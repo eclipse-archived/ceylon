@@ -1,11 +1,7 @@
 package com.redhat.ceylon.model.typechecker.model;
 
-import static com.redhat.ceylon.model.typechecker.model.Util.EMPTY_TYPE_ARG_MAP;
-
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
 
@@ -88,7 +84,7 @@ public abstract class ClassOrInterface extends TypeDeclaration {
     
     @Override
     protected boolean equalsForCache(Object o) {
-        if (o == null || o instanceof ClassOrInterface == false) {
+        if (o == null || !(o instanceof ClassOrInterface)) {
             return false;
         }
         ClassOrInterface b = (ClassOrInterface) o;
@@ -97,7 +93,8 @@ public abstract class ClassOrInterface extends TypeDeclaration {
         }
         if (isToplevel()) {
             if (!b.isToplevel()) return false;
-            return getQualifiedNameString().equals(b.getQualifiedNameString());
+            return getQualifiedNameString()
+                        .equals(b.getQualifiedNameString());
         }
         else {
             if (b.isToplevel()) return false;
@@ -110,58 +107,5 @@ public abstract class ClassOrInterface extends TypeDeclaration {
     public void clearProducedTypeCache() {
         Util.clearProducedTypeCache(this);
     }
-
-    private ProducedType getCompleteContainer() {
-        Scope container = this.getContainer();
-        while (container!=null &&
-                !(container instanceof ClassOrInterface)) {
-            container = container.getContainer();
-        }
-        if (container == null) {
-            return null;
-        }
-        else {
-            ClassOrInterface classOrInterface = 
-                    (ClassOrInterface) 
-                        container;
-            return classOrInterface.getType();
-        }
-    }
     
-    /**
-     * A totally weird version of 
-     * {@link TypeDeclaration#getType()} that returns a
-     * type qualified by *all* outer types, instead of 
-     * stopping at things which aren't types. This was
-     * needed to be able to properly validate refinement
-     * with higher-order generics and nesting, and it's
-     * possible that it points to some deeper problem in
-     * the reasoning related to higher-order generics. 
-     */
-    public ProducedType getCompleteType() {
-        ProducedType type = new ProducedType();
-        type.setQualifyingType(getCompleteContainer());
-        type.setDeclaration(this);
-        //each type parameter is its own argument
-        List<TypeParameter> typeParameters = 
-                getTypeParameters();
-        if (typeParameters.isEmpty()) {
-            type.setTypeArguments(EMPTY_TYPE_ARG_MAP);
-        }
-        else {
-            Map<TypeParameter,ProducedType> map = 
-                    new HashMap<TypeParameter,ProducedType>();
-            for (TypeParameter p: typeParameters) {
-                ProducedType pta = new ProducedType();
-                if (p.isTypeConstructor()) {
-                    pta.setTypeConstructor(true);
-                    pta.setTypeConstructorParameter(p);
-                }
-                pta.setDeclaration(p);
-                map.put(p, pta);
-            }
-            type.setTypeArguments(map);
-        }
-        return type;
-    }
 }
