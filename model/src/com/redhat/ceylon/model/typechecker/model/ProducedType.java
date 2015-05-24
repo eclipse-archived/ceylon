@@ -2660,12 +2660,12 @@ public class ProducedType extends ProducedReference {
      */
     static class Substitution {
         
-        ProducedType substitute(final ProducedType pt, 
+        ProducedType substitute(final ProducedType type, 
                 Map<TypeParameter, ProducedType> substitutions, 
                 Map<TypeParameter, SiteVariance> overrides,
                 boolean covariant, boolean contravariant) {
             TypeDeclaration dec;
-            TypeDeclaration ptd = pt.getDeclaration();
+            TypeDeclaration ptd = type.getDeclaration();
             Unit unit = ptd.getUnit();
             if (ptd instanceof UnionType) {
                 UnionType ut = 
@@ -2715,11 +2715,11 @@ public class ProducedType extends ProducedReference {
                     else {
                         //a regular type parameter, easy,
                         //nothing more to do with it
-                        return pt;
+                        return type;
                     }
                 }
                 else {
-                    if (pt.isTypeConstructor()) {
+                    if (type.isTypeConstructor()) {
                         //an unapplied generic type 
                         //parameter (a type constructor 
                         //parameter) in a higher-order
@@ -2740,62 +2740,75 @@ public class ProducedType extends ProducedReference {
                         //abstraction - in this case we need
                         //to substitute both the type 
                         //constructor and its arguments
-                        List<ProducedType> tal = 
-                                pt.getTypeArgumentList();
-                        List<TypeParameter> tpl = 
-                                tp.getTypeParameters();
-                        List<ProducedType> sta = 
-                                new ArrayList<ProducedType>
-                                    (tal.size());
-                        for (int i=0; 
-                                i<tal.size() && 
-                                i<tpl.size(); 
-                                i++) {
-                            ProducedType ta = tal.get(i);
-                            TypeParameter itp = tpl.get(i);
-                            boolean co = false;
-                            boolean contra = false;
-                            if (pt.isContravariant(itp)) {
-                                co = contravariant;
-                                contra = covariant;
-                            }
-                            else if (pt.isCovariant(itp)) {
-                                co = covariant;
-                                contra = contravariant;
-                            }
-                            sta.add(ta.substitute(
-                                    substitutions,
-                                    overrides, 
-                                    co, contra));
-                        }
-                        return substituteIntoTypeConstructors(
-                                sub, sta, 
+                        return substitutedAppliedTypeConstructor(
+                                type, sub, tp, 
                                 substitutions, overrides, 
-                                covariant, contravariant,
-                                unit, pt);
+                                covariant, contravariant, unit);
                     }
                 }
             }
             else {
                 dec = ptd;
             }
-            if (pt.isTypeConstructor()) {
+            if (type.isTypeConstructor()) {
                 //a type constructor occurring in a higher
                 //rank generic abstraction
-                return substitutedTypeConstructor(pt, 
+                return substitutedTypeConstructor(type, 
                         substitutions, overrides,
                         covariant, contravariant);
             }
             else {
                 //a plain olde type
-                return substitutedType(dec, pt, 
+                return substitutedType(dec, type, 
                         substitutions, overrides,
                         covariant, contravariant);
             }
         }
+
+        private ProducedType substitutedAppliedTypeConstructor(
+                ProducedType type, ProducedType sub, 
+                TypeParameter typeConstructorParameter,
+                Map<TypeParameter, ProducedType> substitutions, 
+                Map<TypeParameter, SiteVariance> overrides, 
+                boolean covariant, boolean contravariant, 
+                Unit unit) {
+            List<ProducedType> tal = 
+                    type.getTypeArgumentList();
+            List<TypeParameter> tpl = 
+                    typeConstructorParameter.getTypeParameters();
+            List<ProducedType> sta = 
+                    new ArrayList<ProducedType>
+                        (tal.size());
+            for (int i=0; 
+                    i<tal.size() && 
+                    i<tpl.size(); 
+                    i++) {
+                ProducedType ta = tal.get(i);
+                TypeParameter itp = tpl.get(i);
+                boolean co = false;
+                boolean contra = false;
+                if (type.isContravariant(itp)) {
+                    co = contravariant;
+                    contra = covariant;
+                }
+                else if (type.isCovariant(itp)) {
+                    co = covariant;
+                    contra = contravariant;
+                }
+                sta.add(ta.substitute(
+                        substitutions,
+                        overrides, 
+                        co, contra));
+            }
+            return substituteIntoTypeConstructors(
+                    sub, sta, 
+                    substitutions, overrides, 
+                    covariant, contravariant,
+                    unit, type);
+        }
         
         private ProducedType substituteIntoTypeConstructors(
-                ProducedType sub, List<ProducedType> sta,
+                ProducedType sub, List<ProducedType> args,
                 Map<TypeParameter, ProducedType> substitutions, 
                 Map<TypeParameter, SiteVariance> overrides,
                 boolean covariant, boolean contravariant,
@@ -2807,7 +2820,7 @@ public class ProducedType extends ProducedReference {
                 for (ProducedType ct: sd.getCaseTypes()) {
                     addToUnion(list, 
                             substituteIntoTypeConstructors(
-                                    ct,sta, 
+                                    ct,args, 
                                     substitutions, 
                                     overrides,
                                     covariant, contravariant, 
@@ -2824,7 +2837,7 @@ public class ProducedType extends ProducedReference {
                 for (ProducedType st: sd.getSatisfiedTypes()) {
                     addToIntersection(list, 
                             substituteIntoTypeConstructors(st,
-                                    sta, 
+                                    args, 
                                     substitutions, overrides,
                                     covariant, contravariant, 
                                     unit, tc),
@@ -2842,7 +2855,7 @@ public class ProducedType extends ProducedReference {
                             substitutions, overrides,
                             covariant, contravariant);
                 ProducedType result = 
-                        sd.getProducedType(qt, sta);
+                        sd.getProducedType(qt, args);
                 substituteVarianceOverridesInTypeConstructor(
                         tc, result);
                 return result;
@@ -2891,40 +2904,40 @@ public class ProducedType extends ProducedReference {
             }
         }
 
-        void addTypeToIntersection(ProducedType ct, 
+        void addTypeToIntersection(ProducedType st, 
                 Map<TypeParameter, ProducedType> substitutions, 
                 Map<TypeParameter, SiteVariance> overrides,
                 boolean covariant, boolean contravariant, 
                 List<ProducedType> types) {
-            if (ct==null) {
+            if (st==null) {
                 types.add(null);
             }
             else {
-                addToIntersection(types, substitute(ct, 
+                addToIntersection(types, substitute(st, 
                         substitutions, overrides,
                         covariant, contravariant), 
-                        ct.getDeclaration().getUnit());
+                        st.getDeclaration().getUnit());
             }
         }
         
         private ProducedType substitutedType(
-                TypeDeclaration dec, ProducedType pt,
+                TypeDeclaration dec, ProducedType type,
                 Map<TypeParameter, ProducedType> substitutions, 
                 Map<TypeParameter, SiteVariance> overrides,
                 boolean covariant, boolean contravariant) {
-            ProducedType qt = pt.getQualifyingType();
-            ProducedType type = new ProducedType();
-            type.setDeclaration(dec);
-            type.setTypeConstructor(pt.isTypeConstructor());
-            type.setTypeConstructorParameter(
-                    pt.getTypeConstructorParameter());
+            ProducedType qt = type.getQualifyingType();
+            ProducedType result = new ProducedType();
+            result.setDeclaration(dec);
+            result.setTypeConstructor(type.isTypeConstructor());
+            result.setTypeConstructorParameter(
+                    type.getTypeConstructorParameter());
             if (qt!=null) {
-                type.setQualifyingType(substitute(qt, 
+                result.setQualifyingType(substitute(qt, 
                         substitutions, overrides,
                         covariant, contravariant));
             }
             Map<TypeParameter, ProducedType> typeArguments = 
-                    pt.getTypeArguments();
+                    type.getTypeArguments();
             Map<TypeParameter, ProducedType> typeArgs = 
                     new HashMap<TypeParameter, ProducedType>
                         (typeArguments.size());
@@ -2935,11 +2948,11 @@ public class ProducedType extends ProducedReference {
                 if (arg!=null) {
                     boolean co = false;
                     boolean contra = false;
-                    if (pt.isContravariant(tp)) {
+                    if (type.isContravariant(tp)) {
                         co = contravariant;
                         contra = covariant;
                     }
-                    else if (pt.isCovariant(tp)) {
+                    else if (type.isCovariant(tp)) {
                         co = covariant;
                         contra = contravariant;
                     }
@@ -2948,18 +2961,18 @@ public class ProducedType extends ProducedReference {
                             co, contra));
                 }
             }
-            type.setTypeArguments(typeArgs);
-            type.setVarianceOverrides(pt.getVarianceOverrides());
-            type.setUnderlyingType(pt.getUnderlyingType());
-            return type;
+            result.setTypeArguments(typeArgs);
+            result.setVarianceOverrides(type.getVarianceOverrides());
+            result.setUnderlyingType(type.getUnderlyingType());
+            return result;
         }
         
         private ProducedType substitutedTypeConstructor(
-                ProducedType pt,
+                ProducedType type,
                 Map<TypeParameter, ProducedType> substitutions, 
                 Map<TypeParameter, SiteVariance> overrides,
                 boolean covariant, boolean contravariant) {
-            TypeDeclaration d = pt.getDeclaration();            
+            TypeDeclaration d = type.getDeclaration();            
             if (d.isAlias() && substitutions!=null) {
                 //necessary for subtyping of rank > 2 
                 //polymorphic types and of any higher rank
@@ -2968,7 +2981,7 @@ public class ProducedType extends ProducedReference {
                 ProducedType et = 
                         d.getExtendedType();
                 if (et==null) {
-                    return pt.unknownType();
+                    return type.unknownType();
                 }
                 TypeAlias ta = new TypeAlias();
                 ta.setAnonymous(d.isAnonymous());
@@ -3022,20 +3035,20 @@ public class ProducedType extends ProducedReference {
                     tps.add(stp);
                 }
                 ta.setTypeParameters(tps);
-                ProducedType type = ta.getType();
-                ProducedType qt = pt.getQualifyingType();
+                ProducedType result = ta.getType();
+                ProducedType qt = type.getQualifyingType();
                 if (qt!=null) {
-                    type.setQualifyingType(qt.substitute(
+                    result.setQualifyingType(qt.substitute(
                             substitutions, overrides,
                             covariant, contravariant));
                 }
-                type.setTypeConstructor(true);
-                type.setTypeConstructorParameter(
-                        pt.getTypeConstructorParameter());
-                return type;
+                result.setTypeConstructor(true);
+                result.setTypeConstructorParameter(
+                        type.getTypeConstructorParameter());
+                return result;
             }
             else {
-                return pt;
+                return type;
             }
         }
     }
@@ -3053,13 +3066,13 @@ public class ProducedType extends ProducedReference {
      */
     static class InternalSubstitution extends Substitution {
     
-        private void addType(ProducedType ct,
+        private void addType(ProducedType t,
                 Map<TypeParameter, ProducedType> substitutions,
                 Map<TypeParameter, SiteVariance> variances, 
                 boolean covariant, boolean contravariant,
                 List<ProducedType> types) {
-            if (ct!=null) {
-                types.add(substitute(ct, 
+            if (t!=null) {
+                types.add(substitute(t, 
                         substitutions, variances,
                         covariant, contravariant));
             }
@@ -3074,12 +3087,12 @@ public class ProducedType extends ProducedReference {
                     covariant, contravariant, types);
         }
 
-        @Override void addTypeToIntersection(ProducedType ct,
+        @Override void addTypeToIntersection(ProducedType st,
                 Map<TypeParameter, ProducedType> substitutions,
                 Map<TypeParameter, SiteVariance> variances,
                 boolean covariant, boolean contravariant,
                 List<ProducedType> types) {
-            addType(ct, substitutions, variances,
+            addType(st, substitutions, variances,
                     covariant, contravariant, types);
         }
         
