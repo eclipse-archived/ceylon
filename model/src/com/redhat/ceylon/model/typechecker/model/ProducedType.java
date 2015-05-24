@@ -1010,7 +1010,7 @@ public class ProducedType extends ProducedReference {
         if (!substitutions.isEmpty()) {
             ProducedType type = this;
             if (overrides!=null) {
-                type = applyVarianceOverridesInternal(this, 
+                type = applyVarianceOverrides(this, 
                         covariant, contravariant, overrides);
             }
             return new Substitution(
@@ -1031,21 +1031,21 @@ public class ProducedType extends ProducedReference {
      * @param source an extended type, satisfied type, or
      *        case type
      */
-    private ProducedType substituteInternal(ProducedType source) {
-        return substituteInternal(source.getTypeArguments(), 
+    private ProducedType substituteFromSubtype(ProducedType source) {
+        return substituteFromSubtype(source.getTypeArguments(), 
                 source.getVarianceOverrides());
     }
 
-    private ProducedType substituteInternal(
+    private ProducedType substituteFromSubtype(
             Map<TypeParameter, ProducedType> substitutions, 
             Map<TypeParameter, SiteVariance> overrides) {
         if (!substitutions.isEmpty()) {
             ProducedType type = this;
             if (overrides!=null) {
-                type = applyVarianceOverridesInternal(this, 
+                type = applyVarianceOverrides(this, 
                         true, false, overrides);
             }
-            return new InternalSubstitution(
+            return new SupertypeSubstitution(
                     substitutions, overrides)
                 .substitute(type, true, false);
         }
@@ -2565,7 +2565,7 @@ public class ProducedType extends ProducedReference {
                 new ArrayList<ProducedType>
                     (sts.size());
         for (ProducedType st: sts) {
-            satisfiedTypes.add(st.substituteInternal(this));
+            satisfiedTypes.add(st.substituteFromSubtype(this));
         }
         return satisfiedTypes;
     }
@@ -2580,7 +2580,7 @@ public class ProducedType extends ProducedReference {
             if (getTypeArguments().isEmpty()) {
                 return et;
             }
-            return et.substituteInternal(this);
+            return et.substituteFromSubtype(this);
         }
     }
 
@@ -2598,7 +2598,7 @@ public class ProducedType extends ProducedReference {
                     new ArrayList<ProducedType>
                         (cts.size());
             for (ProducedType ct: cts) {
-                caseTypes.add(ct.substituteInternal(this));
+                caseTypes.add(ct.substituteFromSubtype(this));
             }
             return caseTypes;
         }
@@ -3043,9 +3043,9 @@ public class ProducedType extends ProducedReference {
      * 
      * @author Gavin King
      */
-    private static class InternalSubstitution extends Substitution {
+    private static class SupertypeSubstitution extends Substitution {
     
-        private InternalSubstitution(
+        private SupertypeSubstitution(
                 Map<TypeParameter, ProducedType> substitutions, 
                 Map<TypeParameter, SiteVariance> overrides) {
             super(substitutions, overrides);
@@ -3885,7 +3885,7 @@ public class ProducedType extends ProducedReference {
      * @return the new type after application of the rules
      *         for use-site variance substitution
      */
-    private static ProducedType applyVarianceOverridesInternal(
+    private static ProducedType applyVarianceOverrides(
             ProducedType type, 
             boolean covariant, boolean contravariant, 
             Map<TypeParameter, SiteVariance> overrides) {
@@ -3915,7 +3915,7 @@ public class ProducedType extends ProducedReference {
                 //TODO: BUG HERE! This can cause a stack
                 //      when the upper bound involves
                 //      the type parameter covariantly
-                return applyVarianceOverridesInternal(
+                return applyVarianceOverrides(
                         intersectionOfSupertypes(tp), 
                         covariant, contravariant, 
                         overrides);
@@ -3929,7 +3929,7 @@ public class ProducedType extends ProducedReference {
                     new ArrayList<ProducedType>();
             for (ProducedType ut: type.getCaseTypes()) {
                 addToUnion(list, 
-                        applyVarianceOverridesInternal(ut, 
+                        applyVarianceOverrides(ut, 
                                 covariant, contravariant,
                                 overrides));
             }
@@ -3943,7 +3943,7 @@ public class ProducedType extends ProducedReference {
                     new ArrayList<ProducedType>();
             for (ProducedType it: type.getSatisfiedTypes()) {
                 addToIntersection(list, 
-                        applyVarianceOverridesInternal(it, 
+                        applyVarianceOverrides(it, 
                                 covariant, contravariant,
                                 overrides),
                         unit);
@@ -3981,14 +3981,14 @@ public class ProducedType extends ProducedReference {
                 TypeParameter param = params.get(i);
                 if (type.isCovariant(param)) {
                     resultArgs.add(
-                            applyVarianceOverridesInternal(arg, 
+                            applyVarianceOverrides(arg, 
                                     covariant, contravariant,
                                     overrides));
                 }
                 else if (type.isContravariant(param)) {
 //                    if (covariant||contravariant) {
                     resultArgs.add(
-                            applyVarianceOverridesInternal(arg, 
+                            applyVarianceOverrides(arg, 
                                     !covariant, !contravariant,
                                     overrides));
 //                    }
@@ -4014,7 +4014,7 @@ public class ProducedType extends ProducedReference {
                         }
                     }
                     ProducedType resultArg = 
-                            applyVarianceOverridesInternal(arg, 
+                            applyVarianceOverrides(arg, 
                                     covariant, contravariant,
                                     overrides);
                     if (resultArg.isNothing()) {
