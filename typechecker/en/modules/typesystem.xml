@@ -2628,7 +2628,7 @@ interface NumberLiteral
             <programlisting>T satisfies A || T satisfies B => T abstracts A|B</programlisting></comment>
             -->
             
-            <para>The inferred type argument to a covariant or invariant type parameter 
+            <para>The inferred type argument to a covariant type parameter 
             <literal>T</literal> of the generic declaration is:</para>
             
             <itemizedlist>
@@ -2653,6 +2653,42 @@ interface NumberLiteral
                 <listitem>
                     <para>the type <literal>A</literal>, where the inferred upper bound for 
                     <literal>T</literal> is <literal>T satisfies A</literal>.</para>
+                </listitem>
+            </itemizedlist>
+            
+            <para>An invariant type parameter <literal>T</literal> of the generic 
+            declaration is treated, for the purposes of type argument inference, as if 
+            it were covariant or contravariant, depending upon how it occurs in the 
+            signature of the generic declaration.</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>If the generic declaration is a method, and <literal>T</literal> 
+                    occurs covariantly in its return type, and does not occur contravariantly
+                    or invariantly in its return type, then <literal>T</literal> is 
+                    treated as covariant.</para>
+                </listitem>
+                <listitem>
+                    <para>If the generic declaration is a method, and <literal>T</literal> 
+                    occurs contravariantly in its return type, and does not occur covariantly
+                    or invariantly in its return type, then <literal>T</literal> is 
+                    treated as contravariant.</para>
+                </listitem>
+                <!--listitem>
+                    <para>Otherwise, if <literal>T</literal> occurs covariantly in any of 
+                    the parameter types of the generic declaration, and does not occur 
+                    contravariantly or invariantly in any parameter type, then 
+                    <literal>T</literal> is estimated to be covariant.</para>
+                </listitem-->
+                <listitem>
+                    <para>Otherwise, if <literal>T</literal> occurs contravariantly in any 
+                    of the parameter types of the generic declaration, and does not occur 
+                    covariantly or invariantly in any parameter type, then <literal>T</literal> 
+                    treated as be contravariant.</para>
+                </listitem>
+                <listitem>
+                    <para>Finally, if none of the above cases apply, <literal>T</literal>
+                    is treated as covariant.</para>
                 </listitem>
             </itemizedlist>
             
