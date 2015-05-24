@@ -1698,23 +1698,32 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
         super.visit(that);
         endDeclaration(d);
     }
-
+    
+    TypeParameter searchForTypeParameter(String name, Generic g) {
+        for (TypeParameter tp: g.getTypeParameters()) {
+            if (tp.isTypeConstructor()) {
+                TypeParameter p = (TypeParameter) 
+                        tp.getDirectMember(name, null, false);
+                if (p==null) {
+                    p = searchForTypeParameter(name, tp);
+                }
+                if (p!=null) {
+                    return p;
+                }
+            }
+        }
+        return null;
+    }
+    
     @Override
     public void visit(Tree.TypeConstraint that) {
         String name = name(that.getIdentifier());
-        TypeParameter p = (TypeParameter) 
+        TypeParameter p = (TypeParameter)
                 scope.getDirectMember(name, null, false);
         if (p==null && scope instanceof Generic) {
             //TODO: just look at the most recent
             Generic g = (Generic) scope;
-            for (TypeParameter tp: g.getTypeParameters()) {
-                if (tp.isTypeConstructor()) {
-                    p = (TypeParameter) 
-                            tp.getDirectMember(name, null, 
-                                    false);
-                    if (p!=null) break;
-                }
-            }
+            p = searchForTypeParameter(name, g);
         }
         that.setDeclarationModel(p);
         if (p==null) {
@@ -1752,7 +1761,7 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
             p.addParameterList(model);
         }
     }
-    
+
     @Override
     public void visit(Tree.ParameterizedExpression that) {
         super.visit(that);
