@@ -858,17 +858,26 @@ public class Util {
     }
     
     /**
-     * Collect together type arguments given a list of 
-     * type arguments to a declaration and the receiving 
-     * type.
+     * Given a declaration, a list of type arguments to the 
+     * declaration, and a receiving type, collect together
+     * all interesting type arguments. The resulting map 
+     * includes all type arguments from the receiving type 
+     * and all its qualifying types. That's useful, because
+     * {@link ProducedType.Substitution} works with a single
+     * aggregated map, and so for performance
+     * {@link ProducedType#substitute(ProducedType)} and
+     * {@link ProducedType#substitute(ProducedTypedReference)}
+     * assume that the given type or reference holds such a
+     * single aggregated map.
      * 
      * @return a map of type parameter to type argument
      *  
      * @param declaration a declaration
      * @param receivingType the receiving produced type 
      *        of which the declaration is a member
-     * @param typeArguments explicit or inferred type 
-     *        arguments of the declaration
+     * @param typeArguments all the explicit or inferred 
+     *        type arguments of the declaration, including
+     *        those from qualifying types
      */
     public static Map<TypeParameter,ProducedType> 
     getTypeArgumentMap(Declaration declaration, 

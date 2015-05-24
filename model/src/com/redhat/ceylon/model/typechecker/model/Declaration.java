@@ -573,7 +573,17 @@ public abstract class Declaration
     public void setActualCompleter(DeclarationCompleter actualCompleter) {
         this.actualCompleter = actualCompleter;
     }
-
+    
+    /**
+     * Get the type parameters of this declaration as their
+     * own arguments. Note: what is returned is different to 
+     * {@link Util#getTypeArgumentMap(Declaration, ProducedType, List)},
+     * which also includes type arguments from qualifying 
+     * types. In this case we assume they're uninteresting.
+     * 
+     * @return a map from each type parameter of this 
+     *         declaration to its own type
+     */
     Map<TypeParameter, ProducedType> getTypeParametersAsArguments() {
         if (this instanceof Generic) {
             Generic g = (Generic) this;
