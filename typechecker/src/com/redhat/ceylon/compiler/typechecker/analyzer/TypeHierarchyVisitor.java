@@ -34,10 +34,14 @@ import com.redhat.ceylon.model.typechecker.model.Value;
 
 /**
  * Checks associated to the traversal of the hierarchy:
+ * 
  * - detect circularity in inheritance
- * - All formal must be implemented as actual by concrete classes
- * - may not inherit two declarations with the same name that do not share a common supertype
- * - may not inherit two declarations with the same name unless redefined in subclass
+ * - lll formal must be implemented as actual by concrete 
+ *   classes
+ * - may not inherit two declarations with the same name 
+ *   that do not share a common supertype
+ * - may not inherit two declarations with the same name 
+ *   unless redefined in subclass
  *
  * @author Emmanuel Bernard <emmanuel@hibernate.org>
  */

@@ -37,6 +37,16 @@ import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.model.typechecker.model.Unit;
 import com.redhat.ceylon.model.typechecker.model.UnknownType;
 
+/**
+ * Enforces a number of rules surrounding inheritance.
+ * This work happens during an intermediate phase in 
+ * between the second and third phases of type analysis.
+ * 
+ * @see TypeHierarchyVisitor for more complex stuff
+ * 
+ * @author Gavin King
+ *
+ */
 public class InheritanceVisitor extends Visitor {
     
     @Override public void visit(Tree.TypeDeclaration that) {
@@ -103,14 +113,19 @@ public class InheritanceVisitor extends Visitor {
                 ProducedType st1 = supertypes.get(i);
                 for (int j=i+1; j<supertypes.size(); j++) {
                     ProducedType st2 = supertypes.get(j);
-                    checkSupertypeIntersection(that, td, st1, st2); //note: sets td.inconsistentType by side-effect
+                    //Note: sets td.inconsistentType by side-effect
+                    checkSupertypeIntersection(that, 
+                            td, st1, st2); 
                 }
             }
         }
     }
     private void checkSupertypeIntersection(Node that,
-            TypeDeclaration td, ProducedType st1, ProducedType st2) {
-        if (st1.getDeclaration().equals(st2.getDeclaration()) /*&& !st1.isExactly(st2)*/) {
+            TypeDeclaration td, 
+            ProducedType st1, ProducedType st2) {
+        TypeDeclaration st1d = st1.getDeclaration();
+        TypeDeclaration st2d = st2.getDeclaration();
+        if (st1d.equals(st2d) /*&& !st1.isExactly(st2)*/) {
             Unit unit = that.getUnit();
             if (!areConsistentSupertypes(st1, st2, unit)) {
                 that.addError(typeDescription(td, unit) +
@@ -215,8 +230,8 @@ public class InheritanceVisitor extends Visitor {
         }
     }
 
-    private void validateEnumeratedSupertypeArguments(Node that, TypeDeclaration d, 
-            ProducedType supertype) {
+    private void validateEnumeratedSupertypeArguments(Node that, 
+            TypeDeclaration d, ProducedType supertype) {
         for (TypeParameter p: 
                 supertype.getDeclaration().getTypeParameters()) {
             ProducedType arg = 
@@ -314,7 +329,8 @@ public class InheritanceVisitor extends Visitor {
                     //checkCaseOfSupertype(et, td, type);
                     TypeDeclaration etd = 
                             td.getExtendedTypeDeclaration();
-                    TypeDeclaration aetd = type.getDeclaration();
+                    TypeDeclaration aetd = 
+                            type.getDeclaration();
                     if (aetd instanceof Constructor &&
                             aetd.isAbstract()) {
                         et.addError("extends a partial constructor: '" +
@@ -398,7 +414,8 @@ public class InheritanceVisitor extends Visitor {
                                 .getModule()
                                 .getNameAsString();
                     t.addError("satisfies a sealed interface in a different module: '" +
-                            std.getName(unit) + "' in '" + moduleName + "'");
+                            std.getName(unit) + "' in '" + 
+                            moduleName + "'");
                 }
                 checkSelfTypes(t, td, type);
                 checkExtensionOfMemberType(t, td, type);
@@ -440,125 +457,148 @@ public class InheritanceVisitor extends Visitor {
             }
         }
         else {
-            Unit unit = that.getUnit();
-            Set<TypeDeclaration> typeSet = 
-                    new HashSet<TypeDeclaration>();
-            for (Tree.StaticType ct: that.getTypes()) {
-                ProducedType type = ct.getTypeModel();
-                if (!isTypeUnknown(type)) {
-                    type = type.resolveAliases();
-                    TypeDeclaration ctd = type.getDeclaration();
-                    if (!typeSet.add(ctd)) {
-                        //this error is not really truly necessary
-                        ct.addError("duplicate case type: '" + 
-                                ctd.getName(unit) + "' of '" + 
-                                td.getName() + "'");
-                    }
-                    if (!(ctd instanceof TypeParameter)) {
-                        //it's not a self type
-                        if (checkDirectSubtype(td, ct, type)) {
-                            checkAssignable(type, td.getType(), ct,
-                                    getCaseTypeExplanation(td, type));
-                        }
-                        //note: this is a better, faster way to call 
-                        //      validateEnumeratedSupertypeArguments()
-                        //      but unfortunately it winds up displaying
-                        //      the error on the wrong node, confusing
-                        //      the user
-                        /*ProducedType supertype = type.getDeclaration().getType().getSupertype(td);
-                        validateEnumeratedSupertypeArguments(t, type.getDeclaration(), supertype);*/
-                    }
-                    if (ctd instanceof ClassOrInterface && 
-                            ct instanceof Tree.SimpleType) {
-                        Tree.SimpleType s = 
-                                (Tree.SimpleType) ct;
-                        Tree.TypeArgumentList tal = 
-                                s.getTypeArgumentList();
-                        if (tal!=null) {
-                            List<Tree.Type> args = 
-                                    tal.getTypes();
-                            List<TypeParameter> typeParameters = 
-                                    ctd.getTypeParameters();
-                            for (int i=0; 
-                                    i<args.size() && 
-                                    i<typeParameters.size(); 
-                                    i++) {
-                                Tree.Type arg = args.get(i);
-                                TypeParameter typeParameter = 
-                                        ctd.getTypeParameters()
-                                            .get(i);
-                                ProducedType argType = 
-                                        arg.getTypeModel();
-                                if (argType!=null) {
-                                    TypeDeclaration argTypeDec = 
-                                            argType.getDeclaration();
-                                    if (argTypeDec instanceof TypeParameter) {
-                                        TypeParameter tp = 
-                                                (TypeParameter) 
-                                                    argTypeDec;
-                                        if (!tp.getDeclaration().equals(td)) {
-                                            arg.addError("type argument is not a type parameter of the enumerated type: '" +
-                                                    argTypeDec.getName() + 
-                                                    "' is not a type parameter of '" + 
-                                                    td.getName());
-                                        }
-                                    }
-                                    else if (typeParameter.isCovariant()) {
-                                        checkAssignable(typeParameter.getType(), 
-                                                argType, arg, 
-                                                "type argument not an upper bound of the type parameter");
-                                    }
-                                    else if (typeParameter.isContravariant()) {
-                                        checkAssignable(argType, 
-                                                typeParameter.getType(), arg, 
-                                                "type argument not a lower bound of the type parameter");
-                                    }
-                                    else {
-                                        arg.addError("type argument is not a type parameter of the enumerated type: '" +
-                                                argTypeDec.getName() + "'");
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            Set<Declaration> valueSet = 
-                    new HashSet<Declaration>();
-            for (Tree.BaseMemberExpression bme: 
-                    that.getBaseMemberExpressions()) {
-                TypedDeclaration d = 
-                        getTypedDeclaration(bme.getScope(), 
-                                name(bme.getIdentifier()), 
-                                null, false, unit);
-                ProducedType type = d.getType();
-                if (d!=null && !valueSet.add(d)) {
-                    //this error is not really truly necessary
-                    bme.addError("duplicate case: '" + 
-                            d.getName(unit) + 
-                            "' of '" + td.getName() + "'");
-                }
-                if (d!=null && type!=null && 
-                        !type.getDeclaration()
-                            .isAnonymous()) {
-                    bme.addError("case must be a toplevel anonymous class: '" + 
-                            d.getName(unit) + "' is not an anonymous class");
-                }
-                else if (d!=null && !d.isToplevel()) {
-                    bme.addError("case must be a toplevel anonymous class: '" + 
-                            d.getName(unit) + "' is not toplevel");
-                }
-                if (type!=null) {
-                    if (checkDirectSubtype(td, bme, type)) {
-                        checkAssignable(type, td.getType(), bme, 
-                                getCaseTypeExplanation(td, type));
-                    }
-                }
-            }
+            collectCaseTypes(that, td);
+            collectCaseValues(that, td);
         }
         
         //TODO: get rid of this awful hack:
         td.setCaseTypes(cases);
+    }
+
+    void collectCaseValues(Tree.CaseTypes that, 
+            TypeDeclaration td) {
+        Unit unit = that.getUnit();
+        Set<Declaration> valueSet = 
+                new HashSet<Declaration>();
+        for (Tree.BaseMemberExpression bme: 
+                that.getBaseMemberExpressions()) {
+            TypedDeclaration value = 
+                    getTypedDeclaration(bme.getScope(), 
+                            name(bme.getIdentifier()), 
+                            null, false, unit);
+            ProducedType type = value.getType();
+            if (value!=null && !valueSet.add(value)) {
+                //this error is not really truly necessary
+                bme.addError("duplicate case: '" + 
+                        value.getName(unit) + 
+                        "' of '" + td.getName() + "'");
+            }
+            if (value!=null && type!=null && 
+                    !type.getDeclaration()
+                        .isAnonymous()) {
+                bme.addError("case must be a toplevel anonymous class: '" + 
+                        value.getName(unit) + "' is not an anonymous class");
+            }
+            else if (value!=null && !value.isToplevel()) {
+                bme.addError("case must be a toplevel anonymous class: '" + 
+                        value.getName(unit) + "' is not toplevel");
+            }
+            if (type!=null) {
+                if (checkDirectSubtype(td, bme, type)) {
+                    checkAssignable(type, td.getType(), bme, 
+                            getCaseTypeExplanation(td, type));
+                }
+            }
+        }
+    }
+
+    void collectCaseTypes(Tree.CaseTypes that, TypeDeclaration td) {
+        Set<TypeDeclaration> typeSet = 
+                new HashSet<TypeDeclaration>();
+        for (Tree.StaticType ct: that.getTypes()) {
+            ProducedType type = ct.getTypeModel();
+            if (!isTypeUnknown(type)) {
+                type = type.resolveAliases();
+                TypeDeclaration ctd = type.getDeclaration();
+                if (!typeSet.add(ctd)) {
+                    //this error is not really truly necessary
+                    Unit unit = that.getUnit();
+                    ct.addError("duplicate case type: '" + 
+                            ctd.getName(unit) + "' of '" + 
+                            td.getName() + "'");
+                }
+                if (!(ctd instanceof TypeParameter)) {
+                    //it's not a self type
+                    if (checkDirectSubtype(td, ct, type)) {
+                        checkAssignable(type, td.getType(), ct,
+                                getCaseTypeExplanation(td, type));
+                    }
+                    //note: this is a better, faster way to call 
+                    //      validateEnumeratedSupertypeArguments()
+                    //      but unfortunately it winds up displaying
+                    //      the error on the wrong node, confusing
+                    //      the user
+                    /*
+                    ProducedType supertype = 
+                            type.getDeclaration()
+                                .getType()
+                                .getSupertype(td);
+                    validateEnumeratedSupertypeArguments(t, 
+                            type.getDeclaration(), supertype);
+                    */
+                }
+                checkCaseType(td, ct, ctd);
+            }
+        }
+    }
+
+    void checkCaseType(TypeDeclaration type, 
+            Tree.StaticType ct,
+            TypeDeclaration caseTypeDec) {
+        if (caseTypeDec instanceof ClassOrInterface && 
+                ct instanceof Tree.SimpleType) {
+            Tree.SimpleType t = (Tree.SimpleType) ct;
+            Tree.TypeArgumentList tal = 
+                    t.getTypeArgumentList();
+            if (tal!=null) {
+                List<Tree.Type> args = 
+                        tal.getTypes();
+                List<TypeParameter> typeParameters = 
+                        caseTypeDec.getTypeParameters();
+                for (int i=0; 
+                        i<args.size() && 
+                        i<typeParameters.size(); 
+                        i++) {
+                    Tree.Type arg = args.get(i);
+                    TypeParameter typeParameter = 
+                            caseTypeDec.getTypeParameters()
+                                .get(i);
+                    ProducedType argType = 
+                            arg.getTypeModel();
+                    if (argType!=null) {
+                        TypeDeclaration argTypeDec = 
+                                argType.getDeclaration();
+                        if (argTypeDec instanceof TypeParameter) {
+                            TypeParameter tp = 
+                                    (TypeParameter) 
+                                        argTypeDec;
+                            if (!tp.getDeclaration()
+                                    .equals(type)) {
+                                arg.addError("type argument is not a type parameter of the enumerated type: '" +
+                                        argTypeDec.getName() + 
+                                        "' is not a type parameter of '" + 
+                                        type.getName());
+                            }
+                        }
+                        else if (typeParameter.isCovariant()) {
+                            checkAssignable(
+                                    typeParameter.getType(), 
+                                    argType, arg, 
+                                    "type argument not an upper bound of the type parameter");
+                        }
+                        else if (typeParameter.isContravariant()) {
+                            checkAssignable(argType, 
+                                    typeParameter.getType(), arg, 
+                                    "type argument not a lower bound of the type parameter");
+                        }
+                        else {
+                            arg.addError("type argument is not a type parameter of the enumerated type: '" +
+                                    argTypeDec.getName() + "'");
+                        }
+                    }
+                }
+            }
+        }
     }
 
     @Override 
