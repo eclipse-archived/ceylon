@@ -18,13 +18,13 @@ import com.redhat.ceylon.compiler.typechecker.analyzer.ExpressionVisitor;
 import com.redhat.ceylon.compiler.typechecker.analyzer.InheritanceVisitor;
 import com.redhat.ceylon.compiler.typechecker.analyzer.LiteralVisitor;
 import com.redhat.ceylon.compiler.typechecker.analyzer.LocalDeclarationVisitor;
+import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleSourceMapper;
 import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleVisitor;
 import com.redhat.ceylon.compiler.typechecker.analyzer.RefinementVisitor;
 import com.redhat.ceylon.compiler.typechecker.analyzer.SelfReferenceVisitor;
 import com.redhat.ceylon.compiler.typechecker.analyzer.SpecificationVisitor;
 import com.redhat.ceylon.compiler.typechecker.analyzer.SupertypeVisitor;
 import com.redhat.ceylon.compiler.typechecker.analyzer.TypeArgumentVisitor;
-import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleSourceMapper;
 import com.redhat.ceylon.compiler.typechecker.analyzer.TypeHierarchyVisitor;
 import com.redhat.ceylon.compiler.typechecker.analyzer.TypeVisitor;
 import com.redhat.ceylon.compiler.typechecker.analyzer.VisibilityVisitor;
@@ -389,7 +389,7 @@ public class PhasedUnit {
                 ProducedTypeCache.setEnabled(false);
         try {
             if (!refinementValidated) {
-                ProducedType.depth.set(0);
+                ProducedType.resetDepth(0);
                 //System.out.println("Validate member refinement for " + fileName);
                 rootNode.visit(new AliasVisitor());
                 rootNode.visit(new SupertypeVisitor(true)); //TODO: move to a new phase!
@@ -405,7 +405,7 @@ public class PhasedUnit {
 
     public synchronized void analyseTypes() {
         if (!fullyTyped) {
-            ProducedType.depth.set(-100);
+            ProducedType.resetDepth(-100);
             //System.out.println("Run analysis phase for " + fileName);
             rootNode.visit(new ExpressionVisitor(moduleManagerRef.get()));
             rootNode.visit(new VisibilityVisitor());

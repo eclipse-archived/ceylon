@@ -184,3 +184,4 @@ interface MyIdentif satisfies Identifiable {}
 class MyClass() extends Object() satisfies MyIdentif {}
 
 @error class MyNothing() extends Nothing() {}
+@error interface MyOtherNothing satisfies Nothing {}

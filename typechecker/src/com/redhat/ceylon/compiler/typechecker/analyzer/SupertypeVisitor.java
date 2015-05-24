@@ -11,6 +11,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.model.typechecker.model.Class;
+import com.redhat.ceylon.model.typechecker.model.DecidabilityException;
 import com.redhat.ceylon.model.typechecker.model.IntersectionType;
 import com.redhat.ceylon.model.typechecker.model.ProducedType;
 import com.redhat.ceylon.model.typechecker.model.TypeAlias;
@@ -125,7 +126,7 @@ public class SupertypeVisitor extends Visitor {
                 it.setSatisfiedTypes(list);
 				it.canonicalize().getType();
             }
-            catch (RuntimeException re) {
+            catch (DecidabilityException re) {
                 brokenHierarchy(d, that, unit);
                 return;
             }

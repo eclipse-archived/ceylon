@@ -289,13 +289,13 @@ public abstract class Node {
     public String getMessage(Exception e, Visitor visitor) {
 		return "the '" + visitor.getClass().getSimpleName() +
 		        "' caused an exception visiting a '" + 
-		        getNodeType() + "' node: '\"" + e + "\"' " + 
+		        getNodeType() + "' node: '\"" + e + "\"'" + 
 		        getLocationInfo(e);
 	}
 
 	private String getLocationInfo(Exception e) {
 		return e.getStackTrace().length==0 ? "" : 
-		    "at '" + e.getStackTrace()[0].toString() + "'";
+		    " at '" + e.getStackTrace()[0].toString() + "'";
 	}
 	
 	public void connect(Node child) {

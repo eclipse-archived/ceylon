@@ -2,6 +2,7 @@ package com.redhat.ceylon.compiler.typechecker.analyzer;
 
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
+import com.redhat.ceylon.model.typechecker.model.DecidabilityException;
 import com.redhat.ceylon.model.typechecker.model.ProducedType;
 import com.redhat.ceylon.model.typechecker.model.TypeParameter;
 
@@ -25,7 +26,7 @@ public class DefaultTypeArgVisitor extends Visitor {
                         tpd.setDefaultTypeArgument(null);
                     }
                 }
-                catch (RuntimeException re) {
+                catch (DecidabilityException re) {
                     ts.addError("undecidable default type argument");
                     tpd.setDefaultTypeArgument(null);
                 }

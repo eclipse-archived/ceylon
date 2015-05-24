@@ -50,6 +50,7 @@ import com.redhat.ceylon.model.typechecker.model.Method;
 import com.redhat.ceylon.model.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.ModuleImport;
+import com.redhat.ceylon.model.typechecker.model.NothingType;
 import com.redhat.ceylon.model.typechecker.model.Package;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.ProducedType;
@@ -715,10 +716,10 @@ public class TypeVisitor extends Visitor {
                     length.addError("must be positive");
                     return;
                 }
-                if (len>100) {
-                    length.addError("may not be greater than 100");
-                    return;
-                }
+//                if (len>100) {
+//                    length.addError("may not be greater than 100");
+//                    return;
+//                }
                 Class td = unit.getTupleDeclaration();
                 t = unit.getType(unit.getEmptyDeclaration());
                 for (int i=0; i<len; i++) {
@@ -1649,6 +1650,9 @@ public class TypeVisitor extends Visitor {
                                     type.getDeclaration().getName(unit) + 
                                     "'");
                         }
+                        else if (etd instanceof NothingType) {
+                            et.addError("extends the bottom type 'Nothing'");
+                        }
                         else {
                             td.setExtendedType(type);
                         }
@@ -1687,6 +1691,9 @@ public class TypeVisitor extends Visitor {
                         //unnecessary, handled by SupertypeVisitor
 //                      st.addError("directly extends itself: '" + 
 //                              td.getName() + "'");
+                    }
+                    else if (std instanceof NothingType) {
+                        st.addError("satisfies the bottom type 'Nothing'");
                     }
                     else if (std instanceof TypeAlias) {
                         st.addError("satisfies a type alias: '" + 
@@ -1806,7 +1813,8 @@ public class TypeVisitor extends Visitor {
                 if (ctd!=null && 
                         !(ctd instanceof UnknownType)) {
                     if (ctd instanceof UnionType || 
-                        ctd instanceof IntersectionType) {
+                        ctd instanceof IntersectionType ||
+                        ctd instanceof NothingType) {
                         //union/intersection types don't have equals()
                         if (td instanceof TypeParameter) {
                             ct.addError("enumerated bound must be a class or interface type");

@@ -2411,14 +2411,18 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
                 (TypeDeclaration) 
                     that.getScope();
         if (!td.isAlias()) {
-            Tree.SimpleType t = that.getType();
-            if (t==null) {
+            Tree.SimpleType type = that.getType();
+            if (type==null) {
                 that.addError("missing extended type");
             }
             else {
-                ProducedType type = t.getTypeModel();
-                if (type!=null) {
-                    td.setExtendedType(type);
+                ProducedType et = type.getTypeModel();
+                if (et!=null) {
+                    //we can't check here that it's a 
+                    //sensible supertype, because this is
+                    //just a lazy reference that will be
+                    //resolvable later
+                    td.setExtendedType(et);
                 }
             }
         }
@@ -2439,10 +2443,14 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
         List<ProducedType> list = 
                 new ArrayList<ProducedType>
                     (types.size());
-        for (Tree.StaticType t: types) {
-            if (t!=null) {
-                ProducedType type = t.getTypeModel();
+        for (Tree.StaticType st: types) {
+            if (st!=null) {
+                ProducedType type = st.getTypeModel();
                 if (type!=null) {
+                    //we can't check here that it's a 
+                    //sensible supertype, because this is
+                    //just a lazy reference that will be
+                    //resolvable later
                     list.add(type);
                 }
             }
@@ -2455,8 +2463,8 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
         inExtends = true;
         super.visit(that);
         inExtends = false;
-        Tree.SimpleType t = that.getType();
-        if (t==null) {
+        Tree.SimpleType type = that.getType();
+        if (type==null) {
             that.addError("missing aliased type");
         }
         else if (that.getInvocationExpression()==null) {
@@ -2466,9 +2474,13 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
             TypeDeclaration td = 
                     (TypeDeclaration) 
                         that.getScope();
-            ProducedType type = t.getTypeModel();
-            if (type!=null) {
-                td.setExtendedType(type);
+            ProducedType at = type.getTypeModel();
+            if (at!=null) {
+                //we can't check here that it's a 
+                //sensible supertype, because this is
+                //just a lazy reference that will be
+                //resolvable later
+                td.setExtendedType(at);
             }
             checkSpecifierSymbol(that);
         }
@@ -2479,17 +2491,21 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
         inExtends = true;
         super.visit(that);
         inExtends = false;
-        Tree.StaticType t = that.getType();
-        if (t==null) {
+        Tree.StaticType type = that.getType();
+        if (type==null) {
             that.addError("missing aliased type");
         }
         else if (!(that instanceof Tree.DefaultTypeArgument)) {
             TypeDeclaration td = 
                     (TypeDeclaration) 
                         that.getScope();
-            ProducedType type = t.getTypeModel();
-            if (type!=null) {
-                td.setExtendedType(type);
+            ProducedType at = type.getTypeModel();
+            if (at!=null) {
+                //we can't check here that it's a 
+                //sensible supertype, because this is
+                //just a lazy reference that will be
+                //resolvable later
+                td.setExtendedType(at);
             }
             checkSpecifierSymbol(that);
         }
