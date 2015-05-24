@@ -346,7 +346,7 @@ public class Util {
         }
     }
     
-    private static String message(ProducedType type, 
+    static String typingMessage(ProducedType type, 
             String problem, ProducedType otherType, 
             Unit unit) {
         String unknownTypeError = 
@@ -491,10 +491,7 @@ public class Util {
         }
         else if (!type.isSubtypeOf(supertype)) {
         	node.addError(message + 
-        	        message(type, 
-        	                " is not assignable to ", 
-        	                supertype, 
-        	                node.getUnit()));
+        	        notAssignableMessage(type, supertype, node));
         }
     }
 
@@ -508,10 +505,7 @@ public class Util {
         }
         else if (!type.isSubtypeOf(supertype)) {
         	node.addUnsupportedError(message + 
-        	        message(type, 
-        	                " is not assignable to ", 
-        	                supertype, 
-        	                node.getUnit()));
+        	        notAssignableMessage(type, supertype, node));
         }
     }
 
@@ -530,12 +524,17 @@ public class Util {
         else if (!type.isSubtypeOf(supertype1)
                 && !type.isSubtypeOf(supertype2)) {
             node.addError(message + 
-                    message(type, 
-                            " is not assignable to ", 
-                            supertype1, 
-                            node.getUnit()), 
-                            code);
+                    notAssignableMessage(type, supertype1, node), 
+                    code);
         }
+    }
+
+    static String notAssignableMessage(ProducedType type,
+            ProducedType supertype, Node node) {
+        return typingMessage(type, 
+                " is not assignable to ", 
+                supertype, 
+                node.getUnit());
     }
 
     static void checkAssignable(ProducedType type, 
@@ -549,11 +548,8 @@ public class Util {
         }
         else if (!type.isSubtypeOf(supertype)) {
             node.addError(message + 
-                    message(type, 
-                            " is not assignable to ", 
-                            supertype, 
-                            node.getUnit()), 
-                            code);
+                    notAssignableMessage(type, supertype, node), 
+                    code);
         }
     }
 
@@ -577,8 +573,7 @@ public class Util {
         }
         else if (!type.isExactly(supertype)) {
             node.addError(message + 
-                    message(type, " is not exactly ", 
-                            supertype, node.getUnit()));
+                    notExactlyMessage(type, supertype, node));
         }
     }
 
@@ -593,8 +588,8 @@ public class Util {
         }
         else if (!type.isExactly(supertype)) {
             node.addError(message + 
-                    message(type, " is not exactly ", 
-                            supertype, node.getUnit()), code);
+                    notExactlyMessage(type, supertype, node), 
+                    code);
         }
     }
 
@@ -613,9 +608,16 @@ public class Util {
         else if (!type.isExactly(supertype1)
                 && !type.isExactly(supertype2)) {
             node.addError(message + 
-                    message(type, " is not exactly ", 
-                            supertype1, node.getUnit()));
+                    notExactlyMessage(type, supertype1, node));
         }
+    }
+
+    static String notExactlyMessage(ProducedType type, 
+            ProducedType supertype, Node node) {
+        return typingMessage(type, 
+                " is not exactly ", 
+                supertype, 
+                node.getUnit());
     }
     
     public static boolean hasErrorOrWarning(Node node) {

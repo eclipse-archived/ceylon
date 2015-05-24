@@ -1,7 +1,6 @@
 package com.redhat.ceylon.compiler.typechecker.analyzer;
 
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.checkAssignable;
-import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.checkAssignableWithWarning;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.checkCallable;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.checkIsExactly;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.checkIsExactlyForInterop;
@@ -23,6 +22,7 @@ import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.isEffectively
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.isGeneric;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.isIndirectInvocation;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.isInstantiationExpression;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.notAssignableMessage;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.spreadType;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.typeDescription;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.typeNamesAsIntersection;
@@ -1193,8 +1193,7 @@ public class ExpressionVisitor extends Visitor {
             Tree.ParameterList pl) {
         ProducedType ct = 
                 pt.getSupertype(unit.getCallableDeclaration());
-        String refName = 
-                mte.getDeclaration().getName();
+        String refName = mte.getDeclaration().getName();
         if (ct==null) { 
             pl.addError("no matching parameter list in referenced declaration: '" + 
                     refName + "'");
@@ -1208,8 +1207,7 @@ public class ExpressionVisitor extends Visitor {
                     unit.isTupleLengthUnbounded(tupleType);
             boolean atLeastOne = 
                     unit.isTupleVariantAtLeastOne(tupleType);
-            List<Tree.Parameter> params = 
-                    pl.getParameters();
+            List<Tree.Parameter> params = pl.getParameters();
             if (argTypes.size()!=params.size()) {
                 pl.addError("wrong number of declared parameters: '" + 
                         refName  + "' has " + 
@@ -1221,14 +1219,17 @@ public class ExpressionVisitor extends Visitor {
                 ProducedType at = argTypes.get(i);
                 Tree.Parameter param = params.get(i);
                 Parameter model = param.getParameterModel();
-                ProducedType t = model.getModel()
-                        .getTypedReference()
-                        .getFullType();
-                checkAssignable(at, t, param, 
-                        "type of parameter '" + 
-                                model.getName() + 
-                        "' must be a supertype of parameter type in declaration of '" + 
-                        refName + "'");
+                ProducedType t = 
+                        model.getModel()
+                            .getTypedReference()
+                            .getFullType();
+                if (!isTypeUnknown(t) && !isTypeUnknown(at) &&
+                        !at.isSubtypeOf(t)) {
+                    param.addError("type of parameter '" + 
+                            model.getName() + 
+                            "' must be a supertype of corresponding parameter type in declaration of '" + 
+                            refName + "'");
+                }
             }
             if (!params.isEmpty()) {
                 Tree.Parameter lastParam = 
@@ -1738,8 +1739,7 @@ public class ExpressionVisitor extends Visitor {
                 String message = not ?
                         "specified type must be the null type" :
                         "specified type may not be optional";
-                checkAssignable(vt, nt, type, 
-                        message);
+                checkAssignable(vt, nt, type, message);
             }
             if (se!=null) {
                 Tree.Expression e = se.getExpression();
@@ -2100,7 +2100,7 @@ public class ExpressionVisitor extends Visitor {
                 //TODO: all this can be removed once the backend
                 //      implements full support for the new class 
                 //      alias stuff
-                ProducedType at = alias.getExtendedType();
+                ProducedType alt = alias.getExtendedType();
                 ParameterList cpl = c.getParameterList();
                 ParameterList apl = alias.getParameterList();
                 if (cpl!=null && apl!=null) {
@@ -2120,15 +2120,22 @@ public class ExpressionVisitor extends Visitor {
                         Parameter ap = aplps.get(i);
                         Parameter cp = cplps.get(i);
                         ProducedType pt = 
-                                at.getTypedParameter(cp)
+                                alt.getTypedParameter(cp)
                                     .getType();
                         //TODO: properly check type of functional parameters!!
-                        checkAssignableWithWarning(
-                                ap.getType(), 
-                                pt, that, 
-                                "alias parameter '" + 
-                                ap.getName() + "' must be assignable to corresponding class parameter '" +
-                                cp.getName() + "'");
+                        ProducedType apt = ap.getType();
+                        if (!isTypeUnknown(pt) && 
+                            !isTypeUnknown(apt) &&
+                            !apt.isSubtypeOf(pt)) {
+                            that.addUnsupportedError(
+                                    "alias parameter '" + 
+                                    ap.getName() + 
+                                    "' must be assignable to corresponding class parameter '" +
+                                    cp.getName() + 
+                                    "'" + 
+                                    notAssignableMessage(apt,
+                                            pt, that));
+                        }
                     }
                     //temporary restrictions
                     checkAliasedClass(that, cpl, apl);
@@ -6067,13 +6074,13 @@ public class ExpressionVisitor extends Visitor {
     
     @Override public void visit(Tree.SpreadType that) {
         super.visit(that);
-        Tree.Type t = that.getType();
-        if (t!=null) {
+        Tree.Type type = that.getType();
+        if (type!=null) {
             ProducedType at = 
                     anythingType();
             checkAssignable(that.getTypeModel(), 
-                    unit.getSequentialType(at), 
-                    t, "spread type must be a sequence type");
+                    unit.getSequentialType(at), type, 
+                    "spread type must be a sequence type");
         }
     }
 
@@ -6200,8 +6207,8 @@ public class ExpressionVisitor extends Visitor {
                         }
                         if (l!=null) {
                             checkAssignable(l.getTypeModel(), 
-                                    integerType(),
-                                    l, "length must be an integer");
+                                    integerType(), l, 
+                                    "length must be an integer");
                         }
                         that.setTypeModel(rt);
 //                        if (er.getLowerBound()!=null && er.getUpperBound()!=null) {
@@ -9806,61 +9813,54 @@ public class ExpressionVisitor extends Visitor {
             Map<TypeParameter, SiteVariance> variances =
                     Collections.emptyMap(); //TODO!!!!!
             for (int i=0; i<size; i++) {
-                ProducedType arg = 
-                        typeArguments.get(i);
-                TypeParameter param = 
-                        typeParameters.get(i);
-                List<ProducedType> sts = 
-                        param.getSatisfiedTypes();
-                for (ProducedType st: sts) {
-                    ProducedType bound = 
-                            st.substitute(args, variances);
-                    if (explicit) {
-                        checkAssignable(arg, bound, 
-                                typeArgNode(tas, i, parent), 
-                                "type argument '" + 
-                                arg.getProducedTypeName(unit) +
-                                "' is not assignable to upper bound '" +
-                                bound.getProducedTypeName(unit) +
-                                "' of type parameter '" +
-                                param.getName() + "' of '" +
-                                param.getDeclaration()
-                                    .getName(unit) + 
-                                "'");
-                    }
-                    else {
-                        checkAssignable(arg, bound, parent,
-                                "inferred type argument '" + 
-                                arg.getProducedTypeName(unit) +
-                                "' is not assignable to upper bound '" +
-                                bound.getProducedTypeName(unit) +
-                                "' of type parameter '" +
-                                param.getName() + "' of '" +
-                                param.getDeclaration()
-                                    .getName(unit) + 
-                                "'");
+                TypeParameter param = typeParameters.get(i);
+                ProducedType arg = typeArguments.get(i);
+                if (!isTypeUnknown(arg)) {
+                    List<ProducedType> sts = 
+                            param.getSatisfiedTypes();
+                    for (ProducedType st: sts) {
+                        final ProducedType bound = 
+                                st.substitute(args, variances);
+                        if (!isTypeUnknown(bound) &&
+                                !arg.isSubtypeOf(bound)) {
+                            String message = 
+                                    "type argument '" + 
+                                    arg.getProducedTypeName(unit) +
+                                    "' is not assignable to upper bound '" +
+                                    bound.getProducedTypeName(unit) +
+                                    "' of type parameter '" +
+                                    param.getName() + "' of '" +
+                                    param.getDeclaration()
+                                        .getName(unit) + 
+                                    "'";
+                            if (explicit) {
+                                typeArgNode(tas, i, parent)
+                                    .addError(message);
+                            }
+                            else {
+                                parent.addError("inferred " + 
+                                        message);
+                            }
+                        }
                     }
                 }
                 if (!satisfiesEnumeratedConstraint(param, 
                         arg, args, variances)) {
+                    String message = 
+                            "type argument '" + 
+                            arg.getProducedTypeName(unit) +
+                            "' is not one of the enumerated cases of the type parameter '" +
+                            param.getName() + "' of '" +
+                            param.getDeclaration()
+                                .getName(unit) + 
+                            "'";
                     if (explicit) {
                         typeArgNode(tas, i, parent)
-                            .addError("type argument '" + 
-                                    arg.getProducedTypeName(unit) +
-                                    "' is not one of the enumerated cases of the type parameter '" +
-                                    param.getName() + "' of '" +
-                                    param.getDeclaration()
-                                        .getName(unit) + 
-                                    "'");
+                            .addError(message);
                     }
                     else {
-                        parent.addError("inferred type argument '" + 
-                                arg.getProducedTypeName(unit) +
-                                "' is not one of the enumerated cases of the type parameter '" +
-                                param.getName() + "' of '" +
-                                param.getDeclaration()
-                                    .getName(unit) + 
-                                "'");
+                        parent.addError("inferred " + 
+                                message);
 
                     }
                 }
@@ -10368,7 +10368,7 @@ public class ExpressionVisitor extends Visitor {
                     new HashSet<TypeDeclaration>();
             for (Tree.StaticType ct: that.getTypes()) {
                 ProducedType type = ct.getTypeModel();
-                if (type!=null && type.getDeclaration()!=null) {
+                if (!isTypeUnknown(type)) {
                     type = type.resolveAliases();
                     TypeDeclaration ctd = type.getDeclaration();
                     if (!typeSet.add(ctd)) {
