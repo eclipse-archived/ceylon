@@ -55,10 +55,18 @@ public class AssertionVisitor extends Visitor implements NaturalVisitor {
                 		out(that, "type not known");
                 	}
                 	else {
-                		String actualType = type.getProducedTypeName(false);
-                		if ( !actualType.equals(expectedType) )
-                			out(that, "type " + actualType + 
-                					" not of expected type " + expectedType);
+                	    String actualType = type.getProducedTypeName(false);
+                	    String abbreviatedActualType = type.getProducedTypeName();
+                	    if (!actualType.equals(expectedType) &&
+                	            !abbreviatedActualType.equals(expectedType)) {
+                	        String desc = "'" + abbreviatedActualType + "'";
+                	        if (!actualType.equals(abbreviatedActualType)) {
+                	            desc += " ('"+ actualType + "')";
+                	        }
+                	        out(that, "type " + desc +
+                	                " not of expected type '" + 
+                	                expectedType + "'");
+                	    }
                 	}
                 }
             }
