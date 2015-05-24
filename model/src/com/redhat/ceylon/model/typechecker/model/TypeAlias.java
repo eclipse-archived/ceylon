@@ -2,6 +2,7 @@ package com.redhat.ceylon.model.typechecker.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class TypeAlias extends TypeDeclaration {
     
@@ -57,7 +58,7 @@ public class TypeAlias extends TypeDeclaration {
             ret = (37 * ret) + getQualifiedNameString().hashCode();
         else{
             ret = (37 * ret) + getContainer().hashCode();
-            ret = (37 * ret) + getName().hashCode();
+            ret = (37 * ret) + Objects.hashCode(getName());
         }
         return ret;
     }
@@ -77,7 +78,7 @@ public class TypeAlias extends TypeDeclaration {
             if(b.isToplevel())
                 return false;
             return getContainer().equals(b.getContainer())
-                    && getName().equals(b.getName());
+                    && Objects.equals(getName(),b.getName());
         }
     }
 

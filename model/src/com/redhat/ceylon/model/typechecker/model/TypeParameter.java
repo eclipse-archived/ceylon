@@ -3,6 +3,7 @@ package com.redhat.ceylon.model.typechecker.model;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 public class TypeParameter extends TypeDeclaration implements Functional {
 
@@ -177,7 +178,7 @@ public class TypeParameter extends TypeDeclaration implements Functional {
     protected int hashCodeForCache() {
         int ret = 17;
         ret = (37 * ret) + getDeclaration().hashCodeForCache();
-        ret = (37 * ret) + getName().hashCode();
+        ret = (37 * ret) + Objects.hashCode(getName());
         return ret;
     }
 
@@ -187,7 +188,7 @@ public class TypeParameter extends TypeDeclaration implements Functional {
             return false;
         TypeParameter b = (TypeParameter) o;
         return getDeclaration().equalsForCache(b.getDeclaration())
-                && getName().equals(b.getName());
+                && Objects.equals(getName(),b.getName());
     }
 
     @Override
