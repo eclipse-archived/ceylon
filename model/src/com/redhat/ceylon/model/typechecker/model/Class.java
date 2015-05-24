@@ -143,7 +143,14 @@ public class Class extends ClassOrInterface implements Functional {
     
     @Override
     public Class getExtendedTypeDeclaration() {
-        return (Class) super.getExtendedTypeDeclaration();
+        ClassOrInterface etd = 
+                super.getExtendedTypeDeclaration();
+        if (etd instanceof Class) {
+            return (Class) etd;
+        }
+        else {
+            return null;
+        }
     }
     
     public void setAbstraction(boolean abstraction) {

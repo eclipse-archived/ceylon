@@ -102,19 +102,30 @@ public abstract class TypeDeclaration extends Declaration
     public void setTypeParameters(List<TypeParameter> typeParameters) {
         this.typeParameters = typeParameters;
     }
-
+    
+    /**
+     * The class extended by a class, the type aliased
+     * by a class or interface alias, or the class Anything
+     * for any other type.
+     */
     public ClassOrInterface getExtendedTypeDeclaration() {
         ProducedType et = getExtendedType();
 		if (et==null) {
 		    return null;
 		}
 		else {
-		    TypeDeclaration td = et.getDeclaration();
-		    if (td instanceof ClassOrInterface) {
-		        return (ClassOrInterface) 
-		                et.getDeclaration();
+		    TypeDeclaration etd = et.getDeclaration();
+		    if (etd instanceof Constructor) {
+		        //some classes directly extend a constructor
+		        //of their superclass
+		        return etd.getExtendedTypeDeclaration();
+		    }
+		    else if (etd instanceof ClassOrInterface) {
+		        return (ClassOrInterface) etd;
 		    }
 		    else {
+		        //plain type aliases "extend" their aliased
+		        //type (yew!)
 		        return null;
 		    }
 		}

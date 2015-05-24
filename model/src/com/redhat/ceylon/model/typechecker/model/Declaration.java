@@ -114,7 +114,7 @@ public abstract class Declaration
     
     @Override
     public String getQualifiedNameString() {
-        if(qualifiedNameAsStringCache == null){
+        if (qualifiedNameAsStringCache == null) {
             String qualifier = getContainer().getQualifiedNameString();
             String name = getName();
             if (qualifier.isEmpty()) {

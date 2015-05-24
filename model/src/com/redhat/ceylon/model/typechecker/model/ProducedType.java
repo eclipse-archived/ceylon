@@ -150,10 +150,8 @@ public class ProducedType extends ProducedReference {
     }
     
     private boolean isExactlyInternal(ProducedType type) {
-        if (depth.get()>50) {
-            throw new RuntimeException("undecidable subtyping");
-        }
-        depth.set(depth.get()+1);
+        checkDepth();
+        incDepthIfNotTuple();
         try {
             TypeDeclaration dec = getDeclaration();
             TypeDeclaration otherDec = type.getDeclaration();
@@ -325,7 +323,7 @@ public class ProducedType extends ProducedReference {
             }
         }
         finally {
-            depth.set(depth.get()-1);
+            decDepth();
         }
     }
 
@@ -421,10 +419,8 @@ public class ProducedType extends ProducedReference {
      * a certain self type constraint.
      */
     private boolean isSubtypeOfInternal(final ProducedType type) {
-        if (depth.get()>50) {
-            throw new RuntimeException("undecidable subtyping");
-        }
-        depth.set(depth.get()+1);
+        checkDepth();
+        incDepth();
         try {
             TypeDeclaration dec = getDeclaration();
             TypeDeclaration otherDec = type.getDeclaration();
@@ -544,7 +540,7 @@ public class ProducedType extends ProducedReference {
             }
         }
         finally { 
-            depth.set(depth.get()-1);
+            decDepth();
         }
     }
 
@@ -1193,15 +1189,20 @@ public class ProducedType extends ProducedReference {
                 addToSupertypes(this, list)) {
             ProducedType extendedType = 
                     getExtendedType();
-            if (extendedType!=null) {
+            if (extendedType!=null && 
+                    !extendedType.isNothing()) {
                 extendedType.getSupertypes(list);
             }
             List<ProducedType> satisfiedTypes = 
                     getSatisfiedTypes();
             for (int i=0, l=satisfiedTypes.size(); 
                     i<l; i++) {
-                satisfiedTypes.get(i)
-                    .getSupertypes(list);
+                ProducedType satisfiedType = 
+                        satisfiedTypes.get(i);
+                if (satisfiedType!=null &&
+                        !satisfiedType.isNothing()) {
+                    satisfiedType.getSupertypes(list);
+                }
             }
         }
         return list;
@@ -1435,10 +1436,8 @@ public class ProducedType extends ProducedReference {
      * satisfying the given predicate. 
      */
     public ProducedType getSupertype(Criteria c) {
-        if (depth.get()>50) {
-            throw new RuntimeException("undecidable canonicalization");
-        }
-        depth.set(depth.get()+1);
+        checkDepth();
+        incDepth();
         try {
             if (c.satisfies(getDeclaration())) {
                 return qualifiedByDeclaringType();
@@ -1461,7 +1460,7 @@ public class ProducedType extends ProducedReference {
             }
         }
         finally {
-            depth.set(depth.get()-1);
+            decDepth();
         }
     }
     
@@ -1533,12 +1532,39 @@ public class ProducedType extends ProducedReference {
         return result;
     }
     
-    public static ThreadLocal<Integer> depth = 
+    private static ThreadLocal<Integer> depth = 
             new ThreadLocal<Integer>() {
         protected Integer initialValue() {
             return 0;
         }
     };
+    
+    public static void resetDepth(int initial) {
+        depth.set(initial);
+    }
+    
+    static void checkDepth() {
+        if (depth.get()>100) {
+            throw new DecidabilityException();
+        }
+    }
+
+    void incDepthIfNotTuple() {
+        String qname = 
+                getDeclaration()
+                    .getQualifiedNameString();
+        if (!"ceylon.language::Tuple".equals(qname)) {
+            incDepth();
+        }
+    }
+
+    static void decDepth() {
+        depth.set(depth.get()-1);
+    }
+
+    static void incDepth() {
+        depth.set(depth.get()+1);
+    }
     
     private ProducedType getPrincipalInstantiation(Criteria c) {
         //search for the most-specific supertype 
@@ -3385,15 +3411,13 @@ public class ProducedType extends ProducedReference {
     public ProducedType resolveAliases() {
         if (resolvedAliases == null) {
             // really compute it
-            if (depth.get()>50) {
-                throw new RuntimeException("undecidable canonicalization");
-            }
-            depth.set(depth.get()+1);
+            checkDepth();
+            incDepthIfNotTuple();
             try {
                 resolvedAliases = resolveAliasesInternal();
             }
             finally { 
-                depth.set(depth.get()-1);
+                decDepth();
             }
             // mark it as resolved so it doesn't get resolved again
             resolvedAliases.resolvedAliases = resolvedAliases;
@@ -3405,7 +3429,7 @@ public class ProducedType extends ProducedReference {
         }
         return resolvedAliases;
     }
-    
+
     private ProducedType resolveAliasesInternal() {
         TypeDeclaration d = getDeclaration();
         Unit unit = d.getUnit();

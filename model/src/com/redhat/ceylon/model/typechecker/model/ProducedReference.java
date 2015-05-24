@@ -1,6 +1,8 @@
 package com.redhat.ceylon.model.typechecker.model;
 
-import static com.redhat.ceylon.model.typechecker.model.ProducedType.depth;
+import static com.redhat.ceylon.model.typechecker.model.ProducedType.checkDepth;
+import static com.redhat.ceylon.model.typechecker.model.ProducedType.decDepth;
+import static com.redhat.ceylon.model.typechecker.model.ProducedType.incDepth;
 import static com.redhat.ceylon.model.typechecker.model.Util.EMPTY_TYPE_ARG_MAP;
 import static com.redhat.ceylon.model.typechecker.model.Util.EMPTY_VARIANCE_MAP;
 import static com.redhat.ceylon.model.typechecker.model.Util.isAbstraction;
@@ -53,11 +55,8 @@ public abstract class ProducedReference {
         if (declaration instanceof Generic) {
             if (typeArgumentsWithDefaults == null ||
                     !ProducedTypeCache.isEnabled()) {
-                if (depth.get()>50) {
-                    throw new RuntimeException(
-                            "undecidable default type arguments");
-                }
-                depth.set(depth.get()+1);
+                checkDepth();
+                incDepth();
                 try {
                     typeArgumentsWithDefaults = 
                             fillInDefaultTypeArguments(
@@ -65,7 +64,7 @@ public abstract class ProducedReference {
                                     typeArguments);
                 }
                 finally { 
-                    depth.set(depth.get()-1);
+                    decDepth();
                 }
             }
             return typeArgumentsWithDefaults;
