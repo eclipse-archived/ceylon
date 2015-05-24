@@ -221,10 +221,15 @@ public class AssertionVisitor extends Visitor implements NaturalVisitor {
 
 	private String file(Node that) {
 		Unit unit = that.getUnit();
-		String relativePath = unit.getRelativePath();
-        return !relativePath.isEmpty() ?
-				relativePath : 
-				unit.getFilename();
+		if (unit==null) {
+		    return null;
+		}
+		else {
+		    String relativePath = unit.getRelativePath();
+		    return !relativePath.isEmpty() ?
+		            relativePath : 
+		            unit.getFilename();
+		}
 	}
 
     private void checkErrors(Node that) {
