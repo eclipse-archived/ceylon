@@ -65,6 +65,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.NamedArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Pattern;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.VoidModifier;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
@@ -2017,10 +2018,12 @@ public class ExpressionVisitor extends Visitor {
         inBackend = ib;
     }
 
+    private static VoidModifier fakeVoid(Node that) {
+        return new Tree.VoidModifier(that.getToken());
+    }
+    
     @Override public void visit(Tree.ClassDefinition that) {
-        Tree.Type rt = 
-                beginReturnScope(new Tree.VoidModifier(
-                        that.getToken()));
+        Tree.Type rt = beginReturnScope(fakeVoid(that));
         Class c = that.getDeclarationModel();
         Declaration od = 
                 beginReturnDeclaration(c);
@@ -2028,7 +2031,7 @@ public class ExpressionVisitor extends Visitor {
         endReturnDeclaration(od);
         endReturnScope(rt, null);
     }
-    
+
     @Override public void visit(Tree.InterfaceDefinition that) {
         Tree.Type rt = beginReturnScope(null);
         Interface i = that.getDeclarationModel();
@@ -2039,9 +2042,7 @@ public class ExpressionVisitor extends Visitor {
     }
 
     @Override public void visit(Tree.ObjectDefinition that) {
-        Tree.Type rt = 
-                beginReturnScope(new Tree.VoidModifier(
-                        that.getToken()));
+        Tree.Type rt = beginReturnScope(fakeVoid(that));
         Class ac = that.getAnonymousClass();
         Declaration od = beginReturnDeclaration(ac);
         super.visit(that);
@@ -2050,9 +2051,7 @@ public class ExpressionVisitor extends Visitor {
     }
 
     @Override public void visit(Tree.ObjectArgument that) {
-        Tree.Type rt = 
-                beginReturnScope(new Tree.VoidModifier(
-                        that.getToken()));
+        Tree.Type rt = beginReturnScope(fakeVoid(that));
         Class ac = that.getAnonymousClass();
         Declaration od = beginReturnDeclaration(ac);
         super.visit(that);
@@ -2061,9 +2060,7 @@ public class ExpressionVisitor extends Visitor {
     }
     
     @Override public void visit(Tree.ObjectExpression that) {
-        Tree.Type rt = 
-                beginReturnScope(new Tree.VoidModifier(
-                        that.getToken()));
+        Tree.Type rt = beginReturnScope(fakeVoid(that));
         Class ac = that.getAnonymousClass();
         Declaration od = beginReturnDeclaration(ac);
         super.visit(that);
@@ -2079,7 +2076,7 @@ public class ExpressionVisitor extends Visitor {
         if (c!=null) {
             if (c.isAbstract()) {
                 if (!alias.isFormal() && 
-                        !alias.isAbstract()) {
+                    !alias.isAbstract()) {
                     that.addError("alias of abstract class must be annotated abstract", 
                             310);
                 }
