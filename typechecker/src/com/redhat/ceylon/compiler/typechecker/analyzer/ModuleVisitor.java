@@ -25,15 +25,18 @@ import com.redhat.ceylon.model.typechecker.model.Package;
 import com.redhat.ceylon.model.typechecker.util.ModuleManager;
 
 /**
- * Detect and populate the list of imports for modules.
- * In theory should only be called on module.ceylon and
+ * Detect and populate the list of imports for modules. In 
+ * theory should only be called on module.ceylon and
  * package.ceylon files
  *
- * Put restrictions on how module.ceylon files are built today:
- *  - names and versions must be string literals or else the 
- *    visitor cannot extract them
- *  - imports must be "explicitly" defined, ie not imported as 
- *    List<Import> or else the module names cannot be extracted
+ * Put restrictions on how module.ceylon files are built 
+ * today:
+ * 
+ *  - names and versions must be string literals or else 
+ *    the visitor cannot extract them
+ *  - imports must be "explicitly" defined, ie not imported 
+ *    as List<Import> or else the module names cannot be 
+ *    extracted
  *
  * @author Emmanuel Bernard <emmanuel@hibernate.org>
  */

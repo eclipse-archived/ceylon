@@ -21,9 +21,10 @@ import com.redhat.ceylon.model.typechecker.model.UnknownType;
 
 /**
  * Detects and eliminates potentially undecidable 
- * supertypes, including: 
- * - supertypes containing intersections in type 
- *   arguments, and
+ * supertypes, including:
+ *  
+ * - supertypes containing intersections in type arguments, 
+ *   and
  * - supertypes with incorrect variance.
  * 
  * @author Gavin King

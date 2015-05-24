@@ -27,6 +27,7 @@ import com.redhat.ceylon.model.typechecker.util.ModuleManager;
 
 /**
  * Validate module dependency:
+ * 
  *  - make sure all modules are available
  *  - get modules from local or remote repos if necessary
  *  - parse and process external modules

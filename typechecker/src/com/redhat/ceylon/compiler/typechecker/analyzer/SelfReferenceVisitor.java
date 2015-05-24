@@ -14,9 +14,8 @@ import com.redhat.ceylon.model.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
 /**
- * Validates that the initializer of a class does
- * not leak self-references to the instance being
- * initialized.
+ * Validates that the initializer of a class does not leak 
+ * self-references to the instance being initialized.
  * 
  * @author Gavin King
  *

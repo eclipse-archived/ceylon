@@ -26,6 +26,13 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.StringLiteral;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.StringTemplate;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
+/**
+ * Validate and interpret the syntax of string and numeric
+ * literals.
+ * 
+ * @author Gavin King
+ *
+ */
 public class LiteralVisitor extends Visitor {
 
     private int indent;

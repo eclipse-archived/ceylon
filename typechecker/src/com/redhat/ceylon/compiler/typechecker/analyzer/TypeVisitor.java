@@ -72,9 +72,9 @@ import com.redhat.ceylon.model.typechecker.model.Value;
  * objects. Also builds up a list of imports for the 
  * compilation unit. Finally, assigns types to the 
  * associated model objects of declarations declared 
- * using an explicit type (this must be done in
- * this phase, since shared declarations may be used
- * out of order in expressions).
+ * using an explicit type (this must be done in this 
+ * phase, since shared declarations may be used out of 
+ * order in expressions).
  * 
  * @author Gavin King
  *
