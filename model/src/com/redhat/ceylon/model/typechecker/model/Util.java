@@ -883,8 +883,7 @@ public class Util {
 		}
 		else {
 			return aggregateTypeArguments(receivingType, 
-			        typeArguments,
-                    typeParameters, count);
+			        typeArguments, typeParameters, count);
 		}
     }
 
@@ -894,7 +893,8 @@ public class Util {
 	        List<TypeParameter> typeParameters, 
 	        int count) {
 	    Map<TypeParameter,ProducedType> map = 
-	            new HashMap<TypeParameter,ProducedType>(count);
+	            new HashMap<TypeParameter,ProducedType>
+	                (count);
         //make sure we collect all type arguments
         //from the whole qualified type!
 	    if (receivingType!=null) {

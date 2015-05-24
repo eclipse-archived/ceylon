@@ -1,6 +1,5 @@
 package com.redhat.ceylon.model.typechecker.model;
 
-import static com.redhat.ceylon.model.typechecker.model.Util.EMPTY_TYPE_ARG_MAP;
 import static com.redhat.ceylon.model.typechecker.model.Util.getSignature;
 import static com.redhat.ceylon.model.typechecker.model.Util.getTypeArgumentMap;
 import static com.redhat.ceylon.model.typechecker.model.Util.hasMatchingSignature;
@@ -13,7 +12,6 @@ import static java.util.Collections.emptyList;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -243,14 +241,8 @@ public abstract class TypeDeclaration extends Declaration
     }
 
     @Override
-    public ProducedType getReference() {
-        ProducedType pt = new ProducedType();
-        pt.setQualifyingType(getMemberContainerType());
-        pt.setDeclaration(this);
-        pt.setTypeArguments(getTypeArgumentMap(this, 
-                pt.getQualifyingType(), 
-                Collections.<ProducedType>emptyList()));
-        return pt;
+    public final ProducedType getReference() {
+        return getType();
     }
 
     /**
@@ -299,26 +291,7 @@ public abstract class TypeDeclaration extends Declaration
         ProducedType type = new ProducedType();
         type.setQualifyingType(getMemberContainerType());
         type.setDeclaration(this);
-        //each type parameter is its own argument
-        List<TypeParameter> typeParameters = 
-                getTypeParameters();
-        if (typeParameters.isEmpty()) {
-            type.setTypeArguments(EMPTY_TYPE_ARG_MAP);
-        }
-        else {
-            Map<TypeParameter,ProducedType> map = 
-                    new HashMap<TypeParameter,ProducedType>();
-            for (TypeParameter p: typeParameters) {
-                ProducedType pta = new ProducedType();
-                if (p.isTypeConstructor()) {
-                    pta.setTypeConstructor(true);
-                    pta.setTypeConstructorParameter(p);
-                }
-                pta.setDeclaration(p);
-                map.put(p, pta);
-            }
-            type.setTypeArguments(map);
-        }
+        type.setTypeArguments(getTypeParametersAsArguments());
         return type;
     }
 

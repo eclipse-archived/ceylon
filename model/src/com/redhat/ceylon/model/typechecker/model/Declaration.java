@@ -1,11 +1,14 @@
 package com.redhat.ceylon.model.typechecker.model;
 
+import static com.redhat.ceylon.model.typechecker.model.Util.EMPTY_TYPE_ARG_MAP;
 import static com.redhat.ceylon.model.typechecker.model.Util.contains;
 import static com.redhat.ceylon.model.typechecker.model.Util.erase;
 import static com.redhat.ceylon.model.typechecker.model.Util.isOverloadedVersion;
 import static java.util.Collections.emptyList;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -319,13 +322,40 @@ public abstract class Declaration
      */
     public abstract ProducedReference getProducedReference(ProducedType pt,
             List<ProducedType> typeArguments);
-
+    
+    /**
+     * Obtain a reference to this declaration, as seen 
+     * within the body of the declaration itself. That is,
+     * within its type parameters as their own arguments.
+     */
     public abstract ProducedReference getReference();
     
     protected java.lang.Class<?> getModelClass() {
         return getClass();
     }
     
+    private Scope getAbstraction(Scope container) {
+        if (container instanceof Class) {
+            Class c = (Class) container;
+            if (isOverloadedVersion(c)) {
+                container = c.getExtendedTypeDeclaration();
+            }
+        }
+        return container;
+    }
+    
+    ProducedType getMemberContainerType() {
+        if (isMember()) {
+            ClassOrInterface container = 
+                    (ClassOrInterface) 
+                        getContainer();
+            return container.getType();
+        }
+        else {
+            return null;
+        }
+    }
+
     @Override
     public boolean equals(Object object) {
         if (this==object) {
@@ -337,7 +367,8 @@ public abstract class Declaration
         }
         
         if (object instanceof Declaration) {
-            if (this.getModelClass() != ((Declaration) object).getModelClass()) {
+            Declaration dec = (Declaration) object;
+            if (this.getModelClass() != dec.getModelClass()) {
                 return false;
             }
             Declaration that = (Declaration) object;
@@ -420,26 +451,6 @@ public abstract class Declaration
         }
         else {
             return false;
-        }
-    }
-
-    private Scope getAbstraction(Scope container) {
-        if (container instanceof Class && 
-                isOverloadedVersion((Class) container)) {
-            container = ((Class) container).getExtendedTypeDeclaration();
-        }
-        return container;
-    }
-    
-    ProducedType getMemberContainerType() {
-        if (isMember()) {
-            ClassOrInterface container = 
-                    (ClassOrInterface) 
-                        getContainer();
-            return container.getType();
-        }
-        else {
-            return null;
         }
     }
 
@@ -547,7 +558,8 @@ public abstract class Declaration
     
     public String getPrefixedName(){
         String qualifier = getQualifier();
-        return qualifier==null || isParameter() ? name : qualifier + name;
+        return qualifier==null || isParameter() ? 
+                name : qualifier + name;
     }
 
     public boolean sameKind(Declaration m) {
@@ -561,4 +573,33 @@ public abstract class Declaration
     public void setActualCompleter(DeclarationCompleter actualCompleter) {
         this.actualCompleter = actualCompleter;
     }
+
+    Map<TypeParameter, ProducedType> getTypeParametersAsArguments() {
+        if (this instanceof Generic) {
+            Generic g = (Generic) this;
+            List<TypeParameter> typeParameters = 
+                    g.getTypeParameters();
+            if (typeParameters.isEmpty()) {
+                return EMPTY_TYPE_ARG_MAP;
+            }
+            else {
+                Map<TypeParameter,ProducedType> typeArgs = 
+                        new HashMap<TypeParameter,ProducedType>();
+                for (TypeParameter p: typeParameters) {
+                    ProducedType pta = new ProducedType();
+                    if (p.isTypeConstructor()) {
+                        pta.setTypeConstructor(true);
+                        pta.setTypeConstructorParameter(p);
+                    }
+                    pta.setDeclaration(p);
+                    typeArgs.put(p, pta);
+                }
+                return typeArgs;
+            }
+        }
+        else {
+            return EMPTY_TYPE_ARG_MAP;
+        }
+    }
+
 }
