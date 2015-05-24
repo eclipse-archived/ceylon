@@ -1003,7 +1003,7 @@ public class ProducedType extends ProducedReference {
                 true, false);
     }
     
-    public ProducedType substitute(
+    private ProducedType substitute(
             Map<TypeParameter, ProducedType> substitutions, 
             Map<TypeParameter, SiteVariance> overrides,
             boolean covariant, boolean contravariant) {
@@ -2974,7 +2974,8 @@ public class ProducedType extends ProducedReference {
                 ta.setAnonymous(d.isAnonymous());
                 ta.setName(d.getName());
                 ta.setExtendedType(et.substitute(
-                        substitutions, overrides));
+                        substitutions, overrides,
+                        covariant, contravariant));
                 ta.setScope(d.getScope());
                 ta.setContainer(d.getContainer());
                 ta.setUnit(d.getUnit());
@@ -3001,8 +3002,8 @@ public class ProducedType extends ProducedReference {
                                 (sts.size());
                     for (ProducedType st: sts) {
                         ssts.add(st.substitute(
-                                substitutions, 
-                                overrides));
+                                substitutions, overrides,
+                                covariant, contravariant));
                     }
                     stp.setSatisfiedTypes(ssts);
                     List<ProducedType> cts = 
@@ -3013,8 +3014,8 @@ public class ProducedType extends ProducedReference {
                                     (cts.size());
                         for (ProducedType ct: cts) {
                             scts.add(ct.substitute(
-                                    substitutions, 
-                                    overrides));
+                                    substitutions, overrides,
+                                    covariant, contravariant));
                         }
                         stp.setCaseTypes(scts);
                     }
@@ -3025,7 +3026,8 @@ public class ProducedType extends ProducedReference {
                 ProducedType qt = pt.getQualifyingType();
                 if (qt!=null) {
                     type.setQualifyingType(qt.substitute(
-                            substitutions, overrides));
+                            substitutions, overrides,
+                            covariant, contravariant));
                 }
                 type.setTypeConstructor(true);
                 type.setTypeConstructorParameter(
