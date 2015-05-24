@@ -299,14 +299,14 @@ public final class String
     @Ignore
     public static Character getFromFirst(java.lang.String value, long key) {
         int index = Util.toInt(key);
-        int offset;
+        int codePoint;
         try {
-            offset = value.offsetByCodePoints(0, index);
+            int offset = value.offsetByCodePoints(0, index);
+            codePoint = value.codePointAt(offset);
         }
         catch (StringIndexOutOfBoundsException e) {
             return null;
         }
-        int codePoint = value.codePointAt(offset);
         return Character.instance(codePoint);
     }
 
