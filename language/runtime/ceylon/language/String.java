@@ -304,7 +304,7 @@ public final class String
             int offset = value.offsetByCodePoints(0, index);
             codePoint = value.codePointAt(offset);
         }
-        catch (StringIndexOutOfBoundsException e) {
+        catch (IndexOutOfBoundsException e) {
             return null;
         }
         return Character.instance(codePoint);
