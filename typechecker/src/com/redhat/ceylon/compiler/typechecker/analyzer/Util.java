@@ -1337,4 +1337,24 @@ public class Util {
             return false;
         }
     }
+
+    static boolean inSameModule(TypeDeclaration etd, Unit unit) {
+        return etd.getUnit().getPackage().getModule()
+        		.equals(unit.getPackage().getModule());
+    }
+
+    static void checkCasesDisjoint(ProducedType type, ProducedType other,
+            Node node) {
+        if (!isTypeUnknown(type) && !isTypeUnknown(other)) {
+            Unit unit = node.getUnit();
+            ProducedType it = 
+                    intersectionType(type.resolveAliases(), 
+                            other.resolveAliases(), unit);
+            if (!it.isNothing()) {
+                node.addError("cases are not disjoint: '" + 
+                        type.getProducedTypeName(unit) + "' and '" + 
+                        other.getProducedTypeName(unit) + "'");
+            }
+        }
+    }
 }
