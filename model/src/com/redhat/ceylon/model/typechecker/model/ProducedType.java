@@ -1016,7 +1016,7 @@ public class ProducedType extends ProducedReference {
             return new Substitution(
                     substitutions, overrides)
                 .substitute(type, covariant, contravariant)
-                .simple();
+                /*.simple()*/;
         }
         else {
             return this;
@@ -3484,7 +3484,7 @@ public class ProducedType extends ProducedReference {
         }
     }
     
-    private ProducedType simple() {
+    /*private ProducedType simple() {
         TypeDeclaration d = getDeclaration();
         if (d instanceof UnionType) {
             List<ProducedType> cts = d.getCaseTypes();
@@ -3527,7 +3527,7 @@ public class ProducedType extends ProducedReference {
         ret.setRaw(isRaw());
         ret.setVarianceOverrides(getVarianceOverrides());
         return ret;
-    }
+    }*/
     
     public boolean involvesTypeParameters() {
         TypeDeclaration d = getDeclaration();
