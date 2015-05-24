@@ -27,6 +27,7 @@ import com.redhat.ceylon.model.typechecker.model.Constructor;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Interface;
 import com.redhat.ceylon.model.typechecker.model.IntersectionType;
+import com.redhat.ceylon.model.typechecker.model.NothingType;
 import com.redhat.ceylon.model.typechecker.model.ProducedType;
 import com.redhat.ceylon.model.typechecker.model.Scope;
 import com.redhat.ceylon.model.typechecker.model.TypeAlias;
@@ -45,31 +46,59 @@ public class InheritanceVisitor extends Visitor {
 
     @Override public void visit(Tree.ObjectDefinition that) {
         validateSupertypes(that, 
-                that.getDeclarationModel().getType().getDeclaration());
+                that.getDeclarationModel()
+                    .getType()
+                    .getDeclaration());
         super.visit(that);
+        validateEnumeratedSupertypes(that, 
+                that.getAnonymousClass());
     }
 
     @Override public void visit(Tree.ObjectArgument that) {
         validateSupertypes(that, 
                 that.getAnonymousClass());
         super.visit(that);
+        validateEnumeratedSupertypes(that, 
+                that.getAnonymousClass());
     }
 
     @Override public void visit(Tree.ObjectExpression that) {
         validateSupertypes(that, 
                 that.getAnonymousClass());
         super.visit(that);
+        validateEnumeratedSupertypes(that, 
+                that.getAnonymousClass());
     }
 
     @Override public void visit(Tree.TypeConstraint that) {
         super.visit(that);
-        validateUpperBounds(that, that.getDeclarationModel());
+        validateUpperBounds(that, 
+                that.getDeclarationModel());
     }
 
+    @Override public void visit(Tree.ClassOrInterface that) {
+        super.visit(that);
+        validateEnumeratedSupertypeArguments(that, 
+                that.getDeclarationModel());
+    }
+
+    @Override public void visit(Tree.ClassDefinition that) {
+        super.visit(that);
+        validateEnumeratedSupertypes(that, 
+                that.getDeclarationModel());
+    }
+    
+    @Override public void visit(Tree.InterfaceDefinition that) {
+        super.visit(that);
+        validateEnumeratedSupertypes(that, 
+                that.getDeclarationModel());
+    }
+    
     private void validateSupertypes(Node that, 
             TypeDeclaration td) {
         if (!(td instanceof TypeAlias)) {
-            List<ProducedType> supertypes = td.getType().getSupertypes();
+            List<ProducedType> supertypes = 
+                    td.getType().getSupertypes();
             for (int i=0; i<supertypes.size(); i++) {
                 ProducedType st1 = supertypes.get(i);
                 for (int j=i+1; j<supertypes.size(); j++) {
@@ -115,6 +144,141 @@ public class InheritanceVisitor extends Visitor {
         }
     }
 
+    private void validateEnumeratedSupertypes(Node that, ClassOrInterface d) {
+        ProducedType type = d.getType();
+        Unit unit = that.getUnit();
+        for (ProducedType supertype: type.getSupertypes()) {
+            if (!type.isExactly(supertype)) {
+                TypeDeclaration std = supertype.getDeclaration();
+                List<ProducedType> cts = std.getCaseTypes();
+                if (cts!=null && 
+                        !cts.isEmpty()) {
+                    if (cts.size()==1 && 
+                            cts.get(0).getDeclaration()
+                                .isSelfType()) {
+                        continue;
+                    }
+                    List<ProducedType> types =
+                            new ArrayList<ProducedType>
+                                (cts.size());
+                    for (ProducedType ct: cts) {
+                        TypeDeclaration ctd = 
+                                ct.resolveAliases().getDeclaration();
+                        ProducedType cst = 
+                                type.getSupertype(ctd);
+                        if (cst!=null) {
+                            types.add(cst);
+                        }
+                    }
+                    if (types.isEmpty()) {
+                        that.addError("not a subtype of any case of enumerated supertype: '" + 
+                                d.getName(unit) + "' is a subtype of '" + 
+                                std.getName(unit) + "'");
+                    }
+                    else if (types.size()>1) {
+                        StringBuilder sb = new StringBuilder();
+                        for (ProducedType pt: types) {
+                            sb.append("'")
+                              .append(pt.getProducedTypeName(unit))
+                              .append("' and ");
+                        }
+                        sb.setLength(sb.length()-5);
+                        that.addError("concrete type is a subtype of multiple cases of enumerated supertype '" +
+                                std.getName(unit) + "': '" + 
+                                d.getName(unit) + "' is a subtype of " + sb);
+                    }
+                }
+            }
+        }
+    }
+
+    private void validateEnumeratedSupertypeArguments(Node that, ClassOrInterface d) {
+        //note: I hate doing the whole traversal here, but it is the
+        //      only way to get the error in the right place (see
+        //      the note in visit(CaseTypes) for more)
+        ProducedType type = d.getType();
+        for (ProducedType supertype: type.getSupertypes()) { //traverse the entire supertype hierarchy of the declaration
+            if (!type.isExactly(supertype)) {
+                List<TypeDeclaration> ctds = 
+                        supertype.getDeclaration()
+                            .getCaseTypeDeclarations();
+                if (ctds!=null) {
+                    for (TypeDeclaration ct: ctds) {
+                        if (ct.equals(d)) { //the declaration is a case of the current enumerated supertype
+                            validateEnumeratedSupertypeArguments(that, 
+                                    d, supertype);
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private void validateEnumeratedSupertypeArguments(Node that, TypeDeclaration d, 
+            ProducedType supertype) {
+        for (TypeParameter p: 
+                supertype.getDeclaration().getTypeParameters()) {
+            ProducedType arg = 
+                    supertype.getTypeArguments().get(p); //the type argument that the declaration (indirectly) passes to the enumerated supertype
+            if (arg!=null) {
+                validateEnumeratedSupertypeArgument(that, 
+                        d, supertype, p, arg);
+            }
+        }
+    }
+
+    private void validateEnumeratedSupertypeArgument(Node that, 
+            TypeDeclaration d, ProducedType supertype, 
+            TypeParameter p, ProducedType arg) {
+        TypeDeclaration td = arg.getDeclaration();
+        Unit unit = that.getUnit();
+        if (td instanceof TypeParameter) {
+            TypeParameter tp = (TypeParameter) td;
+            if (tp.getDeclaration().equals(d)) { //the argument is a type parameter of the declaration
+                //check that the variance of the argument type parameter is
+                //the same as the type parameter of the enumerated supertype
+                if (p.isCovariant() && !tp.isCovariant()) {
+                    that.addError("argument to covariant type parameter of enumerated supertype must be covariant: " + 
+                            typeDescription(p, unit));
+                }
+                if (p.isContravariant() && 
+                        !tp.isContravariant()) {
+                    that.addError("argument to contravariant type parameter of enumerated supertype must be contravariant: " + 
+                            typeDescription(p, unit));
+                }
+            }
+            else {
+                that.addError("argument to type parameter of enumerated supertype must be a type parameter of '" +
+                        d.getName() + "': " + 
+                        typeDescription(p, unit));
+            }
+        }
+        else if (p.isCovariant()) {
+            if (!(td instanceof NothingType)) {
+                //TODO: let it be the union of the lower bounds on p
+                that.addError("argument to covariant type parameter of enumerated supertype must be a type parameter or 'Nothing': " + 
+                        typeDescription(p, unit));
+            }
+        }
+        else if (p.isContravariant()) {
+            List<ProducedType> sts = p.getSatisfiedTypes();
+            //TODO: do I need to do type arg substitution here??
+            IntersectionType it = new IntersectionType(unit);
+            it.setSatisfiedTypes(sts);
+            ProducedType ub = it.canonicalize().getType();
+            if (!(arg.isExactly(ub))) {
+                that.addError("argument to contravariant type parameter of enumerated supertype must be a type parameter or '" + 
+                        typeNamesAsIntersection(sts, unit) + "': " + 
+                        typeDescription(p, unit));
+            }
+        }
+        else {
+            that.addError("argument to type parameter of enumerated supertype must be a type parameter: " + 
+                    typeDescription(p, unit));
+        }
+    }
+    
     @Override 
     public void visit(Tree.ExtendedType that) {
         super.visit(that);
