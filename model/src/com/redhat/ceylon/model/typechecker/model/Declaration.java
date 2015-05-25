@@ -107,10 +107,7 @@ public abstract class Declaration
     }
     
     @Override
-    public String toString() {
-        return getClass().getSimpleName() + 
-                "[" + toStringName() + "]";
-    }
+    public abstract String toString();
     
     @Override
     public String getQualifiedNameString() {
@@ -611,5 +608,5 @@ public abstract class Declaration
             return EMPTY_TYPE_ARG_MAP;
         }
     }
-
+    
 }

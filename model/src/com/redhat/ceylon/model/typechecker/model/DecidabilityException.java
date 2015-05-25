@@ -1,5 +1,6 @@
 package com.redhat.ceylon.model.typechecker.model;
 
+@SuppressWarnings("serial")
 public class DecidabilityException
         extends RuntimeException {
 

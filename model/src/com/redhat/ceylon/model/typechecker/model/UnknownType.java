@@ -45,7 +45,7 @@ public class UnknownType extends TypeDeclaration {
 
     @Override
     public String toString() {
-        return getClass().getSimpleName();
+        return getName();
     }
     
     @Override

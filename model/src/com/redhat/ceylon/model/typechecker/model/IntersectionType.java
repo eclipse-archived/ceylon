@@ -34,7 +34,7 @@ public class IntersectionType extends TypeDeclaration {
     
     @Override
     public String toString() {
-        return "IntersectionType[" + getName() + "]";
+        return getName();
     }
     
     @Override

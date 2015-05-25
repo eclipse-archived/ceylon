@@ -48,18 +48,6 @@ public abstract class TypedDeclaration extends Declaration {
         this.type = t;
     }
 
-    @Override
-    public String toString() {
-        if (type==null) {
-            return super.toString();
-        }
-        else {
-            return getClass().getSimpleName() + 
-                    "[" + toStringName() + " => " + 
-                          type.getProducedTypeName() + "]";
-        }
-    }
-
     public ProducedTypedReference getProducedTypedReference(
             ProducedType qualifyingType,
             List<ProducedType> typeArguments) {

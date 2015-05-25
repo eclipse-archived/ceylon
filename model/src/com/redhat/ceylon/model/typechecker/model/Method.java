@@ -1,7 +1,5 @@
 package com.redhat.ceylon.model.typechecker.model;
 
-import com.redhat.ceylon.model.typechecker.model.Util;
-
 import static java.util.Collections.emptyList;
 
 import java.util.ArrayList;
@@ -139,7 +137,7 @@ public class Method extends MethodOrValue implements Generic, Scope, Functional 
     public String toString() {
         ProducedType type = getType();
         if (type==null) {
-            return super.toString();
+            return "function " + toStringName();
         }
         else {
             StringBuilder params = new StringBuilder();
@@ -161,10 +159,9 @@ public class Method extends MethodOrValue implements Generic, Scope, Functional 
                 }
                 params.append(")");
             }
-            return getClass().getSimpleName() + 
-                    "[" + toStringName() + params + " => " + 
-                          type.getProducedTypeName() + "]";
+            return "function " + toStringName() + params + 
+                    " => " + type.getProducedTypeName();
         }
     }
-
+    
 }

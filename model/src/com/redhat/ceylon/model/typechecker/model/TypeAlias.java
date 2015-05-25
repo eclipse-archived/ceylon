@@ -86,4 +86,9 @@ public class TypeAlias extends TypeDeclaration {
     public void clearProducedTypeCache() {
         Util.clearProducedTypeCache(this);
     }
+    
+    @Override
+    public String toString() {
+        return "type " + toStringName();
+    }
 }

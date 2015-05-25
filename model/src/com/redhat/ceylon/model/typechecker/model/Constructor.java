@@ -175,4 +175,28 @@ public class Constructor extends TypeDeclaration implements Generic, Scope, Func
         return Objects.equals(getName(), b.getName());
     }
     
+    @Override
+    public String toString() {
+        StringBuilder params = new StringBuilder();
+        for (ParameterList pl: getParameterLists()) {
+            params.append("(");
+            boolean first = true;
+            for (Parameter p: pl.getParameters()) {
+                if (first) {
+                    first = false;
+                }
+                else {
+                    params.append(", ");
+                }
+                if (p.getType()!=null) {
+                    params.append(p.getType().getProducedName());
+                    params.append(" ");
+                }
+                params.append(p.getName());
+            }
+            params.append(")");
+        }
+        return "new " + toStringName() + params;
+    }
+        
 }

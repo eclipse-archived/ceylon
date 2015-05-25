@@ -7,10 +7,16 @@ public class InterfaceAlias extends Interface {
         return true;
     }
     
-
     @Override
     public Interface getExtendedTypeDeclaration() {
-        return (Interface) super.getExtendedTypeDeclaration();
+        ClassOrInterface etd = 
+                super.getExtendedTypeDeclaration();
+        if (etd instanceof Interface) {
+            return (Interface) etd;
+        }
+        else {
+            return null;
+        }
     }
     
 }

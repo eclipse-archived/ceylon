@@ -237,9 +237,7 @@ public class Class extends ClassOrInterface implements Functional {
             }
             params.append(")");
         }
-        return getClass().getSimpleName() + 
-                "[" + toStringName() + 
-                      params + "]";
+        return "class " + toStringName() + params;
     }
-
+    
 }

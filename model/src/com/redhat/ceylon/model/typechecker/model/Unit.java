@@ -101,7 +101,7 @@ public class Unit {
 
 	@Override
     public String toString() {
-        return "Unit[" + filename + "]";
+        return filename;
     }
 
     public Import getImport(String name) {

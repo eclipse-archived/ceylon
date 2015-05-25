@@ -91,7 +91,7 @@ public class Parameter {
     
     @Override
     public String toString() {
-        return model==null ? "" : model.toString();
+        return model==null ? name : model.toString();
     }
     
 }

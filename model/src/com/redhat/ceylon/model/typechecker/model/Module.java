@@ -228,8 +228,8 @@ public class Module
 
     @Override
     public String toString() {
-        return "Module[" + getNameAsString() + 
-                ", " + getVersion() + "]";
+        return "module " + getNameAsString() + 
+                " \"" + getVersion() + "\"";
     }
     
     /**

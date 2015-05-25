@@ -16,7 +16,16 @@ public class ParameterList {
     
     @Override
     public String toString() {
-        return "ParameterList" + parameters.toString();
+        StringBuilder sb = new StringBuilder();
+        sb.append("(");
+        for (Parameter p: parameters) {
+            if (sb.length()>1) {
+                sb.append(", ");
+            }
+            sb.append(p);
+        }
+        sb.append(")");
+        return parameters.toString();
     }
 
     public boolean isNamedParametersSupported() {

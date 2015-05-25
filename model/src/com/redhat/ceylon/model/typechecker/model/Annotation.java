@@ -42,14 +42,17 @@ public class Annotation {
     
     @Override 
     public String toString() {
-        String vs = "";
+        String args = "";
         if (!positionalArguments.isEmpty()) {
-            vs = positionalArguments.toString().replace('[', '(').replace(']', ')');
+            args = positionalArguments.toString()
+                    .replace('[', '(')
+                    .replace(']', ')');
         }
         else if (!namedArguments.isEmpty()) {
-            vs = namedArguments.toString().replace(',', ';');
+            args = namedArguments.toString()
+                    .replace(',', ';');
         }
-        return "Annotation[" + name + vs + "]";
+        return name + args;
     }
     
 }

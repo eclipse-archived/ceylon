@@ -204,4 +204,9 @@ public class TypeParameter extends TypeDeclaration implements Functional {
     public boolean isCaptured() {
         return captured;
     }
+    
+    @Override
+    public String toString() {
+        return "given " + toStringName();
+    }
 }

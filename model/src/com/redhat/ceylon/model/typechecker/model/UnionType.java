@@ -38,7 +38,7 @@ public class UnionType extends TypeDeclaration {
     
     @Override
     public String toString() {
-        return "UnionType[" + getName() + "]";
+        return getName();
     }
     
     @Override

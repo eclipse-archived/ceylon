@@ -118,7 +118,7 @@ public class Package
 
     @Override
     public String toString() {
-        return "Package[" + getNameAsString() + "]";
+        return "package " + getNameAsString();
     }
     
     @Override

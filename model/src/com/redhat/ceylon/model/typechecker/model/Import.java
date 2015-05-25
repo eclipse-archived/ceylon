@@ -44,9 +44,13 @@ public class Import {
     
     @Override
     public String toString() {
-        return "Import[" + alias + "=" + 
-        		(typeDeclaration==null?"":typeDeclaration.getName()+".") + 
-        		declaration.getName() + "]";
+        return "import " + 
+        		(typeDeclaration==null ? 
+        		        "" : typeDeclaration.getName() + " { ") + 
+        		alias + " = " + 
+        		declaration.getName() +
+        		(typeDeclaration==null ? 
+        		        "" : " }");
     }
     
     public boolean isWildcardImport() {

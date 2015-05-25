@@ -25,4 +25,10 @@ public class Interface extends ClassOrInterface {
     public void setCompanionClassNeeded(Boolean companionClassNeeded) {
         this.companionClassNeeded = companionClassNeeded;
     }
+    
+    @Override
+    public String toString() {
+        return "interface " + toStringName();
+    }
+    
 }

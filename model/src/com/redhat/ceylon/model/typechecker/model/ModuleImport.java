@@ -78,14 +78,18 @@ public class ModuleImport implements Annotated {
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder();
-        sb.append("ModuleImport");
-        sb.append("{module=").append(module.getNameAsString()).append(", ").append(module.getVersion());
-        sb.append(", optional=").append(optional);
-        sb.append(", export=").append(export);
-        if (nativeBackend != null) {
-            sb.append(", backend=").append(nativeBackend);
+        if (export) sb.append("shared ");
+        if (optional) sb.append("optional ");
+        if (nativeBackend!=null) {
+            sb.append("native(")
+              .append(nativeBackend)
+              .append(") ");
         }
-        sb.append('}');
+        sb.append("import ")
+          .append(module.getNameAsString())
+          .append(" \"")
+          .append(module.getVersion())
+          .append("\"");
         return sb.toString();
     }
 }

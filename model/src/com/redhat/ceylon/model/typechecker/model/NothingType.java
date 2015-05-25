@@ -29,7 +29,7 @@ public class NothingType extends TypeDeclaration {
     
     @Override
     public String toString() {
-        return getClass().getSimpleName();
+        return "type Nothing";
     }
     
     @Override

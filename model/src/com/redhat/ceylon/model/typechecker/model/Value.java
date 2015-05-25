@@ -118,4 +118,17 @@ public class Value extends MethodOrValue implements Scope, Overloadable {
     public void setOverloads(List<Declaration> overloads) {
         this.overloads = overloads;
     }
+    
+    @Override
+    public String toString() {
+        ProducedType type = getType();
+        if (type==null) {
+            return "value " + toStringName();
+        }
+        else {
+            return "value " + toStringName() + 
+                    " => " + type.getProducedTypeName();
+        }
+    }
+
 }

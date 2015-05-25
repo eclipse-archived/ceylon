@@ -66,4 +66,9 @@ public class Setter extends MethodOrValue implements Scope {
         // use the same qualifier as the getter with a $setter$ prefix
         return getterQualifier == null ? null : "$setter$"+getterQualifier;
     }
+    
+    @Override
+    public String toString() {
+        return "assign " + toStringName();
+    }
 }
