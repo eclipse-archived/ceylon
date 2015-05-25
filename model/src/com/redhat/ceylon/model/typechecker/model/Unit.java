@@ -957,13 +957,10 @@ public class Unit {
                 it.setSatisfiedTypes(list);
                 return it.canonicalize().getType();
             }
-    		if (d instanceof Functional) {
-    			Functional fd = (Functional) d;
-                if (fd.isOverloaded()) {
-    				pt = pt.getSupertype(
-    				        d.getExtendedTypeDeclaration());
-    			}
-    		}
+            if (d.isOverloaded()) {
+				pt = pt.getSupertype(
+				        d.getExtendedTypeDeclaration());
+			}
     		if (d instanceof Constructor) {
     		    return pt.getSupertype(
     		            d.getExtendedTypeDeclaration());

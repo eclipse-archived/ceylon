@@ -3,7 +3,6 @@ package com.redhat.ceylon.model.typechecker.model;
 import static com.redhat.ceylon.model.typechecker.model.Util.getSignature;
 import static com.redhat.ceylon.model.typechecker.model.Util.getTypeArgumentMap;
 import static com.redhat.ceylon.model.typechecker.model.Util.hasMatchingSignature;
-import static com.redhat.ceylon.model.typechecker.model.Util.isAbstraction;
 import static com.redhat.ceylon.model.typechecker.model.Util.isNameMatching;
 import static com.redhat.ceylon.model.typechecker.model.Util.isOverloadedVersion;
 import static com.redhat.ceylon.model.typechecker.model.Util.isResolvable;
@@ -513,12 +512,12 @@ public abstract class TypeDeclaration extends Declaration
         if (signature==null) {
             throw new RuntimeException("missing signature");
         }
-        if (isAbstraction(candidate) && 
-                !isAbstraction(result)) {
+        if (candidate.isAbstraction() && 
+                !result.isAbstraction()) {
             return false;
         }
-        if (!isAbstraction(candidate) && 
-                isAbstraction(result)) {
+        if (!candidate.isAbstraction() && 
+                result.isAbstraction()) {
             return true;
         }
         if (hasMatchingSignature(signature, ellipsis, candidate)) {
@@ -599,14 +598,14 @@ public abstract class TypeDeclaration extends Declaration
             //looking for, return it
             //TODO: should also return it if we're 
             //      calling from local scope!
-            if (signature!=null && isAbstraction(dec)){
+            if (signature!=null && dec.isAbstraction()){
                 //look for a supertype declaration that matches 
                 //the given signature better
                 SupertypeDeclaration sd = 
                         getSupertypeDeclaration(name, 
                                 signature, variadic);
                 Declaration sm = sd.getMember();
-                if (sm!=null && !isAbstraction(sm)) {
+                if (sm!=null && !sm.isAbstraction()) {
                     return sd;
                 }
             }
@@ -644,7 +643,7 @@ public abstract class TypeDeclaration extends Declaration
                         signature, variadic);
         if (dec!=null) {
             if (signature!=null && 
-                    isAbstraction(dec)) {
+                    dec.isAbstraction()) {
                 // look for a supertype declaration that matches 
                 // the given signature better
                 Declaration supertype = 
@@ -652,7 +651,7 @@ public abstract class TypeDeclaration extends Declaration
                                 signature, variadic)
                                 .getMember();
                 if (supertype!=null && 
-                        !isAbstraction(supertype)) {
+                        !supertype.isAbstraction()) {
                     return supertype;
                 }
             }
@@ -771,7 +770,7 @@ public abstract class TypeDeclaration extends Declaration
                         dm.isShared() && 
                         isResolvable(dm)) {
                     // only accept abstractions if we don't have a signature
-                    return !isAbstraction(dm) || 
+                    return !dm.isAbstraction() || 
                             signature == null;
                 }
                 else {
@@ -796,7 +795,7 @@ public abstract class TypeDeclaration extends Declaration
                         dm.isShared() && 
                         isResolvable(dm)) {
                     // only accept abstractions
-                    return isAbstraction(dm);
+                    return dm.isAbstraction();
                 }
                 else {
                     return false;

@@ -10,6 +10,7 @@ public abstract class MethodOrValue extends TypedDeclaration {
     private Parameter initializerParameter;
     private List<Declaration> members = new ArrayList<Declaration>(3);
     private List<Annotation> annotations = new ArrayList<Annotation>(4);
+    private List<Declaration> overloads;
     
     @Override
     public List<Annotation> getAnnotations() {
@@ -62,6 +63,19 @@ public abstract class MethodOrValue extends TypedDeclaration {
 
     public void setCaptured(boolean local) {
         this.captured = local;
+    }
+
+    @Override
+    public List<Declaration> getOverloads() {
+        return overloads;
+    }
+
+    public void setOverloads(List<Declaration> overloads) {
+        this.overloads = overloads;
+    }
+
+    public void initOverloads() {
+        overloads = new ArrayList<Declaration>(3);
     }
 
 }

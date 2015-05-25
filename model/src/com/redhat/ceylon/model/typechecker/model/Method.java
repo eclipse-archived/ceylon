@@ -21,7 +21,6 @@ public class Method extends MethodOrValue implements Generic, Scope, Functional 
     private List<ParameterList> parameterLists = new ArrayList<ParameterList>(1);
     private boolean overloaded;
     private boolean abstraction;
-    private List<Declaration> overloads;
     private boolean declaredVoid;
     private Object annotationConstructor;
     private boolean deferred;
@@ -93,19 +92,11 @@ public class Method extends MethodOrValue implements Generic, Scope, Functional 
         this.deferred = deferred;
     }
     
-    @Override
-    public List<Declaration> getOverloads() {
-        return overloads;
-    }
-    
-    public void setOverloads(List<Declaration> overloads) {
-        this.overloads = overloads;
-    }
-    
     public Parameter getParameter(String name) {
         for (Declaration d : getMembers()) {
             if (d.isParameter() && Util.isNamed(name, d)) {
-                return ((MethodOrValue) d).getInitializerParameter();
+                MethodOrValue mod = (MethodOrValue) d;
+                return mod.getInitializerParameter();
             }
         }
         return null;

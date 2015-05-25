@@ -6,6 +6,7 @@ import static com.redhat.ceylon.model.typechecker.model.Util.erase;
 import static com.redhat.ceylon.model.typechecker.model.Util.isOverloadedVersion;
 import static java.util.Collections.emptyList;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -317,7 +318,8 @@ public abstract class Declaration
      * @param typeArguments arguments to the type
      * parameters of this declaration
      */
-    public abstract ProducedReference getProducedReference(ProducedType pt,
+    public abstract ProducedReference getProducedReference(
+            ProducedType pt,
             List<ProducedType> typeArguments);
     
     /**
@@ -353,6 +355,18 @@ public abstract class Declaration
         }
     }
 
+    public boolean isAbstraction() { 
+        return false; 
+    }
+
+    public boolean isOverloaded() {
+        return false;
+    }
+
+    public List<Declaration> getOverloads() {
+        return Collections.emptyList();
+    }
+    
     @Override
     public boolean equals(Object object) {
         if (this==object) {
@@ -385,17 +399,20 @@ public abstract class Declaration
                 return false;
             }
             else if (this.isNative() != that.isNative() ||
-                    (this.isNative() && !this.getNative().equals(that.getNative()))) {
+                    (this.isNative() && 
+                            !this.getNative().equals(that.getNative()))) {
                 return false;
             }
             else if (this instanceof Functional && 
                     that instanceof Functional) {
-                Functional thisFunction = (Functional) this;
-                Functional thatFunction = (Functional) that;
-                boolean thisIsAbstraction = thisFunction.isAbstraction();
-                boolean thatIsAbstraction = thatFunction.isAbstraction();
-                boolean thisIsOverloaded = thisFunction.isOverloaded();
-                boolean thatIsOverloaded = thatFunction.isOverloaded();
+                boolean thisIsAbstraction = 
+                        this.isAbstraction();
+                boolean thatIsAbstraction = 
+                        that.isAbstraction();
+                boolean thisIsOverloaded = 
+                        this.isOverloaded();
+                boolean thatIsOverloaded = 
+                        that.isOverloaded();
                 if (thisIsAbstraction!=thatIsAbstraction ||
                     thisIsOverloaded!=thatIsOverloaded) {
                     return false;
@@ -406,14 +423,20 @@ public abstract class Declaration
                 if (thisIsAbstraction && thatIsAbstraction) {
                     return true;
                 }
-                List<ParameterList> thisParamLists = thisFunction.getParameterLists();
-                List<ParameterList> thatParamLists = thatFunction.getParameterLists();
+                Functional thisFunction = (Functional) this;
+                Functional thatFunction = (Functional) that;
+                List<ParameterList> thisParamLists = 
+                        thisFunction.getParameterLists();
+                List<ParameterList> thatParamLists = 
+                        thatFunction.getParameterLists();
                 if (thisParamLists.size()!=thatParamLists.size()) {
                     return false;
                 }
                 for (int i=0; i<thisParamLists.size(); i++) {
-                    List<Parameter> thisParams = thisParamLists.get(i).getParameters();
-                    List<Parameter> thatParams = thatParamLists.get(i).getParameters();
+                    List<Parameter> thisParams = 
+                            thisParamLists.get(i).getParameters();
+                    List<Parameter> thatParams = 
+                            thatParamLists.get(i).getParameters();
                     if (thisParams.size()!=thatParams.size()) {
                         return false;
                     }
@@ -422,9 +445,12 @@ public abstract class Declaration
                         Parameter thatParam = thatParams.get(j);
                         if (thisParam!=thatParam) {
                             if (thisParam!=null && thatParam!=null) {
-                                ProducedType thisParamType = thisParam.getType();
-                                ProducedType thatParamType = thatParam.getType();
-                                if (thisParamType!=null && thatParamType!=null) {
+                                ProducedType thisParamType = 
+                                        thisParam.getType();
+                                ProducedType thatParamType = 
+                                        thatParam.getType();
+                                if (thisParamType!=null && 
+                                        thatParamType!=null) {
                                     if (!erase(thisParamType.getDeclaration())
                                             .equals(erase(thatParamType.getDeclaration()))) {
                                         return false;
@@ -455,9 +481,11 @@ public abstract class Declaration
     public int hashCode() {
         int ret = 17;
         Scope container = getContainer();
-        ret = (37 * ret) + (container == null ? 0 : container.hashCode());
+        ret = (37 * ret) + 
+                (container == null ? 0 : container.hashCode());
         String qualifier = getQualifier();
-        ret = (37 * ret) + (qualifier == null ? 0 : qualifier.hashCode());
+        ret = (37 * ret) + 
+                (qualifier == null ? 0 : qualifier.hashCode());
         String name = getName();
         ret = (37 * ret) + (name == null ? 0 : name.hashCode());
         // make sure we don't consider getter/setter or value/anonymous-type equal
@@ -476,7 +504,9 @@ public abstract class Declaration
         }
         else {
             if (isClassOrInterfaceMember()) {
-                ClassOrInterface type = (ClassOrInterface) getContainer();
+                ClassOrInterface type = 
+                        (ClassOrInterface) 
+                            getContainer();
                 return other.getName()!=null && getName()!=null &&
                         other.getName().equals(getName()) && 
                         isShared() && other.isShared() &&
@@ -494,17 +524,21 @@ public abstract class Declaration
     }
     
     /**
-     * Return true if this declaration has a system-generated name, rather than a user-generated name.
-     * At the moment only object expressions and function expressions are not named. This is different from
-     * isAnonymous() because named object declarations are anonymous but named.
+     * Return true if this declaration has a system-generated 
+     * name, rather than a user-generated name. At the moment 
+     * only object expressions and function expressions are 
+     * not named. This is different from isAnonymous() because 
+     * named object declarations are anonymous but named.
      */
     public boolean isNamed() {
         return true;
     }
     
     /**
-     * Return true IFF this is not a real type but a pseudo-type generated by the model loader to pretend that
-     * Java enum values have an anonymous type. This is overridden and implemented in Class.
+     * Return true IFF this is not a real type but a 
+     * pseudo-type generated by the model loader to pretend 
+     * that Java enum values have an anonymous type. This is 
+     * overridden and implemented in Class.
      */
     public boolean isJavaEnum() {
         return false;
@@ -518,7 +552,9 @@ public abstract class Declaration
     }
     
     public String getName(Unit unit) {
-    	return unit==null ? getName() : unit.getAliasedName(this);
+    	return unit==null ? 
+    	        getName() : 
+    	        unit.getAliasedName(this);
     }
     
     public boolean getOtherInstanceAccess() {

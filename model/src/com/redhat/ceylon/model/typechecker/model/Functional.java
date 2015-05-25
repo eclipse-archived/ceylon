@@ -14,7 +14,7 @@ import java.util.List;
  *
  * @author Gavin King
  */
-public interface Functional extends Overloadable {
+public interface Functional {
 
     public List<ParameterList> getParameterLists();
 

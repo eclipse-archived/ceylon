@@ -1,6 +1,5 @@
 package com.redhat.ceylon.model.typechecker.model;
 
-import java.util.List;
 
 
 /**
@@ -8,7 +7,7 @@ import java.util.List;
  *
  * @author Gavin King
  */
-public class Value extends MethodOrValue implements Scope, Overloadable {
+public class Value extends MethodOrValue implements Scope {
 
     private boolean variable;
     private boolean trans;
@@ -18,7 +17,6 @@ public class Value extends MethodOrValue implements Scope, Overloadable {
     private boolean inferred;
     private boolean overloaded;
     private boolean abstraction;
-    private List<Declaration> overloads;
 
     private Setter setter;
     // used for object declarations that use their own value binding in their body
@@ -108,15 +106,6 @@ public class Value extends MethodOrValue implements Scope, Overloadable {
     @Override
     public boolean isAbstraction() {
         return abstraction;
-    }
-
-    @Override
-    public List<Declaration> getOverloads() {
-        return overloads;
-    }
-    
-    public void setOverloads(List<Declaration> overloads) {
-        this.overloads = overloads;
     }
     
     @Override

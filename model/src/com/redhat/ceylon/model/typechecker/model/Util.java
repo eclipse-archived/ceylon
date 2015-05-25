@@ -147,22 +147,22 @@ public class Util {
     }
     
     public static boolean isAbstraction(Declaration d) {
-        return d instanceof Overloadable && 
-                ((Overloadable) d).isAbstraction();
+        return d!=null && d.isAbstraction();
     }
 
     public static boolean notOverloaded(Declaration d) {
-        if(!d.isFunctional())
+        if (d==null || !d.isFunctional()) {
             return true;
-        Overloadable f = (Overloadable) d;
-        return  !f.isOverloaded() ||
-                f.isAbstraction();
+        }
+        else {
+            return  !d.isOverloaded() || d.isAbstraction();
+        }
     }
     
     public static boolean isOverloadedVersion(Declaration decl) {
-        return (decl instanceof Overloadable) &&
-                ((Overloadable) decl).isOverloaded() &&
-                !((Overloadable) decl).isAbstraction();
+        return decl!=null && 
+                decl.isOverloaded() && 
+                !decl.isAbstraction();
     }
 
     static boolean hasMatchingSignature(List<ProducedType> signature, 
@@ -179,11 +179,11 @@ public class Util {
             return false;
         }
         if (d instanceof Functional) {
-            Functional f = (Functional) d;
-            if (f.isAbstraction()) {
+            if (d.isAbstraction()) {
                 return false;
             }
             else {
+                Functional f = (Functional) d;
                 Unit unit = d.getUnit();
                 List<ParameterList> pls = 
                         f.getParameterLists();
@@ -1597,7 +1597,7 @@ public class Util {
             }
             return b;
         }
-        if (bName.equals("ceylon.language::Object")){
+        if (bName.equals("ceylon.language::Object")) {
             // every ClassOrInterface is an object except Null
             if(aName.equals("ceylon.language::Null")
                     || aName.equals("ceylon.language::null")) {
@@ -1605,7 +1605,7 @@ public class Util {
             }
             return a;
         }
-        if (aName.equals("ceylon.language::Null")){
+        if (aName.equals("ceylon.language::Null")) {
             // only null is null
             if(bName.equals("ceylon.language::Null")
                     || bName.equals("ceylon.language::null")) {
@@ -1625,8 +1625,9 @@ public class Util {
         return null;
     }
 
-    private static ProducedType getSimpleIntersection(ProducedType a, 
-            ClassOrInterface aDecl, ProducedType b, UnionType bDecl) {
+    private static ProducedType getSimpleIntersection(
+            ProducedType a, ClassOrInterface aDecl, 
+            ProducedType b, UnionType bDecl) {
         // we only handle Foo|Null
         if (bDecl.getCaseTypes().size() != 2) {
             return null;
@@ -1696,8 +1697,9 @@ public class Util {
                 return it.canonicalize().getType();
             }
             for(ProducedType sat : satisfiedTypes){
-                if (sat.getDeclaration() instanceof ClassOrInterface && 
-                        sat.getDeclaration().getQualifiedNameString()
+                TypeDeclaration satd = sat.getDeclaration();
+                if (satd instanceof ClassOrInterface && 
+                        satd.getQualifiedNameString()
                             .equals("ceylon.language::Object")) {
                     // it is already an Object
                     return type;
@@ -1710,7 +1712,8 @@ public class Util {
         return null;
     }
 
-    public static boolean isElementOfUnion(UnionType ut, ClassOrInterface ci) {
+    public static boolean isElementOfUnion(UnionType ut, 
+            ClassOrInterface ci) {
         for (TypeDeclaration ct: ut.getCaseTypeDeclarations()) {
             if (ct instanceof ClassOrInterface && ct.equals(ci)) {
                 return true;
@@ -2256,9 +2259,8 @@ public class Util {
     }
     
     public static boolean hasNativeImplementation(Declaration dec) {
-        if (dec instanceof Overloadable && dec.isNative()) {
-            Overloadable fun = (Overloadable) dec;
-            List<Declaration> overloads = fun.getOverloads();
+        if (dec.isNative()) {
+            List<Declaration> overloads = dec.getOverloads();
             if (overloads != null) {
                 for (Declaration overload: overloads) {
                     if (overload.isNative() && 
@@ -2290,9 +2292,7 @@ public class Util {
     public static Declaration getNativeDeclaration(
             Declaration dec, BackendSupport backendSupport) {
         if (dec.isNative() && 
-                dec instanceof Overloadable &&
                 backendSupport != null) {
-            Overloadable overloadabe = (Overloadable) dec;
             Declaration abstraction = null;
             if (backendSupport.supportsBackend(
                     Backend.fromAnnotation(
@@ -2301,7 +2301,7 @@ public class Util {
             }
             else {
                 List<Declaration> overloads = 
-                        overloadabe.getOverloads();
+                        dec.getOverloads();
                 if (overloads != null) {
                     for (Declaration d: overloads) {
                         if (backendSupport.supportsBackend(
@@ -2364,42 +2364,6 @@ public class Util {
             }
         }
         return null;
-    }
-
-    public static List<Declaration> getOverloads(
-            Declaration dec) {
-        if (dec instanceof Overloadable) {
-            Overloadable overloadable = 
-                    (Overloadable) dec;
-            return overloadable.getOverloads();
-        }
-        return null;
-    }
-
-    public static void setOverloads(
-            Declaration dec, 
-            List<Declaration> overloads) {
-        if (dec instanceof Method) {
-            Method m = (Method) dec;
-            m.setOverloads(overloads);
-        }
-        else if (dec instanceof Value) {
-            Value v = (Value) dec;
-            v.setOverloads(overloads);
-        }
-        else if (dec instanceof Class) {
-            Class c = (Class) dec;
-            c.setOverloads(overloads);
-        }
-    }
-
-    public static List<Declaration> initOverloads(
-            Declaration dec) {
-        ArrayList<Declaration> overloads = 
-                new ArrayList<Declaration>(3);
-        overloads.add(dec);
-        setOverloads(dec, overloads);
-        return overloads;
     }
 
 }

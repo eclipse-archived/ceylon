@@ -1,5 +1,6 @@
 package com.redhat.ceylon.model.typechecker.model;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -175,9 +176,14 @@ public class Class extends ClassOrInterface implements Functional {
     public List<Declaration> getOverloads() {
         return overloads;
     }
-    
+
     public void setOverloads(List<Declaration> overloads) {
         this.overloads = overloads;
+    }
+
+    public void initOverloads() {
+        overloads = new ArrayList<Declaration>(3);
+        overloads.add(this);
     }
     
     @Override
