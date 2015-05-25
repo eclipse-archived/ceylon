@@ -109,8 +109,14 @@ class DeserializationContextImpl<Id>() satisfies DeserializationContext<Id>
     
     shared actual Instance reconstruct<Instance>(Id instanceId) {
         NativeDeque deque = NativeDequeImpl();
-        if (!exists x=instances.get(instanceId)) {
-            throw DeserializationException("unknown id: ``instanceId``.");
+        value root = instances.get(instanceId);
+        if (!root exists) {
+            if (instances.contains(instanceId)) {
+                assert(is Instance r=null);
+                return r;
+            } else {
+                throw DeserializationException("unknown id: ``instanceId``.");
+            }
         }
         deque.pushFront(instances.get(instanceId));
         while (!deque.empty){
