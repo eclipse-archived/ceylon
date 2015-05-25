@@ -691,7 +691,7 @@ public class ModelLoaderTests extends CompilerTests {
     public void loadVariadic(){
         compile("Variadic.ceylon");
         assertErrors("variadictest",
-                new CompilerError(7, "missing argument to required parameter 'seq' of 'VariadicPlus'")
+                new CompilerError(7, "missing argument to required parameter 'String+ seq' of 'VariadicPlus'")
         );
     }
     
