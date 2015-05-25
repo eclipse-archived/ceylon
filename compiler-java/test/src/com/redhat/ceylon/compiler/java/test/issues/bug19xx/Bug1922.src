@@ -19,7 +19,7 @@ final class random_ extends .java.util.Random implements .com.redhat.ceylon.comp
     
     @.java.lang.Override
     public final int next(final int i) {
-        return super.next(.com.redhat.ceylon.compiler.java.Util.toInt(i));
+        return super.next(i);
     }
     private static final .com.redhat.ceylon.compiler.java.test.issues.bug19xx.random_ value;
     private static volatile boolean $init$value = false;

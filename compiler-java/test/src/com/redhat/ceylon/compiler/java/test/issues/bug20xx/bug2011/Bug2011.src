@@ -15,7 +15,7 @@ class MWETreeNode extends .javax.swing.tree.DefaultMutableTreeNode implements .c
     public final void remove(@.com.redhat.ceylon.compiler.java.metadata.Name("int")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     final int $int) {
-        super.remove(.com.redhat.ceylon.compiler.java.Util.toInt($int));
+        super.remove($int);
     }
     
     @.ceylon.language.SharedAnnotation$annotation$

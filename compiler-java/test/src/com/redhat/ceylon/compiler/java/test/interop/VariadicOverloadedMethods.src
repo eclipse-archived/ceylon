@@ -26,8 +26,14 @@ final class variadicOverloadedMethods_ {
                 3.0});
         java.variadic(.ceylon.language.String.instance("a"));
         java.variadic("a", "b");
-        java.variadic(.com.redhat.ceylon.compiler.java.Util.toJavaStringArray((.ceylon.language.Sequence<? extends .ceylon.language.String>).ceylon.language.Tuple.instance(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{
-                .ceylon.language.String.instance("a"),
-                .ceylon.language.String.instance("b")})));
+        java.variadic((
+            let
+            {
+                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$0$0 = (.ceylon.language.Sequence<? extends .ceylon.language.String>).ceylon.language.Tuple.instance(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{
+                        .ceylon.language.String.instance("a"),
+                        .ceylon.language.String.instance("b")});
+            }
+            returning .com.redhat.ceylon.compiler.java.Util.<.ceylon.language.String>toArray($ceylontmp$0$0, new .ceylon.language.String[.com.redhat.ceylon.compiler.java.Util.toInt($ceylontmp$0$0.getSize())]);
+        ));
     }
 }
