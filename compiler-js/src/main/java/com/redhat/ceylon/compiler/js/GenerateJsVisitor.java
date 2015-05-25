@@ -769,6 +769,7 @@ public class GenerateJsVisitor extends Visitor
         }
         out(names.self(d), "){");
         initSelf(that);
+        initParameters(that.getParameterList(), d, null);
         out("return ");
         TypeDeclaration aliased = ext.getType().getDeclarationModel();
         final String aliasedName;
@@ -1286,7 +1287,7 @@ public class GenerateJsVisitor extends Visitor
                 out(";}");
                 endLine();
             }
-            if ((typeDecl != null) && (pd.getModel().isCaptured() ||
+            if ((typeDecl != null && typeDecl instanceof ClassAlias==false) && (pd.getModel().isCaptured() ||
                     pd.getDeclaration() instanceof com.redhat.ceylon.model.typechecker.model.Class)) {
                 out(names.self(typeDecl), ".", paramName, "_=", paramName);
                 if (!opts.isOptimize() && pd.isHidden()) { //belt and suspenders...
