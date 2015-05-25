@@ -13,25 +13,37 @@ import ceylon.language.meta.model {
 import com.redhat.ceylon.compiler.java.runtime.model{
     TypeDescriptor
 }
+import com.redhat.ceylon.compiler.java.runtime.serialization {
+    MemberImpl,
+    ElementImpl,
+    OuterImpl
+}
 import com.redhat.ceylon.model.typechecker.model{
     ProducedType
 }
 
 class DeserializationContextImpl<Id>() satisfies DeserializationContext<Id> 
         given Id satisfies Object {
+    // item is either a Partial or the actual instance
+    // that's not ambiguous because Partial never leaks, so it's impossible
+    // for a client to use the API to instantiate a Partial
+    // they can only end up in the map due to our implementation.
     NativeMap<Id,Anything> instances = NativeMapImpl<Id,Anything>();
+    
+    //"""a cache of "attribute" (represented as a TypeDescriptor and an attribute name)
+     //  to its type"""
     shared NativeMapImpl<TypeDescriptor.Class->String, ProducedType> memberTypeCache = NativeMapImpl<TypeDescriptor.Class->String, ProducedType>();
     
     shared Anything leakInstance(Id id) => instances.get(id);
     
     shared actual void attribute(Id instanceId, ValueDeclaration attribute, Id attributeValueId) {
-        attributeOrElement(instanceId, attribute.qualifiedName, attributeValueId);
+        attributeOrElement(instanceId, MemberImpl(attribute), attributeValueId);
     }
     
     shared DeserializationException alreadyComplete(Id instanceId) 
         => DeserializationException("instance referred to by id ``instanceId`` already complete.");
     
-    void attributeOrElement(Id instanceId, String|Integer attributeOrIndex, Id attributeValueId) {
+    void attributeOrElement(Id instanceId, ReachableReference attributeOrIndex, Id attributeValueId) {
         Partial referring;
         switch(r=instances.get(instanceId))
         case (is Null){
@@ -52,7 +64,7 @@ class DeserializationContextImpl<Id>() satisfies DeserializationContext<Id>
     }
     
     shared actual void element(Id instanceId, Integer index, Id elementValueId) {
-        attributeOrElement(instanceId, index, elementValueId);
+        attributeOrElement(instanceId, ElementImpl(index), elementValueId);
     }
     
     shared actual void instance(Id instanceId, ClassModel<Anything,Nothing> clazz) {

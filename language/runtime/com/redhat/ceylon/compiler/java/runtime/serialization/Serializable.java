@@ -1,9 +1,8 @@
 package com.redhat.ceylon.compiler.java.runtime.serialization;
 
-import java.lang.invoke.MethodHandle;
 import java.util.Collection;
 
-import ceylon.language.serialization.Deconstructor;
+import ceylon.language.serialization.ReachableReference;
 
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 
@@ -16,24 +15,28 @@ import com.redhat.ceylon.compiler.java.metadata.Ignore;
  */
 @Ignore
 public interface Serializable {
-    public void $serialize$(Deconstructor deconstructor);
+    
+    /**
+     * Get the value of one of the references returned from {@link #$references$()}
+     * @param attributeOrIndexOrOuter
+     * @return
+     */
+    public java.lang.Object $get$(ReachableReference ref);
     /** 
      * Return a collection of objects identifying the assignable state of 
      * the class of this instance.
      * 
-     * For Arrays this returns a {@code Collection<java.lang.Integer>} 
-     * (the indexes)
-     * for everything else this returns a {@code Collection<java.lang.String>}
-     * (the Ceylon attribute names).
+     * Each Ceylon attributes qualified name will be included {@code java.lang.String}. 
+     * For arrays the index of each element will be included {@code java.lang.Integer}.
      * 
      * This is static data, but since the caller doesn't know the type 
      * as compile time, it is easiest to make this a virtual method.
      * */
-    public Collection<java.lang.Object> $references$();
+    public Collection<ReachableReference> $references$();
     /**
      * Set the given attribute or element to the given value.
      * @param attributeOrIndex
      * @param ref
      */
-    public void $set$(java.lang.Object attributeOrIndex, java.lang.Object ref);
+    public void $set$(ReachableReference reference, java.lang.Object instance);
 }

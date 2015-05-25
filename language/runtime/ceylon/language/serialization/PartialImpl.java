@@ -4,12 +4,14 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Iterator;
 
 import ceylon.language.AssertionError;
 import ceylon.language.Collection;
 import ceylon.language.Entry;
 import ceylon.language.String;
 import ceylon.language.impl.rethrow_;
+import ceylon.language.meta.declaration.ClassDeclaration;
 import ceylon.language.meta.model.ClassModel;
 import ceylon.language.meta.model.Type;
 
@@ -21,6 +23,8 @@ import com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel;
 import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 import com.redhat.ceylon.compiler.java.runtime.serialization.$Serialization$;
+import com.redhat.ceylon.compiler.java.runtime.serialization.ElementImpl;
+import com.redhat.ceylon.compiler.java.runtime.serialization.MemberImpl;
 import com.redhat.ceylon.compiler.java.runtime.serialization.Serializable;
 import com.redhat.ceylon.model.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.model.typechecker.model.ProducedType;
@@ -156,123 +160,162 @@ class PartialImpl extends Partial {
 
     protected <Id> void initializeArray(DeserializationContextImpl<Id> context,
             ceylon.language.Array instance) {
-        NativeMap<java.lang.Object, Id> state = (NativeMap<java.lang.Object, Id>)getState();
+        NativeMap<ReachableReference, Id> state = (NativeMap<ReachableReference, Id>)getState();
         // In this case we statically know the $references$, and they are:
         // the array's size and each of its elements (as integers)
-        String sizeAttr = ceylon.language.String.instance("ceylon.language::Array.size");
+        ReachableReference sizeAttr = (ReachableReference)instance.$references$().iterator().next();//ceylon.language.String.instance("ceylon.language::Array.size");
         ceylon.language.Integer size = (ceylon.language.Integer)getReferredInstance(context, 
-                (NativeMap<ceylon.language.String, Id>)(NativeMap)state, 
+                state, 
                 sizeAttr);
         if (size == null) {
-            throw new DeserializationException("lacking sufficient state for instance with id " + getId() + ": ceylon.language::Array.size");
+            throw insufficiantState(sizeAttr);
         }
         instance.$set$(sizeAttr, size);
         int sz = Util.toInt(size.longValue());
         for (int ii = 0; ii < sz; ii++) {
-            ceylon.language.Integer index = ceylon.language.Integer.instance(ii);
+            ElementImpl index = new ElementImpl(ii);
             Id id = (Id)state.get(index);
             if (id == null) {
-                throw new DeserializationException("lacking sufficient state for instance with id " + getId() + ": index " + ii);
+                throw insufficiantState(index);
             }
             TypeDescriptor.Class arrayType = (TypeDescriptor.Class)Metamodel.getTypeDescriptor(instance);
             ProducedType arrayElementType = Metamodel.getModuleManager().getCachedProducedType(arrayType.getTypeArguments()[0]);
             Object element = getReferredInstance(context, id);
             ProducedType elementType = Metamodel.getModuleManager().getCachedProducedType(Metamodel.getTypeDescriptor(element));
             if (elementType.isSubtypeOf(arrayElementType)) {
-                instance.$set$(ceylon.language.Integer.instance(ii), element);
+                instance.$set$(index, element);
             } else {
-                throw notAssignable(ii, 
+                throw notAssignable(index, 
                         arrayElementType,
                         elementType);
             }
         }
         if (state.getSize() != sz + 1) {
-            throw new DeserializationException("lacking sufficient state for instance with id " + getId());
+            throw insufficiantState((ReachableReference)null);
         }
     }
 
     protected <Id> void initializeObject(
             DeserializationContextImpl<Id> context,
             Serializable instance) {
-        NativeMap<ceylon.language.String, Id> state = (NativeMap<ceylon.language.String, Id>)getState();
+        NativeMap<ReachableReference, Id> state = (NativeMap<ReachableReference, Id>)getState();
         // TODO If it were a map of java.lang.String we'd avoid pointless extra boxing
-        java.util.Collection<java.lang.String> attributeNames = (java.util.Collection)instance.$references$();
-        if (state.getSize() != attributeNames.size()) {
-            HashSet<ceylon.language.String> missingNames = new HashSet<ceylon.language.String>();
-            java.util.Iterator<java.lang.String> it = attributeNames.iterator();
-            while (it.hasNext()) {
-                missingNames.add(ceylon.language.String.instance(it.next()));
+        java.util.Collection<ReachableReference> attributeNames = instance.$references$();
+        int numLate = 0;
+        for (ReachableReference r : attributeNames) {
+            if (r instanceof Member
+                    && ((Member)r).getAttribute().getLate()) {
+                numLate++;
+            } else if (r instanceof Outer) {
+                numLate++;
             }
-            ceylon.language.Iterator<? extends ceylon.language.String> it2 = state.getKeys().iterator();
+        }
+        if (state.getSize() < attributeNames.size()-numLate) {
+            HashSet<ReachableReference> missingNames = new HashSet<ReachableReference>();
+            java.util.Iterator<ReachableReference> it = attributeNames.iterator();
+            while (it.hasNext()) {
+                missingNames.add(it.next());
+            }
+            ceylon.language.Iterator<? extends ReachableReference> it2 = state.getKeys().iterator();
             Object next;
-            while (((next = it2.next()) instanceof ceylon.language.String)) {
+            while (((next = it2.next()) instanceof ReachableReference)) {
                 missingNames.remove(next);
             }
             throw insufficiantState(missingNames);
         }
-        for (java.lang.String attributeName : attributeNames) {
-            Object referredInstance = getReferredInstance(context, state, 
-                    ceylon.language.String.instance(attributeName));
-            java.lang.String unqualifiedName = attributeName.substring(attributeName.lastIndexOf('.')+1, attributeName.length());
-            
-            TypeDescriptor.Class classTypeDescriptor = getClassTypeDescriptor();
-            Entry<TypeDescriptor.Class,String> cacheKey = new Entry<TypeDescriptor.Class,String>(TypeDescriptor.klass(TypeDescriptor.Class.class), String.$TypeDescriptor$, classTypeDescriptor, String.instance(unqualifiedName));
-            ProducedType attributeOrIndexType = context.getMemberTypeCache().get(cacheKey);
-            if (attributeOrIndexType == null) {
-                ProducedType pt = Metamodel.getModuleManager().getCachedProducedType(classTypeDescriptor);
-                MethodOrValue attributeDeclaration = (MethodOrValue)((TypeDeclaration)pt.getDeclaration()).getMember(
-                        unqualifiedName, null, false);
-                ProducedTypedReference attributeType = pt.getTypedMember(
-                        attributeDeclaration, Collections.<ProducedType>emptyList(), true);
-                attributeOrIndexType = attributeType.getType();
-                context.getMemberTypeCache().put(cacheKey, attributeOrIndexType);
-            }
-            
-            ProducedType instanceType = Metamodel.getModuleManager().getCachedProducedType(
-                    Metamodel.getTypeDescriptor(referredInstance));
-            
-            if (instanceType.isSubtypeOf(attributeOrIndexType)) {
-                // XXX the JVM will check the assignability, but we need to 
-                // check assignability at the ceylon level, so we need to know 
-                /// type of the attribute an the type that we're assigning.
-                // XXX this check is really expensive!
-                // we should cache the attribute type on the context
-                // when can we avoid this check.
-                // XXX we can cache MethodHandle setters on the context!
-                instance.$set$(attributeName, referredInstance);
+        for (ReachableReference reference : attributeNames) {
+            if (reference instanceof Member) {
+                Member attributeName  = (Member)reference;
+                
+                if (attributeName.getAttribute().getLate()
+                        && !state.contains(attributeName)
+                        || state.get(attributeName) == uninitializedLateValue_.get_()) {
+                    continue;
+                }
+                
+                TypeDescriptor.Class classTypeDescriptor = getClassTypeDescriptor();
+                Entry<TypeDescriptor.Class,String> cacheKey = new Entry<TypeDescriptor.Class,String>(
+                        TypeDescriptor.klass(TypeDescriptor.Class.class), String.$TypeDescriptor$, 
+                        classTypeDescriptor, String.instance(attributeName.getAttribute().getQualifiedName()));
+                ProducedType attributeOrIndexType = context.getMemberTypeCache().get(cacheKey);
+                if (attributeOrIndexType == null) {
+                    ProducedType pt = Metamodel.getModuleManager().getCachedProducedType(classTypeDescriptor);
+                    while (!pt.getDeclaration().getQualifiedNameString().equals(((ClassDeclaration)attributeName.getAttribute().getContainer()).getQualifiedName())) {
+                        pt = pt.getExtendedType();
+                    }
+                    MethodOrValue attributeDeclaration = (MethodOrValue)((TypeDeclaration)pt.getDeclaration()).getMember(
+                            attributeName.getAttribute().getName(), null, false);
+                    ProducedTypedReference attributeType = pt.getTypedMember(
+                            attributeDeclaration, Collections.<ProducedType>emptyList(), true);
+                    attributeOrIndexType = attributeType.getType();
+                    context.getMemberTypeCache().put(cacheKey, attributeOrIndexType);
+                }
+                
+                Object referredInstance = getReferredInstance(context, state, 
+                        attributeName);
+                
+                ProducedType instanceType = Metamodel.getModuleManager().getCachedProducedType(
+                        Metamodel.getTypeDescriptor(referredInstance));
+                
+                if (instanceType.isSubtypeOf(attributeOrIndexType)) {
+                    // XXX the JVM will check the assignability, but we need to 
+                    // check assignability at the ceylon level, so we need to know 
+                    /// type of the attribute an the type that we're assigning.
+                    // XXX this check is really expensive!
+                    // we should cache the attribute type on the context
+                    // when can we avoid this check.
+                    // XXX we can cache MethodHandle setters on the context!
+                    instance.$set$(attributeName, referredInstance);
+                } else {
+                    throw notAssignable(attributeName, attributeOrIndexType, instanceType);
+                }
+            } else if (reference instanceof Outer) {
+                // ignore it -- the DeserializationContext deals with
+                // instantiating member classes
+                continue;
             } else {
-                throw notAssignable(attributeName, attributeOrIndexType, instanceType);
+                throw new AssertionError("unexpected ReachableReference " + reference);
             }
         }
     }
     
-    java.lang.String descriptor(java.lang.Object referent) {
-        if (referent instanceof java.lang.String 
-                || referent instanceof ceylon.language.String) {
-            return "attribute " + referent;
-        } else if (referent instanceof java.lang.Integer
-                || referent instanceof java.lang.Long
-                || referent instanceof ceylon.language.Integer) {
-            return "index " + referent;
+    java.lang.String descriptor(ReachableReference referent) {
+        if (referent instanceof Member) {
+            return java.lang.String.valueOf(((Member)referent).getAttribute());
+        } else if (referent instanceof Element) {
+            return "index " + ((Element)referent).getIndex();
         } else {
             return java.lang.String.valueOf(referent);
         }
     }
     
-    DeserializationException notAssignable(java.lang.Object attributeOrIndex, ProducedType attributeOrIndexType, ProducedType instanceType) {
+    DeserializationException notAssignable(ReachableReference attributeOrIndex, ProducedType attributeOrIndexType, ProducedType instanceType) {
         return new DeserializationException("instance not assignable to " + descriptor(attributeOrIndex) + " of id " + getId() + ": "
                 + instanceType.getProducedTypeName() + " is not assignable to " + attributeOrIndexType.getProducedTypeName());
     }
     
-    DeserializationException insufficiantState(java.util.Collection<ceylon.language.String> missingNames) {
-        return new DeserializationException("lacking sufficient state for instance with id " + getId() + ": " + missingNames);
+    DeserializationException insufficiantState(java.util.Collection<ReachableReference> missingNames) {
+        StringBuilder sb = new StringBuilder();
+        Iterator<ReachableReference> iterator = missingNames.iterator();
+        while (iterator.hasNext()) {
+            ReachableReference r = iterator.next();
+            sb.append(descriptor(r));
+            if (iterator.hasNext()) {
+                sb.append(", ");
+            }
+        }
+        return new DeserializationException("lacking sufficient state for instance with id " + getId() + ": " + sb.toString());
+    }
+    
+    DeserializationException insufficiantState(ReachableReference missing) {
+        return new DeserializationException("lacking sufficient state for instance with id " + getId() + (missing != null ?  ": " + descriptor(missing) : ""));
     }
 
     /** Get the (leaked, partially constructed) instance with the given name. */
     protected <Id> java.lang.Object getReferredInstance(
             DeserializationContextImpl<Id> context,
-            NativeMap<ceylon.language.String, Id> state,
-            ceylon.language.String attributeName) {
+            NativeMap<ReachableReference, Id> state,
+            ReachableReference attributeName) {
         Id referredId = state.get(attributeName);
         return getReferredInstance(context, referredId);
     }

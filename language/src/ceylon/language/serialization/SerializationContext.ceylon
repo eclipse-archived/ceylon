@@ -1,32 +1,29 @@
+
+import ceylon.language.meta.declaration {
+    ValueDeclaration
+}
 "A context representing serialization of many objects to a 
  single output stream. 
  
  The serialization library obtains an instance by calling 
- [[serialization]] and then  
- [[registers|reference]] the objects to be serialized, 
- assigning them each a unique identifier. Then, the 
- serialization library is responsible for iterating the 
- instances registered with the context and persisting their 
- [[deconstructed states|Deconstructed]] to the output 
- stream.
+ [[serialization]] and then uses
+ [[references]] to traverse the instances reachable from the 
+ instance(s) being serialized.
+ 
+ It is the serialization library's responsibility to 
+ manage object identity and handle cycles in the graph 
+ of object references. For example a serialization library 
+ that produced a hierarchical format might ignore identity 
+ when an instance is encountered multiple times 
+ (resulting in duplicate subtrees in the output), and 
+ simply throw an exception if it encountered a cycle. 
  "
 shared sealed
-interface SerializationContext
-        satisfies {SerializableReference<Anything>*} {
-    "Create a reference to the given [[instance]], assigning it 
-     the given [[identifer|id]]."
-    throws (`class AssertionError`,
-        "if there is already an instance with the given
-         identifier")
-    shared formal
-    SerializableReference<Instance> reference<Instance>(Object id, Instance instance);
-    
-    "The reference for the given (previously [[registered|reference]]) instance, 
-     or null if the given instance has not been [[registered|reference]]."
-    shared formal SerializableReference<Instance>? getReference<Instance>(Instance instance);
-    
-    "An iterator over each of the objects which have 
-     been [[registered|reference]] with this context."
-    shared actual formal
-    Iterator<SerializableReference<Anything>> iterator();
+interface SerializationContext {
+    // could be generic
+    "Obtain the references of the given instance."
+    shared formal References references(Anything instance);
 }
+
+
+

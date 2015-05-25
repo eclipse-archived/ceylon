@@ -19,7 +19,8 @@ import ceylon.language.impl.BaseList;
 import ceylon.language.impl.rethrow_;
 import ceylon.language.meta.declaration.ClassDeclaration;
 import ceylon.language.meta.declaration.ValueDeclaration;
-import ceylon.language.serialization.Deconstructor;
+import ceylon.language.serialization.Member;
+import ceylon.language.serialization.ReachableReference;
 
 import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.language.AbstractArrayIterable;
@@ -39,6 +40,7 @@ import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 import com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 import com.redhat.ceylon.compiler.java.runtime.serialization.$Serialization$;
+import com.redhat.ceylon.compiler.java.runtime.serialization.MemberImpl;
 import com.redhat.ceylon.compiler.java.runtime.serialization.Serializable;
 
 @Ceylon(major = 8)
@@ -2080,21 +2082,6 @@ public final class Array<Element>
     }
     
     @Ignore
-    @Override
-    public void $serialize$(Deconstructor dtor) {
-        
-        ValueDeclaration sizeAttribute = (ValueDeclaration)((ClassDeclaration)Metamodel.getOrCreateMetamodel(Array.class)).getMemberDeclaration(ceylon.language.meta.declaration.ValueDeclaration.$TypeDescriptor$, "size");
-        
-        dtor.putValue(Integer.$TypeDescriptor$, 
-                sizeAttribute, 
-                Integer.instance(getSize()));
-        
-        for (int ii = 0; ii < getSize(); ii++) {
-            dtor.<Element>putElement(this.$reifiedElement, ii, unsafeItem(ii));
-        }
-    }
-
-    @Ignore
     public Array($Serialization$ ignored, TypeDescriptor $reifiedElement) {
         super(ignored, $reifiedElement);
         this.$reifiedElement = $reifiedElement;
@@ -2112,14 +2099,41 @@ public final class Array<Element>
     }
     
     @Override
-    public java.util.Collection<java.lang.Object> $references$() {
-        return Collections.<java.lang.Object>singletonList("ceylon.langage::Array.size");
+    public java.util.Collection<ReachableReference> $references$() {
+        /*if (attr == null) {
+            java.lang.String qualAttrName = (java.lang.String)ref;
+            String className = qualAttrName.substring(0, qualAttrName.lastIndexOf('.'));
+            String attrName = qualAttrName.substring(qualAttrName.lastIndexOf('.')+1);
+            ClassDeclaration classDeclaration = klass;
+            while (!classDeclaration.getQualifiedName().equals(className)) {
+                classDeclaration = classDeclaration.getExtendedType().getDeclaration();
+            }
+            attr = classDeclaration.getDeclaredMemberDeclaration(ValueDeclaration.$TypeDescriptor$, attrName);
+        }*/
+        return Collections.<ReachableReference>singletonList(
+                new MemberImpl(getArraySize()));
+    }
+    @Ignore
+    protected ValueDeclaration getArraySize() {
+        return (ValueDeclaration)((ClassDeclaration)Metamodel.getOrCreateMetamodel(Array.class)).getMemberDeclaration(ValueDeclaration.$TypeDescriptor$, "size");
+    }
+    
+    @Ignore
+    @Override
+    public java.lang.Object $get$(ReachableReference indexOrAttr) {
+        if (indexOrAttr instanceof Member
+                && getArraySize().equals(((Member)indexOrAttr).getAttribute())) {
+            return ceylon.language.Integer.instance(size);
+        } else if (indexOrAttr instanceof ceylon.language.serialization.Element){
+            return getFromFirst(((ceylon.language.serialization.Element)indexOrAttr).getIndex());
+        }
+        throw new AssertionError("unknown reference " + indexOrAttr);
     }
     
     @Override
-    public void $set$(java.lang.Object reference, java.lang.Object instance) {
-        if (reference instanceof ceylon.language.String
-                && "ceylon.language::Array.size".equals(((ceylon.language.String)reference).value)) {
+    public void $set$(ReachableReference reference, java.lang.Object instance) {
+        if (reference instanceof Member
+                && getArraySize().equals(((Member) reference).getAttribute())) {
             int size = toSize(((ceylon.language.Integer)instance).value);
             try {
                 Lookup lookup = MethodHandles.lookup();
@@ -2160,8 +2174,8 @@ public final class Array<Element>
                 rethrow_.rethrow(t);
             }
         } else {
-            ceylon.language.Integer index  = (ceylon.language.Integer)reference;
-            set(index.value, (Element)instance);
+            ceylon.language.serialization.Element index  = (ceylon.language.serialization.Element)reference;
+            set(index.getIndex(), (Element)instance);
         }
     }
 }

@@ -1,18 +1,19 @@
 package ceylon.language;
 
 import static com.redhat.ceylon.compiler.java.Util.toInt;
-import static com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.getOrCreateMetamodel;
 import static com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.getTypeDescriptor;
 import static com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType;
 import static java.lang.System.arraycopy;
 
 import java.lang.ref.SoftReference;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 import ceylon.language.impl.BaseIterator;
 import ceylon.language.meta.declaration.ClassDeclaration;
 import ceylon.language.meta.declaration.ValueDeclaration;
-import ceylon.language.serialization.Deconstructor;
+import ceylon.language.serialization.Member;
+import ceylon.language.serialization.ReachableReference;
 
 import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.metadata.Annotation;
@@ -32,6 +33,7 @@ import com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel;
 import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 import com.redhat.ceylon.compiler.java.runtime.serialization.$Serialization$;
+import com.redhat.ceylon.compiler.java.runtime.serialization.MemberImpl;
 import com.redhat.ceylon.compiler.java.runtime.serialization.Serializable;
 
 @Ceylon(major = 8)
@@ -720,26 +722,6 @@ public final class Tuple<Element, First extends Element,
     }
     
     @Ignore
-    @Override
-    public void $serialize$(Deconstructor dtor) {
-        // Don't call super.$serialize$() since our runtime super class is 
-        // an implementation detail
-        TypeDescriptor.Class myTd = (TypeDescriptor.Class)$getType$();
-        
-        TypeDescriptor reifiedFirst = myTd.getTupleFirstElement();
-        TypeDescriptor reifiedRest = myTd.getTupleRest();
-        
-        ValueDeclaration firstAttribute = (ValueDeclaration)
-                ((ClassDeclaration) getOrCreateMetamodel(Tuple.class))
-                    .getMemberDeclaration(ValueDeclaration.$TypeDescriptor$, "first");
-        dtor.putValue(reifiedFirst, firstAttribute, getFirst());
-        
-        ValueDeclaration restAttribute = (ValueDeclaration)
-                ((ClassDeclaration) getOrCreateMetamodel(Tuple.class))
-                    .getMemberDeclaration(ValueDeclaration.$TypeDescriptor$, "rest");
-        dtor.putValue(reifiedRest, restAttribute, getRest());
-    }
-    @Ignore
     public Tuple($Serialization$ ignored, 
             TypeDescriptor $reifiedElement,
             TypeDescriptor $reifiedFirst, 
@@ -748,19 +730,70 @@ public final class Tuple<Element, First extends Element,
         this.$reifiedElement = $reifiedElement;
         // hack: put the type descriptors into the array, so they're available
         // in $deserialize$() for getting the values from the dted
-        this.array = new java.lang.Object[]{$reifiedFirst, $reifiedRest};
+        this.array = new java.lang.Object[3];
+        this.array[0] = $reifiedFirst;
+        this.array[1] = $reifiedRest;
         this.rest = null;
     }
     @Ignore
     @Override
-    public java.util.Collection<java.lang.Object> $references$() {
+    public java.util.Collection<ReachableReference> $references$() {
         // could put the elements with int indexes and the rest as a String!
-        return null;
+        ArrayList<ReachableReference> s = new ArrayList<ReachableReference>(2);
+        ClassDeclaration cd = (ClassDeclaration)Metamodel.getOrCreateMetamodel(Tuple.class);
+        s.add(new MemberImpl(cd.<ValueDeclaration>getMemberDeclaration(ValueDeclaration.$TypeDescriptor$, "first")));
+        s.add(new MemberImpl(cd.<ValueDeclaration>getMemberDeclaration(ValueDeclaration.$TypeDescriptor$, "rest")));
+        return s;
     }
     @Ignore
     @Override
-    public void $set$(java.lang.Object indexOrAttr, java.lang.Object ref) {
+    public void $set$(ReachableReference indexOrAttr, java.lang.Object ref) {
+        // hack: recover the reified type arguments stored in the array
+        throw new AssertionError("not implemented yet");
+        /*if (indexOrAttr instanceof java.lang.String) {
+            switch ((java.lang.String)indexOrAttr){
+            case "ceylon.language::Tuple.first":
+                TypeDescriptor reifiedFirst = (TypeDescriptor)this.array[0];
+                ValueDeclaration firstAttribute = (ValueDeclaration)
+                        ((ClassDeclaration) getOrCreateMetamodel(Tuple.class))
+                        .getMemberDeclaration(ValueDeclaration.$TypeDescriptor$, "first");
+                return;
+            case "ceylon.language::Tuple.rest":
+                TypeDescriptor reifiedRest = (TypeDescriptor)this.array[1];
+                ValueDeclaration restAttribute = (ValueDeclaration)
+                        ((ClassDeclaration) getOrCreateMetamodel(Tuple.class))
+                        .getMemberDeclaration(ValueDeclaration.$TypeDescriptor$, "rest");
+                Sequential<? extends Element> rest1 = (Sequential)ref;
+                Rest rest2 = (Rest)makeRest(rest1);
+                //java.lang.Object[] array = makeArray(first, rest1);
+                //Util.setter(MethodHandles.lookup(), "array").invokeExact(this, array);
+                //Util.setter(MethodHandles.lookup(), "rest").invokeExact(this, rest2);
+                return;
+            default:
+                throw new AssertionError("unknown attribute " + indexOrAttr);
+            }
+        } else {
+            throw new AssertionError("unknown reference " + indexOrAttr);
+        }*/
     }
+    
+    @Ignore
+    @Override
+    public java.lang.Object $get$(ReachableReference indexOrAttr) {
+        if (indexOrAttr instanceof Member) {
+            switch (((Member)indexOrAttr).getAttribute().getQualifiedName()){
+            case "ceylon.language::Tuple.first":
+                return getFirst();
+            case "ceylon.language::Tuple.rest":
+                return getRest();
+            default:
+                throw new AssertionError("unknown attribute " + indexOrAttr);
+            }
+        } else {
+            throw new AssertionError("unknown reference " + indexOrAttr);
+        }
+    }
+    
     
     
     //MIXINS:

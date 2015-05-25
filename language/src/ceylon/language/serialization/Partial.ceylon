@@ -17,12 +17,12 @@ abstract class Partial(id) {
     "The (partially initialized) instance, if it has been instantiated yet, or null."
     shared variable Anything instance_ = null;
     
-    "The state, mapping attributes (for objects) or indexes (for arrays) to the 
+    "The state, mapping references to the 
      id of the corresponding value in the [[DeserializationContext]]."
-    shared variable NativeMap<String|Integer, Object>? state = NativeMapImpl<String|Integer, Object>();
+    shared variable NativeMap<ReachableReference, Object>? state = NativeMapImpl<ReachableReference, Object>();
     
     "Add some state."
-    shared void addState(String|Integer attrOrIndex, Object partialOrComplete) {
+    shared void addState(ReachableReference attrOrIndex, Object partialOrComplete) {
         assert(exists s=state);
         s.put(attrOrIndex, partialOrComplete);
     }
