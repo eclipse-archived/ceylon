@@ -13,6 +13,62 @@ serializable class Container<Element>(shared Element element) {
         shared Container<Element> container => outer;
     }
 }
+@test
+shared void testSerializationOfObject() {
+    value sc = serialization();
+    value container = Container("hello, world");
+    variable value refs = sc.references(container);
+    assert(is Identifiable x = refs.instance,
+        container === x);
+    assert(1 == refs.size);
+    assert(exists reference= refs.first,
+        is Object o = reference.item,
+        container.element == o);
+    
+    value member = container.Member();
+    refs = sc.references(member);
+    assert(is Identifiable z = refs.instance, 
+        member === z);
+    assert(1 == refs.size);
+    assert(exists outerReference = refs.first,
+        //is Container<String> a=
+        is Identifiable c=outerReference.item,
+        container === c);
+}
+
+@test
+shared void serializationWithUninitializedLate() {
+    value sc = serialization();
+    value cycle = Cycle();
+    value refs = sc.references(cycle).references;
+    assert(exists r = refs.first);
+    assert(exists x=r.referred(cycle),
+        x == uninitializedLateValue);
+}
+
+@test
+shared void testSerializationOfArray() {
+    value sc = serialization();
+    value array  = Array{"hello"};
+    variable value refs = sc.references(array);
+    assert(is Identifiable x = refs.instance,
+        array  === x);
+    assert(2 == refs.size);
+    assert(exists reference= refs.first,
+        is Member sizeMember = reference.key,
+        sizeMember.attribute == `value Array.size`,
+        is Object o = reference.item,
+        1 == o);
+    assert(exists elementReference = refs.sequence()[1],
+        is Element element = elementReference.key,
+        element.index == 0,
+        is Object o2 = elementReference.item,
+        "hello" == o2);
+}
+
+// TODO serialization of object with uninitialized late attributes
+// TODO Tuple serialization, deserialization
+
 
 @test
 "deserialize a Container that references a string. 
@@ -175,7 +231,7 @@ shared void testDeserializationOfArrayCycle() {
 }
 
 @test
-shared void noInfo() {
+shared void deserializationWithNoInfo() {
     value dc = deserialization<Integer>();
     try {
         dc.reconstruct<Anything>(1);
@@ -186,7 +242,7 @@ shared void noInfo() {
 }
 
 @test
-shared void noClass() {
+shared void deserializationWithNoClass() {
     value dc = deserialization<Integer>();
     dc.attribute(1, `value Cycle.ref`, 1);
     try {
@@ -198,26 +254,36 @@ shared void noClass() {
 }
 
 @test
-shared void insufficientStateObject() {
+shared void deserializationWithUninitializedLateAttribute() {
     value dc = deserialization<Integer>();
     dc.instance(1, `Cycle`);
+    Cycle c = dc.reconstruct<Cycle>(1);
+    // It should be partially initialized, so I should be able to set its ref
+    c.ref = c;
+}
+
+@test
+shared void deserializationWithInsufficientStateObject() {
+    value dc = deserialization<Integer>();
+    dc.instance(1, `Container<String>`);
     try {
         dc.reconstruct<Anything>(1);
         assert(false);
     } catch(DeserializationException e) {
-        assert(e.message == "lacking sufficient state for instance with id 1: [serialization::Cycle.ref]");
+        assert(e.message == "lacking sufficient state for instance with id 1: value serialization::Container.element");
     }
 }
 
 @test
-shared void insufficientStateArray() {
+shared void deserializationWithInsufficientStateArray() {
     variable value dc = deserialization<Integer>();
     dc.instance(1, `Array<String>`);
     try {
         dc.reconstruct<Anything>(1);
         assert(false);
     } catch(DeserializationException e) {
-        assert(e.message == "lacking sufficient state for instance with id 1: ceylon.language::Array.size");
+        print(e.message);
+        assert(e.message == "lacking sufficient state for instance with id 1: value ceylon.language::Array.size");
     }
     
     dc = deserialization<Integer>();
@@ -233,28 +299,26 @@ shared void insufficientStateArray() {
 }
 
 @test
-shared void badAttributeType() {
+shared void deserializationWithBadAttributeType() {
     value dc = deserialization<Integer>();
     dc.instance(2, `Container<String>`);
     dc.attribute(2, `value Container.element`, 1);
     dc.instanceValue(1, 'c');
     try {
         value x =dc.reconstruct<Container<String>>(2);
-        print(x.element);
-        // XXX pb here is jvm see container has having a field of type
-        // <upper bound of Element=Object>, so doesn't complain when we set the field value.
+        // pb here was jvm wascontainer has having a field of type
+        // <upper bound of Element=Object>, so didn't complain when we set the field value.
         // it would if the field was not a tp, but there' basically no check that
         // the value being set on a field is of the correct ceylon type as the 
         // ceylon Value 
         assert(false);
     } catch(DeserializationException e) {
-        print(e.message);
-        assert(e.message == "instance not assignable to attribute serialization::Container.element of id 2: Character is not assignable to String");
+        assert(e.message == "instance not assignable to value serialization::Container.element of id 2: Character is not assignable to String");
     }
 }
 
 @test
-shared void badElementType() {
+shared void deserializationWithBadElementType() {
     variable value dc = deserialization<Integer>();
     dc.instanceValue(1, 'c');
     dc.instance(2, `Array<String>`);
@@ -274,24 +338,22 @@ serializable class CollisionSuper(collides) {
     shared actual String string => collides;
 }
 serializable class CollisionSub(String sup, collides) extends CollisionSuper(sup) {
-    shared String collides; 
+    shared Integer collides; 
 }
 
 @test
-shared void attributeNamingCollision() {
+shared void deserializationWithAttributeNamingCollision() {
     variable value dc = deserialization<Integer>();
     dc.instance(1, `CollisionSub`);
     dc.attribute(1, `class CollisionSuper`.getDeclaredMemberDeclaration<ValueDeclaration>("collides") else nothing, 2);
     dc.instanceValue(2, "super");
     dc.attribute(1, `value CollisionSub.collides`, 3);
-    dc.instanceValue(3, "sub");
+    dc.instanceValue(3, 42);
     
     variable CollisionSub reconstructed = dc.reconstruct<CollisionSub>(1);
     assert(reconstructed.string == "super");
-    assert(reconstructed.collides == "sub");
+    assert(reconstructed.collides == 42);
 }
-
-
 
 shared void run() {
     testDeserializationOfObject();
