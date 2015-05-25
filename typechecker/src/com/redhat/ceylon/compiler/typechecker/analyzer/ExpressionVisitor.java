@@ -7522,11 +7522,7 @@ public class ExpressionVisitor extends Visitor {
             }
         }
         else {
-            if (member.isNative()) {
-                member = (TypedDeclaration)
-                        nativeDeclaration(member);
-            }
-            if (member == null) {
+            if (missingNativeImplementation(member)) {
                 that.addError("function or value does not have a proper native backend implementation: '" +
                         name + "'" /* , 100 */);
                 unit.getUnresolvedReferences()
@@ -7773,11 +7769,7 @@ public class ExpressionVisitor extends Visitor {
                 }
             }
             else {
-                if (member.isNative()) {
-                    member = (TypedDeclaration)
-                            nativeDeclaration(member);
-                }
-                if (member == null) {
+                if (missingNativeImplementation(member)) {
                     that.addError("method or attribute does not have a native implementation for this backend: '" +
                             name + "' in " + container);
                     unit.getUnresolvedReferences()
@@ -8131,11 +8123,7 @@ public class ExpressionVisitor extends Visitor {
             }
         }
         else {
-            if (type.isNative()) {
-                type = (TypeDeclaration)
-                        nativeDeclaration(type);
-            }
-            if (type == null) {
+            if (missingNativeImplementation(type)) {
                 that.addError("type does not have a native implementation for this backend: '" +
                         name + "'");
                 unit.getUnresolvedReferences()
@@ -8479,11 +8467,7 @@ public class ExpressionVisitor extends Visitor {
                 }
             }
             else {
-                if (type.isNative()) {
-                    type = (TypeDeclaration)
-                            nativeDeclaration(type);
-                }
-                if (type == null) {
+                if (missingNativeImplementation(type)) {
                     that.addError("member type does not have a native implementation for this backend: '" +
                             name + "' in " + container);
                     unit.getUnresolvedReferences()
@@ -10502,15 +10486,19 @@ public class ExpressionVisitor extends Visitor {
         return dec;
     }
     
-    private Declaration nativeDeclaration(Declaration decl) {
-        Declaration d = 
-                getNativeDeclaration(decl, 
-                        inBackend != null ? 
-                                inBackend.backendSupport : 
-                                backendSupport);
-        if (d == null) {
-            d = getNativeDeclaration(decl, Backend.None);
+    private boolean missingNativeImplementation(Declaration decl) {
+        if (decl.isNative()) {
+            Declaration d = 
+                    getNativeDeclaration(decl, 
+                            inBackend != null ? 
+                                    inBackend.backendSupport : 
+                                    backendSupport);
+            if (d == null) {
+                d = getNativeDeclaration(decl, Backend.None);
+            }
+            return d == null;
+        } else {
+            return false;
         }
-        return d;
     }
 }
