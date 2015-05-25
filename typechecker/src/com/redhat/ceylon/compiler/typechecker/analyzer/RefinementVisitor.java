@@ -16,6 +16,7 @@ import static com.redhat.ceylon.compiler.typechecker.tree.Util.name;
 import static com.redhat.ceylon.model.typechecker.model.Util.getInheritedDeclarations;
 import static com.redhat.ceylon.model.typechecker.model.Util.getInterveningRefinements;
 import static com.redhat.ceylon.model.typechecker.model.Util.getNativeDeclaration;
+import static com.redhat.ceylon.model.typechecker.model.Util.getOverloads;
 import static com.redhat.ceylon.model.typechecker.model.Util.getRealScope;
 import static com.redhat.ceylon.model.typechecker.model.Util.getSignature;
 import static com.redhat.ceylon.model.typechecker.model.Util.hasNativeImplementation;
@@ -43,7 +44,6 @@ import com.redhat.ceylon.model.typechecker.model.Functional;
 import com.redhat.ceylon.model.typechecker.model.Generic;
 import com.redhat.ceylon.model.typechecker.model.LazyProducedType;
 import com.redhat.ceylon.model.typechecker.model.Method;
-import com.redhat.ceylon.model.typechecker.model.Overloadable;
 import com.redhat.ceylon.model.typechecker.model.Package;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.ParameterList;
@@ -165,45 +165,40 @@ public class RefinementVisitor extends Visitor {
         Declaration abstraction = 
                 getNativeDeclaration(dec, Backend.None);
         if (abstraction == null) {
-            // Abstraction-less native implementation, check it's not shared
+            // Abstraction-less native implementation, check 
+            // it's not shared
             if (dec.isShared()) {
                 that.addError("native implementation must have a header: " + 
                         dec.getName());
             }
-            // If there's no abstraction we just compare to the first implementation in the list
-            Overloadable overloadable = (Overloadable) dec;
-            Declaration firstImpl = 
-                    overloadable.getOverloads()
-                        .get(0);
-            if (dec != firstImpl) {
-                checkSameDeclaration(that, dec, firstImpl);
-            }
+            // If there's no abstraction we just compare to 
+            // the first implementation in the list
+            abstraction = getOverloads(dec).get(0);
         }
-        else {
-            if (dec != abstraction) {
-                checkSameDeclaration(that, dec, abstraction);
-            }
+        if (dec!=abstraction && abstraction!=null) {
+            checkSameDeclaration(that, dec, abstraction);
         }
     }
     
     private void checkSameDeclaration(Tree.Declaration that, 
             Declaration dec, Declaration abstraction) {
-        if (dec.getClass() == abstraction.getClass()) {
-            if (dec instanceof Method) {
-                checkSameMethod(that, 
-                        (Method) dec, 
-                        (Method) abstraction);
-            }
-            else if (dec instanceof Value) {
-                checkSameValue(that, 
-                        (Value) dec, 
-                        (Value) abstraction);
-            }
-            else if (dec instanceof Class) {
-                checkSameClass(that, 
-                        (Class) dec, 
-                        (Class) abstraction);
-            }
+        if (dec instanceof Method && 
+                abstraction instanceof Method) {
+            checkSameMethod(that, 
+                    (Method) dec, 
+                    (Method) abstraction);
+        }
+        else if (dec instanceof Value &&
+                abstraction instanceof Value) {
+            checkSameValue(that, 
+                    (Value) dec, 
+                    (Value) abstraction);
+        }
+        else if (dec instanceof Class &&
+                abstraction instanceof Class) {
+            checkSameClass(that, 
+                    (Class) dec, 
+                    (Class) abstraction);
         }
         else {
             that.addError("native declarations not of same type: " + 

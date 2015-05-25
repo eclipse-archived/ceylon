@@ -13,10 +13,13 @@ import static com.redhat.ceylon.compiler.typechecker.tree.Util.hasAnnotation;
 import static com.redhat.ceylon.compiler.typechecker.tree.Util.name;
 import static com.redhat.ceylon.model.typechecker.model.Util.getContainingClassOrInterface;
 import static com.redhat.ceylon.model.typechecker.model.Util.getDirectMemberForBackend;
+import static com.redhat.ceylon.model.typechecker.model.Util.getOverloads;
 import static com.redhat.ceylon.model.typechecker.model.Util.getTypeArgumentMap;
+import static com.redhat.ceylon.model.typechecker.model.Util.initOverloads;
 import static com.redhat.ceylon.model.typechecker.model.Util.intersectionOfSupertypes;
 import static com.redhat.ceylon.model.typechecker.model.Util.isInNativeContainer;
 import static com.redhat.ceylon.model.typechecker.model.Util.isNativeHeader;
+import static com.redhat.ceylon.model.typechecker.model.Util.setOverloads;
 import static java.lang.Integer.parseInt;
 import static java.util.Collections.emptyList;
 import static java.util.Collections.emptyMap;
@@ -51,7 +54,6 @@ import com.redhat.ceylon.model.typechecker.model.Method;
 import com.redhat.ceylon.model.typechecker.model.ModelUtil;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.NamedArgumentList;
-import com.redhat.ceylon.model.typechecker.model.Overloadable;
 import com.redhat.ceylon.model.typechecker.model.Package;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.ParameterList;
@@ -231,7 +233,7 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
                 Declaration member = 
                         scope.getDirectMember(name, null, false);
                 if (member == null) {
-                    initOverloads(model, model);
+                    initOverloads(model);
                 }
                 else {
                     if (member.isNative()) {
@@ -299,42 +301,6 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
         return modelToAdd;
     }
     
-    private static List<Declaration> initOverloads(
-            Declaration decl, Declaration initial) {
-        ArrayList<Declaration> al = 
-                new ArrayList<Declaration>(3);
-        al.add(initial);
-        setOverloads(decl, al);
-        return al;
-    }
-
-    private static void setOverloads(
-            Declaration dec, 
-            List<Declaration> overloads) {
-        if (dec instanceof Method) {
-            Method m = (Method) dec;
-            m.setOverloads(overloads);
-        }
-        else if (dec instanceof Value) {
-            Value v = (Value) dec;
-            v.setOverloads(overloads);
-        }
-        else if (dec instanceof Class) {
-            Class c = (Class) dec;
-            c.setOverloads(overloads);
-        }
-    }
-
-    private static List<Declaration> getOverloads(
-            Declaration dec) {
-        if (dec instanceof Overloadable) {
-            Overloadable overloadable = 
-                    (Overloadable) dec;
-            return overloadable.getOverloads();
-        }
-        return null;
-    }
-
     private boolean hasOverload(String backend, 
             Declaration declaration, 
             List<Declaration> overloads) {
