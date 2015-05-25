@@ -33,7 +33,10 @@ public abstract class TypeDeclaration extends Declaration
     private boolean dynamic;
 	private boolean sealed;
 
-	/** true if the type arguments of this type are not available at runtime */
+	/** 
+	 * true if the type arguments of this type are not 
+	 * available at runtime 
+	 */
 	public boolean isErasedTypeArguments() {
 	    return false;
 	}
