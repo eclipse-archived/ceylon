@@ -7522,19 +7522,11 @@ public class ExpressionVisitor extends Visitor {
             }
         }
         else {
-            if (missingNativeImplementation(member)) {
-                that.addError("function or value does not have a proper native backend implementation: '" +
-                        name + "'" /* , 100 */);
-                unit.getUnresolvedReferences()
-                    .add(id);
-            }
-            else {
-                member = (TypedDeclaration) 
-                        handleAbstraction(member, that);
-                that.setDeclaration(member);
-                if (error) {
-                    checkBaseVisibility(that, member, name);
-                }
+            member = (TypedDeclaration) 
+                    handleAbstractionOrHeader(member, that);
+            that.setDeclaration(member);
+            if (error) {
+                checkBaseVisibility(that, member, name);
             }
         }
         return member;
@@ -7769,29 +7761,21 @@ public class ExpressionVisitor extends Visitor {
                 }
             }
             else {
-                if (missingNativeImplementation(member)) {
-                    that.addError("method or attribute does not have a native implementation for this backend: '" +
-                            name + "' in " + container);
-                    unit.getUnresolvedReferences()
-                        .add(id);
+                member = (TypedDeclaration) 
+                        handleAbstractionOrHeader(member, that);
+                that.setDeclaration(member);
+                resetSuperReference(that);
+                boolean selfReference = 
+                        isSelfReference(p);
+                if (!selfReference && 
+                        !member.isShared()) {
+                    member.setOtherInstanceAccess(true);
                 }
-                else {
-                    member = (TypedDeclaration) 
-                            handleAbstraction(member, that);
-                    that.setDeclaration(member);
-                    resetSuperReference(that);
-                    boolean selfReference = 
-                            isSelfReference(p);
-                    if (!selfReference && 
-                            !member.isShared()) {
-                        member.setOtherInstanceAccess(true);
-                    }
-                    if (error) {
-                        checkQualifiedVisibility(that, 
-                                member, name, container, 
-                                selfReference);
-                        checkSuperMember(that);
-                    }
+                if (error) {
+                    checkQualifiedVisibility(that, 
+                            member, name, container, 
+                            selfReference);
+                    checkSuperMember(that);
                 }
             }
             return member;
@@ -8123,21 +8107,14 @@ public class ExpressionVisitor extends Visitor {
             }
         }
         else {
-            if (missingNativeImplementation(type)) {
-                that.addError("type does not have a native implementation for this backend: '" +
-                        name + "'");
-                unit.getUnresolvedReferences()
-                    .add(id);
-            } else {
-                type = (TypeDeclaration) 
-                        handleAbstraction(type, that);
-                that.setDeclaration(type);
-                if (error) {
-                    if (checkConcreteClass(type, that)) {
-                        if (checkSealedReference(type, that)) {
-                            checkBaseTypeAndConstructorVisibility(that, 
-                                    name, type);
-                        }
+            type = (TypeDeclaration) 
+                    handleAbstractionOrHeader(type, that);
+            that.setDeclaration(type);
+            if (error) {
+                if (checkConcreteClass(type, that)) {
+                    if (checkSealedReference(type, that)) {
+                        checkBaseTypeAndConstructorVisibility(that, 
+                                name, type);
                     }
                 }
             }
@@ -8467,31 +8444,23 @@ public class ExpressionVisitor extends Visitor {
                 }
             }
             else {
-                if (missingNativeImplementation(type)) {
-                    that.addError("member type does not have a native implementation for this backend: '" +
-                            name + "' in " + container);
-                    unit.getUnresolvedReferences()
-                        .add(id);
+                type = (TypeDeclaration) 
+                        handleAbstractionOrHeader(type, that);
+                that.setDeclaration(type);
+                resetSuperReference(that);
+                if (!isSelfReference(p) && 
+                        !type.isShared()) {
+                    type.setOtherInstanceAccess(true);
                 }
-                else {
-                    type = (TypeDeclaration) 
-                            handleAbstraction(type, that);
-                    that.setDeclaration(type);
-                    resetSuperReference(that);
-                    if (!isSelfReference(p) && 
-                            !type.isShared()) {
-                        type.setOtherInstanceAccess(true);
+                if (error) {
+                    if (checkConcreteClass(type, that)) {
+                        if (checkSealedReference(type, that)) {
+                            checkQualifiedTypeAndConstructorVisibility(that, 
+                                    type, name, container);
+                        }
                     }
-                    if (error) {
-                        if (checkConcreteClass(type, that)) {
-                            if (checkSealedReference(type, that)) {
-                                checkQualifiedTypeAndConstructorVisibility(that, 
-                                        type, name, container);
-                            }
-                        }
-                        if (!inExtendsClause) {
-                            checkSuperMember(that);
-                        }
+                    if (!inExtendsClause) {
+                        checkSuperMember(that);
                     }
                 }
             }
@@ -10467,38 +10436,46 @@ public class ExpressionVisitor extends Visitor {
         }
     }*/
     
-    private Declaration handleAbstraction(Declaration dec, 
+    private Declaration handleAbstractionOrHeader(Declaration dec, 
             Tree.MemberOrTypeExpression that) {
-        //NOTE: if this is the qualifying type of a static method
-        //      reference, don't do anything special here, since
-        //      we're not actually calling the constructor
-        if (!that.getStaticMethodReferencePrimary() &&
-                isAbstraction(dec)) {
-            //handle the case where it's not _really_ overloaded,
-            //it's just a constructor with a different visibility
-            //to the class itself
-        	List<Declaration> overloads = 
-        	        ((Functional) dec).getOverloads();
-        	if (overloads.size()==1) {
-        		return overloads.get(0);
-        	}
+        if (dec.isNative()) {
+            BackendSupport backend = 
+                    inBackend == null ?
+                            backendSupport : 
+                            inBackend.backendSupport;
+            Declaration impl =
+                    getNativeDeclaration(dec, backend);
+            if (impl==null) {
+                impl = getNativeDeclaration(dec, Backend.None);
+            }
+            if (impl==null) {
+                that.addError("no native implementation for backend: native '" 
+                        + dec.getName(unit) + 
+                        "' is not implemented for one or more backends");
+            }
+            return inBackend == null || impl==null ? 
+                    dec : impl;
         }
-        return dec;
+        else {
+            //NOTE: if this is the qualifying type of a static 
+            //      method reference, don't do anything special 
+            //      here, since we're not actually calling the 
+            //      constructor
+            if (!that.getStaticMethodReferencePrimary() &&
+                    isAbstraction(dec)) {
+                //handle the case where it's not _really_ 
+                //overloaded, it's just a constructor with a 
+                //different visibility to the class itself
+                //(this is a hack the Java model loader uses
+                //because we didn't used to have constructors)
+            	List<Declaration> overloads = 
+            	        ((Functional) dec).getOverloads();
+            	if (overloads.size()==1) {
+            		return overloads.get(0);
+            	}
+            }
+            return dec;
+        }
     }
     
-    private boolean missingNativeImplementation(Declaration decl) {
-        if (decl.isNative()) {
-            Declaration d = 
-                    getNativeDeclaration(decl, 
-                            inBackend != null ? 
-                                    inBackend.backendSupport : 
-                                    backendSupport);
-            if (d == null) {
-                d = getNativeDeclaration(decl, Backend.None);
-            }
-            return d == null;
-        } else {
-            return false;
-        }
-    }
 }
