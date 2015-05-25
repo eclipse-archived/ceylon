@@ -355,6 +355,23 @@ shared void deserializationWithAttributeNamingCollision() {
     assert(reconstructed.collides == 42);
 }
 
+serializable class SerializableSuper() {}
+class NonserializableSub() extends SerializableSuper(){}
+@test
+shared void serNonSerializable() {
+    value sc = serialization();
+    sc.references(NonserializableSub());
+    "we expect it to throw"
+    assert(false);
+}
+@test
+shared void deserNonSerializable() {
+    value dc = deserialization();
+    dc.instance(`NonserializableSub`);
+    "we expect it to throw"
+    assert(false);
+}
+
 shared void run() {
     testDeserializationOfObject();
     testDeserializationOfObject2();
