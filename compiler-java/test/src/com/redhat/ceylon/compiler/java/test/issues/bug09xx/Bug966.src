@@ -557,6 +557,11 @@ public abstract class Bug966<Element extends .ceylon.language.Enumerable<Element
     }
     
     @.java.lang.Override
+    public .ceylon.language.Entry<? extends .ceylon.language.Boolean, ? extends Element> lookup(final .ceylon.language.Integer key) {
+        return $ceylon$language$Correspondence$this$.lookup(key);
+    }
+    
+    @.java.lang.Override
     public boolean definesEvery(final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> keys) {
         return $ceylon$language$Correspondence$this$.definesEvery(keys);
     }

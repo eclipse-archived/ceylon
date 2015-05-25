@@ -526,6 +526,11 @@ public abstract class SequenceOperators implements .com.redhat.ceylon.compiler.j
     }
     
     @.java.lang.Override
+    public .ceylon.language.Entry<? extends .ceylon.language.Boolean, ? extends .ceylon.language.String> lookup(final .ceylon.language.Integer key) {
+        return $ceylon$language$Correspondence$this$.lookup(key);
+    }
+    
+    @.java.lang.Override
     public boolean definesEvery(final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> keys) {
         return $ceylon$language$Correspondence$this$.definesEvery(keys);
     }
@@ -1525,6 +1530,11 @@ public abstract class SequenceOperators2 implements .com.redhat.ceylon.compiler.
     @.java.lang.Override
     public .ceylon.language.Correspondence$impl<? super .ceylon.language.Integer, ? extends .ceylon.language.String> $ceylon$language$Correspondence$impl() {
         return $ceylon$language$Correspondence$this$;
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.Entry<? extends .ceylon.language.Boolean, ? extends .ceylon.language.String> lookup(final .ceylon.language.Integer key) {
+        return $ceylon$language$Correspondence$this$.lookup(key);
     }
     
     @.java.lang.Override
