@@ -471,14 +471,18 @@
                 <include name="ceylon/language/flatten_.java"/>
                 <exclude name="ceylon/language/unflatten.ceylon"/>
                 <include name="ceylon/language/unflatten_.java"/>
+                
+                <exclude name="ceylon/language/meta/annotations.ceylon"/>
+                <include name="ceylon/language/meta/annotations_.java"/>
+                <exclude name="ceylon/language/meta/classDeclaration.ceylon"/>
+                <include name="ceylon/language/meta/classDeclaration_.java"/>
+                <exclude name="ceylon/language/meta/modules.ceylon"/>
+                <include name="ceylon/language/meta/modules_.java"/>
                 <exclude name="ceylon/language/meta/type.ceylon"/>
                 <include name="ceylon/language/meta/type_.java"/>
                 <exclude name="ceylon/language/meta/typeLiteral.ceylon"/>
                 <include name="ceylon/language/meta/typeLiteral_.java"/>
-                <exclude name="ceylon/language/meta/annotations.ceylon"/>
-                <include name="ceylon/language/meta/annotations_.java"/>
-                <exclude name="ceylon/language/meta/modules.ceylon"/>
-                <include name="ceylon/language/meta/modules_.java"/>
+                
                 <exclude name="ceylon/language/serialization/serialization.ceylon"/>
                 <include name="ceylon/language/serialization/serialization_.java"/>
                 <include name="ceylon/language/serialization/PartialImpl.java"/>
