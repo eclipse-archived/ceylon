@@ -12,10 +12,11 @@ import static com.redhat.ceylon.compiler.typechecker.tree.Util.getNativeBackend;
 import static com.redhat.ceylon.compiler.typechecker.tree.Util.hasAnnotation;
 import static com.redhat.ceylon.compiler.typechecker.tree.Util.name;
 import static com.redhat.ceylon.model.typechecker.model.Util.getContainingClassOrInterface;
+import static com.redhat.ceylon.model.typechecker.model.Util.getDirectMemberForBackend;
 import static com.redhat.ceylon.model.typechecker.model.Util.getTypeArgumentMap;
 import static com.redhat.ceylon.model.typechecker.model.Util.intersectionOfSupertypes;
 import static com.redhat.ceylon.model.typechecker.model.Util.isInNativeContainer;
-import static com.redhat.ceylon.model.typechecker.model.Util.isNativeNoImpl;
+import static com.redhat.ceylon.model.typechecker.model.Util.isNativeHeader;
 import static java.lang.Integer.parseInt;
 import static java.util.Collections.emptyList;
 import static java.util.Collections.emptyMap;
@@ -82,7 +83,8 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
     
     public interface Delegates {
         TypecheckerUnit createUnit();
-        boolean shouldIgnoreOverload(Declaration overload, Declaration currentDeclaration);
+        boolean shouldIgnoreOverload(Declaration overload, 
+                Declaration currentDeclaration);
     }
     
     private final Package pkg;
@@ -222,7 +224,8 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
                 if (!backend.isEmpty() && 
                         !Backend.validAnnotation(backend)) {
                     a.addError("illegal native backend name: '\"" + 
-                            backend + "\"' (must be either '\"jvm\"' or '\"js\"')");
+                            backend + 
+                            "\"' (must be either '\"jvm\"' or '\"js\"')");
                 }
                 model.setNative(backend);
                 Declaration member = 
@@ -234,7 +237,7 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
                     if (member.isNative()) {
                         List<Declaration> overloads = 
                                 getOverloads(member);
-                        if (hasOverload(overloads, backend, model)) {
+                        if (hasOverload(backend, model, overloads)) {
                             if (backend.isEmpty()) {
                                 that.addError("duplicate native header: '" + 
                                         name + "'");
@@ -244,7 +247,7 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
                                         name + "'");
                             }
                         }
-                        if (!hasModelInOverloads(overloads, model)) {
+                        if (!hasModelInOverloads(model, overloads)) {
                             overloads.add(model);
                         }
                         setOverloads(model, overloads);
@@ -276,8 +279,9 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
             }
             else {
                 if (isInNativeContainer(model)) {
-                    Declaration container = (Declaration) 
-                            model.getContainer();
+                    Declaration container = 
+                            (Declaration) 
+                                model.getContainer();
                     String cbackend = container.getNative();
                     if (!cbackend.equals(backend)) {
                         that.addError("native backend must be the same as its container: '" + 
@@ -295,8 +299,8 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
         return modelToAdd;
     }
     
-    private static List<Declaration> initOverloads
-            (Declaration decl, Declaration initial) {
+    private static List<Declaration> initOverloads(
+            Declaration decl, Declaration initial) {
         ArrayList<Declaration> al = 
                 new ArrayList<Declaration>(3);
         al.add(initial);
@@ -304,8 +308,9 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
         return al;
     }
 
-    private static void setOverloads
-            (Declaration dec, List<Declaration> overloads) {
+    private static void setOverloads(
+            Declaration dec, 
+            List<Declaration> overloads) {
         if (dec instanceof Method) {
             Method m = (Method) dec;
             m.setOverloads(overloads);
@@ -320,35 +325,24 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
         }
     }
 
-    private static List<Declaration> getOverloads
-            (Declaration dec) {
+    private static List<Declaration> getOverloads(
+            Declaration dec) {
         if (dec instanceof Overloadable) {
-            Overloadable overloadable = (Overloadable) dec;
+            Overloadable overloadable = 
+                    (Overloadable) dec;
             return overloadable.getOverloads();
         }
         return null;
     }
 
-    private boolean hasOverload
-            (List<Declaration> overloads, String backend, Declaration currentDeclaration) {
-        if (overloads!=null) {
-            for (Declaration d: overloads) {
-                if (backend.equals(d.getNative()) 
-                        && !delegates.shouldIgnoreOverload(d, currentDeclaration)) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-    private boolean hasModelInOverloads
-            (List<Declaration> overloads, Declaration currentDeclaration) {
+    private boolean hasOverload(String backend, 
+            Declaration declaration, 
+            List<Declaration> overloads) {
         if (overloads!=null) {
             for (Declaration overload: overloads) {
-                if (overload == currentDeclaration ||
-                        overload.equals(currentDeclaration)
-                        && delegates.shouldIgnoreOverload(overload, currentDeclaration)) {
+                if (backend.equals(overload.getNative()) && 
+                        !delegates.shouldIgnoreOverload(
+                                overload, declaration)) {
                     return true;
                 }
             }
@@ -356,10 +350,26 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
         return false;
     }
 
-
+    private boolean hasModelInOverloads(
+            Declaration declaration, 
+            List<Declaration> overloads) {
+        if (overloads!=null) {
+            for (Declaration overload: overloads) {
+                if (overload == declaration ||
+                        overload.equals(declaration) && 
+                        delegates.shouldIgnoreOverload(
+                                overload, declaration)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
     
-    private static void checkForDuplicateDeclaration
-            (Tree.Declaration that, Declaration model, Scope scope) {
+    private static void checkForDuplicateDeclaration(
+            Tree.Declaration that, 
+            Declaration model, 
+            Scope scope) {
         String name = model.getName();
         Unit unit = model.getUnit();
         if (name!=null) {
@@ -368,10 +378,10 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
                 //a setter must have a matching getter
                 Tree.AnnotationList al = 
                         that.getAnnotationList();
-                String backend = getNativeBackend(al, unit);
                 Declaration member = 
-                        getDirectMember(model.getContainer(),
-                                name, backend);
+                        getDirectMemberForBackend(
+                                model.getContainer(), name, 
+                                getNativeBackend(al, unit));
                 if (member==null) {
                     that.addError("setter with no matching getter: '" + 
                             name + "'");
@@ -381,7 +391,7 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
                             name + "'");
                 }
                 else if (!((Value) member).isTransient() && 
-                        !isNativeNoImpl(member)) {
+                        !isNativeHeader(member)) {
                     that.addError("matching value is a reference or is forward-declared: '" + 
                             name + "'");
                 }
@@ -427,14 +437,17 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
                                 method.setOverloaded(true);
                                 abstraction = new Method();
                                 abstraction.setAbstraction(true);
-                                abstraction.setType(new UnknownType(unit).getType());
+                                abstraction.setType(
+                                        new UnknownType(unit)
+                                            .getType());
                                 abstraction.setName(name);
                                 abstraction.setShared(true);
                                 abstraction.setActual(true);
                                 abstraction.setContainer(scope);
                                 abstraction.setScope(scope);
                                 abstraction.setUnit(unit);
-                                abstraction.setOverloads(new ArrayList<Declaration>());
+                                abstraction.setOverloads(
+                                        new ArrayList<Declaration>());
                                 abstraction.getOverloads().add(member);
                                 scope.addMember(abstraction);
                             }
@@ -480,29 +493,6 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
         }
     }
 
-    // Find the named member and return it. In case a backend has been specified
-    // and the found member is native return the proper backend declaration
-    private static Declaration getDirectMember
-            (Scope scope, String name, String backend) {
-        Declaration member = 
-                scope.getDirectMember(name, null, false);
-        if (member!=null && member.isNative() && 
-                backend != null) {
-            Declaration m = null;
-            Overloadable overloadable = 
-                    (Overloadable) member;
-            for (Declaration o: 
-                    overloadable.getOverloads()) {
-                if (backend.equals(o.getNative())) {
-                    m = o;
-                    break;
-                }
-            }
-            member = m;
-        }
-        return member;
-    }
-    
     private void visitElement(Node that, Element model) {
         model.setUnit(unit);
         model.setScope(scope);
@@ -584,7 +574,8 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
         if (firstNonImportNode!=null) {
             for (Tree.Import im: 
                     that.getImportList().getImports()) {
-                if (im.getStopIndex() > firstNonImportNode.getStartIndex()) {
+                if (im.getStopIndex() > 
+                        firstNonImportNode.getStartIndex()) {
                     im.addError("import statement must occur before any declaration or descriptor");
                 }
             }
@@ -693,7 +684,8 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
             Tree.AnnotationList al = 
                     that.getAnnotationList();
             if (hasAnnotation(al, "sealed", unit)) {
-                that.addError("class without parameter list may not be annotated sealed", 1800);
+                that.addError("class without parameter list may not be annotated sealed", 
+                        1800);
             }
         }
         if (c.isSealed() && c.isFormal() && 
@@ -701,7 +693,8 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
             ClassOrInterface container = 
                     (ClassOrInterface) c.getContainer();
             if (!container.isSealed()) {
-                that.addError("sealed formal member class does not belong to a sealed type", 1801);
+                that.addError("sealed formal member class does not belong to a sealed type", 
+                        1801);
             }
         }
     }
@@ -768,7 +761,8 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
         if (that.getParameterList()==null) {
             that.addError("missing parameter list in constructor declaration: '" + 
                     name(that.getIdentifier()) + 
-                    "' must have a parameter list", 1000);
+                    "' must have a parameter list", 
+                    1000);
         }
         else {
             ParameterList model = 
@@ -779,10 +773,12 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
         if (that.getIdentifier()==null) {
             //default constructor
             if (!c.isShared()) {
-                that.addError("default constructor must be annotated shared", 401);
+                that.addError("default constructor must be annotated shared", 
+                        401);
             }
             if (c.isAbstract()) {
-                that.addError("default constructor may not be annotated abstract", 1601);
+                that.addError("default constructor may not be annotated abstract", 
+                        1601);
             }
 //        if (scope instanceof Class) {
 //            Class clazz = (Class) scope;
@@ -793,7 +789,8 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
 //        }
         }
         if (c.isAbstract() && c.isShared()) {
-            that.addError("abstract constructor may not be annotated shared", 1610);
+            that.addError("abstract constructor may not be annotated shared", 
+                    1610);
         }
     }
 
@@ -888,7 +885,8 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
             }
         }
         if (paramLists.isEmpty()) {
-            that.addError("missing parameter list in function declaration", 1000);
+            that.addError("missing parameter list in function declaration", 
+                    1000);
         }
         else {
             paramLists.get(0).getModel().setFirst(true);
@@ -1006,7 +1004,8 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
         if (v.isInterfaceMember() && 
                 !v.isFormal() && !v.isNative()) {
             if (sie==null) {
-                that.addError("interface attribute must be annotated formal", 1400);
+                that.addError("interface attribute must be annotated formal", 
+                        1400);
             }
         }
         if (v.isLate()) {
@@ -1019,7 +1018,8 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
             }
         }
         if (v.isFormal() && sie!=null) {
-            that.addError("formal attributes may not have a value", 1307);
+            that.addError("formal attributes may not have a value", 
+                    1307);
         }
         Tree.Type type = that.getType();
         if (type instanceof Tree.ValueModifier) {
@@ -1028,11 +1028,13 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
                     type.addError("toplevel values must explicitly specify a type");
                 }
                 else {
-                    type.addError("toplevel value must explicitly specify a type", 200);
+                    type.addError("toplevel value must explicitly specify a type", 
+                            200);
                 }
             }
             else if (v.isShared()) {
-                type.addError("shared value must explicitly specify a type", 200);
+                type.addError("shared value must explicitly specify a type", 
+                        200);
             }
         }
     }
@@ -1044,7 +1046,8 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
                 that.getSpecifierExpression();
         Method m = that.getDeclarationModel();
         if (m.isFormal() && sie!=null) {
-            that.addError("formal methods may not have a specification", 1307);
+            that.addError("formal methods may not have a specification", 
+                    1307);
         }
         Tree.Type type = that.getType();
         if (type instanceof Tree.FunctionModifier) {
@@ -1053,11 +1056,13 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
                     type.addError("toplevel function must explicitly specify a return type");
                 }
                 else {
-                    type.addError("toplevel function must explicitly specify a return type", 200);
+                    type.addError("toplevel function must explicitly specify a return type", 
+                            200);
                 }
             }
             else if (m.isShared()) {
-                type.addError("shared function must explicitly specify a return type", 200);
+                type.addError("shared function must explicitly specify a return type", 
+                        200);
             }
         }
     }
@@ -1069,10 +1074,12 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
         Tree.Type type = that.getType();
         if (type instanceof Tree.FunctionModifier) {
             if (m.isToplevel()) {
-                type.addError("toplevel function must explicitly specify a return type", 200);
+                type.addError("toplevel function must explicitly specify a return type", 
+                        200);
             }
             else if (m.isShared() && !dynamic) {
-                type.addError("shared function must explicitly specify a return type", 200);
+                type.addError("shared function must explicitly specify a return type", 
+                        200);
             }
         }
     }
@@ -1089,10 +1096,12 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
         Tree.Type type = that.getType();
         if (type instanceof Tree.ValueModifier) {
             if (g.isToplevel()) {
-                type.addError("toplevel getter must explicitly specify a type", 200);
+                type.addError("toplevel getter must explicitly specify a type", 
+                        200);
             }
             else if (g.isShared() && !dynamic) {
-                type.addError("shared getter must explicitly specify a type", 200);
+                type.addError("shared getter must explicitly specify a type", 
+                        200);
             }
         }
     }
@@ -1133,7 +1142,7 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
         
         if (that.getSpecifierExpression()==null &&
                 that.getBlock()==null &&
-                !isNativeNoImpl(s)) {
+                !isNativeHeader(s)) {
             that.addError("setter declaration must have a body or => specifier");
         }
     }
@@ -1245,7 +1254,8 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
             }
         }
         if (v.isFormal()) {
-            that.addError("parameters may not be annotated formal", 1312);
+            that.addError("parameters may not be annotated formal", 
+                    1312);
         }
 //        if (v.isVariable()) {
 //            that.addError("parameter may not be annotated variable");
@@ -1272,7 +1282,8 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
             type.addError("functional parameter type may not be variadic");
         }
         if (m.isFormal()) {
-            that.addError("parameters may not be annotated formal", 1312);
+            that.addError("parameters may not be annotated formal", 
+                    1312);
         }
     }
 
@@ -1340,11 +1351,12 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
         if (be!=null) {
             be.addError("incorrect syntax: " + op + 
                     " conditions do not apply to arbitrary expressions, try using postfix '" + 
-                    op + "' operator", 3100);
+                    op + "' operator", 
+                    3100);
         }
         else if (that.getVariable()==null) {
-            that.addError("missing variable or immutable value reference: " + op + 
-                    " condition requires an operand");
+            that.addError("missing variable or immutable value reference: " + 
+                    op + " condition requires an operand");
         }
     }
     
@@ -1509,7 +1521,8 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
             ClassOrInterface container = 
                     (ClassOrInterface) model.getContainer();
             if (container.isFinal() && model.isDefault()) {
-                that.addError("member of final class may not be annotated default", 1350);
+                that.addError("member of final class may not be annotated default", 
+                        1350);
             }
         }
         if (model.isToplevel()) {
@@ -1528,7 +1541,8 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
         Tree.AnnotationList al = that.getAnnotationList();
         if (hasAnnotation(al, "shared", unit)) {
             if (that instanceof Tree.AttributeSetterDefinition) {
-                that.addError("setter may not be annotated shared", 1201);
+                that.addError("setter may not be annotated shared", 
+                        1201);
             }
             /*else if (that instanceof Tree.TypedDeclaration && !(that instanceof Tree.ObjectDefinition)) {
                 Tree.Type t =  ((Tree.TypedDeclaration) that).getType();
@@ -1545,7 +1559,8 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
         }
         if (hasAnnotation(al, "default", unit)) {
             if (that instanceof Tree.ObjectDefinition) {
-                that.addError("object declaration may not be annotated default", 1313);
+                that.addError("object declaration may not be annotated default", 
+                        1313);
             }
             /*else if (that instanceof Tree.Parameter) {
                 that.addError("parameters may not be annotated default", 1313);
@@ -1556,7 +1571,8 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
         }
         if (hasAnnotation(al, "formal", unit)) {
             if (that instanceof Tree.ObjectDefinition) {
-                that.addError("object declaration may not be annotated formal", 1312);
+                that.addError("object declaration may not be annotated formal", 
+                        1312);
             }
             else {
                 model.setFormal(true);
@@ -1568,7 +1584,8 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
             model.setNative(getAnnotationArgument(na, ""));
         }
         if (model.isFormal() && model.isDefault()) {
-            that.addError("declaration may not be annotated both formal and default", 1320);
+            that.addError("declaration may not be annotated both formal and default", 
+                    1320);
         }
         if (hasAnnotation(al, "actual", unit)) {
             model.setActual(true);
@@ -1581,7 +1598,8 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
                 ((Constructor) model).setAbstract(true);
             }
             else {
-                that.addError("declaration is not a class, and may not be annotated abstract", 1600);
+                that.addError("declaration is not a class, and may not be annotated abstract", 
+                        1600);
             }
         }
         if (hasAnnotation(al, "final", unit)) {
@@ -1589,7 +1607,8 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
                 ((Class) model).setFinal(true);
             }
             else {
-                that.addError("declaration is not a class, and may not be annotated final", 1700);
+                that.addError("declaration is not a class, and may not be annotated final", 
+                        1700);
             }
         }
         if (hasAnnotation(al, "sealed", unit)) {
@@ -1600,7 +1619,8 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
                 ((Constructor) model).setSealed(true);
             }
             else {
-                that.addError("declaration is not a class or interface, and may not be annotated sealed", 1800);
+                that.addError("declaration is not a class or interface, and may not be annotated sealed", 
+                        1800);
             }
         }
         if (hasAnnotation(al, "variable", unit)) {
@@ -1608,7 +1628,8 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
                 ((Value) model).setVariable(true);
             }
             else {
-                that.addError("declaration is not a value, and may not be annotated variable", 1500);
+                that.addError("declaration is not a value, and may not be annotated variable", 
+                        1500);
             }
         }
         if (hasAnnotation(al, "late", unit)) {
@@ -1620,22 +1641,26 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
                         ((Value) model).setLate(true);
                     }
                     else {
-                        that.addError("value is not an uninitialized reference, and may not be annotated late", 1900);
+                        that.addError("value is not an uninitialized reference, and may not be annotated late", 
+                                1900);
                     }
                 }
                 else {
-                    that.addError("value is not an uninitialized reference, and may not be annotated late", 1900);
+                    that.addError("value is not an uninitialized reference, and may not be annotated late", 
+                            1900);
                 }
             }
             else {
-                that.addError("declaration is not a value, and may not be annotated late", 1900);
+                that.addError("declaration is not a value, and may not be annotated late", 
+                        1900);
             }
         }
         if (model instanceof Value) {
             Value value = (Value) model;
             if (value.isVariable() && value.isTransient()) {
                 that.addError("getter may not be annotated variable: '" + 
-                        model.getName() + "'", 1501);
+                        model.getName() + "'", 
+                        1501);
             }
         }
         if (hasAnnotation(al, "deprecated", unit)) {
@@ -1644,10 +1669,12 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
         if (hasAnnotation(al, "annotation", unit)) {
             if (!(model instanceof Method) && 
                 !(model instanceof Class)) {
-                that.addError("declaration is not a function or class, and may not be annotated annotation", 1950);
+                that.addError("declaration is not a function or class, and may not be annotated annotation", 
+                        1950);
             }
             else if (!model.isToplevel()) {
-                that.addError("declaration is not toplevel, and may not be annotated annotation", 1951);
+                that.addError("declaration is not toplevel, and may not be annotated annotation", 
+                        1951);
             }
             else {
                 model.setAnnotation(true);
@@ -1658,7 +1685,8 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
                 ((Class) model).setSerializable(true);
             }
             else {
-                that.addError("declaration is not a class, and may not be annotated serializable", 1600);
+                that.addError("declaration is not a class, and may not be annotated serializable", 
+                        1600);
             }
         }
         buildAnnotations(al, model.getAnnotations());        
@@ -1681,12 +1709,14 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
 //                }
             } 
             else {
-                that.addError("formal member does not belong to an interface or abstract class", 1100);
+                that.addError("formal member does not belong to an interface or abstract class", 
+                        1100);
             }
             if (!(that instanceof Tree.AttributeDeclaration) && 
                 !(that instanceof Tree.MethodDeclaration) &&
                 !(that instanceof Tree.AnyClass)) {
-                that.addError("formal member may not have a body", 1101);
+                that.addError("formal member may not have a body", 
+                        1101);
             }
         }
         
@@ -2519,7 +2549,8 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
 
     private static void checkSpecifierSymbol(Node that) {
         if (that.getMainToken().getType()==SPECIFY) {
-            that.addError("incorrect syntax: expression must be specified using =>", 1050);
+            that.addError("incorrect syntax: expression must be specified using =>", 
+                    1050);
         }
     }
     

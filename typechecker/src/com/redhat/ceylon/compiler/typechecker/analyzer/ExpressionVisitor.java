@@ -25,7 +25,6 @@ import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.isInstantiati
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.notAssignableMessage;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.spreadType;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.unwrapExpressionUntilTerm;
-import static com.redhat.ceylon.compiler.typechecker.tree.Util.getNativeBackend;
 import static com.redhat.ceylon.compiler.typechecker.tree.Util.hasUncheckedNulls;
 import static com.redhat.ceylon.compiler.typechecker.tree.Util.name;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.argumentSatisfiesEnumeratedConstraint;
@@ -1991,33 +1990,14 @@ public class ExpressionVisitor extends Visitor {
         }
     }
     
-    @Override public void visit(Tree.AnyMethod that) {
+    @Override public void visit(Tree.Declaration that) {
         Backend ib = inBackend;
-        inBackend = Backend.fromAnnotation(
-                getNativeBackend(that.getAnnotationList(), 
-                        unit));
+        String nat = that.getDeclarationModel().getNative();
+        inBackend = Backend.fromAnnotation(nat);
         super.visit(that);
         inBackend = ib;
     }
     
-    @Override public void visit(Tree.AnyAttribute that) {
-        Backend ib = inBackend;
-        inBackend = Backend.fromAnnotation(
-                getNativeBackend(that.getAnnotationList(), 
-                        unit));
-        super.visit(that);
-        inBackend = ib;
-    }
-    
-    @Override public void visit(Tree.ClassOrInterface that) {
-        Backend ib = inBackend;
-        inBackend = Backend.fromAnnotation(
-                getNativeBackend(that.getAnnotationList(), 
-                        unit));
-        super.visit(that);
-        inBackend = ib;
-    }
-
     private static VoidModifier fakeVoid(Node that) {
         return new Tree.VoidModifier(that.getToken());
     }

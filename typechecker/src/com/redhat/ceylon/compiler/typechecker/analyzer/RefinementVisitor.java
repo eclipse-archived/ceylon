@@ -153,9 +153,7 @@ public class RefinementVisitor extends Visitor {
                 }
             }
             
-            boolean isNativeWithImplementation = 
-                    hasNativeImplementation(dec);
-            if (isNativeWithImplementation) {
+            if (hasNativeImplementation(dec)) {
                 checkNative(that, dec);
             }
         }

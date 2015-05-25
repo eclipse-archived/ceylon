@@ -8,7 +8,7 @@ import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.isEffectively
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.isNeverSatisfied;
 import static com.redhat.ceylon.model.typechecker.model.Util.getContainingDeclarationOfScope;
 import static com.redhat.ceylon.model.typechecker.model.Util.isInNativeContainer;
-import static com.redhat.ceylon.model.typechecker.model.Util.isNativeNoImpl;
+import static com.redhat.ceylon.model.typechecker.model.Util.isNativeHeader;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -274,7 +274,7 @@ public class SpecificationVisitor extends Visitor {
                     }
                 }
                 else if (!metamodel &&
-                        !isNativeNoImpl(declaration) &&
+                        !isNativeHeader(declaration) &&
                         (!isLate() || !isForwardReferenceable())) {
                     if (isVariable()) {
                         that.addError("not definitely initialized: '" + 
@@ -841,20 +841,20 @@ public class SpecificationVisitor extends Visitor {
             else {
                 super.visit(that);
             	if (declaration.isToplevel() && 
-            	        !isNativeNoImpl(declaration)) {
+            	        !isNativeHeader(declaration)) {
 	                that.addError("toplevel function must be specified: '" +
 	                        declaration.getName() + 
 	                        "' may not be forward declared");
 	            }
                 else if (declaration.isClassMember() && 
-                        !isNativeNoImpl(declaration) &&
+                        !isNativeHeader(declaration) &&
                         isInNativeContainer(declaration)) {
                     that.addError("member in native container must be native: '" +
                                 declaration.getName() + "'", 
                                 1450);
                 }
 	            else if (declaration.isClassMember() && 
-	                    !isNativeNoImpl(declaration) &&
+	                    !isNativeHeader(declaration) &&
 	                    !declaration.isFormal() && 
 	                    that.getDeclarationModel()
 	                        .getInitializerParameter()==null &&
@@ -864,7 +864,7 @@ public class SpecificationVisitor extends Visitor {
 	                            1450);
 	            }
 	            else if (declaration.isInterfaceMember() && 
-	                    !isNativeNoImpl(declaration) &&
+	                    !isNativeHeader(declaration) &&
 	            		!declaration.isFormal()) {
 	                that.addError("interface method must be formal or specified: '" +
 	                        declaration.getName() + "'", 
@@ -945,7 +945,7 @@ public class SpecificationVisitor extends Visitor {
             else {
             	super.visit(that);
             	if (declaration.isToplevel() && 
-	                    !isNativeNoImpl(declaration) &&
+	                    !isNativeHeader(declaration) &&
 	                    !isLate()) {
 	                if (isVariable()) {
 	                    that.addError("toplevel variable value must be initialized: '" +
@@ -957,7 +957,7 @@ public class SpecificationVisitor extends Visitor {
 	                }
 	            }
 	            else if (declaration.isClassOrInterfaceMember() && 
-	                    !isNativeNoImpl(declaration) &&
+	                    !isNativeHeader(declaration) &&
 	                    !declaration.isFormal() &&
 	                    that.getDeclarationModel()
 	                        .getInitializerParameter()==null &&
@@ -1107,7 +1107,7 @@ public class SpecificationVisitor extends Visitor {
         return (declaration.isShared() || 
         		declaration.getOtherInstanceAccess()) && 
                 !declaration.isFormal() && 
-                !isNativeNoImpl(declaration) &&
+                !isNativeHeader(declaration) &&
                 !isLate() &&
                 !specified.definitely;
     }
