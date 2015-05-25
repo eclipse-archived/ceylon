@@ -2280,19 +2280,19 @@ public class Util {
         return false;
     }
     
-    public static Declaration getNativeDeclaration
-            (Declaration decl, Backend backend) {
+    public static Declaration getNativeDeclaration(
+            Declaration decl, Backend backend) {
         return getNativeDeclaration(decl, 
                 backend == null ? null :
                     backend.backendSupport);
     }
     
-    public static Declaration getNativeDeclaration
-            (Declaration dec, BackendSupport backendSupport) {
+    public static Declaration getNativeDeclaration(
+            Declaration dec, BackendSupport backendSupport) {
         if (dec.isNative() && 
                 dec instanceof Overloadable &&
                 backendSupport != null) {
-            Overloadable f = (Overloadable) dec;
+            Overloadable overloadabe = (Overloadable) dec;
             Declaration abstraction = null;
             if (backendSupport.supportsBackend(
                     Backend.fromAnnotation(
@@ -2300,7 +2300,8 @@ public class Util {
                 abstraction = dec;
             }
             else {
-                List<Declaration> overloads = f.getOverloads();
+                List<Declaration> overloads = 
+                        overloadabe.getOverloads();
                 if (overloads != null) {
                     for (Declaration d: overloads) {
                         if (backendSupport.supportsBackend(
@@ -2345,8 +2346,8 @@ public class Util {
      * 
      * @return the matching declaration
      */
-    public static Declaration getDirectMemberForBackend
-            (Scope scope, String name, String backend) {
+    public static Declaration getDirectMemberForBackend(
+            Scope scope, String name, String backend) {
         for (Declaration d: scope.getMembers()) {
             if (isResolvable(d) && isNamed(name, d)) {
                 String nat = d.getNative();
@@ -2363,6 +2364,42 @@ public class Util {
             }
         }
         return null;
+    }
+
+    public static List<Declaration> getOverloads(
+            Declaration dec) {
+        if (dec instanceof Overloadable) {
+            Overloadable overloadable = 
+                    (Overloadable) dec;
+            return overloadable.getOverloads();
+        }
+        return null;
+    }
+
+    public static void setOverloads(
+            Declaration dec, 
+            List<Declaration> overloads) {
+        if (dec instanceof Method) {
+            Method m = (Method) dec;
+            m.setOverloads(overloads);
+        }
+        else if (dec instanceof Value) {
+            Value v = (Value) dec;
+            v.setOverloads(overloads);
+        }
+        else if (dec instanceof Class) {
+            Class c = (Class) dec;
+            c.setOverloads(overloads);
+        }
+    }
+
+    public static List<Declaration> initOverloads(
+            Declaration dec) {
+        ArrayList<Declaration> overloads = 
+                new ArrayList<Declaration>(3);
+        overloads.add(dec);
+        setOverloads(dec, overloads);
+        return overloads;
     }
 
 }
