@@ -87,6 +87,14 @@ class Four547() extends Three547() {
         => object satisfies Cont547<D> {};
 }
 
+shared class Test562(){
+    shared class Bar() {
+        shared class Baz() extends Bar(){
+          check(true, "#562");
+        }
+    }
+}
+
 void testIssues() {
     check(C150((Integer i) => "i=``i``").f()=="i=100", "issue 150");
     check(Issue231_1("Hola").string == "Hola", "Issue 231 [1]");
@@ -142,4 +150,5 @@ void testIssues() {
     check(cb547 is Cont547<String>, "#547 gen 2");
     check(cc547 is Cont547<String>, "#547 gen 3");
     check(cd547 is Cont547<String>, "#547 gen 4");
+    Test562().Bar().Baz();
 }
