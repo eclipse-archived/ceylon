@@ -2665,8 +2665,8 @@ interface NumberLiteral
                 <listitem>
                     <para>If the generic declaration is a method, and <literal>T</literal> 
                     occurs covariantly in its return type, and does not occur contravariantly
-                    or invariantly in its return type, then <literal>T</literal> is 
-                    treated as covariant.</para>
+                    or invariantly in its return type, then <literal>T</literal> is treated 
+                    as covariant.</para>
                 </listitem>
                 <listitem>
                     <para>If the generic declaration is a method, and <literal>T</literal> 
@@ -2674,17 +2674,12 @@ interface NumberLiteral
                     or invariantly in its return type, then <literal>T</literal> is 
                     treated as contravariant.</para>
                 </listitem>
-                <!--listitem>
-                    <para>Otherwise, if <literal>T</literal> occurs covariantly in any of 
-                    the parameter types of the generic declaration, and does not occur 
-                    contravariantly or invariantly in any parameter type, then 
-                    <literal>T</literal> is estimated to be covariant.</para>
-                </listitem-->
                 <listitem>
                     <para>Otherwise, if <literal>T</literal> occurs contravariantly in any 
-                    of the parameter types of the generic declaration, and does not occur 
-                    covariantly or invariantly in any parameter type, then <literal>T</literal> 
-                    treated as be contravariant.</para>
+                    of the type of a parameter to which an argument is assigned by the 
+                    argument list of the direct invocation, and does not occur covariantly 
+                    or invariantly in the type of any parameter to which an argument is 
+                    assigned, then <literal>T</literal> is treated as contravariant.</para>
                 </listitem>
                 <listitem>
                     <para>Finally, if none of the above cases apply, <literal>T</literal>
