@@ -16,7 +16,6 @@ import static com.redhat.ceylon.compiler.typechecker.tree.Util.name;
 import static com.redhat.ceylon.model.typechecker.model.Util.getInheritedDeclarations;
 import static com.redhat.ceylon.model.typechecker.model.Util.getInterveningRefinements;
 import static com.redhat.ceylon.model.typechecker.model.Util.getNativeDeclaration;
-import static com.redhat.ceylon.model.typechecker.model.Util.getOverloads;
 import static com.redhat.ceylon.model.typechecker.model.Util.getRealScope;
 import static com.redhat.ceylon.model.typechecker.model.Util.getSignature;
 import static com.redhat.ceylon.model.typechecker.model.Util.hasNativeImplementation;
@@ -173,7 +172,7 @@ public class RefinementVisitor extends Visitor {
             }
             // If there's no abstraction we just compare to 
             // the first implementation in the list
-            abstraction = getOverloads(dec).get(0);
+            abstraction = dec.getOverloads().get(0);
         }
         if (dec!=abstraction && abstraction!=null) {
             checkSameDeclaration(that, dec, abstraction);

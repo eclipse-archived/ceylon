@@ -5060,7 +5060,8 @@ public class ExpressionVisitor extends Visitor {
         Tree.MemberOrTypeExpression mte = 
                 (Tree.MemberOrTypeExpression) primary;
         ProducedReference prf = mte.getTarget();
-        Functional dec = (Functional) mte.getDeclaration();
+        Declaration dec = mte.getDeclaration();
+        Functional fun = (Functional) dec;
         if (dec!=null) {
             if (!(primary instanceof Tree.ExtendedTypeExpression)) {
                 if (dec instanceof Class) {
@@ -5094,7 +5095,7 @@ public class ExpressionVisitor extends Visitor {
             }
             if (nal!=null) {
                 List<ParameterList> parameterLists = 
-                        dec.getParameterLists();
+                        fun.getParameterLists();
                 if (!parameterLists.isEmpty()
                         && !parameterLists.get(0)
                             .isNamedParametersSupported()) {
@@ -5108,7 +5109,7 @@ public class ExpressionVisitor extends Visitor {
             else {
                 //typecheck arguments using the parameter list
                 //of the target declaration
-                checkInvocationArguments(that, prf, dec);
+                checkInvocationArguments(that, prf, fun);
             }
         }
     }
@@ -10449,7 +10450,7 @@ public class ExpressionVisitor extends Visitor {
                 //(this is a hack the Java model loader uses
                 //because we didn't used to have constructors)
             	List<Declaration> overloads = 
-            	        ((Functional) dec).getOverloads();
+            	        dec.getOverloads();
             	if (overloads.size()==1) {
             		return overloads.get(0);
             	}

@@ -14,7 +14,6 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.ImportMemberOrType;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ImportMemberOrTypeList;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
-import com.redhat.ceylon.model.typechecker.model.Functional;
 import com.redhat.ceylon.model.typechecker.model.ProducedType;
 import com.redhat.ceylon.model.typechecker.model.TypeParameter;
 
@@ -46,7 +45,7 @@ public class UsageVisitor extends Visitor {
         if (d!=null) {
         	referenced = rc.isReferenced(d);
         	if (isAbstraction(d)) {
-        		for (Declaration od: ((Functional) d).getOverloads()) {
+        		for (Declaration od: d.getOverloads()) {
         			referenced=referenced||rc.isReferenced(od);
         		}
         	}

@@ -13,13 +13,10 @@ import static com.redhat.ceylon.compiler.typechecker.tree.Util.hasAnnotation;
 import static com.redhat.ceylon.compiler.typechecker.tree.Util.name;
 import static com.redhat.ceylon.model.typechecker.model.Util.getContainingClassOrInterface;
 import static com.redhat.ceylon.model.typechecker.model.Util.getDirectMemberForBackend;
-import static com.redhat.ceylon.model.typechecker.model.Util.getOverloads;
 import static com.redhat.ceylon.model.typechecker.model.Util.getTypeArgumentMap;
-import static com.redhat.ceylon.model.typechecker.model.Util.initOverloads;
 import static com.redhat.ceylon.model.typechecker.model.Util.intersectionOfSupertypes;
 import static com.redhat.ceylon.model.typechecker.model.Util.isInNativeContainer;
 import static com.redhat.ceylon.model.typechecker.model.Util.isNativeHeader;
-import static com.redhat.ceylon.model.typechecker.model.Util.setOverloads;
 import static java.lang.Integer.parseInt;
 import static java.util.Collections.emptyList;
 import static java.util.Collections.emptyMap;
@@ -51,6 +48,7 @@ import com.redhat.ceylon.model.typechecker.model.InterfaceAlias;
 import com.redhat.ceylon.model.typechecker.model.IntersectionType;
 import com.redhat.ceylon.model.typechecker.model.LazyProducedType;
 import com.redhat.ceylon.model.typechecker.model.Method;
+import com.redhat.ceylon.model.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.model.typechecker.model.ModelUtil;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.NamedArgumentList;
@@ -233,12 +231,22 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
                 Declaration member = 
                         scope.getDirectMember(name, null, false);
                 if (member == null) {
-                    initOverloads(model);
+                    if (model instanceof MethodOrValue) {
+                        MethodOrValue m = 
+                                (MethodOrValue) model;
+                        m.initOverloads();
+                        m.getOverloads().add(m);
+                    }
+                    else if (model instanceof Class) {
+                        Class c = (Class) model;
+                        c.initOverloads();
+                        c.getOverloads().add(c);
+                    }
                 }
                 else {
                     if (member.isNative()) {
                         List<Declaration> overloads = 
-                                getOverloads(member);
+                                member.getOverloads();
                         if (hasOverload(backend, model, overloads)) {
                             if (backend.isEmpty()) {
                                 that.addError("duplicate native header: '" + 
@@ -252,7 +260,15 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
                         if (!hasModelInOverloads(model, overloads)) {
                             overloads.add(model);
                         }
-                        setOverloads(model, overloads);
+                        if (model instanceof MethodOrValue) {
+                            MethodOrValue m = 
+                                    (MethodOrValue) model;
+                            m.setOverloads(overloads);
+                        }
+                        else if (model instanceof Class) {
+                            Class c = (Class) model;
+                            c.setOverloads(overloads);
+                        }
                     }
                     else {
                         if (backend.isEmpty()) {
@@ -399,6 +415,7 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
                             scope instanceof ClassOrInterface) {
                             Method abstraction;
                             Method method = (Method) member;
+                            ((Method) model).setOverloaded(true);
                             if (!method.isAbstraction()) {
                                 method.setOverloaded(true);
                                 abstraction = new Method();
@@ -412,16 +429,15 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
                                 abstraction.setContainer(scope);
                                 abstraction.setScope(scope);
                                 abstraction.setUnit(unit);
-                                abstraction.setOverloads(
-                                        new ArrayList<Declaration>());
+                                abstraction.initOverloads();
                                 abstraction.getOverloads().add(member);
+                                abstraction.getOverloads().add(model);
                                 scope.addMember(abstraction);
                             }
                             else {
                                 abstraction = (Method) member;
+                                abstraction.getOverloads().add(model);
                             }
-                            ((Method) model).setOverloaded(true);
-                            abstraction.getOverloads().add(model);
                             dup = true;
                         }
                         else if (memberCanBeNative && modelCanBeNative &&
