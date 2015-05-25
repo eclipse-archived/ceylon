@@ -279,4 +279,9 @@ public class IssuesTests_2000_2499 extends CompilerTests {
                 new CompilerError(Kind.WARNING, null, 1, "imported declaration is deprecated: 'StringBufferInputStream'"),
                 new CompilerError(Kind.WARNING, null, 3, "type is deprecated: 'StringBufferInputStream'"));
     }
+    
+    @Test
+    public void testBug2164() {
+        compareWithJavaSource("bug21xx/Bug2164");
+    }
 }
