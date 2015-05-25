@@ -568,4 +568,8 @@ shared void strings() {
     value charr=Array.OfSize(3,'x');
     "abc".copyTo(charr);
     check(charr==Array{'a','b','c'}, "String.copyTo");
+    check("abc".lookup(2).key, "String.lookup 1");
+    check("abc".lookup(2).item exists, "String.lookup 2");
+    check(!"abc".lookup(10).key, "String.lookup 3");
+    check(!"abc".lookup(10).item exists, "String.lookup 4");
 }

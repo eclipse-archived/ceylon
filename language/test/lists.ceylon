@@ -85,6 +85,12 @@ shared void lists() {
     //#197
     value nulled197 = TestList(1,2,3,null,5,6,7);
     check(nulled197.count((Integer? i) => i exists) == 6, "list with nulls (see #197)");
+    check(nulled197.lookup(1).key, "List.lookup 1");
+    check(nulled197.lookup(1).item exists, "List.lookup 2");
+    check(nulled197.lookup(3).key, "List.lookup 3");
+    check(!nulled197.lookup(3).item exists, "List.lookup 4");
+    check(!nulled197.lookup(99).key, "List.lookup 5");
+    check(!nulled197.lookup(99).item exists, "List.lookup 6");
 
     check(b.longerThan(7), "List.longerThan");
     check(!b.longerThan(8), "List.longerThan");
