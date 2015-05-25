@@ -148,8 +148,11 @@ public class ProducedType extends ProducedReference {
         try {
             TypeDeclaration dec = getDeclaration();
             TypeDeclaration otherDec = type.getDeclaration();
-            if (dec instanceof NothingType) {
+            if (isNothing()) {
                 return type.isNothing();
+            }
+            else if (type.isNothing()) {
+                return isNothing();
             }
             else if (dec instanceof UnionType) {
                 List<ProducedType> cases = getCaseTypes();
