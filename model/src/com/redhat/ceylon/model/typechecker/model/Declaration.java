@@ -578,6 +578,12 @@ public abstract class Declaration
      * which also includes type arguments from qualifying 
      * types. In this case we assume they're uninteresting.
      * 
+     * We do need to compensate for this in 
+     * {@link ProducedType.Substitution#substitutedType(TypeDeclaration, ProducedType, boolean, boolean)}
+     * By expanding out the type arguments of the qualifying
+     * type. An alternative solution would be to just expand
+     * out all the type args of the qualifying type here. 
+     * 
      * @return a map from each type parameter of this 
      *         declaration to its own type
      */
