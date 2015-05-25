@@ -2566,7 +2566,7 @@ public class GenerateJsVisitor extends Visitor
                     }
                     scope = scope.getContainer();
                 }
-                if (id != null && path.length() == 0 && id.isToplevel() && !Util.contains(id, that.getScope())) {
+                if (id != null && path.length() == 0 && !Util.contains(id, that.getScope())) {
                     //Import of toplevel object or constructor
                     if (imported) {
                         path.append(names.moduleAlias(id.getUnit().getPackage().getModule())).append('.');
