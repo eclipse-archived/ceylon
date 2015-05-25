@@ -2657,29 +2657,32 @@ interface NumberLiteral
             </itemizedlist>
             
             <para>An invariant type parameter <literal>T</literal> of the generic 
-            declaration is treated, for the purposes of type argument inference, as if 
-            it were covariant or contravariant, depending upon how it occurs in the 
-            signature of the generic declaration.</para>
+            declaration is treated, for the purposes of type argument inference, as if it 
+            were covariant or contravariant, depending upon how it occurs in the types of 
+            parameters explicitly assigned arguments by the direct invocation, and, in the
+            case of direct invocation of a generic function, upon how it occurs in the 
+            return type of the function.</para>
             
             <itemizedlist>
                 <listitem>
-                    <para>If the generic declaration is a method, and <literal>T</literal> 
+                    <para>If the generic declaration is a function, and <literal>T</literal> 
                     occurs covariantly in its return type, and does not occur contravariantly
                     or invariantly in its return type, then <literal>T</literal> is treated 
                     as covariant.</para>
                 </listitem>
                 <listitem>
-                    <para>If the generic declaration is a method, and <literal>T</literal> 
+                    <para>If the generic declaration is a function, and <literal>T</literal> 
                     occurs contravariantly in its return type, and does not occur covariantly
                     or invariantly in its return type, then <literal>T</literal> is 
                     treated as contravariant.</para>
                 </listitem>
                 <listitem>
                     <para>Otherwise, if <literal>T</literal> occurs contravariantly in the 
-                    type of any parameter to which an argument is assigned by the argument 
-                    list of the direct invocation, and does not occur covariantly or 
-                    invariantly in the type of any parameter to which an argument is 
-                    assigned, then <literal>T</literal> is treated as contravariant.</para>
+                    type of any parameter to which an argument is explicity assigned by the 
+                    argument list of the direct invocation, and does not occur covariantly 
+                    or invariantly in the type of any parameter to which an argument is 
+                    explicitly assigned, then <literal>T</literal> is treated as 
+                    contravariant.</para>
                 </listitem>
                 <listitem>
                     <para>Finally, if none of the above cases apply, <literal>T</literal>
