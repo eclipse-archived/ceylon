@@ -56,6 +56,9 @@ shared sealed interface ClassDeclaration
     "True if the class has an [[abstract|ceylon.language::abstract]] annotation."
     shared formal Boolean abstract;
 
+    "True if the class is serializable class."
+    shared formal Boolean serializable;
+
     "True if the class is an anonymous class, as is the case for the class of object value declarations."
     shared formal Boolean anonymous;
 

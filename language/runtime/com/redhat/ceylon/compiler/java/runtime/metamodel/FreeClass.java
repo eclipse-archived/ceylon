@@ -117,6 +117,11 @@ public class FreeClass
     public boolean getAbstract() {
         return ((com.redhat.ceylon.model.typechecker.model.Class)declaration).isAbstract();
     }
+    
+    @Override
+    public boolean getSerializable() {
+        return ((com.redhat.ceylon.model.typechecker.model.Class)declaration).isSerializable();
+    }
 
     @Override
     public boolean getFinal() {
