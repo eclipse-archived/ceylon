@@ -2724,7 +2724,7 @@ public class ProducedType extends ProducedReference {
                 UnionType ut = 
                         new UnionType(unit);
                 ut.setCaseTypes(types);
-                dec = ut;
+                return ut.getType();
             }
             else if (ptd instanceof IntersectionType) {
                 List<ProducedType> sts = 
@@ -2743,7 +2743,7 @@ public class ProducedType extends ProducedReference {
                 IntersectionType it = 
                         new IntersectionType(unit);
                 it.setSatisfiedTypes(types);
-                dec = it.canonicalize();
+                return it.canonicalize().getType();
             }
             else if (ptd instanceof TypeParameter) {
                 TypeParameter tp = (TypeParameter) ptd;
