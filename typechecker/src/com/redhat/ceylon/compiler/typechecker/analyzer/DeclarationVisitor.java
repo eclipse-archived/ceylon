@@ -234,13 +234,11 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
                     if (model instanceof MethodOrValue) {
                         MethodOrValue m = 
                                 (MethodOrValue) model;
-                        m.initOverloads();
-                        m.getOverloads().add(m);
+                        m.initOverloads(m);
                     }
                     else if (model instanceof Class) {
                         Class c = (Class) model;
-                        c.initOverloads();
-                        c.getOverloads().add(c);
+                        c.initOverloads(c);
                     }
                 }
                 else {
@@ -415,7 +413,8 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
                             scope instanceof ClassOrInterface) {
                             Method abstraction;
                             Method method = (Method) member;
-                            ((Method) model).setOverloaded(true);
+                            Method newMethod = (Method) model;
+                            newMethod.setOverloaded(true);
                             if (!method.isAbstraction()) {
                                 method.setOverloaded(true);
                                 abstraction = new Method();
@@ -429,18 +428,18 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
                                 abstraction.setContainer(scope);
                                 abstraction.setScope(scope);
                                 abstraction.setUnit(unit);
-                                abstraction.initOverloads();
-                                abstraction.getOverloads().add(member);
-                                abstraction.getOverloads().add(model);
+                                abstraction.initOverloads(method, newMethod);
                                 scope.addMember(abstraction);
                             }
                             else {
-                                abstraction = (Method) member;
-                                abstraction.getOverloads().add(model);
+                                abstraction = method;
+                                abstraction.getOverloads()
+                                    .add(model);
                             }
                             dup = true;
                         }
-                        else if (memberCanBeNative && modelCanBeNative &&
+                        else if (memberCanBeNative && 
+                                modelCanBeNative &&
                                 model.isNative()) {
                             // Just to make sure no error gets reported
                         }
