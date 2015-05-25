@@ -74,8 +74,13 @@ public abstract class MethodOrValue extends TypedDeclaration {
         this.overloads = overloads;
     }
 
-    public void initOverloads() {
-        overloads = new ArrayList<Declaration>(3);
+    public void initOverloads(MethodOrValue... initial) {
+        overloads = 
+                new ArrayList<Declaration>
+                    (initial.length+1);
+        for (Declaration d: initial) {
+            overloads.add(d);
+        }
     }
 
 }

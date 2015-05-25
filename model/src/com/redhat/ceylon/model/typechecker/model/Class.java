@@ -181,9 +181,13 @@ public class Class extends ClassOrInterface implements Functional {
         this.overloads = overloads;
     }
 
-    public void initOverloads() {
-        overloads = new ArrayList<Declaration>(3);
-        overloads.add(this);
+    public void initOverloads(Class... initial) {
+        overloads = 
+                new ArrayList<Declaration>
+                    (initial.length+1);
+        for (Declaration d: initial) {
+            overloads.add(d);
+        }
     }
     
     @Override

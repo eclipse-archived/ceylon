@@ -388,8 +388,10 @@ public abstract class Declaration
             if (!Objects.equals(getQualifier(), that.getQualifier())) {
                 return false;
             }
-            Scope thisContainer = getAbstraction(getContainer());
-            Scope thatContainer = getAbstraction(that.getContainer());
+            Scope thisContainer = 
+                    getAbstraction(getContainer());
+            Scope thatContainer = 
+                    getAbstraction(that.getContainer());
             if (thisName!=thatName && 
                     (thisName==null || thatName==null || 
                         !thisName.equals(thatName)) ||
@@ -400,7 +402,8 @@ public abstract class Declaration
             }
             else if (this.isNative() != that.isNative() ||
                     (this.isNative() && 
-                            !this.getNative().equals(that.getNative()))) {
+                            !this.getNative()
+                                .equals(that.getNative()))) {
                 return false;
             }
             else if (this instanceof Functional && 
@@ -434,9 +437,11 @@ public abstract class Declaration
                 }
                 for (int i=0; i<thisParamLists.size(); i++) {
                     List<Parameter> thisParams = 
-                            thisParamLists.get(i).getParameters();
+                            thisParamLists.get(i)
+                                .getParameters();
                     List<Parameter> thatParams = 
-                            thatParamLists.get(i).getParameters();
+                            thatParamLists.get(i)
+                                .getParameters();
                     if (thisParams.size()!=thatParams.size()) {
                         return false;
                     }
