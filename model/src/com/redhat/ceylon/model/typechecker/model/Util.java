@@ -287,8 +287,7 @@ public class Util {
                 unit.getDefiniteType(paramType);
         ProducedType defArgType = 
                 unit.getDefiniteType(argType);
-        ProducedType nt = 
-                unit.getNullDeclaration().getType();
+        ProducedType nt = unit.getNullType();
         if (defArgType.isSubtypeOf(nt)) {
             return true;
         }
@@ -1122,8 +1121,7 @@ public class Util {
             //there exists some enumerated type Baz with
             //    Baz of Foo | Bar 
             //(the intersection of disjoint types is empty)
-            ProducedType nt = 
-                    nothingType(unit);
+            ProducedType nt = unit.getNothingType();
             if (!list.isEmpty() && reduceDisjointTypes) {
                 List<TypeDeclaration> supertypes = 
                         ptd.getSupertypeDeclarations();
@@ -1880,8 +1878,10 @@ public class Util {
         Unit unit = dec.getUnit();
         for (Parameter param: parameters) {
             MethodOrValue model = param.getModel();
-            ProducedType t = model==null ? 
-                    unknownType(unit) : model.getType();
+            ProducedType t = 
+                    model==null ? 
+                        unit.getUnknownType() : 
+                        model.getType();
             signature.add(t);
         }
         return signature;
@@ -1961,7 +1961,7 @@ public class Util {
             ProducedType secondArg = 
                     second.getTypeArguments().get(tp);
             if (firstArg==null || secondArg==null) {
-                arg = unknownType(unit);
+                arg = unit.getUnknownType();
             }
             else {
                 boolean firstCo = first.isCovariant(tp);
@@ -1991,10 +1991,10 @@ public class Util {
                     }
                     else if (parameterized) {
                        //irreconcilable instantiations
-                       arg = unknownType(unit);
+                       arg = unit.getUnknownType();
                     }
                     else {
-                        return nothingType(unit);
+                        return unit.getNothingType();
                     }
                 }
                 else if (firstCo && secondInv) {
@@ -2003,10 +2003,10 @@ public class Util {
                     }
                     else if (parameterized) {
                        //irreconcilable instantiations
-                       arg = unknownType(unit);
+                       arg = unit.getUnknownType();
                     }
                     else {
-                        return nothingType(unit);
+                        return unit.getNothingType();
                     }
                 }
                 else if (secondCo && firstInv) {
@@ -2015,10 +2015,10 @@ public class Util {
                    }
                    else if (parameterized) {
                       //irreconcilable instantiations
-                      arg = unknownType(unit);
+                      arg = unit.getUnknownType();
                    }
                    else {
-                       return nothingType(unit);
+                       return unit.getNothingType();
                    }
                 }
                 else if (secondContra && firstInv) {
@@ -2027,10 +2027,10 @@ public class Util {
                     }
                     else if (parameterized) {
                         //irreconcilable instantiations
-                        arg = unknownType(unit);
+                        arg = unit.getUnknownType();
                     }
                     else {
-                        return nothingType(unit);
+                        return unit.getNothingType();
                     }
                 }
                 else if (firstInv && secondInv) {
@@ -2045,19 +2045,19 @@ public class Util {
                         //      sure that the types are disjoint
                         //      because the type parameters only
                         //      occur as type args
-                        arg = unknownType(unit);
+                        arg = unit.getUnknownType();
                     }
                     else {
                         //the type arguments are distinct, and the
                         //intersection is Nothing, so there is
                         //no reasonable principal instantiation
-                        return nothingType(unit);
+                        return unit.getNothingType();
                     }
                 }
                 else {
                     //opposite variances
                     //irreconcilable instantiations
-                    arg = unknownType(unit);
+                    arg = unit.getUnknownType();
                 }
             }
             args.add(arg);
@@ -2069,14 +2069,6 @@ public class Util {
                 dec.getProducedType(pqt, args);
         result.setVarianceOverrides(varianceOverrides);
         return result;
-    }
-
-    static ProducedType unknownType(Unit unit) {
-        return new UnknownType(unit).getType();
-    }
-
-    static ProducedType nothingType(Unit unit) {
-        return unit.getNothingDeclaration().getType();
     }
     
     public static boolean areConsistentSupertypes(
@@ -2140,7 +2132,7 @@ public class Util {
         List<ProducedType> caseTypes = td.getCaseTypes();
         Unit unit = td.getUnit();
         if (caseTypes==null) {
-            return unit.getType(unit.getAnythingDeclaration());
+            return unit.getAnythingType();
         }
         int capacity = caseTypes.size()+1;
         List<ProducedType> list = 

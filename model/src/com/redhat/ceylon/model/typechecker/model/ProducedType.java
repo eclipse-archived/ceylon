@@ -602,8 +602,7 @@ public class ProducedType extends ProducedReference {
     
     private boolean isSupertypeOfObject() {
         Unit unit = getDeclaration().getUnit();
-        return unit.getType(unit.getObjectDeclaration())
-                .isSubtypeOf(this);
+        return unit.getObjectType().isSubtypeOf(this);
     }
     
     private boolean isExactlyTypeConstructor(ProducedType type) {
@@ -837,7 +836,7 @@ public class ProducedType extends ProducedReference {
         Unit unit = dec.getUnit();
         Class nd = unit.getNullDeclaration();
         if (getDeclaration().inherits(nd)) {
-            return nothingType();
+            return unit.getNothingType();
         }
         else if (dec instanceof UnionType) {
             List<ProducedType> caseTypes = getCaseTypes();
@@ -858,8 +857,9 @@ public class ProducedType extends ProducedReference {
     
     public ProducedType shallowMinus(ProducedType pt) {
         TypeDeclaration dec = getDeclaration();
+        Unit unit = dec.getUnit();
         if (isSubtypeOf(pt)) {
-            return nothingType();
+            return unit.getNothingType();
         }
         else if (dec instanceof UnionType) {
             List<ProducedType> caseTypes = getCaseTypes();
@@ -869,7 +869,7 @@ public class ProducedType extends ProducedReference {
             for (ProducedType ct: caseTypes) {
                 addToUnion(types, ct.shallowMinus(pt));
             }
-            UnionType ut = new UnionType(dec.getUnit());
+            UnionType ut = new UnionType(unit);
             ut.setCaseTypes(types);
             return ut.getType();
         }
@@ -877,17 +877,12 @@ public class ProducedType extends ProducedReference {
             return this;
         }
     }
-
-    ProducedType nothingType() {
-        return getDeclaration().getUnit()
-                .getNothingDeclaration().getType();
-    }
     
     private ProducedType minusInternal(ProducedType pt) {
         TypeDeclaration dec = getDeclaration();
         Unit unit = dec.getUnit();
         if (pt.coversInternal(this)) { //note: coversInternal() already calls getUnionOfCases()
-            return nothingType();
+            return unit.getNothingType();
         }
         else {
             ProducedType ucts = getUnionOfCases();
@@ -1654,11 +1649,11 @@ public class ProducedType extends ProducedReference {
                             ut.setCaseTypes(caseTypes);
                             result = ut.getType().getSupertype(c);
                             if (result==null) {
-                                return unknownType();
+                                return unit.getUnknownType();
                             }
                         }
                         else {
-                            return unknownType();
+                            return unit.getUnknownType();
                         }
                     }
                 }
@@ -1667,12 +1662,7 @@ public class ProducedType extends ProducedReference {
         
         return result;
     }
-
-    private ProducedType unknownType() {
-        Unit unit = getDeclaration().getUnit();
-        return new UnknownType(unit).getType();
-    }
-
+    
     private ProducedType qualifiedByDeclaringType() {
         ProducedType qt = getQualifyingType();
         if (qt==null) {
@@ -1940,7 +1930,7 @@ public class ProducedType extends ProducedReference {
                     TypeParameter tp = tps.get(i);
                     ProducedType arg = args.get(tp);
                     if (arg==null) {
-                        arg = unknownType();
+                        arg = dec.getUnit().getUnknownType();
                     }
                     argList.add(arg);
                 }
@@ -3000,26 +2990,26 @@ public class ProducedType extends ProducedReference {
         private ProducedType substitutedTypeConstructor(
                 ProducedType type,
                 boolean covariant, boolean contravariant) {
-            TypeDeclaration d = type.getDeclaration();            
-            if (d.isAlias() && substitutions!=null) {
+            TypeDeclaration dec = type.getDeclaration();            
+            if (dec.isAlias() && substitutions!=null) {
                 //necessary for subtyping of rank > 2 
                 //polymorphic types and of any higher rank
                 //parameter of a generic function ... and
                 //possibly also other cases
-                ProducedType et = 
-                        d.getExtendedType();
+                Unit unit = dec.getUnit();
+                ProducedType et = dec.getExtendedType();
                 if (et==null) {
-                    return type.unknownType();
+                    return unit.getUnknownType();
                 }
                 TypeAlias ta = new TypeAlias();
-                ta.setAnonymous(d.isAnonymous());
-                ta.setName(d.getName());
+                ta.setAnonymous(dec.isAnonymous());
+                ta.setName(dec.getName());
                 ta.setExtendedType(et.substitute(
                         substitutions, overrides,
                         covariant, contravariant));
-                ta.setScope(d.getScope());
-                ta.setContainer(d.getContainer());
-                ta.setUnit(d.getUnit());
+                ta.setScope(dec.getScope());
+                ta.setContainer(dec.getContainer());
+                ta.setUnit(unit);
                 List<TypeParameter> tps = 
                         new ArrayList<TypeParameter>();
                 //compute the right bounds for a higher
@@ -3028,7 +3018,7 @@ public class ProducedType extends ProducedReference {
                 //the function into the bounds of the
                 //parameter
                 for (TypeParameter tp: 
-                        d.getTypeParameters()) {
+                        dec.getTypeParameters()) {
                     TypeParameter stp = 
                             new TypeParameter();
                     stp.setName(tp.getName());
@@ -3451,16 +3441,16 @@ public class ProducedType extends ProducedReference {
     }
 
     private ProducedType resolveAliasesInternal() {
-        TypeDeclaration d = getDeclaration();
-        Unit unit = d.getUnit();
+        TypeDeclaration dec = getDeclaration();
+        Unit unit = dec.getUnit();
         
         if (isTypeConstructor()) {
             return this;
         }
         
-        if (d instanceof UnionType) {
+        if (dec instanceof UnionType) {
             List<ProducedType> caseTypes = 
-                    d.getCaseTypes();
+                    dec.getCaseTypes();
             List<ProducedType> list = 
                     new ArrayList<ProducedType>
                         (caseTypes.size());
@@ -3472,9 +3462,9 @@ public class ProducedType extends ProducedReference {
             ut.setCaseTypes(list);
             return ut.getType();
         }
-        if (d instanceof IntersectionType) {
+        if (dec instanceof IntersectionType) {
             List<ProducedType> satisfiedTypes = 
-                    d.getSatisfiedTypes();
+                    dec.getSatisfiedTypes();
             List<ProducedType> list = 
                     new ArrayList<ProducedType>
                         (satisfiedTypes.size());
@@ -3504,15 +3494,15 @@ public class ProducedType extends ProducedReference {
                         arg.resolveAliases();
             aliasedArgs.add(aliasedArg);
         }
-        if (d.isAlias()) {
-            ProducedType et = d.getExtendedType();
+        if (dec.isAlias()) {
+            ProducedType et = dec.getExtendedType();
             if (et == null) {
-                return unknownType();
+                return unit.getUnknownType();
             }
             else {
                 ProducedType rt = 
                         et.resolveAliases()
-                          .substitute(getTypeArgumentMap(d, 
+                          .substitute(getTypeArgumentMap(dec, 
                                 aliasedQualifyingType, 
                                 aliasedArgs),
                                 getVarianceOverrides());
@@ -3521,7 +3511,7 @@ public class ProducedType extends ProducedReference {
         }
         else {
             ProducedType result = 
-                    d.getProducedType(aliasedQualifyingType, 
+                    dec.getProducedType(aliasedQualifyingType, 
                             aliasedArgs);
             result.setVarianceOverrides(getVarianceOverrides());
             return result;
@@ -3843,8 +3833,13 @@ public class ProducedType extends ProducedReference {
     
     public boolean isAnything() {
         TypeDeclaration d = getDeclaration();
-        return d instanceof Class && 
-                d.equals(d.getUnit().getAnythingDeclaration());
+        if (d instanceof Class) {
+            Class ad = d.getUnit().getAnythingDeclaration();
+            return d.equals(ad);
+        }
+        else {
+            return false;
+        }
     }
     
     public int getMemoisedHashCode() {

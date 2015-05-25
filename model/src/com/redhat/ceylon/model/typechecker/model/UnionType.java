@@ -50,7 +50,7 @@ public class UnionType extends TypeDeclaration {
             }
         }
         if (cts.size()==0) {
-            return unit.getNothingDeclaration().getType();
+            return unit.getNothingType();
         }
         else if (cts.size()==1) {
             return cts.get(0).getType();

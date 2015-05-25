@@ -680,20 +680,60 @@ public class Unit {
             unionType(pt, getNullType(), this);
     }
 
-    private ProducedType getUnknownType() {
+    public ProducedType getUnknownType() {
         return new UnknownType(this).getType();
     }
     
-    ProducedType getNothingType() {
+    public ProducedType getNothingType() {
         return getType(getNothingDeclaration());
     }
 
-    ProducedType getEmptyType() {
+    public ProducedType getEmptyType() {
         return getType(getEmptyDeclaration());
     }
     
-    ProducedType getNullType() {
+    public ProducedType getAnythingType() {
+        return getType(getAnythingDeclaration());
+    }
+    
+    public ProducedType getObjectType() {
+        return getType(getObjectDeclaration());
+    }
+    
+    public ProducedType getIdentifiableType() {
+        return getType(getIdentifiableDeclaration());
+    }
+    
+    public ProducedType getNullType() {
         return getType(getNullDeclaration());
+    }
+    
+    public ProducedType getThrowableType() {
+        return getType(getThrowableDeclaration());
+    }
+    
+    public ProducedType getExceptionType() {
+        return getType(getExceptionDeclaration());
+    }
+    
+    public ProducedType getBooleanType() {
+        return getType(getBooleanDeclaration());
+    }
+    
+    public ProducedType getIntegerType() {
+        return getType(getIntegerDeclaration());
+    }
+    
+    public ProducedType getComparisonType() {
+        return getType(getComparisonDeclaration());
+    }
+    
+    public ProducedType getDestroyableType() {
+        return getType(getDestroyableDeclaration());
+    }
+
+    public ProducedType getObtainableType() {
+        return getType(getObtainableDeclaration());
     }
     
     public ProducedType getSequenceType(ProducedType et) {
