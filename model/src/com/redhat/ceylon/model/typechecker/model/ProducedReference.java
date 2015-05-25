@@ -27,7 +27,6 @@ public abstract class ProducedReference {
     private Map<TypeParameter, ProducedType> typeArguments = 
             EMPTY_TYPE_ARG_MAP;
     
-    private Declaration declaration;
     private ProducedType qualifyingType;
     
     //cache
@@ -42,13 +41,7 @@ public abstract class ProducedReference {
         this.qualifyingType = qualifyingType;
     }
     
-    public Declaration getDeclaration() {
-        return declaration;
-    }
-    
-    void setDeclaration(Declaration declaration) {
-        this.declaration = declaration;
-    }
+    public abstract Declaration getDeclaration();
     
     public Map<TypeParameter, ProducedType> getTypeArguments() {
         Declaration declaration = getDeclaration();
@@ -149,7 +142,7 @@ public abstract class ProducedReference {
      */
     public ProducedType getFullType(ProducedType wrappedType) {
         //don't use this, because it is refined by ProducedType
-        //Declaration declaration = getDeclaration();
+        Declaration declaration = getDeclaration();
         if (declaration instanceof Functional) {
             Unit unit = declaration.getUnit();
             if (isAbstraction(declaration)) {
@@ -194,10 +187,6 @@ public abstract class ProducedReference {
         return ptr;
     }
     
-    public Declaration getOverloadedVersion() {
-        return declaration;
-    }
-
     public abstract String getProducedName();
     
 }

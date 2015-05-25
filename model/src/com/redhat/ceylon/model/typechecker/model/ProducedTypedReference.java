@@ -13,6 +13,7 @@ import java.util.Map;
  */
 public class ProducedTypedReference extends ProducedReference {
     
+    private TypedDeclaration declaration;
     private final boolean covariant;
     private final boolean contravariant;
 
@@ -23,17 +24,11 @@ public class ProducedTypedReference extends ProducedReference {
     
     @Override
     public TypedDeclaration getDeclaration() {
-        return (TypedDeclaration) super.getDeclaration();
+        return declaration;
     }
     
-    @Override
-    void setDeclaration(Declaration declaration) {
-        if (declaration instanceof TypedDeclaration) {
-            super.setDeclaration(declaration);
-        }
-        else {
-            throw new IllegalArgumentException("not a TypedDeclaration");
-        }
+    void setDeclaration(TypedDeclaration declaration) {
+        this.declaration = declaration;
     }
     
     public ProducedType getType() {

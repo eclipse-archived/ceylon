@@ -2,7 +2,6 @@ package com.redhat.ceylon.model.typechecker.model;
 
 import static com.redhat.ceylon.model.typechecker.model.SiteVariance.IN;
 import static com.redhat.ceylon.model.typechecker.model.SiteVariance.OUT;
-import static com.redhat.ceylon.model.typechecker.model.Unit.getAbstraction;
 import static com.redhat.ceylon.model.typechecker.model.Util.EMPTY_VARIANCE_MAP;
 import static com.redhat.ceylon.model.typechecker.model.Util.NO_TYPE_ARGS;
 import static com.redhat.ceylon.model.typechecker.model.Util.addToIntersection;
@@ -41,6 +40,7 @@ import com.redhat.ceylon.model.typechecker.util.ProducedTypeNamePrinter;
  */
 public class ProducedType extends ProducedReference {
     
+    private TypeDeclaration declaration;
     private String underlyingType;
     private boolean isRaw;
     private ProducedType resolvedAliases;
@@ -109,18 +109,11 @@ public class ProducedType extends ProducedReference {
     
     @Override
     public TypeDeclaration getDeclaration() {
-        return (TypeDeclaration) 
-                getAbstraction(super.getDeclaration());
+        return declaration;
     }
     
-    @Override
-    void setDeclaration(Declaration declaration) {
-        if (declaration instanceof TypeDeclaration) {
-            super.setDeclaration(declaration);
-        }
-        else {
-            throw new IllegalArgumentException("not a TypeDeclaration");
-        }
+    void setDeclaration(TypeDeclaration declaration) {
+        this.declaration = declaration;
     }
     
     public boolean isTypeConstructor() {

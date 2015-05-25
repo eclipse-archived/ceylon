@@ -554,7 +554,7 @@ public class Unit {
     
     ProducedType getCallableType(ProducedReference ref, ProducedType rt) {
     	ProducedType result = rt;
-    	Declaration declaration = ref.getOverloadedVersion();
+    	Declaration declaration = ref.getDeclaration();
         if (declaration instanceof Functional) {
     	    Functional fd = (Functional) declaration;
             List<ParameterList> pls = fd.getParameterLists();
