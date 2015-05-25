@@ -1340,6 +1340,14 @@ public class Naming extends NamingBase implements LocalId {
         return makeSelect(makeName((TypedDeclaration)decl, NA_FQ | NA_WRAPPER), getMethodNameInternal((TypedDeclaration)decl));
     }
     
+    JCExpression makeLanguageSerializationValue(String string) {
+        Declaration decl = gen().typeFact().getLanguageModuleSerializationDeclaration(string);
+        if (!Decl.isValue(decl)) {
+            throw new BugException();
+        }
+        return makeSelect(makeName((Value)decl, NA_FQ | NA_WRAPPER), getGetterName(decl));
+    }
+    
     /*
      * Methods for making unique temporary and alias names
      */

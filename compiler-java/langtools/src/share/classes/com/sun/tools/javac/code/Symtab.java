@@ -212,7 +212,6 @@ public class Symtab {
     public  Type ceylonGetterDoubleType;
     public  Type ceylonGetterByteType;
     public  Type ceylonGetterBooleanType;
-    public  Type ceylonDeconstructorType;
     
     public final Type ceylonAtCeylonType;
     public final Type ceylonAtDynamicType;
@@ -277,10 +276,16 @@ public class Symtab {
     public final Type ceylonTypeDescriptorType;
     public final Type ceylonReifiedTypeType;
     public final Type ceylonSerializationType;
-    public final Type ceylonInstanceLeakerType;
     public final Type ceylonSerializableType;
+    public final Type ceylonReachableReferenceType;
+    public final Type ceylonMemberImplType;
+    public final Type ceylonMemberType;
+    public final Type ceylonOuterImplType;
+    public final Type ceylonOuterType;
+    public final Type ceylonElementImplType;
+    public final Type ceylonElementType;
+    public final Type ceylonUninitializedLateValueType;
     
-
     /** The symbol representing the length field of an array.
      */
     public final VarSymbol lengthVar;
@@ -684,8 +689,16 @@ public class Symtab {
         ceylonTypeDescriptorType = enterClass("com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor");
         ceylonReifiedTypeType = enterClass("com.redhat.ceylon.compiler.java.runtime.model.ReifiedType");
         ceylonSerializationType = enterClass("com.redhat.ceylon.compiler.java.runtime.serialization.$Serialization$");
-        ceylonInstanceLeakerType = enterClass("com.redhat.ceylon.compiler.java.runtime.serialization.$InstanceLeaker$");
         ceylonSerializableType = enterClass("com.redhat.ceylon.compiler.java.runtime.serialization.Serializable");
+        ceylonReachableReferenceType = enterClass("ceylon.language.serialization.ReachableReference");
+        ceylonMemberType = enterClass("ceylon.language.serialization.Member");
+        ceylonMemberImplType = enterClass("com.redhat.ceylon.compiler.java.runtime.serialization.MemberImpl");
+        ceylonOuterType = enterClass("ceylon.language.serialization.Outer");
+        ceylonOuterImplType = enterClass("com.redhat.ceylon.compiler.java.runtime.serialization.OuterImpl");
+        ceylonElementType = enterClass("ceylon.language.serialization.Element");
+        ceylonElementImplType = enterClass("com.redhat.ceylon.compiler.java.runtime.serialization.ElementImpl");
+        ceylonUninitializedLateValueType = enterClass("ceylon.language.serialization.UninitializedLateValue");
+        
         
         ceylonAtNoInitCheckType = enterClass("com.redhat.ceylon.compiler.java.metadata.NoInitCheck");
         
@@ -942,6 +955,5 @@ public class Symtab {
         ceylonGetterByteType = enterClass("com.redhat.ceylon.compiler.java.language.GetterByte");
         ceylonGetterBooleanType = enterClass("com.redhat.ceylon.compiler.java.language.GetterBoolean");
         
-        ceylonDeconstructorType = enterClass("ceylon.language.serialization.Deconstructor");
     }
 }
