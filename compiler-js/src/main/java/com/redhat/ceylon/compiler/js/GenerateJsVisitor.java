@@ -861,7 +861,8 @@ public class GenerateJsVisitor extends Visitor
         }
         final boolean inProto = opts.isOptimize()
                 && (type.getScope().getContainer() instanceof TypeDeclaration);
-        if (inProto && coi.isMember() && !d.isAlias() && coi.getContainer() == Util.getContainingDeclaration(d)) {
+        if (inProto && coi.isMember() && !d.isAlias() && (coi.getContainer() == Util.getContainingDeclaration(d)
+                || Util.contains(d, coi))) {
             //A member class that extends or satisfies another member of its same container,
             //use its $init$ function
             return "$init$" +  names.name(d) + "()";
