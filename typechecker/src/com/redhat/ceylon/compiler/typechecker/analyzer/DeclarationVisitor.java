@@ -413,11 +413,19 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
                         if (member instanceof Method && 
                             model instanceof Method &&
                             scope instanceof ClassOrInterface) {
+                            //even though Ceylon does not 
+                            //officially support overloading,
+                            //we actually do let you overload
+                            //a method that is refining an
+                            //overloaded method inherited from
+                            //a Java superclass
                             Method abstraction;
                             Method method = (Method) member;
                             Method newMethod = (Method) model;
                             newMethod.setOverloaded(true);
                             if (!method.isAbstraction()) {
+                                //create the "abstraction" 
+                                //for the overloaded method
                                 method.setOverloaded(true);
                                 abstraction = new Method();
                                 abstraction.setAbstraction(true);
@@ -430,7 +438,8 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
                                 abstraction.setContainer(scope);
                                 abstraction.setScope(scope);
                                 abstraction.setUnit(unit);
-                                abstraction.initOverloads(method, newMethod);
+                                abstraction.initOverloads(
+                                        method, newMethod);
                                 scope.addMember(abstraction);
                             }
                             else {
