@@ -120,7 +120,8 @@ public class JsCompiler {
             if (hasErrors(that)) {
                 exitCode = 1;
             } else if (that.getImportPath() != null && that.getImportPath().getModel() instanceof Module &&
-                    ((Module)that.getImportPath().getModel()).isJava()) {
+                    ((Module)that.getImportPath().getModel()).isJava()
+                    && !Backend.Java.nativeAnnotation.equals(((Module)that.getImportPath().getModel()).getNative())) {
                 that.getImportPath().addUnexpectedError("cannot import Java modules in Javascript", Backend.JavaScript);
             } else {
                 super.visit(that);
