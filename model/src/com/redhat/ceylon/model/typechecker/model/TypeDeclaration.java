@@ -670,6 +670,8 @@ public abstract class TypeDeclaration extends Declaration
      * Is the given declaration inherited from
      * a supertype of this type or an outer
      * type?
+     * 
+     * @return true if it is
      */
     @Override
     public boolean isInherited(Declaration member) {
@@ -689,7 +691,8 @@ public abstract class TypeDeclaration extends Declaration
 
     /**
      * Get the containing type which inherits the given declaration.
-     * Returns null if the declaration is not inherited!!
+     * 
+     * @return null if the declaration is not inherited!!
      */
     @Override
     public TypeDeclaration getInheritingDeclaration(Declaration member) {

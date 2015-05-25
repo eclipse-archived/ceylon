@@ -1719,7 +1719,25 @@ public class Util {
         return false;
     }
     
-    public static Declaration lookupMember(List<Declaration> members, String name,
+    /**
+     * Find the member which best matches the given signature
+     * among the given list of members. In the case that
+     * there are multiple matching declarations, attempt to
+     * return the "best" match, according to some ad-hoc 
+     * rules that roughly follow how Java resolves 
+     * overloaded methods.
+     * 
+     * @param members a list of members to search
+     * @param name the name of the member to find
+     * @param signature the parameter types to match, or
+     *        null if we're not matching on parameter types
+     * @param ellipsis true of we want to find a declaration
+     *        which supports varags, or false otherwise
+     *        
+     * @return the best matching declaration
+     */
+    public static Declaration lookupMember(
+            List<Declaration> members, String name,
             List<ProducedType> signature, boolean ellipsis) {
         List<Declaration> results = null;
         Declaration result = null;
@@ -2229,21 +2247,7 @@ public class Util {
         }
     }
     
-    public static boolean isNativeAbstraction(Declaration dec) {
-        if (dec instanceof Overloadable) {
-            Overloadable fun = (Overloadable) dec;
-            List<Declaration> overloads = fun.getOverloads();
-            return dec.isNative() && 
-                    dec.getNative().isEmpty() && 
-                    overloads != null && 
-                    !overloads.isEmpty();
-        }
-        else {
-            return false;
-        }
-    }
-    
-    public static boolean isNativeNoImpl(Declaration dec) {
+    public static boolean isNativeHeader(Declaration dec) {
         return dec.isNative() && dec.getNative().isEmpty();
     }
     
@@ -2256,9 +2260,9 @@ public class Util {
             Overloadable fun = (Overloadable) dec;
             List<Declaration> overloads = fun.getOverloads();
             if (overloads != null) {
-                for (Declaration d: overloads) {
-                    if (d.isNative() && 
-                            !d.getNative().isEmpty()) {
+                for (Declaration overload: overloads) {
+                    if (overload.isNative() && 
+                            !overload.getNative().isEmpty()) {
                         return true;
                     }
                 }
@@ -2290,14 +2294,18 @@ public class Util {
                 backendSupport != null) {
             Overloadable f = (Overloadable) dec;
             Declaration abstraction = null;
-            if (backendSupport.supportsBackend(Backend.fromAnnotation(dec.getNative()))) {
+            if (backendSupport.supportsBackend(
+                    Backend.fromAnnotation(
+                            dec.getNative()))) {
                 abstraction = dec;
             }
             else {
                 List<Declaration> overloads = f.getOverloads();
                 if (overloads != null) {
                     for (Declaration d: overloads) {
-                        if (backendSupport.supportsBackend(Backend.fromAnnotation(d.getNative()))) {
+                        if (backendSupport.supportsBackend(
+                                Backend.fromAnnotation(
+                                        d.getNative()))) {
                             abstraction = d;
                             break;
                         }
@@ -2322,6 +2330,39 @@ public class Util {
             paramsAsArgs.add(param.getType());
         }
         return paramsAsArgs;
+    }
+    
+    /**
+     * Find the declaration with the given name that occurs
+     * directly in the given scope, taking into account the
+     * given backend, if any. Does not take into account
+     * Java overloading
+     *  
+     * @param scope any scope
+     * @param name the name of a declaration occurring 
+     *        directly in the scope, and not overloaded
+     * @param backend the native backend name
+     * 
+     * @return the matching declaration
+     */
+    public static Declaration getDirectMemberForBackend
+            (Scope scope, String name, String backend) {
+        for (Declaration d: scope.getMembers()) {
+            if (isResolvable(d) && isNamed(name, d)) {
+                String nat = d.getNative();
+                if (nat==null) {
+                    if (backend==null) {
+                        return d;
+                    }
+                }
+                else {
+                    if (nat.equals(backend)) {
+                        return d;
+                    }
+                }
+            }
+        }
+        return null;
     }
 
 }

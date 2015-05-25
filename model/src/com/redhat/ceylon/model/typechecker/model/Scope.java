@@ -12,27 +12,77 @@ import java.util.Map;
  */
 public interface Scope {
     
+    /**
+     * A period-separated name uniquely representing this 
+     * scope. 
+     */
     public String getQualifiedNameString();
 
     public ProducedType getDeclaringType(Declaration d);
     
     /**
      * Get a member declared directly in this scope.
+     * 
+     * @param name the name of the member
+     * @param signature the signature of the parameter list,
+     *        or null if we have no parameter list
+     * @param ellipsis true if we are looking for a member
+     *        with a variadic parameter
+     * 
+     * @return the best matching member
      */
-    public Declaration getDirectMember(String name, List<ProducedType> signature, boolean ellipsis);
+    public Declaration getDirectMember(String name, 
+            List<ProducedType> signature, 
+            boolean ellipsis);
     
     /**
      * Resolve a qualified reference.
+     * 
+     * @param name the name of the member
+     * @param signature the signature of the parameter list,
+     *        or null if we have no parameter list
+     * @param ellipsis true if we are looking for a member
+     *        with a variadic parameter
+     * 
+     * @return the best matching member
      */
-    public Declaration getMember(String name, List<ProducedType> signature, boolean ellipsis);
+    public Declaration getMember(String name, 
+            List<ProducedType> signature, 
+            boolean ellipsis);
     
     /**
      * Resolve an unqualified reference.
+     * 
+     * @param name the name of the member
+     * @param signature the signature of the parameter list,
+     *        or null if we have no parameter list
+     * @param ellipsis true if we are looking for a member
+     *        with a variadic parameter
+     * 
+     * @return the best matching member
      */
-    //TODO: should be renamed getBase() since it also looks in containing scopes
-    public Declaration getMemberOrParameter(Unit unit, String name, List<ProducedType> signature, boolean ellipsis);
-
+    //TODO: should be renamed getBase() since it also looks 
+    //      in containing scopes
+    public Declaration getMemberOrParameter(Unit unit, 
+            String name, 
+            List<ProducedType> signature, 
+            boolean ellipsis);
+    
+    /**
+     * Is the given declaration inherited from
+     * a supertype of this type or an outer
+     * type?
+     * 
+     * @return true if it is
+     */
     public boolean isInherited(Declaration d);
+    
+    /**
+     * Get the containing type which inherits the given 
+     * declaration.
+     * 
+     * @return null if the declaration is not inherited!!
+     */
     public TypeDeclaration getInheritingDeclaration(Declaration d);
 
     /**
@@ -53,11 +103,37 @@ public interface Scope {
      */
     public Scope getScope();
     
-    public Map<String, DeclarationWithProximity> getMatchingDeclarations(Unit unit, String startingWith, int proximity);
+    /**
+     * Get a set of proposals for use in IDE completion.
+     * 
+     * @param unit
+     * @param startingWith a pattern to match the name against
+     * @param proximity the "distance" from the carat
+     * @return
+     */
+    public Map<String, DeclarationWithProximity> 
+    getMatchingDeclarations(Unit unit, 
+            String startingWith,
+            int proximity);
     
+    /**
+     * Get a list of all declarations belonging directly to
+     * this scope, even declarations which aren't normally
+     * visible. Calling this method necessarily loads the
+     * whole containing scope, so please don't, at least not
+     * unless you really have to.
+     * 
+     * @return a list of everything
+     * @deprecated to discourage you from calling this
+     */
     @Deprecated 
     public List<Declaration> getMembers();
     
+    /**
+     * Add a member to this scope.
+     * 
+     * @param declaration the member to add
+     */
     public void addMember(Declaration declaration);
     
 }
