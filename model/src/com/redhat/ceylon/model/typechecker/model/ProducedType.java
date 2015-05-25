@@ -2937,44 +2937,71 @@ public class ProducedType extends ProducedReference {
         private ProducedType substitutedType(
                 TypeDeclaration dec, ProducedType type,
                 boolean covariant, boolean contravariant) {
-            ProducedType qt = type.getQualifyingType();
+            ProducedType receiverType = 
+                    type.getQualifyingType();
             ProducedType result = new ProducedType();
             result.setDeclaration(dec);
             result.setTypeConstructor(type.isTypeConstructor());
             result.setTypeConstructorParameter(
                     type.getTypeConstructorParameter());
-            if (qt!=null) {
-                result.setQualifyingType(substitute(qt,
-                        covariant, contravariant));
-            }
             Map<TypeParameter, ProducedType> typeArguments = 
                     type.getTypeArguments();
-            Map<TypeParameter, ProducedType> typeArgs = 
-                    new HashMap<TypeParameter, ProducedType>
-                        (typeArguments.size());
+            Map<TypeParameter, ProducedType> typeArgs;
+            if (receiverType!=null) {
+                //we have to aggregate the type arguments of
+                //the receiver since the contract is that
+                //a qualified type carries with it all the
+                //arguments of the qualifying type duped in
+                //its own map of type arguments
+                result.setQualifyingType(substitute(receiverType,
+                        covariant, contravariant));
+                Map<TypeParameter, ProducedType> receiverTypeArgs = 
+                        receiverType.getTypeArguments();
+                typeArgs = new HashMap<TypeParameter, ProducedType>
+                            (typeArguments.size() + 
+                             receiverTypeArgs.size());
+                for (Map.Entry<TypeParameter, ProducedType> e: 
+                        receiverTypeArgs.entrySet()) {
+                    substituteTypeArgument(typeArgs, type, 
+                            covariant, contravariant, 
+                            e.getKey(), e.getValue());
+                }
+            }
+            else {
+                typeArgs = new HashMap<TypeParameter, ProducedType>
+                            (typeArguments.size());
+            }
             for (Map.Entry<TypeParameter, ProducedType> e: 
                     typeArguments.entrySet()) {
-                TypeParameter tp = e.getKey();
-                ProducedType arg = e.getValue();
-                if (arg!=null) {
-                    boolean co = false;
-                    boolean contra = false;
-                    if (type.isContravariant(tp)) {
-                        co = contravariant;
-                        contra = covariant;
-                    }
-                    else if (type.isCovariant(tp)) {
-                        co = covariant;
-                        contra = contravariant;
-                    }
-                    typeArgs.put(tp, substitute(arg,
-                            co, contra));
-                }
+                substituteTypeArgument(typeArgs, type, 
+                        covariant, contravariant, 
+                        e.getKey(), e.getValue());
             }
             result.setTypeArguments(typeArgs);
             result.setVarianceOverrides(type.getVarianceOverrides());
             result.setUnderlyingType(type.getUnderlyingType());
             return result;
+        }
+
+        private void substituteTypeArgument(
+                Map<TypeParameter, ProducedType> typeArgs, 
+                ProducedType type, 
+                boolean covariant, boolean contravariant, 
+                TypeParameter tp, ProducedType arg) {
+            if (arg!=null) {
+                boolean co = false;
+                boolean contra = false;
+                if (type.isContravariant(tp)) {
+                    co = contravariant;
+                    contra = covariant;
+                }
+                else if (type.isCovariant(tp)) {
+                    co = covariant;
+                    contra = contravariant;
+                }
+                typeArgs.put(tp, substitute(arg,
+                        co, contra));
+            }
         }
         
         private ProducedType substitutedTypeConstructor(
