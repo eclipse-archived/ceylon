@@ -258,6 +258,8 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
                         if (!hasModelInOverloads(model, overloads)) {
                             overloads.add(model);
                         }
+                        //note that all native "overloads"
+                        //have to share the same list!
                         if (model instanceof MethodOrValue) {
                             MethodOrValue m = 
                                     (MethodOrValue) model;
