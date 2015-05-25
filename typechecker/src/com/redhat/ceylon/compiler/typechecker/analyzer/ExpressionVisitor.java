@@ -5337,8 +5337,7 @@ public class ExpressionVisitor extends Visitor {
                         sp.getName() + "' of '" + 
                         pr.getDeclaration().getName(unit) + "'");
             }
-            else if (!dynamic && 
-                    !isNativeForWrongBackend() &&
+            else if (!dynamic &&
                     isTypeUnknown(sp.getType())) {
                 sa.addError("parameter type could not be determined: " + 
                         paramdesc(sp) +
@@ -5374,7 +5373,6 @@ public class ExpressionVisitor extends Visitor {
                         pr.getDeclaration().getName(unit) + "'");
             }
             else if (!dynamic && 
-                    !isNativeForWrongBackend() &&
                     isTypeUnknown(p.getType())) {
                 a.addError("parameter type could not be determined: " + 
                         paramdesc(p) + 
@@ -5442,7 +5440,6 @@ public class ExpressionVisitor extends Visitor {
             		.getFullType();
             checkArgumentToVoidParameter(p, ta);
             if (!dynamic && 
-                    !isNativeForWrongBackend() &&
                     isTypeUnknown(argType)) {
                 a.addError("could not determine type of named argument: '" + 
                         p.getName() + "'");
@@ -5613,7 +5610,6 @@ public class ExpressionVisitor extends Visitor {
                 Tree.PositionalArgument arg = args.get(i);
                 ProducedType pt = param.getType();
                 if (!dynamic && 
-                        !isNativeForWrongBackend() &&
                         isTypeUnknown(pt)) {
                     arg.addError("parameter type could not be determined: " + 
                             paramdesc(param) +
@@ -7518,7 +7514,6 @@ public class ExpressionVisitor extends Visitor {
                         that.getUnit());
         if (member==null) {
             if (!dynamic && 
-                    !isNativeForWrongBackend() && 
                     error) {
                 that.addError("function or value does not exist: '" +
                         name + "'", 100);
@@ -7858,7 +7853,6 @@ public class ExpressionVisitor extends Visitor {
                             ptr.getFullType(wrap(ptr.getType(), 
                                     receivingType, that)));
             if (!dynamic && 
-                    !isNativeForWrongBackend() && 
                     !isAbstraction(member) && 
                     isTypeUnknown(fullType)) {
                 //this occurs with an ambiguous reference
@@ -8043,7 +8037,6 @@ public class ExpressionVisitor extends Visitor {
                             tal, outerType, typeArgs, 
                             pr.getFullType());
             if (!dynamic && 
-                    !isNativeForWrongBackend() && 
                     !isAbstraction(member) && 
                     isTypeUnknown(fullType)) {
                 that.addError("could not determine type of function or value reference: '" +
@@ -8051,7 +8044,6 @@ public class ExpressionVisitor extends Visitor {
                         getTypeUnknownError(fullType));
             }
             if (dynamic && 
-                    !isNativeForWrongBackend() && 
                     isTypeUnknown(fullType)) {
                 //deliberately throw away the partial
                 //type information we have
@@ -8130,9 +8122,7 @@ public class ExpressionVisitor extends Visitor {
                         that.getEllipsis(), 
                         that.getUnit());
         if (type==null) {
-            if (!dynamic && 
-                    !isNativeForWrongBackend() && 
-                    error) {
+            if (!dynamic && error) {
                 that.addError("type does not exist: '" + 
                         name + "'", 
                         102);
@@ -8677,7 +8667,6 @@ public class ExpressionVisitor extends Visitor {
                     type.getFullType(wrap(type, 
                             receivingType, that));
             if (!dynamic && 
-                    !isNativeForWrongBackend() &&
                     !that.getStaticMethodReference() &&
                     memberType instanceof Class &&
                     !isAbstraction(memberType) &&
@@ -9058,7 +9047,6 @@ public class ExpressionVisitor extends Visitor {
                 if (st!=null) {
                     if (v!=null) {
                         if (dynamic || 
-                                isNativeForWrongBackend() || 
                                 !isTypeUnknown(st)) { //eliminate dupe errors
                             v.visit(this);
                         }
@@ -10512,11 +10500,6 @@ public class ExpressionVisitor extends Visitor {
         	}
         }
         return dec;
-    }
-    
-    private boolean isNativeForWrongBackend() {
-        return inBackend != null && 
-                !backendSupport.supportsBackend(inBackend);
     }
     
     private Declaration nativeDeclaration(Declaration decl) {
