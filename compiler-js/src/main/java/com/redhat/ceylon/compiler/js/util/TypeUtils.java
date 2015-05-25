@@ -23,7 +23,6 @@ import com.redhat.ceylon.model.typechecker.model.IntersectionType;
 import com.redhat.ceylon.model.typechecker.model.Method;
 import com.redhat.ceylon.model.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.model.typechecker.model.Module;
-import com.redhat.ceylon.model.typechecker.model.Overloadable;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.ParameterList;
 import com.redhat.ceylon.model.typechecker.model.ProducedType;
@@ -1306,14 +1305,11 @@ public class TypeUtils {
     public static boolean isNativeExternal(Declaration decl) {
         boolean isNative = decl.isNative() && decl.getNative().isEmpty();
         if (isNative) {
-            if (decl instanceof Overloadable) {
-                Overloadable f = (Overloadable)decl;
-                if (f.getOverloads() != null) {
-                    for (Declaration d : f.getOverloads()) {
-                        if (!d.getNative().isEmpty()) {
-                            isNative = false;
-                            break;
-                        }
+            if (decl.getOverloads() != null) {
+                for (Declaration d : decl.getOverloads()) {
+                    if (!d.getNative().isEmpty()) {
+                        isNative = false;
+                        break;
                     }
                 }
             }
