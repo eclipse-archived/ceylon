@@ -77,6 +77,8 @@ class Issue519<A,B>(shared A key, shared B item)
   check(c is Test, "#519");
 }
 
+class Alias563(Integer i=42) => Integer(i);
+
 void testAliasing() {
     check(AliasingSubclass().aliasingSubclass(), "Aliased member class");
     class InnerSubalias() => AliasingSubclass();
@@ -96,4 +98,5 @@ void testAliasing() {
     check(cualquiera(true,true,true), "seq arg method alias");
     check(Issue412().bleh exists, "Issue 412");
     Issue519(1, "2");
+    check(Alias563()==42, "#563");
 }
