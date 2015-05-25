@@ -60,4 +60,9 @@ public class SerializableTests extends CompilerTests {
         compareWithJavaSource("klass/SerializableMemberClass");
     }
     
+    @Test
+    public void testKlsSerializableLate() {
+        compareWithJavaSource("klass/SerializableLate");
+    }
+    
 }

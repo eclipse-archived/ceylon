@@ -22,6 +22,7 @@ serializable class SerializableClass() {
     shared variable Integer sharedVariableInteger=1;
     shared Integer sharedInteger=1;
     shared Integer? sharedOptionalInteger=null;
+    shared String? sharedOptionalString="";
     shared Integer deferred;
     deferred=1;
 }
