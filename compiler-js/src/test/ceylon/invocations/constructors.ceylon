@@ -140,4 +140,10 @@ void testConstructors() {
   sb528.clear();
   Anything test566 = Test566().Bar.Baz();
   check(test566 exists, "#566");
+  class Test564{ 
+    shared new Bar(){
+      check(true, "#564");
+    }
+  }
+  (Test564.Bar)();
 }
