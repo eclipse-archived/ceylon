@@ -90,6 +90,12 @@ class Test557<F> extends Parent {
     sb528.append(",4");
 }
 
+class Test566(){
+    shared class Bar {
+        shared new Baz(){}
+    }
+}
+
 void testConstructors() {
   check(ToplevelBug476.Bar().x==2, "#476 toplevel");
   class NestedBug476 {
@@ -132,4 +138,6 @@ void testConstructors() {
   Test557.Bar(1);
   check(sb528.string=="1,2,3,4", "#557.2");
   sb528.clear();
+  Anything test566 = Test566().Bar.Baz();
+  check(test566 exists, "#566");
 }
