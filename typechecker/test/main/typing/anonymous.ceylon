@@ -20,3 +20,15 @@ void anonymousTypes(Integer i) {
     value pna = \Iprocess.namedArgumentPresent;
     
 }
+
+class Promise<V>() {}
+class Deferred<V>() {
+    shared object promise extends Promise<V>() {}
+}
+shared void testAnonymousClassMemberOfGenericClass() {
+    @type:"Promise<String>" 
+    value promise1 = Deferred<String>().promise;
+    Promise<String> promise2 = Deferred<String>().promise;
+    Deferred<String>.\Ipromise promise3 = Deferred<String>().promise;
+}
+
