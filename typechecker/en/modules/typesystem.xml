@@ -2675,10 +2675,10 @@ interface NumberLiteral
                     treated as contravariant.</para>
                 </listitem>
                 <listitem>
-                    <para>Otherwise, if <literal>T</literal> occurs contravariantly in any 
-                    of the type of a parameter to which an argument is assigned by the 
-                    argument list of the direct invocation, and does not occur covariantly 
-                    or invariantly in the type of any parameter to which an argument is 
+                    <para>Otherwise, if <literal>T</literal> occurs contravariantly in the 
+                    type of any parameter to which an argument is assigned by the argument 
+                    list of the direct invocation, and does not occur covariantly or 
+                    invariantly in the type of any parameter to which an argument is 
                     assigned, then <literal>T</literal> is treated as contravariant.</para>
                 </listitem>
                 <listitem>
