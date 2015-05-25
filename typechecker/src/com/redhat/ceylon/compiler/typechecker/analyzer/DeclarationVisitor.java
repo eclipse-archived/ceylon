@@ -2025,9 +2025,7 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
                     final ProducedType elementType;
                     final boolean atLeastOne;
                     if (elem==null) {
-                        elementType = 
-                                unit.getNothingDeclaration()
-                                    .getType();
+                        elementType = unit.getNothingType();
                         atLeastOne = false;
                     }
                     else if (elem instanceof Tree.SequencedType) {
@@ -2101,7 +2099,7 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
                 public TypeDeclaration initDeclaration() {
                     List<ProducedType> types = 
                             new ArrayList<ProducedType>(2);
-                    types.add(unit.getType(unit.getNullDeclaration()));
+                    types.add(unit.getNullType());
                     if (definiteType!=null) {
                         types.add(definiteType.getTypeModel());
                     }

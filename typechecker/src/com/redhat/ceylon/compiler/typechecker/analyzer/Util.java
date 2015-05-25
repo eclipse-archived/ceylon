@@ -17,6 +17,7 @@ import java.util.Map;
 import com.redhat.ceylon.compiler.typechecker.tree.Message;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.ClassBody;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.TypeVariance;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.model.typechecker.model.Annotation;
@@ -324,17 +325,24 @@ public class Util {
                 }
             }*/
             else if (s instanceof Tree.ObjectDefinition) {
-                Tree.ObjectDefinition o = (Tree.ObjectDefinition) s;
+                Tree.ObjectDefinition o = 
+                        (Tree.ObjectDefinition) s;
                 if (o.getExtendedType()!=null) {
-                    ProducedType et = o.getExtendedType().getType().getTypeModel();
+                    ProducedType et = 
+                            o.getExtendedType()
+                                .getType()
+                                .getTypeModel();
         			if (et!=null 
-                            && !et.getDeclaration().equals(unit.getObjectDeclaration())
-                            && !et.getDeclaration().equals(unit.getBasicDeclaration())) {
+                            && !et.getDeclaration()
+                                .equals(unit.getObjectDeclaration())
+                            && !et.getDeclaration()
+                                .equals(unit.getBasicDeclaration())) {
                         return true;
                     }
                 }
-                if (o.getClassBody()!=null) {
-                    if (getLastExecutableStatement(o.getClassBody())!=null) {
+                ClassBody body = o.getClassBody();
+                if (body!=null) {
+                    if (getLastExecutableStatement(body)!=null) {
                         return true;
                     }
                 }
@@ -980,7 +988,7 @@ public class Util {
                 if (e!=null) {
                     Unit unit = forClause.getUnit();
                     ProducedType at = 
-                            unit.getAnythingDeclaration().getType();
+                            unit.getAnythingType();
                     ProducedType neit = 
                             unit.getNonemptyIterableType(at);
                     ProducedType t = e.getTypeModel();
@@ -1019,7 +1027,8 @@ public class Util {
         }
     }
 
-    private static boolean isIndirectInvocation(Tree.MemberOrTypeExpression that) {
+    private static boolean isIndirectInvocation(
+            Tree.MemberOrTypeExpression that) {
         ProducedReference prf = that.getTarget();
         if (prf==null) {
             return true;
@@ -1036,7 +1045,8 @@ public class Util {
                 if (d.isStaticallyImportable() || 
                         d instanceof Constructor) {
                     Tree.QualifiedMemberOrTypeExpression qmte = 
-                            (Tree.QualifiedMemberOrTypeExpression) that;
+                            (Tree.QualifiedMemberOrTypeExpression) 
+                                that;
                     return isIndirectInvocation(qmte.getPrimary());
                 }
                 else {
@@ -1047,7 +1057,8 @@ public class Util {
         }
     }
     
-    public static boolean isInstantiationExpression(Tree.Expression e) {
+    public static boolean isInstantiationExpression(
+            Tree.Expression e) {
         Tree.Term term = e.getTerm();
         if (term instanceof Tree.InvocationExpression) {
             Tree.InvocationExpression ie = 
@@ -1122,8 +1133,8 @@ public class Util {
         String qualifier;
         Scope container = dec.getContainer();
         if (container instanceof Declaration) {
-            String name = ((Declaration) container).getName();
-            qualifier = " in '" + name + "'";
+            Declaration cd = (Declaration) container;
+            qualifier = " in '" + cd.getName() + "'";
         }
         else {
             qualifier = "";
@@ -1170,28 +1181,35 @@ public class Util {
         return that;
     }
 
-    static void checkIsExactlyForInterop(Unit unit, boolean isCeylon,  
-            ProducedType parameterType, ProducedType refinedParameterType, 
+    static void checkIsExactlyForInterop(Unit unit, 
+            boolean isCeylon,  
+            ProducedType parameterType, 
+            ProducedType refinedParameterType, 
             Node node, String message) {
         if (isCeylon) {
             // it must be a Ceylon method
-            checkIsExactly(parameterType, refinedParameterType, 
+            checkIsExactly(parameterType, 
+                    refinedParameterType, 
                     node, message, 9200);
         }
         else {
             // we're refining a Java method
             ProducedType refinedDefiniteType = 
-                    unit.getDefiniteType(refinedParameterType);
+                    unit.getDefiniteType(
+                            refinedParameterType);
             checkIsExactlyOneOf(parameterType, 
-                    refinedParameterType, refinedDefiniteType, 
+                    refinedParameterType, 
+                    refinedDefiniteType, 
             		node, message);
         }
     }
 
-    public static ProducedType getTupleType(List<Tree.PositionalArgument> es, 
-            Unit unit, boolean requireSequential) {
-        ProducedType result = unit.getType(unit.getEmptyDeclaration());
-        ProducedType ut = unit.getNothingDeclaration().getType();
+    public static ProducedType getTupleType(
+            List<Tree.PositionalArgument> es, 
+            Unit unit, 
+            boolean requireSequential) {
+        ProducedType result = unit.getEmptyType();
+        ProducedType ut = unit.getNothingType();
         for (int i=es.size()-1; i>=0; i--) {
             Tree.PositionalArgument a = es.get(i);
             ProducedType t = a.getTypeModel();

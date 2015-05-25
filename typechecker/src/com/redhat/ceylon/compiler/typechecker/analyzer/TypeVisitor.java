@@ -721,7 +721,7 @@ public class TypeVisitor extends Visitor {
 //                    return;
 //                }
                 Class td = unit.getTupleDeclaration();
-                t = unit.getType(unit.getEmptyDeclaration());
+                t = unit.getEmptyType();
                 for (int i=0; i<len; i++) {
                     t = producedType(td, et, et, t);
                 }
@@ -735,8 +735,7 @@ public class TypeVisitor extends Visitor {
         super.visit(that);
         Tree.Type elem = that.getElementType();
         if (elem==null) {
-            ProducedType nt = 
-                    unit.getNothingDeclaration().getType();
+            ProducedType nt = unit.getNothingType();
             that.setTypeModel(unit.getIterableType(nt));
             that.addError("iterable type must have an element type");
         }
@@ -765,7 +764,7 @@ public class TypeVisitor extends Visitor {
         super.visit(that);
         List<ProducedType> types = 
                 new ArrayList<ProducedType>(2);
-        types.add(unit.getType(unit.getNullDeclaration()));
+        types.add(unit.getNullType());
         ProducedType dt = 
                 that.getDefiniteType().getTypeModel();
         if (dt!=null) types.add(dt);
@@ -883,10 +882,8 @@ public class TypeVisitor extends Visitor {
             int firstDefaulted,
             Unit unit) {
         Class td = unit.getTupleDeclaration();
-        Interface ed = unit.getEmptyDeclaration();
-        ProducedType result = unit.getType(ed);
-        ProducedType union =
-                unit.getType(unit.getNothingDeclaration());
+        ProducedType result = unit.getEmptyType();
+        ProducedType union = unit.getNothingType();
         int last = elemTypes.size()-1;
         for (int i=last; i>=0; i--) {
             ProducedType elemType = elemTypes.get(i);
@@ -907,7 +904,7 @@ public class TypeVisitor extends Visitor {
                         union, elemType, result);
                 if (firstDefaulted>=0 && i>=firstDefaulted) {
                     pair = new ArrayList<ProducedType>();
-                    pair.add(unit.getType(ed));
+                    pair.add(unit.getEmptyType());
                     pair.add(result);
                     ut = new UnionType(unit);
                     ut.setCaseTypes(pair);
