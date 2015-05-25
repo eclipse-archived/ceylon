@@ -8891,7 +8891,8 @@ public class ExpressionVisitor extends Visitor {
         }
         else if (term instanceof Tree.MemberOrTypeExpression) {
             ProducedType ut = 
-                    unionType(unit.getNullType(), unit.getIdentifiableType(), 
+                    unionType(unit.getNullType(), 
+                            unit.getIdentifiableType(), 
                             unit);
             TypeDeclaration dec = t.getDeclaration();
             if (!dec.isAnonymous() || 
