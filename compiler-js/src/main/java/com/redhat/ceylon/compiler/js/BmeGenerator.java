@@ -157,7 +157,14 @@ public class BmeGenerator {
             if (gen.isInDynamicBlock() && that.getDeclaration() == null) {
                 gen.out("new ");
             }
-            that.getPrimary().visit(gen);
+            Tree.Primary prim = that.getPrimary();
+            if (prim instanceof Tree.BaseMemberExpression) {
+                generateBme((Tree.BaseMemberExpression)prim, gen, forInvoke);
+            } else if (prim instanceof Tree.QualifiedTypeExpression) {
+                generateQte((Tree.QualifiedTypeExpression)prim, gen, forInvoke);
+            } else {
+                prim.visit(gen);
+            }
             if (gen.isInDynamicBlock() && that.getDeclaration() == null) {
                 gen.out(".", that.getIdentifier().getText());
             } else if (that.getDeclaration() instanceof com.redhat.ceylon.model.typechecker.model.Constructor) {
