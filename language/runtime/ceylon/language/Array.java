@@ -1229,8 +1229,8 @@ public final class Array<Element>
     
     @Override
     @TypeInfo("ceylon.language::Entry<ceylon.language::Boolean,ceylon.language::Null|Element>")
-    public Entry<? extends Boolean, ? extends Element> lookup(Integer key) {
-        long ind = key.longValue();
+    public Entry<? extends Boolean, ? extends Element> lookup(@Name("index") Integer index) {
+        long ind = index.longValue();
         boolean defined = ind >= 0 && ind < size;
         Element item = defined ? 
                 unsafeItem((int) ind) : null;

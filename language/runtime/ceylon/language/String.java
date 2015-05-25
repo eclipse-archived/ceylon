@@ -323,8 +323,8 @@ public final class String
     
     @Override
     @TypeInfo("ceylon.language::Entry<ceylon.language::Boolean,ceylon.language::Null|ceylon.language::Character>")
-    public Entry<? extends Boolean, ? extends Character> lookup(Integer key) {
-        return lookup(value, key.value);
+    public Entry<? extends Boolean, ? extends Character> lookup(@Name("index") Integer index) {
+        return lookup(value, index.value);
     }
 
     @Ignore
