@@ -97,8 +97,8 @@ shared sealed interface ClassDeclaration
     
     "The default constructor declaration of this class. 
      Returns null if this class lacks a default constructor.
-     The default constructor is the one with the same name as its 
-     containing class."
+     The default constructor is the one with the name `\"\"`
+     (the empty string)."
     shared formal ConstructorDeclaration? defaultConstructorDeclaration;
     
     "Returns the list of constructors declared on this class. This includes unshared constructors."
