@@ -2614,8 +2614,8 @@ public class ProducedType extends ProducedReference {
     }
 
     public List<ProducedType> getSatisfiedTypes() {
-        TypeDeclaration dec = getDeclaration();
-        List<ProducedType> sts = dec.getSatisfiedTypes();
+        List<ProducedType> sts = 
+                getDeclaration().getSatisfiedTypes();
         if (getTypeArguments().isEmpty()) {
             return sts; 
         }
@@ -2630,8 +2630,8 @@ public class ProducedType extends ProducedReference {
     }
 
     public ProducedType getExtendedType() {
-        TypeDeclaration dec = getDeclaration();
-        ProducedType et = dec.getExtendedType();
+        ProducedType et = 
+                getDeclaration().getExtendedType();
         if (et==null) {
             return null;
         }
@@ -2646,8 +2646,8 @@ public class ProducedType extends ProducedReference {
     }
 
     public List<ProducedType> getCaseTypes() {
-        TypeDeclaration dec = getDeclaration();
-        List<ProducedType> cts = dec.getCaseTypes();
+        List<ProducedType> cts = 
+                getDeclaration().getCaseTypes();
         if (cts==null) {
             return null;
         }

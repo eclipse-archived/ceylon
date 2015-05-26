@@ -143,6 +143,7 @@ public class Class extends ClassOrInterface implements Functional {
 	}
     
     @Override
+    @Deprecated
     public Class getExtendedTypeDeclaration() {
         ClassOrInterface etd = 
                 super.getExtendedTypeDeclaration();
