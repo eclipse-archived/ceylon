@@ -5,7 +5,6 @@ import java.util.List;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
-import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.model.typechecker.model.ProducedType;
@@ -163,13 +162,16 @@ public class TypeArgumentVisitor extends Visitor {
         }
     }
     
-    private ClassOrInterface constructorClass;
+    private TypeDeclaration constructorClass;
     
     @Override public void visit(Tree.Constructor that) {
-        ClassOrInterface occ = constructorClass;
-        constructorClass = 
+        TypeDeclaration occ = constructorClass;
+        ProducedType et = 
                 that.getDeclarationModel()
-                    .getExtendedTypeDeclaration();
+                    .getExtendedType();
+        constructorClass = 
+                et==null ? null :
+                    et.getDeclaration();
         super.visit(that);
         constructorClass = occ;
     }

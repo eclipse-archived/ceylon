@@ -16,17 +16,14 @@ import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Functional;
 import com.redhat.ceylon.model.typechecker.model.Interface;
-import com.redhat.ceylon.model.typechecker.model.IntersectionType;
 import com.redhat.ceylon.model.typechecker.model.Method;
 import com.redhat.ceylon.model.typechecker.model.MethodOrValue;
-import com.redhat.ceylon.model.typechecker.model.NothingType;
 import com.redhat.ceylon.model.typechecker.model.Package;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.ProducedType;
 import com.redhat.ceylon.model.typechecker.model.TypeAlias;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
-import com.redhat.ceylon.model.typechecker.model.UnionType;
 import com.redhat.ceylon.model.typechecker.model.Unit;
 import com.redhat.ceylon.model.typechecker.model.Value;
 
@@ -69,14 +66,13 @@ public class AnnotationVisitor extends Visitor {
     }
     
     private static boolean isEnum(TypeDeclaration ptd) {
-        List<TypeDeclaration> ctds = 
-                ptd.getCaseTypeDeclarations();
-        if (ctds==null) {
+        List<ProducedType> cts = ptd.getCaseTypes();
+        if (cts==null) {
             return false;
         }
         else {
-            for (TypeDeclaration td: ctds) {
-                if (!td.isAnonymous()) {
+            for (ProducedType ct: cts) {
+                if (!ct.getDeclaration().isAnonymous()) {
                     return false;
                 }
             }

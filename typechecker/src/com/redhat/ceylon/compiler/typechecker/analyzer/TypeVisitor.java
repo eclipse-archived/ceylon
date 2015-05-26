@@ -1400,7 +1400,8 @@ public class TypeVisitor extends Visitor {
                                     "' is not shared");
                         }
                         type = type.getExtendedType();
-                        dec = dec.getExtendedTypeDeclaration();
+                        dec = dec.getExtendedType()
+                                .getDeclaration();
                     }
                     if (dec instanceof Class) {
                         td.setExtendedType(type);
@@ -1625,7 +1626,8 @@ public class TypeVisitor extends Visitor {
                             !(etd instanceof UnknownType)) {
                         if (etd instanceof Constructor) {
                             type = type.getExtendedType();
-                            etd = etd.getExtendedTypeDeclaration();
+                            etd = etd.getExtendedType()
+                                    .getDeclaration();
                         }
                         if (etd==td) {
                             //unnecessary, handled by SupertypeVisitor

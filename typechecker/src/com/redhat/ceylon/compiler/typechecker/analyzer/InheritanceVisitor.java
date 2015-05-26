@@ -140,14 +140,16 @@ public class InheritanceVisitor extends Visitor {
             TypeDeclaration td) {
         if (!td.isInconsistentType()) {
             Unit unit = that.getUnit();
-            List<ProducedType> upperBounds = td.getSatisfiedTypes();
+            List<ProducedType> upperBounds = 
+                    td.getSatisfiedTypes();
             List<ProducedType> list = 
                     new ArrayList<ProducedType>
                         (upperBounds.size());
             for (ProducedType st: upperBounds) {
                 addToIntersection(list, st, unit);
             }
-            IntersectionType it = new IntersectionType(unit);
+            IntersectionType it = 
+                    new IntersectionType(unit);
             it.setSatisfiedTypes(list);
             if (it.canonicalize().getType().isNothing()) {
                 that.addError(typeDescription(td, unit) + 
@@ -177,7 +179,8 @@ public class InheritanceVisitor extends Visitor {
                                 (cts.size());
                     for (ProducedType ct: cts) {
                         TypeDeclaration ctd = 
-                                ct.resolveAliases().getDeclaration();
+                                ct.resolveAliases()
+                                    .getDeclaration();
                         ProducedType cst = 
                                 type.getSupertype(ctd);
                         if (cst!=null) {
@@ -206,21 +209,25 @@ public class InheritanceVisitor extends Visitor {
         }
     }
 
-    private void validateEnumeratedSupertypeArguments(Node that, ClassOrInterface d) {
-        //note: I hate doing the whole traversal here, but it is the
-        //      only way to get the error in the right place (see
-        //      the note in visit(CaseTypes) for more)
-        ProducedType type = d.getType();
+    private void validateEnumeratedSupertypeArguments(
+            Node that, ClassOrInterface classOrInterface) {
+        //note: I hate doing the whole traversal here, but
+        //      it is the only way to get the error in the 
+        //      right place (see the note in visit(CaseTypes) 
+        //      for more)
+        ProducedType type = classOrInterface.getType();
         for (ProducedType supertype: type.getSupertypes()) { //traverse the entire supertype hierarchy of the declaration
             if (!type.isExactly(supertype)) {
-                List<TypeDeclaration> ctds = 
+                List<ProducedType> cts = 
                         supertype.getDeclaration()
-                            .getCaseTypeDeclarations();
-                if (ctds!=null) {
-                    for (TypeDeclaration ct: ctds) {
-                        if (ct.equals(d)) { //the declaration is a case of the current enumerated supertype
-                            validateEnumeratedSupertypeArguments(that, 
-                                    d, supertype);
+                            .getCaseTypes();
+                if (cts!=null) {
+                    for (ProducedType ct: cts) {
+                        if (ct.getDeclaration()
+                                .equals(classOrInterface)) { //the declaration is a case of the current enumerated supertype
+                            validateEnumeratedSupertypeArguments(
+                                    that, classOrInterface, 
+                                    supertype);
                             break;
                         }
                     }
@@ -229,67 +236,75 @@ public class InheritanceVisitor extends Visitor {
         }
     }
 
-    private void validateEnumeratedSupertypeArguments(Node that, 
-            TypeDeclaration d, ProducedType supertype) {
-        for (TypeParameter p: 
-                supertype.getDeclaration().getTypeParameters()) {
+    private void validateEnumeratedSupertypeArguments(
+            Node that, TypeDeclaration type, 
+            ProducedType supertype) {
+        List<TypeParameter> params = 
+                supertype.getDeclaration()
+                    .getTypeParameters();
+        for (TypeParameter param: params) {
             ProducedType arg = 
-                    supertype.getTypeArguments().get(p); //the type argument that the declaration (indirectly) passes to the enumerated supertype
+                    supertype.getTypeArguments()
+                        .get(param); //the type argument that the declaration (indirectly) passes to the enumerated supertype
             if (arg!=null) {
                 validateEnumeratedSupertypeArgument(that, 
-                        d, supertype, p, arg);
+                        type, supertype, param, arg);
             }
         }
     }
 
-    private void validateEnumeratedSupertypeArgument(Node that, 
-            TypeDeclaration d, ProducedType supertype, 
-            TypeParameter p, ProducedType arg) {
+    private void validateEnumeratedSupertypeArgument(
+            Node that, TypeDeclaration type, 
+            ProducedType supertype, TypeParameter tp, 
+            ProducedType arg) {
         Unit unit = that.getUnit();
         if (arg.isTypeParameter()) {
-            TypeDeclaration td = arg.getDeclaration();
-            TypeParameter tp = (TypeParameter) td;
-            if (tp.getDeclaration().equals(d)) { //the argument is a type parameter of the declaration
-                //check that the variance of the argument type parameter is
-                //the same as the type parameter of the enumerated supertype
-                if (p.isCovariant() && !tp.isCovariant()) {
+            TypeParameter atp = 
+                    (TypeParameter) 
+                        arg.getDeclaration();
+            if (atp.getDeclaration().equals(type)) { //the argument is a type parameter of the declaration
+                //check that the variance of the argument 
+                //type parameter is the same as the type 
+                //parameter of the enumerated supertype
+                if (tp.isCovariant() && !atp.isCovariant()) {
                     that.addError("argument to covariant type parameter of enumerated supertype must be covariant: " + 
-                            typeDescription(p, unit));
+                            typeDescription(tp, unit));
                 }
-                if (p.isContravariant() && 
-                        !tp.isContravariant()) {
+                if (tp.isContravariant() && 
+                        !atp.isContravariant()) {
                     that.addError("argument to contravariant type parameter of enumerated supertype must be contravariant: " + 
-                            typeDescription(p, unit));
+                            typeDescription(tp, unit));
                 }
             }
             else {
                 that.addError("argument to type parameter of enumerated supertype must be a type parameter of '" +
-                        d.getName() + "': " + 
-                        typeDescription(p, unit));
+                        type.getName() + "': " + 
+                        typeDescription(tp, unit));
             }
         }
-        else if (p.isCovariant()) {
+        else if (tp.isCovariant()) {
             if (!(arg.isNothing())) {
                 //TODO: let it be the union of the lower bounds on p
                 that.addError("argument to covariant type parameter of enumerated supertype must be a type parameter or 'Nothing': " + 
-                        typeDescription(p, unit));
+                        typeDescription(tp, unit));
             }
         }
-        else if (p.isContravariant()) {
-            List<ProducedType> sts = p.getSatisfiedTypes();
+        else if (tp.isContravariant()) {
+            List<ProducedType> sts = tp.getSatisfiedTypes();
             //TODO: do I need to do type arg substitution here??
-            IntersectionType it = new IntersectionType(unit);
+            IntersectionType it = 
+                    new IntersectionType(unit);
             it.setSatisfiedTypes(sts);
             ProducedType ub = it.canonicalize().getType();
             if (!(arg.isExactly(ub))) {
                 that.addError("argument to contravariant type parameter of enumerated supertype must be a type parameter or '" + 
                         typeNamesAsIntersection(sts, unit) + "': " + 
-                        typeDescription(p, unit));
+                        typeDescription(tp, unit));
             }
         }
         else {
             that.addError("argument to type parameter of enumerated supertype must be a type parameter: " + 
-                    typeDescription(p, unit));
+                    typeDescription(tp, unit));
         }
     }
     
@@ -326,8 +341,11 @@ public class InheritanceVisitor extends Visitor {
                     checkSelfTypes(et, td, type);
                     checkExtensionOfMemberType(et, td, type);
                     //checkCaseOfSupertype(et, td, type);
+                    ProducedType ext = 
+                            td.getExtendedType();
                     TypeDeclaration etd = 
-                            td.getExtendedTypeDeclaration();
+                            ext==null ? null :
+                                ext.getDeclaration();
                     TypeDeclaration aetd = 
                             type.getDeclaration();
                     if (aetd instanceof Constructor &&
@@ -337,7 +355,10 @@ public class InheritanceVisitor extends Visitor {
                                 "' is declared abstract");
                     }
                     while (etd!=null && etd.isAlias()) {
-                        etd = etd.getExtendedTypeDeclaration();
+                        ProducedType etdet = 
+                                etd.getExtendedType();
+                        etd = etdet == null ? null :
+                            etdet.getDeclaration();
                     }
                     if (etd!=null) {
                         if (etd.isFinal()) {
@@ -368,7 +389,8 @@ public class InheritanceVisitor extends Visitor {
     public void visit(Tree.SatisfiedTypes that) {
         super.visit(that);
         TypeDeclaration td = 
-                (TypeDeclaration) that.getScope();
+                (TypeDeclaration) 
+                    that.getScope();
         if (td.isAlias()) {
             return;
         }
@@ -382,11 +404,10 @@ public class InheritanceVisitor extends Visitor {
         
         for (Tree.StaticType t: that.getTypes()) {
             ProducedType type = t.getTypeModel();
-            if (type!=null && type.getDeclaration()!=null) {
+            if (!isTypeUnknown(type)) {
                 type = type.resolveAliases();
-                TypeDeclaration std = type.getDeclaration();
                 if (td instanceof ClassOrInterface &&
-                        !inLanguageModule(that.getUnit())) {
+                        !inLanguageModule(unit)) {
                     if (unit.isCallableType(type)) {
                         t.addError("satisfies 'Callable'");
                     }
@@ -404,17 +425,20 @@ public class InheritanceVisitor extends Visitor {
                             type.getDeclaration().getName(unit) +
                             "' of '" + td.getName() + "'");
                 }
-                if (td instanceof ClassOrInterface && 
-                        std.isSealed() && 
-                        !inSameModule(std, unit)) {
-                    String moduleName = 
-                            std.getUnit()
-                                .getPackage()
-                                .getModule()
-                                .getNameAsString();
-                    t.addError("satisfies a sealed interface in a different module: '" +
-                            std.getName(unit) + "' in '" + 
-                            moduleName + "'");
+                if (td instanceof ClassOrInterface) {
+                    TypeDeclaration std = 
+                            type.getDeclaration();
+                    if (std.isSealed() && 
+                            !inSameModule(std, unit)) {
+                        String moduleName = 
+                                std.getUnit()
+                                    .getPackage()
+                                    .getModule()
+                                    .getNameAsString();
+                        t.addError("satisfies a sealed interface in a different module: '" +
+                                std.getName(unit) + "' in '" + 
+                                moduleName + "'");
+                    }
                 }
                 checkSelfTypes(t, td, type);
                 checkExtensionOfMemberType(t, td, type);
@@ -628,18 +652,22 @@ public class InheritanceVisitor extends Visitor {
                         type.addError("constructor delegates to itself: '" +
                                 c.getName() + "'");
                     }
-                    ClassOrInterface delegatedType = 
-                            c.getExtendedTypeDeclaration();
-                    if (superclass.equals(delegatedType)) {
+                    ProducedType delegatedType = 
+                            c.getExtendedType();
+                    TypeDeclaration delegated =
+                            delegatedType == null ? null :
+                                delegatedType.getDeclaration();
+                    if (superclass.equals(delegated)) {
                         checkIsExactly(
                                 constructedType.getExtendedType(), 
                                 extendedType, type, 
                                 "type arguments must match type arguments in extended class expression");
                     }
-                    else if (containingClass.equals(delegatedType)) {
+                    else if (containingClass.equals(delegated)) {
                         if (type instanceof Tree.QualifiedType) {
                             Tree.QualifiedType qt = 
-                                    (Tree.QualifiedType) type;
+                                    (Tree.QualifiedType) 
+                                        type;
                             checkIsExactly(
                                     constructedType.getQualifyingType(), 
                                     containingClass.getType(), 
@@ -682,7 +710,8 @@ public class InheritanceVisitor extends Visitor {
         if (td instanceof Interface) {
             for (ProducedType st: ctd.getSatisfiedTypes()) {
                 if (st!=null && 
-                        st.resolveAliases().getDeclaration()
+                        st.resolveAliases()
+                            .getDeclaration()
                             .equals(td)) {
                     found = true;
                 }
@@ -691,7 +720,8 @@ public class InheritanceVisitor extends Visitor {
         else if (td instanceof Class) {
             ProducedType et = ctd.getExtendedType();
             if (et!=null && 
-                    et.resolveAliases().getDeclaration()
+                    et.resolveAliases()
+                        .getDeclaration()
                         .equals(td)) {
                 found = true;
             }

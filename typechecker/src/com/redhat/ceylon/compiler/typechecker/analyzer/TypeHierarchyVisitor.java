@@ -293,18 +293,22 @@ public class TypeHierarchyVisitor extends Visitor {
 
     private boolean mixedInBySupertype(TypeDeclaration currentType, 
             TypeDeclaration otherType, ClassOrInterface classOrInterface) {
-        TypeDeclaration et = classOrInterface.getExtendedTypeDeclaration();
-        if (et!=null && 
-                et.inherits(currentType) && 
-                et.inherits(otherType)) {
-            return true;
-        }
-        for (TypeDeclaration st: 
-                classOrInterface.getSatisfiedTypeDeclarations()) {
-            if (st!=null && 
-                    st.inherits(currentType) && 
-                    st.inherits(otherType)) {
+        ProducedType et = classOrInterface.getExtendedType();
+        if (et!=null) {
+            TypeDeclaration etd = et.getDeclaration();
+            if (etd.inherits(currentType) && 
+                etd.inherits(otherType)) {
                 return true;
+            }
+        }
+        for (ProducedType st: 
+                classOrInterface.getSatisfiedTypes()) {
+            if (st!=null) {
+                TypeDeclaration std = st.getDeclaration();
+                if (std.inherits(currentType) && 
+                    std.inherits(otherType)) {
+                    return true;
+                }
             }
         }
         return false;

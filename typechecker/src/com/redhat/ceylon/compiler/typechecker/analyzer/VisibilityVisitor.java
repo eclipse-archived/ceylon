@@ -203,9 +203,8 @@ public class VisibilityVisitor extends Visitor {
     static boolean isCompletelyVisibleFromOtherModules(
             Declaration member, ProducedType pt, 
             Module thisModule) {
-        TypeDeclaration ptd = pt.getDeclaration();
         if (pt.isUnion()) {
-            for (ProducedType ct: ptd.getCaseTypes()) {
+            for (ProducedType ct: pt.getCaseTypes()) {
                 if (!isCompletelyVisibleFromOtherModules(
                         member, ct.substitute(pt), 
                         thisModule)) {
@@ -215,7 +214,7 @@ public class VisibilityVisitor extends Visitor {
             return true;
         }
         else if (pt.isIntersection()) {
-            for (ProducedType st: ptd.getSatisfiedTypes()) {
+            for (ProducedType st: pt.getSatisfiedTypes()) {
                 if (!isCompletelyVisibleFromOtherModules(
                         member, st.substitute(pt), 
                         thisModule)) {
@@ -225,8 +224,8 @@ public class VisibilityVisitor extends Visitor {
             return true;
         }
         else {
-            if (!isVisibleFromOtherModules(
-                    member, thisModule, ptd)) {
+            if (!isVisibleFromOtherModules(member, 
+                    thisModule, pt.getDeclaration())) {
                 return false;
             }
             for (ProducedType at: pt.getTypeArgumentList()) {
