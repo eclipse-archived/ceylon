@@ -69,6 +69,66 @@ public abstract class ClassOrInterface extends TypeDeclaration {
     }
 
     @Override
+    public ProducedType getExtendedType() {
+        ProducedType extendedType = 
+                super.getExtendedType();
+        if (extendedType!=null) {
+            TypeDeclaration etd = 
+                    extendedType.getDeclaration();
+            if (etd==this || etd instanceof TypeAlias) {
+                return null;
+            }
+        }
+        return extendedType;
+    }
+
+    @Override
+    public List<ProducedType> getSatisfiedTypes() {
+        List<ProducedType> satisfiedTypes = 
+                super.getSatisfiedTypes();
+        List<ProducedType> sts = satisfiedTypes;
+        for (int i=0, size=sts.size(); i<size; i++) {
+            ProducedType st = sts.get(i);
+            if (st!=null) {
+                TypeDeclaration std = st.getDeclaration();
+                if (std==this || std instanceof TypeAlias) {
+                    if (sts == satisfiedTypes) {
+                        sts = new ArrayList<ProducedType>(sts);
+                    }
+                    sts.remove(i);
+                    size--;
+                    i--; 
+                }
+            }
+        }
+        return sts;
+    }
+    
+    @Override
+    public List<ProducedType> getCaseTypes() {
+        List<ProducedType> caseTypes = 
+                super.getCaseTypes();
+        List<ProducedType> cts = caseTypes;
+        if (cts!=null) {
+            for (int i=0, size=cts.size(); i<size; i++) {
+                ProducedType ct = cts.get(i);
+                if (ct!=null) {
+                    TypeDeclaration ctd = ct.getDeclaration();
+                    if (ctd==this || ctd instanceof TypeAlias) {
+                        if (cts==caseTypes) {
+                            cts = new ArrayList<ProducedType>(cts);
+                        }
+                        cts.remove(i);
+                        i--;
+                        size--;
+                    }
+                }
+            }
+        }
+        return cts;
+    }
+
+    @Override
     protected int hashCodeForCache() {
         int ret = 17;
         ret = Util.addHashForModule(ret, this);

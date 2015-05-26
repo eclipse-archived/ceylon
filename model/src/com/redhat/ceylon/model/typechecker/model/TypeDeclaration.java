@@ -135,15 +135,6 @@ public abstract class TypeDeclaration extends Declaration
     }
 
     public ProducedType getExtendedType() {
-        if (extendedType!=null) {
-            TypeDeclaration etd = 
-                    extendedType.getDeclaration();
-            if (etd==this ||
-                    etd instanceof TypeAlias && 
-                    !(this instanceof TypeAlias)) {
-                return null;
-            }
-        }
         return extendedType;
     }
 
@@ -165,24 +156,7 @@ public abstract class TypeDeclaration extends Declaration
     }
     
     public List<ProducedType> getSatisfiedTypes() {
-        List<ProducedType> sts = satisfiedTypes;
-        for (int i=0, size=sts.size(); i<size; i++) {
-            ProducedType st = sts.get(i);
-            if (st!=null) {
-                TypeDeclaration std = st.getDeclaration();
-                if (std==this || 
-                        std instanceof TypeAlias && 
-                        !(this instanceof IntersectionType)) {
-                    if (sts == satisfiedTypes) {
-                        sts = new ArrayList<ProducedType>(sts);
-                    }
-                    sts.remove(i);
-                    size--;
-                    i--; 
-                }
-            }
-        }
-        return sts;
+        return satisfiedTypes;
     }
 
     public void setSatisfiedTypes(List<ProducedType> satisfiedTypes) {
@@ -208,26 +182,7 @@ public abstract class TypeDeclaration extends Declaration
     }
 
     public List<ProducedType> getCaseTypes() {
-        List<ProducedType> cts = caseTypes;
-        if (cts!=null) {
-            for (int i=0, size=cts.size(); i<size; i++) {
-                ProducedType ct = cts.get(i);
-                if (ct!=null) {
-                    TypeDeclaration ctd = ct.getDeclaration();
-                    if (ctd==this || 
-                            ctd instanceof TypeAlias && 
-                            !(this instanceof UnionType)) {
-                        if (cts==caseTypes) {
-                            cts = new ArrayList<ProducedType>(cts);
-                        }
-                        cts.remove(i);
-                        i--;
-                        size--;
-                    }
-                }
-            }
-        }
-        return cts;
+        return caseTypes;
     }
 
     public void setCaseTypes(List<ProducedType> caseTypes) {
@@ -249,7 +204,8 @@ public abstract class TypeDeclaration extends Declaration
     }
     
     @Override
-    public ProducedReference getProducedReference(ProducedType pt,
+    public ProducedReference getProducedReference(
+            ProducedType pt,
             List<ProducedType> typeArguments) {
         return getProducedType(pt, typeArguments);
     }
@@ -347,9 +303,12 @@ public abstract class TypeDeclaration extends Declaration
                 new ArrayList<TypeDeclaration>());
     }
     
+    //identity containment
     private static <T> boolean contains(Iterable<T> iter, T object) {
         for (Object elem: iter) {
-            if (elem==object) return true;
+            if (elem==object) {
+                return true;
+            }
         }
         return false;
     }
@@ -465,8 +424,9 @@ public abstract class TypeDeclaration extends Declaration
             if (et!=null) {
                 Declaration ed = 
                         et.getDeclaration()
-                            .getRefinedMember(name, signature, 
-                                    ellipsis, visited);
+                            .getRefinedMember(name, 
+                                    signature, ellipsis, 
+                                    visited);
                 if (isBetterRefinement(signature, 
                         ellipsis, result, ed)) {
                     result = ed;
@@ -493,8 +453,9 @@ public abstract class TypeDeclaration extends Declaration
         }
     }
 
-    public boolean isBetterRefinement(List<ProducedType> signature,
-            boolean ellipsis, Declaration result, Declaration candidate) {
+    public boolean isBetterRefinement(
+            List<ProducedType> signature, boolean ellipsis, 
+            Declaration result, Declaration candidate) {
         if (candidate==null ||
                 candidate.isActual() /*&& 
                 !candidate.getNameAsString()
@@ -536,8 +497,11 @@ public abstract class TypeDeclaration extends Declaration
      * account, followed by supertypes. We're looking
      * for shared members.
      */
-    public Declaration getMember(String name, Unit unit, 
-            List<ProducedType> signature, boolean variadic) {
+    public Declaration getMember(
+            String name, 
+            Unit unit, 
+            List<ProducedType> signature, 
+            boolean variadic) {
         //TODO: does not handle aliased members of supertypes
         Declaration dec = 
                 unit.getImportedDeclaration(this, name, 
@@ -562,8 +526,11 @@ public abstract class TypeDeclaration extends Declaration
      *       I'm leaving it like this for now to avoid
      *       breaking the backends
      */
-    public boolean isMemberAmbiguous(String name, Unit unit, 
-            List<ProducedType> signature, boolean variadic) {
+    public boolean isMemberAmbiguous(
+            String name, 
+            Unit unit, 
+            List<ProducedType> signature, 
+            boolean variadic) {
         //TODO: does not handle aliased members of supertypes
         Declaration dec = 
                 unit.getImportedDeclaration(this, name, 
@@ -583,13 +550,16 @@ public abstract class TypeDeclaration extends Declaration
      * We're looking for shared members.
      */
     @Override
-    public Declaration getMember(String name, 
-            List<ProducedType> signature, boolean variadic) {
+    public Declaration getMember(
+            String name, 
+            List<ProducedType> signature, 
+            boolean variadic) {
         return getMemberInternal(name, signature, variadic)
                 .getMember();
     }
 
-    private SupertypeDeclaration getMemberInternal(String name,
+    private SupertypeDeclaration getMemberInternal(
+            String name,
             List<ProducedType> signature, boolean variadic) {
         //first search for the member in the local
         //scope, including non-shared declarations
@@ -636,8 +606,10 @@ public abstract class TypeDeclaration extends Declaration
      * this type.
      */
     @Override
-    protected Declaration getMemberOrParameter(String name, 
-            List<ProducedType> signature, boolean variadic) {
+    protected Declaration getMemberOrParameter(
+            String name, 
+            List<ProducedType> signature, 
+            boolean variadic) {
         //first search for the member or parameter 
         //in the local scope, including non-shared 
         //declarations
@@ -684,7 +656,8 @@ public abstract class TypeDeclaration extends Declaration
             return true;
         }
         else if (getContainer()!=null) {
-            return getContainer().isInherited(member);
+            return getContainer()
+                    .isInherited(member);
         }
         else {
             return false;
@@ -697,7 +670,8 @@ public abstract class TypeDeclaration extends Declaration
      * @return null if the declaration is not inherited!!
      */
     @Override
-    public TypeDeclaration getInheritingDeclaration(Declaration member) {
+    public TypeDeclaration getInheritingDeclaration(
+            Declaration member) {
         if (member.getContainer().equals(this)) {
             return null;
         }
@@ -706,14 +680,16 @@ public abstract class TypeDeclaration extends Declaration
             return this;
         }
         else if (getContainer()!=null) {
-            return getContainer().getInheritingDeclaration(member);
+            return getContainer()
+                    .getInheritingDeclaration(member);
         }
         else {
             return null;
         }
     }
 
-    public boolean isInheritedFromSupertype(final Declaration member) {
+    public boolean isInheritedFromSupertype(
+            final Declaration member) {
         final List<ProducedType> signature = 
                 getSignature(member);
         class Criteria implements ProducedType.Criteria {
@@ -724,7 +700,8 @@ public abstract class TypeDeclaration extends Declaration
                 }
                 else {
                     Declaration dm = 
-                            type.getDirectMember(member.getName(), 
+                            type.getDirectMember(
+                                    member.getName(), 
                                     signature, false);
                     return dm!=null && dm.equals(member);
                 }
@@ -734,7 +711,8 @@ public abstract class TypeDeclaration extends Declaration
             	return false;
             }
         };
-        return getType().getSupertype(new Criteria())!=null;
+        return getType()
+                .getSupertype(new Criteria())!=null;
     }
     
     static class SupertypeDeclaration {
@@ -757,9 +735,12 @@ public abstract class TypeDeclaration extends Declaration
      * Get the supertype which defines the most-refined
      * member with the given name.
      */
-    SupertypeDeclaration getSupertypeDeclaration(final String name, 
-            final List<ProducedType> signature, final boolean variadic) {
-        class ExactCriteria implements ProducedType.Criteria {
+    SupertypeDeclaration getSupertypeDeclaration(
+            final String name, 
+            final List<ProducedType> signature, 
+            final boolean variadic) {
+        class ExactCriteria 
+                implements ProducedType.Criteria {
             @Override
             public boolean satisfies(TypeDeclaration type) {
                 // do not look in ourselves
@@ -785,7 +766,8 @@ public abstract class TypeDeclaration extends Declaration
             	return true;
             }
         };
-        class LooseCriteria implements ProducedType.Criteria {
+        class LooseCriteria 
+                implements ProducedType.Criteria {
             @Override
             public boolean satisfies(TypeDeclaration type) {
                 // do not look in ourselves
