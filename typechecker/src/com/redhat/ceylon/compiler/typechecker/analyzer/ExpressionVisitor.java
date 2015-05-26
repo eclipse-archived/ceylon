@@ -4821,8 +4821,9 @@ public class ExpressionVisitor extends Visitor {
                         }
                     }
                 }
-                TypeDeclaration ptd = pt.getDeclaration();
                 if (pt.isUnion())  {
+                    TypeDeclaration ptd = 
+                            pt.getDeclaration();
                     boolean found = false;
                 	for (TypeDeclaration td: 
                 	        ptd.getCaseTypeDeclarations()) {
