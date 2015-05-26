@@ -45,10 +45,14 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ImportModule;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ModuleDescriptor;
 import com.redhat.ceylon.compiler.typechecker.tree.UnexpectedError;
+import com.redhat.ceylon.compiler.typechecker.tree.Util;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.compiler.typechecker.util.WarningSuppressionVisitor;
+import com.redhat.ceylon.model.typechecker.model.Declaration;
+import com.redhat.ceylon.model.typechecker.model.Import;
 import com.redhat.ceylon.model.typechecker.model.ImportableScope;
 import com.redhat.ceylon.model.typechecker.model.Module;
+import com.redhat.ceylon.model.typechecker.model.ModuleImport;
 import com.redhat.ceylon.model.typechecker.model.Package;
 import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.model.typechecker.model.Unit;
@@ -105,13 +109,24 @@ public class JsCompiler {
             }
             super.visit(that);
         }
+        
         @Override
         public void visit(Tree.ImportMemberOrType that) {
             if (hasErrors(that)) return;
-            if (that.getImportModel() == null || that.getImportModel().getDeclaration() == null)return;
-            Unit u = that.getImportModel().getDeclaration().getUnit();
-            if (nonCeylonUnit(u)) {
-                that.addUnexpectedError("cannot import Java declarations in Javascript", Backend.JavaScript);
+            Import importModel = that.getImportModel();
+            if (that.getImportModel() == null) {
+                return;
+            }
+            Declaration importedDeclaration = importModel.getDeclaration();
+            if (importedDeclaration == null) {
+                return;
+            }
+            
+            Unit importedDeclarationUnit = importedDeclaration.getUnit();
+            if (importedDeclarationUnit != null && nonCeylonUnit(importedDeclarationUnit)) {
+                if (!providedByAJavaNativeModuleImport(that.getUnit(), importedDeclarationUnit)) {
+                    that.addUnexpectedError("cannot import Java declarations in Javascript", Backend.JavaScript);
+                }
             }
             super.visit(that);
         }
@@ -119,20 +134,42 @@ public class JsCompiler {
         public void visit(Tree.ImportModule that) {
             if (hasErrors(that)) {
                 exitCode = 1;
-            } else if (that.getImportPath() != null && that.getImportPath().getModel() instanceof Module &&
-                    ((Module)that.getImportPath().getModel()).isJava()
-                    && !Backend.Java.nativeAnnotation.equals(((Module)that.getImportPath().getModel()).getNative())) {
-                that.getImportPath().addUnexpectedError("cannot import Java modules in Javascript", Backend.JavaScript);
             } else {
-                super.visit(that);
+                boolean isJavaModule = false;
+                String importNativeBackend = null;
+                String moduleNativeBackend = null;
+                if (that.getImportPath() != null && that.getImportPath().getModel() instanceof Module) {
+                    Module importedModule = (Module) that.getImportPath().getModel();
+                    if (importedModule.isJava()) {
+                        isJavaModule = true;
+                        moduleNativeBackend = importedModule.getNative();
+                    }
+                }
+                if (that.getQuotedLiteral() != null) {
+                    isJavaModule = true;
+                }
+                if (isJavaModule) {
+                    importNativeBackend = Util.getNativeBackend(that.getAnnotationList(), that.getUnit());
+                    if (!Backend.Java.nativeAnnotation.equals(importNativeBackend)
+                            && !Backend.Java.nativeAnnotation.equals(moduleNativeBackend)) {
+                        that.getImportPath().addUnexpectedError("cannot import Java modules in Javascript", Backend.JavaScript);
+                    }
+                } else {
+                    super.visit(that);
+                }
             }
         }
         @Override
         public void visit(Tree.BaseMemberOrTypeExpression that) {
             if (hasErrors(that)) return;
-            if (that.getDeclaration() != null && that.getDeclaration().getUnit() != null) {
-                Unit u = that.getDeclaration().getUnit();
-                if (nonCeylonUnit(u)) {
+            Declaration declaration = that.getDeclaration();
+            Unit declarationUnit = null;
+            if (declaration != null) {
+                declarationUnit = declaration.getUnit();
+            }
+            
+            if (declarationUnit != null && nonCeylonUnit(declarationUnit)) {
+                if (!providedByAJavaNativeModuleImport(that.getUnit(), declarationUnit)) {
                     that.addUnexpectedError("cannot call Java declarations in Javascript", Backend.JavaScript);
                 }
             }
@@ -141,13 +178,35 @@ public class JsCompiler {
         @Override
         public void visit(Tree.QualifiedMemberOrTypeExpression that) {
             if (hasErrors(that)) return;
-            if (that.getDeclaration() != null && that.getDeclaration().getUnit() != null) {
-                Unit u = that.getDeclaration().getUnit();
-                if (nonCeylonUnit(u)) {
+            Declaration declaration = that.getDeclaration();
+            Unit declarationUnit = null;
+            if (declaration != null) {
+                declarationUnit = declaration.getUnit();
+            }
+            
+            if (declarationUnit != null && nonCeylonUnit(declarationUnit)) {
+                if (!providedByAJavaNativeModuleImport(that.getUnit(), declarationUnit)) {
                     that.addUnexpectedError("cannot call Java declarations in Javascript", Backend.JavaScript);
                 }
             }
             super.visit(that);
+        }
+
+        protected boolean providedByAJavaNativeModuleImport(
+                Unit currentUnit, Unit declarationUnit) {
+            boolean isFromAJavaNativeModuleImport;
+            Module declarationModule = declarationUnit.getPackage().getModule();
+            String moduleNativeBackend = declarationModule.getNative();
+            String importNativeBackend = null;
+            for(ModuleImport moduleImport : currentUnit.getPackage().getModule().getImports()) {
+                if (declarationModule.equals(moduleImport.getModule())) {
+                    importNativeBackend = moduleImport.getNative();
+                    break;
+                }
+            }
+            isFromAJavaNativeModuleImport = Backend.Java.nativeAnnotation.equals(importNativeBackend)
+                    || Backend.Java.nativeAnnotation.equals(moduleNativeBackend);
+            return isFromAJavaNativeModuleImport;
         }
     };
 
