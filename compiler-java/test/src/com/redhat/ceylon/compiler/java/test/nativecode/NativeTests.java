@@ -227,6 +227,11 @@ public class NativeTests extends CompilerTests {
         );
     }
     
+    @Test
+    public void testNativeOtherRef() {
+        testNativeModule("otherref");
+    }
+    
     // Misc
     
     @Test
