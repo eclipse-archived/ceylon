@@ -417,20 +417,6 @@ public class GenerateJsVisitor extends Visitor
             final Tree.Constructor cnst2, final int filter) {
         if (cnstr == null) {
             visitStatements(cdef.getClassBody().getStatements());
-        } else if (cnstr.getDeclarationModel().isAbstract()) {
-            ReturnConstructorVisitor rcv = new ReturnConstructorVisitor(cnstr);
-            if (rcv.isReturns()) {
-                out("(function(){");
-            }
-            for (Tree.Statement s2 : cnstr.getBlock().getStatements()) {
-                //Ignore return statements directly in main constructor scope
-                s2.visit(this);
-                if (!opts.isMinify())beginNewLine();
-                retainedVars.emitRetainedVars(this);
-            }
-            if (rcv.isReturns()) {
-                out("}())");
-            }
         } else {
             List<String> oldRetainedVars = retainedVars.reset(null);
             final List<? extends Statement> prevStatements = currentStatements;
