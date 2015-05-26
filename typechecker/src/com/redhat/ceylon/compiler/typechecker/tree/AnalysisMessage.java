@@ -23,7 +23,7 @@ public class AnalysisMessage implements Message {
     }
     
     public AnalysisMessage(Node treeNode, String message, int code) {
-        this(treeNode, message, 0, null);
+        this(treeNode, message, code, null);
     }
     
     public AnalysisMessage(Node treeNode, String message, int code, Backend backend) {
