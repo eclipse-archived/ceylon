@@ -25,7 +25,9 @@ public class SerializationHelper {
         gen.beginBlock();
         gen.out("var ", gen.getNames().self(d), "=this;");
         //Call super.ser$$ if possible
-        com.redhat.ceylon.model.typechecker.model.Class et = d.getExtendedTypeDeclaration();
+        ProducedType extendedType = d.getExtendedType();
+        com.redhat.ceylon.model.typechecker.model.Class et = extendedType==null ? null : 
+            (com.redhat.ceylon.model.typechecker.model.Class) extendedType.getDeclaration();
         while (et != null && !(et.equals(d.getUnit().getObjectDeclaration()) || et.equals(d.getUnit().getBasicDeclaration()))) {
             if (et.isSerializable()) {
                 gen.qualify(node, et);
@@ -33,7 +35,9 @@ public class SerializationHelper {
                 et = null;
                 gen.endLine();
             } else {
-                et = et.getExtendedTypeDeclaration();
+                extendedType = extendedType.getExtendedType();
+                et = extendedType==null ? null : 
+                    (com.redhat.ceylon.model.typechecker.model.Class) extendedType.getDeclaration();
             }
         }
         gen.endLine();
@@ -116,7 +120,9 @@ public class SerializationHelper {
         gen.beginBlock();
         //Call super.deser$$ if possible
         boolean create = true;
-        com.redhat.ceylon.model.typechecker.model.Class et = d.getExtendedTypeDeclaration();
+        ProducedType extendedType = d.getExtendedType();
+        com.redhat.ceylon.model.typechecker.model.Class et = extendedType==null ? null : 
+            (com.redhat.ceylon.model.typechecker.model.Class) extendedType.getDeclaration();
         while (create && !(et.equals(that.getUnit().getObjectDeclaration()) || et.equals(that.getUnit().getBasicDeclaration()))) {
             if (et.isSerializable()) {
                 gen.qualify(that, et);
@@ -124,7 +130,9 @@ public class SerializationHelper {
                 gen.endLine();
                 create = false;
             } else {
-                et = et.getExtendedTypeDeclaration();
+                extendedType = extendedType.getExtendedType();
+                et = extendedType==null ? null : 
+                    (com.redhat.ceylon.model.typechecker.model.Class) extendedType.getDeclaration();
             }
         }
         //Get the current package and module

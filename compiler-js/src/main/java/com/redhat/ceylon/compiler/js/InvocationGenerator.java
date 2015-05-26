@@ -11,9 +11,11 @@ import com.redhat.ceylon.compiler.js.util.JsIdentifierNames;
 import com.redhat.ceylon.compiler.js.util.RetainedVars;
 import com.redhat.ceylon.compiler.js.util.TypeUtils;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.Constructor;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Functional;
+import com.redhat.ceylon.model.typechecker.model.Interface;
 import com.redhat.ceylon.model.typechecker.model.Method;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.ParameterList;
@@ -161,8 +163,10 @@ public class InvocationGenerator {
                 }
                 if (fillInParams) {
                     //Get the callable and try to assign params from there
-                    ProducedType callable = typeArgSource.getTypeModel().getSupertype(
-                            that.getUnit().getCallableDeclaration());
+                    Interface cd = that.getUnit().getCallableDeclaration();
+                    Interface ed = that.getUnit().getEmptyDeclaration();
+                    Class td = that.getUnit().getTupleDeclaration();
+                    ProducedType callable = typeArgSource.getTypeModel().getSupertype(cd);
                     if (callable != null) {
                         //This is a tuple with the arguments to the callable
                         //(can be union with empty if first param is defaulted)
@@ -170,12 +174,12 @@ public class InvocationGenerator {
                         boolean isUnion=false;
                         if (callableArgs.isUnion()) {
                             if (callableArgs.getCaseTypes().size() == 2) {
-                                callableArgs = callableArgs.minus(that.getUnit().getEmptyDeclaration().getType());
+                                callableArgs = callableArgs.minus(ed.getType());
                             }
                             isUnion=callableArgs.isUnion();
                         }
                         //This is the type of the first argument
-                        boolean isSequenced = !(isUnion || that.getUnit().getTupleDeclaration().equals(
+                        boolean isSequenced = !(isUnion || td.equals(
                                 callableArgs.getDeclaration()));
                         ProducedType argtype = isUnion ? callableArgs :
                             callableArgs.isTypeParameter() ? callableArgs :
@@ -196,15 +200,15 @@ public class InvocationGenerator {
                                     p.setSequenced(true);
                                 } else if (!isSequenced) {
                                     ProducedType next = isUnion ? null : callableArgs.getTypeArgumentList().get(2);
-                                    if (next != null && next.getSupertype(that.getUnit().getTupleDeclaration()) == null) {
+                                    if (next != null && next.getSupertype(td) == null) {
                                         //It's not a tuple, so no more regular parms. It can be:
                                         //empty|tuple if defaulted params
                                         //empty if no more params
                                         //sequential if sequenced param
                                         if (next.isUnion()) {
                                             //empty|tuple
-                                            callableArgs = next.minus(that.getUnit().getEmptyDeclaration().getType());
-                                            isSequenced = !that.getUnit().getTupleDeclaration().equals(
+                                            callableArgs = next.minus(ed.getType());
+                                            isSequenced = !td.equals(
                                                     callableArgs.getDeclaration());
                                             argtype = callableArgs.getTypeArgumentList().get(isSequenced ? 0 : 1);
                                         } else {

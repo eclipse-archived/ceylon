@@ -461,8 +461,8 @@ public class FunctionHelper {
                             end |= copyMissingTypeParameters(m, (Method)d, i, false, gen);
                         }
                     }
-                    for (TypeDeclaration sup : cont.getSatisfiedTypeDeclarations()) {
-                        Declaration d = sup.getDirectMember(m.getName(), null, false);
+                    for (ProducedType sup : cont.getSatisfiedTypes()) {
+                        Declaration d = sup.getDeclaration().getDirectMember(m.getName(), null, false);
                         if (d instanceof Method && !decs.contains(d)) {
                             decs.add(d);
                             end |= copyMissingTypeParameters(m, (Method)d, i, false, gen);

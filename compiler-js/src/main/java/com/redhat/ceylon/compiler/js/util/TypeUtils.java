@@ -15,10 +15,12 @@ import com.redhat.ceylon.compiler.loader.MetamodelGenerator;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.model.typechecker.model.Annotation;
+import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.model.typechecker.model.Constructor;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Generic;
+import com.redhat.ceylon.model.typechecker.model.Interface;
 import com.redhat.ceylon.model.typechecker.model.Method;
 import com.redhat.ceylon.model.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.model.typechecker.model.Module;
@@ -223,7 +225,6 @@ public class TypeUtils {
 
     /** Appends an object with the type's type and list of union/intersection types. */
     public static boolean outputTypeList(final Node node, final ProducedType pt, final GenerateJsVisitor gen, final boolean skipSelfDecl) {
-        TypeDeclaration d = pt.getDeclaration();
         final List<ProducedType> subs;
         int seq=0;
         if (pt.isIntersection()) {
@@ -232,34 +233,38 @@ public class TypeUtils {
         } else if (pt.isUnion()) {
             gen.out(gen.getClAlias(), "mut$([");
             subs = pt.getCaseTypes();
-        } else if ("ceylon.language::Tuple".equals(d.getQualifiedNameString())) {
-            subs = d.getUnit().getTupleElementTypes(pt);
-            final ProducedType lastType = subs.get(subs.size()-1);
-            if (Util.isTypeUnknown(lastType) || lastType.isTypeParameter()) {
-                //Revert to outputting normal Tuple with its type arguments
-                gen.out("{t:", gen.getClAlias(), "Tuple,a:");
-                printTypeArguments(node, pt.getTypeArguments(), gen, skipSelfDecl, pt.getVarianceOverrides());
-                gen.out("}");
-                return true;
-            }
-            if (!d.getUnit().getEmptyDeclaration().equals(lastType.getDeclaration())) {
-                if (d.getUnit().getSequentialDeclaration().equals(lastType.getDeclaration())) {
-                    seq = 1;
+        }
+        else {
+            TypeDeclaration d = pt.getDeclaration();
+            if ("ceylon.language::Tuple".equals(d.getQualifiedNameString())) {
+                subs = d.getUnit().getTupleElementTypes(pt);
+                final ProducedType lastType = subs.get(subs.size()-1);
+                if (Util.isTypeUnknown(lastType) || lastType.isTypeParameter()) {
+                    //Revert to outputting normal Tuple with its type arguments
+                    gen.out("{t:", gen.getClAlias(), "Tuple,a:");
+                    printTypeArguments(node, pt.getTypeArguments(), gen, skipSelfDecl, pt.getVarianceOverrides());
+                    gen.out("}");
+                    return true;
                 }
-                if (d.getUnit().getSequenceDeclaration().equals(lastType.getDeclaration())) {
-                    seq = 2;
+                if (!d.getUnit().getEmptyDeclaration().equals(lastType.getDeclaration())) {
+                    if (d.getUnit().getSequentialDeclaration().equals(lastType.getDeclaration())) {
+                        seq = 1;
+                    }
+                    if (d.getUnit().getSequenceDeclaration().equals(lastType.getDeclaration())) {
+                        seq = 2;
+                    }
                 }
+                if (seq > 0) {
+                    //Non-empty, non-tuple tail; union it with its type parameter
+                    UnionType utail = new UnionType(d.getUnit());
+                    utail.setCaseTypes(Arrays.asList(lastType.getTypeArgumentList().get(0), lastType));
+                    subs.remove(subs.size()-1);
+                    subs.add(utail.getType());
+                }
+                gen.out(gen.getClAlias(), "mtt$([");
+            } else {
+                return false;
             }
-            if (seq > 0) {
-                //Non-empty, non-tuple tail; union it with its type parameter
-                UnionType utail = new UnionType(d.getUnit());
-                utail.setCaseTypes(Arrays.asList(lastType.getTypeArgumentList().get(0), lastType));
-                subs.remove(subs.size()-1);
-                subs.add(utail.getType());
-            }
-            gen.out(gen.getClAlias(), "mtt$([");
-        } else {
-            return false;
         }
         boolean first = true;
         for (ProducedType t : subs) {
@@ -356,10 +361,7 @@ public class TypeUtils {
     }
 
     static ProducedType typeContainsTypeParameter(ProducedType td, TypeParameter tp) {
-        TypeDeclaration d = td.getDeclaration();
-        if (d == tp) {
-            return td;
-        } else if (td.isUnion() || td.isIntersection()) {
+        if (td.isUnion() || td.isIntersection()) {
             List<ProducedType> comps = td.getCaseTypes();
             if (comps == null) comps = td.getSatisfiedTypes();
             for (ProducedType sub : comps) {
@@ -368,10 +370,16 @@ public class TypeUtils {
                     return td;
                 }
             }
-        } else if (td.isClassOrInterface()) {
-            for (ProducedType sub : td.getTypeArgumentList()) {
-                if (typeContainsTypeParameter(sub, tp) != null) {
-                    return td;
+        }
+        else {
+            TypeDeclaration d = td.getDeclaration();
+            if (d == tp) {
+                return td;
+            } else if (d instanceof ClassOrInterface) {
+                for (ProducedType sub : td.getTypeArgumentList()) {
+                    if (typeContainsTypeParameter(sub, tp) != null) {
+                        return td;
+                    }
                 }
             }
         }
@@ -519,6 +527,7 @@ public class TypeUtils {
             Parameter _p = null;
             if (tuple.equals(tdecl) || (_tuple.getCaseTypes() != null
                     && _tuple.getCaseTypes().size()==2
+                    //TODO: fix this!
                     && tdecl.getCaseTypeDeclarations().contains(tuple))) {
                 _p = new Parameter();
                 _p.setModel(new Value());
@@ -579,6 +588,7 @@ public class TypeUtils {
             gen.out(MetamodelGenerator.KEY_TYPE, ":");
             if (tuple.equals(tdecl) || (_tuple.getCaseTypes() != null
                     && _tuple.getCaseTypes().size()==2
+                            //TODO: fix this!
                     && tdecl.getCaseTypeDeclarations().contains(tuple))) {
                 if (tuple.equals(tdecl)) {
                     metamodelTypeNameOrList(resolveTargs, node, gen.getCurrentPackage(),
@@ -957,25 +967,32 @@ public class TypeUtils {
     static boolean outputMetamodelTypeList(final boolean resolveTargs, final Node node,
             final com.redhat.ceylon.model.typechecker.model.Package pkg,
             ProducedType pt, GenerateJsVisitor gen) {
-        TypeDeclaration type = pt.getDeclaration();
         final List<ProducedType> subs;
         if (pt.isIntersection()) {
             gen.out("{t:'i");
             subs = pt.getSatisfiedTypes();
         } else if (pt.isUnion()) {
             //It still could be a Tuple with first optional type
-            List<TypeDeclaration> cts = type.getCaseTypeDeclarations();
-            if (cts.size()==2 && cts.contains(type.getUnit().getEmptyDeclaration())
-                    && cts.contains(type.getUnit().getTupleDeclaration())) {
-                //yup...
-                gen.out("{t:'T',l:");
-                encodeTupleAsParameterListForRuntime(resolveTargs, node, pt,false,gen);
-                gen.out("}");
-                return true;
+            List<ProducedType> cts = pt.getCaseTypes();
+            if (cts.size()==2) {
+                Interface ed = node.getUnit().getEmptyDeclaration();
+                Class td = node.getUnit().getTupleDeclaration();
+                for (ProducedType ct: cts) {
+                    if (ct.isClass()) {
+                        TypeDeclaration ctd = ct.getDeclaration();
+                        if (ctd.equals(ed) && ctd.equals(td)) {
+                            //yup...
+                            gen.out("{t:'T',l:");
+                            encodeTupleAsParameterListForRuntime(resolveTargs, node, pt,false,gen);
+                            gen.out("}");
+                            return true;
+                        }
+                    }
+                }
             }
             gen.out("{t:'u");
             subs = pt.getCaseTypes();
-        } else if (type.getQualifiedNameString().equals("ceylon.language::Tuple")) {
+        } else if (pt.getDeclaration().getQualifiedNameString().equals("ceylon.language::Tuple")) {
             gen.out("{t:'T',l:");
             encodeTupleAsParameterListForRuntime(resolveTargs, node, pt,false, gen);
             gen.out("}");

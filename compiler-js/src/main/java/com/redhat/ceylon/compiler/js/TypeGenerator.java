@@ -353,7 +353,7 @@ public class TypeGenerator {
         final Tree.ExtendedType extendedType = that.getExtendedType();
         callSupertypes(sats == null ? null : sats.getTypes(), extendedType == null ? null : extendedType.getType(),
                 d, that, superDecs, extendedType == null ? null : extendedType.getInvocationExpression(),
-                extendedType == null ? null : d.getExtendedTypeDeclaration().getParameterList(), gen);
+                extendedType == null ? null : ((Class) d.getExtendedType().getDeclaration()).getParameterList(), gen);
 
         if (!gen.opts.isOptimize() && plist != null) {
             //Fix #231 for lexical scope
@@ -643,7 +643,7 @@ public class TypeGenerator {
         TypeGenerator.callSupertypes(sats == null ? null : sats.getTypes(),
                 superType == null ? null : superType.getType(), c, that, superDecs,
                 superType == null ? null : superType.getInvocationExpression(),
-                superType == null ? null : c.getExtendedTypeDeclaration().getParameterList(), gen);
+                superType == null ? null : ((Class) c.getExtendedType().getDeclaration()).getParameterList(), gen);
         
         body.visit(gen);
         gen.out("return ", selfName, ";");
