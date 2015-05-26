@@ -46,7 +46,7 @@ public class UnionType extends TypeDeclaration {
         List<ProducedType> cts = getCaseTypes();
         for (ProducedType pt: cts) {
             if (pt==null || pt.isUnknown()) {
-                return new UnknownType(unit).getType();
+                return unit.getUnknownType();
             }
         }
         if (cts.size()==0) {
@@ -87,19 +87,19 @@ public class UnionType extends TypeDeclaration {
     
     @Override
     public List<TypeDeclaration> getSupertypeDeclarations() {
-        List<ProducedType> ctds = getCaseTypes();
+        List<ProducedType> cts = getCaseTypes();
         List<TypeDeclaration> result =
                 new ArrayList<TypeDeclaration>
-                    (ctds.size());
+                    (cts.size());
         ProducedType type = getType();
-        for (int i=0, l=ctds.size(); i<l; i++) {
+        for (int i=0, size=cts.size(); i<size; i++) {
             //actually the loop is unnecessary, we
             //only need to consider the first case
-            ProducedType ct = ctds.get(i);
+            ProducedType ct = cts.get(i);
             TypeDeclaration ctd = ct.getDeclaration();
             List<TypeDeclaration> ctsts = 
                     ctd.getSupertypeDeclarations();
-            for (int j=0; j<ctsts.size(); j++) {
+            for (int j=0, max=ctsts.size(); j<max; j++) {
                 TypeDeclaration std = ctsts.get(j);
                 ProducedType st = type.getSupertype(std);
                 if (st!=null && !st.isNothing()) {
