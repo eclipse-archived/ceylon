@@ -109,6 +109,20 @@ class Test565 {
   shared actual String string=>sb.string;
 }
 
+class Test540 {
+  shared new Bar(Integer a=1) {
+    check(a==1, "#540");
+  }
+  shared new() extends Bar() {}
+}
+
+class Test541 {
+  abstract new Bar(){
+    check(true,"#541");
+  }
+  shared new() extends Bar() {}
+}
+
 void testConstructors() {
   check(ToplevelBug476.Bar().x==2, "#476 toplevel");
   class NestedBug476 {
@@ -160,4 +174,6 @@ void testConstructors() {
   }
   (Test564.Bar)();
   check(Test565().string=="abcd", "#565");
+  Test541();
+  Test540();
 }
