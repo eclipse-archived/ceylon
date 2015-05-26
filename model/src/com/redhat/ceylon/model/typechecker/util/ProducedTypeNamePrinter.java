@@ -86,13 +86,13 @@ public class ProducedTypeNamePrinter {
     }
 
     public String getProducedTypeName(ProducedType pt, Unit unit) {
-        if (pt==null || pt.getDeclaration()==null) {
+        if (pt==null) {
             return "unknown";
         }
         else {
-            TypeDeclaration declaration = pt.getDeclaration();
             if (printAbbreviated()) {
-                Unit u = declaration.getUnit();
+                //TODO: we're going to have to fix this!
+                Unit u = pt.getDeclaration().getUnit();
                 if (abbreviateOptional(pt)) {
                     ProducedType dt = pt.eliminateNull();
                     String dtn = getProducedTypeName(dt, unit);
@@ -151,7 +151,8 @@ public class ProducedTypeNamePrinter {
                             + getProducedTypeName(vt, unit);
                 }
                 if (abbreviateCallable(pt)) {
-                    List<ProducedType> tal = pt.getTypeArgumentList();
+                    List<ProducedType> tal = 
+                            pt.getTypeArgumentList();
                     ProducedType rt = tal.get(0);
                     ProducedType at = tal.get(1);
                     if (abbreviateCallableArg(at)) {
@@ -246,7 +247,7 @@ public class ProducedTypeNamePrinter {
                 StringBuilder name = new StringBuilder();
                 TypeParameter tp = 
                         (TypeParameter) 
-                            declaration;
+                            pt.getDeclaration();
 
                 if (printTypeParameterDetail() && 
                         tp.isContravariant()) {
@@ -274,41 +275,45 @@ public class ProducedTypeNamePrinter {
 
                 return name.toString();
             }
-            else if (declaration.isAlias() && 
-                    declaration.isAnonymous()) {
-                StringBuilder name = new StringBuilder();
-                if (pt.isTypeConstructor()) {
-                    name.append(lt());
-                    TypeParameter tpc = 
-                            pt.getTypeConstructorParameter();
-                    List<TypeParameter> params = 
-                            (tpc == null ? declaration : tpc)
+            else {
+                TypeDeclaration declaration = 
+                        pt.getDeclaration();
+                if (declaration.isAlias() && 
+                        declaration.isAnonymous()) {
+                    StringBuilder name = new StringBuilder();
+                    if (pt.isTypeConstructor()) {
+                        name.append(lt());
+                        TypeParameter tpc = 
+                                pt.getTypeConstructorParameter();
+                        List<TypeParameter> params = 
+                                (tpc == null ? declaration : tpc)
                                 .getTypeParameters();
-                    for (TypeParameter tp: params) {
-                        if (name.length()>lt().length()) {
-                            name.append(", ");
+                        for (TypeParameter tp: params) {
+                            if (name.length()>lt().length()) {
+                                name.append(", ");
+                            }
+                            if (tp.isCovariant()) {
+                                name.append("out ");
+                            }
+                            if (tp.isContravariant()) {
+                                name.append("in ");
+                            }
+                            printDeclaration(name, tp, 
+                                    printFullyQualified(), unit);
                         }
-                        if (tp.isCovariant()) {
-                            name.append("out ");
-                        }
-                        if (tp.isContravariant()) {
-                            name.append("in ");
-                        }
-                        printDeclaration(name, tp, 
-                                printFullyQualified(), unit);
+                        name.append(gt());
+                        appendConstraintsString(pt, name, unit);
+                        name.append(" =").append(gt()).append(" ");
                     }
-                    name.append(gt());
-                    appendConstraintsString(pt, name, unit);
-                    name.append(" =").append(gt()).append(" ");
-                }
-                ProducedType aliasedType =
-                        declaration.getExtendedType()
+                    ProducedType aliasedType =
+                            declaration.getExtendedType()
                             .substitute(pt);
-                name.append(getProducedTypeName(aliasedType, unit));
-                return name.toString();
-            }
-            else {            
-                return getSimpleProducedTypeName(pt, unit);
+                    name.append(getProducedTypeName(aliasedType, unit));
+                    return name.toString();
+                }
+                else {            
+                    return getSimpleProducedTypeName(pt, unit);
+                }
             }
         }
     }
@@ -316,7 +321,7 @@ public class ProducedTypeNamePrinter {
     public static boolean abbreviateEntry(ProducedType pt) {
         Unit unit = pt.getDeclaration().getUnit();
         Class ed = unit.getEntryDeclaration();
-        if (pt.getDeclaration() instanceof Class &&
+        if (pt.isClass() &&
                 pt.getDeclaration().equals(ed) &&
                 pt.getTypeArgumentList().size()==2) {
             ProducedType kt = unit.getKeyType(pt);
@@ -335,9 +340,10 @@ public class ProducedTypeNamePrinter {
     }
 
     public static boolean abbreviateEmpty(ProducedType pt) {
-        if (pt.getDeclaration() instanceof Interface) {
-            Unit unit = pt.getDeclaration().getUnit();
-            return pt.getDeclaration().equals(unit.getEmptyDeclaration());
+        if (pt.isInterface()) {
+            TypeDeclaration dec = pt.getDeclaration();
+            Unit unit = dec.getUnit();
+            return dec.equals(unit.getEmptyDeclaration());
         }
         return false;
     }
@@ -357,15 +363,19 @@ public class ProducedTypeNamePrinter {
 
     public static boolean abbreviateTuple(ProducedType pt) {
         TypeDeclaration dec = pt.getDeclaration();
-        return dec instanceof Class && 
-                dec.equals(dec.getUnit().getTupleDeclaration()) &&
+        Unit unit = dec.getUnit();
+        return pt.isClass() && 
+                dec.equals(unit.getTupleDeclaration()) &&
                         isTupleTypeWellformed(pt);
     }
 
     public static boolean abbreviateCallable(ProducedType pt) {
-        if (pt.getDeclaration() instanceof Interface) {
-            Interface callableDeclaration = pt.getDeclaration().getUnit().getCallableDeclaration();
-            return  pt.getDeclaration().equals(callableDeclaration) &&
+        if (pt.isInterface()) {
+            TypeDeclaration dec = pt.getDeclaration();
+            Interface callableDeclaration = 
+                    dec.getUnit()
+                        .getCallableDeclaration();
+            return  dec.equals(callableDeclaration) &&
                     pt.getTypeArgumentList().size()==2 && 
                     pt.getTypeArgumentList().get(0)!=null /*&& 
                     abbreviateCallableArg(pt.getTypeArgumentList().get(1))*/;
@@ -377,9 +387,10 @@ public class ProducedTypeNamePrinter {
     
     private static boolean abbreviateCallableArg(ProducedType at) {
         if (at.isUnion()) {
-            return at.getCaseTypes().size()==2 &&
-                    abbreviateEmpty(at.getCaseTypes().get(0)) &&
-                    abbreviateCallableArg(at.getCaseTypes().get(1));
+            List<ProducedType> caseTypes = at.getCaseTypes();
+            return caseTypes.size()==2 &&
+                    abbreviateEmpty(caseTypes.get(0)) &&
+                    abbreviateCallableArg(caseTypes.get(1));
         }
         else {
             return abbreviateEmpty(at) || 
@@ -390,9 +401,10 @@ public class ProducedTypeNamePrinter {
     }
 
     public static boolean abbreviateSequence(ProducedType pt) {
-        if (pt.getDeclaration() instanceof Interface) {
-            Unit unit = pt.getDeclaration().getUnit();
-            if (pt.getDeclaration().equals(unit.getSequenceDeclaration())) {
+        if (pt.isInterface()) {
+            TypeDeclaration dec = pt.getDeclaration();
+            Unit unit = dec.getUnit();
+            if (dec.equals(unit.getSequenceDeclaration())) {
                 ProducedType et = unit.getIteratedType(pt);
                 return et!=null;// && et.isPrimitiveAbbreviatedType();
             }
@@ -441,19 +453,19 @@ public class ProducedTypeNamePrinter {
                 args.getTypeArgumentList().size()<3) {
             return false;
         }
-        Unit u = args.getDeclaration().getUnit();
+        Unit unit = args.getDeclaration().getUnit();
         List<ProducedType> elemtypes = 
-                u.getTupleElementTypes(args);
-        if (u.isTupleLengthUnbounded(args)) {
+                unit.getTupleElementTypes(args);
+        if (unit.isTupleLengthUnbounded(args)) {
             int lastIndex = elemtypes.size()-1;
             ProducedType last = elemtypes.get(lastIndex);
             elemtypes.set(lastIndex, 
-                    u.getSequentialElementType(last));
+                    unit.getSequentialElementType(last));
         }
         if (elemtypes==null) {
             return false;
         }
-        UnionType ut = new UnionType(u);
+        UnionType ut = new UnionType(unit);
         ut.setCaseTypes(elemtypes);
         ProducedType t = ut.getType();
         ProducedType typeArg = 
@@ -646,7 +658,7 @@ public class ProducedTypeNamePrinter {
                 container = container.getContainer();
             }
             if (container != null) {
-                if(container instanceof Package){
+                if (container instanceof Package) {
                     String q = container.getQualifiedNameString();
                     if (!q.isEmpty()) {
                         ptn.append(q).append("::");
