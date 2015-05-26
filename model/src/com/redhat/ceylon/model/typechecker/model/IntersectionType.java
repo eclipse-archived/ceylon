@@ -43,13 +43,15 @@ public class IntersectionType extends TypeDeclaration {
         for (ProducedType pt: sts) {
             if (pt==null || pt.isUnknown()) {
                 List<ProducedType> list = 
-                        new ArrayList<ProducedType>(sts.size()-1);
+                        new ArrayList<ProducedType>
+                            (sts.size()-1);
                 for (ProducedType st: sts) {
                     if (!st.isUnknown()) {
                         list.add(st);
                     }
                 }
-                IntersectionType it = new IntersectionType(unit);
+                IntersectionType it = 
+                        new IntersectionType(unit);
                 it.setSatisfiedTypes(list);
                 return it.getType();
             }
@@ -87,7 +89,8 @@ public class IntersectionType extends TypeDeclaration {
 	    }
 		for (ProducedType st: sts) {
 			if (st.isUnion()) {
-				TypeDeclaration result = new UnionType(unit);
+				TypeDeclaration result = 
+				        new UnionType(unit);
                 List<ProducedType> caseTypes = 
                         st.getCaseTypes();
 				List<ProducedType> ulist = 
@@ -99,12 +102,13 @@ public class IntersectionType extends TypeDeclaration {
 					            (sts.size());
 					for (ProducedType pt: sts) {
 						if (pt==st) {
-							addToIntersection(ilist, ct, unit, 
+							addToIntersection(ilist, ct, 
+							        unit, 
 							        reduceDisjointTypes);
 						}
 						else {
-							addToIntersection(ilist, pt, unit, 
-							        reduceDisjointTypes);
+							addToIntersection(ilist, pt, 
+							        unit, reduceDisjointTypes);
 						}
 					}
 					IntersectionType it = 

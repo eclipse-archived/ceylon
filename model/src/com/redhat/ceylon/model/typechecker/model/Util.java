@@ -1551,21 +1551,20 @@ public class Util {
         }
         TypeDeclaration aDecl = a.getDeclaration();
         TypeDeclaration bDecl = b.getDeclaration();
-        if(aDecl == null || bDecl == null) {
+        if (aDecl == null || bDecl == null) {
             return null;
         }
-        if (!(aDecl instanceof ClassOrInterface)) {
-            if (aDecl instanceof UnionType && 
-                    bDecl instanceof ClassOrInterface) {
+        if (!a.isClassOrInterface()) {
+            if (a.isUnion() && b.isClassOrInterface()) {
                 return getSimpleIntersection(
                         b, (ClassOrInterface) bDecl, 
                         a, (UnionType)aDecl);
             }
             return null;
         }
-        if (!(bDecl instanceof ClassOrInterface)) {
+        if (!b.isClassOrInterface()) {
             // here aDecl MUST BE a ClassOrInterface as per flow
-            if (bDecl instanceof UnionType){
+            if (b.isUnion()) {
                 return getSimpleIntersection(
                         a, (ClassOrInterface) aDecl, 
                         b, (UnionType) bDecl);
@@ -1686,14 +1685,14 @@ public class Util {
                     type.getSatisfiedTypes();
             if (satisfiedTypes.isEmpty()) {
                 // trivial intersection TP&Object
+                Unit unit = objectDecl.getUnit();
                 IntersectionType it = 
-                        new IntersectionType(
-                                objectDecl.getUnit());
+                        new IntersectionType(unit);
                 it.getSatisfiedTypes().add(type);
                 it.getSatisfiedTypes().add(objectDecl.getType());
                 return it.canonicalize().getType();
             }
-            for(ProducedType sat: satisfiedTypes){
+            for (ProducedType sat: satisfiedTypes) {
                 if (sat.isClassOrInterface() && 
                         sat.getDeclaration()
                             .getQualifiedNameString()
@@ -1709,9 +1708,10 @@ public class Util {
         return null;
     }
 
-    public static boolean isElementOfUnion(UnionType ut, 
+    public static boolean isElementOfUnion(
+            ProducedType unionType, 
             ClassOrInterface ci) {
-        for (ProducedType ct: ut.getCaseTypes()) {
+        for (ProducedType ct: unionType.getCaseTypes()) {
             if (ct.isClassOrInterface() && 
                     ct.getDeclaration().equals(ci)) {
                 return true;

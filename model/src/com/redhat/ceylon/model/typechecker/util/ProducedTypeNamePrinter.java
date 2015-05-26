@@ -346,9 +346,8 @@ public class ProducedTypeNamePrinter {
         if (pt.isUnion()) {
             TypeDeclaration dec = pt.getDeclaration();
             Unit unit = dec.getUnit();
-            UnionType ut = (UnionType) dec;
-            return ut.getCaseTypes().size()==2 &&
-                    isElementOfUnion(ut, unit.getNullDeclaration()); /*&&
+            return pt.getCaseTypes().size()==2 &&
+                    isElementOfUnion(pt, unit.getNullDeclaration()); /*&&
                     minus(unit.getNullDeclaration()).isPrimitiveAbbreviatedType();*/
         }
         else {

@@ -1316,11 +1316,12 @@ public class ProducedType extends ProducedReference {
             if (declaration.equals(supertype)) {
                 return SupertypeCheck.YES;
             }
-            ClassOrInterface etd = 
-                    declaration.getExtendedTypeDeclaration();
-            if (etd!=null) {
+            ProducedType et = 
+                    declaration.getExtendedType();
+            if (et!=null) {
                 SupertypeCheck extended = 
-                        checkSupertype(etd, supertype);
+                        checkSupertype(et.getDeclaration(), 
+                                supertype);
                 if (extended == SupertypeCheck.YES) {
                     return extended;
                 }
