@@ -743,15 +743,17 @@ public class Decl {
     
     
     public static boolean isEnumeratedTypeWithAnonCases(ProducedType parameterType) {
-        TypeDeclaration decl = parameterType.getDeclaration();
-        if (decl.equals(decl.getUnit().getBooleanDeclaration())) {
+        if (parameterType.isClass()) {
+            TypeDeclaration decl = parameterType.getDeclaration();
+            if (decl.equals(decl.getUnit().getBooleanDeclaration())) {
+                return false;
+            }
+        }
+        if (parameterType.getCaseTypes() == null) {
             return false;
         }
-        if (decl.getCaseTypeDeclarations() == null) {
-            return false;
-        }
-        for (TypeDeclaration td : decl.getCaseTypeDeclarations()) {
-            if (!td.isAnonymous()) {
+        for (ProducedType td : parameterType.getCaseTypes()) {
+            if (!td.getDeclaration().isAnonymous()) {
                 return false;
             }
         }
@@ -769,8 +771,9 @@ public class Decl {
             return false;
         }
         if (decl instanceof Value) {
-            TypeDeclaration type = ((Value) decl).getType().getDeclaration();
-            if (type.isAnonymous()) {
+            ProducedType type = ((Value) decl).getType();
+            if (type.isClass() &&
+                    type.getDeclaration().isAnonymous()) {
                 if (isEnumeratedTypeWithAnonCases(type.getExtendedType())) {
                     return true;
                 }

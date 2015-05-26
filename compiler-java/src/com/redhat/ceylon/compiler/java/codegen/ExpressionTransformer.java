@@ -1355,8 +1355,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         if(addCast){
             // if we have a type that is not nothingType and not Type, we need to cast
             exprType = exprType.resolveAliases();
-            TypeDeclaration typeDeclaration = exprType.getDeclaration();
-            if(typeDeclaration instanceof UnionType == false
+            if(!exprType.isUnion()
                     && !exprType.isExactly(typeFact().getMetamodelNothingTypeDeclaration().getType())
                     && !exprType.isExactly(typeFact().getMetamodelTypeDeclaration().getType())){
                 JCExpression typeClass = makeJavaType(exprType, JT_NO_PRIMITIVES);

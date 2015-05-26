@@ -366,10 +366,10 @@ public class MethodDefinitionBuilder
         if (canWiden
                 && (gen.typeFact().isUnion(nonWideningType) 
                         || gen.typeFact().isIntersection(nonWideningType))) {
-            final TypeDeclaration refinedTypeDecl = ((TypedDeclaration)CodegenUtil.getTopmostRefinedDeclaration(nonWideningDecl)).getType().getDeclaration();
-            if (refinedTypeDecl instanceof TypeParameter
-                    && !refinedTypeDecl.getSatisfiedTypes().isEmpty()) {
-                nonWideningType = refinedTypeDecl.getSatisfiedTypes().get(0);
+            final ProducedType refinedType = ((TypedDeclaration)CodegenUtil.getTopmostRefinedDeclaration(nonWideningDecl)).getType();
+            if (refinedType.isTypeParameter()
+                    && !refinedType.getSatisfiedTypes().isEmpty()) {
+                nonWideningType = refinedType.getSatisfiedTypes().get(0);
                 // Could be parameterized, and type param won't be in scope, so have to go raw
                 flags |= AbstractTransformer.JT_RAW;
             }

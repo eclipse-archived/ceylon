@@ -66,7 +66,6 @@ import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Interface;
-import com.redhat.ceylon.model.typechecker.model.IntersectionType;
 import com.redhat.ceylon.model.typechecker.model.Method;
 import com.redhat.ceylon.model.typechecker.model.ProducedReference;
 import com.redhat.ceylon.model.typechecker.model.ProducedType;
@@ -74,7 +73,6 @@ import com.redhat.ceylon.model.typechecker.model.Scope;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.model.typechecker.model.TypeParameter;
 import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
-import com.redhat.ceylon.model.typechecker.model.UnionType;
 
 public abstract class BoxingVisitor extends Visitor {
 
@@ -517,28 +515,26 @@ public abstract class BoxingVisitor extends Visitor {
     private boolean hasTypeParameterWithConstraintsOutsideScopeResolved(ProducedType type, Scope scope) {
         if(type == null)
             return false;
-        TypeDeclaration declaration = type.getDeclaration();
-        if(declaration == null)
-            return false;
-        if(declaration instanceof UnionType){
-            UnionType ut = (UnionType) declaration;
-            java.util.List<ProducedType> caseTypes = ut.getCaseTypes();
+        if(type.isUnion()){
+            java.util.List<ProducedType> caseTypes = type.getCaseTypes();
             for(ProducedType pt : caseTypes){
                 if(hasTypeParameterWithConstraintsOutsideScopeResolved(pt, scope))
                     return true;
             }
             return false;
         }
-        if(declaration instanceof IntersectionType){
-            IntersectionType ut = (IntersectionType) declaration;
-            java.util.List<ProducedType> satisfiedTypes = ut.getSatisfiedTypes();
+        if(type.isIntersection()){
+            java.util.List<ProducedType> satisfiedTypes = type.getSatisfiedTypes();
             for(ProducedType pt : satisfiedTypes){
                 if(hasTypeParameterWithConstraintsOutsideScopeResolved(pt, scope))
                     return true;
             }
             return false;
         }
-        if(declaration instanceof TypeParameter){
+        TypeDeclaration declaration = type.getDeclaration();
+        if(declaration == null)
+            return false;
+        if(type.isTypeParameter()){
             // only look at it if it is defined outside our scope
             Scope typeParameterScope = declaration.getContainer();
             while(scope != null){

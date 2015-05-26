@@ -1297,7 +1297,7 @@ public class Naming extends NamingBase implements LocalId {
     final String getCompanionFieldName(Interface def) {
         // resolve aliases
         if(def.isAlias())
-            def = (Interface) def.getExtendedTypeDeclaration();
+            def = (Interface) def.getExtendedType().getDeclaration();
         return suffixName(Suffix.$this$, "$" + Decl.className(def).replace('.', '$'));
     }
 

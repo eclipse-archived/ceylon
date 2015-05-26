@@ -3381,24 +3381,24 @@ public class StatementTransformer extends AbstractTransformer {
 
 
     private boolean isOrContainsError(ProducedType exceptionType) {
-        TypeDeclaration declaration = exceptionType.getDeclaration();
-        if (declaration instanceof TypeAlias) {
+        if (exceptionType.isTypeAlias()) {
             return isOrContainsError(exceptionType.resolveAliases());
-        } else if (declaration instanceof UnionType) {
-            for (ProducedType t : declaration.getCaseTypes()) {
+        } else if (exceptionType.isUnion()) {
+            for (ProducedType t : exceptionType.getCaseTypes()) {
                 if (isOrContainsError(t)) {
                     return true;
                 }
             }
             return false;
-        } else if (declaration instanceof IntersectionType) {
-            for (ProducedType t : declaration.getSatisfiedTypes()) {
+        } else if (exceptionType.isIntersection()) {
+            for (ProducedType t : exceptionType.getSatisfiedTypes()) {
                 if (isOrContainsError(t)) {
                     return true;
                 }
             }
             return false;
         } else {
+            TypeDeclaration declaration = exceptionType.getDeclaration();
             return "java.lang::Error".equals(declaration.getQualifiedNameString());
         }
     }

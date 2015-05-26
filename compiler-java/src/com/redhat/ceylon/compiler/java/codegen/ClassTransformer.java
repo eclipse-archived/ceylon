@@ -91,7 +91,6 @@ import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.model.typechecker.model.TypeParameter;
 import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.model.typechecker.model.Unit;
-import com.redhat.ceylon.model.typechecker.model.UnknownType;
 import com.redhat.ceylon.model.typechecker.model.Value;
 import com.sun.tools.javac.code.Flags;
 import com.sun.tools.javac.tree.JCTree;
@@ -1287,7 +1286,7 @@ public class ClassTransformer extends AbstractTransformer {
         }
         
         // initialize companion instances to a new companion instance
-        if (!model.getSatisfiedTypeDeclarations().isEmpty()) {
+        if (!model.getSatisfiedTypes().isEmpty()) {
             SatisfactionVisitor visitor = new SatisfactionVisitor() {
                 @Override
                 public void visit(Class model, Interface iface) {
@@ -1637,7 +1636,7 @@ public class ClassTransformer extends AbstractTransformer {
     }
     
     private void addReifiedTypeInterface(ClassDefinitionBuilder classBuilder, ClassOrInterface model) {
-        if(model.getExtendedType() == null || willEraseToObject(model.getExtendedType()) || !Decl.isCeylon(model.getExtendedTypeDeclaration()))
+        if(model.getExtendedType() == null || willEraseToObject(model.getExtendedType()) || !Decl.isCeylon(model.getExtendedType().getDeclaration()))
             classBuilder.reifiedType();
     }
 
@@ -1693,8 +1692,8 @@ public class ClassTransformer extends AbstractTransformer {
         if(satisfiedTypes.size() <= 1)
             return;
         Set<Interface> satisfiedInterfaces = new HashSet<Interface>();
-        for(TypeDeclaration interfaceDecl : model.getSatisfiedTypeDeclarations()){
-            collectInterfaces((Interface) interfaceDecl, satisfiedInterfaces);
+        for(ProducedType interfaceDecl : model.getSatisfiedTypes()){
+            collectInterfaces((Interface) interfaceDecl.getDeclaration(), satisfiedInterfaces);
         }
 
         Set<Interface> ambiguousInterfaces = new HashSet<Interface>();
@@ -1908,13 +1907,12 @@ public class ClassTransformer extends AbstractTransformer {
     }
 
     private void satisfaction(Tree.SatisfiedTypes satisfied, final Class model, ClassDefinitionBuilder classBuilder) {
-        final java.util.List<ProducedType> satisfiedTypes = model.getSatisfiedTypes();
         Set<Interface> satisfiedInterfaces = new HashSet<Interface>();
         // start by saying that we already satisfied each interface from superclasses
         Class superClass = model.getExtendedTypeDeclaration();
         while(superClass != null){
-            for(TypeDeclaration interfaceDecl : superClass.getSatisfiedTypeDeclarations()){
-                collectInterfaces((Interface) interfaceDecl, satisfiedInterfaces);
+            for(ProducedType interfaceDecl : superClass.getSatisfiedTypes()){
+                collectInterfaces((Interface) interfaceDecl.getDeclaration(), satisfiedInterfaces);
             }
             superClass = superClass.getExtendedTypeDeclaration();
         }
@@ -1939,8 +1937,8 @@ public class ClassTransformer extends AbstractTransformer {
         if(model.getExtendedTypeDeclaration() != null){
             // reuse that Set
             satisfiedInterfaces.clear();
-            for(TypeDeclaration interfaceDecl : model.getSatisfiedTypeDeclarations()){
-                collectInterfaces((Interface) interfaceDecl, satisfiedInterfaces);
+            for(ProducedType interfaceDecl : model.getSatisfiedTypes()){
+                collectInterfaces((Interface) interfaceDecl.getDeclaration(), satisfiedInterfaces);
             }
             // now see if we refined them
             for(Interface iface : satisfiedInterfaces){
@@ -1962,9 +1960,9 @@ public class ClassTransformer extends AbstractTransformer {
 
     private void collectInterfaces(Interface interfaceDecl, Set<Interface> satisfiedInterfaces) {
         if(satisfiedInterfaces.add(interfaceDecl)){
-            for(TypeDeclaration newInterfaceDecl : interfaceDecl.getSatisfiedTypeDeclarations()){
-                if (!(newInterfaceDecl instanceof UnknownType)) {
-                    collectInterfaces((Interface) newInterfaceDecl, satisfiedInterfaces);
+            for(ProducedType newInterfaceDecl : interfaceDecl.getSatisfiedTypes()){
+                if (!(newInterfaceDecl.isUnknown())) {
+                    collectInterfaces((Interface) newInterfaceDecl.getDeclaration(), satisfiedInterfaces);
                 }
             }
         }
@@ -2610,8 +2608,8 @@ public class ClassTransformer extends AbstractTransformer {
         if (Decl.equal(currentDecl, iface)) {
             return currentType;
         }
-        if(currentDecl.getExtendedType() != null){
-            ProducedType supertype = currentType.getSupertype(currentDecl.getExtendedTypeDeclaration());
+        if(currentType.getExtendedType() != null){
+            ProducedType supertype = currentType.getSupertype(currentType.getExtendedType().getDeclaration());
             found = getFirstSatisfiedType(supertype, iface);
             if(found != null)
                 return found;
@@ -4742,7 +4740,7 @@ public class ClassTransformer extends AbstractTransformer {
     private MethodDefinitionBuilder makeMainForClass(ClassOrInterface model) {
         at(null);
         if(model.isAlias())
-            model = model.getExtendedTypeDeclaration();
+            model = (ClassOrInterface) model.getExtendedType().getDeclaration();
         JCExpression nameId = makeJavaType(model.getType(), JT_RAW);
         List<JCExpression> arguments = makeBottomReifiedTypeParameters(model.getTypeParameters());
         JCNewClass expr = make().NewClass(null, null, nameId, arguments, null);

@@ -29,14 +29,10 @@ import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Functional;
-import com.redhat.ceylon.model.typechecker.model.IntersectionType;
-import com.redhat.ceylon.model.typechecker.model.NothingType;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.ParameterList;
 import com.redhat.ceylon.model.typechecker.model.ProducedType;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
-import com.redhat.ceylon.model.typechecker.model.TypeParameter;
-import com.redhat.ceylon.model.typechecker.model.UnionType;
 import com.redhat.ceylon.model.typechecker.model.UnknownType;
 import com.redhat.ceylon.model.typechecker.model.Value;
 
@@ -69,17 +65,9 @@ public class UnknownTypeCollector extends Visitor {
         collectUnknownTypes(type, visited);
     }
 
-    private void collectUnknownTypes(ProducedType type, Map<Declaration, Declaration> visited) {
-        if (type!=null) {
-            collectUnknownTypesResolved(type.resolveAliases(), visited);
-        }
-    }
-
     private void collectUnknownTypesResolved(ProducedType type, Map<Declaration, Declaration> visited) {
         if(type != null){
-            TypeDeclaration declaration = type.getDeclaration();
-            if(declaration != null)
-                collectUnknownTypes(declaration, visited);
+            collectUnknownTypes(type, visited);
             List<ProducedType> typeArguments = type.getTypeArgumentList();
             // cheaper c-for than foreach
             for (int i=0,l=typeArguments.size();i<l;i++) {
@@ -89,31 +77,38 @@ public class UnknownTypeCollector extends Visitor {
         }
     }
 
-    private void collectUnknownTypes(TypeDeclaration declaration, Map<Declaration, Declaration> visited) {
-        if(visited.put(declaration, declaration) != null)
-            return;
-        if(declaration instanceof UnknownType){
-            UnknownType ut = (UnknownType) declaration;
-            ut.reportErrors();
-            // don't report it twice
-            ut.setErrorReporter(null);
-        }else if(declaration instanceof UnionType){
-            for(ProducedType t : declaration.getCaseTypes()){
-                collectUnknownTypesResolved(t, visited);
+    private void collectUnknownTypes(ProducedType type, Map<Declaration, Declaration> visited) {
+        if (type!=null) {
+            type = type.resolveAliases();
+            if(type.isUnknown()){
+                UnknownType ut = (UnknownType) type.getDeclaration();
+                ut.reportErrors();
+                // don't report it twice
+                ut.setErrorReporter(null);
+            }else if(type.isUnion()){
+                for(ProducedType t : type.getCaseTypes()){
+                    collectUnknownTypesResolved(t, visited);
+                }
+            }else if(type.isIntersection()){
+                for(ProducedType t : type.getSatisfiedTypes()){
+                    collectUnknownTypesResolved(t, visited);
+                }
+            }else if(type.isUnknown() || type.isTypeParameter()){
+                // do nothing
             }
-        }else if(declaration instanceof IntersectionType){
-            for(ProducedType t : declaration.getSatisfiedTypes()){
-                collectUnknownTypesResolved(t, visited);
+            else {
+                TypeDeclaration declaration = type.getDeclaration();
+                if(visited.put(declaration, declaration) != null)
+                    return;
+                if(type.isClassOrInterface()){
+                    // these are not resolved
+                    if(type.getExtendedType() != null)
+                        collectUnknownTypes(type.getExtendedType(), visited);
+                    for(ProducedType t : type.getSatisfiedTypes())
+                        collectUnknownTypes(t, visited);
+
+                }
             }
-        }else if(declaration instanceof ClassOrInterface){
-            // these are not resolved
-            if(declaration.getExtendedType() != null)
-                collectUnknownTypes(declaration.getExtendedType(), visited);
-            for(ProducedType t : declaration.getSatisfiedTypes())
-                collectUnknownTypes(t, visited);
-        }else if(declaration instanceof NothingType
-                || declaration instanceof TypeParameter){
-            // do nothing
         }
     }
 }

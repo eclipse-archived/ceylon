@@ -366,7 +366,7 @@ public class ClassDoc extends ClassOrPackageDoc {
 
     private void writeTabs() throws IOException {
         boolean hasTypeHierarchy = klass instanceof Class;
-        boolean hasSupertypeHierarchy = klass instanceof Class || !isEmpty(klass.getSatisfiedTypeDeclarations());
+        boolean hasSupertypeHierarchy = klass instanceof Class || !isEmpty(klass.getSatisfiedTypes());
         boolean hasSubtypeHierarchy = !isEmpty(tool.getSubclasses(klass)) || !isEmpty(tool.getSatisfyingClassesOrInterfaces(klass));
 
         open("div class='type-tabs section'");
@@ -444,7 +444,7 @@ public class ClassDoc extends ClassOrPackageDoc {
         ProducedType type = klass.getExtendedType();
         while (type != null) {
             superTypes.add(0, type);
-            type = type.getDeclaration().getExtendedType();
+            type = type.getExtendedType();
         }
         int level = 0;
         for (ProducedType superType : superTypes) {
@@ -505,12 +505,14 @@ public class ClassDoc extends ClassOrPackageDoc {
     
     private List<TypeDeclaration> collectSupertypes(TypeDeclaration type) {
         List<TypeDeclaration> supertypes = new ArrayList<TypeDeclaration>();
-        if (type instanceof Class && type.getExtendedTypeDeclaration() != null) {
-            supertypes.add(type.getExtendedTypeDeclaration());
+        if (type instanceof Class && type.getExtendedType() != null) {
+            supertypes.add(type.getExtendedType().getDeclaration());
         }
-        List<TypeDeclaration> satisfiedTypes = type.getSatisfiedTypeDeclarations();
+        List<ProducedType> satisfiedTypes = type.getSatisfiedTypes();
         if (satisfiedTypes != null) {
-            supertypes.addAll(satisfiedTypes);
+            for (ProducedType satisfiedType: satisfiedTypes) {
+                supertypes.add(satisfiedType.getDeclaration());
+            }
         }
         return supertypes;
     }

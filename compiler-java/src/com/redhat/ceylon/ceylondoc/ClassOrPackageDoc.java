@@ -386,8 +386,8 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
     }
 
     protected final void writeInheritance(TypeDeclaration typeDeclaration) throws IOException {
-        if (typeDeclaration.getCaseTypes()!=null &&
-                !typeDeclaration.getCaseTypes().isEmpty()) {
+        List<ProducedType> caseTypes = typeDeclaration.getCaseTypes();
+        if (caseTypes!=null && !caseTypes.isEmpty()) {
             open("div class='inheritance-satisfies'");
             writeCaseTypes(typeDeclaration);
             close("div");
@@ -400,8 +400,8 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
             linkRenderer().to(typeDeclaration.getExtendedType()).write();
             close("div");
         }
-        if (typeDeclaration.getSatisfiedTypes()!=null &&
-                !typeDeclaration.getSatisfiedTypes().isEmpty()) {
+        List<ProducedType> satisfiedTypes = typeDeclaration.getSatisfiedTypes();
+        if (satisfiedTypes!=null && !satisfiedTypes.isEmpty()) {
             open("div class='inheritance-of'");
             writeSatisfiedTypes(typeDeclaration);
             close("div");

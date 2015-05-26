@@ -19,8 +19,6 @@
  */
 package com.redhat.ceylon.compiler.java.codegen;
 
-import static com.redhat.ceylon.model.typechecker.model.Util.getSignature;
-
 import java.util.List;
 import java.util.Map;
 
@@ -35,11 +33,8 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
 import com.redhat.ceylon.model.loader.JvmBackendUtil;
 import com.redhat.ceylon.model.loader.NamingBase.Unfix;
 import com.redhat.ceylon.model.typechecker.model.Class;
-import com.redhat.ceylon.model.typechecker.model.ClassAlias;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
-import com.redhat.ceylon.model.typechecker.model.Functional;
 import com.redhat.ceylon.model.typechecker.model.Interface;
-import com.redhat.ceylon.model.typechecker.model.IntersectionType;
 import com.redhat.ceylon.model.typechecker.model.Method;
 import com.redhat.ceylon.model.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.model.typechecker.model.Package;
@@ -48,9 +43,7 @@ import com.redhat.ceylon.model.typechecker.model.ProducedType;
 import com.redhat.ceylon.model.typechecker.model.Scope;
 import com.redhat.ceylon.model.typechecker.model.Specification;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
-import com.redhat.ceylon.model.typechecker.model.TypeParameter;
 import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
-import com.redhat.ceylon.model.typechecker.model.UnionType;
 import com.redhat.ceylon.model.typechecker.model.Value;
 
 /**
@@ -338,26 +331,23 @@ public class CodegenUtil {
      * are type parameters.
      */
     public static boolean containsTypeParameter(ProducedType type) {
-        TypeDeclaration declaration = type.getDeclaration();
-        if(declaration == null)
-            return false;
-        if(declaration instanceof TypeParameter)
+        if(type.isTypeParameter())
             return true;
         for(ProducedType pt : type.getTypeArgumentList()){
             if(containsTypeParameter(pt)){
                 return true;
             }
         }
-        if(declaration instanceof IntersectionType){
-            List<ProducedType> types = declaration.getSatisfiedTypes();
+        if(type.isIntersection()){
+            List<ProducedType> types = type.getSatisfiedTypes();
             for(int i=0,l=types.size();i<l;i++){
                 if(containsTypeParameter(types.get(i)))
                     return true;
             }
             return false;
         }
-        if(declaration instanceof UnionType){
-            List<ProducedType> types = declaration.getCaseTypes();
+        if(type.isUnion()){
+            List<ProducedType> types = type.getCaseTypes();
             for(int i=0,l=types.size();i<l;i++){
                 if(containsTypeParameter(types.get(i)))
                     return true;

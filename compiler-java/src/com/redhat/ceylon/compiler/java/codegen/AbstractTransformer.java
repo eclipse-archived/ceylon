@@ -84,12 +84,10 @@ import com.redhat.ceylon.model.typechecker.model.ProducedType;
 import com.redhat.ceylon.model.typechecker.model.ProducedTypedReference;
 import com.redhat.ceylon.model.typechecker.model.Scope;
 import com.redhat.ceylon.model.typechecker.model.SiteVariance;
-import com.redhat.ceylon.model.typechecker.model.TypeAlias;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.model.typechecker.model.TypeParameter;
 import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.model.typechecker.model.UnionType;
-import com.redhat.ceylon.model.typechecker.model.UnknownType;
 import com.redhat.ceylon.model.typechecker.util.ProducedTypeNamePrinter;
 import com.sun.tools.javac.code.BoundKind;
 import com.sun.tools.javac.code.Symbol.TypeSymbol;
@@ -737,13 +735,12 @@ public abstract class AbstractTransformer implements Transformation {
             }
         }
         
-        TypeDeclaration tdecl = type.getDeclaration();
-        if (tdecl instanceof UnionType && tdecl.getCaseTypes().size() == 1) {
+        if (type.isUnion() && type.getCaseTypes().size() == 1) {
             // Special case when the Union contains only a single CaseType
             // FIXME This is not correct! We might lose information about type arguments!
-            type = tdecl.getCaseTypes().get(0);
-        } else if (tdecl instanceof IntersectionType) {
-            java.util.List<ProducedType> satisfiedTypes = tdecl.getSatisfiedTypes();
+            type = type.getCaseTypes().get(0);
+        } else if (type.isIntersection()) {
+            java.util.List<ProducedType> satisfiedTypes = type.getSatisfiedTypes();
             if (satisfiedTypes.size() == 1) {
                 // Special case when the Intersection contains only a single SatisfiedType
                 // FIXME This is not correct! We might lose information about type arguments!
@@ -1045,14 +1042,14 @@ public abstract class AbstractTransformer implements Transformation {
         }
         // look up
         // first look in super types
-        if(typeDecl.getExtendedTypeDeclaration() != null){
-            TypedDeclaration refinedDecl = getFirstRefinedDeclaration(typeDecl.getExtendedTypeDeclaration(), decl, signature, visited, false);
+        if(typeDecl.getExtendedType() != null){
+            TypedDeclaration refinedDecl = getFirstRefinedDeclaration(typeDecl.getExtendedType().getDeclaration(), decl, signature, visited, false);
             if(refinedDecl != null)
                 return refinedDecl;
         }
         // look in interfaces
-        for(TypeDeclaration interf : typeDecl.getSatisfiedTypeDeclarations()){
-            TypedDeclaration refinedDecl = getFirstRefinedDeclaration(interf, decl, signature, visited, false);
+        for(ProducedType interf : typeDecl.getSatisfiedTypes()){
+            TypedDeclaration refinedDecl = getFirstRefinedDeclaration(interf.getDeclaration(), decl, signature, visited, false);
             if(refinedDecl != null)
                 return refinedDecl;
         }
@@ -1082,11 +1079,11 @@ public abstract class AbstractTransformer implements Transformation {
         }
         else {
             visited.add(decl);
-            ProducedType et = decl.getExtendedType();
+            ProducedType et = currentType.getExtendedType();
             if (et!=null) {
                 collectRefinedMembers(et, name, signature, ellipsis, visited, ret, false);
             }
-            for (ProducedType st: decl.getSatisfiedTypes()) {
+            for (ProducedType st: currentType.getSatisfiedTypes()) {
                 collectRefinedMembers(st, name, signature, ellipsis, visited, ret, false);
             }
             // we're collecting refined members, not the refining one
@@ -1331,6 +1328,11 @@ public abstract class AbstractTransformer implements Transformation {
         if(type == null)
             return false;
         type = simplifyType(type);
+        if (type.isUnion() || type.isIntersection()) {
+            // Any Unions and Intersections erase to Object as well
+            // except for the ones that erase to Sequential
+            return true;
+        }
         TypeDeclaration decl = type.getDeclaration();
         // All the following types either are Object or erase to Object
         if (Decl.equal(decl, typeFact.getObjectDeclaration())
@@ -1342,9 +1344,7 @@ public abstract class AbstractTransformer implements Transformation {
                 || decl instanceof NothingType) {
             return true;
         }
-        // Any Unions and Intersections erase to Object as well
-        // except for the ones that erase to Sequential
-        return ((decl instanceof UnionType || decl instanceof IntersectionType));
+        return false;
     }
     
     boolean willEraseToPrimitive(ProducedType type) {
@@ -1385,9 +1385,9 @@ public abstract class AbstractTransformer implements Transformation {
         ProducedType type = param.getType();
         if (typeFact().isUnion(type) 
                 || typeFact().isIntersection(type)) {
-            final TypeDeclaration refinedTypeDecl = ((TypedDeclaration)CodegenUtil.getTopmostRefinedDeclaration(param.getModel())).getType().getDeclaration();
-            if (refinedTypeDecl instanceof TypeParameter
-                    && !refinedTypeDecl.getSatisfiedTypes().isEmpty()) {
+            final ProducedType refinedType = ((TypedDeclaration)CodegenUtil.getTopmostRefinedDeclaration(param.getModel())).getType();
+            if (refinedType.isTypeParameter()
+                    && !refinedType.getSatisfiedTypes().isEmpty()) {
                 return true;
             }
         }
@@ -1401,12 +1401,8 @@ public abstract class AbstractTransformer implements Transformation {
     private boolean hasErasureResolved(ProducedType type) {
         if(type == null)
             return false;
-        TypeDeclaration declaration = type.getDeclaration();
-        if(declaration == null)
-            return false;
-        if(declaration instanceof UnionType){
-            UnionType ut = (UnionType) declaration;
-            java.util.List<ProducedType> caseTypes = ut.getCaseTypes();
+        if(type.isUnion()){
+            java.util.List<ProducedType> caseTypes = type.getCaseTypes();
             // special case for optional types
             if(caseTypes.size() == 2){
                 if(isOptional(caseTypes.get(0)))
@@ -1417,9 +1413,8 @@ public abstract class AbstractTransformer implements Transformation {
             // must be erased
             return true;
         }
-        if(declaration instanceof IntersectionType){
-            IntersectionType ut = (IntersectionType) declaration;
-            java.util.List<ProducedType> satisfiedTypes = ut.getSatisfiedTypes();
+        if(type.isIntersection()){
+            java.util.List<ProducedType> satisfiedTypes = type.getSatisfiedTypes();
             // special case for non-optional types
             if(satisfiedTypes.size() == 2){
                 if(isObject(satisfiedTypes.get(0)))
@@ -1430,10 +1425,10 @@ public abstract class AbstractTransformer implements Transformation {
             // must be erased
             return true;
         }
-        if(declaration instanceof TypeParameter){
+        if(type.isTypeParameter()){
             // consider type parameters with non-erased bounds as erased to force a cast
             // see https://github.com/ceylon/ceylon-compiler/issues/1327
-            for(ProducedType bound : declaration.getSatisfiedTypes()){
+            for(ProducedType bound : type.getSatisfiedTypes()){
                 if(!willEraseToObject(bound))
                     return true;
             }
@@ -1505,10 +1500,8 @@ public abstract class AbstractTransformer implements Transformation {
     }
 
     private boolean isErasedUnionOrIntersection(ProducedType producedType) {
-        TypeDeclaration typeDeclaration = producedType.getDeclaration();
-        if(typeDeclaration instanceof UnionType){
-            UnionType ut = (UnionType) typeDeclaration;
-            java.util.List<ProducedType> caseTypes = ut.getCaseTypes();
+        if(producedType.isUnion()){
+            java.util.List<ProducedType> caseTypes = producedType.getCaseTypes();
             // special case for optional types
             if(caseTypes.size() == 2){
                 if(isNull(caseTypes.get(0))){
@@ -1520,9 +1513,8 @@ public abstract class AbstractTransformer implements Transformation {
             // it is erased
             return true;
         }
-        if(typeDeclaration instanceof IntersectionType){
-            IntersectionType ut = (IntersectionType) typeDeclaration;
-            java.util.List<ProducedType> satisfiedTypes = ut.getSatisfiedTypes();
+        if(producedType.isIntersection()){
+            java.util.List<ProducedType> satisfiedTypes = producedType.getSatisfiedTypes();
             // special case for non-optional types
             if(satisfiedTypes.size() == 2){
                 if(isObject(satisfiedTypes.get(0))){
@@ -1795,8 +1787,7 @@ public abstract class AbstractTransformer implements Transformation {
     
     JCExpression makeJavaType(final ProducedType ceylonType, final int flags) {
         ProducedType type = ceylonType;
-        if(type == null
-                || type.getDeclaration() instanceof UnknownType)
+        if(type == null || type.isUnknown())
             return make().Erroneous();
         
         if (type.getDeclaration() instanceof Constructor) {
@@ -1808,17 +1799,17 @@ public abstract class AbstractTransformer implements Transformation {
             type = type.resolveAliases();
         
         if ((flags & __JT_RAW_TP_BOUND) != 0
-                && type.getDeclaration() instanceof TypeParameter) {
-            type = ((TypeParameter)type.getDeclaration()).getExtendedType();    
+                && type.isTypeParameter()) {
+            type = type.getExtendedType();    
         }
         
-        if(type.getDeclaration() instanceof UnionType){
+        if(type.isUnion()){
             for (ProducedType pt : type.getCaseTypes()){
                 if(pt.getDeclaration().isAnonymous()){
                     // found one, let's try to make it simpler
                     ProducedType simplerType = typeFact().denotableType(type);
                     if(!simplerType.isNothing()
-                            && simplerType.getDeclaration() instanceof UnionType == false){
+                            && !simplerType.isUnion()){
                         type = simplerType;
                     } else if (isCeylonBoolean(simplifyType(simplerType))) {
                         type = simplerType;
@@ -2205,8 +2196,8 @@ public abstract class AbstractTransformer implements Transformation {
         Module jdkBaseModule = loader().getJDKBaseModule();
         Package javaLang = jdkBaseModule.getPackage("java.lang");
         TypeDeclaration enumDecl = (TypeDeclaration)javaLang.getDirectMember("Enum", null, false);
-        if (type.getDeclaration().isAnonymous()) {
-            type = type.getDeclaration().getExtendedType();
+        if (type.isClass() && type.getDeclaration().isAnonymous()) {
+            type = type.getExtendedType();
         }
         return type.isSubtypeOf(enumDecl.getProducedType(null, Collections.singletonList(type)));
     }
@@ -2561,14 +2552,13 @@ public abstract class AbstractTransformer implements Transformation {
     }
     
     private boolean isUnknownTuple(ProducedType args) {
-        TypeDeclaration declaration = args.getDeclaration();
-        if (declaration instanceof TypeParameter) {
+        if (args.isTypeParameter()) {
             return true;
-        } else if (declaration instanceof UnionType){
+        } else if (args.isUnion()){
             /* Callable<R,A>&Callable<R,B> is the same as Callable<R,A|B> so 
              * for a union if either A or B is known then the union is known
              */
-            java.util.List<ProducedType> caseTypes = declaration.getCaseTypes();
+            java.util.List<ProducedType> caseTypes = args.getCaseTypes();
             if(caseTypes == null || caseTypes.size() < 2)
                 return true;
             for (int ii = 0; ii < caseTypes.size(); ii++) {
@@ -2577,11 +2567,11 @@ public abstract class AbstractTransformer implements Transformation {
                 }
             }// all unknown
             return true;
-        } else if (declaration instanceof IntersectionType) {
+        } else if (args.isIntersection()) {
             /* Callable<R,A>|Callable<R,B> is the same as Callable<R,A&B> so 
              * for an intersection if both A and B are known then the intersection is known
              */
-            java.util.List<ProducedType> caseTypes = declaration.getSatisfiedTypes();
+            java.util.List<ProducedType> caseTypes = args.getSatisfiedTypes();
             if(caseTypes == null || caseTypes.size() < 2)
                 return true;
             for (int ii = 0; ii < caseTypes.size(); ii++) {
@@ -2590,9 +2580,10 @@ public abstract class AbstractTransformer implements Transformation {
                 }
             }
             return false;
-        } else if (declaration instanceof NothingType) {
+        } else if (args.isNothing()) {
             return true;
-        } else if(declaration instanceof ClassOrInterface) {
+        } else if(args.isClassOrInterface()) {
+            TypeDeclaration declaration = args.getDeclaration();
             String name = declaration.getQualifiedNameString();
             if(name.equals("ceylon.language::Tuple")){
                 ProducedType rest = args.getTypeArgumentList().get(2);
@@ -2605,7 +2596,7 @@ public abstract class AbstractTransformer implements Transformation {
                || name.equals("ceylon.language::Sequence")){
                 return false;
             }
-        } else if (declaration instanceof TypeAlias) {
+        } else if (args.isTypeAlias()) {
             return isUnknownTuple(args.resolveAliases());
         }
         return true;
@@ -2644,9 +2635,8 @@ public abstract class AbstractTransformer implements Transformation {
     
     private int getSimpleNumParametersOfCallable(ProducedType args) {
         // can be a defaulted tuple of Empty|Tuple
-        TypeDeclaration declaration = args.getDeclaration();
-        if(declaration instanceof UnionType){
-            java.util.List<ProducedType> caseTypes = declaration.getCaseTypes();
+        if(args.isUnion()){
+            java.util.List<ProducedType> caseTypes = args.getCaseTypes();
             if(caseTypes == null || caseTypes.size() != 2)
                 return -1;
             ProducedType caseA = caseTypes.get(0);
@@ -2665,8 +2655,9 @@ public abstract class AbstractTransformer implements Transformation {
             return -1;
         }
         // can be Tuple, Empty, Sequence or Sequential
-        if(declaration instanceof ClassOrInterface == false)
+        if(!args.isClassOrInterface())
             return -1;
+        TypeDeclaration declaration = args.getDeclaration();
         String name = declaration.getQualifiedNameString();
         if(name.equals("ceylon.language::Tuple")){
             ProducedType rest = args.getTypeArgumentList().get(2);
@@ -2724,7 +2715,6 @@ public abstract class AbstractTransformer implements Transformation {
         // be more resilient to upstream errors
         if(declType == null)
             return typeFact.getUnknownType();
-        final TypeDeclaration declTypeDecl = declType.getDeclaration();
         if(isJavaVariadic(parameter) && (flags & TP_SEQUENCED_TYPE) == 0){
             // type of param must be Iterable<T>
             ProducedType elementType = typeFact.getIteratedType(type);
@@ -2734,13 +2724,13 @@ public abstract class AbstractTransformer implements Transformation {
             }
             return elementType;
         }
-        if (declTypeDecl instanceof ClassOrInterface) {
+        if (declType.isClassOrInterface()) {
             return type;
-        } else if ((declTypeDecl instanceof TypeParameter)
+        } else if ((declType.isTypeParameter())
                 && (flags & TP_TO_BOUND) != 0) {
-            if(!declTypeDecl.getSatisfiedTypes().isEmpty()){
+            if(!declType.getSatisfiedTypes().isEmpty()){
                 // use upper bound
-                ProducedType upperBound = declTypeDecl.getSatisfiedTypes().get(0);
+                ProducedType upperBound = declType.getSatisfiedTypes().get(0);
                 // make sure we apply the type arguments
                 upperBound = substituteTypeArgumentsForTypeParameterBound(producedReference, upperBound);
                 ProducedType self = upperBound.getDeclaration().getSelfType();
@@ -4177,10 +4167,10 @@ public abstract class AbstractTransformer implements Transformation {
                 // or parhaps a A|B|C|D and we're testing for C|D
                 java.util.List<ProducedType> cases = expressionType.getCaseTypes();
                 if (cases != null) {
-                    if ((testedType.getDeclaration() instanceof ClassOrInterface
-                            || testedType.getDeclaration() instanceof TypeParameter)
+                    if ((testedType.isClassOrInterface()
+                            || testedType.isTypeParameter())
                             && cases.remove(testedType)) { 
-                    } else if (testedType.getDeclaration() instanceof UnionType) {
+                    } else if (testedType.isUnion()) {
                         for (ProducedType ct : testedType.getCaseTypes()) {
                             if (!cases.remove(ct)) {
                                 cases = null;
@@ -4191,7 +4181,7 @@ public abstract class AbstractTransformer implements Transformation {
                         cases = null;
                     }                
                     if (cases != null) {
-                        ProducedType complementType = typeFact().getNothingDeclaration().getType();
+                        ProducedType complementType = typeFact().getNothingType();
                         for (ProducedType ct : cases) {
                             complementType = com.redhat.ceylon.model.typechecker.model.Util.unionType(complementType, ct, typeFact());
                         }
@@ -4278,8 +4268,7 @@ public abstract class AbstractTransformer implements Transformation {
                 }
             }
         } else if (typeFact().isUnion(testedType)) {
-            UnionType union = (UnionType)declaration;
-            for (ProducedType pt : union.getCaseTypes()) {
+            for (ProducedType pt : testedType.getCaseTypes()) {
                 R partExpr = makeTypeTest(typeTester, firstTimeExpr, varName, pt, expressionType);
                 firstTimeExpr = null;
                 if (result == null) {
@@ -4290,8 +4279,7 @@ public abstract class AbstractTransformer implements Transformation {
             }
             return result;
         } else if (typeFact().isIntersection(testedType)) {
-            IntersectionType union = (IntersectionType)declaration;
-            for (ProducedType pt : union.getSatisfiedTypes()) {
+            for (ProducedType pt : testedType.getSatisfiedTypes()) {
                 R partExpr = makeTypeTest(typeTester, firstTimeExpr, varName, pt, expressionType);
                 firstTimeExpr = null;
                 if (result == null) {
@@ -4301,7 +4289,7 @@ public abstract class AbstractTransformer implements Transformation {
                 }
             }
             return result;
-        } else if (declaration instanceof NothingType){
+        } else if (testedType.isNothing()){
             // nothing is Bottom
             JCExpression varExpr = firstTimeExpr != null ? firstTimeExpr : varName.makeIdent();
             return typeTester.eval(varExpr, false);
@@ -4613,23 +4601,22 @@ public abstract class AbstractTransformer implements Transformation {
     }
 
     private boolean dependsOnTypeParameter(ProducedType t, TypeParameter tp) {
-        TypeDeclaration decl = t.getDeclaration();
-        if(decl instanceof UnionType){
-            for(ProducedType pt : decl.getCaseTypes()){
+        if(t.isUnion()){
+            for(ProducedType pt : t.getCaseTypes()){
                 if(dependsOnTypeParameter(pt, tp)){
                     return true;
                 }
             }
-        }else if(decl instanceof IntersectionType){
-            for(ProducedType pt : decl.getSatisfiedTypes()){
+        }else if(t.isIntersection()){
+            for(ProducedType pt : t.getSatisfiedTypes()){
                 if(dependsOnTypeParameter(pt, tp)){
                     return true;
                 }
             }
-        }else if(decl instanceof TypeParameter){
-            if (tp == null || Decl.equal(tp, decl))
+        }else if(t.isTypeParameter()){
+            if (tp == null || Decl.equal(tp, t.getDeclaration()))
                 return true;
-        }else if(decl instanceof ClassOrInterface){
+        }else if(t.isClassOrInterface()){
             for(ProducedType ta : t.getTypeArgumentList()){
                 if(dependsOnTypeParameter(ta, tp)){
                     return true;
@@ -4644,19 +4631,18 @@ public abstract class AbstractTransformer implements Transformation {
         return hasConstrainedTypeParameters(type);
     }
     private boolean hasConstrainedTypeParameters(ProducedType type) {
-        TypeDeclaration declaration = type.getDeclaration();
-        if(declaration instanceof TypeParameter){
-            TypeParameter tp = (TypeParameter) declaration;
+        if(type.isTypeParameter()){
+            TypeParameter tp = (TypeParameter) type.getDeclaration();
             return !tp.getSatisfiedTypes().isEmpty() && !tp.isContravariant();
         }
-        if(declaration instanceof UnionType){
-            for(ProducedType m : declaration.getCaseTypes())
+        if(type.isUnion()){
+            for(ProducedType m : type.getCaseTypes())
                 if(hasConstrainedTypeParameters(m))
                     return true;
             return false;
         }
-        if(declaration instanceof IntersectionType){
-            for(ProducedType m : declaration.getSatisfiedTypes())
+        if(type.isIntersection()){
+            for(ProducedType m : type.getSatisfiedTypes())
                 if(hasConstrainedTypeParameters(m))
                     return true;
             return false;
@@ -4675,18 +4661,17 @@ public abstract class AbstractTransformer implements Transformation {
     }
 
     boolean containsTypeParameter(ProducedType type) {
-        TypeDeclaration declaration = type.getDeclaration();
-        if(declaration instanceof TypeParameter){
+        if(type.isTypeParameter()){
             return true;
         }
-        if(declaration instanceof UnionType){
-            for(ProducedType m : declaration.getCaseTypes())
+        if(type.isUnion()){
+            for(ProducedType m : type.getCaseTypes())
                 if(containsTypeParameter(m))
                     return true;
             return false;
         }
-        if(declaration instanceof IntersectionType){
-            for(ProducedType m : declaration.getSatisfiedTypes())
+        if(type.isIntersection()){
+            for(ProducedType m : type.getSatisfiedTypes())
                 if(containsTypeParameter(m))
                     return true;
             return false;
@@ -4705,15 +4690,14 @@ public abstract class AbstractTransformer implements Transformation {
     }
 
     boolean hasDependentCovariantTypeParameters(ProducedType type) {
-        TypeDeclaration declaration = type.getDeclaration();
-        if(declaration instanceof UnionType){
-            for(ProducedType m : declaration.getCaseTypes())
+        if(type.isUnion()){
+            for(ProducedType m : type.getCaseTypes())
                 if(hasDependentCovariantTypeParameters(m))
                     return true;
             return false;
         }
-        if(declaration instanceof IntersectionType){
-            for(ProducedType m : declaration.getSatisfiedTypes())
+        if(type.isIntersection()){
+            for(ProducedType m : type.getSatisfiedTypes())
                 if(hasDependentCovariantTypeParameters(m))
                     return true;
             return false;
@@ -4722,6 +4706,7 @@ public abstract class AbstractTransformer implements Transformation {
         // special case for Callable which has only a single type param in Java
         boolean isCallable = isCeylonCallable(type);
         // check if any type parameter is dependent on and covariant
+        TypeDeclaration declaration = type.getDeclaration();
         java.util.List<TypeParameter> typeParams = declaration.getTypeParameters();
         Map<TypeParameter, ProducedType> typeArguments = type.getTypeArguments();
         for(TypeParameter typeParam : typeParams){
@@ -4955,12 +4940,31 @@ public abstract class AbstractTransformer implements Transformation {
     }
     
     private JCExpression makeReifiedTypeArgumentResolved(ProducedType pt, boolean qualified) {
+        if(pt.isUnion()){
+            // FIXME: refactor this shite
+            List<JCExpression> typeTestArguments = List.nil();
+            java.util.List<ProducedType> typeParameters = pt.getCaseTypes();
+            for(int i=typeParameters.size()-1;i>=0;i--){
+                typeTestArguments = typeTestArguments.prepend(makeReifiedTypeArgument(typeParameters.get(i)));
+            }
+            return make().Apply(null, makeSelect(makeTypeDescriptorType(), "union"), typeTestArguments);
+        } else if(pt.isIntersection()){
+            List<JCExpression> typeTestArguments = List.nil();
+            java.util.List<ProducedType> typeParameters = pt.getSatisfiedTypes();
+            for(int i=typeParameters.size()-1;i>=0;i--){
+                typeTestArguments = typeTestArguments.prepend(makeReifiedTypeArgument(typeParameters.get(i)));
+            }
+            return make().Apply(null, makeSelect(makeTypeDescriptorType(), "intersection"), typeTestArguments);
+        } else if(pt.isNothing()){
+            return makeNothingTypeDescriptor();
+        }
+        
         TypeDeclaration declaration = pt.getDeclaration();
         if(declaration instanceof Constructor){
             pt = pt.getExtendedType();
             declaration = pt.getDeclaration();
         }
-        if(declaration instanceof ClassOrInterface){
+        if(pt.isClassOrInterface()){
             if(declaration.isJavaEnum()){
                 pt = pt.getExtendedType();
                 declaration = pt.getDeclaration();
@@ -5031,7 +5035,7 @@ public abstract class AbstractTransformer implements Transformation {
                 return make().Apply(null, makeSelect(makeTypeDescriptorType(), "member"), 
                                                      List.of(containerType, classDescriptor));
             }
-        } else if(declaration instanceof TypeParameter){
+        } else if(pt.isTypeParameter()){
             TypeParameter tp = (TypeParameter) declaration;
             String name = naming.getTypeArgumentDescriptorName(tp);
             if(!qualified || isTypeParameterSubstituted(tp))
@@ -5049,23 +5053,6 @@ public abstract class AbstractTransformer implements Transformation {
                 throw BugException.unhandledCase(container);
             }
             return makeSelect(qualifier, name);
-        } else if(declaration instanceof UnionType){
-            // FIXME: refactor this shite
-            List<JCExpression> typeTestArguments = List.nil();
-            java.util.List<ProducedType> typeParameters = ((UnionType)declaration).getCaseTypes();
-            for(int i=typeParameters.size()-1;i>=0;i--){
-                typeTestArguments = typeTestArguments.prepend(makeReifiedTypeArgument(typeParameters.get(i)));
-            }
-            return make().Apply(null, makeSelect(makeTypeDescriptorType(), "union"), typeTestArguments);
-        } else if(declaration instanceof IntersectionType){
-            List<JCExpression> typeTestArguments = List.nil();
-            java.util.List<ProducedType> typeParameters = ((IntersectionType)declaration).getSatisfiedTypes();
-            for(int i=typeParameters.size()-1;i>=0;i--){
-                typeTestArguments = typeTestArguments.prepend(makeReifiedTypeArgument(typeParameters.get(i)));
-            }
-            return make().Apply(null, makeSelect(makeTypeDescriptorType(), "intersection"), typeTestArguments);
-        } else  if(declaration instanceof NothingType){
-            return makeNothingTypeDescriptor();
         } else {
             throw BugException.unhandledDeclarationCase(declaration);
         }
@@ -5282,22 +5269,22 @@ public abstract class AbstractTransformer implements Transformation {
     }
     
     private boolean declarationAppearsInInvariantPosition(TypeDeclaration declaration, ProducedType type) {
-        TypeDeclaration typeDeclaration = type.getDeclaration();
-        if(typeDeclaration instanceof UnionType){
-            for(ProducedType pt : typeDeclaration.getCaseTypes()){
+        if(type.isUnion()){
+            for(ProducedType pt : type.getCaseTypes()){
                 if(declarationAppearsInInvariantPosition(declaration, pt))
                     return true;
             }
             return false;
         }
-        if(typeDeclaration instanceof IntersectionType){
-            for(ProducedType pt : typeDeclaration.getSatisfiedTypes()){
+        if(type.isIntersection()){
+            for(ProducedType pt : type.getSatisfiedTypes()){
                 if(declarationAppearsInInvariantPosition(declaration, pt))
                     return true;
             }
             return false;
         }
-        if(typeDeclaration instanceof ClassOrInterface){
+        if(type.isClassOrInterface()){
+            TypeDeclaration typeDeclaration = type.getDeclaration();
             java.util.List<TypeParameter> typeParameters = typeDeclaration.getTypeParameters();
             Map<TypeParameter, ProducedType> typeArguments = type.getTypeArguments();
             for(TypeParameter tp : typeParameters){

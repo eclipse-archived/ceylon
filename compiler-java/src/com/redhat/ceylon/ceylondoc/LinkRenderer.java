@@ -939,12 +939,12 @@ public class LinkRenderer {
     private void decompose(ProducedType pt, List<ProducedType> producedTypes) {
         if (!producedTypes.contains(pt)) {
             producedTypes.add(pt);
-            TypeDeclaration decl = pt.getDeclaration();
-            if (decl instanceof IntersectionType) {
+            if (pt.isIntersection()) {
                 for (ProducedType satisfiedType : pt.getSatisfiedTypes()) {
                     decompose(satisfiedType, producedTypes);
                 }
-            } else if (decl instanceof UnionType) {
+            }
+            else if (pt.isUnion()) {
                 for (ProducedType caseType : pt.getCaseTypes()) {
                     decompose(caseType, producedTypes);
                 }

@@ -281,10 +281,10 @@ public class Util {
 
     public static List<TypeDeclaration> getAncestors(TypeDeclaration decl) {
         List<TypeDeclaration> ancestors = new ArrayList<TypeDeclaration>();
-        TypeDeclaration ancestor = decl.getExtendedTypeDeclaration();
+        ProducedType ancestor = decl.getExtendedType();
         while (ancestor != null) {
-            ancestors.add(ancestor);
-            ancestor = ancestor.getExtendedTypeDeclaration();
+            ancestors.add(ancestor.getDeclaration());
+            ancestor = ancestor.getExtendedType();
         }
         return ancestors;
     }
@@ -384,8 +384,10 @@ public class Util {
                 }
             }
 
-            queue.add(type.getExtendedTypeDeclaration());
-            queue.addAll(type.getSatisfiedTypeDeclarations());
+            queue.add(type.getExtendedType().getDeclaration());
+            for (ProducedType satisfiedType: type.getSatisfiedTypes()) {
+                queue.add(satisfiedType.getDeclaration());
+            }
 
             return findBottomMostRefinedDeclaration(d, queue);
         }

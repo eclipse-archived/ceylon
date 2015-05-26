@@ -698,23 +698,25 @@ public class CeylonDocTool extends OutputRepoUsingTool {
                         ClassOrInterface c = (ClassOrInterface) decl;                    
                         // subclasses map
                         if (c instanceof Class) {
-                            ClassOrInterface superclass = c.getExtendedTypeDeclaration();                    
+                            ProducedType superclass = c.getExtendedType();                    
                             if (superclass != null) {
-                                if (subclasses.get(superclass) ==  null) {
-                                    subclasses.put(superclass, new ArrayList<Class>());
+                                TypeDeclaration superdec = superclass.getDeclaration();
+                                if (subclasses.get(superdec) == null) {
+                                    subclasses.put(superdec, new ArrayList<Class>());
                                 }
-                                subclasses.get(superclass).add((Class) c);
+                                subclasses.get(superdec).add((Class) c);
                             }
                         }
 
-                        List<TypeDeclaration> satisfiedTypes = new ArrayList<TypeDeclaration>(c.getSatisfiedTypeDeclarations());                     
+                        List<ProducedType> satisfiedTypes = new ArrayList<ProducedType>(c.getSatisfiedTypes());                     
                         if (satisfiedTypes != null && satisfiedTypes.isEmpty() == false) {
                             // satisfying classes or interfaces map
-                            for (TypeDeclaration satisfiedType : satisfiedTypes) {
-                                if (satisfyingClassesOrInterfaces.get(satisfiedType) ==  null) {
-                                    satisfyingClassesOrInterfaces.put(satisfiedType, new ArrayList<ClassOrInterface>());
+                            for (ProducedType satisfiedType : satisfiedTypes) {
+                                TypeDeclaration superdec = satisfiedType.getDeclaration();
+                                if (satisfyingClassesOrInterfaces.get(superdec) ==  null) {
+                                    satisfyingClassesOrInterfaces.put(superdec, new ArrayList<ClassOrInterface>());
                                 }
-                                satisfyingClassesOrInterfaces.get(satisfiedType).add(c);
+                                satisfyingClassesOrInterfaces.get(superdec).add(c);
                             }
                         }
                     }
