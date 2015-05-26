@@ -10,7 +10,7 @@ public class TreeValidator<P> extends com.sun.tools.javac.tree.TreeScanner {
 
     protected void check(JCTree node) {
         if (trees.containsKey(node)) {
-            new RuntimeException("not a tree! " + node + " occurs twice", node.init).printStackTrace();;
+            new RuntimeException("not a tree! " + node + " occurs twice").printStackTrace();;
         }
         trees.put(node, null);
     }
