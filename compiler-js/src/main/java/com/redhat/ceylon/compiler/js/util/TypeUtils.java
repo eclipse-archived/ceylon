@@ -100,7 +100,7 @@ public class TypeUtils {
             gen.out(gen.getClAlias(), "Nothing");
         } else if (qname.equals("ceylon.language::null") || qname.equals("ceylon.language::Null")) {
             gen.out(gen.getClAlias(), "Null");
-        } else if (pt.isUnknown()) {
+        } else if (Util.isTypeUnknown(pt)) {
             if (!gen.isInDynamicBlock()) {
                 gen.out("/*WARNING unknown type");
                 gen.location(node);
@@ -235,7 +235,7 @@ public class TypeUtils {
         } else if ("ceylon.language::Tuple".equals(d.getQualifiedNameString())) {
             subs = d.getUnit().getTupleElementTypes(pt);
             final ProducedType lastType = subs.get(subs.size()-1);
-            if (lastType.isUnknown() || lastType.isTypeParameter()) {
+            if (Util.isTypeUnknown(lastType) || lastType.isTypeParameter()) {
                 //Revert to outputting normal Tuple with its type arguments
                 gen.out("{t:", gen.getClAlias(), "Tuple,a:");
                 printTypeArguments(node, pt.getTypeArguments(), gen, skipSelfDecl, pt.getVarianceOverrides());
@@ -453,7 +453,7 @@ public class TypeUtils {
             gen.out(",'", term.getUnit().getFilename(), " ", term.getLocation(), "')");
         } else {
             final boolean checkFloat = term.getUnit().getFloatDeclaration().equals(t.getDeclaration());
-            final boolean checkInt = checkFloat ? false : term.getUnit().getIntegerDeclaration().equals(t.getDeclaration());
+            final boolean checkInt = checkFloat ? false : t.isSubtypeOf(term.getUnit().getIntegerType());
             String tmp = gen.getNames().createTempVariable();
             gen.out("(", tmp, "=");
             term.visit(gen);
@@ -513,9 +513,9 @@ public class TypeUtils {
         ArrayList<Parameter> rval = new ArrayList<>();
         int pos = 0;
         TypeDeclaration tdecl = _tuple.getDeclaration();
-        final TypeDeclaration empty = tdecl.getUnit().getEmptyDeclaration();
+        final ProducedType empty = tdecl.getUnit().getEmptyType();
         final TypeDeclaration tuple = tdecl.getUnit().getTupleDeclaration();
-        while (!(empty.equals(tdecl) || _tuple.isTypeParameter())) {
+        while (!(_tuple.isSubtypeOf(empty) || _tuple.isTypeParameter())) {
             Parameter _p = null;
             if (tuple.equals(tdecl) || (_tuple.getCaseTypes() != null
                     && _tuple.getCaseTypes().size()==2
@@ -566,9 +566,9 @@ public class TypeUtils {
         gen.out("[");
         int pos = 1;
         TypeDeclaration tdecl = _tuple.getDeclaration();
-        final TypeDeclaration empty = tdecl.getUnit().getEmptyDeclaration();
+        final ProducedType empty = tdecl.getUnit().getEmptyType();
         final TypeDeclaration tuple = tdecl.getUnit().getTupleDeclaration();
-        while (!(empty.equals(tdecl) || _tuple.isTypeParameter())) {
+        while (!(_tuple.isSubtypeOf(empty) || _tuple.isTypeParameter())) {
             if (pos > 1) gen.out(",");
             gen.out("{");
             pos++;
@@ -604,7 +604,8 @@ public class TypeUtils {
                 _tuple = empty.getType();
             } else if (_tuple.isUnion()) {
                 metamodelTypeNameOrList(resolveTargs, node, gen.getCurrentPackage(), _tuple, gen);
-                tdecl = empty; _tuple=null;
+                tdecl = empty.getDeclaration();
+                _tuple=null;
             } else {
                 gen.out("\n/*WARNING3! Tuple is actually ", _tuple.getProducedTypeQualifiedName(), ", ", tdecl.getName(),"*/");
                 if (pos > 100) {
@@ -960,7 +961,7 @@ public class TypeUtils {
         final List<ProducedType> subs;
         if (pt.isIntersection()) {
             gen.out("{t:'i");
-            subs = type.getSatisfiedTypes();
+            subs = pt.getSatisfiedTypes();
         } else if (pt.isUnion()) {
             //It still could be a Tuple with first optional type
             List<TypeDeclaration> cts = type.getCaseTypeDeclarations();

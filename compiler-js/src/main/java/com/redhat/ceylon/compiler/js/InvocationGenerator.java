@@ -132,7 +132,7 @@ public class InvocationGenerator {
                     if (gen.isInDynamicBlock() && _bme.getDeclaration() != null &&
                             "ceylon.language::print".equals(_bme.getDeclaration().getQualifiedNameString())) {
                         Tree.PositionalArgument printArg =  that.getPositionalArgumentList().getPositionalArguments().get(0);
-                        if (printArg.getTypeModel().isUnknown()) {
+                        if (Util.isTypeUnknown(printArg.getTypeModel())) {
                             gen.out(gen.getClAlias(), "pndo$(/*DYNAMIC arg*/"); //#397
                             printArg.visit(gen);
                             gen.out(")");
@@ -178,7 +178,7 @@ public class InvocationGenerator {
                         boolean isSequenced = !(isUnion || that.getUnit().getTupleDeclaration().equals(
                                 callableArgs.getDeclaration()));
                         ProducedType argtype = isUnion ? callableArgs :
-                            callableArgs.getDeclaration() instanceof TypeParameter ? callableArgs :
+                            callableArgs.isTypeParameter() ? callableArgs :
                             callableArgs.getTypeArgumentList().get(
                                 isSequenced ? 0 : 1);
                         Parameter p = null;
@@ -446,7 +446,7 @@ public class InvocationGenerator {
                             arg.visit(gen);
                             gen.out(".$_get(0)");
                             int i = 1;
-                            while (!targ.getDeclaration().inherits(that.getUnit().getEmptyDeclaration())) {
+                            while (!targ.isSubtypeOf(that.getUnit().getEmptyType())) {
                                 gen.out(",");
                                 arg.visit(gen);
                                 gen.out(".$_get("+(i++)+")");

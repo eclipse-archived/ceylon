@@ -59,14 +59,15 @@ public class SerializationHelper {
             pkgname = gen.getClAlias() + "lmp$(ex$,'" + pkgname + "')";
         }
         for (Value v : vals) {
-            final TypeDeclaration vd = v.getType().getDeclaration();
+            final ProducedType vt = v.getType();
+            final TypeDeclaration vd = vt.getDeclaration();
             gen.out(dc, ".putValue(", gen.getClAlias(), "OpenValue$jsint(",
                     pkgname, ",this.", gen.getNames().getter(v, true),")", ",",
                     "this.", gen.getNames().name(v), ",{Instance$putValue:");
-            if (vd instanceof TypeParameter && vd.getContainer() == d) {
+            if (vt.isTypeParameter() && vd.getContainer() == d) {
                 gen.out("this.$$targs$$.", vd.getName(), "$", d.getName());
             } else {
-                TypeUtils.typeNameOrList(node, v.getType(), gen, false);
+                TypeUtils.typeNameOrList(node, vt, gen, false);
             }
             gen.out("});");
             gen.endLine();
@@ -150,7 +151,8 @@ public class SerializationHelper {
         }
         first=true;
         for (Value v : vals) {
-            final TypeDeclaration vd = v.getType().getDeclaration();
+            final ProducedType vt = v.getType();
+            final TypeDeclaration vd = vt.getDeclaration();
             final String valname;
             if (v.isParameter()) {
                 valname = gen.getNames().name(d.getParameter(v.getName())) + "_";
@@ -165,10 +167,10 @@ public class SerializationHelper {
             gen.out("=", dc, ".getValue(", gen.getClAlias(),
                     "OpenValue$jsint(", pkgname, ",", ni, ".",
                     gen.getNames().getter(v, true),")", ",{Instance$getValue:");
-            if (vd instanceof TypeParameter && vd.getContainer() == d) {
+            if (vt.isTypeParameter() && vd.getContainer() == d) {
                 gen.out(ni, ".$$targs$$.", vd.getName(), "$", d.getName());
             } else {
-                TypeUtils.typeNameOrList(that, v.getType(), gen, false);
+                TypeUtils.typeNameOrList(that, vt, gen, false);
             }
             gen.out("});");
             gen.endLine();

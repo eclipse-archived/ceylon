@@ -135,7 +135,7 @@ public class MetamodelHelper {
         final Map<TypeParameter,ProducedType> targs = that.getType().getTypeModel().getTypeArguments();
         final boolean isConstructor = that instanceof Tree.NewLiteral
                 || td instanceof com.redhat.ceylon.model.typechecker.model.Constructor;
-        if (td instanceof Class) {
+        if (ltype.isClass()) {
             if (td.isClassOrInterfaceMember()) {
                 gen.out(gen.getClAlias(), "$init$AppliedMemberClass$jsint()(");
             } else {
@@ -158,7 +158,7 @@ public class MetamodelHelper {
             }
             gen.out(")");
         } else if (isConstructor) {
-            Class _pc = td instanceof Class ? (Class)td : (Class)td.getContainer();
+            Class _pc = ltype.isClass() ? (Class)td : (Class)td.getContainer();
             if (_pc.isToplevel()) {
                 gen.out(gen.getClAlias(), "$init$AppliedConstructor$jsint()(");
             } else {
@@ -174,7 +174,7 @@ public class MetamodelHelper {
                         that.getType().getTypeModel().getVarianceOverrides());
             }
             gen.out(")");
-        } else if (td instanceof com.redhat.ceylon.model.typechecker.model.Interface) {
+        } else if (ltype.isInterface()) {
             if (td.isToplevel()) {
                 gen.out(gen.getClAlias(), "$init$AppliedInterface$jsint()(");
             } else {
@@ -190,7 +190,7 @@ public class MetamodelHelper {
                         that.getType().getTypeModel().getVarianceOverrides());
             }
             gen.out(")");
-        } else if (td instanceof com.redhat.ceylon.model.typechecker.model.NothingType) {
+        } else if (ltype.isNothing()) {
             gen.out(gen.getClAlias(),"nothingType$meta$model()");
         } else if (that instanceof Tree.AliasLiteral) {
             gen.out("/*TODO: applied alias*/");

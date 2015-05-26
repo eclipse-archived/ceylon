@@ -326,7 +326,6 @@ public class JsCompiler {
             //First generate the metamodel
             final Module defmod = tc.getContext().getModules().getDefaultModule();
             for (PhasedUnit pu: phasedUnits) {
-                File path = getFullPath(pu);
                 //#416 default module with packages
                 Module mod = pu.getPackage().getModule();
                 if (mod.getVersion() == null && !mod.isDefault()) {

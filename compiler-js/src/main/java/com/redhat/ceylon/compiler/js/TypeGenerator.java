@@ -556,11 +556,11 @@ public class TypeGenerator {
         public int compare(StaticType o1, StaticType o2) {
             final ProducedType t1 = o1.getTypeModel();
             final ProducedType t2 = o2.getTypeModel();
-            if (t1.isUnknown()) {
-                return t2.isUnknown() ? 0 : -1;
+            if (Util.isTypeUnknown(t1)) {
+                return Util.isTypeUnknown(t2) ? 0 : -1;
             }
-            if (t2.isUnknown()) {
-                return t1.isUnknown() ? 0 : -1;
+            if (Util.isTypeUnknown(t2)) {
+                return Util.isTypeUnknown(t1) ? 0 : -1;
             }
             if (t1.isSubtypeOf(t2)) {
                 return 1;

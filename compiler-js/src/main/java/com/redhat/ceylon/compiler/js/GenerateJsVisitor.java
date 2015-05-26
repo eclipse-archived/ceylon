@@ -2245,7 +2245,7 @@ public class GenerateJsVisitor extends Visitor
             return;
         }
         if (smte != null) {
-            Declaration bmeDecl = smte.getDeclaration();
+            final Declaration bmeDecl = smte.getDeclaration();
             if (specStmt.getSpecifierExpression() instanceof LazySpecifierExpression) {
                 // attr => expr;
                 final boolean property = defineAsProperty(bmeDecl);
@@ -2326,11 +2326,10 @@ public class GenerateJsVisitor extends Visitor
                                 } else {
                                     //TODO extract parameters from Value
                                     ProducedType ps = moval.getType().getTypeArgumentList().get(1);
-                                    TypeDeclaration pd = ps.getDeclaration();
-                                    if (moval.getUnit().getEmptyDeclaration().equals(pd)) {
+                                    if (ps.isSubtypeOf(moval.getUnit().getEmptyType())) {
                                         out("[],");
                                     } else {
-                                        out("[/*VALUE Callable params ", pd+"*/],");
+                                        out("[/*VALUE Callable params ", ps.getProducedTypeQualifiedName()+"*/],");
                                     }
                                 }
                                 TypeUtils.printTypeArguments(expr, expr.getTypeModel().getTypeArguments(),
@@ -2834,14 +2833,14 @@ public class GenerateJsVisitor extends Visitor
             }
             return;
         }
-        final TypeDeclaration d = term.getTypeModel().getDeclaration();
-        final boolean isint = d.inherits(that.getUnit().getIntegerDeclaration());
+        final ProducedType d = term.getTypeModel();
+        final boolean isint = d.isSubtypeOf(that.getUnit().getIntegerType());
         Operators.unaryOp(that, isint?"(-":null, isint?")":".negated", this);
     }
 
     @Override public void visit(final Tree.PositiveOp that) {
-        final TypeDeclaration d = that.getTerm().getTypeModel().getDeclaration();
-        final boolean nat = d.inherits(that.getUnit().getIntegerDeclaration());
+        final ProducedType d = that.getTerm().getTypeModel();
+        final boolean nat = d.isSubtypeOf(that.getUnit().getIntegerType());
         //TODO if it's positive we leave it as is?
         Operators.unaryOp(that, nat?"(+":null, nat?")":null, this);
     }
@@ -2908,10 +2907,10 @@ public class GenerateJsVisitor extends Visitor
         }
         final ProducedType lt = left.getTypeModel();
         final ProducedType rt = right.getTypeModel();
-        final TypeDeclaration intdecl = left.getUnit().getIntegerDeclaration();
-        final TypeDeclaration booldecl = left.getUnit().getBooleanDeclaration();
-        return (intdecl.equals(lt.getDeclaration()) && intdecl.equals(rt.getDeclaration()))
-                || (booldecl.equals(lt.getDeclaration()) && booldecl.equals(rt.getDeclaration()));
+        final ProducedType intdecl = left.getUnit().getIntegerType();
+        final ProducedType booldecl = left.getUnit().getBooleanType();
+        return (lt.isSubtypeOf(intdecl) && rt.isSubtypeOf(intdecl))
+                || (lt.isSubtypeOf(booldecl) && rt.isSubtypeOf(booldecl));
     }
 
     @Override public void visit(final Tree.SmallerOp that) {

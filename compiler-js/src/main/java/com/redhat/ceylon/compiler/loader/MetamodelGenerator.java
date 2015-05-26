@@ -18,7 +18,6 @@ import com.redhat.ceylon.model.typechecker.model.Constructor;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.DeclarationKind;
 import com.redhat.ceylon.model.typechecker.model.Interface;
-import com.redhat.ceylon.model.typechecker.model.IntersectionType;
 import com.redhat.ceylon.model.typechecker.model.Method;
 import com.redhat.ceylon.model.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.model.typechecker.model.Module;
@@ -30,7 +29,6 @@ import com.redhat.ceylon.model.typechecker.model.SiteVariance;
 import com.redhat.ceylon.model.typechecker.model.TypeAlias;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.model.typechecker.model.TypeParameter;
-import com.redhat.ceylon.model.typechecker.model.UnionType;
 import com.redhat.ceylon.model.typechecker.model.Util;
 import com.redhat.ceylon.model.typechecker.model.Value;
 
@@ -155,10 +153,9 @@ public class MetamodelGenerator {
      * type, in which case it contains a "comp" key with an "i" or "u" and a key "types" with
      * the list of types that compose it. */
     private Map<String, Object> typeMap(ProducedType pt, Declaration from) {
-        if (pt==null || pt.isUnknown()) {
+        if (Util.isTypeUnknown(pt)) {
             return unknownTypeMap;
         }
-        TypeDeclaration d = pt.getDeclaration();
         Map<String, Object> m = new HashMap<>();
         if (pt.isUnion() || pt.isIntersection()) {
             List<ProducedType> subtipos = pt.isUnion() ? pt.getCaseTypes() : pt.getSatisfiedTypes();
@@ -170,7 +167,8 @@ public class MetamodelGenerator {
             m.put(KEY_TYPES, subs);
             return m;
         }
-        if (d.isToplevel() || d instanceof TypeParameter) {
+        TypeDeclaration d = pt.getDeclaration();
+        if (d.isToplevel() || pt.isTypeParameter()) {
             m.put(KEY_NAME, d.getName());
         } else {
             String qn = d.getQualifiedNameString();
@@ -240,7 +238,6 @@ public class MetamodelGenerator {
     private Map<String, Object> typeParameterMap(ProducedType pt, Declaration from) {
         if (pt == null)return null;
         final Map<String, Object> m = new HashMap<>();
-        final TypeDeclaration d = pt.getDeclaration();
         m.put(KEY_METATYPE, METATYPE_TYPE_PARAMETER);
         if (pt.isUnion() || pt.isIntersection()) {
             List<ProducedType> subtipos = pt.isUnion() ? pt.getCaseTypes() : pt.getSatisfiedTypes();
@@ -252,6 +249,7 @@ public class MetamodelGenerator {
             m.put(KEY_TYPES, subs);
             return m;
         }
+        final TypeDeclaration d = pt.getDeclaration();
         m.put(KEY_NAME, d.getName());
         if (d.getDeclarationKind()==DeclarationKind.TYPE_PARAMETER) {
             //Don't add package, etc
