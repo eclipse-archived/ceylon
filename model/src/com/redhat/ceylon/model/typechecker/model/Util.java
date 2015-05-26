@@ -734,12 +734,15 @@ public class Util {
     static TypeDeclaration erase(TypeDeclaration paramType) {
         if (paramType instanceof TypeParameter) {
             if (paramType.getSatisfiedTypes().isEmpty()) {
-                return paramType.getExtendedTypeDeclaration();
+                ProducedType et = paramType.getExtendedType();
+                return et==null ? null : et.getDeclaration();
             }
             else {
                 //TODO: is this actually correct? What is Java's
                 //      rule here?
-                return paramType.getSatisfiedTypeDeclarations().get(0);
+                ProducedType st = 
+                        paramType.getSatisfiedTypes().get(0);
+                return st==null ? null : st.getDeclaration();
             }
         }
         else if (paramType instanceof UnionType) {
@@ -750,28 +753,29 @@ public class Util {
         }
         else if (paramType instanceof IntersectionType) {
             Unit unit = paramType.getUnit();
-            List<TypeDeclaration> sts = 
-                    paramType.getSatisfiedTypeDeclarations();
+            List<ProducedType> sts = 
+                    paramType.getSatisfiedTypes();
             if (sts.size()==2) {
                 //attempt to eliminate Basic from the 
                 //intersection - very useful for anonymous
                 //classes, whose denotableType is often an 
                 //intersection with Basic
-                TypeDeclaration first = sts.get(0);
-                TypeDeclaration second = sts.get(1);
-                if (first!=null && 
-                        first.equals(unit.getBasicDeclaration())) {
+                TypeDeclaration first = 
+                        sts.get(0).getDeclaration();
+                TypeDeclaration second = 
+                        sts.get(1).getDeclaration();
+                Class bd = unit.getBasicDeclaration();
+                if (first!=null && first.equals(bd)) {
                     return erase(second);
                 }
-                else if (second!=null && 
-                        second.equals(unit.getBasicDeclaration())) {
+                else if (second!=null && second.equals(bd)) {
                     return erase(first);
                 }
             }
             //TODO: this is very sucky, cos in theory an
             //      intersection might be assignable to the 
             //      parameter type with a typecast
-            return paramType.getUnit().getObjectDeclaration();
+            return unit.getObjectDeclaration();
         }
         else {
             return paramType;
@@ -907,10 +911,8 @@ public class Util {
         //from the whole qualified type!
 	    if (receivingType!=null) {
             if (receivingType.isIntersection()) {
-                TypeDeclaration rtd = 
-                        receivingType.getDeclaration();
 	            for (ProducedType dt: 
-	                    rtd.getSatisfiedTypes()) {
+	                    receivingType.getSatisfiedTypes()) {
 	                while (dt!=null) {
 	                    map.putAll(dt.getTypeArguments());
 	                    dt = dt.getQualifyingType();
@@ -969,10 +971,8 @@ public class Util {
         //from the whole qualified type!
         if (receivingType!=null) {
             if (receivingType.isIntersection()) {
-                TypeDeclaration rtd = 
-                        receivingType.getDeclaration();
                 for (ProducedType dt: 
-                        rtd.getSatisfiedTypes()) {
+                        receivingType.getSatisfiedTypes()) {
                     while (dt!=null) {
                         map.putAll(dt.getVarianceOverrides());
                         dt = dt.getQualifyingType();
@@ -1007,10 +1007,8 @@ public class Util {
         //from the whole qualified type!
         if (receivingType!=null) {
             if (receivingType.isIntersection()) {
-                TypeDeclaration rtd = 
-                        receivingType.getDeclaration();
                 for (ProducedType dt: 
-                        rtd.getSatisfiedTypes()) {
+                        receivingType.getSatisfiedTypes()) {
                     while (dt!=null) {
                         count += dt.getTypeArguments().size();
                         dt = dt.getQualifyingType();
@@ -1060,9 +1058,8 @@ public class Util {
         if (pt.isUnion()) {
             // cheaper c-for than foreach
             List<ProducedType> caseTypes = 
-                    pt.getDeclaration()
-                        .getCaseTypes();
-            for ( int i=0,l=caseTypes.size();i<l;i++ ) {
+                    pt.getCaseTypes();
+            for ( int i=0,l=caseTypes.size(); i<l; i++ ) {
                 ProducedType t = caseTypes.get(i);
                 addToUnion(list, t.substitute(pt));
             }
@@ -1104,10 +1101,9 @@ public class Util {
         if (pt==null || !list.isEmpty() && pt.isAnything()) {
             return;
         }
-        TypeDeclaration ptd = pt.getDeclaration();
         if (pt.isIntersection()) {
             List<ProducedType> satisfiedTypes = 
-                    ptd.getSatisfiedTypes();
+                    pt.getSatisfiedTypes();
             // cheaper c-for than foreach
             for (int i=0,l=satisfiedTypes.size(); i<l; i++) {
                 ProducedType t = satisfiedTypes.get(i);
@@ -1117,6 +1113,7 @@ public class Util {
             }
         }
         else {
+            TypeDeclaration ptd = pt.getDeclaration();
             //implement the rule that Foo&Bar==Nothing if 
             //there exists some enumerated type Baz with
             //    Baz of Foo | Bar 
@@ -1128,26 +1125,28 @@ public class Util {
                 for (int i=0, l=supertypes.size(); i<l; i++) {
                     TypeDeclaration supertype = 
                             supertypes.get(i);
-                    List<TypeDeclaration> ctds =
-                            supertype.getCaseTypeDeclarations();
-                    if (ctds!=null) {
+                    List<ProducedType> cts =
+                            supertype.getCaseTypes();
+                    if (cts!=null) {
                         TypeDeclaration ctd=null;
-                        for (int cti=0, ctl=ctds.size(); 
+                        for (int cti=0, ctl=cts.size(); 
                                 cti<ctl; 
                                 cti++) {
                             TypeDeclaration ct = 
-                                    ctds.get(cti);
+                                    cts.get(cti)
+                                        .getDeclaration();
                             if (ptd.inherits(ct)) {
                                 ctd = ct;
                                 break;
                             }
                         }
                         if (ctd!=null) {
-                            for (int cti=0, ctl=ctds.size(); 
+                            for (int cti=0, ctl=cts.size(); 
                                     cti<ctl; 
                                     cti++) {
                                 TypeDeclaration ct = 
-                                        ctds.get(cti);
+                                        cts.get(cti)
+                                            .getDeclaration();
                                 if (ct!=ctd) {
                                     for (int ti=0, tl=list.size(); 
                                             ti<tl; 
@@ -1242,38 +1241,38 @@ public class Util {
         TypeDeclaration nd = unit.getNullDeclaration(); //TODO what about the anonymous type of null?
         TypeDeclaration pd = p.getDeclaration();
         TypeDeclaration qd = q.getDeclaration();
-        if (pd instanceof TypeParameter) {
+        if (p.isTypeParameter()) {
             IntersectionType it = 
                     new IntersectionType(unit);
-            it.setSatisfiedTypes(pd.getSatisfiedTypes());
+            it.setSatisfiedTypes(p.getSatisfiedTypes());
             p = it.canonicalize().getType();
             pd = p.getDeclaration();
         }
-        if (qd instanceof TypeParameter) {
+        if (q.isTypeParameter()) {
             IntersectionType it = 
                     new IntersectionType(unit);
-            it.setSatisfiedTypes(qd.getSatisfiedTypes());
+            it.setSatisfiedTypes(q.getSatisfiedTypes());
             q = it.canonicalize().getType();
             qd = q.getDeclaration();
         }
-        if (qd instanceof IntersectionType) {
-            for (ProducedType t: qd.getSatisfiedTypes()) {
+        if (q.isIntersection()) {
+            for (ProducedType t: q.getSatisfiedTypes()) {
                 if (emptyMeet(p,t,unit)) {
                     return true;
                 }
             }
             return false;
         }
-        if (pd instanceof IntersectionType) {
-            for (ProducedType t: pd.getSatisfiedTypes()) {
+        if (p.isIntersection()) {
+            for (ProducedType t: p.getSatisfiedTypes()) {
                 if (emptyMeet(q,t,unit)) {
                     return true;
                 }
             }
             return false;
         }
-        if (qd instanceof UnionType) {
-            for (ProducedType t: qd.getCaseTypes()) {
+        if (q.isUnion()) {
+            for (ProducedType t: q.getCaseTypes()) {
                 if (!emptyMeet(p,t,unit)) {
                     return false;
                 }
@@ -1294,15 +1293,15 @@ public class Util {
             }
             if (all) return true;
         }
-        if (pd instanceof UnionType) {
-            for (ProducedType t: pd.getCaseTypes()) {
+        if (p.isUnion()) {
+            for (ProducedType t: p.getCaseTypes()) {
                 if (!emptyMeet(q,t,unit)) {
                     return false;
                 }
             }
             return true;
         }
-        else if (pd.getCaseTypes()!=null) {
+        else if (p.getCaseTypes()!=null) {
             boolean all = true;
             for (ProducedType t: 
                     //TODO: shouldn't this be p.getCaseTypes() ?
@@ -1316,10 +1315,10 @@ public class Util {
             }
             if (all) return true;
         }
-        if (pd instanceof Class && qd instanceof Class ||
-            pd instanceof Interface && qd instanceof Class &&
+        if (p.isClass() && q.isClass() ||
+            p.isInterface() && q.isClass() &&
                     qd.equals(nd) ||
-            qd instanceof Interface && pd instanceof Class &&
+            q.isInterface() && p.isClass() &&
                     pd.equals(nd)) {
             if (!qd.inherits(pd) &&
                 !pd.inherits(qd)) {
@@ -1333,7 +1332,7 @@ public class Util {
                     !(qd instanceof UnknownType)) {
                 return true;
             }
-            if (qd instanceof ClassOrInterface &&
+            if (q.isClassOrInterface() &&
                     !pd.inherits(qd)) {
                 return true;
             }
@@ -1342,10 +1341,10 @@ public class Util {
             if (qd.getTypeParameters().isEmpty() &&
                     !p.involvesTypeParameters() &&
                     !q.isSubtypeOf(p) &&
-                    !(pd instanceof UnknownType)) {
+                    !(p.isUnknown())) {
                 return true;
             }
-            if (pd instanceof ClassOrInterface &&
+            if (p.isClassOrInterface() &&
                     !qd.inherits(pd)) {
                 return true;
             }
@@ -1359,10 +1358,10 @@ public class Util {
 //            return true;
 //        }
         Interface st = unit.getSequentialDeclaration();
-        if (qd instanceof ClassOrInterface &&
+        if (q.isClassOrInterface() &&
                 pd.inherits(st) && !qd.inherits(st) && 
                 !st.inherits(qd) ||
-            pd instanceof ClassOrInterface &&
+            p.isClassOrInterface() &&
                 qd.inherits(st) && !pd.inherits(st) && 
                 !st.inherits(pd) && 
                 !p.involvesTypeParameters()) {
@@ -1683,19 +1682,18 @@ public class Util {
             return type;
         }
         else if (type.isTypeParameter()) {
-            TypeDeclaration declaration = 
-                    type.getDeclaration();
             List<ProducedType> satisfiedTypes = 
-                    declaration.getSatisfiedTypes();
+                    type.getSatisfiedTypes();
             if (satisfiedTypes.isEmpty()) {
                 // trivial intersection TP&Object
                 IntersectionType it = 
-                        new IntersectionType(objectDecl.getUnit());
+                        new IntersectionType(
+                                objectDecl.getUnit());
                 it.getSatisfiedTypes().add(type);
                 it.getSatisfiedTypes().add(objectDecl.getType());
                 return it.canonicalize().getType();
             }
-            for(ProducedType sat : satisfiedTypes){
+            for(ProducedType sat: satisfiedTypes){
                 if (sat.isClassOrInterface() && 
                         sat.getDeclaration()
                             .getQualifiedNameString()
@@ -1713,8 +1711,9 @@ public class Util {
 
     public static boolean isElementOfUnion(UnionType ut, 
             ClassOrInterface ci) {
-        for (TypeDeclaration ct: ut.getCaseTypeDeclarations()) {
-            if (ct instanceof ClassOrInterface && ct.equals(ci)) {
+        for (ProducedType ct: ut.getCaseTypes()) {
+            if (ct.isClassOrInterface() && 
+                    ct.getDeclaration().equals(ci)) {
                 return true;
             }
         }
@@ -1891,8 +1890,7 @@ public class Util {
     public static boolean isCompletelyVisible(Declaration member, 
             ProducedType pt) {
         if (pt.isUnion()) {
-            for (ProducedType ct: 
-                    pt.getDeclaration().getCaseTypes()) {
+            for (ProducedType ct: pt.getCaseTypes()) {
                 if (!isCompletelyVisible(member, 
                         ct.substitute(pt))) {
                     return false;
@@ -1901,8 +1899,7 @@ public class Util {
             return true;
         }
         else if (pt.isIntersection()) {
-            for (ProducedType ct: 
-                    pt.getDeclaration().getSatisfiedTypes()) {
+            for (ProducedType ct: pt.getSatisfiedTypes()) {
                 if (!isCompletelyVisible(member, 
                         ct.substitute(pt))) {
                     return false;

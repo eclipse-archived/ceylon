@@ -87,15 +87,18 @@ public class UnionType extends TypeDeclaration {
     
     @Override
     public List<TypeDeclaration> getSupertypeDeclarations() {
-        List<TypeDeclaration> ctds = getCaseTypeDeclarations();
+        List<ProducedType> ctds = getCaseTypes();
         List<TypeDeclaration> result =
-                new ArrayList<TypeDeclaration>(ctds.size());
+                new ArrayList<TypeDeclaration>
+                    (ctds.size());
         ProducedType type = getType();
         for (int i=0, l=ctds.size(); i<l; i++) {
             //actually the loop is unnecessary, we
             //only need to consider the first case
-            TypeDeclaration ctd = ctds.get(i);
-            List<TypeDeclaration> ctsts = ctd.getSupertypeDeclarations();
+            ProducedType ct = ctds.get(i);
+            TypeDeclaration ctd = ct.getDeclaration();
+            List<TypeDeclaration> ctsts = 
+                    ctd.getSupertypeDeclarations();
             for (int j=0; j<ctsts.size(); j++) {
                 TypeDeclaration std = ctsts.get(j);
                 ProducedType st = type.getSupertype(std);

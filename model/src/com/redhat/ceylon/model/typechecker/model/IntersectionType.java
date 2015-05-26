@@ -89,7 +89,7 @@ public class IntersectionType extends TypeDeclaration {
 			if (st.isUnion()) {
 				TypeDeclaration result = new UnionType(unit);
                 List<ProducedType> caseTypes = 
-                        st.getDeclaration().getCaseTypes();
+                        st.getCaseTypes();
 				List<ProducedType> ulist = 
 				        new ArrayList<ProducedType>
 				            (caseTypes.size());

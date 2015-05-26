@@ -110,6 +110,7 @@ public abstract class TypeDeclaration extends Declaration
      * by a class or interface alias, or the class Anything
      * for any other type.
      */
+    @Deprecated
     public ClassOrInterface getExtendedTypeDeclaration() {
         ProducedType et = getExtendedType();
 		if (et==null) {
@@ -150,6 +151,7 @@ public abstract class TypeDeclaration extends Declaration
         this.extendedType = extendedType;
     }
 
+    @Deprecated
     public List<TypeDeclaration> getSatisfiedTypeDeclarations() {
         List<ProducedType> sts = getSatisfiedTypes();
         List<TypeDeclaration> list = 
@@ -164,8 +166,7 @@ public abstract class TypeDeclaration extends Declaration
     
     public List<ProducedType> getSatisfiedTypes() {
         List<ProducedType> sts = satisfiedTypes;
-        for (int i=0, size=sts.size(); 
-                i<size; i++) {
+        for (int i=0, size=sts.size(); i<size; i++) {
             ProducedType st = sts.get(i);
             if (st!=null) {
                 TypeDeclaration std = st.getDeclaration();
@@ -188,6 +189,7 @@ public abstract class TypeDeclaration extends Declaration
         this.satisfiedTypes = satisfiedTypes;
     }
 
+    @Deprecated
     public List<TypeDeclaration> getCaseTypeDeclarations() {
         List<ProducedType> cts = getCaseTypes();
         if (cts==null) {
@@ -208,8 +210,7 @@ public abstract class TypeDeclaration extends Declaration
     public List<ProducedType> getCaseTypes() {
         List<ProducedType> cts = caseTypes;
         if (cts!=null) {
-            for (int i=0, size=cts.size(); 
-                    i<size; i++) {
+            for (int i=0, size=cts.size(); i<size; i++) {
                 ProducedType ct = cts.get(i);
                 if (ct!=null) {
                     TypeDeclaration ctd = ct.getDeclaration();
@@ -357,11 +358,11 @@ public abstract class TypeDeclaration extends Declaration
             List<TypeDeclaration> visited) {
         List<Declaration> members = 
                 new ArrayList<Declaration>();
-        for (TypeDeclaration std: 
-                getSatisfiedTypeDeclarations()) {
+        for (ProducedType st: getSatisfiedTypes()) {
             //if ( !(t instanceof TypeParameter) ) { //don't look for members in a type parameter with a self-referential lower bound
             for (Declaration member: 
-                    std.getMembers(name, visited)) {
+                    st.getDeclaration()
+                        .getMembers(name, visited)) {
                 if (member.isShared() && 
                         isResolvable(member)) {
                     if (!contains(members, member)) {
@@ -371,11 +372,11 @@ public abstract class TypeDeclaration extends Declaration
             }
             //}
         }
-        TypeDeclaration et = 
-                getExtendedTypeDeclaration();
+        ProducedType et = getExtendedType();
         if (et!=null) {
             for (Declaration member: 
-                    et.getMembers(name, visited)) {
+                    et.getDeclaration()
+                        .getMembers(name, visited)) {
                 if (member.isShared() && 
                         isResolvable(member)) {
                     if (!contains(members, member)) {
@@ -407,16 +408,15 @@ public abstract class TypeDeclaration extends Declaration
                 return true;
             }
         }
-        for (TypeDeclaration t: 
-                getSatisfiedTypeDeclarations()) {
-            if (t.isMember(dec, visited)) {
+        for (ProducedType t: getSatisfiedTypes()) {
+            if (t.getDeclaration().isMember(dec, visited)) {
                 return true;
             }
         }
-        TypeDeclaration et = 
-                getExtendedTypeDeclaration();
+        ProducedType et = getExtendedType();
         if (et!=null) {
-            if (et.isMember(dec, visited)) {
+            if (et.getDeclaration()
+                    .isMember(dec, visited)) {
                 return true;
             }
         }
@@ -429,15 +429,14 @@ public abstract class TypeDeclaration extends Declaration
     public boolean inherits(TypeDeclaration dec) {
         //TODO: optimize this to avoid walking the
         //      same supertypes multiple times
-        for (TypeDeclaration t: 
-                getSatisfiedTypeDeclarations()) {
-            if (t.inherits(dec)) {
+        for (ProducedType t: getSatisfiedTypes()) {
+            if (t.getDeclaration().inherits(dec)) {
                 return true;
             }
         }
-        TypeDeclaration et = 
-                getExtendedTypeDeclaration();
-        if (et!=null && et.inherits(dec)) {
+        ProducedType et = getExtendedType();
+        if (et!=null && 
+                et.getDeclaration().inherits(dec)) {
             return true;
         }
         return false;
@@ -462,22 +461,23 @@ public abstract class TypeDeclaration extends Declaration
         }
         else {
             Declaration result = null;
-            TypeDeclaration et = 
-                    getExtendedTypeDeclaration();
+            ProducedType et = getExtendedType();
             if (et!=null) {
                 Declaration ed = 
-                        et.getRefinedMember(name, signature, 
-                                ellipsis, visited);
+                        et.getDeclaration()
+                            .getRefinedMember(name, signature, 
+                                    ellipsis, visited);
                 if (isBetterRefinement(signature, 
                         ellipsis, result, ed)) {
                     result = ed;
                 }
             }
-            for (TypeDeclaration st: 
-                    getSatisfiedTypeDeclarations()) {
+            for (ProducedType st: getSatisfiedTypes()) {
                 Declaration sd = 
-                        st.getRefinedMember(name, signature, 
-                                ellipsis, visited);
+                        st.getDeclaration()
+                            .getRefinedMember(name, 
+                                    signature, ellipsis, 
+                                    visited);
                 if (isBetterRefinement(signature, 
                         ellipsis, result, sd)) {
                     result = sd;
@@ -911,41 +911,43 @@ public abstract class TypeDeclaration extends Declaration
             String startingWith, int proximity) {
         Map<String,DeclarationWithProximity> result = 
                 new TreeMap<String,DeclarationWithProximity>();
-        for (TypeDeclaration st: 
-                getSatisfiedTypeDeclarations()) {
+        for (ProducedType st: getSatisfiedTypes()) {
             mergeMembers(result, 
-                    st.getMatchingMemberDeclarations(unit, 
-                            scope, startingWith, 
-                            proximity+1));
+                    st.getDeclaration()
+                        .getMatchingMemberDeclarations(unit, 
+                                scope, startingWith, 
+                                proximity+1));
         }
-        TypeDeclaration et = 
-                getExtendedTypeDeclaration();
+        ProducedType et = 
+                getExtendedType();
         if (et!=null) {
             mergeMembers(result, 
-                    et.getMatchingMemberDeclarations(unit, 
-                            scope, startingWith, 
-                            proximity+1));
+                    et.getDeclaration()
+                        .getMatchingMemberDeclarations(unit, 
+                                scope, startingWith, 
+                                proximity+1));
         }
-        for (Declaration d: getMembers()) {
-            if (isResolvable(d) && 
-                    !isOverloadedVersion(d) &&
-                    isNameMatching(startingWith, d)) {
-                if( d.isShared() || 
-                        Util.contains(d.getScope(), scope) ) {
-                    result.put(d.getName(unit), 
-                            new DeclarationWithProximity(d, 
-                                    proximity));
+        for (Declaration member: getMembers()) {
+            if (isResolvable(member) && 
+                    !isOverloadedVersion(member) &&
+                    isNameMatching(startingWith, member)) {
+                if( member.isShared() || 
+                        Util.contains(member.getScope(), scope) ) {
+                    result.put(member.getName(unit), 
+                            new DeclarationWithProximity(
+                                    member, proximity));
                 }
             }
         }
         //premature optimization so that we don't have to 
         //call d.getName(unit) on *every* member
-        result.putAll(unit.getMatchingImportedDeclarations(this, 
-                startingWith, proximity));
+        result.putAll(unit.getMatchingImportedDeclarations(
+                this, startingWith, proximity));
         return result;
     }
 
-    private void mergeMembers(Map<String,DeclarationWithProximity> result,
+    private void mergeMembers(
+            Map<String,DeclarationWithProximity> result,
             Map<String,DeclarationWithProximity> etm) {
         for (Map.Entry<String,DeclarationWithProximity> e: 
                 etm.entrySet()) {
@@ -965,12 +967,11 @@ public abstract class TypeDeclaration extends Declaration
     public List<TypeDeclaration> getSupertypeDeclarations() {
         //TODO: optimize this to avoid walking the
         //      same supertypes multiple times
-        ClassOrInterface etd = 
-                getExtendedTypeDeclaration();
-        List<TypeDeclaration> stds = 
-                getSatisfiedTypeDeclarations();
         List<TypeDeclaration> result;
-        if (etd!=null) {
+        ProducedType et = getExtendedType();
+        List<ProducedType> stds = getSatisfiedTypes();
+        if (et!=null) {
+            TypeDeclaration etd = et.getDeclaration();
             List<TypeDeclaration> etsts = 
                     etd.getSupertypeDeclarations();
             result = new ArrayList<TypeDeclaration>
@@ -987,13 +988,14 @@ public abstract class TypeDeclaration extends Declaration
                         (stds.size()*2);
         }
         for (int i=0, l=stds.size(); i<l; i++) {
-            TypeDeclaration std = stds.get(i);
+            ProducedType st = stds.get(i);
+            TypeDeclaration std = st.getDeclaration();
             List<TypeDeclaration> ststs = 
                     std.getSupertypeDeclarations();
             for (int j=0, s=ststs.size(); j<s; j++) {
-                TypeDeclaration st = ststs.get(j);
-                if (!result.contains(st)) {
-                    result.add(st);
+                TypeDeclaration ststd = ststs.get(j);
+                if (!result.contains(ststd)) {
+                    result.add(ststd);
                 }
             }
         }

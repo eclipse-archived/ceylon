@@ -964,12 +964,11 @@ public class Unit {
         return new NothingType(this);
     }
     
-    public ProducedType denotableType(ProducedType pt) {
-    	if (pt!=null) {
-    		TypeDeclaration dec = pt.getDeclaration();
-    		if (pt.isUnion()) {
+    public ProducedType denotableType(ProducedType type) {
+    	if (type!=null) {
+    		if (type.isUnion()) {
     		    List<ProducedType> cts = 
-                        dec.getCaseTypes();
+                        type.getCaseTypes();
                 List<ProducedType> list = 
                         new ArrayList<ProducedType>
                             (cts.size()+1);
@@ -981,9 +980,9 @@ public class Unit {
                 ut.setCaseTypes(list);
                 return ut.getType();
     		}
-            if (pt.isIntersection()) {
+            if (type.isIntersection()) {
                 List<ProducedType> sts = 
-                        dec.getSatisfiedTypes();
+                        type.getSatisfiedTypes();
                 List<ProducedType> list = 
                         new ArrayList<ProducedType>
                             (sts.size()+1);
@@ -997,31 +996,36 @@ public class Unit {
                 it.setSatisfiedTypes(list);
                 return it.canonicalize().getType();
             }
+            TypeDeclaration dec = type.getDeclaration();
+            ProducedType et = dec.getExtendedType();
+            TypeDeclaration ed = 
+                    et==null ? null : 
+                        et.getDeclaration();
             if (dec.isOverloaded()) {
-				pt = pt.getSupertype(
-				        dec.getExtendedTypeDeclaration());
+				type = type.getSupertype(ed);
 			}
     		if (dec instanceof Constructor) {
-    		    return pt.getSupertype(
-    		            dec.getExtendedTypeDeclaration());
+    		    return type.getSupertype(ed);
     		}
     		if (dec instanceof Class && dec.isAnonymous()) {
-    			ClassOrInterface etd = 
-    			        dec.getExtendedTypeDeclaration();
-    			List<TypeDeclaration> stds = 
-    			        dec.getSatisfiedTypeDeclarations();
+    			List<ProducedType> sts = 
+    			        dec.getSatisfiedTypes();
     			List<ProducedType> list = 
     			        new ArrayList<ProducedType>
-    			            (stds.size()+1);
-    			if (etd!=null) {
+    			            (sts.size()+1);
+    			if (et!=null) {
+    			    TypeDeclaration etd = 
+    			            et.getDeclaration();
     			    addToIntersection(list, 
-    			            pt.getSupertype(etd), 
+    			            type.getSupertype(etd), 
     			            this);
     			}
-    			for (TypeDeclaration td: stds) {
-    			    if (td!=null) {
+    			for (ProducedType st: sts) {
+    			    if (st!=null) {
+                        TypeDeclaration std = 
+                                st.getDeclaration();
     			        addToIntersection(list, 
-    			                pt.getSupertype(td), 
+    			                type.getSupertype(std), 
     			                this);
     			    }
     			}
@@ -1032,12 +1036,12 @@ public class Unit {
     		}
     		else {
                 List<ProducedType> typeArgList = 
-                        pt.getTypeArgumentList();
+                        type.getTypeArgumentList();
                 if (typeArgList.isEmpty()) {
-                    return pt;
+                    return type;
                 }
                 else {
-                    dec = pt.getDeclaration();
+                    dec = type.getDeclaration();
                     List<TypeParameter> typeParamList = 
                             dec.getTypeParameters();
                     List<ProducedType> typeArguments = 
@@ -1054,16 +1058,16 @@ public class Unit {
                         typeArguments.add(tp.isCovariant() ? 
                                 denotableType(at) : at);
                     }
-                    ProducedType qt = pt.getQualifyingType();
+                    ProducedType qt = type.getQualifyingType();
                     ProducedType dt = 
                             dec.getProducedType(qt, 
                                     typeArguments);
-                    dt.setUnderlyingType(pt.getUnderlyingType());
-                    dt.setVarianceOverrides(pt.getVarianceOverrides());
-                    dt.setTypeConstructor(pt.isTypeConstructor());
+                    dt.setUnderlyingType(type.getUnderlyingType());
+                    dt.setVarianceOverrides(type.getVarianceOverrides());
+                    dt.setTypeConstructor(type.isTypeConstructor());
                     dt.setTypeConstructorParameter(
-                            pt.getTypeConstructorParameter());
-                    dt.setRaw(pt.isRaw());
+                            type.getTypeConstructorParameter());
+                    dt.setRaw(type.isRaw());
                     return dt;
                 }
     		}
@@ -1123,23 +1127,22 @@ public class Unit {
     private List<ProducedType> getSimpleTupleElementTypes(
             ProducedType args, int count) {
         // can be a defaulted tuple of Empty|Tuple
-        TypeDeclaration declaration = args.getDeclaration();
-        if (declaration instanceof UnionType) {
+        if (args.isUnion()) {
             List<ProducedType> caseTypes = 
-                    declaration.getCaseTypes();
+                    args.getCaseTypes();
             if (caseTypes == null || caseTypes.size() != 2) {
                 return null;
             }
             ProducedType caseA = caseTypes.get(0);
+            ProducedType caseB = caseTypes.get(1);
+            if (!caseA.isClassOrInterface() || 
+                !caseB.isClassOrInterface()) {
+                    return null;
+            }
             TypeDeclaration caseADecl = 
                     caseA.getDeclaration();
-            ProducedType caseB = caseTypes.get(1);
             TypeDeclaration caseBDecl = 
                     caseB.getDeclaration();
-            if (!(caseADecl instanceof ClassOrInterface) || 
-                !(caseBDecl instanceof ClassOrInterface)) {
-                return null;
-            }
             String caseAName = 
                     caseADecl.getQualifiedNameString();
             String caseBName = 
@@ -1155,10 +1158,12 @@ public class Unit {
             return null;
         }
         // can be Tuple, Empty, Sequence or Sequential
-        if (!(declaration instanceof ClassOrInterface)) {
+        if (!(args.isClassOrInterface())) {
             return null;
         }
-        String name = declaration.getQualifiedNameString();
+        String name = 
+                args.getDeclaration()
+                    .getQualifiedNameString();
         if (name.equals("ceylon.language::Tuple")){
             List<ProducedType> tal = 
                     args.getTypeArgumentList();
@@ -1224,23 +1229,22 @@ public class Unit {
     
     protected Boolean isSimpleTupleLengthUnbounded(ProducedType args) {
         // can be a defaulted tuple of Empty|Tuple
-        TypeDeclaration declaration = args.getDeclaration();
-        if (declaration instanceof UnionType){
+        if (args.isUnion()) {
             List<ProducedType> caseTypes = 
-                    declaration.getCaseTypes();
+                    args.getCaseTypes();
             if (caseTypes == null || caseTypes.size() != 2) {
                 return null;
             }
             ProducedType caseA = caseTypes.get(0);
+            ProducedType caseB = caseTypes.get(1);
+            if (!caseA.isClassOrInterface() || 
+                !caseB.isClassOrInterface()) {
+                    return null;
+            }
             TypeDeclaration caseADecl = 
                     caseA.getDeclaration();
-            ProducedType caseB = caseTypes.get(1);
             TypeDeclaration caseBDecl = 
                     caseB.getDeclaration();
-            if (!(caseADecl instanceof ClassOrInterface) || 
-                !(caseBDecl instanceof ClassOrInterface)) {
-                    return null;
-                }
             String caseAName = 
                     caseADecl.getQualifiedNameString();
             String caseBName = 
@@ -1256,10 +1260,12 @@ public class Unit {
             return null;
         }
         // can be Tuple, Empty, Sequence or Sequential
-        if (!(declaration instanceof ClassOrInterface)) {
+        if (!(args.isClassOrInterface())) {
             return null;
         }
-        String name = declaration.getQualifiedNameString();
+        String name = 
+                args.getDeclaration()
+                    .getQualifiedNameString();
         if (name.equals("ceylon.language::Tuple")) {
             ProducedType rest = 
                     args.getTypeArgumentList().get(2);
@@ -1312,23 +1318,22 @@ public class Unit {
     
     private Boolean isSimpleTupleVariantAtLeastOne(ProducedType args) {
         // can be a defaulted tuple of Empty|Tuple
-        TypeDeclaration declaration = args.getDeclaration();
-        if (declaration instanceof UnionType) {
+        if (args.isUnion()) {
             List<ProducedType> caseTypes = 
-                    declaration.getCaseTypes();
+                    args.getCaseTypes();
             if (caseTypes == null || caseTypes.size() != 2) {
                 return null;
             }
             ProducedType caseA = caseTypes.get(0);
+            ProducedType caseB = caseTypes.get(1);
+            if (!caseA.isClassOrInterface() || 
+                !caseB.isClassOrInterface()) {
+                    return null;
+            }
             TypeDeclaration caseADecl = 
                     caseA.getDeclaration();
-            ProducedType caseB = caseTypes.get(1);
             TypeDeclaration caseBDecl = 
                     caseB.getDeclaration();
-            if (!(caseADecl instanceof ClassOrInterface) || 
-                !(caseBDecl instanceof ClassOrInterface)) {
-                return null;
-            }
             String caseAName = 
                     caseADecl.getQualifiedNameString();
             String caseBName = 
@@ -1344,10 +1349,12 @@ public class Unit {
             return null;
         }
         // can be Tuple, Empty, Sequence or Sequential
-        if (!(declaration instanceof ClassOrInterface)) {
+        if (!(args.isClassOrInterface())) {
             return null;
         }
-        String name = declaration.getQualifiedNameString();
+        String name = 
+                args.getDeclaration()
+                    .getQualifiedNameString();
         if (name.equals("ceylon.language::Tuple")) {
             ProducedType rest = 
                     args.getTypeArgumentList().get(2);
@@ -1402,23 +1409,22 @@ public class Unit {
     
     private int getSimpleTupleMinimumLength(ProducedType args) {
         // can be a defaulted tuple of Empty|Tuple
-        TypeDeclaration declaration = args.getDeclaration();
-        if (declaration instanceof UnionType){
+        if (args.isUnion()){
             List<ProducedType> caseTypes = 
-                    declaration.getCaseTypes();
+                    args.getCaseTypes();
             if (caseTypes == null || caseTypes.size() != 2) {
                 return -1;
             }
             ProducedType caseA = caseTypes.get(0);
+            ProducedType caseB = caseTypes.get(1);
+            if (!caseA.isClassOrInterface() || 
+                !caseB.isClassOrInterface()) {
+                    return -1;
+            }
             TypeDeclaration caseADecl = 
                     caseA.getDeclaration();
-            ProducedType caseB = caseTypes.get(1);
             TypeDeclaration caseBDecl = 
                     caseB.getDeclaration();
-            if (!(caseADecl instanceof ClassOrInterface) || 
-                !(caseBDecl instanceof ClassOrInterface)) {
-                return -1;
-            }
             String caseAName = 
                     caseADecl.getQualifiedNameString();
             String caseBName = 
@@ -1434,10 +1440,12 @@ public class Unit {
             return -1;
         }
         // can be Tuple, Empty, Sequence or Sequential
-        if (!(declaration instanceof ClassOrInterface)) {
+        if (!(args.isClassOrInterface())) {
             return -1;
         }
-        String name = declaration.getQualifiedNameString();
+        String name = 
+                args.getDeclaration()
+                    .getQualifiedNameString();
         if (name.equals("ceylon.language::Tuple")) {
             ProducedType rest = 
                     args.getTypeArgumentList().get(2);
