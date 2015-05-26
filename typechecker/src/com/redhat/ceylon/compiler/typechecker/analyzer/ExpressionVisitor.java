@@ -7462,7 +7462,8 @@ public class ExpressionVisitor extends Visitor {
                         that.getEllipsis(),
                         that.getUnit());
         if (member==null) {
-            if (!dynamic && 
+            if (!dynamic &&
+                    !isNativeForWrongBackend() &&
                     error) {
                 that.addError("function or value does not exist: '" +
                         name + "'", 100);
@@ -8047,7 +8048,7 @@ public class ExpressionVisitor extends Visitor {
                         that.getEllipsis(), 
                         that.getUnit());
         if (type==null) {
-            if (!dynamic && error) {
+            if (!dynamic && !isNativeForWrongBackend() && error) {
                 that.addError("type does not exist: '" + 
                         name + "'", 
                         102);
@@ -10415,4 +10416,11 @@ public class ExpressionVisitor extends Visitor {
         }
     }
     
+    // We use this to check for similar situations as "dynamic"
+    // where in this case the backend compiler can't check the
+    // validity of the code for the other backend 
+    private boolean isNativeForWrongBackend() {
+        return inBackend != null && 
+                !backendSupport.supportsBackend(inBackend);
+    }    
 }
