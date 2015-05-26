@@ -168,11 +168,11 @@ public class InvocationGenerator {
                         //(can be union with empty if first param is defaulted)
                         ProducedType callableArgs = callable.getTypeArgumentList().get(1);
                         boolean isUnion=false;
-                        if (callableArgs.getDeclaration() instanceof UnionType) {
+                        if (callableArgs.isUnion()) {
                             if (callableArgs.getCaseTypes().size() == 2) {
                                 callableArgs = callableArgs.minus(that.getUnit().getEmptyDeclaration().getType());
                             }
-                            isUnion=callableArgs.getDeclaration() instanceof UnionType;
+                            isUnion=callableArgs.isUnion();
                         }
                         //This is the type of the first argument
                         boolean isSequenced = !(isUnion || that.getUnit().getTupleDeclaration().equals(
@@ -201,7 +201,7 @@ public class InvocationGenerator {
                                         //empty|tuple if defaulted params
                                         //empty if no more params
                                         //sequential if sequenced param
-                                        if (next.getDeclaration() instanceof UnionType) {
+                                        if (next.isUnion()) {
                                             //empty|tuple
                                             callableArgs = next.minus(that.getUnit().getEmptyDeclaration().getType());
                                             isSequenced = !that.getUnit().getTupleDeclaration().equals(

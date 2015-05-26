@@ -19,7 +19,6 @@ import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.model.typechecker.model.Constructor;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Generic;
-import com.redhat.ceylon.model.typechecker.model.IntersectionType;
 import com.redhat.ceylon.model.typechecker.model.Method;
 import com.redhat.ceylon.model.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.model.typechecker.model.Module;
@@ -62,10 +61,10 @@ public class TypeUtils {
                 boolean hasParams = pt.getTypeArgumentList() != null && !pt.getTypeArgumentList().isEmpty();
                 boolean closeBracket = false;
                 final TypeDeclaration d = pt.getDeclaration();
-                if (d instanceof TypeParameter) {
+                if (pt.isTypeParameter()) {
                     resolveTypeParameter(node, (TypeParameter)d, gen, skipSelfDecl);
                 } else {
-                    closeBracket = pt.getDeclaration() instanceof TypeAlias==false;
+                    closeBracket = !pt.isTypeAlias();
                     if (closeBracket)gen.out("{t:");
                     outputQualifiedTypename(node,
                             node != null && gen.isImported(node.getUnit().getPackage(), pt.getDeclaration()),
@@ -175,9 +174,9 @@ public class TypeUtils {
     public static void typeNameOrList(final Node node, final ProducedType pt, final GenerateJsVisitor gen, final boolean skipSelfDecl) {
         TypeDeclaration type = pt.getDeclaration();
         if (!outputTypeList(node, pt, gen, skipSelfDecl)) {
-            if (type instanceof TypeParameter) {
+            if (pt.isTypeParameter()) {
                 resolveTypeParameter(node, (TypeParameter)type, gen, skipSelfDecl);
-            } else if (type instanceof TypeAlias) {
+            } else if (pt.isTypeAlias()) {
                 outputQualifiedTypename(node, node != null && gen.isImported(node.getUnit().getPackage(), type),
                         pt, gen, skipSelfDecl);
             } else {
@@ -227,16 +226,16 @@ public class TypeUtils {
         TypeDeclaration d = pt.getDeclaration();
         final List<ProducedType> subs;
         int seq=0;
-        if (d instanceof IntersectionType) {
+        if (pt.isIntersection()) {
             gen.out(gen.getClAlias(), "mit$([");
-            subs = d.getSatisfiedTypes();
-        } else if (d instanceof UnionType) {
+            subs = pt.getSatisfiedTypes();
+        } else if (pt.isUnion()) {
             gen.out(gen.getClAlias(), "mut$([");
-            subs = d.getCaseTypes();
+            subs = pt.getCaseTypes();
         } else if ("ceylon.language::Tuple".equals(d.getQualifiedNameString())) {
             subs = d.getUnit().getTupleElementTypes(pt);
             final ProducedType lastType = subs.get(subs.size()-1);
-            if (lastType.isUnknown() || lastType.getDeclaration() instanceof TypeParameter) {
+            if (lastType.isUnknown() || lastType.isTypeParameter()) {
                 //Revert to outputting normal Tuple with its type arguments
                 gen.out("{t:", gen.getClAlias(), "Tuple,a:");
                 printTypeArguments(node, pt.getTypeArguments(), gen, skipSelfDecl, pt.getVarianceOverrides());
@@ -360,7 +359,7 @@ public class TypeUtils {
         TypeDeclaration d = td.getDeclaration();
         if (d == tp) {
             return td;
-        } else if (d instanceof UnionType || d instanceof IntersectionType) {
+        } else if (td.isUnion() || td.isIntersection()) {
             List<ProducedType> comps = td.getCaseTypes();
             if (comps == null) comps = td.getSatisfiedTypes();
             for (ProducedType sub : comps) {
@@ -369,7 +368,7 @@ public class TypeUtils {
                     return td;
                 }
             }
-        } else if (d instanceof ClassOrInterface) {
+        } else if (td.isClassOrInterface()) {
             for (ProducedType sub : td.getTypeArgumentList()) {
                 if (typeContainsTypeParameter(sub, tp) != null) {
                     return td;
@@ -467,7 +466,7 @@ public class TypeUtils {
                 errmsg = "Expected Integer";
             } else {
                 gen.out(",", gen.getClAlias(), "is$(", tmp, ",");
-                if (t.getDeclaration() instanceof TypeParameter && typeArguments != null
+                if (t.isTypeParameter() && typeArguments != null
                         && typeArguments.containsKey(t.getDeclaration())) {
                     t = typeArguments.get(t.getDeclaration());
                 }
@@ -516,10 +515,10 @@ public class TypeUtils {
         TypeDeclaration tdecl = _tuple.getDeclaration();
         final TypeDeclaration empty = tdecl.getUnit().getEmptyDeclaration();
         final TypeDeclaration tuple = tdecl.getUnit().getTupleDeclaration();
-        while (!(empty.equals(tdecl) || tdecl instanceof TypeParameter)) {
+        while (!(empty.equals(tdecl) || _tuple.isTypeParameter())) {
             Parameter _p = null;
-            if (tuple.equals(tdecl) || (tdecl.getCaseTypeDeclarations() != null
-                    && tdecl.getCaseTypeDeclarations().size()==2
+            if (tuple.equals(tdecl) || (_tuple.getCaseTypes() != null
+                    && _tuple.getCaseTypes().size()==2
                     && tdecl.getCaseTypeDeclarations().contains(tuple))) {
                 _p = new Parameter();
                 _p.setModel(new Value());
@@ -569,7 +568,7 @@ public class TypeUtils {
         TypeDeclaration tdecl = _tuple.getDeclaration();
         final TypeDeclaration empty = tdecl.getUnit().getEmptyDeclaration();
         final TypeDeclaration tuple = tdecl.getUnit().getTupleDeclaration();
-        while (!(empty.equals(tdecl) || tdecl instanceof TypeParameter)) {
+        while (!(empty.equals(tdecl) || _tuple.isTypeParameter())) {
             if (pos > 1) gen.out(",");
             gen.out("{");
             pos++;
@@ -578,8 +577,8 @@ public class TypeUtils {
                 gen.out(MetamodelGenerator.KEY_METATYPE, ":'", MetamodelGenerator.METATYPE_PARAMETER, "',");
             }
             gen.out(MetamodelGenerator.KEY_TYPE, ":");
-            if (tuple.equals(tdecl) || (tdecl.getCaseTypeDeclarations() != null
-                    && tdecl.getCaseTypeDeclarations().size()==2
+            if (tuple.equals(tdecl) || (_tuple.getCaseTypes() != null
+                    && _tuple.getCaseTypes().size()==2
                     && tdecl.getCaseTypeDeclarations().contains(tuple))) {
                 if (tuple.equals(tdecl)) {
                     metamodelTypeNameOrList(resolveTargs, node, gen.getCurrentPackage(),
@@ -603,7 +602,7 @@ public class TypeUtils {
                 metamodelTypeNameOrList(resolveTargs, node, gen.getCurrentPackage(), _t2.getTypeArgumentList().get(0), gen);
                 gen.out(",seq:1");
                 _tuple = empty.getType();
-            } else if (tdecl instanceof UnionType) {
+            } else if (_tuple.isUnion()) {
                 metamodelTypeNameOrList(resolveTargs, node, gen.getCurrentPackage(), _tuple, gen);
                 tdecl = empty; _tuple=null;
             } else {
@@ -916,7 +915,7 @@ public class TypeUtils {
         }
         if (!outputMetamodelTypeList(resolveTargsFromScope, node, pkg, pt, gen)) {
             TypeDeclaration type = pt.getDeclaration();
-            if (type instanceof TypeParameter) {
+            if (pt.isTypeParameter()) {
                 Declaration tpowner = ((TypeParameter)type).getDeclaration();
                 if (resolveTargsFromScope && Util.contains((Scope)tpowner, node.getScope())) {
                     //Attempt to resolve this to an argument if the scope allows for it
@@ -930,7 +929,7 @@ public class TypeUtils {
                 } else {
                     gen.out("'", type.getNameAsString(), "$", tpowner.getName(), "'");
                 }
-            } else if (type instanceof TypeAlias) {
+            } else if (pt.isTypeAlias()) {
                 outputQualifiedTypename(node, gen.isImported(pkg, type), pt, gen, false);
             } else {
                 gen.out("{t:");
@@ -959,10 +958,10 @@ public class TypeUtils {
             ProducedType pt, GenerateJsVisitor gen) {
         TypeDeclaration type = pt.getDeclaration();
         final List<ProducedType> subs;
-        if (type instanceof IntersectionType) {
+        if (pt.isIntersection()) {
             gen.out("{t:'i");
             subs = type.getSatisfiedTypes();
-        } else if (type instanceof UnionType) {
+        } else if (pt.isUnion()) {
             //It still could be a Tuple with first optional type
             List<TypeDeclaration> cts = type.getCaseTypeDeclarations();
             if (cts.size()==2 && cts.contains(type.getUnit().getEmptyDeclaration())
@@ -974,7 +973,7 @@ public class TypeUtils {
                 return true;
             }
             gen.out("{t:'u");
-            subs = type.getCaseTypes();
+            subs = pt.getCaseTypes();
         } else if (type.getQualifiedNameString().equals("ceylon.language::Tuple")) {
             gen.out("{t:'T',l:");
             encodeTupleAsParameterListForRuntime(resolveTargs, node, pt,false, gen);

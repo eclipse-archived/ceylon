@@ -160,13 +160,13 @@ public class MetamodelGenerator {
         }
         TypeDeclaration d = pt.getDeclaration();
         Map<String, Object> m = new HashMap<>();
-        if (d instanceof UnionType || d instanceof IntersectionType) {
-            List<ProducedType> subtipos = d instanceof UnionType ? d.getCaseTypes() : d.getSatisfiedTypes();
+        if (pt.isUnion() || pt.isIntersection()) {
+            List<ProducedType> subtipos = pt.isUnion() ? pt.getCaseTypes() : pt.getSatisfiedTypes();
             List<Map<String,Object>> subs = new ArrayList<>(subtipos.size());
             for (ProducedType sub : subtipos) {
                 subs.add(typeMap(sub, from));
             }
-            m.put("comp", d instanceof UnionType ? "u" : "i");
+            m.put("comp", pt.isUnion() ? "u" : "i");
             m.put(KEY_TYPES, subs);
             return m;
         }
@@ -242,13 +242,13 @@ public class MetamodelGenerator {
         final Map<String, Object> m = new HashMap<>();
         final TypeDeclaration d = pt.getDeclaration();
         m.put(KEY_METATYPE, METATYPE_TYPE_PARAMETER);
-        if (d instanceof UnionType || d instanceof IntersectionType) {
-            List<ProducedType> subtipos = d instanceof UnionType ? d.getCaseTypes() : d.getSatisfiedTypes();
+        if (pt.isUnion() || pt.isIntersection()) {
+            List<ProducedType> subtipos = pt.isUnion() ? pt.getCaseTypes() : pt.getSatisfiedTypes();
             List<Map<String,Object>> subs = new ArrayList<>(subtipos.size());
             for (ProducedType sub : subtipos) {
                 subs.add(typeMap(sub, from));
             }
-            m.put("comp", d instanceof UnionType ? "u" : "i");
+            m.put("comp", pt.isUnion() ? "u" : "i");
             m.put(KEY_TYPES, subs);
             return m;
         }
