@@ -226,7 +226,7 @@ public class TypeParser {
             }else{
                 // look it up via its qualifying type or decl
                 Declaration qualifyingDeclaration = qualifyingType.getDeclaration();
-                if (qualifyingDeclaration instanceof UnionType || qualifyingDeclaration instanceof IntersectionType) {
+                if (qualifyingType.isUnion() || qualifyingType.isIntersection()) {
                     newDeclaration = qualifyingDeclaration.getMember(part.name, null, false);
                 } else {
                     if(qualifyingDeclaration instanceof FunctionOrValueInterface)

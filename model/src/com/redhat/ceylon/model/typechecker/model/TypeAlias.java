@@ -65,7 +65,7 @@ public class TypeAlias extends TypeDeclaration {
 
     @Override
     protected boolean equalsForCache(Object o) {
-        if(o == null || o instanceof ClassOrInterface == false)
+        if(o == null || !(o instanceof ClassOrInterface))
             return false;
         ClassOrInterface b = (ClassOrInterface) o;
         if(!Util.sameModule(this, b))

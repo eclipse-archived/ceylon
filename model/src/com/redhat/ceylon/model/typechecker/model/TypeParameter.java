@@ -184,7 +184,7 @@ public class TypeParameter extends TypeDeclaration implements Functional {
 
     @Override
     protected boolean equalsForCache(Object o) {
-        if(o == null || o instanceof TypeParameter == false)
+        if(o == null || !(o instanceof TypeParameter))
             return false;
         TypeParameter b = (TypeParameter) o;
         return getDeclaration().equalsForCache(b.getDeclaration())

@@ -3230,7 +3230,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
 
     List<ProducedType> getSimpleCallableArgumentTypes(ProducedType type) {
         if(type != null
-                && type.getDeclaration() instanceof ClassOrInterface
+                && type.isClassOrInterface()
                 && type.getDeclaration().getQualifiedNameString().equals(CEYLON_LANGUAGE_CALLABLE_TYPE_NAME)
                 && type.getTypeArgumentList().size() >= 2)
             return flattenCallableTupleType(type.getTypeArgumentList().get(1));
@@ -3239,7 +3239,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
 
     List<ProducedType> flattenCallableTupleType(ProducedType tupleType) {
         if(tupleType != null
-                && tupleType.getDeclaration() instanceof ClassOrInterface){
+                && tupleType.isClassOrInterface()){
             String declName = tupleType.getDeclaration().getQualifiedNameString();
             if(declName.equals(CEYLON_LANGUAGE_TUPLE_TYPE_NAME)){
                 List<ProducedType> tal = tupleType.getTypeArgumentList();
@@ -3265,7 +3265,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     
     ProducedType getSimpleCallableReturnType(ProducedType type) {
         if(type != null
-                && type.getDeclaration() instanceof ClassOrInterface
+                && type.isClassOrInterface()
                 && type.getDeclaration().getQualifiedNameString().equals(CEYLON_LANGUAGE_CALLABLE_TYPE_NAME)
                 && !type.getTypeArgumentList().isEmpty())
             return type.getTypeArgumentList().get(0);
@@ -3777,7 +3777,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             Module moduleScope = ModelUtil.getModuleContainer(klass);
             if(selfType != null && !selfType.isEmpty()){
                 ProducedType type = decodeType(selfType, klass, moduleScope, "self type");
-                if(!(type.getDeclaration() instanceof TypeParameter)){
+                if(!type.isTypeParameter()){
                     logError("Invalid type signature for self type of "+klass.getQualifiedNameString()+": "+selfType+" is not a type parameter");
                 }else{
                     klass.setSelfType(type);

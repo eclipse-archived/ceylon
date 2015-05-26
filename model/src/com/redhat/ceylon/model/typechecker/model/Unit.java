@@ -966,10 +966,10 @@ public class Unit {
     
     public ProducedType denotableType(ProducedType pt) {
     	if (pt!=null) {
-    		TypeDeclaration d = pt.getDeclaration();
-    		if (d instanceof UnionType) {
+    		TypeDeclaration dec = pt.getDeclaration();
+    		if (pt.isUnion()) {
     		    List<ProducedType> cts = 
-                        d.getCaseTypes();
+                        dec.getCaseTypes();
                 List<ProducedType> list = 
                         new ArrayList<ProducedType>
                             (cts.size()+1);
@@ -981,9 +981,9 @@ public class Unit {
                 ut.setCaseTypes(list);
                 return ut.getType();
     		}
-            if (d instanceof IntersectionType) {
+            if (pt.isIntersection()) {
                 List<ProducedType> sts = 
-                        d.getSatisfiedTypes();
+                        dec.getSatisfiedTypes();
                 List<ProducedType> list = 
                         new ArrayList<ProducedType>
                             (sts.size()+1);
@@ -997,19 +997,19 @@ public class Unit {
                 it.setSatisfiedTypes(list);
                 return it.canonicalize().getType();
             }
-            if (d.isOverloaded()) {
+            if (dec.isOverloaded()) {
 				pt = pt.getSupertype(
-				        d.getExtendedTypeDeclaration());
+				        dec.getExtendedTypeDeclaration());
 			}
-    		if (d instanceof Constructor) {
+    		if (dec instanceof Constructor) {
     		    return pt.getSupertype(
-    		            d.getExtendedTypeDeclaration());
+    		            dec.getExtendedTypeDeclaration());
     		}
-    		if (d instanceof Class && d.isAnonymous()) {
+    		if (dec instanceof Class && dec.isAnonymous()) {
     			ClassOrInterface etd = 
-    			        d.getExtendedTypeDeclaration();
+    			        dec.getExtendedTypeDeclaration();
     			List<TypeDeclaration> stds = 
-    			        d.getSatisfiedTypeDeclarations();
+    			        dec.getSatisfiedTypeDeclarations();
     			List<ProducedType> list = 
     			        new ArrayList<ProducedType>
     			            (stds.size()+1);
@@ -1037,9 +1037,9 @@ public class Unit {
                     return pt;
                 }
                 else {
-                    d = pt.getDeclaration();
+                    dec = pt.getDeclaration();
                     List<TypeParameter> typeParamList = 
-                            d.getTypeParameters();
+                            dec.getTypeParameters();
                     List<ProducedType> typeArguments = 
                             new ArrayList<ProducedType>
                                 (typeArgList.size());
@@ -1056,12 +1056,13 @@ public class Unit {
                     }
                     ProducedType qt = pt.getQualifyingType();
                     ProducedType dt = 
-                            d.getProducedType(qt, 
+                            dec.getProducedType(qt, 
                                     typeArguments);
                     dt.setUnderlyingType(pt.getUnderlyingType());
                     dt.setVarianceOverrides(pt.getVarianceOverrides());
                     dt.setTypeConstructor(pt.isTypeConstructor());
-                    dt.setTypeConstructorParameter(pt.getTypeConstructorParameter());
+                    dt.setTypeConstructorParameter(
+                            pt.getTypeConstructorParameter());
                     dt.setRaw(pt.isRaw());
                     return dt;
                 }
@@ -1683,14 +1684,13 @@ public class Unit {
     }
 
     public ProducedType getTypeMetaType(ProducedType literalType) {
-        TypeDeclaration declaration = literalType.getDeclaration();
-        if (declaration instanceof UnionType) {
+        if (literalType.isUnion()) {
             TypeDeclaration utd = 
                     getLanguageModuleModelTypeDeclaration(
                             "UnionType");
             return producedType(utd, literalType);
         }
-        else if (declaration instanceof IntersectionType) {
+        else if (literalType.isIntersection()) {
             TypeDeclaration itd = 
                     getLanguageModuleModelTypeDeclaration(
                             "IntersectionType");

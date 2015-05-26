@@ -123,8 +123,7 @@ public class ProducedTypeNamePrinter {
                     ProducedType it = u.getIteratedType(pt);
                     String etn = getProducedTypeName(it, unit);
                     if (isPrimitiveAbbreviatedType(it) || 
-                            it.getDeclaration() instanceof UnionType ||
-                            it.getDeclaration() instanceof IntersectionType ) {
+                            it.isUnion() || it.isIntersection()) {
                         return "[" + etn + "+]";
                     }
                     else {
@@ -140,8 +139,7 @@ public class ProducedTypeNamePrinter {
                     String itn = getProducedTypeName(it, unit);
                     String many = nt.isNothing() ? "+" : "*";
                     if (isPrimitiveAbbreviatedType(it) || 
-                            it.getDeclaration() instanceof UnionType ||
-                            it.getDeclaration() instanceof IntersectionType) {
+                            it.isUnion() || it.isIntersection()) {
                         return "{" + itn + many + "}";
                     }
                     else {
@@ -188,7 +186,7 @@ public class ProducedTypeNamePrinter {
                     }
                 }
             }
-            if (declaration instanceof UnionType) {
+            if (pt.isUnion()) {
                 StringBuilder name = new StringBuilder();
                 boolean first = true;
                 for (ProducedType caseType: pt.getCaseTypes()) {
@@ -213,7 +211,7 @@ public class ProducedTypeNamePrinter {
                 }
                 return name.toString();
             }
-            else if (declaration instanceof IntersectionType) {
+            else if (pt.isIntersection()) {
                 StringBuilder name = new StringBuilder();
                 boolean first = true;
                 for (ProducedType satisfiedType: pt.getSatisfiedTypes()) {
@@ -228,7 +226,7 @@ public class ProducedTypeNamePrinter {
                     }
                     else if (printAbbreviated() && 
                             abbreviateEntry(satisfiedType) || 
-                            satisfiedType.getDeclaration() instanceof UnionType) {
+                            satisfiedType.isUnion()) {
                         name.append(lt())
                             .append(getProducedTypeName(satisfiedType, unit))
                             .append(gt());
@@ -239,7 +237,7 @@ public class ProducedTypeNamePrinter {
                 }
                 return name.toString();
             }
-            else if (declaration instanceof TypeParameter) {
+            else if (pt.isTypeParameter()) {
                 StringBuilder name = new StringBuilder();
                 TypeParameter tp = (TypeParameter) declaration;
 
@@ -333,9 +331,10 @@ public class ProducedTypeNamePrinter {
     }
 
     public static boolean abbreviateOptional(ProducedType pt) {
-        if (pt.getDeclaration() instanceof UnionType) {
-            Unit unit = pt.getDeclaration().getUnit();
-            UnionType ut = (UnionType) pt.getDeclaration();
+        if (pt.isUnion()) {
+            TypeDeclaration dec = pt.getDeclaration();
+            Unit unit = dec.getUnit();
+            UnionType ut = (UnionType) dec;
             return ut.getCaseTypes().size()==2 &&
                     isElementOfUnion(ut, unit.getNullDeclaration()); /*&&
                     minus(unit.getNullDeclaration()).isPrimitiveAbbreviatedType();*/
@@ -346,9 +345,9 @@ public class ProducedTypeNamePrinter {
     }    
 
     public static boolean abbreviateTuple(ProducedType pt) {
-        return pt.getDeclaration() instanceof Class && 
-                pt.getDeclaration().equals(pt.getDeclaration().getUnit()
-                        .getTupleDeclaration()) &&
+        TypeDeclaration dec = pt.getDeclaration();
+        return dec instanceof Class && 
+                dec.equals(dec.getUnit().getTupleDeclaration()) &&
                         isTupleTypeWellformed(pt);
     }
 
@@ -366,7 +365,7 @@ public class ProducedTypeNamePrinter {
     }
     
     private static boolean abbreviateCallableArg(ProducedType at) {
-        if (at.getDeclaration() instanceof UnionType) {
+        if (at.isUnion()) {
             return at.getCaseTypes().size()==2 &&
                     abbreviateEmpty(at.getCaseTypes().get(0)) &&
                     abbreviateCallableArg(at.getCaseTypes().get(1));
@@ -406,13 +405,15 @@ public class ProducedTypeNamePrinter {
             Unit unit = pt.getDeclaration().getUnit();
             if (pt.getDeclaration().equals(unit.getIterableDeclaration())) {
                 ProducedType et = unit.getIteratedType(pt);
-                if (et!=null && pt.getTypeArgumentList().size()==2) {
-                    ProducedType at = pt.getTypeArgumentList().get(1);
+                List<ProducedType> typeArgs = 
+                        pt.getTypeArgumentList();
+                if (et!=null && typeArgs.size()==2) {
+                    ProducedType at = typeArgs.get(1);
                     if (at!=null) {
-                        TypeDeclaration d = at.getDeclaration();
-                        return d instanceof NothingType ||
-                                d instanceof ClassOrInterface && 
-                                d.equals(unit.getNullDeclaration());
+                        return at.isNothing() ||
+                                at.isClassOrInterface() && 
+                                at.getDeclaration().equals(
+                                        unit.getNullDeclaration());
                     }
                 }// && et.isPrimitiveAbbreviatedType();
             }
@@ -451,7 +452,7 @@ public class ProducedTypeNamePrinter {
         if (args!=null) {
             Unit u = args.getDeclaration().getUnit();
             boolean defaulted=false;
-            if (args.getDeclaration() instanceof UnionType) {
+            if (args.isUnion()) {
                 List<ProducedType> cts = args.getDeclaration().getCaseTypes();
                 if (cts.size()==2) {
                     TypeDeclaration lc = cts.get(0).getDeclaration();
@@ -468,7 +469,7 @@ public class ProducedTypeNamePrinter {
                     }
                 }
             }
-            if (args.getDeclaration() instanceof ClassOrInterface) {
+            if (args.isClassOrInterface()) {
                 if (args.getDeclaration().equals(u.getTupleDeclaration())) {
                     List<ProducedType> tal = args.getTypeArgumentList();
                     if (tal.size()>=3) {
@@ -524,10 +525,10 @@ public class ProducedTypeNamePrinter {
     }
 
     private boolean isPrimitiveAbbreviatedType(ProducedType pt) {
-        if (pt.getDeclaration() instanceof IntersectionType) {
+        if (pt.isIntersection()) {
             return false;
         }
-        else if (pt.getDeclaration() instanceof UnionType) {
+        else if (pt.isUnion()) {
             return abbreviateOptional(pt);
         }
         else {
@@ -543,14 +544,13 @@ public class ProducedTypeNamePrinter {
         if (printQualifyingType()) {
             ProducedType qt = pt.getQualifyingType();
             if (qt != null) {
-	            TypeDeclaration qtd = qt.getDeclaration();
-				if (qtd instanceof IntersectionType ||
-					qtd instanceof UnionType) {
+				boolean isComplex = 
+				        qt.isIntersection() || qt.isUnion();
+                if (isComplex) {
 					ptn.append(lt());
 	            }
                 ptn.append(getProducedTypeName(qt, unit));
-    			if (qtd instanceof IntersectionType ||
-					qtd instanceof UnionType) {
+    			if (isComplex) {
 					ptn.append(gt());
 	            }
     			ptn.append(".");

@@ -19,8 +19,10 @@ public class ModelUtil {
     }
 
     public static boolean equal(Declaration decl, Declaration other) {
-        if (decl instanceof UnionType || decl instanceof IntersectionType
-                || other instanceof UnionType || other instanceof IntersectionType) {
+        if (decl instanceof UnionType || 
+            decl instanceof IntersectionType || 
+            other instanceof UnionType || 
+            other instanceof IntersectionType) {
             return false;
         }
         return ModelUtil.eq(decl, other);
@@ -193,7 +195,7 @@ public class ModelUtil {
         //is a subtype of one of the cases of the type parameter,
         //then the constraint is satisfied
         TypeDeclaration atd = argType.getDeclaration();
-        if (atd instanceof TypeParameter) {
+        if (argType.isTypeParameter()) {
             List<ProducedType> argCaseTypes = 
                     atd.getCaseTypes();
             if (argCaseTypes!=null && 

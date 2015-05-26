@@ -906,9 +906,9 @@ public class Util {
         //make sure we collect all type arguments
         //from the whole qualified type!
 	    if (receivingType!=null) {
-	        TypeDeclaration rtd = 
-	                receivingType.getDeclaration();
-            if (rtd instanceof IntersectionType) {
+            if (receivingType.isIntersection()) {
+                TypeDeclaration rtd = 
+                        receivingType.getDeclaration();
 	            for (ProducedType dt: 
 	                    rtd.getSatisfiedTypes()) {
 	                while (dt!=null) {
@@ -968,9 +968,9 @@ public class Util {
         //make sure we collect all type arguments
         //from the whole qualified type!
         if (receivingType!=null) {
-            TypeDeclaration rtd = 
-                    receivingType.getDeclaration();
-            if (rtd instanceof IntersectionType) {
+            if (receivingType.isIntersection()) {
+                TypeDeclaration rtd = 
+                        receivingType.getDeclaration();
                 for (ProducedType dt: 
                         rtd.getSatisfiedTypes()) {
                     while (dt!=null) {
@@ -1006,9 +1006,9 @@ public class Util {
         //make sure we count all type arguments
         //from the whole qualified type!
         if (receivingType!=null) {
-            TypeDeclaration rtd = 
-                    receivingType.getDeclaration();
-            if (rtd instanceof IntersectionType) {
+            if (receivingType.isIntersection()) {
+                TypeDeclaration rtd = 
+                        receivingType.getDeclaration();
                 for (ProducedType dt: 
                         rtd.getSatisfiedTypes()) {
                     while (dt!=null) {
@@ -1057,7 +1057,7 @@ public class Util {
         if (pt==null || !list.isEmpty() && pt.isNothing()) {
             return;
         }
-        if (pt.getDeclaration() instanceof UnionType) {
+        if (pt.isUnion()) {
             // cheaper c-for than foreach
             List<ProducedType> caseTypes = 
                     pt.getDeclaration()
@@ -1105,7 +1105,7 @@ public class Util {
             return;
         }
         TypeDeclaration ptd = pt.getDeclaration();
-        if (ptd instanceof IntersectionType) {
+        if (pt.isIntersection()) {
             List<ProducedType> satisfiedTypes = 
                     ptd.getSatisfiedTypes();
             // cheaper c-for than foreach
@@ -1187,8 +1187,8 @@ public class Util {
                     } 
                     else {
                         TypeDeclaration td = t.getDeclaration();
-                        if (ptd instanceof ClassOrInterface && 
-                                td instanceof ClassOrInterface && 
+                        if (pt.isClassOrInterface() && 
+                            t.isClassOrInterface() && 
                                 ptd.equals(td) &&
                                 !pt.containsUnknowns() &&
                                 !t.containsUnknowns()) {
@@ -1679,11 +1679,12 @@ public class Util {
 
     private static ProducedType simpleObjectIntersection(
             ClassOrInterface objectDecl, ProducedType type) {
-        TypeDeclaration declaration = 
-                type.getDeclaration();
-        if (declaration instanceof ClassOrInterface)
+        if (type.isClassOrInterface()) {
             return type;
-        if (declaration instanceof TypeParameter) {
+        }
+        else if (type.isTypeParameter()) {
+            TypeDeclaration declaration = 
+                    type.getDeclaration();
             List<ProducedType> satisfiedTypes = 
                     declaration.getSatisfiedTypes();
             if (satisfiedTypes.isEmpty()) {
@@ -1695,9 +1696,9 @@ public class Util {
                 return it.canonicalize().getType();
             }
             for(ProducedType sat : satisfiedTypes){
-                TypeDeclaration satd = sat.getDeclaration();
-                if (satd instanceof ClassOrInterface && 
-                        satd.getQualifiedNameString()
+                if (sat.isClassOrInterface() && 
+                        sat.getDeclaration()
+                            .getQualifiedNameString()
                             .equals("ceylon.language::Object")) {
                     // it is already an Object
                     return type;
@@ -1889,7 +1890,7 @@ public class Util {
     
     public static boolean isCompletelyVisible(Declaration member, 
             ProducedType pt) {
-        if (pt.getDeclaration() instanceof UnionType) {
+        if (pt.isUnion()) {
             for (ProducedType ct: 
                     pt.getDeclaration().getCaseTypes()) {
                 if (!isCompletelyVisible(member, 
@@ -1899,7 +1900,7 @@ public class Util {
             }
             return true;
         }
-        else if (pt.getDeclaration() instanceof IntersectionType) {
+        else if (pt.isIntersection()) {
             for (ProducedType ct: 
                     pt.getDeclaration().getSatisfiedTypes()) {
                 if (!isCompletelyVisible(member, 
