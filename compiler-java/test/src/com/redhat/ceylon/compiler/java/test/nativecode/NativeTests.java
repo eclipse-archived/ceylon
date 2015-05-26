@@ -224,14 +224,14 @@ public class NativeTests extends CompilerTests {
     @Test
     public void testNativeModuleMissing() {
         testNativeModuleErrors("modmissing",
-                new CompilerError(2, "Missing backend argument for native annotation on module: com.redhat.ceylon.compiler.java.test.nativecode.modmissing")
+                new CompilerError(21, "Missing backend argument for native annotation on module: com.redhat.ceylon.compiler.java.test.nativecode.modmissing")
         );
     }
     
     @Test
     public void testNativeModuleWrong() {
         testNativeModuleErrors("modwrong",
-                new CompilerError(2, "Module not meant for this backend: com.redhat.ceylon.compiler.java.test.nativecode.modwrong")
+                new CompilerError(21, "Module not meant for this backend: com.redhat.ceylon.compiler.java.test.nativecode.modwrong")
         );
     }
     
@@ -248,7 +248,7 @@ public class NativeTests extends CompilerTests {
     @Test
     public void testNativeConflict() {
         testNativeModuleErrors("modconflict",
-                new CompilerError(1, "native backend name on declaration conflicts with module descriptor: '\"js\"' is not '\"jvm\"' for 'conflicting'")
+                new CompilerError(20, "native backend name on declaration conflicts with module descriptor: '\"js\"' is not '\"jvm\"' for 'conflicting'")
         );
     }
     
