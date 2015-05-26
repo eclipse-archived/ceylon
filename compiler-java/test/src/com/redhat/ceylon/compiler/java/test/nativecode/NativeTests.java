@@ -252,6 +252,12 @@ public class NativeTests extends CompilerTests {
         );
     }
     
+    @Test
+    public void testNativeIncremental() {
+        compile("modincremental/test.ceylon", "modincremental/testheader.ceylon", "modincremental/module.ceylon");
+        testNativeModule("modincremental");
+    }
+    
     // Misc
     
     @Test
