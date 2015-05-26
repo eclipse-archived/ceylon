@@ -384,7 +384,9 @@ public class Util {
                 }
             }
 
-            queue.add(type.getExtendedType().getDeclaration());
+            if (type.getExtendedType() != null) {
+                queue.add(type.getExtendedType().getDeclaration());
+            }
             for (ProducedType satisfiedType: type.getSatisfiedTypes()) {
                 queue.add(satisfiedType.getDeclaration());
             }
