@@ -2536,13 +2536,21 @@ public class GenerateJsVisitor extends Visitor
                         scope = scope.getContainer();
                     } else if (scope instanceof TypeDeclaration) {
                         if (path.length() > 0) {
-                            path.append(".outer$");
+                            if (scope instanceof com.redhat.ceylon.model.typechecker.model.Constructor==false) {
+                                path.append(".outer$");
+                            }
                         } else if (d instanceof com.redhat.ceylon.model.typechecker.model.Constructor
                                 && Util.getContainingDeclaration(d) == scope) {
                             if (!d.getName().equals(((TypeDeclaration)scope).getName())) {
+                                if (path.length()>0) {
+                                    path.append('.');
+                                }
                                 path.append(names.name((TypeDeclaration) scope));
                             }
                         } else {
+                            if (path.length()>0) {
+                                path.append('.');
+                            }
                             path.append(names.self((TypeDeclaration) scope));
                         }
                     } else {
