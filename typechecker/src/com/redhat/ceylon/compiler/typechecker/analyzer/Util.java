@@ -1252,7 +1252,7 @@ public class Util {
         if (et==null) return null;
         if (requireSequential) {
             if (unit.isSequentialType(et)) {
-                //if (et.getDeclaration() instanceof TypeParameter) {
+                //if (et.isTypeParameter()) {
                     return et;
                 /*}
                 else {

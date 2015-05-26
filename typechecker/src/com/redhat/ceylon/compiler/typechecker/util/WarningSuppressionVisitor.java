@@ -15,6 +15,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Annotation;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AnnotationList;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.Primary;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 
@@ -160,10 +161,15 @@ public class WarningSuppressionVisitor<E extends Enum<E>>
     
     private static Tree.Annotation getSuppressWarnings(
             Tree.Annotation anno) {
-        if (anno.getPrimary() instanceof Tree.MemberOrTypeExpression) {
-            Declaration declaration = ((Tree.MemberOrTypeExpression)anno.getPrimary()).getDeclaration();
+        Primary primary = anno.getPrimary();
+        if (primary instanceof Tree.MemberOrTypeExpression) {
+            Tree.MemberOrTypeExpression mte = 
+                    (Tree.MemberOrTypeExpression)primary;
+            Declaration declaration = mte.getDeclaration();
             if (declaration != null 
-                    && declaration.equals(anno.getUnit().getLanguageModuleDeclaration("suppressWarnings"))) {
+                    && declaration.equals(anno.getUnit()
+                            .getLanguageModuleDeclaration(
+                                    "suppressWarnings"))) {
                 return anno;
             }
         }

@@ -27,7 +27,6 @@ import com.redhat.ceylon.model.typechecker.model.Constructor;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Interface;
 import com.redhat.ceylon.model.typechecker.model.IntersectionType;
-import com.redhat.ceylon.model.typechecker.model.NothingType;
 import com.redhat.ceylon.model.typechecker.model.ProducedType;
 import com.redhat.ceylon.model.typechecker.model.Scope;
 import com.redhat.ceylon.model.typechecker.model.TypeAlias;
@@ -246,9 +245,9 @@ public class InheritanceVisitor extends Visitor {
     private void validateEnumeratedSupertypeArgument(Node that, 
             TypeDeclaration d, ProducedType supertype, 
             TypeParameter p, ProducedType arg) {
-        TypeDeclaration td = arg.getDeclaration();
         Unit unit = that.getUnit();
-        if (td instanceof TypeParameter) {
+        if (arg.isTypeParameter()) {
+            TypeDeclaration td = arg.getDeclaration();
             TypeParameter tp = (TypeParameter) td;
             if (tp.getDeclaration().equals(d)) { //the argument is a type parameter of the declaration
                 //check that the variance of the argument type parameter is
@@ -270,7 +269,7 @@ public class InheritanceVisitor extends Visitor {
             }
         }
         else if (p.isCovariant()) {
-            if (!(td instanceof NothingType)) {
+            if (!(arg.isNothing())) {
                 //TODO: let it be the union of the lower bounds on p
                 that.addError("argument to covariant type parameter of enumerated supertype must be a type parameter or 'Nothing': " + 
                         typeDescription(p, unit));
@@ -568,7 +567,7 @@ public class InheritanceVisitor extends Visitor {
                     if (argType!=null) {
                         TypeDeclaration argTypeDec = 
                                 argType.getDeclaration();
-                        if (argTypeDec instanceof TypeParameter) {
+                        if (argType.isTypeParameter()) {
                             TypeParameter tp = 
                                     (TypeParameter) 
                                         argTypeDec;

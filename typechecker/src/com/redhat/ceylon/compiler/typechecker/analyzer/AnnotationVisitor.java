@@ -42,12 +42,11 @@ public class AnnotationVisitor extends Visitor {
 
     private static boolean isIllegalAnnotationParameterType(ProducedType pt) {
         if (pt!=null) {
-            TypeDeclaration ptd = pt.getDeclaration();
-            if (ptd instanceof IntersectionType || 
-                ptd instanceof UnionType) {
+            if (pt.isIntersection() || pt.isUnion()) {
                 return true;
             }
-            Unit unit = pt.getDeclaration().getUnit();
+            TypeDeclaration ptd = pt.getDeclaration();
+            Unit unit = ptd.getUnit();
             if (!ptd.isAnnotation() && !isEnum(ptd) &&
                     !ptd.equals(unit.getBooleanDeclaration()) &&
                     !ptd.equals(unit.getStringDeclaration()) &&
@@ -390,7 +389,7 @@ public class AnnotationVisitor extends Visitor {
                         TypecheckerUnit unit = that.getUnit();
                         TypeDeclaration annotationDec = 
                                 unit.getAnnotationDeclaration();
-                        if (td instanceof NothingType) {
+                        if (t.isNothing()) {
                             that.addError("annotation constructor may not return 'Nothing'");
                         }
                         if (!td.inherits(annotationDec)) {

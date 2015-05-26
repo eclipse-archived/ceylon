@@ -4703,8 +4703,9 @@ public class ExpressionVisitor extends Visitor {
                     paramType.getTypeArguments();
             Map<TypeParameter, SiteVariance> paramVariances = 
                     paramType.getVarianceOverrides();
-            TypeDeclaration atd = argType.getDeclaration();
-            if (paramTypeDec instanceof TypeParameter &&
+            TypeDeclaration argTypeDec = 
+                    argType.getDeclaration();
+            if (paramType.isTypeParameter() &&
                     paramTypeDec.equals(tp)) {
                 if (tp.isTypeConstructor()) {
                     if (argType.isTypeConstructor()) {
@@ -4738,7 +4739,7 @@ public class ExpressionVisitor extends Visitor {
                     return unit.denotableType(argType);
                 }
             }
-            else if (paramTypeDec instanceof TypeParameter &&
+            else if (paramType.isTypeParameter() &&
                     !paramTypeDec.isParameterized()) {
                 TypeParameter tp2 = 
                         (TypeParameter) paramTypeDec;
@@ -4771,7 +4772,7 @@ public class ExpressionVisitor extends Visitor {
                     return null;
                 }
             }
-            else if (paramTypeDec instanceof UnionType) {
+            else if (paramType.isUnion()) {
                 //If there is more than one type parameter in
                 //the union, ignore this union when inferring 
                 //types. 
@@ -4805,9 +4806,9 @@ public class ExpressionVisitor extends Visitor {
                 }*/
                 ProducedType pt = paramType;
                 ProducedType apt = argType;
-                if (atd instanceof UnionType) {
+                if (argType.isUnion()) {
                     for (ProducedType act: 
-                            atd.getCaseTypes()) {
+                            argTypeDec.getCaseTypes()) {
                         //some element of the argument union 
                         //is already a subtype of the 
                         //parameter union, so throw it away 
@@ -4821,7 +4822,7 @@ public class ExpressionVisitor extends Visitor {
                     }
                 }
                 TypeDeclaration ptd = pt.getDeclaration();
-                if (ptd instanceof UnionType)  {
+                if (pt.isUnion())  {
                     boolean found = false;
                 	for (TypeDeclaration td: 
                 	        ptd.getCaseTypeDeclarations()) {
@@ -4874,7 +4875,7 @@ public class ExpressionVisitor extends Visitor {
                     //return null;
                 }*/
             } 
-            else if (paramTypeDec instanceof IntersectionType) {
+            else if (paramType.isIntersection()) {
                 List<ProducedType> sts = 
                         paramTypeDec.getSatisfiedTypes();
                 List<ProducedType> list = 
@@ -4895,9 +4896,9 @@ public class ExpressionVisitor extends Visitor {
                 return unionOrIntersection(
                         findingUpperBounds, list);
             }
-            else if (atd instanceof UnionType) {
+            else if (argType.isUnion()) {
                 List<ProducedType> cts = 
-                        atd.getCaseTypes();
+                        argTypeDec.getCaseTypes();
                 List<ProducedType> list = 
                         new ArrayList<ProducedType>
                             (cts.size());
@@ -4914,9 +4915,9 @@ public class ExpressionVisitor extends Visitor {
                 }
                 return union(list);
             }
-            else if (atd instanceof IntersectionType) {
+            else if (argType.isIntersection()) {
                 List<ProducedType> sts = 
-                        atd.getSatisfiedTypes();
+                        argTypeDec.getSatisfiedTypes();
                 List<ProducedType> list = 
                         new ArrayList<ProducedType>
                             (sts.size());
@@ -9371,7 +9372,7 @@ public class ExpressionVisitor extends Visitor {
                                         .addError("exception type is already handled by earlier catch clause: '" 
                                                 + ct.getProducedTypeName(unit) + "'");
                                 }
-                                if (ct.getDeclaration() instanceof UnionType) {
+                                if (ct.isUnion()) {
                                     for (ProducedType ut: 
                                             ct.getDeclaration()
                                                 .getCaseTypes()) {
@@ -9490,8 +9491,7 @@ public class ExpressionVisitor extends Visitor {
                         typeArguments.get(i);
                 boolean argTypeMeaningful = 
                         argType!=null && 
-                        !(argType.getDeclaration() 
-                                instanceof UnknownType);
+                        !argType.isUnknown();
                 if (argTypeMeaningful) {
                     if (argType.isTypeConstructor() && 
                             !param.isTypeConstructor()) {
@@ -9750,7 +9750,7 @@ public class ExpressionVisitor extends Visitor {
                     return true;
                 }
             }
-            if (arg.getDeclaration() instanceof TypeParameter) {
+            if (arg.isTypeParameter()) {
                 for (ProducedType act: arg.getCaseTypes()) {
                     boolean foundCase = false;
                     for (ProducedType ct: cts) {
@@ -9781,21 +9781,21 @@ public class ExpressionVisitor extends Visitor {
         else {
             TypeDeclaration atd = 
                     argType.getDeclaration();
-            if (atd instanceof UnionType) {
+            if (argType.isUnion()) {
                 for (ProducedType ct: 
                         atd.getCaseTypes()) {
                     checkTypeConstructorParam(param, 
                             ct, argNode);
                 }
             }
-            else if (atd instanceof IntersectionType) {
+            else if (argType.isIntersection()) {
                 for (ProducedType st: 
                         atd.getSatisfiedTypes()) {
                     checkTypeConstructorParam(param, 
                             st, argNode);
                 }
             }
-            else if (atd instanceof NothingType) {
+            else if (argType.isNothing()) {
                 //just let it through?!
             }
             else {

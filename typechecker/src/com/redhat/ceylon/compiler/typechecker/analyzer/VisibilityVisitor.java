@@ -204,7 +204,7 @@ public class VisibilityVisitor extends Visitor {
             Declaration member, ProducedType pt, 
             Module thisModule) {
         TypeDeclaration ptd = pt.getDeclaration();
-        if (ptd instanceof UnionType) {
+        if (pt.isUnion()) {
             for (ProducedType ct: ptd.getCaseTypes()) {
                 if (!isCompletelyVisibleFromOtherModules(
                         member, ct.substitute(pt), 
@@ -214,7 +214,7 @@ public class VisibilityVisitor extends Visitor {
             }
             return true;
         }
-        else if (ptd instanceof IntersectionType) {
+        else if (pt.isIntersection()) {
             for (ProducedType st: ptd.getSatisfiedTypes()) {
                 if (!isCompletelyVisibleFromOtherModules(
                         member, st.substitute(pt), 
