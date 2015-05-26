@@ -232,6 +232,13 @@ public class NativeTests extends CompilerTests {
         testNativeModule("otherref");
     }
     
+    @Test
+    public void testNativeConflict() {
+        testNativeModuleErrors("modconflict",
+                new CompilerError(1, "native backend name on declaration conflicts with module descriptor: '\"js\"' is not '\"jvm\"' for 'conflicting'")
+        );
+    }
+    
     // Misc
     
     @Test
