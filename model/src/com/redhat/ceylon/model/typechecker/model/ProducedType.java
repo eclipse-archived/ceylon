@@ -3106,9 +3106,10 @@ public class ProducedType extends ProducedReference {
 
     @Override
     public String toString() {
+        String result = getProducedTypeName();
         return isTypeConstructor() ?
-                "TypeConstructor[" + getProducedTypeName() + "]" :
-                "Type[" + getProducedTypeName() + "]";
+                result + " (type constructor)" :
+                result + " (type)";
     }
     
     @Override

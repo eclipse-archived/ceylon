@@ -52,7 +52,7 @@ public class ProducedTypedReference extends ProducedReference {
     
     @Override
     public String toString() {
-        return "Reference[" + getProducedName() + "]";
+        return getProducedName() + " (typed reference)";
     }
 
     @Override
