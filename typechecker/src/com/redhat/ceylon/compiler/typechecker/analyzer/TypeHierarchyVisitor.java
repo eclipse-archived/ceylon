@@ -88,7 +88,6 @@ public class TypeHierarchyVisitor extends Visitor {
 
     @Override
     public void visit(Tree.ObjectArgument that) {
-        Value value = that.getDeclarationModel();
         Class anonymousClass = that.getAnonymousClass();
         validateMemberRefinement(that, anonymousClass);
         super.visit(that);
