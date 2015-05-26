@@ -53,9 +53,17 @@ public class NativeTests extends CompilerTests {
     }
     
     private void testNativeModule(String dir) {
+        testNativeModule(dir, "test.ceylon", "module.ceylon");
+    }
+    
+    private void testNativeModule(String dir, String... files) {
         boolean ok = false;
         try {
-            compile(dir + "/test.ceylon", dir + "/module.ceylon");
+            String[] paths = new String[files.length];
+            for (int i=0; i < files.length; i++) {
+                paths[i] = dir + "/" + files[i];
+            }
+            compile(paths);
             run("com.redhat.ceylon.compiler.java.test.nativecode." + dir + ".test", new ModuleWithArtifact("com.redhat.ceylon.compiler.java.test.nativecode." + dir, "1.0"));
         } catch (RuntimeException ex) {
             assert(("ceylon.language.Exception \"" + dir + "-JVM\"").equals(ex.getMessage()));
@@ -230,6 +238,11 @@ public class NativeTests extends CompilerTests {
     @Test
     public void testNativeOtherRef() {
         testNativeModule("otherref");
+    }
+    
+    @Test
+    public void testNativeWithJava() {
+        testNativeModule("withjava", "NativeClass.java", "test.ceylon", "module.ceylon");
     }
     
     @Test
