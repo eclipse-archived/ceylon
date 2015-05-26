@@ -96,6 +96,19 @@ class Test566(){
     }
 }
 
+class Test565 {
+  value sb=StringBuilder();
+  sb.append("a");
+  abstract new Baz(){
+    sb.append("b");
+  } 
+  shared new() extends Baz() {
+    sb.append("c");
+  }
+  sb.append("d");
+  shared actual String string=>sb.string;
+}
+
 void testConstructors() {
   check(ToplevelBug476.Bar().x==2, "#476 toplevel");
   class NestedBug476 {
@@ -146,4 +159,5 @@ void testConstructors() {
     }
   }
   (Test564.Bar)();
+  check(Test565().string=="abcd", "#565");
 }
