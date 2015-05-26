@@ -79,14 +79,7 @@ import com.redhat.ceylon.model.typechecker.model.Value;
  * @author Gavin King
  *
  */
-public class DeclarationVisitor extends Visitor implements NaturalVisitor {
-    
-    public interface Delegates {
-        TypecheckerUnit createUnit();
-        boolean shouldIgnoreOverload(Declaration overload, 
-                Declaration currentDeclaration);
-    }
-    
+public abstract class DeclarationVisitor extends Visitor implements NaturalVisitor {
     private final Package pkg;
     private final String filename;
     private Scope scope;
@@ -96,17 +89,14 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
     private String fullPath; 
     private String relativePath;
     private boolean dynamic;
-    protected Delegates delegates;
     
     public DeclarationVisitor(Package pkg, String filename,
-            String fullPath, String relativePath, 
-            Delegates delegates) {
+            String fullPath, String relativePath) {
         scope = pkg;
         this.pkg = pkg;
         this.filename = filename;
         this.fullPath = fullPath;
         this.relativePath = relativePath;
-        this.delegates = delegates;
     }
 
     public TypecheckerUnit getCompilationUnit() {
@@ -323,7 +313,7 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
         if (overloads!=null) {
             for (Declaration overload: overloads) {
                 if (backend.equals(overload.getNative()) && 
-                        !delegates.shouldIgnoreOverload(
+                        !shouldIgnoreOverload(
                                 overload, declaration)) {
                     return true;
                 }
@@ -339,7 +329,7 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
             for (Declaration overload: overloads) {
                 if (overload == declaration ||
                         overload.equals(declaration) && 
-                        delegates.shouldIgnoreOverload(
+                        shouldIgnoreOverload(
                                 overload, declaration)) {
                     return true;
                 }
@@ -348,6 +338,9 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
         return false;
     }
     
+    protected abstract boolean shouldIgnoreOverload(Declaration overload,
+            Declaration declaration);
+
     private static void checkForDuplicateDeclaration(
             Tree.Declaration that, 
             Declaration model, 
@@ -529,7 +522,7 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
     
     @Override
     public void visit(Tree.CompilationUnit that) {
-        unit = delegates.createUnit();
+        unit = createUnit();
         //that.setModelNode(unit);
         unit.setPackage(pkg);
         unit.setFilename(filename);
@@ -590,6 +583,8 @@ public class DeclarationVisitor extends Visitor implements NaturalVisitor {
         }
     }
     
+    protected abstract TypecheckerUnit createUnit();
+
     @Override
     public void visit(Tree.ImportMemberOrTypeList that) {
         ImportList il = new ImportList();
