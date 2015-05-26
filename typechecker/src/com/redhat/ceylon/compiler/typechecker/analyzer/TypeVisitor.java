@@ -289,7 +289,8 @@ public class TypeVisitor extends Visitor {
                                 Backend.fromAnnotation(mi.getNative());
                         String name = mi.getModule().getNameAsString();
                         if (!backendSupport.supportsBackend(backend)
-                                && nameToImport.startsWith(name)) {
+                                && (nameToImport.equals(name)
+                                        || nameToImport.startsWith(name + "."))) {
                             return null;
                         }
                         if (!backendSupport.supportsBackend(Backend.Java) && 
