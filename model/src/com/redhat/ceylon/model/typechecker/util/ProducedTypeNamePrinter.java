@@ -505,7 +505,8 @@ public class ProducedTypeNamePrinter {
                 }
             }
             if (args.isClassOrInterface()) {
-                Interface sd = u.getSequentialDeclaration();
+                Interface sld = u.getSequentialDeclaration();
+                Interface scd = u.getSequenceDeclaration();
                 Class td = u.getTupleDeclaration();
                 if (args.getDeclaration().equals(td)) {
                     List<ProducedType> tal = 
@@ -532,12 +533,11 @@ public class ProducedTypeNamePrinter {
                         }
                     }
                 }
-                else if (args.getDeclaration()
-                            .equals(ed)) {
+                else if (args.getDeclaration().equals(ed)) {
                     return defaulted ? "=" : "";
                 }
                 else if (!defaulted && 
-                        args.getDeclaration().equals(sd)) {
+                        args.getDeclaration().equals(sld)) {
                     ProducedType elementType = 
                             u.getIteratedType(args);
                     if (elementType!=null) {
@@ -552,7 +552,7 @@ public class ProducedTypeNamePrinter {
                     }
                 }
                 else if (!defaulted && 
-                        args.getDeclaration().equals(sd)) {
+                        args.getDeclaration().equals(scd)) {
                     ProducedType elementType = 
                             u.getIteratedType(args);
                     if (elementType!=null) {
