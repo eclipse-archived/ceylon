@@ -456,8 +456,8 @@ public abstract class Declaration
                                         thatParam.getType();
                                 if (thisParamType!=null && 
                                         thatParamType!=null) {
-                                    if (!erase(thisParamType.getDeclaration())
-                                            .equals(erase(thatParamType.getDeclaration()))) {
+                                    if (!erase(thisParamType, unit)
+                                            .equals(erase(thatParamType, unit))) {
                                         return false;
                                     }
                                 }

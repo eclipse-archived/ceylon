@@ -122,7 +122,8 @@ public class Util {
      * Convenience method to bind a single type argument 
      * to a toplevel type declaration.  
      */
-    public static ProducedType producedType(TypeDeclaration declaration, 
+    public static ProducedType producedType(
+            TypeDeclaration declaration, 
             ProducedType typeArgument) {
         if (declaration==null) return null;
         return declaration.getProducedType(null, 
@@ -133,7 +134,8 @@ public class Util {
      * Convenience method to bind a list of type arguments
      * to a toplevel type declaration.  
      */
-    public static ProducedType producedType(TypeDeclaration declaration, 
+    public static ProducedType producedType(
+            TypeDeclaration declaration, 
             ProducedType... typeArguments) {
         if (declaration==null) return null;
         return declaration.getProducedType(null, 
@@ -165,12 +167,14 @@ public class Util {
                 !decl.isAbstraction();
     }
 
-    static boolean hasMatchingSignature(List<ProducedType> signature, 
+    static boolean hasMatchingSignature(
+            List<ProducedType> signature, 
             boolean ellipsis, Declaration d) {
         return hasMatchingSignature(signature, ellipsis, d, true);
     }
     
-    static boolean hasMatchingSignature(List<ProducedType> signature, 
+    static boolean hasMatchingSignature(
+            List<ProducedType> signature, 
             boolean spread, Declaration d, 
             boolean excludeAbstractClasses) {
         if (excludeAbstractClasses && 
@@ -269,7 +273,8 @@ public class Util {
         }
     }
     
-    public static boolean matches(ProducedType argType, ProducedType paramType, 
+    public static boolean matches(
+            ProducedType argType, ProducedType paramType, 
             Unit unit) {
         if (paramType==null || argType==null) {
             return false;
@@ -295,16 +300,16 @@ public class Util {
                 isTypeUnknown(defParamType)) {
             return false;
         }
-        if (!erase(defArgType.getDeclaration())
-                .inherits(erase(defParamType.getDeclaration())) &&
+        if (!erase(defArgType, unit)
+                .inherits(erase(defParamType, unit)) &&
                 notUnderlyingTypesEqual(defParamType, defArgType)) {
             return false;
         }
         return true;
     }
 
-    private static boolean notUnderlyingTypesEqual(ProducedType paramType,
-            ProducedType sigType) {
+    private static boolean notUnderlyingTypesEqual(
+            ProducedType paramType, ProducedType sigType) {
         String sut = sigType.getUnderlyingType();
         String put = paramType.getUnderlyingType();
         return sut==null || put==null || !sut.equals(put);
@@ -362,17 +367,18 @@ public class Util {
                                 signature != null && signature.size() >= i ? 
                                         signature.get(i) : null;
                         if (isTypeUnknown(otherType) || 
-                                isTypeUnknown(paramType)) {
+                            isTypeUnknown(paramType)) {
                             return false;
                         }
                         TypeDeclaration ptd = 
-                                erase(paramType.getDeclaration());
+                                erase(paramType, unit);
                         TypeDeclaration otd = 
-                                erase(otherType.getDeclaration());
+                                erase(otherType, unit);
                         if(paramType.isExactly(otherType) && 
                                 supportsCoercion(ptd) &&
                                 // do we have different scores?
-                                hasWorseScore(getCoercionScore(argumentType, paramType), 
+                                hasWorseScore(
+                                        getCoercionScore(argumentType, paramType), 
                                         getCoercionScore(argumentType, otherType))){
                             return false;
                         }
@@ -388,13 +394,15 @@ public class Util {
                                 .getProducedReference(null, 
                                         NO_TYPE_ARGS)
                                 .getFullType();
-                        ProducedType paramType = unit.getDefiniteType(dplt);
+                        ProducedType paramType = 
+                                unit.getDefiniteType(dplt);
                         ProducedType rplt = 
                                 rpl.get(dplSize).getModel()
                                 .getProducedReference(null, 
                                         NO_TYPE_ARGS)
                                 .getFullType();
-                        ProducedType otherType = unit.getDefiniteType(rplt);
+                        ProducedType otherType = 
+                                unit.getDefiniteType(rplt);
                         if (isTypeUnknown(otherType) || 
                                 isTypeUnknown(paramType)) {
                             return false;
@@ -406,16 +414,17 @@ public class Util {
                             return false;
                         }
                         TypeDeclaration ptd = 
-                                erase(paramType.getDeclaration());
+                                erase(paramType, unit);
                         TypeDeclaration otd = 
-                                erase(otherType.getDeclaration());
+                                erase(otherType, unit);
                         if (paramType.isExactly(otherType) && 
                                 supportsCoercion(ptd)) {
                             ProducedType widerArgumentType = 
                                     getWiderArgumentType(paramType, 
                                             signature, dplSize);
                             // do we have different scores?
-                            if (hasWorseScore(getCoercionScore(widerArgumentType, paramType), 
+                            if (hasWorseScore(
+                                    getCoercionScore(widerArgumentType, paramType), 
                                     getCoercionScore(widerArgumentType, otherType))) {
                                 return false;
                             }
@@ -438,7 +447,8 @@ public class Util {
                 decl.equals(unit.getFloatDeclaration());
     }
 
-    private static boolean hasWorseScore(int underlyingTypeCoercionScoreA, 
+    private static boolean hasWorseScore(
+            int underlyingTypeCoercionScoreA, 
             int underlyingTypeCoercionScoreB) {
         if (underlyingTypeCoercionScoreA != 
                 underlyingTypeCoercionScoreB) {
@@ -476,8 +486,10 @@ public class Util {
         return false;// same score or we don't know
     }
 
-    private static ProducedType getWiderArgumentType(ProducedType paramType, 
-            List<ProducedType> signature, int startAt) {
+    private static ProducedType getWiderArgumentType(
+            ProducedType paramType, 
+            List<ProducedType> signature, 
+            int startAt) {
         if (startAt >= signature.size())
             return null;
         TypeDeclaration decl = paramType.getDeclaration();
@@ -540,7 +552,9 @@ public class Util {
      * the higher for the worse truncation, or < 0 if we have to widen the argument type to fit the param
      * type, the lower for the worse widening.
      */
-    private static int getCoercionScore(ProducedType argumentType, ProducedType paramType) {
+    private static int getCoercionScore(
+            ProducedType argumentType, 
+            ProducedType paramType) {
         if (argumentType == null) {
             return 0;
         }
@@ -615,7 +629,8 @@ public class Util {
     }
 
     static boolean strictlyBetterMatch(Declaration d, Declaration r) {
-        if (d instanceof Functional && r instanceof Functional) {
+        if (d instanceof Functional && 
+            r instanceof Functional) {
             List<ParameterList> dpls = 
                     ((Functional) d).getParameterLists();
             List<ParameterList> rpls = 
@@ -667,15 +682,18 @@ public class Util {
                             return false;
                         }
                         TypeDeclaration ptd = 
-                                erase(paramType.getDeclaration());
+                                erase(paramType, unit);
                         TypeDeclaration otd = 
-                                erase(otherType.getDeclaration());
+                                erase(otherType, unit);
                         if (!ptd.inherits(otd) &&
-                                notUnderlyingTypesEqual(paramType, otherType)) {
+                                notUnderlyingTypesEqual(
+                                        paramType, otherType)) {
                             return false;
                         }
-                        if (ptd.inherits(otd) && !otd.inherits(ptd) &&
-                                notUnderlyingTypesEqual(paramType, otherType)) {
+                        if (ptd.inherits(otd) && 
+                            !otd.inherits(ptd) &&
+                                notUnderlyingTypesEqual(
+                                        paramType, otherType)) {
                             atLeastOneBetter = true;
                         }
                         
@@ -707,9 +725,9 @@ public class Util {
                             return false;
                         }
                         TypeDeclaration ptd = 
-                                erase(paramType.getDeclaration());
+                                erase(paramType, unit);
                         TypeDeclaration otd = 
-                                erase(otherType.getDeclaration());
+                                erase(otherType, unit);
                         if (!ptd.inherits(otd) &&
                                 notUnderlyingTypesEqual(paramType, otherType)) {
                             return false;
@@ -731,8 +749,8 @@ public class Util {
         return dname!=null && dname.equals(name);
     }
     
-    static TypeDeclaration erase(TypeDeclaration paramType) {
-        if (paramType instanceof TypeParameter) {
+    static TypeDeclaration erase(ProducedType paramType, Unit unit) {
+        if (paramType.isTypeParameter()) {
             if (paramType.getSatisfiedTypes().isEmpty()) {
                 ProducedType et = paramType.getExtendedType();
                 return et==null ? null : et.getDeclaration();
@@ -745,14 +763,13 @@ public class Util {
                 return st==null ? null : st.getDeclaration();
             }
         }
-        else if (paramType instanceof UnionType) {
+        else if (paramType.isUnion()) {
             //TODO: this is very sucky, cos in theory a
             //      union might be assignable to the 
             //      parameter type with a typecast
-            return paramType.getUnit().getObjectDeclaration();
+            return unit.getObjectDeclaration();
         }
-        else if (paramType instanceof IntersectionType) {
-            Unit unit = paramType.getUnit();
+        else if (paramType.isIntersection()) {
             List<ProducedType> sts = 
                     paramType.getSatisfiedTypes();
             if (sts.size()==2) {
@@ -760,16 +777,18 @@ public class Util {
                 //intersection - very useful for anonymous
                 //classes, whose denotableType is often an 
                 //intersection with Basic
-                TypeDeclaration first = 
-                        sts.get(0).getDeclaration();
-                TypeDeclaration second = 
-                        sts.get(1).getDeclaration();
+                ProducedType first = sts.get(0);
+                ProducedType second = sts.get(1);
                 Class bd = unit.getBasicDeclaration();
-                if (first!=null && first.equals(bd)) {
-                    return erase(second);
+                if (first!=null && 
+                        first.isClass() && 
+                        first.getDeclaration().equals(bd)) {
+                    return erase(second, unit);
                 }
-                else if (second!=null && second.equals(bd)) {
-                    return erase(first);
+                else if (second!=null && 
+                        second.isClass() &&
+                        second.getDeclaration().equals(bd)) {
+                    return erase(first, unit);
                 }
             }
             //TODO: this is very sucky, cos in theory an
@@ -778,7 +797,7 @@ public class Util {
             return unit.getObjectDeclaration();
         }
         else {
-            return paramType;
+            return paramType.getDeclaration();
         }
     }
     
@@ -1230,8 +1249,8 @@ public class Util {
      * of an anonymous class with a type to which it is not
      * assignable is empty.
      */
-    private static boolean emptyMeet(ProducedType p, ProducedType q, 
-            Unit unit) {
+    private static boolean emptyMeet(
+            ProducedType p, ProducedType q, Unit unit) {
         if (p==null || q==null) {
             return false;
         }
@@ -1427,14 +1446,16 @@ public class Util {
      * instantiation of that type constructor for the 
      * intersection of the two types.
      */
-    static ProducedType principalQualifyingType(ProducedType pt,
-            ProducedType t, TypeDeclaration td, Unit unit) {
+    static ProducedType principalQualifyingType(
+            ProducedType pt, ProducedType t, 
+            TypeDeclaration td, Unit unit) {
         ProducedType ptqt = pt.getQualifyingType();
         ProducedType tqt = t.getQualifyingType();
         if (ptqt!=null && tqt!=null && 
                 td.getContainer() instanceof TypeDeclaration) {
             TypeDeclaration qtd = 
-                    (TypeDeclaration) td.getContainer();
+                    (TypeDeclaration) 
+                        td.getContainer();
             ProducedType pst = ptqt.getSupertype(qtd);
             ProducedType st = tqt.getSupertype(qtd);
             if (pst!=null && st!=null) {
@@ -1814,8 +1835,9 @@ public class Util {
         }
     }
 
-    private static void addIfBetterMatch(List<Declaration> results, 
-            Declaration d, List<ProducedType> signature) {
+    private static void addIfBetterMatch(
+            List<Declaration> results, Declaration d, 
+            List<ProducedType> signature) {
         boolean add=true;
         for (Iterator<Declaration> i = results.iterator(); 
                 i.hasNext();) {
@@ -1830,16 +1852,20 @@ public class Util {
         if (add) results.add(d);
     }
     
-    public static Declaration findMatchingOverloadedClass(Class abstractionClass, 
+    public static Declaration findMatchingOverloadedClass(
+            Class abstractionClass, 
             List<ProducedType> signature, boolean ellipsis) {
         List<Declaration> results = 
                 new ArrayList<Declaration>(1);
         if (!abstractionClass.isAbstraction()) {
             return abstractionClass;
         }
-        for (Declaration overloaded: abstractionClass.getOverloads()) {
-            if (hasMatchingSignature(signature, ellipsis, overloaded, false)) {
-                addIfBetterMatch(results, overloaded, signature);
+        for (Declaration overloaded: 
+                abstractionClass.getOverloads()) {
+            if (hasMatchingSignature(signature, ellipsis, 
+                    overloaded, false)) {
+                addIfBetterMatch(results, 
+                        overloaded, signature);
             }
         }
         if (results.size() == 1) {
@@ -1853,14 +1879,16 @@ public class Util {
                 type.containsUnknowns();
     }
 
-    public static List<ProducedType> getSignature(Declaration dec) {
+    public static List<ProducedType> getSignature(
+            Declaration dec) {
         if (!(dec instanceof Functional)) {
             return null;
         }
         Functional fun = (Functional)dec;
         List<ParameterList> parameterLists = 
                 fun.getParameterLists();
-        if (parameterLists == null || parameterLists.isEmpty()) {
+        if (parameterLists == null || 
+                parameterLists.isEmpty()) {
             return null;
         }
         ParameterList parameterList = parameterLists.get(0);
@@ -1887,8 +1915,8 @@ public class Util {
         return signature;
     }
     
-    public static boolean isCompletelyVisible(Declaration member, 
-            ProducedType pt) {
+    public static boolean isCompletelyVisible(
+            Declaration member, ProducedType pt) {
         if (pt.isUnion()) {
             for (ProducedType ct: pt.getCaseTypes()) {
                 if (!isCompletelyVisible(member, 
@@ -1921,7 +1949,8 @@ public class Util {
         }
     }
 
-    static boolean isVisible(Declaration member, TypeDeclaration type) {
+    static boolean isVisible(Declaration member, 
+            TypeDeclaration type) {
         return type instanceof TypeParameter || 
                 type.isVisible(member.getVisibleScope()) &&
                 (member.getVisibleScope()!=null || 
@@ -2175,8 +2204,9 @@ public class Util {
         }
     }
     
-    public static List<Declaration> getInterveningRefinements(String name,
-            List<ProducedType> signature, Declaration root,
+    public static List<Declaration> getInterveningRefinements(
+            String name, List<ProducedType> signature, 
+            Declaration root,
             TypeDeclaration bottom, TypeDeclaration top) {
         List<Declaration> result = 
                 new ArrayList<Declaration>(2);
@@ -2205,8 +2235,8 @@ public class Util {
         return result;
     }
     
-    public static List<Declaration> getInheritedDeclarations(String name,
-            TypeDeclaration bottom) {
+    public static List<Declaration> getInheritedDeclarations(
+            String name, TypeDeclaration bottom) {
         List<Declaration> result = 
                 new ArrayList<Declaration>(2);
         for (TypeDeclaration std: 
@@ -2224,8 +2254,8 @@ public class Util {
         return result;
     }
 
-    public static boolean isToplevelClassConstructor(TypeDeclaration td, 
-            Declaration m) {
+    public static boolean isToplevelClassConstructor(
+            TypeDeclaration td, Declaration m) {
         return td.isToplevel() && 
                 m instanceof Constructor;
     }
@@ -2340,7 +2370,9 @@ public class Util {
             Scope scope, String name, String backend) {
         for (Declaration d: scope.getMembers()) {
             if (isResolvable(d) && isNamed(name, d)) {
-                Declaration nd = getNativeDeclaration(d, Backend.fromAnnotation(backend));
+                Declaration nd = 
+                        getNativeDeclaration(d, 
+                                Backend.fromAnnotation(backend));
                 if (nd != null) {
                     return nd;
                 }
