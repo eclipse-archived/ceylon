@@ -2340,16 +2340,9 @@ public class Util {
             Scope scope, String name, String backend) {
         for (Declaration d: scope.getMembers()) {
             if (isResolvable(d) && isNamed(name, d)) {
-                String nat = d.getNative();
-                if (nat==null) {
-                    if (backend==null) {
-                        return d;
-                    }
-                }
-                else {
-                    if (nat.equals(backend)) {
-                        return d;
-                    }
+                Declaration nd = getNativeDeclaration(d, Backend.fromAnnotation(backend));
+                if (nd != null) {
+                    return nd;
                 }
             }
         }
