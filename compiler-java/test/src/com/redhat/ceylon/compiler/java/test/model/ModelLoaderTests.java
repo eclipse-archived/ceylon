@@ -976,7 +976,7 @@ public class ModelLoaderTests extends CompilerTests {
                         Assert.assertTrue(paramF.getModel() instanceof Method);
                         Method modelF = (Method)paramF.getModel();
                         Assert.assertEquals("f", modelF.getName());
-                        Assert.assertEquals("Type[Anything()]", modelF.getType().toString());
+                        Assert.assertEquals("Anything()", modelF.getType().getProducedTypeName());
                         Assert.assertEquals(1, modelF.getParameterLists().size());
                         Assert.assertEquals(1, modelF.getParameterLists().get(0).getParameters().size());
                         Parameter paramS = modelF.getParameterLists().get(0).getParameters().get(0);
@@ -984,7 +984,7 @@ public class ModelLoaderTests extends CompilerTests {
                         Assert.assertTrue(paramS.getModel() instanceof Value);
                         Value modelS = (Value)paramS.getModel();
                         Assert.assertEquals("s", modelS.getName());
-                        Assert.assertEquals("Type[String]", modelS.getType().toString());
+                        Assert.assertEquals("String", modelS.getType().getProducedTypeName());
                     }
                     { // functionalParameterReturningCallable
                         Method fp = (Method)fpClass.getDirectMember("functionalParameterTakingCallable", null, false);
@@ -996,7 +996,7 @@ public class ModelLoaderTests extends CompilerTests {
                         Assert.assertTrue(paramF.getModel() instanceof Method);
                         Method modelF = (Method)paramF.getModel();
                         Assert.assertEquals("f", modelF.getName());
-                        Assert.assertEquals("Type[Anything]", modelF.getType().toString());
+                        Assert.assertEquals("Anything", modelF.getType().getProducedTypeName());
                         Assert.assertEquals(1, modelF.getParameterLists().size());
                         Assert.assertEquals(1, modelF.getParameterLists().get(0).getParameters().size());
                         Parameter paramF2 = modelF.getParameterLists().get(0).getParameters().get(0);
@@ -1004,7 +1004,7 @@ public class ModelLoaderTests extends CompilerTests {
                         Assert.assertTrue(paramF2.getModel() instanceof Value);
                         Value modelF2 = (Value)paramF2.getModel();
                         Assert.assertEquals("f2", modelF2.getName());
-                        Assert.assertEquals("Type[Anything(String)]", modelF2.getType().toString());
+                        Assert.assertEquals("Anything(String)", modelF2.getType().getProducedTypeName());
                     }
                     { // functionalParameterVariadicStar
                         Method fp = (Method)fpClass.getDirectMember("functionalParameterVariadicStar", null, false);
