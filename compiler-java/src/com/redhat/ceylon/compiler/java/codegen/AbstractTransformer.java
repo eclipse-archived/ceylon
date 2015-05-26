@@ -1341,7 +1341,7 @@ public abstract class AbstractTransformer implements Transformation {
                 || Decl.equal(decl, typeFact.getNullDeclaration())
                 || Decl.equal(decl, typeFact.getNullValueDeclaration().getTypeDeclaration())
                 || Decl.equal(decl, typeFact.getAnythingDeclaration())
-                || decl instanceof NothingType) {
+                || type.isNothing()) {
             return true;
         }
         return false;
@@ -1480,7 +1480,7 @@ public abstract class AbstractTransformer implements Transformation {
                     return false;
 
                 // see makeTypeArgs: Nothing in contravariant position causes a raw type
-                if(singleType.isContravariant(tp) && ta.getDeclaration() instanceof NothingType)
+                if(singleType.isContravariant(tp) && ta.isNothing())
                     return true;
                 
                 if (isErasedUnionOrIntersection(ta)) {
@@ -1762,7 +1762,7 @@ public abstract class AbstractTransformer implements Transformation {
                 }
             }
             
-            if (ta.getDeclaration() instanceof NothingType
+            if (ta.isNothing()
                     // if we're in a type argument, extends or satisfies already, union and intersection types should 
                     // use the same erasure rules as bottom: prefer wildcards
                     || ((flags & (__JT_FULL_TYPE | JT_EXTENDS | JT_SATISFIES)) != 0
@@ -2337,7 +2337,7 @@ public abstract class AbstractTransformer implements Transformation {
                 }
             }
             
-            if (ta.getDeclaration() instanceof NothingType
+            if (ta.isNothing()
                     // if we're in a type argument, extends or satisfies already, union and intersection types should 
                     // use the same erasure rules as bottom: prefer wildcards
                     || ((flags & (__JT_FULL_TYPE | JT_EXTENDS | JT_SATISFIES)) != 0
@@ -2354,7 +2354,7 @@ public abstract class AbstractTransformer implements Transformation {
                     // - The Ceylon type Foo<Bottom> appearing in an extends or satisfies location results in the Java type
                     //   Foo<Object> (see https://github.com/ceylon/ceylon-compiler/issues/633 for why)
                     if((flags & (JT_SATISFIES | JT_EXTENDS)) != 0){
-                        if (ta.getDeclaration() instanceof NothingType) {
+                        if (ta.isNothing()) {
                             jta = make().Type(syms().objectType);
                         } else {
                             if (!tp.getSatisfiedTypes().isEmpty()) {
@@ -2364,7 +2364,7 @@ public abstract class AbstractTransformer implements Transformation {
                                 jta = make().Type(syms().objectType);
                             }
                         }
-                    }else if (ta.getDeclaration() instanceof NothingType){
+                    }else if (ta.isNothing()){
                         // - The Ceylon type Foo<Bottom> appearing anywhere else results in the Java type
                         // - Foo if Foo is contravariant in T (see https://github.com/ceylon/ceylon-compiler/issues/1042), or
                         // - Foo<? extends Object> if Foo is covariant in T and not depended on by other type params

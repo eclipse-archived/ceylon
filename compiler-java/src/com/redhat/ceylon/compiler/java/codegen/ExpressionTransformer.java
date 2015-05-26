@@ -457,7 +457,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                         JCExpression targetType = makeJavaType(expectedType, AbstractTransformer.JT_RAW | companionFlags);
                         result = make().TypeCast(targetType, result);
                     }
-                }else if(exprType.getDeclaration() instanceof NothingType){
+                }else if(exprType.isNothing()){
                     // type param erasure
                     JCExpression targetType = makeJavaType(expectedType, 
                             AbstractTransformer.JT_NO_PRIMITIVES | companionFlags);
@@ -545,7 +545,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         
         // very special case for nothing that we need to "unbox" to a primitive type
         if(exprType != null
-                && exprType.getDeclaration() instanceof NothingType
+                && exprType.isNothing()
                 && boxingStrategy == BoxingStrategy.UNBOXED){
             // in this case we have to use the expected type
             ret = unboxType(ret, expectedType);
@@ -3436,7 +3436,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                     // if it is an array of Foo<X> we need a raw instanciation and cast
                     // array of Foo is fine, array of Nothing too
                     if(elementType.getDeclaration() instanceof ClassOrInterface
-                            || elementType.getDeclaration() instanceof NothingType){
+                            || elementType.isNothing()){
                         if(!elementType.getTypeArgumentList().isEmpty())
                             callBuilder.javaArrayInstanceNeedsCast(makeJavaType(classType, AbstractTransformer.JT_NO_PRIMITIVES));
                     }else{
