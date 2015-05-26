@@ -186,86 +186,93 @@ public class Util {
             if (d.isAbstraction()) {
                 return false;
             }
-            else {
-                Functional f = (Functional) d;
-                Unit unit = d.getUnit();
-                List<ParameterList> pls = 
-                        f.getParameterLists();
-                if (pls!=null && !pls.isEmpty()) {
-                    ParameterList pl = pls.get(0);
-                    List<Parameter> params = 
-                            pl.getParameters();
-                    int size = params.size();
-                    boolean hasSeqParam = 
-                            pl.hasSequencedParameter();
-                    int sigSize = signature.size();
-                    if (hasSeqParam) {
-                        size--;
-                        if (sigSize<size) {
-                            return false;
-                        }
-                    }
-                    else if (sigSize!=size) {
+            Functional f = (Functional) d;
+            Unit unit = d.getUnit();
+            List<ParameterList> pls = 
+                    f.getParameterLists();
+            if (pls!=null && !pls.isEmpty()) {
+                ParameterList pl = pls.get(0);
+                List<Parameter> params = 
+                        pl.getParameters();
+                int size = params.size();
+                boolean hasSeqParam = 
+                        pl.hasSequencedParameter();
+                int sigSize = signature.size();
+                if (hasSeqParam) {
+                    size--;
+                    if (sigSize<size) {
                         return false;
                     }
-                    for (int i=0; i<size; i++) {
-                        MethodOrValue pm = 
-                                params.get(i).getModel();
-                        if (pm==null) return false;
-                        ProducedType pdt = 
-                                pm.getProducedReference(null, 
-                                        NO_TYPE_ARGS)
-                                    .getFullType();
-                        if (pdt==null) return false;
-                        ProducedType sdt = signature.get(i);
-                        if (!matches(sdt, pdt, d.getUnit())) {
-                            return false;
-                        }
-                    }
-                    if (hasSeqParam) {
-                        ProducedType pdt = 
-                                params.get(size).getModel()
-                                .getProducedReference(null, 
-                                        NO_TYPE_ARGS)
-                                .getFullType();
-                        if (pdt==null || 
-                                pdt.getTypeArgumentList().isEmpty()) {
-                            return false;
-                        }
-                        //Note: don't use Unit.getIterableType() because this
-                        //      gets called from model loader out-of-phase
-                        ProducedType ipdt = 
-                                pdt.getTypeArgumentList().get(0);  
-                        for (int i=size; i<sigSize; i++) {
-                            if (spread && i==sigSize-1) {
-                                ProducedType sdt = signature.get(i);
-                                ProducedType isdt = 
-                                        unit.getIteratedType(sdt);
-                                if (!matches(isdt, ipdt, d.getUnit())) {
-                                    return false;
-                                }
-                            }
-                            else {
-                                ProducedType sdt = signature.get(i);
-                                if (!matches(sdt, ipdt, d.getUnit())) {
-                                    return false;
-                                }
-                            }
-                        }
-                    }
-                    else if (spread) {
-                        // if the method doesn't take sequenced params
-                        // and we have an ellipsis let's not use it 
-                        // since we expect a variadic method
-                        // TODO: this is basically wrong now that we
-                        //       can spread tuples
-                        return false;
-                    }
-                    return true;
                 }
-                else {
+                else if (sigSize!=size) {
                     return false;
                 }
+                for (int i=0; i<size; i++) {
+                    MethodOrValue pm = 
+                            params.get(i).getModel();
+                    if (pm==null) {
+                        return false;
+                    }
+                    ProducedType pdt = 
+                            pm.getProducedReference(null, 
+                                    NO_TYPE_ARGS)
+                                .getFullType();
+                    if (pdt==null) {
+                        return false;
+                    }
+                    ProducedType sdt = signature.get(i);
+                    if (!matches(sdt, pdt, unit)) {
+                        return false;
+                    }
+                }
+                if (hasSeqParam) {
+                    ProducedType pdt = 
+                            params.get(size).getModel()
+                            .getProducedReference(null, 
+                                    NO_TYPE_ARGS)
+                            .getFullType();
+                    if (pdt==null || 
+                            pdt.getTypeArgumentList()
+                                .isEmpty()) {
+                        return false;
+                    }
+                    //Note: don't use Unit.getIterableType() because this
+                    //      gets called from model loader out-of-phase
+                    ProducedType ipdt = 
+                            pdt.getTypeArgumentList()
+                                .get(0);  
+                    for (int i=size; i<sigSize; i++) {
+                        if (spread && i==sigSize-1) {
+                            ProducedType sdt = 
+                                    signature.get(i);
+                            ProducedType isdt = 
+                                    unit.getIteratedType(sdt);
+                            if (!matches(isdt, ipdt, unit)) {
+                                return false;
+                            }
+                        }
+                        else {
+                            ProducedType sdt = 
+                                    signature.get(i);
+                            if (!matches(sdt, ipdt, unit)) {
+                                return false;
+                            }
+                        }
+                    }
+                }
+                else if (spread) {
+                    // if the method doesn't take sequenced 
+                    // params and we have an ellipsis let's 
+                    // not use it since we expect a variadic 
+                    // method
+                    // TODO: this is basically wrong now that 
+                    //       we can spread tuples
+                    return false;
+                }
+                return true;
+            }
+            else {
+                return false;
             }
         }
         else {
@@ -274,7 +281,8 @@ public class Util {
     }
     
     public static boolean matches(
-            ProducedType argType, ProducedType paramType, 
+            ProducedType argType, 
+            ProducedType paramType, 
             Unit unit) {
         if (paramType==null || argType==null) {
             return false;
@@ -283,7 +291,8 @@ public class Util {
         //all Java parameters are treated as optional
         //Except in the case of primitive parameters
         ProducedType nvt = 
-                unit.getNullValueDeclaration().getType();
+                unit.getNullValueDeclaration()
+                    .getType();
         if (nvt.isSubtypeOf(argType) && 
                 !nvt.isSubtypeOf(paramType)) {
             return false; //only for primitives
@@ -302,14 +311,16 @@ public class Util {
         }
         if (!erase(defArgType, unit)
                 .inherits(erase(defParamType, unit)) &&
-                notUnderlyingTypesEqual(defParamType, defArgType)) {
+                notUnderlyingTypesEqual(defParamType, 
+                        defArgType)) {
             return false;
         }
         return true;
     }
 
     private static boolean notUnderlyingTypesEqual(
-            ProducedType paramType, ProducedType sigType) {
+            ProducedType paramType, 
+            ProducedType sigType) {
         String sut = sigType.getUnderlyingType();
         String put = paramType.getUnderlyingType();
         return sut==null || put==null || !sut.equals(put);
@@ -317,7 +328,8 @@ public class Util {
     
     static boolean betterMatch(Declaration d, Declaration r, 
             List<ProducedType> signature) {
-        if (d instanceof Functional && r instanceof Functional) {
+        if (d instanceof Functional && 
+            r instanceof Functional) {
             List<ParameterList> dpls = 
                     ((Functional) d).getParameterLists();
             List<ParameterList> rpls = 
@@ -364,8 +376,10 @@ public class Util {
                         ProducedType otherType = 
                                 unit.getDefiniteType(rplt);
                         ProducedType argumentType = 
-                                signature != null && signature.size() >= i ? 
-                                        signature.get(i) : null;
+                                signature != null && 
+                                signature.size() >= i ? 
+                                        signature.get(i) : 
+                                        null;
                         if (isTypeUnknown(otherType) || 
                             isTypeUnknown(paramType)) {
                             return false;
@@ -378,12 +392,18 @@ public class Util {
                                 supportsCoercion(ptd) &&
                                 // do we have different scores?
                                 hasWorseScore(
-                                        getCoercionScore(argumentType, paramType), 
-                                        getCoercionScore(argumentType, otherType))){
+                                        getCoercionScore(
+                                                argumentType, 
+                                                paramType), 
+                                        getCoercionScore(
+                                                argumentType, 
+                                                otherType))) {
                             return false;
                         }
                         if (!ptd.inherits(otd) &&
-                                notUnderlyingTypesEqual(paramType, otherType)) {
+                                notUnderlyingTypesEqual(
+                                        paramType, 
+                                        otherType)) {
                             return false;
                         }
                     }
@@ -407,8 +427,10 @@ public class Util {
                                 isTypeUnknown(paramType)) {
                             return false;
                         }
-                        paramType = unit.getIteratedType(paramType);
-                        otherType = unit.getIteratedType(otherType);
+                        paramType = 
+                                unit.getIteratedType(paramType);
+                        otherType = 
+                                unit.getIteratedType(otherType);
                         if (isTypeUnknown(otherType) || 
                                 isTypeUnknown(paramType)) {
                             return false;
@@ -420,17 +442,27 @@ public class Util {
                         if (paramType.isExactly(otherType) && 
                                 supportsCoercion(ptd)) {
                             ProducedType widerArgumentType = 
-                                    getWiderArgumentType(paramType, 
-                                            signature, dplSize);
+                                    getWiderArgumentType(
+                                            paramType, 
+                                            signature, 
+                                            dplSize);
                             // do we have different scores?
-                            if (hasWorseScore(
-                                    getCoercionScore(widerArgumentType, paramType), 
-                                    getCoercionScore(widerArgumentType, otherType))) {
+                            int pscore = 
+                                    getCoercionScore(
+                                            widerArgumentType, 
+                                            paramType);
+                            int oscore = 
+                                    getCoercionScore(
+                                            widerArgumentType, 
+                                            otherType);
+                            if (hasWorseScore(pscore, oscore)) {
                                 return false;
                             }
                         }
                         if (!ptd.inherits(otd) &&
-                                notUnderlyingTypesEqual(paramType, otherType)) {
+                                notUnderlyingTypesEqual(
+                                        paramType, 
+                                        otherType)) {
                             return false;
                         }
                     }
@@ -441,7 +473,8 @@ public class Util {
         return false;
     }
 
-    private static boolean supportsCoercion(TypeDeclaration decl) {
+    private static boolean supportsCoercion(
+            TypeDeclaration decl) {
         Unit unit = decl.getUnit();
         return decl.equals(unit.getIntegerDeclaration()) || 
                 decl.equals(unit.getFloatDeclaration());
@@ -490,8 +523,9 @@ public class Util {
             ProducedType paramType, 
             List<ProducedType> signature, 
             int startAt) {
-        if (startAt >= signature.size())
+        if (startAt >= signature.size()) {
             return null;
+        }
         TypeDeclaration decl = paramType.getDeclaration();
         Unit unit = decl.getUnit();
         if (decl.equals(unit.getIntegerDeclaration())) {
@@ -718,8 +752,10 @@ public class Util {
                                 isTypeUnknown(paramType)) {
                             return false;
                         }
-                        paramType = unit.getIteratedType(paramType);
-                        otherType = unit.getIteratedType(otherType);
+                        paramType = 
+                                unit.getIteratedType(paramType);
+                        otherType = 
+                                unit.getIteratedType(otherType);
                         if (isTypeUnknown(otherType) || 
                                 isTypeUnknown(paramType)) {
                             return false;
@@ -729,11 +765,16 @@ public class Util {
                         TypeDeclaration otd = 
                                 erase(otherType, unit);
                         if (!ptd.inherits(otd) &&
-                                notUnderlyingTypesEqual(paramType, otherType)) {
+                                notUnderlyingTypesEqual(
+                                        paramType, 
+                                        otherType)) {
                             return false;
                         }
-                        if (ptd.inherits(otd) && !otd.inherits(ptd) &&
-                                notUnderlyingTypesEqual(paramType, otherType)) {
+                        if (ptd.inherits(otd) && 
+                            !otd.inherits(ptd) &&
+                                notUnderlyingTypesEqual(
+                                        paramType, 
+                                        otherType)) {
                             atLeastOneBetter = true;
                         }
                     }
@@ -752,15 +793,19 @@ public class Util {
     static TypeDeclaration erase(ProducedType paramType, Unit unit) {
         if (paramType.isTypeParameter()) {
             if (paramType.getSatisfiedTypes().isEmpty()) {
-                ProducedType et = paramType.getExtendedType();
-                return et==null ? null : et.getDeclaration();
+                ProducedType et = 
+                        paramType.getExtendedType();
+                return et==null ? null : 
+                    et.getDeclaration();
             }
             else {
-                //TODO: is this actually correct? What is Java's
-                //      rule here?
+                //TODO: Is this actually correct? 
+                //      What is Java's rule here?
                 ProducedType st = 
-                        paramType.getSatisfiedTypes().get(0);
-                return st==null ? null : st.getDeclaration();
+                        paramType.getSatisfiedTypes()
+                            .get(0);
+                return st==null ? null : 
+                    st.getDeclaration();
             }
         }
         else if (paramType.isUnion()) {
@@ -782,12 +827,14 @@ public class Util {
                 Class bd = unit.getBasicDeclaration();
                 if (first!=null && 
                         first.isClass() && 
-                        first.getDeclaration().equals(bd)) {
+                        first.getDeclaration()
+                            .equals(bd)) {
                     return erase(second, unit);
                 }
                 else if (second!=null && 
                         second.isClass() &&
-                        second.getDeclaration().equals(bd)) {
+                        second.getDeclaration()
+                            .equals(bd)) {
                     return erase(first, unit);
                 }
             }
@@ -810,15 +857,18 @@ public class Util {
      *   first character, and its uppercase "humps" match 
      *   the pattern.
      */
-    public static boolean isNameMatching(String startingWith, Declaration d) {
+    public static boolean isNameMatching(
+            String startingWith, Declaration d) {
         return isNameMatching(startingWith, d.getName());
     }
     
-    public static boolean isNameMatching(String startingWith, Import i) {
+    public static boolean isNameMatching(
+            String startingWith, Import i) {
         return isNameMatching(startingWith, i.getAlias());
     }
     
-    public static boolean isNameMatching(String startingWith, String name) {
+    public static boolean isNameMatching(
+            String startingWith, String name) {
         if (startingWith==null || startingWith.isEmpty()) {
             return true;
         }
@@ -1198,16 +1248,16 @@ public class Util {
                         list.remove(i);
                         i--; // redo this index
                     }
-                    else if (haveUninhabitableIntersection(pt, t, unit)) {
+                    else if (haveUninhabitableIntersection(
+                            pt, t, unit)) {
                         list.clear();
                         list.add(nt);
                         return;
                     } 
                     else {
-                        TypeDeclaration td = t.getDeclaration();
                         if (pt.isClassOrInterface() && 
                             t.isClassOrInterface() && 
-                                ptd.equals(td) &&
+                            t.getDeclaration().equals(ptd) &&
                                 !pt.containsUnknowns() &&
                                 !t.containsUnknowns()) {
                             //canonicalize T<InX,OutX>&T<InY,OutY> to T<InX|InY,OutX&OutY>
@@ -1481,34 +1531,56 @@ public class Util {
             ProducedType p, ProducedType q) {
 //        if (!p.containsTypeParameters() && !q.containsTypeParameters()) {
             List<TypeDeclaration> stds = 
-                    p.getDeclaration().getSupertypeDeclarations();
-            stds.retainAll(q.getDeclaration().getSupertypeDeclarations());
+                    p.getDeclaration()
+                        .getSupertypeDeclarations();
+            stds.retainAll(
+                    q.getDeclaration()
+                        .getSupertypeDeclarations());
             for (TypeDeclaration std: stds) {
                 ProducedType pst = null;
                 ProducedType qst = null;
                 for (TypeParameter tp: std.getTypeParameters()) {
                     if (tp.isInvariant()) {
-                        if (pst==null) pst = p.getSupertype(std);
-                        if (qst==null) qst = q.getSupertype(std);
+                        if (pst==null) 
+                            pst = p.getSupertype(std);
+                        if (qst==null) 
+                            qst = q.getSupertype(std);
                         if (pst!=null && qst!=null) {
-                            ProducedType psta = pst.getTypeArguments().get(tp);
-                            ProducedType qsta = qst.getTypeArguments().get(tp);
+                            ProducedType psta = 
+                                    pst.getTypeArguments()
+                                        .get(tp);
+                            ProducedType qsta = 
+                                    qst.getTypeArguments()
+                                        .get(tp);
                             //TODO: why isWellDefined() instead of isTypeUnknown() ?
-                            if (psta!=null && psta.isWellDefined() && 
+                            if (psta!=null && 
+                                    psta.isWellDefined() && 
                                     !pst.involvesTypeParameters() && 
-                                qsta!=null && qsta.isWellDefined() && 
+                                qsta!=null && 
+                                    qsta.isWellDefined() && 
                                     !qst.involvesTypeParameters()) {
-                                boolean psti = pst.isInvariant(tp);
-                                boolean pstcov = pst.isCovariant(tp);
-                                boolean pstcontra = pst.isContravariant(tp);
-                                boolean qsti = qst.isInvariant(tp);
-                                boolean qstcov = qst.isCovariant(tp);
-                                boolean qstcontra = qst.isContravariant(tp);
-                                if (psti && qsti && !psta.isExactly(qsta) ||
-                                    pstcov && qsti && !qsta.isSubtypeOf(psta) ||
-                                    qstcov && psti && !psta.isSubtypeOf(qsta) ||
-                                    pstcontra && qsti && !psta.isSubtypeOf(qsta) ||
-                                    qstcontra && psti && !qsta.isSubtypeOf(psta)) {
+                                boolean psti = 
+                                        pst.isInvariant(tp);
+                                boolean pstcov = 
+                                        pst.isCovariant(tp);
+                                boolean pstcontra = 
+                                        pst.isContravariant(tp);
+                                boolean qsti = 
+                                        qst.isInvariant(tp);
+                                boolean qstcov = 
+                                        qst.isCovariant(tp);
+                                boolean qstcontra = 
+                                        qst.isContravariant(tp);
+                                if (psti && qsti && 
+                                        !psta.isExactly(qsta) ||
+                                    pstcov && qsti && 
+                                        !qsta.isSubtypeOf(psta) ||
+                                    qstcov && psti && 
+                                        !psta.isSubtypeOf(qsta) ||
+                                    pstcontra && qsti && 
+                                        !psta.isSubtypeOf(qsta) ||
+                                    qstcontra && psti && 
+                                        !qsta.isSubtypeOf(psta)) {
                                     return true;
                                 }
                             }
@@ -1578,8 +1650,7 @@ public class Util {
         if (!a.isClassOrInterface()) {
             if (a.isUnion() && b.isClassOrInterface()) {
                 return getSimpleIntersection(
-                        b, (ClassOrInterface) bDecl, 
-                        a, (UnionType)aDecl);
+                        b, (ClassOrInterface) bDecl, a);
             }
             return null;
         }
@@ -1587,8 +1658,7 @@ public class Util {
             // here aDecl MUST BE a ClassOrInterface as per flow
             if (b.isUnion()) {
                 return getSimpleIntersection(
-                        a, (ClassOrInterface) aDecl, 
-                        b, (UnionType) bDecl);
+                        a, (ClassOrInterface) aDecl, b);
             }
             return null;
         }
@@ -1608,35 +1678,35 @@ public class Util {
         }
         if (aName.equals("ceylon.language::Object")) {
             // every ClassOrInterface is an object except Null
-            if (bName.equals("ceylon.language::Null")
-                    || bName.equals("ceylon.language::null")) {
-                return new NothingType(aDecl.getUnit()).getType();
+            if (bName.equals("ceylon.language::Null") || 
+                bName.equals("ceylon.language::null")) {
+                return aDecl.getUnit().getNothingType();
             }
             return b;
         }
         if (bName.equals("ceylon.language::Object")) {
             // every ClassOrInterface is an object except Null
-            if(aName.equals("ceylon.language::Null")
-                    || aName.equals("ceylon.language::null")) {
-                return new NothingType(aDecl.getUnit()).getType();
+            if (aName.equals("ceylon.language::Null") || 
+                aName.equals("ceylon.language::null")) {
+                return aDecl.getUnit().getNothingType();
             }
             return a;
         }
         if (aName.equals("ceylon.language::Null")) {
             // only null is null
-            if(bName.equals("ceylon.language::Null")
-                    || bName.equals("ceylon.language::null")) {
+            if (bName.equals("ceylon.language::Null") || 
+                bName.equals("ceylon.language::null")) {
                 return b;
             }
-            return new NothingType(aDecl.getUnit()).getType();
+            return aDecl.getUnit().getNothingType();
         }
-        if (bName.equals("ceylon.language::Null")){
+        if (bName.equals("ceylon.language::Null")) {
             // only null is null
-            if(aName.equals("ceylon.language::Null")
-                    || aName.equals("ceylon.language::null")) {
+            if (aName.equals("ceylon.language::Null") || 
+                aName.equals("ceylon.language::null")) {
                 return a;
             }
-            return new NothingType(aDecl.getUnit()).getType();
+            return aDecl.getUnit().getNothingType();
         }
         // not simple
         return null;
@@ -1644,31 +1714,31 @@ public class Util {
 
     private static ProducedType getSimpleIntersection(
             ProducedType a, ClassOrInterface aDecl, 
-            ProducedType b, UnionType bDecl) {
+            ProducedType b) {
         // we only handle Foo|Null
-        if (bDecl.getCaseTypes().size() != 2) {
+        if (b.getCaseTypes().size() != 2) {
             return null;
         }
 
         String aName = aDecl.getQualifiedNameString();
         // we only handle Object and Null intersections
-        if (!aName.equals("ceylon.language::Object")
-                && !aName.equals("ceylon.language::Null")) {
+        if (!aName.equals("ceylon.language::Object") && 
+            !aName.equals("ceylon.language::Null")) {
             return null;
         }
         
-        ProducedType caseA = bDecl.getCaseTypes().get(0);
+        ProducedType caseA = b.getCaseTypes().get(0);
         TypeDeclaration caseADecl = caseA.getDeclaration();
 
-        ProducedType caseB = bDecl.getCaseTypes().get(1);
+        ProducedType caseB = b.getCaseTypes().get(1);
         TypeDeclaration caseBDecl = caseB.getDeclaration();
 
         boolean isANull = 
-                caseADecl instanceof ClassOrInterface && 
+                caseA.isClass() && 
                 "ceylon.language::Null"
                     .equals(caseADecl.getQualifiedNameString());
         boolean isBNull = 
-                caseBDecl instanceof ClassOrInterface && 
+                caseB.isClass() && 
                 "ceylon.language::Null"
                     .equals(caseBDecl.getQualifiedNameString());
         
@@ -1891,7 +1961,8 @@ public class Util {
                 parameterLists.isEmpty()) {
             return null;
         }
-        ParameterList parameterList = parameterLists.get(0);
+        ParameterList parameterList = 
+                parameterLists.get(0);
         if (parameterList == null) {
             return null;
         }

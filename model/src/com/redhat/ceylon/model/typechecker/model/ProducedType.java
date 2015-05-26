@@ -1496,9 +1496,8 @@ public class ProducedType extends ProducedReference {
             if (std instanceof ClassOrInterface && 
                     c.satisfies(std)) {
                 for (ProducedType ct: types) {
-                    TypeDeclaration ctd = 
-                            ct.getDeclaration();
-                    if (!ctd.inherits(std)) {
+                    if (!ct.getDeclaration()
+                            .inherits(std)) {
                         std = null;
                         break;
                     }

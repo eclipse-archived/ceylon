@@ -952,7 +952,9 @@ public abstract class TypeDeclaration extends Declaration
         List<TypeDeclaration> result;
         ProducedType et = getExtendedType();
         List<ProducedType> stds = getSatisfiedTypes();
-        if (et!=null && !(this instanceof TypeAlias)) {
+        if (et!=null &&
+                //TODO: how is this correct?!
+                !(this instanceof TypeAlias)) {
             TypeDeclaration etd = et.getDeclaration();
             List<TypeDeclaration> etsts = 
                     etd.getSupertypeDeclarations();
