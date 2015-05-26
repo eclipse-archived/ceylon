@@ -1809,12 +1809,10 @@ public class TypeVisitor extends Visitor {
         for (Tree.StaticType ct: cts) {
             ProducedType type = ct.getTypeModel();
             if (type!=null) {
-                TypeDeclaration ctd = type.getDeclaration();
-                if (ctd!=null && 
-                        !(ctd instanceof UnknownType)) {
-                    if (ctd instanceof UnionType || 
-                        ctd instanceof IntersectionType ||
-                        ctd instanceof NothingType) {
+                if (!isTypeUnknown(type)) {
+                    if (type.isUnion() || 
+                        type.isIntersection() ||
+                        type.isNothing()) {
                         //union/intersection types don't have equals()
                         if (td instanceof TypeParameter) {
                             ct.addError("enumerated bound must be a class or interface type");
@@ -1823,39 +1821,42 @@ public class TypeVisitor extends Visitor {
                             ct.addError("case type must be a class, interface, or self type");
                         }
                     }
-                    else if (ctd.equals(td)) {
-                        ct.addError("directly enumerates itself: '" + 
-                                td.getName() + "'");
-                    }
-                    else if (ctd instanceof TypeParameter) {
-                        if (td instanceof TypeParameter) {
+                    else {
+                        TypeDeclaration ctd = type.getDeclaration();
+                        if (ctd.equals(td)) {
+                            ct.addError("directly enumerates itself: '" + 
+                                    td.getName() + "'");
+                        }
+                        else if (type.isClassOrInterface()) {
                             list.add(type);
                         }
-                        else {
-                            TypeParameter tp = 
-                                    (TypeParameter) ctd;
-                            td.setSelfType(type);
-                            if (tp.isSelfType()) {
-                                ct.addError("type parameter may not act as self type for two different types");
-                            }
-                            else {
-                                tp.setSelfTypedDeclaration(td);
+                        else if (type.isTypeParameter()) {
+                            if (td instanceof TypeParameter) {
                                 list.add(type);
                             }
-                            if (cts.size()>1) {
-                                ct.addError("a type may not have more than one self type");
+                            else {
+                                TypeParameter tp = 
+                                        (TypeParameter) ctd;
+                                td.setSelfType(type);
+                                if (tp.isSelfType()) {
+                                    ct.addError("type parameter may not act as self type for two different types");
+                                }
+                                else {
+                                    tp.setSelfTypedDeclaration(td);
+                                    list.add(type);
+                                }
+                                if (cts.size()>1) {
+                                    ct.addError("a type may not have more than one self type");
+                                }
                             }
                         }
-                    }
-                    else if (ctd instanceof ClassOrInterface) {
-                        list.add(type);
-                    }
-                    else {
-                        if (td instanceof TypeParameter) {
-                            ct.addError("enumerated bound must be a class or interface type");
-                        }
                         else {
-                            ct.addError("case type must be a class, interface, or self type");
+                            if (td instanceof TypeParameter) {
+                                ct.addError("enumerated bound must be a class or interface type");
+                            }
+                            else {
+                                ct.addError("case type must be a class, interface, or self type");
+                            }
                         }
                     }
                 }

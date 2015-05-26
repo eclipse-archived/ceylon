@@ -2555,7 +2555,7 @@ public class ExpressionVisitor extends Visitor {
                     addToUnion(list, et);
                     addToUnion(list, at);
                     ut.setCaseTypes(list);
-                    returnType.setTypeModel( ut.getType() );
+                    returnType.setTypeModel(ut.getType());
                 }
             }
         }
