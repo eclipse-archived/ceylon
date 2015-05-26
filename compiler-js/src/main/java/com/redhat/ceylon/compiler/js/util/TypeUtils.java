@@ -325,11 +325,9 @@ public class TypeUtils {
             //it has to be a method, right?
             //We need to find the index of the parameter where the argument occurs
             //...and it could be null...
-            int plistCount = -1;
             ProducedType type = null;
             for (Iterator<ParameterList> iter0 = ((Method)tp.getContainer()).getParameterLists().iterator();
                     type == null && iter0.hasNext();) {
-                plistCount++;
                 for (Iterator<Parameter> iter1 = iter0.next().getParameters().iterator();
                         type == null && iter1.hasNext();) {
                     if (type == null) {
