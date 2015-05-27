@@ -470,8 +470,8 @@ public class ModelLoaderTests extends CompilerTests {
             } else if (!(validDeclaration.getDefaultTypeArgument() == null && modelDeclaration.getDefaultTypeArgument() == null)) {
                 Assert.fail("[DefaultTypeArgument] one has default type argument the other not");
             }
-            compareSatisfiedTypes(name, validDeclaration.getSatisfiedTypeDeclarations(), modelDeclaration.getSatisfiedTypeDeclarations());
-            compareCaseTypes(name, validDeclaration.getCaseTypeDeclarations(), modelDeclaration.getCaseTypeDeclarations());
+            compareSatisfiedTypes(name, validDeclaration.getSatisfiedTypes(), modelDeclaration.getSatisfiedTypes());
+            compareCaseTypes(name, validDeclaration.getCaseTypes(), modelDeclaration.getCaseTypes());
         }
     
         protected void compareClassOrInterfaceDeclarations(ClassOrInterface validDeclaration, ClassOrInterface modelDeclaration) {
@@ -483,14 +483,14 @@ public class ModelLoaderTests extends CompilerTests {
             Assert.assertEquals(name+" [sealed]", validDeclaration.isSealed(), modelDeclaration.isSealed());
             Assert.assertEquals(name+" [dynamic]", validDeclaration.isDynamic(), modelDeclaration.isDynamic());
             // extended type
-            if(validDeclaration.getExtendedTypeDeclaration() == null)
-                Assert.assertTrue(name+" [null supertype]", modelDeclaration.getExtendedTypeDeclaration() == null);
+            if(validDeclaration.getExtendedType() == null)
+                Assert.assertTrue(name+" [null supertype]", modelDeclaration.getExtendedType() == null);
             else
-                compareDeclarations(name+" [supertype]", validDeclaration.getExtendedTypeDeclaration(), modelDeclaration.getExtendedTypeDeclaration());
+                compareDeclarations(name+" [supertype]", validDeclaration.getExtendedType().getDeclaration(), modelDeclaration.getExtendedType()==null ? null : modelDeclaration.getExtendedType().getDeclaration());
             // satisfied types!
-            compareSatisfiedTypes(name, validDeclaration.getSatisfiedTypeDeclarations(), modelDeclaration.getSatisfiedTypeDeclarations());
+            compareSatisfiedTypes(name, validDeclaration.getSatisfiedTypes(), modelDeclaration.getSatisfiedTypes());
             // case types
-            compareCaseTypes(name, validDeclaration.getCaseTypeDeclarations(), modelDeclaration.getCaseTypeDeclarations());
+            compareCaseTypes(name, validDeclaration.getCaseTypes(), modelDeclaration.getCaseTypes());
             // work on type parameters
             compareTypeParameters(name, validDeclaration.getTypeParameters(), modelDeclaration.getTypeParameters());
             // tests specific to classes
@@ -528,8 +528,8 @@ public class ModelLoaderTests extends CompilerTests {
         }
     
         protected void compareCaseTypes(String name,
-                List<TypeDeclaration> validTypeDeclarations,
-                List<TypeDeclaration> modelTypeDeclarations) {
+                List<ProducedType> validTypeDeclarations,
+                List<ProducedType> modelTypeDeclarations) {
             if(validTypeDeclarations != null){
                 Assert.assertNotNull(name+ " [null case types]", modelTypeDeclarations);
             }else{
@@ -538,8 +538,8 @@ public class ModelLoaderTests extends CompilerTests {
             }
             Assert.assertEquals(name+ " [case types count]", validTypeDeclarations.size(), modelTypeDeclarations.size());
             for(int i=0;i<validTypeDeclarations.size();i++){
-                TypeDeclaration validTypeDeclaration = validTypeDeclarations.get(i);
-                TypeDeclaration modelTypeDeclaration = modelTypeDeclarations.get(i);
+                TypeDeclaration validTypeDeclaration = validTypeDeclarations.get(i).getDeclaration();
+                TypeDeclaration modelTypeDeclaration = modelTypeDeclarations.get(i).getDeclaration();
                 compareDeclarations(name+ " [case types]", validTypeDeclaration, modelTypeDeclaration);
             }
         }
@@ -585,11 +585,11 @@ public class ModelLoaderTests extends CompilerTests {
             return null;
         }
     
-        protected void compareSatisfiedTypes(String name, List<TypeDeclaration> validTypeDeclarations, List<TypeDeclaration> modelTypeDeclarations) {
+        protected void compareSatisfiedTypes(String name, List<ProducedType> validTypeDeclarations, List<ProducedType> modelTypeDeclarations) {
             Assert.assertEquals(name+ " [Satisfied types count]", validTypeDeclarations.size(), modelTypeDeclarations.size());
             for(int i=0;i<validTypeDeclarations.size();i++){
-                TypeDeclaration validTypeDeclaration = validTypeDeclarations.get(i);
-                TypeDeclaration modelTypeDeclaration = modelTypeDeclarations.get(i);
+                TypeDeclaration validTypeDeclaration = validTypeDeclarations.get(i).getDeclaration();
+                TypeDeclaration modelTypeDeclaration = modelTypeDeclarations.get(i).getDeclaration();
                 compareDeclarations(name+ " [Satisfied types]", validTypeDeclaration, modelTypeDeclaration);
             }
         }
