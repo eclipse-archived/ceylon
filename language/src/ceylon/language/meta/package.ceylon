@@ -105,7 +105,7 @@
    function, like this:
    
        // Does the process declaration have the Shared annotation?
-       value isShared = annotations(`Shared`, `value process`) exists;
+       value isShared = annotations(`SharedAnnotation`, `value process`) exists;
    
    or the related [[optionalAnnotation]] and [[sequencedAnnotations]] functions.
    
