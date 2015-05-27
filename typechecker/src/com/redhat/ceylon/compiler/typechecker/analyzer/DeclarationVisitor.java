@@ -210,7 +210,7 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
                     model instanceof Method || 
                     model instanceof Class || 
                     model instanceof Value;
-            if (canBeNativeModel && model.isToplevel()) {
+            if (canBeNativeModel && (model.isToplevel() || model.isMember())) {
                 if (!backend.isEmpty() && 
                         !Backend.validAnnotation(backend)) {
                     a.addError("illegal native backend name: '\"" + 
@@ -223,8 +223,29 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
                             backend + "\"' is not '\"" + moduleBackend + "\"' for '" + name + "'");
                 }
                 model.setNative(backend);
-                Declaration member = 
-                        scope.getDirectMember(name, null, false);
+                Declaration member = scope.getDirectMember(name, null, false);
+                if (model.isMember() && isInNativeContainer(model)) {
+                    Declaration container = 
+                            (Declaration) 
+                                model.getContainer();
+                    String cbackend = container.getNative();
+                    if (!cbackend.equals(backend)) {
+                        that.addError("native backend name on member conflicts with its container: '" + 
+                                name + "' of '" + 
+                                container.getName() + "'");
+                    }
+                    
+                    List<Declaration> overloads = container.getOverloads();
+                    if (overloads != null) {
+                        for (Declaration ol : overloads) {
+                            Declaration m = ol.getDirectMember(name, null, false);
+                            if (m != null) {
+                                member = m;
+                                break;
+                            }
+                        }
+                    }
+                }
                 if (member == null) {
                     if (model instanceof MethodOrValue) {
                         MethodOrValue m = 
@@ -275,7 +296,9 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
                                     name + "'");
                         }
                     }
-                    modelToAdd = null;
+                    if (!model.isMember() || !isInNativeContainer(model)) {
+                        modelToAdd = null;
+                    }
                 }
 // Re-enable when we support native member/inner declarations
 //              Scope container = model.getContainer();
@@ -291,20 +314,9 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
 //              }
             }
             else {
-                if (isInNativeContainer(model)) {
-                    Declaration container = 
-                            (Declaration) 
-                                model.getContainer();
-                    String cbackend = container.getNative();
-                    if (!cbackend.equals(backend)) {
-                        that.addError("native backend name on member conflicts with its container: '" + 
-                                name + "' of '" + 
-                                container.getName() + "'");
-                    }
-                }
-                else if (!backend.isEmpty() && 
+                if (!backend.isEmpty() && 
                         !(model instanceof Setter)) {
-                    that.addError("native implementation is not a toplevel value, function, or class: '" + 
+                    that.addError("native declarations can not be local: '" + 
                                     name + "'");
                 }
             }
