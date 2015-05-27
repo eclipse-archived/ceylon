@@ -35,6 +35,7 @@ import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.model.typechecker.model.TypeParameter;
 import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.model.typechecker.model.UnionType;
+import com.redhat.ceylon.model.typechecker.model.Unit;
 import com.redhat.ceylon.model.typechecker.model.Util;
 import com.redhat.ceylon.model.typechecker.model.Value;
 
@@ -514,49 +515,65 @@ public class TypeUtils {
         gen.out("]");
     }
 
+    private static Unit getUnit(ProducedType pt) {
+        if (pt.isClassOrInterface()) {
+            return pt.getDeclaration().getUnit();
+        } else if (pt.isUnion()) {
+            for (ProducedType ct : pt.getCaseTypes()) {
+                Unit u = getUnit(ct);
+                if (u != null) {
+                    return u;
+                }
+            }
+        } else if (pt.isIntersection()) {
+            for (ProducedType st : pt.getSatisfiedTypes()) {
+                Unit u = getUnit(st);
+                if (u != null) {
+                    return u;
+                }
+            }
+        }
+        return null;
+    }
+
     /** Turns a Tuple type into a parameter list. */
     public static List<Parameter> convertTupleToParameters(ProducedType _tuple) {
-        ArrayList<Parameter> rval = new ArrayList<>();
+        final ArrayList<Parameter> rval = new ArrayList<>();
         int pos = 0;
-        TypeDeclaration tdecl = _tuple.getDeclaration();
-        final ProducedType empty = tdecl.getUnit().getEmptyType();
-        final TypeDeclaration tuple = tdecl.getUnit().getTupleDeclaration();
-        while (!(_tuple.isSubtypeOf(empty) || _tuple.isTypeParameter())) {
+        final ProducedType empty = getUnit(_tuple).getEmptyType();
+        while (_tuple != null && !(_tuple.isSubtypeOf(empty) || _tuple.isTypeParameter())) {
             Parameter _p = null;
-            if (tuple.equals(tdecl) || (_tuple.getCaseTypes() != null
-                    && _tuple.getCaseTypes().size()==2
-                    //TODO: fix this!
-                    && tdecl.getCaseTypeDeclarations().contains(tuple))) {
+            if (isTuple(_tuple)) {
                 _p = new Parameter();
                 _p.setModel(new Value());
-                if (tuple.equals(tdecl)) {
-                    _p.getModel().setType(_tuple.getTypeArgumentList().get(1));
-                    _tuple = _tuple.getTypeArgumentList().get(2);
-                } else {
+                if (_tuple.isUnion()) {
                     //Handle union types for defaulted parameters
                     for (ProducedType mt : _tuple.getCaseTypes()) {
-                        if (tuple.equals(mt.getDeclaration())) {
+                        if (mt.isClass() &&
+                                mt.getDeclaration().getUnit().getTupleDeclaration().equals(mt.getDeclaration())) {
                             _p.getModel().setType(mt.getTypeArgumentList().get(1));
                             _tuple = mt.getTypeArgumentList().get(2);
                             break;
                         }
                     }
                     _p.setDefaulted(true);
+                } else {
+                    _p.getModel().setType(_tuple.getTypeArgumentList().get(1));
+                    _tuple = _tuple.getTypeArgumentList().get(2);
                 }
-            } else if (tdecl.inherits(tdecl.getUnit().getSequentialDeclaration())) {
+            } else if (isSequential(_tuple)) {
                 //Handle Sequence, for nonempty variadic parameters
                 _p = new Parameter();
                 _p.setModel(new Value());
                 _p.getModel().setType(_tuple.getTypeArgumentList().get(0));
                 _p.setSequenced(true);
-                _tuple = empty.getType();
+                _tuple = null;
             }
             else {
                 if (pos > 100) {
                     return rval;
                 }
             }
-            if (_tuple != null) tdecl = _tuple.getDeclaration();
             if (_p != null) {
                 _p.setName("arg" + pos);
                 rval.add(_p);
@@ -566,16 +583,35 @@ public class TypeUtils {
         return rval;
     }
 
+    /** Check if a type is a Tuple, or a union of 2 types one of which is a Tuple. */
+    private static boolean isTuple(ProducedType pt) {
+        if (pt.isClass() && pt.getDeclaration().equals(pt.getDeclaration().getUnit().getTupleDeclaration())) {
+            return true;
+        } else if (pt.isUnion() && pt.getCaseTypes().size() == 2) {
+            Class tuple = pt.getCaseTypes().get(0).isClassOrInterface() ?
+                    pt.getCaseTypes().get(0).getDeclaration().getUnit().getTupleDeclaration() :
+                        pt.getCaseTypes().get(1).isClassOrInterface() ?
+                                pt.getCaseTypes().get(1).getDeclaration().getUnit().getTupleDeclaration() : null;
+            return tuple != null && (tuple.equals(pt.getCaseTypes().get(0).getDeclaration())
+                    || tuple.equals(pt.getCaseTypes().get(1).getDeclaration()));
+        }
+        return false;
+    }
+
+    private static boolean isSequential(ProducedType pt) {
+        return pt.isClassOrInterface() && pt.getDeclaration().inherits(
+                pt.getDeclaration().getUnit().getSequentialDeclaration());
+    }
+
     /** This method encodes the type parameters of a Tuple in the same way
      * as a parameter list for runtime. */
     private static void encodeTupleAsParameterListForRuntime(final boolean resolveTargs, final Node node,
             ProducedType _tuple, boolean nameAndMetatype, GenerateJsVisitor gen) {
         gen.out("[");
         int pos = 1;
-        TypeDeclaration tdecl = _tuple.getDeclaration();
-        final ProducedType empty = tdecl.getUnit().getEmptyType();
-        final TypeDeclaration tuple = tdecl.getUnit().getTupleDeclaration();
-        while (!(_tuple.isSubtypeOf(empty) || _tuple.isTypeParameter())) {
+        final ProducedType empty = node.getUnit().getEmptyType();
+        final TypeDeclaration tuple = node.getUnit().getTupleDeclaration();
+        while (_tuple != null && !(_tuple.isSubtypeOf(empty) || _tuple.isTypeParameter())) {
             if (pos > 1) gen.out(",");
             gen.out("{");
             pos++;
@@ -584,18 +620,11 @@ public class TypeUtils {
                 gen.out(MetamodelGenerator.KEY_METATYPE, ":'", MetamodelGenerator.METATYPE_PARAMETER, "',");
             }
             gen.out(MetamodelGenerator.KEY_TYPE, ":");
-            if (tuple.equals(tdecl) || (_tuple.getCaseTypes() != null
-                    && _tuple.getCaseTypes().size()==2
-                            //TODO: fix this!
-                    && tdecl.getCaseTypeDeclarations().contains(tuple))) {
-                if (tuple.equals(tdecl)) {
-                    metamodelTypeNameOrList(resolveTargs, node, gen.getCurrentPackage(),
-                            _tuple.getTypeArgumentList().get(1), gen);
-                    _tuple = _tuple.getTypeArgumentList().get(2);
-                } else {
+            if (isTuple(_tuple)) {
+                if (_tuple.isUnion()) {
                     //Handle union types for defaulted parameters
                     for (ProducedType mt : _tuple.getCaseTypes()) {
-                        if (tuple.equals(mt.getDeclaration())) {
+                        if (mt.isClass() && tuple.equals(mt.getDeclaration())) {
                             metamodelTypeNameOrList(resolveTargs, node, gen.getCurrentPackage(),
                                     mt.getTypeArgumentList().get(1), gen);
                             _tuple = mt.getTypeArgumentList().get(2);
@@ -603,25 +632,27 @@ public class TypeUtils {
                         }
                     }
                     gen.out(",", MetamodelGenerator.KEY_DEFAULT,":1");
+                } else {
+                    metamodelTypeNameOrList(resolveTargs, node, gen.getCurrentPackage(),
+                            _tuple.getTypeArgumentList().get(1), gen);
+                    _tuple = _tuple.getTypeArgumentList().get(2);
                 }
-            } else if (tdecl.inherits(tdecl.getUnit().getSequentialDeclaration())) {
-                ProducedType _t2 = _tuple.getSupertype(tdecl.getUnit().getSequentialDeclaration());
+            } else if (isSequential(_tuple)) {
+                ProducedType _t2 = _tuple.getSupertype(node.getUnit().getSequentialDeclaration());
                 //Handle Sequence, for nonempty variadic parameters
                 metamodelTypeNameOrList(resolveTargs, node, gen.getCurrentPackage(), _t2.getTypeArgumentList().get(0), gen);
                 gen.out(",seq:1");
-                _tuple = empty.getType();
+                _tuple = null;
             } else if (_tuple.isUnion()) {
                 metamodelTypeNameOrList(resolveTargs, node, gen.getCurrentPackage(), _tuple, gen);
-                tdecl = empty.getDeclaration();
                 _tuple=null;
             } else {
-                gen.out("\n/*WARNING3! Tuple is actually ", _tuple.getProducedTypeQualifiedName(), ", ", tdecl.getName(),"*/");
+                gen.out("\n/*WARNING3! Tuple is actually ", _tuple.getProducedTypeQualifiedName(), "*/");
                 if (pos > 100) {
                     break;
                 }
             }
             gen.out("}");
-            if (_tuple != null) tdecl = _tuple.getDeclaration();
         }
         gen.out("]");
     }
@@ -659,7 +690,7 @@ public class TypeUtils {
 
     public static void encodeForRuntime(Node that, final Declaration d, final GenerateJsVisitor gen) {
         if (d.getAnnotations() == null || d.getAnnotations().isEmpty() ||
-                (d instanceof com.redhat.ceylon.model.typechecker.model.Class && d.isAnonymous())) {
+                (d instanceof Class && d.isAnonymous())) {
             encodeForRuntime(that, d, gen, null);
         } else {
             encodeForRuntime(that, d, gen, new ModelAnnotationGenerator(gen, d, that));
@@ -696,7 +727,7 @@ public class TypeUtils {
                 sb.add(i, TypeUtils.modelName(p));
                 //Build the path in reverse
                 if (!p.isToplevel()) {
-                    if (p instanceof com.redhat.ceylon.model.typechecker.model.Class) {
+                    if (p instanceof Class) {
                         sb.add(i, p.isAnonymous() ? MetamodelGenerator.KEY_OBJECTS : MetamodelGenerator.KEY_CLASSES);
                     } else if (p instanceof com.redhat.ceylon.model.typechecker.model.Interface) {
                         sb.add(i, MetamodelGenerator.KEY_INTERFACES);
@@ -736,8 +767,8 @@ public class TypeUtils {
         List<TypeParameter> tparms = d instanceof Generic ? ((Generic)d).getTypeParameters() : null;
         List<ProducedType> satisfies = null;
         List<ProducedType> caseTypes = null;
-        if (d instanceof com.redhat.ceylon.model.typechecker.model.Class) {
-            com.redhat.ceylon.model.typechecker.model.Class _cd = (com.redhat.ceylon.model.typechecker.model.Class)d;
+        if (d instanceof Class) {
+            Class _cd = (Class)d;
             if (_cd.getExtendedType() != null) {
                 gen.out(",'super':");
                 metamodelTypeNameOrList(false, that, d.getUnit().getPackage(), _cd.getExtendedType(), gen);

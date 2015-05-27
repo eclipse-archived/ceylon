@@ -164,7 +164,7 @@ public class InvocationGenerator {
                 if (fillInParams) {
                     //Get the callable and try to assign params from there
                     Interface cd = that.getUnit().getCallableDeclaration();
-                    Interface ed = that.getUnit().getEmptyDeclaration();
+                    final ProducedType ed = that.getUnit().getEmptyType();
                     Class td = that.getUnit().getTupleDeclaration();
                     ProducedType callable = typeArgSource.getTypeModel().getSupertype(cd);
                     if (callable != null) {
@@ -174,7 +174,7 @@ public class InvocationGenerator {
                         boolean isUnion=false;
                         if (callableArgs.isUnion()) {
                             if (callableArgs.getCaseTypes().size() == 2) {
-                                callableArgs = callableArgs.minus(ed.getType());
+                                callableArgs = callableArgs.minus(ed);
                             }
                             isUnion=callableArgs.isUnion();
                         }
@@ -207,9 +207,8 @@ public class InvocationGenerator {
                                         //sequential if sequenced param
                                         if (next.isUnion()) {
                                             //empty|tuple
-                                            callableArgs = next.minus(ed.getType());
-                                            isSequenced = !td.equals(
-                                                    callableArgs.getDeclaration());
+                                            callableArgs = next.minus(ed);
+                                            isSequenced = !td.equals(callableArgs.getDeclaration());
                                             argtype = callableArgs.getTypeArgumentList().get(isSequenced ? 0 : 1);
                                         } else {
                                             //we'll bet on sequential (if it's empty we don't care anyway)
