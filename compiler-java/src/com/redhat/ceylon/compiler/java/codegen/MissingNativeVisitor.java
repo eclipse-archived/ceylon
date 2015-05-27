@@ -115,7 +115,8 @@ public class MissingNativeVisitor extends Visitor {
         if(pkg == null)
             return true;
         
-        if ((node instanceof Tree.ClassOrInterface || node instanceof Tree.AnyMethod || node instanceof Tree.AnyAttribute)
+        boolean nodeIsDecl = node instanceof Tree.ClassOrInterface || node instanceof Tree.AnyMethod || node instanceof Tree.AnyAttribute;
+        if (nodeIsDecl
                 && !model.getNative().isEmpty()
                 && !forBackend.nativeAnnotation.equals(model.getNative())) {
             // We don't care about declarations for other backends
@@ -126,7 +127,7 @@ public class MissingNativeVisitor extends Visitor {
         if (model instanceof Method || model instanceof Class || model instanceof Value) {
             Declaration m = pkg.getDirectMember(model.getName(), null, false);
             if (m != null) {
-                if (!m.isNative()) {
+                if (!m.isNative() || !nodeIsDecl) {
                     // An error will already have been added by the typechecker
                     return true;
                 }
