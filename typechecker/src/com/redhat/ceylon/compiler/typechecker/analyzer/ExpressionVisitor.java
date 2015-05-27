@@ -10396,9 +10396,6 @@ public class ExpressionVisitor extends Visitor {
             Declaration impl =
                     getNativeDeclaration(dec, backend);
             if (impl==null) {
-                impl = getNativeDeclaration(dec, Backend.None);
-            }
-            if (impl==null) {
                 that.addError("no native implementation for backend: native '" 
                         + dec.getName(unit) + 
                         "' is not implemented for one or more backends");
