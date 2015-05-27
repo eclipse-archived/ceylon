@@ -207,10 +207,10 @@ public class NativeTests extends CompilerTests {
                 new CompilerError(82, "native header for non-native declaration: 'NativeClassMismatch6'"),
                 new CompilerError(84, "native implementation for non-native header: 'NativeClassMismatch6'"),
                 new CompilerError(91, "formal member 'test1' of 'NativeClassMismatchSuper1' not implemented in class hierarchy"),
-                new CompilerError(92, "native backend must be the same as its container: 'test1' of 'NativeClassMismatch7'"),
                 new CompilerError(98, "type does not have a native implementation for this backend: 'NativeClassMismatch8js'"),
                 new CompilerError(104, "type does not have a native implementation for this backend: 'NativeClassMismatch8jvm'"),
                 new CompilerError(110, "type does not have a native implementation for this backend: 'NativeClassMismatch8js'")
+                new CompilerError(92, "native backend name on member conflicts with its container: 'test1' of 'NativeClassMismatch7'"),
         );
     }
     
