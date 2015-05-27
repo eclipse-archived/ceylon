@@ -21,7 +21,7 @@ public class ProducedTypeCache {
             new ThreadLocal<Boolean>();
     
     public static Boolean setEnabled(Boolean enabled) {
-        boolean was = cachingEnabled.get();
+        Boolean was = cachingEnabled.get();
         cachingEnabled.set(enabled);
         return was;
     }
