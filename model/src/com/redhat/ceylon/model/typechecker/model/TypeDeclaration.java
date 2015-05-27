@@ -894,19 +894,19 @@ public abstract class TypeDeclaration extends Declaration
         }
     }
     
-    private List<TypeDeclaration> supertypeDeclarations;
+//    private List<TypeDeclaration> supertypeDeclarations;
     
     public final List<TypeDeclaration> getSupertypeDeclarations() {
-        if (ProducedTypeCache.isEnabled()) {
-            if (supertypeDeclarations==null) {
-                supertypeDeclarations = 
-                        getSupertypeDeclarationsInternal();
-            }
-            return supertypeDeclarations;
-        }
-        else {
+//        if (ProducedTypeCache.isEnabled()) {
+//            if (supertypeDeclarations==null) {
+//                supertypeDeclarations = 
+//                        getSupertypeDeclarationsInternal();
+//            }
+//            return supertypeDeclarations;
+//        }
+//        else {
             return getSupertypeDeclarationsInternal();
-        }
+//        }
     }
 
     private List<TypeDeclaration> getSupertypeDeclarationsInternal() {
@@ -929,7 +929,7 @@ public abstract class TypeDeclaration extends Declaration
      */
     public void clearProducedTypeCache() {
         // do nothing, work in subclasses
-        supertypeDeclarations = null;
+//        supertypeDeclarations = null;
     }
 
 }

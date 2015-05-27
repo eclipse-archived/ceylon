@@ -48,7 +48,7 @@ public class ProducedType extends ProducedReference {
     
     // cache
     private int hashCode;
-    private List<ProducedType> typeArgumentList;
+//    private List<ProducedType> typeArgumentList;
     
     private Map<TypeParameter,SiteVariance> varianceOverrides = 
             EMPTY_VARIANCE_MAP;
@@ -324,7 +324,8 @@ public class ProducedType extends ProducedReference {
 
     private boolean isTypeArgumentListExactly(ProducedType type) {
         List<TypeParameter> typeParameters = 
-                getDeclaration().getTypeParameters();
+                getDeclaration()
+                    .getTypeParameters();
         for (TypeParameter p: 
                 typeParameters) {
             ProducedType arg = 
@@ -1919,17 +1920,17 @@ public class ProducedType extends ProducedReference {
             return NO_TYPE_ARGS;
         }
         else {
-            if (ProducedTypeCache.isEnabled()) {
-                if (typeArgumentList==null) {
-                    typeArgumentList = 
-                            getTypeArgumentListInternal();
-                }
-                return typeArgumentList;
-            }
-            else {
+//            if (ProducedTypeCache.isEnabled()) {
+//                if (typeArgumentList==null) {
+//                    typeArgumentList = 
+//                            getTypeArgumentListInternal();
+//                }
+//                return typeArgumentList;
+//            }
+//            else {
                 return getTypeArgumentListInternal();
             }
-        }
+//        }
     }
 
     private List<ProducedType> getTypeArgumentListInternal() {
