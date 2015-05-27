@@ -11,9 +11,11 @@ import static java.util.Collections.singletonList;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.common.BackendSupport;
@@ -1542,66 +1544,69 @@ public class Util {
 
     private static boolean hasEmptyIntersectionOfInvariantInstantiations(
             ProducedType p, ProducedType q) {
-//        if (!p.containsTypeParameters() && !q.containsTypeParameters()) {
-            List<TypeDeclaration> stds = 
-                    p.getDeclaration()
-                        .getSupertypeDeclarations();
-            stds.retainAll(
-                    q.getDeclaration()
-                        .getSupertypeDeclarations());
-            for (TypeDeclaration std: stds) {
-                ProducedType pst = null;
-                ProducedType qst = null;
-                for (TypeParameter tp: std.getTypeParameters()) {
-                    if (tp.isInvariant()) {
-                        if (pst==null) 
-                            pst = p.getSupertype(std);
-                        if (qst==null) 
-                            qst = q.getSupertype(std);
-                        if (pst!=null && qst!=null) {
-                            ProducedType psta = 
-                                    pst.getTypeArguments()
-                                        .get(tp);
-                            ProducedType qsta = 
-                                    qst.getTypeArguments()
-                                        .get(tp);
-                            //TODO: why isWellDefined() instead of isTypeUnknown() ?
-                            if (psta!=null && 
-                                    psta.isWellDefined() && 
-                                    !pst.involvesTypeParameters() && 
-                                qsta!=null && 
-                                    qsta.isWellDefined() && 
-                                    !qst.involvesTypeParameters()) {
-                                boolean psti = 
-                                        pst.isInvariant(tp);
-                                boolean pstcov = 
-                                        pst.isCovariant(tp);
-                                boolean pstcontra = 
-                                        pst.isContravariant(tp);
-                                boolean qsti = 
-                                        qst.isInvariant(tp);
-                                boolean qstcov = 
-                                        qst.isCovariant(tp);
-                                boolean qstcontra = 
-                                        qst.isContravariant(tp);
-                                if (psti && qsti && 
-                                        !psta.isExactly(qsta) ||
-                                    pstcov && qsti && 
-                                        !qsta.isSubtypeOf(psta) ||
-                                    qstcov && psti && 
-                                        !psta.isSubtypeOf(qsta) ||
-                                    pstcontra && qsti && 
-                                        !psta.isSubtypeOf(qsta) ||
-                                    qstcontra && psti && 
-                                        !qsta.isSubtypeOf(psta)) {
-                                    return true;
-                                }
+        List<TypeDeclaration> pstds = 
+                p.getDeclaration()
+                    .getSupertypeDeclarations();
+        List<TypeDeclaration> qstds =
+                q.getDeclaration()
+                    .getSupertypeDeclarations();
+        Set<TypeDeclaration> set = 
+                new HashSet<TypeDeclaration>
+                    (pstds.size()+qstds.size());
+        set.addAll(pstds); 
+        set.retainAll(qstds);
+        for (TypeDeclaration std: pstds) {
+            ProducedType pst = null;
+            ProducedType qst = null;
+            for (TypeParameter tp: std.getTypeParameters()) {
+                if (tp.isInvariant()) {
+                    if (pst==null) 
+                        pst = p.getSupertype(std);
+                    if (qst==null) 
+                        qst = q.getSupertype(std);
+                    if (pst!=null && qst!=null) {
+                        ProducedType psta = 
+                                pst.getTypeArguments()
+                                    .get(tp);
+                        ProducedType qsta = 
+                                qst.getTypeArguments()
+                                    .get(tp);
+                        //TODO: why isWellDefined() instead of isTypeUnknown() ?
+                        if (psta!=null && 
+                                psta.isWellDefined() && 
+                                !pst.involvesTypeParameters() && 
+                            qsta!=null && 
+                                qsta.isWellDefined() && 
+                                !qst.involvesTypeParameters()) {
+                            boolean psti = 
+                                    pst.isInvariant(tp);
+                            boolean pstcov = 
+                                    pst.isCovariant(tp);
+                            boolean pstcontra = 
+                                    pst.isContravariant(tp);
+                            boolean qsti = 
+                                    qst.isInvariant(tp);
+                            boolean qstcov = 
+                                    qst.isCovariant(tp);
+                            boolean qstcontra = 
+                                    qst.isContravariant(tp);
+                            if (psti && qsti && 
+                                    !psta.isExactly(qsta) ||
+                                pstcov && qsti && 
+                                    !qsta.isSubtypeOf(psta) ||
+                                qstcov && psti && 
+                                    !psta.isSubtypeOf(qsta) ||
+                                pstcontra && qsti && 
+                                    !psta.isSubtypeOf(qsta) ||
+                                qstcontra && psti && 
+                                    !qsta.isSubtypeOf(psta)) {
+                                return true;
                             }
                         }
                     }
                 }
             }
-//        }
+        }
         return false;
     }
     

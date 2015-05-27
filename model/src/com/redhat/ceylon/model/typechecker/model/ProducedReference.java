@@ -42,28 +42,37 @@ public abstract class ProducedReference {
     }
     
     public abstract Declaration getDeclaration();
-    
+
     public Map<TypeParameter, ProducedType> getTypeArguments() {
         Declaration declaration = getDeclaration();
         if (declaration instanceof Generic) {
-            if (typeArgumentsWithDefaults == null ||
-                    !ProducedTypeCache.isEnabled()) {
-                checkDepth();
-                incDepth();
-                try {
+            if (ProducedTypeCache.isEnabled()) {
+                if (typeArgumentsWithDefaults==null) {
                     typeArgumentsWithDefaults = 
-                            fillInDefaultTypeArguments(
-                                    declaration,
-                                    typeArguments);
+                            getTypeArgumentsInternal(declaration);
                 }
-                finally { 
-                    decDepth();
-                }
+                return typeArgumentsWithDefaults;
             }
-            return typeArgumentsWithDefaults;
+            else {
+                return getTypeArgumentsInternal(declaration);
+            }
         }
         else {
             return typeArguments;
+        }
+    }
+
+    private Map<TypeParameter, ProducedType> 
+    getTypeArgumentsInternal(Declaration declaration) {
+        checkDepth();
+        incDepth();
+        try {
+            return fillInDefaultTypeArguments(
+                    declaration,
+                    typeArguments);
+        }
+        finally { 
+            decDepth();
         }
     }
 

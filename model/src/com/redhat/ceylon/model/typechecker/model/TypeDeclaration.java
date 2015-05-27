@@ -17,6 +17,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
+import com.redhat.ceylon.model.typechecker.context.ProducedTypeCache;
+
 public abstract class TypeDeclaration extends Declaration 
         implements ImportableScope, Generic, Cloneable {
 
@@ -892,12 +894,28 @@ public abstract class TypeDeclaration extends Declaration
         }
     }
     
+    private List<TypeDeclaration> supertypeDeclarations;
+    
     public final List<TypeDeclaration> getSupertypeDeclarations() {
-        ArrayList<TypeDeclaration> results = 
+        if (ProducedTypeCache.isEnabled()) {
+            if (supertypeDeclarations==null) {
+                supertypeDeclarations = 
+                        getSupertypeDeclarationsInternal();
+            }
+            return supertypeDeclarations;
+        }
+        else {
+            return getSupertypeDeclarationsInternal();
+        }
+    }
+
+    private List<TypeDeclaration> getSupertypeDeclarationsInternal() {
+        List<TypeDeclaration> results = 
                 new ArrayList<TypeDeclaration>(
                         getSatisfiedTypes().size()+2);
         results.add(unit.getAnythingDeclaration());
         collectSupertypeDeclarations(results);
+//        results = unmodifiableList(results);
         return results;
     }
     
@@ -911,6 +929,7 @@ public abstract class TypeDeclaration extends Declaration
      */
     public void clearProducedTypeCache() {
         // do nothing, work in subclasses
+        supertypeDeclarations = null;
     }
 
 }

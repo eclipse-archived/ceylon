@@ -15,7 +15,6 @@ import static com.redhat.ceylon.model.typechecker.model.Util.toTypeArgs;
 import static com.redhat.ceylon.model.typechecker.model.Util.unionOfCaseTypes;
 import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
-import static java.util.Collections.unmodifiableList;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -1913,36 +1912,45 @@ public class ProducedType extends ProducedReference {
      * Get the type arguments as a tuple. 
      */
     public List<ProducedType> getTypeArgumentList() {
-        if (typeArgumentList==null || 
-                !ProducedTypeCache.isEnabled()) {
-            TypeDeclaration dec = getDeclaration();
-            List<TypeParameter> tps = 
-                    dec.getTypeParameters();
-            if (tps.isEmpty()) {
-                return NO_TYPE_ARGS;
-            }
-            else {
-                int size = tps.size();
-                List<ProducedType> argList = 
-                        new ArrayList<ProducedType>(size);
-                Map<TypeParameter, ProducedType> args = 
-                        getTypeArguments();
-                for (int i=0; i<size; i++) {
-                    TypeParameter tp = tps.get(i);
-                    ProducedType arg = args.get(tp);
-                    if (arg==null) {
-                        arg = dec.getUnit().getUnknownType();
-                    }
-                    argList.add(arg);
-                }
-                argList = unmodifiableList(argList);
-                typeArgumentList = argList;
-                return argList;
-            }
+        List<TypeParameter> tps = 
+                getDeclaration()
+                    .getTypeParameters();
+        if (tps.isEmpty()) {
+            return NO_TYPE_ARGS;
         }
         else {
-            return typeArgumentList;
+            if (ProducedTypeCache.isEnabled()) {
+                if (typeArgumentList==null) {
+                    typeArgumentList = 
+                            getTypeArgumentListInternal();
+                }
+                return typeArgumentList;
+            }
+            else {
+                return getTypeArgumentListInternal();
+            }
         }
+    }
+
+    private List<ProducedType> getTypeArgumentListInternal() {
+        TypeDeclaration dec = getDeclaration();
+        List<TypeParameter> tps = 
+                dec.getTypeParameters();
+        int size = tps.size();
+        List<ProducedType> argList = 
+                new ArrayList<ProducedType>(size);
+        Map<TypeParameter, ProducedType> args = 
+                getTypeArguments();
+        for (int i=0; i<size; i++) {
+            TypeParameter tp = tps.get(i);
+            ProducedType arg = args.get(tp);
+            if (arg==null) {
+                arg = dec.getUnit().getUnknownType();
+            }
+            argList.add(arg);
+        }
+//        argList = unmodifiableList(argList);
+        return argList;
     }
 
     /**

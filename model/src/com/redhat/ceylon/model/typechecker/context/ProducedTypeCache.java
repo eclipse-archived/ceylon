@@ -11,7 +11,7 @@ import com.redhat.ceylon.model.typechecker.model.UnknownType;
 
 public class ProducedTypeCache {
     
-    private static boolean cachingEnabledByDefault = true;
+    private static boolean cachingEnabledByDefault = false;
     
     public static void setEnabledByDefault(boolean enabled) {
         cachingEnabledByDefault = enabled;
@@ -21,7 +21,7 @@ public class ProducedTypeCache {
             new ThreadLocal<Boolean>();
     
     public static Boolean setEnabled(Boolean enabled) {
-        Boolean was = isEnabled();
+        boolean was = cachingEnabled.get();
         cachingEnabled.set(enabled);
         return was;
     }
