@@ -2806,15 +2806,15 @@ public class ExpressionVisitor extends Visitor {
                     nal.getNamedArguments();
             for (int i=0; i<args.size(); i++) {
                 Tree.NamedArgument arg = args.get(i);
-                if (arg instanceof Tree.SpecifiedArgument) {
-                    Tree.SpecifiedArgument sa = 
-                            (Tree.SpecifiedArgument) arg;
-                    Parameter param = 
-                            getMatchingParameter(pl, arg, 
-                                    foundParameters);
-                    if (param!=null) {
-                        foundParameters.add(param);
-                        sa.setParameter(param);
+                Parameter param = 
+                        getMatchingParameter(pl, arg, 
+                                foundParameters);
+                if (param!=null) {
+                    foundParameters.add(param);
+                    arg.setParameter(param);
+                    if (arg instanceof Tree.SpecifiedArgument) {
+                        Tree.SpecifiedArgument sa = 
+                                (Tree.SpecifiedArgument) arg;
                         Tree.SpecifierExpression se = 
                                 sa.getSpecifierExpression();
                         if (se!=null) {
@@ -2832,6 +2832,7 @@ public class ExpressionVisitor extends Visitor {
                         getUnspecifiedParameter(pr, pl, 
                                 foundParameters);
                 if (param!=null) {
+                    sa.setParameter(param);
                     for (Tree.PositionalArgument pa: 
                             sa.getPositionalArguments()) {
                         if (pa instanceof Tree.ListedArgument) {
@@ -4407,6 +4408,17 @@ public class ExpressionVisitor extends Visitor {
                 new boolean[params.size()];
         for (Tree.NamedArgument arg: 
                 args.getNamedArguments()) {
+            Parameter p = arg.getParameter();
+            if (p!=null) {
+                int loc = params.indexOf(p);
+                if (loc>=0) {
+                    specified[loc] = true;
+                }
+            }
+        }
+        Tree.SequencedArgument arg = 
+                args.getSequencedArgument();
+        if (arg!=null) {
             Parameter p = arg.getParameter();
             if (p!=null) {
                 int loc = params.indexOf(p);
