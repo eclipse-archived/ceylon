@@ -10,6 +10,7 @@ import com.redhat.ceylon.compiler.loader.JsModuleManagerFactory;
 import com.redhat.ceylon.compiler.typechecker.TypeChecker;
 import com.redhat.ceylon.compiler.typechecker.TypeCheckerBuilder;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
+import com.redhat.ceylon.model.typechecker.context.ProducedTypeCache;
 
 /**
  * Some hack before a proper unit test harness is put in place
@@ -61,7 +62,9 @@ public class MainForJsTest {
                 }
             }
         }
+        ProducedTypeCache.setEnabled(false);
         typeChecker.process();
+        ProducedTypeCache.setEnabled(true);
         if (typeChecker.getErrors() > 0) {
             System.exit(1);
         }
