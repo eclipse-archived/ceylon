@@ -1909,12 +1909,12 @@ public class ClassTransformer extends AbstractTransformer {
     private void satisfaction(Tree.SatisfiedTypes satisfied, final Class model, ClassDefinitionBuilder classBuilder) {
         Set<Interface> satisfiedInterfaces = new HashSet<Interface>();
         // start by saying that we already satisfied each interface from superclasses
-        Class superClass = model.getExtendedTypeDeclaration();
+        ProducedType superClass = model.getExtendedType();
         while(superClass != null){
             for(ProducedType interfaceDecl : superClass.getSatisfiedTypes()){
                 collectInterfaces((Interface) interfaceDecl.getDeclaration(), satisfiedInterfaces);
             }
-            superClass = superClass.getExtendedTypeDeclaration();
+            superClass = superClass.getExtendedType();
         }
         // now satisfy each new interface
         if (satisfied != null) {
@@ -1934,7 +1934,7 @@ public class ClassTransformer extends AbstractTransformer {
             }
         }
         // now find the set of interfaces we implemented twice with more refined type parameters
-        if(model.getExtendedTypeDeclaration() != null){
+        if(model.getExtendedType() != null){
             // reuse that Set
             satisfiedInterfaces.clear();
             for(ProducedType interfaceDecl : model.getSatisfiedTypes()){
