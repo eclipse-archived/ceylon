@@ -110,9 +110,9 @@ public class NativeTests extends CompilerTests {
                 new CompilerError(34, "native implementation must have the same return type as native abstraction: 'nativeMethodMismatch2' must have the type 'Anything'"),
                 new CompilerError(40, "member does not have the same number of parameters as native header: 'nativeMethodMismatch3'"),
                 new CompilerError(44, "type of parameter 's' of 'nativeMethodMismatch3' is different to type of corresponding parameter 'i' of native header 'nativeMethodMismatch3': 'String' is not exactly 'Integer'"),
-                new CompilerError(49, "function or value does not have a proper native backend implementation: 'nativeMethodMismatch4js'"),
-                new CompilerError(53, "function or value does not have a proper native backend implementation: 'nativeMethodMismatch4jvm'"),
-                new CompilerError(58, "function or value does not have a proper native backend implementation: 'nativeMethodMismatch4js'")
+                new CompilerError(49, "no native implementation for backend: native 'nativeMethodMismatch4js' is not implemented for one or more backends"),
+                new CompilerError(53, "no native implementation for backend: native 'nativeMethodMismatch4jvm' is not implemented for one or more backends"),
+                new CompilerError(58, "no native implementation for backend: native 'nativeMethodMismatch4js' is not implemented for one or more backends")
         );
     }
     
@@ -207,10 +207,13 @@ public class NativeTests extends CompilerTests {
                 new CompilerError(82, "native header for non-native declaration: 'NativeClassMismatch6'"),
                 new CompilerError(84, "native implementation for non-native header: 'NativeClassMismatch6'"),
                 new CompilerError(91, "formal member 'test1' of 'NativeClassMismatchSuper1' not implemented in class hierarchy"),
-                new CompilerError(98, "type does not have a native implementation for this backend: 'NativeClassMismatch8js'"),
-                new CompilerError(104, "type does not have a native implementation for this backend: 'NativeClassMismatch8jvm'"),
-                new CompilerError(110, "type does not have a native implementation for this backend: 'NativeClassMismatch8js'")
                 new CompilerError(92, "native backend name on member conflicts with its container: 'test1' of 'NativeClassMismatch7'"),
+                new CompilerError(98, "no native implementation for backend: native 'NativeClassMismatch8js' is not implemented for one or more backends"),
+                new CompilerError(98, "no native implementation for backend: native 'test2' is not implemented for one or more backends"),
+                new CompilerError(104, "no native implementation for backend: native 'NativeClassMismatch8jvm' is not implemented for one or more backends"),
+                new CompilerError(104, "no native implementation for backend: native 'test1' is not implemented for one or more backends"),
+                new CompilerError(110, "no native implementation for backend: native 'NativeClassMismatch8js' is not implemented for one or more backends"),
+                new CompilerError(110, "no native implementation for backend: native 'test2' is not implemented for one or more backends")
         );
     }
     
@@ -284,10 +287,8 @@ public class NativeTests extends CompilerTests {
     @Test
     public void testNativeDuplicates() {
         testNativeErrors("NativeDuplicates",
-                new CompilerError(20, "native implementation not found for: 'nativeDuplicates1'"),
                 new CompilerError(22, "duplicate native header: 'nativeDuplicates1'"),
                 new CompilerError(28, "duplicate native implementation: 'nativeDuplicates2'"),
-                new CompilerError(30, "native implementation not found for: 'nativeDuplicates3'"),
                 new CompilerError(34, "duplicate native implementation: 'nativeDuplicates3'"),
                 new CompilerError(38, "duplicate native implementation: 'nativeDuplicates4'"),
                 new CompilerError(42, "duplicate native implementation: 'nativeDuplicates5'")
