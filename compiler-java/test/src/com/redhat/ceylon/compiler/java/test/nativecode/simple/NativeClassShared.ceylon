@@ -20,22 +20,30 @@
 native shared class NativeClassShared() {
     native shared Integer test(Integer i);
     native shared Integer foo;
+    native shared Integer bar;
+    assign bar;
 }
 
 native("jvm") shared class NativeClassShared() {
     native("jvm") shared Integer test(Integer i) {
         throw Exception("NativeClassShared-JVM");
     }
-    native("jvm") shared Integer foo => test(0);
+    native("jvm") shared Integer foo => 0;
+    native("jvm") shared Integer bar => 0;
+    assign bar { test(0); }
 }
 
 native("js") shared class NativeClassShared() {
     native("js") shared Integer test(Integer i) {
         throw Exception("NativeClassShared-JS");
     }
-    native("js") shared Integer foo => test(0);
+    native("js") shared Integer foo => 0;
+    native("js") shared Integer bar => 0;
+    assign bar {test(0); }
 }
 
 void testNativeClassShared() {
     value x = NativeClassShared().foo;
+    value y = NativeClassShared().bar;
+    NativeClassShared().bar = x;
 }
