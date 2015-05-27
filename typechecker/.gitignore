@@ -19,3 +19,6 @@ treegen/*.tokens
 
 # Documentation
 Ceylon Language Specification*.pdf
+
+# Misc
+test/temp
