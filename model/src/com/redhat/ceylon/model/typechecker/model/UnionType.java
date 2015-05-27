@@ -97,7 +97,7 @@ public class UnionType extends TypeDeclaration {
             List<TypeDeclaration> results) {
         List<ProducedType> cts = getCaseTypes();
         if (!cts.isEmpty()) {
-//            ProducedType type = getType();
+            ProducedType type = getType();
 //        for (int i=0, size=cts.size(); i<size; i++) {
             //actually the loop is unnecessary, we
             //only need to consider the first case
@@ -110,10 +110,6 @@ public class UnionType extends TypeDeclaration {
                     max=candidates.size(); 
                     j<max; j++) {
                 TypeDeclaration std = candidates.get(j);
-//                ProducedType st = type.getSupertype(std);
-//                if (st!=null && !st.isNothing()) {
-//                    results.add(std);
-//                }
                 if (inherits(std)) {
                     results.add(std);
                 }
@@ -124,12 +120,20 @@ public class UnionType extends TypeDeclaration {
     
     @Override
     public boolean inherits(TypeDeclaration dec) {
-        for (ProducedType ct: getCaseTypes()) {
+        //this loop is intended as a performance
+        //optimization, but it doesn't actually
+        //seem to help at all really
+        /*for (ProducedType ct: getCaseTypes()) {
             if (!ct.getDeclaration().inherits(dec)) {
                 return false;
             }
-        }
-        ProducedType st = getType().getSupertype(dec);
+        }*/        
+        //have to resolve aliases here or the build of
+        //ceylon.ast is really slow / nonterminating
+        ProducedType st = 
+                getType()
+                    .resolveAliases()
+                    .getSupertype(dec);
         return st!=null && !st.isNothing();
     }
     
