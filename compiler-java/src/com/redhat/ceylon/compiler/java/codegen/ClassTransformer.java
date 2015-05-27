@@ -4393,10 +4393,11 @@ public class ClassTransformer extends AbstractTransformer {
         protected void resultType() {
             /* Not actually part of the return type */
             overloadBuilder.ignoreModelAnnotations();
+            ProducedType et = klass.getExtendedType();
             if (!klass.isAlias() 
-                    && Strategy.generateInstantiator(klass.getExtendedTypeDeclaration())
+                    && Strategy.generateInstantiator(et.getDeclaration())
                     && klass.isActual()
-                    && klass.getExtendedTypeDeclaration().getContainer() instanceof Class) {
+                    && et.isClass()) {
                 overloadBuilder.isOverride(true);
             }
             /**/

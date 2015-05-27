@@ -40,7 +40,6 @@ import com.redhat.ceylon.compiler.java.codegen.Decl;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
 import com.redhat.ceylon.model.typechecker.model.Annotation;
 import com.redhat.ceylon.model.typechecker.model.Class;
-import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Import;
 import com.redhat.ceylon.model.typechecker.model.Module;
@@ -335,12 +334,12 @@ public class Util {
         return c == null || c.isEmpty();
     }
     
-    public static boolean isThrowable(ClassOrInterface c) {
-        if (c != null) {
+    public static boolean isThrowable(TypeDeclaration c) {
+        if (c instanceof Class) {
             if ("ceylon.language::Throwable".equals(c.getQualifiedNameString())) {
                 return true;
-            } else {
-                return isThrowable(c.getExtendedTypeDeclaration());
+            } else if (c.getExtendedType()!=null) {
+                return isThrowable(c.getExtendedType().getDeclaration());
             }
         }
         return false;

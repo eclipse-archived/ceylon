@@ -145,7 +145,10 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
                     delegates.put(ctorModel, new CtorDelegation(ctorModel, p.getDeclaration()));
                 } else {
                     // implicitly delegating to superclass initializer
-                    delegates.put(ctorModel, new CtorDelegation(ctorModel, Decl.getConstructedClass(ctorModel).getExtendedTypeDeclaration()));
+                    ProducedType et = Decl.getConstructedClass(ctorModel).getExtendedType();
+                    if (et!=null) {
+                        delegates.put(ctorModel, new CtorDelegation(ctorModel, et.getDeclaration()));
+                    }
                 }
             } else {
                 HasErrorException error = gen.errors().getFirstErrorInitializer(stmt);

@@ -888,7 +888,10 @@ class SuperInvocation extends PositionalInvocation {
     static Declaration unaliasedPrimaryDeclaration(Tree.InvocationExpression invocation) {
         Declaration declaration = ((Tree.MemberOrTypeExpression)invocation.getPrimary()).getDeclaration();
         if (declaration instanceof ClassAlias) {
-            declaration = ((ClassAlias) declaration).getExtendedTypeDeclaration();
+            ProducedType et = ((ClassAlias) declaration).getExtendedType();
+            if (et!=null) {
+                declaration = et.getDeclaration();
+            }
         }
         return declaration;
     }
