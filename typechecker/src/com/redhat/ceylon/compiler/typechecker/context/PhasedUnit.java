@@ -422,23 +422,30 @@ public class PhasedUnit {
     }
     
     public synchronized void analyseFlow() {
-        if (!flowAnalyzed) {
-            rootNode.visit(new TypeHierarchyVisitor());
-            //System.out.println("Validate control flow for " + fileName);
-            rootNode.visit(new ControlFlowVisitor());
-            //System.out.println("Validate self references for " + fileName);
-            //System.out.println("Validate specification for " + fileName);
-            for (Declaration d: unit.getDeclarations()) {
-                if (d.getName()!=null) {
-                    rootNode.visit(new SpecificationVisitor(d));
-                    if (d instanceof TypeDeclaration) {
-                        TypeDeclaration td = 
-                                (TypeDeclaration) d;
-                        rootNode.visit(new SelfReferenceVisitor(td));
+        Boolean enabled = 
+                ProducedTypeCache.setEnabled(true);
+        try {
+            if (!flowAnalyzed) {
+                rootNode.visit(new TypeHierarchyVisitor());
+                //System.out.println("Validate control flow for " + fileName);
+                rootNode.visit(new ControlFlowVisitor());
+                //System.out.println("Validate self references for " + fileName);
+                //System.out.println("Validate specification for " + fileName);
+                for (Declaration d: unit.getDeclarations()) {
+                    if (d.getName()!=null) {
+                        rootNode.visit(new SpecificationVisitor(d));
+                        if (d instanceof TypeDeclaration) {
+                            TypeDeclaration td = 
+                                    (TypeDeclaration) d;
+                            rootNode.visit(new SelfReferenceVisitor(td));
+                        }
                     }
                 }
+                flowAnalyzed = true;
             }
-            flowAnalyzed = true;
+        }
+        finally {
+            ProducedTypeCache.setEnabled(enabled);
         }
     }
 
