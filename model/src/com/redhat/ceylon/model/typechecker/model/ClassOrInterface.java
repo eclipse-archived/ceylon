@@ -80,7 +80,7 @@ public abstract class ClassOrInterface extends TypeDeclaration {
             //it is allowed to be a class, 
             //an interface (for interface aliases)
             //or a constructor (for classes)
-            if (etd==this || !et.isTypeAlias()) {
+            if (etd==this || et.isTypeAlias()) {
                 return unit.getAnythingType();
             }
             else {
