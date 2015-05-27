@@ -126,10 +126,14 @@ public abstract class FreeClassOrInterface
                     byName.put(decl.getName(), decl);
             }
         }
-        if(base.getExtendedTypeDeclaration() != null)
-            collectMembers(base.getExtendedTypeDeclaration(), byName);
-        for(com.redhat.ceylon.model.typechecker.model.TypeDeclaration st : base.getSatisfiedTypeDeclarations()){
-            collectMembers(st, byName);
+        com.redhat.ceylon.model.typechecker.model.ProducedType et = base.getExtendedType();
+        if(et != null) {
+            collectMembers(et.getDeclaration(), byName);
+        }
+        for(com.redhat.ceylon.model.typechecker.model.ProducedType st : base.getSatisfiedTypes()){
+            if(st != null) {
+                collectMembers(st.getDeclaration(), byName);
+            }
         }
     }
 
