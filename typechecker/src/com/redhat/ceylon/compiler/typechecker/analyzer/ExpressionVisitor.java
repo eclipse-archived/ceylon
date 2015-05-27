@@ -3565,6 +3565,7 @@ public class ExpressionVisitor extends Visitor {
             TypeDeclaration type = 
                     resolveBaseTypeExpression(bte, true);
             if (type!=null) {
+                setArgumentParameters(that, type);
                 ProducedType receiverType;
                 Scope scope = that.getScope();
                 if (type.isClassOrInterfaceMember() &&
@@ -3600,6 +3601,7 @@ public class ExpressionVisitor extends Visitor {
             TypeDeclaration type = 
                     resolveQualifiedTypeExpression(qte, true);
             if (type!=null) {
+                setArgumentParameters(that, type);
                 Tree.Primary primary = qte.getPrimary();
                 ProducedType qt = 
                         primary.getTypeModel()
@@ -3626,6 +3628,7 @@ public class ExpressionVisitor extends Visitor {
             TypedDeclaration base = 
                     resolveBaseMemberExpression(bme, true);
             if (base!=null) {
+                setArgumentParameters(that, base);
                 List<ProducedType> typeArgs = 
                         getOrInferTypeArguments(that, base, 
                                 reference, null);
@@ -3643,6 +3646,7 @@ public class ExpressionVisitor extends Visitor {
                     resolveQualifiedMemberExpression(qme, 
                             true);
             if (member!=null) {
+                setArgumentParameters(that, member);
                 Tree.Primary primary = qme.getPrimary();
                 ProducedType qt = 
                         primary.getTypeModel()
@@ -3658,6 +3662,57 @@ public class ExpressionVisitor extends Visitor {
                 else {
                     visitQualifiedMemberExpression(qme, qt, 
                             member, typeArgs, tas);
+                }
+            }
+        }
+    }
+    
+    /**
+     * Set up references from positional arguments to
+     * parameters for later use during type inference. This 
+     * is only necessary here because in the case of an 
+     * overloaded Java function or constructors, the 
+     * overload has not been resolved the first time we 
+     * visit the arguments. So we need to revisit them here
+     * with the fully-resolved overloaded version. 
+     * 
+     * @param that an invocation
+     * @param invoked the thing being invoked
+     */
+    private void setArgumentParameters(
+            Tree.InvocationExpression that,
+            Declaration invoked) {
+        if (invoked instanceof Functional) {
+            Functional fun = (Functional) invoked;
+            List<ParameterList> pls = 
+                    fun.getParameterLists();
+            if (!pls.isEmpty()) {
+                ParameterList pl = pls.get(0);
+                //no need to do named arg lists because
+                //they can't be used with overloaded decs
+                Tree.PositionalArgumentList pal = 
+                        that.getPositionalArgumentList();
+                if (pal!=null) {
+                    List<PositionalArgument> args = 
+                            pal.getPositionalArguments();
+                    List<Parameter> params = 
+                            pl.getParameters();
+                    for (int i=0, j=0; 
+                            i<args.size() && 
+                            j<params.size();
+                            i++) {
+                        PositionalArgument arg = 
+                                args.get(i);
+                        Parameter param = 
+                                params.get(j);
+                        if (arg!=null && param!=null) {
+                            arg.setParameter(param);
+                        }
+                        if (param==null ||
+                                !param.isSequenced()) {
+                            j++;
+                        }
+                    }
                 }
             }
         }
