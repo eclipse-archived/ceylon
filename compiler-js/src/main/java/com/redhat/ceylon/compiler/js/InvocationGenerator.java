@@ -478,8 +478,8 @@ public class InvocationGenerator {
                         boolean found = false;
                         if (pdd instanceof Method) {
                             moreParams = ((Method)pdd).getParameterLists().get(0).getParameters();
-                        } else if (pdd instanceof com.redhat.ceylon.model.typechecker.model.Class) {
-                            moreParams = ((com.redhat.ceylon.model.typechecker.model.Class)pdd).getParameterList().getParameters();
+                        } else if (pdd instanceof Class) {
+                            moreParams = ((Class)pdd).getParameterList().getParameters();
                         } else {
                             //Check the parameters of the primary (obviously a callable, so this is a Tuple)
                             List<Parameter> cparms = TypeUtils.convertTupleToParameters(
