@@ -1972,7 +1972,7 @@ public class Util {
         if (!(dec instanceof Functional)) {
             return null;
         }
-        Functional fun = (Functional)dec;
+        Functional fun = (Functional) dec;
         List<ParameterList> parameterLists = 
                 fun.getParameterLists();
         if (parameterLists == null || 
@@ -2066,7 +2066,8 @@ public class Util {
             Unit unit) {
         List<TypeParameter> tps = dec.getTypeParameters();
         List<ProducedType> args = 
-                new ArrayList<ProducedType>(tps.size());
+                new ArrayList<ProducedType>
+                    (tps.size());
         Map<TypeParameter,SiteVariance> 
         varianceOverrides =
                 new HashMap<TypeParameter,SiteVariance>(1);
@@ -2090,13 +2091,15 @@ public class Util {
                         firstArg.involvesTypeParameters() ||
                         secondArg.involvesTypeParameters();
                 if (firstContra && secondContra) {
-                    arg = unionType(firstArg,secondArg,unit);
+                    arg = unionType(
+                            firstArg, secondArg, unit);
                     if (!tp.isContravariant()) {
                         varianceOverrides.put(tp, IN);
                     }
                 }
                 else if (firstCo && secondCo) {
-                    arg = intersectionType(firstArg,secondArg,unit);
+                    arg = intersectionType(
+                            firstArg, secondArg, unit);
                     if (!tp.isCovariant()) {
                         varianceOverrides.put(tp, OUT);
                     }
@@ -2226,9 +2229,9 @@ public class Util {
             TypeDeclaration td) {
         List<ProducedType> satisfiedTypes = 
                 td.getSatisfiedTypes();
-        int capacity = satisfiedTypes.size()+1;
         List<ProducedType> list = 
-                new ArrayList<ProducedType>(capacity);
+                new ArrayList<ProducedType>
+                    (satisfiedTypes.size()+1);
         ProducedType extendedType = td.getExtendedType();
         if (extendedType!=null) {
             list.add(extendedType);
@@ -2250,9 +2253,9 @@ public class Util {
         if (caseTypes==null) {
             return unit.getAnythingType();
         }
-        int capacity = caseTypes.size()+1;
         List<ProducedType> list = 
-                new ArrayList<ProducedType>(capacity);
+                new ArrayList<ProducedType>
+                    (caseTypes.size()+1);
         list.addAll(caseTypes);
         UnionType it = new UnionType(unit);
         it.setCaseTypes(list);
@@ -2332,7 +2335,8 @@ public class Util {
                 bottom.getSupertypeDeclarations()) {
             if (!std.equals(bottom)) {
                 Declaration member = 
-                        std.getDirectMember(name, null, false);
+                        std.getDirectMember(name, 
+                                null, false);
                 if (member!=null && 
                         member.isShared() && 
                         !isAbstraction(member)) {
@@ -2457,13 +2461,13 @@ public class Util {
      */
     public static Declaration getDirectMemberForBackend(
             Scope scope, String name, String backend) {
-        for (Declaration d: scope.getMembers()) {
-            if (isResolvable(d) && isNamed(name, d)) {
-                Declaration nd = 
-                        getNativeDeclaration(d, 
+        for (Declaration dec: scope.getMembers()) {
+            if (isResolvable(dec) && isNamed(name, dec)) {
+                Declaration nativeDec = 
+                        getNativeDeclaration(dec, 
                                 Backend.fromAnnotation(backend));
-                if (nd != null) {
-                    return nd;
+                if (nativeDec != null) {
+                    return nativeDec;
                 }
             }
         }

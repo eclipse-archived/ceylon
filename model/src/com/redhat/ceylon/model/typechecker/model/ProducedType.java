@@ -2217,12 +2217,16 @@ public class ProducedType extends ProducedReference {
         }
         else if (isUnion()) {
             for (ProducedType ct: getCaseTypes()) {
-                if (ct.containsUnknowns()) return true;
+                if (ct.containsUnknowns()) {
+                    return true;
+                }
             }
         }
         else if (isIntersection()) {
             for (ProducedType st: getSatisfiedTypes()) {
-                if (st.containsUnknowns()) return true;
+                if (st.containsUnknowns()) {
+                    return true;
+                }
             }
         }
         else if (isNothing()) {
@@ -2235,9 +2239,8 @@ public class ProducedType extends ProducedReference {
                 return true;
             }
             if (!isTypeConstructor()) {
-                List<ProducedType> tas = 
-                        getTypeArgumentList();
-                for (ProducedType at: tas) {
+                for (ProducedType at: 
+                        getTypeArgumentList()) {
                     if (at==null || 
                             at.containsUnknowns()) {
                         return true;
