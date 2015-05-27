@@ -292,7 +292,7 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
                                 model.getContainer();
                     String cbackend = container.getNative();
                     if (!cbackend.equals(backend)) {
-                        that.addError("native backend must be the same as its container: '" + 
+                        that.addError("native backend name on member conflicts with its container: '" + 
                                 name + "' of '" + 
                                 container.getName() + "'");
                     }
