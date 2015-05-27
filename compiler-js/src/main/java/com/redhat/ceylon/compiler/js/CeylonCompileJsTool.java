@@ -32,6 +32,7 @@ import com.redhat.ceylon.compiler.typechecker.TypeChecker;
 import com.redhat.ceylon.compiler.typechecker.TypeCheckerBuilder;
 import com.redhat.ceylon.compiler.typechecker.analyzer.Warning;
 import com.redhat.ceylon.compiler.typechecker.io.VirtualFile;
+import com.redhat.ceylon.model.typechecker.context.ProducedTypeCache;
 
 @Summary("Compiles Ceylon source code to JavaScript and directly produces " +
         "module and source archives in a module repository")
@@ -316,7 +317,9 @@ public class CeylonCompileJsTool extends OutputRepoUsingTool {
 
         typeChecker = tcb.getTypeChecker();
         t1=System.nanoTime();
+        ProducedTypeCache.setEnabled(false);
         typeChecker.process(true);
+        ProducedTypeCache.setEnabled(true);
         
         t2=System.nanoTime();
         JsCompiler jsc = new JsCompiler(typeChecker, opts);
