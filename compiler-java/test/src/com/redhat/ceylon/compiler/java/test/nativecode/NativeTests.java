@@ -293,4 +293,11 @@ public class NativeTests extends CompilerTests {
                 new CompilerError(42, "duplicate native implementation: 'nativeDuplicates5'")
         );
     }
+    
+    @Test
+    public void testNativeMissing() {
+        testNativeErrors("NativeMissing",
+                new CompilerError(23, "no native implementation for backend: native 'nativeMissing' is not implemented for one or more backends")
+        );
+    }
 }
