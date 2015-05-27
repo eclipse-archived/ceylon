@@ -403,14 +403,21 @@ public class PhasedUnit {
     }
 
     public synchronized void analyseTypes() {
-        if (!fullyTyped) {
-            ProducedType.resetDepth(-100);
-            //System.out.println("Run analysis phase for " + fileName);
-            rootNode.visit(new ExpressionVisitor(moduleManagerRef.get()));
-            rootNode.visit(new VisibilityVisitor());
-            rootNode.visit(new AnnotationVisitor());
-            rootNode.visit(new TypeArgumentVisitor());
-            fullyTyped = true;
+        Boolean enabled = 
+                ProducedTypeCache.setEnabled(true);
+        try {
+            if (!fullyTyped) {
+                ProducedType.resetDepth(-100);
+                //System.out.println("Run analysis phase for " + fileName);
+                rootNode.visit(new ExpressionVisitor(moduleManagerRef.get()));
+                rootNode.visit(new VisibilityVisitor());
+                rootNode.visit(new AnnotationVisitor());
+                rootNode.visit(new TypeArgumentVisitor());
+                fullyTyped = true;
+            }
+        }
+        finally {
+            ProducedTypeCache.setEnabled(enabled);
         }
     }
     
