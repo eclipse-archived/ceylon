@@ -8379,8 +8379,8 @@ public class ExpressionVisitor extends Visitor {
                 ClassOrInterface ci = 
                         getContainingClassOrInterface(scope);
                 if (ci!=null && 
-                        d.inherits(ci) && 
-                        !(d instanceof NothingType)) {
+                        !(d instanceof NothingType) &&
+                        d.inherits(ci)) {
                     Declaration direct = 
                             ci.getDirectMember(name, 
                                     signature, ellipsis);
