@@ -353,10 +353,13 @@ public class AnnotationVisitor extends Visitor {
         if (!c.isFinal()) {
             that.addError("annotation class must be final");
         }
-        Class etd = c.getExtendedTypeDeclaration();
+        ProducedType et = c.getExtendedType();
         Class bd = that.getUnit().getBasicDeclaration();
-        if (etd!=null && !etd.equals(bd)) {
-            that.addError("annotation class must directly extend 'Basic'");
+        if (et!=null) {
+            TypeDeclaration etd = et.getDeclaration();
+            if (!etd.equals(bd)) {
+                that.addError("annotation class must directly extend 'Basic'");
+            }
         }
         for (Tree.Parameter pn: 
                 that.getParameterList().getParameters()) {

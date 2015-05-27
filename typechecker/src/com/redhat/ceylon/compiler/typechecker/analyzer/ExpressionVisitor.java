@@ -2036,7 +2036,8 @@ public class ExpressionVisitor extends Visitor {
     @Override public void visit(Tree.ClassDeclaration that) {
         super.visit(that);
         Class alias = that.getDeclarationModel();
-        Class c = alias.getExtendedTypeDeclaration();
+        ClassOrInterface c = 
+                alias.getExtendedTypeDeclaration();
         if (c!=null) {
             if (c.isAbstract()) {
                 if (!alias.isFormal() && 
@@ -2048,12 +2049,13 @@ public class ExpressionVisitor extends Visitor {
             if (c.isAbstraction()) {
                 that.addError("class alias may not alias overloaded class");
             }
-            else {
+            else if (c instanceof Class) {
                 //TODO: all this can be removed once the backend
                 //      implements full support for the new class 
                 //      alias stuff
                 ProducedType alt = alias.getExtendedType();
-                ParameterList cpl = c.getParameterList();
+                ParameterList cpl = 
+                        ((Class) c).getParameterList();
                 ParameterList apl = alias.getParameterList();
                 if (cpl!=null && apl!=null) {
                     List<Parameter> cplps = 
@@ -6872,22 +6874,24 @@ public class ExpressionVisitor extends Visitor {
         Tree.Type rt = that.getType();
         if (rt!=null) {
             ProducedType type = rt.getTypeModel();
-            if (type!=null) {
-                if (that.getTerm()!=null) {
+            if (!isTypeUnknown(type)) {
+                Tree.Term term = that.getTerm();
+                if (term!=null) {
                     ProducedType knownType = 
-                            that.getTerm().getTypeModel();
-                    if (knownType!=null && 
-                            knownType.isSubtypeOf(type)) {
-                        that.addError("expression type is a subtype of the type: '" +
-                                knownType.getProducedTypeName(unit) + 
-                                "' is assignable to '" +
-                                type.getProducedTypeName(unit) + "'");
-                    }
-                    else {
-                        if (intersectionType(type, knownType, unit).isNothing()) {
-                            that.addError("tests assignability to bottom type 'Nothing': intersection of '" +
-                                    knownType.getProducedTypeName(unit) + "' and '" + 
-                                    type.getProducedTypeName(unit) + "' is empty");
+                            term.getTypeModel();
+                    if (!isTypeUnknown(knownType)) {
+                        if (knownType.isSubtypeOf(type)) {
+                            that.addError("expression type is a subtype of the type: '" +
+                                    knownType.getProducedTypeName(unit) + 
+                                    "' is assignable to '" +
+                                    type.getProducedTypeName(unit) + "'");
+                        }
+                        else {
+                            if (intersectionType(type, knownType, unit).isNothing()) {
+                                that.addError("tests assignability to bottom type 'Nothing': intersection of '" +
+                                        knownType.getProducedTypeName(unit) + "' and '" + 
+                                        type.getProducedTypeName(unit) + "' is empty");
+                            }
                         }
                     }
                 }
@@ -9922,14 +9926,17 @@ public class ExpressionVisitor extends Visitor {
         if (that.getDelegatedConstructor()==null) {
             if (c.isClassMember()) {
                 Class clazz = (Class) c.getContainer();
-                Class superclass = 
-                        clazz.getExtendedTypeDeclaration();
-                if (superclass!=null &&
-                        !unit.getBasicDeclaration()
-                            .equals(superclass)) {
-                    that.addError("constructor must explicitly delegate to some superclass constructor: '" +
-                            clazz.getName() + "' extends '" + 
-                            superclass.getName() + "'");
+                ProducedType et = clazz.getExtendedType();
+                if (et!=null) {
+                    TypeDeclaration superclass = 
+                            et.getDeclaration();
+                    if (superclass!=null &&
+                            !unit.getBasicDeclaration()
+                                .equals(superclass)) {
+                        that.addError("constructor must explicitly delegate to some superclass constructor: '" +
+                                clazz.getName() + "' extends '" + 
+                                superclass.getName() + "'");
+                    }
                 }
             }
         }

@@ -629,14 +629,15 @@ public class InheritanceVisitor extends Visitor {
         super.visit(that);
         
         TypeDeclaration constructor = 
-                (TypeDeclaration) that.getScope();
+                (TypeDeclaration) 
+                    that.getScope();
         Scope container = constructor.getContainer();
         Tree.SimpleType type = that.getType();
         if (type!=null &&
                 constructor instanceof Constructor &&
                 container instanceof Class) {
             Class containingClass = (Class) container;
-            Class superclass = 
+            ClassOrInterface superclass = 
                     containingClass.getExtendedTypeDeclaration();
             if (superclass!=null) {
                 Unit unit = that.getUnit();

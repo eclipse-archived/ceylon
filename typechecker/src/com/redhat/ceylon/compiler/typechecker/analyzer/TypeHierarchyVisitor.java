@@ -596,7 +596,8 @@ public class TypeHierarchyVisitor extends Visitor {
             TypeDeclaration td) {
         if (!td.isInconsistentType()) {
             Set<String> errors = new HashSet<String>();
-            for (TypeDeclaration std: td.getSupertypeDeclarations()) {
+            for (TypeDeclaration std: 
+                    td.getSupertypeDeclarations()) {
                 if (td instanceof ClassOrInterface && 
                         !td.isAbstract() && !td.isAlias()) {
                     for (Declaration d: std.getMembers()) {
