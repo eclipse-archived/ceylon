@@ -764,6 +764,17 @@ public class Metamodel {
 
     public static TypeDescriptor getTypeDescriptorForProducedType(com.redhat.ceylon.model.typechecker.model.ProducedType type) {
         TypeDeclaration declaration = type.getDeclaration();
+        if(type.isNothing()){
+            return TypeDescriptor.NothingType;
+        }
+        if(type.isUnion()){
+            TypeDescriptor[] tdArgs = getTypeDescriptorsForProducedTypes(type.getCaseTypes());
+            return TypeDescriptor.union(tdArgs);
+        }
+        if(type.isIntersection()){
+            TypeDescriptor[] tdArgs = getTypeDescriptorsForProducedTypes(type.getSatisfiedTypes());
+            return TypeDescriptor.intersection(tdArgs);
+        }
         if(declaration instanceof LazyClass){
             ReflectionClass classMirror = (ReflectionClass) ((LazyClass) declaration).classMirror;
             TypeDescriptor[] tdArgs = getTypeDescriptorsForProducedTypes(type.getTypeArgumentList());
@@ -779,17 +790,6 @@ public class Metamodel {
             if(type.getQualifyingType() != null)
                 return TypeDescriptor.member(getTypeDescriptorForProducedType(type.getQualifyingType()), ret);
             return ret;
-        }
-        if(declaration instanceof NothingType){
-            return TypeDescriptor.NothingType;
-        }
-        if(declaration instanceof com.redhat.ceylon.model.typechecker.model.UnionType){
-            TypeDescriptor[] tdArgs = getTypeDescriptorsForProducedTypes(type.getCaseTypes());
-            return TypeDescriptor.union(tdArgs);
-        }
-        if(declaration instanceof com.redhat.ceylon.model.typechecker.model.IntersectionType){
-            TypeDescriptor[] tdArgs = getTypeDescriptorsForProducedTypes(type.getSatisfiedTypes());
-            return TypeDescriptor.intersection(tdArgs);
         }
         if(declaration instanceof FunctionOrValueInterface){
             TypedDeclaration underlyingDeclaration = ((FunctionOrValueInterface) declaration).getUnderlyingDeclaration();
