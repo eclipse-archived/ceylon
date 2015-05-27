@@ -752,8 +752,8 @@ public class Decl {
         if (parameterType.getCaseTypes() == null) {
             return false;
         }
-        for (ProducedType td : parameterType.getCaseTypes()) {
-            if (!td.getDeclaration().isAnonymous()) {
+        for (ProducedType type : parameterType.getCaseTypes()) {
+            if (!type.isClass() || !type.getDeclaration().isAnonymous()) {
                 return false;
             }
         }
@@ -772,8 +772,7 @@ public class Decl {
         }
         if (decl instanceof Value) {
             ProducedType type = ((Value) decl).getType();
-            if (type.isClass() &&
-                    type.getDeclaration().isAnonymous()) {
+            if (type.isClass() && type.getDeclaration().isAnonymous()) {
                 if (isEnumeratedTypeWithAnonCases(type.getExtendedType())) {
                     return true;
                 }
