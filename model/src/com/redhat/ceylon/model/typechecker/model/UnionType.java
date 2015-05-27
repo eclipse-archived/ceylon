@@ -97,7 +97,6 @@ public class UnionType extends TypeDeclaration {
             List<TypeDeclaration> results) {
         List<ProducedType> cts = getCaseTypes();
         if (!cts.isEmpty()) {
-            ProducedType type = getType();
 //        for (int i=0, size=cts.size(); i<size; i++) {
             //actually the loop is unnecessary, we
             //only need to consider the first case
