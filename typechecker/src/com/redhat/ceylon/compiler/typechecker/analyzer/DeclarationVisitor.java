@@ -778,7 +778,7 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
             //default constructor
             if (!c.isShared()) {
                 that.addError("default constructor must be annotated shared", 
-                        401);
+                        705);
             }
             if (c.isAbstract()) {
                 that.addError("default constructor may not be annotated abstract", 
