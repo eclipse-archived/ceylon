@@ -1,5 +1,7 @@
 package com.redhat.ceylon.model.typechecker.model;
 
+import java.util.List;
+
 
 public class NothingType extends TypeDeclaration {
     
@@ -9,6 +11,12 @@ public class NothingType extends TypeDeclaration {
     
     @Override
     public void addMember(Declaration declaration) {
+        throw new UnsupportedOperationException();
+    }
+    
+    @Override
+    void collectSupertypeDeclarations(
+            List<TypeDeclaration> results) {
         throw new UnsupportedOperationException();
     }
     

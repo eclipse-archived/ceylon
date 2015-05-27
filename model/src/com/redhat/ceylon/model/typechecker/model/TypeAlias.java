@@ -12,6 +12,20 @@ public class TypeAlias extends TypeDeclaration {
     private boolean anonymous;
     
     @Override
+    void collectSupertypeDeclarations(
+            List<TypeDeclaration> results) {
+        getExtendedType()
+            .getDeclaration()
+                .collectSupertypeDeclarations(results);
+    }
+    
+    @Override
+    public boolean inherits(TypeDeclaration dec) {
+        return getExtendedType()
+                .getDeclaration().inherits(dec);
+    }
+    
+    @Override
     public List<Annotation> getAnnotations() {
         return annotations;
     }

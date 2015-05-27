@@ -388,8 +388,8 @@ public abstract class TypeDeclaration extends Declaration
     public boolean inherits(TypeDeclaration dec) {
         //TODO: optimize this to avoid walking the
         //      same supertypes multiple times
-        for (ProducedType t: getSatisfiedTypes()) {
-            if (t.getDeclaration().inherits(dec)) {
+        for (ProducedType st: getSatisfiedTypes()) {
+            if (st.getDeclaration().inherits(dec)) {
                 return true;
             }
         }
@@ -484,8 +484,8 @@ public abstract class TypeDeclaration extends Declaration
                 result.isAbstraction()) {
             return true;
         }
-        if (hasMatchingSignature(signature, ellipsis, candidate)) {
-            return !hasMatchingSignature(signature, ellipsis, result) || 
+        if (hasMatchingSignature(candidate, signature, ellipsis)) {
+            return !hasMatchingSignature(result, signature, ellipsis) || 
                     strictlyBetterMatch(candidate, result);
         }
         return false; //asymmetric!!
@@ -804,7 +804,7 @@ public abstract class TypeDeclaration extends Declaration
             //no such member
             return new SupertypeDeclaration(null, false);
         }
-        else if (st.getDeclaration() instanceof UnknownType) {
+        else if (st.isUnknown()) {
             //we're dealing with an ambiguous member of an 
             //intersection type
             //TODO: this is pretty fragile - it depends upon
@@ -816,8 +816,9 @@ public abstract class TypeDeclaration extends Declaration
         else {
             //we got exactly one uniquely-defined member
             Declaration member = 
-                    st.getDeclaration().getDirectMember(name, 
-                            signature, variadic);
+                    st.getDeclaration()
+                        .getDirectMember(name, 
+                                signature, variadic);
             return new SupertypeDeclaration(member, false);
         }
     }
@@ -946,50 +947,17 @@ public abstract class TypeDeclaration extends Declaration
         }
     }
     
-    public List<TypeDeclaration> getSupertypeDeclarations() {
-        //TODO: optimize this to avoid walking the
-        //      same supertypes multiple times
-        List<TypeDeclaration> result;
-        ProducedType et = getExtendedType();
-        List<ProducedType> stds = getSatisfiedTypes();
-        if (et!=null &&
-                //TODO: how is this correct?!
-                !(this instanceof TypeAlias)) {
-            TypeDeclaration etd = et.getDeclaration();
-            List<TypeDeclaration> etsts = 
-                    etd.getSupertypeDeclarations();
-            result = new ArrayList<TypeDeclaration>
-                        (etsts.size() + stds.size()*2);
-            for (int j=0, s=etsts.size(); j<s; j++) {
-                TypeDeclaration st = etsts.get(j);
-                if (!result.contains(st)) {
-                    result.add(st);
-                }
-            }
-        }
-        else {
-            result = new ArrayList<TypeDeclaration>
-                        (stds.size()*2);
-        }
-        for (int i=0, l=stds.size(); i<l; i++) {
-            ProducedType st = stds.get(i);
-            TypeDeclaration std = st.getDeclaration();
-            List<TypeDeclaration> ststs = 
-                    std.getSupertypeDeclarations();
-            for (int j=0, s=ststs.size(); j<s; j++) {
-                TypeDeclaration ststd = ststs.get(j);
-                if (!result.contains(ststd)) {
-                    result.add(ststd);
-                }
-            }
-        }
-        if (this instanceof ClassOrInterface) {
-            if (!result.contains(this)) {
-                result.add(this);
-            }
-        }
-        return result;
+    public final List<TypeDeclaration> getSupertypeDeclarations() {
+        ArrayList<TypeDeclaration> results = 
+                new ArrayList<TypeDeclaration>(
+                        getSatisfiedTypes().size()+2);
+        results.add(unit.getAnythingDeclaration());
+        collectSupertypeDeclarations(results);
+        return results;
     }
+    
+    abstract void collectSupertypeDeclarations(
+            List<TypeDeclaration> results);
     
     /**
      * Clears the ProducedType supertype caches for that declaration. Does nothing

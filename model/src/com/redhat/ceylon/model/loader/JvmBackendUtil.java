@@ -22,6 +22,7 @@ import com.redhat.ceylon.model.typechecker.model.Method;
 import com.redhat.ceylon.model.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.model.typechecker.model.ModelUtil;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
+import com.redhat.ceylon.model.typechecker.model.ProducedType;
 import com.redhat.ceylon.model.typechecker.model.Scope;
 import com.redhat.ceylon.model.typechecker.model.Specification;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
@@ -155,7 +156,8 @@ public class JvmBackendUtil {
                 while ((isAlias && c.isAlias())
                         || (isActual && c.isActual())) {
                     ctor = (isAlias && c.isAlias()) ? (Functional)((ClassAlias)c).getConstructor() : c;
-                    c = c.getExtendedTypeDeclaration();
+                    ProducedType et = c.getExtendedType();
+                    c = et!=null && et.isClass() ? (Class)et.getDeclaration() : null;
                     // handle compile errors
                     if(c == null)
                         return null;

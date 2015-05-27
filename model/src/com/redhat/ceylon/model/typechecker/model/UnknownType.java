@@ -1,5 +1,7 @@
 package com.redhat.ceylon.model.typechecker.model;
 
+import java.util.List;
+
 
 public class UnknownType extends TypeDeclaration {
 
@@ -51,6 +53,15 @@ public class UnknownType extends TypeDeclaration {
     @Override
     public boolean isShared() {
         return true;
+    }
+    
+    @Override
+    void collectSupertypeDeclarations(
+            List<TypeDeclaration> results) {}
+    
+    @Override
+    public boolean inherits(TypeDeclaration dec) {
+        return false;
     }
     
     @Override

@@ -143,15 +143,18 @@ public class Class extends ClassOrInterface implements Functional {
 	}
     
     @Override
-    @Deprecated
-    public Class getExtendedTypeDeclaration() {
-        ClassOrInterface etd = 
-                super.getExtendedTypeDeclaration();
-        if (etd instanceof Class) {
-            return (Class) etd;
+    public ProducedType getExtendedType() {
+        ProducedType et = 
+                super.getExtendedType();
+        if (et==null) {
+            //for Anything
+            return null;
+        }
+        else if (et.isClass()) {
+            return et;
         }
         else {
-            return null;
+            return unit.getAnythingType();
         }
     }
     

@@ -869,8 +869,7 @@ public class Unit {
     }
 
     public ProducedType getDefiniteType(ProducedType pt) {
-        return intersectionType(getType(getObjectDeclaration()), 
-                pt, pt.getDeclaration().getUnit());
+        return intersectionType(getObjectType(), pt, this);
         /*if (pt.getDeclaration().equals(getAnythingDeclaration())) {
             return getObjectDeclaration().getType();
         }

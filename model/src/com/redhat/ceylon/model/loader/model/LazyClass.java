@@ -11,6 +11,7 @@ import com.redhat.ceylon.model.loader.mirror.ClassMirror;
 import com.redhat.ceylon.model.loader.mirror.MethodMirror;
 import com.redhat.ceylon.model.typechecker.model.Annotation;
 import com.redhat.ceylon.model.typechecker.model.Class;
+import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.ParameterList;
@@ -196,7 +197,7 @@ public class LazyClass extends Class implements LazyContainer {
     }
 
     @Override
-    public Class getExtendedTypeDeclaration() {
+    public ClassOrInterface getExtendedTypeDeclaration() {
         load();
         return super.getExtendedTypeDeclaration();
     }

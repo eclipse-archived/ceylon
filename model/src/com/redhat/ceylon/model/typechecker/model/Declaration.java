@@ -337,7 +337,8 @@ public abstract class Declaration
         if (container instanceof Class) {
             Class c = (Class) container;
             if (isOverloadedVersion(c)) {
-                container = c.getExtendedTypeDeclaration();
+                return c.getExtendedType()
+                        .getDeclaration();
             }
         }
         return container;

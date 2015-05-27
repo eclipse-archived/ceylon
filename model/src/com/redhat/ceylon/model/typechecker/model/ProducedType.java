@@ -3240,8 +3240,7 @@ public class ProducedType extends ProducedReference {
             return it.canonicalize().getType();
         }
         else {
-            List<ProducedType> cts = 
-                    getCaseTypes();
+            List<ProducedType> cts = getCaseTypes();
             if (cts==null) {
                 return this;
             }
@@ -3341,7 +3340,7 @@ public class ProducedType extends ProducedReference {
         if (uoc.isSubtypeOfInternal(this)) {
             return true;
         }
-        if (type.isUnion()) {
+        if (uoc.isUnion()) {
             //X covers Y if Y has the cases A|B|C and 
             //X covers all of A, B, and C
             for (ProducedType ct: uoc.getCaseTypes()) {

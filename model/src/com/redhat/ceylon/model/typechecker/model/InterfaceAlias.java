@@ -1,5 +1,7 @@
 package com.redhat.ceylon.model.typechecker.model;
 
+import java.util.List;
+
 public class InterfaceAlias extends Interface {
     
     @Override
@@ -8,15 +10,22 @@ public class InterfaceAlias extends Interface {
     }
     
     @Override
-    public Interface getExtendedTypeDeclaration() {
-        ClassOrInterface etd = 
-                super.getExtendedTypeDeclaration();
-        if (etd instanceof Interface) {
-            return (Interface) etd;
+    void collectSupertypeDeclarations(
+            List<TypeDeclaration> results) {
+        ProducedType et = getExtendedType();
+        if (et!=null) { 
+            et.getDeclaration()
+                .collectSupertypeDeclarations(results);
         }
-        else {
-            return null;
+    }
+        
+    @Override
+    public boolean inherits(TypeDeclaration dec) {
+        ProducedType et = getExtendedType();
+        if (et!=null) {
+            return et.getDeclaration().inherits(dec);
         }
+        return false;
     }
     
 }

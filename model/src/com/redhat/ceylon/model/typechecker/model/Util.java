@@ -168,26 +168,26 @@ public class Util {
     }
 
     static boolean hasMatchingSignature(
-            List<ProducedType> signature, 
-            boolean ellipsis, Declaration d) {
-        return hasMatchingSignature(signature, ellipsis, d, true);
+            Declaration dec, 
+            List<ProducedType> signature, boolean ellipsis) {
+        return hasMatchingSignature(dec, signature, ellipsis, true);
     }
     
     static boolean hasMatchingSignature(
-            List<ProducedType> signature, 
-            boolean spread, Declaration d, 
+            Declaration dec, 
+            List<ProducedType> signature, boolean spread, 
             boolean excludeAbstractClasses) {
         if (excludeAbstractClasses && 
-                d instanceof Class && 
-                ((Class) d).isAbstract()) {
+                dec instanceof Class && 
+                ((Class) dec).isAbstract()) {
             return false;
         }
-        if (d instanceof Functional) {
-            if (d.isAbstraction()) {
+        if (dec instanceof Functional) {
+            if (dec.isAbstraction()) {
                 return false;
             }
-            Functional f = (Functional) d;
-            Unit unit = d.getUnit();
+            Functional f = (Functional) dec;
+            Unit unit = dec.getUnit();
             List<ParameterList> pls = 
                     f.getParameterLists();
             if (pls!=null && !pls.isEmpty()) {
@@ -1124,11 +1124,16 @@ public class Util {
         if (pt==null || !list.isEmpty() && pt.isNothing()) {
             return;
         }
-        if (pt.isUnion()) {
+        else if (pt.isAnything()) {
+            list.clear();
+            list.add(pt);
+        }
+        else if (pt.isUnion()) {
             // cheaper c-for than foreach
             List<ProducedType> caseTypes = 
                     pt.getCaseTypes();
-            for ( int i=0,l=caseTypes.size(); i<l; i++ ) {
+            for ( int i=0, size=caseTypes.size(); 
+                    i<size; i++ ) {
                 ProducedType t = caseTypes.get(i);
                 addToUnion(list, t.substitute(pt));
             }
@@ -1136,7 +1141,7 @@ public class Util {
         else if (pt.isWellDefined()) {
             boolean add=true;
             // cheaper c-for than foreach
-            for (int i=0;i<list.size();i++) {
+            for (int i=0; i<list.size(); i++) {
                 ProducedType t = list.get(i);
                 if (pt.isSubtypeOf(t)) {
                     add=false;
@@ -1170,11 +1175,17 @@ public class Util {
         if (pt==null || !list.isEmpty() && pt.isAnything()) {
             return;
         }
-        if (pt.isIntersection()) {
+        else if (pt.isNothing()) {
+            list.clear();
+            list.add(pt);
+        }
+        else if (pt.isIntersection()) {
             List<ProducedType> satisfiedTypes = 
                     pt.getSatisfiedTypes();
             // cheaper c-for than foreach
-            for (int i=0,l=satisfiedTypes.size(); i<l; i++) {
+            for (int i=0, 
+                    size=satisfiedTypes.size(); 
+                    i<size; i++) {
                 ProducedType t = satisfiedTypes.get(i);
                 addToIntersection(list, 
                         t.substitute(pt), 
@@ -1198,7 +1209,8 @@ public class Util {
                             supertype.getCaseTypes();
                     if (cts!=null) {
                         TypeDeclaration ctd=null;
-                        for (int cti=0, ctl=cts.size(); 
+                        for (int cti=0, 
+                                ctl=cts.size(); 
                                 cti<ctl; 
                                 cti++) {
                             TypeDeclaration ct = 
@@ -1217,7 +1229,8 @@ public class Util {
                                         cts.get(cti)
                                             .getDeclaration();
                                 if (ct!=ctd) {
-                                    for (int ti=0, tl=list.size(); 
+                                    for (int ti=0, 
+                                            tl=list.size(); 
                                             ti<tl; 
                                             ti++) {
                                         ProducedType t = 
@@ -1350,10 +1363,7 @@ public class Util {
         }
         else if (qd.getCaseTypes()!=null) {
             boolean all = true;
-            for (ProducedType t: 
-                    //TODO: shouldn't this be q.getCaseTypes() ?
-                    //      but that causes nontermination...
-                    qd.getCaseTypes()) {
+            for (ProducedType t: qd.getCaseTypes()) {
                 if (t.getDeclaration().isSelfType() || 
                         !emptyMeet(p,t,unit)) {
                     all = false; 
@@ -1372,10 +1382,7 @@ public class Util {
         }
         else if (p.getCaseTypes()!=null) {
             boolean all = true;
-            for (ProducedType t: 
-                    //TODO: shouldn't this be p.getCaseTypes() ?
-                    //      but that causes nontermination...
-                    pd.getCaseTypes()) {
+            for (ProducedType t: pd.getCaseTypes()) {
                 if (t.getDeclaration().isSelfType() || 
                         !emptyMeet(q,t,unit)) {
                     all = false; 
@@ -1518,13 +1525,19 @@ public class Util {
     /**
      * Determine if a type of form X<P>&X<Q> is equivalent to
      * Nothing where X<T> is invariant in T.
+     * 
      * @param p the argument type P
      * @param q the argument type Q
      */
-    private static boolean haveUninhabitableIntersection
-            (ProducedType p, ProducedType q, Unit unit) {
-        return emptyMeet(p, q, unit) ||
-                hasEmptyIntersectionOfInvariantInstantiations(p, q);
+    private static boolean haveUninhabitableIntersection(
+            ProducedType p, ProducedType q, Unit unit) {
+        //we have to resolve aliases here, or the computing
+        //supertype declarations gets incredibly slow for 
+        //the big stack of union type aliases in ceylon.ast
+        ProducedType ps = p.resolveAliases();
+        ProducedType qs = q.resolveAliases();
+        return emptyMeet(ps, qs, unit) ||
+                hasEmptyIntersectionOfInvariantInstantiations(ps, qs);
     }
 
     private static boolean hasEmptyIntersectionOfInvariantInstantiations(
@@ -1834,7 +1847,7 @@ public class Util {
         List<Declaration> results = null;
         Declaration result = null;
         Declaration inexactMatch = null;
-        for (int i = 0, l = members.size(); i < l ; i++) {
+        for (int i=0, size=members.size(); i<size ; i++) {
             Declaration d = members.get(i);
             if (isResolvable(d) && isNamed(name, d)) {
                 if (signature==null) {
@@ -1861,7 +1874,7 @@ public class Util {
                         }*/
                         inexactMatch = d;
                     }
-                    if (hasMatchingSignature(signature, ellipsis, d)) {
+                    if (hasMatchingSignature(d, signature, ellipsis)) {
                         //we have found an exactly matching 
                         //overloaded declaration
                         if (result == null) {
@@ -1932,8 +1945,8 @@ public class Util {
         }
         for (Declaration overloaded: 
                 abstractionClass.getOverloads()) {
-            if (hasMatchingSignature(signature, ellipsis, 
-                    overloaded, false)) {
+            if (hasMatchingSignature(overloaded, 
+                    signature, ellipsis, false)) {
                 addIfBetterMatch(results, 
                         overloaded, signature);
             }

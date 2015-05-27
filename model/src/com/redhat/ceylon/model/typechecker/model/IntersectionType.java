@@ -131,6 +131,17 @@ public class IntersectionType extends TypeDeclaration {
     }
 
     @Override
+    void collectSupertypeDeclarations(
+            List<TypeDeclaration> results) {
+        List<ProducedType> stds = getSatisfiedTypes();
+        for (int i=0, l=stds.size(); i<l; i++) {
+            ProducedType st = stds.get(i);
+            st.getDeclaration()
+                .collectSupertypeDeclarations(results);
+        }
+    }
+    
+    @Override
     public boolean equals(Object object) {
         throw new UnsupportedOperationException("intersection types don't have well-defined equality");
     }

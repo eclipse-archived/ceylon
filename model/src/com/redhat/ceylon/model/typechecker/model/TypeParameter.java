@@ -178,7 +178,7 @@ public class TypeParameter extends TypeDeclaration implements Functional {
             ProducedType st = sts.get(i);
             if (st!=null) {
                 TypeDeclaration std = st.getDeclaration();
-                if (std==this || std instanceof TypeAlias) {
+                if (std==this || st.isTypeAlias()) {
                     if (sts == satisfiedTypes) {
                         sts = new ArrayList<ProducedType>(sts);
                     }
@@ -201,7 +201,7 @@ public class TypeParameter extends TypeDeclaration implements Functional {
                 ProducedType ct = cts.get(i);
                 if (ct!=null) {
                     TypeDeclaration ctd = ct.getDeclaration();
-                    if (ctd==this || ctd instanceof TypeAlias) {
+                    if (ctd==this || ct.isTypeAlias()) {
                         if (cts==caseTypes) {
                             cts = new ArrayList<ProducedType>(cts);
                         }
@@ -214,7 +214,18 @@ public class TypeParameter extends TypeDeclaration implements Functional {
         }
         return cts;
     }
-
+    
+    @Override
+    void collectSupertypeDeclarations(
+            List<TypeDeclaration> results) {
+        List<ProducedType> stds = getSatisfiedTypes();
+        for (int i=0, l=stds.size(); i<l; i++) {
+            ProducedType st = stds.get(i);
+            st.getDeclaration()
+                .collectSupertypeDeclarations(results);
+        }
+    }
+    
     @Override
     public boolean isFunctional() {
         return true;

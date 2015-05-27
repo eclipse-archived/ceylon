@@ -6,8 +6,8 @@ import com.redhat.ceylon.model.loader.JvmBackendUtil;
 import com.redhat.ceylon.model.loader.ModelCompleter;
 import com.redhat.ceylon.model.loader.mirror.ClassMirror;
 import com.redhat.ceylon.model.typechecker.model.Annotation;
+import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
-import com.redhat.ceylon.model.typechecker.model.Interface;
 import com.redhat.ceylon.model.typechecker.model.InterfaceAlias;
 import com.redhat.ceylon.model.typechecker.model.ProducedReference;
 import com.redhat.ceylon.model.typechecker.model.ProducedType;
@@ -118,7 +118,7 @@ public class LazyInterfaceAlias extends InterfaceAlias implements LazyContainer 
     }
 
     @Override
-    public Interface getExtendedTypeDeclaration() {
+    public ClassOrInterface getExtendedTypeDeclaration() {
         load();
         return super.getExtendedTypeDeclaration();
     }

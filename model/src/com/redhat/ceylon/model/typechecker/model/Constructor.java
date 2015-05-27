@@ -135,6 +135,16 @@ public class Constructor extends TypeDeclaration implements Generic, Scope, Func
             List<ProducedType> signature, boolean ellipsis) {
         return getDirectMember(name, signature, ellipsis);
     }
+    
+    @Override
+    void collectSupertypeDeclarations(
+            List<TypeDeclaration> results) {
+        ProducedType et = getExtendedType();
+        if (et!=null) { 
+            et.getDeclaration()
+                .collectSupertypeDeclarations(results);
+        }
+    }
 
     @Override
     protected int hashCodeForCache() {

@@ -70,16 +70,23 @@ public abstract class ClassOrInterface extends TypeDeclaration {
 
     @Override
     public ProducedType getExtendedType() {
-        ProducedType extendedType = 
-                super.getExtendedType();
-        if (extendedType!=null) {
-            TypeDeclaration etd = 
-                    extendedType.getDeclaration();
-            if (etd==this || etd instanceof TypeAlias) {
-                return null;
+        ProducedType et = super.getExtendedType();
+        if (et == null) {
+            //for Anything
+            return null;
+        }
+        else {
+            TypeDeclaration etd = et.getDeclaration();
+            //it is allowed to be a class, 
+            //an interface (for interface aliases)
+            //or a constructor (for classes)
+            if (etd==this || !et.isTypeAlias()) {
+                return unit.getAnythingType();
+            }
+            else {
+                return et;
             }
         }
-        return extendedType;
     }
 
     @Override
@@ -91,7 +98,7 @@ public abstract class ClassOrInterface extends TypeDeclaration {
             ProducedType st = sts.get(i);
             if (st!=null) {
                 TypeDeclaration std = st.getDeclaration();
-                if (std==this || std instanceof TypeAlias) {
+                if (std==this || st.isTypeAlias()) {
                     if (sts == satisfiedTypes) {
                         sts = new ArrayList<ProducedType>(sts);
                     }
@@ -114,7 +121,7 @@ public abstract class ClassOrInterface extends TypeDeclaration {
                 ProducedType ct = cts.get(i);
                 if (ct!=null) {
                     TypeDeclaration ctd = ct.getDeclaration();
-                    if (ctd==this || ctd instanceof TypeAlias) {
+                    if (ctd==this || ct.isTypeAlias()) {
                         if (cts==caseTypes) {
                             cts = new ArrayList<ProducedType>(cts);
                         }
@@ -128,6 +135,25 @@ public abstract class ClassOrInterface extends TypeDeclaration {
         return cts;
     }
 
+    @Override
+    void collectSupertypeDeclarations(
+            List<TypeDeclaration> results) {
+        if (!results.contains(this)) {
+            results.add(this);
+            ProducedType et = getExtendedType();
+            List<ProducedType> stds = getSatisfiedTypes();
+            if (et!=null) {
+                et.getDeclaration()
+                    .collectSupertypeDeclarations(results);
+            }
+            for (int i=0, l=stds.size(); i<l; i++) {
+                ProducedType st = stds.get(i);
+                st.getDeclaration()
+                    .collectSupertypeDeclarations(results);
+            }
+        }
+    }
+    
     @Override
     protected int hashCodeForCache() {
         int ret = 17;
