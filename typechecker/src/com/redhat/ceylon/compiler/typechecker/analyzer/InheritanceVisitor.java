@@ -637,9 +637,9 @@ public class InheritanceVisitor extends Visitor {
                 constructor instanceof Constructor &&
                 container instanceof Class) {
             Class containingClass = (Class) container;
-            ClassOrInterface superclass = 
-                    containingClass.getExtendedTypeDeclaration();
-            if (superclass!=null) {
+            ProducedType et = 
+                    containingClass.getExtendedType();
+            if (et!=null) {
                 Unit unit = that.getUnit();
                 ProducedType extendedType = 
                         containingClass.getExtendedType();
@@ -647,6 +647,13 @@ public class InheritanceVisitor extends Visitor {
                         type.getTypeModel();
                 Declaration delegate = 
                         type.getDeclarationModel();
+                TypeDeclaration superclass = 
+                        et.getDeclaration();
+                if (superclass instanceof Constructor) {
+                    superclass = 
+                            superclass.getExtendedType()
+                                .getDeclaration();
+                }
                 if (delegate instanceof Constructor) {
                     Constructor c = (Constructor) delegate;
                     if (c.equals(constructor)) {

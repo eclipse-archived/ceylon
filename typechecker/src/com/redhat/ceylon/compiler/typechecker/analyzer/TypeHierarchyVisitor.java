@@ -498,13 +498,20 @@ public class TypeHierarchyVisitor extends Visitor {
         Type type = getOrBuildType(declaration);
 
         stackOfProcessedType.add(declaration);
-        visitDAGNode(declaration.getExtendedTypeDeclaration(), 
-                sortedDag, visited, stackOfProcessedType, 
-                errorReporter);
-        for (TypeDeclaration superSatisfiedType: 
-                declaration.getSatisfiedTypeDeclarations()) {
-            visitDAGNode(superSatisfiedType, sortedDag, visited, 
-                    stackOfProcessedType, errorReporter);
+        ProducedType extendedType = 
+                declaration.getExtendedType();
+        if (extendedType!=null) {
+            visitDAGNode(extendedType.getDeclaration(), 
+                    sortedDag, visited, stackOfProcessedType, 
+                    errorReporter);
+        }
+        for (ProducedType superSatisfiedType: 
+                declaration.getSatisfiedTypes()) {
+            if (superSatisfiedType!=null) {
+                visitDAGNode(superSatisfiedType.getDeclaration(), 
+                        sortedDag, visited, 
+                        stackOfProcessedType, errorReporter);
+            }
         }
         for (ProducedType superSatisfiedType: 
                 declaration.getBrokenSupertypes()) {

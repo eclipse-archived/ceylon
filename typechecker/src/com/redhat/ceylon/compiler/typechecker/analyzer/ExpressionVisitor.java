@@ -2036,9 +2036,14 @@ public class ExpressionVisitor extends Visitor {
     @Override public void visit(Tree.ClassDeclaration that) {
         super.visit(that);
         Class alias = that.getDeclarationModel();
-        ClassOrInterface c = 
-                alias.getExtendedTypeDeclaration();
-        if (c!=null) {
+        ProducedType et = alias.getExtendedType();
+        if (et!=null) {
+            TypeDeclaration etd = et.getDeclaration();
+            if (etd instanceof Constructor) {
+                etd = etd.getExtendedType().getDeclaration();
+            }
+            //TODO: some of this belongs in InheritanceVisitor! 
+            Class c = (Class) etd;
             if (c.isAbstract()) {
                 if (!alias.isFormal() && 
                     !alias.isAbstract()) {
