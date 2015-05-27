@@ -217,6 +217,11 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
                             backend + 
                             "\"' (must be either '\"jvm\"' or '\"js\"')");
                 }
+                String moduleBackend = unit.getPackage().getModule().getNative();
+                if (!backend.isEmpty() && moduleBackend != null && !backend.equals(moduleBackend)) {
+                    that.addError("native backend name on declaration conflicts with module descriptor: '\"" + 
+                            backend + "\"' is not '\"" + moduleBackend + "\"' for '" + name + "'");
+                }
                 model.setNative(backend);
                 Declaration member = 
                         scope.getDirectMember(name, null, false);
