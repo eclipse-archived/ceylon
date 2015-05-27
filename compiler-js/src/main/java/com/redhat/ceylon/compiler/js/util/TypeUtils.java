@@ -500,7 +500,11 @@ public class TypeUtils {
                 ptype = ((Method)p.getModel()).getTypedReference().getFullType();
             }
             if (p.isSequenced()) {
-                gen.out("seq:1,");
+                if (p.isAtLeastOne()) {
+                    gen.out("seq:2,");
+                } else {
+                    gen.out("seq:1,");
+                }
             }
             if (p.isDefaulted()) {
                 gen.out(MetamodelGenerator.KEY_DEFAULT, ":1,");
@@ -638,10 +642,17 @@ public class TypeUtils {
                     _tuple = _tuple.getTypeArgumentList().get(2);
                 }
             } else if (isSequential(_tuple)) {
-                ProducedType _t2 = _tuple.getSupertype(node.getUnit().getSequentialDeclaration());
+                ProducedType _t2 = _tuple.getSupertype(node.getUnit().getSequenceDeclaration());
+                final int seq;
+                if (_t2 == null) {
+                    _t2 = _tuple.getSupertype(node.getUnit().getSequentialDeclaration());
+                    seq = 1;
+                } else {
+                    seq = 2;
+                }
                 //Handle Sequence, for nonempty variadic parameters
                 metamodelTypeNameOrList(resolveTargs, node, gen.getCurrentPackage(), _t2.getTypeArgumentList().get(0), gen);
-                gen.out(",seq:1");
+                gen.out(",seq:", Integer.toString(seq));
                 _tuple = null;
             } else if (_tuple.isUnion()) {
                 metamodelTypeNameOrList(resolveTargs, node, gen.getCurrentPackage(), _tuple, gen);
