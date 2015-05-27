@@ -454,7 +454,7 @@ void treesetsAndArraylists() {
     @type:"TreeSet<String>" TreeSet((String x, String y)=>x<=>y);
     @type:"TreeSet<String>" TreeSet(compare);
     @type:"TreeSet<String>" TreeSet { compare; "foo", "bar" };
-    @type:"TreeSet<Float|Integer>" TreeSet { 
+    @type:"TreeSet<Integer|Float>" TreeSet { 
         (Float|Integer x, Float|Integer y) => larger; 
         1, 1.0 
     };
