@@ -23,7 +23,6 @@ import com.redhat.ceylon.common.ModuleUtil;
 import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
 import com.redhat.ceylon.model.cmr.JDKUtils;
-import com.redhat.ceylon.model.loader.Timer;
 import com.redhat.ceylon.model.loader.mirror.AccessibleMirror;
 import com.redhat.ceylon.model.loader.mirror.AnnotatedMirror;
 import com.redhat.ceylon.model.loader.mirror.AnnotationMirror;
@@ -1941,11 +1940,11 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             String constructorName = (String)alias.classMirror.getAnnotation(CEYLON_ALIAS_ANNOTATION).getValue("constructor");
             if (constructorName != null 
                     && !constructorName.isEmpty()) {
-                Declaration constructor = alias.getExtendedTypeDeclaration().getMember(constructorName, null, false);
+                Declaration constructor = alias.getExtendedType().getDeclaration().getMember(constructorName, null, false);
                 if (constructor instanceof TypeDeclaration) {
                     alias.setConstructor((TypeDeclaration)constructor);
                 } else {
-                    logError("class aliased constructor " + constructorName + " which is no longer a constructor of " + alias.getExtendedTypeDeclaration().getQualifiedNameString());
+                    logError("class aliased constructor " + constructorName + " which is no longer a constructor of " + alias.getExtendedType().getDeclaration().getQualifiedNameString());
                 }
             }
             

@@ -118,27 +118,9 @@ public class LazyInterfaceAlias extends InterfaceAlias implements LazyContainer 
     }
 
     @Override
-    public ClassOrInterface getExtendedTypeDeclaration() {
-        load();
-        return super.getExtendedTypeDeclaration();
-    }
-
-    @Override
-    public List<TypeDeclaration> getSatisfiedTypeDeclarations() {
-        load();
-        return super.getSatisfiedTypeDeclarations();
-    }
-
-    @Override
     public List<ProducedType> getSatisfiedTypes() {
         load();
         return super.getSatisfiedTypes();
-    }
-
-    @Override
-    public List<TypeDeclaration> getCaseTypeDeclarations() {
-        load();
-        return super.getCaseTypeDeclarations();
     }
 
     @Override

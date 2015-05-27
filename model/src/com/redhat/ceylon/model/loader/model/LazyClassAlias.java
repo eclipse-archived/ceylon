@@ -6,16 +6,13 @@ import com.redhat.ceylon.model.loader.JvmBackendUtil;
 import com.redhat.ceylon.model.loader.ModelCompleter;
 import com.redhat.ceylon.model.loader.mirror.ClassMirror;
 import com.redhat.ceylon.model.typechecker.model.Annotation;
-import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.ClassAlias;
-import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.ParameterList;
 import com.redhat.ceylon.model.typechecker.model.ProducedReference;
 import com.redhat.ceylon.model.typechecker.model.ProducedType;
 import com.redhat.ceylon.model.typechecker.model.Scope;
-import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.model.typechecker.model.TypeParameter;
 import com.redhat.ceylon.model.typechecker.model.Unit;
 
@@ -146,27 +143,9 @@ public class LazyClassAlias extends ClassAlias implements LazyContainer {
     }
 
     @Override
-    public ClassOrInterface getExtendedTypeDeclaration() {
-        load();
-        return super.getExtendedTypeDeclaration();
-    }
-
-    @Override
-    public List<TypeDeclaration> getSatisfiedTypeDeclarations() {
-        load();
-        return super.getSatisfiedTypeDeclarations();
-    }
-
-    @Override
     public List<ProducedType> getSatisfiedTypes() {
         load();
         return super.getSatisfiedTypes();
-    }
-
-    @Override
-    public List<TypeDeclaration> getCaseTypeDeclarations() {
-        load();
-        return super.getCaseTypeDeclarations();
     }
 
     @Override

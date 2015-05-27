@@ -106,85 +106,30 @@ public abstract class TypeDeclaration extends Declaration
     }
     
     /**
-     * The class extended by a class, the type aliased
-     * by a class or interface alias, or the class Anything
-     * for any other type.
+     * The class or constructor extended by a class, the 
+     * type aliased by a class or interface alias, or the 
+     * class Anything for any other type.
      */
-    @Deprecated
-    public ClassOrInterface getExtendedTypeDeclaration() {
-        ProducedType et = getExtendedType();
-		if (et==null) {
-		    return null;
-		}
-		else {
-		    TypeDeclaration etd = et.getDeclaration();
-		    if (etd instanceof Constructor) {
-		        //some classes directly extend a constructor
-		        //of their superclass
-		        return etd.getExtendedTypeDeclaration();
-		    }
-		    else if (etd instanceof ClassOrInterface) {
-		        return (ClassOrInterface) etd;
-		    }
-		    else {
-		        //plain type aliases "extend" their aliased
-		        //type (yew!)
-		        return null;
-		    }
-		}
-    }
-
     public ProducedType getExtendedType() {
         return extendedType;
     }
-
+    
     public void setExtendedType(ProducedType extendedType) {
         this.extendedType = extendedType;
-    }
-
-    @Deprecated
-    public List<TypeDeclaration> getSatisfiedTypeDeclarations() {
-        List<ProducedType> sts = getSatisfiedTypes();
-        List<TypeDeclaration> list = 
-                new ArrayList<TypeDeclaration>
-                    (sts.size());
-        for (int i=0, l=sts.size(); i<l; i++) {
-            ProducedType pt = sts.get(i);
-            list.add(pt==null ? null : pt.getDeclaration());
-        }
-        return list;
     }
     
     public List<ProducedType> getSatisfiedTypes() {
         return satisfiedTypes;
     }
-
+    
     public void setSatisfiedTypes(List<ProducedType> satisfiedTypes) {
         this.satisfiedTypes = satisfiedTypes;
     }
-
-    @Deprecated
-    public List<TypeDeclaration> getCaseTypeDeclarations() {
-        List<ProducedType> cts = getCaseTypes();
-        if (cts==null) {
-            return null;
-        }
-        else {
-            List<TypeDeclaration> list = 
-                    new ArrayList<TypeDeclaration>
-                        (cts.size());
-            for (int i=0, l=cts.size(); i<l; i++) {
-                ProducedType pt = cts.get(i);
-                list.add(pt==null ? null : pt.getDeclaration());
-            }
-            return list;
-        }
-    }
-
+    
     public List<ProducedType> getCaseTypes() {
         return caseTypes;
     }
-
+    
     public void setCaseTypes(List<ProducedType> caseTypes) {
         this.caseTypes = caseTypes;
     }
