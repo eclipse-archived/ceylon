@@ -272,11 +272,8 @@ public class ProducedType extends ProducedReference {
                     return false;
                 }
                 else {
-                    Class td = getDeclaration()
-                            .getUnit()
-                            .getTupleDeclaration();
-                    if (dec.equals(td)) {
-                        return isExactlyTuple(type, td);
+                    if (isTuple()) {
+                        return isExactlyTuple(type);
                     }
                     ProducedType qt = 
                             trueQualifyingType();
@@ -327,8 +324,12 @@ public class ProducedType extends ProducedReference {
             decDepth();
         }
     }
-
-    private boolean isExactlyTuple(ProducedType type, Class td) {
+    
+    private boolean isExactlyTuple(ProducedType type) {
+        TypeDeclaration td = 
+                getDeclaration()
+                    .getUnit()
+                    .getTupleDeclaration();
         TypeParameter elem = td.getTypeParameters().get(0);
         TypeParameter first = td.getTypeParameters().get(1);
         TypeParameter rest = td.getTypeParameters().get(2);
@@ -347,8 +348,8 @@ public class ProducedType extends ProducedReference {
                 f1==null || f2==null) {
                 return false;
             }
-            if (!f1.isExactly(f2) || 
-                !e1.isExactly(e2)) {
+            if (!f1.isExactlyInternal(f2) || 
+                !e1.isExactlyInternal(e2)) {
                 return false;
             }
             ProducedType r1 = t1a.get(rest);
@@ -356,9 +357,7 @@ public class ProducedType extends ProducedReference {
             if (r1==null || r2==null) {
                 return false;
             }
-            if (!r1.isClass() || !r2.isClass() ||
-                !r1.getDeclaration().equals(td) ||
-                !r2.getDeclaration().equals(td)) {
+            if (!r1.isTuple() || !r2.isTuple()) {
                 return r1.isExactlyInternal(r2); 
             }
             t1 = r1;
@@ -529,15 +528,11 @@ public class ProducedType extends ProducedReference {
                 return isSupertypeOfObject();
             }
             else {
-                TypeDeclaration dec = getDeclaration();
+                if (isTuple() && type.isTuple()) {
+                    return isSubtypeOfTuple(type);
+                }
                 TypeDeclaration otherDec = 
                         type.getDeclaration();
-                Class td = getDeclaration()
-                        .getUnit()
-                        .getTupleDeclaration();
-                if (dec.equals(td) && otherDec.equals(td)) {
-                    return isSubtypeOfTuple(type, td);
-                }
                 ProducedType supertype = 
                         getSupertypeInternal(otherDec);
                 if (supertype==null) {
@@ -594,7 +589,11 @@ public class ProducedType extends ProducedReference {
         }
     }
 
-    private boolean isSubtypeOfTuple(ProducedType type, Class td) {
+    private boolean isSubtypeOfTuple(ProducedType type) {
+        TypeDeclaration td = 
+                getDeclaration()
+                    .getUnit()
+                    .getTupleDeclaration();
         TypeParameter elem = td.getTypeParameters().get(0);
         TypeParameter first = td.getTypeParameters().get(1);
         TypeParameter rest = td.getTypeParameters().get(2);
@@ -622,9 +621,7 @@ public class ProducedType extends ProducedReference {
             if (r1==null || r2==null) {
                 return false;
             }
-            if (!r1.isClass() || !r2.isClass() ||
-                !r1.getDeclaration().equals(td) ||
-                !r2.getDeclaration().equals(td)) {
+            if (!r1.isTuple() || !r2.isTuple()) {
                 return r1.isSubtypeOfInternal(r2); 
             }
             t1 = r1;
@@ -3959,14 +3956,19 @@ public class ProducedType extends ProducedReference {
     }
     
     public boolean isAnything() {
-        TypeDeclaration d = getDeclaration();
-        if (d instanceof Class) {
-            Class ad = d.getUnit().getAnythingDeclaration();
-            return d.equals(ad);
-        }
-        else {
-            return false;
-        }
+        return isClass() &&
+                getDeclaration()
+//                    .equals(getDeclaration().getUnit().getAnythingDeclaration());
+                    .getQualifiedNameString()
+                    .equals("ceylon.language::Anything");
+    }
+    
+    public boolean isTuple() {
+        return isClass() &&
+                getDeclaration()
+//                    .equals(getDeclaration().getUnit().getTupleDeclaration());
+                    .getQualifiedNameString()
+                    .equals("ceylon.language::Tuple");
     }
     
     public int getMemoisedHashCode() {
