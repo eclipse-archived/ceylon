@@ -912,7 +912,7 @@ shared void checkParameterAnnotations() {
         check(d.annotations<SharedAnnotation>().size == 1, "``d``.annotations()");
         check(d.annotated<SharedAnnotation>(), "``d``.annotated()");
     }
-    value g=`value AnotherClass.g`;
+    ValueDeclaration g=`value AnotherClass.g`;
     check(g.parameter, "AnotherClass.g should be a parameter");
     check(g.annotations<SharedAnnotation>() nonempty, "AnotherClass.g should be shared #1");
     check(g.annotated<SharedAnnotation>(), "AnotherClass.g should be shared #2");
