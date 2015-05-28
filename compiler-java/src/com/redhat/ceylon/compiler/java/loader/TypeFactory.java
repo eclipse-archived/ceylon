@@ -185,29 +185,61 @@ public class TypeFactory extends Unit {
      */
     public boolean isTupleOfVariadicCallable(ProducedType args) {
         if (args!=null) {
-            Boolean simpleTupleLengthUnbounded = 
+            /*Boolean simpleTupleLengthUnbounded = 
                     isSimpleTupleLengthUnbounded(args);
             if (simpleTupleLengthUnbounded != null) {
                 return simpleTupleLengthUnbounded.booleanValue();
-            }
-            ProducedType tst = nonemptyArgs(args)
-                    .getSupertype(getTupleDeclaration());
-            if (tst!=null) {
-                java.util.List<ProducedType> tal = tst.getTypeArgumentList();
-                if (tal.size()>=3) {
-                    return isTupleOfVariadicCallable(tal.get(2));
-                }
-            }
-            else if (isEmptyType(args)) {
+            }*/
+            if (isEmptyType(args)) {
                 return false;
             }
-            else if (args.getDeclaration() instanceof ClassOrInterface 
-                     && (args.getDeclaration().equals(getSequentialDeclaration())
-                         || args.getDeclaration().equals(getSequenceDeclaration()))) {
+            else if (isVariadicElement(args)) {
                 return true;
+            }
+            Class td = getTupleDeclaration();
+            ProducedType tuple = 
+                    nonemptyArgs(args)
+                        .getSupertype(td);
+            if (tuple==null) {
+                return false;
+            }
+            else {
+                while (true) {
+                    java.util.List<ProducedType> tal = 
+                            tuple.getTypeArgumentList();
+                    if (tal.size()>=3) {
+                        ProducedType rest = tal.get(2);
+                        if (rest==null) {
+                            return false;
+                        }
+                        else if (isEmptyType(rest)) {
+                            return false;
+                        }
+                        else if (isVariadicElement(rest)) {
+                            return true;
+                        }
+                        else {
+                            tuple = nonemptyArgs(rest)
+                                    .getSupertype(td);
+                            if (tuple==null) {
+                                return false;
+                            }
+                            //else continue the loop!
+                        }
+                    }
+                    else {
+                        return false;
+                    }
+                }
             }
         }
         return false;
+    }
+
+    private boolean isVariadicElement(ProducedType args) {
+        return args.isClassOrInterface() 
+                 && (args.getDeclaration().equals(getSequentialDeclaration())
+                     || args.getDeclaration().equals(getSequenceDeclaration()));
     }
 
 }
