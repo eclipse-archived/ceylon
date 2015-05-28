@@ -1272,7 +1272,7 @@ public class CeylonDocTool extends OutputRepoUsingTool {
                 if (expression != null) {
                     thrownExceptions.add(expression.getTypeModel());
                 } else {
-                    thrownExceptions.add(unit.getUnit().getExceptionDeclaration().getType());
+                    thrownExceptions.add(unit.getUnit().getExceptionType());
                 }
             }
             @Override

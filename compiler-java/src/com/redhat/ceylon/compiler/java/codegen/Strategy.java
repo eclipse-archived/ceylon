@@ -310,7 +310,7 @@ class Strategy {
     static boolean useBoxedVoid(Method m) {
         return m.isMember() &&
             (m.isDefault() || m.isFormal() || m.isActual()) &&
-            m.getUnit().getAnythingDeclaration().equals(m.getType().getDeclaration()) &&
+            m.getType().isAnything() &&
             Decl.isCeylon((TypeDeclaration)m.getRefinedDeclaration().getContainer());
     }
 
@@ -335,12 +335,12 @@ class Strategy {
                 // up bloating the code (e.g. imagine x^1_000_000_000)
                 if (power > 0
                         && power <= 64
-                        && baseType.isExactly(unit.getIntegerDeclaration().getType())) {
+                        && baseType.isExactly(unit.getIntegerType())) {
                     return true;
                 }
                 else if (power > 0
                         && power <= 64
-                        && baseType.isExactly(unit.getFloatDeclaration().getType())) {
+                        && baseType.isExactly(unit.getFloatType())) {
                     return true;
                 }
             }

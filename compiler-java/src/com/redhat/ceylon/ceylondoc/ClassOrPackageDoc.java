@@ -218,17 +218,13 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
             Value value = (Value) d;
             if( value.isShared() && !value.isVariable() ) {
                 Unit unit = value.getUnit();
-                TypeDeclaration type = value.getTypeDeclaration();
+                ProducedType type = value.getType();
                 
-                if (type == unit.getSequentialDeclaration()) {
-                    ProducedType elementType = unit.getIteratedType(value.getType());
-                    type = elementType.getDeclaration();
+                if (unit.getSequentialDeclaration().equals(type.getDeclaration())) {
+                    type = unit.getSequentialElementType(type);
                 }
 
-                if (unit.getStringDeclaration().equals(type)
-                        || unit.getIntegerDeclaration().equals(type)
-                        || unit.getFloatDeclaration().equals(type)
-                        || unit.getCharacterDeclaration().equals(type)) {
+                if (type.isString() || type.isInteger() || type.isFloat() || type.isCharacter()) {
                     return true;
                 }
             }

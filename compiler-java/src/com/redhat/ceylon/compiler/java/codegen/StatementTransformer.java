@@ -49,15 +49,12 @@ import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.model.typechecker.model.ConditionScope;
 import com.redhat.ceylon.model.typechecker.model.ControlBlock;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
-import com.redhat.ceylon.model.typechecker.model.IntersectionType;
 import com.redhat.ceylon.model.typechecker.model.Package;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.ProducedType;
 import com.redhat.ceylon.model.typechecker.model.Scope;
-import com.redhat.ceylon.model.typechecker.model.TypeAlias;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
-import com.redhat.ceylon.model.typechecker.model.UnionType;
 import com.redhat.ceylon.model.typechecker.model.Util;
 import com.redhat.ceylon.model.typechecker.model.Value;
 import com.sun.tools.javac.code.Flags;
@@ -1065,7 +1062,7 @@ public class StatementTransformer extends AbstractTransformer {
          * because there can be no unboxing or typecasting of the result
          */
         private boolean isNothingOptimization() {
-            return toType.isExactly(typeFact().getNothingDeclaration().getType()) 
+            return toType.isExactly(typeFact().getNothingType()) 
                     && ! hasAliasedVariable();
         }
         
@@ -1105,7 +1102,7 @@ public class StatementTransformer extends AbstractTransformer {
         
         @Override
         public ProducedType getResultType() {
-            return typeFact().getObjectDeclaration().getType();
+            return typeFact().getObjectType();
         }
 
         @Override
@@ -1388,7 +1385,7 @@ public class StatementTransformer extends AbstractTransformer {
         public JCExpression makeTest() {
             at(cond);
             return expressionGen().transformExpression(cond.getExpression(), 
-                    BoxingStrategy.UNBOXED, typeFact().getBooleanDeclaration().getType());
+                    BoxingStrategy.UNBOXED, typeFact().getBooleanType());
         }
 
         @Override
@@ -1565,7 +1562,7 @@ public class StatementTransformer extends AbstractTransformer {
             
             List<JCStatement> transformedBlock = transformBlock(getBlock());
             
-            ProducedType charType = typeFact().getCharacterDeclaration().getType();
+            ProducedType charType = typeFact().getCharacterType();
             boolean elemBoxed = BooleanUtil.isFalse(getElementOrKeyVariable().getDeclarationModel().getUnboxed());
             
             JCExpression elemNameExpr = naming.makeQuotedIdent(Naming.getVariableName(getElementOrKeyVariable()));
@@ -1716,7 +1713,7 @@ public class StatementTransformer extends AbstractTransformer {
                 // FIXME DESCTRUCTURE
                 SyntheticName entryName = naming.alias("entry");
                 JCStatement entryVariable = makeVar(FINAL, entryName,
-                        makeJavaType(typeFact().getEntryType(typeFact().getAnythingDeclaration().getType(), typeFact().getAnythingDeclaration().getType()), JT_RAW),
+                        makeJavaType(typeFact().getEntryType(typeFact().getAnythingType(), typeFact().getAnythingType()), JT_RAW),
                         elementGet);
                 ProducedType entryType = elementType.getSupertype(typeFact().getEntryDeclaration());
                 ProducedType keyType = entryType.getTypeArgumentList().get(0);
@@ -1729,7 +1726,7 @@ public class StatementTransformer extends AbstractTransformer {
                         makeJavaType(keyType, BooleanUtil.isFalse(keyUnboxed) ? JT_NO_PRIMITIVES : 0),
                         expressionGen().applyErasureAndBoxing(
                                 make().Apply(null, naming.makeQualIdent(entryName.makeIdent(), "getKey"), List.<JCExpression>nil()),
-                                typeFact().getAnythingDeclaration().getType(), true, keyBoxStrat, keyType));
+                                typeFact().getAnythingType(), true, keyBoxStrat, keyType));
                 ProducedType valueType = entryType.getTypeArgumentList().get(1);
                 Tree.Variable valueVar = ((Tree.VariablePattern)pat.getValue()).getVariable();
                 String valueName = Naming.getVariableName(valueVar);
@@ -1740,7 +1737,7 @@ public class StatementTransformer extends AbstractTransformer {
                         makeJavaType(valueType, BooleanUtil.isFalse(valueUnboxed) ? JT_NO_PRIMITIVES : 0),
                         expressionGen().applyErasureAndBoxing(
                                 make().Apply(null, naming.makeQualIdent(entryName.makeIdent(), "getItem"), List.<JCExpression>nil()),
-                                typeFact().getAnythingDeclaration().getType(), true, valueBoxStrat, valueType));
+                                typeFact().getAnythingType(), true, valueBoxStrat, valueType));
                 // Prepend to the block
                 transformedBlock = transformedBlock.prepend(valueVariable);
                 transformedBlock = transformedBlock.prepend(keyVariable);
@@ -1768,7 +1765,7 @@ public class StatementTransformer extends AbstractTransformer {
 
         /** Makes the expression for incrementing the index */
         protected JCExpression makeStepExpr() {
-            ProducedType intType = typeFact().getIntegerDeclaration().getType();
+            ProducedType intType = typeFact().getIntegerType();
             intType.setUnderlyingType("int");
             return expressionGen().transformExpression(step, BoxingStrategy.UNBOXED, 
                     intType);
@@ -1819,12 +1816,12 @@ public class StatementTransformer extends AbstractTransformer {
                 Tree.Term baseIterable, Tree.Term step,
                 ProducedType arrayType) {
             super(stmt, baseIterable, step, typeFact().getArrayElementType(arrayType), "array");
-            unboxed = typeFact().getArrayType(typeFact().getBooleanDeclaration().getType()).isExactly(arrayType)
-                    || typeFact().getArrayType(typeFact().getByteDeclaration().getType()).isExactly(arrayType)
-                    || typeFact().getArrayType(typeFact().getIntegerDeclaration().getType()).isExactly(arrayType)
-                    || typeFact().getArrayType(typeFact().getCharacterDeclaration().getType()).isExactly(arrayType)
-                    || typeFact().getArrayType(typeFact().getFloatDeclaration().getType()).isExactly(arrayType)
-                    || typeFact().getArrayType(typeFact().getStringDeclaration().getType()).isExactly(arrayType);;
+            unboxed = typeFact().getArrayType(typeFact().getBooleanType()).isExactly(arrayType)
+                    || typeFact().getArrayType(typeFact().getByteType()).isExactly(arrayType)
+                    || typeFact().getArrayType(typeFact().getIntegerType()).isExactly(arrayType)
+                    || typeFact().getArrayType(typeFact().getCharacterType()).isExactly(arrayType)
+                    || typeFact().getArrayType(typeFact().getFloatType()).isExactly(arrayType)
+                    || typeFact().getArrayType(typeFact().getStringType()).isExactly(arrayType);;
         }
         
         @Override
@@ -1895,7 +1892,7 @@ public class StatementTransformer extends AbstractTransformer {
                 elementGet = make().Apply(null, 
                                           naming.makeQualIdent(indexableName.makeIdent(), "unsafeItem"),
                                           List.<JCExpression>of(indexName.makeIdent()));
-                gotType = typeFact().getObjectDeclaration().getType();
+                gotType = typeFact().getObjectType();
                 typeErased = true;
                 exprBoxed = true;
             }
@@ -2140,8 +2137,8 @@ public class StatementTransformer extends AbstractTransformer {
         }
         
         Type type;
-        ProducedType integerType = typeFact().getIntegerDeclaration().getType();
-        ProducedType characterType = typeFact().getCharacterDeclaration().getType();
+        ProducedType integerType = typeFact().getIntegerType();
+        ProducedType characterType = typeFact().getCharacterType();
         if (isSpanOf(range, integerType)) {
             type = syms().longType;
         } else if (isSpanOf(range, characterType)) {
@@ -2200,7 +2197,7 @@ public class StatementTransformer extends AbstractTransformer {
         
         @Override
         protected JCExpression makeIndexedAccess() {
-            if (step == null && elementType.isExactly(typeFact().getIntegerDeclaration().getType())) {
+            if (step == null && elementType.isExactly(typeFact().getIntegerType())) {
                 return make().Binary(JCTree.PLUS, indexName.makeIdent(), indexableName.makeIdent());
             } else {
                 return make().Apply(null,
@@ -2254,9 +2251,9 @@ public class StatementTransformer extends AbstractTransformer {
         
         final Tree.SegmentOp op = (Tree.SegmentOp)baseIterable;
         ProducedType iteratedType = typeFact().getIteratedType(op.getTypeModel()); 
-        if (iteratedType.isExactly(typeFact().getIntegerDeclaration().getType())) {
+        if (iteratedType.isExactly(typeFact().getIntegerType())) {
             
-        } else if (iteratedType.isExactly(typeFact().getCharacterDeclaration().getType())) {
+        } else if (iteratedType.isExactly(typeFact().getCharacterType())) {
             
         } else {
             return optimizationFailed(stmt, Optimization.SegmentOpIteration, 
@@ -2552,7 +2549,7 @@ public class StatementTransformer extends AbstractTransformer {
                     arrayName.makeIdent(), 
                     make().Apply(null, 
                             naming.makeQualIdent(
-                                    make().TypeCast(makeJavaType(typeFact().getArrayType(typeFact().getAnythingDeclaration().getType()), JT_RAW), iterableName.makeIdent()),
+                                    make().TypeCast(makeJavaType(typeFact().getArrayType(typeFact().getAnythingType()), JT_RAW), iterableName.makeIdent()),
                                     "toArray"),
                             List.<JCExpression>nil()))));
             whenArray.append(make().Exec(make().Assign(
@@ -2712,9 +2709,9 @@ public class StatementTransformer extends AbstractTransformer {
             this.increment = increment;
             this.type = type;
             if (type.tag == syms().intType.tag) {
-                this.pt = typeFact().getCharacterDeclaration().getType();
+                this.pt = typeFact().getCharacterType();
             } else if (type.tag == syms().longType.tag) {
-                this.pt = typeFact().getIntegerDeclaration().getType();
+                this.pt = typeFact().getIntegerType();
             } else {
                 throw new BugException(range, "unhandled Range type: " + type.tag); 
             }
@@ -3230,11 +3227,11 @@ public class StatementTransformer extends AbstractTransformer {
                 } else {
                     throw new BugException(res, "missing resource expression");
                 }
-                boolean isDestroyable = typeFact().getDestroyableDeclaration().getType().isSupertypeOf(resExpr.getTypeModel());
+                boolean isDestroyable = typeFact().getDestroyableType().isSupertypeOf(resExpr.getTypeModel());
                 ProducedType resVarType = resExpr.getTypeModel();
                 ProducedType resVarExpectedType = isDestroyable 
-                        ? typeFact().getDestroyableDeclaration().getType()
-                        : typeFact().getObtainableDeclaration().getType();
+                        ? typeFact().getDestroyableType()
+                        : typeFact().getObtainableType();
                 
                 // CloseableType $var = resource-expression
                 JCExpression expr = expressionGen().transformExpression(resExpr);
@@ -3252,7 +3249,7 @@ public class StatementTransformer extends AbstractTransformer {
                 
                 // Exception $tpmex = null;
                 String innerExTmpVarName = naming.newTemp("ex");
-                JCExpression innerExType = makeJavaType(typeFact().getThrowableDeclaration().getType(), JT_CATCH);
+                JCExpression innerExType = makeJavaType(typeFact().getThrowableType(), JT_CATCH);
                 JCVariableDecl innerExTmpVar = makeVar(innerExTmpVarName, innerExType, makeNull());
                 stats = stats.append(innerExTmpVar);
                 
@@ -3275,7 +3272,7 @@ public class StatementTransformer extends AbstractTransformer {
                 
                 // try { $var.close() } catch (Exception closex) { $tmpex.addSuppressed(closex); }
                 Name closeCatchVarName = naming.tempName("closex");
-                JCExpression closeCatchExType = makeJavaType(typeFact().getThrowableDeclaration().getType(), JT_CATCH);
+                JCExpression closeCatchExType = makeJavaType(typeFact().getThrowableType(), JT_CATCH);
                 JCVariableDecl closeCatchVar = make().VarDef(make().Modifiers(Flags.FINAL), closeCatchVarName, closeCatchExType, null);
                 JCExpression addarg = make().Ident(closeCatchVarName);
                 JCMethodInvocation addSuppressedCall = make().Apply(null, makeQualIdent(makeUnquotedIdent(innerExTmpVarName), "addSuppressed"), List.<JCExpression>of(addarg));
@@ -3293,7 +3290,7 @@ public class StatementTransformer extends AbstractTransformer {
     
                 // try { .... } catch (Exception ex) { $tmpex=ex; throw ex; }
                 // finally { try { $var.close() } catch (Exception closex) { } }
-                JCExpression innerCatchExType = makeJavaType(typeFact().getThrowableDeclaration().getType(), JT_CATCH);
+                JCExpression innerCatchExType = makeJavaType(typeFact().getThrowableType(), JT_CATCH);
                 JCVariableDecl innerCatchVar = make().VarDef(make().Modifiers(Flags.FINAL), innerCatchVarName, innerCatchExType, null);
                 JCCatch innerCatch = make().Catch(innerCatchVar, innerCatchBlock);
                 JCBlock innerFinallyBlock = make().Block(0, List.<JCStatement>of(closeCatchIf));
@@ -3453,7 +3450,7 @@ public class StatementTransformer extends AbstractTransformer {
      */
     private ProducedType intersectionOfCatchClauseTypes(
             java.util.List<Tree.CatchClause> catchClauses) {
-        ProducedType result = typeFact().getNothingDeclaration().getType();
+        ProducedType result = typeFact().getNothingType();
         for (Tree.CatchClause catchClause : catchClauses) {
             ProducedType pt = catchClause.getCatchVariable().getVariable().getType().getTypeModel();
             result = Util.unionType(result, exceptionSupertype(pt), typeFact());
@@ -3465,18 +3462,18 @@ public class StatementTransformer extends AbstractTransformer {
     }
 
     private ProducedType exceptionSupertype(ProducedType pt) {
-        ProducedType result = typeFact().getNothingDeclaration().getType();
+        ProducedType result = typeFact().getNothingType();
         if (typeFact().isUnion(pt)) {
             for (ProducedType t : pt.getCaseTypes()) {
                 result = Util.unionType(result, exceptionSupertype(t), typeFact());
             }
         } else if (typeFact().isIntersection(pt)) {
             for (ProducedType t : pt.getSatisfiedTypes()) {
-                if (t.isSubtypeOf(typeFact().getThrowableDeclaration().getType())) {
+                if (t.isSubtypeOf(typeFact().getThrowableType())) {
                     result = Util.unionType(result, exceptionSupertype(t), typeFact());
                 }
             }
-        } else if (pt.isSubtypeOf(typeFact().getThrowableDeclaration().getType())) {
+        } else if (pt.isSubtypeOf(typeFact().getThrowableType())) {
             if (pt.getDeclaration().isParameterized()) {
                 // We do this to avoid ending up with a union ExG<Foo>|ExG<Bar>
                 // when we're actually going to go raw, so ExG would be fine
@@ -3892,8 +3889,8 @@ public class StatementTransformer extends AbstractTransformer {
     }
     
     private boolean isJavaSwitchableType(ProducedType type, Boolean switchUnboxed) {
-        return BooleanUtil.isNotFalse(switchUnboxed) && (type.isExactly(typeFact().getCharacterDeclaration().getType())
-                    || type.isExactly(typeFact().getStringDeclaration().getType()))
+        return BooleanUtil.isNotFalse(switchUnboxed) && (type.isExactly(typeFact().getCharacterType())
+                    || type.isExactly(typeFact().getStringType()))
                 || isJavaEnumType(type);
     }
     
@@ -4318,7 +4315,7 @@ public class StatementTransformer extends AbstractTransformer {
             Tree.TuplePattern tuple = (Tree.TuplePattern)pat;
             for (Tree.Pattern p : tuple.getPatterns()) {
                 JCExpression idxExpr = makeInteger(idx++);
-                ProducedType ot = typeFact().getObjectDeclaration().getType();
+                ProducedType ot = typeFact().getObjectType();
                 JCExpression fullGetExpr;
                 if (varAccessExpr != null) {
                     JCExpression seqVarAccessExpr = make().TypeCast(makeJavaType(typeFact().getSequenceType(ot), JT_RAW), varAccessExpr);
@@ -4340,7 +4337,7 @@ public class StatementTransformer extends AbstractTransformer {
         } else if (pat instanceof Tree.KeyValuePattern) {
             // For an Entry we create two local values, one for the key and one for the value
             Tree.KeyValuePattern entry = (Tree.KeyValuePattern)pat;
-            ProducedType ot = typeFact().getObjectDeclaration().getType();
+            ProducedType ot = typeFact().getObjectType();
             JCExpression getItemExpr;
             if (varAccessExpr != null) {
                 JCExpression entryVarAccessExpr = make().TypeCast(makeJavaType(typeFact().getEntryType(ot , ot), JT_RAW), varAccessExpr);
@@ -4370,7 +4367,7 @@ public class StatementTransformer extends AbstractTransformer {
     }
 
     VarDefBuilder transformVariable(Variable var, JCExpression initExpr) {
-        return transformVariable(var, initExpr, typeFact().getObjectDeclaration().getType(), true);
+        return transformVariable(var, initExpr, typeFact().getObjectType(), true);
     }
 
     VarDefBuilder transformVariable(Variable var, JCExpression initExpr, ProducedType exprType, boolean exprBoxed) {

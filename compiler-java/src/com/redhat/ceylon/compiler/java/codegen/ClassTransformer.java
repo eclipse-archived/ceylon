@@ -556,7 +556,7 @@ public class ClassTransformer extends AbstractTransformer {
             at(param);
             transformParameter(instantiator, param, paramModel, Decl.getMemberDeclaration(def, param));
         }
-        instantiator.body(make().Throw(makeNewClass(makeJavaType(typeFact().getExceptionDeclaration().getType(), JT_CLASS_NEW))));
+        instantiator.body(make().Throw(makeNewClass(makeJavaType(typeFact().getExceptionType(), JT_CLASS_NEW))));
         return instantiator;
     }
 
@@ -1373,8 +1373,8 @@ public class ClassTransformer extends AbstractTransformer {
     }
 
     private boolean extendsSerializable(Class model) {
-        return !typeFact().getObjectDeclaration().getType().isExactly(model.getExtendedType())
-                && !typeFact().getBasicDeclaration().getType().isExactly(model.getExtendedType());
+        return !typeFact().getObjectType().isExactly(model.getExtendedType())
+                && !typeFact().getBasicType().isExactly(model.getExtendedType());
     }
     
     /**
@@ -1829,7 +1829,7 @@ public class ClassTransformer extends AbstractTransformer {
                         PUBLIC | ABSTRACT, 
                         Collections.<TypeParameter>emptyList(), 
                         Collections.<java.util.List<ProducedType>>emptyList(),
-                        typeFact().getAnythingDeclaration().getType(), 
+                        typeFact().getAnythingType(), 
                         Naming.getSetterName(attr), 
                         Collections.<Parameter>singletonList(((Setter)member).getParameter()),
                         ((Setter) member).getTypeErased(),
@@ -2147,7 +2147,7 @@ public class ClassTransformer extends AbstractTransformer {
                                 PUBLIC | (((Setter)member).getGetter().isDefault() ? 0 : FINAL), 
                                 Collections.<TypeParameter>emptyList(), 
                                 Collections.<java.util.List<ProducedType>>emptyList(),
-                                typeFact().getAnythingDeclaration().getType(), 
+                                typeFact().getAnythingType(), 
                                 Naming.getSetterName(attr), 
                                 Collections.<Parameter>singletonList(((Setter)member).getParameter()),
                                 ((Setter) member).getTypeErased(),
@@ -2374,7 +2374,7 @@ public class ClassTransformer extends AbstractTransformer {
             ProducedType type;
             // if the supertype method itself got erased to Object, we can't do better than this
             if(gen().willEraseToObject(param.getType()) && !gen().willEraseToBestBounds(param))
-                type = typeFact().getObjectDeclaration().getType();
+                type = typeFact().getObjectType();
             else
                 type = typedParameter.getType();
             concreteWrapper.parameter(param, type, FINAL, 0, true);
@@ -4145,7 +4145,7 @@ public class ClassTransformer extends AbstractTransformer {
             ProducedType paramType;
             // if the supertype method itself got erased to Object, we can't do better than this
             if (gen().willEraseToObject(parameter.getType()) && !gen().willEraseToBestBounds(parameter)) {
-                paramType = typeFact().getObjectDeclaration().getType();
+                paramType = typeFact().getObjectType();
             } else {
                 paramType = typedParameter.getType();
             }

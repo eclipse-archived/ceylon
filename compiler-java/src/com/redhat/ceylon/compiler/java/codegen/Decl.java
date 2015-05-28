@@ -743,11 +743,8 @@ public class Decl {
     
     
     public static boolean isEnumeratedTypeWithAnonCases(ProducedType parameterType) {
-        if (parameterType.isClass()) {
-            TypeDeclaration decl = parameterType.getDeclaration();
-            if (decl.equals(decl.getUnit().getBooleanDeclaration())) {
-                return false;
-            }
+        if (parameterType.isBoolean()) {
+            return false;
         }
         if (parameterType.getCaseTypes() == null) {
             return false;

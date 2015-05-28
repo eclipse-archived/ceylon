@@ -70,12 +70,10 @@ import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Functional;
 import com.redhat.ceylon.model.typechecker.model.Generic;
 import com.redhat.ceylon.model.typechecker.model.Interface;
-import com.redhat.ceylon.model.typechecker.model.IntersectionType;
 import com.redhat.ceylon.model.typechecker.model.Method;
 import com.redhat.ceylon.model.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.ModuleImport;
-import com.redhat.ceylon.model.typechecker.model.NothingType;
 import com.redhat.ceylon.model.typechecker.model.Package;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.ParameterList;
@@ -87,7 +85,6 @@ import com.redhat.ceylon.model.typechecker.model.SiteVariance;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.model.typechecker.model.TypeParameter;
 import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
-import com.redhat.ceylon.model.typechecker.model.UnionType;
 import com.redhat.ceylon.model.typechecker.util.ProducedTypeNamePrinter;
 import com.sun.tools.javac.code.BoundKind;
 import com.sun.tools.javac.code.Symbol.TypeSymbol;
@@ -695,15 +692,15 @@ public abstract class AbstractTransformer implements Transformation {
     }
 
     private boolean isObject(ProducedType type) {
-        return typeFact.getObjectDeclaration().getType().isExactly(type);
+        return typeFact.getObjectType().isExactly(type);
     }
     
     private boolean isBasic(ProducedType type) {
-        return typeFact.getBasicDeclaration().getType().isExactly(type);
+        return typeFact.getBasicType().isExactly(type);
     }
     
     private boolean isIdentifiable(ProducedType type) {
-        return typeFact.getIdentifiableDeclaration().getType().isExactly(type);
+        return typeFact.getIdentifiableType().isExactly(type);
     }
     
     public boolean isAlias(ProducedType type) {
@@ -1365,7 +1362,7 @@ public abstract class AbstractTransformer implements Transformation {
 
     boolean willEraseToException(ProducedType type) {
         type = simplifyType(type);
-        return type != null && type.isExactly(typeFact.getExceptionDeclaration().getType());
+        return type != null && type.isExactly(typeFact.getExceptionType());
     }
     
     boolean willEraseToThrowable(ProducedType type) {
@@ -1531,13 +1528,13 @@ public abstract class AbstractTransformer implements Transformation {
     }
 
     boolean isCeylonString(ProducedType type) {
-        return type != null && type.isExactly(typeFact.getStringDeclaration().getType());
+        return type != null && type.isExactly(typeFact.getStringType());
     }
     
     boolean isCeylonBoolean(ProducedType type) {
         TypeDeclaration declaration = type.getDeclaration();
         return declaration != null
-                && (type.isExactly(typeFact.getBooleanDeclaration().getType())
+                && (type.isExactly(typeFact.getBooleanType())
                         || isBooleanTrue(declaration)
                         || Decl.equal(declaration, typeFact.getBooleanTrueClassDeclaration())
                         || isBooleanFalse(declaration)
@@ -1545,19 +1542,19 @@ public abstract class AbstractTransformer implements Transformation {
     }
     
     boolean isCeylonInteger(ProducedType type) {
-        return type != null && type.isExactly(typeFact.getIntegerDeclaration().getType());
+        return type != null && type.isExactly(typeFact.getIntegerType());
     }
     
     boolean isCeylonFloat(ProducedType type) {
-        return type != null && type.isExactly(typeFact.getFloatDeclaration().getType());
+        return type != null && type.isExactly(typeFact.getFloatType());
     }
     
     boolean isCeylonCharacter(ProducedType type) {
-        return type != null && type.isExactly(typeFact.getCharacterDeclaration().getType());
+        return type != null && type.isExactly(typeFact.getCharacterType());
     }
 
     boolean isCeylonByte(ProducedType type) {
-        return type != null && type.isExactly(typeFact.getByteDeclaration().getType());
+        return type != null && type.isExactly(typeFact.getByteType());
     }
 
     boolean isCeylonArray(ProducedType type) {
@@ -1565,7 +1562,7 @@ public abstract class AbstractTransformer implements Transformation {
     }
     
     boolean isCeylonObject(ProducedType type) {
-        return type != null && type.isExactly(typeFact.getObjectDeclaration().getType());
+        return type != null && type.isExactly(typeFact.getObjectType());
     }
     
     boolean isCeylonBasicType(ProducedType type) {
@@ -1896,7 +1893,7 @@ public abstract class AbstractTransformer implements Transformation {
                 && !isTypeParameter(type)) {
                 //&& (flags & TYPE_ARGUMENT) == 0){
             // special case to get rid of $true and $false types
-            type = typeFact.getBooleanDeclaration().getType();
+            type = typeFact.getBooleanType();
         } else if ((flags & JT_VALUE_TYPE) == 0 && isJavaArray(type)){
             return getJavaArrayElementType(type, flags);
         }
@@ -2311,7 +2308,7 @@ public abstract class AbstractTransformer implements Transformation {
             }
             if (isCeylonBoolean(ta)
                     && !isTypeParameter(ta)) {
-                ta = typeFact.getBooleanDeclaration().getType();
+                ta = typeFact.getBooleanType();
             } 
             JCExpression jta;
             
@@ -2458,8 +2455,8 @@ public abstract class AbstractTransformer implements Transformation {
     protected ProducedType getNonNullType(ProducedType pt) {
         // typeFact().getDefiniteType() intersects with Object, which isn't 
         // always right for working with the java type system.
-        if (typeFact().getAnythingDeclaration().equals(pt.getDeclaration())) {
-            pt = typeFact().getObjectDeclaration().getType();
+        if (pt.isAnything()) {
+            pt = typeFact().getObjectType();
         }
         else {
             pt = pt.eliminateNull();
@@ -2510,8 +2507,8 @@ public abstract class AbstractTransformer implements Transformation {
     ProducedType getReturnTypeOfCallable(ProducedType typeModel) {
         if (!isCeylonCallableSubtype(typeModel)) {
             throw new BugException("expected Callable<...>, but was " + typeModel);
-        } else if (typeFact().getNothingDeclaration().getType().isExactly(typeModel)) {
-            return typeFact().getNothingDeclaration().getType();
+        } else if (typeFact().getNothingType().isExactly(typeModel)) {
+            return typeFact().getNothingType();
         }
         ProducedType ct = typeModel.getSupertype(typeFact().getCallableDeclaration());
         return ct.getTypeArgumentList().get(0);
@@ -2544,7 +2541,7 @@ public abstract class AbstractTransformer implements Transformation {
      * Returns true if any part of the given Callable is unknown, like Callable&lt;Ret,Args>
      */
     boolean isUnknownArgumentsCallable(ProducedType callableType) {
-        if (typeFact().getNothingDeclaration().getType().isExactly(callableType)) {
+        if (typeFact().getNothingType().isExactly(callableType)) {
             return false;
         }
         ProducedType args = typeFact().getCallableTuple(callableType);
@@ -2604,7 +2601,7 @@ public abstract class AbstractTransformer implements Transformation {
     }
 
     int getNumParametersOfCallable(ProducedType callableType) {
-        if (typeFact().getNothingDeclaration().getType().isExactly(callableType)) {
+        if (typeFact().getNothingType().isExactly(callableType)) {
             return 0;
         }
         ProducedType tuple = typeFact().getCallableTuple(callableType);
@@ -2677,7 +2674,7 @@ public abstract class AbstractTransformer implements Transformation {
     }
 
     boolean isVariadicCallable(ProducedType callableType) {
-        if (typeFact().getNothingDeclaration().getType().isExactly(callableType)) {
+        if (typeFact().getNothingType().isExactly(callableType)) {
             return true;
         }
         ProducedType tuple = typeFact().getCallableTuple(callableType);
@@ -3050,7 +3047,7 @@ public abstract class AbstractTransformer implements Transformation {
         boolean isIdentifiable = true;
         boolean isAnything = extendedType == null 
                 && thisType != null 
-                && thisType.isExactly(typeFact().getAnythingDeclaration().getType());
+                && thisType.isExactly(typeFact().getAnythingType());
         if(isAnything){
             // special for Anything
             isBasic = isIdentifiable = false;
@@ -3064,7 +3061,7 @@ public abstract class AbstractTransformer implements Transformation {
         String extendedTypeSig = null;
         if (isAnything) {
             extendedTypeSig = "";
-        } else if (extendedType != null && !extendedType.isExactly(typeFact.getBasicDeclaration().getType())){
+        } else if (extendedType != null && !extendedType.isExactly(typeFact.getBasicType())){
             extendedTypeSig = serialiseTypeSignature(extendedType);
         }
         
@@ -3637,7 +3634,7 @@ public abstract class AbstractTransformer implements Transformation {
             return value;
         }
         Naming.SyntheticName name = naming.temp();
-        JCExpression type = makeJavaType(typeFact().getStringDeclaration().getType(), JT_NO_PRIMITIVES);
+        JCExpression type = makeJavaType(typeFact().getStringType(), JT_NO_PRIMITIVES);
         JCExpression expr = make().Conditional(make().Binary(JCTree.NE, name.makeIdent(), makeNull()), 
                 unboxString(name.makeIdent()),
                 makeNull());
@@ -3646,7 +3643,7 @@ public abstract class AbstractTransformer implements Transformation {
 
     private JCExpression boxOptionalJavaString(JCExpression value){
         Naming.SyntheticName name = naming.temp();
-        JCExpression type = makeJavaType(typeFact().getStringDeclaration().getType());
+        JCExpression type = makeJavaType(typeFact().getStringType());
         JCExpression expr = make().Conditional(make().Binary(JCTree.NE, name.makeIdent(), makeNull()), 
                 boxString(name.makeIdent()),
                 makeNull());
@@ -4215,20 +4212,20 @@ public abstract class AbstractTransformer implements Transformation {
             if (isAnything(testedType)){
                 // everything is Void, it's the root of the hierarchy
                 return typeTester.eval(varExpr, true);
-            } else if (testedType.isExactly(typeFact().getNullDeclaration().getType())){
+            } else if (testedType.isExactly(typeFact().getNullType())){
                 // is Null => is null
                 return typeTester.nullTest(varExpr, JCTree.EQ);
-            } else if (testedType.isExactly(typeFact().getObjectDeclaration().getType())){
+            } else if (testedType.isExactly(typeFact().getObjectType())){
                 // is Object => is not null
                 return typeTester.nullTest(varExpr, JCTree.NE);
-            } else if (testedType.isExactly(typeFact().getIdentifiableDeclaration().getType())){
+            } else if (testedType.isExactly(typeFact().getIdentifiableType())){
                 // it's erased
                 return typeTester.isIdentifiable(varExpr);
             } else if (testedType.getDeclaration().equals(typeFact().getTrueValueDeclaration().getTypeDeclaration())) {
                 return typeTester.isTrue(varExpr);
             } else if (testedType.getDeclaration().equals(typeFact().getFalseValueDeclaration().getTypeDeclaration())) {
                 return typeTester.isFalse(varExpr);
-            } else if (testedType.isExactly(typeFact().getBasicDeclaration().getType())){
+            } else if (testedType.isExactly(typeFact().getBasicType())){
                 // it's erased
                 return typeTester.isBasic(varExpr);
             } else if (testedType.getDeclaration().getQualifiedNameString().equals("java.lang::Error")){
@@ -5176,8 +5173,7 @@ public abstract class AbstractTransformer implements Transformation {
         TypeDeclaration meta = typeFact().getSequencedAnnotationDeclaration();
         return meta != null && klass.getType().isSubtypeOf(
                 meta.getProducedType(null, 
-                Arrays.asList(typeFact().getAnythingDeclaration().getType(),
-                typeFact().getNothingDeclaration().getType())));
+                Arrays.asList(typeFact().getAnythingType(), typeFact().getNothingType())));
     }
 
     private Module getLanguageModule() {

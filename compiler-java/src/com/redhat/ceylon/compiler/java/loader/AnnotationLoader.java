@@ -229,7 +229,7 @@ public class AnnotationLoader {
     private LiteralAnnotationTerm loadLiteralAnnotationTerm(LazyMethod method, Parameter parameter, AnnotatedMirror mm) {
         // FIXME: store iterable info somewhere else
         boolean singleValue = !typeFactory.isIterableType(parameter.getType())
-            || typeFactory.getStringDeclaration().equals(parameter.getType().getDeclaration());
+            || parameter.getType().isString();
         AnnotationMirror valueAnnotation = mm.getAnnotation(AbstractModelLoader.CEYLON_STRING_VALUE_ANNOTATION);
         if (valueAnnotation != null) {
             return readStringValuesAnnotation(valueAnnotation, singleValue);
@@ -268,7 +268,7 @@ public class AnnotationLoader {
     private LiteralAnnotationTerm findLiteralAnnotationTerm(Module moduleScope, List<AnnotationFieldName> namePath, Parameter parameter, AnnotatedMirror mm) {
         // FIXME: store info somewhere else
         boolean singeValue = !typeFactory.isIterableType(parameter.getType())
-            || typeFactory.getStringDeclaration().equals(parameter.getType().getDeclaration());
+            || parameter.getType().isString();
         final String name = Naming.getAnnotationFieldName(namePath);
         AnnotationMirror exprsAnnotation = mm.getAnnotation(AbstractModelLoader.CEYLON_STRING_EXPRS_ANNOTATION);
         if (exprsAnnotation != null) {

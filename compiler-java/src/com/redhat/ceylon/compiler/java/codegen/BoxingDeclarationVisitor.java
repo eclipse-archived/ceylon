@@ -230,7 +230,7 @@ public abstract class BoxingDeclarationVisitor extends Visitor {
             if (Decl.equal(refinedFrom, functionalParameter) ) {
                 // Don't consider Anything to be unboxed, since this is a parameter
                 // not a method return type (where void would be considered unboxed).
-                if (declaration.getUnit().getAnythingDeclaration().getType().isExactly(declaration.getType())
+                if (declaration.getUnit().getAnythingType().isExactly(declaration.getType())
                         || declaration.getUnit().isOptionalType(declaration.getType())) {
                     declaration.setUnboxed(false);
                 } else {

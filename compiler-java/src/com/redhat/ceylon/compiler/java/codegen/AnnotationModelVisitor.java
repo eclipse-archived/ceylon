@@ -381,21 +381,20 @@ public class AnnotationModelVisitor extends Visitor implements NaturalVisitor {
         Unit unit = t.getUnit();
         // Continue the visit to collect the elements
         ProducedType iteratedType = unit.getIteratedType(parameter().getType());
-        TypeDeclaration declaration = iteratedType.getDeclaration();
         LiteralAnnotationTerm factory;
-        if (unit.getStringDeclaration().equals(declaration)) {
+        if (iteratedType.isString()) {
             factory = StringLiteralAnnotationTerm.FACTORY;
-        } else if (unit.getIntegerDeclaration().equals(declaration)) {
+        } else if (iteratedType.isInteger()) {
             factory = IntegerLiteralAnnotationTerm.FACTORY;
-        } else if (unit.getCharacterDeclaration().equals(declaration)) {
+        } else if (iteratedType.isCharacter()) {
             factory = CharacterLiteralAnnotationTerm.FACTORY;
-        } else if (unit.getBooleanDeclaration().equals(declaration)) {
+        } else if (iteratedType.isBoolean()) {
             factory = BooleanLiteralAnnotationTerm.FACTORY;
-        } else if (unit.getFloatDeclaration().equals(declaration)) {
+        } else if (iteratedType.isFloat()) {
             factory = FloatLiteralAnnotationTerm.FACTORY;
         } else if (Decl.isEnumeratedTypeWithAnonCases(iteratedType)) {
             factory = ObjectLiteralAnnotationTerm.FACTORY;
-        } else if (Decl.isAnnotationClass(declaration)) {
+        } else if (Decl.isAnnotationClass(iteratedType.getDeclaration())) {
             t.addError("compiler bug: iterables of annotation classes or annotation constructors not supported as literal " + (checkingDefaults ? "defaulted parameters" : "arguments"), Backend.Java);
             return null;
         } else if (iteratedType.isSubtypeOf(((TypeDeclaration)unit.getLanguageModuleDeclarationDeclaration("Declaration")).getType())) {

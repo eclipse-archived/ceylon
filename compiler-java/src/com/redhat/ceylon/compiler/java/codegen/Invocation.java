@@ -334,8 +334,8 @@ abstract class Invocation {
         if(!gen.isCeylonCallable(primaryModel)){
             // if it's not exactly a Callable we may have to unerase it to one
             ProducedType expectedType;
-            if (gen.typeFact().getNothingDeclaration().getType().isExactly(primaryModel)) {
-                expectedType = gen.typeFact().getCallableType(gen.typeFact().getNothingDeclaration().getType());
+            if (gen.typeFact().getNothingType().isExactly(primaryModel)) {
+                expectedType = gen.typeFact().getCallableType(gen.typeFact().getNothingType());
             } else {
                 expectedType = primaryModel.getSupertype(gen.typeFact().getCallableDeclaration());
             }
@@ -587,7 +587,7 @@ class IndirectInvocation extends SimpleInvocation {
                 return parameterTypes.get(parameterTypes.size()-1);
             }
         }
-        return gen.typeFact().getObjectDeclaration().getType();
+        return gen.typeFact().getObjectType();
     }
 
     @Override

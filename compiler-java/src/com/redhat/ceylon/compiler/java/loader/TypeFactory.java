@@ -25,13 +25,10 @@ import java.util.Collections;
 import com.redhat.ceylon.compiler.java.tools.LanguageCompiler;
 import com.redhat.ceylon.compiler.typechecker.context.Context;
 import com.redhat.ceylon.model.typechecker.model.Class;
-import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
-import com.redhat.ceylon.model.typechecker.model.IntersectionType;
 import com.redhat.ceylon.model.typechecker.model.ProducedType;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
-import com.redhat.ceylon.model.typechecker.model.UnionType;
 import com.redhat.ceylon.model.typechecker.model.Unit;
 import com.redhat.ceylon.model.typechecker.model.UnknownType;
 import com.redhat.ceylon.model.typechecker.model.Util;
@@ -110,14 +107,14 @@ public class TypeFactory extends Unit {
         }
         if (!typeArgs.get(1).isSubtypeOf(
                 getSequentialDeclaration().getProducedType(
-                        null, Collections.singletonList(getAnythingDeclaration().getType())))) {
+                        null, Collections.singletonList(getAnythingType())))) {
             throw new IllegalArgumentException("Callable's second argument should be sequential " + typeArgs.get(1));
         }
         return getCallableDeclaration().getProducedType(null, typeArgs);
     }
     
     public ProducedType getCallableType(ProducedType resultType) {
-        return getCallableType(List.<ProducedType>of(resultType,getEmptyDeclaration().getType()));
+        return getCallableType(List.<ProducedType>of(resultType,getEmptyType()));
     }
 
     public ProducedType getUnknownType() {

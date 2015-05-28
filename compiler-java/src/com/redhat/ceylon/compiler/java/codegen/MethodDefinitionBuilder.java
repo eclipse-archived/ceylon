@@ -232,7 +232,7 @@ public class MethodDefinitionBuilder
                     && !Strategy.useBoxedVoid((Method)typedDeclaration)) {
                 return makeVoidType();
             } else {
-                return gen.makeJavaType(typedDeclaration, gen.typeFact().getAnythingDeclaration().getType(), flags);
+                return gen.makeJavaType(typedDeclaration, gen.typeFact().getAnythingType(), flags);
             }
         } else {
             return gen.makeJavaType(typedDeclaration, type, flags);
@@ -421,7 +421,7 @@ public class MethodDefinitionBuilder
                     refinedParameterType = refinedParameter.getType();
                 // if the supertype method itself got erased to Object, we can't do better than this
                 if(gen.willEraseToObject(refinedParameterType) && !gen.willEraseToBestBounds(param))
-                    nonWideningType = gen.typeFact().getObjectDeclaration().getType();
+                    nonWideningType = gen.typeFact().getObjectType();
                 else if (CodegenUtil.isRaw(refinedParameter)) {
                     flags |= AbstractTransformer.JT_RAW;
                 } else {

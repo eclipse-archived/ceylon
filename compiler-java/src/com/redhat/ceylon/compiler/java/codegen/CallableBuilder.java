@@ -1390,7 +1390,7 @@ public class CallableBuilder {
                 JCExpression get = gen.make().Apply(null, 
                         gen.makeQualIdent(makeParamIdent(gen, arity), "get"), 
                         List.<JCExpression>of(gen.expressionGen().applyErasureAndBoxing(gen.make().Literal(a), 
-                                gen.typeFact().getIntegerDeclaration().getType(), false, BoxingStrategy.BOXED, gen.typeFact().getIntegerDeclaration().getType())));
+                                gen.typeFact().getIntegerType(), false, BoxingStrategy.BOXED, gen.typeFact().getIntegerType())));
                 Parameter param = paramLists.getParameters().get(a);
                 get = gen.expressionGen().applyErasureAndBoxing(get, 
                         parameterTypes.get(a), 
@@ -1407,7 +1407,7 @@ public class CallableBuilder {
             JCExpression spanFrom = gen.make().Apply(null, 
                     gen.makeQualIdent(makeParamIdent(gen, arity), "spanFrom"), 
                     List.<JCExpression>of(gen.expressionGen().applyErasureAndBoxing(gen.make().Literal(a), 
-                            gen.typeFact().getIntegerDeclaration().getType(), false, BoxingStrategy.BOXED, gen.typeFact().getIntegerDeclaration().getType())));
+                            gen.typeFact().getIntegerType(), false, BoxingStrategy.BOXED, gen.typeFact().getIntegerType())));
             spanFrom = gen.expressionGen().applyErasureAndBoxing(spanFrom, 
                     parameterTypes.get(a), 
                     true, true, BoxingStrategy.UNBOXED, 
