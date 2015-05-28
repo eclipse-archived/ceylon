@@ -96,4 +96,27 @@ shared void testCurries() {
       check(!i[0] exists, "JS #478");
     }
     flatten(js478)(null);
+
+    Integer f6991([Integer,Integer,Integer] ints) => ints[0]+ints[1]+ints[2];
+    Integer f6992([Integer*] ints) =>
+        if (nonempty ints)
+        then sum(ints)
+        else 0;
+    Integer f6993([Integer+] ints) => sum(ints);
+    Integer f6994([Integer, Integer, Integer*] ints) => ints[0]+ints[1]+f6992(ints.rest.rest);
+    Integer f6995([Integer, Integer, Integer+] ints) => ints[0]+ints[1]+f6993(ints.rest.rest);
+    value uf1=flatten(f6991);
+    check(uf1(1,2,3)==6, "#699.1");
+    value uf2=flatten(f6992);
+    check(uf2(1,2,3,4)==10, "#699.2");
+    check(uf2()==0, "#699.3");
+    value uf3=flatten(f6993);
+    check(uf3(1,2,3)==6, "#699.4");
+    value uf4=flatten(f6994);
+    check(uf4(1,2,3)==6, "#699.5");
+    check(uf4(1,2)==3, "#699.6");
+    check(uf4(1,2,3,4)==10, "#699.7");
+    value uf5=flatten(f6995);
+    check(uf5(1,2,3)==6, "#699.8");
+    check(uf5(1,2,3,4)==10, "#699.9");
 }
