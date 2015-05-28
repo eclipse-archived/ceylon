@@ -621,17 +621,17 @@ public class SpecificationVisitor extends Visitor {
 
     @Override
     public void visit(Tree.SpecifierStatement that) {
-        Tree.Term m = that.getBaseMemberExpression();
+        Tree.Term term = that.getBaseMemberExpression();
         boolean parameterized = false;
-        while (m instanceof Tree.ParameterizedExpression) {
+        while (term instanceof Tree.ParameterizedExpression) {
         	Tree.ParameterizedExpression pe = 
-        	        (Tree.ParameterizedExpression) m;
-            m = pe.getPrimary();
+        	        (Tree.ParameterizedExpression) term;
+            term = pe.getPrimary();
         	parameterized = true;
         }
-        if (m instanceof Tree.StaticMemberOrTypeExpression) {
+        if (term instanceof Tree.StaticMemberOrTypeExpression) {
             Tree.StaticMemberOrTypeExpression bme = 
-                    (Tree.StaticMemberOrTypeExpression) m;
+                    (Tree.StaticMemberOrTypeExpression) term;
 //            Declaration member = getTypedDeclaration(bme.getScope(), 
 //                    name(bme.getIdentifier()), null, false, bme.getUnit());
 	        Declaration member = bme.getDeclaration();
@@ -646,8 +646,10 @@ public class SpecificationVisitor extends Visitor {
 	        	if (that.getRefinement()) {
 	        	    declare();
 	        	}
-                Tree.SpecifierExpression se = that.getSpecifierExpression();
-				boolean lazy = se instanceof Tree.LazySpecifierExpression;
+                Tree.SpecifierExpression se = 
+                        that.getSpecifierExpression();
+				boolean lazy = se instanceof 
+				        Tree.LazySpecifierExpression;
             	if (declaration instanceof Value) {
             		Value value = (Value) declaration;
             	    if (!value.isVariable() &&
@@ -738,7 +740,7 @@ public class SpecificationVisitor extends Visitor {
 	            }
 	            else {
 	                specify();
-	                m.visit(this);
+	                term.visit(this);
 	            }
 	            if (lazy && parameterized) {
 	                se.visit(this);
@@ -1349,7 +1351,8 @@ public class SpecificationVisitor extends Visitor {
             lastContinueStatement=null;
         }
         
-        Tree.SwitchClause switchClause = that.getSwitchClause();
+        Tree.SwitchClause switchClause = 
+                that.getSwitchClause();
         if (switchClause!=null) {
             switchClause.visit(this);
         }
@@ -1360,7 +1363,8 @@ public class SpecificationVisitor extends Visitor {
         
         Tree.SwitchCaseList switchCaseList = 
                 that.getSwitchCaseList();
-        for (Tree.CaseClause cc: switchCaseList.getCaseClauses()) {
+        for (Tree.CaseClause cc: 
+                switchCaseList.getCaseClauses()) {
             boolean d = beginDeclarationScope();
             SpecificationState as = beginSpecificationScope();
             cc.visit(this);
