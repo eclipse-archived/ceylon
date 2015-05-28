@@ -1508,8 +1508,14 @@ public final class Tuple<Element, First extends Element,
     public java.lang.String toString() {
         StringBuilder sb = new StringBuilder();
         sb.appendCharacter('[');
+        boolean first = true;
         for (int i=0; i<array.length; i++) {
-            if (sb.getSize()>1) sb.append(", ");
+            if (first) {
+                first = false;
+            }
+            else {
+                sb.append(", ");
+            }
             java.lang.Object object = array[i];
             sb.append(object==null ? "<null>" : object.toString());
         }
