@@ -206,11 +206,11 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
         if (a != null) {
             String backend = getAnnotationArgument(a, "");
             String name = model.getName();
-            boolean canBeNativeModel = 
-                    model instanceof Method || 
-                    model instanceof Class || 
-                    model instanceof Value;
-            if (canBeNativeModel && (model.isToplevel() || model.isMember())) {
+            boolean canBeNative = 
+                    that instanceof Tree.AnyMethod ||
+                    that instanceof Tree.AnyClass ||
+                    that instanceof Tree.AnyAttribute;
+            if (canBeNative && (model.isToplevel() || model.isMember())) {
                 if (!backend.isEmpty() && 
                         !Backend.validAnnotation(backend)) {
                     a.addError("illegal native backend name: '\"" + 
@@ -313,10 +313,13 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
 //                  }
 //              }
             }
-            else {
-                if (!backend.isEmpty() && 
-                        !(model instanceof Setter)) {
-                    that.addError("native declarations can not be local: '" + 
+            else if (!(model instanceof Setter) && !backend.isEmpty()) {
+                if (!canBeNative) {
+                    that.addError("native declaration is not a class, method or attribute: '" + 
+                            name + "'");
+                }
+                else {
+                    that.addError("native declaration can not be local: '" + 
                                     name + "'");
                 }
             }

@@ -1440,7 +1440,9 @@ public class TypeVisitor extends Visitor {
         Tree.TypeSpecifier typeSpecifier = 
                 that.getTypeSpecifier();
         if (typeSpecifier==null) {
-            that.addError("missing interface body or aliased interface reference");
+            if (!id.isNative()) {
+                that.addError("missing interface body or aliased interface reference");
+            }
         }
         else {
             Tree.SatisfiedTypes sts = 
