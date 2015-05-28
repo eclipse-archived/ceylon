@@ -3,25 +3,55 @@ function unflatten(ff, $$$mptypes) {
   if (ff.jsc$)ff=ff.jsc$;
   var mm=getrtmm$$(ff);
   if (mm && mm.ps) {
-    var ru=function ru(seq,$mptypes) {
-      if (seq===undefined || seq.size === 0) { return ff(); }
-      var pmeta = mm.ps;
-      var _lim=Math.max(pmeta.length,seq.size);
-      var a = [];
-      for (var i = 0; i < _lim; i++) {
-        if (pmeta[i]&&pmeta[i]['seq']) {
-          a.push(seq.skip(i).sequence());
-          break;//we're done
-        } else if (seq.size > i) {
+    if (mm.ps.length===0)return ff;
+    var last=mm.ps[mm.ps.length-1];
+    var iadic=variadicness(mm.ps[mm.ps.length-1].$t);
+    if (is$(last,{t:Tuple}))iadic=0;
+    var ru;
+    if (iadic && mm.ps.length===1) {
+      //Single variadic parm, passed as sequence
+      ru=function rus(seq,$mptypes) {
+        if (seq===undefined || seq.size === 0)seq=empty();
+        return ff(seq,$mptypes);
+      }
+      ru.$crtmm$={$t:mm.$t,ps:[{$t:{t:last.$t.t,a:last.$t.a}}]};
+    } else if (iadic) {
+      //Args and variadic, gets unfinished Tuple
+      var cut=mm.ps.length-1;
+      ru=function ruv(seq,$mptypes) {
+        var a=[];
+        for (var i=0;i<Math.min(seq.size,cut);i++) {
           a.push(seq.$_get(i));
         }
+        if (seq.size<=cut) {
+          //Fill positions of defaulted args
+          for (var i=seq.size;i<cut;i++)a.push(undefined);
+          a.push(empty());
+        } else {
+          var s=[];
+          for (var i=cut;i<seq.size;i++)s.push(seq.$_get(i));
+          a.push(ArraySequence(s,{Element$ArraySequence:last.$t}));
+        }
+        if ($mptypes)a.push($mptypes);
+        return ff.apply(0,a);
       }
-      if ($mptypes && mm.tp)a.push($mptypes);
-      return ff.apply(ru, a);
+    } else {
+      ru=function rut(tup,$mptypes) {
+        var a=[];
+        for (var i=0;i<tup.size;i++) {
+          a.push(tup.$_get(i));
+        }
+        //Fill positions of defaulted args
+        for (var i=tup.size;i<mm.ps.length;i++)a.push(undefined);
+        if ($mptypes)a.push($mptypes);
+        return ff.apply(0,a);
+      }
     }
-    ru.$crtmm$={$t:mm.$t,ps:[{$t:{t:'T',l:[]}}]};
-    for (var i=0;i<mm.ps.length;i++){
-      ru.$crtmm$.ps[0].$t.l.push(mm.ps[i].$t);
+    if (!ru.$crtmm$) {
+      ru.$crtmm$={$t:mm.$t,ps:[{$t:{t:'T',l:[]}}]};
+      for (var i=0;i<mm.ps.length;i++){
+        ru.$crtmm$.ps[0].$t.l.push(mm.ps[i].$t);
+      }
     }
   } else {
     var ru=function ru(seq) {
