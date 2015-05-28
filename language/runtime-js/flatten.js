@@ -14,27 +14,37 @@ function flatten(tf, $$$mptypes) {
   } else {
     throw new TypeError("Missing metamodel for " + tf);
   }
-  function rf() {
-    var argc = arguments.length;
-    var mptypes = argc>argx ? arguments[argc-1] : undefined;
-    if (mptypes)argc--;
-    var t = [];
-    if (iadic)argc--;
-    for (var i=0;i<argx-(iadic?1:0);i++) {
-      t.push(arguments[i]);
-    }
-    if (iadic) {
-      var seqarg=arguments[argx-1];
-      if (seqarg===undefined || seqarg.length===0) {
-        seqarg=empty();
-      } else if (seqarg !== null && !is$(seqarg,{t:Sequence})) {
-        seqarg=ArraySequence(seqarg,{Element$ArraySequence:seqarg._elemTarg()});
+  var rf;
+  if (t0.t==='T') {
+    //Tuple
+    rf=function rtf(){
+      var argc = arguments.length;
+      var mptypes = argc>argx ? arguments[argc-1] : undefined;
+      if (mptypes)argc--;
+      var t = [];
+      if (iadic)argc--;
+      for (var i=0;i<argx-(iadic?1:0);i++) {
+        t.push(arguments[i]);
       }
-      if (argx===1&&t.length==0)return tf(seqarg);
-    }
-    return tf(tpl$(t,undefined,seqarg));
+      if (iadic) {
+        var seqarg=arguments[argx-1];
+        if (seqarg===undefined || seqarg.length===0) {
+          seqarg=empty();
+        } else if (seqarg !== null && !is$(seqarg,{t:Sequence})) {
+          seqarg=ArraySequence(seqarg,{Element$ArraySequence:seqarg._elemTarg()});
+        }
+        if (argx===1&&t.length==0)return tf(seqarg);
+      }
+      return tf(tpl$(t,undefined,seqarg));
+    };
+  } else {
+    //Single variadic argument
+    rf=function rfs(s,$mpt){
+      return tf(s?tpl$(s):empty(),$mpt);
+    };
+    rf.$crtmm$={$t:mm.$t,ps:[mm.ps[0]]};
   }
-  if (mm) {
+  if (!rf.$crtmm$) {
     rf.$crtmm$={$t:mm.$t,ps:[]};
     if (mm.ps.length===1 && mm.ps[0].$t.t==='T') {
       for(var i=0;i<mm.ps[0].$t.l.length;i++){
