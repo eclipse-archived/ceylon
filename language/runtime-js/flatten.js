@@ -37,20 +37,16 @@ function flatten(tf, $$$mptypes) {
       }
       return tf(tpl$(t,undefined,seqarg));
     };
+    rf.$crtmm$={$t:mm.$t,ps:[]};
+    for(var i=0;i<t0.l.length;i++){
+      rf.$crtmm$.ps.push({$t:t0.l[i]});
+    }
   } else {
     //Single variadic argument
     rf=function rfs(s,$mpt){
       return tf(s?tpl$(s):empty(),$mpt);
     };
-    rf.$crtmm$={$t:mm.$t,ps:[mm.ps[0]]};
-  }
-  if (!rf.$crtmm$) {
-    rf.$crtmm$={$t:mm.$t,ps:[]};
-    if (mm.ps.length===1 && mm.ps[0].$t.t==='T') {
-      for(var i=0;i<mm.ps[0].$t.l.length;i++){
-        rf.$crtmm$.ps.push(mm.ps[0].$t.l[i]);
-      }
-    }
+    rf.$crtmm$={$t:mm.$t,ps:[{$t:{t:t0.t,a:t0.a,seq:iadic}}]};
   }
   rf.$$targs$$={Return$Callable:$$$mptypes.Return$flatten,Arguments$Callable:$$$mptypes.Args$flatten};
   rf.$flattened$=tf;
