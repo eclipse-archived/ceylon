@@ -487,9 +487,9 @@ public class JsCompiler {
                 String be = getNativeBackend(md.getAnnotationList(), md.getUnit());
                 if (be != null) {
                     if (be.isEmpty()) {
-                        md.addError("Missing backend argument for native annotation on module: " + formatPath(md.getImportPath().getIdentifiers()), Backend.JavaScript);
+                        md.addError("missing backend argument for native annotation on module: " + formatPath(md.getImportPath().getIdentifiers()), Backend.JavaScript);
                     } else if (!isForBackend(be, Backend.JavaScript)) {
-                        md.addError("Module not meant for this backend: " + formatPath(md.getImportPath().getIdentifiers()), Backend.JavaScript);
+                        md.addError("module not meant for this backend: " + formatPath(md.getImportPath().getIdentifiers()), Backend.JavaScript);
                     }
                 }
             }
