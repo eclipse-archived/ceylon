@@ -816,8 +816,7 @@ public class TypeVisitor extends Visitor {
     public void visit(Tree.TupleType that) {
         super.visit(that);
         ProducedType tt = 
-                getTupleType(that.getElementTypes(), 
-                        unit);
+                getTupleType(that.getElementTypes(), unit);
         that.setTypeModel(tt);
     }
 
@@ -870,8 +869,8 @@ public class TypeVisitor extends Visitor {
             }
             args.add(arg);
         }
-        return getTupleType(args, sequenced, 
-                atleastone, firstDefaulted, unit);
+        return getTupleType(args, sequenced, atleastone, 
+                firstDefaulted, unit);
     }
 
     //TODO: big copy/paste from Unit.getTupleType(), to 
@@ -890,6 +889,7 @@ public class TypeVisitor extends Visitor {
             ProducedType elemType = elemTypes.get(i);
             List<ProducedType> pair = 
                     new ArrayList<ProducedType>();
+            //can't use addToUnion() here
             pair.add(elemType);
             pair.add(union);
             UnionType ut = new UnionType(unit);
@@ -901,10 +901,11 @@ public class TypeVisitor extends Visitor {
                         unit.getSequentialType(elemType);
             }
             else {
-                result = producedType(td, 
-                        union, elemType, result);
+                result = producedType(td, union, elemType, 
+                        result);
                 if (firstDefaulted>=0 && i>=firstDefaulted) {
                     pair = new ArrayList<ProducedType>();
+                    //can't use addToUnion() here
                     pair.add(unit.getEmptyType());
                     pair.add(result);
                     ut = new UnionType(unit);

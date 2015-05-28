@@ -6,11 +6,12 @@ import java.util.List;
 
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
-import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.TupleType;
+import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.model.typechecker.model.ProducedType;
+import com.redhat.ceylon.model.typechecker.model.TypeAlias;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
-import com.redhat.ceylon.model.typechecker.model.UnknownType;
+import com.redhat.ceylon.model.typechecker.model.Util;
 
 /**
  * Detects recursive type aliases and eliminates the
@@ -32,7 +33,7 @@ public class AliasVisitor extends Visitor {
                         typeList(list));
                 //to avoid stack overflows, throw 
                 //away the recursive definition:
-                d.setExtendedType(new UnknownType(that.getUnit()).getType());
+                d.setExtendedType(that.getUnit().getUnknownType());
                 d.addBrokenSupertype(t);
             }
         }
