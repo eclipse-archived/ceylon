@@ -64,15 +64,15 @@ shared void testCurries() {
     
     function f1(Integer i) => i;
     value g1 = curry(f1);
-    check(g1(1)()==1, "call curried");
+    check(g1(1)()==1, "call curried 1");
     value h1 = uncurry(g1);
-    check(h1(3)==3, "call uncurried");
+    check(h1(3)==3, "call uncurried 1");
     
     function f2(Float x, Float y) => x+y;
     value g2 = curry(f2);
-    check(g2(1.0)(1.0)==2.0, "call curried");
+    check(g2(1.0)(1.0)==2.0, "call curried 2");
     value h2 = uncurry(g2);
-    check(h2(3.0, 3.0)==6.0, "call uncurried");
+    check(h2(3.0, 3.0)==6.0, "call uncurried 2");
     
     function fun(Float x, Integer i) => x+i;
     value unflatFun = unflatten(fun);
