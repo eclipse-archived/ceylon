@@ -227,14 +227,14 @@ public class NativeTests extends CompilerTests {
     @Test
     public void testNativeModuleMissing() {
         testNativeModuleErrors("modmissing",
-                new CompilerError(21, "Missing backend argument for native annotation on module: com.redhat.ceylon.compiler.java.test.nativecode.modmissing")
+                new CompilerError(21, "missing backend argument for native annotation on module: com.redhat.ceylon.compiler.java.test.nativecode.modmissing")
         );
     }
     
     @Test
     public void testNativeModuleWrong() {
         testNativeModuleErrors("modwrong",
-                new CompilerError(21, "Module not meant for this backend: com.redhat.ceylon.compiler.java.test.nativecode.modwrong")
+                new CompilerError(21, "module not meant for this backend: com.redhat.ceylon.compiler.java.test.nativecode.modwrong")
         );
     }
     
