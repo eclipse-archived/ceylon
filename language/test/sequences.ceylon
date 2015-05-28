@@ -545,5 +545,10 @@ shared void sequences() {
     
     check((1..4).paired.sequence()==[[1,2],[2,3],[3,4]], "sequence paired");
     check((1..4).paired.by(2).sequence()==[[1,2],[3,4]], "sequence paired by");
+    
+    check([].string=="[]", "sequence string");
+    check([""].string=="[]", "sequence string");
+    check(["", ""].string=="[, ]", "sequence string");
+    check(["", "", ""].string=="[, , ]", "sequence string");
         
 }
