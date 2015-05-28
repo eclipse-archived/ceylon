@@ -1,6 +1,7 @@
 package com.redhat.ceylon.model.typechecker.model;
 
 import static com.redhat.ceylon.model.typechecker.model.Module.LANGUAGE_MODULE_NAME;
+import static com.redhat.ceylon.model.typechecker.model.Util.NO_TYPE_ARGS;
 import static com.redhat.ceylon.model.typechecker.model.Util.addToIntersection;
 import static com.redhat.ceylon.model.typechecker.model.Util.addToUnion;
 import static com.redhat.ceylon.model.typechecker.model.Util.intersectionType;
@@ -1084,10 +1085,10 @@ public class Unit {
     public boolean isHomogeneousTuple(ProducedType args) {
         if (args!=null) {
             Class td = getTupleDeclaration();
-            ProducedType tst = args.getSupertype(td);
-            if (tst!=null) {
+            ProducedType tuple = args.getSupertype(td);
+            if (tuple!=null) {
                 List<ProducedType> tal = 
-                        tst.getTypeArgumentList();
+                        tuple.getTypeArgumentList();
                 ProducedType elemType;
                 if (tal.size()>=3) {
                     elemType = tal.get(0);
@@ -1097,7 +1098,7 @@ public class Unit {
                 }
                 ProducedType emptyType = getEmptyType();
                 while (true) {
-                    tal = tst.getTypeArgumentList();
+                    tal = tuple.getTypeArgumentList();
                     if (tal.size()>=3) {
                         ProducedType first = tal.get(1);
                         if (first==null) {
@@ -1115,8 +1116,8 @@ public class Unit {
                                 return true;
                             }
                             else {
-                                tst = rest.getSupertype(td);
-                                if (tst==null) {
+                                tuple = rest.getSupertype(td);
+                                if (tuple==null) {
                                     return false;
                                 }
                             }
@@ -1139,10 +1140,10 @@ public class Unit {
     public int getHomogeneousTupleLength(ProducedType args) {
         if (args!=null) {
             Class td = getTupleDeclaration();
-            ProducedType tst = args.getSupertype(td);
-            if (tst!=null) {
+            ProducedType tuple = args.getSupertype(td);
+            if (tuple!=null) {
                 List<ProducedType> tal = 
-                        tst.getTypeArgumentList();
+                        tuple.getTypeArgumentList();
                 ProducedType elemType;
                 if (tal.size()>=1) {
                     elemType = tal.get(0);
@@ -1154,7 +1155,7 @@ public class Unit {
                 ProducedType emptyType = getEmptyType();
                 while (true) {
                     size++;
-                    tal = tst.getTypeArgumentList();
+                    tal = tuple.getTypeArgumentList();
                     if (tal.size()>=3) {
                         ProducedType first = tal.get(1);
                         if (first==null) {
@@ -1172,8 +1173,8 @@ public class Unit {
                                 return size;
                             }
                             else {
-                                tst = rest.getSupertype(td);
-                                if (tst==null) {
+                                tuple = rest.getSupertype(td);
+                                if (tuple==null) {
                                     return -1;
                                 }
                             }
@@ -1195,47 +1196,79 @@ public class Unit {
 
     public List<ProducedType> getTupleElementTypes(ProducedType args) {
         if (args!=null) {
-            List<ProducedType> simpleResult = 
+            /*List<ProducedType> simpleResult = 
                     getSimpleTupleElementTypes(args, 0);
-            if (simpleResult!=null){
+            if (simpleResult!=null) {
                 return simpleResult;
-            }
+            }*/
             if (isEmptyType(args)) {
-                return new LinkedList<ProducedType>();
+                return NO_TYPE_ARGS;
             }
-            ProducedType tst = 
+            Class td = getTupleDeclaration();
+            ProducedType tuple =
                     nonemptyArgs(args)
-                        .getSupertype(getTupleDeclaration());
-            if (tst!=null) {
-                List<ProducedType> tal = 
-                        tst.getTypeArgumentList();
-                if (tal.size()>=3) {
-                    List<ProducedType> result = 
-                            getTupleElementTypes(tal.get(2));
-                    ProducedType arg = tal.get(1);
-                    if (arg==null) {
-                        arg = getUnknownType();
+                        .getSupertype(td);
+            if (tuple!=null) {
+                List<ProducedType> result = 
+                        new LinkedList<ProducedType>();
+                while (true) {
+                    List<ProducedType> tal = 
+                            tuple.getTypeArgumentList();
+                    if (tal.size()>=3) {
+                        ProducedType first = tal.get(1);
+                        if (first==null) {
+                            first = getUnknownType();
+                        }
+                        result.add(first);
+                        ProducedType rest = tal.get(2);
+                        if (rest==null) {
+                            result.add(getUnknownType());
+                            return result;
+                        }
+                        else if (isEmptyType(rest)) {
+                            return result;
+                        }
+                        else {
+                            tuple = nonemptyArgs(rest)
+                                    .getSupertype(td);
+                            if (tuple==null) {
+                                if (isSequentialType(rest)) {
+                                    //this is pretty weird: return the whole
+                                    //tail type as the element of the list! 
+                                    result.add(rest);
+                                    return result;
+                                }
+                                else {
+                                    result.add(getUnknownType());
+                                    return result; 
+                                }
+                            }
+                            //else continue the loop!
+                        }
                     }
-                    result.add(0, arg);
-                    return result;
+                    else {
+                        result.add(getUnknownType());
+                        return result;
+                    }
                 }
             }
             else if (isSequentialType(args)) {
                 //this is pretty weird: return the whole
                 //tail type as the element of the list! 
-        		LinkedList<ProducedType> sequenced = 
-        		        new LinkedList<ProducedType>();
-        		sequenced.add(args);
-        		return sequenced;
+        		return singleton(args);
             }
         }
-        LinkedList<ProducedType> unknown = 
-                new LinkedList<ProducedType>();
-        unknown.add(getUnknownType());
-        return unknown;
+        return singleton(getUnknownType());
     }
     
-    private List<ProducedType> getSimpleTupleElementTypes(
+    private static List<ProducedType> singleton(ProducedType pt) {
+        List<ProducedType> result = 
+                new ArrayList<ProducedType>(1);
+        result.add(pt);
+        return result;
+    }
+    
+    /*private List<ProducedType> getSimpleTupleElementTypes(
             ProducedType args, int count) {
         // can be a defaulted tuple of Empty|Tuple
         if (args.isUnion()) {
@@ -1307,38 +1340,58 @@ public class Unit {
             return ret;
         }
         return null;
-    }
+    }*/
 
     public boolean isTupleLengthUnbounded(ProducedType args) {
         if (args!=null) {
-            Boolean simpleTupleLengthUnbounded = 
+            /*Boolean simpleTupleLengthUnbounded = 
                     isSimpleTupleLengthUnbounded(args);
             if (simpleTupleLengthUnbounded != null) {
                 return simpleTupleLengthUnbounded.booleanValue();
-            }
+            }*/
             if (args.isSubtypeOf(getEmptyType())) {
                 return false;
             }
             //TODO: this doesn't account for the case where
             //      a tuple occurs in a union with []
+            Class td = getTupleDeclaration();
             ProducedType tst = 
                     nonemptyArgs(args)
-                        .getSupertype(getTupleDeclaration());
+                        .getSupertype(td);
             if (tst==null) {
                 return true;
             }
             else {
-                List<ProducedType> tal = 
-                        tst.getTypeArgumentList();
-                if (tal.size()>=3) {
-                    return isTupleLengthUnbounded(tal.get(2));
+                while (true) {
+                    List<ProducedType> tal = 
+                            tst.getTypeArgumentList();
+                    if (tal.size()>=3) {
+                        ProducedType rest = tal.get(2);
+                        if (rest==null) {
+                            return false;
+                        }
+                        else if (rest.isSubtypeOf(getEmptyType())) {
+                            return false;
+                        }
+                        else {
+                            tst = nonemptyArgs(rest)
+                                    .getSupertype(td);
+                            if (tst==null) {
+                                return true;
+                            }
+                            //else continue the loop!
+                        }
+                    }
+                    else {
+                        return false;
+                    }
                 }
             }
         }
         return false;
     }
     
-    protected Boolean isSimpleTupleLengthUnbounded(ProducedType args) {
+    /*protected Boolean isSimpleTupleLengthUnbounded(ProducedType args) {
         // can be a defaulted tuple of Empty|Tuple
         if (args.isUnion()) {
             List<ProducedType> caseTypes = 
@@ -1393,15 +1446,15 @@ public class Unit {
             return true;
         }
         return null;
-    }
+    }*/
 
     public boolean isTupleVariantAtLeastOne(ProducedType args) {
         if (args!=null) {
-            Boolean simpleTupleVariantAtLeastOne = 
+            /*Boolean simpleTupleVariantAtLeastOne = 
                     isSimpleTupleVariantAtLeastOne(args);
             if (simpleTupleVariantAtLeastOne != null) {
                 return simpleTupleVariantAtLeastOne.booleanValue();
-            }
+            }*/
             if (getEmptyType().isSubtypeOf(args)) {
                 return false;
             }
@@ -1410,24 +1463,47 @@ public class Unit {
             if (snt.isSubtypeOf(args)) {
                 return true;
             }
-            ProducedType tst = 
+            Class td = getTupleDeclaration();
+            ProducedType tuple = 
                     nonemptyArgs(args)
-                        .getSupertype(getTupleDeclaration());
-            if (tst == null) {
+                        .getSupertype(td);
+            if (tuple == null) {
                 return false;
             }
             else {
-                List<ProducedType> tal = 
-                        tst.getTypeArgumentList();
-                if (tal.size()>=3) {
-                    return isTupleVariantAtLeastOne(tal.get(2));
+                while (true) {
+                    List<ProducedType> tal = 
+                            tuple.getTypeArgumentList();
+                    if (tal.size()>=3) {
+                        ProducedType rest = tal.get(2);
+                        if (rest==null) {
+                            return false;
+                        }
+                        else if (getEmptyType().isSubtypeOf(rest)) {
+                            return false;
+                        }
+                        else if (snt.isSubtypeOf(rest)) {
+                            return true;
+                        }
+                        else {
+                            tuple = nonemptyArgs(rest)
+                                    .getSupertype(td);
+                            if (tuple==null) {
+                                return false;
+                            }
+                            //else continue the loop!
+                        }
+                    }
+                    else {
+                        return false;
+                    }
                 }
             }
         }
         return false;
     }
     
-    private Boolean isSimpleTupleVariantAtLeastOne(ProducedType args) {
+    /*private Boolean isSimpleTupleVariantAtLeastOne(ProducedType args) {
         // can be a defaulted tuple of Empty|Tuple
         if (args.isUnion()) {
             List<ProducedType> caseTypes = 
@@ -1484,15 +1560,15 @@ public class Unit {
             return true;
         }
         return null;
-    }
+    }*/
 
     public int getTupleMinimumLength(ProducedType args) {
         if (args!=null) {
-            int simpleMinimumLength = 
+            /*int simpleMinimumLength = 
                     getSimpleTupleMinimumLength(args);
             if (simpleMinimumLength != -1) {
                 return simpleMinimumLength;
-            }
+            }*/
             if (getEmptyType().isSubtypeOf(args)) {
                 return 0;
             }
@@ -1501,24 +1577,49 @@ public class Unit {
             if (snt.isSubtypeOf(args)) {
                 return 1;
             }
-            ProducedType tst = 
+            Class td = getTupleDeclaration();
+            ProducedType tuple = 
                     nonemptyArgs(args)
-                        .getSupertype(getTupleDeclaration());
-            if (tst == null) {
+                        .getSupertype(td);
+            if (tuple == null) {
                 return 0;
             }
             else {
-                List<ProducedType> tal = 
-                        tst.getTypeArgumentList();
-                if (tal.size()>=3) {
-                    return getTupleMinimumLength(tal.get(2))+1;
+                int size = 0;
+                while (true) {
+                    List<ProducedType> tal = 
+                            tuple.getTypeArgumentList();
+                    size++;
+                    if (tal.size()>=3) {
+                        ProducedType rest = tal.get(2);
+                        if (rest==null) {
+                            return size;
+                        }
+                        else if (getEmptyType().isSubtypeOf(rest)) {
+                            return size;
+                        }
+                        else if (snt.isSubtypeOf(rest)) {
+                            return size+1;
+                        }
+                        else {
+                            tuple = nonemptyArgs(rest)
+                                    .getSupertype(td);
+                            if (tuple==null) {
+                                return size;
+                            }
+                            //else continue the loop!
+                        }
+                    }
+                    else {
+                        return size;
+                    }
                 }
             }
         }
         return 0;
     }
     
-    private int getSimpleTupleMinimumLength(ProducedType args) {
+    /*private int getSimpleTupleMinimumLength(ProducedType args) {
         // can be a defaulted tuple of Empty|Tuple
         if (args.isUnion()){
             List<ProducedType> caseTypes = 
@@ -1576,7 +1677,7 @@ public class Unit {
             return 1;
         }
         return -1;
-    }
+    }*/
 
     public List<ProducedType> getCallableArgumentTypes(ProducedType t) {
         ProducedType tuple = getCallableTuple(t);
