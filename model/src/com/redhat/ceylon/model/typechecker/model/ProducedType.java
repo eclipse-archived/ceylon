@@ -272,6 +272,48 @@ public class ProducedType extends ProducedReference {
                     return false;
                 }
                 else {
+                    Class td = getDeclaration()
+                            .getUnit()
+                            .getTupleDeclaration();
+                    if (dec.equals(td)) {
+                        TypeParameter elem = 
+                                td.getTypeParameters().get(0);
+                        TypeParameter first = 
+                                td.getTypeParameters().get(1);
+                        TypeParameter rest = 
+                                td.getTypeParameters().get(2);
+                        ProducedType t1 = this;
+                        ProducedType t2 = type;
+                        while (true) {
+                            Map<TypeParameter, ProducedType> t1a = 
+                                    t1.getTypeArguments();
+                            Map<TypeParameter, ProducedType> t2a = 
+                                    t2.getTypeArguments();
+                            ProducedType e1 = t1a.get(elem);
+                            ProducedType e2 = t2a.get(elem);
+                            ProducedType f1 = t1a.get(first);
+                            ProducedType f2 = t2a.get(first);
+                            if (e1==null || e2==null || 
+                                f1==null || f2==null) {
+                                return false;
+                            }
+                            if (!f1.isExactly(f2) || 
+                                !e1.isExactly(e2)) {
+                                return false;
+                            }
+                            ProducedType r1 = t1a.get(rest);
+                            ProducedType r2 = t2a.get(rest);
+                            if (r1==null || r2==null) {
+                                return false;
+                            }
+                            if (!r1.getDeclaration().equals(td) ||
+                                !r2.getDeclaration().equals(td)) {
+                                return r1.isExactlyInternal(r2); 
+                            }
+                            t1 = r1;
+                            t2 = r2;
+                        }
+                    }
                     ProducedType qt = 
                             trueQualifyingType();
                     ProducedType tqt = 
@@ -418,7 +460,6 @@ public class ProducedType extends ProducedReference {
         checkDepth();
         incDepth();
         try {
-            TypeDeclaration otherDec = type.getDeclaration();
             if (isNothing()) {
                 return true;
             }
@@ -457,6 +498,8 @@ public class ProducedType extends ProducedReference {
             }
             else if (isIntersection()) {
                 if (type.isClassOrInterface()) {
+                    TypeDeclaration otherDec = 
+                            type.getDeclaration();
                     ProducedType pst = 
                             getSupertypeInternal(otherDec);
                     if (pst!=null && 
@@ -484,6 +527,52 @@ public class ProducedType extends ProducedReference {
                 return isSupertypeOfObject();
             }
             else {
+                TypeDeclaration dec = getDeclaration();
+                TypeDeclaration otherDec = 
+                        type.getDeclaration();
+                Class td = getDeclaration()
+                        .getUnit()
+                        .getTupleDeclaration();
+                if (dec.equals(td) && otherDec.equals(td)) {
+                    TypeParameter elem = 
+                            td.getTypeParameters().get(0);
+                    TypeParameter first = 
+                            td.getTypeParameters().get(1);
+                    TypeParameter rest = 
+                            td.getTypeParameters().get(2);
+                    ProducedType t1 = this;
+                    ProducedType t2 = type;
+                    while (true) {
+                        Map<TypeParameter, ProducedType> t1a = 
+                                t1.getTypeArguments();
+                        Map<TypeParameter, ProducedType> t2a = 
+                                t2.getTypeArguments();
+                        ProducedType e1 = t1a.get(elem);
+                        ProducedType e2 = t2a.get(elem);
+                        ProducedType f1 = t1a.get(first);
+                        ProducedType f2 = t2a.get(first);
+                        if (e1==null || e2==null || 
+                            f1==null || f2==null) {
+                            return false;
+                        }
+                        if (!f1.isSubtypeOf(f2) || 
+                            !e1.isSubtypeOf(e2)) {
+                            return false;
+                        }
+                        ProducedType r1 = t1a.get(rest);
+                        ProducedType r2 = t2a.get(rest);
+                        if (r1==null || r2==null) {
+                            return false;
+                        }
+                        if (!r1.isClass() || !r2.isClass() ||
+                            !r1.getDeclaration().equals(td) ||
+                            !r2.getDeclaration().equals(td)) {
+                            return r1.isSubtypeOf(r2); 
+                        }
+                        t1 = r1;
+                        t2 = r2;
+                    }
+                }
                 ProducedType supertype = 
                         getSupertypeInternal(otherDec);
                 if (supertype==null) {
