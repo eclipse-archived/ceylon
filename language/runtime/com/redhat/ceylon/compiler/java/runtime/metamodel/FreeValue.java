@@ -89,7 +89,7 @@ public class FreeValue
         TypeDescriptor reifiedGet = Metamodel.getTypeDescriptorForProducedType(getType);
         // immutable values have Set=Nothing
         com.redhat.ceylon.model.typechecker.model.ProducedType setType = getVariable() ? 
-                getType : modelDecl.getUnit().getNothingDeclaration().getType();
+                getType : modelDecl.getUnit().getNothingType();
         TypeDescriptor reifiedSet = getVariable() ? reifiedGet : TypeDescriptor.NothingType;
         
         Metamodel.checkReifiedTypeArgument("apply", "Value<$1,$2>", 
@@ -125,7 +125,7 @@ public class FreeValue
         TypeDescriptor reifiedGet = Metamodel.getTypeDescriptorForProducedType(getType);
         // immutable values have Set=Nothing
         com.redhat.ceylon.model.typechecker.model.ProducedType setType = getVariable() ? 
-                getType : modelDecl.getUnit().getNothingDeclaration().getType();
+                getType : modelDecl.getUnit().getNothingType();
         TypeDescriptor reifiedSet = getVariable() ? reifiedGet : TypeDescriptor.NothingType;
         
         Metamodel.checkReifiedTypeArgument("memberApply", "Attribute<$1,$2,$3>", 

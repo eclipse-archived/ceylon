@@ -612,7 +612,7 @@ public abstract class AppliedClassOrInterface<Type>
         ProducedType type = producedReference.getType();
         if(!type.isSubtypeOf(reifiedGet))
             return;
-        ProducedType setType = decl.getVariable() ? type : decl.declaration.getUnit().getNothingDeclaration().getType();
+        ProducedType setType = decl.getVariable() ? type : decl.declaration.getUnit().getNothingType();
         if(!reifiedSet.isSubtypeOf(setType))
             return;
         // it's compatible!
