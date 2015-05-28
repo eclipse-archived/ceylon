@@ -1,7 +1,7 @@
 //Array tests
 @test
 shared void testArrays() {
-    print(Array("hello world").rest);
+    check(Array{1,2,3}.rest==[2,3], "Array.rest");
     check(Array{}.size==0, "array size 0");
     value a1 = Array{1};
     check(a1.size==1, "array.size");
