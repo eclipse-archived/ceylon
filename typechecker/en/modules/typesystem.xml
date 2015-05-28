@@ -815,7 +815,7 @@
             
             <synopsis>EmptyType: "[" "]"</synopsis>
             
-            <synopsis>TupleType: "[" TypeList "]"</synopsis>
+            <synopsis>TupleType: "[" TypeList "]" | PrimaryType "[" DecimalLiteral "]"</synopsis>
             
             <itemizedlist>
                 <listitem>
@@ -842,12 +842,20 @@
                 <listitem>
                     <para><literal>[X,Y+]</literal> means 
                     <literal>Tuple&lt;X|Y,X,Sequence&lt;Y&gt;&gt;</literal> for 
-                    any types <literal>X,Y</literal>, and</para>
+                    any types <literal>X,Y</literal>,</para>
                 </listitem>
                 <listitem>
                     <para><literal>[X,Y=]</literal> means 
                     <literal>Tuple&lt;X|Y,X,Tuple&lt;Y,Y,[]&gt;&gt;|Tuple&lt;X,X,[]&gt;</literal> 
-                    for any types <literal>X,Y</literal>.</para>
+                    for any types <literal>X,Y</literal>, and, finally,</para>
+                </listitem>
+                <listitem>
+                    <para><literal>X[1]</literal> means <literal>[X]</literal>,
+                    for any type <literal>X</literal>,
+                    and <literal>X[n]</literal> means
+                    <literal>Tuple&lt;X,X,X[n-1]&gt;</literal>
+                    for any type <literal>X</literal> and positive integer 
+                    <literal>n</literal>.</para>
                 </listitem>
             </itemizedlist>
             
