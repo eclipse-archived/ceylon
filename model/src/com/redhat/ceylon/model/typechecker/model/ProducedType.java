@@ -276,43 +276,7 @@ public class ProducedType extends ProducedReference {
                             .getUnit()
                             .getTupleDeclaration();
                     if (dec.equals(td)) {
-                        TypeParameter elem = 
-                                td.getTypeParameters().get(0);
-                        TypeParameter first = 
-                                td.getTypeParameters().get(1);
-                        TypeParameter rest = 
-                                td.getTypeParameters().get(2);
-                        ProducedType t1 = this;
-                        ProducedType t2 = type;
-                        while (true) {
-                            Map<TypeParameter, ProducedType> t1a = 
-                                    t1.getTypeArguments();
-                            Map<TypeParameter, ProducedType> t2a = 
-                                    t2.getTypeArguments();
-                            ProducedType e1 = t1a.get(elem);
-                            ProducedType e2 = t2a.get(elem);
-                            ProducedType f1 = t1a.get(first);
-                            ProducedType f2 = t2a.get(first);
-                            if (e1==null || e2==null || 
-                                f1==null || f2==null) {
-                                return false;
-                            }
-                            if (!f1.isExactly(f2) || 
-                                !e1.isExactly(e2)) {
-                                return false;
-                            }
-                            ProducedType r1 = t1a.get(rest);
-                            ProducedType r2 = t2a.get(rest);
-                            if (r1==null || r2==null) {
-                                return false;
-                            }
-                            if (!r1.getDeclaration().equals(td) ||
-                                !r2.getDeclaration().equals(td)) {
-                                return r1.isExactlyInternal(r2); 
-                            }
-                            t1 = r1;
-                            t2 = r2;
-                        }
+                        return isExactlyTuple(type, td);
                     }
                     ProducedType qt = 
                             trueQualifyingType();
@@ -361,6 +325,43 @@ public class ProducedType extends ProducedReference {
         }
         finally {
             decDepth();
+        }
+    }
+
+    private boolean isExactlyTuple(ProducedType type, Class td) {
+        TypeParameter elem = td.getTypeParameters().get(0);
+        TypeParameter first = td.getTypeParameters().get(1);
+        TypeParameter rest = td.getTypeParameters().get(2);
+        ProducedType t1 = this;
+        ProducedType t2 = type;
+        while (true) {
+            Map<TypeParameter, ProducedType> t1a = 
+                    t1.getTypeArguments();
+            Map<TypeParameter, ProducedType> t2a = 
+                    t2.getTypeArguments();
+            ProducedType e1 = t1a.get(elem);
+            ProducedType e2 = t2a.get(elem);
+            ProducedType f1 = t1a.get(first);
+            ProducedType f2 = t2a.get(first);
+            if (e1==null || e2==null || 
+                f1==null || f2==null) {
+                return false;
+            }
+            if (!f1.isExactly(f2) || 
+                !e1.isExactly(e2)) {
+                return false;
+            }
+            ProducedType r1 = t1a.get(rest);
+            ProducedType r2 = t2a.get(rest);
+            if (r1==null || r2==null) {
+                return false;
+            }
+            if (!r1.getDeclaration().equals(td) ||
+                !r2.getDeclaration().equals(td)) {
+                return r1.isExactlyInternal(r2); 
+            }
+            t1 = r1;
+            t2 = r2;
         }
     }
 
@@ -534,44 +535,7 @@ public class ProducedType extends ProducedReference {
                         .getUnit()
                         .getTupleDeclaration();
                 if (dec.equals(td) && otherDec.equals(td)) {
-                    TypeParameter elem = 
-                            td.getTypeParameters().get(0);
-                    TypeParameter first = 
-                            td.getTypeParameters().get(1);
-                    TypeParameter rest = 
-                            td.getTypeParameters().get(2);
-                    ProducedType t1 = this;
-                    ProducedType t2 = type;
-                    while (true) {
-                        Map<TypeParameter, ProducedType> t1a = 
-                                t1.getTypeArguments();
-                        Map<TypeParameter, ProducedType> t2a = 
-                                t2.getTypeArguments();
-                        ProducedType e1 = t1a.get(elem);
-                        ProducedType e2 = t2a.get(elem);
-                        ProducedType f1 = t1a.get(first);
-                        ProducedType f2 = t2a.get(first);
-                        if (e1==null || e2==null || 
-                            f1==null || f2==null) {
-                            return false;
-                        }
-                        if (!f1.isSubtypeOf(f2) || 
-                            !e1.isSubtypeOf(e2)) {
-                            return false;
-                        }
-                        ProducedType r1 = t1a.get(rest);
-                        ProducedType r2 = t2a.get(rest);
-                        if (r1==null || r2==null) {
-                            return false;
-                        }
-                        if (!r1.isClass() || !r2.isClass() ||
-                            !r1.getDeclaration().equals(td) ||
-                            !r2.getDeclaration().equals(td)) {
-                            return r1.isSubtypeOf(r2); 
-                        }
-                        t1 = r1;
-                        t2 = r2;
-                    }
+                    return isSubtypeOfTuple(type, td);
                 }
                 ProducedType supertype = 
                         getSupertypeInternal(otherDec);
@@ -596,7 +560,8 @@ public class ProducedType extends ProducedReference {
                             return false;
                         }
                         else if (!otherDec.isMember()) {
-                            //local types with a qualifying typed declaration do not need to obtain the
+                            //local types with a qualifying typed 
+                            //declaration do not need to obtain the
                             //qualifying type's supertype
                             if (!stqt.isSubtypeOf(tqt)) {
                                 return false;
@@ -625,6 +590,44 @@ public class ProducedType extends ProducedReference {
         }
         finally { 
             decDepth();
+        }
+    }
+
+    private boolean isSubtypeOfTuple(ProducedType type, Class td) {
+        TypeParameter elem = td.getTypeParameters().get(0);
+        TypeParameter first = td.getTypeParameters().get(1);
+        TypeParameter rest = td.getTypeParameters().get(2);
+        ProducedType t1 = this;
+        ProducedType t2 = type;
+        while (true) {
+            Map<TypeParameter, ProducedType> t1a = 
+                    t1.getTypeArguments();
+            Map<TypeParameter, ProducedType> t2a = 
+                    t2.getTypeArguments();
+            ProducedType e1 = t1a.get(elem);
+            ProducedType e2 = t2a.get(elem);
+            ProducedType f1 = t1a.get(first);
+            ProducedType f2 = t2a.get(first);
+            if (e1==null || e2==null || 
+                f1==null || f2==null) {
+                return false;
+            }
+            if (!f1.isSubtypeOfInternal(f2) || 
+                !e1.isSubtypeOfInternal(e2)) {
+                return false;
+            }
+            ProducedType r1 = t1a.get(rest);
+            ProducedType r2 = t2a.get(rest);
+            if (r1==null || r2==null) {
+                return false;
+            }
+            if (!r1.isClass() || !r2.isClass() ||
+                !r1.getDeclaration().equals(td) ||
+                !r2.getDeclaration().equals(td)) {
+                return r1.isSubtypeOfInternal(r2); 
+            }
+            t1 = r1;
+            t2 = r2;
         }
     }
 
