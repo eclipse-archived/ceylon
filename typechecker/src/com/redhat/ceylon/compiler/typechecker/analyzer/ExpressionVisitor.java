@@ -9022,7 +9022,7 @@ public class ExpressionVisitor extends Visitor {
         return switchVariable!=null || 
                 switchExpression!=null &&
                 (!hasUncheckedNulls(switchExpression.getTerm()) || 
-                        !isNullCase(pt));
+                        !pt.isNull());
     }
 
     @Override
@@ -9332,14 +9332,7 @@ public class ExpressionVisitor extends Visitor {
             return etv;
         }
     }
-
-    private static boolean isNullCase(ProducedType ct) {
-        TypeDeclaration d = ct.getDeclaration();
-        Unit unit = d.getUnit();
-        return d!=null && d instanceof Class &&
-                d.equals(unit.getNullDeclaration());
-    }
-
+    
     private ProducedType getType(Tree.CaseItem ci) {
         Tree.IsCase ic = (Tree.IsCase) ci;
         Tree.Type t = ic.getType();
@@ -9975,12 +9968,10 @@ public class ExpressionVisitor extends Visitor {
             if (c.isClassMember()) {
                 Class clazz = (Class) c.getContainer();
                 ProducedType et = clazz.getExtendedType();
-                if (et!=null) {
+                if (et!=null && !et.isBasic()) {
                     TypeDeclaration superclass = 
                             et.getDeclaration();
-                    if (superclass!=null &&
-                            !unit.getBasicDeclaration()
-                                .equals(superclass)) {
+                    if (superclass!=null) {
                         that.addError("constructor must explicitly delegate to some superclass constructor: '" +
                                 clazz.getName() + "' extends '" + 
                                 superclass.getName() + "'");

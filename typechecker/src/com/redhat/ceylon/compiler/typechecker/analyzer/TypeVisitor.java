@@ -1221,10 +1221,7 @@ public class TypeVisitor extends Visitor {
     private void defaultSuperclass(Tree.ExtendedType et, 
             TypeDeclaration cd) {
         if (et==null) {
-            Class bd = unit.getBasicDeclaration();
-            if (bd!=null) {
-                cd.setExtendedType(bd.getType());
-            }
+            cd.setExtendedType(unit.getBasicType());
         }
     }
 

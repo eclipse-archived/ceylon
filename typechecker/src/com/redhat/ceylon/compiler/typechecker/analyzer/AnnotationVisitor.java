@@ -45,11 +45,11 @@ public class AnnotationVisitor extends Visitor {
             TypeDeclaration ptd = pt.getDeclaration();
             Unit unit = ptd.getUnit();
             if (!ptd.isAnnotation() && !isEnum(ptd) &&
-                    !ptd.equals(unit.getBooleanDeclaration()) &&
-                    !ptd.equals(unit.getStringDeclaration()) &&
-                    !ptd.equals(unit.getIntegerDeclaration()) &&
-                    !ptd.equals(unit.getFloatDeclaration()) &&
-                    !ptd.equals(unit.getCharacterDeclaration()) &&
+                    !pt.isBoolean() &&
+                    !pt.isString() &&
+                    !pt.isInteger() &&
+                    !pt.isFloat() &&
+                    !pt.isCharacter() &&
                     !ptd.equals(unit.getIterableDeclaration()) &&
                     !ptd.equals(unit.getSequentialDeclaration()) &&
                     !pt.isSubtypeOf(unit.getType(unit.getDeclarationDeclaration()))) {
@@ -354,10 +354,8 @@ public class AnnotationVisitor extends Visitor {
             that.addError("annotation class must be final");
         }
         ProducedType et = c.getExtendedType();
-        Class bd = that.getUnit().getBasicDeclaration();
         if (et!=null) {
-            TypeDeclaration etd = et.getDeclaration();
-            if (!etd.equals(bd)) {
+            if (!et.isBasic()) {
                 that.addError("annotation class must directly extend 'Basic'");
             }
         }

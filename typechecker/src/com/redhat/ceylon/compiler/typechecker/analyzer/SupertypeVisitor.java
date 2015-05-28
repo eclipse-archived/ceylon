@@ -10,7 +10,6 @@ import java.util.List;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
-import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.DecidabilityException;
 import com.redhat.ceylon.model.typechecker.model.IntersectionType;
 import com.redhat.ceylon.model.typechecker.model.ProducedType;
@@ -148,8 +147,7 @@ public class SupertypeVisitor extends Visitor {
                 	ProducedType t = et.getTypeModel();
                 	if (t!=null) {
                 		if (checkSupertypeVariance(t, d, et)) {
-                	        Class bd = unit.getBasicDeclaration();
-                	        d.setExtendedType(unit.getType(bd));
+                	        d.setExtendedType(unit.getBasicType());
                             d.clearProducedTypeCache();
                 		}
                 	}
@@ -166,8 +164,7 @@ public class SupertypeVisitor extends Visitor {
                     d.getName() + "'");
         }
         d.getSatisfiedTypes().clear();
-        Class bd = unit.getBasicDeclaration();
-        d.setExtendedType(unit.getType(bd));
+        d.setExtendedType(unit.getBasicType());
         d.clearProducedTypeCache();
     }
 
@@ -178,9 +175,7 @@ public class SupertypeVisitor extends Visitor {
         }
         ProducedType pt = et.getTypeModel();
         et.setTypeModel(null);
-        Unit unit = et.getUnit();
-        Class bd = unit.getBasicDeclaration();
-        d.setExtendedType(unit.getType(bd));
+        d.setExtendedType(et.getUnit().getBasicType());
         d.addBrokenSupertype(pt);
         d.clearProducedTypeCache();
     }

@@ -2271,7 +2271,7 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
             args.put(stps.get(0), et);
             args.put(stps.get(1), et);
             args.put(stps.get(3), len==1 ? 
-                    unit.getEmptyDeclaration().getType() : 
+                    unit.getEmptyType() : 
                     new StaticLengthSequenceType(elementType, len-1));
             return args;
         }

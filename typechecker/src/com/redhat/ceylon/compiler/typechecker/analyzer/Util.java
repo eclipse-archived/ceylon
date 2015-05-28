@@ -333,10 +333,8 @@ public class Util {
                                 .getType()
                                 .getTypeModel();
         			if (et!=null 
-                            && !et.getDeclaration()
-                                .equals(unit.getObjectDeclaration())
-                            && !et.getDeclaration()
-                                .equals(unit.getBasicDeclaration())) {
+                            && !et.isObject()
+                            && !et.isBasic()) {
                         return true;
                     }
                 }
@@ -1210,6 +1208,8 @@ public class Util {
             boolean requireSequential) {
         ProducedType result = unit.getEmptyType();
         ProducedType ut = unit.getNothingType();
+        Class td = unit.getTupleDeclaration();
+        Interface id = unit.getIterableDeclaration();
         for (int i=es.size()-1; i>=0; i--) {
             Tree.PositionalArgument a = es.get(i);
             ProducedType t = a.getTypeModel();
@@ -1232,15 +1232,14 @@ public class Util {
                             unit.getSequenceType(et);
                     if (!requireSequential) {
                         ProducedType it = 
-                                producedType(unit.getIterableDeclaration(), 
-                                        et, icc.getFirstTypeModel());
+                                producedType(id, et, 
+                                        icc.getFirstTypeModel());
                         result = intersectionType(result, it, unit);
                     }
                 }
                 else {
                     ut = unionType(ut, et, unit);
-                    result = producedType(unit.getTupleDeclaration(), 
-                            ut, et, result);
+                    result = producedType(td, ut, et, result);
                 }
             }
         }
