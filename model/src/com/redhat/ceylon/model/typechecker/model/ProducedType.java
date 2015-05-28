@@ -3509,14 +3509,12 @@ public class ProducedType extends ProducedReference {
                     return unit.getUnknownType();
                 }
                 else {
-                    ProducedType rt = 
-                            et.resolveAliases()
-                                .substitute(getTypeArgumentMap(
+                    return et.resolveAliases()
+                            .substitute(getTypeArgumentMap(
                                     dec, 
                                     aliasedQualifyingType, 
                                     aliasedArgs),
                                     getVarianceOverrides());
-                    return rt;
                 }
             }
             else {
