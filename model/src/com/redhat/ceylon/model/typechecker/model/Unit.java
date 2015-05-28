@@ -1081,6 +1081,118 @@ public class Unit {
                 getNonemptyType(args) : args;
     }
     
+    public boolean isHomogeneousTuple(ProducedType args) {
+        if (args!=null) {
+            Class td = getTupleDeclaration();
+            ProducedType tst = args.getSupertype(td);
+            if (tst!=null) {
+                List<ProducedType> tal = 
+                        tst.getTypeArgumentList();
+                ProducedType elemType;
+                if (tal.size()>=3) {
+                    elemType = tal.get(0);
+                }
+                else {
+                    return false;
+                }
+                ProducedType emptyType = getEmptyType();
+                while (true) {
+                    tal = tst.getTypeArgumentList();
+                    if (tal.size()>=3) {
+                        ProducedType first = tal.get(1);
+                        if (first==null) {
+                            return false;
+                        }
+                        else if (!first.isExactly(elemType)) {
+                            return false;
+                        }
+                        else {
+                            ProducedType rest = tal.get(2);
+                            if (rest==null) {
+                                return false;
+                            }
+                            else if (rest.isExactly(emptyType)) {
+                                return true;
+                            }
+                            else {
+                                tst = rest.getSupertype(td);
+                                if (tst==null) {
+                                    return false;
+                                }
+                            }
+                        }
+                    }
+                    else {
+                        return false;
+                    }
+                }
+            }
+            else {
+                return false;
+            }
+        }
+        else {
+            return false;
+        }
+    }
+
+    public int getHomogeneousTupleLength(ProducedType args) {
+        if (args!=null) {
+            Class td = getTupleDeclaration();
+            ProducedType tst = args.getSupertype(td);
+            if (tst!=null) {
+                List<ProducedType> tal = 
+                        tst.getTypeArgumentList();
+                ProducedType elemType;
+                if (tal.size()>=1) {
+                    elemType = tal.get(0);
+                }
+                else {
+                    return -1;
+                }
+                int size = 0;
+                ProducedType emptyType = getEmptyType();
+                while (true) {
+                    size++;
+                    tal = tst.getTypeArgumentList();
+                    if (tal.size()>=3) {
+                        ProducedType first = tal.get(1);
+                        if (first==null) {
+                            return -1;
+                        }
+                        else if (!first.isExactly(elemType)) {
+                            return -1;
+                        }
+                        else {
+                            ProducedType rest = tal.get(2);
+                            if (rest==null) {
+                                return -1;
+                            }
+                            else if (rest.isExactly(emptyType)) {
+                                return size;
+                            }
+                            else {
+                                tst = rest.getSupertype(td);
+                                if (tst==null) {
+                                    return -1;
+                                }
+                            }
+                        }
+                    }
+                    else {
+                        return -1;
+                    }
+                }
+            }
+            else {
+                return -1;
+            }
+        }
+        else {
+            return -1;
+        }
+    }
+
     public List<ProducedType> getTupleElementTypes(ProducedType args) {
         if (args!=null) {
             List<ProducedType> simpleResult = 

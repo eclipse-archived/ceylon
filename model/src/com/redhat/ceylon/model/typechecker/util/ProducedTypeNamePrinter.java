@@ -106,6 +106,13 @@ public class ProducedTypeNamePrinter {
                 if (abbreviateEmpty(pt)) {
                     return "[]";
                 }
+                if (abbreviateHomoTuple(pt)) {
+                    ProducedType et = 
+                            u.getSequentialElementType(pt);
+                    String etn = getProducedTypeName(et, unit);
+                    int len = u.getHomogeneousTupleLength(pt);
+                    return etn +  "[" + len + "]";
+                }
                 if (abbreviateSequential(pt)) {
                     ProducedType it = u.getIteratedType(pt);
                     String etn = getProducedTypeName(it, unit);
@@ -316,6 +323,11 @@ public class ProducedTypeNamePrinter {
                 }
             }
         }
+    }
+
+    private boolean abbreviateHomoTuple(ProducedType pt) {
+        Unit unit = pt.getDeclaration().getUnit();
+        return unit.getHomogeneousTupleLength(pt)>1;
     }
 
     public static boolean abbreviateEntry(ProducedType pt) {
