@@ -1,7 +1,7 @@
 //internal
 function tpl$(elems,types,spread){
   if (spread!==undefined) {
-    if (is$(spread,{t:Sequence})) {
+    if (is$(spread,{t:Sequential})) {
     } else {
       var e;
       for (var iter=spread.iterator();(e=iter.next())!==finished();) {
