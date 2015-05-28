@@ -22,8 +22,8 @@ import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Method;
 import com.redhat.ceylon.model.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
-import com.redhat.ceylon.model.typechecker.model.Setter;
 import com.redhat.ceylon.model.typechecker.model.Scope;
+import com.redhat.ceylon.model.typechecker.model.Setter;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.model.typechecker.model.Value;
@@ -1151,8 +1151,11 @@ public class SpecificationVisitor extends Visitor {
         }
 
         Tree.IfClause ifClause = that.getIfClause();
+        Tree.ConditionList conditionList = 
+                ifClause.getConditionList();
         if (ifClause!=null) {
-            Tree.ConditionList cl = ifClause.getConditionList();
+            Tree.ConditionList cl = 
+                    conditionList;
             if (cl!=null) {
                 cl.visit(this);
             }
@@ -1166,10 +1169,14 @@ public class SpecificationVisitor extends Visitor {
                 block.visit(this);
             }
         }
-        boolean definitelyAssignedByIfClause = specified.definitely || specified.exited;
-        boolean possiblyAssignedByIfClause = specified.possibly;
-        boolean possiblyExitedFromIfClause = specified.exited;
-        boolean specifiedByExitsFromIfClause = specified.byExits;
+        boolean definitelyAssignedByIfClause = 
+                specified.definitely || specified.exited;
+        boolean possiblyAssignedByIfClause = 
+                specified.possibly;
+        boolean possiblyExitedFromIfClause = 
+                specified.exited;
+        boolean specifiedByExitsFromIfClause = 
+                specified.byExits;
         endDeclarationScope(d);
         endSpecificationScope(as);
         
@@ -1182,10 +1189,14 @@ public class SpecificationVisitor extends Visitor {
             d = beginDeclarationScope();
             as = beginSpecificationScope();
             elseClause.visit(this);
-            definitelyAssignedByElseClause = specified.definitely || specified.exited;
-            possiblyAssignedByElseClause = specified.possibly;
-            possiblyExitedFromElseClause = specified.exited;
-            specifiedByExitsFromElseClause = specified.byExits;
+            definitelyAssignedByElseClause = 
+                    specified.definitely || specified.exited;
+            possiblyAssignedByElseClause = 
+                    specified.possibly;
+            possiblyExitedFromElseClause = 
+                    specified.exited;
+            specifiedByExitsFromElseClause = 
+                    specified.byExits;
             endDeclarationScope(d);
             endSpecificationScope(as);
         }
@@ -1196,23 +1207,39 @@ public class SpecificationVisitor extends Visitor {
             specifiedByExitsFromElseClause = true;
         }
         
-        if (isAlwaysSatisfied(ifClause.getConditionList())) {
-            specified.definitely = specified.definitely || definitelyAssignedByIfClause;
-            specified.possibly = specified.possibly || possiblyAssignedByIfClause;
-            specified.exited = specified.exited || possiblyExitedFromIfClause;
-            specified.byExits = specified.byExits && specifiedByExitsFromIfClause;
+        if (isAlwaysSatisfied(conditionList)) {
+            specified.definitely = specified.definitely || 
+                    definitelyAssignedByIfClause;
+            specified.possibly = specified.possibly || 
+                    possiblyAssignedByIfClause;
+            specified.exited = specified.exited || 
+                    possiblyExitedFromIfClause;
+            specified.byExits = specified.byExits && 
+                    specifiedByExitsFromIfClause;
         } 
-        else if (isNeverSatisfied(ifClause.getConditionList())) {
-            specified.definitely = specified.definitely || definitelyAssignedByElseClause;
-            specified.possibly = specified.possibly || possiblyAssignedByElseClause;
-            specified.exited = specified.exited || possiblyExitedFromElseClause;
-            specified.byExits = specified.byExits && specifiedByExitsFromElseClause;
+        else if (isNeverSatisfied(conditionList)) {
+            specified.definitely = specified.definitely || 
+                    definitelyAssignedByElseClause;
+            specified.possibly = specified.possibly || 
+                    possiblyAssignedByElseClause;
+            specified.exited = specified.exited || 
+                    possiblyExitedFromElseClause;
+            specified.byExits = specified.byExits && 
+                    specifiedByExitsFromElseClause;
         }
         else {
-            specified.definitely = specified.definitely || (definitelyAssignedByIfClause && definitelyAssignedByElseClause);
-            specified.possibly = specified.possibly || possiblyAssignedByIfClause || possiblyAssignedByElseClause;
-            specified.exited = specified.exited || possiblyExitedFromIfClause || possiblyExitedFromElseClause;
-            specified.byExits = specified.byExits && specifiedByExitsFromIfClause && specifiedByExitsFromElseClause;
+            specified.definitely = specified.definitely || 
+                    definitelyAssignedByIfClause && 
+                            definitelyAssignedByElseClause;
+            specified.possibly = specified.possibly || 
+                    possiblyAssignedByIfClause || 
+                    possiblyAssignedByElseClause;
+            specified.exited = specified.exited || 
+                    possiblyExitedFromIfClause || 
+                    possiblyExitedFromElseClause;
+            specified.byExits = specified.byExits && 
+                    specifiedByExitsFromIfClause && 
+                    specifiedByExitsFromElseClause;
         }
         
         checkDeclarationSection(that);
@@ -1230,14 +1257,20 @@ public class SpecificationVisitor extends Visitor {
         if (tryClause!=null ) {
             tryClause.visit(this);
         }
-        boolean definitelyAssignedByTryClause = specified.definitely || specified.exited;
-        boolean possiblyAssignedByTryClause = specified.possibly;
-        boolean possiblyExitedFromTryClause = specified.exited;
-        boolean specifiedByExitsFromTryClause = specified.byExits;
+        boolean definitelyAssignedByTryClause = 
+                specified.definitely || specified.exited;
+        boolean possiblyAssignedByTryClause = 
+                specified.possibly;
+        boolean possiblyExitedFromTryClause = 
+                specified.exited;
+        boolean specifiedByExitsFromTryClause = 
+                specified.byExits;
         endDeclarationScope(d);
         endSpecificationScope(as);
-        specified.possibly = specified.possibly || possiblyAssignedByTryClause;
-        specified.exited = specified.exited || possiblyExitedFromTryClause;
+        specified.possibly = specified.possibly || 
+                possiblyAssignedByTryClause;
+        specified.exited = specified.exited || 
+                possiblyExitedFromTryClause;
         
         boolean definitelyAssignedByEveryCatchClause = true;
         boolean possiblyAssignedBySomeCatchClause = false;
@@ -1247,29 +1280,44 @@ public class SpecificationVisitor extends Visitor {
             d = beginDeclarationScope();
             as = beginSpecificationScope();
             cc.visit(this);
-            definitelyAssignedByEveryCatchClause = definitelyAssignedByEveryCatchClause && (specified.definitely || specified.exited);
-            possiblyAssignedBySomeCatchClause = possiblyAssignedBySomeCatchClause || specified.possibly;
-            possiblyExitedFromSomeCatchClause = possiblyExitedFromSomeCatchClause || specified.exited;
-            specifiedByExitsFromEveryCatchClause = specifiedByExitsFromEveryCatchClause && specified.byExits;
+            definitelyAssignedByEveryCatchClause = 
+                    definitelyAssignedByEveryCatchClause && 
+                    (specified.definitely || specified.exited);
+            possiblyAssignedBySomeCatchClause = 
+                    possiblyAssignedBySomeCatchClause || 
+                    specified.possibly;
+            possiblyExitedFromSomeCatchClause = 
+                    possiblyExitedFromSomeCatchClause || 
+                    specified.exited;
+            specifiedByExitsFromEveryCatchClause = 
+                    specifiedByExitsFromEveryCatchClause && 
+                    specified.byExits;
             endDeclarationScope(d);
             endSpecificationScope(as);
         }
-        specified.possibly = specified.possibly || possiblyAssignedBySomeCatchClause;
-        specified.exited = specified.exited || possiblyExitedFromSomeCatchClause;
+        specified.possibly = specified.possibly || 
+                possiblyAssignedBySomeCatchClause;
+        specified.exited = specified.exited || 
+                possiblyExitedFromSomeCatchClause;
         
         boolean definitelyAssignedByFinallyClause;
         boolean possiblyAssignedByFinallyClause;
         boolean possiblyExitedFromFinallyClause;
         boolean specifiedByExitsFromFinallyClause;
-        Tree.FinallyClause finallyClause = that.getFinallyClause();
+        Tree.FinallyClause finallyClause = 
+                that.getFinallyClause();
         if (finallyClause!=null) {
             d = beginDeclarationScope();
             as = beginSpecificationScope();
             finallyClause.visit(this);
-            definitelyAssignedByFinallyClause = specified.definitely || specified.exited;
-            possiblyAssignedByFinallyClause = specified.possibly;
-            possiblyExitedFromFinallyClause = specified.exited;
-            specifiedByExitsFromFinallyClause = specified.byExits;
+            definitelyAssignedByFinallyClause = 
+                    specified.definitely || specified.exited;
+            possiblyAssignedByFinallyClause = 
+                    specified.possibly;
+            possiblyExitedFromFinallyClause = 
+                    specified.exited;
+            specifiedByExitsFromFinallyClause = 
+                    specified.byExits;
             endDeclarationScope(d);
             endSpecificationScope(as);
         }
@@ -1279,12 +1327,18 @@ public class SpecificationVisitor extends Visitor {
             possiblyExitedFromFinallyClause = false;
             specifiedByExitsFromFinallyClause = true;
         }
-        specified.possibly = specified.possibly || possiblyAssignedByFinallyClause;
-        specified.definitely = specified.definitely || definitelyAssignedByFinallyClause
-                || (definitelyAssignedByTryClause && definitelyAssignedByEveryCatchClause);
-        specified.exited = specified.exited || possiblyExitedFromFinallyClause;
-        specified.byExits = specified.byExits ||  specifiedByExitsFromFinallyClause || 
-                (specifiedByExitsFromEveryCatchClause && specifiedByExitsFromTryClause);
+        specified.possibly = specified.possibly || 
+                possiblyAssignedByFinallyClause;
+        specified.definitely = specified.definitely || 
+                definitelyAssignedByFinallyClause || 
+                definitelyAssignedByTryClause && 
+                        definitelyAssignedByEveryCatchClause;
+        specified.exited = specified.exited || 
+                possiblyExitedFromFinallyClause;
+        specified.byExits = specified.byExits || 
+                specifiedByExitsFromFinallyClause || 
+                specifiedByExitsFromEveryCatchClause && 
+                        specifiedByExitsFromTryClause;
         
         checkDeclarationSection(that);
     }
@@ -1304,49 +1358,73 @@ public class SpecificationVisitor extends Visitor {
         boolean possiblyExitedFromSomeCaseClause = false;
         boolean specifiedByExitsFromEveryCaseClause = true; 
         
-        Tree.SwitchCaseList switchCaseList = that.getSwitchCaseList();
+        Tree.SwitchCaseList switchCaseList = 
+                that.getSwitchCaseList();
         for (Tree.CaseClause cc: switchCaseList.getCaseClauses()) {
             boolean d = beginDeclarationScope();
             SpecificationState as = beginSpecificationScope();
             cc.visit(this);
-            definitelyAssignedByEveryCaseClause = definitelyAssignedByEveryCaseClause && (specified.definitely || specified.exited);
-            possiblyAssignedBySomeCaseClause = possiblyAssignedBySomeCaseClause || specified.possibly;
-            possiblyExitedFromSomeCaseClause = possiblyExitedFromSomeCaseClause || specified.exited;
-            specifiedByExitsFromEveryCaseClause = specifiedByExitsFromEveryCaseClause && specified.byExits;
+            definitelyAssignedByEveryCaseClause = 
+                    definitelyAssignedByEveryCaseClause && 
+                    (specified.definitely || specified.exited);
+            possiblyAssignedBySomeCaseClause = 
+                    possiblyAssignedBySomeCaseClause || 
+                    specified.possibly;
+            possiblyExitedFromSomeCaseClause = 
+                    possiblyExitedFromSomeCaseClause || 
+                    specified.exited;
+            specifiedByExitsFromEveryCaseClause = 
+                    specifiedByExitsFromEveryCaseClause && 
+                    specified.byExits;
             endDeclarationScope(d);
             endSpecificationScope(as);
         }
         
-        Tree.ElseClause elseClause = switchCaseList.getElseClause();
+        Tree.ElseClause elseClause = 
+                switchCaseList.getElseClause();
         if (elseClause!=null) {
             boolean d = beginDeclarationScope();
             SpecificationState as = beginSpecificationScope();
             elseClause.visit(this);
-            definitelyAssignedByEveryCaseClause = definitelyAssignedByEveryCaseClause && (specified.definitely || specified.exited);
-            possiblyAssignedBySomeCaseClause = possiblyAssignedBySomeCaseClause || specified.possibly;
-            possiblyExitedFromSomeCaseClause = possiblyExitedFromSomeCaseClause || specified.exited;
-            specifiedByExitsFromEveryCaseClause = specifiedByExitsFromEveryCaseClause && specified.byExits;
+            definitelyAssignedByEveryCaseClause = 
+                    definitelyAssignedByEveryCaseClause && 
+                    (specified.definitely || specified.exited);
+            possiblyAssignedBySomeCaseClause = 
+                    possiblyAssignedBySomeCaseClause || 
+                    specified.possibly;
+            possiblyExitedFromSomeCaseClause = 
+                    possiblyExitedFromSomeCaseClause || 
+                    specified.exited;
+            specifiedByExitsFromEveryCaseClause = 
+                    specifiedByExitsFromEveryCaseClause && 
+                    specified.byExits;
             endDeclarationScope(d);
             endSpecificationScope(as);
         }
 
-        specified.possibly = specified.possibly || possiblyAssignedBySomeCaseClause;
-        specified.definitely = specified.definitely || definitelyAssignedByEveryCaseClause;
-        specified.exited = specified.exited || possiblyExitedFromSomeCaseClause;
-        specified.byExits = specified.byExits && specifiedByExitsFromEveryCaseClause;
+        specified.possibly = specified.possibly || 
+                possiblyAssignedBySomeCaseClause;
+        specified.definitely = specified.definitely || 
+                definitelyAssignedByEveryCaseClause;
+        specified.exited = specified.exited || 
+                possiblyExitedFromSomeCaseClause;
+        specified.byExits = specified.byExits && 
+                specifiedByExitsFromEveryCaseClause;
         
         checkDeclarationSection(that);
     }
     
     @Override
     public void visit(Tree.WhileStatement that) {
-    	Tree.WhileClause whileClause = that.getWhileClause();
-        if (whileClause!=null) {
-            Tree.ConditionList cl = whileClause.getConditionList();
-    		if (cl!=null) {
-    			cl.visit(this);
-    		}
-    	}
+    	Tree.WhileClause whileClause = 
+    	        that.getWhileClause();
+        Tree.ConditionList conditionList = 
+                whileClause.getConditionList();
+        Tree.ConditionList cl = 
+                conditionList;
+        if (cl!=null) {
+            cl.visit(this);
+        }
     	
         boolean d = beginDeclarationScope();
         SpecificationState as = beginSpecificationScope();
@@ -1362,16 +1440,20 @@ public class SpecificationVisitor extends Visitor {
                 inLoop = c;
             }
         }
-        boolean possiblyAssignedByWhileClause = specified.possibly;
-        boolean definitelyAssignedByWhileClause = specified.definitely;
+        boolean possiblyAssignedByWhileClause = 
+                specified.possibly;
+        boolean definitelyAssignedByWhileClause = 
+                specified.definitely;
         
         endDeclarationScope(d);
         endSpecificationScope(as);
         
-        specified.definitely = specified.definitely || (definitelyAssignedByWhileClause && 
-                 isAlwaysSatisfied(whileClause.getConditionList()));
-        specified.possibly = specified.possibly || (possiblyAssignedByWhileClause && 
-                 !isNeverSatisfied(whileClause.getConditionList()));
+        specified.definitely = specified.definitely || 
+                (definitelyAssignedByWhileClause && 
+                        isAlwaysSatisfied(conditionList));
+        specified.possibly = specified.possibly || 
+                (possiblyAssignedByWhileClause && 
+                        !isNeverSatisfied(conditionList));
         
         checkDeclarationSection(that);
     }
@@ -1410,8 +1492,12 @@ public class SpecificationVisitor extends Visitor {
             }
             atLeastOneIteration = isAtLeastOne(forClause);
         }
-        boolean possiblyExitedFromForClause = specified.exited && !specified.byExits;
-        boolean possiblyAssignedByForClause = specified.possibly;
+        boolean possiblyExitedFromForClause = 
+                specified.exited && !specified.byExits;
+        boolean possiblyAssignedByForClause = 
+                specified.possibly;
+        boolean definitelyAssignedByForClause = 
+                specified.possibly;
 
         endDeclarationScope(d);
         endSpecificationScope(as);
@@ -1423,8 +1509,10 @@ public class SpecificationVisitor extends Visitor {
             d = beginDeclarationScope();
             as = beginSpecificationScope();
             elseClause.visit(this);
-            definitelyAssignedByElseClause = specified.definitely || specified.exited;
-            possiblyAssignedByElseClause = specified.possibly;
+            definitelyAssignedByElseClause = 
+                    specified.definitely || specified.exited;
+            possiblyAssignedByElseClause = 
+                    specified.possibly;
             endDeclarationScope(d);
             endSpecificationScope(as);
         }
@@ -1433,8 +1521,14 @@ public class SpecificationVisitor extends Visitor {
             possiblyAssignedByElseClause = false;
         }
         
-        specified.definitely = specified.definitely || (!possiblyExitedFromForClause && (definitelyAssignedByElseClause|atLeastOneIteration));
-        specified.possibly = specified.possibly || possiblyAssignedByForClause || possiblyAssignedByElseClause;
+        specified.definitely = specified.definitely || 
+                !possiblyExitedFromForClause && 
+                (definitelyAssignedByElseClause ||
+                 definitelyAssignedByForClause && 
+                         atLeastOneIteration);
+        specified.possibly = specified.possibly || 
+                possiblyAssignedByForClause || 
+                possiblyAssignedByElseClause;
         
         checkDeclarationSection(that);
     }
