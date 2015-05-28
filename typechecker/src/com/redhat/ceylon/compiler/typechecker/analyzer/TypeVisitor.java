@@ -1063,6 +1063,8 @@ public class TypeVisitor extends Visitor {
                 dec.getTypeParameters();
         List<ProducedType> typeArgs = 
                 getTypeArguments(tal, ot, params);
+        //Note: we actually *check* these type arguments
+        //      later in ExpressionVisitor
         ProducedType pt = dec.getProducedType(ot, typeArgs);
         if (tal==null) {
             if (!params.isEmpty()) {
@@ -1088,7 +1090,6 @@ public class TypeVisitor extends Visitor {
                         "' is not a generic type");
             }
             tal.setTypeModels(typeArgs);
-            //TODO: dupe of logic in ExpressionVisitor
             List<Tree.Type> args = tal.getTypes();
             for (int i = 0; 
                     i<args.size() && 
@@ -1102,14 +1103,23 @@ public class TypeVisitor extends Visitor {
                             st.getTypeVariance();
                     if (variance!=null) {
                         TypeParameter p = params.get(i);
-                        if (p.isInvariant()) {
-                            String var = variance.getText();
-                            if (var.equals("out")) {
-                                pt.setVariance(p, OUT);
-                            }
-                            else if (var.equals("in")) {
-                                pt.setVariance(p, IN);
-                            }
+                        String var = variance.getText();
+                        if (var.equals("out")) {
+                            pt.setVariance(p, OUT);
+                        }
+                        else if (var.equals("in")) {
+                            pt.setVariance(p, IN);
+                        }
+                        if (!p.isInvariant()) {
+                            //ProducedType doesn't yet know
+                            //how to reason about *runtime*
+                            //instantiations of variant types
+                            //since they are effectively
+                            //invariant
+                            variance.addUnsupportedError(
+                                    "use-site variant instantiations of declaration-site variant types is not supported: type parameter '" + 
+                                    p.getName() + "' of '" + 
+                                    dec.getName(unit) + "' is not declared invariant");
                         }
                     }
                 }

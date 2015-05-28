@@ -8577,6 +8577,7 @@ public class ExpressionVisitor extends Visitor {
         super.visit(that);
         ProducedType pt = that.getTypeModel();
         if (pt!=null) {
+            //the type has already been set by TypeVisitor
             TypeDeclaration type = 
                     that.getDeclarationModel();
             Tree.TypeArgumentList tal = 
@@ -8591,31 +8592,6 @@ public class ExpressionVisitor extends Visitor {
                                 params);
                 acceptsTypeArguments(type, null, typeArgs, 
                         tal, that);
-                //the type has already been set by TypeVisitor
-                if (tal!=null) {
-                    List<Tree.Type> args = tal.getTypes();
-                    for (int i = 0; 
-                            i<args.size() && 
-                            i<params.size(); 
-                            i++) {
-                        Tree.Type t = args.get(i);
-                        if (t instanceof Tree.StaticType) {
-                            TypeParameter p = params.get(i);
-                            Tree.StaticType st = 
-                                    (Tree.StaticType) t;
-                            //the variance has already been set by TypeVisitor
-                            Tree.TypeVariance variance = 
-                                    st.getTypeVariance();
-                            if (variance!=null) {
-                                if (!p.isInvariant()) {
-                                    variance.addError("type parameter is not declared invariant: '" + 
-                                            p.getName() + "' of '" + 
-                                            type.getName(unit) + "'");
-                                }
-                            }
-                        }
-                    }
-                }
             }
         }
     }
