@@ -1,6 +1,6 @@
 //nonempty
 function ne$(value){
-  return value!==null&&value!==undefined&&(is$(value,{t:Sequence})||(is$(value,{t:$_Array})&&value.size>0));
+  return value!==null&&value!==undefined&&(is$(value,{t:Sequence})||(is$(value,{t:List})&&value.size>0));
 }
 
 //exists
