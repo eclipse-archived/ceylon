@@ -356,7 +356,8 @@ public class ProducedType extends ProducedReference {
             if (r1==null || r2==null) {
                 return false;
             }
-            if (!r1.getDeclaration().equals(td) ||
+            if (!r1.isClass() || !r2.isClass() ||
+                !r1.getDeclaration().equals(td) ||
                 !r2.getDeclaration().equals(td)) {
                 return r1.isExactlyInternal(r2); 
             }
