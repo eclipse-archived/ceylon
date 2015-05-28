@@ -8,7 +8,6 @@ shared void testCurries() {
     check(p2(8)==256, "p2 [2]");
     value triple = compose(curry(veces)(3), p2);
     check(triple(8)==768, "p2 [3]");
-    //TODO: flatten, shuffle
     
     check(unflatten(function () => 1)([]) == 1, "unflatten 0");
     check(unflatten(function (Integer a = 2) => a)([]) == 2, "unflatten 0.1");
@@ -119,4 +118,29 @@ shared void testCurries() {
     value uf5=flatten(f6995);
     check(uf5(1,2,3)==6, "#699.8");
     check(uf5(1,2,3,4)==10, "#699.9");
+    Integer u6691(Integer a, Integer b, Integer c) => a+b+c;
+    Integer u6692(Integer* ints) {
+        if (nonempty ints) {
+            return sum(ints);
+        }
+        return 0;
+    }
+    Integer u6693(Integer+ ints) => ints[0] + uf2(*ints.rest);
+    Integer u6694(Integer a, Integer b, Integer* c) => a + b + uf2(*c);
+    Integer u6695(Integer a, Integer b, Integer+ c) => a + b + uf3(*c);
+    value _f1=unflatten(u6691);
+    check(_f1([1,2,3])==6, "#669.10");
+    value _f2=unflatten(u6692);
+    check(_f2([])==0, "#669.11");
+    check(_f2([1,2,3])==6, "#669.12");
+    value _f3=unflatten(u6693);
+    check(_f3([1])==1,"#669.13");
+    check(_f3([1,2,3])==6, "#669.14");
+    value _f4=unflatten(u6694);
+    check(_f4([1,2])==3, "#669.15");
+    check(_f4([1,2,3])==6, "#669.16");
+    check(_f4([1,2,3,4])==10, "#669.17");
+    value _f5=unflatten(u6695);
+    check(_f5([1,2,3])==6,"#669.18");
+    check(_f5([1,2,3,4])==10, "#669.19");
 }
