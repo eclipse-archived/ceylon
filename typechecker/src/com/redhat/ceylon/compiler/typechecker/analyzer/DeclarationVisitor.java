@@ -2231,7 +2231,7 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
                 catch (NumberFormatException nfe) {
                     return;
                 }
-                if (len<1 || len>100) {
+                if (len<1 || len>1000) {
                     return;
                 }
                 else {

@@ -717,10 +717,10 @@ public class TypeVisitor extends Visitor {
                     length.addError("must be positive");
                     return;
                 }
-//                if (len>100) {
-//                    length.addError("may not be greater than 100");
-//                    return;
-//                }
+                if (len>1000) {
+                    length.addError("may not be greater than 1000");
+                    return;
+                }
                 Class td = unit.getTupleDeclaration();
                 t = unit.getEmptyType();
                 for (int i=0; i<len; i++) {
