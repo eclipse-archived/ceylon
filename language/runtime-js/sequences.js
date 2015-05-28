@@ -108,3 +108,16 @@ function nfor$(c) {
   return a;
 }
 ex$.nfor$=nfor$;
+
+function variadicness(t) {
+  if (extendsType(t,{t:Tuple})) {
+    if (t.t==='T' && t.l.length>0) {
+      return t.l[t.l.length-1].seq || 0;
+    }
+  } else if (extendsType(t,{t:Sequence})) {
+    return 2;
+  } else if (extendsType(t,{t:Sequential})) {
+    return 1;
+  }
+  return 0;
+}
