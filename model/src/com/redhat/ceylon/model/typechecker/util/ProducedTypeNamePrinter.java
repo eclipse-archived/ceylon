@@ -352,12 +352,7 @@ public class ProducedTypeNamePrinter {
     }
 
     public static boolean abbreviateEmpty(ProducedType pt) {
-        if (pt.isInterface()) {
-            TypeDeclaration dec = pt.getDeclaration();
-            Unit unit = dec.getUnit();
-            return dec.equals(unit.getEmptyDeclaration());
-        }
-        return false;
+        return pt.isEmpty();
     }
 
     public static boolean abbreviateOptional(ProducedType pt) {
@@ -374,11 +369,7 @@ public class ProducedTypeNamePrinter {
     }    
 
     public static boolean abbreviateTuple(ProducedType pt) {
-        TypeDeclaration dec = pt.getDeclaration();
-        Unit unit = dec.getUnit();
-        return pt.isClass() && 
-                dec.equals(unit.getTupleDeclaration()) &&
-                        isTupleTypeWellformed(pt);
+        return pt.isTuple() && isTupleTypeWellformed(pt);
     }
 
     public static boolean abbreviateCallable(ProducedType pt) {
@@ -449,10 +440,7 @@ public class ProducedTypeNamePrinter {
                 if (et!=null && typeArgs.size()==2) {
                     ProducedType at = typeArgs.get(1);
                     if (at!=null) {
-                        Class nd = unit.getNullDeclaration();
-                        return at.isNothing() ||
-                                at.isClassOrInterface() && 
-                                at.getDeclaration().equals(nd);
+                        return at.isNothing() || at.isNull();
                     }
                 }// && et.isPrimitiveAbbreviatedType();
             }
@@ -495,22 +483,17 @@ public class ProducedTypeNamePrinter {
         if (args!=null) {
             Unit u = args.getDeclaration().getUnit();
             boolean defaulted=false;
-            Interface ed = u.getEmptyDeclaration();
             if (args.isUnion()) {
                 List<ProducedType> cts = 
                         args.getCaseTypes();
                 if (cts.size()==2) {
-                    TypeDeclaration lc = 
-                            cts.get(0).getDeclaration();
-                    if (lc instanceof Interface && 
-                            lc.equals(ed)) {
+                    ProducedType lc = cts.get(0);
+                    if (lc.isEmpty()) {
                         args = cts.get(1);
                         defaulted = true;
                     }
-                    TypeDeclaration rc = 
-                            cts.get(1).getDeclaration();
-                    if (lc instanceof Interface &&
-                            rc.equals(ed)) {
+                    ProducedType rc = cts.get(1);
+                    if (rc.isEmpty()) {
                         args = cts.get(0);
                         defaulted = true;
                     }
@@ -519,8 +502,7 @@ public class ProducedTypeNamePrinter {
             if (args.isClassOrInterface()) {
                 Interface sld = u.getSequentialDeclaration();
                 Interface scd = u.getSequenceDeclaration();
-                Class td = u.getTupleDeclaration();
-                if (args.getDeclaration().equals(td)) {
+                if (args.isTuple()) {
                     List<ProducedType> tal = 
                             args.getTypeArgumentList();
                     if (tal.size()>=3) {
@@ -529,9 +511,7 @@ public class ProducedTypeNamePrinter {
                         if (first!=null && rest!=null) {
                             String argtype = 
                                     getProducedTypeName(first, unit);
-                            if (rest.isInterface() &&
-                                    rest.getDeclaration()
-                                        .equals(ed)) {
+                            if (rest.isEmpty()) {
                                 return defaulted ? 
                                         argtype + "=" : argtype;
                             }
@@ -545,7 +525,7 @@ public class ProducedTypeNamePrinter {
                         }
                     }
                 }
-                else if (args.getDeclaration().equals(ed)) {
+                else if (args.isEmpty()) {
                     return defaulted ? "=" : "";
                 }
                 else if (!defaulted && 

@@ -926,8 +926,7 @@ public class ProducedType extends ProducedReference {
     public ProducedType eliminateNull() {
         TypeDeclaration dec = getDeclaration();
         Unit unit = dec.getUnit();
-        Class nd = unit.getNullDeclaration();
-        if (dec.inherits(nd)) {
+        if (dec.inherits(unit.getNullDeclaration())) {
             return unit.getNothingType();
         }
         else if (isUnion()) {
@@ -3961,6 +3960,86 @@ public class ProducedType extends ProducedReference {
 //                    .equals(getDeclaration().getUnit().getAnythingDeclaration());
                     .getQualifiedNameString()
                     .equals("ceylon.language::Anything");
+    }
+    
+    public boolean isObject() {
+        return isClass() &&
+                getDeclaration()
+//                    .equals(getDeclaration().getUnit().getAnythingDeclaration());
+                    .getQualifiedNameString()
+                    .equals("ceylon.language::Object");
+    }
+    
+    public boolean isBasic() {
+        return isClass() &&
+                getDeclaration()
+//                    .equals(getDeclaration().getUnit().getAnythingDeclaration());
+                    .getQualifiedNameString()
+                    .equals("ceylon.language::Basic");
+    }
+    
+    public boolean isBoolean() {
+        return isClass() &&
+                getDeclaration()
+//                    .equals(getDeclaration().getUnit().getAnythingDeclaration());
+                    .getQualifiedNameString()
+                    .equals("ceylon.language::Boolean");
+    }
+    
+    public boolean isString() {
+        return isClass() &&
+                getDeclaration()
+//                    .equals(getDeclaration().getUnit().getAnythingDeclaration());
+                    .getQualifiedNameString()
+                    .equals("ceylon.language::String");
+    }
+    
+    public boolean isCharacter() {
+        return isClass() &&
+                getDeclaration()
+//                    .equals(getDeclaration().getUnit().getAnythingDeclaration());
+                    .getQualifiedNameString()
+                    .equals("ceylon.language::Character");
+    }
+    
+    public boolean isFloat() {
+        return isClass() &&
+                getDeclaration()
+//                    .equals(getDeclaration().getUnit().getAnythingDeclaration());
+                    .getQualifiedNameString()
+                    .equals("ceylon.language::Float");
+    }
+    
+    public boolean isInteger() {
+        return isClass() &&
+                getDeclaration()
+//                    .equals(getDeclaration().getUnit().getAnythingDeclaration());
+                    .getQualifiedNameString()
+                    .equals("ceylon.language::Integer");
+    }
+    
+    public boolean isByte() {
+        return isClass() &&
+                getDeclaration()
+//                    .equals(getDeclaration().getUnit().getAnythingDeclaration());
+                    .getQualifiedNameString()
+                    .equals("ceylon.language::Byte");
+    }
+    
+    public boolean isNull() {
+        return isClass() &&
+                getDeclaration()
+//                    .equals(getDeclaration().getUnit().getAnythingDeclaration());
+                    .getQualifiedNameString()
+                    .equals("ceylon.language::Null");
+    }
+    
+    public boolean isEmpty() {
+        return isInterface() &&
+                getDeclaration()
+//                    .equals(getDeclaration().getUnit().getAnythingDeclaration());
+                    .getQualifiedNameString()
+                    .equals("ceylon.language::Empty");
     }
     
     public boolean isTuple() {

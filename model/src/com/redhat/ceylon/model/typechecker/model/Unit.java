@@ -705,6 +705,10 @@ public class Unit {
         return getType(getIdentifiableDeclaration());
     }
     
+    public ProducedType getBasicType() {
+        return getType(getBasicDeclaration());
+    }
+
     public ProducedType getNullType() {
         return getType(getNullDeclaration());
     }
@@ -721,8 +725,24 @@ public class Unit {
         return getType(getBooleanDeclaration());
     }
     
+    public ProducedType getStringType() {
+        return getType(getStringDeclaration());
+    }
+    
     public ProducedType getIntegerType() {
         return getType(getIntegerDeclaration());
+    }
+    
+    public ProducedType getFloatType() {
+        return getType(getFloatDeclaration());
+    }
+    
+    public ProducedType getCharacterType() {
+        return getType(getCharacterDeclaration());
+    }
+    
+    public ProducedType getByteType() {
+        return getType(getByteDeclaration());
     }
     
     public ProducedType getComparisonType() {
@@ -936,7 +956,7 @@ public class Unit {
         return !intersectionType(getNullType(), 
                         pt, this)
                     .isNothing() &&
-                !intersectionType(getType(getObjectDeclaration()), 
+                !intersectionType(getObjectType(), 
                         pt, this)
                     .isNothing();
     }

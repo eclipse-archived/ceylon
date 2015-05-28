@@ -826,17 +826,10 @@ public class Util {
                 //intersection with Basic
                 ProducedType first = sts.get(0);
                 ProducedType second = sts.get(1);
-                Class bd = unit.getBasicDeclaration();
-                if (first!=null && 
-                        first.isClass() && 
-                        first.getDeclaration()
-                            .equals(bd)) {
+                if (first!=null && first.isBasic()) {
                     return erase(second, unit);
                 }
-                else if (second!=null && 
-                        second.isClass() &&
-                        second.getDeclaration()
-                            .equals(bd)) {
+                else if (second!=null && second.isBasic()) {
                     return erase(first, unit);
                 }
             }
@@ -1322,7 +1315,6 @@ public class Util {
         if (p.isNothing() || q.isNothing()) {
             return true;
         }
-        TypeDeclaration nd = unit.getNullDeclaration(); //TODO what about the anonymous type of null?
         TypeDeclaration pd = p.getDeclaration();
         TypeDeclaration qd = q.getDeclaration();
         if (p.isTypeParameter()) {
@@ -1394,10 +1386,8 @@ public class Util {
             if (all) return true;
         }
         if (p.isClass() && q.isClass() ||
-            p.isInterface() && q.isClass() &&
-                    qd.equals(nd) ||
-            q.isInterface() && p.isClass() &&
-                    pd.equals(nd)) {
+            p.isInterface() && q.isNull() ||
+            q.isInterface() && p.isNull()) {
             if (!qd.inherits(pd) &&
                 !pd.inherits(qd)) {
                 return true;

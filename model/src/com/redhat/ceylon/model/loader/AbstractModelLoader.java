@@ -3277,7 +3277,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         // we do not use Unit.getOptionalType because it causes lots of lazy loading that ultimately triggers the typechecker's
         // infinite recursion loop
         List<ProducedType> list = new ArrayList<ProducedType>(2);
-        list.add(typeFactory.getNullDeclaration().getType());
+        list.add(typeFactory.getNullType());
         list.add(type);
         UnionType ut = new UnionType(getUnitForModule(moduleScope));
         ut.setCaseTypes(list);
@@ -3657,7 +3657,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 ProducedType eType = type.getTypeArgumentList().get(0);
                 String elementTypeName = eType.getDeclaration().getQualifiedNameString();
                 if ("java.lang::String".equals(elementTypeName)) {
-                    elementType = unit.getStringDeclaration().getType();
+                    elementType = unit.getStringType();
                 } else if ("java.lang::Class".equals(elementTypeName)
                         || "java.lang.Class".equals(eType.getUnderlyingType())) {
                     // Two cases because the types 
@@ -3666,31 +3666,31 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                     
                     // TODO Replace with metamodel ClassOrInterface type
                     // once we have support for metamodel references
-                    elementType = unit.getAnythingDeclaration().getType();
+                    elementType = unit.getAnythingType();
                     underlyingType = "java.lang.Class";
                 } else {
                     elementType = eType;   
                 }
                 // TODO Enum elements
             } else if(name.equals("java.lang::LongArray")) {
-                elementType = unit.getIntegerDeclaration().getType();
+                elementType = unit.getIntegerType();
             } else if (name.equals("java.lang::ByteArray")) {
-                elementType = unit.getByteDeclaration().getType();
+                elementType = unit.getByteType();
             } else if (name.equals("java.lang::ShortArray")) {
-                elementType = unit.getIntegerDeclaration().getType();
+                elementType = unit.getIntegerType();
                 underlyingType = "short";
             } else if (name.equals("java.lang::IntArray")){
-                elementType = unit.getIntegerDeclaration().getType();
+                elementType = unit.getIntegerType();
                 underlyingType = "int";
             } else if(name.equals("java.lang::BooleanArray")){
-                elementType = unit.getBooleanDeclaration().getType();
+                elementType = unit.getBooleanType();
             } else if(name.equals("java.lang::CharArray")){
-                elementType = unit.getCharacterDeclaration().getType();
+                elementType = unit.getCharacterType();
                 underlyingType = "char";
             } else if(name.equals("java.lang::DoubleArray")) {
-                elementType = unit.getFloatDeclaration().getType();
+                elementType = unit.getFloatType();
             } else if (name.equals("java.lang::FloatArray")){
-                elementType = unit.getFloatDeclaration().getType();
+                elementType = unit.getFloatType();
                 underlyingType = "float";
             } else {
                 throw new RuntimeException();
@@ -3701,7 +3701,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         } else if ("java.lang::Class".equals(type.getDeclaration().getQualifiedNameString())) {
             // TODO Replace with metamodel ClassOrInterface type
             // once we have support for metamodel references
-            return unit.getAnythingDeclaration().getType();
+            return unit.getAnythingType();
         } else {
             return type;
         }
@@ -3830,7 +3830,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             else // must be a method
                 scope.addMember(param);
             param.setName((String)typeParamAnnotation.getValue("value"));
-            param.setExtendedType(typeFactory.getAnythingDeclaration().getType());
+            param.setExtendedType(typeFactory.getAnythingType());
             if(i < typeParameterMirrors.size()){
                 TypeParameterMirror typeParameterMirror = typeParameterMirrors.get(i);
                 param.setNonErasedBounds(hasNonErasedBounds(typeParameterMirror));
@@ -3917,7 +3917,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             else // must be a method
                 scope.addMember(param);
             param.setName(typeParam.getName());
-            param.setExtendedType(typeFactory.getAnythingDeclaration().getType());
+            param.setExtendedType(typeFactory.getAnythingType());
             params.add(param);
         }
         boolean needsObjectBounds = !isCeylon && scope instanceof Method;
@@ -4268,7 +4268,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                     // if we have no type argument, or it was a wildcard with no bounds and we could not use the type parameter bounds,
                     // let's fall back to "out Object"
                     if(typeArgument == null && producedTypeArgument == null){
-                        producedTypeArgument = typeFactory.getObjectDeclaration().getType();
+                        producedTypeArgument = typeFactory.getObjectType();
                         siteVariance = SiteVariance.OUT;
                     }
 
@@ -4332,7 +4332,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 return it.getType();
             }else
                 // no bound is Object
-                return typeFactory.getObjectDeclaration().getType();
+                return typeFactory.getObjectType();
         }else{
             TypeMirror mappedType = applyTypeMapping(type, TypeLocation.TYPE_PARAM);
 
