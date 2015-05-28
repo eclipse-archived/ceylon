@@ -546,14 +546,13 @@ public class TypeUtils {
         final ProducedType empty = getUnit(_tuple).getEmptyType();
         while (_tuple != null && !(_tuple.isSubtypeOf(empty) || _tuple.isTypeParameter())) {
             Parameter _p = null;
-            if (isTuple(_tuple)) {
+            if (isTuple(_tuple, false)) {
                 _p = new Parameter();
                 _p.setModel(new Value());
                 if (_tuple.isUnion()) {
                     //Handle union types for defaulted parameters
                     for (ProducedType mt : _tuple.getCaseTypes()) {
-                        if (mt.isClass() &&
-                                mt.getDeclaration().getUnit().getTupleDeclaration().equals(mt.getDeclaration())) {
+                        if (isTuple(mt, true)) {
                             _p.getModel().setType(mt.getTypeArgumentList().get(1));
                             _tuple = mt.getTypeArgumentList().get(2);
                             break;
@@ -587,10 +586,10 @@ public class TypeUtils {
     }
 
     /** Check if a type is a Tuple, or a union of 2 types one of which is a Tuple. */
-    private static boolean isTuple(ProducedType pt) {
+    private static boolean isTuple(ProducedType pt, final boolean strict) {
         if (pt.isClass() && pt.getDeclaration().equals(pt.getDeclaration().getUnit().getTupleDeclaration())) {
             return true;
-        } else if (pt.isUnion() && pt.getCaseTypes().size() == 2) {
+        } else if (!strict && pt.isUnion() && pt.getCaseTypes().size() == 2) {
             Class tuple = pt.getCaseTypes().get(0).isClassOrInterface() ?
                     pt.getCaseTypes().get(0).getDeclaration().getUnit().getTupleDeclaration() :
                         pt.getCaseTypes().get(1).isClassOrInterface() ?
@@ -613,28 +612,28 @@ public class TypeUtils {
         gen.out("[");
         int pos = 1;
         final ProducedType empty = node.getUnit().getEmptyType();
-        final TypeDeclaration tuple = node.getUnit().getTupleDeclaration();
         while (_tuple != null && !(_tuple.isSubtypeOf(empty) || _tuple.isTypeParameter())) {
             if (pos > 1) gen.out(",");
-            gen.out("{");
             pos++;
             if (nameAndMetatype) {
-                gen.out(MetamodelGenerator.KEY_NAME, ":'p", Integer.toString(pos), "',");
+                gen.out("{", MetamodelGenerator.KEY_NAME, ":'p", Integer.toString(pos), "',");
                 gen.out(MetamodelGenerator.KEY_METATYPE, ":'", MetamodelGenerator.METATYPE_PARAMETER, "',");
+                gen.out(MetamodelGenerator.KEY_TYPE, ":");
             }
-            gen.out(MetamodelGenerator.KEY_TYPE, ":");
-            if (isTuple(_tuple)) {
+            if (isTuple(_tuple, false)) {
                 if (_tuple.isUnion()) {
                     //Handle union types for defaulted parameters
                     for (ProducedType mt : _tuple.getCaseTypes()) {
-                        if (mt.isClass() && tuple.equals(mt.getDeclaration())) {
+                        if (isTuple(mt, true)) {
                             metamodelTypeNameOrList(resolveTargs, node, gen.getCurrentPackage(),
                                     mt.getTypeArgumentList().get(1), gen);
                             _tuple = mt.getTypeArgumentList().get(2);
                             break;
                         }
                     }
-                    gen.out(",", MetamodelGenerator.KEY_DEFAULT,":1");
+                    if (nameAndMetatype) {
+                        gen.out(",", MetamodelGenerator.KEY_DEFAULT,":1");
+                    }
                 } else {
                     metamodelTypeNameOrList(resolveTargs, node, gen.getCurrentPackage(),
                             _tuple.getTypeArgumentList().get(1), gen);
@@ -651,7 +650,9 @@ public class TypeUtils {
                 }
                 //Handle Sequence, for nonempty variadic parameters
                 metamodelTypeNameOrList(resolveTargs, node, gen.getCurrentPackage(), _t2.getTypeArgumentList().get(0), gen);
-                gen.out(",seq:", Integer.toString(seq));
+                if (nameAndMetatype) {
+                    gen.out(",seq:", Integer.toString(seq));
+                }
                 _tuple = null;
             } else if (_tuple.isUnion()) {
                 metamodelTypeNameOrList(resolveTargs, node, gen.getCurrentPackage(), _tuple, gen);
@@ -662,7 +663,9 @@ public class TypeUtils {
                     break;
                 }
             }
-            gen.out("}");
+            if (nameAndMetatype) {
+                gen.out("}");
+            }
         }
         gen.out("]");
     }
