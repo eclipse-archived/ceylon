@@ -8,7 +8,7 @@ import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
-import com.redhat.ceylon.model.typechecker.model.Class;
+import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Method;
 import com.redhat.ceylon.model.typechecker.model.Package;
@@ -107,7 +107,7 @@ public class MissingNativeVisitor extends Visitor {
         if(pkg == null)
             return true;
         
-        boolean nodeIsDecl = node instanceof Tree.ClassOrInterface || node instanceof Tree.AnyMethod || node instanceof Tree.AnyAttribute;
+        boolean nodeIsDecl = node instanceof Tree.AnyClass || node instanceof Tree.AnyMethod || node instanceof Tree.AnyAttribute;
         if (nodeIsDecl
                 && !model.getNative().isEmpty()
                 && !forBackend.nativeAnnotation.equals(model.getNative())) {
@@ -116,7 +116,7 @@ public class MissingNativeVisitor extends Visitor {
         }
         
         boolean ok = true;
-        if (model instanceof Method || model instanceof Class || model instanceof Value) {
+        if (model instanceof Method || model instanceof ClassOrInterface || model instanceof Value) {
             Declaration m = pkg.getDirectMember(model.getName(), null, false);
             if (m != null) {
                 if (!m.isNative() || !nodeIsDecl) {
