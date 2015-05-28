@@ -90,7 +90,7 @@ public class ProducedTypeNamePrinter {
             return "unknown";
         }
         else {
-            if (printAbbreviated()) {
+            if (printAbbreviated() && !pt.isTypeAlias()) {
                 //TODO: we're going to have to fix this!
                 Unit u = pt.getDeclaration().getUnit();
                 if (abbreviateOptional(pt)) {
