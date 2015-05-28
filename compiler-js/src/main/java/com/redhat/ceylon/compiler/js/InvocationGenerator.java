@@ -539,7 +539,7 @@ public class InvocationGenerator {
                             }
                         }
                         if (_tlist[1] == null) {
-                            _tlist[1] = that.getUnit().getNothingDeclaration().getType();
+                            _tlist[1] = that.getUnit().getNothingType();
                         }
                         Method cdec = (Method)that.getUnit().getIterableDeclaration().getMember("chain", null, false);
                         _targs = TypeUtils.matchTypeParametersWithArguments(cdec.getTypeParameters(), Arrays.asList(_tlist));

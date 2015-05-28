@@ -20,7 +20,6 @@ import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.model.typechecker.model.Constructor;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Generic;
-import com.redhat.ceylon.model.typechecker.model.Interface;
 import com.redhat.ceylon.model.typechecker.model.Method;
 import com.redhat.ceylon.model.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.model.typechecker.model.Module;
@@ -236,8 +235,8 @@ public class TypeUtils {
             subs = pt.getCaseTypes();
         }
         else {
-            TypeDeclaration d = pt.getDeclaration();
-            if ("ceylon.language::Tuple".equals(d.getQualifiedNameString())) {
+            if (pt.isTuple()) {
+                TypeDeclaration d = pt.getDeclaration();
                 subs = d.getUnit().getTupleElementTypes(pt);
                 final ProducedType lastType = subs.get(subs.size()-1);
                 if (Util.isTypeUnknown(lastType) || lastType.isTypeParameter()) {
@@ -247,7 +246,7 @@ public class TypeUtils {
                     gen.out("}");
                     return true;
                 }
-                if (!d.getUnit().getEmptyDeclaration().equals(lastType.getDeclaration())) {
+                if (!lastType.isEmpty()) {
                     if (d.getUnit().getSequentialDeclaration().equals(lastType.getDeclaration())) {
                         seq = 1;
                     }
@@ -404,7 +403,7 @@ public class TypeUtils {
         for (TypeParameter tp : tparms) {
             ProducedType t = tp.getDefaultTypeArgument();
             if (t == null) {
-                t = tp.getUnit().getAnythingDeclaration().getType();
+                t = tp.getUnit().getAnythingType();
             }
             targs.add(t);
         }
@@ -431,7 +430,7 @@ public class TypeUtils {
         HashMap<TypeParameter, ProducedType> r = new HashMap<TypeParameter, ProducedType>();
         final TypeDeclaration iterable = pt.getDeclaration().getUnit().getIterableDeclaration();
         r.put(iterable.getTypeParameters().get(0), pt);
-        r.put(iterable.getTypeParameters().get(1), pt.getDeclaration().getUnit().getNullDeclaration().getType());
+        r.put(iterable.getTypeParameters().get(1), pt.getDeclaration().getUnit().getNullType());
         return r;
     }
 
@@ -459,7 +458,7 @@ public class TypeUtils {
             TypeUtils.typeNameOrList(term, t, gen, skipSelfDecl);
             gen.out(",'", term.getUnit().getFilename(), " ", term.getLocation(), "')");
         } else {
-            final boolean checkFloat = term.getUnit().getFloatDeclaration().equals(t.getDeclaration());
+            final boolean checkFloat = t.isFloat();
             final boolean checkInt = checkFloat ? false : t.isSubtypeOf(term.getUnit().getIntegerType());
             String tmp = gen.getNames().createTempVariable();
             gen.out("(", tmp, "=");
@@ -962,7 +961,7 @@ public class TypeUtils {
             ProducedType pt, GenerateJsVisitor gen) {
         if (pt == null) {
             //In dynamic blocks we sometimes get a null producedType
-            pt = node.getUnit().getAnythingDeclaration().getType();
+            pt = node.getUnit().getAnythingType();
         }
         if (!outputMetamodelTypeList(resolveTargsFromScope, node, pkg, pt, gen)) {
             TypeDeclaration type = pt.getDeclaration();
@@ -1015,24 +1014,20 @@ public class TypeUtils {
             //It still could be a Tuple with first optional type
             List<ProducedType> cts = pt.getCaseTypes();
             if (cts.size()==2) {
-                Interface ed = node.getUnit().getEmptyDeclaration();
-                Class td = node.getUnit().getTupleDeclaration();
-                for (ProducedType ct: cts) {
-                    if (ct.isClass()) {
-                        TypeDeclaration ctd = ct.getDeclaration();
-                        if (ctd.equals(ed) && ctd.equals(td)) {
-                            //yup...
-                            gen.out("{t:'T',l:");
-                            encodeTupleAsParameterListForRuntime(resolveTargs, node, pt,false,gen);
-                            gen.out("}");
-                            return true;
-                        }
-                    }
+                ProducedType ct1 = cts.get(0);
+                ProducedType ct2 = cts.get(1);
+                if (ct1.isEmpty() && ct2.isTuple() ||
+                    ct2.isEmpty() && ct1.isTuple()) {
+                    //yup...
+                    gen.out("{t:'T',l:");
+                    encodeTupleAsParameterListForRuntime(resolveTargs, node, pt,false,gen);
+                    gen.out("}");
+                    return true;
                 }
             }
             gen.out("{t:'u");
             subs = pt.getCaseTypes();
-        } else if (pt.getDeclaration().getQualifiedNameString().equals("ceylon.language::Tuple")) {
+        } else if (pt.isTuple()) {
             gen.out("{t:'T',l:");
             encodeTupleAsParameterListForRuntime(resolveTargs, node, pt,false, gen);
             gen.out("}");

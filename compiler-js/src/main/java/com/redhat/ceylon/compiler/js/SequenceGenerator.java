@@ -216,7 +216,7 @@ public class SequenceGenerator {
         }
         if (elem == null) {
             gen.out("/*WARNING no Element found* /");
-            elem = that.getUnit().getAnythingDeclaration().getType();
+            elem = that.getUnit().getAnythingType();
         }
         TypeUtils.typeNameOrList(that, elem, gen, false);
         if (nonempty) {

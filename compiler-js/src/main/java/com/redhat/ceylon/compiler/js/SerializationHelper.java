@@ -26,18 +26,16 @@ public class SerializationHelper {
         gen.out("var ", gen.getNames().self(d), "=this;");
         //Call super.ser$$ if possible
         ProducedType extendedType = d.getExtendedType();
-        com.redhat.ceylon.model.typechecker.model.Class et = extendedType==null ? null : 
-            (com.redhat.ceylon.model.typechecker.model.Class) extendedType.getDeclaration();
-        while (et != null && !(et.equals(d.getUnit().getObjectDeclaration()) || et.equals(d.getUnit().getBasicDeclaration()))) {
+        while (extendedType != null && !(extendedType.isObject() || extendedType.isBasic())) {
+            com.redhat.ceylon.model.typechecker.model.Class et =  
+                (com.redhat.ceylon.model.typechecker.model.Class) extendedType.getDeclaration();
             if (et.isSerializable()) {
                 gen.qualify(node, et);
                 gen.out(gen.getNames().name(et), ".$$.prototype.ser$$.call(this,", dc, ");");
-                et = null;
+                extendedType = null;
                 gen.endLine();
             } else {
                 extendedType = extendedType.getExtendedType();
-                et = extendedType==null ? null : 
-                    (com.redhat.ceylon.model.typechecker.model.Class) extendedType.getDeclaration();
             }
         }
         gen.endLine();
@@ -121,9 +119,9 @@ public class SerializationHelper {
         //Call super.deser$$ if possible
         boolean create = true;
         ProducedType extendedType = d.getExtendedType();
-        com.redhat.ceylon.model.typechecker.model.Class et = extendedType==null ? null : 
-            (com.redhat.ceylon.model.typechecker.model.Class) extendedType.getDeclaration();
-        while (create && !(et.equals(that.getUnit().getObjectDeclaration()) || et.equals(that.getUnit().getBasicDeclaration()))) {
+        while (create && !(extendedType.isObject() || extendedType.isBasic())) {
+            com.redhat.ceylon.model.typechecker.model.Class et = extendedType==null ? null : 
+                (com.redhat.ceylon.model.typechecker.model.Class) extendedType.getDeclaration();
             if (et.isSerializable()) {
                 gen.qualify(that, et);
                 gen.out(gen.getNames().name(et), ".deser$$(", dc, ",", cmodel, ",", ni, ");");

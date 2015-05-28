@@ -399,7 +399,7 @@ public class FunctionHelper {
         }
         ProducedType tupleFromParameterList() {
             if (params.getParameters().isEmpty()) {
-                return n.getUnit().getEmptyDeclaration().getType();
+                return n.getUnit().getEmptyType();
             }
             List<ProducedType> types = new ArrayList<>(params.getParameters().size());
             int firstDefaulted=-1;
