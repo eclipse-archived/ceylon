@@ -14,7 +14,7 @@ function unflatten(ff, $$$mptypes) {
         if (seq===undefined || seq.size === 0)seq=empty();
         return ff(seq,$mptypes);
       }
-      ru.$crtmm$={$t:mm.$t,ps:[{$t:{t:last.$t.t,a:last.$t.a}}]};
+      ru.$crtmm$={$t:mm.$t,ps:[{$t:{t:last.$t.t,a:last.$t.a},nm:'unf0',mt:'prm'}]};
     } else if (iadic) {
       //Args and variadic, gets unfinished Tuple
       var cut=mm.ps.length-1;
@@ -48,13 +48,14 @@ function unflatten(ff, $$$mptypes) {
       }
     }
     if (!ru.$crtmm$) {
-      ru.$crtmm$={$t:mm.$t,ps:[{$t:{t:'T',l:[]}}]};
+      ru.$crtmm$={$t:mm.$t,ps:[{$t:{t:'T',l:[]},nm:'unf'}]};
       for (var i=0;i<mm.ps.length;i++){
         ru.$crtmm$.ps[0].$t.l.push(mm.ps[i].$t);
       }
+      if (iadic)ru.$crtmm$.ps[0].$t.l[mm.ps.length-1].seq=iadic;
     }
   } else {
-    var ru=function ru(seq) {
+    var ru=function runomm(seq) {
       if (seq===undefined || seq.size === 0) { return ff(); }
       var a = [];
       for (var i = 0; i < seq.size; i++) {
