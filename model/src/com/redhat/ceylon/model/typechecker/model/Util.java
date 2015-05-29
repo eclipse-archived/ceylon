@@ -477,9 +477,7 @@ public class Util {
 
     private static boolean supportsCoercion(
             TypeDeclaration decl) {
-        Unit unit = decl.getUnit();
-        return decl.equals(unit.getIntegerDeclaration()) || 
-                decl.equals(unit.getFloatDeclaration());
+        return decl.isInteger() || decl.isFloat();
     }
 
     private static boolean hasWorseScore(
@@ -530,7 +528,7 @@ public class Util {
         }
         TypeDeclaration decl = paramType.getDeclaration();
         Unit unit = decl.getUnit();
-        if (decl.equals(unit.getIntegerDeclaration())) {
+        if (decl.isInteger()) {
             int bestScore = 0;
             ProducedType ret = null;
             for(int i=startAt; i<signature.size(); i++){
@@ -603,7 +601,7 @@ public class Util {
             }
             Unit unit = argumentType.getDeclaration().getUnit();
             TypeDeclaration decl = paramType.getDeclaration();
-            if (decl.equals(unit.getIntegerDeclaration())) {
+            if (decl.isInteger()) {
                 if (aType == null) {
                     aType = "long";
                 }

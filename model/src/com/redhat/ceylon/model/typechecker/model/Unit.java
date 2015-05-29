@@ -891,24 +891,13 @@ public class Unit {
 
     public ProducedType getDefiniteType(ProducedType pt) {
         return intersectionType(getObjectType(), pt, this);
-        /*if (pt.getDeclaration().equals(getAnythingDeclaration())) {
-            return getObjectDeclaration().getType();
-        }
-        else {
-            return pt.minus(getNullDeclaration());
-        }*/
     }
 
     public ProducedType getNonemptyType(ProducedType pt) {
-        return intersectionType(producedType(getSequenceDeclaration(), 
-                getSequentialElementType(pt)), pt, 
-                pt.getDeclaration().getUnit());
-        /*if (pt.getDeclaration().equals(getAnythingDeclaration())) {
-            return getObjectDeclaration().getType();
-        }
-        else {
-            return pt.minus(getNullDeclaration());
-        }*/
+        ProducedType st = 
+                producedType(getSequenceDeclaration(), 
+                        getSequentialElementType(pt));
+        return intersectionType(st, pt, this);
     }
 
     public ProducedType getNonemptyDefiniteType(ProducedType pt) {
