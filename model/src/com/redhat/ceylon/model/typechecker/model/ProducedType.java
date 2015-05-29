@@ -143,15 +143,19 @@ public class ProducedType extends ProducedReference {
     
     private boolean isExactlyInternal(ProducedType type) {
         checkDepth();
-        incDepthIfNotTuple();
+        incDepth();
         try {
-            TypeDeclaration dec = getDeclaration();
-            TypeDeclaration otherDec = type.getDeclaration();
             if (isNothing()) {
                 return type.isNothing();
             }
             else if (type.isNothing()) {
                 return isNothing();
+            }
+            else if (isAnything()) {
+                return type.isAnything();
+            }
+            else if (type.isAnything()) {
+                return isAnything();
             }
             else if (isUnion()) {
                 List<ProducedType> cases = getCaseTypes();
@@ -216,7 +220,7 @@ public class ProducedType extends ProducedReference {
                                             getSupertypeInternal(cd);
                                     ProducedType ocst = 
                                             type.getSupertypeInternal(ocd);
-                                    if (cst.isExactlyInternal(ocst)) {
+                                    if (cst.isExactly(ocst)) {
                                         found = true;
                                         break;
                                     }
@@ -242,7 +246,7 @@ public class ProducedType extends ProducedReference {
                         type.getCaseTypes();
                 if (otherCases.size()==1) {
                     ProducedType st = otherCases.get(0);
-                    return this.isExactlyInternal(st);
+                    return isExactlyInternal(st);
                 }
                 else {
                     return false;
@@ -253,11 +257,28 @@ public class ProducedType extends ProducedReference {
                         type.getSatisfiedTypes();
                 if (otherTypes.size()==1) {
                     ProducedType st = otherTypes.get(0);
-                    return this.isExactlyInternal(st);
+                    return isExactlyInternal(st);
                 }
                 else {
                     return false;
                 }
+            }
+            else if (isObject()) {
+                return type.isObject();
+            }
+            else if (type.isObject()) {
+                return isObject();
+            }
+            else if (isNull()) {
+                return type.isNull();
+            }
+            else if (type.isNull()) {
+                return isNull();
+            }
+            else if (type.isClass()!=isClass() ||
+                    type.isInterface()!=isInterface() ||
+                    type.isTypeParameter()!=isTypeParameter()) {
+                return false;
             }
             else if (isTypeConstructor() && 
                     type.isTypeConstructor()) {
@@ -268,6 +289,8 @@ public class ProducedType extends ProducedReference {
                 return false;
             }
             else {
+                TypeDeclaration dec = getDeclaration();
+                TypeDeclaration otherDec = type.getDeclaration();
                 if (!otherDec.equals(dec)) {
                     return false;
                 }
@@ -298,7 +321,7 @@ public class ProducedType extends ProducedReference {
                                 return false;
                             }
                             // just delegate equality
-                            if (!tqt.isExactly(qt)) {
+                            if (!tqt.isExactlyInternal(qt)) {
                                 return false;
                             }
                         }
@@ -311,7 +334,7 @@ public class ProducedType extends ProducedReference {
                                     (TypeDeclaration) dc;
                             ProducedType qts = 
                                     qt.getSupertypeInternal(otd);
-                            if (!qts.isExactlyInternal(tqts)) {
+                            if (!qts.isExactly(tqts)) {
                                 return false;
                             }
                         }
@@ -467,6 +490,12 @@ public class ProducedType extends ProducedReference {
             else if (type.isNothing()) {
                 return false;
             }
+            else if (type.isAnything()) {
+                return true;
+            }
+            else if (isAnything()) {
+                return false;
+            }
             else if (isUnion()) {
                 for (ProducedType ct: 
                         getInternalCaseTypes()) {
@@ -527,6 +556,15 @@ public class ProducedType extends ProducedReference {
             else if (type.isTypeConstructor()) {
                 return isSupertypeOfObject();
             }
+            else if (isObject()) {
+                return type.isObject();
+            }
+            else if (isNull()) {
+                return type.isNull();
+            }
+            else if (isInterface() && type.isClass()) {
+                return type.isObject();
+            }
             else {
                 if (isTuple() && type.isTuple()) {
                     return isSubtypeOfTuple(type);
@@ -559,7 +597,7 @@ public class ProducedType extends ProducedReference {
                             //local types with a qualifying typed 
                             //declaration do not need to obtain the
                             //qualifying type's supertype
-                            if (!stqt.isSubtypeOf(tqt)) {
+                            if (!stqt.isSubtypeOfInternal(tqt)) {
                                 return false;
                             }
                         }
@@ -574,8 +612,14 @@ public class ProducedType extends ProducedReference {
                                         otherDec.getContainer();
                             ProducedType tqts = 
                                     tqt.getSupertypeInternal(totd);
-                            if (!stqt.isSubtypeOf(tqts)) {
+                            if (tqts==null) {
                                 return false;
+                            }
+                            else {
+                                tqts = tqts.resolveAliases();
+                                if(!stqt.isSubtypeOfInternal(tqts)) {
+                                    return false;
+                                }
                             }
                         }
                     }
@@ -1200,13 +1244,6 @@ public class ProducedType extends ProducedReference {
         ProducedType declaringType = getSupertype(type);
         return member.getProducedType(declaringType, 
                 typeArguments);
-        /*ProducedType pt = new ProducedType();
-        pt.setDeclaration(member);
-        pt.setQualifyingType(declaringType);
-        Map<TypeParameter, ProducedType> map = arguments(member, declaringType, typeArguments);
-        //map.putAll(sub(map));
-        pt.setTypeArguments(map);
-        return pt;*/
     }
 
     /**
@@ -1322,7 +1359,8 @@ public class ProducedType extends ProducedReference {
         boolean complexType = 
                 dec instanceof UnionType || 
                 dec instanceof IntersectionType;
-        boolean canCache = !complexType && 
+        boolean canCache = 
+                !complexType && 
                 !hasUnderlyingType() && 
                 collectVarianceOverrides().isEmpty() &&
                 ProducedTypeCache.isEnabled();
@@ -1331,27 +1369,26 @@ public class ProducedType extends ProducedReference {
                 cache.containsKey(this, dec)) {
             return cache.get(this, dec);
         }
-        SupertypeCheck check = 
-                checkSupertype(getDeclaration(), dec);
+        
         ProducedType superType;
-        if (check == SupertypeCheck.NO) {
-            superType = null;
-        }
-        else if (check == SupertypeCheck.YES && 
-                dec instanceof ClassOrInterface && 
-                dec.isToplevel() && 
-                dec.getTypeParameters().isEmpty()) {
-            superType = dec.getType();
-        }
-        else if (check == SupertypeCheck.YES && 
-                dec == getDeclaration() && 
-                dec.isToplevel()) {
-            superType = this;
+        if (dec instanceof ClassOrInterface &&
+                isClassOrInterface() &&
+                dec.getTypeParameters().isEmpty() &&
+                !dec.isClassOrInterfaceMember()) {
+            //fast!
+            if (getDeclaration().inherits(dec)) {
+                superType = dec.getType();
+            }
+            else {
+                superType = null;
+            }
         }
         else {
+            //slow:
             superType = 
                     getSupertype(new SupertypeCriteria(dec));
         }
+        
         if (canCache) {
             cache.put(this, dec, superType);
         }
@@ -1373,113 +1410,7 @@ public class ProducedType extends ProducedReference {
         }
         return false;
     }
-
-    enum SupertypeCheck {
-        YES, NO, MAYBE;
-    }
     
-    private static SupertypeCheck checkSupertype(
-            TypeDeclaration declaration, 
-            TypeDeclaration supertype) {
-        // fail-fast: there are only two classes that can 
-        // be supertypes of an interface
-        if (declaration instanceof Interface && 
-                supertype instanceof Class) {
-            String supertypeName = 
-                    supertype.getQualifiedNameString();
-            if (supertypeName.equals("ceylon.language::Object") || 
-                supertypeName.equals("ceylon.language::Anything")) {
-                return SupertypeCheck.YES;
-            }
-            else {
-                return SupertypeCheck.NO;
-            }
-        }
-        // we don't know how to look for non-simple supertypes
-        if (!(supertype instanceof Class) && 
-            !(supertype instanceof Interface)) {
-            return SupertypeCheck.MAYBE;
-        }
-        if (declaration instanceof Class || 
-            declaration instanceof Interface) {
-            if (declaration.equals(supertype)) {
-                return SupertypeCheck.YES;
-            }
-            ProducedType et = 
-                    declaration.getExtendedType();
-            if (et!=null) {
-                SupertypeCheck extended = 
-                        checkSupertype(et.getDeclaration(), 
-                                supertype);
-                if (extended == SupertypeCheck.YES) {
-                    return extended;
-                }
-                // keep looking
-            }
-            List<ProducedType> sts = 
-                    declaration.getSatisfiedTypes();
-            for (ProducedType satisfiedType: sts) {
-                TypeDeclaration std = 
-                        satisfiedType.getDeclaration();
-                SupertypeCheck satisfied = 
-                        checkSupertype(std, supertype);
-                if (satisfied == SupertypeCheck.YES) {
-                    return satisfied;
-                }
-                // keep looking
-            }
-            // not in the interfaces, not in the extended type
-            return SupertypeCheck.NO;
-        }
-        if (declaration instanceof UnionType) {
-            List<ProducedType> cts = 
-                    declaration.getCaseTypes();
-            if (cts.isEmpty()) {
-                return SupertypeCheck.NO;
-            }
-            // every case must have that supertype
-            for (ProducedType caseType: cts) {
-                TypeDeclaration ctd = 
-                        caseType.getDeclaration();
-                SupertypeCheck satisfied = 
-                        checkSupertype(ctd, supertype);
-                if (satisfied != SupertypeCheck.YES) {
-                    return satisfied;
-                }
-                // keep looking
-            }
-            // in every case
-            return SupertypeCheck.YES;
-        }
-        if (declaration instanceof IntersectionType) {
-            List<ProducedType> sts = 
-                    declaration.getSatisfiedTypes();
-            if (sts.isEmpty()) {
-                return SupertypeCheck.NO;
-            }
-            boolean perhaps = false;
-            // any satisfied type will do
-            for (ProducedType satisfiedType: sts) {
-                TypeDeclaration std = 
-                        satisfiedType.getDeclaration();
-                SupertypeCheck satisfied = 
-                        checkSupertype(std, supertype);
-                if (satisfied == SupertypeCheck.YES) {
-                    return satisfied;
-                }
-                else if (satisfied == SupertypeCheck.MAYBE) {
-                    perhaps = true;
-                }
-                // keep looking
-            }
-            // did not find it, but perhaps it's in there?
-            return perhaps ? 
-                    SupertypeCheck.MAYBE : 
-                    SupertypeCheck.NO;
-        }
-        return SupertypeCheck.MAYBE;
-    }
-
     private static final class SupertypeCriteria 
             implements Criteria {
         private TypeDeclaration dec;
@@ -1627,16 +1558,7 @@ public class ProducedType extends ProducedReference {
             throw new DecidabilityException();
         }
     }
-
-    void incDepthIfNotTuple() {
-        String qname = 
-                getDeclaration()
-                    .getQualifiedNameString();
-        if (!"ceylon.language::Tuple".equals(qname)) {
-            incDepth();
-        }
-    }
-
+    
     static void decDepth() {
         depth.set(depth.get()-1);
     }
@@ -3355,9 +3277,12 @@ public class ProducedType extends ProducedReference {
                         new ArrayList<ProducedType>
                             (cts.size());
                 for (ProducedType ct: cts) {
+                    if (ct.isExactly(this)) {
+                        //we hit a self type
+                        return this;
+                    }
                     addToUnion(list, 
-                            ct.substitute(this)
-                              .getUnionOfCases()); //note recursion
+                            ct.getUnionOfCases()); //note recursion
                 }
                 UnionType ut = new UnionType(unit);
                 ut.setCaseTypes(list);
@@ -3521,12 +3446,16 @@ public class ProducedType extends ProducedReference {
         if (resolvedAliases == null) {
             // really compute it
             checkDepth();
-            incDepthIfNotTuple();
+            if (!isTuple()) {
+                incDepth();
+            }
             try {
                 resolvedAliases = resolveAliasesInternal();
             }
-            finally { 
-                decDepth();
+            finally {
+                if (!isTuple()) {
+                    decDepth();
+                }
             }
             // mark it as resolved so it doesn't get resolved again
             resolvedAliases.resolvedAliases = resolvedAliases;
@@ -3542,8 +3471,13 @@ public class ProducedType extends ProducedReference {
     private ProducedType resolveAliasesInternal() {
         TypeDeclaration dec = getDeclaration();
         Unit unit = dec.getUnit();
-        
-        if (isTypeConstructor()) {
+        if (isClassOrInterface() &&
+                getQualifyingType()==null &&
+                !dec.isAlias() &&
+                dec.getTypeParameters().isEmpty()) {
+            return this;
+        }
+        else if (isTypeConstructor()) {
             return this;
         }
         else if (isUnion()) {
@@ -3553,8 +3487,8 @@ public class ProducedType extends ProducedReference {
                     new ArrayList<ProducedType>
                         (caseTypes.size());
             for (ProducedType pt: caseTypes) {
-                ProducedType rt = pt.resolveAliases();
-                addToUnion(list, rt);
+                addToUnion(list, 
+                        pt.resolveAliases());
             }
             UnionType ut = new UnionType(unit);
             ut.setCaseTypes(list);
@@ -3567,8 +3501,9 @@ public class ProducedType extends ProducedReference {
                     new ArrayList<ProducedType>
                         (satisfiedTypes.size());
             for (ProducedType pt: satisfiedTypes) {
-                ProducedType rt = pt.resolveAliases();
-                addToIntersection(list, rt, unit);
+                addToIntersection(list, 
+                        pt.resolveAliases(), 
+                        unit);
             }
             IntersectionType ut = 
                     new IntersectionType(unit);
@@ -3582,15 +3517,20 @@ public class ProducedType extends ProducedReference {
                         qt.resolveAliases();
             
             List<ProducedType> args = getTypeArgumentList();
-            List<ProducedType> aliasedArgs = 
-                    args.isEmpty() ? NO_TYPE_ARGS : 
+            List<ProducedType> aliasedArgs;
+            if (args.isEmpty()) {
+                aliasedArgs = NO_TYPE_ARGS;
+            }
+            else {
+                aliasedArgs = 
                         new ArrayList<ProducedType>
                             (args.size());
-            for (ProducedType arg: args) {
-                ProducedType aliasedArg = 
-                        arg==null ? null : 
-                            arg.resolveAliases();
-                aliasedArgs.add(aliasedArg);
+                for (ProducedType arg: args) {
+                    ProducedType aliasedArg = 
+                            arg==null ? null : 
+                                arg.resolveAliases();
+                    aliasedArgs.add(aliasedArg);
+                }
             }
             if (dec.isAlias()) {
                 ProducedType et = dec.getExtendedType();
@@ -3955,99 +3895,51 @@ public class ProducedType extends ProducedReference {
     }
     
     public boolean isAnything() {
-        return isClass() &&
-                getDeclaration()
-//                    .equals(getDeclaration().getUnit().getAnythingDeclaration());
-                    .getQualifiedNameString()
-                    .equals("ceylon.language::Anything");
+        return getDeclaration().isAnything();
     }
     
     public boolean isObject() {
-        return isClass() &&
-                getDeclaration()
-//                    .equals(getDeclaration().getUnit().getAnythingDeclaration());
-                    .getQualifiedNameString()
-                    .equals("ceylon.language::Object");
-    }
-    
-    public boolean isBasic() {
-        return isClass() &&
-                getDeclaration()
-//                    .equals(getDeclaration().getUnit().getAnythingDeclaration());
-                    .getQualifiedNameString()
-                    .equals("ceylon.language::Basic");
-    }
-    
-    public boolean isBoolean() {
-        return isClass() &&
-                getDeclaration()
-//                    .equals(getDeclaration().getUnit().getAnythingDeclaration());
-                    .getQualifiedNameString()
-                    .equals("ceylon.language::Boolean");
-    }
-    
-    public boolean isString() {
-        return isClass() &&
-                getDeclaration()
-//                    .equals(getDeclaration().getUnit().getAnythingDeclaration());
-                    .getQualifiedNameString()
-                    .equals("ceylon.language::String");
-    }
-    
-    public boolean isCharacter() {
-        return isClass() &&
-                getDeclaration()
-//                    .equals(getDeclaration().getUnit().getAnythingDeclaration());
-                    .getQualifiedNameString()
-                    .equals("ceylon.language::Character");
-    }
-    
-    public boolean isFloat() {
-        return isClass() &&
-                getDeclaration()
-//                    .equals(getDeclaration().getUnit().getAnythingDeclaration());
-                    .getQualifiedNameString()
-                    .equals("ceylon.language::Float");
-    }
-    
-    public boolean isInteger() {
-        return isClass() &&
-                getDeclaration()
-//                    .equals(getDeclaration().getUnit().getAnythingDeclaration());
-                    .getQualifiedNameString()
-                    .equals("ceylon.language::Integer");
-    }
-    
-    public boolean isByte() {
-        return isClass() &&
-                getDeclaration()
-//                    .equals(getDeclaration().getUnit().getAnythingDeclaration());
-                    .getQualifiedNameString()
-                    .equals("ceylon.language::Byte");
+        return getDeclaration().isObject();
     }
     
     public boolean isNull() {
-        return isClass() &&
-                getDeclaration()
-//                    .equals(getDeclaration().getUnit().getAnythingDeclaration());
-                    .getQualifiedNameString()
-                    .equals("ceylon.language::Null");
+        return getDeclaration().isNull();
+    }
+    
+    public boolean isBasic() {
+        return getDeclaration().isBasic();
+    }
+    
+    public boolean isBoolean() {
+        return getDeclaration().isBoolean();
+    }
+    
+    public boolean isString() {
+        return getDeclaration().isString();
+    }
+    
+    public boolean isCharacter() {
+        return getDeclaration().isCharacter();
+    }
+    
+    public boolean isFloat() {
+        return getDeclaration().isFloat();
+    }
+    
+    public boolean isInteger() {
+        return getDeclaration().isInteger();
+    }
+    
+    public boolean isByte() {
+        return getDeclaration().isByte();
     }
     
     public boolean isEmpty() {
-        return isInterface() &&
-                getDeclaration()
-//                    .equals(getDeclaration().getUnit().getAnythingDeclaration());
-                    .getQualifiedNameString()
-                    .equals("ceylon.language::Empty");
+        return getDeclaration().isEmpty();
     }
     
     public boolean isTuple() {
-        return isClass() &&
-                getDeclaration()
-//                    .equals(getDeclaration().getUnit().getTupleDeclaration());
-                    .getQualifiedNameString()
-                    .equals("ceylon.language::Tuple");
+        return getDeclaration().isTuple();
     }
     
     public int getMemoisedHashCode() {

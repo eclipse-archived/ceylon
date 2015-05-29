@@ -17,8 +17,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
-import com.redhat.ceylon.model.typechecker.context.ProducedTypeCache;
-
 public abstract class TypeDeclaration extends Declaration 
         implements ImportableScope, Generic, Cloneable {
 
@@ -332,21 +330,7 @@ public abstract class TypeDeclaration extends Declaration
     /**
      * Does the given declaration inherit the given type?
      */
-    public boolean inherits(TypeDeclaration dec) {
-        //TODO: optimize this to avoid walking the
-        //      same supertypes multiple times
-        for (ProducedType st: getSatisfiedTypes()) {
-            if (st.getDeclaration().inherits(dec)) {
-                return true;
-            }
-        }
-        ProducedType et = getExtendedType();
-        if (et!=null && 
-                et.getDeclaration().inherits(dec)) {
-            return true;
-        }
-        return false;
-    }
+    public abstract boolean inherits(TypeDeclaration dec);
     
     /**
      * Return the least-refined (i.e. the non-actual member)
@@ -930,6 +914,54 @@ public abstract class TypeDeclaration extends Declaration
     public void clearProducedTypeCache() {
         // do nothing, work in subclasses
 //        supertypeDeclarations = null;
+    }
+
+    boolean isAnything() {
+        return false;
+    }
+    
+    boolean isObject() {
+        return false;
+    }
+    
+    boolean isNull() {
+        return false;
+    }
+    
+    public boolean isBasic() {
+        return false;
+    }
+
+    public boolean isBoolean() {
+        return false;
+    }
+
+    public boolean isString() {
+        return false;
+    }
+
+    public boolean isCharacter() {
+        return false;
+    }
+
+    public boolean isFloat() {
+        return false;
+    }
+
+    public boolean isInteger() {
+        return false;
+    }
+
+    public boolean isByte() {
+        return false;
+    }
+
+    public boolean isEmpty() {
+        return false;
+    }
+
+    public boolean isTuple() {
+        return false;
     }
 
 }

@@ -119,21 +119,26 @@ public class UnionType extends TypeDeclaration {
     
     @Override
     public boolean inherits(TypeDeclaration dec) {
-        //this loop is intended as a performance
-        //optimization, but it doesn't actually
-        //seem to help at all really
-        /*for (ProducedType ct: getCaseTypes()) {
-            if (!ct.getDeclaration().inherits(dec)) {
-                return false;
-            }
-        }*/        
-        //have to resolve aliases here or the build of
-        //ceylon.ast is really slow / nonterminating
-        ProducedType st = 
-                getType()
-                    .resolveAliases()
-                    .getSupertype(dec);
-        return st!=null && !st.isNothing();
+        if (dec.isAnything()) {
+            return true;
+        }
+        else {
+            //this loop is intended as a performance
+            //optimization, but it doesn't actually
+            //seem to help at all really
+            /*for (ProducedType ct: getCaseTypes()) {
+                if (!ct.getDeclaration().inherits(dec)) {
+                    return false;
+                }
+            }*/        
+            //have to resolve aliases here or the build of
+            //ceylon.ast is really slow / nonterminating
+            ProducedType st = 
+                    getType()
+                        .resolveAliases()
+                        .getSupertype(dec);
+            return st!=null && !st.isNothing();
+        }
     }
     
     @Override

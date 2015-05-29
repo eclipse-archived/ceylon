@@ -1116,7 +1116,9 @@ public class Util {
      */
     public static void addToUnion(List<ProducedType> list, 
             ProducedType pt) {
-        if (pt==null || !list.isEmpty() && pt.isNothing()) {
+        if (pt==null || 
+                !list.isEmpty() && 
+                pt.isNothing()) {
             return;
         }
         else if (pt.isAnything()) {
@@ -1167,7 +1169,9 @@ public class Util {
     public static void addToIntersection(List<ProducedType> list, 
             ProducedType pt, Unit unit, 
             boolean reduceDisjointTypes) {
-        if (pt==null || !list.isEmpty() && pt.isAnything()) {
+        if (pt==null || 
+                !list.isEmpty() && 
+                pt.isAnything()) {
             return;
         }
         else if (pt.isNothing()) {
@@ -1183,8 +1187,7 @@ public class Util {
                     i<size; i++) {
                 ProducedType t = satisfiedTypes.get(i);
                 addToIntersection(list, 
-                        t.substitute(pt), 
-                        unit, reduceDisjointTypes);
+                        t, unit, reduceDisjointTypes);
             }
         }
         else {
@@ -1248,7 +1251,7 @@ public class Util {
             if (add) {
                 for (int i=0; i<list.size(); i++) {
                     ProducedType t = list.get(i);
-                    if (pt.isSupertypeOf(t)) {
+                    if (t.isSubtypeOf(pt)) {
                         add = false;
                         break;
                     }
@@ -1270,8 +1273,8 @@ public class Util {
                                 !t.containsUnknowns()) {
                             //canonicalize T<InX,OutX>&T<InY,OutY> to T<InX|InY,OutX&OutY>
                             ProducedType pi = 
-                                    principalInstantiation(ptd, 
-                                            pt, t, unit);
+                                    principalInstantiation(
+                                            ptd, pt, t, unit);
                             if (!pi.containsUnknowns()) {
                                 list.remove(i);
                                 list.add(pi);

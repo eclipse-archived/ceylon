@@ -127,7 +127,7 @@ public class Class extends ClassOrInterface implements Functional {
     public Parameter getParameter(String name) {
         for (Declaration d : getMembers()) {
             if (d.isParameter() && Util.isNamed(name, d)) {
-                return ((MethodOrValue)d).getInitializerParameter();
+                return ((MethodOrValue) d).getInitializerParameter();
             }
         }
         return null;
@@ -204,6 +204,106 @@ public class Class extends ClassOrInterface implements Functional {
         return true;
     }
     
+    @Override
+    boolean isAnything() {
+        return getQualifiedNameString()
+                .equals("ceylon.language::Anything");
+    }
+    
+    @Override
+    boolean isObject() {
+        return getQualifiedNameString()
+                .equals("ceylon.language::Object");
+    }
+    
+    @Override
+    boolean isNull() {
+        return getQualifiedNameString()
+                .equals("ceylon.language::Null");
+    }
+
+    @Override
+    public boolean isBasic() {
+        return getQualifiedNameString()
+                .equals("ceylon.language::Basic");
+    }
+
+    @Override
+    public boolean isBoolean() {
+        return getQualifiedNameString()
+                .equals("ceylon.language::Boolean");
+    }
+
+    @Override
+    public boolean isString() {
+        return getQualifiedNameString()
+                .equals("ceylon.language::String");
+    }
+
+    @Override
+    public boolean isCharacter() {
+        return getQualifiedNameString()
+                .equals("ceylon.language::Character");
+    }
+
+    @Override
+    public boolean isFloat() {
+        return getQualifiedNameString()
+                .equals("ceylon.language::Float");
+    }
+
+    @Override
+    public boolean isInteger() {
+        return getQualifiedNameString()
+                .equals("ceylon.language::Integer");
+    }
+
+    @Override
+    public boolean isByte() {
+        return getQualifiedNameString()
+                .equals("ceylon.language::Byte");
+    }
+
+    @Override
+    public boolean isTuple() {
+        return getQualifiedNameString()
+                .equals("ceylon.language::Tuple");
+    }
+    
+    @Override
+    public boolean inherits(TypeDeclaration dec) {
+        if (dec.isAnything()) {
+            return true;
+        }
+//        else if (dec.isObject()) {
+//            return !isAnything() && !isNull() &&
+//            !getQualifiedNameString().equals("ceylon.language::null");
+//        }
+//        else 
+        if (dec instanceof Class &&  equals(dec)) {
+            return true;
+        }
+        else {
+            //TODO: optimize this to avoid walking the
+            //      same supertypes multiple times
+            ProducedType et = getExtendedType();
+            if (et!=null && 
+                    et.getDeclaration().inherits(dec)) {
+                return true;
+            }
+            if (dec instanceof Interface) {
+                List<ProducedType> sts = getSatisfiedTypes();
+                for (int i = 0, s=sts.size(); i<s; i++) {
+                    ProducedType st = sts.get(i);
+                    if (st.getDeclaration().inherits(dec)) {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+    }
+
     public List<ProducedReference> getUnimplementedFormals() {
         return unimplementedFormals;
     }

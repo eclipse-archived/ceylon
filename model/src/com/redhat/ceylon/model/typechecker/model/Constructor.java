@@ -145,6 +145,17 @@ public class Constructor extends TypeDeclaration implements Generic, Scope, Func
                 .collectSupertypeDeclarations(results);
         }
     }
+    
+    @Override
+    public boolean inherits(TypeDeclaration dec) {
+        ProducedType et = getExtendedType();
+        if (et!=null) { 
+            return et.getDeclaration().inherits(dec);
+        }
+        else {
+            return false;
+        }
+    }
 
     @Override
     protected int hashCodeForCache() {

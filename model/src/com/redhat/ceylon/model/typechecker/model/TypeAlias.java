@@ -69,7 +69,8 @@ public class TypeAlias extends TypeDeclaration {
         int ret = 17;
         ret = Util.addHashForModule(ret, this);
         if(isToplevel())
-            ret = (37 * ret) + getQualifiedNameString().hashCode();
+            ret = (37 * ret) + 
+                    getQualifiedNameString().hashCode();
         else{
             ret = (37 * ret) + getContainer().hashCode();
             ret = (37 * ret) + Objects.hashCode(getName());
@@ -82,15 +83,20 @@ public class TypeAlias extends TypeDeclaration {
         if(o == null || !(o instanceof ClassOrInterface))
             return false;
         ClassOrInterface b = (ClassOrInterface) o;
-        if(!Util.sameModule(this, b))
+        if (!Util.sameModule(this, b)) {
             return false;
-        if(isToplevel()){
-            if(!b.isToplevel())
+        }
+        if (isToplevel()) {
+            if (!b.isToplevel()) {
                 return false;
-            return getQualifiedNameString().equals(b.getQualifiedNameString());
-        }else{
-            if(b.isToplevel())
+            }
+            return getQualifiedNameString()
+                    .equals(b.getQualifiedNameString());
+        }
+        else {
+            if(b.isToplevel()) {
                 return false;
+            }
             return getContainer().equals(b.getContainer())
                     && Objects.equals(getName(),b.getName());
         }

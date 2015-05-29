@@ -227,6 +227,23 @@ public class TypeParameter extends TypeDeclaration implements Functional {
     }
     
     @Override
+    public boolean inherits(TypeDeclaration dec) {
+        if (dec.isAnything()) {
+            return true;
+        }
+        else {
+            List<ProducedType> sts = getSatisfiedTypes();
+            for (int i = 0, s=sts.size(); i<s; i++) {
+                ProducedType st = sts.get(i);
+                if (st.getDeclaration().inherits(dec)) {
+                    return true;
+                }
+            }
+            return false;
+        }
+    }
+    
+    @Override
     public boolean isFunctional() {
         return true;
     }

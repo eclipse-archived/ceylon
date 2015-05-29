@@ -1,5 +1,7 @@
 package com.redhat.ceylon.model.typechecker.model;
 
+import java.util.List;
+
 public class Interface extends ClassOrInterface {
 
     private String javaCompanionClassName;
@@ -8,6 +10,36 @@ public class Interface extends ClassOrInterface {
     @Override
     public boolean isAbstract() {
         return true;
+    }
+
+    @Override
+    public boolean isEmpty() {
+        return getQualifiedNameString()
+                .equals("ceylon.language::Empty");
+    }
+
+    @Override
+    public boolean inherits(TypeDeclaration dec) {
+        if (dec.isAnything() || dec.isObject()) {
+            return true;
+        }
+        if (dec instanceof Interface && equals(dec)) {
+            return true;
+        }
+        else {
+            //TODO: optimize this to avoid walking the
+            //      same supertypes multiple times
+            if (dec instanceof Interface) {
+                List<ProducedType> sts = getSatisfiedTypes();
+                for (int i = 0, s=sts.size(); i<s; i++) {
+                    ProducedType st = sts.get(i);
+                    if (st.getDeclaration().inherits(dec)) {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
     }
 
     public void setJavaCompanionClassName(String name) {

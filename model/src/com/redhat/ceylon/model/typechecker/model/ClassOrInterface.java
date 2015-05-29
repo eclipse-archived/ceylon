@@ -58,17 +58,6 @@ public abstract class ClassOrInterface extends TypeDeclaration {
     }
 
     @Override
-    public boolean inherits(TypeDeclaration dec) {
-        if (dec instanceof ClassOrInterface && 
-                equals(dec)) {
-            return true;
-        }
-        else {
-            return super.inherits(dec);
-        }
-    }
-
-    @Override
     public ProducedType getExtendedType() {
         ProducedType et = super.getExtendedType();
         if (et == null) {
