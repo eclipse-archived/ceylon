@@ -144,10 +144,15 @@ public class PhasedUnit {
         this.flowAnalyzed = other.flowAnalyzed;
     }
 
-    protected boolean reuseExistingDescriptorModels() {
+    protected boolean shouldIgnoreOverload(Declaration overload,
+            Declaration currentDeclaration) {
         return false;
     }
-    
+
+    protected boolean isAllowedToChangeModel(Declaration declaration) {
+        return true;
+    }
+
     public ModuleDescriptor findModuleDescriptor() {
         if (ModuleManager.MODULE_FILE.equals(fileName)) {
             rootNode.visit(new Visitor() {
@@ -169,7 +174,7 @@ public class PhasedUnit {
                 moduleVisitor = 
                         new ModuleVisitor(moduleManagerRef.get(), moduleManagerUtilRef.get(), 
                                 pkg);
-                moduleVisitor.setCompleteOnlyAST(reuseExistingDescriptorModels());
+                moduleVisitor.setCompleteOnlyAST(!isAllowedToChangeModel(null));
                 rootNode.visit(moduleVisitor);
                 return moduleVisitor.getMainModule();
             }
@@ -338,25 +343,22 @@ public class PhasedUnit {
 
     protected DeclarationVisitor createDeclarationVisitor() {
         return new DeclarationVisitor(pkg, 
-                fileName,
-                unitFile.getPath(), 
-                pathRelativeToSrcDir) {
-            @Override
-            protected boolean shouldIgnoreOverload(
-                    Declaration overload, Declaration declaration) {
-                return PhasedUnit.this.shouldIgnoreOverload(
-                        overload, declaration);
-            }
-            @Override
-            protected TypecheckerUnit createUnit() {
-                return PhasedUnit.this.createUnit();
-            }
+                        fileName,
+                        unitFile.getPath(), 
+                        pathRelativeToSrcDir) {
+                            @Override
+                            protected boolean shouldIgnoreOverload(Declaration overload, Declaration declaration) {
+                                return PhasedUnit.this.shouldIgnoreOverload(overload, declaration);
+                            }
+                            @Override
+                            protected TypecheckerUnit createUnit() {
+                                return PhasedUnit.this.createUnit();
+                            }
+                            @Override
+                            protected boolean isAllowedToChangeModel(Declaration declaration) {
+                                return PhasedUnit.this.isAllowedToChangeModel(declaration);
+                            }
         };
-    }
-
-    public boolean shouldIgnoreOverload(Declaration overload,
-            Declaration currentDeclaration) {
-        return false;
     }
 
     private void processLiterals() {

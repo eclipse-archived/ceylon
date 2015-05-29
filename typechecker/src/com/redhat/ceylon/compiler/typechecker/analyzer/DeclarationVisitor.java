@@ -271,7 +271,8 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
                                         name + "'");
                             }
                         }
-                        if (!hasModelInOverloads(model, overloads)) {
+                        if (isAllowedToChangeModel(member) && 
+                                !hasModelInOverloads(model, overloads)) {
                             overloads.add(model);
                         }
                         //note that all native "overloads"
@@ -347,10 +348,7 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
             List<Declaration> overloads) {
         if (overloads!=null) {
             for (Declaration overload: overloads) {
-                if (overload == declaration ||
-                        overload.equals(declaration) && 
-                        shouldIgnoreOverload(
-                                overload, declaration)) {
+                if (overload == declaration) {
                     return true;
                 }
             }
@@ -360,6 +358,8 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
     
     protected abstract boolean shouldIgnoreOverload(Declaration overload,
             Declaration declaration);
+
+    protected abstract boolean isAllowedToChangeModel(Declaration declaration);
 
     private static void checkForDuplicateDeclaration(
             Tree.Declaration that, 
