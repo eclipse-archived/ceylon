@@ -234,37 +234,35 @@ public class TypeUtils {
             gen.out(gen.getClAlias(), "mut$([");
             subs = pt.getCaseTypes();
         }
-        else {
-            if (pt.isTuple()) {
-                TypeDeclaration d = pt.getDeclaration();
-                subs = d.getUnit().getTupleElementTypes(pt);
-                final ProducedType lastType = subs.get(subs.size()-1);
-                if (Util.isTypeUnknown(lastType) || lastType.isTypeParameter()) {
-                    //Revert to outputting normal Tuple with its type arguments
-                    gen.out("{t:", gen.getClAlias(), "Tuple,a:");
-                    printTypeArguments(node, pt.getTypeArguments(), gen, skipSelfDecl, pt.getVarianceOverrides());
-                    gen.out("}");
-                    return true;
-                }
-                if (!lastType.isEmpty()) {
-                    if (lastType.isSequential()) {
-                        seq = 1;
-                    }
-                    if (lastType.isSequence()) {
-                        seq = 2;
-                    }
-                }
-                if (seq > 0) {
-                    //Non-empty, non-tuple tail; union it with its type parameter
-                    UnionType utail = new UnionType(d.getUnit());
-                    utail.setCaseTypes(Arrays.asList(lastType.getTypeArgumentList().get(0), lastType));
-                    subs.remove(subs.size()-1);
-                    subs.add(utail.getType());
-                }
-                gen.out(gen.getClAlias(), "mtt$([");
-            } else {
-                return false;
+        else if (pt.isTuple()) {
+            TypeDeclaration d = pt.getDeclaration();
+            subs = d.getUnit().getTupleElementTypes(pt);
+            final ProducedType lastType = subs.get(subs.size()-1);
+            if (pt.involvesTypeParameters()) {
+                //Revert to outputting normal Tuple with its type arguments
+                gen.out("{t:", gen.getClAlias(), "Tuple,a:");
+                printTypeArguments(node, pt.getTypeArguments(), gen, skipSelfDecl, pt.getVarianceOverrides());
+                gen.out("}");
+                return true;
             }
+            if (!lastType.isEmpty()) {
+                if (lastType.isSequential()) {
+                    seq = 1;
+                }
+                if (lastType.isSequence()) {
+                    seq = 2;
+                }
+            }
+            if (seq > 0) {
+                //Non-empty, non-tuple tail; union it with its type parameter
+                UnionType utail = new UnionType(d.getUnit());
+                utail.setCaseTypes(Arrays.asList(lastType.getTypeArgumentList().get(0), lastType));
+                subs.remove(subs.size()-1);
+                subs.add(utail.getType());
+            }
+            gen.out(gen.getClAlias(), "mtt$([");
+        } else {
+            return false;
         }
         boolean first = true;
         for (ProducedType t : subs) {
@@ -546,13 +544,13 @@ public class TypeUtils {
         final ProducedType empty = getUnit(_tuple).getEmptyType();
         while (_tuple != null && !(_tuple.isSubtypeOf(empty) || _tuple.isTypeParameter())) {
             Parameter _p = null;
-            if (isTuple(_tuple, false)) {
+            if (isTuple(_tuple)) {
                 _p = new Parameter();
                 _p.setModel(new Value());
                 if (_tuple.isUnion()) {
                     //Handle union types for defaulted parameters
                     for (ProducedType mt : _tuple.getCaseTypes()) {
-                        if (isTuple(mt, true)) {
+                        if (mt.isTuple()) {
                             _p.getModel().setType(mt.getTypeArgumentList().get(1));
                             _tuple = mt.getTypeArgumentList().get(2);
                             break;
@@ -586,10 +584,10 @@ public class TypeUtils {
     }
 
     /** Check if a type is a Tuple, or a union of 2 types one of which is a Tuple. */
-    private static boolean isTuple(ProducedType pt, final boolean strict) {
+    private static boolean isTuple(ProducedType pt) {
         if (pt.isClass() && pt.getDeclaration().equals(pt.getDeclaration().getUnit().getTupleDeclaration())) {
             return true;
-        } else if (!strict && pt.isUnion() && pt.getCaseTypes().size() == 2) {
+        } else if (pt.isUnion() && pt.getCaseTypes().size() == 2) {
             Class tuple = pt.getCaseTypes().get(0).isClassOrInterface() ?
                     pt.getCaseTypes().get(0).getDeclaration().getUnit().getTupleDeclaration() :
                         pt.getCaseTypes().get(1).isClassOrInterface() ?
@@ -620,11 +618,11 @@ public class TypeUtils {
                 gen.out(MetamodelGenerator.KEY_METATYPE, ":'", MetamodelGenerator.METATYPE_PARAMETER, "',");
                 gen.out(MetamodelGenerator.KEY_TYPE, ":");
             }
-            if (isTuple(_tuple, false)) {
+            if (isTuple(_tuple)) {
                 if (_tuple.isUnion()) {
                     //Handle union types for defaulted parameters
                     for (ProducedType mt : _tuple.getCaseTypes()) {
-                        if (isTuple(mt, true)) {
+                        if (mt.isTuple()) {
                             metamodelTypeNameOrList(resolveTargs, node, gen.getCurrentPackage(),
                                     mt.getTypeArgumentList().get(1), gen);
                             _tuple = mt.getTypeArgumentList().get(2);
@@ -1031,8 +1029,13 @@ public class TypeUtils {
             gen.out("{t:'u");
             subs = pt.getCaseTypes();
         } else if (pt.isTuple()) {
-            gen.out("{t:'T',l:");
-            encodeTupleAsParameterListForRuntime(resolveTargs, node, pt,false, gen);
+            if (pt.involvesTypeParameters() && resolveTargs) {
+                gen.out("{t:", gen.getClAlias(), "Tuple,a:");
+                printTypeArguments(node, pt.getTypeArguments(), gen, false, pt.getVarianceOverrides());
+            } else {
+                gen.out("{t:'T',l:");
+                encodeTupleAsParameterListForRuntime(resolveTargs, node, pt,false, gen);
+            }
             gen.out("}");
             return true;
         } else {
