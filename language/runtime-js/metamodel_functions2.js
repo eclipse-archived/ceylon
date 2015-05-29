@@ -60,7 +60,7 @@ function detpl$(t) {
     var result = detpl$(t.a.Rest$Tuple);
     if (result.l===undefined)return result;
     var arg=t.a.First$Tuple || {t:Anything};
-    result.unshift(arg);
+    result.l.unshift(arg);
     return result;
   } else if (t.a && (t.a.Element$Sequential || t.a.Element$Sequence)) {
     return t.a.Element$Sequential || t.a.Element$Sequence;
