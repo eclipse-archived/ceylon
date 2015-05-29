@@ -50,13 +50,12 @@ public class AnnotationVisitor extends Visitor {
                     !pt.isInteger() &&
                     !pt.isFloat() &&
                     !pt.isCharacter() &&
-                    !ptd.equals(unit.getIterableDeclaration()) &&
-                    !ptd.equals(unit.getSequentialDeclaration()) &&
+                    !ptd.isIterable() &&
+                    !ptd.isSequential() &&
                     !pt.isSubtypeOf(unit.getType(unit.getDeclarationDeclaration()))) {
                 return true;
             }
-            if (ptd.equals(unit.getIterableDeclaration()) ||
-                    ptd.equals(unit.getSequentialDeclaration())) {
+            if (ptd.isIterable() || ptd.isSequential()) {
                 if (isIllegalAnnotationParameterType(unit.getIteratedType(pt))) {
                     return true;
                 }

@@ -5217,10 +5217,8 @@ public class ExpressionVisitor extends Visitor {
                         TypeDeclaration pttd = 
                                 paramTypesAsTuple.getDeclaration();
                         if (pttd instanceof ClassOrInterface &&
-                                (pttd.equals(unit.getTupleDeclaration()) ||
-                                pttd.equals(unit.getSequenceDeclaration()) ||
-                                pttd.equals(unit.getSequentialDeclaration()) ||
-                                pttd.equals(unit.getEmptyDeclaration()))) {
+                                (pttd.isEmpty() ||pttd.isTuple() || 
+                                 pttd.isSequence() || pttd.isSequential())) {
                             //we have a plain tuple type so we can check the
                             //arguments individually
                             checkIndirectInvocationArguments(that, paramTypesAsTuple,
