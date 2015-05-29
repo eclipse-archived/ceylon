@@ -1586,7 +1586,7 @@ public abstract class AbstractTransformer implements Transformation {
     }
 
     boolean isExactlySequential(ProducedType type) {
-        return Decl.equal(typeFact().getDefiniteType(type).getDeclaration(), typeFact.getSequentialDeclaration());
+        return typeFact().getDefiniteType(type).isSequential();
     }
     
     boolean isCeylonMetamodelDeclaration(ProducedType type) {

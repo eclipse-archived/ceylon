@@ -220,7 +220,7 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
                 Unit unit = value.getUnit();
                 ProducedType type = value.getType();
                 
-                if (unit.getSequentialDeclaration().equals(type.getDeclaration())) {
+                if (type.isSequential()) {
                     type = unit.getSequentialElementType(type);
                 }
 

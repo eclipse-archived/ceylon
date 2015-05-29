@@ -235,8 +235,7 @@ public class TypeFactory extends Unit {
 
     private boolean isVariadicElement(ProducedType args) {
         return args.isClassOrInterface() 
-                 && (args.getDeclaration().equals(getSequentialDeclaration())
-                     || args.getDeclaration().equals(getSequenceDeclaration()));
+                && (args.isSequential() || args.isSequence());
     }
 
 }
