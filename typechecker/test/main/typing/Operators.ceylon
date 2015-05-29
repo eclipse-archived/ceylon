@@ -436,4 +436,7 @@ void testSetOperators(variable MySet<String> myset,
     yourset &= set;
     yourset ~= set;
     @error yourset |= set;
+    
+    Integer int = (1..3)[0];
+    @error Integer int = (1..3)[1];
 }
