@@ -3934,6 +3934,14 @@ public class ProducedType extends ProducedReference {
         return getDeclaration().isByte();
     }
     
+    public boolean isSequence() {
+        return getDeclaration().isSequence();
+    }
+    
+    public boolean isSequential() {
+        return getDeclaration().isSequential();
+    }
+    
     public boolean isEmpty() {
         return getDeclaration().isEmpty();
     }

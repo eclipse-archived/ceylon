@@ -1728,9 +1728,7 @@ public class Unit {
     }
     
     public boolean isIterableParameterType(ProducedType t) {
-    	TypeDeclaration dec = t.getDeclaration();
-        return dec instanceof Interface &&
-    			dec.equals(getIterableDeclaration());
+    	return t.getDeclaration().isIterable();
     }
     
     public TypeDeclaration getLanguageModuleModelTypeDeclaration

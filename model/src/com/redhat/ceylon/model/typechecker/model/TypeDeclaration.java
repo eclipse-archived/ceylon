@@ -963,5 +963,17 @@ public abstract class TypeDeclaration extends Declaration
     public boolean isTuple() {
         return false;
     }
+    
+    public boolean isIterable() {
+        return false;
+    }
+    
+    public boolean isSequential() {
+        return false;
+    }
+
+    public boolean isSequence() {
+        return false;
+    }
 
 }

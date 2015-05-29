@@ -19,6 +19,24 @@ public class Interface extends ClassOrInterface {
     }
 
     @Override
+    public boolean isSequence() {
+        return getQualifiedNameString()
+                .equals("ceylon.language::Sequence");
+    }
+
+    @Override
+    public boolean isSequential() {
+        return getQualifiedNameString()
+                .equals("ceylon.language::Sequential");
+    }
+
+    @Override
+    public boolean isIterable() {
+        return getQualifiedNameString()
+                .equals("ceylon.language::Iterable");
+    }
+
+    @Override
     public boolean inherits(TypeDeclaration dec) {
         if (dec.isAnything() || dec.isObject()) {
             return true;

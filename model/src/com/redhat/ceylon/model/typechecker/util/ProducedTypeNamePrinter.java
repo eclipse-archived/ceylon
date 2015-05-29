@@ -406,9 +406,9 @@ public class ProducedTypeNamePrinter {
     public static boolean abbreviateSequence(ProducedType pt) {
         if (pt.isInterface()) {
             TypeDeclaration dec = pt.getDeclaration();
-            Unit unit = dec.getUnit();
-            if (dec.equals(unit.getSequenceDeclaration())) {
-                ProducedType et = unit.getIteratedType(pt);
+            if (dec.isSequence()) {
+                ProducedType et = 
+                        dec.getUnit().getIteratedType(pt);
                 return et!=null;// && et.isPrimitiveAbbreviatedType();
             }
         }
@@ -418,10 +418,9 @@ public class ProducedTypeNamePrinter {
     public static boolean abbreviateSequential(ProducedType pt) {
         if (pt.isInterface()) {
             TypeDeclaration ptd = pt.getDeclaration();
-            Unit unit = ptd.getUnit();
-            Interface sd = unit.getSequentialDeclaration();
-            if (ptd.equals(sd)) {
-                ProducedType et = unit.getIteratedType(pt);
+            if (ptd.isSequential()) {
+                ProducedType et = 
+                        ptd.getUnit().getIteratedType(pt);
                 return et!=null;// && et.isPrimitiveAbbreviatedType();
             }
         }
@@ -431,10 +430,9 @@ public class ProducedTypeNamePrinter {
     public static boolean abbreviateIterable(ProducedType pt) {
         if (pt.isInterface()) {
             TypeDeclaration ptd = pt.getDeclaration();
-            Unit unit = ptd.getUnit();
-            Interface id = unit.getIterableDeclaration();
-            if (ptd.equals(id)) {
-                ProducedType et = unit.getIteratedType(pt);
+            if (ptd.isIterable()) {
+                ProducedType et = 
+                        ptd.getUnit().getIteratedType(pt);
                 List<ProducedType> typeArgs = 
                         pt.getTypeArgumentList();
                 if (et!=null && typeArgs.size()==2) {
@@ -500,8 +498,6 @@ public class ProducedTypeNamePrinter {
                 }
             }
             if (args.isClassOrInterface()) {
-                Interface sld = u.getSequentialDeclaration();
-                Interface scd = u.getSequenceDeclaration();
                 if (args.isTuple()) {
                     List<ProducedType> tal = 
                             args.getTypeArgumentList();
@@ -528,8 +524,7 @@ public class ProducedTypeNamePrinter {
                 else if (args.isEmpty()) {
                     return defaulted ? "=" : "";
                 }
-                else if (!defaulted && 
-                        args.getDeclaration().equals(sld)) {
+                else if (!defaulted && args.isSequential()) {
                     ProducedType elementType = 
                             u.getIteratedType(args);
                     if (elementType!=null) {
@@ -543,8 +538,7 @@ public class ProducedTypeNamePrinter {
                         }
                     }
                 }
-                else if (!defaulted && 
-                        args.getDeclaration().equals(scd)) {
+                else if (!defaulted && args.isSequence()) {
                     ProducedType elementType = 
                             u.getIteratedType(args);
                     if (elementType!=null) {
