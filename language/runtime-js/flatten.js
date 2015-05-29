@@ -5,7 +5,7 @@ function flatten(tf, $$$mptypes) {
   var t0,iadic,argx;
   if (mm && mm.ps) {
     if (mm.ps.length===1) {
-      t0=mm.ps[0].$t;
+      t0=detpl$(mm.ps[0].$t);
       iadic=variadicness(t0);
       argx = t0.t==='T' ? t0.l.length : 1;
     } else {
