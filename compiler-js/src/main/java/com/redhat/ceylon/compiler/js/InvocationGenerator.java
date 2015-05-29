@@ -17,10 +17,12 @@ import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Functional;
 import com.redhat.ceylon.model.typechecker.model.Interface;
 import com.redhat.ceylon.model.typechecker.model.Method;
+import com.redhat.ceylon.model.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.ParameterList;
 import com.redhat.ceylon.model.typechecker.model.ProducedType;
 import com.redhat.ceylon.model.typechecker.model.SiteVariance;
+import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.model.typechecker.model.TypeParameter;
 import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.model.typechecker.model.UnionType;
@@ -641,14 +643,16 @@ public class InvocationGenerator {
             plist = ((Method)(((Tree.FunctionArgument)term).getDeclarationModel())).getParameterLists().get(0);
         } else if (term instanceof Tree.MemberOrTypeExpression) {
             Tree.MemberOrTypeExpression mote = (Tree.MemberOrTypeExpression)term;
-            if (mote.getDeclaration() instanceof Method) {
-                plist = ((Method)((Tree.MemberOrTypeExpression)term).getDeclaration()).getParameterLists().get(0);
-            } else if (mote.getDeclaration() instanceof Value && mote.getStaticMethodReference()) {
+            if (mote.getStaticMethodReference()) {
                 plist = new ParameterList();
                 Parameter param = new Parameter();
                 plist.getParameters().add(param);
-                param.setModel((Value)mote.getDeclaration());
+                final Value pm = new Value();
+                pm.setType(mote.getTarget().getQualifyingType());
+                param.setModel(pm);
                 param.setName("_0");
+            } else if (mote.getDeclaration() instanceof Method) {
+                plist = ((Method)((Tree.MemberOrTypeExpression)term).getDeclaration()).getParameterLists().get(0);
             }
         } else if (term instanceof Tree.InvocationExpression) {
             TypeUtils.encodeCallableArgumentsAsParameterListForRuntime(term, term.getTypeModel(), gen);
