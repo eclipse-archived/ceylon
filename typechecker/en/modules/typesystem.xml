@@ -2265,7 +2265,33 @@ interface NumberLiteral
             <title>Type arguments and type constraints</title>
         
             <para>A generic type constraint affects the type arguments that can be assigned 
-            to a type parameter:</para>
+            to a type parameter in any type argument list belonging directly to:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>a base expression or member expression, or</para>
+                </listitem>
+                <listitem>
+                    <para>an applied type expression that occurs directly in a 
+                    <literal>satisfies</literal>, <literal>of</literal>, or 
+                    <literal>extends</literal> clause.</para>
+                </listitem>
+            </itemizedlist>
+            
+            <para>Type constraints do <emphasis>not</emphasis> apply to any type argument
+            list belonging to an applied type expression that occurs:</para> 
+            
+            <itemizedlist>
+                <listitem>
+                    <para>outside of the <literal>satisfies</literal>, <literal>of</literal>, 
+                    and <literal>extends</literal> clauses, or</para>
+                </listitem>
+                <listitem>
+                    <para>as a type argument within these clauses.</para>
+                </listitem>
+            </itemizedlist>
+            
+            <para>In locations where type constraints apply:</para>
             
             <itemizedlist>
                 <listitem>
@@ -2304,8 +2330,10 @@ interface NumberLiteral
             
             <itemizedlist>
                 <listitem>
-                    <para>there is a type argument that satisfies the constraints of the type 
-                    parameter, or</para>
+                    <para>there is a type argument to the type parameter, and either the type 
+                    argument satisfies the constraints of the type parameter, or the type
+                    argument list occurs in a location where type constraints do not apply,
+                    or, alternatively,</para>
                 </listitem>
                 <listitem>
                     <para>there is no explicit type argument but the type parameter has a 
@@ -2315,13 +2343,9 @@ interface NumberLiteral
                     argument.</para>
                 </listitem>
             </itemizedlist>
-                     
+            
             <para>There must be at least as many type parameters as type arguments. There must 
             be at least as many type arguments as type parameters without default values.</para>
-            
-            <comment><para>TODO: Currently we enforce these restrictions in every type expression,
-            but in fact that is too heavy-handed. We only really need to enforce it for 
-            instantiations and supertypes.</para></comment>
             
         </section>
         
