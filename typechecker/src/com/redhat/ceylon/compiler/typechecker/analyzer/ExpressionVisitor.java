@@ -92,7 +92,6 @@ import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.model.typechecker.model.TypeParameter;
 import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.model.typechecker.model.UnionType;
-import com.redhat.ceylon.model.typechecker.model.Unit;
 import com.redhat.ceylon.model.typechecker.model.UnknownType;
 import com.redhat.ceylon.model.typechecker.model.Value;
 
@@ -8854,19 +8853,19 @@ public class ExpressionVisitor extends Visitor {
                         "interpolated expression must not be an optional type");
             }
         }
-        setLiteralType(that, unit.getStringDeclaration());
+        that.setTypeModel(unit.getStringType());
     }
     
     @Override public void visit(Tree.StringLiteral that) {
-        setLiteralType(that, unit.getStringDeclaration());
+        that.setTypeModel(unit.getStringType());
     }
     
     @Override public void visit(Tree.NaturalLiteral that) {
-        setLiteralType(that, unit.getIntegerDeclaration());
+        that.setTypeModel(unit.getIntegerType());
     }
     
     @Override public void visit(Tree.FloatLiteral that) {
-        setLiteralType(that, unit.getFloatDeclaration());
+        that.setTypeModel(unit.getFloatType());
     }
     
     @Override public void visit(Tree.CharLiteral that) {
@@ -8874,18 +8873,11 @@ public class ExpressionVisitor extends Visitor {
         if (result.codePointCount(1, result.length()-1)!=1) {
             that.addError("character literal must contain exactly one character");
         }
-        setLiteralType(that, 
-                unit.getCharacterDeclaration());
+        that.setTypeModel(unit.getCharacterType());
     }
     
     @Override public void visit(Tree.QuotedLiteral that) {
-        setLiteralType(that, 
-                unit.getStringDeclaration());
-    }
-    
-    private void setLiteralType(Tree.Atom that, 
-            TypeDeclaration languageType) {
-        that.setTypeModel(unit.getType(languageType));
+        that.setTypeModel(unit.getStringType());
     }
     
     @Override
