@@ -19,6 +19,55 @@ function retpl$(t) { //receives {t:'T',l:[...]}
   }
   return r;
 }
+//Create a simplified Tuple {t:'T',l:[...]} from a proper {t:Tuple,a:...}
+//based on Unit.getTupleElementTypes
+function detpl$(t) {
+  if (t.t==='T')return t;
+  if (t.t===Empty)return t;
+  function stet(args,count) {
+    if (t.t==='u') {
+      if (t.l.length!==2)return null;
+      var caseA=t.l[0];
+      var caseB=t.l[1];
+      if (caseA.t===Empty && caseB.t===Tuple)return stet(caseB,count);
+      if (caseB.t===Empty && caseA.t===Tuple)return stet(caseA,count);
+      return null;
+    }
+    if (args.t===Tuple) {
+      var first=args.a.First$Tuple;
+      var rest=args.a.Rest$Tuple;
+      var ret=stet(rest,count+1);
+      if (ret===null)return null;
+      ret[count]=first;
+      return ret;
+    }
+    if (args.t===Empty) {
+      var ret=Array(count);
+      for(var i=0;i<count;i++)ret[i]=null;
+      return ret;
+    }
+    if (args.t===Sequential || args.t===Sequence || args.t===Range) {
+      var ret=Array(count+1);
+      for (var i=0;i<count;i++)ret[i]=null;
+      ret[count]=args;
+      return ret;
+    }
+    return null;
+  }
+  var simpleResult=stet(t,0);
+  if (simpleResult)return {t:'T',l:simpleResult};
+  if (t.a && t.a.First$Tuple && t.a.Element$Tuple && t.a.Rest$Tuple) {
+    var result = detpl$(t.a.Rest$Tuple);
+    if (result.l===undefined)return result;
+    var arg=t.a.First$Tuple || {t:Anything};
+    result.unshift(arg);
+    return result;
+  } else if (t.a && (t.a.Element$Sequential || t.a.Element$Sequence)) {
+    return t.a.Element$Sequential || t.a.Element$Sequence;
+  }
+  throw new TypeError("detpl$ requires a proper Tuple {t:Tuple,a:{First$Tuple:F,Element$Tuple:E,Rest$Tuple:R}}");
+}
+
 //Validate parameters:
 //ps are the params defined in the metamodel
 //t is the tuple with parameters to pass
