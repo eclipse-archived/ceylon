@@ -1467,17 +1467,12 @@ public class Unit {
             if (getEmptyType().isSubtypeOf(args)) {
                 return false;
             }
-            ProducedType snt = 
-                    getSequenceType(getNothingType());
-            if (snt.isSubtypeOf(args)) {
-                return true;
-            }
             Class td = getTupleDeclaration();
             ProducedType tuple = 
                     nonemptyArgs(args)
                         .getSupertype(td);
             if (tuple == null) {
-                return false;
+                return isSequenceType(args);
             }
             else {
                 while (true) {
@@ -1488,17 +1483,19 @@ public class Unit {
                         if (rest==null) {
                             return false;
                         }
-                        else if (getEmptyType().isSubtypeOf(rest)) {
+                        else if (getEmptyType()
+                                .isSubtypeOf(rest)) {
                             return false;
                         }
-                        else if (snt.isSubtypeOf(rest)) {
+                        else if (isSequenceType(rest) && 
+                                !isTupleType(args)) {
                             return true;
                         }
                         else {
                             tuple = nonemptyArgs(rest)
                                     .getSupertype(td);
                             if (tuple==null) {
-                                return false;
+                                return isSequenceType(args);
                             }
                             //else continue the loop!
                         }
@@ -1581,17 +1578,13 @@ public class Unit {
             if (getEmptyType().isSubtypeOf(args)) {
                 return 0;
             }
-            ProducedType snt = 
-                    getSequenceType(getNothingType());
-            if (snt.isSubtypeOf(args)) {
-                return 1;
-            }
             Class td = getTupleDeclaration();
             ProducedType tuple = 
                     nonemptyArgs(args)
                         .getSupertype(td);
             if (tuple == null) {
-                return 0;
+                return isSequenceType(args) ? 
+                        1 : 0;
             }
             else {
                 int size = 0;
@@ -1604,17 +1597,16 @@ public class Unit {
                         if (rest==null) {
                             return size;
                         }
-                        else if (getEmptyType().isSubtypeOf(rest)) {
+                        else if (getEmptyType()
+                                .isSubtypeOf(rest)) {
                             return size;
-                        }
-                        else if (snt.isSubtypeOf(rest)) {
-                            return size+1;
                         }
                         else {
                             tuple = nonemptyArgs(rest)
                                     .getSupertype(td);
                             if (tuple==null) {
-                                return size;
+                                return isSequenceType(args) ? 
+                                        size+1 : size;
                             }
                             //else continue the loop!
                         }
