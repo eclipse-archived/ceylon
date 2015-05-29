@@ -437,6 +437,10 @@ void testSetOperators(variable MySet<String> myset,
     yourset ~= set;
     @error yourset |= set;
     
-    Integer int = (1..3)[0];
-    @error Integer int = (1..3)[1];
+    Integer int1 = (1..3)[0];
+    @error Integer int2 = (1..3)[1];
+    @error Integer int3 = (1..3)[-1];
+    [Integer+] ints1 = (1..3)[0...];
+    @error [Integer+] ints2 = (1..3)[1...];
+    [Integer+] ints3 = (1..3)[-1...];
 }
