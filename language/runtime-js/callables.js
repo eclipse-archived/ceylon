@@ -6,10 +6,7 @@ function $JsCallable(f$,parms,targs) {
   }
   var set_meta = getrtmm$$(f$) === undefined;
   if (set_meta) {
-    f$.$crtmm$={ps:[],mod:$CCMM$,d:['$','Callable']};
-    if (parms !== undefined) {
-      f$.$crtmm$.ps=parms;
-    }
+    f$.$crtmm$={ps:parms||[],mod:$CCMM$,d:['$','Callable']};
   }
   if (targs !== undefined && f$.$$targs$$ === undefined) {
     f$.$$targs$$=targs;
@@ -18,7 +15,7 @@ function $JsCallable(f$,parms,targs) {
     }
   }
   if (f$.$flattened$||f$.$unflattened$)return f$;
-  function f(){
+  var f=function c1(){
     return f$.apply(0,spread$(arguments,f$,targs));
   }
   f.$crtmm$=f$.$crtmm$;
@@ -38,12 +35,12 @@ function nop$(){return null;}
 function JsCallable(o,f,targs) {
   if (o===null || o===undefined) return nop$;
   if (f.jsc$)f=f.jsc$;
-  var f2 = function() {
+  var f2 = function c2() {
     var arg=spread$(arguments,f,targs);
     if (targs)arg.push(targs);
     return f.apply(o, arg);
   };
-  f2.$crtmm$=f.$crtmm$===undefined?Callable.$crtmm$:f.$crtmm$;
+  f2.$crtmm$=f.$crtmm$||Callable.$crtmm$;
   return f2;
 }
 JsCallable.$crtmm$=function(){return{ sts:[{t:Callable,a:{Return$Callable:'Return$Callable',Arguments$Callable:'Arguments$Callable'}}],
