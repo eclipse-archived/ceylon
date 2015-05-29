@@ -427,3 +427,8 @@ void isTest<Args>(Anything[] x, Args y)
     if (is String[] xs) {}
     @error if (is String[] ys) {}
 }
+
+void unionWithUseSiteCoverage(Set<Anything>|Integer set) {
+    Set<Object>|Integer sett = set of Set<Object>|Integer;
+    @error Set<String>|Integer sett = set of Set<String>|Integer;
+}
