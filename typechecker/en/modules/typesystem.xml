@@ -2278,8 +2278,8 @@ interface NumberLiteral
                 </listitem>
             </itemizedlist>
             
-            <para>Type constraints do <emphasis>not</emphasis> apply to any type argument
-            list belonging to an applied type expression that occurs:</para> 
+            <para>A type constraint does <emphasis>not</emphasis> apply to any type 
+            argument list belonging to an applied type expression that occurs:</para> 
             
             <itemizedlist>
                 <listitem>
