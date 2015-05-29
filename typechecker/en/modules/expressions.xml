@@ -2600,8 +2600,11 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         <listitem>
             <para>for every <literal>i&gt;0</literal>, if <literal>Xi</literal> 
             has the principal instantiation <literal>Tuple&lt;Ui,Fi,Ti&gt;</literal> 
-            then <literal>X(i+1)</literal> is <literal>Ti</literal>, or, otherwise, 
-            <literal>X(i+1)</literal> is <literal>[E*]</literal>.</para>
+            then <literal>X(i+1)</literal> is <literal>Ti</literal>, or, if 
+            <literal>Xi</literal> has principal instantiation <literal>[Fi*]</literal>
+            then <literal>X(i+1)</literal> is <literal>[Fi*]</literal>, or, otherwise,
+            if <literal>Xi</literal> is <literal>[]</literal>, then <literal>X(i+1)</literal> 
+            is also <literal>[]</literal>.</para>
         </listitem>
     </itemizedlist>
     
@@ -2610,11 +2613,6 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
     of <literal>X</literal></emphasis> as follows:</para>
         
     <itemizedlist>
-       <listitem>
-            <para>if <literal>n&lt;0</literal>, then <literal>Xn</literal> 
-            has the principal instantiation <literal>[Fn*]</literal> and 
-            <literal>En</literal> is <literal>Fn?</literal>,</para>
-       </listitem>
        <listitem>
             <para>if <literal>n&gt;=0</literal> and <literal>Xn</literal> 
             has the principal instantiation <literal>[Fn+]</literal> then 
@@ -2631,14 +2629,19 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
     
     <itemizedlist>
         <listitem>
-            <para>The type of an expression of form <literal>x[i...]</literal> where
-            <literal>x</literal> is of the sequence type <literal>X</literal> and 
-            <literal>n</literal> is an integer literal is <literal>Xn</literal>.</para>
-        </listitem>
-        <listitem>
             <para>The type of an expression of form <literal>x[i]</literal> where
             <literal>x</literal> is of the sequence type <literal>X</literal> and 
             <literal>n</literal> is an integer literal is <literal>En</literal>.</para>
+        </listitem>
+        <listitem>
+            <para>The type of an expression of form <literal>x[i...]</literal> where
+            <literal>x</literal> is of the sequence type <literal>X</literal> and 
+            <literal>n</literal> is an integer literal is <literal>Xn</literal> if
+            <literal>Xn</literal> is an instantiation of <literal>Tuple</literal>,
+            <literal>[Fn+]</literal> if <literal>Xn</literal> has the principal 
+            instantiation <literal>[Fn+]</literal>, or <literal>[Fn*]</literal>
+            if <literal>Xn</literal> has the principal instantiation 
+            <literal>[Fn*]</literal>.</para>
         </listitem>
     </itemizedlist>
     
