@@ -17,7 +17,7 @@ function flatten(tf, $$$mptypes) {
   var rf;
   if (t0.t==='T') {
     //Tuple
-    rf=function rtf(){
+    rf=function fft(){
       var argc = arguments.length;
       var mptypes = argc>argx ? arguments[argc-1] : undefined;
       if (mptypes)argc--;
@@ -39,14 +39,17 @@ function flatten(tf, $$$mptypes) {
     };
     rf.$crtmm$={$t:mm.$t,ps:[]};
     for(var i=0;i<t0.l.length;i++){
-      rf.$crtmm$.ps.push({$t:t0.l[i]});
+      rf.$crtmm$.ps.push({$t:t0.l[i],mt:'prm',nm:'flat'+i});
+      if (t0.l[i].seq)rf.$crtmm$.ps[i].$t.seq=t0.l[i].seq;
     }
   } else {
     //Single variadic argument
-    rf=function rfs(s,$mpt){
+    rf=function ffs(s,$mpt){
       return tf(s?tpl$(s):empty(),$mpt);
     };
-    rf.$crtmm$={$t:mm.$t,ps:[{$t:{t:t0.t,a:t0.a,seq:iadic}}]};
+    rf.$crtmm$={$t:mm.$t,ps:[{$t:{t:t0.t},nm:'flat#0',seq:iadic}]};
+    if (t0.a)rf.$crtmm$.ps[0].$t.a=t0.a;
+    if (extendsType(t0,{t:Empty}))rf.$crtmm$.ps=[];
   }
   rf.$$targs$$={Return$Callable:$$$mptypes.Return$flatten,Arguments$Callable:$$$mptypes.Args$flatten};
   rf.$flattened$=tf;
