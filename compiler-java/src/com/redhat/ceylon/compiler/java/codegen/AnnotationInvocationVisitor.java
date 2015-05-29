@@ -158,7 +158,7 @@ class AnnotationInvocationVisitor extends Visitor {
                 append(transformConstructor(exprGen, invocation));
             } else if (primary instanceof Tree.BaseTypeExpression) {
                 Tree.BaseTypeExpression bte = (Tree.BaseTypeExpression)primary;
-                if (exprGen.typeFact().getByteDeclaration().equals(bte.getDeclaration())) {
+                if (((TypeDeclaration) bte.getDeclaration()).isByte()) {
                     // Special case for "Byte(x)" where we make use of the fact that it looks
                     // like an annotation class instantiation but is in fact a byte literal
                     PositionalArgument arg = invocation.getPositionalArgumentList().getPositionalArguments().get(0);

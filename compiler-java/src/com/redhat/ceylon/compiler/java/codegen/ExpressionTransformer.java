@@ -5488,7 +5488,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             MethodDefinitionBuilder mb = MethodDefinitionBuilder.systemMethod(ExpressionTransformer.this, ctxtName.getName())
                 .ignoreModelAnnotations()
                 .modifiers(Flags.PRIVATE | Flags.FINAL)
-                .resultType(null, makeJavaType(typeFact().getBooleanDeclaration().getType()))
+                .resultType(null, makeJavaType(typeFact().getBooleanType()))
                 .body(body);
             fields.add(mb.build());
         }
@@ -5560,7 +5560,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 elseBody.add(make().Exec(vdb.buildAssign()));
             }
             fields.add(make().VarDef(make().Modifiers(Flags.PRIVATE), itemVar.suffixedBy(Suffix.$exhausted$).asName(),
-                    makeJavaType(typeFact().getBooleanDeclaration().getType()), null));
+                    makeJavaType(typeFact().getBooleanType()), null));
             elseBody.add(make().Return(makeBoolean(true)));
             
             //Now the context for this iterator
@@ -5609,7 +5609,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             //Create the context method that returns the next item for this iterator
             lastIteratorCtxtName = ctxtName = itemVar;
             fields.add(make().MethodDef(make().Modifiers(Flags.PRIVATE | Flags.FINAL), itemVar.asName(),
-                makeJavaType(typeFact().getBooleanDeclaration().getType()),
+                makeJavaType(typeFact().getBooleanType()),
                 List.<JCTree.JCTypeParameter>nil(), List.<JCTree.JCVariableDecl>nil(), List.<JCExpression>nil(),
                 make().Block(0, methodBody), null));
             return itemVar;
