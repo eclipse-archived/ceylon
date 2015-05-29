@@ -4133,16 +4133,10 @@ public class ProducedType extends ProducedReference {
                                     overrides));
                 }
                 else if (type.isContravariant(param)) {
-//                    if (covariant||contravariant) {
                     resultArgs.add(
                             applyVarianceOverrides(arg, 
                                     !covariant, !contravariant,
                                     overrides));
-//                    }
-//                    else {
-//                        resultArgs.add(applyVarianceOverrides(arg, 
-//                                covariant, contravariant));
-//                    }
                 }
                 else {
                     if (contravariant) {
@@ -4175,7 +4169,8 @@ public class ProducedType extends ProducedReference {
                 }
             }
             ProducedType result = 
-                    dec.getProducedType(type.getQualifyingType(), 
+                    dec.getProducedType(
+                            type.getQualifyingType(), 
                             resultArgs);
             result.setVarianceOverrides(varianceResults);
             result.setUnderlyingType(type.getUnderlyingType());
