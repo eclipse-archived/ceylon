@@ -247,10 +247,10 @@ public class TypeUtils {
                     return true;
                 }
                 if (!lastType.isEmpty()) {
-                    if (d.getUnit().getSequentialDeclaration().equals(lastType.getDeclaration())) {
+                    if (lastType.isSequential()) {
                         seq = 1;
                     }
-                    if (d.getUnit().getSequenceDeclaration().equals(lastType.getDeclaration())) {
+                    if (lastType.isSequence()) {
                         seq = 2;
                     }
                 }
