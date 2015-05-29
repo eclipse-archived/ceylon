@@ -1384,6 +1384,9 @@ public class RefinementVisitor extends Visitor {
             that.addError("inherited attribute may not be assigned in initializer and is variable so may not be refined by non-variable: " + 
                     message(sv));
         }
+        boolean lazy = 
+                that.getSpecifierExpression() 
+                    instanceof Tree.LazySpecifierExpression;
         Value v = new Value();
         v.setName(sv.getName());
         v.setShared(true);
@@ -1396,6 +1399,7 @@ public class RefinementVisitor extends Visitor {
         v.setContainer(c);
         v.setScope(c);
         v.setShortcutRefinement(true);
+        v.setTransient(lazy);
         setVisibleScope(v);
         c.addMember(v);
         that.setRefinement(true);
