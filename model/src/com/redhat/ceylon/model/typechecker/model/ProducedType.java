@@ -3265,7 +3265,7 @@ public class ProducedType extends ProducedReference {
         else {
             List<ProducedType> cts = getCaseTypes();
             if (cts==null) {
-                return this;
+                return narrowToUpperBounds();
             }
             //otherwise, if X is a union A|B, or an enumerated 
             //type, with cases A and B, and A is an enumerated 
@@ -3281,57 +3281,72 @@ public class ProducedType extends ProducedReference {
                         //we hit a self type
                         return this;
                     }
-                    if (ct.isClassOrInterface()) {
-                        TypeDeclaration ctd = 
-                                ct.getDeclaration();
-                        List<TypeParameter> params = 
-                                ctd.getTypeParameters();
-                        if (!params.isEmpty()) {
-                            List<ProducedType> args = 
-                                    ct.getTypeArgumentList();
-                            List<ProducedType> bounded =
-                                    new ArrayList<ProducedType>
-                                        (args.size());
-                            boolean found = false;
-                            for (int i=0, 
-                                    s1 = params.size(),
-                                    s2 = args.size(); 
-                                    i<s1 && i<s2; i++) {
-                                TypeParameter tp = 
-                                        params.get(i);
-                                ProducedType arg = 
-                                        args.get(i);
-                                if (ct.isCovariant(tp)) {
-                                    ProducedType bound = 
-                                            //TODO: BUG, this could
-                                            //cause a stack overflow!
-                                            intersectionOfSupertypes(tp)
-                                                .substitute(ct);
-                                    if (!arg.isSubtypeOf(bound)) {
-                                        arg = bound;
-                                        found = true;
-                                    }
-                                }
-                                bounded.add(arg);
-                            }
-                            if (found) {
-                                Map<TypeParameter, SiteVariance> overrides = 
-                                        ct.getVarianceOverrides();
-                                ct = ctd.getProducedType(
-                                        ct.getQualifyingType(), 
-                                        bounded);
-                                ct.setVarianceOverrides(overrides);
-                            }
-                        }
-                    }
-                    addToUnion(list, 
-                            ct.getUnionOfCases()); //note recursion
+                    addToUnion(list,
+                            ct.narrowToUpperBounds()
+                                .getUnionOfCases()); //note recursion
                 }
                 UnionType ut = new UnionType(unit);
                 ut.setCaseTypes(list);
                 return ut.getType();
             }
         }
+    }
+
+    /**
+     * If a covariant type argument is a supertype of the
+     * upper bounds on the type parameter, replace it with
+     * the upper bounds.
+     *  
+     * @return a new instantiation of the generic type that 
+     *         covers this instantiation, but whose type 
+     *         arguments satisfy the upper bounds
+     */
+    ProducedType narrowToUpperBounds() {
+        if (isClassOrInterface()) {
+            TypeDeclaration declaration = 
+                    getDeclaration();
+            List<TypeParameter> params = 
+                    declaration.getTypeParameters();
+            if (!params.isEmpty()) {
+                List<ProducedType> args = 
+                        getTypeArgumentList();
+                List<ProducedType> bounded =
+                        new ArrayList<ProducedType>
+                            (args.size());
+                boolean found = false;
+                for (int i=0, 
+                        s1 = params.size(),
+                        s2 = args.size(); 
+                        i<s1 && i<s2; i++) {
+                    TypeParameter tp = 
+                            params.get(i);
+                    ProducedType arg = 
+                            args.get(i);
+                    if (isCovariant(tp)) {
+                        ProducedType bound = 
+                                //TODO: BUG, this could
+                                //cause a stack overflow!
+                                intersectionOfSupertypes(tp)
+                                    .substitute(this);
+                        if (!arg.isSubtypeOf(bound)) {
+                            arg = bound;
+                            found = true;
+                        }
+                    }
+                    bounded.add(arg);
+                }
+                if (found) {
+                    ProducedType type = 
+                            declaration.getProducedType(
+                                    getQualifyingType(), 
+                                    bounded);
+                    type.setVarianceOverrides(
+                            getVarianceOverrides());
+                    return type;
+                }
+            }
+        }
+        return this;
     }
     
     public void setUnderlyingType(String underlyingType) {
