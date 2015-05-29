@@ -18,11 +18,7 @@ function flatten(tf, $$$mptypes) {
   if (t0.t==='T') {
     //Tuple
     rf=function fft(){
-      var argc = arguments.length;
-      var mptypes = argc>argx ? arguments[argc-1] : undefined;
-      if (mptypes)argc--;
       var t = [];
-      if (iadic)argc--;
       for (var i=0;i<argx-(iadic?1:0);i++) {
         t.push(arguments[i]);
       }
