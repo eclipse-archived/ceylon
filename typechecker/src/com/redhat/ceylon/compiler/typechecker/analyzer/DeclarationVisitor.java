@@ -210,21 +210,32 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
                     that instanceof Tree.AnyMethod ||
                     that instanceof Tree.AnyClass ||
                     that instanceof Tree.AnyAttribute;
-            if (canBeNative && (model.isToplevel() || model.isMember())) {
+            if (canBeNative && 
+                    (model.isToplevel() || model.isMember())) {
                 if (!backend.isEmpty() && 
                         !Backend.validAnnotation(backend)) {
                     a.addError("illegal native backend name: '\"" + 
                             backend + 
                             "\"' (must be either '\"jvm\"' or '\"js\"')");
                 }
-                String moduleBackend = unit.getPackage().getModule().getNative();
-                if (!backend.isEmpty() && moduleBackend != null && !backend.equals(moduleBackend)) {
+                String moduleBackend = 
+                        unit.getPackage()
+                            .getModule()
+                            .getNative();
+                if (!backend.isEmpty() && 
+                        moduleBackend != null && 
+                        !backend.equals(moduleBackend)) {
                     that.addError("native backend name on declaration conflicts with module descriptor: '\"" + 
-                            backend + "\"' is not '\"" + moduleBackend + "\"' for '" + name + "'");
+                            backend + "\"' is not '\"" + 
+                            moduleBackend + "\"' for '" + 
+                            name + "'");
                 }
                 model.setNative(backend);
-                Declaration member = scope.getDirectMember(name, null, false);
-                if (model.isMember() && isInNativeContainer(model)) {
+                Declaration member = 
+                        scope.getDirectMember(name, 
+                                null, false);
+                if (model.isMember() && 
+                        isInNativeContainer(model)) {
                     Declaration container = 
                             (Declaration) 
                                 model.getContainer();
@@ -235,10 +246,13 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
                                 container.getName() + "'");
                     }
                     
-                    List<Declaration> overloads = container.getOverloads();
+                    List<Declaration> overloads = 
+                            container.getOverloads();
                     if (overloads != null) {
-                        for (Declaration ol : overloads) {
-                            Declaration m = ol.getDirectMember(name, null, false);
+                        for (Declaration ol: overloads) {
+                            Declaration m = 
+                                    ol.getDirectMember(name, 
+                                            null, false);
                             if (m != null) {
                                 member = m;
                                 break;
@@ -261,7 +275,8 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
                     if (member.isNative()) {
                         List<Declaration> overloads = 
                                 member.getOverloads();
-                        if (hasOverload(backend, model, overloads)) {
+                        if (hasOverload(backend, model, 
+                                overloads)) {
                             if (backend.isEmpty()) {
                                 that.addError("duplicate native header: '" + 
                                         name + "'");
@@ -272,7 +287,8 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
                             }
                         }
                         if (isAllowedToChangeModel(member) && 
-                                !hasModelInOverloads(model, overloads)) {
+                                !hasModelInOverloads(model, 
+                                        overloads)) {
                             overloads.add(model);
                         }
                         //note that all native "overloads"
@@ -297,7 +313,8 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
                                     name + "'");
                         }
                     }
-                    if (!model.isMember() || !isInNativeContainer(model)) {
+                    if (!model.isMember() || 
+                            !isInNativeContainer(model)) {
                         modelToAdd = null;
                     }
                 }
@@ -314,7 +331,8 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
 //                  }
 //              }
             }
-            else if (!(model instanceof Setter) && !backend.isEmpty()) {
+            else if (!(model instanceof Setter) && 
+                    !backend.isEmpty()) {
                 if (!canBeNative) {
                     that.addError("native declaration is not a class, method or attribute: '" + 
                             name + "'");
@@ -356,10 +374,12 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
         return false;
     }
     
-    protected abstract boolean shouldIgnoreOverload(Declaration overload,
+    protected abstract boolean shouldIgnoreOverload(
+            Declaration overload,
             Declaration declaration);
 
-    protected abstract boolean isAllowedToChangeModel(Declaration declaration);
+    protected abstract boolean isAllowedToChangeModel(
+            Declaration declaration);
 
     private static void checkForDuplicateDeclaration(
             Tree.Declaration that, 
@@ -731,7 +751,8 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
         }
         //TODO: is this still necessary??
         if (c.isClassOrInterfaceMember() && 
-                c.getContainer() instanceof TypedDeclaration) {
+                c.getContainer() 
+                    instanceof TypedDeclaration) {
             that.addUnsupportedError("nested classes of inner classes are not yet supported");
         }
         Tree.Identifier identifier = that.getIdentifier();
