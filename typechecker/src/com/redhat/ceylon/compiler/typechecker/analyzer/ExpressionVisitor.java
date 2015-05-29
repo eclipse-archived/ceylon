@@ -1173,8 +1173,8 @@ public class ExpressionVisitor extends Visitor {
             Tree.ParameterizedExpression that,
             Tree.MemberOrTypeExpression mte, ProducedType pt,
             Tree.ParameterList pl) {
-        ProducedType ct = 
-                pt.getSupertype(unit.getCallableDeclaration());
+        Interface cd = unit.getCallableDeclaration();
+        ProducedType ct = pt.getSupertype(cd);
         String refName = mte.getDeclaration().getName();
         if (ct==null) { 
             pl.addError("no matching parameter list in referenced declaration: '" + 

@@ -55,8 +55,10 @@ public class SupertypeVisitor extends Visitor {
         return !errors.isEmpty();
     }
 
-    private void checkForUndecidability(Tree.ExtendedType etn, 
-            Tree.SatisfiedTypes stn, TypeDeclaration d, 
+    private void checkForUndecidability(
+            Tree.ExtendedType etn, 
+            Tree.SatisfiedTypes stn, 
+            TypeDeclaration d, 
             Tree.TypeDeclaration that) {
         boolean errors = false;
         
@@ -117,10 +119,12 @@ public class SupertypeVisitor extends Visitor {
             try {
                 List<ProducedType> supertypes = 
                         d.getType().getSupertypes();
-                for (ProducedType st: 
-                        supertypes) {
+                for (ProducedType st: supertypes) {
                     addToIntersection(list, st, unit);
                 }
+                //probably unnecessary - if it were 
+                //going to blow up, it would have 
+                //already blown up in addToIntersection()
                 IntersectionType it = 
                         new IntersectionType(unit);
                 it.setSatisfiedTypes(list);
