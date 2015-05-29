@@ -743,3 +743,17 @@ void upperBoundSubstitution() {
                 given X satisfies C<Y,String,X,P> {}
     }
 }
+
+class WithUpperBoundConstraint<out T>() 
+        given T satisfies String {}
+
+void testWithUpperBoundConstraint() {
+    class Test1() extends WithUpperBoundConstraint<String>() {}
+    @error
+    class Test2() extends WithUpperBoundConstraint<Object>() {}
+    WithUpperBoundConstraint<Anything> test1 = 
+            WithUpperBoundConstraint<String>();
+    @error
+    WithUpperBoundConstraint<Anything> test2 = 
+            WithUpperBoundConstraint<Anything>();
+}

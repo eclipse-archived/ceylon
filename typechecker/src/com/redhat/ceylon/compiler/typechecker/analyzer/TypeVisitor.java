@@ -1601,12 +1601,19 @@ public class TypeVisitor extends Visitor {
         }
     }
     
+    private static void inheritedType(Tree.StaticType st) {
+        if (st instanceof Tree.SimpleType) {
+            ((Tree.SimpleType) st).setInherited(true);
+        }
+    }
+
     @Override 
     public void visit(Tree.DelegatedConstructor that) {
         inDelegatedConstructor = true;
         super.visit(that);
         inDelegatedConstructor = false;
         checkExtendedTypeExpression(that.getType());
+        inheritedType(that.getType());
     }
 
     @Override 
@@ -1615,6 +1622,7 @@ public class TypeVisitor extends Visitor {
         super.visit(that);
         inExtendsOrClassAlias = false;
         checkExtendedTypeExpression(that.getType());
+        inheritedType(that.getType());
     }
     
     @Override 
@@ -1623,6 +1631,7 @@ public class TypeVisitor extends Visitor {
                 that.getInvocationExpression()!=null;
         super.visit(that);
         inExtendsOrClassAlias = false;
+        inheritedType(that.getType());
         checkExtendedTypeExpression(that.getType());
         TypeDeclaration td = 
                 (TypeDeclaration) that.getScope();
@@ -1692,6 +1701,7 @@ public class TypeVisitor extends Visitor {
         boolean foundClass = false;
         boolean foundInterface = false;
         for (Tree.StaticType st: types) {
+            inheritedType(st);
             ProducedType type = st.getTypeModel();
             if (type!=null) {
                 TypeDeclaration std = type.getDeclaration();
@@ -1817,6 +1827,7 @@ public class TypeVisitor extends Visitor {
             }
         }
         for (Tree.StaticType ct: cts) {
+            inheritedType(ct);
             ProducedType type = ct.getTypeModel();
             if (type!=null) {
                 if (!isTypeUnknown(type)) {

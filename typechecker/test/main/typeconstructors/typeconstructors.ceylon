@@ -62,15 +62,18 @@ void fun<X>(X<String> strings)
         given X<T> satisfies {T*} 
             given T satisfies Object {
     for (s in strings) {}
-    @error X<Null> nulls;
+    //@error 
+    X<Null> nulls;
 }
 
 void gun<X>(X<Integer> ints) 
         given X<T> satisfies {T*} 
             given T of Integer|Float|String {
     for (i in ints) {}
-    @error X<Null> nulls;
-    @error X<Integer|Float> iof;
+    //@error 
+    X<Null> nulls;
+    //@error 
+    X<Integer|Float> iof;
 }
 
         

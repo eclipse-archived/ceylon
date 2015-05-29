@@ -32,11 +32,16 @@ class Is() {
     if (strings is Seq2<String>) {
         @error String s = strings.first;
     }
-    @error if (strings is Seq2) {}
-    @error if (strings is SimpleContainer<String>) {}
-    @error if (strings is Is.SimpleContainer) {}
-    @error if (strings is Is.SimpleContainer<String>) {}
-    @error if (strings is Is.SimpleContainer<String,Integer>) {}
+    @error 
+    if (strings is Seq2) {}
+    //@error 
+    if (strings is SimpleContainer<String>) {}
+    @error 
+    if (strings is Is.SimpleContainer) {}
+    //@error 
+    if (strings is Is.SimpleContainer<String>) {}
+    @error 
+    if (strings is Is.SimpleContainer<String,Integer>) {}
 
     void method<T>() {
         if (is T strings) {}

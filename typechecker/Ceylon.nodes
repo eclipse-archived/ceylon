@@ -272,7 +272,8 @@
 ^(abstract SIMPLE_TYPE:STATIC_TYPE
     IDENTIFIER 
     TYPE_ARGUMENT_LIST?
-    TypeDeclaration declarationModel;)
+    TypeDeclaration declarationModel;
+    boolean inherited;)
 
 ^(BASE_TYPE: SIMPLE_TYPE
     boolean packageQualified;)

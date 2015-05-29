@@ -113,7 +113,7 @@ public class ExpressionVisitor extends Visitor {
     
     private Tree.Type returnType;
     private Declaration returnDeclaration;
-    private boolean isCondition;
+//    private boolean isCondition;
     private boolean dynamic;
     private boolean inExtendsClause = false;
     private Backend inBackend = null;
@@ -717,15 +717,16 @@ public class ExpressionVisitor extends Visitor {
         //want to check that the specifier expression is
         //assignable to the declared variable type
         //(nor is it possible to infer the variable type)
-        isCondition=true;
+//        isCondition=true;
         Tree.Type t = that.getType();
         if (t!=null) {
             t.visit(this);
         }
-        isCondition=false;
+//        isCondition=false;
         Tree.Variable v = that.getVariable();
         ProducedType type = 
-                t==null ? null : t.getTypeModel();
+                t==null ? null : 
+                    t.getTypeModel();
         if (v!=null) {
 //            if (type!=null && !that.getNot()) {
 //                v.getType().setTypeModel(type);
@@ -9567,8 +9568,12 @@ public class ExpressionVisitor extends Visitor {
                 boolean hasConstraints = 
                         !sts.isEmpty() || 
                         param.getCaseTypes()!=null;
-                if (!isCondition && 
-                        hasConstraints) {
+                boolean enforceConstraints = 
+                        !(parent instanceof Tree.SimpleType) ||
+                        ((Tree.SimpleType) parent).getInherited();
+                if (//!isCondition && 
+                        hasConstraints &&
+                        enforceConstraints) {
                     ProducedType assignedType = 
                             argumentTypeForBoundsCheck(param, 
                                     argType);
