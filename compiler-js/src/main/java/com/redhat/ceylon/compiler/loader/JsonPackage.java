@@ -20,8 +20,8 @@ import com.redhat.ceylon.model.typechecker.model.Generic;
 import com.redhat.ceylon.model.typechecker.model.Interface;
 import com.redhat.ceylon.model.typechecker.model.InterfaceAlias;
 import com.redhat.ceylon.model.typechecker.model.IntersectionType;
-import com.redhat.ceylon.model.typechecker.model.Method;
-import com.redhat.ceylon.model.typechecker.model.MethodOrValue;
+import com.redhat.ceylon.model.typechecker.model.Function;
+import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.NothingType;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
@@ -342,8 +342,8 @@ public class JsonPackage extends com.redhat.ceylon.model.typechecker.model.Packa
         }
         if (container instanceof TypeDeclaration) {
             ((TypeDeclaration) container).setTypeParameters(tparms);
-        } else if (container instanceof Method) {
-            ((Method) container).setTypeParameters(tparms);
+        } else if (container instanceof Function) {
+            ((Function) container).setTypeParameters(tparms);
         }
         //Second, add defaults and heritage
         for (Map<String,Object> tp : typeParams) {
@@ -406,7 +406,7 @@ public class JsonPackage extends com.redhat.ceylon.model.typechecker.model.Packa
                 } else if ("f".equals(paramtype)) {
                     @SuppressWarnings("unchecked")
                     List<List<Map<String,Object>>> paramLists = (List<List<Map<String,Object>>>)p.get(MetamodelGenerator.KEY_PARAMS);
-                    Method _m = new Method();
+                    Function _m = new Function();
                     param.setModel(_m);
                     if (paramLists == null) {
                         _m.addParameterList(new ParameterList());
@@ -456,8 +456,8 @@ public class JsonPackage extends com.redhat.ceylon.model.typechecker.model.Packa
     }
 
     @SuppressWarnings("unchecked")
-    Method loadMethod(String name, Map<String, Object> m, Scope parent, final List<TypeParameter> existing) {
-        Method md = new Method();
+    Function loadMethod(String name, Map<String, Object> m, Scope parent, final List<TypeParameter> existing) {
+        Function md = new Function();
         md.setName(name);
         m.remove(MetamodelGenerator.KEY_NAME);
         md.setContainer(parent);
@@ -492,7 +492,7 @@ public class JsonPackage extends com.redhat.ceylon.model.typechecker.model.Packa
         return md;
     }
 
-    MethodOrValue loadAttribute(String name, Map<String, Object> m, Scope parent,
+    FunctionOrValue loadAttribute(String name, Map<String, Object> m, Scope parent,
             List<TypeParameter> typeParameters) {
         String metatype = (String)m.get(MetamodelGenerator.KEY_METATYPE);
         Value d = new Value();
@@ -832,8 +832,8 @@ public class JsonPackage extends com.redhat.ceylon.model.typechecker.model.Packa
                     Declaration d = rp.getDirectMember(tname, null, false);
                     if (d instanceof TypeDeclaration) {
                         td = (TypeDeclaration)d;
-                    } else if (d instanceof MethodOrValue) {
-                        td = ((MethodOrValue)d).getTypeDeclaration();
+                    } else if (d instanceof FunctionOrValue) {
+                        td = ((FunctionOrValue)d).getTypeDeclaration();
                     }
                 }
                 if (td == null && rp instanceof JsonPackage) {

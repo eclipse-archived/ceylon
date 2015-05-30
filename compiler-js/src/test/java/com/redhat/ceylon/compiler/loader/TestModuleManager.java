@@ -18,7 +18,7 @@ import com.redhat.ceylon.compiler.typechecker.TypeChecker;
 import com.redhat.ceylon.compiler.typechecker.TypeCheckerBuilder;
 import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
-import com.redhat.ceylon.model.typechecker.model.MethodOrValue;
+import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
@@ -98,7 +98,7 @@ public class TestModuleManager {
     }
 
     private void compareMembers(Declaration m1, Declaration m2) {
-        if (m1 instanceof MethodOrValue) {
+        if (m1 instanceof FunctionOrValue) {
             return;
         } else if (m1.getMembers() == null) {
             Assert.assertNull(m2.getMembers());
@@ -210,8 +210,8 @@ public class TestModuleManager {
         compareTypes(seq0, seq1, new ArrayList<String>());
         System.out.println("src " + seq0 + " - js " + seq1);
         compareTypeDeclarations(d0, d1);
-        MethodOrValue m0 = (MethodOrValue)d0.getDirectMember("last", null, false);
-        MethodOrValue m1 = (MethodOrValue)d1.getDirectMember("last", null, false);
+        FunctionOrValue m0 = (FunctionOrValue)d0.getDirectMember("last", null, false);
+        FunctionOrValue m1 = (FunctionOrValue)d1.getDirectMember("last", null, false);
         System.out.println("Iterable.last " + m0 + " vs " + m1);
         System.out.println("refined member " + d0.getRefinedMember("last", null, false).getContainer() + " vs " + d1.getRefinedMember("last", null, false).getContainer());
         System.out.println("last is transient? " + m0.isTransient() + " vs " + m1.isTransient());

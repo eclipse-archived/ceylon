@@ -16,8 +16,8 @@ import com.redhat.ceylon.model.typechecker.model.Constructor;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Functional;
 import com.redhat.ceylon.model.typechecker.model.Interface;
-import com.redhat.ceylon.model.typechecker.model.Method;
-import com.redhat.ceylon.model.typechecker.model.MethodOrValue;
+import com.redhat.ceylon.model.typechecker.model.Function;
+import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.ParameterList;
 import com.redhat.ceylon.model.typechecker.model.Type;
@@ -478,8 +478,8 @@ public class InvocationGenerator {
                         final List<Parameter> moreParams;
                         final Declaration pdd = pd.getDeclaration();
                         boolean found = false;
-                        if (pdd instanceof Method) {
-                            moreParams = ((Method)pdd).getParameterLists().get(0).getParameters();
+                        if (pdd instanceof Function) {
+                            moreParams = ((Function)pdd).getParameterLists().get(0).getParameters();
                         } else if (pdd instanceof Class) {
                             moreParams = ((Class)pdd).getParameterList().getParameters();
                         } else {
@@ -543,7 +543,7 @@ public class InvocationGenerator {
                         if (_tlist[1] == null) {
                             _tlist[1] = that.getUnit().getNothingType();
                         }
-                        Method cdec = (Method)that.getUnit().getIterableDeclaration().getMember("chain", null, false);
+                        Function cdec = (Function)that.getUnit().getIterableDeclaration().getMember("chain", null, false);
                         _targs = TypeUtils.matchTypeParametersWithArguments(cdec.getTypeParameters(), Arrays.asList(_tlist));
                     }
                     TypeUtils.printTypeArguments(that, _targs, gen, false, _vo);
@@ -640,7 +640,7 @@ public class InvocationGenerator {
     void describeMethodParameters(Tree.Term term) {
         ParameterList plist = null;
         if (term instanceof Tree.FunctionArgument) {
-            plist = ((Method)(((Tree.FunctionArgument)term).getDeclarationModel())).getParameterLists().get(0);
+            plist = ((Function)(((Tree.FunctionArgument)term).getDeclarationModel())).getParameterLists().get(0);
         } else if (term instanceof Tree.MemberOrTypeExpression) {
             Tree.MemberOrTypeExpression mote = (Tree.MemberOrTypeExpression)term;
             if (mote.getStaticMethodReference()) {
@@ -651,8 +651,8 @@ public class InvocationGenerator {
                 pm.setType(mote.getTarget().getQualifyingType());
                 param.setModel(pm);
                 param.setName("_0");
-            } else if (mote.getDeclaration() instanceof Method) {
-                plist = ((Method)((Tree.MemberOrTypeExpression)term).getDeclaration()).getParameterLists().get(0);
+            } else if (mote.getDeclaration() instanceof Function) {
+                plist = ((Function)((Tree.MemberOrTypeExpression)term).getDeclaration()).getParameterLists().get(0);
             }
         } else if (term instanceof Tree.InvocationExpression) {
             TypeUtils.encodeCallableArgumentsAsParameterListForRuntime(term, term.getTypeModel(), gen);

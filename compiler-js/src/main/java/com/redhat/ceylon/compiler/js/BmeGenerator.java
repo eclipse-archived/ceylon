@@ -13,7 +13,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.TypeArguments;
 import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Generic;
-import com.redhat.ceylon.model.typechecker.model.Method;
+import com.redhat.ceylon.model.typechecker.model.Function;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.TypeParameter;
@@ -41,7 +41,7 @@ public class BmeGenerator {
             gen.generateThrow(null, "Undefined or null reference: " + exp, bme);
             gen.out(":", exp, ")");
         } else {
-            final boolean isCallable = !forInvoke && decl instanceof Method
+            final boolean isCallable = !forInvoke && decl instanceof Function
                     && bme.getUnit().getCallableDeclaration().equals(bme.getTypeModel().getDeclaration());
             String who = isCallable && decl.isMember() ? gen.getMember(bme, decl, null) : null;
             if (who == null || who.isEmpty()) {
@@ -52,7 +52,7 @@ public class BmeGenerator {
             final boolean hasTparms = hasTypeParameters(bme);
             if (isCallable && (who != null || hasTparms)) {
                 if (hasTparms) {
-                    //Method refs with type arguments must be passed as a special function
+                    //Function refs with type arguments must be passed as a special function
                     printGenericMethodReference(gen, bme, who, exp);
                 } else {
                     //Member methods must be passed as JsCallables
@@ -97,7 +97,7 @@ public class BmeGenerator {
 
     static void printGenericMethodReference(final GenerateJsVisitor gen,
             final Tree.StaticMemberOrTypeExpression expr, final String who, final String member) {
-        //Method refs with type arguments must be passed as a special function
+        //Function refs with type arguments must be passed as a special function
         gen.out(gen.getClAlias(), "JsCallable(", who, ",", member, ",");
         TypeUtils.printTypeArguments(expr, createTypeArguments(expr), gen, true,
                 expr.getTypeModel().getVarianceOverrides());

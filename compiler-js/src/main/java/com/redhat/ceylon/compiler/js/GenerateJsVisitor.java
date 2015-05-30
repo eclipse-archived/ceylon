@@ -80,8 +80,8 @@ import com.redhat.ceylon.model.typechecker.model.Constructor;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Functional;
 import com.redhat.ceylon.model.typechecker.model.Interface;
-import com.redhat.ceylon.model.typechecker.model.Method;
-import com.redhat.ceylon.model.typechecker.model.MethodOrValue;
+import com.redhat.ceylon.model.typechecker.model.Function;
+import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.Package;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
@@ -434,10 +434,10 @@ public class GenerateJsVisitor extends Visitor
         boolean first=true;
         String ptypes = null;
         //Check if this is the first parameter list
-        if (that.getScope() instanceof Method && that.getModel().isFirst()) {
-            if (((Method)that.getScope()).getTypeParameters() != null &&
-                    !((Method)that.getScope()).getTypeParameters().isEmpty()) {
-                ptypes = names.typeArgsParamName((Method)that.getScope());
+        if (that.getScope() instanceof Function && that.getModel().isFirst()) {
+            if (((Function)that.getScope()).getTypeParameters() != null &&
+                    !((Function)that.getScope()).getTypeParameters().isEmpty()) {
+                ptypes = names.typeArgsParamName((Function)that.getScope());
             }
         }
         for (Tree.Parameter param: that.getParameters()) {
@@ -972,7 +972,7 @@ public class GenerateJsVisitor extends Visitor
 
     void generateAttributeForParameter(Node node, Class d, Parameter p) {
         final String privname = names.name(p) + "_";
-        final MethodOrValue pdec = p.getModel();
+        final FunctionOrValue pdec = p.getModel();
         defineAttribute(names.self(d), names.name(pdec));
         out("{");
         if (pdec.isLate()) {
@@ -1209,7 +1209,7 @@ public class GenerateJsVisitor extends Visitor
     public void visit(final Tree.MethodDefinition that) {
         //Don't even bother with nodes that have errors
         if (errVisitor.hasErrors(that) || !TypeUtils.acceptNative(that))return;
-        final Method d = that.getDeclarationModel();
+        final Function d = that.getDeclarationModel();
         if (!((opts.isOptimize() && d.isClassOrInterfaceMember()) || TypeUtils.isNativeExternal(d))) {
             comment(that);
             initDefaultedParameters(that.getParameterLists().get(0), d);
@@ -1248,7 +1248,7 @@ public class GenerateJsVisitor extends Visitor
     }
 
     /** Create special functions with the expressions for defaulted parameters in a parameter list. */
-    void initDefaultedParameters(final Tree.ParameterList params, Method container) {
+    void initDefaultedParameters(final Tree.ParameterList params, Function container) {
         if (!container.isMember())return;
         for (final Tree.Parameter param : params.getParameters()) {
             Parameter pd = param.getParameterModel();
@@ -1279,7 +1279,7 @@ public class GenerateJsVisitor extends Visitor
     }
 
     /** Initialize the sequenced, defaulted and captured parameters in a type declaration. */
-    void initParameters(final Tree.ParameterList params, TypeDeclaration typeDecl, Method m) {
+    void initParameters(final Tree.ParameterList params, TypeDeclaration typeDecl, Function m) {
         for (final Tree.Parameter param : params.getParameters()) {
             Parameter pd = param.getParameterModel();
             final String paramName = names.name(pd);
@@ -1331,7 +1331,7 @@ public class GenerateJsVisitor extends Visitor
             final Tree.MethodDefinition that) {
         //Don't even bother with nodes that have errors
         if (errVisitor.hasErrors(that))return;
-        Method d = that.getDeclarationModel();
+        Function d = that.getDeclarationModel();
         if (!opts.isOptimize()||!d.isClassOrInterfaceMember()) return;
         comment(that);
         initDefaultedParameters(that.getParameterLists().get(0), d);
@@ -1441,7 +1441,7 @@ public class GenerateJsVisitor extends Visitor
     }
 
     /** Exports a getter function; useful in non-prototype style. */
-    boolean shareGetter(final MethodOrValue d) {
+    boolean shareGetter(final FunctionOrValue d) {
         boolean shared = false;
         if (isCaptured(d)) {
             beginNewLine();
@@ -1485,7 +1485,7 @@ public class GenerateJsVisitor extends Visitor
         }
     }
 
-    boolean shareSetter(final MethodOrValue d) {
+    boolean shareSetter(final FunctionOrValue d) {
         boolean shared = false;
         if (isCaptured(d)) {
             beginNewLine();
@@ -1586,7 +1586,7 @@ public class GenerateJsVisitor extends Visitor
                     }
                 }
             }
-            else if (!(d.isParameter() && d.getContainer() instanceof Method)) {
+            else if (!(d.isParameter() && d.getContainer() instanceof Function)) {
                 if (addGetter) {
                     AttributeGenerator.generateAttributeGetter(that, d, specInitExpr,
                             names.name(param), this, directAccess);
@@ -1613,7 +1613,7 @@ public class GenerateJsVisitor extends Visitor
         while (_scope != null) {
             //TODO this is bound to change for local decl metamodel
             if (_scope instanceof Declaration) {
-                if (_scope instanceof Method)return;
+                if (_scope instanceof Function)return;
                 else break;
             }
             _scope = _scope.getContainer();
@@ -1674,7 +1674,7 @@ public class GenerateJsVisitor extends Visitor
         out("if(", privname, "===undefined)throw ", getClAlias(),
                 "InitializationError('Attempt to read unitialized attribute «", pubname, "»');");
     }
-    void generateImmutableAttributeReassignmentCheck(MethodOrValue decl, String privname, String pubname) {
+    void generateImmutableAttributeReassignmentCheck(FunctionOrValue decl, String privname, String pubname) {
         if (decl.isLate() && !decl.isVariable()) {
             out("if(", privname, "!==undefined)throw ", getClAlias(),
                     "InitializationError('Attempt to reassign immutable attribute «", pubname, "»');");
@@ -1801,7 +1801,7 @@ public class GenerateJsVisitor extends Visitor
     }
 
     private boolean accessThroughGetter(Declaration d) {
-        return (d instanceof MethodOrValue) && !(d instanceof Method)
+        return (d instanceof FunctionOrValue) && !(d instanceof Function)
                 && !defineAsProperty(d);
     }
     
@@ -1846,7 +1846,7 @@ public class GenerateJsVisitor extends Visitor
     }
 
     private void generateSafeOp(final Tree.QualifiedMemberOrTypeExpression that) {
-        boolean isMethod = that.getDeclaration() instanceof Method;
+        boolean isMethod = that.getDeclaration() instanceof Function;
         String lhsVar = createRetainedTempVar();
         out("(", lhsVar, "=");
         super.visit(that);
@@ -1855,8 +1855,8 @@ public class GenerateJsVisitor extends Visitor
             out(getClAlias(), "JsCallable(", lhsVar, ",");
         }
         out(getClAlias(),"nn$(", lhsVar, ")?");
-        if (isMethod && !((Method)that.getDeclaration()).getTypeParameters().isEmpty()) {
-            //Method ref with type parameters
+        if (isMethod && !((Function)that.getDeclaration()).getTypeParameters().isEmpty()) {
+            //Function ref with type parameters
             BmeGenerator.printGenericMethodReference(this, that, lhsVar, memberAccess(that, lhsVar));
         } else {
             out(memberAccess(that, lhsVar));
@@ -1880,14 +1880,14 @@ public class GenerateJsVisitor extends Visitor
             generateSafeOp(that);
         } else if (that.getMemberOperator() instanceof Tree.SpreadOp) {
             SequenceGenerator.generateSpread(that, this);
-        } else if (that.getDeclaration() instanceof Method && that.getSignature() == null) {
+        } else if (that.getDeclaration() instanceof Function && that.getSignature() == null) {
             //TODO right now this causes that all method invocations are done this way
             //we need to filter somehow to only use this pattern when the result is supposed to be a callable
             //looks like checking for signature is a good way (not THE way though; named arg calls don't have signature)
             generateCallable(that, null);
         } else if (that.getStaticMethodReference() && that.getDeclaration()!=null) {
             out("function($O$){return ");
-            if (that.getDeclaration() instanceof Method) {
+            if (that.getDeclaration() instanceof Function) {
                 if (BmeGenerator.hasTypeParameters(that)) {
                     BmeGenerator.printGenericMethodReference(this, that, "$O$", "$O$."+names.name(that.getDeclaration()));
                 } else {
@@ -1928,7 +1928,7 @@ public class GenerateJsVisitor extends Visitor
             }
             return;
         }
-        if (d.isToplevel() && d instanceof Method) {
+        if (d.isToplevel() && d instanceof Function) {
             //Just output the name
             out(names.name(d));
             return;
@@ -1938,9 +1938,9 @@ public class GenerateJsVisitor extends Visitor
         that.getPrimary().visit(this);
         out(",");
         final String member = (name == null) ? memberAccess(that, primaryVar) : (primaryVar+"."+name);
-        if (that.getDeclaration() instanceof Method
-                && !((Method)that.getDeclaration()).getTypeParameters().isEmpty()) {
-            //Method ref with type parameters
+        if (that.getDeclaration() instanceof Function
+                && !((Function)that.getDeclaration()).getTypeParameters().isEmpty()) {
+            //Function ref with type parameters
             BmeGenerator.printGenericMethodReference(this, that, primaryVar, member);
         } else {
             out(getClAlias(), "JsCallable(", primaryVar, ",", getClAlias(), "nn$(", primaryVar, ")?", member, ":null)");
@@ -2343,9 +2343,9 @@ public class GenerateJsVisitor extends Visitor
                     endLine(true);
                 }
             }
-            else if (bmeDecl instanceof MethodOrValue) {
+            else if (bmeDecl instanceof FunctionOrValue) {
                 // "attr = expr;" in an initializer or method
-                final MethodOrValue moval = (MethodOrValue)bmeDecl;
+                final FunctionOrValue moval = (FunctionOrValue)bmeDecl;
                 if (moval.isVariable()) {
                     // simple assignment to a variable attribute
                     BmeGenerator.generateMemberAccess(smte, new GenerateCallback() {
@@ -2360,10 +2360,10 @@ public class GenerateJsVisitor extends Visitor
                             }
                             if (boxType == 4) {
                                 out(",");
-                                if (moval instanceof Method) {
+                                if (moval instanceof Function) {
                                     //Add parameters
                                     TypeUtils.encodeParameterListForRuntime(true, specStmt,
-                                            ((Method)moval).getParameterLists().get(0), GenerateJsVisitor.this);
+                                            ((Function)moval).getParameterLists().get(0), GenerateJsVisitor.this);
                                     out(",");
                                 } else {
                                     //TODO extract parameters from Value
@@ -2382,13 +2382,13 @@ public class GenerateJsVisitor extends Visitor
                     }, qualifiedPath(smte, moval), this);
                     out(";");
                 } else if (moval.isMember()) {
-                    if (moval instanceof Method) {
+                    if (moval instanceof Function) {
                         //same as fat arrow
                         qualify(specStmt, bmeDecl);
                         out(names.name(moval), "=function ", names.name(moval), "(");
                         //Build the parameter list, we'll use it several times
                         final StringBuilder paramNames = new StringBuilder();
-                        final List<Parameter> params = ((Method) moval).getParameterLists().get(0).getParameters();
+                        final List<Parameter> params = ((Function) moval).getParameterLists().get(0).getParameters();
                         for (Parameter p : params) {
                             if (paramNames.length() > 0) paramNames.append(",");
                             paramNames.append(names.name(p));
@@ -2431,13 +2431,13 @@ public class GenerateJsVisitor extends Visitor
                 } else {
                     // Specifier for some other attribute, or for a method.
                     if (opts.isOptimize() 
-                            || (bmeDecl.isMember() && (bmeDecl instanceof Method))) {
+                            || (bmeDecl.isMember() && (bmeDecl instanceof Function))) {
                         qualify(specStmt, bmeDecl);
                     }
                     out(names.name(bmeDecl), "=");
                     if (dynblock > 0 && Util.isTypeUnknown(expr.getTypeModel())
-                            && !Util.isTypeUnknown(((MethodOrValue) bmeDecl).getType())) {
-                        TypeUtils.generateDynamicCheck(expr, ((MethodOrValue) bmeDecl).getType(), this, false,
+                            && !Util.isTypeUnknown(((FunctionOrValue) bmeDecl).getType())) {
+                        TypeUtils.generateDynamicCheck(expr, ((FunctionOrValue) bmeDecl).getType(), this, false,
                                 expr.getTypeModel().getTypeArguments());
                     } else {
                         specStmt.getSpecifierExpression().visit(this);
@@ -3263,8 +3263,8 @@ public class GenerateJsVisitor extends Visitor
             out("]");
         } else if (type.getDeclaration() != null && type.getDeclaration().getContainer() != null) {
             Declaration d = Util.getContainingDeclarationOfScope(type.getDeclaration().getContainer());
-            if (d != null && d instanceof Method && !((Method)d).getTypeParameters().isEmpty()) {
-                out(",", names.typeArgsParamName((Method)d));
+            if (d != null && d instanceof Function && !((Function)d).getTypeParameters().isEmpty()) {
+                out(",", names.typeArgsParamName((Function)d));
             }
         }
         out(")");

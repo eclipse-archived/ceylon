@@ -3,7 +3,7 @@ package com.redhat.ceylon.compiler.js;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
-import com.redhat.ceylon.model.typechecker.model.MethodOrValue;
+import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
 import com.redhat.ceylon.model.typechecker.model.Setter;
 import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.model.typechecker.model.Value;
@@ -63,7 +63,7 @@ public class ValueVisitor extends Visitor {
                         //a reference from a default argument 
                         //expression of the same parameter 
                         //list does not capture a parameter
-                        ((MethodOrValue) d).setCaptured(true);
+                        ((FunctionOrValue) d).setCaptured(true);
                     }
                 } else if (d instanceof Value) {
                     ((Value) d).setCaptured(true);

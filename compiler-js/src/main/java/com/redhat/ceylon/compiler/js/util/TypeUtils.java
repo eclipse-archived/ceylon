@@ -20,8 +20,8 @@ import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.model.typechecker.model.Constructor;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Generic;
-import com.redhat.ceylon.model.typechecker.model.Method;
-import com.redhat.ceylon.model.typechecker.model.MethodOrValue;
+import com.redhat.ceylon.model.typechecker.model.Function;
+import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.ParameterList;
@@ -324,7 +324,7 @@ public class TypeUtils {
             //We need to find the index of the parameter where the argument occurs
             //...and it could be null...
             Type type = null;
-            for (Iterator<ParameterList> iter0 = ((Method)tp.getContainer()).getParameterLists().iterator();
+            for (Iterator<ParameterList> iter0 = ((Function)tp.getContainer()).getParameterLists().iterator();
                     type == null && iter0.hasNext();) {
                 for (Iterator<Parameter> iter1 = iter0.next().getParameters().iterator();
                         type == null && iter1.hasNext();) {
@@ -338,7 +338,7 @@ public class TypeUtils {
             //A component of a union/intersection type, in which case we just use the argument's type (may be null)
             //A type argument of the argument's type, in which case we must get the reified generic from the argument
             if (tp.getContainer() == parent) {
-                gen.out(gen.getNames().typeArgsParamName((Method)tp.getContainer()), ".",
+                gen.out(gen.getNames().typeArgsParamName((Function)tp.getContainer()), ".",
                         tp.getName(), "$", tp.getDeclaration().getName());
             } else {
                 if (parent == null && node instanceof Tree.StaticMemberOrTypeExpression) {
@@ -492,9 +492,9 @@ public class TypeUtils {
             gen.out("{", MetamodelGenerator.KEY_NAME, ":'", p.getName(), "',");
             gen.out(MetamodelGenerator.KEY_METATYPE, ":'", MetamodelGenerator.METATYPE_PARAMETER, "',");
             Type ptype = p.getType();
-            if (p.getModel() instanceof Method) {
+            if (p.getModel() instanceof Function) {
                 gen.out("$pt:'f',");
-                ptype = ((Method)p.getModel()).getTypedReference().getFullType();
+                ptype = ((Function)p.getModel()).getTypedReference().getFullType();
             }
             if (p.isSequenced()) {
                 if (p.isAtLeastOne()) {
@@ -746,7 +746,7 @@ public class TypeUtils {
                         sb.add(i, p.isAnonymous() ? MetamodelGenerator.KEY_OBJECTS : MetamodelGenerator.KEY_CLASSES);
                     } else if (p instanceof com.redhat.ceylon.model.typechecker.model.Interface) {
                         sb.add(i, MetamodelGenerator.KEY_INTERFACES);
-                    } else if (p instanceof Method) {
+                    } else if (p instanceof Function) {
                         sb.add(i, MetamodelGenerator.KEY_METHODS);
                     } else if (p instanceof TypeAlias || p instanceof Setter) {
                         sb.add(i, MetamodelGenerator.KEY_ATTRIBUTES);
@@ -801,16 +801,16 @@ public class TypeUtils {
             satisfies = ((com.redhat.ceylon.model.typechecker.model.Interface) d).getSatisfiedTypes();
             caseTypes = ((com.redhat.ceylon.model.typechecker.model.Interface) d).getCaseTypes();
 
-        } else if (d instanceof MethodOrValue) {
+        } else if (d instanceof FunctionOrValue) {
 
             gen.out(",", MetamodelGenerator.KEY_TYPE, ":");
             //This needs a new setting to resolve types but not type parameters
-            metamodelTypeNameOrList(false, that, d.getUnit().getPackage(), ((MethodOrValue)d).getType(), gen);
-            if (d instanceof Method) {
+            metamodelTypeNameOrList(false, that, d.getUnit().getPackage(), ((FunctionOrValue)d).getType(), gen);
+            if (d instanceof Function) {
                 gen.out(",", MetamodelGenerator.KEY_PARAMS, ":");
                 //Parameter types of the first parameter list
-                encodeParameterListForRuntime(false, that, ((Method)d).getParameterLists().get(0), gen);
-                tparms = ((Method) d).getTypeParameters();
+                encodeParameterListForRuntime(false, that, ((Function)d).getParameterLists().get(0), gen);
+                tparms = ((Function) d).getTypeParameters();
             }
 
         } else if (d instanceof Constructor) {
@@ -977,8 +977,8 @@ public class TypeUtils {
                     if (tpowner instanceof TypeDeclaration) {
                         gen.out(gen.getNames().self((TypeDeclaration)tpowner), ".",
                                 type.getNameAsString(), "$", tpowner.getName());
-                    } else if (tpowner instanceof Method) {
-                        gen.out(gen.getNames().typeArgsParamName((Method)tpowner), ".",
+                    } else if (tpowner instanceof Function) {
+                        gen.out(gen.getNames().typeArgsParamName((Function)tpowner), ".",
                                 type.getNameAsString(), "$", tpowner.getName());
                     }
                 } else {
@@ -1216,7 +1216,7 @@ public class TypeUtils {
             boolean first = true;
             for (Annotation a : anns) {
                 Declaration ad = d.getUnit().getPackage().getMemberOrParameter(d.getUnit(), a.getName(), null, false);
-                if (ad instanceof Method) {
+                if (ad instanceof Function) {
                     if (first) first=false; else gen.out(",");
                     final boolean isDoc = "ceylon.language::doc".equals(ad.getQualifiedNameString());
                     if (!isDoc) {
@@ -1224,7 +1224,7 @@ public class TypeUtils {
                         gen.out(gen.getNames().name(ad), "(");
                     }
                     if (a.getPositionalArguments() == null) {
-                        for (Parameter p : ((Method)ad).getParameterLists().get(0).getParameters()) {
+                        for (Parameter p : ((Function)ad).getParameterLists().get(0).getParameters()) {
                             String v = a.getNamedArguments().get(p.getName());
                             gen.out(v == null ? "undefined" : v);
                         }
@@ -1265,7 +1265,7 @@ public class TypeUtils {
      * and the produced type belonging to the type argument of the term on the right. */
     public static Map<TypeParameter, Type> mapTypeArgument(final Tree.BinaryOperatorExpression expr,
             final String methodName, final String rightTpName, final String leftTpName) {
-        Method md = (Method)expr.getLeftTerm().getTypeModel().getDeclaration().getMember(methodName, null, false);
+        Function md = (Function)expr.getLeftTerm().getTypeModel().getDeclaration().getMember(methodName, null, false);
         if (md == null) {
             expr.addUnexpectedError("Left term of intersection operator should have method named " + methodName, Backend.JavaScript);
             return null;

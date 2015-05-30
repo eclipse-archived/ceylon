@@ -11,7 +11,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ValueLiteral;
 import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
-import com.redhat.ceylon.model.typechecker.model.Method;
+import com.redhat.ceylon.model.typechecker.model.Function;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.Scope;
@@ -40,7 +40,7 @@ public class MetamodelHelper {
             gen.out("OpenConstructor$jsint");
         } else if (d instanceof Class) {
             gen.out("openClass$jsint");
-        } else if (d instanceof Method) {
+        } else if (d instanceof Function) {
             gen.out("OpenFunction$jsint");
         } else if (d instanceof Value) {
             gen.out("OpenValue$jsint");
@@ -208,7 +208,7 @@ public class MetamodelHelper {
         final Type ltype = that.getType() == null ? null : that.getType().getTypeModel();
         final Declaration d = ref.getDeclaration();
         final Class anonClass = d.isMember()&&d.getContainer() instanceof Class && ((Class)d.getContainer()).isAnonymous()?(Class)d.getContainer():null;
-        if (that instanceof Tree.FunctionLiteral || d instanceof Method) {
+        if (that instanceof Tree.FunctionLiteral || d instanceof Function) {
             gen.out(gen.getClAlias(), d.isMember()?"AppliedMethod$jsint(":"AppliedFunction$jsint(");
             if (anonClass != null) {
                 gen.qualify(that, anonClass);

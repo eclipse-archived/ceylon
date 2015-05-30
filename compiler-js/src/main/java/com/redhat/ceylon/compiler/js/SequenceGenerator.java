@@ -9,7 +9,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SequencedArgument;
-import com.redhat.ceylon.model.typechecker.model.Method;
+import com.redhat.ceylon.model.typechecker.model.Function;
 import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.TypeParameter;
 import com.redhat.ceylon.model.typechecker.model.Util;
@@ -112,7 +112,7 @@ public class SequenceGenerator {
     /** SpreadOp cannot be a simple function call because we need to reference the object methods directly, so it's a function */
     static void generateSpread(final Tree.QualifiedMemberOrTypeExpression that, final GenerateJsVisitor gen) {
         //Determine if it's a method or attribute
-        boolean isMethod = that.getDeclaration() instanceof Method;
+        boolean isMethod = that.getDeclaration() instanceof Function;
         //Define a function
         gen.out("(function()");
         gen.beginBlock();
@@ -147,7 +147,7 @@ public class SequenceGenerator {
         //Return the array of values or a Callable with the arguments
         gen.out("return ");
         if (isMethod) {
-            Method m = (Method)that.getDeclaration();
+            Function m = (Function)that.getDeclaration();
             ArrayList<String> tmpvars = null;
             if (m.getParameterLists().size() > 1) {
                 tmpvars = new ArrayList<>(m.getParameterLists().size());
@@ -160,7 +160,7 @@ public class SequenceGenerator {
             if (that.getTypeArguments() != null && that.getTypeArguments().getTypeModels()!=null && !that.getTypeArguments().getTypeModels().isEmpty()) {
                 gen.out(",");
                 TypeUtils.printTypeArguments(that, TypeUtils.matchTypeParametersWithArguments(
-                        ((Method)that.getDeclaration()).getTypeParameters(),
+                        ((Function)that.getDeclaration()).getTypeParameters(),
                         that.getTypeArguments().getTypeModels()), gen, true, null);
             }
             gen.out(")");

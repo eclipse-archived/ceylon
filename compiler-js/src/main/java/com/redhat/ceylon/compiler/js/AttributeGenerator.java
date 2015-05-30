@@ -8,8 +8,8 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.LazySpecifierExpression;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Functional;
-import com.redhat.ceylon.model.typechecker.model.Method;
-import com.redhat.ceylon.model.typechecker.model.MethodOrValue;
+import com.redhat.ceylon.model.typechecker.model.Function;
+import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.model.typechecker.model.Util;
 import com.redhat.ceylon.model.typechecker.model.Value;
@@ -44,7 +44,7 @@ public class AttributeGenerator {
         }
     }
 
-    static void generateAttributeGetter(final Tree.AnyAttribute attributeNode, final MethodOrValue decl,
+    static void generateAttributeGetter(final Tree.AnyAttribute attributeNode, final FunctionOrValue decl,
             final Tree.SpecifierOrInitializerExpression expr, final String param, final GenerateJsVisitor gen,
             final Set<Declaration> directAccess) {
         final boolean asProp = defineAsProperty(decl) && (gen.isCaptured(decl) || decl.isToplevel());
@@ -91,9 +91,9 @@ public class AttributeGenerator {
                 if (boxType == 4) {
                     //Pass Callable argument types
                     gen.out(",");
-                    if (decl instanceof Method) {
+                    if (decl instanceof Function) {
                         //Add parameters
-                        TypeUtils.encodeParameterListForRuntime(true, attributeNode, ((Method)decl).getParameterLists().get(0), gen);
+                        TypeUtils.encodeParameterListForRuntime(true, attributeNode, ((Function)decl).getParameterLists().get(0), gen);
                     } else {
                         //Type of value must be Callable
                         //And the Args Type Parameters is a Tuple
@@ -117,7 +117,7 @@ public class AttributeGenerator {
             stitch=false;
         }
         gen.endLine(true);
-        if (decl instanceof Method) {
+        if (decl instanceof Function) {
             if (decl.isClassOrInterfaceMember() && gen.isCaptured(decl)) {
                 gen.beginNewLine();
                 gen.outerSelf(decl);
@@ -338,7 +338,7 @@ public class AttributeGenerator {
 
     public static boolean defineAsProperty(Declaration d) {
         // for now, only define member attributes as properties, not toplevel attributes
-        return d.isMember() && d instanceof MethodOrValue && !(d instanceof Method);
+        return d.isMember() && d instanceof FunctionOrValue && !(d instanceof Function);
     }
 
 }

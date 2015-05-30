@@ -18,7 +18,7 @@ import com.redhat.ceylon.compiler.js.JsCompiler;
 import com.redhat.ceylon.compiler.js.util.Options;
 import com.redhat.ceylon.compiler.typechecker.TypeChecker;
 import com.redhat.ceylon.compiler.typechecker.TypeCheckerBuilder;
-import com.redhat.ceylon.model.typechecker.model.Method;
+import com.redhat.ceylon.model.typechecker.model.Function;
 import com.redhat.ceylon.model.typechecker.model.SiteVariance;
 
 public class TestSiteVariance {
@@ -59,7 +59,7 @@ public class TestSiteVariance {
         model = (Map<String,Object>)model.get("phase1");
         Assert.assertNotNull("Default package not found", model);
         model = (Map<String,Object>)model.get("m2");
-        Assert.assertNotNull("Method m2 not found", model);
+        Assert.assertNotNull("Function m2 not found", model);
         Map<String,Object> type = (Map<String,Object>)model.get(MetamodelGenerator.KEY_TYPE);
         List<Map<String,Object>> targs = (List<Map<String,Object>>)type.get(MetamodelGenerator.KEY_TYPE_PARAMS);
         type = targs.get(0);
@@ -74,7 +74,7 @@ public class TestSiteVariance {
         //Typecheck phase2
         opts = options("src/test/resources/variance/phase2");
         tc = typeChecker(opts);
-        Method m2 = (Method)tc.getPhasedUnits().getPhasedUnits().get(0).getPackage().getModule().getPackage("phase1").getDirectMember("m2", null, false);
+        Function m2 = (Function)tc.getPhasedUnits().getPhasedUnits().get(0).getPackage().getModule().getPackage("phase1").getDirectMember("m2", null, false);
         Assert.assertNotNull("phase1::m2 missing", m2);
         Assert.assertFalse("Missing variance overrides in return type",
                 m2.getType().getVarianceOverrides().isEmpty());

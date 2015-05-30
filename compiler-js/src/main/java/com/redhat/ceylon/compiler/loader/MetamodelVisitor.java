@@ -10,7 +10,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.model.typechecker.model.Annotation;
-import com.redhat.ceylon.model.typechecker.model.Method;
+import com.redhat.ceylon.model.typechecker.model.Function;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.model.typechecker.model.Value;
@@ -151,8 +151,8 @@ public class MetamodelVisitor extends Visitor {
             ann = new Annotation();
             ann.setName("actual");
             d.getAnnotations().add(ann);
-            if (d instanceof Method) {
-                gen.encodeMethod((Method)d);
+            if (d instanceof Function) {
+                gen.encodeMethod((Function)d);
             } else if (d instanceof Value) {
                 gen.encodeAttributeOrGetter((Value)d);
             } else {

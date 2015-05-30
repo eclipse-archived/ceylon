@@ -19,7 +19,7 @@ import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.model.typechecker.model.Constructor;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Interface;
-import com.redhat.ceylon.model.typechecker.model.Method;
+import com.redhat.ceylon.model.typechecker.model.Function;
 import com.redhat.ceylon.model.typechecker.model.ParameterList;
 import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.Scope;
@@ -192,9 +192,9 @@ public class TypeGenerator {
             gen.endLine(true);
         }
         callSupertypes(sats == null ? null : sats.getTypes(), null, d, that, superDecs, null, null, gen);
-        if (!d.isToplevel() && d.getContainer() instanceof Method && !((Method)d.getContainer()).getTypeParameters().isEmpty()) {
+        if (!d.isToplevel() && d.getContainer() instanceof Function && !((Function)d.getContainer()).getTypeParameters().isEmpty()) {
             gen.out(gen.getClAlias(), "set_type_args(", gen.getNames().self(d),
-                    ",", gen.getNames().typeArgsParamName((Method)d.getContainer()), ",",
+                    ",", gen.getNames().typeArgsParamName((Function)d.getContainer()), ",",
                     gen.getNames().name(d), ")");
             gen.endLine(true);
         }
@@ -336,10 +336,10 @@ public class TypeGenerator {
                 }
             }
         }
-        if (!d.isToplevel() && d.getContainer() instanceof Method
-                && !((Method)d.getContainer()).getTypeParameters().isEmpty()) {
+        if (!d.isToplevel() && d.getContainer() instanceof Function
+                && !((Function)d.getContainer()).getTypeParameters().isEmpty()) {
             gen.out(gen.getClAlias(), "set_type_args(", me, ",",
-                    gen.getNames().typeArgsParamName((Method)d.getContainer()), ")");
+                    gen.getNames().typeArgsParamName((Function)d.getContainer()), ")");
             gen.endLine(true);
         }
         if (plist != null) {

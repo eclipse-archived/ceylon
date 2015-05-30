@@ -11,8 +11,8 @@ import com.redhat.ceylon.compiler.js.JsCompiler;
 import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.model.typechecker.model.Constructor;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
-import com.redhat.ceylon.model.typechecker.model.Method;
-import com.redhat.ceylon.model.typechecker.model.MethodOrValue;
+import com.redhat.ceylon.model.typechecker.model.Function;
+import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.Scope;
@@ -90,9 +90,9 @@ public class JsIdentifierNames {
     public String name(Parameter param) {
         if (param == null) { return null; }
         String name = param.getName();
-        MethodOrValue decl = param.getModel();
+        FunctionOrValue decl = param.getModel();
         final boolean nonLocal = (decl.isShared() && decl.isMember())
-                || (decl.isToplevel() && decl instanceof Method);
+                || (decl.isToplevel() && decl instanceof Function);
         if (nonLocal) {
             // The identifier might be accessed from other .js files, so it must
             // be reliably reproducible. In most cases simply using the original
@@ -269,7 +269,7 @@ public class JsIdentifierNames {
         if (nonLocal) {
             // check if it's a shared member or a toplevel function
             nonLocal = decl.isMember() ? decl.isShared() || decl instanceof TypeDeclaration :
-                decl.isToplevel() && (forGetterSetter || (decl instanceof Method)
+                decl.isToplevel() && (forGetterSetter || (decl instanceof Function)
                 || (decl instanceof ClassOrInterface) || (decl instanceof TypeAlias));
         }
         if (nonLocal && decl instanceof com.redhat.ceylon.model.typechecker.model.Class
@@ -347,7 +347,7 @@ public class JsIdentifierNames {
     }
 
     /** The name for the argument that holds the type parameters of a method. */
-    public String typeArgsParamName(Method m) {
+    public String typeArgsParamName(Function m) {
         return "$" + Long.toString(Math.abs(m.getQualifiedNameString().hashCode()), 36) + "$";
     }
 

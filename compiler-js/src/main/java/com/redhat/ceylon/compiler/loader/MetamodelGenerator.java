@@ -18,8 +18,8 @@ import com.redhat.ceylon.model.typechecker.model.Constructor;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.DeclarationKind;
 import com.redhat.ceylon.model.typechecker.model.Interface;
-import com.redhat.ceylon.model.typechecker.model.Method;
-import com.redhat.ceylon.model.typechecker.model.MethodOrValue;
+import com.redhat.ceylon.model.typechecker.model.Function;
+import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.ModuleImport;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
@@ -324,7 +324,7 @@ public class MetamodelGenerator {
                 if (parm.isAtLeastOne()) {
                     pm.put("$min1", 1);
                 }
-                final MethodOrValue parmtype = parm.getModel();
+                final FunctionOrValue parmtype = parm.getModel();
                 if (parmtype != null && parmtype.getDeclarationKind()==DeclarationKind.TYPE_PARAMETER) {
                     pm.put(KEY_TYPE, parmtype.getName());
                 } else {
@@ -333,11 +333,11 @@ public class MetamodelGenerator {
                 if (parm.isHidden()) {
                     pm.put("$hdn", 1);
                 }
-                if (parmtype instanceof Method) {
+                if (parmtype instanceof Function) {
                     pm.put("$pt", "f");
                     List<List<Map<String, Object>>> _paramLists = new ArrayList<>(
-                            ((Method)parmtype).getParameterLists().size());
-                    for (ParameterList subplist : ((Method)parmtype).getParameterLists()) {
+                            ((Function)parmtype).getParameterLists().size());
+                    for (ParameterList subplist : ((Function)parmtype).getParameterLists()) {
                         List<Map<String,Object>> params = parameterListMap(subplist, from);
                         if (params == null) {
                             params = Collections.emptyList();
@@ -362,7 +362,7 @@ public class MetamodelGenerator {
     }
 
     @SuppressWarnings("unchecked")
-    public Map<String,Object> encodeMethod(Method d) {
+    public Map<String,Object> encodeMethod(Function d) {
         final Map<String, Object> m = new HashMap<>();
         m.put(KEY_METATYPE, METATYPE_METHOD);
         m.put(KEY_NAME, d.getName());
@@ -540,7 +540,7 @@ public class MetamodelGenerator {
     }
 
     @SuppressWarnings("unchecked")
-    public Map<String, Object> encodeAttributeOrGetter(MethodOrValue d) {
+    public Map<String, Object> encodeAttributeOrGetter(FunctionOrValue d) {
         Map<String, Object> m = new HashMap<>();
         Map<String, Object> parent;
         final String mname = TypeUtils.modelName(d);

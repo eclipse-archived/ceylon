@@ -11,7 +11,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
-import com.redhat.ceylon.model.typechecker.model.Method;
+import com.redhat.ceylon.model.typechecker.model.Function;
 import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.Scope;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
@@ -31,8 +31,8 @@ public class FunctionHelper {
             public void completeFunction() {
                 gen.beginBlock();
                 if (paramLists.size() == 1 && scope!=null && initSelf) { gen.initSelf(block); }
-                if (scope instanceof Method) {
-                    addParentMethodTypeParameters((Method)scope, gen);
+                if (scope instanceof Function) {
+                    addParentMethodTypeParameters((Function)scope, gen);
                 }
                 gen.initParameters(paramLists.get(paramLists.size()-1),
                         scope instanceof TypeDeclaration ? (TypeDeclaration)scope : null, null);
@@ -49,11 +49,11 @@ public class FunctionHelper {
             public void completeFunction() {
                 gen.out("{");
                 if (paramLists.size() == 1 && scope != null && initSelf) { gen.initSelf(expr); }
-                if (scope instanceof Method) {
-                    addParentMethodTypeParameters((Method)scope, gen);
+                if (scope instanceof Function) {
+                    addParentMethodTypeParameters((Function)scope, gen);
                 }
                 gen.initParameters(paramLists.get(paramLists.size()-1),
-                        null, scope instanceof Method ? (Method)scope : null);
+                        null, scope instanceof Function ? (Function)scope : null);
                 gen.out("return ");
                 if (!gen.isNaturalLiteral(expr.getTerm())) {
                     expr.visit(gen);
@@ -75,7 +75,7 @@ public class FunctionHelper {
             callback.completeFunction();
         } else {
             List<MplData> metas = new ArrayList<>(plist.size());
-            Method m = scope instanceof Method ? (Method)scope : null;
+            Function m = scope instanceof Function ? (Function)scope : null;
             for (Tree.ParameterList paramList : plist) {
                 final MplData mpl = new MplData();
                 metas.add(mpl);
@@ -197,7 +197,7 @@ public class FunctionHelper {
     }
 
     static void methodDeclaration(TypeDeclaration outer, Tree.MethodDeclaration that, GenerateJsVisitor gen) {
-        final Method m = that.getDeclarationModel();
+        final Function m = that.getDeclarationModel();
         if (that.getSpecifierExpression() != null) {
             // method(params) => expr
             if (outer == null) {
@@ -246,9 +246,9 @@ public class FunctionHelper {
                     gen.out(gen.getNames().self((Class)m.getContainer()), ".", gen.getNames().name(m), "=", name);
                     gen.endLine(true);
                 }
-            } else if (m.getContainer() instanceof Method) {
+            } else if (m.getContainer() instanceof Function) {
                 //Declare the function just by forcing the name we used in the param list
-                final String name = gen.getNames().name(((Method)m.getContainer()).getParameter(m.getName()));
+                final String name = gen.getNames().name(((Function)m.getContainer()).getParameter(m.getName()));
                 gen.getNames().forceName(m, name);
             }
             //Only the first paramlist can have defaults
@@ -287,7 +287,7 @@ public class FunctionHelper {
     }
 
     static void methodDefinition(final Tree.MethodDefinition that, final GenerateJsVisitor gen, final boolean needsName) {
-        final Method d = that.getDeclarationModel();
+        final Function d = that.getDeclarationModel();
         if (gen.shouldStitch(d)) {
             if (gen.stitchNative(d, that)) {
                 gen.spitOut("Stitching in native method " + d.getQualifiedNameString() + ", ignoring Ceylon definition");
@@ -416,7 +416,7 @@ public class FunctionHelper {
         }
     }
 
-    private static boolean copyMissingTypeParameters(final Method child, final Method parent,
+    private static boolean copyMissingTypeParameters(final Function child, final Function parent,
             final int idx, final boolean firstOne, final GenerateJsVisitor gen) {
         //We already know the kid has type parameters
         List<TypeParameter> ctp = child.getTypeParameters();
@@ -439,11 +439,11 @@ public class FunctionHelper {
 
     /** See #547 - a generic actual method that has different names in its type parameters as the one
      * it's refining, can receive the type arguments of the parent instead. */
-    static void addParentMethodTypeParameters(final Method m, final GenerateJsVisitor gen) {
+    static void addParentMethodTypeParameters(final Function m, final GenerateJsVisitor gen) {
         List<TypeParameter> tps = m.getTypeParameters();
         if (m.isActual() && tps != null && !tps.isEmpty()) {
             //This gives us the root declaration
-            Method sm = (Method)m.getRefinedDeclaration();
+            Function sm = (Function)m.getRefinedDeclaration();
             for (int i = 0; i < tps.size(); i++) {
                 boolean end = false;
                 end |= copyMissingTypeParameters(m, sm, i, true, gen);
@@ -456,16 +456,16 @@ public class FunctionHelper {
                     TypeDeclaration cont = Util.getContainingClassOrInterface(m);
                     for (TypeDeclaration sup : cont.getSupertypeDeclarations()) {
                         Declaration d = sup.getDirectMember(m.getName(), null, false);
-                        if (d instanceof Method && !decs.contains(d)) {
+                        if (d instanceof Function && !decs.contains(d)) {
                             decs.add(d);
-                            end |= copyMissingTypeParameters(m, (Method)d, i, false, gen);
+                            end |= copyMissingTypeParameters(m, (Function)d, i, false, gen);
                         }
                     }
                     for (Type sup : cont.getSatisfiedTypes()) {
                         Declaration d = sup.getDeclaration().getDirectMember(m.getName(), null, false);
-                        if (d instanceof Method && !decs.contains(d)) {
+                        if (d instanceof Function && !decs.contains(d)) {
                             decs.add(d);
-                            end |= copyMissingTypeParameters(m, (Method)d, i, false, gen);
+                            end |= copyMissingTypeParameters(m, (Function)d, i, false, gen);
                         }
                     }
                 }
