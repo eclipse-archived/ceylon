@@ -30,10 +30,13 @@ import com.redhat.ceylon.model.typechecker.util.ProducedTypeNamePrinter;
 
 
 /**
- * A produced type with actual type arguments.
- * This represents something that is actually
- * considered a "type" in the language
- * specification.
+ * An applied type - a type declaration together with actual 
+ * type arguments, along with optional variance overrides in 
+ * the case of use-site variance. Alternatively, a union or
+ * intersection type, or a type constructor.
+ * 
+ * This represents anything that is actually considered a 
+ * "type" in the language specification.
  *
  * @author Gavin King
  */

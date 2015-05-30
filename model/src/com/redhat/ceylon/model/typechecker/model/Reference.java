@@ -15,8 +15,9 @@ import java.util.Map;
 import com.redhat.ceylon.model.typechecker.context.ProducedTypeCache;
 
 /**
- * A produced type or produced reference to a
- * method or attribute
+ * An applied type or applied reference to a method or 
+ * attribute. Packages a declaration, together with type
+ * arguments.
  *
  * @author Gavin King
  */

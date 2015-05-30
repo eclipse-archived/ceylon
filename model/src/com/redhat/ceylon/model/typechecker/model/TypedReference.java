@@ -5,8 +5,8 @@ import java.util.Map;
 
 
 /**
- * A produced reference to a method or 
- * attribute with actual type arguments.
+ * An applied reference to a method or attribute - a typed
+ * declaration together with actual type arguments.
  * 
  * @author Gavin King
  *
