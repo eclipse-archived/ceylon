@@ -14,8 +14,7 @@ import com.redhat.ceylon.model.typechecker.model.ParameterList;
 
 public class FunctionalUtil {
     public static Sequential<FunctionOrValueDeclaration> getParameters(Functional declaration) {
-        List<ParameterList> parameterLists = ((Functional)declaration).getParameterLists();
-        ParameterList parameterList = parameterLists.get(0);
+        ParameterList parameterList = ((Functional)declaration).getFirstParameterList();
         List<Parameter> modelParameters = parameterList.getParameters();
         ceylon.language.meta.declaration.FunctionOrValueDeclaration[] parameters = new ceylon.language.meta.declaration.FunctionOrValueDeclaration[modelParameters.size()];
         int i=0;

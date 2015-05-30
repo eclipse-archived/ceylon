@@ -235,7 +235,7 @@ public class FreeValue
                 throw Metamodel.newModelError("Unsupported parameter container");
             }
             // now find the right parameter
-            List<Parameter> parameters = ((com.redhat.ceylon.model.typechecker.model.Functional)container).getParameterLists().get(0).getParameters();
+            List<Parameter> parameters = ((com.redhat.ceylon.model.typechecker.model.Functional)container).getFirstParameterList().getParameters();
             int index = parameters.indexOf(parameter);
             if(index == -1)
                 throw Metamodel.newModelError("Parameter "+parameter+" not found in container "+parameter.getModel().getContainer());

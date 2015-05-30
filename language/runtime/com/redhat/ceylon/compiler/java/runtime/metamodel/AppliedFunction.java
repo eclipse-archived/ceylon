@@ -66,7 +66,7 @@ public class AppliedFunction<Type, Arguments extends Sequential<? extends Object
         this.appliedFunction = appliedFunction;
         
         com.redhat.ceylon.model.typechecker.model.Function decl = (com.redhat.ceylon.model.typechecker.model.Function) function.declaration;
-        List<Parameter> parameters = decl.getParameterLists().get(0).getParameters();
+        List<Parameter> parameters = decl.getFirstParameterList().getParameters();
 
         this.firstDefaulted = Metamodel.getFirstDefaultedParameter(parameters);
         this.variadicIndex = Metamodel.getVariadicParameter(parameters);

@@ -90,7 +90,7 @@ public class AppliedClass<Type, Arguments extends Sequential<? extends Object>>
     }
 
     private void initConstructor(com.redhat.ceylon.model.typechecker.model.Class decl) {
-        List<Parameter> parameters = decl.getParameterLists().get(0).getParameters();
+        List<Parameter> parameters = decl.getFirstParameterList().getParameters();
         this.firstDefaulted = Metamodel.getFirstDefaultedParameter(parameters);
         this.variadicIndex = Metamodel.getVariadicParameter(parameters);
 

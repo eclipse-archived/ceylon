@@ -72,7 +72,7 @@ public class AppliedConstructor<Type, Arguments extends Sequential<? extends Obj
         this.instance = instance;
         
         com.redhat.ceylon.model.typechecker.model.Constructor decl = declaration.constructor;
-        List<Parameter> parameters = decl.getParameterLists().get(0).getParameters();
+        List<Parameter> parameters = decl.getFirstParameterList().getParameters();
         
         // get a list of produced parameter types
         this.parameterProducedTypes = Metamodel.getParameterProducedTypes(parameters, appliedFunction);
@@ -113,7 +113,7 @@ public class AppliedConstructor<Type, Arguments extends Sequential<? extends Obj
             this.instance = Metamodel.getCompanionInstance(this.instance, (com.redhat.ceylon.model.typechecker.model.Interface)classModel.getContainer());
         }
         
-        List<Parameter> parameters = constructorModel.getParameterLists().get(0).getParameters();
+        List<Parameter> parameters = constructorModel.getFirstParameterList().getParameters();
         this.firstDefaulted = Metamodel.getFirstDefaultedParameter(parameters);
         this.variadicIndex = Metamodel.getVariadicParameter(parameters);
         Object found = null;

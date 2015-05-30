@@ -695,7 +695,7 @@ public class Metamodel {
         // find the appropriate ultimate constructor
         java.lang.reflect.Constructor<?> ultimate = getJavaConstructor(declaration);
         result.add(ultimate);
-        List<Parameter> parameters = declaration.getParameterLists().get(0).getParameters();
+        List<Parameter> parameters = declaration.getFirstParameterList().getParameters();
         Class<?>[] javapl = ultimate.getParameterTypes();
         // find all the overloads of the ultimate that we expect, 
         // according to the parameter list 
@@ -726,7 +726,7 @@ public class Metamodel {
         String methodName = classModel.getName() + "$new$";
         java.lang.reflect.Method ultimate = getJavaInstantiator(declaration, methodName);
         result.add(ultimate);
-        List<Parameter> parameters = declaration.getParameterLists().get(0).getParameters();
+        List<Parameter> parameters = declaration.getFirstParameterList().getParameters();
         Class<?>[] javapl = ultimate.getParameterTypes();
         // find all the overloads of the ultimate that we expect, 
         // according to the parameter list 
@@ -1155,7 +1155,7 @@ public class Metamodel {
             com.redhat.ceylon.model.typechecker.model.Functional decl, 
             Reference producedReference) {
         if(!decl.getParameterLists().isEmpty()){
-            List<Parameter> parameters = decl.getParameterLists().get(0).getParameters();
+            List<Parameter> parameters = decl.getFirstParameterList().getParameters();
             com.redhat.ceylon.model.typechecker.model.Type tupleType 
             = unit.getParameterTypesAsTupleType(parameters, producedReference);
             return Metamodel.getTypeDescriptorForProducedType(tupleType);
@@ -1169,7 +1169,7 @@ public class Metamodel {
             Reference producedReference) {
         
         if(!decl.getParameterLists().isEmpty()){
-            List<Parameter> parameters = decl.getParameterLists().get(0).getParameters();
+            List<Parameter> parameters = decl.getFirstParameterList().getParameters();
             return unit.getParameterTypesAsTupleType(parameters, producedReference);
         }else{
             return new NothingType(unit).getType();
@@ -1548,7 +1548,7 @@ public class Metamodel {
         
         java.util.Map<java.lang.String,java.lang.Object> argumentMap = collectArguments(arguments);
         
-        java.util.List<Parameter> parameters = declaration.getParameterLists().get(0).getParameters();
+        java.util.List<Parameter> parameters = declaration.getFirstParameterList().getParameters();
         
         // store the values in an array
         Array<java.lang.Object> values = new Array<java.lang.Object>(Anything.$TypeDescriptor$, parameters.size(), (java.lang.Object) null);

@@ -52,7 +52,7 @@ public class AppliedMemberClassConstructor<Container,Type, Arguments extends Seq
     }
     
     protected void init() {
-        java.util.List<com.redhat.ceylon.model.typechecker.model.Type> parameterProducedTypes = Metamodel.getParameterProducedTypes(declaration.constructor.getParameterLists().get(0).getParameters(), producedType);
+        java.util.List<com.redhat.ceylon.model.typechecker.model.Type> parameterProducedTypes = Metamodel.getParameterProducedTypes(declaration.constructor.getFirstParameterList().getParameters(), producedType);
         this.parameterTypes = Metamodel.getAppliedMetamodelSequential(parameterProducedTypes);
     }
     
