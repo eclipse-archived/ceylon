@@ -35,7 +35,6 @@ import ceylon.modules.bootstrap.CeylonRunTool;
 
 import com.redhat.ceylon.common.tool.AbstractToolTest;
 import com.redhat.ceylon.common.tool.OptionArgumentException;
-import com.redhat.ceylon.common.tool.ToolFactory;
 import com.redhat.ceylon.common.tool.ToolLoader;
 import com.redhat.ceylon.common.tool.ToolModel;
 import com.redhat.ceylon.common.tools.CeylonToolLoader;
