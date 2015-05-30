@@ -777,9 +777,9 @@ public class CeylonDocToolTests {
         assertMatchInFile(destDir, "StubClass.type.html", 
                 Pattern.compile("<li><code><span class='parameter' id='StubClass-b'>b</span></code><div class='doc section'><p>Initializer parameter <code>b</code></p>"));        
         assertMatchInFile(destDir, "StubClass.type.html", 
-                Pattern.compile("<li><code><span class='parameter' id='methodWithParametersDocumentation-a'>a</span></code><div class='doc section'><p>Function parameter <code>a</code></p>"));
+                Pattern.compile("<li><code><span class='parameter' id='methodWithParametersDocumentation-a'>a</span></code><div class='doc section'><p>Method parameter <code>a</code></p>"));
         assertMatchInFile(destDir, "StubClass.type.html", 
-                Pattern.compile("<li><code><span class='parameter' id='methodWithParametersDocumentation-b'>b</span></code><div class='doc section'><p>Function parameter <code>b</code></p>"));
+                Pattern.compile("<li><code><span class='parameter' id='methodWithParametersDocumentation-b'>b</span></code><div class='doc section'><p>Method parameter <code>b</code></p>"));
 	}
     
     private void assertParametersAssertions(File destDir) throws Exception {

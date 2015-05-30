@@ -362,7 +362,7 @@ public class ModelLoaderTests extends CompilerTests {
                 Assert.assertTrue(name+" [ClassOrInterface]", modelDeclaration instanceof ClassOrInterface);
                 compareClassOrInterfaceDeclarations((ClassOrInterface)validDeclaration, (ClassOrInterface)modelDeclaration);
             }else if(validDeclaration instanceof Function){
-                Assert.assertTrue(name+" [Function]", modelDeclaration instanceof Function);
+                Assert.assertTrue(name+" [Method]", modelDeclaration instanceof Function);
                 compareMethodDeclarations((Function)validDeclaration, (Function)modelDeclaration);
             }else if(validDeclaration instanceof Value || validDeclaration instanceof Setter){
                 Assert.assertTrue(name+" [Attribute]", modelDeclaration instanceof Value);
