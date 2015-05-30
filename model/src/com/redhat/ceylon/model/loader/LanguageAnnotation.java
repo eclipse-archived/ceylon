@@ -36,6 +36,7 @@ public enum LanguageAnnotation {
     },
     THROWS("throws", 0, AbstractModelLoader.CEYLON_LANGUAGE_THROWS_ANNOTATIONS) {
         public List<Annotation> makeFromCeylonAnnotation(AnnotationMirror mirror) {
+            @SuppressWarnings("unchecked")
             List<AnnotationMirror> thrownExceptions = (List<AnnotationMirror>)mirror.getValue("value");
             List<Annotation> result = new ArrayList<Annotation>(thrownExceptions.size());
             for (AnnotationMirror thrown : thrownExceptions) {
@@ -51,7 +52,9 @@ public enum LanguageAnnotation {
     BY("by", 0, AbstractModelLoader.CEYLON_LANGUAGE_AUTHORS_ANNOTATION) {
         public List<Annotation> makeFromCeylonAnnotation(AnnotationMirror mirror) {
             Annotation anno = new Annotation(name);
-            for (String author : (List<String>)mirror.getValue("authors")) {
+            @SuppressWarnings("unchecked")
+            List<String> authors = (List<String>)mirror.getValue("authors");
+            for (String author : authors) {
                 anno.addPositionalArgment(author);
             }
             return Collections.singletonList(anno);
@@ -59,12 +62,15 @@ public enum LanguageAnnotation {
     },
     SEE("see", 0, AbstractModelLoader.CEYLON_LANGUAGE_SEE_ANNOTATIONS) {
         public List<Annotation> makeFromCeylonAnnotation(AnnotationMirror mirror) {
+            @SuppressWarnings("unchecked")
             List<AnnotationMirror> sees = (List<AnnotationMirror>)mirror.getValue("value");
             List<Annotation> result = new ArrayList<Annotation>(sees.size());
             for (AnnotationMirror see : sees) {
                 Annotation anno = new Annotation(name);
                 // can't decode the declaration
-                for (String s : (List<String>)see.getValue("programElements")) {
+                @SuppressWarnings("unchecked")
+                List<String> elements = (List<String>)see.getValue("programElements");
+                for (String s : elements) {
                     anno.addPositionalArgment(parseMetamodelReference(s));
                 }
                 result.add(anno);
@@ -90,7 +96,9 @@ public enum LanguageAnnotation {
     TAGGED("tagged", 0, AbstractModelLoader.CEYLON_LANGUAGE_TAGS_ANNOTATION) {
         public List<Annotation> makeFromCeylonAnnotation(AnnotationMirror mirror) {
             Annotation anno = new Annotation(name);
-            for (String tag : (List<String>)mirror.getValue("tags")) {
+            @SuppressWarnings("unchecked")
+            List<String> tags = (List<String>)mirror.getValue("tags");
+            for (String tag : tags) {
                 anno.addPositionalArgment(tag);
             }
             return Collections.singletonList(anno);
@@ -99,7 +107,9 @@ public enum LanguageAnnotation {
     SUPPRESS_WARNINGS("suppressWarnings", 0, AbstractModelLoader.CEYLON_LANGUAGE_SUPPRESS_WARNINGS_ANNOTATION) {
         public List<Annotation> makeFromCeylonAnnotation(AnnotationMirror mirror) {
             Annotation anno = new Annotation(name);
-            for (String tag : (List<String>)mirror.getValue("warnings")) {
+            @SuppressWarnings("unchecked")
+            List<String> warnings = (List<String>)mirror.getValue("warnings");
+            for (String tag : warnings) {
                 anno.addPositionalArgment(tag);
             }
             return Collections.singletonList(anno);

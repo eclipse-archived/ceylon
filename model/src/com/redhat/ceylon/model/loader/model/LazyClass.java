@@ -220,6 +220,7 @@ public class LazyClass extends Class implements LazyContainer {
         return super.getProducedType(outerType, typeArguments);
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public List<Declaration> getInheritedMembers(String name) {
         load();

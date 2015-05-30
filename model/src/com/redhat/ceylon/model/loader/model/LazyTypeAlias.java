@@ -7,7 +7,6 @@ import com.redhat.ceylon.model.loader.JvmBackendUtil;
 import com.redhat.ceylon.model.loader.ModelCompleter;
 import com.redhat.ceylon.model.loader.mirror.ClassMirror;
 import com.redhat.ceylon.model.typechecker.model.Annotation;
-import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.DeclarationKind;
 import com.redhat.ceylon.model.typechecker.model.DeclarationWithProximity;
@@ -158,6 +157,7 @@ public class LazyTypeAlias extends TypeAlias implements LazyContainer {
         return super.getType();
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public List<Declaration> getInheritedMembers(String name) {
         load();
@@ -362,6 +362,7 @@ public class LazyTypeAlias extends TypeAlias implements LazyContainer {
         return super.isPackageVisibility();
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public boolean refines(Declaration other) {
         load();

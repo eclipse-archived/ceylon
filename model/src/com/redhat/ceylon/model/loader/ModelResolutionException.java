@@ -1,5 +1,6 @@
 package com.redhat.ceylon.model.loader;
 
+@SuppressWarnings("serial")
 public class ModelResolutionException extends RuntimeException {
 
     public ModelResolutionException() {

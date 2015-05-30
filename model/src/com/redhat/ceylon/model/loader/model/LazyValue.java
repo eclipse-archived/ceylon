@@ -306,6 +306,7 @@ public class LazyValue extends Value implements LazyElement, LocalDeclarationCon
         return super.hashCode();
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public boolean refines(Declaration other) {
         load();

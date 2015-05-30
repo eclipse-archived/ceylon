@@ -281,6 +281,7 @@ public class LazyMethod extends Method implements LazyElement, LocalDeclarationC
         return super.isClassOrInterfaceMember();
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public boolean refines(Declaration other) {
         load();

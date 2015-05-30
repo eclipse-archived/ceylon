@@ -97,7 +97,6 @@ class ParameterNameLexer {
     
     public void eat(int token) {
         if(!lookingAt(token)){
-            int oldIndex = index;
             throw new ParameterNameParserException("Missing expected token: "+tokenToString(token)+System.lineSeparator() 
                     + this);
         }

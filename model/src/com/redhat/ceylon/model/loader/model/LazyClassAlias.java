@@ -168,6 +168,7 @@ public class LazyClassAlias extends ClassAlias implements LazyContainer {
         return super.getProducedType(outerType, typeArguments);
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public List<Declaration> getInheritedMembers(String name) {
         load();

@@ -26,7 +26,8 @@ public class AnnotationProxyClass extends Class {
     public EnumSet<AnnotationTarget> getAnnotationTarget() {
         AnnotationMirror targetAnno = iface.classMirror.getAnnotation("java.lang.annotation.Target");
         if (targetAnno != null) {
-            List<String> targets = (List)targetAnno.getValue();
+            @SuppressWarnings("unchecked")
+            List<String> targets = (List<String>)targetAnno.getValue();
             EnumSet<AnnotationTarget> result = EnumSet.<AnnotationTarget>noneOf(AnnotationTarget.class);
             for (String name : targets) {
                 result.add(AnnotationTarget.valueOf(name));

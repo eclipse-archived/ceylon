@@ -5,6 +5,7 @@ package com.redhat.ceylon.model.cmr;
  *
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
+@SuppressWarnings("serial")
 public class RepositoryException extends RuntimeException {
     public RepositoryException(String message) {
         super(message);

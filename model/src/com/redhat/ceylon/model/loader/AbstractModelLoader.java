@@ -190,7 +190,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     private static final TypeMirror CEYLON_OBJECT_TYPE = simpleCeylonObjectType("ceylon.language.Object");
     private static final TypeMirror CEYLON_ANNOTATION_TYPE = simpleCeylonObjectType("ceylon.language.Annotation");
     private static final TypeMirror CEYLON_CONSTRAINED_ANNOTATION_TYPE = simpleCeylonObjectType("ceylon.language.ConstrainedAnnotation");
-    private static final TypeMirror CEYLON_FUNCTION_DECLARATION_TYPE = simpleCeylonObjectType("ceylon.language.meta.declaration.FunctionDeclaration");
+//    private static final TypeMirror CEYLON_FUNCTION_DECLARATION_TYPE = simpleCeylonObjectType("ceylon.language.meta.declaration.FunctionDeclaration");
     private static final TypeMirror CEYLON_FUNCTION_OR_VALUE_DECLARATION_TYPE = simpleCeylonObjectType("ceylon.language.meta.declaration.FunctionOrValueDeclaration");
     private static final TypeMirror CEYLON_VALUE_DECLARATION_TYPE = simpleCeylonObjectType("ceylon.language.meta.declaration.ValueDeclaration");
     private static final TypeMirror CEYLON_ALIAS_DECLARATION_TYPE = simpleCeylonObjectType("ceylon.language.meta.declaration.AliasDeclaration");
@@ -203,7 +203,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     private static final TypeMirror CEYLON_TYPE_DESCRIPTOR_TYPE = simpleCeylonObjectType("com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor");
     
     private static final TypeMirror THROWABLE_TYPE = simpleCeylonObjectType("java.lang.Throwable");
-    private static final TypeMirror ERROR_TYPE = simpleCeylonObjectType("java.lang.Error");
+//    private static final TypeMirror ERROR_TYPE = simpleCeylonObjectType("java.lang.Error");
     private static final TypeMirror EXCEPTION_TYPE = simpleCeylonObjectType("java.lang.Exception");
     private static final TypeMirror CEYLON_THROWABLE_TYPE = simpleCeylonObjectType("java.lang.Throwable");
     private static final TypeMirror CEYLON_EXCEPTION_TYPE = simpleCeylonObjectType("ceylon.language.Exception");
@@ -2993,6 +2993,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         AnnotationMirror target = classMirror.getAnnotation("java.lang.annotation.Target");
         Set<ProducedType> types = new HashSet<ProducedType>();
         if(target != null){
+            @SuppressWarnings("unchecked")
             List<String> values = (List<String>) target.getValue();
             for(String value : values){
                 switch(value){
@@ -3366,7 +3367,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         }
     }
 
-    private boolean hasTypeParameterWithConstraints(TypeMirror type) {
+    /*private boolean hasTypeParameterWithConstraints(TypeMirror type) {
         switch(type.getKind()){
         case BOOLEAN:
         case BYTE:
@@ -3393,7 +3394,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         default:
             return false;
         }
-    }
+    }*/
     
     private void markUnboxed(TypedDeclaration decl, MethodMirror methodMirror, TypeMirror type) {
         boolean unboxed = false;
@@ -3810,7 +3811,6 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     }
 
     // from our annotation
-    @SuppressWarnings("deprecation")
     private void setTypeParametersFromAnnotations(Scope scope, List<TypeParameter> params, AnnotatedMirror mirror, 
             List<AnnotationMirror> typeParameterAnnotations, List<TypeParameterMirror> typeParameterMirrors) {
         // We must first add every type param, before we resolve the bounds, which can
@@ -3900,7 +3900,6 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     }
 
     // from java type info
-    @SuppressWarnings("deprecation")
     private void setTypeParameters(Scope scope, List<TypeParameter> params, List<TypeParameterMirror> typeParameters, boolean isCeylon) {
         // We must first add every type param, before we resolve the bounds, which can
         // refer to type params.
@@ -4352,13 +4351,13 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         }
     }
     
-    private ProducedType getQualifyingType(TypeDeclaration declaration) {
+    /*private ProducedType getQualifyingType(TypeDeclaration declaration) {
         // As taken from ProducedType.getType():
         if (declaration.isMember()) {
             return((ClassOrInterface) declaration.getContainer()).getType();
         }
         return null;
-    }
+    }*/
 
     @Override
     public ProducedType getType(Module module, String pkgName, String name, Scope scope)  {
