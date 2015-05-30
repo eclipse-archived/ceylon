@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.codegen;
 
-import static com.redhat.ceylon.model.typechecker.model.Util.getNativeDeclaration;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getNativeDeclaration;
 
 import java.util.HashSet;
 

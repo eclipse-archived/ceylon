@@ -1658,7 +1658,7 @@ public class ExpressionTransformer extends AbstractTransformer {
     public JCTree transform(Tree.Outer expr) {
         at(expr);
         
-        Type outerClass = com.redhat.ceylon.model.typechecker.model.Util.getOuterClassOrInterface(expr.getScope());
+        Type outerClass = com.redhat.ceylon.model.typechecker.model.ModelUtil.getOuterClassOrInterface(expr.getScope());
         return makeOuterExpr(outerClass);
     }
 
@@ -2771,7 +2771,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                     // On the other hand, if the parameter is sequenced and the argument is spread,
                     // but not sequential, then transformArguments() will use getSequence(),
                     // so we only need to expect an Iterable type
-                    type = com.redhat.ceylon.model.typechecker.model.Util.producedType(
+                    type = com.redhat.ceylon.model.typechecker.model.ModelUtil.producedType(
                             typeFact().getIterableDeclaration(),
                             typeFact().getIteratedType(type), typeFact().getIteratedAbsentType(type));
                 }

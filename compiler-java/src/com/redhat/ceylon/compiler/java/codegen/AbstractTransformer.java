@@ -22,7 +22,7 @@ package com.redhat.ceylon.compiler.java.codegen;
 
 import static com.redhat.ceylon.compiler.typechecker.tree.Util.hasUncheckedNulls;
 import static com.redhat.ceylon.compiler.typechecker.tree.Util.isForBackend;
-import static com.redhat.ceylon.model.typechecker.model.Util.producedType;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.producedType;
 import static com.sun.tools.javac.code.Flags.FINAL;
 import static com.sun.tools.javac.code.Flags.PRIVATE;
 import static com.sun.tools.javac.code.Flags.PROTECTED;
@@ -888,7 +888,7 @@ public abstract class AbstractTransformer implements Transformation {
                     && !isTypeParameter(typedReference.getType())){
                 ClassOrInterface declaringType = (ClassOrInterface) qualifyingDeclaration;
                 Set<TypedDeclaration> refinedMembers = getRefinedMembers(declaringType, decl.getName(), 
-                        com.redhat.ceylon.model.typechecker.model.Util.getSignature(decl), false);
+                        com.redhat.ceylon.model.typechecker.model.ModelUtil.getSignature(decl), false);
                 // now we must select a different refined declaration if we refine it more than once
                 if(refinedMembers.size() > (forMixinMethod ? 0 : 1)){
                     // first case
@@ -1013,7 +1013,7 @@ public abstract class AbstractTransformer implements Transformation {
     private TypedDeclaration getFirstRefinedDeclaration(TypedDeclaration decl) {
         if(decl.getContainer() instanceof ClassOrInterface == false)
             return decl;
-        java.util.List<Type> signature = com.redhat.ceylon.model.typechecker.model.Util.getSignature(decl);
+        java.util.List<Type> signature = com.redhat.ceylon.model.typechecker.model.ModelUtil.getSignature(decl);
         ClassOrInterface container = (ClassOrInterface) decl.getContainer();
         HashSet<TypeDeclaration> visited = new HashSet<TypeDeclaration>();
         // start looking for it, but skip this type, only lookup upwards of it
@@ -1126,7 +1126,7 @@ public abstract class AbstractTransformer implements Transformation {
             Type typedSignatureArg = typedSignature.get(i);
             if(signatureArg != null
                     && typedSignatureArg != null
-                    && !com.redhat.ceylon.model.typechecker.model.Util.matches(signatureArg, typedSignatureArg, typeFact()))
+                    && !com.redhat.ceylon.model.typechecker.model.ModelUtil.matches(signatureArg, typedSignatureArg, typeFact()))
                 return false;
         }
         return true;
@@ -4179,10 +4179,10 @@ public abstract class AbstractTransformer implements Transformation {
                     if (cases != null) {
                         Type complementType = typeFact().getNothingType();
                         for (Type ct : cases) {
-                            complementType = com.redhat.ceylon.model.typechecker.model.Util.unionType(complementType, ct, typeFact());
+                            complementType = com.redhat.ceylon.model.typechecker.model.ModelUtil.unionType(complementType, ct, typeFact());
                         }
                         if (/*typeFact().getLanguageModuleDeclaration("Finished").equals(complementType.getDeclaration())
-                                ||*/ com.redhat.ceylon.model.typechecker.model.Util.intersectionType(complementType, testedType, typeFact()).isNothing()) {
+                                ||*/ com.redhat.ceylon.model.typechecker.model.ModelUtil.intersectionType(complementType, testedType, typeFact()).isNothing()) {
                             return make().Unary(JCTree.NOT, makeTypeTest(firstTimeExpr, varName, complementType, expressionType));
                         }
                     }

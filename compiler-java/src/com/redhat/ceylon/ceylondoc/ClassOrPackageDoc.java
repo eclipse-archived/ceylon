@@ -818,7 +818,7 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
             public void visit(Tree.BaseMemberExpression that) {
                 if (assertion != null) {
                     Declaration d = that.getDeclaration();
-                    Scope realScope = com.redhat.ceylon.model.typechecker.model.Util.getRealScope(d.getScope());
+                    Scope realScope = com.redhat.ceylon.model.typechecker.model.ModelUtil.getRealScope(d.getScope());
                     if (parametersNames.containsKey(d.getName()) && realScope == decl) {
                         referencedParameters.add(parametersNames.get(d.getName()));
                     }

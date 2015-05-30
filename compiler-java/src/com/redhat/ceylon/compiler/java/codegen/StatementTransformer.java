@@ -55,7 +55,7 @@ import com.redhat.ceylon.model.typechecker.model.Scope;
 import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
-import com.redhat.ceylon.model.typechecker.model.Util;
+import com.redhat.ceylon.model.typechecker.model.ModelUtil;
 import com.redhat.ceylon.model.typechecker.model.Value;
 import com.sun.tools.javac.code.Flags;
 //import com.sun.tools.javac.code.Type;
@@ -3452,7 +3452,7 @@ public class StatementTransformer extends AbstractTransformer {
         Type result = typeFact().getNothingType();
         for (Tree.CatchClause catchClause : catchClauses) {
             Type pt = catchClause.getCatchVariable().getVariable().getType().getTypeModel();
-            result = Util.unionType(result, exceptionSupertype(pt), typeFact());
+            result = ModelUtil.unionType(result, exceptionSupertype(pt), typeFact());
         }
         if (typeFact().isUnion(result)) {
             return result.getSupertype(typeFact().getThrowableDeclaration());
@@ -3464,12 +3464,12 @@ public class StatementTransformer extends AbstractTransformer {
         Type result = typeFact().getNothingType();
         if (typeFact().isUnion(pt)) {
             for (Type t : pt.getCaseTypes()) {
-                result = Util.unionType(result, exceptionSupertype(t), typeFact());
+                result = ModelUtil.unionType(result, exceptionSupertype(t), typeFact());
             }
         } else if (typeFact().isIntersection(pt)) {
             for (Type t : pt.getSatisfiedTypes()) {
                 if (t.isSubtypeOf(typeFact().getThrowableType())) {
-                    result = Util.unionType(result, exceptionSupertype(t), typeFact());
+                    result = ModelUtil.unionType(result, exceptionSupertype(t), typeFact());
                 }
             }
         } else if (pt.isSubtypeOf(typeFact().getThrowableType())) {

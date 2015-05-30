@@ -31,7 +31,7 @@ import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.model.typechecker.model.Unit;
 import com.redhat.ceylon.model.typechecker.model.UnknownType;
-import com.redhat.ceylon.model.typechecker.model.Util;
+import com.redhat.ceylon.model.typechecker.model.ModelUtil;
 import com.sun.tools.javac.util.List;
 
 public class TypeFactory extends Unit {
@@ -79,7 +79,7 @@ public class TypeFactory extends Unit {
     }
     
     public Type getArraySequenceType(Type et) {
-        return Util.producedType(getArraySequenceDeclaration(), et);
+        return ModelUtil.producedType(getArraySequenceDeclaration(), et);
     }
     
     /**
@@ -88,7 +88,7 @@ public class TypeFactory extends Unit {
      * @return The Type corresponding to {@code Array<T>}
      */
     public Type getArrayType(Type et) {
-        return Util.producedType(getArrayDeclaration(), et);
+        return ModelUtil.producedType(getArrayDeclaration(), et);
     }
 
     public Type getArrayElementType(Type type) {
