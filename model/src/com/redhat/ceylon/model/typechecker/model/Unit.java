@@ -1802,7 +1802,7 @@ public class Unit {
             if (qualifyingType!=null) {
                 TypeDeclaration md = 
                         getLanguageModuleModelTypeDeclaration(
-                                "Function");
+                                "Method");
                 return producedType(md, qualifyingType, 
                         returnType, parameterTuple);
             }
