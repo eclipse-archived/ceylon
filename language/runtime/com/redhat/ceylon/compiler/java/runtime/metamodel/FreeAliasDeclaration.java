@@ -93,7 +93,7 @@ public class FreeAliasDeclaration extends FreeNestableDeclaration
             throw new RuntimeException("Cannot apply a member declaration with no container type: use memberApply");
         List<com.redhat.ceylon.compiler.typechecker.model.ProducedType> producedTypes = Metamodel.getProducedTypes(typeArguments);
         Metamodel.checkTypeArguments(null, declaration, producedTypes);
-        ProducedReference producedReference = declaration.getProducedReference(null, producedTypes);
+        Reference producedReference = declaration.getProducedReference(null, producedTypes);
         final Type appliedType = producedReference.getType();
         return Metamodel.getAppliedMetamodel(appliedType.resolveAliases());
     }
@@ -130,7 +130,7 @@ public class FreeAliasDeclaration extends FreeNestableDeclaration
         List<com.redhat.ceylon.compiler.typechecker.model.ProducedType> producedTypes = Metamodel.getProducedTypes(typeArguments);
         Type qualifyingType = Metamodel.getModel(containerType);
         Metamodel.checkTypeArguments(qualifyingType, declaration, producedTypes);
-        ProducedReference producedReference = declaration.getProducedReference(qualifyingType, producedTypes);
+        Reference producedReference = declaration.getProducedReference(qualifyingType, producedTypes);
         final Type appliedType = producedReference.getType();
         return Metamodel.getAppliedMetamodel(appliedType.resolveAliases());
     }

@@ -86,7 +86,7 @@ import com.redhat.ceylon.model.typechecker.model.ModuleImport;
 import com.redhat.ceylon.model.typechecker.model.Modules;
 import com.redhat.ceylon.model.typechecker.model.NothingType;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
-import com.redhat.ceylon.model.typechecker.model.ProducedReference;
+import com.redhat.ceylon.model.typechecker.model.Reference;
 import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.Scope;
 import com.redhat.ceylon.model.typechecker.model.Setter;
@@ -1134,7 +1134,7 @@ public class Metamodel {
         return module != null ? getOrCreateMetamodel(module, null, true) : null;
     }
 
-    public static List<Type> getParameterProducedTypes(List<Parameter> parameters, ProducedReference producedReference) {
+    public static List<Type> getParameterProducedTypes(List<Parameter> parameters, Reference producedReference) {
         List<Type> parameterProducedTypes = new ArrayList<Type>(parameters.size());
         for(Parameter parameter : parameters){
             Type ft = producedReference.getTypedParameter(parameter).getFullType();
@@ -1153,7 +1153,7 @@ public class Metamodel {
 
     public static TypeDescriptor getTypeDescriptorForArguments(com.redhat.ceylon.model.typechecker.model.Unit unit, 
             com.redhat.ceylon.model.typechecker.model.Functional decl, 
-            ProducedReference producedReference) {
+            Reference producedReference) {
         if(!decl.getParameterLists().isEmpty()){
             List<Parameter> parameters = decl.getParameterLists().get(0).getParameters();
             com.redhat.ceylon.model.typechecker.model.Type tupleType 
@@ -1166,7 +1166,7 @@ public class Metamodel {
 
     public static Type getProducedTypeForArguments(com.redhat.ceylon.model.typechecker.model.Unit unit, 
             com.redhat.ceylon.model.typechecker.model.Functional decl, 
-            ProducedReference producedReference) {
+            Reference producedReference) {
         
         if(!decl.getParameterLists().isEmpty()){
             List<Parameter> parameters = decl.getParameterLists().get(0).getParameters();
@@ -1190,11 +1190,11 @@ public class Metamodel {
         return (ceylon.language.meta.declaration.NestableDeclaration) getOrCreateMetamodel(decl);
     }
 
-    public static TypeDescriptor getTypeDescriptorForFunction(ProducedReference appliedFunction) {
+    public static TypeDescriptor getTypeDescriptorForFunction(Reference appliedFunction) {
         return getTypeDescriptorForProducedType(getFunctionReturnType(appliedFunction));
     }
     
-    public static Type getFunctionReturnType(ProducedReference appliedFunction) {
+    public static Type getFunctionReturnType(Reference appliedFunction) {
         // pull the return type out of the Callable
         Type fullType = appliedFunction.getFullType();
         return fullType.getTypeArgumentList().get(0);
@@ -1295,7 +1295,7 @@ public class Metamodel {
     }
 
     public static ceylon.language.Map<? extends ceylon.language.meta.declaration.TypeParameter, ? extends ceylon.language.meta.model.Type<?>> 
-        getTypeArguments(ceylon.language.meta.declaration.GenericDeclaration declaration, ProducedReference appliedFunction) {
+        getTypeArguments(ceylon.language.meta.declaration.GenericDeclaration declaration, Reference appliedFunction) {
         
         java.util.Map<ceylon.language.meta.declaration.TypeParameter, ceylon.language.meta.model.Type<?>> typeArguments 
             = new LinkedHashMap<ceylon.language.meta.declaration.TypeParameter, ceylon.language.meta.model.Type<?>>();

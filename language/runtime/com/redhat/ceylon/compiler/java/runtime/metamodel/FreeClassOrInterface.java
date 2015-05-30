@@ -28,7 +28,7 @@ import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 import com.redhat.ceylon.compiler.java.metadata.Variance;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
-import com.redhat.ceylon.model.typechecker.model.ProducedReference;
+import com.redhat.ceylon.model.typechecker.model.Reference;
 import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 
@@ -366,7 +366,7 @@ public abstract class FreeClassOrInterface
             throw new ceylon.language.meta.model.TypeApplicationException("Cannot apply a member declaration with no container type: use memberApply");
         List<com.redhat.ceylon.model.typechecker.model.Type> producedTypes = Metamodel.getProducedTypes(typeArguments);
         Metamodel.checkTypeArguments(null, declaration, producedTypes);
-        com.redhat.ceylon.model.typechecker.model.ProducedReference appliedType = declaration.getProducedReference(null, producedTypes);
+        com.redhat.ceylon.model.typechecker.model.Reference appliedType = declaration.getProducedReference(null, producedTypes);
         Metamodel.checkReifiedTypeArgument("apply", "ClassOrInterface<$1>", Variance.OUT, appliedType.getType(), $reifiedType);
         return (ClassOrInterface<Type>) Metamodel.getAppliedMetamodel(appliedType.getType());
     }
@@ -430,7 +430,7 @@ public abstract class FreeClassOrInterface
         Metamodel.checkTypeArguments(qualifyingType, declaration, producedTypes);
         // find the proper qualifying type
         Type memberQualifyingType = qualifyingType.getSupertype((TypeDeclaration) declaration.getContainer());
-        ProducedReference producedReference = declaration.getProducedReference(memberQualifyingType, producedTypes);
+        Reference producedReference = declaration.getProducedReference(memberQualifyingType, producedTypes);
         final Type appliedType = producedReference.getType();
         return (Member<Container, Kind>) Metamodel.getAppliedMetamodel(appliedType);
     }

@@ -24,7 +24,7 @@ import com.redhat.ceylon.compiler.java.metadata.Variance;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 import com.redhat.ceylon.model.typechecker.model.Functional;
 import com.redhat.ceylon.model.typechecker.model.Method;
-import com.redhat.ceylon.model.typechecker.model.ProducedTypedReference;
+import com.redhat.ceylon.model.typechecker.model.TypedReference;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 
 @Ceylon(major = 8)
@@ -118,7 +118,7 @@ public class FreeFunction
             throw new ceylon.language.meta.model.TypeApplicationException("Cannot apply a member declaration with no container type: use memberApply");
         List<com.redhat.ceylon.model.typechecker.model.Type> producedTypes = Metamodel.getProducedTypes(typeArguments);
         Metamodel.checkTypeArguments(null, declaration, producedTypes);
-        com.redhat.ceylon.model.typechecker.model.ProducedReference appliedFunction = declaration.getProducedReference(null, producedTypes);
+        com.redhat.ceylon.model.typechecker.model.Reference appliedFunction = declaration.getProducedReference(null, producedTypes);
         TypeDescriptor reifiedType = Metamodel.getTypeDescriptorForFunction(appliedFunction);
         TypeDescriptor reifiedArguments = Metamodel.getTypeDescriptorForArguments(declaration.getUnit(), (Functional) declaration, appliedFunction);
 
@@ -175,7 +175,7 @@ public class FreeFunction
         Metamodel.checkTypeArguments(containerType, declaration, producedTypes);
         // find the proper qualifying type
         com.redhat.ceylon.model.typechecker.model.Type memberQualifyingType = containerType.getSupertype((TypeDeclaration) declaration.getContainer());
-        final ProducedTypedReference appliedFunction = ((com.redhat.ceylon.model.typechecker.model.TypedDeclaration)declaration).getProducedTypedReference(memberQualifyingType, producedTypes);
+        final TypedReference appliedFunction = ((com.redhat.ceylon.model.typechecker.model.TypedDeclaration)declaration).getProducedTypedReference(memberQualifyingType, producedTypes);
         TypeDescriptor reifiedType = Metamodel.getTypeDescriptorForFunction(appliedFunction);
         TypeDescriptor reifiedArguments = Metamodel.getTypeDescriptorForArguments(declaration.getUnit(), (Functional) declaration, appliedFunction);
         TypeDescriptor reifiedContainer = Metamodel.getTypeDescriptorForProducedType(containerType);

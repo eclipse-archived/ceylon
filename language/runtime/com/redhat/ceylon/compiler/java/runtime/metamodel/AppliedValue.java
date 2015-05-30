@@ -29,7 +29,7 @@ import com.redhat.ceylon.model.loader.model.FieldValue;
 import com.redhat.ceylon.model.loader.model.JavaBeanValue;
 import com.redhat.ceylon.model.loader.model.LazyValue;
 import com.redhat.ceylon.model.typechecker.model.Type;
-import com.redhat.ceylon.model.typechecker.model.ProducedTypedReference;
+import com.redhat.ceylon.model.typechecker.model.TypedReference;
 
 @Ceylon(major = 8)
 @com.redhat.ceylon.compiler.java.metadata.Class
@@ -55,7 +55,7 @@ public class AppliedValue<Get, Set>
     protected final Type producedType;
 
     public AppliedValue(@Ignore TypeDescriptor $reifiedGet, @Ignore TypeDescriptor $reifiedSet,
-            FreeValue value, ProducedTypedReference valueTypedReference, 
+            FreeValue value, TypedReference valueTypedReference, 
             ceylon.language.meta.model.Type<?> container, Object instance) {
         this.producedType = valueTypedReference.getType();
         this.container = container;

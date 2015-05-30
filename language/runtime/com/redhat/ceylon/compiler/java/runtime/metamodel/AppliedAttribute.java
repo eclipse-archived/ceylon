@@ -13,7 +13,7 @@ import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 import com.redhat.ceylon.compiler.java.metadata.Variance;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
-import com.redhat.ceylon.model.typechecker.model.ProducedTypedReference;
+import com.redhat.ceylon.model.typechecker.model.TypedReference;
 
 @Ceylon(major = 8)
 @com.redhat.ceylon.compiler.java.metadata.Class
@@ -27,7 +27,7 @@ public class AppliedAttribute<Container, Get, Set>
     implements ceylon.language.meta.model.Attribute<Container, Get, Set> {
 
     protected final FreeValue declaration;
-    protected final ProducedTypedReference typedReference;
+    protected final TypedReference typedReference;
     private final ceylon.language.meta.model.Type<? extends Get> closedType;
     @Ignore
     protected final TypeDescriptor $reifiedGet;
@@ -37,7 +37,7 @@ public class AppliedAttribute<Container, Get, Set>
     public AppliedAttribute(@Ignore TypeDescriptor $reifiedContainer, 
                             @Ignore TypeDescriptor $reifiedGet,
                             @Ignore TypeDescriptor $reifiedSet,
-                            FreeValue declaration, ProducedTypedReference typedReference,
+                            FreeValue declaration, TypedReference typedReference,
                             ceylon.language.meta.model.Type<? extends Object> container) {
         super($reifiedContainer, TypeDescriptor.klass(ceylon.language.meta.model.Value.class, $reifiedGet, $reifiedSet), container);
         this.declaration = declaration;

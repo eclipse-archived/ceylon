@@ -159,7 +159,7 @@ public class FreeClass
             throw new ceylon.language.meta.model.TypeApplicationException("Cannot apply a member declaration with no container type: use memberApply");
         List<com.redhat.ceylon.model.typechecker.model.Type> producedTypes = Metamodel.getProducedTypes(typeArguments);
         Metamodel.checkTypeArguments(null, declaration, producedTypes);
-        com.redhat.ceylon.model.typechecker.model.ProducedReference appliedType = declaration.getProducedReference(null, producedTypes);
+        com.redhat.ceylon.model.typechecker.model.Reference appliedType = declaration.getProducedReference(null, producedTypes);
         AppliedClass<Type, Arguments> ret = (AppliedClass<Type, Arguments>) Metamodel.getAppliedMetamodel(appliedType.getType());;
         Metamodel.checkReifiedTypeArgument("classApply", "Class<$1,$2>", Variance.OUT, appliedType.getType(), $reifiedType, 
                 Variance.IN, Metamodel.getProducedType(ret.$reifiedArguments), $reifiedArguments);

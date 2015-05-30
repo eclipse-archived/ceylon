@@ -25,7 +25,7 @@ import com.redhat.ceylon.compiler.java.metadata.Variance;
 import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
-import com.redhat.ceylon.model.typechecker.model.ProducedReference;
+import com.redhat.ceylon.model.typechecker.model.Reference;
 
 @Ceylon(major = 8)
 @com.redhat.ceylon.compiler.java.metadata.Class
@@ -52,11 +52,11 @@ public class AppliedFunction<Type, Arguments extends Sequential<? extends Object
     private ceylon.language.meta.model.Type<?> container;
     private List<com.redhat.ceylon.model.typechecker.model.Type> parameterProducedTypes;
     private Sequential<? extends ceylon.language.meta.model.Type<? extends Object>> parameterTypes;
-    private ProducedReference appliedFunction;
+    private Reference appliedFunction;
 
     public AppliedFunction(@Ignore TypeDescriptor $reifiedType, 
                            @Ignore TypeDescriptor $reifiedArguments,
-                           ProducedReference appliedFunction, FreeFunction function, 
+                           Reference appliedFunction, FreeFunction function, 
                            ceylon.language.meta.model.Type<?> container,
                            Object instance) {
         this.$reifiedType = $reifiedType;
@@ -172,7 +172,7 @@ public class AppliedFunction<Type, Arguments extends Sequential<? extends Object
     }
 
     private MethodHandle reflectionToMethodHandle(Method found, java.lang.Class<?> javaClass, Object instance, 
-                                                  ProducedReference appliedFunction, 
+                                                  Reference appliedFunction, 
                                                   List<com.redhat.ceylon.model.typechecker.model.Type> parameterProducedTypes,
                                                   boolean variadic, boolean bindVariadicParameterToEmptyArray) {
         // save the parameter types before we mess with "found"
