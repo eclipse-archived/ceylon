@@ -378,7 +378,7 @@ public class FunctionHelper {
             gen.endBlock(true,true);
             pl.outputMetamodelAndReturn(gen, rt);
             if (i>1) {
-                rt = ModelUtil.producedType(pl.n.getUnit().getCallableDeclaration(), rt, pl.tupleFromParameterList());
+                rt = ModelUtil.appliedType(pl.n.getUnit().getCallableDeclaration(), rt, pl.tupleFromParameterList());
             }
         }
     }
