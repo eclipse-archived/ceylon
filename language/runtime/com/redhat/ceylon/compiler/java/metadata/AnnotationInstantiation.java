@@ -7,7 +7,7 @@ import java.lang.annotation.Target;
 
 /** 
  * Annotates an annotation constructor method
- * (i.e. adjacent to {@link Function @Function}) 
+ * (i.e. adjacent to {@link Method Method}) 
  * or the default parameter value method of an annotation constructor method 
  */
 @Retention(RetentionPolicy.CLASS)

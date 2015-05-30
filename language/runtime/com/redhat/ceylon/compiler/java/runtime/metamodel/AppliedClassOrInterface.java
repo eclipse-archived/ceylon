@@ -151,7 +151,7 @@ public abstract class AppliedClassOrInterface<Type>
         @TypeParameter(value = "Type"),
         @TypeParameter(value = "Arguments", satisfies = "ceylon.language::Sequential<ceylon.language::Anything>")
     })
-    @TypeInfo("ceylon.language.meta.model::Function<Container,Type,Arguments>|ceylon.language::Null")
+    @TypeInfo("ceylon.language.meta.model::Method<Container,Type,Arguments>|ceylon.language::Null")
     public <Container, Type, Arguments extends Sequential<? extends Object>>
         ceylon.language.meta.model.Method<Container, Type, Arguments> getMethod(@Ignore TypeDescriptor $reifiedContainer, 
                                                                              @Ignore TypeDescriptor $reifiedType, 
@@ -190,7 +190,7 @@ public abstract class AppliedClassOrInterface<Type>
         @TypeParameter(value = "Type"),
         @TypeParameter(value = "Arguments", satisfies = "ceylon.language::Sequential<ceylon.language::Anything>")
     })
-    @TypeInfo("ceylon.language.meta.model::Function<Container,Type,Arguments>|ceylon.language::Null")
+    @TypeInfo("ceylon.language.meta.model::Method<Container,Type,Arguments>|ceylon.language::Null")
     public <Container, Type, Arguments extends Sequential<? extends Object>>
         ceylon.language.meta.model.Method<Container, Type, Arguments> getDeclaredMethod(@Ignore TypeDescriptor $reifiedContainer, 
                                                                              @Ignore TypeDescriptor $reifiedType, 
@@ -702,7 +702,7 @@ public abstract class AppliedClassOrInterface<Type>
         @TypeParameter(value = "Type"),
         @TypeParameter(value = "Arguments", satisfies = "ceylon.language::Sequential<ceylon.language::Anything>")
     })
-    @TypeInfo("ceylon.language::Sequential<ceylon.language.meta.model::Function<Container,Type,Arguments>>")
+    @TypeInfo("ceylon.language::Sequential<ceylon.language.meta.model::Method<Container,Type,Arguments>>")
     public <Container, Type, Arguments extends Sequential<? extends Object>>
         ceylon.language.Sequential<? extends ceylon.language.meta.model.Method<? super Container, ? extends Type, ? super Arguments>> 
             getDeclaredMethods(@Ignore TypeDescriptor $reifiedContainer, 
@@ -769,7 +769,7 @@ public abstract class AppliedClassOrInterface<Type>
         @TypeParameter(value = "Type"),
         @TypeParameter(value = "Arguments", satisfies = "ceylon.language::Sequential<ceylon.language::Anything>")
     })
-    @TypeInfo("ceylon.language::Sequential<ceylon.language.meta.model::Function<Container,Type,Arguments>>")
+    @TypeInfo("ceylon.language::Sequential<ceylon.language.meta.model::Method<Container,Type,Arguments>>")
     public <Container, Type, Arguments extends Sequential<? extends Object>>
         ceylon.language.Sequential<? extends ceylon.language.meta.model.Method<? super Container, ? extends Type, ? super Arguments>> 
             getMethods(@Ignore TypeDescriptor $reifiedContainer, 

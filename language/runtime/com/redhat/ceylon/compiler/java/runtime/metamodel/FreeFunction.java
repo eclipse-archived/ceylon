@@ -144,7 +144,7 @@ public class FreeFunction
                                                               (Sequential)empty_.get_());
     }
 
-    @TypeInfo("ceylon.language.meta.model::Function<Container,Return,Arguments>")
+    @TypeInfo("ceylon.language.meta.model::Method<Container,Return,Arguments>")
     @TypeParameters({
         @TypeParameter("Container"),
         @TypeParameter("Return"),
@@ -180,7 +180,7 @@ public class FreeFunction
         TypeDescriptor reifiedArguments = Metamodel.getTypeDescriptorForArguments(declaration.getUnit(), (Functional) declaration, appliedFunction);
         TypeDescriptor reifiedContainer = Metamodel.getTypeDescriptorForProducedType(containerType);
 
-        Metamodel.checkReifiedTypeArgument("memberApply", "Function<$1,$2,$3>", 
+        Metamodel.checkReifiedTypeArgument("memberApply", "Method<$1,$2,$3>", 
                 Variance.IN, containerType, $reifiedContainer, 
                 Variance.OUT, appliedFunction.getType(), $reifiedType,
                 Variance.IN, Metamodel.getProducedTypeForArguments(declaration.getUnit(), (Functional)declaration, appliedFunction), $reifiedArguments);
