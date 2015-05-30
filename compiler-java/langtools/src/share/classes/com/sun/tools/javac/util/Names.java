@@ -251,7 +251,7 @@ public class Names {
         RUNTIME = fromString("RUNTIME");
 
         Array = fromString("Array");
-        Method = fromString("Function");
+        Method = fromString("Method");
         Bound = fromString("Bound");
         clone = fromString("clone");
         getComponentType = fromString("getComponentType");

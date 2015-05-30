@@ -374,7 +374,7 @@ public class Types {
 
     /**
      * Is t a subtype of s?<br>
-     * (not defined for Function and ForAll types)
+     * (not defined for Method and ForAll types)
      */
     final public boolean isSubtype(Type t, Type s) {
         return isSubtype(t, s, true);
@@ -541,7 +541,7 @@ public class Types {
 
     /**
      * Is t a subtype of every type in given list `ts'?<br>
-     * (not defined for Function and ForAll types)<br>
+     * (not defined for Method and ForAll types)<br>
      * Allows unchecked conversions.
      */
     public boolean isSubtypeUnchecked(Type t, List<Type> ts, Warner warn) {
@@ -963,7 +963,7 @@ public class Types {
     /**
      * Is t is castable to s?<br>
      * s is assumed to be an erased type.<br>
-     * (not defined for Function and ForAll types).
+     * (not defined for Method and ForAll types).
      */
     public boolean isCastable(Type t, Type s, Warner warn) {
         if (t == s)
@@ -1599,7 +1599,7 @@ public class Types {
      * Is t assignable to s?<br>
      * Equivalent to subtype except for constant values and raw
      * types.<br>
-     * (not defined for Function and ForAll types)
+     * (not defined for Method and ForAll types)
      */
     public boolean isAssignable(Type t, Type s, Warner warn) {
         if (t.tag == ERROR)

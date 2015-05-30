@@ -116,7 +116,7 @@ public interface Types {
      * @param m2  the second method
      * @return {@code true} if and only if the first signature is a
      *          subsignature of the second
-     * @jls 8.4.2 Function Signature
+     * @jls 8.4.2 Method Signature
      */
     boolean isSubsignature(ExecutableType m1, ExecutableType m2);
 

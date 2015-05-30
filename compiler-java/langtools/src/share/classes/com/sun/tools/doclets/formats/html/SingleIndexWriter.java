@@ -81,7 +81,7 @@ public class SingleIndexWriter extends AbstractIndexWriter {
 
     /**
      * Generate the contents of each index file, with Header, Footer,
-     * Member Field, Function and Constructor Description.
+     * Member Field, Method and Constructor Description.
      */
     protected void generateIndexFile() throws IOException {
         String title = configuration.getText("doclet.Window_Single_Index");

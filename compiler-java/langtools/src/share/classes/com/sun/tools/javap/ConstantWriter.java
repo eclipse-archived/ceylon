@@ -227,7 +227,7 @@ public class ConstantWriter extends BasicWriter {
             case CONSTANT_MethodType:
                 return "MethodType";
             case CONSTANT_Methodref:
-                return "Function";
+                return "Method";
             case CONSTANT_InterfaceMethodref:
                 return "InterfaceMethod";
             case CONSTANT_InvokeDynamic:

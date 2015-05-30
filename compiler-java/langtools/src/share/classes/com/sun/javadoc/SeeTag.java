@@ -33,9 +33,9 @@ package com.sun.javadoc;
  * HTML link.)  The reference can either be inline with the comment,
  * using <code>&#123;@link}</code>, or a separate block comment,
  * using <code>@see</code>.
- * Function <code>name()</code> returns "@link" (no curly braces) or
+ * Method <code>name()</code> returns "@link" (no curly braces) or
  * "@see", depending on the tag.
- * Function <code>kind()</code> returns "@see" for both tags.
+ * Method <code>kind()</code> returns "@see" for both tags.
  *
  * @author Kaiyang Liu (original)
  * @author Robert Field (rewrite)

@@ -160,7 +160,7 @@ public class AttributeWriter extends BasicWriter
             print(i + ": #" + bsm.bootstrap_method_ref + " ");
             println(constantWriter.stringValue(bsm.bootstrap_method_ref));
             indent(+1);
-            println("Function arguments:");
+            println("Method arguments:");
             indent(+1);
             for (int j = 0; j < bsm.bootstrap_arguments.length; j++) {
                 print("#" + bsm.bootstrap_arguments[j] + " ");

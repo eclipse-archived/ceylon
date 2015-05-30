@@ -121,8 +121,8 @@ public class Util {
      * Search for the given method in the given class.
      *
      * @param  cd        Class to search into.
-     * @param  method    Function to be searched.
-     * @return MethodDoc Function found, null otherwise.
+     * @param  method    Method to be searched.
+     * @return MethodDoc Method found, null otherwise.
      */
     public static MethodDoc findMethod(ClassDoc cd, MethodDoc method) {
         MethodDoc[] methods = cd.methods();

@@ -59,7 +59,7 @@ public class MetaKeywords {
      * Returns an array of strings where each element
      * is a class, method or field name.  This array is
      * used to create one meta keyword tag for each element.
-     * Function parameter lists are converted to "()" and
+     * Method parameter lists are converted to "()" and
      * overloads are combined.
      *
      * Constructors are not included because they have the same

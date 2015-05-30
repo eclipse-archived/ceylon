@@ -125,7 +125,7 @@ public class ImplementedMethods {
      * a method which is overriding the method parameter or is the method
      * parameter itself.
      *
-     * @param method MethodDoc Function to be searched in the Function List for
+     * @param method MethodDoc Method to be searched in the Method List for
      * an overriding method.
      */
     private boolean overridingMethodFound(MethodDoc method) {

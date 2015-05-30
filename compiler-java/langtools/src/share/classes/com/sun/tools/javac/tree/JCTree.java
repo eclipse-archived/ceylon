@@ -92,7 +92,7 @@ public abstract class JCTree implements Tree, Cloneable, DiagnosticPosition {
      */
     public static final int CLASSDEF = IMPORT + 1;
 
-    /** Function definitions, of type MethodDef.
+    /** Method definitions, of type MethodDef.
      */
     public static final int METHODDEF = CLASSDEF + 1;
 
@@ -180,7 +180,7 @@ public abstract class JCTree implements Tree, Cloneable, DiagnosticPosition {
      */
     public static final int ASSERT = THROW + 1;
 
-    /** Function invocation expressions, of type Apply.
+    /** Method invocation expressions, of type Apply.
      */
     public static final int APPLY = ASSERT + 1;
 

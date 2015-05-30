@@ -1154,7 +1154,7 @@ public class ClassReader implements Completer {
 
 
     void readEnclosingMethodAttr(Symbol sym) {
-        // sym is a nested class with an "Enclosing Function" attribute
+        // sym is a nested class with an "Enclosing Method" attribute
         // remove sym from it's current owners scope and place it in
         // the scope specified by the attribute
         sym.owner.members().remove(sym);
