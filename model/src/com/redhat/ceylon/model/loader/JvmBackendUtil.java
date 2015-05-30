@@ -169,11 +169,11 @@ public class JvmBackendUtil {
                 if(ctor == null 
                         || ctor.getParameterLists() == null
                         || ctor.getParameterLists().isEmpty()
-                        || ctor.getParameterLists().get(0) == null
-                        || ctor.getParameterLists().get(0).getParameters() == null
-                        || ctor.getParameterLists().get(0).getParameters().size() <= index)
+                        || ctor.getFirstParameterList() == null
+                        || ctor.getFirstParameterList().getParameters() == null
+                        || ctor.getFirstParameterList().getParameters().size() <= index)
                     return null;
-                decl = ctor.getParameterLists().get(0).getParameters().get(index).getModel();
+                decl = ctor.getFirstParameterList().getParameters().get(index).getModel();
             }
             if (decl.isShared()) {
                 Declaration refinedDecl = c.getRefinedMember(decl.getName(), getSignature(decl), false);//?? ellipsis=false??

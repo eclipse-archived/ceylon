@@ -9,6 +9,8 @@ import java.util.List;
  */
 public interface Functional {
 
+    public ParameterList getFirstParameterList();
+    
     public List<ParameterList> getParameterLists();
 
     public void addParameterList(ParameterList pl);

@@ -2554,7 +2554,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         if (decl instanceof Functional) {
             Functional func = (Functional)decl;
             if (func.getParameterLists().size() > 0) {
-                List<Parameter> params = func.getParameterLists().get(0).getParameters();
+                List<Parameter> params = func.getFirstParameterList().getParameters();
                 result = new ArrayList<Type>(params.size());
                 for (Parameter p : params) {
                     result.add(p.getType());

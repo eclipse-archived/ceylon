@@ -1,16 +1,14 @@
 package com.redhat.ceylon.model.typechecker.model;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
-public class TypeParameter extends TypeDeclaration implements Functional {
+public class TypeParameter extends TypeDeclaration {
 
     private boolean covariant;
     private boolean contravariant;
     private Declaration declaration;
-    private ParameterList parameterList;
     private TypeDeclaration selfTypedDeclaration;
     private Type defaultTypeArgument;
     private boolean defaulted;
@@ -83,29 +81,6 @@ public class TypeParameter extends TypeDeclaration implements Functional {
     public void setDeclaration(Declaration declaration) {
         this.declaration = declaration;
     }
-
-    public ParameterList getParameterList() {
-        return parameterList;
-    }
-
-    public void setParameterList(ParameterList parameterList) {
-        this.parameterList = parameterList;
-    }
-
-    @Override
-    public List<ParameterList> getParameterLists() {
-        if (parameterList==null) {
-            return Collections.emptyList();
-        }
-        else {
-            return Collections.singletonList(parameterList);
-        }
-    }
-
-    @Override
-    public void addParameterList(ParameterList pl) {
-        parameterList = pl;
-    }
     
     @Override
     public DeclarationKind getDeclarationKind() {
@@ -125,16 +100,6 @@ public class TypeParameter extends TypeDeclaration implements Functional {
     @Override
     public List<Declaration> getOverloads() {
         return null;
-    }
-    
-    @Override
-    public Parameter getParameter(String name) {
-        return null;
-    }
-    
-    @Override
-    public boolean isDeclaredVoid() {
-        return false;
     }
     
     public Type getDefaultTypeArgument() {

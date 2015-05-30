@@ -1787,7 +1787,7 @@ public class Unit {
         if (f.getParameterLists().isEmpty()) {
             return null;
         }
-        ParameterList fpl = f.getParameterLists().get(0);
+        ParameterList fpl = f.getFirstParameterList();
         List<Parameter> params = fpl.getParameters();
         Type parameterTuple = 
                 getParameterTypesAsTupleType(params, pr);
@@ -1822,7 +1822,7 @@ public class Unit {
         if (f.getParameterLists().isEmpty()) {
             return null;
         }
-        ParameterList fpl = f.getParameterLists().get(0);
+        ParameterList fpl = f.getFirstParameterList();
         List<Parameter> params = fpl.getParameters();
         Type parameterTuple = 
                 getParameterTypesAsTupleType(params, pr);

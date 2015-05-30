@@ -87,7 +87,12 @@ public class Class extends ClassOrInterface implements Functional {
             return super.isSealed();
         }
     }
-
+    
+    @Override
+    public ParameterList getFirstParameterList() {
+        return getParameterList();
+    }
+    
     public ParameterList getParameterList() {
         if (constructors) {
             Constructor defaultConstructor = getDefaultConstructor();
@@ -96,7 +101,7 @@ public class Class extends ClassOrInterface implements Functional {
                 return null;
             }
             else {
-                return defaultConstructor.getParameterLists().get(0);
+                return defaultConstructor.getFirstParameterList();
             }
         }
         else {

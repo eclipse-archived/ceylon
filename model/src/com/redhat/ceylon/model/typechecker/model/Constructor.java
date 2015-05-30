@@ -49,6 +49,11 @@ public class Constructor extends TypeDeclaration implements Generic, Scope, Func
     public void setTypeParameters(List<TypeParameter> typeParameters) {
         this.typeParameters = typeParameters;
     }
+    
+    @Override
+    public ParameterList getFirstParameterList() {
+        return getParameterLists().get(0);
+    }
 
     @Override
     public List<ParameterList> getParameterLists() {
