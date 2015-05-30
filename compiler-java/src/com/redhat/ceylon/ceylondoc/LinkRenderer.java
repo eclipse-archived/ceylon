@@ -54,8 +54,8 @@ import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Element;
-import com.redhat.ceylon.model.typechecker.model.Method;
-import com.redhat.ceylon.model.typechecker.model.MethodOrValue;
+import com.redhat.ceylon.model.typechecker.model.Function;
+import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.NothingType;
 import com.redhat.ceylon.model.typechecker.model.Package;
@@ -488,8 +488,8 @@ public class LinkRenderer {
     }
 
     private boolean isParameter(Declaration decl) {
-        return decl instanceof MethodOrValue
-                && ((MethodOrValue)decl).isParameter();
+        return decl instanceof FunctionOrValue
+                && ((FunctionOrValue)decl).isParameter();
     }
     
     private Declaration resolveDeclaration(Scope scope, String declName, boolean isNested) {
@@ -580,7 +580,7 @@ public class LinkRenderer {
                 result = "<span class='type-identifier'>" + name + "</span>";
             }
             else {
-                if (decl instanceof Method && printParenthesisAfterMethodName) {
+                if (decl instanceof Function && printParenthesisAfterMethodName) {
                     name = name + "()";
                 }
                 result = "<span class='identifier'>" + name + "</span>";
@@ -604,9 +604,9 @@ public class LinkRenderer {
     private String getUrl(Object to, Declaration anchor) {
         String url;
         
-        List<Method> methods = new ArrayList<Method>();
-        while(to instanceof Method){
-            Method method = (Method) to;
+        List<Function> methods = new ArrayList<Function>();
+        while(to instanceof Function){
+            Function method = (Function) to;
             methods.add(method);
             to = method.getContainer();
         }
@@ -625,7 +625,7 @@ public class LinkRenderer {
             StringBuilder fragment = new StringBuilder();
             if(!methods.isEmpty()) {
                 Collections.reverse(methods);
-                for(Method method : methods) {
+                for(Function method : methods) {
                     fragment.append(method.getName());
                     fragment.append("-");
                 }

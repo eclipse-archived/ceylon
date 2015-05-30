@@ -3167,7 +3167,7 @@ public class StatementTransformer extends AbstractTransformer {
             boolean prevNoExpressionlessReturn = noExpressionlessReturn;
             try {
                 noExpressionlessReturn = false;
-                // we can cast to TypedDeclaration here because return with expressions are only in Method or Value
+                // we can cast to TypedDeclaration here because return with expressions are only in Function or Value
                 TypedDeclaration declaration = (TypedDeclaration)ret.getDeclaration();
                 returnExpr = expressionGen().transformExpression(declaration, expr.getTerm());
                 // make sure all returns from hash are properly turned into ints

@@ -174,7 +174,7 @@ public class AbstractIndexWriter extends HtmlDocletWriter {
     }
 
     /**
-     * Add description for Class, Field, Method or Constructor.
+     * Add description for Class, Field, Function or Constructor.
      *
      * @param member MemberDoc for the member of the Class Kind
      * @param dlTree the content tree to which the description will be added
@@ -231,7 +231,7 @@ public class AbstractIndexWriter extends HtmlDocletWriter {
     }
 
     /**
-     * Add description about the Static Varible/Method/Constructor for a
+     * Add description about the Static Varible/Function/Constructor for a
      * member.
      *
      * @param member MemberDoc for the member within the Class Kind

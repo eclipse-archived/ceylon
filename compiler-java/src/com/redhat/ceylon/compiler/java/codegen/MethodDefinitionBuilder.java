@@ -31,8 +31,8 @@ import java.util.Collections;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.model.typechecker.model.Annotation;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
-import com.redhat.ceylon.model.typechecker.model.Method;
-import com.redhat.ceylon.model.typechecker.model.MethodOrValue;
+import com.redhat.ceylon.model.typechecker.model.Function;
+import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
 import com.redhat.ceylon.model.typechecker.model.Package;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.ParameterList;
@@ -95,7 +95,7 @@ public class MethodDefinitionBuilder
     private boolean haveLocation = false;
     private Node location;
 
-    public static MethodDefinitionBuilder method(AbstractTransformer gen, Method method) {
+    public static MethodDefinitionBuilder method(AbstractTransformer gen, Function method) {
         return new MethodDefinitionBuilder(gen, false, gen.naming.selector(method));
     }
     
@@ -225,11 +225,11 @@ public class MethodDefinitionBuilder
 
     JCExpression makeResultType(TypedDeclaration typedDeclaration, Type type, int flags) {
         if (typedDeclaration == null
-                || ((!(typedDeclaration instanceof Method) || !((Method)typedDeclaration).isParameter())
+                || ((!(typedDeclaration instanceof Function) || !((Function)typedDeclaration).isParameter())
                         && AbstractTransformer.isAnything(type))) {
-            if ((typedDeclaration instanceof Method)
-                    && ((Method)typedDeclaration).isDeclaredVoid()
-                    && !Strategy.useBoxedVoid((Method)typedDeclaration)) {
+            if ((typedDeclaration instanceof Function)
+                    && ((Function)typedDeclaration).isDeclaredVoid()
+                    && !Strategy.useBoxedVoid((Function)typedDeclaration)) {
                 return makeVoidType();
             } else {
                 return gen.makeJavaType(typedDeclaration, gen.typeFact().getAnythingType(), flags);
@@ -389,7 +389,7 @@ public class MethodDefinitionBuilder
             List<JCAnnotation> userAnnotations, int flags, boolean canWiden) {
         String paramName = param.getName();
         String aliasedName = Naming.getAliasedParameterName(param);
-        MethodOrValue mov = CodegenUtil.findMethodOrValueForParam(param);
+        FunctionOrValue mov = CodegenUtil.findMethodOrValueForParam(param);
         int mods = 0;
         if (!Decl.isNonTransientValue(mov) || !mov.isVariable() || mov.isCaptured()) {
             mods |= FINAL;
@@ -415,7 +415,7 @@ public class MethodDefinitionBuilder
                 // we don't have to use produced typed references with type params applied here because we want to know the
                 // erasure status of the compilation of the refined parameter, so it's OK if we end up with unbound type parameters
                 // in the refined parameter type
-                if(refinedParameter instanceof Method)
+                if(refinedParameter instanceof Function)
                     refinedParameterType = refinedParameter.getProducedTypedReference(null, Collections.<Type>emptyList()).getFullType();
                 else
                     refinedParameterType = refinedParameter.getType();
@@ -478,7 +478,7 @@ public class MethodDefinitionBuilder
         }
     }
 
-    public MethodDefinitionBuilder resultType(Method method, int flags) {
+    public MethodDefinitionBuilder resultType(Function method, int flags) {
         if (method.isParameter()) {
             if (Decl.isUnboxedVoid(method) && !Strategy.useBoxedVoid(method)) {
                 return resultType(gen.makeJavaTypeAnnotations(method, false), gen.make().Type(gen.syms().voidType));

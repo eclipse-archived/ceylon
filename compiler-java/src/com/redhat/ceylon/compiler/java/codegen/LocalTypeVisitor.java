@@ -32,7 +32,7 @@ import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Interface;
-import com.redhat.ceylon.model.typechecker.model.Method;
+import com.redhat.ceylon.model.typechecker.model.Function;
 import com.redhat.ceylon.model.typechecker.model.Setter;
 import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.model.typechecker.model.Value;
@@ -99,7 +99,7 @@ public class LocalTypeVisitor extends Visitor implements NaturalVisitor {
 
     @Override
     public void visit(Tree.AnyMethod that){
-        Method model = that.getDeclarationModel();
+        Function model = that.getDeclarationModel();
         int mpl = model.getParameterLists().size();
         String prefix = null;
         if(mpl > 1){
@@ -200,7 +200,7 @@ public class LocalTypeVisitor extends Visitor implements NaturalVisitor {
     public void visit(Tree.BaseMemberOrTypeExpression that) {
         Declaration model = that.getDeclaration();
         if(model != null
-                && (model instanceof Method || model instanceof Class)
+                && (model instanceof Function || model instanceof Class)
                 && !model.isParameter() // if it's a parameter we don't need to wrap it in a class
                 && !that.getDirectlyInvoked()){
             String prefix = this.prefix;

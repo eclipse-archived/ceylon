@@ -36,7 +36,7 @@ import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Functional;
-import com.redhat.ceylon.model.typechecker.model.Method;
+import com.redhat.ceylon.model.typechecker.model.Function;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.Package;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
@@ -54,11 +54,11 @@ class AnnotationInvocationVisitor extends Visitor {
     public static Class annoClass(Tree.InvocationExpression invocation) {
         Declaration declaration = ((Tree.BaseMemberOrTypeExpression)invocation.getPrimary()).getDeclaration();
         Set<Declaration> ctors = new HashSet<Declaration>();
-        while (declaration instanceof Method) {
+        while (declaration instanceof Function) {
             if (!ctors.add(declaration)) {
                 throw new BugException(invocation, "recursive annotation constructor");
             }
-            declaration = ((AnnotationInvocation)((Method)declaration).getAnnotationConstructor()).getPrimary();
+            declaration = ((AnnotationInvocation)((Function)declaration).getAnnotationConstructor()).getPrimary();
         } 
         
         if (declaration instanceof Class) {
@@ -68,10 +68,10 @@ class AnnotationInvocationVisitor extends Visitor {
         }
     }
     
-    public static Method annoCtor(Tree.InvocationExpression invocation) {
+    public static Function annoCtor(Tree.InvocationExpression invocation) {
         Declaration declaration = ((Tree.BaseMemberOrTypeExpression)invocation.getPrimary()).getDeclaration();
-        if (declaration instanceof Method) {
-            return (Method)declaration;
+        if (declaration instanceof Function) {
+            return (Function)declaration;
         } else if (declaration instanceof Class) {
             return null;
         } else {
@@ -81,8 +81,8 @@ class AnnotationInvocationVisitor extends Visitor {
     
     public static AnnotationInvocation annoCtorModel(Tree.InvocationExpression invocation) {
         Declaration declaration = ((Tree.BaseMemberOrTypeExpression)invocation.getPrimary()).getDeclaration();
-        if (declaration instanceof Method) {
-            return (AnnotationInvocation)((Method)declaration).getAnnotationConstructor();
+        if (declaration instanceof Function) {
+            return (AnnotationInvocation)((Function)declaration).getAnnotationConstructor();
         } else if (declaration instanceof Class) {
             // TODO Why doesn't the AnnotationModelVisitor do this? I guess because
             // an annotation Class's doesn't have a body, so there's no need for Visitor
@@ -248,7 +248,7 @@ class AnnotationInvocationVisitor extends Visitor {
                     continue outer;
                 }
             } else {
-                Method ac2 = (Method)ai.getPrimary();
+                Function ac2 = (Function)ai.getPrimary();
                 AnnotationInvocation i = (AnnotationInvocation)ac2.getAnnotationConstructor();
                 for (AnnotationArgument aa : i.getAnnotationArguments()) {
                     if (aa.getParameter().equals(classParameter)) {

@@ -66,7 +66,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Interface;
-import com.redhat.ceylon.model.typechecker.model.Method;
+import com.redhat.ceylon.model.typechecker.model.Function;
 import com.redhat.ceylon.model.typechecker.model.Reference;
 import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.Scope;
@@ -195,7 +195,7 @@ public abstract class BoxingVisitor extends Visitor {
         // which will need to be marked boxed
         if (term instanceof MemberOrTypeExpression) {
             Tree.MemberOrTypeExpression expr = (Tree.MemberOrTypeExpression)term;
-            if (expr.getDeclaration() instanceof Method) {
+            if (expr.getDeclaration() instanceof Function) {
                 that.setUnboxed(false);
             }
         }
@@ -227,8 +227,8 @@ public abstract class BoxingVisitor extends Visitor {
         // then we mark the expression itself as erased as well
         if (that.getPrimary() instanceof StaticMemberOrTypeExpression) {
             StaticMemberOrTypeExpression expr = (StaticMemberOrTypeExpression)that.getPrimary();
-            if (expr.getDeclaration() instanceof Method) {
-                Method mth = (Method)expr.getDeclaration();
+            if (expr.getDeclaration() instanceof Function) {
+                Function mth = (Function)expr.getDeclaration();
                 if (isTypeParameter(mth.getType()) 
                         && (hasErasedTypeParameter(expr.getTarget(), expr.getTypeArguments())
                         || CodegenUtil.isRaw(that))) {

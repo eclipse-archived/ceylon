@@ -17,7 +17,7 @@ public class AnnotationConstructorParameter implements AnnotationFieldName {
     public AnnotationConstructorParameter() {}
     
     /**
-     * The corresponding parameter of the annotation constructor {@code Method}
+     * The corresponding parameter of the annotation constructor {@code Function}
      * @return
      */
     public Parameter getParameter() {

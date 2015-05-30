@@ -31,7 +31,7 @@ public class ExpressionTests2 extends CompilerTests {
         return name + "-2";
     }
 
-    // Method invocation
+    // Function invocation
 
     @Test
     public void testInvAnonymousFunctionPositionalInvocation(){

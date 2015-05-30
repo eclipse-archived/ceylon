@@ -85,8 +85,8 @@ import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Element;
 import com.redhat.ceylon.model.typechecker.model.Interface;
-import com.redhat.ceylon.model.typechecker.model.Method;
-import com.redhat.ceylon.model.typechecker.model.MethodOrValue;
+import com.redhat.ceylon.model.typechecker.model.Function;
+import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.NothingType;
 import com.redhat.ceylon.model.typechecker.model.Package;
@@ -170,7 +170,7 @@ public class CeylonDocTool extends OutputRepoUsingTool {
     private final List<String> compiledClasses = new LinkedList<String>();
     private final Map<TypeDeclaration, List<Class>> subclasses = new HashMap<TypeDeclaration, List<Class>>();
     private final Map<TypeDeclaration, List<ClassOrInterface>> satisfyingClassesOrInterfaces = new HashMap<TypeDeclaration, List<ClassOrInterface>>();
-    private final Map<TypeDeclaration, List<Method>> annotationConstructors = new HashMap<TypeDeclaration, List<Method>>();
+    private final Map<TypeDeclaration, List<Function>> annotationConstructors = new HashMap<TypeDeclaration, List<Function>>();
     private final Map<Referenceable, PhasedUnit> modelUnitMap = new HashMap<Referenceable, PhasedUnit>();
     private final Map<Referenceable, Node> modelNodeMap = new HashMap<Referenceable, Node>();
     private final Map<Parameter, PhasedUnit> parameterUnitMap = new HashMap<Parameter, PhasedUnit>();
@@ -729,12 +729,12 @@ public class CeylonDocTool extends OutputRepoUsingTool {
         for (Module module : modules) {
             for (Package pkg : getPackages(module)) {
                 for (Declaration decl : pkg.getMembers()) {
-                    if (decl instanceof Method && decl.isAnnotation() && shouldInclude(decl)) {
-                        Method annotationCtor = (Method) decl;
+                    if (decl instanceof Function && decl.isAnnotation() && shouldInclude(decl)) {
+                        Function annotationCtor = (Function) decl;
                         TypeDeclaration annotationType = annotationCtor.getTypeDeclaration();
-                        List<Method> annotationConstructorList = annotationConstructors.get(annotationType);
+                        List<Function> annotationConstructorList = annotationConstructors.get(annotationType);
                         if (annotationConstructorList == null) {
-                            annotationConstructorList = new ArrayList<Method>();
+                            annotationConstructorList = new ArrayList<Function>();
                             annotationConstructors.put(annotationType, annotationConstructorList);
                         }
                         annotationConstructorList.add(annotationCtor);
@@ -1179,7 +1179,7 @@ public class CeylonDocTool extends OutputRepoUsingTool {
         return parameterNodeMap.get(parameter);
     }
     
-    protected List<Method> getAnnotationConstructors(TypeDeclaration klass) {
+    protected List<Function> getAnnotationConstructors(TypeDeclaration klass) {
         return annotationConstructors.get(klass);
     }
 
@@ -1249,7 +1249,7 @@ public class CeylonDocTool extends OutputRepoUsingTool {
         final Scope scope = d.getScope();
         final PhasedUnit unit = getUnit(d);
         final Node node = getNode(d);
-        if (scope == null || unit == null || unit.getUnit() == null || node == null || !(d instanceof MethodOrValue)) {
+        if (scope == null || unit == null || unit.getUnit() == null || node == null || !(d instanceof FunctionOrValue)) {
             return;
         }
         
@@ -1309,8 +1309,8 @@ public class CeylonDocTool extends OutputRepoUsingTool {
             where += "type alias ";
         } else if (scope instanceof TypeParameter) {
             where += "type parameter ";
-        } else if (scope instanceof Method) {
-            if (((Method) scope).isToplevel()) {
+        } else if (scope instanceof Function) {
+            if (((Function) scope).isToplevel()) {
                 where += "function ";
             } else {
                 where += "method ";

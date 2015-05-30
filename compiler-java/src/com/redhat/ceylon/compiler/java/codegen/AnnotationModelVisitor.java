@@ -16,7 +16,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
-import com.redhat.ceylon.model.typechecker.model.Method;
+import com.redhat.ceylon.model.typechecker.model.Function;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
@@ -74,7 +74,7 @@ public class AnnotationModelVisitor extends Visitor implements NaturalVisitor {
     
     public static boolean isAnnotationConstructor(Declaration def) {
         return def.isToplevel()
-                && def instanceof Method
+                && def instanceof Function
                 && def.isAnnotation();
     }
 
@@ -180,7 +180,7 @@ public class AnnotationModelVisitor extends Visitor implements NaturalVisitor {
                     final AnnotationInvocation prevInstantiation = this.instantiation;
                     this.instantiation = new AnnotationInvocation();
                     if (isAnnotationConstructor( ((Tree.BaseMemberOrTypeExpression)primary).getDeclaration())) {
-                        Method constructor = (Method)((Tree.BaseMemberOrTypeExpression)primary).getDeclaration();
+                        Function constructor = (Function)((Tree.BaseMemberOrTypeExpression)primary).getDeclaration();
                         instantiation.setConstructorDeclaration(constructor);
                         instantiation.getConstructorParameters().addAll(((AnnotationInvocation)constructor.getAnnotationConstructor()).getConstructorParameters());
                     }
@@ -427,7 +427,7 @@ public class AnnotationModelVisitor extends Visitor implements NaturalVisitor {
             Declaration declaration = bme.getDeclaration();
             if (checkingInvocationPrimary 
                     && isAnnotationConstructor(bme.getDeclaration())) {
-                Method ctor = (Method)bme.getDeclaration();
+                Function ctor = (Function)bme.getDeclaration();
                 instantiation.setPrimary(ctor);
                 if (ctor.getAnnotationConstructor() != null) {
                     instantiation.getConstructorParameters().addAll(((AnnotationInvocation)ctor.getAnnotationConstructor()).getConstructorParameters());

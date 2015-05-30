@@ -33,8 +33,8 @@ import com.redhat.ceylon.ceylondoc.Util.ReferenceableComparatorByName;
 import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Interface;
-import com.redhat.ceylon.model.typechecker.model.Method;
-import com.redhat.ceylon.model.typechecker.model.MethodOrValue;
+import com.redhat.ceylon.model.typechecker.model.Function;
+import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
 import com.redhat.ceylon.model.typechecker.model.Package;
 import com.redhat.ceylon.model.typechecker.model.TypeAlias;
 import com.redhat.ceylon.model.typechecker.model.Value;
@@ -45,12 +45,12 @@ public class PackageDoc extends ClassOrPackageDoc {
     private final boolean sharingPageWithModule;
     private final List<Class> classes = new ArrayList<Class>();
     private final List<Interface> interfaces = new ArrayList<Interface>();
-    private final List<MethodOrValue> attributes = new ArrayList<MethodOrValue>();
-    private final List<Method> methods = new ArrayList<Method>();
+    private final List<FunctionOrValue> attributes = new ArrayList<FunctionOrValue>();
+    private final List<Function> methods = new ArrayList<Function>();
     private final List<Class> exceptions = new ArrayList<Class>();
     private final List<TypeAlias> aliases = new ArrayList<TypeAlias>();
     private final List<Class> annotationTypes = new ArrayList<Class>();
-    private final List<Method> annotationConstructors = new ArrayList<Method>();
+    private final List<Function> annotationConstructors = new ArrayList<Function>();
 
 	public PackageDoc(CeylonDocTool tool, Writer writer, Package pkg) throws IOException {
 		super(pkg.getModule(), tool, writer);
@@ -76,9 +76,9 @@ public class PackageDoc extends ClassOrPackageDoc {
                     classes.add(c);
                 }
             } else if (m instanceof Value) {
-                attributes.add((MethodOrValue) m);
-            } else if (m instanceof Method) {
-                Method method = (Method) m;
+                attributes.add((FunctionOrValue) m);
+            } else if (m instanceof Function) {
+                Function method = (Function) m;
                 if( m.isAnnotation() ) {
                     annotationConstructors.add(method);
                 } else {
@@ -218,7 +218,7 @@ public class PackageDoc extends ClassOrPackageDoc {
             return;
         }
         openTable("section-annotations", "Annotations", 2, true);
-        for (Method annotationConstructor : annotationConstructors) {
+        for (Function annotationConstructor : annotationConstructors) {
             doc(annotationConstructor);
         }
         for (Class annotationType : annotationTypes) {
@@ -232,7 +232,7 @@ public class PackageDoc extends ClassOrPackageDoc {
             return;
         }
         openTable("section-attributes", "Values", 2, true);
-        for (MethodOrValue v : attributes) {
+        for (FunctionOrValue v : attributes) {
             doc(v);
         }
         closeTable();
@@ -243,7 +243,7 @@ public class PackageDoc extends ClassOrPackageDoc {
             return;
         }
         openTable("section-methods", "Functions", 2, true);
-        for (Method m : methods) {
+        for (Function m : methods) {
             doc(m);
         }
         closeTable();

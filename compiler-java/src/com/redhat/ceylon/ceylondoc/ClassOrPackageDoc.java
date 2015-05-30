@@ -53,8 +53,8 @@ import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.model.typechecker.model.Constructor;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Functional;
-import com.redhat.ceylon.model.typechecker.model.Method;
-import com.redhat.ceylon.model.typechecker.model.MethodOrValue;
+import com.redhat.ceylon.model.typechecker.model.Function;
+import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.ParameterList;
@@ -266,13 +266,13 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
             tool.warningMissingDoc(d.getQualifiedNameString(), d);
         }
         around("div class='doc section'", doc);
-        if( d instanceof MethodOrValue ) {
+        if( d instanceof FunctionOrValue ) {
             writeAnnotations(d);
         	writeParameters(d);
             writeThrows(d);        
             writeBy(d);
             writeSee(d);
-            writeLinkToRefinedDeclaration((MethodOrValue)d);
+            writeLinkToRefinedDeclaration((FunctionOrValue)d);
         }
         if (d instanceof TypeAlias) {
             writeAnnotations(d);
@@ -310,7 +310,7 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
         }
     }
 
-    private void writeLinkToRefinedDeclaration(MethodOrValue d) throws IOException {
+    private void writeLinkToRefinedDeclaration(FunctionOrValue d) throws IOException {
         Declaration topMostRefinedDecl = d.getRefinedDeclaration();
         if (topMostRefinedDecl != null && topMostRefinedDecl != d) {
             Declaration bottomMostRefinedDecl = findBottomMostRefinedDeclaration(d);
@@ -466,8 +466,8 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
                     around("a id='" + idPrefix + f.getName() + "-" + parameter.getName() + "'", "");
                     
                     // if parameter is function, we need to produce links to its parameters
-                    if (parameter.getModel() instanceof Method) {
-                        writeParameterLinksIfRequired((Method) parameter.getModel(), false, idPrefix + f.getName() + "-");
+                    if (parameter.getModel() instanceof Function) {
+                        writeParameterLinksIfRequired((Function) parameter.getModel(), false, idPrefix + f.getName() + "-");
                     }
                 }
             }
@@ -485,7 +485,7 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
                     first = false;
                 }
                 
-                if (param.getModel() instanceof Method) {
+                if (param.getModel() instanceof Function) {
                     writeFunctionalParameter(param);
                 } else {
                     linkRenderer().to(param.getType()).write();
@@ -549,7 +549,7 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
         }
         write(" ");
         write(functionParam.getName());
-        writeParameterList((Method)functionParam.getModel());
+        writeParameterList((Function)functionParam.getModel());
     }
 
     protected final void writeParameters(Declaration decl) throws IOException {
@@ -573,8 +573,8 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
                         around("span class='parameter' id='" + decl.getName() + "-" + parameter.getName() + "'", parameter.getName());
                         
                         // if parameter is function, we need to produce links to its parameters
-                        if (parameter.getModel() instanceof Method) {
-                            writeParameterLinksIfRequired((Method) parameter.getModel(), false, decl.getName() + "-");
+                        if (parameter.getModel() instanceof Function) {
+                            writeParameterLinksIfRequired((Function) parameter.getModel(), false, decl.getName() + "-");
                         }
                         
                         if (!isEmpty(parameterDocData.defaultValue)) {

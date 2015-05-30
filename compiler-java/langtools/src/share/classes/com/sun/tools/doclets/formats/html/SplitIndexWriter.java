@@ -105,7 +105,7 @@ public class SplitIndexWriter extends AbstractIndexWriter {
 
     /**
      * Generate the contents of each index file, with Header, Footer,
-     * Member Field, Method and Constructor Description.
+     * Member Field, Function and Constructor Description.
      *
      * @param unicode Unicode character referring to the character for the
      * index.

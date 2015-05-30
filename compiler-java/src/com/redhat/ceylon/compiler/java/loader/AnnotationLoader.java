@@ -52,7 +52,7 @@ import com.redhat.ceylon.model.loader.model.AnnotationProxyClass;
 import com.redhat.ceylon.model.loader.model.AnnotationProxyMethod;
 import com.redhat.ceylon.model.loader.model.LazyMethod;
 import com.redhat.ceylon.model.typechecker.model.Class;
-import com.redhat.ceylon.model.typechecker.model.Method;
+import com.redhat.ceylon.model.typechecker.model.Function;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.Type;
@@ -179,7 +179,7 @@ public class AnnotationLoader {
         ClassMirror annotationClassMirror = annotationType.getDeclaredClass();
         Module module = modelLoader.findModuleForClassMirror(annotationClassMirror);
         if (annotationClassMirror.getAnnotation(AbstractModelLoader.CEYLON_METHOD_ANNOTATION) != null) {
-            ai.setPrimary((Method)modelLoader.convertToDeclaration(module, annotationClassMirror, DeclarationType.VALUE));
+            ai.setPrimary((Function)modelLoader.convertToDeclaration(module, annotationClassMirror, DeclarationType.VALUE));
         } else {
             ai.setPrimary((Class)modelLoader.convertToDeclaration(module, annotationClassMirror, DeclarationType.TYPE));
         }

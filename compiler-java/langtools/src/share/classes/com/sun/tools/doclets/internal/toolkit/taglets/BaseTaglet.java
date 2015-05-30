@@ -131,7 +131,7 @@ public abstract class BaseTaglet implements Taglet {
      * @throws IllegalArgumentException thrown when the method is not supported by the taglet.
      */
     public TagletOutput getTagletOutput(Tag tag, TagletWriter writer) {
-        throw new IllegalArgumentException("Method not supported in taglet " + getName() + ".");
+        throw new IllegalArgumentException("Function not supported in taglet " + getName() + ".");
     }
 
     /**
@@ -139,6 +139,6 @@ public abstract class BaseTaglet implements Taglet {
      * @throws IllegalArgumentException thrown when the method is not supported by the taglet.
      */
     public TagletOutput getTagletOutput(Doc holder, TagletWriter writer) {
-        throw new IllegalArgumentException("Method not supported in taglet " + getName() + ".");
+        throw new IllegalArgumentException("Function not supported in taglet " + getName() + ".");
     }
 }

@@ -21,7 +21,7 @@
 package com.redhat.ceylon.compiler.java.codegen;
 
 import com.redhat.ceylon.compiler.java.codegen.recovery.HasErrorException;
-import com.redhat.ceylon.model.typechecker.model.MethodOrValue;
+import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
 import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.TypedReference;
 import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
@@ -107,7 +107,7 @@ public class AttributeDefinitionBuilder {
         if (!CodegenUtil.isUnBoxed(nonWideningTypedRef.getDeclaration())) {
             typeFlags |= AbstractTransformer.JT_NO_PRIMITIVES;
         }
-        this.isHash = CodegenUtil.isHashAttribute((MethodOrValue) attrType);
+        this.isHash = CodegenUtil.isHashAttribute((FunctionOrValue) attrType);
         this.attrTypedDecl = attrType;
         this.owner = owner;
         this.javaClassName = javaClassName;

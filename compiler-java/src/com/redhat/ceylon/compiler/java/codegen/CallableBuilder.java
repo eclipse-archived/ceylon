@@ -39,8 +39,8 @@ import com.redhat.ceylon.model.typechecker.model.Constructor;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Functional;
 import com.redhat.ceylon.model.typechecker.model.Interface;
-import com.redhat.ceylon.model.typechecker.model.Method;
-import com.redhat.ceylon.model.typechecker.model.MethodOrValue;
+import com.redhat.ceylon.model.typechecker.model.Function;
+import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.ParameterList;
 import com.redhat.ceylon.model.typechecker.model.Reference;
@@ -285,14 +285,14 @@ public class CallableBuilder {
         }
         CallBuilder callBuilder = CallBuilder.instance(gen);
         Type accessType = gen.getParameterTypeOfCallable(typeModel, 0);
-        if (methodClassOrCtor instanceof Method) {
-            callBuilder.invoke(gen.naming.makeQualifiedName(target, (Method)methodClassOrCtor, Naming.NA_MEMBER));
+        if (methodClassOrCtor instanceof Function) {
+            callBuilder.invoke(gen.naming.makeQualifiedName(target, (Function)methodClassOrCtor, Naming.NA_MEMBER));
             if (!((TypedDeclaration)methodClassOrCtor).isShared()) {
                 accessType = Decl.getPrivateAccessType(qmte);
             }
-        } else if (methodClassOrCtor instanceof Method
-                && ((Method)methodClassOrCtor).isParameter()) {
-            callBuilder.invoke(gen.naming.makeQualifiedName(target, (Method)methodClassOrCtor, Naming.NA_MEMBER));
+        } else if (methodClassOrCtor instanceof Function
+                && ((Function)methodClassOrCtor).isParameter()) {
+            callBuilder.invoke(gen.naming.makeQualifiedName(target, (Function)methodClassOrCtor, Naming.NA_MEMBER));
         } else if (methodClassOrCtor instanceof Class) {
             Class cls = (Class)methodClassOrCtor;
             if (Strategy.generateInstantiator(cls)) {
@@ -360,7 +360,7 @@ public class CallableBuilder {
             }
         }
         JCExpression innerInvocation = callBuilder.build();
-        // Need to worry about boxing for Method and FunctionalParameter 
+        // Need to worry about boxing for Function and FunctionalParameter 
         if (methodClassOrCtor instanceof TypedDeclaration) {
             // use the method return type since the function is actually applied
             Type returnType = gen.getReturnTypeOfCallable(type);
@@ -410,8 +410,8 @@ public class CallableBuilder {
         }
         @Override
         public JCExpression makeDefaultValueMethod(AbstractTransformer gen, Parameter defaultedParam, List<JCExpression> defaultMethodArgs) {
-            if (methodOrClass instanceof Method
-                    && ((Method)methodOrClass).isParameter()) {
+            if (methodOrClass instanceof Function
+                    && ((Function)methodOrClass).isParameter()) {
                 // We can't generate a call to the dpm because there isn't one!
                 // But since FunctionalParameters cannot currently have 
                 // defaulted parameters this *must* be a variadic parameter
@@ -443,7 +443,7 @@ public class CallableBuilder {
         JCExpression innerInvocation = gen.expressionGen().makeJavaStaticInvocation(gen,
                 methodOrClass, producedReference, parameterList);
         
-        // Need to worry about boxing for Method and FunctionalParameter 
+        // Need to worry about boxing for Function and FunctionalParameter 
         if (methodOrClass instanceof TypedDeclaration) {
             innerInvocation = gen.expressionGen().applyErasureAndBoxing(innerInvocation, 
                     methodOrClass.getType(),
@@ -528,7 +528,7 @@ public class CallableBuilder {
     public static CallableBuilder anonymous(
             CeylonTransformer gen,
             Node node,
-            MethodOrValue model,
+            FunctionOrValue model,
             Tree.Expression expr,  
             java.util.List<Tree.ParameterList> parameterListTree, 
             Type callableTypeModel, boolean delegateDefaultedCalls) {
@@ -543,7 +543,7 @@ public class CallableBuilder {
     public static CallableBuilder methodArgument(
             CeylonTransformer gen,
             Node node,
-            Method model,
+            Function model,
             Type callableTypeModel,
             java.util.List<Tree.ParameterList> parameterListTree, 
             List<JCStatement> stmts) {
@@ -569,7 +569,7 @@ public class CallableBuilder {
     private static CallableBuilder methodArgument(
             CeylonTransformer gen,
             Node node,
-            MethodOrValue model,
+            FunctionOrValue model,
             Type callableTypeModel,
             java.util.List<Tree.ParameterList> parameterListTree, 
             List<JCStatement> stmts, boolean delegateDefaultedCalls) {
@@ -923,7 +923,7 @@ public class CallableBuilder {
             if (forwardCallTo instanceof Tree.MemberOrTypeExpression) {
                 target = ((Tree.MemberOrTypeExpression)forwardCallTo).getTarget();
             } else if (forwardCallTo instanceof Tree.FunctionArgument) {
-                Method method = ((Tree.FunctionArgument) forwardCallTo).getDeclarationModel();
+                Function method = ((Tree.FunctionArgument) forwardCallTo).getDeclarationModel();
                 target = method.getProducedReference(null, Collections.<Type>emptyList());
             } else {
                 throw new RuntimeException(forwardCallTo.getNodeType());
@@ -1549,10 +1549,10 @@ public class CallableBuilder {
         // get them from our declaration
         for(Parameter p : paramLists.getParameters()){
             Type pt;
-            MethodOrValue pm = p.getModel();
-            if(pm instanceof Method
-                    && ((Method)pm).isParameter())
-                pt = gen.getTypeForFunctionalParameter((Method) pm);
+            FunctionOrValue pm = p.getModel();
+            if(pm instanceof Function
+                    && ((Function)pm).isParameter())
+                pt = gen.getTypeForFunctionalParameter((Function) pm);
             else
                 pt = p.getType();
             parameterTypes.add(pt);

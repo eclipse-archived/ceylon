@@ -40,8 +40,8 @@ import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Element;
 import com.redhat.ceylon.model.typechecker.model.Functional;
 import com.redhat.ceylon.model.typechecker.model.Interface;
-import com.redhat.ceylon.model.typechecker.model.Method;
-import com.redhat.ceylon.model.typechecker.model.MethodOrValue;
+import com.redhat.ceylon.model.typechecker.model.Function;
+import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
 import com.redhat.ceylon.model.typechecker.model.ModelUtil;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.NamedArgumentList;
@@ -153,8 +153,8 @@ public class Decl {
     }
     
     public static boolean isMethodOrSharedOrCapturedParam(Declaration decl) {
-        return decl instanceof Method 
-                    && (!((Method)decl).isParameter() || decl.isShared() || decl.isCaptured());
+        return decl instanceof Function 
+                    && (!((Function)decl).isParameter() || decl.isShared() || decl.isCaptured());
     }
 
     /**
@@ -199,7 +199,7 @@ public class Decl {
      * @return true if the declaration is within a method
      */
     public static boolean withinMethod(Declaration decl) {
-        return container(decl) instanceof Method;
+        return container(decl) instanceof Function;
     }
     
     /**
@@ -315,8 +315,8 @@ public class Decl {
     }
 
     public static boolean isTransient(Declaration decl) {
-        if (decl instanceof MethodOrValue) {
-            return ((MethodOrValue)decl).isTransient();
+        if (decl instanceof FunctionOrValue) {
+            return ((FunctionOrValue)decl).isTransient();
         } else {
             return false;
         }
@@ -380,7 +380,7 @@ public class Decl {
     }
     
     public static boolean isDeferred(Declaration decl) {
-        return (decl instanceof Method) && ((Method)decl).isDeferred();
+        return (decl instanceof Function) && ((Function)decl).isDeferred();
     }
     
     /**
@@ -451,7 +451,7 @@ public class Decl {
     public static boolean isAncestorLocal(Declaration decl) {
         Scope container = decl.getContainer();
         while (container != null) {
-            if (container instanceof MethodOrValue
+            if (container instanceof FunctionOrValue
                     || container instanceof ControlBlock
                     || container instanceof NamedArgumentList) {
                 return true;
@@ -625,7 +625,7 @@ public class Decl {
     
     public static boolean isAnnotationConstructor(Declaration def) {
         return def.isToplevel()
-                && def instanceof Method
+                && def instanceof Function
                 && containsAnnotationAnnotation(def);
     }
 
@@ -725,13 +725,13 @@ public class Decl {
     }
     
     public static boolean isParameter(Declaration decl) {
-        return decl instanceof MethodOrValue
-                && ((MethodOrValue)decl).isParameter();
+        return decl instanceof FunctionOrValue
+                && ((FunctionOrValue)decl).isParameter();
     }
     
     public static boolean isFunctionalParameter(Declaration decl) {
-        return decl instanceof Method
-                && ((Method)decl).isParameter();
+        return decl instanceof Function
+                && ((Function)decl).isParameter();
     }
     
     public static boolean isValueParameter(Declaration decl) {

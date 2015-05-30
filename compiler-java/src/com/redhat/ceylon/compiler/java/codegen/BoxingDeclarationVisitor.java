@@ -47,8 +47,8 @@ import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Functional;
-import com.redhat.ceylon.model.typechecker.model.Method;
-import com.redhat.ceylon.model.typechecker.model.MethodOrValue;
+import com.redhat.ceylon.model.typechecker.model.Function;
+import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
 import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.Setter;
 import com.redhat.ceylon.model.typechecker.model.TypeParameter;
@@ -72,7 +72,7 @@ public abstract class BoxingDeclarationVisitor extends Visitor {
      * class X() extends T(){ m = function() => e; } and we need to be able to map back the lambda with
      * the method it specifies, for boxing and all
      */
-    private Map<Method,Method> optimisedMethodSpecifiersToMethods = new HashMap<Method, Method>();
+    private Map<Function,Function> optimisedMethodSpecifiersToMethods = new HashMap<Function, Function>();
     
     // This is mostly just for testing purposes. Using -Dceylon.compiler.forceBoxedLocals=true
     // on the command line you can force all locals to be boxed (instead of the default unboxed)
@@ -96,7 +96,7 @@ public abstract class BoxingDeclarationVisitor extends Visitor {
         visitMethod(that.getDeclarationModel(), that);
     }
 
-    private void visitMethod(Method method, Node that) {
+    private void visitMethod(Function method, Node that) {
         boxMethod(method, that);
         rawTypedDeclaration(method);
         setErasureState(method);
@@ -106,7 +106,7 @@ public abstract class BoxingDeclarationVisitor extends Visitor {
     public void visit(FunctionalParameterDeclaration that) {
         if (Strategy.createMethod(that.getParameterModel())) {
             // Box the functional parameter as if it were a method
-            visitMethod((Method)that.getParameterModel().getModel(), that);
+            visitMethod((Function)that.getParameterModel().getModel(), that);
             // Visit the parameters of the functional parameter
             that.visitChildren(this);
         } else {
@@ -148,14 +148,14 @@ public abstract class BoxingDeclarationVisitor extends Visitor {
         }
     }
 
-    private void boxMethod(Method method, Node that) {
+    private void boxMethod(Function method, Node that) {
         // deal with invalid input
         if(method == null)
             return;
         Declaration refined = CodegenUtil.getTopmostRefinedDeclaration(method, optimisedMethodSpecifiersToMethods);
         // deal with invalid input
         if(refined == null
-                || (!(refined instanceof Method)))
+                || (!(refined instanceof Function)))
             return;
         TypedDeclaration refinedMethod = (TypedDeclaration)refined;
         if (method.getName() != null) {
@@ -175,11 +175,11 @@ public abstract class BoxingDeclarationVisitor extends Visitor {
         }
         // fetch the real refined declaration if required
         if (Decl.equal(declaration, refinedDeclaration)
-                && declaration instanceof MethodOrValue
-                && ((MethodOrValue)declaration).isParameter()
+                && declaration instanceof FunctionOrValue
+                && ((FunctionOrValue)declaration).isParameter()
                 && declaration.getContainer() instanceof Class){
             // maybe it is really inherited from a field?
-            MethodOrValue methodOrValueForParam = (MethodOrValue)declaration;
+            FunctionOrValue methodOrValueForParam = (FunctionOrValue)declaration;
             if(methodOrValueForParam != null){
                 // make sure we get the refined version of that member
                 refinedDeclaration = (TypedDeclaration) methodOrValueForParam.getRefinedDeclaration();
@@ -196,9 +196,9 @@ public abstract class BoxingDeclarationVisitor extends Visitor {
             return;
         
         // functional parameter return values are always boxed if we're not creating a method for them
-        if(declaration instanceof Method 
-                && ((Method)declaration).isParameter()
-                && !JvmBackendUtil.createMethod((Method)declaration)){
+        if(declaration instanceof Function 
+                && ((Function)declaration).isParameter()
+                && !JvmBackendUtil.createMethod((Function)declaration)){
             declaration.setUnboxed(false);
             return;
         }
@@ -209,9 +209,9 @@ public abstract class BoxingDeclarationVisitor extends Visitor {
                 setBoxingState(refinedDeclaration, refinedDeclaration, that);
             // inherit
             declaration.setUnboxed(refinedDeclaration.getUnboxed());
-        } else if (declaration instanceof Method
+        } else if (declaration instanceof Function
                 && CodegenUtil.isVoid(declaration.getType())
-                && Strategy.useBoxedVoid((Method)declaration)
+                && Strategy.useBoxedVoid((Function)declaration)
                 && !(refinedDeclaration.getTypeDeclaration() instanceof TypeParameter)
                 && !CodegenUtil.isContainerFunctionalParameter(refinedDeclaration)
                 && !(refinedDeclaration instanceof Functional && Decl.isMpl((Functional)refinedDeclaration))){
@@ -224,8 +224,8 @@ public abstract class BoxingDeclarationVisitor extends Visitor {
             declaration.setUnboxed(unbox);
         } else if (Decl.isValueParameter(declaration)
                 && CodegenUtil.isContainerFunctionalParameter(declaration)
-                && JvmBackendUtil.createMethod((MethodOrValue)declaration.getContainer())) {
-            Method functionalParameter = (Method)declaration.getContainer();
+                && JvmBackendUtil.createMethod((FunctionOrValue)declaration.getContainer())) {
+            Function functionalParameter = (Function)declaration.getContainer();
             TypedDeclaration refinedFrom = (TypedDeclaration)CodegenUtil.getTopmostRefinedDeclaration(functionalParameter, optimisedMethodSpecifiersToMethods);
             if (Decl.equal(refinedFrom, functionalParameter) ) {
                 // Don't consider Anything to be unboxed, since this is a parameter
@@ -350,16 +350,16 @@ public abstract class BoxingDeclarationVisitor extends Visitor {
     @Override
     public void visit(SpecifierStatement that) {
         TypedDeclaration declaration = that.getDeclaration();
-        Method optimisedDeclaration = null;
+        Function optimisedDeclaration = null;
         // make sure we detect the shortcut refinement inlining cases
-        if(declaration instanceof Method){
+        if(declaration instanceof Function){
             if(that.getSpecifierExpression() != null
                     && that.getSpecifierExpression() instanceof LazySpecifierExpression == false){
                 Tree.Term term = Decl.unwrapExpressionsUntilTerm(that.getSpecifierExpression().getExpression());
                 if(term != null
                         && term instanceof Tree.FunctionArgument){
                     optimisedDeclaration = ((Tree.FunctionArgument)term).getDeclarationModel();
-                    this.optimisedMethodSpecifiersToMethods.put(optimisedDeclaration, (Method) declaration);
+                    this.optimisedMethodSpecifiersToMethods.put(optimisedDeclaration, (Function) declaration);
                 }
             }
         }
@@ -371,8 +371,8 @@ public abstract class BoxingDeclarationVisitor extends Visitor {
         }
         if(declaration == null)
             return;
-        if(declaration instanceof Method){
-            visitMethod((Method) declaration, that);
+        if(declaration instanceof Function){
+            visitMethod((Function) declaration, that);
         }else if(declaration instanceof Value)
             visitAttributeOrParameter(declaration, that);
     }

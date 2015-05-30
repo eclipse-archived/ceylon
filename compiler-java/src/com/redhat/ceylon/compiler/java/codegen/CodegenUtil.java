@@ -35,8 +35,8 @@ import com.redhat.ceylon.model.loader.NamingBase.Unfix;
 import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Interface;
-import com.redhat.ceylon.model.typechecker.model.Method;
-import com.redhat.ceylon.model.typechecker.model.MethodOrValue;
+import com.redhat.ceylon.model.typechecker.model.Function;
+import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
 import com.redhat.ceylon.model.typechecker.model.Package;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.Type;
@@ -240,7 +240,7 @@ public class CodegenUtil {
         return JvmBackendUtil.getTopmostRefinedDeclaration(decl);
     }
 
-    static Declaration getTopmostRefinedDeclaration(Declaration decl, Map<Method, Method> methodOverrides){
+    static Declaration getTopmostRefinedDeclaration(Declaration decl, Map<Function, Function> methodOverrides){
         return JvmBackendUtil.getTopmostRefinedDeclaration(decl, methodOverrides);
     }
     
@@ -257,7 +257,7 @@ public class CodegenUtil {
         return JvmBackendUtil.findParamForDecl(attrName, decl);
     }
     
-    static MethodOrValue findMethodOrValueForParam(Parameter param) {
+    static FunctionOrValue findMethodOrValueForParam(Parameter param) {
         return param.getModel();
     }
 
@@ -267,21 +267,21 @@ public class CodegenUtil {
     }
 
 
-    public static boolean canOptimiseMethodSpecifier(Term expression, Method m) {
+    public static boolean canOptimiseMethodSpecifier(Term expression, Function m) {
         if(expression instanceof Tree.FunctionArgument)
             return true;
         if(expression instanceof Tree.BaseMemberOrTypeExpression == false)
             return false;
         Declaration declaration = ((Tree.BaseMemberOrTypeExpression)expression).getDeclaration();
         // methods are fine because they are constant
-        if(declaration instanceof Method)
+        if(declaration instanceof Function)
             return true;
         // toplevel constructors are fine
         if(declaration instanceof Class)
             return true;
         // parameters are constant too
-        if(declaration instanceof MethodOrValue
-                && ((MethodOrValue)declaration).isParameter())
+        if(declaration instanceof FunctionOrValue
+                && ((FunctionOrValue)declaration).isParameter())
             return true;
         // the rest we can't know: we can't trust attributes that could be getters or overridden
         // we can't trust even toplevel attributes that could be made variable in the future because of
@@ -293,7 +293,7 @@ public class CodegenUtil {
         return parameter.getDeclaration();
     }
     
-    public static Declaration getParameterized(MethodOrValue methodOrValue) {
+    public static Declaration getParameterized(FunctionOrValue methodOrValue) {
         return JvmBackendUtil.getParameterized(methodOrValue);
     }
     
@@ -307,8 +307,8 @@ public class CodegenUtil {
         } else {
             throw BugException.unhandledCase(containerScope);
         }
-        return containerDeclaration instanceof Method
-                && ((Method)containerDeclaration).isParameter();
+        return containerDeclaration instanceof Function
+                && ((Function)containerDeclaration).isParameter();
     }
     
     public static boolean isMemberReferenceInvocation(Tree.InvocationExpression expr) {

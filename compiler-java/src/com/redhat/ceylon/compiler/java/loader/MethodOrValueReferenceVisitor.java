@@ -17,8 +17,8 @@ import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.model.typechecker.model.Constructor;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Functional;
-import com.redhat.ceylon.model.typechecker.model.Method;
-import com.redhat.ceylon.model.typechecker.model.MethodOrValue;
+import com.redhat.ceylon.model.typechecker.model.Function;
+import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
 import com.redhat.ceylon.model.typechecker.model.Scope;
 import com.redhat.ceylon.model.typechecker.model.Setter;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
@@ -90,19 +90,19 @@ public class MethodOrValueReferenceVisitor extends Visitor {
                     // list does not capture a parameter
                     boolean sameScope = d.getContainer().equals(that.getScope());
                     if (!sameScope || methodSpecifier || inLazySpecifierExpression) {
-                        ((MethodOrValue)d).setCaptured(true);
+                        ((FunctionOrValue)d).setCaptured(true);
                     }
                     
                     // Accessing another instance's member passed to a class initializer
                     if (that instanceof Tree.QualifiedMemberExpression) {
                         if (decl instanceof TypedDeclaration
                                 && ((TypedDeclaration)decl).getOtherInstanceAccess()) {
-                            ((MethodOrValue)d).setCaptured(true);
+                            ((FunctionOrValue)d).setCaptured(true);
                         }
                     }
                     
                     if (isCapturableMplParameter(d)) {
-                        ((MethodOrValue)d).setCaptured(true);
+                        ((FunctionOrValue)d).setCaptured(true);
                     }
                 } else if (Decl.isValue(d) || Decl.isGetter(decl)) {
                     Value v = (Value) d;
@@ -114,8 +114,8 @@ public class MethodOrValueReferenceVisitor extends Visitor {
                         v.getSetter().setCaptured(true);
                     }
                 }
-                else if (d instanceof Method) {
-                    ((Method) d).setCaptured(true);
+                else if (d instanceof Function) {
+                    ((Function) d).setCaptured(true);
                 }
                 
                 /*if (d.isVariable() && !d.isClassMember() && !d.isToplevel()) {
@@ -146,10 +146,10 @@ public class MethodOrValueReferenceVisitor extends Visitor {
      * it should be captured.
      */
     private boolean isCapturableMplParameter(Declaration d) {
-        if (!(d instanceof MethodOrValue)) {
+        if (!(d instanceof FunctionOrValue)) {
             return false;
         }
-        com.redhat.ceylon.model.typechecker.model.Parameter param = ((MethodOrValue)d).getInitializerParameter();
+        com.redhat.ceylon.model.typechecker.model.Parameter param = ((FunctionOrValue)d).getInitializerParameter();
         if (param == null) {
             return false;
         }
@@ -266,7 +266,7 @@ public class MethodOrValueReferenceVisitor extends Visitor {
             // for being part of the initializer. This is because
             // uncaptured method *declarations* can and will be
             // made local to the class initializer, but if the only
-            // thing you've got is a Method you can't know the
+            // thing you've got is a Function you can't know the
             // difference between a definition and a declaration,
             // that's why we set the captured flag here.
             that.getDeclarationModel().setCaptured(true);

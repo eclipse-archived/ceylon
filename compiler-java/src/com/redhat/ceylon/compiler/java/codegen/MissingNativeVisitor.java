@@ -13,7 +13,7 @@ import com.redhat.ceylon.model.loader.AbstractModelLoader;
 import com.redhat.ceylon.model.loader.mirror.ClassMirror;
 import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
-import com.redhat.ceylon.model.typechecker.model.Method;
+import com.redhat.ceylon.model.typechecker.model.Function;
 import com.redhat.ceylon.model.typechecker.model.Package;
 import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.Setter;
@@ -124,7 +124,7 @@ public class MissingNativeVisitor extends Visitor {
         }
         
         boolean ok = true;
-        if (model instanceof Method || model instanceof ClassOrInterface || model instanceof Value) {
+        if (model instanceof Function || model instanceof ClassOrInterface || model instanceof Value) {
             Declaration m = pkg.getDirectMember(model.getName(), null, false);
             if (m != null) {
                 if (!m.isNative() || !nodeIsDecl) {

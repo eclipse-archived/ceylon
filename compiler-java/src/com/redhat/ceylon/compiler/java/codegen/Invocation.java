@@ -52,7 +52,7 @@ import com.redhat.ceylon.model.typechecker.model.Constructor;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Functional;
 import com.redhat.ceylon.model.typechecker.model.Interface;
-import com.redhat.ceylon.model.typechecker.model.Method;
+import com.redhat.ceylon.model.typechecker.model.Function;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.ParameterList;
 import com.redhat.ceylon.model.typechecker.model.Reference;
@@ -218,9 +218,9 @@ abstract class Invocation {
             
         if (Decl.isJavaStaticPrimary(getPrimary())) {
             Declaration methodOrClass = ((Tree.QualifiedMemberOrTypeExpression)getPrimary()).getDeclaration();
-            if (methodOrClass instanceof Method) {
+            if (methodOrClass instanceof Function) {
                 return new TransformedInvocationPrimary(gen.naming.makeName(
-                        (Method)methodOrClass, Naming.NA_FQ | Naming.NA_WRAPPER_UNQUOTED), 
+                        (Function)methodOrClass, Naming.NA_FQ | Naming.NA_WRAPPER_UNQUOTED), 
                         null);
             } else if (methodOrClass instanceof Class) {
                 return new TransformedInvocationPrimary(
@@ -304,9 +304,9 @@ abstract class Invocation {
                     selector = Naming.getCallableMethodName();
                     this.callable = true;
                 }
-            } else if ((getPrimaryDeclaration() instanceof Method
-                            && ((Method)getPrimaryDeclaration()).isParameter()// i.e. functional parameter
-                            && (!JvmBackendUtil.createMethod((Method)getPrimaryDeclaration())) // not class member, or not shared/captured
+            } else if ((getPrimaryDeclaration() instanceof Function
+                            && ((Function)getPrimaryDeclaration()).isParameter()// i.e. functional parameter
+                            && (!JvmBackendUtil.createMethod((Function)getPrimaryDeclaration())) // not class member, or not shared/captured
                             // we may create a method, but if we're accessing it from a default parameter expression
                             // we need to access the Callable parameter, no the member method
                         || gen.expressionGen().isWithinDefaultParameterExpression(getPrimaryDeclaration().getContainer()))) {
@@ -457,8 +457,8 @@ abstract class SimpleInvocation extends Invocation {
     }
 
     protected boolean isJavaMethod() {
-        if(getPrimaryDeclaration() instanceof Method) {
-            return gen.isJavaMethod((Method) getPrimaryDeclaration());
+        if(getPrimaryDeclaration() instanceof Function) {
+            return gen.isJavaMethod((Function) getPrimaryDeclaration());
         } else if (getPrimaryDeclaration() instanceof Class) {
             return gen.isJavaCtor((Class) getPrimaryDeclaration());
         }
@@ -1068,12 +1068,12 @@ class CallableInvocation extends DirectInvocation {
  */
 class MethodReferenceSpecifierInvocation extends DirectInvocation {
     
-    private final Method method;
+    private final Function method;
 
     public MethodReferenceSpecifierInvocation(
             AbstractTransformer gen, Tree.Primary primary,
             Declaration primaryDeclaration,
-            Reference producedReference, Method method, Tree.SpecifierExpression node) {
+            Reference producedReference, Function method, Tree.SpecifierExpression node) {
         super(gen, primary, primaryDeclaration, producedReference, method.getType(), node);
         this.method = method;
         setUnboxed(primary.getUnboxed());
@@ -1138,12 +1138,12 @@ class MethodReferenceSpecifierInvocation extends DirectInvocation {
  */
 class CallableSpecifierInvocation extends Invocation {
     
-    private final Method method;
+    private final Function method;
     private final JCExpression callable;
     private final Term callableTerm;
     public CallableSpecifierInvocation(
             AbstractTransformer gen, 
-            Method method,
+            Function method,
             JCExpression callableExpr,
             Tree.Term callableTerm,
             Node node) {
@@ -1168,7 +1168,7 @@ class CallableSpecifierInvocation extends Invocation {
         return callable;
     }
 
-    Method getMethod() {
+    Function getMethod() {
         return method;
     }
 
@@ -1428,7 +1428,7 @@ class NamedArgumentInvocation extends Invocation {
     private void bindMethodArgument(Tree.MethodArgument methodArg,
             Parameter declaredParam, Naming.SyntheticName argName) {
         ListBuffer<JCStatement> statements;
-        Method model = methodArg.getDeclarationModel();
+        Function model = methodArg.getDeclarationModel();
         List<JCStatement> body;
         boolean prevNoExpressionlessReturn = gen.statementGen().noExpressionlessReturn;
         boolean prevSyntheticClassBody = gen.expressionGen().withinSyntheticClassBody(Decl.isMpl(model) || gen.expressionGen().isWithinSyntheticClassBody()); 
@@ -1574,7 +1574,7 @@ class NamedArgumentInvocation extends Invocation {
                     }else if(getQmePrimary() != null 
                              && gen.isJavaArray(getQmePrimary().getTypeModel())){
                         // we support array methods with optional parameters
-                        if(getPrimaryDeclaration() instanceof Method
+                        if(getPrimaryDeclaration() instanceof Function
                                 && getPrimaryDeclaration().getName().equals("copyTo")){
                             if(param.getName().equals("sourcePosition")
                                     || param.getName().equals("destinationPosition")){

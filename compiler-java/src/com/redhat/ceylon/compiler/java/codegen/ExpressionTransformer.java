@@ -61,8 +61,8 @@ import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Functional;
 import com.redhat.ceylon.model.typechecker.model.Generic;
 import com.redhat.ceylon.model.typechecker.model.Interface;
-import com.redhat.ceylon.model.typechecker.model.Method;
-import com.redhat.ceylon.model.typechecker.model.MethodOrValue;
+import com.redhat.ceylon.model.typechecker.model.Function;
+import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.Package;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
@@ -343,7 +343,7 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
     
     JCExpression transform(Tree.FunctionArgument functionArg, Type expectedType) {
-        Method model = functionArg.getDeclarationModel();
+        Function model = functionArg.getDeclarationModel();
         List<JCStatement> body;
         boolean prevNoExpressionlessReturn = statementGen().noExpressionlessReturn;
         boolean prevSyntheticClassBody = expressionGen().withinSyntheticClassBody(true);
@@ -1159,7 +1159,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             JCExpression reifiedContainerExpr = makeReifiedTypeArgument(containerType);
             
             // make a raw call and cast
-            if(declaration instanceof Method){
+            if(declaration instanceof Function){
                 // we need to get types for each type argument
                 JCExpression closedTypesExpr = null;
                 if(expr.getTypeArgumentList() != null) {
@@ -1229,7 +1229,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             memberClassName = "ClassDeclaration";
         else if(declaration instanceof Interface)
             memberClassName = "InterfaceDeclaration";
-        else if(declaration instanceof Method)
+        else if(declaration instanceof Function)
             memberClassName = "FunctionDeclaration";
         else if(declaration instanceof Value){
             memberClassName = "ValueDeclaration";
@@ -2735,9 +2735,9 @@ public class ExpressionTransformer extends AbstractTransformer {
             if (param instanceof Tree.FunctionalParameterDeclaration) {
                 Tree.FunctionalParameterDeclaration fpTree = (Tree.FunctionalParameterDeclaration) param;
                 Tree.SpecifierExpression lazy = (Tree.SpecifierExpression)spec;
-                Method fp = (Method)fpTree.getParameterModel().getModel();
+                Function fp = (Function)fpTree.getParameterModel().getModel();
                 
-                expr = CallableBuilder.anonymous(gen(), param, (Method)fpTree.getTypedDeclaration().getDeclarationModel(), lazy.getExpression(), 
+                expr = CallableBuilder.anonymous(gen(), param, (Function)fpTree.getTypedDeclaration().getDeclarationModel(), lazy.getExpression(), 
                         ((Tree.MethodDeclaration)fpTree.getTypedDeclaration()).getParameterLists(),
                         getTypeForFunctionalParameter(fp),
                         true).build();
@@ -3797,8 +3797,8 @@ public class ExpressionTransformer extends AbstractTransformer {
         boolean prevSyntheticClassBody = withinSyntheticClassBody(true);
         try {
             if (member.isStaticallyImportable()) {
-                if (member instanceof Method) {
-                    Method method = (Method)member;
+                if (member instanceof Function) {
+                    Function method = (Function)member;
                     Reference producedReference = method.getProducedReference(qualifyingType, typeArguments.getTypeModels());
                     return CallableBuilder.javaStaticMethodReference(
                             gen(), 
@@ -3822,8 +3822,8 @@ public class ExpressionTransformer extends AbstractTransformer {
                             producedReference).build();
                 }
             } 
-            if (member instanceof Method) {
-                Method method = (Method)member;
+            if (member instanceof Function) {
+                Function method = (Function)member;
                 if (!method.isParameter()) {
                     Reference producedReference = method.getProducedReference(qualifyingType, typeArguments.getTypeModels());
                     return CallableBuilder.unboundFunctionalMemberReference(
@@ -4154,8 +4154,8 @@ public class ExpressionTransformer extends AbstractTransformer {
                     member, 
                     Naming.NA_GETTER | Naming.NA_MEMBER));
             return utilInvocation().checkNull(callBuilder.build());
-        } else if (decl instanceof Method) {
-            Method method = (Method)decl;
+        } else if (decl instanceof Function) {
+            Function method = (Function)decl;
             final ParameterList parameterList = method.getParameterLists().get(0);
             Type qualifyingType = qmte.getPrimary().getTypeModel();
             Tree.TypeArguments typeArguments = qmte.getTypeArguments();
@@ -4178,9 +4178,9 @@ public class ExpressionTransformer extends AbstractTransformer {
             Reference producedReference,
             final ParameterList parameterList) {
         CallBuilder callBuilder = CallBuilder.instance(gen);
-        if (methodOrClass instanceof Method) {
+        if (methodOrClass instanceof Function) {
             callBuilder.invoke(gen.naming.makeName(
-                    (Method)methodOrClass, Naming.NA_FQ | Naming.NA_WRAPPER_UNQUOTED));
+                    (Function)methodOrClass, Naming.NA_FQ | Naming.NA_WRAPPER_UNQUOTED));
         } else if (methodOrClass instanceof Class) {
             callBuilder.instantiate(
                     gen.makeJavaType(((Class)methodOrClass).getType(), JT_RAW | JT_NO_PRIMITIVES));
@@ -4408,8 +4408,8 @@ public class ExpressionTransformer extends AbstractTransformer {
         boolean mustUseParameter = false;
         if (decl instanceof Functional
                 && (!(decl instanceof Class) || ((Class)decl).getParameterList() != null)
-                && (!(decl instanceof Method) || !decl.isParameter() 
-                        || functionalParameterRequiresCallable((Method)decl, expr)) 
+                && (!(decl instanceof Function) || !decl.isParameter() 
+                        || functionalParameterRequiresCallable((Function)decl, expr)) 
                 && isFunctionalResult(expr.getTypeModel())) {
             result = transformFunctional(expr, (Functional)decl);
         } else if (Decl.isGetter(decl)) {
@@ -4487,7 +4487,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                     && decl.isParameter()
                     && isWithinDefaultParameterExpression(decl.getContainer()));
             if (!decl.isParameter()
-                    && (Decl.isLocalNotInitializer(decl) || (Decl.isLocalToInitializer(decl) && ((Method)decl).isDeferred()))) {
+                    && (Decl.isLocalNotInitializer(decl) || (Decl.isLocalToInitializer(decl) && ((Function)decl).isDeferred()))) {
                 primaryExpr = null;
                 int flags = Naming.NA_MEMBER;
                 if (!isRecursiveReference(expr)) {
@@ -4498,21 +4498,21 @@ public class ExpressionTransformer extends AbstractTransformer {
                     // always qualify it with this
                     flags |= Naming.NA_WRAPPER | Naming.NA_WRAPPER_WITH_THIS;
                 }
-                qualExpr = naming.makeName((Method)decl, flags);
+                qualExpr = naming.makeName((Function)decl, flags);
                 selector = null;
             } else if (decl.isToplevel()) {
                 primaryExpr = null;
-                qualExpr = naming.makeName((Method)decl, Naming.NA_FQ | Naming.NA_WRAPPER | Naming.NA_MEMBER);
+                qualExpr = naming.makeName((Function)decl, Naming.NA_FQ | Naming.NA_WRAPPER | Naming.NA_MEMBER);
                 selector = null;
             } else if (!isWithinInvocation()) {
                 selector = null;
             } else {
                 // not toplevel, not within method, must be a class member
-                selector = naming.selector((Method)decl);
+                selector = naming.selector((Function)decl);
             }
         }
         if (result == null) {
-            boolean useGetter = !(decl instanceof Method || decl instanceof Constructor) && !mustUseField && !mustUseParameter;
+            boolean useGetter = !(decl instanceof Function || decl instanceof Constructor) && !mustUseField && !mustUseParameter;
             if (qualExpr == null && selector == null
                     && !(decl instanceof Constructor)) {
                 useGetter = Decl.isClassAttribute(decl) && CodegenUtil.isErasedAttribute(decl.getName());
@@ -4706,7 +4706,7 @@ public class ExpressionTransformer extends AbstractTransformer {
      * Determines whether we need to generate an AbstractCallable when taking 
      * a method reference to a method that's declared as a FunctionalParameter
      */
-    private boolean functionalParameterRequiresCallable(Method functionalParameter, Tree.StaticMemberOrTypeExpression expr) {
+    private boolean functionalParameterRequiresCallable(Function functionalParameter, Tree.StaticMemberOrTypeExpression expr) {
         if (!functionalParameter.isParameter()) {
             throw new BugException();
         }
@@ -5011,7 +5011,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             // instanceof Tree.ParameterizedExpression
             boxing = CodegenUtil.getBoxingStrategy(leftTerm);
             Tree.ParameterizedExpression paramExpr = (Tree.ParameterizedExpression)leftTerm;
-            MethodOrValue decl = (MethodOrValue) ((Tree.MemberOrTypeExpression)paramExpr.getPrimary()).getDeclaration();
+            FunctionOrValue decl = (FunctionOrValue) ((Tree.MemberOrTypeExpression)paramExpr.getPrimary()).getDeclaration();
             CallableBuilder callableBuilder = CallableBuilder.anonymous(
                     gen(),
                     paramExpr,
@@ -5019,7 +5019,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                     (Tree.Expression)rightTerm,
                     paramExpr.getParameterLists(),
                     paramExpr.getPrimary().getTypeModel(),
-                    decl instanceof Method ? !((Method)decl).isDeferred() : false);
+                    decl instanceof Function ? !((Function)decl).isDeferred() : false);
             rhs = callableBuilder.build();
         }
 
@@ -5107,7 +5107,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                     lhs = naming.makeTypeDeclarationExpression(null, (TypeDeclaration)decl.getContainer(), DeclNameFlag.QUALIFIED);
                 }
             }
-        } else if (decl instanceof Method && Decl.isDeferred(decl)) {
+        } else if (decl instanceof Function && Decl.isDeferred(decl)) {
             if (Decl.isLocal(decl)) {
                 // Deferred method initialization of a local function
                 // The Callable field has the same name as the method, so use NA_MEMBER
@@ -6241,7 +6241,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             sb.append("A").append(decl.getName());
         } else if (decl instanceof Value) {
             sb.append("V").append(decl.getName());
-        } else if (decl instanceof Method) {
+        } else if (decl instanceof Function) {
             sb.append("F").append(decl.getName());
         } else if (decl instanceof TypeParameter) {
             sb.append("P").append(decl.getName());

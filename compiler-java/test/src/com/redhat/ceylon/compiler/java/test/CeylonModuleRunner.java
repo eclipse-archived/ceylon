@@ -520,8 +520,8 @@ public class CeylonModuleRunner extends ParentRunner<Runner> {
                                 if (moduleName.isEmpty() || Decl.getModule(decl).getNameAsString().equals(moduleName)) {
                                     boolean added = false;
                                     if (testClassName != null || decl.isToplevel()) {
-                                        if (decl instanceof com.redhat.ceylon.model.typechecker.model.Method) {
-                                            com.redhat.ceylon.model.typechecker.model.Method method = (com.redhat.ceylon.model.typechecker.model.Method)decl;
+                                        if (decl instanceof com.redhat.ceylon.model.typechecker.model.Function) {
+                                            com.redhat.ceylon.model.typechecker.model.Function method = (com.redhat.ceylon.model.typechecker.model.Function)decl;
                                             String methodName = method.getName();
                                             if (method.getParameterLists().size() == 1
                                                     && method.getParameterLists().get(0).getParameters().size() == 0) {

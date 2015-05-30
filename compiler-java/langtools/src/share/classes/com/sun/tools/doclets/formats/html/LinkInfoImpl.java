@@ -158,12 +158,12 @@ public class LinkInfoImpl extends LinkInfo {
     public static final int CONTEXT_METHOD_DOC_COPY = 26;
 
     /**
-     * Method "specified by" link.
+     * Function "specified by" link.
      */
     public static final int CONTEXT_METHOD_SPECIFIED_BY = 27;
 
     /**
-     * Method "overrides" link.
+     * Function "overrides" link.
      */
     public static final int CONTEXT_METHOD_OVERRIDES = 28;
 

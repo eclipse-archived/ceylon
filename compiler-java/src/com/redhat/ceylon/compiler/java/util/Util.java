@@ -36,7 +36,7 @@ import com.redhat.ceylon.model.loader.mirror.AnnotatedMirror;
 import com.redhat.ceylon.model.loader.mirror.AnnotationMirror;
 import com.redhat.ceylon.model.loader.mirror.ClassMirror;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
-import com.redhat.ceylon.model.typechecker.model.Method;
+import com.redhat.ceylon.model.typechecker.model.Function;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.sun.tools.javac.code.Symbol.ClassSymbol;
 
@@ -140,7 +140,7 @@ public class Util {
      * (as opposed to a {@code Anything})
      */
     public static boolean isUnboxedVoid(Declaration decl) {
-        return (decl instanceof Method && ((Method)decl).isDeclaredVoid());
+        return (decl instanceof Function && ((Function)decl).isDeclaredVoid());
     }
 
     public static boolean isJavaSource(ClassSymbol classSymbol) {

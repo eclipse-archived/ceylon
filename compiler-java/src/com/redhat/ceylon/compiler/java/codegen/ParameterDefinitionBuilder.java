@@ -22,8 +22,8 @@ package com.redhat.ceylon.compiler.java.codegen;
 import java.util.Iterator;
 
 import com.redhat.ceylon.model.typechecker.model.Annotation;
-import com.redhat.ceylon.model.typechecker.model.Method;
-import com.redhat.ceylon.model.typechecker.model.MethodOrValue;
+import com.redhat.ceylon.model.typechecker.model.Function;
+import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.ParameterList;
 import com.redhat.ceylon.model.typechecker.model.Value;
@@ -63,7 +63,7 @@ public class ParameterDefinitionBuilder {
 
     private String functionalParameterName;
 
-    private MethodOrValue boxedVariable;
+    private FunctionOrValue boxedVariable;
 
     private ParameterDefinitionBuilder(AbstractTransformer gen, String name) {
         this.gen = gen;
@@ -97,20 +97,20 @@ public class ParameterDefinitionBuilder {
         if (isBoxedVariableParameter(parameter)) {
             pdb.boxedVariable = parameter.getModel();
         }
-        if (parameter.getModel() instanceof Method) {
-            pdb.functionalParameterName = functionalName((Method)parameter.getModel());
+        if (parameter.getModel() instanceof Function) {
+            pdb.functionalParameterName = functionalName((Function)parameter.getModel());
         }
         
         return pdb;
     }
 
-    private static String functionalName(Method model) {
+    private static String functionalName(Function model) {
         StringBuilder sb = new StringBuilder();
         functionalName(sb, model);
         return sb.toString();
     }
     
-    private static void functionalName(StringBuilder sb, Method model) {
+    private static void functionalName(StringBuilder sb, Function model) {
         if (model.isDeclaredVoid()) {
             sb.append('!');
         }
@@ -124,7 +124,7 @@ public class ParameterDefinitionBuilder {
         Iterator<Parameter> parameters = pl.getParameters().iterator();
         while (parameters.hasNext()) {
             Parameter p = parameters.next();
-            MethodOrValue pm = p.getModel();
+            FunctionOrValue pm = p.getModel();
             sb.append(pm.getName());
             if(p.isSequenced()) {
                 if (p.isAtLeastOne()) {
@@ -133,9 +133,9 @@ public class ParameterDefinitionBuilder {
                     sb.append('*');
                 }
             }
-            if (pm instanceof Method) {
-                Method meth = (Method)pm;
-                functionalName(sb, (Method)pm);
+            if (pm instanceof Function) {
+                Function meth = (Function)pm;
+                functionalName(sb, (Function)pm);
             }
             if (parameters.hasNext()) {
                 sb.append(',');

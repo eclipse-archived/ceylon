@@ -70,8 +70,8 @@ import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Functional;
 import com.redhat.ceylon.model.typechecker.model.Generic;
 import com.redhat.ceylon.model.typechecker.model.Interface;
-import com.redhat.ceylon.model.typechecker.model.Method;
-import com.redhat.ceylon.model.typechecker.model.MethodOrValue;
+import com.redhat.ceylon.model.typechecker.model.Function;
+import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.ModuleImport;
 import com.redhat.ceylon.model.typechecker.model.Package;
@@ -756,9 +756,9 @@ public abstract class AbstractTransformer implements Transformation {
 
     TypedReference getTypedReference(TypedDeclaration decl){
         java.util.List<Type> typeArgs = Collections.<Type>emptyList();
-        if (decl instanceof Method) {
+        if (decl instanceof Function) {
             // For methods create type arguments for any type parameters it might have
-            Method m = (Method)decl;
+            Function m = (Function)decl;
             if (!m.getTypeParameters().isEmpty()) {
                 typeArgs = new ArrayList<Type>(m.getTypeParameters().size());
                 for (TypeParameter p: m.getTypeParameters()) {
@@ -1085,7 +1085,7 @@ public abstract class AbstractTransformer implements Transformation {
             // we're collecting refined members, not the refining one
             if(!ignoreFirst){
                 TypedDeclaration found = (TypedDeclaration) decl.getDirectMember(name, signature, ellipsis);
-                if(found instanceof Method){
+                if(found instanceof Function){
                     // do not trust getDirectMember because if you ask it for [Integer,String] and it has [Integer,E] it does not
                     // know that E=String and will not make it match, and will just return any member when there is overloading,
                     // including one with signature [String] when you asked for [Integer,String]
@@ -1100,7 +1100,7 @@ public abstract class AbstractTransformer implements Transformation {
 
     private java.util.List<Type> getTypedSignature(Type currentType, TypedDeclaration found) {
         // check that its signature is compatible
-        java.util.List<ParameterList> parameterLists = ((Method) found).getParameterLists();
+        java.util.List<ParameterList> parameterLists = ((Function) found).getParameterLists();
         if(parameterLists == null || parameterLists.isEmpty())
             return null;
         // only consider first param list
@@ -1273,10 +1273,10 @@ public abstract class AbstractTransformer implements Transformation {
             // if the refined type is a method TypeParam, use the original decl that will be more correct,
             // since it may have changed name
             if(refinedType.getDeclaration() instanceof TypeParameter
-                    && refinedType.getDeclaration().getContainer() instanceof Method){
+                    && refinedType.getDeclaration().getContainer() instanceof Function){
                 // find its index in the refined declaration
                 TypeParameter refinedTypeParameter = (TypeParameter) refinedType.getDeclaration();
-                Method refinedMethod = (Method) refinedTypeParameter.getContainer();
+                Function refinedMethod = (Function) refinedTypeParameter.getContainer();
                 int i=0;
                 for(TypeParameter tp : refinedMethod.getTypeParameters()){
                     if(tp.getName().equals(refinedTypeParameter.getName()))
@@ -1287,9 +1287,9 @@ public abstract class AbstractTransformer implements Transformation {
                     throw new BugException("can't find type parameter "+refinedTypeParameter.getName()+" in its container "+refinedMethod.getName());
                 }
                 // the refining method type parameter should be at the same index
-                if(declaration.getDeclaration() instanceof Method == false)
+                if(declaration.getDeclaration() instanceof Function == false)
                     throw new BugException("refining declaration is not a method: "+declaration);
-                Method refiningMethod = (Method) declaration.getDeclaration();
+                Function refiningMethod = (Function) declaration.getDeclaration();
                 if(i >= refiningMethod.getTypeParameters().size()){
                     throw new BugException("refining method does not have enough type parameters to refine "+refinedMethod.getName());
                 }
@@ -1658,9 +1658,9 @@ public abstract class AbstractTransformer implements Transformation {
      * This function is used solely for method return types and parameters 
      */
     JCExpression makeJavaType(TypedDeclaration typeDecl, Type type, int flags) {
-        if (typeDecl instanceof Method
-                && ((Method)typeDecl).isParameter()) {
-            Method p = (Method)typeDecl;
+        if (typeDecl instanceof Function
+                && ((Function)typeDecl).isParameter()) {
+            Function p = (Function)typeDecl;
             Type pt = type;
             for (int ii = 1; ii < p.getParameterLists().size(); ii++) {
                 pt = typeFact().getCallableType(pt);
@@ -1928,8 +1928,8 @@ public abstract class AbstractTransformer implements Transformation {
                     && needsQualifyingTypeArgumentsFromLocalContainers
                     && typeDeclaration instanceof ClassOrInterface){
                 Declaration container = Decl.getDeclarationScope(typeDeclaration.getContainer());
-                while (container instanceof Method) {
-                    qType = ((Method)container).getReference();
+                while (container instanceof Function) {
+                    qType = ((Function)container).getReference();
                     if (qualifyingTypes == null) { 
                         qualifyingTypes = new java.util.ArrayList<Reference>();
                         qualifyingTypes.add(simpleType);
@@ -2075,17 +2075,17 @@ public abstract class AbstractTransformer implements Transformation {
             if(Decl.isLocal(declaration)){
                 Scope scope = declaration.getContainer();
                 // collect every container method until the next type or package
-                java.util.List<Method> methods = new LinkedList<Method>();
+                java.util.List<Function> methods = new LinkedList<Function>();
                 while(scope != null
                         && scope instanceof ClassOrInterface == false
                         && scope instanceof Package == false){
-                    if(scope instanceof Method){
-                        methods.add((Method) scope);
+                    if(scope instanceof Function){
+                        methods.add((Function) scope);
                     }
                     scope = scope.getContainer();
                 }
                 // methods are sorted inner to outer, which is the order we're following here for types
-                for(Method method : methods){
+                for(Function method : methods){
                     java.util.List<TypeParameter> methodTypeParameters = method.getTypeParameters();
                     if (methodTypeParameters != null) {
                         int index = 0;
@@ -2700,7 +2700,7 @@ public abstract class AbstractTransformer implements Transformation {
          * "what's the type of the java declaration of the given parameter", 
          * but using the ceylon type system to do so. 
          */
-        boolean functional = parameter.getModel() instanceof Method;
+        boolean functional = parameter.getModel() instanceof Function;
         if (producedReference == null) {
             return parameter.getType();
         }
@@ -2768,11 +2768,11 @@ public abstract class AbstractTransformer implements Transformation {
 
     private boolean isJavaVariadic(Parameter parameter) {
         return parameter.isSequenced()
-                && parameter.getDeclaration() instanceof Method
-                && isJavaMethod((Method) parameter.getDeclaration());
+                && parameter.getDeclaration() instanceof Function
+                && isJavaMethod((Function) parameter.getDeclaration());
     }
 
-    boolean isJavaMethod(Method method) {
+    boolean isJavaMethod(Function method) {
         ClassOrInterface container = Decl.getClassOrInterfaceContainer(method);
         return container != null && !Decl.isCeylon(container);
     }
@@ -2781,7 +2781,7 @@ public abstract class AbstractTransformer implements Transformation {
         return !Decl.isCeylon(cls);
     }
 
-    Type getTypeForFunctionalParameter(Method fp) {
+    Type getTypeForFunctionalParameter(Function fp) {
         return fp.getProducedTypedReference(null, java.util.Collections.<Type>emptyList()).getFullType();
     }
     
@@ -3406,9 +3406,9 @@ public abstract class AbstractTransformer implements Transformation {
      */
     private boolean needsJavaTypeAnnotations(Declaration decl) {
         Declaration reqdecl = decl;
-        if (reqdecl instanceof MethodOrValue
-                && ((MethodOrValue)reqdecl).isParameter()) {
-            reqdecl = CodegenUtil.getParameterized(((MethodOrValue)reqdecl));
+        if (reqdecl instanceof FunctionOrValue
+                && ((FunctionOrValue)reqdecl).isParameter()) {
+            reqdecl = CodegenUtil.getParameterized(((FunctionOrValue)reqdecl));
         }
         if (reqdecl instanceof TypeDeclaration) {
             return true;
@@ -3425,14 +3425,14 @@ public abstract class AbstractTransformer implements Transformation {
         if(decl == null || decl.getType() == null)
             return List.nil();
         Type type;
-        if (decl instanceof Method && ((Method)decl).isParameter() && handleFunctionalParameter) {
-            type = getTypeForFunctionalParameter((Method)decl);
+        if (decl instanceof Function && ((Function)decl).isParameter() && handleFunctionalParameter) {
+            type = getTypeForFunctionalParameter((Function)decl);
         } else if (decl instanceof Functional && Decl.isMpl((Functional)decl)) {
             type = getReturnTypeOfCallable(decl.getProducedTypedReference(null, Collections.<Type>emptyList()).getFullType());
         } else {
             type = decl.getType();
         }
-        boolean declaredVoid = decl instanceof Method && Strategy.useBoxedVoid((Method)decl) && Decl.isUnboxedVoid(decl);
+        boolean declaredVoid = decl instanceof Function && Strategy.useBoxedVoid((Function)decl) && Decl.isUnboxedVoid(decl);
         
         return makeJavaTypeAnnotations(type, declaredVoid, 
                 CodegenUtil.hasTypeErased(decl),
@@ -4733,9 +4733,9 @@ public abstract class AbstractTransformer implements Transformation {
             satisfiedTypesForBounds = declarationModel.getSatisfiedTypes();
         }
         // special case for method refinenement where Java doesn't let us refine the parameter bounds
-        if(declarationModel.getContainer() instanceof Method){
-            Method method = (Method) declarationModel.getContainer();
-            Method refinedMethod = (Method) method.getRefinedDeclaration();
+        if(declarationModel.getContainer() instanceof Function){
+            Function method = (Function) declarationModel.getContainer();
+            Function refinedMethod = (Function) method.getRefinedDeclaration();
             if (!Decl.equal(method, refinedMethod)) {
                 // find the param index
                 int index = method.getTypeParameters().indexOf(declarationModel);
@@ -4859,15 +4859,15 @@ public abstract class AbstractTransformer implements Transformation {
         if(declaration instanceof ClassOrInterface){
             // Java constructors don't support reified type arguments
             return Decl.isCeylon((TypeDeclaration) declaration);
-        }else if(declaration instanceof Method){
-            if (((Method)declaration).isParameter()) {
+        }else if(declaration instanceof Function){
+            if (((Function)declaration).isParameter()) {
                 // those can never be parameterised
                 return false;
             }
             if(Decl.isToplevel(declaration))
                 return true;
             // Java methods don't support reified type arguments
-            Method m = (Method) CodegenUtil.getTopmostRefinedDeclaration(declaration);
+            Function m = (Function) CodegenUtil.getTopmostRefinedDeclaration(declaration);
             // See what its container is
             ClassOrInterface container = Decl.getClassOrInterfaceContainer(m);
             // a method which is not a toplevel and is not a class method, must be a method within method and
@@ -4893,7 +4893,7 @@ public abstract class AbstractTransformer implements Transformation {
     }
 
     private java.util.List<Type> getTypeArguments(
-            Method method) {
+            Function method) {
         java.util.List<TypeParameter> typeParameters = method.getTypeParameters();
         java.util.List<Type> typeArguments = new ArrayList<Type>(typeParameters.size());
         for(TypeParameter tp : typeParameters)
@@ -4909,7 +4909,7 @@ public abstract class AbstractTransformer implements Transformation {
         else if(declaration instanceof Constructor)
             return ((Class)((Constructor)declaration).getContainer()).getTypeParameters();
         else
-            return ((Method)declaration).getTypeParameters();
+            return ((Function)declaration).getTypeParameters();
     }
 
     public List<JCExpression> makeReifiedTypeArguments(
@@ -5042,7 +5042,7 @@ public abstract class AbstractTransformer implements Transformation {
                 qualifier = naming.makeQualifiedThis(makeJavaType(((Class)container).getType(), JT_RAW));
             }else if(container instanceof Interface){
                 qualifier = naming.makeQualifiedThis(makeJavaType(((Interface)container).getType(), JT_COMPANION | JT_RAW));
-            }else if(container instanceof Method){
+            }else if(container instanceof Function){
                 // name must be a unique name, as returned by getTypeArgumentDescriptorName
                 return makeUnquotedIdent(name);
             }else{
@@ -5088,13 +5088,13 @@ public abstract class AbstractTransformer implements Transformation {
         // figure out the method name
         String methodName = declaration.getPrefixedName();
         List<JCExpression> arguments;
-        if(declaration instanceof Method)
-            arguments = makeReifiedTypeArgumentsResolved(getTypeArguments((Method)declaration), true);
+        if(declaration instanceof Function)
+            arguments = makeReifiedTypeArgumentsResolved(getTypeArguments((Function)declaration), true);
         else
             arguments = List.nil();
         if(declaration.isToplevel()){
             JCExpression getterClassNameExpr;
-            if(declaration instanceof Method){
+            if(declaration instanceof Function){
                 getterClassNameExpr = naming.makeName(declaration, Naming.NA_FQ | Naming.NA_WRAPPER);
             }else{
                 String getterClassName = Naming.getAttrClassName(declaration, 0);
@@ -5150,7 +5150,7 @@ public abstract class AbstractTransformer implements Transformation {
                 return null;
             if(container instanceof Declaration
                     // skip anonymous methods
-                    && (container instanceof Method == false || !((Declaration) container).isAnonymous()))
+                    && (container instanceof Function == false || !((Declaration) container).isAnonymous()))
                 return (Declaration) container;
             container = container.getContainer();
         }

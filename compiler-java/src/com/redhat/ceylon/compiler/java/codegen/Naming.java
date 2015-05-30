@@ -50,8 +50,8 @@ import com.redhat.ceylon.model.typechecker.model.ControlBlock;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Functional;
 import com.redhat.ceylon.model.typechecker.model.Interface;
-import com.redhat.ceylon.model.typechecker.model.Method;
-import com.redhat.ceylon.model.typechecker.model.MethodOrValue;
+import com.redhat.ceylon.model.typechecker.model.Function;
+import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
 import com.redhat.ceylon.model.typechecker.model.Package;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.Scope;
@@ -190,12 +190,12 @@ public class Naming extends NamingBase implements LocalId {
     private static String getMethodNameInternal(TypedDeclaration decl) {
         String name;
         if (decl.isClassOrInterfaceMember()
-                && decl instanceof Method) {
+                && decl instanceof Function) {
             Declaration refined = decl.getRefinedDeclaration();
             if (refined instanceof JavaMethod) {
                 return ((JavaMethod)refined).getRealName();
             }
-            name = quoteMethodNameIfProperty((Method)decl);
+            name = quoteMethodNameIfProperty((Function)decl);
         } else {
             name = decl.getName();
         }
@@ -614,7 +614,7 @@ public class Naming extends NamingBase implements LocalId {
         return makeTypeDeclarationExpression(null, decl, DeclNameFlag.QUALIFIED, DeclNameFlag.COMPANION);
     }
     
-    private static String quoteMethodNameIfProperty(Method method) {
+    private static String quoteMethodNameIfProperty(Function method) {
         String name = method.getName();
         if (!method.isShared()) {
             name = suffixName(Suffix.$priv$, name);
@@ -628,7 +628,7 @@ public class Naming extends NamingBase implements LocalId {
         if(!method.isClassOrInterfaceMember())
             return name;
         // do not quote method names if we have a refined constraint
-        Method refinedMethod = (Method) method.getRefinedDeclaration();
+        Function refinedMethod = (Function) method.getRefinedDeclaration();
         if(refinedMethod instanceof JavaMethod){
             return ((JavaMethod)refinedMethod).getRealName();
         }
@@ -646,19 +646,19 @@ public class Naming extends NamingBase implements LocalId {
         return name;
     }
 
-    private static String quoteMethodName(Method decl, int namingOptions){
+    private static String quoteMethodName(Function decl, int namingOptions){
         // always use the refined decl
         Declaration refinedDecl = decl.getRefinedDeclaration();  
-        return getMethodName((Method)refinedDecl, namingOptions);
+        return getMethodName((Function)refinedDecl, namingOptions);
     
     }
 
 
     public static String getDefaultedParamMethodName(Declaration decl, Parameter param) {
-        if (decl instanceof Method) {
+        if (decl instanceof Function) {
             if(decl.isAnonymous())
                 return prefixName(Prefix.$default$, param.getName());
-            return compoundName(((Method) decl).getName(), CodegenUtil.getTopmostRefinedDeclaration(param.getModel()).getName());
+            return compoundName(((Function) decl).getName(), CodegenUtil.getTopmostRefinedDeclaration(param.getModel()).getName());
         } else if (decl instanceof Constructor) {
             Constructor constructor = (Constructor)decl;
             if (Decl.isDefaultConstructor(constructor)) {
@@ -698,16 +698,16 @@ public class Naming extends NamingBase implements LocalId {
         return getAliasedParameterName(parameter.getModel());
     }
     
-    static boolean aliasConstructorParameterName(MethodOrValue mov) {
+    static boolean aliasConstructorParameterName(FunctionOrValue mov) {
         return mov.getContainer() instanceof Constructor && !mov.isShared() && !mov.isCaptured();
     }
     
-    private static String getAliasedParameterName(MethodOrValue parameter) {
+    private static String getAliasedParameterName(FunctionOrValue parameter) {
         if (!parameter.isParameter()) {
             throw new BugException();
         }
-        MethodOrValue mov = parameter;
-        if ((mov instanceof Method && ((Method)mov).isDeferred())
+        FunctionOrValue mov = parameter;
+        if ((mov instanceof Function && ((Function)mov).isDeferred())
                 || (mov instanceof Value && mov.isVariable() && mov.isCaptured())
                 || aliasConstructorParameterName(mov)) {
             return suffixName(Suffix.$param$, parameter.getName());
@@ -1031,19 +1031,19 @@ public class Naming extends NamingBase implements LocalId {
             }
             String name;
             if ((namingOptions & __NA_IDENT_PARAMETER_ALIASED) != 0) {
-                name = Naming.getAliasedParameterName((MethodOrValue)decl);
+                name = Naming.getAliasedParameterName((FunctionOrValue)decl);
             } else {
                 name = substitute(decl);
                 
             }
             builder.select(name);
         } else if ((namingOptions & NA_SETTER) != 0) {
-            if (decl instanceof Method) {
+            if (decl instanceof Function) {
                 throw new BugException("A method has no setter");
             }
             builder.select(getSetterName(decl));
         } else if ((namingOptions & NA_GETTER) != 0) {
-            if (decl instanceof Method) {
+            if (decl instanceof Function) {
                 throw new BugException("A method has no getter");
             }
             builder.select(getGetterName(decl));
@@ -1052,17 +1052,17 @@ public class Naming extends NamingBase implements LocalId {
             builder.select(getGetterName(decl));
         } else if (decl instanceof Setter) {
             builder.select(getSetterName(decl.getName()));
-        } else if (decl instanceof Method
+        } else if (decl instanceof Function
                 && ((!decl.isParameter() || decl.isShared() || decl.isCaptured())
                         // if we want it aliased, it means we're in a constructor and we don't want
                         // the member name ever for parameters, so let's never fall into that branch and skip
                         // to the next one
                         && (namingOptions & NA_ALIASED) == 0)) {
             builder.select(getMethodName(decl, namingOptions));
-        } else if (decl instanceof MethodOrValue
-                && ((MethodOrValue)decl).isParameter()) {
+        } else if (decl instanceof FunctionOrValue
+                && ((FunctionOrValue)decl).isParameter()) {
             if ((namingOptions & NA_ALIASED) != 0) {
-                builder.select(getAliasedParameterName((MethodOrValue)decl));
+                builder.select(getAliasedParameterName((FunctionOrValue)decl));
             } else {
                 builder.select(decl.getName());
             }
@@ -1244,16 +1244,16 @@ public class Naming extends NamingBase implements LocalId {
             } else {
                 return getGetterName(decl);
             }
-        } else if (decl instanceof Method) {
+        } else if (decl instanceof Function) {
             if (decl.isClassMember()) {
                 // don't try to be smart with interop calls 
                 if(decl instanceof JavaMethod)
                     return ((JavaMethod)decl).getRealName();
                 return getMethodName(decl, namingOptions);
             }
-            return quoteMethodName((Method)decl, namingOptions);
-        } else if (decl instanceof MethodOrValue
-                && ((MethodOrValue)decl).isParameter()) {
+            return quoteMethodName((Function)decl, namingOptions);
+        } else if (decl instanceof FunctionOrValue
+                && ((FunctionOrValue)decl).isParameter()) {
             return getMethodName(decl, namingOptions);
         }
         throw new BugException();
@@ -1968,7 +1968,7 @@ public class Naming extends NamingBase implements LocalId {
     /**
      * Makes a name for a local attribute where we store a method specifier
      */
-    public String getMethodSpecifierAttributeName(Method m) {
+    public String getMethodSpecifierAttributeName(Function m) {
         return suffixName(Suffix.$specifier$, m.getName());
     }
     
@@ -1984,7 +1984,7 @@ public class Naming extends NamingBase implements LocalId {
         return name(Unfix.$callvariadic$);
     }
     
-    public static String getCallableMethodName(Method method) {
+    public static String getCallableMethodName(Function method) {
         java.util.List<Parameter> parameters = method.getParameterLists().get(0).getParameters();
         boolean variadic = !parameters.isEmpty() && parameters.get(parameters.size()-1).isSequenced();
         return variadic ? getCallableVariadicMethodName() : getCallableMethodName();

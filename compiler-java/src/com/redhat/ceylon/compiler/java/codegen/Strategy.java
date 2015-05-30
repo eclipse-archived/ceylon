@@ -31,8 +31,8 @@ import com.redhat.ceylon.model.typechecker.model.Constructor;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Element;
 import com.redhat.ceylon.model.typechecker.model.Functional;
-import com.redhat.ceylon.model.typechecker.model.Method;
-import com.redhat.ceylon.model.typechecker.model.MethodOrValue;
+import com.redhat.ceylon.model.typechecker.model.Function;
+import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.ParameterList;
 import com.redhat.ceylon.model.typechecker.model.Type;
@@ -52,7 +52,7 @@ class Strategy {
     }
     
     public static boolean defaultParameterMethodTakesThis(Declaration decl) {
-        return decl instanceof Method 
+        return decl instanceof Function 
                 && decl.isToplevel();
     }
     
@@ -81,20 +81,20 @@ class Strategy {
     }
     
     public static DefaultParameterMethodOwner defaultParameterMethodOwner(Declaration decl) {
-        if (decl instanceof Method 
+        if (decl instanceof Function 
                 && !Decl.withinInterface(decl)
-                && !((Method)decl).isParameter()) {
+                && !((Function)decl).isParameter()) {
             return DefaultParameterMethodOwner.SELF;
         }
-        if (decl instanceof MethodOrValue
-                && ((MethodOrValue)decl).isParameter()) {
+        if (decl instanceof FunctionOrValue
+                && ((FunctionOrValue)decl).isParameter()) {
             decl = (Declaration) decl.getContainer();
         } 
         if (decl instanceof Constructor) {
             decl = (Declaration) decl.getContainer();
         }
         
-        if ((decl instanceof Method || decl instanceof Class) 
+        if ((decl instanceof Function || decl instanceof Class) 
                 && decl.isToplevel()) {
             // Only top-level methods have static default value methods
             return DefaultParameterMethodOwner.STATIC;
@@ -115,15 +115,15 @@ class Strategy {
     }
     
     public static boolean defaultParameterMethodStatic(Element decl) {
-        if (decl instanceof MethodOrValue
-                && ((MethodOrValue)decl).isParameter()) {
+        if (decl instanceof FunctionOrValue
+                && ((FunctionOrValue)decl).isParameter()) {
             decl = (Element) decl.getContainer();
         }
         if (decl instanceof Constructor) {
             decl = (Class)decl.getContainer();
         }
         // Only top-level methods have static default value methods
-        return ((decl instanceof Method && !((Method)decl).isParameter())
+        return ((decl instanceof Function && !((Function)decl).isParameter())
                 || decl instanceof Class) 
                 && ((Declaration)decl).isToplevel();
     }
@@ -135,9 +135,9 @@ class Strategy {
     }
     
     public static boolean defaultParameterMethodOnOuter(Element elem) {
-        if (elem instanceof MethodOrValue
-                && ((MethodOrValue)elem).isParameter()) {
-            elem = (Element) ((MethodOrValue)elem).getContainer();
+        if (elem instanceof FunctionOrValue
+                && ((FunctionOrValue)elem).isParameter()) {
+            elem = (Element) ((FunctionOrValue)elem).getContainer();
         }
         if (elem instanceof Constructor) {
             elem = (Class)elem.getContainer();
@@ -153,8 +153,8 @@ class Strategy {
     }
     
     public static boolean defaultParameterMethodOnSelf(Declaration decl) {
-        return decl instanceof Method
-                && !((Method)decl).isParameter()
+        return decl instanceof Function
+                && !((Function)decl).isParameter()
                 && !Decl.withinInterface(decl);
     }
     
@@ -209,7 +209,7 @@ class Strategy {
     }
 
     /**
-     * Determines whether the given Method def should have a {@code main()} method generated.
+     * Determines whether the given Function def should have a {@code main()} method generated.
      * I.e. it's a shared top level method without parameters
      * @param def
      */
@@ -253,7 +253,7 @@ class Strategy {
      * for a FunctionalParameter 
      */
     static boolean createMethod(Parameter parameter) {
-        MethodOrValue model = parameter.getModel();
+        FunctionOrValue model = parameter.getModel();
         return JvmBackendUtil.createMethod(model);
     }
 
@@ -307,7 +307,7 @@ class Strategy {
      * (but was not itself refined from a Java {@code void} method), or is 
      * {@code actual} then {@code java.lang.Object} should be used.
      */
-    static boolean useBoxedVoid(Method m) {
+    static boolean useBoxedVoid(Function m) {
         return m.isMember() &&
             (m.isDefault() || m.isFormal() || m.isActual()) &&
             m.getType().isAnything() &&

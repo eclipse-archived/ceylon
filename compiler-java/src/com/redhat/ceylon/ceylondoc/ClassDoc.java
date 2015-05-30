@@ -43,8 +43,8 @@ import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.model.typechecker.model.Constructor;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Interface;
-import com.redhat.ceylon.model.typechecker.model.Method;
-import com.redhat.ceylon.model.typechecker.model.MethodOrValue;
+import com.redhat.ceylon.model.typechecker.model.Function;
+import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
 import com.redhat.ceylon.model.typechecker.model.Package;
 import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.TypeAlias;
@@ -56,7 +56,7 @@ public class ClassDoc extends ClassOrPackageDoc {
 
     private TypeDeclaration klass;
     private List<Constructor> constructors;
-    private List<Method> methods;
+    private List<Function> methods;
     private List<TypedDeclaration> attributes;
     private List<Interface> innerInterfaces;
     private List<Class> innerClasses;
@@ -81,7 +81,7 @@ public class ClassDoc extends ClassOrPackageDoc {
     private MemberSpecification methodSpecification = new MemberSpecification() {
         @Override
         public boolean isSatisfiedBy(Declaration decl) {
-            return decl instanceof Method;
+            return decl instanceof Function;
         }
     };
 
@@ -93,7 +93,7 @@ public class ClassDoc extends ClassOrPackageDoc {
 
     private void loadMembers() {
         constructors = new ArrayList<Constructor>();
-        methods = new ArrayList<Method>();
+        methods = new ArrayList<Function>();
         attributes = new ArrayList<TypedDeclaration>();
         innerInterfaces = new ArrayList<Interface>();
         innerClasses = new ArrayList<Class>();
@@ -108,8 +108,8 @@ public class ClassDoc extends ClassOrPackageDoc {
                     constructors.add((Constructor) m);
                 } else if (m instanceof Value) {
                     attributes.add((Value) m);
-                } else if (m instanceof Method) {
-                    methods.add((Method) m);
+                } else if (m instanceof Function) {
+                    methods.add((Function) m);
                 } else if (m instanceof Interface) {
                     innerInterfaces.add((Interface) m);
                 } else if (m instanceof Class) {
@@ -189,7 +189,7 @@ public class ClassDoc extends ClassOrPackageDoc {
         List<Declaration> members = new ArrayList<Declaration>();
         for (Declaration m : decl.getMembers())
             if (tool.shouldInclude(m) && specification.isSatisfiedBy(m)) {
-                members.add((MethodOrValue) m);
+                members.add((FunctionOrValue) m);
             }
         return members;
     }
@@ -571,7 +571,7 @@ public class ClassDoc extends ClassOrPackageDoc {
     
     private void writeAnnotationConstructors() throws IOException {
         if( klass.isAnnotation() ) {
-            List<Method> annotationConstructors = tool.getAnnotationConstructors(klass);
+            List<Function> annotationConstructors = tool.getAnnotationConstructors(klass);
             if( annotationConstructors != null ) {
                 Collections.sort(annotationConstructors, ReferenceableComparatorByName.INSTANCE);
                 writeListOnSummary("annotationConstructors", "Annotation Constructors: ", annotationConstructors);
@@ -707,7 +707,7 @@ public class ClassDoc extends ClassOrPackageDoc {
             return;
         }
         openTable(null, "Methods", 2, true);
-        for (Method m : methods) {
+        for (Function m : methods) {
             doc(m);
         }
         closeTable();

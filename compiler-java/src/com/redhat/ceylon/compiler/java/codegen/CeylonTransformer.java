@@ -37,7 +37,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.Declaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ModuleDescriptor;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PackageDescriptor;
 import com.redhat.ceylon.model.loader.model.OutputElement;
-import com.redhat.ceylon.model.typechecker.model.MethodOrValue;
+import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.Setter;
 import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
@@ -351,8 +351,8 @@ public class CeylonTransformer extends AbstractTransformer {
         }
         
         if (declarationModel instanceof Setter
-                || (declarationModel instanceof MethodOrValue 
-                    && ((MethodOrValue)declarationModel).isParameter())) {
+                || (declarationModel instanceof FunctionOrValue 
+                    && ((FunctionOrValue)declarationModel).isParameter())) {
             // For local setters
             JCBlock setterBlock = makeSetterBlock(declarationModel, block, expression);
             builder.setterBlock(setterBlock);
@@ -415,8 +415,8 @@ public class CeylonTransformer extends AbstractTransformer {
                 builder.valueConstructor();
             JCExpression typeExpr;
             if (declarationModel instanceof Setter 
-                    || (declarationModel instanceof MethodOrValue
-                        && ((MethodOrValue)declarationModel).isParameter())) {
+                    || (declarationModel instanceof FunctionOrValue
+                        && ((FunctionOrValue)declarationModel).isParameter())) {
                 typeExpr = makeQuotedIdent(attrClassName);
             } else {
                 typeExpr = makeJavaType(getGetterInterfaceType(declarationModel));

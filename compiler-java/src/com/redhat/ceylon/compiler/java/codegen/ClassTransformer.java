@@ -76,8 +76,8 @@ import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Functional;
 import com.redhat.ceylon.model.typechecker.model.Generic;
 import com.redhat.ceylon.model.typechecker.model.Interface;
-import com.redhat.ceylon.model.typechecker.model.Method;
-import com.redhat.ceylon.model.typechecker.model.MethodOrValue;
+import com.redhat.ceylon.model.typechecker.model.Function;
+import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
 import com.redhat.ceylon.model.typechecker.model.Package;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.ParameterList;
@@ -268,9 +268,9 @@ public class ClassTransformer extends AbstractTransformer {
             if (formalMember instanceof Value) {
                 addRefinedThrowerAttribute(classBuilder, errorMessage, classModel,
                         (Value)formalMember);
-            } else if (formalMember instanceof Method) {
+            } else if (formalMember instanceof Function) {
                 addRefinedThrowerMethod(classBuilder, errorMessage, classModel,
-                        (Method)formalMember);
+                        (Function)formalMember);
             } else if (formalMember instanceof Class
                     && formalMember.isClassMember()) {
                 addRefinedThrowerInstantiatorMethod(classBuilder, errorMessage, classModel,
@@ -319,8 +319,8 @@ public class ClassTransformer extends AbstractTransformer {
     
     private void addRefinedThrowerMethod(ClassDefinitionBuilder classBuilder,
             String error, ClassOrInterface classModel,
-            Method formalMethod) {
-        Method refined = refineMethod(classModel, 
+            Function formalMethod) {
+        Function refined = refineMethod(classModel, 
                 classModel.getType().getTypedMember(formalMethod, Collections.<Type>emptyList()),
                 classModel, formalMethod, classModel.getUnit());
         // TODO When the method in inherited from an interface and is defaulted 
@@ -372,13 +372,13 @@ public class ClassTransformer extends AbstractTransformer {
                 refinedP.setSequenced(formalP.isSequenced());
                 refinedP.setName(formalP.getName());
                 final TypedReference typedParameter = pr.getTypedParameter(formalP);
-                MethodOrValue paramModel;
+                FunctionOrValue paramModel;
                 if (formalP.getModel() instanceof Value) {
                     Value paramValueModel = refineValue((Value)formalP.getModel(), typedParameter, refined, classModel.getUnit());
                     paramValueModel.setInitializerParameter(refinedP);
                     paramModel = paramValueModel;
                 } else {
-                    Method paramFunctionModel = refineMethod(refined, typedParameter, classModel, (Method)formalP.getModel(), unit);
+                    Function paramFunctionModel = refineMethod(refined, typedParameter, classModel, (Function)formalP.getModel(), unit);
                     paramFunctionModel.setInitializerParameter(refinedP);
                     paramModel = paramFunctionModel; 
                 }
@@ -390,13 +390,13 @@ public class ClassTransformer extends AbstractTransformer {
         return refined;
     }
     
-    private Method refineMethod(
+    private Function refineMethod(
             Scope container,
             TypedReference pr,
             ClassOrInterface classModel, 
-            Method formalMethod,
+            Function formalMethod,
             Unit unit) {
-        Method refined = new Method();
+        Function refined = new Function();
         refined.setActual(true);
         refined.setShared(formalMethod.isShared());
         refined.setContainer(container);
@@ -428,13 +428,13 @@ public class ClassTransformer extends AbstractTransformer {
                 refinedP.setSequenced(formalP.isSequenced());
                 refinedP.setName(formalP.getName());
                 final TypedReference typedParameter = pr.getTypedParameter(formalP);
-                MethodOrValue paramModel;
+                FunctionOrValue paramModel;
                 if (formalP.getModel() instanceof Value) {
                     Value paramValueModel = refineValue((Value)formalP.getModel(), typedParameter, refined, classModel.getUnit());
                     paramValueModel.setInitializerParameter(refinedP);
                     paramModel = paramValueModel;
                 } else {
-                    Method paramFunctionModel = refineMethod(refined, typedParameter, classModel, (Method)formalP.getModel(), unit);
+                    Function paramFunctionModel = refineMethod(refined, typedParameter, classModel, (Function)formalP.getModel(), unit);
                     paramFunctionModel.setInitializerParameter(refinedP);
                     paramModel = paramFunctionModel; 
                 }
@@ -1013,7 +1013,7 @@ public class ClassTransformer extends AbstractTransformer {
     
     private void makeFieldForParameter(ClassDefinitionBuilder classBuilder,
             Parameter decl, Tree.Declaration annotated) {
-        MethodOrValue model = decl.getModel();
+        FunctionOrValue model = decl.getModel();
         classBuilder.defs(make().VarDef(make().Modifiers(transformClassParameterDeclFlags(decl) | PRIVATE, 
                 makeAtIgnore().prependList(expressionGen().transformAnnotations(false, OutputElement.FIELD, annotated))),
                 names().fromString(Naming.quoteFieldName(decl.getName())), 
@@ -1607,7 +1607,7 @@ public class ClassTransformer extends AbstractTransformer {
         if (Strategy.createMethod(paramModel)) {
             Tree.MethodDeclaration methodDecl = (Tree.MethodDeclaration)memberDecl;
             makeFieldForParameter(classBuilder, paramModel, memberDecl);
-            Method method = (Method)paramModel.getModel();
+            Function method = (Function)paramModel.getModel();
 
             java.util.List<Parameter> parameters = method.getParameterLists().get(0).getParameters();
             CallBuilder callBuilder = CallBuilder.instance(this).invoke(
@@ -1646,12 +1646,12 @@ public class ClassTransformer extends AbstractTransformer {
      * @return
      */
     JCExpression transformClassParameterType(Parameter parameter) {
-        MethodOrValue decl = parameter.getModel();
+        FunctionOrValue decl = parameter.getModel();
         if (!(decl.getContainer() instanceof Class)) {
             throw new BugException("expected parameter of Class");
         }
         JCExpression type;
-        MethodOrValue attr = decl;
+        FunctionOrValue attr = decl;
         if (!Decl.isTransient(attr)) {
             TypedReference typedRef = getTypedReference(attr);
             TypedReference nonWideningTypedRef = nonWideningTypeDecl(typedRef);
@@ -1769,8 +1769,8 @@ public class ClassTransformer extends AbstractTransformer {
                 }
                 
             }
-        }else if (member instanceof Method) {
-            Method method = (Method)member;
+        }else if (member instanceof Function) {
+            Function method = (Function)member;
             final TypedReference typedMember = satisfiedType.getTypedMember(method, Collections.<Type>emptyList());
             java.util.List<java.util.List<Type>> producedTypeParameterBounds = producedTypeParameterBounds(
                     typedMember, method);
@@ -1799,7 +1799,7 @@ public class ClassTransformer extends AbstractTransformer {
                     typedMember.getType(), 
                     naming.selector(method), 
                     method.getParameterLists().get(0).getParameters(),
-                    ((Method) member).getTypeErased(),
+                    ((Function) member).getTypeErased(),
                     null, 
                     false);
             classBuilder.method(concreteMemberDelegate);
@@ -2033,12 +2033,12 @@ public class ClassTransformer extends AbstractTransformer {
                 // (they're just private methods on the $impl)
                 continue;
             }
-            if (member instanceof Method) {
-                Method method = (Method)member;
+            if (member instanceof Function) {
+                Function method = (Function)member;
                 final TypedReference typedMember = satisfiedType.getTypedMember(method, Collections.<Type>emptyList());
                 Declaration sub = (Declaration)model.getMember(method.getName(), null, false);
-                if (sub instanceof Method) {
-                    Method subMethod = (Method)sub;
+                if (sub instanceof Function) {
+                    Function subMethod = (Function)sub;
                     if (subMethod.getParameterLists().isEmpty()) {
                         continue;
                     }
@@ -2099,7 +2099,7 @@ public class ClassTransformer extends AbstractTransformer {
                                 typedMember.getType(), 
                                 naming.selector(method), 
                                 method.getParameterLists().get(0).getParameters(),
-                                ((Method) member).getTypeErased(),
+                                ((Function) member).getTypeErased(),
                                 null);
                         classBuilder.method(concreteMemberDelegate);
                     }
@@ -2116,7 +2116,7 @@ public class ClassTransformer extends AbstractTransformer {
                                 typedMember.getType(), 
                                 Naming.selector(method, Naming.NA_CANONICAL_METHOD), 
                                 method.getParameterLists().get(0).getParameters(),
-                                ((Method) member).getTypeErased(),
+                                ((Function) member).getTypeErased(),
                                 naming.selector(method));
                         classBuilder.method(canonicalMethod);
                     }
@@ -2330,8 +2330,8 @@ public class ClassTransformer extends AbstractTransformer {
         Declaration member = typedMember.getDeclaration();
         Type returnType = null;
         if (!isAnything(methodType) 
-                || ((member instanceof Method || member instanceof Value) && !Decl.isUnboxedVoid(member)) 
-                || (member instanceof Method && Strategy.useBoxedVoid((Method)member))) {
+                || ((member instanceof Function || member instanceof Value) && !Decl.isUnboxedVoid(member)) 
+                || (member instanceof Function && Strategy.useBoxedVoid((Function)member))) {
             explicitReturn = true;
             if(CodegenUtil.isHashAttribute(member)){
                 // delegates for hash attributes are int
@@ -2667,10 +2667,10 @@ public class ClassTransformer extends AbstractTransformer {
                 
                 // Generate the attribute
                 transform(attrDecl, classBuilder);
-            } else if (decl instanceof Method) {
+            } else if (decl instanceof Function) {
                 // Now build a "fake" declaration for the method
                 Tree.MethodDeclaration methDecl = new Tree.MethodDeclaration(null);
-                Method m = (Method)decl;
+                Function m = (Function)decl;
                 methDecl.setDeclarationModel(m);
                 methDecl.setIdentifier(expr.getIdentifier());
                 methDecl.setScope(op.getScope());
@@ -2717,7 +2717,7 @@ public class ClassTransformer extends AbstractTransformer {
                                 tvpd.setTypedDeclaration(((Tree.ParameterDeclaration)parameterTree).getTypedDeclaration());
                             tvpd.setParameterModel(p);
                             tp = tvpd;
-                        } else if (p.getModel() instanceof Method) {
+                        } else if (p.getModel() instanceof Function) {
                             Tree.FunctionalParameterDeclaration tfpd = new Tree.FunctionalParameterDeclaration(null);
                             if(parameterTree != null)
                                 tfpd.setTypedDeclaration(((Tree.ParameterDeclaration)parameterTree).getTypedDeclaration());
@@ -2973,7 +2973,7 @@ public class ClassTransformer extends AbstractTransformer {
         return result;
     }
     
-    private int transformMethodDeclFlags(Method def) {
+    private int transformMethodDeclFlags(Function def) {
         int result = 0;
 
         if (def.isToplevel()) {
@@ -3128,7 +3128,7 @@ public class ClassTransformer extends AbstractTransformer {
     }
 
     public List<JCTree> transformWrappedMethod(Tree.AnyMethod def, TransformationPlan plan) {
-        final Method model = def.getDeclarationModel();
+        final Function model = def.getDeclarationModel();
         if (model.isParameter()) {
             return List.nil();
         }
@@ -3225,7 +3225,7 @@ public class ClassTransformer extends AbstractTransformer {
             addRefinedThrowerMethod(classBuilder, 
                     plan.getErrorMessage().getMessage(), 
                     (Class)def.getDeclarationModel().getContainer(),
-                    (Method)def.getDeclarationModel().getRefinedDeclaration());
+                    (Function)def.getDeclarationModel().getRefinedDeclaration());
             return List.<MethodDefinitionBuilder>nil();
         }
         // Transform the method body of the 'inner-most method'
@@ -3239,7 +3239,7 @@ public class ClassTransformer extends AbstractTransformer {
 
     List<MethodDefinitionBuilder> transform(Tree.AnyMethod def,
             ClassDefinitionBuilder classBuilder, List<JCStatement> body) {
-        final Method model = def.getDeclarationModel();
+        final Function model = def.getDeclarationModel();
         
         List<MethodDefinitionBuilder> result = List.<MethodDefinitionBuilder>nil();
         if (!Decl.withinInterface(model)) {
@@ -3339,7 +3339,7 @@ public class ClassTransformer extends AbstractTransformer {
     }
     
     private List<MethodDefinitionBuilder> transformMethod(
-            final Method methodModel,
+            final Function methodModel,
             Tree.TypeParameterList typeParameterList,
             Tree.AnyMethod node, 
             java.util.List<Tree.ParameterList> parameterLists,
@@ -3460,7 +3460,7 @@ public class ClassTransformer extends AbstractTransformer {
     }
 
     List<JCStatement> transformMplBodyUnlessSpecifier(Tree.AnyMethod def,
-            Method model,
+            Function model,
             List<JCStatement> body) {
         if (def instanceof Tree.MethodDeclaration) {
             Tree.SpecifierExpression specifier = ((Tree.MethodDeclaration)def).getSpecifierExpression();
@@ -3476,13 +3476,13 @@ public class ClassTransformer extends AbstractTransformer {
     }
     
     /**
-     * Constructs all but the outer-most method of a {@code Method} with 
+     * Constructs all but the outer-most method of a {@code Function} with 
      * multiple parameter lists 
-     * @param model The {@code Method} model
+     * @param model The {@code Function} model
      * @param body The inner-most body
      */
     List<JCStatement> transformMplBody(java.util.List<Tree.ParameterList> parameterListsTree,
-            Method model,
+            Function model,
             List<JCStatement> body) {
         Type resultType = model.getType();
         for (int index = model.getParameterLists().size() - 1; index >  0; index--) {
@@ -3496,7 +3496,7 @@ public class ClassTransformer extends AbstractTransformer {
 
     private List<JCStatement> transformMethodBody(Tree.AnyMethod def) {
         List<JCStatement> body = null;
-        final Method model = def.getDeclarationModel();
+        final Function model = def.getDeclarationModel();
         
         if (model.isDeferred()) {
             // Uninitialized or deferred initialized method => Make a Callable field
@@ -3524,7 +3524,7 @@ public class ClassTransformer extends AbstractTransformer {
             invocation.handleBoxing(true);
             JCExpression call = expressionGen().transformInvocation(invocation);
             JCStatement stmt;
-            if (!isVoid(def) || !Decl.isUnboxedVoid(model) || Strategy.useBoxedVoid((Method)model)) {
+            if (!isVoid(def) || !Decl.isUnboxedVoid(model) || Strategy.useBoxedVoid((Function)model)) {
                 stmt = make().Return(call);
             } else {
                 stmt = make().Exec(call);
@@ -3555,7 +3555,7 @@ public class ClassTransformer extends AbstractTransformer {
 
     private List<JCStatement> transformMethodBlock(
             final Tree.MethodDefinition def) {
-        final Method model = def.getDeclarationModel();
+        final Function model = def.getDeclarationModel();
         final Tree.Block block = def.getBlock();
         List<JCStatement> body;
         boolean prevNoExpressionlessReturn = statementGen().noExpressionlessReturn;
@@ -3580,7 +3580,7 @@ public class ClassTransformer extends AbstractTransformer {
     }
 
     List<JCStatement> transformSpecifiedMethodBody(Tree.MethodDeclaration  def, SpecifierExpression specifierExpression) {
-        final Method model = def.getDeclarationModel();
+        final Function model = def.getDeclarationModel();
         List<JCStatement> body;
         Tree.MethodDeclaration methodDecl = def;
         boolean isLazy = specifierExpression instanceof Tree.LazySpecifierExpression;
@@ -3596,7 +3596,7 @@ public class ClassTransformer extends AbstractTransformer {
             }
         }
         if (!isLazy && term instanceof Tree.FunctionArgument) {
-            // Method specified with lambda: Don't bother generating a 
+            // Function specified with lambda: Don't bother generating a 
             // Callable, just transform the expr to use as the method body.
             Tree.FunctionArgument fa = (Tree.FunctionArgument)term;
             Type resultType = model.getType();
@@ -3617,7 +3617,7 @@ public class ClassTransformer extends AbstractTransformer {
             }
         } else if (!isLazy && typeFact().isCallableType(term.getTypeModel())) {
             returnNull = isAnything(term.getTypeModel()) && term.getUnboxed();
-            Method method = methodDecl.getDeclarationModel();
+            Function method = methodDecl.getDeclarationModel();
             boolean lazy = specifierExpression instanceof Tree.LazySpecifierExpression;
             boolean inlined = CodegenUtil.canOptimiseMethodSpecifier(term, method);
             Invocation invocation;
@@ -3678,8 +3678,8 @@ public class ClassTransformer extends AbstractTransformer {
     }
     
     private boolean isVoid(Declaration def) {
-        if (def instanceof Method) {
-            return gen().isAnything(((Method)def).getType());
+        if (def instanceof Function) {
+            return gen().isAnything(((Function)def).getType());
         } else if (def instanceof Class
                 || def instanceof Constructor) {
             // Consider classes void since ctors don't require a return statement
@@ -3839,8 +3839,8 @@ public class ClassTransformer extends AbstractTransformer {
             if (!isVoid(model)
                     // MPL overloads always return a Callable
                     || (model instanceof Functional && Decl.isMpl((Functional) model))
-                    || (model instanceof Method && !(Decl.isUnboxedVoid(model)))
-                    || (model instanceof Method && Strategy.useBoxedVoid((Method)model)) 
+                    || (model instanceof Function && !(Decl.isUnboxedVoid(model)))
+                    || (model instanceof Function && Strategy.useBoxedVoid((Function)model)) 
                     || Strategy.generateInstantiator(model) && overloaded instanceof DefaultedArgumentInstantiator) {
                 if (!vars.isEmpty()) {
                     invocation = at(declTree).LetExpr(vars.toList(), invocation);
@@ -3896,9 +3896,9 @@ public class ClassTransformer extends AbstractTransformer {
             }
             JCExpression superCall = overloaded.makeInvocation(args);
             /*JCMethodInvocation superCall = make().Apply(null,
-                    naming.makeQualIdent(naming.makeSuper(), ((Method)overloaded.getModel()).getName()),
+                    naming.makeQualIdent(naming.makeSuper(), ((Function)overloaded.getModel()).getName()),
                     args.toList());*/
-            JCExpression refinedType = makeJavaType(((Method)overloaded.getModel()).getType(), JT_NO_PRIMITIVES);
+            JCExpression refinedType = makeJavaType(((Function)overloaded.getModel()).getType(), JT_NO_PRIMITIVES);
             overloadBuilder.body(make().Return(make().TypeCast(refinedType, superCall)));
         }
     }
@@ -3955,7 +3955,7 @@ public class ClassTransformer extends AbstractTransformer {
         
         protected Type parameterType(Parameter parameterModel) {
             Type paramType = null;
-            if (parameterModel.getModel() instanceof Method) {
+            if (parameterModel.getModel() instanceof Function) {
                 paramType = typeFact().getCallableType(parameterModel.getType());
             } else {
                 paramType = parameterModel.getType();
@@ -4027,15 +4027,15 @@ public class ClassTransformer extends AbstractTransformer {
      * defaulted arguments. 
      */
     class DefaultedArgumentMethod extends DefaultedArgumentOverload {
-        private final Method method;
+        private final Function method;
 
-        DefaultedArgumentMethod(DaoBody daoBody, MethodDefinitionBuilder mdb, Method method) {
+        DefaultedArgumentMethod(DaoBody daoBody, MethodDefinitionBuilder mdb, Function method) {
             super(daoBody, mdb);
             this.method = method;
         }
 
         @Override
-        protected Method getModel() {
+        protected Function getModel() {
             return method;
         }
         
@@ -4104,7 +4104,7 @@ public class ClassTransformer extends AbstractTransformer {
         private TypedReference typedMember;
 
         DefaultedArgumentMethodTyped(DaoBody daoBody, MethodDefinitionBuilder mdb, TypedReference typedMember) {
-            super(daoBody, mdb, (Method)typedMember.getDeclaration());
+            super(daoBody, mdb, (Function)typedMember.getDeclaration());
             this.typedMember = typedMember;
         }
 
@@ -4112,7 +4112,7 @@ public class ClassTransformer extends AbstractTransformer {
         protected void resultType() {
             if (!isAnything(getModel().getType())
                     || !Decl.isUnboxedVoid(getModel())
-                    || Strategy.useBoxedVoid((Method)getModel())) {
+                    || Strategy.useBoxedVoid((Function)getModel())) {
                 TypedReference typedRef = (TypedReference) typedMember;
                 overloadBuilder.resultTypeNonWidening(typedMember.getQualifyingType(), typedRef, typedMember.getType(), 0);
             } else {
@@ -4134,7 +4134,7 @@ public class ClassTransformer extends AbstractTransformer {
         @Override
         protected Type parameterType(Parameter parameter) {
             Type paramType = paramType(parameter);
-            if (parameter.getModel() instanceof Method) {
+            if (parameter.getModel() instanceof Function) {
                 paramType = typeFact().getCallableType(parameter.getType());
             }
             return paramType;
@@ -4172,12 +4172,12 @@ public class ClassTransformer extends AbstractTransformer {
         private List<JCStatement> body;
         private boolean useBody;
         
-        CanonicalMethod(DaoBody daoBody, MethodDefinitionBuilder mdb, Method method) {
+        CanonicalMethod(DaoBody daoBody, MethodDefinitionBuilder mdb, Function method) {
             super(daoBody, mdb, method);
             useBody = false;
         }
         
-        CanonicalMethod(DaoBody daoBody, Method method, List<JCStatement> body) {
+        CanonicalMethod(DaoBody daoBody, Function method, List<JCStatement> body) {
             super(daoBody, MethodDefinitionBuilder.method(ClassTransformer.this, method, Naming.NA_CANONICAL_METHOD), method);
             this.body = body;
             useBody = true;
@@ -4521,7 +4521,7 @@ public class ClassTransformer extends AbstractTransformer {
         MethodDefinitionBuilder methodBuilder = MethodDefinitionBuilder.systemMethod(this, Naming.getDefaultedParamMethodName(container, parameter));
         methodBuilder.ignoreModelAnnotations();
         if (container != null && Decl.isAnnotationConstructor(container)) {
-            AnnotationInvocation ac = (AnnotationInvocation)((Method)container).getAnnotationConstructor();
+            AnnotationInvocation ac = (AnnotationInvocation)((Function)container).getAnnotationConstructor();
             for (AnnotationConstructorParameter acp : ac.getConstructorParameters()) {
                 if (acp.getParameter().equals(parameter)
                         && acp.getDefaultArgument() != null) {
@@ -4752,7 +4752,7 @@ public class ClassTransformer extends AbstractTransformer {
      * Makes a {@code main()} method which calls the given top-level method
      * @param method
      */
-    private MethodDefinitionBuilder makeMainForFunction(Method method) {
+    private MethodDefinitionBuilder makeMainForFunction(Function method) {
         at(null);
         JCExpression qualifiedName = naming.makeName(method, Naming.NA_FQ | Naming.NA_WRAPPER | Naming.NA_MEMBER);
         List<JCExpression> arguments = makeBottomReifiedTypeParameters(method.getTypeParameters());

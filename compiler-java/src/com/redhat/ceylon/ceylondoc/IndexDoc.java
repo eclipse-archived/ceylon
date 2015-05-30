@@ -34,8 +34,8 @@ import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.model.typechecker.model.Constructor;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Interface;
-import com.redhat.ceylon.model.typechecker.model.Method;
-import com.redhat.ceylon.model.typechecker.model.MethodOrValue;
+import com.redhat.ceylon.model.typechecker.model.Function;
+import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.Package;
 import com.redhat.ceylon.model.typechecker.model.Scope;
@@ -121,9 +121,9 @@ public class IndexDoc extends CeylonDoc {
         
         if (decl instanceof ClassOrInterface) {
             url = linkRenderer().to(decl).getUrl();
-        } else if ((decl instanceof MethodOrValue
+        } else if ((decl instanceof FunctionOrValue
                     && decl instanceof Setter == false
-                    && !((MethodOrValue)decl).isParameter()) 
+                    && !((FunctionOrValue)decl).isParameter()) 
                 || decl instanceof TypeAlias
                 || decl instanceof Constructor) {
             url = tool.getObjectUrl(module, container, false) + "#" + name;
@@ -131,7 +131,7 @@ public class IndexDoc extends CeylonDoc {
                 name = ((ClassOrInterface) container).getName() + "." + name;
             }
         } else if (decl instanceof Setter
-                || (decl instanceof MethodOrValue && ((MethodOrValue)decl).isParameter())
+                || (decl instanceof FunctionOrValue && ((FunctionOrValue)decl).isParameter())
                 || decl instanceof TypeParameter) {
             return false; // ignore
         } else {
@@ -214,7 +214,7 @@ public class IndexDoc extends CeylonDoc {
             return "alias";
         } else if (obj instanceof AttributeDeclaration || (obj instanceof Declaration && Decl.isGetter((Declaration)obj))) {
             return "attribute";
-        } else if (obj instanceof Method) {
+        } else if (obj instanceof Function) {
             return "function";
         } else if (obj instanceof Value) {
             return "value";

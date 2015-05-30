@@ -30,7 +30,7 @@ import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Functional;
 import com.redhat.ceylon.model.typechecker.model.Interface;
-import com.redhat.ceylon.model.typechecker.model.Method;
+import com.redhat.ceylon.model.typechecker.model.Function;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.ParameterList;
 import com.redhat.ceylon.model.typechecker.model.Setter;
@@ -62,7 +62,7 @@ public class InterfaceVisitor extends Visitor {
 
     @Override
     public void visit(Tree.AnyMethod that){
-        Method model = that.getDeclarationModel();
+        Function model = that.getDeclarationModel();
         // locals and toplevels get a type generated for them
         if(!model.isMember() && !model.isToplevel()){
             Set<String> old = localCompanionClasses;

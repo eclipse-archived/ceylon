@@ -96,7 +96,7 @@ public class JNI extends Gen {
                     }
                     pw.println("/*");
                     pw.println(" * Class:     " + cname);
-                    pw.println(" * Method:    " +
+                    pw.println(" * Function:    " +
                                mangler.mangle(methodName, Mangle.Type.FIELDSTUB));
                     pw.println(" * Signature: " + newtypesig.getTypeSignature(sig, mtr));
                     pw.println(" */");

@@ -32,7 +32,7 @@ public class CeylonDebugEvaluationThread extends Thread {
     }
     
     /*
-     *  Method that can host a method entry breakpoint 
+     *  Function that can host a method entry breakpoint 
      *  so that the thread is always suspended on it
      *  while waiting for evaluation requests.
      */
