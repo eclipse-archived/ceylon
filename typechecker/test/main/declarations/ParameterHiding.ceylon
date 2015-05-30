@@ -20,12 +20,6 @@ interface ParameterHiding {
         @error shared String name = name;
     }
     
-    class HidingWithTypeConstraint<T>(String name)
-            given T(String name) {
-        @error shared String name = name;
-        shared T t = T(name);
-    }
-    
     class AdvancedHiding(Float x, Float y) {
         @error shared String x = x.string;
         @error shared variable Float y = y;
@@ -59,12 +53,6 @@ interface NewParameterHiding {
 
     class Hiding(name) {
         shared String name;
-    }
-    
-    class HidingWithTypeConstraint<T>(name)
-            given T(String name) {
-        shared String name;
-        shared T t = T(name);
     }
     
     class AdvancedHiding(x, y) {
