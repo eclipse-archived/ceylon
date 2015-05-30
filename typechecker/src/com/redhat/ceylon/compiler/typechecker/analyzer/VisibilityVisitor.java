@@ -14,7 +14,6 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.ParameterList;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Element;
-import com.redhat.ceylon.model.typechecker.model.IntersectionType;
 import com.redhat.ceylon.model.typechecker.model.Function;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.ModuleImport;
@@ -25,7 +24,6 @@ import com.redhat.ceylon.model.typechecker.model.TypeAlias;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.model.typechecker.model.TypeParameter;
 import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
-import com.redhat.ceylon.model.typechecker.model.UnionType;
 
 /**
  * Validates the schema of type declarations to ensure that

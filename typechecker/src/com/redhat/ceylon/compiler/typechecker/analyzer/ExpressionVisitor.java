@@ -27,9 +27,10 @@ import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.spreadType;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.unwrapExpressionUntilTerm;
 import static com.redhat.ceylon.compiler.typechecker.tree.Util.hasUncheckedNulls;
 import static com.redhat.ceylon.compiler.typechecker.tree.Util.name;
-import static com.redhat.ceylon.model.typechecker.model.ModelUtil.argumentSatisfiesEnumeratedConstraint;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.addToIntersection;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.addToUnion;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.appliedType;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.argumentSatisfiesEnumeratedConstraint;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.findMatchingOverloadedClass;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getContainingClassOrInterface;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getInterveningRefinements;
@@ -42,7 +43,6 @@ import static com.redhat.ceylon.model.typechecker.model.ModelUtil.intersectionTy
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isAbstraction;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isOverloadedVersion;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isTypeUnknown;
-import static com.redhat.ceylon.model.typechecker.model.ModelUtil.appliedType;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.toTypeArgs;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.unionOfCaseTypes;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.unionType;
@@ -70,27 +70,27 @@ import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.model.typechecker.model.Constructor;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
+import com.redhat.ceylon.model.typechecker.model.Function;
+import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
 import com.redhat.ceylon.model.typechecker.model.Functional;
 import com.redhat.ceylon.model.typechecker.model.Generic;
 import com.redhat.ceylon.model.typechecker.model.Interface;
 import com.redhat.ceylon.model.typechecker.model.IntersectionType;
-import com.redhat.ceylon.model.typechecker.model.Function;
-import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.NothingType;
 import com.redhat.ceylon.model.typechecker.model.Package;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.ParameterList;
 import com.redhat.ceylon.model.typechecker.model.Reference;
-import com.redhat.ceylon.model.typechecker.model.Type;
-import com.redhat.ceylon.model.typechecker.model.TypedReference;
 import com.redhat.ceylon.model.typechecker.model.Scope;
 import com.redhat.ceylon.model.typechecker.model.Setter;
 import com.redhat.ceylon.model.typechecker.model.SiteVariance;
+import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.TypeAlias;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.model.typechecker.model.TypeParameter;
 import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
+import com.redhat.ceylon.model.typechecker.model.TypedReference;
 import com.redhat.ceylon.model.typechecker.model.UnionType;
 import com.redhat.ceylon.model.typechecker.model.UnknownType;
 import com.redhat.ceylon.model.typechecker.model.Value;
@@ -1482,18 +1482,21 @@ public class ExpressionVisitor extends Visitor {
             else {
                 parameterLists = emptyList();
             }
+            List<ParameterList> refinedParamLists = 
+                    refinedMethod.getParameterLists();
+            List<ParameterList> methodParamLists = 
+                    method.getParameterLists();
             for (int i=0; 
-                    i<refinedMethod.getParameterLists().size(); 
+                    i<refinedParamLists.size() &&
+                    i<methodParamLists.size(); 
                     i++) {
                 ParameterList refinedParameters = 
-                        refinedMethod.getParameterLists()
-                            .get(i);
+                        refinedParamLists.get(i);
                 ParameterList parameters = 
-                        method.getParameterLists()
-                            .get(i);
+                        methodParamLists.get(i);
                 Tree.ParameterList parameterList = 
-                        parameterLists.size()<=i ? 
-                                null : parameterLists.get(i);
+                        parameterLists.size()<=i ? null : 
+                            parameterLists.get(i);
                 List<Parameter> rps = 
                         refinedParameters.getParameters();
                 for (int j=0; j<rps.size(); j++) {
@@ -5740,8 +5743,7 @@ public class ExpressionVisitor extends Visitor {
         if (target instanceof Function && target.isAnnotation()) {
             Function method = (Function) target;
             ParameterList parameterList = 
-                    method.getParameterLists()
-                        .get(0);
+                    method.getFirstParameterList();
             if (!parameterList.isPositionalParametersSupported()) {
                 for (int i=0; 
                         i<params.size() && i<args.size(); 
@@ -8193,17 +8195,6 @@ public class ExpressionVisitor extends Visitor {
                 }
                 else {
                     return false;
-                }
-            }
-            else if (type instanceof TypeParameter) {
-                TypeParameter tp = (TypeParameter) type;
-                if (tp.getParameterList()==null) {
-                    that.addError("type parameter cannot be instantiated: '" +
-                            type.getName(unit) + "'");
-                    return false;
-                }
-                else {
-                    return true;
                 }
             }
             else {

@@ -1332,10 +1332,6 @@ typeConstraint returns [TypeConstraint typeConstraint]
          { $typeConstraint.setTypeParameterList($typeParameters.typeParameterList); }
       )?
       (
-        parameters
-        { $typeConstraint.setParameterList($parameters.parameterList); }
-      )?
-      (
         caseTypes
         { $typeConstraint.setCaseTypes($caseTypes.caseTypes); }
       )?

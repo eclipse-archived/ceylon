@@ -1810,14 +1810,6 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
         if (that.getAbstractedType()!=null) {
             that.addUnsupportedError("lower bound type constraints are not yet supported");
         }
-        Tree.ParameterList pl = 
-                that.getParameterList();
-        if (pl!=null) {
-            that.addUnsupportedError("parameter bounds are not yet supported");
-            ParameterList model = pl.getModel();
-            model.setFirst(true);
-            p.addParameterList(model);
-        }
     }
 
     @Override
