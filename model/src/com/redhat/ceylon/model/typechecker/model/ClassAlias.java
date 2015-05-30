@@ -22,7 +22,7 @@ public class ClassAlias extends Class {
     @Override
     void collectSupertypeDeclarations(
             List<TypeDeclaration> results) {
-        ProducedType et = getExtendedType();
+        Type et = getExtendedType();
         if (et!=null) { 
             et.getDeclaration()
                 .collectSupertypeDeclarations(results);
@@ -31,7 +31,7 @@ public class ClassAlias extends Class {
     
     @Override
     public boolean inherits(TypeDeclaration dec) {
-        ProducedType et = getExtendedType();
+        Type et = getExtendedType();
         if (et!=null) {
             return et.getDeclaration().inherits(dec);
         }

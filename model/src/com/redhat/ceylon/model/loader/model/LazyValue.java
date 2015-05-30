@@ -12,7 +12,7 @@ import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.DeclarationKind;
 import com.redhat.ceylon.model.typechecker.model.DeclarationWithProximity;
 import com.redhat.ceylon.model.typechecker.model.ProducedReference;
-import com.redhat.ceylon.model.typechecker.model.ProducedType;
+import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.ProducedTypedReference;
 import com.redhat.ceylon.model.typechecker.model.Scope;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
@@ -79,7 +79,7 @@ public class LazyValue extends Value implements LazyElement, LocalDeclarationCon
     }
     
     @Override
-    public ProducedType getType() {
+    public Type getType() {
         load();
         return super.getType();
     }
@@ -126,20 +126,20 @@ public class LazyValue extends Value implements LazyElement, LocalDeclarationCon
     }
 
     @Override
-    public void setType(ProducedType type) {
+    public void setType(Type type) {
         load();
         super.setType(type);
     }
 
     @Override
-    public ProducedTypedReference getProducedTypedReference(ProducedType qualifyingType, 
-            List<ProducedType> typeArguments, boolean assignment) {
+    public ProducedTypedReference getProducedTypedReference(Type qualifyingType, 
+            List<Type> typeArguments, boolean assignment) {
         load();
         return super.getProducedTypedReference(qualifyingType, typeArguments, assignment);
     }
 
     @Override
-    public ProducedReference getProducedReference(ProducedType pt, List<ProducedType> typeArguments) {
+    public ProducedReference getProducedReference(Type pt, List<Type> typeArguments) {
         load();
         return super.getProducedReference(pt, typeArguments);
     }
@@ -320,31 +320,31 @@ public class LazyValue extends Value implements LazyElement, LocalDeclarationCon
     }
 
     @Override
-    protected Declaration getMemberOrParameter(String name, List<ProducedType> signature, boolean ellipsis) {
+    protected Declaration getMemberOrParameter(String name, List<Type> signature, boolean ellipsis) {
         load();
         return super.getMemberOrParameter(name, signature, ellipsis);
     }
 
     @Override
-    public Declaration getMember(String name, List<ProducedType> signature, boolean ellipsis) {
+    public Declaration getMember(String name, List<Type> signature, boolean ellipsis) {
         load();
         return super.getMember(name, signature, ellipsis);
     }
 
     @Override
-    public Declaration getDirectMember(String name, List<ProducedType> signature, boolean ellipsis) {
+    public Declaration getDirectMember(String name, List<Type> signature, boolean ellipsis) {
         load();
         return super.getDirectMember(name, signature, ellipsis);
     }
 
     @Override
-    public ProducedType getDeclaringType(Declaration d) {
+    public Type getDeclaringType(Declaration d) {
         load();
         return super.getDeclaringType(d);
     }
 
     @Override
-    public Declaration getMemberOrParameter(Unit unit, String name, List<ProducedType> signature, boolean ellipsis) {
+    public Declaration getMemberOrParameter(Unit unit, String name, List<Type> signature, boolean ellipsis) {
         load();
         return super.getMemberOrParameter(unit, name, signature, ellipsis);
     }

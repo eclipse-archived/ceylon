@@ -132,14 +132,14 @@ public class Constructor extends TypeDeclaration implements Generic, Scope, Func
     }
     
     protected Declaration getMemberOrParameter(String name, 
-            List<ProducedType> signature, boolean ellipsis) {
+            List<Type> signature, boolean ellipsis) {
         return getDirectMember(name, signature, ellipsis);
     }
     
     @Override
     void collectSupertypeDeclarations(
             List<TypeDeclaration> results) {
-        ProducedType et = getExtendedType();
+        Type et = getExtendedType();
         if (et!=null) { 
             et.getDeclaration()
                 .collectSupertypeDeclarations(results);
@@ -148,7 +148,7 @@ public class Constructor extends TypeDeclaration implements Generic, Scope, Func
     
     @Override
     public boolean inherits(TypeDeclaration dec) {
-        ProducedType et = getExtendedType();
+        Type et = getExtendedType();
         if (et!=null) { 
             return et.getDeclaration().inherits(dec);
         }

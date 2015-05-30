@@ -85,7 +85,7 @@ public class Parameter {
         this.name = name;
     }
     
-    public ProducedType getType() {
+    public Type getType() {
         return model==null ? null : model.getType();
     }
     

@@ -29,22 +29,22 @@ public class ImportList implements Scope {
     }
     
     @Override
-    public ProducedType getDeclaringType(Declaration d) {
+    public Type getDeclaringType(Declaration d) {
         return null;
     }
     
     @Override
-    public Declaration getMemberOrParameter(Unit unit, String name, List<ProducedType> signature, boolean ellipsis) {
+    public Declaration getMemberOrParameter(Unit unit, String name, List<Type> signature, boolean ellipsis) {
         return getContainer().getMemberOrParameter(unit, name, signature, ellipsis);
     }
     
     @Override
-    public Declaration getMember(String name, List<ProducedType> signature, boolean ellipsis) {
+    public Declaration getMember(String name, List<Type> signature, boolean ellipsis) {
         return getContainer().getMember(name, signature, ellipsis);
     }
     
     @Override
-    public Declaration getDirectMember(String name, List<ProducedType> signature, boolean ellipsis) {
+    public Declaration getDirectMember(String name, List<Type> signature, boolean ellipsis) {
         return getContainer().getDirectMember(name, signature, ellipsis);
     }
     

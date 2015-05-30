@@ -12,7 +12,7 @@ import com.redhat.ceylon.model.typechecker.model.DeclarationKind;
 import com.redhat.ceylon.model.typechecker.model.DeclarationWithProximity;
 import com.redhat.ceylon.model.typechecker.model.Import;
 import com.redhat.ceylon.model.typechecker.model.ProducedReference;
-import com.redhat.ceylon.model.typechecker.model.ProducedType;
+import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.Scope;
 import com.redhat.ceylon.model.typechecker.model.TypeAlias;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
@@ -92,7 +92,7 @@ public class LazyTypeAlias extends TypeAlias implements LazyContainer {
     }
 
     @Override
-    public ProducedType getProducedType(ProducedType outerType, List<ProducedType> typeArguments) {
+    public Type getProducedType(Type outerType, List<Type> typeArguments) {
         loadTypeParams();
         return super.getProducedType(outerType, typeArguments);
     }
@@ -128,31 +128,31 @@ public class LazyTypeAlias extends TypeAlias implements LazyContainer {
     }
 
     @Override
-    public ProducedType getExtendedType() {
+    public Type getExtendedType() {
         load();
         return super.getExtendedType();
     }
 
     @Override
-    public List<ProducedType> getSatisfiedTypes() {
+    public List<Type> getSatisfiedTypes() {
         load();
         return super.getSatisfiedTypes();
     }
 
     @Override
-    public List<ProducedType> getCaseTypes() {
+    public List<Type> getCaseTypes() {
         load();
         return super.getCaseTypes();
     }
 
     @Override
-    public ProducedReference getProducedReference(ProducedType pt, List<ProducedType> typeArguments) {
+    public ProducedReference getProducedReference(Type pt, List<Type> typeArguments) {
         loadTypeParams();
         return super.getProducedReference(pt, typeArguments);
     }
 
     @Override
-    public ProducedType getType() {
+    public Type getType() {
         loadTypeParams();
         return super.getType();
     }
@@ -177,25 +177,25 @@ public class LazyTypeAlias extends TypeAlias implements LazyContainer {
     }
 
     @Override
-    public Declaration getRefinedMember(String name, List<ProducedType> signature, boolean ellipsis) {
+    public Declaration getRefinedMember(String name, List<Type> signature, boolean ellipsis) {
         load();
         return super.getRefinedMember(name, signature, ellipsis);
     }
 
     @Override
-    public Declaration getMember(String name, Unit unit, List<ProducedType> signature, boolean ellipsis) {
+    public Declaration getMember(String name, Unit unit, List<Type> signature, boolean ellipsis) {
         load();
         return super.getMember(name, unit, signature, ellipsis);
     }
 
     @Override
-    public Declaration getMember(String name, List<ProducedType> signature, boolean ellipsis) {
+    public Declaration getMember(String name, List<Type> signature, boolean ellipsis) {
         load();
         return super.getMember(name, signature, ellipsis);
     }
 
     @Override
-    public Declaration getMemberOrParameter(String name, List<ProducedType> signature, boolean ellipsis) {
+    public Declaration getMemberOrParameter(String name, List<Type> signature, boolean ellipsis) {
         load();
         return super.getMemberOrParameter(name, signature, ellipsis);
     }
@@ -219,7 +219,7 @@ public class LazyTypeAlias extends TypeAlias implements LazyContainer {
     }
 
     @Override
-    public ProducedType getSelfType() {
+    public Type getSelfType() {
         load();
         return super.getSelfType();
     }
@@ -400,19 +400,19 @@ public class LazyTypeAlias extends TypeAlias implements LazyContainer {
     }
 
     @Override
-    public Declaration getDirectMember(String name, List<ProducedType> signature, boolean ellipsis) {
+    public Declaration getDirectMember(String name, List<Type> signature, boolean ellipsis) {
         load();
         return super.getDirectMember(name, signature, ellipsis);
     }
 
     @Override
-    public ProducedType getDeclaringType(Declaration d) {
+    public Type getDeclaringType(Declaration d) {
         load();
         return super.getDeclaringType(d);
     }
 
     @Override
-    public Declaration getMemberOrParameter(Unit unit, String name, List<ProducedType> signature, boolean ellipsis) {
+    public Declaration getMemberOrParameter(Unit unit, String name, List<Type> signature, boolean ellipsis) {
         load();
         return super.getMemberOrParameter(unit, name, signature, ellipsis);
     }

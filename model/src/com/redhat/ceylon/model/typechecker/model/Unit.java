@@ -142,7 +142,7 @@ public class Unit {
      * for the named toplevel declaration.
      */
     public Declaration getImportedDeclaration(String name, 
-            List<ProducedType> signature, boolean ellipsis) {
+            List<Type> signature, boolean ellipsis) {
         for (Import i: getImports()) {
             if (!i.isAmbiguous() && 
             		i.getAlias().equals(name)) {
@@ -172,7 +172,7 @@ public class Unit {
      * for the named member declaration.
      */
     public Declaration getImportedDeclaration(TypeDeclaration td, 
-            String name, List<ProducedType> signature, 
+            String name, List<Type> signature, 
             boolean ellipsis) {
         for (Import i: getImports()) {
             TypeDeclaration itd = i.getTypeDeclaration();
@@ -553,8 +553,8 @@ public class Unit {
         return (Class) getLanguageModuleDeclaration("Entry");
     }
     
-    ProducedType getCallableType(ProducedReference ref, ProducedType rt) {
-    	ProducedType result = rt;
+    Type getCallableType(ProducedReference ref, Type rt) {
+    	Type result = rt;
     	Declaration declaration = ref.getDeclaration();
         if (declaration instanceof Functional) {
     	    Functional fd = (Functional) declaration;
@@ -565,8 +565,8 @@ public class Unit {
         	    int firstDefaulted = -1;
     	    	List<Parameter> ps = 
     	    	        pls.get(i).getParameters();
-                List<ProducedType> args = 
-                        new ArrayList<ProducedType>
+                List<Type> args = 
+                        new ArrayList<Type>
                             (ps.size());
                 for (int j=0; j<ps.size(); j++) {
                     Parameter p = ps.get(j);
@@ -576,7 +576,7 @@ public class Unit {
                     else {
                         ProducedTypedReference np = 
                                 ref.getTypedParameter(p);
-                        ProducedType npt = np.getType();
+                        Type npt = np.getType();
                         if (npt==null) {
                             args.add(getUnknownType());
                         }
@@ -600,7 +600,7 @@ public class Unit {
                         }
                     }
                 }
-    	    	ProducedType paramListType = 
+    	    	Type paramListType = 
     	    	        getTupleType(args, 
     	    	                hasSequenced, atLeastOne, 
     	    	                firstDefaulted);
@@ -611,15 +611,15 @@ public class Unit {
     	return result;
     }
 
-    public ProducedType getTupleType(
-            List<ProducedType> elemTypes, 
-            ProducedType variadicTailType, 
+    public Type getTupleType(
+            List<Type> elemTypes, 
+            Type variadicTailType, 
             int firstDefaulted) {
         boolean hasVariadicTail = variadicTailType!=null;
-        ProducedType result = hasVariadicTail ?
+        Type result = hasVariadicTail ?
                 variadicTailType : 
                 getEmptyType();
-        ProducedType union = hasVariadicTail ?
+        Type union = hasVariadicTail ?
                 getSequentialElementType(variadicTailType) :
                 getNothingType();
         return getTupleType(elemTypes, 
@@ -628,8 +628,8 @@ public class Unit {
                 result, union);
     }
 
-    public ProducedType getTupleType(
-            List<ProducedType> elemTypes, 
+    public Type getTupleType(
+            List<Type> elemTypes, 
     		boolean variadic, boolean atLeastOne, 
     		int firstDefaulted) {
     	return getTupleType(elemTypes, 
@@ -639,14 +639,14 @@ public class Unit {
                 getNothingType());
     }
 
-    private ProducedType getTupleType(
-            List<ProducedType> elemTypes,
+    private Type getTupleType(
+            List<Type> elemTypes,
             boolean variadic, boolean atLeastOne, 
             int firstDefaulted,
-            ProducedType result, ProducedType union) {
+            Type result, Type union) {
         int last = elemTypes.size()-1;
     	for (int i=last; i>=0; i--) {
-    		ProducedType elemType = elemTypes.get(i);
+    		Type elemType = elemTypes.get(i);
     		union = unionType(union, elemType, this);
     		if (variadic && i==last) {
     			result = atLeastOne ? 
@@ -665,155 +665,155 @@ public class Unit {
     	return result;
     }
 
-    public ProducedType getEmptyType(ProducedType pt) {
+    public Type getEmptyType(Type pt) {
         return pt==null ? null : 
             unionType(pt, getEmptyType(), this);
     }
     
-    public ProducedType getPossiblyEmptyType(ProducedType pt) {
+    public Type getPossiblyEmptyType(Type pt) {
         return pt==null ? null :
             producedType(getSequentialDeclaration(),
                     getSequentialElementType(pt));
     }
     
-    public ProducedType getOptionalType(ProducedType pt) {
+    public Type getOptionalType(Type pt) {
         return pt==null ? null :
             unionType(pt, getNullType(), this);
     }
 
-    public ProducedType getUnknownType() {
+    public Type getUnknownType() {
         return new UnknownType(this).getType();
     }
     
-    public ProducedType getNothingType() {
+    public Type getNothingType() {
         return getType(getNothingDeclaration());
     }
 
-    public ProducedType getEmptyType() {
+    public Type getEmptyType() {
         return getType(getEmptyDeclaration());
     }
     
-    public ProducedType getAnythingType() {
+    public Type getAnythingType() {
         return getType(getAnythingDeclaration());
     }
     
-    public ProducedType getObjectType() {
+    public Type getObjectType() {
         return getType(getObjectDeclaration());
     }
     
-    public ProducedType getIdentifiableType() {
+    public Type getIdentifiableType() {
         return getType(getIdentifiableDeclaration());
     }
     
-    public ProducedType getBasicType() {
+    public Type getBasicType() {
         return getType(getBasicDeclaration());
     }
 
-    public ProducedType getNullType() {
+    public Type getNullType() {
         return getType(getNullDeclaration());
     }
     
-    public ProducedType getThrowableType() {
+    public Type getThrowableType() {
         return getType(getThrowableDeclaration());
     }
     
-    public ProducedType getExceptionType() {
+    public Type getExceptionType() {
         return getType(getExceptionDeclaration());
     }
     
-    public ProducedType getBooleanType() {
+    public Type getBooleanType() {
         return getType(getBooleanDeclaration());
     }
     
-    public ProducedType getStringType() {
+    public Type getStringType() {
         return getType(getStringDeclaration());
     }
     
-    public ProducedType getIntegerType() {
+    public Type getIntegerType() {
         return getType(getIntegerDeclaration());
     }
     
-    public ProducedType getFloatType() {
+    public Type getFloatType() {
         return getType(getFloatDeclaration());
     }
     
-    public ProducedType getCharacterType() {
+    public Type getCharacterType() {
         return getType(getCharacterDeclaration());
     }
     
-    public ProducedType getByteType() {
+    public Type getByteType() {
         return getType(getByteDeclaration());
     }
     
-    public ProducedType getComparisonType() {
+    public Type getComparisonType() {
         return getType(getComparisonDeclaration());
     }
     
-    public ProducedType getDestroyableType() {
+    public Type getDestroyableType() {
         return getType(getDestroyableDeclaration());
     }
 
-    public ProducedType getObtainableType() {
+    public Type getObtainableType() {
         return getType(getObtainableDeclaration());
     }
     
-    public ProducedType getSequenceType(ProducedType et) {
+    public Type getSequenceType(Type et) {
         return producedType(getSequenceDeclaration(), et);
     }
     
-    public ProducedType getSequentialType(ProducedType et) {
+    public Type getSequentialType(Type et) {
         return producedType(getSequentialDeclaration(), et);
     }
     
-    public ProducedType getIterableType(ProducedType et) {
+    public Type getIterableType(Type et) {
         return producedType(getIterableDeclaration(), et, 
                 getNullType());
     }
 
-    public ProducedType getNonemptyIterableType(ProducedType et) {
+    public Type getNonemptyIterableType(Type et) {
         return producedType(getIterableDeclaration(), et, 
                 getNothingType());
     }
 
-    public ProducedType getSetType(ProducedType et) {
+    public Type getSetType(Type et) {
         return producedType(getSetDeclaration(), et);
     }
 
     /**
-     * Returns a ProducedType corresponding to {@code Iterator<T>}
-     * @param et The ProducedType corresponding to {@code T}
-     * @return The ProducedType corresponding to {@code Iterator<T>}
+     * Returns a Type corresponding to {@code Iterator<T>}
+     * @param et The Type corresponding to {@code T}
+     * @return The Type corresponding to {@code Iterator<T>}
      */
-    public ProducedType getIteratorType(ProducedType et) {
+    public Type getIteratorType(Type et) {
         return producedType(getIteratorDeclaration(), et);
     }
 
     /**
-     * Returns a ProducedType corresponding to {@code Span<T>}
-     * @param rt The ProducedType corresponding to {@code T}
-     * @return The ProducedType corresponding to {@code Span<T>}
+     * Returns a Type corresponding to {@code Span<T>}
+     * @param rt The Type corresponding to {@code T}
+     * @return The Type corresponding to {@code Span<T>}
      */
-    public ProducedType getSpanType(ProducedType rt) {
+    public Type getSpanType(Type rt) {
         return producedType(getRangeDeclaration(), rt);
     }
 
     /**
-     * Returns a ProducedType corresponding to {@code SizedRange<T>|[]}
-     * @param rt The ProducedType corresponding to {@code T}
-     * @return The ProducedType corresponding to {@code SizedRange<T>|[]}
+     * Returns a Type corresponding to {@code SizedRange<T>|[]}
+     * @param rt The Type corresponding to {@code T}
+     * @return The Type corresponding to {@code SizedRange<T>|[]}
      */
-    public ProducedType getMeasureType(ProducedType rt) {
+    public Type getMeasureType(Type rt) {
         return unionType(producedType(getRangeDeclaration(), rt), 
         		getEmptyType(), 
         		this);
     }
 
-    public ProducedType getEntryType(ProducedType kt, ProducedType vt) {
+    public Type getEntryType(Type kt, Type vt) {
         return producedType(getEntryDeclaration(), kt, vt);
     }
 
-    public ProducedType getKeyType(ProducedType type) {
-        ProducedType st = 
+    public Type getKeyType(Type type) {
+        Type st = 
                 type.getSupertype(getEntryDeclaration());
         if (st!=null && 
                 st.getTypeArguments().size()==2) {
@@ -824,8 +824,8 @@ public class Unit {
         }
     }
 
-    public ProducedType getValueType(ProducedType type) {
-        ProducedType st = 
+    public Type getValueType(Type type) {
+        Type st = 
                 type.getSupertype(getEntryDeclaration());
         if (st!=null && 
                 st.getTypeArguments().size()==2) {
@@ -836,8 +836,8 @@ public class Unit {
         }
     }
 
-    public ProducedType getIteratedType(ProducedType type) {
-        ProducedType st = 
+    public Type getIteratedType(Type type) {
+        Type st = 
                 type.getSupertype(getIterableDeclaration());
         if (st!=null && 
                 st.getTypeArguments().size()>0) {
@@ -848,8 +848,8 @@ public class Unit {
         }
     }
 
-    public ProducedType getFirstType(ProducedType type) {
-        ProducedType st = 
+    public Type getFirstType(Type type) {
+        Type st = 
                 type.getSupertype(getIterableDeclaration());
         if (st!=null && 
                 st.getTypeArguments().size()>1) {
@@ -860,13 +860,13 @@ public class Unit {
         }
     }
     
-    public boolean isNonemptyIterableType(ProducedType type) {
-    	ProducedType ft = getFirstType(type);
+    public boolean isNonemptyIterableType(Type type) {
+    	Type ft = getFirstType(type);
     	return ft!=null && ft.isNothing();
     }
 
-    public ProducedType getSetElementType(ProducedType type) {
-        ProducedType st = 
+    public Type getSetElementType(Type type) {
+        Type st = 
                 type.getSupertype(getSetDeclaration());
         if (st!=null && 
                 st.getTypeArguments().size()==1) {
@@ -877,8 +877,8 @@ public class Unit {
         }
     }
 
-    public ProducedType getSequentialElementType(ProducedType type) {
-        ProducedType st = 
+    public Type getSequentialElementType(Type type) {
+        Type st = 
                 type.getSupertype(getSequentialDeclaration());
         if (st!=null && 
                 st.getTypeArguments().size()==1) {
@@ -889,57 +889,57 @@ public class Unit {
         }
     }
 
-    public ProducedType getDefiniteType(ProducedType pt) {
+    public Type getDefiniteType(Type pt) {
         return intersectionType(getObjectType(), pt, this);
     }
 
-    public ProducedType getNonemptyType(ProducedType pt) {
-        ProducedType st = 
+    public Type getNonemptyType(Type pt) {
+        Type st = 
                 producedType(getSequenceDeclaration(), 
                         getSequentialElementType(pt));
         return intersectionType(st, pt, this);
     }
 
-    public ProducedType getNonemptyDefiniteType(ProducedType pt) {
+    public Type getNonemptyDefiniteType(Type pt) {
         return getNonemptyType(getDefiniteType(pt));
     }
     
-    public boolean isEntryType(ProducedType pt) {
+    public boolean isEntryType(Type pt) {
         return pt.getDeclaration()
                 .inherits(getEntryDeclaration());
     }
     
-    public boolean isIterableType(ProducedType pt) {
+    public boolean isIterableType(Type pt) {
         return pt.getDeclaration()
                 .inherits(getIterableDeclaration());
     }
     
-    public boolean isUsableType(ProducedType pt) {
+    public boolean isUsableType(Type pt) {
         return pt.getDeclaration()
                 .inherits(getUsableDeclaration());
     }
     
-    public boolean isSequentialType(ProducedType pt) {
+    public boolean isSequentialType(Type pt) {
         return pt.getDeclaration()
                 .inherits(getSequentialDeclaration());
     }
     
-    public boolean isSequenceType(ProducedType pt) {
+    public boolean isSequenceType(Type pt) {
         return pt.getDeclaration()
                 .inherits(getSequenceDeclaration());
     }
     
-    public boolean isEmptyType(ProducedType pt) {
+    public boolean isEmptyType(Type pt) {
         return pt.getDeclaration()
                 .inherits(getEmptyDeclaration());
     }
     
-    public boolean isTupleType(ProducedType pt) {
+    public boolean isTupleType(Type pt) {
         return pt.getDeclaration()
                 .inherits(getTupleDeclaration());
     }
     
-    public boolean isOptionalType(ProducedType pt) {
+    public boolean isOptionalType(Type pt) {
         //must have non-empty intersection with Null
         //and non-empty intersection with Value
         return !intersectionType(getNullType(), 
@@ -950,7 +950,7 @@ public class Unit {
                     .isNothing();
     }
     
-    public boolean isPossiblyEmptyType(ProducedType pt) {
+    public boolean isPossiblyEmptyType(Type pt) {
         //must be a subtype of Sequential<Anything>
         return isSequentialType(getDefiniteType(pt)) &&
         //must have non-empty intersection with Empty
@@ -963,7 +963,7 @@ public class Unit {
                         .isNothing();
     }
     
-    public boolean isCallableType(ProducedType pt) {
+    public boolean isCallableType(Type pt) {
     	return pt!=null && 
     	        pt.getDeclaration()
     	            .inherits(getCallableDeclaration());
@@ -973,15 +973,15 @@ public class Unit {
         return new NothingType(this);
     }
     
-    public ProducedType denotableType(ProducedType type) {
+    public Type denotableType(Type type) {
     	if (type!=null) {
     		if (type.isUnion()) {
-    		    List<ProducedType> cts = 
+    		    List<Type> cts = 
                         type.getCaseTypes();
-                List<ProducedType> list = 
-                        new ArrayList<ProducedType>
+                List<Type> list = 
+                        new ArrayList<Type>
                             (cts.size()+1);
-                for (ProducedType ct: cts) {
+                for (Type ct: cts) {
                     addToUnion(list, 
                             denotableType(ct));
                 }
@@ -990,12 +990,12 @@ public class Unit {
                 return ut.getType();
     		}
             if (type.isIntersection()) {
-                List<ProducedType> sts = 
+                List<Type> sts = 
                         type.getSatisfiedTypes();
-                List<ProducedType> list = 
-                        new ArrayList<ProducedType>
+                List<Type> list = 
+                        new ArrayList<Type>
                             (sts.size()+1);
-                for (ProducedType st: sts) {
+                for (Type st: sts) {
                     addToIntersection(list, 
                             denotableType(st), 
                             this);
@@ -1006,7 +1006,7 @@ public class Unit {
                 return it.canonicalize().getType();
             }
             TypeDeclaration dec = type.getDeclaration();
-            ProducedType et = dec.getExtendedType();
+            Type et = dec.getExtendedType();
             TypeDeclaration ed = 
                     et==null ? null : 
                         et.getDeclaration();
@@ -1017,10 +1017,10 @@ public class Unit {
     		    return type.getSupertype(ed);
     		}
     		if (dec instanceof Class && dec.isAnonymous()) {
-    			List<ProducedType> sts = 
+    			List<Type> sts = 
     			        dec.getSatisfiedTypes();
-    			List<ProducedType> list = 
-    			        new ArrayList<ProducedType>
+    			List<Type> list = 
+    			        new ArrayList<Type>
     			            (sts.size()+1);
     			if (et!=null) {
     			    TypeDeclaration etd = 
@@ -1029,7 +1029,7 @@ public class Unit {
     			            type.getSupertype(etd), 
     			            this);
     			}
-    			for (ProducedType st: sts) {
+    			for (Type st: sts) {
     			    if (st!=null) {
                         TypeDeclaration std = 
                                 st.getDeclaration();
@@ -1044,7 +1044,7 @@ public class Unit {
     			return it.canonicalize().getType();
     		}
     		else {
-                List<ProducedType> typeArgList = 
+                List<Type> typeArgList = 
                         type.getTypeArgumentList();
                 if (typeArgList.isEmpty()) {
                     return type;
@@ -1053,22 +1053,22 @@ public class Unit {
                     dec = type.getDeclaration();
                     List<TypeParameter> typeParamList = 
                             dec.getTypeParameters();
-                    List<ProducedType> typeArguments = 
-                            new ArrayList<ProducedType>
+                    List<Type> typeArguments = 
+                            new ArrayList<Type>
                                 (typeArgList.size());
                     for (int i=0; 
                             i<typeParamList.size() && 
                             i<typeArgList.size(); 
                             i++) {
-                        ProducedType at = 
+                        Type at = 
                                 typeArgList.get(i);
                         TypeParameter tp = 
                                 typeParamList.get(i);
                         typeArguments.add(tp.isCovariant() ? 
                                 denotableType(at) : at);
                     }
-                    ProducedType qt = type.getQualifyingType();
-                    ProducedType dt = 
+                    Type qt = type.getQualifyingType();
+                    Type dt = 
                             dec.getProducedType(qt, 
                                     typeArguments);
                     dt.setUnderlyingType(type.getUnderlyingType());
@@ -1086,30 +1086,30 @@ public class Unit {
     	}
     }
     
-    public ProducedType nonemptyArgs(ProducedType args) {
+    public Type nonemptyArgs(Type args) {
         return getEmptyType().isSubtypeOf(args) ? 
                 getNonemptyType(args) : args;
     }
     
-    public boolean isHomogeneousTuple(ProducedType args) {
+    public boolean isHomogeneousTuple(Type args) {
         if (args!=null) {
             Class td = getTupleDeclaration();
-            ProducedType tuple = args.getSupertype(td);
+            Type tuple = args.getSupertype(td);
             if (tuple!=null) {
-                List<ProducedType> tal = 
+                List<Type> tal = 
                         tuple.getTypeArgumentList();
-                ProducedType elemType;
+                Type elemType;
                 if (tal.size()>=3) {
                     elemType = tal.get(0);
                 }
                 else {
                     return false;
                 }
-                ProducedType emptyType = getEmptyType();
+                Type emptyType = getEmptyType();
                 while (true) {
                     tal = tuple.getTypeArgumentList();
                     if (tal.size()>=3) {
-                        ProducedType first = tal.get(1);
+                        Type first = tal.get(1);
                         if (first==null) {
                             return false;
                         }
@@ -1117,7 +1117,7 @@ public class Unit {
                             return false;
                         }
                         else {
-                            ProducedType rest = tal.get(2);
+                            Type rest = tal.get(2);
                             if (rest==null) {
                                 return false;
                             }
@@ -1146,14 +1146,14 @@ public class Unit {
         }
     }
 
-    public int getHomogeneousTupleLength(ProducedType args) {
+    public int getHomogeneousTupleLength(Type args) {
         if (args!=null) {
             Class td = getTupleDeclaration();
-            ProducedType tuple = args.getSupertype(td);
+            Type tuple = args.getSupertype(td);
             if (tuple!=null) {
-                List<ProducedType> tal = 
+                List<Type> tal = 
                         tuple.getTypeArgumentList();
-                ProducedType elemType;
+                Type elemType;
                 if (tal.size()>=1) {
                     elemType = tal.get(0);
                 }
@@ -1161,12 +1161,12 @@ public class Unit {
                     return -1;
                 }
                 int size = 0;
-                ProducedType emptyType = getEmptyType();
+                Type emptyType = getEmptyType();
                 while (true) {
                     size++;
                     tal = tuple.getTypeArgumentList();
                     if (tal.size()>=3) {
-                        ProducedType first = tal.get(1);
+                        Type first = tal.get(1);
                         if (first==null) {
                             return -1;
                         }
@@ -1174,7 +1174,7 @@ public class Unit {
                             return -1;
                         }
                         else {
-                            ProducedType rest = tal.get(2);
+                            Type rest = tal.get(2);
                             if (rest==null) {
                                 return -1;
                             }
@@ -1203,9 +1203,9 @@ public class Unit {
         }
     }
 
-    public List<ProducedType> getTupleElementTypes(ProducedType args) {
+    public List<Type> getTupleElementTypes(Type args) {
         if (args!=null) {
-            /*List<ProducedType> simpleResult = 
+            /*List<Type> simpleResult = 
                     getSimpleTupleElementTypes(args, 0);
             if (simpleResult!=null) {
                 return simpleResult;
@@ -1214,22 +1214,22 @@ public class Unit {
                 return NO_TYPE_ARGS;
             }
             Class td = getTupleDeclaration();
-            ProducedType tuple =
+            Type tuple =
                     nonemptyArgs(args)
                         .getSupertype(td);
             if (tuple!=null) {
-                List<ProducedType> result = 
-                        new LinkedList<ProducedType>();
+                List<Type> result = 
+                        new LinkedList<Type>();
                 while (true) {
-                    List<ProducedType> tal = 
+                    List<Type> tal = 
                             tuple.getTypeArgumentList();
                     if (tal.size()>=3) {
-                        ProducedType first = tal.get(1);
+                        Type first = tal.get(1);
                         if (first==null) {
                             first = getUnknownType();
                         }
                         result.add(first);
-                        ProducedType rest = tal.get(2);
+                        Type rest = tal.get(2);
                         if (rest==null) {
                             result.add(getUnknownType());
                             return result;
@@ -1270,24 +1270,24 @@ public class Unit {
         return singleton(getUnknownType());
     }
     
-    private static List<ProducedType> singleton(ProducedType pt) {
-        List<ProducedType> result = 
-                new ArrayList<ProducedType>(1);
+    private static List<Type> singleton(Type pt) {
+        List<Type> result = 
+                new ArrayList<Type>(1);
         result.add(pt);
         return result;
     }
     
-    /*private List<ProducedType> getSimpleTupleElementTypes(
-            ProducedType args, int count) {
+    /*private List<Type> getSimpleTupleElementTypes(
+            Type args, int count) {
         // can be a defaulted tuple of Empty|Tuple
         if (args.isUnion()) {
-            List<ProducedType> caseTypes = 
+            List<Type> caseTypes = 
                     args.getCaseTypes();
             if (caseTypes == null || caseTypes.size() != 2) {
                 return null;
             }
-            ProducedType caseA = caseTypes.get(0);
-            ProducedType caseB = caseTypes.get(1);
+            Type caseA = caseTypes.get(0);
+            Type caseB = caseTypes.get(1);
             if (!caseA.isClassOrInterface() || 
                 !caseB.isClassOrInterface()) {
                     return null;
@@ -1318,11 +1318,11 @@ public class Unit {
                 args.getDeclaration()
                     .getQualifiedNameString();
         if (name.equals("ceylon.language::Tuple")){
-            List<ProducedType> tal = 
+            List<Type> tal = 
                     args.getTypeArgumentList();
-            ProducedType first = tal.get(1);
-            ProducedType rest = tal.get(2);
-            List<ProducedType> ret = 
+            Type first = tal.get(1);
+            Type rest = tal.get(2);
+            List<Type> ret = 
                     getSimpleTupleElementTypes(rest, count+1);
             if (ret == null)
                 return null;
@@ -1330,8 +1330,8 @@ public class Unit {
             return ret;
         }
         if (name.equals("ceylon.language::Empty")){
-            ArrayList<ProducedType> ret = 
-                    new ArrayList<ProducedType>(count);
+            ArrayList<Type> ret = 
+                    new ArrayList<Type>(count);
             for (int i=0;i<count;i++) {
                 ret.add(null);
             }
@@ -1340,8 +1340,8 @@ public class Unit {
         if (name.equals("ceylon.language::Sequential")
                 || name.equals("ceylon.language::Sequence")
                 || name.equals("ceylon.language::Range")) {
-            ArrayList<ProducedType> ret = 
-                    new ArrayList<ProducedType>(count+1);
+            ArrayList<Type> ret = 
+                    new ArrayList<Type>(count+1);
             for (int i=0;i<count;i++) {
                 ret.add(null);
             }
@@ -1351,7 +1351,7 @@ public class Unit {
         return null;
     }*/
 
-    public boolean isTupleLengthUnbounded(ProducedType args) {
+    public boolean isTupleLengthUnbounded(Type args) {
         if (args!=null) {
             /*Boolean simpleTupleLengthUnbounded = 
                     isSimpleTupleLengthUnbounded(args);
@@ -1364,7 +1364,7 @@ public class Unit {
             //TODO: this doesn't account for the case where
             //      a tuple occurs in a union with []
             Class td = getTupleDeclaration();
-            ProducedType tst = 
+            Type tst = 
                     nonemptyArgs(args)
                         .getSupertype(td);
             if (tst==null) {
@@ -1372,10 +1372,10 @@ public class Unit {
             }
             else {
                 while (true) {
-                    List<ProducedType> tal = 
+                    List<Type> tal = 
                             tst.getTypeArgumentList();
                     if (tal.size()>=3) {
-                        ProducedType rest = tal.get(2);
+                        Type rest = tal.get(2);
                         if (rest==null) {
                             return false;
                         }
@@ -1400,16 +1400,16 @@ public class Unit {
         return false;
     }
     
-    /*protected Boolean isSimpleTupleLengthUnbounded(ProducedType args) {
+    /*protected Boolean isSimpleTupleLengthUnbounded(Type args) {
         // can be a defaulted tuple of Empty|Tuple
         if (args.isUnion()) {
-            List<ProducedType> caseTypes = 
+            List<Type> caseTypes = 
                     args.getCaseTypes();
             if (caseTypes == null || caseTypes.size() != 2) {
                 return null;
             }
-            ProducedType caseA = caseTypes.get(0);
-            ProducedType caseB = caseTypes.get(1);
+            Type caseA = caseTypes.get(0);
+            Type caseB = caseTypes.get(1);
             if (!caseA.isClassOrInterface() || 
                 !caseB.isClassOrInterface()) {
                     return null;
@@ -1440,7 +1440,7 @@ public class Unit {
                 args.getDeclaration()
                     .getQualifiedNameString();
         if (name.equals("ceylon.language::Tuple")) {
-            ProducedType rest = 
+            Type rest = 
                     args.getTypeArgumentList().get(2);
             return isSimpleTupleLengthUnbounded(rest);
         }
@@ -1457,7 +1457,7 @@ public class Unit {
         return null;
     }*/
 
-    public boolean isTupleVariantAtLeastOne(ProducedType args) {
+    public boolean isTupleVariantAtLeastOne(Type args) {
         if (args!=null) {
             /*Boolean simpleTupleVariantAtLeastOne = 
                     isSimpleTupleVariantAtLeastOne(args);
@@ -1468,7 +1468,7 @@ public class Unit {
                 return false;
             }
             Class td = getTupleDeclaration();
-            ProducedType tuple = 
+            Type tuple = 
                     nonemptyArgs(args)
                         .getSupertype(td);
             if (tuple == null) {
@@ -1476,10 +1476,10 @@ public class Unit {
             }
             else {
                 while (true) {
-                    List<ProducedType> tal = 
+                    List<Type> tal = 
                             tuple.getTypeArgumentList();
                     if (tal.size()>=3) {
-                        ProducedType rest = tal.get(2);
+                        Type rest = tal.get(2);
                         if (rest==null) {
                             return false;
                         }
@@ -1509,16 +1509,16 @@ public class Unit {
         return false;
     }
     
-    /*private Boolean isSimpleTupleVariantAtLeastOne(ProducedType args) {
+    /*private Boolean isSimpleTupleVariantAtLeastOne(Type args) {
         // can be a defaulted tuple of Empty|Tuple
         if (args.isUnion()) {
-            List<ProducedType> caseTypes = 
+            List<Type> caseTypes = 
                     args.getCaseTypes();
             if (caseTypes == null || caseTypes.size() != 2) {
                 return null;
             }
-            ProducedType caseA = caseTypes.get(0);
-            ProducedType caseB = caseTypes.get(1);
+            Type caseA = caseTypes.get(0);
+            Type caseB = caseTypes.get(1);
             if (!caseA.isClassOrInterface() || 
                 !caseB.isClassOrInterface()) {
                     return null;
@@ -1549,7 +1549,7 @@ public class Unit {
                 args.getDeclaration()
                     .getQualifiedNameString();
         if (name.equals("ceylon.language::Tuple")) {
-            ProducedType rest = 
+            Type rest = 
                     args.getTypeArgumentList().get(2);
             return isSimpleTupleVariantAtLeastOne(rest);
         }
@@ -1568,7 +1568,7 @@ public class Unit {
         return null;
     }*/
 
-    public int getTupleMinimumLength(ProducedType args) {
+    public int getTupleMinimumLength(Type args) {
         if (args!=null) {
             /*int simpleMinimumLength = 
                     getSimpleTupleMinimumLength(args);
@@ -1579,7 +1579,7 @@ public class Unit {
                 return 0;
             }
             Class td = getTupleDeclaration();
-            ProducedType tuple = 
+            Type tuple = 
                     nonemptyArgs(args)
                         .getSupertype(td);
             if (tuple == null) {
@@ -1589,11 +1589,11 @@ public class Unit {
             else {
                 int size = 0;
                 while (true) {
-                    List<ProducedType> tal = 
+                    List<Type> tal = 
                             tuple.getTypeArgumentList();
                     size++;
                     if (tal.size()>=3) {
-                        ProducedType rest = tal.get(2);
+                        Type rest = tal.get(2);
                         if (rest==null) {
                             return size;
                         }
@@ -1620,16 +1620,16 @@ public class Unit {
         return 0;
     }
     
-    /*private int getSimpleTupleMinimumLength(ProducedType args) {
+    /*private int getSimpleTupleMinimumLength(Type args) {
         // can be a defaulted tuple of Empty|Tuple
         if (args.isUnion()){
-            List<ProducedType> caseTypes = 
+            List<Type> caseTypes = 
                     args.getCaseTypes();
             if (caseTypes == null || caseTypes.size() != 2) {
                 return -1;
             }
-            ProducedType caseA = caseTypes.get(0);
-            ProducedType caseB = caseTypes.get(1);
+            Type caseA = caseTypes.get(0);
+            Type caseB = caseTypes.get(1);
             if (!caseA.isClassOrInterface() || 
                 !caseB.isClassOrInterface()) {
                     return -1;
@@ -1660,7 +1660,7 @@ public class Unit {
                 args.getDeclaration()
                     .getQualifiedNameString();
         if (name.equals("ceylon.language::Tuple")) {
-            ProducedType rest = 
+            Type rest = 
                     args.getTypeArgumentList().get(2);
             int ret = getSimpleTupleMinimumLength(rest);
             return ret == -1 ? -1 : ret + 1;
@@ -1680,8 +1680,8 @@ public class Unit {
         return -1;
     }*/
 
-    public List<ProducedType> getCallableArgumentTypes(ProducedType t) {
-        ProducedType tuple = getCallableTuple(t);
+    public List<Type> getCallableArgumentTypes(Type t) {
+        Type tuple = getCallableTuple(t);
         if (tuple == null) {
             return Collections.emptyList();
         }
@@ -1690,12 +1690,12 @@ public class Unit {
         }
     }
     
-    public ProducedType getCallableTuple(ProducedType t) {
+    public Type getCallableTuple(Type t) {
         if (t==null) return null;
-        ProducedType ct = 
+        Type ct = 
                 t.getSupertype(getCallableDeclaration());
         if (ct!=null) {
-            List<ProducedType> typeArgs = 
+            List<Type> typeArgs = 
                     ct.getTypeArgumentList();
             if (typeArgs.size()>=2) {
                 return typeArgs.get(1);
@@ -1704,13 +1704,13 @@ public class Unit {
         return null;
     }
     
-    public ProducedType getCallableReturnType(ProducedType t) {
+    public Type getCallableReturnType(Type t) {
         if (t==null) return null;
         if (t.isNothing()) return t;
-        ProducedType ct = 
+        Type ct = 
                 t.getSupertype(getCallableDeclaration());
         if (ct!=null) {
-            List<ProducedType> typeArgs = 
+            List<Type> typeArgs = 
                     ct.getTypeArgumentList();
             if (typeArgs.size()>=1) {
                 return typeArgs.get(0);
@@ -1719,7 +1719,7 @@ public class Unit {
         return null;
     }
     
-    public boolean isIterableParameterType(ProducedType t) {
+    public boolean isIterableParameterType(Type t) {
     	return t.getDeclaration().isIterable();
     }
     
@@ -1759,12 +1759,12 @@ public class Unit {
         return modifiers;
     }
     
-    public ProducedType getValueMetatype(ProducedTypedReference pr) {
+    public Type getValueMetatype(ProducedTypedReference pr) {
         boolean variable = pr.getDeclaration().isVariable();
-        ProducedType getType = pr.getType();
-        ProducedType setType = variable ? 
+        Type getType = pr.getType();
+        Type setType = variable ? 
                 pr.getType() : getNothingType();
-        ProducedType qualifyingType = 
+        Type qualifyingType = 
                 pr.getQualifyingType();
         if (qualifyingType!=null) {
             TypeDeclaration ad = 
@@ -1781,7 +1781,7 @@ public class Unit {
         }
     }
     
-    public ProducedType getFunctionMetatype(ProducedTypedReference pr) {
+    public Type getFunctionMetatype(ProducedTypedReference pr) {
         TypedDeclaration d = pr.getDeclaration();
         Functional f = (Functional) d;
         if (f.getParameterLists().isEmpty()) {
@@ -1789,15 +1789,15 @@ public class Unit {
         }
         ParameterList fpl = f.getParameterLists().get(0);
         List<Parameter> params = fpl.getParameters();
-        ProducedType parameterTuple = 
+        Type parameterTuple = 
                 getParameterTypesAsTupleType(params, pr);
-        ProducedType returnType = 
+        Type returnType = 
                 getCallableReturnType(pr.getFullType());
         if (returnType == null) {
             return null;
         }
         else {
-            ProducedType qualifyingType = 
+            Type qualifyingType = 
                     pr.getQualifyingType();
             if (qualifyingType!=null) {
                 TypeDeclaration md = 
@@ -1816,7 +1816,7 @@ public class Unit {
         }
     }
     
-    public ProducedType getConstructorMetatype(ProducedType pr) {
+    public Type getConstructorMetatype(Type pr) {
         TypeDeclaration d = pr.getDeclaration();
         Functional f = (Functional) d;
         if (f.getParameterLists().isEmpty()) {
@@ -1824,18 +1824,18 @@ public class Unit {
         }
         ParameterList fpl = f.getParameterLists().get(0);
         List<Parameter> params = fpl.getParameters();
-        ProducedType parameterTuple = 
+        Type parameterTuple = 
                 getParameterTypesAsTupleType(params, pr);
-        ProducedType returnType = 
+        Type returnType = 
                 getCallableReturnType(pr.getFullType());
         if (returnType == null) {
             return null;
         }
         else {
-            ProducedType qt = pr.getQualifyingType();
+            Type qt = pr.getQualifyingType();
             if (qt!=null && 
                     !qt.getDeclaration().isToplevel()) {
-                ProducedType qqt = qt.getQualifyingType();
+                Type qqt = qt.getQualifyingType();
                 TypeDeclaration mccd = 
                         getLanguageModuleModelTypeDeclaration(
                                 "MemberClassConstructor");
@@ -1852,10 +1852,10 @@ public class Unit {
         }
     }
     
-    public ProducedType getClassMetatype(ProducedType literalType) {
+    public Type getClassMetatype(Type literalType) {
         Class c = (Class) literalType.getDeclaration();
         ParameterList parameterList = c.getParameterList();
-        ProducedType parameterTuple;
+        Type parameterTuple;
         if ((c.isClassOrInterfaceMember() || c.isToplevel()) &&
                 parameterList!=null) {
         	parameterTuple = 
@@ -1866,7 +1866,7 @@ public class Unit {
         else {
         	parameterTuple = getNothingType();
         }
-        ProducedType qualifyingType = 
+        Type qualifyingType = 
                 literalType.getQualifyingType();
         if (qualifyingType!=null) {
             TypeDeclaration mcd = 
@@ -1884,8 +1884,8 @@ public class Unit {
         }
     }
     
-    public ProducedType getInterfaceMetatype(ProducedType literalType) {
-        ProducedType qualifyingType = 
+    public Type getInterfaceMetatype(Type literalType) {
+        Type qualifyingType = 
                 literalType.getQualifyingType();
         if (qualifyingType!=null) {
             TypeDeclaration mid = 
@@ -1902,7 +1902,7 @@ public class Unit {
         }
     }
 
-    public ProducedType getTypeMetaType(ProducedType literalType) {
+    public Type getTypeMetaType(Type literalType) {
         if (literalType.isUnion()) {
             TypeDeclaration utd = 
                     getLanguageModuleModelTypeDeclaration(
@@ -1923,10 +1923,10 @@ public class Unit {
         }
     }
     
-    public ProducedType getParameterTypesAsTupleType(List<Parameter> params, 
+    public Type getParameterTypesAsTupleType(List<Parameter> params, 
             ProducedReference pr) {
-        List<ProducedType> paramTypes = 
-                new ArrayList<ProducedType>
+        List<Type> paramTypes = 
+                new ArrayList<Type>
                     (params.size());
         int max = params.size()-1;
         int firstDefaulted = -1;
@@ -1934,7 +1934,7 @@ public class Unit {
         boolean atLeastOne = false;
         for (int i=0; i<=max; i++) {
             Parameter p = params.get(i);
-            ProducedType ft;
+            Type ft;
             if (p.getModel() == null) {
                 ft = getUnknownType();
             }
@@ -1958,59 +1958,59 @@ public class Unit {
                 firstDefaulted);
     }
     
-    public ProducedType getType(TypeDeclaration td) {
+    public Type getType(TypeDeclaration td) {
         return td==null ?
                 getUnknownType() :
                 td.getType();
     }
     
-    public ProducedType getPackageDeclarationType() {
+    public Type getPackageDeclarationType() {
         return getType(getLanguageModuleDeclarationTypeDeclaration("Package"));
     }
     
-    public ProducedType getModuleDeclarationType() {
+    public Type getModuleDeclarationType() {
         return getType(getLanguageModuleDeclarationTypeDeclaration("Module"));
     }
     
-    public ProducedType getImportDeclarationType() {
+    public Type getImportDeclarationType() {
         return getType(getLanguageModuleDeclarationTypeDeclaration("Import"));
     }
     
-    public ProducedType getClassDeclarationType() {
+    public Type getClassDeclarationType() {
         return getType(getLanguageModuleDeclarationTypeDeclaration("ClassDeclaration"));
     }
     
-    public ProducedType getClassDeclarationType(Class clazz) {
+    public Type getClassDeclarationType(Class clazz) {
         return clazz.hasConstructors() ?
                 getType(getLanguageModuleDeclarationTypeDeclaration("ClassWithConstructorsDeclaration")) :
                 getType(getLanguageModuleDeclarationTypeDeclaration("ClassWithInitializerDeclaration"));
     }
     
-    public ProducedType getConstructorDeclarationType() {
+    public Type getConstructorDeclarationType() {
         return getType(getLanguageModuleDeclarationTypeDeclaration("ConstructorDeclaration"));
     }
     
-    public ProducedType getInterfaceDeclarationType() {
+    public Type getInterfaceDeclarationType() {
         return getType(getLanguageModuleDeclarationTypeDeclaration("InterfaceDeclaration"));
     }
     
-    public ProducedType getAliasDeclarationType() {
+    public Type getAliasDeclarationType() {
         return getType(getLanguageModuleDeclarationTypeDeclaration("AliasDeclaration"));
     }
     
-    public ProducedType getTypeParameterDeclarationType() {
+    public Type getTypeParameterDeclarationType() {
         return getType(getLanguageModuleDeclarationTypeDeclaration("TypeParameter"));
     }
     
-    public ProducedType getFunctionDeclarationType() {
+    public Type getFunctionDeclarationType() {
         return getType(getLanguageModuleDeclarationTypeDeclaration("FunctionDeclaration"));
     }
     
-    public ProducedType getValueDeclarationType() {
+    public Type getValueDeclarationType() {
         return getType(getLanguageModuleDeclarationTypeDeclaration("ValueDeclaration"));
     }
     
-    public ProducedType getValueDeclarationType(TypedDeclaration value) {
+    public Type getValueDeclarationType(TypedDeclaration value) {
         return !(value instanceof Value) || ((Value) value).isTransient() ? 
                 getValueDeclarationType() :
                 getType(getLanguageModuleDeclarationTypeDeclaration("ReferenceDeclaration"));

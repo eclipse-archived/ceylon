@@ -67,7 +67,7 @@ public abstract class Element {
      * Search only directly inside this scope.
      */
     public Declaration getDirectMember(String name, 
-            List<ProducedType> signature, boolean ellipsis) {
+            List<Type> signature, boolean ellipsis) {
         return lookupMember(getMembers(), 
                 name, signature, ellipsis);
     }
@@ -80,7 +80,7 @@ public abstract class Element {
      * produce a nicer error.
      */
     public Declaration getMember(String name, 
-            List<ProducedType> signature, boolean ellipsis) {
+            List<Type> signature, boolean ellipsis) {
         return getDirectMember(name, signature, ellipsis);
     }
     
@@ -91,7 +91,7 @@ public abstract class Element {
      * declarations of this scope and containing scopes.
      */
     public Declaration getMemberOrParameter(Unit unit, String name, 
-            List<ProducedType> signature, boolean ellipsis) {
+            List<Type> signature, boolean ellipsis) {
         Declaration d = 
                 getMemberOrParameter(name, signature, ellipsis);
         if (d!=null) {
@@ -115,7 +115,7 @@ public abstract class Element {
      * direct members.
      */
     protected Declaration getMemberOrParameter(String name, 
-            List<ProducedType> signature, boolean ellipsis) {
+            List<Type> signature, boolean ellipsis) {
         return getDirectMember(name, signature, ellipsis);
     }
     
@@ -143,7 +143,7 @@ public abstract class Element {
         }
     }
     
-    public ProducedType getDeclaringType(Declaration d) {
+    public Type getDeclaringType(Declaration d) {
         if (d.isMember()) {
             return getContainer().getDeclaringType(d);
         }

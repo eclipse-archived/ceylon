@@ -168,12 +168,12 @@ public class ModelUtil {
     }
 
     public static boolean argumentSatisfiesEnumeratedConstraint(
-            ProducedType receiver, Declaration member, 
-            List<ProducedType> typeArguments,
-            ProducedType argType,
+            Type receiver, Declaration member, 
+            List<Type> typeArguments,
+            Type argType,
             TypeParameter param) {
         
-        List<ProducedType> caseTypes = param.getCaseTypes();
+        List<Type> caseTypes = param.getCaseTypes();
         if (caseTypes==null || caseTypes.isEmpty()) {
             //no enumerated constraint
             return true;
@@ -181,8 +181,8 @@ public class ModelUtil {
         
         //if the type argument is a subtype of one of the cases
         //of the type parameter then the constraint is satisfied
-        for (ProducedType ct: caseTypes) {
-            ProducedType cts = 
+        for (Type ct: caseTypes) {
+            Type cts = 
                     ct.getProducedType(receiver, member, 
                             typeArguments, null);
             if (argType.isSubtypeOf(cts)) {
@@ -196,14 +196,14 @@ public class ModelUtil {
         //then the constraint is satisfied
         TypeDeclaration atd = argType.getDeclaration();
         if (argType.isTypeParameter()) {
-            List<ProducedType> argCaseTypes = 
+            List<Type> argCaseTypes = 
                     atd.getCaseTypes();
             if (argCaseTypes!=null && 
                     !argCaseTypes.isEmpty()) {
-                for (ProducedType act: argCaseTypes) {
+                for (Type act: argCaseTypes) {
                     boolean foundCase = false;
-                    for (ProducedType ct: caseTypes) {
-                        ProducedType cts = 
+                    for (Type ct: caseTypes) {
+                        Type cts = 
                                 ct.getProducedType(receiver, 
                                         member, 
                                         typeArguments, null);

@@ -12,7 +12,7 @@ public class TypeParameter extends TypeDeclaration implements Functional {
     private Declaration declaration;
     private ParameterList parameterList;
     private TypeDeclaration selfTypedDeclaration;
-    private ProducedType defaultTypeArgument;
+    private Type defaultTypeArgument;
     private boolean defaulted;
     private boolean constrained;
     private boolean typeConstructor;
@@ -137,11 +137,11 @@ public class TypeParameter extends TypeDeclaration implements Functional {
         return false;
     }
     
-    public ProducedType getDefaultTypeArgument() {
+    public Type getDefaultTypeArgument() {
 		return defaultTypeArgument;
 	}
     
-    public void setDefaultTypeArgument(ProducedType defaultTypeArgument) {
+    public void setDefaultTypeArgument(Type defaultTypeArgument) {
 		this.defaultTypeArgument = defaultTypeArgument;
 	}
     
@@ -170,17 +170,17 @@ public class TypeParameter extends TypeDeclaration implements Functional {
     }
     
     @Override
-    public List<ProducedType> getSatisfiedTypes() {
-        List<ProducedType> satisfiedTypes = 
+    public List<Type> getSatisfiedTypes() {
+        List<Type> satisfiedTypes = 
                 super.getSatisfiedTypes();
-        List<ProducedType> sts = satisfiedTypes;
+        List<Type> sts = satisfiedTypes;
         for (int i=0, size=sts.size(); i<size; i++) {
-            ProducedType st = sts.get(i);
+            Type st = sts.get(i);
             if (st!=null) {
                 TypeDeclaration std = st.getDeclaration();
                 if (std==this || st.isTypeAlias()) {
                     if (sts == satisfiedTypes) {
-                        sts = new ArrayList<ProducedType>(sts);
+                        sts = new ArrayList<Type>(sts);
                     }
                     sts.remove(i);
                     size--;
@@ -192,18 +192,18 @@ public class TypeParameter extends TypeDeclaration implements Functional {
     }
     
     @Override
-    public List<ProducedType> getCaseTypes() {
-        List<ProducedType> caseTypes = 
+    public List<Type> getCaseTypes() {
+        List<Type> caseTypes = 
                 super.getCaseTypes();
-        List<ProducedType> cts = caseTypes;
+        List<Type> cts = caseTypes;
         if (cts!=null) {
             for (int i=0, size=cts.size(); i<size; i++) {
-                ProducedType ct = cts.get(i);
+                Type ct = cts.get(i);
                 if (ct!=null) {
                     TypeDeclaration ctd = ct.getDeclaration();
                     if (ctd==this || ct.isTypeAlias()) {
                         if (cts==caseTypes) {
-                            cts = new ArrayList<ProducedType>(cts);
+                            cts = new ArrayList<Type>(cts);
                         }
                         cts.remove(i);
                         i--;
@@ -218,9 +218,9 @@ public class TypeParameter extends TypeDeclaration implements Functional {
     @Override
     void collectSupertypeDeclarations(
             List<TypeDeclaration> results) {
-        List<ProducedType> stds = getSatisfiedTypes();
+        List<Type> stds = getSatisfiedTypes();
         for (int i=0, l=stds.size(); i<l; i++) {
-            ProducedType st = stds.get(i);
+            Type st = stds.get(i);
             st.getDeclaration()
                 .collectSupertypeDeclarations(results);
         }
@@ -232,9 +232,9 @@ public class TypeParameter extends TypeDeclaration implements Functional {
             return true;
         }
         else {
-            List<ProducedType> sts = getSatisfiedTypes();
+            List<Type> sts = getSatisfiedTypes();
             for (int i = 0, s=sts.size(); i<s; i++) {
-                ProducedType st = sts.get(i);
+                Type st = sts.get(i);
                 if (st.getDeclaration().inherits(dec)) {
                     return true;
                 }

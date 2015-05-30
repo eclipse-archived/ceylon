@@ -10,7 +10,7 @@ import com.redhat.ceylon.model.typechecker.model.Method;
 import com.redhat.ceylon.model.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.ParameterList;
-import com.redhat.ceylon.model.typechecker.model.ProducedType;
+import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.Unit;
 import com.redhat.ceylon.model.typechecker.model.Value;
 
@@ -40,7 +40,7 @@ class ParameterNameParser {
         this.loader = loader;
     }
     
-    public void parse(String input, ProducedType type, Method method) {
+    public void parse(String input, Type type, Method method) {
         lexer.setup(input);
         this.unit = method.getUnit();
         boolean declaredVoid = false;
@@ -63,7 +63,7 @@ class ParameterNameParser {
             throw new ParameterNameParserException("Expected end of input" + System.lineSeparator() + input);
         }
     }
-    public void parseMpl(String input, ProducedType type, Method method) {
+    public void parseMpl(String input, Type type, Method method) {
         lexer.setup(input);
         this.unit = method.getUnit();
         ArrayList<ParameterList> lists = new ArrayList<>();
@@ -80,13 +80,13 @@ class ParameterNameParser {
             throw new ParameterNameParserException("Expected end of input" + System.lineSeparator() + input);
         }
     }
-    private ParameterList parseNameList(ProducedType type, Method method) {
+    private ParameterList parseNameList(Type type, Method method) {
         ParameterList pl = new ParameterList();
         List<Parameter> parameters = pl.getParameters();
         //startParameterList();
         lexer.eat(LEFT_PAREN);
         if (!lexer.lookingAt(RIGHT_PAREN)) {
-            Iterator<ProducedType> ct = loader.getSimpleCallableArgumentTypes(type).iterator();
+            Iterator<Type> ct = loader.getSimpleCallableArgumentTypes(type).iterator();
             if (!ct.hasNext()) {
                 throw new ParameterNameParserException("Too few parameter types");
             }
@@ -108,7 +108,7 @@ class ParameterNameParser {
         return pl;
     }
 
-    private Parameter parseName(ProducedType type, Method container) {
+    private Parameter parseName(Type type, Method container) {
         String identifier = lexer.eatIdentifier();
         boolean declaredVoid = false;
         boolean sequenced = false;
@@ -152,13 +152,13 @@ class ParameterNameParser {
         return p;
     }
 
-    private Value parseValue(ProducedType type) {
+    private Value parseValue(Type type) {
         Value value = new Value();
         value.setType(type);
         return value;
     }
 
-    private Method parseMethod(ProducedType type, boolean declaredVoid) {
+    private Method parseMethod(Type type, boolean declaredVoid) {
         Method method = new Method();
         method.setDeclaredVoid(declaredVoid);
         method.setType(loader.getSimpleCallableReturnType(type));

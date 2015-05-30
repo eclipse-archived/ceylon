@@ -131,19 +131,19 @@ public class Package
      */
     @Override
     public Declaration getMember(String name, 
-            List<ProducedType> signature, boolean ellipsis) {
+            List<Type> signature, boolean ellipsis) {
         return getDirectMember(name, signature, ellipsis);
     }
 
     @Override
     public Declaration getDirectMember(String name, 
-            List<ProducedType> signature, boolean ellipsis) {
+            List<Type> signature, boolean ellipsis) {
         return lookupMember(getMembers(), 
                 name, signature, ellipsis);
     }
 
     @Override
-    public ProducedType getDeclaringType(Declaration d) {
+    public Type getDeclaringType(Declaration d) {
         if (d.isClassMember()) {
             Class containingAnonClass =
                     (Class) d.getContainer();
@@ -160,7 +160,7 @@ public class Package
      */
     @Override
     public Declaration getMemberOrParameter(Unit unit, 
-            String name, List<ProducedType> signature, 
+            String name, List<Type> signature, 
             boolean ellipsis) {
         //this implements the rule that imports hide 
         //toplevel members of a package

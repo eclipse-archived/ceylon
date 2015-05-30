@@ -14,7 +14,7 @@ import java.util.Objects;
  */
 public abstract class TypedDeclaration extends Declaration {
 
-    private ProducedType type;
+    private Type type;
     private boolean uncheckedNullType = false;
     private Boolean unboxed;
     private boolean typeErased;
@@ -40,17 +40,17 @@ public abstract class TypedDeclaration extends Declaration {
     	}
     }
 
-    public ProducedType getType() {
+    public Type getType() {
         return type;
     }
 
-    public void setType(ProducedType t) {
+    public void setType(Type t) {
         this.type = t;
     }
 
     public ProducedTypedReference getProducedTypedReference(
-            ProducedType qualifyingType,
-            List<ProducedType> typeArguments) {
+            Type qualifyingType,
+            List<Type> typeArguments) {
         return getProducedTypedReference(qualifyingType, 
                 typeArguments, false);
     }
@@ -72,8 +72,8 @@ public abstract class TypedDeclaration extends Declaration {
      *                   LHS of an assignment
      */
     public ProducedTypedReference getProducedTypedReference(
-            ProducedType qualifyingType,
-            List<ProducedType> typeArguments, 
+            Type qualifyingType,
+            List<Type> typeArguments, 
             boolean assignment) {
         ProducedTypedReference ptr = 
                 new ProducedTypedReference(!assignment, 
@@ -99,8 +99,8 @@ public abstract class TypedDeclaration extends Declaration {
     }
 
     @Override
-    public ProducedReference getProducedReference(ProducedType pt,
-            List<ProducedType> typeArguments) {
+    public ProducedReference getProducedReference(Type pt,
+            List<Type> typeArguments) {
         return getProducedTypedReference(pt, typeArguments);
     }
     

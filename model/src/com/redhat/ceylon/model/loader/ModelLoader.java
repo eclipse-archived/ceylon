@@ -2,7 +2,7 @@ package com.redhat.ceylon.model.loader;
 
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Module;
-import com.redhat.ceylon.model.typechecker.model.ProducedType;
+import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.Scope;
 
 /**
@@ -40,15 +40,15 @@ public interface ModelLoader {
     public Declaration getDeclaration(Module module, String typeName, DeclarationType declarationType);
     
     /**
-     * Returns the ProducedType of a name in a given scope
+     * Returns the Type of a name in a given scope
 
      * @param module the module to load it from
      * @param pkg the package name
      * @param name the fully-qualified name of the type
      * @param scope the scope in which to find it
-     * @return the ProducedType found
+     * @return the Type found
      */
-    public ProducedType getType(Module module, String pkg, String name, Scope scope);
+    public Type getType(Module module, String pkg, String name, Scope scope);
 
     /**
      * Returns the Declaration of a name in a given scope
@@ -57,7 +57,7 @@ public interface ModelLoader {
      * @param pkg the package name
      * @param name the fully-qualified name of the type
      * @param scope the scope in which to find it
-     * @return the ProducedType found
+     * @return the Type found
      */
     public Declaration getDeclaration(Module module, String pkg, String name, Scope scope);
 

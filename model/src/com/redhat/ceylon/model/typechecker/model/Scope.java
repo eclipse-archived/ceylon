@@ -18,7 +18,7 @@ public interface Scope {
      */
     public String getQualifiedNameString();
 
-    public ProducedType getDeclaringType(Declaration d);
+    public Type getDeclaringType(Declaration d);
     
     /**
      * Get a member declared directly in this scope.
@@ -32,7 +32,7 @@ public interface Scope {
      * @return the best matching member
      */
     public Declaration getDirectMember(String name, 
-            List<ProducedType> signature, 
+            List<Type> signature, 
             boolean ellipsis);
     
     /**
@@ -47,7 +47,7 @@ public interface Scope {
      * @return the best matching member
      */
     public Declaration getMember(String name, 
-            List<ProducedType> signature, 
+            List<Type> signature, 
             boolean ellipsis);
     
     /**
@@ -65,7 +65,7 @@ public interface Scope {
     //      in containing scopes
     public Declaration getMemberOrParameter(Unit unit, 
             String name, 
-            List<ProducedType> signature, 
+            List<Type> signature, 
             boolean ellipsis);
     
     /**

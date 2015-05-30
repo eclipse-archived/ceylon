@@ -12,7 +12,7 @@ public class InterfaceAlias extends Interface {
     @Override
     void collectSupertypeDeclarations(
             List<TypeDeclaration> results) {
-        ProducedType et = getExtendedType();
+        Type et = getExtendedType();
         if (et!=null) { 
             et.getDeclaration()
                 .collectSupertypeDeclarations(results);
@@ -21,7 +21,7 @@ public class InterfaceAlias extends Interface {
         
     @Override
     public boolean inherits(TypeDeclaration dec) {
-        ProducedType et = getExtendedType();
+        Type et = getExtendedType();
         if (et!=null) {
             return et.getDeclaration().inherits(dec);
         }

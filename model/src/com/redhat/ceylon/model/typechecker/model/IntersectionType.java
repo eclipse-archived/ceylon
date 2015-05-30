@@ -38,14 +38,14 @@ public class IntersectionType extends TypeDeclaration {
     }
     
     @Override
-    public ProducedType getType() {
-        List<ProducedType> sts = getSatisfiedTypes();
-        for (ProducedType pt: sts) {
+    public Type getType() {
+        List<Type> sts = getSatisfiedTypes();
+        for (Type pt: sts) {
             if (pt==null || pt.isUnknown()) {
-                List<ProducedType> list = 
-                        new ArrayList<ProducedType>
+                List<Type> list = 
+                        new ArrayList<Type>
                             (sts.size()-1);
-                for (ProducedType st: sts) {
+                for (Type st: sts) {
                     if (!st.isUnknown()) {
                         list.add(st);
                     }
@@ -77,30 +77,30 @@ public class IntersectionType extends TypeDeclaration {
      * a union of intersections, instead of an intersection of unions.
      */
 	public TypeDeclaration canonicalize(boolean reduceDisjointTypes) {
-	    List<ProducedType> sts = getSatisfiedTypes();
+	    List<Type> sts = getSatisfiedTypes();
 		if (sts.isEmpty()) {
 	        return unit.getAnythingDeclaration();
 	    }
 	    else if (sts.size()==1) {
-	    	ProducedType st = sts.get(0);
+	    	Type st = sts.get(0);
             if (st.isNothing()) {
 	    		return st.getDeclaration();
 	    	}
 	    }
-		for (ProducedType st: sts) {
+		for (Type st: sts) {
 			if (st.isUnion()) {
 				TypeDeclaration result = 
 				        new UnionType(unit);
-                List<ProducedType> caseTypes = 
+                List<Type> caseTypes = 
                         st.getCaseTypes();
-				List<ProducedType> ulist = 
-				        new ArrayList<ProducedType>
+				List<Type> ulist = 
+				        new ArrayList<Type>
 				            (caseTypes.size());
-                for (ProducedType ct: caseTypes) {
-					List<ProducedType> ilist = 
-					        new ArrayList<ProducedType>
+                for (Type ct: caseTypes) {
+					List<Type> ilist = 
+					        new ArrayList<Type>
 					            (sts.size());
-					for (ProducedType pt: sts) {
+					for (Type pt: sts) {
 						if (pt==st) {
 							addToIntersection(ilist, ct, 
 							        unit, 
@@ -133,9 +133,9 @@ public class IntersectionType extends TypeDeclaration {
     @Override
     void collectSupertypeDeclarations(
             List<TypeDeclaration> results) {
-        List<ProducedType> stds = getSatisfiedTypes();
+        List<Type> stds = getSatisfiedTypes();
         for (int i=0, l=stds.size(); i<l; i++) {
-            ProducedType st = stds.get(i);
+            Type st = stds.get(i);
             st.getDeclaration()
                 .collectSupertypeDeclarations(results);
         }
@@ -147,9 +147,9 @@ public class IntersectionType extends TypeDeclaration {
             return true;
         }
         else {
-            List<ProducedType> sts = getSatisfiedTypes();
+            List<Type> sts = getSatisfiedTypes();
             for (int i = 0, s=sts.size(); i<s; i++) {
-                ProducedType st = sts.get(i);
+                Type st = sts.get(i);
                 if (st.getDeclaration().inherits(dec)) {
                     return true;
                 }
@@ -166,7 +166,7 @@ public class IntersectionType extends TypeDeclaration {
     @Override
     protected int hashCodeForCache() {
         int ret = 17;
-        List<ProducedType> satisfiedTypes = getSatisfiedTypes();
+        List<Type> satisfiedTypes = getSatisfiedTypes();
         for(int i=0, l=satisfiedTypes.size(); i<l; i++) {
             ret = (37 * ret) + satisfiedTypes.get(i).hashCode();
         }
@@ -179,8 +179,8 @@ public class IntersectionType extends TypeDeclaration {
             return false;
         }
         IntersectionType b = (IntersectionType) o;
-        List<ProducedType> satisfiedTypesA = getSatisfiedTypes();
-        List<ProducedType> satisfiedTypesB = b.getSatisfiedTypes();
+        List<Type> satisfiedTypesA = getSatisfiedTypes();
+        List<Type> satisfiedTypesB = b.getSatisfiedTypes();
         if (satisfiedTypesA.size() != satisfiedTypesB.size()) {
             return false;
         }

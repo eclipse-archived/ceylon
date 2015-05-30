@@ -143,8 +143,8 @@ public class Class extends ClassOrInterface implements Functional {
 	}
     
     @Override
-    public ProducedType getExtendedType() {
-        ProducedType et = 
+    public Type getExtendedType() {
+        Type et = 
                 super.getExtendedType();
         if (et==null) {
             //for Anything
@@ -286,15 +286,15 @@ public class Class extends ClassOrInterface implements Functional {
         else {
             //TODO: optimize this to avoid walking the
             //      same supertypes multiple times
-            ProducedType et = getExtendedType();
+            Type et = getExtendedType();
             if (et!=null && 
                     et.getDeclaration().inherits(dec)) {
                 return true;
             }
             if (dec instanceof Interface) {
-                List<ProducedType> sts = getSatisfiedTypes();
+                List<Type> sts = getSatisfiedTypes();
                 for (int i = 0, s=sts.size(); i<s; i++) {
-                    ProducedType st = sts.get(i);
+                    Type st = sts.get(i);
                     if (st.getDeclaration().inherits(dec)) {
                         return true;
                     }

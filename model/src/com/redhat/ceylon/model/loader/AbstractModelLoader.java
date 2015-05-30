@@ -72,7 +72,7 @@ import com.redhat.ceylon.model.typechecker.model.Modules;
 import com.redhat.ceylon.model.typechecker.model.Package;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.ParameterList;
-import com.redhat.ceylon.model.typechecker.model.ProducedType;
+import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.Scope;
 import com.redhat.ceylon.model.typechecker.model.Setter;
 import com.redhat.ceylon.model.typechecker.model.SiteVariance;
@@ -1441,7 +1441,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         }
     }
 
-    private ProducedType newUnknownType() {
+    private Type newUnknownType() {
         return new UnknownType(typeFactory).getType();
     }
 
@@ -1986,7 +1986,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         AnnotationMirror aliasAnnotation = mirror.getAnnotation(aliasAnnotationName);
         String extendedTypeString = (String) aliasAnnotation.getValue();
         
-        ProducedType extendedType = decodeType(extendedTypeString, alias, ModelUtil.getModuleContainer(alias), "alias target");
+        Type extendedType = decodeType(extendedTypeString, alias, ModelUtil.getModuleContainer(alias), "alias target");
         alias.setExtendedType(extendedType);
     }
 
@@ -2138,7 +2138,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                         && !setter.isProtected() && !value.mirror.isProtected()
                         && !setter.isDefaultAccess() && !value.mirror.isDefaultAccess())) {
                     VariableMirror setterParam = setter.getParameters().get(0);
-                    ProducedType paramType = obtainType(setterParam.getType(), setterParam, klass, ModelUtil.getModuleContainer(klass), VarianceLocation.INVARIANT,
+                    Type paramType = obtainType(setterParam.getType(), setterParam, klass, ModelUtil.getModuleContainer(klass), VarianceLocation.INVARIANT,
                             "setter '"+setter.getName()+"'", klass);
                     // only add the setter if it has exactly the same type as the getter
                     if(paramType.isExactly(value.getType())){
@@ -2503,7 +2503,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         method.setRealName(methodName);
         method.setUnit(klass.getUnit());
         method.setOverloaded(isOverloaded || isOverloadingMethod(methodMirror));
-        ProducedType type = null;
+        Type type = null;
         try{
             setMethodOrValueFlags(klass, methodMirror, method, isCeylon);
         }catch(ModelResolutionException x){
@@ -2549,13 +2549,13 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         return method;
     }
 
-    private List<ProducedType> getSignature(Declaration decl) {
-        List<ProducedType> result = null;
+    private List<Type> getSignature(Declaration decl) {
+        List<Type> result = null;
         if (decl instanceof Functional) {
             Functional func = (Functional)decl;
             if (func.getParameterLists().size() > 0) {
                 List<Parameter> params = func.getParameterLists().get(0).getParameters();
-                result = new ArrayList<ProducedType>(params.size());
+                result = new ArrayList<Type>(params.size());
                 for (Parameter p : params) {
                     result.add(p.getType());
                 }
@@ -2688,7 +2688,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 && fieldMirror.isStatic())
             value.setEnumValue(true);
         
-        ProducedType type = obtainType(fieldMirror.getType(), fieldMirror, klass, ModelUtil.getModuleContainer(klass), VarianceLocation.INVARIANT,
+        Type type = obtainType(fieldMirror.getType(), fieldMirror, klass, ModelUtil.getModuleContainer(klass), VarianceLocation.INVARIANT,
                 "field '"+value.getName()+"'", klass);
         if (value.isEnumValue()) {
             Class enumValueType = new Class();
@@ -2798,7 +2798,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         value.setContainer(klass);
         value.setScope(klass);
         value.setUnit(klass.getUnit());
-        ProducedType type = null;
+        Type type = null;
         try{
             setMethodOrValueFlags(klass, methodMirror, value, isCeylon);
         }catch(ModelResolutionException x){
@@ -2939,7 +2939,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     private void setExtendedType(ClassOrInterface klass, ClassMirror classMirror) {
         // look at its super type
         TypeMirror superClass = classMirror.getSuperclass();
-        ProducedType extendedType;
+        Type extendedType;
         
         if(klass instanceof Interface){
             // interfaces need to have their superclass set to Object
@@ -2988,10 +2988,10 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             klass.setExtendedType(extendedType);
     }
 
-    private ProducedType getJavaAnnotationExtendedType(ClassOrInterface klass, ClassMirror classMirror) {
+    private Type getJavaAnnotationExtendedType(ClassOrInterface klass, ClassMirror classMirror) {
         TypeDeclaration constrainedAnnotation = (TypeDeclaration) convertNonPrimitiveTypeToDeclaration(getLanguageModule(), CEYLON_CONSTRAINED_ANNOTATION_TYPE, klass, DeclarationType.TYPE);
         AnnotationMirror target = classMirror.getAnnotation("java.lang.annotation.Target");
-        Set<ProducedType> types = new HashSet<ProducedType>();
+        Set<Type> types = new HashSet<Type>();
         if(target != null){
             @SuppressWarnings("unchecked")
             List<String> values = (List<String>) target.getValue();
@@ -3028,7 +3028,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             }
         }
         Module module = ModelUtil.getModuleContainer(klass);
-        ProducedType annotatedType;
+        Type annotatedType;
         if(types.size() == 1)
             annotatedType = types.iterator().next();
         else if(types.isEmpty()){
@@ -3043,13 +3043,13 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             }
             annotatedType = decl.getType();
         }else{
-            List<ProducedType> list = new ArrayList<ProducedType>(types.size());
+            List<Type> list = new ArrayList<Type>(types.size());
             list.addAll(types);
             UnionType ut = new UnionType(getUnitForModule(module));
             ut.setCaseTypes(list);
             annotatedType =  ut.getType();
         }
-        ProducedType constrainedType = constrainedAnnotation.getProducedType(null, Arrays.asList(klass.getType(), getOptionalType(klass.getType(), module), annotatedType));
+        Type constrainedType = constrainedAnnotation.getProducedType(null, Arrays.asList(klass.getType(), getOptionalType(klass.getType(), module), annotatedType));
         return constrainedType;
     }
     
@@ -3079,7 +3079,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             TypeMirror typeMirror = paramMirror.getType();
             Module module = ModelUtil.getModuleContainer((Scope) decl);
 
-            ProducedType type;
+            Type type;
             if(isVariadic){
                 // possibly make it optional
                 TypeMirror variadicType = typeMirror.getComponentType();
@@ -3087,7 +3087,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 type = obtainType(ModelUtil.getModuleContainer((Scope)decl), variadicType, (Scope)decl, TypeLocation.TOPLEVEL, VarianceLocation.CONTRAVARIANT);
                 if(!isCeylon && !variadicType.isPrimitive()){
                     // Java parameters are all optional unless primitives
-                    ProducedType optionalType = getOptionalType(type, module);
+                    Type optionalType = getOptionalType(type, module);
                     optionalType.setUnderlyingType(type.getUnderlyingType());
                     type = optionalType;
                 }
@@ -3101,7 +3101,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 // in the java side so let's not allow this
                 if(!isCeylon && !typeMirror.isPrimitive()){
                     // Java parameters are all optional unless primitives
-                    ProducedType optionalType = getOptionalType(type, module);
+                    Type optionalType = getOptionalType(type, module);
                     optionalType.setUnderlyingType(type.getUnderlyingType());
                     type = optionalType;
                 }
@@ -3139,7 +3139,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 // rather than just the method return type, so we try to detect this and fix it
                 if(value instanceof Method 
                         && isCeylon1Dot1(classMirror)){
-                    ProducedType newType = getSimpleCallableReturnType(value.getType());
+                    Type newType = getSimpleCallableReturnType(value.getType());
                     if(!newType.isUnknown())
                         value.setType(newType);
                 }
@@ -3192,7 +3192,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         return major == Versions.V1_1_BINARY_MAJOR_VERSION && minor == Versions.V1_1_BINARY_MINOR_VERSION;
     }
     
-    private Method loadFunctionalParameter(Declaration decl, String paramName, ProducedType type, String parameterNames) {
+    private Method loadFunctionalParameter(Declaration decl, String paramName, Type type, String parameterNames) {
         Method method = new Method();
         method.setName(paramName);
         method.setUnit(decl.getUnit());
@@ -3202,7 +3202,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             method.setType(getSimpleCallableReturnType(type));
             ParameterList pl = new ParameterList();
             int count = 0;
-            for (ProducedType pt : getSimpleCallableArgumentTypes(type)) {
+            for (Type pt : getSimpleCallableArgumentTypes(type)) {
                 Parameter p = new Parameter();
                 Value v = new Value();
                 String name = "arg" + count++;
@@ -3228,7 +3228,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         return method;
     }
 
-    List<ProducedType> getSimpleCallableArgumentTypes(ProducedType type) {
+    List<Type> getSimpleCallableArgumentTypes(Type type) {
         if(type != null
                 && type.isClassOrInterface()
                 && type.getDeclaration().getQualifiedNameString().equals(CEYLON_LANGUAGE_CALLABLE_TYPE_NAME)
@@ -3237,25 +3237,25 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         return Collections.emptyList();
     }
 
-    List<ProducedType> flattenCallableTupleType(ProducedType tupleType) {
+    List<Type> flattenCallableTupleType(Type tupleType) {
         if(tupleType != null
                 && tupleType.isClassOrInterface()){
             String declName = tupleType.getDeclaration().getQualifiedNameString();
             if(declName.equals(CEYLON_LANGUAGE_TUPLE_TYPE_NAME)){
-                List<ProducedType> tal = tupleType.getTypeArgumentList();
+                List<Type> tal = tupleType.getTypeArgumentList();
                 if(tal.size() >= 3){
-                    List<ProducedType> ret = flattenCallableTupleType(tal.get(2));
+                    List<Type> ret = flattenCallableTupleType(tal.get(2));
                     ret.add(0, tal.get(1));
                     return ret;
                 }
             }else if(declName.equals(CEYLON_LANGUAGE_EMPTY_TYPE_NAME)){
-                return new LinkedList<ProducedType>();
+                return new LinkedList<Type>();
             }else if(declName.equals(CEYLON_LANGUAGE_SEQUENTIAL_TYPE_NAME)){
-                LinkedList<ProducedType> ret = new LinkedList<ProducedType>();
+                LinkedList<Type> ret = new LinkedList<Type>();
                 ret.add(tupleType);
                 return ret;
             }else if(declName.equals(CEYLON_LANGUAGE_SEQUENCE_TYPE_NAME)){
-                LinkedList<ProducedType> ret = new LinkedList<ProducedType>();
+                LinkedList<Type> ret = new LinkedList<Type>();
                 ret.add(tupleType);
                 return ret;
             }
@@ -3263,7 +3263,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         return Collections.emptyList();
     }
     
-    ProducedType getSimpleCallableReturnType(ProducedType type) {
+    Type getSimpleCallableReturnType(Type type) {
         if(type != null
                 && type.isClassOrInterface()
                 && type.getDeclaration().getQualifiedNameString().equals(CEYLON_LANGUAGE_CALLABLE_TYPE_NAME)
@@ -3272,12 +3272,12 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         return newUnknownType();
     }
     
-    private ProducedType getOptionalType(ProducedType type, Module moduleScope) {
+    private Type getOptionalType(Type type, Module moduleScope) {
         if(type.isUnknown())
             return type;
         // we do not use Unit.getOptionalType because it causes lots of lazy loading that ultimately triggers the typechecker's
         // infinite recursion loop
-        List<ProducedType> list = new ArrayList<ProducedType>(2);
+        List<Type> list = new ArrayList<Type>(2);
         list.add(typeFactory.getNullType());
         list.add(type);
         UnionType ut = new UnionType(getUnitForModule(moduleScope));
@@ -3285,20 +3285,20 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         return ut.getType();
     }
     
-    private ProducedType logModelResolutionError(Scope container, String message) {
+    private Type logModelResolutionError(Scope container, String message) {
         return logModelResolutionException((String)null, container, message);
     }
 
-    private ProducedType logModelResolutionException(ModelResolutionException x, Scope container, String message) {
+    private Type logModelResolutionException(ModelResolutionException x, Scope container, String message) {
         return logModelResolutionException(x.getMessage(), container, message);
     }
     
-    private ProducedType logModelResolutionException(final String exceptionMessage, Scope container, final String message) {
+    private Type logModelResolutionException(final String exceptionMessage, Scope container, final String message) {
         final Module module = ModelUtil.getModuleContainer(container);
         return logModelResolutionException(exceptionMessage, module, message);
     }
     
-    private ProducedType logModelResolutionException(final String exceptionMessage, Module module, final String message) {
+    private Type logModelResolutionException(final String exceptionMessage, Module module, final String message) {
         UnknownType.ErrorReporter errorReporter;
         if(module != null && !module.isDefault()){
             final StringBuilder sb = new StringBuilder();
@@ -3648,14 +3648,14 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         return klass;
     }
 
-    private ProducedType annotationParameterType(Unit unit, JavaMethod m) {
-        ProducedType type = m.getType();
+    private Type annotationParameterType(Unit unit, JavaMethod m) {
+        Type type = m.getType();
         if (JvmBackendUtil.isJavaArray(type.getDeclaration())) {
             String name = type.getDeclaration().getQualifiedNameString();
-            final ProducedType elementType;
+            final Type elementType;
             String underlyingType = null;
             if(name.equals("java.lang::ObjectArray")){
-                ProducedType eType = type.getTypeArgumentList().get(0);
+                Type eType = type.getTypeArgumentList().get(0);
                 String elementTypeName = eType.getDeclaration().getQualifiedNameString();
                 if ("java.lang::String".equals(elementTypeName)) {
                     elementType = unit.getStringType();
@@ -3697,7 +3697,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 throw new RuntimeException();
             }
             elementType.setUnderlyingType(underlyingType);
-            ProducedType iterableType = unit.getIterableType(elementType);
+            Type iterableType = unit.getIterableType(elementType);
             return iterableType;
         } else if ("java.lang::Class".equals(type.getDeclaration().getQualifiedNameString())) {
             // TODO Replace with metamodel ClassOrInterface type
@@ -3764,7 +3764,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
 
     private void setCaseTypes(ClassOrInterface klass, ClassMirror classMirror) {
         if (classMirror.isEnum()) {
-            ArrayList<ProducedType> caseTypes = new ArrayList<ProducedType>();
+            ArrayList<Type> caseTypes = new ArrayList<Type>();
             for (Declaration member : klass.getMembers()) {
                 if (member instanceof FieldValue
                         && ((FieldValue) member).isEnumValue()) {
@@ -3776,12 +3776,12 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             String selfType = getSelfTypeFromAnnotations(classMirror);
             Module moduleScope = ModelUtil.getModuleContainer(klass);
             if(selfType != null && !selfType.isEmpty()){
-                ProducedType type = decodeType(selfType, klass, moduleScope, "self type");
+                Type type = decodeType(selfType, klass, moduleScope, "self type");
                 if(!type.isTypeParameter()){
                     logError("Invalid type signature for self type of "+klass.getQualifiedNameString()+": "+selfType+" is not a type parameter");
                 }else{
                     klass.setSelfType(type);
-                    List<ProducedType> caseTypes = new LinkedList<ProducedType>();
+                    List<Type> caseTypes = new LinkedList<Type>();
                     caseTypes.add(type);
                     klass.setCaseTypes(caseTypes);
                 }
@@ -3794,8 +3794,8 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         }
     }
 
-    private List<ProducedType> getTypesList(List<String> caseTypes, Scope scope, Module moduleScope, String targetType, String targetName) {
-        List<ProducedType> producedTypes = new LinkedList<ProducedType>();
+    private List<Type> getTypesList(List<String> caseTypes, Scope scope, Module moduleScope, String targetType, String targetName) {
+        List<Type> producedTypes = new LinkedList<Type>();
         for(String type : caseTypes){
             producedTypes.add(decodeType(type, scope, moduleScope, targetType));
         }
@@ -3867,13 +3867,13 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             @SuppressWarnings("unchecked")
             List<String> caseTypesAttribute = (List<String>)typeParamAnnotation.getValue("caseTypes");
             if(caseTypesAttribute != null && !caseTypesAttribute.isEmpty())
-                param.setCaseTypes(new LinkedList<ProducedType>());
+                param.setCaseTypes(new LinkedList<Type>());
             setListOfTypes(param.getCaseTypes(), caseTypesAttribute, scope, moduleScope,
                     "type parameter '"+param.getName()+"' case types");
 
             String defaultValueAttribute = (String)typeParamAnnotation.getValue("defaultValue");
             if(defaultValueAttribute != null && !defaultValueAttribute.isEmpty()){
-                ProducedType decodedType = decodeType(defaultValueAttribute, scope, moduleScope, 
+                Type decodedType = decodeType(defaultValueAttribute, scope, moduleScope, 
                         "type parameter '"+param.getName()+"' defaultValue");
                 param.setDefaultTypeArgument(decodedType);
                 param.setDefaulted(true);
@@ -3889,11 +3889,11 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                    || !sameType(bounds.get(0), OBJECT_TYPE));
     }
 
-    private void setListOfTypes(List<ProducedType> destinationTypeList, List<String> serialisedTypes, Scope scope, Module moduleScope, 
+    private void setListOfTypes(List<Type> destinationTypeList, List<String> serialisedTypes, Scope scope, Module moduleScope, 
                                 String targetType) {
         if(serialisedTypes != null){
             for (String serialisedType : serialisedTypes) {
-                ProducedType decodedType = decodeType(serialisedType, scope, moduleScope, targetType);
+                Type decodedType = decodeType(serialisedType, scope, moduleScope, targetType);
                 destinationTypeList.add(decodedType);
             }
         }
@@ -3926,7 +3926,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             TypeParameter param = paramsIterator.next();
             List<TypeMirror> bounds = typeParam.getBounds();
             for(TypeMirror bound : bounds){
-                ProducedType boundType;
+                Type boundType;
                 // we turn java's default upper bound java.lang.Object into ceylon.language.Object
                 if(sameType(bound, OBJECT_TYPE)){
                     // avoid adding java's default upper bound if it's just there with no meaning,
@@ -3939,7 +3939,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 param.getSatisfiedTypes().add(boundType);
             }
             if(needsObjectBounds && param.getSatisfiedTypes().isEmpty()){
-                ProducedType boundType = getNonPrimitiveType(getLanguageModule(), CEYLON_OBJECT_TYPE, scope, VarianceLocation.INVARIANT);
+                Type boundType = getNonPrimitiveType(getLanguageModule(), CEYLON_OBJECT_TYPE, scope, VarianceLocation.INVARIANT);
                 param.getSatisfiedTypes().add(boundType);
             }
         }
@@ -3979,11 +3979,11 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     //
     // TypeParsing and ModelLoader
 
-    private ProducedType decodeType(String value, Scope scope, Module moduleScope, String targetType) {
+    private Type decodeType(String value, Scope scope, Module moduleScope, String targetType) {
         return decodeType(value, scope, moduleScope, targetType, null);
     }
     
-    private ProducedType decodeType(String value, Scope scope, Module moduleScope, String targetType, Declaration target) {
+    private Type decodeType(String value, Scope scope, Module moduleScope, String targetType, Declaration target) {
         try{
             return typeParser.decodeType(value, scope, moduleScope, getUnitForModule(moduleScope));
         }catch(TypeParserException x){
@@ -4026,11 +4026,11 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     }
 
     /** Warning: only valid for toplevel types, not for type parameters */
-    private ProducedType obtainType(TypeMirror type, AnnotatedMirror symbol, Scope scope, Module moduleScope, VarianceLocation variance, 
+    private Type obtainType(TypeMirror type, AnnotatedMirror symbol, Scope scope, Module moduleScope, VarianceLocation variance, 
                                     String targetType, Declaration target) {
         String typeName = getAnnotationStringValue(symbol, CEYLON_TYPE_INFO_ANNOTATION);
         if (typeName != null) {
-            ProducedType ret = decodeType(typeName, scope, moduleScope, targetType, target);
+            Type ret = decodeType(typeName, scope, moduleScope, targetType, target);
             // even decoded types need to fit with the reality of the underlying type
             ret.setUnderlyingType(getUnderlyingType(type, TypeLocation.TOPLEVEL));
             return ret;
@@ -4076,12 +4076,12 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         return null;
     }
     
-    public ProducedType obtainType(Module moduleScope, TypeMirror type, Scope scope, TypeLocation location, VarianceLocation variance) {
+    public Type obtainType(Module moduleScope, TypeMirror type, Scope scope, TypeLocation location, VarianceLocation variance) {
         TypeMirror originalType = type;
         // ERASURE
         type = applyTypeMapping(type, location);
         
-        ProducedType ret = getNonPrimitiveType(moduleScope, type, scope, variance);
+        Type ret = getNonPrimitiveType(moduleScope, type, scope, variance);
         if (ret.getUnderlyingType() == null) {
             ret.setUnderlyingType(getUnderlyingType(originalType, location));
         }
@@ -4176,7 +4176,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         return convertToDeclaration(module, typeName, declarationType);
     }
 
-    private ProducedType getNonPrimitiveType(Module moduleScope, TypeMirror type, Scope scope, VarianceLocation variance) {
+    private Type getNonPrimitiveType(Module moduleScope, TypeMirror type, Scope scope, VarianceLocation variance) {
         TypeDeclaration declaration = (TypeDeclaration) convertNonPrimitiveTypeToDeclaration(moduleScope, type, scope, DeclarationType.TYPE);
         if(declaration == null){
             throw new ModelResolutionException("Failed to find declaration for "+type.getQualifiedName());
@@ -4191,7 +4191,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     @SuppressWarnings("serial")
     private static class RecursiveTypeParameterBoundException extends RuntimeException {}
     
-    private ProducedType applyTypeArguments(Module moduleScope, TypeDeclaration declaration,
+    private Type applyTypeArguments(Module moduleScope, TypeDeclaration declaration,
                                             TypeMirror type, Scope scope, VarianceLocation variance,
                                             TypeMappingMode mode, Set<TypeDeclaration> rawDeclarationsSeen) {
         List<TypeMirror> javacTypeArguments = type.getTypeArguments();
@@ -4207,7 +4207,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             if(rawDeclarationsSeen != null && !rawDeclarationsSeen.add(declaration))
                 throw new RecursiveTypeParameterBoundException();
             try{
-                List<ProducedType> typeArguments = new ArrayList<ProducedType>(javacTypeArguments.size());
+                List<Type> typeArguments = new ArrayList<Type>(javacTypeArguments.size());
                 List<TypeParameter> typeParameters = declaration.getTypeParameters();
                 List<TypeParameterMirror> typeParameterMirrors = null;
                 // SimpleReflType for Object and friends don't have a type, but don't need one
@@ -4219,7 +4219,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                     TypeParameter typeParameter = null;
                     if(i < typeParameters.size())
                         typeParameter = typeParameters.get(i);
-                    ProducedType producedTypeArgument = null;
+                    Type producedTypeArgument = null;
                     // do we have a type argument?
                     TypeMirror typeArgument = null;
                     SiteVariance siteVariance = null;
@@ -4288,11 +4288,11 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                     }
                     typeArguments.add(producedTypeArgument);
                 }
-                ProducedType qualifyingType = null;
+                Type qualifyingType = null;
                 if(type.getQualifyingType() != null){
                     qualifyingType = getNonPrimitiveType(moduleScope, type.getQualifyingType(), scope, variance);
                 }
-                ProducedType ret = declaration.getProducedType(qualifyingType, typeArguments);
+                Type ret = declaration.getProducedType(qualifyingType, typeArguments);
                 if(siteVarianceMap != null){
                     ret.setVarianceOverrides(siteVarianceMap);
                 }
@@ -4308,8 +4308,8 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         // we have no type args, but perhaps we have a qualifying type which has some?
         if(type.getQualifyingType() != null){
             // that one may have type arguments
-            ProducedType qualifyingType = getNonPrimitiveType(moduleScope, type.getQualifyingType(), scope, variance);
-            ProducedType ret = declaration.getProducedType(qualifyingType, Collections.<ProducedType>emptyList());
+            Type qualifyingType = getNonPrimitiveType(moduleScope, type.getQualifyingType(), scope, variance);
+            Type ret = declaration.getProducedType(qualifyingType, Collections.<Type>emptyList());
             ret.setUnderlyingType(type.getQualifiedName());
             ret.setRaw(isRaw);
             return ret;
@@ -4318,14 +4318,14 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         return declaration.getType();
     }
 
-    private ProducedType obtainTypeParameterBound(Module moduleScope, TypeMirror type, Scope scope, Set<TypeDeclaration> rawDeclarationsSeen) {
+    private Type obtainTypeParameterBound(Module moduleScope, TypeMirror type, Scope scope, Set<TypeDeclaration> rawDeclarationsSeen) {
         // type variables are never mapped
         if(type.getKind() == TypeKind.TYPEVAR){
             TypeParameterMirror typeParameter = type.getTypeParameter();
             if(!typeParameter.getBounds().isEmpty()){
                 IntersectionType it = new IntersectionType(getUnitForModule(moduleScope));
                 for(TypeMirror bound : typeParameter.getBounds()){
-                    ProducedType boundModel = obtainTypeParameterBound(moduleScope, bound, scope, rawDeclarationsSeen);
+                    Type boundModel = obtainTypeParameterBound(moduleScope, bound, scope, rawDeclarationsSeen);
                     it.getSatisfiedTypes().add(boundModel);
                 }
                 return it.getType();
@@ -4342,7 +4342,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             if(declaration instanceof UnknownType)
                 return declaration.getType();
 
-            ProducedType ret = applyTypeArguments(moduleScope, declaration, type, scope, VarianceLocation.CONTRAVARIANT, TypeMappingMode.GENERATOR, rawDeclarationsSeen);
+            Type ret = applyTypeArguments(moduleScope, declaration, type, scope, VarianceLocation.CONTRAVARIANT, TypeMappingMode.GENERATOR, rawDeclarationsSeen);
             
             if (ret.getUnderlyingType() == null) {
                 ret.setUnderlyingType(getUnderlyingType(type, TypeLocation.TYPE_PARAM));
@@ -4351,8 +4351,8 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         }
     }
     
-    /*private ProducedType getQualifyingType(TypeDeclaration declaration) {
-        // As taken from ProducedType.getType():
+    /*private Type getQualifyingType(TypeDeclaration declaration) {
+        // As taken from Type.getType():
         if (declaration.isMember()) {
             return((ClassOrInterface) declaration.getContainer()).getType();
         }
@@ -4360,7 +4360,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     }*/
 
     @Override
-    public ProducedType getType(Module module, String pkgName, String name, Scope scope)  {
+    public Type getType(Module module, String pkgName, String name, Scope scope)  {
         Declaration decl = getDeclaration(module, pkgName, name, scope);
         if(decl == null)
             return null;

@@ -31,14 +31,14 @@ public abstract class ClassOrInterface extends TypeDeclaration {
     }
 
     @Override
-    public ProducedType getDeclaringType(Declaration d) {
+    public Type getDeclaringType(Declaration d) {
         //look for it as a declared or inherited 
         //member of the current class or interface
     	if (d.isMember()) {
     	    TypeDeclaration ctd = 
     	            (TypeDeclaration) 
     	                d.getContainer();
-    	    ProducedType st = getType().getSupertype(ctd);
+    	    Type st = getType().getSupertype(ctd);
 	        //return st;
 	        if (st!=null) {
 	            return st;
@@ -58,8 +58,8 @@ public abstract class ClassOrInterface extends TypeDeclaration {
     }
 
     @Override
-    public ProducedType getExtendedType() {
-        ProducedType et = super.getExtendedType();
+    public Type getExtendedType() {
+        Type et = super.getExtendedType();
         if (et == null) {
             //for Anything
             return null;
@@ -79,17 +79,17 @@ public abstract class ClassOrInterface extends TypeDeclaration {
     }
 
     @Override
-    public List<ProducedType> getSatisfiedTypes() {
-        List<ProducedType> satisfiedTypes = 
+    public List<Type> getSatisfiedTypes() {
+        List<Type> satisfiedTypes = 
                 super.getSatisfiedTypes();
-        List<ProducedType> sts = satisfiedTypes;
+        List<Type> sts = satisfiedTypes;
         for (int i=0, size=sts.size(); i<size; i++) {
-            ProducedType st = sts.get(i);
+            Type st = sts.get(i);
             if (st!=null) {
                 TypeDeclaration std = st.getDeclaration();
                 if (std==this || st.isTypeAlias()) {
                     if (sts == satisfiedTypes) {
-                        sts = new ArrayList<ProducedType>(sts);
+                        sts = new ArrayList<Type>(sts);
                     }
                     sts.remove(i);
                     size--;
@@ -101,18 +101,18 @@ public abstract class ClassOrInterface extends TypeDeclaration {
     }
     
     @Override
-    public List<ProducedType> getCaseTypes() {
-        List<ProducedType> caseTypes = 
+    public List<Type> getCaseTypes() {
+        List<Type> caseTypes = 
                 super.getCaseTypes();
-        List<ProducedType> cts = caseTypes;
+        List<Type> cts = caseTypes;
         if (cts!=null) {
             for (int i=0, size=cts.size(); i<size; i++) {
-                ProducedType ct = cts.get(i);
+                Type ct = cts.get(i);
                 if (ct!=null) {
                     TypeDeclaration ctd = ct.getDeclaration();
                     if (ctd==this || ct.isTypeAlias()) {
                         if (cts==caseTypes) {
-                            cts = new ArrayList<ProducedType>(cts);
+                            cts = new ArrayList<Type>(cts);
                         }
                         cts.remove(i);
                         i--;
@@ -129,14 +129,14 @@ public abstract class ClassOrInterface extends TypeDeclaration {
             List<TypeDeclaration> results) {
         if (!results.contains(this)) {
             results.add(this);
-            ProducedType et = getExtendedType();
-            List<ProducedType> stds = getSatisfiedTypes();
+            Type et = getExtendedType();
+            List<Type> stds = getSatisfiedTypes();
             if (et!=null) {
                 et.getDeclaration()
                     .collectSupertypeDeclarations(results);
             }
             for (int i=0, l=stds.size(); i<l; i++) {
-                ProducedType st = stds.get(i);
+                Type st = stds.get(i);
                 st.getDeclaration()
                     .collectSupertypeDeclarations(results);
             }

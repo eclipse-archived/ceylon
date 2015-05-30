@@ -110,7 +110,7 @@ public class Value extends MethodOrValue implements Scope {
     
     @Override
     public String toString() {
-        ProducedType type = getType();
+        Type type = getType();
         if (type==null) {
             return "value " + toStringName();
         }

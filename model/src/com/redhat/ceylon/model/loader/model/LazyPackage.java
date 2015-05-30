@@ -21,7 +21,7 @@ import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.Package;
-import com.redhat.ceylon.model.typechecker.model.ProducedType;
+import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.model.typechecker.model.Unit;
 
@@ -42,14 +42,14 @@ public class LazyPackage extends Package {
     }
     
     @Override
-    public Declaration getMember(String name, List<ProducedType> signature, boolean ellipsis) {
+    public Declaration getMember(String name, List<Type> signature, boolean ellipsis) {
         // FIXME: what use is this method in the type checker?
         return getDirectMember(name, signature, ellipsis);
     }
     
     // FIXME: redo this method better: https://github.com/ceylon/ceylon-spec/issues/90
     @Override
-    public Declaration getDirectMember(String name, List<ProducedType> signature, boolean ellipsis) {
+    public Declaration getDirectMember(String name, List<Type> signature, boolean ellipsis) {
 //        System.err.println("getMember "+name+" "+signature+" "+ellipsis);
         boolean canCache = (signature == null && !ellipsis);
         if(canCache){
@@ -68,7 +68,7 @@ public class LazyPackage extends Package {
         return ret;
     }
     
-    private Declaration getDirectMemberMemoised(String name, List<ProducedType> signature, boolean ellipsis) {
+    private Declaration getDirectMemberMemoised(String name, List<Type> signature, boolean ellipsis) {
         synchronized(modelLoader.getLock()){
 
             String pkgName = getQualifiedNameString();

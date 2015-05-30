@@ -319,8 +319,7 @@ public abstract class Declaration
      * parameters of this declaration
      */
     public abstract ProducedReference getProducedReference(
-            ProducedType pt,
-            List<ProducedType> typeArguments);
+            Type pt, List<Type> typeArguments);
     
     /**
      * Obtain a reference to this declaration, as seen 
@@ -344,7 +343,7 @@ public abstract class Declaration
         return container;
     }
     
-    ProducedType getMemberContainerType() {
+    Type getMemberContainerType() {
         if (isMember()) {
             ClassOrInterface container = 
                     (ClassOrInterface) 
@@ -451,9 +450,9 @@ public abstract class Declaration
                         Parameter thatParam = thatParams.get(j);
                         if (thisParam!=thatParam) {
                             if (thisParam!=null && thatParam!=null) {
-                                ProducedType thisParamType = 
+                                Type thisParamType = 
                                         thisParam.getType();
-                                ProducedType thatParamType = 
+                                Type thatParamType = 
                                         thatParam.getType();
                                 if (thisParamType!=null && 
                                         thatParamType!=null) {
@@ -616,12 +615,12 @@ public abstract class Declaration
     /**
      * Get the type parameters of this declaration as their
      * own arguments. Note: what is returned is different to 
-     * {@link Util#getTypeArgumentMap(Declaration, ProducedType, List)},
+     * {@link Util#getTypeArgumentMap(Declaration, Type, List)},
      * which also includes type arguments from qualifying 
      * types. In this case we assume they're uninteresting.
      * 
      * We do need to compensate for this in 
-     * {@link ProducedType.Substitution#substitutedType(TypeDeclaration, ProducedType, boolean, boolean)}
+     * {@link Type.Substitution#substitutedType(TypeDeclaration, Type, boolean, boolean)}
      * By expanding out the type arguments of the qualifying
      * type. An alternative solution would be to just expand
      * out all the type args of the qualifying type here. 
@@ -629,7 +628,7 @@ public abstract class Declaration
      * @return a map from each type parameter of this 
      *         declaration to its own type
      */
-    Map<TypeParameter, ProducedType> getTypeParametersAsArguments() {
+    Map<TypeParameter, Type> getTypeParametersAsArguments() {
         if (this instanceof Generic) {
             Generic g = (Generic) this;
             List<TypeParameter> typeParameters = 
@@ -638,10 +637,10 @@ public abstract class Declaration
                 return EMPTY_TYPE_ARG_MAP;
             }
             else {
-                Map<TypeParameter,ProducedType> typeArgs = 
-                        new HashMap<TypeParameter,ProducedType>();
+                Map<TypeParameter,Type> typeArgs = 
+                        new HashMap<TypeParameter,Type>();
                 for (TypeParameter p: typeParameters) {
-                    ProducedType pta = new ProducedType();
+                    Type pta = new Type();
                     if (p.isTypeConstructor()) {
                         pta.setTypeConstructor(true);
                         pta.setTypeConstructorParameter(p);

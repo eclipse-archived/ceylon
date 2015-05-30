@@ -42,9 +42,9 @@ public class UnionType extends TypeDeclaration {
     }
     
     @Override
-    public ProducedType getType() {
-        List<ProducedType> cts = getCaseTypes();
-        for (ProducedType pt: cts) {
+    public Type getType() {
+        List<Type> cts = getCaseTypes();
+        for (Type pt: cts) {
             if (pt==null || pt.isUnknown()) {
                 return unit.getUnknownType();
             }
@@ -95,14 +95,14 @@ public class UnionType extends TypeDeclaration {
     @Override
     void collectSupertypeDeclarations(
             List<TypeDeclaration> results) {
-        List<ProducedType> cts = getCaseTypes();
+        List<Type> cts = getCaseTypes();
         if (!cts.isEmpty()) {
 //        for (int i=0, size=cts.size(); i<size; i++) {
             //actually the loop is unnecessary, we
             //only need to consider the first case
             List<TypeDeclaration> candidates =
                     new ArrayList<TypeDeclaration>(results);
-            ProducedType firstCase = cts.get(0);
+            Type firstCase = cts.get(0);
             firstCase.getDeclaration()
                 .collectSupertypeDeclarations(candidates);
             for (int j=results.size(), 
@@ -126,14 +126,14 @@ public class UnionType extends TypeDeclaration {
             //this loop is intended as a performance
             //optimization, but it doesn't actually
             //seem to help at all really
-            /*for (ProducedType ct: getCaseTypes()) {
+            /*for (Type ct: getCaseTypes()) {
                 if (!ct.getDeclaration().inherits(dec)) {
                     return false;
                 }
             }*/        
             //have to resolve aliases here or the build of
             //ceylon.ast is really slow / nonterminating
-            ProducedType st = 
+            Type st = 
                     getType()
                         .resolveAliases()
                         .getSupertype(dec);
@@ -149,7 +149,7 @@ public class UnionType extends TypeDeclaration {
     @Override
     protected int hashCodeForCache() {
         int ret = 17;
-        List<ProducedType> caseTypes = getCaseTypes();
+        List<Type> caseTypes = getCaseTypes();
         for(int i=0,l=caseTypes.size();i<l;i++) {
             ret = (37 * ret) + caseTypes.get(i).hashCode();
         }
@@ -162,8 +162,8 @@ public class UnionType extends TypeDeclaration {
             return false;
         }
         UnionType b = (UnionType) o;
-        List<ProducedType> caseTypesA = getCaseTypes();
-        List<ProducedType> caseTypesB = b.getCaseTypes();
+        List<Type> caseTypesA = getCaseTypes();
+        List<Type> caseTypesB = b.getCaseTypes();
         if (caseTypesA.size() != caseTypesB.size()) {
             return false;
         }

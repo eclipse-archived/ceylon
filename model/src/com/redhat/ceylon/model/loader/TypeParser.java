@@ -9,7 +9,7 @@ import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.IntersectionType;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.Package;
-import com.redhat.ceylon.model.typechecker.model.ProducedType;
+import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.Scope;
 import com.redhat.ceylon.model.typechecker.model.SiteVariance;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
@@ -21,10 +21,10 @@ import com.redhat.ceylon.model.typechecker.model.Unit;
 public class TypeParser {
     public class Part {
         String name;
-        List<ProducedType> parameters;
+        List<Type> parameters;
         List<SiteVariance> variance;
-        List<ProducedType> getParameters(){
-            return parameters != null ? parameters : Collections.<ProducedType>emptyList();
+        List<Type> getParameters(){
+            return parameters != null ? parameters : Collections.<Type>emptyList();
         }
         List<SiteVariance> getVariance(){
             return variance != null ? variance : Collections.<SiteVariance>emptyList();
@@ -44,7 +44,7 @@ public class TypeParser {
     /*
      * type: unionType EOT
      */
-    public ProducedType decodeType(String type, Scope scope, Module moduleScope, Unit unit){
+    public Type decodeType(String type, Scope scope, Module moduleScope, Unit unit){
         // save the previous state (this method is reentrant)
         char[] oldType = lexer.type;
         int oldIndex = lexer.index;
@@ -59,7 +59,7 @@ public class TypeParser {
             this.moduleScope = moduleScope;
             this.unit = unit;
             // do the parsing
-            ProducedType ret = parseType();
+            Type ret = parseType();
             if(!lexer.lookingAt(TypeLexer.EOT))
                 throw new TypeParserException("Junk lexemes remaining: "+lexer.eatTokenString());
             return ret;
@@ -77,18 +77,18 @@ public class TypeParser {
     /*
      * type: unionType EOT
      */
-    private ProducedType parseType(){
+    private Type parseType(){
         return parseUnionType();
     }
 
     /*
      * unionType: intersectionType (| intersectionType)*
      */
-    private ProducedType parseUnionType() {
-        ProducedType firstType = parseIntersectionType();
+    private Type parseUnionType() {
+        Type firstType = parseIntersectionType();
         if(lexer.lookingAt(TypeLexer.OR)){
             UnionType type = new UnionType(unit);
-            List<ProducedType> caseTypes = new LinkedList<ProducedType>();
+            List<Type> caseTypes = new LinkedList<Type>();
             type.setCaseTypes(caseTypes);
             caseTypes.add(firstType);
             while(lexer.lookingAt(TypeLexer.OR)){
@@ -104,11 +104,11 @@ public class TypeParser {
     /*
      * intersectionType: qualifiedType (& qualifiedType)*
      */
-    private ProducedType parseIntersectionType() {
-        ProducedType firstType = parseQualifiedType();
+    private Type parseIntersectionType() {
+        Type firstType = parseQualifiedType();
         if(lexer.lookingAt(TypeLexer.AND)){
             IntersectionType type = new IntersectionType(unit);
-            List<ProducedType> satisfiedTypes = new LinkedList<ProducedType>();
+            List<Type> satisfiedTypes = new LinkedList<Type>();
             type.setSatisfiedTypes(satisfiedTypes);
             satisfiedTypes.add(firstType);
             while(lexer.lookingAt(TypeLexer.AND)){
@@ -124,7 +124,7 @@ public class TypeParser {
     /*
      * qualifiedType: compoundQualifiedType | simpleQualifiedType
      */
-    private ProducedType parseQualifiedType() {
+    private Type parseQualifiedType() {
         if (lexer.lookingAt(TypeLexer.LT)) {
             return parseCompoundQualifiedType();
         } else {
@@ -135,14 +135,14 @@ public class TypeParser {
     /*
      * qualifiedType: < unionType > . typeNameWithArguments (. typeNameWithArguments)*
      */
-    private ProducedType parseCompoundQualifiedType() {
+    private Type parseCompoundQualifiedType() {
         lexer.eat(TypeLexer.LT);
-        ProducedType unionType = parseUnionType();
+        Type unionType = parseUnionType();
         lexer.eat(TypeLexer.GT);
         lexer.eat(TypeLexer.DOT);
         Part part = parseTypeNameWithArguments();
         String fullName = part.name;
-        ProducedType qualifyingType = loadType("", fullName, part, unionType);
+        Type qualifyingType = loadType("", fullName, part, unionType);
         while(lexer.lookingAt(TypeLexer.DOT)){
             lexer.eat();
             part = parseTypeNameWithArguments();
@@ -152,16 +152,16 @@ public class TypeParser {
         if(qualifyingType == null){
             throw new ModelResolutionException("Could not find type '"+fullName+"'");
         }
-        if(qualifyingType instanceof ProducedType == false){
-            throw new ModelResolutionException("Type is a declaration (should be a ProducedType): '"+fullName+"'");
+        if(qualifyingType instanceof Type == false){
+            throw new ModelResolutionException("Type is a declaration (should be a Type): '"+fullName+"'");
         }
-        return (ProducedType) qualifyingType;
+        return (Type) qualifyingType;
     }
 
     /*
      * qualifiedType: [packageName (. packageName)* ::] typeNameWithArguments (. typeNameWithArguments)*
      */
-    private ProducedType parseSimpleQualifiedType() {
+    private Type parseSimpleQualifiedType() {
         String pkg;
         
         if (hasPackage()) {
@@ -181,7 +181,7 @@ public class TypeParser {
         // then the type itself
         Part part = parseTypeNameWithArguments();
         String fullName = (pkg.isEmpty()) ? part.name : pkg + "." + part.name;
-        ProducedType qualifyingType = loadType(pkg, fullName, part, null);
+        Type qualifyingType = loadType(pkg, fullName, part, null);
         while(lexer.lookingAt(TypeLexer.DOT)){
             lexer.eat();
             part = parseTypeNameWithArguments();
@@ -191,10 +191,10 @@ public class TypeParser {
         if(qualifyingType == null){
             throw new ModelResolutionException("Could not find type '"+fullName+"'");
         }
-        if(qualifyingType instanceof ProducedType == false){
-            throw new ModelResolutionException("Type is a declaration (should be a ProducedType): '"+fullName+"'");
+        if(qualifyingType instanceof Type == false){
+            throw new ModelResolutionException("Type is a declaration (should be a Type): '"+fullName+"'");
         }
-        return (ProducedType) qualifyingType;
+        return (Type) qualifyingType;
     }
 
     private boolean hasPackage() {
@@ -208,7 +208,7 @@ public class TypeParser {
         return result;
     }
     
-    private ProducedType loadType(String pkg, String fullName, Part part, ProducedType qualifyingType) {
+    private Type loadType(String pkg, String fullName, Part part, Type qualifyingType) {
         // try to find a qualified type
         try{
             Declaration newDeclaration;
@@ -243,7 +243,7 @@ public class TypeParser {
                 newTypeDeclaration = (TypeDeclaration) newDeclaration;
             else
                 newTypeDeclaration = new FunctionOrValueInterface((TypedDeclaration) newDeclaration);
-            ProducedType ret = newTypeDeclaration.getProducedType(qualifyingType, part.getParameters());
+            Type ret = newTypeDeclaration.getProducedType(qualifyingType, part.getParameters());
             // set the use-site variance if required, now that we know the TypeParameter declarations
             if(!part.getVariance().isEmpty()){
                 List<TypeParameter> tps = newTypeDeclaration.getTypeParameters();
@@ -277,7 +277,7 @@ public class TypeParser {
         if(lexer.lookingAt(TypeLexer.LT)){
             lexer.eat();
             parseTypeArgumentVariance(type);
-            type.parameters = new LinkedList<ProducedType>();
+            type.parameters = new LinkedList<Type>();
             type.parameters.add(parseType());
             while(lexer.lookingAt(TypeLexer.COMMA)){
                 lexer.eat();

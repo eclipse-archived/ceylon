@@ -20,15 +20,15 @@ import java.util.TreeMap;
 public abstract class TypeDeclaration extends Declaration 
         implements ImportableScope, Generic, Cloneable {
 
-    private ProducedType extendedType;
-    private List<ProducedType> satisfiedTypes = 
+    private Type extendedType;
+    private List<Type> satisfiedTypes = 
             needsSatisfiedTypes() ? 
-                    new ArrayList<ProducedType>(3) : 
-                    Collections.<ProducedType>emptyList();
-    private List<ProducedType> caseTypes = null;
+                    new ArrayList<Type>(3) : 
+                    Collections.<Type>emptyList();
+    private List<Type> caseTypes = null;
     private List<TypeParameter> typeParameters = emptyList();
-    private ProducedType selfType;
-    private List<ProducedType> brokenSupertypes = null; // delayed allocation
+    private Type selfType;
+    private List<Type> brokenSupertypes = null; // delayed allocation
     private boolean inconsistentType;
     private boolean dynamic;
 	private boolean sealed;
@@ -110,53 +110,53 @@ public abstract class TypeDeclaration extends Declaration
      * type aliased by a class or interface alias, or the 
      * class Anything for any other type.
      */
-    public ProducedType getExtendedType() {
+    public Type getExtendedType() {
         return extendedType;
     }
     
-    public void setExtendedType(ProducedType extendedType) {
+    public void setExtendedType(Type extendedType) {
         this.extendedType = extendedType;
     }
     
-    public List<ProducedType> getSatisfiedTypes() {
+    public List<Type> getSatisfiedTypes() {
         return satisfiedTypes;
     }
     
-    public void setSatisfiedTypes(List<ProducedType> satisfiedTypes) {
+    public void setSatisfiedTypes(List<Type> satisfiedTypes) {
         this.satisfiedTypes = satisfiedTypes;
     }
     
-    public List<ProducedType> getCaseTypes() {
+    public List<Type> getCaseTypes() {
         return caseTypes;
     }
     
-    public void setCaseTypes(List<ProducedType> caseTypes) {
+    public void setCaseTypes(List<Type> caseTypes) {
         this.caseTypes = caseTypes;
     }
     
-    public List<ProducedType> getBrokenSupertypes() {
+    public List<Type> getBrokenSupertypes() {
         return brokenSupertypes == null ? 
-                Collections.<ProducedType>emptyList() : 
+                Collections.<Type>emptyList() : 
                 brokenSupertypes;
     }
     
-    public void addBrokenSupertype(ProducedType type) {
+    public void addBrokenSupertype(Type type) {
         if (brokenSupertypes == null) {
             brokenSupertypes = 
-                    new ArrayList<ProducedType>(1);
+                    new ArrayList<Type>(1);
         }
         brokenSupertypes.add(type);
     }
     
     @Override
     public ProducedReference getProducedReference(
-            ProducedType pt,
-            List<ProducedType> typeArguments) {
+            Type pt,
+            List<Type> typeArguments) {
         return getProducedType(pt, typeArguments);
     }
 
     @Override
-    public final ProducedType getReference() {
+    public final Type getReference() {
         return getType();
     }
 
@@ -174,15 +174,15 @@ public abstract class TypeDeclaration extends Declaration
      *                      parameters of this 
      *                      declaration
      */
-    public ProducedType getProducedType(
-            ProducedType qualifyingType,
-            List<ProducedType> typeArguments) {
+    public Type getProducedType(
+            Type qualifyingType,
+            List<Type> typeArguments) {
     	if (qualifyingType!=null && 
                 qualifyingType.isNothing()) {
         	return qualifyingType;
         }
     	else {
-            ProducedType pt = new ProducedType();
+            Type pt = new Type();
             pt.setDeclaration(this);
             pt.setQualifyingType(qualifyingType);
             pt.setTypeArguments(getTypeArgumentMap(this, 
@@ -202,8 +202,8 @@ public abstract class TypeDeclaration extends Declaration
      * the body of the declaration, but this is not
      * really correct!
      */
-    public ProducedType getType() {
-        ProducedType type = new ProducedType();
+    public Type getType() {
+        Type type = new Type();
         type.setQualifyingType(getMemberContainerType());
         type.setDeclaration(this);
         type.setTypeArguments(getTypeParametersAsArguments());
@@ -262,7 +262,7 @@ public abstract class TypeDeclaration extends Declaration
             List<TypeDeclaration> visited) {
         List<Declaration> members = 
                 new ArrayList<Declaration>();
-        for (ProducedType st: getSatisfiedTypes()) {
+        for (Type st: getSatisfiedTypes()) {
             //if ( !(t instanceof TypeParameter) ) { //don't look for members in a type parameter with a self-referential lower bound
             for (Declaration member: 
                     st.getDeclaration()
@@ -276,7 +276,7 @@ public abstract class TypeDeclaration extends Declaration
             }
             //}
         }
-        ProducedType et = getExtendedType();
+        Type et = getExtendedType();
         if (et!=null) {
             for (Declaration member: 
                     et.getDeclaration()
@@ -312,12 +312,12 @@ public abstract class TypeDeclaration extends Declaration
                 return true;
             }
         }
-        for (ProducedType t: getSatisfiedTypes()) {
+        for (Type t: getSatisfiedTypes()) {
             if (t.getDeclaration().isMember(dec, visited)) {
                 return true;
             }
         }
-        ProducedType et = getExtendedType();
+        Type et = getExtendedType();
         if (et!=null) {
             if (et.getDeclaration()
                     .isMember(dec, visited)) {
@@ -338,20 +338,20 @@ public abstract class TypeDeclaration extends Declaration
      * order and searching supertypes first.
      */
     public Declaration getRefinedMember(String name, 
-            List<ProducedType> signature, boolean ellipsis) {
+            List<Type> signature, boolean ellipsis) {
         return getRefinedMember(name, signature, ellipsis,
                         new HashSet<TypeDeclaration>());
     }
 
     protected Declaration getRefinedMember(String name, 
-            List<ProducedType> signature, boolean ellipsis, 
+            List<Type> signature, boolean ellipsis, 
             Set<TypeDeclaration> visited) {
         if (!visited.add(this)) {
             return null;
         }
         else {
             Declaration result = null;
-            ProducedType et = getExtendedType();
+            Type et = getExtendedType();
             if (et!=null) {
                 Declaration ed = 
                         et.getDeclaration()
@@ -363,7 +363,7 @@ public abstract class TypeDeclaration extends Declaration
                     result = ed;
                 }
             }
-            for (ProducedType st: getSatisfiedTypes()) {
+            for (Type st: getSatisfiedTypes()) {
                 Declaration sd = 
                         st.getDeclaration()
                             .getRefinedMember(name, 
@@ -385,7 +385,7 @@ public abstract class TypeDeclaration extends Declaration
     }
 
     public boolean isBetterRefinement(
-            List<ProducedType> signature, boolean ellipsis, 
+            List<Type> signature, boolean ellipsis, 
             Declaration result, Declaration candidate) {
         if (candidate==null ||
                 candidate.isActual() /*&& 
@@ -431,7 +431,7 @@ public abstract class TypeDeclaration extends Declaration
     public Declaration getMember(
             String name, 
             Unit unit, 
-            List<ProducedType> signature, 
+            List<Type> signature, 
             boolean variadic) {
         //TODO: does not handle aliased members of supertypes
         Declaration dec = 
@@ -460,7 +460,7 @@ public abstract class TypeDeclaration extends Declaration
     public boolean isMemberAmbiguous(
             String name, 
             Unit unit, 
-            List<ProducedType> signature, 
+            List<Type> signature, 
             boolean variadic) {
         //TODO: does not handle aliased members of supertypes
         Declaration dec = 
@@ -483,7 +483,7 @@ public abstract class TypeDeclaration extends Declaration
     @Override
     public Declaration getMember(
             String name, 
-            List<ProducedType> signature, 
+            List<Type> signature, 
             boolean variadic) {
         return getMemberInternal(name, signature, variadic)
                 .getMember();
@@ -491,7 +491,7 @@ public abstract class TypeDeclaration extends Declaration
 
     private SupertypeDeclaration getMemberInternal(
             String name,
-            List<ProducedType> signature, boolean variadic) {
+            List<Type> signature, boolean variadic) {
         //first search for the member in the local
         //scope, including non-shared declarations
         Declaration dec = 
@@ -539,7 +539,7 @@ public abstract class TypeDeclaration extends Declaration
     @Override
     protected Declaration getMemberOrParameter(
             String name, 
-            List<ProducedType> signature, 
+            List<Type> signature, 
             boolean variadic) {
         //first search for the member or parameter 
         //in the local scope, including non-shared 
@@ -621,9 +621,9 @@ public abstract class TypeDeclaration extends Declaration
 
     public boolean isInheritedFromSupertype(
             final Declaration member) {
-        final List<ProducedType> signature = 
+        final List<Type> signature = 
                 getSignature(member);
-        class Criteria implements ProducedType.Criteria {
+        class Criteria implements Type.Criteria {
             @Override
             public boolean satisfies(TypeDeclaration type) {
                 if (type.equals(TypeDeclaration.this)) {
@@ -668,10 +668,10 @@ public abstract class TypeDeclaration extends Declaration
      */
     SupertypeDeclaration getSupertypeDeclaration(
             final String name, 
-            final List<ProducedType> signature, 
+            final List<Type> signature, 
             final boolean variadic) {
         class ExactCriteria 
-                implements ProducedType.Criteria {
+                implements Type.Criteria {
             @Override
             public boolean satisfies(TypeDeclaration type) {
                 // do not look in ourselves
@@ -698,7 +698,7 @@ public abstract class TypeDeclaration extends Declaration
             }
         };
         class LooseCriteria 
-                implements ProducedType.Criteria {
+                implements Type.Criteria {
             @Override
             public boolean satisfies(TypeDeclaration type) {
                 // do not look in ourselves
@@ -724,8 +724,8 @@ public abstract class TypeDeclaration extends Declaration
         };
         //this works by finding the most-specialized supertype
         //that defines the member
-        ProducedType type = getType();
-        ProducedType st = 
+        Type type = getType();
+        Type st = 
                 type.getSupertype(new ExactCriteria());
         if (st == null) {
             //try again, ignoring the given signature
@@ -761,11 +761,11 @@ public abstract class TypeDeclaration extends Declaration
         return false;
     }
 
-    public void setSelfType(ProducedType selfType) {
+    public void setSelfType(Type selfType) {
         this.selfType = selfType;
     }
 
-    public ProducedType getSelfType() {
+    public Type getSelfType() {
         return selfType;
     }
     
@@ -825,14 +825,14 @@ public abstract class TypeDeclaration extends Declaration
             String startingWith, int proximity) {
         Map<String,DeclarationWithProximity> result = 
                 new TreeMap<String,DeclarationWithProximity>();
-        for (ProducedType st: getSatisfiedTypes()) {
+        for (Type st: getSatisfiedTypes()) {
             mergeMembers(result, 
                     st.getDeclaration()
                         .getMatchingMemberDeclarations(unit, 
                                 scope, startingWith, 
                                 proximity+1));
         }
-        ProducedType et = 
+        Type et = 
                 getExtendedType();
         if (et!=null) {
             mergeMembers(result, 
@@ -907,7 +907,7 @@ public abstract class TypeDeclaration extends Declaration
             List<TypeDeclaration> results);
     
     /**
-     * Clears the ProducedType supertype caches for that declaration. Does nothing
+     * Clears the Type supertype caches for that declaration. Does nothing
      * for Union/Intersection types since they are not cached. Only does something
      * for ClassOrInterface, TypeAlias, TypeParameter.
      */

@@ -1,8 +1,8 @@
 package com.redhat.ceylon.model.typechecker.model;
 
-import static com.redhat.ceylon.model.typechecker.model.ProducedType.checkDepth;
-import static com.redhat.ceylon.model.typechecker.model.ProducedType.decDepth;
-import static com.redhat.ceylon.model.typechecker.model.ProducedType.incDepth;
+import static com.redhat.ceylon.model.typechecker.model.Type.checkDepth;
+import static com.redhat.ceylon.model.typechecker.model.Type.decDepth;
+import static com.redhat.ceylon.model.typechecker.model.Type.incDepth;
 import static com.redhat.ceylon.model.typechecker.model.Util.EMPTY_TYPE_ARG_MAP;
 import static com.redhat.ceylon.model.typechecker.model.Util.EMPTY_VARIANCE_MAP;
 import static com.redhat.ceylon.model.typechecker.model.Util.isAbstraction;
@@ -24,26 +24,26 @@ public abstract class ProducedReference {
     
     ProducedReference() {}
 
-    private Map<TypeParameter, ProducedType> typeArguments = 
+    private Map<TypeParameter, Type> typeArguments = 
             EMPTY_TYPE_ARG_MAP;
     
-    private ProducedType qualifyingType;
+    private Type qualifyingType;
     
     //cache
-    private Map<TypeParameter, ProducedType> 
+    private Map<TypeParameter, Type> 
     typeArgumentsWithDefaults;
     
-    public ProducedType getQualifyingType() {
+    public Type getQualifyingType() {
         return qualifyingType;
     }
     
-    void setQualifyingType(ProducedType qualifyingType) {
+    void setQualifyingType(Type qualifyingType) {
         this.qualifyingType = qualifyingType;
     }
     
     public abstract Declaration getDeclaration();
 
-    public Map<TypeParameter, ProducedType> getTypeArguments() {
+    public Map<TypeParameter, Type> getTypeArguments() {
         Declaration declaration = getDeclaration();
         if (declaration instanceof Generic) {
             if (ProducedTypeCache.isEnabled()) {
@@ -62,7 +62,7 @@ public abstract class ProducedReference {
         }
     }
 
-    private Map<TypeParameter, ProducedType> 
+    private Map<TypeParameter, Type> 
     getTypeArgumentsInternal(Declaration declaration) {
         checkDepth();
         incDepth();
@@ -76,10 +76,10 @@ public abstract class ProducedReference {
         }
     }
 
-    private static Map<TypeParameter, ProducedType> 
+    private static Map<TypeParameter, Type> 
     fillInDefaultTypeArguments(Declaration declaration,
-            Map<TypeParameter, ProducedType> typeArguments) {
-        Map<TypeParameter, ProducedType> typeArgs = 
+            Map<TypeParameter, Type> typeArguments) {
+        Map<TypeParameter, Type> typeArgs = 
                 typeArguments;
         Generic g = (Generic) declaration;
         List<TypeParameter> typeParameters = 
@@ -87,14 +87,14 @@ public abstract class ProducedReference {
         for (int i=0, l=typeParameters.size(); 
                 i<l; i++) {
             TypeParameter pt = typeParameters.get(i);
-            ProducedType dta = pt.getDefaultTypeArgument();
+            Type dta = pt.getDefaultTypeArgument();
             if (dta!=null &&
                     !typeArguments.containsKey(pt)) {
                 // only make a copy of typeArguments if required
                 if (typeArguments == typeArgs) {
                     // make a copy big enough to fit every type parameter
                     typeArgs = new HashMap
-                            <TypeParameter,ProducedType>
+                            <TypeParameter,Type>
                                 (typeParameters.size());
                     typeArgs.putAll(typeArguments);
                 }
@@ -107,7 +107,7 @@ public abstract class ProducedReference {
     }
     
     void setTypeArguments
-        (Map<TypeParameter,ProducedType> typeArguments) {
+        (Map<TypeParameter,Type> typeArguments) {
         this.typeArguments = typeArguments;
     }
     
@@ -124,7 +124,7 @@ public abstract class ProducedReference {
      * @see ProducedReference#getTypedParameter(Parameter)
      * @see ProducedReference#getFullType()
      */
-    public abstract ProducedType getType();
+    public abstract Type getType();
     
     /**
      * The type or callable type of the referenced thing:
@@ -140,7 +140,7 @@ public abstract class ProducedReference {
      *   @see ProducedReference#getType()
      *   @see ProducedReference#getTypedParameter(Parameter)
      */
-    public ProducedType getFullType() {
+    public Type getFullType() {
     	return getFullType(getType());
     }
     
@@ -149,8 +149,8 @@ public abstract class ProducedReference {
      *                    a ?. or *. expression, i.e.
      *                    T?, [T*], or [T+]
      */
-    public ProducedType getFullType(ProducedType wrappedType) {
-        //don't use this, because it is refined by ProducedType
+    public Type getFullType(Type wrappedType) {
+        //don't use this, because it is refined by Type
         Declaration declaration = getDeclaration();
         if (declaration instanceof Functional) {
             Unit unit = declaration.getUnit();

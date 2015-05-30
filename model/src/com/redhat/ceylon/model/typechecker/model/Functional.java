@@ -20,7 +20,7 @@ public interface Functional {
 
     public void addParameterList(ParameterList pl);
 
-    public ProducedType getType();
+    public Type getType();
 
     public String getName();
     public String getName(Unit unit);

@@ -31,13 +31,13 @@ public class ProducedTypedReference extends ProducedReference {
         this.declaration = declaration;
     }
     
-    public ProducedType getType() {
+    public Type getType() {
         TypedDeclaration declaration = getDeclaration();
         if (declaration==null) {
             return null;
         }
         else {
-            ProducedType type = declaration.getType();
+            Type type = declaration.getType();
             return type==null ? null : type.substitute(this);
         }
     }
@@ -59,7 +59,7 @@ public class ProducedTypedReference extends ProducedReference {
     public String getProducedName() {
         TypedDeclaration dec = getDeclaration();
         StringBuilder name = new StringBuilder();
-        ProducedType type = getQualifyingType();
+        Type type = getQualifyingType();
         if (type!=null) {
             name.append(type.getProducedTypeName())
                 .append(".");
@@ -70,14 +70,14 @@ public class ProducedTypedReference extends ProducedReference {
             List<TypeParameter> tps = g.getTypeParameters();
             if (!tps.isEmpty()) {
                 name.append("<");
-                Map<TypeParameter, ProducedType> args = 
+                Map<TypeParameter, Type> args = 
                         getTypeArguments();
                 for (int i=0, l=tps.size(); i<l; i++) {
                     if (i!=0) {
                         name.append(",");
                     }
                     TypeParameter tp = tps.get(i);
-                    ProducedType arg = args.get(tp);
+                    Type arg = args.get(tp);
                     if (arg==null) {
                         name.append("unknown");
                     }

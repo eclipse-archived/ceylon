@@ -2,7 +2,7 @@ package com.redhat.ceylon.model.typechecker.model;
 
 import java.util.Map;
 
-public abstract class LazyProducedType extends ProducedType {
+public abstract class LazyProducedType extends Type {
     
     private boolean initialized;
     private Unit unit;
@@ -39,16 +39,16 @@ public abstract class LazyProducedType extends ProducedType {
     }
     
     @Override
-    public Map<TypeParameter, ProducedType> getTypeArguments() {
+    public Map<TypeParameter, Type> getTypeArguments() {
         getDeclaration();//force initialization
         return super.getTypeArguments();
     }
     
-    public abstract Map<TypeParameter, ProducedType> initTypeArguments();
+    public abstract Map<TypeParameter, Type> initTypeArguments();
     
     public abstract TypeDeclaration initDeclaration();
     
-    public ProducedType initQualifyingType() {
+    public Type initQualifyingType() {
         return null;
     }
     

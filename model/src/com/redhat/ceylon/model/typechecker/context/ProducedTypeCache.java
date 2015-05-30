@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import com.redhat.ceylon.model.typechecker.model.ProducedType;
+import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.model.typechecker.model.UnknownType;
 
@@ -32,35 +32,35 @@ public class ProducedTypeCache {
     }
     
     // need a special value for null because ConcurrentHashMap does not support null
-    private final static ProducedType NULL_VALUE = new UnknownType(null).getType();
+    private final static Type NULL_VALUE = new UnknownType(null).getType();
     // need ConcurrentHashMap even for the cache, otherwise get/put/containsKey can get info infinite loops
     // on concurrent operations
-    private final Map<ProducedType, Map<TypeDeclaration, ProducedType>> superTypes = 
-            new ConcurrentHashMap<ProducedType, Map<TypeDeclaration, ProducedType>>();
+    private final Map<Type, Map<TypeDeclaration, Type>> superTypes = 
+            new ConcurrentHashMap<Type, Map<TypeDeclaration, Type>>();
     
-    public boolean containsKey(ProducedType producedType, TypeDeclaration dec) {
-        Map<TypeDeclaration, ProducedType> cache = superTypes.get(producedType);
+    public boolean containsKey(Type producedType, TypeDeclaration dec) {
+        Map<TypeDeclaration, Type> cache = superTypes.get(producedType);
         if (cache == null) {
             return false;
         }
         return cache.containsKey(dec);
     }
 
-    public ProducedType get(ProducedType producedType, TypeDeclaration dec) {
-        Map<TypeDeclaration, ProducedType> cache = superTypes.get(producedType);
+    public Type get(Type producedType, TypeDeclaration dec) {
+        Map<TypeDeclaration, Type> cache = superTypes.get(producedType);
         if (cache == null) {
             return null;
         }
-        ProducedType ret = cache.get(dec);
+        Type ret = cache.get(dec);
         return ret == NULL_VALUE ? null : ret;
     }
 
-    public void put(ProducedType producedType, TypeDeclaration dec, ProducedType superType) {
-        Map<TypeDeclaration, ProducedType> cache = superTypes.get(producedType);
+    public void put(Type producedType, TypeDeclaration dec, Type superType) {
+        Map<TypeDeclaration, Type> cache = superTypes.get(producedType);
         if (cache == null) {
             // need ConcurrentHashMap even for the cache, otherwise get/put/containsKey can get info infinite loops
             // on concurrent operations
-            cache = new ConcurrentHashMap<TypeDeclaration, ProducedType>();
+            cache = new ConcurrentHashMap<TypeDeclaration, Type>();
             superTypes.put(producedType, cache);
         }
         if (superType == null) {
@@ -80,17 +80,17 @@ public class ProducedTypeCache {
     }
     
     public void clearNullValues() {
-        List<ProducedType> cachesToremove = new LinkedList<ProducedType>();
-        for (Map.Entry<ProducedType, Map<TypeDeclaration, ProducedType>> entry: 
+        List<Type> cachesToremove = new LinkedList<Type>();
+        for (Map.Entry<Type, Map<TypeDeclaration, Type>> entry: 
                 superTypes.entrySet()) {
-            Map<TypeDeclaration, ProducedType> cache = entry.getValue();
+            Map<TypeDeclaration, Type> cache = entry.getValue();
             if (cache == null) {
                 cachesToremove.add(entry.getKey());
             }
             else {
                 List<TypeDeclaration> valuesToremove = 
                         new LinkedList<TypeDeclaration>();
-                for (Map.Entry<TypeDeclaration, ProducedType> cacheEntry: 
+                for (Map.Entry<TypeDeclaration, Type> cacheEntry: 
                         cache.entrySet()) {
                     if (cacheEntry.getValue() == NULL_VALUE) {
                         valuesToremove.add(cacheEntry.getKey());
@@ -101,7 +101,7 @@ public class ProducedTypeCache {
                 }
             }
         }
-        for (ProducedType toRemove: cachesToremove) {
+        for (Type toRemove: cachesToremove) {
             superTypes.remove(toRemove);
         }
     }

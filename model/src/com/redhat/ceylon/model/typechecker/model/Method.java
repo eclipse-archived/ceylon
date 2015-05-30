@@ -126,7 +126,7 @@ public class Method extends MethodOrValue implements Generic, Scope, Functional 
 
     @Override
     public String toString() {
-        ProducedType type = getType();
+        Type type = getType();
         if (type==null) {
             return "function " + toStringName();
         }

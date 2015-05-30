@@ -48,9 +48,9 @@ public class Interface extends ClassOrInterface {
             //TODO: optimize this to avoid walking the
             //      same supertypes multiple times
             if (dec instanceof Interface) {
-                List<ProducedType> sts = getSatisfiedTypes();
+                List<Type> sts = getSatisfiedTypes();
                 for (int i = 0, s=sts.size(); i<s; i++) {
-                    ProducedType st = sts.get(i);
+                    Type st = sts.get(i);
                     if (st.getDeclaration().inherits(dec)) {
                         return true;
                     }
