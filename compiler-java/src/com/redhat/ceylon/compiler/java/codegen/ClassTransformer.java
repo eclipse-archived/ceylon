@@ -81,9 +81,9 @@ import com.redhat.ceylon.model.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.model.typechecker.model.Package;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.ParameterList;
-import com.redhat.ceylon.model.typechecker.model.ProducedReference;
+import com.redhat.ceylon.model.typechecker.model.Reference;
 import com.redhat.ceylon.model.typechecker.model.Type;
-import com.redhat.ceylon.model.typechecker.model.ProducedTypedReference;
+import com.redhat.ceylon.model.typechecker.model.TypedReference;
 import com.redhat.ceylon.model.typechecker.model.Scope;
 import com.redhat.ceylon.model.typechecker.model.Setter;
 import com.redhat.ceylon.model.typechecker.model.TypeAlias;
@@ -256,7 +256,7 @@ public class ClassTransformer extends AbstractTransformer {
             Class classModel,
             ClassDefinitionBuilder classBuilder) {
         
-        for (ProducedReference unrefined : classModel.getUnimplementedFormals()) {
+        for (Reference unrefined : classModel.getUnimplementedFormals()) {
             Declaration formalMember = unrefined.getDeclaration();//classModel.getMember(memberName, null, false);
             String errorMessage  = "formal member '"+formalMember.getName()+"' of '"+((TypeDeclaration)formalMember.getContainer()).getName()+"' not implemented in class hierarchy";
             java.util.List<Type> params = new java.util.ArrayList<Type>();
@@ -283,7 +283,7 @@ public class ClassTransformer extends AbstractTransformer {
     }
 
     private void addRefinedThrowerInstantiatorMethod(ClassDefinitionBuilder classBuilder,
-            String message, ClassOrInterface classModel, Class formalClass, ProducedReference unrefined) {
+            String message, ClassOrInterface classModel, Class formalClass, Reference unrefined) {
         MethodDefinitionBuilder mdb = MethodDefinitionBuilder.systemMethod(this, 
                 naming.getInstantiatorMethodName(formalClass));
         mdb.modifiers(transformClassDeclFlags(formalClass) &~ABSTRACT);
@@ -345,7 +345,7 @@ public class ClassTransformer extends AbstractTransformer {
 
     private Class refineClass(
             Scope container,
-            ProducedReference pr,
+            Reference pr,
             ClassOrInterface classModel, 
             Class formalClass,
             Unit unit) {
@@ -371,7 +371,7 @@ public class ClassTransformer extends AbstractTransformer {
                 refinedP.setHidden(formalP.isHidden());
                 refinedP.setSequenced(formalP.isSequenced());
                 refinedP.setName(formalP.getName());
-                final ProducedTypedReference typedParameter = pr.getTypedParameter(formalP);
+                final TypedReference typedParameter = pr.getTypedParameter(formalP);
                 MethodOrValue paramModel;
                 if (formalP.getModel() instanceof Value) {
                     Value paramValueModel = refineValue((Value)formalP.getModel(), typedParameter, refined, classModel.getUnit());
@@ -392,7 +392,7 @@ public class ClassTransformer extends AbstractTransformer {
     
     private Method refineMethod(
             Scope container,
-            ProducedTypedReference pr,
+            TypedReference pr,
             ClassOrInterface classModel, 
             Method formalMethod,
             Unit unit) {
@@ -427,7 +427,7 @@ public class ClassTransformer extends AbstractTransformer {
                 refinedP.setHidden(formalP.isHidden());
                 refinedP.setSequenced(formalP.isSequenced());
                 refinedP.setName(formalP.getName());
-                final ProducedTypedReference typedParameter = pr.getTypedParameter(formalP);
+                final TypedReference typedParameter = pr.getTypedParameter(formalP);
                 MethodOrValue paramModel;
                 if (formalP.getModel() instanceof Value) {
                     Value paramValueModel = refineValue((Value)formalP.getModel(), typedParameter, refined, classModel.getUnit());
@@ -473,7 +473,7 @@ public class ClassTransformer extends AbstractTransformer {
     }
 
     private Value refineValue(Value formalAttribute,
-            ProducedTypedReference producedValue,
+            TypedReference producedValue,
             Scope container, 
             Unit unit) {
         Value refined = new Value();
@@ -991,8 +991,8 @@ public class ClassTransformer extends AbstractTransformer {
                 // but it has to be initialized here so all the fields are initialized in parameter order
                 
                 JCExpression parameterExpr = makeUnquotedIdent(Naming.getAliasedParameterName(decl));
-                ProducedTypedReference typedRef = getTypedReference(value);
-                ProducedTypedReference nonWideningTypedRef = nonWideningTypeDecl(typedRef);
+                TypedReference typedRef = getTypedReference(value);
+                TypedReference nonWideningTypedRef = nonWideningTypeDecl(typedRef);
                 Type paramType = nonWideningType(typedRef, nonWideningTypedRef);
                 if (!paramType.isExactly(decl.getType())) {
                     // The parameter type follows normal erasure rules, not affected by inheritance
@@ -1653,8 +1653,8 @@ public class ClassTransformer extends AbstractTransformer {
         JCExpression type;
         MethodOrValue attr = decl;
         if (!Decl.isTransient(attr)) {
-            ProducedTypedReference typedRef = getTypedReference(attr);
-            ProducedTypedReference nonWideningTypedRef = nonWideningTypeDecl(typedRef);
+            TypedReference typedRef = getTypedReference(attr);
+            TypedReference nonWideningTypedRef = nonWideningTypeDecl(typedRef);
             Type paramType = nonWideningType(typedRef, nonWideningTypedRef);
             type = makeJavaType(nonWideningTypedRef.getDeclaration(), paramType, 0);
         } else {
@@ -1730,8 +1730,8 @@ public class ClassTransformer extends AbstractTransformer {
                         if(member2 == null)
                             continue;
                         // we have it in two separate interfaces
-                        ProducedReference typedMember1 = firstInterface.getTypedReference(member1, Collections.<Type>emptyList());
-                        ProducedReference typedMember2 = secondInterface.getTypedReference(member2, Collections.<Type>emptyList());
+                        Reference typedMember1 = firstInterface.getTypedReference(member1, Collections.<Type>emptyList());
+                        Reference typedMember2 = secondInterface.getTypedReference(member2, Collections.<Type>emptyList());
                         Type type1 = simplifyType(typedMember1.getType());
                         Type type2 = simplifyType(typedMember2.getType());
                         if(!type1.isExactly(type2)){
@@ -1771,7 +1771,7 @@ public class ClassTransformer extends AbstractTransformer {
             }
         }else if (member instanceof Method) {
             Method method = (Method)member;
-            final ProducedTypedReference typedMember = satisfiedType.getTypedMember(method, Collections.<Type>emptyList());
+            final TypedReference typedMember = satisfiedType.getTypedMember(method, Collections.<Type>emptyList());
             java.util.List<java.util.List<Type>> producedTypeParameterBounds = producedTypeParameterBounds(
                     typedMember, method);
             final java.util.List<TypeParameter> typeParameters = method.getTypeParameters();
@@ -1806,7 +1806,7 @@ public class ClassTransformer extends AbstractTransformer {
         } else if (member instanceof Value
                 || member instanceof Setter) {
             TypedDeclaration attr = (TypedDeclaration)member;
-            final ProducedTypedReference typedMember = satisfiedType.getTypedMember(attr, Collections.<Type>emptyList());
+            final TypedReference typedMember = satisfiedType.getTypedMember(attr, Collections.<Type>emptyList());
             if (member instanceof Value) {
                 final MethodDefinitionBuilder getterDelegate = makeDelegateToCompanion(null, 
                         typedMember,
@@ -2035,7 +2035,7 @@ public class ClassTransformer extends AbstractTransformer {
             }
             if (member instanceof Method) {
                 Method method = (Method)member;
-                final ProducedTypedReference typedMember = satisfiedType.getTypedMember(method, Collections.<Type>emptyList());
+                final TypedReference typedMember = satisfiedType.getTypedMember(method, Collections.<Type>emptyList());
                 Declaration sub = (Declaration)model.getMember(method.getName(), null, false);
                 if (sub instanceof Method) {
                     Method subMethod = (Method)sub;
@@ -2044,7 +2044,7 @@ public class ClassTransformer extends AbstractTransformer {
                     }
                     java.util.List<java.util.List<Type>> producedTypeParameterBounds = producedTypeParameterBounds(
                             typedMember, subMethod);
-                    final ProducedTypedReference refinedTypedMember = model.getType().getTypedMember(subMethod, Collections.<Type>emptyList());
+                    final TypedReference refinedTypedMember = model.getType().getTypedMember(subMethod, Collections.<Type>emptyList());
                     final java.util.List<TypeParameter> typeParameters = subMethod.getTypeParameters();
                     final java.util.List<Parameter> parameters = subMethod.getParameterLists().get(0).getParameters();
                     boolean hasOverloads = false;
@@ -2053,7 +2053,7 @@ public class ClassTransformer extends AbstractTransformer {
                         for (Parameter param : parameters) {
                             if (Strategy.hasDefaultParameterValueMethod(param)
                                     && CodegenUtil.getTopmostRefinedDeclaration(param.getModel()).getContainer().equals(member)) {
-                                final ProducedTypedReference typedParameter = typedMember.getTypedParameter(param);
+                                final TypedReference typedParameter = typedMember.getTypedParameter(param);
                                 // If that method has a defaulted parameter, 
                                 // we need to generate a default value method
                                 // which also delegates to the $impl
@@ -2124,7 +2124,7 @@ public class ClassTransformer extends AbstractTransformer {
             } else if (member instanceof Value
                     || member instanceof Setter) {
                 TypedDeclaration attr = (TypedDeclaration)member;
-                final ProducedTypedReference typedMember = satisfiedType.getTypedMember(attr, null);
+                final TypedReference typedMember = satisfiedType.getTypedMember(attr, null);
                 if (needsCompanionDelegate(model, member)) {
                     if (member instanceof Value) {
                         final MethodDefinitionBuilder getterDelegate = makeDelegateToCompanion(iface, 
@@ -2179,7 +2179,7 @@ public class ClassTransformer extends AbstractTransformer {
     }
 
     private java.util.List<java.util.List<Type>> producedTypeParameterBounds(
-            final ProducedReference typedMember, Generic subMethod) {
+            final Reference typedMember, Generic subMethod) {
         java.util.List<java.util.List<Type>> producedTypeParameterBounds = new ArrayList<java.util.List<Type>>(subMethod.getTypeParameters().size());
         for (TypeParameter tp : subMethod.getTypeParameters()) {
             java.util.List<Type> satisfiedTypes = tp.getType().getSatisfiedTypes();
@@ -2188,8 +2188,8 @@ public class ClassTransformer extends AbstractTransformer {
                 if (typedMember instanceof Type) {
                     bounds.add(bound.substitute((Type) typedMember));
                 }
-                else if (typedMember instanceof ProducedTypedReference) {
-                    bounds.add(bound.substitute((ProducedTypedReference) typedMember));
+                else if (typedMember instanceof TypedReference) {
+                    bounds.add(bound.substitute((TypedReference) typedMember));
                 }
             }
             producedTypeParameterBounds.add(bounds);
@@ -2216,7 +2216,7 @@ public class ClassTransformer extends AbstractTransformer {
         for (Parameter param : parameters) {
             if (Strategy.hasDefaultParameterValueMethod(param)
                     && !klass.isActual()) {
-                final ProducedTypedReference typedParameter = typeMember.getTypedParameter(param);
+                final TypedReference typedParameter = typeMember.getTypedParameter(param);
                 // If that method has a defaulted parameter, 
                 // we need to generate a default value method
                 // which also delegates to the $impl
@@ -2281,7 +2281,7 @@ public class ClassTransformer extends AbstractTransformer {
      * Generates a method which delegates to the companion instance $Foo$impl
      */
     private MethodDefinitionBuilder makeDelegateToCompanion(Interface iface,
-            ProducedReference typedMember,
+            Reference typedMember,
             Type currentType,
             final long mods,
             final java.util.List<TypeParameter> typeParameters,
@@ -2299,7 +2299,7 @@ public class ClassTransformer extends AbstractTransformer {
      * Generates a method which delegates to the companion instance $Foo$impl
      */
     private MethodDefinitionBuilder makeDelegateToCompanion(Interface iface,
-            ProducedReference typedMember,
+            Reference typedMember,
             Type currentType,
             final long mods,
             final java.util.List<TypeParameter> typeParameters,
@@ -2337,8 +2337,8 @@ public class ClassTransformer extends AbstractTransformer {
                 // delegates for hash attributes are int
                 concreteWrapper.resultType(null, make().Type(syms().intType));
                 returnType = typedMember.getType();
-            }else if (typedMember instanceof ProducedTypedReference) {
-                ProducedTypedReference typedRef = (ProducedTypedReference) typedMember;
+            }else if (typedMember instanceof TypedReference) {
+                TypedReference typedRef = (TypedReference) typedMember;
                 // This is very much like for method refinement: if the supertype is erased -> go raw.
                 // Except for some reason we only need to do it with multiple inheritance with different type
                 // arguments, so let's not go overboard
@@ -2350,7 +2350,7 @@ public class ClassTransformer extends AbstractTransformer {
                 }
                 concreteWrapper.resultTypeNonWidening(currentType, typedRef, typedMember.getType(), flags);
                 // FIXME: this is redundant with what we computed in the previous line in concreteWrapper.resultTypeNonWidening
-                ProducedTypedReference nonWideningTypedRef = gen().nonWideningTypeDecl(typedRef, currentType);
+                TypedReference nonWideningTypedRef = gen().nonWideningTypeDecl(typedRef, currentType);
                 returnType = gen().nonWideningType(typedRef, nonWideningTypedRef);
             } else {
                 concreteWrapper.resultType(null, makeJavaType((Type)typedMember));
@@ -2370,7 +2370,7 @@ public class ClassTransformer extends AbstractTransformer {
             arguments.add(naming.makeUnquotedIdent(Unfix.$name$));
         }
         for (Parameter param : parameters) {
-            final ProducedTypedReference typedParameter = typedMember.getTypedParameter(param);
+            final TypedReference typedParameter = typedMember.getTypedParameter(param);
             Type type;
             // if the supertype method itself got erased to Object, we can't do better than this
             if(gen().willEraseToObject(param.getType()) && !gen().willEraseToBestBounds(param))
@@ -2436,10 +2436,10 @@ public class ClassTransformer extends AbstractTransformer {
         return concreteWrapper;
     }
 
-    private boolean isUnimplementedMemberClass(Type currentType, ProducedReference typedMember) {
+    private boolean isUnimplementedMemberClass(Type currentType, Reference typedMember) {
         if (typedMember instanceof Type
                 && currentType.getDeclaration() instanceof Class) {// member class
-            for (ProducedReference formal : ((Class)currentType.getDeclaration()).getUnimplementedFormals()) {
+            for (Reference formal : ((Class)currentType.getDeclaration()).getUnimplementedFormals()) {
                 if (formal.getDeclaration().equals(typedMember.getDeclaration())) {
                     return true;
                 }
@@ -2805,8 +2805,8 @@ public class ClassTransformer extends AbstractTransformer {
                 (concrete || 
                         (!Decl.isFormal(decl) 
                                 && createField))) {
-            ProducedTypedReference typedRef = getTypedReference(model);
-            ProducedTypedReference nonWideningTypedRef = nonWideningTypeDecl(typedRef);
+            TypedReference typedRef = getTypedReference(model);
+            TypedReference nonWideningTypedRef = nonWideningTypeDecl(typedRef);
             Type nonWideningType = nonWideningType(typedRef, nonWideningTypedRef);
             
             if (Decl.isIndirect(decl)) {
@@ -3051,8 +3051,8 @@ public class ClassTransformer extends AbstractTransformer {
                     builder.getterBlock(make().Block(0, List.<JCStatement>of(this.makeThrowUnresolvedCompilationError(error))));
                 } else {
                     Value declarationModel = decl.getDeclarationModel();
-                    ProducedTypedReference typedRef = getTypedReference(declarationModel);
-                    ProducedTypedReference nonWideningTypedRef = nonWideningTypeDecl(typedRef);
+                    TypedReference typedRef = getTypedReference(declarationModel);
+                    TypedReference nonWideningTypedRef = nonWideningTypeDecl(typedRef);
                     Type nonWideningType = nonWideningType(typedRef, nonWideningTypedRef);
                     
                     JCExpression expr = expressionGen().transformExpression(specOrInit.getExpression(), 
@@ -3625,7 +3625,7 @@ public class ClassTransformer extends AbstractTransformer {
                     && term instanceof Tree.MemberOrTypeExpression
                     && ((Tree.MemberOrTypeExpression)term).getDeclaration() instanceof Functional) {
                 Declaration primaryDeclaration = ((Tree.MemberOrTypeExpression)term).getDeclaration();
-                ProducedReference producedReference = ((Tree.MemberOrTypeExpression)term).getTarget();
+                Reference producedReference = ((Tree.MemberOrTypeExpression)term).getTarget();
                 invocation = new MethodReferenceSpecifierInvocation(
                         this, 
                         (Tree.MemberOrTypeExpression)term, 
@@ -4101,9 +4101,9 @@ public class ClassTransformer extends AbstractTransformer {
      * defaulted arguments. 
      */
     class DefaultedArgumentMethodTyped extends DefaultedArgumentMethod {
-        private ProducedTypedReference typedMember;
+        private TypedReference typedMember;
 
-        DefaultedArgumentMethodTyped(DaoBody daoBody, MethodDefinitionBuilder mdb, ProducedTypedReference typedMember) {
+        DefaultedArgumentMethodTyped(DaoBody daoBody, MethodDefinitionBuilder mdb, TypedReference typedMember) {
             super(daoBody, mdb, (Method)typedMember.getDeclaration());
             this.typedMember = typedMember;
         }
@@ -4113,7 +4113,7 @@ public class ClassTransformer extends AbstractTransformer {
             if (!isAnything(getModel().getType())
                     || !Decl.isUnboxedVoid(getModel())
                     || Strategy.useBoxedVoid((Method)getModel())) {
-                ProducedTypedReference typedRef = (ProducedTypedReference) typedMember;
+                TypedReference typedRef = (TypedReference) typedMember;
                 overloadBuilder.resultTypeNonWidening(typedMember.getQualifyingType(), typedRef, typedMember.getType(), 0);
             } else {
                 super.resultType();
@@ -4141,7 +4141,7 @@ public class ClassTransformer extends AbstractTransformer {
         }
 
         private Type paramType(Parameter parameter) {
-            final ProducedTypedReference typedParameter = typedMember.getTypedParameter(parameter);
+            final TypedReference typedParameter = typedMember.getTypedParameter(parameter);
             Type paramType;
             // if the supertype method itself got erased to Object, we can't do better than this
             if (gen().willEraseToObject(parameter.getType()) && !gen().willEraseToBestBounds(parameter)) {

@@ -67,9 +67,9 @@ import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.Package;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.ParameterList;
-import com.redhat.ceylon.model.typechecker.model.ProducedReference;
+import com.redhat.ceylon.model.typechecker.model.Reference;
 import com.redhat.ceylon.model.typechecker.model.Type;
-import com.redhat.ceylon.model.typechecker.model.ProducedTypedReference;
+import com.redhat.ceylon.model.typechecker.model.TypedReference;
 import com.redhat.ceylon.model.typechecker.model.Referenceable;
 import com.redhat.ceylon.model.typechecker.model.Scope;
 import com.redhat.ceylon.model.typechecker.model.TypeAlias;
@@ -237,8 +237,8 @@ public class ExpressionTransformer extends AbstractTransformer {
     
     JCExpression transformExpression(final TypedDeclaration declaration, final Tree.Term expr) {
         // make sure we use the best declaration for boxing and type
-        ProducedTypedReference typedRef = getTypedReference(declaration);
-        ProducedTypedReference nonWideningTypedRef = nonWideningTypeDecl(typedRef);
+        TypedReference typedRef = getTypedReference(declaration);
+        TypedReference nonWideningTypedRef = nonWideningTypeDecl(typedRef);
         Type nonWideningType = nonWideningType(typedRef, nonWideningTypedRef);
         // If this is a return statement in a MPL method we want to know 
         // the non-widening type of the innermost callable
@@ -1132,7 +1132,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             return makeMemberValueOrFunctionDeclarationLiteral(expr, declaration);
         }else{
             // get its produced ref
-            ProducedReference producedReference = expr.getTarget();
+            Reference producedReference = expr.getTarget();
             // it's a member we get from its container type
             Type containerType = producedReference.getQualifyingType();
             // if we have no container type it means we have an object member
@@ -3536,7 +3536,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         }
     }
 
-    boolean erasesTypeArguments(ProducedReference producedReference) {
+    boolean erasesTypeArguments(Reference producedReference) {
         java.util.List<TypeParameter> tps = null;
         Declaration declaration = producedReference.getDeclaration();
         if (declaration instanceof Generic) {
@@ -3724,7 +3724,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         
         Tree.Term primary = Decl.unwrapExpressionsUntilTerm(ce.getPrimary());
         Declaration primaryDeclaration = null;
-        ProducedReference producedReference = null;
+        Reference producedReference = null;
         if (primary instanceof Tree.MemberOrTypeExpression) {
             producedReference = ((Tree.MemberOrTypeExpression)primary).getTarget();
             primaryDeclaration = ((Tree.MemberOrTypeExpression)primary).getDeclaration();
@@ -3799,7 +3799,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             if (member.isStaticallyImportable()) {
                 if (member instanceof Method) {
                     Method method = (Method)member;
-                    ProducedReference producedReference = method.getProducedReference(qualifyingType, typeArguments.getTypeModels());
+                    Reference producedReference = method.getProducedReference(qualifyingType, typeArguments.getTypeModels());
                     return CallableBuilder.javaStaticMethodReference(
                             gen(), 
                             expr.getTypeModel(), 
@@ -3814,7 +3814,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                     callBuilder.invoke(naming.makeQualifiedName(qualExpr, (TypedDeclaration)member, Naming.NA_GETTER | Naming.NA_MEMBER));
                     return callBuilder.build();
                 } else if (member instanceof Class) {
-                    ProducedReference producedReference = expr.getTarget();
+                    Reference producedReference = expr.getTarget();
                     return CallableBuilder.javaStaticMethodReference(
                             gen(), 
                             expr.getTypeModel(), 
@@ -3825,7 +3825,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             if (member instanceof Method) {
                 Method method = (Method)member;
                 if (!method.isParameter()) {
-                    ProducedReference producedReference = method.getProducedReference(qualifyingType, typeArguments.getTypeModels());
+                    Reference producedReference = method.getProducedReference(qualifyingType, typeArguments.getTypeModels());
                     return CallableBuilder.unboundFunctionalMemberReference(
                             gen(), 
                             expr,
@@ -3833,7 +3833,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                             method, 
                             producedReference).build();
                 } else {
-                    ProducedReference producedReference = method.getProducedReference(qualifyingType, typeArguments.getTypeModels());
+                    Reference producedReference = method.getProducedReference(qualifyingType, typeArguments.getTypeModels());
                     return CallableBuilder.unboundFunctionalMemberReference(
                             gen(), 
                             expr,
@@ -3848,7 +3848,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                         expr.getTypeModel(), 
                         ((TypedDeclaration)member)).build();
             } else if (member instanceof Class) {
-                ProducedReference producedReference = expr.getTarget();
+                Reference producedReference = expr.getTarget();
                 return CallableBuilder.unboundFunctionalMemberReference(
                         gen(), 
                         expr,
@@ -3856,7 +3856,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                         (Class)member, 
                         producedReference).build();
             } else if (member instanceof Constructor) {
-                ProducedReference producedReference = expr.getTarget();
+                Reference producedReference = expr.getTarget();
                 return CallableBuilder.unboundFunctionalMemberReference(
                         gen(), 
                         expr,
@@ -4159,13 +4159,13 @@ public class ExpressionTransformer extends AbstractTransformer {
             final ParameterList parameterList = method.getParameterLists().get(0);
             Type qualifyingType = qmte.getPrimary().getTypeModel();
             Tree.TypeArguments typeArguments = qmte.getTypeArguments();
-            ProducedReference producedReference = method.getProducedReference(qualifyingType, typeArguments.getTypeModels());
+            Reference producedReference = method.getProducedReference(qualifyingType, typeArguments.getTypeModels());
             return utilInvocation().checkNull(makeJavaStaticInvocation(gen(),
                     method, producedReference, parameterList));
         } else if (decl instanceof Class) {
             Class class_ = (Class)decl;
             final ParameterList parameterList = class_.getParameterLists().get(0);
-            ProducedReference producedReference = qmte.getTarget();
+            Reference producedReference = qmte.getTarget();
             return utilInvocation().checkNull(makeJavaStaticInvocation(gen(),
                     class_, producedReference, parameterList));
         } else {
@@ -4175,7 +4175,7 @@ public class ExpressionTransformer extends AbstractTransformer {
 
     JCExpression makeJavaStaticInvocation(CeylonTransformer gen,
             final Functional methodOrClass,
-            ProducedReference producedReference,
+            Reference producedReference,
             final ParameterList parameterList) {
         CallBuilder callBuilder = CallBuilder.instance(gen);
         if (methodOrClass instanceof Method) {
@@ -5001,8 +5001,8 @@ public class ExpressionTransformer extends AbstractTransformer {
             Type targetType = tmpInStatement ? leftTerm.getTypeModel() : rightTerm.getTypeModel();
             // if we're dealing with widening do not trust the type of the declaration and get the real type
             if(CodegenUtil.hasUntrustedType(decl)){
-                ProducedTypedReference typedRef = (ProducedTypedReference) ((Tree.MemberOrTypeExpression)leftTerm).getTarget();
-                ProducedTypedReference nonWideningTypedRef = nonWideningTypeDecl(typedRef);
+                TypedReference typedRef = (TypedReference) ((Tree.MemberOrTypeExpression)leftTerm).getTarget();
+                TypedReference nonWideningTypedRef = nonWideningTypeDecl(typedRef);
                 targetType = nonWideningType(typedRef, nonWideningTypedRef);
             }
             rhs = transformExpression(rightTerm, boxing, targetType, 

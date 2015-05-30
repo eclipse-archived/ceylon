@@ -23,7 +23,7 @@ package com.redhat.ceylon.compiler.java.codegen;
 import com.redhat.ceylon.compiler.java.codegen.recovery.HasErrorException;
 import com.redhat.ceylon.model.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.model.typechecker.model.Type;
-import com.redhat.ceylon.model.typechecker.model.ProducedTypedReference;
+import com.redhat.ceylon.model.typechecker.model.TypedReference;
 import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
 import com.sun.tools.javac.code.Flags;
 import com.sun.tools.javac.tree.JCTree;
@@ -98,8 +98,8 @@ public class AttributeDefinitionBuilder {
     private AttributeDefinitionBuilder(AbstractTransformer owner, TypedDeclaration attrType, 
             String javaClassName, ClassDefinitionBuilder classBuilder, String attrName, String fieldName, boolean toplevel, boolean indirect) {
         int typeFlags = 0;
-        ProducedTypedReference typedRef = owner.getTypedReference(attrType);
-        ProducedTypedReference nonWideningTypedRef = owner.nonWideningTypeDecl(typedRef);
+        TypedReference typedRef = owner.getTypedReference(attrType);
+        TypedReference nonWideningTypedRef = owner.nonWideningTypeDecl(typedRef);
         Type nonWideningType = owner.nonWideningType(typedRef, nonWideningTypedRef);
         if(attrType.isActual()
                 && CodegenUtil.hasTypeErased(attrType))

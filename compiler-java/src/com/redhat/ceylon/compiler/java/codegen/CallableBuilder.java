@@ -43,9 +43,9 @@ import com.redhat.ceylon.model.typechecker.model.Method;
 import com.redhat.ceylon.model.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.ParameterList;
-import com.redhat.ceylon.model.typechecker.model.ProducedReference;
+import com.redhat.ceylon.model.typechecker.model.Reference;
 import com.redhat.ceylon.model.typechecker.model.Type;
-import com.redhat.ceylon.model.typechecker.model.ProducedTypedReference;
+import com.redhat.ceylon.model.typechecker.model.TypedReference;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.model.typechecker.model.Value;
@@ -263,7 +263,7 @@ public class CallableBuilder {
             Tree.QualifiedMemberOrTypeExpression qmte,
             Type typeModel, 
             final Functional methodClassOrCtor, 
-            ProducedReference producedReference) {
+            Reference producedReference) {
         final ParameterList parameterList = methodClassOrCtor.getParameterLists().get(0);
         Type type = typeModel;
         JCExpression target;
@@ -347,7 +347,7 @@ public class CallableBuilder {
                 if(gen.hasDependentCovariantTypeParameters(parameterType))
                     flags |= ExpressionTransformer.EXPR_EXPECTED_TYPE_HAS_DEPENDENT_COVARIANT_TYPE_PARAMETERS;
                 // this gives me the parameter as typed in this invocation
-                ProducedTypedReference typedParameter = qmte.getTarget().getTypedParameter(parameter);
+                TypedReference typedParameter = qmte.getTarget().getTypedParameter(parameter);
                 // this gives me the parameter as typed that the method expects
                 Type targetParamType = gen.expressionGen().getTypeForParameter(parameter, qmte.getTarget(), ExpressionTransformer.TP_TO_BOUND);
                 // make sure it's compatible
@@ -429,7 +429,7 @@ public class CallableBuilder {
     public static CallableBuilder javaStaticMethodReference(CeylonTransformer gen, 
             Type typeModel, 
             final Functional methodOrClass, 
-            ProducedReference producedReference) {
+            Reference producedReference) {
         final ParameterList parameterList = methodOrClass.getParameterLists().get(0);
         CallableBuilder inner = new CallableBuilder(gen, null, typeModel, parameterList);
         
@@ -888,7 +888,7 @@ public class CallableBuilder {
             return isCallMethod ? makeCallMethod(stmts.toList(), arity) : makeCallTypedMethod(stmts.toList());
         }
         private JCExpression makeInvocation(int arity, boolean isCallMethod) {
-            ProducedReference target = getProducedReference();
+            Reference target = getProducedReference();
             TypeDeclaration primaryDeclaration = gen.getReturnTypeOfCallable(getTypeModel()).getDeclaration();
             CallableInvocation invocationBuilder = new CallableInvocation (
                     gen,
@@ -918,8 +918,8 @@ public class CallableBuilder {
             return forwardCallTo.getTypeModel();
         }
 
-        private ProducedReference getProducedReference() {
-            ProducedReference target;
+        private Reference getProducedReference() {
+            Reference target;
             if (forwardCallTo instanceof Tree.MemberOrTypeExpression) {
                 target = ((Tree.MemberOrTypeExpression)forwardCallTo).getTarget();
             } else if (forwardCallTo instanceof Tree.FunctionArgument) {

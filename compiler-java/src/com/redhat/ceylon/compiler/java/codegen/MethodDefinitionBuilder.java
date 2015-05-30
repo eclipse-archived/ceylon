@@ -37,7 +37,7 @@ import com.redhat.ceylon.model.typechecker.model.Package;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.ParameterList;
 import com.redhat.ceylon.model.typechecker.model.Type;
-import com.redhat.ceylon.model.typechecker.model.ProducedTypedReference;
+import com.redhat.ceylon.model.typechecker.model.TypedReference;
 import com.redhat.ceylon.model.typechecker.model.Scope;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.model.typechecker.model.TypeParameter;
@@ -397,8 +397,8 @@ public class MethodDefinitionBuilder
         TypedDeclaration nonWideningDecl = null;
         Type nonWideningType;
         if (Decl.isValue(mov)) {
-            ProducedTypedReference typedRef = gen.getTypedReference(mov);
-            ProducedTypedReference nonWideningTypedRef = gen.nonWideningTypeDecl(typedRef);
+            TypedReference typedRef = gen.getTypedReference(mov);
+            TypedReference nonWideningTypedRef = gen.nonWideningTypeDecl(typedRef);
             nonWideningType = gen.nonWideningType(typedRef, nonWideningTypedRef);
             nonWideningDecl = nonWideningTypedRef.getDeclaration();
         }else{
@@ -491,8 +491,8 @@ public class MethodDefinitionBuilder
                 return resultType(gen.makeJavaType(resultType, CodegenUtil.isUnBoxed(method) ? 0 : AbstractTransformer.JT_NO_PRIMITIVES), method);
             }
         }
-        ProducedTypedReference typedRef = gen.getTypedReference(method);
-        ProducedTypedReference nonWideningTypedRef = gen.nonWideningTypeDecl(typedRef);
+        TypedReference typedRef = gen.getTypedReference(method);
+        TypedReference nonWideningTypedRef = gen.nonWideningTypeDecl(typedRef);
         Type nonWideningType = gen.nonWideningType(typedRef, nonWideningTypedRef);
         if(method.isActual()
                 && CodegenUtil.hasTypeErased(method))
@@ -500,9 +500,9 @@ public class MethodDefinitionBuilder
         return resultType(makeResultType(nonWideningTypedRef.getDeclaration(), nonWideningType, flags), method);
     }
     
-    public MethodDefinitionBuilder resultTypeNonWidening(Type currentType, ProducedTypedReference typedRef, 
+    public MethodDefinitionBuilder resultTypeNonWidening(Type currentType, TypedReference typedRef, 
             Type returnType, int flags){
-        ProducedTypedReference nonWideningTypedRef = gen.nonWideningTypeDecl(typedRef, currentType);
+        TypedReference nonWideningTypedRef = gen.nonWideningTypeDecl(typedRef, currentType);
         returnType = gen.nonWideningType(typedRef, nonWideningTypedRef);
         return resultType(makeResultType(nonWideningTypedRef.getDeclaration(), returnType, flags), typedRef.getDeclaration());
 

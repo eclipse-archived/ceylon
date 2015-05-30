@@ -67,7 +67,7 @@ import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Interface;
 import com.redhat.ceylon.model.typechecker.model.Method;
-import com.redhat.ceylon.model.typechecker.model.ProducedReference;
+import com.redhat.ceylon.model.typechecker.model.Reference;
 import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.Scope;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
@@ -79,7 +79,7 @@ public abstract class BoxingVisitor extends Visitor {
     protected abstract boolean isBooleanTrue(Declaration decl);
     protected abstract boolean isBooleanFalse(Declaration decl);
     protected abstract boolean hasErasure(Type type);
-    protected abstract boolean hasErasedTypeParameters(ProducedReference producedReference);
+    protected abstract boolean hasErasedTypeParameters(Reference producedReference);
     protected abstract boolean willEraseToObject(Type type);
     protected abstract boolean isTypeParameter(Type type);
     protected abstract boolean isRaw(Type type);
@@ -145,7 +145,7 @@ public abstract class BoxingVisitor extends Visitor {
         if(ExpressionTransformer.isSuperOrSuperOf(that.getPrimary())){
             // if the target is an interface whose type arguments have been turned to raw, make this expression
             // as erased
-            ProducedReference target = that.getTarget();
+            Reference target = that.getTarget();
             if(target != null
                     && target.getQualifyingType() != null
                     && target.getQualifyingType().getDeclaration() instanceof Interface){
@@ -267,7 +267,7 @@ public abstract class BoxingVisitor extends Visitor {
         return false;
     }
 
-    private boolean hasErasedTypeParameter(ProducedReference producedReference, TypeArguments typeArguments) {
+    private boolean hasErasedTypeParameter(Reference producedReference, TypeArguments typeArguments) {
         if (typeArguments != null && typeArguments.getTypeModels() != null){
             for (Type arg : typeArguments.getTypeModels()) {
                 if (hasErasure(arg) /*|| willEraseToSequential(param.getType())*/) {

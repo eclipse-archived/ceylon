@@ -77,8 +77,8 @@ import com.redhat.ceylon.model.typechecker.model.ModuleImport;
 import com.redhat.ceylon.model.typechecker.model.Package;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.ParameterList;
-import com.redhat.ceylon.model.typechecker.model.ProducedReference;
-import com.redhat.ceylon.model.typechecker.model.ProducedTypedReference;
+import com.redhat.ceylon.model.typechecker.model.Reference;
+import com.redhat.ceylon.model.typechecker.model.TypedReference;
 import com.redhat.ceylon.model.typechecker.model.Scope;
 import com.redhat.ceylon.model.typechecker.model.SiteVariance;
 import com.redhat.ceylon.model.typechecker.model.Type;
@@ -754,7 +754,7 @@ public abstract class AbstractTransformer implements Transformation {
         return type;
     }
 
-    ProducedTypedReference getTypedReference(TypedDeclaration decl){
+    TypedReference getTypedReference(TypedDeclaration decl){
         java.util.List<Type> typeArgs = Collections.<Type>emptyList();
         if (decl instanceof Method) {
             // For methods create type arguments for any type parameters it might have
@@ -775,12 +775,12 @@ public abstract class AbstractTransformer implements Transformation {
         return decl.getProducedTypedReference(null, typeArgs);
     }
     
-    ProducedTypedReference nonWideningTypeDecl(ProducedTypedReference typedReference) {
+    TypedReference nonWideningTypeDecl(TypedReference typedReference) {
         return nonWideningTypeDecl(typedReference, typedReference.getQualifyingType());
     }
     
-    ProducedTypedReference nonWideningTypeDecl(ProducedTypedReference typedReference, Type currentType) {
-        ProducedTypedReference refinedTypedReference = getRefinedDeclaration(typedReference, currentType);
+    TypedReference nonWideningTypeDecl(TypedReference typedReference, Type currentType) {
+        TypedReference refinedTypedReference = getRefinedDeclaration(typedReference, currentType);
         if(refinedTypedReference != null){
             /*
              * We are widening if the type:
@@ -814,12 +814,12 @@ public abstract class AbstractTransformer implements Transformation {
     }
 
     public boolean isWideningTypeDecl(TypedDeclaration typedDeclaration) {
-        ProducedTypedReference typedReference = getTypedReference(typedDeclaration);
+        TypedReference typedReference = getTypedReference(typedDeclaration);
         return isWideningTypeDecl(typedReference, typedReference.getQualifyingType());
     }
 
-    public boolean isWideningTypeDecl(ProducedTypedReference typedReference, Type currentType) {
-        ProducedTypedReference refinedTypedReference = getRefinedDeclaration(typedReference, currentType);
+    public boolean isWideningTypeDecl(TypedReference typedReference, Type currentType) {
+        TypedReference refinedTypedReference = getRefinedDeclaration(typedReference, currentType);
         if(refinedTypedReference == null)
             return false;
         /*
@@ -861,7 +861,7 @@ public abstract class AbstractTransformer implements Transformation {
      * - The third special case is when we implement a declaration via multiple super types, without having any refining
      * declarations in those supertypes, simply by instantiating a common super type with different type parameters
      */
-    private ProducedTypedReference getRefinedDeclaration(ProducedTypedReference typedReference, Type currentType) {
+    private TypedReference getRefinedDeclaration(TypedReference typedReference, Type currentType) {
         TypedDeclaration decl = typedReference.getDeclaration();
         TypedDeclaration modelRefinedDecl = (TypedDeclaration)decl.getRefinedDeclaration();
         Type referenceQualifyingType = typedReference.getQualifyingType();
@@ -894,7 +894,7 @@ public abstract class AbstractTransformer implements Transformation {
                     // first case
                     for(TypedDeclaration refinedDecl : refinedMembers){
                         // get the type reference to see if any eventual type param is instantiated in our inheritance of this type/method
-                        ProducedTypedReference refinedTypedReference = getRefinedTypedReference(typedReference, refinedDecl);
+                        TypedReference refinedTypedReference = getRefinedTypedReference(typedReference, refinedDecl);
                         // if it is not instantiated, that's the one we're looking for
                         if(isTypeParameter(refinedTypedReference.getType()))
                             return refinedTypedReference;
@@ -902,7 +902,7 @@ public abstract class AbstractTransformer implements Transformation {
                     // second case
                     for(TypedDeclaration refinedDecl : refinedMembers){
                         // get the type reference to see if any eventual type param is instantiated in our inheritance of this type/method
-                        ProducedTypedReference refinedTypedReference = getRefinedTypedReference(typedReference, refinedDecl);
+                        TypedReference refinedTypedReference = getRefinedTypedReference(typedReference, refinedDecl);
                         // if we're not erasing this one to Object let's select it
                         if(!willEraseToObject(refinedTypedReference.getType()) && !isWideningTypeArguments(refinedDecl.getType(), modelRefinedDecl.getType(), true))
                             return refinedTypedReference;
@@ -915,7 +915,7 @@ public abstract class AbstractTransformer implements Transformation {
                         // first super type
                         Type extendedType = declaringType.getExtendedType();
                         if(extendedType != null){
-                            ProducedTypedReference refinedTypedReference = getRefinedTypedReference(extendedType, modelRefinedDecl);
+                            TypedReference refinedTypedReference = getRefinedTypedReference(extendedType, modelRefinedDecl);
                             Type refinedType = refinedTypedReference.getType();
                             if(!isTypeParameter(refinedType)
                                     && !willEraseToObject(refinedType))
@@ -923,7 +923,7 @@ public abstract class AbstractTransformer implements Transformation {
                         }
                         // then satisfied interfaces
                         for(Type satisfiedType : declaringType.getSatisfiedTypes()){
-                            ProducedTypedReference refinedTypedReference = getRefinedTypedReference(satisfiedType, modelRefinedDecl);
+                            TypedReference refinedTypedReference = getRefinedTypedReference(satisfiedType, modelRefinedDecl);
                             Type refinedType = refinedTypedReference.getType();
                             if(!isTypeParameter(refinedType)
                                     && !willEraseToObject(refinedType))
@@ -950,7 +950,7 @@ public abstract class AbstractTransformer implements Transformation {
              */
             Type firstInstantiation = isInheritedWithDifferentTypeArguments(modelRefinedDecl.getContainer(), currentType);
             if(firstInstantiation != null){
-                ProducedTypedReference firstInstantiationTypedReference = getRefinedTypedReference(firstInstantiation, modelRefinedDecl);
+                TypedReference firstInstantiationTypedReference = getRefinedTypedReference(firstInstantiation, modelRefinedDecl);
                 Type firstInstantiationType = firstInstantiationTypedReference.getType();
                 if(isWidening(decl.getType(), firstInstantiationType)
                         || isWideningTypeArguments(decl.getType(), firstInstantiationType, true))
@@ -1107,7 +1107,7 @@ public abstract class AbstractTransformer implements Transformation {
         java.util.List<Parameter> parameters = parameterLists.get(0).getParameters();
         if(parameters == null)
             return null;
-        ProducedTypedReference typedMember = currentType.getTypedMember(found, Collections.<Type>emptyList());
+        TypedReference typedMember = currentType.getTypedMember(found, Collections.<Type>emptyList());
         if(typedMember == null)
             return null;
         java.util.List<Type> typedSignature = new ArrayList<Type>(parameters.size());
@@ -1132,7 +1132,7 @@ public abstract class AbstractTransformer implements Transformation {
         return true;
     }
 
-    private ProducedTypedReference getRefinedTypedReference(ProducedTypedReference typedReference, 
+    private TypedReference getRefinedTypedReference(TypedReference typedReference, 
             TypedDeclaration refinedDeclaration) {
         TypeDeclaration refinedContainer = (TypeDeclaration)refinedDeclaration.getContainer();
 
@@ -1146,7 +1146,7 @@ public abstract class AbstractTransformer implements Transformation {
         return refinedDeclaration.getProducedTypedReference(refinedContainerType, typeArgs);
     }
 
-    private ProducedTypedReference getRefinedTypedReference(Type qualifyingType, 
+    private TypedReference getRefinedTypedReference(Type qualifyingType, 
                                                             TypedDeclaration refinedDeclaration) {
         TypeDeclaration refinedContainer = (TypeDeclaration)refinedDeclaration.getContainer();
 
@@ -1264,8 +1264,8 @@ public abstract class AbstractTransformer implements Transformation {
         return true;
     }
 
-    Type nonWideningType(ProducedTypedReference declaration, ProducedTypedReference refinedDeclaration){
-        final ProducedReference pr;
+    Type nonWideningType(TypedReference declaration, TypedReference refinedDeclaration){
+        final Reference pr;
         if (declaration.equals(refinedDeclaration)) {
             pr = declaration;
         } else {
@@ -1914,8 +1914,8 @@ public abstract class AbstractTransformer implements Transformation {
                 // this is only valid for interfaces, not for their companion which stay where they are
                 && (flags & JT_COMPANION) == 0;
         
-        java.util.List<ProducedReference> qualifyingTypes = null;
-        ProducedReference qType = simpleType;
+        java.util.List<Reference> qualifyingTypes = null;
+        Reference qType = simpleType;
         boolean hasTypeParameters = false;
         while (qType != null) {
             hasTypeParameters |= !qType.getTypeArguments().isEmpty();
@@ -1931,7 +1931,7 @@ public abstract class AbstractTransformer implements Transformation {
                 while (container instanceof Method) {
                     qType = ((Method)container).getReference();
                     if (qualifyingTypes == null) { 
-                        qualifyingTypes = new java.util.ArrayList<ProducedReference>();
+                        qualifyingTypes = new java.util.ArrayList<Reference>();
                         qualifyingTypes.add(simpleType);
                     }
                     hasTypeParameters = true;
@@ -1958,14 +1958,14 @@ public abstract class AbstractTransformer implements Transformation {
             }
             // delayed allocation if we have a qualifying type
             if(qualifyingTypes == null && qType != null){
-                qualifyingTypes = new java.util.ArrayList<ProducedReference>();
+                qualifyingTypes = new java.util.ArrayList<Reference>();
                 qualifyingTypes.add(simpleType);
             }
         }
         int firstQualifyingTypeWithTypeParameters = qualifyingTypes != null ? qualifyingTypes.size() - 1 : 0;
         // find the first static one, from the right to the left
         if(qualifyingTypes != null){
-            for(ProducedReference pt : qualifyingTypes){
+            for(Reference pt : qualifyingTypes){
                 Declaration declaration = pt.getDeclaration();
                 if(declaration instanceof TypeDeclaration && Decl.isStatic((TypeDeclaration)declaration)){
                     break;
@@ -2012,7 +2012,7 @@ public abstract class AbstractTransformer implements Transformation {
             }else if((flags & JT_NON_QUALIFIED) == 0){
                 int index = 0;
                 if(qualifyingTypes != null){
-                    for (ProducedReference qualifyingType : qualifyingTypes) {
+                    for (Reference qualifyingType : qualifyingTypes) {
                         jt = makeParameterisedType(qualifyingType.getType(), type, flags, jt, qualifyingTypes, firstQualifyingTypeWithTypeParameters, index);
                         index++;
                     }
@@ -2047,13 +2047,13 @@ public abstract class AbstractTransformer implements Transformation {
      */
     private void collectQualifyingTypeArguments(java.util.List<TypeParameter> qualifyingTypeParameters, 
             Map<TypeParameter, Type> qualifyingTypeArguments, 
-            java.util.List<ProducedReference> qualifyingTypes) {
+            java.util.List<Reference> qualifyingTypes) {
         // make sure we only add type parameters with the same name once, as duplicates are erased from the target interface
         // since they cannot be accessed
         Set<String> names = new HashSet<String>();
         // walk the qualifying types backwards to make sure we only add a TP with the same name once and the outer one wins
         for (int i = qualifyingTypes.size()-1 ; i >= 0 ; i--) {
-            ProducedReference qualifiedType = qualifyingTypes.get(i);
+            Reference qualifiedType = qualifyingTypes.get(i);
             Map<TypeParameter, Type> tas = qualifiedType.getTypeArguments();
             java.util.List<TypeParameter> tps = ((Generic)qualifiedType.getDeclaration()).getTypeParameters();
             // add any type params for this type
@@ -2199,7 +2199,7 @@ public abstract class AbstractTransformer implements Transformation {
     }
 
     public JCExpression makeParameterisedType(Type type, Type generalType, final int flags, 
-            JCExpression qualifyingExpression, java.util.List<ProducedReference> qualifyingTypes, 
+            JCExpression qualifyingExpression, java.util.List<Reference> qualifyingTypes, 
             int firstQualifyingTypeWithTypeParameters, int index) {
         JCExpression baseType;
         TypeDeclaration tdecl = type.getDeclaration();
@@ -2695,7 +2695,7 @@ public abstract class AbstractTransformer implements Transformation {
      */
     static final int TP_SEQUENCED_TYPE = 1<<1;
     
-    Type getTypeForParameter(Parameter parameter, ProducedReference producedReference, int flags) {
+    Type getTypeForParameter(Parameter parameter, Reference producedReference, int flags) {
         /* this method is bogus: It's really trying to answer 
          * "what's the type of the java declaration of the given parameter", 
          * but using the ceylon type system to do so. 
@@ -2704,7 +2704,7 @@ public abstract class AbstractTransformer implements Transformation {
         if (producedReference == null) {
             return parameter.getType();
         }
-        final ProducedTypedReference producedTypedReference = producedReference.getTypedParameter(parameter);
+        final TypedReference producedTypedReference = producedReference.getTypedParameter(parameter);
         final Type type = functional ? producedTypedReference.getFullType() : producedTypedReference.getType();
         final TypedDeclaration producedParameterDecl = producedTypedReference.getDeclaration();
         final Type declType = producedParameterDecl.getType();
@@ -2748,7 +2748,7 @@ public abstract class AbstractTransformer implements Transformation {
     }
 
     protected Type substituteTypeArgumentsForTypeParameterBound(
-            ProducedReference target, Type bound) {
+            Reference target, Type bound) {
         Declaration declaration = target.getDeclaration();
         if(declaration.getContainer() instanceof ClassOrInterface){
             Type targetType = target.getQualifyingType();
@@ -4836,7 +4836,7 @@ public abstract class AbstractTransformer implements Transformation {
         return makeSelect(className, "class");
     }
 
-    public java.util.List<JCExpression> makeReifiedTypeArguments(ProducedReference ref){
+    public java.util.List<JCExpression> makeReifiedTypeArguments(Reference ref){
         ref = resolveAliasesForReifiedTypeArguments(ref);
         Declaration declaration = ref.getDeclaration();
         if(!supportsReified(declaration))
@@ -4844,9 +4844,9 @@ public abstract class AbstractTransformer implements Transformation {
         return makeReifiedTypeArguments(getTypeArguments(ref));
     }
 
-    ProducedReference resolveAliasesForReifiedTypeArguments(ProducedReference ref) {
+    Reference resolveAliasesForReifiedTypeArguments(Reference ref) {
         // this is a bit tricky:
-        // - for method references (ProducedTypedReference) it's all good
+        // - for method references (TypedReference) it's all good
         // - for classes we get a Type which we use to resolve aliases
         // -- UNLESS it's a class with an instantiator, in which case we should not resolve aliases
         //    because the instantiator has the right set of type parameters
@@ -4884,7 +4884,7 @@ public abstract class AbstractTransformer implements Transformation {
     }
     
     private java.util.List<Type> getTypeArguments(
-            ProducedReference producedReference) {
+            Reference producedReference) {
         java.util.List<TypeParameter> typeParameters = getTypeParameters(producedReference);
         java.util.List<Type> typeArguments = new ArrayList<Type>(typeParameters.size());
         for(TypeParameter tp : typeParameters)
@@ -4902,7 +4902,7 @@ public abstract class AbstractTransformer implements Transformation {
     }
 
     java.util.List<TypeParameter> getTypeParameters(
-            ProducedReference producedReference) {
+            Reference producedReference) {
         Declaration declaration = producedReference.getDeclaration();
         if(declaration instanceof ClassOrInterface)
             return ((ClassOrInterface)declaration).getTypeParameters();
@@ -5184,8 +5184,8 @@ public abstract class AbstractTransformer implements Transformation {
     }
 
     Type getGetterInterfaceType(TypedDeclaration attrTypedDecl) {
-        ProducedTypedReference typedRef = getTypedReference(attrTypedDecl);
-        ProducedTypedReference nonWideningTypedRef = nonWideningTypeDecl(typedRef);
+        TypedReference typedRef = getTypedReference(attrTypedDecl);
+        TypedReference nonWideningTypedRef = nonWideningTypeDecl(typedRef);
         Type nonWideningType = nonWideningType(typedRef, nonWideningTypedRef);
         
         Type type;

@@ -55,9 +55,9 @@ import com.redhat.ceylon.model.typechecker.model.Interface;
 import com.redhat.ceylon.model.typechecker.model.Method;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.ParameterList;
-import com.redhat.ceylon.model.typechecker.model.ProducedReference;
+import com.redhat.ceylon.model.typechecker.model.Reference;
 import com.redhat.ceylon.model.typechecker.model.Type;
-import com.redhat.ceylon.model.typechecker.model.ProducedTypedReference;
+import com.redhat.ceylon.model.typechecker.model.TypedReference;
 import com.redhat.ceylon.model.typechecker.model.Scope;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
@@ -154,7 +154,7 @@ abstract class Invocation {
         return onValueType;
     }
     
-    protected Type getParameterTypeForValueType(ProducedReference producedReference, Parameter param) {
+    protected Type getParameterTypeForValueType(Reference producedReference, Parameter param) {
         // we need to find the interface for this method
         Type paramType = param.getModel().getReference().getFullType().getType();
         Scope paramContainer = param.getModel().getContainer();
@@ -681,19 +681,19 @@ class IndirectInvocation extends SimpleInvocation {
  */
 abstract class DirectInvocation extends SimpleInvocation {
 
-    private final ProducedReference producedReference;
+    private final Reference producedReference;
 
     protected DirectInvocation(
             AbstractTransformer gen,
             Tree.Term primary,
             Declaration primaryDeclaration,
-            ProducedReference producedReference, Type returnType, 
+            Reference producedReference, Type returnType, 
             Node node) {
         super(gen, primary, primaryDeclaration, returnType, node);
         this.producedReference = producedReference;
     }
 
-    protected ProducedReference getProducedReference() {
+    protected Reference getProducedReference() {
         return producedReference;
     }
 
@@ -753,7 +753,7 @@ abstract class DirectInvocation extends SimpleInvocation {
         addReifiedArguments(gen, producedReference, result);
     }
     
-    static void addReifiedArguments(AbstractTransformer gen, ProducedReference producedReference, ListBuffer<ExpressionAndType> result) {
+    static void addReifiedArguments(AbstractTransformer gen, Reference producedReference, ListBuffer<ExpressionAndType> result) {
         java.util.List<JCExpression> reifiedTypeArgs = gen.makeReifiedTypeArguments(producedReference);
         for(JCExpression reifiedTypeArg : reifiedTypeArgs)
             result.append(new ExpressionAndType(reifiedTypeArg, gen.makeTypeDescriptorType()));
@@ -773,7 +773,7 @@ class PositionalInvocation extends DirectInvocation {
             AbstractTransformer gen, 
             Tree.Term primary,
             Declaration primaryDeclaration,
-            ProducedReference producedReference, Tree.InvocationExpression invocation,
+            Reference producedReference, Tree.InvocationExpression invocation,
             java.util.List<Parameter> parameters) {
         super(gen, primary, primaryDeclaration, producedReference, invocation.getTypeModel(), invocation);
         positional = invocation.getPositionalArgumentList();
@@ -962,7 +962,7 @@ class CallableInvocation extends DirectInvocation {
 
     public CallableInvocation(
             AbstractTransformer gen, Naming.SyntheticName primaryName, boolean primaryIsBoxed, Tree.Term primary,
-            Declaration primaryDeclaration, ProducedReference producedReference, Type returnType,
+            Declaration primaryDeclaration, Reference producedReference, Type returnType,
             Tree.Term expr, ParameterList parameterList, int parameterCount, boolean tempVars) {
         super(gen, primary, primaryDeclaration, producedReference, returnType, expr);
         this.instanceFieldName = primaryName;
@@ -1073,7 +1073,7 @@ class MethodReferenceSpecifierInvocation extends DirectInvocation {
     public MethodReferenceSpecifierInvocation(
             AbstractTransformer gen, Tree.Primary primary,
             Declaration primaryDeclaration,
-            ProducedReference producedReference, Method method, Tree.SpecifierExpression node) {
+            Reference producedReference, Method method, Tree.SpecifierExpression node) {
         super(gen, primary, primaryDeclaration, producedReference, method.getType(), node);
         this.method = method;
         setUnboxed(primary.getUnboxed());
@@ -1189,12 +1189,12 @@ class NamedArgumentInvocation extends Invocation {
     private final TreeMap<Integer, Naming.SyntheticName> argsNamesByIndex = new TreeMap<Integer, Naming.SyntheticName>();
     private final TreeMap<Integer, ExpressionAndType> argsAndTypes = new TreeMap<Integer, ExpressionAndType>();
     private final Set<Parameter> bound = new HashSet<Parameter>();
-    private ProducedReference producedReference;
+    private Reference producedReference;
     
     public NamedArgumentInvocation(
             AbstractTransformer gen, Tree.Term primary,
             Declaration primaryDeclaration,
-            ProducedReference producedReference,
+            Reference producedReference,
             Tree.InvocationExpression invocation) {
         super(gen, primary, primaryDeclaration, invocation.getTypeModel(), invocation);
         this.producedReference = producedReference;
@@ -1205,7 +1205,7 @@ class NamedArgumentInvocation extends Invocation {
     
     @Override
     protected void addReifiedArguments(ListBuffer<ExpressionAndType> result) {
-        ProducedReference ref = gen.resolveAliasesForReifiedTypeArguments(producedReference);
+        Reference ref = gen.resolveAliasesForReifiedTypeArguments(producedReference);
         if(!gen.supportsReified(ref.getDeclaration()))
             return;
         int tpCount = gen.getTypeParameters(ref).size();
@@ -1322,7 +1322,7 @@ class NamedArgumentInvocation extends Invocation {
             names.append(varBaseName.suffixedBy(Suffix.$argthis$).makeIdent());
         }
         // put all the required reified type args too
-        ProducedReference ref = gen.resolveAliasesForReifiedTypeArguments(producedReference);
+        Reference ref = gen.resolveAliasesForReifiedTypeArguments(producedReference);
         int tpCount = gen.getTypeParameters(ref).size();
         for(int tpIndex = 0;tpIndex<tpCount;tpIndex++){
             names.append(reifiedTypeArgName(tpIndex).makeIdent());
@@ -1488,8 +1488,8 @@ class NamedArgumentInvocation extends Invocation {
         final String name = model.getName();
         String className = Naming.getAttrClassName(model, 0);
         final List<JCTree> attrClass = gen.gen().transformAttribute(model, name, className, null, attrArg.getBlock(), attrArg.getSpecifierExpression(), null, null);
-        ProducedTypedReference typedRef = gen.getTypedReference(model);
-        ProducedTypedReference nonWideningTypedRef = gen.nonWideningTypeDecl(typedRef);
+        TypedReference typedRef = gen.getTypedReference(model);
+        TypedReference nonWideningTypedRef = gen.nonWideningTypeDecl(typedRef);
         Type nonWideningType = gen.nonWideningType(typedRef, nonWideningTypedRef);
         Type type = parameterType(declaredParam, model.getType(), 0);
         final BoxingStrategy boxType = getNamedParameterBoxingStrategy(declaredParam);
@@ -1615,7 +1615,7 @@ class NamedArgumentInvocation extends Invocation {
         // handle type parameters correctly
         // we used to use thisType = gen.getThisType(getPrimaryDeclaration());
         final JCExpression thisType;
-        ProducedReference target = ((Tree.MemberOrTypeExpression)getPrimary()).getTarget();
+        Reference target = ((Tree.MemberOrTypeExpression)getPrimary()).getTarget();
         if (getPrimary() instanceof Tree.BaseMemberExpression
                 && !gen.expressionGen().isWithinSyntheticClassBody()) {
             if (Decl.withinClassOrInterface(getPrimaryDeclaration())) {
