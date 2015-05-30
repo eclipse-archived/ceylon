@@ -2771,7 +2771,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                     // On the other hand, if the parameter is sequenced and the argument is spread,
                     // but not sequential, then transformArguments() will use getSequence(),
                     // so we only need to expect an Iterable type
-                    type = com.redhat.ceylon.model.typechecker.model.ModelUtil.producedType(
+                    type = com.redhat.ceylon.model.typechecker.model.ModelUtil.appliedType(
                             typeFact().getIterableDeclaration(),
                             typeFact().getIteratedType(type), typeFact().getIteratedAbsentType(type));
                 }

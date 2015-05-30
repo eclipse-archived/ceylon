@@ -22,7 +22,7 @@ package com.redhat.ceylon.compiler.java.codegen;
 
 import static com.redhat.ceylon.compiler.typechecker.tree.Util.hasUncheckedNulls;
 import static com.redhat.ceylon.compiler.typechecker.tree.Util.isForBackend;
-import static com.redhat.ceylon.model.typechecker.model.ModelUtil.producedType;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.appliedType;
 import static com.sun.tools.javac.code.Flags.FINAL;
 import static com.sun.tools.javac.code.Flags.PRIVATE;
 import static com.sun.tools.javac.code.Flags.PROTECTED;
@@ -5206,7 +5206,7 @@ public abstract class AbstractTransformer implements Transformation {
             if (unboxed && isCeylonString(typeArg)) {
                 typeArg = javacJavaTypeToProducedType(syms().stringType);
             }
-            type = producedType(type.getDeclaration(), typeArg);
+            type = appliedType(type.getDeclaration(), typeArg);
         }
         return type;
     }

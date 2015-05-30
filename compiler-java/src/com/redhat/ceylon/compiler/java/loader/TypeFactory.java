@@ -79,7 +79,7 @@ public class TypeFactory extends Unit {
     }
     
     public Type getArraySequenceType(Type et) {
-        return ModelUtil.producedType(getArraySequenceDeclaration(), et);
+        return ModelUtil.appliedType(getArraySequenceDeclaration(), et);
     }
     
     /**
@@ -88,7 +88,7 @@ public class TypeFactory extends Unit {
      * @return The Type corresponding to {@code Array<T>}
      */
     public Type getArrayType(Type et) {
-        return ModelUtil.producedType(getArrayDeclaration(), et);
+        return ModelUtil.appliedType(getArrayDeclaration(), et);
     }
 
     public Type getArrayElementType(Type type) {
