@@ -358,7 +358,7 @@ public class JsonPackage extends com.redhat.ceylon.model.typechecker.model.Packa
                         throw new IllegalArgumentException("Only union or intersection types are allowed as 'comp'");
                     }
                     Type subtype = getTypeFromJson(tp, container, allparms);
-                    tparm.setName(subtype.getProducedTypeName());
+                    tparm.setName(subtype.asString());
                     tparm.setExtendedType(subtype);
                 } else {
                     tparm.setExtendedType(getTypeFromJson(voidclass, container, null));

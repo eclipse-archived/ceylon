@@ -196,13 +196,13 @@ public class TestModuleManager {
         Type seq0 = null, seq1 = null;
         for (Type pt : d0.getSatisfiedTypes()) {
             System.out.println(d0 + " satisfies " + pt);
-            if (pt.getProducedTypeName().startsWith("Null[]")) {
+            if (pt.asString().startsWith("Null[]")) {
                 seq0 = pt;
                 break;
             }
         }
         for (Type pt : d1.getSatisfiedTypes()) {
-            if (pt.getProducedTypeName().startsWith("Null[]")) {
+            if (pt.asString().startsWith("Null[]")) {
                 seq1 = pt;
                 break;
             }
@@ -228,7 +228,7 @@ public class TestModuleManager {
         } else {
             Assert.assertNotNull(t1);
         }
-        Assert.assertEquals("stack: " + stack, t0.getProducedTypeName(), t1.getProducedTypeName());
+        Assert.assertEquals("stack: " + stack, t0.asString(), t1.asString());
         Assert.assertEquals(t0.getUnderlyingType(), t1.getUnderlyingType());
         Assert.assertEquals(t0.getProducedTypeQualifiedName(), t1.getProducedTypeQualifiedName());
         Assert.assertEquals(t0.isFunctional(), t1.isFunctional());
