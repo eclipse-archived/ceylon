@@ -176,9 +176,9 @@ public class FreePackage implements ceylon.language.meta.declaration.Package,
     @TypeInfo("ceylon.language.meta.declaration::FunctionDeclaration|ceylon.language::Null")
     public ceylon.language.meta.declaration.FunctionDeclaration getFunction(String name) {
         com.redhat.ceylon.model.typechecker.model.Declaration toplevel = declaration.getMember(name, null, false);
-        if(toplevel instanceof com.redhat.ceylon.model.typechecker.model.Method == false)
+        if(toplevel instanceof com.redhat.ceylon.model.typechecker.model.Function == false)
             return null;
-        com.redhat.ceylon.model.typechecker.model.Method decl = (com.redhat.ceylon.model.typechecker.model.Method) toplevel;
+        com.redhat.ceylon.model.typechecker.model.Function decl = (com.redhat.ceylon.model.typechecker.model.Function) toplevel;
         return (FreeFunction) Metamodel.getOrCreateMetamodel(decl);
     }
 

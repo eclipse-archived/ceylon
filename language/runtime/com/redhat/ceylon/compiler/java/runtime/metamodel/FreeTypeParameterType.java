@@ -45,9 +45,9 @@ public class FreeTypeParameterType
                 this.declaration = typeParameter;
             else
                 throw Metamodel.newModelError("Failed to find type parameter: "+wrapped.getName()+" in container "+container);
-        }else if(container instanceof com.redhat.ceylon.model.typechecker.model.Method){
+        }else if(container instanceof com.redhat.ceylon.model.typechecker.model.Function){
             // try to find it in the method
-            ceylon.language.meta.declaration.FunctionDeclaration method = Metamodel.getMetamodel((com.redhat.ceylon.model.typechecker.model.Method)container);
+            ceylon.language.meta.declaration.FunctionDeclaration method = Metamodel.getMetamodel((com.redhat.ceylon.model.typechecker.model.Function)container);
             ceylon.language.meta.declaration.TypeParameter typeParameter = method.getTypeParameterDeclaration(wrapped.getName());
             if(typeParameter != null)
                 this.declaration = typeParameter;

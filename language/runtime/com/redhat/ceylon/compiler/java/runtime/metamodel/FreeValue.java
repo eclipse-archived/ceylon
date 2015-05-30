@@ -219,9 +219,9 @@ public class FreeValue
             // get the annotations from the parameter itself
             Annotation[][] parameterAnnotations;
             Scope container = parameter.getModel().getContainer();
-            if(container instanceof com.redhat.ceylon.model.typechecker.model.Method) {
+            if(container instanceof com.redhat.ceylon.model.typechecker.model.Function) {
                 parameterAnnotations = Metamodel.getJavaMethod(
-                        (com.redhat.ceylon.model.typechecker.model.Method)container)
+                        (com.redhat.ceylon.model.typechecker.model.Function)container)
                         .getParameterAnnotations();
             } else if(container instanceof com.redhat.ceylon.model.typechecker.model.ClassAlias){
                 parameterAnnotations = Reflection.findClassAliasInstantiator(

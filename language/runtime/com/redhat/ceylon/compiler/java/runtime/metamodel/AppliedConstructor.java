@@ -516,7 +516,7 @@ public class AppliedConstructor<Type, Arguments extends Sequential<? extends Obj
                 (com.redhat.ceylon.compiler.typechecker.model.Class)declaration.declaration;
         java.lang.Class<?> javaClass = Metamodel.getJavaClass(decl);
 
-        Method found = null;
+        Function found = null;
         java.lang.String name;
         java.lang.Class<?> lookupClass;
         if(!javaClass.isMemberClass()){
@@ -528,7 +528,7 @@ public class AppliedConstructor<Type, Arguments extends Sequential<? extends Obj
             lookupClass = Metamodel.getJavaClass((Declaration) declaration.declaration.getContainer());
         }
         // iterate to find it, rather than figure out its parameter types
-        for(Method m : lookupClass.getDeclaredMethods()){
+        for(Function m : lookupClass.getDeclaredMethods()){
             if(m.getName().equals(name)){
                 found = m;
                 break;

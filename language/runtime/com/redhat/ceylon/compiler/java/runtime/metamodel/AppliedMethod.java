@@ -55,7 +55,7 @@ public class AppliedMethod<Container, Type, Arguments extends Sequential<? exten
         this.typeArguments = Metamodel.getTypeArguments(declaration, appliedFunction);
         this.closedType = Metamodel.getAppliedMetamodel(Metamodel.getFunctionReturnType(appliedFunction));
         // get a list of produced parameter types
-        com.redhat.ceylon.model.typechecker.model.Method method = (com.redhat.ceylon.model.typechecker.model.Method)appliedFunction.getDeclaration();
+        com.redhat.ceylon.model.typechecker.model.Function method = (com.redhat.ceylon.model.typechecker.model.Function)appliedFunction.getDeclaration();
         List<Parameter> parameters = method.getParameterLists().get(0).getParameters();
         List<com.redhat.ceylon.model.typechecker.model.Type> parameterProducedTypes = Metamodel.getParameterProducedTypes(parameters, appliedFunction);
         this.parameterTypes = Metamodel.getAppliedMetamodelSequential(parameterProducedTypes);

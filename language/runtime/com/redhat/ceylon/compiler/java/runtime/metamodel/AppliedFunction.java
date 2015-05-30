@@ -65,7 +65,7 @@ public class AppliedFunction<Type, Arguments extends Sequential<? extends Object
         this.instance = instance;
         this.appliedFunction = appliedFunction;
         
-        com.redhat.ceylon.model.typechecker.model.Method decl = (com.redhat.ceylon.model.typechecker.model.Method) function.declaration;
+        com.redhat.ceylon.model.typechecker.model.Function decl = (com.redhat.ceylon.model.typechecker.model.Function) function.declaration;
         List<Parameter> parameters = decl.getParameterLists().get(0).getParameters();
 
         this.firstDefaulted = Metamodel.getFirstDefaultedParameter(parameters);
@@ -92,7 +92,7 @@ public class AppliedFunction<Type, Arguments extends Sequential<? extends Object
         // FIXME: delay method setup for when we actually use it?
         java.lang.Class<?> javaClass = Metamodel.getJavaClass(function.declaration);
         Method found = null;
-        String name = Metamodel.getJavaMethodName((com.redhat.ceylon.model.typechecker.model.Method) function.declaration);
+        String name = Metamodel.getJavaMethodName((com.redhat.ceylon.model.typechecker.model.Function) function.declaration);
         
         // special cases for some erased types
         if(javaClass == ceylon.language.Object.class
@@ -123,7 +123,7 @@ public class AppliedFunction<Type, Arguments extends Sequential<? extends Object
         } else{
             // FIXME: deal with Java classes and overloading
             // FIXME: faster lookup with types? but then we have to deal with erasure and stuff
-            found = Metamodel.getJavaMethod((com.redhat.ceylon.model.typechecker.model.Method) function.declaration);
+            found = Metamodel.getJavaMethod((com.redhat.ceylon.model.typechecker.model.Function) function.declaration);
             
             int reifiedTypeParameterCount = MethodHandleUtil.isReifiedTypeSupported(found, false) ? found.getTypeParameters().length : 0;
             boolean isArray = MethodHandleUtil.isJavaArray(javaClass);
@@ -209,7 +209,7 @@ public class AppliedFunction<Type, Arguments extends Sequential<? extends Object
         if(typeParametersCount != 0 && MethodHandleUtil.isReifiedTypeSupported(found, false)){
             List<com.redhat.ceylon.model.typechecker.model.Type> typeArguments = new ArrayList<com.redhat.ceylon.model.typechecker.model.Type>();
             Map<com.redhat.ceylon.model.typechecker.model.TypeParameter, com.redhat.ceylon.model.typechecker.model.Type> typeArgumentMap = appliedFunction.getTypeArguments();
-            for (com.redhat.ceylon.model.typechecker.model.TypeParameter tp : ((com.redhat.ceylon.model.typechecker.model.Method)appliedFunction.getDeclaration()).getTypeParameters()) {
+            for (com.redhat.ceylon.model.typechecker.model.TypeParameter tp : ((com.redhat.ceylon.model.typechecker.model.Function)appliedFunction.getDeclaration()).getTypeParameters()) {
                 typeArguments.add(typeArgumentMap.get(tp));
             }
             method = MethodHandleUtil.insertReifiedTypeArguments(method, 0, typeArguments);

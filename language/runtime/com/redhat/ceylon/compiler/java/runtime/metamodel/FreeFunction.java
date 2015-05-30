@@ -23,7 +23,7 @@ import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 import com.redhat.ceylon.compiler.java.metadata.Variance;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 import com.redhat.ceylon.model.typechecker.model.Functional;
-import com.redhat.ceylon.model.typechecker.model.Method;
+import com.redhat.ceylon.model.typechecker.model.Function;
 import com.redhat.ceylon.model.typechecker.model.TypedReference;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 
@@ -144,7 +144,7 @@ public class FreeFunction
                                                               (Sequential)empty_.get_());
     }
 
-    @TypeInfo("ceylon.language.meta.model::Method<Container,Return,Arguments>")
+    @TypeInfo("ceylon.language.meta.model::Function<Container,Return,Arguments>")
     @TypeParameters({
         @TypeParameter("Container"),
         @TypeParameter("Return"),
@@ -180,7 +180,7 @@ public class FreeFunction
         TypeDescriptor reifiedArguments = Metamodel.getTypeDescriptorForArguments(declaration.getUnit(), (Functional) declaration, appliedFunction);
         TypeDescriptor reifiedContainer = Metamodel.getTypeDescriptorForProducedType(containerType);
 
-        Metamodel.checkReifiedTypeArgument("memberApply", "Method<$1,$2,$3>", 
+        Metamodel.checkReifiedTypeArgument("memberApply", "Function<$1,$2,$3>", 
                 Variance.IN, containerType, $reifiedContainer, 
                 Variance.OUT, appliedFunction.getType(), $reifiedType,
                 Variance.IN, Metamodel.getProducedTypeForArguments(declaration.getUnit(), (Functional)declaration, appliedFunction), $reifiedArguments);
@@ -301,13 +301,13 @@ public class FreeFunction
     @Override
     public java.lang.annotation.Annotation[] $getJavaAnnotations$() {
         // FIXME: this could be a FunctionalParameter!
-        return Metamodel.getJavaMethod((Method) declaration).getAnnotations();
+        return Metamodel.getJavaMethod((Function) declaration).getAnnotations();
     }
     
     @Override
     @Ignore
     public boolean $isAnnotated$(java.lang.Class<? extends java.lang.annotation.Annotation> annotationType) {
-        final AnnotatedElement element = Metamodel.getJavaMethod((Method) declaration);
+        final AnnotatedElement element = Metamodel.getJavaMethod((Function) declaration);
         return element != null ? element.isAnnotationPresent(annotationType) : false;
     }
     

@@ -7,7 +7,7 @@ import java.lang.annotation.Target;
 
 /**
  * Marks a parameter of {@code Callable} type as being a functional parameter
- * (i.e. having {@code Method} as its model)
+ * (i.e. having {@code Function} as its model)
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.PARAMETER, ElementType.METHOD})
@@ -25,7 +25,7 @@ public @interface FunctionalParameter {
      * name      ::= identifier ( nameList )*
      * </pre>
      * <ul>
-     *   <li>A {@code !} means that the {@code Method} model is declared {@code void}</li>
+     *   <li>A {@code !} means that the {@code Function} model is declared {@code void}</li>
      *   <li>A {@code +} means that the {@code Parameter} model is possibly-empty variadic</li>
      *   <li>A {@code *} means that the {@code Parameter} model is nonempty variadic</li>
      * </ul> 

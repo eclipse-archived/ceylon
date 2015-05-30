@@ -200,11 +200,11 @@ class Predicates {
         }
     };
     
-    /** Predicate on Declarations that accepts Method */
+    /** Predicate on Declarations that accepts Function */
     private static final Predicate<Declaration> DECLARATION_IS_FUNCTION = new Predicate<Declaration>() {  
         @Override
         public boolean accept(Declaration declaration) {
-            return declaration instanceof com.redhat.ceylon.model.typechecker.model.Method;
+            return declaration instanceof com.redhat.ceylon.model.typechecker.model.Function;
         }
         @Override
         public String toString() {
@@ -212,12 +212,12 @@ class Predicates {
         }
     };
 
-    /** Predicate on Declarations that accepts Method and Value */
+    /** Predicate on Declarations that accepts Function and Value */
     private static final Predicate<Declaration> DECLARATION_IS_FUNCTION_OR_VALUE = new Predicate<Declaration>() {
         @Override
         public boolean accept(Declaration declaration) {
             return declaration instanceof com.redhat.ceylon.model.typechecker.model.Value
-                || declaration instanceof com.redhat.ceylon.model.typechecker.model.Method
+                || declaration instanceof com.redhat.ceylon.model.typechecker.model.Function
             ;
         }
         @Override

@@ -103,8 +103,8 @@ public abstract class FreeClassOrInterface
 
     private boolean isSupportedType(Declaration memberModelDeclaration) {
         return memberModelDeclaration instanceof com.redhat.ceylon.model.typechecker.model.Value
-                || (memberModelDeclaration instanceof com.redhat.ceylon.model.typechecker.model.Method
-                        && !((com.redhat.ceylon.model.typechecker.model.Method)memberModelDeclaration).isAbstraction())
+                || (memberModelDeclaration instanceof com.redhat.ceylon.model.typechecker.model.Function
+                        && !((com.redhat.ceylon.model.typechecker.model.Function)memberModelDeclaration).isAbstraction())
                 || memberModelDeclaration instanceof com.redhat.ceylon.model.typechecker.model.TypeAlias
                 || memberModelDeclaration instanceof com.redhat.ceylon.model.typechecker.model.Interface
                 || (memberModelDeclaration instanceof com.redhat.ceylon.model.typechecker.model.Class

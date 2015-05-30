@@ -80,7 +80,7 @@ import com.redhat.ceylon.model.loader.model.LazyTypeAlias;
 import com.redhat.ceylon.model.loader.model.LazyValue;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Functional;
-import com.redhat.ceylon.model.typechecker.model.Method;
+import com.redhat.ceylon.model.typechecker.model.Function;
 import com.redhat.ceylon.model.typechecker.model.ModelUtil;
 import com.redhat.ceylon.model.typechecker.model.ModuleImport;
 import com.redhat.ceylon.model.typechecker.model.Modules;
@@ -336,7 +336,7 @@ public class Metamodel {
                 }else if(declaration instanceof com.redhat.ceylon.model.typechecker.model.TypeAlias){
                     com.redhat.ceylon.model.typechecker.model.TypeAlias alias = (com.redhat.ceylon.model.typechecker.model.TypeAlias)declaration;
                     ret = new com.redhat.ceylon.compiler.java.runtime.metamodel.FreeAliasDeclaration(alias);
-                }else if(declaration instanceof com.redhat.ceylon.model.typechecker.model.Method){
+                }else if(declaration instanceof com.redhat.ceylon.model.typechecker.model.Function){
                     com.redhat.ceylon.model.typechecker.model.TypedDeclaration method = (com.redhat.ceylon.model.typechecker.model.TypedDeclaration)declaration;
                     ret = new com.redhat.ceylon.compiler.java.runtime.metamodel.FreeFunction(method);
                 }else if(declaration instanceof com.redhat.ceylon.model.typechecker.model.Value){
@@ -750,7 +750,7 @@ public class Metamodel {
         return declaration.getName() == null || declaration.getName().isEmpty();
     }
 
-    public static java.lang.reflect.Method getJavaMethod(com.redhat.ceylon.model.typechecker.model.Method declaration) {
+    public static java.lang.reflect.Method getJavaMethod(com.redhat.ceylon.model.typechecker.model.Function declaration) {
         if(declaration instanceof JavaMethod){
             ReflectionMethod methodMirror = (ReflectionMethod) ((JavaMethod) declaration).mirror;
             return (java.lang.reflect.Method) methodMirror.method;
@@ -860,7 +860,7 @@ public class Metamodel {
         return tdArgs;
     }
 
-    public static ceylon.language.meta.declaration.FunctionDeclaration getMetamodel(Method method) {
+    public static ceylon.language.meta.declaration.FunctionDeclaration getMetamodel(Function method) {
         // find its container
         Scope container = method.getContainer();
         if(container instanceof com.redhat.ceylon.model.typechecker.model.ClassOrInterface){
@@ -1064,7 +1064,7 @@ public class Metamodel {
 		return new ObjectArrayIterable<A>($reifiedValues, (A[]) array).sequence();
     }
 
-    public static String getJavaMethodName(Method method) {
+    public static String getJavaMethodName(Function method) {
         // FIXME: introduce a damn interface for getRealName()
         if(method instanceof JavaMethod)
             return ((JavaMethod)method).getRealName();
@@ -1201,8 +1201,8 @@ public class Metamodel {
     }
 
     public static com.redhat.ceylon.model.typechecker.model.Parameter getParameterFromTypedDeclaration(com.redhat.ceylon.model.typechecker.model.TypedDeclaration declaration) {
-        if(declaration instanceof com.redhat.ceylon.model.typechecker.model.MethodOrValue)
-            return ((com.redhat.ceylon.model.typechecker.model.MethodOrValue) declaration).getInitializerParameter();
+        if(declaration instanceof com.redhat.ceylon.model.typechecker.model.FunctionOrValue)
+            return ((com.redhat.ceylon.model.typechecker.model.FunctionOrValue) declaration).getInitializerParameter();
         return null;
     }
     
