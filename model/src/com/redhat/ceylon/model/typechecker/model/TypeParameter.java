@@ -267,7 +267,7 @@ public class TypeParameter extends TypeDeclaration implements Functional {
 
     @Override
     public void clearProducedTypeCache() {
-        Util.clearProducedTypeCache(this);
+        ModelUtil.clearProducedTypeCache(this);
     }
 
     public void setCaptured(boolean captured) {

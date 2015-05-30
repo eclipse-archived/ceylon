@@ -94,7 +94,7 @@ public class Function extends FunctionOrValue implements Generic, Scope, Functio
     
     public Parameter getParameter(String name) {
         for (Declaration d : getMembers()) {
-            if (d.isParameter() && Util.isNamed(name, d)) {
+            if (d.isParameter() && ModelUtil.isNamed(name, d)) {
                 FunctionOrValue mod = (FunctionOrValue) d;
                 return mod.getInitializerParameter();
             }

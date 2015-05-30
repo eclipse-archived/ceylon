@@ -1,7 +1,7 @@
 package com.redhat.ceylon.model.typechecker.model;
 
-import static com.redhat.ceylon.model.typechecker.model.Util.addToIntersection;
-import static com.redhat.ceylon.model.typechecker.model.Util.addToUnion;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.addToIntersection;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.addToUnion;
 
 import java.util.ArrayList;
 import java.util.List;

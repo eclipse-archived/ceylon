@@ -3,10 +3,10 @@ package com.redhat.ceylon.model.typechecker.model;
 import static com.redhat.ceylon.model.typechecker.model.Type.checkDepth;
 import static com.redhat.ceylon.model.typechecker.model.Type.decDepth;
 import static com.redhat.ceylon.model.typechecker.model.Type.incDepth;
-import static com.redhat.ceylon.model.typechecker.model.Util.EMPTY_TYPE_ARG_MAP;
-import static com.redhat.ceylon.model.typechecker.model.Util.EMPTY_VARIANCE_MAP;
-import static com.redhat.ceylon.model.typechecker.model.Util.isAbstraction;
-import static com.redhat.ceylon.model.typechecker.model.Util.producedType;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.EMPTY_TYPE_ARG_MAP;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.EMPTY_VARIANCE_MAP;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isAbstraction;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.producedType;
 
 import java.util.HashMap;
 import java.util.List;

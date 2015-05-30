@@ -1,12 +1,12 @@
 package com.redhat.ceylon.model.typechecker.model;
 
-import static com.redhat.ceylon.model.typechecker.model.Util.getSignature;
-import static com.redhat.ceylon.model.typechecker.model.Util.getTypeArgumentMap;
-import static com.redhat.ceylon.model.typechecker.model.Util.hasMatchingSignature;
-import static com.redhat.ceylon.model.typechecker.model.Util.isNameMatching;
-import static com.redhat.ceylon.model.typechecker.model.Util.isOverloadedVersion;
-import static com.redhat.ceylon.model.typechecker.model.Util.isResolvable;
-import static com.redhat.ceylon.model.typechecker.model.Util.strictlyBetterMatch;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getSignature;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getTypeArgumentMap;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.hasMatchingSignature;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isNameMatching;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isOverloadedVersion;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isResolvable;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.strictlyBetterMatch;
 import static java.util.Collections.emptyList;
 
 import java.util.ArrayList;
@@ -846,7 +846,7 @@ public abstract class TypeDeclaration extends Declaration
                     !isOverloadedVersion(member) &&
                     isNameMatching(startingWith, member)) {
                 if( member.isShared() || 
-                        Util.contains(member.getScope(), scope) ) {
+                        ModelUtil.contains(member.getScope(), scope) ) {
                     result.put(member.getName(unit), 
                             new DeclarationWithProximity(
                                     member, proximity));

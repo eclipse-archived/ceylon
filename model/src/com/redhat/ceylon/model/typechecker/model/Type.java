@@ -2,17 +2,17 @@ package com.redhat.ceylon.model.typechecker.model;
 
 import static com.redhat.ceylon.model.typechecker.model.SiteVariance.IN;
 import static com.redhat.ceylon.model.typechecker.model.SiteVariance.OUT;
-import static com.redhat.ceylon.model.typechecker.model.Util.EMPTY_VARIANCE_MAP;
-import static com.redhat.ceylon.model.typechecker.model.Util.NO_TYPE_ARGS;
-import static com.redhat.ceylon.model.typechecker.model.Util.addToIntersection;
-import static com.redhat.ceylon.model.typechecker.model.Util.addToUnion;
-import static com.redhat.ceylon.model.typechecker.model.Util.getTypeArgumentMap;
-import static com.redhat.ceylon.model.typechecker.model.Util.getVarianceMap;
-import static com.redhat.ceylon.model.typechecker.model.Util.intersectionOfSupertypes;
-import static com.redhat.ceylon.model.typechecker.model.Util.intersectionType;
-import static com.redhat.ceylon.model.typechecker.model.Util.principalInstantiation;
-import static com.redhat.ceylon.model.typechecker.model.Util.toTypeArgs;
-import static com.redhat.ceylon.model.typechecker.model.Util.unionOfCaseTypes;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.EMPTY_VARIANCE_MAP;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.NO_TYPE_ARGS;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.addToIntersection;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.addToUnion;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getTypeArgumentMap;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getVarianceMap;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.intersectionOfSupertypes;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.intersectionType;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.principalInstantiation;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.toTypeArgs;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.unionOfCaseTypes;
 import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
 

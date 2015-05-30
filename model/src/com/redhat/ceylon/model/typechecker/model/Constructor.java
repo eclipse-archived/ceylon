@@ -89,7 +89,7 @@ public class Constructor extends TypeDeclaration implements Generic, Scope, Func
     
     public Parameter getParameter(String name) {
         for (Declaration d : getMembers()) {
-            if (d.isParameter() && Util.isNamed(name, d)) {
+            if (d.isParameter() && ModelUtil.isNamed(name, d)) {
                 return ((FunctionOrValue) d).getInitializerParameter();
             }
         }

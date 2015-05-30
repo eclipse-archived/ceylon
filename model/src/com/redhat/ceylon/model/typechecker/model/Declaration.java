@@ -1,9 +1,9 @@
 package com.redhat.ceylon.model.typechecker.model;
 
-import static com.redhat.ceylon.model.typechecker.model.Util.EMPTY_TYPE_ARG_MAP;
-import static com.redhat.ceylon.model.typechecker.model.Util.contains;
-import static com.redhat.ceylon.model.typechecker.model.Util.erase;
-import static com.redhat.ceylon.model.typechecker.model.Util.isOverloadedVersion;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.EMPTY_TYPE_ARG_MAP;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.contains;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.erase;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isOverloadedVersion;
 import static java.util.Collections.emptyList;
 
 import java.util.Collections;

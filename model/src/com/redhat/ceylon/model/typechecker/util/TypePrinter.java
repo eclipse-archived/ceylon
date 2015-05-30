@@ -1,6 +1,6 @@
 package com.redhat.ceylon.model.typechecker.util;
 
-import static com.redhat.ceylon.model.typechecker.model.Util.isElementOfUnion;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isElementOfUnion;
 
 import java.util.List;
 

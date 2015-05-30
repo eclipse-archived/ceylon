@@ -1,6 +1,6 @@
 package com.redhat.ceylon.model.typechecker.model;
 
-import static com.redhat.ceylon.model.typechecker.model.Util.getTypeArgumentMap;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getTypeArgumentMap;
 
 import java.util.List;
 import java.util.Objects;

@@ -1,16 +1,16 @@
 package com.redhat.ceylon.model.typechecker.model;
 
 import static com.redhat.ceylon.model.typechecker.model.Module.LANGUAGE_MODULE_NAME;
-import static com.redhat.ceylon.model.typechecker.model.Util.NO_TYPE_ARGS;
-import static com.redhat.ceylon.model.typechecker.model.Util.addToIntersection;
-import static com.redhat.ceylon.model.typechecker.model.Util.addToUnion;
-import static com.redhat.ceylon.model.typechecker.model.Util.intersectionType;
-import static com.redhat.ceylon.model.typechecker.model.Util.isNameMatching;
-import static com.redhat.ceylon.model.typechecker.model.Util.isOverloadedVersion;
-import static com.redhat.ceylon.model.typechecker.model.Util.isToplevelAnonymousClass;
-import static com.redhat.ceylon.model.typechecker.model.Util.isToplevelClassConstructor;
-import static com.redhat.ceylon.model.typechecker.model.Util.producedType;
-import static com.redhat.ceylon.model.typechecker.model.Util.unionType;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.NO_TYPE_ARGS;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.addToIntersection;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.addToUnion;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.intersectionType;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isNameMatching;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isOverloadedVersion;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isToplevelAnonymousClass;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isToplevelClassConstructor;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.producedType;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.unionType;
 
 import java.util.ArrayList;
 import java.util.Collections;

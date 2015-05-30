@@ -146,7 +146,7 @@ public abstract class ClassOrInterface extends TypeDeclaration {
     @Override
     protected int hashCodeForCache() {
         int ret = 17;
-        ret = Util.addHashForModule(ret, this);
+        ret = ModelUtil.addHashForModule(ret, this);
         if (isToplevel()) {
             ret = (37 * ret) + getQualifiedNameString().hashCode();
         }
@@ -163,7 +163,7 @@ public abstract class ClassOrInterface extends TypeDeclaration {
             return false;
         }
         ClassOrInterface b = (ClassOrInterface) o;
-        if (!Util.sameModule(this, b)) {
+        if (!ModelUtil.sameModule(this, b)) {
             return false;
         }
         if (isToplevel()) {
@@ -180,7 +180,7 @@ public abstract class ClassOrInterface extends TypeDeclaration {
     
     @Override
     public void clearProducedTypeCache() {
-        Util.clearProducedTypeCache(this);
+        ModelUtil.clearProducedTypeCache(this);
     }
     
 }

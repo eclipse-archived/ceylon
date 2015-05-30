@@ -1,5 +1,7 @@
 package com.redhat.ceylon.model.typechecker.model;
 
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.addHashForModule;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -67,7 +69,7 @@ public class TypeAlias extends TypeDeclaration {
     @Override
     protected int hashCodeForCache() {
         int ret = 17;
-        ret = Util.addHashForModule(ret, this);
+        ret = addHashForModule(ret, this);
         if(isToplevel())
             ret = (37 * ret) + 
                     getQualifiedNameString().hashCode();
@@ -83,7 +85,7 @@ public class TypeAlias extends TypeDeclaration {
         if(o == null || !(o instanceof ClassOrInterface))
             return false;
         ClassOrInterface b = (ClassOrInterface) o;
-        if (!Util.sameModule(this, b)) {
+        if (!ModelUtil.sameModule(this, b)) {
             return false;
         }
         if (isToplevel()) {
@@ -104,7 +106,7 @@ public class TypeAlias extends TypeDeclaration {
 
     @Override
     public void clearProducedTypeCache() {
-        Util.clearProducedTypeCache(this);
+        ModelUtil.clearProducedTypeCache(this);
     }
     
     @Override

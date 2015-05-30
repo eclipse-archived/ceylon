@@ -1,9 +1,9 @@
 package com.redhat.ceylon.model.typechecker.model;
 
-import static com.redhat.ceylon.model.typechecker.model.Util.isNameMatching;
-import static com.redhat.ceylon.model.typechecker.model.Util.isOverloadedVersion;
-import static com.redhat.ceylon.model.typechecker.model.Util.isResolvable;
-import static com.redhat.ceylon.model.typechecker.model.Util.lookupMember;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isNameMatching;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isOverloadedVersion;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isResolvable;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.lookupMember;
 import static java.util.Collections.emptyList;
 
 import java.util.List;

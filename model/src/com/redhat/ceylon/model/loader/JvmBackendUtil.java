@@ -1,6 +1,6 @@
 package com.redhat.ceylon.model.loader;
 
-import static com.redhat.ceylon.model.typechecker.model.Util.getSignature;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getSignature;
 
 import java.util.List;
 import java.util.Map;

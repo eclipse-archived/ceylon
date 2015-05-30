@@ -1,6 +1,6 @@
 package com.redhat.ceylon.model.loader.model;
 
-import static com.redhat.ceylon.model.typechecker.model.Util.lookupMember;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.lookupMember;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -127,8 +127,8 @@ public class LazyPackage extends Package {
 
     private Declaration getDirectMemberFromSource(String name) {
         for (Declaration d: super.getMembers()) {
-            if (com.redhat.ceylon.model.typechecker.model.Util.isResolvable(d) /* && d.isShared() */ 
-            && com.redhat.ceylon.model.typechecker.model.Util.isNamed(name, d)) {
+            if (com.redhat.ceylon.model.typechecker.model.ModelUtil.isResolvable(d) /* && d.isShared() */ 
+            && com.redhat.ceylon.model.typechecker.model.ModelUtil.isNamed(name, d)) {
                 return d;
             }
         }
