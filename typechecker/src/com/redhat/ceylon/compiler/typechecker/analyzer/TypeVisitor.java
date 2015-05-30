@@ -46,8 +46,8 @@ import com.redhat.ceylon.model.typechecker.model.Import;
 import com.redhat.ceylon.model.typechecker.model.ImportList;
 import com.redhat.ceylon.model.typechecker.model.Interface;
 import com.redhat.ceylon.model.typechecker.model.IntersectionType;
-import com.redhat.ceylon.model.typechecker.model.Method;
-import com.redhat.ceylon.model.typechecker.model.MethodOrValue;
+import com.redhat.ceylon.model.typechecker.model.Function;
+import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.ModuleImport;
 import com.redhat.ceylon.model.typechecker.model.NothingType;
@@ -1179,8 +1179,8 @@ public class TypeVisitor extends Visitor {
         Tree.Type type = that.getType();
         TypedDeclaration dec = that.getDeclarationModel();
         setType(that, type, dec);
-        if (dec instanceof MethodOrValue) {
-            MethodOrValue mv = (MethodOrValue) dec;
+        if (dec instanceof FunctionOrValue) {
+            FunctionOrValue mv = (FunctionOrValue) dec;
             if (dec.isLate() && 
                     mv.isParameter()) {
                 that.addError("parameter may not be annotated late");
@@ -1508,7 +1508,7 @@ public class TypeVisitor extends Visitor {
         }
     }
     
-    private boolean isInitializerParameter(MethodOrValue dec) {
+    private boolean isInitializerParameter(FunctionOrValue dec) {
         return dec!=null && 
                 dec.isParameter() && 
                 dec.getInitializerParameter()
@@ -1520,7 +1520,7 @@ public class TypeVisitor extends Visitor {
         super.visit(that);
         Tree.SpecifierExpression sie = 
                 that.getSpecifierExpression();
-        Method dec = that.getDeclarationModel();
+        Function dec = that.getDeclarationModel();
         if (isInitializerParameter(dec)) {
             if (sie!=null) {
                 sie.addError("function is an initializer parameter and may not have an initial value: '" + 
@@ -1535,7 +1535,7 @@ public class TypeVisitor extends Visitor {
     @Override
     public void visit(Tree.MethodDefinition that) {
         super.visit(that);
-        Method dec = that.getDeclarationModel();
+        Function dec = that.getDeclarationModel();
         if (isInitializerParameter(dec)) {
             that.getBlock()
                 .addError("function is an initializer parameter and may not have a body: '" + 
@@ -1935,7 +1935,7 @@ public class TypeVisitor extends Visitor {
                 that.addError("parameter is a formal attribute: '" + 
                         name + "'", 320);
             }
-            MethodOrValue mov = (MethodOrValue) a;
+            FunctionOrValue mov = (FunctionOrValue) a;
             mov.setInitializerParameter(p);
             p.setModel(mov);
         }
@@ -1960,7 +1960,7 @@ public class TypeVisitor extends Visitor {
                         !td.isAnonymous();
             }
         }
-        else if (a instanceof Method) {
+        else if (a instanceof Function) {
             return true;
         }
         else {

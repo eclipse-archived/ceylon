@@ -47,8 +47,8 @@ import com.redhat.ceylon.model.typechecker.model.Interface;
 import com.redhat.ceylon.model.typechecker.model.InterfaceAlias;
 import com.redhat.ceylon.model.typechecker.model.IntersectionType;
 import com.redhat.ceylon.model.typechecker.model.LazyProducedType;
-import com.redhat.ceylon.model.typechecker.model.Method;
-import com.redhat.ceylon.model.typechecker.model.MethodOrValue;
+import com.redhat.ceylon.model.typechecker.model.Function;
+import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
 import com.redhat.ceylon.model.typechecker.model.ModelUtil;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.NamedArgumentList;
@@ -261,9 +261,9 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
                     }
                 }
                 if (member == null) {
-                    if (model instanceof MethodOrValue) {
-                        MethodOrValue m = 
-                                (MethodOrValue) model;
+                    if (model instanceof FunctionOrValue) {
+                        FunctionOrValue m = 
+                                (FunctionOrValue) model;
                         m.initOverloads(m);
                     }
                     else if (model instanceof Class) {
@@ -293,9 +293,9 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
                         }
                         //note that all native "overloads"
                         //have to share the same list!
-                        if (model instanceof MethodOrValue) {
-                            MethodOrValue m = 
-                                    (MethodOrValue) model;
+                        if (model instanceof FunctionOrValue) {
+                            FunctionOrValue m = 
+                                    (FunctionOrValue) model;
                             m.setOverloads(overloads);
                         }
                         else if (model instanceof Class) {
@@ -436,15 +436,15 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
                     if (member!=null && member!=model) {
                         boolean dup = false;
                         boolean memberCanBeNative = 
-                                member instanceof Method || 
+                                member instanceof Function || 
                                 member instanceof Value || 
                                 member instanceof Class;
                         boolean modelCanBeNative = 
-                                model instanceof Method || 
+                                model instanceof Function || 
                                 model instanceof Value || 
                                 model instanceof Class;
-                        if (member instanceof Method && 
-                            model instanceof Method &&
+                        if (member instanceof Function && 
+                            model instanceof Function &&
                             scope instanceof ClassOrInterface) {
                             //even though Ceylon does not 
                             //officially support overloading,
@@ -452,15 +452,15 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
                             //a method that is refining an
                             //overloaded method inherited from
                             //a Java superclass
-                            Method abstraction;
-                            Method method = (Method) member;
-                            Method newMethod = (Method) model;
+                            Function abstraction;
+                            Function method = (Function) member;
+                            Function newMethod = (Function) model;
                             newMethod.setOverloaded(true);
                             if (!method.isAbstraction()) {
                                 //create the "abstraction" 
                                 //for the overloaded method
                                 method.setOverloaded(true);
-                                abstraction = new Method();
+                                abstraction = new Function();
                                 abstraction.setAbstraction(true);
                                 abstraction.setType(
                                         new UnknownType(unit)
@@ -887,7 +887,7 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
     
     @Override
     public void visit(Tree.AnyMethod that) {
-        Method m = new Method();
+        Function m = new Function();
         that.setDeclarationModel(m);
         visitDeclaration(that, m);
         Scope o = enterScope(m);
@@ -904,7 +904,7 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
         }
     }
     
-    private static void setParameterLists(Method m, 
+    private static void setParameterLists(Function m, 
             List<Tree.ParameterList> paramLists, 
             Node that) {
         if (m!=null) {
@@ -936,7 +936,7 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
 
     @Override
     public void visit(Tree.MethodArgument that) {
-        Method m = new Method();
+        Function m = new Function();
         that.setDeclarationModel(m);
         visitArgument(that, m);
         Scope o = enterScope(m);
@@ -951,7 +951,7 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
 
     @Override
     public void visit(Tree.FunctionArgument that) {
-        Method m = new Method();
+        Function m = new Function();
         m.setName("anonymous#"+fid++);
         m.setAnonymous(true);
         that.setDeclarationModel(m);
@@ -1072,7 +1072,7 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
         super.visit(that);
         Tree.SpecifierExpression sie = 
                 that.getSpecifierExpression();
-        Method m = that.getDeclarationModel();
+        Function m = that.getDeclarationModel();
         if (m.isFormal() && sie!=null) {
             that.addError("formal methods may not have a specification", 
                     1307);
@@ -1098,7 +1098,7 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
     @Override
     public void visit(Tree.MethodDefinition that) {
         super.visit(that);
-        Method m = that.getDeclarationModel();
+        Function m = that.getDeclarationModel();
         Tree.Type type = that.getType();
         if (type instanceof Tree.FunctionModifier) {
             if (m.isToplevel()) {
@@ -1301,7 +1301,7 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
         p.setDeclaredAnything(type instanceof Tree.VoidModifier);
         that.setParameterModel(p);
         super.visit(that);
-        Method m = (Method) td.getDeclarationModel();
+        Function m = (Function) td.getDeclarationModel();
         p.setModel(m);
         p.setName(m.getName());
         m.setInitializerParameter(p);
@@ -1695,7 +1695,7 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
             model.setDeprecated(true);
         }
         if (hasAnnotation(al, "annotation", unit)) {
-            if (!(model instanceof Method) && 
+            if (!(model instanceof Function) && 
                 !(model instanceof Class)) {
                 that.addError("declaration is not a function or class, and may not be annotated annotation", 
                         1950);

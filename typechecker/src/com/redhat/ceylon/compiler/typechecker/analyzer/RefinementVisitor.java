@@ -42,7 +42,7 @@ import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Functional;
 import com.redhat.ceylon.model.typechecker.model.Generic;
 import com.redhat.ceylon.model.typechecker.model.LazyProducedType;
-import com.redhat.ceylon.model.typechecker.model.Method;
+import com.redhat.ceylon.model.typechecker.model.Function;
 import com.redhat.ceylon.model.typechecker.model.Package;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.ParameterList;
@@ -131,7 +131,7 @@ public class RefinementVisitor extends Visitor {
             
             boolean mayBeRefined =
                     dec instanceof Value || 
-                    dec instanceof Method ||
+                    dec instanceof Function ||
                     dec instanceof Class;
             if (!mayBeRefined) {
                 checkNonrefinableDeclaration(that, dec);
@@ -185,11 +185,11 @@ public class RefinementVisitor extends Visitor {
     
     private void checkSameDeclaration(Tree.Declaration that, 
             Declaration dec, Declaration abstraction) {
-        if (dec instanceof Method && 
-                abstraction instanceof Method) {
+        if (dec instanceof Function && 
+                abstraction instanceof Function) {
             checkSameMethod(that, 
-                    (Method) dec, 
-                    (Method) abstraction);
+                    (Function) dec, 
+                    (Function) abstraction);
         }
         else if (dec instanceof Value &&
                 abstraction instanceof Value) {
@@ -283,7 +283,7 @@ public class RefinementVisitor extends Visitor {
     }
     
     private void checkSameMethod(Tree.Declaration that, 
-            Method dec, Method abstraction) {
+            Function dec, Function abstraction) {
         Type at = abstraction.getType();
         if (!dec.getType().isExactly(at)) {
             that.addError("native implementation must have the same return type as native abstraction: " + 
@@ -457,8 +457,8 @@ public class RefinementVisitor extends Visitor {
                     legallyOverloaded = true;
                 }
                 found = true;
-                if (member instanceof Method) {
-                    if (!(refined instanceof Method)) {
+                if (member instanceof Function) {
+                    if (!(refined instanceof Function)) {
                         that.addError("refined declaration is not a method: " + 
                                 message(member) + " refines " + message(refined));
                     }
@@ -471,7 +471,7 @@ public class RefinementVisitor extends Visitor {
                 }
                 else if (member instanceof TypedDeclaration) {
                     if (refined instanceof Class || 
-                        refined instanceof Method) {
+                        refined instanceof Function) {
                         that.addError("refined declaration is not an attribute: " + 
                                 message(member) + " refines " + message(refined));
                     }
@@ -507,8 +507,8 @@ public class RefinementVisitor extends Visitor {
                 }
             }
             if (!found) {
-                if (member instanceof Method && 
-                        root instanceof Method) { //see the condition in DeclarationVisitor.checkForDuplicateDeclaration()
+                if (member instanceof Function && 
+                        root instanceof Function) { //see the condition in DeclarationVisitor.checkForDuplicateDeclaration()
                     that.addError("overloaded member does not refine any inherited member: " + 
                             message(member));
                 }
@@ -1353,8 +1353,8 @@ public class RefinementVisitor extends Visitor {
                                 refineValue((Value) td, 
                                         bme, that, ci);
                             }
-                            else if (td instanceof Method) {
-                                refineMethod((Method) td, 
+                            else if (td instanceof Function) {
+                                refineMethod((Function) td, 
                                         bme, that, ci);
                             }
                             else {
@@ -1423,7 +1423,7 @@ public class RefinementVisitor extends Visitor {
         });
     }
 
-    private void refineMethod(final Method sm, 
+    private void refineMethod(final Function sm, 
             Tree.BaseMemberExpression bme,
             Tree.SpecifierStatement that, 
             ClassOrInterface c) {
@@ -1432,15 +1432,15 @@ public class RefinementVisitor extends Visitor {
         Declaration refined = 
                 ci.getRefinedMember(sm.getName(), 
                         getSignature(sm), false);
-        Method root = refined instanceof Method ? 
-                (Method) refined : sm;
+        Function root = refined instanceof Function ? 
+                (Function) refined : sm;
         if (!sm.isFormal() && !sm.isDefault()
                 && !sm.isShortcutRefinement()) { //this condition is here to squash a dupe message
             that.addError("inherited method is neither formal nor default so may not be refined: " + 
                     message(sm));
         }
         final Reference rm = getRefinedMember(sm,c);
-        Method m = new Method();
+        Function m = new Function();
         m.setName(sm.getName());
         List<Tree.ParameterList> tpls;
         Tree.Term me = that.getBaseMemberExpression();

@@ -194,7 +194,7 @@
     TYPE_PARAMETER_LIST?
     PARAMETER_LIST*
     TYPE_CONSTRAINT_LIST?
-    Method declarationModel;)
+    Function declarationModel;)
 
 "A function declaration followed by a block."
 ^(METHOD_DEFINITION:ANY_METHOD
@@ -778,7 +778,7 @@
     TYPE_CONSTRAINT_LIST?
     EXPRESSION?
     BLOCK?
-    Method declarationModel;)
+    Function declarationModel;)
 
 "An anonymous function."
 ^(OBJECT_EXPRESSION:PRIMARY
@@ -815,7 +815,7 @@
     PARAMETER_LIST*
     BLOCK? 
     SPECIFIER_EXPRESSION?
-    Method declarationModel;)
+    Function declarationModel;)
 "A value declaration that occurs as a named argument."
 ^(ATTRIBUTE_ARGUMENT:TYPED_ARGUMENT
     BLOCK? 

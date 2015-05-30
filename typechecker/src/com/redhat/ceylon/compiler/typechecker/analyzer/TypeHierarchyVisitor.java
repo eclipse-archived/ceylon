@@ -24,7 +24,7 @@ import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Functional;
-import com.redhat.ceylon.model.typechecker.model.MethodOrValue;
+import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.ParameterList;
 import com.redhat.ceylon.model.typechecker.model.Reference;
@@ -161,8 +161,8 @@ public class TypeHierarchyVisitor extends Visitor {
     public void visit(Tree.BaseMemberExpression that) {
         super.visit(that);
         Declaration dec = that.getDeclaration();
-        if (dec instanceof MethodOrValue && 
-                ((MethodOrValue) dec).isShortcutRefinement()) {
+        if (dec instanceof FunctionOrValue && 
+                ((FunctionOrValue) dec).isShortcutRefinement()) {
             checkForShortcutRefinement(that, dec);
         }
     }
@@ -172,8 +172,8 @@ public class TypeHierarchyVisitor extends Visitor {
                 (ClassOrInterface) dec.getContainer();
         for (Declaration im: 
                 classOrInterface.getInheritedMembers(dec.getName())) {
-            if (im instanceof MethodOrValue && 
-                    ((MethodOrValue) im).isShortcutRefinement()) {
+            if (im instanceof FunctionOrValue && 
+                    ((FunctionOrValue) im).isShortcutRefinement()) {
                 that.addError("refines a non-formal, non-default member: " + 
                         message(im));
             }
@@ -555,7 +555,7 @@ public class TypeHierarchyVisitor extends Visitor {
             type = new Type();
             type.declaration = declaration;
             for (Declaration member: declaration.getMembers()) {
-                if (!(member instanceof MethodOrValue || 
+                if (!(member instanceof FunctionOrValue || 
                       member instanceof Class) || 
                         member.isStaticallyImportable() ||
                         isAbstraction(member)) {

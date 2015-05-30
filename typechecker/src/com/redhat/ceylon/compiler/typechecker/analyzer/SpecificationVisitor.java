@@ -19,8 +19,8 @@ import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.Constructor;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
-import com.redhat.ceylon.model.typechecker.model.Method;
-import com.redhat.ceylon.model.typechecker.model.MethodOrValue;
+import com.redhat.ceylon.model.typechecker.model.Function;
+import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.Scope;
 import com.redhat.ceylon.model.typechecker.model.Setter;
@@ -154,8 +154,8 @@ public class SpecificationVisitor extends Visitor {
     }
     
     private boolean isLate() {
-        return declaration instanceof MethodOrValue
-            && ((MethodOrValue) declaration).isLate();
+        return declaration instanceof FunctionOrValue
+            && ((FunctionOrValue) declaration).isLate();
     }
     
     @Override
@@ -599,7 +599,7 @@ public class SpecificationVisitor extends Visitor {
         if (declaration instanceof Value) {
             return "value is neither variable nor late and";
         }
-        else if (declaration instanceof Method) {
+        else if (declaration instanceof Function) {
             return "function";
         }
         else {
@@ -611,7 +611,7 @@ public class SpecificationVisitor extends Visitor {
         if (declaration instanceof Value) {
             return "value";
         }
-        else if (declaration instanceof Method) {
+        else if (declaration instanceof Function) {
             return "function";
         }
         else {

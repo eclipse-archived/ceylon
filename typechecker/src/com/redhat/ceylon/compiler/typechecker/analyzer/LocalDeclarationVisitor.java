@@ -28,7 +28,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
-import com.redhat.ceylon.model.typechecker.model.Method;
+import com.redhat.ceylon.model.typechecker.model.Function;
 import com.redhat.ceylon.model.typechecker.model.Value;
 
 /**
@@ -80,7 +80,7 @@ public class LocalDeclarationVisitor extends Visitor implements NaturalVisitor {
         if (model!=null
                 && (isTopLevelObjectExpressionType(model)
                         || (!model.isToplevel() && !model.isMember())) 
-                && !(model instanceof Method && model.isParameter())
+                && !(model instanceof Function && model.isParameter())
                 && localNames!=null){
             Integer counter = localNames.get(model.getName());
             if (counter == null) {

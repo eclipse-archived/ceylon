@@ -5,7 +5,7 @@ import java.util.List;
 import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.common.BackendSupport;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
-import com.redhat.ceylon.model.typechecker.model.Method;
+import com.redhat.ceylon.model.typechecker.model.Function;
 import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.model.typechecker.model.Unit;
 
@@ -149,7 +149,7 @@ public class Util {
                 return td.hasUncheckedNullType() &&
                         // only consider method types when invoking them, 
                         // because java method references can't be null
-                        (!(d instanceof Method) || invoking);
+                        (!(d instanceof Function) || invoking);
             }
             else {
                 return false;

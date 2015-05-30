@@ -15,7 +15,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Element;
 import com.redhat.ceylon.model.typechecker.model.IntersectionType;
-import com.redhat.ceylon.model.typechecker.model.Method;
+import com.redhat.ceylon.model.typechecker.model.Function;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.ModuleImport;
 import com.redhat.ceylon.model.typechecker.model.Package;
@@ -78,12 +78,12 @@ public class VisibilityVisitor extends Visitor {
     @Override
     public void visit(Tree.FunctionArgument that) {
         super.visit(that);
-        Method m = that.getDeclarationModel();
+        Function m = that.getDeclarationModel();
         checkVisibility(that, m);
         checkParameterVisibility(m, that.getParameterLists());
     }
 
-    private void checkParameterVisibility(Method m,
+    private void checkParameterVisibility(Function m,
             List<ParameterList> parameterLists) {
         for (Tree.ParameterList list: parameterLists) {
             checkParameterVisibility(m, list);

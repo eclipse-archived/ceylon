@@ -74,8 +74,8 @@ import com.redhat.ceylon.model.typechecker.model.Functional;
 import com.redhat.ceylon.model.typechecker.model.Generic;
 import com.redhat.ceylon.model.typechecker.model.Interface;
 import com.redhat.ceylon.model.typechecker.model.IntersectionType;
-import com.redhat.ceylon.model.typechecker.model.Method;
-import com.redhat.ceylon.model.typechecker.model.MethodOrValue;
+import com.redhat.ceylon.model.typechecker.model.Function;
+import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.NothingType;
 import com.redhat.ceylon.model.typechecker.model.Package;
@@ -225,7 +225,7 @@ public class ExpressionVisitor extends Visitor {
     
     @Override public void visit(Tree.FunctionArgument that) {
         Tree.Expression e = that.getExpression();
-        Method fun = that.getDeclarationModel();
+        Function fun = that.getDeclarationModel();
         Tree.Type type = that.getType();
         if (e==null) {
             Tree.Type rt = beginReturnScope(type);
@@ -1284,15 +1284,15 @@ public class ExpressionVisitor extends Visitor {
                 if (d instanceof Value) {
                     refineValue(that);
                 }
-                else if (d instanceof Method) {
+                else if (d instanceof Function) {
                     refineMethod(that);
                 }
                 Tree.StaticMemberOrTypeExpression smte = 
                         (Tree.StaticMemberOrTypeExpression) me;
                 smte.setDeclaration(d);
             }
-            else if (d instanceof MethodOrValue) {
-                MethodOrValue mv = (MethodOrValue) d;
+            else if (d instanceof FunctionOrValue) {
+                FunctionOrValue mv = (FunctionOrValue) d;
                 if (mv.isShortcutRefinement()) {
                     String desc;
                     if (d instanceof Value) {
@@ -1333,8 +1333,8 @@ public class ExpressionVisitor extends Visitor {
                 }
             }
             
-            if (hasParams && d instanceof Method && 
-                    ((Method) d).isDeclaredVoid() && 
+            if (hasParams && d instanceof Function && 
+                    ((Function) d).isDeclaredVoid() && 
                     !isSatementExpression(rhs.getExpression())) {
                 rhs.addError("function is declared void so specified expression must be a statement: '" + 
                         d.getName(unit) + 
@@ -1346,7 +1346,7 @@ public class ExpressionVisitor extends Visitor {
             }
             
             Type t = lhs.getTypeModel();
-            if (lhs==me && d instanceof Method) {
+            if (lhs==me && d instanceof Function) {
                 //if the declaration of the method has
                 //defaulted parameters, we should ignore
                 //that when determining if the RHS is
@@ -1367,7 +1367,7 @@ public class ExpressionVisitor extends Visitor {
             }
         }
         else {
-            if (rhs instanceof Tree.LazySpecifierExpression && d instanceof Method) {
+            if (rhs instanceof Tree.LazySpecifierExpression && d instanceof Function) {
                 rhs.addError("functions without parameters must be specified using =");
             }
         }
@@ -1416,7 +1416,7 @@ public class ExpressionVisitor extends Visitor {
         return t;
     }
     
-    static Reference getRefinedMember(MethodOrValue d, 
+    static Reference getRefinedMember(FunctionOrValue d, 
             ClassOrInterface classOrInterface) {
         TypeDeclaration td = 
                 (TypeDeclaration) 
@@ -1448,8 +1448,8 @@ public class ExpressionVisitor extends Visitor {
     }
 
     private void refineMethod(Tree.SpecifierStatement that) {
-        Method refinedMethod = (Method) that.getRefined();
-        Method method = (Method) that.getDeclaration();
+        Function refinedMethod = (Function) that.getRefined();
+        Function method = (Function) that.getDeclaration();
         ClassOrInterface ci = 
                 (ClassOrInterface) 
                     method.getContainer();
@@ -1552,8 +1552,8 @@ public class ExpressionVisitor extends Visitor {
 
     private Reference accountForIntermediateRefinements(
             Tree.SpecifierStatement that, 
-            MethodOrValue refinedMethodOrValue, 
-            MethodOrValue methodOrValue,
+            FunctionOrValue refinedMethodOrValue, 
+            FunctionOrValue methodOrValue,
             ClassOrInterface ci, 
             List<Declaration> interveningRefinements) {
         Tree.SpecifierExpression rhs = 
@@ -1569,10 +1569,10 @@ public class ExpressionVisitor extends Visitor {
                 refinedProducedReference.getType(), 
                 unit);
         for (Declaration refinement: interveningRefinements) {
-            if (refinement instanceof MethodOrValue && 
+            if (refinement instanceof FunctionOrValue && 
                     !refinement.equals(refinedMethodOrValue)) {
-                MethodOrValue rmv = 
-                        (MethodOrValue) refinement;
+                FunctionOrValue rmv = 
+                        (FunctionOrValue) refinement;
                 Reference refinedMember = 
                         getRefinedMember(rmv, ci);
                 addToIntersection(refinedTypes, 
@@ -1638,7 +1638,7 @@ public class ExpressionVisitor extends Visitor {
     @Override public void visit(Tree.InitializerParameter that) {
         super.visit(that);
         Parameter p = that.getParameterModel();
-        MethodOrValue model = p.getModel();
+        FunctionOrValue model = p.getModel();
         if (model!=null) {
         	Type type = 
         	        model.getTypedReference()
@@ -1882,7 +1882,7 @@ public class ExpressionVisitor extends Visitor {
     @Override public void visit(Tree.MethodDeclaration that) {
         super.visit(that);
         Tree.Type type = that.getType();
-        Method m = that.getDeclarationModel();
+        Function m = that.getDeclarationModel();
         Tree.SpecifierExpression se = 
                 that.getSpecifierExpression();
         if (se!=null) {
@@ -1920,7 +1920,7 @@ public class ExpressionVisitor extends Visitor {
     @Override public void visit(Tree.MethodDefinition that) {
         Tree.Type type = that.getType();
         Tree.Type rt = beginReturnScope(type);
-        Method m = that.getDeclarationModel();
+        Function m = that.getDeclarationModel();
         Declaration od = 
                 beginReturnDeclaration(m);
         super.visit(that);
@@ -1936,7 +1936,7 @@ public class ExpressionVisitor extends Visitor {
     @Override public void visit(Tree.MethodArgument that) {
         Tree.SpecifierExpression se = 
                 that.getSpecifierExpression();
-        Method m = that.getDeclarationModel();
+        Function m = that.getDeclarationModel();
         Tree.Type type = that.getType();
         if (se==null) {
             Tree.Type rt = beginReturnScope(type);           
@@ -2166,7 +2166,7 @@ public class ExpressionVisitor extends Visitor {
     private static void checkAliasArg(Parameter param, 
             Tree.Expression e) {
         if (e!=null && param!=null) {
-            MethodOrValue p = param.getModel();
+            FunctionOrValue p = param.getModel();
             if (p!=null) {
                 Tree.Term term = e.getTerm();
                 if (term instanceof Tree.BaseMemberExpression) {
@@ -2907,7 +2907,7 @@ public class ExpressionVisitor extends Visitor {
     private void inferParameterTypes(Reference pr, 
             Parameter param, Tree.Expression e, 
             boolean variadic) {
-        MethodOrValue model = param.getModel();
+        FunctionOrValue model = param.getModel();
         if (e!=null && model!=null) {
             Tree.Term term = 
                     unwrapExpressionUntilTerm(e.getTerm());
@@ -3394,7 +3394,7 @@ public class ExpressionVisitor extends Visitor {
         model.setInferred(true);
         parameter.setModel(model);
         model.setInitializerParameter(parameter);
-        Method m = anon.getDeclarationModel();
+        Function m = anon.getDeclarationModel();
         model.setContainer(m);
         m.addMember(model);
     }
@@ -4230,7 +4230,7 @@ public class ExpressionVisitor extends Visitor {
                         if (specifiedArguments==null ||
                                 specifiedArguments[i]) {
                             Parameter p = params.get(i);
-                            MethodOrValue model = p.getModel();
+                            FunctionOrValue model = p.getModel();
                             if (model!=null) {
                                 Type pt = 
                                         model.getTypedReference()
@@ -5737,8 +5737,8 @@ public class ExpressionVisitor extends Visitor {
             List<Tree.PositionalArgument> args, 
             List<Parameter> params,
             Declaration target) {
-        if (target instanceof Method && target.isAnnotation()) {
-            Method method = (Method) target;
+        if (target instanceof Function && target.isAnnotation()) {
+            Function method = (Function) target;
             ParameterList parameterList = 
                     method.getParameterLists()
                         .get(0);
@@ -7502,7 +7502,7 @@ public class ExpressionVisitor extends Visitor {
     private void visitGenericBaseMemberReference(
             Tree.StaticMemberOrTypeExpression that,
             TypedDeclaration member) {
-        if (isGeneric(member) && member instanceof Method) {
+        if (isGeneric(member) && member instanceof Function) {
             Generic g = (Generic) member;
             List<TypeParameter> typeParameters = 
                     g.getTypeParameters();
@@ -7640,7 +7640,7 @@ public class ExpressionVisitor extends Visitor {
             Tree.QualifiedMemberExpression that,
             Type receiverType,
             TypedDeclaration member) {
-        if (isGeneric(member) && member instanceof Method) {
+        if (isGeneric(member) && member instanceof Function) {
             Generic g = (Generic) member;
             List<TypeParameter> typeParameters = 
                     g.getTypeParameters();
@@ -10285,7 +10285,7 @@ public class ExpressionVisitor extends Visitor {
             that.setTypeModel(unit.getValueDeclarationType(result));
         }
         else if (that instanceof Tree.FunctionLiteral) {
-            if (result instanceof Method) {
+            if (result instanceof Function) {
                 checkNonlocal(that, result);
             }
             else {
@@ -10304,7 +10304,7 @@ public class ExpressionVisitor extends Visitor {
 
     private String getDeclarationReferenceSuggestion(Declaration result) {
         String name = ": " + result.getName(unit);
-        if (result instanceof Method) {
+        if (result instanceof Function) {
             return name + " is a function";
         }
         else if (result instanceof Value) {
@@ -10341,8 +10341,8 @@ public class ExpressionVisitor extends Visitor {
         else {
             outerType = null;
         }
-        if (result instanceof Method) {
-            Method method = (Method) result;
+        if (result instanceof Function) {
+            Function method = (Function) result;
             if (method.isAbstraction()) {
                 that.addError("method is overloaded");
             }

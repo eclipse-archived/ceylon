@@ -6,7 +6,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
-import com.redhat.ceylon.model.typechecker.model.MethodOrValue;
+import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
 import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.model.typechecker.model.TypeParameter;
@@ -57,7 +57,7 @@ public class TypeArgumentVisitor extends Visitor {
             boolean topLevel = 
                     parameterizedDeclaration==null; //i.e. toplevel parameter in a parameter declaration
             if (topLevel) {
-            	MethodOrValue mv = (MethodOrValue) dec;
+            	FunctionOrValue mv = (FunctionOrValue) dec;
                 parameterizedDeclaration = 
             	        mv.getInitializerParameter()
             	                .getDeclaration();

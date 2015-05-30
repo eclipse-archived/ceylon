@@ -10,7 +10,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.Super;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.model.typechecker.model.Constructor;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
-import com.redhat.ceylon.model.typechecker.model.MethodOrValue;
+import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
 /**
@@ -361,8 +361,8 @@ public class SelfReferenceVisitor extends Visitor {
     			if (e!=null) {
     				if (e.getTerm() instanceof Tree.This) {
     					Declaration d = ((Tree.MemberOrTypeExpression) lt).getDeclaration();
-    					if (d instanceof MethodOrValue) {
-    						if (((MethodOrValue) d).isLate()) {
+    					if (d instanceof FunctionOrValue) {
+    						if (((FunctionOrValue) d).isLate()) {
     							lt.visit(this);
     							return; //NOTE: EARLY EXIT!!
     						}
@@ -382,8 +382,8 @@ public class SelfReferenceVisitor extends Visitor {
 			if (lt instanceof Tree.MemberOrTypeExpression &&
 					that.getRightTerm() instanceof Tree.This) {
         		Declaration d = ((Tree.MemberOrTypeExpression) lt).getDeclaration();
-        		if (d instanceof MethodOrValue) {
-        			if (((MethodOrValue) d).isLate()) {
+        		if (d instanceof FunctionOrValue) {
+        			if (((FunctionOrValue) d).isLate()) {
         				return; //NOTE: EARLY EXIT!!
         			}
         		}

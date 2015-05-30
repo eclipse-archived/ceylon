@@ -16,8 +16,8 @@ import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Functional;
 import com.redhat.ceylon.model.typechecker.model.Interface;
-import com.redhat.ceylon.model.typechecker.model.Method;
-import com.redhat.ceylon.model.typechecker.model.MethodOrValue;
+import com.redhat.ceylon.model.typechecker.model.Function;
+import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
 import com.redhat.ceylon.model.typechecker.model.Package;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.Type;
@@ -204,7 +204,7 @@ public class AnnotationVisitor extends Visitor {
                         (Tree.BaseMemberExpression) term;
                 Declaration d = bme.getDeclaration();
                 if (a!=null && d!=null && d.isParameter()) {
-                    MethodOrValue mv = (MethodOrValue) d;
+                    FunctionOrValue mv = (FunctionOrValue) d;
                     Parameter p = 
                             mv.getInitializerParameter();
                     if (!p.getDeclaration().equals(a)) {
@@ -330,7 +330,7 @@ public class AnnotationVisitor extends Visitor {
     @Override
     public void visit(Tree.AnyMethod that) {
         super.visit(that);
-        Method a = that.getDeclarationModel();
+        Function a = that.getDeclarationModel();
         if (a.isAnnotation()) {
             checkAnnotationConstructor(that, a);
         }
@@ -374,7 +374,7 @@ public class AnnotationVisitor extends Visitor {
         }
     }
 
-    private void checkAnnotationConstructor(Tree.AnyMethod that, Method a) {
+    private void checkAnnotationConstructor(Tree.AnyMethod that, Function a) {
         Tree.Type type = that.getType();
         if (type!=null) {
             Type t = type.getTypeModel();
@@ -751,7 +751,7 @@ public class AnnotationVisitor extends Visitor {
                             "linked declaration is not a type alias: '" + 
                                     base.getName() + "'");
                 } else if (DOC_LINK_FUNCTION.equals(kind) && 
-                        !(base instanceof Method)) {
+                        !(base instanceof Function)) {
                     that.addUsageWarning(Warning.doclink, 
                             "linked declaration is not a function: '" + 
                                     base.getName() + "'");
