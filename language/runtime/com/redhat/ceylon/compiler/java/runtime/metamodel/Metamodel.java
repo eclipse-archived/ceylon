@@ -1464,8 +1464,8 @@ public class Metamodel {
         Type expectedReifiedType = Metamodel.getProducedType($reifiedType);
         boolean check = checkReifiedTypeArgument(variance, appliedType, expectedReifiedType);
         if(!check){
-            String appliedTypeString = appliedType.getProducedTypeName();
-            String expectedReifiedTypeString = expectedReifiedType.getProducedTypeName();
+            String appliedTypeString = appliedType.asString();
+            String expectedReifiedTypeString = expectedReifiedType.asString();
             String appliedString = className.replace("$1", appliedTypeString);
             String expectedString = className.replace("$1", expectedReifiedTypeString);
             throw new IncompatibleTypeException("Incompatible type: actual type of applied declaration is "+appliedString
@@ -1482,10 +1482,10 @@ public class Metamodel {
         boolean check1 = checkReifiedTypeArgument(variance1, appliedType1, expectedReifiedType1);
         boolean check2 = checkReifiedTypeArgument(variance2, appliedType2, expectedReifiedType2);
         if(!check1 || !check2){
-            String appliedTypeString1 = appliedType1.getProducedTypeName();
-            String expectedReifiedTypeString1 = expectedReifiedType1.getProducedTypeName();
-            String appliedTypeString2 = appliedType2.getProducedTypeName();
-            String expectedReifiedTypeString2 = expectedReifiedType2.getProducedTypeName();
+            String appliedTypeString1 = appliedType1.asString();
+            String expectedReifiedTypeString1 = expectedReifiedType1.asString();
+            String appliedTypeString2 = appliedType2.asString();
+            String expectedReifiedTypeString2 = expectedReifiedType2.asString();
             String appliedString = className.replace("$1", appliedTypeString1).replace("$2", appliedTypeString2);
             String expectedString = className.replace("$1", expectedReifiedTypeString1).replace("$2", expectedReifiedTypeString2);
             throw new IncompatibleTypeException("Incompatible type: actual type of applied declaration is "+appliedString
@@ -1505,12 +1505,12 @@ public class Metamodel {
         boolean check2 = checkReifiedTypeArgument(variance2, appliedType2, expectedReifiedType2);
         boolean check3 = checkReifiedTypeArgument(variance3, appliedType3, expectedReifiedType3);
         if(!check1 || !check2 || !check3){
-            String appliedTypeString1 = appliedType1.getProducedTypeName();
-            String expectedReifiedTypeString1 = expectedReifiedType1.getProducedTypeName();
-            String appliedTypeString2 = appliedType2.getProducedTypeName();
-            String expectedReifiedTypeString2 = expectedReifiedType2.getProducedTypeName();
-            String appliedTypeString3 = appliedType3.getProducedTypeName();
-            String expectedReifiedTypeString3 = expectedReifiedType3.getProducedTypeName();
+            String appliedTypeString1 = appliedType1.asString();
+            String expectedReifiedTypeString1 = expectedReifiedType1.asString();
+            String appliedTypeString2 = appliedType2.asString();
+            String expectedReifiedTypeString2 = expectedReifiedType2.asString();
+            String appliedTypeString3 = appliedType3.asString();
+            String expectedReifiedTypeString3 = expectedReifiedType3.asString();
             String appliedString = className.replace("$1", appliedTypeString1).replace("$2", appliedTypeString2).replace("$3", appliedTypeString3);
             String expectedString = className.replace("$1", expectedReifiedTypeString1).replace("$2", expectedReifiedTypeString2).replace("$3", expectedReifiedTypeString3);
             throw new IncompatibleTypeException("Incompatible type: actual type of applied declaration is "+appliedString
