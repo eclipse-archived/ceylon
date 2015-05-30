@@ -259,7 +259,7 @@
 ^(INTERFACE_BODY:BODY)
 
 ^(abstract TYPE
-    ProducedType typeModel;)
+    Type typeModel;)
 
 ^(abstract STATIC_TYPE:TYPE
     TYPE_VARIANCE?
@@ -362,7 +362,7 @@
 
 "A list of type arguments in a generic invocation."
 ^(TYPE_ARGUMENTS
-    List<ProducedType> typeModels;)
+    List<Type> typeModels;)
 
 "A list of type arguments in a produced type."
 ^(TYPE_ARGUMENT_LIST:TYPE_ARGUMENTS
@@ -552,7 +552,7 @@
     Value declarationModel;)
 
 ^(abstract TERM
-    ProducedType typeModel;
+    Type typeModel;
     boolean unboxed;
     boolean typeErased;
     boolean untrustedType;)
@@ -680,7 +680,7 @@
 ^(abstract MEMBER_OR_TYPE_EXPRESSION:PRIMARY
     ProducedReference target;
     Declaration declaration;
-    List<ProducedType> signature;
+    List<Type> signature;
     boolean ellipsis;
     boolean directlyInvoked;
     boolean assigned;
@@ -693,7 +693,7 @@
     IDENTIFIER
     TYPE_ARGUMENTS?
     ProducedTypedReference targetParameter;
-    ProducedType parameterType;)
+    Type parameterType;)
 
 ^(abstract BASE_MEMBER_OR_TYPE_EXPRESSION:STATIC_MEMBER_OR_TYPE_EXPRESSION)
 
@@ -761,7 +761,7 @@
 
 "A single listed argument, spread argument or comprehension."
 ^(abstract POSITIONAL_ARGUMENT 
-    ProducedType typeModel; 
+    Type typeModel; 
     Parameter parameter;)
 "A single listed argument."
 ^(LISTED_ARGUMENT:POSITIONAL_ARGUMENT
@@ -902,8 +902,8 @@
 
 "A single clause of comprehension"
 ^(abstract COMPREHENSION_CLAUSE:CONTROL_CLAUSE
-    ProducedType typeModel;
-    ProducedType firstTypeModel;
+    Type typeModel;
+    Type firstTypeModel;
     boolean possiblyEmpty;)
 
 "A clause that can appear at the beginning of a comprehension."

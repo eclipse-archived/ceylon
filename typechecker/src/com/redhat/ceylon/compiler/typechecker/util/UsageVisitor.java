@@ -14,7 +14,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.ImportMemberOrType;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ImportMemberOrTypeList;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
-import com.redhat.ceylon.model.typechecker.model.ProducedType;
+import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.TypeParameter;
 
 /**
@@ -87,7 +87,7 @@ public class UsageVisitor extends Visitor {
     public void visit(Tree.Term that) {
         super.visit(that);
         if (!hasErrorOrWarning(that)) {
-            ProducedType type = that.getTypeModel();
+            Type type = that.getTypeModel();
             if (!isTypeUnknown(type) && type.isNothing()) {
                 that.addUsageWarning(Warning.expressionTypeNothing,
                         "expression has type 'Nothing'");

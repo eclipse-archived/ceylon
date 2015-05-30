@@ -47,7 +47,7 @@ import com.redhat.ceylon.model.typechecker.model.Package;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.ParameterList;
 import com.redhat.ceylon.model.typechecker.model.ProducedReference;
-import com.redhat.ceylon.model.typechecker.model.ProducedType;
+import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.Scope;
 import com.redhat.ceylon.model.typechecker.model.Setter;
 import com.redhat.ceylon.model.typechecker.model.SiteVariance;
@@ -251,17 +251,17 @@ public class RefinementVisitor extends Visitor {
             that.addError("native abstraction is an annotation type: " + 
                     message(dec));
         }
-        ProducedType dext = dec.getExtendedType();
-        ProducedType aext = abstraction.getExtendedType();
+        Type dext = dec.getExtendedType();
+        Type aext = abstraction.getExtendedType();
         if ((dext != null && aext == null)
                 || (dext == null && aext != null)
                 || !dext.isExactly(aext)) {
             that.addError("native classes do not extend the same type: " + 
                     message(dec));
         }
-        List<ProducedType> dst = 
+        List<Type> dst = 
                 dec.getSatisfiedTypes();
-        List<ProducedType> ast = 
+        List<Type> ast = 
                 abstraction.getSatisfiedTypes();
         if (dst.size() != ast.size() || 
                 !dst.containsAll(ast)) {
@@ -284,7 +284,7 @@ public class RefinementVisitor extends Visitor {
     
     private void checkSameMethod(Tree.Declaration that, 
             Method dec, Method abstraction) {
-        ProducedType at = abstraction.getType();
+        Type at = abstraction.getType();
         if (!dec.getType().isExactly(at)) {
             that.addError("native implementation must have the same return type as native abstraction: " + 
                     message(dec) + " must have the type '" + 
@@ -321,7 +321,7 @@ public class RefinementVisitor extends Visitor {
     
     private void checkSameValue(Tree.Declaration that, 
             Value dec, Value abstraction) {
-        ProducedType at = abstraction.getType();
+        Type at = abstraction.getType();
         if (!dec.getType().isExactly(at)) {
             that.addError("native implementation must have the same type as native abstraction: " + 
                     message(dec) + " must have the type '" + 
@@ -406,7 +406,7 @@ public class RefinementVisitor extends Visitor {
                 that.addError("non-formal member belongs to dynamic interface");
             }
         }
-        List<ProducedType> signature = getSignature(member);
+        List<Type> signature = getSignature(member);
         Declaration root = 
                 type.getRefinedMember(name, 
                         signature, false);
@@ -521,7 +521,7 @@ public class RefinementVisitor extends Visitor {
     }
 
     /*private boolean refinesOverloaded(Declaration dec, 
-    		Declaration refined, ProducedType st) {
+    		Declaration refined, Type st) {
         Functional fun1 = (Functional) dec;
         Functional fun2 = (Functional) refined;
         if (fun1.getParameterLists().size()!=1 ||
@@ -544,7 +544,7 @@ public class RefinementVisitor extends Visitor {
             	return false;
             }
             else {
-            	ProducedType p2st = p2.getType()
+            	Type p2st = p2.getType()
             			.substitute(st.getTypeArguments());
 				if (!matches(p1.getType(), p2st, dec.getUnit())) {
                     return false;
@@ -558,7 +558,7 @@ public class RefinementVisitor extends Visitor {
             Tree.Declaration that, Declaration refining, 
             ClassOrInterface ci, Declaration refined) {
         
-    	List<ProducedType> typeArgs;
+    	List<Type> typeArgs;
         if (refined instanceof Generic && 
             refining instanceof Generic) {
             List<TypeParameter> refinedTypeParams = 
@@ -577,7 +577,7 @@ public class RefinementVisitor extends Visitor {
         	typeArgs = emptyList();
         }
         
-        ProducedType cit = ci.getType();
+        Type cit = ci.getType();
         ProducedReference refinedMember = 
                 cit.getTypedReference(refined, 
                         typeArgs);
@@ -741,7 +741,7 @@ public class RefinementVisitor extends Visitor {
 	    }
     }
 
-	private List<ProducedType> checkRefiningMemberUpperBounds(
+	private List<Type> checkRefiningMemberUpperBounds(
 	        Tree.Declaration that,
             ClassOrInterface ci, Declaration refined,
             List<TypeParameter> refinedTypeParams, 
@@ -756,8 +756,8 @@ public class RefinementVisitor extends Visitor {
 	    //we substitute the type parameters of the refined
 	    //declaration into the bounds of the refining 
 	    //declaration
-        Map<TypeParameter, ProducedType> substitution =
-                new HashMap<TypeParameter, ProducedType>();
+        Map<TypeParameter, Type> substitution =
+                new HashMap<TypeParameter, Type>();
         for (int i=0; i<max; i++) {
             TypeParameter refinedTypeParam = 
                     refinedTypeParams.get(i);
@@ -774,28 +774,28 @@ public class RefinementVisitor extends Visitor {
         //we substitute the type arguments of the subtype's
         //instantiation of the supertype into the bounds of 
         //the refined declaration
-        ProducedType supertype = 
+        Type supertype = 
                 ci.getType().getSupertype(rc);
-        Map<TypeParameter, ProducedType> args = 
+        Map<TypeParameter, Type> args = 
                 supertype.getTypeArguments();
         Map<TypeParameter, SiteVariance> variances = 
                 supertype.getVarianceOverrides();
-		List<ProducedType> typeArgs = 
-		        new ArrayList<ProducedType>(max); 
+		List<Type> typeArgs = 
+		        new ArrayList<Type>(max); 
 		for (int i=0; i<max; i++) {
 	        TypeParameter refinedTypeParam = 
 	                refinedTypeParams.get(i);
 	        TypeParameter refiningTypeParam = 
 	                refiningTypeParams.get(i);
-	        ProducedType refinedProducedType = 
+	        Type refinedProducedType = 
 	                refinedTypeParam.getType();
-	        List<ProducedType> refinedBounds = 
+	        List<Type> refinedBounds = 
 	                refinedTypeParam.getSatisfiedTypes();
-            List<ProducedType> refiningBounds = 
+            List<Type> refiningBounds = 
                     refiningTypeParam.getSatisfiedTypes();
             Unit unit = that.getUnit();
-            for (ProducedType bound: refiningBounds) {
-                ProducedType refiningBound = 
+            for (Type bound: refiningBounds) {
+                Type refiningBound = 
                         bound.substitute(substitution, 
                                 noVariances);
 	            //for every type constraint of the refining member, there must
@@ -807,7 +807,7 @@ public class RefinementVisitor extends Visitor {
 	            //      test assignability directly (the error messages might
 	            //      not be as helpful, but it might be less restrictive)
 	            boolean ok = false;
-	            for (ProducedType refinedBound: refinedBounds) {
+	            for (Type refinedBound: refinedBounds) {
 	                refinedBound = 
 	                        refinedBound.substitute(
 	                                args, variances);
@@ -827,11 +827,11 @@ public class RefinementVisitor extends Visitor {
 	                        "'");
 	            }
 	        }
-            for (ProducedType bound: refinedBounds) {
-                ProducedType refinedBound =
+            for (Type bound: refinedBounds) {
+                Type refinedBound =
                         bound.substitute(args, variances);
                 boolean ok = false;
-                for (ProducedType refiningBound: refiningBounds) {
+                for (Type refiningBound: refiningBounds) {
                     refiningBound = 
                             refiningBound.substitute(
                                     substitution, 
@@ -869,7 +869,7 @@ public class RefinementVisitor extends Visitor {
             Unit unit = 
                     refiningMember.getDeclaration()
                         .getUnit();
-            ProducedType optionalRefinedType = 
+            Type optionalRefinedType = 
                     unit.getOptionalType(
                             refinedMember.getType());
             checkAssignableToOneOf(refiningMember.getType(), 
@@ -896,7 +896,7 @@ public class RefinementVisitor extends Visitor {
             Unit unit = 
                     refiningMember.getDeclaration()
                         .getUnit();
-            ProducedType optionalRefinedType = 
+            Type optionalRefinedType = 
                     unit.getOptionalType(
                             refinedMember.getType());
             checkIsExactlyOneOf(refiningMember.getType(), 
@@ -1041,10 +1041,10 @@ public class RefinementVisitor extends Visitor {
             for (int i=0; i<paramsList.size(); i++) {
                 Parameter rparam = refinedParamsList.get(i);
                 Parameter param = paramsList.get(i);
-                ProducedType refinedParameterType = 
+                Type refinedParameterType = 
                 		refinedMember.getTypedParameter(rparam)
                 		        .getFullType();
-                ProducedType parameterType = 
+                Type parameterType = 
                 		member.getTypedParameter(param)
                 		        .getFullType();
                 Tree.Parameter parameter = 
@@ -1123,9 +1123,9 @@ public class RefinementVisitor extends Visitor {
             ProducedReference refinedMember, 
             ParameterList refinedParams,
             Parameter rparam, 
-            ProducedType refinedParameterType,
+            Type refinedParameterType,
             Parameter param, 
-            ProducedType parameterType,
+            Type parameterType,
             Node typeNode, 
             boolean forNative) {
 	    //TODO: consider type parameter substitution!!!
@@ -1290,8 +1290,8 @@ public class RefinementVisitor extends Visitor {
     public void visit(Tree.SpecifierStatement that) {
         super.visit(that);
         
-        List<ProducedType> sig = 
-                new ArrayList<ProducedType>();
+        List<Type> sig = 
+                new ArrayList<Type>();
         Tree.Term term = that.getBaseMemberExpression();
         while (term instanceof Tree.ParameterizedExpression) {
             sig.clear();
@@ -1408,11 +1408,11 @@ public class RefinementVisitor extends Visitor {
         unit.addDeclaration(v);
         v.setType(new LazyProducedType(unit) {
             @Override
-            public ProducedType initQualifyingType() {
+            public Type initQualifyingType() {
                 return rv.getType().getQualifyingType();
             }
             @Override
-            public Map<TypeParameter, ProducedType> 
+            public Map<TypeParameter, Type> 
             initTypeArguments() {
                 return rv.getType().getTypeArguments();
             }
@@ -1479,13 +1479,13 @@ public class RefinementVisitor extends Visitor {
                     l.getParameters().add(vp);
                     v.setType(new LazyProducedType(unit) {
                         @Override
-                        public ProducedType initQualifyingType() {
+                        public Type initQualifyingType() {
                             return rm.getTypedParameter(p)
                                     .getFullType()
                                     .getQualifyingType();
                         }
                         @Override
-                        public Map<TypeParameter,ProducedType> 
+                        public Map<TypeParameter,Type> 
                         initTypeArguments() {
                             return rm.getTypedParameter(p)
                                     .getFullType()
@@ -1538,21 +1538,21 @@ public class RefinementVisitor extends Visitor {
         }
         m.setType(new LazyProducedType(unit) {
             @Override
-            public ProducedType initQualifyingType() {
-                ProducedType type = rm.getType();
+            public Type initQualifyingType() {
+                Type type = rm.getType();
                 return type==null ? null : 
                     type.getQualifyingType();
             }
             @Override
-            public Map<TypeParameter,ProducedType> 
+            public Map<TypeParameter,Type> 
             initTypeArguments() {
-                ProducedType type = rm.getType();
+                Type type = rm.getType();
                 return type==null ? null : 
                     type.getTypeArguments();
             }
             @Override
             public TypeDeclaration initDeclaration() {
-                ProducedType type = rm.getType();
+                Type type = rm.getType();
                 return type==null ? null : 
                     type.getDeclaration();
             }

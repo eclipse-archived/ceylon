@@ -53,7 +53,7 @@ import com.redhat.ceylon.model.typechecker.model.ModuleImport;
 import com.redhat.ceylon.model.typechecker.model.NothingType;
 import com.redhat.ceylon.model.typechecker.model.Package;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
-import com.redhat.ceylon.model.typechecker.model.ProducedType;
+import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.Scope;
 import com.redhat.ceylon.model.typechecker.model.Specification;
 import com.redhat.ceylon.model.typechecker.model.TypeAlias;
@@ -652,12 +652,12 @@ public class TypeVisitor extends Visitor {
         super.visit(that);
         List<Tree.StaticType> sts = 
                 that.getStaticTypes();
-        List<ProducedType> types = 
-                new ArrayList<ProducedType>
+        List<Type> types = 
+                new ArrayList<Type>
                     (sts.size());
         for (Tree.StaticType st: sts) {
             //addToUnion( types, st.getTypeModel() );
-            ProducedType t = st.getTypeModel();
+            Type t = st.getTypeModel();
             if (t!=null) {
                 types.add(t);
             }
@@ -665,7 +665,7 @@ public class TypeVisitor extends Visitor {
         UnionType ut = 
                 new UnionType(unit);
         ut.setCaseTypes(types);
-        ProducedType type = ut.getType();
+        Type type = ut.getType();
         that.setTypeModel(type);
         //that.setTarget(pt);
     }
@@ -675,12 +675,12 @@ public class TypeVisitor extends Visitor {
         super.visit(that);
         List<Tree.StaticType> sts = 
                 that.getStaticTypes();
-        List<ProducedType> types = 
-                new ArrayList<ProducedType>
+        List<Type> types = 
+                new ArrayList<Type>
                     (sts.size());
         for (Tree.StaticType st: sts) {
             //addToIntersection(types, st.getTypeModel(), unit);
-            ProducedType t = st.getTypeModel();
+            Type t = st.getTypeModel();
             if (t!=null) {
                 types.add(t);
             }
@@ -688,7 +688,7 @@ public class TypeVisitor extends Visitor {
         IntersectionType it = 
                 new IntersectionType(unit);
         it.setSatisfiedTypes(types);
-        ProducedType type = it.getType();
+        Type type = it.getType();
         that.setTypeModel(type);
         //that.setTarget(pt);
     }
@@ -698,9 +698,9 @@ public class TypeVisitor extends Visitor {
         super.visit(that);
         Tree.StaticType elementType = that.getElementType();
         Tree.NaturalLiteral length = that.getLength();
-        ProducedType et = elementType.getTypeModel();
+        Type et = elementType.getTypeModel();
         if (et!=null) {
-            ProducedType t;
+            Type t;
             if (length==null) {
                 t = unit.getSequentialType(et);
             }
@@ -736,7 +736,7 @@ public class TypeVisitor extends Visitor {
         super.visit(that);
         Tree.Type elem = that.getElementType();
         if (elem==null) {
-            ProducedType nt = unit.getNothingType();
+            Type nt = unit.getNothingType();
             that.setTypeModel(unit.getIterableType(nt));
             that.addError("iterable type must have an element type");
         }
@@ -744,10 +744,10 @@ public class TypeVisitor extends Visitor {
             if (elem instanceof Tree.SequencedType) {
                 Tree.SequencedType st = 
                         (Tree.SequencedType) elem;
-                ProducedType et = 
+                Type et = 
                         st.getType().getTypeModel();
                 if (et!=null) {
-                    ProducedType t =
+                    Type t =
                             st.getAtLeastOne() ?
                                 unit.getNonemptyIterableType(et) :
                                 unit.getIterableType(et);
@@ -763,10 +763,10 @@ public class TypeVisitor extends Visitor {
     @Override
     public void visit(Tree.OptionalType that) {
         super.visit(that);
-        List<ProducedType> types = 
-                new ArrayList<ProducedType>(2);
+        List<Type> types = 
+                new ArrayList<Type>(2);
         types.add(unit.getNullType());
-        ProducedType dt = 
+        Type dt = 
                 that.getDefiniteType().getTypeModel();
         if (dt!=null) types.add(dt);
         UnionType ut = new UnionType(unit);
@@ -777,9 +777,9 @@ public class TypeVisitor extends Visitor {
     @Override
     public void visit(Tree.EntryType that) {
         super.visit(that);
-        ProducedType kt = 
+        Type kt = 
                 that.getKeyType().getTypeModel();
-        ProducedType vt = 
+        Type vt = 
                 that.getValueType()==null ? 
                         new UnknownType(unit).getType() : 
                         that.getValueType().getTypeModel();
@@ -791,7 +791,7 @@ public class TypeVisitor extends Visitor {
         super.visit(that);
         TypeAlias ta = that.getDeclarationModel();
         ta.setExtendedType(that.getType().getTypeModel());
-        ProducedType type = ta.getType();
+        Type type = ta.getType();
         type.setTypeConstructor(true);
         that.setTypeModel(type);
     }
@@ -802,11 +802,11 @@ public class TypeVisitor extends Visitor {
         Tree.StaticType rt = 
                 that.getReturnType();
         if (rt!=null) {
-            ProducedType tt = 
+            Type tt = 
                     getTupleType(that.getArgumentTypes(), 
                             unit);
             Interface cd = unit.getCallableDeclaration();
-            ProducedType pt = 
+            Type pt = 
                     producedType(cd, rt.getTypeModel(), tt);
             that.setTypeModel(pt);
         }
@@ -815,22 +815,22 @@ public class TypeVisitor extends Visitor {
     @Override
     public void visit(Tree.TupleType that) {
         super.visit(that);
-        ProducedType tt = 
+        Type tt = 
                 getTupleType(that.getElementTypes(), unit);
         that.setTypeModel(tt);
     }
 
-    static ProducedType getTupleType(List<Tree.Type> ets, 
+    static Type getTupleType(List<Tree.Type> ets, 
             Unit unit) {
-        List<ProducedType> args = 
-                new ArrayList<ProducedType>
+        List<Type> args = 
+                new ArrayList<Type>
                     (ets.size());
         boolean sequenced = false;
         boolean atleastone = false;
         int firstDefaulted = -1;
         for (int i=0; i<ets.size(); i++) {
             Tree.Type st = ets.get(i);
-            ProducedType arg = st==null ? 
+            Type arg = st==null ? 
                     null : st.getTypeModel();
             if (arg==null) {
                 arg = new UnknownType(unit).getType();
@@ -876,19 +876,19 @@ public class TypeVisitor extends Visitor {
     //TODO: big copy/paste from Unit.getTupleType(), to 
     //      eliminate the canonicalization (since aliases  
     //      are not yet resolvable in this phase)
-    public static ProducedType getTupleType(
-            List<ProducedType> elemTypes, 
+    public static Type getTupleType(
+            List<Type> elemTypes, 
             boolean variadic, boolean atLeastOne, 
             int firstDefaulted,
             Unit unit) {
         Class td = unit.getTupleDeclaration();
-        ProducedType result = unit.getEmptyType();
-        ProducedType union = unit.getNothingType();
+        Type result = unit.getEmptyType();
+        Type union = unit.getNothingType();
         int last = elemTypes.size()-1;
         for (int i=last; i>=0; i--) {
-            ProducedType elemType = elemTypes.get(i);
-            List<ProducedType> pair = 
-                    new ArrayList<ProducedType>();
+            Type elemType = elemTypes.get(i);
+            List<Type> pair = 
+                    new ArrayList<Type>();
             //can't use addToUnion() here
             pair.add(elemType);
             pair.add(union);
@@ -904,7 +904,7 @@ public class TypeVisitor extends Visitor {
                 result = producedType(td, union, elemType, 
                         result);
                 if (firstDefaulted>=0 && i>=firstDefaulted) {
-                    pair = new ArrayList<ProducedType>();
+                    pair = new ArrayList<Type>();
                     //can't use addToUnion() here
                     pair.add(unit.getEmptyType());
                     pair.add(result);
@@ -939,7 +939,7 @@ public class TypeVisitor extends Visitor {
                 unit.getUnresolvedReferences().add(id);
             }
             else {
-                ProducedType outerType = 
+                Type outerType = 
                         scope.getDeclaringType(type);
                 visitSimpleType(that, outerType, type);
             }
@@ -971,7 +971,7 @@ public class TypeVisitor extends Visitor {
     public void visit(Tree.MemberLiteral that) {
         super.visit(that);
         if (that.getType()!=null) {
-            ProducedType pt = 
+            Type pt = 
                     that.getType().getTypeModel();
             if (pt!=null) {
                 if (that.getTypeArgumentList()!=null &&
@@ -998,7 +998,7 @@ public class TypeVisitor extends Visitor {
         inTypeLiteral = onl;
         
         Tree.StaticType ot = that.getOuterType();        
-        ProducedType pt = ot.getTypeModel();
+        Type pt = ot.getTypeModel();
         if (pt!=null) {
 //            if (pt.isTypeConstructor()) {
 //                ot.addError("qualifying type may not be a type constructor");
@@ -1044,7 +1044,7 @@ public class TypeVisitor extends Visitor {
     }
 
     private void visitSimpleType(Tree.SimpleType that, 
-            ProducedType ot, TypeDeclaration dec) {
+            Type ot, TypeDeclaration dec) {
         if (dec instanceof Constructor &&
                 //in a metamodel type literal, a constructor
                 //is allowed
@@ -1062,11 +1062,11 @@ public class TypeVisitor extends Visitor {
                 that.getTypeArgumentList();
         List<TypeParameter> params = 
                 dec.getTypeParameters();
-        List<ProducedType> typeArgs = 
+        List<Type> typeArgs = 
                 getTypeArguments(tal, ot, params);
         //Note: we actually *check* these type arguments
         //      later in ExpressionVisitor
-        ProducedType pt = dec.getProducedType(ot, typeArgs);
+        Type pt = dec.getProducedType(ot, typeArgs);
         if (tal==null) {
             if (!params.isEmpty()) {
                 //For now the only type constructors allowed
@@ -1112,7 +1112,7 @@ public class TypeVisitor extends Visitor {
                             pt.setVariance(p, IN);
                         }
                         if (!p.isInvariant()) {
-                            //ProducedType doesn't yet know
+                            //Type doesn't yet know
                             //how to reason about *runtime*
                             //instantiations of variant types
                             //since they are effectively
@@ -1141,10 +1141,10 @@ public class TypeVisitor extends Visitor {
     @Override 
     public void visit(Tree.SequencedType that) {
         super.visit(that);
-        ProducedType type = 
+        Type type = 
                 that.getType().getTypeModel();
         if (type!=null) {
-            ProducedType et = that.getAtLeastOne() ? 
+            Type et = that.getAtLeastOne() ? 
                     unit.getSequenceType(type) : 
                     unit.getSequentialType(type);
             that.setTypeModel(et);
@@ -1154,7 +1154,7 @@ public class TypeVisitor extends Visitor {
     @Override 
     public void visit(Tree.DefaultedType that) {
         super.visit(that);
-        ProducedType type = 
+        Type type = 
                 that.getType().getTypeModel();
         if (type!=null) {
             that.setTypeModel(type);
@@ -1166,7 +1166,7 @@ public class TypeVisitor extends Visitor {
         super.visit(that);
         Tree.Type t = that.getType();
         if (t!=null) {
-            ProducedType type = t.getTypeModel();
+            Type type = t.getTypeModel();
             if (type!=null) {
                 that.setTypeModel(type);
             }
@@ -1211,7 +1211,7 @@ public class TypeVisitor extends Visitor {
                     td.getName() + "'");
         }
         else if (!(type instanceof Tree.LocalModifier)) { //if the type declaration is missing, we do type inference later
-            ProducedType t = type.getTypeModel();
+            Type t = type.getTypeModel();
             if (t!=null) {
                 td.setType(t);
             }
@@ -1232,7 +1232,7 @@ public class TypeVisitor extends Visitor {
         o.getSatisfiedTypes().clear();
         defaultSuperclass(that.getExtendedType(), o);
         super.visit(that);
-        ProducedType type = o.getType();
+        Type type = o.getType();
         that.getDeclarationModel().setType(type);
         that.getType().setTypeModel(type);
     }
@@ -1244,7 +1244,7 @@ public class TypeVisitor extends Visitor {
         o.getSatisfiedTypes().clear();
         defaultSuperclass(that.getExtendedType(), o);
         super.visit(that);
-        ProducedType type = o.getType();
+        Type type = o.getType();
         that.getDeclarationModel().setType(type);
         that.getType().setTypeModel(type);
     }
@@ -1310,7 +1310,7 @@ public class TypeVisitor extends Visitor {
         if (ts!=null) {
             Tree.StaticType type = ts.getType();
             if (type!=null) {
-                ProducedType dta = type.getTypeModel();
+                Type dta = type.getTypeModel();
                 Declaration dec = p.getDeclaration();
                 if (dta!=null && 
                         dta.involvesDeclaration(dec)) {
@@ -1344,7 +1344,7 @@ public class TypeVisitor extends Visitor {
             if (tpd!=null) {
                 TypeParameter tp = 
                         tpd.getDeclarationModel();
-                ProducedType dta = 
+                Type dta = 
                         tp.getDefaultTypeArgument();
                 if (dta!=null) {
                     params.add(tp);
@@ -1392,7 +1392,7 @@ public class TypeVisitor extends Visitor {
                 ct.addError("aliased type must be a class");
             }
             else {
-                ProducedType type = ct.getTypeModel();
+                Type type = ct.getTypeModel();
                 if (type!=null) {
                     TypeDeclaration dec = 
                             type.getDeclaration();
@@ -1463,7 +1463,7 @@ public class TypeVisitor extends Visitor {
                         .addError("aliased type must be an interface");
             }
             else {
-                ProducedType type = et.getTypeModel();
+                Type type = et.getTypeModel();
                 if (type!=null) {
                     if (type.getDeclaration() instanceof Interface) {
                         id.setExtendedType(type);
@@ -1500,7 +1500,7 @@ public class TypeVisitor extends Visitor {
                 that.addError("malformed aliased type");
             }
             else {
-                ProducedType type = et.getTypeModel();
+                Type type = et.getTypeModel();
                 if (type!=null) {
                     ta.setExtendedType(type);
                 }
@@ -1638,7 +1638,7 @@ public class TypeVisitor extends Visitor {
         if (!td.isAlias()) {
             Tree.SimpleType et = that.getType();
             if (et!=null) {
-                ProducedType type = et.getTypeModel();
+                Type type = et.getTypeModel();
                 if (type!=null) {
                     TypeDeclaration etd = 
                             et.getDeclarationModel();
@@ -1691,8 +1691,8 @@ public class TypeVisitor extends Visitor {
             return;
         }
         List<Tree.StaticType> types = that.getTypes();
-        List<ProducedType> list = 
-                new ArrayList<ProducedType>
+        List<Type> list = 
+                new ArrayList<Type>
                     (types.size());
         if (types.isEmpty()) {
             that.addError("missing types in satisfies");
@@ -1702,7 +1702,7 @@ public class TypeVisitor extends Visitor {
         boolean foundInterface = false;
         for (Tree.StaticType st: types) {
             inheritedType(st);
-            ProducedType type = st.getTypeModel();
+            Type type = st.getTypeModel();
             if (type!=null) {
                 TypeDeclaration std = type.getDeclaration();
                 if (std!=null && 
@@ -1803,8 +1803,8 @@ public class TypeVisitor extends Visitor {
         List<Tree.BaseMemberExpression> bmes = 
                 that.getBaseMemberExpressions();
         List<Tree.StaticType> cts = that.getTypes();
-        List<ProducedType> list = 
-                new ArrayList<ProducedType>
+        List<Type> list = 
+                new ArrayList<Type>
                     (bmes.size()+cts.size());
         if (td instanceof TypeParameter) {
             if (!bmes.isEmpty()) {
@@ -1819,7 +1819,7 @@ public class TypeVisitor extends Visitor {
                                 name(bme.getIdentifier()), 
                                 null, false, bme.getUnit());
                 if (od!=null) {
-                    ProducedType type = od.getType();
+                    Type type = od.getType();
                     if (type!=null) {
                         list.add(type);
                     }
@@ -1828,7 +1828,7 @@ public class TypeVisitor extends Visitor {
         }
         for (Tree.StaticType ct: cts) {
             inheritedType(ct);
-            ProducedType type = ct.getTypeModel();
+            Type type = ct.getTypeModel();
             if (type!=null) {
                 if (!isTypeUnknown(type)) {
                     if (type.isUnion() || 

@@ -12,7 +12,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.ProducedReference;
-import com.redhat.ceylon.model.typechecker.model.ProducedType;
+import com.redhat.ceylon.model.typechecker.model.Type;
 
 
 public class PrintVisitor extends Visitor implements NaturalVisitor {
@@ -71,29 +71,29 @@ public class PrintVisitor extends Visitor implements NaturalVisitor {
             print(" (" + node.getLocation() + ")");
         }
         if (node instanceof Tree.Term) {
-            ProducedType type = ((Tree.Term) node).getTypeModel();
+            Type type = ((Tree.Term) node).getTypeModel();
             if (type!=null) {
                 print(" : " + type.getProducedTypeName() + "");
             }
         }
         if (node instanceof Tree.ComprehensionClause) {
-            ProducedType type = ((Tree.ComprehensionClause) node).getTypeModel();
+            Type type = ((Tree.ComprehensionClause) node).getTypeModel();
             if (type!=null) {
                 print(" : " + type.getProducedTypeName() + "");
             }
         }
         if (node instanceof Tree.Type) {
-            ProducedType type = ((Tree.Type) node).getTypeModel();
+            Type type = ((Tree.Type) node).getTypeModel();
             if (type!=null) {
                 print(" : " + type.getProducedTypeName() + "");
             }
         }
         if (node instanceof Tree.TypeArguments) {
-            List<ProducedType> types = ((Tree.TypeArguments) node).getTypeModels();
+            List<Type> types = ((Tree.TypeArguments) node).getTypeModels();
             if (types!=null && !types.isEmpty()) {
                 print(" : <");
                 int i=0;
-                for (ProducedType pt: types) {
+                for (Type pt: types) {
                     if (pt!=null) {
                     	print(pt.getProducedTypeName());
                     }

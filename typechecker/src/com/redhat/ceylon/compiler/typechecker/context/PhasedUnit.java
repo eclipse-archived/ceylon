@@ -45,7 +45,7 @@ import com.redhat.ceylon.model.typechecker.context.ProducedTypeCache;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.Package;
-import com.redhat.ceylon.model.typechecker.model.ProducedType;
+import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.model.typechecker.model.Unit;
 import com.redhat.ceylon.model.typechecker.util.ModuleManager;
@@ -390,7 +390,7 @@ public class PhasedUnit {
                 ProducedTypeCache.setEnabled(false);
         try {
             if (!refinementValidated) {
-                ProducedType.resetDepth(0);
+                Type.resetDepth(0);
                 //System.out.println("Validate member refinement for " + fileName);
                 rootNode.visit(new AliasVisitor());
                 rootNode.visit(new SupertypeVisitor(true)); //TODO: move to a new phase!
@@ -409,7 +409,7 @@ public class PhasedUnit {
                 ProducedTypeCache.setEnabled(true);
         try {
             if (!fullyTyped) {
-                ProducedType.resetDepth(-100);
+                Type.resetDepth(-100);
                 //System.out.println("Run analysis phase for " + fileName);
                 rootNode.visit(new ExpressionVisitor(moduleManagerRef.get()));
                 rootNode.visit(new VisibilityVisitor());

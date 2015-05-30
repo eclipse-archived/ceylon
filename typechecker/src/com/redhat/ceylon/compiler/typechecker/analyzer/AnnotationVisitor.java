@@ -20,7 +20,7 @@ import com.redhat.ceylon.model.typechecker.model.Method;
 import com.redhat.ceylon.model.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.model.typechecker.model.Package;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
-import com.redhat.ceylon.model.typechecker.model.ProducedType;
+import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.TypeAlias;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
@@ -37,7 +37,7 @@ public class AnnotationVisitor extends Visitor {
     private static final String DOC_LINK_VALUE = "value ";
     private static final String DOC_LINK_ALIAS = "alias ";
 
-    private static boolean isIllegalAnnotationParameterType(ProducedType pt) {
+    private static boolean isIllegalAnnotationParameterType(Type pt) {
         if (pt!=null) {
             if (pt.isIntersection() || pt.isUnion()) {
                 return true;
@@ -65,12 +65,12 @@ public class AnnotationVisitor extends Visitor {
     }
     
     private static boolean isEnum(TypeDeclaration ptd) {
-        List<ProducedType> cts = ptd.getCaseTypes();
+        List<Type> cts = ptd.getCaseTypes();
         if (cts==null) {
             return false;
         }
         else {
-            for (ProducedType ct: cts) {
+            for (Type ct: cts) {
                 if (!ct.getDeclaration().isAnonymous()) {
                     return false;
                 }
@@ -86,7 +86,7 @@ public class AnnotationVisitor extends Visitor {
     		pn.addError("annotations may not have callable parameters");
     	}
     	else {
-    		ProducedType pt = p.getType();
+    		Type pt = p.getType();
     		if (pt!=null && 
     		        isIllegalAnnotationParameterType(pt)) {
     			Node errorNode;
@@ -133,7 +133,7 @@ public class AnnotationVisitor extends Visitor {
     }
     
     private void checkAnnotationArgument(Functional a, 
-            Tree.Expression e, ProducedType pt) {
+            Tree.Expression e, Type pt) {
         if (e!=null) {
             Tree.Term term = e.getTerm();
             if (term instanceof Tree.Literal) {
@@ -352,7 +352,7 @@ public class AnnotationVisitor extends Visitor {
         if (!c.isFinal()) {
             that.addError("annotation class must be final");
         }
-        ProducedType et = c.getExtendedType();
+        Type et = c.getExtendedType();
         if (et!=null) {
             if (!et.isBasic()) {
                 that.addError("annotation class must directly extend 'Basic'");
@@ -377,7 +377,7 @@ public class AnnotationVisitor extends Visitor {
     private void checkAnnotationConstructor(Tree.AnyMethod that, Method a) {
         Tree.Type type = that.getType();
         if (type!=null) {
-            ProducedType t = type.getTypeModel();
+            Type t = type.getTypeModel();
             if (t!=null) {
                 TypeDeclaration td = t.getDeclaration();
                 if (td!=null) {
@@ -484,7 +484,7 @@ public class AnnotationVisitor extends Visitor {
     }
     
     private void checkAnnotationInstantiation(Functional a, 
-            Tree.Expression e, ProducedType pt) {
+            Tree.Expression e, Type pt) {
         if (e!=null) {
             Tree.Term term = e.getTerm();
             if (term instanceof Tree.InvocationExpression) {
@@ -795,28 +795,28 @@ public class AnnotationVisitor extends Visitor {
 
     private void checkAnnotations(
             Tree.AnnotationList annotationList,
-            ProducedType declarationType, 
-            ProducedType modelType) {
+            Type declarationType, 
+            Type modelType) {
         Unit unit = annotationList.getUnit();
         List<Tree.Annotation> annotations = 
                 annotationList.getAnnotations();
         for (Tree.Annotation annotation: annotations) {
-            ProducedType t = annotation.getTypeModel();
+            Type t = annotation.getTypeModel();
             if (t!=null) {
                 TypeDeclaration cad = 
                         unit.getConstrainedAnnotationDeclaration();
-                ProducedType cat = t.getSupertype(cad);
+                Type cat = t.getSupertype(cad);
                 if (cat!=null) {
-                    List<ProducedType> args = 
+                    List<Type> args = 
                             cat.getTypeArgumentList();
                     if (args.size()>2) {
-                        ProducedType constraint = args.get(2);
+                        Type constraint = args.get(2);
                         checkAssignable(declarationType, 
                                 constraint, annotation, 
                                 "annotated program element does not satisfy annotation constraint");
                     }
                     if (args.size()>3) {
-                        ProducedType constraint = args.get(3);
+                        Type constraint = args.get(3);
                         if (!constraint.isAnything()) {
                             checkAssignable(modelType, 
                                     constraint, annotation, 
@@ -830,14 +830,14 @@ public class AnnotationVisitor extends Visitor {
                 unit.getOptionalAnnotationDeclaration();
         for (int i=0; i<annotations.size(); i++) {
             Tree.Annotation ann = annotations.get(i);
-            ProducedType t = ann.getTypeModel();
+            Type t = ann.getTypeModel();
             if (t!=null) {
                 TypeDeclaration td = t.getDeclaration();
                 if (td.inherits(od)) {
                     for (int j=0; j<i; j++) {
                         Tree.Annotation other = 
                                 annotations.get(j);
-                        ProducedType ot = 
+                        Type ot = 
                                 other.getTypeModel();
                         if (ot!=null) {
                             TypeDeclaration otd = 
@@ -872,7 +872,7 @@ public class AnnotationVisitor extends Visitor {
                         dec.getName(unit) + "' is overloaded");
             }
             else {
-                List<ProducedType> sig = that.getSignature();
+                List<Type> sig = that.getSignature();
                 if (sig==null) {
                     that.addError("ambiguous callable reference to overloaded method or class: '" +
                             dec.getName(unit) + "' is overloaded");
@@ -880,7 +880,7 @@ public class AnnotationVisitor extends Visitor {
                 else {
                     StringBuilder sb = new StringBuilder();
                     sb.append(" '");
-                    for (ProducedType pt: sig) {
+                    for (Type pt: sig) {
                         if (pt!=null) {
                             sb.append(pt.getProducedTypeName(unit));
                         }

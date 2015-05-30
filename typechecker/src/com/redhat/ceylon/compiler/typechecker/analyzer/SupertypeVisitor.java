@@ -12,7 +12,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.model.typechecker.model.DecidabilityException;
 import com.redhat.ceylon.model.typechecker.model.IntersectionType;
-import com.redhat.ceylon.model.typechecker.model.ProducedType;
+import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.TypeAlias;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.model.typechecker.model.Unit;
@@ -37,7 +37,7 @@ public class SupertypeVisitor extends Visitor {
         this.displayErrors = displayErrors;
     }
     
-    private boolean checkSupertypeVariance(ProducedType type, 
+    private boolean checkSupertypeVariance(Type type, 
             TypeDeclaration d, Node node) {
         List<TypeDeclaration> errors = 
                 type.resolveAliases()
@@ -64,7 +64,7 @@ public class SupertypeVisitor extends Visitor {
         
         if (stn!=null) {
             for (Tree.StaticType st: stn.getTypes()) {
-                ProducedType t = st.getTypeModel();
+                Type t = st.getTypeModel();
                 if (t!=null) {
                     TypeDeclaration td = t.getDeclaration();
                     if (!(td instanceof UnknownType) &&
@@ -89,7 +89,7 @@ public class SupertypeVisitor extends Visitor {
         if (etn!=null) {
             Tree.StaticType et = etn.getType();
             if (et!=null) {
-            	ProducedType t = et.getTypeModel();
+            	Type t = et.getTypeModel();
             	if (t!=null) {
             	    TypeDeclaration td = t.getDeclaration();
                     if (!(td instanceof UnknownType) &&
@@ -114,12 +114,12 @@ public class SupertypeVisitor extends Visitor {
         
         if (!errors) {
             Unit unit = d.getUnit();
-            List<ProducedType> list = 
-                    new ArrayList<ProducedType>();
+            List<Type> list = 
+                    new ArrayList<Type>();
             try {
-                List<ProducedType> supertypes = 
+                List<Type> supertypes = 
                         d.getType().getSupertypes();
-                for (ProducedType st: supertypes) {
+                for (Type st: supertypes) {
                     addToIntersection(list, st, unit);
                 }
                 //probably unnecessary - if it were 
@@ -136,7 +136,7 @@ public class SupertypeVisitor extends Visitor {
             }
             if (stn!=null) {
                 for (Tree.StaticType st: stn.getTypes()) {
-                    ProducedType t = st.getTypeModel();
+                    Type t = st.getTypeModel();
                     if (t!=null) {
                         if (checkSupertypeVariance(t, d, st)) {
                             d.getSatisfiedTypes().remove(t);
@@ -148,7 +148,7 @@ public class SupertypeVisitor extends Visitor {
             if (etn!=null) {
                 Tree.StaticType et = etn.getType();
                 if (et!=null) {
-                	ProducedType t = et.getTypeModel();
+                	Type t = et.getTypeModel();
                 	if (t!=null) {
                 		if (checkSupertypeVariance(t, d, et)) {
                 	        d.setExtendedType(unit.getBasicType());
@@ -177,7 +177,7 @@ public class SupertypeVisitor extends Visitor {
         if (displayErrors) {
             et.addError(message(d, list));
         }
-        ProducedType pt = et.getTypeModel();
+        Type pt = et.getTypeModel();
         et.setTypeModel(null);
         d.setExtendedType(et.getUnit().getBasicType());
         d.addBrokenSupertype(pt);
@@ -189,7 +189,7 @@ public class SupertypeVisitor extends Visitor {
         if (displayErrors) {
             st.addError(message(d, list));
         }
-        ProducedType pt = st.getTypeModel();
+        Type pt = st.getTypeModel();
         st.setTypeModel(null);
         d.getSatisfiedTypes().remove(pt);
         d.addBrokenSupertype(pt);

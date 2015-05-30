@@ -29,7 +29,7 @@ import com.redhat.ceylon.model.typechecker.model.Interface;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.ProducedReference;
-import com.redhat.ceylon.model.typechecker.model.ProducedType;
+import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.Scope;
 import com.redhat.ceylon.model.typechecker.model.SiteVariance;
 import com.redhat.ceylon.model.typechecker.model.TypeAlias;
@@ -49,7 +49,7 @@ import com.redhat.ceylon.model.typechecker.model.Value;
 public class Util {
     
     static TypedDeclaration getTypedMember(TypeDeclaration d, String name,
-            List<ProducedType> signature, boolean ellipsis, Unit unit) {
+            List<Type> signature, boolean ellipsis, Unit unit) {
         Declaration member = 
                 d.getMember(name, unit, signature, ellipsis);
         if (member instanceof TypedDeclaration) {
@@ -61,7 +61,7 @@ public class Util {
     }
 
     static TypeDeclaration getTypeMember(TypeDeclaration d, String name,
-            List<ProducedType> signature, boolean ellipsis, Unit unit) {
+            List<Type> signature, boolean ellipsis, Unit unit) {
         Declaration member = 
                 d.getMember(name, unit, signature, ellipsis);
         if (member instanceof TypeDeclaration) {
@@ -77,7 +77,7 @@ public class Util {
     }
 
     static TypedDeclaration getTypedDeclaration(Scope scope,
-            String name, List<ProducedType> signature, boolean ellipsis,
+            String name, List<Type> signature, boolean ellipsis,
             Unit unit) {
         Declaration result = 
                 scope.getMemberOrParameter(unit, 
@@ -91,7 +91,7 @@ public class Util {
     }
     
     static TypeDeclaration getTypeDeclaration(Scope scope,
-            String name, List<ProducedType> signature, boolean ellipsis,
+            String name, List<Type> signature, boolean ellipsis,
             Unit unit) {
         Declaration result = 
                 scope.getMemberOrParameter(unit, 
@@ -109,7 +109,7 @@ public class Util {
     }
 
     static TypedDeclaration getPackageTypedDeclaration(String name, 
-            List<ProducedType> signature, boolean ellipsis,
+            List<Type> signature, boolean ellipsis,
             Unit unit) {
         Declaration result = 
                 unit.getPackage().getMember(name, 
@@ -123,7 +123,7 @@ public class Util {
     }
     
     static TypeDeclaration getPackageTypeDeclaration(String name, 
-            List<ProducedType> signature, boolean ellipsis,
+            List<Type> signature, boolean ellipsis,
             Unit unit) {
         Declaration result = 
                 unit.getPackage().getMember(name, 
@@ -142,7 +142,7 @@ public class Util {
 
     public static TypeDeclaration anonymousType(String name, 
             TypedDeclaration result) {
-        ProducedType type = result.getType();
+        Type type = result.getType();
         if (type!=null) {
             TypeDeclaration typeDeclaration = 
                     type.getDeclaration();
@@ -168,16 +168,16 @@ public class Util {
      * @return a list of type arguments to the given type
      *         parameters
      */
-    static List<ProducedType> getTypeArguments(
+    static List<Type> getTypeArguments(
             Tree.TypeArguments tas,
-    		ProducedType qt, 
+    		Type qt, 
     		List<TypeParameter> typeParameters) {
         if (tas instanceof Tree.TypeArgumentList) {
             
             //accumulate substitutions in case we need
             //them below for calculating default args
-            Map<TypeParameter,ProducedType> typeArgs = 
-                    new HashMap<TypeParameter,ProducedType>();
+            Map<TypeParameter,Type> typeArgs = 
+                    new HashMap<TypeParameter,Type>();
             Map<TypeParameter,SiteVariance> vars = 
                     new HashMap<TypeParameter,SiteVariance>();
             if (qt!=null) {
@@ -189,13 +189,13 @@ public class Util {
             Tree.TypeArgumentList tal = 
                     (Tree.TypeArgumentList) tas;
             int size = typeParameters.size();
-            List<ProducedType> typeArguments = 
-                    new ArrayList<ProducedType>(size);
+            List<Type> typeArguments = 
+                    new ArrayList<Type>(size);
             List<Tree.Type> types = tal.getTypes();
             int count = types.size();
             for (int i=0; i<count; i++) {
                 Tree.Type type = types.get(i);
-                ProducedType t = 
+                Type t = 
                         type.getTypeModel();
                 if (t==null) {
                     typeArguments.add(null);
@@ -226,11 +226,11 @@ public class Util {
             }
 //            }
 //            else {
-//                List<ProducedType> types = 
+//                List<Type> types = 
 //                        tas.getTypeModels();
 //                int count = types.size();
 //                for (int i=0; i<count; i++) {
-//                    ProducedType t = types.get(i);
+//                    Type t = types.get(i);
 //                    if (t==null) {
 //                        typeArguments.add(null);
 //                    }
@@ -249,7 +249,7 @@ public class Util {
             //for missing arguments, use the default args
             for (int i=typeArguments.size(); i<size; i++) {
                 TypeParameter tp = typeParameters.get(i);
-            	ProducedType dta = 
+            	Type dta = 
             	        tp.getDefaultTypeArgument();
             	if (dta==null || 
             	        //necessary to prevent stack overflow
@@ -259,7 +259,7 @@ public class Util {
             		break;
             	}
             	else {
-            	    ProducedType da = 
+            	    Type da = 
             	            dta.substitute(typeArgs, vars);
             		typeArguments.add(da);
             		typeArgs.put(tp, da);
@@ -328,7 +328,7 @@ public class Util {
                 Tree.ObjectDefinition o = 
                         (Tree.ObjectDefinition) s;
                 if (o.getExtendedType()!=null) {
-                    ProducedType et = 
+                    Type et = 
                             o.getExtendedType()
                                 .getType()
                                 .getTypeModel();
@@ -352,8 +352,8 @@ public class Util {
         }
     }
     
-    static String typingMessage(ProducedType type, 
-            String problem, ProducedType otherType, 
+    static String typingMessage(Type type, 
+            String problem, Type otherType, 
             Unit unit) {
         String unknownTypeError = 
                 type.getFirstUnknownTypeError(true);
@@ -408,7 +408,7 @@ public class Util {
         return sb.toString();
     }
     
-    private static String message(ProducedType type, 
+    private static String message(Type type, 
             String problem, Unit unit) {
         String typeName = type.getProducedTypeName(unit);
         String expandedTypeName = 
@@ -427,7 +427,7 @@ public class Util {
         return sb.toString();
     }
     
-    static boolean checkCallable(ProducedType type, Node node, String message) {
+    static boolean checkCallable(Type type, Node node, String message) {
         Unit unit = node.getUnit();
         if (isTypeUnknown(type)) {
             addTypeUnknownError(node, type, message);
@@ -468,14 +468,14 @@ public class Util {
         }
     }
 
-    static ProducedType checkSupertype(ProducedType type, 
+    static Type checkSupertype(Type type, 
             TypeDeclaration td, Node node, String message) {
         if (isTypeUnknown(type)) {
             addTypeUnknownError(node, type, message);
             return null;
         }
         else {
-            ProducedType supertype = type.getSupertype(td);
+            Type supertype = type.getSupertype(td);
             if (supertype==null) {
                 node.addError(message + 
                         message(type, 
@@ -487,8 +487,8 @@ public class Util {
         }
     }
 
-    static void checkAssignable(ProducedType type, 
-            ProducedType supertype, Node node, String message) {
+    static void checkAssignable(Type type, 
+            Type supertype, Node node, String message) {
         if (isTypeUnknown(type)) {
         	addTypeUnknownError(node, type, message);
         }
@@ -501,8 +501,8 @@ public class Util {
         }
     }
 
-    static void checkAssignableWithWarning(ProducedType type, 
-            ProducedType supertype, Node node, String message) {
+    static void checkAssignableWithWarning(Type type, 
+            Type supertype, Node node, String message) {
         if (isTypeUnknown(type)) {
             addTypeUnknownError(node, type, message);
         }
@@ -515,8 +515,8 @@ public class Util {
         }
     }
 
-    static void checkAssignableToOneOf(ProducedType type, 
-    		ProducedType supertype1, ProducedType supertype2, 
+    static void checkAssignableToOneOf(Type type, 
+    		Type supertype1, Type supertype2, 
             Node node, String message, int code) {
         if (isTypeUnknown(type)) {
             addTypeUnknownError(node, type, message);
@@ -535,16 +535,16 @@ public class Util {
         }
     }
 
-    static String notAssignableMessage(ProducedType type,
-            ProducedType supertype, Node node) {
+    static String notAssignableMessage(Type type,
+            Type supertype, Node node) {
         return typingMessage(type, 
                 " is not assignable to ", 
                 supertype, 
                 node.getUnit());
     }
 
-    static void checkAssignable(ProducedType type, 
-            ProducedType supertype, Node node, 
+    static void checkAssignable(Type type, 
+            Type supertype, Node node, 
             String message, int code) {
         if (isTypeUnknown(type)) {
             addTypeUnknownError(node, type, message);
@@ -559,7 +559,7 @@ public class Util {
         }
     }
 
-    /*static void checkAssignable(ProducedType type, ProducedType supertype, 
+    /*static void checkAssignable(Type type, Type supertype, 
             TypeDeclaration td, Node node, String message) {
         if (isTypeUnknown(type) || isTypeUnknown(supertype)) {
             addTypeUnknownError(node, message);
@@ -569,8 +569,8 @@ public class Util {
         }
     }*/
 
-    static void checkIsExactly(ProducedType type, 
-            ProducedType supertype, Node node, String message) {
+    static void checkIsExactly(Type type, 
+            Type supertype, Node node, String message) {
         if (isTypeUnknown(type)) {
             addTypeUnknownError(node, type, message);
         }
@@ -583,8 +583,8 @@ public class Util {
         }
     }
 
-    static void checkIsExactly(ProducedType type, 
-            ProducedType supertype, Node node, String message, 
+    static void checkIsExactly(Type type, 
+            Type supertype, Node node, String message, 
             int code) {
         if (isTypeUnknown(type)) {
             addTypeUnknownError(node, type, message);
@@ -599,8 +599,8 @@ public class Util {
         }
     }
 
-    static void checkIsExactlyOneOf(ProducedType type, 
-    		ProducedType supertype1, ProducedType supertype2, 
+    static void checkIsExactlyOneOf(Type type, 
+    		Type supertype1, Type supertype2, 
             Node node, String message) {
         if (isTypeUnknown(type)) {
             addTypeUnknownError(node, type, message);
@@ -618,8 +618,8 @@ public class Util {
         }
     }
 
-    static String notExactlyMessage(ProducedType type, 
-            ProducedType supertype, Node node) {
+    static String notExactlyMessage(Type type, 
+            Type supertype, Node node) {
         return typingMessage(type, 
                 " is not exactly ", 
                 supertype, 
@@ -682,7 +682,7 @@ public class Util {
     }
 
     private static void addTypeUnknownError(Node node, 
-            ProducedType type, String message) {
+            Type type, String message) {
         if (!hasError(node)) {
             node.addError(message + 
                     ": type cannot be determined" +
@@ -690,7 +690,7 @@ public class Util {
         }
     }
     
-    public static String getTypeUnknownError(ProducedType type) {
+    public static String getTypeUnknownError(Type type) {
         if (type == null) {
             return "";
         }
@@ -885,12 +885,12 @@ public class Util {
     }
 
     static String typeNamesAsIntersection(
-            List<ProducedType> upperBounds, Unit unit) {
+            List<Type> upperBounds, Unit unit) {
         if (upperBounds.isEmpty()) {
             return "Anything";
         }
         StringBuilder sb = new StringBuilder();
-        for (ProducedType st: upperBounds) {
+        for (Type st: upperBounds) {
             sb.append(st.getProducedTypeName(unit)).append(" & ");
         }
         if (sb.toString().endsWith(" & ")) {
@@ -985,11 +985,11 @@ public class Util {
                 Tree.Expression e = se.getExpression();
                 if (e!=null) {
                     Unit unit = forClause.getUnit();
-                    ProducedType at = 
+                    Type at = 
                             unit.getAnythingType();
-                    ProducedType neit = 
+                    Type neit = 
                             unit.getNonemptyIterableType(at);
-                    ProducedType t = e.getTypeModel();
+                    Type t = e.getTypeModel();
                     return t!=null && t.isSubtypeOf(neit);
                 }
             }
@@ -1181,8 +1181,8 @@ public class Util {
 
     static void checkIsExactlyForInterop(Unit unit, 
             boolean isCeylon,  
-            ProducedType parameterType, 
-            ProducedType refinedParameterType, 
+            Type parameterType, 
+            Type refinedParameterType, 
             Node node, String message) {
         if (isCeylon) {
             // it must be a Ceylon method
@@ -1192,7 +1192,7 @@ public class Util {
         }
         else {
             // we're refining a Java method
-            ProducedType refinedDefiniteType = 
+            Type refinedDefiniteType = 
                     unit.getDefiniteType(
                             refinedParameterType);
             checkIsExactlyOneOf(parameterType, 
@@ -1202,19 +1202,19 @@ public class Util {
         }
     }
 
-    public static ProducedType getTupleType(
+    public static Type getTupleType(
             List<Tree.PositionalArgument> es, 
             Unit unit, 
             boolean requireSequential) {
-        ProducedType result = unit.getEmptyType();
-        ProducedType ut = unit.getNothingType();
+        Type result = unit.getEmptyType();
+        Type ut = unit.getNothingType();
         Class td = unit.getTupleDeclaration();
         Interface id = unit.getIterableDeclaration();
         for (int i=es.size()-1; i>=0; i--) {
             Tree.PositionalArgument a = es.get(i);
-            ProducedType t = a.getTypeModel();
+            Type t = a.getTypeModel();
             if (t!=null) {
-                ProducedType et = t; //unit.denotableType(t);
+                Type et = t; //unit.denotableType(t);
                 if (a instanceof Tree.SpreadArgument) {
                     /*if (requireSequential) { 
                         checkSpreadArgumentSequential((Tree.SpreadArgument) a, et);
@@ -1231,7 +1231,7 @@ public class Util {
                             unit.getSequentialType(et) : 
                             unit.getSequenceType(et);
                     if (!requireSequential) {
-                        ProducedType it = 
+                        Type it = 
                                 producedType(id, et, 
                                         icc.getFirstTypeModel());
                         result = intersectionType(result, it, unit);
@@ -1246,7 +1246,7 @@ public class Util {
         return result;
     }
     
-    public static ProducedType spreadType(ProducedType et, Unit unit,
+    public static Type spreadType(Type et, Unit unit,
             boolean requireSequential) {
         if (et==null) return null;
         if (requireSequential) {
@@ -1259,12 +1259,12 @@ public class Util {
                     // out extraneous information, like that it is a
                     // String, just keeping information about what
                     // kind of tuple it is
-                    List<ProducedType> elementTypes = unit.getTupleElementTypes(et);
+                    List<Type> elementTypes = unit.getTupleElementTypes(et);
                     boolean variadic = unit.isTupleLengthUnbounded(et);
                     boolean atLeastOne = unit.isTupleVariantAtLeastOne(et);
                     int minimumLength = unit.getTupleMinimumLength(et);
                     if (variadic) {
-                        ProducedType spt = elementTypes.get(elementTypes.size()-1);
+                        Type spt = elementTypes.get(elementTypes.size()-1);
                         elementTypes.set(elementTypes.size()-1, unit.getIteratedType(spt));
                     }
                     return unit.getTupleType(elementTypes, variadic, 
@@ -1275,8 +1275,8 @@ public class Util {
                 // transform any Iterable into a Sequence without
                 // losing the information that it is nonempty, in
                 // the case that we know that for sure
-                ProducedType it = unit.getIteratedType(et);
-                ProducedType st = 
+                Type it = unit.getIteratedType(et);
+                Type st = 
                         unit.isNonemptyIterableType(et) ?
                                 unit.getSequenceType(it) :
                                 unit.getSequentialType(it);
@@ -1308,7 +1308,7 @@ public class Util {
 
     static boolean setTypeConstructor(Tree.Type t,
             TypeParameter typeParam) {
-        ProducedType pt = t.getTypeModel();
+        Type pt = t.getTypeModel();
         if (pt == null) {
             return false;
         }
@@ -1360,11 +1360,11 @@ public class Util {
         		.equals(unit.getPackage().getModule());
     }
 
-    static void checkCasesDisjoint(ProducedType type, ProducedType other,
+    static void checkCasesDisjoint(Type type, Type other,
             Node node) {
         if (!isTypeUnknown(type) && !isTypeUnknown(other)) {
             Unit unit = node.getUnit();
-            ProducedType it = 
+            Type it = 
                     intersectionType(type.resolveAliases(), 
                             other.resolveAliases(), unit);
             if (!it.isNothing()) {

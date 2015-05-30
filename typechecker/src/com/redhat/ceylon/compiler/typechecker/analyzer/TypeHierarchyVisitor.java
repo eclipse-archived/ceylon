@@ -28,7 +28,6 @@ import com.redhat.ceylon.model.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.ParameterList;
 import com.redhat.ceylon.model.typechecker.model.ProducedReference;
-import com.redhat.ceylon.model.typechecker.model.ProducedType;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.model.typechecker.model.Value;
 
@@ -47,6 +46,9 @@ import com.redhat.ceylon.model.typechecker.model.Value;
  */
 public class TypeHierarchyVisitor extends Visitor {
 
+    private static final List<com.redhat.ceylon.model.typechecker.model.Type> NO_TYPE_ARGS = 
+            Collections.<com.redhat.ceylon.model.typechecker.model.Type>emptyList();
+    
     private final Map<TypeDeclaration,Type> types = new HashMap<TypeDeclaration, Type>();
 
     private static final class Type {
@@ -292,7 +294,8 @@ public class TypeHierarchyVisitor extends Visitor {
 
     private boolean mixedInBySupertype(TypeDeclaration currentType, 
             TypeDeclaration otherType, ClassOrInterface classOrInterface) {
-        ProducedType et = classOrInterface.getExtendedType();
+        com.redhat.ceylon.model.typechecker.model.Type et = 
+                classOrInterface.getExtendedType();
         if (et!=null) {
             TypeDeclaration etd = et.getDeclaration();
             if (etd.inherits(currentType) && 
@@ -300,7 +303,7 @@ public class TypeHierarchyVisitor extends Visitor {
                 return true;
             }
         }
-        for (ProducedType st: 
+        for (com.redhat.ceylon.model.typechecker.model.Type st: 
                 classOrInterface.getSatisfiedTypes()) {
             if (st!=null) {
                 TypeDeclaration std = st.getDeclaration();
@@ -418,7 +421,7 @@ public class TypeHierarchyVisitor extends Visitor {
     private void addUnimplementedFormal(Class clazz, Declaration member) {
         ProducedReference unimplemented = 
                 member.getProducedReference(clazz.getType(), 
-                        Collections.<ProducedType>emptyList());
+                        NO_TYPE_ARGS);
         List<ProducedReference> list = 
                 clazz.getUnimplementedFormals();
         if (list.isEmpty()) {
@@ -498,23 +501,23 @@ public class TypeHierarchyVisitor extends Visitor {
         Type type = getOrBuildType(declaration);
 
         stackOfProcessedType.add(declaration);
-        ProducedType extendedType = 
-                declaration.getExtendedType();
+        com.redhat.ceylon.model.typechecker.model.Type 
+        extendedType = declaration.getExtendedType();
         if (extendedType!=null) {
             visitDAGNode(extendedType.getDeclaration(), 
                     sortedDag, visited, stackOfProcessedType, 
                     errorReporter);
         }
-        for (ProducedType superSatisfiedType: 
-                declaration.getSatisfiedTypes()) {
+        for (com.redhat.ceylon.model.typechecker.model.Type 
+                superSatisfiedType: declaration.getSatisfiedTypes()) {
             if (superSatisfiedType!=null) {
                 visitDAGNode(superSatisfiedType.getDeclaration(), 
                         sortedDag, visited, 
                         stackOfProcessedType, errorReporter);
             }
         }
-        for (ProducedType superSatisfiedType: 
-                declaration.getBrokenSupertypes()) {
+        for (com.redhat.ceylon.model.typechecker.model.Type 
+                superSatisfiedType: declaration.getBrokenSupertypes()) {
             visitDAGNode(superSatisfiedType.getDeclaration(), 
                     sortedDag, visited, stackOfProcessedType, 
                     errorReporter);
@@ -650,14 +653,14 @@ public class TypeHierarchyVisitor extends Visitor {
                             /*else if (!r.getContainer().equals(td)) { //the case where the member is actually declared by the current type is handled by checkRefinedTypeAndParameterTypes()
                                 //TODO: I think this case never occurs, because getMember() always
                                 //      returns null in the case of an ambiguity
-                                List<ProducedType> typeArgs = new ArrayList<ProducedType>();
+                                List<Type> typeArgs = new ArrayList<Type>();
                                 if (d instanceof Generic) {
                                     for (TypeParameter refinedTypeParam: ((Generic) d).getTypeParameters()) {
                                         typeArgs.add(refinedTypeParam.getType());
                                     }
                                 }
-                                ProducedType t = td.getType().getTypedReference(r, typeArgs).getType();
-                                ProducedType it = st.getTypedReference(d, typeArgs).getType();
+                                Type t = td.getType().getTypedReference(r, typeArgs).getType();
+                                Type it = st.getTypedReference(d, typeArgs).getType();
                                 checkAssignable(t, it, that, "type of member " + d.getName() + 
                                         " must be assignable to all types inherited from instantiations of " +
                                         st.getDeclaration().getName());

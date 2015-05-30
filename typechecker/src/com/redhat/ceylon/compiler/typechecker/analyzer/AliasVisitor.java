@@ -8,7 +8,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.TupleType;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
-import com.redhat.ceylon.model.typechecker.model.ProducedType;
+import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 
 /**
@@ -20,7 +20,7 @@ import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
  */
 public class AliasVisitor extends Visitor {
 
-    private void check(Node that, ProducedType t, TypeDeclaration d) {
+    private void check(Node that, Type t, TypeDeclaration d) {
         if (t!=null) {
             List<TypeDeclaration> list = 
                     t.isRecursiveTypeAliasDefinition(singleton(d));
@@ -97,7 +97,7 @@ public class AliasVisitor extends Visitor {
     @Override
     public void visit(Tree.FunctionType that) {
         super.visit(that);
-        ProducedType rt = that.getTypeModel();
+        Type rt = that.getTypeModel();
         if (rt!=null) {
             that.setTypeModel(rt.resolveAliases());
         }

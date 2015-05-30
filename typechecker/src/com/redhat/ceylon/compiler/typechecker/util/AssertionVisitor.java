@@ -15,7 +15,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.UnexpectedError;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
-import com.redhat.ceylon.model.typechecker.model.ProducedType;
+import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.Unit;
 
 public class AssertionVisitor extends Visitor implements NaturalVisitor {
@@ -41,7 +41,7 @@ public class AssertionVisitor extends Visitor implements NaturalVisitor {
         super.visit(that);
     }
     
-    protected void checkType(Tree.Statement that, ProducedType type, Node typedNode) {
+    protected void checkType(Tree.Statement that, Type type, Node typedNode) {
         for (Tree.CompilerAnnotation c: that.getCompilerAnnotations()) {
             if (c.getIdentifier().getText().equals("type")) {
                 Tree.StringLiteral sl = c.getStringLiteral();

@@ -7,7 +7,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.MethodOrValue;
-import com.redhat.ceylon.model.typechecker.model.ProducedType;
+import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.model.typechecker.model.TypeParameter;
 import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
@@ -166,7 +166,7 @@ public class TypeArgumentVisitor extends Visitor {
     
     @Override public void visit(Tree.Constructor that) {
         TypeDeclaration occ = constructorClass;
-        ProducedType et = 
+        Type et = 
                 that.getDeclarationModel()
                     .getExtendedType();
         constructorClass = 
@@ -183,7 +183,7 @@ public class TypeArgumentVisitor extends Visitor {
         }
     }
 
-    private void check(ProducedType type, boolean variable, 
+    private void check(Type type, boolean variable, 
             Declaration d, Node that) {
         if (type!=null) {
             List<TypeParameter> errors = 
@@ -194,7 +194,7 @@ public class TypeArgumentVisitor extends Visitor {
         }
     }
 
-    private void displayErrors(Node that, ProducedType type,
+    private void displayErrors(Node that, Type type,
             List<TypeParameter> errors, Declaration d) {
         for (TypeParameter tp: errors) {
             Declaration declaration = tp.getDeclaration();
@@ -232,7 +232,7 @@ public class TypeArgumentVisitor extends Visitor {
         Tree.TypeArgumentList tal = 
                 that.getTypeArgumentList();
         TypeDeclaration dec = that.getDeclarationModel();
-        ProducedType type = that.getTypeModel();
+        Type type = that.getTypeModel();
         if (dec!=null && type!=null) {
             List<TypeParameter> params = 
                     dec.getTypeParameters();

@@ -20,7 +20,7 @@ import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.ModuleImport;
 import com.redhat.ceylon.model.typechecker.model.Package;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
-import com.redhat.ceylon.model.typechecker.model.ProducedType;
+import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.TypeAlias;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.model.typechecker.model.TypeParameter;
@@ -129,7 +129,7 @@ public class VisibilityVisitor extends Visitor {
 
     private void validateSupertypes(Node that, TypeDeclaration td) {
         if (td instanceof TypeAlias) {
-            ProducedType at = td.getExtendedType();
+            Type at = td.getExtendedType();
             if (at!=null) {
                 if (!isCompletelyVisible(td, at)) {
                     that.addError("aliased type is not visible everywhere type alias '" + 
@@ -149,9 +149,9 @@ public class VisibilityVisitor extends Visitor {
             }
         }
         else {
-            List<ProducedType> supertypes = td.getType().getSupertypes();
+            List<Type> supertypes = td.getType().getSupertypes();
             if (!td.isInconsistentType()) {
-                for (ProducedType st: supertypes) {
+                for (Type st: supertypes) {
                     // don't do this check for ObjectArguments
                     if (that instanceof Tree.Declaration) {
                         if (!isCompletelyVisible(td, st)) {
@@ -179,7 +179,7 @@ public class VisibilityVisitor extends Visitor {
 
 
     private static boolean checkModuleVisibility(
-            Declaration member, ProducedType pt) {
+            Declaration member, Type pt) {
         if (inExportedScope(member)) {
             Module declarationModule = getModule(member);
             if (declarationModule!=null) {
@@ -201,10 +201,10 @@ public class VisibilityVisitor extends Visitor {
     }
 
     static boolean isCompletelyVisibleFromOtherModules(
-            Declaration member, ProducedType pt, 
+            Declaration member, Type pt, 
             Module thisModule) {
         if (pt.isUnion()) {
-            for (ProducedType ct: pt.getCaseTypes()) {
+            for (Type ct: pt.getCaseTypes()) {
                 if (!isCompletelyVisibleFromOtherModules(
                         member, ct.substitute(pt), 
                         thisModule)) {
@@ -214,7 +214,7 @@ public class VisibilityVisitor extends Visitor {
             return true;
         }
         else if (pt.isIntersection()) {
-            for (ProducedType st: pt.getSatisfiedTypes()) {
+            for (Type st: pt.getSatisfiedTypes()) {
                 if (!isCompletelyVisibleFromOtherModules(
                         member, st.substitute(pt), 
                         thisModule)) {
@@ -228,7 +228,7 @@ public class VisibilityVisitor extends Visitor {
                     thisModule, pt.getDeclaration())) {
                 return false;
             }
-            for (ProducedType at: pt.getTypeArgumentList()) {
+            for (Type at: pt.getTypeArgumentList()) {
                 if (at!=null && 
                         !isCompletelyVisibleFromOtherModules(
                                 member, at, thisModule)) {
@@ -250,7 +250,7 @@ public class VisibilityVisitor extends Visitor {
 
     private static void checkVisibility(Node that, 
             TypedDeclaration td) {
-        ProducedType type = td.getType();
+        Type type = td.getType();
         if (type!=null) {
             Node typeNode = getTypeErrorNode(that);
             if (!isCompletelyVisible(td, type)) {
@@ -274,7 +274,7 @@ public class VisibilityVisitor extends Visitor {
 
     private static void checkParameterVisibility(
             Tree.Parameter tp, Declaration td, Parameter p) {
-        ProducedType pt = p.getType();
+        Type pt = p.getType();
         if (pt!=null) {
             if (!isCompletelyVisible(td, pt)) {
                 getParameterTypeErrorNode(tp)
