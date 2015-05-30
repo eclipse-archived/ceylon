@@ -58,33 +58,32 @@ function spread$(a,f,targs) {
     if (typeof(a1t)==='string')a1t=targs && targs[a1t];
     //If the tuple type matches the param type, it's NOT a spread
     //(it's just a regular 1-param func which happens to receive a tuple)
-    if (!(a1t && is$(arg[0],a1t))) {
-      var typecheck;
-      if (a1t && targs && targs.Arguments$Callable) {
-        typecheck=targs.Arguments$Callable;
-        if (typecheck && typecheck.t && typecheck.t==='T' && typecheck.l
-            && typecheck.l.length===1 && typecheck.l[0].seq) {
-          //after all, it is NOT a spread
-          return arg;
-        }
-      } else if (a1t && arg[0].$$targs$$) {
-        if (arg[0].$$targs$$.First$Tuple) {
-          typecheck={t:Tuple,a:arg[0].$$targs$$};
-        } else if (arg[0].$$targs$$.t==='T') {
-          typecheck=arg[0].$$targs$$;
-        } else if (arg[0].$$targs$$.Element$Iterable) {
-          typecheck={t:Iterable,a:arg[0].$$targs$$.Element$Iterable};
-        }
+    if (!a1t || is$(arg[0],a1t))return arg;
+    var typecheck;
+    if (a1t && targs && targs.Arguments$Callable) {
+      typecheck=targs.Arguments$Callable;
+      if (typecheck && typecheck.t && typecheck.t==='T' && typecheck.l
+          && typecheck.l.length===1 && typecheck.l[0].seq) {
+        //after all, it is NOT a spread
+        return arg;
       }
-      if (mm && mm.ps && (mm.ps.length>1 || (mm.ps.length===1
-          && (mm.ps[0].seq || !extendsType(a1t, typecheck))))) {
-        var a=arg[0].nativeArray ? arg[0].nativeArray():undefined;
-        if (a===undefined) {
-          a=[];
-          for (var i=0;i<arg[0].size;i++)a.push(arg[0].$_get(i));
-        }
-        arg=a;
+    } else if (a1t && arg[0].$$targs$$) {
+      if (arg[0].$$targs$$.First$Tuple) {
+        typecheck={t:Tuple,a:arg[0].$$targs$$};
+      } else if (arg[0].$$targs$$.t==='T') {
+        typecheck=arg[0].$$targs$$;
+      } else if (arg[0].$$targs$$.Element$Iterable) {
+        typecheck={t:Iterable,a:arg[0].$$targs$$.Element$Iterable};
       }
+    }
+    if (mm && mm.ps && (mm.ps.length>1 || (mm.ps.length===1
+        && (mm.ps[0].seq || !extendsType(a1t, typecheck))))) {
+      var a=arg[0].nativeArray ? arg[0].nativeArray():undefined;
+      if (a===undefined) {
+        a=[];
+        for (var i=0;i<arg[0].size;i++)a.push(arg[0].$_get(i));
+      }
+      arg=a;
     }
   }
   return arg;
@@ -116,7 +115,12 @@ function mplclist$(orig,clist,params,targs) {
     return JsCallableList(b);
   },params,targs);
 }
+function mkseq$(t,seq) {
+  if (seq)t.seq=seq;
+  return t;
+}
 ex$.mplclist$=mplclist$;
 ex$.JsCallableList=JsCallableList;
 ex$.JsCallable=JsCallable;
 ex$.$JsCallable=$JsCallable;
+ex$.mkseq$=mkseq$;
