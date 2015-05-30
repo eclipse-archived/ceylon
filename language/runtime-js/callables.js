@@ -52,6 +52,20 @@ function spread$(a,f,targs) {
   if (arg.length===1 && is$(arg[0],{t:Tuple})) {
     //Possible spread, check the metamodel
     var mm=getrtmm$$(f);
+    if (arg[0].size===mm.ps.length && mm.ps.length>1) {
+      //Simple mapping
+      var all=[];
+      for (var i=0; i<mm.ps.length;i++){
+        var tet=mm.ps[i].$t;
+        if (typeof(tet)==='string'&&targs)tet=targs[tet];
+        if (is$(arg[0].$_get(i),tet)) {
+          all.push(arg[0].$_get(i));
+        }
+      }
+      if (all.length===mm.ps.length) {
+        return all;
+      }
+    }
     //If f has only 1 param and it's not sequenced, get its type
     var a1t=mm && mm.ps && mm.ps.length===1 && mm.ps[0].seq===undefined ? mm.ps[0].$t : undefined;
     //If it's a type param, get the type argument
