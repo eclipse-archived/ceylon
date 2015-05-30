@@ -13,7 +13,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.QualifiedMemberOrTypeExp
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SimpleType;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.model.typechecker.model.Annotation;
-import com.redhat.ceylon.model.typechecker.model.ProducedType;
+import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 
 /** A Visitor that gathers ceylondoc info for each node's declaration.
@@ -63,7 +63,7 @@ public class DocVisitor extends Visitor {
     @Override
     public void visit(AnyAttribute that) {
         //local vars
-    	ProducedType t = that.getDeclarationModel().getType();
+    	Type t = that.getDeclarationModel().getType();
     	if (t!=null) {
     		retrieveDocs(t.getDeclaration().getAnnotations(), 
     				that.getType().getLocation());
@@ -81,7 +81,7 @@ public class DocVisitor extends Visitor {
             }
         } 
         else {
-            ProducedType t = that.getDeclarationModel().getType();
+            Type t = that.getDeclarationModel().getType();
             if (t!=null) {
             	retrieveDocs(t.getDeclaration().getAnnotations(), 
             			that.getType().getLocation());

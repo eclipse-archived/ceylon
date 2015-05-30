@@ -26,7 +26,7 @@ import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.NothingType;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.ParameterList;
-import com.redhat.ceylon.model.typechecker.model.ProducedType;
+import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.Scope;
 import com.redhat.ceylon.model.typechecker.model.Setter;
 import com.redhat.ceylon.model.typechecker.model.SiteVariance;
@@ -194,7 +194,7 @@ public class JsonPackage extends com.redhat.ceylon.model.typechecker.model.Packa
         if (!(getModule().getLanguageModule()==getModule() && ("Nothing".equals(name) || "Anything".equals(name)))) {
             if (cls.getExtendedType() == null) {
                 if (m.containsKey("super")) {
-                    ProducedType father = getTypeFromJson((Map<String,Object>)m.get("super"),
+                    Type father = getTypeFromJson((Map<String,Object>)m.get("super"),
                             parent instanceof Declaration ? (Declaration)parent : null, allparms);
                     if (father != null) {
                         m.remove("super");
@@ -276,11 +276,11 @@ public class JsonPackage extends com.redhat.ceylon.model.typechecker.model.Packa
         }
     }
 
-    /** Creates a list of ProducedType from the references in the maps.
+    /** Creates a list of Type from the references in the maps.
      * @param types A list of maps where each map is a reference to a type or type parameter.
      * @param typeParams The type parameters that can be referenced from the list of maps. */
-    private List<ProducedType> parseTypeList(List<Map<String,Object>> types, List<TypeParameter> typeParams) {
-        List<ProducedType> ts = new ArrayList<ProducedType>(types.size());
+    private List<Type> parseTypeList(List<Map<String,Object>> types, List<TypeParameter> typeParams) {
+        List<Type> ts = new ArrayList<Type>(types.size());
         for (Map<String,Object> st : types) {
             ts.add(getTypeFromJson(st, null, typeParams));
         }
@@ -351,13 +351,13 @@ public class JsonPackage extends com.redhat.ceylon.model.typechecker.model.Packa
             if (tparm.getExtendedType() == null) {
                 if (tp.containsKey(MetamodelGenerator.KEY_PACKAGE)) {
                     //Looks like this never happens but...
-                    ProducedType subtype = getTypeFromJson(tp, container, allparms);
+                    Type subtype = getTypeFromJson(tp, container, allparms);
                     tparm.setExtendedType(subtype);
                 } else if (tp.containsKey(MetamodelGenerator.KEY_TYPES)) {
                     if (!("u".equals(tp.get("comp")) || "i".equals(tp.get("comp")))) {
                         throw new IllegalArgumentException("Only union or intersection types are allowed as 'comp'");
                     }
-                    ProducedType subtype = getTypeFromJson(tp, container, allparms);
+                    Type subtype = getTypeFromJson(tp, container, allparms);
                     tparm.setName(subtype.getProducedTypeName());
                     tparm.setExtendedType(subtype);
                 } else {
@@ -611,7 +611,7 @@ public class JsonPackage extends com.redhat.ceylon.model.typechecker.model.Packa
             t.setCaseTypes(parseTypeList((List<Map<String,Object>>)m.remove("of"), allparms));
         }
         if (m.containsKey(MetamodelGenerator.KEY_SATISFIES)) {
-            for (ProducedType s : parseTypeList((List<Map<String,Object>>)m.remove(MetamodelGenerator.KEY_SATISFIES), allparms)) {
+            for (Type s : parseTypeList((List<Map<String,Object>>)m.remove(MetamodelGenerator.KEY_SATISFIES), allparms)) {
                 t.getSatisfiedTypes().add(s);
             }
         }
@@ -743,7 +743,7 @@ public class JsonPackage extends com.redhat.ceylon.model.typechecker.model.Packa
 
     /** Looks up a type from model data, creating it if necessary. The returned type will have its
      * type parameters substituted if needed. */
-    private ProducedType getTypeFromJson(Map<String, Object> m, Declaration container, List<TypeParameter> typeParams) {
+    private Type getTypeFromJson(Map<String, Object> m, Declaration container, List<TypeParameter> typeParams) {
         TypeDeclaration td = null;
         if (m.get(MetamodelGenerator.KEY_METATYPE) instanceof TypeDeclaration) {
             td = (TypeDeclaration)m.get(MetamodelGenerator.KEY_METATYPE);
@@ -759,7 +759,7 @@ public class JsonPackage extends com.redhat.ceylon.model.typechecker.model.Packa
         if (td == null && m.containsKey("comp")) {
             @SuppressWarnings("unchecked")
             final List<Map<String,Object>> tmaps = (List<Map<String,Object>>)m.get(MetamodelGenerator.KEY_TYPES);
-            final ArrayList<ProducedType> types = new ArrayList<ProducedType>(tmaps.size());
+            final ArrayList<Type> types = new ArrayList<Type>(tmaps.size());
             if ("u".equals(m.get("comp"))) {
                 UnionType ut = new UnionType(u2);
                 for (Map<String, Object> tmap : tmaps) {
@@ -861,7 +861,7 @@ public class JsonPackage extends com.redhat.ceylon.model.typechecker.model.Packa
         final List<Map<String,Object>> modelParms = (List<Map<String,Object>>)m.get(MetamodelGenerator.KEY_TYPE_PARAMS);
         if (td != null && modelParms != null) {
             //Substitute type parameters
-            final HashMap<TypeParameter, ProducedType> concretes = new HashMap<TypeParameter, ProducedType>();
+            final HashMap<TypeParameter, Type> concretes = new HashMap<TypeParameter, Type>();
             HashMap<TypeParameter,SiteVariance> variances = null;
             if (td.getTypeParameters().size() < modelParms.size()) {
                 if (td.getUnit().getPackage() == this) {
@@ -873,7 +873,7 @@ public class JsonPackage extends com.redhat.ceylon.model.typechecker.model.Packa
                 TypeParameter _cparm = viter.next();
                 if (ptparm.containsKey(MetamodelGenerator.KEY_PACKAGE) || ptparm.containsKey(MetamodelGenerator.KEY_TYPES)) {
                     //Substitute for proper type
-                    final ProducedType _pt = getTypeFromJson(ptparm, container, typeParams);
+                    final Type _pt = getTypeFromJson(ptparm, container, typeParams);
                     if (ptparm.containsKey(MetamodelGenerator.KEY_US_VARIANCE)) {
                         if (variances == null) {
                             variances = new HashMap<>();
@@ -891,7 +891,7 @@ public class JsonPackage extends com.redhat.ceylon.model.typechecker.model.Packa
                 }
             }
             if (!concretes.isEmpty()) {
-                ProducedType rval = td.getType()
+                Type rval = td.getType()
                         .substitute(concretes, variances);
                 return rval;
             }

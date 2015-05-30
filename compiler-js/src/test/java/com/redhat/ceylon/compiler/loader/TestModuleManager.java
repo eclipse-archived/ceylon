@@ -20,7 +20,7 @@ import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.model.typechecker.model.Module;
-import com.redhat.ceylon.model.typechecker.model.ProducedType;
+import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.model.typechecker.model.TypeParameter;
 import com.redhat.ceylon.model.typechecker.model.Value;
@@ -150,9 +150,9 @@ public class TestModuleManager {
             Assert.assertNotNull(b.getSatisfiedTypes());
             Assert.assertEquals("satisfied types for " + n,
                     a.getSatisfiedTypes().size(), b.getSatisfiedTypes().size());
-            Iterator<ProducedType> bsats = b.getSatisfiedTypes().iterator();
-            for (ProducedType satA : a.getSatisfiedTypes()) {
-                ProducedType satB = bsats.next();
+            Iterator<Type> bsats = b.getSatisfiedTypes().iterator();
+            for (Type satA : a.getSatisfiedTypes()) {
+                Type satB = bsats.next();
                 compareTypes(satA, satB, null);
             }
         }
@@ -193,15 +193,15 @@ public class TestModuleManager {
         Assert.assertNotNull("ContainerWithFirstElement from srclang", d0);
         ClassOrInterface d1 = (ClassOrInterface)jslang.getDirectMember("Iterable", null, false);
         Assert.assertNotNull("ContainerWithFirstElement from jslang", d1);
-        ProducedType seq0 = null, seq1 = null;
-        for (ProducedType pt : d0.getSatisfiedTypes()) {
+        Type seq0 = null, seq1 = null;
+        for (Type pt : d0.getSatisfiedTypes()) {
             System.out.println(d0 + " satisfies " + pt);
             if (pt.getProducedTypeName().startsWith("Null[]")) {
                 seq0 = pt;
                 break;
             }
         }
-        for (ProducedType pt : d1.getSatisfiedTypes()) {
+        for (Type pt : d1.getSatisfiedTypes()) {
             if (pt.getProducedTypeName().startsWith("Null[]")) {
                 seq1 = pt;
                 break;
@@ -218,7 +218,7 @@ public class TestModuleManager {
         System.out.println("refined " + m0.getRefinedDeclaration().getContainer() + " vs " + m1.getRefinedDeclaration().getContainer());
     }
 
-    public void compareTypes(ProducedType t0, ProducedType t1, ArrayList<String> stack) {
+    public void compareTypes(Type t0, Type t1, ArrayList<String> stack) {
         if (stack == null) {
             stack = new ArrayList<String>();
         }
@@ -243,9 +243,9 @@ public class TestModuleManager {
         if (t0.getTypeArguments() == null) {
             Assert.assertNull(t1.getTypeArguments());
         } else {
-            Map<TypeParameter, ProducedType> parms1 = t1.getTypeArguments();
-            for (Map.Entry<TypeParameter, ProducedType> e : t0.getTypeArguments().entrySet()) {
-                ProducedType tparm = parms1.get(e.getKey());
+            Map<TypeParameter, Type> parms1 = t1.getTypeArguments();
+            for (Map.Entry<TypeParameter, Type> e : t0.getTypeArguments().entrySet()) {
+                Type tparm = parms1.get(e.getKey());
                 Assert.assertNotNull(tparm);
                 final String s0ppp = e.getValue().getProducedTypeQualifiedName();
                 if (stack.contains(s0ppp)) {
@@ -259,9 +259,9 @@ public class TestModuleManager {
         if (t0.getCaseTypes() == null) {
             Assert.assertNull(t1.getCaseTypes());
         } else {
-            Iterator<ProducedType> cases = t1.getCaseTypes().iterator();
-            for (ProducedType c0 : t0.getCaseTypes()) {
-                ProducedType c1 = cases.next();
+            Iterator<Type> cases = t1.getCaseTypes().iterator();
+            for (Type c0 : t0.getCaseTypes()) {
+                Type c1 = cases.next();
                 compareTypes(c0, c1, stack);
             }
         }
@@ -279,9 +279,9 @@ public class TestModuleManager {
             }
             Assert.assertEquals("supertypes differ for " + t0 + ": " + t0.getSupertypes() + " vs " + t1.getSupertypes(),
                     t0.getSupertypes().size(), t1.getSupertypes().size());
-            Iterator<ProducedType> supers = t1.getSupertypes().iterator();
-            for (ProducedType s0 : t0.getSupertypes()) {
-                ProducedType s1 = supers.next();
+            Iterator<Type> supers = t1.getSupertypes().iterator();
+            for (Type s0 : t0.getSupertypes()) {
+                Type s1 = supers.next();
                 if (s0 == t0) {
                     Assert.assertTrue(s1 == t1);
                 } else {

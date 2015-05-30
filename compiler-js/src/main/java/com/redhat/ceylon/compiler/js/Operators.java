@@ -4,7 +4,7 @@ import java.util.Map;
 
 import com.redhat.ceylon.compiler.js.util.TypeUtils;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
-import com.redhat.ceylon.model.typechecker.model.ProducedType;
+import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.SiteVariance;
 import com.redhat.ceylon.model.typechecker.model.TypeParameter;
 
@@ -32,7 +32,7 @@ public class Operators {
     }
 
     static void genericBinaryOp(final Tree.BinaryOperatorExpression exp, final String op,
-            final Map<TypeParameter, ProducedType> targs, final Map<TypeParameter, SiteVariance> overrides,
+            final Map<TypeParameter, Type> targs, final Map<TypeParameter, SiteVariance> overrides,
             final GenerateJsVisitor gen) {
         if (op.charAt(0)!='.' && exp.getLeftTerm() instanceof Tree.NaturalLiteral) {
             gen.out(Long.toString(gen.parseNaturalLiteral((Tree.NaturalLiteral)exp.getLeftTerm(), false)));

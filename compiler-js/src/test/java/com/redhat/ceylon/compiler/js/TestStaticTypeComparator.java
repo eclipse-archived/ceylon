@@ -12,7 +12,7 @@ import org.junit.Test;
 import com.redhat.ceylon.compiler.typechecker.TypeChecker;
 import com.redhat.ceylon.compiler.typechecker.TypeCheckerBuilder;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
-import com.redhat.ceylon.model.typechecker.model.ProducedType;
+import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 
 public class TestStaticTypeComparator {
@@ -31,12 +31,12 @@ public class TestStaticTypeComparator {
         return (TypeDeclaration)tc.getPhasedUnits().getPhasedUnits().get(0).getUnit().getPackage().getMember(name, null, false);
     }
 
-    private static ProducedType getType(String name, ProducedType... targs) {
+    private static Type getType(String name, Type... targs) {
         TypeDeclaration td = getTypeDeclaration(name);
         return td.getProducedType(null, Arrays.asList(targs));
     }
 
-    private static Tree.StaticType staticType(ProducedType pt) {
+    private static Tree.StaticType staticType(Type pt) {
         Tree.StaticType node = new Tree.BaseType(null);
         node.setTypeModel(pt);
         return node;
@@ -44,15 +44,15 @@ public class TestStaticTypeComparator {
 
     @Test
     public void testCollection_vs_Range() {
-        final ProducedType d_coll = getType("Collection", getType("Integer"));
-        final ProducedType d_ranged = getType("Ranged", getType("Integer"), getType("Integer"), getType("List", getType("Integer")));
+        final Type d_coll = getType("Collection", getType("Integer"));
+        final Type d_ranged = getType("Ranged", getType("Integer"), getType("Integer"), getType("List", getType("Integer")));
         List<Tree.StaticType> types = Arrays.asList(staticType(d_coll), staticType(d_ranged));
         Collections.sort(types, new TypeGenerator.StaticTypeComparator());
         Assert.assertTrue(d_ranged == types.get(0).getTypeModel());
         types = Arrays.asList(staticType(d_ranged), staticType(d_coll));
         Collections.sort(types, new TypeGenerator.StaticTypeComparator());
         Assert.assertTrue(d_ranged == types.get(0).getTypeModel());
-        final ProducedType d_iterable = getType("Iterable", getType("Integer"), getType("Null"));
+        final Type d_iterable = getType("Iterable", getType("Integer"), getType("Null"));
         types = Arrays.asList(staticType(d_coll), staticType(d_ranged), staticType(d_iterable));
         Collections.sort(types, new TypeGenerator.StaticTypeComparator());
         Assert.assertTrue(d_iterable == types.get(0).getTypeModel());

@@ -9,7 +9,7 @@ import java.util.Set;
 import com.redhat.ceylon.compiler.js.util.TypeUtils;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
-import com.redhat.ceylon.model.typechecker.model.ProducedType;
+import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.model.typechecker.model.TypeParameter;
 import com.redhat.ceylon.model.typechecker.model.Util;
@@ -25,7 +25,7 @@ public class SerializationHelper {
         gen.beginBlock();
         gen.out("var ", gen.getNames().self(d), "=this;");
         //Call super.ser$$ if possible
-        ProducedType extendedType = d.getExtendedType();
+        Type extendedType = d.getExtendedType();
         while (extendedType != null && !(extendedType.isObject() || extendedType.isBasic())) {
             com.redhat.ceylon.model.typechecker.model.Class et =  
                 (com.redhat.ceylon.model.typechecker.model.Class) extendedType.getDeclaration();
@@ -61,7 +61,7 @@ public class SerializationHelper {
             pkgname = gen.getClAlias() + "lmp$(ex$,'" + pkgname + "')";
         }
         for (Value v : vals) {
-            final ProducedType vt = v.getType();
+            final Type vt = v.getType();
             final TypeDeclaration vd = vt.getDeclaration();
             gen.out(dc, ".putValue(", gen.getClAlias(), "OpenValue$jsint(",
                     pkgname, ",this.", gen.getNames().getter(v, true),")", ",",
@@ -118,7 +118,7 @@ public class SerializationHelper {
         gen.beginBlock();
         //Call super.deser$$ if possible
         boolean create = true;
-        ProducedType extendedType = d.getExtendedType();
+        Type extendedType = d.getExtendedType();
         while (create && !(extendedType.isObject() || extendedType.isBasic())) {
             com.redhat.ceylon.model.typechecker.model.Class et = extendedType==null ? null : 
                 (com.redhat.ceylon.model.typechecker.model.Class) extendedType.getDeclaration();
@@ -157,7 +157,7 @@ public class SerializationHelper {
         }
         first=true;
         for (Value v : vals) {
-            final ProducedType vt = v.getType();
+            final Type vt = v.getType();
             final TypeDeclaration vd = vt.getDeclaration();
             final String valname;
             if (v.isParameter()) {
@@ -190,17 +190,17 @@ public class SerializationHelper {
 
     /** Recursively add all the type arguments from extended and satisfied types. */
     private static void setDeserializedTypeArguments(final com.redhat.ceylon.model.typechecker.model.Class root,
-            ProducedType pt, boolean first, final Node that, final String ni, final GenerateJsVisitor gen,
+            Type pt, boolean first, final Node that, final String ni, final GenerateJsVisitor gen,
             final Set<TypeDeclaration> decs) {
         if (pt == null) {
             return;
         }
         final boolean start=decs.isEmpty();
-        final List<ProducedType> sats = start ? root.getSatisfiedTypes() : pt.getSatisfiedTypes();
+        final List<Type> sats = start ? root.getSatisfiedTypes() : pt.getSatisfiedTypes();
         decs.add(root);
         while (pt != null && !root.getUnit().getBasicDeclaration().equals(pt.getDeclaration())) {
             if (!decs.contains(pt.getDeclaration())) {
-                for (Map.Entry<TypeParameter,ProducedType> tp : pt.getTypeArguments().entrySet()) {
+                for (Map.Entry<TypeParameter,Type> tp : pt.getTypeArguments().entrySet()) {
                     if (first) {
                         gen.out(gen.getClAlias(), "set_type_args(", ni, ",{");
                         first=false;
@@ -215,9 +215,9 @@ public class SerializationHelper {
             }
             pt = pt.getExtendedType();
         }
-        for (ProducedType sat : sats) {
+        for (Type sat : sats) {
             if (!decs.contains(sat.getDeclaration())) {
-                for (Map.Entry<TypeParameter,ProducedType> tp : sat.getTypeArguments().entrySet()) {
+                for (Map.Entry<TypeParameter,Type> tp : sat.getTypeArguments().entrySet()) {
                     if (first) {
                         gen.out(gen.getClAlias(), "set_type_args(", ni, ",{");
                         first=false;

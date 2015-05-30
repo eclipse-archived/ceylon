@@ -24,7 +24,7 @@ import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.ModuleImport;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.ParameterList;
-import com.redhat.ceylon.model.typechecker.model.ProducedType;
+import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.SiteVariance;
 import com.redhat.ceylon.model.typechecker.model.TypeAlias;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
@@ -148,19 +148,19 @@ public class MetamodelGenerator {
         return last;
     }
 
-    /** Create a map for the specified ProducedType.
+    /** Create a map for the specified Type.
      * Includes name, package, module and type parameters, unless it's a union or intersection
      * type, in which case it contains a "comp" key with an "i" or "u" and a key "types" with
      * the list of types that compose it. */
-    private Map<String, Object> typeMap(ProducedType pt, Declaration from) {
+    private Map<String, Object> typeMap(Type pt, Declaration from) {
         if (Util.isTypeUnknown(pt)) {
             return unknownTypeMap;
         }
         Map<String, Object> m = new HashMap<>();
         if (pt.isUnion() || pt.isIntersection()) {
-            List<ProducedType> subtipos = pt.isUnion() ? pt.getCaseTypes() : pt.getSatisfiedTypes();
+            List<Type> subtipos = pt.isUnion() ? pt.getCaseTypes() : pt.getSatisfiedTypes();
             List<Map<String,Object>> subs = new ArrayList<>(subtipos.size());
-            for (ProducedType sub : subtipos) {
+            for (Type sub : subtipos) {
                 subs.add(typeMap(sub, from));
             }
             m.put("comp", pt.isUnion() ? "u" : "i");
@@ -207,7 +207,7 @@ public class MetamodelGenerator {
         return m;
     }
 
-    /** Returns a map with the same info as {@link #typeParameterMap(ProducedType)} but with
+    /** Returns a map with the same info as {@link #typeParameterMap(Type)} but with
      * an additional key {@value #KEY_DS_VARIANCE} if it's covariant ("out") or contravariant ("in"). */
     private Map<String, Object> typeParameterMap(TypeParameter tp, Declaration from) {
         Map<String, Object> map = new HashMap<>();
@@ -231,18 +231,18 @@ public class MetamodelGenerator {
         return map;
     }
 
-    /** Create a map for the ProducedType, as a type parameter.
+    /** Create a map for the Type, as a type parameter.
      * Includes name, package, module and type parameters, unless it's a union or intersection
      * type, in which case it will contain a "comp" key with an "i" or "u", and a list of the types
      * that compose it. */
-    private Map<String, Object> typeParameterMap(ProducedType pt, Declaration from) {
+    private Map<String, Object> typeParameterMap(Type pt, Declaration from) {
         if (pt == null)return null;
         final Map<String, Object> m = new HashMap<>();
         m.put(KEY_METATYPE, METATYPE_TYPE_PARAMETER);
         if (pt.isUnion() || pt.isIntersection()) {
-            List<ProducedType> subtipos = pt.isUnion() ? pt.getCaseTypes() : pt.getSatisfiedTypes();
+            List<Type> subtipos = pt.isUnion() ? pt.getCaseTypes() : pt.getSatisfiedTypes();
             List<Map<String,Object>> subs = new ArrayList<>(subtipos.size());
-            for (ProducedType sub : subtipos) {
+            for (Type sub : subtipos) {
                 subs.add(typeMap(sub, from));
             }
             m.put("comp", pt.isUnion() ? "u" : "i");
@@ -269,13 +269,13 @@ public class MetamodelGenerator {
         return m;
     }
 
-    private void putTypeParameters(Map<String, Object> container, ProducedType pt, Declaration from) {
+    private void putTypeParameters(Map<String, Object> container, Type pt, Declaration from) {
         if (pt.getTypeArgumentList() != null && !pt.getTypeArgumentList().isEmpty()) {
             final List<Map<String, Object>> list = new ArrayList<>(pt.getTypeArgumentList().size());
             final Map<TypeParameter, SiteVariance> usv = pt.getVarianceOverrides();
             final Iterator<TypeParameter> typeParameters = usv == null || usv.isEmpty() ?
                     null : pt.getDeclaration().getTypeParameters().iterator();
-            for (ProducedType targ : pt.getTypeArgumentList()) {
+            for (Type targ : pt.getTypeArgumentList()) {
                 final Map<String, Object> tpmap = typeParameterMap(targ, from);
                 final TypeParameter typeParam = typeParameters == null ? null : typeParameters.next();
                 final SiteVariance variance = typeParam == null ? null : usv.get(typeParam);
@@ -618,10 +618,10 @@ public class MetamodelGenerator {
     }
 
     /** Encodes the list of types and puts them under the specified key in the map. */
-    private void encodeTypes(List<ProducedType> types, Map<String,Object> m, String key, Declaration from) {
+    private void encodeTypes(List<Type> types, Map<String,Object> m, String key, Declaration from) {
         if (types == null || types.isEmpty()) return;
         List<Map<String, Object>> sats = new ArrayList<>(types.size());
-        for (ProducedType st : types) {
+        for (Type st : types) {
             sats.add(typeMap(st, from));
         }
         m.put(key, sats);

@@ -14,7 +14,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.model.typechecker.model.DeclarationWithProximity;
-import com.redhat.ceylon.model.typechecker.model.ProducedType;
+import com.redhat.ceylon.model.typechecker.model.Type;
 
 /** A visitor that can return a list of suggestions given a location on the AST.
  * 
@@ -96,7 +96,7 @@ public class AutocompleteVisitor {
             HashSet<com.redhat.ceylon.model.typechecker.model.Package> packs = new HashSet<>();
             if (node instanceof Tree.QualifiedMemberExpression) {
                 final Tree.QualifiedMemberExpression exp = (Tree.QualifiedMemberExpression)node;
-                ProducedType type = exp.getPrimary().getTypeModel();
+                Type type = exp.getPrimary().getTypeModel();
                 Map<String, DeclarationWithProximity> c2 = type.getDeclaration().getMatchingMemberDeclarations(
                         node.getUnit(), null, text, 0);
                 comps.putAll(c2);

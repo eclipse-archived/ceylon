@@ -86,7 +86,7 @@ import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.Package;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.ParameterList;
-import com.redhat.ceylon.model.typechecker.model.ProducedType;
+import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.Scope;
 import com.redhat.ceylon.model.typechecker.model.Setter;
 import com.redhat.ceylon.model.typechecker.model.TypeAlias;
@@ -696,7 +696,7 @@ public class GenerateJsVisitor extends Visitor
         tname = tname.substring(0, tname.length()-2);
         String _tmp=names.createTempVariable();
         out(names.self(outer), ".", tname, "=function(){var ");
-        ProducedType pt = that.getTypeSpecifier().getType().getTypeModel();
+        Type pt = that.getTypeSpecifier().getType().getTypeModel();
         boolean skip=true;
         if (pt.involvesTypeParameters() && outerSelf(d)) {
             out("=this,");
@@ -766,7 +766,7 @@ public class GenerateJsVisitor extends Visitor
             out("$$targs$$,");
         }
         out(names.self(d), "){");
-        final ProducedType pt = ext.getTypeModel();
+        final Type pt = ext.getTypeModel();
         final TypeDeclaration aliased = pt.getDeclaration();
         qualify(that,aliased);
         out(names.name(aliased), "(");
@@ -831,7 +831,7 @@ public class GenerateJsVisitor extends Visitor
         } else {
             out("/*PENDIENTE NAMED ARG CLASS DECL */");
         }
-        Map<TypeParameter, ProducedType> invargs = ext.getType().getTypeModel().getTypeArguments();
+        Map<TypeParameter, Type> invargs = ext.getType().getTypeModel().getTypeArguments();
         if (invargs != null && !invargs.isEmpty()) {
             TypeUtils.printTypeArguments(that, invargs, this, true,
                     ext.getType().getTypeModel().getVarianceOverrides());
@@ -889,7 +889,7 @@ public class GenerateJsVisitor extends Visitor
     String typeFunctionName(final Tree.StaticType type, boolean removeAlias, final ClassOrInterface coi) {
         TypeDeclaration d = type.getTypeModel().getDeclaration();
         if ((removeAlias && d!=null && d.isAlias()) || d instanceof Constructor) {
-            ProducedType extendedType = d.getExtendedType();
+            Type extendedType = d.getExtendedType();
             d = extendedType==null ? null : extendedType.getDeclaration();
         }
         final boolean inProto = opts.isOptimize()
@@ -2112,7 +2112,7 @@ public class GenerateJsVisitor extends Visitor
                 for (int i=0;i<params.size(); i++) {
                     out(pname, "$", Integer.toString(i), ",");
                 }
-                List<ProducedType> targs = that.getTypeArguments() == null ? null :
+                List<Type> targs = that.getTypeArguments() == null ? null :
                     that.getTypeArguments().getTypeModels();
                 TypeUtils.printTypeArguments(that, TypeUtils.matchTypeParametersWithArguments(
                         td.getTypeParameters(), targs), this, false, null);
@@ -2145,7 +2145,7 @@ public class GenerateJsVisitor extends Visitor
         final int t = boxStart(term);
         term.visit(this);
         if (t == 4) {
-            final ProducedType ct = term.getTypeModel();
+            final Type ct = term.getTypeModel();
             out(",");
             TypeUtils.encodeCallableArgumentsAsParameterListForRuntime(term, ct, this);
             out(",");
@@ -2172,7 +2172,7 @@ public class GenerateJsVisitor extends Visitor
     int boxUnboxStart(final Tree.Term fromTerm, boolean toNative) {
         // Box the value
         final boolean fromNative = isNativeJs(fromTerm);
-        final ProducedType fromType = fromTerm.getTypeModel();
+        final Type fromType = fromTerm.getTypeModel();
         final String fromTypeName = Util.isTypeUnknown(fromType) ? "UNKNOWN" : fromType.getProducedTypeQualifiedName();
         if (fromNative != toNative || fromTypeName.startsWith("ceylon.language::Callable<")) {
             if (fromNative) {
@@ -2367,7 +2367,7 @@ public class GenerateJsVisitor extends Visitor
                                     out(",");
                                 } else {
                                     //TODO extract parameters from Value
-                                    ProducedType ps = moval.getType().getTypeArgumentList().get(1);
+                                    Type ps = moval.getType().getTypeArgumentList().get(1);
                                     if (ps.isSubtypeOf(moval.getUnit().getEmptyType())) {
                                         out("[],");
                                     } else {
@@ -2681,7 +2681,7 @@ public class GenerateJsVisitor extends Visitor
         if (dynblock > 0 && Util.isTypeUnknown(that.getExpression().getTypeModel())) {
             Scope cont = Util.getRealScope(that.getScope()).getScope();
             if (cont instanceof Declaration) {
-                final ProducedType dectype = ((Declaration)cont).getReference().getType();
+                final Type dectype = ((Declaration)cont).getReference().getType();
                 if (!Util.isTypeUnknown(dectype)) {
                     TypeUtils.generateDynamicCheck(that.getExpression(), dectype, this, false,
                             that.getExpression().getTypeModel().getTypeArguments());
@@ -2784,7 +2784,7 @@ public class GenerateJsVisitor extends Visitor
     }
 
     private void assignOp(final Tree.AssignmentOp that, final String functionName,
-            final Map<TypeParameter, ProducedType> targs) {
+            final Map<TypeParameter, Type> targs) {
         Term lhs = that.getLeftTerm();
         final boolean isNative="||".equals(functionName)||"&&".equals(functionName);
         if (lhs instanceof BaseMemberExpression) {
@@ -2873,13 +2873,13 @@ public class GenerateJsVisitor extends Visitor
             }
             return;
         }
-        final ProducedType d = term.getTypeModel();
+        final Type d = term.getTypeModel();
         final boolean isint = d.isSubtypeOf(that.getUnit().getIntegerType());
         Operators.unaryOp(that, isint?"(-":null, isint?")":".negated", this);
     }
 
     @Override public void visit(final Tree.PositiveOp that) {
-        final ProducedType d = that.getTerm().getTypeModel();
+        final Type d = that.getTerm().getTypeModel();
         final boolean nat = d.isSubtypeOf(that.getUnit().getIntegerType());
         //TODO if it's positive we leave it as is?
         Operators.unaryOp(that, nat?"(+":null, nat?")":null, this);
@@ -2945,10 +2945,10 @@ public class GenerateJsVisitor extends Visitor
         if (left == null || right == null || left.getTypeModel() == null || right.getTypeModel() == null) {
             return false;
         }
-        final ProducedType lt = left.getTypeModel();
-        final ProducedType rt = right.getTypeModel();
-        final ProducedType intdecl = left.getUnit().getIntegerType();
-        final ProducedType booldecl = left.getUnit().getBooleanType();
+        final Type lt = left.getTypeModel();
+        final Type rt = right.getTypeModel();
+        final Type intdecl = left.getUnit().getIntegerType();
+        final Type booldecl = left.getUnit().getBooleanType();
         return (lt.isSubtypeOf(intdecl) && rt.isSubtypeOf(intdecl))
                 || (lt.isSubtypeOf(booldecl) && rt.isSubtypeOf(booldecl));
     }
@@ -3235,7 +3235,7 @@ public class GenerateJsVisitor extends Visitor
      * @param tmpvar (optional) a variable to which the term is assigned
      * @param negate If true, negates the generated condition
      */
-    void generateIsOfType(Node term, String termString, final ProducedType type, String tmpvar, final boolean negate) {
+    void generateIsOfType(Node term, String termString, final Type type, String tmpvar, final boolean negate) {
         if (negate) {
             out("!");
         }
@@ -3249,7 +3249,7 @@ public class GenerateJsVisitor extends Visitor
         TypeUtils.typeNameOrList(term, type, this, false);
         if (type.getQualifyingType() != null) {
             out(",[");
-            ProducedType outer = type.getQualifyingType();
+            Type outer = type.getQualifyingType();
             boolean first=true;
             while (outer != null) {
                 if (first) {

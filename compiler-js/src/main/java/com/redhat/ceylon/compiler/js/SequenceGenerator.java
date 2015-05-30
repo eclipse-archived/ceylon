@@ -10,13 +10,13 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SequencedArgument;
 import com.redhat.ceylon.model.typechecker.model.Method;
-import com.redhat.ceylon.model.typechecker.model.ProducedType;
+import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.TypeParameter;
 import com.redhat.ceylon.model.typechecker.model.Util;
 
 public class SequenceGenerator {
 
-    static void lazyEnumeration(final List<Tree.PositionalArgument> args, final Node node, final ProducedType seqType,
+    static void lazyEnumeration(final List<Tree.PositionalArgument> args, final Node node, final Type seqType,
             final boolean spread, final GenerateJsVisitor gen) {
         Tree.PositionalArgument seqarg = spread ? args.get(args.size()-1) : null;
         if (args.size() == 1 && seqarg instanceof Tree.Comprehension) {
@@ -201,12 +201,12 @@ public class SequenceGenerator {
         return true;
     }
     /** Closes a native array and invokes reifyCeylonType (rt$) with the specified type parameters. */
-    static void closeSequenceWithReifiedType(final Node that, final Map<TypeParameter,ProducedType> types,
+    static void closeSequenceWithReifiedType(final Node that, final Map<TypeParameter,Type> types,
             final GenerateJsVisitor gen) {
         gen.out("].rt$(");
         boolean nonempty=false;
-        ProducedType elem = null;
-        for (Map.Entry<TypeParameter,ProducedType> e : types.entrySet()) {
+        Type elem = null;
+        for (Map.Entry<TypeParameter,Type> e : types.entrySet()) {
             if (e.getKey().getName().equals("Element")) {
                 elem = e.getValue();
             } else if (e.getKey().equals(that.getUnit().getIterableDeclaration().getTypeParameters().get(1))) {

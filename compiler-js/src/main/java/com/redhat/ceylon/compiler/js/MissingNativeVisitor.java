@@ -12,7 +12,7 @@ import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Method;
 import com.redhat.ceylon.model.typechecker.model.Package;
-import com.redhat.ceylon.model.typechecker.model.ProducedType;
+import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.Scope;
 import com.redhat.ceylon.model.typechecker.model.Setter;
 import com.redhat.ceylon.model.typechecker.model.Value;
@@ -43,7 +43,7 @@ public class MissingNativeVisitor extends Visitor {
     }
 
     public void visit(Tree.SimpleType expr){
-        ProducedType model = expr.getTypeModel();
+        Type model = expr.getTypeModel();
         if(model != null)
             checkNativeExistence(expr, model.getDeclaration());
         super.visit(expr);

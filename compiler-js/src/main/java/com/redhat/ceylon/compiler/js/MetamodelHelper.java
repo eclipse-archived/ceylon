@@ -13,7 +13,7 @@ import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Method;
 import com.redhat.ceylon.model.typechecker.model.Module;
-import com.redhat.ceylon.model.typechecker.model.ProducedType;
+import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.Scope;
 import com.redhat.ceylon.model.typechecker.model.TypeAlias;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
@@ -130,9 +130,9 @@ public class MetamodelHelper {
     }
 
     static void generateClosedTypeLiteral(final Tree.TypeLiteral that, final GenerateJsVisitor gen) {
-        final ProducedType ltype = that.getType().getTypeModel();
+        final Type ltype = that.getType().getTypeModel();
         final TypeDeclaration td = ltype.getDeclaration();
-        final Map<TypeParameter,ProducedType> targs = that.getType().getTypeModel().getTypeArguments();
+        final Map<TypeParameter,Type> targs = that.getType().getTypeModel().getTypeArguments();
         final boolean isConstructor = that instanceof Tree.NewLiteral
                 || td instanceof com.redhat.ceylon.model.typechecker.model.Constructor;
         if (ltype.isClass()) {
@@ -205,7 +205,7 @@ public class MetamodelHelper {
 
     static void generateMemberLiteral(final Tree.MemberLiteral that, final GenerateJsVisitor gen) {
         final com.redhat.ceylon.model.typechecker.model.ProducedReference ref = that.getTarget();
-        final ProducedType ltype = that.getType() == null ? null : that.getType().getTypeModel();
+        final Type ltype = that.getType() == null ? null : that.getType().getTypeModel();
         final Declaration d = ref.getDeclaration();
         final Class anonClass = d.isMember()&&d.getContainer() instanceof Class && ((Class)d.getContainer()).isAnonymous()?(Class)d.getContainer():null;
         if (that instanceof Tree.FunctionLiteral || d instanceof Method) {
@@ -231,11 +231,11 @@ public class MetamodelHelper {
             }
             if (d.isMember()) {
                 if (that.getTypeArgumentList()!=null) {
-                    List<ProducedType> typeModels = that.getTypeArgumentList().getTypeModels();
+                    List<Type> typeModels = that.getTypeArgumentList().getTypeModels();
                     if (typeModels!=null) {
                         gen.out("[");
                         boolean first=true;
-                        for (ProducedType targ : typeModels) {
+                        for (Type targ : typeModels) {
                             if (first)first=false;else gen.out(",");
                             gen.out(gen.getClAlias(),"typeLiteral$meta({Type$typeLiteral:");
                             TypeUtils.typeNameOrList(that, targ, gen, false);

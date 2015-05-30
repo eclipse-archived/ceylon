@@ -25,7 +25,7 @@ import com.redhat.ceylon.model.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.ParameterList;
-import com.redhat.ceylon.model.typechecker.model.ProducedType;
+import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.Scope;
 import com.redhat.ceylon.model.typechecker.model.Setter;
 import com.redhat.ceylon.model.typechecker.model.SiteVariance;
@@ -45,18 +45,18 @@ public class TypeUtils {
             "ceylon.language::throws", "ceylon.language::see", "ceylon.language::by");
 
     /** Prints the type arguments, usually for their reification. */
-    public static void printTypeArguments(final Node node, final Map<TypeParameter,ProducedType> targs,
+    public static void printTypeArguments(final Node node, final Map<TypeParameter,Type> targs,
             final GenerateJsVisitor gen, final boolean skipSelfDecl, final Map<TypeParameter, SiteVariance> overrides) {
         gen.out("{");
         boolean first = true;
-        for (Map.Entry<TypeParameter,ProducedType> e : targs.entrySet()) {
+        for (Map.Entry<TypeParameter,Type> e : targs.entrySet()) {
             if (first) {
                 first = false;
             } else {
                 gen.out(",");
             }
             gen.out(e.getKey().getName(), "$", e.getKey().getDeclaration().getName(), ":");
-            final ProducedType pt = e.getValue() == null ? null : e.getValue().resolveAliases();
+            final Type pt = e.getValue() == null ? null : e.getValue().resolveAliases();
             if (pt == null) {
                 gen.out("'", e.getKey().getName(), "'");
             } else if (!outputTypeList(node, pt, gen, skipSelfDecl)) {
@@ -93,7 +93,7 @@ public class TypeUtils {
         gen.out("}");
     }
 
-    public static void outputQualifiedTypename(final Node node, final boolean imported, final ProducedType pt,
+    public static void outputQualifiedTypename(final Node node, final boolean imported, final Type pt,
             final GenerateJsVisitor gen, final boolean skipSelfDecl) {
         TypeDeclaration t = pt.getDeclaration();
         final String qname = t.getQualifiedNameString();
@@ -173,7 +173,7 @@ public class TypeUtils {
      * the property "a", or a union/intersection type with "u" or "i" under property "t" and the list
      * of types that compose it in an array under the property "l", or a type parameter as a reference to
      * already existing params. */
-    public static void typeNameOrList(final Node node, final ProducedType pt, final GenerateJsVisitor gen, final boolean skipSelfDecl) {
+    public static void typeNameOrList(final Node node, final Type pt, final GenerateJsVisitor gen, final boolean skipSelfDecl) {
         TypeDeclaration type = pt.getDeclaration();
         if (!outputTypeList(node, pt, gen, skipSelfDecl)) {
             if (pt.isTypeParameter()) {
@@ -186,7 +186,7 @@ public class TypeUtils {
                 outputQualifiedTypename(node, node != null && gen.isImported(node.getUnit().getPackage(), type),
                         pt, gen, skipSelfDecl);
                 if (!pt.getTypeArgumentList().isEmpty()) {
-                    final Map<TypeParameter,ProducedType> targs;
+                    final Map<TypeParameter,Type> targs;
                     if (pt.getDeclaration().isToplevel()) {
                         targs = pt.getTypeArguments();
                     } else {
@@ -224,8 +224,8 @@ public class TypeUtils {
     }
 
     /** Appends an object with the type's type and list of union/intersection types. */
-    public static boolean outputTypeList(final Node node, final ProducedType pt, final GenerateJsVisitor gen, final boolean skipSelfDecl) {
-        final List<ProducedType> subs;
+    public static boolean outputTypeList(final Node node, final Type pt, final GenerateJsVisitor gen, final boolean skipSelfDecl) {
+        final List<Type> subs;
         int seq=0;
         if (pt.isIntersection()) {
             gen.out(gen.getClAlias(), "mit$([");
@@ -237,7 +237,7 @@ public class TypeUtils {
         else if (pt.isTuple()) {
             TypeDeclaration d = pt.getDeclaration();
             subs = d.getUnit().getTupleElementTypes(pt);
-            final ProducedType lastType = subs.get(subs.size()-1);
+            final Type lastType = subs.get(subs.size()-1);
             if (pt.involvesTypeParameters()) {
                 //Revert to outputting normal Tuple with its type arguments
                 gen.out("{t:", gen.getClAlias(), "Tuple,a:");
@@ -265,7 +265,7 @@ public class TypeUtils {
             return false;
         }
         boolean first = true;
-        for (ProducedType t : subs) {
+        for (Type t : subs) {
             if (!first) gen.out(",");
             if (t==subs.get(subs.size()-1) && seq>0) {
                 //The non-empty, non-tuple tail
@@ -323,7 +323,7 @@ public class TypeUtils {
             //it has to be a method, right?
             //We need to find the index of the parameter where the argument occurs
             //...and it could be null...
-            ProducedType type = null;
+            Type type = null;
             for (Iterator<ParameterList> iter0 = ((Method)tp.getContainer()).getParameterLists().iterator();
                     type == null && iter0.hasNext();) {
                 for (Iterator<Parameter> iter1 = iter0.next().getParameters().iterator();
@@ -333,7 +333,7 @@ public class TypeUtils {
                     }
                 }
             }
-            //The ProducedType that we find corresponds to a parameter, whose type can be:
+            //The Type that we find corresponds to a parameter, whose type can be:
             //A type parameter in the method, in which case we just use the argument's type (may be null)
             //A component of a union/intersection type, in which case we just use the argument's type (may be null)
             //A type argument of the argument's type, in which case we must get the reified generic from the argument
@@ -356,11 +356,11 @@ public class TypeUtils {
         }
     }
 
-    static ProducedType typeContainsTypeParameter(ProducedType td, TypeParameter tp) {
+    static Type typeContainsTypeParameter(Type td, TypeParameter tp) {
         if (td.isUnion() || td.isIntersection()) {
-            List<ProducedType> comps = td.getCaseTypes();
+            List<Type> comps = td.getCaseTypes();
             if (comps == null) comps = td.getSatisfiedTypes();
-            for (ProducedType sub : comps) {
+            for (Type sub : comps) {
                 td = typeContainsTypeParameter(sub, tp);
                 if (td != null) {
                     return td;
@@ -372,7 +372,7 @@ public class TypeUtils {
             if (d == tp) {
                 return td;
             } else if (d instanceof ClassOrInterface) {
-                for (ProducedType sub : td.getTypeArgumentList()) {
+                for (Type sub : td.getTypeArgumentList()) {
                     if (typeContainsTypeParameter(sub, tp) != null) {
                         return td;
                     }
@@ -383,12 +383,12 @@ public class TypeUtils {
     }
 
     /** Find the type with the specified declaration among the specified type's supertypes, case types, satisfied types, etc. */
-    public static ProducedType findSupertype(TypeDeclaration d, ProducedType pt) {
+    public static Type findSupertype(TypeDeclaration d, Type pt) {
         if (pt.getDeclaration().equals(d)) {
             return pt;
         }
-        List<ProducedType> list = pt.getSupertypes() == null ? pt.getCaseTypes() : pt.getSupertypes();
-        for (ProducedType t : list) {
+        List<Type> list = pt.getSupertypes() == null ? pt.getCaseTypes() : pt.getSupertypes();
+        for (Type t : list) {
             if (t.getDeclaration().equals(d)) {
                 return t;
             }
@@ -396,10 +396,10 @@ public class TypeUtils {
         return null;
     }
 
-    public static List<ProducedType> getDefaultTypeArguments(List<TypeParameter> tparms) {
-        final ArrayList<ProducedType> targs = new ArrayList<>(tparms.size());
+    public static List<Type> getDefaultTypeArguments(List<TypeParameter> tparms) {
+        final ArrayList<Type> targs = new ArrayList<>(tparms.size());
         for (TypeParameter tp : tparms) {
-            ProducedType t = tp.getDefaultTypeArgument();
+            Type t = tp.getDefaultTypeArgument();
             if (t == null) {
                 t = tp.getUnit().getAnythingType();
             }
@@ -408,13 +408,13 @@ public class TypeUtils {
         return targs;
     }
 
-    public static Map<TypeParameter, ProducedType> matchTypeParametersWithArguments(List<TypeParameter> params, List<ProducedType> targs) {
+    public static Map<TypeParameter, Type> matchTypeParametersWithArguments(List<TypeParameter> params, List<Type> targs) {
         if (params != null) {
             if (targs == null) {
                 targs = getDefaultTypeArguments(params);
             }
             if (params.size() == targs.size()) {
-                HashMap<TypeParameter, ProducedType> r = new HashMap<TypeParameter, ProducedType>();
+                HashMap<TypeParameter, Type> r = new HashMap<TypeParameter, Type>();
                 for (int i = 0; i < targs.size(); i++) {
                     r.put(params.get(i), targs.get(i));
                 }
@@ -424,8 +424,8 @@ public class TypeUtils {
         return null;
     }
 
-    public static Map<TypeParameter, ProducedType> wrapAsIterableArguments(ProducedType pt) {
-        HashMap<TypeParameter, ProducedType> r = new HashMap<TypeParameter, ProducedType>();
+    public static Map<TypeParameter, Type> wrapAsIterableArguments(Type pt) {
+        HashMap<TypeParameter, Type> r = new HashMap<TypeParameter, Type>();
         final TypeDeclaration iterable = pt.getDeclaration().getUnit().getIterableDeclaration();
         r.put(iterable.getTypeParameters().get(0), pt);
         r.put(iterable.getTypeParameters().get(1), pt.getDeclaration().getUnit().getNullType());
@@ -446,9 +446,9 @@ public class TypeUtils {
     }
 
     /** Generates the code to throw an Exception if a dynamic object is not of the specified type. */
-    public static void generateDynamicCheck(final Tree.Term term, ProducedType t,
+    public static void generateDynamicCheck(final Tree.Term term, Type t,
             final GenerateJsVisitor gen, final boolean skipSelfDecl,
-            final Map<TypeParameter,ProducedType> typeArguments) {
+            final Map<TypeParameter,Type> typeArguments) {
         if (t.getDeclaration().isDynamic()) {
             gen.out(gen.getClAlias(), "dre$$(");
             term.visit(gen);
@@ -491,7 +491,7 @@ public class TypeUtils {
             if (first) first=false; else gen.out(",");
             gen.out("{", MetamodelGenerator.KEY_NAME, ":'", p.getName(), "',");
             gen.out(MetamodelGenerator.KEY_METATYPE, ":'", MetamodelGenerator.METATYPE_PARAMETER, "',");
-            ProducedType ptype = p.getType();
+            Type ptype = p.getType();
             if (p.getModel() instanceof Method) {
                 gen.out("$pt:'f',");
                 ptype = ((Method)p.getModel()).getTypedReference().getFullType();
@@ -516,18 +516,18 @@ public class TypeUtils {
         gen.out("]");
     }
 
-    private static Unit getUnit(ProducedType pt) {
+    private static Unit getUnit(Type pt) {
         if (pt.isClassOrInterface()) {
             return pt.getDeclaration().getUnit();
         } else if (pt.isUnion()) {
-            for (ProducedType ct : pt.getCaseTypes()) {
+            for (Type ct : pt.getCaseTypes()) {
                 Unit u = getUnit(ct);
                 if (u != null) {
                     return u;
                 }
             }
         } else if (pt.isIntersection()) {
-            for (ProducedType st : pt.getSatisfiedTypes()) {
+            for (Type st : pt.getSatisfiedTypes()) {
                 Unit u = getUnit(st);
                 if (u != null) {
                     return u;
@@ -538,10 +538,10 @@ public class TypeUtils {
     }
 
     /** Turns a Tuple type into a parameter list. */
-    public static List<Parameter> convertTupleToParameters(ProducedType _tuple) {
+    public static List<Parameter> convertTupleToParameters(Type _tuple) {
         final ArrayList<Parameter> rval = new ArrayList<>();
         int pos = 0;
-        final ProducedType empty = getUnit(_tuple).getEmptyType();
+        final Type empty = getUnit(_tuple).getEmptyType();
         while (_tuple != null && !(_tuple.isSubtypeOf(empty) || _tuple.isTypeParameter())) {
             Parameter _p = null;
             if (isTuple(_tuple)) {
@@ -549,7 +549,7 @@ public class TypeUtils {
                 _p.setModel(new Value());
                 if (_tuple.isUnion()) {
                     //Handle union types for defaulted parameters
-                    for (ProducedType mt : _tuple.getCaseTypes()) {
+                    for (Type mt : _tuple.getCaseTypes()) {
                         if (mt.isTuple()) {
                             _p.getModel().setType(mt.getTypeArgumentList().get(1));
                             _tuple = mt.getTypeArgumentList().get(2);
@@ -584,7 +584,7 @@ public class TypeUtils {
     }
 
     /** Check if a type is a Tuple, or a union of 2 types one of which is a Tuple. */
-    private static boolean isTuple(ProducedType pt) {
+    private static boolean isTuple(Type pt) {
         if (pt.isClass() && pt.getDeclaration().equals(pt.getDeclaration().getUnit().getTupleDeclaration())) {
             return true;
         } else if (pt.isUnion() && pt.getCaseTypes().size() == 2) {
@@ -598,7 +598,7 @@ public class TypeUtils {
         return false;
     }
 
-    private static boolean isSequential(ProducedType pt) {
+    private static boolean isSequential(Type pt) {
         return pt.isClassOrInterface() && pt.getDeclaration().inherits(
                 pt.getDeclaration().getUnit().getSequentialDeclaration());
     }
@@ -606,10 +606,10 @@ public class TypeUtils {
     /** This method encodes the type parameters of a Tuple in the same way
      * as a parameter list for runtime. */
     private static void encodeTupleAsParameterListForRuntime(final boolean resolveTargs, final Node node,
-            ProducedType _tuple, boolean nameAndMetatype, GenerateJsVisitor gen) {
+            Type _tuple, boolean nameAndMetatype, GenerateJsVisitor gen) {
         gen.out("[");
         int pos = 1;
-        final ProducedType empty = node.getUnit().getEmptyType();
+        final Type empty = node.getUnit().getEmptyType();
         while (_tuple != null && !(_tuple.isSubtypeOf(empty) || _tuple.isTypeParameter())) {
             if (pos > 1) gen.out(",");
             pos++;
@@ -621,7 +621,7 @@ public class TypeUtils {
             if (isTuple(_tuple)) {
                 if (_tuple.isUnion()) {
                     //Handle union types for defaulted parameters
-                    for (ProducedType mt : _tuple.getCaseTypes()) {
+                    for (Type mt : _tuple.getCaseTypes()) {
                         if (mt.isTuple()) {
                             metamodelTypeNameOrList(resolveTargs, node, gen.getCurrentPackage(),
                                     mt.getTypeArgumentList().get(1), gen);
@@ -638,7 +638,7 @@ public class TypeUtils {
                     _tuple = _tuple.getTypeArgumentList().get(2);
                 }
             } else if (isSequential(_tuple)) {
-                ProducedType _t2 = _tuple.getSupertype(node.getUnit().getSequenceDeclaration());
+                Type _t2 = _tuple.getSupertype(node.getUnit().getSequenceDeclaration());
                 final int seq;
                 if (_t2 == null) {
                     _t2 = _tuple.getSupertype(node.getUnit().getSequentialDeclaration());
@@ -675,16 +675,16 @@ public class TypeUtils {
     /** This method encodes the Arguments type argument of a Callable the same way
      * as a parameter list for runtime. */
     public static void encodeCallableArgumentsAsParameterListForRuntime(final Node node,
-            ProducedType _callable, GenerateJsVisitor gen) {
+            Type _callable, GenerateJsVisitor gen) {
         if (_callable.getCaseTypes() != null) {
-            for (ProducedType pt : _callable.getCaseTypes()) {
+            for (Type pt : _callable.getCaseTypes()) {
                 if (pt.getProducedTypeQualifiedName().startsWith("ceylon.language::Callable<")) {
                     _callable = pt;
                     break;
                 }
             }
         } else if (_callable.getSatisfiedTypes() != null) {
-            for (ProducedType pt : _callable.getSatisfiedTypes()) {
+            for (Type pt : _callable.getSatisfiedTypes()) {
                 if (pt.getProducedTypeQualifiedName().startsWith("ceylon.language::Callable<")) {
                     _callable = pt;
                     break;
@@ -695,7 +695,7 @@ public class TypeUtils {
             gen.out("[/*WARNING1: got ", _callable.getProducedTypeQualifiedName(), " instead of Callable*/]");
             return;
         }
-        List<ProducedType> targs = _callable.getTypeArgumentList();
+        List<Type> targs = _callable.getTypeArgumentList();
         if (targs == null || targs.size() != 2) {
             gen.out("[/*WARNING2: missing argument types for Callable*/]");
             return;
@@ -780,8 +780,8 @@ public class TypeUtils {
             final RuntimeMetamodelAnnotationGenerator annGen) {
         gen.out("function(){return{mod:$CCMM$");
         List<TypeParameter> tparms = d instanceof Generic ? ((Generic)d).getTypeParameters() : null;
-        List<ProducedType> satisfies = null;
-        List<ProducedType> caseTypes = null;
+        List<Type> satisfies = null;
+        List<Type> caseTypes = null;
         if (d instanceof Class) {
             Class _cd = (Class)d;
             if (_cd.getExtendedType() != null) {
@@ -871,7 +871,7 @@ public class TypeUtils {
         if (satisfies != null && !satisfies.isEmpty()) {
             gen.out(",", MetamodelGenerator.KEY_SATISFIES, ":[");
             boolean first = true;
-            for (ProducedType st : satisfies) {
+            for (Type st : satisfies) {
                 if (!first)gen.out(",");
                 first=false;
                 metamodelTypeNameOrList(false, that, d.getUnit().getPackage(), st, gen);
@@ -881,7 +881,7 @@ public class TypeUtils {
         if (caseTypes != null && !caseTypes.isEmpty()) {
             gen.out(",of:[");
             boolean first = true;
-            for (ProducedType st : caseTypes) {
+            for (Type st : caseTypes) {
                 if (!first)gen.out(",");
                 first=false;
                 if (st.getDeclaration().isAnonymous()) {
@@ -915,12 +915,12 @@ public class TypeUtils {
                 gen.out(MetamodelGenerator.KEY_DS_VARIANCE, ":'in'");
                 comma = true;
             }
-            List<ProducedType> typelist = tp.getSatisfiedTypes();
+            List<Type> typelist = tp.getSatisfiedTypes();
             if (typelist != null && !typelist.isEmpty()) {
                 if (comma)gen.out(",");
                 gen.out(MetamodelGenerator.KEY_SATISFIES, ":[");
                 boolean first2 = true;
-                for (ProducedType st : typelist) {
+                for (Type st : typelist) {
                     if (!first2)gen.out(",");
                     first2=false;
                     metamodelTypeNameOrList(false, node, d.getUnit().getPackage(), st, gen);
@@ -933,7 +933,7 @@ public class TypeUtils {
                 if (comma)gen.out(",");
                 gen.out("of:[");
                 boolean first3 = true;
-                for (ProducedType st : typelist) {
+                for (Type st : typelist) {
                     if (!first3)gen.out(",");
                     first3=false;
                     metamodelTypeNameOrList(false, node, d.getUnit().getPackage(), st, gen);
@@ -963,7 +963,7 @@ public class TypeUtils {
      * @param gen The generator to use for output. */
     static void metamodelTypeNameOrList(final boolean resolveTargsFromScope, final Node node,
             final com.redhat.ceylon.model.typechecker.model.Package pkg,
-            ProducedType pt, GenerateJsVisitor gen) {
+            Type pt, GenerateJsVisitor gen) {
         if (pt == null) {
             //In dynamic blocks we sometimes get a null producedType
             pt = node.getUnit().getAnythingType();
@@ -993,7 +993,7 @@ public class TypeUtils {
                 if (!pt.getTypeArgumentList().isEmpty()) {
                     gen.out(",a:{");
                     boolean first = true;
-                    for (Map.Entry<TypeParameter, ProducedType> e : pt.getTypeArguments().entrySet()) {
+                    for (Map.Entry<TypeParameter, Type> e : pt.getTypeArguments().entrySet()) {
                         if (first) first=false; else gen.out(",");
                         gen.out(e.getKey().getNameAsString(), "$", e.getKey().getDeclaration().getName(), ":");
                         metamodelTypeNameOrList(resolveTargsFromScope, node, pkg, e.getValue(), gen);
@@ -1010,17 +1010,17 @@ public class TypeUtils {
      * @return true if output was generated, false otherwise (it was a regular type) */
     static boolean outputMetamodelTypeList(final boolean resolveTargs, final Node node,
             final com.redhat.ceylon.model.typechecker.model.Package pkg,
-            ProducedType pt, GenerateJsVisitor gen) {
-        final List<ProducedType> subs;
+            Type pt, GenerateJsVisitor gen) {
+        final List<Type> subs;
         if (pt.isIntersection()) {
             gen.out("{t:'i");
             subs = pt.getSatisfiedTypes();
         } else if (pt.isUnion()) {
             //It still could be a Tuple with first optional type
-            List<ProducedType> cts = pt.getCaseTypes();
+            List<Type> cts = pt.getCaseTypes();
             if (cts.size()==2) {
-                ProducedType ct1 = cts.get(0);
-                ProducedType ct2 = cts.get(1);
+                Type ct1 = cts.get(0);
+                Type ct2 = cts.get(1);
                 if (ct1.isEmpty() && ct2.isTuple() ||
                     ct2.isEmpty() && ct1.isTuple()) {
                     //yup...
@@ -1047,7 +1047,7 @@ public class TypeUtils {
         }
         gen.out("',l:[");
         boolean first = true;
-        for (ProducedType t : subs) {
+        for (Type t : subs) {
             if (!first) gen.out(",");
             metamodelTypeNameOrList(resolveTargs, node, pkg, t, gen);
             first = false;
@@ -1263,15 +1263,15 @@ public class TypeUtils {
      * @param leftTpName The name of the type parameter on the method
      * @return A map with the type parameter of the method as key
      * and the produced type belonging to the type argument of the term on the right. */
-    public static Map<TypeParameter, ProducedType> mapTypeArgument(final Tree.BinaryOperatorExpression expr,
+    public static Map<TypeParameter, Type> mapTypeArgument(final Tree.BinaryOperatorExpression expr,
             final String methodName, final String rightTpName, final String leftTpName) {
         Method md = (Method)expr.getLeftTerm().getTypeModel().getDeclaration().getMember(methodName, null, false);
         if (md == null) {
             expr.addUnexpectedError("Left term of intersection operator should have method named " + methodName, Backend.JavaScript);
             return null;
         }
-        Map<TypeParameter, ProducedType> targs = expr.getRightTerm().getTypeModel().getTypeArguments();
-        ProducedType otherType = null;
+        Map<TypeParameter, Type> targs = expr.getRightTerm().getTypeModel().getTypeArguments();
+        Type otherType = null;
         for (TypeParameter tp : targs.keySet()) {
             if (tp.getName().equals(rightTpName)) {
                 otherType = targs.get(tp);

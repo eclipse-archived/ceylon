@@ -15,7 +15,7 @@ import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Generic;
 import com.redhat.ceylon.model.typechecker.model.Method;
 import com.redhat.ceylon.model.typechecker.model.Module;
-import com.redhat.ceylon.model.typechecker.model.ProducedType;
+import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.TypeParameter;
 import com.redhat.ceylon.model.typechecker.model.Util;
 
@@ -71,7 +71,7 @@ public class BmeGenerator {
 
     /** Create a map with type arguments from the type parameter list in the expression's declaration and the
      *  type argument list in the expression itself. */
-    static Map<TypeParameter, ProducedType> createTypeArguments(final Tree.StaticMemberOrTypeExpression expr) {
+    static Map<TypeParameter, Type> createTypeArguments(final Tree.StaticMemberOrTypeExpression expr) {
         List<TypeParameter> tparams = null;
         if (expr.getDeclaration() instanceof Generic) {
             tparams = ((Generic)expr.getDeclaration()).getTypeParameters();
@@ -80,14 +80,14 @@ public class BmeGenerator {
                     + expr.getDeclaration(), Backend.JavaScript);
             return null;
         }
-        final HashMap<TypeParameter, ProducedType> targs = new HashMap<>();
+        final HashMap<TypeParameter, Type> targs = new HashMap<>();
         TypeArguments typeArguments = expr.getTypeArguments();
         if (typeArguments!=null) {
-            List<ProducedType> typeModels = typeArguments.getTypeModels();
+            List<Type> typeModels = typeArguments.getTypeModels();
             if (typeModels!=null) {
-                final Iterator<ProducedType> iter = typeModels.iterator();
+                final Iterator<Type> iter = typeModels.iterator();
                 for (TypeParameter tp : tparams) {
-                    ProducedType pt = iter.hasNext() ? iter.next() : tp.getDefaultTypeArgument();
+                    Type pt = iter.hasNext() ? iter.next() : tp.getDefaultTypeArgument();
                     targs.put(tp, pt);
                 }
             }

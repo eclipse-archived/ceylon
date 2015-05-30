@@ -12,7 +12,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Method;
-import com.redhat.ceylon.model.typechecker.model.ProducedType;
+import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.Scope;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.model.typechecker.model.TypeParameter;
@@ -372,7 +372,7 @@ public class FunctionHelper {
         directs.removeAll(decs2);
     }
 
-    private static void closeMPL(List<MplData> mpl, ProducedType rt, GenerateJsVisitor gen) {
+    private static void closeMPL(List<MplData> mpl, Type rt, GenerateJsVisitor gen) {
         for (int i=mpl.size()-1; i>0; i--) {
             final MplData pl = mpl.get(i);
             gen.endBlock(true,true);
@@ -387,7 +387,7 @@ public class FunctionHelper {
         String name;
         Node n;
         Tree.ParameterList params;
-        void outputMetamodelAndReturn(GenerateJsVisitor gen, ProducedType t) {
+        void outputMetamodelAndReturn(GenerateJsVisitor gen, Type t) {
             gen.out(name,  ".$crtmm$=function(){return{", MetamodelGenerator.KEY_PARAMS,":");
             TypeUtils.encodeParameterListForRuntime(true, n, params.getModel(), gen);
             if (t != null) {
@@ -397,11 +397,11 @@ public class FunctionHelper {
             }
             gen.out("};};return ", gen.getClAlias(), "JsCallable(0,", name, ");");
         }
-        ProducedType tupleFromParameterList() {
+        Type tupleFromParameterList() {
             if (params.getParameters().isEmpty()) {
                 return n.getUnit().getEmptyType();
             }
-            List<ProducedType> types = new ArrayList<>(params.getParameters().size());
+            List<Type> types = new ArrayList<>(params.getParameters().size());
             int firstDefaulted=-1;
             int count = 0;
             for (Tree.Parameter p : params.getParameters()) {
@@ -461,7 +461,7 @@ public class FunctionHelper {
                             end |= copyMissingTypeParameters(m, (Method)d, i, false, gen);
                         }
                     }
-                    for (ProducedType sup : cont.getSatisfiedTypes()) {
+                    for (Type sup : cont.getSatisfiedTypes()) {
                         Declaration d = sup.getDeclaration().getDirectMember(m.getName(), null, false);
                         if (d instanceof Method && !decs.contains(d)) {
                             decs.add(d);

@@ -21,7 +21,7 @@ import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Interface;
 import com.redhat.ceylon.model.typechecker.model.Method;
 import com.redhat.ceylon.model.typechecker.model.ParameterList;
-import com.redhat.ceylon.model.typechecker.model.ProducedType;
+import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.Scope;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.model.typechecker.model.TypeParameter;
@@ -322,7 +322,7 @@ public class TypeGenerator {
             if (sats != null) {
                 for(Tree.StaticType sat : sats.getTypes()) {
                     boolean first = true;
-                    Map<TypeParameter,ProducedType> targs = sat.getTypeModel().getTypeArguments();
+                    Map<TypeParameter,Type> targs = sat.getTypeModel().getTypeArguments();
                     if (targs != null && !targs.isEmpty()) {
                         if (first) {
                             gen.out(me, ".$$targs$$=");
@@ -453,7 +453,7 @@ public class TypeGenerator {
             }
             //If the supertype has type arguments, add them to the call
             if (typeDecl.getTypeParameters() != null && !typeDecl.getTypeParameters().isEmpty()) {
-                List<ProducedType> typeArgs = null;
+                List<Type> typeArgs = null;
                 if (extendedType.getTypeArgumentList() != null) {
                     typeArgs = extendedType.getTypeArgumentList().getTypeModels();
                 }
@@ -554,8 +554,8 @@ public class TypeGenerator {
 
         @Override
         public int compare(StaticType o1, StaticType o2) {
-            final ProducedType t1 = o1.getTypeModel();
-            final ProducedType t2 = o2.getTypeModel();
+            final Type t1 = o1.getTypeModel();
+            final Type t2 = o2.getTypeModel();
             if (Util.isTypeUnknown(t1)) {
                 return Util.isTypeUnknown(t2) ? 0 : -1;
             }
@@ -606,10 +606,10 @@ public class TypeGenerator {
         final String selfName = gen.getNames().self(c);
 
         gen.out(GenerateJsVisitor.function, className);
-        Map<TypeParameter, ProducedType> targs=new HashMap<TypeParameter, ProducedType>();
+        Map<TypeParameter, Type> targs=new HashMap<TypeParameter, Type>();
         if (sats != null) {
             for (StaticType st : sats.getTypes()) {
-                Map<TypeParameter, ProducedType> stargs = st.getTypeModel().getTypeArguments();
+                Map<TypeParameter, Type> stargs = st.getTypeModel().getTypeArguments();
                 if (stargs != null && !stargs.isEmpty()) {
                     targs.putAll(stargs);
                 }
