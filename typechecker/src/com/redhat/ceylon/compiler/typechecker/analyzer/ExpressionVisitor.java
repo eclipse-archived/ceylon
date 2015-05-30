@@ -3013,7 +3013,7 @@ public class ExpressionVisitor extends Visitor {
                 }
                 
                 Reference arg = 
-                        getProducedReference(smte);
+                        appliedReference(smte);
                 
                 if (!smte.getStaticMethodReferencePrimary() &&
                         reference instanceof Functional && 
@@ -3250,7 +3250,7 @@ public class ExpressionVisitor extends Visitor {
                 node);
     }
     
-    private Reference getProducedReference(
+    private Reference appliedReference(
             Tree.StaticMemberOrTypeExpression smte) {
         //TODO: this might not be right for static refs
         Type qt = getQualifyingType(smte);
