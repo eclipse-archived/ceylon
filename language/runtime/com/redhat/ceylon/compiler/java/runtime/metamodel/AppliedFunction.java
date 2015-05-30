@@ -26,7 +26,6 @@ import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.ProducedReference;
-import com.redhat.ceylon.model.typechecker.model.ProducedType;
 
 @Ceylon(major = 8)
 @com.redhat.ceylon.compiler.java.metadata.Class
@@ -51,7 +50,7 @@ public class AppliedFunction<Type, Arguments extends Sequential<? extends Object
     private ceylon.language.Map<? extends ceylon.language.meta.declaration.TypeParameter, ? extends ceylon.language.meta.model.Type<?>> typeArguments;
     private Object instance;
     private ceylon.language.meta.model.Type<?> container;
-    private List<ProducedType> parameterProducedTypes;
+    private List<com.redhat.ceylon.model.typechecker.model.Type> parameterProducedTypes;
     private Sequential<? extends ceylon.language.meta.model.Type<? extends Object>> parameterTypes;
     private ProducedReference appliedFunction;
 
@@ -173,7 +172,8 @@ public class AppliedFunction<Type, Arguments extends Sequential<? extends Object
     }
 
     private MethodHandle reflectionToMethodHandle(Method found, java.lang.Class<?> javaClass, Object instance, 
-                                                  ProducedReference appliedFunction, List<ProducedType> parameterProducedTypes,
+                                                  ProducedReference appliedFunction, 
+                                                  List<com.redhat.ceylon.model.typechecker.model.Type> parameterProducedTypes,
                                                   boolean variadic, boolean bindVariadicParameterToEmptyArray) {
         // save the parameter types before we mess with "found"
         java.lang.Class<?>[] parameterTypes = found.getParameterTypes();
@@ -207,8 +207,8 @@ public class AppliedFunction<Type, Arguments extends Sequential<? extends Object
         int skipParameters = 0;
         // insert any required type descriptors
         if(typeParametersCount != 0 && MethodHandleUtil.isReifiedTypeSupported(found, false)){
-            List<ProducedType> typeArguments = new ArrayList<ProducedType>();
-            Map<com.redhat.ceylon.model.typechecker.model.TypeParameter, ProducedType> typeArgumentMap = appliedFunction.getTypeArguments();
+            List<com.redhat.ceylon.model.typechecker.model.Type> typeArguments = new ArrayList<com.redhat.ceylon.model.typechecker.model.Type>();
+            Map<com.redhat.ceylon.model.typechecker.model.TypeParameter, com.redhat.ceylon.model.typechecker.model.Type> typeArgumentMap = appliedFunction.getTypeArguments();
             for (com.redhat.ceylon.model.typechecker.model.TypeParameter tp : ((com.redhat.ceylon.model.typechecker.model.Method)appliedFunction.getDeclaration()).getTypeParameters()) {
                 typeArguments.add(typeArgumentMap.get(tp));
             }

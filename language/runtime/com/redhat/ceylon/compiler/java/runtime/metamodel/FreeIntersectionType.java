@@ -26,14 +26,14 @@ public class FreeIntersectionType
     protected Sequential<ceylon.language.meta.declaration.OpenType> satisfiedTypes;
     
     // this is only used for equals
-    private com.redhat.ceylon.model.typechecker.model.ProducedType model;
+    private com.redhat.ceylon.model.typechecker.model.Type model;
 
     FreeIntersectionType(com.redhat.ceylon.model.typechecker.model.IntersectionType intersection){
         this.model = intersection.getType();
-        List<com.redhat.ceylon.model.typechecker.model.ProducedType> satisfiedTypes = intersection.getSatisfiedTypes();
+        List<com.redhat.ceylon.model.typechecker.model.Type> satisfiedTypes = intersection.getSatisfiedTypes();
         ceylon.language.meta.declaration.OpenType[] types = new ceylon.language.meta.declaration.OpenType[satisfiedTypes.size()];
         int i=0;
-        for(com.redhat.ceylon.model.typechecker.model.ProducedType pt : satisfiedTypes){
+        for(com.redhat.ceylon.model.typechecker.model.Type pt : satisfiedTypes){
             types[i++] = Metamodel.getMetamodel(pt);
         }
         this.satisfiedTypes = Util.sequentialWrapper(ceylon.language.meta.declaration.OpenType.$TypeDescriptor$, types);

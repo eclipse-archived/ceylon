@@ -22,12 +22,12 @@ import com.redhat.ceylon.compiler.java.language.ObjectArray;
 import com.redhat.ceylon.compiler.java.language.ShortArray;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
-import com.redhat.ceylon.model.typechecker.model.ProducedType;
+import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 
 public class MethodHandleUtil {
 
-    public static MethodHandle insertReifiedTypeArguments(MethodHandle constructor, int insertAt, List<ProducedType> typeArguments) {
+    public static MethodHandle insertReifiedTypeArguments(MethodHandle constructor, int insertAt, List<com.redhat.ceylon.model.typechecker.model.Type> typeArguments) {
         Object[] typeDescriptors = new TypeDescriptor[typeArguments.size()];
         for(int i=0;i<typeDescriptors.length;i++){
             typeDescriptors[i] = Metamodel.getTypeDescriptorForProducedType(typeArguments.get(i));
@@ -41,13 +41,13 @@ public class MethodHandleUtil {
 
     public static MethodHandle unboxArguments(MethodHandle method, int skippedParameters, int filterIndex, 
             java.lang.Class<?>[] parameterTypes,
-            List<ProducedType> producedTypes) {
+            List<Type> producedTypes) {
         return unboxArguments(method, skippedParameters, filterIndex, parameterTypes, parameterTypes.length, producedTypes, false);
     }
     
     public static MethodHandle unboxArguments(MethodHandle method, int skippedParameters, int filterIndex, 
             java.lang.Class<?>[] parameterTypes,
-            List<ProducedType> producedTypes,
+            List<Type> producedTypes,
             boolean variadic, boolean bindVariadicParameterToEmptyArray) {
         if(bindVariadicParameterToEmptyArray){
             // filter all but the last parameter
@@ -85,13 +85,13 @@ public class MethodHandleUtil {
 
     public static MethodHandle unboxArguments(MethodHandle method, int skippedParameters, int filterIndex, 
                                               java.lang.Class<?>[] parameterTypes, int parameterCount, 
-                                              List<ProducedType> producedTypes,
+                                              List<Type> producedTypes,
                                               boolean variadic) {
         MethodHandle[] filters = new MethodHandle[parameterCount - skippedParameters];
         try {
             for(int i=0;i<filters.length;i++){
                 java.lang.Class<?> paramType = parameterTypes[i + skippedParameters];
-                ProducedType producedType = producedTypes.get(i);
+                Type producedType = producedTypes.get(i);
                 if(variadic && i == filters.length - 1){
                     // we need to convert our ArraySequence instance to a T[] or primitive array
                     String methodName = null;
@@ -214,7 +214,7 @@ public class MethodHandleUtil {
         return MethodHandles.filterArguments(method, filterIndex, filters);
     }
 
-    private static boolean isCeylonCharacter(ProducedType producedType) {
+    private static boolean isCeylonCharacter(Type producedType) {
         if(producedType == null)
             return false;
         TypeDeclaration declaration = producedType.getDeclaration();
@@ -224,7 +224,7 @@ public class MethodHandleUtil {
         return declaration.getQualifiedNameString().equals("ceylon.language::Character");
     }
 
-    public static MethodHandle boxReturnValue(MethodHandle method, java.lang.Class<?> type, ProducedType producedType) {
+    public static MethodHandle boxReturnValue(MethodHandle method, java.lang.Class<?> type, Type producedType) {
         try {
             if(type == java.lang.String.class){
                 // ceylon.language.String.instance(obj)

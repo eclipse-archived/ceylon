@@ -28,7 +28,6 @@ import com.redhat.ceylon.compiler.java.metadata.Variance;
 import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
-import com.redhat.ceylon.model.typechecker.model.ProducedType;
 
 @Ceylon(major = 8, minor=0)
 @com.redhat.ceylon.compiler.java.metadata.Class
@@ -45,7 +44,7 @@ public class AppliedConstructor<Type, Arguments extends Sequential<? extends Obj
     private final TypeDescriptor reified$Type;
     private final TypeDescriptor reified$Arguments;
     protected final FreeConstructor declaration;
-    private final List<ProducedType> parameterProducedTypes;
+    private final List<com.redhat.ceylon.model.typechecker.model.Type> parameterProducedTypes;
     private final Sequential<? extends ceylon.language.meta.model.Type<? extends Object>> parameterTypes;
     private final Class<Type, ? extends Object> container;
     
@@ -56,13 +55,13 @@ public class AppliedConstructor<Type, Arguments extends Sequential<? extends Obj
     private MethodHandle ctor;
     private MethodHandle[] dispatch;
     private Object instance;
-    private ProducedType producedType;
+    private com.redhat.ceylon.model.typechecker.model.Type producedType;
     
     public AppliedConstructor(
             @Ignore TypeDescriptor reified$Type,
             @Ignore TypeDescriptor reified$Arguments,
             Class<Type, ? extends Object> container,
-            ProducedType appliedFunction,
+            com.redhat.ceylon.model.typechecker.model.Type appliedFunction,
             FreeConstructor declaration,
             Object instance) {
         this.reified$Type = reified$Type;
@@ -219,8 +218,8 @@ public class AppliedConstructor<Type, Arguments extends Sequential<? extends Obj
     }
 
     private MethodHandle reflectionToMethodHandle(Object found, java.lang.Class<?> javaClass, Object instance, 
-                                                  ProducedType producedType,
-                                                  List<ProducedType> parameterProducedTypes,
+                                                  com.redhat.ceylon.model.typechecker.model.Type producedType,
+                                                  List<com.redhat.ceylon.model.typechecker.model.Type> parameterProducedTypes,
                                                   boolean variadic, boolean bindVariadicParameterToEmptyArray) {
         MethodHandle constructor = null;
         java.lang.Class<?>[] parameterTypes;
@@ -267,7 +266,7 @@ public class AppliedConstructor<Type, Arguments extends Sequential<? extends Obj
             skipParameters++; // skip the first parameter for boxing
         // insert any required type descriptors
         if(typeParametersCount != 0 && MethodHandleUtil.isReifiedTypeSupported(found, isJavaMember)){
-            List<ProducedType> typeArguments = producedType.getQualifyingType().getTypeArgumentList();
+            List<com.redhat.ceylon.model.typechecker.model.Type> typeArguments = producedType.getQualifyingType().getTypeArgumentList();
             constructor = MethodHandleUtil.insertReifiedTypeArguments(constructor, 0, typeArguments);
             skipParameters += typeParametersCount;
         }

@@ -24,7 +24,6 @@ import com.redhat.ceylon.compiler.java.metadata.Variance;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 import com.redhat.ceylon.model.typechecker.model.Functional;
 import com.redhat.ceylon.model.typechecker.model.Method;
-import com.redhat.ceylon.model.typechecker.model.ProducedType;
 import com.redhat.ceylon.model.typechecker.model.ProducedTypedReference;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 
@@ -117,7 +116,7 @@ public class FreeFunction
             @Name("typeArguments") @TypeInfo("ceylon.language::Sequential<ceylon.language.meta.model::Type<ceylon.language::Anything>>") @Sequenced Sequential<? extends ceylon.language.meta.model.Type<?>> typeArguments){
         if(!getToplevel())
             throw new ceylon.language.meta.model.TypeApplicationException("Cannot apply a member declaration with no container type: use memberApply");
-        List<com.redhat.ceylon.model.typechecker.model.ProducedType> producedTypes = Metamodel.getProducedTypes(typeArguments);
+        List<com.redhat.ceylon.model.typechecker.model.Type> producedTypes = Metamodel.getProducedTypes(typeArguments);
         Metamodel.checkTypeArguments(null, declaration, producedTypes);
         com.redhat.ceylon.model.typechecker.model.ProducedReference appliedFunction = declaration.getProducedReference(null, producedTypes);
         TypeDescriptor reifiedType = Metamodel.getTypeDescriptorForFunction(appliedFunction);
@@ -170,12 +169,12 @@ public class FreeFunction
                                                                               @Ignore TypeDescriptor $reifiedArguments, 
                                                                               Sequential<? extends ceylon.language.meta.model.Type<?>> typeArguments,
                                                                               ceylon.language.meta.model.Type<? extends Object> container){
-        List<com.redhat.ceylon.model.typechecker.model.ProducedType> producedTypes = Metamodel.getProducedTypes(typeArguments);
-        ProducedType containerType = Metamodel.getModel(container);
+        List<com.redhat.ceylon.model.typechecker.model.Type> producedTypes = Metamodel.getProducedTypes(typeArguments);
+        com.redhat.ceylon.model.typechecker.model.Type containerType = Metamodel.getModel(container);
         Metamodel.checkQualifyingType(containerType, declaration);
         Metamodel.checkTypeArguments(containerType, declaration, producedTypes);
         // find the proper qualifying type
-        ProducedType memberQualifyingType = containerType.getSupertype((TypeDeclaration) declaration.getContainer());
+        com.redhat.ceylon.model.typechecker.model.Type memberQualifyingType = containerType.getSupertype((TypeDeclaration) declaration.getContainer());
         final ProducedTypedReference appliedFunction = ((com.redhat.ceylon.model.typechecker.model.TypedDeclaration)declaration).getProducedTypedReference(memberQualifyingType, producedTypes);
         TypeDescriptor reifiedType = Metamodel.getTypeDescriptorForFunction(appliedFunction);
         TypeDescriptor reifiedArguments = Metamodel.getTypeDescriptorForArguments(declaration.getUnit(), (Functional) declaration, appliedFunction);

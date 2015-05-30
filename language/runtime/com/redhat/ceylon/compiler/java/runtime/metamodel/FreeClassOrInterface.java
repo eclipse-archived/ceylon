@@ -29,7 +29,7 @@ import com.redhat.ceylon.compiler.java.metadata.Variance;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.ProducedReference;
-import com.redhat.ceylon.model.typechecker.model.ProducedType;
+import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 
 @Ceylon(major = 8)
@@ -66,14 +66,14 @@ public abstract class FreeClassOrInterface
     protected void init(){
         com.redhat.ceylon.model.typechecker.model.ClassOrInterface declaration = (com.redhat.ceylon.model.typechecker.model.ClassOrInterface) this.declaration;
         
-        ProducedType superType = declaration.getExtendedType();
+        Type superType = declaration.getExtendedType();
         if(superType != null)
             this.superclass = (ceylon.language.meta.declaration.OpenClassType) Metamodel.getMetamodel(superType);
         
-        List<ProducedType> satisfiedTypes = declaration.getSatisfiedTypes();
+        List<Type> satisfiedTypes = declaration.getSatisfiedTypes();
         ceylon.language.meta.declaration.OpenInterfaceType[] interfaces = new ceylon.language.meta.declaration.OpenInterfaceType[satisfiedTypes.size()];
         int i=0;
-        for(ProducedType pt : satisfiedTypes){
+        for(Type pt : satisfiedTypes){
             interfaces[i++] = (ceylon.language.meta.declaration.OpenInterfaceType) Metamodel.getMetamodel(pt);
         }
         this.interfaces = Util.sequentialWrapper(ceylon.language.meta.declaration.OpenInterfaceType.$TypeDescriptor$, interfaces);
@@ -126,11 +126,11 @@ public abstract class FreeClassOrInterface
                     byName.put(decl.getName(), decl);
             }
         }
-        com.redhat.ceylon.model.typechecker.model.ProducedType et = base.getExtendedType();
+        com.redhat.ceylon.model.typechecker.model.Type et = base.getExtendedType();
         if(et != null) {
             collectMembers(et.getDeclaration(), byName);
         }
-        for(com.redhat.ceylon.model.typechecker.model.ProducedType st : base.getSatisfiedTypes()){
+        for(com.redhat.ceylon.model.typechecker.model.Type st : base.getSatisfiedTypes()){
             if(st != null) {
                 collectMembers(st.getDeclaration(), byName);
             }
@@ -364,7 +364,7 @@ public abstract class FreeClassOrInterface
             @Name("typeArguments") @TypeInfo("ceylon.language::Sequential<ceylon.language.meta.model::Type<ceylon.language::Anything>>") @Sequenced Sequential<? extends ceylon.language.meta.model.Type<?>> typeArguments){
         if(!getToplevel())
             throw new ceylon.language.meta.model.TypeApplicationException("Cannot apply a member declaration with no container type: use memberApply");
-        List<com.redhat.ceylon.model.typechecker.model.ProducedType> producedTypes = Metamodel.getProducedTypes(typeArguments);
+        List<com.redhat.ceylon.model.typechecker.model.Type> producedTypes = Metamodel.getProducedTypes(typeArguments);
         Metamodel.checkTypeArguments(null, declaration, producedTypes);
         com.redhat.ceylon.model.typechecker.model.ProducedReference appliedType = declaration.getProducedReference(null, producedTypes);
         Metamodel.checkReifiedTypeArgument("apply", "ClassOrInterface<$1>", Variance.OUT, appliedType.getType(), $reifiedType);
@@ -411,7 +411,7 @@ public abstract class FreeClassOrInterface
             actualReifiedContainer = ((AppliedMemberClass)member).$reifiedContainer;
         else
             actualReifiedContainer = ((AppliedMemberInterface)member).$reifiedContainer;
-        ProducedType actualType = Metamodel.getModel((ceylon.language.meta.model.Type<?>) member);
+        com.redhat.ceylon.model.typechecker.model.Type actualType = Metamodel.getModel((ceylon.language.meta.model.Type<?>) member);
         Metamodel.checkReifiedTypeArgument("memberApply", "Member<$1,ClassOrInterface<$2>>&ClassOrInterface<$2>", 
                 Variance.IN, Metamodel.getProducedType(actualReifiedContainer), $reifiedContainer, 
                 Variance.OUT, actualType, $reifiedType);
@@ -424,14 +424,14 @@ public abstract class FreeClassOrInterface
                                                                         @Ignore TypeDescriptor $reifiedKind, 
                                                                         Sequential<? extends ceylon.language.meta.model.Type<?>> types,
                                                                         ceylon.language.meta.model.Type<? extends Object> container){
-        List<com.redhat.ceylon.model.typechecker.model.ProducedType> producedTypes = Metamodel.getProducedTypes(types);
-        ProducedType qualifyingType = Metamodel.getModel(container);
+        List<com.redhat.ceylon.model.typechecker.model.Type> producedTypes = Metamodel.getProducedTypes(types);
+        Type qualifyingType = Metamodel.getModel(container);
         Metamodel.checkQualifyingType(qualifyingType, declaration);
         Metamodel.checkTypeArguments(qualifyingType, declaration, producedTypes);
         // find the proper qualifying type
-        ProducedType memberQualifyingType = qualifyingType.getSupertype((TypeDeclaration) declaration.getContainer());
+        Type memberQualifyingType = qualifyingType.getSupertype((TypeDeclaration) declaration.getContainer());
         ProducedReference producedReference = declaration.getProducedReference(memberQualifyingType, producedTypes);
-        final ProducedType appliedType = producedReference.getType();
+        final Type appliedType = producedReference.getType();
         return (Member<Container, Kind>) Metamodel.getAppliedMetamodel(appliedType);
     }
 

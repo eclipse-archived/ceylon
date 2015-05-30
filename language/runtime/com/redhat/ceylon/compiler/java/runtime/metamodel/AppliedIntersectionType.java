@@ -36,7 +36,7 @@ public class AppliedIntersectionType<Intersection>
     @Ignore
     protected final TypeDescriptor $reifiedIntersection;
 
-    final com.redhat.ceylon.model.typechecker.model.ProducedType model;
+    final com.redhat.ceylon.model.typechecker.model.Type model;
 
     protected final Sequential<ceylon.language.meta.model.Type<?>> satisfiedTypes;
     
@@ -53,12 +53,12 @@ public class AppliedIntersectionType<Intersection>
     }
 
     AppliedIntersectionType(@Ignore TypeDescriptor $reifiedType, com.redhat.ceylon.model.typechecker.model.IntersectionType intersection){
-        List<com.redhat.ceylon.model.typechecker.model.ProducedType> satisfiedTypes = intersection.getSatisfiedTypes();
+        List<com.redhat.ceylon.model.typechecker.model.Type> satisfiedTypes = intersection.getSatisfiedTypes();
         this.model = intersection.getType();
         this.$reifiedIntersection = $reifiedType;
         ceylon.language.meta.model.Type<?>[] types = new ceylon.language.meta.model.Type<?>[satisfiedTypes.size()];
         int i=0;
-        for(com.redhat.ceylon.model.typechecker.model.ProducedType pt : satisfiedTypes){
+        for(com.redhat.ceylon.model.typechecker.model.Type pt : satisfiedTypes){
             types[i++] = Metamodel.getAppliedMetamodel(pt);
         }
         this.satisfiedTypes = Util.sequentialWrapper(TypeDescriptor.klass(ceylon.language.meta.model.Type.class, ceylon.language.Anything.$TypeDescriptor$), types);

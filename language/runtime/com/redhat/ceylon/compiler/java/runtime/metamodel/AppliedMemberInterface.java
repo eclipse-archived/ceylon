@@ -9,7 +9,6 @@ import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Name;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
-import com.redhat.ceylon.model.typechecker.model.ProducedType;
 
 public class AppliedMemberInterface<Container, Type> 
     extends AppliedClassOrInterface<Type>
@@ -20,7 +19,7 @@ public class AppliedMemberInterface<Container, Type>
 
     AppliedMemberInterface(@Ignore TypeDescriptor $reifiedContainer,
                            @Ignore TypeDescriptor $reifiedType,
-                           ProducedType producedType) {
+                           com.redhat.ceylon.model.typechecker.model.Type producedType) {
         super($reifiedType, producedType);
         this.$reifiedContainer = $reifiedContainer;
     }

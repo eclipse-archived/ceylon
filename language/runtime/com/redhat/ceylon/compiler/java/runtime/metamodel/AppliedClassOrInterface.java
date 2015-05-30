@@ -34,7 +34,6 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Functional;
 import com.redhat.ceylon.model.typechecker.model.ProducedReference;
-import com.redhat.ceylon.model.typechecker.model.ProducedType;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 
 @Ceylon(major = 8)
@@ -45,8 +44,9 @@ import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 public abstract class AppliedClassOrInterface<Type> 
     implements ceylon.language.meta.model.ClassOrInterface<Type>, ReifiedType {
 
+    private static final List<com.redhat.ceylon.model.typechecker.model.Type> NO_TYPE_ARGS = Collections.<com.redhat.ceylon.model.typechecker.model.Type>emptyList();
     private volatile boolean initialised;
-    final com.redhat.ceylon.model.typechecker.model.ProducedType producedType;
+    final com.redhat.ceylon.model.typechecker.model.Type producedType;
     protected final com.redhat.ceylon.compiler.java.runtime.metamodel.FreeClassOrInterface declaration;
     protected ceylon.language.Map<? extends ceylon.language.meta.declaration.TypeParameter, ? extends ceylon.language.meta.model.Type<?>> typeArguments;
     protected ceylon.language.meta.model.ClassModel<? extends Object, ? super Sequential<? extends Object>> superclass;
@@ -54,7 +54,7 @@ public abstract class AppliedClassOrInterface<Type>
     @Ignore
     protected final TypeDescriptor $reifiedType;
     
-    AppliedClassOrInterface(@Ignore TypeDescriptor $reifiedType, com.redhat.ceylon.model.typechecker.model.ProducedType producedType){
+    AppliedClassOrInterface(@Ignore TypeDescriptor $reifiedType, com.redhat.ceylon.model.typechecker.model.Type producedType){
         this.producedType = producedType;
         this.declaration = Metamodel.getOrCreateMetamodel(producedType.getDeclaration());
         this.$reifiedType = Metamodel.getTypeDescriptorForProducedType(producedType);
@@ -82,17 +82,17 @@ public abstract class AppliedClassOrInterface<Type>
         com.redhat.ceylon.model.typechecker.model.ClassOrInterface decl = (com.redhat.ceylon.model.typechecker.model.ClassOrInterface) producedType.getDeclaration();
         this.typeArguments = Metamodel.getTypeArguments(declaration, producedType);
         
-        com.redhat.ceylon.model.typechecker.model.ProducedType superType = decl.getExtendedType();
+        com.redhat.ceylon.model.typechecker.model.Type superType = decl.getExtendedType();
         if(superType != null){
-            com.redhat.ceylon.model.typechecker.model.ProducedType superTypeResolved = superType.substitute(producedType);
+            com.redhat.ceylon.model.typechecker.model.Type superTypeResolved = superType.substitute(producedType);
             this.superclass = (ceylon.language.meta.model.ClassModel<?,? super Sequential<? extends Object>>) Metamodel.getAppliedMetamodel(superTypeResolved);
         }
         
-        List<com.redhat.ceylon.model.typechecker.model.ProducedType> satisfiedTypes = decl.getSatisfiedTypes();
+        List<com.redhat.ceylon.model.typechecker.model.Type> satisfiedTypes = decl.getSatisfiedTypes();
         ceylon.language.meta.model.InterfaceModel<?>[] interfaces = new ceylon.language.meta.model.InterfaceModel[satisfiedTypes.size()];
         int i=0;
-        for(com.redhat.ceylon.model.typechecker.model.ProducedType pt : satisfiedTypes){
-            com.redhat.ceylon.model.typechecker.model.ProducedType resolvedPt = pt.substitute(producedType);
+        for(com.redhat.ceylon.model.typechecker.model.Type pt : satisfiedTypes){
+            com.redhat.ceylon.model.typechecker.model.Type resolvedPt = pt.substitute(producedType);
             interfaces[i++] = (ceylon.language.meta.model.InterfaceModel<?>) Metamodel.getAppliedMetamodel(resolvedPt);
         }
         this.interfaces = Util.sequentialWrapper(TypeDescriptor.klass(ceylon.language.meta.model.InterfaceModel.class, ceylon.language.Anything.$TypeDescriptor$), interfaces);
@@ -203,7 +203,7 @@ public abstract class AppliedClassOrInterface<Type>
         if(method == null)
             return null;
         // do not return the attribute if the container is not a subtype of this type
-        ProducedType reifiedContainer = Metamodel.getProducedType($reifiedContainer);
+        com.redhat.ceylon.model.typechecker.model.Type reifiedContainer = Metamodel.getProducedType($reifiedContainer);
         if(!reifiedContainer.isSubtypeOf(producedType))
             return null;
         return method.memberApply($reifiedContainer, $reifiedType, $reifiedArguments, 
@@ -273,7 +273,7 @@ public abstract class AppliedClassOrInterface<Type>
         if(type == null)
             return null;
         // do not return the attribute if the container is not a subtype of this type
-        ProducedType reifiedContainer = Metamodel.getProducedType($reifiedContainer);
+        com.redhat.ceylon.model.typechecker.model.Type reifiedContainer = Metamodel.getProducedType($reifiedContainer);
         if(!reifiedContainer.isSubtypeOf(producedType))
             return null;
         return applyClassOrInterface($reifiedContainer, $reifiedKind, type, types);
@@ -389,7 +389,7 @@ public abstract class AppliedClassOrInterface<Type>
         if(type instanceof FreeClass == false)
             throw new IncompatibleTypeException("Specified member is not a class: "+name);
         // do not return the attribute if the container is not a subtype of this type
-        ProducedType reifiedContainer = Metamodel.getProducedType($reifiedContainer);
+        com.redhat.ceylon.model.typechecker.model.Type reifiedContainer = Metamodel.getProducedType($reifiedContainer);
         if(!reifiedContainer.isSubtypeOf(producedType))
             return null;
         return ((FreeClass)type).memberClassApply($reifiedContainer, $reifiedType, $reifiedArguments, 
@@ -467,7 +467,7 @@ public abstract class AppliedClassOrInterface<Type>
         if(type instanceof FreeInterface == false)
             throw new IncompatibleTypeException("Specified member is not an interface: "+name);
         // do not return the attribute if the container is not a subtype of this type
-        ProducedType reifiedContainer = Metamodel.getProducedType($reifiedContainer);
+        com.redhat.ceylon.model.typechecker.model.Type reifiedContainer = Metamodel.getProducedType($reifiedContainer);
         if(!reifiedContainer.isSubtypeOf(producedType))
             return null;
         return (ceylon.language.meta.model.MemberInterface<Container, Type>) 
@@ -505,7 +505,7 @@ public abstract class AppliedClassOrInterface<Type>
             FreeNestableDeclaration decl) {
         FreeClassOrInterface valueContainer = (FreeClassOrInterface) decl.getContainer();
         if(valueContainer != declaration){
-            ProducedType valueContainerType = this.producedType.getSupertype((com.redhat.ceylon.model.typechecker.model.TypeDeclaration)valueContainer.declaration);
+            com.redhat.ceylon.model.typechecker.model.Type valueContainerType = this.producedType.getSupertype((com.redhat.ceylon.model.typechecker.model.TypeDeclaration)valueContainer.declaration);
             return (AppliedClassOrInterface<Container>) Metamodel.getAppliedMetamodel(valueContainerType);
         }else{
             return (AppliedClassOrInterface<Container>) this;
@@ -531,7 +531,7 @@ public abstract class AppliedClassOrInterface<Type>
         if(value == null)
             return null;
         // do not return the attribute if the container is not a subtype of this type
-        ProducedType reifiedContainer = Metamodel.getProducedType($reifiedContainer);
+        com.redhat.ceylon.model.typechecker.model.Type reifiedContainer = Metamodel.getProducedType($reifiedContainer);
         if(!reifiedContainer.isSubtypeOf(producedType))
             return null;
         return value.memberApply($reifiedContainer, $reifiedGet, $reifiedSet, 
@@ -567,7 +567,7 @@ public abstract class AppliedClassOrInterface<Type>
         checkInit();
         
         // check the container type first
-        ProducedType reifiedContainer = Metamodel.getProducedType($reifiedContainer);
+        com.redhat.ceylon.model.typechecker.model.Type reifiedContainer = Metamodel.getProducedType($reifiedContainer);
         if(!reifiedContainer.isSubtypeOf(this.producedType))
             return (ceylon.language.Sequential)empty_.get_();
         
@@ -575,8 +575,8 @@ public abstract class AppliedClassOrInterface<Type>
         if(declaredDeclarations.getEmpty())
             return (ceylon.language.Sequential)empty_.get_();
         
-        ProducedType reifiedGet = Metamodel.getProducedType($reifiedGet);
-        ProducedType reifiedSet = Metamodel.getProducedType($reifiedSet);
+        com.redhat.ceylon.model.typechecker.model.Type reifiedGet = Metamodel.getProducedType($reifiedGet);
+        com.redhat.ceylon.model.typechecker.model.Type reifiedSet = Metamodel.getProducedType($reifiedSet);
         
         Iterator<?> iterator = declaredDeclarations.iterator();
         Object it;
@@ -605,14 +605,16 @@ public abstract class AppliedClassOrInterface<Type>
             @Ignore TypeDescriptor $reifiedGet,
             @Ignore TypeDescriptor $reifiedSet,
             ArrayList<ceylon.language.meta.model.Attribute<? super Container,? extends Get,? super Set>> members,
-            FreeValue decl, ProducedType qualifyingType, ceylon.language.meta.model.Type<Container> qualifyingMetamodel,
-            ProducedType reifiedGet, ProducedType reifiedSet){
+            FreeValue decl, com.redhat.ceylon.model.typechecker.model.Type qualifyingType, 
+            ceylon.language.meta.model.Type<Container> qualifyingMetamodel,
+            com.redhat.ceylon.model.typechecker.model.Type reifiedGet, 
+            com.redhat.ceylon.model.typechecker.model.Type reifiedSet){
         // now the types
-        ProducedReference producedReference = decl.declaration.getProducedReference(qualifyingType, Collections.<ProducedType>emptyList());
-        ProducedType type = producedReference.getType();
+        ProducedReference producedReference = decl.declaration.getProducedReference(qualifyingType, NO_TYPE_ARGS);
+        com.redhat.ceylon.model.typechecker.model.Type type = producedReference.getType();
         if(!type.isSubtypeOf(reifiedGet))
             return;
-        ProducedType setType = decl.getVariable() ? type : decl.declaration.getUnit().getNothingType();
+        com.redhat.ceylon.model.typechecker.model.Type setType = decl.getVariable() ? type : decl.declaration.getUnit().getNothingType();
         if(!reifiedSet.isSubtypeOf(setType))
             return;
         // it's compatible!
@@ -651,9 +653,9 @@ public abstract class AppliedClassOrInterface<Type>
         if(declaredDeclarations.getEmpty())
             return (ceylon.language.Sequential)empty_.get_();
         
-        ProducedType reifiedContainer = Metamodel.getProducedType($reifiedContainer);
-        ProducedType reifiedGet = Metamodel.getProducedType($reifiedGet);
-        ProducedType reifiedSet = Metamodel.getProducedType($reifiedSet);
+        com.redhat.ceylon.model.typechecker.model.Type reifiedContainer = Metamodel.getProducedType($reifiedContainer);
+        com.redhat.ceylon.model.typechecker.model.Type reifiedGet = Metamodel.getProducedType($reifiedGet);
+        com.redhat.ceylon.model.typechecker.model.Type reifiedSet = Metamodel.getProducedType($reifiedSet);
         
         Iterator<?> iterator = declaredDeclarations.iterator();
         Object it;
@@ -711,7 +713,7 @@ public abstract class AppliedClassOrInterface<Type>
         checkInit();
         
         // check the container type first
-        ProducedType reifiedContainer = Metamodel.getProducedType($reifiedContainer);
+        com.redhat.ceylon.model.typechecker.model.Type reifiedContainer = Metamodel.getProducedType($reifiedContainer);
         if(!reifiedContainer.isSubtypeOf(this.producedType))
             return (ceylon.language.Sequential)empty_.get_();
         
@@ -719,8 +721,8 @@ public abstract class AppliedClassOrInterface<Type>
         if(declaredDeclarations.getEmpty())
             return (ceylon.language.Sequential)empty_.get_();
         
-        ProducedType reifiedType = Metamodel.getProducedType($reifiedType);
-        ProducedType reifiedArguments = Metamodel.getProducedType($reifiedArguments);
+        com.redhat.ceylon.model.typechecker.model.Type reifiedType = Metamodel.getProducedType($reifiedType);
+        com.redhat.ceylon.model.typechecker.model.Type reifiedArguments = Metamodel.getProducedType($reifiedArguments);
         
         Iterator<?> iterator = declaredDeclarations.iterator();
         Object it;
@@ -781,9 +783,9 @@ public abstract class AppliedClassOrInterface<Type>
         if(declaredDeclarations.getEmpty())
             return (ceylon.language.Sequential)empty_.get_();
         
-        ProducedType reifiedContainer = Metamodel.getProducedType($reifiedContainer);
-        ProducedType reifiedType = Metamodel.getProducedType($reifiedType);
-        ProducedType reifiedArguments = Metamodel.getProducedType($reifiedArguments);
+        com.redhat.ceylon.model.typechecker.model.Type reifiedContainer = Metamodel.getProducedType($reifiedContainer);
+        com.redhat.ceylon.model.typechecker.model.Type reifiedType = Metamodel.getProducedType($reifiedType);
+        com.redhat.ceylon.model.typechecker.model.Type reifiedArguments = Metamodel.getProducedType($reifiedArguments);
         
         Iterator<?> iterator = declaredDeclarations.iterator();
         Object it;
@@ -821,15 +823,16 @@ public abstract class AppliedClassOrInterface<Type>
             @Ignore TypeDescriptor $reifiedType,
             @Ignore TypeDescriptor $reifiedArguments,
             ArrayList<ceylon.language.meta.model.Method<? super Container,? extends Type,? super Arguments>> members,
-            FreeFunction decl, ProducedType qualifyingType, 
+            FreeFunction decl, com.redhat.ceylon.model.typechecker.model.Type qualifyingType, 
             AppliedClassOrInterface<Container> containerMetamodel,
-            ProducedType reifiedType, ProducedType reifiedArguments){
+            com.redhat.ceylon.model.typechecker.model.Type reifiedType, 
+            com.redhat.ceylon.model.typechecker.model.Type reifiedArguments){
         // now the types
-        ProducedReference producedReference = decl.declaration.getProducedReference(qualifyingType, Collections.<ProducedType>emptyList());
-        ProducedType type = producedReference.getType();
+        ProducedReference producedReference = decl.declaration.getProducedReference(qualifyingType, Collections.<com.redhat.ceylon.model.typechecker.model.Type>emptyList());
+        com.redhat.ceylon.model.typechecker.model.Type type = producedReference.getType();
         if(!type.isSubtypeOf(reifiedType))
             return;
-        ProducedType argumentsType = Metamodel.getProducedTypeForArguments(decl.declaration.getUnit(), (Functional) decl.declaration, producedReference);
+        com.redhat.ceylon.model.typechecker.model.Type argumentsType = Metamodel.getProducedTypeForArguments(decl.declaration.getUnit(), (Functional) decl.declaration, producedReference);
         if(!reifiedArguments.isSubtypeOf(argumentsType))
             return;
         // it's compatible!
@@ -865,7 +868,7 @@ public abstract class AppliedClassOrInterface<Type>
         checkInit();
         
         // check the container type first
-        ProducedType reifiedContainer = Metamodel.getProducedType($reifiedContainer);
+        com.redhat.ceylon.model.typechecker.model.Type reifiedContainer = Metamodel.getProducedType($reifiedContainer);
         if(!reifiedContainer.isSubtypeOf(this.producedType))
             return (ceylon.language.Sequential)empty_.get_();
         
@@ -873,8 +876,8 @@ public abstract class AppliedClassOrInterface<Type>
         if(declaredDeclarations.getEmpty())
             return (ceylon.language.Sequential)empty_.get_();
         
-        ProducedType reifiedType = Metamodel.getProducedType($reifiedType);
-        ProducedType reifiedArguments = Metamodel.getProducedType($reifiedArguments);
+        com.redhat.ceylon.model.typechecker.model.Type reifiedType = Metamodel.getProducedType($reifiedType);
+        com.redhat.ceylon.model.typechecker.model.Type reifiedArguments = Metamodel.getProducedType($reifiedArguments);
         
         Iterator<?> iterator = declaredDeclarations.iterator();
         Object it;
@@ -935,9 +938,9 @@ public abstract class AppliedClassOrInterface<Type>
         if(declaredDeclarations.getEmpty())
             return (ceylon.language.Sequential)empty_.get_();
         
-        ProducedType reifiedContainer = Metamodel.getProducedType($reifiedContainer);
-        ProducedType reifiedType = Metamodel.getProducedType($reifiedType);
-        ProducedType reifiedArguments = Metamodel.getProducedType($reifiedArguments);
+        com.redhat.ceylon.model.typechecker.model.Type reifiedContainer = Metamodel.getProducedType($reifiedContainer);
+        com.redhat.ceylon.model.typechecker.model.Type reifiedType = Metamodel.getProducedType($reifiedType);
+        com.redhat.ceylon.model.typechecker.model.Type reifiedArguments = Metamodel.getProducedType($reifiedArguments);
         
         Iterator<?> iterator = declaredDeclarations.iterator();
         Object it;
@@ -975,15 +978,16 @@ public abstract class AppliedClassOrInterface<Type>
             @Ignore TypeDescriptor $reifiedType,
             @Ignore TypeDescriptor $reifiedArguments,
             ArrayList<ceylon.language.meta.model.MemberClass<? super Container,? extends Type,? super Arguments>> members,
-            FreeClass decl, ProducedType qualifyingType, 
+            FreeClass decl, com.redhat.ceylon.model.typechecker.model.Type qualifyingType, 
             AppliedClassOrInterface<Container> containerMetamodel,
-            ProducedType reifiedType, ProducedType reifiedArguments){
+            com.redhat.ceylon.model.typechecker.model.Type reifiedType, 
+            com.redhat.ceylon.model.typechecker.model.Type reifiedArguments){
         // now the types
-        ProducedReference producedReference = decl.declaration.getProducedReference(qualifyingType, Collections.<ProducedType>emptyList());
-        ProducedType type = producedReference.getType();
+        ProducedReference producedReference = decl.declaration.getProducedReference(qualifyingType, Collections.<com.redhat.ceylon.model.typechecker.model.Type>emptyList());
+        com.redhat.ceylon.model.typechecker.model.Type type = producedReference.getType();
         if(!type.isSubtypeOf(reifiedType))
             return;
-        ProducedType argumentsType = Metamodel.getProducedTypeForArguments(decl.declaration.getUnit(), (Functional) decl.declaration, producedReference);
+        com.redhat.ceylon.model.typechecker.model.Type argumentsType = Metamodel.getProducedTypeForArguments(decl.declaration.getUnit(), (Functional) decl.declaration, producedReference);
         if(!reifiedArguments.isSubtypeOf(argumentsType))
             return;
         // it's compatible!
@@ -1016,7 +1020,7 @@ public abstract class AppliedClassOrInterface<Type>
         checkInit();
         
         // check the container type first
-        ProducedType reifiedContainer = Metamodel.getProducedType($reifiedContainer);
+        com.redhat.ceylon.model.typechecker.model.Type reifiedContainer = Metamodel.getProducedType($reifiedContainer);
         if(!reifiedContainer.isSubtypeOf(this.producedType))
             return (ceylon.language.Sequential)empty_.get_();
         
@@ -1024,7 +1028,7 @@ public abstract class AppliedClassOrInterface<Type>
         if(declaredDeclarations.getEmpty())
             return (ceylon.language.Sequential)empty_.get_();
         
-        ProducedType reifiedType = Metamodel.getProducedType($reifiedType);
+        com.redhat.ceylon.model.typechecker.model.Type reifiedType = Metamodel.getProducedType($reifiedType);
         
         Iterator<?> iterator = declaredDeclarations.iterator();
         Object it;
@@ -1082,8 +1086,8 @@ public abstract class AppliedClassOrInterface<Type>
         if(declaredDeclarations.getEmpty())
             return (ceylon.language.Sequential)empty_.get_();
         
-        ProducedType reifiedContainer = Metamodel.getProducedType($reifiedContainer);
-        ProducedType reifiedType = Metamodel.getProducedType($reifiedType);
+        com.redhat.ceylon.model.typechecker.model.Type reifiedContainer = Metamodel.getProducedType($reifiedContainer);
+        com.redhat.ceylon.model.typechecker.model.Type reifiedType = Metamodel.getProducedType($reifiedType);
         
         Iterator<?> iterator = declaredDeclarations.iterator();
         Object it;
@@ -1120,11 +1124,12 @@ public abstract class AppliedClassOrInterface<Type>
     private <Container,Type> void addIfCompatible(@Ignore TypeDescriptor $reifiedContainer,
             @Ignore TypeDescriptor $reifiedType,
             ArrayList<ceylon.language.meta.model.MemberInterface<? super Container,? extends Type>> members,
-            FreeInterface decl, ProducedType qualifyingType, AppliedClassOrInterface<Container> containerMetamodel,
-            ProducedType reifiedType){
+            FreeInterface decl, com.redhat.ceylon.model.typechecker.model.Type qualifyingType, 
+            AppliedClassOrInterface<Container> containerMetamodel,
+            com.redhat.ceylon.model.typechecker.model.Type reifiedType){
         // now the types
-        ProducedReference producedReference = decl.declaration.getProducedReference(qualifyingType, Collections.<ProducedType>emptyList());
-        ProducedType type = producedReference.getType();
+        ProducedReference producedReference = decl.declaration.getProducedReference(qualifyingType, Collections.<com.redhat.ceylon.model.typechecker.model.Type>emptyList());
+        com.redhat.ceylon.model.typechecker.model.Type type = producedReference.getType();
         if(!type.isSubtypeOf(reifiedType))
             return;
         // it's compatible!
@@ -1195,13 +1200,13 @@ public abstract class AppliedClassOrInterface<Type>
     
     static class MemberLookup<T, Container>{
         public final T declaration;
-        public final ProducedType qualifyingType;
+        public final com.redhat.ceylon.model.typechecker.model.Type qualifyingType;
         public final AppliedClassOrInterface<Container> containerMetamodel;
         
         MemberLookup(@Ignore TypeDescriptor $reifiedT,
                 @Ignore TypeDescriptor $reifiedContainer,
                 T declaration,
-                ProducedType qualifyingType,
+                com.redhat.ceylon.model.typechecker.model.Type qualifyingType,
                 AppliedClassOrInterface<Container> containerMetamodel){
             this.declaration = declaration;
             this.qualifyingType = qualifyingType;
@@ -1218,10 +1223,10 @@ public abstract class AppliedClassOrInterface<Type>
     @SuppressWarnings("unchecked")
     private <T extends FreeNestableDeclaration, Container> MemberLookup<T, Container> lookupMember(@Ignore TypeDescriptor $reifiedT,
             @Ignore TypeDescriptor $reifiedContainer,
-            ProducedType reifiedContainer,
+            com.redhat.ceylon.model.typechecker.model.Type reifiedContainer,
             T value) {
         AppliedClassOrInterface<Container> containerMetamodel;
-        ProducedType qualifyingType;
+        com.redhat.ceylon.model.typechecker.model.Type qualifyingType;
         if($reifiedContainer == TypeDescriptor.NothingType){
             // wildcard: everything goes
             qualifyingType = this.producedType.getSupertype((TypeDeclaration) value.declaration.getContainer());

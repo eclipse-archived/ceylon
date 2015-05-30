@@ -11,14 +11,13 @@ import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
-import com.redhat.ceylon.model.typechecker.model.ProducedType;
 
 public class AppliedMemberClassConstructor<Container,Type, Arguments extends Sequential<? extends Object>> 
         implements MemberClassConstructor<Container, Type, Arguments>, ReifiedType {
 
     private final FreeConstructor declaration;
     private final MemberClass<Object,Type,? extends Object> container;
-    private final ProducedType producedType;
+    private final com.redhat.ceylon.model.typechecker.model.Type producedType;
     private final TypeDescriptor reified$Type;
     private final TypeDescriptor reified$Arguments;
     private final TypeDescriptor reified$Container;
@@ -31,7 +30,7 @@ public class AppliedMemberClassConstructor<Container,Type, Arguments extends Seq
             TypeDescriptor reified$Type,
             TypeDescriptor reified$Arguments,
             MemberClass<Object,Type,? extends Object> container,
-            ProducedType producedType,
+            com.redhat.ceylon.model.typechecker.model.Type producedType,
             FreeConstructor declaration) {
         this.reified$Container = reified$Container;
         this.reified$Type = reified$Type;
@@ -53,7 +52,7 @@ public class AppliedMemberClassConstructor<Container,Type, Arguments extends Seq
     }
     
     protected void init() {
-        java.util.List<ProducedType> parameterProducedTypes = Metamodel.getParameterProducedTypes(declaration.constructor.getParameterLists().get(0).getParameters(), producedType);
+        java.util.List<com.redhat.ceylon.model.typechecker.model.Type> parameterProducedTypes = Metamodel.getParameterProducedTypes(declaration.constructor.getParameterLists().get(0).getParameters(), producedType);
         this.parameterTypes = Metamodel.getAppliedMetamodelSequential(parameterProducedTypes);
     }
     

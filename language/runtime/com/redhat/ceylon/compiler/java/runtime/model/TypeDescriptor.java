@@ -33,7 +33,7 @@ import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.IntersectionType;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.NothingType;
-import com.redhat.ceylon.model.typechecker.model.ProducedType;
+import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.SiteVariance;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.model.typechecker.model.TypeParameter;
@@ -50,7 +50,7 @@ public abstract class TypeDescriptor {
     //
     // Methods
 
-    public abstract ProducedType toProducedType(RuntimeModuleManager moduleManager);
+    public abstract Type toProducedType(RuntimeModuleManager moduleManager);
     
     public abstract java.lang.Class<?> getArrayElementClass();
     
@@ -86,7 +86,7 @@ public abstract class TypeDescriptor {
     // Subtypes
 
     public static interface QualifiableTypeDescriptor {
-        public ProducedType toProducedType(ProducedType qualifyingType, RuntimeModuleManager moduleManager);
+        public Type toProducedType(Type qualifyingType, RuntimeModuleManager moduleManager);
     }
     
     public static abstract class Generic extends TypeDescriptor {
@@ -131,7 +131,7 @@ public abstract class TypeDescriptor {
             }
         }
         
-        protected ProducedType applyUseSiteVariance(TypeDeclaration decl, ProducedType type) {
+        protected Type applyUseSiteVariance(TypeDeclaration decl, Type type) {
             // apply use site variance if required
             if(useSiteVariance.length != 0){
                 List<TypeParameter> typeParameters = decl.getTypeParameters();
@@ -270,21 +270,21 @@ public abstract class TypeDescriptor {
         }
 
         @Override
-        public ProducedType toProducedType(RuntimeModuleManager moduleManager){
+        public Type toProducedType(RuntimeModuleManager moduleManager){
             return toProducedType(null, moduleManager);
         }
         
         @Override
-        public ProducedType toProducedType(ProducedType qualifyingType, RuntimeModuleManager moduleManager){
+        public Type toProducedType(Type qualifyingType, RuntimeModuleManager moduleManager){
             // FIXME: is this really enough?
             String typeName = klass.getName();
             Module module = moduleManager.findModuleForClass(klass);
             TypeDeclaration decl = (TypeDeclaration) moduleManager.getModelLoader().getDeclaration(module, typeName, DeclarationType.TYPE);
-            List<ProducedType> typeArgs = new ArrayList<ProducedType>(typeArguments.length);
+            List<Type> typeArgs = new ArrayList<Type>(typeArguments.length);
             for(TypeDescriptor typeArg : typeArguments){
                 typeArgs.add(Metamodel.getProducedType(typeArg));
             }
-            ProducedType type = decl.getProducedType(qualifyingType, typeArgs);
+            Type type = decl.getProducedType(qualifyingType, typeArgs);
             type = applyUseSiteVariance(decl, type);
             return type;
         }
@@ -376,7 +376,7 @@ public abstract class TypeDescriptor {
         }
 
         @Override
-        public ProducedType toProducedType(RuntimeModuleManager moduleManager) {
+        public Type toProducedType(RuntimeModuleManager moduleManager) {
             // FIXME: is this really enough?
             String typeName = klass.getName();
             // use the toplevel wrapper declaration
@@ -388,7 +388,7 @@ public abstract class TypeDescriptor {
         }
 
         @Override
-        public ProducedType toProducedType(ProducedType qualifyingType, RuntimeModuleManager moduleManager) {
+        public Type toProducedType(Type qualifyingType, RuntimeModuleManager moduleManager) {
             // need to find the local Declaration in its container
             Declaration qualifyingDeclaration = qualifyingType.getDeclaration();
             if(qualifyingDeclaration instanceof FunctionOrValueInterface)
@@ -403,9 +403,9 @@ public abstract class TypeDescriptor {
             return makeProducedType(qualifyingType, declaration, moduleManager);
         }
 
-        private ProducedType makeProducedType(ProducedType qualifyingType, TypedDeclaration declaration, RuntimeModuleManager moduleManager) {
+        private Type makeProducedType(Type qualifyingType, TypedDeclaration declaration, RuntimeModuleManager moduleManager) {
             // add the type args
-            List<ProducedType> typeArgs = new ArrayList<ProducedType>(typeArguments.length);
+            List<Type> typeArgs = new ArrayList<Type>(typeArguments.length);
             for(TypeDescriptor typeArg : typeArguments){
                 typeArgs.add(Metamodel.getProducedType(typeArg));
             }
@@ -508,8 +508,8 @@ public abstract class TypeDescriptor {
         }
 
         @Override
-        public ProducedType toProducedType(RuntimeModuleManager moduleManager) {
-            ProducedType qualifyingType = Metamodel.getProducedType(container);
+        public Type toProducedType(RuntimeModuleManager moduleManager) {
+            Type qualifyingType = Metamodel.getProducedType(container);
             return ((QualifiableTypeDescriptor)member).toProducedType(qualifyingType, moduleManager);
         }
 
@@ -544,7 +544,7 @@ public abstract class TypeDescriptor {
         }
 
         @Override
-        public ProducedType toProducedType(RuntimeModuleManager moduleManager) {
+        public Type toProducedType(RuntimeModuleManager moduleManager) {
             return new NothingType(moduleManager.getModelLoader().getUnit()).getType();
         }
         
@@ -667,9 +667,9 @@ public abstract class TypeDescriptor {
         }
 
         @Override
-        public ProducedType toProducedType(RuntimeModuleManager moduleManager) {
+        public Type toProducedType(RuntimeModuleManager moduleManager) {
             UnionType ret = new UnionType(moduleManager.getModelLoader().getUnit());
-            ArrayList<ProducedType> caseTypes = new ArrayList<ProducedType>(members.length);
+            ArrayList<Type> caseTypes = new ArrayList<Type>(members.length);
             for(TypeDescriptor member : members)
                 Util.addToUnion(caseTypes,Metamodel.getProducedType(member));
             ret.setCaseTypes(caseTypes);
@@ -745,10 +745,10 @@ public abstract class TypeDescriptor {
         }
 
         @Override
-        public ProducedType toProducedType(RuntimeModuleManager moduleManager) {
+        public Type toProducedType(RuntimeModuleManager moduleManager) {
             Unit unit = moduleManager.getModelLoader().getUnit();
 			IntersectionType ret = new IntersectionType(unit);
-            ArrayList<ProducedType> satisfiedTypes = new ArrayList<ProducedType>(members.length);
+            ArrayList<Type> satisfiedTypes = new ArrayList<Type>(members.length);
             for(TypeDescriptor member : members)
             	Util.addToIntersection(satisfiedTypes, Metamodel.getProducedType(member), unit);
             ret.setSatisfiedTypes(satisfiedTypes);

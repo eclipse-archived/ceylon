@@ -29,7 +29,6 @@ import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.Constructor;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.ParameterList;
-import com.redhat.ceylon.model.typechecker.model.ProducedType;
 
 @Ceylon(major = 8)
 @com.redhat.ceylon.compiler.java.metadata.Class
@@ -158,7 +157,7 @@ public class FreeClass
             @Name("typeArguments") @TypeInfo("ceylon.language::Sequential<ceylon.language.meta.model::Type<ceylon.language::Anything>>") @Sequenced Sequential<? extends ceylon.language.meta.model.Type<?>> typeArguments){
         if(!getToplevel())
             throw new ceylon.language.meta.model.TypeApplicationException("Cannot apply a member declaration with no container type: use memberApply");
-        List<com.redhat.ceylon.model.typechecker.model.ProducedType> producedTypes = Metamodel.getProducedTypes(typeArguments);
+        List<com.redhat.ceylon.model.typechecker.model.Type> producedTypes = Metamodel.getProducedTypes(typeArguments);
         Metamodel.checkTypeArguments(null, declaration, producedTypes);
         com.redhat.ceylon.model.typechecker.model.ProducedReference appliedType = declaration.getProducedReference(null, producedTypes);
         AppliedClass<Type, Arguments> ret = (AppliedClass<Type, Arguments>) Metamodel.getAppliedMetamodel(appliedType.getType());;
@@ -209,7 +208,7 @@ public class FreeClass
         // implementation types to the user, such as AppliedMemberClass
         TypeDescriptor actualReifiedContainer = ((AppliedMemberClass)member).$reifiedContainer;
         TypeDescriptor actualReifiedArguments = ((AppliedMemberClass)member).$reifiedArguments;
-        ProducedType actualType = Metamodel.getModel((ceylon.language.meta.model.Type<?>) member);
+        com.redhat.ceylon.model.typechecker.model.Type actualType = Metamodel.getModel((ceylon.language.meta.model.Type<?>) member);
         Metamodel.checkReifiedTypeArgument("memberApply", "Member<$1,Class<$2,$3>>&Class<$2,$3>", 
                 Variance.IN, Metamodel.getProducedType(actualReifiedContainer), $reifiedContainer, 
                 Variance.OUT, actualType, $reifiedType,

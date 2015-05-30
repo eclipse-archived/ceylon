@@ -28,7 +28,7 @@ import com.redhat.ceylon.model.loader.impl.reflect.mirror.ReflectionClass;
 import com.redhat.ceylon.model.loader.model.FieldValue;
 import com.redhat.ceylon.model.loader.model.JavaBeanValue;
 import com.redhat.ceylon.model.loader.model.LazyValue;
-import com.redhat.ceylon.model.typechecker.model.ProducedType;
+import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.ProducedTypedReference;
 
 @Ceylon(major = 8)
@@ -52,7 +52,7 @@ public class AppliedValue<Get, Set>
     private MethodHandle setter;
     private final Object instance;
     private final ceylon.language.meta.model.Type<?> container;
-    protected final ProducedType producedType;
+    protected final Type producedType;
 
     public AppliedValue(@Ignore TypeDescriptor $reifiedGet, @Ignore TypeDescriptor $reifiedSet,
             FreeValue value, ProducedTypedReference valueTypedReference, 
@@ -68,7 +68,7 @@ public class AppliedValue<Get, Set>
         initField(instance, producedType);
     }
 
-    private void initField(Object instance, ProducedType valueType) {
+    private void initField(Object instance, Type valueType) {
         com.redhat.ceylon.model.typechecker.model.Value decl = (com.redhat.ceylon.model.typechecker.model.Value) declaration.declaration;
         if(decl instanceof JavaBeanValue){
             java.lang.Class<?> javaClass = Metamodel.getJavaClass((com.redhat.ceylon.model.typechecker.model.ClassOrInterface)decl.getContainer());
@@ -172,7 +172,7 @@ public class AppliedValue<Get, Set>
     }
 
     private void initSetter(com.redhat.ceylon.model.typechecker.model.Value decl, java.lang.Class<?> javaClass, 
-                            java.lang.Class<?> getterReturnType, Object instance, ProducedType valueType) {
+                            java.lang.Class<?> getterReturnType, Object instance, Type valueType) {
         if(!decl.isVariable())
             return;
         if(decl instanceof JavaBeanValue){
@@ -251,7 +251,7 @@ public class AppliedValue<Get, Set>
     @SuppressWarnings("unchecked")
     @Override
     public java.lang.Object $setIfAssignable(@Name("newValue") @TypeInfo("ceylon.language::Anything") java.lang.Object newValue){
-        ProducedType newValueType = Metamodel.getProducedType(newValue);
+        Type newValueType = Metamodel.getProducedType(newValue);
         if(!newValueType.isSubtypeOf(this.producedType))
             throw new IncompatibleTypeException("Invalid new value type: "+newValueType+", expecting: "+this.producedType);
         return set((Set) newValue);

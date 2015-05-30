@@ -87,7 +87,7 @@ import com.redhat.ceylon.model.typechecker.model.Modules;
 import com.redhat.ceylon.model.typechecker.model.NothingType;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.ProducedReference;
-import com.redhat.ceylon.model.typechecker.model.ProducedType;
+import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.Scope;
 import com.redhat.ceylon.model.typechecker.model.Setter;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
@@ -109,7 +109,7 @@ public class Metamodel {
     private static Map<com.redhat.ceylon.model.typechecker.model.Module, com.redhat.ceylon.compiler.java.runtime.metamodel.FreeModule> typeCheckModulesToRuntimeModel
         = new HashMap<com.redhat.ceylon.model.typechecker.model.Module, com.redhat.ceylon.compiler.java.runtime.metamodel.FreeModule>();
 
-    private static Map<TypeDescriptor,ProducedType> typeDescriptorToProducedType = new WeakHashMap<TypeDescriptor,ProducedType>();
+    private static Map<TypeDescriptor,Type> typeDescriptorToProducedType = new WeakHashMap<TypeDescriptor,Type>();
 
     static{
         resetModuleManager();
@@ -291,15 +291,15 @@ public class Metamodel {
         return result;
     }
 
-    public static ProducedType getProducedType(Object instance) {
+    public static Type getProducedType(Object instance) {
         TypeDescriptor instanceType = getTypeDescriptor(instance);
         if(instanceType == null)
             throw Metamodel.newModelError("Metamodel not yet supported for Java types");
         return getProducedType(instanceType);
     }
 
-    public static ProducedType getProducedType(TypeDescriptor reifiedType) {
-        ProducedType producedType;
+    public static Type getProducedType(TypeDescriptor reifiedType) {
+        Type producedType;
         synchronized(getLock()){
             producedType = typeDescriptorToProducedType.get(reifiedType);
             if(producedType == null){
@@ -313,7 +313,7 @@ public class Metamodel {
     public static ceylon.language.meta.model.Type<?> getAppliedMetamodel(TypeDescriptor typeDescriptor) {
         if(typeDescriptor == null)
             throw Metamodel.newModelError("Metamodel not yet supported for Java types");
-        ProducedType pt = getProducedType(typeDescriptor);
+        Type pt = getProducedType(typeDescriptor);
         return getAppliedMetamodel(pt);
     }
     
@@ -476,7 +476,7 @@ public class Metamodel {
         return Metamodel.class.getClassLoader() instanceof org.jboss.modules.ModuleClassLoader;
     }
 
-    public static ceylon.language.meta.declaration.OpenType getMetamodel(ProducedType pt) {
+    public static ceylon.language.meta.declaration.OpenType getMetamodel(Type pt) {
         TypeDeclaration declaration = pt.getDeclaration();
         if(declaration instanceof com.redhat.ceylon.model.typechecker.model.Class){
             return new com.redhat.ceylon.compiler.java.runtime.metamodel.FreeClassType(pt);
@@ -507,13 +507,13 @@ public class Metamodel {
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
-    public static Sequential<? extends ceylon.language.meta.declaration.OpenType> getMetamodelSequential(List<ProducedType> types) {
+    public static Sequential<? extends ceylon.language.meta.declaration.OpenType> getMetamodelSequential(List<Type> types) {
         if(types.isEmpty())
             return (Sequential<? extends ceylon.language.meta.declaration.OpenType>)(Sequential)empty_.get_();
         ceylon.language.meta.declaration.OpenType[] ret = new ceylon.language.meta.declaration.OpenType[types.size()];
         int i=0;
         TypeDescriptor td = TypeDescriptor.NothingType;
-        for(ProducedType pt : types){
+        for(Type pt : types){
             OpenType mm = Metamodel.getMetamodel(pt);
             td = TypeDescriptor.union(((ReifiedType)mm).$getType$());
             ret[i++] = mm;
@@ -522,12 +522,12 @@ public class Metamodel {
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
-    public static Sequential<? extends ceylon.language.meta.model.Type<? extends Object>> getAppliedMetamodelSequential(List<ProducedType> types) {
+    public static Sequential<? extends ceylon.language.meta.model.Type<? extends Object>> getAppliedMetamodelSequential(List<Type> types) {
         if(types.isEmpty())
             return (Sequential<? extends ceylon.language.meta.model.Type<? extends Object>>)(Sequential)empty_.get_();
         ceylon.language.meta.model.Type<?>[] ret = new ceylon.language.meta.model.Type[types.size()];
         int i=0;
-        for(ProducedType pt : types){
+        for(Type pt : types){
             ret[i++] = Metamodel.getAppliedMetamodel(pt);
         }
         return Util.sequentialWrapper(TypeDescriptor.klass(ceylon.language.meta.model.Type.class, Anything.$TypeDescriptor$), 
@@ -535,7 +535,7 @@ public class Metamodel {
     }
 
     @SuppressWarnings({ "rawtypes", "unchecked" })
-    public static <T> ceylon.language.meta.model.Type<T> getAppliedMetamodel(ProducedType pt) {
+    public static <T> ceylon.language.meta.model.Type<T> getAppliedMetamodel(Type pt) {
         TypeDeclaration declaration = pt.getDeclaration();
         if(declaration instanceof com.redhat.ceylon.model.typechecker.model.Constructor){
             pt = pt.getExtendedType();
@@ -762,7 +762,7 @@ public class Metamodel {
         throw Metamodel.newModelError("Unsupported declaration type: " + declaration);
     }
 
-    public static TypeDescriptor getTypeDescriptorForProducedType(com.redhat.ceylon.model.typechecker.model.ProducedType type) {
+    public static TypeDescriptor getTypeDescriptorForProducedType(com.redhat.ceylon.model.typechecker.model.Type type) {
         TypeDeclaration declaration = type.getDeclaration();
         if(type.isNothing()){
             return TypeDescriptor.NothingType;
@@ -852,7 +852,7 @@ public class Metamodel {
         throw Metamodel.newModelError("Unsupported type: " + appliedType);
     }
 
-    private static TypeDescriptor[] getTypeDescriptorsForProducedTypes(List<ProducedType> args) {
+    private static TypeDescriptor[] getTypeDescriptorsForProducedTypes(List<Type> args) {
         TypeDescriptor[] tdArgs = new TypeDescriptor[args.size()];
         for(int i=0;i<tdArgs.length;i++){
             tdArgs[i] = getTypeDescriptorForProducedType(args.get(i));
@@ -881,13 +881,13 @@ public class Metamodel {
         throw Metamodel.newModelError("Unsupported method container for "+method.getName()+": "+container);
     }
 
-    public static com.redhat.ceylon.model.typechecker.model.ProducedType getModel(ceylon.language.meta.declaration.OpenType pt) {
+    public static com.redhat.ceylon.model.typechecker.model.Type getModel(ceylon.language.meta.declaration.OpenType pt) {
         if(pt instanceof FreeClassOrInterfaceType)
             return ((FreeClassOrInterfaceType)pt).producedType;
         throw Metamodel.newModelError("Unsupported produced type: " + pt);
     }
 
-    public static com.redhat.ceylon.model.typechecker.model.ProducedType getModel(ceylon.language.meta.model.Type<?> pt) {
+    public static com.redhat.ceylon.model.typechecker.model.Type getModel(ceylon.language.meta.model.Type<?> pt) {
         if(pt instanceof AppliedClassOrInterface)
             return ((AppliedClassOrInterface<?>)pt).producedType;
         if(pt instanceof AppliedUnionType<?>)
@@ -910,13 +910,13 @@ public class Metamodel {
     }
 
 
-    public static java.util.List<com.redhat.ceylon.model.typechecker.model.ProducedType> getProducedTypes(Sequential<? extends ceylon.language.meta.model.Type<?>> types) {
+    public static java.util.List<com.redhat.ceylon.model.typechecker.model.Type> getProducedTypes(Sequential<? extends ceylon.language.meta.model.Type<?>> types) {
         Iterator<?> iterator = types.iterator();
         Object it;
-        List<com.redhat.ceylon.model.typechecker.model.ProducedType> producedTypes = new LinkedList<com.redhat.ceylon.model.typechecker.model.ProducedType>();
+        List<com.redhat.ceylon.model.typechecker.model.Type> producedTypes = new LinkedList<com.redhat.ceylon.model.typechecker.model.Type>();
         while((it = iterator.next()) != finished_.get_()){
             ceylon.language.meta.model.Type<?> pt = (ceylon.language.meta.model.Type<?>) it;
-            com.redhat.ceylon.model.typechecker.model.ProducedType modelPt = Metamodel.getModel(pt);
+            com.redhat.ceylon.model.typechecker.model.Type modelPt = Metamodel.getModel(pt);
             producedTypes.add(modelPt);
         }
         return producedTypes;
@@ -1134,10 +1134,10 @@ public class Metamodel {
         return module != null ? getOrCreateMetamodel(module, null, true) : null;
     }
 
-    public static List<ProducedType> getParameterProducedTypes(List<Parameter> parameters, ProducedReference producedReference) {
-        List<ProducedType> parameterProducedTypes = new ArrayList<ProducedType>(parameters.size());
+    public static List<Type> getParameterProducedTypes(List<Parameter> parameters, ProducedReference producedReference) {
+        List<Type> parameterProducedTypes = new ArrayList<Type>(parameters.size());
         for(Parameter parameter : parameters){
-            ProducedType ft = producedReference.getTypedParameter(parameter).getFullType();
+            Type ft = producedReference.getTypedParameter(parameter).getFullType();
             parameterProducedTypes.add(ft);
         }
         return parameterProducedTypes;
@@ -1156,7 +1156,7 @@ public class Metamodel {
             ProducedReference producedReference) {
         if(!decl.getParameterLists().isEmpty()){
             List<Parameter> parameters = decl.getParameterLists().get(0).getParameters();
-            com.redhat.ceylon.model.typechecker.model.ProducedType tupleType 
+            com.redhat.ceylon.model.typechecker.model.Type tupleType 
             = unit.getParameterTypesAsTupleType(parameters, producedReference);
             return Metamodel.getTypeDescriptorForProducedType(tupleType);
         }else{
@@ -1164,7 +1164,7 @@ public class Metamodel {
         }
     }
 
-    public static ProducedType getProducedTypeForArguments(com.redhat.ceylon.model.typechecker.model.Unit unit, 
+    public static Type getProducedTypeForArguments(com.redhat.ceylon.model.typechecker.model.Unit unit, 
             com.redhat.ceylon.model.typechecker.model.Functional decl, 
             ProducedReference producedReference) {
         
@@ -1194,9 +1194,9 @@ public class Metamodel {
         return getTypeDescriptorForProducedType(getFunctionReturnType(appliedFunction));
     }
     
-    public static ProducedType getFunctionReturnType(ProducedReference appliedFunction) {
+    public static Type getFunctionReturnType(ProducedReference appliedFunction) {
         // pull the return type out of the Callable
-        ProducedType fullType = appliedFunction.getFullType();
+        Type fullType = appliedFunction.getFullType();
         return fullType.getTypeArgumentList().get(0);
     }
 
@@ -1301,12 +1301,12 @@ public class Metamodel {
             = new LinkedHashMap<ceylon.language.meta.declaration.TypeParameter, ceylon.language.meta.model.Type<?>>();
         Iterator<? extends ceylon.language.meta.declaration.TypeParameter> typeParameters = declaration.getTypeParameterDeclarations().iterator();
         Object it;
-        java.util.Map<com.redhat.ceylon.model.typechecker.model.TypeParameter, com.redhat.ceylon.model.typechecker.model.ProducedType> ptArguments 
+        java.util.Map<com.redhat.ceylon.model.typechecker.model.TypeParameter, com.redhat.ceylon.model.typechecker.model.Type> ptArguments 
         = appliedFunction.getTypeArguments();
         while((it = typeParameters.next()) != finished_.get_()){
             com.redhat.ceylon.compiler.java.runtime.metamodel.FreeTypeParameter tp = (com.redhat.ceylon.compiler.java.runtime.metamodel.FreeTypeParameter) it;
             com.redhat.ceylon.model.typechecker.model.TypeParameter tpDecl = (com.redhat.ceylon.model.typechecker.model.TypeParameter) tp.declaration;
-            com.redhat.ceylon.model.typechecker.model.ProducedType ptArg = ptArguments.get(tpDecl);
+            com.redhat.ceylon.model.typechecker.model.Type ptArg = ptArguments.get(tpDecl);
             ceylon.language.meta.model.Type<?> ptArgWrapped = Metamodel.getAppliedMetamodel(ptArg);
             typeArguments.put(tp, ptArgWrapped);
         }
@@ -1386,7 +1386,7 @@ public class Metamodel {
         return string.toString();
     }
 
-    public static void checkTypeArguments(ProducedType qualifyingType, Declaration declaration, List<ProducedType> typeArguments) {
+    public static void checkTypeArguments(Type qualifyingType, Declaration declaration, List<Type> typeArguments) {
         if(declaration instanceof com.redhat.ceylon.model.typechecker.model.Generic){
             List<com.redhat.ceylon.model.typechecker.model.TypeParameter> typeParameters = ((com.redhat.ceylon.model.typechecker.model.Generic) declaration).getTypeParameters();
             if(typeParameters.size() < typeArguments.size())
@@ -1400,10 +1400,10 @@ public class Metamodel {
                 throw new TypeApplicationException("Not enough type arguments provided: "+typeArguments.size()+", but requires "+requires+" "+min);
             }
             for(int i=0;i<typeArguments.size();i++){
-                ProducedType typeArgument = typeArguments.get(i);
+                Type typeArgument = typeArguments.get(i);
                 com.redhat.ceylon.model.typechecker.model.TypeParameter typeParameter = typeParameters.get(i);
-                for (ProducedType st: typeParameter.getSatisfiedTypes()) {
-                    ProducedType sts = st.getProducedType(qualifyingType, declaration, typeArguments, null);
+                for (Type st: typeParameter.getSatisfiedTypes()) {
+                    Type sts = st.getProducedType(qualifyingType, declaration, typeArguments, null);
                     if (!typeArgument.isSubtypeOf(sts)) {
                         throw new TypeApplicationException("Type argument "+i+": "+typeArgument.getProducedTypeQualifiedName()
                                 +" does not conform to upper bound constraint: "+sts.getProducedTypeQualifiedName()
@@ -1422,46 +1422,46 @@ public class Metamodel {
         }
     }
 
-    public static boolean isTypeOf(ProducedType producedType, Object instance) {
-        ProducedType instanceType = Metamodel.getProducedType(instance);
+    public static boolean isTypeOf(Type producedType, Object instance) {
+        Type instanceType = Metamodel.getProducedType(instance);
         return instanceType.isSubtypeOf(producedType);
     }
 
-    public static boolean isSuperTypeOf(ProducedType a, ceylon.language.meta.model.Type<? extends Object> type) {
-        ProducedType b = Metamodel.getModel(type);
+    public static boolean isSuperTypeOf(Type a, ceylon.language.meta.model.Type<? extends Object> type) {
+        Type b = Metamodel.getModel(type);
         return a.isSupertypeOf(b);
     }
 
-    public static boolean isSubTypeOf(ProducedType a, ceylon.language.meta.model.Type<? extends Object> type) {
-        ProducedType b = Metamodel.getModel(type);
+    public static boolean isSubTypeOf(Type a, ceylon.language.meta.model.Type<? extends Object> type) {
+        Type b = Metamodel.getModel(type);
         return a.isSubtypeOf(b);
     }
 
-    public static boolean isExactly(ProducedType a, ceylon.language.meta.model.Type<? extends Object> type) {
-        ProducedType b = Metamodel.getModel(type);
+    public static boolean isExactly(Type a, ceylon.language.meta.model.Type<? extends Object> type) {
+        Type b = Metamodel.getModel(type);
         return a.isExactly(b);
     }
     
     public static ceylon.language.meta.model.Type<?> union(
             ceylon.language.meta.model.Type<? extends Object> typeX, 
             ceylon.language.meta.model.Type<? extends Object> typeY) {
-        ProducedType x = Metamodel.getModel(typeX);
-        ProducedType y = Metamodel.getModel(typeY);
-        ProducedType unionType = com.redhat.ceylon.model.typechecker.model.Util.unionType(x, y, moduleManager.getModelLoader().getUnit());
+        Type x = Metamodel.getModel(typeX);
+        Type y = Metamodel.getModel(typeY);
+        Type unionType = com.redhat.ceylon.model.typechecker.model.Util.unionType(x, y, moduleManager.getModelLoader().getUnit());
         return getAppliedMetamodel(unionType);
     }
     
     public static ceylon.language.meta.model.Type<?> intersection(
             ceylon.language.meta.model.Type<? extends Object> typeX, 
             ceylon.language.meta.model.Type<? extends Object> typeY) {
-        ProducedType x = Metamodel.getModel(typeX);
-        ProducedType y = Metamodel.getModel(typeY);
-        ProducedType intersectionType = com.redhat.ceylon.model.typechecker.model.Util.intersectionType(x, y, moduleManager.getModelLoader().getUnit());
+        Type x = Metamodel.getModel(typeX);
+        Type y = Metamodel.getModel(typeY);
+        Type intersectionType = com.redhat.ceylon.model.typechecker.model.Util.intersectionType(x, y, moduleManager.getModelLoader().getUnit());
         return getAppliedMetamodel(intersectionType);
     }
 
-    public static void checkReifiedTypeArgument(String methodName, String className, Variance variance, ProducedType appliedType, TypeDescriptor $reifiedType) {
-        ProducedType expectedReifiedType = Metamodel.getProducedType($reifiedType);
+    public static void checkReifiedTypeArgument(String methodName, String className, Variance variance, Type appliedType, TypeDescriptor $reifiedType) {
+        Type expectedReifiedType = Metamodel.getProducedType($reifiedType);
         boolean check = checkReifiedTypeArgument(variance, appliedType, expectedReifiedType);
         if(!check){
             String appliedTypeString = appliedType.getProducedTypeName();
@@ -1475,10 +1475,10 @@ public class Metamodel {
     }
 
     public static void checkReifiedTypeArgument(String methodName, String className, 
-            Variance variance1, ProducedType appliedType1, TypeDescriptor $reifiedType1,
-            Variance variance2, ProducedType appliedType2, TypeDescriptor $reifiedType2) {
-        ProducedType expectedReifiedType1 = Metamodel.getProducedType($reifiedType1);
-        ProducedType expectedReifiedType2 = Metamodel.getProducedType($reifiedType2);
+            Variance variance1, Type appliedType1, TypeDescriptor $reifiedType1,
+            Variance variance2, Type appliedType2, TypeDescriptor $reifiedType2) {
+        Type expectedReifiedType1 = Metamodel.getProducedType($reifiedType1);
+        Type expectedReifiedType2 = Metamodel.getProducedType($reifiedType2);
         boolean check1 = checkReifiedTypeArgument(variance1, appliedType1, expectedReifiedType1);
         boolean check2 = checkReifiedTypeArgument(variance2, appliedType2, expectedReifiedType2);
         if(!check1 || !check2){
@@ -1495,12 +1495,12 @@ public class Metamodel {
     }
 
     public static void checkReifiedTypeArgument(String methodName, String className, 
-            Variance variance1, ProducedType appliedType1, TypeDescriptor $reifiedType1,
-            Variance variance2, ProducedType appliedType2, TypeDescriptor $reifiedType2,
-            Variance variance3, ProducedType appliedType3, TypeDescriptor $reifiedType3) {
-        ProducedType expectedReifiedType1 = Metamodel.getProducedType($reifiedType1);
-        ProducedType expectedReifiedType2 = Metamodel.getProducedType($reifiedType2);
-        ProducedType expectedReifiedType3 = Metamodel.getProducedType($reifiedType3);
+            Variance variance1, Type appliedType1, TypeDescriptor $reifiedType1,
+            Variance variance2, Type appliedType2, TypeDescriptor $reifiedType2,
+            Variance variance3, Type appliedType3, TypeDescriptor $reifiedType3) {
+        Type expectedReifiedType1 = Metamodel.getProducedType($reifiedType1);
+        Type expectedReifiedType2 = Metamodel.getProducedType($reifiedType2);
+        Type expectedReifiedType3 = Metamodel.getProducedType($reifiedType3);
         boolean check1 = checkReifiedTypeArgument(variance1, appliedType1, expectedReifiedType1);
         boolean check2 = checkReifiedTypeArgument(variance2, appliedType2, expectedReifiedType2);
         boolean check3 = checkReifiedTypeArgument(variance3, appliedType3, expectedReifiedType3);
@@ -1519,7 +1519,7 @@ public class Metamodel {
         }
     }
 
-    private static boolean checkReifiedTypeArgument(Variance variance, ProducedType appliedType, ProducedType expectedReifiedType) {
+    private static boolean checkReifiedTypeArgument(Variance variance, Type appliedType, Type expectedReifiedType) {
         switch(variance){
         case IN: return appliedType.isSupertypeOf(expectedReifiedType);
         case OUT: return appliedType.isSubtypeOf(expectedReifiedType);
@@ -1529,12 +1529,12 @@ public class Metamodel {
         }
     }
 
-    public static void checkQualifyingType(ProducedType qualifyingType, Declaration declaration) {
+    public static void checkQualifyingType(Type qualifyingType, Declaration declaration) {
         Scope container = declaration.getContainer();
         if(container instanceof TypeDeclaration == false)
             throw new IncompatibleTypeException("Declaration container is not a type: "+container);
         TypeDeclaration typeDecl = (TypeDeclaration) container;
-        ProducedType supertype = qualifyingType.getSupertype(typeDecl);
+        Type supertype = qualifyingType.getSupertype(typeDecl);
         if(supertype == null)
             throw new IncompatibleTypeException("Invalid container type: "+qualifyingType+" is not a subtype of "+typeDecl);
     }
@@ -1543,7 +1543,7 @@ public class Metamodel {
             DefaultValueProvider defaultValueProvider, 
             com.redhat.ceylon.model.typechecker.model.Functional declaration,
             ceylon.language.Iterable<? extends ceylon.language.Entry<? extends ceylon.language.String,? extends java.lang.Object>,? extends java.lang.Object> arguments, 
-            List<ProducedType> parameterProducedTypes){
+            List<Type> parameterProducedTypes){
         // FIXME: throw for Java declarations
         
         java.util.Map<java.lang.String,java.lang.Object> argumentMap = collectArguments(arguments);
@@ -1559,8 +1559,8 @@ public class Metamodel {
             if(argumentMap.containsKey(parameter.getName())){
                 value = argumentMap.remove(parameter.getName());
                 // we have a value: check the type
-                ProducedType argumentType = Metamodel.getProducedType(value);
-                ProducedType parameterType = parameterProducedTypes.get(parameterIndex);
+                Type argumentType = Metamodel.getProducedType(value);
+                Type parameterType = parameterProducedTypes.get(parameterIndex);
                 if(!argumentType.isSubtypeOf(parameterType))
                     throw new ceylon.language.meta.model.IncompatibleTypeException("Invalid argument "+parameter.getName()+", expected type "+parameterType+" but got "+argumentType);
             }else{
@@ -1602,7 +1602,7 @@ public class Metamodel {
 
     public static <Return> Return apply(Callable<? extends Return> function,
             Sequential<?> arguments, 
-            List<ProducedType> parameterProducedTypes,
+            List<Type> parameterProducedTypes,
             int firstDefaulted, int variadicIndex){
         int argumentCount = Util.toInt(arguments.getSize());
         int parameters = parameterProducedTypes.size();
@@ -1624,17 +1624,17 @@ public class Metamodel {
         Iterator<?> it = arguments.iterator();
         Object arg;
         int i = 0;
-        ProducedType variadicElement = null;
+        Type variadicElement = null;
         if(variadicIndex != -1)
             // it must be a Sequential<T>
             variadicElement = parameterProducedTypes.get(variadicIndex).getTypeArgumentList().get(0);
         while((arg = it.next()) != finished_.get_()){
-            ProducedType parameterType = variadicIndex == -1 || i < variadicIndex ?
+            Type parameterType = variadicIndex == -1 || i < variadicIndex ?
                     // normal param
                     parameterProducedTypes.get(i)
                     // variadic param
                     : variadicElement;
-            ProducedType argumentType = Metamodel.getProducedType(arg);
+            Type argumentType = Metamodel.getProducedType(arg);
             if(!argumentType.isSubtypeOf(parameterType))
                 throw new IncompatibleTypeException("Invalid argument "+i+", expected type "+parameterType+" but got "+argumentType);
             i++;
@@ -1643,10 +1643,10 @@ public class Metamodel {
         return Util.apply(function, arguments);
     }
     
-    public static <K,C>K bind(ceylon.language.meta.model.Qualified<K,C> member, ProducedType containerType, Object container){
+    public static <K,C>K bind(ceylon.language.meta.model.Qualified<K,C> member, Type containerType, Object container){
         if(container == null)
             throw new IncompatibleTypeException("Invalid container "+container+", expected type "+containerType+" but got ceylon.language::Null");
-        ProducedType argumentType = Metamodel.getProducedType(container);
+        Type argumentType = Metamodel.getProducedType(container);
         if(!argumentType.isSubtypeOf(containerType))
             throw new IncompatibleTypeException("Invalid container "+container+", expected type "+containerType+" but got "+argumentType);
         return member.$call$(container);

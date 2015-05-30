@@ -17,7 +17,6 @@ import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 import com.redhat.ceylon.compiler.java.metadata.Variance;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
-import com.redhat.ceylon.model.typechecker.model.ProducedType;
 import com.redhat.ceylon.model.typechecker.model.ProducedTypedReference;
 
 @Ceylon(major = 8)
@@ -58,7 +57,7 @@ public class AppliedMethod<Container, Type, Arguments extends Sequential<? exten
         // get a list of produced parameter types
         com.redhat.ceylon.model.typechecker.model.Method method = (com.redhat.ceylon.model.typechecker.model.Method)appliedFunction.getDeclaration();
         List<Parameter> parameters = method.getParameterLists().get(0).getParameters();
-        List<ProducedType> parameterProducedTypes = Metamodel.getParameterProducedTypes(parameters, appliedFunction);
+        List<com.redhat.ceylon.model.typechecker.model.Type> parameterProducedTypes = Metamodel.getParameterProducedTypes(parameters, appliedFunction);
         this.parameterTypes = Metamodel.getAppliedMetamodelSequential(parameterProducedTypes);
     }
 

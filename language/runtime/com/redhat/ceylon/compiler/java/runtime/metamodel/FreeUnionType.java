@@ -26,14 +26,14 @@ public class FreeUnionType
     protected Sequential<ceylon.language.meta.declaration.OpenType> caseTypes;
 
     // this is only used for equals
-    private com.redhat.ceylon.model.typechecker.model.ProducedType model;
+    private com.redhat.ceylon.model.typechecker.model.Type model;
     
     FreeUnionType(com.redhat.ceylon.model.typechecker.model.UnionType union){
         this.model = union.getType();
-        List<com.redhat.ceylon.model.typechecker.model.ProducedType> caseTypes = union.getCaseTypes();
+        List<com.redhat.ceylon.model.typechecker.model.Type> caseTypes = union.getCaseTypes();
         ceylon.language.meta.declaration.OpenType[] types = new ceylon.language.meta.declaration.OpenType[caseTypes.size()];
         int i=0;
-        for(com.redhat.ceylon.model.typechecker.model.ProducedType pt : caseTypes){
+        for(com.redhat.ceylon.model.typechecker.model.Type pt : caseTypes){
             types[i++] = Metamodel.getMetamodel(pt);
         }
         this.caseTypes = Util.sequentialWrapper(ceylon.language.meta.declaration.OpenType.$TypeDescriptor$, types);

@@ -20,7 +20,7 @@ import com.redhat.ceylon.compiler.java.metadata.Variance;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 import com.redhat.ceylon.model.loader.NamingBase;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
-import com.redhat.ceylon.model.typechecker.model.ProducedType;
+import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.Scope;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 
@@ -83,12 +83,12 @@ public class FreeValue
         if(!getToplevel())
             throw new ceylon.language.meta.model.TypeApplicationException("Cannot apply a member declaration with no container type: use memberApply");
         com.redhat.ceylon.model.typechecker.model.Value modelDecl = (com.redhat.ceylon.model.typechecker.model.Value)declaration;
-        com.redhat.ceylon.model.typechecker.model.ProducedTypedReference typedReference = modelDecl.getProducedTypedReference(null, Collections.<ProducedType>emptyList());
+        com.redhat.ceylon.model.typechecker.model.ProducedTypedReference typedReference = modelDecl.getProducedTypedReference(null, Collections.<Type>emptyList());
 
-        com.redhat.ceylon.model.typechecker.model.ProducedType getType = typedReference.getType();
+        com.redhat.ceylon.model.typechecker.model.Type getType = typedReference.getType();
         TypeDescriptor reifiedGet = Metamodel.getTypeDescriptorForProducedType(getType);
         // immutable values have Set=Nothing
-        com.redhat.ceylon.model.typechecker.model.ProducedType setType = getVariable() ? 
+        com.redhat.ceylon.model.typechecker.model.Type setType = getVariable() ? 
                 getType : modelDecl.getUnit().getNothingType();
         TypeDescriptor reifiedSet = getVariable() ? reifiedGet : TypeDescriptor.NothingType;
         
@@ -113,18 +113,18 @@ public class FreeValue
                 @Name("containerType") ceylon.language.meta.model.Type<? extends Object> containerType){
         if(getToplevel())
             throw new ceylon.language.meta.model.TypeApplicationException("Cannot apply a toplevel declaration to a container type: use apply");
-        ProducedType qualifyingType = Metamodel.getModel(containerType);
+        Type qualifyingType = Metamodel.getModel(containerType);
         Metamodel.checkQualifyingType(qualifyingType, declaration);
         com.redhat.ceylon.model.typechecker.model.Value modelDecl = (com.redhat.ceylon.model.typechecker.model.Value)declaration;
         // find the proper qualifying type
-        ProducedType memberQualifyingType = qualifyingType.getSupertype((TypeDeclaration) modelDecl.getContainer());
-        com.redhat.ceylon.model.typechecker.model.ProducedTypedReference typedReference = modelDecl.getProducedTypedReference(memberQualifyingType, Collections.<ProducedType>emptyList());
+        Type memberQualifyingType = qualifyingType.getSupertype((TypeDeclaration) modelDecl.getContainer());
+        com.redhat.ceylon.model.typechecker.model.ProducedTypedReference typedReference = modelDecl.getProducedTypedReference(memberQualifyingType, Collections.<Type>emptyList());
         TypeDescriptor reifiedContainer = Metamodel.getTypeDescriptorForProducedType(qualifyingType);
         
-        com.redhat.ceylon.model.typechecker.model.ProducedType getType = typedReference.getType();
+        com.redhat.ceylon.model.typechecker.model.Type getType = typedReference.getType();
         TypeDescriptor reifiedGet = Metamodel.getTypeDescriptorForProducedType(getType);
         // immutable values have Set=Nothing
-        com.redhat.ceylon.model.typechecker.model.ProducedType setType = getVariable() ? 
+        com.redhat.ceylon.model.typechecker.model.Type setType = getVariable() ? 
                 getType : modelDecl.getUnit().getNothingType();
         TypeDescriptor reifiedSet = getVariable() ? reifiedGet : TypeDescriptor.NothingType;
         

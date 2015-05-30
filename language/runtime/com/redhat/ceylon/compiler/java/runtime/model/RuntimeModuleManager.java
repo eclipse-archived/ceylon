@@ -17,7 +17,7 @@ import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.ModuleImport;
 import com.redhat.ceylon.model.typechecker.model.Modules;
 import com.redhat.ceylon.model.typechecker.model.Package;
-import com.redhat.ceylon.model.typechecker.model.ProducedType;
+import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.Unit;
 
 public class RuntimeModuleManager extends ReflectionModuleManager {
@@ -119,17 +119,17 @@ public class RuntimeModuleManager extends ReflectionModuleManager {
     }
     
     @SuppressWarnings("serial")
-    private final LinkedHashMap<TypeDescriptor, ProducedType> producedTypeCache = 
-    		new LinkedHashMap<TypeDescriptor, ProducedType>(100, (float)0.75, true) {
+    private final LinkedHashMap<TypeDescriptor, Type> producedTypeCache = 
+    		new LinkedHashMap<TypeDescriptor, Type>(100, (float)0.75, true) {
     	@Override
     	protected boolean removeEldestEntry
-    	        (Map.Entry<TypeDescriptor,ProducedType> eldest) {
+    	        (Map.Entry<TypeDescriptor,Type> eldest) {
     		return size() > 100;
     	}
     };
     
-    public ProducedType getCachedProducedType(TypeDescriptor td) {
-        ProducedType pt = producedTypeCache.get(td);
+    public Type getCachedProducedType(TypeDescriptor td) {
+        Type pt = producedTypeCache.get(td);
         if (pt == null) {
             pt = td.toProducedType(this);
             producedTypeCache.put(td, pt);
@@ -157,8 +157,8 @@ public class RuntimeModuleManager extends ReflectionModuleManager {
         
         if(instanceType == null)
             return false;
-        ProducedType pt1 = getCachedProducedType(instanceType);
-        ProducedType pt2  = getCachedProducedType(type);
+        Type pt1 = getCachedProducedType(instanceType);
+        Type pt2  = getCachedProducedType(type);
         boolean result = pt1.isSubtypeOf(pt2);
         isCache.put(key, result);
         return result;

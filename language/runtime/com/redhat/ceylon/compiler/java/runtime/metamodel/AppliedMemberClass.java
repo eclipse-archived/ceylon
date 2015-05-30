@@ -12,7 +12,6 @@ import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Name;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
-import com.redhat.ceylon.model.typechecker.model.ProducedType;
 
 public class AppliedMemberClass<Container, Type, Arguments extends Sequential<? extends Object>> 
     extends AppliedClassOrInterface<Type>
@@ -26,7 +25,7 @@ public class AppliedMemberClass<Container, Type, Arguments extends Sequential<? 
     AppliedMemberClass(@Ignore TypeDescriptor $reifiedContainer,
                        @Ignore TypeDescriptor $reifiedType,
                        @Ignore TypeDescriptor $reifiedArguments, 
-                       ProducedType producedType) {
+                       com.redhat.ceylon.model.typechecker.model.Type producedType) {
         super($reifiedType, producedType);
         this.$reifiedArguments = $reifiedArguments;
         this.$reifiedContainer = $reifiedContainer;
@@ -45,7 +44,7 @@ public class AppliedMemberClass<Container, Type, Arguments extends Sequential<? 
         // FIXME: so we really want to disallow that in the metamodel?
         if(!decl.isAnonymous() && !Metamodel.isLocalType(decl)){
             // get a list of produced parameter types
-            java.util.List<ProducedType> parameterProducedTypes = Metamodel.getParameterProducedTypes(decl.getParameterList().getParameters(), producedType);
+            java.util.List<com.redhat.ceylon.model.typechecker.model.Type> parameterProducedTypes = Metamodel.getParameterProducedTypes(decl.getParameterList().getParameters(), producedType);
             this.parameterTypes = Metamodel.getAppliedMetamodelSequential(parameterProducedTypes);
         }else{
             this.parameterTypes = (Sequential) empty_.get_();
@@ -215,7 +214,7 @@ public class AppliedMemberClass<Container, Type, Arguments extends Sequential<? 
         final FreeConstructor ctor = (FreeConstructor)((FreeClass)declaration).getConstructorDeclaration(name);
         if(ctor == null)
             return null;
-        return new AppliedMemberClassConstructor($reifiedContainer, this.$reifiedType, reified$Arguments, this, ctor.constructor.getProducedType(this.producedType, Collections.<ProducedType>emptyList()), ctor);
+        return new AppliedMemberClassConstructor($reifiedContainer, this.$reifiedType, reified$Arguments, this, ctor.constructor.getProducedType(this.producedType, Collections.<com.redhat.ceylon.model.typechecker.model.Type>emptyList()), ctor);
     }
     
 }

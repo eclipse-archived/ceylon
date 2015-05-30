@@ -27,13 +27,13 @@ public abstract class FreeClassOrInterfaceType
     public static final TypeDescriptor $TypeDescriptor$ = TypeDescriptor.klass(FreeClassOrInterfaceType.class);
     
     private volatile boolean initialised;
-    final com.redhat.ceylon.model.typechecker.model.ProducedType producedType;
+    final com.redhat.ceylon.model.typechecker.model.Type producedType;
     protected com.redhat.ceylon.compiler.java.runtime.metamodel.FreeClassOrInterface declaration;
     protected ceylon.language.Map<? extends ceylon.language.meta.declaration.TypeParameter, ? extends ceylon.language.meta.declaration.OpenType> typeArguments;
     protected ceylon.language.meta.declaration.OpenClassType superclass;
     protected Sequential<ceylon.language.meta.declaration.OpenInterfaceType> interfaces;
     
-    FreeClassOrInterfaceType(com.redhat.ceylon.model.typechecker.model.ProducedType producedType){
+    FreeClassOrInterfaceType(com.redhat.ceylon.model.typechecker.model.Type producedType){
         this.producedType = producedType;
     }
 
@@ -55,12 +55,12 @@ public abstract class FreeClassOrInterfaceType
             = new LinkedHashMap<ceylon.language.meta.declaration.TypeParameter, ceylon.language.meta.declaration.OpenType>();
         Iterator<? extends ceylon.language.meta.declaration.TypeParameter> typeParameters = declaration.getTypeParameterDeclarations().iterator();
         Object it;
-        java.util.Map<com.redhat.ceylon.model.typechecker.model.TypeParameter, com.redhat.ceylon.model.typechecker.model.ProducedType> ptArguments 
+        java.util.Map<com.redhat.ceylon.model.typechecker.model.TypeParameter, com.redhat.ceylon.model.typechecker.model.Type> ptArguments 
             = producedType.getTypeArguments();
         while((it = typeParameters.next()) != finished_.get_()){
             com.redhat.ceylon.compiler.java.runtime.metamodel.FreeTypeParameter tp = (com.redhat.ceylon.compiler.java.runtime.metamodel.FreeTypeParameter) it;
             com.redhat.ceylon.model.typechecker.model.TypeParameter tpDecl = (com.redhat.ceylon.model.typechecker.model.TypeParameter) tp.declaration;
-            com.redhat.ceylon.model.typechecker.model.ProducedType ptArg = ptArguments.get(tpDecl);
+            com.redhat.ceylon.model.typechecker.model.Type ptArg = ptArguments.get(tpDecl);
             OpenType ptArgWrapped = Metamodel.getMetamodel(ptArg);
             typeArguments.put(tp, ptArgWrapped);
         }
@@ -69,18 +69,18 @@ public abstract class FreeClassOrInterfaceType
                                                                                              ceylon.language.meta.declaration.OpenType.$TypeDescriptor$, 
                                                                                              typeArguments);
         
-        com.redhat.ceylon.model.typechecker.model.ProducedType superType = decl.getExtendedType();
+        com.redhat.ceylon.model.typechecker.model.Type superType = decl.getExtendedType();
         if(superType != null){
-            com.redhat.ceylon.model.typechecker.model.ProducedType superTypeResolved = superType.substitute(producedType);
+            com.redhat.ceylon.model.typechecker.model.Type superTypeResolved = superType.substitute(producedType);
             this.superclass = (ceylon.language.meta.declaration.OpenClassType) Metamodel.getMetamodel(superTypeResolved);
         }
         
-        List<com.redhat.ceylon.model.typechecker.model.ProducedType> satisfiedTypes = decl.getSatisfiedTypes();
+        List<com.redhat.ceylon.model.typechecker.model.Type> satisfiedTypes = decl.getSatisfiedTypes();
         ceylon.language.meta.declaration.OpenInterfaceType[] interfaces 
             = new ceylon.language.meta.declaration.OpenInterfaceType[satisfiedTypes.size()];
         int i=0;
-        for(com.redhat.ceylon.model.typechecker.model.ProducedType pt : satisfiedTypes){
-            com.redhat.ceylon.model.typechecker.model.ProducedType resolvedPt = pt.substitute(producedType);
+        for(com.redhat.ceylon.model.typechecker.model.Type pt : satisfiedTypes){
+            com.redhat.ceylon.model.typechecker.model.Type resolvedPt = pt.substitute(producedType);
             interfaces[i++] = (ceylon.language.meta.declaration.OpenInterfaceType) 
                     Metamodel.getMetamodel(resolvedPt);
         }
