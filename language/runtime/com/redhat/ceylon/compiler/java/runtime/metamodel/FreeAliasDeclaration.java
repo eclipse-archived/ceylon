@@ -91,7 +91,7 @@ public class FreeAliasDeclaration extends FreeNestableDeclaration
         if(!getToplevel())
             // FIXME: change type
             throw new RuntimeException("Cannot apply a member declaration with no container type: use memberApply");
-        List<com.redhat.ceylon.compiler.typechecker.model.ProducedType> producedTypes = Metamodel.getProducedTypes(typeArguments);
+        List<com.redhat.ceylon.compiler.typechecker.model.Type> producedTypes = Metamodel.getProducedTypes(typeArguments);
         Metamodel.checkTypeArguments(null, declaration, producedTypes);
         Reference producedReference = declaration.getProducedReference(null, producedTypes);
         final Type appliedType = producedReference.getType();
@@ -127,7 +127,7 @@ public class FreeAliasDeclaration extends FreeNestableDeclaration
         if(getToplevel())
             // FIXME: change type
             throw new RuntimeException("Cannot apply a toplevel declaration to a container type: use apply");
-        List<com.redhat.ceylon.compiler.typechecker.model.ProducedType> producedTypes = Metamodel.getProducedTypes(typeArguments);
+        List<com.redhat.ceylon.compiler.typechecker.model.Type> producedTypes = Metamodel.getProducedTypes(typeArguments);
         Type qualifyingType = Metamodel.getModel(containerType);
         Metamodel.checkTypeArguments(qualifyingType, declaration, producedTypes);
         Reference producedReference = declaration.getProducedReference(qualifyingType, producedTypes);
