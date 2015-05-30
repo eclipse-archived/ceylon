@@ -366,7 +366,7 @@ public abstract class FreeClassOrInterface
             throw new ceylon.language.meta.model.TypeApplicationException("Cannot apply a member declaration with no container type: use memberApply");
         List<com.redhat.ceylon.model.typechecker.model.Type> producedTypes = Metamodel.getProducedTypes(typeArguments);
         Metamodel.checkTypeArguments(null, declaration, producedTypes);
-        com.redhat.ceylon.model.typechecker.model.Reference appliedType = declaration.getProducedReference(null, producedTypes);
+        com.redhat.ceylon.model.typechecker.model.Reference appliedType = declaration.appliedReference(null, producedTypes);
         Metamodel.checkReifiedTypeArgument("apply", "ClassOrInterface<$1>", Variance.OUT, appliedType.getType(), $reifiedType);
         return (ClassOrInterface<Type>) Metamodel.getAppliedMetamodel(appliedType.getType());
     }
@@ -430,7 +430,7 @@ public abstract class FreeClassOrInterface
         Metamodel.checkTypeArguments(qualifyingType, declaration, producedTypes);
         // find the proper qualifying type
         Type memberQualifyingType = qualifyingType.getSupertype((TypeDeclaration) declaration.getContainer());
-        Reference producedReference = declaration.getProducedReference(memberQualifyingType, producedTypes);
+        Reference producedReference = declaration.appliedReference(memberQualifyingType, producedTypes);
         final Type appliedType = producedReference.getType();
         return (Member<Container, Kind>) Metamodel.getAppliedMetamodel(appliedType);
     }

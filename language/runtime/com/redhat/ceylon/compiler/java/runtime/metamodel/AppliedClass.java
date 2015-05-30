@@ -582,7 +582,7 @@ public class AppliedClass<Type, Arguments extends Sequential<? extends Object>>
             return null;
         TypeDescriptor reifiedType = null;//TODO
         TypeDescriptor reifiedArguments = null;//TODO
-        return new AppliedConstructor<Type,Arguments>(reifiedType, reifiedArguments, this, ctor.constructor.getProducedType(this.producedType, Collections.<com.redhat.ceylon.model.typechecker.model.Type>emptyList()), ctor, this.instance);
+        return new AppliedConstructor<Type,Arguments>(reifiedType, reifiedArguments, this, ctor.constructor.appliedType(this.producedType, Collections.<com.redhat.ceylon.model.typechecker.model.Type>emptyList()), ctor, this.instance);
     }
     
 }

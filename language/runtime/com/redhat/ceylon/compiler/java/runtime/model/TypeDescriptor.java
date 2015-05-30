@@ -284,7 +284,7 @@ public abstract class TypeDescriptor {
             for(TypeDescriptor typeArg : typeArguments){
                 typeArgs.add(Metamodel.getProducedType(typeArg));
             }
-            Type type = decl.getProducedType(qualifyingType, typeArgs);
+            Type type = decl.appliedType(qualifyingType, typeArgs);
             type = applyUseSiteVariance(decl, type);
             return type;
         }
@@ -410,7 +410,7 @@ public abstract class TypeDescriptor {
                 typeArgs.add(Metamodel.getProducedType(typeArg));
             }
             // wrap it
-            return new FunctionOrValueInterface(declaration).getProducedType(qualifyingType, typeArgs);
+            return new FunctionOrValueInterface(declaration).appliedType(qualifyingType, typeArgs);
         }
 
         @Override

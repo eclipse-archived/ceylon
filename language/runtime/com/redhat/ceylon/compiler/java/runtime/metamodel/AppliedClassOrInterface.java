@@ -610,7 +610,7 @@ public abstract class AppliedClassOrInterface<Type>
             com.redhat.ceylon.model.typechecker.model.Type reifiedGet, 
             com.redhat.ceylon.model.typechecker.model.Type reifiedSet){
         // now the types
-        Reference producedReference = decl.declaration.getProducedReference(qualifyingType, NO_TYPE_ARGS);
+        Reference producedReference = decl.declaration.appliedReference(qualifyingType, NO_TYPE_ARGS);
         com.redhat.ceylon.model.typechecker.model.Type type = producedReference.getType();
         if(!type.isSubtypeOf(reifiedGet))
             return;
@@ -828,7 +828,7 @@ public abstract class AppliedClassOrInterface<Type>
             com.redhat.ceylon.model.typechecker.model.Type reifiedType, 
             com.redhat.ceylon.model.typechecker.model.Type reifiedArguments){
         // now the types
-        Reference producedReference = decl.declaration.getProducedReference(qualifyingType, Collections.<com.redhat.ceylon.model.typechecker.model.Type>emptyList());
+        Reference producedReference = decl.declaration.appliedReference(qualifyingType, Collections.<com.redhat.ceylon.model.typechecker.model.Type>emptyList());
         com.redhat.ceylon.model.typechecker.model.Type type = producedReference.getType();
         if(!type.isSubtypeOf(reifiedType))
             return;
@@ -983,7 +983,7 @@ public abstract class AppliedClassOrInterface<Type>
             com.redhat.ceylon.model.typechecker.model.Type reifiedType, 
             com.redhat.ceylon.model.typechecker.model.Type reifiedArguments){
         // now the types
-        Reference producedReference = decl.declaration.getProducedReference(qualifyingType, Collections.<com.redhat.ceylon.model.typechecker.model.Type>emptyList());
+        Reference producedReference = decl.declaration.appliedReference(qualifyingType, Collections.<com.redhat.ceylon.model.typechecker.model.Type>emptyList());
         com.redhat.ceylon.model.typechecker.model.Type type = producedReference.getType();
         if(!type.isSubtypeOf(reifiedType))
             return;
@@ -1128,7 +1128,7 @@ public abstract class AppliedClassOrInterface<Type>
             AppliedClassOrInterface<Container> containerMetamodel,
             com.redhat.ceylon.model.typechecker.model.Type reifiedType){
         // now the types
-        Reference producedReference = decl.declaration.getProducedReference(qualifyingType, Collections.<com.redhat.ceylon.model.typechecker.model.Type>emptyList());
+        Reference producedReference = decl.declaration.appliedReference(qualifyingType, Collections.<com.redhat.ceylon.model.typechecker.model.Type>emptyList());
         com.redhat.ceylon.model.typechecker.model.Type type = producedReference.getType();
         if(!type.isSubtypeOf(reifiedType))
             return;
