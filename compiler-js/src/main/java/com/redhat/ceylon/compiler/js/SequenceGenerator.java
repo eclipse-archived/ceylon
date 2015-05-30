@@ -12,7 +12,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.SequencedArgument;
 import com.redhat.ceylon.model.typechecker.model.Function;
 import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.TypeParameter;
-import com.redhat.ceylon.model.typechecker.model.Util;
+import com.redhat.ceylon.model.typechecker.model.ModelUtil;
 
 public class SequenceGenerator {
 
@@ -31,7 +31,7 @@ public class SequenceGenerator {
             if (expr == seqarg) {
                 gen.out("}return ", gen.getClAlias(), "finished();},function(){return ");
                 if (gen.isInDynamicBlock() && expr instanceof Tree.SpreadArgument
-                        && Util.isTypeUnknown(expr.getTypeModel())) {
+                        && ModelUtil.isTypeUnknown(expr.getTypeModel())) {
                     TypeUtils.spreadArrayCheck(((Tree.SpreadArgument)expr).getExpression(), gen);
                 } else {
                     expr.visit(gen);
@@ -70,8 +70,8 @@ public class SequenceGenerator {
                 if (count > 0) {
                     gen.out(",");
                 }
-                if (gen.isInDynamicBlock() && expr instanceof Tree.ListedArgument && Util.isTypeUnknown(expr.getTypeModel())
-                        && expr.getParameter() != null && !Util.isTypeUnknown(expr.getParameter().getType())) {
+                if (gen.isInDynamicBlock() && expr instanceof Tree.ListedArgument && ModelUtil.isTypeUnknown(expr.getTypeModel())
+                        && expr.getParameter() != null && !ModelUtil.isTypeUnknown(expr.getParameter().getType())) {
                     //TODO find out how to test this, if at all possible
                     TypeUtils.generateDynamicCheck(((Tree.ListedArgument)expr).getExpression(),
                             expr.getParameter().getType(), gen, false, that.getTypeModel().getTypeArguments());

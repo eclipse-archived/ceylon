@@ -29,7 +29,7 @@ import com.redhat.ceylon.model.typechecker.model.SiteVariance;
 import com.redhat.ceylon.model.typechecker.model.TypeAlias;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.model.typechecker.model.TypeParameter;
-import com.redhat.ceylon.model.typechecker.model.Util;
+import com.redhat.ceylon.model.typechecker.model.ModelUtil;
 import com.redhat.ceylon.model.typechecker.model.Value;
 
 /** Generates the metamodel for all objects in a module.
@@ -130,7 +130,7 @@ public class MetamodelGenerator {
         if (d.isToplevel()) {
             return pkgmap;
         }
-        List<String> names = TypeUtils.generateModelPath(Util.getContainingDeclaration(d));
+        List<String> names = TypeUtils.generateModelPath(ModelUtil.getContainingDeclaration(d));
         names.remove(0); //we don't need the package key
         Map<String, Object> last = pkgmap;
         for (String name : names) {
@@ -153,7 +153,7 @@ public class MetamodelGenerator {
      * type, in which case it contains a "comp" key with an "i" or "u" and a key "types" with
      * the list of types that compose it. */
     private Map<String, Object> typeMap(Type pt, Declaration from) {
-        if (Util.isTypeUnknown(pt)) {
+        if (ModelUtil.isTypeUnknown(pt)) {
             return unknownTypeMap;
         }
         Map<String, Object> m = new HashMap<>();
@@ -179,11 +179,11 @@ public class MetamodelGenerator {
             p0 = qn.indexOf('.');
             if (p0 >= 0) {
                 StringBuilder nestedName = new StringBuilder(TypeUtils.modelName(d));
-                Declaration pd = Util.getContainingDeclaration(d);
+                Declaration pd = ModelUtil.getContainingDeclaration(d);
                 while (pd != null) {
                     nestedName.insert(0, '.');
                     nestedName.insert(0, TypeUtils.modelName(pd));
-                    pd = Util.getContainingDeclaration(pd);
+                    pd = ModelUtil.getContainingDeclaration(pd);
                 }
                 qn = nestedName.toString();
             }

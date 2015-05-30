@@ -93,7 +93,7 @@ import com.redhat.ceylon.model.typechecker.model.TypeAlias;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.model.typechecker.model.TypeParameter;
 import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
-import com.redhat.ceylon.model.typechecker.model.Util;
+import com.redhat.ceylon.model.typechecker.model.ModelUtil;
 import com.redhat.ceylon.model.typechecker.model.Value;
 
 public class GenerateJsVisitor extends Visitor
@@ -547,7 +547,7 @@ public class GenerateJsVisitor extends Visitor
             //Code inside anonymous inner types sometimes gens direct refs to the outer instance
             //We can detect if that's going to happen and declare the ref right here
             if (ntv.needsOuterReference()) {
-                final Declaration od = Util.getContainingDeclaration(prototypeOwner);
+                final Declaration od = ModelUtil.getContainingDeclaration(prototypeOwner);
                 if (od instanceof TypeDeclaration) {
                     out(",", names.self((TypeDeclaration)od), "=", me, ".outer$");
                 }
@@ -872,7 +872,7 @@ public class GenerateJsVisitor extends Visitor
 
     void referenceOuter(TypeDeclaration d) {
         if (!d.isToplevel()) {
-            final ClassOrInterface coi = Util.getContainingClassOrInterface(d.getContainer());
+            final ClassOrInterface coi = ModelUtil.getContainingClassOrInterface(d.getContainer());
             if (coi != null) {
                 out(names.self(d), ".outer$");
                 if (d.isClassOrInterfaceMember()) {
@@ -894,8 +894,8 @@ public class GenerateJsVisitor extends Visitor
         }
         final boolean inProto = opts.isOptimize()
                 && (type.getScope().getContainer() instanceof TypeDeclaration);
-        if (inProto && coi.isMember() && !d.isAlias() && (coi.getContainer() == Util.getContainingDeclaration(d)
-                || Util.contains(d, coi))) {
+        if (inProto && coi.isMember() && !d.isAlias() && (coi.getContainer() == ModelUtil.getContainingDeclaration(d)
+                || ModelUtil.contains(d, coi))) {
             //A member class that extends or satisfies another member of its same container,
             //use its $init$ function
             return "$init$" +  names.name(d) + "()";
@@ -953,7 +953,7 @@ public class GenerateJsVisitor extends Visitor
                     }
                 }
                 if (d.isMember()) {
-                    ClassOrInterface coi = Util.getContainingClassOrInterface(d.getContainer());
+                    ClassOrInterface coi = ModelUtil.getContainingClassOrInterface(d.getContainer());
                     if (coi != null && d.inherits(coi)) {
                         out(names.self(d), ".", names.name(d),"=", names.name(d), ";");
                     }
@@ -1597,7 +1597,7 @@ public class GenerateJsVisitor extends Visitor
             }
             boolean addMeta=!opts.isOptimize() || d.isToplevel();
             if (!d.isToplevel()) {
-                addMeta |= Util.getContainingDeclaration(d).isAnonymous();
+                addMeta |= ModelUtil.getContainingDeclaration(d).isAnonymous();
             }
             if (addMeta) {
                 generateAttributeMetamodel(that, addGetter, addSetter);
@@ -1761,12 +1761,12 @@ public class GenerateJsVisitor extends Visitor
 
     @Override
     public void visit(final Tree.This that) {
-        out(names.self(Util.getContainingClassOrInterface(that.getScope())));
+        out(names.self(ModelUtil.getContainingClassOrInterface(that.getScope())));
     }
 
     @Override
     public void visit(final Tree.Super that) {
-        out(names.self(Util.getContainingClassOrInterface(that.getScope())));
+        out(names.self(ModelUtil.getContainingClassOrInterface(that.getScope())));
     }
 
     @Override
@@ -2173,7 +2173,7 @@ public class GenerateJsVisitor extends Visitor
         // Box the value
         final boolean fromNative = isNativeJs(fromTerm);
         final Type fromType = fromTerm.getTypeModel();
-        final String fromTypeName = Util.isTypeUnknown(fromType) ? "UNKNOWN" : fromType.getProducedTypeQualifiedName();
+        final String fromTypeName = ModelUtil.isTypeUnknown(fromType) ? "UNKNOWN" : fromType.getProducedTypeQualifiedName();
         if (fromNative != toNative || fromTypeName.startsWith("ceylon.language::Callable<")) {
             if (fromNative) {
                 // conversion from native value to Ceylon value
@@ -2272,7 +2272,7 @@ public class GenerateJsVisitor extends Visitor
         final Tree.Term term = specStmt.getBaseMemberExpression();
         final Tree.StaticMemberOrTypeExpression smte = term instanceof Tree.StaticMemberOrTypeExpression
                 ? (Tree.StaticMemberOrTypeExpression)term : null;
-        if (dynblock > 0 && Util.isTypeUnknown(term.getTypeModel())) {
+        if (dynblock > 0 && ModelUtil.isTypeUnknown(term.getTypeModel())) {
             if (smte != null && smte.getDeclaration() == null) {
                 out(smte.getIdentifier().getText());
             } else {
@@ -2351,8 +2351,8 @@ public class GenerateJsVisitor extends Visitor
                     BmeGenerator.generateMemberAccess(smte, new GenerateCallback() {
                         @Override public void generateValue() {
                             int boxType = boxUnboxStart(expr.getTerm(), moval);
-                            if (dynblock > 0 && !Util.isTypeUnknown(moval.getType())
-                                    && Util.isTypeUnknown(expr.getTypeModel())) {
+                            if (dynblock > 0 && !ModelUtil.isTypeUnknown(moval.getType())
+                                    && ModelUtil.isTypeUnknown(expr.getTypeModel())) {
                                 TypeUtils.generateDynamicCheck(expr, moval.getType(), GenerateJsVisitor.this, false,
                                         expr.getTypeModel().getTypeArguments());
                             } else {
@@ -2415,7 +2415,7 @@ public class GenerateJsVisitor extends Visitor
                         // declaration itself can be omitted), so generate the attribute.
                         if (opts.isOptimize()) {
                             //#451
-                            out(names.self(Util.getContainingClassOrInterface(moval.getScope())), ".",
+                            out(names.self(ModelUtil.getContainingClassOrInterface(moval.getScope())), ".",
                                     names.name(moval));
                             if (!(moval.isVariable() || moval.isLate())) {
                                     out("_");
@@ -2435,8 +2435,8 @@ public class GenerateJsVisitor extends Visitor
                         qualify(specStmt, bmeDecl);
                     }
                     out(names.name(bmeDecl), "=");
-                    if (dynblock > 0 && Util.isTypeUnknown(expr.getTypeModel())
-                            && !Util.isTypeUnknown(((FunctionOrValue) bmeDecl).getType())) {
+                    if (dynblock > 0 && ModelUtil.isTypeUnknown(expr.getTypeModel())
+                            && !ModelUtil.isTypeUnknown(((FunctionOrValue) bmeDecl).getType())) {
                         TypeUtils.generateDynamicCheck(expr, ((FunctionOrValue) bmeDecl).getType(), this, false,
                                 expr.getTypeModel().getTypeArguments());
                     } else {
@@ -2476,7 +2476,7 @@ public class GenerateJsVisitor extends Visitor
         String returnValue = null;
         StaticMemberOrTypeExpression lhsExpr = null;
         
-        if (dynblock > 0 && Util.isTypeUnknown(that.getLeftTerm().getTypeModel())) {
+        if (dynblock > 0 && ModelUtil.isTypeUnknown(that.getLeftTerm().getTypeModel())) {
             that.getLeftTerm().visit(this);
             out("=");
             int box = boxUnboxStart(that.getRightTerm(), that.getLeftTerm());
@@ -2561,7 +2561,7 @@ public class GenerateJsVisitor extends Visitor
                     scope = scope.getContainer();
                 }
                 final StringBuilder path = new StringBuilder();
-                final Declaration innermostDeclaration = Util.getContainingDeclarationOfScope(scope);
+                final Declaration innermostDeclaration = ModelUtil.getContainingDeclarationOfScope(scope);
                 while (scope != null) {
                     if (scope instanceof Constructor
                             && scope == innermostDeclaration) {
@@ -2579,7 +2579,7 @@ public class GenerateJsVisitor extends Visitor
                             if (scope instanceof Constructor==false) {
                                 path.append(".outer$");
                             }
-                        } else if (d instanceof Constructor && Util.getContainingDeclaration(d) == scope) {
+                        } else if (d instanceof Constructor && ModelUtil.getContainingDeclaration(d) == scope) {
                             if (!d.getName().equals(((TypeDeclaration)scope).getName())) {
                                 if (path.length()>0) {
                                     path.append('.');
@@ -2600,7 +2600,7 @@ public class GenerateJsVisitor extends Visitor
                     }
                     scope = scope.getContainer();
                 }
-                if (id != null && path.length() == 0 && !Util.contains(id, that.getScope())) {
+                if (id != null && path.length() == 0 && !ModelUtil.contains(id, that.getScope())) {
                     //Import of toplevel object or constructor
                     if (imported) {
                         path.append(names.moduleAlias(id.getUnit().getPackage().getModule())).append('.');
@@ -2618,7 +2618,7 @@ public class GenerateJsVisitor extends Visitor
                     //a local declaration of some kind,
                     //perhaps in an outer scope
                     id = (TypeDeclaration) d.getContainer();
-                    if (id.isToplevel() && !Util.contains(id, that.getScope())) {
+                    if (id.isToplevel() && !ModelUtil.contains(id, that.getScope())) {
                         //Import of toplevel object or constructor
                         final StringBuilder sb = new StringBuilder();
                         if (imported) {
@@ -2678,11 +2678,11 @@ public class GenerateJsVisitor extends Visitor
             return;
         }
         out("return ");
-        if (dynblock > 0 && Util.isTypeUnknown(that.getExpression().getTypeModel())) {
-            Scope cont = Util.getRealScope(that.getScope()).getScope();
+        if (dynblock > 0 && ModelUtil.isTypeUnknown(that.getExpression().getTypeModel())) {
+            Scope cont = ModelUtil.getRealScope(that.getScope()).getScope();
             if (cont instanceof Declaration) {
                 final Type dectype = ((Declaration)cont).getReference().getType();
-                if (!Util.isTypeUnknown(dectype)) {
+                if (!ModelUtil.isTypeUnknown(dectype)) {
                     TypeUtils.generateDynamicCheck(that.getExpression(), dectype, this, false,
                             that.getExpression().getTypeModel().getTypeArguments());
                     endLine(true);
@@ -2886,7 +2886,7 @@ public class GenerateJsVisitor extends Visitor
     }
 
     @Override public void visit(final Tree.EqualOp that) {
-        if (dynblock > 0 && Util.isTypeUnknown(that.getLeftTerm().getTypeModel())) {
+        if (dynblock > 0 && ModelUtil.isTypeUnknown(that.getLeftTerm().getTypeModel())) {
             //Try to use equals() if it exists
             String ltmp = names.createTempVariable();
             String rtmp = names.createTempVariable();
@@ -2903,7 +2903,7 @@ public class GenerateJsVisitor extends Visitor
     }
 
     @Override public void visit(final Tree.NotEqualOp that) {
-        if (dynblock > 0 && Util.isTypeUnknown(that.getLeftTerm().getTypeModel())) {
+        if (dynblock > 0 && ModelUtil.isTypeUnknown(that.getLeftTerm().getTypeModel())) {
             //Try to use equals() if it exists
             String ltmp = names.createTempVariable();
             String rtmp = names.createTempVariable();
@@ -2954,7 +2954,7 @@ public class GenerateJsVisitor extends Visitor
     }
 
     @Override public void visit(final Tree.SmallerOp that) {
-        if (dynblock > 0 && Util.isTypeUnknown(that.getLeftTerm().getTypeModel())) {
+        if (dynblock > 0 && ModelUtil.isTypeUnknown(that.getLeftTerm().getTypeModel())) {
             //Try to use compare() if it exists
             String ltmp = names.createTempVariable();
             String rtmp = names.createTempVariable();
@@ -2976,7 +2976,7 @@ public class GenerateJsVisitor extends Visitor
     }
 
     @Override public void visit(final Tree.LargerOp that) {
-        if (dynblock > 0 && Util.isTypeUnknown(that.getLeftTerm().getTypeModel())) {
+        if (dynblock > 0 && ModelUtil.isTypeUnknown(that.getLeftTerm().getTypeModel())) {
             //Try to use compare() if it exists
             String ltmp = names.createTempVariable();
             String rtmp = names.createTempVariable();
@@ -2998,7 +2998,7 @@ public class GenerateJsVisitor extends Visitor
     }
 
     @Override public void visit(final Tree.SmallAsOp that) {
-        if (dynblock > 0 && Util.isTypeUnknown(that.getLeftTerm().getTypeModel())) {
+        if (dynblock > 0 && ModelUtil.isTypeUnknown(that.getLeftTerm().getTypeModel())) {
             //Try to use compare() if it exists
             String ltmp = names.createTempVariable();
             String rtmp = names.createTempVariable();
@@ -3022,7 +3022,7 @@ public class GenerateJsVisitor extends Visitor
     }
 
     @Override public void visit(final Tree.LargeAsOp that) {
-        if (dynblock > 0 && Util.isTypeUnknown(that.getLeftTerm().getTypeModel())) {
+        if (dynblock > 0 && ModelUtil.isTypeUnknown(that.getLeftTerm().getTypeModel())) {
             //Try to use compare() if it exists
             String ltmp = names.createTempVariable();
             String rtmp = names.createTempVariable();
@@ -3049,7 +3049,7 @@ public class GenerateJsVisitor extends Visitor
         out("(", ttmp, "=");
         box(that.getTerm());
         out(",");
-        if (dynblock > 0 && Util.isTypeUnknown(that.getTerm().getTypeModel())) {
+        if (dynblock > 0 && ModelUtil.isTypeUnknown(that.getTerm().getTypeModel())) {
             final String tmpl = names.createTempVariable();
             final String tmpu = names.createTempVariable();
             out(tmpl, "=");
@@ -3109,7 +3109,7 @@ public class GenerateJsVisitor extends Visitor
        that.getRightTerm().visit(this);
        out(",{Element$span:");
        TypeUtils.typeNameOrList(that,
-               Util.unionType(that.getLeftTerm().getTypeModel(), that.getRightTerm().getTypeModel(), that.getUnit()),
+               ModelUtil.unionType(that.getLeftTerm().getTypeModel(), that.getRightTerm().getTypeModel(), that.getUnit()),
                this, false);
        out("})");
    }
@@ -3124,7 +3124,7 @@ public class GenerateJsVisitor extends Visitor
        right.visit(this);
        out(",{Element$measure:");
        TypeUtils.typeNameOrList(that,
-               Util.unionType(left.getTypeModel(), right.getTypeModel(), that.getUnit()),
+               ModelUtil.unionType(left.getTypeModel(), right.getTypeModel(), that.getUnit()),
                this, false);
        out("})");
    }
@@ -3262,7 +3262,7 @@ public class GenerateJsVisitor extends Visitor
             }
             out("]");
         } else if (type.getDeclaration() != null && type.getDeclaration().getContainer() != null) {
-            Declaration d = Util.getContainingDeclarationOfScope(type.getDeclaration().getContainer());
+            Declaration d = ModelUtil.getContainingDeclarationOfScope(type.getDeclaration().getContainer());
             if (d != null && d instanceof Function && !((Function)d).getTypeParameters().isEmpty()) {
                 out(",", names.typeArgsParamName((Function)d));
             }
@@ -3336,7 +3336,7 @@ public class GenerateJsVisitor extends Visitor
         if (eor instanceof Tree.Element) {
             final Tree.Expression _elemexpr = ((Tree.Element)eor).getExpression();
             final String _end;
-            if (Util.isTypeUnknown(that.getPrimary().getTypeModel()) && dynblock > 0) {
+            if (ModelUtil.isTypeUnknown(that.getPrimary().getTypeModel()) && dynblock > 0) {
                 out("[");
                 _end = "]";
             } else {

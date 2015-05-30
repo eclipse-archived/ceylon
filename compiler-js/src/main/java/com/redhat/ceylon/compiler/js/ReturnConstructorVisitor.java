@@ -3,7 +3,7 @@ package com.redhat.ceylon.compiler.js;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.model.typechecker.model.Constructor;
-import com.redhat.ceylon.model.typechecker.model.Util;
+import com.redhat.ceylon.model.typechecker.model.ModelUtil;
 
 public class ReturnConstructorVisitor extends Visitor {
 
@@ -19,7 +19,7 @@ public class ReturnConstructorVisitor extends Visitor {
 
     public void visit(Tree.Return that) {
         if (that.getExpression() == null && !ret) {
-            if (d == Util.getContainingDeclarationOfScope(that.getScope())) {
+            if (d == ModelUtil.getContainingDeclarationOfScope(that.getScope())) {
                 ret = true;
             }
         }

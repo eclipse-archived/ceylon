@@ -16,7 +16,7 @@ import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.Scope;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.model.typechecker.model.TypeParameter;
-import com.redhat.ceylon.model.typechecker.model.Util;
+import com.redhat.ceylon.model.typechecker.model.ModelUtil;
 
 public class FunctionHelper {
 
@@ -378,7 +378,7 @@ public class FunctionHelper {
             gen.endBlock(true,true);
             pl.outputMetamodelAndReturn(gen, rt);
             if (i>1) {
-                rt = Util.producedType(pl.n.getUnit().getCallableDeclaration(), rt, pl.tupleFromParameterList());
+                rt = ModelUtil.producedType(pl.n.getUnit().getCallableDeclaration(), rt, pl.tupleFromParameterList());
             }
         }
     }
@@ -453,7 +453,7 @@ public class FunctionHelper {
                     decs.add(sm);
                     decs.add(m);
                     //This gives us the containing type
-                    TypeDeclaration cont = Util.getContainingClassOrInterface(m);
+                    TypeDeclaration cont = ModelUtil.getContainingClassOrInterface(m);
                     for (TypeDeclaration sup : cont.getSupertypeDeclarations()) {
                         Declaration d = sup.getDirectMember(m.getName(), null, false);
                         if (d instanceof Function && !decs.contains(d)) {

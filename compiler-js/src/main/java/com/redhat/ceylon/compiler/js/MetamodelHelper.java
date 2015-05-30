@@ -18,7 +18,7 @@ import com.redhat.ceylon.model.typechecker.model.Scope;
 import com.redhat.ceylon.model.typechecker.model.TypeAlias;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.model.typechecker.model.TypeParameter;
-import com.redhat.ceylon.model.typechecker.model.Util;
+import com.redhat.ceylon.model.typechecker.model.ModelUtil;
 import com.redhat.ceylon.model.typechecker.model.Value;
 
 public class MetamodelHelper {
@@ -318,14 +318,14 @@ public class MetamodelHelper {
     }
 
     static void outputPathToDeclaration(final Node that, final Declaration d, final GenerateJsVisitor gen) {
-        final Declaration parent = Util.getContainingDeclaration(d);
-        if (!gen.opts.isOptimize() && parent instanceof TypeDeclaration && Util.contains((Scope)parent, that.getScope())) {
+        final Declaration parent = ModelUtil.getContainingDeclaration(d);
+        if (!gen.opts.isOptimize() && parent instanceof TypeDeclaration && ModelUtil.contains((Scope)parent, that.getScope())) {
             gen.out(gen.getNames().self((TypeDeclaration)parent), ".");
         } else {
             Declaration _md = d;
             final ArrayList<Declaration> parents = new ArrayList<>(3);
             while (_md.isMember()) {
-                _md=Util.getContainingDeclaration(_md);
+                _md=ModelUtil.getContainingDeclaration(_md);
                 parents.add(0, _md);
             }
             boolean first=true;

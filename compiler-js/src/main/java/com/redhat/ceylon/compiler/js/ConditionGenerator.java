@@ -17,7 +17,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.IsCondition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.MatchCase;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.NonemptyCondition;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
-import com.redhat.ceylon.model.typechecker.model.Util;
+import com.redhat.ceylon.model.typechecker.model.ModelUtil;
 import com.redhat.ceylon.model.typechecker.model.Value;
 
 /** This component is used by the main JS visitor to generate code for conditions.
@@ -336,7 +336,7 @@ public class ConditionGenerator {
         }
         final Tree.ElseClause anoserque = cases.getElseClause();
         if (anoserque == null) {
-            if (gen.isInDynamicBlock() && Util.isTypeUnknown(expr.getTypeModel())) {
+            if (gen.isInDynamicBlock() && ModelUtil.isTypeUnknown(expr.getTypeModel())) {
                 gen.out("else throw ", gen.getClAlias(), "Exception('Ceylon switch over unknown type does not cover all cases')");
             }
         } else {
@@ -411,7 +411,7 @@ public class ConditionGenerator {
             for (Expression exp : ((MatchCase)item).getExpressionList().getExpressions()) {
                 if (!first) gen.out(" || ");
                 if (exp.getTerm() instanceof Tree.StringLiteral || exp.getTerm() instanceof Tree.NaturalLiteral
-                        || Util.isTypeUnknown(switchTerm.getTypeModel())) {
+                        || ModelUtil.isTypeUnknown(switchTerm.getTypeModel())) {
                     gen.out(expvar, "===");
                     if (!gen.isNaturalLiteral(exp.getTerm())) {
                         exp.visit(gen);

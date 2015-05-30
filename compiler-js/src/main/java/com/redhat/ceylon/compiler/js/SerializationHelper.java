@@ -12,7 +12,7 @@ import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.model.typechecker.model.TypeParameter;
-import com.redhat.ceylon.model.typechecker.model.Util;
+import com.redhat.ceylon.model.typechecker.model.ModelUtil;
 import com.redhat.ceylon.model.typechecker.model.Value;
 
 public class SerializationHelper {
@@ -42,7 +42,7 @@ public class SerializationHelper {
         //Put the outer instance if it's a member
         if (d.isMember()) {
             gen.out(dc, ".putOuterInstance(this.outer$,{Instance$putOuterInstance:",
-                    gen.getNames().name(Util.getContainingDeclaration(d)), "});");
+                    gen.getNames().name(ModelUtil.getContainingDeclaration(d)), "});");
             gen.endLine();
         }
         //Get the type's package

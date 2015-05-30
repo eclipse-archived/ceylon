@@ -26,7 +26,7 @@ import com.redhat.ceylon.model.typechecker.model.Scope;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.model.typechecker.model.TypeParameter;
 import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
-import com.redhat.ceylon.model.typechecker.model.Util;
+import com.redhat.ceylon.model.typechecker.model.ModelUtil;
 import com.redhat.ceylon.model.typechecker.model.Value;
 
 public class TypeGenerator {
@@ -378,7 +378,7 @@ public class TypeGenerator {
             //Define a function as the class and call the default constructor in there
             String _this = "undefined";
             if (!d.isToplevel()) {
-                final ClassOrInterface coi = Util.getContainingClassOrInterface(d.getContainer());
+                final ClassOrInterface coi = ModelUtil.getContainingClassOrInterface(d.getContainer());
                 if (coi != null) {
                     if (d.isClassOrInterfaceMember()) {
                         _this = "this";
@@ -556,11 +556,11 @@ public class TypeGenerator {
         public int compare(StaticType o1, StaticType o2) {
             final Type t1 = o1.getTypeModel();
             final Type t2 = o2.getTypeModel();
-            if (Util.isTypeUnknown(t1)) {
-                return Util.isTypeUnknown(t2) ? 0 : -1;
+            if (ModelUtil.isTypeUnknown(t1)) {
+                return ModelUtil.isTypeUnknown(t2) ? 0 : -1;
             }
-            if (Util.isTypeUnknown(t2)) {
-                return Util.isTypeUnknown(t1) ? 0 : -1;
+            if (ModelUtil.isTypeUnknown(t2)) {
+                return ModelUtil.isTypeUnknown(t1) ? 0 : -1;
             }
             if (t1.isSubtypeOf(t2)) {
                 return 1;
@@ -573,7 +573,7 @@ public class TypeGenerator {
                 if (d instanceof TypedDeclaration || d instanceof ClassOrInterface) {
                     Declaration d2 = t2.getDeclaration().getMember(d.getName(), null, false);
                     if (d2 != null) {
-                        final Declaration dd2 = Util.getContainingDeclaration(d2);
+                        final Declaration dd2 = ModelUtil.getContainingDeclaration(d2);
                         if (dd2 instanceof TypeDeclaration && t1.getDeclaration().inherits((TypeDeclaration)dd2)) {
                             return 1;
                         }
@@ -584,7 +584,7 @@ public class TypeGenerator {
                 if (d instanceof TypedDeclaration || d instanceof ClassOrInterface) {
                     Declaration d2 = t1.getDeclaration().getMember(d.getName(), null, false);
                     if (d2 != null) {
-                        final Declaration dd2 = Util.getContainingDeclaration(d2);
+                        final Declaration dd2 = ModelUtil.getContainingDeclaration(d2);
                         if (dd2 instanceof TypeDeclaration && t2.getDeclaration().inherits((TypeDeclaration)dd2)) {
                             return -1;
                         }
@@ -619,7 +619,7 @@ public class TypeGenerator {
         gen.beginBlock();
         if (isObjExpr) {
             gen.out("var ", selfName, "=new ", className, ".$$;");
-            final ClassOrInterface coi = Util.getContainingClassOrInterface(c.getContainer());
+            final ClassOrInterface coi = ModelUtil.getContainingClassOrInterface(c.getContainer());
             if (coi != null) {
                 gen.out(selfName, ".outer$=", gen.getNames().self(coi));
                 gen.endLine(true);

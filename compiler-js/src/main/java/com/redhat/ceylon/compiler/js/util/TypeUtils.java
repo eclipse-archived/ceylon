@@ -35,7 +35,7 @@ import com.redhat.ceylon.model.typechecker.model.TypeParameter;
 import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.model.typechecker.model.UnionType;
 import com.redhat.ceylon.model.typechecker.model.Unit;
-import com.redhat.ceylon.model.typechecker.model.Util;
+import com.redhat.ceylon.model.typechecker.model.ModelUtil;
 import com.redhat.ceylon.model.typechecker.model.Value;
 
 /** A convenience class to help with the handling of certain type declarations. */
@@ -102,7 +102,7 @@ public class TypeUtils {
             gen.out(gen.getClAlias(), "Nothing");
         } else if (qname.equals("ceylon.language::null") || qname.equals("ceylon.language::Null")) {
             gen.out(gen.getClAlias(), "Null");
-        } else if (Util.isTypeUnknown(pt)) {
+        } else if (ModelUtil.isTypeUnknown(pt)) {
             if (!gen.isInDynamicBlock()) {
                 gen.out("/*WARNING unknown type");
                 gen.location(node);
@@ -113,9 +113,9 @@ public class TypeUtils {
             gen.out(qualifiedTypeContainer(node, imported, t, gen));
             boolean _init = (!imported && pt.getDeclaration().isDynamic()) || t.isAnonymous();
             if (_init && !pt.getDeclaration().isToplevel()) {
-                Declaration dynintc = Util.getContainingClassOrInterface(node.getScope());
+                Declaration dynintc = ModelUtil.getContainingClassOrInterface(node.getScope());
                 if (dynintc == null || dynintc instanceof Scope==false ||
-                        !Util.contains((Scope)dynintc, pt.getDeclaration())) {
+                        !ModelUtil.contains((Scope)dynintc, pt.getDeclaration())) {
                     _init=false;
                 }
             }
@@ -144,7 +144,7 @@ public class TypeUtils {
             sb.append(modAlias).append('.');
         }
         if (t.getContainer() instanceof ClassOrInterface) {
-            final Scope scope = node == null ? null : Util.getContainingClassOrInterface(node.getScope());
+            final Scope scope = node == null ? null : ModelUtil.getContainingClassOrInterface(node.getScope());
             ClassOrInterface parent = (ClassOrInterface)t.getContainer();
             final List<ClassOrInterface> parents = new ArrayList<>(3);
             parents.add(0, parent);
@@ -203,7 +203,7 @@ public class TypeUtils {
                         }
                         targs = new HashMap<>();
                         targs.putAll(pt.getTypeArguments());
-                        Declaration cd = Util.getContainingDeclaration(pt.getDeclaration());
+                        Declaration cd = ModelUtil.getContainingDeclaration(pt.getDeclaration());
                         while (cd != null) {
                             if (cd instanceof Generic) {
                                 for (TypeParameter tp : ((Generic)cd).getTypeParameters()) {
@@ -212,7 +212,7 @@ public class TypeUtils {
                                     }
                                 }
                             }
-                            cd = Util.getContainingDeclaration(cd);
+                            cd = ModelUtil.getContainingDeclaration(cd);
                         }
                     }
                     gen.out(",a:");
@@ -286,7 +286,7 @@ public class TypeUtils {
     /** Finds the owner of the type parameter and outputs a reference to the corresponding type argument. */
     static void resolveTypeParameter(final Node node, final TypeParameter tp,
             final GenerateJsVisitor gen, final boolean skipSelfDecl) {
-        Scope parent = Util.getRealScope(node.getScope());
+        Scope parent = ModelUtil.getRealScope(node.getScope());
         int outers = 0;
         while (parent != null && parent != tp.getContainer()) {
             if (parent instanceof TypeDeclaration &&
@@ -298,8 +298,8 @@ public class TypeUtils {
         if (tp.getContainer() instanceof ClassOrInterface) {
             if (parent == tp.getContainer()) {
                 if (!skipSelfDecl) {
-                    TypeDeclaration ontoy = Util.getContainingClassOrInterface(node.getScope());
-                    while (ontoy.isAnonymous())ontoy=Util.getContainingClassOrInterface(ontoy.getScope());
+                    TypeDeclaration ontoy = ModelUtil.getContainingClassOrInterface(node.getScope());
+                    while (ontoy.isAnonymous())ontoy=ModelUtil.getContainingClassOrInterface(ontoy.getScope());
                     gen.out(gen.getNames().self(ontoy));
                     if (ontoy == parent)outers--;
                     for (int i = 0; i < outers; i++) {
@@ -758,7 +758,7 @@ public class TypeUtils {
                                 : MetamodelGenerator.KEY_ATTRIBUTES);
                     }
                 }
-                p = Util.getContainingDeclaration(p);
+                p = ModelUtil.getContainingDeclaration(p);
             }
         }
         return sb;
@@ -819,15 +819,15 @@ public class TypeUtils {
         }
         if (!d.isToplevel()) {
             //Find the first container that is a Declaration
-            Declaration _cont = Util.getContainingDeclaration(d);
+            Declaration _cont = ModelUtil.getContainingDeclaration(d);
             gen.out(",$cont:");
             boolean generateName = true;
             if (_cont.getName() != null && _cont.getName().startsWith("anonymous#")) {
                 //Anon functions don't have metamodel so go up until we find a non-anon container
-                Declaration _supercont = Util.getContainingDeclaration(_cont);
+                Declaration _supercont = ModelUtil.getContainingDeclaration(_cont);
                 while (_supercont != null && _supercont.getName() != null
                         && _supercont.getName().startsWith("anonymous#")) {
-                    _supercont = Util.getContainingDeclaration(_supercont);
+                    _supercont = ModelUtil.getContainingDeclaration(_supercont);
                 }
                 if (_supercont == null) {
                     //If the container is a package, add it because this isn't really toplevel
@@ -972,7 +972,7 @@ public class TypeUtils {
             TypeDeclaration type = pt.getDeclaration();
             if (pt.isTypeParameter()) {
                 Declaration tpowner = ((TypeParameter)type).getDeclaration();
-                if (resolveTargsFromScope && Util.contains((Scope)tpowner, node.getScope())) {
+                if (resolveTargsFromScope && ModelUtil.contains((Scope)tpowner, node.getScope())) {
                     //Attempt to resolve this to an argument if the scope allows for it
                     if (tpowner instanceof TypeDeclaration) {
                         gen.out(gen.getNames().self((TypeDeclaration)tpowner), ".",

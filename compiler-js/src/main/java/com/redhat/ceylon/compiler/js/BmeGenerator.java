@@ -17,7 +17,7 @@ import com.redhat.ceylon.model.typechecker.model.Function;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.TypeParameter;
-import com.redhat.ceylon.model.typechecker.model.Util;
+import com.redhat.ceylon.model.typechecker.model.ModelUtil;
 
 public class BmeGenerator {
 
@@ -46,7 +46,7 @@ public class BmeGenerator {
             String who = isCallable && decl.isMember() ? gen.getMember(bme, decl, null) : null;
             if (who == null || who.isEmpty()) {
                 //We may not need to wrap this in certain cases
-                ClassOrInterface cont = Util.getContainingClassOrInterface(bme.getScope());
+                ClassOrInterface cont = ModelUtil.getContainingClassOrInterface(bme.getScope());
                 who=cont == null ? "0" : gen.getNames().self(cont);
             }
             final boolean hasTparms = hasTypeParameters(bme);

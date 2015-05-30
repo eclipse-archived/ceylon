@@ -26,7 +26,7 @@ import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.model.typechecker.model.TypeParameter;
 import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.model.typechecker.model.UnionType;
-import com.redhat.ceylon.model.typechecker.model.Util;
+import com.redhat.ceylon.model.typechecker.model.ModelUtil;
 import com.redhat.ceylon.model.typechecker.model.Value;
 
 /** Generates js code for invocation expression (named and positional). */
@@ -136,7 +136,7 @@ public class InvocationGenerator {
                     if (gen.isInDynamicBlock() && _bme.getDeclaration() != null &&
                             "ceylon.language::print".equals(_bme.getDeclaration().getQualifiedNameString())) {
                         Tree.PositionalArgument printArg =  that.getPositionalArgumentList().getPositionalArguments().get(0);
-                        if (Util.isTypeUnknown(printArg.getTypeModel())) {
+                        if (ModelUtil.isTypeUnknown(printArg.getTypeModel())) {
                             gen.out(gen.getClAlias(), "pndo$(/*DYNAMIC arg*/"); //#397
                             printArg.visit(gen);
                             gen.out(")");
@@ -151,7 +151,7 @@ public class InvocationGenerator {
                 }
 
                 if (gen.opts.isOptimize() && (gen.getSuperMemberScope(typeArgSource) != null)) {
-                    gen.out(".call(", names.self(Util.getContainingClassOrInterface(typeArgSource.getScope())));
+                    gen.out(".call(", names.self(ModelUtil.getContainingClassOrInterface(typeArgSource.getScope())));
                     if (!argList.getPositionalArguments().isEmpty()) {
                         gen.out(",");
                     }
@@ -360,7 +360,7 @@ public class InvocationGenerator {
                 if (!first) gen.out(",");
                 expr = ((Tree.ListedArgument) arg).getExpression();
                 Type exprType = expr.getTypeModel();
-                boolean dyncheck = gen.isInDynamicBlock() && pd != null && !Util.isTypeUnknown(pd.getType())
+                boolean dyncheck = gen.isInDynamicBlock() && pd != null && !ModelUtil.isTypeUnknown(pd.getType())
                         && exprType.containsUnknowns();
                 if (forceSequenced || (pd != null && pd.isSequenced())) {
                     if (dyncheck) {
@@ -371,8 +371,8 @@ public class InvocationGenerator {
                         sequencedType=exprType;
                     } else {
                         ArrayList<Type> cases = new ArrayList<Type>(2);
-                        Util.addToUnion(cases, sequencedType);
-                        Util.addToUnion(cases, exprType);
+                        ModelUtil.addToUnion(cases, sequencedType);
+                        ModelUtil.addToUnion(cases, exprType);
                         if (cases.size() > 1) {
                             UnionType ut = new UnionType(that.getUnit());
                             ut.setCaseTypes(cases);

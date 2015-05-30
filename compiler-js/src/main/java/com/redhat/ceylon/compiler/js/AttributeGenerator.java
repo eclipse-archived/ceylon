@@ -11,7 +11,7 @@ import com.redhat.ceylon.model.typechecker.model.Functional;
 import com.redhat.ceylon.model.typechecker.model.Function;
 import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
-import com.redhat.ceylon.model.typechecker.model.Util;
+import com.redhat.ceylon.model.typechecker.model.ModelUtil;
 import com.redhat.ceylon.model.typechecker.model.Value;
 
 public class AttributeGenerator {
@@ -81,8 +81,8 @@ public class AttributeGenerator {
             }
             if (genatr) {
                 int boxType = gen.boxStart(expr.getExpression().getTerm());
-                if (gen.isInDynamicBlock() && Util.isTypeUnknown(expr.getExpression().getTypeModel())
-                        && !Util.isTypeUnknown(decl.getType())) {
+                if (gen.isInDynamicBlock() && ModelUtil.isTypeUnknown(expr.getExpression().getTypeModel())
+                        && !ModelUtil.isTypeUnknown(decl.getType())) {
                     TypeUtils.generateDynamicCheck(expr.getExpression(), decl.getType(), gen, false,
                             expr.getExpression().getTypeModel().getTypeArguments());
                 } else {
