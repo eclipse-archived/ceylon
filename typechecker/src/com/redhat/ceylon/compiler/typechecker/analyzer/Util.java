@@ -358,9 +358,9 @@ public class Util {
         String unknownTypeError = 
                 type.getFirstUnknownTypeError(true);
         String typeName = 
-                type.getProducedTypeName(unit);
+                type.asString(unit);
         String otherTypeName = 
-                otherType.getProducedTypeName(unit);
+                otherType.asString(unit);
         String expandedTypeName;
         String expandedOtherTypeName;
         if (otherTypeName.equals(typeName)) {
@@ -378,10 +378,10 @@ public class Util {
         else {
             expandedTypeName = 
                     type.resolveAliases()
-                        .getProducedTypeName(unit);
+                        .asString(unit);
             expandedOtherTypeName = 
                     otherType.resolveAliases()
-                        .getProducedTypeName(unit);
+                        .asString(unit);
         }
         StringBuilder sb = new StringBuilder();
         sb.append(": '")
@@ -410,10 +410,10 @@ public class Util {
     
     private static String message(Type type, 
             String problem, Unit unit) {
-        String typeName = type.getProducedTypeName(unit);
+        String typeName = type.asString(unit);
         String expandedTypeName = 
                 type.resolveAliases()
-                    .getProducedTypeName(unit);
+                    .asString(unit);
         StringBuilder sb = new StringBuilder();
         sb.append(": '")
           .append(typeName)
@@ -455,7 +455,7 @@ public class Util {
                     }
                     else if (d instanceof Value) {
                         extra = ": value '" + name + "' has type '" + 
-                                type.getProducedTypeName(unit) + 
+                                type.asString(unit) + 
                                 "' which is not a subtype of 'Callable'";
                     }
                 }
@@ -891,7 +891,7 @@ public class Util {
         }
         StringBuilder sb = new StringBuilder();
         for (Type st: upperBounds) {
-            sb.append(st.getProducedTypeName(unit)).append(" & ");
+            sb.append(st.asString(unit)).append(" & ");
         }
         if (sb.toString().endsWith(" & ")) {
             sb.setLength(sb.length()-3);
@@ -1369,8 +1369,8 @@ public class Util {
                             other.resolveAliases(), unit);
             if (!it.isNothing()) {
                 node.addError("cases are not disjoint: '" + 
-                        type.getProducedTypeName(unit) + "' and '" + 
-                        other.getProducedTypeName(unit) + "'");
+                        type.asString(unit) + "' and '" + 
+                        other.asString(unit) + "'");
             }
         }
     }

@@ -134,7 +134,7 @@ public class VisibilityVisitor extends Visitor {
                 if (!isCompletelyVisible(td, at)) {
                     that.addError("aliased type is not visible everywhere type alias '" + 
                             td.getName() + "' is visible: '" + 
-                            at.getProducedTypeName(that.getUnit()) +
+                            at.asString(that.getUnit()) +
                             "' involves an unshared type declaration", 
                             713);
                 }
@@ -142,7 +142,7 @@ public class VisibilityVisitor extends Visitor {
                     that.addError("aliased type of type alias '" + 
                             td.getName() + 
                             "' that is visible outside this module comes from an imported module that is not re-exported: '" +
-                            at.getProducedTypeName(that.getUnit()) +
+                            at.asString(that.getUnit()) +
                             "' involves an unexported type declaration", 
                             714);
                 }
@@ -158,7 +158,7 @@ public class VisibilityVisitor extends Visitor {
                             that.addError("supertype is not visible everywhere type '" + 
                                     td.getName() + 
                                     "' is visible: '" + 
-                                    st.getProducedTypeName(that.getUnit()) +
+                                    st.asString(that.getUnit()) +
                                     "' involves an unshared type declaration", 
                                     713);
                         }
@@ -166,7 +166,7 @@ public class VisibilityVisitor extends Visitor {
                             that.addError("supertype of type '" + 
                                     td.getName() + 
                                     "' that is visible outside this module comes from an imported module that is not re-exported: '" +
-                                    st.getProducedTypeName(that.getUnit()) +
+                                    st.asString(that.getUnit()) +
                                     "' involves an unexported type declaration", 
                                     714);
                         }
@@ -257,7 +257,7 @@ public class VisibilityVisitor extends Visitor {
                 typeNode.addError("type of declaration " + 
                         getName(td) +
                         " is not visible everywhere declaration is visible: '" + 
-                        type.getProducedTypeName(that.getUnit()) +
+                        type.asString(that.getUnit()) +
                         "' involves an unshared type declaration", 
                         711);
             }
@@ -265,7 +265,7 @@ public class VisibilityVisitor extends Visitor {
                 typeNode.addError("type of declaration " + 
                         getName(td) + 
                         " that is visible outside this module comes from an imported module that is not re-exported: '" + 
-                        type.getProducedTypeName(that.getUnit()) +
+                        type.asString(that.getUnit()) +
                         "' involves an unexported type declaration", 
                         712);
             }
@@ -281,7 +281,7 @@ public class VisibilityVisitor extends Visitor {
                     .addError("type of parameter '" + 
                             p.getName() + "' of " + getName(td) +
                         " is not visible everywhere declaration is visible: '" + 
-                        pt.getProducedTypeName(tp.getUnit()) +
+                        pt.asString(tp.getUnit()) +
                         "' involves an unshared type declaration", 
                         710);
             }
@@ -290,7 +290,7 @@ public class VisibilityVisitor extends Visitor {
                     .addError("type of parameter '" + 
                             p.getName() + "' of " + getName(td) + 
                         " that is visible outside this module comes from an imported module that is not re-exported: '" +
-                        pt.getProducedTypeName(tp.getUnit()) +
+                        pt.asString(tp.getUnit()) +
                         "' involves an unexported type declaration", 
                         714);
             }

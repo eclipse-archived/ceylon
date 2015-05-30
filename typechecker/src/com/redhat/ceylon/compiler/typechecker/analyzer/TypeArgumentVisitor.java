@@ -216,7 +216,7 @@ public class TypeArgumentVisitor extends Visitor {
                     throw new RuntimeException();
                 }
                 String typename = 
-                        type.getProducedTypeName(that.getUnit());
+                        type.asString(that.getUnit());
                 that.addError(var + 
                         " type parameter '" + tp.getName() + 
                         "' of '" + declaration.getName() +

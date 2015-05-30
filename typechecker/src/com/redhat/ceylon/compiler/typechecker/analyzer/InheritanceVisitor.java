@@ -129,8 +129,8 @@ public class InheritanceVisitor extends Visitor {
             if (!areConsistentSupertypes(st1, st2, unit)) {
                 that.addError(typeDescription(td, unit) +
                         " has the same parameterized supertype twice with incompatible type arguments: '" +
-                        st1.getProducedTypeName(unit) + " & " + 
-                        st2.getProducedTypeName(unit) + "'");
+                        st1.asString(unit) + " & " + 
+                        st2.asString(unit) + "'");
                td.setInconsistentType(true);
             }
         }
@@ -196,7 +196,7 @@ public class InheritanceVisitor extends Visitor {
                         StringBuilder sb = new StringBuilder();
                         for (Type pt: types) {
                             sb.append("'")
-                              .append(pt.getProducedTypeName(unit))
+                              .append(pt.asString(unit))
                               .append("' and ");
                         }
                         sb.setLength(sb.length()-5);
@@ -773,8 +773,8 @@ public class InheritanceVisitor extends Visitor {
                         }
                     }
                 }
-                that.addError("qualifying type '" + qt.getProducedTypeName(unit) + 
-                        "' of supertype '" + type.getProducedTypeName(unit) + 
+                that.addError("qualifying type '" + qt.asString(unit) + 
+                        "' of supertype '" + type.asString(unit) + 
                         "' is not an outer type or supertype of any outer type of '" +
                         td.getName(unit) + "'");
             }
@@ -835,7 +835,7 @@ public class InheritanceVisitor extends Visitor {
                         that.addError("type argument does not satisfy self type constraint on type parameter '" +
                                 param.getName() + "' of '" + 
                                 type.getDeclaration().getName(unit) + "': '" +
-                                arg.getProducedTypeName(unit) + 
+                                arg.asString(unit) + 
                                 "' is not a supertype or self type of '" + 
                                 td.getName(unit) + "'" + help);
                     }

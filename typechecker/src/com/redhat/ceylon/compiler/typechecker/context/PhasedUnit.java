@@ -41,7 +41,7 @@ import com.redhat.ceylon.compiler.typechecker.util.PrintVisitor;
 import com.redhat.ceylon.compiler.typechecker.util.ReferenceCounter;
 import com.redhat.ceylon.compiler.typechecker.util.StatisticsVisitor;
 import com.redhat.ceylon.compiler.typechecker.util.UsageVisitor;
-import com.redhat.ceylon.model.typechecker.context.ProducedTypeCache;
+import com.redhat.ceylon.model.typechecker.context.TypeCache;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.Package;
@@ -320,7 +320,7 @@ public class PhasedUnit {
 
     public void scanDeclarations() {
         Boolean enabled = 
-                ProducedTypeCache.setEnabled(false);
+                TypeCache.setEnabled(false);
         try {
             if (!declarationsScanned) {
                 processLiterals();
@@ -337,7 +337,7 @@ public class PhasedUnit {
             }
         }
         finally {
-            ProducedTypeCache.setEnabled(enabled);
+            TypeCache.setEnabled(enabled);
         }
     }
 
@@ -370,7 +370,7 @@ public class PhasedUnit {
 
     public void scanTypeDeclarations() {
         Boolean enabled = 
-                ProducedTypeCache.setEnabled(false);
+                TypeCache.setEnabled(false);
         try {
             if (!typeDeclarationsScanned) {
                 //System.out.println("Scan type declarations for " + fileName);
@@ -381,13 +381,13 @@ public class PhasedUnit {
             }
         }
         finally {
-            ProducedTypeCache.setEnabled(enabled);
+            TypeCache.setEnabled(enabled);
         }
     }
 
     public synchronized void validateRefinement() {
         Boolean enabled = 
-                ProducedTypeCache.setEnabled(false);
+                TypeCache.setEnabled(false);
         try {
             if (!refinementValidated) {
                 Type.resetDepth(0);
@@ -400,13 +400,13 @@ public class PhasedUnit {
             }
         }
         finally {
-            ProducedTypeCache.setEnabled(enabled);
+            TypeCache.setEnabled(enabled);
         }
     }
 
     public synchronized void analyseTypes() {
         Boolean enabled = 
-                ProducedTypeCache.setEnabled(true);
+                TypeCache.setEnabled(true);
         try {
             if (!fullyTyped) {
                 Type.resetDepth(-100);
@@ -419,13 +419,13 @@ public class PhasedUnit {
             }
         }
         finally {
-            ProducedTypeCache.setEnabled(enabled);
+            TypeCache.setEnabled(enabled);
         }
     }
     
     public synchronized void analyseFlow() {
         Boolean enabled = 
-                ProducedTypeCache.setEnabled(true);
+                TypeCache.setEnabled(true);
         try {
             if (!flowAnalyzed) {
                 rootNode.visit(new TypeHierarchyVisitor());
@@ -447,7 +447,7 @@ public class PhasedUnit {
             }
         }
         finally {
-            ProducedTypeCache.setEnabled(enabled);
+            TypeCache.setEnabled(enabled);
         }
     }
 

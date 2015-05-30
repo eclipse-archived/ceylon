@@ -396,7 +396,7 @@ public class TypeHierarchyVisitor extends Visitor {
                                         paramTypes.append(", ");
                                     }
                                     if (!isTypeUnknown(p.getType())) {
-                                        paramTypes.append(p.getType().getProducedTypeName());
+                                        paramTypes.append(p.getType().asString());
                                     }
                                 }
                             }

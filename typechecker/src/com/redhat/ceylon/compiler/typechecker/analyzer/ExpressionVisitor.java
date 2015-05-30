@@ -494,7 +494,7 @@ public class ExpressionVisitor extends Visitor {
         Tree.Pattern value = keyValuePattern.getValue();
         if (!unit.isEntryType(entryType)) {
             se.addError("assigned expression is not an entry type: '"
-                    + entryType.getProducedTypeName(unit) + 
+                    + entryType.asString(unit) + 
                     "' is not an entry type");
         }
         else {
@@ -528,12 +528,12 @@ public class ExpressionVisitor extends Visitor {
                     patterns.get(length-1);
             if (!unit.isSequentialType(sequenceType)) {
                 se.addError("assigned expression is not a sequence type, so may not be destructured: '" + 
-                        sequenceType.getProducedTypeName(unit) + 
+                        sequenceType.asString(unit) + 
                         "' is not a subtype of 'Sequential'");
             }
             else if (unit.isEmptyType(sequenceType)) {
                 se.addError("assigned expression is an empty sequence type, so may not be destructured: '" + 
-                        sequenceType.getProducedTypeName(unit) + 
+                        sequenceType.asString(unit) + 
                         "' is a subtype of `Empty`");
             }
             else if (unit.isTupleType(sequenceType)) {
@@ -617,18 +617,18 @@ public class ExpressionVisitor extends Visitor {
         
         if (!variadic) {
             se.addError("assigned expression is not a tuple type, so pattern must end in a variadic element: '" + 
-                    sequenceType.getProducedTypeName(unit) + 
+                    sequenceType.asString(unit) + 
                     "' is not a tuple type");
         }
         else if (/*nonempty && length>1 ||*/ length>2) {
             se.addError("assigned expression is not a tuple type, so pattern must not have more than two elements: '" + 
-                    sequenceType.getProducedTypeName(unit) + 
+                    sequenceType.asString(unit) + 
                     "' is not a tuple type");
         }
         else if ((/*nonempty ||*/ length>1) && 
                 !unit.isSequenceType(sequenceType)) {
             se.addError("assigned expression is not a nonempty sequence type, so pattern must have exactly one element: '" + 
-                    sequenceType.getProducedTypeName(unit) + 
+                    sequenceType.asString(unit) + 
                     "' is not a subtype of 'Sequence'");
         }
         
@@ -760,24 +760,24 @@ public class ExpressionVisitor extends Visitor {
                     if (that.getNot()) {
                         if (intersectionType(type, knownType, unit).isNothing()) {
                             that.addError("does not narrow type: intersection of '" + 
-                                    type.getProducedTypeName(unit) + 
+                                    type.asString(unit) + 
                                     "' and '" + 
-                                    knownType.getProducedTypeName(unit) + "' is empty" + 
+                                    knownType.asString(unit) + "' is empty" + 
                                     help);
                         }
                         else if (knownType.isSubtypeOf(type)) {
                             that.addError("tests assignability to bottom type 'Nothing': '" + 
-                                    knownType.getProducedTypeName(unit) + 
+                                    knownType.asString(unit) + 
                                     "' is a subtype of '" + 
-                                    type.getProducedTypeName(unit) + "'");
+                                    type.asString(unit) + "'");
                         }
                     } 
                     else {
                         if (knownType.isSubtypeOf(type)) {
                             that.addError("does not narrow type: '" + 
-                                    knownType.getProducedTypeName(unit) + 
+                                    knownType.asString(unit) + 
                                     "' is a subtype of '" + 
-                                    type.getProducedTypeName(unit) + "'" + 
+                                    type.asString(unit) + "'" + 
                                     help);
                         }
                     }
@@ -799,8 +799,8 @@ public class ExpressionVisitor extends Visitor {
                 }
                 else {
                     that.addError("tests assignability to bottom type 'Nothing': intersection of '" +
-                            knownType.getProducedTypeName(unit) + "' and '" + 
-                            type.getProducedTypeName(unit) + "' is empty");
+                            knownType.asString(unit) + "' and '" + 
+                            type.asString(unit) + "' is empty");
                 }
             }
             //do this *after* checking for disjointness!
@@ -972,12 +972,12 @@ public class ExpressionVisitor extends Visitor {
         if (!isTypeUnknown(t)) {
             if (!unit.isSequentialType(unit.getDefiniteType(t))) {
                 term.addError("expression must be a possibly-empty sequential type: '" + 
-                        t.getProducedTypeName(unit) + 
+                        t.asString(unit) + 
                         "' is not a subtype of 'Anything[]?'");
             }
             else if (!unit.isPossiblyEmptyType(t)) {
                 term.addError("expression must be a possibly-empty sequential type: '" + 
-                        t.getProducedTypeName(unit) + 
+                        t.asString(unit) + 
                         "' is not possibly-empty");
             }
         }
@@ -988,7 +988,7 @@ public class ExpressionVisitor extends Visitor {
                 !unit.isOptionalType(t) && 
                 !hasUncheckedNulls(term)) {
             term.addError("expression must be of optional type: '" +
-                    t.getProducedTypeName(unit) + 
+                    t.asString(unit) + 
                     "' is not optional");
         }
     }
@@ -1042,7 +1042,7 @@ public class ExpressionVisitor extends Visitor {
                     if (isInstantiationExpression(e)) {
                         if (!t.isSubtypeOf(dt) && !t.isSubtypeOf(ot)) {
                             typedNode.addError("resource must be either obtainable or destroyable: '" +
-                                    t.getProducedTypeName(unit) + 
+                                    t.asString(unit) + 
                                     "' is neither 'Obtainable' nor 'Destroyable'");
                         }
                     }
@@ -1066,12 +1066,12 @@ public class ExpressionVisitor extends Visitor {
                 if (!isTypeUnknown(et)) {
                     if (!unit.isIterableType(et)) {
                         se.addError("expression is not iterable: '" + 
-                                et.getProducedTypeName(unit) + 
+                                et.asString(unit) + 
                                 "' is not a subtype of 'Iterable'");
                     }
                     else if (et!=null && unit.isEmptyType(et)) {
                         se.addError("iterated expression is definitely empty: '" +
-                                et.getProducedTypeName(unit) + 
+                                et.asString(unit) + 
                                 "' is a subtype of 'Empty'");
                     }
                 }
@@ -2584,7 +2584,7 @@ public class ExpressionVisitor extends Visitor {
             }
             else {
                 p.addError("expression must be of iterable type: '" +
-                        pt.getProducedTypeName(unit) + 
+                        pt.asString(unit) + 
                         "' is not a subtype of 'Iterable'");
                 result = pt;
             }
@@ -3383,7 +3383,7 @@ public class ExpressionVisitor extends Visitor {
             ap.addError("could not infer parameter type: '" +
                     parameter.getName() + 
                     "' would have type '" + 
-                    type.getProducedTypeName(unit) + 
+                    type.asString(unit) + 
                     "' involving type parameters");
             type = unit.getUnknownType();
         }
@@ -5341,7 +5341,7 @@ public class ExpressionVisitor extends Visitor {
                     missing.append(", ");
                 }
                 if (type!=null) {
-                    missing.append(type.getProducedTypeName(unit))
+                    missing.append(type.asString(unit))
                         .append(" ");
                 }
                 missing.append(p.getName());
@@ -5455,7 +5455,7 @@ public class ExpressionVisitor extends Visitor {
                 dec.getName(unit) + "'";
         Type qt = pr.getQualifyingType();
         if (qt!=null) { 
-            result += " in '" + qt.getProducedTypeName(unit) + "'";
+            result += " in '" + qt.asString(unit) + "'";
         }
         return result;
     }
@@ -5724,7 +5724,7 @@ public class ExpressionVisitor extends Visitor {
             if (param.isSequenced()) {
                 pt = unit.getSequentialElementType(pt);
             }
-            missing.append(pt.getProducedTypeName(unit));
+            missing.append(pt.asString(unit));
             if (param.isSequenced()) {
                 missing.append(param.isAtLeastOne()?"+":"*");
             }
@@ -5802,7 +5802,7 @@ public class ExpressionVisitor extends Visitor {
             else {
                 atLeastOne = false;
             }
-            missing.append(pt.getProducedTypeName(unit));
+            missing.append(pt.asString(unit));
             if (sequenced) {
                 missing.append(atLeastOne?"+":"*");
             }
@@ -6119,7 +6119,7 @@ public class ExpressionVisitor extends Visitor {
                 if (!isTypeUnknown(t)) {
                     if (!unit.isIterableType(t)) {
                         e.addError("spread argument is not iterable: '" + 
-                                t.getProducedTypeName(unit) + 
+                                t.asString(unit) + 
                                 "' is not a subtype of 'Iterable'");
                     }
                 }
@@ -6574,9 +6574,9 @@ public class ExpressionVisitor extends Visitor {
                     "operand expression must be of type 'Identifiable'");
             if (intersectionType(lhst, rhst, unit).isNothing()) {
                 that.addError("values of disjoint types are never identical: '" +
-                        lhst.getProducedTypeName(unit) + 
+                        lhst.asString(unit) + 
                         "' has empty intersection with '" +
-                        rhst.getProducedTypeName(unit) + "'");
+                        rhst.asString(unit) + "'");
             }
         }
         that.setTypeModel(unit.getBooleanType());
@@ -6925,8 +6925,8 @@ public class ExpressionVisitor extends Visitor {
                     if (!isTypeUnknown(pt)) {
                         if (!t.covers(pt)) {
                             that.addError("specified type does not cover the cases of the operand expression: '" +
-                                    t.getProducedTypeName(unit) + "' does not cover '" + 
-                                    pt.getProducedTypeName(unit) + "'");
+                                    t.asString(unit) + "' does not cover '" + 
+                                    pt.asString(unit) + "'");
                         }
                     }
                     //Just especially for the IDE!
@@ -6954,15 +6954,15 @@ public class ExpressionVisitor extends Visitor {
                     if (!isTypeUnknown(knownType)) {
                         if (knownType.isSubtypeOf(type)) {
                             that.addError("expression type is a subtype of the type: '" +
-                                    knownType.getProducedTypeName(unit) + 
+                                    knownType.asString(unit) + 
                                     "' is assignable to '" +
-                                    type.getProducedTypeName(unit) + "'");
+                                    type.asString(unit) + "'");
                         }
                         else {
                             if (intersectionType(type, knownType, unit).isNothing()) {
                                 that.addError("tests assignability to bottom type 'Nothing': intersection of '" +
-                                        knownType.getProducedTypeName(unit) + "' and '" + 
-                                        type.getProducedTypeName(unit) + "' is empty");
+                                        knownType.asString(unit) + "' and '" + 
+                                        type.asString(unit) + "' is empty");
                             }
                         }
                     }
@@ -7585,7 +7585,7 @@ public class ExpressionVisitor extends Visitor {
                         .resolveAliases(); //TODO: probably not necessary
             if (receiverType.isTypeConstructor()) {
                 that.addError("missing type arguments in reference to member of generic type: the type '" +
-                        receiverType.getProducedTypeName(unit) + 
+                        receiverType.asString(unit) + 
                         "' is a type constructor (specify explicit type arguments)");
             }
             List<Type> typeArgs;
@@ -8913,9 +8913,9 @@ public class ExpressionVisitor extends Visitor {
                                         mayNotBeNothing(switchExpression, 
                                                 switchVariable, t)) {
                                     e.addError("value is not a case of the switched type: '" +
-                                                t.getProducedTypeName(unit) +
+                                                t.asString(unit) +
                                                 "' is not a case of the type '" +
-                                                st.getProducedTypeName(unit) + "'");
+                                                st.asString(unit) + "'");
                                 }
                             }
                         }
@@ -8995,9 +8995,9 @@ public class ExpressionVisitor extends Visitor {
                                 mayNotBeNothing(switchExpression, 
                                         switchVariable, pt)) {
                             that.addError("narrows to bottom type 'Nothing': '" + 
-                                    pt.getProducedTypeName(unit) + 
+                                    pt.asString(unit) + 
                                     "' has empty intersection with '" + 
-                                    st.getProducedTypeName(unit) + "'");
+                                    st.asString(unit) + "'");
                         }
                         if (v!=null) {
                             v.getType().setTypeModel(it);
@@ -9076,8 +9076,8 @@ public class ExpressionVisitor extends Visitor {
                         //switch is exhaustive
                         if (!caseUnionType.covers(switchExpressionType)) {
                             switchClause.addError("case types must cover all cases of the switch type or an else clause must appear: '" +
-                                    caseUnionType.getProducedTypeName(unit) + "' does not cover '" + 
-                                    switchExpressionType.getProducedTypeName(unit) + "'", 
+                                    caseUnionType.asString(unit) + "' does not cover '" + 
+                                    switchExpressionType.asString(unit) + "'", 
                                     10000);
                         }
                     }
@@ -9412,7 +9412,7 @@ public class ExpressionVisitor extends Visitor {
                                     ccv.getVariable()
                                         .getType()
                                         .addError("exception type is already handled by earlier catch clause: '" 
-                                                + ct.getProducedTypeName(unit) + "'");
+                                                + ct.asString(unit) + "'");
                                 }
                                 if (ct.isUnion()) {
                                     for (Type ut: 
@@ -9421,7 +9421,7 @@ public class ExpressionVisitor extends Visitor {
                                             ccv.getVariable()
                                                 .getType()
                                                 .addError("exception type is already handled by earlier catch clause: '"
-                                                        + ut.getProducedTypeName(unit) + "'");
+                                                        + ut.asString(unit) + "'");
                                         }
                                     }
                                 }
@@ -9539,7 +9539,7 @@ public class ExpressionVisitor extends Visitor {
                             .addError("type argument must be a regular type: parameter '" + 
                                     param.getName() + 
                                     "' is a regular type parameter but '" +
-                                    argType.getProducedTypeName(unit) + 
+                                    argType.asString(unit) + 
                                     "' is a type constructor");
                     }
                     else if (!argType.isTypeConstructor() && 
@@ -9548,7 +9548,7 @@ public class ExpressionVisitor extends Visitor {
                             .addError("type argument must be a type constructor: parameter '" + 
                                     param.getName() + 
                                     "' is a type constructor parameter but '" +
-                                    argType.getProducedTypeName(unit) + 
+                                    argType.asString(unit) + 
                                     "' is a regular type");
                     }
                     else if (param.isTypeConstructor()) {
@@ -9591,18 +9591,18 @@ public class ExpressionVisitor extends Visitor {
                                         .addError("type parameter '" + param.getName() 
                                                 + "' of declaration '" + dec.getName(unit)
                                                 + "' has argument '" 
-                                                + assignedType.getProducedTypeName(unit) 
+                                                + assignedType.asString(unit) 
                                                 + "' which is not assignable to upper bound '" 
-                                                + bound.getProducedTypeName(unit)
+                                                + bound.asString(unit)
                                                 + "' of '" + param.getName() + "'", 2102);
                                 }
                                 else {
                                     parent.addError("inferred type argument '" 
-                                            + assignedType.getProducedTypeName(unit)
+                                            + assignedType.asString(unit)
                                             + "' to type parameter '" + param.getName()
                                             + "' of declaration '" + dec.getName(unit)
                                             + "' is not assignable to upper bound '" 
-                                            + bound.getProducedTypeName(unit)
+                                            + bound.asString(unit)
                                             + "' of '" + param.getName() + "'");
                                 }
                             }
@@ -9617,13 +9617,13 @@ public class ExpressionVisitor extends Visitor {
                                     .addError("type parameter '" + param.getName() 
                                             + "' of declaration '" + dec.getName(unit)
                                             + "' has argument '" 
-                                            + assignedType.getProducedTypeName(unit) 
+                                            + assignedType.asString(unit) 
                                             + "' which is not one of the enumerated cases of '" 
                                             + param.getName() + "'");
                             }
                             else {
                                 parent.addError("inferred type argument '" 
-                                        + assignedType.getProducedTypeName(unit)
+                                        + assignedType.asString(unit)
                                         + "' to type parameter '" + param.getName()
                                         + "' of declaration '" + dec.getName(unit)
                                         + "' is not one of the enumerated cases of '" 
@@ -9740,9 +9740,9 @@ public class ExpressionVisitor extends Visitor {
                                 !arg.isSubtypeOf(bound)) {
                             String message = 
                                     "type argument '" + 
-                                    arg.getProducedTypeName(unit) +
+                                    arg.asString(unit) +
                                     "' is not assignable to upper bound '" +
-                                    bound.getProducedTypeName(unit) +
+                                    bound.asString(unit) +
                                     "' of type parameter '" +
                                     param.getName() + "' of '" +
                                     param.getDeclaration()
@@ -9763,7 +9763,7 @@ public class ExpressionVisitor extends Visitor {
                         arg, args, variances)) {
                     String message = 
                             "type argument '" + 
-                            arg.getProducedTypeName(unit) +
+                            arg.asString(unit) +
                             "' is not one of the enumerated cases of the type parameter '" +
                             param.getName() + "' of '" +
                             param.getDeclaration()
@@ -9824,7 +9824,7 @@ public class ExpressionVisitor extends Visitor {
             Type argType, Node argNode) {
         if (!argType.isTypeConstructor()) {
             argNode.addError("not a type constructor: '" +
-                    argType.getProducedTypeName(unit) + "'");
+                    argType.asString(unit) + "'");
         }
         else {
             if (argType.isUnion()) {

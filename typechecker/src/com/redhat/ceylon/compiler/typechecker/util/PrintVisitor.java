@@ -73,19 +73,19 @@ public class PrintVisitor extends Visitor implements NaturalVisitor {
         if (node instanceof Tree.Term) {
             Type type = ((Tree.Term) node).getTypeModel();
             if (type!=null) {
-                print(" : " + type.getProducedTypeName() + "");
+                print(" : " + type.asString() + "");
             }
         }
         if (node instanceof Tree.ComprehensionClause) {
             Type type = ((Tree.ComprehensionClause) node).getTypeModel();
             if (type!=null) {
-                print(" : " + type.getProducedTypeName() + "");
+                print(" : " + type.asString() + "");
             }
         }
         if (node instanceof Tree.Type) {
             Type type = ((Tree.Type) node).getTypeModel();
             if (type!=null) {
-                print(" : " + type.getProducedTypeName() + "");
+                print(" : " + type.asString() + "");
             }
         }
         if (node instanceof Tree.TypeArguments) {
@@ -95,7 +95,7 @@ public class PrintVisitor extends Visitor implements NaturalVisitor {
                 int i=0;
                 for (Type pt: types) {
                     if (pt!=null) {
-                    	print(pt.getProducedTypeName());
+                    	print(pt.asString());
                     }
                     if (++i!=types.size()) {
                         print(", ");
@@ -108,7 +108,7 @@ public class PrintVisitor extends Visitor implements NaturalVisitor {
             Reference t = ((Tree.MemberOrTypeExpression) node).getTarget();
             Declaration d = ((Tree.MemberOrTypeExpression) node).getDeclaration();
             if (t!=null) {
-                print(" : " + t.getProducedName() + "");
+                print(" : " + t.asString() + "");
             }
             if (d!=null) {
                 print(" : " + d);

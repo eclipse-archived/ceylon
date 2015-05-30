@@ -1315,7 +1315,7 @@ public class TypeVisitor extends Visitor {
                 if (dta!=null && 
                         dta.involvesDeclaration(dec)) {
                     type.addError("default type argument involves parameterized type: '" + 
-                            dta.getProducedTypeName(unit) + 
+                            dta.asString(unit) + 
                             "' involves '" + dec.getName(unit) + 
                             "'");
                     dta = null;

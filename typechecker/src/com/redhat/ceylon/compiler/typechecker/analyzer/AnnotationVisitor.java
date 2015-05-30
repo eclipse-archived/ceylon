@@ -101,7 +101,7 @@ public class AnnotationVisitor extends Visitor {
                     errorNode = pn;
                 }
     			errorNode.addError("illegal annotation parameter type: '" + 
-    					pt.getProducedTypeName() + "'");
+    					pt.asString() + "'");
     		}
     		Tree.SpecifierOrInitializerExpression se = null;
     		if (pn instanceof Tree.InitializerParameter) {
@@ -882,7 +882,7 @@ public class AnnotationVisitor extends Visitor {
                     sb.append(" '");
                     for (Type pt: sig) {
                         if (pt!=null) {
-                            sb.append(pt.getProducedTypeName(unit));
+                            sb.append(pt.asString(unit));
                         }
                         sb.append(", ");
                     }

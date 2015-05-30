@@ -288,7 +288,7 @@ public class RefinementVisitor extends Visitor {
         if (!dec.getType().isExactly(at)) {
             that.addError("native implementation must have the same return type as native abstraction: " + 
                     message(dec) + " must have the type '" + 
-                    at.getProducedTypeName(that.getUnit()) + "'");
+                    at.asString(that.getUnit()) + "'");
         }
         if (dec.isShared() && !abstraction.isShared()) {
             that.addError("native abstraction is not shared: " + 
@@ -325,7 +325,7 @@ public class RefinementVisitor extends Visitor {
         if (!dec.getType().isExactly(at)) {
             that.addError("native implementation must have the same type as native abstraction: " + 
                     message(dec) + " must have the type '" + 
-                    at.getProducedTypeName(that.getUnit()) + "'");
+                    at.asString(that.getUnit()) + "'");
         }
         if (dec.isShared() && !abstraction.isShared()) {
             that.addError("native abstraction is not shared: " + 
@@ -823,7 +823,7 @@ public class RefinementVisitor extends Visitor {
 	                        refinedTypeParam.getName() + 
 	                        "' of " + message(refined) + 
 	                        " does not satisfy: '" + 
-	                        bound.getProducedTypeName(unit) + 
+	                        bound.asString(unit) + 
 	                        "'");
 	            }
 	        }
@@ -848,11 +848,11 @@ public class RefinementVisitor extends Visitor {
                             " with upper bound which refining member type parameter '" + 
                             refiningTypeParam.getName() + 
                             "' does not satisfy not yet supported: '" + 
-                            bound.getProducedTypeName(unit) + 
+                            bound.asString(unit) + 
                             "' ('" +
                             refiningTypeParam.getName() +
                             "' should be upper bounded by '" +
-                            refinedBound.getProducedTypeName(unit) + 
+                            refinedBound.asString(unit) + 
                             "')");
                 }
             }
