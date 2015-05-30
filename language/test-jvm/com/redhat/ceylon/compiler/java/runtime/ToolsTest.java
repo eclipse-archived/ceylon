@@ -139,7 +139,7 @@ public class ToolsTest {
         Assert.assertEquals(0, exit);
         
         // to run in this JVM:
-//        Function method;
+//        Method method;
 //        try {
 //            method = ToolsTest.class.getDeclaredMethod(name.getMethodName()+"_");
 //            method.invoke(new ToolsTest());

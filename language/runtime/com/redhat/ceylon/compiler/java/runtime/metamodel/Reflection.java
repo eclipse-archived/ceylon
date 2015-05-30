@@ -98,8 +98,8 @@ class Reflection {
     }
     
     static java.lang.reflect.Constructor<?> findConstructor(Class<?> javaClass) {
-        // How to find the right Function, just go for the one with the longest parameter list?
-        // OR go via the Function in AppliedFunction?
+        // How to find the right Method, just go for the one with the longest parameter list?
+        // OR go via the Method in AppliedFunction?
         java.lang.reflect.Constructor<?> best = null;
         int numBestParams = -1;
         int numBest = 0;
@@ -122,7 +122,7 @@ class Reflection {
             throw Metamodel.newModelError("Couldn't find method " + javaClass);
         }
         if (numBest > 1) {
-            throw Metamodel.newModelError("Function arity ambiguity " + javaClass);
+            throw Metamodel.newModelError("Method arity ambiguity " + javaClass);
         }
         return best;
     }
