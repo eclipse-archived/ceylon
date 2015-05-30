@@ -1379,6 +1379,9 @@ public class Type extends Reference {
                 dec.getTypeParameters().isEmpty() &&
                 !dec.isClassOrInterfaceMember()) {
             //fast!
+            if (dec.isAlias()) {
+                dec = dec.getExtendedType().getDeclaration();
+            }
             if (getDeclaration().inherits(dec)) {
                 superType = dec.getType();
             }
