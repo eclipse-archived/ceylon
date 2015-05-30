@@ -24,12 +24,12 @@ public class UnionType extends TypeDeclaration {
     
     @Override
     public String getName() {
-        return getType().getProducedTypeName();
+        return getType().asString();
     }
     
     @Override
     public String getName(Unit unit) {
-    	return getType().getProducedTypeName(unit);
+    	return getType().asString(unit);
     }
     
     @Override

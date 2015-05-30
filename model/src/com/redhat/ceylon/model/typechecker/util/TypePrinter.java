@@ -15,13 +15,13 @@ import com.redhat.ceylon.model.typechecker.model.TypeParameter;
 import com.redhat.ceylon.model.typechecker.model.UnionType;
 import com.redhat.ceylon.model.typechecker.model.Unit;
 
-public class ProducedTypeNamePrinter {
+public class TypePrinter {
 
-    public static final ProducedTypeNamePrinter DEFAULT = 
-            new ProducedTypeNamePrinter(true, true, false, true, false);
+    public static final TypePrinter DEFAULT = 
+            new TypePrinter(true, true, false, true, false);
 
-    public static final ProducedTypeNamePrinter ESCAPED = 
-            new ProducedTypeNamePrinter(true, true, false, true, true);
+    public static final TypePrinter ESCAPED = 
+            new TypePrinter(true, true, false, true, true);
 
     private boolean printAbbreviated;
     private boolean printTypeParameters;
@@ -31,13 +31,13 @@ public class ProducedTypeNamePrinter {
     private boolean printFullyQualified;
     private boolean escapeLowercased;
     
-    public ProducedTypeNamePrinter() {}
+    public TypePrinter() {}
 
-    public ProducedTypeNamePrinter(boolean printAbbreviated) {
+    public TypePrinter(boolean printAbbreviated) {
         this(printAbbreviated, true, false, true, false);
     }
 
-    public ProducedTypeNamePrinter(boolean printAbbreviated, 
+    public TypePrinter(boolean printAbbreviated, 
             boolean printTypeParameters, 
             boolean printTypeParameterDetail,
             boolean printQualifyingType,
@@ -85,7 +85,7 @@ public class ProducedTypeNamePrinter {
         return "&";
     }
 
-    public String getProducedTypeName(Type pt, Unit unit) {
+    public String print(Type pt, Unit unit) {
         if (pt==null) {
             return "unknown";
         }
@@ -95,7 +95,7 @@ public class ProducedTypeNamePrinter {
                 Unit u = pt.getDeclaration().getUnit();
                 if (abbreviateOptional(pt)) {
                     Type dt = pt.eliminateNull();
-                    String dtn = getProducedTypeName(dt, unit);
+                    String dtn = print(dt, unit);
                     if (isPrimitiveAbbreviatedType(dt)) {
                         return dtn + "?";
                     }
@@ -109,13 +109,13 @@ public class ProducedTypeNamePrinter {
                 if (abbreviateHomoTuple(pt)) {
                     Type et = 
                             u.getSequentialElementType(pt);
-                    String etn = getProducedTypeName(et, unit);
+                    String etn = print(et, unit);
                     int len = u.getHomogeneousTupleLength(pt);
                     return etn +  "[" + len + "]";
                 }
                 if (abbreviateSequential(pt)) {
                     Type it = u.getIteratedType(pt);
-                    String etn = getProducedTypeName(it, unit);
+                    String etn = print(it, unit);
                     if (isPrimitiveAbbreviatedType(it)) {
                         return etn + "[]";
                     }
@@ -125,7 +125,7 @@ public class ProducedTypeNamePrinter {
                 }
                 if (abbreviateSequence(pt)) {
                     Type it = u.getIteratedType(pt);
-                    String etn = getProducedTypeName(it, unit);
+                    String etn = print(it, unit);
                     if (isPrimitiveAbbreviatedType(it) || 
                             it.isUnion() || it.isIntersection()) {
                         return "[" + etn + "+]";
@@ -140,7 +140,7 @@ public class ProducedTypeNamePrinter {
                     if (it.isNothing() && !nt.isNothing()) {
                     	return "{}";
                     }
-                    String itn = getProducedTypeName(it, unit);
+                    String itn = print(it, unit);
                     String many = nt.isNothing() ? "+" : "*";
                     if (isPrimitiveAbbreviatedType(it) || 
                             it.isUnion() || it.isIntersection()) {
@@ -153,9 +153,9 @@ public class ProducedTypeNamePrinter {
                 if (abbreviateEntry(pt)) {
                     Type kt = u.getKeyType(pt);
                     Type vt = u.getValueType(pt);
-                    return getProducedTypeName(kt, unit) + 
+                    return print(kt, unit) + 
                             "-" + gt()
-                            + getProducedTypeName(vt, unit);
+                            + print(vt, unit);
                 }
                 if (abbreviateCallable(pt)) {
                     List<Type> tal = 
@@ -167,7 +167,7 @@ public class ProducedTypeNamePrinter {
                                 getTupleElementTypeNames(at, unit);
                         if (rt!=null && paramTypes!=null) {
                             String rtn = 
-                                    getProducedTypeName(rt, unit);
+                                    print(rt, unit);
                             if (!isPrimitiveAbbreviatedType(rt)) {
                                 rtn = lt() + rtn + gt();
                             }
@@ -177,9 +177,9 @@ public class ProducedTypeNamePrinter {
                     else {
                         if (rt!=null && at!=null) {
                             String rtn = 
-                                    getProducedTypeName(rt, unit);
+                                    print(rt, unit);
                             String atn = 
-                                    getProducedTypeName(at, unit);
+                                    print(at, unit);
                             if (!isPrimitiveAbbreviatedType(at)) {
                                 atn = lt() + atn + gt();
                             }
@@ -214,11 +214,11 @@ public class ProducedTypeNamePrinter {
                     else if (printAbbreviated() && 
                             abbreviateEntry(caseType)) {
                         name.append(lt())
-                            .append(getProducedTypeName(caseType, unit))
+                            .append(print(caseType, unit))
                             .append(gt());
                     }
                     else {
-                        name.append(getProducedTypeName(caseType, unit));
+                        name.append(print(caseType, unit));
                     }
                 }
                 return name.toString();
@@ -241,11 +241,11 @@ public class ProducedTypeNamePrinter {
                             abbreviateEntry(satisfiedType) || 
                             satisfiedType.isUnion()) {
                         name.append(lt())
-                            .append(getProducedTypeName(satisfiedType, unit))
+                            .append(print(satisfiedType, unit))
                             .append(gt());
                     }
                     else {
-                        name.append(getProducedTypeName(satisfiedType, unit));
+                        name.append(print(satisfiedType, unit));
                     }
                 }
                 return name.toString();
@@ -276,7 +276,7 @@ public class ProducedTypeNamePrinter {
                     }
                     else {
                         name.append(" = ")
-                            .append(getProducedTypeName(dta, unit));
+                            .append(print(dta, unit));
                     }
                 }
 
@@ -315,7 +315,7 @@ public class ProducedTypeNamePrinter {
                     Type aliasedType =
                             declaration.getExtendedType()
                             .substitute(pt);
-                    name.append(getProducedTypeName(aliasedType, unit));
+                    name.append(print(aliasedType, unit));
                     return name.toString();
                 }
                 else {            
@@ -506,7 +506,7 @@ public class ProducedTypeNamePrinter {
                         Type rest = tal.get(2);
                         if (first!=null && rest!=null) {
                             String argtype = 
-                                    getProducedTypeName(first, unit);
+                                    print(first, unit);
                             if (rest.isEmpty()) {
                                 return defaulted ? 
                                         argtype + "=" : argtype;
@@ -529,7 +529,7 @@ public class ProducedTypeNamePrinter {
                             u.getIteratedType(args);
                     if (elementType!=null) {
                         String elemtype = 
-                                getProducedTypeName(elementType, unit);
+                                print(elementType, unit);
                         if (isPrimitiveAbbreviatedType(elementType)) {
                             return elemtype + "*";
                         }
@@ -543,7 +543,7 @@ public class ProducedTypeNamePrinter {
                             u.getIteratedType(args);
                     if (elementType!=null) {
                         String elemtype = 
-                                getProducedTypeName(elementType, unit);
+                                print(elementType, unit);
                         if (isPrimitiveAbbreviatedType(elementType)) {
                             return elemtype + "+";
                         }
@@ -583,7 +583,7 @@ public class ProducedTypeNamePrinter {
                 if (isComplex) {
 					ptn.append(lt());
 	            }
-                ptn.append(getProducedTypeName(qt, unit));
+                ptn.append(print(qt, unit));
     			if (isComplex) {
 					ptn.append(gt());
 	            }
@@ -623,7 +623,7 @@ public class ProducedTypeNamePrinter {
                             pt.isContravariant(p)) {
                         ptn.append("in ");
                     }
-                    ptn.append(getProducedTypeName(t, unit));
+                    ptn.append(print(t, unit));
                 }
             }
             ptn.append(gt());
@@ -707,7 +707,7 @@ public class ProducedTypeNamePrinter {
                         else {
                             result.append("|");
                         }
-                        result.append(getProducedTypeName(ct,unit));
+                        result.append(print(ct,unit));
                     }
                 }
                 if (hasUpperBounds) {
@@ -720,7 +720,7 @@ public class ProducedTypeNamePrinter {
                         else {
                             result.append(amp());
                         }
-                        result.append(getProducedTypeName(st,unit));
+                        result.append(print(st,unit));
                     }
                 }
             }

@@ -24,9 +24,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import com.redhat.ceylon.model.typechecker.context.ProducedTypeCache;
+import com.redhat.ceylon.model.typechecker.context.TypeCache;
 import com.redhat.ceylon.model.typechecker.model.UnknownType.ErrorReporter;
-import com.redhat.ceylon.model.typechecker.util.ProducedTypeNamePrinter;
+import com.redhat.ceylon.model.typechecker.util.TypePrinter;
 
 
 /**
@@ -1366,8 +1366,8 @@ public class Type extends Reference {
                 !complexType && 
                 !hasUnderlyingType() && 
                 collectVarianceOverrides().isEmpty() &&
-                ProducedTypeCache.isEnabled();
-        ProducedTypeCache cache = dec.getUnit().getCache();
+                TypeCache.isEnabled();
+        TypeCache cache = dec.getUnit().getCache();
         if (canCache && 
                 cache.containsKey(this, dec)) {
             return cache.get(this, dec);
@@ -1934,7 +1934,7 @@ public class Type extends Reference {
             return NO_TYPE_ARGS;
         }
         else {
-//            if (ProducedTypeCache.isEnabled()) {
+//            if (TypeCache.isEnabled()) {
 //                if (typeArgumentList==null) {
 //                    typeArgumentList = 
 //                            getTypeArgumentListInternal();
@@ -3130,44 +3130,38 @@ public class Type extends Reference {
 
     @Override
     public String toString() {
-        String result = getProducedTypeName();
+        String result = asString();
         return isTypeConstructor() ?
                 result + " (type constructor)" :
                 result + " (type)";
     }
     
     @Override
-    public String getProducedName() {
-        return getProducedTypeName();
-    }
-    
-    public String getProducedTypeName() {
-        return getProducedTypeName(null);
+    public String asString() {
+        return asString(null);
     }
 
-    public String getProducedTypeName(Unit unit) {
-        return ProducedTypeNamePrinter.DEFAULT
-                .getProducedTypeName(this, unit);
+    public String asString(Unit unit) {
+        return TypePrinter.DEFAULT.print(this, unit);
     }
     
-    public String getProducedTypeNameInSource(Unit unit) {
-        return ProducedTypeNamePrinter.ESCAPED
-                .getProducedTypeName(this, unit);
+    public String asSourceCodeString(Unit unit) {
+        return TypePrinter.ESCAPED.print(this, unit);
     }
     
-    public String getProducedTypeName(boolean abbreviate) {
-        return getProducedTypeName(abbreviate, null);
+    public String asString(boolean abbreviate) {
+        return asString(abbreviate, null);
     }
 
-    public String getProducedTypeName(boolean abbreviate, Unit unit) {
-        return new ProducedTypeNamePrinter(abbreviate)
-                        .getProducedTypeName(this, unit);
+    public String asString(boolean abbreviate, Unit unit) {
+        return new TypePrinter(abbreviate)
+                        .print(this, unit);
     }
 
     private String getSimpleProducedTypeQualifiedName() {
         StringBuilder ptn = new StringBuilder();
         if (isTypeConstructor()) {
-            return getProducedTypeName();
+            return asString();
         }
         Type qt = getQualifyingType();
         TypeDeclaration declaration = getDeclaration();

@@ -12,7 +12,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.redhat.ceylon.model.typechecker.context.ProducedTypeCache;
+import com.redhat.ceylon.model.typechecker.context.TypeCache;
 
 /**
  * An applied type or applied reference to a method or 
@@ -47,7 +47,7 @@ public abstract class Reference {
     public Map<TypeParameter, Type> getTypeArguments() {
         Declaration declaration = getDeclaration();
         if (declaration instanceof Generic) {
-            if (ProducedTypeCache.isEnabled()) {
+            if (TypeCache.isEnabled()) {
                 if (typeArgumentsWithDefaults==null) {
                     typeArgumentsWithDefaults = 
                             getTypeArgumentsInternal(declaration);
@@ -197,6 +197,6 @@ public abstract class Reference {
         return ptr;
     }
     
-    public abstract String getProducedName();
+    public abstract String asString();
     
 }

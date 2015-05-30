@@ -881,7 +881,7 @@ public abstract class TypeDeclaration extends Declaration
 //    private List<TypeDeclaration> supertypeDeclarations;
     
     public final List<TypeDeclaration> getSupertypeDeclarations() {
-//        if (ProducedTypeCache.isEnabled()) {
+//        if (TypeCache.isEnabled()) {
 //            if (supertypeDeclarations==null) {
 //                supertypeDeclarations = 
 //                        getSupertypeDeclarationsInternal();

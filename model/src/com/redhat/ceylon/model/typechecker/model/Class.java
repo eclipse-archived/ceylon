@@ -344,7 +344,7 @@ public class Class extends ClassOrInterface implements Functional {
                     params.append(", ");
                 }
                 if (p.getType()!=null) {
-                    params.append(p.getType().getProducedName());
+                    params.append(p.getType().asString());
                     params.append(" ");
                 }
                 params.append(p.getName());

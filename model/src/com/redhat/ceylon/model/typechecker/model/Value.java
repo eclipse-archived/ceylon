@@ -116,7 +116,7 @@ public class Value extends FunctionOrValue implements Scope {
         }
         else {
             return "value " + toStringName() + 
-                    " => " + type.getProducedTypeName();
+                    " => " + type.asString();
         }
     }
 

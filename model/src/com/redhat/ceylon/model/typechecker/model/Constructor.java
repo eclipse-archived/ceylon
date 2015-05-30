@@ -210,7 +210,7 @@ public class Constructor extends TypeDeclaration implements Generic, Scope, Func
                     params.append(", ");
                 }
                 if (p.getType()!=null) {
-                    params.append(p.getType().getProducedName());
+                    params.append(p.getType().asString());
                     params.append(" ");
                 }
                 params.append(p.getName());

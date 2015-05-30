@@ -143,7 +143,7 @@ public class Function extends FunctionOrValue implements Generic, Scope, Functio
                         params.append(", ");
                     }
                     if (p.getType()!=null) {
-                        params.append(p.getType().getProducedName());
+                        params.append(p.getType().asString());
                         params.append(" ");
                     }
                     params.append(p.getName());
@@ -151,7 +151,7 @@ public class Function extends FunctionOrValue implements Generic, Scope, Functio
                 params.append(")");
             }
             return "function " + toStringName() + params + 
-                    " => " + type.getProducedTypeName();
+                    " => " + type.asString();
         }
     }
     

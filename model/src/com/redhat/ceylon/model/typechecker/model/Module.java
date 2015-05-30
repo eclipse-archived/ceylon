@@ -12,7 +12,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
-import com.redhat.ceylon.model.typechecker.context.ProducedTypeCache;
+import com.redhat.ceylon.model.typechecker.context.TypeCache;
 
 public class Module 
         implements Referenceable, Annotated, Comparable<Module> {
@@ -32,7 +32,7 @@ public class Module
     private List<Annotation> annotations = new ArrayList<Annotation>();
     private Unit unit;
     private String memoisedName;
-    private ProducedTypeCache cache = new ProducedTypeCache();
+    private TypeCache cache = new TypeCache();
     private String signature;
     private List<ModuleImport> overridenImports = null;
     private String nativeBackend;
@@ -312,12 +312,12 @@ public class Module
         return version.compareTo(otherVersion);
     }
 
-    public ProducedTypeCache getCache(){
+    public TypeCache getCache(){
         return cache;
     }
 
     public void clearCache(TypeDeclaration declaration) {
-        ProducedTypeCache cache = getCache();
+        TypeCache cache = getCache();
         if (cache != null){
             cache.clearForDeclaration(declaration);
         }

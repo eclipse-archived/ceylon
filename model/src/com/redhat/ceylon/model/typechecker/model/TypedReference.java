@@ -52,16 +52,16 @@ public class TypedReference extends Reference {
     
     @Override
     public String toString() {
-        return getProducedName() + " (typed reference)";
+        return asString() + " (typed reference)";
     }
 
     @Override
-    public String getProducedName() {
+    public String asString() {
         TypedDeclaration dec = getDeclaration();
         StringBuilder name = new StringBuilder();
         Type type = getQualifyingType();
         if (type!=null) {
-            name.append(type.getProducedTypeName())
+            name.append(type.asString())
                 .append(".");
         }
         name.append(dec.getName());
@@ -82,7 +82,7 @@ public class TypedReference extends Reference {
                         name.append("unknown");
                     }
                     else {
-                        name.append(arg.getProducedTypeName());
+                        name.append(arg.asString());
                     }
                 }
                 name.append(">");

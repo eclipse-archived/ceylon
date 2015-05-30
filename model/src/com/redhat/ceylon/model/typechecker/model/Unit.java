@@ -23,7 +23,7 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.TreeMap;
 
-import com.redhat.ceylon.model.typechecker.context.ProducedTypeCache;
+import com.redhat.ceylon.model.typechecker.context.TypeCache;
 
 public class Unit {
 
@@ -2036,7 +2036,7 @@ public class Unit {
         return getLanguageModuleDeclarationTypeDeclaration("Declaration");
     }
     
-    public ProducedTypeCache getCache() {
+    public TypeCache getCache() {
         Module module = getPackage().getModule();
         return module != null ? module.getCache() : null;
     }
