@@ -18,8 +18,8 @@ import com.redhat.ceylon.model.typechecker.model.Constructor;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Functional;
 import com.redhat.ceylon.model.typechecker.model.Interface;
-import com.redhat.ceylon.model.typechecker.model.Method;
-import com.redhat.ceylon.model.typechecker.model.MethodOrValue;
+import com.redhat.ceylon.model.typechecker.model.Function;
+import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
 import com.redhat.ceylon.model.typechecker.model.ModelUtil;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.Type;
@@ -118,8 +118,8 @@ public class JvmBackendUtil {
      * @return true if the declaration is a method
      */
     public static boolean isMethod(Declaration decl) {
-        return (decl instanceof Method)
-                && !((Method)decl).isParameter();
+        return (decl instanceof Function)
+                && !((Function)decl).isParameter();
     }
 
     public static boolean isCeylon(TypeDeclaration declaration) {
@@ -137,9 +137,9 @@ public class JvmBackendUtil {
         return getTopmostRefinedDeclaration(decl, null);
     }
 
-    public static Declaration getTopmostRefinedDeclaration(Declaration decl, Map<Method, Method> methodOverrides){
-        if (decl instanceof MethodOrValue
-                && ((MethodOrValue)decl).isParameter()
+    public static Declaration getTopmostRefinedDeclaration(Declaration decl, Map<Function, Function> methodOverrides){
+        if (decl instanceof FunctionOrValue
+                && ((FunctionOrValue)decl).isParameter()
                 && decl.getContainer() instanceof Class) {
             // Parameters in a refined class are not considered refinements themselves
             // We have in find the refined attribute
@@ -182,16 +182,16 @@ public class JvmBackendUtil {
                 }
             }
             return decl;
-        } else if(decl instanceof MethodOrValue
-                && ((MethodOrValue)decl).isParameter() // a parameter
-                && ((decl.getContainer() instanceof Method && !(((Method)decl.getContainer()).isParameter())) // that's not parameter of a functional parameter 
+        } else if(decl instanceof FunctionOrValue
+                && ((FunctionOrValue)decl).isParameter() // a parameter
+                && ((decl.getContainer() instanceof Function && !(((Function)decl.getContainer()).isParameter())) // that's not parameter of a functional parameter 
                         || decl.getContainer() instanceof Specification // or is a parameter in a specification
-                        || (decl.getContainer() instanceof Method  
-                            && ((Method)decl.getContainer()).isParameter() 
-                            && createMethod((Method)decl.getContainer())))) {// or is a class functional parameter
+                        || (decl.getContainer() instanceof Function  
+                            && ((Function)decl.getContainer()).isParameter() 
+                            && createMethod((Function)decl.getContainer())))) {// or is a class functional parameter
             // Parameters in a refined method are not considered refinements themselves
             // so we have to look up the corresponding parameter in the container's refined declaration
-            Functional func = (Functional)getParameterized((MethodOrValue)decl);
+            Functional func = (Functional)getParameterized((FunctionOrValue)decl);
             if(func == null)
                 return decl;
             Declaration kk = getTopmostRefinedDeclaration((Declaration)func, methodOverrides);
@@ -224,11 +224,11 @@ public class JvmBackendUtil {
                 continue;
             }
         }else if(methodOverrides != null
-                && decl instanceof Method
+                && decl instanceof Function
                 && ModelUtil.equal(decl.getRefinedDeclaration(), decl)
                 && decl.getContainer() instanceof Specification
-                && ((Specification)decl.getContainer()).getDeclaration() instanceof Method
-                && ((Method) ((Specification)decl.getContainer()).getDeclaration()).isShortcutRefinement()
+                && ((Specification)decl.getContainer()).getDeclaration() instanceof Function
+                && ((Function) ((Specification)decl.getContainer()).getDeclaration()).isShortcutRefinement()
                 // we do all the previous ones first because they are likely to filter out false positives cheaper than the
                 // hash lookup we do next to make sure it is really one of those cases
                 && methodOverrides.containsKey(decl)){
@@ -255,7 +255,7 @@ public class JvmBackendUtil {
         return result;
     }
 
-    public static Declaration getParameterized(MethodOrValue methodOrValue) {
+    public static Declaration getParameterized(FunctionOrValue methodOrValue) {
         if (!methodOrValue.isParameter()) {
             return null;
         }
@@ -268,8 +268,8 @@ public class JvmBackendUtil {
         return null;
     }
 
-    public static boolean createMethod(MethodOrValue model) {
-        return model instanceof Method
+    public static boolean createMethod(FunctionOrValue model) {
+        return model instanceof Function
                 && model.isParameter()
                 && model.isClassMember()
                 && (model.isShared() || model.isCaptured());
@@ -279,15 +279,15 @@ public class JvmBackendUtil {
         if(declaration instanceof ClassOrInterface){
             // Java constructors don't support reified type arguments
             return isCeylon((TypeDeclaration) declaration);
-        }else if(declaration instanceof Method){
-            if (((Method)declaration).isParameter()) {
+        }else if(declaration instanceof Function){
+            if (((Function)declaration).isParameter()) {
                 // those can never be parameterised
                 return false;
             }
             if(declaration.isToplevel())
                 return true;
             // Java methods don't support reified type arguments
-            Method m = (Method) getTopmostRefinedDeclaration(declaration);
+            Function m = (Function) getTopmostRefinedDeclaration(declaration);
             // See what its container is
             ClassOrInterface container = ModelUtil.getClassOrInterfaceContainer(m);
             // a method which is not a toplevel and is not a class method, must be a method within method and

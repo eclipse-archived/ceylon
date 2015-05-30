@@ -5,14 +5,14 @@ import java.util.Map;
 
 import com.redhat.ceylon.model.loader.mirror.MethodMirror;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
-import com.redhat.ceylon.model.typechecker.model.Method;
+import com.redhat.ceylon.model.typechecker.model.Function;
 
 /**
  * Instance method that allows us to remember the exact method name
  *
  * @author Stéphane Épardaud <stef@epardaud.fr>
  */
-public class JavaMethod extends Method implements LocalDeclarationContainer {
+public class JavaMethod extends Function implements LocalDeclarationContainer {
 
     private String realName;
     private boolean defaultedAnnotation;

@@ -6,6 +6,12 @@ import static com.redhat.ceylon.model.typechecker.model.Util.addToUnion;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * A "fake" declaration for an intersection type.
+ * 
+ * @author Gavin King
+ *
+ */
 public class IntersectionType extends TypeDeclaration {
 
     public IntersectionType(Unit unit) {

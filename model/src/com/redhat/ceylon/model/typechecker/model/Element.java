@@ -9,6 +9,12 @@ import static java.util.Collections.emptyList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Any program element of relevance to the model.
+ * 
+ * @author Gavin King
+ *
+ */
 public abstract class Element {
     
     Element() {}

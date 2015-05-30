@@ -149,7 +149,7 @@ public class ModelUtil {
      * Is the given scope a local scope but not an initializer scope?
      */
     public static boolean isLocalNotInitializerScope(Scope scope) {
-        return scope instanceof MethodOrValue 
+        return scope instanceof FunctionOrValue 
                 || scope instanceof Constructor
                 || scope instanceof ControlBlock
                 || scope instanceof NamedArgumentList

@@ -2,7 +2,12 @@ package com.redhat.ceylon.model.typechecker.model;
 
 import java.util.List;
 
-
+/**
+ * The bottom type Nothing.
+ * 
+ * @author Gavin King
+ *
+ */
 public class NothingType extends TypeDeclaration {
     
     public NothingType(Unit unit) {

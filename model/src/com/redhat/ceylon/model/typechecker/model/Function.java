@@ -6,14 +6,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * A method. Note that a method must have
- * at least one parameter list.
+ * A function. Note that a function must have at least one 
+ * parameter list.
  *
  * @author Gavin King
  */
-public class Method extends MethodOrValue implements Generic, Scope, Functional {
+public class Function extends FunctionOrValue implements Generic, Scope, Functional {
 
-    public Method() {}
+    public Function() {}
     
     //private boolean formal;
 
@@ -95,7 +95,7 @@ public class Method extends MethodOrValue implements Generic, Scope, Functional 
     public Parameter getParameter(String name) {
         for (Declaration d : getMembers()) {
             if (d.isParameter() && Util.isNamed(name, d)) {
-                MethodOrValue mod = (MethodOrValue) d;
+                FunctionOrValue mod = (FunctionOrValue) d;
                 return mod.getInitializerParameter();
             }
         }

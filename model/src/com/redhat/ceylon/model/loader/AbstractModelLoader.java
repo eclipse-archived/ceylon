@@ -63,8 +63,8 @@ import com.redhat.ceylon.model.typechecker.model.Element;
 import com.redhat.ceylon.model.typechecker.model.Functional;
 import com.redhat.ceylon.model.typechecker.model.Interface;
 import com.redhat.ceylon.model.typechecker.model.IntersectionType;
-import com.redhat.ceylon.model.typechecker.model.Method;
-import com.redhat.ceylon.model.typechecker.model.MethodOrValue;
+import com.redhat.ceylon.model.typechecker.model.Function;
+import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
 import com.redhat.ceylon.model.typechecker.model.ModelUtil;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.ModuleImport;
@@ -948,7 +948,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     private static Declaration selectTypeOrSetter(Declaration member, boolean wantsSetter) {
         // if we found a type or a method/value we're good to go
         if (member instanceof ClassOrInterface
-                || member instanceof Method) {
+                || member instanceof Function) {
             return member;
         }
         // if it's a Value return its object type by preference, the member otherwise
@@ -1122,7 +1122,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 break;
             }
         }catch(ModelResolutionException x){
-            // FIXME: this may not be the best thing to do, perhaps we should have an erroneous Class,Interface,Method
+            // FIXME: this may not be the best thing to do, perhaps we should have an erroneous Class,Interface,Function
             // etc, like javac's model does?
             decl = logModelResolutionException(x, null, "Failed to load declaration "+classMirror).getDeclaration();
         }
@@ -1324,7 +1324,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 logError("Constructor for '"+containerName+"' should take "+tpCount
                         +" reified type arguments (TypeDescriptor) but has '"+actualTypeDescriptorParameters+"': skipping constructor.");
             else
-                logError("Method '"+containerName+"."+methodMirror.getName()+"' should take "+tpCount
+                logError("Function '"+containerName+"."+methodMirror.getName()+"' should take "+tpCount
                     +" reified type arguments (TypeDescriptor) but has '"+actualTypeDescriptorParameters+"': method is invalid.");
             return false;
         }
@@ -1453,8 +1453,8 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     }
     
     private TypeParameter lookupTypeParameter(Scope scope, String name) {
-        if(scope instanceof Method){
-            Method m = (Method) scope;
+        if(scope instanceof Function){
+            Function m = (Function) scope;
             for(TypeParameter param : m.getTypeParameters()){
                 if(param.getName().equals(name))
                     return param;
@@ -2054,7 +2054,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 } else if(!methodMirror.getName().equals("hash")
                         && !methodMirror.getName().equals("string")){
                     // normal method
-                    Method m = addMethod(klass, methodMirror, classMirror, isCeylon, isOverloaded);
+                    Function m = addMethod(klass, methodMirror, classMirror, isCeylon, isOverloaded);
                     if (m.isOverloaded()) {
                         overloads = overloads == null ? new ArrayList<Declaration>(methodMirrors.size()) :  overloads;
                         overloads.add(m);
@@ -2064,7 +2064,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             
             if (overloads != null && !overloads.isEmpty()) {
                 // We create an extra "abstraction" method for overloaded methods
-                Method abstractionMethod = addMethod(klass, methodMirrors.get(0), classMirror, isCeylon, false);
+                Function abstractionMethod = addMethod(klass, methodMirrors.get(0), classMirror, isCeylon, false);
                 abstractionMethod.setAbstraction(true);
                 abstractionMethod.setOverloads(overloads);
                 abstractionMethod.setType(newUnknownType());
@@ -2379,8 +2379,8 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     }
 
     public static List<Declaration> getOverloads(Declaration decl) {
-        if (decl instanceof Method) {
-            return ((Method)decl).getOverloads();
+        if (decl instanceof Function) {
+            return ((Function)decl).getOverloads();
         }
         else if (decl instanceof Value) {
             return ((Value)decl).getOverloads();
@@ -2392,8 +2392,8 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     }
     
     public static void setOverloads(Declaration decl, List<Declaration> overloads) {
-        if (decl instanceof Method) {
-            ((Method)decl).setOverloads(overloads);
+        if (decl instanceof Function) {
+            ((Function)decl).setOverloads(overloads);
         }
         else if (decl instanceof Value) {
             ((Value)decl).setOverloads(overloads);
@@ -2492,7 +2492,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         }
     }
 
-    private Method addMethod(ClassOrInterface klass, MethodMirror methodMirror, ClassMirror classMirror, 
+    private Function addMethod(ClassOrInterface klass, MethodMirror methodMirror, ClassMirror classMirror, 
                              boolean isCeylon, boolean isOverloaded) {
         
         JavaMethod method = new JavaMethod(methodMirror);
@@ -2633,7 +2633,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         return sameType(param.getType(), OBJECT_TYPE);
     }
 
-    private void setEqualsParameters(Method decl, MethodMirror methodMirror) {
+    private void setEqualsParameters(Function decl, MethodMirror methodMirror) {
         ParameterList parameters = new ParameterList();
         decl.addParameterList(parameters);
         Parameter parameter = new Parameter();
@@ -2831,7 +2831,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         return unchecked != null && unchecked.booleanValue();
     }
 
-    private void setMethodOrValueFlags(final ClassOrInterface klass, final MethodMirror methodMirror, final MethodOrValue decl, boolean isCeylon) {
+    private void setMethodOrValueFlags(final ClassOrInterface klass, final MethodMirror methodMirror, final FunctionOrValue decl, boolean isCeylon) {
         decl.setShared(methodMirror.isPublic() || methodMirror.isProtected() || methodMirror.isDefaultAccess());
         decl.setProtectedVisibility(methodMirror.isProtected());
         decl.setPackageVisibility(methodMirror.isDefaultAccess());
@@ -2885,7 +2885,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                     Declaration refined = klass.getRefinedMember(decl.getName(), getSignature(decl), false);
                     decl.setRefinedDeclaration(refined);
                 }
-            }else{ // Method or Value
+            }else{ // Function or Value
                 MethodMirror methodMirror;
                 if(decl instanceof JavaBeanValue)
                     methodMirror = ((JavaBeanValue) decl).mirror;
@@ -3107,11 +3107,11 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 }
             }
             
-            MethodOrValue value = null;
+            FunctionOrValue value = null;
             boolean lookedup = false;
             if (isCeylon && decl instanceof Class){
                 // For a functional parameter to a class, we can just lookup the member
-                value = (MethodOrValue)((Class)decl).getDirectMember(paramName, null, false);
+                value = (FunctionOrValue)((Class)decl).getDirectMember(paramName, null, false);
                 lookedup = value != null;
             } 
             if (value == null) {
@@ -3120,7 +3120,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 AnnotationMirror functionalParameterAnnotation = paramMirror.getAnnotation(CEYLON_FUNCTIONAL_PARAMETER_ANNOTATION);
                 if (functionalParameterAnnotation != null) {
                     // A functional parameter to a method
-                    Method method = loadFunctionalParameter((Declaration)decl, paramName, type, (String)functionalParameterAnnotation.getValue());
+                    Function method = loadFunctionalParameter((Declaration)decl, paramName, type, (String)functionalParameterAnnotation.getValue());
                     value = method;
                     parameter.setDeclaredAnything(method.isDeclaredVoid());
                 } else {
@@ -3137,7 +3137,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             }else{
                 // Ceylon 1.1 had a bug where TypeInfo for functional parameters included the full CallableType on the method
                 // rather than just the method return type, so we try to detect this and fix it
-                if(value instanceof Method 
+                if(value instanceof Function 
                         && isCeylon1Dot1(classMirror)){
                     Type newType = getSimpleCallableReturnType(value.getType());
                     if(!newType.isUnknown())
@@ -3170,11 +3170,11 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             
             parameterIndex++;
         }
-        if (decl instanceof Method) {
+        if (decl instanceof Function) {
             // Multiple parameter lists
             AnnotationMirror functionalParameterAnnotation = methodMirror.getAnnotation(CEYLON_FUNCTIONAL_PARAMETER_ANNOTATION);
             if (functionalParameterAnnotation != null) {
-                parameterNameParser.parseMpl((String)functionalParameterAnnotation.getValue(), ((Method)decl).getType().getFullType(), (Method)decl);
+                parameterNameParser.parseMpl((String)functionalParameterAnnotation.getValue(), ((Function)decl).getType().getFullType(), (Function)decl);
             }
         }
     }
@@ -3192,8 +3192,8 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         return major == Versions.V1_1_BINARY_MAJOR_VERSION && minor == Versions.V1_1_BINARY_MINOR_VERSION;
     }
     
-    private Method loadFunctionalParameter(Declaration decl, String paramName, Type type, String parameterNames) {
-        Method method = new Method();
+    private Function loadFunctionalParameter(Declaration decl, String paramName, Type type, String parameterNames) {
+        Function method = new Function();
         method.setName(paramName);
         method.setUnit(decl.getUnit());
         if (parameterNames == null || parameterNames.isEmpty()) {
@@ -3360,7 +3360,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         }
     }
     
-    private void markDeclaredVoid(Method decl, MethodMirror methodMirror) {
+    private void markDeclaredVoid(Function decl, MethodMirror methodMirror) {
         if (methodMirror.isDeclaredVoid() || 
                 BooleanUtil.isTrue(getAnnotationBooleanValue(methodMirror, CEYLON_TYPE_INFO_ANNOTATION, "declaredVoid"))) {
             decl.setDeclaredVoid(true);
@@ -3919,7 +3919,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             param.setExtendedType(typeFactory.getAnythingType());
             params.add(param);
         }
-        boolean needsObjectBounds = !isCeylon && scope instanceof Method;
+        boolean needsObjectBounds = !isCeylon && scope instanceof Function;
         // Now all type params have been set, we can resolve the references parts
         Iterator<TypeParameter> paramsIterator = params.iterator();
         for(TypeParameterMirror typeParam : typeParameters){
@@ -3946,7 +3946,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     }
 
     // method
-    private void setTypeParameters(Method method, MethodMirror methodMirror, boolean isCeylon) {
+    private void setTypeParameters(Function method, MethodMirror methodMirror, boolean isCeylon) {
         List<TypeParameter> params = new LinkedList<TypeParameter>();
         method.setTypeParameters(params);
         List<AnnotationMirror> typeParameters = getTypeParametersFromAnnotations(methodMirror);

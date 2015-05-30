@@ -5,6 +5,12 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * A "fake" declaration for a union type.
+ * 
+ * @author Gavin King
+ *
+ */
 public class UnionType extends TypeDeclaration {
 
     public UnionType(Unit unit) {

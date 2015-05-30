@@ -3,11 +3,11 @@ package com.redhat.ceylon.model.typechecker.model;
 
 
 /**
- * Represents a simple attribute or local.
+ * Represents any value - either a reference or getter.
  *
  * @author Gavin King
  */
-public class Value extends MethodOrValue implements Scope {
+public class Value extends FunctionOrValue implements Scope {
 
     private boolean variable;
     private boolean trans;

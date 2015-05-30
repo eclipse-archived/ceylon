@@ -127,7 +127,7 @@ public class Class extends ClassOrInterface implements Functional {
     public Parameter getParameter(String name) {
         for (Declaration d : getMembers()) {
             if (d.isParameter() && Util.isNamed(name, d)) {
-                return ((MethodOrValue) d).getInitializerParameter();
+                return ((FunctionOrValue) d).getInitializerParameter();
             }
         }
         return null;

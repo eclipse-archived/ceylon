@@ -8,7 +8,7 @@ public class Parameter {
     private Declaration declaration;
     private boolean atLeastOne = false;
     private boolean declaredAnything = false;
-    private MethodOrValue model;
+    private FunctionOrValue model;
     private String name;
     
     private boolean hidden;
@@ -25,10 +25,10 @@ public class Parameter {
         this.hidden = hidden;
     }
     
-    public MethodOrValue getModel() {
+    public FunctionOrValue getModel() {
         return model;
     }
-    public void setModel(MethodOrValue model) {
+    public void setModel(FunctionOrValue model) {
         this.model = model;
     }
         
@@ -73,8 +73,8 @@ public class Parameter {
     }
     
     public boolean isDeclaredVoid() {
-        return model instanceof Method && 
-                ((Method) model).isDeclaredVoid();
+        return model instanceof Function && 
+                ((Function) model).isDeclaredVoid();
     }
     
     public String getName() {

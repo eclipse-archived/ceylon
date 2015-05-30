@@ -210,7 +210,7 @@ public class Util {
                     return false;
                 }
                 for (int i=0; i<size; i++) {
-                    MethodOrValue pm = 
+                    FunctionOrValue pm = 
                             params.get(i).getModel();
                     if (pm==null) {
                         return false;
@@ -1985,7 +1985,7 @@ public class Util {
                     (parameters.size());
         Unit unit = dec.getUnit();
         for (Parameter param: parameters) {
-            MethodOrValue model = param.getModel();
+            FunctionOrValue model = param.getModel();
             Type t = 
                     model==null ? 
                         unit.getUnknownType() : 

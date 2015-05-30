@@ -188,7 +188,7 @@ public abstract class Reference {
     public TypedReference getTypedParameter(Parameter p) {
         TypedReference ptr = 
                 new TypedReference(false, true);
-        MethodOrValue model = p.getModel();
+        FunctionOrValue model = p.getModel();
         if (model!=null) {
             ptr.setDeclaration(model);
         }

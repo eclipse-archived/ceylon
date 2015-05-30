@@ -3,7 +3,7 @@ package com.redhat.ceylon.model.typechecker.model;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class MethodOrValue extends TypedDeclaration {
+public abstract class FunctionOrValue extends TypedDeclaration {
     
     private boolean captured;
     private boolean shortcutRefinement;
@@ -74,7 +74,7 @@ public abstract class MethodOrValue extends TypedDeclaration {
         this.overloads = overloads;
     }
 
-    public void initOverloads(MethodOrValue... initial) {
+    public void initOverloads(FunctionOrValue... initial) {
         overloads = 
                 new ArrayList<Declaration>
                     (initial.length+1);

@@ -1,13 +1,13 @@
 package com.redhat.ceylon.model.loader.model;
 
-import com.redhat.ceylon.model.typechecker.model.Method;
+import com.redhat.ceylon.model.typechecker.model.Function;
 
 /**
  * Used for annotation interop.
  * 
  * @author Stéphane Épardaud <stef@epardaud.fr>
  */
-public class AnnotationProxyMethod extends Method {
+public class AnnotationProxyMethod extends Function {
     
     private AnnotationProxyClass proxyClass;
     

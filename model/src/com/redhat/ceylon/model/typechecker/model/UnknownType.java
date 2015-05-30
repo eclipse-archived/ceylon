@@ -2,7 +2,14 @@ package com.redhat.ceylon.model.typechecker.model;
 
 import java.util.List;
 
-
+/**
+ * Used whenever the typechecker doesn't know the type of 
+ * something. This might result from some error, or from
+ * use of dynamic typing.
+ * 
+ * @author Gavin King
+ *
+ */
 public class UnknownType extends TypeDeclaration {
 
     private ErrorReporter errorReporter;

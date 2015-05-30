@@ -12,7 +12,7 @@ import com.redhat.ceylon.model.typechecker.model.Annotation;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.DeclarationKind;
 import com.redhat.ceylon.model.typechecker.model.DeclarationWithProximity;
-import com.redhat.ceylon.model.typechecker.model.Method;
+import com.redhat.ceylon.model.typechecker.model.Function;
 import com.redhat.ceylon.model.typechecker.model.ParameterList;
 import com.redhat.ceylon.model.typechecker.model.Reference;
 import com.redhat.ceylon.model.typechecker.model.Type;
@@ -28,7 +28,7 @@ import com.redhat.ceylon.model.typechecker.model.Unit;
  *
  * @author Stéphane Épardaud <stef@epardaud.fr>
  */
-public class LazyMethod extends Method implements LazyElement, LocalDeclarationContainer {
+public class LazyMethod extends Function implements LazyElement, LocalDeclarationContainer {
 
     private MethodMirror methodMirror;
     public final ClassMirror classMirror;

@@ -6,8 +6,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import com.redhat.ceylon.model.typechecker.model.Method;
-import com.redhat.ceylon.model.typechecker.model.MethodOrValue;
+import com.redhat.ceylon.model.typechecker.model.Function;
+import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.ParameterList;
 import com.redhat.ceylon.model.typechecker.model.Type;
@@ -22,7 +22,7 @@ import com.redhat.ceylon.model.typechecker.model.Value;
  * name      ::= identifier ( '+' | '*' )? ( '!' )? ( nameList )*
  * </pre>
  * <ul>
- *   <li>A {@code !} means that the {@code Method} model is declared {@code void}</li>
+ *   <li>A {@code !} means that the {@code Function} model is declared {@code void}</li>
  *   <li>A {@code +} means that the {@code Parameter} model is possibly-empty variadic</li>
  *   <li>A {@code *} means that the {@code Parameter} model is nonempty variadic</li>
  * </ul> 
@@ -40,7 +40,7 @@ class ParameterNameParser {
         this.loader = loader;
     }
     
-    public void parse(String input, Type type, Method method) {
+    public void parse(String input, Type type, Function method) {
         lexer.setup(input);
         this.unit = method.getUnit();
         boolean declaredVoid = false;
@@ -63,7 +63,7 @@ class ParameterNameParser {
             throw new ParameterNameParserException("Expected end of input" + System.lineSeparator() + input);
         }
     }
-    public void parseMpl(String input, Type type, Method method) {
+    public void parseMpl(String input, Type type, Function method) {
         lexer.setup(input);
         this.unit = method.getUnit();
         ArrayList<ParameterList> lists = new ArrayList<>();
@@ -80,7 +80,7 @@ class ParameterNameParser {
             throw new ParameterNameParserException("Expected end of input" + System.lineSeparator() + input);
         }
     }
-    private ParameterList parseNameList(Type type, Method method) {
+    private ParameterList parseNameList(Type type, Function method) {
         ParameterList pl = new ParameterList();
         List<Parameter> parameters = pl.getParameters();
         //startParameterList();
@@ -108,7 +108,7 @@ class ParameterNameParser {
         return pl;
     }
 
-    private Parameter parseName(Type type, Method container) {
+    private Parameter parseName(Type type, Function container) {
         String identifier = lexer.eatIdentifier();
         boolean declaredVoid = false;
         boolean sequenced = false;
@@ -126,7 +126,7 @@ class ParameterNameParser {
             declaredVoid = true;
         }
         
-        final MethodOrValue result;
+        final FunctionOrValue result;
         if (lexer.lookingAt(LEFT_PAREN)) {
             // functionParameter()
             result = parseMethod(type, declaredVoid);
@@ -158,8 +158,8 @@ class ParameterNameParser {
         return value;
     }
 
-    private Method parseMethod(Type type, boolean declaredVoid) {
-        Method method = new Method();
+    private Function parseMethod(Type type, boolean declaredVoid) {
+        Function method = new Function();
         method.setDeclaredVoid(declaredVoid);
         method.setType(loader.getSimpleCallableReturnType(type));
         while (lexer.lookingAt(LEFT_PAREN)) {

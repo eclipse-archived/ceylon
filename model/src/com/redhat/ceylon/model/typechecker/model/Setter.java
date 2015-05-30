@@ -6,7 +6,7 @@ package com.redhat.ceylon.model.typechecker.model;
  *
  * @author Gavin King
  */
-public class Setter extends MethodOrValue implements Scope {
+public class Setter extends FunctionOrValue implements Scope {
 
 	private Value getter;
 	private Parameter parameter;

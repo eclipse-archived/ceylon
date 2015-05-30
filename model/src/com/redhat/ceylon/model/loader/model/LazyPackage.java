@@ -115,7 +115,7 @@ public class LazyPackage extends Package {
                     if (possibleAnnotationType != null
                             && possibleAnnotationType instanceof LazyInterface
                             && ((LazyInterface)possibleAnnotationType).isAnnotationType()) {
-                        // addMember() will have added a Method if we found an annotation type
+                        // addMember() will have added a Function if we found an annotation type
                         // so now we can look for the constructor again
                         d = lookupMember(compiledDeclarations, name, signature, ellipsis);
                     }
