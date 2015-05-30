@@ -4177,38 +4177,37 @@ public class ExpressionVisitor extends Visitor {
         }
         else {
             
-            if (invoked instanceof TypedDeclaration) {
-                TypedDeclaration typed =
-                        (TypedDeclaration) invoked;
-                ProducedType fullType = 
-                        typed.getTypedReference()
-                            .getFullType();
-                ProducedType returnType =
-                        unit.getCallableReturnType(fullType);
-                
-                if (returnType!=null) {
-                    boolean occursInvariantly =
-                            returnType.occursInvariantly(tp);
-                    boolean occursCovariantly =
-                            returnType.occursCovariantly(tp);
-                    boolean occursContravariantly =
-                            returnType.occursContravariantly(tp);
-                    if (occursCovariantly
-                			&& !occursContravariantly
-            				&& !occursInvariantly) {
-                        //if the parameter occurs only
-                        //covariantly in the return type,
-                        //then treat it as 'out'
-                        return false;
-                    }
-                    else if (!occursCovariantly
-                			&& occursContravariantly
-            				&& !occursInvariantly) {
-                        //if the parameter occurs only
-                        //contravariantly in the return type,
-                        //then treat it as 'in'
-                        return true;
-                    }
+            //for functions and class aliases, we need to 
+            //consider how the type parameter occurs in the 
+            //"return type"
+            ProducedType fullType = 
+                    invoked.getReference()
+                        .getFullType();
+            ProducedType returnType =
+                    unit.getCallableReturnType(fullType);
+            
+            if (returnType!=null) {
+                boolean occursInvariantly =
+                        returnType.occursInvariantly(tp);
+                boolean occursCovariantly =
+                        returnType.occursCovariantly(tp);
+                boolean occursContravariantly =
+                        returnType.occursContravariantly(tp);
+                if (occursCovariantly
+            			&& !occursContravariantly
+        				&& !occursInvariantly) {
+                    //if the parameter occurs only
+                    //covariantly in the return type,
+                    //then treat it as 'out'
+                    return false;
+                }
+                else if (!occursCovariantly
+            			&& occursContravariantly
+        				&& !occursInvariantly) {
+                    //if the parameter occurs only
+                    //contravariantly in the return type,
+                    //then treat it as 'in'
+                    return true;
                 }
             }
             

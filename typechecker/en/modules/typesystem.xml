@@ -2701,21 +2701,23 @@ interface NumberLiteral
             declaration is treated, for the purposes of type argument inference, as if it 
             were covariant or contravariant, depending upon how it occurs in the types of 
             parameters explicitly assigned arguments by the direct invocation, and, in the
-            case of direct invocation of a generic function, upon how it occurs in the 
-            return type of the function.</para>
+            case of direct invocation of a generic function or class alias, upon how it 
+            occurs in the return type of the function or aliased type of the class alias.</para>
             
             <itemizedlist>
                 <listitem>
-                    <para>If the generic declaration is a function, and <literal>T</literal> 
-                    occurs covariantly in its return type, and does not occur contravariantly
-                    or invariantly in its return type, then <literal>T</literal> is treated 
-                    as covariant.</para>
+                    <para>If the generic declaration is a function or class alias, and 
+                    <literal>T</literal> occurs covariantly in its return type or aliased 
+                    type, and does not occur contravariantly or invariantly in its return 
+                    type or aliased type, then <literal>T</literal> is treated as 
+                    covariant.</para>
                 </listitem>
                 <listitem>
-                    <para>If the generic declaration is a function, and <literal>T</literal> 
-                    occurs contravariantly in its return type, and does not occur covariantly
-                    or invariantly in its return type, then <literal>T</literal> is 
-                    treated as contravariant.</para>
+                    <para>If the generic declaration is a function or class alias, and 
+                    <literal>T</literal> occurs contravariantly in its return type or 
+                    aliased type, and does not occur covariantly or invariantly in its 
+                    return type or aliased type, then <literal>T</literal> is treated as 
+                    contravariant.</para>
                 </listitem>
                 <listitem>
                     <para>Otherwise, if <literal>T</literal> occurs contravariantly in the 
@@ -2726,8 +2728,8 @@ interface NumberLiteral
                     contravariant.</para>
                 </listitem>
                 <listitem>
-                    <para>Finally, if none of the above cases apply, <literal>T</literal>
-                    is treated as covariant.</para>
+                    <para>Finally, if none of the above cases apply, <literal>T</literal> is 
+                    treated as covariant.</para>
                 </listitem>
             </itemizedlist>
             
