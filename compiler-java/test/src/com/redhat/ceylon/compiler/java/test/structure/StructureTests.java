@@ -422,7 +422,7 @@ public class StructureTests extends CompilerTests {
     }
     @Test
     public void testMthMethod(){
-        compareWithJavaSource("method/Function");
+        compareWithJavaSource("method/Method");
     }
     @Test
     public void testMthVariadic(){
@@ -720,7 +720,7 @@ public class StructureTests extends CompilerTests {
 
     @Test
     public void testRfdMethod(){
-        compareWithJavaSource("reified/Function");
+        compareWithJavaSource("reified/Method");
     }
 
     @Test
@@ -766,7 +766,7 @@ public class StructureTests extends CompilerTests {
 
     @Test
     public void testRfdModelLoader(){
-        compile("reified/Class.ceylon", "reified/Function.ceylon");
+        compile("reified/Class.ceylon", "reified/Method.ceylon");
         compareWithJavaSource("reified/ModelLoader");
     }
 }

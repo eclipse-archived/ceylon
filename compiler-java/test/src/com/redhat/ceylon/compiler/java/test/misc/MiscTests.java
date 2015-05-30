@@ -384,7 +384,7 @@ public class MiscTests extends CompilerTests {
     
     @Test
     public void testKeywordMethod(){
-        compareWithJavaSource("keyword/Function");
+        compareWithJavaSource("keyword/Method");
     }
     
     @Test

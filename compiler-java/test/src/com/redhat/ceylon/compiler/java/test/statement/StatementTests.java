@@ -28,7 +28,7 @@ import com.redhat.ceylon.compiler.java.test.CompilerTests;
 public class StatementTests extends CompilerTests {
     
     //
-    // Function attributes and variables
+    // Method attributes and variables
     
     @Test
     public void testAtrMethodAttribute(){
