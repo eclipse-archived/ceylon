@@ -106,11 +106,11 @@ public class TypeFactory extends Unit {
             throw new IllegalArgumentException("Callable type always has two arguments: " + typeArgs);
         }
         if (!typeArgs.get(1).isSubtypeOf(
-                getSequentialDeclaration().getProducedType(
+                getSequentialDeclaration().appliedType(
                         null, Collections.singletonList(getAnythingType())))) {
             throw new IllegalArgumentException("Callable's second argument should be sequential " + typeArgs.get(1));
         }
-        return getCallableDeclaration().getProducedType(null, typeArgs);
+        return getCallableDeclaration().appliedType(null, typeArgs);
     }
     
     public Type getCallableType(Type resultType) {
@@ -168,7 +168,7 @@ public class TypeFactory extends Unit {
     public Type getReferenceType(Type value) {
         final Type serializedValueType;
         TypeDeclaration referenceTypeDecl = (TypeDeclaration)getLanguageModuleSerializationDeclaration("Reference");
-        serializedValueType = referenceTypeDecl.getProducedType(null, Collections.singletonList(value));
+        serializedValueType = referenceTypeDecl.appliedType(null, Collections.singletonList(value));
         return serializedValueType;
     }
     

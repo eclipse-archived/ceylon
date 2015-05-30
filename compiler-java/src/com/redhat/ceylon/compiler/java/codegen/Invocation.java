@@ -1456,7 +1456,7 @@ class NamedArgumentInvocation extends Invocation {
             gen.statementGen().noExpressionlessReturn = prevNoExpressionlessReturn;
         }
         
-        Type callableType = model.getProducedReference(null, Collections.<Type>emptyList()).getFullType();
+        Type callableType = model.appliedReference(null, Collections.<Type>emptyList()).getFullType();
         CallableBuilder callableBuilder = CallableBuilder.methodArgument(gen.gen(),
                 methodArg,
                 model,

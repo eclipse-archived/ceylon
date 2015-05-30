@@ -924,7 +924,7 @@ public class CallableBuilder {
                 target = ((Tree.MemberOrTypeExpression)forwardCallTo).getTarget();
             } else if (forwardCallTo instanceof Tree.FunctionArgument) {
                 Function method = ((Tree.FunctionArgument) forwardCallTo).getDeclarationModel();
-                target = method.getProducedReference(null, Collections.<Type>emptyList());
+                target = method.appliedReference(null, Collections.<Type>emptyList());
             } else {
                 throw new RuntimeException(forwardCallTo.getNodeType());
             }

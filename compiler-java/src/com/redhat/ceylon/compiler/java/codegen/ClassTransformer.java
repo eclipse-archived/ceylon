@@ -2202,7 +2202,7 @@ public class ClassTransformer extends AbstractTransformer {
             Interface iface, Class klass, Constructor ctor, Type currentType, boolean includeBody) {
         Type typeMember = satisfiedType.getTypeMember(klass, klass.getType().getTypeArgumentList());
         if (ctor != null) {
-            typeMember = ctor.getProducedType(typeMember, Collections.<Type>emptyList());
+            typeMember = ctor.appliedType(typeMember, Collections.<Type>emptyList());
         }
         java.util.List<TypeParameter> typeParameters = klass.getTypeParameters();
         java.util.List<Parameter> parameters = (ctor != null ? ctor.getParameterLists() : klass.getParameterLists()).get(0).getParameters();

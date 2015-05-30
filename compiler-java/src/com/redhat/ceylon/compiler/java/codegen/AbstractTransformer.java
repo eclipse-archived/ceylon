@@ -2195,7 +2195,7 @@ public abstract class AbstractTransformer implements Transformation {
         if (type.isClass() && type.getDeclaration().isAnonymous()) {
             type = type.getExtendedType();
         }
-        return type.isSubtypeOf(enumDecl.getProducedType(null, Collections.singletonList(type)));
+        return type.isSubtypeOf(enumDecl.appliedType(null, Collections.singletonList(type)));
     }
 
     public JCExpression makeParameterisedType(Type type, Type generalType, final int flags, 
@@ -3926,7 +3926,7 @@ public abstract class AbstractTransformer implements Transformation {
         
         Naming.SyntheticName seqName = naming.temp().suffixedBy(0);
         
-        Type sequentialType = typeFact().getSequentialDeclaration().getProducedType(null, Arrays.asList(type));
+        Type sequentialType = typeFact().getSequentialDeclaration().appliedType(null, Arrays.asList(type));
         JCExpression seqTypeExpr1 = makeJavaType(sequentialType);
         //JCExpression seqTypeExpr2 = makeJavaType(fixedSizedType);
         
@@ -5171,7 +5171,7 @@ public abstract class AbstractTransformer implements Transformation {
     boolean isSequencedAnnotation(Class klass) {
         TypeDeclaration meta = typeFact().getSequencedAnnotationDeclaration();
         return meta != null && klass.getType().isSubtypeOf(
-                meta.getProducedType(null, 
+                meta.appliedType(null, 
                 Arrays.asList(typeFact().getAnythingType(), typeFact().getNothingType())));
     }
 

@@ -1150,7 +1150,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             // make sure we cast it to ClassOrInterface
             TypeDeclaration classOrInterfaceDeclaration = (TypeDeclaration) typeFact().getLanguageModuleModelDeclaration("ClassOrInterface");
             JCExpression classOrInterfaceTypeExpr = makeJavaType(
-                    classOrInterfaceDeclaration.getProducedReference(null, Arrays.asList(containerType)).getType());
+                    classOrInterfaceDeclaration.appliedReference(null, Arrays.asList(containerType)).getType());
 
             typeCall = make().TypeCast(classOrInterfaceTypeExpr, typeCall);
             // we will need a TD for the container
@@ -1334,7 +1334,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         for (Type producedType : typeModels) {
             closedTypes.add(makeTypeLiteralCall(producedType));
         }
-        Type elementType = typeFact().getMetamodelTypeDeclaration().getProducedType(null, Arrays.asList(typeFact().getAnythingType()));
+        Type elementType = typeFact().getMetamodelTypeDeclaration().appliedType(null, Arrays.asList(typeFact().getAnythingType()));
         // now wrap into a sequential
         return makeSequence(closedTypes.toList(), elementType, CeylonTransformer.JT_CLASS_NEW);
     }
@@ -1370,7 +1370,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 TypeDeclaration classModelDeclaration = (TypeDeclaration)typeFact().getLanguageModuleModelDeclaration(
                         expr.getType().getTypeModel().getQualifyingType().getDeclaration().isMember() ? "MemberClass" : "Class");
                 JCTypeCast typeCast = make().TypeCast(
-                        makeJavaType(classModelDeclaration.getProducedType(null, 
+                        makeJavaType(classModelDeclaration.appliedType(null, 
                                 List.of(expr.getType().getTypeModel().getQualifyingType(), 
                                         typeFact().getNothingType()))), 
                         classLiteral);
@@ -3799,7 +3799,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             if (member.isStaticallyImportable()) {
                 if (member instanceof Function) {
                     Function method = (Function)member;
-                    Reference producedReference = method.getProducedReference(qualifyingType, typeArguments.getTypeModels());
+                    Reference producedReference = method.appliedReference(qualifyingType, typeArguments.getTypeModels());
                     return CallableBuilder.javaStaticMethodReference(
                             gen(), 
                             expr.getTypeModel(), 
@@ -3825,7 +3825,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             if (member instanceof Function) {
                 Function method = (Function)member;
                 if (!method.isParameter()) {
-                    Reference producedReference = method.getProducedReference(qualifyingType, typeArguments.getTypeModels());
+                    Reference producedReference = method.appliedReference(qualifyingType, typeArguments.getTypeModels());
                     return CallableBuilder.unboundFunctionalMemberReference(
                             gen(), 
                             expr,
@@ -3833,7 +3833,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                             method, 
                             producedReference).build();
                 } else {
-                    Reference producedReference = method.getProducedReference(qualifyingType, typeArguments.getTypeModels());
+                    Reference producedReference = method.appliedReference(qualifyingType, typeArguments.getTypeModels());
                     return CallableBuilder.unboundFunctionalMemberReference(
                             gen(), 
                             expr,
@@ -4159,7 +4159,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             final ParameterList parameterList = method.getParameterLists().get(0);
             Type qualifyingType = qmte.getPrimary().getTypeModel();
             Tree.TypeArguments typeArguments = qmte.getTypeArguments();
-            Reference producedReference = method.getProducedReference(qualifyingType, typeArguments.getTypeModels());
+            Reference producedReference = method.appliedReference(qualifyingType, typeArguments.getTypeModels());
             return utilInvocation().checkNull(makeJavaStaticInvocation(gen(),
                     method, producedReference, parameterList));
         } else if (decl instanceof Class) {
@@ -4846,7 +4846,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         if(isElement){
             // can we use getFromFirst() to avoid boxing the index?
             boolean listOptim =  
-                    leftType.isSubtypeOf(typeFact().getListDeclaration().getProducedType(
+                    leftType.isSubtypeOf(typeFact().getListDeclaration().appliedType(
                             null, Collections.singletonList(typeFact().getAnythingType())));
             
             Type leftTypeForGetCall = listOptim ? leftType.getSupertype(typeFact().getListDeclaration()) : leftCorrespondenceOrRangeType;
