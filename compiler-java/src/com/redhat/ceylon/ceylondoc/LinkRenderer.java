@@ -23,13 +23,13 @@ import static com.redhat.ceylon.ceylondoc.CeylondMessages.msg;
 import static com.redhat.ceylon.ceylondoc.Util.getAnnotation;
 import static com.redhat.ceylon.ceylondoc.Util.isAbbreviatedType;
 import static com.redhat.ceylon.ceylondoc.Util.normalizeSpaces;
-import static com.redhat.ceylon.model.typechecker.util.ProducedTypeNamePrinter.abbreviateCallable;
-import static com.redhat.ceylon.model.typechecker.util.ProducedTypeNamePrinter.abbreviateEntry;
-import static com.redhat.ceylon.model.typechecker.util.ProducedTypeNamePrinter.abbreviateIterable;
-import static com.redhat.ceylon.model.typechecker.util.ProducedTypeNamePrinter.abbreviateOptional;
-import static com.redhat.ceylon.model.typechecker.util.ProducedTypeNamePrinter.abbreviateSequence;
-import static com.redhat.ceylon.model.typechecker.util.ProducedTypeNamePrinter.abbreviateSequential;
-import static com.redhat.ceylon.model.typechecker.util.ProducedTypeNamePrinter.abbreviateTuple;
+import static com.redhat.ceylon.model.typechecker.util.TypePrinter.abbreviateCallable;
+import static com.redhat.ceylon.model.typechecker.util.TypePrinter.abbreviateEntry;
+import static com.redhat.ceylon.model.typechecker.util.TypePrinter.abbreviateIterable;
+import static com.redhat.ceylon.model.typechecker.util.TypePrinter.abbreviateOptional;
+import static com.redhat.ceylon.model.typechecker.util.TypePrinter.abbreviateSequence;
+import static com.redhat.ceylon.model.typechecker.util.TypePrinter.abbreviateSequential;
+import static com.redhat.ceylon.model.typechecker.util.TypePrinter.abbreviateTuple;
 
 import java.io.File;
 import java.io.IOException;
@@ -68,7 +68,7 @@ import com.redhat.ceylon.model.typechecker.model.TypeParameter;
 import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.model.typechecker.model.Unit;
 import com.redhat.ceylon.model.typechecker.model.Value;
-import com.redhat.ceylon.model.typechecker.util.ProducedTypeNamePrinter;
+import com.redhat.ceylon.model.typechecker.util.TypePrinter;
 
 public class LinkRenderer {
     
@@ -87,7 +87,7 @@ public class LinkRenderer {
     private boolean printLinkDropdownMenu = true;
     private boolean printParenthesisAfterMethodName = true;
     
-    private final ProducedTypeNamePrinter producedTypeNamePrinter = new ProducedTypeNamePrinter() {
+    private final TypePrinter producedTypeNamePrinter = new TypePrinter() {
         
         @Override
         public String getSimpleDeclarationName(Declaration declaration, Unit unit) {
@@ -291,7 +291,7 @@ public class LinkRenderer {
         boolean wasWithinText = withinText;
         withinText = false;
         try {
-            result = producedTypeNamePrinter.getProducedTypeName(producedType, null);
+            result = producedTypeNamePrinter.print(producedType, null);
         }
         finally {
             withinText = wasWithinText;

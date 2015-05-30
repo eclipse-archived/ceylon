@@ -976,7 +976,7 @@ public class ModelLoaderTests extends CompilerTests {
                         Assert.assertTrue(paramF.getModel() instanceof Function);
                         Function modelF = (Function)paramF.getModel();
                         Assert.assertEquals("f", modelF.getName());
-                        Assert.assertEquals("Anything()", modelF.getType().getProducedTypeName());
+                        Assert.assertEquals("Anything()", modelF.getType().asString());
                         Assert.assertEquals(1, modelF.getParameterLists().size());
                         Assert.assertEquals(1, modelF.getParameterLists().get(0).getParameters().size());
                         Parameter paramS = modelF.getParameterLists().get(0).getParameters().get(0);
@@ -984,7 +984,7 @@ public class ModelLoaderTests extends CompilerTests {
                         Assert.assertTrue(paramS.getModel() instanceof Value);
                         Value modelS = (Value)paramS.getModel();
                         Assert.assertEquals("s", modelS.getName());
-                        Assert.assertEquals("String", modelS.getType().getProducedTypeName());
+                        Assert.assertEquals("String", modelS.getType().asString());
                     }
                     { // functionalParameterReturningCallable
                         Function fp = (Function)fpClass.getDirectMember("functionalParameterTakingCallable", null, false);
@@ -996,7 +996,7 @@ public class ModelLoaderTests extends CompilerTests {
                         Assert.assertTrue(paramF.getModel() instanceof Function);
                         Function modelF = (Function)paramF.getModel();
                         Assert.assertEquals("f", modelF.getName());
-                        Assert.assertEquals("Anything", modelF.getType().getProducedTypeName());
+                        Assert.assertEquals("Anything", modelF.getType().asString());
                         Assert.assertEquals(1, modelF.getParameterLists().size());
                         Assert.assertEquals(1, modelF.getParameterLists().get(0).getParameters().size());
                         Parameter paramF2 = modelF.getParameterLists().get(0).getParameters().get(0);
@@ -1004,7 +1004,7 @@ public class ModelLoaderTests extends CompilerTests {
                         Assert.assertTrue(paramF2.getModel() instanceof Value);
                         Value modelF2 = (Value)paramF2.getModel();
                         Assert.assertEquals("f2", modelF2.getName());
-                        Assert.assertEquals("Anything(String)", modelF2.getType().getProducedTypeName());
+                        Assert.assertEquals("Anything(String)", modelF2.getType().asString());
                     }
                     { // functionalParameterVariadicStar
                         Function fp = (Function)fpClass.getDirectMember("functionalParameterVariadicStar", null, false);
@@ -1060,9 +1060,9 @@ public class ModelLoaderTests extends CompilerTests {
 
                 private String typeName(FunctionOrValue fp) {
                     if (fp instanceof Function) {
-                        return fp.getProducedTypedReference(null, Collections.<Type>emptyList()).getFullType().getProducedTypeName();
+                        return fp.getProducedTypedReference(null, Collections.<Type>emptyList()).getFullType().asString();
                     } else if (fp instanceof Value) {
-                        return fp.getType().getProducedTypeName();
+                        return fp.getType().asString();
                     }
                     return null;
                 }
@@ -1294,18 +1294,18 @@ public class ModelLoaderTests extends CompilerTests {
                 // check the method which returns a java list
                 Function javaListMethod = (Function) javaType.getDirectMember("javaList", null, false);
                 Assert.assertNotNull(javaListMethod);
-                Assert.assertEquals("List<out Object>", javaListMethod.getType().getProducedTypeName());
+                Assert.assertEquals("List<out Object>", javaListMethod.getType().asString());
                 Parameter javaListParam = javaListMethod.getParameterLists().get(0).getParameters().get(0);
                 Assert.assertNotNull(javaListParam);
-                Assert.assertEquals("List<out Object>?", javaListParam.getType().getProducedTypeName());
+                Assert.assertEquals("List<out Object>?", javaListParam.getType().asString());
 
                 // check the method which returns a Ceylon list
                 Function ceylonListMethod = (Function) javaType.getDirectMember("ceylonList", null, false);
                 Assert.assertNotNull(ceylonListMethod);
-                Assert.assertEquals("List<Object>", ceylonListMethod.getType().getProducedTypeName());
+                Assert.assertEquals("List<Object>", ceylonListMethod.getType().asString());
                 Parameter ceylonListParam = ceylonListMethod.getParameterLists().get(0).getParameters().get(0);
                 Assert.assertNotNull(ceylonListParam);
-                Assert.assertEquals("List<Object>?", ceylonListParam.getType().getProducedTypeName());
+                Assert.assertEquals("List<Object>?", ceylonListParam.getType().asString());
 
                 Function equalsMethod = (Function) javaType.getDirectMember("equals", null, false);
                 Assert.assertNotNull(equalsMethod);

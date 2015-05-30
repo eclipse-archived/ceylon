@@ -481,9 +481,9 @@ public class Util {
 
     };
     
-    public static class ProducedTypeComparatorByName implements Comparator<Type> {
+    public static class TypeComparatorByName implements Comparator<Type> {
         
-        public static final ProducedTypeComparatorByName INSTANCE = new ProducedTypeComparatorByName();
+        public static final TypeComparatorByName INSTANCE = new TypeComparatorByName();
         
         @Override
         public int compare(Type a, Type b) {

@@ -1290,7 +1290,7 @@ public class CeylonDocTool extends OutputRepoUsingTool {
                 }
             }
             if (!isDocumented) {
-                log.warning(CeylondMessages.msg("warn.missingThrows", thrownException.getProducedTypeName(), getWhere(d), getPosition(getNode(d))));
+                log.warning(CeylondMessages.msg("warn.missingThrows", thrownException.asString(), getWhere(d), getPosition(getNode(d))));
             }
         }
     }

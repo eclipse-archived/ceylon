@@ -1526,7 +1526,7 @@ public class CallableBuilder {
                 gen.makeJavaType(typeModel, JT_EXTENDS | JT_CLASS_NEW), 
                 List.<JCExpression>of(gen.makeReifiedTypeArgument(typeModel.getTypeArgumentList().get(0)),
                                       gen.makeReifiedTypeArgument(typeModel.getTypeArgumentList().get(1)),
-                                      gen.make().Literal(typeModel.getProducedTypeName(true)),
+                                      gen.make().Literal(typeModel.asString(true)),
                                       gen.make().TypeCast(gen.syms().shortType, gen.makeInteger(variadicIndex))),
                 classDef);
         gen.at(null);

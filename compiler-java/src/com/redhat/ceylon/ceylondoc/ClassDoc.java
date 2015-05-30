@@ -36,7 +36,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import com.redhat.ceylon.ceylondoc.Util.ProducedTypeComparatorByName;
+import com.redhat.ceylon.ceylondoc.Util.TypeComparatorByName;
 import com.redhat.ceylon.ceylondoc.Util.ReferenceableComparatorByName;
 import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
@@ -128,7 +128,7 @@ public class ClassDoc extends ClassOrPackageDoc {
         Collections.sort(constructors, ReferenceableComparatorByName.INSTANCE);
         Collections.sort(methods, ReferenceableComparatorByName.INSTANCE);
         Collections.sort(attributes, ReferenceableComparatorByName.INSTANCE);
-        Collections.sort(superInterfaces, ProducedTypeComparatorByName.INSTANCE);
+        Collections.sort(superInterfaces, TypeComparatorByName.INSTANCE);
         Collections.sort(innerInterfaces, ReferenceableComparatorByName.INSTANCE);
         Collections.sort(innerClasses, ReferenceableComparatorByName.INSTANCE);
         Collections.sort(innerExceptions, ReferenceableComparatorByName.INSTANCE);

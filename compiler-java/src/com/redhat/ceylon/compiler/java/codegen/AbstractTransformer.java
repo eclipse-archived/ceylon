@@ -85,7 +85,7 @@ import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.model.typechecker.model.TypeParameter;
 import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
-import com.redhat.ceylon.model.typechecker.util.ProducedTypeNamePrinter;
+import com.redhat.ceylon.model.typechecker.util.TypePrinter;
 import com.sun.tools.javac.code.BoundKind;
 import com.sun.tools.javac.code.Symbol.TypeSymbol;
 import com.sun.tools.javac.code.Symtab;
@@ -126,7 +126,7 @@ import com.sun.tools.javac.util.Position.LineMap;
  */
 public abstract class AbstractTransformer implements Transformation {
 
-    private final static ProducedTypeNamePrinter typeSerialiser = new ProducedTypeNamePrinter(false){
+    private final static TypePrinter typeSerialiser = new TypePrinter(false){
         protected boolean printFullyQualified() {
             return true;
         }
@@ -3468,7 +3468,7 @@ public abstract class AbstractTransformer implements Transformation {
     private String serialiseTypeSignature(Type type){
         // resolve aliases
         type = type.resolveAliases();
-        return typeSerialiser.getProducedTypeName(type, typeFact);
+        return typeSerialiser.print(type, typeFact);
     }
     
     /*
