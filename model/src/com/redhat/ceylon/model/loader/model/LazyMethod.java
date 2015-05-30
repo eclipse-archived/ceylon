@@ -150,9 +150,9 @@ public class LazyMethod extends Function implements LazyElement, LocalDeclaratio
     }
 
     @Override
-    public Reference getProducedReference(Type pt, List<Type> typeArguments) {
+    public Reference appliedReference(Type pt, List<Type> typeArguments) {
         load();
-        return super.getProducedReference(pt, typeArguments);
+        return super.appliedReference(pt, typeArguments);
     }
 
     @Override

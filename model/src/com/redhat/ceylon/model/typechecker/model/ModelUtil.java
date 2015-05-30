@@ -135,7 +135,7 @@ public class ModelUtil {
             TypeDeclaration declaration, 
             Type typeArgument) {
         if (declaration==null) return null;
-        return declaration.getProducedType(null, 
+        return declaration.appliedType(null, 
                 singletonList(typeArgument));
     }
 
@@ -147,7 +147,7 @@ public class ModelUtil {
             TypeDeclaration declaration, 
             Type... typeArguments) {
         if (declaration==null) return null;
-        return declaration.getProducedType(null, 
+        return declaration.appliedType(null, 
                 asList(typeArguments));
     }
 
@@ -223,7 +223,7 @@ public class ModelUtil {
                         return false;
                     }
                     Type pdt = 
-                            pm.getProducedReference(null, 
+                            pm.appliedReference(null, 
                                     NO_TYPE_ARGS)
                                 .getFullType();
                     if (pdt==null) {
@@ -237,7 +237,7 @@ public class ModelUtil {
                 if (hasSeqParam) {
                     Type pdt = 
                             params.get(size).getModel()
-                            .getProducedReference(null, 
+                            .appliedReference(null, 
                                     NO_TYPE_ARGS)
                             .getFullType();
                     if (pdt==null || 
@@ -372,14 +372,14 @@ public class ModelUtil {
                     for (int i=0; i<dplSize; i++) {
                         Type dplt =
                                 dpl.get(i).getModel()
-                                .getProducedReference(null, 
+                                .appliedReference(null, 
                                         NO_TYPE_ARGS)
                                 .getFullType();
                         Type paramType = 
                                 unit.getDefiniteType(dplt);
                         Type rplt = 
                                 rpl.get(i).getModel()
-                                .getProducedReference(null, 
+                                .appliedReference(null, 
                                         NO_TYPE_ARGS)
                                 .getFullType();
                         Type otherType = 
@@ -420,14 +420,14 @@ public class ModelUtil {
                     if (dhsp && rhsp){
                         Type dplt = 
                                 dpl.get(dplSize).getModel()
-                                .getProducedReference(null, 
+                                .appliedReference(null, 
                                         NO_TYPE_ARGS)
                                 .getFullType();
                         Type paramType = 
                                 unit.getDefiniteType(dplt);
                         Type rplt = 
                                 rpl.get(dplSize).getModel()
-                                .getProducedReference(null, 
+                                .appliedReference(null, 
                                         NO_TYPE_ARGS)
                                 .getFullType();
                         Type otherType = 
@@ -706,14 +706,14 @@ public class ModelUtil {
                     for (int i=0; i<dplSize; i++) {
                         Type dplt = 
                                 dpl.get(i).getModel()
-                                .getProducedReference(null, 
+                                .appliedReference(null, 
                                         NO_TYPE_ARGS)
                                 .getFullType();
                         Type paramType = 
                                 unit.getDefiniteType(dplt);
                         Type rplt = 
                                 rpl.get(i).getModel()
-                                .getProducedReference(null, 
+                                .appliedReference(null, 
                                         NO_TYPE_ARGS)
                                 .getFullType();
                         Type otherType = 
@@ -743,14 +743,14 @@ public class ModelUtil {
                     if (dhsp && rhsp) {
                         Type dplt = 
                                 dpl.get(dplSize).getModel()
-                                .getProducedReference(null, 
+                                .appliedReference(null, 
                                         NO_TYPE_ARGS)
                                 .getFullType();
                         Type paramType = 
                                 unit.getDefiniteType(dplt);
                         Type rplt = 
                                 rpl.get(dplSize).getModel()
-                                .getProducedReference(null, 
+                                .appliedReference(null, 
                                         NO_TYPE_ARGS)
                                 .getFullType();
                         Type otherType = 
@@ -2183,7 +2183,7 @@ public class ModelUtil {
                 principalQualifyingType(first, second, 
                         dec, unit);
         Type result = 
-                dec.getProducedType(pqt, args);
+                dec.appliedType(pqt, args);
         result.setVarianceOverrides(varianceOverrides);
         return result;
     }

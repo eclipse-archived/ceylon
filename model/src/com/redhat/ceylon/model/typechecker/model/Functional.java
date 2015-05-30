@@ -3,14 +3,7 @@ package com.redhat.ceylon.model.typechecker.model;
 import java.util.List;
 
 /**
- * Represents a construct which may have a
- * list of parameters or more than one:
- * a formal parameter or method. We don't
- * include classes here because they can
- * have only one list of parameters.
- * <p/>
- * TODO: do we need a type to abstract
- * classes, parameters, and methods?
+ * Represents a declaration which has a list of parameters.
  *
  * @author Gavin King
  */

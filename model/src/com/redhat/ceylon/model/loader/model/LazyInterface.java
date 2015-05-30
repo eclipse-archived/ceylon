@@ -163,17 +163,17 @@ public class LazyInterface extends Interface implements LazyContainer {
     }
 
     @Override
-    public Reference getProducedReference(Type pt,
+    public Reference appliedReference(Type pt,
             List<Type> typeArguments) {
         loadTypeParams();
-        return super.getProducedReference(pt, typeArguments);
+        return super.appliedReference(pt, typeArguments);
     }
 
     @Override
-    public Type getProducedType(Type outerType,
+    public Type appliedType(Type outerType,
             List<Type> typeArguments) {
         loadTypeParams();
-        return super.getProducedType(outerType, typeArguments);
+        return super.appliedType(outerType, typeArguments);
     }
 
     @SuppressWarnings("deprecation")

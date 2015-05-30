@@ -318,8 +318,8 @@ public abstract class Declaration
      * @param typeArguments arguments to the type
      * parameters of this declaration
      */
-    public abstract Reference getProducedReference(
-            Type pt, List<Type> typeArguments);
+    public abstract Reference appliedReference(Type pt, 
+            List<Type> typeArguments);
     
     /**
      * Obtain a reference to this declaration, as seen 

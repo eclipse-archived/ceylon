@@ -149,10 +149,9 @@ public abstract class TypeDeclaration extends Declaration
     }
     
     @Override
-    public Reference getProducedReference(
-            Type pt,
+    public Reference appliedReference(Type pt, 
             List<Type> typeArguments) {
-        return getProducedType(pt, typeArguments);
+        return appliedType(pt, typeArguments);
     }
 
     @Override
@@ -174,7 +173,7 @@ public abstract class TypeDeclaration extends Declaration
      *                      parameters of this 
      *                      declaration
      */
-    public Type getProducedType(
+    public Type appliedType(
             Type qualifyingType,
             List<Type> typeArguments) {
     	if (qualifyingType!=null && 
@@ -192,15 +191,14 @@ public abstract class TypeDeclaration extends Declaration
     }
     
     /**
-     * The type of the declaration as seen from
-     * within the body of the declaration itself.
+     * The type of the declaration as seen from within the 
+     * body of the declaration itself.
      * <p/>
-     * Note that for certain special types which
-     * we happen to know don't have type arguments,
-     * we use this as a convenience method to
-     * quickly get a produced type for use outside
-     * the body of the declaration, but this is not
-     * really correct!
+     * Note that for certain special types which we happen 
+     * to know don't have type arguments, we use this as a 
+     * convenience method to quickly get a produced type for 
+     * use outside the body of the declaration, but this is 
+     * not really correct!
      */
     public Type getType() {
         Type type = new Type();

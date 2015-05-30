@@ -3049,7 +3049,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             ut.setCaseTypes(list);
             annotatedType =  ut.getType();
         }
-        Type constrainedType = constrainedAnnotation.getProducedType(null, Arrays.asList(klass.getType(), getOptionalType(klass.getType(), module), annotatedType));
+        Type constrainedType = constrainedAnnotation.appliedType(null, Arrays.asList(klass.getType(), getOptionalType(klass.getType(), module), annotatedType));
         return constrainedType;
     }
     
@@ -4292,7 +4292,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 if(type.getQualifyingType() != null){
                     qualifyingType = getNonPrimitiveType(moduleScope, type.getQualifyingType(), scope, variance);
                 }
-                Type ret = declaration.getProducedType(qualifyingType, typeArguments);
+                Type ret = declaration.appliedType(qualifyingType, typeArguments);
                 if(siteVarianceMap != null){
                     ret.setVarianceOverrides(siteVarianceMap);
                 }
@@ -4309,7 +4309,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         if(type.getQualifyingType() != null){
             // that one may have type arguments
             Type qualifyingType = getNonPrimitiveType(moduleScope, type.getQualifyingType(), scope, variance);
-            Type ret = declaration.getProducedType(qualifyingType, Collections.<Type>emptyList());
+            Type ret = declaration.appliedType(qualifyingType, Collections.<Type>emptyList());
             ret.setUnderlyingType(type.getQualifiedName());
             ret.setRaw(isRaw);
             return ret;

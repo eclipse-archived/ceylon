@@ -1069,7 +1069,7 @@ public class Unit {
                     }
                     Type qt = type.getQualifyingType();
                     Type dt = 
-                            dec.getProducedType(qt, 
+                            dec.appliedType(qt, 
                                     typeArguments);
                     dt.setUnderlyingType(type.getUnderlyingType());
                     dt.setVarianceOverrides(type.getVarianceOverrides());

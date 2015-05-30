@@ -759,10 +759,10 @@ public class Type extends Reference {
                 List<Type> paramsAsArgs =
                         toTypeArgs(otherDec);
                 Type rt =
-                        dec.getProducedType(qt,
+                        dec.appliedType(qt,
                                 paramsAsArgs);
                 Type ort =
-                        otherDec.getProducedType(oqt,
+                        otherDec.appliedType(oqt,
                                 paramsAsArgs);
                 return rt.isExactly(ort) &&
                         hasExactSameUpperBounds(type,
@@ -772,10 +772,10 @@ public class Type extends Reference {
                 List<Type> paramsAsArgs = 
                         toTypeArgs(typeConstructorParam);
                 Type rt = 
-                        dec.getProducedType(qt, 
+                        dec.appliedType(qt, 
                                 paramsAsArgs);
                 Type ort = 
-                        otherDec.getProducedType(oqt, 
+                        otherDec.appliedType(oqt, 
                                 paramsAsArgs);
                 //resolves aliases:
                 return rt.isExactly(ort);
@@ -801,10 +801,10 @@ public class Type extends Reference {
                 List<Type> paramsAsArgs = 
                         toTypeArgs(otherDec);
                 Type rt =
-                        dec.getProducedType(qt, 
+                        dec.appliedType(qt, 
                                 paramsAsArgs);
                 Type ort = 
-                        otherDec.getProducedType(oqt, 
+                        otherDec.appliedType(oqt, 
                                 paramsAsArgs);
                 return rt.isSubtypeOf(ort) &&
                         acceptsUpperBounds(type, 
@@ -816,10 +816,10 @@ public class Type extends Reference {
                 List<Type> paramsAsArgs = 
                         toTypeArgs(typeConstructorParam);
                 Type rt = 
-                        dec.getProducedType(qt, 
+                        dec.appliedType(qt, 
                                 paramsAsArgs);
                 Type ort = 
-                        otherDec.getProducedType(oqt, 
+                        otherDec.appliedType(oqt, 
                                 paramsAsArgs);
                 //resolves aliases:
                 return rt.isSubtypeOf(ort);
@@ -1245,7 +1245,7 @@ public class Type extends Reference {
                 (TypeDeclaration) 
                     member.getContainer();
         Type declaringType = getSupertype(type);
-        return member.getProducedType(declaringType, 
+        return member.appliedType(declaringType, 
                 typeArguments);
     }
 
@@ -1913,7 +1913,7 @@ public class Type extends Reference {
         }
         //make the resulting type
         Type candidateResult = 
-                dec.getProducedType(outerType, args);
+                dec.appliedType(outerType, args);
         candidateResult.setVarianceOverrides(variances);
         //check the the resulting type is *really*
         //a subtype (take variance into account)
@@ -2899,7 +2899,7 @@ public class Type extends Reference {
                             covariant, contravariant);
                 Type result = 
                         sub.getDeclaration()
-                            .getProducedType(qt, args);
+                            .appliedType(qt, args);
                 substituteVarianceOverridesInTypeConstructor(
                         tc, result);
                 return result;
@@ -3337,7 +3337,7 @@ public class Type extends Reference {
                 }
                 if (found) {
                     Type type = 
-                            declaration.getProducedType(
+                            declaration.appliedType(
                                     getQualifyingType(), 
                                     bounded);
                     type.setVarianceOverrides(
@@ -3606,7 +3606,7 @@ public class Type extends Reference {
             }
             else {
                 Type result = 
-                        dec.getProducedType(
+                        dec.appliedType(
                                 aliasedQualifyingType, 
                                 aliasedArgs);
                 result.setVarianceOverrides(
@@ -4227,7 +4227,7 @@ public class Type extends Reference {
                 }
             }
             Type result = 
-                    dec.getProducedType(
+                    dec.appliedType(
                             type.getQualifyingType(), 
                             resultArgs);
             result.setVarianceOverrides(varianceResults);

@@ -243,7 +243,7 @@ public class TypeParser {
                 newTypeDeclaration = (TypeDeclaration) newDeclaration;
             else
                 newTypeDeclaration = new FunctionOrValueInterface((TypedDeclaration) newDeclaration);
-            Type ret = newTypeDeclaration.getProducedType(qualifyingType, part.getParameters());
+            Type ret = newTypeDeclaration.appliedType(qualifyingType, part.getParameters());
             // set the use-site variance if required, now that we know the TypeParameter declarations
             if(!part.getVariance().isEmpty()){
                 List<TypeParameter> tps = newTypeDeclaration.getTypeParameters();
