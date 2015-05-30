@@ -28,24 +28,24 @@ import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.unwrapExpress
 import static com.redhat.ceylon.compiler.typechecker.tree.Util.hasUncheckedNulls;
 import static com.redhat.ceylon.compiler.typechecker.tree.Util.name;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.argumentSatisfiesEnumeratedConstraint;
-import static com.redhat.ceylon.model.typechecker.model.Util.addToIntersection;
-import static com.redhat.ceylon.model.typechecker.model.Util.addToUnion;
-import static com.redhat.ceylon.model.typechecker.model.Util.findMatchingOverloadedClass;
-import static com.redhat.ceylon.model.typechecker.model.Util.getContainingClassOrInterface;
-import static com.redhat.ceylon.model.typechecker.model.Util.getInterveningRefinements;
-import static com.redhat.ceylon.model.typechecker.model.Util.getNativeDeclaration;
-import static com.redhat.ceylon.model.typechecker.model.Util.getOuterClassOrInterface;
-import static com.redhat.ceylon.model.typechecker.model.Util.getSignature;
-import static com.redhat.ceylon.model.typechecker.model.Util.getTypeArgumentMap;
-import static com.redhat.ceylon.model.typechecker.model.Util.intersectionOfSupertypes;
-import static com.redhat.ceylon.model.typechecker.model.Util.intersectionType;
-import static com.redhat.ceylon.model.typechecker.model.Util.isAbstraction;
-import static com.redhat.ceylon.model.typechecker.model.Util.isOverloadedVersion;
-import static com.redhat.ceylon.model.typechecker.model.Util.isTypeUnknown;
-import static com.redhat.ceylon.model.typechecker.model.Util.producedType;
-import static com.redhat.ceylon.model.typechecker.model.Util.toTypeArgs;
-import static com.redhat.ceylon.model.typechecker.model.Util.unionOfCaseTypes;
-import static com.redhat.ceylon.model.typechecker.model.Util.unionType;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.addToIntersection;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.addToUnion;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.findMatchingOverloadedClass;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getContainingClassOrInterface;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getInterveningRefinements;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getNativeDeclaration;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getOuterClassOrInterface;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getSignature;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getTypeArgumentMap;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.intersectionOfSupertypes;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.intersectionType;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isAbstraction;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isOverloadedVersion;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isTypeUnknown;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.producedType;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.toTypeArgs;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.unionOfCaseTypes;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.unionType;
 import static java.util.Collections.emptyList;
 
 import java.util.ArrayList;
@@ -794,8 +794,8 @@ public class ExpressionVisitor extends Visitor {
             if (it.isNothing()) {
                 if (that.getNot()) {
                     /*that.addError("tests assignability to Nothing type: " +
-                            knownType.getProducedTypeName(unit) + " is a subtype of " + 
-                            type.getProducedTypeName(unit));*/
+                            knownType.asString(unit) + " is a subtype of " + 
+                            type.asString(unit));*/
                 }
                 else {
                     that.addError("tests assignability to bottom type 'Nothing': intersection of '" +
@@ -897,7 +897,7 @@ public class ExpressionVisitor extends Visitor {
                         }
                         /*else {
                             d.getPattern().addError("cannot be destructured: '" + 
-                                    type.getProducedTypeName(unit) + "'");
+                                    type.asString(unit) + "'");
                         }*/
                     }
                     term = e.getTerm();
@@ -5285,7 +5285,7 @@ public class ExpressionVisitor extends Visitor {
             Type argTuple) {
         if (!unit.isSequentialType(argTuple)) {
             arg.addError("spread argument expression is not sequential: " +
-                    argTuple.getProducedTypeName(unit) + " is not a sequence type");
+                    argTuple.asString(unit) + " is not a sequence type");
         }
     }*/
     
@@ -5772,7 +5772,7 @@ public class ExpressionVisitor extends Visitor {
             if (!unit.isIterableType(rat)) {
                 //note: check already done by visit(SpreadArgument)
                 /*arg.addError("spread argument is not iterable: " + 
-                        rat.getProducedTypeName(unit) + 
+                        rat.asString(unit) + 
                         " is not a subtype of Iterable");*/
             }
             else {
@@ -5948,7 +5948,7 @@ public class ExpressionVisitor extends Visitor {
             else {
               //note: check already done by visit(SpreadArgument)
               /*sa.addError("spread argument is not iterable: " + 
-                      at.getProducedTypeName(unit) + 
+                      at.asString(unit) + 
                       " is not a subtype of Iterable");*/
             }
         }
@@ -6842,7 +6842,7 @@ public class ExpressionVisitor extends Visitor {
             }
             if (!lhst.isSubtypeOf(ot)) {
                 that.getLeftTerm().addError("must be of type: " + 
-                        ot.getProducedTypeName(unit));
+                        ot.asString(unit));
             }*/
         }
     }

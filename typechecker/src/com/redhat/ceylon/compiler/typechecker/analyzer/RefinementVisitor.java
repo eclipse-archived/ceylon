@@ -13,13 +13,13 @@ import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getTypeErrorN
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getTypedDeclaration;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.message;
 import static com.redhat.ceylon.compiler.typechecker.tree.Util.name;
-import static com.redhat.ceylon.model.typechecker.model.Util.getInheritedDeclarations;
-import static com.redhat.ceylon.model.typechecker.model.Util.getInterveningRefinements;
-import static com.redhat.ceylon.model.typechecker.model.Util.getNativeDeclaration;
-import static com.redhat.ceylon.model.typechecker.model.Util.getRealScope;
-import static com.redhat.ceylon.model.typechecker.model.Util.getSignature;
-import static com.redhat.ceylon.model.typechecker.model.Util.hasNativeImplementation;
-import static com.redhat.ceylon.model.typechecker.model.Util.isOverloadedVersion;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getInheritedDeclarations;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getInterveningRefinements;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getNativeDeclaration;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getRealScope;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getSignature;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.hasNativeImplementation;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isOverloadedVersion;
 import static java.util.Collections.emptyList;
 import static java.util.Collections.emptyMap;
 

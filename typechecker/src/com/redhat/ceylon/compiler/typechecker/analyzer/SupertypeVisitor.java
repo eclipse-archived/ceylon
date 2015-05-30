@@ -1,7 +1,7 @@
 package com.redhat.ceylon.compiler.typechecker.analyzer;
 
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AliasVisitor.typeList;
-import static com.redhat.ceylon.model.typechecker.model.Util.addToIntersection;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.addToIntersection;
 import static java.util.Collections.singleton;
 
 import java.util.ArrayList;

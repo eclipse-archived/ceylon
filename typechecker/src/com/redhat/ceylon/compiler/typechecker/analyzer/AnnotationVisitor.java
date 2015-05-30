@@ -3,7 +3,7 @@ package com.redhat.ceylon.compiler.typechecker.analyzer;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.checkAssignable;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.isExecutableStatement;
 import static com.redhat.ceylon.model.typechecker.model.Module.LANGUAGE_MODULE_NAME;
-import static com.redhat.ceylon.model.typechecker.model.Util.isAbstraction;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isAbstraction;
 
 import java.util.ArrayList;
 import java.util.List;

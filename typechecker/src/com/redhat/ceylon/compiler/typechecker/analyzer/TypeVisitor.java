@@ -12,14 +12,14 @@ import static com.redhat.ceylon.compiler.typechecker.tree.Util.formatPath;
 import static com.redhat.ceylon.compiler.typechecker.tree.Util.name;
 import static com.redhat.ceylon.model.typechecker.model.SiteVariance.IN;
 import static com.redhat.ceylon.model.typechecker.model.SiteVariance.OUT;
-import static com.redhat.ceylon.model.typechecker.model.Util.getContainingClassOrInterface;
-import static com.redhat.ceylon.model.typechecker.model.Util.intersectionOfSupertypes;
-import static com.redhat.ceylon.model.typechecker.model.Util.isNativeImplementation;
-import static com.redhat.ceylon.model.typechecker.model.Util.isToplevelAnonymousClass;
-import static com.redhat.ceylon.model.typechecker.model.Util.isToplevelClassConstructor;
-import static com.redhat.ceylon.model.typechecker.model.Util.isTypeUnknown;
-import static com.redhat.ceylon.model.typechecker.model.Util.notOverloaded;
-import static com.redhat.ceylon.model.typechecker.model.Util.producedType;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getContainingClassOrInterface;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.intersectionOfSupertypes;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isNativeImplementation;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isToplevelAnonymousClass;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isToplevelClassConstructor;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isTypeUnknown;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.notOverloaded;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.producedType;
 import static java.lang.Integer.parseInt;
 
 import java.util.ArrayList;
@@ -1322,7 +1322,7 @@ public class TypeVisitor extends Visitor {
                 }
                 /*else if (dta.containsTypeParameters()) {
                     type.addError("default type argument involves type parameters: " + 
-                            dta.getProducedTypeName(unit));
+                            dta.asString(unit));
                     dta = null;
                 }*/
                 p.setDefaultTypeArgument(dta);

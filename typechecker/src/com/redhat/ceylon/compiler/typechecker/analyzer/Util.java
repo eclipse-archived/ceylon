@@ -2,11 +2,11 @@ package com.redhat.ceylon.compiler.typechecker.analyzer;
 
 import static com.redhat.ceylon.model.typechecker.model.SiteVariance.IN;
 import static com.redhat.ceylon.model.typechecker.model.SiteVariance.OUT;
-import static com.redhat.ceylon.model.typechecker.model.Util.intersectionType;
-import static com.redhat.ceylon.model.typechecker.model.Util.isNamed;
-import static com.redhat.ceylon.model.typechecker.model.Util.isTypeUnknown;
-import static com.redhat.ceylon.model.typechecker.model.Util.producedType;
-import static com.redhat.ceylon.model.typechecker.model.Util.unionType;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.intersectionType;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isNamed;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isTypeUnknown;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.producedType;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.unionType;
 import static java.util.Collections.emptyList;
 
 import java.util.ArrayList;

@@ -6,9 +6,9 @@ import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.isAlwaysSatis
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.isAtLeastOne;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.isEffectivelyBaseMemberExpression;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.isNeverSatisfied;
-import static com.redhat.ceylon.model.typechecker.model.Util.getContainingDeclarationOfScope;
-import static com.redhat.ceylon.model.typechecker.model.Util.isInNativeContainer;
-import static com.redhat.ceylon.model.typechecker.model.Util.isNativeHeader;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getContainingDeclarationOfScope;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isInNativeContainer;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isNativeHeader;
 
 import java.util.ArrayList;
 import java.util.List;

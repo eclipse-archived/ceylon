@@ -9,9 +9,9 @@ import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.inSameModule;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.typeDescription;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.typeNamesAsIntersection;
 import static com.redhat.ceylon.compiler.typechecker.tree.Util.name;
-import static com.redhat.ceylon.model.typechecker.model.Util.addToIntersection;
-import static com.redhat.ceylon.model.typechecker.model.Util.areConsistentSupertypes;
-import static com.redhat.ceylon.model.typechecker.model.Util.isTypeUnknown;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.addToIntersection;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.areConsistentSupertypes;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isTypeUnknown;
 
 import java.util.ArrayList;
 import java.util.HashSet;

@@ -2,7 +2,7 @@ package com.redhat.ceylon.compiler.typechecker.analyzer;
 
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getParameterTypeErrorNode;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getTypeErrorNode;
-import static com.redhat.ceylon.model.typechecker.model.Util.isCompletelyVisible;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isCompletelyVisible;
 
 import java.util.HashSet;
 import java.util.List;

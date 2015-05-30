@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.typechecker.analyzer;
 
-import static com.redhat.ceylon.model.typechecker.model.Util.formatPath;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.formatPath;
 
 import java.util.ArrayList;
 import java.util.HashMap;
