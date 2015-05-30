@@ -693,7 +693,7 @@ abstract class DirectInvocation extends SimpleInvocation {
         this.producedReference = producedReference;
     }
 
-    protected Reference getProducedReference() {
+    protected Reference appliedReference() {
         return producedReference;
     }
 
@@ -721,7 +721,7 @@ abstract class DirectInvocation extends SimpleInvocation {
                 && isJavaMethod()
                 && isSpread())
             flags |= AbstractTransformer.TP_SEQUENCED_TYPE;
-        return gen.expressionGen().getTypeForParameter(getParameter(argIndex), getProducedReference(), flags);
+        return gen.expressionGen().getTypeForParameter(getParameter(argIndex), appliedReference(), flags);
     }
     
     @Override
@@ -1041,7 +1041,7 @@ class CallableInvocation extends DirectInvocation {
     @Override
     protected Type getArgumentType(int argIndex) {
         Parameter param = callableParameters.get(argIndex);
-        return getParameterTypeForValueType(getProducedReference(), param);
+        return getParameterTypeForValueType(appliedReference(), param);
     }
     
     @Override
@@ -1055,7 +1055,7 @@ class CallableInvocation extends DirectInvocation {
     }
     
     public Constructor getConstructor() {
-        return getConstructorFromPrimary(getProducedReference().getDeclaration());
+        return getConstructorFromPrimary(appliedReference().getDeclaration());
     }
 }
 

@@ -888,7 +888,7 @@ public class CallableBuilder {
             return isCallMethod ? makeCallMethod(stmts.toList(), arity) : makeCallTypedMethod(stmts.toList());
         }
         private JCExpression makeInvocation(int arity, boolean isCallMethod) {
-            Reference target = getProducedReference();
+            Reference target = appliedReference();
             TypeDeclaration primaryDeclaration = gen.getReturnTypeOfCallable(getTypeModel()).getDeclaration();
             CallableInvocation invocationBuilder = new CallableInvocation (
                     gen,
@@ -918,7 +918,7 @@ public class CallableBuilder {
             return forwardCallTo.getTypeModel();
         }
 
-        private Reference getProducedReference() {
+        private Reference appliedReference() {
             Reference target;
             if (forwardCallTo instanceof Tree.MemberOrTypeExpression) {
                 target = ((Tree.MemberOrTypeExpression)forwardCallTo).getTarget();
