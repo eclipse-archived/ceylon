@@ -11,7 +11,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
-import com.redhat.ceylon.model.typechecker.model.ProducedReference;
+import com.redhat.ceylon.model.typechecker.model.Reference;
 import com.redhat.ceylon.model.typechecker.model.Type;
 
 
@@ -105,7 +105,7 @@ public class PrintVisitor extends Visitor implements NaturalVisitor {
             }
         }
         if (node instanceof Tree.MemberOrTypeExpression) {
-            ProducedReference t = ((Tree.MemberOrTypeExpression) node).getTarget();
+            Reference t = ((Tree.MemberOrTypeExpression) node).getTarget();
             Declaration d = ((Tree.MemberOrTypeExpression) node).getDeclaration();
             if (t!=null) {
                 print(" : " + t.getProducedName() + "");

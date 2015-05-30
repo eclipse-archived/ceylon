@@ -329,7 +329,7 @@
     IDENTIFIER
     TYPE_ARGUMENT_LIST?
     boolean packageQualified;
-    ProducedReference target;)
+    Reference target;)
 
 ^(CLASS_LITERAL:TYPE_LITERAL)
 ^(NEW_LITERAL:TYPE_LITERAL)
@@ -678,7 +678,7 @@
     boolean leftTerm;)
 
 ^(abstract MEMBER_OR_TYPE_EXPRESSION:PRIMARY
-    ProducedReference target;
+    Reference target;
     Declaration declaration;
     List<Type> signature;
     boolean ellipsis;
@@ -692,7 +692,7 @@
 ^(abstract STATIC_MEMBER_OR_TYPE_EXPRESSION:MEMBER_OR_TYPE_EXPRESSION
     IDENTIFIER
     TYPE_ARGUMENTS?
-    ProducedTypedReference targetParameter;
+    TypedReference targetParameter;
     Type parameterType;)
 
 ^(abstract BASE_MEMBER_OR_TYPE_EXPRESSION:STATIC_MEMBER_OR_TYPE_EXPRESSION)

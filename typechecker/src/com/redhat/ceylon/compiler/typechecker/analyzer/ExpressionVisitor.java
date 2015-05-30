@@ -81,9 +81,9 @@ import com.redhat.ceylon.model.typechecker.model.NothingType;
 import com.redhat.ceylon.model.typechecker.model.Package;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.ParameterList;
-import com.redhat.ceylon.model.typechecker.model.ProducedReference;
+import com.redhat.ceylon.model.typechecker.model.Reference;
 import com.redhat.ceylon.model.typechecker.model.Type;
-import com.redhat.ceylon.model.typechecker.model.ProducedTypedReference;
+import com.redhat.ceylon.model.typechecker.model.TypedReference;
 import com.redhat.ceylon.model.typechecker.model.Scope;
 import com.redhat.ceylon.model.typechecker.model.Setter;
 import com.redhat.ceylon.model.typechecker.model.SiteVariance;
@@ -1416,7 +1416,7 @@ public class ExpressionVisitor extends Visitor {
         return t;
     }
     
-    static ProducedReference getRefinedMember(MethodOrValue d, 
+    static Reference getRefinedMember(MethodOrValue d, 
             ClassOrInterface classOrInterface) {
         TypeDeclaration td = 
                 (TypeDeclaration) 
@@ -1468,7 +1468,7 @@ public class ExpressionVisitor extends Visitor {
                 .addError("shortcut refinement does not exactly refine any overloaded inherited member");
         }
         else {
-            ProducedReference refinedProducedReference = 
+            Reference refinedProducedReference = 
                     accountForIntermediateRefinements(that, 
                             refinedMethod, method, ci, 
                             interveningRefinements);
@@ -1550,7 +1550,7 @@ public class ExpressionVisitor extends Visitor {
         }
     }
 
-    private ProducedReference accountForIntermediateRefinements(
+    private Reference accountForIntermediateRefinements(
             Tree.SpecifierStatement that, 
             MethodOrValue refinedMethodOrValue, 
             MethodOrValue methodOrValue,
@@ -1558,7 +1558,7 @@ public class ExpressionVisitor extends Visitor {
             List<Declaration> interveningRefinements) {
         Tree.SpecifierExpression rhs = 
                 that.getSpecifierExpression();
-        ProducedReference refinedProducedReference = 
+        Reference refinedProducedReference = 
                 getRefinedMember(refinedMethodOrValue, ci);
         List<Type> refinedTypes = 
                 new ArrayList<Type>();
@@ -1573,7 +1573,7 @@ public class ExpressionVisitor extends Visitor {
                     !refinement.equals(refinedMethodOrValue)) {
                 MethodOrValue rmv = 
                         (MethodOrValue) refinement;
-                ProducedReference refinedMember = 
+                Reference refinedMember = 
                         getRefinedMember(rmv, ci);
                 addToIntersection(refinedTypes, 
                         refinedMember.getType(), 
@@ -1606,7 +1606,7 @@ public class ExpressionVisitor extends Visitor {
 
     private Type getRequiredSpecifiedType(
             Tree.SpecifierStatement that,
-            ProducedReference refinedMember) {
+            Reference refinedMember) {
         Type t = refinedMember.getFullType();
         Tree.Term term = that.getBaseMemberExpression();
         if (term instanceof Tree.ParameterizedExpression) {
@@ -2754,7 +2754,7 @@ public class ExpressionVisitor extends Visitor {
     private void inferParameterTypesDirectly(Declaration dec,
             Tree.PositionalArgumentList pal,
             Tree.MemberOrTypeExpression mte) {
-        ProducedReference pr = 
+        Reference pr = 
                 getInvokedProducedReference(dec, mte);
         Functional fun = (Functional) dec;
         List<ParameterList> pls = fun.getParameterLists();
@@ -2794,7 +2794,7 @@ public class ExpressionVisitor extends Visitor {
     private void inferParameterTypesDirectly(Declaration dec,
             Tree.NamedArgumentList nal,
             Tree.MemberOrTypeExpression mte) {
-        ProducedReference pr = 
+        Reference pr = 
                 getInvokedProducedReference(dec, mte);
         Functional fun = (Functional) dec;
         List<ParameterList> pls = fun.getParameterLists();
@@ -2849,7 +2849,7 @@ public class ExpressionVisitor extends Visitor {
         }
     }
 
-    private ProducedReference getInvokedProducedReference(
+    private Reference getInvokedProducedReference(
             Declaration dec, 
             Tree.MemberOrTypeExpression mte) {
         Tree.TypeArguments tas;
@@ -2904,14 +2904,14 @@ public class ExpressionVisitor extends Visitor {
      * which will be used later for inferring type arguments
      * for a function ref or generic function ref.
      */
-    private void inferParameterTypes(ProducedReference pr, 
+    private void inferParameterTypes(Reference pr, 
             Parameter param, Tree.Expression e, 
             boolean variadic) {
         MethodOrValue model = param.getModel();
         if (e!=null && model!=null) {
             Tree.Term term = 
                     unwrapExpressionUntilTerm(e.getTerm());
-            ProducedTypedReference tpr = 
+            TypedReference tpr = 
                     pr.getTypedParameter(param);
             if (term instanceof Tree.FunctionArgument) {
                 Tree.FunctionArgument anon = 
@@ -2982,7 +2982,7 @@ public class ExpressionVisitor extends Visitor {
             }
             else {
                 //set earlier in inferParameterTypes()
-                ProducedTypedReference paramTypedRef = 
+                TypedReference paramTypedRef = 
                         smte.getTargetParameter();
                 Type paramType = 
                         smte.getParameterType();
@@ -3009,7 +3009,7 @@ public class ExpressionVisitor extends Visitor {
                     parameterizedDec = null;
                 }
                 
-                ProducedReference arg = 
+                Reference arg = 
                         getProducedReference(smte);
                 
                 if (!smte.getStaticMethodReferencePrimary() &&
@@ -3200,8 +3200,8 @@ public class ExpressionVisitor extends Visitor {
     private Type inferFunctionRefTypeArg(
             Tree.StaticMemberOrTypeExpression smte,
             List<TypeParameter> typeParams, 
-            ProducedTypedReference param, 
-            Declaration pd, ProducedReference arg, 
+            TypedReference param, 
+            Declaration pd, Reference arg, 
             List<Parameter> apl, List<Parameter> ppl,
             TypeParameter tp, 
             boolean findingUpperBounds) {
@@ -3247,7 +3247,7 @@ public class ExpressionVisitor extends Visitor {
                 node);
     }
     
-    private ProducedReference getProducedReference(
+    private Reference getProducedReference(
             Tree.StaticMemberOrTypeExpression smte) {
         //TODO: this might not be right for static refs
         Type qt = getQualifyingType(smte);
@@ -3332,7 +3332,7 @@ public class ExpressionVisitor extends Visitor {
     }
 
     private void inferParameterTypesFromCallableParameter(
-            ProducedReference pr, Parameter param, 
+            Reference pr, Parameter param, 
             Tree.FunctionArgument anon) {
         Declaration declaration = param.getDeclaration();
         Functional fun = (Functional) param.getModel();
@@ -5122,7 +5122,7 @@ public class ExpressionVisitor extends Visitor {
         }
         Tree.MemberOrTypeExpression mte = 
                 (Tree.MemberOrTypeExpression) primary;
-        ProducedReference prf = mte.getTarget();
+        Reference prf = mte.getTarget();
         Declaration dec = mte.getDeclaration();
         Functional fun = (Functional) dec;
         if (dec!=null) {
@@ -5250,7 +5250,7 @@ public class ExpressionVisitor extends Visitor {
      */
     private void checkInvocationArguments(
             Tree.InvocationExpression that,
-            ProducedReference prf, Functional dec) {
+            Reference prf, Functional dec) {
         List<ParameterList> pls = dec.getParameterLists();
         if (pls.isEmpty()) {
             if (dec instanceof TypeDeclaration) {
@@ -5290,7 +5290,7 @@ public class ExpressionVisitor extends Visitor {
     }*/
     
     private void checkNamedArguments(ParameterList pl, 
-            ProducedReference pr, 
+            Reference pr, 
             Tree.NamedArgumentList nal) {
         Set<Parameter> foundParameters = 
                 new HashSet<Parameter>();
@@ -5322,7 +5322,7 @@ public class ExpressionVisitor extends Visitor {
                 foundParameters);
     }
 
-    private void checkForMissingNamedParameters(ParameterList pl, ProducedReference pr,
+    private void checkForMissingNamedParameters(ParameterList pl, Reference pr,
             Tree.NamedArgumentList nal, Set<Parameter> foundParameters) {
         StringBuilder missing = null;
         int count = 0;
@@ -5363,7 +5363,7 @@ public class ExpressionVisitor extends Visitor {
     }
     
     private void checkSequencedArg(Tree.SequencedArgument sa, 
-            ParameterList pl, ProducedReference pr, 
+            ParameterList pl, Reference pr, 
             Set<Parameter> foundParameters) {
         Parameter sp = 
                 getUnspecifiedParameter(pr, pl, 
@@ -5390,7 +5390,7 @@ public class ExpressionVisitor extends Visitor {
     }
 
     private void checkNamedArg(Tree.NamedArgument a, 
-            ParameterList pl, ProducedReference pr, 
+            ParameterList pl, Reference pr, 
             Set<Parameter> foundParameters) {
         Parameter p = 
                 getMatchingParameter(pl, a, 
@@ -5448,7 +5448,7 @@ public class ExpressionVisitor extends Visitor {
         return result;
     }
 
-    private String argdesc(Parameter p, ProducedReference pr) {
+    private String argdesc(Parameter p, Reference pr) {
         Declaration dec = pr.getDeclaration();
         String result = 
                 "'" + p.getName() + "' of '" + 
@@ -5461,7 +5461,7 @@ public class ExpressionVisitor extends Visitor {
     }
     
     private void checkNamedArgument(Tree.NamedArgument a, 
-            ProducedReference pr, Parameter p) {
+            Reference pr, Parameter p) {
         a.setParameter(p);
         Type argType = null;
         if (a instanceof Tree.SpecifiedArgument) {
@@ -5539,7 +5539,7 @@ public class ExpressionVisitor extends Visitor {
     }
     
     private void checkSequencedArgument(Tree.SequencedArgument sa, 
-            ProducedReference pr, Parameter p) {
+            Reference pr, Parameter p) {
         sa.setParameter(p);
         List<Tree.PositionalArgument> args = 
                 sa.getPositionalArguments();
@@ -5580,7 +5580,7 @@ public class ExpressionVisitor extends Visitor {
         return null;
     }
 
-    private Parameter getUnspecifiedParameter(ProducedReference pr,
+    private Parameter getUnspecifiedParameter(Reference pr,
             ParameterList pl, Set<Parameter> foundParameters) {
         for (Parameter p: pl.getParameters()) {
             Type t = pr==null ? 
@@ -5599,7 +5599,7 @@ public class ExpressionVisitor extends Visitor {
     }
     
     private void checkPositionalArguments(ParameterList pl, 
-            ProducedReference pr, Tree.PositionalArgumentList pal, 
+            Reference pr, Tree.PositionalArgumentList pal, 
             Tree.InvocationExpression that) {
         List<Tree.PositionalArgument> args = 
                 pal.getPositionalArguments();
@@ -5715,7 +5715,7 @@ public class ExpressionVisitor extends Visitor {
                 (!param.isSequenced() || param.isAtLeastOne());
     }
 
-    private void appendParam(ProducedReference pr, 
+    private void appendParam(Reference pr, 
             Parameter param, StringBuilder missing) {
         Type pt = 
                 pr.getTypedParameter(param)
@@ -5762,7 +5762,7 @@ public class ExpressionVisitor extends Visitor {
         }
     }
 
-    private void checkSpreadArgument(ProducedReference pr, 
+    private void checkSpreadArgument(Reference pr, 
             Parameter p, Tree.PositionalArgument a, 
             Tree.SpreadArgument arg, 
             List<Parameter> params) {
@@ -6003,7 +6003,7 @@ public class ExpressionVisitor extends Visitor {
     
     private void checkSequencedPositionalArgument(
             Parameter p, 
-            ProducedReference pr, 
+            Reference pr, 
             List<Tree.PositionalArgument> args) {
         Type paramType = 
                 pr.getTypedParameter(p)
@@ -6039,7 +6039,7 @@ public class ExpressionVisitor extends Visitor {
     }
     
     private void checkComprehensionPositionalArgument(Parameter p, 
-            ProducedReference pr, Tree.Comprehension c, 
+            Reference pr, Tree.Comprehension c, 
             boolean atLeastOne) {
         c.setParameter(p);
         Tree.InitialComprehensionClause icc = 
@@ -6075,7 +6075,7 @@ public class ExpressionVisitor extends Visitor {
     }
 
     private void checkPositionalArgument(Parameter p, 
-            ProducedReference pr, Tree.ListedArgument a) {
+            Reference pr, Tree.ListedArgument a) {
         if (p.getModel()!=null) {
             Type paramType = 
                     pr.getTypedParameter(p)
@@ -7509,7 +7509,7 @@ public class ExpressionVisitor extends Visitor {
             Scope scope = that.getScope();
             Type outerType = 
                     scope.getDeclaringType(member);
-            ProducedTypedReference pr = 
+            TypedReference pr = 
                     member.getProducedTypedReference(outerType, 
                             NO_TYPE_ARGS);
             that.setTarget(pr);
@@ -7645,7 +7645,7 @@ public class ExpressionVisitor extends Visitor {
             List<TypeParameter> typeParameters = 
                     g.getTypeParameters();
             Scope scope = that.getScope();
-            ProducedTypedReference pr = 
+            TypedReference pr = 
                     receiverType.getTypedMember(member, 
                             NO_TYPE_ARGS);
             that.setTarget(pr);
@@ -7837,7 +7837,7 @@ public class ExpressionVisitor extends Visitor {
                         unwrap(receivingType, that));
         if (acceptsTypeArguments(member, receiverType, 
                 typeArgs, tal, that)) {
-            ProducedTypedReference ptr = 
+            TypedReference ptr = 
                     receiverType.getTypedMember(member, 
                             typeArgs, that.getAssigned());
             /*if (ptr==null) {
@@ -7897,7 +7897,7 @@ public class ExpressionVisitor extends Visitor {
                     //apply the type arguments to the generic
                     //function reference
                     //TODO: it's ugly to do this here, better to 
-                    //      suck it into ProducedTypedReference
+                    //      suck it into TypedReference
                     return ftd.getProducedType(receivingType, typeArgs)
                             .resolveAliases();
                 }
@@ -7931,7 +7931,7 @@ public class ExpressionVisitor extends Visitor {
             Tree.MemberOrTypeExpression primary = 
                     (Tree.MemberOrTypeExpression) 
                         that.getPrimary();
-            ProducedReference target = primary.getTarget();
+            Reference target = primary.getTarget();
             return target==null ? 
                     unit.getUnknownType() : 
                     target.getType();
@@ -7997,7 +7997,7 @@ public class ExpressionVisitor extends Visitor {
                 }
                 else {
                     //ordinary non-static, non-constructor member
-                    ProducedReference target = p.getTarget();
+                    Reference target = p.getTarget();
                     if (target==null) {
                         return unit.getUnknownType();
                     }
@@ -8029,7 +8029,7 @@ public class ExpressionVisitor extends Visitor {
             Type outerType = 
                     that.getScope()
                         .getDeclaringType(member);
-            ProducedTypedReference pr = 
+            TypedReference pr = 
                     member.getProducedTypedReference(outerType, 
                             typeArgs, that.getAssigned());
             that.setTarget(pr);
@@ -8553,7 +8553,7 @@ public class ExpressionVisitor extends Visitor {
             Tree.StaticMemberOrTypeExpression smte) {
         if (dec instanceof Value) {
             Value value = (Value) dec;
-            ProducedTypedReference param = 
+            TypedReference param = 
                     smte.getTargetParameter();
             Type paramType = 
                     smte.getParameterType();
@@ -10359,7 +10359,7 @@ public class ExpressionVisitor extends Visitor {
                     }
                     if (acceptsTypeArguments(method,
                             outerType, typeArgs, tal, that)) {
-                        ProducedTypedReference pr = 
+                        TypedReference pr = 
                                 outerType==null ? 
                                         method.getProducedTypedReference(null, typeArgs) : 
                                         outerType.getTypedMember(method, typeArgs);
@@ -10380,7 +10380,7 @@ public class ExpressionVisitor extends Visitor {
                         result.getName(unit) + "' is a value");
             }
             else {
-                ProducedTypedReference pr = 
+                TypedReference pr = 
                         value.getProducedTypedReference(outerType, 
                                 NO_TYPE_ARGS);
                 that.setTarget(pr);

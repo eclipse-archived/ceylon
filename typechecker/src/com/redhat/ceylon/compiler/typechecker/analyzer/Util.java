@@ -28,7 +28,7 @@ import com.redhat.ceylon.model.typechecker.model.Generic;
 import com.redhat.ceylon.model.typechecker.model.Interface;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
-import com.redhat.ceylon.model.typechecker.model.ProducedReference;
+import com.redhat.ceylon.model.typechecker.model.Reference;
 import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.Scope;
 import com.redhat.ceylon.model.typechecker.model.SiteVariance;
@@ -1027,7 +1027,7 @@ public class Util {
 
     private static boolean isIndirectInvocation(
             Tree.MemberOrTypeExpression that) {
-        ProducedReference prf = that.getTarget();
+        Reference prf = that.getTarget();
         if (prf==null) {
             return true;
         }

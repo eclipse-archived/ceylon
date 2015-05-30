@@ -46,7 +46,7 @@ import com.redhat.ceylon.model.typechecker.model.Method;
 import com.redhat.ceylon.model.typechecker.model.Package;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.ParameterList;
-import com.redhat.ceylon.model.typechecker.model.ProducedReference;
+import com.redhat.ceylon.model.typechecker.model.Reference;
 import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.Scope;
 import com.redhat.ceylon.model.typechecker.model.Setter;
@@ -347,8 +347,8 @@ public class RefinementVisitor extends Visitor {
     
     private void checkClassParameters(Tree.Declaration that,
             Declaration dec, Declaration refined,
-            ProducedReference refinedMember, 
-            ProducedReference refiningMember,
+            Reference refinedMember, 
+            Reference refiningMember,
             boolean forNative) {
         List<ParameterList> refiningParamLists = 
                 ((Functional) dec).getParameterLists();
@@ -578,10 +578,10 @@ public class RefinementVisitor extends Visitor {
         }
         
         Type cit = ci.getType();
-        ProducedReference refinedMember = 
+        Reference refinedMember = 
                 cit.getTypedReference(refined, 
                         typeArgs);
-        ProducedReference refiningMember = 
+        Reference refiningMember = 
                 cit.getTypedReference(refining, 
                         typeArgs);
         Declaration refinedMemberDec = 
@@ -620,8 +620,8 @@ public class RefinementVisitor extends Visitor {
 	private void checkRefiningMemberParameters(
 	        Tree.Declaration that,
             Declaration refining, Declaration refined,
-            ProducedReference refinedMember, 
-            ProducedReference refiningMember,
+            Reference refinedMember, 
+            Reference refiningMember,
             boolean forNative) {
 		List<ParameterList> refiningParamLists = 
 		        ((Functional) refining).getParameterLists();
@@ -862,8 +862,8 @@ public class RefinementVisitor extends Visitor {
     }
 
     private void checkRefinedMemberTypeAssignable(
-            ProducedReference refiningMember, 
-    		ProducedReference refinedMember,
+            Reference refiningMember, 
+    		Reference refinedMember,
     		Node that, Declaration refined) {
         if (hasUncheckedNullType(refinedMember)) {
             Unit unit = 
@@ -889,8 +889,8 @@ public class RefinementVisitor extends Visitor {
     }
 
     private void checkRefinedMemberTypeExactly(
-            ProducedReference refiningMember, 
-    		ProducedReference refinedMember, 
+            Reference refiningMember, 
+    		Reference refinedMember, 
     		Node that, Declaration refined) {
         if (hasUncheckedNullType(refinedMember)) {
             Unit unit = 
@@ -914,7 +914,7 @@ public class RefinementVisitor extends Visitor {
     }
 
     private boolean hasUncheckedNullType(
-            ProducedReference member) {
+            Reference member) {
         Declaration dec = member.getDeclaration();
         return dec instanceof TypedDeclaration && 
                 ((TypedDeclaration) dec)
@@ -1005,7 +1005,7 @@ public class RefinementVisitor extends Visitor {
     }
     
     private static String containerName(
-            ProducedReference member) {
+            Reference member) {
         Scope container = 
                 member.getDeclaration()
                     .getContainer();
@@ -1025,8 +1025,8 @@ public class RefinementVisitor extends Visitor {
     private void checkParameterTypes(
             Tree.Declaration that, 
             Tree.ParameterList pl,
-            ProducedReference member, 
-            ProducedReference refinedMember,
+            Reference member, 
+            Reference refinedMember,
             ParameterList params, 
             ParameterList refinedParams, 
             boolean forNative) {
@@ -1093,8 +1093,8 @@ public class RefinementVisitor extends Visitor {
 
 	private void handleWrongParameterListLength(
 	        Tree.Declaration that,
-            ProducedReference member, 
-            ProducedReference refinedMember,
+            Reference member, 
+            Reference refinedMember,
             boolean forNative) {
         StringBuilder message = new StringBuilder();
 	    String subject = 
@@ -1119,8 +1119,8 @@ public class RefinementVisitor extends Visitor {
     }
 
 	private static void checkRefiningParameterType(
-	        ProducedReference member,
-            ProducedReference refinedMember, 
+	        Reference member,
+            Reference refinedMember, 
             ParameterList refinedParams,
             Parameter rparam, 
             Type refinedParameterType,
@@ -1163,8 +1163,8 @@ public class RefinementVisitor extends Visitor {
     }
 
 	private void handleUnknownParameterType(
-	        ProducedReference member,
-            ProducedReference refinedMember, 
+	        Reference member,
+            Reference refinedMember, 
             Parameter param, 
             Node typeNode, 
             boolean forNative) {
@@ -1191,8 +1191,8 @@ public class RefinementVisitor extends Visitor {
     }
 
 	private void checkRefinedParameterDynamicallyTyped(
-            ProducedReference member, 
-            ProducedReference refinedMember,
+            Reference member, 
+            Reference refinedMember,
             Parameter rparam, Parameter param, 
             Node typeNode) {
 	    if (!rparam.getModel().isDynamicallyTyped()) {
@@ -1211,7 +1211,7 @@ public class RefinementVisitor extends Visitor {
     }
 
 	private void checkRefiningParameterDynamicallyTyped(
-            ProducedReference member, ProducedReference refinedMember,
+            Reference member, Reference refinedMember,
             Parameter param, Node typeNode) {
 	    if (!param.getModel().isDynamicallyTyped()) {
 	    	typeNode.addError(
@@ -1373,7 +1373,7 @@ public class RefinementVisitor extends Visitor {
             Tree.BaseMemberExpression bme,
             Tree.SpecifierStatement that, 
             ClassOrInterface c) {
-        final ProducedReference rv = 
+        final Reference rv = 
                 getRefinedMember(sv, c);
         if (!sv.isFormal() && !sv.isDefault()
                 && !sv.isShortcutRefinement()) { //this condition is here to squash a dupe message
@@ -1439,7 +1439,7 @@ public class RefinementVisitor extends Visitor {
             that.addError("inherited method is neither formal nor default so may not be refined: " + 
                     message(sm));
         }
-        final ProducedReference rm = getRefinedMember(sm,c);
+        final Reference rm = getRefinedMember(sm,c);
         Method m = new Method();
         m.setName(sm.getName());
         List<Tree.ParameterList> tpls;

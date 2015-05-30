@@ -27,7 +27,7 @@ import com.redhat.ceylon.model.typechecker.model.Functional;
 import com.redhat.ceylon.model.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.ParameterList;
-import com.redhat.ceylon.model.typechecker.model.ProducedReference;
+import com.redhat.ceylon.model.typechecker.model.Reference;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.model.typechecker.model.Value;
 
@@ -419,13 +419,13 @@ public class TypeHierarchyVisitor extends Visitor {
     }
 
     private void addUnimplementedFormal(Class clazz, Declaration member) {
-        ProducedReference unimplemented = 
+        Reference unimplemented = 
                 member.getProducedReference(clazz.getType(), 
                         NO_TYPE_ARGS);
-        List<ProducedReference> list = 
+        List<Reference> list = 
                 clazz.getUnimplementedFormals();
         if (list.isEmpty()) {
-            list = new ArrayList<ProducedReference>();
+            list = new ArrayList<Reference>();
             clazz.setUnimplementedFormals(list);
         }
         list.add(unimplemented);
