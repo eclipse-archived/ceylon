@@ -12,7 +12,7 @@ import ceylon.language.meta.declaration {
 }
 
 "The annotation class for the [[annotation]] meta-annotation."
-shared final annotation class AnnotationAnnotation()
+shared final sealed annotation class AnnotationAnnotation()
         satisfies OptionalAnnotation<AnnotationAnnotation,
                 ClassDeclaration|FunctionDeclaration> {}
 
@@ -23,7 +23,7 @@ shared annotation AnnotationAnnotation annotation()
         => AnnotationAnnotation();
 
 "The annotation class for the [[shared]] annotation."
-shared final annotation class SharedAnnotation()
+shared final sealed annotation class SharedAnnotation()
         satisfies OptionalAnnotation<SharedAnnotation,
                 FunctionOrValueDeclaration|ClassOrInterfaceDeclaration|ConstructorDeclaration|Package|Import> {}
 
@@ -34,7 +34,7 @@ shared annotation SharedAnnotation shared()
         => SharedAnnotation();
 
 "The annotation class for the [[variable]] annotation."
-shared final annotation class VariableAnnotation()
+shared final sealed annotation class VariableAnnotation()
         satisfies OptionalAnnotation<VariableAnnotation,
                 ValueDeclaration> {}
 
@@ -44,7 +44,7 @@ shared annotation VariableAnnotation variable()
         => VariableAnnotation();
 
 "The annotation class for the [[abstract]] annotation."
-shared final annotation class AbstractAnnotation()
+shared final sealed annotation class AbstractAnnotation()
         satisfies OptionalAnnotation<AbstractAnnotation,
                 ClassDeclaration|ConstructorDeclaration> {}
 
@@ -55,7 +55,7 @@ shared annotation AbstractAnnotation abstract()
         => AbstractAnnotation();
 
 "The annotation class for the [[final]] annotation."
-shared final annotation class FinalAnnotation()
+shared final sealed annotation class FinalAnnotation()
         satisfies OptionalAnnotation<FinalAnnotation,
                 ClassDeclaration> {}
 
@@ -66,7 +66,7 @@ shared annotation FinalAnnotation final()
         => FinalAnnotation();
                 
 "The annotation class for the [[sealed]] annotation."
-shared final annotation class SealedAnnotation()
+shared final sealed annotation class SealedAnnotation()
         satisfies OptionalAnnotation<SealedAnnotation,
                 ClassOrInterfaceDeclaration|ConstructorDeclaration> {}
                 
@@ -80,7 +80,7 @@ shared annotation SealedAnnotation sealed()
         => SealedAnnotation();
 
 "The annotation class for the [[actual]] annotation."
-shared final annotation class ActualAnnotation()
+shared final sealed annotation class ActualAnnotation()
         satisfies OptionalAnnotation<ActualAnnotation,
                 FunctionOrValueDeclaration|ClassOrInterfaceDeclaration> {}
 
@@ -90,7 +90,7 @@ shared annotation ActualAnnotation actual()
         => ActualAnnotation();
 
 "The annotation class for the [[formal]] annotation."
-shared final annotation class FormalAnnotation()
+shared final sealed annotation class FormalAnnotation()
         satisfies OptionalAnnotation<FormalAnnotation,
                 FunctionOrValueDeclaration|ClassOrInterfaceDeclaration> {}
 
@@ -100,7 +100,7 @@ shared annotation FormalAnnotation formal()
         => FormalAnnotation();
 
 "The annotation class for the [[default]] annotation."
-shared final annotation class DefaultAnnotation()
+shared final sealed annotation class DefaultAnnotation()
         satisfies OptionalAnnotation<DefaultAnnotation,
                 FunctionOrValueDeclaration|ClassOrInterfaceDeclaration> {}
 
@@ -111,7 +111,7 @@ shared annotation DefaultAnnotation default()
         => DefaultAnnotation();
 
 "The annotation class for the [[late]] annotation."
-shared final annotation class LateAnnotation()
+shared final sealed annotation class LateAnnotation()
         satisfies OptionalAnnotation<LateAnnotation,
                 ValueDeclaration> {}
 
@@ -121,7 +121,7 @@ shared annotation LateAnnotation late()
         => LateAnnotation();
 
 "The annotation class for the [[native]] annotation."
-shared final annotation class NativeAnnotation(
+shared final sealed annotation class NativeAnnotation(
     shared String backend)
         satisfies OptionalAnnotation<NativeAnnotation,Annotated> {}
 
@@ -132,7 +132,7 @@ shared annotation NativeAnnotation native(
         => NativeAnnotation(backend);
 
 /*"The annotation class for [[inherited]]."
-shared final annotation class InheritedAnnotation()
+shared final sealed annotation class InheritedAnnotation()
         satisfies OptionalAnnotation<InheritedAnnotation, 
             ClassDeclaration> {}
 
@@ -141,7 +141,7 @@ shared annotation InheritedAnnotation inherited()
         => InheritedAnnotation();*/
 
 "The annotation class for the [[doc]] annotation."
-shared final annotation class DocAnnotation(
+shared final sealed annotation class DocAnnotation(
     "Documentation, in Markdown syntax, about the annotated 
      program element"
     shared String description)
@@ -154,7 +154,7 @@ shared annotation DocAnnotation doc(
     String description) => DocAnnotation(description);
 
 "The annotation class for the [[see]] annotation."
-shared final annotation class SeeAnnotation(
+shared final sealed annotation class SeeAnnotation(
     "The program elements being referred to."
     shared Declaration* programElements)
         satisfies SequencedAnnotation<SeeAnnotation,Annotated> {}
@@ -167,7 +167,7 @@ shared annotation SeeAnnotation see(
         => SeeAnnotation(*programElements);
 
 "The annotation class for the [[by]] annotation."
-shared final annotation class AuthorsAnnotation(
+shared final sealed annotation class AuthorsAnnotation(
     "The authors, in Markdown syntax, of the annotated 
      program element"
     shared String* authors)
@@ -181,7 +181,7 @@ shared annotation AuthorsAnnotation by(
         => AuthorsAnnotation(*authors);
 
 "The annotation class for the [[throws]] annotation."
-shared final annotation class ThrownExceptionAnnotation(
+shared final sealed annotation class ThrownExceptionAnnotation(
     "The [[Exception]] type that is thrown."
     shared Declaration type,
     "A description, in Markdown syntax, of the circumstances 
@@ -201,7 +201,7 @@ shared annotation ThrownExceptionAnnotation throws(
         => ThrownExceptionAnnotation(type, when);
 
 "The annotation class for the [[deprecated]] annotation."
-shared final annotation class DeprecationAnnotation(
+shared final sealed annotation class DeprecationAnnotation(
     "A description, in Markdown syntax, of why the program 
      element is deprecated, and of what alternatives are 
      available."
@@ -225,7 +225,7 @@ shared annotation DeprecationAnnotation deprecated(
         => DeprecationAnnotation(reason);
 
 "The annotation class for the [[tagged]] annotation."
-shared final annotation class TagsAnnotation(
+shared final sealed annotation class TagsAnnotation(
     "The tags, in plain text."
     shared String* tags)
         satisfies OptionalAnnotation<TagsAnnotation,Annotated> {}
@@ -237,7 +237,7 @@ shared annotation TagsAnnotation tagged(
         => TagsAnnotation(*tags);
 
 "The annotation class for the [[license]] annotation."
-shared final annotation class LicenseAnnotation(
+shared final sealed annotation class LicenseAnnotation(
     "The name, text, or URL of the license."
     shared String description)
         satisfies OptionalAnnotation<LicenseAnnotation,Module> {}
@@ -250,7 +250,7 @@ shared annotation LicenseAnnotation license(
         => LicenseAnnotation(description);
 
 "The annotation class for the [[optional]] annotation."
-shared final annotation class OptionalImportAnnotation()
+shared final sealed annotation class OptionalImportAnnotation()
         satisfies OptionalAnnotation<OptionalImportAnnotation,
                 Import> {}
 
@@ -261,7 +261,7 @@ shared annotation OptionalImportAnnotation optional()
 
 "The annotation class for the [[suppressWarnings]] 
  annotation."
-shared final annotation class SuppressWarningsAnnotation(
+shared final sealed annotation class SuppressWarningsAnnotation(
     "The warning types to suppress."
     [String*] warnings)
         satisfies OptionalAnnotation<SuppressWarningsAnnotation, 
