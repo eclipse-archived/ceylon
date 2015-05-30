@@ -42,7 +42,7 @@ import static com.redhat.ceylon.model.typechecker.model.ModelUtil.intersectionTy
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isAbstraction;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isOverloadedVersion;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isTypeUnknown;
-import static com.redhat.ceylon.model.typechecker.model.ModelUtil.producedType;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.appliedType;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.toTypeArgs;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.unionOfCaseTypes;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.unionType;
@@ -1410,7 +1410,7 @@ public class ExpressionVisitor extends Visitor {
                 Type tt = 
                         unit.getTupleType(argTypes, 
                                 variadic, atLeastOne, -1);
-                return producedType(cd, rt, tt);
+                return appliedType(cd, rt, tt);
             }
         }
         return t;
@@ -3088,10 +3088,10 @@ public class ExpressionVisitor extends Visitor {
                         Type fullType;
                         if (smte.getStaticMethodReferencePrimary()) {
                             Type type = arg.getType();
-                            parameterListType = producedType(
+                            parameterListType = appliedType(
                                     unit.getTupleDeclaration(), 
                                     type, type, unit.getEmptyType());
-                            fullType = producedType(
+                            fullType = appliedType(
                                     unit.getCallableDeclaration(),
                                     type, parameterListType);
                         }
@@ -8014,8 +8014,8 @@ public class ExpressionVisitor extends Visitor {
     }
     
     private Type getStaticReferenceType(Type type, Type rt) {
-        return producedType(unit.getCallableDeclaration(), type,
-                producedType(unit.getTupleDeclaration(), rt, rt, 
+        return appliedType(unit.getCallableDeclaration(), type,
+                appliedType(unit.getTupleDeclaration(), rt, rt, 
                         unit.getEmptyType()));
     }
     

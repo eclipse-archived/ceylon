@@ -5,7 +5,7 @@ import static com.redhat.ceylon.model.typechecker.model.SiteVariance.OUT;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.intersectionType;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isNamed;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isTypeUnknown;
-import static com.redhat.ceylon.model.typechecker.model.ModelUtil.producedType;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.appliedType;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.unionType;
 import static java.util.Collections.emptyList;
 
@@ -1232,14 +1232,14 @@ public class Util {
                             unit.getSequenceType(et);
                     if (!requireSequential) {
                         Type it = 
-                                producedType(id, et, 
+                                appliedType(id, et, 
                                         icc.getFirstTypeModel());
                         result = intersectionType(result, it, unit);
                     }
                 }
                 else {
                     ut = unionType(ut, et, unit);
-                    result = producedType(td, ut, et, result);
+                    result = appliedType(td, ut, et, result);
                 }
             }
         }

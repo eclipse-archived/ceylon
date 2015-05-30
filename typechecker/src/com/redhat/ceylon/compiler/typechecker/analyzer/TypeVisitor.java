@@ -19,7 +19,7 @@ import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isToplevelAnon
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isToplevelClassConstructor;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isTypeUnknown;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.notOverloaded;
-import static com.redhat.ceylon.model.typechecker.model.ModelUtil.producedType;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.appliedType;
 import static java.lang.Integer.parseInt;
 
 import java.util.ArrayList;
@@ -724,7 +724,7 @@ public class TypeVisitor extends Visitor {
                 Class td = unit.getTupleDeclaration();
                 t = unit.getEmptyType();
                 for (int i=0; i<len; i++) {
-                    t = producedType(td, et, et, t);
+                    t = appliedType(td, et, et, t);
                 }
             }
             that.setTypeModel(t);
@@ -807,7 +807,7 @@ public class TypeVisitor extends Visitor {
                             unit);
             Interface cd = unit.getCallableDeclaration();
             Type pt = 
-                    producedType(cd, rt.getTypeModel(), tt);
+                    appliedType(cd, rt.getTypeModel(), tt);
             that.setTypeModel(pt);
         }
     }
@@ -901,7 +901,7 @@ public class TypeVisitor extends Visitor {
                         unit.getSequentialType(elemType);
             }
             else {
-                result = producedType(td, union, elemType, 
+                result = appliedType(td, union, elemType, 
                         result);
                 if (firstDefaulted>=0 && i>=firstDefaulted) {
                     pair = new ArrayList<Type>();
