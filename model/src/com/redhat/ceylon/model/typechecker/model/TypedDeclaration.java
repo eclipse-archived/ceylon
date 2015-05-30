@@ -48,7 +48,7 @@ public abstract class TypedDeclaration extends Declaration {
         this.type = t;
     }
 
-    public ProducedTypedReference getProducedTypedReference(
+    public TypedReference getProducedTypedReference(
             Type qualifyingType,
             List<Type> typeArguments) {
         return getProducedTypedReference(qualifyingType, 
@@ -71,12 +71,12 @@ public abstract class TypedDeclaration extends Declaration {
      * @param assignment the reference occurs on the
      *                   LHS of an assignment
      */
-    public ProducedTypedReference getProducedTypedReference(
+    public TypedReference getProducedTypedReference(
             Type qualifyingType,
             List<Type> typeArguments, 
             boolean assignment) {
-        ProducedTypedReference ptr = 
-                new ProducedTypedReference(!assignment, 
+        TypedReference ptr = 
+                new TypedReference(!assignment, 
                         assignment);
         ptr.setDeclaration(this);
         ptr.setQualifyingType(qualifyingType);
@@ -89,9 +89,9 @@ public abstract class TypedDeclaration extends Declaration {
      * The type of this declaration, as viewed from within
      * itself.
      */
-    public ProducedTypedReference getTypedReference() {
-        ProducedTypedReference ptr =
-                new ProducedTypedReference(true, false);
+    public TypedReference getTypedReference() {
+        TypedReference ptr =
+                new TypedReference(true, false);
         ptr.setQualifyingType(getMemberContainerType());
         ptr.setDeclaration(this);
         ptr.setTypeArguments(getTypeParametersAsArguments());
@@ -99,13 +99,13 @@ public abstract class TypedDeclaration extends Declaration {
     }
 
     @Override
-    public ProducedReference getProducedReference(Type pt,
+    public Reference getProducedReference(Type pt,
             List<Type> typeArguments) {
         return getProducedTypedReference(pt, typeArguments);
     }
     
     @Override
-    public final ProducedReference getReference() {
+    public final Reference getReference() {
     	return getTypedReference();
     }
 

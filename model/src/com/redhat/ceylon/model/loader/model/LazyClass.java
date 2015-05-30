@@ -14,7 +14,7 @@ import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.ParameterList;
-import com.redhat.ceylon.model.typechecker.model.ProducedReference;
+import com.redhat.ceylon.model.typechecker.model.Reference;
 import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.Scope;
 import com.redhat.ceylon.model.typechecker.model.TypeParameter;
@@ -207,7 +207,7 @@ public class LazyClass extends Class implements LazyContainer {
     }
 
     @Override
-    public ProducedReference getProducedReference(Type pt,
+    public Reference getProducedReference(Type pt,
             List<Type> typeArguments) {
         loadTypeParams();
         return super.getProducedReference(pt, typeArguments);

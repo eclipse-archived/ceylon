@@ -11,7 +11,7 @@ import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.DeclarationKind;
 import com.redhat.ceylon.model.typechecker.model.DeclarationWithProximity;
 import com.redhat.ceylon.model.typechecker.model.Import;
-import com.redhat.ceylon.model.typechecker.model.ProducedReference;
+import com.redhat.ceylon.model.typechecker.model.Reference;
 import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.Scope;
 import com.redhat.ceylon.model.typechecker.model.TypeAlias;
@@ -146,7 +146,7 @@ public class LazyTypeAlias extends TypeAlias implements LazyContainer {
     }
 
     @Override
-    public ProducedReference getProducedReference(Type pt, List<Type> typeArguments) {
+    public Reference getProducedReference(Type pt, List<Type> typeArguments) {
         loadTypeParams();
         return super.getProducedReference(pt, typeArguments);
     }

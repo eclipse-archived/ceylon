@@ -318,7 +318,7 @@ public abstract class Declaration
      * @param typeArguments arguments to the type
      * parameters of this declaration
      */
-    public abstract ProducedReference getProducedReference(
+    public abstract Reference getProducedReference(
             Type pt, List<Type> typeArguments);
     
     /**
@@ -326,7 +326,7 @@ public abstract class Declaration
      * within the body of the declaration itself. That is,
      * within its type parameters as their own arguments.
      */
-    public abstract ProducedReference getReference();
+    public abstract Reference getReference();
     
     protected java.lang.Class<?> getModelClass() {
         return getClass();

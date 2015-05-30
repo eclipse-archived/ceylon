@@ -8,7 +8,7 @@ import com.redhat.ceylon.model.loader.mirror.ClassMirror;
 import com.redhat.ceylon.model.typechecker.model.Annotation;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.InterfaceAlias;
-import com.redhat.ceylon.model.typechecker.model.ProducedReference;
+import com.redhat.ceylon.model.typechecker.model.Reference;
 import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.Scope;
 import com.redhat.ceylon.model.typechecker.model.TypeParameter;
@@ -128,7 +128,7 @@ public class LazyInterfaceAlias extends InterfaceAlias implements LazyContainer 
     }
 
     @Override
-    public ProducedReference getProducedReference(Type pt,
+    public Reference getProducedReference(Type pt,
             List<Type> typeArguments) {
         loadTypeParams();
         return super.getProducedReference(pt, typeArguments);

@@ -37,7 +37,7 @@ import com.redhat.ceylon.model.typechecker.util.ProducedTypeNamePrinter;
  *
  * @author Gavin King
  */
-public class Type extends ProducedReference {
+public class Type extends Reference {
     
     private TypeDeclaration declaration;
     private String underlyingType;
@@ -1098,7 +1098,7 @@ public class Type extends ProducedReference {
      * @return this type after application of use-site 
      *         variances and substitution of type arguments
      */
-    public Type substitute(ProducedTypedReference source) {
+    public Type substitute(TypedReference source) {
         Type receiver =
                 source.getQualifyingType();
         return substitute(source.getTypeArguments(),
@@ -1177,7 +1177,7 @@ public class Type extends ProducedReference {
      * A member or member type of the type with actual type 
      * arguments to the receiving type and invocation.
      */
-    public ProducedReference getTypedReference(
+    public Reference getTypedReference(
             Declaration member, 
             List<Type> typeArguments) {
         if (member instanceof TypeDeclaration) {
@@ -1190,7 +1190,7 @@ public class Type extends ProducedReference {
         }
     }
     
-    public ProducedTypedReference getTypedMember(
+    public TypedReference getTypedMember(
             TypedDeclaration member, 
             List<Type> typeArguments) {
         return getTypedMember(member, typeArguments, false);
@@ -1207,7 +1207,7 @@ public class Type extends ProducedReference {
      * @param assigned does this reference occur on the
      *                 RHS of an assignment operator
      */
-    public ProducedTypedReference getTypedMember(
+    public TypedReference getTypedMember(
             TypedDeclaration member, 
             List<Type> typeArguments, 
             boolean assigned) {
@@ -1215,8 +1215,8 @@ public class Type extends ProducedReference {
                 (TypeDeclaration) 
                     member.getContainer();
         Type declaringType = getSupertype(type);
-        ProducedTypedReference ptr = 
-                new ProducedTypedReference(!assigned, assigned);
+        TypedReference ptr = 
+                new TypedReference(!assigned, assigned);
         ptr.setDeclaration(member);
         ptr.setQualifyingType(declaringType);
         Map<TypeParameter, Type> map = 

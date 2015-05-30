@@ -11,13 +11,13 @@ import java.util.Map;
  * @author Gavin King
  *
  */
-public class ProducedTypedReference extends ProducedReference {
+public class TypedReference extends Reference {
     
     private TypedDeclaration declaration;
     private final boolean covariant;
     private final boolean contravariant;
 
-    ProducedTypedReference(boolean covariant, boolean contravariant) {
+    TypedReference(boolean covariant, boolean contravariant) {
         this.covariant = covariant;
         this.contravariant = contravariant;
     }

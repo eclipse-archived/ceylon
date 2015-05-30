@@ -20,9 +20,9 @@ import com.redhat.ceylon.model.typechecker.context.ProducedTypeCache;
  *
  * @author Gavin King
  */
-public abstract class ProducedReference {
+public abstract class Reference {
     
-    ProducedReference() {}
+    Reference() {}
 
     private Map<TypeParameter, Type> typeArguments = 
             EMPTY_TYPE_ARG_MAP;
@@ -119,10 +119,10 @@ public abstract class ProducedReference {
      * - for a class or constructor, it is the class type.
      * 
      * The "whole" type of the reference may be obtained
-     * using {@link ProducedReference#getFullType()}.
+     * using {@link Reference#getFullType()}.
      * 
-     * @see ProducedReference#getTypedParameter(Parameter)
-     * @see ProducedReference#getFullType()
+     * @see Reference#getTypedParameter(Parameter)
+     * @see Reference#getFullType()
      */
     public abstract Type getType();
     
@@ -134,11 +134,11 @@ public abstract class ProducedReference {
      *   callable type.
      * 
      * This type encodes all the types you could assemble
-     * using {@link ProducedReference#getType()} and
-     * {@link ProducedReference#getTypedParameter(Parameter)}.
+     * using {@link Reference#getType()} and
+     * {@link Reference#getTypedParameter(Parameter)}.
      *   
-     *   @see ProducedReference#getType()
-     *   @see ProducedReference#getTypedParameter(Parameter)
+     *   @see Reference#getType()
+     *   @see Reference#getTypedParameter(Parameter)
      */
     public Type getFullType() {
     	return getFullType(getType());
@@ -184,9 +184,9 @@ public abstract class ProducedReference {
      * Get the type of a parameter, after substitution of
      * type arguments.
      */
-    public ProducedTypedReference getTypedParameter(Parameter p) {
-        ProducedTypedReference ptr = 
-                new ProducedTypedReference(false, true);
+    public TypedReference getTypedParameter(Parameter p) {
+        TypedReference ptr = 
+                new TypedReference(false, true);
         MethodOrValue model = p.getModel();
         if (model!=null) {
             ptr.setDeclaration(model);

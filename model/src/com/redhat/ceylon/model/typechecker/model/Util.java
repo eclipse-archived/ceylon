@@ -931,7 +931,7 @@ public class Util {
      * {@link Type.Substitution} works with a single
      * aggregated map, and so for performance
      * {@link Type#substitute(Type)} and
-     * {@link Type#substitute(ProducedTypedReference)}
+     * {@link Type#substitute(TypedReference)}
      * assume that the given type or reference holds such a
      * single aggregated map.
      * 

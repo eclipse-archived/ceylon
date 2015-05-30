@@ -18,8 +18,8 @@ public class Class extends ClassOrInterface implements Functional {
     private boolean fin;
     private boolean serializable;
     private List<Declaration> overloads;
-    private List<ProducedReference> unimplementedFormals = 
-            Collections.<ProducedReference>emptyList();
+    private List<Reference> unimplementedFormals = 
+            Collections.<Reference>emptyList();
 
     public boolean hasConstructors() {
         return constructors;
@@ -304,12 +304,12 @@ public class Class extends ClassOrInterface implements Functional {
         }
     }
 
-    public List<ProducedReference> getUnimplementedFormals() {
+    public List<Reference> getUnimplementedFormals() {
         return unimplementedFormals;
     }
     
     public void setUnimplementedFormals(
-            List<ProducedReference> unimplementedFormals) {
+            List<Reference> unimplementedFormals) {
         this.unimplementedFormals = unimplementedFormals;
     }
 

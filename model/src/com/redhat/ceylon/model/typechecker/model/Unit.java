@@ -553,7 +553,7 @@ public class Unit {
         return (Class) getLanguageModuleDeclaration("Entry");
     }
     
-    Type getCallableType(ProducedReference ref, Type rt) {
+    Type getCallableType(Reference ref, Type rt) {
     	Type result = rt;
     	Declaration declaration = ref.getDeclaration();
         if (declaration instanceof Functional) {
@@ -574,7 +574,7 @@ public class Unit {
                         args.add(getUnknownType());
                     }
                     else {
-                        ProducedTypedReference np = 
+                        TypedReference np = 
                                 ref.getTypedParameter(p);
                         Type npt = np.getType();
                         if (npt==null) {
@@ -1759,7 +1759,7 @@ public class Unit {
         return modifiers;
     }
     
-    public Type getValueMetatype(ProducedTypedReference pr) {
+    public Type getValueMetatype(TypedReference pr) {
         boolean variable = pr.getDeclaration().isVariable();
         Type getType = pr.getType();
         Type setType = variable ? 
@@ -1781,7 +1781,7 @@ public class Unit {
         }
     }
     
-    public Type getFunctionMetatype(ProducedTypedReference pr) {
+    public Type getFunctionMetatype(TypedReference pr) {
         TypedDeclaration d = pr.getDeclaration();
         Functional f = (Functional) d;
         if (f.getParameterLists().isEmpty()) {
@@ -1924,7 +1924,7 @@ public class Unit {
     }
     
     public Type getParameterTypesAsTupleType(List<Parameter> params, 
-            ProducedReference pr) {
+            Reference pr) {
         List<Type> paramTypes = 
                 new ArrayList<Type>
                     (params.size());

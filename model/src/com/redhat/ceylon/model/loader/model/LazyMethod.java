@@ -14,9 +14,9 @@ import com.redhat.ceylon.model.typechecker.model.DeclarationKind;
 import com.redhat.ceylon.model.typechecker.model.DeclarationWithProximity;
 import com.redhat.ceylon.model.typechecker.model.Method;
 import com.redhat.ceylon.model.typechecker.model.ParameterList;
-import com.redhat.ceylon.model.typechecker.model.ProducedReference;
+import com.redhat.ceylon.model.typechecker.model.Reference;
 import com.redhat.ceylon.model.typechecker.model.Type;
-import com.redhat.ceylon.model.typechecker.model.ProducedTypedReference;
+import com.redhat.ceylon.model.typechecker.model.TypedReference;
 import com.redhat.ceylon.model.typechecker.model.Scope;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.model.typechecker.model.TypeParameter;
@@ -143,14 +143,14 @@ public class LazyMethod extends Method implements LazyElement, LocalDeclarationC
     }
 
     @Override
-    public ProducedTypedReference getProducedTypedReference(Type qualifyingType, 
+    public TypedReference getProducedTypedReference(Type qualifyingType, 
             List<Type> typeArguments, boolean assignment) {
         load();
         return super.getProducedTypedReference(qualifyingType, typeArguments, assignment);
     }
 
     @Override
-    public ProducedReference getProducedReference(Type pt, List<Type> typeArguments) {
+    public Reference getProducedReference(Type pt, List<Type> typeArguments) {
         load();
         return super.getProducedReference(pt, typeArguments);
     }

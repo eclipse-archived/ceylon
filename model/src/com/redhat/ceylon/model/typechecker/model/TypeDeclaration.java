@@ -149,7 +149,7 @@ public abstract class TypeDeclaration extends Declaration
     }
     
     @Override
-    public ProducedReference getProducedReference(
+    public Reference getProducedReference(
             Type pt,
             List<Type> typeArguments) {
         return getProducedType(pt, typeArguments);
