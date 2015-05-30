@@ -58,7 +58,7 @@ import com.redhat.ceylon.model.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.ParameterList;
-import com.redhat.ceylon.model.typechecker.model.ProducedType;
+import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.Scope;
 import com.redhat.ceylon.model.typechecker.model.Setter;
 import com.redhat.ceylon.model.typechecker.model.TypeAlias;
@@ -218,7 +218,7 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
             Value value = (Value) d;
             if( value.isShared() && !value.isVariable() ) {
                 Unit unit = value.getUnit();
-                ProducedType type = value.getType();
+                Type type = value.getType();
                 
                 if (type.isSequential()) {
                     type = unit.getSequentialElementType(type);
@@ -382,7 +382,7 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
     }
 
     protected final void writeInheritance(TypeDeclaration typeDeclaration) throws IOException {
-        List<ProducedType> caseTypes = typeDeclaration.getCaseTypes();
+        List<Type> caseTypes = typeDeclaration.getCaseTypes();
         if (caseTypes!=null && !caseTypes.isEmpty()) {
             open("div class='inheritance-satisfies'");
             writeCaseTypes(typeDeclaration);
@@ -396,7 +396,7 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
             linkRenderer().to(typeDeclaration.getExtendedType()).write();
             close("div");
         }
-        List<ProducedType> satisfiedTypes = typeDeclaration.getSatisfiedTypes();
+        List<Type> satisfiedTypes = typeDeclaration.getSatisfiedTypes();
         if (satisfiedTypes!=null && !satisfiedTypes.isEmpty()) {
             open("div class='inheritance-of'");
             writeSatisfiedTypes(typeDeclaration);
@@ -405,13 +405,13 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
     }
 
     private void writeCaseTypes(TypeDeclaration typeDeclaration) throws IOException {
-        List<ProducedType> caseTypes = typeDeclaration.getCaseTypes();
+        List<Type> caseTypes = typeDeclaration.getCaseTypes();
         if (caseTypes != null && !caseTypes.isEmpty()) {
             write(" ");
             write("<span class='type-parameter-keyword'>of</span>");
             write(" ");
             boolean first = true;
-            for (ProducedType caseType : caseTypes) {
+            for (Type caseType : caseTypes) {
                 if (first) {
                     first = false;
                 } else {
@@ -424,13 +424,13 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
 
     private void writeSatisfiedTypes(TypeDeclaration typeDeclaration)
             throws IOException {
-        List<ProducedType> satisfiedTypes = typeDeclaration.getSatisfiedTypes();
+        List<Type> satisfiedTypes = typeDeclaration.getSatisfiedTypes();
         if (satisfiedTypes != null && !satisfiedTypes.isEmpty()) {
             write(" ");
             write("<span class='keyword'>satisfies</span>");
             write(" ");
             boolean first = true;
-            for (ProducedType satisfiedType : satisfiedTypes) {
+            for (Type satisfiedType : satisfiedTypes) {
                 if (first) {
                     first = false;
                 } else {

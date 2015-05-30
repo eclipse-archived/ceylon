@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.codegen;
 
-import com.redhat.ceylon.model.typechecker.model.ProducedType;
+import com.redhat.ceylon.model.typechecker.model.Type;
 import com.sun.tools.javac.tree.JCTree.JCAnnotation;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
 
@@ -11,9 +11,9 @@ public class ObjectLiteralAnnotationTerm extends LiteralAnnotationTerm {
      */
     public static final LiteralAnnotationTerm FACTORY = new ObjectLiteralAnnotationTerm(null);
     
-    final ProducedType value;
+    final Type value;
     
-    public ObjectLiteralAnnotationTerm(ProducedType value) {
+    public ObjectLiteralAnnotationTerm(Type value) {
         super();
         this.value = value;
     }

@@ -10,7 +10,7 @@ import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Functional;
 import com.redhat.ceylon.model.typechecker.model.Method;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
-import com.redhat.ceylon.model.typechecker.model.ProducedType;
+import com.redhat.ceylon.model.typechecker.model.Type;
 import com.sun.tools.javac.tree.JCTree.JCAnnotation;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
 import com.sun.tools.javac.util.ListBuffer;
@@ -89,7 +89,7 @@ public class AnnotationInvocation {
     /**
      * The type of the annotation class ultimately being instantiated
      */
-    public ProducedType getAnnotationClassType() {
+    public Type getAnnotationClassType() {
         if (isInstantiation()) {
             return ((Class)getPrimary()).getType();
         } else {
@@ -156,7 +156,7 @@ public class AnnotationInvocation {
      * Make a type expression for the underlying annotation class
      */
     public JCExpression makeAnnotationType(ExpressionTransformer exprGen) {
-        ProducedType type = getAnnotationClassType();
+        Type type = getAnnotationClassType();
         if (isInterop()) {
             return exprGen.makeJavaType(type.getSatisfiedTypes().get(0));
         } else {

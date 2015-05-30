@@ -59,7 +59,7 @@ import com.redhat.ceylon.model.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.NothingType;
 import com.redhat.ceylon.model.typechecker.model.Package;
-import com.redhat.ceylon.model.typechecker.model.ProducedType;
+import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.Referenceable;
 import com.redhat.ceylon.model.typechecker.model.Scope;
 import com.redhat.ceylon.model.typechecker.model.TypeAlias;
@@ -232,8 +232,8 @@ public class LinkRenderer {
             } else {
                 link = processAnnotationParam((String) to);
             }
-        } else if (to instanceof ProducedType) {
-            link = processProducedType((ProducedType) to);
+        } else if (to instanceof Type) {
+            link = processProducedType((Type) to);
         } else if (to instanceof Declaration) {
             link = processDeclaration(((Declaration) to));
         } else if (to instanceof Module) {
@@ -286,7 +286,7 @@ public class LinkRenderer {
         }
     }
 
-    private String processProducedType(ProducedType producedType) {
+    private String processProducedType(Type producedType) {
         String result;
         boolean wasWithinText = withinText;
         withinText = false;
@@ -849,12 +849,12 @@ public class LinkRenderer {
         return text;
     }
 
-    private String decorateWithLinkDropdownMenu(String link, ProducedType producedType) {
+    private String decorateWithLinkDropdownMenu(String link, Type producedType) {
         if( !printLinkDropdownMenu || !printAbbreviated || !canLinkToCeylonLanguageModule() ) {
             return link;
         }
         
-        List<ProducedType> producedTypes = new ArrayList<ProducedType>();
+        List<Type> producedTypes = new ArrayList<Type>();
         decompose(producedType, producedTypes);
         
         boolean containsOptional = false;
@@ -865,7 +865,7 @@ public class LinkRenderer {
         boolean containsCallable = false;
         boolean containsTuple = false;
         
-        for (ProducedType pt : producedTypes) {
+        for (Type pt : producedTypes) {
             if (abbreviateOptional(pt)) {
                 containsOptional = true;
             } else if (abbreviateSequential(pt) && !link.contains("'Go to ceylon.language::Sequential'")) {
@@ -934,21 +934,21 @@ public class LinkRenderer {
         }
     }
 
-    private void decompose(ProducedType pt, List<ProducedType> producedTypes) {
+    private void decompose(Type pt, List<Type> producedTypes) {
         if (!producedTypes.contains(pt)) {
             producedTypes.add(pt);
             if (pt.isIntersection()) {
-                for (ProducedType satisfiedType : pt.getSatisfiedTypes()) {
+                for (Type satisfiedType : pt.getSatisfiedTypes()) {
                     decompose(satisfiedType, producedTypes);
                 }
             }
             else if (pt.isUnion()) {
-                for (ProducedType caseType : pt.getCaseTypes()) {
+                for (Type caseType : pt.getCaseTypes()) {
                     decompose(caseType, producedTypes);
                 }
             }
             if (!pt.getTypeArgumentList().isEmpty()) {
-                for (ProducedType typeArgument : pt.getTypeArgumentList()) {
+                for (Type typeArgument : pt.getTypeArgumentList()) {
                     decompose(typeArgument, producedTypes);
                 }
             }

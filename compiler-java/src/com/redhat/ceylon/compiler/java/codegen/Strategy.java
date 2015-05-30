@@ -35,7 +35,7 @@ import com.redhat.ceylon.model.typechecker.model.Method;
 import com.redhat.ceylon.model.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.ParameterList;
-import com.redhat.ceylon.model.typechecker.model.ProducedType;
+import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.model.typechecker.model.Unit;
 import com.redhat.ceylon.model.typechecker.model.Value;
@@ -330,7 +330,7 @@ class Strategy {
             power = ExpressionTransformer.getIntegerLiteralPower(op);
             if (power != null) {
                 Unit unit = op.getUnit();
-                ProducedType baseType = op.getLeftTerm().getTypeModel();
+                Type baseType = op.getLeftTerm().getTypeModel();
                 // Although the optimisation still works for powers > 64, it ends 
                 // up bloating the code (e.g. imagine x^1_000_000_000)
                 if (power > 0

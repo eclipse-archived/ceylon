@@ -39,7 +39,7 @@ import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.model.typechecker.model.Constructor;
 import com.redhat.ceylon.model.typechecker.model.Interface;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
-import com.redhat.ceylon.model.typechecker.model.ProducedType;
+import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.model.typechecker.model.TypeParameter;
 import com.sun.tools.javac.tree.JCTree;
@@ -145,7 +145,7 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
                     delegates.put(ctorModel, new CtorDelegation(ctorModel, p.getDeclaration()));
                 } else {
                     // implicitly delegating to superclass initializer
-                    ProducedType et = Decl.getConstructedClass(ctorModel).getExtendedType();
+                    Type et = Decl.getConstructedClass(ctorModel).getExtendedType();
                     if (et!=null) {
                         delegates.put(ctorModel, new CtorDelegation(ctorModel, et.getDeclaration()));
                     }
@@ -450,8 +450,8 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
 
     public void visit(Tree.ExtendedType extendedType) {
         ClassOrInterface forDefinition = classBuilder.getForDefinition();
-        ProducedType thisType;
-        ProducedType extended;
+        Type thisType;
+        Type extended;
         thisType = forDefinition != null ? forDefinition.getType() : null;
         extended = extendedType.getType().getTypeModel();
         if (extended.getDeclaration() instanceof Constructor) {

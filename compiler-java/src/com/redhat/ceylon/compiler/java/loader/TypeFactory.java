@@ -26,7 +26,7 @@ import com.redhat.ceylon.compiler.java.tools.LanguageCompiler;
 import com.redhat.ceylon.compiler.typechecker.context.Context;
 import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
-import com.redhat.ceylon.model.typechecker.model.ProducedType;
+import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.model.typechecker.model.Unit;
@@ -55,21 +55,21 @@ public class TypeFactory extends Unit {
     }
     
     /**
-     * Determines whether the given ProducedType is a union
+     * Determines whether the given Type is a union
      * @param pt 
      * @return whether the type is a union type
      */
-    public boolean isUnion(ProducedType pt) {
+    public boolean isUnion(Type pt) {
         if (pt==null) return false;
         return pt.isUnion() && pt.getCaseTypes().size() > 1;
     }
 
     /**
-     * Determines whether the given ProducedType is an intersection
+     * Determines whether the given Type is an intersection
      * @param pt 
      * @return whether the type is an intersection type
      */
-    public boolean isIntersection(ProducedType pt) {
+    public boolean isIntersection(Type pt) {
         if (pt==null) return false;
         return pt.isIntersection() && pt.getSatisfiedTypes().size() > 1;
     }
@@ -78,21 +78,21 @@ public class TypeFactory extends Unit {
         return (Class) getLanguageModuleDeclaration("ArraySequence");
     }
     
-    public ProducedType getArraySequenceType(ProducedType et) {
+    public Type getArraySequenceType(Type et) {
         return Util.producedType(getArraySequenceDeclaration(), et);
     }
     
     /**
-     * Returns a ProducedType corresponding to {@code Array<T>}
-     * @param et The ProducedType corresponding to {@code T}
-     * @return The ProducedType corresponding to {@code Array<T>}
+     * Returns a Type corresponding to {@code Array<T>}
+     * @param et The Type corresponding to {@code T}
+     * @return The Type corresponding to {@code Array<T>}
      */
-    public ProducedType getArrayType(ProducedType et) {
+    public Type getArrayType(Type et) {
         return Util.producedType(getArrayDeclaration(), et);
     }
 
-    public ProducedType getArrayElementType(ProducedType type) {
-        ProducedType st = type.getSupertype(getArrayDeclaration());
+    public Type getArrayElementType(Type type) {
+        Type st = type.getSupertype(getArrayDeclaration());
         if (st!=null && st.getTypeArguments().size()==1) {
             return st.getTypeArgumentList().get(0);
         }
@@ -101,7 +101,7 @@ public class TypeFactory extends Unit {
         }
     }
     
-    public ProducedType getCallableType(java.util.List<ProducedType> typeArgs) {
+    public Type getCallableType(java.util.List<Type> typeArgs) {
         if (typeArgs.size()!=2) {
             throw new IllegalArgumentException("Callable type always has two arguments: " + typeArgs);
         }
@@ -113,16 +113,16 @@ public class TypeFactory extends Unit {
         return getCallableDeclaration().getProducedType(null, typeArgs);
     }
     
-    public ProducedType getCallableType(ProducedType resultType) {
-        return getCallableType(List.<ProducedType>of(resultType,getEmptyType()));
+    public Type getCallableType(Type resultType) {
+        return getCallableType(List.<Type>of(resultType,getEmptyType()));
     }
 
-    public ProducedType getUnknownType() {
+    public Type getUnknownType() {
         return new UnknownType(this).getType();
     }
     
-    public ProducedType getIteratedAbsentType(ProducedType type) {
-        ProducedType st = type.getSupertype(getIterableDeclaration());
+    public Type getIteratedAbsentType(Type type) {
+        Type st = type.getSupertype(getIterableDeclaration());
         if (st!=null && st.getTypeArguments().size()>1) {
             return st.getTypeArgumentList().get(1);
         }
@@ -165,14 +165,14 @@ public class TypeFactory extends Unit {
         return (TypeDeclaration)getLanguageModuleDeclaration("AssertionError");
     }
     
-    public ProducedType getReferenceType(ProducedType value) {
-        final ProducedType serializedValueType;
+    public Type getReferenceType(Type value) {
+        final Type serializedValueType;
         TypeDeclaration referenceTypeDecl = (TypeDeclaration)getLanguageModuleSerializationDeclaration("Reference");
         serializedValueType = referenceTypeDecl.getProducedType(null, Collections.singletonList(value));
         return serializedValueType;
     }
     
-    public ProducedType getDeconstructorType() {
+    public Type getDeconstructorType() {
         return ((TypeDeclaration)getLanguageModuleSerializationDeclaration("Deconstructor")).getType();
     }
     
@@ -180,7 +180,7 @@ public class TypeFactory extends Unit {
      * Copy of Unit.isTupleLengthUnbounded which is more strict on what we consider variadic. For example
      * we do not consider Args|[] as a variadic tuple in a Callable. See https://github.com/ceylon/ceylon-compiler/issues/1908
      */
-    public boolean isTupleOfVariadicCallable(ProducedType args) {
+    public boolean isTupleOfVariadicCallable(Type args) {
         if (args!=null) {
             /*Boolean simpleTupleLengthUnbounded = 
                     isSimpleTupleLengthUnbounded(args);
@@ -194,7 +194,7 @@ public class TypeFactory extends Unit {
                 return true;
             }
             Class td = getTupleDeclaration();
-            ProducedType tuple = 
+            Type tuple = 
                     nonemptyArgs(args)
                         .getSupertype(td);
             if (tuple==null) {
@@ -202,10 +202,10 @@ public class TypeFactory extends Unit {
             }
             else {
                 while (true) {
-                    java.util.List<ProducedType> tal = 
+                    java.util.List<Type> tal = 
                             tuple.getTypeArgumentList();
                     if (tal.size()>=3) {
-                        ProducedType rest = tal.get(2);
+                        Type rest = tal.get(2);
                         if (rest==null) {
                             return false;
                         }
@@ -233,7 +233,7 @@ public class TypeFactory extends Unit {
         return false;
     }
 
-    private boolean isVariadicElement(ProducedType args) {
+    private boolean isVariadicElement(Type args) {
         return args.isClassOrInterface() 
                 && (args.isSequential() || args.isSequence());
     }

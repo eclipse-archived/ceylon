@@ -46,7 +46,7 @@ import com.redhat.ceylon.model.typechecker.model.Interface;
 import com.redhat.ceylon.model.typechecker.model.Method;
 import com.redhat.ceylon.model.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.model.typechecker.model.Package;
-import com.redhat.ceylon.model.typechecker.model.ProducedType;
+import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.TypeAlias;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
@@ -62,7 +62,7 @@ public class ClassDoc extends ClassOrPackageDoc {
     private List<Class> innerClasses;
     private List<Class> innerExceptions;
     private List<TypeAlias> innerAliases;
-    private List<ProducedType> superInterfaces;
+    private List<Type> superInterfaces;
     private List<TypeDeclaration> superClasses;
     private Map<MemberSpecification, Map<TypeDeclaration, List<Declaration>>> superclassInheritedMembers = new HashMap<ClassDoc.MemberSpecification, Map<TypeDeclaration,List<Declaration>>>(2);
     private Map<MemberSpecification, Map<TypeDeclaration, List<Declaration>>> interfaceInheritedMembers = new HashMap<ClassDoc.MemberSpecification, Map<TypeDeclaration,List<Declaration>>>(2);
@@ -164,7 +164,7 @@ public class ClassDoc extends ClassOrPackageDoc {
 
     private void loadInterfaceInheritedMembers(MemberSpecification memberSpecification) {
         LinkedHashMap<TypeDeclaration, List<Declaration>> result = new LinkedHashMap<TypeDeclaration, List<Declaration>>();
-        for (ProducedType superInterface : superInterfaces) {
+        for (Type superInterface : superInterfaces) {
             TypeDeclaration decl = superInterface.getDeclaration();
             List<Declaration> members = getInheritedMembers(decl, memberSpecification);
             for (Declaration member : members) {
@@ -439,15 +439,15 @@ public class ClassDoc extends ClassOrPackageDoc {
     }
     
     private void writeTypeHierarchy() throws IOException {
-        LinkedList<ProducedType> superTypes = new LinkedList<ProducedType>();
+        LinkedList<Type> superTypes = new LinkedList<Type>();
         superTypes.add(klass.getType());
-        ProducedType type = klass.getExtendedType();
+        Type type = klass.getExtendedType();
         while (type != null) {
             superTypes.add(0, type);
             type = type.getExtendedType();
         }
         int level = 0;
-        for (ProducedType superType : superTypes) {
+        for (Type superType : superTypes) {
             writeTypeHierarchyLevel(superType.getDeclaration(), level < superTypes.size() - 1);
             if (!isEmpty(superType.getSatisfiedTypes())) {
                 write("<a class='hint' title='Go to the Supertype Hierarchy' onClick='$(\"#tabSupertypeHierarchyNav\").tab(\"show\");'> ...and other supertypes</a>");
@@ -508,9 +508,9 @@ public class ClassDoc extends ClassOrPackageDoc {
         if (type instanceof Class && type.getExtendedType() != null) {
             supertypes.add(type.getExtendedType().getDeclaration());
         }
-        List<ProducedType> satisfiedTypes = type.getSatisfiedTypes();
+        List<Type> satisfiedTypes = type.getSatisfiedTypes();
         if (satisfiedTypes != null) {
-            for (ProducedType satisfiedType: satisfiedTypes) {
+            for (Type satisfiedType: satisfiedTypes) {
                 supertypes.add(satisfiedType.getDeclaration());
             }
         }
@@ -550,7 +550,7 @@ public class ClassDoc extends ClassOrPackageDoc {
                     ClassOrInterface klass = (ClassOrInterface) type;
                     linkRenderer().to(klass).printAbbreviated(!isAbbreviatedType(klass)).write();
                 } else {
-                    ProducedType pt = (ProducedType) type;
+                    Type pt = (Type) type;
                     linkRenderer().to(pt).printAbbreviated(!isAbbreviatedType(pt.getDeclaration())).write(); 
                 }
             }

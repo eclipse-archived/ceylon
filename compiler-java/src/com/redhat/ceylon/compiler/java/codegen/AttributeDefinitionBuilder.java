@@ -22,7 +22,7 @@ package com.redhat.ceylon.compiler.java.codegen;
 
 import com.redhat.ceylon.compiler.java.codegen.recovery.HasErrorException;
 import com.redhat.ceylon.model.typechecker.model.MethodOrValue;
-import com.redhat.ceylon.model.typechecker.model.ProducedType;
+import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.ProducedTypedReference;
 import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
 import com.sun.tools.javac.code.Flags;
@@ -61,7 +61,7 @@ public class AttributeDefinitionBuilder {
      */
     private final ClassDefinitionBuilder classBuilder;
     private final int typeFlags;
-    private final ProducedType attrType;
+    private final Type attrType;
     
     private final boolean toplevel;
     private final boolean late;
@@ -100,7 +100,7 @@ public class AttributeDefinitionBuilder {
         int typeFlags = 0;
         ProducedTypedReference typedRef = owner.getTypedReference(attrType);
         ProducedTypedReference nonWideningTypedRef = owner.nonWideningTypeDecl(typedRef);
-        ProducedType nonWideningType = owner.nonWideningType(typedRef, nonWideningTypedRef);
+        Type nonWideningType = owner.nonWideningType(typedRef, nonWideningTypedRef);
         if(attrType.isActual()
                 && CodegenUtil.hasTypeErased(attrType))
             typeFlags |= AbstractTransformer.JT_RAW;
@@ -317,8 +317,8 @@ public class AttributeDefinitionBuilder {
         return toplevel && !late;
     }
 
-    private List<ProducedType> getSatisfies() {
-        List<ProducedType> types = List.<ProducedType>nil();
+    private List<Type> getSatisfies() {
+        List<Type> types = List.<Type>nil();
         if (javaClassName != null && readable && !toplevel) {
             types = types.append(owner.getGetterInterfaceType(attrTypedDecl));
         }

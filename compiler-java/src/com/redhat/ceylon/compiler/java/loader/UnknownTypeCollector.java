@@ -31,7 +31,7 @@ import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Functional;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.ParameterList;
-import com.redhat.ceylon.model.typechecker.model.ProducedType;
+import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.model.typechecker.model.UnknownType;
 import com.redhat.ceylon.model.typechecker.model.Value;
@@ -60,24 +60,24 @@ public class UnknownTypeCollector extends Visitor {
         }
     }
 
-    private void collectUnknownTypes(ProducedType type) {
+    private void collectUnknownTypes(Type type) {
         Map<Declaration, Declaration> visited = new IdentityHashMap<Declaration, Declaration>(0); // expect the best case: no error
         collectUnknownTypes(type, visited);
     }
 
-    private void collectUnknownTypesResolved(ProducedType type, Map<Declaration, Declaration> visited) {
+    private void collectUnknownTypesResolved(Type type, Map<Declaration, Declaration> visited) {
         if(type != null){
             collectUnknownTypes(type, visited);
-            List<ProducedType> typeArguments = type.getTypeArgumentList();
+            List<Type> typeArguments = type.getTypeArgumentList();
             // cheaper c-for than foreach
             for (int i=0,l=typeArguments.size();i<l;i++) {
-                ProducedType tl = typeArguments.get(i);
+                Type tl = typeArguments.get(i);
                 collectUnknownTypesResolved(tl, visited);
             }
         }
     }
 
-    private void collectUnknownTypes(ProducedType type, Map<Declaration, Declaration> visited) {
+    private void collectUnknownTypes(Type type, Map<Declaration, Declaration> visited) {
         if (type!=null) {
             type = type.resolveAliases();
             if(type.isUnknown()){
@@ -86,11 +86,11 @@ public class UnknownTypeCollector extends Visitor {
                 // don't report it twice
                 ut.setErrorReporter(null);
             }else if(type.isUnion()){
-                for(ProducedType t : type.getCaseTypes()){
+                for(Type t : type.getCaseTypes()){
                     collectUnknownTypesResolved(t, visited);
                 }
             }else if(type.isIntersection()){
-                for(ProducedType t : type.getSatisfiedTypes()){
+                for(Type t : type.getSatisfiedTypes()){
                     collectUnknownTypesResolved(t, visited);
                 }
             }else if(type.isUnknown() || type.isTypeParameter()){
@@ -104,7 +104,7 @@ public class UnknownTypeCollector extends Visitor {
                     // these are not resolved
                     if(type.getExtendedType() != null)
                         collectUnknownTypes(type.getExtendedType(), visited);
-                    for(ProducedType t : type.getSatisfiedTypes())
+                    for(Type t : type.getSatisfiedTypes())
                         collectUnknownTypes(t, visited);
 
                 }

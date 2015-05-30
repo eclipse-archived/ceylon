@@ -26,7 +26,7 @@ import java.util.Map;
 import com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.BoxingStrategy;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AssignmentOp;
-import com.redhat.ceylon.model.typechecker.model.ProducedType;
+import com.redhat.ceylon.model.typechecker.model.Type;
 import com.sun.tools.javac.tree.JCTree;
 
 /**
@@ -144,8 +144,8 @@ public class Operators {
                 if(left == OptimisationStrategy.OPTIMISE
                         && right == OptimisationStrategy.OPTIMISE){
                     // these two previous checks ensure that the term is unboxed and has a type model
-                    ProducedType leftType = leftTerm.getTypeModel();
-                    ProducedType rightType = rightTerm.getTypeModel();
+                    Type leftType = leftTerm.getTypeModel();
+                    Type rightType = rightTerm.getTypeModel();
 
                     // make sure both types are the same, can't optimise otherwise
                     if(!leftType.isExactly(rightType))
@@ -235,7 +235,7 @@ public class Operators {
             if (optimisationStrategy != OptimisationStrategy.OPTIMISE) {
                 // we can't use operator optimization, but maybe was can
                 // use static value type method to avoid boxing
-                ProducedType leftType = leftTerm.getTypeModel();
+                Type leftType = leftTerm.getTypeModel();
                 if (Decl.isValueTypeDecl(leftType)) {
                     optimisationStrategy = OptimisationStrategy.OPTIMISE_VALUE_TYPE;
                 } else if (leftType.getDeclaration().getSelfType() != null
@@ -264,7 +264,7 @@ public class Operators {
         final OptimisationStrategy isTermOptimisable(Tree.Term t, AbstractTransformer gen){
             if(javacOperator < 0 || !t.getUnboxed())
                 return OptimisationStrategy.NONE;
-            ProducedType pt = t.getTypeModel();
+            Type pt = t.getTypeModel();
             if(pt == null) // typechecker error?
                 return OptimisationStrategy.NONE;
             if(optimisableTypes == null)

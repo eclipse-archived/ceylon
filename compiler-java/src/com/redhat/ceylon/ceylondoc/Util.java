@@ -45,7 +45,7 @@ import com.redhat.ceylon.model.typechecker.model.Import;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.ModuleImport;
 import com.redhat.ceylon.model.typechecker.model.Package;
-import com.redhat.ceylon.model.typechecker.model.ProducedType;
+import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.Referenceable;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
@@ -281,7 +281,7 @@ public class Util {
 
     public static List<TypeDeclaration> getAncestors(TypeDeclaration decl) {
         List<TypeDeclaration> ancestors = new ArrayList<TypeDeclaration>();
-        ProducedType ancestor = decl.getExtendedType();
+        Type ancestor = decl.getExtendedType();
         while (ancestor != null) {
             ancestors.add(ancestor.getDeclaration());
             ancestor = ancestor.getExtendedType();
@@ -289,25 +289,25 @@ public class Util {
         return ancestors;
     }
 
-    public static List<ProducedType> getSuperInterfaces(TypeDeclaration decl) {
-        Set<ProducedType> superInterfaces = new HashSet<ProducedType>();
-        List<ProducedType> satisfiedTypes = decl.getSatisfiedTypes();
-        for (ProducedType satisfiedType : satisfiedTypes) {
+    public static List<Type> getSuperInterfaces(TypeDeclaration decl) {
+        Set<Type> superInterfaces = new HashSet<Type>();
+        List<Type> satisfiedTypes = decl.getSatisfiedTypes();
+        for (Type satisfiedType : satisfiedTypes) {
             superInterfaces.add(satisfiedType);
             superInterfaces.addAll(getSuperInterfaces(satisfiedType.getDeclaration()));
         }
-        ArrayList<ProducedType> list = new ArrayList<ProducedType>();
+        ArrayList<Type> list = new ArrayList<Type>();
         list.addAll(superInterfaces);
         removeDuplicates(list);
         return list;
     }
 
-    private static void removeDuplicates(List<ProducedType> superInterfaces) {
+    private static void removeDuplicates(List<Type> superInterfaces) {
         OUTER: for (int i = 0; i < superInterfaces.size(); i++) {
-            ProducedType pt1 = superInterfaces.get(i);
+            Type pt1 = superInterfaces.get(i);
             // compare it with each type after it
             for (int j = i + 1; j < superInterfaces.size(); j++) {
-                ProducedType pt2 = superInterfaces.get(j);
+                Type pt2 = superInterfaces.get(j);
                 if (pt1.getDeclaration().equals(pt2.getDeclaration())) {
                     if (pt1.isSubtypeOf(pt2)) {
                         // we keep the first one because it is more specific
@@ -387,7 +387,7 @@ public class Util {
             if (type.getExtendedType() != null) {
                 queue.add(type.getExtendedType().getDeclaration());
             }
-            for (ProducedType satisfiedType: type.getSatisfiedTypes()) {
+            for (Type satisfiedType: type.getSatisfiedTypes()) {
                 queue.add(satisfiedType.getDeclaration());
             }
 
@@ -481,12 +481,12 @@ public class Util {
 
     };
     
-    public static class ProducedTypeComparatorByName implements Comparator<ProducedType> {
+    public static class ProducedTypeComparatorByName implements Comparator<Type> {
         
         public static final ProducedTypeComparatorByName INSTANCE = new ProducedTypeComparatorByName();
         
         @Override
-        public int compare(ProducedType a, ProducedType b) {
+        public int compare(Type a, Type b) {
             return nullSafeCompare(a.getDeclaration().getName(), b.getDeclaration().getName());
         }
     };

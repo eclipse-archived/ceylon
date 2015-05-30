@@ -56,7 +56,7 @@ import com.redhat.ceylon.model.typechecker.model.Method;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.ParameterList;
 import com.redhat.ceylon.model.typechecker.model.ProducedReference;
-import com.redhat.ceylon.model.typechecker.model.ProducedType;
+import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.ProducedTypedReference;
 import com.redhat.ceylon.model.typechecker.model.Scope;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
@@ -96,7 +96,7 @@ abstract class Invocation {
     private final Node node;
     private final Tree.Term primary;
     private final Declaration primaryDeclaration;
-    private final ProducedType returnType;
+    private final Type returnType;
     protected boolean handleBoxing;
     protected boolean unboxed;
     protected boolean erased;
@@ -111,7 +111,7 @@ abstract class Invocation {
     
     protected Invocation(AbstractTransformer gen, 
             Tree.Term primary, Declaration primaryDeclaration,
-            ProducedType returnType, Node node) {
+            Type returnType, Node node) {
         this.gen = gen;
         this.primary = primary;
         this.primaryDeclaration = primaryDeclaration;
@@ -142,7 +142,7 @@ abstract class Invocation {
         return primaryDeclaration;
     }
 
-    ProducedType getReturnType() {
+    Type getReturnType() {
         return returnType;
     }
 
@@ -154,17 +154,17 @@ abstract class Invocation {
         return onValueType;
     }
     
-    protected ProducedType getParameterTypeForValueType(ProducedReference producedReference, Parameter param) {
+    protected Type getParameterTypeForValueType(ProducedReference producedReference, Parameter param) {
         // we need to find the interface for this method
-        ProducedType paramType = param.getModel().getReference().getFullType().getType();
+        Type paramType = param.getModel().getReference().getFullType().getType();
         Scope paramContainer = param.getModel().getContainer();
         if(paramContainer instanceof TypedDeclaration){
             TypedDeclaration method = (TypedDeclaration) paramContainer;
             if(method.getContainer() instanceof TypeDeclaration
                     && !(method.getContainer() instanceof Constructor)){
                 TypeDeclaration container = (TypeDeclaration) method.getContainer();
-                ProducedType qualifyingType = producedReference.getQualifyingType();
-                ProducedType supertype = qualifyingType.getSupertype(container);
+                Type qualifyingType = producedReference.getQualifyingType();
+                Type supertype = qualifyingType.getSupertype(container);
                 return paramType.substitute(supertype);
             }
         }
@@ -173,7 +173,7 @@ abstract class Invocation {
     
 
     protected boolean isParameterRaw(Parameter param){
-        ProducedType type = param.getType();
+        Type type = param.getType();
         return type == null ? false : type.isRaw();
     }
     
@@ -182,7 +182,7 @@ abstract class Invocation {
     }
 
     protected boolean isParameterWithDependentCovariantTypeParameters(Parameter param) {
-        ProducedType type = param.getType();
+        Type type = param.getType();
         return gen.hasDependentCovariantTypeParameters(type);
     }
 
@@ -330,10 +330,10 @@ abstract class Invocation {
     }
 
     protected JCExpression unboxCallableIfNecessary(JCExpression actualPrimExpr, Tree.Term primary) {
-        ProducedType primaryModel = primary.getTypeModel();
+        Type primaryModel = primary.getTypeModel();
         if(!gen.isCeylonCallable(primaryModel)){
             // if it's not exactly a Callable we may have to unerase it to one
-            ProducedType expectedType;
+            Type expectedType;
             if (gen.typeFact().getNothingType().isExactly(primaryModel)) {
                 expectedType = gen.typeFact().getCallableType(gen.typeFact().getNothingType());
             } else {
@@ -394,7 +394,7 @@ abstract class Invocation {
 abstract class SimpleInvocation extends Invocation {
 
     public SimpleInvocation(AbstractTransformer gen, Tree.Term primary,
-            Declaration primaryDeclaration, ProducedType returnType, Node node) {
+            Declaration primaryDeclaration, Type returnType, Node node) {
         super(gen, primary, primaryDeclaration, returnType, node);
     }
 
@@ -405,7 +405,7 @@ abstract class SimpleInvocation extends Invocation {
         return isParameterVariadicStar(argIndex) || isParameterVariadicPlus(argIndex);
     }
 
-    protected abstract ProducedType getParameterType(int argIndex);
+    protected abstract Type getParameterType(int argIndex);
 
     //protected abstract String getParameterName(int argIndex);
     protected abstract JCExpression getParameterExpression(int argIndex);
@@ -466,7 +466,7 @@ abstract class SimpleInvocation extends Invocation {
     }
 
     protected abstract Tree.Expression getArgumentExpression(int argIndex);
-    protected ProducedType getArgumentType(int argIndex) {
+    protected Type getArgumentType(int argIndex) {
         return getArgumentExpression(argIndex).getTypeModel();
     }
     
@@ -480,7 +480,7 @@ abstract class SimpleInvocation extends Invocation {
  */
 class IndirectInvocation extends SimpleInvocation {
 
-    private final java.util.List<ProducedType> parameterTypes;
+    private final java.util.List<Type> parameterTypes;
     private final java.util.List<Tree.Expression> argumentExpressions;
     private final Comprehension comprehension;
     private final boolean variadic;
@@ -494,23 +494,23 @@ class IndirectInvocation extends SimpleInvocation {
             Tree.InvocationExpression invocation) {
         super(gen, primary, primaryDeclaration, invocation.getTypeModel(), invocation);
 
-        ProducedType callableType = primary.getTypeModel();
+        Type callableType = primary.getTypeModel();
 
         this.unknownArguments = gen.isUnknownArgumentsCallable(callableType);
         
-        final java.util.List<ProducedType> parameterTypes;
+        final java.util.List<Type> parameterTypes;
         // if we have an unknown parameter list, like Callble<Ret,Args>, we can't look at parameter types
         // note that ATM the typechecker only allows a single argument to be passed in spread form in this
         // case so we don't need to look at parameter types
         if(!this.unknownArguments){
             // find the parameter types
-            final java.util.List<ProducedType> tas = new ArrayList<>();
+            final java.util.List<Type> tas = new ArrayList<>();
             tas.add(gen.getReturnTypeOfCallable(callableType));
             for (int ii = 0, l = gen.getNumParametersOfCallable(callableType); ii < l; ii++) {
                 tas.add(gen.getParameterTypeOfCallable(callableType, ii));
             }
             this.variadic = gen.isVariadicCallable(callableType);
-            //final java.util.List<ProducedType> tas = primary.getTypeModel().getTypeArgumentList();
+            //final java.util.List<Type> tas = primary.getTypeModel().getTypeArgumentList();
             parameterTypes = tas.subList(1, tas.size());
         }else{
             this.variadic = false; // we don't know
@@ -569,7 +569,7 @@ class IndirectInvocation extends SimpleInvocation {
     }
 
     @Override
-    protected ProducedType getParameterType(int argIndex) {
+    protected Type getParameterType(int argIndex) {
         // in the Java code, all Callable.call() params are of type Object so let's not
         // pretend they are typed, this saves a lot of casting.
         // except for sequenced parameters where we do care about the iterated type
@@ -646,7 +646,7 @@ class IndirectInvocation extends SimpleInvocation {
     }
     
     @Override
-    protected ProducedType getArgumentType(int argIndex) {
+    protected Type getArgumentType(int argIndex) {
         if (argIndex == argumentExpressions.size() && comprehension != null) {   
             return gen.typeFact().getSequentialType(comprehension.getTypeModel());
         }
@@ -656,7 +656,7 @@ class IndirectInvocation extends SimpleInvocation {
     @Override
     protected JCExpression getTransformedArgumentExpression(int argIndex) {
         if (argIndex == argumentExpressions.size() && comprehension != null) {
-            ProducedType type = getParameterType(argIndex);
+            Type type = getParameterType(argIndex);
             return gen.expressionGen().comprehensionAsSequential(comprehension, type); 
         }
         Tree.Expression expr = getArgumentExpression(argIndex);
@@ -687,7 +687,7 @@ abstract class DirectInvocation extends SimpleInvocation {
             AbstractTransformer gen,
             Tree.Term primary,
             Declaration primaryDeclaration,
-            ProducedReference producedReference, ProducedType returnType, 
+            ProducedReference producedReference, Type returnType, 
             Node node) {
         super(gen, primary, primaryDeclaration, returnType, node);
         this.producedReference = producedReference;
@@ -715,7 +715,7 @@ abstract class DirectInvocation extends SimpleInvocation {
     }
     
     @Override
-    protected ProducedType getParameterType(int argIndex) {
+    protected Type getParameterType(int argIndex) {
         int flags = AbstractTransformer.TP_TO_BOUND;
         if(isParameterSequenced(argIndex)
                 && isJavaMethod()
@@ -802,7 +802,7 @@ class PositionalInvocation extends DirectInvocation {
     }
     
     @Override
-    protected ProducedType getArgumentType(int argIndex) {
+    protected Type getArgumentType(int argIndex) {
         PositionalArgument arg = getPositional().getPositionalArguments().get(argIndex);
         if (arg instanceof Tree.Comprehension) {
             return gen.typeFact().getSequentialType(arg.getTypeModel());
@@ -822,7 +822,7 @@ class PositionalInvocation extends DirectInvocation {
         }
         // special case for comprehensions which are not expressions
         if(arg instanceof Tree.Comprehension){
-            ProducedType type = getParameterType(argIndex);
+            Type type = getParameterType(argIndex);
             return gen.expressionGen().comprehensionAsSequential((Comprehension) arg, type); 
         }
         return gen.expressionGen().transformArg(this, argIndex);
@@ -888,7 +888,7 @@ class SuperInvocation extends PositionalInvocation {
     static Declaration unaliasedPrimaryDeclaration(Tree.InvocationExpression invocation) {
         Declaration declaration = ((Tree.MemberOrTypeExpression)invocation.getPrimary()).getDeclaration();
         if (declaration instanceof ClassAlias) {
-            ProducedType et = ((ClassAlias) declaration).getExtendedType();
+            Type et = ((ClassAlias) declaration).getExtendedType();
             if (et!=null) {
                 declaration = et.getDeclaration();
             }
@@ -962,7 +962,7 @@ class CallableInvocation extends DirectInvocation {
 
     public CallableInvocation(
             AbstractTransformer gen, Naming.SyntheticName primaryName, boolean primaryIsBoxed, Tree.Term primary,
-            Declaration primaryDeclaration, ProducedReference producedReference, ProducedType returnType,
+            Declaration primaryDeclaration, ProducedReference producedReference, Type returnType,
             Tree.Term expr, ParameterList parameterList, int parameterCount, boolean tempVars) {
         super(gen, primary, primaryDeclaration, producedReference, returnType, expr);
         this.instanceFieldName = primaryName;
@@ -1039,7 +1039,7 @@ class CallableInvocation extends DirectInvocation {
         throw new BugException("I override getTransformedArgumentExpression(), so should never be called");
     }
     @Override
-    protected ProducedType getArgumentType(int argIndex) {
+    protected Type getArgumentType(int argIndex) {
         Parameter param = callableParameters.get(argIndex);
         return getParameterTypeForValueType(getProducedReference(), param);
     }
@@ -1092,7 +1092,7 @@ class MethodReferenceSpecifierInvocation extends DirectInvocation {
     
     @Override
     protected JCExpression getTransformedArgumentExpression(int argIndex) {
-        ProducedType exprType = getParameterType(argIndex);
+        Type exprType = getParameterType(argIndex);
         Parameter declaredParameter = ((Functional)getPrimaryDeclaration()).getParameterLists().get(0).getParameters().get(argIndex);
         JCExpression result = getParameterExpression(argIndex);
         result = gen.expressionGen().applyErasureAndBoxing(
@@ -1264,15 +1264,15 @@ class NamedArgumentInvocation extends Invocation {
     }
     
     private void appendVarsForSequencedArguments(Tree.SequencedArgument sequencedArgument, java.util.List<Parameter> declaredParams) {
-        // FIXME: this is suspisciously similar to AbstractTransformer.makeIterable(java.util.List<Tree.PositionalArgument> list, ProducedType seqElemType)
+        // FIXME: this is suspisciously similar to AbstractTransformer.makeIterable(java.util.List<Tree.PositionalArgument> list, Type seqElemType)
         // and possibly needs to be merged
         Parameter parameter = sequencedArgument.getParameter();
-        ProducedType parameterType = parameterType(parameter, parameter.getType(), gen.TP_TO_BOUND);
+        Type parameterType = parameterType(parameter, parameter.getType(), gen.TP_TO_BOUND);
         // find out the individual type, we use the argument type for the value, and the param type for the temp variable
-        ProducedType tupleType = Util.getTupleType(sequencedArgument.getPositionalArguments(), gen.typeFact(), false);
-        ProducedType argumentsType = tupleType.getSupertype(gen.typeFact().getIterableDeclaration());
-        ProducedType iteratedType = gen.typeFact().getIteratedType(argumentsType);
-        ProducedType absentType = gen.typeFact().getIteratedAbsentType(argumentsType);
+        Type tupleType = Util.getTupleType(sequencedArgument.getPositionalArguments(), gen.typeFact(), false);
+        Type argumentsType = tupleType.getSupertype(gen.typeFact().getIterableDeclaration());
+        Type iteratedType = gen.typeFact().getIteratedType(argumentsType);
+        Type absentType = gen.typeFact().getIteratedAbsentType(argumentsType);
         // we can't just generate types like Foo<?> if the target type param is not raw because the bounds will
         // not match, so we go raw, we also ignore primitives naturally
         int flags = JT_RAW | JT_NO_PRIMITIVES;
@@ -1366,7 +1366,7 @@ class NamedArgumentInvocation extends Invocation {
         return parameterList(param).indexOf(param);
     }
 
-    private ProducedType parameterType(Parameter declaredParam, ProducedType pt, int flags) {
+    private Type parameterType(Parameter declaredParam, Type pt, int flags) {
         if(declaredParam == null)
             return pt;
         return gen.getTypeForParameter(declaredParam, producedReference, flags);
@@ -1399,7 +1399,7 @@ class NamedArgumentInvocation extends Invocation {
             Parameter declaredParam, Naming.SyntheticName argName) {
         ListBuffer<JCStatement> statements;
         Tree.Expression expr = specifiedArg.getSpecifierExpression().getExpression();
-        ProducedType type = parameterType(declaredParam, expr.getTypeModel(), gen.TP_TO_BOUND);
+        Type type = parameterType(declaredParam, expr.getTypeModel(), gen.TP_TO_BOUND);
         final BoxingStrategy boxType = getNamedParameterBoxingStrategy(declaredParam);
         int jtFlags = 0;
         int exprFlags = 0;
@@ -1446,7 +1446,7 @@ class NamedArgumentInvocation extends Invocation {
             } else {
                 Expression expr = methodArg.getSpecifierExpression().getExpression();
                 BoxingStrategy boxing = CodegenUtil.getBoxingStrategy(model);
-                ProducedType type = model.getType();
+                Type type = model.getType();
                 JCExpression transExpr = gen.expressionGen().transformExpression(expr, boxing, type);
                 JCReturn returnStat = gen.make().Return(transExpr);
                 body = List.<JCStatement>of(returnStat);
@@ -1456,7 +1456,7 @@ class NamedArgumentInvocation extends Invocation {
             gen.statementGen().noExpressionlessReturn = prevNoExpressionlessReturn;
         }
         
-        ProducedType callableType = model.getProducedReference(null, Collections.<ProducedType>emptyList()).getFullType();
+        Type callableType = model.getProducedReference(null, Collections.<Type>emptyList()).getFullType();
         CallableBuilder callableBuilder = CallableBuilder.methodArgument(gen.gen(),
                 methodArg,
                 model,
@@ -1490,8 +1490,8 @@ class NamedArgumentInvocation extends Invocation {
         final List<JCTree> attrClass = gen.gen().transformAttribute(model, name, className, null, attrArg.getBlock(), attrArg.getSpecifierExpression(), null, null);
         ProducedTypedReference typedRef = gen.getTypedReference(model);
         ProducedTypedReference nonWideningTypedRef = gen.nonWideningTypeDecl(typedRef);
-        ProducedType nonWideningType = gen.nonWideningType(typedRef, nonWideningTypedRef);
-        ProducedType type = parameterType(declaredParam, model.getType(), 0);
+        Type nonWideningType = gen.nonWideningType(typedRef, nonWideningTypedRef);
+        Type type = parameterType(declaredParam, model.getType(), 0);
         final BoxingStrategy boxType = getNamedParameterBoxingStrategy(declaredParam);
         JCExpression initValue = gen.make().Apply(null, 
                 gen.makeSelect(gen.makeUnquotedIdent(className), Naming.getGetterName(model)),
@@ -1538,7 +1538,7 @@ class NamedArgumentInvocation extends Invocation {
         if (getNamedParameterBoxingStrategy(param) == BoxingStrategy.BOXED) {
             flags |= JT_TYPE_ARGUMENT;
         }
-        ProducedType type = gen.getTypeForParameter(param, producedReference, gen.TP_TO_BOUND);
+        Type type = gen.getTypeForParameter(param, producedReference, gen.TP_TO_BOUND);
         Naming.SyntheticName argName = argName(param);
         JCExpression typeExpr = gen.makeJavaType(type, flags);
         JCVariableDecl varDecl = gen.makeVar(argName, typeExpr, argExpr);
@@ -1665,7 +1665,7 @@ class NamedArgumentInvocation extends Invocation {
                 && primaryExpr != null
                 && selector != null) {
             // Prepare the first argument holding the primary for the call
-            ProducedType type = ((Tree.MemberOrTypeExpression)getPrimary()).getTarget().getQualifyingType();
+            Type type = ((Tree.MemberOrTypeExpression)getPrimary()).getTarget().getQualifyingType();
             JCExpression varType;
             if (isOnValueType()) {
                 varType = gen.makeJavaType(getQmePrimary().getTypeModel());

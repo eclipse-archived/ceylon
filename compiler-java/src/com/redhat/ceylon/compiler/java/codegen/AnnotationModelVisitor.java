@@ -18,7 +18,7 @@ import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Method;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
-import com.redhat.ceylon.model.typechecker.model.ProducedType;
+import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.model.typechecker.model.Unit;
 import com.redhat.ceylon.model.typechecker.model.Value;
@@ -380,7 +380,7 @@ public class AnnotationModelVisitor extends Visitor implements NaturalVisitor {
     private CollectionLiteralAnnotationTerm startCollection(Tree.Term t) {
         Unit unit = t.getUnit();
         // Continue the visit to collect the elements
-        ProducedType iteratedType = unit.getIteratedType(parameter().getType());
+        Type iteratedType = unit.getIteratedType(parameter().getType());
         LiteralAnnotationTerm factory;
         if (iteratedType.isString()) {
             factory = StringLiteralAnnotationTerm.FACTORY;

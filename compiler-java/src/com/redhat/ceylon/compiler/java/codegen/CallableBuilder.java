@@ -44,7 +44,7 @@ import com.redhat.ceylon.model.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.ParameterList;
 import com.redhat.ceylon.model.typechecker.model.ProducedReference;
-import com.redhat.ceylon.model.typechecker.model.ProducedType;
+import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.ProducedTypedReference;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
@@ -122,7 +122,7 @@ public class CallableBuilder {
     
     private final AbstractTransformer gen;
     private final Node node;
-    private final ProducedType typeModel;
+    private final Type typeModel;
     private final ParameterList paramLists;
     private final int numParams;
     private final int minimumParams;
@@ -134,7 +134,7 @@ public class CallableBuilder {
      * generated on the wrapper class, not on the Callable (#1177)
      */
     private boolean delegateDefaultedCalls = true;
-    private java.util.List<ProducedType> parameterTypes;
+    private java.util.List<Type> parameterTypes;
     
     private ListBuffer<MethodDefinitionBuilder> parameterDefaultValueMethods;
     
@@ -146,7 +146,7 @@ public class CallableBuilder {
 
     private List<JCAnnotation> annotations;
     
-    private CallableBuilder(CeylonTransformer gen, Node node, ProducedType typeModel, ParameterList paramLists) {
+    private CallableBuilder(CeylonTransformer gen, Node node, Type typeModel, ParameterList paramLists) {
         this.gen = gen;
         this.node = node;
         this.typeModel = typeModel;
@@ -191,7 +191,7 @@ public class CallableBuilder {
             boolean prevCallableInv = gen.expressionGen().withinSyntheticClassBody(true);
             try {
                 instanceFieldName = gen.naming.synthetic(Unfix.$instance$);
-                ProducedType primaryType = qmte.getTarget().getQualifyingType();
+                Type primaryType = qmte.getTarget().getQualifyingType();
                 if (((Tree.QualifiedMemberOrTypeExpression)forwardCallTo).getMemberOperator() instanceof Tree.SafeMemberOp) {
                     primaryType = gen.typeFact().getOptionalType(primaryType);
                 }
@@ -199,7 +199,7 @@ public class CallableBuilder {
                 if (Decl.isPrivateAccessRequiringCompanion(qmte)) {
                     primaryExpr = gen.naming.makeCompanionAccessorCall(primaryExpr, (Interface)qmte.getDeclaration().getContainer());
                 }
-                ProducedType varType = qmte.getDeclaration().isShared() ? primaryType : Decl.getPrivateAccessType(qmte);
+                Type varType = qmte.getDeclaration().isShared() ? primaryType : Decl.getPrivateAccessType(qmte);
                 int varTypeFlags = Decl.isPrivateAccessRequiringCompanion(qmte) ? JT_COMPANION : 0;
                 if (qmte.getPrimary().getUnboxed() == false) {
                     varTypeFlags |= JT_NO_PRIMITIVES;
@@ -261,11 +261,11 @@ public class CallableBuilder {
     public static CallableBuilder unboundFunctionalMemberReference(
             CeylonTransformer gen,
             Tree.QualifiedMemberOrTypeExpression qmte,
-            ProducedType typeModel, 
+            Type typeModel, 
             final Functional methodClassOrCtor, 
             ProducedReference producedReference) {
         final ParameterList parameterList = methodClassOrCtor.getParameterLists().get(0);
-        ProducedType type = typeModel;
+        Type type = typeModel;
         JCExpression target;
         boolean hasOuter = !(methodClassOrCtor instanceof Constructor
                 && gen.getNumParameterLists(typeModel) == 1);
@@ -274,7 +274,7 @@ public class CallableBuilder {
             target = null;
         } else {
             type = gen.getReturnTypeOfCallable(type);
-            ProducedType qualifyingType = qmte.getTarget().getQualifyingType();
+            Type qualifyingType = qmte.getTarget().getQualifyingType();
             target = gen.naming.makeUnquotedIdent(Unfix.$instance$);
             target = gen.expressionGen().applyErasureAndBoxing(target, producedReference.getQualifyingType(), true, BoxingStrategy.BOXED, qualifyingType);
         }
@@ -284,7 +284,7 @@ public class CallableBuilder {
             inner.defaultValueCall = inner.new MemberReferenceDefaultValueCall(methodClassOrCtor);
         }
         CallBuilder callBuilder = CallBuilder.instance(gen);
-        ProducedType accessType = gen.getParameterTypeOfCallable(typeModel, 0);
+        Type accessType = gen.getParameterTypeOfCallable(typeModel, 0);
         if (methodClassOrCtor instanceof Method) {
             callBuilder.invoke(gen.naming.makeQualifiedName(target, (Method)methodClassOrCtor, Naming.NA_MEMBER));
             if (!((TypedDeclaration)methodClassOrCtor).isShared()) {
@@ -338,7 +338,7 @@ public class CallableBuilder {
             for (Parameter parameter : parameterList.getParameters()) {
                 JCExpression parameterExpr = gen.naming.makeQuotedIdent(Naming.getAliasedParameterName(parameter));
                 int flags = 0;
-                ProducedType parameterType = parameter.getType();
+                Type parameterType = parameter.getType();
                 // this works on the parameter type as declared
                 if(!parameterType.isRaw())
                     flags |= ExpressionTransformer.EXPR_EXPECTED_TYPE_NOT_RAW;
@@ -349,7 +349,7 @@ public class CallableBuilder {
                 // this gives me the parameter as typed in this invocation
                 ProducedTypedReference typedParameter = qmte.getTarget().getTypedParameter(parameter);
                 // this gives me the parameter as typed that the method expects
-                ProducedType targetParamType = gen.expressionGen().getTypeForParameter(parameter, qmte.getTarget(), ExpressionTransformer.TP_TO_BOUND);
+                Type targetParamType = gen.expressionGen().getTypeForParameter(parameter, qmte.getTarget(), ExpressionTransformer.TP_TO_BOUND);
                 // make sure it's compatible
                 parameterExpr = gen.expressionGen().applyErasureAndBoxing(parameterExpr, typedParameter.getType(), 
                         CodegenUtil.hasTypeErased(parameter.getModel()),
@@ -363,7 +363,7 @@ public class CallableBuilder {
         // Need to worry about boxing for Method and FunctionalParameter 
         if (methodClassOrCtor instanceof TypedDeclaration) {
             // use the method return type since the function is actually applied
-            ProducedType returnType = gen.getReturnTypeOfCallable(type);
+            Type returnType = gen.getReturnTypeOfCallable(type);
             innerInvocation = gen.expressionGen().applyErasureAndBoxing(innerInvocation, 
                     returnType,
                     // make sure we use the type erased info as it has not been passed to the expression since the
@@ -427,13 +427,13 @@ public class CallableBuilder {
     }
     
     public static CallableBuilder javaStaticMethodReference(CeylonTransformer gen, 
-            ProducedType typeModel, 
+            Type typeModel, 
             final Functional methodOrClass, 
             ProducedReference producedReference) {
         final ParameterList parameterList = methodOrClass.getParameterLists().get(0);
         CallableBuilder inner = new CallableBuilder(gen, null, typeModel, parameterList);
         
-        ArrayList<ProducedType> pt = new ArrayList<>();
+        ArrayList<Type> pt = new ArrayList<>();
         for (Parameter p : methodOrClass.getParameterLists().get(0).getParameters()) {
             pt.add(p.getType());
         }
@@ -470,10 +470,10 @@ public class CallableBuilder {
     public static CallableBuilder unboundValueMemberReference(
             CeylonTransformer gen,
             Tree.QualifiedMemberOrTypeExpression qmte,
-            ProducedType typeModel,
+            Type typeModel,
             final TypedDeclaration value) {
         CallBuilder callBuilder = CallBuilder.instance(gen);
-        ProducedType qualifyingType = qmte.getTarget().getQualifyingType();
+        Type qualifyingType = qmte.getTarget().getQualifyingType();
         JCExpression target = gen.naming.makeUnquotedIdent(Unfix.$instance$);
         target = gen.expressionGen().applyErasureAndBoxing(target, qmte.getPrimary().getTypeModel(), true, BoxingStrategy.BOXED, qualifyingType);
         if (gen.expressionGen().isThrowableMessage(qmte)) {
@@ -492,7 +492,7 @@ public class CallableBuilder {
         }
         JCExpression innerInvocation = callBuilder.build();
         // use the return type since the value is actually applied
-        ProducedType returnType = gen.getReturnTypeOfCallable(typeModel);
+        Type returnType = gen.getReturnTypeOfCallable(typeModel);
         innerInvocation = gen.expressionGen().applyErasureAndBoxing(innerInvocation, returnType, 
                 // make sure we use the type erased info as it has not been passed to the expression since the
                 // expression is a Callable
@@ -504,7 +504,7 @@ public class CallableBuilder {
         instanceParameter.setName(Naming.name(Unfix.$instance$));
         Value valueModel = new Value();
         instanceParameter.setModel(valueModel);
-        ProducedType accessType = gen.getParameterTypeOfCallable(typeModel, 0);;
+        Type accessType = gen.getParameterTypeOfCallable(typeModel, 0);;
         if (!value.isShared()) {
             accessType = Decl.getPrivateAccessType(qmte);
         }
@@ -531,7 +531,7 @@ public class CallableBuilder {
             MethodOrValue model,
             Tree.Expression expr,  
             java.util.List<Tree.ParameterList> parameterListTree, 
-            ProducedType callableTypeModel, boolean delegateDefaultedCalls) {
+            Type callableTypeModel, boolean delegateDefaultedCalls) {
         boolean prevSyntheticClassBody = gen.expressionGen().withinSyntheticClassBody(true);
         JCExpression transformedExpr = gen.expressionGen().transformExpression(expr, BoxingStrategy.BOXED, gen.getReturnTypeOfCallable(callableTypeModel));
         gen.expressionGen().withinSyntheticClassBody(prevSyntheticClassBody);
@@ -544,7 +544,7 @@ public class CallableBuilder {
             CeylonTransformer gen,
             Node node,
             Method model,
-            ProducedType callableTypeModel,
+            Type callableTypeModel,
             java.util.List<Tree.ParameterList> parameterListTree, 
             List<JCStatement> stmts) {
         return methodArgument(gen, node, model,callableTypeModel, parameterListTree, stmts, true);
@@ -570,13 +570,13 @@ public class CallableBuilder {
             CeylonTransformer gen,
             Node node,
             MethodOrValue model,
-            ProducedType callableTypeModel,
+            Type callableTypeModel,
             java.util.List<Tree.ParameterList> parameterListTree, 
             List<JCStatement> stmts, boolean delegateDefaultedCalls) {
         
         for (int ii = parameterListTree.size()-1; ii > 0; ii-- ) {
             Tree.ParameterList pl = parameterListTree.get(ii);
-            ProducedType t = callableTypeModel;
+            Type t = callableTypeModel;
             for (int jj = 0; jj < ii; jj++) {
                 t = gen.getReturnTypeOfCallable(t);
             }
@@ -607,7 +607,7 @@ public class CallableBuilder {
      */
     public static CallableBuilder mpl(
             CeylonTransformer gen,
-            ProducedType typeModel,
+            Type typeModel,
             ParameterList parameterList,
             Tree.ParameterList parameterListTree,
             List<JCStatement> body) {
@@ -668,7 +668,7 @@ public class CallableBuilder {
          * @param boxed 
          */
         private JCExpression makeCallParameterExpr(Parameter param, boolean boxed, int argIndex, boolean varargs) {
-            ProducedType paramType = gen.typeFact().denotableType(parameterTypes.get(Math.min(argIndex, numParams-1)));
+            Type paramType = gen.typeFact().denotableType(parameterTypes.get(Math.min(argIndex, numParams-1)));
             return makeParameterExpr(param, argIndex, paramType, boxed, varargs);
         }
         
@@ -676,7 +676,7 @@ public class CallableBuilder {
          * Makes an expression, (appropriately downcasted or unboxed) for the
          * given parameter of the {@code $call()} method.
          */
-        protected JCExpression makeParameterExpr(Parameter param, int argIndex, ProducedType paramType, boolean boxed, boolean ellipsis){
+        protected JCExpression makeParameterExpr(Parameter param, int argIndex, Type paramType, boolean boxed, boolean ellipsis){
             JCExpression argExpr;
             if (!ellipsis) {
                 // The Callable has overridden one of the non-ellipsis $call$() 
@@ -760,7 +760,7 @@ public class CallableBuilder {
         }
         
         protected final void makeVarForParameter(ListBuffer<JCStatement> stmts,
-                final Parameter param, ProducedType parameterType,
+                final Parameter param, Type parameterType,
                 Naming.SyntheticName name, boolean boxed, JCExpression expr) {
             // store it in a local var
             int flags = jtFlagsForParameter(param, parameterType, boxed);
@@ -773,7 +773,7 @@ public class CallableBuilder {
                 stmts.append(gen.makeVariableBoxDecl(name.makeIdent(), param.getModel()));
             }
         }
-        protected int jtFlagsForParameter(final Parameter param, ProducedType parameterType, boolean boxed) {
+        protected int jtFlagsForParameter(final Parameter param, Type parameterType, boolean boxed) {
             int flags = 0;
             if(!CodegenUtil.isUnBoxed(param.getModel()) && (!isValueTypeCall(param, parameterType) || boxed)){
                 flags |= AbstractTransformer.JT_NO_PRIMITIVES;
@@ -784,7 +784,7 @@ public class CallableBuilder {
             return flags;
         }
 
-        protected boolean isValueTypeCall(Parameter param, ProducedType parameterType) {
+        protected boolean isValueTypeCall(Parameter param, Type parameterType) {
             return false;
         }
     }
@@ -839,7 +839,7 @@ public class CallableBuilder {
         }
         
         @Override
-        protected int jtFlagsForParameter(final Parameter param, ProducedType parameterType, boolean boxed) {
+        protected int jtFlagsForParameter(final Parameter param, Type parameterType, boolean boxed) {
             int flags = super.jtFlagsForParameter(param, parameterType, boxed);
             // Always go raw if we're forwarding, because we're building the call ourselves and we don't get a chance to apply erasure and
             // casting to parameter expressions when we pass them to the forwarded method. Ideally we could set it up correctly so that
@@ -852,7 +852,7 @@ public class CallableBuilder {
         }
 
         @Override
-        protected boolean isValueTypeCall(Parameter param, ProducedType parameterType) {
+        protected boolean isValueTypeCall(Parameter param, Type parameterType) {
             if(!param.isSequenced()
                     && forwardCallTo instanceof Tree.QualifiedMemberExpression){
                 Tree.Primary primary = ((Tree.QualifiedMemberExpression) forwardCallTo).getPrimary();
@@ -914,7 +914,7 @@ public class CallableBuilder {
             return invocation;
         }
 
-        private ProducedType getTypeModel() {
+        private Type getTypeModel() {
             return forwardCallTo.getTypeModel();
         }
 
@@ -924,7 +924,7 @@ public class CallableBuilder {
                 target = ((Tree.MemberOrTypeExpression)forwardCallTo).getTarget();
             } else if (forwardCallTo instanceof Tree.FunctionArgument) {
                 Method method = ((Tree.FunctionArgument) forwardCallTo).getDeclarationModel();
-                target = method.getProducedReference(null, Collections.<ProducedType>emptyList());
+                target = method.getProducedReference(null, Collections.<Type>emptyList());
             } else {
                 throw new RuntimeException(forwardCallTo.getNodeType());
             }
@@ -988,7 +988,7 @@ public class CallableBuilder {
         MethodDefinitionBuilder callMethod = MethodDefinitionBuilder.callable(gen);
         callMethod.isOverride(true);
         callMethod.modifiers(Flags.PUBLIC);
-        ProducedType returnType = gen.getReturnTypeOfCallable(typeModel);
+        Type returnType = gen.getReturnTypeOfCallable(typeModel);
         callMethod.resultType(gen.makeJavaType(returnType, JT_NO_PRIMITIVES), null);
         // Now append formal parameters
         switch (arity) {
@@ -1074,11 +1074,11 @@ public class CallableBuilder {
             return paramLists.getParameters().get(numParams - 1);
         }
         
-        protected ProducedType getVariadicType() {
+        protected Type getVariadicType() {
             return parameterTypes.get(numParams - 1);
         }
         
-        protected ProducedType getVariadicIteratedType() {
+        protected Type getVariadicIteratedType() {
             return gen.typeFact().getIteratedType(getVariadicType());
         }
         
@@ -1278,7 +1278,7 @@ public class CallableBuilder {
             MethodDefinitionBuilder callVaryMethod = MethodDefinitionBuilder.systemMethod(gen, Naming.getCallableVariadicMethodName());
             callVaryMethod.isOverride(true);
             callVaryMethod.modifiers(Flags.PUBLIC);
-            ProducedType returnType = gen.getReturnTypeOfCallable(typeModel);
+            Type returnType = gen.getReturnTypeOfCallable(typeModel);
             callVaryMethod.resultType(gen.makeJavaType(returnType, JT_NO_PRIMITIVES), null);
             // Now append formal parameters
             switch (arity1) {
@@ -1536,19 +1536,19 @@ public class CallableBuilder {
         return instance;
     }
 
-    private java.util.List<ProducedType> getParameterTypesFromCallableModel() {
-        java.util.List<ProducedType> parameterTypes = new ArrayList<ProducedType>(numParams);
+    private java.util.List<Type> getParameterTypesFromCallableModel() {
+        java.util.List<Type> parameterTypes = new ArrayList<Type>(numParams);
         for(int i=0;i<numParams;i++) {
             parameterTypes.add(gen.getParameterTypeOfCallable(typeModel, i));
         }
         return parameterTypes;
     }
 
-    private java.util.List<ProducedType> getParameterTypesFromParameterModels() {
-        java.util.List<ProducedType> parameterTypes = new ArrayList<ProducedType>(numParams);
+    private java.util.List<Type> getParameterTypesFromParameterModels() {
+        java.util.List<Type> parameterTypes = new ArrayList<Type>(numParams);
         // get them from our declaration
         for(Parameter p : paramLists.getParameters()){
-            ProducedType pt;
+            Type pt;
             MethodOrValue pm = p.getModel();
             if(pm instanceof Method
                     && ((Method)pm).isParameter())
@@ -1586,7 +1586,7 @@ public class CallableBuilder {
         MethodDefinitionBuilder methodBuilder = MethodDefinitionBuilder.systemMethod(gen, Naming.getCallableTypedMethodName());
         methodBuilder.noAnnotations();
         methodBuilder.modifiers(Flags.PRIVATE);
-        ProducedType returnType = gen.getReturnTypeOfCallable(typeModel);
+        Type returnType = gen.getReturnTypeOfCallable(typeModel);
         methodBuilder.resultType(gen.makeJavaType(returnType, JT_NO_PRIMITIVES), null);
         // add all parameters
         int i=0;
@@ -1627,7 +1627,7 @@ public class CallableBuilder {
     }
     
     private ParameterDefinitionBuilder makeCallableVaryParam(long flags, int ii) {
-        ProducedType iteratedType = gen.typeFact().getIteratedType(parameterTypes.get(parameterTypes.size()-1));
+        Type iteratedType = gen.typeFact().getIteratedType(parameterTypes.get(parameterTypes.size()-1));
         // $call$var()'s variadic parameter is *always* erasred to Sequential
         // even if it's a Variadic+ parameter
         JCExpression type = gen.makeJavaType(gen.typeFact().getSequentialType(iteratedType), AbstractTransformer.JT_RAW);

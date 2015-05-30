@@ -78,10 +78,10 @@ import com.redhat.ceylon.model.typechecker.model.Package;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.ParameterList;
 import com.redhat.ceylon.model.typechecker.model.ProducedReference;
-import com.redhat.ceylon.model.typechecker.model.ProducedType;
 import com.redhat.ceylon.model.typechecker.model.ProducedTypedReference;
 import com.redhat.ceylon.model.typechecker.model.Scope;
 import com.redhat.ceylon.model.typechecker.model.SiteVariance;
+import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.model.typechecker.model.TypeParameter;
 import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
@@ -89,7 +89,6 @@ import com.redhat.ceylon.model.typechecker.util.ProducedTypeNamePrinter;
 import com.sun.tools.javac.code.BoundKind;
 import com.sun.tools.javac.code.Symbol.TypeSymbol;
 import com.sun.tools.javac.code.Symtab;
-import com.sun.tools.javac.code.Type;
 import com.sun.tools.javac.code.TypeTags;
 import com.sun.tools.javac.main.OptionName;
 import com.sun.tools.javac.tree.JCTree;
@@ -382,7 +381,7 @@ public abstract class AbstractTransformer implements Transformation {
         return naming.makeQuotedFQIdent(qualifiedName);
     }
 
-    JCExpression makeIdent(Type type) {
+    JCExpression makeIdent(com.sun.tools.javac.code.Type type) {
         return naming.makeIdent(type);
     }
 
@@ -437,7 +436,7 @@ public abstract class AbstractTransformer implements Transformation {
         return expr;
     }
     
-    JCExpression makeDefaultExprForType(ProducedType type) {
+    JCExpression makeDefaultExprForType(Type type) {
         if (canUnbox(type)) {
             if (isCeylonBoolean(type)) {
                 return makeBoolean(false);
@@ -510,7 +509,7 @@ public abstract class AbstractTransformer implements Transformation {
             stats = statementGen().transformBlock(block);
         } else {
             BoxingStrategy boxing = CodegenUtil.getBoxingStrategy(declarationModel);
-            ProducedType type = declarationModel.getType();
+            Type type = declarationModel.getType();
             JCStatement transStat;
             HasErrorException error = errors().getFirstExpressionErrorAndMarkBrokenness(expression.getExpression());
             if (error != null) {
@@ -537,7 +536,7 @@ public abstract class AbstractTransformer implements Transformation {
         if (block != null) {
             stats = statementGen().transformBlock(block);
         } else {
-            ProducedType type = declarationModel.getType();
+            Type type = declarationModel.getType();
             JCStatement transStmt;
             HasErrorException error = errors().getFirstExpressionErrorAndMarkBrokenness(expression.getExpression());
             if (error != null) {
@@ -673,37 +672,37 @@ public abstract class AbstractTransformer implements Transformation {
     /**
      * Determines whether the given type is optional.
      */
-    boolean isOptional(ProducedType type) {
+    boolean isOptional(Type type) {
         // Note we don't use typeFact().isOptionalType(type) because
         // that implements a stricter test used in the type checker.
         return typeFact().getNullValueDeclaration().getType().isSubtypeOf(type);
     }
     
-    boolean isNull(ProducedType type) {
+    boolean isNull(Type type) {
         return type.getSupertype(typeFact.getNullDeclaration()) != null;
     }
 
-    boolean isNullValue(ProducedType type) {
+    boolean isNullValue(Type type) {
         return type.getSupertype(typeFact.getNullValueDeclaration().getTypeDeclaration()) != null;
     }
 
-    public static boolean isAnything(ProducedType type) {
+    public static boolean isAnything(Type type) {
         return CodegenUtil.isVoid(type);
     }
 
-    private boolean isObject(ProducedType type) {
+    private boolean isObject(Type type) {
         return typeFact.getObjectType().isExactly(type);
     }
     
-    private boolean isBasic(ProducedType type) {
+    private boolean isBasic(Type type) {
         return typeFact.getBasicType().isExactly(type);
     }
     
-    private boolean isIdentifiable(ProducedType type) {
+    private boolean isIdentifiable(Type type) {
         return typeFact.getIdentifiableType().isExactly(type);
     }
     
-    public boolean isAlias(ProducedType type) {
+    public boolean isAlias(Type type) {
         return type.getDeclaration().isAlias() || typeFact.getDefiniteType(type).getDeclaration().isAlias();
     }
 
@@ -718,10 +717,10 @@ public abstract class AbstractTransformer implements Transformation {
      * <tr><td>T&Basic</td><td>T</td></tr>
      * </tbody></table>
      */
-    ProducedType simplifyType(ProducedType orgType) {
+    Type simplifyType(Type orgType) {
         if(orgType == null)
             return null;
-        ProducedType type = orgType.resolveAliases();
+        Type type = orgType.resolveAliases();
         if (isOptional(type)) {
             // For an optional type T?:
             //  - The Ceylon type T? results in the Java type T
@@ -737,7 +736,7 @@ public abstract class AbstractTransformer implements Transformation {
             // FIXME This is not correct! We might lose information about type arguments!
             type = type.getCaseTypes().get(0);
         } else if (type.isIntersection()) {
-            java.util.List<ProducedType> satisfiedTypes = type.getSatisfiedTypes();
+            java.util.List<Type> satisfiedTypes = type.getSatisfiedTypes();
             if (satisfiedTypes.size() == 1) {
                 // Special case when the Intersection contains only a single SatisfiedType
                 // FIXME This is not correct! We might lose information about type arguments!
@@ -756,14 +755,14 @@ public abstract class AbstractTransformer implements Transformation {
     }
 
     ProducedTypedReference getTypedReference(TypedDeclaration decl){
-        java.util.List<ProducedType> typeArgs = Collections.<ProducedType>emptyList();
+        java.util.List<Type> typeArgs = Collections.<Type>emptyList();
         if (decl instanceof Method) {
             // For methods create type arguments for any type parameters it might have
             Method m = (Method)decl;
             if (!m.getTypeParameters().isEmpty()) {
-                typeArgs = new ArrayList<ProducedType>(m.getTypeParameters().size());
+                typeArgs = new ArrayList<Type>(m.getTypeParameters().size());
                 for (TypeParameter p: m.getTypeParameters()) {
-                    ProducedType pt = p.getType();
+                    Type pt = p.getType();
                     typeArgs.add(pt);
                 }
             }
@@ -780,7 +779,7 @@ public abstract class AbstractTransformer implements Transformation {
         return nonWideningTypeDecl(typedReference, typedReference.getQualifyingType());
     }
     
-    ProducedTypedReference nonWideningTypeDecl(ProducedTypedReference typedReference, ProducedType currentType) {
+    ProducedTypedReference nonWideningTypeDecl(ProducedTypedReference typedReference, Type currentType) {
         ProducedTypedReference refinedTypedReference = getRefinedDeclaration(typedReference, currentType);
         if(refinedTypedReference != null){
             /*
@@ -789,8 +788,8 @@ public abstract class AbstractTransformer implements Transformation {
              * - is erased to object
              * - refines a declaration that is not erased to object
              */
-            ProducedType declType = typedReference.getType();
-            ProducedType refinedDeclType = refinedTypedReference.getType();
+            Type declType = typedReference.getType();
+            Type refinedDeclType = refinedTypedReference.getType();
             if(declType == null || refinedDeclType == null)
                 return typedReference;
             boolean isWidening = isWidening(declType, refinedDeclType);
@@ -819,7 +818,7 @@ public abstract class AbstractTransformer implements Transformation {
         return isWideningTypeDecl(typedReference, typedReference.getQualifyingType());
     }
 
-    public boolean isWideningTypeDecl(ProducedTypedReference typedReference, ProducedType currentType) {
+    public boolean isWideningTypeDecl(ProducedTypedReference typedReference, Type currentType) {
         ProducedTypedReference refinedTypedReference = getRefinedDeclaration(typedReference, currentType);
         if(refinedTypedReference == null)
             return false;
@@ -829,8 +828,8 @@ public abstract class AbstractTransformer implements Transformation {
          * - is erased to object
          * - refines a declaration that is not erased to object
          */
-        ProducedType declType = typedReference.getType();
-        ProducedType refinedDeclType = refinedTypedReference.getType();
+        Type declType = typedReference.getType();
+        Type refinedDeclType = refinedTypedReference.getType();
         if(declType == null || refinedDeclType == null)
             return false;
         if(isWidening(declType, refinedDeclType))
@@ -862,10 +861,10 @@ public abstract class AbstractTransformer implements Transformation {
      * - The third special case is when we implement a declaration via multiple super types, without having any refining
      * declarations in those supertypes, simply by instantiating a common super type with different type parameters
      */
-    private ProducedTypedReference getRefinedDeclaration(ProducedTypedReference typedReference, ProducedType currentType) {
+    private ProducedTypedReference getRefinedDeclaration(ProducedTypedReference typedReference, Type currentType) {
         TypedDeclaration decl = typedReference.getDeclaration();
         TypedDeclaration modelRefinedDecl = (TypedDeclaration)decl.getRefinedDeclaration();
-        ProducedType referenceQualifyingType = typedReference.getQualifyingType();
+        Type referenceQualifyingType = typedReference.getQualifyingType();
         boolean forMixinMethod = 
                 currentType != null
                 && decl.getContainer() instanceof ClassOrInterface
@@ -914,18 +913,18 @@ public abstract class AbstractTransformer implements Transformation {
                         // via different supertype instantiations, without having ever refined them in supertypes
                         // so we try each super type to see if we already have a matching typed reference
                         // first super type
-                        ProducedType extendedType = declaringType.getExtendedType();
+                        Type extendedType = declaringType.getExtendedType();
                         if(extendedType != null){
                             ProducedTypedReference refinedTypedReference = getRefinedTypedReference(extendedType, modelRefinedDecl);
-                            ProducedType refinedType = refinedTypedReference.getType();
+                            Type refinedType = refinedTypedReference.getType();
                             if(!isTypeParameter(refinedType)
                                     && !willEraseToObject(refinedType))
                                 return refinedTypedReference;
                         }
                         // then satisfied interfaces
-                        for(ProducedType satisfiedType : declaringType.getSatisfiedTypes()){
+                        for(Type satisfiedType : declaringType.getSatisfiedTypes()){
                             ProducedTypedReference refinedTypedReference = getRefinedTypedReference(satisfiedType, modelRefinedDecl);
-                            ProducedType refinedType = refinedTypedReference.getType();
+                            Type refinedType = refinedTypedReference.getType();
                             if(!isTypeParameter(refinedType)
                                     && !willEraseToObject(refinedType))
                                 return refinedTypedReference;
@@ -949,10 +948,10 @@ public abstract class AbstractTransformer implements Transformation {
              * to use for determining widening.
              * See https://github.com/ceylon/ceylon-compiler/issues/1765
              */
-            ProducedType firstInstantiation = isInheritedWithDifferentTypeArguments(modelRefinedDecl.getContainer(), currentType);
+            Type firstInstantiation = isInheritedWithDifferentTypeArguments(modelRefinedDecl.getContainer(), currentType);
             if(firstInstantiation != null){
                 ProducedTypedReference firstInstantiationTypedReference = getRefinedTypedReference(firstInstantiation, modelRefinedDecl);
-                ProducedType firstInstantiationType = firstInstantiationTypedReference.getType();
+                Type firstInstantiationType = firstInstantiationTypedReference.getType();
                 if(isWidening(decl.getType(), firstInstantiationType)
                         || isWideningTypeArguments(decl.getType(), firstInstantiationType, true))
                     return firstInstantiationTypedReference;
@@ -962,7 +961,7 @@ public abstract class AbstractTransformer implements Transformation {
         return getRefinedTypedReference(typedReference, modelRefinedDecl);
     }
 
-    protected ProducedType isInheritedWithDifferentTypeArguments(Scope container, ProducedType currentType) {
+    protected Type isInheritedWithDifferentTypeArguments(Scope container, Type currentType) {
         // only interfaces can be inherited twice
         if(container instanceof Interface == false)
             return null;
@@ -973,11 +972,11 @@ public abstract class AbstractTransformer implements Transformation {
         if(iface.getTypeParameters().isEmpty())
             return null;
         
-        ProducedType[] arg = new ProducedType[1];
+        Type[] arg = new Type[1];
         return findFirstInheritedTypeIfInheritedTwiceWithDifferentTypeArguments(iface, currentType, arg);
     }
 
-    private ProducedType findFirstInheritedTypeIfInheritedTwiceWithDifferentTypeArguments(Interface iface, ProducedType currentType, ProducedType[] found) {
+    private Type findFirstInheritedTypeIfInheritedTwiceWithDifferentTypeArguments(Interface iface, Type currentType, Type[] found) {
         if(Decl.equal(currentType.getDeclaration(), iface)){
             if(found[0] == null){
                 // first time we find it, just record it
@@ -993,16 +992,16 @@ public abstract class AbstractTransformer implements Transformation {
             }
         }
         // first extended type
-        ProducedType extendedType = currentType.getExtendedType();
+        Type extendedType = currentType.getExtendedType();
         if(extendedType != null){
-            ProducedType ret = findFirstInheritedTypeIfInheritedTwiceWithDifferentTypeArguments(iface, extendedType, found);
+            Type ret = findFirstInheritedTypeIfInheritedTwiceWithDifferentTypeArguments(iface, extendedType, found);
             // stop there if we found a result
             if(ret != null)
                 return ret;
         }
         // then satisfied interfaces
-        for(ProducedType satisfiedType : currentType.getSatisfiedTypes()){
-            ProducedType ret = findFirstInheritedTypeIfInheritedTwiceWithDifferentTypeArguments(iface, satisfiedType, found);
+        for(Type satisfiedType : currentType.getSatisfiedTypes()){
+            Type ret = findFirstInheritedTypeIfInheritedTwiceWithDifferentTypeArguments(iface, satisfiedType, found);
             // stop there if we found a result
             if(ret != null)
                 return ret;
@@ -1014,7 +1013,7 @@ public abstract class AbstractTransformer implements Transformation {
     private TypedDeclaration getFirstRefinedDeclaration(TypedDeclaration decl) {
         if(decl.getContainer() instanceof ClassOrInterface == false)
             return decl;
-        java.util.List<ProducedType> signature = com.redhat.ceylon.model.typechecker.model.Util.getSignature(decl);
+        java.util.List<Type> signature = com.redhat.ceylon.model.typechecker.model.Util.getSignature(decl);
         ClassOrInterface container = (ClassOrInterface) decl.getContainer();
         HashSet<TypeDeclaration> visited = new HashSet<TypeDeclaration>();
         // start looking for it, but skip this type, only lookup upwards of it
@@ -1028,7 +1027,7 @@ public abstract class AbstractTransformer implements Transformation {
     }
 
     private TypedDeclaration getFirstRefinedDeclaration(TypeDeclaration typeDecl, TypedDeclaration decl, 
-            java.util.List<ProducedType> signature, HashSet<TypeDeclaration> visited,
+            java.util.List<Type> signature, HashSet<TypeDeclaration> visited,
             boolean skipType) {
         if(!visited.add(typeDecl))
             return null;
@@ -1045,7 +1044,7 @@ public abstract class AbstractTransformer implements Transformation {
                 return refinedDecl;
         }
         // look in interfaces
-        for(ProducedType interf : typeDecl.getSatisfiedTypes()){
+        for(Type interf : typeDecl.getSatisfiedTypes()){
             TypedDeclaration refinedDecl = getFirstRefinedDeclaration(interf.getDeclaration(), decl, signature, visited, false);
             if(refinedDecl != null)
                 return refinedDecl;
@@ -1059,15 +1058,15 @@ public abstract class AbstractTransformer implements Transformation {
     // classes and interfaces
     public Set<TypedDeclaration> getRefinedMembers(TypeDeclaration decl,
             String name, 
-            java.util.List<ProducedType> signature, boolean ellipsis) {
+            java.util.List<Type> signature, boolean ellipsis) {
         Set<TypedDeclaration> ret = new HashSet<TypedDeclaration>();
         collectRefinedMembers(decl.getType(), name, signature, ellipsis, 
                 new HashSet<TypeDeclaration>(), ret, true);
         return ret;
     }
 
-    private void collectRefinedMembers(ProducedType currentType, String name, 
-            java.util.List<ProducedType> signature, boolean ellipsis,
+    private void collectRefinedMembers(Type currentType, String name, 
+            java.util.List<Type> signature, boolean ellipsis,
             java.util.Set<TypeDeclaration> visited, Set<TypedDeclaration> ret,
             boolean ignoreFirst) {
         TypeDeclaration decl = currentType.getDeclaration();
@@ -1076,11 +1075,11 @@ public abstract class AbstractTransformer implements Transformation {
         }
         else {
             visited.add(decl);
-            ProducedType et = currentType.getExtendedType();
+            Type et = currentType.getExtendedType();
             if (et!=null) {
                 collectRefinedMembers(et, name, signature, ellipsis, visited, ret, false);
             }
-            for (ProducedType st: currentType.getSatisfiedTypes()) {
+            for (Type st: currentType.getSatisfiedTypes()) {
                 collectRefinedMembers(st, name, signature, ellipsis, visited, ret, false);
             }
             // we're collecting refined members, not the refining one
@@ -1090,7 +1089,7 @@ public abstract class AbstractTransformer implements Transformation {
                     // do not trust getDirectMember because if you ask it for [Integer,String] and it has [Integer,E] it does not
                     // know that E=String and will not make it match, and will just return any member when there is overloading,
                     // including one with signature [String] when you asked for [Integer,String]
-                    java.util.List<ProducedType> typedSignature = getTypedSignature(currentType, found);
+                    java.util.List<Type> typedSignature = getTypedSignature(currentType, found);
                     if(typedSignature != null
                             && hasMatchingSignature(signature, typedSignature))
                         ret.add(found);
@@ -1099,7 +1098,7 @@ public abstract class AbstractTransformer implements Transformation {
         }
     }
 
-    private java.util.List<ProducedType> getTypedSignature(ProducedType currentType, TypedDeclaration found) {
+    private java.util.List<Type> getTypedSignature(Type currentType, TypedDeclaration found) {
         // check that its signature is compatible
         java.util.List<ParameterList> parameterLists = ((Method) found).getParameterLists();
         if(parameterLists == null || parameterLists.isEmpty())
@@ -1108,23 +1107,23 @@ public abstract class AbstractTransformer implements Transformation {
         java.util.List<Parameter> parameters = parameterLists.get(0).getParameters();
         if(parameters == null)
             return null;
-        ProducedTypedReference typedMember = currentType.getTypedMember(found, Collections.<ProducedType>emptyList());
+        ProducedTypedReference typedMember = currentType.getTypedMember(found, Collections.<Type>emptyList());
         if(typedMember == null)
             return null;
-        java.util.List<ProducedType> typedSignature = new ArrayList<ProducedType>(parameters.size());
+        java.util.List<Type> typedSignature = new ArrayList<Type>(parameters.size());
         for(Parameter p : parameters){
-            ProducedType parameterType = typedMember.getTypedParameter(p).getFullType();
+            Type parameterType = typedMember.getTypedParameter(p).getFullType();
             typedSignature.add(parameterType);
         }
         return typedSignature;
     }
 
-    private boolean hasMatchingSignature(java.util.List<ProducedType> signature, java.util.List<ProducedType> typedSignature) {
+    private boolean hasMatchingSignature(java.util.List<Type> signature, java.util.List<Type> typedSignature) {
         if(signature.size() != typedSignature.size())
             return false;
         for(int i=0;i<signature.size();i++){
-            ProducedType signatureArg = signature.get(i);
-            ProducedType typedSignatureArg = typedSignature.get(i);
+            Type signatureArg = signature.get(i);
+            Type typedSignatureArg = typedSignature.get(i);
             if(signatureArg != null
                     && typedSignatureArg != null
                     && !com.redhat.ceylon.model.typechecker.model.Util.matches(signatureArg, typedSignatureArg, typeFact()))
@@ -1137,8 +1136,8 @@ public abstract class AbstractTransformer implements Transformation {
             TypedDeclaration refinedDeclaration) {
         TypeDeclaration refinedContainer = (TypeDeclaration)refinedDeclaration.getContainer();
 
-        ProducedType refinedContainerType = typedReference.getQualifyingType().getSupertype(refinedContainer);
-        ArrayList<ProducedType> typeArgs = new ArrayList<ProducedType>();
+        Type refinedContainerType = typedReference.getQualifyingType().getSupertype(refinedContainer);
+        ArrayList<Type> typeArgs = new ArrayList<Type>();
         if (typedReference.getDeclaration() instanceof Generic) {
             for (TypeParameter tp : ((Generic)typedReference.getDeclaration()).getTypeParameters()) {
                 typeArgs.add(typedReference.getTypeArguments().get(tp));
@@ -1147,21 +1146,21 @@ public abstract class AbstractTransformer implements Transformation {
         return refinedDeclaration.getProducedTypedReference(refinedContainerType, typeArgs);
     }
 
-    private ProducedTypedReference getRefinedTypedReference(ProducedType qualifyingType, 
+    private ProducedTypedReference getRefinedTypedReference(Type qualifyingType, 
                                                             TypedDeclaration refinedDeclaration) {
         TypeDeclaration refinedContainer = (TypeDeclaration)refinedDeclaration.getContainer();
 
-        ProducedType refinedContainerType = qualifyingType.getSupertype(refinedContainer);
-        return refinedDeclaration.getProducedTypedReference(refinedContainerType, Collections.<ProducedType>emptyList());
+        Type refinedContainerType = qualifyingType.getSupertype(refinedContainer);
+        return refinedDeclaration.getProducedTypedReference(refinedContainerType, Collections.<Type>emptyList());
     }
 
-    public boolean isWidening(ProducedType declType, ProducedType refinedDeclType) {
+    public boolean isWidening(Type declType, Type refinedDeclType) {
         return !isCeylonObject(declType)
                 && willEraseToObject(declType)
                 && !willEraseToObject(refinedDeclType);
     }
 
-    private boolean isWideningTypeArguments(ProducedType declType, ProducedType refinedDeclType, boolean allowSubtypes) {
+    private boolean isWideningTypeArguments(Type declType, Type refinedDeclType, boolean allowSubtypes) {
         if(declType == null || refinedDeclType == null)
             return false;
         // make sure we work on simplified types, to avoid stuff like optional or size-1 unions
@@ -1199,7 +1198,7 @@ public abstract class AbstractTransformer implements Transformation {
                 // find the instantiation of the refined decl type in the decl type
                 // special case for optional types: let's find the definite type since
                 // in java they are equivalent
-                ProducedType definiteType = typeFact().getDefiniteType(refinedDeclType);
+                Type definiteType = typeFact().getDefiniteType(refinedDeclType);
                 if(definiteType != null)
                     refinedDeclType = definiteType;
                 declType = declType.getSupertype(refinedDeclType.getDeclaration());
@@ -1208,14 +1207,14 @@ public abstract class AbstractTransformer implements Transformation {
                     return true;
             }
         }
-        Map<TypeParameter, ProducedType> typeArguments = declType.getTypeArguments();
-        Map<TypeParameter, ProducedType> refinedTypeArguments = refinedDeclType.getTypeArguments();
+        Map<TypeParameter, Type> typeArguments = declType.getTypeArguments();
+        Map<TypeParameter, Type> refinedTypeArguments = refinedDeclType.getTypeArguments();
         java.util.List<TypeParameter> typeParameters = declType.getDeclaration().getTypeParameters();
         for(TypeParameter tp : typeParameters){
-            ProducedType typeArgument = typeArguments.get(tp);
+            Type typeArgument = typeArguments.get(tp);
             if(typeArgument == null)
                 return true; // something fishy here
-            ProducedType refinedTypeArgument = refinedTypeArguments.get(tp);
+            Type refinedTypeArgument = refinedTypeArguments.get(tp);
             if(refinedTypeArgument == null)
                 return true; // something fishy here
             // check if the type arg is widening due to erasure
@@ -1242,16 +1241,16 @@ public abstract class AbstractTransformer implements Transformation {
     }
 
     public boolean haveSameBounds(TypeParameter tp, TypeParameter refinedTP) {
-        java.util.List<ProducedType> satTP = tp.getSatisfiedTypes();
-        java.util.List<ProducedType> satRefinedTP = new LinkedList<ProducedType>();
+        java.util.List<Type> satTP = tp.getSatisfiedTypes();
+        java.util.List<Type> satRefinedTP = new LinkedList<Type>();
         satRefinedTP.addAll(refinedTP.getSatisfiedTypes());
         // same number of bounds
         if(satTP.size() != satRefinedTP.size())
             return false;
         // make sure all the bounds are the same
         OUT:
-        for(ProducedType satisfiedType : satTP){
-            for(ProducedType refinedSatisfiedType : satRefinedTP){
+        for(Type satisfiedType : satTP){
+            for(Type refinedSatisfiedType : satRefinedTP){
                 // if we found it, remove it from the second list to not match it again
                 if(satisfiedType.isExactly(refinedSatisfiedType)){
                     satRefinedTP.remove(refinedSatisfiedType);
@@ -1265,12 +1264,12 @@ public abstract class AbstractTransformer implements Transformation {
         return true;
     }
 
-    ProducedType nonWideningType(ProducedTypedReference declaration, ProducedTypedReference refinedDeclaration){
+    Type nonWideningType(ProducedTypedReference declaration, ProducedTypedReference refinedDeclaration){
         final ProducedReference pr;
         if (declaration.equals(refinedDeclaration)) {
             pr = declaration;
         } else {
-            ProducedType refinedType = refinedDeclaration.getType();
+            Type refinedType = refinedDeclaration.getType();
             // if the refined type is a method TypeParam, use the original decl that will be more correct,
             // since it may have changed name
             if(refinedType.getDeclaration() instanceof TypeParameter
@@ -1308,11 +1307,11 @@ public abstract class AbstractTransformer implements Transformation {
         return pr.getType();
     }
 
-    private ProducedType javacCeylonTypeToProducedType(com.sun.tools.javac.code.Type t) {
+    private Type javacCeylonTypeToProducedType(com.sun.tools.javac.code.Type t) {
         return loader().getType(getLanguageModule(), t.tsym.packge().getQualifiedName().toString(), t.tsym.getQualifiedName().toString(), null);
     }
 
-    private ProducedType javacJavaTypeToProducedType(com.sun.tools.javac.code.Type t) {
+    private Type javacJavaTypeToProducedType(com.sun.tools.javac.code.Type t) {
         return loader().getType(getJDKBaseModule(), t.tsym.packge().getQualifiedName().toString(), t.tsym.getQualifiedName().toString(), null);
     }
 
@@ -1321,7 +1320,7 @@ public abstract class AbstractTransformer implements Transformation {
      * @param type
      * @return
      */
-    boolean willEraseToObject(ProducedType type) {
+    boolean willEraseToObject(Type type) {
         if(type == null)
             return false;
         type = simplifyType(type);
@@ -1344,7 +1343,7 @@ public abstract class AbstractTransformer implements Transformation {
         return false;
     }
     
-    boolean willEraseToPrimitive(ProducedType type) {
+    boolean willEraseToPrimitive(Type type) {
         return (isCeylonBoolean(type)
                 || isCeylonInteger(type)
                 || isCeylonFloat(type)
@@ -1352,7 +1351,7 @@ public abstract class AbstractTransformer implements Transformation {
                 || isCeylonByte(type));
     }
     
-    boolean willEraseToAnnotation(ProducedType type) {
+    boolean willEraseToAnnotation(Type type) {
         type = simplifyType(type);
         return type != null 
                 && (type.isExactly(typeFact.getAnnotationDeclaration().getType())
@@ -1360,18 +1359,18 @@ public abstract class AbstractTransformer implements Transformation {
                                 && type.getDeclaration().equals(typeFact.getConstrainedAnnotationDeclaration())));
     }
 
-    boolean willEraseToException(ProducedType type) {
+    boolean willEraseToException(Type type) {
         type = simplifyType(type);
         return type != null && type.isExactly(typeFact.getExceptionType());
     }
     
-    boolean willEraseToThrowable(ProducedType type) {
+    boolean willEraseToThrowable(Type type) {
         type = simplifyType(type);
         TypeDeclaration decl = type.getDeclaration();
         return Decl.equal(decl, typeFact.getThrowableDeclaration());
     }
     
-    boolean willEraseToSequence(ProducedType type) {
+    boolean willEraseToSequence(Type type) {
         type = simplifyType(type);
         TypeDeclaration decl = type.getDeclaration();
         return Decl.equal(decl, typeFact.getTupleDeclaration());
@@ -1379,10 +1378,10 @@ public abstract class AbstractTransformer implements Transformation {
     
     // keep in sync with MethodDefinitionBuilder.paramType()
     public boolean willEraseToBestBounds(Parameter param) {
-        ProducedType type = param.getType();
+        Type type = param.getType();
         if (typeFact().isUnion(type) 
                 || typeFact().isIntersection(type)) {
-            final ProducedType refinedType = ((TypedDeclaration)CodegenUtil.getTopmostRefinedDeclaration(param.getModel())).getType();
+            final Type refinedType = ((TypedDeclaration)CodegenUtil.getTopmostRefinedDeclaration(param.getModel())).getType();
             if (refinedType.isTypeParameter()
                     && !refinedType.getSatisfiedTypes().isEmpty()) {
                 return true;
@@ -1391,15 +1390,15 @@ public abstract class AbstractTransformer implements Transformation {
         return false;
     }
 
-    boolean hasErasure(ProducedType type) {
+    boolean hasErasure(Type type) {
         return type==null ? false : hasErasureResolved(type.resolveAliases());
     }
     
-    private boolean hasErasureResolved(ProducedType type) {
+    private boolean hasErasureResolved(Type type) {
         if(type == null)
             return false;
         if(type.isUnion()){
-            java.util.List<ProducedType> caseTypes = type.getCaseTypes();
+            java.util.List<Type> caseTypes = type.getCaseTypes();
             // special case for optional types
             if(caseTypes.size() == 2){
                 if(isOptional(caseTypes.get(0)))
@@ -1411,7 +1410,7 @@ public abstract class AbstractTransformer implements Transformation {
             return true;
         }
         if(type.isIntersection()){
-            java.util.List<ProducedType> satisfiedTypes = type.getSatisfiedTypes();
+            java.util.List<Type> satisfiedTypes = type.getSatisfiedTypes();
             // special case for non-optional types
             if(satisfiedTypes.size() == 2){
                 if(isObject(satisfiedTypes.get(0)))
@@ -1425,7 +1424,7 @@ public abstract class AbstractTransformer implements Transformation {
         if(type.isTypeParameter()){
             // consider type parameters with non-erased bounds as erased to force a cast
             // see https://github.com/ceylon/ceylon-compiler/issues/1327
-            for(ProducedType bound : type.getSatisfiedTypes()){
+            for(Type bound : type.getSatisfiedTypes()){
                 if(!willEraseToObject(bound))
                     return true;
             }
@@ -1439,7 +1438,7 @@ public abstract class AbstractTransformer implements Transformation {
         boolean isCallable = isCeylonCallable(type);
         
         // now check its type parameters
-        for(ProducedType pt : type.getTypeArgumentList()){
+        for(Type pt : type.getTypeArgumentList()){
             if(hasErasureResolved(pt))
                 return true;
             if(isCallable)
@@ -1453,25 +1452,25 @@ public abstract class AbstractTransformer implements Transformation {
      * This method should do the same sort of logic as AbstractTransformer.makeTypeArgs to determine
      * that the given type will be turned raw as a return type
      */
-    boolean isTurnedToRaw(ProducedType type){
+    boolean isTurnedToRaw(Type type){
         return type==null ? false : isTurnedToRawResolved(type.resolveAliases());
     }
     
-    private boolean isTurnedToRawResolved(ProducedType type) {
+    private boolean isTurnedToRawResolved(Type type) {
         // if we don't have type arguments we can't be raw
         if(type.getTypeArguments().isEmpty())
             return false;
 
         // we only go raw if any type param is an erased union/intersection
         // start with type but consider ever qualifying type
-        ProducedType singleType = type;
+        Type singleType = type;
         do{
             // special case for Callable where we stop after the first type param
             boolean isCallable = isCeylonCallable(singleType);
             TypeDeclaration declaration = singleType.getDeclaration();
-            Map<TypeParameter, ProducedType> typeArguments = singleType.getTypeArguments();
+            Map<TypeParameter, Type> typeArguments = singleType.getTypeArguments();
             for(TypeParameter tp : declaration.getTypeParameters()){
-                ProducedType ta = typeArguments.get(tp);
+                Type ta = typeArguments.get(tp);
                 // skip invalid input
                 if(tp == null || ta == null)
                     return false;
@@ -1496,9 +1495,9 @@ public abstract class AbstractTransformer implements Transformation {
         return false;
     }
 
-    private boolean isErasedUnionOrIntersection(ProducedType producedType) {
+    private boolean isErasedUnionOrIntersection(Type producedType) {
         if(producedType.isUnion()){
-            java.util.List<ProducedType> caseTypes = producedType.getCaseTypes();
+            java.util.List<Type> caseTypes = producedType.getCaseTypes();
             // special case for optional types
             if(caseTypes.size() == 2){
                 if(isNull(caseTypes.get(0))){
@@ -1511,7 +1510,7 @@ public abstract class AbstractTransformer implements Transformation {
             return true;
         }
         if(producedType.isIntersection()){
-            java.util.List<ProducedType> satisfiedTypes = producedType.getSatisfiedTypes();
+            java.util.List<Type> satisfiedTypes = producedType.getSatisfiedTypes();
             // special case for non-optional types
             if(satisfiedTypes.size() == 2){
                 if(isObject(satisfiedTypes.get(0))){
@@ -1527,11 +1526,11 @@ public abstract class AbstractTransformer implements Transformation {
         return false;
     }
 
-    boolean isCeylonString(ProducedType type) {
+    boolean isCeylonString(Type type) {
         return type != null && type.isExactly(typeFact.getStringType());
     }
     
-    boolean isCeylonBoolean(ProducedType type) {
+    boolean isCeylonBoolean(Type type) {
         TypeDeclaration declaration = type.getDeclaration();
         return declaration != null
                 && (type.isExactly(typeFact.getBooleanType())
@@ -1541,31 +1540,31 @@ public abstract class AbstractTransformer implements Transformation {
                         || Decl.equal(declaration, typeFact.getBooleanFalseClassDeclaration()));
     }
     
-    boolean isCeylonInteger(ProducedType type) {
+    boolean isCeylonInteger(Type type) {
         return type != null && type.isExactly(typeFact.getIntegerType());
     }
     
-    boolean isCeylonFloat(ProducedType type) {
+    boolean isCeylonFloat(Type type) {
         return type != null && type.isExactly(typeFact.getFloatType());
     }
     
-    boolean isCeylonCharacter(ProducedType type) {
+    boolean isCeylonCharacter(Type type) {
         return type != null && type.isExactly(typeFact.getCharacterType());
     }
 
-    boolean isCeylonByte(ProducedType type) {
+    boolean isCeylonByte(Type type) {
         return type != null && type.isExactly(typeFact.getByteType());
     }
 
-    boolean isCeylonArray(ProducedType type) {
+    boolean isCeylonArray(Type type) {
         return type.getSupertype(typeFact.getArrayDeclaration()) != null;
     }
     
-    boolean isCeylonObject(ProducedType type) {
+    boolean isCeylonObject(Type type) {
         return type != null && type.isExactly(typeFact.getObjectType());
     }
     
-    boolean isCeylonBasicType(ProducedType type) {
+    boolean isCeylonBasicType(Type type) {
         return (isCeylonString(type)
                 || isCeylonBoolean(type)
                 || isCeylonInteger(type)
@@ -1574,26 +1573,26 @@ public abstract class AbstractTransformer implements Transformation {
                 || isCeylonByte(type));
     }
     
-    boolean isCeylonCallable(ProducedType type) {
+    boolean isCeylonCallable(Type type) {
         // only say yes for exactly Callable, as this is mostly used for erasure of its second type parameter
         // but we want subtypes of Callable such as the metamodel to have those extra type parameters ATM
         return Decl.equal(type.getDeclaration(), typeFact.getCallableDeclaration());
 //        return type.getDeclaration().getUnit().isCallableType(type);
     }
 
-    boolean isCeylonCallableSubtype(ProducedType type) {
+    boolean isCeylonCallableSubtype(Type type) {
         return typeFact().isCallableType(type);
     }
 
-    boolean isExactlySequential(ProducedType type) {
+    boolean isExactlySequential(Type type) {
         return typeFact().getDefiniteType(type).isSequential();
     }
     
-    boolean isCeylonMetamodelDeclaration(ProducedType type) {
+    boolean isCeylonMetamodelDeclaration(Type type) {
         return type.isSubtypeOf(typeFact().getMetamodelDeclarationDeclaration().getType());
     }
 
-    boolean isCeylonSequentialMetamodelDeclaration(ProducedType type) {
+    boolean isCeylonSequentialMetamodelDeclaration(Type type) {
         return type.isSubtypeOf(typeFact().getSequentialType(typeFact().getMetamodelDeclarationDeclaration().getType()));
     }
 
@@ -1658,11 +1657,11 @@ public abstract class AbstractTransformer implements Transformation {
     /**
      * This function is used solely for method return types and parameters 
      */
-    JCExpression makeJavaType(TypedDeclaration typeDecl, ProducedType type, int flags) {
+    JCExpression makeJavaType(TypedDeclaration typeDecl, Type type, int flags) {
         if (typeDecl instanceof Method
                 && ((Method)typeDecl).isParameter()) {
             Method p = (Method)typeDecl;
-            ProducedType pt = type;
+            Type pt = type;
             for (int ii = 1; ii < p.getParameterLists().size(); ii++) {
                 pt = typeFact().getCallableType(pt);
             }
@@ -1677,7 +1676,7 @@ public abstract class AbstractTransformer implements Transformation {
         return make().QualIdent(tsym);
     }
     
-    JCExpression makeJavaType(ProducedType producedType) {
+    JCExpression makeJavaType(Type producedType) {
         return makeJavaType(producedType, 0);
     }
 
@@ -1697,16 +1696,16 @@ public abstract class AbstractTransformer implements Transformation {
      * any of its supertypes were made raw.
      * See #1875.
      */
-    public boolean rawSupertype(ProducedType ceylonType, int flags) {
+    public boolean rawSupertype(Type ceylonType, int flags) {
         if (ceylonType == null
                 || (flags & (JT_SATISFIES | JT_EXTENDS)) == 0) {
             return false;
         }
-        ProducedType simpleType = simplifyType(ceylonType);
-        Map<TypeParameter, ProducedType> tas = simpleType.getTypeArguments();
+        Type simpleType = simplifyType(ceylonType);
+        Map<TypeParameter, Type> tas = simpleType.getTypeArguments();
         java.util.List<TypeParameter> tps = simpleType.getDeclaration().getTypeParameters();
         for (TypeParameter tp : tps) {
-            ProducedType ta = tas.get(tp);
+            Type ta = tas.get(tp);
             // error handling
             if(ta == null)
                 continue;
@@ -1741,7 +1740,7 @@ public abstract class AbstractTransformer implements Transformation {
             
             if(!tp.getSatisfiedTypes().isEmpty()){
                 boolean needsCastForBounds = false;
-                for(ProducedType bound : tp.getSatisfiedTypes()){
+                for(Type bound : tp.getSatisfiedTypes()){
                     bound = bound.substitute(simpleType);
                     needsCastForBounds |= expressionGen().needsCast(ta, bound, false, false, false);
                 }
@@ -1774,7 +1773,7 @@ public abstract class AbstractTransformer implements Transformation {
             }
         }
         // deal with supertypes which were raw
-        for (ProducedType superType : ceylonType.getSatisfiedTypes()) {
+        for (Type superType : ceylonType.getSatisfiedTypes()) {
             if (rawSupertype(superType, flags)) {
                 return true;
             }
@@ -1782,8 +1781,8 @@ public abstract class AbstractTransformer implements Transformation {
         return rawSupertype(ceylonType.getExtendedType(), flags);
     }
     
-    JCExpression makeJavaType(final ProducedType ceylonType, final int flags) {
-        ProducedType type = ceylonType;
+    JCExpression makeJavaType(final Type ceylonType, final int flags) {
+        Type type = ceylonType;
         if(type == null || type.isUnknown())
             return make().Erroneous();
         
@@ -1801,10 +1800,10 @@ public abstract class AbstractTransformer implements Transformation {
         }
         
         if(type.isUnion()){
-            for (ProducedType pt : type.getCaseTypes()){
+            for (Type pt : type.getCaseTypes()){
                 if(pt.getDeclaration().isAnonymous()){
                     // found one, let's try to make it simpler
-                    ProducedType simplerType = typeFact().denotableType(type);
+                    Type simplerType = typeFact().denotableType(type);
                     if(!simplerType.isNothing()
                             && !simplerType.isUnion()){
                         type = simplerType;
@@ -1852,8 +1851,8 @@ public abstract class AbstractTransformer implements Transformation {
             }
         } else if (willEraseToSequence(type)) {
             if ((flags & (JT_CLASS_NEW | JT_EXTENDS | JT_IS)) == 0) {
-                ProducedType typeArg = simplifyType(type).getTypeArgumentList().get(0);
-                ProducedType seqType = typeFact.getSequenceType(typeArg);
+                Type typeArg = simplifyType(type).getTypeArgumentList().get(0);
+                Type seqType = typeFact.getSequenceType(typeArg);
                 if (typeFact.isOptionalType(type)) {
                     type = typeFact.getOptionalType(seqType);
                 } else {
@@ -1900,7 +1899,7 @@ public abstract class AbstractTransformer implements Transformation {
         
         JCExpression jt = null;
         
-        ProducedType simpleType;
+        Type simpleType;
         if((flags & JT_CLASS_LITERAL) == 0)
             simpleType = simplifyType(type);
         else
@@ -1951,7 +1950,7 @@ public abstract class AbstractTransformer implements Transformation {
                     // we can't make anything of them, since some members may be unrelated to
                     // the qualified declaration. This happens with "extends super.Foo()"
                     // for example. See https://github.com/ceylon/ceylon-compiler/issues/1478
-                    qType = ((ProducedType)qType).getSupertype((TypeDeclaration) typeDeclaration.getContainer());
+                    qType = ((Type)qType).getSupertype((TypeDeclaration) typeDeclaration.getContainer());
                 }
             }else{
                 // skip local declaration containers
@@ -1992,7 +1991,7 @@ public abstract class AbstractTransformer implements Transformation {
                 TypeDeclaration tdecl = simpleType.getDeclaration();
                 // collect all the qualifying type args we'd normally have
                 java.util.List<TypeParameter> qualifyingTypeParameters = new java.util.ArrayList<TypeParameter>();
-                java.util.Map<TypeParameter, ProducedType> qualifyingTypeArguments = new java.util.HashMap<TypeParameter, ProducedType>();
+                java.util.Map<TypeParameter, Type> qualifyingTypeArguments = new java.util.HashMap<TypeParameter, Type>();
                 collectQualifyingTypeArguments(qualifyingTypeParameters, qualifyingTypeArguments, qualifyingTypes);
                 
                 ListBuffer<JCExpression> typeArgs = makeTypeArgs(isCeylonCallable(simpleType), 
@@ -2047,7 +2046,7 @@ public abstract class AbstractTransformer implements Transformation {
      * toplevel, including its containing type and method type parameters.
      */
     private void collectQualifyingTypeArguments(java.util.List<TypeParameter> qualifyingTypeParameters, 
-            Map<TypeParameter, ProducedType> qualifyingTypeArguments, 
+            Map<TypeParameter, Type> qualifyingTypeArguments, 
             java.util.List<ProducedReference> qualifyingTypes) {
         // make sure we only add type parameters with the same name once, as duplicates are erased from the target interface
         // since they cannot be accessed
@@ -2055,7 +2054,7 @@ public abstract class AbstractTransformer implements Transformation {
         // walk the qualifying types backwards to make sure we only add a TP with the same name once and the outer one wins
         for (int i = qualifyingTypes.size()-1 ; i >= 0 ; i--) {
             ProducedReference qualifiedType = qualifyingTypes.get(i);
-            Map<TypeParameter, ProducedType> tas = qualifiedType.getTypeArguments();
+            Map<TypeParameter, Type> tas = qualifiedType.getTypeArguments();
             java.util.List<TypeParameter> tps = ((Generic)qualifiedType.getDeclaration()).getTypeParameters();
             // add any type params for this type
             if (tps != null) {
@@ -2108,14 +2107,14 @@ public abstract class AbstractTransformer implements Transformation {
 
     protected static final class MultidimensionalArray {
         public final int dimension;
-        public final ProducedType type;
-        MultidimensionalArray(int dimension, ProducedType type){
+        public final Type type;
+        MultidimensionalArray(int dimension, Type type){
             this.dimension = dimension;
             this.type = type;
         }
     }
 
-    protected MultidimensionalArray getMultiDimensionalArrayInfo(ProducedType type) {
+    protected MultidimensionalArray getMultiDimensionalArrayInfo(Type type) {
         int dimension = 0;
         while(isJavaObjectArray(type)){
             type = type.getTypeArgumentList().get(0);
@@ -2126,7 +2125,7 @@ public abstract class AbstractTransformer implements Transformation {
         return new MultidimensionalArray(dimension, type);
     }
 
-    public boolean isJavaArray(ProducedType type) {
+    public boolean isJavaArray(Type type) {
         if(type == null)
             return false;
         type = simplifyType(type);
@@ -2139,7 +2138,7 @@ public abstract class AbstractTransformer implements Transformation {
         return Decl.isJavaArray(decl);
     }
 
-    public boolean isJavaObjectArray(ProducedType type) {
+    public boolean isJavaObjectArray(Type type) {
         if(type == null)
             return false;
         type = simplifyType(type);
@@ -2152,7 +2151,7 @@ public abstract class AbstractTransformer implements Transformation {
         return Decl.isJavaObjectArray(decl);
     }
 
-    private JCExpression getJavaArrayElementType(ProducedType type, int flags) {
+    private JCExpression getJavaArrayElementType(Type type, int flags) {
         if(type == null)
             return makeErroneous(null, "compiler bug: "+ type + " is not a java array");
         type = simplifyType(type);
@@ -2164,7 +2163,7 @@ public abstract class AbstractTransformer implements Transformation {
             // fetch its type parameter
             if(type.getTypeArgumentList().size() != 1)
                 return makeErroneous(null, "compiler bug: " + type + " is missing parameter type to java ObjectArray");
-            ProducedType elementType = type.getTypeArgumentList().get(0);
+            Type elementType = type.getTypeArgumentList().get(0);
             if(elementType == null)
                 return makeErroneous(null, "compiler bug: " + type + " has null parameter type to java ObjectArray");
             return make().TypeArray(makeJavaType(elementType, flags | JT_TYPE_ARGUMENT));
@@ -2189,7 +2188,7 @@ public abstract class AbstractTransformer implements Transformation {
         }
     }
     
-    boolean isJavaEnumType(ProducedType type) {
+    boolean isJavaEnumType(Type type) {
         Module jdkBaseModule = loader().getJDKBaseModule();
         Package javaLang = jdkBaseModule.getPackage("java.lang");
         TypeDeclaration enumDecl = (TypeDeclaration)javaLang.getDirectMember("Enum", null, false);
@@ -2199,7 +2198,7 @@ public abstract class AbstractTransformer implements Transformation {
         return type.isSubtypeOf(enumDecl.getProducedType(null, Collections.singletonList(type)));
     }
 
-    public JCExpression makeParameterisedType(ProducedType type, ProducedType generalType, final int flags, 
+    public JCExpression makeParameterisedType(Type type, Type generalType, final int flags, 
             JCExpression qualifyingExpression, java.util.List<ProducedReference> qualifyingTypes, 
             int firstQualifyingTypeWithTypeParameters, int index) {
         JCExpression baseType;
@@ -2249,9 +2248,9 @@ public abstract class AbstractTransformer implements Transformation {
     }
 
     private ListBuffer<JCExpression> makeTypeArgs(
-            ProducedType simpleType, 
+            Type simpleType, 
             int flags) {
-        Map<TypeParameter, ProducedType> tas = simpleType.getTypeArguments();
+        Map<TypeParameter, Type> tas = simpleType.getTypeArguments();
         java.util.List<TypeParameter> tps = simpleType.getDeclaration().getTypeParameters();
         
 
@@ -2259,12 +2258,12 @@ public abstract class AbstractTransformer implements Transformation {
     }
 
     private ListBuffer<JCExpression> makeTypeArgs(boolean isCeylonCallable,
-            int flags, Map<TypeParameter, ProducedType> tas,
-            java.util.List<TypeParameter> tps, ProducedType simpleType) {
+            int flags, Map<TypeParameter, Type> tas,
+            java.util.List<TypeParameter> tps, Type simpleType) {
         ListBuffer<JCExpression> typeArgs = new ListBuffer<JCExpression>();
         
         for (TypeParameter tp : tps) {
-            ProducedType ta = tas.get(tp);
+            Type ta = tas.get(tp);
             // error handling
             if(ta == null)
                 continue;
@@ -2314,7 +2313,7 @@ public abstract class AbstractTransformer implements Transformation {
             
             if(!tp.getSatisfiedTypes().isEmpty()){
                 boolean needsCastForBounds = false;
-                for(ProducedType bound : tp.getSatisfiedTypes()){
+                for(Type bound : tp.getSatisfiedTypes()){
                     bound = bound.substitute(tas, null);
                     needsCastForBounds |= expressionGen().needsCast(ta, bound, false, false, false);
                 }
@@ -2426,18 +2425,18 @@ public abstract class AbstractTransformer implements Transformation {
         return typeArgs;
     }
 
-    boolean hasSubstitutedBounds(ProducedType pt){
+    boolean hasSubstitutedBounds(Type pt){
         TypeDeclaration declaration = pt.getDeclaration();
         java.util.List<TypeParameter> tps = declaration.getTypeParameters();
-        final Map<TypeParameter, ProducedType> tas = pt.getTypeArguments();
+        final Map<TypeParameter, Type> tas = pt.getTypeArguments();
         boolean isCallable = isCeylonCallable(pt);
         for(TypeParameter tp : tps){
-            ProducedType ta = tas.get(tp);
+            Type ta = tas.get(tp);
             // error recovery
             if(ta == null)
                 continue;
             if(!tp.getSatisfiedTypes().isEmpty()){
-                for(ProducedType bound : tp.getSatisfiedTypes()){
+                for(Type bound : tp.getSatisfiedTypes()){
                     bound = bound.substitute(pt);
                     if(expressionGen().needsCast(ta, bound, false, false, false))
                         return true;
@@ -2452,7 +2451,7 @@ public abstract class AbstractTransformer implements Transformation {
         return false;
     }
 
-    protected ProducedType getNonNullType(ProducedType pt) {
+    protected Type getNonNullType(Type pt) {
         // typeFact().getDefiniteType() intersects with Object, which isn't 
         // always right for working with the java type system.
         if (pt.isAnything()) {
@@ -2464,7 +2463,7 @@ public abstract class AbstractTransformer implements Transformation {
         return pt;
     }
     
-    private boolean isJavaString(ProducedType type) {
+    private boolean isJavaString(Type type) {
         return "java.lang.String".equals(type.getUnderlyingType());
     }
     
@@ -2504,23 +2503,23 @@ public abstract class AbstractTransformer implements Transformation {
      * @param typeModel A {@code ceylon.language.Callable<Result, ParameterTypes...>}.
      * @return The result type of the {@code Callable}.
      */
-    ProducedType getReturnTypeOfCallable(ProducedType typeModel) {
+    Type getReturnTypeOfCallable(Type typeModel) {
         if (!isCeylonCallableSubtype(typeModel)) {
             throw new BugException("expected Callable<...>, but was " + typeModel);
         } else if (typeFact().getNothingType().isExactly(typeModel)) {
             return typeFact().getNothingType();
         }
-        ProducedType ct = typeModel.getSupertype(typeFact().getCallableDeclaration());
+        Type ct = typeModel.getSupertype(typeFact().getCallableDeclaration());
         return ct.getTypeArgumentList().get(0);
     }
     
-    ProducedType getParameterTypeOfCallable(ProducedType callableType, int parameter) {
+    Type getParameterTypeOfCallable(Type callableType, int parameter) {
         if (!isCeylonCallableSubtype(callableType)) {
             throw new BugException("expected Callable<...>, but was " + callableType);
         }
-        ProducedType tuple = typeFact().getCallableTuple(callableType);
+        Type tuple = typeFact().getCallableTuple(callableType);
         if(tuple != null){
-            java.util.List<ProducedType> elementTypes = typeFact().getTupleElementTypes(tuple);
+            java.util.List<Type> elementTypes = typeFact().getTupleElementTypes(tuple);
             if(elementTypes.size() > parameter){
                 return elementTypes.get(parameter);
             }
@@ -2528,7 +2527,7 @@ public abstract class AbstractTransformer implements Transformation {
         return typeFact().getUnknownType();
     }
     
-    int getNumParameterLists(ProducedType typeModel) {
+    int getNumParameterLists(Type typeModel) {
         int result = 0;
         while (isCeylonCallableSubtype(typeModel)) {
             result++;
@@ -2540,22 +2539,22 @@ public abstract class AbstractTransformer implements Transformation {
     /**
      * Returns true if any part of the given Callable is unknown, like Callable&lt;Ret,Args>
      */
-    boolean isUnknownArgumentsCallable(ProducedType callableType) {
+    boolean isUnknownArgumentsCallable(Type callableType) {
         if (typeFact().getNothingType().isExactly(callableType)) {
             return false;
         }
-        ProducedType args = typeFact().getCallableTuple(callableType);
+        Type args = typeFact().getCallableTuple(callableType);
         return isUnknownTuple(args);
     }
     
-    private boolean isUnknownTuple(ProducedType args) {
+    private boolean isUnknownTuple(Type args) {
         if (args.isTypeParameter()) {
             return true;
         } else if (args.isUnion()){
             /* Callable<R,A>&Callable<R,B> is the same as Callable<R,A|B> so 
              * for a union if either A or B is known then the union is known
              */
-            java.util.List<ProducedType> caseTypes = args.getCaseTypes();
+            java.util.List<Type> caseTypes = args.getCaseTypes();
             if(caseTypes == null || caseTypes.size() < 2)
                 return true;
             for (int ii = 0; ii < caseTypes.size(); ii++) {
@@ -2568,7 +2567,7 @@ public abstract class AbstractTransformer implements Transformation {
             /* Callable<R,A>|Callable<R,B> is the same as Callable<R,A&B> so 
              * for an intersection if both A and B are known then the intersection is known
              */
-            java.util.List<ProducedType> caseTypes = args.getSatisfiedTypes();
+            java.util.List<Type> caseTypes = args.getSatisfiedTypes();
             if(caseTypes == null || caseTypes.size() < 2)
                 return true;
             for (int ii = 0; ii < caseTypes.size(); ii++) {
@@ -2583,7 +2582,7 @@ public abstract class AbstractTransformer implements Transformation {
             TypeDeclaration declaration = args.getDeclaration();
             String name = declaration.getQualifiedNameString();
             if(name.equals("ceylon.language::Tuple")){
-                ProducedType rest = args.getTypeArgumentList().get(2);
+                Type rest = args.getTypeArgumentList().get(2);
                 return isUnknownTuple(rest);
             }
             if(name.equals("ceylon.language::Empty")){
@@ -2600,19 +2599,19 @@ public abstract class AbstractTransformer implements Transformation {
         
     }
 
-    int getNumParametersOfCallable(ProducedType callableType) {
+    int getNumParametersOfCallable(Type callableType) {
         if (typeFact().getNothingType().isExactly(callableType)) {
             return 0;
         }
-        ProducedType tuple = typeFact().getCallableTuple(callableType);
+        Type tuple = typeFact().getCallableTuple(callableType);
         int simpleNumParametersOfCallable = getSimpleNumParametersOfCallable(tuple);
         if(simpleNumParametersOfCallable != -1)
             return simpleNumParametersOfCallable;
         int count = 0;
         while (tuple != null) {
-            ProducedType tst = typeFact().nonemptyArgs(tuple).getSupertype(typeFact().getTupleDeclaration());
+            Type tst = typeFact().nonemptyArgs(tuple).getSupertype(typeFact().getTupleDeclaration());
             if (tst!=null) {
-                java.util.List<ProducedType> tal = tst.getTypeArgumentList();
+                java.util.List<Type> tal = tst.getTypeArgumentList();
                 if (tal.size()>=3) {
                     tuple = tal.get(2);
                     count++;
@@ -2630,15 +2629,15 @@ public abstract class AbstractTransformer implements Transformation {
         return count;
     }
     
-    private int getSimpleNumParametersOfCallable(ProducedType args) {
+    private int getSimpleNumParametersOfCallable(Type args) {
         // can be a defaulted tuple of Empty|Tuple
         if(args.isUnion()){
-            java.util.List<ProducedType> caseTypes = args.getCaseTypes();
+            java.util.List<Type> caseTypes = args.getCaseTypes();
             if(caseTypes == null || caseTypes.size() != 2)
                 return -1;
-            ProducedType caseA = caseTypes.get(0);
+            Type caseA = caseTypes.get(0);
             TypeDeclaration caseADecl = caseA.getDeclaration();
-            ProducedType caseB = caseTypes.get(1);
+            Type caseB = caseTypes.get(1);
             TypeDeclaration caseBDecl = caseB.getDeclaration();
             if(caseADecl instanceof ClassOrInterface == false
                     || caseBDecl instanceof ClassOrInterface == false)
@@ -2657,7 +2656,7 @@ public abstract class AbstractTransformer implements Transformation {
         TypeDeclaration declaration = args.getDeclaration();
         String name = declaration.getQualifiedNameString();
         if(name.equals("ceylon.language::Tuple")){
-            ProducedType rest = args.getTypeArgumentList().get(2);
+            Type rest = args.getTypeArgumentList().get(2);
             int ret = getSimpleNumParametersOfCallable(rest);
             if(ret == -1)
                 return -1;
@@ -2673,16 +2672,16 @@ public abstract class AbstractTransformer implements Transformation {
         return -1;
     }
 
-    boolean isVariadicCallable(ProducedType callableType) {
+    boolean isVariadicCallable(Type callableType) {
         if (typeFact().getNothingType().isExactly(callableType)) {
             return true;
         }
-        ProducedType tuple = typeFact().getCallableTuple(callableType);
+        Type tuple = typeFact().getCallableTuple(callableType);
         return typeFact().isTupleOfVariadicCallable(tuple);
     }
 
-    public int getMinimumParameterCountForCallable(ProducedType callableType) {
-        ProducedType tuple = typeFact().getCallableTuple(callableType);
+    public int getMinimumParameterCountForCallable(Type callableType) {
+        Type tuple = typeFact().getCallableTuple(callableType);
         return typeFact().getTupleMinimumLength(tuple);
     }
 
@@ -2696,7 +2695,7 @@ public abstract class AbstractTransformer implements Transformation {
      */
     static final int TP_SEQUENCED_TYPE = 1<<1;
     
-    ProducedType getTypeForParameter(Parameter parameter, ProducedReference producedReference, int flags) {
+    Type getTypeForParameter(Parameter parameter, ProducedReference producedReference, int flags) {
         /* this method is bogus: It's really trying to answer 
          * "what's the type of the java declaration of the given parameter", 
          * but using the ceylon type system to do so. 
@@ -2706,15 +2705,15 @@ public abstract class AbstractTransformer implements Transformation {
             return parameter.getType();
         }
         final ProducedTypedReference producedTypedReference = producedReference.getTypedParameter(parameter);
-        final ProducedType type = functional ? producedTypedReference.getFullType() : producedTypedReference.getType();
+        final Type type = functional ? producedTypedReference.getFullType() : producedTypedReference.getType();
         final TypedDeclaration producedParameterDecl = producedTypedReference.getDeclaration();
-        final ProducedType declType = producedParameterDecl.getType();
+        final Type declType = producedParameterDecl.getType();
         // be more resilient to upstream errors
         if(declType == null)
             return typeFact.getUnknownType();
         if(isJavaVariadic(parameter) && (flags & TP_SEQUENCED_TYPE) == 0){
             // type of param must be Iterable<T>
-            ProducedType elementType = typeFact.getIteratedType(type);
+            Type elementType = typeFact.getIteratedType(type);
             if(elementType == null){
                 log.error("ceylon", "Invalid type for Java variadic parameter: "+type.getProducedTypeQualifiedName());
                 return type;
@@ -2727,13 +2726,13 @@ public abstract class AbstractTransformer implements Transformation {
                 && (flags & TP_TO_BOUND) != 0) {
             if(!declType.getSatisfiedTypes().isEmpty()){
                 // use upper bound
-                ProducedType upperBound = declType.getSatisfiedTypes().get(0);
+                Type upperBound = declType.getSatisfiedTypes().get(0);
                 // make sure we apply the type arguments
                 upperBound = substituteTypeArgumentsForTypeParameterBound(producedReference, upperBound);
-                ProducedType self = upperBound.getDeclaration().getSelfType();
+                Type self = upperBound.getDeclaration().getSelfType();
                 if (self != null) {
                     // make sure we apply the type arguments
-                    ProducedType selfUpperBound = self.substitute(upperBound);
+                    Type selfUpperBound = self.substitute(upperBound);
                     if (!willEraseToObject(selfUpperBound)
                             && (willEraseToObject(type) || expressionGen().needsCast(type, selfUpperBound, false, false, false))) {
                         return selfUpperBound;
@@ -2748,16 +2747,16 @@ public abstract class AbstractTransformer implements Transformation {
         return type;
     }
 
-    protected ProducedType substituteTypeArgumentsForTypeParameterBound(
-            ProducedReference target, ProducedType bound) {
+    protected Type substituteTypeArgumentsForTypeParameterBound(
+            ProducedReference target, Type bound) {
         Declaration declaration = target.getDeclaration();
         if(declaration.getContainer() instanceof ClassOrInterface){
-            ProducedType targetType = target.getQualifyingType();
+            Type targetType = target.getQualifyingType();
             // static methods have a container but do not capture type parameters
             if(targetType != null
                     && !declaration.isStaticallyImportable()){
                 ClassOrInterface methodContainer = (ClassOrInterface) declaration.getContainer();
-                ProducedType supertype = targetType.getSupertype(methodContainer);
+                Type supertype = targetType.getSupertype(methodContainer);
                 // we need type arguments that may come from the method container
                 bound = bound.substitute(supertype);
             }
@@ -2782,8 +2781,8 @@ public abstract class AbstractTransformer implements Transformation {
         return !Decl.isCeylon(cls);
     }
 
-    ProducedType getTypeForFunctionalParameter(Method fp) {
-        return fp.getProducedTypedReference(null, java.util.Collections.<ProducedType>emptyList()).getFullType();
+    Type getTypeForFunctionalParameter(Method fp) {
+        return fp.getProducedTypedReference(null, java.util.Collections.<Type>emptyList()).getFullType();
     }
     
     /*
@@ -2816,17 +2815,17 @@ public abstract class AbstractTransformer implements Transformation {
         gen().disableAnnotations = value;
     }
 
-    private List<JCAnnotation> makeModelAnnotation(Type annotationType, List<JCExpression> annotationArgs) {
+    private List<JCAnnotation> makeModelAnnotation(com.sun.tools.javac.code.Type annotationType, List<JCExpression> annotationArgs) {
         if ((gen().disableAnnotations & CeylonTransformer.DISABLE_MODEL_ANNOS) != 0)
             return List.nil();
         return List.of(make().Annotation(makeIdent(annotationType), annotationArgs));
     }
     
-    private List<JCAnnotation> makeAnnoAnnotation(Type annotationType, List<JCExpression> annotationArgs) {
+    private List<JCAnnotation> makeAnnoAnnotation(com.sun.tools.javac.code.Type annotationType, List<JCExpression> annotationArgs) {
         return List.of(make().Annotation(makeIdent(annotationType), annotationArgs));
     }
 
-    private List<JCAnnotation> makeModelAnnotation(Type annotationType) {
+    private List<JCAnnotation> makeModelAnnotation(com.sun.tools.javac.code.Type annotationType) {
         return makeModelAnnotation(annotationType, List.<JCExpression>nil());
     }
 
@@ -2927,7 +2926,7 @@ public abstract class AbstractTransformer implements Transformation {
         return makeModelAnnotation(syms().ceylonAtNameType, List.<JCExpression>of(make().Literal(name)));
     }
 
-    List<JCAnnotation> makeAtAlias(ProducedType type, Constructor constructor) {
+    List<JCAnnotation> makeAtAlias(Type type, Constructor constructor) {
         
         List<JCExpression> attributes = List.<JCExpression>nil();
         
@@ -2941,13 +2940,13 @@ public abstract class AbstractTransformer implements Transformation {
         return makeModelAnnotation(syms().ceylonAtAliasType, attributes);
     }
 
-    List<JCAnnotation> makeAtTypeAlias(ProducedType type) {
+    List<JCAnnotation> makeAtTypeAlias(Type type) {
         String name = serialiseTypeSignature(type);
         return makeModelAnnotation(syms().ceylonAtTypeAliasType, List.<JCExpression>of(make().Literal(name)));
     }
 
-    final JCAnnotation makeAtTypeParameter(String name, java.util.List<ProducedType> satisfiedTypes, java.util.List<ProducedType> caseTypes, 
-                                           boolean covariant, boolean contravariant, ProducedType defaultValue) {
+    final JCAnnotation makeAtTypeParameter(String name, java.util.List<Type> satisfiedTypes, java.util.List<Type> caseTypes, 
+                                           boolean covariant, boolean contravariant, Type defaultValue) {
         ListBuffer<JCExpression> attributes = new ListBuffer<JCExpression>();
         
         // name
@@ -2965,7 +2964,7 @@ public abstract class AbstractTransformer implements Transformation {
         
         // upper bounds
         ListBuffer<JCExpression> upperBounds = new ListBuffer<JCTree.JCExpression>();
-        for(ProducedType satisfiedType : satisfiedTypes){
+        for(Type satisfiedType : satisfiedTypes){
             String type = serialiseTypeSignature(satisfiedType);
             upperBounds.append(make().Literal(type));
         }
@@ -2976,7 +2975,7 @@ public abstract class AbstractTransformer implements Transformation {
         // case types
         ListBuffer<JCExpression> caseTypesExpressions = new ListBuffer<JCTree.JCExpression>();
         if(caseTypes != null){
-            for(ProducedType caseType : caseTypes){
+            for(Type caseType : caseTypes){
                 String type = serialiseTypeSignature(caseType);
                 caseTypesExpressions.append(make().Literal(type));
             }
@@ -3041,7 +3040,7 @@ public abstract class AbstractTransformer implements Transformation {
         return makeModelAnnotation(syms().ceylonAtObjectType);
     }
     
-    List<JCAnnotation> makeAtClass(ProducedType thisType, ProducedType extendedType, boolean hasConstructors) {
+    List<JCAnnotation> makeAtClass(Type thisType, Type extendedType, boolean hasConstructors) {
         
         boolean isBasic = true;
         boolean isIdentifiable = true;
@@ -3086,7 +3085,7 @@ public abstract class AbstractTransformer implements Transformation {
         return makeModelAnnotation(syms().ceylonAtClassType, attributes);
     }
 
-    List<JCAnnotation> makeAtSatisfiedTypes(java.util.List<ProducedType> satisfiedTypes) {
+    List<JCAnnotation> makeAtSatisfiedTypes(java.util.List<Type> satisfiedTypes) {
         JCExpression attrib = makeTypesListAttr(satisfiedTypes);
         if (attrib != null) {
             return makeModelAnnotation(syms().ceylonAtSatisfiedTypes, List.of(attrib));
@@ -3095,7 +3094,7 @@ public abstract class AbstractTransformer implements Transformation {
         }
     }
 
-    List<JCAnnotation> makeAtCaseTypes(java.util.List<ProducedType> caseTypes, ProducedType ofType) {
+    List<JCAnnotation> makeAtCaseTypes(java.util.List<Type> caseTypes, Type ofType) {
         List<JCExpression> attribs = List.nil();
         if (ofType != null) {
             JCExpression ofAttr = makeOfTypeAttr(ofType);
@@ -3113,11 +3112,11 @@ public abstract class AbstractTransformer implements Transformation {
         }
     }
 
-    private JCExpression makeTypesListAttr(java.util.List<ProducedType> types) {
+    private JCExpression makeTypesListAttr(java.util.List<Type> types) {
         if(types.isEmpty())
             return null;
         ListBuffer<JCExpression> upperBounds = new ListBuffer<JCTree.JCExpression>();
-        for(ProducedType type : types){
+        for(Type type : types){
             String typeSig = serialiseTypeSignature(type);
             upperBounds.append(make().Literal(typeSig));
         }
@@ -3126,7 +3125,7 @@ public abstract class AbstractTransformer implements Transformation {
         return caseAttribute;
     }
 
-    private JCExpression makeOfTypeAttr(ProducedType ofType) {
+    private JCExpression makeOfTypeAttr(Type ofType) {
         if(ofType == null)
             return null;
         String typeSig = serialiseTypeSignature(ofType);
@@ -3239,7 +3238,7 @@ public abstract class AbstractTransformer implements Transformation {
         return make().Annotation(makeIdent(syms().ceylonAtAnnotationType), attributes);
     }
 
-    List<JCAnnotation> makeAtContainer(ProducedType type) {
+    List<JCAnnotation> makeAtContainer(Type type) {
         JCExpression classAttribute = make().Assign(naming.makeUnquotedIdent("klass"), 
                                                     makeClassLiteral(type));
         List<JCExpression> attributes = List.of(classAttribute);
@@ -3262,7 +3261,7 @@ public abstract class AbstractTransformer implements Transformation {
         return makeModelAnnotation(syms().ceylonAtLocalDeclarationType, attributes);
     }
 
-    JCAnnotation makeAtMember(ProducedType type) {
+    JCAnnotation makeAtMember(Type type) {
         JCExpression classAttribute = make().Assign(naming.makeUnquotedIdent("klass"), 
                                                     makeClassLiteral(type));
         List<JCExpression> attributes = List.of(classAttribute);
@@ -3335,7 +3334,7 @@ public abstract class AbstractTransformer implements Transformation {
         return makeAtLocalDeclarations(locals, localInterfaces);
     }
 
-    private List<JCAnnotation> makeAtAnnotationValue(Type annotationType, String name, JCExpression values) {
+    private List<JCAnnotation> makeAtAnnotationValue(com.sun.tools.javac.code.Type annotationType, String name, JCExpression values) {
         if (name == null) {
             return makeAnnoAnnotation(annotationType, List.<JCExpression>of(values));
         } else {
@@ -3345,7 +3344,7 @@ public abstract class AbstractTransformer implements Transformation {
         }
     }
     
-    private List<JCAnnotation> makeAtAnnotationExprs(Type annotationType, List<JCExpression> value) {
+    private List<JCAnnotation> makeAtAnnotationExprs(com.sun.tools.javac.code.Type annotationType, List<JCExpression> value) {
         return makeAnnoAnnotation(annotationType, value);
     }
     
@@ -3425,11 +3424,11 @@ public abstract class AbstractTransformer implements Transformation {
     List<JCTree.JCAnnotation> makeJavaTypeAnnotations(TypedDeclaration decl, boolean handleFunctionalParameter) {
         if(decl == null || decl.getType() == null)
             return List.nil();
-        ProducedType type;
+        Type type;
         if (decl instanceof Method && ((Method)decl).isParameter() && handleFunctionalParameter) {
             type = getTypeForFunctionalParameter((Method)decl);
         } else if (decl instanceof Functional && Decl.isMpl((Functional)decl)) {
-            type = getReturnTypeOfCallable(decl.getProducedTypedReference(null, Collections.<ProducedType>emptyList()).getFullType());
+            type = getReturnTypeOfCallable(decl.getProducedTypedReference(null, Collections.<Type>emptyList()).getFullType());
         } else {
             type = decl.getType();
         }
@@ -3441,7 +3440,7 @@ public abstract class AbstractTransformer implements Transformation {
                 needsJavaTypeAnnotations(decl));
     }
 
-    private List<JCTree.JCAnnotation> makeJavaTypeAnnotations(ProducedType type, boolean declaredVoid, 
+    private List<JCTree.JCAnnotation> makeJavaTypeAnnotations(Type type, boolean declaredVoid, 
                                                               boolean hasTypeErased, boolean untrusted, boolean required) {
         if (!required)
             return List.nil();
@@ -3466,7 +3465,7 @@ public abstract class AbstractTransformer implements Transformation {
         return makeModelAnnotation(syms().ceylonAtTypeInfoType, annotationArgs.toList());
     }
     
-    private String serialiseTypeSignature(ProducedType type){
+    private String serialiseTypeSignature(Type type){
         // resolve aliases
         type = type.resolveAliases();
         return typeSerialiser.getProducedTypeName(type, typeFact);
@@ -3479,27 +3478,27 @@ public abstract class AbstractTransformer implements Transformation {
         UNBOXED, BOXED, INDIFFERENT;
     }
 
-    public boolean canUnbox(ProducedType type){
+    public boolean canUnbox(Type type){
         // all the rest is boxed
         return isCeylonBasicType(type) || isJavaString(type);
     }
     
     JCExpression boxUnboxIfNecessary(JCExpression javaExpr, Tree.Term expr,
-            ProducedType exprType,
+            Type exprType,
             BoxingStrategy boxingStrategy) {
         boolean exprBoxed = !CodegenUtil.isUnBoxed(expr);
         return boxUnboxIfNecessary(javaExpr, exprBoxed, exprType, boxingStrategy);
     }
     
     JCExpression boxUnboxIfNecessary(JCExpression javaExpr, boolean exprBoxed,
-            ProducedType exprType,
+            Type exprType,
             BoxingStrategy boxingStrategy) {
         return boxUnboxIfNecessary(javaExpr, exprBoxed, exprType, boxingStrategy, exprType);
     }
     
     JCExpression boxUnboxIfNecessary(JCExpression javaExpr, boolean exprBoxed,
-            ProducedType exprType,
-            BoxingStrategy boxingStrategy, ProducedType expectedType) {
+            Type exprType,
+            BoxingStrategy boxingStrategy, Type expectedType) {
         if(boxingStrategy == BoxingStrategy.INDIFFERENT)
             return javaExpr;
         boolean targetBoxed = boxingStrategy == BoxingStrategy.BOXED;
@@ -3519,7 +3518,7 @@ public abstract class AbstractTransformer implements Transformation {
         return javaExpr;
     }
     
-    boolean isTypeParameter(ProducedType type) {
+    boolean isTypeParameter(Type type) {
         if(type == null)
             return false;
         if (typeFact().isOptionalType(type)) {
@@ -3528,7 +3527,7 @@ public abstract class AbstractTransformer implements Transformation {
         return type.getDeclaration() instanceof TypeParameter;
     }
     
-    JCExpression unboxType(JCExpression expr, ProducedType exprType) {
+    JCExpression unboxType(JCExpression expr, Type exprType) {
         exprType = typeFact().denotableType(exprType);
         if (isCeylonInteger(exprType)) {
             expr = unboxInteger(expr);
@@ -3552,7 +3551,7 @@ public abstract class AbstractTransformer implements Transformation {
         return expr;
     }
 
-    JCExpression boxType(JCExpression expr, ProducedType exprType) {
+    JCExpression boxType(JCExpression expr, Type exprType) {
         exprType = typeFact().denotableType(exprType);
         if (isCeylonInteger(exprType)) {
             expr = boxInteger(expr);
@@ -3603,7 +3602,7 @@ public abstract class AbstractTransformer implements Transformation {
         return makeBoxType(value, syms().ceylonBooleanType);
     }
     
-    private JCTree.JCMethodInvocation makeBoxType(JCExpression value, Type type) {
+    private JCTree.JCMethodInvocation makeBoxType(JCExpression value, com.sun.tools.javac.code.Type type) {
         return make().Apply(null, makeSelect(makeIdent(type), "instance"), List.<JCExpression>of(value));
     }
     
@@ -3687,7 +3686,7 @@ public abstract class AbstractTransformer implements Transformation {
      * @return a JCExpression
      * @see #makeSequenceRaw(java.util.List)
      */
-    JCExpression makeSequence(List<JCExpression> elems, ProducedType seqElemType, int makeJavaTypeOpts) {
+    JCExpression makeSequence(List<JCExpression> elems, Type seqElemType, int makeJavaTypeOpts) {
         return make().TypeCast(makeJavaType(typeFact().getSequenceType(seqElemType), JT_RAW), 
                 utilInvocation().sequentialInstance(null,
                     makeReifiedTypeArgument(seqElemType),
@@ -3701,7 +3700,7 @@ public abstract class AbstractTransformer implements Transformation {
      * for an iterable instantiation (<code>{expr1, expr2, *expr3}</code>)
      */
     JCExpression makeLazyIterable(Tree.SequencedArgument sequencedArgument, 
-            ProducedType seqElemType, ProducedType absentType, 
+            Type seqElemType, Type absentType, 
             int flags) {
         java.util.List<PositionalArgument> list = sequencedArgument.getPositionalArguments();
         int i = 0;
@@ -3718,7 +3717,7 @@ public abstract class AbstractTransformer implements Transformation {
                     if(i != list.size()-1){
                         jcExpression = makeErroneous(arg, "compiler bug: spread or comprehension argument is not last in sequence literal");
                     }else{
-                        ProducedType type = typeFact().getIterableType(seqElemType);
+                        Type type = typeFact().getIterableType(seqElemType);
                         spread = true;
                         if(arg instanceof Tree.SpreadArgument){
                             Tree.Expression expr = ((Tree.SpreadArgument) arg).getExpression();
@@ -3823,7 +3822,7 @@ public abstract class AbstractTransformer implements Transformation {
      * Makes an iterable literal, where the first element of elems is an Iterable, and the rest are the start of the
      * iterable.
      */
-    JCExpression makeIterable(List<JCExpression> elems, ProducedType seqElemType, int makeJavaTypeOpts) {
+    JCExpression makeIterable(List<JCExpression> elems, Type seqElemType, int makeJavaTypeOpts) {
         JCExpression elemTypeExpr = makeJavaType(seqElemType, makeJavaTypeOpts);
         elems = elems.prepend(makeReifiedTypeArgument(seqElemType));
         // we delegate to ArrayIterable.instance() so that we can filter out empty Iterables
@@ -3861,11 +3860,11 @@ public abstract class AbstractTransformer implements Transformation {
      */
     JCExpression sequenceToJavaArray(
             SimpleInvocation invocation,
-            JCExpression expr, ProducedType sequenceType, 
-                                     BoxingStrategy boxingStrategy, ProducedType exprType,
+            JCExpression expr, Type sequenceType, 
+                                     BoxingStrategy boxingStrategy, Type exprType,
                                      List<JCTree.JCExpression> initialElements) {
         // find the sequence element type
-        ProducedType type = typeFact().getIteratedType(sequenceType);
+        Type type = typeFact().getIteratedType(sequenceType);
         if(boxingStrategy == BoxingStrategy.UNBOXED){
             if(isCeylonInteger(type)){
                 if("short".equals(type.getUnderlyingType()))
@@ -3900,24 +3899,24 @@ public abstract class AbstractTransformer implements Transformation {
 
     private JCExpression objectVariadicToJavaArray(
             SimpleInvocation invocation,
-            ProducedType type,
-            ProducedType exprType,
+            Type type,
+            Type exprType,
             JCExpression expr,
             List<JCExpression> initialElements) {
         // The type that the java varargs parameter erases to: 
         // this is the type of the array which we need to construct
         java.util.List<Parameter> pl = ((Functional)invocation.getPrimaryDeclaration()).getParameterLists().get(0).getParameters();
         Parameter varargsParameter = pl.get(pl.size()-1);
-        ProducedType arrayType = simplifyType(typeFact().getIteratedType(varargsParameter.getType()));
+        Type arrayType = simplifyType(typeFact().getIteratedType(varargsParameter.getType()));
         while (arrayType.getDeclaration() instanceof TypeParameter) {
             TypeParameter tp = (TypeParameter)arrayType.getDeclaration();
             arrayType = tp.getSatisfiedTypes().get(0);
         }
         
         // we could have a <X>variadic(X&Object), so we need to pick a type which satisfies the bound
-        ProducedType castType = simplifyType(type);
+        Type castType = simplifyType(type);
         if (typeFact().isIntersection(castType)) {
-            for (ProducedType t : castType.getSatisfiedTypes()) {
+            for (Type t : castType.getSatisfiedTypes()) {
                 if (t.isSubtypeOf(arrayType)) {
                     castType = t;
                     break;
@@ -3927,7 +3926,7 @@ public abstract class AbstractTransformer implements Transformation {
         
         Naming.SyntheticName seqName = naming.temp().suffixedBy(0);
         
-        ProducedType sequentialType = typeFact().getSequentialDeclaration().getProducedType(null, Arrays.asList(type));
+        Type sequentialType = typeFact().getSequentialDeclaration().getProducedType(null, Arrays.asList(type));
         JCExpression seqTypeExpr1 = makeJavaType(sequentialType);
         //JCExpression seqTypeExpr2 = makeJavaType(fixedSizedType);
         
@@ -3982,9 +3981,9 @@ public abstract class AbstractTransformer implements Transformation {
         /** Make a type test using {@code Util.isBasic()} */
         public R isBasic(JCExpression varExpr);
         /** Make a type test using {@code instanceof} */
-        public R isInstanceof(JCExpression varExpr, ProducedType testedType);
+        public R isInstanceof(JCExpression varExpr, Type testedType);
         /** Make a type test using {@code Util.isReified()} */
-        public R isReified(JCExpression varExpr, ProducedType testedType);
+        public R isReified(JCExpression varExpr, Type testedType);
         /** ceylon.language.true_.get().equals(expr) */
         public R isTrue(JCExpression expr);
         /** ceylon.language.false_.get().equals(expr) */
@@ -4029,14 +4028,14 @@ public abstract class AbstractTransformer implements Transformation {
 
         @Override
         public JCExpression isInstanceof(JCExpression varExpr,
-                ProducedType testedType) {
+                Type testedType) {
             JCExpression rawTypeExpr = makeJavaType(testedType, JT_NO_PRIMITIVES | JT_RAW | JT_IS);
             return make().TypeTest(varExpr, rawTypeExpr);
         }
 
         @Override
         public JCExpression isReified(JCExpression varExpr,
-                ProducedType testedType) {
+                Type testedType) {
             return utilInvocation().isReified(varExpr, testedType);
         }
 
@@ -4105,13 +4104,13 @@ public abstract class AbstractTransformer implements Transformation {
 
         @Override
         public Boolean isInstanceof(JCExpression varExpr,
-                ProducedType testedType) {
+                Type testedType) {
             // instanceof is cheap
             return Boolean.TRUE;
         }
 
         @Override
-        public Boolean isReified(JCExpression varExpr, ProducedType testedType) {
+        public Boolean isReified(JCExpression varExpr, Type testedType) {
             // Util.isReified() is expensive
             return Boolean.FALSE;
         }
@@ -4140,20 +4139,20 @@ public abstract class AbstractTransformer implements Transformation {
      * conditions ({@code is X e}), the {@code is} operator ({@code e is X})
      * and {@code is} cases ({@code case (is X)})
      */
-    JCExpression makeTypeTest(JCExpression firstTimeExpr, Naming.CName varName, ProducedType testedType, ProducedType expressionType) {
+    JCExpression makeTypeTest(JCExpression firstTimeExpr, Naming.CName varName, Type testedType, Type expressionType) {
         return makeTypeTest(javacTypeTester(), firstTimeExpr, varName, testedType, expressionType);
     }
     /**
      * Determines whether the given type test generated by 
-     * {@link #makeTypeTest(JCExpression, com.redhat.ceylon.compiler.java.codegen.Naming.CName, ProducedType, ProducedType)} 
+     * {@link #makeTypeTest(JCExpression, com.redhat.ceylon.compiler.java.codegen.Naming.CName, Type, Type)} 
      * will be "cheap" or "expensive"
      */
-    boolean isTypeTestCheap(JCExpression firstTimeExpr, Naming.CName varName, ProducedType testedType, ProducedType expressionType) {
+    boolean isTypeTestCheap(JCExpression firstTimeExpr, Naming.CName varName, Type testedType, Type expressionType) {
         return makeTypeTest(perfTypeTester(), firstTimeExpr, varName, testedType, expressionType);
     }
     
     JCExpression makeOptimizedTypeTest( 
-            JCExpression firstTimeExpr, Naming.CName varName, ProducedType testedType, ProducedType expressionType) {
+            JCExpression firstTimeExpr, Naming.CName varName, Type testedType, Type expressionType) {
         // If the type test is expensive and we can figure out a 
         // "complement type" whose type test is cheap we can invert the test.
         //TypeDeclaration widerDeclaration = expressionType.getDeclaration();
@@ -4162,13 +4161,13 @@ public abstract class AbstractTransformer implements Transformation {
             //        || widerDeclaration instanceof ClassOrInterface) {
                 // we've got a X|Y and we're testing for X
                 // or parhaps a A|B|C|D and we're testing for C|D
-                java.util.List<ProducedType> cases = expressionType.getCaseTypes();
+                java.util.List<Type> cases = expressionType.getCaseTypes();
                 if (cases != null) {
                     if ((testedType.isClassOrInterface()
                             || testedType.isTypeParameter())
                             && cases.remove(testedType)) { 
                     } else if (testedType.isUnion()) {
-                        for (ProducedType ct : testedType.getCaseTypes()) {
+                        for (Type ct : testedType.getCaseTypes()) {
                             if (!cases.remove(ct)) {
                                 cases = null;
                                 break;
@@ -4178,8 +4177,8 @@ public abstract class AbstractTransformer implements Transformation {
                         cases = null;
                     }                
                     if (cases != null) {
-                        ProducedType complementType = typeFact().getNothingType();
-                        for (ProducedType ct : cases) {
+                        Type complementType = typeFact().getNothingType();
+                        for (Type ct : cases) {
                             complementType = com.redhat.ceylon.model.typechecker.model.Util.unionType(complementType, ct, typeFact());
                         }
                         if (/*typeFact().getLanguageModuleDeclaration("Finished").equals(complementType.getDeclaration())
@@ -4195,7 +4194,7 @@ public abstract class AbstractTransformer implements Transformation {
     
     private <R> R makeTypeTest(TypeTestTransformation<R> typeTester, 
             JCExpression firstTimeExpr, Naming.CName varName, 
-            ProducedType testedType, ProducedType expressionType) {
+            Type testedType, Type expressionType) {
         R result = null;
         // make sure aliases are resolved
         testedType = testedType.resolveAliases();
@@ -4265,7 +4264,7 @@ public abstract class AbstractTransformer implements Transformation {
                 }
             }
         } else if (typeFact().isUnion(testedType)) {
-            for (ProducedType pt : testedType.getCaseTypes()) {
+            for (Type pt : testedType.getCaseTypes()) {
                 R partExpr = makeTypeTest(typeTester, firstTimeExpr, varName, pt, expressionType);
                 firstTimeExpr = null;
                 if (result == null) {
@@ -4276,7 +4275,7 @@ public abstract class AbstractTransformer implements Transformation {
             }
             return result;
         } else if (typeFact().isIntersection(testedType)) {
-            for (ProducedType pt : testedType.getSatisfiedTypes()) {
+            for (Type pt : testedType.getSatisfiedTypes()) {
                 R partExpr = makeTypeTest(typeTester, firstTimeExpr, varName, pt, expressionType);
                 firstTimeExpr = null;
                 if (result == null) {
@@ -4297,9 +4296,9 @@ public abstract class AbstractTransformer implements Transformation {
                 // class or interface upper bounds we can again shortcircuit the 
                 // Util.isReified() using instanceof against the bounds
                 result = typeTester.isReified(varName.makeIdent(), testedType);
-                Iterator<ProducedType> iterator = reifiableUpperBounds((TypeParameter)declaration, expressionType).iterator();
+                Iterator<Type> iterator = reifiableUpperBounds((TypeParameter)declaration, expressionType).iterator();
                 while (iterator.hasNext()) {
-                    ProducedType type = iterator.next();
+                    Type type = iterator.next();
                     ClassOrInterface c = ((ClassOrInterface)type.resolveAliases().getDeclaration());
                     result = typeTester.andOr(
                             typeTester.isInstanceof(iterator.hasNext() ? varName.makeIdent() : varExpr, c.getType()),
@@ -4318,10 +4317,10 @@ public abstract class AbstractTransformer implements Transformation {
      * Returns the upper bounds of the given type parameter which are 
      * java reifiable types (and can thus be used in an {@code instanceof})
      */
-    private java.util.List<ProducedType> reifiableUpperBounds(
-            TypeParameter testedType, ProducedType expressionType) {
-        ArrayList<ProducedType> result = new ArrayList<ProducedType>();
-        for (ProducedType type: testedType.getSatisfiedTypes()) {
+    private java.util.List<Type> reifiableUpperBounds(
+            TypeParameter testedType, Type expressionType) {
+        ArrayList<Type> result = new ArrayList<Type>();
+        for (Type type: testedType.getSatisfiedTypes()) {
             if (type.getDeclaration() instanceof ClassOrInterface // reified, so we can use instanceof
                     && !willEraseToObject(type) // no point doing instanceof Object
                     && !type.isSupertypeOf(expressionType)) { // no point doing instanceof 
@@ -4335,7 +4334,7 @@ public abstract class AbstractTransformer implements Transformation {
      * Determine whether we can use a plain {@code instanceof} instead of 
      * a full {@code Util.isReified()} for a {@code is} test
      */
-    private boolean canOptimiseReifiedTypeTest(ProducedType type) {
+    private boolean canOptimiseReifiedTypeTest(Type type) {
         if(isJavaArray(type)){
             if(isJavaObjectArray(type)){
                 MultidimensionalArray multiArray = getMultiDimensionalArrayInfo(type);
@@ -4349,24 +4348,24 @@ public abstract class AbstractTransformer implements Transformation {
         // we can optimise it if we've got a ClassOrInterface with only Anything type parameters
         if(type.getDeclaration() instanceof ClassOrInterface == false)
             return false;
-        for(Entry<TypeParameter, ProducedType> entry : type.getTypeArguments().entrySet()){
+        for(Entry<TypeParameter, Type> entry : type.getTypeArguments().entrySet()){
             TypeParameter tp = entry.getKey();
             if(!type.isCovariant(tp)) {
                 return false;
             }
-            java.util.List<ProducedType> bounds = tp.getSatisfiedTypes();
-            ProducedType ta = entry.getValue();
+            java.util.List<Type> bounds = tp.getSatisfiedTypes();
+            Type ta = entry.getValue();
             if ((bounds == null || bounds.isEmpty()) && !isAnything(ta)) {
                 return false;
             }
-            for (ProducedType bound : bounds) {
+            for (Type bound : bounds) {
                 if (!ta.isSupertypeOf(bound)) {
                     return false;
                 }
             }
         }
         // they're all Anything (or supertypes of their upper bound) we can optimise, unless we have a container with type arguments
-        ProducedType qualifyingType = type.getQualifyingType();
+        Type qualifyingType = type.getQualifyingType();
         if(qualifyingType == null
             // ignore qualifying types of static java declarations
             && (Decl.isCeylon(type.getDeclaration())
@@ -4407,11 +4406,11 @@ public abstract class AbstractTransformer implements Transformation {
         }
     }
 
-    private boolean canUseFastFailTypeTest(ProducedType type) {
+    private boolean canUseFastFailTypeTest(Type type) {
         if(type.getDeclaration() instanceof ClassOrInterface == false)
             return false;
         boolean isRaw = !type.getDeclaration().getTypeParameters().isEmpty();
-        ProducedType qualifyingType = type.getQualifyingType();
+        Type qualifyingType = type.getQualifyingType();
         if(qualifyingType == null
             // ignore qualifying types of static java declarations
             && (Decl.isCeylon(type.getDeclaration())
@@ -4542,9 +4541,9 @@ public abstract class AbstractTransformer implements Transformation {
         return make().Erroneous(errs);
     }
     
-    List<JCExpression> makeTypeParameterBounds(java.util.List<ProducedType> satisfiedTypes){
+    List<JCExpression> makeTypeParameterBounds(java.util.List<Type> satisfiedTypes){
         ListBuffer<JCExpression> bounds = new ListBuffer<JCExpression>();
-        for (ProducedType t : satisfiedTypes) {
+        for (Type t : satisfiedTypes) {
             if (!willEraseToObject(t)) {
                 JCExpression bound = makeJavaType(t, AbstractTransformer.JT_NO_PRIMITIVES);
                 // if it's a class, we need to move it first as per JLS http://docs.oracle.com/javase/specs/jls/se7/html/jls-4.html#jls-4.4
@@ -4590,22 +4589,22 @@ public abstract class AbstractTransformer implements Transformation {
     }
     
     private boolean dependsOnTypeParameter(TypeParameter tpToCheck, TypeParameter tpToDependOn) {
-        for(ProducedType pt : tpToCheck.getSatisfiedTypes()){
+        for(Type pt : tpToCheck.getSatisfiedTypes()){
             if(dependsOnTypeParameter(pt, tpToDependOn))
                 return true;
         }
         return false;
     }
 
-    private boolean dependsOnTypeParameter(ProducedType t, TypeParameter tp) {
+    private boolean dependsOnTypeParameter(Type t, TypeParameter tp) {
         if(t.isUnion()){
-            for(ProducedType pt : t.getCaseTypes()){
+            for(Type pt : t.getCaseTypes()){
                 if(dependsOnTypeParameter(pt, tp)){
                     return true;
                 }
             }
         }else if(t.isIntersection()){
-            for(ProducedType pt : t.getSatisfiedTypes()){
+            for(Type pt : t.getSatisfiedTypes()){
                 if(dependsOnTypeParameter(pt, tp)){
                     return true;
                 }
@@ -4614,7 +4613,7 @@ public abstract class AbstractTransformer implements Transformation {
             if (tp == null || Decl.equal(tp, t.getDeclaration()))
                 return true;
         }else if(t.isClassOrInterface()){
-            for(ProducedType ta : t.getTypeArgumentList()){
+            for(Type ta : t.getTypeArgumentList()){
                 if(dependsOnTypeParameter(ta, tp)){
                     return true;
                 }
@@ -4624,22 +4623,22 @@ public abstract class AbstractTransformer implements Transformation {
     }
     
     boolean hasConstrainedTypeParameters(Parameter parameter) {
-        ProducedType type = parameter.getType();
+        Type type = parameter.getType();
         return hasConstrainedTypeParameters(type);
     }
-    private boolean hasConstrainedTypeParameters(ProducedType type) {
+    private boolean hasConstrainedTypeParameters(Type type) {
         if(type.isTypeParameter()){
             TypeParameter tp = (TypeParameter) type.getDeclaration();
             return !tp.getSatisfiedTypes().isEmpty() && !tp.isContravariant();
         }
         if(type.isUnion()){
-            for(ProducedType m : type.getCaseTypes())
+            for(Type m : type.getCaseTypes())
                 if(hasConstrainedTypeParameters(m))
                     return true;
             return false;
         }
         if(type.isIntersection()){
-            for(ProducedType m : type.getSatisfiedTypes())
+            for(Type m : type.getSatisfiedTypes())
                 if(hasConstrainedTypeParameters(m))
                     return true;
             return false;
@@ -4647,7 +4646,7 @@ public abstract class AbstractTransformer implements Transformation {
         // check its type arguments
         // special case for Callable which has only a single type param in Java
         boolean isCallable = isCeylonCallable(type);
-        for(ProducedType typeArg : type.getTypeArgumentList()){
+        for(Type typeArg : type.getTypeArgumentList()){
             if(hasConstrainedTypeParameters(typeArg))
                 return true;
             // stop after the first type arg for Callable
@@ -4657,18 +4656,18 @@ public abstract class AbstractTransformer implements Transformation {
         return false;
     }
 
-    boolean containsTypeParameter(ProducedType type) {
+    boolean containsTypeParameter(Type type) {
         if(type.isTypeParameter()){
             return true;
         }
         if(type.isUnion()){
-            for(ProducedType m : type.getCaseTypes())
+            for(Type m : type.getCaseTypes())
                 if(containsTypeParameter(m))
                     return true;
             return false;
         }
         if(type.isIntersection()){
-            for(ProducedType m : type.getSatisfiedTypes())
+            for(Type m : type.getSatisfiedTypes())
                 if(containsTypeParameter(m))
                     return true;
             return false;
@@ -4676,7 +4675,7 @@ public abstract class AbstractTransformer implements Transformation {
         // check its type arguments
         // special case for Callable which has only a single type param in Java
         boolean isCallable = isCeylonCallable(type);
-        for(ProducedType typeArg : type.getTypeArgumentList()){
+        for(Type typeArg : type.getTypeArgumentList()){
             if(containsTypeParameter(typeArg))
                 return true;
             // stop after the first type arg for Callable
@@ -4686,15 +4685,15 @@ public abstract class AbstractTransformer implements Transformation {
         return false;
     }
 
-    boolean hasDependentCovariantTypeParameters(ProducedType type) {
+    boolean hasDependentCovariantTypeParameters(Type type) {
         if(type.isUnion()){
-            for(ProducedType m : type.getCaseTypes())
+            for(Type m : type.getCaseTypes())
                 if(hasDependentCovariantTypeParameters(m))
                     return true;
             return false;
         }
         if(type.isIntersection()){
-            for(ProducedType m : type.getSatisfiedTypes())
+            for(Type m : type.getSatisfiedTypes())
                 if(hasDependentCovariantTypeParameters(m))
                     return true;
             return false;
@@ -4705,9 +4704,9 @@ public abstract class AbstractTransformer implements Transformation {
         // check if any type parameter is dependent on and covariant
         TypeDeclaration declaration = type.getDeclaration();
         java.util.List<TypeParameter> typeParams = declaration.getTypeParameters();
-        Map<TypeParameter, ProducedType> typeArguments = type.getTypeArguments();
+        Map<TypeParameter, Type> typeArguments = type.getTypeArguments();
         for(TypeParameter typeParam : typeParams){
-            ProducedType typeArg = typeArguments.get(typeParam);
+            Type typeArg = typeArguments.get(typeParam);
             if(type.isCovariant(typeParam)
                     && hasDependentTypeParameters(typeParams, typeParam)){
                 // see if the type argument in question contains type parameters and is erased to Object
@@ -4724,11 +4723,11 @@ public abstract class AbstractTransformer implements Transformation {
         return false;
     }
 
-    private JCTypeParameter makeTypeParameter(String name, java.util.List<ProducedType> satisfiedTypes, boolean covariant, boolean contravariant) {
+    private JCTypeParameter makeTypeParameter(String name, java.util.List<Type> satisfiedTypes, boolean covariant, boolean contravariant) {
         return make().TypeParameter(names().fromString(name), makeTypeParameterBounds(satisfiedTypes));
     }
 
-    JCTypeParameter makeTypeParameter(TypeParameter declarationModel, java.util.List<ProducedType> satisfiedTypesForBounds) {
+    JCTypeParameter makeTypeParameter(TypeParameter declarationModel, java.util.List<Type> satisfiedTypesForBounds) {
         TypeParameter typeParameterForBounds = declarationModel;
         if (satisfiedTypesForBounds == null) {
             satisfiedTypesForBounds = declarationModel.getSatisfiedTypes();
@@ -4750,9 +4749,9 @@ public abstract class AbstractTransformer implements Transformation {
                         TypeDeclaration methodContainer = (TypeDeclaration) method.getContainer();
                         TypeDeclaration refinedMethodContainer = (TypeDeclaration) refinedMethod.getContainer();
                         // find the supertype that gave us that method and its type arguments
-                        ProducedType supertype = methodContainer.getType().getSupertype(refinedMethodContainer);
-                        satisfiedTypesForBounds = new ArrayList<ProducedType>(refinedTP.getSatisfiedTypes().size());
-                        for(ProducedType satisfiedType : refinedTP.getSatisfiedTypes()){
+                        Type supertype = methodContainer.getType().getSupertype(refinedMethodContainer);
+                        satisfiedTypesForBounds = new ArrayList<Type>(refinedTP.getSatisfiedTypes().size());
+                        for(Type satisfiedType : refinedTP.getSatisfiedTypes()){
                             // substitute the refined type parameter bounds with the right type arguments
                             satisfiedTypesForBounds.add(satisfiedType.substitute(supertype));
                         }
@@ -4794,10 +4793,10 @@ public abstract class AbstractTransformer implements Transformation {
         return typeArguments(type.getDeclarationModel().getTypeParameters(), type.getDeclarationModel().getType().getTypeArguments());
     }
     
-    final List<JCExpression> typeArguments(java.util.List<TypeParameter> typeParameters, Map<TypeParameter, ProducedType> typeArguments) {
+    final List<JCExpression> typeArguments(java.util.List<TypeParameter> typeParameters, Map<TypeParameter, Type> typeArguments) {
         ListBuffer<JCExpression> typeArgs = ListBuffer.<JCExpression>lb();
         for (TypeParameter tp : typeParameters) {
-            ProducedType type = typeArguments.get(tp);
+            Type type = typeArguments.get(tp);
             if (type != null) {
                 typeArgs.append(makeJavaType(type, JT_TYPE_ARGUMENT));
             } else {
@@ -4821,11 +4820,11 @@ public abstract class AbstractTransformer implements Transformation {
         return pos;
     }
 
-    public JCExpression makeClassLiteral(ProducedType type) {
+    public JCExpression makeClassLiteral(Type type) {
         return makeClassLiteral(type, 0);
     }
 
-    public JCExpression makeClassLiteral(ProducedType type, int extraFlags) {
+    public JCExpression makeClassLiteral(Type type, int extraFlags) {
         return makeSelect(makeJavaType(type, JT_NO_PRIMITIVES | JT_RAW | JT_CLASS_LITERAL | extraFlags), "class");
     }
 
@@ -4848,11 +4847,11 @@ public abstract class AbstractTransformer implements Transformation {
     ProducedReference resolveAliasesForReifiedTypeArguments(ProducedReference ref) {
         // this is a bit tricky:
         // - for method references (ProducedTypedReference) it's all good
-        // - for classes we get a ProducedType which we use to resolve aliases
+        // - for classes we get a Type which we use to resolve aliases
         // -- UNLESS it's a class with an instantiator, in which case we should not resolve aliases
         //    because the instantiator has the right set of type parameters
-        if(ref instanceof ProducedType && !Strategy.generateInstantiator(ref.getDeclaration()))
-            return ((ProducedType)ref).resolveAliases();
+        if(ref instanceof Type && !Strategy.generateInstantiator(ref.getDeclaration()))
+            return ((Type)ref).resolveAliases();
         return ref;
     }
 
@@ -4884,19 +4883,19 @@ public abstract class AbstractTransformer implements Transformation {
         }
     }
     
-    private java.util.List<ProducedType> getTypeArguments(
+    private java.util.List<Type> getTypeArguments(
             ProducedReference producedReference) {
         java.util.List<TypeParameter> typeParameters = getTypeParameters(producedReference);
-        java.util.List<ProducedType> typeArguments = new ArrayList<ProducedType>(typeParameters.size());
+        java.util.List<Type> typeArguments = new ArrayList<Type>(typeParameters.size());
         for(TypeParameter tp : typeParameters)
             typeArguments.add(producedReference.getTypeArguments().get(tp));
         return typeArguments;
     }
 
-    private java.util.List<ProducedType> getTypeArguments(
+    private java.util.List<Type> getTypeArguments(
             Method method) {
         java.util.List<TypeParameter> typeParameters = method.getTypeParameters();
-        java.util.List<ProducedType> typeArguments = new ArrayList<ProducedType>(typeParameters.size());
+        java.util.List<Type> typeArguments = new ArrayList<Type>(typeParameters.size());
         for(TypeParameter tp : typeParameters)
             typeArguments.add(tp.getType());
         return typeArguments;
@@ -4914,7 +4913,7 @@ public abstract class AbstractTransformer implements Transformation {
     }
 
     public List<JCExpression> makeReifiedTypeArguments(
-            java.util.List<ProducedType> typeArguments) {
+            java.util.List<Type> typeArguments) {
         // same as makeReifiedTypeArgumentsResolved(typeArguments, false) but resolve each element
         List<JCExpression> ret = List.nil();
         for(int i=typeArguments.size()-1;i>=0;i--){
@@ -4924,7 +4923,7 @@ public abstract class AbstractTransformer implements Transformation {
     }
     
     private List<JCExpression> makeReifiedTypeArgumentsResolved(
-            java.util.List<ProducedType> typeArguments, boolean qualified) {
+            java.util.List<Type> typeArguments, boolean qualified) {
         List<JCExpression> ret = List.nil();
         for(int i=typeArguments.size()-1;i>=0;i--){
             ret = ret.prepend(makeReifiedTypeArgumentResolved(typeArguments.get(i), qualified));
@@ -4932,22 +4931,22 @@ public abstract class AbstractTransformer implements Transformation {
         return ret;
     }
 
-    public JCExpression makeReifiedTypeArgument(ProducedType pt) {
+    public JCExpression makeReifiedTypeArgument(Type pt) {
         return makeReifiedTypeArgumentResolved(pt.resolveAliases(), false);
     }
     
-    private JCExpression makeReifiedTypeArgumentResolved(ProducedType pt, boolean qualified) {
+    private JCExpression makeReifiedTypeArgumentResolved(Type pt, boolean qualified) {
         if(pt.isUnion()){
             // FIXME: refactor this shite
             List<JCExpression> typeTestArguments = List.nil();
-            java.util.List<ProducedType> typeParameters = pt.getCaseTypes();
+            java.util.List<Type> typeParameters = pt.getCaseTypes();
             for(int i=typeParameters.size()-1;i>=0;i--){
                 typeTestArguments = typeTestArguments.prepend(makeReifiedTypeArgument(typeParameters.get(i)));
             }
             return make().Apply(null, makeSelect(makeTypeDescriptorType(), "union"), typeTestArguments);
         } else if(pt.isIntersection()){
             List<JCExpression> typeTestArguments = List.nil();
-            java.util.List<ProducedType> typeParameters = pt.getSatisfiedTypes();
+            java.util.List<Type> typeParameters = pt.getSatisfiedTypes();
             for(int i=typeParameters.size()-1;i>=0;i--){
                 typeTestArguments = typeTestArguments.prepend(makeReifiedTypeArgument(typeParameters.get(i)));
             }
@@ -5005,7 +5004,7 @@ public abstract class AbstractTransformer implements Transformation {
             }
             typeTestArguments = typeTestArguments.prepend(thisType);
             JCExpression classDescriptor = make().Apply(null, makeSelect(makeTypeDescriptorType(), "klass"), typeTestArguments);
-            ProducedType qualifyingType = pt.getQualifyingType();
+            Type qualifyingType = pt.getQualifyingType();
             JCExpression containerType = null;
             if(qualifyingType == null
                     // ignore qualifying types of static java declarations
@@ -5055,10 +5054,10 @@ public abstract class AbstractTransformer implements Transformation {
         }
     }
     
-    protected boolean hasTypeArguments(ProducedType type){
+    protected boolean hasTypeArguments(Type type){
         if(!type.getTypeArguments().isEmpty())
             return true;
-        ProducedType qualifyingType = type.getQualifyingType();
+        Type qualifyingType = type.getQualifyingType();
         if(qualifyingType == null){
             Declaration declaration = type.getDeclaration();
             do{
@@ -5113,7 +5112,7 @@ public abstract class AbstractTransformer implements Transformation {
         if(enclosingDeclaration instanceof TypedDeclaration)
             containerType = makeTypedDeclarationTypeDescriptorResolved((TypedDeclaration) enclosingDeclaration);
         else if(enclosingDeclaration instanceof TypeDeclaration){
-            ProducedType qualifyingType = ((TypeDeclaration) enclosingDeclaration).getType();
+            Type qualifyingType = ((TypeDeclaration) enclosingDeclaration).getType();
             containerType = makeReifiedTypeArgumentResolved(qualifyingType, true);
         }
         if(containerType == null){
@@ -5184,12 +5183,12 @@ public abstract class AbstractTransformer implements Transformation {
         return loader.getJDKBaseModule();
     }
 
-    ProducedType getGetterInterfaceType(TypedDeclaration attrTypedDecl) {
+    Type getGetterInterfaceType(TypedDeclaration attrTypedDecl) {
         ProducedTypedReference typedRef = getTypedReference(attrTypedDecl);
         ProducedTypedReference nonWideningTypedRef = nonWideningTypeDecl(typedRef);
-        ProducedType nonWideningType = nonWideningType(typedRef, nonWideningTypedRef);
+        Type nonWideningType = nonWideningType(typedRef, nonWideningTypedRef);
         
-        ProducedType type;
+        Type type;
         boolean unboxed = CodegenUtil.isUnBoxed(attrTypedDecl);
         if (unboxed && isCeylonBoolean(nonWideningType)) {
             type = javacCeylonTypeToProducedType(syms().ceylonGetterBooleanType);
@@ -5203,7 +5202,7 @@ public abstract class AbstractTransformer implements Transformation {
             type = javacCeylonTypeToProducedType(syms().ceylonGetterByteType);
         } else {
             type = javacCeylonTypeToProducedType(syms().ceylonGetterType);
-            ProducedType typeArg = nonWideningType;
+            Type typeArg = nonWideningType;
             if (unboxed && isCeylonString(typeArg)) {
                 typeArg = javacJavaTypeToProducedType(syms().stringType);
             }
@@ -5215,7 +5214,7 @@ public abstract class AbstractTransformer implements Transformation {
     /**
      * Makes a {@code java.lang.Class<? extends UPPERBOUND>}
      */
-    JCExpression makeJavaClassTypeBounded(ProducedType upperBound) {
+    JCExpression makeJavaClassTypeBounded(Type upperBound) {
         return make().TypeApply(make().QualIdent(syms().classType.tsym),
                 List.<JCExpression>of(make().Wildcard(make().TypeBoundKind(BoundKind.EXTENDS), 
                             makeJavaType(upperBound))));
@@ -5258,22 +5257,22 @@ public abstract class AbstractTransformer implements Transformation {
     * @param type the type in which to check for the given declaration, in an invariant position.
     * @return true if all these conditions are met.
     */
-    public boolean needsRawCastForMixinSuperCall(TypeDeclaration declaration, ProducedType type) {
+    public boolean needsRawCastForMixinSuperCall(TypeDeclaration declaration, Type type) {
         return !declaration.getTypeParameters().isEmpty()
                 && hasVariantTypeParameters(declaration)
                 && declarationAppearsInInvariantPosition(declaration, type.resolveAliases());
     }
     
-    private boolean declarationAppearsInInvariantPosition(TypeDeclaration declaration, ProducedType type) {
+    private boolean declarationAppearsInInvariantPosition(TypeDeclaration declaration, Type type) {
         if(type.isUnion()){
-            for(ProducedType pt : type.getCaseTypes()){
+            for(Type pt : type.getCaseTypes()){
                 if(declarationAppearsInInvariantPosition(declaration, pt))
                     return true;
             }
             return false;
         }
         if(type.isIntersection()){
-            for(ProducedType pt : type.getSatisfiedTypes()){
+            for(Type pt : type.getSatisfiedTypes()){
                 if(declarationAppearsInInvariantPosition(declaration, pt))
                     return true;
             }
@@ -5282,9 +5281,9 @@ public abstract class AbstractTransformer implements Transformation {
         if(type.isClassOrInterface()){
             TypeDeclaration typeDeclaration = type.getDeclaration();
             java.util.List<TypeParameter> typeParameters = typeDeclaration.getTypeParameters();
-            Map<TypeParameter, ProducedType> typeArguments = type.getTypeArguments();
+            Map<TypeParameter, Type> typeArguments = type.getTypeArguments();
             for(TypeParameter tp : typeParameters){
-                ProducedType typeArgument = typeArguments.get(tp);
+                Type typeArgument = typeArguments.get(tp);
                 if(tp.isInvariant()
                         || hasDependentTypeParameters(typeParameters, tp)){
                     if(Decl.equal(typeArgument.getDeclaration(), declaration)){
@@ -5306,7 +5305,7 @@ public abstract class AbstractTransformer implements Transformation {
         return false;
     }
 
-    protected ProducedType getOptionalTypeForInteropIfAllowed(ProducedType expectedType, ProducedType termType, Term term){
+    protected Type getOptionalTypeForInteropIfAllowed(Type expectedType, Type termType, Term term){
         // make sure we do not insert null checks if we're going to allow testing for null
         if(expectedType != null
                 && hasUncheckedNulls(term)

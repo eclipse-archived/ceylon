@@ -19,7 +19,7 @@
  */
 package com.redhat.ceylon.compiler.java.codegen;
 
-import com.redhat.ceylon.model.typechecker.model.ProducedType;
+import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.ProducedTypedReference;
 import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
 
@@ -31,37 +31,37 @@ public class CompilerBoxingDeclarationVisitor extends BoxingDeclarationVisitor {
     }
 
     @Override
-    protected boolean isCeylonBasicType(ProducedType type) {
+    protected boolean isCeylonBasicType(Type type) {
         return transformer.isCeylonBasicType(type);
     }
 
     @Override
-    protected boolean isNull(ProducedType type) {
+    protected boolean isNull(Type type) {
         return transformer.isNull(type);
     }
 
     @Override
-    protected boolean isObject(ProducedType type) {
+    protected boolean isObject(Type type) {
         return transformer.isCeylonObject(type);
     }
 
     @Override
-    protected boolean willEraseToObject(ProducedType type) {
+    protected boolean willEraseToObject(Type type) {
         return transformer.willEraseToObject(type);
     }
 
     @Override
-    protected boolean isCallable(ProducedType type) {
+    protected boolean isCallable(Type type) {
         return transformer.isCeylonCallable(type);
     }
 
     @Override
-    protected boolean hasErasure(ProducedType type) {
+    protected boolean hasErasure(Type type) {
         return transformer.hasErasure(type);
     }
 
     @Override
-    protected boolean isRaw(ProducedType type) {
+    protected boolean isRaw(Type type) {
         return transformer.isTurnedToRaw(type);
     }
 
@@ -71,7 +71,7 @@ public class CompilerBoxingDeclarationVisitor extends BoxingDeclarationVisitor {
     }
 
     @Override
-    protected boolean hasSubstitutedBounds(ProducedType type) {
+    protected boolean hasSubstitutedBounds(Type type) {
         return transformer.hasSubstitutedBounds(type);
     }
 }

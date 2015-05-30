@@ -40,7 +40,7 @@ import com.redhat.ceylon.model.typechecker.model.Method;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.Package;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
-import com.redhat.ceylon.model.typechecker.model.ProducedType;
+import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.model.typechecker.model.Value;
 import com.sun.tools.javac.tree.JCTree.JCAnnotation;
@@ -114,7 +114,7 @@ class AnnotationInvocationVisitor extends Visitor {
     
     
     private Parameter parameter;
-    private ProducedType expectedType;
+    private Type expectedType;
     private ListBuffer<JCExpression> arrayExprs = null;
     private JCExpression argumentExpr;
 
@@ -494,7 +494,7 @@ class AnnotationInvocationVisitor extends Visitor {
                 ExpressionTransformer.EXPR_UNSAFE_PRIMITIVE_TYPECAST_OK));
     }
 
-    private ProducedType expectedType() {
+    private Type expectedType() {
         return this.expectedType != null ?  this.expectedType : this.parameter.getType();
     }
     

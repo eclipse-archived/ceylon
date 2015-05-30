@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.codegen;
 
-import com.redhat.ceylon.model.typechecker.model.ProducedType;
+import com.redhat.ceylon.model.typechecker.model.Type;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
 import com.sun.tools.javac.tree.JCTree.JCFieldAccess;
 import com.sun.tools.javac.util.List;
@@ -100,7 +100,7 @@ class RuntimeUtil {
     /**
      * Casts a <tt>ceylon.language.Sequential</tt> type to a <tt>ceylon.language.Sequence</tt> type.
      */
-    public JCExpression castSequentialToSequence(JCExpression sequentialExpr, ProducedType iteratedType) {
+    public JCExpression castSequentialToSequence(JCExpression sequentialExpr, Type iteratedType) {
         return makeUtilInvocation(null, "asSequence", List.of(sequentialExpr));
     }
     
@@ -113,7 +113,7 @@ class RuntimeUtil {
     }
     
     public JCExpression isReified(JCExpression varExpr,
-            ProducedType testedType) {
+            Type testedType) {
         return makeUtilInvocation(null, "isReified", List.of(varExpr, this.abstractTransformer.makeReifiedTypeArgument(testedType)));
     }
 

@@ -78,8 +78,8 @@ import com.redhat.ceylon.model.loader.Timer;
 import com.redhat.ceylon.model.loader.model.LazyModule;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Module;
-import com.redhat.ceylon.model.typechecker.model.ProducedType;
 import com.redhat.ceylon.model.typechecker.model.Setter;
+import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.model.typechecker.model.Unit;
 import com.sun.source.util.TaskEvent;
@@ -88,7 +88,6 @@ import com.sun.tools.javac.code.Symbol;
 import com.sun.tools.javac.code.Symbol.ClassSymbol;
 import com.sun.tools.javac.code.Symbol.PackageSymbol;
 import com.sun.tools.javac.code.Symtab;
-import com.sun.tools.javac.code.Type;
 import com.sun.tools.javac.code.Type.ClassType;
 import com.sun.tools.javac.code.Types;
 import com.sun.tools.javac.comp.Annotate;
@@ -276,7 +275,7 @@ public class CeylonEnter extends Enter {
         }
         
         // reset its type, we need to keep it
-        Type.ClassType classType = (ClassType) classSymbol.type;
+        com.sun.tools.javac.code.Type.ClassType classType = (ClassType) classSymbol.type;
         classType.all_interfaces_field = null;
         classType.interfaces_field = null;
         classType.supertype_field = null;
@@ -288,7 +287,7 @@ public class CeylonEnter extends Enter {
     }
 
     @Override
-    protected Type classEnter(JCTree tree, Env<AttrContext> env) {
+    protected com.sun.tools.javac.code.Type classEnter(JCTree tree, Env<AttrContext> env) {
         if(tree instanceof CeylonCompilationUnit){
             sourceLanguage.push(Language.CEYLON);
             try{
@@ -665,7 +664,7 @@ public class CeylonEnter extends Enter {
         }
         
         @Override
-        protected void checkType(Statement that, ProducedType type, Node typedNode) {
+        protected void checkType(Statement that, Type type, Node typedNode) {
             if(runAssertions)
                 super.checkType(that, type, typedNode);
         }

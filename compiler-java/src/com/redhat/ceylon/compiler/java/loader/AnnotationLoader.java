@@ -55,7 +55,7 @@ import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.Method;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
-import com.redhat.ceylon.model.typechecker.model.ProducedType;
+import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.Unit;
 
 /**
@@ -341,13 +341,13 @@ public class AnnotationLoader {
             AnnotationMirror valueAnnotation, boolean singleValue) {
         if (singleValue) {
             TypeMirror klass = getAnnotationClassValues(valueAnnotation, "value").get(0);
-            ProducedType type = modelLoader.obtainType(moduleScope, klass, null, null, null);
+            Type type = modelLoader.obtainType(moduleScope, klass, null, null, null);
             ObjectLiteralAnnotationTerm term = new ObjectLiteralAnnotationTerm(type);
             return term;
         } else {
             CollectionLiteralAnnotationTerm result = new CollectionLiteralAnnotationTerm(ObjectLiteralAnnotationTerm.FACTORY);
             for (TypeMirror klass : getAnnotationClassValues(valueAnnotation, "value")) {
-                ProducedType type = modelLoader.obtainType(moduleScope, klass, null, null, null);
+                Type type = modelLoader.obtainType(moduleScope, klass, null, null, null);
                 result.addElement(new ObjectLiteralAnnotationTerm(type));
             }
             return result;

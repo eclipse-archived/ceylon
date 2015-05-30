@@ -33,7 +33,7 @@ import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.model.typechecker.model.Generic;
 import com.redhat.ceylon.model.typechecker.model.Interface;
-import com.redhat.ceylon.model.typechecker.model.ProducedType;
+import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.model.typechecker.model.TypeParameter;
 import com.sun.tools.javac.code.BoundKind;
@@ -98,9 +98,9 @@ public class ClassDefinitionBuilder {
 
     private ClassDefinitionBuilder containingClassBuilder;
 
-    private ProducedType extendingType;
+    private Type extendingType;
 
-    private ProducedType thisType;
+    private Type thisType;
 
     public static ClassDefinitionBuilder klass(AbstractTransformer gen, String javaClassName, String ceylonClassName, boolean isLocal) {
         ClassDefinitionBuilder builder = new ClassDefinitionBuilder(gen, javaClassName, ceylonClassName, isLocal);
@@ -252,7 +252,7 @@ public class ClassDefinitionBuilder {
         defs.appendList(this.defs);
     }
 
-    private JCExpression getSuperclass(ProducedType extendedType) {
+    private JCExpression getSuperclass(Type extendedType) {
         JCExpression superclass;
         if (extendedType != null) {
             superclass = gen.makeJavaType(extendedType, CeylonTransformer.JT_EXTENDS);
@@ -273,12 +273,12 @@ public class ClassDefinitionBuilder {
         return superclass;
     }
 
-    private List<JCExpression> transformTypesList(java.util.List<ProducedType> types) {
+    private List<JCExpression> transformTypesList(java.util.List<Type> types) {
         if (types == null) {
             return List.nil();
         }
         ListBuffer<JCExpression> typesList = new ListBuffer<JCExpression>();
-        for (ProducedType t : types) {
+        for (Type t : types) {
             JCExpression jt = gen.makeJavaType(t, CeylonTransformer.JT_SATISFIES);
             if (jt != null) {
                 typesList.append(jt);
@@ -312,8 +312,8 @@ public class ClassDefinitionBuilder {
     }
 
 
-    public ClassDefinitionBuilder typeParameter(String name, java.util.List<ProducedType> satisfiedTypes, java.util.List<ProducedType> caseTypes, 
-                                                boolean covariant, boolean contravariant, ProducedType defaultValue, boolean addModelAnnotation) {
+    public ClassDefinitionBuilder typeParameter(String name, java.util.List<Type> satisfiedTypes, java.util.List<Type> caseTypes, 
+                                                boolean covariant, boolean contravariant, Type defaultValue, boolean addModelAnnotation) {
         typeParams.append(typeParam(name, gen.makeTypeParameterBounds(satisfiedTypes)));
         if(addModelAnnotation)
             typeParamAnnotations.append(gen.makeAtTypeParameter(name, satisfiedTypes, caseTypes, covariant, contravariant, defaultValue));
@@ -344,7 +344,7 @@ public class ClassDefinitionBuilder {
         return typeParameter(param.getDeclarationModel());
     }
 
-    public ClassDefinitionBuilder extending(ProducedType thisType, ProducedType extendingType, boolean hasConstructors) {
+    public ClassDefinitionBuilder extending(Type thisType, Type extendingType, boolean hasConstructors) {
         if (!isAlias) {
             this.thisType = thisType;
             this.extendingType = extendingType;
@@ -363,14 +363,14 @@ public class ClassDefinitionBuilder {
         return this;
     }
 
-    public ClassDefinitionBuilder satisfies(java.util.List<ProducedType> satisfies) {
+    public ClassDefinitionBuilder satisfies(java.util.List<Type> satisfies) {
         this.satisfies.addAll(transformTypesList(satisfies));
         //this.defs.addAll(appendConcreteInterfaceMembers(satisfies));
         annotations(gen.makeAtSatisfiedTypes(satisfies));
         return this;
     }
 
-    public ClassDefinitionBuilder caseTypes(java.util.List<ProducedType> caseTypes, ProducedType ofType) {
+    public ClassDefinitionBuilder caseTypes(java.util.List<Type> caseTypes, Type ofType) {
         if (caseTypes != null || ofType != null) {
             annotations(gen.makeAtCaseTypes(caseTypes, ofType));
         }
@@ -502,7 +502,7 @@ public class ClassDefinitionBuilder {
         if(decl instanceof Generic) {
             companionBuilder.reifiedTypeParameters(((Generic)decl).getTypeParameters());
         }
-        ProducedType thisType = decl.getType();
+        Type thisType = decl.getType();
         companionBuilder.field(PRIVATE | FINAL, 
                 "$this", 
                 gen.makeJavaType(thisType), 
@@ -605,7 +605,7 @@ public class ClassDefinitionBuilder {
     }
 
 
-    public ClassDefinitionBuilder addGetTypeMethod(ProducedType type){
+    public ClassDefinitionBuilder addGetTypeMethod(Type type){
         if (isInterface()) {
             // interfaces don't have that one
         }else{
@@ -623,7 +623,7 @@ public class ClassDefinitionBuilder {
         return this;
     }
 
-    public ClassDefinitionBuilder addAnnotationTypeMethod(ProducedType type){
+    public ClassDefinitionBuilder addAnnotationTypeMethod(Type type){
         MethodDefinitionBuilder method = MethodDefinitionBuilder.systemMethod(gen, "annotationType");
         method.modifiers(PUBLIC);
         method.resultType(List.<JCAnnotation>nil(), 
@@ -664,12 +664,12 @@ public class ClassDefinitionBuilder {
     }
 
 
-    public ClassDefinitionBuilder refineReifiedType(ProducedType thisType) {
+    public ClassDefinitionBuilder refineReifiedType(Type thisType) {
         // init: $type$impl.$refine(tp1, tp2...)
         Interface iface = (Interface) thisType.getDeclaration();
         String companion = gen.naming.getCompanionFieldName(iface);
         ListBuffer<JCExpression> typeParameters = new ListBuffer<JCExpression>();
-        for(ProducedType tp : thisType.getTypeArgumentList()){
+        for(Type tp : thisType.getTypeArgumentList()){
             typeParameters.add(gen.makeReifiedTypeArgument(tp));
         }
         JCExpression refine = gen.make().Apply(null, gen.makeSelect(companion, gen.naming.getRefineTypeParametersMethodName()), typeParameters.toList());
@@ -678,7 +678,7 @@ public class ClassDefinitionBuilder {
     }
 
 
-    public void reifiedAlias(ProducedType type) {
+    public void reifiedAlias(Type type) {
         try (AbstractTransformer.SavedPosition savedPos = gen.noPosition()) {
             JCExpression klass = gen.makeUnerasedClassLiteral(type.getDeclaration());
             JCExpression classDescriptor = gen.make().Apply(null, gen.makeSelect(gen.makeTypeDescriptorType(), "klass"), List.of(klass));

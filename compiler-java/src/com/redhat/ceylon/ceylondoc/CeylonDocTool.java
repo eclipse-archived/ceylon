@@ -91,7 +91,7 @@ import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.NothingType;
 import com.redhat.ceylon.model.typechecker.model.Package;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
-import com.redhat.ceylon.model.typechecker.model.ProducedType;
+import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.Referenceable;
 import com.redhat.ceylon.model.typechecker.model.Scope;
 import com.redhat.ceylon.model.typechecker.model.TypeAlias;
@@ -698,7 +698,7 @@ public class CeylonDocTool extends OutputRepoUsingTool {
                         ClassOrInterface c = (ClassOrInterface) decl;                    
                         // subclasses map
                         if (c instanceof Class) {
-                            ProducedType superclass = c.getExtendedType();                    
+                            Type superclass = c.getExtendedType();                    
                             if (superclass != null) {
                                 TypeDeclaration superdec = superclass.getDeclaration();
                                 if (subclasses.get(superdec) == null) {
@@ -708,10 +708,10 @@ public class CeylonDocTool extends OutputRepoUsingTool {
                             }
                         }
 
-                        List<ProducedType> satisfiedTypes = new ArrayList<ProducedType>(c.getSatisfiedTypes());                     
+                        List<Type> satisfiedTypes = new ArrayList<Type>(c.getSatisfiedTypes());                     
                         if (satisfiedTypes != null && satisfiedTypes.isEmpty() == false) {
                             // satisfying classes or interfaces map
-                            for (ProducedType satisfiedType : satisfiedTypes) {
+                            for (Type satisfiedType : satisfiedTypes) {
                                 TypeDeclaration superdec = satisfiedType.getDeclaration();
                                 if (satisfyingClassesOrInterfaces.get(superdec) ==  null) {
                                     satisfyingClassesOrInterfaces.put(superdec, new ArrayList<ClassOrInterface>());
@@ -1253,7 +1253,7 @@ public class CeylonDocTool extends OutputRepoUsingTool {
             return;
         }
         
-        List<ProducedType> documentedExceptions = new ArrayList<ProducedType>();
+        List<Type> documentedExceptions = new ArrayList<Type>();
         for (Annotation annotation : d.getAnnotations()) {
             if (annotation.getName().equals("throws")) {
                 String exceptionName = annotation.getPositionalArguments().get(0);
@@ -1264,7 +1264,7 @@ public class CeylonDocTool extends OutputRepoUsingTool {
             }
         }
         
-        final List<ProducedType> thrownExceptions = new ArrayList<ProducedType>();
+        final List<Type> thrownExceptions = new ArrayList<Type>();
         node.visitChildren(new Visitor() {
             @Override
             public void visit(Tree.Throw that) {
@@ -1281,9 +1281,9 @@ public class CeylonDocTool extends OutputRepoUsingTool {
             }
         });
 
-        for (ProducedType thrownException : thrownExceptions) {
+        for (Type thrownException : thrownExceptions) {
             boolean isDocumented = false;
-            for (ProducedType documentedException : documentedExceptions) {
+            for (Type documentedException : documentedExceptions) {
                 if (thrownException.isSubtypeOf(documentedException)) {
                     isDocumented = true;
                     break;

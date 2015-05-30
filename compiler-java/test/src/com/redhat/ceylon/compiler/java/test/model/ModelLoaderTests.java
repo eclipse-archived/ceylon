@@ -91,7 +91,7 @@ import com.redhat.ceylon.model.typechecker.model.Modules;
 import com.redhat.ceylon.model.typechecker.model.Package;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.ParameterList;
-import com.redhat.ceylon.model.typechecker.model.ProducedType;
+import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.Scope;
 import com.redhat.ceylon.model.typechecker.model.Setter;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
@@ -528,8 +528,8 @@ public class ModelLoaderTests extends CompilerTests {
         }
     
         protected void compareCaseTypes(String name,
-                List<ProducedType> validTypeDeclarations,
-                List<ProducedType> modelTypeDeclarations) {
+                List<Type> validTypeDeclarations,
+                List<Type> modelTypeDeclarations) {
             if(validTypeDeclarations != null){
                 Assert.assertNotNull(name+ " [null case types]", modelTypeDeclarations);
             }else{
@@ -549,8 +549,8 @@ public class ModelLoaderTests extends CompilerTests {
             if(validDeclaration.getSelfType() == null)
                 Assert.assertTrue(name+" [null self type]", modelDeclaration.getSelfType() == null);
             else{
-                ProducedType validSelfType = validDeclaration.getSelfType();
-                ProducedType modelSelfType =  modelDeclaration.getSelfType();
+                Type validSelfType = validDeclaration.getSelfType();
+                Type modelSelfType =  modelDeclaration.getSelfType();
                 Assert.assertNotNull(name+" [non-null self type]", modelSelfType);
                 // self types are always type parameters so they must have a declaration
                 compareDeclarations(name+" [non-null self type]", validSelfType.getDeclaration(), modelSelfType.getDeclaration());
@@ -585,7 +585,7 @@ public class ModelLoaderTests extends CompilerTests {
             return null;
         }
     
-        protected void compareSatisfiedTypes(String name, List<ProducedType> validTypeDeclarations, List<ProducedType> modelTypeDeclarations) {
+        protected void compareSatisfiedTypes(String name, List<Type> validTypeDeclarations, List<Type> modelTypeDeclarations) {
             Assert.assertEquals(name+ " [Satisfied types count]", validTypeDeclarations.size(), modelTypeDeclarations.size());
             for(int i=0;i<validTypeDeclarations.size();i++){
                 TypeDeclaration validTypeDeclaration = validTypeDeclarations.get(i).getDeclaration();
@@ -717,7 +717,7 @@ public class ModelLoaderTests extends CompilerTests {
                     Assert.assertNotNull(mod);
                     Package p = mod.getDirectPackage(packageForJavaModelLoading());
                     Assert.assertNotNull(p);
-                    Declaration fpClass = p.getDirectMember("FunctionalParameterParameterNames", Collections.<ProducedType>emptyList(), false);
+                    Declaration fpClass = p.getDirectMember("FunctionalParameterParameterNames", Collections.<Type>emptyList(), false);
                     Assert.assertNotNull(fpClass);
                     { // functionalParameter
                         Method fp = (Method)fpClass.getDirectMember("functionalParameter", null, false);
@@ -1060,7 +1060,7 @@ public class ModelLoaderTests extends CompilerTests {
 
                 private String typeName(MethodOrValue fp) {
                     if (fp instanceof Method) {
-                        return fp.getProducedTypedReference(null, Collections.<ProducedType>emptyList()).getFullType().getProducedTypeName();
+                        return fp.getProducedTypedReference(null, Collections.<Type>emptyList()).getFullType().getProducedTypeName();
                     } else if (fp instanceof Value) {
                         return fp.getType().getProducedTypeName();
                     }

@@ -47,7 +47,7 @@ import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.NamedArgumentList;
 import com.redhat.ceylon.model.typechecker.model.Package;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
-import com.redhat.ceylon.model.typechecker.model.ProducedType;
+import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.Scope;
 import com.redhat.ceylon.model.typechecker.model.Setter;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
@@ -557,7 +557,7 @@ public class Decl {
         return false;
     }
 
-    public static boolean isValueTypeDecl(ProducedType type) {
+    public static boolean isValueTypeDecl(Type type) {
         if(type == null)
             return false;
         type = type.resolveAliases();
@@ -610,7 +610,7 @@ public class Decl {
     }
 
     public static boolean isObjectValue(TypedDeclaration attr) {
-        ProducedType type = attr.getType();
+        Type type = attr.getType();
         // Check type because in case of compile errors it can be null
         if (type != null) {
             TypeDeclaration typeDecl = type.getDeclaration();
@@ -742,14 +742,14 @@ public class Decl {
 
     
     
-    public static boolean isEnumeratedTypeWithAnonCases(ProducedType parameterType) {
+    public static boolean isEnumeratedTypeWithAnonCases(Type parameterType) {
         if (parameterType.isBoolean()) {
             return false;
         }
         if (parameterType.getCaseTypes() == null) {
             return false;
         }
-        for (ProducedType type : parameterType.getCaseTypes()) {
+        for (Type type : parameterType.getCaseTypes()) {
             if (!type.isClass() || !type.getDeclaration().isAnonymous()) {
                 return false;
             }
@@ -768,12 +768,12 @@ public class Decl {
             return false;
         }
         if (decl instanceof Value) {
-            ProducedType type = ((Value) decl).getType();
+            Type type = ((Value) decl).getType();
             if (type.isClass() && type.getDeclaration().isAnonymous()) {
                 if (isEnumeratedTypeWithAnonCases(type.getExtendedType())) {
                     return true;
                 }
-                for (ProducedType s : type.getSatisfiedTypes()) {
+                for (Type s : type.getSatisfiedTypes()) {
                     if (isEnumeratedTypeWithAnonCases(s)) {
                         return true;
                     }
@@ -829,7 +829,7 @@ public class Decl {
         return false;
     }
     
-    public static ProducedType getPrivateAccessType(Tree.StaticMemberOrTypeExpression qmte) {
+    public static Type getPrivateAccessType(Tree.StaticMemberOrTypeExpression qmte) {
         return ((TypeDeclaration)qmte.getDeclaration().getRefinedDeclaration().getContainer()).getType();
     }
 

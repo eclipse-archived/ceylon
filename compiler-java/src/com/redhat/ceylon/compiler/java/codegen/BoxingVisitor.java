@@ -68,7 +68,7 @@ import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Interface;
 import com.redhat.ceylon.model.typechecker.model.Method;
 import com.redhat.ceylon.model.typechecker.model.ProducedReference;
-import com.redhat.ceylon.model.typechecker.model.ProducedType;
+import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.Scope;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.model.typechecker.model.TypeParameter;
@@ -78,12 +78,12 @@ public abstract class BoxingVisitor extends Visitor {
 
     protected abstract boolean isBooleanTrue(Declaration decl);
     protected abstract boolean isBooleanFalse(Declaration decl);
-    protected abstract boolean hasErasure(ProducedType type);
+    protected abstract boolean hasErasure(Type type);
     protected abstract boolean hasErasedTypeParameters(ProducedReference producedReference);
-    protected abstract boolean willEraseToObject(ProducedType type);
-    protected abstract boolean isTypeParameter(ProducedType type);
-    protected abstract boolean isRaw(ProducedType type);
-    protected abstract boolean needsRawCastForMixinSuperCall(TypeDeclaration declaration, ProducedType type);
+    protected abstract boolean willEraseToObject(Type type);
+    protected abstract boolean isTypeParameter(Type type);
+    protected abstract boolean isRaw(Type type);
+    protected abstract boolean needsRawCastForMixinSuperCall(TypeDeclaration declaration, Type type);
 
     private Stack<Boolean> nextPreferredExpressionBoxings = null;
     private Boolean preferredExpressionBoxing = null;
@@ -139,7 +139,7 @@ public abstract class BoxingVisitor extends Visitor {
         // be (ex: <String>), and in that case we will generate a proper Sequential<String> which is not raw at all
         if(that.getMemberOperator() instanceof Tree.SpreadOp){
             // find the return element type
-            ProducedType elementType = that.getTarget().getType();
+            Type elementType = that.getTarget().getType();
             CodegenUtil.markTypeErased(that, hasErasure(elementType));
         }
         if(ExpressionTransformer.isSuperOrSuperOf(that.getPrimary())){
@@ -160,7 +160,7 @@ public abstract class BoxingVisitor extends Visitor {
                 }
             }
         }
-        ProducedType primaryType;
+        Type primaryType;
         if (that.getPrimary() instanceof Tree.Package
                 || that.getTarget() == null) {
             primaryType = that.getPrimary().getTypeModel();
@@ -269,7 +269,7 @@ public abstract class BoxingVisitor extends Visitor {
 
     private boolean hasErasedTypeParameter(ProducedReference producedReference, TypeArguments typeArguments) {
         if (typeArguments != null && typeArguments.getTypeModels() != null){
-            for (ProducedType arg : typeArguments.getTypeModels()) {
+            for (Type arg : typeArguments.getTypeModels()) {
                 if (hasErasure(arg) /*|| willEraseToSequential(param.getType())*/) {
                     return true;
                 }
@@ -291,7 +291,7 @@ public abstract class BoxingVisitor extends Visitor {
         if(that.getPrimary() == null
                 || that.getPrimary().getTypeModel() == null)
             return;
-        ProducedType lhsModel = that.getPrimary().getTypeModel();
+        Type lhsModel = that.getPrimary().getTypeModel();
         if(lhsModel.getDeclaration() == null)
             return;
         String methodName = that.getElementOrRange() instanceof Tree.Element ? "get" : "span";
@@ -508,24 +508,24 @@ public abstract class BoxingVisitor extends Visitor {
             CodegenUtil.markUntrustedType(that);
     }
 
-    private boolean hasTypeParameterWithConstraintsOutsideScope(ProducedType type, Scope scope) {
+    private boolean hasTypeParameterWithConstraintsOutsideScope(Type type, Scope scope) {
         return hasTypeParameterWithConstraintsOutsideScopeResolved(type != null ? type.resolveAliases() : null, scope);
     }
     
-    private boolean hasTypeParameterWithConstraintsOutsideScopeResolved(ProducedType type, Scope scope) {
+    private boolean hasTypeParameterWithConstraintsOutsideScopeResolved(Type type, Scope scope) {
         if(type == null)
             return false;
         if(type.isUnion()){
-            java.util.List<ProducedType> caseTypes = type.getCaseTypes();
-            for(ProducedType pt : caseTypes){
+            java.util.List<Type> caseTypes = type.getCaseTypes();
+            for(Type pt : caseTypes){
                 if(hasTypeParameterWithConstraintsOutsideScopeResolved(pt, scope))
                     return true;
             }
             return false;
         }
         if(type.isIntersection()){
-            java.util.List<ProducedType> satisfiedTypes = type.getSatisfiedTypes();
-            for(ProducedType pt : satisfiedTypes){
+            java.util.List<Type> satisfiedTypes = type.getSatisfiedTypes();
+            for(Type pt : satisfiedTypes){
                 if(hasTypeParameterWithConstraintsOutsideScopeResolved(pt, scope))
                     return true;
             }
@@ -550,7 +550,7 @@ public abstract class BoxingVisitor extends Visitor {
         }
         
         // now check its type parameters
-        for(ProducedType pt : type.getTypeArgumentList()){
+        for(Type pt : type.getTypeArgumentList()){
             if(hasTypeParameterWithConstraintsOutsideScopeResolved(pt, scope))
                 return true;
         }
@@ -561,7 +561,7 @@ public abstract class BoxingVisitor extends Visitor {
     private void visitTypeParameter(TypeParameter typeParameter) {
         if(typeParameter.hasNonErasedBounds() != null)
             return;
-        for(ProducedType pt : typeParameter.getSatisfiedTypes()){
+        for(Type pt : typeParameter.getSatisfiedTypes()){
             if(!willEraseToObject(pt)){
                 typeParameter.setNonErasedBounds(true);
                 return;

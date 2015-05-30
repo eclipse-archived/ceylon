@@ -49,7 +49,7 @@ import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Functional;
 import com.redhat.ceylon.model.typechecker.model.Method;
 import com.redhat.ceylon.model.typechecker.model.MethodOrValue;
-import com.redhat.ceylon.model.typechecker.model.ProducedType;
+import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.Setter;
 import com.redhat.ceylon.model.typechecker.model.TypeParameter;
 import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
@@ -57,15 +57,15 @@ import com.redhat.ceylon.model.typechecker.model.Value;
 
 public abstract class BoxingDeclarationVisitor extends Visitor {
 
-    protected abstract boolean isCeylonBasicType(ProducedType type);
-    protected abstract boolean isNull(ProducedType type);
-    protected abstract boolean isObject(ProducedType type);
-    protected abstract boolean isCallable(ProducedType type);
-    protected abstract boolean hasErasure(ProducedType type);
-    protected abstract boolean willEraseToObject(ProducedType type);
-    protected abstract boolean isRaw(ProducedType type);
+    protected abstract boolean isCeylonBasicType(Type type);
+    protected abstract boolean isNull(Type type);
+    protected abstract boolean isObject(Type type);
+    protected abstract boolean isCallable(Type type);
+    protected abstract boolean hasErasure(Type type);
+    protected abstract boolean willEraseToObject(Type type);
+    protected abstract boolean isRaw(Type type);
     protected abstract boolean isWideningTypedDeclaration(TypedDeclaration typedDeclaration);
-    protected abstract boolean hasSubstitutedBounds(ProducedType type);
+    protected abstract boolean hasSubstitutedBounds(Type type);
 
     /**
      * This is used to keep track of some optimisations we do, such as inlining the following shortcuts:
@@ -119,7 +119,7 @@ public abstract class BoxingDeclarationVisitor extends Visitor {
         if(decl == null)
             return;
 
-        ProducedType type = decl.getType();
+        Type type = decl.getType();
         if(type != null){
             if(hasErasure(type) || hasSubstitutedBounds(type)){
                 decl.setTypeErased(true);
@@ -141,7 +141,7 @@ public abstract class BoxingDeclarationVisitor extends Visitor {
         if(decl == null)
             return;
 
-        ProducedType type = decl.getType();
+        Type type = decl.getType();
         if(type != null){
             if(isRaw(type))
                 type.setRaw(true);
@@ -168,7 +168,7 @@ public abstract class BoxingDeclarationVisitor extends Visitor {
     }
 
     private void setBoxingState(TypedDeclaration declaration, TypedDeclaration refinedDeclaration, Node that) {
-        ProducedType type = declaration.getType();
+        Type type = declaration.getType();
         if(type == null){
             // an error must have already been reported
             return;
@@ -417,7 +417,7 @@ public abstract class BoxingDeclarationVisitor extends Visitor {
     private void visitTypeParameter(TypeParameter typeParameter) {
         if(typeParameter.hasNonErasedBounds() != null)
             return;
-        for(ProducedType pt : typeParameter.getSatisfiedTypes()){
+        for(Type pt : typeParameter.getSatisfiedTypes()){
             if(!willEraseToObject(pt)){
                 typeParameter.setNonErasedBounds(true);
                 return;

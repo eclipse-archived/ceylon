@@ -39,7 +39,7 @@ import com.redhat.ceylon.model.typechecker.model.Method;
 import com.redhat.ceylon.model.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.model.typechecker.model.Package;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
-import com.redhat.ceylon.model.typechecker.model.ProducedType;
+import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.Scope;
 import com.redhat.ceylon.model.typechecker.model.Specification;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
@@ -90,17 +90,17 @@ public class CodegenUtil {
     }
 
     static boolean isRaw(TypedDeclaration decl){
-        ProducedType type = decl.getType();
+        Type type = decl.getType();
         return type != null && type.isRaw();
     }
 
     static boolean isRaw(Term node){
-        ProducedType type = node.getTypeModel();
+        Type type = node.getTypeModel();
         return type != null && type.isRaw();
     }
 
     static void markRaw(Term node) {
-        ProducedType type = node.getTypeModel();
+        Type type = node.getTypeModel();
         if(type != null)
             type.setRaw(true);
     }
@@ -261,7 +261,7 @@ public class CodegenUtil {
         return param.getModel();
     }
 
-    static boolean isVoid(ProducedType type) {
+    static boolean isVoid(Type type) {
         return type != null && type.getDeclaration() != null
                 && type.getDeclaration().getUnit().getAnythingType().isExactly(type);    
     }
@@ -330,16 +330,16 @@ public class CodegenUtil {
      * Returns true if the given produced type is a type parameter or has type arguments which
      * are type parameters.
      */
-    public static boolean containsTypeParameter(ProducedType type) {
+    public static boolean containsTypeParameter(Type type) {
         if(type.isTypeParameter())
             return true;
-        for(ProducedType pt : type.getTypeArgumentList()){
+        for(Type pt : type.getTypeArgumentList()){
             if(containsTypeParameter(pt)){
                 return true;
             }
         }
         if(type.isIntersection()){
-            List<ProducedType> types = type.getSatisfiedTypes();
+            List<Type> types = type.getSatisfiedTypes();
             for(int i=0,l=types.size();i<l;i++){
                 if(containsTypeParameter(types.get(i)))
                     return true;
@@ -347,7 +347,7 @@ public class CodegenUtil {
             return false;
         }
         if(type.isUnion()){
-            List<ProducedType> types = type.getCaseTypes();
+            List<Type> types = type.getCaseTypes();
             for(int i=0,l=types.size();i<l;i++){
                 if(containsTypeParameter(types.get(i)))
                     return true;

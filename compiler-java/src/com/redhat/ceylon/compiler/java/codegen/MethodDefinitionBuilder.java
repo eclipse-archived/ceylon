@@ -36,7 +36,7 @@ import com.redhat.ceylon.model.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.model.typechecker.model.Package;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.ParameterList;
-import com.redhat.ceylon.model.typechecker.model.ProducedType;
+import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.ProducedTypedReference;
 import com.redhat.ceylon.model.typechecker.model.Scope;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
@@ -223,7 +223,7 @@ public class MethodDefinitionBuilder
         return gen.make().TypeIdent(VOID);
     }
 
-    JCExpression makeResultType(TypedDeclaration typedDeclaration, ProducedType type, int flags) {
+    JCExpression makeResultType(TypedDeclaration typedDeclaration, Type type, int flags) {
         if (typedDeclaration == null
                 || ((!(typedDeclaration instanceof Method) || !((Method)typedDeclaration).isParameter())
                         && AbstractTransformer.isAnything(type))) {
@@ -287,7 +287,7 @@ public class MethodDefinitionBuilder
         return this;
     }
 
-    public MethodDefinitionBuilder typeParameter(TypeParameter param, java.util.List<ProducedType> producedBounds) {
+    public MethodDefinitionBuilder typeParameter(TypeParameter param, java.util.List<Type> producedBounds) {
         return typeParameter(gen.makeTypeParameter(param, producedBounds), gen.makeAtTypeParameter(param));
     }
     
@@ -316,7 +316,7 @@ public class MethodDefinitionBuilder
             String name, 
             Parameter decl, 
             TypedDeclaration nonWideningDecl, 
-            ProducedType nonWideningType, 
+            Type nonWideningType, 
             int flags, boolean canWiden) {
         return parameter(modifiers, annos, null, name, name, decl, nonWideningDecl, nonWideningType, flags, canWiden);
     }
@@ -324,7 +324,7 @@ public class MethodDefinitionBuilder
     private MethodDefinitionBuilder parameter(long modifiers, 
             java.util.List<Annotation> modelAnnotations, List<JCAnnotation> userAnnotations,
             String name, String aliasedName, 
-            Parameter decl, TypedDeclaration nonWideningDecl, ProducedType nonWideningType, 
+            Parameter decl, TypedDeclaration nonWideningDecl, Type nonWideningType, 
             int flags, boolean canWiden) {
         ParameterDefinitionBuilder pdb = ParameterDefinitionBuilder.explicitParameter(gen, decl);
         pdb.modifiers(modifiers);
@@ -343,7 +343,7 @@ public class MethodDefinitionBuilder
     }
 
     private boolean isParamTypeLocalToMethod(Parameter parameter,
-            ProducedType nonWideningType) {
+            Type nonWideningType) {
         Declaration method = parameter.getDeclaration();
         TypeDeclaration paramTypeDecl = nonWideningType.getDeclaration();
         if (paramTypeDecl instanceof TypeParameter
@@ -361,12 +361,12 @@ public class MethodDefinitionBuilder
     }
 
     static JCExpression paramType(AbstractTransformer gen, TypedDeclaration nonWideningDecl,
-            ProducedType nonWideningType, int flags, boolean canWiden) {
+            Type nonWideningType, int flags, boolean canWiden) {
         // keep in sync with gen.willEraseToBestBounds()
         if (canWiden
                 && (gen.typeFact().isUnion(nonWideningType) 
                         || gen.typeFact().isIntersection(nonWideningType))) {
-            final ProducedType refinedType = ((TypedDeclaration)CodegenUtil.getTopmostRefinedDeclaration(nonWideningDecl)).getType();
+            final Type refinedType = ((TypedDeclaration)CodegenUtil.getTopmostRefinedDeclaration(nonWideningDecl)).getType();
             if (refinedType.isTypeParameter()
                     && !refinedType.getSatisfiedTypes().isEmpty()) {
                 nonWideningType = refinedType.getSatisfiedTypes().get(0);
@@ -379,7 +379,7 @@ public class MethodDefinitionBuilder
     }
     
     public MethodDefinitionBuilder parameter(Parameter paramDecl, 
-            ProducedType paramType, int mods, int flags, boolean canWiden) {
+            Type paramType, int mods, int flags, boolean canWiden) {
         String name = paramDecl.getName();
         return parameter(mods, paramDecl.getModel().getAnnotations(), 
                 name, paramDecl, paramDecl.getModel(), paramType, flags, canWiden);
@@ -395,7 +395,7 @@ public class MethodDefinitionBuilder
             mods |= FINAL;
         }
         TypedDeclaration nonWideningDecl = null;
-        ProducedType nonWideningType;
+        Type nonWideningType;
         if (Decl.isValue(mov)) {
             ProducedTypedReference typedRef = gen.getTypedReference(mov);
             ProducedTypedReference nonWideningTypedRef = gen.nonWideningTypeDecl(typedRef);
@@ -411,12 +411,12 @@ public class MethodDefinitionBuilder
                 && param.getModel() instanceof Value){
             TypedDeclaration refinedParameter = (TypedDeclaration)CodegenUtil.getTopmostRefinedDeclaration(param.getModel());
             if(!Decl.equal(refinedParameter, param.getModel())){
-                ProducedType refinedParameterType;
+                Type refinedParameterType;
                 // we don't have to use produced typed references with type params applied here because we want to know the
                 // erasure status of the compilation of the refined parameter, so it's OK if we end up with unbound type parameters
                 // in the refined parameter type
                 if(refinedParameter instanceof Method)
-                    refinedParameterType = refinedParameter.getProducedTypedReference(null, Collections.<ProducedType>emptyList()).getFullType();
+                    refinedParameterType = refinedParameter.getProducedTypedReference(null, Collections.<Type>emptyList()).getFullType();
                 else
                     refinedParameterType = refinedParameter.getType();
                 // if the supertype method itself got erased to Object, we can't do better than this
@@ -484,7 +484,7 @@ public class MethodDefinitionBuilder
                 return resultType(gen.makeJavaTypeAnnotations(method, false), gen.make().Type(gen.syms().voidType));
             } else {
                 Parameter parameter = method.getInitializerParameter();
-                ProducedType resultType = parameter.getType();
+                Type resultType = parameter.getType();
                 for (int ii = 1; ii < method.getParameterLists().size(); ii++) {
                     resultType = gen.typeFact().getCallableType(resultType);
                 }
@@ -493,22 +493,22 @@ public class MethodDefinitionBuilder
         }
         ProducedTypedReference typedRef = gen.getTypedReference(method);
         ProducedTypedReference nonWideningTypedRef = gen.nonWideningTypeDecl(typedRef);
-        ProducedType nonWideningType = gen.nonWideningType(typedRef, nonWideningTypedRef);
+        Type nonWideningType = gen.nonWideningType(typedRef, nonWideningTypedRef);
         if(method.isActual()
                 && CodegenUtil.hasTypeErased(method))
             flags |= AbstractTransformer.JT_RAW;
         return resultType(makeResultType(nonWideningTypedRef.getDeclaration(), nonWideningType, flags), method);
     }
     
-    public MethodDefinitionBuilder resultTypeNonWidening(ProducedType currentType, ProducedTypedReference typedRef, 
-            ProducedType returnType, int flags){
+    public MethodDefinitionBuilder resultTypeNonWidening(Type currentType, ProducedTypedReference typedRef, 
+            Type returnType, int flags){
         ProducedTypedReference nonWideningTypedRef = gen.nonWideningTypeDecl(typedRef, currentType);
         returnType = gen.nonWideningType(typedRef, nonWideningTypedRef);
         return resultType(makeResultType(nonWideningTypedRef.getDeclaration(), returnType, flags), typedRef.getDeclaration());
 
     }
     
-    public MethodDefinitionBuilder resultType(TypedDeclaration resultType, ProducedType type, int flags) {
+    public MethodDefinitionBuilder resultType(TypedDeclaration resultType, Type type, int flags) {
         return resultType(makeResultType(resultType, type, flags), resultType);
     }
 

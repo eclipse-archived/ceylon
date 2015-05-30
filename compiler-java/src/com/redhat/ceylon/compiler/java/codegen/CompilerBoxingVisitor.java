@@ -21,7 +21,7 @@ package com.redhat.ceylon.compiler.java.codegen;
 
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.ProducedReference;
-import com.redhat.ceylon.model.typechecker.model.ProducedType;
+import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 
 public class CompilerBoxingVisitor extends BoxingVisitor {
@@ -42,7 +42,7 @@ public class CompilerBoxingVisitor extends BoxingVisitor {
     }
 
     @Override
-    protected boolean hasErasure(ProducedType type) {
+    protected boolean hasErasure(Type type) {
         return transformer.hasErasure(type);
     }
     
@@ -52,22 +52,22 @@ public class CompilerBoxingVisitor extends BoxingVisitor {
     }
 
     @Override
-    protected boolean isTypeParameter(ProducedType type) {
+    protected boolean isTypeParameter(Type type) {
         return transformer.isTypeParameter(type);
     }
 
     @Override
-    protected boolean isRaw(ProducedType type) {
+    protected boolean isRaw(Type type) {
         return transformer.isTurnedToRaw(type);
     }
 
     @Override
-    protected boolean needsRawCastForMixinSuperCall(TypeDeclaration declaration, ProducedType type) {
+    protected boolean needsRawCastForMixinSuperCall(TypeDeclaration declaration, Type type) {
         return transformer.needsRawCastForMixinSuperCall(declaration, type);
     }
 
     @Override
-    protected boolean willEraseToObject(ProducedType type) {
+    protected boolean willEraseToObject(Type type) {
         return transformer.willEraseToObject(type);
     }
 }

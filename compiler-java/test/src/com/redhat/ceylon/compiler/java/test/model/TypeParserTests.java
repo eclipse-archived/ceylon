@@ -37,7 +37,7 @@ import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.IntersectionType;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.Package;
-import com.redhat.ceylon.model.typechecker.model.ProducedType;
+import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.Scope;
 import com.redhat.ceylon.model.typechecker.model.SiteVariance;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
@@ -95,7 +95,7 @@ public class TypeParserTests {
 
         
         @Override
-        public ProducedType getType(Module module, String pkg, String name, Scope scope) {
+        public Type getType(Module module, String pkg, String name, Scope scope) {
             Class klass = (Class)getDeclaration(module, pkg, name, scope);
             return klass.getType();
         }
@@ -160,13 +160,13 @@ public class TypeParserTests {
     
     @Test
     public void testUnion(){
-        ProducedType type = new TypeParser(MockLoader.instance).decodeType("a|b|c", null, mockModule, mockUnit);
+        Type type = new TypeParser(MockLoader.instance).decodeType("a|b|c", null, mockModule, mockUnit);
         Assert.assertNotNull(type);
         TypeDeclaration declaration = type.getDeclaration();
         Assert.assertNotNull(declaration);
         Assert.assertTrue(declaration instanceof UnionType);
         UnionType union = (UnionType) declaration;
-        List<ProducedType> types = union.getCaseTypes();
+        List<Type> types = union.getCaseTypes();
         Assert.assertEquals(3, types.size());
         Assert.assertEquals("a", types.get(0).getDeclaration().getName());
         Assert.assertTrue(types.get(0).getDeclaration() instanceof Class);
@@ -178,13 +178,13 @@ public class TypeParserTests {
 
     @Test
     public void testIntersection(){
-        ProducedType type = new TypeParser(MockLoader.instance).decodeType("a&b&c", null, mockModule, mockUnit);
+        Type type = new TypeParser(MockLoader.instance).decodeType("a&b&c", null, mockModule, mockUnit);
         Assert.assertNotNull(type);
         TypeDeclaration declaration = type.getDeclaration();
         Assert.assertNotNull(declaration);
         Assert.assertTrue(declaration instanceof IntersectionType);
         IntersectionType intersection = (IntersectionType) declaration;
-        List<ProducedType> types = intersection.getSatisfiedTypes();
+        List<Type> types = intersection.getSatisfiedTypes();
         Assert.assertEquals(3, types.size());
         Assert.assertEquals("a", types.get(0).getDeclaration().getName());
         Assert.assertTrue(types.get(0).getDeclaration() instanceof Class);
@@ -196,19 +196,19 @@ public class TypeParserTests {
 
     @Test
     public void testIntersectionAndUnion(){
-        ProducedType type = new TypeParser(MockLoader.instance).decodeType("a&b|c", null, mockModule, mockUnit);
+        Type type = new TypeParser(MockLoader.instance).decodeType("a&b|c", null, mockModule, mockUnit);
         Assert.assertNotNull(type);
         TypeDeclaration declaration = type.getDeclaration();
         Assert.assertNotNull(declaration);
         Assert.assertTrue(declaration instanceof UnionType);
         UnionType union = (UnionType) declaration;
-        List<ProducedType> unionTypes = union.getCaseTypes();
+        List<Type> unionTypes = union.getCaseTypes();
         Assert.assertEquals(2, unionTypes.size());
         
         Assert.assertTrue(unionTypes.get(0).getDeclaration() instanceof IntersectionType);
         IntersectionType intersection = (IntersectionType) unionTypes.get(0).getDeclaration();
 
-        List<ProducedType> intersectionTypes = intersection.getSatisfiedTypes();
+        List<Type> intersectionTypes = intersection.getSatisfiedTypes();
         Assert.assertEquals(2, intersectionTypes.size());
         Assert.assertEquals("a", intersectionTypes.get(0).getDeclaration().getName());
         Assert.assertTrue(intersectionTypes.get(0).getDeclaration() instanceof Class);
@@ -221,7 +221,7 @@ public class TypeParserTests {
 
     @Test
     public void testParams(){
-        ProducedType type = new TypeParser(MockLoader.instance).decodeType("t2<b,c>", null, mockModule, mockUnit);
+        Type type = new TypeParser(MockLoader.instance).decodeType("t2<b,c>", null, mockModule, mockUnit);
         assertTypeWithParameters(type);
         
         Assert.assertTrue(type.getVarianceOverrides().isEmpty());
@@ -229,7 +229,7 @@ public class TypeParserTests {
 
     @Test
     public void testParamsVariance1(){
-        ProducedType type = new TypeParser(MockLoader.instance).decodeType("t2<in b,out c>", null, mockModule, mockUnit);
+        Type type = new TypeParser(MockLoader.instance).decodeType("t2<in b,out c>", null, mockModule, mockUnit);
         assertTypeWithParameters(type);
 
         Map<TypeParameter, SiteVariance> varianceOverrides = type.getVarianceOverrides();
@@ -242,7 +242,7 @@ public class TypeParserTests {
 
     @Test
     public void testParamsVariance2(){
-        ProducedType type = new TypeParser(MockLoader.instance).decodeType("t2<b,out c>", null, mockModule, mockUnit);
+        Type type = new TypeParser(MockLoader.instance).decodeType("t2<b,out c>", null, mockModule, mockUnit);
         assertTypeWithParameters(type);
 
         Map<TypeParameter, SiteVariance> varianceOverrides = type.getVarianceOverrides();
@@ -255,7 +255,7 @@ public class TypeParserTests {
 
     @Test
     public void testParamsVariance3(){
-        ProducedType type = new TypeParser(MockLoader.instance).decodeType("t2<in b,c>", null, mockModule, mockUnit);
+        Type type = new TypeParser(MockLoader.instance).decodeType("t2<in b,c>", null, mockModule, mockUnit);
         assertTypeWithParameters(type);
 
         Map<TypeParameter, SiteVariance> varianceOverrides = type.getVarianceOverrides();
@@ -266,13 +266,13 @@ public class TypeParserTests {
         Assert.assertEquals(null, varianceOverrides.get(tps.get(1)));
     }
 
-    private void assertTypeWithParameters(ProducedType type) {
+    private void assertTypeWithParameters(Type type) {
         Assert.assertNotNull(type);
         TypeDeclaration declaration = type.getDeclaration();
         Assert.assertNotNull(declaration);
         Assert.assertTrue(declaration instanceof Class);
         Assert.assertEquals("t2", declaration.getName());
-        List<ProducedType> tal = type.getTypeArgumentList();
+        List<Type> tal = type.getTypeArgumentList();
         Assert.assertEquals(2, tal.size());
         Assert.assertEquals("b", tal.get(0).getDeclaration().getName());
         Assert.assertTrue(tal.get(0).getDeclaration() instanceof Class);
@@ -282,13 +282,13 @@ public class TypeParserTests {
 
     @Test
     public void testUnionParams(){
-        ProducedType type = new TypeParser(MockLoader.instance).decodeType("a|t2<b|c,t2<d,e|f>>", null, mockModule, mockUnit);
+        Type type = new TypeParser(MockLoader.instance).decodeType("a|t2<b|c,t2<d,e|f>>", null, mockModule, mockUnit);
         Assert.assertNotNull(type);
         TypeDeclaration declaration = type.getDeclaration();
         Assert.assertNotNull(declaration);
         Assert.assertTrue(declaration instanceof UnionType);
         UnionType union = (UnionType) declaration;
-        List<ProducedType> caseTypes = union.getCaseTypes();
+        List<Type> caseTypes = union.getCaseTypes();
         Assert.assertEquals(2, caseTypes.size());
         
         // a
@@ -296,7 +296,7 @@ public class TypeParserTests {
         Assert.assertTrue(caseTypes.get(0).getDeclaration() instanceof Class);
         
         // first t2
-        ProducedType firstT2 = caseTypes.get(1);
+        Type firstT2 = caseTypes.get(1);
         TypeDeclaration firstT2Declaration = firstT2.getDeclaration();
         Assert.assertNotNull(firstT2Declaration);
         Assert.assertTrue(firstT2Declaration instanceof Class);
@@ -304,22 +304,22 @@ public class TypeParserTests {
         Assert.assertEquals(2, firstT2.getTypeArgumentList().size());
         
         // b|c
-        ProducedType bc = firstT2.getTypeArgumentList().get(0);
+        Type bc = firstT2.getTypeArgumentList().get(0);
         Assert.assertTrue(bc.getDeclaration() instanceof UnionType);
         Assert.assertEquals(2, bc.getDeclaration().getCaseTypes().size());
         
         // b
-        ProducedType b = bc.getDeclaration().getCaseTypes().get(0);
+        Type b = bc.getDeclaration().getCaseTypes().get(0);
         Assert.assertEquals("b", b.getDeclaration().getName());
         Assert.assertTrue(b.getDeclaration() instanceof Class);
 
         // c
-        ProducedType c = bc.getDeclaration().getCaseTypes().get(1);
+        Type c = bc.getDeclaration().getCaseTypes().get(1);
         Assert.assertEquals("c", c.getDeclaration().getName());
         Assert.assertTrue(c.getDeclaration() instanceof Class);
         
         // second t2
-        ProducedType secondT2 = firstT2.getTypeArgumentList().get(1);
+        Type secondT2 = firstT2.getTypeArgumentList().get(1);
         TypeDeclaration secondT2Declaration = firstT2.getDeclaration();
         Assert.assertNotNull(secondT2Declaration);
         Assert.assertTrue(secondT2Declaration instanceof Class);
@@ -327,22 +327,22 @@ public class TypeParserTests {
         Assert.assertEquals(2, secondT2.getTypeArgumentList().size());
         
         // d
-        ProducedType d = secondT2.getTypeArgumentList().get(0);
+        Type d = secondT2.getTypeArgumentList().get(0);
         Assert.assertEquals("d", d.getDeclaration().getName());
         Assert.assertTrue(d.getDeclaration() instanceof Class);
 
         // e|f
-        ProducedType ef = secondT2.getTypeArgumentList().get(1);
+        Type ef = secondT2.getTypeArgumentList().get(1);
         Assert.assertTrue(ef.getDeclaration() instanceof UnionType);
         Assert.assertEquals(2, ef.getDeclaration().getCaseTypes().size());
         
         // e
-        ProducedType e = ef.getDeclaration().getCaseTypes().get(0);
+        Type e = ef.getDeclaration().getCaseTypes().get(0);
         Assert.assertEquals("e", e.getDeclaration().getName());
         Assert.assertTrue(e.getDeclaration() instanceof Class);
 
         // f
-        ProducedType f = ef.getDeclaration().getCaseTypes().get(1);
+        Type f = ef.getDeclaration().getCaseTypes().get(1);
         Assert.assertEquals("f", f.getDeclaration().getName());
         Assert.assertTrue(f.getDeclaration() instanceof Class);
 
@@ -350,14 +350,14 @@ public class TypeParserTests {
 
     @Test
     public void testQualified(){
-        ProducedType type = new TypeParser(MockLoader.instance).decodeType("a.b", null, mockModule, mockUnit);
+        Type type = new TypeParser(MockLoader.instance).decodeType("a.b", null, mockModule, mockUnit);
         Assert.assertNotNull(type);
         TypeDeclaration declaration = type.getDeclaration();
         Assert.assertNotNull(declaration);
         Assert.assertTrue(declaration instanceof Class);
         Assert.assertEquals("a.b", declaration.getQualifiedNameString());
 
-        ProducedType qualifyingType = type.getQualifyingType();
+        Type qualifyingType = type.getQualifyingType();
         Assert.assertNotNull(qualifyingType);
         TypeDeclaration qualifyingDeclaration = qualifyingType.getDeclaration();
         Assert.assertNotNull(qualifyingDeclaration);
@@ -367,7 +367,7 @@ public class TypeParserTests {
 
     @Test
     public void testQualifiedAndParameterised(){
-        ProducedType type = new TypeParser(MockLoader.instance).decodeType("t2<a,b>.t2<c,d>", null, mockModule, mockUnit);
+        Type type = new TypeParser(MockLoader.instance).decodeType("t2<a,b>.t2<c,d>", null, mockModule, mockUnit);
         Assert.assertNotNull(type);
         TypeDeclaration declaration = type.getDeclaration();
         Assert.assertNotNull(declaration);
@@ -376,16 +376,16 @@ public class TypeParserTests {
         Assert.assertEquals(2, type.getTypeArgumentList().size());
         
         // c
-        ProducedType c = type.getTypeArgumentList().get(0);
+        Type c = type.getTypeArgumentList().get(0);
         Assert.assertEquals("c", c.getDeclaration().getName());
         Assert.assertTrue(c.getDeclaration() instanceof Class);
 
         // d
-        ProducedType d = type.getTypeArgumentList().get(1);
+        Type d = type.getTypeArgumentList().get(1);
         Assert.assertEquals("d", d.getDeclaration().getName());
         Assert.assertTrue(d.getDeclaration() instanceof Class);
 
-        ProducedType qualifyingType = type.getQualifyingType();
+        Type qualifyingType = type.getQualifyingType();
         Assert.assertNotNull(qualifyingType);
         TypeDeclaration qualifyingDeclaration = qualifyingType.getDeclaration();
         Assert.assertNotNull(qualifyingDeclaration);
@@ -394,19 +394,19 @@ public class TypeParserTests {
         Assert.assertEquals(2, qualifyingType.getTypeArgumentList().size());
         
         // a
-        ProducedType a = qualifyingType.getTypeArgumentList().get(0);
+        Type a = qualifyingType.getTypeArgumentList().get(0);
         Assert.assertEquals("a", a.getDeclaration().getName());
         Assert.assertTrue(a.getDeclaration() instanceof Class);
 
         // b
-        ProducedType b = qualifyingType.getTypeArgumentList().get(1);
+        Type b = qualifyingType.getTypeArgumentList().get(1);
         Assert.assertEquals("b", b.getDeclaration().getName());
         Assert.assertTrue(b.getDeclaration() instanceof Class);
     }
 
     @Test
     public void testPackageQualified(){
-        ProducedType type = new TypeParser(MockLoader.instance).decodeType("pkg::b", null, mockModule, mockUnit);
+        Type type = new TypeParser(MockLoader.instance).decodeType("pkg::b", null, mockModule, mockUnit);
         Assert.assertNotNull(type);
         TypeDeclaration declaration = type.getDeclaration();
         Assert.assertNotNull(declaration);
@@ -418,14 +418,14 @@ public class TypeParserTests {
 
     @Test
     public void testComplexQualified(){
-        ProducedType type = new TypeParser(MockLoader.instance).decodeType("<pkg::a&pkg::b>.c", null, mockModule, mockUnit);
+        Type type = new TypeParser(MockLoader.instance).decodeType("<pkg::a&pkg::b>.c", null, mockModule, mockUnit);
         Assert.assertNotNull(type);
         TypeDeclaration declaration = type.getDeclaration();
         Assert.assertNotNull(declaration);
         Assert.assertTrue(declaration instanceof Class);
         Assert.assertEquals("pkg::b.c", declaration.getQualifiedNameString());
 
-        ProducedType qualifyingType = type.getQualifyingType();
+        Type qualifyingType = type.getQualifyingType();
         Assert.assertNotNull(qualifyingType);
         TypeDeclaration qualifyingDeclaration = qualifyingType.getDeclaration();
         Assert.assertNotNull(qualifyingDeclaration);
