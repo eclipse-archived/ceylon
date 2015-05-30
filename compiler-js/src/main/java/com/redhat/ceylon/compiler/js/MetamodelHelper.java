@@ -204,7 +204,7 @@ public class MetamodelHelper {
     }
 
     static void generateMemberLiteral(final Tree.MemberLiteral that, final GenerateJsVisitor gen) {
-        final com.redhat.ceylon.model.typechecker.model.ProducedReference ref = that.getTarget();
+        final com.redhat.ceylon.model.typechecker.model.Reference ref = that.getTarget();
         final Type ltype = that.getType() == null ? null : that.getType().getTypeModel();
         final Declaration d = ref.getDeclaration();
         final Class anonClass = d.isMember()&&d.getContainer() instanceof Class && ((Class)d.getContainer()).isAnonymous()?(Class)d.getContainer():null;
