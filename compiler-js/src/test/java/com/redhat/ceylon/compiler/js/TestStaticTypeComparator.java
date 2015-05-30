@@ -33,7 +33,7 @@ public class TestStaticTypeComparator {
 
     private static Type getType(String name, Type... targs) {
         TypeDeclaration td = getTypeDeclaration(name);
-        return td.getProducedType(null, Arrays.asList(targs));
+        return td.appliedType(null, Arrays.asList(targs));
     }
 
     private static Tree.StaticType staticType(Type pt) {
