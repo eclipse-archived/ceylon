@@ -31,16 +31,16 @@ import com.redhat.ceylon.model.loader.model.FunctionOrValueInterface;
 import com.redhat.ceylon.model.loader.model.LocalDeclarationContainer;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.IntersectionType;
+import com.redhat.ceylon.model.typechecker.model.ModelUtil;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.NothingType;
-import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.SiteVariance;
+import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.model.typechecker.model.TypeParameter;
 import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.model.typechecker.model.UnionType;
 import com.redhat.ceylon.model.typechecker.model.Unit;
-import com.redhat.ceylon.model.typechecker.model.Util;
 
 public abstract class TypeDescriptor {
 
@@ -671,7 +671,7 @@ public abstract class TypeDescriptor {
             UnionType ret = new UnionType(moduleManager.getModelLoader().getUnit());
             ArrayList<Type> caseTypes = new ArrayList<Type>(members.length);
             for(TypeDescriptor member : members)
-                Util.addToUnion(caseTypes,Metamodel.getProducedType(member));
+                ModelUtil.addToUnion(caseTypes,Metamodel.getProducedType(member));
             ret.setCaseTypes(caseTypes);
             return ret.getType();
         }
@@ -750,7 +750,7 @@ public abstract class TypeDescriptor {
 			IntersectionType ret = new IntersectionType(unit);
             ArrayList<Type> satisfiedTypes = new ArrayList<Type>(members.length);
             for(TypeDescriptor member : members)
-            	Util.addToIntersection(satisfiedTypes, Metamodel.getProducedType(member), unit);
+                ModelUtil.addToIntersection(satisfiedTypes, Metamodel.getProducedType(member), unit);
             ret.setSatisfiedTypes(satisfiedTypes);
             return ret.canonicalize().getType();
         }

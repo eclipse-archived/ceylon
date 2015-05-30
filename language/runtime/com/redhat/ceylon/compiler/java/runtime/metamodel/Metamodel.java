@@ -1447,7 +1447,7 @@ public class Metamodel {
             ceylon.language.meta.model.Type<? extends Object> typeY) {
         Type x = Metamodel.getModel(typeX);
         Type y = Metamodel.getModel(typeY);
-        Type unionType = com.redhat.ceylon.model.typechecker.model.Util.unionType(x, y, moduleManager.getModelLoader().getUnit());
+        Type unionType = com.redhat.ceylon.model.typechecker.model.ModelUtil.unionType(x, y, moduleManager.getModelLoader().getUnit());
         return getAppliedMetamodel(unionType);
     }
     
@@ -1456,7 +1456,7 @@ public class Metamodel {
             ceylon.language.meta.model.Type<? extends Object> typeY) {
         Type x = Metamodel.getModel(typeX);
         Type y = Metamodel.getModel(typeY);
-        Type intersectionType = com.redhat.ceylon.model.typechecker.model.Util.intersectionType(x, y, moduleManager.getModelLoader().getUnit());
+        Type intersectionType = com.redhat.ceylon.model.typechecker.model.ModelUtil.intersectionType(x, y, moduleManager.getModelLoader().getUnit());
         return getAppliedMetamodel(intersectionType);
     }
 

@@ -120,7 +120,7 @@ public abstract class FreeClassOrInterface
     
     private void collectMembers(com.redhat.ceylon.model.typechecker.model.TypeDeclaration base, Map<String, Declaration> byName) {
         for(com.redhat.ceylon.model.typechecker.model.Declaration decl : base.getMembers()){
-            if(decl.isShared() && com.redhat.ceylon.model.typechecker.model.Util.isResolvable(decl)){
+            if(decl.isShared() && com.redhat.ceylon.model.typechecker.model.ModelUtil.isResolvable(decl)){
                 Declaration otherDeclaration = byName.get(decl.getName());
                 if(otherDeclaration == null || decl.refines(otherDeclaration))
                     byName.put(decl.getName(), decl);
