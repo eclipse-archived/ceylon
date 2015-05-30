@@ -50,17 +50,17 @@ import com.redhat.ceylon.model.typechecker.model.ClassAlias;
 import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.model.typechecker.model.Constructor;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
+import com.redhat.ceylon.model.typechecker.model.Function;
 import com.redhat.ceylon.model.typechecker.model.Functional;
 import com.redhat.ceylon.model.typechecker.model.Interface;
-import com.redhat.ceylon.model.typechecker.model.Function;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.ParameterList;
 import com.redhat.ceylon.model.typechecker.model.Reference;
-import com.redhat.ceylon.model.typechecker.model.Type;
-import com.redhat.ceylon.model.typechecker.model.TypedReference;
 import com.redhat.ceylon.model.typechecker.model.Scope;
+import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
+import com.redhat.ceylon.model.typechecker.model.TypedReference;
 import com.redhat.ceylon.model.typechecker.model.Value;
 import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.JCAnnotation;
@@ -973,7 +973,7 @@ class CallableInvocation extends DirectInvocation {
         else if(primary instanceof Tree.FunctionArgument)
             functional = ((Tree.FunctionArgument) primary).getDeclarationModel();
         if(functional != null)
-            callableParameters = functional.getParameterLists().get(0).getParameters();
+            callableParameters = functional.getFirstParameterList().getParameters();
         else
             callableParameters = Collections.emptyList();
         functionalParameters = parameterList.getParameters();
@@ -1082,18 +1082,18 @@ class MethodReferenceSpecifierInvocation extends DirectInvocation {
 
     @Override
     protected int getNumArguments() {
-        return method.getParameterLists().get(0).getParameters().size();
+        return method.getFirstParameterList().getParameters().size();
     }
     
     @Override
     protected int getNumParameters() {
-        return method.getParameterLists().get(0).getParameters().size();
+        return method.getFirstParameterList().getParameters().size();
     }
     
     @Override
     protected JCExpression getTransformedArgumentExpression(int argIndex) {
         Type exprType = getParameterType(argIndex);
-        Parameter declaredParameter = ((Functional)getPrimaryDeclaration()).getParameterLists().get(0).getParameters().get(argIndex);
+        Parameter declaredParameter = ((Functional)getPrimaryDeclaration()).getFirstParameterList().getParameters().get(argIndex);
         JCExpression result = getParameterExpression(argIndex);
         result = gen.expressionGen().applyErasureAndBoxing(
                 result, 
@@ -1105,11 +1105,11 @@ class MethodReferenceSpecifierInvocation extends DirectInvocation {
     }
     @Override
     protected Parameter getParameter(int argIndex) {
-        return method.getParameterLists().get(0).getParameters().get(argIndex);
+        return method.getFirstParameterList().getParameters().get(argIndex);
     }
     @Override
     protected boolean isSpread() {
-        return method.getParameterLists().get(0).getParameters().get(getNumArguments() - 1).isSequenced();
+        return method.getFirstParameterList().getParameters().get(getNumArguments() - 1).isSequenced();
     }
     @Override
     protected boolean isArgumentSpread(int argIndex) {
@@ -1359,7 +1359,7 @@ class NamedArgumentInvocation extends Invocation {
 
     private java.util.List<Parameter> parameterList(Parameter param) {
         Functional functional = (Functional)param.getDeclaration();
-        return functional.getParameterLists().get(0).getParameters();
+        return functional.getFirstParameterList().getParameters();
     }
     
     private int parameterIndex(Parameter param) {

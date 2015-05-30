@@ -372,10 +372,6 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
                 writeSatisfiedTypes(typeParam);
                 writeCaseTypes(typeParam);
 
-                if (typeParam.getParameterList() != null) {
-                    writeParameterList(typeParam);
-                }
-
                 close("div");
             }
         }

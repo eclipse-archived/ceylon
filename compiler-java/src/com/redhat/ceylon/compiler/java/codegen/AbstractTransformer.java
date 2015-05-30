@@ -3905,7 +3905,7 @@ public abstract class AbstractTransformer implements Transformation {
             List<JCExpression> initialElements) {
         // The type that the java varargs parameter erases to: 
         // this is the type of the array which we need to construct
-        java.util.List<Parameter> pl = ((Functional)invocation.getPrimaryDeclaration()).getParameterLists().get(0).getParameters();
+        java.util.List<Parameter> pl = ((Functional)invocation.getPrimaryDeclaration()).getFirstParameterList().getParameters();
         Parameter varargsParameter = pl.get(pl.size()-1);
         Type arrayType = simplifyType(typeFact().getIteratedType(varargsParameter.getType()));
         while (arrayType.getDeclaration() instanceof TypeParameter) {

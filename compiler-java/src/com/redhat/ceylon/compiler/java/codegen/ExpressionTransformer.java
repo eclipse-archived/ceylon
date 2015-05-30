@@ -3236,9 +3236,9 @@ public class ExpressionTransformer extends AbstractTransformer {
     private List<ExpressionAndType> transformArgumentsForCallableSpecifier(CallableSpecifierInvocation invocation) {
         List<ExpressionAndType> result = List.<ExpressionAndType>nil();
         int argIndex = 0;
-        for(Parameter parameter : invocation.getMethod().getParameterLists().get(0).getParameters()) {
+        for(Parameter parameter : invocation.getMethod().getFirstParameterList().getParameters()) {
             Type exprType = expressionGen().getTypeForParameter(parameter, null, this.TP_TO_BOUND);
-            Parameter declaredParameter = invocation.getMethod().getParameterLists().get(0).getParameters().get(argIndex);
+            Parameter declaredParameter = invocation.getMethod().getFirstParameterList().getParameters().get(argIndex);
             
             JCExpression arg = naming.makeName(parameter.getModel(), Naming.NA_IDENT);
             
@@ -3740,7 +3740,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                         ce);
             } else {
                 // direct invocation
-                java.util.List<Parameter> parameters = ((Functional)primaryDeclaration).getParameterLists().get(0).getParameters();
+                java.util.List<Parameter> parameters = ((Functional)primaryDeclaration).getFirstParameterList().getParameters();
                 invocation = new PositionalInvocation(this, 
                         primary, primaryDeclaration,producedReference,
                         ce,
@@ -3761,7 +3761,7 @@ public class ExpressionTransformer extends AbstractTransformer {
     public JCExpression transformFunctional(Tree.StaticMemberOrTypeExpression expr,
             Functional functional) {
         return CallableBuilder.methodReference(gen(), expr, 
-                    functional.getParameterLists().get(0));
+                    functional.getFirstParameterList());
     }
 
     //
@@ -4156,7 +4156,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             return utilInvocation().checkNull(callBuilder.build());
         } else if (decl instanceof Function) {
             Function method = (Function)decl;
-            final ParameterList parameterList = method.getParameterLists().get(0);
+            final ParameterList parameterList = method.getFirstParameterList();
             Type qualifyingType = qmte.getPrimary().getTypeModel();
             Tree.TypeArguments typeArguments = qmte.getTypeArguments();
             Reference producedReference = method.appliedReference(qualifyingType, typeArguments.getTypeModels());
@@ -4164,7 +4164,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                     method, producedReference, parameterList));
         } else if (decl instanceof Class) {
             Class class_ = (Class)decl;
-            final ParameterList parameterList = class_.getParameterLists().get(0);
+            final ParameterList parameterList = class_.getFirstParameterList();
             Reference producedReference = qmte.getTarget();
             return utilInvocation().checkNull(makeJavaStaticInvocation(gen(),
                     class_, producedReference, parameterList));

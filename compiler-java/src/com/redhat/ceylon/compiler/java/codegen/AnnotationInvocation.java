@@ -102,7 +102,7 @@ public class AnnotationInvocation {
      * The parameters of the primary
      */
     public List<Parameter> getParameters() {
-        return ((Functional)primary).getParameterLists().get(0).getParameters();
+        return ((Functional)primary).getFirstParameterList().getParameters();
     }
     
     /**

@@ -73,23 +73,23 @@ import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.model.typechecker.model.Constructor;
 import com.redhat.ceylon.model.typechecker.model.ControlBlock;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
+import com.redhat.ceylon.model.typechecker.model.Function;
+import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
 import com.redhat.ceylon.model.typechecker.model.Functional;
 import com.redhat.ceylon.model.typechecker.model.Generic;
 import com.redhat.ceylon.model.typechecker.model.Interface;
-import com.redhat.ceylon.model.typechecker.model.Function;
-import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
 import com.redhat.ceylon.model.typechecker.model.Package;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.ParameterList;
 import com.redhat.ceylon.model.typechecker.model.Reference;
-import com.redhat.ceylon.model.typechecker.model.Type;
-import com.redhat.ceylon.model.typechecker.model.TypedReference;
 import com.redhat.ceylon.model.typechecker.model.Scope;
 import com.redhat.ceylon.model.typechecker.model.Setter;
+import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.TypeAlias;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.model.typechecker.model.TypeParameter;
 import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
+import com.redhat.ceylon.model.typechecker.model.TypedReference;
 import com.redhat.ceylon.model.typechecker.model.Unit;
 import com.redhat.ceylon.model.typechecker.model.Value;
 import com.sun.tools.javac.code.Flags;
@@ -305,12 +305,12 @@ public class ClassTransformer extends AbstractTransformer {
 
     private Iterable<java.util.List<Parameter>> overloads(Functional f) {
         java.util.List<java.util.List<Parameter>> result = new ArrayList<java.util.List<Parameter>>();
-        result.add(f.getParameterLists().get(0).getParameters());
+        result.add(f.getFirstParameterList().getParameters());
         int ii = 0;
-        for (Parameter p : f.getParameterLists().get(0).getParameters()) {
+        for (Parameter p : f.getFirstParameterList().getParameters()) {
             if (p.isDefaulted()
                     || (p.isSequenced() && !p.isAtLeastOne())) {
-                result.add(f.getParameterLists().get(0).getParameters().subList(0, ii));
+                result.add(f.getFirstParameterList().getParameters().subList(0, ii));
             }
             ii++;
         }
@@ -938,7 +938,7 @@ public class ClassTransformer extends AbstractTransformer {
             Class cls, Constructor ctor, ClassDefinitionBuilder instantiatorDeclCb, 
             ClassDefinitionBuilder instantiatorImplCb, Tree.Declaration node, Tree.ParameterList pl) {
         // TODO Instantiators on companion classes
-        ParameterList parameterList = ctor != null ? ctor.getParameterLists().get(0) : cls.getParameterList();
+        ParameterList parameterList = ctor != null ? ctor.getFirstParameterList() : cls.getParameterList();
         if (Decl.withinInterface(cls)) {
             DefaultedArgumentOverload overloaded = new DefaultedArgumentInstantiator(daoAbstract, cls, ctor);
             MethodDefinitionBuilder instBuilder = overloaded.makeOverload(
@@ -1609,7 +1609,7 @@ public class ClassTransformer extends AbstractTransformer {
             makeFieldForParameter(classBuilder, paramModel, memberDecl);
             Function method = (Function)paramModel.getModel();
 
-            java.util.List<Parameter> parameters = method.getParameterLists().get(0).getParameters();
+            java.util.List<Parameter> parameters = method.getFirstParameterList().getParameters();
             CallBuilder callBuilder = CallBuilder.instance(this).invoke(
                     naming.makeQualIdent(naming.makeName(method, Naming.NA_IDENT), 
                             Naming.getCallableMethodName(method)));
@@ -1775,14 +1775,14 @@ public class ClassTransformer extends AbstractTransformer {
             java.util.List<java.util.List<Type>> producedTypeParameterBounds = producedTypeParameterBounds(
                     typedMember, method);
             final java.util.List<TypeParameter> typeParameters = method.getTypeParameters();
-            final java.util.List<Parameter> parameters = method.getParameterLists().get(0).getParameters();
+            final java.util.List<Parameter> parameters = method.getFirstParameterList().getParameters();
 
             for (Parameter param : parameters) {
 
                 if (Strategy.hasDefaultParameterOverload(param)) {
                     MethodDefinitionBuilder overload = new DefaultedArgumentMethodTyped(null, MethodDefinitionBuilder.method(this, method), typedMember)
                     .makeOverload(
-                            method.getParameterLists().get(0),
+                            method.getFirstParameterList(),
                             param,
                             typeParameters);
                     overload.modifiers(PUBLIC | ABSTRACT);
@@ -1798,7 +1798,7 @@ public class ClassTransformer extends AbstractTransformer {
                     producedTypeParameterBounds, 
                     typedMember.getType(), 
                     naming.selector(method), 
-                    method.getParameterLists().get(0).getParameters(),
+                    method.getFirstParameterList().getParameters(),
                     ((Function) member).getTypeErased(),
                     null, 
                     false);
@@ -2044,9 +2044,9 @@ public class ClassTransformer extends AbstractTransformer {
                     }
                     java.util.List<java.util.List<Type>> producedTypeParameterBounds = producedTypeParameterBounds(
                             typedMember, subMethod);
-                    final TypedReference refinedTypedMember = model.getType().getTypedMember(subMethod, Collections.<Type>emptyList());
+//                    final TypedReference refinedTypedMember = model.getType().getTypedMember(subMethod, Collections.<Type>emptyList());
                     final java.util.List<TypeParameter> typeParameters = subMethod.getTypeParameters();
-                    final java.util.List<Parameter> parameters = subMethod.getParameterLists().get(0).getParameters();
+                    final java.util.List<Parameter> parameters = subMethod.getFirstParameterList().getParameters();
                     boolean hasOverloads = false;
                     if (!satisfiedInterfaces.contains((Interface)method.getContainer())) {
 
@@ -2075,7 +2075,7 @@ public class ClassTransformer extends AbstractTransformer {
                                         && Decl.equal(method, subMethod)) {
                                     MethodDefinitionBuilder overload = new DefaultedArgumentMethodTyped(new DaoThis((Tree.AnyMethod)null, null), MethodDefinitionBuilder.method(this, subMethod), typedMember)
                                         .makeOverload(
-                                            subMethod.getParameterLists().get(0),
+                                            subMethod.getFirstParameterList(),
                                             param,
                                             typeParameters);
                                     classBuilder.method(overload);
@@ -2098,7 +2098,7 @@ public class ClassTransformer extends AbstractTransformer {
                                 producedTypeParameterBounds, 
                                 typedMember.getType(), 
                                 naming.selector(method), 
-                                method.getParameterLists().get(0).getParameters(),
+                                method.getFirstParameterList().getParameters(),
                                 ((Function) member).getTypeErased(),
                                 null);
                         classBuilder.method(concreteMemberDelegate);
@@ -2115,7 +2115,7 @@ public class ClassTransformer extends AbstractTransformer {
                                 producedTypeParameterBounds,
                                 typedMember.getType(), 
                                 Naming.selector(method, Naming.NA_CANONICAL_METHOD), 
-                                method.getParameterLists().get(0).getParameters(),
+                                method.getFirstParameterList().getParameters(),
                                 ((Function) member).getTypeErased(),
                                 naming.selector(method));
                         classBuilder.method(canonicalMethod);

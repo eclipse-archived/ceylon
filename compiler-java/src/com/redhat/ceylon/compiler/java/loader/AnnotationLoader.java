@@ -169,7 +169,7 @@ public class AnnotationLoader {
             term.setInstantiation(nested);
             return term;
         } else {
-            AnnotationTerm term = decode(Decl.getModuleContainer(method), method.getParameterLists().get(0).getParameters(), ai, parameter, dpm, path, code);
+            AnnotationTerm term = decode(Decl.getModuleContainer(method), method.getFirstParameterList().getParameters(), ai, parameter, dpm, path, code);
             return term;
         }
     }
@@ -187,7 +187,7 @@ public class AnnotationLoader {
     
     private void loadAnnotationConstructorDefaultedParameters(
             LazyMethod method, MethodMirror meth, AnnotationInvocation ai) {
-        for (Parameter ctorParam : method.getParameterLists().get(0).getParameters()) {
+        for (Parameter ctorParam : method.getFirstParameterList().getParameters()) {
             AnnotationConstructorParameter acp = new AnnotationConstructorParameter();
             acp.setParameter(ctorParam);
             if (ctorParam.isDefaulted()) {

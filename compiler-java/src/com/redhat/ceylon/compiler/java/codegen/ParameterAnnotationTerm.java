@@ -60,7 +60,7 @@ public class ParameterAnnotationTerm extends AnnotationTerm implements Annotatio
     @Override
     public int encode(AbstractTransformer gen, ListBuffer<JCExpression> instantiations) {
         Parameter parameter = getSourceParameter();
-        int index = ((Functional)parameter.getDeclaration()).getParameterLists().get(0).getParameters().indexOf(parameter);
+        int index = ((Functional)parameter.getDeclaration()).getFirstParameterList().getParameters().indexOf(parameter);
         if (isSpread()) {
             index += 256;
         }

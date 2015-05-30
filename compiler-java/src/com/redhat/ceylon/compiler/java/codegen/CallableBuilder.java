@@ -264,7 +264,7 @@ public class CallableBuilder {
             Type typeModel, 
             final Functional methodClassOrCtor, 
             Reference producedReference) {
-        final ParameterList parameterList = methodClassOrCtor.getParameterLists().get(0);
+        final ParameterList parameterList = methodClassOrCtor.getFirstParameterList();
         Type type = typeModel;
         JCExpression target;
         boolean hasOuter = !(methodClassOrCtor instanceof Constructor
@@ -430,11 +430,11 @@ public class CallableBuilder {
             Type typeModel, 
             final Functional methodOrClass, 
             Reference producedReference) {
-        final ParameterList parameterList = methodOrClass.getParameterLists().get(0);
+        final ParameterList parameterList = methodOrClass.getFirstParameterList();
         CallableBuilder inner = new CallableBuilder(gen, null, typeModel, parameterList);
         
         ArrayList<Type> pt = new ArrayList<>();
-        for (Parameter p : methodOrClass.getParameterLists().get(0).getParameters()) {
+        for (Parameter p : methodOrClass.getFirstParameterList().getParameters()) {
             pt.add(p.getType());
         }
         inner.parameterTypes = pt; 

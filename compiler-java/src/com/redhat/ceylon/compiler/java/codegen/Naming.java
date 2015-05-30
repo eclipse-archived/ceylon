@@ -635,12 +635,12 @@ public class Naming extends NamingBase implements LocalId {
         // get/is with at least one more letter, no parameter and non-void type
         if(((name.length() >= 4 && name.startsWith("get"))
              || name.length() >= 3 && name.startsWith("is"))
-            && method.getParameterLists().get(0).getParameters().isEmpty()
+            && method.getFirstParameterList().getParameters().isEmpty()
             && !AbstractTransformer.isAnything(method.getType()))
             return quote(name);
         // set with one parameter and void type
         if((name.length() >= 4 && name.startsWith("set"))
-           && method.getParameterLists().get(0).getParameters().size() == 1
+           && method.getFirstParameterList().getParameters().size() == 1
            && AbstractTransformer.isAnything(method.getType()))
             return quote(name);
         return name;
@@ -1985,7 +1985,7 @@ public class Naming extends NamingBase implements LocalId {
     }
     
     public static String getCallableMethodName(Function method) {
-        java.util.List<Parameter> parameters = method.getParameterLists().get(0).getParameters();
+        java.util.List<Parameter> parameters = method.getFirstParameterList().getParameters();
         boolean variadic = !parameters.isEmpty() && parameters.get(parameters.size()-1).isSequenced();
         return variadic ? getCallableVariadicMethodName() : getCallableMethodName();
     }

@@ -209,7 +209,7 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
                     }
                     arguments.add(gen.naming.makeNamedConstructorName(delegation.getConstructor(), true));
                     
-                    for (Parameter p : delegation.getConstructor().getParameterLists().get(0).getParameters()) {
+                    for (Parameter p : delegation.getConstructor().getFirstParameterList().getParameters()) {
                         arguments.add(gen.naming.makeName(p.getModel(), Naming.NA_IDENT));
                     }
                     delegateExpr = gen.make().Exec(gen.make().Apply(null, 
