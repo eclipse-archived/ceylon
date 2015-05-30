@@ -647,9 +647,13 @@ public class TypeUtils {
                     seq = 2;
                 }
                 //Handle Sequence, for nonempty variadic parameters
-                metamodelTypeNameOrList(resolveTargs, node, gen.getCurrentPackage(), _t2.getTypeArgumentList().get(0), gen);
                 if (nameAndMetatype) {
+                    metamodelTypeNameOrList(resolveTargs, node, gen.getCurrentPackage(), _t2.getTypeArgumentList().get(0), gen);
                     gen.out(",seq:", Integer.toString(seq));
+                } else {
+                    gen.out(gen.getClAlias(), "mkseq$(");
+                    metamodelTypeNameOrList(resolveTargs, node, gen.getCurrentPackage(), _t2.getTypeArgumentList().get(0), gen);
+                    gen.out(",", Integer.toString(seq), ")");
                 }
                 _tuple = null;
             } else if (_tuple.isUnion()) {
