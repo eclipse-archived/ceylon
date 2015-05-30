@@ -1317,7 +1317,8 @@ alias Y => List<X>;  //error: circular type alias definition]]></programlisting>
                 instantiations of a generic type <literal>G</literal>, and if the type 
                 <literal>Z</literal> is formed by replacing every covariant argument in 
                 <literal>Y</literal> with the intersection of the upper bounds of the 
-                corresponding type parameter of <literal>G</literal>, then if 
+                corresponding type parameter of <literal>G</literal> except where the 
+                argument is already a subtype of the upper bounds, then if 
                 <literal>X</literal> covers <literal>Z</literal>, then <literal>X</literal> 
                 also covers <literal>Y</literal>.</para>
             </listitem>
