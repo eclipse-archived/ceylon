@@ -36,7 +36,6 @@ import com.redhat.ceylon.model.typechecker.model.TypeParameter;
 import com.redhat.ceylon.model.typechecker.model.UnionType;
 import com.redhat.ceylon.model.typechecker.model.Unit;
 import com.redhat.ceylon.model.typechecker.model.UnknownType;
-import com.redhat.ceylon.model.typechecker.model.Util;
 import com.redhat.ceylon.model.typechecker.model.Value;
 import com.redhat.ceylon.model.typechecker.util.ModuleManager;
 
@@ -238,9 +237,8 @@ public class JsonPackage extends com.redhat.ceylon.model.typechecker.model.Packa
             m.remove("of");
         }
         if (m.containsKey(MetamodelGenerator.KEY_SATISFIES)) {
-            for (ProducedType sat : parseTypeList((List<Map<String,Object>>)m.remove(MetamodelGenerator.KEY_SATISFIES), allparms)) {
-                Util.addToIntersection(cls.getSatisfiedTypes(), sat, u2);
-            }
+            List<Map<String,Object>> stypes = (List<Map<String,Object>>)m.remove(MetamodelGenerator.KEY_SATISFIES);
+            cls.setSatisfiedTypes(parseTypeList(stypes, allparms));
         }
         if (m.containsKey(MetamodelGenerator.KEY_OBJECTS)) {
             for (Map.Entry<String,Map<String,Object>> inner : ((Map<String,Map<String,Object>>)m.remove(MetamodelGenerator.KEY_OBJECTS)).entrySet()) {
@@ -374,9 +372,7 @@ public class JsonPackage extends com.redhat.ceylon.model.typechecker.model.Packa
             if (tp.containsKey(MetamodelGenerator.KEY_SATISFIES)) {
                 @SuppressWarnings("unchecked")
                 final List<Map<String,Object>> stypes = (List<Map<String,Object>>)tp.get(MetamodelGenerator.KEY_SATISFIES);
-                for (ProducedType sat : parseTypeList(stypes, allparms)) {
-                    Util.addToIntersection(tparm.getSatisfiedTypes(), sat, u2);
-                }
+                tparm.setSatisfiedTypes(parseTypeList(stypes, allparms));
                 tparm.setConstrained(true);
             } else if (tp.containsKey("of")) {
                 @SuppressWarnings("unchecked")
@@ -616,7 +612,7 @@ public class JsonPackage extends com.redhat.ceylon.model.typechecker.model.Packa
         }
         if (m.containsKey(MetamodelGenerator.KEY_SATISFIES)) {
             for (ProducedType s : parseTypeList((List<Map<String,Object>>)m.remove(MetamodelGenerator.KEY_SATISFIES), allparms)) {
-                Util.addToIntersection(t.getSatisfiedTypes(), s, u2);
+                t.getSatisfiedTypes().add(s);
             }
         }
         addAttributesAndMethods(m, t, allparms);
@@ -659,9 +655,8 @@ public class JsonPackage extends com.redhat.ceylon.model.typechecker.model.Packa
                 }
             }
             if (m.containsKey(MetamodelGenerator.KEY_SATISFIES)) {
-                for (ProducedType sat : parseTypeList((List<Map<String,Object>>)m.remove(MetamodelGenerator.KEY_SATISFIES), existing)) {
-                    Util.addToIntersection(type.getSatisfiedTypes(), sat, u2);
-                }
+                List<Map<String,Object>> stypes = (List<Map<String,Object>>)m.remove(MetamodelGenerator.KEY_SATISFIES);
+                type.setSatisfiedTypes(parseTypeList(stypes, existing));
             }
             if (m.containsKey(MetamodelGenerator.KEY_INTERFACES)) {
                 for (Map.Entry<String,Map<String,Object>> inner : ((Map<String,Map<String,Object>>)m.remove(MetamodelGenerator.KEY_INTERFACES)).entrySet()) {
@@ -738,9 +733,8 @@ public class JsonPackage extends com.redhat.ceylon.model.typechecker.model.Packa
             alias.setCaseTypes(parseTypeList((List<Map<String,Object>>)m.remove("of"), allparms));
         }
         if (m.containsKey(MetamodelGenerator.KEY_SATISFIES)) {
-            for (ProducedType sat :parseTypeList((List<Map<String,Object>>)m.remove(MetamodelGenerator.KEY_SATISFIES), allparms)) {
-                Util.addToIntersection(alias.getSatisfiedTypes(), sat, u2);
-            }
+            List<Map<String,Object>> stypes = (List<Map<String,Object>>)m.remove(MetamodelGenerator.KEY_SATISFIES);
+            alias.setSatisfiedTypes(parseTypeList(stypes, allparms));
         }
         m.clear();
         m.put(MetamodelGenerator.KEY_METATYPE, alias);
@@ -769,14 +763,14 @@ public class JsonPackage extends com.redhat.ceylon.model.typechecker.model.Packa
             if ("u".equals(m.get("comp"))) {
                 UnionType ut = new UnionType(u2);
                 for (Map<String, Object> tmap : tmaps) {
-                    Util.addToUnion(types, getTypeFromJson(tmap, container, typeParams));
+                    types.add(getTypeFromJson(tmap, container, typeParams));
                 }
                 ut.setCaseTypes(types);
                 td = ut;
             } else if ("i".equals(m.get("comp"))) {
                 IntersectionType it = new IntersectionType(u2);
                 for (Map<String, Object> tmap : tmaps) {
-                    Util.addToIntersection(types, getTypeFromJson(tmap, container, typeParams), u2);
+                    types.add(getTypeFromJson(tmap, container, typeParams));
                 }
                 it.setSatisfiedTypes(types);
                 td = it;
