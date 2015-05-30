@@ -119,7 +119,7 @@ public class RuntimeModuleManager extends ReflectionModuleManager {
     }
     
     @SuppressWarnings("serial")
-    private final LinkedHashMap<TypeDescriptor, Type> producedTypeCache = 
+    private final LinkedHashMap<TypeDescriptor, Type> typeCache = 
     		new LinkedHashMap<TypeDescriptor, Type>(100, (float)0.75, true) {
     	@Override
     	protected boolean removeEldestEntry
@@ -128,11 +128,11 @@ public class RuntimeModuleManager extends ReflectionModuleManager {
     	}
     };
     
-    public Type getCachedProducedType(TypeDescriptor td) {
-        Type pt = producedTypeCache.get(td);
+    public Type getCachedType(TypeDescriptor td) {
+        Type pt = typeCache.get(td);
         if (pt == null) {
-            pt = td.toProducedType(this);
-            producedTypeCache.put(td, pt);
+            pt = td.toType(this);
+            typeCache.put(td, pt);
         }
         return pt;
     }
@@ -157,8 +157,8 @@ public class RuntimeModuleManager extends ReflectionModuleManager {
         
         if(instanceType == null)
             return false;
-        Type pt1 = getCachedProducedType(instanceType);
-        Type pt2  = getCachedProducedType(type);
+        Type pt1 = getCachedType(instanceType);
+        Type pt2  = getCachedType(type);
         boolean result = pt1.isSubtypeOf(pt2);
         isCache.put(key, result);
         return result;

@@ -50,7 +50,7 @@ public abstract class TypeDescriptor {
     //
     // Methods
 
-    public abstract Type toProducedType(RuntimeModuleManager moduleManager);
+    public abstract Type toType(RuntimeModuleManager moduleManager);
     
     public abstract java.lang.Class<?> getArrayElementClass();
     
@@ -270,7 +270,7 @@ public abstract class TypeDescriptor {
         }
 
         @Override
-        public Type toProducedType(RuntimeModuleManager moduleManager){
+        public Type toType(RuntimeModuleManager moduleManager){
             return toProducedType(null, moduleManager);
         }
         
@@ -376,7 +376,7 @@ public abstract class TypeDescriptor {
         }
 
         @Override
-        public Type toProducedType(RuntimeModuleManager moduleManager) {
+        public Type toType(RuntimeModuleManager moduleManager) {
             // FIXME: is this really enough?
             String typeName = klass.getName();
             // use the toplevel wrapper declaration
@@ -508,7 +508,7 @@ public abstract class TypeDescriptor {
         }
 
         @Override
-        public Type toProducedType(RuntimeModuleManager moduleManager) {
+        public Type toType(RuntimeModuleManager moduleManager) {
             Type qualifyingType = Metamodel.getProducedType(container);
             return ((QualifiableTypeDescriptor)member).toProducedType(qualifyingType, moduleManager);
         }
@@ -544,7 +544,7 @@ public abstract class TypeDescriptor {
         }
 
         @Override
-        public Type toProducedType(RuntimeModuleManager moduleManager) {
+        public Type toType(RuntimeModuleManager moduleManager) {
             return new NothingType(moduleManager.getModelLoader().getUnit()).getType();
         }
         
@@ -667,7 +667,7 @@ public abstract class TypeDescriptor {
         }
 
         @Override
-        public Type toProducedType(RuntimeModuleManager moduleManager) {
+        public Type toType(RuntimeModuleManager moduleManager) {
             UnionType ret = new UnionType(moduleManager.getModelLoader().getUnit());
             ArrayList<Type> caseTypes = new ArrayList<Type>(members.length);
             for(TypeDescriptor member : members)
@@ -745,7 +745,7 @@ public abstract class TypeDescriptor {
         }
 
         @Override
-        public Type toProducedType(RuntimeModuleManager moduleManager) {
+        public Type toType(RuntimeModuleManager moduleManager) {
             Unit unit = moduleManager.getModelLoader().getUnit();
 			IntersectionType ret = new IntersectionType(unit);
             ArrayList<Type> satisfiedTypes = new ArrayList<Type>(members.length);

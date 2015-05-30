@@ -303,7 +303,7 @@ public class Metamodel {
         synchronized(getLock()){
             producedType = typeDescriptorToProducedType.get(reifiedType);
             if(producedType == null){
-                producedType = reifiedType.toProducedType(moduleManager);
+                producedType = reifiedType.toType(moduleManager);
                 typeDescriptorToProducedType.put(reifiedType, producedType);
             }
         }
