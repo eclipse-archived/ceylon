@@ -463,7 +463,7 @@ public class MetamodelGenerator {
         if (d.getName() != null) {
             m.put(KEY_NAME, d.getName());
         }
-        final ParameterList plist = d.getParameterLists().get(0);
+        final ParameterList plist = d.getFirstParameterList();
         if (!plist.getParameters().isEmpty()) {
             m.put(KEY_PARAMS, parameterListMap(plist, d));
         }

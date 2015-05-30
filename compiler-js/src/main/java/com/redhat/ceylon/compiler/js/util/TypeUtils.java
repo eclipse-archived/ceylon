@@ -809,13 +809,13 @@ public class TypeUtils {
             if (d instanceof Function) {
                 gen.out(",", MetamodelGenerator.KEY_PARAMS, ":");
                 //Parameter types of the first parameter list
-                encodeParameterListForRuntime(false, that, ((Function)d).getParameterLists().get(0), gen);
+                encodeParameterListForRuntime(false, that, ((Function)d).getFirstParameterList(), gen);
                 tparms = ((Function) d).getTypeParameters();
             }
 
         } else if (d instanceof Constructor) {
             gen.out(",", MetamodelGenerator.KEY_PARAMS, ":");
-            encodeParameterListForRuntime(false, that, ((Constructor)d).getParameterLists().get(0), gen);
+            encodeParameterListForRuntime(false, that, ((Constructor)d).getFirstParameterList(), gen);
         }
         if (!d.isToplevel()) {
             //Find the first container that is a Declaration
@@ -1224,7 +1224,7 @@ public class TypeUtils {
                         gen.out(gen.getNames().name(ad), "(");
                     }
                     if (a.getPositionalArguments() == null) {
-                        for (Parameter p : ((Function)ad).getParameterLists().get(0).getParameters()) {
+                        for (Parameter p : ((Function)ad).getFirstParameterList().getParameters()) {
                             String v = a.getNamedArguments().get(p.getName());
                             gen.out(v == null ? "undefined" : v);
                         }

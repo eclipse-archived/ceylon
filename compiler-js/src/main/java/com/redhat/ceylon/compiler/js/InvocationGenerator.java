@@ -14,19 +14,17 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.Constructor;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
+import com.redhat.ceylon.model.typechecker.model.Function;
 import com.redhat.ceylon.model.typechecker.model.Functional;
 import com.redhat.ceylon.model.typechecker.model.Interface;
-import com.redhat.ceylon.model.typechecker.model.Function;
-import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
+import com.redhat.ceylon.model.typechecker.model.ModelUtil;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.ParameterList;
-import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.SiteVariance;
-import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
+import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.TypeParameter;
 import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.model.typechecker.model.UnionType;
-import com.redhat.ceylon.model.typechecker.model.ModelUtil;
 import com.redhat.ceylon.model.typechecker.model.Value;
 
 /** Generates js code for invocation expression (named and positional). */
@@ -243,7 +241,7 @@ public class InvocationGenerator {
                 Functional bmed = (Functional)((Tree.StaticMemberOrTypeExpression)typeArgSource).getDeclaration();
                 //If there are fewer arguments than there are parameters...
                 final int argsSize = argList.getPositionalArguments().size();
-                int paramArgDiff = ((Functional) bmed).getParameterLists().get(0).getParameters().size() - argsSize;
+                int paramArgDiff = ((Functional) bmed).getFirstParameterList().getParameters().size() - argsSize;
                 if (paramArgDiff > 0) {
                     final Tree.PositionalArgument parg = argsSize > 0 ? argList.getPositionalArguments().get(argsSize-1) : null;
                     if (parg instanceof Tree.Comprehension || parg instanceof Tree.SpreadArgument) {
@@ -309,7 +307,7 @@ public class InvocationGenerator {
 
     void applyNamedArguments(Tree.NamedArgumentList argList, Functional func,
                 Map<String, String> argVarNames, boolean superAccess, Map<TypeParameter, Type> targs) {
-        final ParameterList plist = func.getParameterLists().get(0);
+        final ParameterList plist = func.getFirstParameterList();
         boolean first=true;
         if (superAccess) {
             gen.out(".call(this");
@@ -479,7 +477,7 @@ public class InvocationGenerator {
                         final Declaration pdd = pd.getDeclaration();
                         boolean found = false;
                         if (pdd instanceof Function) {
-                            moreParams = ((Function)pdd).getParameterLists().get(0).getParameters();
+                            moreParams = ((Function)pdd).getFirstParameterList().getParameters();
                         } else if (pdd instanceof Class) {
                             moreParams = ((Class)pdd).getParameterList().getParameters();
                         } else {
@@ -640,7 +638,7 @@ public class InvocationGenerator {
     void describeMethodParameters(Tree.Term term) {
         ParameterList plist = null;
         if (term instanceof Tree.FunctionArgument) {
-            plist = ((Function)(((Tree.FunctionArgument)term).getDeclarationModel())).getParameterLists().get(0);
+            plist = ((Function)(((Tree.FunctionArgument)term).getDeclarationModel())).getFirstParameterList();
         } else if (term instanceof Tree.MemberOrTypeExpression) {
             Tree.MemberOrTypeExpression mote = (Tree.MemberOrTypeExpression)term;
             if (mote.getStaticMethodReference()) {
@@ -652,7 +650,7 @@ public class InvocationGenerator {
                 param.setModel(pm);
                 param.setName("_0");
             } else if (mote.getDeclaration() instanceof Function) {
-                plist = ((Function)((Tree.MemberOrTypeExpression)term).getDeclaration()).getParameterLists().get(0);
+                plist = ((Function)((Tree.MemberOrTypeExpression)term).getDeclaration()).getFirstParameterList();
             }
         } else if (term instanceof Tree.InvocationExpression) {
             TypeUtils.encodeCallableArgumentsAsParameterListForRuntime(term, term.getTypeModel(), gen);

@@ -79,7 +79,7 @@ public class TestSiteVariance {
         Assert.assertFalse("Missing variance overrides in return type",
                 m2.getType().getVarianceOverrides().isEmpty());
         Assert.assertFalse("Missing variance overrides in parameter",
-                m2.getParameterLists().get(0).getParameters().get(0).getType()
+                m2.getFirstParameterList().getParameters().get(0).getType()
                     .getVarianceOverrides().isEmpty());
         jsc = new JsCompiler(tc, opts);
         jsc.generate();

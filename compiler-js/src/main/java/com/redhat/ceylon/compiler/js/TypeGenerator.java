@@ -777,7 +777,7 @@ public class TypeGenerator {
                 callAbstract = superdec instanceof Class ? superdec==container :
                     ((Constructor)superdec).getContainer()==container;
                 superplist = superdec instanceof Class ? ((Class)superdec).getParameterList() :
-                    ((Constructor)superdec).getParameterLists().get(0);
+                    ((Constructor)superdec).getFirstParameterList();
             }
             gen.out("function ", fullName);
             final boolean forceAbstract = localConstructorDelegation(that.getDeclarationModel(), constructors);

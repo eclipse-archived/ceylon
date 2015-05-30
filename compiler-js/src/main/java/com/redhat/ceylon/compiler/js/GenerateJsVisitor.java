@@ -1290,7 +1290,7 @@ public class GenerateJsVisitor extends Visitor
                         qualify(params, m);
                         out(names.name(m), "$defs$", pd.getName(), "(");
                         boolean firstParam=true;
-                        for (Parameter p : m.getParameterLists().get(0).getParameters()) {
+                        for (Parameter p : m.getFirstParameterList().getParameters()) {
                             if (firstParam){firstParam=false;}else out(",");
                             out(names.name(p));
                         }
@@ -2085,7 +2085,7 @@ public class GenerateJsVisitor extends Visitor
                     if (td instanceof Class) {
                         params = ((Class)td).getParameterList().getParameters();
                     } else if (td instanceof Constructor) {
-                        params = ((Constructor)td).getParameterLists().get(0).getParameters();
+                        params = ((Constructor)td).getFirstParameterList().getParameters();
                     }
                     for (int i=0;i<params.size(); i++) {
                         if (i>0)out(",");
@@ -2363,7 +2363,7 @@ public class GenerateJsVisitor extends Visitor
                                 if (moval instanceof Function) {
                                     //Add parameters
                                     TypeUtils.encodeParameterListForRuntime(true, specStmt,
-                                            ((Function)moval).getParameterLists().get(0), GenerateJsVisitor.this);
+                                            ((Function)moval).getFirstParameterList(), GenerateJsVisitor.this);
                                     out(",");
                                 } else {
                                     //TODO extract parameters from Value
@@ -2388,7 +2388,7 @@ public class GenerateJsVisitor extends Visitor
                         out(names.name(moval), "=function ", names.name(moval), "(");
                         //Build the parameter list, we'll use it several times
                         final StringBuilder paramNames = new StringBuilder();
-                        final List<Parameter> params = ((Function) moval).getParameterLists().get(0).getParameters();
+                        final List<Parameter> params = ((Function) moval).getFirstParameterList().getParameters();
                         for (Parameter p : params) {
                             if (paramNames.length() > 0) paramNames.append(",");
                             paramNames.append(names.name(p));
