@@ -420,7 +420,7 @@ public class TypeHierarchyVisitor extends Visitor {
 
     private void addUnimplementedFormal(Class clazz, Declaration member) {
         Reference unimplemented = 
-                member.getProducedReference(clazz.getType(), 
+                member.appliedReference(clazz.getType(), 
                         NO_TYPE_ARGS);
         List<Reference> list = 
                 clazz.getUnimplementedFormals();

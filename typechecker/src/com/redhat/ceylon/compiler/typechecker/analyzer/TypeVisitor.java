@@ -1066,7 +1066,7 @@ public class TypeVisitor extends Visitor {
                 getTypeArguments(tal, ot, params);
         //Note: we actually *check* these type arguments
         //      later in ExpressionVisitor
-        Type pt = dec.getProducedType(ot, typeArgs);
+        Type pt = dec.appliedType(ot, typeArgs);
         if (tal==null) {
             if (!params.isEmpty()) {
                 //For now the only type constructors allowed

@@ -1424,7 +1424,7 @@ public class ExpressionVisitor extends Visitor {
         Type supertype = 
                 classOrInterface.getType()
                     .getSupertype(td);
-        return d.getProducedReference(supertype, 
+        return d.appliedReference(supertype, 
                 NO_TYPE_ARGS);
     }
     
@@ -2879,7 +2879,7 @@ public class ExpressionVisitor extends Visitor {
             Type qt = 
                     mte.getScope()
                         .getDeclaringType(dec);
-            return dec.getProducedReference(qt,
+            return dec.appliedReference(qt,
                     getTypeArguments(tas, qt, tps));
         }
     }
@@ -3272,7 +3272,7 @@ public class ExpressionVisitor extends Visitor {
             else {
                 list = NO_TYPE_ARGS;
             }
-            return dec.getProducedReference(qt,list);
+            return dec.appliedReference(qt,list);
         }
     }
 
@@ -3579,7 +3579,7 @@ public class ExpressionVisitor extends Visitor {
                             getInferredTypeArgsForReference(
                                     that, type, ci);
                     receiverType = 
-                            ci.getProducedType(null, 
+                            ci.appliedType(null, 
                                     inferredArgs);
                 }
                 else {
@@ -7898,7 +7898,7 @@ public class ExpressionVisitor extends Visitor {
                     //function reference
                     //TODO: it's ugly to do this here, better to 
                     //      suck it into TypedReference
-                    return ftd.getProducedType(receivingType, typeArgs)
+                    return ftd.appliedType(receivingType, typeArgs)
                             .resolveAliases();
                 }
                 else {
@@ -8096,7 +8096,7 @@ public class ExpressionVisitor extends Visitor {
             Type outerType = 
                     scope.getDeclaringType(type);
             Type pt = 
-                    type.getProducedType(outerType, 
+                    type.appliedType(outerType, 
                             toTypeArgs(g));
             that.setTarget(pt);
             TypeAlias ta = new TypeAlias();
@@ -8660,7 +8660,7 @@ public class ExpressionVisitor extends Visitor {
                 outerType = qt;
             }
             Type type = 
-                    baseType.getProducedType(outerType, 
+                    baseType.appliedType(outerType, 
                             typeArgs);
             Type fullType = type.getFullType();
             that.setTypeModel(fullType);
@@ -9685,7 +9685,7 @@ public class ExpressionVisitor extends Visitor {
         }
         else if (argType.isTypeConstructor()) {
             return argType.getDeclaration()
-                .getProducedType(null, 
+                .appliedType(null, 
                     param.getType()
                         .getTypeArgumentList());
         }
