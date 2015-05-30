@@ -131,7 +131,7 @@ public class ModelUtil {
      * Convenience method to bind a single type argument 
      * to a toplevel type declaration.  
      */
-    public static Type producedType(
+    public static Type appliedType(
             TypeDeclaration declaration, 
             Type typeArgument) {
         if (declaration==null) return null;
@@ -143,7 +143,7 @@ public class ModelUtil {
      * Convenience method to bind a list of type arguments
      * to a toplevel type declaration.  
      */
-    public static Type producedType(
+    public static Type appliedType(
             TypeDeclaration declaration, 
             Type... typeArguments) {
         if (declaration==null) return null;

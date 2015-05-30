@@ -9,7 +9,7 @@ import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isNameMatching
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isOverloadedVersion;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isToplevelAnonymousClass;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isToplevelClassConstructor;
-import static com.redhat.ceylon.model.typechecker.model.ModelUtil.producedType;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.appliedType;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.unionType;
 
 import java.util.ArrayList;
@@ -604,7 +604,7 @@ public class Unit {
     	    	        getTupleType(args, 
     	    	                hasSequenced, atLeastOne, 
     	    	                firstDefaulted);
-                result = producedType(getCallableDeclaration(), 
+                result = appliedType(getCallableDeclaration(), 
                         result, paramListType);
     	    }
     	}
@@ -654,7 +654,7 @@ public class Unit {
     					getSequentialType(elemType);
     		}
     		else {
-    			result = producedType(getTupleDeclaration(), 
+    			result = appliedType(getTupleDeclaration(), 
     					union, elemType, result);
     			if (firstDefaulted>=0 && i>=firstDefaulted) {
     				result = unionType(result, 
@@ -672,7 +672,7 @@ public class Unit {
     
     public Type getPossiblyEmptyType(Type pt) {
         return pt==null ? null :
-            producedType(getSequentialDeclaration(),
+            appliedType(getSequentialDeclaration(),
                     getSequentialElementType(pt));
     }
     
@@ -758,25 +758,25 @@ public class Unit {
     }
     
     public Type getSequenceType(Type et) {
-        return producedType(getSequenceDeclaration(), et);
+        return appliedType(getSequenceDeclaration(), et);
     }
     
     public Type getSequentialType(Type et) {
-        return producedType(getSequentialDeclaration(), et);
+        return appliedType(getSequentialDeclaration(), et);
     }
     
     public Type getIterableType(Type et) {
-        return producedType(getIterableDeclaration(), et, 
+        return appliedType(getIterableDeclaration(), et, 
                 getNullType());
     }
 
     public Type getNonemptyIterableType(Type et) {
-        return producedType(getIterableDeclaration(), et, 
+        return appliedType(getIterableDeclaration(), et, 
                 getNothingType());
     }
 
     public Type getSetType(Type et) {
-        return producedType(getSetDeclaration(), et);
+        return appliedType(getSetDeclaration(), et);
     }
 
     /**
@@ -785,7 +785,7 @@ public class Unit {
      * @return The Type corresponding to {@code Iterator<T>}
      */
     public Type getIteratorType(Type et) {
-        return producedType(getIteratorDeclaration(), et);
+        return appliedType(getIteratorDeclaration(), et);
     }
 
     /**
@@ -794,7 +794,7 @@ public class Unit {
      * @return The Type corresponding to {@code Span<T>}
      */
     public Type getSpanType(Type rt) {
-        return producedType(getRangeDeclaration(), rt);
+        return appliedType(getRangeDeclaration(), rt);
     }
 
     /**
@@ -803,13 +803,13 @@ public class Unit {
      * @return The Type corresponding to {@code SizedRange<T>|[]}
      */
     public Type getMeasureType(Type rt) {
-        return unionType(producedType(getRangeDeclaration(), rt), 
+        return unionType(appliedType(getRangeDeclaration(), rt), 
         		getEmptyType(), 
         		this);
     }
 
     public Type getEntryType(Type kt, Type vt) {
-        return producedType(getEntryDeclaration(), kt, vt);
+        return appliedType(getEntryDeclaration(), kt, vt);
     }
 
     public Type getKeyType(Type type) {
@@ -895,7 +895,7 @@ public class Unit {
 
     public Type getNonemptyType(Type pt) {
         Type st = 
-                producedType(getSequenceDeclaration(), 
+                appliedType(getSequenceDeclaration(), 
                         getSequentialElementType(pt));
         return intersectionType(st, pt, this);
     }
@@ -1770,14 +1770,14 @@ public class Unit {
             TypeDeclaration ad = 
                     getLanguageModuleModelTypeDeclaration(
                             "Attribute");
-            return producedType(ad, qualifyingType, 
+            return appliedType(ad, qualifyingType, 
                     getType, setType);
         }
         else {
             TypeDeclaration vd = 
                     getLanguageModuleModelTypeDeclaration(
                             "Value");
-            return producedType(vd, getType, setType);
+            return appliedType(vd, getType, setType);
         }
     }
     
@@ -1803,14 +1803,14 @@ public class Unit {
                 TypeDeclaration md = 
                         getLanguageModuleModelTypeDeclaration(
                                 "Method");
-                return producedType(md, qualifyingType, 
+                return appliedType(md, qualifyingType, 
                         returnType, parameterTuple);
             }
             else {
                 TypeDeclaration fd = 
                         getLanguageModuleModelTypeDeclaration(
                                 "Function");
-                return producedType(fd, returnType, 
+                return appliedType(fd, returnType, 
                         parameterTuple);
             }
         }
@@ -1839,14 +1839,14 @@ public class Unit {
                 TypeDeclaration mccd = 
                         getLanguageModuleModelTypeDeclaration(
                                 "MemberClassConstructor");
-                return producedType(mccd, qqt, returnType, 
+                return appliedType(mccd, qqt, returnType, 
                         parameterTuple);
             }
             else {
                 TypeDeclaration cd = 
                         getLanguageModuleModelTypeDeclaration(
                                 "Constructor");
-                return producedType(cd, returnType, 
+                return appliedType(cd, returnType, 
                         parameterTuple);
             }
         }
@@ -1872,14 +1872,14 @@ public class Unit {
             TypeDeclaration mcd = 
                     getLanguageModuleModelTypeDeclaration(
                             "MemberClass");
-            return producedType(mcd, qualifyingType, 
+            return appliedType(mcd, qualifyingType, 
                     literalType, parameterTuple);
         }
         else {
             TypeDeclaration cd = 
                     getLanguageModuleModelTypeDeclaration(
                             "Class");
-            return producedType(cd, literalType, 
+            return appliedType(cd, literalType, 
                     parameterTuple);
         }
     }
@@ -1891,14 +1891,14 @@ public class Unit {
             TypeDeclaration mid = 
                     getLanguageModuleModelTypeDeclaration(
                             "MemberInterface");
-            return producedType(mid, qualifyingType, 
+            return appliedType(mid, qualifyingType, 
                     literalType);
         }
         else {
             TypeDeclaration id = 
                     getLanguageModuleModelTypeDeclaration(
                             "Interface");
-            return producedType(id, literalType);
+            return appliedType(id, literalType);
         }
     }
 
@@ -1907,19 +1907,19 @@ public class Unit {
             TypeDeclaration utd = 
                     getLanguageModuleModelTypeDeclaration(
                             "UnionType");
-            return producedType(utd, literalType);
+            return appliedType(utd, literalType);
         }
         else if (literalType.isIntersection()) {
             TypeDeclaration itd = 
                     getLanguageModuleModelTypeDeclaration(
                             "IntersectionType");
-            return producedType(itd, literalType);
+            return appliedType(itd, literalType);
         }
         else {
             TypeDeclaration td = 
                     getLanguageModuleModelTypeDeclaration(
                             "Type");
-            return producedType(td, literalType);
+            return appliedType(td, literalType);
         }
     }
     

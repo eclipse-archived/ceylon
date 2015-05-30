@@ -6,7 +6,7 @@ import static com.redhat.ceylon.model.typechecker.model.Type.incDepth;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.EMPTY_TYPE_ARG_MAP;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.EMPTY_VARIANCE_MAP;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isAbstraction;
-import static com.redhat.ceylon.model.typechecker.model.ModelUtil.producedType;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.appliedType;
 
 import java.util.HashMap;
 import java.util.List;
@@ -159,7 +159,7 @@ public abstract class Reference {
                 //for an unresolved overloaded method we don't 
                 //know the parameter types, but we do know that
                 //there is only one parameter list
-                return producedType(
+                return appliedType(
                         unit.getCallableDeclaration(), 
                         wrappedType, 
                         new UnknownType(unit).getType());
