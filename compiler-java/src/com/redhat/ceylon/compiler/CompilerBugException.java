@@ -12,6 +12,7 @@ import com.redhat.ceylon.compiler.java.launcher.Main.ExitState;
  * <li>a real bug in javac</li>
  * </ul> 
  */
+@SuppressWarnings("serial")
 public class CompilerBugException extends FatalToolError {
     
     private final ExitState exitState;

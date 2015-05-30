@@ -25,6 +25,7 @@ import com.redhat.ceylon.common.tool.ToolError;
  * Exception type used when compilation could not complete normally due to 
  * errors in the source code, such as syntax or type errors. 
  */
+@SuppressWarnings("serial")
 public class CompilerErrorException extends ToolError {
 
     private final int numErrors;
