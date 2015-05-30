@@ -4236,12 +4236,15 @@ public class ExpressionVisitor extends Visitor {
                                         model.getTypedReference()
                                             .getFullType();
                                 if (pt!=null) {
-                                	occursContravariantly = occursContravariantly
-                            				|| pt.occursContravariantly(tp);
-                                	occursCovariantly = occursCovariantly
-                                			|| pt.occursCovariantly(tp);
-                                	occursInvariantly = occursInvariantly
-                                			|| pt.occursInvariantly(tp);
+                                	occursContravariantly = 
+                                	        occursContravariantly || 
+                                	        pt.occursContravariantly(tp);
+                                	occursCovariantly = 
+                                	        occursCovariantly || 
+                                	        pt.occursCovariantly(tp);
+                                	occursInvariantly = 
+                                	        occursInvariantly || 
+                                	        pt.occursInvariantly(tp);
                                 }
                             }
                         }
