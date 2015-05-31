@@ -2865,7 +2865,7 @@ public class ExpressionVisitor extends Visitor {
         else {
             tas = null;
         }
-        Functional fun = (Functional) dec;
+        Generic fun = (Generic) dec;
         List<TypeParameter> tps = fun.getTypeParameters();
         if (isPackageQualified(mte)) {
             Tree.QualifiedMemberOrTypeExpression qmte = 
