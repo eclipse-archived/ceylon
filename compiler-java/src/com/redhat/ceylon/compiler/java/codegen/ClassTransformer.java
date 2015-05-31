@@ -4582,8 +4582,8 @@ public class ClassTransformer extends AbstractTransformer {
                 methodBuilder.body(this.makeThrowUnresolvedCompilationError(error));
             } else {
                 java.util.List<TypeParameter> copiedTypeParameters = null;
-                if(container instanceof Functional) {
-                    copiedTypeParameters = ((Functional) container).getTypeParameters();
+                if(container instanceof Generic) {
+                    copiedTypeParameters = ((Generic) container).getTypeParameters();
                     if(copiedTypeParameters != null)
                         addTypeParameterSubstitution(copiedTypeParameters);
                 }

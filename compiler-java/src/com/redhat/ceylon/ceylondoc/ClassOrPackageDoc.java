@@ -55,6 +55,7 @@ import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Functional;
 import com.redhat.ceylon.model.typechecker.model.Function;
 import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
+import com.redhat.ceylon.model.typechecker.model.Generic;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.ParameterList;
@@ -195,10 +196,15 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
         if( isConstantValue(d) ) {
             writeConstantValue((Value) d);
         }
-        if( d instanceof Functional ) {
-            Functional f = (Functional) d;
+        if( d instanceof Generic ) {
+            Generic f = (Generic) d;
             writeTypeParameters(f.getTypeParameters());
-            writeParameterList(f);
+        }
+        if( d instanceof Functional ) {
+            writeParameterList((Functional) d);
+        }
+        if( d instanceof Generic ) {
+            Generic f = (Generic) d;
             writeTypeParametersConstraints(f.getTypeParameters());
         }
         if (d instanceof Value) {
