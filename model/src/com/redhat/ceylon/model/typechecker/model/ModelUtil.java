@@ -23,9 +23,10 @@ import com.redhat.ceylon.common.BackendSupport;
 
 
 /**
- * Model utilities, mostly used by the backends. Holds things moved from Decl.
+ * Model utilities.
  *
  * @author Stéphane Épardaud <stef@epardaud.fr>
+ * @author Gavin King
  */
 public class ModelUtil {
 
