@@ -280,7 +280,7 @@ public class AnalyzerUtil {
         }
     }
     
-    static Tree.Statement getLastExecutableStatement(Tree.ClassBody that) {
+    public static Tree.Statement getLastExecutableStatement(Tree.ClassBody that) {
         List<Tree.Statement> statements = that.getStatements();
         Unit unit = that.getUnit();
         for (int i=statements.size()-1; i>=0; i--) {
