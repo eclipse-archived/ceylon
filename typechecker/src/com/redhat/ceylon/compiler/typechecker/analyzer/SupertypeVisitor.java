@@ -2,6 +2,7 @@ package com.redhat.ceylon.compiler.typechecker.analyzer;
 
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AliasVisitor.typeList;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.addToIntersection;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.canonicalIntersection;
 import static java.util.Collections.singleton;
 
 import java.util.ArrayList;
@@ -11,7 +12,6 @@ import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.model.typechecker.model.DecidabilityException;
-import com.redhat.ceylon.model.typechecker.model.IntersectionType;
 import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.TypeAlias;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
@@ -125,10 +125,7 @@ public class SupertypeVisitor extends Visitor {
                 //probably unnecessary - if it were 
                 //going to blow up, it would have 
                 //already blown up in addToIntersection()
-                IntersectionType it = 
-                        new IntersectionType(unit);
-                it.setSatisfiedTypes(list);
-				it.canonicalize().getType();
+				canonicalIntersection(list, unit);
             }
             catch (DecidabilityException re) {
                 brokenHierarchy(d, that, unit);

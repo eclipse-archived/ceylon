@@ -10,16 +10,18 @@ import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.isGeneric;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.unwrapExpressionUntilTerm;
 import static com.redhat.ceylon.compiler.typechecker.tree.Util.formatPath;
 import static com.redhat.ceylon.compiler.typechecker.tree.Util.name;
-import static com.redhat.ceylon.model.typechecker.model.SiteVariance.IN;
-import static com.redhat.ceylon.model.typechecker.model.SiteVariance.OUT;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.appliedType;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getContainingClassOrInterface;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.intersection;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.intersectionOfSupertypes;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isNativeImplementation;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isToplevelAnonymousClass;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isToplevelClassConstructor;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isTypeUnknown;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.notOverloaded;
-import static com.redhat.ceylon.model.typechecker.model.ModelUtil.appliedType;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.union;
+import static com.redhat.ceylon.model.typechecker.model.SiteVariance.IN;
+import static com.redhat.ceylon.model.typechecker.model.SiteVariance.OUT;
 import static java.lang.Integer.parseInt;
 
 import java.util.ArrayList;
@@ -42,25 +44,23 @@ import com.redhat.ceylon.model.typechecker.model.ClassAlias;
 import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.model.typechecker.model.Constructor;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
+import com.redhat.ceylon.model.typechecker.model.Function;
+import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
 import com.redhat.ceylon.model.typechecker.model.Import;
 import com.redhat.ceylon.model.typechecker.model.ImportList;
 import com.redhat.ceylon.model.typechecker.model.Interface;
-import com.redhat.ceylon.model.typechecker.model.IntersectionType;
-import com.redhat.ceylon.model.typechecker.model.Function;
-import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.ModuleImport;
 import com.redhat.ceylon.model.typechecker.model.NothingType;
 import com.redhat.ceylon.model.typechecker.model.Package;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
-import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.Scope;
 import com.redhat.ceylon.model.typechecker.model.Specification;
+import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.TypeAlias;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.model.typechecker.model.TypeParameter;
 import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
-import com.redhat.ceylon.model.typechecker.model.UnionType;
 import com.redhat.ceylon.model.typechecker.model.Unit;
 import com.redhat.ceylon.model.typechecker.model.UnknownType;
 import com.redhat.ceylon.model.typechecker.model.Value;
@@ -656,18 +656,14 @@ public class TypeVisitor extends Visitor {
                 new ArrayList<Type>
                     (sts.size());
         for (Tree.StaticType st: sts) {
-            //addToUnion( types, st.getTypeModel() );
+            //can't use addToUnion() here
             Type t = st.getTypeModel();
             if (t!=null) {
                 types.add(t);
             }
         }
-        UnionType ut = 
-                new UnionType(unit);
-        ut.setCaseTypes(types);
-        Type type = ut.getType();
+        Type type = union(types ,unit);
         that.setTypeModel(type);
-        //that.setTarget(pt);
     }
     
     @Override 
@@ -679,18 +675,14 @@ public class TypeVisitor extends Visitor {
                 new ArrayList<Type>
                     (sts.size());
         for (Tree.StaticType st: sts) {
-            //addToIntersection(types, st.getTypeModel(), unit);
+            //can't use addToIntersection() here
             Type t = st.getTypeModel();
             if (t!=null) {
                 types.add(t);
             }
         }
-        IntersectionType it = 
-                new IntersectionType(unit);
-        it.setSatisfiedTypes(types);
-        Type type = it.getType();
+        Type type = intersection(types, unit);
         that.setTypeModel(type);
-        //that.setTarget(pt);
     }
     
     @Override 
@@ -744,8 +736,7 @@ public class TypeVisitor extends Visitor {
             if (elem instanceof Tree.SequencedType) {
                 Tree.SequencedType st = 
                         (Tree.SequencedType) elem;
-                Type et = 
-                        st.getType().getTypeModel();
+                Type et = st.getType().getTypeModel();
                 if (et!=null) {
                     Type t =
                             st.getAtLeastOne() ?
@@ -766,12 +757,9 @@ public class TypeVisitor extends Visitor {
         List<Type> types = 
                 new ArrayList<Type>(2);
         types.add(unit.getNullType());
-        Type dt = 
-                that.getDefiniteType().getTypeModel();
+        Type dt = that.getDefiniteType().getTypeModel();
         if (dt!=null) types.add(dt);
-        UnionType ut = new UnionType(unit);
-        ut.setCaseTypes(types);
-        that.setTypeModel(ut.getType());
+        that.setTypeModel(union(types, unit));
     }
     
     @Override
@@ -802,9 +790,9 @@ public class TypeVisitor extends Visitor {
         Tree.StaticType rt = 
                 that.getReturnType();
         if (rt!=null) {
-            Type tt = 
-                    getTupleType(that.getArgumentTypes(), 
-                            unit);
+            List<Tree.Type> argumentTypes = 
+                    that.getArgumentTypes();
+            Type tt = getTupleType(argumentTypes, unit);
             Interface cd = unit.getCallableDeclaration();
             Type pt = 
                     appliedType(cd, rt.getTypeModel(), tt);
@@ -815,8 +803,9 @@ public class TypeVisitor extends Visitor {
     @Override
     public void visit(Tree.TupleType that) {
         super.visit(that);
-        Type tt = 
-                getTupleType(that.getElementTypes(), unit);
+        List<Tree.Type> elementTypes = 
+                that.getElementTypes();
+        Type tt = getTupleType(elementTypes, unit);
         that.setTypeModel(tt);
     }
 
@@ -892,9 +881,7 @@ public class TypeVisitor extends Visitor {
             //can't use addToUnion() here
             pair.add(elemType);
             pair.add(union);
-            UnionType ut = new UnionType(unit);
-            ut.setCaseTypes(pair);
-            union = ut.getType();
+            union = union(pair, unit);
             if (variadic && i==last) {
                 result = atLeastOne ? 
                         unit.getSequenceType(elemType) : 
@@ -908,9 +895,7 @@ public class TypeVisitor extends Visitor {
                     //can't use addToUnion() here
                     pair.add(unit.getEmptyType());
                     pair.add(result);
-                    ut = new UnionType(unit);
-                    ut.setCaseTypes(pair);
-                    result = ut.getType();
+                    result = union(pair, unit);
                 }
             }
         }

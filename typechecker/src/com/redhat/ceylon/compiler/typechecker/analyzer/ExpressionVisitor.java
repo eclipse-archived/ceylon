@@ -31,6 +31,7 @@ import static com.redhat.ceylon.model.typechecker.model.ModelUtil.addToIntersect
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.addToUnion;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.appliedType;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.argumentSatisfiesEnumeratedConstraint;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.canonicalIntersection;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.findMatchingOverloadedClass;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getContainingClassOrInterface;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getInterveningRefinements;
@@ -44,6 +45,7 @@ import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isAbstraction;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isOverloadedVersion;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isTypeUnknown;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.toTypeArgs;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.union;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.unionOfCaseTypes;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.unionType;
 import static java.util.Collections.emptyList;
@@ -75,7 +77,7 @@ import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
 import com.redhat.ceylon.model.typechecker.model.Functional;
 import com.redhat.ceylon.model.typechecker.model.Generic;
 import com.redhat.ceylon.model.typechecker.model.Interface;
-import com.redhat.ceylon.model.typechecker.model.IntersectionType;
+import com.redhat.ceylon.model.typechecker.model.ModelUtil;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.NothingType;
 import com.redhat.ceylon.model.typechecker.model.Package;
@@ -91,7 +93,6 @@ import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.model.typechecker.model.TypeParameter;
 import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.model.typechecker.model.TypedReference;
-import com.redhat.ceylon.model.typechecker.model.UnionType;
 import com.redhat.ceylon.model.typechecker.model.UnknownType;
 import com.redhat.ceylon.model.typechecker.model.Value;
 
@@ -312,9 +313,7 @@ public class ExpressionVisitor extends Visitor {
         else {
             that.addError("missing else expression");
         }
-        UnionType ut = new UnionType(unit);
-        ut.setCaseTypes(list);
-        that.setTypeModel(ut.getType());
+        that.setTypeModel(union(list, unit));
         
         switchStatementOrExpression = ose;        
         ifStatementOrExpression = oie;
@@ -371,9 +370,7 @@ public class ExpressionVisitor extends Visitor {
                     }
                 }
             }
-            UnionType ut = new UnionType(unit);
-            ut.setCaseTypes(list);
-            that.setTypeModel(ut.getType());
+            that.setTypeModel(union(list, unit));
         }
         switchStatementOrExpression = ose;        
         ifStatementOrExpression = oie;
@@ -1600,10 +1597,9 @@ public class ExpressionVisitor extends Visitor {
                                 container.getName(unit));
                 }
             }
-        }        
-        IntersectionType it = new IntersectionType(unit);
-        it.setSatisfiedTypes(refinedTypes);
-        methodOrValue.setType(it.canonicalize().getType());
+        }
+        Type it = canonicalIntersection(refinedTypes, unit);
+        methodOrValue.setType(it);
         return refinedProducedReference;
     }
 
@@ -2559,13 +2555,8 @@ public class ExpressionVisitor extends Visitor {
             }
             else {
                 if (!at.isSubtypeOf(et)) {
-                    UnionType ut = new UnionType(unit);
-                    List<Type> list = 
-                            new ArrayList<Type>(2);
-                    addToUnion(list, et);
-                    addToUnion(list, at);
-                    ut.setCaseTypes(list);
-                    returnType.setTypeModel(ut.getType());
+                    Type rt = unionType(at, et, unit);
+                    returnType.setTypeModel(rt);
                 }
             }
         }
@@ -3234,7 +3225,7 @@ public class ExpressionVisitor extends Visitor {
                         list, it);
             }
         }
-        return formUnionOrIntersection(findingUpperBounds, 
+        return unionOrIntersection(findingUpperBounds, 
                 list);
     }
     
@@ -4295,9 +4286,7 @@ public class ExpressionVisitor extends Visitor {
                 addToIntersection(list, st, unit);
             }
         }
-        IntersectionType it = new IntersectionType(unit);
-        it.setSatisfiedTypes(list);
-        return it.canonicalize().getType();
+        return canonicalIntersection(list, unit);
     }
 
     private Type inferTypeArgument(
@@ -4354,7 +4343,7 @@ public class ExpressionVisitor extends Visitor {
         	        findingUpperBounds,
         	        inferredTypes, sarg);
         }
-        return formUnionOrIntersection(findingUpperBounds, 
+        return unionOrIntersection(findingUpperBounds, 
                 inferredTypes);
     }
 
@@ -4578,7 +4567,7 @@ public class ExpressionVisitor extends Visitor {
                 }
             }
         }
-        return formUnionOrIntersection(findingUpperBounds, 
+        return unionOrIntersection(findingUpperBounds, 
                 inferredTypes);
     }
 
@@ -4651,7 +4640,7 @@ public class ExpressionVisitor extends Visitor {
             }
         }
         
-        return formUnionOrIntersection(
+        return unionOrIntersection(
                 findingUpperBounds, inferredTypes);
     }
 
@@ -4709,25 +4698,25 @@ public class ExpressionVisitor extends Visitor {
             }
     }
     
-    private Type formUnionOrIntersection(
+    private Type unionOrIntersection(
             boolean findingUpperBounds,
             List<Type> inferredTypes) {
         if (findingUpperBounds) {
-            return formIntersection(inferredTypes);
+            return canonicalIntersection(inferredTypes, unit);
         }
         else {
-            return formUnion(inferredTypes);
+            return union(inferredTypes, unit);
         }
     }
     
-    private Type unionOrIntersection(
+    private Type unionOrIntersectionOrNull(
             boolean findingUpperBounds,
             List<Type> inferredTypes) {
         if (inferredTypes.isEmpty()) {
             return null;
         }
         else {
-            return formUnionOrIntersection(
+            return unionOrIntersection(
                     findingUpperBounds, 
                     inferredTypes);
         }
@@ -4745,32 +4734,20 @@ public class ExpressionVisitor extends Visitor {
         }
     }
 
-    private Type union(List<Type> types) {
+    private Type unionOrNull(List<Type> types) {
         if (types.isEmpty()) {
             return null;
         }
-        return formUnion(types);
+        return union(types, unit);
     }
 
-    private Type intersection(List<Type> types) {
+    private Type intersectionOrNull(List<Type> types) {
         if (types.isEmpty()) {
             return null;
         }
-        return formIntersection(types);
+        return canonicalIntersection(types, unit);
     }
 
-    private Type formUnion(List<Type> types) {
-        UnionType ut = new UnionType(unit);
-        ut.setCaseTypes(types);
-        return ut.getType();
-    }
-    
-    private Type formIntersection(List<Type> types) {
-        IntersectionType it = new IntersectionType(unit);
-        it.setSatisfiedTypes(types);
-        return it.canonicalize().getType();
-    }
-    
     private Type inferTypeArg(TypeParameter tp,
             Type paramType, Type argType, 
             boolean covariant, boolean contravariant,
@@ -4847,7 +4824,7 @@ public class ExpressionVisitor extends Visitor {
                                         visited, argNode));
                     }
                     visited.remove(tp2);
-                    return unionOrIntersection(
+                    return unionOrIntersectionOrNull(
                             findingUpperBounds, list);
                 }
                 else {
@@ -4935,7 +4912,7 @@ public class ExpressionVisitor extends Visitor {
                                         findingUpperBounds,
                                         visited, argNode));
                     }
-                    return unionOrIntersection(
+                    return unionOrIntersectionOrNull(
                             findingUpperBounds, list);
                 }
                 else {
@@ -4974,7 +4951,7 @@ public class ExpressionVisitor extends Visitor {
                                     findingUpperBounds,
                                     visited, argNode));
                 }
-                return unionOrIntersection(
+                return unionOrIntersectionOrNull(
                         findingUpperBounds, list);
             }
             else if (argType.isUnion()) {
@@ -4994,7 +4971,7 @@ public class ExpressionVisitor extends Visitor {
                             findingUpperBounds,
                             visited, argNode));
                 }
-                return union(list);
+                return unionOrNull(list);
             }
             else if (argType.isIntersection()) {
                 List<Type> sts = 
@@ -5014,7 +4991,7 @@ public class ExpressionVisitor extends Visitor {
                                     visited, argNode), 
                             unit);
                 }
-                return intersection(list);
+                return intersectionOrNull(list);
             }
             else {
                 Type supertype = 
@@ -5042,7 +5019,7 @@ public class ExpressionVisitor extends Visitor {
                             findingUpperBounds,
                             list, visited, 
                             argNode);
-                    return unionOrIntersection(
+                    return unionOrIntersectionOrNull(
                             findingUpperBounds, list);
                 }
                 else {
@@ -6826,13 +6803,8 @@ public class ExpressionVisitor extends Visitor {
         Type rhst = rightType(that);
         if (!isTypeUnknown(rhst) && !isTypeUnknown(lhst)) {
             checkOptional(lhst, that.getLeftTerm());
-            List<Type> list = 
-                    new ArrayList<Type>(2);
-            addToUnion(list, rhst);
-            addToUnion(list, unit.getDefiniteType(lhst));
-            UnionType ut = new UnionType(unit);
-            ut.setCaseTypes(list);
-            Type rt = ut.getType();
+            Type rt = unionType(unit.getDefiniteType(lhst), 
+                    rhst, unit);
             that.setTypeModel(rt);
             /*that.setTypeModel(rhst);
             Type ot;
@@ -9231,9 +9203,7 @@ public class ExpressionVisitor extends Visitor {
                 addToUnion(list, ct);
             }
         }
-        UnionType ut = new UnionType(unit);
-        ut.setCaseTypes(list);
-        return ut.getType();
+        return ModelUtil.union(list, unit);
     }
 
     private void checkCasesClausesDisjoint(
@@ -9344,7 +9314,7 @@ public class ExpressionVisitor extends Visitor {
                     addToUnion(list, e.getTypeModel());
                 }
             }
-            return formUnion(list);
+            return union(list, unit);
         }
         else {
             return null;
@@ -9369,7 +9339,7 @@ public class ExpressionVisitor extends Visitor {
                     addToUnion(list, e.getTypeModel());
                 }
             }
-            return formUnion(list);
+            return union(list, unit);
         }
         else {
             return null;

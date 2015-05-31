@@ -11,6 +11,8 @@ import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.typeNamesAsIn
 import static com.redhat.ceylon.compiler.typechecker.tree.Util.name;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.addToIntersection;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.areConsistentSupertypes;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.canonicalIntersection;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.intersectionOfSupertypes;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isTypeUnknown;
 
 import java.util.ArrayList;
@@ -26,9 +28,8 @@ import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.model.typechecker.model.Constructor;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Interface;
-import com.redhat.ceylon.model.typechecker.model.IntersectionType;
-import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.Scope;
+import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.TypeAlias;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.model.typechecker.model.TypeParameter;
@@ -148,10 +149,7 @@ public class InheritanceVisitor extends Visitor {
             for (Type st: upperBounds) {
                 addToIntersection(list, st, unit);
             }
-            IntersectionType it = 
-                    new IntersectionType(unit);
-            it.setSatisfiedTypes(list);
-            if (it.canonicalize().getType().isNothing()) {
+            if (canonicalIntersection(list, unit).isNothing()) {
                 that.addError(typeDescription(td, unit) + 
                         " has unsatisfiable upper bound constraints: the constraints '" + 
                         typeNamesAsIntersection(upperBounds, unit) + 
@@ -292,10 +290,7 @@ public class InheritanceVisitor extends Visitor {
         else if (tp.isContravariant()) {
             List<Type> sts = tp.getSatisfiedTypes();
             //TODO: do I need to do type arg substitution here??
-            IntersectionType it = 
-                    new IntersectionType(unit);
-            it.setSatisfiedTypes(sts);
-            Type ub = it.canonicalize().getType();
+            Type ub = intersectionOfSupertypes(tp);
             if (!(arg.isExactly(ub))) {
                 that.addError("argument to contravariant type parameter of enumerated supertype must be a type parameter or '" + 
                         typeNamesAsIntersection(sts, unit) + "': " + 
