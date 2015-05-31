@@ -369,16 +369,7 @@ public class InvocationGenerator {
                     if (sequencedType == null) {
                         sequencedType=exprType;
                     } else {
-                        ArrayList<Type> cases = new ArrayList<Type>(2);
-                        ModelUtil.addToUnion(cases, sequencedType);
-                        ModelUtil.addToUnion(cases, exprType);
-                        if (cases.size() > 1) {
-                            UnionType ut = new UnionType(that.getUnit());
-                            ut.setCaseTypes(cases);
-                            sequencedType = ut.getType();
-                        } else {
-                            sequencedType = cases.get(0);
-                        }
+                        sequencedType = ModelUtil.unionType(exprType, sequencedType, that.getUnit());
                     }
                     if (!opened) {
                         if (generateVars) {
