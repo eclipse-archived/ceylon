@@ -20,7 +20,10 @@
 
 package com.redhat.ceylon.compiler.java.codegen;
 
-import static com.redhat.ceylon.compiler.typechecker.tree.Util.hasUncheckedNulls;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.isIndirectInvocation;
+import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.eliminateParensAndWidening;
+import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.hasUncheckedNulls;
+import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.unwrapExpressionUntilTerm;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -42,7 +45,6 @@ import com.redhat.ceylon.compiler.java.codegen.StatementTransformer.CondList;
 import com.redhat.ceylon.compiler.java.codegen.StatementTransformer.VarDefBuilder;
 import com.redhat.ceylon.compiler.java.codegen.StatementTransformer.VarTrans;
 import com.redhat.ceylon.compiler.java.codegen.recovery.HasErrorException;
-import com.redhat.ceylon.compiler.typechecker.analyzer.Util;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
@@ -58,24 +60,24 @@ import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.model.typechecker.model.Constructor;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
+import com.redhat.ceylon.model.typechecker.model.Function;
+import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
 import com.redhat.ceylon.model.typechecker.model.Functional;
 import com.redhat.ceylon.model.typechecker.model.Generic;
 import com.redhat.ceylon.model.typechecker.model.Interface;
-import com.redhat.ceylon.model.typechecker.model.Function;
-import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.Package;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.ParameterList;
 import com.redhat.ceylon.model.typechecker.model.Reference;
-import com.redhat.ceylon.model.typechecker.model.Type;
-import com.redhat.ceylon.model.typechecker.model.TypedReference;
 import com.redhat.ceylon.model.typechecker.model.Referenceable;
 import com.redhat.ceylon.model.typechecker.model.Scope;
+import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.TypeAlias;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.model.typechecker.model.TypeParameter;
 import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
+import com.redhat.ceylon.model.typechecker.model.TypedReference;
 import com.redhat.ceylon.model.typechecker.model.Value;
 import com.sun.tools.javac.code.Flags;
 import com.sun.tools.javac.code.TypeTags;
@@ -147,7 +149,7 @@ public class ExpressionTransformer extends AbstractTransformer {
     
     /**
      * Usually if a {@code long} to {@code int}, {@code short} or {@code byte}
-     * conversion is required we use a Util invocation so that a runtime check 
+     * conversion is required we use a AnalyzerUtil invocation so that a runtime check 
      * is performed. 
      * 
      * In some circumstances (e.g. annotations) we need to use a 
@@ -1532,7 +1534,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 return false;
             return containsUncheckedNulls(sequencedArgument.getPositionalArguments());
         }else
-            return com.redhat.ceylon.compiler.typechecker.tree.Util.hasUncheckedNulls(term);
+            return hasUncheckedNulls(term);
     }
     
     private boolean containsUncheckedNulls(Tree.Comprehension comp) {
@@ -1842,10 +1844,10 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
 
     public JCExpression transform(Tree.DefaultOp op, Type expectedType) {
-        Term elseTerm = Util.unwrapExpressionUntilTerm(op.getRightTerm());
-        if (Util.unwrapExpressionUntilTerm(op.getLeftTerm()) instanceof Tree.ThenOp) {
+        Term elseTerm = unwrapExpressionUntilTerm(op.getRightTerm());
+        if (unwrapExpressionUntilTerm(op.getLeftTerm()) instanceof Tree.ThenOp) {
             // Optimize cond then foo else bar (avoids unnecessary boxing in particular)
-            Tree.ThenOp then = (Tree.ThenOp)Util.unwrapExpressionUntilTerm(op.getLeftTerm());
+            Tree.ThenOp then = (Tree.ThenOp)unwrapExpressionUntilTerm(op.getLeftTerm());
             Term condTerm = then.getLeftTerm();
             Term thenTerm = then.getRightTerm();
             JCExpression cond = transformExpression(condTerm, BoxingStrategy.UNBOXED, condTerm.getTypeModel());
@@ -2187,7 +2189,7 @@ public class ExpressionTransformer extends AbstractTransformer {
     static java.lang.Long getIntegerLiteralPower(Tree.PowerOp op)
             throws ErroneousException {
         java.lang.Long power;
-        Tree.Term term = Util.unwrapExpressionUntilTerm(op.getRightTerm());
+        Tree.Term term = unwrapExpressionUntilTerm(op.getRightTerm());
         if (term instanceof Tree.NaturalLiteral) {
             power = literalValue((Tree.NaturalLiteral)term);
         } else if (term instanceof Tree.NegativeOp &&
@@ -2456,7 +2458,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             return at(expr).Unary(operator.javacOperator, term);
         }
         
-        Tree.Term term = Util.unwrapExpressionUntilTerm(expr.getTerm());
+        Tree.Term term = unwrapExpressionUntilTerm(expr.getTerm());
         
         Interface compoundType = expr.getUnit().getOrdinalDeclaration();
         Type valueType = getSupertype(expr.getTerm(), compoundType);
@@ -3083,7 +3085,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             
             Type lastType = invocation.getArgumentType(numArguments-1);
 
-            // must translate it into a Util call
+            // must translate it into a AnalyzerUtil call
             expr = sequenceToJavaArray(invocation, last, parameterType, boxingStrategy, lastType, x);
         }else{
             JCExpression typeExpr = makeJavaType(iteratedType, JT_TYPE_ARGUMENT);
@@ -3317,7 +3319,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 return makeErroneous(invocation.getNode(), "compiler bug: extraneous array selector: "+transformedPrimary.selector);
         } else if (invocation.isUnknownArguments()) {
             // if we have an unknown parameter list, like Callble<Ret,Args>, need to prepend the callable
-            // to the argument list, and invoke Util.apply
+            // to the argument list, and invoke AnalyzerUtil.apply
             // note that ATM the typechecker only allows a single argument to be passed in spread form in this
             // case so we don't need to look at parameter types
             JCExpression callableTypeExpr = makeJavaType(invocation.getPrimary().getTypeModel());
@@ -3731,7 +3733,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         }
         Invocation invocation;
         if (ce.getPositionalArgumentList() != null) {
-            if ((Util.isIndirectInvocation(ce)
+            if ((isIndirectInvocation(ce)
                     || isWithinDefaultParameterExpression(primaryDeclaration.getContainer()))
                     && !Decl.isJavaStaticPrimary(ce.getPrimary())){
                 // indirect invocation
@@ -4210,7 +4212,7 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
     
     private static boolean isThis(Tree.Primary primary) {
-        return Util.eliminateParensAndWidening(primary) instanceof Tree.This;
+        return eliminateParensAndWidening(primary) instanceof Tree.This;
     }
     
     static boolean isPackage(Tree.Primary primary) {
@@ -4227,7 +4229,7 @@ public class ExpressionTransformer extends AbstractTransformer {
      */
     private static boolean isSuperOf(Tree.Primary primary) {
         return primary instanceof Tree.Expression
-                && Util.eliminateParensAndWidening(((Tree.Expression)primary).getTerm()) instanceof Tree.Super;
+                && eliminateParensAndWidening(((Tree.Expression)primary).getTerm()) instanceof Tree.Super;
     }
     
     /** 
@@ -4459,7 +4461,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                         selector = decl.getName();
                     }
                 } else {
-                    // invoke the getter, using the Java interop form of Util.getGetterName because this is the only case
+                    // invoke the getter, using the Java interop form of AnalyzerUtil.getGetterName because this is the only case
                     // (Value inside a Class) where we might refer to JavaBean properties
                     selector = naming.selector((TypedDeclaration)decl);
                 }
@@ -4954,7 +4956,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 flags |= EXPR_DOWN_CAST;
                 // make sure we barf properly if we missed a heuristics
                 if(method.equals("spanFrom")){
-                    // make a "Util.<method>(lhs, start, end)" call
+                    // make a "AnalyzerUtil.<method>(lhs, start, end)" call
                     at(access);
                     safeAccess = utilInvocation().tuple_spanFrom(args.prepend(lhs));
                 }else{

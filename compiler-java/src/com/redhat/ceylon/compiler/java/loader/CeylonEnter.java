@@ -69,6 +69,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.CompilationUnit;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.CompilerAnnotation;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Statement;
+import com.redhat.ceylon.compiler.typechecker.tree.TreeUtil;
 import com.redhat.ceylon.compiler.typechecker.tree.UnexpectedError;
 import com.redhat.ceylon.compiler.typechecker.util.AssertionVisitor;
 import com.redhat.ceylon.compiler.typechecker.util.WarningSuppressionVisitor;
@@ -670,7 +671,7 @@ public class CeylonEnter extends Enter {
         }
         
         protected Node getIdentifyingNode(Node node) {
-            return com.redhat.ceylon.compiler.typechecker.tree.Util.getIdentifyingNode(node);
+            return TreeUtil.getIdentifyingNode(node);
         }
         
         protected DiagnosticPosition getPosition(int line, int characterInLine) {

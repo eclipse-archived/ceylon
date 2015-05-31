@@ -659,7 +659,7 @@ public abstract class CompilerTests {
 
     protected Class<?> loadClass(String className, ModuleWithArtifact... modules) {
         synchronized(RUN_LOCK){
-            // the module initialiser code needs to run in a protected section because the language module Util is not loaded by
+            // the module initialiser code needs to run in a protected section because the language module AnalyzerUtil is not loaded by
             // the test classloader but by our own classloader, which may be shared with other tests running in parallel, so if
             // we set up the module system while another thread is setting it up for other modules we're toast
             try{
@@ -682,7 +682,7 @@ public abstract class CompilerTests {
     
     protected Object run(String main, Class<?>[] sig, Object[] args, ModuleWithArtifact... modules) {
         synchronized(RUN_LOCK){
-            // the module initialiser code needs to run in a protected section because the language module Util is not loaded by
+            // the module initialiser code needs to run in a protected section because the language module AnalyzerUtil is not loaded by
             // the test classloader but by our own classloader, which may be shared with other tests running in parallel, so if
             // we set up the module system while another thread is setting it up for other modules we're toast
             Object result = null;

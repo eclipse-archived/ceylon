@@ -19,13 +19,16 @@
  */
 package com.redhat.ceylon.compiler.java.codegen;
 
+import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.isIndirectInvocation;
+import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.unwrapExpressionUntilTerm;
+
 import java.util.List;
 import java.util.Map;
 
 import com.redhat.ceylon.common.BooleanUtil;
 import com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.BoxingStrategy;
 import com.redhat.ceylon.compiler.java.codegen.Naming.DeclNameFlag;
-import com.redhat.ceylon.compiler.java.util.Util;
+import com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.BaseMemberExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.CompilerAnnotation;
@@ -34,21 +37,21 @@ import com.redhat.ceylon.model.loader.JvmBackendUtil;
 import com.redhat.ceylon.model.loader.NamingBase.Unfix;
 import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
-import com.redhat.ceylon.model.typechecker.model.Interface;
 import com.redhat.ceylon.model.typechecker.model.Function;
 import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
+import com.redhat.ceylon.model.typechecker.model.Interface;
 import com.redhat.ceylon.model.typechecker.model.Package;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
-import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.Scope;
 import com.redhat.ceylon.model.typechecker.model.Specification;
+import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.model.typechecker.model.Value;
 
 /**
  * Utility functions that are specific to the codegen package
- * @see Util
+ * @see AnalyzerUtil
  */
 public class CodegenUtil {
 
@@ -312,11 +315,11 @@ public class CodegenUtil {
     }
     
     public static boolean isMemberReferenceInvocation(Tree.InvocationExpression expr) {
-        Tree.Term p = com.redhat.ceylon.compiler.typechecker.analyzer.Util.unwrapExpressionUntilTerm(expr.getPrimary());
-        if (com.redhat.ceylon.compiler.typechecker.analyzer.Util.isIndirectInvocation(expr)
+        Tree.Term p = unwrapExpressionUntilTerm(expr.getPrimary());
+        if (isIndirectInvocation(expr)
                 && p instanceof Tree.QualifiedMemberOrTypeExpression) {
             Tree.QualifiedMemberOrTypeExpression primary = (Tree.QualifiedMemberOrTypeExpression)p;
-            Tree.Term q = com.redhat.ceylon.compiler.typechecker.analyzer.Util.unwrapExpressionUntilTerm(primary.getPrimary());
+            Tree.Term q = unwrapExpressionUntilTerm(primary.getPrimary());
             if (q instanceof Tree.BaseTypeExpression
                     || q instanceof Tree.QualifiedTypeExpression) {
                 return true;

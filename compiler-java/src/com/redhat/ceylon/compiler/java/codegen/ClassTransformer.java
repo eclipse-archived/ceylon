@@ -596,7 +596,7 @@ public class ClassTransformer extends AbstractTransformer {
                 if (isCeylonBasicType(iteratedType)) {
                     argExpr = utilInvocation().sequentialWrapperBoxed(annoAttr);
                 } else if (Decl.isAnnotationClass(iteratedType.getDeclaration())) {
-                    // Can't use Util.sequentialAnnotation becase we need to 'box'
+                    // Can't use AnalyzerUtil.sequentialAnnotation becase we need to 'box'
                     // the Java annotations in their Ceylon annotation class
                     argExpr = make().Apply(null, naming.makeUnquotedIdent(naming.getAnnotationSequenceMethodName()), List.of(annoAttr));
                     ListBuffer<JCStatement> stmts = ListBuffer.lb();

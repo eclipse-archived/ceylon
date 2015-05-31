@@ -20,8 +20,8 @@
 
 package com.redhat.ceylon.compiler.java.codegen;
 
-import static com.redhat.ceylon.compiler.typechecker.tree.Util.hasUncheckedNulls;
-import static com.redhat.ceylon.compiler.typechecker.tree.Util.isForBackend;
+import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.hasUncheckedNulls;
+import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.isForBackend;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.appliedType;
 import static com.sun.tools.javac.code.Flags.FINAL;
 import static com.sun.tools.javac.code.Flags.PRIVATE;
@@ -67,24 +67,24 @@ import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.model.typechecker.model.Constructor;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
+import com.redhat.ceylon.model.typechecker.model.Function;
+import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
 import com.redhat.ceylon.model.typechecker.model.Functional;
 import com.redhat.ceylon.model.typechecker.model.Generic;
 import com.redhat.ceylon.model.typechecker.model.Interface;
-import com.redhat.ceylon.model.typechecker.model.Function;
-import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.ModuleImport;
 import com.redhat.ceylon.model.typechecker.model.Package;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.ParameterList;
 import com.redhat.ceylon.model.typechecker.model.Reference;
-import com.redhat.ceylon.model.typechecker.model.TypedReference;
 import com.redhat.ceylon.model.typechecker.model.Scope;
 import com.redhat.ceylon.model.typechecker.model.SiteVariance;
 import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.model.typechecker.model.TypeParameter;
 import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
+import com.redhat.ceylon.model.typechecker.model.TypedReference;
 import com.redhat.ceylon.model.typechecker.util.TypePrinter;
 import com.sun.tools.javac.code.BoundKind;
 import com.sun.tools.javac.code.Symbol.TypeSymbol;
@@ -3976,13 +3976,13 @@ public abstract class AbstractTransformer implements Transformation {
          * depending on the {@code op} parameter 
          */
         public R nullTest(JCExpression varExpr, int op);
-        /** Make a type test using {@code Util.isIdentifiable()} */
+        /** Make a type test using {@code AnalyzerUtil.isIdentifiable()} */
         public R isIdentifiable(JCExpression varExpr);
-        /** Make a type test using {@code Util.isBasic()} */
+        /** Make a type test using {@code AnalyzerUtil.isBasic()} */
         public R isBasic(JCExpression varExpr);
         /** Make a type test using {@code instanceof} */
         public R isInstanceof(JCExpression varExpr, Type testedType);
-        /** Make a type test using {@code Util.isReified()} */
+        /** Make a type test using {@code AnalyzerUtil.isReified()} */
         public R isReified(JCExpression varExpr, Type testedType);
         /** ceylon.language.true_.get().equals(expr) */
         public R isTrue(JCExpression expr);
@@ -4092,13 +4092,13 @@ public abstract class AbstractTransformer implements Transformation {
 
         @Override
         public Boolean isIdentifiable(JCExpression varExpr) {
-            // Util.isIdentifiable() is expensive
+            // AnalyzerUtil.isIdentifiable() is expensive
             return Boolean.FALSE;
         }
 
         @Override
         public Boolean isBasic(JCExpression varExpr) {
-            // Util.isBasic() is expensive
+            // AnalyzerUtil.isBasic() is expensive
             return Boolean.FALSE;
         }
 
@@ -4111,7 +4111,7 @@ public abstract class AbstractTransformer implements Transformation {
 
         @Override
         public Boolean isReified(JCExpression varExpr, Type testedType) {
-            // Util.isReified() is expensive
+            // AnalyzerUtil.isReified() is expensive
             return Boolean.FALSE;
         }
 
@@ -4250,7 +4250,7 @@ public abstract class AbstractTransformer implements Transformation {
                     if (!Decl.equal(declaration, expressionType.getDeclaration())
                             && canUseFastFailTypeTest(testedType)) {
                         // do a cheap instanceof test to try to shortcircuit the expensive
-                        // Util.isReified()
+                        // AnalyzerUtil.isReified()
                         
                         // XXX Possible future optimization: When the `is` is a condition 
                         // in an `assert` we expect the result to be true, so 
@@ -4294,7 +4294,7 @@ public abstract class AbstractTransformer implements Transformation {
             if (!reifiableUpperBounds((TypeParameter)declaration, expressionType).isEmpty()) {
                 // If we're testing against a type parameter with  
                 // class or interface upper bounds we can again shortcircuit the 
-                // Util.isReified() using instanceof against the bounds
+                // AnalyzerUtil.isReified() using instanceof against the bounds
                 result = typeTester.isReified(varName.makeIdent(), testedType);
                 Iterator<Type> iterator = reifiableUpperBounds((TypeParameter)declaration, expressionType).iterator();
                 while (iterator.hasNext()) {
@@ -4332,7 +4332,7 @@ public abstract class AbstractTransformer implements Transformation {
 
     /**
      * Determine whether we can use a plain {@code instanceof} instead of 
-     * a full {@code Util.isReified()} for a {@code is} test
+     * a full {@code AnalyzerUtil.isReified()} for a {@code is} test
      */
     private boolean canOptimiseReifiedTypeTest(Type type) {
         if(isJavaArray(type)){

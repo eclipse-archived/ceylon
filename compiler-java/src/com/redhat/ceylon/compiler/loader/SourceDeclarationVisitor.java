@@ -19,7 +19,7 @@
  */
 package com.redhat.ceylon.compiler.loader;
 
-import static com.redhat.ceylon.compiler.typechecker.tree.Util.isForBackend;
+import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.isForBackend;
 
 import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.compiler.typechecker.tree.NaturalVisitor;

@@ -1,7 +1,7 @@
 package com.redhat.ceylon.compiler.java.codegen;
 
-import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.isBooleanFalse;
-import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.isBooleanTrue;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isBooleanFalse;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isBooleanTrue;
 
 import java.util.ArrayList;
 import java.util.List;

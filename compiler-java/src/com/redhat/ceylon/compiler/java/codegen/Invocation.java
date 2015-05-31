@@ -32,7 +32,7 @@ import java.util.Set;
 import java.util.TreeMap;
 
 import com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.BoxingStrategy;
-import com.redhat.ceylon.compiler.typechecker.analyzer.Util;
+import com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Comprehension;
@@ -576,7 +576,7 @@ class IndirectInvocation extends SimpleInvocation {
         if(isParameterSequenced(argIndex)){
             if (isArgumentSpread(argIndex) 
                     && isParameterVariadicPlus(argIndex)) {
-                // We might end up calling Util.sequentialInstance to handle 
+                // We might end up calling AnalyzerUtil.sequentialInstance to handle 
                 // the spread and if the spread argument is empty, we need to 
                 // transform it to something of sequential type so we can 
                 // call sequentialInstance(). 
@@ -1269,7 +1269,7 @@ class NamedArgumentInvocation extends Invocation {
         Parameter parameter = sequencedArgument.getParameter();
         Type parameterType = parameterType(parameter, parameter.getType(), gen.TP_TO_BOUND);
         // find out the individual type, we use the argument type for the value, and the param type for the temp variable
-        Type tupleType = Util.getTupleType(sequencedArgument.getPositionalArguments(), gen.typeFact(), false);
+        Type tupleType = AnalyzerUtil.getTupleType(sequencedArgument.getPositionalArguments(), gen.typeFact(), false);
         Type argumentsType = tupleType.getSupertype(gen.typeFact().getIterableDeclaration());
         Type iteratedType = gen.typeFact().getIteratedType(argumentsType);
         Type absentType = gen.typeFact().getIteratedAbsentType(argumentsType);

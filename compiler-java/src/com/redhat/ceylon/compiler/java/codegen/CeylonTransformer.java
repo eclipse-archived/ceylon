@@ -20,7 +20,7 @@
 
 package com.redhat.ceylon.compiler.java.codegen;
 
-import static com.redhat.ceylon.compiler.typechecker.tree.Util.isForBackend;
+import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.isForBackend;
 
 import java.util.Iterator;
 

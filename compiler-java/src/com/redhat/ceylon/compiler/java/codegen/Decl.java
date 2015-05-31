@@ -20,6 +20,9 @@
 
 package com.redhat.ceylon.compiler.java.codegen;
 
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isBooleanFalse;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isBooleanTrue;
+
 import java.util.List;
 
 import com.redhat.ceylon.common.Backend;
@@ -38,18 +41,18 @@ import com.redhat.ceylon.model.typechecker.model.Constructor;
 import com.redhat.ceylon.model.typechecker.model.ControlBlock;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Element;
-import com.redhat.ceylon.model.typechecker.model.Functional;
-import com.redhat.ceylon.model.typechecker.model.Interface;
 import com.redhat.ceylon.model.typechecker.model.Function;
 import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
+import com.redhat.ceylon.model.typechecker.model.Functional;
+import com.redhat.ceylon.model.typechecker.model.Interface;
 import com.redhat.ceylon.model.typechecker.model.ModelUtil;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.NamedArgumentList;
 import com.redhat.ceylon.model.typechecker.model.Package;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
-import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.Scope;
 import com.redhat.ceylon.model.typechecker.model.Setter;
+import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.model.typechecker.model.Value;
@@ -763,8 +766,7 @@ public class Decl {
     }
     public static boolean isAnonCaseOfEnumeratedType(Declaration decl) {
     
-        if (com.redhat.ceylon.compiler.typechecker.analyzer.Util.isBooleanTrue(decl)
-                || com.redhat.ceylon.compiler.typechecker.analyzer.Util.isBooleanFalse(decl)) {
+        if (isBooleanTrue(decl) || isBooleanFalse(decl)) {
             return false;
         }
         if (decl instanceof Value) {

@@ -20,10 +20,12 @@
 
 package com.redhat.ceylon.compiler.java.codegen;
 
+import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.isIndirectInvocation;
+import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.unwrapExpressionUntilTerm;
+
 import java.util.Stack;
 
 import com.redhat.ceylon.common.BooleanUtil;
-import com.redhat.ceylon.compiler.typechecker.analyzer.Util;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ArithmeticAssignmentOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ArithmeticOp;
@@ -65,11 +67,11 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.WithinOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
-import com.redhat.ceylon.model.typechecker.model.Interface;
 import com.redhat.ceylon.model.typechecker.model.Function;
+import com.redhat.ceylon.model.typechecker.model.Interface;
 import com.redhat.ceylon.model.typechecker.model.Reference;
-import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.Scope;
+import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.model.typechecker.model.TypeParameter;
 import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
@@ -205,7 +207,7 @@ public abstract class BoxingVisitor extends Visitor {
     @Override
     public void visit(InvocationExpression that) {
         super.visit(that);
-        if (Util.isIndirectInvocation(that)
+        if (isIndirectInvocation(that)
                 && !Decl.isJavaStaticPrimary(that.getPrimary())) {
             // if the Callable is raw the invocation will be erased
             if(that.getPrimary().getTypeModel() != null
@@ -644,8 +646,8 @@ public abstract class BoxingVisitor extends Visitor {
     @Override
     public void visit(Tree.DefaultOp that) {
         super.visit(that);
-        if (Util.unwrapExpressionUntilTerm(that.getLeftTerm()) instanceof Tree.ThenOp) {
-            Tree.ThenOp then = (Tree.ThenOp)Util.unwrapExpressionUntilTerm(that.getLeftTerm());
+        if (unwrapExpressionUntilTerm(that.getLeftTerm()) instanceof Tree.ThenOp) {
+            Tree.ThenOp then = (Tree.ThenOp)unwrapExpressionUntilTerm(that.getLeftTerm());
             if (CodegenUtil.isUnBoxed(that.getRightTerm())
                     && CodegenUtil.isUnBoxed(then.getRightTerm())
                     && !willEraseToObject(that.getUnit().denotableType(that.getTypeModel()))) {

@@ -30,9 +30,9 @@
 
 package com.redhat.ceylon.compiler.java.tools;
 
-import static com.redhat.ceylon.compiler.typechecker.tree.Util.formatPath;
-import static com.redhat.ceylon.compiler.typechecker.tree.Util.getNativeBackend;
-import static com.redhat.ceylon.compiler.typechecker.tree.Util.isForBackend;
+import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.formatPath;
+import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.getNativeBackend;
+import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.isForBackend;
 
 import java.io.File;
 import java.io.FileInputStream;
