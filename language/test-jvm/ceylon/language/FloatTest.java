@@ -1,6 +1,9 @@
 package ceylon.language;
 
 import static ceylon.language.parseFloat_.parseFloat;
+import static java.lang.Double.NEGATIVE_INFINITY;
+import static java.lang.Double.NaN;
+import static java.lang.Double.POSITIVE_INFINITY;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
@@ -44,6 +47,10 @@ public class FloatTest {
         assertTrue("preserve positive 0", 1 / Float.getWholePart(+0.4) > 0);
         assertTrue("preserve negative 0", 1 / Float.getWholePart(-0.6) < 0);
         assertTrue("preserve positive 0", 1 / Float.getWholePart(+0.6) > 0);
+
+        assertEquals(Float.getWholePart(NEGATIVE_INFINITY), NEGATIVE_INFINITY, 0.0);
+        assertEquals(Float.getWholePart(POSITIVE_INFINITY), POSITIVE_INFINITY, 0.0);
+        assertEquals(Float.getWholePart(NaN), NaN, 0.0);
     }
 
     @Test
@@ -67,6 +74,10 @@ public class FloatTest {
         assertTrue("preserve positive 0", 1 / Float.instance(+0.4).getWholePart().value > 0);
         assertTrue("preserve negative 0", 1 / Float.instance(-0.6).getWholePart().value < 0);
         assertTrue("preserve positive 0", 1 / Float.instance(+0.6).getWholePart().value > 0);
+
+        assertEquals(Float.instance(NEGATIVE_INFINITY).getWholePart().value, NEGATIVE_INFINITY, 0.0);
+        assertEquals(Float.instance(POSITIVE_INFINITY).getWholePart().value, POSITIVE_INFINITY, 0.0);
+        assertEquals(Float.instance(NaN).getWholePart().value, NaN, 0.0);
     }
 
     @Test

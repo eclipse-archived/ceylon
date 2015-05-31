@@ -234,12 +234,17 @@ public final class Float
         if (value <= -TWO_FIFTY_TWO || value >= TWO_FIFTY_TWO) {
             return value;
         }
-        long result = (long) value;
-        if (result == 0 && (1/value) < 0) {
-            return -0.0d;
+        else if (Double.isNaN(value)) {
+            return Double.NaN;
         }
         else {
-            return result;
+            long result = (long) value;
+            if (result == 0 && (1/value) < 0) {
+                return -0.0d;
+            }
+            else {
+                return result;
+            }
         }
     }
 
