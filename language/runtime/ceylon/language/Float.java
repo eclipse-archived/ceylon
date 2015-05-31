@@ -20,7 +20,9 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 @ValueType
 public final class Float
     implements Number<Float>, Exponentiable<Float,Float>, ReifiedType {
-    
+
+    private static final double TWO_FIFTY_TWO = (double) (1 << 52);
+
     @Ignore
     public final static TypeDescriptor $TypeDescriptor$ = TypeDescriptor.klass(Float.class);
 
@@ -219,15 +221,22 @@ public final class Float
     }
     
     @Override
-    public Float getWholePart() {		
-        return instance(getInteger(value));
+    public Float getWholePart() {
+        double wholePart = getWholePart(value);
+        if (wholePart != 0 && wholePart == value) {
+            return this;
+        }
+        return instance(wholePart);
     }
-    
+
     @Ignore
     public static double getWholePart(double value) {
-        return getInteger(value);
+        if (value <= -TWO_FIFTY_TWO || value >= TWO_FIFTY_TWO) {
+            return value;
+        }
+        return Math.copySign((long) value, value);
     }
-    
+
     @Override
     public boolean getPositive() {
         return value > 0;

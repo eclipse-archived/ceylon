@@ -22,7 +22,53 @@ public class FloatTest {
             assertNull("parseFloat(" + str + ") returned a result " + parsed, parsed);
         }
     }
-    
+
+    @Test
+    public void testFloatWholePart() {
+        assertEquals(0.0, Float.getWholePart(-0.0), 0.0);
+        assertEquals(0.0, Float.getWholePart(+0.0), 0.0);
+        assertEquals(0.0, Float.getWholePart(+0.4), 0.0);
+        assertEquals(0.0, Float.getWholePart(-0.4), 0.0);
+        assertEquals(0.0, Float.getWholePart(+0.6), 0.0);
+        assertEquals(0.0, Float.getWholePart(-0.6), 0.0);
+        assertEquals(-1.0, Float.getWholePart(-1.0), 0.0);
+        assertEquals(+1.0, Float.getWholePart(+1.0), 0.0);
+        assertEquals(+1.0, Float.getWholePart(+1.4), 0.0);
+        assertEquals(-1.0, Float.getWholePart(-1.4), 0.0);
+        assertEquals(+1.0, Float.getWholePart(+1.6), 0.0);
+        assertEquals(-1.0, Float.getWholePart(-1.6), 0.0);
+
+        assertTrue("preserve negative 0", 1 / Float.getWholePart(-0.0) < 0);
+        assertTrue("preserve positive 0", 1 / Float.getWholePart(+0.0) > 0);
+        assertTrue("preserve negative 0", 1 / Float.getWholePart(-0.4) < 0);
+        assertTrue("preserve positive 0", 1 / Float.getWholePart(+0.4) > 0);
+        assertTrue("preserve negative 0", 1 / Float.getWholePart(-0.6) < 0);
+        assertTrue("preserve positive 0", 1 / Float.getWholePart(+0.6) > 0);
+    }
+
+    @Test
+    public void testFloatWholePartInstance() {
+        assertEquals(0.0, Float.instance(-0.0).getWholePart().value, 0.0);
+        assertEquals(0.0, Float.instance(+0.0).getWholePart().value, 0.0);
+        assertEquals(0.0, Float.instance(+0.4).getWholePart().value, 0.0);
+        assertEquals(0.0, Float.instance(-0.4).getWholePart().value, 0.0);
+        assertEquals(0.0, Float.instance(+0.6).getWholePart().value, 0.0);
+        assertEquals(0.0, Float.instance(-0.6).getWholePart().value, 0.0);
+        assertEquals(-1.0, Float.instance(-1.0).getWholePart().value, 0.0);
+        assertEquals(+1.0, Float.instance(+1.0).getWholePart().value, 0.0);
+        assertEquals(+1.0, Float.instance(+1.4).getWholePart().value, 0.0);
+        assertEquals(-1.0, Float.instance(-1.4).getWholePart().value, 0.0);
+        assertEquals(+1.0, Float.instance(+1.6).getWholePart().value, 0.0);
+        assertEquals(-1.0, Float.instance(-1.6).getWholePart().value, 0.0);
+
+        assertTrue("preserve negative 0", 1 / Float.instance(-0.0).getWholePart().value < 0);
+        assertTrue("preserve positive 0", 1 / Float.instance(+0.0).getWholePart().value > 0);
+        assertTrue("preserve negative 0", 1 / Float.instance(-0.4).getWholePart().value < 0);
+        assertTrue("preserve positive 0", 1 / Float.instance(+0.4).getWholePart().value > 0);
+        assertTrue("preserve negative 0", 1 / Float.instance(-0.6).getWholePart().value < 0);
+        assertTrue("preserve positive 0", 1 / Float.instance(+0.6).getWholePart().value > 0);
+    }
+
     @Test
     public void testParseFloat() {
         assertParseFloat(12.34e3, "12.34e3");
