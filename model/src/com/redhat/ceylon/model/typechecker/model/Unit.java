@@ -1952,6 +1952,30 @@ public class Unit {
                 firstDefaulted);
     }
     
+    public Type getTailType(Type sequenceType, 
+            int fixedLength) {
+        int i=0;
+        Type tail = sequenceType;
+        while (i++<fixedLength && tail!=null) {
+            if (isTupleType(tail)) {
+                List<Type> list = 
+                        tail.getTypeArgumentList();
+                if (list.size()>=3) {
+                    tail = list.get(2);
+                }
+                else {
+                    tail = null;
+                }
+            }
+            else {
+                tail = null;
+            }
+        }
+        return tail;
+    }
+    
+
+    
     public Type getType(TypeDeclaration td) {
         return td==null ?
                 getUnknownType() :
