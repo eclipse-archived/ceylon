@@ -2727,4 +2727,14 @@ public class ModelUtil {
 
         return false;
     }
+
+    public static boolean isBooleanTrue(Declaration d) {
+        return d!=null && d.getQualifiedNameString()
+                .equals("ceylon.language::true");
+    }
+
+    public static boolean isBooleanFalse(Declaration d) {
+        return d!=null && d.getQualifiedNameString()
+                .equals("ceylon.language::false");
+    }
 }
