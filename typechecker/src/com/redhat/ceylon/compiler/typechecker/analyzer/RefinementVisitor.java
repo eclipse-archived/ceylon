@@ -3,6 +3,7 @@ package com.redhat.ceylon.compiler.typechecker.analyzer;
 
 import static com.redhat.ceylon.compiler.typechecker.analyzer.DeclarationVisitor.setVisibleScope;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.ExpressionVisitor.getRefinedMember;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.NO_TYPE_ARGS;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.checkAssignable;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.checkAssignableToOneOf;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.checkIsExactly;
@@ -24,7 +25,6 @@ import static java.util.Collections.emptyList;
 import static java.util.Collections.emptyMap;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -39,19 +39,19 @@ import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.model.typechecker.model.Constructor;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
+import com.redhat.ceylon.model.typechecker.model.Function;
 import com.redhat.ceylon.model.typechecker.model.Functional;
 import com.redhat.ceylon.model.typechecker.model.Generic;
 import com.redhat.ceylon.model.typechecker.model.LazyProducedType;
-import com.redhat.ceylon.model.typechecker.model.Function;
 import com.redhat.ceylon.model.typechecker.model.Package;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.ParameterList;
 import com.redhat.ceylon.model.typechecker.model.Reference;
-import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.Scope;
 import com.redhat.ceylon.model.typechecker.model.Setter;
 import com.redhat.ceylon.model.typechecker.model.SiteVariance;
 import com.redhat.ceylon.model.typechecker.model.Specification;
+import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.model.typechecker.model.TypeParameter;
 import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
@@ -574,7 +574,7 @@ public class RefinementVisitor extends Visitor {
                     refiningTypeParams);
         }
         else {
-        	typeArgs = emptyList();
+        	typeArgs = NO_TYPE_ARGS;
         }
         
         Type cit = ci.getType();
@@ -751,7 +751,7 @@ public class RefinementVisitor extends Visitor {
 	    int max = refiningSize <= refinedSize ? 
 	            refiningSize : refinedSize;
 	    if (max==0) {
-	    	return emptyList();
+	    	return NO_TYPE_ARGS;
 	    }
 	    //we substitute the type parameters of the refined
 	    //declaration into the bounds of the refining 
@@ -1450,7 +1450,7 @@ public class RefinementVisitor extends Visitor {
             tpls = pe.getParameterLists();
         }
         else {
-            tpls = Collections.emptyList();
+            tpls = emptyList();
         }
         int i=0;
         TypecheckerUnit unit = that.getUnit();

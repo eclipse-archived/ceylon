@@ -1,18 +1,20 @@
 package com.redhat.ceylon.compiler.typechecker.analyzer;
 
-import static com.redhat.ceylon.model.typechecker.model.SiteVariance.IN;
-import static com.redhat.ceylon.model.typechecker.model.SiteVariance.OUT;
+import static com.redhat.ceylon.compiler.typechecker.tree.Util.name;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.appliedType;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.intersectionType;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isNamed;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isTypeUnknown;
-import static com.redhat.ceylon.model.typechecker.model.ModelUtil.appliedType;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.unionType;
+import static com.redhat.ceylon.model.typechecker.model.SiteVariance.IN;
+import static com.redhat.ceylon.model.typechecker.model.SiteVariance.OUT;
 import static java.util.Collections.emptyList;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import com.redhat.ceylon.compiler.typechecker.tree.Message;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
@@ -28,10 +30,11 @@ import com.redhat.ceylon.model.typechecker.model.Generic;
 import com.redhat.ceylon.model.typechecker.model.Interface;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
+import com.redhat.ceylon.model.typechecker.model.ParameterList;
 import com.redhat.ceylon.model.typechecker.model.Reference;
-import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.Scope;
 import com.redhat.ceylon.model.typechecker.model.SiteVariance;
+import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.TypeAlias;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.model.typechecker.model.TypeParameter;
@@ -47,6 +50,8 @@ import com.redhat.ceylon.model.typechecker.model.Value;
  *
  */
 public class Util {
+    
+    static final List<Type> NO_TYPE_ARGS = emptyList();
     
     static TypedDeclaration getTypedMember(TypeDeclaration d, String name,
             List<Type> signature, boolean ellipsis, Unit unit) {
@@ -1374,4 +1379,59 @@ public class Util {
             }
         }
     }
+
+    static Parameter getMatchingParameter(ParameterList pl, 
+            Tree.NamedArgument na, 
+            Set<Parameter> foundParameters) {
+        Tree.Identifier id = na.getIdentifier();
+        if (id==null) {
+            for (Parameter p: pl.getParameters()) {
+                if (!foundParameters.contains(p)) {
+                    return p;
+                }
+            }
+        }
+        else {
+            String name = name(id);
+            for (Parameter p: pl.getParameters()) {
+                if (p.getName()!=null &&
+                        p.getName().equals(name)) {
+                    return p;
+                }
+            }
+        }
+        return null;
+    }
+
+    static Parameter getUnspecifiedParameter(Reference pr,
+            ParameterList pl, 
+            Set<Parameter> foundParameters) {
+        for (Parameter p: pl.getParameters()) {
+            Type t = pr==null ? 
+                    p.getType() : 
+                    pr.getTypedParameter(p)
+                        .getFullType();
+            if (t!=null) {
+                t = t.resolveAliases();
+                if (!foundParameters.contains(p) &&
+                        p.getDeclaration().getUnit()
+                            .isIterableParameterType(t)) {
+                    return p;
+                }
+            }
+        }
+        return null;
+    }
+
+    static boolean involvesTypeParams(Declaration dec, 
+            Type type) {
+        if (isGeneric(dec)) {
+            Generic g = (Generic) dec;
+            return type.involvesTypeParameters(g);
+        }
+        else {
+            return false;
+        }
+    }
+
 }
