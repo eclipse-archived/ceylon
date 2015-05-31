@@ -212,7 +212,8 @@
     SATISFIED_TYPES?
     CLASS_BODY
     Value declarationModel;
-    Class anonymousClass;)
+    Class anonymousClass;
+    boolean enumerated;)
 
 "A parameter list for a function or class."
 ^(PARAMETER_LIST 

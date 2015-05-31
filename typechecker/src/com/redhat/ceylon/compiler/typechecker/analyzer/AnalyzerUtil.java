@@ -293,12 +293,19 @@ public class AnalyzerUtil {
         return null;
     }
 
-    static Tree.Constructor getLastConstructor(Tree.ClassBody that) {
+    static Tree.Declaration getLastConstructor(Tree.ClassBody that) {
         List<Tree.Statement> statements = that.getStatements();
         for (int i=statements.size()-1; i>=0; i--) {
             Tree.Statement s = statements.get(i);
             if (s instanceof Tree.Constructor) {
                 return (Tree.Constructor) s;
+            }
+            else if (s instanceof Tree.ObjectDefinition) {
+                Tree.ObjectDefinition o = 
+                        (Tree.ObjectDefinition) s;
+                if (o.getEnumerated()) {
+                    return o;
+                }
             }
         }
         return null;
@@ -333,6 +340,9 @@ public class AnalyzerUtil {
             else if (s instanceof Tree.ObjectDefinition) {
                 Tree.ObjectDefinition o = 
                         (Tree.ObjectDefinition) s;
+                if (o.getEnumerated()) {
+                    return true;
+                }
                 if (o.getExtendedType()!=null) {
                     Type et = 
                             o.getExtendedType()

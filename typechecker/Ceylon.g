@@ -353,6 +353,25 @@ typeNameDeclaration returns [Identifier identifier]
       
     ;
 
+enumeratedObject returns [ObjectDefinition declaration]
+    : NEW
+      { $declaration = new ObjectDefinition($NEW); 
+        $declaration.setType(new ValueModifier(null)); 
+        $declaration.setEnumerated(true); }
+      (
+        memberName
+        { $declaration.setIdentifier($memberName.identifier); }
+      )?
+      (
+        classBody
+        { $declaration.setClassBody($classBody.classBody); }
+      | { displayRecognitionError(getTokenNames(), 
+              new MismatchedTokenException(LBRACE, input)); }
+        SEMICOLON
+        { $declaration.setEndToken($SEMICOLON); }
+      )
+    ;
+    
 objectDeclaration returns [ObjectDefinition declaration]
     : OBJECT_DEFINITION
       { $declaration = new ObjectDefinition($OBJECT_DEFINITION); 
@@ -855,8 +874,8 @@ constructor returns [Constructor declaration]
     : NEW
       { $declaration = new Constructor($NEW); }
       (
-        typeNameDeclaration
-        { $declaration.setIdentifier($typeNameDeclaration.identifier); }
+        typeName
+        { $declaration.setIdentifier($typeName.identifier); }
       )?
       (
         parameters
@@ -1430,6 +1449,8 @@ declaration returns [Declaration declaration]
       { $declaration=$inferredAttributeDeclaration.declaration; }
     | typedMethodOrAttributeDeclaration
       { $declaration=$typedMethodOrAttributeDeclaration.declaration; }
+    | (NEW LIDENTIFIER) => enumeratedObject
+      { $declaration=$enumeratedObject.declaration; }
     | constructor
       { $declaration=$constructor.declaration; }
     /*| { displayRecognitionError(getTokenNames(), 

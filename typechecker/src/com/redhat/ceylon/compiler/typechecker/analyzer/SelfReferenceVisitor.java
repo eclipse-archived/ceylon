@@ -10,6 +10,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.Super;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.model.typechecker.model.Constructor;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
+import com.redhat.ceylon.model.typechecker.model.Enumerated;
 import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
@@ -36,8 +37,10 @@ public class SelfReferenceVisitor extends Visitor {
         Declaration member = that.getDeclaration();
         if (member!=null && 
                 !typeDeclaration.isAlias() && 
-                !(member instanceof Constructor)) {
-            if (!declarationSection && isInherited(that, member)) {
+                !(member instanceof Constructor ||
+                  member instanceof Enumerated)) {
+            if (!declarationSection && 
+                    isInherited(that, member)) {
                 that.addError("inherited member class may not be extended in initializer of '" +
                     		typeDeclaration.getName() + "': '" + member.getName() + 
                     		"' is inherited from '" + 
@@ -48,9 +51,12 @@ public class SelfReferenceVisitor extends Visitor {
 
     private void visitReference(Tree.Primary that) {
         if (that instanceof Tree.MemberOrTypeExpression) {
-            Declaration member = ((Tree.MemberOrTypeExpression) that).getDeclaration();
+            Tree.MemberOrTypeExpression mte = 
+                    (Tree.MemberOrTypeExpression) that;
+            Declaration member = mte.getDeclaration();
             if (member!=null) {
-                if (!declarationSection && isInherited(that, member)) {
+                if (!declarationSection && 
+                        isInherited(that, member)) {
                     that.addError("inherited member may not be used in initializer of '" +
                     		typeDeclaration.getName() + "': '" + member.getName() + 
                     		"' is inherited from '" + 

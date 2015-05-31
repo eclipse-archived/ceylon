@@ -1,8 +1,6 @@
 package com.redhat.ceylon.compiler.typechecker.analyzer;
 
 
-import static com.redhat.ceylon.compiler.typechecker.analyzer.DeclarationVisitor.setVisibleScope;
-import static com.redhat.ceylon.compiler.typechecker.analyzer.ExpressionVisitor.getRefinedMember;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.NO_TYPE_ARGS;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.checkAssignable;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.checkAssignableToOneOf;
@@ -13,6 +11,8 @@ import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.decla
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.getTypeErrorNode;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.getTypedDeclaration;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.message;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.DeclarationVisitor.setVisibleScope;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.ExpressionVisitor.getRefinedMember;
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.name;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getInheritedDeclarations;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getInterveningRefinements;
@@ -39,6 +39,7 @@ import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.model.typechecker.model.Constructor;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
+import com.redhat.ceylon.model.typechecker.model.Enumerated;
 import com.redhat.ceylon.model.typechecker.model.Function;
 import com.redhat.ceylon.model.typechecker.model.Functional;
 import com.redhat.ceylon.model.typechecker.model.Generic;
@@ -1332,6 +1333,16 @@ public class RefinementVisitor extends Visitor {
                 Scope container = scope.getContainer();
                 Scope realScope = getRealScope(container);
                 if (realScope instanceof ClassOrInterface) {
+                    if (realScope instanceof Enumerated)  {
+                        //TODO: this is _not_ how I want to
+                        //handle this, I want to treat 
+                        //the Enumerated as constructor
+                        //assigning to the private member,
+                        //not refining a shared member
+                        td.setShared(true);
+                        td.setFormal(true);
+                        td.setProtectedVisibility(true);
+                    }
                     ClassOrInterface ci = 
                             (ClassOrInterface) 
                                 realScope;
