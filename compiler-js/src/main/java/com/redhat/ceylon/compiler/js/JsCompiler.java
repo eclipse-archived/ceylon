@@ -1,8 +1,8 @@
 package com.redhat.ceylon.compiler.js;
 
-import static com.redhat.ceylon.compiler.typechecker.tree.Util.formatPath;
-import static com.redhat.ceylon.compiler.typechecker.tree.Util.getNativeBackend;
-import static com.redhat.ceylon.compiler.typechecker.tree.Util.isForBackend;
+import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.formatPath;
+import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.getNativeBackend;
+import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.isForBackend;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -44,8 +44,8 @@ import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ImportModule;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ModuleDescriptor;
+import com.redhat.ceylon.compiler.typechecker.tree.TreeUtil;
 import com.redhat.ceylon.compiler.typechecker.tree.UnexpectedError;
-import com.redhat.ceylon.compiler.typechecker.tree.Util;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.compiler.typechecker.util.WarningSuppressionVisitor;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
@@ -149,7 +149,7 @@ public class JsCompiler {
                     isJavaModule = true;
                 }
                 if (isJavaModule) {
-                    importNativeBackend = Util.getNativeBackend(that.getAnnotationList(), that.getUnit());
+                    importNativeBackend = TreeUtil.getNativeBackend(that.getAnnotationList(), that.getUnit());
                     if (!Backend.Java.nativeAnnotation.equals(importNativeBackend)
                             && !Backend.Java.nativeAnnotation.equals(moduleNativeBackend)) {
                         that.getImportPath().addUnexpectedError("cannot import Java modules in Javascript", Backend.JavaScript);
@@ -651,7 +651,7 @@ public class JsCompiler {
             if (err instanceof AnalysisMessage) {
                 Node n = ((AnalysisMessage)err).getTreeNode();
                 if(n != null)
-                    n = com.redhat.ceylon.compiler.typechecker.tree.Util.getIdentifyingNode(n);
+                    n = TreeUtil.getIdentifyingNode(n);
                 out.write(String.format(" at %s of %s", n.getLocation(), n.getUnit().getFilename()));
             } else if (err instanceof RecognitionError) {
                 RecognitionError rer = (RecognitionError)err;
@@ -667,7 +667,7 @@ public class JsCompiler {
                 if(err instanceof AnalysisMessage){
                     Node node = ((AnalysisMessage) err).getTreeNode();
                     if(node != null)
-                        node = com.redhat.ceylon.compiler.typechecker.tree.Util.getIdentifyingNode(node);
+                        node = TreeUtil.getIdentifyingNode(node);
                     if(node != null && node.getToken() != null)
                         position = node.getToken().getCharPositionInLine();
                     if(node.getUnit() != null && node.getUnit().getFullPath() != null)
