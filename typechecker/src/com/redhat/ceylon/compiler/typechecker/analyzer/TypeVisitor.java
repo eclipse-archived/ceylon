@@ -488,7 +488,9 @@ public class TypeVisitor extends Visitor {
             }
             checkAliasCase(alias, d);
         }
-        importMembers(member, d);
+        if (d!=null) {
+            importMembers(member, d);
+        }
         return name;
     }
     
@@ -579,7 +581,9 @@ public class TypeVisitor extends Visitor {
             }
             checkAliasCase(alias, m);
         }
-        importMembers(member, m);
+        if (m!=null) {
+            importMembers(member, m);
+        }
         //imtl.addError("member aliases may not have member aliases");
         return name;
     }
