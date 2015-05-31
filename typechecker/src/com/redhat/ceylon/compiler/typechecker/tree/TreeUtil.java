@@ -4,9 +4,10 @@ import java.util.List;
 
 import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.common.BackendSupport;
-import com.redhat.ceylon.compiler.typechecker.analyzer.UsageWarning;
+import com.redhat.ceylon.model.typechecker.model.Annotation;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Function;
+import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.model.typechecker.model.Unit;
 
@@ -304,7 +305,7 @@ public class TreeUtil {
                 else {
                     // UsageWarning don't count as errors
                     for (Message error: that.getErrors()) {
-                        if (!(error instanceof UsageWarning)) {
+                        if (!error.isWarning()) {
                             // get out fast
                             throw new ErrorFoundException();
                         }
@@ -322,6 +323,193 @@ public class TreeUtil {
         catch (ErrorFoundException x) {
             return true;
         }
+    }
+
+    public static void buildAnnotations(Tree.AnnotationList al, 
+            List<Annotation> annotations) {
+        if (al!=null) {
+            Tree.AnonymousAnnotation aa = 
+                    al.getAnonymousAnnotation();
+            if (aa!=null) {
+                Annotation ann = new Annotation();
+                ann.setName("doc");
+                String text = aa.getStringLiteral().getText();
+                ann.addPositionalArgment(text);
+                annotations.add(ann);
+            }
+            for (Tree.Annotation a: al.getAnnotations()) {
+                Annotation ann = new Annotation();
+                Tree.BaseMemberExpression bma = 
+                        (Tree.BaseMemberExpression) a.getPrimary();
+                String name = bma.getIdentifier().getText();
+                ann.setName(name);
+                Tree.NamedArgumentList nal = 
+                        a.getNamedArgumentList();
+                if (nal!=null) {
+                    for (Tree.NamedArgument na: 
+                            nal.getNamedArguments()) {
+                        if (na instanceof Tree.SpecifiedArgument) {
+                            Tree.SpecifiedArgument sa = 
+                                    (Tree.SpecifiedArgument) na;
+                            Tree.SpecifierExpression sie = 
+                                    sa.getSpecifierExpression();
+                            Tree.Expression e = sie.getExpression();
+                            if (e!=null) {
+                                Tree.Term t = e.getTerm();
+                                Parameter p = sa.getParameter();
+                                if (p!=null) {
+                                    String text = toString(t);
+                                    if (text!=null) {
+                                        ann.addNamedArgument(p.getName(), text);
+                                    }
+                                }
+                            }
+                        }                    
+                    }
+                }
+                Tree.PositionalArgumentList pal = 
+                        a.getPositionalArgumentList();
+                if (pal!=null) {
+                    for (Tree.PositionalArgument pa: 
+                            pal.getPositionalArguments()) {
+                        if (pa instanceof Tree.ListedArgument) {
+                            Tree.ListedArgument la = 
+                                    (Tree.ListedArgument) pa;
+                            Tree.Term t = la.getExpression().getTerm();
+                            String text = toString(t);
+                            if (text!=null) {
+                                ann.addPositionalArgment(text);
+                            }
+                        }
+                    }
+                }
+                annotations.add(ann);
+            }
+        }
+    }
+    
+    private static String toString(Tree.Term t) {
+        if (t instanceof Tree.Literal) {
+            return ((Tree.Literal) t).getText();
+        }
+        else if (t instanceof Tree.StaticMemberOrTypeExpression) {
+            Tree.StaticMemberOrTypeExpression mte = 
+                    (Tree.StaticMemberOrTypeExpression) t;
+            String id = mte.getIdentifier().getText();
+            if (mte instanceof Tree.QualifiedMemberOrTypeExpression) {
+                Tree.QualifiedMemberOrTypeExpression qmte = 
+                        (Tree.QualifiedMemberOrTypeExpression) mte;
+                Tree.Primary p = qmte.getPrimary();
+                if (p instanceof Tree.StaticMemberOrTypeExpression) {
+                    Tree.StaticMemberOrTypeExpression smte = 
+                            (Tree.StaticMemberOrTypeExpression) p;
+                    return toString(smte) + '.' + id;
+                }
+                return null;
+            }
+            else {
+                return id;
+            }
+        }
+        else if (t instanceof Tree.TypeLiteral) {
+            Tree.TypeLiteral tl = 
+                    (Tree.TypeLiteral) t;
+            Tree.StaticType type = tl.getType();
+            if (type!=null) {
+                return toString(type);
+            }
+            return null;
+        }
+        else if (t instanceof Tree.MemberLiteral) {
+            Tree.MemberLiteral ml = 
+                    (Tree.MemberLiteral) t;
+            Tree.Identifier id = ml.getIdentifier();
+            Tree.StaticType type = ml.getType();
+            if (type!=null) {
+                String qualifier = toString(type);
+                if (qualifier!=null && id!=null) {
+                    return qualifier + "." + id.getText();
+                }
+                return null;
+            }
+            return id.getText();
+        }
+        else if (t instanceof Tree.ModuleLiteral) {
+            Tree.ModuleLiteral ml = (Tree.ModuleLiteral) t;
+            String importPath = toString(ml.getImportPath());
+            return importPath == null ? "module" : "module " + importPath;
+        }
+        else if (t instanceof Tree.PackageLiteral) {
+            Tree.PackageLiteral pl = (Tree.PackageLiteral) t;
+            String importPath = toString(pl.getImportPath());
+            return importPath == null ? "package" : "package " + importPath;
+        }
+        else {
+            return null;
+        }
+    }
+    
+    private static String toString(Tree.ImportPath importPath) {
+        if (importPath != null) {
+            StringBuilder sb = new StringBuilder();
+            if (importPath.getIdentifiers() != null) {
+                for (Tree.Identifier identifier : importPath.getIdentifiers()) {
+                    if (sb.length() != 0) {
+                        sb.append(".");
+                    }
+                    sb.append(identifier.getText());
+                }
+            }
+            return sb.toString();
+        }
+        return null;
+    }
+
+    private static String toString(Tree.StaticType type) {
+        // FIXME: we're discarding syntactic types and union/intersection types
+        if (type instanceof Tree.BaseType){
+            Tree.BaseType bt = (Tree.BaseType) type;
+            return bt.getIdentifier().getText();
+        }
+        else if(type instanceof Tree.QualifiedType) {
+            Tree.QualifiedType qt = 
+                    (Tree.QualifiedType) type;
+            String qualifier = toString(qt.getOuterType());
+            if(qualifier != null) {
+                Tree.SimpleType st = (Tree.SimpleType) type;
+                return qualifier + "." + 
+                        st.getIdentifier().getText();
+            }
+            return null;
+        }
+        return null;
+    }
+
+    public static boolean isSelfReference(Tree.Primary that) {
+        return that instanceof Tree.This || 
+                that instanceof Tree.Outer;
+    }
+
+    public static boolean isEffectivelyBaseMemberExpression(Tree.Term term) {
+        return term instanceof Tree.BaseMemberExpression ||
+                term instanceof Tree.QualifiedMemberExpression &&
+                isSelfReference(((Tree.QualifiedMemberExpression) term)
+                        .getPrimary());
+    }
+
+    public static boolean isInstantiationExpression(
+            Tree.Expression e) {
+        Tree.Term term = e.getTerm();
+        if (term instanceof Tree.InvocationExpression) {
+            Tree.InvocationExpression ie = 
+                    (Tree.InvocationExpression) term;
+            Tree.Primary p = ie.getPrimary();
+            if (p instanceof Tree.BaseTypeExpression || 
+                p instanceof Tree.QualifiedTypeExpression) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }

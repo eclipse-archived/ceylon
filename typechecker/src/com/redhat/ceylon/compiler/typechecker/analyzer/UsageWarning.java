@@ -24,6 +24,11 @@ public class UsageWarning extends AnalysisMessage {
         this.suppressed = false;
     }
     
+    @Override
+    public boolean isWarning() {
+        return true;
+    }
+    
     public String getWarningName() {
         return name;
     }

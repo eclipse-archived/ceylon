@@ -7,4 +7,5 @@ public interface Message {
     int getCode();
     int getLine();
     Backend getBackend();
+    boolean isWarning();
 }

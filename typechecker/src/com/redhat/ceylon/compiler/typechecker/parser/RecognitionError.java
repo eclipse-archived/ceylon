@@ -23,6 +23,11 @@ public abstract class RecognitionError implements Message {
 		}
 	}
 	
+	@Override
+	public boolean isWarning() {
+	    return false;
+	}
+	
 	public String[] getTokenNames() {
 		return tokenNames;
 	}

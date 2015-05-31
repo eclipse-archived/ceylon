@@ -14,6 +14,11 @@ public class AnalysisMessage implements Message {
     private final int code;
     private final Backend backend;
     
+    @Override
+    public boolean isWarning() {
+        return false;
+    }
+    
     public AnalysisMessage(Node treeNode, String message) {
         this(treeNode, message, 0);
     }
