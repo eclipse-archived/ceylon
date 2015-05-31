@@ -18,7 +18,7 @@ import java.util.Set;
 import java.util.TreeMap;
 
 public abstract class TypeDeclaration extends Declaration 
-        implements ImportableScope, Generic, Cloneable {
+        implements ImportableScope, Cloneable, Generic {
 
     private Type extendedType;
     private List<Type> satisfiedTypes = 
@@ -26,7 +26,6 @@ public abstract class TypeDeclaration extends Declaration
                     new ArrayList<Type>(3) : 
                     Collections.<Type>emptyList();
     private List<Type> caseTypes = null;
-    private List<TypeParameter> typeParameters = emptyList();
     private Type selfType;
     private List<Type> brokenSupertypes = null; // delayed allocation
     private boolean inconsistentType;
@@ -84,11 +83,6 @@ public abstract class TypeDeclaration extends Declaration
         }
     }
 
-    @Override
-    public boolean isParameterized() {
-        return !typeParameters.isEmpty();
-    }
-
     public boolean isSelfType() {
     	return false;
     }
@@ -97,14 +91,16 @@ public abstract class TypeDeclaration extends Declaration
     	return false;
     }
 
+    @Override
     public List<TypeParameter> getTypeParameters() {
-        return typeParameters;
-    }
-
-    public void setTypeParameters(List<TypeParameter> typeParameters) {
-        this.typeParameters = typeParameters;
+        return emptyList();
     }
     
+    @Override
+    public void setTypeParameters(List<TypeParameter> params) {
+        throw new UnsupportedOperationException();
+    }
+
     /**
      * The class or constructor extended by a class, the 
      * type aliased by a class or interface alias, or the 

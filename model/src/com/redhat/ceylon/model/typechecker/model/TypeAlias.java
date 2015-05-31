@@ -1,6 +1,7 @@
 package com.redhat.ceylon.model.typechecker.model;
 
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.addHashForModule;
+import static java.util.Collections.emptyList;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,6 +11,7 @@ public class TypeAlias extends TypeDeclaration {
     
     private List<Declaration> members = new ArrayList<Declaration>(3);
     private List<Annotation> annotations = new ArrayList<Annotation>(4);
+    private List<TypeParameter> typeParameters = emptyList();
     
     private boolean anonymous;
     
@@ -61,6 +63,19 @@ public class TypeAlias extends TypeDeclaration {
         this.anonymous = anonymous;
     }
 	
+    @Override
+    public boolean isParameterized() {
+        return !typeParameters.isEmpty();
+    }
+
+    public List<TypeParameter> getTypeParameters() {
+        return typeParameters;
+    }
+
+    public void setTypeParameters(List<TypeParameter> typeParameters) {
+        this.typeParameters = typeParameters;
+    }
+    
     @Override
     public boolean isMember() {
         return getContainer() instanceof ClassOrInterface;

@@ -1,7 +1,6 @@
 package com.redhat.ceylon.model.typechecker.model;
 
 import static com.redhat.ceylon.model.typechecker.model.DeclarationKind.CONSTRUCTOR;
-import static java.util.Collections.emptyList;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,13 +12,12 @@ import java.util.Objects;
  *
  * @author Gavin King
  */
-public class Constructor extends TypeDeclaration implements Generic, Scope, Functional {
+public class Constructor extends TypeDeclaration implements Scope, Functional {
 
     public Constructor() {}
     
     //private boolean formal;
 
-    private List<TypeParameter> typeParameters = emptyList();
     private List<ParameterList> parameterLists = new ArrayList<ParameterList>(1);
     private boolean overloaded;
     private boolean abstraction;
@@ -36,19 +34,6 @@ public class Constructor extends TypeDeclaration implements Generic, Scope, Func
     public void setAbstract(boolean isAbstract) {
         this.abstr = isAbstract;
     }
-
-    @Override
-    public boolean isParameterized() {
-        return !typeParameters.isEmpty();
-    }
-
-    public List<TypeParameter> getTypeParameters() {
-        return typeParameters;
-    }
-
-    public void setTypeParameters(List<TypeParameter> typeParameters) {
-        this.typeParameters = typeParameters;
-    }
     
     @Override
     public ParameterList getFirstParameterList() {
@@ -64,7 +49,7 @@ public class Constructor extends TypeDeclaration implements Generic, Scope, Func
     public void addParameterList(ParameterList pl) {
         parameterLists.add(pl);
     }
-
+    
     @Override
     public boolean isOverloaded() {
     	return overloaded;

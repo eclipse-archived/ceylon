@@ -3,7 +3,7 @@ package com.redhat.ceylon.model.loader.model;
 import java.util.Collections;
 import java.util.List;
 
-import com.redhat.ceylon.model.typechecker.model.Functional;
+import com.redhat.ceylon.model.typechecker.model.Generic;
 import com.redhat.ceylon.model.typechecker.model.Interface;
 import com.redhat.ceylon.model.typechecker.model.Scope;
 import com.redhat.ceylon.model.typechecker.model.TypeParameter;
@@ -41,8 +41,8 @@ public class FunctionOrValueInterface extends Interface {
     
     @Override
     public List<TypeParameter> getTypeParameters() {
-        return declaration instanceof Functional 
-                ? ((Functional) declaration).getTypeParameters() 
+        return declaration instanceof Generic 
+                ? ((Generic) declaration).getTypeParameters() 
                 : Collections.<TypeParameter>emptyList();
     }
 

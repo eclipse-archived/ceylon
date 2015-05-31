@@ -1,5 +1,7 @@
 package com.redhat.ceylon.model.typechecker.model;
 
+import static java.util.Collections.emptyList;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -9,6 +11,7 @@ public abstract class ClassOrInterface extends TypeDeclaration {
 
     private List<Declaration> members = new ArrayList<Declaration>(3);
     private List<Annotation> annotations = new ArrayList<Annotation>(4);
+    private List<TypeParameter> typeParameters = emptyList();
     
     @Override
     public List<Annotation> getAnnotations() {
@@ -52,6 +55,19 @@ public abstract class ClassOrInterface extends TypeDeclaration {
     	}
     }
 
+    @Override
+    public boolean isParameterized() {
+        return !typeParameters.isEmpty();
+    }
+
+    public List<TypeParameter> getTypeParameters() {
+        return typeParameters;
+    }
+
+    public void setTypeParameters(List<TypeParameter> typeParameters) {
+        this.typeParameters = typeParameters;
+    }
+    
     @Override
     public DeclarationKind getDeclarationKind() {
         return DeclarationKind.TYPE;

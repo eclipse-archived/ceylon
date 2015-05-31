@@ -1,5 +1,7 @@
 package com.redhat.ceylon.model.typechecker.model;
 
+import static java.util.Collections.emptyList;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -17,6 +19,7 @@ public class TypeParameter extends TypeDeclaration {
     private Boolean hasNonErasedBounds;
     private List<Declaration> members = new ArrayList<Declaration>(0);
     private boolean captured;
+    private List<TypeParameter> typeParameters = emptyList();
 
     @Override
     public List<Declaration> getMembers() {
@@ -95,6 +98,19 @@ public class TypeParameter extends TypeDeclaration {
     @Override
     public boolean isAbstraction() {
         return false;
+    }
+    
+    @Override
+    public boolean isParameterized() {
+        return !typeParameters.isEmpty();
+    }
+
+    public List<TypeParameter> getTypeParameters() {
+        return typeParameters;
+    }
+
+    public void setTypeParameters(List<TypeParameter> typeParameters) {
+        this.typeParameters = typeParameters;
     }
     
     @Override

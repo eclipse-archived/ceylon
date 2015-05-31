@@ -22,7 +22,7 @@ public interface Functional {
     
     public Parameter getParameter(String name);
 
-    public List<TypeParameter> getTypeParameters();
+//    public List<TypeParameter> getTypeParameters();
     
     public boolean isDeclaredVoid();
 
