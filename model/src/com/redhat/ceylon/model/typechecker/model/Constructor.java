@@ -16,6 +16,11 @@ public class Constructor extends TypeDeclaration implements Scope, Functional {
 
     public Constructor() {}
     
+    @Override
+    public boolean isConstructor() {
+        return true;
+    }
+    
     //private boolean formal;
 
     private List<ParameterList> parameterLists = new ArrayList<ParameterList>(1);
