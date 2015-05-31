@@ -1196,60 +1196,11 @@ public class ModelUtil {
             }
         }
         else {
-            TypeDeclaration ptd = pt.getDeclaration();
-            //implement the rule that Foo&Bar==Nothing if 
-            //there exists some enumerated type Baz with
-            //    Baz of Foo | Bar 
-            //(the intersection of disjoint types is empty)
-            Type nt = unit.getNothingType();
-            if (!list.isEmpty() && reduceDisjointTypes) {
-                List<TypeDeclaration> supertypes = 
-                        ptd.getSupertypeDeclarations();
-                for (int i=0, l=supertypes.size(); i<l; i++) {
-                    TypeDeclaration supertype = 
-                            supertypes.get(i);
-                    List<Type> cts =
-                            supertype.getCaseTypes();
-                    if (cts!=null) {
-                        TypeDeclaration ctd=null;
-                        for (int cti=0, 
-                                ctl=cts.size(); 
-                                cti<ctl; 
-                                cti++) {
-                            TypeDeclaration ct = 
-                                    cts.get(cti)
-                                        .getDeclaration();
-                            if (ptd.inherits(ct)) {
-                                ctd = ct;
-                                break;
-                            }
-                        }
-                        if (ctd!=null) {
-                            for (int cti=0, ctl=cts.size(); 
-                                    cti<ctl; 
-                                    cti++) {
-                                TypeDeclaration ct = 
-                                        cts.get(cti)
-                                            .getDeclaration();
-                                if (ct!=ctd) {
-                                    for (int ti=0, 
-                                            tl=list.size(); 
-                                            ti<tl; 
-                                            ti++) {
-                                        Type t = 
-                                                list.get(ti);
-                                        if (t.getDeclaration()
-                                                .inherits(ct)) {
-                                            list.clear();
-                                            list.add(nt);
-                                            return;
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
+            if (reduceDisjointTypes &&
+                    reduceIfDisjoint(pt, list, unit)) {
+                list.clear();
+                list.add(unit.getNothingType());
+                return;
             }
             
             Boolean add = pt.isWellDefined();
@@ -1267,10 +1218,12 @@ public class ModelUtil {
                     else if (haveUninhabitableIntersection(
                             pt, t, unit)) {
                         list.clear();
-                        list.add(nt);
+                        list.add(unit.getNothingType());
                         return;
                     } 
                     else {
+                        TypeDeclaration ptd = 
+                                pt.getDeclaration();
                         if (pt.isClassOrInterface() && 
                             t.isClassOrInterface() && 
                             t.getDeclaration().equals(ptd) &&
@@ -1304,6 +1257,74 @@ public class ModelUtil {
                 list.add(pt);
             }
         }
+    }
+
+    /**
+     * implement the rule that Foo&Bar==Nothing if 
+     * here exists some enumerated type Baz with
+     * 
+     *    Baz of Foo | Bar 
+     * 
+     * (the intersection of disjoint types is empty)
+     * 
+     * @param type a type which might be disjoint from
+     *        a list of other given types
+     * @param list the list of other types
+     * @param unit
+     * 
+     * @return true of the given type was disjoint from
+     *         the given list of types
+     */
+    private static boolean reduceIfDisjoint(Type type, 
+            List<Type> list, Unit unit) {
+        if (list.isEmpty()) { 
+            return false;
+        }
+        TypeDeclaration typeDec = type.getDeclaration();
+        List<TypeDeclaration> supertypes = 
+                typeDec.getSupertypeDeclarations();
+        for (int i=0, l=supertypes.size(); i<l; i++) {
+            TypeDeclaration supertype = 
+                    supertypes.get(i);
+            List<Type> cts = supertype.getCaseTypes();
+            if (cts!=null) {
+                TypeDeclaration ctd=null;
+                for (int cti=0, 
+                        ctl=cts.size(); 
+                        cti<ctl; 
+                        cti++) {
+                    TypeDeclaration ct = 
+                            cts.get(cti)
+                                .getDeclaration();
+                    if (typeDec.inherits(ct)) {
+                        ctd = ct;
+                        break;
+                    }
+                }
+                if (ctd!=null) {
+                    for (int cti=0, ctl=cts.size(); 
+                            cti<ctl; 
+                            cti++) {
+                        TypeDeclaration ct = 
+                                cts.get(cti)
+                                    .getDeclaration();
+                        if (ct!=ctd) {
+                            for (int ti=0, 
+                                    tl=list.size(); 
+                                    ti<tl; 
+                                    ti++) {
+                                Type t = list.get(ti);
+                                if (t.getDeclaration()
+                                        .inherits(ct)) {
+                                    return true;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return false;
     }
 
     /**
