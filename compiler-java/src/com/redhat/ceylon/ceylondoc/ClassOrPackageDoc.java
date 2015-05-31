@@ -26,6 +26,7 @@ import static com.redhat.ceylon.ceylondoc.Util.getModifiers;
 import static com.redhat.ceylon.ceylondoc.Util.getNameWithContainer;
 import static com.redhat.ceylon.ceylondoc.Util.isAbbreviatedType;
 import static com.redhat.ceylon.ceylondoc.Util.isEmpty;
+import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.buildAnnotations;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -43,7 +44,6 @@ import java.util.Set;
 import org.antlr.runtime.CommonToken;
 
 import com.redhat.ceylon.compiler.java.codegen.Decl;
-import com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
@@ -615,7 +615,7 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
         for (Tree.Assertion assertion : parameterAssertions.keySet()) {
 
             List<Annotation> annotations = new ArrayList<Annotation>();
-            AnalyzerUtil.buildAnnotations(assertion.getAnnotationList(), annotations);
+            buildAnnotations(assertion.getAnnotationList(), annotations);
 
             String doc = Util.getRawDoc(decl.getUnit(), annotations);
             if (!Util.isEmpty(doc)) {
