@@ -872,6 +872,78 @@ public abstract class TypeDeclaration extends Declaration
         }
     }
     
+    /**
+     * implement the rule that Foo&Bar==Nothing if 
+     * here exists some enumerated type Baz with
+     * 
+     *    Baz of Foo | Bar 
+     * 
+     * (the intersection of disjoint types is empty)
+     * 
+     * @param type a type which might be disjoint from
+     *        a list of other given types
+     * @param list the list of other types
+     * @param unit
+     * 
+     * @return true of the given type was disjoint from
+     *         the given list of types
+     */
+    public boolean isDisjoint(TypeDeclaration td) {
+        if (this instanceof ClassOrInterface &&
+            td instanceof ClassOrInterface &&
+                equals(td)) {
+            return false;
+        }
+        if (this instanceof TypeParameter &&
+                td instanceof TypeParameter &&
+                    equals(td)) {
+            return false;
+        }
+        List<Type> sts = getSatisfiedTypes();
+        for (int i=0, s=sts.size(); i<s; i++) {
+            Type st = sts.get(i);
+            if (isDisjoint(td, st)) {
+                return true;
+            }
+        }     
+        Type et = getExtendedType();
+        if (et!=null) {
+            if (isDisjoint(td, et)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean isDisjoint(TypeDeclaration td, Type st) {
+        TypeDeclaration std = st.getDeclaration();
+        List<Type> cts = std.getCaseTypes();
+        if (cts!=null) {
+            for (int i=0, s=cts.size(); i<s; i++) {
+                TypeDeclaration ctd = 
+                        cts.get(i)
+                            .getDeclaration();
+                if (ctd.equals(this)) {
+                    for (int j=0, l=cts.size(); j<l; j++) {
+                        if (i!=j) {
+                            TypeDeclaration octd = 
+                                    cts.get(j)
+                                        .getDeclaration();
+                            if (td.inherits(octd)) {
+                                return true;
+                            }
+                        }
+                    }
+                    break;
+                }
+            }
+        }
+        if (std.isDisjoint(td)) {
+            return true;
+        }
+        return false;
+    }
+    
 //    private List<TypeDeclaration> supertypeDeclarations;
     
     public final List<TypeDeclaration> getSupertypeDeclarations() {

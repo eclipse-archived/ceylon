@@ -1173,21 +1173,20 @@ public class ModelUtil {
      * subtype.
      */
     public static void addToIntersection(List<Type> list, 
-            Type pt, Unit unit, 
+            Type type, Unit unit, 
             boolean reduceDisjointTypes) {
-        if (pt==null || 
+        if (type==null || 
                 !list.isEmpty() && 
-                pt.isAnything()) {
+                type.isAnything()) {
             return;
         }
-        else if (pt.isNothing()) {
+        else if (type.isNothing()) {
             list.clear();
-            list.add(pt);
+            list.add(type);
         }
-        else if (pt.isIntersection()) {
+        else if (type.isIntersection()) {
             List<Type> satisfiedTypes = 
-                    pt.getSatisfiedTypes();
-            // cheaper c-for than foreach
+                    type.getSatisfiedTypes();
             for (int i=0, 
                     size=satisfiedTypes.size(); 
                     i<size; i++) {
@@ -1197,43 +1196,36 @@ public class ModelUtil {
             }
         }
         else {
-            if (reduceDisjointTypes &&
-                    reduceIfDisjoint(pt, list, unit)) {
-                list.clear();
-                list.add(unit.getNothingType());
-                return;
-            }
-            
-            Boolean add = pt.isWellDefined();
-            if (add) {
+            if (type.isWellDefined()) {
+                TypeDeclaration dec = type.getDeclaration();
                 for (int i=0; i<list.size(); i++) {
                     Type t = list.get(i);
-                    if (t.isSubtypeOf(pt)) {
-                        add = false;
-                        break;
+                    if (t.isSubtypeOf(type)) {
+                        return;
                     }
-                    else if (pt.isSubtypeOf(t)) {
+                    else if (type.isSubtypeOf(t)) {
                         list.remove(i);
                         i--; // redo this index
                     }
-                    else if (haveUninhabitableIntersection(
-                            pt, t, unit)) {
+                    else if (disjoint(type, t, 
+                            reduceDisjointTypes, unit)) {
                         list.clear();
                         list.add(unit.getNothingType());
                         return;
                     } 
                     else {
-                        TypeDeclaration ptd = 
-                                pt.getDeclaration();
-                        if (pt.isClassOrInterface() && 
+                        if (type.isClassOrInterface() && 
                             t.isClassOrInterface() && 
-                            t.getDeclaration().equals(ptd) &&
-                                !pt.containsUnknowns() &&
+                            t.getDeclaration().equals(dec) &&
+                                !type.containsUnknowns() &&
                                 !t.containsUnknowns()) {
-                            //canonicalize T<InX,OutX>&T<InY,OutY> to T<InX|InY,OutX&OutY>
+                            //canonicalize a type of form
+                            //T<InX,OutX>&T<InY,OutY> to 
+                            //T<InX|InY,OutX&OutY>
                             Type pi = 
                                     principalInstantiation(
-                                            ptd, pt, t, unit);
+                                            dec, type, t, 
+                                            unit);
                             if (!pi.containsUnknowns()) {
                                 list.remove(i);
                                 list.add(pi);
@@ -1242,21 +1234,51 @@ public class ModelUtil {
                         }
                     }
                 }
-            }
-            if (add && list.size()>1) {
-                //it is possible to have a type that is a
-                //supertype of the intersection, even though
-                //it is not a supertype of any of the 
-                //intersected types!
-                Type type = 
-                        canonicalIntersection(list, unit);
-                if (pt.isSupertypeOf(type)) {
-                    add = false;
+                if (list.size()>1) {
+                    //it is possible to have a type that is
+                    //a supertype of the intersection, even 
+                    //though it is not a supertype of any of  
+                    //the intersected types!
+                    Type t = canonicalIntersection(list, unit);
+                    if (type.isSupertypeOf(t)) {
+                        return;
+                    }
                 }
+                list.add(type);
             }
-            if (add) {
-                list.add(pt);
-            }
+        }
+    }
+    
+    /**
+     * Are the given types disjoint?
+     * 
+     * @param p the first type
+     * @param q the second type
+     * @param considerEnumeratedSupertypes true if we
+     *        should take into account that cases of an
+     *        enumerated type are disjoint
+     * @param unit
+     * 
+     * @return true if the types are disjoint
+     */
+    private static boolean disjoint(Type p, Type q, 
+            boolean considerEnumeratedSupertypes, 
+            Unit unit) {
+        if (considerEnumeratedSupertypes &&
+                q.getDeclaration()
+                    .isDisjoint(p.getDeclaration())) {
+            return true;
+        }
+        else {
+            //we have to resolve aliases here, or computing
+            //supertype declarations gets incredibly slow 
+            //for the big stack of union type aliases in 
+            //ceylon.ast
+            Type ps = p.resolveAliases();
+            Type qs = q.resolveAliases();
+            return emptyMeet(ps, qs, unit) ||
+                    hasEmptyIntersectionOfInvariantInstantiations(ps, qs);
+
         }
     }
 
@@ -1276,7 +1298,7 @@ public class ModelUtil {
      * @return true of the given type was disjoint from
      *         the given list of types
      */
-    private static boolean reduceIfDisjoint(Type type, 
+    /*private static boolean reduceIfDisjoint(Type type, 
             List<Type> list, Unit unit) {
         if (list.isEmpty()) { 
             return false;
@@ -1326,7 +1348,7 @@ public class ModelUtil {
             }
         }
         return false;
-    }
+    }*/
 
     /**
      * The meet of two classes unrelated by inheritance,
@@ -1548,17 +1570,6 @@ public class ModelUtil {
      * @param p the argument type P
      * @param q the argument type Q
      */
-    private static boolean haveUninhabitableIntersection(
-            Type p, Type q, Unit unit) {
-        //we have to resolve aliases here, or the computing
-        //supertype declarations gets incredibly slow for 
-        //the big stack of union type aliases in ceylon.ast
-        Type ps = p.resolveAliases();
-        Type qs = q.resolveAliases();
-        return emptyMeet(ps, qs, unit) ||
-                hasEmptyIntersectionOfInvariantInstantiations(ps, qs);
-    }
-
     private static boolean hasEmptyIntersectionOfInvariantInstantiations(
             Type p, Type q) {
         List<TypeDeclaration> pstds = 
