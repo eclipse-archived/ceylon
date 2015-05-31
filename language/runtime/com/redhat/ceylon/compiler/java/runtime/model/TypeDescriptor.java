@@ -133,8 +133,10 @@ public abstract class TypeDescriptor {
         
         protected Type applyUseSiteVariance(TypeDeclaration decl, Type type) {
             // apply use site variance if required
-            if(useSiteVariance.length != 0){
-                List<TypeParameter> typeParameters = decl.getTypeParameters();
+            if(useSiteVariance.length != 0 && 
+                    decl instanceof com.redhat.ceylon.model.typechecker.model.Generic){
+                List<TypeParameter> typeParameters = 
+                        ((com.redhat.ceylon.model.typechecker.model.Generic)decl).getTypeParameters();
                 int i = 0;
                 for(TypeParameter typeParameter : typeParameters){
                     // bail if we have more type parameters than provided use site variance

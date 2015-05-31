@@ -22,10 +22,11 @@ import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 import com.redhat.ceylon.compiler.java.metadata.Variance;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
-import com.redhat.ceylon.model.typechecker.model.Functional;
 import com.redhat.ceylon.model.typechecker.model.Function;
-import com.redhat.ceylon.model.typechecker.model.TypedReference;
+import com.redhat.ceylon.model.typechecker.model.Functional;
+import com.redhat.ceylon.model.typechecker.model.Generic;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
+import com.redhat.ceylon.model.typechecker.model.TypedReference;
 
 @Ceylon(major = 8)
 @com.redhat.ceylon.compiler.java.metadata.Class
@@ -47,7 +48,7 @@ public class FreeFunction
 
         // FIXME: make lazy
         // FIXME: share with ClassOrInterface
-        List<com.redhat.ceylon.model.typechecker.model.TypeParameter> typeParameters = ((Functional) declaration).getTypeParameters();
+        List<com.redhat.ceylon.model.typechecker.model.TypeParameter> typeParameters = ((Generic) declaration).getTypeParameters();
         ceylon.language.meta.declaration.TypeParameter[] typeParametersArray = new ceylon.language.meta.declaration.TypeParameter[typeParameters.size()];
         int i=0;
         for(com.redhat.ceylon.model.typechecker.model.TypeParameter tp : typeParameters){
