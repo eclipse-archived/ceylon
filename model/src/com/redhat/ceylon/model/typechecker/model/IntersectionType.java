@@ -2,6 +2,7 @@ package com.redhat.ceylon.model.typechecker.model;
 
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.addToIntersection;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.addToUnion;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.canonicalIntersection;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.intersection;
 
 import java.util.ArrayList;
@@ -76,16 +77,12 @@ public class IntersectionType extends TypeDeclaration {
         }
     }
     
-    public TypeDeclaration canonicalize() {
-        return canonicalize(true);
-    }
-
     /**
      * Apply the distributive rule X&(Y|Z) == X&Y|X&Z to simplify the 
      * intersection to a canonical form with no parens. The result is 
      * a union of intersections, instead of an intersection of unions.
      */
-	public TypeDeclaration canonicalize(boolean reduceDisjointTypes) {
+	public TypeDeclaration canonicalize() {
 	    List<Type> sts = getSatisfiedTypes();
 		if (sts.isEmpty()) {
 	        return unit.getAnythingDeclaration();
@@ -109,22 +106,16 @@ public class IntersectionType extends TypeDeclaration {
 					for (Type pt: sts) {
 						if (pt==st) {
 							addToIntersection(ilist, ct, 
-							        unit, 
-							        reduceDisjointTypes);
+							        unit);
 						}
 						else {
 							addToIntersection(ilist, pt, 
-							        unit, 
-							        reduceDisjointTypes);
+							        unit);
 						}
 					}
-					IntersectionType it = 
-					        new IntersectionType(unit);
-					it.setSatisfiedTypes(ilist);
-					addToUnion(ulist, 
-					        it.canonicalize(
-					                reduceDisjointTypes)
-					            .getType());
+					Type it = canonicalIntersection(ilist, 
+					        unit);
+                    addToUnion(ulist, it);
 				}
                 TypeDeclaration result = 
                         new UnionType(unit);

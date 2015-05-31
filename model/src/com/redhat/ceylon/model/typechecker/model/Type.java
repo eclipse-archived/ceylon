@@ -7,6 +7,7 @@ import static com.redhat.ceylon.model.typechecker.model.ModelUtil.addToUnion;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.canonicalIntersection;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getTypeArgumentMap;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getVarianceMap;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.intersection;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.intersectionOfSupertypes;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.intersectionType;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.principalInstantiation;
@@ -1731,8 +1732,7 @@ public class Type extends Reference {
                     if (pt==null) {
                         return null;
                     }
-                    Type st = 
-                            pt.getSupertypeInternal(dec);
+                    Type st = pt.getSupertypeInternal(dec);
                     if (st==null) {
                         return null;
                     }
@@ -1750,21 +1750,18 @@ public class Type extends Reference {
                     if (pt==null) {
                         return null;
                     }
-                    Type st = 
-                            pt.getSupertypeInternal(dec);
+                    Type st = pt.getSupertypeInternal(dec);
                     if (st==null) {
                         return null;
                     }
                     Type arg = 
                             st.getTypeArguments()
                                 .get(tp);
-                    addToIntersection(intersection, 
-                            arg, unit, false);
+                    addToIntersection(intersection, arg, 
+                            unit);
                 }
-                IntersectionType it = 
-                        new IntersectionType(unit);
-                it.setSatisfiedTypes(intersection);
-                result = it.canonicalize(false).getType();
+                result = canonicalIntersection(intersection, 
+                        unit);
             }
             else {
                 //invariant is harder, need to account for
@@ -1796,19 +1793,16 @@ public class Type extends Reference {
                     else if (st.isContravariant(tp)) {
                         contravariant = true;
                         addToIntersection(intersection, 
-                                arg, unit, false);
+                                arg, unit);
                     }
                     else {
                         addToUnion(union, arg);
                         addToIntersection(intersection, 
-                                arg, unit, false);
+                                arg, unit);
                     }
                 }
                 Type utt = union(union, unit);
-                IntersectionType it = 
-                        new IntersectionType(unit);
-                it.setSatisfiedTypes(intersection);
-                Type itt = it.getType();
+                Type itt = intersection(intersection, unit);;
                 if (!covariant && !contravariant) {
                     if (utt.isExactly(itt)) {
                         result = utt; //invariant!

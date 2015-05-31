@@ -1161,11 +1161,6 @@ public class ModelUtil {
         }
     }
     
-    public static void addToIntersection(List<Type> list, 
-            Type pt, Unit unit) {
-        addToIntersection(list, pt, unit, true);
-    }
-    
     /**
      * Helper method for eliminating duplicate types from
      * lists of types that form an intersection type, taking 
@@ -1173,8 +1168,7 @@ public class ModelUtil {
      * subtype.
      */
     public static void addToIntersection(List<Type> list, 
-            Type type, Unit unit, 
-            boolean reduceDisjointTypes) {
+            Type type, Unit unit) {
         if (type==null || 
                 !list.isEmpty() && 
                 type.isAnything()) {
@@ -1191,8 +1185,7 @@ public class ModelUtil {
                     size=satisfiedTypes.size(); 
                     i<size; i++) {
                 Type t = satisfiedTypes.get(i);
-                addToIntersection(list, 
-                        t, unit, reduceDisjointTypes);
+                addToIntersection(list, t, unit);
             }
         }
         else {
@@ -1207,8 +1200,7 @@ public class ModelUtil {
                         list.remove(i);
                         i--; // redo this index
                     }
-                    else if (disjoint(type, t, 
-                            reduceDisjointTypes, unit)) {
+                    else if (disjoint(type, t, unit)) {
                         list.clear();
                         list.add(unit.getNothingType());
                         return;
@@ -1254,19 +1246,15 @@ public class ModelUtil {
      * 
      * @param p the first type
      * @param q the second type
-     * @param considerEnumeratedSupertypes true if we
-     *        should take into account that cases of an
      *        enumerated type are disjoint
      * @param unit
      * 
      * @return true if the types are disjoint
      */
     private static boolean disjoint(Type p, Type q, 
-            boolean considerEnumeratedSupertypes, 
             Unit unit) {
-        if (considerEnumeratedSupertypes &&
-                q.getDeclaration()
-                    .isDisjoint(p.getDeclaration())) {
+        if (q.getDeclaration()
+                .isDisjoint(p.getDeclaration())) {
             return true;
         }
         else {
