@@ -1,6 +1,7 @@
 package com.redhat.ceylon.model.typechecker.util;
 
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isElementOfUnion;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.union;
 
 import java.util.List;
 
@@ -8,11 +9,10 @@ import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Interface;
 import com.redhat.ceylon.model.typechecker.model.Package;
-import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.Scope;
+import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.model.typechecker.model.TypeParameter;
-import com.redhat.ceylon.model.typechecker.model.UnionType;
 import com.redhat.ceylon.model.typechecker.model.Unit;
 
 public class TypePrinter {
@@ -463,9 +463,7 @@ public class TypePrinter {
         if (elemtypes==null) {
             return false;
         }
-        UnionType ut = new UnionType(unit);
-        ut.setCaseTypes(elemtypes);
-        Type t = ut.getType();
+        Type t = union(elemtypes, unit);
         Type typeArg = 
                 args.getTypeArgumentList().get(0);
         if (typeArg==null) {

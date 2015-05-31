@@ -1,18 +1,20 @@
 package com.redhat.ceylon.model.typechecker.model;
 
-import static com.redhat.ceylon.model.typechecker.model.SiteVariance.IN;
-import static com.redhat.ceylon.model.typechecker.model.SiteVariance.OUT;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.EMPTY_VARIANCE_MAP;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.NO_TYPE_ARGS;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.addToIntersection;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.addToUnion;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.canonicalIntersection;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getTypeArgumentMap;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getVarianceMap;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.intersectionOfSupertypes;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.intersectionType;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.principalInstantiation;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.toTypeArgs;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.union;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.unionOfCaseTypes;
+import static com.redhat.ceylon.model.typechecker.model.SiteVariance.IN;
+import static com.redhat.ceylon.model.typechecker.model.SiteVariance.OUT;
 import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
 
@@ -984,9 +986,7 @@ public class Type extends Reference {
             for (Type ct: caseTypes) {
                 addToUnion(types, ct.eliminateNull());
             }
-            UnionType ut = new UnionType(unit);
-            ut.setCaseTypes(types);
-            return ut.getType();
+            return union(types, unit);
         }
         else {
             return this;
@@ -1007,9 +1007,7 @@ public class Type extends Reference {
             for (Type ct: caseTypes) {
                 addToUnion(types, ct.shallowMinus(pt));
             }
-            UnionType ut = new UnionType(unit);
-            ut.setCaseTypes(types);
-            return ut.getType();
+            return union(types, unit);
         }
         else {
             return this;
@@ -1033,9 +1031,7 @@ public class Type extends Reference {
                 for (Type ct: cts) {
                     addToUnion(types, ct.minus(pt));
                 }
-                UnionType ut = new UnionType(unit);
-                ut.setCaseTypes(types);
-                Type type = ut.getType();
+                Type type = union(types, unit);
                 return type.coversInternal(this) ? 
                         this : type;
             }
@@ -1049,11 +1045,8 @@ public class Type extends Reference {
                     addToIntersection(types, ct.minus(pt), 
                             unit);
                 }
-                IntersectionType ut = 
-                        new IntersectionType(unit);
-                ut.setSatisfiedTypes(types);
                 Type type = 
-                        ut.canonicalize().getType();
+                        canonicalIntersection(types, unit);
                 return type.coversInternal(this) ? 
                         this : type;
             }
@@ -1657,16 +1650,14 @@ public class Type extends Reference {
                             //a common supertype by forming the union of 
                             //the two possible results (since A|B is always
                             //a supertype of A&B)
-                            UnionType ut = 
-                                    new UnionType(unit);
                             List<Type> caseTypes = 
                                     new ArrayList<Type>(2);
                             //if (extendedType!=null) caseTypes.add(extendedType);
                             //caseTypes.addAll(satisfiedTypes);
                             caseTypes.add(result);
                             caseTypes.add(possibleResult);
-                            ut.setCaseTypes(caseTypes);
-                            result = ut.getType().getSupertype(c);
+                            result = union(caseTypes, unit)
+                                    .getSupertype(c);
                             if (result==null) {
                                 return unit.getUnknownType();
                             }
@@ -1749,10 +1740,7 @@ public class Type extends Reference {
                             st.getTypeArguments()
                                 .get(tp));
                 }
-                UnionType ut = 
-                        new UnionType(unit);
-                ut.setCaseTypes(union);
-                result = ut.getType();
+                result = union(union, unit);
             }
             else if (tp.isContravariant()) { 
                 List<Type> intersection = 
@@ -1816,10 +1804,7 @@ public class Type extends Reference {
                                 arg, unit, false);
                     }
                 }
-                UnionType ut = 
-                        new UnionType(unit);
-                ut.setCaseTypes(union);
-                Type utt = ut.getType();
+                Type utt = union(union, unit);
                 IntersectionType it = 
                         new IntersectionType(unit);
                 it.setSatisfiedTypes(intersection);
@@ -2732,10 +2717,7 @@ public class Type extends Reference {
                                 types);
                     }
                 }
-                UnionType ut = 
-                        new UnionType(unit);
-                ut.setCaseTypes(types);
-                return ut.getType();
+                return union(types, unit);
             }
             else if (type.isIntersection()) {
                 List<Type> sts = 
@@ -2751,10 +2733,7 @@ public class Type extends Reference {
                                 types, unit);
                     }
                 }
-                IntersectionType it = 
-                        new IntersectionType(unit);
-                it.setSatisfiedTypes(types);
-                return it.canonicalize().getType();
+                return canonicalIntersection(types, unit);
             }
             else if (type.isTypeParameter()) {
                 TypeParameter tp = (TypeParameter) ptd;
@@ -2871,10 +2850,7 @@ public class Type extends Reference {
                                     covariant, contravariant, 
                                     unit, tc));
                 }
-                UnionType ut = 
-                        new UnionType(unit);
-                ut.setCaseTypes(list);
-                return ut.getType();
+                return union(list, unit);
             }
             else if (sub.isIntersection()) {
                 List<Type> list =
@@ -2887,10 +2863,7 @@ public class Type extends Reference {
                                     unit, tc),
                             unit);
                 }
-                IntersectionType it = 
-                        new IntersectionType(unit);
-                it.setSatisfiedTypes(list);
-                return it.canonicalize().getType();
+                return canonicalIntersection(list, unit);
             }
             else {
                 Type sqt = sub.getQualifyingType();
@@ -3257,10 +3230,7 @@ public class Type extends Reference {
                         st.getUnionOfCases(), 
                         unit);
             }
-            IntersectionType it = 
-                    new IntersectionType(unit);
-            it.setSatisfiedTypes(list);
-            return it.canonicalize().getType();
+            return canonicalIntersection(list, unit);
         }
         else {
             List<Type> cts = getCaseTypes();
@@ -3285,9 +3255,7 @@ public class Type extends Reference {
                             ct.narrowToUpperBounds()
                                 .getUnionOfCases()); //note recursion
                 }
-                UnionType ut = new UnionType(unit);
-                ut.setCaseTypes(list);
-                return ut.getType();
+                return union(list, unit);
             }
         }
     }
@@ -3548,9 +3516,7 @@ public class Type extends Reference {
                 addToUnion(list, 
                         pt.resolveAliases());
             }
-            UnionType ut = new UnionType(unit);
-            ut.setCaseTypes(list);
-            return ut.getType();
+            return union(list, unit);
         }
         else if (isIntersection()) {
             List<Type> satisfiedTypes = 
@@ -3563,10 +3529,7 @@ public class Type extends Reference {
                         pt.resolveAliases(), 
                         unit);
             }
-            IntersectionType ut = 
-                    new IntersectionType(unit);
-            ut.setSatisfiedTypes(list);
-            return ut.canonicalize().getType();
+            return canonicalIntersection(list, unit);
         }
         else {
             Type qt = getQualifyingType();
@@ -4138,10 +4101,7 @@ public class Type extends Reference {
                                 covariant, contravariant,
                                 overrides));
             }
-            UnionType unionType = 
-                    new UnionType(unit);
-            unionType.setCaseTypes(list);
-            return unionType.getType();
+            return union(list, unit);
         }
         else if (type.isIntersection()) {
             List<Type> list = 
@@ -4153,10 +4113,7 @@ public class Type extends Reference {
                                 overrides),
                         unit);
             }
-            IntersectionType intersectionType = 
-                    new IntersectionType(unit);
-            intersectionType.setSatisfiedTypes(list);
-            return intersectionType.canonicalize().getType();
+            return canonicalIntersection(list, unit);
         }
         else {
             List<Type> args = 

@@ -1,16 +1,18 @@
 package com.redhat.ceylon.model.typechecker.model;
 
-import static com.redhat.ceylon.model.typechecker.model.Module.LANGUAGE_MODULE_NAME;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.NO_TYPE_ARGS;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.addToIntersection;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.addToUnion;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.appliedType;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.canonicalIntersection;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.intersectionType;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isNameMatching;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isOverloadedVersion;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isToplevelAnonymousClass;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isToplevelClassConstructor;
-import static com.redhat.ceylon.model.typechecker.model.ModelUtil.appliedType;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.union;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.unionType;
+import static com.redhat.ceylon.model.typechecker.model.Module.LANGUAGE_MODULE_NAME;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -985,9 +987,7 @@ public class Unit {
                     addToUnion(list, 
                             denotableType(ct));
                 }
-                UnionType ut = new UnionType(this);
-                ut.setCaseTypes(list);
-                return ut.getType();
+                return union(list, this);
     		}
             if (type.isIntersection()) {
                 List<Type> sts = 
@@ -1000,10 +1000,7 @@ public class Unit {
                             denotableType(st), 
                             this);
                 }
-                IntersectionType it = 
-                        new IntersectionType(this);
-                it.setSatisfiedTypes(list);
-                return it.canonicalize().getType();
+                return canonicalIntersection(list, this);
             }
             TypeDeclaration dec = type.getDeclaration();
             Type et = dec.getExtendedType();
@@ -1038,10 +1035,7 @@ public class Unit {
     			                this);
     			    }
     			}
-    			IntersectionType it = 
-    			        new IntersectionType(this);
-    			it.setSatisfiedTypes(list);
-    			return it.canonicalize().getType();
+    			return canonicalIntersection(list, this);
     		}
     		else {
                 List<Type> typeArgList = 

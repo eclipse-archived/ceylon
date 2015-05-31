@@ -1294,11 +1294,8 @@ public class ModelUtil {
                 //supertype of the intersection, even though
                 //it is not a supertype of any of the 
                 //intersected types!
-                IntersectionType it = 
-                        new IntersectionType(unit);
-                it.setSatisfiedTypes(list);
                 Type type = 
-                        it.canonicalize().getType();
+                        canonicalIntersection(list, unit);
                 if (pt.isSupertypeOf(type)) {
                     add = false;
                 }
@@ -1326,17 +1323,15 @@ public class ModelUtil {
         TypeDeclaration pd = p.getDeclaration();
         TypeDeclaration qd = q.getDeclaration();
         if (p.isTypeParameter()) {
-            IntersectionType it = 
-                    new IntersectionType(unit);
-            it.setSatisfiedTypes(p.getSatisfiedTypes());
-            p = it.canonicalize().getType();
+            p = canonicalIntersection(
+                    p.getSatisfiedTypes(), 
+                    unit);
             pd = p.getDeclaration();
         }
         if (q.isTypeParameter()) {
-            IntersectionType it = 
-                    new IntersectionType(unit);
-            it.setSatisfiedTypes(q.getSatisfiedTypes());
-            q = it.canonicalize().getType();
+            q = canonicalIntersection(
+                    q.getSatisfiedTypes(), 
+                    unit);
             qd = q.getDeclaration();
         }
         if (q.isIntersection()) {
@@ -1509,14 +1504,16 @@ public class ModelUtil {
         Type ptqt = pt.getQualifyingType();
         Type tqt = t.getQualifyingType();
         if (ptqt!=null && tqt!=null && 
-                td.getContainer() instanceof TypeDeclaration) {
+                td.getContainer() 
+                        instanceof TypeDeclaration) {
             TypeDeclaration qtd = 
                     (TypeDeclaration) 
                         td.getContainer();
             Type pst = ptqt.getSupertype(qtd);
             Type st = tqt.getSupertype(qtd);
             if (pst!=null && st!=null) {
-                return principalInstantiation(qtd, pst, st, unit);
+                return principalInstantiation(qtd, pst, st, 
+                        unit);
             }
         }
         return null;
@@ -1608,7 +1605,8 @@ public class ModelUtil {
         return false;
     }
     
-    public static String formatPath(List<String> path, char separator) {
+    public static String formatPath(List<String> path, 
+            char separator) {
         StringBuilder sb = new StringBuilder();
         for (int i=0; i<path.size(); i++) {
             String pathPart = path.get(i);
@@ -1624,11 +1622,14 @@ public class ModelUtil {
         return formatPath(path, '.');
     }
     
+    /**
+     * Form the union of the given types, eliminating 
+     * duplicates. 
+     */
     public static Type unionType(
             Type lhst, Type rhst, 
             Unit unit) {
-        List<Type> list = 
-                new ArrayList<Type>(2);
+        List<Type> list = new ArrayList<Type>(2);
         addToUnion(list, rhst);
         addToUnion(list, lhst);
         UnionType ut = new UnionType(unit);
@@ -1636,6 +1637,10 @@ public class ModelUtil {
         return ut.getType();
     }
 
+    /**
+     * Form the intersection of the given types, 
+     * canonicalizing, and eliminating duplicates. 
+     */
     public static Type intersectionType(
             Type lhst, Type rhst, 
             Unit unit) {
@@ -1644,12 +1649,53 @@ public class ModelUtil {
         if (simpleIntersection != null) {
             return simpleIntersection;
         }
-        List<Type> list = 
-                new ArrayList<Type>(2);
+        List<Type> list = new ArrayList<Type>(2);
         addToIntersection(list, rhst, unit);
         addToIntersection(list, lhst, unit);
         IntersectionType it = new IntersectionType(unit);
         it.setSatisfiedTypes(list);
+        return it.canonicalize().getType();
+    }
+    
+    /**
+     * Form the union of the given types, without 
+     * eliminating duplicates.
+     */
+    public static Type union(
+            List<Type> types, Unit unit) {
+        if (types.size()==1) {
+            return types.get(0);
+        }
+        UnionType ut = new UnionType(unit);
+        ut.setCaseTypes(types);
+        return ut.getType();
+    }
+    
+    /**
+     * Form the intersection of the given types, without
+     * eliminating duplicates nor canonicalizing.
+     */
+    public static Type intersection(
+            List<Type> types, Unit unit) {
+        if (types.size()==1) {
+            return types.get(0);
+        }
+        IntersectionType it = new IntersectionType(unit);
+        it.setSatisfiedTypes(types);
+        return it.getType();
+    }
+
+    /**
+     * Form the canonical intersection of the given types, 
+     * without eliminating duplicates.
+     */
+    public static Type canonicalIntersection(
+            List<Type> types, Unit unit) {
+        if (types.size()==1) {
+            return types.get(0);
+        }
+        IntersectionType it = new IntersectionType(unit);
+        it.setSatisfiedTypes(types);
         return it.canonicalize().getType();
     }
 
@@ -1793,11 +1839,10 @@ public class ModelUtil {
             if (satisfiedTypes.isEmpty()) {
                 // trivial intersection TP&Object
                 Unit unit = objectDecl.getUnit();
-                IntersectionType it = 
-                        new IntersectionType(unit);
-                it.getSatisfiedTypes().add(type);
-                it.getSatisfiedTypes().add(objectDecl.getType());
-                return it.canonicalize().getType();
+                List<Type> types = new ArrayList<Type>(2);
+                types.add(type);
+                types.add(objectDecl.getType());
+                return canonicalIntersection(types, unit);
             }
             for (Type sat: satisfiedTypes) {
                 if (sat.isClassOrInterface() && 
@@ -2235,8 +2280,8 @@ public class ModelUtil {
             list.add(extendedType);
         }
         list.addAll(satisfiedTypes);
-        IntersectionType it = 
-                new IntersectionType(td.getUnit());
+        Unit unit = td.getUnit();
+        IntersectionType it = new IntersectionType(unit);
         it.setSatisfiedTypes(list);
         return it.getType();
     }
@@ -2251,7 +2296,7 @@ public class ModelUtil {
         if (caseTypes==null) {
             return unit.getAnythingType();
         }
-        List<Type> list = 
+        List<Type> list =
                 new ArrayList<Type>
                     (caseTypes.size()+1);
         list.addAll(caseTypes);

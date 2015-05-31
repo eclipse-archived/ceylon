@@ -1,5 +1,8 @@
 package com.redhat.ceylon.model.loader;
 
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.intersection;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.union;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -60,11 +63,10 @@ import com.redhat.ceylon.model.typechecker.model.Constructor;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.DeclarationCompleter;
 import com.redhat.ceylon.model.typechecker.model.Element;
-import com.redhat.ceylon.model.typechecker.model.Functional;
-import com.redhat.ceylon.model.typechecker.model.Interface;
-import com.redhat.ceylon.model.typechecker.model.IntersectionType;
 import com.redhat.ceylon.model.typechecker.model.Function;
 import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
+import com.redhat.ceylon.model.typechecker.model.Functional;
+import com.redhat.ceylon.model.typechecker.model.Interface;
 import com.redhat.ceylon.model.typechecker.model.ModelUtil;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.ModuleImport;
@@ -72,15 +74,14 @@ import com.redhat.ceylon.model.typechecker.model.Modules;
 import com.redhat.ceylon.model.typechecker.model.Package;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.ParameterList;
-import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.Scope;
 import com.redhat.ceylon.model.typechecker.model.Setter;
 import com.redhat.ceylon.model.typechecker.model.SiteVariance;
+import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.TypeAlias;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.model.typechecker.model.TypeParameter;
 import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
-import com.redhat.ceylon.model.typechecker.model.UnionType;
 import com.redhat.ceylon.model.typechecker.model.Unit;
 import com.redhat.ceylon.model.typechecker.model.UnknownType;
 import com.redhat.ceylon.model.typechecker.model.Value;
@@ -3045,9 +3046,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         }else{
             List<Type> list = new ArrayList<Type>(types.size());
             list.addAll(types);
-            UnionType ut = new UnionType(getUnitForModule(module));
-            ut.setCaseTypes(list);
-            annotatedType =  ut.getType();
+            annotatedType = union(list, getUnitForModule(module));
         }
         Type constrainedType = constrainedAnnotation.appliedType(null, Arrays.asList(klass.getType(), getOptionalType(klass.getType(), module), annotatedType));
         return constrainedType;
@@ -3280,9 +3279,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         List<Type> list = new ArrayList<Type>(2);
         list.add(typeFactory.getNullType());
         list.add(type);
-        UnionType ut = new UnionType(getUnitForModule(moduleScope));
-        ut.setCaseTypes(list);
-        return ut.getType();
+        return union(list, getUnitForModule(moduleScope));
     }
     
     private Type logModelResolutionError(Scope container, String message) {
@@ -4323,12 +4320,12 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         if(type.getKind() == TypeKind.TYPEVAR){
             TypeParameterMirror typeParameter = type.getTypeParameter();
             if(!typeParameter.getBounds().isEmpty()){
-                IntersectionType it = new IntersectionType(getUnitForModule(moduleScope));
+                List<Type> bounds = new ArrayList<Type>(typeParameter.getBounds().size());
                 for(TypeMirror bound : typeParameter.getBounds()){
                     Type boundModel = obtainTypeParameterBound(moduleScope, bound, scope, rawDeclarationsSeen);
-                    it.getSatisfiedTypes().add(boundModel);
+                    bounds.add(boundModel);
                 }
-                return it.getType();
+                return intersection(bounds, getUnitForModule(moduleScope));
             }else
                 // no bound is Object
                 return typeFactory.getObjectType();

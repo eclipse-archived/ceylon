@@ -1,21 +1,22 @@
 package com.redhat.ceylon.model.loader;
 
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.intersection;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.union;
+
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
 import com.redhat.ceylon.model.loader.model.FunctionOrValueInterface;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
-import com.redhat.ceylon.model.typechecker.model.IntersectionType;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.Package;
-import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.Scope;
 import com.redhat.ceylon.model.typechecker.model.SiteVariance;
+import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.model.typechecker.model.TypeParameter;
 import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
-import com.redhat.ceylon.model.typechecker.model.UnionType;
 import com.redhat.ceylon.model.typechecker.model.Unit;
 
 public class TypeParser {
@@ -87,15 +88,13 @@ public class TypeParser {
     private Type parseUnionType() {
         Type firstType = parseIntersectionType();
         if(lexer.lookingAt(TypeLexer.OR)){
-            UnionType type = new UnionType(unit);
             List<Type> caseTypes = new LinkedList<Type>();
-            type.setCaseTypes(caseTypes);
             caseTypes.add(firstType);
             while(lexer.lookingAt(TypeLexer.OR)){
                 lexer.eat();
                 caseTypes.add(parseIntersectionType());
             }
-            return type.getType();
+            return union(caseTypes, unit);
         }else{
             return firstType;
         }
@@ -107,15 +106,13 @@ public class TypeParser {
     private Type parseIntersectionType() {
         Type firstType = parseQualifiedType();
         if(lexer.lookingAt(TypeLexer.AND)){
-            IntersectionType type = new IntersectionType(unit);
             List<Type> satisfiedTypes = new LinkedList<Type>();
-            type.setSatisfiedTypes(satisfiedTypes);
             satisfiedTypes.add(firstType);
             while(lexer.lookingAt(TypeLexer.AND)){
                 lexer.eat();
                 satisfiedTypes.add(parseQualifiedType());
             }
-            return type.getType();
+            return intersection(satisfiedTypes, unit);
         }else{
             return firstType;
         }

@@ -2,6 +2,7 @@ package com.redhat.ceylon.model.typechecker.model;
 
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.addToIntersection;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.addToUnion;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.intersection;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +17,11 @@ public class IntersectionType extends TypeDeclaration {
 
     public IntersectionType(Unit unit) {
         this.unit = unit;
+    }
+    
+    @Override
+    protected boolean needsSatisfiedTypes() {
+        return false;
     }
     
     @Override
@@ -52,14 +58,11 @@ public class IntersectionType extends TypeDeclaration {
                         new ArrayList<Type>
                             (sts.size()-1);
                 for (Type st: sts) {
-                    if (!st.isUnknown()) {
+                    if (st!=null && !st.isUnknown()) {
                         list.add(st);
                     }
                 }
-                IntersectionType it = 
-                        new IntersectionType(unit);
-                it.setSatisfiedTypes(list);
-                return it.getType();
+                return intersection(list, unit);
             }
         }
         if (sts.isEmpty()) {
@@ -95,8 +98,6 @@ public class IntersectionType extends TypeDeclaration {
 	    }
 		for (Type st: sts) {
 			if (st.isUnion()) {
-				TypeDeclaration result = 
-				        new UnionType(unit);
                 List<Type> caseTypes = 
                         st.getCaseTypes();
 				List<Type> ulist = 
@@ -114,16 +115,20 @@ public class IntersectionType extends TypeDeclaration {
 						}
 						else {
 							addToIntersection(ilist, pt, 
-							        unit, reduceDisjointTypes);
+							        unit, 
+							        reduceDisjointTypes);
 						}
 					}
 					IntersectionType it = 
 					        new IntersectionType(unit);
 					it.setSatisfiedTypes(ilist);
 					addToUnion(ulist, 
-					        it.canonicalize(reduceDisjointTypes)
+					        it.canonicalize(
+					                reduceDisjointTypes)
 					            .getType());
 				}
+                TypeDeclaration result = 
+                        new UnionType(unit);
 				result.setCaseTypes(ulist);
 				return result;
 			}
