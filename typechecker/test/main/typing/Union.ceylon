@@ -338,10 +338,18 @@ class Union1() {
         shared actual ContravariantNone<T> val => ContravariantNone<T>();
     }
     
+    interface Either of Left|Right {}
+    interface Left satisfies Either {}
+    interface Right satisfies Either {}
+    
     ContravariantSome<String>|ContravariantNone<Integer> call = ContravariantSome<String>();
-    @type:"Union1.ContravariantAll<Nothing>" value cval = call.val;
+    @type:"Union1.ContravariantAll<Nothing>" value cval1 = call.val;
+    ContravariantSome<Left>|ContravariantNone<Right> call6 = nothing;
+    @type:"Union1.ContravariantAll<Nothing>" value cval6 = call.val;
     ContravariantSome<String>&ContravariantNone<Integer> call2 = nothing;
-    Nothing cng = call2;
+    Nothing cng1 = call2;
+    ContravariantSome<Left>&ContravariantNone<Right> call5 = nothing;
+    Nothing cng2 = call5;
     @error value cval2 = call2.val;
     Union1.ContravariantAll<String|Integer> call3 = call2;
     @type:"Union1.ContravariantAll<String|Integer>" value cval3 = call3.val;
