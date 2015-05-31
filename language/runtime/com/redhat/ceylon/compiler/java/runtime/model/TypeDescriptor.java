@@ -30,7 +30,6 @@ import com.redhat.ceylon.model.loader.ModelLoader.DeclarationType;
 import com.redhat.ceylon.model.loader.model.FunctionOrValueInterface;
 import com.redhat.ceylon.model.loader.model.LocalDeclarationContainer;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
-import com.redhat.ceylon.model.typechecker.model.IntersectionType;
 import com.redhat.ceylon.model.typechecker.model.ModelUtil;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.NothingType;
@@ -39,7 +38,6 @@ import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.model.typechecker.model.TypeParameter;
 import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
-import com.redhat.ceylon.model.typechecker.model.UnionType;
 import com.redhat.ceylon.model.typechecker.model.Unit;
 
 public abstract class TypeDescriptor {
@@ -670,12 +668,10 @@ public abstract class TypeDescriptor {
 
         @Override
         public Type toType(RuntimeModuleManager moduleManager) {
-            UnionType ret = new UnionType(moduleManager.getModelLoader().getUnit());
             ArrayList<Type> caseTypes = new ArrayList<Type>(members.length);
             for(TypeDescriptor member : members)
                 ModelUtil.addToUnion(caseTypes,Metamodel.getProducedType(member));
-            ret.setCaseTypes(caseTypes);
-            return ret.getType();
+            return ModelUtil.union(caseTypes, moduleManager.getModelLoader().getUnit());
         }
 
 		@Override
@@ -749,12 +745,10 @@ public abstract class TypeDescriptor {
         @Override
         public Type toType(RuntimeModuleManager moduleManager) {
             Unit unit = moduleManager.getModelLoader().getUnit();
-			IntersectionType ret = new IntersectionType(unit);
             ArrayList<Type> satisfiedTypes = new ArrayList<Type>(members.length);
             for(TypeDescriptor member : members)
                 ModelUtil.addToIntersection(satisfiedTypes, Metamodel.getProducedType(member), unit);
-            ret.setSatisfiedTypes(satisfiedTypes);
-            return ret.canonicalize().getType();
+            return ModelUtil.canonicalIntersection(satisfiedTypes, unit);
         }
         
 		@Override
