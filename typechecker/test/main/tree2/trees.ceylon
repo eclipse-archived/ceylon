@@ -1,6 +1,6 @@
 void printTree<T>(Tree<T> tree) 
         given T satisfies Object {
-    switch (tree)
+    @error switch (tree)
     case (is Branch<T>) {
         printTree(tree.left);
         printTree(tree.right);
