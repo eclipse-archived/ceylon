@@ -234,7 +234,13 @@ public final class Float
         if (value <= -TWO_FIFTY_TWO || value >= TWO_FIFTY_TWO) {
             return value;
         }
-        return Math.copySign((long) value, value);
+        long result = (long) value;
+        if (result == 0 && (1/value) < 0) {
+            return -0.0d;
+        }
+        else {
+            return result;
+        }
     }
 
     @Override
