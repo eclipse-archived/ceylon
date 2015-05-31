@@ -539,7 +539,7 @@ public class CeylonDocToolTests {
                 "ceylon/interop/java/internal/javaObjectArray_.java",
                 "ceylon/interop/java/internal/javaShortArray_.java",
                 "ceylon/interop/java/internal/javaStringArray_.java",
-                "ceylon/interop/java/internal/AnalyzerUtil.java",
+                "ceylon/interop/java/internal/Util.java",
         };
         List<String> qualifiedNames = new ArrayList<String>(fileNames.length);
         for(String name : fileNames){

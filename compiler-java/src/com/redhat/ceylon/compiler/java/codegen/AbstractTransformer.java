@@ -3976,13 +3976,13 @@ public abstract class AbstractTransformer implements Transformation {
          * depending on the {@code op} parameter 
          */
         public R nullTest(JCExpression varExpr, int op);
-        /** Make a type test using {@code AnalyzerUtil.isIdentifiable()} */
+        /** Make a type test using {@code Util.isIdentifiable()} */
         public R isIdentifiable(JCExpression varExpr);
-        /** Make a type test using {@code AnalyzerUtil.isBasic()} */
+        /** Make a type test using {@code Util.isBasic()} */
         public R isBasic(JCExpression varExpr);
         /** Make a type test using {@code instanceof} */
         public R isInstanceof(JCExpression varExpr, Type testedType);
-        /** Make a type test using {@code AnalyzerUtil.isReified()} */
+        /** Make a type test using {@code Util.isReified()} */
         public R isReified(JCExpression varExpr, Type testedType);
         /** ceylon.language.true_.get().equals(expr) */
         public R isTrue(JCExpression expr);
@@ -4092,13 +4092,13 @@ public abstract class AbstractTransformer implements Transformation {
 
         @Override
         public Boolean isIdentifiable(JCExpression varExpr) {
-            // AnalyzerUtil.isIdentifiable() is expensive
+            // Util.isIdentifiable() is expensive
             return Boolean.FALSE;
         }
 
         @Override
         public Boolean isBasic(JCExpression varExpr) {
-            // AnalyzerUtil.isBasic() is expensive
+            // Util.isBasic() is expensive
             return Boolean.FALSE;
         }
 
@@ -4111,7 +4111,7 @@ public abstract class AbstractTransformer implements Transformation {
 
         @Override
         public Boolean isReified(JCExpression varExpr, Type testedType) {
-            // AnalyzerUtil.isReified() is expensive
+            // Util.isReified() is expensive
             return Boolean.FALSE;
         }
 
@@ -4250,7 +4250,7 @@ public abstract class AbstractTransformer implements Transformation {
                     if (!Decl.equal(declaration, expressionType.getDeclaration())
                             && canUseFastFailTypeTest(testedType)) {
                         // do a cheap instanceof test to try to shortcircuit the expensive
-                        // AnalyzerUtil.isReified()
+                        // Util.isReified()
                         
                         // XXX Possible future optimization: When the `is` is a condition 
                         // in an `assert` we expect the result to be true, so 
@@ -4294,7 +4294,7 @@ public abstract class AbstractTransformer implements Transformation {
             if (!reifiableUpperBounds((TypeParameter)declaration, expressionType).isEmpty()) {
                 // If we're testing against a type parameter with  
                 // class or interface upper bounds we can again shortcircuit the 
-                // AnalyzerUtil.isReified() using instanceof against the bounds
+                // Util.isReified() using instanceof against the bounds
                 result = typeTester.isReified(varName.makeIdent(), testedType);
                 Iterator<Type> iterator = reifiableUpperBounds((TypeParameter)declaration, expressionType).iterator();
                 while (iterator.hasNext()) {
@@ -4332,7 +4332,7 @@ public abstract class AbstractTransformer implements Transformation {
 
     /**
      * Determine whether we can use a plain {@code instanceof} instead of 
-     * a full {@code AnalyzerUtil.isReified()} for a {@code is} test
+     * a full {@code Util.isReified()} for a {@code is} test
      */
     private boolean canOptimiseReifiedTypeTest(Type type) {
         if(isJavaArray(type)){

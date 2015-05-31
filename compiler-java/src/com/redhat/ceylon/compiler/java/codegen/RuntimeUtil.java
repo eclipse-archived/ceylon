@@ -8,7 +8,7 @@ import com.sun.tools.javac.util.List;
 /**
  * Every use of {@code com.redhat.ceylon.compiler.java.Util} 
  * goes through this, so it's easier to know where and how 
- * {@code AnalyzerUtil} methods are used
+ * {@code Util} methods are used
  */
 class RuntimeUtil {
 
@@ -27,7 +27,7 @@ class RuntimeUtil {
     }
     
     /**
-     * Invokes a static method of the AnalyzerUtil helper class
+     * Invokes a static method of the Util helper class
      * @param typeArguments The arguments to the method
      * @param methodName name of the method
      * @param arguments The arguments to the invocation
@@ -73,7 +73,7 @@ class RuntimeUtil {
 
     /**
      * Make a call to 
-     * {@code AnalyzerUtil.toJavaStringArray(Iterable<String> tail, java.lang.String... initialElements) }
+     * {@code Util.toJavaStringArray(Iterable<String> tail, java.lang.String... initialElements) }
      */
     public JCExpression toJavaStringArray(JCExpression expr, List<JCExpression> initialElements) {
         return makeUtilInvocation(null, "toJavaStringArray", initialElements.prepend(expr));
@@ -85,7 +85,7 @@ class RuntimeUtil {
     
     /**
      * Make a call to 
-     * {@code AnalyzerUtil.toArray(List<T> tail, T[] array, T... initialElements) }
+     * {@code Util.toArray(List<T> tail, T[] array, T... initialElements) }
      */
     public JCExpression toArray(JCExpression seq, JCExpression arrayExpr, List<JCExpression> initialElements, JCExpression typeArgs) {
         return makeUtilInvocation(List.of(typeArgs), 
@@ -123,7 +123,7 @@ class RuntimeUtil {
 
     /**
      * Makes a call to 
-     * {@code AnalyzerUtil.sequentialCopy($reifiedT, Sequential rest, Object... initial)} */
+     * {@code Util.sequentialCopy($reifiedT, Sequential rest, Object... initial)} */
     public JCExpression sequentialInstance(JCExpression typeArgument,
             JCExpression reifiedTypeArgument, 
             JCExpression /*Sequential*/ rest, 

@@ -149,7 +149,7 @@ public class ExpressionTransformer extends AbstractTransformer {
     
     /**
      * Usually if a {@code long} to {@code int}, {@code short} or {@code byte}
-     * conversion is required we use a AnalyzerUtil invocation so that a runtime check 
+     * conversion is required we use a Util invocation so that a runtime check 
      * is performed. 
      * 
      * In some circumstances (e.g. annotations) we need to use a 
@@ -3085,7 +3085,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             
             Type lastType = invocation.getArgumentType(numArguments-1);
 
-            // must translate it into a AnalyzerUtil call
+            // must translate it into a Util call
             expr = sequenceToJavaArray(invocation, last, parameterType, boxingStrategy, lastType, x);
         }else{
             JCExpression typeExpr = makeJavaType(iteratedType, JT_TYPE_ARGUMENT);
@@ -3319,7 +3319,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 return makeErroneous(invocation.getNode(), "compiler bug: extraneous array selector: "+transformedPrimary.selector);
         } else if (invocation.isUnknownArguments()) {
             // if we have an unknown parameter list, like Callble<Ret,Args>, need to prepend the callable
-            // to the argument list, and invoke AnalyzerUtil.apply
+            // to the argument list, and invoke Util.apply
             // note that ATM the typechecker only allows a single argument to be passed in spread form in this
             // case so we don't need to look at parameter types
             JCExpression callableTypeExpr = makeJavaType(invocation.getPrimary().getTypeModel());
@@ -4461,7 +4461,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                         selector = decl.getName();
                     }
                 } else {
-                    // invoke the getter, using the Java interop form of AnalyzerUtil.getGetterName because this is the only case
+                    // invoke the getter, using the Java interop form of Util.getGetterName because this is the only case
                     // (Value inside a Class) where we might refer to JavaBean properties
                     selector = naming.selector((TypedDeclaration)decl);
                 }
@@ -4956,7 +4956,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 flags |= EXPR_DOWN_CAST;
                 // make sure we barf properly if we missed a heuristics
                 if(method.equals("spanFrom")){
-                    // make a "AnalyzerUtil.<method>(lhs, start, end)" call
+                    // make a "Util.<method>(lhs, start, end)" call
                     at(access);
                     safeAccess = utilInvocation().tuple_spanFrom(args.prepend(lhs));
                 }else{

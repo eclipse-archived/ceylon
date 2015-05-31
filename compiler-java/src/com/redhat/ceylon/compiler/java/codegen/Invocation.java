@@ -576,7 +576,7 @@ class IndirectInvocation extends SimpleInvocation {
         if(isParameterSequenced(argIndex)){
             if (isArgumentSpread(argIndex) 
                     && isParameterVariadicPlus(argIndex)) {
-                // We might end up calling AnalyzerUtil.sequentialInstance to handle 
+                // We might end up calling Util.sequentialInstance to handle 
                 // the spread and if the spread argument is empty, we need to 
                 // transform it to something of sequential type so we can 
                 // call sequentialInstance(). 

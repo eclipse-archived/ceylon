@@ -476,7 +476,7 @@ public class CeylonCompileAntTask extends LazyCeylonAntTask  {
             throw new RuntimeException("-classpath not longer supported");
         	/*String path = classpath.toString();
             cmd.createArgument().setValue("-classpath");
-            cmd.createArgument().setValue(AnalyzerUtil.quoteParameter(path));*/
+            cmd.createArgument().setValue(Util.quoteParameter(path));*/
         }
         // files to compile
         for (File file : compileList) {
