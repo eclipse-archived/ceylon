@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.typechecker.context;
 
-import static com.redhat.ceylon.compiler.typechecker.tree.Util.formatPath;
+import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.formatPath;
 
 import java.lang.ref.WeakReference;
 import java.util.EnumSet;

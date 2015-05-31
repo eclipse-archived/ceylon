@@ -1,14 +1,14 @@
 package com.redhat.ceylon.compiler.typechecker.analyzer;
 
-import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.checkAssignable;
-import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.checkCasesDisjoint;
-import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.checkIsExactly;
-import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getTypedDeclaration;
-import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.inLanguageModule;
-import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.inSameModule;
-import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.typeDescription;
-import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.typeNamesAsIntersection;
-import static com.redhat.ceylon.compiler.typechecker.tree.Util.name;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.checkAssignable;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.checkCasesDisjoint;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.checkIsExactly;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.getTypedDeclaration;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.inLanguageModule;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.inSameModule;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.typeDescription;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.typeNamesAsIntersection;
+import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.name;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.addToIntersection;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.areConsistentSupertypes;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.canonicalIntersection;

@@ -1,11 +1,12 @@
 package com.redhat.ceylon.compiler.typechecker.analyzer;
 
-import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getLastConstructor;
-import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getLastExecutableStatement;
-import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.isAlwaysSatisfied;
-import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.isAtLeastOne;
-import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.isEffectivelyBaseMemberExpression;
-import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.isNeverSatisfied;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.getLastConstructor;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.getLastExecutableStatement;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.isAlwaysSatisfied;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.isAtLeastOne;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.isEffectivelyBaseMemberExpression;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.isNeverSatisfied;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.isSelfReference;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getContainingDeclarationOfScope;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isInNativeContainer;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isNativeHeader;
@@ -199,7 +200,7 @@ public class SpecificationVisitor extends Visitor {
     @Override
     public void visit(Tree.QualifiedMemberExpression that) {
         super.visit(that);
-        if (Util.isSelfReference(that.getPrimary())) {
+        if (isSelfReference(that.getPrimary())) {
             visitReference(that);
         }
     }
@@ -207,7 +208,7 @@ public class SpecificationVisitor extends Visitor {
     @Override
     public void visit(Tree.QualifiedTypeExpression that) {
         super.visit(that);
-        if (Util.isSelfReference(that.getPrimary())) {
+        if (isSelfReference(that.getPrimary())) {
             visitReference(that);
         }
     }

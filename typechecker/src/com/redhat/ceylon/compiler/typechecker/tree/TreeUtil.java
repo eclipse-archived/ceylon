@@ -4,13 +4,14 @@ import java.util.List;
 
 import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.common.BackendSupport;
+import com.redhat.ceylon.compiler.typechecker.analyzer.UsageWarning;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Function;
 import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.model.typechecker.model.Unit;
 
 
-public class Util {
+public class TreeUtil {
     
     public static final String MISSING_NAME = 
             "program element with missing name";
@@ -246,5 +247,81 @@ public class Util {
         }
         return result;
     }
+
+    public static Tree.Term eliminateParensAndWidening(Tree.Term term) {
+        while (term instanceof Tree.OfOp ||
+               term instanceof Tree.Expression) {
+            if (term instanceof Tree.OfOp) {
+                term = ((Tree.OfOp) term).getTerm();
+            }
+            else if (term instanceof Tree.Expression) {
+                term = ((Tree.Expression) term).getTerm();
+            }
+        }
+        return term;
+    }
     
+    public static Tree.Term unwrapExpressionUntilTerm(Tree.Term term){
+        while (term instanceof Tree.Expression) {
+            Tree.Expression e = (Tree.Expression) term;
+            term = e.getTerm();
+        }
+        return term;
+    }
+    
+    public static boolean hasErrorOrWarning(Node node) {
+        return hasError(node, true);
+    }
+
+    public static boolean hasError(Node node) {
+        return hasError(node, false);
+    }
+
+    static boolean hasError(Node node, 
+            final boolean includeWarnings) {
+        // we use an exception to get out of the visitor 
+        // as fast as possible when an error is found
+        // TODO: wtf?! because it's the common case that
+        //       a node has an error? that's just silly
+        @SuppressWarnings("serial")
+        class ErrorFoundException extends RuntimeException {}
+        class ErrorVisitor extends Visitor {
+            @Override
+            public void handleException(Exception e, Node that) {
+                if (e instanceof ErrorFoundException) {
+                    throw (ErrorFoundException) e;
+                }
+                super.handleException(e, that);
+            }
+            @Override
+            public void visitAny(Node that) {
+                if (that.getErrors().isEmpty()) {
+                    super.visitAny(that);
+                }
+                else if (includeWarnings) {
+                    throw new ErrorFoundException();
+                }
+                else {
+                    // UsageWarning don't count as errors
+                    for (Message error: that.getErrors()) {
+                        if (!(error instanceof UsageWarning)) {
+                            // get out fast
+                            throw new ErrorFoundException();
+                        }
+                    }
+                    // no real error, proceed
+                    super.visitAny(that);
+                }
+            }
+        }
+        ErrorVisitor ev = new ErrorVisitor();
+        try {
+            node.visit(ev);
+            return false;
+        }
+        catch (ErrorFoundException x) {
+            return true;
+        }
+    }
+
 }

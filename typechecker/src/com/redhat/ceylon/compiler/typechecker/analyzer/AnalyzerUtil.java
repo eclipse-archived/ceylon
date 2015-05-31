@@ -1,8 +1,12 @@
 package com.redhat.ceylon.compiler.typechecker.analyzer;
 
-import static com.redhat.ceylon.compiler.typechecker.tree.Util.name;
+import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.hasError;
+import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.name;
+import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.unwrapExpressionUntilTerm;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.appliedType;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.intersectionType;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isBooleanFalse;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isBooleanTrue;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isNamed;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isTypeUnknown;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.unionType;
@@ -16,12 +20,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import com.redhat.ceylon.compiler.typechecker.tree.Message;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ClassBody;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.TypeVariance;
-import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.model.typechecker.model.Annotation;
 import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.Constructor;
@@ -49,7 +51,7 @@ import com.redhat.ceylon.model.typechecker.model.Value;
  * @author Gavin King
  *
  */
-public class Util {
+public class AnalyzerUtil {
     
     static final List<Type> NO_TYPE_ARGS = emptyList();
     
@@ -145,7 +147,7 @@ public class Util {
         }
     }
 
-    public static TypeDeclaration anonymousType(String name, 
+    private static TypeDeclaration anonymousType(String name, 
             TypedDeclaration result) {
         Type type = result.getType();
         if (type!=null) {
@@ -279,7 +281,7 @@ public class Util {
         }
     }
     
-    public static Tree.Statement getLastExecutableStatement(Tree.ClassBody that) {
+    static Tree.Statement getLastExecutableStatement(Tree.ClassBody that) {
         List<Tree.Statement> statements = that.getStatements();
         Unit unit = that.getUnit();
         for (int i=statements.size()-1; i>=0; i--) {
@@ -292,7 +294,7 @@ public class Util {
         return null;
     }
 
-    public static Tree.Constructor getLastConstructor(Tree.ClassBody that) {
+    static Tree.Constructor getLastConstructor(Tree.ClassBody that) {
         List<Tree.Statement> statements = that.getStatements();
         for (int i=statements.size()-1; i>=0; i--) {
             Tree.Statement s = statements.get(i);
@@ -631,61 +633,6 @@ public class Util {
                 node.getUnit());
     }
     
-    public static boolean hasErrorOrWarning(Node node) {
-        return hasError(node, true);
-    }
-
-    public static boolean hasError(Node node) {
-        return hasError(node, false);
-    }
-
-    static boolean hasError(Node node, 
-            final boolean includeWarnings) {
-        // we use an exception to get out of the visitor 
-        // as fast as possible when an error is found
-        // TODO: wtf?! because it's the common case that
-        //       a node has an error? that's just silly
-        @SuppressWarnings("serial")
-        class ErrorFoundException extends RuntimeException {}
-        class ErrorVisitor extends Visitor {
-            @Override
-            public void handleException(Exception e, Node that) {
-                if (e instanceof ErrorFoundException) {
-                    throw (ErrorFoundException) e;
-                }
-                super.handleException(e, that);
-            }
-            @Override
-            public void visitAny(Node that) {
-                if (that.getErrors().isEmpty()) {
-                    super.visitAny(that);
-                }
-                else if (includeWarnings) {
-                    throw new ErrorFoundException();
-                }
-                else {
-                    // UsageWarning don't count as errors
-                    for (Message error: that.getErrors()) {
-                        if (!(error instanceof UsageWarning)) {
-                            // get out fast
-                            throw new ErrorFoundException();
-                        }
-                    }
-                    // no real error, proceed
-                    super.visitAny(that);
-                }
-            }
-        }
-        ErrorVisitor ev = new ErrorVisitor();
-        try {
-            node.visit(ev);
-            return false;
-        }
-        catch (ErrorFoundException x) {
-            return true;
-        }
-    }
-
     private static void addTypeUnknownError(Node node, 
             Type type, String message) {
         if (!hasError(node)) {
@@ -695,7 +642,7 @@ public class Util {
         }
     }
     
-    public static String getTypeUnknownError(Type type) {
+    static String getTypeUnknownError(Type type) {
         if (type == null) {
             return "";
         }
@@ -904,19 +851,6 @@ public class Util {
         return sb.toString();
     }
 
-    public static Tree.Term eliminateParensAndWidening(Tree.Term term) {
-        while (term instanceof Tree.OfOp ||
-               term instanceof Tree.Expression) {
-            if (term instanceof Tree.OfOp) {
-                term = ((Tree.OfOp) term).getTerm();
-            }
-            else if (term instanceof Tree.Expression) {
-                term = ((Tree.Expression) term).getTerm();
-            }
-        }
-        return term;
-    }
-
     static boolean isAlwaysSatisfied(Tree.ConditionList cl) {
         if (cl==null) return false;
         for (Tree.Condition c: cl.getConditions()) {
@@ -942,16 +876,6 @@ public class Util {
             return false;
         }
         return true;
-    }
-
-    public static boolean isBooleanTrue(Declaration d) {
-        return d!=null && d.getQualifiedNameString()
-                .equals("ceylon.language::true");
-    }
-
-    public static boolean isBooleanFalse(Declaration d) {
-        return d!=null && d.getQualifiedNameString()
-                .equals("ceylon.language::false");
     }
 
     static boolean isNeverSatisfied(Tree.ConditionList cl) {
@@ -1006,14 +930,6 @@ public class Util {
         return dec.getUnit().getPackage().equals(unit.getPackage());
     }
 
-    public static Tree.Term unwrapExpressionUntilTerm(Tree.Term term){
-        while (term instanceof Tree.Expression) {
-            Tree.Expression e = (Tree.Expression) term;
-            term = e.getTerm();
-        }
-        return term;
-    }
-    
     public static boolean isIndirectInvocation(Tree.InvocationExpression that) {
         return isIndirectInvocation(that.getPrimary());
     }
@@ -1060,7 +976,7 @@ public class Util {
         }
     }
     
-    public static boolean isInstantiationExpression(
+    static boolean isInstantiationExpression(
             Tree.Expression e) {
         Tree.Term term = e.getTerm();
         if (term instanceof Tree.InvocationExpression) {
@@ -1073,63 +989,6 @@ public class Util {
             }
         }
         return false;
-    }
-    
-    public static boolean hasErrors(Tree.Declaration d) {
-        class DeclarationErrorVisitor extends Visitor {
-            boolean foundError;
-            @Override
-            public void visitAny(Node that) {
-                super.visitAny(that);
-                if (!that.getErrors().isEmpty()) {
-                    foundError = true;
-                }
-            }
-            @Override
-            public void visit(Tree.Body that) {}
-        }
-        DeclarationErrorVisitor dev = 
-                new DeclarationErrorVisitor();
-        d.visit(dev);
-        return dev.foundError;
-    }
-
-    public static boolean hasErrors(Tree.TypedArgument d) {
-        class ArgErrorVisitor extends Visitor {
-            boolean foundError;
-            @Override
-            public void visitAny(Node that) {
-                super.visitAny(that);
-                if (!that.getErrors().isEmpty()) {
-                    foundError = true;
-                }
-            }
-            @Override
-            public void visit(Tree.Body that) {}
-        }
-        ArgErrorVisitor dev = 
-                new ArgErrorVisitor();
-        d.visit(dev);
-        return dev.foundError;
-    }
-
-    public static boolean hasErrors(Tree.Body d) {
-        class BodyErrorVisitor extends Visitor {
-            boolean foundError;
-            @Override
-            public void visitAny(Node that) {
-                super.visitAny(that);
-                if (!that.getErrors().isEmpty()) {
-                    foundError = true;
-                }
-            }
-            @Override
-            public void visit(Tree.Declaration that) {}
-        }
-        BodyErrorVisitor bev = 
-                new BodyErrorVisitor();
-        d.visit(bev);
-        return bev.foundError;
     }
 
     static String message(Declaration dec) {
@@ -1145,7 +1004,7 @@ public class Util {
         return "'" + dec.getName() + "'" + qualifier;
     }
     
-    public static Node getParameterTypeErrorNode(Tree.Parameter p) {
+    static Node getParameterTypeErrorNode(Tree.Parameter p) {
         if (p instanceof Tree.ParameterDeclaration) {
             Tree.ParameterDeclaration pd = 
                     (Tree.ParameterDeclaration) p;
@@ -1251,7 +1110,7 @@ public class Util {
         return result;
     }
     
-    public static Type spreadType(Type et, Unit unit,
+    static Type spreadType(Type et, Unit unit,
             boolean requireSequential) {
         if (et==null) return null;
         if (requireSequential) {

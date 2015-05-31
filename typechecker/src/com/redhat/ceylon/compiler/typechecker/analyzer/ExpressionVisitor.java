@@ -1,36 +1,35 @@
 package com.redhat.ceylon.compiler.typechecker.analyzer;
 
-import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.NO_TYPE_ARGS;
-import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.checkAssignable;
-import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.checkCallable;
-import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.checkCasesDisjoint;
-import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.checkIsExactlyForInterop;
-import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.checkSupertype;
-import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.declaredInPackage;
-import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.eliminateParensAndWidening;
-import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getMatchingParameter;
-import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getPackageTypeDeclaration;
-import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getPackageTypedDeclaration;
-import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getTupleType;
-import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getTypeArguments;
-import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getTypeDeclaration;
-import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getTypeMember;
-import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getTypeUnknownError;
-import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getTypedDeclaration;
-import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getTypedMember;
-import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getUnspecifiedParameter;
-import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.hasError;
-import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.inSameModule;
-import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.involvesTypeParams;
-import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.isEffectivelyBaseMemberExpression;
-import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.isGeneric;
-import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.isIndirectInvocation;
-import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.isInstantiationExpression;
-import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.notAssignableMessage;
-import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.spreadType;
-import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.unwrapExpressionUntilTerm;
-import static com.redhat.ceylon.compiler.typechecker.tree.Util.hasUncheckedNulls;
-import static com.redhat.ceylon.compiler.typechecker.tree.Util.name;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.NO_TYPE_ARGS;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.checkAssignable;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.checkCallable;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.checkCasesDisjoint;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.checkIsExactlyForInterop;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.checkSupertype;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.declaredInPackage;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.getMatchingParameter;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.getPackageTypeDeclaration;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.getPackageTypedDeclaration;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.getTupleType;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.getTypeArguments;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.getTypeDeclaration;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.getTypeMember;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.getTypeUnknownError;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.getTypedDeclaration;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.getTypedMember;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.getUnspecifiedParameter;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.inSameModule;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.involvesTypeParams;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.isEffectivelyBaseMemberExpression;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.isGeneric;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.isIndirectInvocation;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.isInstantiationExpression;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.notAssignableMessage;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.spreadType;
+import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.hasError;
+import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.hasUncheckedNulls;
+import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.name;
+import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.unwrapExpressionUntilTerm;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.addToIntersection;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.addToUnion;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.appliedType;
@@ -70,6 +69,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Pattern;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.VoidModifier;
+import com.redhat.ceylon.compiler.typechecker.tree.TreeUtil;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
@@ -6193,7 +6193,7 @@ public class ExpressionVisitor extends Visitor {
     private void checkSuperMember(
             Tree.QualifiedMemberOrTypeExpression that) {
         Tree.Term term = 
-                eliminateParensAndWidening(that.getPrimary());
+                TreeUtil.eliminateParensAndWidening(that.getPrimary());
         if (term instanceof Tree.Super) {
             checkSuperInvocation(that);
         }

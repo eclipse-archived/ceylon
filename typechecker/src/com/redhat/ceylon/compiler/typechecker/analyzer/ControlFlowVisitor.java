@@ -1,9 +1,9 @@
 package com.redhat.ceylon.compiler.typechecker.analyzer;
 
-import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.isAlwaysSatisfied;
-import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.isAtLeastOne;
-import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.isNeverSatisfied;
-import static com.redhat.ceylon.compiler.typechecker.tree.Util.name;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.isAlwaysSatisfied;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.isAtLeastOne;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.isNeverSatisfied;
+import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.name;
 
 import java.util.List;
 

@@ -1,16 +1,16 @@
 package com.redhat.ceylon.compiler.typechecker.analyzer;
 
 import static com.redhat.ceylon.compiler.typechecker.analyzer.TypeVisitor.getTupleType;
-import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.buildAnnotations;
-import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getPackageTypeDeclaration;
-import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getTypeDeclaration;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.buildAnnotations;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.getPackageTypeDeclaration;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.getTypeDeclaration;
 import static com.redhat.ceylon.compiler.typechecker.parser.CeylonLexer.SPECIFY;
-import static com.redhat.ceylon.compiler.typechecker.tree.Util.formatPath;
-import static com.redhat.ceylon.compiler.typechecker.tree.Util.getAnnotation;
-import static com.redhat.ceylon.compiler.typechecker.tree.Util.getAnnotationArgument;
-import static com.redhat.ceylon.compiler.typechecker.tree.Util.getNativeBackend;
-import static com.redhat.ceylon.compiler.typechecker.tree.Util.hasAnnotation;
-import static com.redhat.ceylon.compiler.typechecker.tree.Util.name;
+import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.formatPath;
+import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.getAnnotation;
+import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.getAnnotationArgument;
+import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.getNativeBackend;
+import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.hasAnnotation;
+import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.name;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getContainingClassOrInterface;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getDirectMemberForBackend;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getTypeArgumentMap;
@@ -1988,8 +1988,8 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
                     List<TypeParameter> tps = 
                             dec.getTypeParameters();
                     return getTypeArgumentMap(dec, null,
-                            Util.getTypeArguments(tal, 
-                                    null, tps));
+                            AnalyzerUtil.getTypeArguments(
+                                    tal, null, tps));
                 }
             };
             that.setTypeModel(t);
@@ -2016,8 +2016,8 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
                         TypeDeclaration dec = 
                                 outerType.getTypeModel()
                                     .getDeclaration();
-                        return Util.getTypeMember(dec, name, 
-                                null, false, unit);
+                        return AnalyzerUtil.getTypeMember(
+                                dec, name, null, false, unit);
                     }
                 }
                 @Override
@@ -2034,8 +2034,8 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
                         Type ot = 
                                 outerType.getTypeModel();
                         return getTypeArgumentMap(dec, ot, 
-                                Util.getTypeArguments(tal, 
-                                        ot, tps));
+                                AnalyzerUtil.getTypeArguments(
+                                        tal, ot, tps));
                     }
                 }
             };

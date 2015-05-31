@@ -1,15 +1,15 @@
 package com.redhat.ceylon.compiler.typechecker.analyzer;
 
-import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.declaredInPackage;
-import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getPackageTypeDeclaration;
-import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getTypeArguments;
-import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getTypeDeclaration;
-import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getTypeMember;
-import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getTypedDeclaration;
-import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.isGeneric;
-import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.unwrapExpressionUntilTerm;
-import static com.redhat.ceylon.compiler.typechecker.tree.Util.formatPath;
-import static com.redhat.ceylon.compiler.typechecker.tree.Util.name;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.declaredInPackage;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.getPackageTypeDeclaration;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.getTypeArguments;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.getTypeDeclaration;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.getTypeMember;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.getTypedDeclaration;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.isGeneric;
+import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.formatPath;
+import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.name;
+import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.unwrapExpressionUntilTerm;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.appliedType;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getContainingClassOrInterface;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.intersection;

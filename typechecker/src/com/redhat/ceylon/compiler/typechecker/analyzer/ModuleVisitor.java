@@ -1,10 +1,10 @@
 package com.redhat.ceylon.compiler.typechecker.analyzer;
 
-import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.buildAnnotations;
-import static com.redhat.ceylon.compiler.typechecker.tree.Util.formatPath;
-import static com.redhat.ceylon.compiler.typechecker.tree.Util.getNativeBackend;
-import static com.redhat.ceylon.compiler.typechecker.tree.Util.hasAnnotation;
-import static com.redhat.ceylon.compiler.typechecker.tree.Util.name;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.buildAnnotations;
+import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.formatPath;
+import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.getNativeBackend;
+import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.hasAnnotation;
+import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.name;
 import static java.util.Arrays.asList;
 
 import java.util.ArrayList;

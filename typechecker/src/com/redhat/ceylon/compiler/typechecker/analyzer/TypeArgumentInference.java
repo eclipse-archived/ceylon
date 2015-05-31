@@ -1,12 +1,12 @@
 package com.redhat.ceylon.compiler.typechecker.analyzer;
 
-import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.NO_TYPE_ARGS;
-import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getMatchingParameter;
-import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getTupleType;
-import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getUnspecifiedParameter;
-import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.involvesTypeParams;
-import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.isGeneric;
-import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.spreadType;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.NO_TYPE_ARGS;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.getMatchingParameter;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.getTupleType;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.getUnspecifiedParameter;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.involvesTypeParams;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.isGeneric;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.spreadType;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.addToIntersection;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.addToUnion;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.appliedType;

@@ -4,7 +4,7 @@
  */
 package com.redhat.ceylon.compiler.typechecker.util;
 
-import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.hasErrorOrWarning;
+import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.hasErrorOrWarning;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isAbstraction;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isTypeUnknown;
 

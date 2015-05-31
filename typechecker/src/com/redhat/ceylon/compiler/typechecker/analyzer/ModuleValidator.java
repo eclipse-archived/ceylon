@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.typechecker.analyzer;
 
-import static com.redhat.ceylon.compiler.typechecker.tree.Util.getNativeBackend;
+import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.getNativeBackend;
 
 import java.util.ArrayList;
 import java.util.Collection;
