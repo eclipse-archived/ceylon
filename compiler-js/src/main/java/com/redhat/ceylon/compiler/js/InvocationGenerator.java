@@ -16,6 +16,7 @@ import com.redhat.ceylon.model.typechecker.model.Constructor;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Function;
 import com.redhat.ceylon.model.typechecker.model.Functional;
+import com.redhat.ceylon.model.typechecker.model.Generic;
 import com.redhat.ceylon.model.typechecker.model.Interface;
 import com.redhat.ceylon.model.typechecker.model.ModelUtil;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
@@ -44,11 +45,11 @@ public class InvocationGenerator {
         if (typeArgSource instanceof Tree.StaticMemberOrTypeExpression) {
             Tree.StaticMemberOrTypeExpression smote = (Tree.StaticMemberOrTypeExpression) typeArgSource;
             if (smote.getDeclaration() instanceof Constructor &&
-                    !((Functional)smote.getDeclaration().getContainer()).getTypeParameters().isEmpty()) {
+                    !((Generic)smote.getDeclaration().getContainer()).getTypeParameters().isEmpty()) {
                 return smote.getTarget().getTypeArguments();
             } else if (smote.getDeclaration() instanceof Functional) {
                 Map<TypeParameter,Type> targs = TypeUtils.matchTypeParametersWithArguments(
-                        ((Functional)smote.getDeclaration()).getTypeParameters(),
+                        ((Generic)smote.getDeclaration()).getTypeParameters(),
                         smote.getTypeArguments() == null ? null :
                         smote.getTypeArguments().getTypeModels());
                 if (targs == null) {
