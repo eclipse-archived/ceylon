@@ -69,3 +69,12 @@ class OuterClass() {
     case (InnerBool.true) {}
     case (InnerBool.false) {}
 }
+
+class BoolWithNew {
+    shared new true {}
+    shared new false {}
+    shared new New() {}
+    @error switch(bool)
+    case (BoolWithNew.true) {}
+    case (BoolWithNew.false) {}
+}

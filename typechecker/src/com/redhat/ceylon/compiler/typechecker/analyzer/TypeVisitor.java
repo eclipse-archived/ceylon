@@ -1263,8 +1263,15 @@ public class TypeVisitor extends Visitor {
                     cd.getName() + 
                     "' has a parameter list and a constructor");
         }
-        if (pl==null && !cd.hasConstructors()) {
-            that.addError("class without parameters must declare at least one constructor: class '" + 
+        else if (pl!=null && cd.hasEnumerated()) {
+            pl.addError("class with parameters may not declare enumerated instances: class '" + 
+                    cd.getName() + 
+                    "' has a parameter list and an enumerated instance");
+        }
+        if (pl==null && 
+                !cd.hasConstructors() && 
+                !cd.hasEnumerated()) {
+            that.addError("class without parameters must declare at least one constructor or enumerated instance: class '" + 
                     cd.getName() + 
                     "' has neither parameter list nor constructors", 
                     1001);

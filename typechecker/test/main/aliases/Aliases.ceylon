@@ -285,3 +285,14 @@ class Case() extends EnumAlias() {}
 @error alias RCA => RCA();
 @error interface RCI => RCI(RCI);
 
+interface Bug824_X {
+    shared String name { return "Gavin"; }
+}
+interface Bug824_Y => Bug824_X;
+interface Bug824_Z => Bug824_Y;
+class Bug824_W() satisfies Bug824_Y {}
+class Bug824_W2() satisfies Bug824_Z {}
+class Invariant<T>(shared T t) {}
+Invariant<Bug824_Z>&Invariant<Bug824_X> inv = Invariant<Bug824_X>(Bug824_W2());
+String name = inv.t.name;
+

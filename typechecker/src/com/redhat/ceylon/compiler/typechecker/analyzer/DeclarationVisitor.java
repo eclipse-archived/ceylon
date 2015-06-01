@@ -702,6 +702,9 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
         }
         that.setDeclarationModel(c);
         super.visit(that);
+        if (c.hasConstructors() && c.hasEnumerated()) {
+            c.setCaseTypes(null);
+        }
         if (that.getParameterList()==null) {
             if (c.isClassOrInterfaceMember() &&
                     (c.isFormal() || 
@@ -842,7 +845,7 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
                 }
                 caseTypes.add(at);
             }
-            clazz.setConstructors(true);
+            clazz.setEnumerated(true);
             if (clazz.isAnonymous()) {
                 that.addError("anonymous class may not have an enumerated instance");
             }
