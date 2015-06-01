@@ -705,4 +705,7 @@ public class ClassDefinitionBuilder {
         return initBuilder;
     }
 
+    public boolean isCompanionBuilder(){
+        return isCompanion;
+    }
 }

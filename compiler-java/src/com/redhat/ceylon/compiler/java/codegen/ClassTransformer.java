@@ -940,7 +940,7 @@ public class ClassTransformer extends AbstractTransformer {
         // TODO Instantiators on companion classes
         ParameterList parameterList = ctor != null ? ctor.getFirstParameterList() : cls.getParameterList();
         if (Decl.withinInterface(cls)) {
-            DefaultedArgumentOverload overloaded = new DefaultedArgumentInstantiator(daoAbstract, cls, ctor);
+            DefaultedArgumentOverload overloaded = new DefaultedArgumentInstantiator(daoAbstract, cls, ctor, instantiatorDeclCb.isCompanionBuilder());
             MethodDefinitionBuilder instBuilder = overloaded.makeOverload(
                     parameterList,
                     null,
@@ -949,7 +949,8 @@ public class ClassTransformer extends AbstractTransformer {
         }
         if (!Decl.withinInterface(cls)
                 || !cls.isFormal()) {
-            DefaultedArgumentOverload overloaded = new DefaultedArgumentInstantiator(!cls.isFormal() ? new DaoThis(node, pl) : daoAbstract, cls, ctor);
+            DefaultedArgumentOverload overloaded = new DefaultedArgumentInstantiator(!cls.isFormal() ? new DaoThis(node, pl) : daoAbstract, 
+                    cls, ctor, instantiatorImplCb.isCompanionBuilder());
             MethodDefinitionBuilder instBuilder = overloaded.makeOverload(
                     parameterList,
                     null,
@@ -1164,14 +1165,16 @@ public class ClassTransformer extends AbstractTransformer {
                 if (generateInstantiator) {
                     if (Decl.withinInterface(cls)) {
                         
-                        MethodDefinitionBuilder instBuilder = new DefaultedArgumentInstantiator(daoAbstract, cls, constructor).makeOverload(
+                        MethodDefinitionBuilder instBuilder = new DefaultedArgumentInstantiator(daoAbstract, cls, constructor,
+                                instantiatorDeclCb.isCompanionBuilder()).makeOverload(
                                 paramList.getModel(),
                                 param.getParameterModel(),
                                 cls.getTypeParameters());
                         instantiatorDeclCb.method(instBuilder);
                     }
                     if (!Decl.withinInterface(cls) || !cls.isFormal()) {
-                        MethodDefinitionBuilder instBuilder = new DefaultedArgumentInstantiator(new DaoThis(node, paramList), cls, constructor).makeOverload(
+                        MethodDefinitionBuilder instBuilder = new DefaultedArgumentInstantiator(new DaoThis(node, paramList), cls, constructor,
+                                instantiatorImplCb.isCompanionBuilder()).makeOverload(
                                 paramList.getModel(),
                                 param.getParameterModel(),
                                 cls.getTypeParameters());
@@ -4360,8 +4363,11 @@ public class ClassTransformer extends AbstractTransformer {
      */
     class DefaultedArgumentInstantiator extends DefaultedArgumentClass {
 
-        DefaultedArgumentInstantiator(DaoBody daoBody, Class klass, Constructor ctor) {
+        private boolean forCompanionClass;
+
+        DefaultedArgumentInstantiator(DaoBody daoBody, Class klass, Constructor ctor, boolean forCompanionClass) {
             super(daoBody, MethodDefinitionBuilder.systemMethod(ClassTransformer.this, naming.getInstantiatorMethodName(klass)), klass, ctor);
+            this.forCompanionClass = forCompanionClass;
         }
 
         @Override
@@ -4394,10 +4400,10 @@ public class ClassTransformer extends AbstractTransformer {
             /* Not actually part of the return type */
             overloadBuilder.ignoreModelAnnotations();
             Type et = klass.getExtendedType();
-            if (!klass.isAlias() 
+            if (!forCompanionClass
+                    && !klass.isAlias() 
                     && Strategy.generateInstantiator(et.getDeclaration())
-                    && klass.isActual()
-                    && et.isClass()) {
+                    && klass.isActual()) {
                 overloadBuilder.isOverride(true);
             }
             /**/
