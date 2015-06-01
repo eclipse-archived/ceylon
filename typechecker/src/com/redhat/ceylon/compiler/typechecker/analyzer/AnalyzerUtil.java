@@ -360,23 +360,19 @@ public class AnalyzerUtil {
             Unit unit) {
         String unknownTypeError = 
                 type.getFirstUnknownTypeError(true);
-        String typeName = 
-                type.asString(unit);
-        String otherTypeName = 
-                otherType.asString(unit);
+        String typeName = type.asString(unit);
+        String otherTypeName = otherType.asString(unit);
         String expandedTypeName;
         String expandedOtherTypeName;
         if (otherTypeName.equals(typeName)) {
-            typeName = 
-                    type.getProducedTypeQualifiedName();
-            otherTypeName = 
-                    otherType.getProducedTypeQualifiedName();
+            typeName = type.asQualifiedString();
+            otherTypeName = otherType.asQualifiedString();
             expandedTypeName = 
                     type.resolveAliases()
-                        .getProducedTypeQualifiedName();
+                        .asQualifiedString();
             expandedOtherTypeName = 
                     otherType.resolveAliases()
-                        .getProducedTypeQualifiedName();
+                        .asQualifiedString();
         }
         else {
             expandedTypeName = 

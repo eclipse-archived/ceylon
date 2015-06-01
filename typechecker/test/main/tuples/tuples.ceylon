@@ -192,3 +192,9 @@ void badTupleTypeExpressions(
     @error [String=,String] yy, 
     @error Anything(String=,String) zz, 
     @error Anything(String,String=,String+) uu) {}
+
+void tupleOfIntegers([Integer, Integer, Integer] seq) {
+    for (element in seq) {
+        print(element + 5);
+    }
+}

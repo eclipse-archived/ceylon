@@ -774,8 +774,7 @@ public class RefinementVisitor extends Visitor {
         //we substitute the type arguments of the subtype's
         //instantiation of the supertype into the bounds of 
         //the refined declaration
-        Type supertype = 
-                ci.getType().getSupertype(rc);
+        Type supertype = ci.getType().getSupertype(rc);
         Map<TypeParameter, Type> args = 
                 supertype.getTypeArguments();
         Map<TypeParameter, SiteVariance> variances = 

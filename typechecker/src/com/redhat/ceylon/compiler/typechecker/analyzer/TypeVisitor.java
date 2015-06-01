@@ -12,6 +12,7 @@ import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.name;
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.unwrapExpressionUntilTerm;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.appliedType;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getContainingClassOrInterface;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getNativeDeclaration;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.intersection;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.intersectionOfSupertypes;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isNativeImplementation;
@@ -87,6 +88,7 @@ public class TypeVisitor extends Visitor {
     private boolean inDelegatedConstructor;
     private boolean inTypeLiteral;
     private boolean inExtendsOrClassAlias;
+    private Backend inBackend = null;
     
     public TypeVisitor(BackendSupport backendSupport) {
         this.backendSupport = backendSupport;
@@ -643,6 +645,14 @@ public class TypeVisitor extends Visitor {
                  "Exception".equals(name));
     }
     
+    @Override public void visit(Tree.Declaration that) {
+        Backend ib = inBackend;
+        String nat = that.getDeclarationModel().getNative();
+        inBackend = Backend.fromAnnotation(nat);
+        super.visit(that);
+        inBackend = ib;
+    }
+    
     public void visit(Tree.GroupedType that) {
         super.visit(that);
         Tree.StaticType type = that.getType();
@@ -928,6 +938,7 @@ public class TypeVisitor extends Visitor {
                 unit.getUnresolvedReferences().add(id);
             }
             else {
+                type = (TypeDeclaration)handleHeader(type, that);
                 Type outerType = 
                         scope.getDeclaringType(type);
                 visitSimpleType(that, outerType, type);
@@ -2070,6 +2081,30 @@ public class TypeVisitor extends Visitor {
             }
             checkDefaultArg(getSpecifier(that), p);
         }
+    }
+    
+    private Declaration handleHeader(Declaration dec, 
+            Tree.SimpleType that) {
+        if (dec.isNative()) {
+            BackendSupport backend = 
+                    inBackend == null ?
+                            backendSupport : 
+                            inBackend.backendSupport;
+            Declaration impl =
+                    getNativeDeclaration(dec, backend);
+            if (impl==null) {
+                // HACK to make the JS language module compile
+                // Remove this once the problem has been fixed!
+                if (backendSupport.supportsBackend(Backend.Java) && !backendSupport.supportsBackend(Backend.JavaScript)) {
+                    that.addError("no native implementation for backend: native '" 
+                            + dec.getName(unit) + 
+                            "' is not implemented for one or more backends");
+                }
+            }
+            return inBackend == null || impl==null ? 
+                    dec : impl;
+        }
+        return dec;
     }
     
 }
