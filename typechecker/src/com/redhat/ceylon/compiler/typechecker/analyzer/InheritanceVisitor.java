@@ -318,7 +318,7 @@ public class InheritanceVisitor extends Visitor {
                 boolean hasConstructors = 
                         clazz.hasConstructors();
                 boolean anonymous = clazz.isAnonymous();
-                if (ie==null && !clazz.isConstructor()) { 
+                if (ie==null) { 
                     if (!hasConstructors || anonymous) {
                         et.addError("missing instantiation arguments");
                     }
