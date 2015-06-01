@@ -2715,7 +2715,7 @@ public abstract class AbstractTransformer implements Transformation {
             // type of param must be Iterable<T>
             Type elementType = typeFact.getIteratedType(type);
             if(elementType == null){
-                log.error("ceylon", "Invalid type for Java variadic parameter: "+type.getProducedTypeQualifiedName());
+                log.error("ceylon", "Invalid type for Java variadic parameter: "+type.asQualifiedString());
                 return type;
             }
             return elementType;
