@@ -13,7 +13,6 @@ import ceylon.language.String;
 import ceylon.language.impl.rethrow_;
 import ceylon.language.meta.declaration.ClassDeclaration;
 import ceylon.language.meta.model.ClassModel;
-import ceylon.language.meta.model.Type;
 
 import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
@@ -26,9 +25,9 @@ import com.redhat.ceylon.compiler.java.runtime.serialization.$Serialization$;
 import com.redhat.ceylon.compiler.java.runtime.serialization.ElementImpl;
 import com.redhat.ceylon.compiler.java.runtime.serialization.MemberImpl;
 import com.redhat.ceylon.compiler.java.runtime.serialization.Serializable;
-import com.redhat.ceylon.model.typechecker.model.MethodOrValue;
-import com.redhat.ceylon.model.typechecker.model.ProducedType;
-import com.redhat.ceylon.model.typechecker.model.ProducedTypedReference;
+import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
+import com.redhat.ceylon.model.typechecker.model.Type;
+import com.redhat.ceylon.model.typechecker.model.TypedReference;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 
 @Ceylon(major = 8, minor=0)
@@ -110,7 +109,7 @@ class PartialImpl extends Partial {
         ii++;
         for (int jj = 0 ; jj < typeArgs.getSize(); ii++, jj++) {
             types[ii] = TypeDescriptor.class;
-            args[ii] = Metamodel.getTypeDescriptor((Type)typeArgs.getFromFirst(jj));
+            args[ii] = Metamodel.getTypeDescriptor((ceylon.language.meta.model.Type)typeArgs.getFromFirst(jj));
         }
 
         try {
@@ -179,9 +178,9 @@ class PartialImpl extends Partial {
                 throw insufficiantState(index);
             }
             TypeDescriptor.Class arrayType = (TypeDescriptor.Class)Metamodel.getTypeDescriptor(instance);
-            ProducedType arrayElementType = Metamodel.getModuleManager().getCachedProducedType(arrayType.getTypeArguments()[0]);
+            Type arrayElementType = Metamodel.getModuleManager().getCachedType(arrayType.getTypeArguments()[0]);
             Object element = getReferredInstance(context, id);
-            ProducedType elementType = Metamodel.getModuleManager().getCachedProducedType(Metamodel.getTypeDescriptor(element));
+            Type elementType = Metamodel.getModuleManager().getCachedType(Metamodel.getTypeDescriptor(element));
             if (elementType.isSubtypeOf(arrayElementType)) {
                 instance.$set$(index, element);
             } else {
@@ -237,16 +236,16 @@ class PartialImpl extends Partial {
                 Entry<TypeDescriptor.Class,String> cacheKey = new Entry<TypeDescriptor.Class,String>(
                         TypeDescriptor.klass(TypeDescriptor.Class.class), String.$TypeDescriptor$, 
                         classTypeDescriptor, String.instance(attributeName.getAttribute().getQualifiedName()));
-                ProducedType attributeOrIndexType = context.getMemberTypeCache().get(cacheKey);
+                Type attributeOrIndexType = context.getMemberTypeCache().get(cacheKey);
                 if (attributeOrIndexType == null) {
-                    ProducedType pt = Metamodel.getModuleManager().getCachedProducedType(classTypeDescriptor);
+                    Type pt = Metamodel.getModuleManager().getCachedType(classTypeDescriptor);
                     while (!pt.getDeclaration().getQualifiedNameString().equals(((ClassDeclaration)attributeName.getAttribute().getContainer()).getQualifiedName())) {
                         pt = pt.getExtendedType();
                     }
-                    MethodOrValue attributeDeclaration = (MethodOrValue)((TypeDeclaration)pt.getDeclaration()).getMember(
+                    FunctionOrValue attributeDeclaration = (FunctionOrValue)((TypeDeclaration)pt.getDeclaration()).getMember(
                             attributeName.getAttribute().getName(), null, false);
-                    ProducedTypedReference attributeType = pt.getTypedMember(
-                            attributeDeclaration, Collections.<ProducedType>emptyList(), true);
+                    TypedReference attributeType = pt.getTypedMember(
+                            attributeDeclaration, Collections.<Type>emptyList(), true);
                     attributeOrIndexType = attributeType.getType();
                     context.getMemberTypeCache().put(cacheKey, attributeOrIndexType);
                 }
@@ -254,7 +253,7 @@ class PartialImpl extends Partial {
                 Object referredInstance = getReferredInstance(context, state, 
                         attributeName);
                 
-                ProducedType instanceType = Metamodel.getModuleManager().getCachedProducedType(
+                Type instanceType = Metamodel.getModuleManager().getCachedType(
                         Metamodel.getTypeDescriptor(referredInstance));
                 
                 if (instanceType.isSubtypeOf(attributeOrIndexType)) {
@@ -289,9 +288,9 @@ class PartialImpl extends Partial {
         }
     }
     
-    DeserializationException notAssignable(ReachableReference attributeOrIndex, ProducedType attributeOrIndexType, ProducedType instanceType) {
+    DeserializationException notAssignable(ReachableReference attributeOrIndex, Type attributeOrIndexType, Type instanceType) {
         return new DeserializationException("instance not assignable to " + descriptor(attributeOrIndex) + " of id " + getId() + ": "
-                + instanceType.getProducedTypeName() + " is not assignable to " + attributeOrIndexType.getProducedTypeName());
+                + instanceType.asString() + " is not assignable to " + attributeOrIndexType.asString());
     }
     
     DeserializationException insufficiantState(java.util.Collection<ReachableReference> missingNames) {

@@ -19,7 +19,7 @@ import com.redhat.ceylon.compiler.java.runtime.serialization {
     OuterImpl
 }
 import com.redhat.ceylon.model.typechecker.model{
-    ProducedType
+    ProducedType=Type
 }
 
 class DeserializationContextImpl<Id>() satisfies DeserializationContext<Id> 
