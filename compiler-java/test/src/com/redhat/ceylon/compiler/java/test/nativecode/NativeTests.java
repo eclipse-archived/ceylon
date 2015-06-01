@@ -303,8 +303,11 @@ public class NativeTests extends CompilerTests {
     @Test
     public void testNativeMissing() {
         testNativeErrors("NativeMissing",
-                new CompilerError(20, "native implementation not found for: 'nativeMissing'"),
-                new CompilerError(23, "no native implementation for backend: native 'nativeMissing' is not implemented for one or more backends")
+                new CompilerError(20, "native implementation not found for: 'nativeMissingMethod'"),
+                new CompilerError(21, "native implementation not found for: 'NativeMissingClass'"),
+                new CompilerError(24, "no native implementation for backend: native 'nativeMissingMethod' is not implemented for one or more backends"),
+                new CompilerError(25, "no native implementation for backend: native 'NativeMissingClass' is not implemented for one or more backends"),
+                new CompilerError(28, "no native implementation for backend: native 'NativeMissingClass' is not implemented for one or more backends")
         );
     }
 }

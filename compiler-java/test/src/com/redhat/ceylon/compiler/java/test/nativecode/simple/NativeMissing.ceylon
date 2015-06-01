@@ -17,8 +17,13 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-native shared Integer nativeMissing();
+native shared Integer nativeMissingMethod();
+native shared class NativeMissingClass() {}
 
 shared void test() {
-    nativeMissing();
+    nativeMissingMethod();
+    NativeMissingClass nmc = NativeMissingClass();
+}
+
+shared void test2(NativeMissingClass nmc) {
 }
