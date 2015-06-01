@@ -61,11 +61,27 @@ class Bug1972Ser implements .com.redhat.ceylon.compiler.java.runtime.serializati
     }
     
     @.java.lang.Override
-    public void $serialize$(final .ceylon.language.serialization.Deconstructor deconstructor) {
+    public .java.util.Collection<.ceylon.language.serialization.ReachableReference> $references$() {
+        .java.util.Collection<.ceylon.language.serialization.ReachableReference> reference = new .java.util.ArrayList<.ceylon.language.serialization.ReachableReference>();
+        return reference;
     }
     
     @.java.lang.Override
-    public void $deserialize$(final .ceylon.language.serialization.Deconstructed deconstructed) {
+    public .java.lang.Object $get$(final .ceylon.language.serialization.ReachableReference reference) {
+        switch (((.ceylon.language.serialization.Member)reference).getAttribute().getQualifiedName()) {
+        default: 
+            throw new .java.lang.RuntimeException("unknown attribute");
+        
+        }
+    }
+    
+    @.java.lang.Override
+    public void $set$(final .ceylon.language.serialization.ReachableReference reference, final .java.lang.Object instance) {
+        if (reference instanceof .ceylon.language.serialization.Member) switch (((.ceylon.language.serialization.Member)reference).getAttribute().getQualifiedName()) {
+        default: 
+            throw new .java.lang.RuntimeException("unknown attribute");
+        
+        } else throw new .ceylon.language.AssertionError("unexpected reachable reference " + reference);
     }
     
     private final void m$priv$() {
@@ -89,13 +105,27 @@ class Bug1972SerSub extends .com.redhat.ceylon.compiler.java.test.issues.bug19xx
     }
     
     @.java.lang.Override
-    public void $serialize$(final .ceylon.language.serialization.Deconstructor deconstructor) {
-        super.$serialize$(deconstructor);
+    public .java.util.Collection<.ceylon.language.serialization.ReachableReference> $references$() {
+        .java.util.Collection<.ceylon.language.serialization.ReachableReference> reference = super.$references$();
+        return reference;
     }
     
     @.java.lang.Override
-    public void $deserialize$(final .ceylon.language.serialization.Deconstructed deconstructed) {
-        super.$deserialize$(deconstructed);
+    public .java.lang.Object $get$(final .ceylon.language.serialization.ReachableReference reference) {
+        switch (((.ceylon.language.serialization.Member)reference).getAttribute().getQualifiedName()) {
+        default: 
+            return super.$get$(reference);
+        
+        }
+    }
+    
+    @.java.lang.Override
+    public void $set$(final .ceylon.language.serialization.ReachableReference reference, final .java.lang.Object instance) {
+        if (reference instanceof .ceylon.language.serialization.Member) switch (((.ceylon.language.serialization.Member)reference).getAttribute().getQualifiedName()) {
+        default: 
+            super.$set$(reference, instance);
+        
+        } else throw new .ceylon.language.AssertionError("unexpected reachable reference " + reference);
     }
     
     @.java.lang.Override

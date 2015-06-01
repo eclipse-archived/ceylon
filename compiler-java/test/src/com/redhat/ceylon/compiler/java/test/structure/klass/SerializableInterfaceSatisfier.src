@@ -49,11 +49,27 @@ class SerializableInterfaceSatisfier implements .com.redhat.ceylon.compiler.java
     }
     
     @.java.lang.Override
-    public void $serialize$(final .ceylon.language.serialization.Deconstructor deconstructor) {
+    public .java.util.Collection<.ceylon.language.serialization.ReachableReference> $references$() {
+        .java.util.Collection<.ceylon.language.serialization.ReachableReference> reference = new .java.util.ArrayList<.ceylon.language.serialization.ReachableReference>();
+        return reference;
     }
     
     @.java.lang.Override
-    public void $deserialize$(final .ceylon.language.serialization.Deconstructed deconstructed) {
+    public .java.lang.Object $get$(final .ceylon.language.serialization.ReachableReference reference) {
+        switch (((.ceylon.language.serialization.Member)reference).getAttribute().getQualifiedName()) {
+        default: 
+            throw new .java.lang.RuntimeException("unknown attribute");
+        
+        }
+    }
+    
+    @.java.lang.Override
+    public void $set$(final .ceylon.language.serialization.ReachableReference reference, final .java.lang.Object instance) {
+        if (reference instanceof .ceylon.language.serialization.Member) switch (((.ceylon.language.serialization.Member)reference).getAttribute().getQualifiedName()) {
+        default: 
+            throw new .java.lang.RuntimeException("unknown attribute");
+        
+        } else throw new .ceylon.language.AssertionError("unexpected reachable reference " + reference);
     }
     
     @.java.lang.Override
@@ -99,20 +115,36 @@ class SerializableInterfaceSatisfierGeneric<U> implements .com.redhat.ceylon.com
     }
     
     @.java.lang.Override
-    public void $serialize$(final .ceylon.language.serialization.Deconstructor deconstructor) {
-        deconstructor.<U>putValue($reified$U, ((.ceylon.language.meta.declaration.ClassOrInterfaceDeclaration).com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.getOrCreateMetamodel(.com.redhat.ceylon.compiler.java.test.structure.klass.SerializableInterfaceSatisfierGeneric.class)).<.ceylon.language.meta.declaration.ValueDeclaration>getDeclaredMemberDeclaration(.ceylon.language.meta.declaration.ValueDeclaration.$TypeDescriptor$, "u"), this.u);
+    public .java.util.Collection<.ceylon.language.serialization.ReachableReference> $references$() {
+        .java.util.Collection<.ceylon.language.serialization.ReachableReference> reference = new .java.util.ArrayList<.ceylon.language.serialization.ReachableReference>();
+        reference.add(new .com.redhat.ceylon.compiler.java.runtime.serialization.MemberImpl(((.ceylon.language.meta.declaration.ClassOrInterfaceDeclaration).com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.getOrCreateMetamodel(.com.redhat.ceylon.compiler.java.test.structure.klass.SerializableInterfaceSatisfierGeneric.class)).<.ceylon.language.meta.declaration.ValueDeclaration>getDeclaredMemberDeclaration(.ceylon.language.meta.declaration.ValueDeclaration.$TypeDescriptor$, "u")));
+        return reference;
     }
     
     @.java.lang.Override
-    public void $deserialize$(final .ceylon.language.serialization.Deconstructed deconstructed) {
+    public .java.lang.Object $get$(final .ceylon.language.serialization.ReachableReference reference) {
+        switch (((.ceylon.language.serialization.Member)reference).getAttribute().getQualifiedName()) {
+        case "com.redhat.ceylon.compiler.java.test.structure.klass::SerializableInterfaceSatisfierGeneric.u": 
+            return this.u;
+        
+        default: 
+            throw new .java.lang.RuntimeException("unknown attribute");
+        
+        }
+    }
+    
+    @.java.lang.Override
+    public void $set$(final .ceylon.language.serialization.ReachableReference reference, final .java.lang.Object instance) {
         final .java.lang.invoke.MethodHandles.Lookup lookup = .java.lang.invoke.MethodHandles.lookup();
-        .com.redhat.ceylon.compiler.java.Util.setter(lookup, "u").invokeExact(this, (U)(
-            let
-            {
-                .java.lang.Object valueOrRef$0 = deconstructed.<U>getValue($reified$U, ((.ceylon.language.meta.declaration.ClassOrInterfaceDeclaration).com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.getOrCreateMetamodel(.com.redhat.ceylon.compiler.java.test.structure.klass.SerializableInterfaceSatisfierGeneric.class)).<.ceylon.language.meta.declaration.ValueDeclaration>getDeclaredMemberDeclaration(.ceylon.language.meta.declaration.ValueDeclaration.$TypeDescriptor$, "u"));
-            }
-            returning valueOrRef$0 instanceof .ceylon.language.serialization.Reference ? ((.com.redhat.ceylon.compiler.java.runtime.serialization.$InstanceLeaker$<U>)valueOrRef$0).$leakInstance$() : (U)valueOrRef$0;
-        ));
+        if (reference instanceof .ceylon.language.serialization.Member) switch (((.ceylon.language.serialization.Member)reference).getAttribute().getQualifiedName()) {
+        case "com.redhat.ceylon.compiler.java.test.structure.klass::SerializableInterfaceSatisfierGeneric.u": 
+            .com.redhat.ceylon.compiler.java.Util.setter(lookup, "u").invokeExact(this, (U)(U)instance);
+            break;
+        
+        default: 
+            throw new .java.lang.RuntimeException("unknown attribute");
+        
+        } else throw new .ceylon.language.AssertionError("unexpected reachable reference " + reference);
     }
     
     @.java.lang.Override

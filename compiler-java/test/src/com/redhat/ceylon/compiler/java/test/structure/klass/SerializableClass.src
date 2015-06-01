@@ -6,6 +6,7 @@ class SerializableClass implements .com.redhat.ceylon.compiler.java.runtime.seri
         this.sharedVariableInteger = 0L;
         this.sharedInteger = 0L;
         this.sharedOptionalInteger = null;
+        this.sharedOptionalString = null;
         this.deferred = 0L;
     }
     
@@ -13,48 +14,73 @@ class SerializableClass implements .com.redhat.ceylon.compiler.java.runtime.seri
         this.sharedVariableInteger = 1L;
         this.sharedInteger = 1L;
         this.sharedOptionalInteger = null;
+        this.sharedOptionalString = .ceylon.language.String.instance("");
         deferred = 1L;
     }
     
     @.java.lang.Override
-    public void $serialize$(final .ceylon.language.serialization.Deconstructor deconstructor) {
-        deconstructor.<.ceylon.language.Integer>putValue(.ceylon.language.Integer.$TypeDescriptor$, ((.ceylon.language.meta.declaration.ClassOrInterfaceDeclaration).com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.getOrCreateMetamodel(.com.redhat.ceylon.compiler.java.test.structure.klass.SerializableClass.class)).<.ceylon.language.meta.declaration.ValueDeclaration>getDeclaredMemberDeclaration(.ceylon.language.meta.declaration.ValueDeclaration.$TypeDescriptor$, "sharedVariableInteger"), .ceylon.language.Integer.instance(this.sharedVariableInteger));
-        deconstructor.<.ceylon.language.Integer>putValue(.ceylon.language.Integer.$TypeDescriptor$, ((.ceylon.language.meta.declaration.ClassOrInterfaceDeclaration).com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.getOrCreateMetamodel(.com.redhat.ceylon.compiler.java.test.structure.klass.SerializableClass.class)).<.ceylon.language.meta.declaration.ValueDeclaration>getDeclaredMemberDeclaration(.ceylon.language.meta.declaration.ValueDeclaration.$TypeDescriptor$, "sharedInteger"), .ceylon.language.Integer.instance(this.sharedInteger));
-        deconstructor.<.ceylon.language.Integer>putValue(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$), ((.ceylon.language.meta.declaration.ClassOrInterfaceDeclaration).com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.getOrCreateMetamodel(.com.redhat.ceylon.compiler.java.test.structure.klass.SerializableClass.class)).<.ceylon.language.meta.declaration.ValueDeclaration>getDeclaredMemberDeclaration(.ceylon.language.meta.declaration.ValueDeclaration.$TypeDescriptor$, "sharedOptionalInteger"), this.sharedOptionalInteger);
-        deconstructor.<.ceylon.language.Integer>putValue(.ceylon.language.Integer.$TypeDescriptor$, ((.ceylon.language.meta.declaration.ClassOrInterfaceDeclaration).com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.getOrCreateMetamodel(.com.redhat.ceylon.compiler.java.test.structure.klass.SerializableClass.class)).<.ceylon.language.meta.declaration.ValueDeclaration>getDeclaredMemberDeclaration(.ceylon.language.meta.declaration.ValueDeclaration.$TypeDescriptor$, "deferred"), .ceylon.language.Integer.instance(this.deferred));
+    public .java.util.Collection<.ceylon.language.serialization.ReachableReference> $references$() {
+        .java.util.Collection<.ceylon.language.serialization.ReachableReference> reference = new .java.util.ArrayList<.ceylon.language.serialization.ReachableReference>();
+        reference.add(new .com.redhat.ceylon.compiler.java.runtime.serialization.MemberImpl(((.ceylon.language.meta.declaration.ClassOrInterfaceDeclaration).com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.getOrCreateMetamodel(.com.redhat.ceylon.compiler.java.test.structure.klass.SerializableClass.class)).<.ceylon.language.meta.declaration.ValueDeclaration>getDeclaredMemberDeclaration(.ceylon.language.meta.declaration.ValueDeclaration.$TypeDescriptor$, "sharedVariableInteger")));
+        reference.add(new .com.redhat.ceylon.compiler.java.runtime.serialization.MemberImpl(((.ceylon.language.meta.declaration.ClassOrInterfaceDeclaration).com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.getOrCreateMetamodel(.com.redhat.ceylon.compiler.java.test.structure.klass.SerializableClass.class)).<.ceylon.language.meta.declaration.ValueDeclaration>getDeclaredMemberDeclaration(.ceylon.language.meta.declaration.ValueDeclaration.$TypeDescriptor$, "sharedInteger")));
+        reference.add(new .com.redhat.ceylon.compiler.java.runtime.serialization.MemberImpl(((.ceylon.language.meta.declaration.ClassOrInterfaceDeclaration).com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.getOrCreateMetamodel(.com.redhat.ceylon.compiler.java.test.structure.klass.SerializableClass.class)).<.ceylon.language.meta.declaration.ValueDeclaration>getDeclaredMemberDeclaration(.ceylon.language.meta.declaration.ValueDeclaration.$TypeDescriptor$, "sharedOptionalInteger")));
+        reference.add(new .com.redhat.ceylon.compiler.java.runtime.serialization.MemberImpl(((.ceylon.language.meta.declaration.ClassOrInterfaceDeclaration).com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.getOrCreateMetamodel(.com.redhat.ceylon.compiler.java.test.structure.klass.SerializableClass.class)).<.ceylon.language.meta.declaration.ValueDeclaration>getDeclaredMemberDeclaration(.ceylon.language.meta.declaration.ValueDeclaration.$TypeDescriptor$, "sharedOptionalString")));
+        reference.add(new .com.redhat.ceylon.compiler.java.runtime.serialization.MemberImpl(((.ceylon.language.meta.declaration.ClassOrInterfaceDeclaration).com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.getOrCreateMetamodel(.com.redhat.ceylon.compiler.java.test.structure.klass.SerializableClass.class)).<.ceylon.language.meta.declaration.ValueDeclaration>getDeclaredMemberDeclaration(.ceylon.language.meta.declaration.ValueDeclaration.$TypeDescriptor$, "deferred")));
+        return reference;
     }
     
     @.java.lang.Override
-    public void $deserialize$(final .ceylon.language.serialization.Deconstructed deconstructed) {
+    public .java.lang.Object $get$(final .ceylon.language.serialization.ReachableReference reference) {
+        switch (((.ceylon.language.serialization.Member)reference).getAttribute().getQualifiedName()) {
+        case "com.redhat.ceylon.compiler.java.test.structure.klass::SerializableClass.sharedVariableInteger": 
+            return .ceylon.language.Integer.instance(this.sharedVariableInteger);
+        
+        case "com.redhat.ceylon.compiler.java.test.structure.klass::SerializableClass.sharedInteger": 
+            return .ceylon.language.Integer.instance(this.sharedInteger);
+        
+        case "com.redhat.ceylon.compiler.java.test.structure.klass::SerializableClass.sharedOptionalInteger": 
+            return this.sharedOptionalInteger;
+        
+        case "com.redhat.ceylon.compiler.java.test.structure.klass::SerializableClass.sharedOptionalString": 
+            return this.sharedOptionalString;
+        
+        case "com.redhat.ceylon.compiler.java.test.structure.klass::SerializableClass.deferred": 
+            return .ceylon.language.Integer.instance(this.deferred);
+        
+        default: 
+            throw new .java.lang.RuntimeException("unknown attribute");
+        
+        }
+    }
+    
+    @.java.lang.Override
+    public void $set$(final .ceylon.language.serialization.ReachableReference reference, final .java.lang.Object instance) {
         final .java.lang.invoke.MethodHandles.Lookup lookup = .java.lang.invoke.MethodHandles.lookup();
-        this.sharedVariableInteger = (
-            let
-            {
-                .java.lang.Object valueOrRef$0 = deconstructed.<.ceylon.language.Integer>getValue(.ceylon.language.Integer.$TypeDescriptor$, ((.ceylon.language.meta.declaration.ClassOrInterfaceDeclaration).com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.getOrCreateMetamodel(.com.redhat.ceylon.compiler.java.test.structure.klass.SerializableClass.class)).<.ceylon.language.meta.declaration.ValueDeclaration>getDeclaredMemberDeclaration(.ceylon.language.meta.declaration.ValueDeclaration.$TypeDescriptor$, "sharedVariableInteger"));
-            }
-            returning valueOrRef$0 instanceof .ceylon.language.serialization.Reference ? ((.com.redhat.ceylon.compiler.java.runtime.serialization.$InstanceLeaker$<.ceylon.language.Integer>)valueOrRef$0).$leakInstance$() : (.ceylon.language.Integer)valueOrRef$0;
-        ).longValue();
-        .com.redhat.ceylon.compiler.java.Util.setter(lookup, "sharedInteger").invokeExact(this, (long)(
-            let
-            {
-                .java.lang.Object valueOrRef$1 = deconstructed.<.ceylon.language.Integer>getValue(.ceylon.language.Integer.$TypeDescriptor$, ((.ceylon.language.meta.declaration.ClassOrInterfaceDeclaration).com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.getOrCreateMetamodel(.com.redhat.ceylon.compiler.java.test.structure.klass.SerializableClass.class)).<.ceylon.language.meta.declaration.ValueDeclaration>getDeclaredMemberDeclaration(.ceylon.language.meta.declaration.ValueDeclaration.$TypeDescriptor$, "sharedInteger"));
-            }
-            returning valueOrRef$1 instanceof .ceylon.language.serialization.Reference ? ((.com.redhat.ceylon.compiler.java.runtime.serialization.$InstanceLeaker$<.ceylon.language.Integer>)valueOrRef$1).$leakInstance$() : (.ceylon.language.Integer)valueOrRef$1;
-        ).longValue());
-        .com.redhat.ceylon.compiler.java.Util.setter(lookup, "sharedOptionalInteger").invokeExact(this, (.ceylon.language.Integer)(
-            let
-            {
-                .java.lang.Object valueOrRef$2 = deconstructed.<.ceylon.language.Integer>getValue(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$), ((.ceylon.language.meta.declaration.ClassOrInterfaceDeclaration).com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.getOrCreateMetamodel(.com.redhat.ceylon.compiler.java.test.structure.klass.SerializableClass.class)).<.ceylon.language.meta.declaration.ValueDeclaration>getDeclaredMemberDeclaration(.ceylon.language.meta.declaration.ValueDeclaration.$TypeDescriptor$, "sharedOptionalInteger"));
-            }
-            returning valueOrRef$2 instanceof .ceylon.language.serialization.Reference ? ((.com.redhat.ceylon.compiler.java.runtime.serialization.$InstanceLeaker$<.ceylon.language.Integer>)valueOrRef$2).$leakInstance$() : (.ceylon.language.Integer)valueOrRef$2;
-        ));
-        .com.redhat.ceylon.compiler.java.Util.setter(lookup, "deferred").invokeExact(this, (long)(
-            let
-            {
-                .java.lang.Object valueOrRef$3 = deconstructed.<.ceylon.language.Integer>getValue(.ceylon.language.Integer.$TypeDescriptor$, ((.ceylon.language.meta.declaration.ClassOrInterfaceDeclaration).com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.getOrCreateMetamodel(.com.redhat.ceylon.compiler.java.test.structure.klass.SerializableClass.class)).<.ceylon.language.meta.declaration.ValueDeclaration>getDeclaredMemberDeclaration(.ceylon.language.meta.declaration.ValueDeclaration.$TypeDescriptor$, "deferred"));
-            }
-            returning valueOrRef$3 instanceof .ceylon.language.serialization.Reference ? ((.com.redhat.ceylon.compiler.java.runtime.serialization.$InstanceLeaker$<.ceylon.language.Integer>)valueOrRef$3).$leakInstance$() : (.ceylon.language.Integer)valueOrRef$3;
-        ).longValue());
+        if (reference instanceof .ceylon.language.serialization.Member) switch (((.ceylon.language.serialization.Member)reference).getAttribute().getQualifiedName()) {
+        case "com.redhat.ceylon.compiler.java.test.structure.klass::SerializableClass.sharedVariableInteger": 
+            this.sharedVariableInteger = ((.ceylon.language.Integer)instance).longValue();
+            break;
+        
+        case "com.redhat.ceylon.compiler.java.test.structure.klass::SerializableClass.sharedInteger": 
+            .com.redhat.ceylon.compiler.java.Util.setter(lookup, "sharedInteger").invokeExact(this, (long)((.ceylon.language.Integer)instance).longValue());
+            break;
+        
+        case "com.redhat.ceylon.compiler.java.test.structure.klass::SerializableClass.sharedOptionalInteger": 
+            .com.redhat.ceylon.compiler.java.Util.setter(lookup, "sharedOptionalInteger").invokeExact(this, (.ceylon.language.Integer)(.ceylon.language.Integer)instance);
+            break;
+        
+        case "com.redhat.ceylon.compiler.java.test.structure.klass::SerializableClass.sharedOptionalString": 
+            .com.redhat.ceylon.compiler.java.Util.setter(lookup, "sharedOptionalString").invokeExact(this, (.ceylon.language.String)(.ceylon.language.String)instance);
+            break;
+        
+        case "com.redhat.ceylon.compiler.java.test.structure.klass::SerializableClass.deferred": 
+            .com.redhat.ceylon.compiler.java.Util.setter(lookup, "deferred").invokeExact(this, (long)((.ceylon.language.Integer)instance).longValue());
+            break;
+        
+        default: 
+            throw new .java.lang.RuntimeException("unknown attribute");
+        
+        } else throw new .ceylon.language.AssertionError("unexpected reachable reference " + reference);
     }
     private long sharedVariableInteger;
     
@@ -74,6 +100,11 @@ class SerializableClass implements .com.redhat.ceylon.compiler.java.runtime.seri
     
     public final .ceylon.language.Integer getSharedOptionalInteger() {
         return sharedOptionalInteger;
+    }
+    private final .ceylon.language.String sharedOptionalString;
+    
+    public final .ceylon.language.String getSharedOptionalString() {
+        return sharedOptionalString;
     }
     private final long deferred;
     
@@ -100,50 +131,6 @@ class SerializableSubclass extends .com.redhat.ceylon.compiler.java.test.structu
     }
     
     @.java.lang.Override
-    public void $serialize$(final .ceylon.language.serialization.Deconstructor deconstructor) {
-        super.$serialize$(deconstructor);
-        if (variablePartner == null) throw new .ceylon.language.AssertionError("instance cannot be serialized: com.redhat.ceylon.compiler.java.test.structure.klass::SerializableSubclass.variablePartner has not been initialized");
-        deconstructor.<.com.redhat.ceylon.compiler.java.test.structure.klass.SerializableSubclass>putValue(.com.redhat.ceylon.compiler.java.test.structure.klass.SerializableSubclass.$TypeDescriptor$, ((.ceylon.language.meta.declaration.ClassOrInterfaceDeclaration).com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.getOrCreateMetamodel(.com.redhat.ceylon.compiler.java.test.structure.klass.SerializableSubclass.class)).<.ceylon.language.meta.declaration.ValueDeclaration>getDeclaredMemberDeclaration(.ceylon.language.meta.declaration.ValueDeclaration.$TypeDescriptor$, "variablePartner"), this.getVariablePartner());
-        if (partner == null) throw new .ceylon.language.AssertionError("instance cannot be serialized: com.redhat.ceylon.compiler.java.test.structure.klass::SerializableSubclass.partner has not been initialized");
-        deconstructor.<.com.redhat.ceylon.compiler.java.test.structure.klass.SerializableSubclass>putValue(.com.redhat.ceylon.compiler.java.test.structure.klass.SerializableSubclass.$TypeDescriptor$, ((.ceylon.language.meta.declaration.ClassOrInterfaceDeclaration).com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.getOrCreateMetamodel(.com.redhat.ceylon.compiler.java.test.structure.klass.SerializableSubclass.class)).<.ceylon.language.meta.declaration.ValueDeclaration>getDeclaredMemberDeclaration(.ceylon.language.meta.declaration.ValueDeclaration.$TypeDescriptor$, "partner"), this.getPartner());
-        if (!$init$variableInteger) throw new .ceylon.language.AssertionError("instance cannot be serialized: com.redhat.ceylon.compiler.java.test.structure.klass::SerializableSubclass.variableInteger has not been initialized");
-        deconstructor.<.ceylon.language.Integer>putValue(.ceylon.language.Integer.$TypeDescriptor$, ((.ceylon.language.meta.declaration.ClassOrInterfaceDeclaration).com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.getOrCreateMetamodel(.com.redhat.ceylon.compiler.java.test.structure.klass.SerializableSubclass.class)).<.ceylon.language.meta.declaration.ValueDeclaration>getDeclaredMemberDeclaration(.ceylon.language.meta.declaration.ValueDeclaration.$TypeDescriptor$, "variableInteger"), .ceylon.language.Integer.instance(this.getVariableInteger()));
-        if (!$init$integer) throw new .ceylon.language.AssertionError("instance cannot be serialized: com.redhat.ceylon.compiler.java.test.structure.klass::SerializableSubclass.integer has not been initialized");
-        deconstructor.<.ceylon.language.Integer>putValue(.ceylon.language.Integer.$TypeDescriptor$, ((.ceylon.language.meta.declaration.ClassOrInterfaceDeclaration).com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.getOrCreateMetamodel(.com.redhat.ceylon.compiler.java.test.structure.klass.SerializableSubclass.class)).<.ceylon.language.meta.declaration.ValueDeclaration>getDeclaredMemberDeclaration(.ceylon.language.meta.declaration.ValueDeclaration.$TypeDescriptor$, "integer"), .ceylon.language.Integer.instance(this.getInteger()));
-    }
-    
-    @.java.lang.Override
-    public void $deserialize$(final .ceylon.language.serialization.Deconstructed deconstructed) {
-        super.$deserialize$(deconstructed);
-        this.setVariablePartner((
-            let
-            {
-                .java.lang.Object valueOrRef$4 = deconstructed.<.com.redhat.ceylon.compiler.java.test.structure.klass.SerializableSubclass>getValue(.com.redhat.ceylon.compiler.java.test.structure.klass.SerializableSubclass.$TypeDescriptor$, ((.ceylon.language.meta.declaration.ClassOrInterfaceDeclaration).com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.getOrCreateMetamodel(.com.redhat.ceylon.compiler.java.test.structure.klass.SerializableSubclass.class)).<.ceylon.language.meta.declaration.ValueDeclaration>getDeclaredMemberDeclaration(.ceylon.language.meta.declaration.ValueDeclaration.$TypeDescriptor$, "variablePartner"));
-            }
-            returning valueOrRef$4 instanceof .ceylon.language.serialization.Reference ? ((.com.redhat.ceylon.compiler.java.runtime.serialization.$InstanceLeaker$<.com.redhat.ceylon.compiler.java.test.structure.klass.SerializableSubclass>)valueOrRef$4).$leakInstance$() : (.com.redhat.ceylon.compiler.java.test.structure.klass.SerializableSubclass)valueOrRef$4;
-        ));
-        this.setPartner((
-            let
-            {
-                .java.lang.Object valueOrRef$5 = deconstructed.<.com.redhat.ceylon.compiler.java.test.structure.klass.SerializableSubclass>getValue(.com.redhat.ceylon.compiler.java.test.structure.klass.SerializableSubclass.$TypeDescriptor$, ((.ceylon.language.meta.declaration.ClassOrInterfaceDeclaration).com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.getOrCreateMetamodel(.com.redhat.ceylon.compiler.java.test.structure.klass.SerializableSubclass.class)).<.ceylon.language.meta.declaration.ValueDeclaration>getDeclaredMemberDeclaration(.ceylon.language.meta.declaration.ValueDeclaration.$TypeDescriptor$, "partner"));
-            }
-            returning valueOrRef$5 instanceof .ceylon.language.serialization.Reference ? ((.com.redhat.ceylon.compiler.java.runtime.serialization.$InstanceLeaker$<.com.redhat.ceylon.compiler.java.test.structure.klass.SerializableSubclass>)valueOrRef$5).$leakInstance$() : (.com.redhat.ceylon.compiler.java.test.structure.klass.SerializableSubclass)valueOrRef$5;
-        ));
-        this.setVariableInteger((
-            let
-            {
-                .java.lang.Object valueOrRef$6 = deconstructed.<.ceylon.language.Integer>getValue(.ceylon.language.Integer.$TypeDescriptor$, ((.ceylon.language.meta.declaration.ClassOrInterfaceDeclaration).com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.getOrCreateMetamodel(.com.redhat.ceylon.compiler.java.test.structure.klass.SerializableSubclass.class)).<.ceylon.language.meta.declaration.ValueDeclaration>getDeclaredMemberDeclaration(.ceylon.language.meta.declaration.ValueDeclaration.$TypeDescriptor$, "variableInteger"));
-            }
-            returning valueOrRef$6 instanceof .ceylon.language.serialization.Reference ? ((.com.redhat.ceylon.compiler.java.runtime.serialization.$InstanceLeaker$<.ceylon.language.Integer>)valueOrRef$6).$leakInstance$() : (.ceylon.language.Integer)valueOrRef$6;
-        ).longValue());
-        this.setInteger((
-            let
-            {
-                .java.lang.Object valueOrRef$7 = deconstructed.<.ceylon.language.Integer>getValue(.ceylon.language.Integer.$TypeDescriptor$, ((.ceylon.language.meta.declaration.ClassOrInterfaceDeclaration).com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.getOrCreateMetamodel(.com.redhat.ceylon.compiler.java.test.structure.klass.SerializableSubclass.class)).<.ceylon.language.meta.declaration.ValueDeclaration>getDeclaredMemberDeclaration(.ceylon.language.meta.declaration.ValueDeclaration.$TypeDescriptor$, "integer"));
-            }
-            returning valueOrRef$7 instanceof .ceylon.language.serialization.Reference ? ((.com.redhat.ceylon.compiler.java.runtime.serialization.$InstanceLeaker$<.ceylon.language.Integer>)valueOrRef$7).$leakInstance$() : (.ceylon.language.Integer)valueOrRef$7;
-        ).longValue());
-    }
     private .com.redhat.ceylon.compiler.java.test.structure.klass.SerializableSubclass variablePartner;
     
     public final .com.redhat.ceylon.compiler.java.test.structure.klass.SerializableSubclass getVariablePartner() {
