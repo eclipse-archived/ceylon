@@ -8777,7 +8777,8 @@ public class ExpressionVisitor extends Visitor {
     
     private Declaration handleAbstractionOrHeader(Declaration dec, 
             Tree.MemberOrTypeExpression that) {
-        if (dec.isNative()) {
+        if (dec.isNative()
+                && !backendSupport.supportsBackend(Backend.None)) {
             BackendSupport backend = 
                     inBackend == null ?
                             backendSupport : 

@@ -2091,7 +2091,8 @@ public class TypeVisitor extends Visitor {
     
     private Declaration handleHeader(Declaration dec, 
             Node that) {
-        if (Backend.None.nativeAnnotation.equals(dec.getNative())) {
+        if (Backend.None.nativeAnnotation.equals(dec.getNative())
+                && !backendSupport.supportsBackend(Backend.None)) {
             BackendSupport backend = 
                     inBackend == null ?
                             backendSupport : 
