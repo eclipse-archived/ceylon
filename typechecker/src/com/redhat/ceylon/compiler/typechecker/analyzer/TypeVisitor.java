@@ -1912,8 +1912,12 @@ public class TypeVisitor extends Visitor {
                     ClassOrInterface ci = 
                             (ClassOrInterface) td;
                     if (!ci.isAbstract()) {
-                        that.addError("non-abstract class has enumerated subtypes: '" +
-                                td.getName() + "'", 905);
+                        Class c = (Class) ci;
+                        if (!c.hasEnumerated() || 
+                             c.hasConstructors()) {
+                            that.addError("non-abstract class has enumerated subtypes: '" +
+                                    td.getName() + "'", 905);
+                        }
                     }
                 }
             }

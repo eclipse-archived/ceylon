@@ -493,27 +493,50 @@ public class InheritanceVisitor extends Visitor {
                     getTypedDeclaration(bme.getScope(), 
                             name(bme.getIdentifier()), 
                             null, false, unit);
-            Type type = value.getType();
-            if (value!=null && !valueSet.add(value)) {
-                //this error is not really truly necessary
-                bme.addError("duplicate case: '" + 
-                        value.getName(unit) + 
-                        "' of '" + td.getName() + "'");
-            }
-            if (value!=null && type!=null && 
-                    !type.getDeclaration()
-                        .isAnonymous()) {
-                bme.addError("case must be a toplevel anonymous class: '" + 
-                        value.getName(unit) + "' is not an anonymous class");
-            }
-            else if (value!=null && !value.isToplevel()) {
-                bme.addError("case must be a toplevel anonymous class: '" + 
-                        value.getName(unit) + "' is not toplevel");
-            }
-            if (type!=null) {
-                if (checkDirectSubtype(td, bme, type)) {
-                    checkAssignable(type, td.getType(), bme, 
-                            getCaseTypeExplanation(td, type));
+            if (value!=null) {
+                if (value!=null && !valueSet.add(value)) {
+                    //this error is not really truly necessary
+                    bme.addError("duplicate case: '" + 
+                            value.getName(unit) + 
+                            "' of '" + td.getName() + "'");
+                }
+                Type type = value.getType();
+                if (type!=null) {
+                    TypeDeclaration caseDec = 
+                            type.getDeclaration();
+                    if (caseDec instanceof Constructor) {
+                        if (!caseDec.isAnonymous()) {
+                            bme.addError("case must be an enumerated instance of a toplevel class: '" + 
+                                    value.getName(unit) + 
+                                    "' is not an enumerated instance");
+                        }
+                        else {
+                            Scope scope = caseDec.getContainer();
+                            if (scope instanceof Class) {
+                                if (!((Class) scope).isToplevel()) {
+                                    bme.addError("case must be an enumerated instance of a toplevel class: '" + 
+                                            value.getName(unit) + 
+                                            "' is not toplevel");
+                                }
+                            }
+                        }
+                    }
+                    else {
+                        if (!caseDec.isAnonymous()) {
+                            bme.addError("case must be a toplevel anonymous class: '" + 
+                                    value.getName(unit) + 
+                                    "' is not an anonymous class");
+                        }
+                        else if (!value.isToplevel()) {
+                            bme.addError("case must be a toplevel anonymous class: '" + 
+                                    value.getName(unit) + 
+                                    "' is not toplevel");
+                        }
+                    }
+                    if (checkDirectSubtype(td, bme, type)) {
+                        checkAssignable(type, td.getType(), bme, 
+                                getCaseTypeExplanation(td, type));
+                    }
                 }
             }
         }

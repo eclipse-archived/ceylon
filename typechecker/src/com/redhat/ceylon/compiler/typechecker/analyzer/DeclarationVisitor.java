@@ -837,14 +837,6 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
             Type ot = clazz.getType();
             e.setExtendedType(ot);
             at = e.appliedType(ot, NO_TYPE_ARGS);
-            if (clazz.isToplevel()) {
-                List<Type> caseTypes = clazz.getCaseTypes();
-                if (caseTypes==null) {
-                    caseTypes = new ArrayList<Type>();
-                    clazz.setCaseTypes(caseTypes);
-                }
-                caseTypes.add(at);
-            }
             clazz.setEnumerated(true);
             if (clazz.isAnonymous()) {
                 that.addError("anonymous class may not have an enumerated instance");
