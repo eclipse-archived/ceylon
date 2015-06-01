@@ -323,8 +323,12 @@ public class ModelLoaderTests extends CompilerTests {
             }
             return d.isShared();
         }
-            
+
         public void compareDeclarations(String name, Declaration validDeclaration, Declaration modelDeclaration) {
+            compareDeclarations(name, validDeclaration, modelDeclaration, false);
+        }
+        
+        public void compareDeclarations(String name, Declaration validDeclaration, Declaration modelDeclaration, boolean skipAnnotations) {
             if(alreadyCompared(validDeclaration, modelDeclaration) || validDeclaration instanceof LazyElement)
                 return;
             Assert.assertNotNull("Missing model declararion for: "+name, modelDeclaration);
@@ -353,7 +357,8 @@ public class ModelLoaderTests extends CompilerTests {
                 Assert.assertTrue(name+" [type] " + validDeclaration + " is not the same as " + modelDeclaration, sameType);
                 return;
             }
-            compareAnnotations(validDeclaration, modelDeclaration);
+            if(!skipAnnotations)
+                compareAnnotations(validDeclaration, modelDeclaration);
             // check containers
             compareContainers(validDeclaration, modelDeclaration);
             compareScopes(validDeclaration, modelDeclaration);
@@ -621,7 +626,7 @@ public class ModelLoaderTests extends CompilerTests {
                 Assert.assertEquals(name+" [param "+validParameter.getName()+" defaulted]", 
                         validParameter.isDefaulted(), modelParameter.isDefaulted());
                 // make sure they have the same name and type
-                compareDeclarations(name+" [param "+i+", "+p+"]", validParameter.getModel(), modelParameter.getModel());
+                compareDeclarations(name+" [param "+i+", "+p+"]", validParameter.getModel(), modelParameter.getModel(), i > 0);
             }
         }
     
