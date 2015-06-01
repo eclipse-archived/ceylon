@@ -373,3 +373,20 @@ class Foobar {
     @error class First() => Foobar.Partial();
     @error shared class Second() => Foobar.New();
 }
+
+class WithMethod {
+    shared void accept(Float x);
+    shared new New1() {
+        accept(Float x) => print(x);
+    }
+    shared new New2(void accept(Float x)) {
+        this.accept = accept;
+    }
+}
+
+void testWithMethod() {
+    WithMethod.New1()
+            .accept(1.0);
+    WithMethod.New2((x) => print("hello " + x.string))
+            .accept(3.0);
+}
