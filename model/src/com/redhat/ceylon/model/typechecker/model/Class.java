@@ -8,6 +8,7 @@ import java.util.List;
 public class Class extends ClassOrInterface implements Functional {
     
     private boolean constructors;
+    private boolean enumerated;
     private boolean abstr;
     private ParameterList parameterList;
     private boolean overloaded;
@@ -27,6 +28,14 @@ public class Class extends ClassOrInterface implements Functional {
     
     public void setConstructors(boolean constructors) {
         this.constructors = constructors;
+    }
+    
+    public boolean hasEnumerated() {
+        return enumerated;
+    }
+
+    public void setEnumerated(boolean enumerated) {
+        this.enumerated = enumerated;
     }
     
     @Override
@@ -358,5 +367,5 @@ public class Class extends ClassOrInterface implements Functional {
         }
         return "class " + toStringName() + params;
     }
-    
+
 }
