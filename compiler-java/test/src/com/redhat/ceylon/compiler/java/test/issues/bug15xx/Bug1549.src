@@ -38,6 +38,7 @@ interface Bug1549InSub extends .com.redhat.ceylon.compiler.java.test.issues.bug1
     
     public .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1549InSub$impl $com$redhat$ceylon$compiler$java$test$issues$bug15xx$Bug1549InSub$impl();
     
+    @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1549InSub$impl.In In$new$();
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1549InSub.class);
 }
@@ -102,6 +103,7 @@ interface Bug1549OutSub extends .com.redhat.ceylon.compiler.java.test.issues.bug
     
     public .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1549OutSub$impl $com$redhat$ceylon$compiler$java$test$issues$bug15xx$Bug1549OutSub$impl();
     
+    @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1549OutSub$impl.Out Out$new$();
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1549OutSub.class);
 }

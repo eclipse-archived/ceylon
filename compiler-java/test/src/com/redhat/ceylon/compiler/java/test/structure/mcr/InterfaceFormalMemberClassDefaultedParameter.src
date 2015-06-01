@@ -56,6 +56,7 @@ class InterfaceFormalMemberClassDefaultedParameterSub implements .com.redhat.cey
         return $com$redhat$ceylon$compiler$java$test$structure$mcr$InterfaceFormalMemberClassDefaultedParameter$this$;
     }
     
+    @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceFormalMemberClassDefaultedParameterSub.X X$new$(final .java.lang.String o, final .ceylon.language.String s) {
         return new X(o, s);
     }
@@ -65,6 +66,7 @@ class InterfaceFormalMemberClassDefaultedParameterSub implements .com.redhat.cey
         return $com$redhat$ceylon$compiler$java$test$structure$mcr$InterfaceFormalMemberClassDefaultedParameter$this$.$default$X$s(o);
     }
     
+    @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceFormalMemberClassDefaultedParameterSub.X X$new$(final .java.lang.String o) {
         return (
             let
@@ -105,6 +107,7 @@ class InterfaceFormalMemberClassDefaultedParameterSub2 implements .com.redhat.ce
         return $com$redhat$ceylon$compiler$java$test$structure$mcr$InterfaceFormalMemberClassDefaultedParameter$this$;
     }
     
+    @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceFormalMemberClassDefaultedParameterSub2.X X$new$(final .java.lang.String o, final .ceylon.language.String s) {
         return new X(o, s);
     }
@@ -114,6 +117,7 @@ class InterfaceFormalMemberClassDefaultedParameterSub2 implements .com.redhat.ce
         return $com$redhat$ceylon$compiler$java$test$structure$mcr$InterfaceFormalMemberClassDefaultedParameter$this$.$default$X$s(o);
     }
     
+    @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceFormalMemberClassDefaultedParameterSub2.X X$new$(final .java.lang.String o) {
         return (
             let

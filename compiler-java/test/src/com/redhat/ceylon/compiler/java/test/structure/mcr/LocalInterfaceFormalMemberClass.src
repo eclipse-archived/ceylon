@@ -44,6 +44,7 @@ public final class localInterfaceFormalMemberClass_ {
                 return $com$redhat$ceylon$compiler$java$test$structure$mcr$localInterfaceFormalMemberClass$Foo$this$;
             }
             
+            @.java.lang.Override
             public .java.lang.Object Bar$new$() {
                 return new Bar();
             }

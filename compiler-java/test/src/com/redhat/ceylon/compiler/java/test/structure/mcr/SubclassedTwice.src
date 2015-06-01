@@ -40,6 +40,7 @@ interface SubclassedTwiceFirst extends .com.redhat.ceylon.compiler.java.test.str
     
     public .com.redhat.ceylon.compiler.java.test.structure.mcr.SubclassedTwiceFirst$impl $com$redhat$ceylon$compiler$java$test$structure$mcr$SubclassedTwiceFirst$impl();
     
+    @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.test.structure.mcr.SubclassedTwiceFirst$impl.Member Member$new$();
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.mcr.SubclassedTwiceFirst.class);
 }
@@ -90,6 +91,7 @@ class SubclassedTwiceSecond implements .com.redhat.ceylon.compiler.java.runtime.
         $com$redhat$ceylon$compiler$java$test$structure$mcr$SubclassedTwiceTop$this$.m1(qual);
     }
     
+    @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.test.structure.mcr.SubclassedTwiceSecond.Member Member$new$() {
         return new Member();
     }

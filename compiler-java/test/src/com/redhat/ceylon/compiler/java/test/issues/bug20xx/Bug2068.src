@@ -93,8 +93,10 @@ public interface IBug2068_2 extends .com.redhat.ceylon.compiler.java.test.issues
     
     public .com.redhat.ceylon.compiler.java.test.issues.bug20xx.IBug2068_2$impl $com$redhat$ceylon$compiler$java$test$issues$bug20xx$IBug2068_2$impl();
     
+    @.java.lang.Override
     public abstract .com.redhat.ceylon.compiler.java.test.issues.bug20xx.IBug2068_2$impl.IFormal2 IFormal2$new$();
     
+    @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.test.issues.bug20xx.IBug2068_2$impl.IDefault2 IDefault2$new$();
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug20xx.IBug2068_2.class);
 }
@@ -306,6 +308,7 @@ public class ConcreteBug2068 extends .com.redhat.ceylon.compiler.java.test.issue
         super();
     }
     
+    @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.test.issues.bug20xx.ConcreteBug2068.IFormal IFormal$new$() {
         return new IFormal();
     }
@@ -322,6 +325,7 @@ public class ConcreteBug2068 extends .com.redhat.ceylon.compiler.java.test.issue
         }
     }
     
+    @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.test.issues.bug20xx.ConcreteBug2068.IFormal2 IFormal2$new$() {
         return new IFormal2();
     }

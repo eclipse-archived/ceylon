@@ -109,8 +109,10 @@ public interface List<Element> extends .com.redhat.ceylon.compiler.java.test.iss
     @.java.lang.Override
     public abstract .com.redhat.ceylon.compiler.java.test.issues.bug20xx.List<? extends Element> getRepeatAttr();
     
+    @.java.lang.Override
     public abstract .com.redhat.ceylon.compiler.java.test.issues.bug20xx.List$impl<? extends Element>.Member Member$new$(final long times);
     
+    @.java.lang.Override
     public abstract .com.redhat.ceylon.compiler.java.test.issues.bug20xx.List$impl<? extends Element>.Member Member$new$();
 }
 public final class List$impl<Element> {

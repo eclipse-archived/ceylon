@@ -96,6 +96,7 @@ public class Bug1879_Y implements .com.redhat.ceylon.compiler.java.runtime.model
     public void setV(final .ceylon.language.Iterable v) {
     }
     
+    @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.test.issues.bug18xx.Bug1879_Y.MemberClass MemberClass$new$(final .ceylon.language.Iterable g) {
         return new MemberClass(g);
     }
@@ -200,6 +201,7 @@ public interface Bug1879_Y2 extends .com.redhat.ceylon.compiler.java.test.issues
     @.java.lang.Override
     public void setV(final .ceylon.language.Iterable v);
     
+    @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.test.issues.bug18xx.Bug1879_Y2$impl.MemberClass MemberClass$new$(final .ceylon.language.Iterable g);
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug18xx.Bug1879_Y2.class);
 }
