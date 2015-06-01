@@ -27,6 +27,60 @@ public class FloatTest {
     }
 
     @Test
+    public void testFloatFractionalPart() {
+        assertEquals(-0.0, Float.getFractionalPart(-0.0), 0.0);
+        assertEquals(+0.0, Float.getFractionalPart(+0.0), 0.0);
+        assertEquals(+0.4, Float.getFractionalPart(+0.4), 0.0000001);
+        assertEquals(-0.4, Float.getFractionalPart(-0.4), 0.0000001);
+        assertEquals(+0.6, Float.getFractionalPart(+0.6), 0.0000001);
+        assertEquals(-0.6, Float.getFractionalPart(-0.6), 0.0000001);
+        assertEquals(-0.0, Float.getFractionalPart(-1.0), 0.0000001);
+        assertEquals(+0.0, Float.getFractionalPart(+1.0), 0.0000001);
+        assertEquals(+0.4, Float.getFractionalPart(+1.4), 0.0000001);
+        assertEquals(-0.4, Float.getFractionalPart(-1.4), 0.0000001);
+        assertEquals(+0.6, Float.getFractionalPart(+1.6), 0.0000001);
+        assertEquals(-0.6, Float.getFractionalPart(-1.6), 0.0000001);
+
+        assertTrue("preserve negative 0", 1 / Float.getFractionalPart(-0.0) < 0);
+        assertTrue("preserve positive 0", 1 / Float.getFractionalPart(+0.0) > 0);
+        assertTrue("preserve negative 0", 1 / Float.getFractionalPart(-0.4) < 0);
+        assertTrue("preserve positive 0", 1 / Float.getFractionalPart(+0.4) > 0);
+        assertTrue("preserve negative 0", 1 / Float.getFractionalPart(-0.6) < 0);
+        assertTrue("preserve positive 0", 1 / Float.getFractionalPart(+0.6) > 0);
+
+        assertTrue("preserve negative 0", 1 / Float.getFractionalPart(NEGATIVE_INFINITY) < 0);
+        assertTrue("preserve positive 0", 1 / Float.getFractionalPart(POSITIVE_INFINITY) > 0);
+        assertEquals(Float.getFractionalPart(NaN), NaN, 0.0);
+    }
+
+    @Test
+    public void testFloatFractionalPartInstance() {
+        assertEquals(-0.0, Float.instance(-0.0).getFractionalPart().value, 0.0);
+        assertEquals(+0.0, Float.instance(+0.0).getFractionalPart().value, 0.0);
+        assertEquals(+0.4, Float.instance(+0.4).getFractionalPart().value, 0.0000001);
+        assertEquals(-0.4, Float.instance(-0.4).getFractionalPart().value, 0.0000001);
+        assertEquals(+0.6, Float.instance(+0.6).getFractionalPart().value, 0.0000001);
+        assertEquals(-0.6, Float.instance(-0.6).getFractionalPart().value, 0.0000001);
+        assertEquals(-0.0, Float.instance(-1.0).getFractionalPart().value, 0.0000001);
+        assertEquals(+0.0, Float.instance(+1.0).getFractionalPart().value, 0.0000001);
+        assertEquals(+0.4, Float.instance(+1.4).getFractionalPart().value, 0.0000001);
+        assertEquals(-0.4, Float.instance(-1.4).getFractionalPart().value, 0.0000001);
+        assertEquals(+0.6, Float.instance(+1.6).getFractionalPart().value, 0.0000001);
+        assertEquals(-0.6, Float.instance(-1.6).getFractionalPart().value, 0.0000001);
+
+        assertTrue("preserve negative 0", 1 / Float.instance(-0.0).getFractionalPart().value < 0);
+        assertTrue("preserve positive 0", 1 / Float.instance(+0.0).getFractionalPart().value > 0);
+        assertTrue("preserve negative 0", 1 / Float.instance(-0.4).getFractionalPart().value < 0);
+        assertTrue("preserve positive 0", 1 / Float.instance(+0.4).getFractionalPart().value > 0);
+        assertTrue("preserve negative 0", 1 / Float.instance(-0.6).getFractionalPart().value < 0);
+        assertTrue("preserve positive 0", 1 / Float.instance(+0.6).getFractionalPart().value > 0);
+
+        assertTrue("preserve negative 0", 1 / Float.instance(NEGATIVE_INFINITY).getFractionalPart().value < 0);
+        assertTrue("preserve positive 0", 1 / Float.instance(POSITIVE_INFINITY).getFractionalPart().value > 0);
+        assertEquals(Float.getFractionalPart(NaN), NaN, 0.0);
+    }
+
+    @Test
     public void testFloatWholePart() {
         assertEquals(0.0, Float.getWholePart(-0.0), 0.0);
         assertEquals(0.0, Float.getWholePart(+0.0), 0.0);

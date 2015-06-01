@@ -212,14 +212,35 @@ public final class Float
     
     @Override
     public Float getFractionalPart() {
-        return instance(value > 0.0D ? value - (long)value : (long)value - value);
+        double fractionalPart = getFractionalPart(value);
+        if (fractionalPart != 0 && fractionalPart == value) {
+            return this;
+        }
+        return instance(fractionalPart);
     }
-    
+
     @Ignore
     public static double getFractionalPart(double value) {
-        return value > 0.0D ? value - (long)value : (long)value - value;
+        if (value <= -TWO_FIFTY_TWO) {
+            return -0d;
+        }
+        else if (value >= TWO_FIFTY_TWO) {
+            return 0d;
+        }
+        else if (Double.isNaN(value)) {
+            return Double.NaN;
+        }
+        else {
+            double result = value - (long) value;
+            if (result == 0 && (1/value) < 0) {
+                return -0d;
+            }
+            else {
+                return result;
+            }
+        }
     }
-    
+
     @Override
     public Float getWholePart() {
         double wholePart = getWholePart(value);
