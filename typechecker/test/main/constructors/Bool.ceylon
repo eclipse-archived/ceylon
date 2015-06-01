@@ -51,6 +51,10 @@ class BrokenFlow {
     print("hello");
 }
 
+@error class WithParamsAndSingleton() {
+    shared new instance {}
+}
+
 class OuterClass() {
     class InnerBool {
         shared actual String string;
