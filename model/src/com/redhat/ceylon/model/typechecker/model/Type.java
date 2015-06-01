@@ -338,8 +338,7 @@ public class Type extends Reference {
                                     tqt.getSupertype(totd);
                             TypeDeclaration otd = 
                                     (TypeDeclaration) dc;
-                            Type qts = 
-                                    qt.getSupertype(otd);
+                            Type qts = qt.getSupertype(otd);
                             if (!qts.isExactly(tqts)) {
                                 return false;
                             }
@@ -398,14 +397,9 @@ public class Type extends Reference {
         List<TypeParameter> typeParameters = 
                 getDeclaration()
                     .getTypeParameters();
-        for (TypeParameter p: 
-                typeParameters) {
-            Type arg = 
-                    getTypeArguments()
-                        .get(p);
-            Type otherArg = 
-                    type.getTypeArguments()
-                        .get(p);
+        for (TypeParameter p: typeParameters) {
+            Type arg = getTypeArguments().get(p);
+            Type otherArg = type.getTypeArguments().get(p);
             if (arg==null || otherArg==null) {
                 return false;
             }
@@ -1724,6 +1718,9 @@ public class Type extends Reference {
                     if (pt==null) {
                         return null;
                     }
+                    if (pt.isNothing()) {
+                        continue;
+                    }
                     Type st = pt.getSupertype(dec);
                     if (st==null) {
                         return null;
@@ -1741,6 +1738,9 @@ public class Type extends Reference {
                 for (Type pt: caseTypes) {
                     if (pt==null) {
                         return null;
+                    }
+                    if (pt.isNothing()) {
+                        continue;
                     }
                     Type st = pt.getSupertype(dec);
                     if (st==null) {
