@@ -34,7 +34,7 @@ public class UnionType extends TypeDeclaration {
     
     @Override
     public String getQualifiedNameString() {
-        return getType().getProducedTypeQualifiedName();
+        return getType().asQualifiedString();
     }
     
     @Override
@@ -136,7 +136,7 @@ public class UnionType extends TypeDeclaration {
                 if (!ct.getDeclaration().inherits(dec)) {
                     return false;
                 }
-            }*/        
+            }*/
             //have to resolve aliases here or the build of
             //ceylon.ast is really slow / nonterminating
             Type st = 

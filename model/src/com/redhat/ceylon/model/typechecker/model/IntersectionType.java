@@ -42,7 +42,7 @@ public class IntersectionType extends TypeDeclaration {
     
     @Override
     public String getQualifiedNameString() {
-        return getType().getProducedTypeQualifiedName();
+        return getType().asQualifiedString();
     }
     
     @Override

@@ -815,8 +815,7 @@ public class Unit {
     }
 
     public Type getKeyType(Type type) {
-        Type st = 
-                type.getSupertype(getEntryDeclaration());
+        Type st = type.getSupertype(getEntryDeclaration());
         if (st!=null && 
                 st.getTypeArguments().size()==2) {
             return st.getTypeArgumentList().get(0);
@@ -827,8 +826,7 @@ public class Unit {
     }
 
     public Type getValueType(Type type) {
-        Type st = 
-                type.getSupertype(getEntryDeclaration());
+        Type st = type.getSupertype(getEntryDeclaration());
         if (st!=null && 
                 st.getTypeArguments().size()==2) {
             return st.getTypeArgumentList().get(1);
@@ -839,8 +837,8 @@ public class Unit {
     }
 
     public Type getIteratedType(Type type) {
-        Type st = 
-                type.getSupertype(getIterableDeclaration());
+        Interface id = getIterableDeclaration();
+        Type st = type.getSupertype(id);
         if (st!=null && 
                 st.getTypeArguments().size()>0) {
             return st.getTypeArgumentList().get(0);
@@ -851,8 +849,8 @@ public class Unit {
     }
 
     public Type getFirstType(Type type) {
-        Type st = 
-                type.getSupertype(getIterableDeclaration());
+        Interface id = getIterableDeclaration();
+        Type st = type.getSupertype(id);
         if (st!=null && 
                 st.getTypeArguments().size()>1) {
             return st.getTypeArgumentList().get(1);
@@ -868,8 +866,7 @@ public class Unit {
     }
 
     public Type getSetElementType(Type type) {
-        Type st = 
-                type.getSupertype(getSetDeclaration());
+        Type st = type.getSupertype(getSetDeclaration());
         if (st!=null && 
                 st.getTypeArguments().size()==1) {
             return st.getTypeArgumentList().get(0);
@@ -880,8 +877,8 @@ public class Unit {
     }
 
     public Type getSequentialElementType(Type type) {
-        Type st = 
-                type.getSupertype(getSequentialDeclaration());
+        Interface sd = getSequentialDeclaration();
+        Type st = type.getSupertype(sd);
         if (st!=null && 
                 st.getTypeArguments().size()==1) {
             return st.getTypeArgumentList().get(0);
@@ -1090,8 +1087,7 @@ public class Unit {
             Class td = getTupleDeclaration();
             Type tuple = args.getSupertype(td);
             if (tuple!=null) {
-                List<Type> tal = 
-                        tuple.getTypeArgumentList();
+                List<Type> tal = tuple.getTypeArgumentList();
                 Type elemType;
                 if (tal.size()>=3) {
                     elemType = tal.get(0);
@@ -1145,8 +1141,7 @@ public class Unit {
             Class td = getTupleDeclaration();
             Type tuple = args.getSupertype(td);
             if (tuple!=null) {
-                List<Type> tal = 
-                        tuple.getTypeArgumentList();
+                List<Type> tal = tuple.getTypeArgumentList();
                 Type elemType;
                 if (tal.size()>=1) {
                     elemType = tal.get(0);
@@ -1686,8 +1681,8 @@ public class Unit {
     
     public Type getCallableTuple(Type t) {
         if (t==null) return null;
-        Type ct = 
-                t.getSupertype(getCallableDeclaration());
+        Interface cd = getCallableDeclaration();
+        Type ct = t.getSupertype(cd);
         if (ct!=null) {
             List<Type> typeArgs = 
                     ct.getTypeArgumentList();
@@ -1701,11 +1696,10 @@ public class Unit {
     public Type getCallableReturnType(Type t) {
         if (t==null) return null;
         if (t.isNothing()) return t;
-        Type ct = 
-                t.getSupertype(getCallableDeclaration());
+        Interface cd = getCallableDeclaration();
+        Type ct = t.getSupertype(cd);
         if (ct!=null) {
-            List<Type> typeArgs = 
-                    ct.getTypeArgumentList();
+            List<Type> typeArgs = ct.getTypeArgumentList();
             if (typeArgs.size()>=1) {
                 return typeArgs.get(0);
             }

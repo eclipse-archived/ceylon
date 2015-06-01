@@ -1535,12 +1535,10 @@ public class ModelUtil {
             TypeDeclaration td, Unit unit) {
         Type ptqt = pt.getQualifyingType();
         Type tqt = t.getQualifyingType();
+        Scope tdc = td.getContainer();
         if (ptqt!=null && tqt!=null && 
-                td.getContainer() 
-                        instanceof TypeDeclaration) {
-            TypeDeclaration qtd = 
-                    (TypeDeclaration) 
-                        td.getContainer();
+                tdc instanceof TypeDeclaration) {
+            TypeDeclaration qtd = (TypeDeclaration) tdc;
             Type pst = ptqt.getSupertype(qtd);
             Type st = tqt.getSupertype(qtd);
             if (pst!=null && st!=null) {
@@ -1576,10 +1574,12 @@ public class ModelUtil {
             Type qst = null;
             for (TypeParameter tp: std.getTypeParameters()) {
                 if (tp.isInvariant()) {
-                    if (pst==null) 
+                    if (pst==null) {
                         pst = p.getSupertype(std);
-                    if (qst==null) 
+                    }
+                    if (qst==null) { 
                         qst = q.getSupertype(std);
+                    }
                     if (pst!=null && qst!=null) {
                         Type psta = 
                                 pst.getTypeArguments()
@@ -2688,7 +2688,7 @@ public class ModelUtil {
         //of the type parameter then the constraint is satisfied
         for (Type ct: caseTypes) {
             Type cts = 
-                    ct.getProducedType(receiver, member, 
+                    ct.appliedType(receiver, member, 
                             typeArguments, null);
             if (argType.isSubtypeOf(cts)) {
                 return true;
@@ -2709,7 +2709,7 @@ public class ModelUtil {
                     boolean foundCase = false;
                     for (Type ct: caseTypes) {
                         Type cts = 
-                                ct.getProducedType(receiver, 
+                                ct.appliedType(receiver, 
                                         member, 
                                         typeArguments, null);
                         if (act.isSubtypeOf(cts)) {
