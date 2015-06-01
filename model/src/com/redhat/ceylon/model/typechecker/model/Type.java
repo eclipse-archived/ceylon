@@ -1255,7 +1255,7 @@ public class Type extends Reference {
      * @return the upper bound of a type parameter, after 
      *         performing all type argument substitution
      */
-    public Type getProducedType(Type receiver, 
+    public Type appliedType(Type receiver, 
             Declaration member, 
             List<Type> typeArguments,
             List<SiteVariance> variances) {
@@ -3126,7 +3126,7 @@ public class Type extends Reference {
                         .print(this, unit);
     }
 
-    private String getSimpleProducedTypeQualifiedName() {
+    private String qualifiedName() {
         StringBuilder ptn = new StringBuilder();
         if (isTypeConstructor()) {
             return asString();
@@ -3134,7 +3134,7 @@ public class Type extends Reference {
         Type qt = getQualifyingType();
         TypeDeclaration declaration = getDeclaration();
         if (qt!=null) {
-            ptn.append(qt.getProducedTypeQualifiedName())
+            ptn.append(qt.asQualifiedString())
                .append(".")
                .append(declaration.getName());
         }
@@ -3153,10 +3153,10 @@ public class Type extends Reference {
                     ptn.append(",");
                 }
                 if (t==null) {
-                    ptn.append("?");
+                    ptn.append("unknown");
                 }
                 else {
-                    ptn.append(t.getProducedTypeQualifiedName());
+                    ptn.append(t.asQualifiedString());
                 }
             }
             ptn.append(">");
@@ -3164,7 +3164,7 @@ public class Type extends Reference {
         return ptn.toString();
     }
 
-    public String getProducedTypeQualifiedName() {
+    public String asQualifiedString() {
         TypeDeclaration declaration = getDeclaration();
         if (declaration==null) {
             //unknown type
@@ -3172,32 +3172,44 @@ public class Type extends Reference {
         }
         if (isUnion()) {
             StringBuilder name = new StringBuilder();
+            boolean first = true;
             for (Type pt: getCaseTypes()) {
+                if (first) {
+                    first = false;
+                }
+                else {
+                    name.append("|");
+                }
                 if (pt==null) {
                     name.append("unknown");
                 }
                 else {
-                    name.append(pt.getProducedTypeQualifiedName());
+                    name.append(pt.asQualifiedString());
                 }
-                name.append("|");
             }
-            return name.substring(0,name.length()>0?name.length()-1:0);
+            return name.toString();
         }
         else if (isIntersection()) {
             StringBuilder name = new StringBuilder();
+            boolean first = true;
             for (Type pt: getSatisfiedTypes()) {
+                if (first) {
+                    first = false;
+                }
+                else {
+                    name.append("&");
+                }
                 if (pt==null) {
                     name.append("unknown");
                 }
                 else {
-                    name.append(pt.getProducedTypeQualifiedName());
+                    name.append(pt.asQualifiedString());
                 }
-                name.append("&");
             }
-            return name.substring(0,name.length()>0?name.length()-1:0);
+            return name.toString();
         }
         else {            
-            return getSimpleProducedTypeQualifiedName();
+            return qualifiedName();
         }
     }
 

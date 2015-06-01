@@ -2688,7 +2688,7 @@ public class ModelUtil {
         //of the type parameter then the constraint is satisfied
         for (Type ct: caseTypes) {
             Type cts = 
-                    ct.getProducedType(receiver, member, 
+                    ct.appliedType(receiver, member, 
                             typeArguments, null);
             if (argType.isSubtypeOf(cts)) {
                 return true;
@@ -2709,7 +2709,7 @@ public class ModelUtil {
                     boolean foundCase = false;
                     for (Type ct: caseTypes) {
                         Type cts = 
-                                ct.getProducedType(receiver, 
+                                ct.appliedType(receiver, 
                                         member, 
                                         typeArguments, null);
                         if (act.isSubtypeOf(cts)) {
