@@ -702,9 +702,6 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
         }
         that.setDeclarationModel(c);
         super.visit(that);
-        if (c.hasConstructors() && c.hasEnumerated()) {
-            c.setCaseTypes(null);
-        }
         if (that.getParameterList()==null) {
             if (c.isClassOrInterfaceMember() &&
                     (c.isFormal() || 
