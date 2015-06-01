@@ -231,10 +231,10 @@ public class IssuesTests_1500_1999 extends CompilerTests {
     @Test
     public void testBug1576() {
         assertErrors("bug15xx/Bug1576",
-                new CompilerError(21, "native implementation not found for: 'bug1576angular'"),
-                new CompilerError(26, "native implementation not found for: 'Bug1576Class'"),
-                new CompilerError(29, "native implementation not found for: 'bug1576Method'"),
-                new CompilerError(32, "native implementation not found for: 'bug1576Attr'"),
+                new CompilerError(21, "no native implementation for backend: native 'bug1576angular' is not implemented for one or more backends"),
+                new CompilerError(26, "no native implementation for backend: native 'Bug1576Class' is not implemented for one or more backends"),
+                new CompilerError(29, "no native implementation for backend: native 'bug1576Method' is not implemented for one or more backends"),
+                new CompilerError(32, "no native implementation for backend: native 'bug1576Attr' is not implemented for one or more backends"),
                 new CompilerError(36, "no native implementation for backend: native 'bug1576angular' is not implemented for one or more backends"),
                 new CompilerError(36, "no native implementation for backend: native 'module' is not implemented for one or more backends"),
                 new CompilerError(40, "no native implementation for backend: native 'Bug1576Class' is not implemented for one or more backends"),

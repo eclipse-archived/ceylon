@@ -205,6 +205,7 @@ public class NativeTests extends CompilerTests {
                 new CompilerError(57, "native classes do not satisfy the same interfaces: 'NativeClassMismatch4'"),
                 new CompilerError(75, "native classes do not satisfy the same interfaces: 'NativeClassMismatch5'"),
                 new CompilerError(82, "native header for non-native declaration: 'NativeClassMismatch6'"),
+                new CompilerError(82, "no native implementation for backend: native 'NativeClassMismatch6' is not implemented for one or more backends"),
                 new CompilerError(84, "native implementation for non-native header: 'NativeClassMismatch6'"),
                 new CompilerError(91, "formal member 'test1' of 'NativeClassMismatchSuper1' not implemented in class hierarchy"),
                 new CompilerError(92, "native backend name on member conflicts with its container: 'test1' of 'NativeClassMismatch7'"),
@@ -281,6 +282,7 @@ public class NativeTests extends CompilerTests {
                 new CompilerError(21, "native implementation for non-native header: 'NativeNonNativeMixed1'"),
                 new CompilerError(22, "native implementation for non-native header: 'NativeNonNativeMixed1'"),
                 new CompilerError(25, "native header for non-native declaration: 'nativeNonNativeMixed2'"),
+                new CompilerError(25, "no native implementation for backend: native 'nativeNonNativeMixed2' is not implemented for one or more backends"),
                 new CompilerError(26, "native implementation for non-native header: 'nativeNonNativeMixed2'"),
                 new CompilerError(27, "native implementation for non-native header: 'nativeNonNativeMixed2'"),
                 new CompilerError(30, "duplicate declaration name: 'nativeNonNativeMixed3'")
@@ -290,10 +292,11 @@ public class NativeTests extends CompilerTests {
     @Test
     public void testNativeDuplicates() {
         testNativeErrors("NativeDuplicates",
-                new CompilerError(20, "native implementation not found for: 'nativeDuplicates1'"),
+                new CompilerError(20, "no native implementation for backend: native 'nativeDuplicates1' is not implemented for one or more backends"),
                 new CompilerError(22, "duplicate native header: 'nativeDuplicates1'"),
+                new CompilerError(22, "no native implementation for backend: native 'nativeDuplicates1' is not implemented for one or more backends"),
                 new CompilerError(28, "duplicate native implementation: 'nativeDuplicates2'"),
-                new CompilerError(30, "native implementation not found for: 'nativeDuplicates3'"),
+                new CompilerError(30, "no native implementation for backend: native 'nativeDuplicates3' is not implemented for one or more backends"),
                 new CompilerError(34, "duplicate native implementation: 'nativeDuplicates3'"),
                 new CompilerError(38, "duplicate native implementation: 'nativeDuplicates4'"),
                 new CompilerError(42, "duplicate native implementation: 'nativeDuplicates5'")
@@ -303,8 +306,8 @@ public class NativeTests extends CompilerTests {
     @Test
     public void testNativeMissing() {
         testNativeErrors("NativeMissing",
-                new CompilerError(20, "native implementation not found for: 'nativeMissingMethod'"),
-                new CompilerError(21, "native implementation not found for: 'NativeMissingClass'"),
+                new CompilerError(20, "no native implementation for backend: native 'nativeMissingMethod' is not implemented for one or more backends"),
+                new CompilerError(21, "no native implementation for backend: native 'NativeMissingClass' is not implemented for one or more backends"),
                 new CompilerError(24, "no native implementation for backend: native 'nativeMissingMethod' is not implemented for one or more backends"),
                 new CompilerError(25, "no native implementation for backend: native 'NativeMissingClass' is not implemented for one or more backends"),
                 new CompilerError(28, "no native implementation for backend: native 'NativeMissingClass' is not implemented for one or more backends")
