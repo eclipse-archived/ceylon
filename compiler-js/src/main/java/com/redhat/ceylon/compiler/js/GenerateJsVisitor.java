@@ -1708,7 +1708,7 @@ public class GenerateJsVisitor extends Visitor
                 final Expression expr = exprs.get(i);
                 expr.visit(this);
                 if (expr.getTypeModel() == null || !"ceylon.language::String".equals(
-                        expr.getTypeModel().getProducedTypeQualifiedName())) {
+                        expr.getTypeModel().asQualifiedString())) {
                     out(".string");
                 }
                 out(").plus(");
@@ -2173,7 +2173,7 @@ public class GenerateJsVisitor extends Visitor
         // Box the value
         final boolean fromNative = isNativeJs(fromTerm);
         final Type fromType = fromTerm.getTypeModel();
-        final String fromTypeName = ModelUtil.isTypeUnknown(fromType) ? "UNKNOWN" : fromType.getProducedTypeQualifiedName();
+        final String fromTypeName = ModelUtil.isTypeUnknown(fromType) ? "UNKNOWN" : fromType.asQualifiedString();
         if (fromNative != toNative || fromTypeName.startsWith("ceylon.language::Callable<")) {
             if (fromNative) {
                 // conversion from native value to Ceylon value
@@ -2371,7 +2371,7 @@ public class GenerateJsVisitor extends Visitor
                                     if (ps.isSubtypeOf(moval.getUnit().getEmptyType())) {
                                         out("[],");
                                     } else {
-                                        out("[/*VALUE Callable params ", ps.getProducedTypeQualifiedName()+"*/],");
+                                        out("[/*VALUE Callable params ", ps.asQualifiedString()+"*/],");
                                     }
                                 }
                                 TypeUtils.printTypeArguments(expr, expr.getTypeModel().getTypeArguments(),

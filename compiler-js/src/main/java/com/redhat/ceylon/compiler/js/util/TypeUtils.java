@@ -474,7 +474,7 @@ public class TypeUtils {
                 }
                 TypeUtils.typeNameOrList(term, t, gen, skipSelfDecl);
                 gen.out(")?", tmp);
-                errmsg = "Expected " + t.getProducedTypeQualifiedName();
+                errmsg = "Expected " + t.asQualifiedString();
             }
             gen.out(":function(){throw new TypeError('", errmsg, " (",
                     term.getUnit().getFilename(), " ", term.getLocation(), ")')}())");
@@ -658,7 +658,7 @@ public class TypeUtils {
                 metamodelTypeNameOrList(resolveTargs, node, gen.getCurrentPackage(), _tuple, gen);
                 _tuple=null;
             } else {
-                gen.out("\n/*WARNING3! Tuple is actually ", _tuple.getProducedTypeQualifiedName(), "*/");
+                gen.out("\n/*WARNING3! Tuple is actually ", _tuple.asQualifiedString(), "*/");
                 if (pos > 100) {
                     break;
                 }
@@ -676,21 +676,21 @@ public class TypeUtils {
             Type _callable, GenerateJsVisitor gen) {
         if (_callable.getCaseTypes() != null) {
             for (Type pt : _callable.getCaseTypes()) {
-                if (pt.getProducedTypeQualifiedName().startsWith("ceylon.language::Callable<")) {
+                if (pt.asQualifiedString().startsWith("ceylon.language::Callable<")) {
                     _callable = pt;
                     break;
                 }
             }
         } else if (_callable.getSatisfiedTypes() != null) {
             for (Type pt : _callable.getSatisfiedTypes()) {
-                if (pt.getProducedTypeQualifiedName().startsWith("ceylon.language::Callable<")) {
+                if (pt.asQualifiedString().startsWith("ceylon.language::Callable<")) {
                     _callable = pt;
                     break;
                 }
             }
         }
-        if (!_callable.getProducedTypeQualifiedName().contains("ceylon.language::Callable<")) {
-            gen.out("[/*WARNING1: got ", _callable.getProducedTypeQualifiedName(), " instead of Callable*/]");
+        if (!_callable.asQualifiedString().contains("ceylon.language::Callable<")) {
+            gen.out("[/*WARNING1: got ", _callable.asQualifiedString(), " instead of Callable*/]");
             return;
         }
         List<Type> targs = _callable.getTypeArgumentList();
