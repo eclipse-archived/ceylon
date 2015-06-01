@@ -1341,11 +1341,13 @@ public class Type extends Reference {
      *         there is no such supertype
      */
     public Type getSupertype(TypeDeclaration dec) {
-        return //resolveAliases().
-                getSupertypeInternal(dec);
+        //we don't resolve aliases here because we want to
+        //try and propagate the aliased specified in the 
+        //code through to the returned supertype
+        return getSupertypeInternal(dec);
     }
     
-    public Type getSupertypeInternal(TypeDeclaration dec) {
+    private Type getSupertypeInternal(TypeDeclaration dec) {
         if (dec==null) {
             return null;
         }
