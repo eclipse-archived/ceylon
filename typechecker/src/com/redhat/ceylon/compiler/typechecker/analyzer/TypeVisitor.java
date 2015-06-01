@@ -97,11 +97,17 @@ public class TypeVisitor extends Visitor {
     public TypeVisitor(TypecheckerUnit unit, BackendSupport backendSupport) {
         this.unit = unit;
         this.backendSupport = backendSupport;
+        String nat = unit.getPackage().getModule().getNative();
+        inBackend = Backend.fromAnnotation(nat);
     }
     
     @Override public void visit(Tree.CompilationUnit that) {
         unit = that.getUnit();
+        Backend ib = inBackend;
+        String nat = unit.getPackage().getModule().getNative();
+        inBackend = Backend.fromAnnotation(nat);
         super.visit(that);
+        inBackend = ib;
         HashSet<String> set = new HashSet<String>();
         for (Tree.Import im: that.getImportList().getImports()) {
             Tree.ImportPath ip = im.getImportPath();
@@ -1232,6 +1238,7 @@ public class TypeVisitor extends Visitor {
         o.getSatisfiedTypes().clear();
         defaultSuperclass(that.getExtendedType(), o);
         super.visit(that);
+        handleHeader(that.getDeclarationModel(), that);
         Type type = o.getType();
         that.getDeclarationModel().setType(type);
         that.getType().setTypeModel(type);
@@ -1268,6 +1275,7 @@ public class TypeVisitor extends Visitor {
             defaultSuperclass(that.getExtendedType(), cd);
         }
         super.visit(that);
+        handleHeader(cd, that);
         Tree.ParameterList pl = that.getParameterList();
         if (pl!=null && cd.hasConstructors()) {
             pl.addError("class with parameters may not declare constructors: class '" + 
@@ -1371,6 +1379,7 @@ public class TypeVisitor extends Visitor {
                     that.getDeclarationModel();
         td.setExtendedType(null);
         super.visit(that);
+        handleHeader(td, that);
         Tree.ClassSpecifier cs = that.getClassSpecifier();
         if (cs==null) {
             that.addError("missing class body or aliased class reference");
@@ -1528,6 +1537,7 @@ public class TypeVisitor extends Visitor {
         Tree.SpecifierExpression sie = 
                 that.getSpecifierExpression();
         Function dec = that.getDeclarationModel();
+        handleHeader(dec, that);
         if (isInitializerParameter(dec)) {
             if (sie!=null) {
                 sie.addError("function is an initializer parameter and may not have an initial value: '" + 
@@ -1543,6 +1553,7 @@ public class TypeVisitor extends Visitor {
     public void visit(Tree.MethodDefinition that) {
         super.visit(that);
         Function dec = that.getDeclarationModel();
+        handleHeader(dec, that);
         if (isInitializerParameter(dec)) {
             that.getBlock()
                 .addError("function is an initializer parameter and may not have a body: '" + 
@@ -1556,6 +1567,7 @@ public class TypeVisitor extends Visitor {
         Tree.SpecifierOrInitializerExpression sie = 
                 that.getSpecifierOrInitializerExpression();
         Value dec = that.getDeclarationModel();
+        handleHeader(dec, that);
         if (isInitializerParameter(dec)) {
             Parameter param = dec.getInitializerParameter();
             Tree.Type type = that.getType();
@@ -1579,6 +1591,7 @@ public class TypeVisitor extends Visitor {
     public void visit(Tree.AttributeGetterDefinition that) {
         super.visit(that);
         Value dec = that.getDeclarationModel();
+        handleHeader(dec, that);
         if (isInitializerParameter(dec)) {
             that.getBlock()
                 .addError("value is an initializer parameter and may not have a body: '" + 
@@ -2088,15 +2101,16 @@ public class TypeVisitor extends Visitor {
     }
     
     private Declaration handleHeader(Declaration dec, 
-            Tree.SimpleType that) {
-        if (dec.isNative()) {
+            Node that) {
+        if (Backend.None.nativeAnnotation.equals(dec.getNative())
+                && !backendSupport.supportsBackend(Backend.None)) {
             BackendSupport backend = 
                     inBackend == null ?
                             backendSupport : 
                             inBackend.backendSupport;
             Declaration impl =
                     getNativeDeclaration(dec, backend);
-            if (impl==null) {
+            if (impl==null && getNativeDeclaration(dec, Backend.None) != null) {
                 // HACK to make the JS language module compile
                 // Remove this once the problem has been fixed!
                 if (backendSupport.supportsBackend(Backend.Java) && !backendSupport.supportsBackend(Backend.JavaScript)) {
