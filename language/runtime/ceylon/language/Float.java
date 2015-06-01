@@ -21,7 +21,7 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 public final class Float
     implements Number<Float>, Exponentiable<Float,Float>, ReifiedType {
 
-    private static final double TWO_FIFTY_TWO = (double) (1 << 52);
+    private static final double TWO_FIFTY_TWO = (double) (1L << 52);
 
     @Ignore
     public final static TypeDescriptor $TypeDescriptor$ = TypeDescriptor.klass(Float.class);

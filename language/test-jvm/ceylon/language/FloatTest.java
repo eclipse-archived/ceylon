@@ -41,6 +41,15 @@ public class FloatTest {
         assertEquals(+0.6, Float.getFractionalPart(+1.6), 0.0000001);
         assertEquals(-0.6, Float.getFractionalPart(-1.6), 0.0000001);
 
+        assertEquals(+0.5d, Float.getFractionalPart(+2097153.5d), 0.0);
+        assertEquals(-0.5d, Float.getFractionalPart(-2097153.5d), 0.0);
+
+        assertEquals(0.0, Float.getFractionalPart((double) +(2L << 52) + 0.5d), 0.0);
+        assertEquals(0.0, Float.getFractionalPart((double) -(2L << 52) - 0.5d), 0.0);
+
+        assertEquals(0.0, Float.getFractionalPart((double) +(2L << 53) + 0.5d), 0.0);
+        assertEquals(0.0, Float.getFractionalPart((double) -(2L << 53) - 0.5d), 0.0);
+
         assertTrue("preserve negative 0", 1 / Float.getFractionalPart(-0.0) < 0);
         assertTrue("preserve positive 0", 1 / Float.getFractionalPart(+0.0) > 0);
         assertTrue("preserve negative 0", 1 / Float.getFractionalPart(-0.4) < 0);
@@ -67,6 +76,15 @@ public class FloatTest {
         assertEquals(-0.4, Float.instance(-1.4).getFractionalPart().value, 0.0000001);
         assertEquals(+0.6, Float.instance(+1.6).getFractionalPart().value, 0.0000001);
         assertEquals(-0.6, Float.instance(-1.6).getFractionalPart().value, 0.0000001);
+
+        assertEquals(+0.5d, Float.instance(+2097153.5d).getFractionalPart().value, 0.0);
+        assertEquals(-0.5d, Float.instance(-2097153.5d).getFractionalPart().value, 0.0);
+
+        assertEquals(0.0, Float.instance((double) +(2L << 52) + 0.5d).getFractionalPart().value, 0.0);
+        assertEquals(0.0, Float.instance((double) -(2L << 52) - 0.5d).getFractionalPart().value, 0.0);
+
+        assertEquals(0.0, Float.instance((double) +(2L << 53) + 0.5d).getFractionalPart().value, 0.0);
+        assertEquals(0.0, Float.instance((double) -(2L << 53) - 0.5d).getFractionalPart().value, 0.0);
 
         assertTrue("preserve negative 0", 1 / Float.instance(-0.0).getFractionalPart().value < 0);
         assertTrue("preserve positive 0", 1 / Float.instance(+0.0).getFractionalPart().value > 0);
@@ -95,6 +113,15 @@ public class FloatTest {
         assertEquals(+1.0, Float.getWholePart(+1.6), 0.0);
         assertEquals(-1.0, Float.getWholePart(-1.6), 0.0);
 
+        assertEquals(+2097153d, Float.getWholePart(+2097153.5d), 0.0);
+        assertEquals(-2097153d, Float.getWholePart(-2097153.5d), 0.0);
+
+        assertEquals((double) +(2L << 52), Float.getWholePart((double) +(2L << 52) + 0.5d), 0.0);
+        assertEquals((double) -(2L << 52), Float.getWholePart((double) -(2L << 52) - 0.5d), 0.0);
+
+        assertEquals((double) +(2L << 53), Float.getWholePart((double) +(2L << 53) + 0.5d), 0.0);
+        assertEquals((double) -(2L << 53), Float.getWholePart((double) -(2L << 53) - 0.5d), 0.0);
+
         assertTrue("preserve negative 0", 1 / Float.getWholePart(-0.0) < 0);
         assertTrue("preserve positive 0", 1 / Float.getWholePart(+0.0) > 0);
         assertTrue("preserve negative 0", 1 / Float.getWholePart(-0.4) < 0);
@@ -121,6 +148,15 @@ public class FloatTest {
         assertEquals(-1.0, Float.instance(-1.4).getWholePart().value, 0.0);
         assertEquals(+1.0, Float.instance(+1.6).getWholePart().value, 0.0);
         assertEquals(-1.0, Float.instance(-1.6).getWholePart().value, 0.0);
+
+        assertEquals(+2097153d, Float.instance(+2097153.5d).getWholePart().value, 0.0);
+        assertEquals(-2097153d, Float.instance(-2097153.5d).getWholePart().value, 0.0);
+
+        assertEquals((double) +(2L << 52), Float.instance((double) +(2L << 52) + 0.5d).getWholePart().value, 0.0);
+        assertEquals((double) -(2L << 52), Float.instance((double) -(2L << 52) - 0.5d).getWholePart().value, 0.0);
+
+        assertEquals((double) +(2L << 53), Float.instance((double) +(2L << 53) + 0.5d).getWholePart().value, 0.0);
+        assertEquals((double) -(2L << 53), Float.instance((double) -(2L << 53) - 0.5d).getWholePart().value, 0.0);
 
         assertTrue("preserve negative 0", 1 / Float.instance(-0.0).getWholePart().value < 0);
         assertTrue("preserve positive 0", 1 / Float.instance(+0.0).getWholePart().value > 0);
