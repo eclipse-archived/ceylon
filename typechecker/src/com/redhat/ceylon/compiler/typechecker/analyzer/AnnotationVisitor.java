@@ -2,8 +2,8 @@ package com.redhat.ceylon.compiler.typechecker.analyzer;
 
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.checkAssignable;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.isExecutableStatement;
-import static com.redhat.ceylon.model.typechecker.model.Module.LANGUAGE_MODULE_NAME;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isAbstraction;
+import static com.redhat.ceylon.model.typechecker.model.Module.LANGUAGE_MODULE_NAME;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,10 +14,10 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
-import com.redhat.ceylon.model.typechecker.model.Functional;
-import com.redhat.ceylon.model.typechecker.model.Interface;
 import com.redhat.ceylon.model.typechecker.model.Function;
 import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
+import com.redhat.ceylon.model.typechecker.model.Functional;
+import com.redhat.ceylon.model.typechecker.model.Interface;
 import com.redhat.ceylon.model.typechecker.model.Package;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.Type;
@@ -305,6 +305,17 @@ public class AnnotationVisitor extends Visitor {
         checkAnnotations(that.getAnnotationList(),
                 unit.getConstructorDeclarationType(),
                 unit.getConstructorMetatype(c.getType()));
+    }
+    
+    @Override 
+    public void visit(Tree.Enumerated that) {
+        super.visit(that);
+        Value v = that.getDeclarationModel();
+        Unit unit = that.getUnit();
+        //TODO: metamodel types for Enumerated!!
+        checkAnnotations(that.getAnnotationList(),
+                unit.getValueDeclarationType(),
+                unit.getValueMetatype(v.getTypedReference()));
     }
     
     @Override

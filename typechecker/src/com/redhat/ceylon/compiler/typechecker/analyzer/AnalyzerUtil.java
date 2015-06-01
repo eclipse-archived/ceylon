@@ -286,7 +286,8 @@ public class AnalyzerUtil {
         for (int i=statements.size()-1; i>=0; i--) {
             Tree.Statement s = statements.get(i);
             if (isExecutableStatement(unit, s) || 
-                    s instanceof Tree.Constructor) {
+                    s instanceof Tree.Constructor ||
+                    s instanceof Tree.Enumerated) {
                 return s;
             }
         }
@@ -297,15 +298,9 @@ public class AnalyzerUtil {
         List<Tree.Statement> statements = that.getStatements();
         for (int i=statements.size()-1; i>=0; i--) {
             Tree.Statement s = statements.get(i);
-            if (s instanceof Tree.Constructor) {
-                return (Tree.Constructor) s;
-            }
-            else if (s instanceof Tree.ObjectDefinition) {
-                Tree.ObjectDefinition o = 
-                        (Tree.ObjectDefinition) s;
-                if (o.getEnumerated()) {
-                    return o;
-                }
+            if (s instanceof Tree.Constructor ||
+                s instanceof Tree.Enumerated) {
+                return (Tree.Declaration) s;
             }
         }
         return null;
@@ -332,17 +327,9 @@ public class AnalyzerUtil {
         		return sie!=null && 
         		        !(sie instanceof Tree.LazySpecifierExpression);
             }
-            /*else if (s instanceof Tree.MethodDeclaration) {
-                if ( ((Tree.MethodDeclaration) s).getSpecifierExpression()!=null ) {
-                    return s;
-                }
-            }*/
             else if (s instanceof Tree.ObjectDefinition) {
                 Tree.ObjectDefinition o = 
                         (Tree.ObjectDefinition) s;
-                if (o.getEnumerated()) {
-                    return true;
-                }
                 if (o.getExtendedType()!=null) {
                     Type et = 
                             o.getExtendedType()

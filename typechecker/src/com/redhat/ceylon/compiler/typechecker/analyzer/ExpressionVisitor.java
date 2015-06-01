@@ -75,6 +75,7 @@ import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.model.typechecker.model.Constructor;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
+import com.redhat.ceylon.model.typechecker.model.Enumerated;
 import com.redhat.ceylon.model.typechecker.model.Function;
 import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
 import com.redhat.ceylon.model.typechecker.model.Functional;
@@ -118,6 +119,7 @@ public class ExpressionVisitor extends Visitor {
     private boolean dynamic;
     private boolean inExtendsClause = false;
     private Backend inBackend = null;
+    private TypeDeclaration constructorClass;
 
     private Node ifStatementOrExpression;
     private Node switchStatementOrExpression;
@@ -6318,14 +6320,15 @@ public class ExpressionVisitor extends Visitor {
             Tree.QualifiedMemberOrTypeExpression that, 
             Declaration member, Type type) {
         if (that.getStaticMethodReference()) {
-            Tree.MemberOrTypeExpression p = 
+            Tree.MemberOrTypeExpression primary = 
                     (Tree.MemberOrTypeExpression) 
                         that.getPrimary();
             if (member instanceof Constructor) {
                 //Ceylon named constructor
-                if (p.getStaticMethodReference()) {
+                if (primary.getStaticMethodReference()) {
                     Tree.QualifiedMemberOrTypeExpression qmte = 
-                            (Tree.QualifiedMemberOrTypeExpression) p;
+                            (Tree.QualifiedMemberOrTypeExpression) 
+                                primary;
                     Tree.MemberOrTypeExpression pp = 
                             (Tree.MemberOrTypeExpression) 
                                 qmte.getPrimary();
@@ -6338,9 +6341,10 @@ public class ExpressionVisitor extends Visitor {
             }
             else {
                 //something other than a constructor 
-                if (p instanceof Tree.QualifiedMemberOrTypeExpression) {
+                if (primary instanceof Tree.QualifiedMemberOrTypeExpression) {
                     Tree.QualifiedMemberOrTypeExpression qmte =
-                            (Tree.QualifiedMemberOrTypeExpression) p;
+                            (Tree.QualifiedMemberOrTypeExpression) 
+                                primary;
                     Tree.Primary pp = qmte.getPrimary();
                     if (!(pp instanceof Tree.BaseTypeExpression) &&
                             !(pp instanceof Tree.QualifiedTypeExpression) &&
@@ -6350,18 +6354,21 @@ public class ExpressionVisitor extends Visitor {
                 }
                 if (member.isStaticallyImportable()) {
                     //static member of Java type
-                    if (p.getStaticMethodReference()) {
+                    if (primary.getStaticMethodReference()) {
                         Tree.QualifiedMemberOrTypeExpression qmte = 
-                                (Tree.QualifiedMemberOrTypeExpression) p;
-                        if (qmte.getDeclaration().isStaticallyImportable()) {
+                                (Tree.QualifiedMemberOrTypeExpression) 
+                                    primary;
+                        if (qmte.getDeclaration()
+                                .isStaticallyImportable()) {
                             return type;
                         }
                         else {
                             Tree.MemberOrTypeExpression pp = 
                                     (Tree.MemberOrTypeExpression) 
                                         qmte.getPrimary();
-                            return accountForStaticReferenceType(qmte, 
-                                    pp.getDeclaration(), type);
+                            return accountForStaticReferenceType(
+                                    qmte, pp.getDeclaration(), 
+                                    type);
                         }
                     }
                     else {
@@ -6370,7 +6377,7 @@ public class ExpressionVisitor extends Visitor {
                 }
                 else {
                     //ordinary non-static, non-constructor member
-                    Reference target = p.getTarget();
+                    Reference target = primary.getTarget();
                     if (target==null) {
                         return unit.getUnknownType();
                     }
@@ -8320,7 +8327,15 @@ public class ExpressionVisitor extends Visitor {
         
     }
     
-    private TypeDeclaration constructorClass;
+    @Override 
+    public void visit(Tree.Enumerated that) {
+        Enumerated e = that.getEnumerated();
+        Tree.Type rt = beginReturnScope(fakeVoid(that));
+        Declaration od = beginReturnDeclaration(e);
+        super.visit(that);
+        endReturnDeclaration(od);
+        endReturnScope(rt, null);
+    }
     
     @Override 
     public void visit(Tree.Constructor that) {
@@ -8676,6 +8691,9 @@ public class ExpressionVisitor extends Visitor {
         }
         else if (result instanceof Constructor) {
             return name + " is a constructor";
+        }
+        else if (result instanceof Enumerated) {
+            return name + " is an enumerated instance";
         }
         else if (result instanceof Class) {
             return name + " is a class";

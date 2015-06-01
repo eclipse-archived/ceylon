@@ -825,6 +825,47 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
     }
 
     @Override
+    public void visit(Tree.Enumerated that) {
+        Enumerated e = new Enumerated();
+//        e.setAnonymous(true);
+        e.setStaticallyImportable(true);
+        Type at;
+        if (scope instanceof Class) {
+            Class clazz = (Class) scope;
+            List<Type> caseTypes = clazz.getCaseTypes();
+            if (caseTypes==null) {
+                caseTypes = new ArrayList<Type>();
+                clazz.setCaseTypes(caseTypes);
+            }
+            Type ot = clazz.getType();
+            at = e.appliedType(ot, NO_TYPE_ARGS);
+            caseTypes.add(at);
+            e.setExtendedType(ot);
+            clazz.setConstructors(true);
+            if (clazz.isAnonymous()) {
+                that.addError("anonymous class may not have an enumerated instance");
+            }
+            
+        }
+        else {
+            at = null;
+            that.addError("enumerated instance declaration must occur directly in the body of a class");
+        }
+        that.setEnumerated(e);
+        visitDeclaration(that, e);
+        Value v = new Value();
+        v.setType(at);
+        v.setStaticallyImportable(true);
+        that.setDeclarationModel(v);
+        visitDeclaration(that, v);
+//        Type t = e.getType();
+//        v.setType(t);
+        Scope o = enterScope(e);
+        super.visit(that);
+        exitScope(o);
+    }
+
+    @Override
     public void visit(Tree.InterfaceDefinition that) {
         Interface i = new Interface();
         i.setDynamic(that.getDynamic());
@@ -971,51 +1012,12 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
     
     @Override
     public void visit(Tree.ObjectDefinition that) {
-        Class c;
-        boolean enumerated = that.getEnumerated();
-        if (enumerated) {
-            c = new Enumerated();
-            c.setStaticallyImportable(true);
-            if (scope instanceof Class) {
-                Class clazz = (Class) scope;
-                clazz.setAbstract(true);
-                List<Type> caseTypes = clazz.getCaseTypes();
-                if (caseTypes==null) {
-                    caseTypes = new ArrayList<Type>();
-                    clazz.setCaseTypes(caseTypes);
-                }
-                Type ot = clazz.getType();
-                caseTypes.add(c.appliedType(ot, NO_TYPE_ARGS));
-                c.setExtendedType(ot);
-                clazz.setConstructors(true);
-                if (clazz.isAnonymous()) {
-                    that.addError("anonymous class may not have enumerated instance");
-                }
-                //TODO: yew, maybe we don't need this ...
-                //it's just here to make stuff a little
-                //easier for the backend!
-                Tree.ExtendedType et = new Tree.ExtendedType(null);
-                Tree.BaseType bt = new Tree.BaseType(null);
-                Tree.Identifier id = new Tree.Identifier(null);
-                id.setText(clazz.getName());
-                bt.setIdentifier(id);
-                et.setType(bt);
-                that.setExtendedType(et);
-                
-            }
-            else {
-                that.addError("enumerated instance declaration must occur directly in the body of a class");
-            }
-        }
-        else {
-            c = new Class();
-            defaultExtendedToBasic(c);
-        }
+        Class c = new Class();
+        defaultExtendedToBasic(c);
         c.setAnonymous(true);
         that.setAnonymousClass(c);
         visitDeclaration(that, c, false);
         Value v = new Value();
-        v.setStaticallyImportable(enumerated);
         that.setDeclarationModel(v);
         visitDeclaration(that, v);
         Type t = c.getType();

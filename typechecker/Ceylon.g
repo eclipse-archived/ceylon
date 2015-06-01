@@ -353,18 +353,16 @@ typeNameDeclaration returns [Identifier identifier]
       
     ;
 
-enumeratedObject returns [ObjectDefinition declaration]
+enumeratedObject returns [Enumerated declaration]
     : NEW
-      { $declaration = new ObjectDefinition($NEW); 
-        $declaration.setType(new ValueModifier(null)); 
-        $declaration.setEnumerated(true); }
+      { $declaration = new Enumerated($NEW); }
       (
         memberName
         { $declaration.setIdentifier($memberName.identifier); }
       )?
       (
-        classBody
-        { $declaration.setClassBody($classBody.classBody); }
+        block
+        { $declaration.setBlock($block.block); }
       | { displayRecognitionError(getTokenNames(), 
               new MismatchedTokenException(LBRACE, input)); }
         SEMICOLON

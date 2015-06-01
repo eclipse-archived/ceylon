@@ -429,6 +429,17 @@ public class SpecificationVisitor extends Visitor {
     
     @Override
     public void visit(Tree.Block that) {
+        Scope scope = that.getScope();
+        if (scope instanceof Constructor) {
+            if (definitelyInitedBy.contains(delegatedConstructor)) {
+                specified.definitely = true;
+            }
+            if (possiblyInitedBy.contains(delegatedConstructor)) {
+                specified.possibly = true;
+            }
+            delegatedConstructor = null;
+        }
+        
         boolean oe = endsInBreakReturnThrow;
         Tree.Continue olc = lastContinue;
         Tree.Statement olcs = lastContinueStatement;
@@ -466,6 +477,22 @@ public class SpecificationVisitor extends Visitor {
         endsInBreakReturnThrow = oe;
         lastContinue = olc;
         lastContinueStatement = olcs;
+        
+        if (scope instanceof Constructor) {
+            Constructor c = (Constructor) scope;
+            if (specified.definitely) {
+                definitelyInitedBy.add(c);
+            }
+            if (specified.possibly) {
+                possiblyInitedBy.add(c);
+            }
+        }
+        if (isNonAbstractConstructor(scope) &&
+                declaration.getContainer()==scope.getContainer()) {
+            if (!specified.definitely) {
+                initedByEveryConstructor = false;
+            }
+        }
     }
     
     @Override 
@@ -550,17 +577,6 @@ public class SpecificationVisitor extends Visitor {
 
     @Override
     public void visit(Tree.Body that) {
-        Scope scope = that.getScope();
-        if (scope instanceof Constructor) {
-            if (definitelyInitedBy.contains(delegatedConstructor)) {
-                specified.definitely = true;
-            }
-            if (possiblyInitedBy.contains(delegatedConstructor)) {
-                specified.possibly = true;
-            }
-            delegatedConstructor = null;
-        }
-        
         if (hasParameter &&
                 that.getScope()==declaration.getContainer()) {
             hasParameter = false;
@@ -580,22 +596,6 @@ public class SpecificationVisitor extends Visitor {
             st.visit(this);
     		withinAttributeInitializer = false;
     	}
-        
-        if (scope instanceof Constructor) {
-            Constructor c = (Constructor) scope;
-            if (specified.definitely) {
-                definitelyInitedBy.add(c);
-            }
-            if (specified.possibly) {
-                possiblyInitedBy.add(c);
-            }
-        }
-        if (isNonAbstractConstructor(scope) &&
-                declaration.getContainer()==scope.getContainer()) {
-            if (!specified.definitely) {
-                initedByEveryConstructor = false;
-            }
-        }
     }
 
     private static boolean isNonAbstractConstructor(Scope scope) {
@@ -821,6 +821,22 @@ public class SpecificationVisitor extends Visitor {
     }
 
     @Override
+    public void visit(Tree.Enumerated that) {
+        Value v = that.getDeclarationModel();
+        if (v==declaration) {
+            declare();
+            specify();
+        }
+        super.visit(that);
+        Enumerated e = that.getEnumerated();
+        if (declaration.getContainer()==e.getContainer() &&
+                that==lastConstructor && 
+                initedByEveryConstructor) {
+            specified.definitely = true;
+        }
+    }
+
+    @Override
     public void visit(Tree.TypedArgument that) {
         if (that.getDeclarationModel()==declaration) {
             inLoop = false;
@@ -1027,14 +1043,6 @@ public class SpecificationVisitor extends Visitor {
             specify();
         }
         super.visit(that);
-        if (that.getEnumerated()) {
-            Class ac = that.getAnonymousClass();
-            if (declaration.getContainer()==ac.getContainer() &&
-                    that==lastConstructor && 
-                    initedByEveryConstructor) {
-                specified.definitely = true;
-            }
-        }
     }
     
     @Override

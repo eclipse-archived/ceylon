@@ -19,8 +19,8 @@ void tryit(Bool bool) {
 }
 
 class BrokenBool {
-    shared actual String string;
-    @error shared new true {
+    @error shared actual String string;
+    shared new true {
         //string = "true";
     }
     shared new false {

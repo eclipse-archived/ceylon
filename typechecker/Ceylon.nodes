@@ -137,6 +137,11 @@
 ^(CLASS_DEFINITION:ANY_CLASS
     CLASS_BODY)
 
+^(ENUMERATED:DECLARATION
+    BLOCK
+    Value declarationModel;
+    Enumerated enumerated;)
+
 ^(CONSTRUCTOR:DECLARATION
     PARAMETER_LIST?
     DELEGATED_CONSTRUCTOR?
@@ -212,8 +217,7 @@
     SATISFIED_TYPES?
     CLASS_BODY
     Value declarationModel;
-    Class anonymousClass;
-    boolean enumerated;)
+    Class anonymousClass;)
 
 "A parameter list for a function or class."
 ^(PARAMETER_LIST 
