@@ -119,7 +119,7 @@ public class MissingNativeVisitor extends Visitor {
         if (model instanceof Function || model instanceof ClassOrInterface || model instanceof Value) {
             Declaration m = pkg.getDirectMember(model.getName(), null, false);
             if (m != null) {
-                if (!m.isNative() || !nodeIsDecl) {
+                if (!m.isNative() || !(nodeIsDecl || node instanceof Tree.ObjectDefinition)) {
                     // An error will already have been added by the typechecker
                     return true;
                 }
