@@ -7933,7 +7933,7 @@ public class ExpressionVisitor extends Visitor {
                                     argType);
                     for (Type st: sts) {
                         Type bound =
-                                st.getProducedType(receiver, 
+                                st.appliedType(receiver, 
                                         dec, typeArguments, 
                                         null);
                         if (!assignedType.isSubtypeOf(bound)) {
