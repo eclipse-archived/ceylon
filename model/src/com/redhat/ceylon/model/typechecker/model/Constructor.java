@@ -16,13 +16,6 @@ public class Constructor extends TypeDeclaration implements Functional {
 
     public Constructor() {}
     
-    @Override
-    public boolean isConstructor() {
-        return true;
-    }
-    
-    //private boolean formal;
-
     private List<ParameterList> parameterLists = new ArrayList<ParameterList>(1);
     private boolean overloaded;
     private boolean abstraction;
@@ -130,6 +123,21 @@ public class Constructor extends TypeDeclaration implements Functional {
     protected Declaration getMemberOrParameter(String name, 
             List<Type> signature, boolean ellipsis) {
         return getDirectMember(name, signature, ellipsis);
+    }
+    
+    @Override
+    public TypeDeclaration getInheritingDeclaration(
+            Declaration member) {
+        if (member.getContainer().equals(this)) {
+            return null;
+        }
+        else if (getContainer()!=null) {
+            return getContainer()
+                    .getInheritingDeclaration(member);
+        }
+        else {
+            return null;
+        }
     }
     
     @Override

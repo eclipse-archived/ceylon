@@ -32,10 +32,6 @@ public abstract class TypeDeclaration extends Declaration
     private boolean dynamic;
 	private boolean sealed;
 
-    public boolean isConstructor() {
-        return false;
-    }
-    
 	/** 
 	 * true if the type arguments of this type are not 
 	 * available at runtime 
@@ -604,8 +600,7 @@ public abstract class TypeDeclaration extends Declaration
         if (member.getContainer().equals(this)) {
             return null;
         }
-        else if (!isConstructor() &&  //TODO: refine getInheritingDeclaration() on constructor models
-                isInheritedFromSupertype(member)) {
+        else if (isInheritedFromSupertype(member)) {
             return this;
         }
         else if (getContainer()!=null) {
