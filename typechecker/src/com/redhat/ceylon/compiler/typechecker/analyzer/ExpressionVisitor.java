@@ -1361,12 +1361,12 @@ public class ExpressionVisitor extends Visitor {
         }
     }
     
-    private Type eraseDefaultedParameters(Type t) {
+    private Type eraseDefaultedParameters(Type type) {
         Interface cd = unit.getCallableDeclaration();
-        Type ct = t.getSupertype(cd);
-        if (ct!=null) {
+        Type callableType = type.getSupertype(cd);
+        if (callableType!=null) {
             List<Type> typeArgs = 
-                    ct.getTypeArgumentList();
+                    callableType.getTypeArgumentList();
             if (typeArgs.size()>=2) {
                 Type rt = typeArgs.get(0);
                 Type pts = typeArgs.get(1);
@@ -1388,7 +1388,7 @@ public class ExpressionVisitor extends Visitor {
                 return appliedType(cd, rt, tt);
             }
         }
-        return t;
+        return type;
     }
     
     static Reference getRefinedMember(FunctionOrValue d, 
@@ -3551,8 +3551,7 @@ public class ExpressionVisitor extends Visitor {
             //that.setTypeModel(prf.getType());
             Type ct = primary.getTypeModel();
             if (ct!=null) {
-                List<Type> tal = 
-                        ct.getTypeArgumentList();
+                List<Type> tal = ct.getTypeArgumentList();
                 if (!tal.isEmpty()) {
                     //pull the return type out of the Callable
                     that.setTypeModel(tal.get(0));
@@ -3608,23 +3607,24 @@ public class ExpressionVisitor extends Visitor {
             }
             else if (checkCallable(pt, primary, 
                     "invoked expression must be callable")) {
+                Interface cd = unit.getCallableDeclaration();
                 List<Type> typeArgs = 
-                        pt.getSupertype(
-                                unit.getCallableDeclaration())
+                        pt.getSupertype(cd)
                             .getTypeArgumentList();
                 if (!typeArgs.isEmpty()) {
                     that.setTypeModel(typeArgs.get(0));
                 }
                 //typecheck arguments using the type args of Callable
                 if (typeArgs.size()>=2) {
-                    Type paramTypesAsTuple = 
-                            typeArgs.get(1);
+                    Type paramTypesAsTuple = typeArgs.get(1);
                     if (paramTypesAsTuple!=null) {
                         TypeDeclaration pttd = 
                                 paramTypesAsTuple.getDeclaration();
                         if (pttd instanceof ClassOrInterface &&
-                                (pttd.isEmpty() ||pttd.isTuple() || 
-                                 pttd.isSequence() || pttd.isSequential())) {
+                                (pttd.isEmpty() || 
+                                 pttd.isTuple() || 
+                                 pttd.isSequence() || 
+                                 pttd.isSequential())) {
                             //we have a plain tuple type so we can check the
                             //arguments individually
                             checkIndirectInvocationArguments(
@@ -4124,8 +4124,10 @@ public class ExpressionVisitor extends Visitor {
                             parameterList.getParameters()
                                 .get(i);
                     Tree.PositionalArgument arg = args.get(i);
+                    boolean isJavaAnnotationValueParameter = 
+                            "value".equals(parameter.getName());
                     if (arg!=null && 
-                            !"value".equals(parameter.getName())) {
+                            !isJavaAnnotationValueParameter) {
                         arg.addUsageWarning(Warning.javaAnnotationElement, 
                                 "positional argument to Java annotation element: '" + 
                                         parameter.getName() + 
@@ -4150,8 +4152,7 @@ public class ExpressionVisitor extends Visitor {
                         " is not a subtype of Iterable");*/
             }
             else {
-                Type at = 
-                        spreadType(rat, unit, true);
+                Type at = spreadType(rat, unit, true);
                 //checkSpreadArgumentSequential(arg, at);
                 Type ptt = 
                         unit.getParameterTypesAsTupleType(
@@ -4312,8 +4313,7 @@ public class ExpressionVisitor extends Visitor {
         //checkSpreadArgumentSequential(sa, at);
         if (!isTypeUnknown(at)) {
             if (unit.isIterableType(at)) {
-                Type sat = 
-                        spreadType(at, unit, true);
+                Type sat = spreadType(at, unit, true);
                 if (!isTypeUnknown(sat) && 
                         !isTypeUnknown(tailType)) {
                     checkAssignable(sat, tailType, sa, 
@@ -4456,7 +4456,7 @@ public class ExpressionVisitor extends Visitor {
         if (p.getModel()!=null) {
             Type paramType = 
                     pr.getTypedParameter(p)
-                    .getFullType();
+                        .getFullType();
             a.setParameter(p);
             Type at = a.getTypeModel();
             if (!isTypeUnknown(at) && 
@@ -4479,8 +4479,7 @@ public class ExpressionVisitor extends Visitor {
         super.visit(that);
         Tree.Type type = that.getType();
         if (type!=null) {
-            Type at = 
-                    unit.getAnythingType();
+            Type at = unit.getAnythingType();
             checkAssignable(that.getTypeModel(), 
                     unit.getSequentialType(at), type, 
                     "spread type must be a sequence type");
@@ -4492,16 +4491,14 @@ public class ExpressionVisitor extends Visitor {
         Tree.Expression e = that.getExpression();
         if (e!=null) {
             Type t = e.getTypeModel();
-            if (t!=null) {
-                if (!isTypeUnknown(t)) {
-                    if (!unit.isIterableType(t)) {
-                        e.addError("spread argument is not iterable: '" + 
-                                t.asString(unit) + 
-                                "' is not a subtype of 'Iterable'");
-                    }
+            if (!isTypeUnknown(t)) {
+                if (!unit.isIterableType(t)) {
+                    e.addError("spread argument is not iterable: '" + 
+                            t.asString(unit) + 
+                            "' is not a subtype of 'Iterable'");
                 }
-                that.setTypeModel(t);
             }
+            that.setTypeModel(t);
         }
     }
     
@@ -4521,12 +4518,12 @@ public class ExpressionVisitor extends Visitor {
         }
         else {
             Tree.ElementRange er = (Tree.ElementRange) eor;
-            return er.getLowerBound()!=null && 
-                        isTypeUnknown(er.getLowerBound()
-                                .getTypeModel()) ||
-                    er.getUpperBound()!=null && 
-                        isTypeUnknown(er.getUpperBound()
-                                .getTypeModel());
+            Tree.Expression lb = er.getLowerBound();
+            Tree.Expression ub = er.getUpperBound();
+            return lb!=null && 
+                        isTypeUnknown(lb.getTypeModel()) ||
+                    ub!=null && 
+                        isTypeUnknown(ub.getTypeModel());
         }
     }
     
@@ -4661,8 +4658,7 @@ public class ExpressionVisitor extends Visitor {
                         unit.isTupleVariantAtLeastOne(tt);
                 if (elementTypes!=null) {
                     int size = elementTypes.size();
-                    Type nt = 
-                            unit.getNullType();
+                    Type nt = unit.getNullType();
                     if (size==0) {
                         that.setTypeModel(nt);
                     }
@@ -4674,18 +4670,14 @@ public class ExpressionVisitor extends Visitor {
                                 elementTypes.get(index);
                         if (iet==null) return;
                         if (index >= minimumLength) {
-                            iet = unionType(iet, 
-                                    nt, 
-                                    unit);
+                            iet = unionType(iet, nt, unit);
                         }
                         that.setTypeModel(iet);
                     }
                     else if (variadic) {
-                        Type iet = 
-                                elementTypes.get(size-1);
+                        Type iet = elementTypes.get(size-1);
                         if (iet==null) return;
-                        Type it = 
-                                unit.getIteratedType(iet);
+                        Type it = unit.getIteratedType(iet);
                         if (it==null) return;
                         if (!atLeastOne || index >= size) {
                             it = unionType(it, nt, unit);
@@ -4733,17 +4725,14 @@ public class ExpressionVisitor extends Visitor {
                     for (int index=lindex; 
                             index < size-(variadic?1:0); 
                             index++) {
-                        Type et = 
-                                elementTypes.get(index);
+                        Type et = elementTypes.get(index);
                         if (et==null) return;
                         list.add(et);
                     }
                     if (variadic) {
-                        Type it = 
-                                elementTypes.get(size-1);
+                        Type it = elementTypes.get(size-1);
                         if (it==null) return;
-                        Type rt = 
-                                unit.getIteratedType(it);
+                        Type rt = unit.getIteratedType(it);
                         if (rt==null) return;
                         list.add(rt);
                     }
@@ -4806,9 +4795,7 @@ public class ExpressionVisitor extends Visitor {
                             term, 
                             "operand expression must be of enumerable type");
             if (ot!=null) {
-                Type ta = 
-                        ot.getTypeArgumentList()
-                            .get(0);
+                Type ta = ot.getTypeArgumentList().get(0);
                 checkAssignable(ta, pt, that, 
                         "result type must be assignable to declared type");
             }
@@ -5050,8 +5037,7 @@ public class ExpressionVisitor extends Visitor {
                                 "left operand must be of summable type" :
                                 "left operand must be of numeric type");
             if (nt!=null) {
-                List<Type> tal = 
-                        nt.getTypeArgumentList();
+                List<Type> tal = nt.getTypeArgumentList();
                 if (tal.isEmpty()) return;
                 Type tt = tal.get(0);
                 that.setTypeModel(tt);
@@ -5095,9 +5081,7 @@ public class ExpressionVisitor extends Visitor {
                                 "operand expression must be of numeric type");
             that.setTypeModel(lhst);
             if (nt!=null) {
-                Type t = 
-                        nt.getTypeArgumentList()
-                            .get(0);
+                Type t = nt.getTypeArgumentList().get(0);
                 //that.setTypeModel(t); //stef requests lhst to make it easier on backend
                 checkAssignable(rhst, t, that, 
                         that instanceof Tree.AddAssignOp ?
@@ -7178,7 +7162,8 @@ public class ExpressionVisitor extends Visitor {
                     sa.getPositionalArguments();
             Type tt = getTupleType(pas, unit, false);
             if (tt!=null) {
-                st = tt.getSupertype(unit.getIterableDeclaration());
+                Interface id = unit.getIterableDeclaration();
+                st = tt.getSupertype(id);
                 if (st==null) {
                     st = unit.getIterableType(unit.getUnknownType());
                 }
