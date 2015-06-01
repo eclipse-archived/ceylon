@@ -41,3 +41,27 @@ class PrivateBool {
     case (PrivateBool.true) {}
     case (PrivateBool.false) {}
 }
+
+abstract class AbstractSingleton {
+    @error new instance {}
+}
+
+class BrokenFlow {
+    shared new instance {}
+    print("hello");
+}
+
+class OuterClass() {
+    class InnerBool {
+        shared actual String string;
+        shared new true {
+            string = "true";
+        }
+        shared new false {
+            string = "false";
+        }
+    }
+    @error switch(this)
+    case (InnerBool.true) {}
+    case (InnerBool.false) {}
+}

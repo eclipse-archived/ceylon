@@ -831,20 +831,24 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
         Type at;
         if (scope instanceof Class) {
             Class clazz = (Class) scope;
-            List<Type> caseTypes = clazz.getCaseTypes();
-            if (caseTypes==null) {
-                caseTypes = new ArrayList<Type>();
-                clazz.setCaseTypes(caseTypes);
-            }
             Type ot = clazz.getType();
-            at = e.appliedType(ot, NO_TYPE_ARGS);
-            caseTypes.add(at);
             e.setExtendedType(ot);
+            at = e.appliedType(ot, NO_TYPE_ARGS);
+            if (clazz.isToplevel()) {
+                List<Type> caseTypes = clazz.getCaseTypes();
+                if (caseTypes==null) {
+                    caseTypes = new ArrayList<Type>();
+                    clazz.setCaseTypes(caseTypes);
+                }
+                caseTypes.add(at);
+            }
             clazz.setConstructors(true);
             if (clazz.isAnonymous()) {
                 that.addError("anonymous class may not have an enumerated instance");
             }
-            
+            else if (clazz.isAbstract()) {
+                that.addError("abstract class may not have an enumerated instance");
+            }
         }
         else {
             at = null;
