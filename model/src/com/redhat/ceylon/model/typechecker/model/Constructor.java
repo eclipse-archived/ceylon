@@ -30,6 +30,7 @@ public class Constructor extends TypeDeclaration implements Functional {
     private List<Declaration> overloads;
     private List<Declaration> members = new ArrayList<Declaration>(3);
     private List<Annotation> annotations = new ArrayList<Annotation>(4);
+    private boolean anonymous;
     
     @Override
     public boolean isAbstract() {
@@ -213,6 +214,20 @@ public class Constructor extends TypeDeclaration implements Functional {
             params.append(")");
         }
         return "new " + toStringName() + params;
+    }
+
+    public void setAnonymous(boolean anonymous) {
+        this.anonymous = anonymous;
+    }
+    
+    @Override
+    public boolean isAnonymous() {
+        return anonymous;
+    }
+    
+    @Override
+    public boolean isFinal() {
+        return true;
     }
     
 }
