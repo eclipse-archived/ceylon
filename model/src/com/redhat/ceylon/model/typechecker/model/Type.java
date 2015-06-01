@@ -1339,6 +1339,9 @@ public class Type extends Reference {
         if (dec==null) {
             return null;
         }
+        if (isNothing()) {
+            return null;
+        }
         boolean complexType = 
                 dec instanceof UnionType || 
                 dec instanceof IntersectionType;
@@ -1361,10 +1364,7 @@ public class Type extends Reference {
         }
         
         Type superType;
-        if (dec instanceof ClassOrInterface &&
-                !isUnion() &&
-                dec.getTypeParameters().isEmpty() &&
-                !dec.isClassOrInterfaceMember()) {
+        if (isSimpleSupertypeLookup(dec)) {
             //fast!
             if (getDeclaration().inherits(dec)) {
                 superType = dec.getType();
@@ -1375,14 +1375,23 @@ public class Type extends Reference {
         }
         else {
             //slow:
-            superType = 
-                    getSupertype(new SupertypeCriteria(dec));
+            superType = getSupertype(new SupertypeCriteria(dec));
         }
         
         if (canCache) {
             cache.put(this, dec, superType);
         }
         return superType;
+    }
+
+    private boolean isSimpleSupertypeLookup(TypeDeclaration dec) {
+        return dec instanceof ClassOrInterface &&
+                !isUnion() && !isIntersection() &&
+                dec.getTypeParameters().isEmpty() &&
+                !dec.isClassOrInterfaceMember() &&
+                //this is for the runtime which uses 
+                //qualifying types in a strange way
+                getQualifyingType()==null;
     }
     
     private boolean hasUnderlyingType() {
