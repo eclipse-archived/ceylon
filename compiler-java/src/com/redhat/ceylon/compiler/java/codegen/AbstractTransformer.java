@@ -3326,9 +3326,10 @@ public abstract class AbstractTransformer implements Transformation {
 
     protected List<JCAnnotation> makeAtLocalDeclarations(Node tree1, Node tree2) {
         LocalTypeVisitor visitor = new LocalTypeVisitor();
-        tree1.visitChildren(visitor);
-        if(tree2 != null)
-            tree2.visitChildren(visitor);
+        visitor.startFrom(tree1);
+        if(tree2 != null){
+            visitor.startFrom(tree2);
+        }
         java.util.Set<String> locals = visitor.getLocals();
         java.util.Set<Interface> localInterfaces = visitor.getLocalInterfaces();
         return makeAtLocalDeclarations(locals, localInterfaces);

@@ -287,4 +287,25 @@ public class LocalTypeVisitor extends Visitor implements NaturalVisitor {
             super.visit(that);
         }
     }
+
+    public void startFrom(Node tree) {
+        int mpl = 0;
+        String prefix = null;
+        // make sure we start with the right number of anonymous classes for methods with MPL before we visit the children
+        if(tree instanceof Tree.AnyMethod){
+            Function model = ((Tree.AnyMethod)tree).getDeclarationModel();
+            mpl = model.getParameterLists().size();
+            if(mpl > 1){
+                prefix = this.prefix;
+                for(int i=1;i<mpl;i++)
+                    enterAnonymousClass();
+            }
+        }
+        tree.visitChildren(this);
+        if(mpl > 1){
+            for(int i=1;i<mpl;i++)
+                exitAnonymousClass();
+            this.prefix = prefix;
+        }
+    }
 }
