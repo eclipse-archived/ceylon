@@ -179,8 +179,7 @@ public class InheritanceVisitor extends Visitor {
                         TypeDeclaration ctd = 
                                 ct.resolveAliases()
                                     .getDeclaration();
-                        Type cst = 
-                                type.getSupertype(ctd);
+                        Type cst = type.getSupertype(ctd);
                         if (cst!=null) {
                             types.add(cst);
                         }

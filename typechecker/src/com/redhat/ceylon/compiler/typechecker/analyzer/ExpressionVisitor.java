@@ -3198,7 +3198,7 @@ public class ExpressionVisitor extends Visitor {
                     resolveBaseTypeExpression(bte, true);
             if (type!=null) {
                 setArgumentParameters(that, type);
-                Type receiverType;
+                Type receivingType;
                 Scope scope = that.getScope();
                 if (type.isClassOrInterfaceMember() &&
                         !type.isStaticallyImportable() &&
@@ -3211,19 +3211,19 @@ public class ExpressionVisitor extends Visitor {
                             new TypeArgumentInference(unit)
                                 .getInferredTypeArgsForReference(
                                         that, type, ci);
-                    receiverType = 
+                    receivingType = 
                             ci.appliedType(null, 
                                     inferredArgs);
                 }
                 else {
-                    receiverType = null;
+                    receivingType = null;
                 }
                 List<Type> typeArgs = 
                         getOrInferTypeArguments(that, type, 
-                                reference, receiverType);
+                                reference, receivingType);
                 tas.setTypeModels(typeArgs);
                 visitBaseTypeExpression(bte, type, typeArgs, 
-                        tas, receiverType);
+                        tas, receivingType);
             }
         }
         
@@ -3236,20 +3236,21 @@ public class ExpressionVisitor extends Visitor {
             if (type!=null) {
                 setArgumentParameters(that, type);
                 Tree.Primary primary = qte.getPrimary();
-                Type qt = 
+                Type receivingType = 
                         primary.getTypeModel()
                             .resolveAliases();
                 List<Type> typeArgs = 
                         getOrInferTypeArguments(that, type, 
-                                reference, qt);
+                                reference, receivingType);
                 tas.setTypeModels(typeArgs);
                 if (primary instanceof Tree.Package) {
                     visitBaseTypeExpression(qte, type, 
                             typeArgs, tas, null);
                 }
                 else {
-                    visitQualifiedTypeExpression(qte, qt, 
-                            type, typeArgs, tas);
+                    visitQualifiedTypeExpression(qte, 
+                            receivingType, type, typeArgs, 
+                            tas);
                 }
             }
         }
@@ -3281,20 +3282,22 @@ public class ExpressionVisitor extends Visitor {
             if (member!=null) {
                 setArgumentParameters(that, member);
                 Tree.Primary primary = qme.getPrimary();
-                Type qt = 
+                Type receivingType = 
                         primary.getTypeModel()
                             .resolveAliases();
                 List<Type> typeArgs = 
                         getOrInferTypeArguments(that, 
-                                member, reference, qt);
+                                member, reference, 
+                                receivingType);
                 tas.setTypeModels(typeArgs);
                 if (primary instanceof Tree.Package) {
                     visitBaseMemberExpression(qme, 
                             member, typeArgs, tas);
                 }
                 else {
-                    visitQualifiedMemberExpression(qme, qt, 
-                            member, typeArgs, tas);
+                    visitQualifiedMemberExpression(qme, 
+                            receivingType, member, typeArgs, 
+                            tas);
                 }
             }
         }
