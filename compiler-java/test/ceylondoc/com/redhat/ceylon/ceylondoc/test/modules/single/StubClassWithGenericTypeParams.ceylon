@@ -17,16 +17,14 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-shared class StubClassWithGenericTypeParams<in ContravariantType, T1, T2, T3, out CovariantType, DefaultedType = Iterable<StubClass>>() 
+shared class StubClassWithGenericTypeParams<in ContravariantType, T1, T2, out CovariantType, DefaultedType = Iterable<StubClass>>() 
   given T1 satisfies Obtainable & Identifiable 
-  given T2 of Obtainable | String
-  given T3(String s) {
+  given T2 of Obtainable | String {
 
     "Method with generic type parameters. <i>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</i>"
-    shared void methodWithGenericTypeParams<in ContravariantType, X1, X2, X3, out CovariantType, DefaultedType = Iterable<StubClass>>()
+    shared void methodWithGenericTypeParams<in ContravariantType, X1, X2, out CovariantType, DefaultedType = Iterable<StubClass>>()
       given X1 satisfies Obtainable & Identifiable 
       given X2 of Obtainable | String
-      given X3(String s) 
       {}
    
 }
