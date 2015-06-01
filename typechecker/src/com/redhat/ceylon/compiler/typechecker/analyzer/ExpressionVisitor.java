@@ -8777,25 +8777,26 @@ public class ExpressionVisitor extends Visitor {
     
     private Declaration handleAbstractionOrHeader(Declaration dec, 
             Tree.MemberOrTypeExpression that) {
-        if (dec.isNative()
-                && !backendSupport.supportsBackend(Backend.None)) {
-            BackendSupport backend = 
-                    inBackend == null ?
-                            backendSupport : 
-                            inBackend.backendSupport;
-            Declaration impl =
-                    getNativeDeclaration(dec, backend);
-            if (impl==null) {
-                // HACK to make the JS language module compile
-                // Remove this once the problem has been fixed!
-                if (backendSupport.supportsBackend(Backend.Java) && !backendSupport.supportsBackend(Backend.JavaScript)) {
-                    that.addError("no native implementation for backend: native '" 
-                            + dec.getName(unit) + 
-                            "' is not implemented for one or more backends");
+        if (dec.isNative()) {
+            if (!backendSupport.supportsBackend(Backend.None)) {
+                BackendSupport backend = 
+                        inBackend == null ?
+                                backendSupport : 
+                                inBackend.backendSupport;
+                Declaration impl =
+                        getNativeDeclaration(dec, backend);
+                if (impl==null) {
+                    // HACK to make the JS language module compile
+                    // Remove this once the problem has been fixed!
+                    if (backendSupport.supportsBackend(Backend.Java) && !backendSupport.supportsBackend(Backend.JavaScript)) {
+                        that.addError("no native implementation for backend: native '" 
+                                + dec.getName(unit) + 
+                                "' is not implemented for one or more backends");
+                    }
                 }
+                return inBackend == null || impl==null ? 
+                        dec : impl;
             }
-            return inBackend == null || impl==null ? 
-                    dec : impl;
         }
         else {
             //NOTE: if this is the qualifying type of a static 
@@ -8815,8 +8816,8 @@ public class ExpressionVisitor extends Visitor {
             		return overloads.get(0);
             	}
             }
-            return dec;
         }
+        return dec;
     }
     
     // We use this to check for similar situations as "dynamic"
