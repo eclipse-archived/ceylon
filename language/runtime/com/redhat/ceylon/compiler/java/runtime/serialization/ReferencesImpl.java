@@ -9,12 +9,10 @@ import ceylon.language.Null;
 import ceylon.language.finished_;
 import ceylon.language.impl.BaseIterable;
 import ceylon.language.impl.BaseIterator;
-import ceylon.language.meta.declaration.ClassDeclaration;
 import ceylon.language.serialization.Element;
 import ceylon.language.serialization.ReachableReference;
 import ceylon.language.serialization.References;
 
-import com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel;
 import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 

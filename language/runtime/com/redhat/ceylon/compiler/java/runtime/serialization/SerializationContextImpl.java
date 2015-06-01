@@ -1,6 +1,7 @@
 package com.redhat.ceylon.compiler.java.runtime.serialization;
 
 import ceylon.language.AssertionError;
+import ceylon.language.meta.classDeclaration_;
 import ceylon.language.meta.type_;
 import ceylon.language.serialization.References;
 import ceylon.language.serialization.SerializationContext;
@@ -22,10 +23,10 @@ public class SerializationContextImpl
     
     
     public References references(java.lang.Object instance) {
-        if (instance instanceof Serializable) {
+        if (classDeclaration_.classDeclaration(instance).getSerializable()) {
             return new ReferencesImpl((Serializable)instance);
         } else {
-            throw new AssertionError("instance is not serializable " + type_.type(TypeDescriptor.NothingType, instance));
+            throw new AssertionError("instance of non-serializable class: " + type_.type(TypeDescriptor.NothingType, instance));
         }
     }
     

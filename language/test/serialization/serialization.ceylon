@@ -360,16 +360,24 @@ class NonserializableSub() extends SerializableSuper(){}
 @test
 shared void serNonSerializable() {
     value sc = serialization();
-    sc.references(NonserializableSub());
-    "we expect it to throw"
-    assert(false);
+    try {
+        sc.references(NonserializableSub());
+        "we expect it to throw"
+        assert(false);
+    } catch (AssertionError e) {
+        assert("instance of non-serializable class: serialization::NonserializableSub" == e.message);
+    }
 }
 @test
 shared void deserNonSerializable() {
-    value dc = deserialization();
-    dc.instance(`NonserializableSub`);
-    "we expect it to throw"
-    assert(false);
+    value dc = deserialization<Integer>();
+    try {
+        dc.instance(1, `NonserializableSub`);
+        "we expect it to throw"
+        assert(false);
+    } catch (DeserializationException e) {
+        assert("not serializable: serialization::NonserializableSub" == e.message);
+    }
 }
 
 shared void run() {

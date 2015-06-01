@@ -21,6 +21,9 @@ import com.redhat.ceylon.compiler.java.runtime.serialization {
 import com.redhat.ceylon.model.typechecker.model{
     ProducedType=Type
 }
+import ceylon.language.serialization {
+    DeserializationException
+}
 
 class DeserializationContextImpl<Id>() satisfies DeserializationContext<Id> 
         given Id satisfies Object {
@@ -69,6 +72,9 @@ class DeserializationContextImpl<Id>() satisfies DeserializationContext<Id>
     
     shared actual void instance(Id instanceId, ClassModel<Anything,Nothing> clazz) {
         // TODO check that clazz has serializable annotation, but really efficiently!
+        if (!clazz.declaration.serializable) {
+            throw DeserializationException("not serializable: ``clazz``");
+        }
         getOrCreatePartial(instanceId).clazz = clazz;
     }
     
