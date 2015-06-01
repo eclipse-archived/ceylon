@@ -65,7 +65,8 @@ void run(){
     assert(`class Foo`.annotations<Bar>().size == 1);
     assert(`class Foo`.annotations<AnnoOnType>().size == 1);
     
-    DeprecationAnnotation("a");
+    // Now sealed so we can't instantiate it
+    //DeprecationAnnotation("a");
     deprecated("a");
     Bar("a");
     bar("a");

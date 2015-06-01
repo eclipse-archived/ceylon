@@ -27,7 +27,7 @@ class Bug1533() {
             given Es satisfies Tuple<E,E,E[]> {
         return callable(*es);
     }
-    shared R tpUnionTp<R,A,B>(Callable<R,A|B> callable, A args) 
+    shared R tpUnionTp<R,A,out B>(Callable<R,A|B> callable, A args) 
             given A satisfies Anything[]
             given B satisfies Anything[] {
         return callable(*args);
