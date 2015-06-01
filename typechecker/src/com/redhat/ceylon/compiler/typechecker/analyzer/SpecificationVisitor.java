@@ -5,6 +5,7 @@ import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.getLa
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.isAlwaysSatisfied;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.isAtLeastOne;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.isNeverSatisfied;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.message;
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.isEffectivelyBaseMemberExpression;
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.isSelfReference;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getContainingDeclarationOfScope;
@@ -1100,7 +1101,7 @@ public class SpecificationVisitor extends Visitor {
         if (!withinDeclaration) {
             if (isSharedDeclarationUninitialized()) {
                 that.addError("must be definitely specified by class initializer: '" +
-                        declaration.getName(that.getUnit()) + " is shared'");
+                        message(declaration) + " is shared'");
             }
         }
         exit();
