@@ -40,6 +40,7 @@ public class NamingBase {
         $calltyped$,
         $element$,
         $evaluate$,
+        $get$,
         $getArray$,
         $getFirst$,
         $getLength$,
@@ -57,9 +58,11 @@ public class NamingBase {
         $TypeDescriptor$,
         
         $serialize$,
-        $deserialize$,
         deconstructor,
-        deconstructed
+        $references$,
+        $set$,
+        reference,
+        instance, $isMember$
     }
     
     /**

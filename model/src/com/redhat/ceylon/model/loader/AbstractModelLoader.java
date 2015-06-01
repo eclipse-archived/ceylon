@@ -1380,10 +1380,14 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                               // for member classes that would be ambiguous between formal and abstract so we don't and require
                               // the model annotation
                               || (!classMirror.isInnerClass() && !classMirror.isLocalClass() && classMirror.isAbstract()));
+            
         else
             klass.setAbstract(classMirror.isAbstract());
         klass.setFormal(classMirror.getAnnotation(CEYLON_LANGUAGE_FORMAL_ANNOTATION) != null);
         klass.setDefault(classMirror.getAnnotation(CEYLON_LANGUAGE_DEFAULT_ANNOTATION) != null);
+        klass.setSerializable(classMirror.getAnnotation(CEYLON_LANGUAGE_SERIALIZABLE_ANNOTATION) != null
+                || classMirror.getQualifiedName().equals("ceylon.language.Array")
+                || classMirror.getQualifiedName().equals("ceylon.language.Tuple"));
         // hack to make Throwable sealed until ceylon/ceylon.language#408 is fixed
         klass.setSealed(classMirror.getAnnotation(CEYLON_LANGUAGE_SEALED_ANNOTATION) != null
                 || CEYLON_LANGUAGE.equals(classMirror.getPackage().getQualifiedName()) && "Throwable".equals(classMirror.getName()));
