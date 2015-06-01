@@ -1403,15 +1403,15 @@ public class Metamodel {
                 Type typeArgument = typeArguments.get(i);
                 com.redhat.ceylon.model.typechecker.model.TypeParameter typeParameter = typeParameters.get(i);
                 for (Type st: typeParameter.getSatisfiedTypes()) {
-                    Type sts = st.getProducedType(qualifyingType, declaration, typeArguments, null);
+                    Type sts = st.appliedType(qualifyingType, declaration, typeArguments, null);
                     if (!typeArgument.isSubtypeOf(sts)) {
-                        throw new TypeApplicationException("Type argument "+i+": "+typeArgument.getProducedTypeQualifiedName()
-                                +" does not conform to upper bound constraint: "+sts.getProducedTypeQualifiedName()
+                        throw new TypeApplicationException("Type argument "+i+": "+typeArgument.asQualifiedString()
+                                +" does not conform to upper bound constraint: "+sts.asQualifiedString()
                                 +" of type parameter "+typeParameter.getQualifiedNameString());
                     }
                 }
                 if(!ModelUtil.argumentSatisfiesEnumeratedConstraint(qualifyingType, declaration, typeArguments, typeArgument, typeParameter)){
-                    throw new TypeApplicationException("Type argument "+i+": "+typeArgument.getProducedTypeQualifiedName()
+                    throw new TypeApplicationException("Type argument "+i+": "+typeArgument.asQualifiedString()
                             +" does not conform to enumerated constraints "
                             +" of type parameter "+typeParameter.getQualifiedNameString());
                 }
