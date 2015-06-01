@@ -12,7 +12,7 @@ import java.util.Objects;
  *
  * @author Gavin King
  */
-public class Constructor extends TypeDeclaration implements Scope, Functional {
+public class Constructor extends TypeDeclaration implements Functional {
 
     public Constructor() {}
     
@@ -214,5 +214,5 @@ public class Constructor extends TypeDeclaration implements Scope, Functional {
         }
         return "new " + toStringName() + params;
     }
-        
+    
 }
