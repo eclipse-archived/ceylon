@@ -1435,9 +1435,6 @@ public class ModelLoaderTests extends CompilerTests {
     public void bogusModelAnnotationsTopLevelClass(){
         compile("BogusTopLevelClass.java", "BogusTopLevelClass2.java");
         assertErrors("bogusTopLevelClassUser",
-                new CompilerError(2, "Error while loading the com.redhat.ceylon.compiler.java.test.model/1 module:\n"
-                        +"   Error while resolving type of extended type for com.redhat.ceylon.compiler.java.test.model::BogusTopLevelClass:\n"
-                        +"   Could not find type 'com.redhat.ceylon.compiler.java.test.model.MissingType'"),
                 new CompilerError(-1, "Constructor for 'com.redhat.ceylon.compiler.java.test.model.BogusTopLevelClass' should take 1 reified type arguments (TypeDescriptor) but has '0': skipping constructor."),
                 new CompilerError(-1, "Invalid type signature for self type of com.redhat.ceylon.compiler.java.test.model::BogusTopLevelClass: com.redhat.ceylon.compiler.java.test.model::MissingType is not a type parameter"),
 
