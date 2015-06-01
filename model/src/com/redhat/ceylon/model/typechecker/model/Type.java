@@ -295,8 +295,10 @@ public class Type extends Reference {
                 return false;
             }
             else {
-                TypeDeclaration dec = getDeclaration();
-                TypeDeclaration otherDec = type.getDeclaration();
+                TypeDeclaration dec = 
+                        getDeclaration();
+                TypeDeclaration otherDec = 
+                        type.getDeclaration();
                 if (!otherDec.equals(dec)) {
                     return false;
                 }
@@ -304,10 +306,8 @@ public class Type extends Reference {
                     if (isTuple()) {
                         return isExactlyTuple(type);
                     }
-                    Type qt = 
-                            trueQualifyingType();
-                    Type tqt = 
-                            type.trueQualifyingType();
+                    Type qt = trueQualifyingType();
+                    Type tqt = type.trueQualifyingType();
                     if (qt==null || tqt==null) {
                         if (qt!=tqt) {
                             return false;
@@ -832,8 +832,7 @@ public class Type extends Reference {
 
     private boolean acceptsUpperBounds(Type type, 
             List<Type> paramsAsArgs) {
-        TypeDeclaration declaration = 
-                getDeclaration();
+        TypeDeclaration declaration = getDeclaration();
         TypeDeclaration otherDeclaration = 
                 type.getDeclaration();
         List<TypeParameter> typeParameters = 
@@ -894,8 +893,7 @@ public class Type extends Reference {
 
     private boolean hasExactSameUpperBounds(Type type, 
             List<Type> paramsAsArgs) {
-        TypeDeclaration declaration = 
-                getDeclaration();
+        TypeDeclaration declaration = getDeclaration();
         TypeDeclaration otherDeclaration = 
                 type.getDeclaration();
         List<TypeParameter> typeParameters = 
@@ -1148,7 +1146,8 @@ public class Type extends Reference {
      *        case type
      */
     private Type substituteFromSubtype(Type source) {
-        return substituteFromSubtype(source.getTypeArguments(), 
+        return substituteFromSubtype(
+                source.getTypeArguments(), 
                 source.getVarianceOverrides());
     }
 
@@ -1299,18 +1298,15 @@ public class Type extends Reference {
         }
         if (isWellDefined() && 
                 addToSupertypes(this, list)) {
-            Type extendedType = 
-                    getExtendedType();
+            Type extendedType = getExtendedType();
             if (extendedType!=null && 
                     !extendedType.isNothing()) {
                 extendedType.getSupertypes(list);
             }
-            List<Type> satisfiedTypes = 
-                    getSatisfiedTypes();
+            List<Type> satisfiedTypes = getSatisfiedTypes();
             for (int i=0, l=satisfiedTypes.size(); 
                     i<l; i++) {
-                Type satisfiedType = 
-                        satisfiedTypes.get(i);
+                Type satisfiedType = satisfiedTypes.get(i);
                 if (satisfiedType!=null &&
                         !satisfiedType.isNothing()) {
                     satisfiedType.getSupertypes(list);
@@ -1345,11 +1341,11 @@ public class Type extends Reference {
      *         there is no such supertype
      */
     public Type getSupertype(TypeDeclaration dec) {
-        //TODO: do I need to call resolveAliases() here?
-        return /*resolveAliases().*/getSupertypeInternal(dec);
+        return //resolveAliases().
+                getSupertypeInternal(dec);
     }
     
-    private Type getSupertypeInternal(TypeDeclaration dec) {
+    public Type getSupertypeInternal(TypeDeclaration dec) {
         if (dec==null) {
             return null;
         }
@@ -1367,18 +1363,19 @@ public class Type extends Reference {
             return cache.get(this, dec);
         }
         
+        while (dec.isAlias()) {
+            dec = dec.getExtendedType().getDeclaration();
+            if (dec==null) {
+                return null;
+            }
+        }
+        
         Type superType;
         if (dec instanceof ClassOrInterface &&
                 isClassOrInterface() &&
                 dec.getTypeParameters().isEmpty() &&
                 !dec.isClassOrInterfaceMember()) {
             //fast!
-            while (dec.isAlias()) {
-                dec = dec.getExtendedType().getDeclaration();
-                if (dec==null) {
-                    return null;
-                }
-            }
             if (getDeclaration().inherits(dec)) {
                 superType = dec.getType();
             }
@@ -1484,8 +1481,7 @@ public class Type extends Reference {
             //types from their cases was resulting in
             //stack overflows and is not currently 
             //required by the spec
-            final List<Type> caseTypes = 
-                    getInternalCaseTypes();
+            List<Type> caseTypes = getInternalCaseTypes();
             if (caseTypes!=null && !caseTypes.isEmpty()) {
                 //first find a common superclass or superinterface 
                 //declaration that satisfies the criteria, ignoring
@@ -1576,8 +1572,7 @@ public class Type extends Reference {
         
         Type result = null;
         
-        Type extendedType = 
-                getInternalExtendedType();
+        Type extendedType = getInternalExtendedType();
         if (extendedType!=null) {
             Type possibleResult = 
                     extendedType.getSupertype(c);
@@ -1591,8 +1586,7 @@ public class Type extends Reference {
         // cheaper iteration
         for (int i=0, l=satisfiedTypes.size(); 
                 i<l; i++) {
-            Type satisfiedType = 
-                    satisfiedTypes.get(i);
+            Type satisfiedType = satisfiedTypes.get(i);
             Type possibleResult = 
                     satisfiedType.getSupertype(c);
             if (possibleResult!=null) {
@@ -1711,8 +1705,7 @@ public class Type extends Reference {
         }
     }
 
-    private Type getCommonSupertype(
-            List<Type> caseTypes,
+    private Type getCommonSupertype(List<Type> caseTypes,
             TypeDeclaration dec) {
         //now try to construct a common produced
         //type that is a common supertype by taking
@@ -1781,8 +1774,10 @@ public class Type extends Reference {
                     if (pt==null) {
                         return null;
                     }
-                    Type st = 
-                            pt.getSupertypeInternal(dec);
+                    if (pt.isNothing()) {
+                        continue;
+                    }
+                    Type st = pt.getSupertypeInternal(dec);
                     if (st==null) {
                         return null;
                     }
@@ -1805,7 +1800,7 @@ public class Type extends Reference {
                     }
                 }
                 Type utt = union(union, unit);
-                Type itt = intersection(intersection, unit);;
+                Type itt = intersection(intersection, unit);
                 if (!covariant && !contravariant) {
                     if (utt.isExactly(itt)) {
                         result = utt; //invariant!
@@ -2149,10 +2144,8 @@ public class Type extends Reference {
                         covariant, contravariant, 
                         declaration, errors);
             }
-            for (TypeParameter tp: 
-                    dec.getTypeParameters()) {
-                Type pt = 
-                        getTypeArguments().get(tp);
+            for (TypeParameter tp: dec.getTypeParameters()) {
+                Type pt = getTypeArguments().get(tp);
                 if (pt!=null) {
                     if (isCovariant(tp)) {
                         pt.checkVariance(
@@ -2239,8 +2232,7 @@ public class Type extends Reference {
                 return true;
             }
             if (!isTypeConstructor()) {
-                for (Type at: 
-                        getTypeArgumentList()) {
+                for (Type at: getTypeArgumentList()) {
                     if (at==null || 
                             at.containsUnknowns()) {
                         return true;
@@ -2934,8 +2926,9 @@ public class Type extends Reference {
                 //a qualified type carries with it all the
                 //arguments of the qualifying type duped in
                 //its own map of type arguments
-                result.setQualifyingType(substitute(receiverType,
-                        covariant, contravariant));
+                result.setQualifyingType(
+                        substitute(receiverType,
+                                covariant, contravariant));
                 Map<TypeParameter, Type> receiverTypeArgs = 
                         receiverType.getTypeArguments();
                 typeArgs = new HashMap<TypeParameter, Type>
@@ -3748,9 +3741,10 @@ public class Type extends Reference {
                 return new ArrayList<TypeDeclaration>(
                         singletonList(dec));
             }
-            if (dec.getExtendedType()!=null) {
-                List<TypeDeclaration> l = dec.getExtendedType()
-                        .isRecursiveTypeAliasDefinition(
+            Type et = dec.getExtendedType();
+            if (et!=null) {
+                List<TypeDeclaration> l = 
+                        et.isRecursiveTypeAliasDefinition(
                                 extend(dec, visited));
                 if (!l.isEmpty()) {
                     return extend(dec, l);
@@ -3809,18 +3803,19 @@ public class Type extends Reference {
                 return new ArrayList<TypeDeclaration>(
                         singletonList(dec));
             }
-            if (dec.getExtendedType()!=null) {
-                List<TypeDeclaration> l = dec.getExtendedType()
-                        .isRecursiveRawTypeDefinition(extend(dec, 
-                                visited));
+            Type et = dec.getExtendedType();
+            if (et!=null) {
+                List<TypeDeclaration> l = 
+                        et.isRecursiveRawTypeDefinition(
+                                extend(dec, visited));
                 if (!l.isEmpty()) {
                     return extend(dec, l);
                 }
             }
             for (Type bt: dec.getBrokenSupertypes()) {
                 List<TypeDeclaration> l = 
-                        bt.isRecursiveRawTypeDefinition(extend(dec, 
-                                visited));
+                        bt.isRecursiveRawTypeDefinition(
+                                extend(dec, visited));
                 if (!l.isEmpty()) {
                     return extend(dec, l);
                 }
@@ -3847,9 +3842,10 @@ public class Type extends Reference {
                 return new ArrayList<TypeDeclaration>(
                         singletonList(dec));
             }
-            if (dec.getExtendedType()!=null) {
-                List<TypeDeclaration> i = dec.getExtendedType()
-                        .isRecursiveRawTypeDefinition(
+            Type et = dec.getExtendedType();
+            if (et!=null) {
+                List<TypeDeclaration> i = 
+                        et.isRecursiveRawTypeDefinition(
                                 extend(dec, visited));
                 if (!i.isEmpty()) {
                     i.add(0, dec);
