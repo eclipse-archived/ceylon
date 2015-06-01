@@ -1368,7 +1368,7 @@ public class Type extends Reference {
         
         Type superType;
         if (dec instanceof ClassOrInterface &&
-                isClassOrInterface() &&
+                !isUnion() &&
                 dec.getTypeParameters().isEmpty() &&
                 !dec.isClassOrInterfaceMember()) {
             //fast!
