@@ -223,9 +223,9 @@ public class Type extends Reference {
                                     //consequence of principal instantiation 
                                     //inheritance
                                     Type cst = 
-                                            getSupertypeInternal(cd);
+                                            getSupertype(cd);
                                     Type ocst = 
-                                            type.getSupertypeInternal(ocd);
+                                            type.getSupertype(ocd);
                                     if (cst.isExactly(ocst)) {
                                         found = true;
                                         break;
@@ -335,11 +335,11 @@ public class Type extends Reference {
                             TypeDeclaration totd = 
                                     (TypeDeclaration) odc;
                             Type tqts = 
-                                    tqt.getSupertypeInternal(totd);
+                                    tqt.getSupertype(totd);
                             TypeDeclaration otd = 
                                     (TypeDeclaration) dc;
                             Type qts = 
-                                    qt.getSupertypeInternal(otd);
+                                    qt.getSupertype(otd);
                             if (!qts.isExactly(tqts)) {
                                 return false;
                             }
@@ -536,8 +536,7 @@ public class Type extends Reference {
                 if (type.isClassOrInterface()) {
                     TypeDeclaration otherDec = 
                             type.getDeclaration();
-                    Type pst = 
-                            getSupertypeInternal(otherDec);
+                    Type pst = getSupertype(otherDec);
                     if (pst!=null && 
                             pst.isSubtypeOfInternal(type)) {
                         return true;
@@ -577,8 +576,7 @@ public class Type extends Reference {
                 }
                 TypeDeclaration otherDec = 
                         type.getDeclaration();
-                Type supertype = 
-                        getSupertypeInternal(otherDec);
+                Type supertype = getSupertype(otherDec);
                 if (supertype==null) {
                     return false;
                 }
@@ -616,8 +614,7 @@ public class Type extends Reference {
                             TypeDeclaration totd = 
                                     (TypeDeclaration) 
                                         otherDec.getContainer();
-                            Type tqts = 
-                                    tqt.getSupertypeInternal(totd);
+                            Type tqts = tqt.getSupertype(totd);
                             if (tqts==null) {
                                 return false;
                             }
@@ -1344,10 +1341,7 @@ public class Type extends Reference {
         //we don't resolve aliases here because we want to
         //try and propagate the aliased specified in the 
         //code through to the returned supertype
-        return getSupertypeInternal(dec);
-    }
-    
-    private Type getSupertypeInternal(TypeDeclaration dec) {
+        
         if (dec==null) {
             return null;
         }
@@ -1694,7 +1688,7 @@ public class Type extends Reference {
                 TypeDeclaration dtd = (TypeDeclaration) 
                         declaration.getContainer();
                 Type declaringType = 
-                        qt.getSupertypeInternal(dtd);
+                        qt.getSupertype(dtd);
                 pt.setQualifyingType(declaringType);
                 Map<TypeParameter, Type> tam = 
                         getTypeArgumentMap(declaration, 
@@ -1730,7 +1724,7 @@ public class Type extends Reference {
                     if (pt==null) {
                         return null;
                     }
-                    Type st = pt.getSupertypeInternal(dec);
+                    Type st = pt.getSupertype(dec);
                     if (st==null) {
                         return null;
                     }
@@ -1748,7 +1742,7 @@ public class Type extends Reference {
                     if (pt==null) {
                         return null;
                     }
-                    Type st = pt.getSupertypeInternal(dec);
+                    Type st = pt.getSupertype(dec);
                     if (st==null) {
                         return null;
                     }
@@ -1779,7 +1773,7 @@ public class Type extends Reference {
                     if (pt.isNothing()) {
                         continue;
                     }
-                    Type st = pt.getSupertypeInternal(dec);
+                    Type st = pt.getSupertype(dec);
                     if (st==null) {
                         return null;
                     }
@@ -1880,7 +1874,7 @@ public class Type extends Reference {
                     if (it.getDeclaration().isMember()) {
                         Type st = 
                                 it.getQualifyingType()
-                                    .getSupertypeInternal(outer);
+                                    .getSupertype(outer);
                         list.add(st);
                     }
                 }
