@@ -75,7 +75,6 @@ import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.model.typechecker.model.Constructor;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
-import com.redhat.ceylon.model.typechecker.model.Enumerated;
 import com.redhat.ceylon.model.typechecker.model.Function;
 import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
 import com.redhat.ceylon.model.typechecker.model.Functional;
@@ -8329,7 +8328,7 @@ public class ExpressionVisitor extends Visitor {
     
     @Override 
     public void visit(Tree.Enumerated that) {
-        Enumerated e = that.getEnumerated();
+        Constructor e = that.getEnumerated();
         Tree.Type rt = beginReturnScope(fakeVoid(that));
         Declaration od = beginReturnDeclaration(e);
         super.visit(that);
@@ -8690,10 +8689,12 @@ public class ExpressionVisitor extends Visitor {
             return name + " is a value";
         }
         else if (result instanceof Constructor) {
-            return name + " is a constructor";
-        }
-        else if (result instanceof Enumerated) {
-            return name + " is an enumerated instance";
+            if (result.isAnonymous()) {
+                return name + " is a singleton instance";
+            }
+            else {
+                return name + " is a constructor";
+            }
         }
         else if (result instanceof Class) {
             return name + " is a class";

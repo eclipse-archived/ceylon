@@ -10,7 +10,6 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.Super;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.model.typechecker.model.Constructor;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
-import com.redhat.ceylon.model.typechecker.model.Enumerated;
 import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
@@ -37,8 +36,7 @@ public class SelfReferenceVisitor extends Visitor {
         Declaration member = that.getDeclaration();
         if (member!=null && 
                 !typeDeclaration.isAlias() && 
-                !(member instanceof Constructor ||
-                  member instanceof Enumerated)) {
+                !(member instanceof Constructor)) {
             if (!declarationSection && 
                     isInherited(that, member)) {
                 that.addError("inherited member class may not be extended in initializer of '" +

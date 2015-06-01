@@ -39,7 +39,6 @@ import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.model.typechecker.model.Constructor;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
-import com.redhat.ceylon.model.typechecker.model.Enumerated;
 import com.redhat.ceylon.model.typechecker.model.Function;
 import com.redhat.ceylon.model.typechecker.model.Functional;
 import com.redhat.ceylon.model.typechecker.model.Generic;
@@ -1333,16 +1332,6 @@ public class RefinementVisitor extends Visitor {
                 Scope container = scope.getContainer();
                 Scope realScope = getRealScope(container);
                 if (realScope instanceof ClassOrInterface) {
-                    if (realScope instanceof Enumerated)  {
-                        //TODO: this is _not_ how I want to
-                        //handle this, I want to treat 
-                        //the Enumerated as constructor
-                        //assigning to the private member,
-                        //not refining a shared member
-                        td.setShared(true);
-                        td.setFormal(true);
-                        td.setProtectedVisibility(true);
-                    }
                     ClassOrInterface ci = 
                             (ClassOrInterface) 
                                 realScope;

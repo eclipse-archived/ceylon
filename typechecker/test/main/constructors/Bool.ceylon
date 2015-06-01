@@ -27,3 +27,17 @@ class BrokenBool {
         string = "false";
     }
 }
+
+
+class PrivateBool {
+    shared actual String string;
+    new true {
+        string = "true";
+    }
+    new false {
+        string = "false";
+    }
+    switch(this)
+    case (PrivateBool.true) {}
+    case (PrivateBool.false) {}
+}

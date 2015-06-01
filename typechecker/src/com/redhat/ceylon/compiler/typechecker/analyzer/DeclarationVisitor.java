@@ -42,7 +42,6 @@ import com.redhat.ceylon.model.typechecker.model.Constructor;
 import com.redhat.ceylon.model.typechecker.model.ControlBlock;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Element;
-import com.redhat.ceylon.model.typechecker.model.Enumerated;
 import com.redhat.ceylon.model.typechecker.model.Function;
 import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
 import com.redhat.ceylon.model.typechecker.model.Generic;
@@ -826,8 +825,8 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
 
     @Override
     public void visit(Tree.Enumerated that) {
-        Enumerated e = new Enumerated();
-//        e.setAnonymous(true);
+        Constructor e = new Constructor();
+        e.setAnonymous(true);
         e.setStaticallyImportable(true);
         Type at;
         if (scope instanceof Class) {

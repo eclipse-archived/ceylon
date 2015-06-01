@@ -21,7 +21,6 @@ import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.Constructor;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
-import com.redhat.ceylon.model.typechecker.model.Enumerated;
 import com.redhat.ceylon.model.typechecker.model.Function;
 import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
@@ -487,7 +486,7 @@ public class SpecificationVisitor extends Visitor {
                 possiblyInitedBy.add(c);
             }
         }
-        if (isNonAbstractConstructor(scope) &&
+        if (isNonPartialConstructor(scope) &&
                 declaration.getContainer()==scope.getContainer()) {
             if (!specified.definitely) {
                 initedByEveryConstructor = false;
@@ -598,9 +597,8 @@ public class SpecificationVisitor extends Visitor {
     	}
     }
 
-    private static boolean isNonAbstractConstructor(Scope scope) {
-        return scope instanceof Enumerated ||
-                scope instanceof Constructor &&
+    private static boolean isNonPartialConstructor(Scope scope) {
+        return scope instanceof Constructor &&
                 !((Constructor) scope).isAbstract();
     }
     
@@ -784,8 +782,7 @@ public class SpecificationVisitor extends Visitor {
             inLoop = false;
             Scope scope = that.getScope();
             boolean constructor = 
-                    scope instanceof Constructor ||
-                    scope instanceof Enumerated;
+                    scope instanceof Constructor;
             boolean c = false;
             if (!constructor) {
                 c = beginDisabledSpecificationScope();
@@ -828,7 +825,7 @@ public class SpecificationVisitor extends Visitor {
             specify();
         }
         super.visit(that);
-        Enumerated e = that.getEnumerated();
+        Constructor e = that.getEnumerated();
         if (declaration.getContainer()==e.getContainer() &&
                 that==lastConstructor && 
                 initedByEveryConstructor) {

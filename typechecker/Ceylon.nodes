@@ -140,7 +140,7 @@
 ^(ENUMERATED:DECLARATION
     BLOCK
     Value declarationModel;
-    Enumerated enumerated;)
+    Constructor enumerated;)
 
 ^(CONSTRUCTOR:DECLARATION
     PARAMETER_LIST?
