@@ -41,7 +41,9 @@ class CtorIntermixedStatementsAndConstructors implements .com.redhat.ceylon.comp
     
     public CtorIntermixedStatementsAndConstructors(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorIntermixedStatementsAndConstructors.Foo $name$, final long val$param$) {
         this.b = 6L;
-        a = val$param$;
+        $return$$0: do {
+            a = val$param$;
+        }         while (false);
         c = 3L;
         this.d = 5L;
         e = 24L;
@@ -59,7 +61,9 @@ class CtorIntermixedStatementsAndConstructors implements .com.redhat.ceylon.comp
         this.b = 6L;
         c = 3L;
         this.d = 5L;
-        a = val$param$;
+        $return$$1: do {
+            a = val$param$;
+        }         while (false);
         e = 24L;
         this.f = 7L;
     }

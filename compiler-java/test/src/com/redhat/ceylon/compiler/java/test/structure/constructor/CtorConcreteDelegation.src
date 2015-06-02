@@ -64,7 +64,9 @@ class C<T> extends .com.redhat.ceylon.compiler.java.test.structure.constructor.C
     public C(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, .com.redhat.ceylon.compiler.java.test.structure.constructor.C.Y $name$) {
         this($reified$T, .com.redhat.ceylon.compiler.java.test.structure.constructor.C.X$delegation$);
         .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("2");
-        .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("Y");
+        $return$$0: do {
+            .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("Y");
+        }         while (false);
         .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("3");
         .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("4");
         .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("5");
@@ -95,7 +97,9 @@ class C<T> extends .com.redhat.ceylon.compiler.java.test.structure.constructor.C
         this($reified$T, .com.redhat.ceylon.compiler.java.test.structure.constructor.C.X$delegation$);
         .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("2");
         .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("3");
-        .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("Z");
+        $return$$1: do {
+            .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("Z");
+        }         while (false);
         .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("4");
         .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("5");
     }
@@ -110,7 +114,9 @@ class C<T> extends .com.redhat.ceylon.compiler.java.test.structure.constructor.C
     public C(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, .com.redhat.ceylon.compiler.java.test.structure.constructor.C.Alpha $name$) {
         this($reified$T, .com.redhat.ceylon.compiler.java.test.structure.constructor.C.Z$delegation$);
         .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("4");
-        .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("alpha");
+        $return$$2: do {
+            .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("alpha");
+        }         while (false);
         .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("5");
     }
     
@@ -164,7 +170,9 @@ class ExtendsBasic<X> implements .com.redhat.ceylon.compiler.java.runtime.model.
     public ExtendsBasic(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$X, .com.redhat.ceylon.compiler.java.test.structure.constructor.ExtendsBasic.World $name$) {
         this($reified$X, .com.redhat.ceylon.compiler.java.test.structure.constructor.ExtendsBasic.For$delegation$, (X)null);
         .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("2");
-        .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("World");
+        $return$$3: do {
+            .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("World");
+        }         while (false);
         .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("3");
     }
     
@@ -212,6 +220,8 @@ class Hello implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTyp
     
     public Hello(.com.redhat.ceylon.compiler.java.test.structure.constructor.Hello.World $name$) {
         this(.com.redhat.ceylon.compiler.java.test.structure.constructor.Hello.For$delegation$, "world");
+        $return$$4: do {
+        }         while (false);
         .ceylon.language.print_.print(.ceylon.language.String.instance("Hello " + getWho$priv$()));
     }
     

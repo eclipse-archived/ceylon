@@ -57,9 +57,11 @@ class CtorAbstractCtorPartial extends .com.redhat.ceylon.compiler.java.test.stru
     public CtorAbstractCtorPartial(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartial.Rest $name$, final long y$param$) {
         this(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartial.Partial, 1L);
         .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("b");
-        .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("Rest");
-        this.y = y$param$;
-        .ceylon.language.print_.print(.ceylon.language.Integer.instance(this.getX$priv$()));
+        $return$$0: do {
+            .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("Rest");
+            this.y = y$param$;
+            .ceylon.language.print_.print(.ceylon.language.Integer.instance(this.getX$priv$()));
+        }         while (false);
         .ceylon.language.print_.print(.ceylon.language.Integer.instance(this.getX$priv$()));
         .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("c");
     }
@@ -108,8 +110,10 @@ class CtorAbstractCtorPartialShared extends .com.redhat.ceylon.compiler.java.tes
     public CtorAbstractCtorPartialShared(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialShared.Rest $name$, final long y$param$) {
         this(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialShared.Partial, 1L);
         .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("b");
-        .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("Rest");
-        this.y = y$param$;
+        $return$$1: do {
+            .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("Rest");
+            this.y = y$param$;
+        }         while (false);
         .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("c");
     }
     
@@ -161,8 +165,10 @@ class CtorAbstractCtorPartialCaptured extends .com.redhat.ceylon.compiler.java.t
     public CtorAbstractCtorPartialCaptured(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialCaptured.Rest $name$, final long y$param$) {
         this(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialCaptured.Partial, 1L);
         .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("b");
-        .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("Rest");
-        this.y = y$param$;
+        $return$$2: do {
+            .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("Rest");
+            this.y = y$param$;
+        }         while (false);
         .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("c");
     }
     
@@ -203,11 +209,11 @@ class CtorAbstractCtorPartialVariable extends .com.redhat.ceylon.compiler.java.t
             return (
                 let
                 {
-                    .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialVariable $ceylontmp$opE$0 = .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialVariable.this;
-                    long $ceylontmp$opV$1 = $ceylontmp$opE$0.getX$priv$() + incr;
-                    $ceylontmp$opE$0.setX$priv$($ceylontmp$opV$1);
+                    .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialVariable $ceylontmp$opE$3 = .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialVariable.this;
+                    long $ceylontmp$opV$4 = $ceylontmp$opE$3.getX$priv$() + incr;
+                    $ceylontmp$opE$3.setX$priv$($ceylontmp$opV$4);
                 }
-                returning $ceylontmp$opV$1;
+                returning $ceylontmp$opV$4;
             );
         }
         
@@ -226,11 +232,11 @@ class CtorAbstractCtorPartialVariable extends .com.redhat.ceylon.compiler.java.t
             return (
                 let
                 {
-                    .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialVariable $ceylontmp$opE$2 = .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialVariable.this;
-                    long $ceylontmp$opV$3 = $ceylontmp$opE$2.getX$priv$() + incr;
-                    $ceylontmp$opE$2.setX$priv$($ceylontmp$opV$3);
+                    .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialVariable $ceylontmp$opE$5 = .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialVariable.this;
+                    long $ceylontmp$opV$6 = $ceylontmp$opE$5.getX$priv$() + incr;
+                    $ceylontmp$opE$5.setX$priv$($ceylontmp$opV$6);
                 }
-                returning $ceylontmp$opV$3;
+                returning $ceylontmp$opV$6;
             );
         }
         
@@ -262,11 +268,11 @@ class CtorAbstractCtorPartialVariable extends .com.redhat.ceylon.compiler.java.t
                 return (
                     let
                     {
-                        .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialVariable $ceylontmp$opE$4 = .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialVariable.this;
-                        long $ceylontmp$opV$5 = $ceylontmp$opE$4.getX$priv$() + incr;
-                        $ceylontmp$opE$4.setX$priv$($ceylontmp$opV$5);
+                        .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialVariable $ceylontmp$opE$7 = .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialVariable.this;
+                        long $ceylontmp$opV$8 = $ceylontmp$opE$7.getX$priv$() + incr;
+                        $ceylontmp$opE$7.setX$priv$($ceylontmp$opV$8);
                     }
-                    returning $ceylontmp$opV$5;
+                    returning $ceylontmp$opV$8;
                 );
             }
             
@@ -289,58 +295,60 @@ class CtorAbstractCtorPartialVariable extends .com.redhat.ceylon.compiler.java.t
     public CtorAbstractCtorPartialVariable(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialVariable.Rest $name$, final long y$param$) {
         this(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialVariable.Partial, 1L);
         .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("b");
-        
-        final class xCapturer_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+        $return$$9: do {
             
-            private xCapturer_() {
+            final class xCapturer_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+                
+                private xCapturer_() {
+                }
+                
+                public final long capture(final long incr) {
+                    return (
+                        let
+                        {
+                            .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialVariable $ceylontmp$opE$10 = .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialVariable.this;
+                            long $ceylontmp$opV$11 = $ceylontmp$opE$10.getX$priv$() + incr;
+                            $ceylontmp$opE$10.setX$priv$($ceylontmp$opV$11);
+                        }
+                        returning $ceylontmp$opV$11;
+                    );
+                }
+                
+                @.java.lang.Override
+                public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                    return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialVariable.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(xCapturer_.class));
+                }
             }
+            final xCapturer_ xCapturer = new xCapturer_();
+            xCapturer.capture(4L);
+            .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("Rest");
+            this.setY$priv$(y$param$);
             
-            public final long capture(final long incr) {
-                return (
-                    let
-                    {
-                        .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialVariable $ceylontmp$opE$6 = .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialVariable.this;
-                        long $ceylontmp$opV$7 = $ceylontmp$opE$6.getX$priv$() + incr;
-                        $ceylontmp$opE$6.setX$priv$($ceylontmp$opV$7);
-                    }
-                    returning $ceylontmp$opV$7;
-                );
+            final class yCapturer_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+                
+                private yCapturer_() {
+                }
+                
+                public final long capture(final long incr) {
+                    return (
+                        let
+                        {
+                            .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialVariable $ceylontmp$opE$12 = .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialVariable.this;
+                            long $ceylontmp$opV$13 = $ceylontmp$opE$12.getY$priv$() + incr;
+                            $ceylontmp$opE$12.setY$priv$($ceylontmp$opV$13);
+                        }
+                        returning $ceylontmp$opV$13;
+                    );
+                }
+                
+                @.java.lang.Override
+                public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                    return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialVariable.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(yCapturer_.class));
+                }
             }
-            
-            @.java.lang.Override
-            public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
-                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialVariable.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(xCapturer_.class));
-            }
-        }
-        final xCapturer_ xCapturer = new xCapturer_();
-        xCapturer.capture(4L);
-        .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("Rest");
-        this.setY$priv$(y$param$);
-        
-        final class yCapturer_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
-            
-            private yCapturer_() {
-            }
-            
-            public final long capture(final long incr) {
-                return (
-                    let
-                    {
-                        .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialVariable $ceylontmp$opE$8 = .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialVariable.this;
-                        long $ceylontmp$opV$9 = $ceylontmp$opE$8.getY$priv$() + incr;
-                        $ceylontmp$opE$8.setY$priv$($ceylontmp$opV$9);
-                    }
-                    returning $ceylontmp$opV$9;
-                );
-            }
-            
-            @.java.lang.Override
-            public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
-                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialVariable.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(yCapturer_.class));
-            }
-        }
-        final yCapturer_ yCapturer = new yCapturer_();
-        yCapturer.capture(1L);
+            final yCapturer_ yCapturer = new yCapturer_();
+            yCapturer.capture(1L);
+        }         while (false);
         final .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialVariable.xCapturer3_ xCapturer3 = new .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialVariable.xCapturer3_();
         xCapturer3.capture(8L);
         final .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialVariable.yCapturer2_ yCapturer2 = new .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialVariable.yCapturer2_();
@@ -387,11 +395,11 @@ class CtorAbstractCtorPartialSharedVariable extends .com.redhat.ceylon.compiler.
             return (
                 let
                 {
-                    .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialSharedVariable $ceylontmp$opE$10 = .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialSharedVariable.this;
-                    long $ceylontmp$opV$11 = $ceylontmp$opE$10.getX() + incr;
-                    $ceylontmp$opE$10.setX($ceylontmp$opV$11);
+                    .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialSharedVariable $ceylontmp$opE$14 = .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialSharedVariable.this;
+                    long $ceylontmp$opV$15 = $ceylontmp$opE$14.getX() + incr;
+                    $ceylontmp$opE$14.setX($ceylontmp$opV$15);
                 }
-                returning $ceylontmp$opV$11;
+                returning $ceylontmp$opV$15;
             );
         }
         
@@ -410,11 +418,11 @@ class CtorAbstractCtorPartialSharedVariable extends .com.redhat.ceylon.compiler.
             return (
                 let
                 {
-                    .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialSharedVariable $ceylontmp$opE$12 = .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialSharedVariable.this;
-                    long $ceylontmp$opV$13 = $ceylontmp$opE$12.getX() + incr;
-                    $ceylontmp$opE$12.setX($ceylontmp$opV$13);
+                    .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialSharedVariable $ceylontmp$opE$16 = .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialSharedVariable.this;
+                    long $ceylontmp$opV$17 = $ceylontmp$opE$16.getX() + incr;
+                    $ceylontmp$opE$16.setX($ceylontmp$opV$17);
                 }
-                returning $ceylontmp$opV$13;
+                returning $ceylontmp$opV$17;
             );
         }
         
@@ -446,11 +454,11 @@ class CtorAbstractCtorPartialSharedVariable extends .com.redhat.ceylon.compiler.
                 return (
                     let
                     {
-                        .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialSharedVariable $ceylontmp$opE$14 = .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialSharedVariable.this;
-                        long $ceylontmp$opV$15 = $ceylontmp$opE$14.getX() + incr;
-                        $ceylontmp$opE$14.setX($ceylontmp$opV$15);
+                        .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialSharedVariable $ceylontmp$opE$18 = .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialSharedVariable.this;
+                        long $ceylontmp$opV$19 = $ceylontmp$opE$18.getX() + incr;
+                        $ceylontmp$opE$18.setX($ceylontmp$opV$19);
                     }
-                    returning $ceylontmp$opV$15;
+                    returning $ceylontmp$opV$19;
                 );
             }
             
@@ -473,58 +481,60 @@ class CtorAbstractCtorPartialSharedVariable extends .com.redhat.ceylon.compiler.
     public CtorAbstractCtorPartialSharedVariable(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialSharedVariable.Rest $name$, final long y$param$) {
         this(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialSharedVariable.Partial, 1L);
         .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("b");
-        
-        final class xCapturer_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+        $return$$20: do {
             
-            private xCapturer_() {
+            final class xCapturer_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+                
+                private xCapturer_() {
+                }
+                
+                public final long capture(final long incr) {
+                    return (
+                        let
+                        {
+                            .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialSharedVariable $ceylontmp$opE$21 = .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialSharedVariable.this;
+                            long $ceylontmp$opV$22 = $ceylontmp$opE$21.getX() + incr;
+                            $ceylontmp$opE$21.setX($ceylontmp$opV$22);
+                        }
+                        returning $ceylontmp$opV$22;
+                    );
+                }
+                
+                @.java.lang.Override
+                public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                    return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialSharedVariable.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(xCapturer_.class));
+                }
             }
+            final xCapturer_ xCapturer = new xCapturer_();
+            xCapturer.capture(4L);
+            .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("Rest");
+            this.setY(y$param$);
             
-            public final long capture(final long incr) {
-                return (
-                    let
-                    {
-                        .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialSharedVariable $ceylontmp$opE$16 = .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialSharedVariable.this;
-                        long $ceylontmp$opV$17 = $ceylontmp$opE$16.getX() + incr;
-                        $ceylontmp$opE$16.setX($ceylontmp$opV$17);
-                    }
-                    returning $ceylontmp$opV$17;
-                );
+            final class yCapturer_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+                
+                private yCapturer_() {
+                }
+                
+                public final long capture(final long incr) {
+                    return (
+                        let
+                        {
+                            .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialSharedVariable $ceylontmp$opE$23 = .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialSharedVariable.this;
+                            long $ceylontmp$opV$24 = $ceylontmp$opE$23.getY() + incr;
+                            $ceylontmp$opE$23.setY($ceylontmp$opV$24);
+                        }
+                        returning $ceylontmp$opV$24;
+                    );
+                }
+                
+                @.java.lang.Override
+                public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                    return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialSharedVariable.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(yCapturer_.class));
+                }
             }
-            
-            @.java.lang.Override
-            public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
-                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialSharedVariable.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(xCapturer_.class));
-            }
-        }
-        final xCapturer_ xCapturer = new xCapturer_();
-        xCapturer.capture(4L);
-        .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("Rest");
-        this.setY(y$param$);
-        
-        final class yCapturer_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
-            
-            private yCapturer_() {
-            }
-            
-            public final long capture(final long incr) {
-                return (
-                    let
-                    {
-                        .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialSharedVariable $ceylontmp$opE$18 = .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialSharedVariable.this;
-                        long $ceylontmp$opV$19 = $ceylontmp$opE$18.getY() + incr;
-                        $ceylontmp$opE$18.setY($ceylontmp$opV$19);
-                    }
-                    returning $ceylontmp$opV$19;
-                );
-            }
-            
-            @.java.lang.Override
-            public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
-                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialSharedVariable.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(yCapturer_.class));
-            }
-        }
-        final yCapturer_ yCapturer = new yCapturer_();
-        yCapturer.capture(1L);
+            final yCapturer_ yCapturer = new yCapturer_();
+            yCapturer.capture(1L);
+        }         while (false);
         final .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialSharedVariable.xCapturer3_ xCapturer3 = new .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialSharedVariable.xCapturer3_();
         xCapturer3.capture(8L);
         final .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialSharedVariable.yCapturer2_ yCapturer2 = new .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialSharedVariable.yCapturer2_();
@@ -571,11 +581,11 @@ class CtorAbstractCtorPartialCapturedVariable extends .com.redhat.ceylon.compile
             return (
                 let
                 {
-                    .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialCapturedVariable $ceylontmp$opE$20 = .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialCapturedVariable.this;
-                    long $ceylontmp$opV$21 = $ceylontmp$opE$20.getX$priv$() + incr;
-                    $ceylontmp$opE$20.setX$priv$($ceylontmp$opV$21);
+                    .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialCapturedVariable $ceylontmp$opE$25 = .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialCapturedVariable.this;
+                    long $ceylontmp$opV$26 = $ceylontmp$opE$25.getX$priv$() + incr;
+                    $ceylontmp$opE$25.setX$priv$($ceylontmp$opV$26);
                 }
-                returning $ceylontmp$opV$21;
+                returning $ceylontmp$opV$26;
             );
         }
         
@@ -594,11 +604,11 @@ class CtorAbstractCtorPartialCapturedVariable extends .com.redhat.ceylon.compile
             return (
                 let
                 {
-                    .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialCapturedVariable $ceylontmp$opE$22 = .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialCapturedVariable.this;
-                    long $ceylontmp$opV$23 = $ceylontmp$opE$22.getX$priv$() + incr;
-                    $ceylontmp$opE$22.setX$priv$($ceylontmp$opV$23);
+                    .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialCapturedVariable $ceylontmp$opE$27 = .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialCapturedVariable.this;
+                    long $ceylontmp$opV$28 = $ceylontmp$opE$27.getX$priv$() + incr;
+                    $ceylontmp$opE$27.setX$priv$($ceylontmp$opV$28);
                 }
-                returning $ceylontmp$opV$23;
+                returning $ceylontmp$opV$28;
             );
         }
         
@@ -634,11 +644,11 @@ class CtorAbstractCtorPartialCapturedVariable extends .com.redhat.ceylon.compile
                 return (
                     let
                     {
-                        .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialCapturedVariable $ceylontmp$opE$24 = .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialCapturedVariable.this;
-                        long $ceylontmp$opV$25 = $ceylontmp$opE$24.getX$priv$() + incr;
-                        $ceylontmp$opE$24.setX$priv$($ceylontmp$opV$25);
+                        .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialCapturedVariable $ceylontmp$opE$29 = .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialCapturedVariable.this;
+                        long $ceylontmp$opV$30 = $ceylontmp$opE$29.getX$priv$() + incr;
+                        $ceylontmp$opE$29.setX$priv$($ceylontmp$opV$30);
                     }
-                    returning $ceylontmp$opV$25;
+                    returning $ceylontmp$opV$30;
                 );
             }
             
@@ -661,58 +671,60 @@ class CtorAbstractCtorPartialCapturedVariable extends .com.redhat.ceylon.compile
     public CtorAbstractCtorPartialCapturedVariable(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialCapturedVariable.Rest $name$, final long y$param$) {
         this(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialCapturedVariable.Partial, 1L);
         .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("b");
-        
-        final class xCapturer_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+        $return$$31: do {
             
-            private xCapturer_() {
+            final class xCapturer_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+                
+                private xCapturer_() {
+                }
+                
+                public final long capture(final long incr) {
+                    return (
+                        let
+                        {
+                            .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialCapturedVariable $ceylontmp$opE$32 = .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialCapturedVariable.this;
+                            long $ceylontmp$opV$33 = $ceylontmp$opE$32.getX$priv$() + incr;
+                            $ceylontmp$opE$32.setX$priv$($ceylontmp$opV$33);
+                        }
+                        returning $ceylontmp$opV$33;
+                    );
+                }
+                
+                @.java.lang.Override
+                public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                    return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialCapturedVariable.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(xCapturer_.class));
+                }
             }
+            final xCapturer_ xCapturer = new xCapturer_();
+            xCapturer.capture(4L);
+            .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("Rest");
+            this.setY$priv$(y$param$);
             
-            public final long capture(final long incr) {
-                return (
-                    let
-                    {
-                        .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialCapturedVariable $ceylontmp$opE$26 = .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialCapturedVariable.this;
-                        long $ceylontmp$opV$27 = $ceylontmp$opE$26.getX$priv$() + incr;
-                        $ceylontmp$opE$26.setX$priv$($ceylontmp$opV$27);
-                    }
-                    returning $ceylontmp$opV$27;
-                );
+            final class yCapturer_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+                
+                private yCapturer_() {
+                }
+                
+                public final long capture(final long incr) {
+                    return (
+                        let
+                        {
+                            .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialCapturedVariable $ceylontmp$opE$34 = .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialCapturedVariable.this;
+                            long $ceylontmp$opV$35 = $ceylontmp$opE$34.getY$priv$() + incr;
+                            $ceylontmp$opE$34.setY$priv$($ceylontmp$opV$35);
+                        }
+                        returning $ceylontmp$opV$35;
+                    );
+                }
+                
+                @.java.lang.Override
+                public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                    return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialCapturedVariable.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(yCapturer_.class));
+                }
             }
-            
-            @.java.lang.Override
-            public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
-                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialCapturedVariable.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(xCapturer_.class));
-            }
-        }
-        final xCapturer_ xCapturer = new xCapturer_();
-        xCapturer.capture(4L);
-        .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("Rest");
-        this.setY$priv$(y$param$);
-        
-        final class yCapturer_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
-            
-            private yCapturer_() {
-            }
-            
-            public final long capture(final long incr) {
-                return (
-                    let
-                    {
-                        .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialCapturedVariable $ceylontmp$opE$28 = .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialCapturedVariable.this;
-                        long $ceylontmp$opV$29 = $ceylontmp$opE$28.getY$priv$() + incr;
-                        $ceylontmp$opE$28.setY$priv$($ceylontmp$opV$29);
-                    }
-                    returning $ceylontmp$opV$29;
-                );
-            }
-            
-            @.java.lang.Override
-            public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
-                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialCapturedVariable.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(yCapturer_.class));
-            }
-        }
-        final yCapturer_ yCapturer = new yCapturer_();
-        yCapturer.capture(1L);
+            final yCapturer_ yCapturer = new yCapturer_();
+            yCapturer.capture(1L);
+        }         while (false);
         final .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialCapturedVariable.xCapturer3_ xCapturer3 = new .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialCapturedVariable.xCapturer3_();
         xCapturer3.capture(8L);
         final .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialCapturedVariable.yCapturer2_ yCapturer2 = new .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialCapturedVariable.yCapturer2_();
@@ -734,8 +746,8 @@ class CtorAbstractCtorGeneric<T> extends .com.redhat.ceylon.compiler.java.test.s
         (
             let
             {
-                T $ceylontmp$x$30 = .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorGeneric.<T>CtorAbstractCtorGeneric$Partial$x($reified$T);
-                this($reified$T, $name$, $ceylontmp$x$30);
+                T $ceylontmp$x$36 = .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorGeneric.<T>CtorAbstractCtorGeneric$Partial$x($reified$T);
+                this($reified$T, $name$, $ceylontmp$x$36);
             }
             returning null;
         );
@@ -745,8 +757,8 @@ class CtorAbstractCtorGeneric<T> extends .com.redhat.ceylon.compiler.java.test.s
         (
             let
             {
-                T $ceylontmp$y$31 = .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorGeneric.<T>CtorAbstractCtorGeneric$Rest$y($reified$T);
-                this($reified$T, $name$, $ceylontmp$y$31);
+                T $ceylontmp$y$38 = .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorGeneric.<T>CtorAbstractCtorGeneric$Rest$y($reified$T);
+                this($reified$T, $name$, $ceylontmp$y$38);
             }
             returning null;
         );
@@ -798,9 +810,11 @@ class CtorAbstractCtorGeneric<T> extends .com.redhat.ceylon.compiler.java.test.s
     public CtorAbstractCtorGeneric(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorGeneric.Rest $name$, final T y$param$) {
         this($reified$T, .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorGeneric.Partial);
         .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("b");
-        .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("Rest");
-        this.y = y$param$;
-        .ceylon.language.print_.print(this.getX$priv$());
+        $return$$37: do {
+            .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("Rest");
+            this.y = y$param$;
+            .ceylon.language.print_.print(this.getX$priv$());
+        }         while (false);
         .ceylon.language.print_.print(this.getX$priv$());
         .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("c");
     }

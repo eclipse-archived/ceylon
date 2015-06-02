@@ -89,7 +89,9 @@ class CtorDelegationClassRefs extends .com.redhat.ceylon.compiler.java.test.stru
     .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationClassRefs.Concrete $name$) {
         this(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationClassRefs.Abstract);
         .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("2");
-        .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("Concrete");
+        $return$$0: do {
+            .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("Concrete");
+        }         while (false);
         .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("3");
         .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("4");
     }
@@ -110,7 +112,9 @@ class CtorDelegationClassRefs extends .com.redhat.ceylon.compiler.java.test.stru
     .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationClassRefs.Concrete2 $name$) {
         this(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationClassRefs.Concrete$delegation$);
         .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("3");
-        .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("Concrete2");
+        $return$$1: do {
+            .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("Concrete2");
+        }         while (false);
         .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("4");
     }
     

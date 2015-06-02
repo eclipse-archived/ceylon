@@ -95,7 +95,9 @@ class CtorDelegationMemberClass implements .com.redhat.ceylon.compiler.java.runt
         .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationMemberClass.ConcreteDelegating$B $name$) {
             this(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationMemberClass.ConcreteDelegating$A$delegation$);
             .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("ConcreteDelegating.2");
-            .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("ConcreteDelegating.B");
+            $return$$0: do {
+                .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("ConcreteDelegating.B");
+            }             while (false);
             .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("ConcreteDelegating.3");
         }
         
@@ -149,7 +151,9 @@ class CtorDelegationMemberClass implements .com.redhat.ceylon.compiler.java.runt
         .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationMemberClass.AbstractDelegating$B $name$) {
             this(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationMemberClass.AbstractDelegating$A);
             .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("AbstractDelegating.2");
-            .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("AbstractDelegating.B");
+            $return$$1: do {
+                .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("AbstractDelegating.B");
+            }             while (false);
             .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("AbstractDelegating.3");
         }
         
@@ -248,7 +252,9 @@ class CtorDelegationMemberClass implements .com.redhat.ceylon.compiler.java.runt
         .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationMemberClass.SharedConcreteDelegating$B $name$) {
             this(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationMemberClass.SharedConcreteDelegating$A$delegation$);
             .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("SharedConcreteDelegating.2");
-            .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("SharedConcreteDelegating.B");
+            $return$$2: do {
+                .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("SharedConcreteDelegating.B");
+            }             while (false);
             .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("SharedConcreteDelegating.3");
         }
         
@@ -308,7 +314,9 @@ class CtorDelegationMemberClass implements .com.redhat.ceylon.compiler.java.runt
         .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationMemberClass.SharedAbstractDelegating$B $name$) {
             this(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationMemberClass.SharedAbstractDelegating$A);
             .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("SharedAbstractDelegating.2");
-            .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("SharedAbstractDelegating.B");
+            $return$$3: do {
+                .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("SharedAbstractDelegating.B");
+            }             while (false);
             .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("SharedAbstractDelegating.3");
         }
         
