@@ -46,6 +46,7 @@ public class TypeUtils {
     /** Prints the type arguments, usually for their reification. */
     public static void printTypeArguments(final Node node, final Map<TypeParameter,Type> targs,
             final GenerateJsVisitor gen, final boolean skipSelfDecl, final Map<TypeParameter, SiteVariance> overrides) {
+        if (targs==null) return;
         gen.out("{");
         boolean first = true;
         for (Map.Entry<TypeParameter,Type> e : targs.entrySet()) {

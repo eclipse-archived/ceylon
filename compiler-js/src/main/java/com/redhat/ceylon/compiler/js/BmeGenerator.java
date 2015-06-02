@@ -18,6 +18,7 @@ import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.TypeParameter;
 import com.redhat.ceylon.model.typechecker.model.ModelUtil;
+import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
 
 public class BmeGenerator {
 
@@ -73,11 +74,18 @@ public class BmeGenerator {
      *  type argument list in the expression itself. */
     static Map<TypeParameter, Type> createTypeArguments(final Tree.StaticMemberOrTypeExpression expr) {
         List<TypeParameter> tparams = null;
-        if (expr.getDeclaration() instanceof Generic) {
-            tparams = ((Generic)expr.getDeclaration()).getTypeParameters();
-        } else {
+        Declaration declaration = expr.getDeclaration();
+        if (declaration instanceof Generic) {
+            tparams = ((Generic)declaration).getTypeParameters();
+        }
+        else if (declaration instanceof TypedDeclaration &&
+                ((TypedDeclaration)declaration).getType()!=null &&
+                ((TypedDeclaration)declaration).getType().isTypeConstructor()) {
+            tparams = ((TypedDeclaration)declaration).getType().getDeclaration().getTypeParameters();
+        }
+        else {
             expr.addUnexpectedError("Getting type parameters from unidentified declaration type "
-                    + expr.getDeclaration(), Backend.JavaScript);
+                    + declaration, Backend.JavaScript);
             return null;
         }
         final HashMap<TypeParameter, Type> targs = new HashMap<>();
