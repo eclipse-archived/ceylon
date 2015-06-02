@@ -11,6 +11,7 @@ import com.redhat.ceylon.compiler.java.metadata.Name;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
+import com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 
 @Ceylon(major = 8)
@@ -31,7 +32,7 @@ public final class flatten_ {
         
         return new AbstractCallable<Return>($reifiedReturn, $reifiedArgs, null, (short)-1) {
 
-            private TypeDescriptor getElementType(java.lang.Object[] args) {
+            private TypeDescriptor getElementType(java.lang.Object[] args, Sequential<?> tail) {
             	if ($reifiedArgs instanceof TypeDescriptor.Class) {
             		//optimization for common cases
             		TypeDescriptor.Class reifiedClass = (TypeDescriptor.Class) $reifiedArgs;
@@ -45,9 +46,15 @@ public final class flatten_ {
 						return TypeDescriptor.NothingType;
 					}
             	}
-                TypeDescriptor[] types = new TypeDescriptor[args.length];
+                TypeDescriptor[] types = new TypeDescriptor[args.length + (tail != null ? 1 : 0)];
                 for (int i = 0; i <args.length; i++) {
                     types[i] = getArgType(args[i]);
+                }
+                if(tail != null){
+                    TypeDescriptor restType = getTypeDescriptor(tail);
+                    TypeDescriptor elementType = 
+                            Metamodel.getIteratedTypeDescriptor(restType);
+                    types[args.length] = elementType;
                 }
                 return TypeDescriptor.union(types);
             }
@@ -58,7 +65,12 @@ public final class flatten_ {
 
 			@SuppressWarnings("rawtypes")
 			private Tuple tuple(java.lang.Object[] args) {
-				return new Tuple(getElementType(args), args);
+				return new Tuple(getElementType(args, null), args);
+			}
+
+			@SuppressWarnings("rawtypes")
+			private Tuple tuple(java.lang.Object[] args, Sequential<?> tail) {
+			    return Tuple.instance(getElementType(args, tail), args, tail);
 			}
 
             @Override
@@ -86,6 +98,29 @@ public final class flatten_ {
                 return tupleFunction.$call$(tuple(args));
             }
             
+            @Override
+            public Return $callvariadic$(Sequential<?> arg0) {
+                return tupleFunction.$call$(arg0);
+            }
+
+            @Override
+            public Return $callvariadic$(java.lang.Object arg0, Sequential<?> arg1) {
+                return tupleFunction.$call$(tuple(new java.lang.Object[] { arg0 }, arg1));
+            }
+
+            @Override
+            public Return $callvariadic$(java.lang.Object arg0, java.lang.Object arg1, Sequential<?> arg2) {
+                return tupleFunction.$call$(tuple(new java.lang.Object[] { arg0, arg1}, arg2));
+            }
+
+            @Override
+            public Return $callvariadic$(java.lang.Object... args) {
+                // it is an array of the first args.length-1 params followed by a Sequential last
+                java.lang.Object[] first = new java.lang.Object[args.length-1];
+                System.arraycopy(args, 0, first, 0, args.length-1);
+                return tupleFunction.$call$(tuple(first, (Sequential<?>)args[args.length-1]));
+            }
+
             @Override
             public java.lang.String toString() {
                 return $getType$().toString();
