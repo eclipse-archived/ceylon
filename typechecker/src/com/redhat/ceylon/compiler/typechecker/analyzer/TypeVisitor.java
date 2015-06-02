@@ -1126,7 +1126,8 @@ public class TypeVisitor extends Visitor {
                             variance.addUnsupportedError(
                                     "use-site variant instantiation of declaration-site variant types is not supported: type parameter '" + 
                                     p.getName() + "' of '" + 
-                                    dec.getName(unit) + "' is not declared invariant");
+                                    dec.getName(unit) + 
+                                    "' is not declared invariant");
                         }
                     }
                 }

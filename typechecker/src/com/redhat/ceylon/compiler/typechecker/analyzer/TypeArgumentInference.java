@@ -12,6 +12,7 @@ import static com.redhat.ceylon.model.typechecker.model.ModelUtil.addToUnion;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.appliedType;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.canonicalIntersection;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isTypeUnknown;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.typeParametersAsArgList;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.union;
 
 import java.util.ArrayList;
@@ -1545,13 +1546,7 @@ public class TypeArgumentInference {
             List<Type> list;
             if (isGeneric(dec)) {
                 Generic generic = (Generic) dec;
-                List<TypeParameter> tps = 
-                        generic.getTypeParameters();
-                list = new ArrayList<Type>
-                        (tps.size());
-                for (TypeParameter tp: tps) {
-                    list.add(tp.getType());
-                }
+                list = typeParametersAsArgList(generic);
             }
             else {
                 list = NO_TYPE_ARGS;
