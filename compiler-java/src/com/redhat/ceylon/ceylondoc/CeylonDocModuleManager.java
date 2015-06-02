@@ -64,7 +64,7 @@ public class CeylonDocModuleManager extends ReflectionModuleManager {
     
     @Override
     public boolean supportsBackend(Backend backend) {
-        return backend == Backend.None;
+        return backend == Backend.None || backend == Backend.Java;
     }
 
     @Override
