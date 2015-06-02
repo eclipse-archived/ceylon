@@ -95,7 +95,7 @@ public class MiscTests extends CompilerTests {
                 filename = filename.substring(0,  filename.lastIndexOf('.'));
                 for (String s : new String[]{
                         "Boolean", "Integer", "Float", "Character", "String", "Byte",
-                        "Array", "Tuple", "Exception", "AssertionError", "Callable", 
+                        "Array", "Tuple", "Exception", "AssertionError", "Callable",
                         "flatten", "className", "identityHash", "integerRangeByIterable",
                         "modules", "printStackTrace", "process",
                         "runtime", "Throwable", "type", "typeLiteral",
@@ -115,7 +115,11 @@ public class MiscTests extends CompilerTests {
         		"true", "false"
         };
         String[] modelExtras = new String[]{
-                "annotations", "modules", "type", "typeLiteral"
+                "classDeclaration", "annotations", "modules", "type", "typeLiteral"
+        };
+        String[] s11nExtras = new String[]{
+                "NativeMapImpl", "NativeDequeImpl", "PartialImpl", "serialization"
+                
         };
         
         for(String pkg : ceylonPackages){
@@ -142,6 +146,9 @@ public class MiscTests extends CompilerTests {
         File javaModelPkgDir = new File(javaSourcePath, "ceylon/language/meta");
         for(String extra : modelExtras)
             addJavaSourceFile(extra, sourceFiles, javaModelPkgDir, true);
+        File javaS11nPkgDir = new File(javaSourcePath, "ceylon/language/serialization");
+        for(String extra : s11nExtras)
+            addJavaSourceFile(extra, sourceFiles, javaS11nPkgDir, true);
         
         String[] javaPackages = {
                 "com/redhat/ceylon/compiler/java", 
