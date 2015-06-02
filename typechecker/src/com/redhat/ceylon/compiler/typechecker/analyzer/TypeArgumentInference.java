@@ -808,8 +808,12 @@ public class TypeArgumentInference {
                 if (paramType==null && paramTypedRef!=null) {
                     paramType = paramTypedRef.getFullType();
                 }
-                if (paramType==null ||
-                        paramType.isTypeConstructor()) {
+                if (paramType==null) {
+                    return null;
+                }
+                if (isArgumentToGenericParameter(
+                        paramTypedRef, 
+                        paramType)) {
                     return null;
                 }
                 Declaration paramDec;
@@ -960,6 +964,13 @@ public class TypeArgumentInference {
             //not inferring
             return null;
         }
+    }
+
+    private static boolean isArgumentToGenericParameter(
+            TypedReference paramTypedRef, Type paramType) {
+        return paramType.isTypeConstructor() ||
+                paramTypedRef != null &&
+                isGeneric(paramTypedRef.getDeclaration());
     }
 
     /**
