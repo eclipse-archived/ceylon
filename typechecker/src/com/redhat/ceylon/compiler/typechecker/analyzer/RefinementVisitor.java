@@ -42,7 +42,7 @@ import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Function;
 import com.redhat.ceylon.model.typechecker.model.Functional;
 import com.redhat.ceylon.model.typechecker.model.Generic;
-import com.redhat.ceylon.model.typechecker.model.LazyProducedType;
+import com.redhat.ceylon.model.typechecker.model.LazyType;
 import com.redhat.ceylon.model.typechecker.model.Package;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.ParameterList;
@@ -1405,7 +1405,7 @@ public class RefinementVisitor extends Visitor {
         that.setDeclaration(v);
         that.setRefined(sv);
         unit.addDeclaration(v);
-        v.setType(new LazyProducedType(unit) {
+        v.setType(new LazyType(unit) {
             @Override
             public Type initQualifyingType() {
                 return rv.getType().getQualifyingType();
@@ -1476,7 +1476,7 @@ public class RefinementVisitor extends Visitor {
                     v.setContainer(m);
                     v.setScope(m);
                     l.getParameters().add(vp);
-                    v.setType(new LazyProducedType(unit) {
+                    v.setType(new LazyType(unit) {
                         @Override
                         public Type initQualifyingType() {
                             return rm.getTypedParameter(p)
@@ -1535,7 +1535,7 @@ public class RefinementVisitor extends Visitor {
             Specification spec = (Specification) scope;
             spec.setDeclaration(m);
         }
-        m.setType(new LazyProducedType(unit) {
+        m.setType(new LazyType(unit) {
             @Override
             public Type initQualifyingType() {
                 Type type = rm.getType();
