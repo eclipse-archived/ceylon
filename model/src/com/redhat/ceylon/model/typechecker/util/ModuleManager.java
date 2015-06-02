@@ -229,6 +229,6 @@ public class ModuleManager implements BackendSupport {
      */
     @Override
     public boolean supportsBackend(Backend backend) {
-        return backend != Backend.None;
+        return backend == Backend.None;
     }
 }
