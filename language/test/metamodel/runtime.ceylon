@@ -1431,7 +1431,7 @@ shared void checkInheritedVsDeclared(){
     
     assert(!bottomType.getDeclaredMethod("inheritedMethod") exists);
     try{
-        bottomType.getDeclaredMethod("myOwnBottomMethod");
+        bottomType.getDeclaredMethod<Nothing,Nothing,Anything[]>("myOwnBottomMethod");
         assert(false);
     }catch(Exception x){
         assert(is IncompatibleTypeException x);
@@ -1533,7 +1533,7 @@ shared void checkTypeArgumentChecks(){
         assert(is IncompatibleTypeException x);
     }
     try{
-        `ContainerClass`.getClassOrInterface("InnerClass");
+        `ContainerClass`.getClassOrInterface<Nothing,Nothing>("InnerClass");
         assert(false);
     }catch(Exception x){
         assert(is IncompatibleTypeException x);
@@ -1563,7 +1563,7 @@ shared void checkTypeArgumentChecks(){
         assert(is IncompatibleTypeException x);
     }
     try{
-        `NoParams`.getMethod("noParams");
+        `NoParams`.getMethod<Nothing,Anything[]>("noParams");
         assert(false);
     }catch(Exception x){
         assert(is IncompatibleTypeException x);
@@ -1589,7 +1589,7 @@ shared void checkTypeArgumentChecks(){
         assert(is IncompatibleTypeException x);
     }
     try{
-        `NoParams`.getAttribute("str");
+        `NoParams`.getAttribute<Nothing,Nothing>("str");
         assert(false);
     }catch(Exception x){
         assert(is IncompatibleTypeException x);
