@@ -20,7 +20,9 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 @ValueType
 public final class Float
     implements Number<Float>, Exponentiable<Float,Float>, ReifiedType {
-    
+
+    private static final double TWO_FIFTY_TWO = (double) (1L << 52);
+
     @Ignore
     public final static TypeDescriptor $TypeDescriptor$ = TypeDescriptor.klass(Float.class);
 
@@ -210,24 +212,63 @@ public final class Float
     
     @Override
     public Float getFractionalPart() {
-        return instance(value > 0.0D ? value - (long)value : (long)value - value);
+        double fractionalPart = getFractionalPart(value);
+        if (fractionalPart != 0 && fractionalPart == value) {
+            return this;
+        }
+        return instance(fractionalPart);
     }
-    
+
     @Ignore
     public static double getFractionalPart(double value) {
-        return value > 0.0D ? value - (long)value : (long)value - value;
+        if (value <= -TWO_FIFTY_TWO) {
+            return -0d;
+        }
+        else if (value >= TWO_FIFTY_TWO) {
+            return 0d;
+        }
+        else if (Double.isNaN(value)) {
+            return Double.NaN;
+        }
+        else {
+            double result = value - (long) value;
+            if (result == 0 && (1/value) < 0) {
+                return -0d;
+            }
+            else {
+                return result;
+            }
+        }
     }
-    
+
     @Override
-    public Float getWholePart() {		
-        return instance(getInteger(value));
+    public Float getWholePart() {
+        double wholePart = getWholePart(value);
+        if (wholePart != 0 && wholePart == value) {
+            return this;
+        }
+        return instance(wholePart);
     }
-    
+
     @Ignore
     public static double getWholePart(double value) {
-        return getInteger(value);
+        if (value <= -TWO_FIFTY_TWO || value >= TWO_FIFTY_TWO) {
+            return value;
+        }
+        else if (Double.isNaN(value)) {
+            return Double.NaN;
+        }
+        else {
+            long result = (long) value;
+            if (result == 0 && (1/value) < 0) {
+                return -0.0d;
+            }
+            else {
+                return result;
+            }
+        }
     }
-    
+
     @Override
     public boolean getPositive() {
         return value > 0;

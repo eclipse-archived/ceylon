@@ -1,6 +1,9 @@
 package ceylon.language;
 
 import static ceylon.language.parseFloat_.parseFloat;
+import static java.lang.Double.NEGATIVE_INFINITY;
+import static java.lang.Double.NaN;
+import static java.lang.Double.POSITIVE_INFINITY;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
@@ -22,7 +25,151 @@ public class FloatTest {
             assertNull("parseFloat(" + str + ") returned a result " + parsed, parsed);
         }
     }
-    
+
+    @Test
+    public void testFloatFractionalPart() {
+        assertEquals(-0.0, Float.getFractionalPart(-0.0), 0.0);
+        assertEquals(+0.0, Float.getFractionalPart(+0.0), 0.0);
+        assertEquals(+0.4, Float.getFractionalPart(+0.4), 0.0000001);
+        assertEquals(-0.4, Float.getFractionalPart(-0.4), 0.0000001);
+        assertEquals(+0.6, Float.getFractionalPart(+0.6), 0.0000001);
+        assertEquals(-0.6, Float.getFractionalPart(-0.6), 0.0000001);
+        assertEquals(-0.0, Float.getFractionalPart(-1.0), 0.0000001);
+        assertEquals(+0.0, Float.getFractionalPart(+1.0), 0.0000001);
+        assertEquals(+0.4, Float.getFractionalPart(+1.4), 0.0000001);
+        assertEquals(-0.4, Float.getFractionalPart(-1.4), 0.0000001);
+        assertEquals(+0.6, Float.getFractionalPart(+1.6), 0.0000001);
+        assertEquals(-0.6, Float.getFractionalPart(-1.6), 0.0000001);
+
+        assertEquals(+0.5d, Float.getFractionalPart(+2097153.5d), 0.0);
+        assertEquals(-0.5d, Float.getFractionalPart(-2097153.5d), 0.0);
+
+        assertEquals(0.0, Float.getFractionalPart((double) +(2L << 52) + 0.5d), 0.0);
+        assertEquals(0.0, Float.getFractionalPart((double) -(2L << 52) - 0.5d), 0.0);
+
+        assertEquals(0.0, Float.getFractionalPart((double) +(2L << 53) + 0.5d), 0.0);
+        assertEquals(0.0, Float.getFractionalPart((double) -(2L << 53) - 0.5d), 0.0);
+
+        assertTrue("preserve negative 0", 1 / Float.getFractionalPart(-0.0) < 0);
+        assertTrue("preserve positive 0", 1 / Float.getFractionalPart(+0.0) > 0);
+        assertTrue("preserve negative 0", 1 / Float.getFractionalPart(-0.4) < 0);
+        assertTrue("preserve positive 0", 1 / Float.getFractionalPart(+0.4) > 0);
+        assertTrue("preserve negative 0", 1 / Float.getFractionalPart(-0.6) < 0);
+        assertTrue("preserve positive 0", 1 / Float.getFractionalPart(+0.6) > 0);
+
+        assertTrue("preserve negative 0", 1 / Float.getFractionalPart(NEGATIVE_INFINITY) < 0);
+        assertTrue("preserve positive 0", 1 / Float.getFractionalPart(POSITIVE_INFINITY) > 0);
+        assertEquals(Float.getFractionalPart(NaN), NaN, 0.0);
+    }
+
+    @Test
+    public void testFloatFractionalPartInstance() {
+        assertEquals(-0.0, Float.instance(-0.0).getFractionalPart().value, 0.0);
+        assertEquals(+0.0, Float.instance(+0.0).getFractionalPart().value, 0.0);
+        assertEquals(+0.4, Float.instance(+0.4).getFractionalPart().value, 0.0000001);
+        assertEquals(-0.4, Float.instance(-0.4).getFractionalPart().value, 0.0000001);
+        assertEquals(+0.6, Float.instance(+0.6).getFractionalPart().value, 0.0000001);
+        assertEquals(-0.6, Float.instance(-0.6).getFractionalPart().value, 0.0000001);
+        assertEquals(-0.0, Float.instance(-1.0).getFractionalPart().value, 0.0000001);
+        assertEquals(+0.0, Float.instance(+1.0).getFractionalPart().value, 0.0000001);
+        assertEquals(+0.4, Float.instance(+1.4).getFractionalPart().value, 0.0000001);
+        assertEquals(-0.4, Float.instance(-1.4).getFractionalPart().value, 0.0000001);
+        assertEquals(+0.6, Float.instance(+1.6).getFractionalPart().value, 0.0000001);
+        assertEquals(-0.6, Float.instance(-1.6).getFractionalPart().value, 0.0000001);
+
+        assertEquals(+0.5d, Float.instance(+2097153.5d).getFractionalPart().value, 0.0);
+        assertEquals(-0.5d, Float.instance(-2097153.5d).getFractionalPart().value, 0.0);
+
+        assertEquals(0.0, Float.instance((double) +(2L << 52) + 0.5d).getFractionalPart().value, 0.0);
+        assertEquals(0.0, Float.instance((double) -(2L << 52) - 0.5d).getFractionalPart().value, 0.0);
+
+        assertEquals(0.0, Float.instance((double) +(2L << 53) + 0.5d).getFractionalPart().value, 0.0);
+        assertEquals(0.0, Float.instance((double) -(2L << 53) - 0.5d).getFractionalPart().value, 0.0);
+
+        assertTrue("preserve negative 0", 1 / Float.instance(-0.0).getFractionalPart().value < 0);
+        assertTrue("preserve positive 0", 1 / Float.instance(+0.0).getFractionalPart().value > 0);
+        assertTrue("preserve negative 0", 1 / Float.instance(-0.4).getFractionalPart().value < 0);
+        assertTrue("preserve positive 0", 1 / Float.instance(+0.4).getFractionalPart().value > 0);
+        assertTrue("preserve negative 0", 1 / Float.instance(-0.6).getFractionalPart().value < 0);
+        assertTrue("preserve positive 0", 1 / Float.instance(+0.6).getFractionalPart().value > 0);
+
+        assertTrue("preserve negative 0", 1 / Float.instance(NEGATIVE_INFINITY).getFractionalPart().value < 0);
+        assertTrue("preserve positive 0", 1 / Float.instance(POSITIVE_INFINITY).getFractionalPart().value > 0);
+        assertEquals(Float.getFractionalPart(NaN), NaN, 0.0);
+    }
+
+    @Test
+    public void testFloatWholePart() {
+        assertEquals(0.0, Float.getWholePart(-0.0), 0.0);
+        assertEquals(0.0, Float.getWholePart(+0.0), 0.0);
+        assertEquals(0.0, Float.getWholePart(+0.4), 0.0);
+        assertEquals(0.0, Float.getWholePart(-0.4), 0.0);
+        assertEquals(0.0, Float.getWholePart(+0.6), 0.0);
+        assertEquals(0.0, Float.getWholePart(-0.6), 0.0);
+        assertEquals(-1.0, Float.getWholePart(-1.0), 0.0);
+        assertEquals(+1.0, Float.getWholePart(+1.0), 0.0);
+        assertEquals(+1.0, Float.getWholePart(+1.4), 0.0);
+        assertEquals(-1.0, Float.getWholePart(-1.4), 0.0);
+        assertEquals(+1.0, Float.getWholePart(+1.6), 0.0);
+        assertEquals(-1.0, Float.getWholePart(-1.6), 0.0);
+
+        assertEquals(+2097153d, Float.getWholePart(+2097153.5d), 0.0);
+        assertEquals(-2097153d, Float.getWholePart(-2097153.5d), 0.0);
+
+        assertEquals((double) +(2L << 52), Float.getWholePart((double) +(2L << 52) + 0.5d), 0.0);
+        assertEquals((double) -(2L << 52), Float.getWholePart((double) -(2L << 52) - 0.5d), 0.0);
+
+        assertEquals((double) +(2L << 53), Float.getWholePart((double) +(2L << 53) + 0.5d), 0.0);
+        assertEquals((double) -(2L << 53), Float.getWholePart((double) -(2L << 53) - 0.5d), 0.0);
+
+        assertTrue("preserve negative 0", 1 / Float.getWholePart(-0.0) < 0);
+        assertTrue("preserve positive 0", 1 / Float.getWholePart(+0.0) > 0);
+        assertTrue("preserve negative 0", 1 / Float.getWholePart(-0.4) < 0);
+        assertTrue("preserve positive 0", 1 / Float.getWholePart(+0.4) > 0);
+        assertTrue("preserve negative 0", 1 / Float.getWholePart(-0.6) < 0);
+        assertTrue("preserve positive 0", 1 / Float.getWholePart(+0.6) > 0);
+
+        assertEquals(Float.getWholePart(NEGATIVE_INFINITY), NEGATIVE_INFINITY, 0.0);
+        assertEquals(Float.getWholePart(POSITIVE_INFINITY), POSITIVE_INFINITY, 0.0);
+        assertEquals(Float.getWholePart(NaN), NaN, 0.0);
+    }
+
+    @Test
+    public void testFloatWholePartInstance() {
+        assertEquals(0.0, Float.instance(-0.0).getWholePart().value, 0.0);
+        assertEquals(0.0, Float.instance(+0.0).getWholePart().value, 0.0);
+        assertEquals(0.0, Float.instance(+0.4).getWholePart().value, 0.0);
+        assertEquals(0.0, Float.instance(-0.4).getWholePart().value, 0.0);
+        assertEquals(0.0, Float.instance(+0.6).getWholePart().value, 0.0);
+        assertEquals(0.0, Float.instance(-0.6).getWholePart().value, 0.0);
+        assertEquals(-1.0, Float.instance(-1.0).getWholePart().value, 0.0);
+        assertEquals(+1.0, Float.instance(+1.0).getWholePart().value, 0.0);
+        assertEquals(+1.0, Float.instance(+1.4).getWholePart().value, 0.0);
+        assertEquals(-1.0, Float.instance(-1.4).getWholePart().value, 0.0);
+        assertEquals(+1.0, Float.instance(+1.6).getWholePart().value, 0.0);
+        assertEquals(-1.0, Float.instance(-1.6).getWholePart().value, 0.0);
+
+        assertEquals(+2097153d, Float.instance(+2097153.5d).getWholePart().value, 0.0);
+        assertEquals(-2097153d, Float.instance(-2097153.5d).getWholePart().value, 0.0);
+
+        assertEquals((double) +(2L << 52), Float.instance((double) +(2L << 52) + 0.5d).getWholePart().value, 0.0);
+        assertEquals((double) -(2L << 52), Float.instance((double) -(2L << 52) - 0.5d).getWholePart().value, 0.0);
+
+        assertEquals((double) +(2L << 53), Float.instance((double) +(2L << 53) + 0.5d).getWholePart().value, 0.0);
+        assertEquals((double) -(2L << 53), Float.instance((double) -(2L << 53) - 0.5d).getWholePart().value, 0.0);
+
+        assertTrue("preserve negative 0", 1 / Float.instance(-0.0).getWholePart().value < 0);
+        assertTrue("preserve positive 0", 1 / Float.instance(+0.0).getWholePart().value > 0);
+        assertTrue("preserve negative 0", 1 / Float.instance(-0.4).getWholePart().value < 0);
+        assertTrue("preserve positive 0", 1 / Float.instance(+0.4).getWholePart().value > 0);
+        assertTrue("preserve negative 0", 1 / Float.instance(-0.6).getWholePart().value < 0);
+        assertTrue("preserve positive 0", 1 / Float.instance(+0.6).getWholePart().value > 0);
+
+        assertEquals(Float.instance(NEGATIVE_INFINITY).getWholePart().value, NEGATIVE_INFINITY, 0.0);
+        assertEquals(Float.instance(POSITIVE_INFINITY).getWholePart().value, POSITIVE_INFINITY, 0.0);
+        assertEquals(Float.instance(NaN).getWholePart().value, NaN, 0.0);
+    }
+
     @Test
     public void testParseFloat() {
         assertParseFloat(12.34e3, "12.34e3");
