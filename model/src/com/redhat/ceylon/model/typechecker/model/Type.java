@@ -1326,6 +1326,8 @@ public class Type extends Reference {
      * Given a type declaration, return a produced type of 
      * which this type is an invariant subtype.
      * 
+     * If this type is Nothing, always return null.
+     * 
      * @param dec a type declaration
      * 
      * @return a produced type of the given type declaration
@@ -1341,6 +1343,7 @@ public class Type extends Reference {
             return null;
         }
         if (isNothing()) {
+            //this is what the backend expects, apparently
             return null;
         }
         boolean complexType = 
@@ -3473,6 +3476,14 @@ public class Type extends Reference {
         }
     }
     
+    /**
+     * Eliminate type aliases from this type, recursively
+     * expanding them into their aliased types. Canonicalize
+     * the type by side-effect!
+     * 
+     * @return this type, with type aliases expanded, and 
+     *         then canonicalized
+     */
     public Type resolveAliases() {
         if (resolvedAliases == null) {
             // really compute it
