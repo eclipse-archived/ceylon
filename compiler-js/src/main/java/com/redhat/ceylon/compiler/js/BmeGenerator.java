@@ -12,8 +12,8 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.TypeArguments;
 import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
+import com.redhat.ceylon.model.typechecker.model.Functional;
 import com.redhat.ceylon.model.typechecker.model.Generic;
-import com.redhat.ceylon.model.typechecker.model.Function;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.TypeParameter;
@@ -41,13 +41,13 @@ public class BmeGenerator {
             gen.generateThrow(null, "Undefined or null reference: " + exp, bme);
             gen.out(":", exp, ")");
         } else {
-            final boolean isCallable = !forInvoke && decl instanceof Function
-                    && bme.getUnit().getCallableDeclaration().equals(bme.getTypeModel().getDeclaration());
+            final boolean isCallable = !forInvoke && (decl instanceof Functional
+                    || bme.getUnit().getCallableDeclaration().equals(bme.getTypeModel().getDeclaration()));
             String who = isCallable && decl.isMember() ? gen.getMember(bme, decl, null) : null;
             if (who == null || who.isEmpty()) {
                 //We may not need to wrap this in certain cases
                 ClassOrInterface cont = ModelUtil.getContainingClassOrInterface(bme.getScope());
-                who=cont == null ? "0" : gen.getNames().self(cont);
+                who = cont == null ? "0" : gen.getNames().self(cont);
             }
             final boolean hasTparms = hasTypeParameters(bme);
             if (isCallable && (who != null || hasTparms)) {
