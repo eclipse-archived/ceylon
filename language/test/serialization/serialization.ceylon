@@ -66,9 +66,95 @@ shared void testSerializationOfArray() {
         "hello" == o2);
 }
 
-// TODO serialization of object with uninitialized late attributes
-// TODO Tuple serialization, deserialization
+@test
+shared void testSerializationOfTuple() {
+    value sc = serialization();
+    value tuple = [1, "hello"];
+    variable value refs = sc.references(tuple);
+    assert(is [Integer, String] x = refs.instance,
+        tuple == x);
+    for (ref in refs) {
+        print(ref);
+    }
+    assert(2 == refs.size);
+    assert(exists reference= refs.first,
+        is Member firstMember = reference.key,
+        firstMember.attribute == `value Tuple.first`,
+        is Object o = reference.item,
+        1 == o);
+    assert(exists restReference = refs.sequence()[1],
+        is Member restMember = restReference.key,
+        restMember.attribute == `value Tuple.rest`,
+        is Object o2 = restReference.item,
+        ["hello"] == o2);
+    
+    refs = sc.references(o2);
+    for (ref in refs) {
+        print(ref);
+    }
+    assert(2 == refs.size);
+    assert(exists reference2= refs.first,
+        is Member firstMember2 = reference2.key,
+        firstMember2.attribute == `value Tuple.first`,
+        is Object o3 = reference2.item,
+        "hello" == o3);
+    assert(exists restReference2 = refs.sequence()[1],
+        is Member restMember2 = restReference2.key,
+        restMember2.attribute == `value Tuple.rest`,
+        is Object o4 = restReference2.item,
+        [] == o4);
+}
+@test
+shared void testSerializationOfTupleTail() {
+    value sc = serialization();
+    value tuple = ["hello", *(2..1_000_000)];
+    variable value refs = sc.references(tuple);
+    assert(is [String, Integer*] x = refs.instance,
+        tuple == x);
+    for (ref in refs) {
+        print(ref);
+    }
+    assert(2 == refs.size);
+    assert(exists reference= refs.first,
+        is Member firstMember = reference.key,
+        firstMember.attribute == `value Tuple.first`,
+        is Object o = reference.item,
+        "hello" == o);
+    assert(exists restReference = refs.sequence()[1],
+        is Member restMember = restReference.key,
+        restMember.attribute == `value Tuple.rest`,
+        is Object o2 = restReference.item,
+        (2..1_000_000) == o2);
+}
 
+@test
+shared void testDeserializationOfTuple() {
+    variable value dc = deserialization<Integer>();
+    dc.instance(0, `[String, Integer]`);
+    dc.attribute(0, `value Tuple.first`, 1);
+    dc.instanceValue(1, "hello");
+    dc.attribute(0, `value Tuple.rest`, 2);
+    dc.instance(2, `[Integer]`);
+    dc.attribute(2, `value Tuple.first`, 3);
+    dc.instanceValue(3, 42);
+    dc.attribute(2, `value Tuple.rest`, 4);
+    dc.instanceValue(4, []);
+    value reconstructed = dc.reconstruct<[String,Integer]>(0);
+    assert(["hello", 42] == reconstructed);
+}
+
+@test
+shared void testDeserializationOfTupleTail() {
+    variable value dc = deserialization<Integer>();
+    dc.instance(0, `[String, Integer+]`);
+    dc.attribute(0, `value Tuple.first`, 1);
+    dc.instanceValue(1, "hello");
+    dc.attribute(0, `value Tuple.rest`, 2);
+    dc.instanceValue(2, 0..10);
+    value reconstructed = dc.reconstruct<[String,Integer+]>(0);
+    print(reconstructed);
+    assert(["hello", *(0..10)] == reconstructed);
+}
 
 @test
 "deserialize a Container that references a string. 
@@ -282,7 +368,6 @@ shared void deserializationWithInsufficientStateArray() {
         dc.reconstruct<Anything>(1);
         assert(false);
     } catch(DeserializationException e) {
-        print(e.message);
         assert(e.message == "lacking sufficient state for instance with id 1: value ceylon.language::Array.size");
     }
     

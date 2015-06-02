@@ -5,11 +5,14 @@ import static com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.getTyp
 import static com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType;
 import static java.lang.System.arraycopy;
 
+import java.lang.invoke.MethodHandles;
+import java.lang.invoke.MethodHandles.Lookup;
 import java.lang.ref.SoftReference;
 import java.util.ArrayList;
 import java.util.Arrays;
 
 import ceylon.language.impl.BaseIterator;
+import ceylon.language.impl.rethrow_;
 import ceylon.language.meta.declaration.ClassDeclaration;
 import ceylon.language.meta.declaration.ValueDeclaration;
 import ceylon.language.serialization.Member;
@@ -726,13 +729,8 @@ public final class Tuple<Element, First extends Element,
             TypeDescriptor $reifiedElement,
             TypeDescriptor $reifiedFirst, 
             TypeDescriptor $reifiedRest) {
-//        super($reifiedElement);
         this.$reifiedElement = $reifiedElement;
-        // hack: put the type descriptors into the array, so they're available
-        // in $deserialize$() for getting the values from the dted
-        this.array = new java.lang.Object[3];
-        this.array[0] = $reifiedFirst;
-        this.array[1] = $reifiedRest;
+        this.array = null;
         this.rest = null;
     }
     @Ignore
@@ -748,33 +746,21 @@ public final class Tuple<Element, First extends Element,
     @Ignore
     @Override
     public void $set$(ReachableReference indexOrAttr, java.lang.Object ref) {
-        // hack: recover the reified type arguments stored in the array
-        throw new AssertionError("not implemented yet");
-        /*if (indexOrAttr instanceof java.lang.String) {
-            switch ((java.lang.String)indexOrAttr){
-            case "ceylon.language::Tuple.first":
-                TypeDescriptor reifiedFirst = (TypeDescriptor)this.array[0];
-                ValueDeclaration firstAttribute = (ValueDeclaration)
-                        ((ClassDeclaration) getOrCreateMetamodel(Tuple.class))
-                        .getMemberDeclaration(ValueDeclaration.$TypeDescriptor$, "first");
-                return;
-            case "ceylon.language::Tuple.rest":
-                TypeDescriptor reifiedRest = (TypeDescriptor)this.array[1];
-                ValueDeclaration restAttribute = (ValueDeclaration)
-                        ((ClassDeclaration) getOrCreateMetamodel(Tuple.class))
-                        .getMemberDeclaration(ValueDeclaration.$TypeDescriptor$, "rest");
-                Sequential<? extends Element> rest1 = (Sequential)ref;
-                Rest rest2 = (Rest)makeRest(rest1);
-                //java.lang.Object[] array = makeArray(first, rest1);
-                //Util.setter(MethodHandles.lookup(), "array").invokeExact(this, array);
-                //Util.setter(MethodHandles.lookup(), "rest").invokeExact(this, rest2);
-                return;
-            default:
-                throw new AssertionError("unknown attribute " + indexOrAttr);
-            }
-        } else {
-            throw new AssertionError("unknown reference " + indexOrAttr);
-        }*/
+        // Because of the tuple optimization, the array field depends on both 
+        // the first and rest values. Because of this PartialImpl handles
+        // Tuples as a special case and invokes $completeInit$() instead of $set$()
+    }
+
+    public void $completeInit$(java.lang.Object first, java.lang.Object rest) {
+        Lookup lookup = MethodHandles.lookup();
+        try {
+            java.lang.Object[] array = makeArray(first, (Sequential)rest);
+            Util.setter(lookup, "array").invokeExact(this, array);
+            Rest rest2 = (Rest)makeRest((Sequential)rest);
+            Util.setter(lookup, "rest").invokeExact(this, rest2);
+        } catch (java.lang.Throwable t) {
+            rethrow_.rethrow(t);
+        }
     }
     
     @Ignore

@@ -21,4 +21,7 @@ final class NativeDequeImpl implements NativeDeque {
     public boolean getEmpty() {
         return deque.isEmpty();
     }
+    public String toString() {
+        return deque.toString();
+    }
 }

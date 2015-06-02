@@ -97,4 +97,7 @@ final class NativeMapImpl<Key,Element> implements NativeMap<Key, Element> {
         };
     }
     
+    public String toString() {
+        return map.toString();
+    }
 }

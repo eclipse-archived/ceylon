@@ -6,12 +6,15 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 
+import ceylon.language.Anything;
 import ceylon.language.AssertionError;
 import ceylon.language.Collection;
 import ceylon.language.Entry;
 import ceylon.language.String;
+import ceylon.language.Tuple;
 import ceylon.language.impl.rethrow_;
 import ceylon.language.meta.declaration.ClassDeclaration;
+import ceylon.language.meta.declaration.ValueDeclaration;
 import ceylon.language.meta.model.ClassModel;
 
 import com.redhat.ceylon.compiler.java.Util;
@@ -27,8 +30,8 @@ import com.redhat.ceylon.compiler.java.runtime.serialization.MemberImpl;
 import com.redhat.ceylon.compiler.java.runtime.serialization.Serializable;
 import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
 import com.redhat.ceylon.model.typechecker.model.Type;
-import com.redhat.ceylon.model.typechecker.model.TypedReference;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
+import com.redhat.ceylon.model.typechecker.model.TypedReference;
 
 @Ceylon(major = 8, minor=0)
 @com.redhat.ceylon.compiler.java.metadata.Class
@@ -109,7 +112,7 @@ class PartialImpl extends Partial {
         ii++;
         for (int jj = 0 ; jj < typeArgs.getSize(); ii++, jj++) {
             types[ii] = TypeDescriptor.class;
-            args[ii] = Metamodel.getTypeDescriptor((ceylon.language.meta.model.Type)typeArgs.getFromFirst(jj));
+            args[ii] = Metamodel.getTypeDescriptor((ceylon.language.meta.model.Type<?>)typeArgs.getFromFirst(jj));
         }
 
         try {
@@ -141,7 +144,7 @@ class PartialImpl extends Partial {
     }
     
     @Override
-    public <Id> java.lang.Object initialize(TypeDescriptor reifiedId, DeserializationContextImpl<Id> context) {
+    public <Id> java.lang.Object initialize(TypeDescriptor $reified$Id, DeserializationContextImpl<Id> context) {
         Object instance_ = getInstance_();
         if (!(instance_ instanceof Serializable)) {
             // we should never get here
@@ -151,14 +154,38 @@ class PartialImpl extends Partial {
         //NativeMap<java.lang.Object, Id> state = (NativeMap<java.lang.Object, Id>)getState();
         if (instance_ instanceof ceylon.language.Array) {
             initializeArray(context, (ceylon.language.Array<?>)instance);
+        } else if (instance_ instanceof ceylon.language.Tuple) {
+            initializeTuple($reified$Id, context, (ceylon.language.Tuple<?,?,?>)instance);
         } else {
             initializeObject(context, instance);
         }
         return null;
     }
 
+    protected <Id> void initializeTuple(TypeDescriptor $reified$Id,DeserializationContextImpl<Id> context,
+            ceylon.language.Tuple<?,?,?> instance) {
+        NativeMap<ReachableReference, Id> state = (NativeMap<ReachableReference, Id>)getState();
+        ValueDeclaration firstAttribute = (ValueDeclaration)
+                ((ClassDeclaration) Metamodel.getOrCreateMetamodel(Tuple.class))
+                .getMemberDeclaration(ValueDeclaration.$TypeDescriptor$, "first");
+        java.lang.Object first = getReferredInstance(context, state, 
+                new MemberImpl(firstAttribute));
+        ValueDeclaration restAttribute = (ValueDeclaration)
+                ((ClassDeclaration) Metamodel.getOrCreateMetamodel(Tuple.class))
+                .getMemberDeclaration(ValueDeclaration.$TypeDescriptor$, "rest");
+        MemberImpl restMember = new MemberImpl(restAttribute);
+        Id restId = state.get(restMember);
+        java.lang.Object referredRest = context.leakInstance(restId);
+        if (referredRest instanceof Partial 
+                && !((PartialImpl)referredRest).getInitialized()) {
+            ((PartialImpl)referredRest).initialize($reified$Id, context);
+        }
+        java.lang.Object rest = getReferredInstance(context, state, restMember);
+        ((Tuple<?,?,?>)instance).$completeInit$(first, rest);
+    }
+    
     protected <Id> void initializeArray(DeserializationContextImpl<Id> context,
-            ceylon.language.Array instance) {
+            ceylon.language.Array<?> instance) {
         NativeMap<ReachableReference, Id> state = (NativeMap<ReachableReference, Id>)getState();
         // In this case we statically know the $references$, and they are:
         // the array's size and each of its elements (as integers)
@@ -173,7 +200,7 @@ class PartialImpl extends Partial {
         int sz = Util.toInt(size.longValue());
         for (int ii = 0; ii < sz; ii++) {
             ElementImpl index = new ElementImpl(ii);
-            Id id = (Id)state.get(index);
+            Id id = state.get(index);
             if (id == null) {
                 throw insufficiantState(index);
             }
@@ -194,14 +221,15 @@ class PartialImpl extends Partial {
         }
     }
 
+    
     protected <Id> void initializeObject(
             DeserializationContextImpl<Id> context,
             Serializable instance) {
         NativeMap<ReachableReference, Id> state = (NativeMap<ReachableReference, Id>)getState();
         // TODO If it were a map of java.lang.String we'd avoid pointless extra boxing
-        java.util.Collection<ReachableReference> attributeNames = instance.$references$();
+        java.util.Collection<ReachableReference> reachables = instance.$references$();
         int numLate = 0;
-        for (ReachableReference r : attributeNames) {
+        for (ReachableReference r : reachables) {
             if (r instanceof Member
                     && ((Member)r).getAttribute().getLate()) {
                 numLate++;
@@ -209,9 +237,9 @@ class PartialImpl extends Partial {
                 numLate++;
             }
         }
-        if (state.getSize() < attributeNames.size()-numLate) {
+        if (state.getSize() < reachables.size()-numLate) {
             HashSet<ReachableReference> missingNames = new HashSet<ReachableReference>();
-            java.util.Iterator<ReachableReference> it = attributeNames.iterator();
+            java.util.Iterator<ReachableReference> it = reachables.iterator();
             while (it.hasNext()) {
                 missingNames.add(it.next());
             }
@@ -222,52 +250,50 @@ class PartialImpl extends Partial {
             }
             throw insufficiantState(missingNames);
         }
-        for (ReachableReference reference : attributeNames) {
+        for (ReachableReference reference : reachables) {
             if (reference instanceof Member) {
-                Member attributeName  = (Member)reference;
+                Member member  = (Member)reference;
                 
-                if (attributeName.getAttribute().getLate()
-                        && !state.contains(attributeName)
-                        || state.get(attributeName) == uninitializedLateValue_.get_()) {
+                if (member.getAttribute().getLate()
+                        && !state.contains(member)
+                        || state.get(member) == uninitializedLateValue_.get_()) {
                     continue;
                 }
                 
                 TypeDescriptor.Class classTypeDescriptor = getClassTypeDescriptor();
                 Entry<TypeDescriptor.Class,String> cacheKey = new Entry<TypeDescriptor.Class,String>(
                         TypeDescriptor.klass(TypeDescriptor.Class.class), String.$TypeDescriptor$, 
-                        classTypeDescriptor, String.instance(attributeName.getAttribute().getQualifiedName()));
-                Type attributeOrIndexType = context.getMemberTypeCache().get(cacheKey);
-                if (attributeOrIndexType == null) {
+                        classTypeDescriptor, String.instance(member.getAttribute().getQualifiedName()));
+                Type memberType = context.getMemberTypeCache().get(cacheKey);
+                if (memberType == null) {
                     Type pt = Metamodel.getModuleManager().getCachedType(classTypeDescriptor);
-                    while (!pt.getDeclaration().getQualifiedNameString().equals(((ClassDeclaration)attributeName.getAttribute().getContainer()).getQualifiedName())) {
+                    while (!pt.getDeclaration().getQualifiedNameString().equals(((ClassDeclaration)member.getAttribute().getContainer()).getQualifiedName())) {
                         pt = pt.getExtendedType();
                     }
                     FunctionOrValue attributeDeclaration = (FunctionOrValue)((TypeDeclaration)pt.getDeclaration()).getMember(
-                            attributeName.getAttribute().getName(), null, false);
+                            member.getAttribute().getName(), null, false);
                     TypedReference attributeType = pt.getTypedMember(
                             attributeDeclaration, Collections.<Type>emptyList(), true);
-                    attributeOrIndexType = attributeType.getType();
-                    context.getMemberTypeCache().put(cacheKey, attributeOrIndexType);
+                    memberType = attributeType.getType();
+                    context.getMemberTypeCache().put(cacheKey, memberType);
                 }
                 
                 Object referredInstance = getReferredInstance(context, state, 
-                        attributeName);
-                
+                        member);
                 Type instanceType = Metamodel.getModuleManager().getCachedType(
                         Metamodel.getTypeDescriptor(referredInstance));
-                
-                if (instanceType.isSubtypeOf(attributeOrIndexType)) {
-                    // XXX the JVM will check the assignability, but we need to 
-                    // check assignability at the ceylon level, so we need to know 
-                    /// type of the attribute an the type that we're assigning.
-                    // XXX this check is really expensive!
-                    // we should cache the attribute type on the context
-                    // when can we avoid this check.
-                    // XXX we can cache MethodHandle setters on the context!
-                    instance.$set$(attributeName, referredInstance);
-                } else {
-                    throw notAssignable(attributeName, attributeOrIndexType, instanceType);
+                if (!instanceType.isSubtypeOf(memberType)) {
+                    throw notAssignable(member, memberType, instanceType);
                 }
+                instance.$set$(member, referredInstance);
+                // XXX the JVM will check the assignability, but we need to 
+                // check assignability at the ceylon level, so we need to know 
+                /// type of the attribute an the type that we're assigning.
+                // XXX this check is really expensive!
+                // we should cache the attribute type on the context
+                // when can we avoid this check.
+                // XXX we can cache MethodHandle setters on the context!
+                
             } else if (reference instanceof Outer) {
                 // ignore it -- the DeserializationContext deals with
                 // instantiating member classes
@@ -278,13 +304,13 @@ class PartialImpl extends Partial {
         }
     }
     
-    java.lang.String descriptor(ReachableReference referent) {
-        if (referent instanceof Member) {
-            return java.lang.String.valueOf(((Member)referent).getAttribute());
-        } else if (referent instanceof Element) {
-            return "index " + ((Element)referent).getIndex();
+    java.lang.String descriptor(ReachableReference reachable) {
+        if (reachable instanceof Member) {
+            return java.lang.String.valueOf(((Member)reachable).getAttribute());
+        } else if (reachable instanceof Element) {
+            return "index " + ((Element)reachable).getIndex();
         } else {
-            return java.lang.String.valueOf(referent);
+            return java.lang.String.valueOf(reachable);
         }
     }
     
@@ -314,8 +340,8 @@ class PartialImpl extends Partial {
     protected <Id> java.lang.Object getReferredInstance(
             DeserializationContextImpl<Id> context,
             NativeMap<ReachableReference, Id> state,
-            ReachableReference attributeName) {
-        Id referredId = state.get(attributeName);
+            ReachableReference reachable) {
+        Id referredId = state.get(reachable);
         return getReferredInstance(context, referredId);
     }
     
@@ -328,4 +354,10 @@ class PartialImpl extends Partial {
         }
         return referred;
     }
+    
+    public java.lang.String toString() {
+        return "Partial " + getId() + (getInitialized() ? "initialized" : getInstantiated() ? "instantiated" : "uninstantiated") + getClazz();
+    }
+    
+    
 }
