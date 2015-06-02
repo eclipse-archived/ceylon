@@ -5,7 +5,10 @@ function flatten(tf, $$$mptypes) {
   var t0,iadic,argx;
   if (mm && mm.ps) {
     if (mm.ps.length===1) {
-      t0=detpl$(mm.ps[0].$t);
+      t0=mm.ps[0].$t;
+      if (!(t0.t===Sequential || t0.t===Sequence)) {
+        t0=detpl$(mm.ps[0].$t);
+      }
       iadic=variadicness(t0);
       argx = t0.t==='T' ? t0.l.length : 1;
     } else {
@@ -17,12 +20,12 @@ function flatten(tf, $$$mptypes) {
   var rf;
   if (t0.t==='T') {
     //Tuple
-    rf=function fft(){
-      var t = [];
-      for (var i=0;i<argx-(iadic?1:0);i++) {
-        t.push(arguments[i]);
-      }
-      if (iadic) {
+    if (iadic) {
+      rf=function fftv(){
+        var t = [];
+        for (var i=0;i<argx-1;i++) {
+          t.push(arguments[i]);
+        }
         var seqarg=arguments[argx-1];
         if (seqarg===undefined || seqarg.length===0) {
           seqarg=empty();
@@ -30,9 +33,27 @@ function flatten(tf, $$$mptypes) {
           seqarg=ArraySequence(seqarg,{Element$ArraySequence:seqarg._elemTarg()});
         }
         if (argx===1&&t.length==0)return tf(seqarg);
+        return tf(tpl$(t,undefined,seqarg));
       }
-      return tf(tpl$(t,undefined,seqarg));
-    };
+    } else {
+      rf=function fft1(){
+        var t=[];
+        if (arguments.length===1 && argx>1 && is$(arguments[0],{t:Sequential}) && arguments[0].size===argx) {
+          //Because of spread we could get a Tuple here
+          if (is$(arguments[0],{t:Tuple})) {
+            return tf(arguments[0]);
+          }
+          for (var i=0;i<argx;i++) {
+            t.push(arguments[0].$_get(i));
+          }
+        } else {
+          for (var i=0;i<argx;i++) {
+            t.push(arguments[i]);
+          }
+        }
+        return tf(tpl$(t));
+      }
+    }
     rf.$crtmm$={$t:mm.$t,ps:[]};
     for(var i=0;i<t0.l.length;i++){
       rf.$crtmm$.ps.push({$t:t0.l[i],mt:'prm',nm:'flat'+i});
