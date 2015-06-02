@@ -39,7 +39,9 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.CaseClause;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Condition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.Return;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierOrInitializerExpression;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.Statement;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Switched;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Variable;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
@@ -134,6 +136,9 @@ public class StatementTransformer extends AbstractTransformer {
     }
     
     public List<JCStatement> transformBlock(Tree.Block block) {
+        return transformBlock(block, false);
+    }
+    public List<JCStatement> transformBlock(Tree.Block block, boolean revertRet) {
         if (block == null) {
             return List.<JCStatement>nil();
         }
@@ -147,13 +152,26 @@ public class StatementTransformer extends AbstractTransformer {
             v.defs = new ListBuffer<JCTree>();
             v.inInitializer = false;
             v.classBuilder = current();
-            for (Tree.Statement stmt : block.getStatements()) {
-                HasErrorException error = errors().getFirstErrorBlock(stmt);
-                if (error == null) {
-                    stmt.visit(v);
+            java.util.Iterator<Statement> statements = block.getStatements().iterator();
+            while (statements.hasNext()) {
+                Tree.Statement stmt = statements.next();
+                Transformer<JCStatement, Return> returnTransformer;
+                if (revertRet 
+                        && stmt instanceof Tree.Declaration) {
+                    returnTransformer = returnTransformer(defaultReturnTransformer);
                 } else {
-                    v.append(this.makeThrowUnresolvedCompilationError(error));
-                    break;
+                    returnTransformer = this.returnTransformer;
+                }
+                try {
+                    HasErrorException error = errors().getFirstErrorBlock(stmt);
+                    if (error == null) {
+                        stmt.visit(v);
+                    } else {
+                        v.append(this.makeThrowUnresolvedCompilationError(error));
+                        break;
+                    }
+                } finally {
+                    returnTransformer(returnTransformer);
                 }
             }
             result = (List<JCStatement>)v.getResult().toList();
@@ -3155,30 +3173,59 @@ public class StatementTransformer extends AbstractTransformer {
         // continue;
         return at(stmt).Continue(getLabel(stmt));
     }
-
+    private Transformer<JCStatement, Tree.Return> defaultReturnTransformer = new DefaultReturnTransformer();
+    private Transformer<JCStatement, Tree.Return> returnTransformer = defaultReturnTransformer;
+    Transformer<JCStatement, Tree.Return> returnTransformer(Transformer<JCStatement, Tree.Return> tx) {
+        Transformer<JCStatement, Tree.Return> result = this.returnTransformer;
+        this.returnTransformer = tx;
+        return result;
+        
+    }
     JCStatement transform(Tree.Return ret) {
-        // Remove the inner substitutions for any deferred values specified 
-        // in the control block
-        closeInnerSubstituionsForSpecifiedValues(currentForClause);
-        Tree.Expression expr = ret.getExpression();
-        JCExpression returnExpr = null;
-        at(ret);
-        if (expr != null) {
-            boolean prevNoExpressionlessReturn = noExpressionlessReturn;
-            try {
-                noExpressionlessReturn = false;
-                // we can cast to TypedDeclaration here because return with expressions are only in Function or Value
-                TypedDeclaration declaration = (TypedDeclaration)ret.getDeclaration();
-                returnExpr = expressionGen().transformExpression(declaration, expr.getTerm());
-                // make sure all returns from hash are properly turned into ints
-                returnExpr = convertToIntIfHashAttribute(declaration, returnExpr);
-            } finally {
-                noExpressionlessReturn = prevNoExpressionlessReturn;
-            }
-        } else if (noExpressionlessReturn) {
-            returnExpr = makeNull();
+        return returnTransformer.transform(ret);
+    }
+    
+    class ConstructorReturnTransformer implements Transformer<JCStatement, Tree.Return> {
+        private final Name label;
+
+        public ConstructorReturnTransformer(Name label) {
+            this.label = label;
         }
-        return at(ret).Return(returnExpr);
+        
+        public JCStatement transform(Tree.Return ret) {
+            // Remove the inner substitutions for any deferred values specified 
+            // in the control block
+            closeInnerSubstituionsForSpecifiedValues(currentForClause);
+            at(ret);
+            return at(ret).Break(label);
+        }
+    }
+    
+    class DefaultReturnTransformer implements Transformer<JCStatement, Tree.Return> {
+        public JCStatement transform(Tree.Return ret) {
+            // Remove the inner substitutions for any deferred values specified 
+            // in the control block
+            closeInnerSubstituionsForSpecifiedValues(currentForClause);
+            Tree.Expression expr = ret.getExpression();
+            JCExpression returnExpr = null;
+            at(ret);
+            if (expr != null) {
+                boolean prevNoExpressionlessReturn = noExpressionlessReturn;
+                try {
+                    noExpressionlessReturn = false;
+                    // we can cast to TypedDeclaration here because return with expressions are only in Function or Value
+                    TypedDeclaration declaration = (TypedDeclaration)ret.getDeclaration();
+                    returnExpr = expressionGen().transformExpression(declaration, expr.getTerm());
+                    // make sure all returns from hash are properly turned into ints
+                    returnExpr = convertToIntIfHashAttribute(declaration, returnExpr);
+                } finally {
+                    noExpressionlessReturn = prevNoExpressionlessReturn;
+                }
+            } else if (noExpressionlessReturn) {
+                returnExpr = makeNull();
+            }
+            return at(ret).Return(returnExpr);
+        }
     }
 
     public JCStatement transform(Tree.Throw t) {

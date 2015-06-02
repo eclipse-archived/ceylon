@@ -32,6 +32,7 @@ import com.redhat.ceylon.compiler.java.codegen.recovery.TransformationPlan;
 import com.redhat.ceylon.compiler.typechecker.tree.NaturalVisitor;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.Return;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.model.loader.NamingBase.Suffix;
 import com.redhat.ceylon.model.typechecker.model.Class;
@@ -47,6 +48,7 @@ import com.sun.tools.javac.tree.JCTree.JCExpression;
 import com.sun.tools.javac.tree.JCTree.JCStatement;
 import com.sun.tools.javac.util.List;
 import com.sun.tools.javac.util.ListBuffer;
+import com.sun.tools.javac.util.Name;
 
 public class CeylonVisitor extends Visitor implements NaturalVisitor {
     protected final CeylonTransformer gen;
@@ -224,30 +226,50 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
             } else {
                 // no explicit extends clause
             }
-            
+            final boolean addBody;
             if (delegatedTo
                     && (delegation.isAbstractSelfOrSuperDelegation())) {
                 if (delegation.getConstructor().isAbstract()) {
                     stmts.addAll(classBuilder.getInitBuilder().copyStatementsBetween(null, ctorModel));
-                    stmts.addAll(gen.statementGen().transformBlock(ctor.getBlock()));
+                    addBody = true;
                 } else if (delegation.getExtendingConstructor() != null && delegation.getExtendingConstructor().isAbstract()){
                     stmts.addAll(classBuilder.getInitBuilder().copyStatementsBetween(delegation.getExtendingConstructor(), ctorModel));
-                    stmts.addAll(gen.statementGen().transformBlock(ctor.getBlock()));
+                    addBody = true;
+                } else {
+                    addBody = false;
                 }
             } else if (delegation.isAbstractSelfDelegation()) {// delegating to abstract
                 stmts.addAll(classBuilder.getInitBuilder().copyStatementsBetween(delegation.getExtendingConstructor(), ctorModel));
-                stmts.addAll(gen.statementGen().transformBlock(ctor.getBlock()));
+                addBody = true;
             } else if (delegation.isConcreteSelfDelegation()) {
                 stmts.addAll(classBuilder.getInitBuilder().copyStatementsBetween(delegation.getExtendingConstructor(), ctorModel));
-                stmts.addAll(gen.statementGen().transformBlock(ctor.getBlock()));
+                addBody = true;
             } else {// super delegation
                 stmts.addAll(classBuilder.getInitBuilder().copyStatementsBetween(null, ctorModel));
-                stmts.addAll(gen.statementGen().transformBlock(ctor.getBlock()));
+                addBody = true;
+                
+            }
+            List<JCStatement> following = ctorModel.isAbstract() ? List.<JCStatement>nil() : classBuilder.getInitBuilder().copyStatementsBetween(ctorModel, null);
+            if (addBody) {
+                if (following.isEmpty()) {
+                    stmts.addAll(gen.statementGen().transformBlock(ctor.getBlock()));
+                } else {
+                    Name label = gen.naming.aliasName(Naming.Unfix.$return$.toString());
+                    Transformer<JCStatement, Return> prev = gen.statementGen().returnTransformer(gen.statementGen().new ConstructorReturnTransformer(label));
+                    try {
+                        stmts.add(gen.make().Labelled(label,
+                                gen.make().DoLoop(
+                                gen.make().Block(0, gen.statementGen().transformBlock(ctor.getBlock(), true)), 
+                                gen.make().Literal(false))));
+                    } finally {
+                        gen.statementGen().returnTransformer(prev);
+                    }
+                }
             }
             
-            if (!ctorModel.isAbstract()) {
-                stmts.addAll(classBuilder.getInitBuilder().copyStatementsBetween(ctorModel, null));
-            }
+            //if (!ctorModel.isAbstract()) {
+                stmts.addAll(following);
+            //}
             
             String ctorName = !Decl.isDefaultConstructor(ctorModel) ? gen.naming.makeTypeDeclarationName(ctorModel) : null;
             classBuilder.defs(gen.classGen().makeNamedConstructor(ctor, classBuilder, Strategy.generateInstantiator(ctorModel),
