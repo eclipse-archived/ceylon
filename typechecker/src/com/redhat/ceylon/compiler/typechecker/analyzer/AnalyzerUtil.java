@@ -168,7 +168,7 @@ public class AnalyzerUtil {
      * default type arguments.
      * 
      * @param tas the type argument list
-     * @param qt the qualifying type
+     * @param qualifyingType the qualifying type
      * @param typeParameters the list of type parameters
      * 
      * @return a list of type arguments to the given type
@@ -176,7 +176,7 @@ public class AnalyzerUtil {
      */
     static List<Type> getTypeArguments(
             Tree.TypeArguments tas,
-    		Type qt, 
+    		Type qualifyingType, 
     		List<TypeParameter> typeParameters) {
         if (tas instanceof Tree.TypeArgumentList) {
             
@@ -186,9 +186,9 @@ public class AnalyzerUtil {
                     new HashMap<TypeParameter,Type>();
             Map<TypeParameter,SiteVariance> vars = 
                     new HashMap<TypeParameter,SiteVariance>();
-            if (qt!=null) {
-                typeArgs.putAll(qt.getTypeArguments());
-                vars.putAll(qt.getVarianceOverrides());
+            if (qualifyingType!=null) {
+                typeArgs.putAll(qualifyingType.getTypeArguments());
+                vars.putAll(qualifyingType.getVarianceOverrides());
             }
             
 //            if (tas instanceof Tree.TypeArgumentList) {

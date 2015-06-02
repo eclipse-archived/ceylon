@@ -2546,11 +2546,10 @@ public class ExpressionVisitor extends Visitor {
         }
     }
     
-    Type unwrap(Type pt, 
+    private Type unwrap(Type pt, 
             Tree.QualifiedMemberOrTypeExpression mte) {
         Type result;
-        Tree.MemberOperator op = 
-                mte.getMemberOperator();
+        Tree.MemberOperator op = mte.getMemberOperator();
         Tree.Primary p = mte.getPrimary();
         if (op instanceof Tree.SafeMemberOp)  {
             checkOptional(pt, p);
@@ -2846,19 +2845,19 @@ public class ExpressionVisitor extends Visitor {
             Tree.QualifiedMemberOrTypeExpression qmte = 
                     (Tree.QualifiedMemberOrTypeExpression) 
                         mte;
-            Type pt = 
+            Type invokedType = 
                     qmte.getPrimary().getTypeModel()
-                        .resolveAliases();
-            Type qt = unwrap(pt, qmte);
-            return qt.getTypedReference(dec,
-                    getTypeArguments(tas, qt, tps));
+                        .resolveAliases(); //TODO: probably not necessary
+            Type receiverType = unwrap(invokedType, qmte);
+            return receiverType.getTypedReference(dec,
+                    getTypeArguments(tas, receiverType, tps));
         }
         else {
-            Type qt = 
+            Type receiverType = 
                     mte.getScope()
                         .getDeclaringType(dec);
-            return dec.appliedReference(qt,
-                    getTypeArguments(tas, qt, tps));
+            return dec.appliedReference(receiverType,
+                    getTypeArguments(tas, receiverType, tps));
         }
     }
 
@@ -3245,7 +3244,7 @@ public class ExpressionVisitor extends Visitor {
                 Tree.Primary primary = qte.getPrimary();
                 Type receivingType = 
                         primary.getTypeModel()
-                            .resolveAliases();
+                            .resolveAliases(); //TODO: probably not necessary
                 List<Type> typeArgs = 
                         getOrInferTypeArguments(that, type, 
                                 reference, receivingType);
@@ -3291,7 +3290,7 @@ public class ExpressionVisitor extends Visitor {
                 Tree.Primary primary = qme.getPrimary();
                 Type receivingType = 
                         primary.getTypeModel()
-                            .resolveAliases();
+                            .resolveAliases(); //TODO: probably not necessary
                 List<Type> typeArgs = 
                         getOrInferTypeArguments(that, 
                                 member, reference, 
@@ -8523,7 +8522,9 @@ public class ExpressionVisitor extends Visitor {
             else if (d != null) {
                 that.setWantsDeclaration(false);
                 t = t.resolveAliases();
-                if (t==null || t.isUnknown()) return;
+                if (t==null || t.isUnknown()) {
+                    return;
+                }
                 //checkNonlocalType(that.getType(), t.getDeclaration());
                 if (d instanceof Constructor) {
                     if (((Constructor) d).isAbstraction()) {
