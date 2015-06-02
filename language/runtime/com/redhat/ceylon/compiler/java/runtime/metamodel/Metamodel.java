@@ -74,7 +74,7 @@ import com.redhat.ceylon.model.loader.model.LazyClass;
 import com.redhat.ceylon.model.loader.model.LazyClassAlias;
 import com.redhat.ceylon.model.loader.model.LazyElement;
 import com.redhat.ceylon.model.loader.model.LazyInterface;
-import com.redhat.ceylon.model.loader.model.LazyMethod;
+import com.redhat.ceylon.model.loader.model.LazyFunction;
 import com.redhat.ceylon.model.loader.model.LazyPackage;
 import com.redhat.ceylon.model.loader.model.LazyTypeAlias;
 import com.redhat.ceylon.model.loader.model.LazyValue;
@@ -600,8 +600,8 @@ public class Metamodel {
             ReflectionClass classMirror = (ReflectionClass) ((LazyInterface) declaration).classMirror;
             return classMirror.klass;
         }
-        if(declaration instanceof LazyMethod){
-            ReflectionClass classMirror = (ReflectionClass) ((LazyMethod) declaration).classMirror;
+        if(declaration instanceof LazyFunction){
+            ReflectionClass classMirror = (ReflectionClass) ((LazyFunction) declaration).classMirror;
             return classMirror.klass;
         }
         if(declaration instanceof LazyValue){
@@ -755,8 +755,8 @@ public class Metamodel {
             ReflectionMethod methodMirror = (ReflectionMethod) ((JavaMethod) declaration).mirror;
             return (java.lang.reflect.Method) methodMirror.method;
         }
-        if(declaration instanceof LazyMethod){
-            ReflectionMethod methodMirror = (ReflectionMethod) ((LazyMethod) declaration).getMethodMirror();
+        if(declaration instanceof LazyFunction){
+            ReflectionMethod methodMirror = (ReflectionMethod) ((LazyFunction) declaration).getMethodMirror();
             return (java.lang.reflect.Method) methodMirror.method;
         }
         throw Metamodel.newModelError("Unsupported declaration type: " + declaration);
@@ -804,8 +804,8 @@ public class Metamodel {
                     underlyingDeclaration = ((Setter) underlyingDeclaration).getGetter();
                 if(underlyingDeclaration instanceof LazyValue)
                     classMirror = (ReflectionClass) ((LazyValue) underlyingDeclaration).classMirror;
-                else if(underlyingDeclaration instanceof LazyMethod)
-                    classMirror = (ReflectionClass) ((LazyMethod) underlyingDeclaration).classMirror;
+                else if(underlyingDeclaration instanceof LazyFunction)
+                    classMirror = (ReflectionClass) ((LazyFunction) underlyingDeclaration).classMirror;
                 else
                     throw Metamodel.newModelError("Unsupported underlying declaration type: " + underlyingDeclaration);
                 ret = TypeDescriptor.functionOrValue(classMirror.klass, tdArgs);
@@ -1068,8 +1068,8 @@ public class Metamodel {
         // FIXME: introduce a damn interface for getRealName()
         if(method instanceof JavaMethod)
             return ((JavaMethod)method).getRealName();
-        else if(method instanceof LazyMethod){
-            return ((LazyMethod)method).getRealMethodName();
+        else if(method instanceof LazyFunction){
+            return ((LazyFunction)method).getRealMethodName();
         }else
             throw Metamodel.newModelError("Function declaration type not supported yet: "+method);
     }
