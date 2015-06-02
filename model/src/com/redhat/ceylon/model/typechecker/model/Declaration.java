@@ -87,11 +87,13 @@ public abstract class Declaration
         }
         if (this instanceof Generic) {
             Generic g = (Generic) this;
-            if (!g.getTypeParameters().isEmpty()) {
+            List<TypeParameter> typeParams = 
+                    g.getTypeParameters();
+            if (!typeParams.isEmpty()) {
                 StringBuilder params = new StringBuilder();
                 params.append("<");
                 boolean first = true;
-                for (TypeParameter tp: g.getTypeParameters()) {
+                for (TypeParameter tp: typeParams) {
                     if (first) {
                         first = false;
                     }
@@ -627,6 +629,8 @@ public abstract class Declaration
      * 
      * @return a map from each type parameter of this 
      *         declaration to its own type
+     *         
+     * @see ModelUtil#typeParametersAsArgList
      */
     Map<TypeParameter, Type> getTypeParametersAsArguments() {
         if (this instanceof Generic) {

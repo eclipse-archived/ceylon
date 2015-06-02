@@ -80,8 +80,7 @@ public abstract class Reference {
     private static Map<TypeParameter, Type> 
     fillInDefaultTypeArguments(Declaration declaration,
             Map<TypeParameter, Type> typeArguments) {
-        Map<TypeParameter, Type> typeArgs = 
-                typeArguments;
+        Map<TypeParameter, Type> typeArgs = typeArguments;
         Generic g = (Generic) declaration;
         List<TypeParameter> typeParameters = 
                 g.getTypeParameters();
@@ -94,8 +93,8 @@ public abstract class Reference {
                 // only make a copy of typeArguments if required
                 if (typeArguments == typeArgs) {
                     // make a copy big enough to fit every type parameter
-                    typeArgs = new HashMap
-                            <TypeParameter,Type>
+                    typeArgs = 
+                            new HashMap<TypeParameter,Type>
                                 (typeParameters.size());
                     typeArgs.putAll(typeArguments);
                 }

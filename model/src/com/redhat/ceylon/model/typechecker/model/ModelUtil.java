@@ -5,6 +5,7 @@ import static com.redhat.ceylon.model.typechecker.model.SiteVariance.OUT;
 import static java.lang.Character.charCount;
 import static java.lang.Character.isLowerCase;
 import static java.util.Arrays.asList;
+import static java.util.Collections.emptyList;
 import static java.util.Collections.emptyMap;
 import static java.util.Collections.singletonList;
 
@@ -1096,14 +1097,14 @@ public class ModelUtil {
         return count;
     }
 
-    private static List<TypeParameter> getTypeParameters(
+    public static List<TypeParameter> getTypeParameters(
             Declaration declaration) {
         if (declaration instanceof Generic) {
             Generic g = (Generic) declaration;
             return g.getTypeParameters();
         }
         else {
-            return Collections.emptyList();
+            return emptyList();
         }
     }
     
@@ -2129,18 +2130,15 @@ public class ModelUtil {
             Type first, Type second, 
             Unit unit) {
         List<TypeParameter> tps = dec.getTypeParameters();
-        List<Type> args = 
-                new ArrayList<Type>
-                    (tps.size());
-        Map<TypeParameter,SiteVariance> 
-        varianceOverrides =
+        List<Type> args = new ArrayList<Type>(tps.size());
+        Map<TypeParameter,SiteVariance> varianceOverrides =
                 new HashMap<TypeParameter,SiteVariance>(1);
         for (TypeParameter tp: tps) {
-            Type arg;
             Type firstArg = 
                     first.getTypeArguments().get(tp);
             Type secondArg = 
                     second.getTypeArguments().get(tp);
+            Type arg;
             if (firstArg==null || secondArg==null) {
                 arg = unit.getUnknownType();
             }
@@ -2248,8 +2246,7 @@ public class ModelUtil {
         Type pqt = 
                 principalQualifyingType(first, second, 
                         dec, unit);
-        Type result = 
-                dec.appliedType(pqt, args);
+        Type result = dec.appliedType(pqt, args);
         result.setVarianceOverrides(varianceOverrides);
         return result;
     }
@@ -2263,15 +2260,12 @@ public class ModelUtil {
         //      type - only supertypes of the outer type
         //      Nor do we need to check variance overrides since
         //      supertypes can't have them.
-        for (TypeParameter tp: 
-                st1.getDeclaration().getTypeParameters()) {
+        List<TypeParameter> typeParameters = 
+                st1.getDeclaration().getTypeParameters();
+        for (TypeParameter tp: typeParameters) {
             if (!tp.isCovariant() && !tp.isContravariant()) {
-                Type ta1 = 
-                        st1.getTypeArguments()
-                            .get(tp);
-                Type ta2 = 
-                        st2.getTypeArguments()
-                            .get(tp);
+                Type ta1 = st1.getTypeArguments().get(tp);
+                Type ta2 = st2.getTypeArguments().get(tp);
                 if (ta1!=null && ta2!=null && 
                         !ta1.isExactly(ta2)) {
                     return false;
@@ -2291,12 +2285,11 @@ public class ModelUtil {
      */
     public static Type intersectionOfSupertypes(
             TypeDeclaration td) {
-        List<Type> satisfiedTypes = 
-                td.getSatisfiedTypes();
+        Type extendedType = td.getExtendedType();
+        List<Type> satisfiedTypes = td.getSatisfiedTypes();
         List<Type> list = 
                 new ArrayList<Type>
                     (satisfiedTypes.size()+1);
-        Type extendedType = td.getExtendedType();
         if (extendedType!=null) {
             list.add(extendedType);
         }
@@ -2482,11 +2475,24 @@ public class ModelUtil {
         }
     }
 
-    public static List<Type> toTypeArgs(Generic dec) {
+    /**
+     * The list of type parameters of the given generic
+     * declaration as types. (As viewed within the body of
+     * the generic declaration.)
+     * 
+     * @param dec a generic declaration or type constructor
+     * @return a list of types of its type parameters
+     * 
+     * @see Declaration#getTypeParametersAsArguments
+     */
+    public static List<Type> typeParametersAsArgList(Generic dec) {
         List<TypeParameter> params = 
                 dec.getTypeParameters();
+        if (params.isEmpty()) {
+            return NO_TYPE_ARGS;
+        }
         int size = params.size();
-        List<Type> paramsAsArgs =
+        List<Type> paramsAsArgs = 
                 new ArrayList<Type>(size);
         for (int i=0; i<size; i++) {
             TypeParameter param = params.get(i);

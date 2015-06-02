@@ -11,7 +11,7 @@ import static com.redhat.ceylon.model.typechecker.model.ModelUtil.intersection;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.intersectionOfSupertypes;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.intersectionType;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.principalInstantiation;
-import static com.redhat.ceylon.model.typechecker.model.ModelUtil.toTypeArgs;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.typeParametersAsArgList;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.union;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.unionOfCaseTypes;
 import static com.redhat.ceylon.model.typechecker.model.SiteVariance.IN;
@@ -550,10 +550,10 @@ public class Type extends Reference {
                 return isSubtypeOfTypeConstructor(type);
             }
             else if (isTypeConstructor()) {
-                return type.isSupertypeOfObject();
+                return type.isAnything() || type.isObject();
             }
             else if (type.isTypeConstructor()) {
-                return isSupertypeOfObject();
+                return isAnything() || isObject();
             }
             else if (isObject()) {
                 return type.isObject();
@@ -676,10 +676,8 @@ public class Type extends Reference {
                 type.getDeclaration()
                     .getTypeParameters();
         for (TypeParameter tp: typeParameters) {
-            Type arg = 
-                    supertype.getTypeArguments().get(tp);
-            Type otherArg = 
-                    type.getTypeArguments().get(tp);
+            Type arg = supertype.getTypeArguments().get(tp);
+            Type otherArg = type.getTypeArguments().get(tp);
             if (arg==null || otherArg==null) {
                 return false;
             }
@@ -733,11 +731,6 @@ public class Type extends Reference {
                 getQualifyingType();
     }
     
-    private boolean isSupertypeOfObject() {
-        Unit unit = getDeclaration().getUnit();
-        return unit.getObjectType().isSubtypeOf(this);
-    }
-    
     private boolean isExactlyTypeConstructor(Type type) {
         TypeDeclaration dec = getDeclaration();
         TypeDeclaration otherDec = type.getDeclaration();
@@ -751,7 +744,7 @@ public class Type extends Reference {
             Type oqt = type.getQualifyingType();
             if (typeConstructorParam==null) {
                 List<Type> paramsAsArgs =
-                        toTypeArgs(otherDec);
+                        typeParametersAsArgList(otherDec);
                 Type rt =
                         dec.appliedType(qt,
                                 paramsAsArgs);
@@ -764,7 +757,7 @@ public class Type extends Reference {
             }
             else {
                 List<Type> paramsAsArgs = 
-                        toTypeArgs(typeConstructorParam);
+                        typeParametersAsArgList(typeConstructorParam);
                 Type rt = 
                         dec.appliedType(qt, 
                                 paramsAsArgs);
@@ -793,7 +786,7 @@ public class Type extends Reference {
             if (typeConstructorParam == null) {
                 // occurs as the type of something
                 List<Type> paramsAsArgs = 
-                        toTypeArgs(otherDec);
+                        typeParametersAsArgList(otherDec);
                 Type rt =
                         dec.appliedType(qt, 
                                 paramsAsArgs);
@@ -808,7 +801,7 @@ public class Type extends Reference {
                 // occurs as a type argument to a type 
                 // constructor parameter
                 List<Type> paramsAsArgs = 
-                        toTypeArgs(typeConstructorParam);
+                        typeParametersAsArgList(typeConstructorParam);
                 Type rt = 
                         dec.appliedType(qt, 
                                 paramsAsArgs);
@@ -1934,13 +1927,10 @@ public class Type extends Reference {
 
     private List<Type> getTypeArgumentListInternal() {
         TypeDeclaration dec = getDeclaration();
-        List<TypeParameter> tps = 
-                dec.getTypeParameters();
+        List<TypeParameter> tps = dec.getTypeParameters();
         int size = tps.size();
-        List<Type> argList = 
-                new ArrayList<Type>(size);
-        Map<TypeParameter, Type> args = 
-                getTypeArguments();
+        List<Type> argList = new ArrayList<Type>(size);
+        Map<TypeParameter, Type> args = getTypeArguments();
         for (int i=0; i<size; i++) {
             TypeParameter tp = tps.get(i);
             Type arg = args.get(tp);
@@ -2428,7 +2418,8 @@ public class Type extends Reference {
                             covariant, contravariant)) {
                 return true;
             }
-            List<TypeParameter> tps = dec.getTypeParameters();
+            List<TypeParameter> tps = 
+                    dec.getTypeParameters();
             List<Type> tas = getTypeArgumentList();
             for (int i=0; i<tps.size() && i<tas.size(); i++) {
                 TypeParameter itp = tps.get(i);
@@ -2497,7 +2488,8 @@ public class Type extends Reference {
                     qt.occursCovariantly(tp,covariant)) {
                 return true;
             }
-            List<TypeParameter> tps = dec.getTypeParameters();
+            List<TypeParameter> tps = 
+                    dec.getTypeParameters();
             List<Type> tas = getTypeArgumentList();
             for (int i=0; i<tps.size() && i<tas.size(); i++) {
                 TypeParameter itp = tps.get(i);
@@ -2552,7 +2544,8 @@ public class Type extends Reference {
                     qt.occursContravariantly(tp, covariant)) {
                 return true;
             }
-            List<TypeParameter> tps = dec.getTypeParameters();
+            List<TypeParameter> tps = 
+                    dec.getTypeParameters();
             List<Type> tas = getTypeArgumentList();
             for (int i=0; i<tps.size() && i<tas.size(); i++) {
                 TypeParameter itp = tps.get(i);
@@ -3278,25 +3271,22 @@ public class Type extends Reference {
      */
     Type narrowToUpperBounds() {
         if (isClassOrInterface()) {
-            TypeDeclaration declaration = 
-                    getDeclaration();
+            TypeDeclaration declaration = getDeclaration();
             List<TypeParameter> params = 
                     declaration.getTypeParameters();
             if (!params.isEmpty()) {
-                List<Type> args = 
-                        getTypeArgumentList();
+                List<Type> args = getTypeArgumentList();
                 List<Type> bounded =
                         new ArrayList<Type>
                             (args.size());
                 boolean found = false;
                 for (int i=0, 
                         s1 = params.size(),
-                        s2 = args.size(); 
-                        i<s1 && i<s2; i++) {
-                    TypeParameter tp = 
-                            params.get(i);
-                    Type arg = 
-                            args.get(i);
+                        s2 = args.size();
+                        i<s1 && i<s2; 
+                        i++) {
+                    TypeParameter tp = params.get(i);
+                    Type arg = args.get(i);
                     if (isCovariant(tp)) {
                         Type bound = 
                                 //TODO: BUG, this could
