@@ -740,32 +740,37 @@ public class Type extends Reference {
         else {
             TypeParameter typeConstructorParam = 
                     getTypeConstructorParameter();
-            Type qt = getQualifyingType();
-            Type oqt = type.getQualifyingType();
+            Type qualifyingType = getQualifyingType();
+            Type otherQualifyingType = type.getQualifyingType();
             if (typeConstructorParam==null) {
                 List<Type> paramsAsArgs =
                         typeParametersAsArgList(otherDec);
-                Type rt =
-                        dec.appliedType(qt,
+                Type appliedType =
+                        dec.appliedType(
+                                qualifyingType,
                                 paramsAsArgs);
-                Type ort =
-                        otherDec.appliedType(oqt,
+                Type otherAppliedType =
+                        otherDec.appliedType(
+                                otherQualifyingType,
                                 paramsAsArgs);
-                return rt.isExactly(ort) &&
+                return appliedType.isExactly(otherAppliedType) &&
                         hasExactSameUpperBounds(type,
                                 paramsAsArgs);
             }
             else {
                 List<Type> paramsAsArgs = 
-                        typeParametersAsArgList(typeConstructorParam);
-                Type rt = 
-                        dec.appliedType(qt, 
+                        typeParametersAsArgList(
+                                typeConstructorParam);
+                Type appliedType = 
+                        dec.appliedType(
+                                qualifyingType, 
                                 paramsAsArgs);
-                Type ort = 
-                        otherDec.appliedType(oqt, 
+                Type otherAppliedType = 
+                        otherDec.appliedType(
+                                otherQualifyingType, 
                                 paramsAsArgs);
                 //resolves aliases:
-                return rt.isExactly(ort);
+                return appliedType.isExactly(otherAppliedType);
             }
         }
     }
@@ -777,23 +782,23 @@ public class Type extends Reference {
             return true;
         }
         else {
-            Type qt = 
-                    getQualifyingType();
-            Type oqt = 
-                    type.getQualifyingType();
+            Type qualifyingType = getQualifyingType();
+            Type otherQualifyingType = type.getQualifyingType();
             TypeParameter typeConstructorParam = 
                     getTypeConstructorParameter();
             if (typeConstructorParam == null) {
                 // occurs as the type of something
                 List<Type> paramsAsArgs = 
                         typeParametersAsArgList(otherDec);
-                Type rt =
-                        dec.appliedType(qt, 
+                Type appliedType =
+                        dec.appliedType(
+                                qualifyingType, 
                                 paramsAsArgs);
-                Type ort = 
-                        otherDec.appliedType(oqt, 
+                Type otherAppliedType = 
+                        otherDec.appliedType(
+                                otherQualifyingType, 
                                 paramsAsArgs);
-                return rt.isSubtypeOf(ort) &&
+                return appliedType.isSubtypeOf(otherAppliedType) &&
                         acceptsUpperBounds(type, 
                                 paramsAsArgs);
             }
@@ -801,15 +806,18 @@ public class Type extends Reference {
                 // occurs as a type argument to a type 
                 // constructor parameter
                 List<Type> paramsAsArgs = 
-                        typeParametersAsArgList(typeConstructorParam);
-                Type rt = 
-                        dec.appliedType(qt, 
+                        typeParametersAsArgList(
+                                typeConstructorParam);
+                Type appliedType = 
+                        dec.appliedType(
+                                qualifyingType, 
                                 paramsAsArgs);
-                Type ort = 
-                        otherDec.appliedType(oqt, 
+                Type otherAppliedType = 
+                        otherDec.appliedType(
+                                otherQualifyingType, 
                                 paramsAsArgs);
                 //resolves aliases:
-                return rt.isSubtypeOf(ort);
+                return appliedType.isSubtypeOf(otherAppliedType);
             }
         }
     }
