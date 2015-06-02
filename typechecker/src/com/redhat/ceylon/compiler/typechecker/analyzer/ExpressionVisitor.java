@@ -262,24 +262,17 @@ public class ExpressionVisitor extends Visitor {
         if (type instanceof Tree.VoidModifier) {
             fun.setType(unit.getAnythingType());            
         }
-        Type fullType = 
-                fun.getTypedReference()
-                    .getFullType();
+        TypedReference pr = fun.getTypedReference();
+        Type fullType;
         //if the anonymous function has type parameters,
         //then the type of the expression is a type 
         //constructor, so create a fake type alias
-        if (!fun.getTypeParameters().isEmpty()) {
-            TypeAlias ta = new TypeAlias();
-            ta.setName(fun.getName() + "#");
-            ta.setAnonymous(true);
-            ta.setTypeParameters(fun.getTypeParameters());
+        if (isGeneric(fun)) {
             Scope scope = that.getScope();
-            ta.setContainer(scope);
-            ta.setScope(scope);
-            ta.setUnit(unit);
-            ta.setExtendedType(fullType);
-            fullType = ta.getType();
-            fullType.setTypeConstructor(true);
+            fullType = genericFunctionType(fun, scope, fun, pr);
+        }
+        else {
+            fullType = pr.getFullType();
         }
         that.setTypeModel(fullType);
     }
@@ -5910,8 +5903,8 @@ public class ExpressionVisitor extends Visitor {
             Type outerType = 
                     scope.getDeclaringType(member);
             TypedReference pr = 
-                    member.getProducedTypedReference(outerType, 
-                            NO_TYPE_ARGS);
+                    member.getProducedTypedReference(
+                            outerType, NO_TYPE_ARGS);
             that.setTarget(pr);
             Type t = genericFunctionType(g, scope, member, pr);
             that.setTypeModel(t);
