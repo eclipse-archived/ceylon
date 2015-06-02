@@ -2,12 +2,12 @@ package com.redhat.ceylon.model.typechecker.model;
 
 import java.util.Map;
 
-public abstract class LazyProducedType extends Type {
+public abstract class LazyType extends Type {
     
     private boolean initialized;
     private Unit unit;
     
-    public LazyProducedType(Unit unit) {
+    public LazyType(Unit unit) {
         this.unit = unit;
     }
     

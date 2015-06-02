@@ -4,7 +4,7 @@ import com.redhat.ceylon.model.loader.model.LazyClass;
 import com.redhat.ceylon.model.loader.model.LazyClassAlias;
 import com.redhat.ceylon.model.loader.model.LazyInterface;
 import com.redhat.ceylon.model.loader.model.LazyInterfaceAlias;
-import com.redhat.ceylon.model.loader.model.LazyMethod;
+import com.redhat.ceylon.model.loader.model.LazyFunction;
 import com.redhat.ceylon.model.loader.model.LazyTypeAlias;
 import com.redhat.ceylon.model.loader.model.LazyValue;
 
@@ -44,7 +44,7 @@ public interface ModelCompleter {
     /**
      * Completes loading of a toplevel method
      */
-    void complete(LazyMethod lazyMethod);
+    void complete(LazyFunction lazyMethod);
 
     /**
      * Completes loading of a lazy class alias

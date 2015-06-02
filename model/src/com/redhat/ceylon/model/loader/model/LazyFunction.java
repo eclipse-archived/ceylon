@@ -28,7 +28,7 @@ import com.redhat.ceylon.model.typechecker.model.Unit;
  *
  * @author Stéphane Épardaud <stef@epardaud.fr>
  */
-public class LazyMethod extends Function implements LazyElement, LocalDeclarationContainer {
+public class LazyFunction extends Function implements LazyElement, LocalDeclarationContainer {
 
     private MethodMirror methodMirror;
     public final ClassMirror classMirror;
@@ -46,7 +46,7 @@ public class LazyMethod extends Function implements LazyElement, LocalDeclaratio
         return getClass().getSuperclass(); 
     }
     
-    public LazyMethod(ClassMirror classMirror, ModelCompleter completer) {
+    public LazyFunction(ClassMirror classMirror, ModelCompleter completer) {
         this.classMirror = classMirror;
         this.completer = completer;
         this.realName = classMirror.getName();
