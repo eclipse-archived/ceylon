@@ -169,8 +169,9 @@ class PartialImpl extends Partial {
         ValueDeclaration firstAttribute = (ValueDeclaration)
                 ((ClassDeclaration) Metamodel.getOrCreateMetamodel(Tuple.class))
                 .getMemberDeclaration(ValueDeclaration.$TypeDescriptor$, "first");
+        MemberImpl firstMember = new MemberImpl(firstAttribute);
         java.lang.Object first = getReferredInstance(context, state, 
-                new MemberImpl(firstAttribute));
+                firstMember);
         ValueDeclaration restAttribute = (ValueDeclaration)
                 ((ClassDeclaration) Metamodel.getOrCreateMetamodel(Tuple.class))
                 .getMemberDeclaration(ValueDeclaration.$TypeDescriptor$, "rest");
@@ -184,7 +185,20 @@ class PartialImpl extends Partial {
         }
         java.lang.Object rest = getReferredInstance(context, state, restMember);
         ((Tuple<?,?,?>)instance).$completeInit$(first, rest);
-        // now check compatibility 
+        // now check compatibility (do this after initialization 
+        // because Tuple$getType$ requires the tuple is initialized!
+        Type firstMemberType = Metamodel.getModuleManager().getCachedType(getClassTypeDescriptor().getTypeArguments()[1]);
+        Type firstInstanceType = Metamodel.getModuleManager().getCachedType(
+                Metamodel.getTypeDescriptor(first));
+        if (!firstInstanceType.isSubtypeOf(firstMemberType)) {
+            throw notAssignable(firstMember, firstMemberType, firstInstanceType);
+        }
+        Type restInstanceType = Metamodel.getModuleManager().getCachedType(
+                Metamodel.getTypeDescriptor(rest));
+        Type restMemberType = Metamodel.getModuleManager().getCachedType(getClassTypeDescriptor().getTypeArguments()[2]);
+        if (!restInstanceType.isSubtypeOf(restMemberType)) {
+            throw notAssignable(restMember, restMemberType, restInstanceType);
+        }
     }
     
     protected <Id> void initializeArray(DeserializationContextImpl<Id> context,

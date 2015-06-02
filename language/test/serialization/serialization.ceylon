@@ -73,9 +73,6 @@ shared void testSerializationOfTuple() {
     variable value refs = sc.references(tuple);
     assert(is [Integer, String] x = refs.instance,
         tuple == x);
-    for (ref in refs) {
-        print(ref);
-    }
     assert(2 == refs.size);
     assert(exists reference= refs.first,
         is Member firstMember = reference.key,
@@ -89,9 +86,6 @@ shared void testSerializationOfTuple() {
         ["hello"] == o2);
     
     refs = sc.references(o2);
-    for (ref in refs) {
-        print(ref);
-    }
     assert(2 == refs.size);
     assert(exists reference2= refs.first,
         is Member firstMember2 = reference2.key,
@@ -111,9 +105,6 @@ shared void testSerializationOfTupleTail() {
     variable value refs = sc.references(tuple);
     assert(is [String, Integer*] x = refs.instance,
         tuple == x);
-    for (ref in refs) {
-        print(ref);
-    }
     assert(2 == refs.size);
     assert(exists reference= refs.first,
         is Member firstMember = reference.key,
@@ -152,8 +143,27 @@ shared void testDeserializationOfTupleTail() {
     dc.attribute(0, `value Tuple.rest`, 2);
     dc.instanceValue(2, 0..10);
     value reconstructed = dc.reconstruct<[String,Integer+]>(0);
-    print(reconstructed);
     assert(["hello", *(0..10)] == reconstructed);
+}
+
+@test
+shared void testDeserializationOfTupleBrokenTypes() {
+    variable value dc = deserialization<Integer>();
+    dc.instance(0, `[String, Integer]`);
+    dc.attribute(0, `value Tuple.first`, 1);
+    dc.instanceValue(1, "hello");
+    dc.attribute(0, `value Tuple.rest`, 2);
+    dc.instance(2, `[Integer]`);
+    dc.attribute(2, `value Tuple.first`, 3);
+    dc.instanceValue(3, "world");
+    dc.attribute(2, `value Tuple.rest`, 4);
+    dc.instanceValue(4, []);
+    try {
+        dc.reconstruct<Anything>(0);
+        assert(false);
+    } catch (DeserializationException e) {
+        assert(e.message == "instance not assignable to value ceylon.language::Tuple.first of id 2: String is not assignable to Integer");
+    }
 }
 
 @test
