@@ -50,6 +50,7 @@ public class NamingBase {
         $invoke$,
         $lookup$,
         $refine$,
+        $return$,
         $sb$,
         $spreadVarargs$,
         $TypeDescriptor$,
