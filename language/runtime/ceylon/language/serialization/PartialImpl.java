@@ -159,6 +159,7 @@ class PartialImpl extends Partial {
         } else {
             initializeObject(context, instance);
         }
+        setState(null);
         return null;
     }
 
@@ -178,10 +179,12 @@ class PartialImpl extends Partial {
         java.lang.Object referredRest = context.leakInstance(restId);
         if (referredRest instanceof Partial 
                 && !((PartialImpl)referredRest).getInitialized()) {
+            // Safe because tuples are immutable => no cycles 
             ((PartialImpl)referredRest).initialize($reified$Id, context);
         }
         java.lang.Object rest = getReferredInstance(context, state, restMember);
         ((Tuple<?,?,?>)instance).$completeInit$(first, rest);
+        // now check compatibility 
     }
     
     protected <Id> void initializeArray(DeserializationContextImpl<Id> context,

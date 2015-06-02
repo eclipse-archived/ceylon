@@ -171,7 +171,6 @@ class DeserializationContextImpl<Id>() satisfies DeserializationContext<Id>
                     }
                 }
                 if (!r.initialized) {
-                    r.initialize<Id>(this);
                     // push the referred things on to the stack
                     // but only if they haven't yet been initialized
                     for (referredId in r.refersTo) {
@@ -187,7 +186,7 @@ class DeserializationContextImpl<Id>() satisfies DeserializationContext<Id>
                             !container.initialized) {
                         deque.pushFront(container);
                     }
-                    r.state = null;
+                    r.initialize<Id>(this);
                 }
             } else {
                 // it's an instance already, nothing to do
