@@ -12,6 +12,11 @@ public class NamedArgumentList extends Element implements Scope {
     private List<Declaration> members = new ArrayList<Declaration>(3);
     
     @Override
+    public boolean isToplevel() {
+        return false;
+    }
+    
+    @Override
     public List<Declaration> getMembers() {
         return members;
     }

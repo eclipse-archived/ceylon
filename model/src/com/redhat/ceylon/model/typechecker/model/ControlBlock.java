@@ -18,6 +18,11 @@ public class ControlBlock extends Element implements Scope {
     private List<Declaration> members = new ArrayList<Declaration>(3);
     private boolean let;
     
+    @Override
+    public boolean isToplevel() {
+        return false;
+    }
+    
     public boolean isLet() {
         return let;
     }

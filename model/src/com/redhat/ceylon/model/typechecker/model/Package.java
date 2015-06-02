@@ -24,6 +24,11 @@ public class Package
     private Unit unit;
     private String nameAsString;
     
+    @Override
+    public boolean isToplevel() {
+        return false;
+    }
+    
     public Module getModule() {
         return module;
     }

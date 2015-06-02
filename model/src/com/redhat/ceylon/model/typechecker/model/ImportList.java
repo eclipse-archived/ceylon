@@ -14,6 +14,11 @@ public class ImportList implements Scope {
     private List<Import> imports = new ArrayList<Import>();
     
     @Override
+    public boolean isToplevel() {
+        return false;
+    }
+    
+    @Override
     public List<Declaration> getMembers() {
         throw new UnsupportedOperationException();
     }

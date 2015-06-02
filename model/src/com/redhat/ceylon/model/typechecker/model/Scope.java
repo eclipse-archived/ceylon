@@ -136,4 +136,6 @@ public interface Scope {
      */
     public void addMember(Declaration declaration);
     
+    public boolean isToplevel();
+    
 }
