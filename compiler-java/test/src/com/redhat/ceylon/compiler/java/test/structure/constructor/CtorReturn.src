@@ -1,0 +1,60 @@
+package com.redhat.ceylon.compiler.java.test.structure.constructor;
+
+class CtorReturn implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    public CtorReturn() {
+        .ceylon.language.print_.print(.ceylon.language.String.instance("A"));
+        $return$$0: do {
+            break $return$$0;
+        }         while (false);
+        .ceylon.language.print_.print(.ceylon.language.String.instance("B"));
+        .ceylon.language.print_.print(.ceylon.language.String.instance("C"));
+        .ceylon.language.print_.print(.ceylon.language.String.instance("done"));
+    }
+    public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorReturn.Baz Baz = null;
+    
+    public static final class Baz {
+        
+        private Baz() {
+        }
+    }
+    
+    public CtorReturn(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorReturn.Baz $name$) {
+        .ceylon.language.print_.print(.ceylon.language.String.instance("A"));
+        .ceylon.language.print_.print(.ceylon.language.String.instance("B"));
+        $return$$1: do {
+            if (true) {
+                break $return$$1;
+            }
+            throw new .java.lang.Error("Ceylon flow error");
+        }         while (false);
+        .ceylon.language.print_.print(.ceylon.language.String.instance("C"));
+        .ceylon.language.print_.print(.ceylon.language.String.instance("done"));
+    }
+    public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorReturn.Gee Gee = null;
+    
+    public static final class Gee {
+        
+        private Gee() {
+        }
+    }
+    
+    public CtorReturn(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorReturn.Gee $name$, final boolean b$param$) {
+        .ceylon.language.print_.print(.ceylon.language.String.instance("A"));
+        .ceylon.language.print_.print(.ceylon.language.String.instance("B"));
+        .ceylon.language.print_.print(.ceylon.language.String.instance("C"));
+        $return$$3: do {
+            if (b$param$) {
+                break $return$$3;
+            }
+            .ceylon.language.print_.print(.ceylon.language.String.instance("D"));
+        }         while (false);
+        .ceylon.language.print_.print(.ceylon.language.String.instance("done"));
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorReturn.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorReturn.class);
+}
