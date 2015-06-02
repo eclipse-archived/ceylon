@@ -827,7 +827,6 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
     public void visit(Tree.Enumerated that) {
         Constructor e = new Constructor();
         e.setAnonymous(true);
-        e.setStaticallyImportable(true);
         Type at;
         if (scope instanceof Class) {
             Class clazz = (Class) scope;
@@ -850,11 +849,8 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
         visitDeclaration(that, e);
         Value v = new Value();
         v.setType(at);
-        v.setStaticallyImportable(true);
         that.setDeclarationModel(v);
         visitDeclaration(that, v);
-//        Type t = e.getType();
-//        v.setType(t);
         Scope o = enterScope(e);
         super.visit(that);
         exitScope(o);

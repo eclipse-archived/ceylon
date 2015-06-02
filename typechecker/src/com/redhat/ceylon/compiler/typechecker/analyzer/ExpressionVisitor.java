@@ -6315,7 +6315,8 @@ public class ExpressionVisitor extends Visitor {
             Tree.MemberOrTypeExpression primary = 
                     (Tree.MemberOrTypeExpression) 
                         that.getPrimary();
-            if (member instanceof Constructor) {
+            if (member instanceof Constructor ||
+                    type.getDeclaration() instanceof Constructor) {
                 //Ceylon named constructor
                 if (primary.getStaticMethodReference()) {
                     Tree.QualifiedMemberOrTypeExpression qmte = 
@@ -7294,10 +7295,9 @@ public class ExpressionVisitor extends Visitor {
 
     private void checkValueCase(Tree.Expression e) {
         Tree.Term term = e.getTerm();
-        Type t = e.getTypeModel();
+        Type type = e.getTypeModel();
         if (term instanceof Tree.NegativeOp) {
-            Tree.NegativeOp no = 
-                    (Tree.NegativeOp) term;
+            Tree.NegativeOp no = (Tree.NegativeOp) term;
             term = no.getTerm();
         }
         if (term instanceof Tree.Literal) {
@@ -7306,18 +7306,23 @@ public class ExpressionVisitor extends Visitor {
             }
         }
         else if (term instanceof Tree.MemberOrTypeExpression) {
-            Type ut = 
-                    unionType(unit.getNullType(), 
-                            unit.getIdentifiableType(), 
-                            unit);
-            TypeDeclaration dec = t.getDeclaration();
-            if (!dec.isAnonymous() || 
-                    (!dec.isToplevel() && 
-                     !dec.isStaticallyImportable())) {
+            TypeDeclaration dec = type.getDeclaration();
+            boolean isToplevelInstance = 
+                    dec.isAnonymous() && dec.isToplevel();
+            boolean isToplevelClassInstance = 
+                    dec instanceof Constructor &&
+                    dec.isAnonymous() &&
+                    dec.getContainer().isToplevel();
+            if (!isToplevelInstance && 
+                !isToplevelClassInstance) {
                 e.addError("case must refer to a toplevel object declaration or literal value");
             }
             else {
-                checkAssignable(t, ut, e, 
+                Type ut = unionType(
+                        unit.getNullType(), 
+                        unit.getIdentifiableType(), 
+                        unit);
+                checkAssignable(type, ut, e, 
                         "case must be identifiable or null");
             }
         }
