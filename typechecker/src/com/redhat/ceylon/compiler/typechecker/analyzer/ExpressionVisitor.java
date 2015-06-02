@@ -1328,7 +1328,8 @@ public class ExpressionVisitor extends Visitor {
             }
             
             Type t = lhs.getTypeModel();
-            if (lhs==me && d instanceof Function) {
+            if (lhs==me && d instanceof Function &&
+                    !t.isTypeConstructor()) {
                 //if the declaration of the method has
                 //defaulted parameters, we should ignore
                 //that when determining if the RHS is
@@ -3905,12 +3906,23 @@ public class ExpressionVisitor extends Visitor {
                         p.getName() + "'");
             }
         }
-        Type pt = 
-                pr.getTypedParameter(p)
-                    .getFullType();
-//      if (p.isSequenced()) pt = unit.getIteratedType(pt);
+        TypedReference paramRef = pr.getTypedParameter(p);
+        FunctionOrValue model = p.getModel();
+        Type paramType;
+        if (isGeneric(model)) {
+            paramType = genericFunctionType(
+                    (Generic) model, 
+                    a.getScope(), //TODO!!! 
+                    model, 
+                    paramRef);
+        }
+        else {
+            paramType = paramRef
+                .getFullType();
+        }
+
         if (!isTypeUnknown(argType) && 
-                !isTypeUnknown(pt)) {
+                !isTypeUnknown(paramType)) {
             Node node;
             if (a instanceof Tree.SpecifiedArgument) {
                 Tree.SpecifiedArgument sa = 
@@ -3920,7 +3932,7 @@ public class ExpressionVisitor extends Visitor {
             else {
                 node = a;
             }
-            checkAssignable(argType, pt, node,
+            checkAssignable(argType, paramType, node,
                     "named argument must be assignable to parameter " + 
                             argdesc(p, pr), 
                     2100);
@@ -4459,11 +4471,22 @@ public class ExpressionVisitor extends Visitor {
 
     private void checkPositionalArgument(Parameter p, 
             Reference pr, Tree.ListedArgument a) {
-        if (p.getModel()!=null) {
-            Type paramType = 
-                    pr.getTypedParameter(p)
-                        .getFullType();
+        FunctionOrValue model = p.getModel();
+        if (model!=null) {
+            TypedReference paramRef = 
+                    pr.getTypedParameter(p);
             a.setParameter(p);
+            Type paramType;
+            if (isGeneric(model)) {
+                paramType = genericFunctionType(
+                        (Generic) model, 
+                        a.getScope(), //TODO!!! 
+                        model, 
+                        paramRef);
+            }
+            else {
+                paramType = paramRef.getFullType();
+            }
             Type at = a.getTypeModel();
             if (!isTypeUnknown(at) && 
                     !isTypeUnknown(paramType)) {
@@ -5806,6 +5829,23 @@ public class ExpressionVisitor extends Visitor {
         }
     }
 
+    protected Type genericFunctionType(Generic g, Scope scope,
+            Declaration member, Reference pr) {
+        List<TypeParameter> typeParameters = 
+                g.getTypeParameters();
+        TypeAlias ta = new TypeAlias();
+        ta.setContainer(scope);
+        ta.setName("Anonymous#" + member.getName());
+        ta.setAnonymous(true);
+        ta.setScope(scope);
+        ta.setUnit(unit);
+        ta.setExtendedType(pr.getFullType());
+        ta.setTypeParameters(typeParameters);
+        Type t = ta.getType();
+        t.setTypeConstructor(true);
+        return t;
+    }
+    
     private static String baseDescription(Tree.BaseType that) {
         return "'" + name(that.getIdentifier()) +"'";
     }
@@ -5866,8 +5906,6 @@ public class ExpressionVisitor extends Visitor {
             TypedDeclaration member) {
         if (isGeneric(member) && member instanceof Function) {
             Generic g = (Generic) member;
-            List<TypeParameter> typeParameters = 
-                    g.getTypeParameters();
             Scope scope = that.getScope();
             Type outerType = 
                     scope.getDeclaringType(member);
@@ -5875,16 +5913,7 @@ public class ExpressionVisitor extends Visitor {
                     member.getProducedTypedReference(outerType, 
                             NO_TYPE_ARGS);
             that.setTarget(pr);
-            TypeAlias ta = new TypeAlias();
-            ta.setContainer(scope);
-            ta.setName("Anonymous#" + member.getName());
-            ta.setAnonymous(true);
-            ta.setScope(scope);
-            ta.setUnit(unit);
-            ta.setExtendedType(pr.getFullType());
-            ta.setTypeParameters(typeParameters);
-            Type t = ta.getType();
-            t.setTypeConstructor(true);
+            Type t = genericFunctionType(g, scope, member, pr);
             that.setTypeModel(t);
         }
     }
@@ -5997,23 +6026,12 @@ public class ExpressionVisitor extends Visitor {
             TypedDeclaration member) {
         if (isGeneric(member) && member instanceof Function) {
             Generic g = (Generic) member;
-            List<TypeParameter> typeParameters = 
-                    g.getTypeParameters();
             Scope scope = that.getScope();
             TypedReference pr = 
                     receiverType.getTypedMember(member, 
                             NO_TYPE_ARGS);
             that.setTarget(pr);
-            TypeAlias ta = new TypeAlias();
-            ta.setContainer(scope);
-            ta.setName("Anonymous#" + member.getName());
-            ta.setAnonymous(true);
-            ta.setScope(scope);
-            ta.setUnit(unit);
-            ta.setExtendedType(pr.getFullType());
-            ta.setTypeParameters(typeParameters);
-            Type t = ta.getType();
-            t.setTypeConstructor(true);
+            Type t = genericFunctionType(g, scope, member, pr);
             that.setTypeModel(t);
         }
     }
@@ -6447,8 +6465,6 @@ public class ExpressionVisitor extends Visitor {
             TypeDeclaration type) {
         if (isGeneric(type) && type instanceof Class) {
             Generic g = (Generic) type;
-            List<TypeParameter> typeParameters = 
-                    g.getTypeParameters();
             Scope scope = that.getScope();
             Type outerType = 
                     scope.getDeclaringType(type);
@@ -6456,16 +6472,7 @@ public class ExpressionVisitor extends Visitor {
                     type.appliedType(outerType, 
                             typeParametersAsArgList(g));
             that.setTarget(pt);
-            TypeAlias ta = new TypeAlias();
-            ta.setContainer(scope);
-            ta.setName("Anonymous#" + type.getName());
-            ta.setAnonymous(true);
-            ta.setScope(scope);
-            ta.setUnit(unit);
-            ta.setExtendedType(pt.getFullType());
-            ta.setTypeParameters(typeParameters);
-            Type t = ta.getType();
-            t.setTypeConstructor(true);
+            Type t = genericFunctionType(g, scope, type, pt);
             that.setTypeModel(t);
         }
     }
@@ -6730,23 +6737,12 @@ public class ExpressionVisitor extends Visitor {
             TypeDeclaration type) {
         if (isGeneric(type) && type instanceof Class) {
             Generic g = (Generic) type;
-            List<TypeParameter> typeParameters = 
-                    g.getTypeParameters();
             Scope scope = that.getScope();
             Type pt =
                     outerType.getTypeMember(type, 
                             typeParametersAsArgList(g));
             that.setTarget(pt);
-            TypeAlias ta = new TypeAlias();
-            ta.setContainer(scope);
-            ta.setName("Anonymous#" + type.getName());
-            ta.setAnonymous(true);
-            ta.setScope(scope);
-            ta.setUnit(unit);
-            ta.setExtendedType(pt.getFullType());
-            ta.setTypeParameters(typeParameters);
-            Type t = ta.getType();
-            t.setTypeConstructor(true);
+            Type t = genericFunctionType(g, scope, type, pt);
             that.setTypeModel(t);
         }
     }

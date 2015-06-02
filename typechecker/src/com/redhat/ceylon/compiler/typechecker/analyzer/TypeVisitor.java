@@ -1953,10 +1953,10 @@ public class TypeVisitor extends Visitor {
             mov.setInitializerParameter(p);
             p.setModel(mov);
         }
-        if (isGeneric(a)) {
+        /*if (isGeneric(a)) {
             that.addError("parameter declaration is generic: '" + 
                     name + "' may not declare type parameters");
-        }
+        }*/
         if (p.isDefaulted()) {
             checkDefaultArg(that.getSpecifierExpression(), p);
         }
