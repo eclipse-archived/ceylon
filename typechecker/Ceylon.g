@@ -1243,6 +1243,10 @@ parameterDeclaration returns [TypedDeclaration declaration]
         )?
       |
         (
+          typeParameters
+          { m.setTypeParameterList($typeParameters.typeParameterList); }
+        )?
+        (
           parameters
           { m.addParameterList($parameters.parameterList);
             $declaration=m; }
