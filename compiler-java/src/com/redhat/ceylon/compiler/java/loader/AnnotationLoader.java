@@ -50,7 +50,7 @@ import com.redhat.ceylon.model.loader.mirror.MethodMirror;
 import com.redhat.ceylon.model.loader.mirror.TypeMirror;
 import com.redhat.ceylon.model.loader.model.AnnotationProxyClass;
 import com.redhat.ceylon.model.loader.model.AnnotationProxyMethod;
-import com.redhat.ceylon.model.loader.model.LazyMethod;
+import com.redhat.ceylon.model.loader.model.LazyFunction;
 import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.Function;
 import com.redhat.ceylon.model.typechecker.model.Module;
@@ -72,7 +72,7 @@ public class AnnotationLoader {
         this.typeFactory = unit;
     }
 
-    public void setAnnotationConstructor(LazyMethod method, MethodMirror meth) {
+    public void setAnnotationConstructor(LazyFunction method, MethodMirror meth) {
         AnnotationInvocation ai = loadAnnotationInvocation(method, method.classMirror, meth);
         if (ai != null) {
             loadAnnotationConstructorDefaultedParameters(method, meth, ai);
@@ -82,7 +82,7 @@ public class AnnotationLoader {
     }
     
     private AnnotationInvocation loadAnnotationInvocation(
-            LazyMethod method, 
+            LazyFunction method, 
             AnnotatedMirror annoInstMirror, MethodMirror meth) {
         AnnotationInvocation ai = null;
         AnnotationMirror annotationInvocationAnnotation = null;
@@ -105,7 +105,7 @@ public class AnnotationLoader {
     
     private void loadAnnotationInvocationArguments(
             List<AnnotationFieldName> path,
-            LazyMethod method,
+            LazyFunction method,
             AnnotationInvocation ai, AnnotationMirror annotationInvocationAnnotation,
             List<AnnotationMirror> annotationTree, 
             AnnotatedMirror dpm) {
@@ -155,7 +155,7 @@ public class AnnotationLoader {
     
     private AnnotationTerm loadAnnotationArgumentTerm(
             List<AnnotationFieldName> path,
-            LazyMethod method,
+            LazyFunction method,
             AnnotationInvocation ai, Parameter parameter,
             List<AnnotationMirror> annotationTree,
             AnnotatedMirror dpm,
@@ -186,7 +186,7 @@ public class AnnotationLoader {
     }
     
     private void loadAnnotationConstructorDefaultedParameters(
-            LazyMethod method, MethodMirror meth, AnnotationInvocation ai) {
+            LazyFunction method, MethodMirror meth, AnnotationInvocation ai) {
         for (Parameter ctorParam : method.getFirstParameterList().getParameters()) {
             AnnotationConstructorParameter acp = new AnnotationConstructorParameter();
             acp.setParameter(ctorParam);
@@ -198,7 +198,7 @@ public class AnnotationLoader {
         }
     }
     private AnnotationTerm loadAnnotationConstructorDefaultedParameter(
-            LazyMethod method, 
+            LazyFunction method, 
             MethodMirror meth,
             Parameter ctorParam, AnnotationConstructorParameter acp) {
         // Find the method mirror for the DPM
@@ -226,7 +226,7 @@ public class AnnotationLoader {
      * @param ctorParam 
      *  
      */
-    private LiteralAnnotationTerm loadLiteralAnnotationTerm(LazyMethod method, Parameter parameter, AnnotatedMirror mm) {
+    private LiteralAnnotationTerm loadLiteralAnnotationTerm(LazyFunction method, Parameter parameter, AnnotatedMirror mm) {
         // FIXME: store iterable info somewhere else
         boolean singleValue = !typeFactory.isIterableType(parameter.getType())
             || parameter.getType().isString();

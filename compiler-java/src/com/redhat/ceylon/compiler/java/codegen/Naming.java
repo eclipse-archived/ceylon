@@ -41,7 +41,7 @@ import com.redhat.ceylon.model.loader.model.FieldValue;
 import com.redhat.ceylon.model.loader.model.JavaMethod;
 import com.redhat.ceylon.model.loader.model.LazyClass;
 import com.redhat.ceylon.model.loader.model.LazyInterface;
-import com.redhat.ceylon.model.loader.model.LazyMethod;
+import com.redhat.ceylon.model.loader.model.LazyFunction;
 import com.redhat.ceylon.model.loader.model.LazyValue;
 import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
@@ -620,8 +620,8 @@ public class Naming extends NamingBase implements LocalId {
             name = suffixName(Suffix.$priv$, name);
         }
         // Toplevel methods keep their original name because their names might be mangled
-        if (method instanceof LazyMethod) {
-            return ((LazyMethod)method).getRealName();
+        if (method instanceof LazyFunction) {
+            return ((LazyFunction)method).getRealName();
         }
         // only quote if method is a member, we cannot get a conflict for local
         // since local methods have a $getter suffix
@@ -1164,8 +1164,8 @@ public class Naming extends NamingBase implements LocalId {
         String name;
         if (decl instanceof LazyValue) {
             name = ((LazyValue)decl).getRealName();
-        } else if (decl instanceof LazyMethod) {
-            name = ((LazyMethod)decl).getRealName();
+        } else if (decl instanceof LazyFunction) {
+            name = ((LazyFunction)decl).getRealName();
         } else if (decl instanceof LazyClass) {
             name = ((LazyClass)decl).getRealName();
         } else if (decl instanceof LazyInterface) {

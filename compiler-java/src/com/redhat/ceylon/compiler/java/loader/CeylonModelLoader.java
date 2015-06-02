@@ -60,7 +60,7 @@ import com.redhat.ceylon.model.loader.mirror.ClassMirror;
 import com.redhat.ceylon.model.loader.mirror.MethodMirror;
 import com.redhat.ceylon.model.loader.model.AnnotationProxyClass;
 import com.redhat.ceylon.model.loader.model.AnnotationProxyMethod;
-import com.redhat.ceylon.model.loader.model.LazyMethod;
+import com.redhat.ceylon.model.loader.model.LazyFunction;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.UnknownType;
@@ -735,7 +735,7 @@ public class CeylonModelLoader extends AbstractModelLoader {
     }
 
     @Override
-    protected void setAnnotationConstructor(LazyMethod method, MethodMirror meth) {
+    protected void setAnnotationConstructor(LazyFunction method, MethodMirror meth) {
         annotationLoader.setAnnotationConstructor(method, meth);
     }
     
