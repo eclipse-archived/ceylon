@@ -885,7 +885,7 @@ public class TypeVisitor extends Visitor {
     //TODO: big copy/paste from Unit.getTupleType(), to 
     //      eliminate the canonicalization (since aliases  
     //      are not yet resolvable in this phase)
-    public static Type getTupleType(
+    private static Type getTupleType(
             List<Type> elemTypes, 
             boolean variadic, boolean atLeastOne, 
             int firstDefaulted,
