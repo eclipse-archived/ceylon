@@ -42,12 +42,13 @@ import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getNativeDecla
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getOuterClassOrInterface;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getSignature;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getTypeArgumentMap;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getTypeParameters;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.intersectionOfSupertypes;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.intersectionType;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isAbstraction;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isOverloadedVersion;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isTypeUnknown;
-import static com.redhat.ceylon.model.typechecker.model.ModelUtil.toTypeArgs;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.typeParametersAsArgList;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.union;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.unionOfCaseTypes;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.unionType;
@@ -5920,18 +5921,7 @@ public class ExpressionVisitor extends Visitor {
         }
         return member;
     }
-
-    private List<TypeParameter> getTypeParameters
-            (Declaration member) {
-        if (member instanceof Generic) { 
-            Generic d = (Generic) member;
-            return d.getTypeParameters();
-        }
-        else {
-            return emptyList();
-        }
-    }
-
+    
     @Override public void visit(
             Tree.QualifiedMemberExpression that) {
         super.visit(that);
@@ -6472,7 +6462,7 @@ public class ExpressionVisitor extends Visitor {
                     scope.getDeclaringType(type);
             Type pt = 
                     type.appliedType(outerType, 
-                            toTypeArgs(g));
+                            typeParametersAsArgList(g));
             that.setTarget(pt);
             TypeAlias ta = new TypeAlias();
             ta.setContainer(scope);
@@ -6753,7 +6743,7 @@ public class ExpressionVisitor extends Visitor {
             Scope scope = that.getScope();
             Type pt =
                     outerType.getTypeMember(type, 
-                            toTypeArgs(g));
+                            typeParametersAsArgList(g));
             that.setTarget(pt);
             TypeAlias ta = new TypeAlias();
             ta.setContainer(scope);
@@ -8081,8 +8071,7 @@ public class ExpressionVisitor extends Visitor {
             Node parent) {
         boolean explicit = 
                 tas instanceof Tree.TypeArgumentList;
-        TypeDeclaration tcd = 
-                type.getDeclaration();
+        TypeDeclaration tcd = type.getDeclaration();
         List<TypeParameter> typeParameters = 
                 tcd.getTypeParameters();
         int size = typeArguments.size();

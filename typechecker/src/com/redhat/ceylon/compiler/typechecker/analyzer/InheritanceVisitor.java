@@ -18,6 +18,7 @@ import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isTypeUnknown;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
@@ -239,10 +240,10 @@ public class InheritanceVisitor extends Visitor {
         List<TypeParameter> params = 
                 supertype.getDeclaration()
                     .getTypeParameters();
+        Map<TypeParameter, Type> typeArguments = 
+                supertype.getTypeArguments();
         for (TypeParameter param: params) {
-            Type arg = 
-                    supertype.getTypeArguments()
-                        .get(param); //the type argument that the declaration (indirectly) passes to the enumerated supertype
+            Type arg = typeArguments.get(param); //the type argument that the declaration (indirectly) passes to the enumerated supertype
             if (arg!=null) {
                 validateEnumeratedSupertypeArgument(that, 
                         type, supertype, param, arg);
@@ -802,7 +803,8 @@ public class InheritanceVisitor extends Visitor {
             TypeDeclaration td, Type type) {
         if (!(td instanceof TypeParameter)) { //TODO: is this really ok?!
             List<TypeParameter> params = 
-                    type.getDeclaration().getTypeParameters();
+                    type.getDeclaration()
+                        .getTypeParameters();
             List<Type> args = 
                     type.getTypeArgumentList();
             Unit unit = that.getUnit();
@@ -830,13 +832,15 @@ public class InheritanceVisitor extends Visitor {
                     }
                     if (at!=null && !at.isSubtypeOf(arg) && 
                             !(mtd.getSelfType()!=null && 
-                                mtd.getSelfType().isExactly(arg))) {
-                        String help;
+                              mtd.getSelfType().isExactly(arg))) {
+                        String help = "";
                         TypeDeclaration ad = arg.getDeclaration();
-                        if (ad instanceof TypeParameter &&
-                                ((TypeParameter) ad).getDeclaration().equals(td)) {
-                            help = " (try making " + ad.getName() + 
-                                    " a self type of " + td.getName() + ")";
+                        if (ad instanceof TypeParameter) {
+                            TypeParameter tp = (TypeParameter) ad;
+                            if (tp.getDeclaration().equals(td)) {
+                                help = " (try making " + ad.getName() + 
+                                        " a self type of " + td.getName() + ")";
+                            }
                         }
                         else if (ad instanceof Interface) {
                             help = " (try making " + td.getName() + 
@@ -845,9 +849,6 @@ public class InheritanceVisitor extends Visitor {
                         else if (ad instanceof Class && td instanceof Class) {
                             help = " (try making " + td.getName() + 
                                     " extend " + ad.getName() + ")";
-                        }
-                        else {
-                            help = "";
                         }
                         that.addError("type argument does not satisfy self type constraint on type parameter '" +
                                 param.getName() + "' of '" + 
