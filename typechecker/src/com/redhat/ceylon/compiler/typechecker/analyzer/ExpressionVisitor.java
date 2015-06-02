@@ -215,9 +215,7 @@ public class ExpressionVisitor extends Visitor {
         returnType = t;
         if (returnType instanceof Tree.FunctionModifier || 
                 returnType instanceof Tree.ValueModifier) {
-            Type nt = 
-                    unit.getNothingType();
-            returnType.setTypeModel(nt);
+            returnType.setTypeModel(unit.getNothingType());
         }
         return ort;
     }
@@ -284,8 +282,7 @@ public class ExpressionVisitor extends Visitor {
         ifStatementOrExpression = that;
         super.visit(that);
         
-        List<Type> list = 
-                new ArrayList<Type>();
+        List<Type> list = new ArrayList<Type>();
         Tree.IfClause ifClause = that.getIfClause();
         if (ifClause!=null && 
                 ifClause.getExpression()!=null) {
@@ -299,6 +296,7 @@ public class ExpressionVisitor extends Visitor {
         else {
             that.addError("missing then expression");
         }
+        
         Tree.ElseClause elseClause = that.getElseClause();
         if (elseClause!=null && 
                 elseClause.getExpression()!=null) {
@@ -312,6 +310,7 @@ public class ExpressionVisitor extends Visitor {
         else {
             that.addError("missing else expression");
         }
+        
         that.setTypeModel(union(list, unit));
         
         switchStatementOrExpression = ose;        
@@ -343,8 +342,7 @@ public class ExpressionVisitor extends Visitor {
         checkCasesExhaustive(switchClause, switchCaseList);
         
         if (switchCaseList!=null) {
-            List<Type> list = 
-                    new ArrayList<Type>();
+            List<Type> list = new ArrayList<Type>();
             for (Tree.CaseClause cc: 
                     that.getSwitchCaseList()
                         .getCaseClauses()) {
@@ -399,12 +397,15 @@ public class ExpressionVisitor extends Visitor {
                         if (it!=null) {
                             Type et = 
                                     unit.getIteratedType(it);
-                            boolean nonemptyIterable = et!=null &&
+                            boolean nonemptyIterable = 
+                                    et!=null &&
                                     it.isSubtypeOf(unit.getNonemptyIterableType(et));
-                            that.setPossiblyEmpty(!nonemptyIterable || 
+                            that.setPossiblyEmpty(
+                                    !nonemptyIterable || 
                                     cc.getPossiblyEmpty());
                             Type firstType = 
-                                    unionType(unit.getFirstType(it), 
+                                    unionType(
+                                            unit.getFirstType(it), 
                                             cc.getFirstTypeModel(), 
                                             unit);
                             that.setFirstTypeModel(firstType);
@@ -418,9 +419,7 @@ public class ExpressionVisitor extends Visitor {
     @Override public void visit(Tree.IfComprehensionClause that) {
         super.visit(that);
         that.setPossiblyEmpty(true);
-        Type nt = 
-                unit.getNullType();
-        that.setFirstTypeModel(nt);
+        that.setFirstTypeModel(unit.getNullType());
         Tree.ComprehensionClause cc = 
                 that.getComprehensionClause();
         if (cc!=null) {
@@ -474,10 +473,13 @@ public class ExpressionVisitor extends Visitor {
     }
 
     private void inferSequencedValueType(Type type, Tree.Variable var) {
-        Tree.SequencedType st = (Tree.SequencedType) var.getType();
+        Tree.SequencedType st = 
+                (Tree.SequencedType) 
+                    var.getType();
         if (st.getType() instanceof Tree.ValueModifier) {
             if (type!=null) {
-                st.getType().setTypeModel(unit.getSequentialElementType(type));
+                Type set = unit.getSequentialElementType(type);
+                st.getType().setTypeModel(set);
                 setSequencedValueType(st, type, var);
             }
         }
@@ -502,7 +504,8 @@ public class ExpressionVisitor extends Visitor {
     private void destructure(Tree.SpecifierExpression se, 
             Type sequenceType,
             Tree.TuplePattern tuplePattern) {
-        List<Tree.Pattern> patterns = tuplePattern.getPatterns();
+        List<Tree.Pattern> patterns = 
+                tuplePattern.getPatterns();
         int length = patterns.size();
         if (length==0) {
             tuplePattern.addError("tuple pattern must have at least one variable");
