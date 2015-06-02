@@ -151,7 +151,6 @@ class PartialImpl extends Partial {
             throw new AssertionError("Cannot initialize instance that is not serializable");
         }
         Serializable instance = (Serializable)instance_;
-        //NativeMap<java.lang.Object, Id> state = (NativeMap<java.lang.Object, Id>)getState();
         if (instance_ instanceof ceylon.language.Array) {
             initializeArray(context, (ceylon.language.Array<?>)instance);
         } else if (instance_ instanceof ceylon.language.Tuple) {
@@ -303,14 +302,13 @@ class PartialImpl extends Partial {
                     throw notAssignable(member, memberType, instanceType);
                 }
                 instance.$set$(member, referredInstance);
-                // XXX the JVM will check the assignability, but we need to 
+                // the JVM will check the assignability, but we need to 
                 // check assignability at the ceylon level, so we need to know 
                 /// type of the attribute an the type that we're assigning.
                 // XXX this check is really expensive!
                 // we should cache the attribute type on the context
                 // when can we avoid this check.
                 // XXX we can cache MethodHandle setters on the context!
-                
             } else if (reference instanceof Outer) {
                 // ignore it -- the DeserializationContext deals with
                 // instantiating member classes

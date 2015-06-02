@@ -71,7 +71,6 @@ class DeserializationContextImpl<Id>() satisfies DeserializationContext<Id>
     }
     
     shared actual void instance(Id instanceId, ClassModel<Anything,Nothing> clazz) {
-        // TODO check that clazz has serializable annotation, but really efficiently!
         if (!clazz.declaration.serializable) {
             throw DeserializationException("not serializable: ``clazz``");
         }

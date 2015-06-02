@@ -296,7 +296,6 @@ shared void testDeserializationOfArrays() {
 }
 // TODO attribute ordering
 // TODO member class ordering
-// TODO tuple deserialization
 // TODO error cases (missing id, wrong type for attribute, wrong type for reconstruct)
 // TODO serialization tests
 
