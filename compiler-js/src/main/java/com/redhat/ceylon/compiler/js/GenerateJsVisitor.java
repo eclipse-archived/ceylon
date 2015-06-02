@@ -1117,9 +1117,10 @@ public class GenerateJsVisitor extends Visitor
 
     private File getStitchedFilename(final Declaration d, final String suffix) {
         String fqn = d.getQualifiedNameString();
-        if (d.getName() == null && d instanceof Constructor) {
-            String cname = "default$constructor";
-            fqn = fqn.substring(0, fqn.length()-4) + cname;
+        String name = d.getName();
+        if (name == null && d instanceof Constructor) {
+            name = "default$constructor";
+            fqn = fqn.substring(0, fqn.length()-4) + name;
         }
         if (fqn.startsWith("ceylon.language"))fqn = fqn.substring(15);
         if (fqn.startsWith("::"))fqn=fqn.substring(2);
@@ -1127,7 +1128,7 @@ public class GenerateJsVisitor extends Visitor
         if (JsCompiler.isCompilingLanguageModule()) {
             return new File(Stitcher.LANGMOD_JS_SRC, fqn + suffix);
         } else {
-            return new File(new File(d.getUnit().getFullPath()).getParentFile(), fqn + suffix);
+            return new File(new File(d.getUnit().getFullPath()).getParentFile(), name + suffix);
         }
     }
 
