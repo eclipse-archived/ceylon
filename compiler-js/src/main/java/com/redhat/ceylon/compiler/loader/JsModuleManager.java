@@ -29,7 +29,9 @@ public class JsModuleManager extends ModuleManager {
 
     @Override
     public boolean supportsBackend(Backend backend) {
-        return backend == Backend.JavaScript;
+        // HACK added `backend == Backend.None` to make the JS language module compile
+        // Remove this once the problem has been fixed!
+        return backend == Backend.JavaScript || backend == Backend.None;
     }
 
     @Override
