@@ -38,14 +38,12 @@ function flatten(tf, $$$mptypes) {
     } else {
       rf=function fft1(){
         var t=[];
-        if (arguments.length===1 && argx>1 && is$(arguments[0],{t:Sequential}) && arguments[0].size===argx) {
-          //Because of spread we could get a Tuple here
-          if (is$(arguments[0],{t:Tuple})) {
-            return tf(arguments[0]);
-          }
-          for (var i=0;i<argx;i++) {
-            t.push(arguments[0].$_get(i));
-          }
+        if (arguments.length===1 && is$(arguments[0],t0)) {
+          //Spread tuple
+          return tf(arguments[0]);
+        } else if (arguments.length===1 && argx===1 && is$(arguments[0],{t:Sequential,a:{Element$Sequential:t0.l[0]}})) {
+          //This definitely stinks
+          return tf(arguments[0]);
         } else {
           for (var i=0;i<argx;i++) {
             t.push(arguments[i]);
