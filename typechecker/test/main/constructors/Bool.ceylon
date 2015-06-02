@@ -65,6 +65,10 @@ abstract class AbstractSingleton {
     @error new instance {}
 }
 
+class GenericSingleton<T> {
+    @error new instance {}
+}
+
 class BrokenFlow {
     shared new instance {}
     print("hello");

@@ -775,7 +775,8 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
             c.setExtendedType(clazz.getType());
             clazz.setConstructors(true);
             if (clazz.isAnonymous()) {
-                that.addError("anonymous class may not have constructor");
+                that.addError("anonymous class may not have constructor: '" + 
+                        clazz.getName() + "' is an anonymous class");
             }
             
         }
@@ -835,10 +836,16 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
             at = e.appliedType(ot, NO_TYPE_ARGS);
             clazz.setEnumerated(true);
             if (clazz.isAnonymous()) {
-                that.addError("anonymous class may not have an enumerated instance");
+                that.addError("anonymous class may not have an enumerated instance: '" + 
+                        clazz.getName() + "' is an anonymous class");
             }
             else if (clazz.isAbstract()) {
-                that.addError("abstract class may not have an enumerated instance");
+                that.addError("abstract class may not have an enumerated instance: '" + 
+                        clazz.getName() + "' is abstract");
+            }
+            else if (!clazz.getTypeParameters().isEmpty()) {
+                that.addError("generic class may not have an enumerated instance: '" + 
+                        clazz.getName() + "' is generic");
             }
         }
         else {
