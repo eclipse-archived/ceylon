@@ -18,6 +18,9 @@ public class DebuggerTests extends CompilerTests {
     protected String getClassPathAsPath(ModuleWithArtifact... modules) {
         List<File> files = getClassPathAsFiles(modules);
         files.add(new File(System.getProperty("user.home"), ".ceylon/repo/ceylon/language/" + Versions.CEYLON_VERSION_NUMBER + "/ceylon.language-" + Versions.CEYLON_VERSION_NUMBER + ".car"));
+        for(String path : CLASS_PATH){
+            files.add(new File(path));
+        }
         return toPath(files);
     }
 

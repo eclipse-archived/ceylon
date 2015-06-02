@@ -94,6 +94,7 @@ public abstract class CompilerTests {
     public static final String[] CLASS_PATH = new String[] {
         "../ceylon-spec/bin",
         "./build/classes",
+        "./../ceylon-model/build/classes",
         "./../ceylon-module-resolver/build/classes",
         "./../ceylon-common/build/classes",
         "./../ceylon-runtime/build/classes",
