@@ -5959,6 +5959,8 @@ public class ExpressionTransformer extends AbstractTransformer {
             outputs = AnnotationUtil.outputs((Tree.TypeAliasDeclaration)annotated);
         } else if (annotated instanceof Tree.Constructor) {
             outputs = AnnotationUtil.outputs((Tree.Constructor)annotated);
+        } else if (annotated instanceof Tree.Enumerated) {
+            outputs = AnnotationUtil.outputs((Tree.Enumerated)annotated);
         } else if (annotated instanceof Tree.AnyMethod) {
             outputs = AnnotationUtil.outputs((Tree.AnyMethod)annotated);
         } else if (annotated instanceof Tree.AttributeDeclaration) {

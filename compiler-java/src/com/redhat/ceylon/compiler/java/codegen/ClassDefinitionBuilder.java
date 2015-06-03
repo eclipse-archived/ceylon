@@ -572,7 +572,7 @@ public class ClassDefinitionBuilder {
 
     public ClassDefinitionBuilder forDefinition(ClassOrInterface def) {
         this.forDefinition = def;
-        this.hasConstructors = def instanceof Class && ((Class)def).hasConstructors();
+        this.hasConstructors = def instanceof Class && (((Class)def).hasConstructors() || ((Class)def).hasEnumerated());
         return this;
     }
 

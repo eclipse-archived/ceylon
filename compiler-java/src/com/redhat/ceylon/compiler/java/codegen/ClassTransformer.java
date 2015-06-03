@@ -4846,7 +4846,10 @@ public class ClassTransformer extends AbstractTransformer {
      * @param declFlags
      * @return
      */
-    public List<JCTree> makeNamedConstructor(Tree.Constructor that, 
+    public List<JCTree> makeNamedConstructor(
+            Tree.Declaration that,
+            Tree.ParameterList parameterList,
+            Constructor ctor,
             ClassDefinitionBuilder classBuilder,
             boolean generateInstantiator,
             int mods,
@@ -4855,7 +4858,6 @@ public class ClassTransformer extends AbstractTransformer {
             List<JCStatement> ctorBody, 
             DeclNameFlag... declFlags) {
         ListBuffer<JCTree> result = ListBuffer.<JCTree>lb();
-        Constructor ctor = that.getDeclarationModel();
         Class clz = (Class)ctor.getContainer();
         
         at(that);
@@ -4871,7 +4873,7 @@ public class ClassTransformer extends AbstractTransformer {
                 decl = classBuilder.getContainingClassBuilder();
                 impl = classBuilder.getContainingClassBuilder();
             }
-            generateInstantiators(classBuilder, clz, ctor, decl, impl, that, that.getParameterList());
+            generateInstantiators(classBuilder, clz, ctor, decl, impl, that, parameterList);
         }
         
         ctorDb.userAnnotations(expressionGen().transformAnnotations(true, OutputElement.CONSTRUCTOR, that));
@@ -4895,8 +4897,10 @@ public class ClassTransformer extends AbstractTransformer {
             ctorDb.parameter(makeConstructorNameParameter(ctor, declFlags));
         }
         // Add the rest of the parameters (this worries about aliasing)
-        transformClassOrCtorParameters(null, (Class)ctor.getContainer(), ctor, that, that.getParameterList(), 
-                classBuilder, ctorDb, generateInstantiator, decl, impl);
+        if (parameterList != null) {
+            transformClassOrCtorParameters(null, (Class)ctor.getContainer(), ctor, that, parameterList, 
+                    classBuilder, ctorDb, generateInstantiator, decl, impl);
+        }
         
         // Transformation of body has to happen after transformation of parameter so we know about parameter aliasing.
         at(that);

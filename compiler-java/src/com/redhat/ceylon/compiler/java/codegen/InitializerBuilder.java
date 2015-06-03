@@ -105,6 +105,14 @@ public class InitializerBuilder implements ParameterizedBuilder<InitializerBuild
         }
         return this;
     }
+    
+    public InitializerBuilder singleton(
+            com.redhat.ceylon.compiler.typechecker.tree.Tree.Enumerated ctor) {
+        if (ctor != null) {
+            this.init.add(ctor.getEnumerated());
+        }
+        return this;
+    }
 
     /** 
      * Set the expression used to invoke {@code super()} or {@code this()}.

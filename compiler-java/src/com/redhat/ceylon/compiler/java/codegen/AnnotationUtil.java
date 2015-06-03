@@ -132,6 +132,11 @@ public class AnnotationUtil {
         return EnumSet.<OutputElement>of(CONSTRUCTOR);
     }
     
+    public static EnumSet<OutputElement> outputs(
+            Tree.Enumerated annotated) {
+        return EnumSet.<OutputElement>of(CONSTRUCTOR, FIELD, GETTER);
+    }
+    
     public static EnumSet<OutputElement> outputs(Tree.AnyMethod that) {
         return EnumSet.of(METHOD);
     }
