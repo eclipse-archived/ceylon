@@ -1265,8 +1265,7 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
         p.setSequenced(type instanceof Tree.SequencedType);
         that.setParameterModel(p);
         super.visit(that);
-        Value v = (Value) 
-                td.getDeclarationModel();
+        Value v = (Value) td.getDeclarationModel();
         p.setName(v.getName());
         p.setModel(v);
         v.setInitializerParameter(p);
