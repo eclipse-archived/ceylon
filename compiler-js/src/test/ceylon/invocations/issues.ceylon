@@ -82,6 +82,24 @@ void test427() {
     check(i427{ "named \"a\""; "a" } == [true, true], "#427 5");
 }
 
+object obj568 {
+    shared List<B>(List<A>) lift<A, B>(B(A) f)
+        =>  curry(map<A,B>)(f);
+
+    shared List<B> map<A,B>(B(A) f, List<A> list)
+        =>  list.collect(f); 
+
+    shared List<Integer> double(List<Integer> list)
+        =>  uncurry(List<Integer>.collect<Integer>)(list,2.times);
+}
+
+void test568() {
+    value double = obj568.lift(2.times);
+    check(double(Array {1,2,3}) == [2,4,6], "#568.1");
+    check(double([1,2,3]) == [2,4,6], "#568.2");
+    check(obj568.double([1,2,3]) == [2,4,6], "#568.3");   // error #2
+}
+
 void testIssues() {
   objectIssue306.foo().call();
   ClassBug314<Object>();
@@ -91,4 +109,5 @@ void testIssues() {
   testIssue326();
   testIssue376();
   test427();
+  test568();
 }
