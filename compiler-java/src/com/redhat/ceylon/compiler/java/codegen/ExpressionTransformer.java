@@ -3844,11 +3844,19 @@ public class ExpressionTransformer extends AbstractTransformer {
                             producedReference).build();
                 }
             } else if (member instanceof Value) {
-                return CallableBuilder.unboundValueMemberReference(
-                        gen(),
-                        expr,
-                        expr.getTypeModel(), 
-                        ((TypedDeclaration)member)).build();
+                if (expr.getStaticMethodReference()
+                        && ((Value)member).getType().getDeclaration() instanceof Constructor) {
+                    CallBuilder callBuilder = CallBuilder.instance(this);
+                    JCExpression qualExpr = naming.makeTypeDeclarationExpression(null, (TypeDeclaration)member.getContainer(), DeclNameFlag.QUALIFIED);
+                    callBuilder.invoke(naming.makeQualifiedName(qualExpr, (TypedDeclaration)member, Naming.NA_GETTER | Naming.NA_MEMBER));
+                    return callBuilder.build();
+                } else {
+                    return CallableBuilder.unboundValueMemberReference(
+                            gen(),
+                            expr,
+                            expr.getTypeModel(), 
+                            ((TypedDeclaration)member)).build();
+                }
             } else if (member instanceof Class) {
                 Reference producedReference = expr.getTarget();
                 return CallableBuilder.unboundFunctionalMemberReference(
