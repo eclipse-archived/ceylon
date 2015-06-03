@@ -2046,6 +2046,10 @@ public class GenerateJsVisitor extends Visitor
             plainName = expr.getIdentifier().getText();
         }
         else if (isNativeJs(decl)) {
+            if (decl==null) {
+                expr.addUnexpectedError("Expression with no declaration outside of dynamic block");
+                return "<NULL>";
+            }
             // direct access to a native element
             plainName = decl.getName();
         }
