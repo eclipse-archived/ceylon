@@ -191,3 +191,15 @@ void moreTypeArgInference() {
     @type:"Float" value sum1 = add(*[1.0,2.0]);
     @type:"Integer" value sum2 = add(0,2);
 }
+
+void genericParameters() {
+    void accept(f) {
+        T f<T>(T t); 
+        Integer i = f(1); 
+    }
+    accept(identity);
+    accept(<T>(T t) => t);
+    [Integer,Float] pipe(T f<T>(T t)) => [f(1), f(1.0)];
+    value [Integer i1,Float f1] = pipe(identity);
+    value [Integer i2,Float f2] = pipe(<T>(T t) => t);  
+}
