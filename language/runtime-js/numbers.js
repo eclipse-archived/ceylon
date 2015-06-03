@@ -32,7 +32,7 @@ initTypeProto(Integer, 'ceylon.language::Integer', $_Object,$_Number,
 Integer.$crtmm$=function(){return{an:function(){return[shared(),$_native(),$_final()];},mod:$CCMM$,d:['$','Integer']};}
 
 function Float(value) {
-    if (value && value.getT$name && value.getT$name() === 'ceylon.language::Float') {
+    if (value!==null && value!==undefined && value.getT$name && value.getT$name() === 'ceylon.language::Float') {
         return value;
     }
     var that = new Number(value);
@@ -272,8 +272,11 @@ JSNum$proto.offsetSign=function(other) {
 }
 $addnm$('offsetSign',Enumerable.$$.prototype.offsetSign);
 
-atr$(JSNum$proto, 'magnitude', function(){ return Math.abs(this); },
-  undefined,function(){return{an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:$_Number,d:['$','Number','$at','magnitude']};});
+atr$(JSNum$proto,'magnitude',function(){
+  var m=Math.abs(this);
+  if (nflt$(this))m=Float(m);
+  return m;
+},undefined,function(){return{an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:$_Number,d:['$','Number','$at','magnitude']};});
 
 atr$(JSNum$proto, '$_undefined', function(){ return isNaN(this); },
   undefined,function(){return{an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:Float,d:['$','Float','$at','undefined']};});
