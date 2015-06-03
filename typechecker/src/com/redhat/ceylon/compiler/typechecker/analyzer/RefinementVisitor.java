@@ -1,8 +1,6 @@
 package com.redhat.ceylon.compiler.typechecker.analyzer;
 
 
-import static com.redhat.ceylon.compiler.typechecker.analyzer.DeclarationVisitor.setVisibleScope;
-import static com.redhat.ceylon.compiler.typechecker.analyzer.ExpressionVisitor.getRefinedMember;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.NO_TYPE_ARGS;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.checkAssignable;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.checkAssignableToOneOf;
@@ -13,6 +11,8 @@ import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.decla
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.getTypeErrorNode;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.getTypedDeclaration;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.message;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.DeclarationVisitor.setVisibleScope;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.ExpressionVisitor.getRefinedMember;
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.name;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getInheritedDeclarations;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getInterveningRefinements;
@@ -1289,14 +1289,23 @@ public class RefinementVisitor extends Visitor {
     public void visit(Tree.SpecifierStatement that) {
         super.visit(that);
         
-        List<Type> sig = 
-                new ArrayList<Type>();
+        List<Type> sig = new ArrayList<Type>();
+        List<TypeParameter> typeParams = 
+                new ArrayList<TypeParameter>();
         Tree.Term term = that.getBaseMemberExpression();
         while (term instanceof Tree.ParameterizedExpression) {
             sig.clear();
             Tree.ParameterizedExpression pe = 
                     (Tree.ParameterizedExpression) 
                         term;
+            Tree.TypeParameterList typeParameterList = 
+                    pe.getTypeParameterList();
+            if (typeParameterList!=null) {
+                for (Tree.TypeParameterDeclaration tpd: 
+                    typeParameterList.getTypeParameterDeclarations()) {
+                    typeParams.add(tpd.getDeclarationModel());
+                }
+            }
             Tree.ParameterList pl = 
                     pe.getParameterLists()
                         .get(0);
@@ -1349,12 +1358,13 @@ public class RefinementVisitor extends Visitor {
                                         "' (rename parameter)");
                             }
                             else if (td instanceof Value) {
-                                refineValue((Value) td, 
+                                refineAttribute((Value) td, 
                                         bme, that, ci);
                             }
                             else if (td instanceof Function) {
                                 refineMethod((Function) td, 
-                                        bme, that, ci);
+                                        bme, that, ci,
+                                        typeParams);
                             }
                             else {
                                 //TODO!
@@ -1368,7 +1378,7 @@ public class RefinementVisitor extends Visitor {
         }
     }
 
-    private void refineValue(final Value sv, 
+    private void refineAttribute(final Value sv, 
             Tree.BaseMemberExpression bme,
             Tree.SpecifierStatement that, 
             ClassOrInterface c) {
@@ -1425,7 +1435,8 @@ public class RefinementVisitor extends Visitor {
     private void refineMethod(final Function sm, 
             Tree.BaseMemberExpression bme,
             Tree.SpecifierStatement that, 
-            ClassOrInterface c) {
+            ClassOrInterface c, 
+            List<TypeParameter> typeParams) {
         ClassOrInterface ci = 
                 (ClassOrInterface) sm.getContainer();
         Declaration refined = 
@@ -1511,7 +1522,11 @@ public class RefinementVisitor extends Visitor {
             }
             m.getParameterLists().add(l);
         }
-        if (!sm.getTypeParameters().isEmpty()) {
+        if (typeParams!=null) {
+            m.setTypeParameters(typeParams);
+            //TODO: check 'em!!
+        }
+        else if (!sm.getTypeParameters().isEmpty()) {
             bme.addError("method has type parameters: " +  
                     message(sm));
         }

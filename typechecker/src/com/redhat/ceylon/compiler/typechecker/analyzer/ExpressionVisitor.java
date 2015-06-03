@@ -1128,7 +1128,7 @@ public class ExpressionVisitor extends Visitor {
         Tree.Term primary = that.getPrimary();
         if (!hasError(that)) {
             if (primary instanceof Tree.QualifiedMemberExpression ||
-                    primary instanceof Tree.BaseMemberExpression) {
+                primary instanceof Tree.BaseMemberExpression) {
                 Tree.MemberOrTypeExpression mte = 
                         (Tree.MemberOrTypeExpression) primary;
                 if (primary.getTypeModel()!=null && 
@@ -1138,8 +1138,8 @@ public class ExpressionVisitor extends Visitor {
                         List<Tree.ParameterList> pls = 
                                 that.getParameterLists();
                         for (int j=0; j<pls.size(); j++) {
-                            pt = handleExpressionParameterList(that, 
-                                    mte, pt, pls.get(j));
+                            pt = handleExpressionParameterList(
+                                    that, mte, pt, pls.get(j));
                         }
                     }
                 }
@@ -1179,12 +1179,37 @@ public class ExpressionVisitor extends Visitor {
                 Type at = argTypes.get(i);
                 Tree.Parameter param = params.get(i);
                 Parameter model = param.getParameterModel();
-                Type t = 
+                //TODO: for #1329 this is not working yet
+                //because the parameters of a specification
+                //all wind up getting shoved into the 
+                //namespace of the containing Declaration
+                //back in DeclarationVisitor, when by rights
+                //they should belong to the Specification,
+                //which means they all get muddled up with
+                //each other (this is probably causing other
+                //bugs too!)
+                /*Reference ref = mte.getTarget();
+                Declaration fakeDec = model.getDeclaration();
+                if (pt.isTypeConstructor()) {
+                    List<Type> typeArgs = 
+                            typeParametersAsArgList(
+                                    pt.getDeclaration());
+                    ref = fakeDec.appliedReference(null, typeArgs);
+                                
+                }
+                else {
+                    ref = fakeDec.getReference();
+                }
+                Type paramType = 
+                        ref.getTypedParameter(model)
+                            .getFullType();*/
+                Type paramType = 
                         model.getModel()
                             .getTypedReference()
                             .getFullType();
-                if (!isTypeUnknown(t) && !isTypeUnknown(at) &&
-                        !at.isSubtypeOf(t)) {
+                if (!isTypeUnknown(paramType) && 
+                    !isTypeUnknown(at) &&
+                        !at.isSubtypeOf(paramType)) {
                     param.addError("type of parameter '" + 
                             model.getName() + 
                             "' must be a supertype of corresponding parameter type in declaration of '" + 
