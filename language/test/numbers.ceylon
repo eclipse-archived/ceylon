@@ -793,4 +793,8 @@ void checkParseFloat() {
     check((5).offsetSign(5)==0, "Integer.offsetSign 1");
     check((1).offsetSign(5)==-1, "Integer.offsetSign 2");
     check((5).offsetSign(0)==1, "Integer.offsetSign 3");
+    //701
+    check((-(-0.5).wholePart.magnitude).string=="-0.0", "#701.1");
+    check(((-0.5).wholePart.magnitude of Anything) is Float, "#701.2");
+    check(!((-0.5).wholePart.magnitude of Anything) is Integer, "#702.3");
 }
