@@ -1863,6 +1863,11 @@ public class ClassTransformer extends AbstractTransformer {
                     continue;
                 }
             }
+            if(innerType.isAlias()
+                    && innerTypeTree != null
+                    && Decl.isAncestorLocal(innerTypeTree))
+                // for the same reason we do not generate aliases in transform(ClassOrInterface def) let's not list them
+                continue;
             JCAnnotation atMember;
             // interfaces are moved to toplevel so they can lose visibility of member types if they are local
             if(Decl.isLocal(model) && model instanceof Interface)
