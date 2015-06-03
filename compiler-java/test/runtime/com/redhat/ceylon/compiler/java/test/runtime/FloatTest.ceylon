@@ -133,7 +133,7 @@ shared class FloatTest() {
         Float minusTwo = -2.3;
         Float zero = 0.0;
         assertEquals(zero,zero.fractionalPart);
-        assertApproximatelyEquals(0.3,minusTwo.fractionalPart, 0.0000000001);
+        assertApproximatelyEquals(-0.3,minusTwo.fractionalPart, 0.0000000001);
         assertEquals(0.5,ten.fractionalPart);        
     }
     
