@@ -1301,6 +1301,7 @@ public class RefinementVisitor extends Visitor {
             Tree.TypeParameterList typeParameterList = 
                     pe.getTypeParameterList();
             if (typeParameterList!=null) {
+                typeParameterList.addError("specification statements may not have type parameters");
                 for (Tree.TypeParameterDeclaration tpd: 
                     typeParameterList.getTypeParameterDeclarations()) {
                     typeParams.add(tpd.getDeclarationModel());
