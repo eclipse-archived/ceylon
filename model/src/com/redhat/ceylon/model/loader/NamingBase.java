@@ -284,11 +284,4 @@ public class NamingBase {
     public static String name(Unfix unfix) {
         return unfix.toString();
     }
-
-    public static String unpack(String string) {
-        char[] ret = new char[string.length()];
-        for(int i=0;i<ret.length;i++)
-            ret[i] = (char) (string.charAt(i)-1);
-        return new String(ret);
-    }
 }
