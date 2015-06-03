@@ -149,8 +149,7 @@ public class Class extends ClassOrInterface implements Functional {
     
     @Override
     public Type getExtendedType() {
-        Type et = 
-                super.getExtendedType();
+        Type et = super.getExtendedType();
         if (et==null) {
             //for Anything
             return null;
