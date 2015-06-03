@@ -3,6 +3,7 @@ package com.redhat.ceylon.model.typechecker.context;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentHashMap;
 
 import com.redhat.ceylon.model.typechecker.model.Type;
@@ -11,7 +12,7 @@ import com.redhat.ceylon.model.typechecker.model.UnknownType;
 
 public class TypeCache {
     
-    private static boolean cachingEnabledByDefault = false;
+    private static boolean cachingEnabledByDefault = true;
     
     public static void setEnabledByDefault(boolean enabled) {
         cachingEnabledByDefault = enabled;
@@ -26,6 +27,52 @@ public class TypeCache {
         return was;
     }
     
+    private static <T> T doWithExplicitCaching(boolean cacheEnabled, final Callable<T> action) {
+        Boolean was = TypeCache.setEnabled(cacheEnabled);
+        try {
+            return action.call();
+        } catch(Exception e) {
+            if (e instanceof RuntimeException) {
+                throw (RuntimeException) e;
+            } else {
+                throw new RuntimeException(e);
+            }
+        } finally {
+            TypeCache.setEnabled(was);
+        }
+    }
+    
+    private static void doWithExplicitCaching(boolean cacheEnabled, final Runnable action) {
+        Boolean was = TypeCache.setEnabled(cacheEnabled);
+        try {
+            action.run();
+        } catch(Exception e) {
+            if (e instanceof RuntimeException) {
+                throw (RuntimeException) e;
+            } else {
+                throw new RuntimeException(e);
+            }
+        } finally {
+            TypeCache.setEnabled(was);
+        }
+    }
+    
+    public static <T> T doWithCaching(final Callable<T> action) {
+        return doWithExplicitCaching(true, action);
+    }
+
+    public static <T> T doWithoutCaching(final Callable<T> action) {
+        return doWithExplicitCaching(false, action);
+    }
+
+    public static void doWithCaching(final Runnable action) {
+        doWithExplicitCaching(true, action);
+    }
+
+    public static void doWithoutCaching(final Runnable action) {
+        doWithExplicitCaching(false, action);
+    }
+
     public static boolean isEnabled() {
         Boolean cie = cachingEnabled.get();
         return cie == null ? cachingEnabledByDefault : cie;
