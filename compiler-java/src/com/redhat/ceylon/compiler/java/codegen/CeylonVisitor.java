@@ -21,6 +21,8 @@
 package com.redhat.ceylon.compiler.java.codegen;
 
 import static com.sun.tools.javac.code.Flags.PRIVATE;
+import static com.sun.tools.javac.code.Flags.FINAL;
+import static com.sun.tools.javac.code.Flags.STATIC;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -48,6 +50,7 @@ import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.model.typechecker.model.TypeParameter;
+import com.redhat.ceylon.model.typechecker.model.Value;
 import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
 import com.sun.tools.javac.tree.JCTree.JCStatement;
@@ -194,12 +197,29 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
                         delegates);
             } else if (stmt instanceof Tree.Enumerated) {
                 Tree.Enumerated ctor = (Tree.Enumerated)stmt;
+                // generate a constructor
                 transformConstructor(ctor, 
                         null,//ctor.getParameterList(), 
                         null,//ctor.getDelegatedConstructor(),
                         ctor.getBlock(),
                         ctor.getEnumerated(), 
                         delegates);
+                Value singletonModel = ctor.getDeclarationModel();
+                // generate a field
+                AttributeDefinitionBuilder adb = AttributeDefinitionBuilder
+                .singleton(gen, 
+                        null,//gen.naming.makeTypeDeclarationName(Decl.getConstructedClass(ctor.getEnumerated())), 
+                        null, 
+                        singletonModel.getName(), singletonModel, false);
+                adb.modifiers(PRIVATE | STATIC | FINAL);
+                adb.initialValue(gen.make().NewClass(null, null, 
+                        gen.naming.makeTypeDeclarationExpression(null, Decl.getConstructedClass(ctor.getEnumerated())), 
+                        List.<JCExpression>of(
+                                gen.make().TypeCast(
+                                        gen.naming.makeNamedConstructorType(ctor.getEnumerated(), false),
+                                gen.makeNull())), null));
+                adb.immutable();// not setter
+                classBuilder.defs(adb.build());
             }
         }
     }

@@ -162,6 +162,12 @@ public class AttributeDefinitionBuilder {
         return new AttributeDefinitionBuilder(owner, attrType, javaClassName, classBuilder, attrName, "value", toplevel, false);
     }
     
+    public static AttributeDefinitionBuilder singleton(AbstractTransformer owner, 
+            String javaClassName, ClassDefinitionBuilder classBuilder, String attrName, TypedDeclaration attrType, 
+            boolean toplevel) {
+        return new AttributeDefinitionBuilder(owner, attrType, javaClassName, classBuilder, attrName, attrName, toplevel, false);
+    }
+    
     public static AttributeDefinitionBuilder indirect(AbstractTransformer owner, 
             String javaClassName, String attrName, TypedDeclaration attrType, 
             boolean toplevel) {
