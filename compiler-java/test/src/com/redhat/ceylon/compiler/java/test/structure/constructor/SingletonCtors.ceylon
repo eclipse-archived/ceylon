@@ -7,8 +7,8 @@ class SingletonCtors {
     shared new two {
         string="two";
     }
-    /*
-    Integer use(SingletonCtors inst) {
+    
+    shared Integer use(SingletonCtors inst) {
         switch(inst)
         case(SingletonCtors.one) {
             return 1;
@@ -19,5 +19,5 @@ class SingletonCtors {
         else{
             return 3;
         }
-    }*/
+    }
 }
