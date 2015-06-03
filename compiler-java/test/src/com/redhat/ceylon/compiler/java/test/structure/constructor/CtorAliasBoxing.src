@@ -30,7 +30,7 @@ final class CtorAliasBoxingAlias {
     private CtorAliasBoxingAlias() {
     }
     
-    static .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAliasBoxing CtorAliasBoxingAlias$aliased$(final .java.lang.String str) {
+    static .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAliasBoxing CtorAliasBoxingAlias$aliased$$priv$(final .java.lang.String str) {
         throw new .ceylon.language.Exception();
     }
 }
@@ -39,7 +39,7 @@ final class CtorAliasBoxingAlias2 {
     private CtorAliasBoxingAlias2() {
     }
     
-    static .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAliasBoxing CtorAliasBoxingAlias2$aliased$(final .java.lang.String str) {
+    static .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAliasBoxing CtorAliasBoxingAlias2$aliased$$priv$(final .java.lang.String str) {
         throw new .ceylon.language.Exception();
     }
 }

@@ -44,7 +44,7 @@ final class ClassAliasCtorDefault {
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    static .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassAliasCtor ClassAliasCtorDefault$aliased$(@.com.redhat.ceylon.compiler.java.metadata.Name("j")
+    static .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassAliasCtor ClassAliasCtorDefault$aliased$$priv$(@.com.redhat.ceylon.compiler.java.metadata.Name("j")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     final long j) {
         throw new .ceylon.language.Exception();
@@ -58,7 +58,7 @@ final class ClassAliasCtorQualDefault {
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    static .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassAliasCtor ClassAliasCtorQualDefault$aliased$(@.com.redhat.ceylon.compiler.java.metadata.Name("j")
+    static .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassAliasCtor ClassAliasCtorQualDefault$aliased$$priv$(@.com.redhat.ceylon.compiler.java.metadata.Name("j")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     final long j) {
         throw new .ceylon.language.Exception();
@@ -74,7 +74,7 @@ final class ClassAliasCtorOther {
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    static .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassAliasCtor ClassAliasCtorOther$aliased$(@.com.redhat.ceylon.compiler.java.metadata.Name("j")
+    static .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassAliasCtor ClassAliasCtorOther$aliased$$priv$(@.com.redhat.ceylon.compiler.java.metadata.Name("j")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     final long j) {
         throw new .ceylon.language.Exception();
@@ -90,7 +90,7 @@ final class ClassAliasCtorAlias {
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    static .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassAliasCtor ClassAliasCtorAlias$aliased$(@.com.redhat.ceylon.compiler.java.metadata.Name("j")
+    static .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassAliasCtor ClassAliasCtorAlias$aliased$$priv$(@.com.redhat.ceylon.compiler.java.metadata.Name("j")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     final long j) {
         throw new .ceylon.language.Exception();
