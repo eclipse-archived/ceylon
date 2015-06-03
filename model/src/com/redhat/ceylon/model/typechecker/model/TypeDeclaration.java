@@ -597,7 +597,8 @@ public abstract class TypeDeclaration extends Declaration
     @Override
     public TypeDeclaration getInheritingDeclaration(
             Declaration member) {
-        if (member.getContainer().equals(this)) {
+        Scope container = member.getContainer();
+        if (container!=null && container.equals(this)) {
             return null;
         }
         else if (!(this instanceof Constructor) && 
