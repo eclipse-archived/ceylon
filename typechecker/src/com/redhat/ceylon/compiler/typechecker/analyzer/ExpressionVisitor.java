@@ -5887,8 +5887,7 @@ public class ExpressionVisitor extends Visitor {
     
     private static String qualifiedDescription(Tree.QualifiedType that) {
         String name = name(that.getIdentifier());
-        Type ot = 
-                that.getOuterType().getTypeModel();
+        Type ot = that.getOuterType().getTypeModel();
         return "'" + name + "' of type '" + 
                 ot.getDeclaration().getName() + "'";
     }
