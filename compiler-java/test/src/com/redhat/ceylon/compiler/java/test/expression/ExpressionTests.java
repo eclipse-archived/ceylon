@@ -221,7 +221,7 @@ public class ExpressionTests extends CompilerTests {
                 new CompilerError(26, "incorrect syntax: no viable alternative at character 's'"),
                 new CompilerError(28, "incorrect syntax: mismatched character '-' expecting set null"),
                 new CompilerError(29, "incorrect syntax: mismatched character '+' expecting set null"),
-                new CompilerError(30, "incorrect syntax: extraneous token '23' expecting statement-ending ';'"),
+                new CompilerError(30, "incorrect syntax: no viable alternative at token '23'"),
                 new CompilerError(31, "incorrect syntax: mismatched character 's' expecting set null")
         );
     }
