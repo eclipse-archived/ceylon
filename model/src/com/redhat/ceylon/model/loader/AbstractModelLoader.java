@@ -1952,10 +1952,9 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             // Find the instantiator method
             MethodMirror instantiator = null;
             ClassMirror instantiatorClass = alias.isToplevel() ? alias.classMirror : alias.classMirror.getEnclosingClass();
+            String aliasName = NamingBase.getAliasInstantiatorMethodName(alias);
             for (MethodMirror method : instantiatorClass.getDirectMethods()) {
-                // If we're finding things based on their name, shouldn't we 
-                // we using Naming to do it?
-                if (method.getName().equals(alias.getName() + "$aliased$")) {
+                if (method.getName().equals(aliasName)) {
                     instantiator = method;
                     break;
                 }
