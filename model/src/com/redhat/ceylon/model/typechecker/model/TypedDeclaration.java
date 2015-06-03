@@ -48,10 +48,10 @@ public abstract class TypedDeclaration extends Declaration {
         this.type = t;
     }
 
-    public TypedReference getProducedTypedReference(
+    public TypedReference appliedTypedReference(
             Type qualifyingType,
             List<Type> typeArguments) {
-        return getProducedTypedReference(qualifyingType, 
+        return appliedTypedReference(qualifyingType, 
                 typeArguments, false);
     }
     
@@ -71,7 +71,7 @@ public abstract class TypedDeclaration extends Declaration {
      * @param assignment the reference occurs on the
      *                   LHS of an assignment
      */
-    public TypedReference getProducedTypedReference(
+    public TypedReference appliedTypedReference(
             Type qualifyingType,
             List<Type> typeArguments, 
             boolean assignment) {
@@ -101,7 +101,7 @@ public abstract class TypedDeclaration extends Declaration {
     @Override
     public Reference appliedReference(Type pt, 
             List<Type> typeArguments) {
-        return getProducedTypedReference(pt, typeArguments);
+        return appliedTypedReference(pt, typeArguments);
     }
     
     @Override

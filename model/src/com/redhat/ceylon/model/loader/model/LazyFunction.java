@@ -143,10 +143,10 @@ public class LazyFunction extends Function implements LazyElement, LocalDeclarat
     }
 
     @Override
-    public TypedReference getProducedTypedReference(Type qualifyingType, 
+    public TypedReference appliedTypedReference(Type qualifyingType, 
             List<Type> typeArguments, boolean assignment) {
         load();
-        return super.getProducedTypedReference(qualifyingType, typeArguments, assignment);
+        return super.appliedTypedReference(qualifyingType, typeArguments, assignment);
     }
 
     @Override
