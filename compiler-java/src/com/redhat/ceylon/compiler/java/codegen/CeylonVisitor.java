@@ -29,6 +29,7 @@ import java.util.Map;
 
 import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.compiler.java.codegen.Naming.DeclNameFlag;
+import com.redhat.ceylon.compiler.java.codegen.Naming.SyntheticName;
 import com.redhat.ceylon.compiler.java.codegen.recovery.Drop;
 import com.redhat.ceylon.compiler.java.codegen.recovery.HasErrorException;
 import com.redhat.ceylon.compiler.java.codegen.recovery.TransformationPlan;
@@ -204,6 +205,7 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
                         ctor.getBlock(),
                         ctor.getEnumerated(), 
                         delegates);
+                Class clz = Decl.getConstructedClass(ctor.getEnumerated());
                 Value singletonModel = ctor.getDeclarationModel();
                 // generate a field
                 AttributeDefinitionBuilder adb = AttributeDefinitionBuilder
@@ -211,15 +213,48 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
                         null,//gen.naming.makeTypeDeclarationName(Decl.getConstructedClass(ctor.getEnumerated())), 
                         null, 
                         singletonModel.getName(), singletonModel, false);
-                adb.modifiers(PRIVATE | STATIC | FINAL);
-                adb.initialValue(gen.make().NewClass(null, null, 
-                        gen.naming.makeTypeDeclarationExpression(null, Decl.getConstructedClass(ctor.getEnumerated())), 
-                        List.<JCExpression>of(
-                                gen.make().TypeCast(
-                                        gen.naming.makeNamedConstructorType(ctor.getEnumerated(), false),
-                                gen.makeNull())), null));
+                if (clz.isToplevel()) {
+                    
+                } else {
+                   
+                }
                 adb.immutable();// not setter
-                classBuilder.defs(adb.build());
+                if (clz.isToplevel()) {
+                    adb.modifiers(PRIVATE | STATIC | FINAL);
+                    adb.initialValue(gen.make().NewClass(null, null, 
+                            gen.naming.makeTypeDeclarationExpression(null, Decl.getConstructedClass(ctor.getEnumerated())), 
+                            List.<JCExpression>of(
+                                    gen.make().TypeCast(
+                                            gen.naming.makeNamedConstructorType(ctor.getEnumerated(), false),
+                                    gen.makeNull())), null));
+                    classBuilder.defs(adb.build());
+                } else if (clz.isClassMember()){
+                    adb.modifiers(PRIVATE);
+                    // lazy
+                    SyntheticName field = gen.naming.synthetic(singletonModel);
+                    adb.initialValue(gen.makeNull());
+                    List<JCStatement> l = List.<JCStatement>of(
+                    gen.make().If(gen.make().Binary(JCTree.EQ, field.makeIdent(), gen.makeNull()),
+                            gen.make().Exec(gen.make().Assign(field.makeIdent(),
+                                    gen.make().NewClass(null, null, 
+                                            gen.naming.makeTypeDeclarationExpression(null, Decl.getConstructedClass(ctor.getEnumerated())), 
+                                            List.<JCExpression>of(
+                                                    gen.make().TypeCast(
+                                                            gen.naming.makeNamedConstructorType(ctor.getEnumerated(), false),
+                                                    gen.makeNull())), null))),
+                            null),
+                    gen.make().Return(field.makeIdent()));
+                    adb.getterBlock(gen.make().Block(0, l));
+                    classBuilder.getContainingClassBuilder().defs(gen.makeVar(PRIVATE, field, gen.naming.makeTypeDeclarationExpression(null, Decl.getConstructedClass(ctor.getEnumerated())), gen.makeNull()));
+                    classBuilder.getContainingClassBuilder().defs(adb.build());
+                } else if (clz.isInterfaceMember()){
+                    //classBuilder.getContainingClassBuilder().getCompanionBuilder(clz).defs(ctorNameClassDecl);
+                    classBuilder.getContainingClassBuilder().getCompanionBuilder(clz).defs(adb.build());
+                } else {
+                    //result.addAll(ctorNameClassDecl);
+                    classBuilder.defs(adb.build());
+                }
+                //classBuilder.defs(adb.build());
             }
         }
     }

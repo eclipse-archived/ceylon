@@ -174,7 +174,8 @@ public class ClassTransformer extends AbstractTransformer {
                 classBuilder.getInitBuilder().userAnnotations(expressionGen().transformAnnotations(false, OutputElement.CONSTRUCTOR, def));
             }
             if(generateInstantiator
-                    && !cls.hasConstructors()){
+                    && !cls.hasConstructors()
+                    && !cls.hasEnumerated()){
                 classBuilder.getInitBuilder().modifiers(PROTECTED);
                 generateInstantiators(classBuilder, cls, null, instantiatorDeclCb, instantiatorImplCb, classDef, classDef.getParameterList());
             }
@@ -938,6 +939,9 @@ public class ClassTransformer extends AbstractTransformer {
             Class cls, Constructor ctor, ClassDefinitionBuilder instantiatorDeclCb, 
             ClassDefinitionBuilder instantiatorImplCb, Tree.Declaration node, Tree.ParameterList pl) {
         // TODO Instantiators on companion classes
+        if (Decl.isEnumeratedConstructor(ctor)) {
+            return;
+        }
         ParameterList parameterList = ctor != null ? ctor.getFirstParameterList() : cls.getParameterList();
         if (Decl.withinInterface(cls)) {
             DefaultedArgumentOverload overloaded = new DefaultedArgumentInstantiator(daoAbstract, cls, ctor, instantiatorDeclCb.isCompanionBuilder());
@@ -4915,16 +4919,27 @@ public class ClassTransformer extends AbstractTransformer {
         ClassDefinitionBuilder constructorNameClass = ClassDefinitionBuilder.klass(this, 
                 ctorName, null, true);
         JCVariableDecl constructorNameConst;
-        if (clz.isToplevel() || 
-                (clz.isMember() && Decl.isToplevel((Declaration)clz.getContainer()))) {
-            classMods |= FINAL | STATIC;
-            constructorNameConst = make().VarDef(make().Modifiers(classMods, makeAtIgnore()),
-                    names().fromString(ctorName),
-                    naming.makeTypeDeclarationExpression(null, ctor, declFlags), 
-                    makeNull());
-        } else {
-            classMods &= ~(PRIVATE | PROTECTED | PUBLIC);
+        if (Decl.isEnumeratedConstructor(ctor)) {
+            if (clz.isToplevel()) {
+                classMods &= ~(PRIVATE | PROTECTED | PUBLIC);
+                classMods |= PRIVATE| STATIC | FINAL ;
+            } else {
+                classMods &= ~(PRIVATE | PROTECTED | PUBLIC);
+                classMods |= PRIVATE| STATIC | FINAL ;
+            }
             constructorNameConst = null;
+        } else {
+            if (clz.isToplevel() || 
+                    (clz.isMember() && Decl.isToplevel((Declaration)clz.getContainer()))) {
+                classMods |= STATIC | FINAL;
+                constructorNameConst = make().VarDef(make().Modifiers(classMods, makeAtIgnore()),
+                        names().fromString(ctorName),
+                        naming.makeTypeDeclarationExpression(null, ctor, declFlags), 
+                        makeNull());
+            } else {
+                classMods &= ~(PRIVATE | PROTECTED | PUBLIC);
+                constructorNameConst = null;
+            }
         }
         constructorNameClass.modifiers(classMods);
         constructorNameClass.annotations(makeAtIgnore());

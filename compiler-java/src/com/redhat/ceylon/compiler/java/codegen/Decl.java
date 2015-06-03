@@ -910,6 +910,16 @@ public class Decl {
         }
         return false;
     }
+    
+    /** Is the given constructor an enumerated ("singleton") constructor */
+    public static boolean isEnumeratedConstructor(Constructor ctor) {
+        return ctor != null && ctor.getContainer().getDirectMember(ctor.getName(), null, false) instanceof Value;
+    }
+    
+    /** Is the given value the result of an enumerated ("singleton") constructor */
+    public static boolean isEnumeratedConstructor(Value value) {
+        return value.getType().getDeclaration() instanceof Constructor;
+    }
 
     public static Declaration getDeclarationScope(Scope scope) {
         while (true) {

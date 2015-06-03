@@ -3845,7 +3845,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 }
             } else if (member instanceof Value) {
                 if (expr.getStaticMethodReference()
-                        && ((Value)member).getType().getDeclaration() instanceof Constructor) {
+                        && Decl.isEnumeratedConstructor((Value)member)) {
                     CallBuilder callBuilder = CallBuilder.instance(this);
                     JCExpression qualExpr = naming.makeTypeDeclarationExpression(null, (TypeDeclaration)member.getContainer(), DeclNameFlag.QUALIFIED);
                     callBuilder.invoke(naming.makeQualifiedName(qualExpr, (TypedDeclaration)member, Naming.NA_GETTER | Naming.NA_MEMBER));
