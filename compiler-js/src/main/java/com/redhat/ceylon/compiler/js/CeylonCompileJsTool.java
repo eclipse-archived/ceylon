@@ -317,9 +317,12 @@ public class CeylonCompileJsTool extends OutputRepoUsingTool {
 
         typeChecker = tcb.getTypeChecker();
         t1=System.nanoTime();
-        TypeCache.setEnabled(false);
-        typeChecker.process(true);
-        TypeCache.setEnabled(true);
+        TypeCache.doWithoutCaching(new Runnable() {
+            @Override
+            public void run() {
+                typeChecker.process(true);
+            }
+        });
         
         t2=System.nanoTime();
         JsCompiler jsc = new JsCompiler(typeChecker, opts);

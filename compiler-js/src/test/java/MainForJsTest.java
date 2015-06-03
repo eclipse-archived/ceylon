@@ -49,7 +49,7 @@ public class MainForJsTest {
             }
         }
         tcb.setRepositoryManager(repoman);
-        TypeChecker typeChecker = tcb.getTypeChecker();
+        final TypeChecker typeChecker = tcb.getTypeChecker();
         for (File x : excludes) {
             String ap = x.getPath();
             //Fix for Windows
@@ -62,9 +62,12 @@ public class MainForJsTest {
                 }
             }
         }
-        TypeCache.setEnabled(false);
-        typeChecker.process();
-        TypeCache.setEnabled(true);
+        TypeCache.doWithoutCaching(new Runnable() {
+            @Override
+            public void run() {
+                typeChecker.process();
+            }
+        });
         if (typeChecker.getErrors() > 0) {
             System.exit(1);
         }
