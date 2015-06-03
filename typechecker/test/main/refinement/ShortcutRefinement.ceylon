@@ -328,3 +328,37 @@ class WithConstructor
     shared new () {}
     contains(Boolean element) => true;
 }
+
+
+interface WithGeneric {
+    shared formal String generic<T>()(String x);
+}
+
+interface WithNonGeneric {
+    shared formal String nongeneric()(String x);
+}
+
+class RefinesGeneric() satisfies WithGeneric {
+    generic = <T>()(String x) => x;
+}
+
+class RefinesGenericWrong() satisfies WithGeneric {
+    @error generic = <T>()(String x) given T satisfies Object => x;
+}
+
+class RefinesGenericBad() satisfies WithGeneric {
+    @error generic = ()(String x) => x;
+}
+
+class RefinesNonGeneric() satisfies WithNonGeneric {
+    nongeneric = ()(String x) => x;
+}
+
+class RefinesNonGenericWrong() satisfies WithNonGeneric {
+    @error nongeneric = ()(Integer x) => x.string;
+}
+
+class RefinesNonGenericBad() satisfies WithNonGeneric {
+    @error nongeneric = <T>()(String x) => x;
+}
+
