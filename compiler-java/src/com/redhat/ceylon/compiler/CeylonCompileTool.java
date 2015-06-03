@@ -290,7 +290,9 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
             "`filenameNonAscii`, `filenameClaselessCollision`, `deprecation`, "+
             "`compilerAnnotation`, `doclink`, `expressionTypeNothing`, "+
             "`unusedDeclaration`, `unusedImport`, `ceylonNamespace`, "+
-            "`javaNamespace`, `suppressedAlready`, `suppressesNothing`.")
+            "`javaNamespace`, `suppressedAlready`, `suppressesNothing`, "+
+            "`unknownWarning`, `ambiguousAnnotation`, `similarModule`, "+
+            "`importsOtherJdk`, `javaAnnotationElement`.")
     public void setSuppressWarning(EnumSet<Warning> warnings) {
         this.suppressWarnings = warnings;
     }
