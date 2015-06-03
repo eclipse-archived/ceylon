@@ -811,6 +811,7 @@
     abstract TypedDeclaration declarationModel;)
 "A function declaration that occurs as a named argument."
 ^(METHOD_ARGUMENT:TYPED_ARGUMENT
+    TYPE_PARAMETER_LIST?
     PARAMETER_LIST*
     BLOCK? 
     SPECIFIER_EXPRESSION?

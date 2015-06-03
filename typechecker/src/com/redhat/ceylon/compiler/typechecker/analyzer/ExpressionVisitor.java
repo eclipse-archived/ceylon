@@ -3891,10 +3891,20 @@ public class ExpressionVisitor extends Visitor {
         else if (a instanceof Tree.TypedArgument) {
             Tree.TypedArgument ta = 
                     (Tree.TypedArgument) a;
-            argType = 
-                    ta.getDeclarationModel()
-                		.getTypedReference() //argument can't have type parameters
-                		.getFullType();
+            TypedDeclaration model = 
+                    ta.getDeclarationModel();
+            TypedReference argRef = 
+                    model.getTypedReference();
+            if (isGeneric(model)) {
+                argType = genericFunctionType(
+                        (Generic) model, 
+                        a.getScope(), //TODO!!! 
+                        model, 
+                        argRef);
+            }
+            else {
+                argType = argRef.getFullType();
+            }
             checkArgumentToVoidParameter(p, ta);
             if (!dynamic && 
                     isTypeUnknown(argType)) {
@@ -3913,8 +3923,7 @@ public class ExpressionVisitor extends Visitor {
                     paramRef);
         }
         else {
-            paramType = paramRef
-                .getFullType();
+            paramType = paramRef.getFullType();
         }
 
         if (!isTypeUnknown(argType) && 

@@ -2114,6 +2114,10 @@ voidOrInferredMethodArgument returns [MethodArgument declaration]
         { $declaration.setIdentifier($memberNameDeclaration.identifier); }
       )?
       (
+        typeParameters
+        { $declaration.setTypeParameterList($typeParameters.typeParameterList); }
+      )?
+      (
         parameters
         { $declaration.addParameterList($parameters.parameterList); }
       )*
@@ -2177,6 +2181,10 @@ typedMethodOrGetterArgument returns [TypedArgument declaration]
         aarg.setIdentifier($memberNameDeclaration.identifier); }
       (
         { $declaration = marg; }
+        (
+          typeParameters
+          { marg.setTypeParameterList($typeParameters.typeParameterList); }
+        )?
         (
           parameters
           { marg.addParameterList($parameters.parameterList); }
