@@ -24,6 +24,7 @@ import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.isGen
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.isIndirectInvocation;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.notAssignableMessage;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.spreadType;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.unwrapAliasedTypeConstructor;
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.hasError;
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.hasUncheckedNulls;
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.isEffectivelyBaseMemberExpression;
@@ -6937,9 +6938,11 @@ public class ExpressionVisitor extends Visitor {
             }
             Type type = value.getType();
             return type!=null &&
-                    type.isTypeConstructor() &&
+                    type.resolveAliases()
+                        .isTypeConstructor() &&
                     paramType!=null &&
-                    !paramType.isTypeConstructor();
+                    !paramType.resolveAliases()
+                        .isTypeConstructor();
         }
         else {
             return false;
@@ -7901,8 +7904,7 @@ public class ExpressionVisitor extends Visitor {
         if (args<=max && args>=min) {
             for (int i=0; i<args; i++) {
                 TypeParameter param = params.get(i);
-                Type argType = 
-                        typeArguments.get(i);
+                Type argType = typeArguments.get(i);
                 boolean argTypeMeaningful = 
                         argType!=null && 
                         !argType.isUnknown();
@@ -7939,8 +7941,7 @@ public class ExpressionVisitor extends Visitor {
                                 argType, argNode);
                     }
                 }
-                List<Type> sts = 
-                        param.getSatisfiedTypes();
+                List<Type> sts = param.getSatisfiedTypes();
                 boolean hasConstraints = 
                         !sts.isEmpty() || 
                         param.getCaseTypes()!=null;
@@ -8052,8 +8053,8 @@ public class ExpressionVisitor extends Visitor {
         }
     }
 
-    private static Type argumentTypeForBoundsCheck(TypeParameter param,
-            Type argType) {
+    private static Type argumentTypeForBoundsCheck(
+            TypeParameter param, Type argType) {
         if (argType==null) {
             return null;
         }
@@ -8068,8 +8069,8 @@ public class ExpressionVisitor extends Visitor {
         }
     }
 
-    private static Node typeArgNode
-            (Tree.TypeArguments tas, int i, Node parent) {
+    private static Node typeArgNode(Tree.TypeArguments tas, 
+            int i, Node parent) {
         if (tas instanceof Tree.TypeArgumentList) {
             Tree.TypeArgumentList tal = 
                     (Tree.TypeArgumentList) tas;
@@ -8161,12 +8162,12 @@ public class ExpressionVisitor extends Visitor {
             Type arg,
             Map<TypeParameter, Type> args, 
             Map<TypeParameter, SiteVariance> variances) {
-        List<Type> cts = 
-                param.getCaseTypes();
+        List<Type> cts = param.getCaseTypes();
         if (cts!=null) {
             for (Type ct: cts) {
                 Type bound = 
-                        ct.substitute(args, variances);
+                        ct.substitute(args, 
+                                variances);
                 if (arg.isSubtypeOf(bound)) {
                     return true;
                 }
@@ -8195,21 +8196,21 @@ public class ExpressionVisitor extends Visitor {
 
     private void checkTypeConstructorParam(TypeParameter param, 
             Type argType, Node argNode) {
+        
         if (!argType.isTypeConstructor()) {
             argNode.addError("not a type constructor: '" +
                     argType.asString(unit) + "'");
         }
         else {
+            argType = unwrapAliasedTypeConstructor(argType);
             if (argType.isUnion()) {
-                for (Type ct: 
-                        argType.getCaseTypes()) {
+                for (Type ct: argType.getCaseTypes()) {
                     checkTypeConstructorParam(param, 
                             ct, argNode);
                 }
             }
             else if (argType.isIntersection()) {
-                for (Type st: 
-                        argType.getSatisfiedTypes()) {
+                for (Type st: argType.getSatisfiedTypes()) {
                     checkTypeConstructorParam(param, 
                             st, argNode);
                 }
@@ -8225,7 +8226,9 @@ public class ExpressionVisitor extends Visitor {
                 int allowed = argTypeParams.size();
                 int required = 0;
                 for (TypeParameter tp: argTypeParams) {
-                    if (tp.isDefaulted()) break;
+                    if (tp.isDefaulted()) {
+                        break;
+                    }
                     required++;
                 }
                 List<TypeParameter> paramTypeParams = 

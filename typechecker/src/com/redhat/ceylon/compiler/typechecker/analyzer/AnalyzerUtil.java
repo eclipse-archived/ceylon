@@ -1101,4 +1101,31 @@ public class AnalyzerUtil {
         }
     }
 
+    static TypeDeclaration unwrapAliasedTypeConstructor(
+            TypeDeclaration dec) {
+        TypeDeclaration d = dec;
+        while (!isGeneric(d) && d.isAlias()) {
+            Type et = d.getExtendedType();
+            if (et==null) break;
+            d = et.getDeclaration();
+            if (et.isTypeConstructor() && isGeneric(d)) {
+                return d;
+            }
+        }
+        return dec;
+    }
+
+    static Type unwrapAliasedTypeConstructor(Type type) {
+        TypeDeclaration d = type.getDeclaration();
+        while (!isGeneric(d) && d.isAlias()) {
+            Type et = d.getExtendedType();
+            if (et==null) break;
+            d = et.getDeclaration();
+            if (et.isTypeConstructor() && isGeneric(d)) {
+                return et;
+            }
+        }
+        return type;
+    }
+
 }

@@ -968,7 +968,8 @@ public class TypeArgumentInference {
 
     private static boolean isArgumentToGenericParameter(
             TypedReference paramTypedRef, Type paramType) {
-        return paramType.isTypeConstructor() ||
+        return paramType.resolveAliases()
+                    .isTypeConstructor() ||
                 paramTypedRef != null &&
                 isGeneric(paramTypedRef.getDeclaration());
     }
