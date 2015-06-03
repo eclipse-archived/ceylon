@@ -90,4 +90,10 @@ void issues() {
     check(model669.string == "model2::Issue669<ceylon.language::String,ceylon.language::Integer>.Middle<ceylon.language::Float>.Inner", "langmod #669.3 says ``model669``");
     value static669=`Issue669<String,Integer>.Middle<Float>.Inner`;
     check(static669.string == "model2::Issue669<ceylon.language::String,ceylon.language::Integer>.Middle<ceylon.language::Float>.Inner", "langmod #669.4 says ``static669``");
+    check("ceylon.language::Integer," in type([].withTrailing(1).withTrailing(1).withTrailing(1)).string, "lang#703.1");
+    variable [Integer*] issue703=[];
+    issue703=issue703.withTrailing(1);
+    issue703=issue703.withTrailing(1);
+    issue703=issue703.withTrailing(1);
+    check("ceylon.language::Integer," in type(issue703).string, "lang#703.2");
 }
