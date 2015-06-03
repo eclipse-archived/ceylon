@@ -457,7 +457,7 @@ public class ClassTransformer extends AbstractTransformer {
     private void addRefinedThrowerAttribute(
             ClassDefinitionBuilder classBuilder, String error,
             ClassOrInterface classModel, Value formalAttribute) {
-        Value refined = refineValue(formalAttribute, formalAttribute.getProducedTypedReference(null, null), classModel, classModel.getUnit());
+        Value refined = refineValue(formalAttribute, formalAttribute.appliedTypedReference(null, null), classModel, classModel.getUnit());
         AttributeDefinitionBuilder getterBuilder = AttributeDefinitionBuilder.getter(this, refined.getName(), refined);
         getterBuilder.skipField();
         getterBuilder.modifiers(transformAttributeGetSetDeclFlags(refined, false));
@@ -1149,7 +1149,7 @@ public class ClassTransformer extends AbstractTransformer {
                         java.util.List<Parameter> parameters = paramList.getModel().getParameters();
                         MethodDefinitionBuilder mdb = 
                         makeDelegateToCompanion((Interface)cls.getRefinedDeclaration().getContainer(),
-                                paramModel.getModel().getProducedTypedReference(cls.getType(), null),
+                                paramModel.getModel().appliedTypedReference(cls.getType(), null),
                                 ((TypeDeclaration)cls.getContainer()).getType(),
                                 FINAL | (transformClassDeclFlags(cls) & ~ABSTRACT), 
                                 List.<TypeParameter>nil(), Collections.<java.util.List<Type>>emptyList(),

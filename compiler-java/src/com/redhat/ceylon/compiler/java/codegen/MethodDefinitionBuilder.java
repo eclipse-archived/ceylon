@@ -416,7 +416,7 @@ public class MethodDefinitionBuilder
                 // erasure status of the compilation of the refined parameter, so it's OK if we end up with unbound type parameters
                 // in the refined parameter type
                 if(refinedParameter instanceof Function)
-                    refinedParameterType = refinedParameter.getProducedTypedReference(null, Collections.<Type>emptyList()).getFullType();
+                    refinedParameterType = refinedParameter.appliedTypedReference(null, Collections.<Type>emptyList()).getFullType();
                 else
                     refinedParameterType = refinedParameter.getType();
                 // if the supertype method itself got erased to Object, we can't do better than this

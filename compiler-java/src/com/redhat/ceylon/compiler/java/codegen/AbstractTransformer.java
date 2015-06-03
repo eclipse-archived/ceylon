@@ -772,7 +772,7 @@ public abstract class AbstractTransformer implements Transformation {
             TypeDeclaration containerDecl = (TypeDeclaration) decl.getContainer();
             return containerDecl.getType().getTypedMember(decl, typeArgs);
         }
-        return decl.getProducedTypedReference(null, typeArgs);
+        return decl.appliedTypedReference(null, typeArgs);
     }
     
     TypedReference nonWideningTypeDecl(TypedReference typedReference) {
@@ -1143,7 +1143,7 @@ public abstract class AbstractTransformer implements Transformation {
                 typeArgs.add(typedReference.getTypeArguments().get(tp));
             }
         }
-        return refinedDeclaration.getProducedTypedReference(refinedContainerType, typeArgs);
+        return refinedDeclaration.appliedTypedReference(refinedContainerType, typeArgs);
     }
 
     private TypedReference getRefinedTypedReference(Type qualifyingType, 
@@ -1151,7 +1151,7 @@ public abstract class AbstractTransformer implements Transformation {
         TypeDeclaration refinedContainer = (TypeDeclaration)refinedDeclaration.getContainer();
 
         Type refinedContainerType = qualifyingType.getSupertype(refinedContainer);
-        return refinedDeclaration.getProducedTypedReference(refinedContainerType, Collections.<Type>emptyList());
+        return refinedDeclaration.appliedTypedReference(refinedContainerType, Collections.<Type>emptyList());
     }
 
     public boolean isWidening(Type declType, Type refinedDeclType) {
@@ -2782,7 +2782,7 @@ public abstract class AbstractTransformer implements Transformation {
     }
 
     Type getTypeForFunctionalParameter(Function fp) {
-        return fp.getProducedTypedReference(null, java.util.Collections.<Type>emptyList()).getFullType();
+        return fp.appliedTypedReference(null, java.util.Collections.<Type>emptyList()).getFullType();
     }
     
     /*
@@ -3429,7 +3429,7 @@ public abstract class AbstractTransformer implements Transformation {
         if (decl instanceof Function && ((Function)decl).isParameter() && handleFunctionalParameter) {
             type = getTypeForFunctionalParameter((Function)decl);
         } else if (decl instanceof Functional && Decl.isMpl((Functional)decl)) {
-            type = getReturnTypeOfCallable(decl.getProducedTypedReference(null, Collections.<Type>emptyList()).getFullType());
+            type = getReturnTypeOfCallable(decl.appliedTypedReference(null, Collections.<Type>emptyList()).getFullType());
         } else {
             type = decl.getType();
         }

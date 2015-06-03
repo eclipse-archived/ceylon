@@ -1065,7 +1065,7 @@ public class ModelLoaderTests extends CompilerTests {
 
                 private String typeName(FunctionOrValue fp) {
                     if (fp instanceof Function) {
-                        return fp.getProducedTypedReference(null, Collections.<Type>emptyList()).getFullType().asString();
+                        return fp.appliedTypedReference(null, Collections.<Type>emptyList()).getFullType().asString();
                     } else if (fp instanceof Value) {
                         return fp.getType().asString();
                     }
