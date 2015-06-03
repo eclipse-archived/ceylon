@@ -1680,13 +1680,34 @@ base returns [Primary primary]
       { $primary=$dynamicObject.dynamic; }
     | objectExpression
       { $primary = $objectExpression.objectExpression; }
-    | selfReference
-      { $primary=$selfReference.atom; }
     | parExpression
       { $primary=$parExpression.expression; }
+    | baseReferenceOrParameterized
+      { $primary=$baseReferenceOrParameterized.primary; }
+    ;
+
+baseReferenceOrParameterized returns [Primary primary]
+    @init { BaseMemberOrTypeExpression be=null;
+            QualifiedMemberOrTypeExpression qe=null;
+            ParameterizedExpression pe=null; }
+    : (LIDENTIFIER typeParameters? specifierParametersStart) => 
+      memberName
+      { be = new BaseMemberExpression(null);
+        be.setTypeArguments(new InferredTypeArguments(null)); //yew!!
+        be.setIdentifier($memberName.identifier); 
+        pe = new ParameterizedExpression(null);
+        pe.setPrimary(be); }
+      (
+        typeParameters
+        { pe.setTypeParameterList($typeParameters.typeParameterList); }
+      )?
+      (
+        (specifierParametersStart) => parameters
+        { pe.addParameterList($parameters.parameterList);
+          $primary = pe; }
+      )+
     | baseReference
-      { BaseMemberOrTypeExpression be;
-        if ($baseReference.isMember)
+      { if ($baseReference.isMember)
             be = new BaseMemberExpression(null);
         else
             be = new BaseTypeExpression(null);
@@ -1694,8 +1715,31 @@ base returns [Primary primary]
         if ($baseReference.typeArgumentList!=null)
             be.setTypeArguments($baseReference.typeArgumentList);
         else
-            be.setTypeArguments( new InferredTypeArguments(null) );
+            be.setTypeArguments(new InferredTypeArguments(null));
         $primary=be; }
+    | selfReference
+      { $primary=$selfReference.atom; }
+      (
+        (MEMBER_OP LIDENTIFIER typeParameters? specifierParametersStart) => 
+        memberSelectionOperator
+        { qe = new QualifiedMemberExpression(null); 
+          qe.setMemberOperator($memberSelectionOperator.operator);
+          qe.setTypeArguments(new InferredTypeArguments(null)); }
+        memberName
+        { qe.setIdentifier($memberName.identifier); 
+          qe.setPrimary($primary);
+          pe = new ParameterizedExpression(null);
+          pe.setPrimary(qe); }
+        (
+          typeParameters
+          { pe.setTypeParameterList($typeParameters.typeParameterList); }
+        )?
+        (
+          (specifierParametersStart) => parameters
+          { pe.addParameterList($parameters.parameterList);
+            $primary = pe; }
+        )+
+      )?
     ;
 
 baseReference returns [Identifier identifier, 
@@ -1718,9 +1762,7 @@ primary returns [Primary primary]
     : base
       { $primary=$base.primary; }
     (
-      //TODO: re-enable:
-        /*inlineFunctionalArgument
-      |*/ qualifiedReference
+      qualifiedReference
       { QualifiedMemberOrTypeExpression qe;
         if ($qualifiedReference.isMember)
             qe = new QualifiedMemberExpression(null);
@@ -1737,16 +1779,6 @@ primary returns [Primary primary]
       | indexOrIndexRange 
         { $indexOrIndexRange.indexExpression.setPrimary($primary);
           $primary = $indexOrIndexRange.indexExpression; }
-      | (specifierParametersStart)=> parameters
-        { ParameterizedExpression pe;
-          if ($primary instanceof ParameterizedExpression) {
-              pe = (ParameterizedExpression) $primary;
-          } else {
-              pe = new ParameterizedExpression(null);
-              pe.setPrimary($primary);
-          }
-          pe.addParameterList($parameters.parameterList);
-          $primary = pe; }
       | positionalArguments 
         { InvocationExpression ie = new InvocationExpression(null);
           ie.setPrimary($primary);
