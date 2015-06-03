@@ -2868,8 +2868,9 @@ public class ExpressionVisitor extends Visitor {
                     (Tree.QualifiedMemberOrTypeExpression) 
                         mte;
             Type invokedType = 
-                    qmte.getPrimary().getTypeModel()
-                        .resolveAliases(); //TODO: probably not necessary
+                    qmte.getPrimary()
+                        .getTypeModel()
+                        .resolveAliases();
             Type receiverType = unwrap(invokedType, qmte);
             return receiverType.getTypedReference(dec,
                     getTypeArguments(tas, receiverType, tps));
@@ -3266,7 +3267,7 @@ public class ExpressionVisitor extends Visitor {
                 Tree.Primary primary = qte.getPrimary();
                 Type receivingType = 
                         primary.getTypeModel()
-                            .resolveAliases(); //TODO: probably not necessary
+                            .resolveAliases();
                 List<Type> typeArgs = 
                         getOrInferTypeArguments(that, type, 
                                 reference, receivingType);
@@ -3312,7 +3313,7 @@ public class ExpressionVisitor extends Visitor {
                 Tree.Primary primary = qme.getPrimary();
                 Type receivingType = 
                         primary.getTypeModel()
-                            .resolveAliases(); //TODO: probably not necessary
+                            .resolveAliases();
                 List<Type> typeArgs = 
                         getOrInferTypeArguments(that, 
                                 member, reference, 
@@ -5992,7 +5993,7 @@ public class ExpressionVisitor extends Visitor {
             Tree.TypeArguments tal = that.getTypeArguments();
             Type receiverType = 
                     primary.getTypeModel()
-                        .resolveAliases(); //TODO: probably not necessary
+                        .resolveAliases();
             if (receiverType.isTypeConstructor()) {
                 that.addError("missing type arguments in reference to member of generic type: the type '" +
                         receiverType.asString(unit) + 
@@ -6712,7 +6713,7 @@ public class ExpressionVisitor extends Visitor {
             Tree.TypeArguments tal = that.getTypeArguments();
             Type receiverType = 
                     primary.getTypeModel()
-                        .resolveAliases(); //TODO: probably not necessary
+                        .resolveAliases();
             List<Type> typeArgs;
             if (explicitTypeArguments(type, tal)) {
                 List<TypeParameter> tps = 
