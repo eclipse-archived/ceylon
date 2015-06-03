@@ -176,7 +176,7 @@ public class FreeFunction
         Metamodel.checkTypeArguments(containerType, declaration, producedTypes);
         // find the proper qualifying type
         com.redhat.ceylon.model.typechecker.model.Type memberQualifyingType = containerType.getSupertype((TypeDeclaration) declaration.getContainer());
-        final TypedReference appliedFunction = ((com.redhat.ceylon.model.typechecker.model.TypedDeclaration)declaration).getProducedTypedReference(memberQualifyingType, producedTypes);
+        final TypedReference appliedFunction = ((com.redhat.ceylon.model.typechecker.model.TypedDeclaration)declaration).appliedTypedReference(memberQualifyingType, producedTypes);
         TypeDescriptor reifiedType = Metamodel.getTypeDescriptorForFunction(appliedFunction);
         TypeDescriptor reifiedArguments = Metamodel.getTypeDescriptorForArguments(declaration.getUnit(), (Functional) declaration, appliedFunction);
         TypeDescriptor reifiedContainer = Metamodel.getTypeDescriptorForProducedType(containerType);

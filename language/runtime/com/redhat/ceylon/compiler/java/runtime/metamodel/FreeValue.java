@@ -83,7 +83,7 @@ public class FreeValue
         if(!getToplevel())
             throw new ceylon.language.meta.model.TypeApplicationException("Cannot apply a member declaration with no container type: use memberApply");
         com.redhat.ceylon.model.typechecker.model.Value modelDecl = (com.redhat.ceylon.model.typechecker.model.Value)declaration;
-        com.redhat.ceylon.model.typechecker.model.TypedReference typedReference = modelDecl.getProducedTypedReference(null, Collections.<Type>emptyList());
+        com.redhat.ceylon.model.typechecker.model.TypedReference typedReference = modelDecl.appliedTypedReference(null, Collections.<Type>emptyList());
 
         com.redhat.ceylon.model.typechecker.model.Type getType = typedReference.getType();
         TypeDescriptor reifiedGet = Metamodel.getTypeDescriptorForProducedType(getType);
@@ -118,7 +118,7 @@ public class FreeValue
         com.redhat.ceylon.model.typechecker.model.Value modelDecl = (com.redhat.ceylon.model.typechecker.model.Value)declaration;
         // find the proper qualifying type
         Type memberQualifyingType = qualifyingType.getSupertype((TypeDeclaration) modelDecl.getContainer());
-        com.redhat.ceylon.model.typechecker.model.TypedReference typedReference = modelDecl.getProducedTypedReference(memberQualifyingType, Collections.<Type>emptyList());
+        com.redhat.ceylon.model.typechecker.model.TypedReference typedReference = modelDecl.appliedTypedReference(memberQualifyingType, Collections.<Type>emptyList());
         TypeDescriptor reifiedContainer = Metamodel.getTypeDescriptorForProducedType(qualifyingType);
         
         com.redhat.ceylon.model.typechecker.model.Type getType = typedReference.getType();
