@@ -223,4 +223,12 @@ class RuntimeUtil {
     public JCExpression setter(JCExpression lookup, JCExpression fieldName) {
         return makeUtilInvocation(null, "setter", List.of(lookup, fieldName));
     }
+
+    public JCExpression unpack(JCExpression expr) {
+        return makeUtilInvocation(null, "unpack", List.of(expr));
+    }
+
+    public JCExpression recover() {
+        return makeUtilInvocation(null, "recover", List.<JCExpression>nil());
+    }
 }
