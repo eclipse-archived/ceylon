@@ -1086,8 +1086,7 @@ public class Type extends Reference {
      *         variances and substitution of type arguments
      */
     public Type substitute(TypedReference source) {
-        Type receiver =
-                source.getQualifyingType();
+        Type receiver = source.getQualifyingType();
         return substitute(source.getTypeArguments(),
                 receiver==null ? null :
                     receiver.collectVarianceOverrides(),
