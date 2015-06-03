@@ -537,7 +537,7 @@ public class ClassTransformer extends AbstractTransformer {
      */
     private MethodDefinitionBuilder transformClassAliasInstantiator(
             final Tree.AnyClass def, Class model, Type aliasedClass) {
-        MethodDefinitionBuilder instantiator = MethodDefinitionBuilder.systemMethod(this, naming.getAliasInstantiatorMethodName(model));
+        MethodDefinitionBuilder instantiator = MethodDefinitionBuilder.systemMethod(this, NamingBase.getAliasInstantiatorMethodName(model));
         int f = 0;
         if (Strategy.defaultParameterMethodStatic(def.getDeclarationModel())) {
             f = STATIC;
