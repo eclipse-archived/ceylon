@@ -5915,7 +5915,7 @@ public class ExpressionVisitor extends Visitor {
             Type outerType = 
                     scope.getDeclaringType(member);
             TypedReference pr = 
-                    member.getProducedTypedReference(
+                    member.appliedTypedReference(
                             outerType, NO_TYPE_ARGS);
             that.setTarget(pr);
             Type t = genericFunctionType(g, scope, member, pr);
@@ -6408,7 +6408,7 @@ public class ExpressionVisitor extends Visitor {
                     that.getScope()
                         .getDeclaringType(member);
             TypedReference pr = 
-                    member.getProducedTypedReference(outerType, 
+                    member.appliedTypedReference(outerType, 
                             typeArgs, that.getAssigned());
             that.setTarget(pr);
             boolean direct = that.getDirectlyInvoked();
@@ -8710,7 +8710,7 @@ public class ExpressionVisitor extends Visitor {
                             outerType, typeArgs, tal, that)) {
                         TypedReference pr = 
                                 outerType==null ? 
-                                        method.getProducedTypedReference(null, typeArgs) : 
+                                        method.appliedTypedReference(null, typeArgs) : 
                                         outerType.getTypedMember(method, typeArgs);
                                 that.setTarget(pr);
                                 that.setTypeModel(unit.getFunctionMetatype(pr));
@@ -8730,7 +8730,7 @@ public class ExpressionVisitor extends Visitor {
             }
             else {
                 TypedReference pr = 
-                        value.getProducedTypedReference(outerType, 
+                        value.appliedTypedReference(outerType, 
                                 NO_TYPE_ARGS);
                 that.setTarget(pr);
                 that.setTypeModel(unit.getValueMetatype(pr));
