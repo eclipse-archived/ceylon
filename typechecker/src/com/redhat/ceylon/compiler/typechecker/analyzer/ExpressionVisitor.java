@@ -3185,17 +3185,19 @@ public class ExpressionVisitor extends Visitor {
             Tree.Term term) {
         if (term!=null) {
             Type type = term.getTypeModel();
-            if (type!=null && 
-                    type.isTypeConstructor()) {
-                List<Type> typeArgs = 
-                        getOrInferTypeArgumentsForTypeConstructor(
-                                that, null, type, null);
-                checkArgumentsAgainstTypeConstructor(
-                        typeArgs, null, type, term);
-                Type fullType =
-                        accountForGenericFunctionRef(true, 
-                                null, null, typeArgs, type);
-                term.setTypeModel(fullType);
+            if (type!=null) {
+                type = type.resolveAliases();
+                if (type.isTypeConstructor()) {
+                    List<Type> typeArgs = 
+                            getOrInferTypeArgumentsForTypeConstructor(
+                                    that, null, type, null);
+                    checkArgumentsAgainstTypeConstructor(
+                            typeArgs, null, type, term);
+                    Type fullType =
+                            accountForGenericFunctionRef(true, 
+                                    null, null, typeArgs, type);
+                    term.setTypeModel(fullType);
+                }
             }
         }
     }
@@ -3421,13 +3423,14 @@ public class ExpressionVisitor extends Visitor {
             //a generic function reference
             Value value = (Value) dec;
             Type type = value.getType();
-            if (type!=null && type.isTypeConstructor()) {
-                return getOrInferTypeArgumentsForTypeConstructor(
-                        that, receiverType, type, tas);
+            if (type!=null) {
+                type = type.resolveAliases();
+                if (type.isTypeConstructor()) {
+                    return getOrInferTypeArgumentsForTypeConstructor(
+                            that, receiverType, type, tas);
+                }
             }
-            else {
-                return NO_TYPE_ARGS;
-            }
+            return NO_TYPE_ARGS;
         }
         else {
             return NO_TYPE_ARGS;
@@ -6296,15 +6299,14 @@ public class ExpressionVisitor extends Visitor {
                     tas instanceof Tree.TypeArgumentList;
             if (explicit || directlyInvoked || 
                     typeArgs!=null && !typeArgs.isEmpty()) {
-                TypeDeclaration ftd = 
-                        fullType.getDeclaration();
-                if (fullType.isTypeConstructor()) {
+                Type realType = fullType.resolveAliases();
+                if (realType.isTypeConstructor()) {
                     //apply the type arguments to the generic
                     //function reference
                     //TODO: it's ugly to do this here, better to 
                     //      suck it into TypedReference
-                    return ftd.appliedType(receivingType, typeArgs)
-                            .resolveAliases();
+                    return realType.getDeclaration()
+                            .appliedType(receivingType, typeArgs);
                 }
                 else {
                     return fullType;
@@ -7860,15 +7862,23 @@ public class ExpressionVisitor extends Visitor {
             boolean empty = 
                     typeArguments==null ||
                     typeArguments.isEmpty();
+            if (dec instanceof TypeAlias && !empty) {
+                dec = unwrapAliasedTypeConstructor((TypeAlias) dec);
+                return checkTypeArgumentAgainstDeclaration(
+                        receiverType, dec, typeArguments, 
+                        tas, parent);
+            }
             if (dec instanceof Value && !empty) {
                 Value td = (Value) dec;
                 Type type = td.getType();
-                if (type!=null && 
-                        type.isTypeConstructor()) {
-                    checkArgumentsAgainstTypeConstructor(
-                            typeArguments, tas, type, 
-                            parent);
-                    return true;
+                if (type!=null) {
+                    type = type.resolveAliases();
+                    if (type.isTypeConstructor()) {
+                        checkArgumentsAgainstTypeConstructor(
+                                typeArguments, tas, type, 
+                                parent);
+                        return true;
+                    }
                 }
             }
             boolean explicit = 
@@ -8109,7 +8119,8 @@ public class ExpressionVisitor extends Visitor {
                             param.getSatisfiedTypes();
                     for (Type st: sts) {
                         Type bound = 
-                                st.substitute(args, variances);
+                                st.substitute(args, 
+                                        variances);
                         if (!isTypeUnknown(bound) &&
                                 !arg.isSubtypeOf(bound)) {
                             String message = 

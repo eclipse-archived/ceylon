@@ -1107,6 +1107,7 @@ public class AnalyzerUtil {
         while (!isGeneric(d) && d.isAlias()) {
             Type et = d.getExtendedType();
             if (et==null) break;
+            et = et.resolveAliases();
             d = et.getDeclaration();
             if (et.isTypeConstructor() && isGeneric(d)) {
                 return d;
@@ -1121,6 +1122,7 @@ public class AnalyzerUtil {
             Type et = d.getExtendedType();
             if (et==null) break;
             d = et.getDeclaration();
+            et = et.resolveAliases();
             if (et.isTypeConstructor() && isGeneric(d)) {
                 return et;
             }
