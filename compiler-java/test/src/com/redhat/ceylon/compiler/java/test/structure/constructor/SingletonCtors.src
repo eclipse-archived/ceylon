@@ -1,0 +1,38 @@
+package com.redhat.ceylon.compiler.java.test.structure.constructor;
+
+class SingletonCtors implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    private final .java.lang.String string;
+    
+    @.java.lang.Override
+    public final .java.lang.String toString() {
+        return string;
+    }
+    public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtors.one_ one_ = null;
+    
+    public static final class one_ {
+        
+        private one_() {
+        }
+    }
+    
+    public SingletonCtors(.com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtors.one_ $name$) {
+        string = "one";
+    }
+    public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtors.two_ two_ = null;
+    
+    public static final class two_ {
+        
+        private two_() {
+        }
+    }
+    
+    public SingletonCtors(.com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtors.two_ $name$) {
+        string = "two";
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtors.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtors.class);
+}

@@ -184,4 +184,9 @@ public class ConstructorTests extends CompilerTests {
     public void testCtorReturn() {
         compareWithJavaSource("constructor/CtorReturn");
     }
+    
+    @Test
+    public void testCtorSingletonCtors() {
+        compareWithJavaSource("constructor/SingletonCtors");
+    }
 }
