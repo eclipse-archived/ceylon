@@ -562,7 +562,7 @@ public class Type extends Reference {
                 return type.isAnything() || type.isObject();
             }
             else if (type.isTypeConstructor()) {
-                return isAnything() || isObject();
+                return false;
             }
             else if (isObject()) {
                 return type.isObject();
@@ -1854,6 +1854,7 @@ public class Type extends Reference {
                 }
             }
             if (tp.isTypeConstructor()) {
+                //TODO: construct a type alias instead!
                 result.setTypeConstructor(true);
                 result.setTypeConstructorParameter(tp);
             }
