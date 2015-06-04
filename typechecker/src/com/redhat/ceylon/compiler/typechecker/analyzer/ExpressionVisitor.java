@@ -8363,10 +8363,12 @@ public class ExpressionVisitor extends Visitor {
             }
         }
         TypeDeclaration occ = constructorClass;
-        constructorClass = 
+        Type et = 
                 that.getDeclarationModel()
-                        .getExtendedType()
-                        .getDeclaration();
+                    .getExtendedType();
+        constructorClass = 
+                et==null ? null :
+                    et.getDeclaration();
         Tree.Type rt = beginReturnScope(fakeVoid(that));
         Declaration od = beginReturnDeclaration(c);
         super.visit(that);
