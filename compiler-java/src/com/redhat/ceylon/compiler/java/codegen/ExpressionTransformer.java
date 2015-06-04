@@ -3848,12 +3848,17 @@ public class ExpressionTransformer extends AbstractTransformer {
                         && Decl.isEnumeratedConstructor((Value)member)) {
                     CallBuilder callBuilder = CallBuilder.instance(this);
                     JCExpression qualExpr;
-                    if (((Class) member.getContainer()).isToplevel()) {
+                    Class class1 = (Class) member.getContainer();
+                    if (class1.isToplevel()) {
                         qualExpr = naming.makeTypeDeclarationExpression(null, (TypeDeclaration)member.getContainer(), DeclNameFlag.QUALIFIED);
-                    } else {
+                        callBuilder.invoke(naming.makeQualifiedName(qualExpr, (TypedDeclaration)member, Naming.NA_GETTER | Naming.NA_MEMBER));
+                    } else if (class1.isMember()){
                         qualExpr = primary instanceof Tree.QualifiedMemberOrTypeExpression ? transformExpression(((Tree.QualifiedMemberOrTypeExpression)primary).getPrimary()) : null;
+                        callBuilder.invoke(naming.makeQualifiedName(qualExpr, (TypedDeclaration)member, Naming.NA_GETTER | Naming.NA_MEMBER));
+                    } else {
+                        callBuilder.fieldRead(naming.makeName((TypedDeclaration)member, Naming.NA_IDENT));
                     }
-                    callBuilder.invoke(naming.makeQualifiedName(qualExpr, (TypedDeclaration)member, Naming.NA_GETTER | Naming.NA_MEMBER));
+                    
                     return callBuilder.build();
                 } else {
                     return CallableBuilder.unboundValueMemberReference(

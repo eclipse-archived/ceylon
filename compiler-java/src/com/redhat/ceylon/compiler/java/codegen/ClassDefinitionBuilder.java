@@ -87,7 +87,8 @@ public class ClassDefinitionBuilder {
     private final ListBuffer<MethodDefinitionBuilder> constructors = ListBuffer.lb();
     private final ListBuffer<JCTree> defs = ListBuffer.lb();
     private ClassDefinitionBuilder concreteInterfaceMemberDefs;
-    private final ListBuffer<JCTree> also = ListBuffer.lb();
+    private final ListBuffer<JCTree> before = ListBuffer.lb();
+    private final ListBuffer<JCTree> after = ListBuffer.lb();
     
 
     private boolean built = false;
@@ -190,23 +191,25 @@ public class ClassDefinitionBuilder {
         
         if (isInterface()) {
             if (this == getTopLevelBuilder()) {
-                klasses.appendList(also.toList());
+                klasses.appendList(before.toList());
                 klasses.append(klass);
                 if (hasCompanion()) {
                     klasses.appendList(concreteInterfaceMemberDefs.build());
                 }
+                klasses.appendList(after.toList());
             } else {
                 if (hasCompanion()) {
                     klasses.appendList(concreteInterfaceMemberDefs.build());
                 }
-                getTopLevelBuilder().also(klass);
+                getTopLevelBuilder().before(klass);
             }
         } else {
-            klasses.appendList(also.toList());
+            klasses.appendList(before.toList());
             if (hasCompanion()) {
                 klasses.appendList(concreteInterfaceMemberDefs.build());
             }
             klasses.append(klass);
+            klasses.appendList(after.toList());
         }
         
         gen.replace(getContainingClassBuilder());
@@ -232,8 +235,12 @@ public class ClassDefinitionBuilder {
                     && concreteInterfaceMemberDefs.constructors.isEmpty()));
     }
 
-    private void also(JCTree also) {
-        this.also.append(also);
+    private void before(JCTree also) {
+        this.before.append(also);
+    }
+    
+    void after(JCTree also) {
+        this.after.append(also);
     }
 
     private void appendDefinitionsTo(ListBuffer<JCTree> defs) {

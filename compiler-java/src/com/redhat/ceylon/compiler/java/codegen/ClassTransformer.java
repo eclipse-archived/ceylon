@@ -4935,9 +4935,12 @@ public class ClassTransformer extends AbstractTransformer {
             if (clz.isToplevel()) {
                 classMods &= ~(PRIVATE | PROTECTED | PUBLIC);
                 classMods |= PRIVATE| STATIC | FINAL ;
-            } else {
+            } else if (clz.isMember()) {
                 classMods &= ~(PRIVATE | PROTECTED | PUBLIC);
                 classMods |= PRIVATE| STATIC | FINAL ;
+            } else {
+                classMods &= ~(PRIVATE | PROTECTED | PUBLIC);
+                classMods |= FINAL ;
             }
             constructorNameConst = null;
         } else {
@@ -4968,7 +4971,7 @@ public class ClassTransformer extends AbstractTransformer {
             classBuilder.getContainingClassBuilder().getCompanionBuilder(clz).defs(ctorNameClassDecl);
             classBuilder.getContainingClassBuilder().getCompanionBuilder(clz).defs(constructorNameConst);
         } else {
-            result.addAll(ctorNameClassDecl);
+            classBuilder.defs(ctorNameClassDecl);
         }
     }
 

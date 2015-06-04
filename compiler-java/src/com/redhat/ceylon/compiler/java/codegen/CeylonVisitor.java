@@ -250,14 +250,17 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
                     adb.getterBlock(gen.make().Block(0, l));
                     classBuilder.getContainingClassBuilder().defs(gen.makeVar(PRIVATE, field, gen.naming.makeTypeDeclarationExpression(null, Decl.getConstructedClass(ctor.getEnumerated())), gen.makeNull()));
                     classBuilder.getContainingClassBuilder().defs(adb.build());
-                } else if (clz.isInterfaceMember()){
-                    //classBuilder.getContainingClassBuilder().getCompanionBuilder(clz).defs(ctorNameClassDecl);
-                    classBuilder.getContainingClassBuilder().getCompanionBuilder(clz).defs(adb.build());
                 } else {
-                    //result.addAll(ctorNameClassDecl);
-                    classBuilder.defs(adb.build());
+                    // LOCAL
+                    classBuilder.after(gen.makeVar(FINAL, gen.naming.quoteFieldName(singletonModel.getName()), 
+                            gen.naming.makeTypeDeclarationExpression(null, Decl.getConstructedClass(ctor.getEnumerated())), 
+                            gen.make().NewClass(null, null, 
+                                    gen.naming.makeTypeDeclarationExpression(null, Decl.getConstructedClass(ctor.getEnumerated())), 
+                                    List.<JCExpression>of(
+                                            gen.make().TypeCast(
+                                                    gen.naming.makeNamedConstructorType(ctor.getEnumerated(), false),
+                                            gen.makeNull())), null)));
                 }
-                //classBuilder.defs(adb.build());
             }
         }
     }
