@@ -166,3 +166,8 @@ void testVariances() {
     Array<in Nothing> a2 = some<String,Array>(Array {"hello", "world"});
 }
 
+
+Integer typeConstructorNotSupertypeOfObject(String s) {
+    @error <T> => T t = s of Object;
+    return t<Integer>;
+}
