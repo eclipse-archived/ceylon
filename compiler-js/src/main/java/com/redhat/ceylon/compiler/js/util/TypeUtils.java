@@ -455,30 +455,25 @@ public class TypeUtils {
             TypeUtils.typeNameOrList(term, t, gen, skipSelfDecl);
             gen.out(",'", term.getUnit().getFilename(), " ", term.getLocation(), "')");
         } else {
-            final boolean checkFloat = t.isFloat();
-            final boolean checkInt = checkFloat ? false : t.isSubtypeOf(term.getUnit().getIntegerType());
-            String tmp = gen.getNames().createTempVariable();
-            gen.out("(", tmp, "=");
-            term.visit(gen);
-            final String errmsg;
-            if (checkFloat) {
-                gen.out(",typeof(", tmp, ")==='number'?", gen.getClAlias(), "Float(", tmp, ")");
-                errmsg = "Expected Float";
-            } else if (checkInt) {
-                gen.out(",typeof(", tmp, ")==='number'?Math.floor(", tmp, ")");
-                errmsg = "Expected Integer";
+            if (t.isFloat() || t.isInteger()) {
+                //Check that it's a number or a Float or an Integer
+                gen.out(gen.getClAlias(), "ndnc$(");
+                term.visit(gen);
+                gen.out(",'", t.isFloat() ? "f" : "i", "','",
+                        term.getUnit().getFilename(), " ", term.getLocation(), "')");
             } else {
+                String tmp = gen.getNames().createTempVariable();
+                gen.out("(", tmp, "=");
+                term.visit(gen);
                 gen.out(",", gen.getClAlias(), "is$(", tmp, ",");
                 if (t.isTypeParameter() && typeArguments != null
                         && typeArguments.containsKey(t.getDeclaration())) {
                     t = typeArguments.get(t.getDeclaration());
                 }
                 TypeUtils.typeNameOrList(term, t, gen, skipSelfDecl);
-                gen.out(")?", tmp);
-                errmsg = "Expected " + t.asQualifiedString();
+                gen.out(")?", tmp, ":function(){throw new TypeError('Expected ", t.asQualifiedString(),
+                        " (", term.getUnit().getFilename(), " ", term.getLocation(), ")')}())");
             }
-            gen.out(":function(){throw new TypeError('", errmsg, " (",
-                    term.getUnit().getFilename(), " ", term.getLocation(), ")')}())");
         }
     }
 
