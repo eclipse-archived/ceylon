@@ -415,7 +415,7 @@ public class LazyClass extends Class implements LazyContainer {
     
     @Override
     public boolean isDeprecated() {
-        load();
+        // requires no lazy-loading
         return super.isDeprecated();
     }
 }

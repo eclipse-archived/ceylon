@@ -340,7 +340,7 @@ public class LazyClassAlias extends ClassAlias implements LazyContainer {
 
     @Override
     public boolean isDeprecated() {
-        load();
+        // requires no lazy-loading
         return super.isDeprecated();
     }
 }
