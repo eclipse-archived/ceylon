@@ -42,3 +42,16 @@ Second<BoxRef2> third = nothing;
 alias Union => <T> => List<T>|Boxy<T>;
 Union<String> union = nothing;
 List<String>|Boxy<String> verbose = union;
+
+
+
+
+alias Wrapper<Box> given Box<E>
+        =>  <Element>
+        =>  Box<Element>(Element);
+
+{Box<A>|Box<B>*} wrapConcat2<Box, A, B>(
+    Wrapper<Box> wrap,
+    {A*} as, {B*} bs)
+        given Box<E>
+        =>  as.map(wrap).chain(bs.map(wrap));
