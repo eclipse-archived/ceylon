@@ -922,14 +922,12 @@ public class Decl {
         }
     }
     
-    public static boolean hasLocalAncestor(Declaration decl){
-        if(isLocal(decl))
+    public static boolean hasLocalNotInitializerAncestor(Declaration decl){
+        if(isLocalNotInitializer(decl))
             return true;
         Scope container = decl.getContainer();
         while(container != null){
             if(ModelUtil.isLocalNotInitializerScope(container))
-                return true;
-            if(container instanceof Declaration && ModelUtil.isLocalToInitializer((Declaration) container))
                 return true;
             container = container.getContainer();
         }
