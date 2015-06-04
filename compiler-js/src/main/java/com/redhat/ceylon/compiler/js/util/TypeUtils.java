@@ -444,15 +444,39 @@ public class TypeUtils {
                 term.getUnit().getFilename(), " ", term.getLocation(), ")')}())");
     }
 
+    public static Type extractDynamic(Type t) {
+        if (t != null) {
+            if (t.isUnion()) {
+                for (Type ct : t.getCaseTypes()) {
+                    ct = extractDynamic(ct);
+                    if (ct != null) {
+                        return ct;
+                    }
+                }
+            } else if (t.isIntersection()) {
+                for (Type st : t.getSatisfiedTypes()) {
+                    st = extractDynamic(st);
+                    if (st != null) {
+                        return st;
+                    }
+                }
+            } else if (t.getDeclaration() != null && t.getDeclaration().isDynamic()) {
+                return t;
+            }
+        }
+        return null;
+    }
+
     /** Generates the code to throw an Exception if a dynamic object is not of the specified type. */
     public static void generateDynamicCheck(final Tree.Term term, Type t,
             final GenerateJsVisitor gen, final boolean skipSelfDecl,
             final Map<TypeParameter,Type> typeArguments) {
-        if (t.getDeclaration().isDynamic()) {
+        Type dyntype = extractDynamic(t);
+        if (dyntype != null) {
             gen.out(gen.getClAlias(), "dre$$(");
             term.visit(gen);
             gen.out(",");
-            TypeUtils.typeNameOrList(term, t, gen, skipSelfDecl);
+            TypeUtils.typeNameOrList(term, dyntype, gen, skipSelfDecl);
             gen.out(",'", term.getUnit().getFilename(), " ", term.getLocation(), "')");
         } else {
             if (t.isFloat() || t.isInteger()) {
