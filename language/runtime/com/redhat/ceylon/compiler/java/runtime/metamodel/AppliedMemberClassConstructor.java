@@ -77,8 +77,6 @@ public class AppliedMemberClassConstructor<Container,Type, Arguments extends Seq
     public MemberClass<Object,Type,? extends Object> getContainer() {
         return container;
     }
-    
-    
 
     @Override
     @Ignore
