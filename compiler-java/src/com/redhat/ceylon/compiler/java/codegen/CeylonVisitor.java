@@ -143,8 +143,11 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
                 classBuilder.getInitBuilder().constructor(ctor);
                 Constructor ctorModel = ctor.getDeclarationModel();
                 if (ctor.getDelegatedConstructor() != null) {
-                    Tree.ExtendedTypeExpression p = (Tree.ExtendedTypeExpression)ctor.getDelegatedConstructor().getInvocationExpression().getPrimary();
-                    delegates.put(ctorModel, new CtorDelegation(ctorModel, p.getDeclaration()));
+                    // error recovery
+                    if(ctor.getDelegatedConstructor().getInvocationExpression() != null){
+                        Tree.ExtendedTypeExpression p = (Tree.ExtendedTypeExpression)ctor.getDelegatedConstructor().getInvocationExpression().getPrimary();
+                        delegates.put(ctorModel, new CtorDelegation(ctorModel, p.getDeclaration()));
+                    }
                 } else {
                     // implicitly delegating to superclass initializer
                     Type et = Decl.getConstructedClass(ctorModel).getExtendedType();
