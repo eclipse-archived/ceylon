@@ -60,5 +60,5 @@ Basic localSingletonCtors() {
 void singletonCtors() {
     Basic o1 = localSingletonCtors();
     Basic o2 = localSingletonCtors();
-    print(o1===o2);
+    assert(!o1===o2);
 }

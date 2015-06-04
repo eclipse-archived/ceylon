@@ -130,3 +130,51 @@ class ClassMemberSingletonCtors implements .com.redhat.ceylon.compiler.java.runt
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberSingletonCtors.class);
 }
+final class localSingletonCtors_ {
+    
+    private localSingletonCtors_() {
+    }
+    
+    static .java.lang.Object localSingletonCtors() {
+        
+        class LocalClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+            private final .java.lang.String string;
+            
+            @.java.lang.Override
+            public final .java.lang.String toString() {
+                return string;
+            }
+            
+            final class one_ {
+                
+                private one_() {
+                }
+            }
+            
+            private LocalClass(LocalClass.one_ $name$) {
+                string = "one";
+            }
+            
+            @.java.lang.Override
+            public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue(.com.redhat.ceylon.compiler.java.test.structure.constructor.localSingletonCtors_.class), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(LocalClass.class));
+            }
+        }
+        final LocalClass one = new LocalClass((LocalClass.one_)null);
+        return one;
+    }
+}
+final class singletonCtors_ {
+    
+    private singletonCtors_() {
+    }
+    
+    static void singletonCtors() {
+        final .java.lang.Object o1 = .com.redhat.ceylon.compiler.java.test.structure.constructor.localSingletonCtors_.localSingletonCtors();
+        final .java.lang.Object o2 = .com.redhat.ceylon.compiler.java.test.structure.constructor.localSingletonCtors_.localSingletonCtors();
+        if (!(o1 == o2)) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "!o1===o2"));
+        }
+    }
+}
