@@ -110,3 +110,9 @@ class BoolWithNew2 {
     case (BoolWithNew.true) {}
     case (BoolWithNew.false) {}
 }
+
+interface InterFace {
+    class Singleton {
+        @error new instance {}
+    }
+}

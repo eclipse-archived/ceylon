@@ -847,6 +847,10 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
                 that.addError("generic class may not have an enumerated instance: '" + 
                         clazz.getName() + "' is generic");
             }
+            else if (scope.getContainer() instanceof Interface) {
+                that.addError("class nested inside an interface may not have enumerated instances: '" +
+                        clazz.getName() + "' belongs to an interface");
+            }
         }
         else {
             at = null;
