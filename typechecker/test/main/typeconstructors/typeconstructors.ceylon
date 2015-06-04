@@ -171,3 +171,10 @@ Integer typeConstructorNotSupertypeOfObject(String s) {
     @error <T> => T t = s of Object;
     return t<Integer>;
 }
+
+List<<T>=>T(T)> listOfFuns = [<T>(T t)=>t, <X>(X x)=>x];
+void useListOfFuns() {
+    if (exists first = listOfFuns[0]) {
+        Float result = first(1.0);
+    }
+}
