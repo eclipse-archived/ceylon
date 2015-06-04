@@ -63,6 +63,11 @@ public class TypeAlias extends TypeDeclaration {
         this.anonymous = anonymous;
     }
 	
+	@Override
+	public boolean isNamed() {
+	    return !anonymous;
+	}
+	
     @Override
     public boolean isParameterized() {
         return !typeParameters.isEmpty();

@@ -526,16 +526,24 @@ public abstract class Declaration
         }
     }
     
+    /**
+     * @return true if this is an anonymous class or 
+     * anything with a rubbish system-generated name.
+     * 
+     * @see Declaration#isNamed()
+     */
     public boolean isAnonymous() {
         return false;
     }
     
     /**
-     * Return true if this declaration has a system-generated 
+     * @return false if this declaration has a system-generated 
      * name, rather than a user-generated name. At the moment 
-     * only object expressions and function expressions are 
-     * not named. This is different from isAnonymous() because 
-     * named object declarations are anonymous but named.
+     * only object expressions, anonymous function expressions 
+     * and anonymous type constructors are not named. This 
+     * is different to {@link Declaration#isAnonymous()} 
+     * because named object classes are considered anonymous 
+     * but do have a user-generated name.
      */
     public boolean isNamed() {
         return true;
