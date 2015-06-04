@@ -2743,4 +2743,23 @@ public class ModelUtil {
         return d!=null && d.getQualifiedNameString()
                 .equals("ceylon.language::false");
     }
+
+    public static Type genericFunctionType(
+            Generic generic, Scope scope, 
+            Declaration member, Reference reference, 
+            Unit unit) {
+        List<TypeParameter> typeParameters = 
+                generic.getTypeParameters();
+        TypeAlias ta = new TypeAlias();
+        ta.setContainer(scope);
+        ta.setName("Anonymous#" + member.getName());
+        ta.setAnonymous(true);
+        ta.setScope(scope);
+        ta.setUnit(unit);
+        ta.setExtendedType(reference.getFullType());
+        ta.setTypeParameters(typeParameters);
+        Type type = ta.getType();
+        type.setTypeConstructor(true);
+        return type;
+    }
 }
