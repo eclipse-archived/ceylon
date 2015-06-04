@@ -55,3 +55,9 @@ function ndnc$(n,t,loc) {
   throw new TypeError('Expected ' + (t==='f'?'Float':'Integer') + ' (' + loc + ')');
 }
 ex$.ndnc$=ndnc$;
+//Check if an object if really of a certain type
+function ndtc$(o,t,loc) {
+  if (is$(o,t))return o;
+  throw new TypeError('Expected ' + qname$(t) + ' (' + loc + ')');
+}
+ex$.ndtc$=ndtc$;
