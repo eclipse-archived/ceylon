@@ -1031,11 +1031,11 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             switch(type){
             case ATTRIBUTE:
                 decl = makeToplevelAttribute(classMirror);
-                setDeclarationVisibility(decl, classMirror, classMirror, classMirror, true);
+                setDeclarationVisibilityAndDeprecation(decl, classMirror, classMirror, classMirror, true);
                 break;
             case METHOD:
                 decl = makeToplevelMethod(classMirror);
-                setDeclarationVisibility(decl, classMirror, classMirror, classMirror, true);
+                setDeclarationVisibilityAndDeprecation(decl, classMirror, classMirror, classMirror, true);
                 break;
             case OBJECT:
                 // we first make a class
@@ -1049,19 +1049,19 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                     decls.add(objectDecl);
                     // which one did we want?
                     decl = declarationType == DeclarationType.TYPE ? objectClassDecl : objectDecl;
-                    setDeclarationVisibility(objectDecl, classMirror, classMirror, classMirror, true);
+                    setDeclarationVisibilityAndDeprecation(objectDecl, classMirror, classMirror, classMirror, true);
                 }else{
                     decl = objectClassDecl;
                 }
-                setDeclarationVisibility(objectClassDecl, classMirror, classMirror, classMirror, true);
+                setDeclarationVisibilityAndDeprecation(objectClassDecl, classMirror, classMirror, classMirror, true);
                 break;
             case CLASS:
                 if(classMirror.getAnnotation(CEYLON_ALIAS_ANNOTATION) != null){
                     decl = makeClassAlias(classMirror);
-                    setDeclarationVisibility(decl, classMirror, classMirror, classMirror, true);
+                    setDeclarationVisibilityAndDeprecation(decl, classMirror, classMirror, classMirror, true);
                 }else if(classMirror.getAnnotation(CEYLON_TYPE_ALIAS_ANNOTATION) != null){
                     decl = makeTypeAlias(classMirror);
-                    setDeclarationVisibility(decl, classMirror, classMirror, classMirror, true);
+                    setDeclarationVisibilityAndDeprecation(decl, classMirror, classMirror, classMirror, true);
                 }else{
                     final List<MethodMirror> constructors = getClassConstructors(classMirror);
                     if (!constructors.isEmpty()) {
@@ -1071,7 +1071,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                                 decl = makeOverloadedConstructor(constructors, classMirror, decls, isCeylon);
                             } else {
                                 decl = makeLazyClass(classMirror, null, null);
-                                setDeclarationVisibility(decl, classMirror, classMirror, classMirror, isCeylon);
+                                setDeclarationVisibilityAndDeprecation(decl, classMirror, classMirror, classMirror, isCeylon);
                             }
                         } else {
                             if (hasConstructors == null || !hasConstructors) {
@@ -1083,19 +1083,19 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                                 // visibility is to be used
                                 if(isCeylon || getJavaVisibility(classMirror) == getJavaVisibility(constructor)){
                                     decl = makeLazyClass(classMirror, null, constructor);
-                                    setDeclarationVisibility(decl, classMirror, classMirror, classMirror, isCeylon);
+                                    setDeclarationVisibilityAndDeprecation(decl, classMirror, classMirror, classMirror, isCeylon);
                                 }else{
                                     decl = makeOverloadedConstructor(constructors, classMirror, decls, isCeylon);
                                 }
                             } else {
                                 decl = makeLazyClass(classMirror, null, null);
-                                setDeclarationVisibility(decl, classMirror, classMirror, classMirror, isCeylon);
+                                setDeclarationVisibilityAndDeprecation(decl, classMirror, classMirror, classMirror, isCeylon);
                             }
                         }
                     } else if(isCeylon && classMirror.getAnnotation(CEYLON_OBJECT_ANNOTATION) != null) {
                         // objects don't need overloading stuff
                         decl = makeLazyClass(classMirror, null, null);
-                        setDeclarationVisibility(decl, classMirror, classMirror, classMirror, isCeylon);
+                        setDeclarationVisibilityAndDeprecation(decl, classMirror, classMirror, classMirror, isCeylon);
                     } else if(getJavaVisibility(classMirror) != JavaVisibility.PRIVATE){
                         Class klass = (Class)makeOverloadedConstructor(constructors, classMirror, decls, isCeylon);
                         decl = klass;
@@ -1119,7 +1119,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 }else{
                     decl = makeLazyInterface(classMirror);
                 }
-                setDeclarationVisibility(decl, classMirror, classMirror, classMirror, isCeylon);
+                setDeclarationVisibilityAndDeprecation(decl, classMirror, classMirror, classMirror, isCeylon);
                 break;
             }
         }catch(ModelResolutionException x){
@@ -1200,14 +1200,14 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         // a subclass of the original
         Class supercls = makeLazyClass(classMirror, null, null);
         // the abstraction class gets the class modifiers
-        setDeclarationVisibility(supercls, classMirror, classMirror, classMirror, isCeylon);
+        setDeclarationVisibilityAndDeprecation(supercls, classMirror, classMirror, classMirror, isCeylon);
         supercls.setAbstraction(true);
         List<Declaration> overloads = new ArrayList<Declaration>(constructors.size());
         // all filtering is done in getClassConstructors
         for (MethodMirror constructor : constructors) {
             LazyClass subdecl = makeLazyClass(classMirror, supercls, constructor);
             // the subclasses class get the constructor modifiers
-            setDeclarationVisibility(subdecl, constructor, constructor, classMirror, isCeylon);
+            setDeclarationVisibilityAndDeprecation(subdecl, constructor, constructor, classMirror, isCeylon);
             subdecl.setOverloaded(true);
             overloads.add(subdecl);
             decls.add(subdecl);
@@ -1216,7 +1216,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         return supercls;
     }
 
-    private void setDeclarationVisibility(Declaration decl, AccessibleMirror mirror, AnnotatedMirror annotatedMirror, ClassMirror classMirror, boolean isCeylon) {
+    private void setDeclarationVisibilityAndDeprecation(Declaration decl, AccessibleMirror mirror, AnnotatedMirror annotatedMirror, ClassMirror classMirror, boolean isCeylon) {
         if(isCeylon){
             // when we're in a local type somewhere we must turn public declarations into package or protected ones, so
             // we have to check the shared annotation
@@ -1226,6 +1226,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             decl.setPackageVisibility(mirror.isDefaultAccess());
             decl.setProtectedVisibility(mirror.isProtected());
         }
+        decl.setDeprecated(isDeprecated(annotatedMirror));
     }
 
     private enum JavaVisibility {
@@ -2205,7 +2206,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         constructor.setScope(klass);
         constructor.setUnit(klass.getUnit());
         constructor.setExtendedType(klass.getType());
-        setDeclarationVisibility(constructor, ctor, ctor, classMirror, isCeylon);
+        setDeclarationVisibilityAndDeprecation(constructor, ctor, ctor, classMirror, isCeylon);
         setAnnotations(constructor, ctor);
         setParameters(constructor, classMirror, ctor, true, klass);
         klass.addMember(constructor);
@@ -2356,10 +2357,6 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             }
         }
         
-        if (hasCeylonDeprecated && annotated instanceof Declaration) {
-            ((Declaration)annotated).setDeprecated(true);
-        }
-
         // Set "native" annotation
         String nativeBackend = getAnnotationStringValue(classMirror, CEYLON_LANGUAGE_NATIVE_ANNOTATION, "backend");
         if (nativeBackend != null) {
@@ -2378,6 +2375,27 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         }
     }
 
+    private boolean isDeprecated(AnnotatedMirror classMirror){
+        if (classMirror.getAnnotation(JAVA_DEPRECATED_ANNOTATION) != null)
+            return true;
+        if (classMirror.getAnnotation(CEYLON_ANNOTATIONS_ANNOTATION) != null) {
+            // Load anything else the long way, reading the @Annotation(name=...)
+            List<AnnotationMirror> annotations = getAnnotationArrayValue(classMirror, CEYLON_ANNOTATIONS_ANNOTATION);
+            if(annotations != null) {
+                for(AnnotationMirror annotation : annotations){
+                    String name = (String) annotation.getValue();
+                    if(name != null && name.equals("deprecated"))
+                        return true;
+                }
+            }
+            return false;
+        } else {
+            // If the class lacks @Annotations then set the modifier annotations
+            // according to the presence of @Shared$annotation etc
+            return classMirror.getAnnotation(LanguageAnnotation.DEPRECATED.annotationType) != null;
+        }
+    }
+    
     public static List<Declaration> getOverloads(Declaration decl) {
         if (decl instanceof Function) {
             return ((Function)decl).getOverloads();
@@ -2539,6 +2557,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         markUnboxed(method, methodMirror, methodMirror.getReturnType());
         markTypeErased(method, methodMirror, methodMirror.getReturnType());
         markUntrustedType(method, methodMirror, methodMirror.getReturnType());
+        method.setDeprecated(isDeprecated(methodMirror));
         setAnnotations(method, methodMirror);
         
         klass.addMember(method);
@@ -2713,6 +2732,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         markUnboxed(value, null, fieldMirror.getType());
         markTypeErased(value, fieldMirror, fieldMirror.getType());
         markUntrustedType(value, fieldMirror, fieldMirror.getType());
+        value.setDeprecated(isDeprecated(fieldMirror));
         setAnnotations(value, fieldMirror);
         klass.addMember(value);
         ModelUtil.setVisibleScope(value);
@@ -2821,6 +2841,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         markUnboxed(value, methodMirror, methodMirror.getReturnType());
         markTypeErased(value, methodMirror, methodMirror.getReturnType());
         markUntrustedType(value, methodMirror, methodMirror.getReturnType());
+        value.setDeprecated(isDeprecated(methodMirror));
         setAnnotations(value, methodMirror);
         klass.addMember(value);
         ModelUtil.setVisibleScope(value);
@@ -3160,6 +3181,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                     paramMirror.getType().getComponentType()
                     : paramMirror.getType());
             parameter.setDeclaration((Declaration) decl);
+            value.setDeprecated(isDeprecated(paramMirror));
             setAnnotations(value, paramMirror);
             parameters.getParameters().add(parameter);
             if (!lookedup) {
