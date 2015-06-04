@@ -21,9 +21,22 @@ class SingletonCtors implements .com.redhat.ceylon.compiler.java.runtime.model.R
             }
         }
     }
-    public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtors.one_ one_ = null;
     
-    public static final class one_ {
+    public final long use2(final .com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtors inst) {
+        {
+            .com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtors sel$2 = inst;
+            if (sel$2 == getOne()) {
+                return 1L;
+            } else if (sel$2 == getTwo()) {
+                return 2L;
+            } else {
+                final .com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtors inst$3 = (.com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtors)sel$2;
+                return 3L;
+            }
+        }
+    }
+    
+    private static final class one_ {
         
         private one_() {
         }
@@ -40,9 +53,8 @@ class SingletonCtors implements .com.redhat.ceylon.compiler.java.runtime.model.R
     private static final .com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtors getOne() {
         return one;
     }
-    public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtors.two_ two_ = null;
     
-    public static final class two_ {
+    private static final class two_ {
         
         private two_() {
         }
@@ -65,4 +77,56 @@ class SingletonCtors implements .com.redhat.ceylon.compiler.java.runtime.model.R
         return .com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtors.$TypeDescriptor$;
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtors.class);
+}
+class ClassMemberSingletonCtors implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    ClassMemberSingletonCtors() {
+    }
+    
+    private static final class MemberClass$one {
+        
+        private MemberClass$one() {
+        }
+    }
+    private MemberClass one = null;
+    
+    private .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberSingletonCtors.MemberClass getOne() {
+        if (one == null) one = new MemberClass((.com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberSingletonCtors.MemberClass$one)null);
+        return one;
+    }
+    
+    public class MemberClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+        private final .java.lang.String string;
+        
+        @.java.lang.Override
+        public final .java.lang.String toString() {
+            return string;
+        }
+        
+        public MemberClass(.com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberSingletonCtors.MemberClass$one $name$) {
+            string = "one";
+        }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberSingletonCtors.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberSingletonCtors.MemberClass.class));
+        }
+    }
+    
+    private final void use$priv$(final .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberSingletonCtors other) {
+        if (!other.getOne().equals(getOne())) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "other.MemberClass.one != MemberClass.one"));
+        }
+        if (!other.getOne().equals(.com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberSingletonCtors.this.getOne())) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "other.MemberClass.one != this.MemberClass.one"));
+        }
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberSingletonCtors.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberSingletonCtors.class);
 }
