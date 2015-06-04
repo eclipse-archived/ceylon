@@ -1,5 +1,8 @@
 package com.redhat.ceylon.model.typechecker.model;
 
+import static java.util.Collections.emptyList;
+import static java.util.Collections.singletonList;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -39,8 +42,9 @@ public class Class extends ClassOrInterface implements Functional {
     }
 
     /**
-     * Return true if we have are anonymous and have a name which is not system-generated. Currently
-     * only object expressions have no name.
+     * Return true if we have are anonymous and have a name 
+     * which is not system-generated. Currently only object 
+     * expressions have no name.
      */
     @Override
     public boolean isNamed() {
@@ -95,13 +99,18 @@ public class Class extends ClassOrInterface implements Functional {
     
     public ParameterList getParameterList() {
         if (constructors) {
-            Constructor defaultConstructor = getDefaultConstructor();
-            if (defaultConstructor==null || 
-                    defaultConstructor.getParameterLists().isEmpty()) {
+            Constructor defaultConstructor = 
+                    getDefaultConstructor();
+            if (defaultConstructor==null) {
                 return null;
             }
             else {
-                return defaultConstructor.getFirstParameterList();
+                if (defaultConstructor.getParameterLists().isEmpty()) {
+                    return null;
+                }
+                else {
+                    return defaultConstructor.getFirstParameterList();
+                }
             }
         }
         else {
@@ -117,10 +126,10 @@ public class Class extends ClassOrInterface implements Functional {
     public List<ParameterList> getParameterLists() {
         ParameterList parameterList = getParameterList();
         if (parameterList==null) {
-            return Collections.emptyList();
+            return emptyList();
         }
         else {
-            return Collections.singletonList(parameterList);
+            return singletonList(parameterList);
         }
     }
 
@@ -131,8 +140,10 @@ public class Class extends ClassOrInterface implements Functional {
 
     public Parameter getParameter(String name) {
         for (Declaration d : getMembers()) {
-            if (d.isParameter() && ModelUtil.isNamed(name, d)) {
-                return ((FunctionOrValue) d).getInitializerParameter();
+            if (d.isParameter() && 
+                    ModelUtil.isNamed(name, d)) {
+                FunctionOrValue fov = (FunctionOrValue) d;
+                return fov.getInitializerParameter();
             }
         }
         return null;
@@ -153,6 +164,13 @@ public class Class extends ClassOrInterface implements Functional {
         if (et==null) {
             //for Anything
             return null;
+        }
+        else if (et.isUnknown()) {
+            //used by the model loader to indicate a
+            //superclass that could not be loaded
+            //leave it intact because the UnknownType 
+            //carries error information 
+            return et;
         }
         else if (et.isClass()) {
             return et;
