@@ -750,6 +750,8 @@ public abstract class AbstractTransformer implements Transformation {
                 }
             }
         }
+        if(isTrueFalseUnion(type))
+            type = typeFact().getBooleanType();
         
         return type;
     }
@@ -1537,9 +1539,21 @@ public abstract class AbstractTransformer implements Transformation {
                         || isBooleanTrue(declaration)
                         || Decl.equal(declaration, typeFact.getBooleanTrueClassDeclaration())
                         || isBooleanFalse(declaration)
-                        || Decl.equal(declaration, typeFact.getBooleanFalseClassDeclaration()));
+                        || Decl.equal(declaration, typeFact.getBooleanFalseClassDeclaration())
+                        || isTrueFalseUnion(type));
     }
     
+    private boolean isTrueFalseUnion(Type type) {
+        if(type.isUnion() && type.getCaseTypes().size() == 2){
+            for(Type t : type.getCaseTypes()){
+                if(!isCeylonBoolean(t))
+                    return false;
+            }
+            return true;
+        }
+        return false;
+    }
+
     boolean isCeylonInteger(Type type) {
         return type != null && type.isExactly(typeFact.getIntegerType());
     }
