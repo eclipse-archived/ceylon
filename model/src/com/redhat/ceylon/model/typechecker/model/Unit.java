@@ -1823,7 +1823,7 @@ public class Unit {
             }
         }
         Type returnType = 
-                getCallableReturnType(pr.getFullType());
+                denotableType(getCallableReturnType(pr.getFullType()));
         if (returnType == null) {
             return null;
         }
