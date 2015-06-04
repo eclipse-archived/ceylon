@@ -222,8 +222,13 @@ public class ModuleManager implements BackendSupport {
         return modules;
     }
 
+    /**
+     * Returns true if this ModuleManager supports the given Backend.
+     * Returning true for Backend.None means that not finding any
+     * native implementation for a declaration is not an error.
+     */
     @Override
     public boolean supportsBackend(Backend backend) {
-        return backend != Backend.None;
+        return backend == Backend.None;
     }
 }

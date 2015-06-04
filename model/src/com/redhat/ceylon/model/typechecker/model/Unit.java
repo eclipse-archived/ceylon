@@ -1752,8 +1752,7 @@ public class Unit {
         Type getType = pr.getType();
         Type setType = variable ? 
                 pr.getType() : getNothingType();
-        Type qualifyingType = 
-                pr.getQualifyingType();
+        Type qualifyingType = pr.getQualifyingType();
         if (qualifyingType!=null) {
             TypeDeclaration ad = 
                     getLanguageModuleModelTypeDeclaration(
@@ -1785,8 +1784,7 @@ public class Unit {
             return null;
         }
         else {
-            Type qualifyingType = 
-                    pr.getQualifyingType();
+            Type qualifyingType = pr.getQualifyingType();
             if (qualifyingType!=null) {
                 TypeDeclaration md = 
                         getLanguageModuleModelTypeDeclaration(
@@ -1812,8 +1810,18 @@ public class Unit {
         }
         ParameterList fpl = f.getFirstParameterList();
         List<Parameter> params = fpl.getParameters();
-        Type parameterTuple = 
-                getParameterTypesAsTupleType(params, pr);
+        Type parameterTuple = getNothingType();
+        Scope scope = d.getContainer();
+        if (scope instanceof Class) {
+            Class c = (Class) scope;
+            if (c.isClassOrInterfaceMember() || c.isToplevel()) {
+                parameterTuple = 
+                        getParameterTypesAsTupleType(params, pr);
+            }
+            else {
+                parameterTuple = getNothingType();
+            }
+        }
         Type returnType = 
                 getCallableReturnType(pr.getFullType());
         if (returnType == null) {
@@ -1822,7 +1830,8 @@ public class Unit {
         else {
             Type qt = pr.getQualifyingType();
             if (qt!=null && 
-                    !qt.getDeclaration().isToplevel()) {
+                    qt.getDeclaration()
+                        .isClassOrInterfaceMember()) {
                 Type qqt = qt.getQualifyingType();
                 TypeDeclaration mccd = 
                         getLanguageModuleModelTypeDeclaration(

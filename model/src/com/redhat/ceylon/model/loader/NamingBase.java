@@ -3,6 +3,7 @@ package com.redhat.ceylon.model.loader;
 import com.redhat.ceylon.model.loader.model.FieldValue;
 import com.redhat.ceylon.model.loader.model.JavaBeanValue;
 import com.redhat.ceylon.model.loader.model.OutputElement;
+import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Interface;
 import com.redhat.ceylon.model.typechecker.model.ModelUtil;
@@ -50,6 +51,7 @@ public class NamingBase {
         $invoke$,
         $lookup$,
         $refine$,
+        $return$,
         $sb$,
         $spreadVarargs$,
         $TypeDescriptor$,
@@ -113,6 +115,14 @@ public class NamingBase {
 
     public static String suffixName(Suffix suffix, String s) {
         return s + suffix.toString();
+    }
+
+    public static String getAliasInstantiatorMethodName(Class model) {
+        String name = suffixName(Suffix.$aliased$, model.getName());
+        if (!model.isShared()) {
+            name = suffixName(Suffix.$priv$, name);
+        }
+        return name;
     }
 
     /**

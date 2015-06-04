@@ -47,7 +47,7 @@ import com.redhat.ceylon.model.loader.model.LazyContainer;
 import com.redhat.ceylon.model.loader.model.LazyElement;
 import com.redhat.ceylon.model.loader.model.LazyInterface;
 import com.redhat.ceylon.model.loader.model.LazyInterfaceAlias;
-import com.redhat.ceylon.model.loader.model.LazyMethod;
+import com.redhat.ceylon.model.loader.model.LazyFunction;
 import com.redhat.ceylon.model.loader.model.LazyModule;
 import com.redhat.ceylon.model.loader.model.LazyPackage;
 import com.redhat.ceylon.model.loader.model.LazyTypeAlias;
@@ -836,9 +836,9 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                         methodDecl = setter;
                     }
                 }
-            }else if(enclosingClassDeclaration instanceof LazyMethod){
+            }else if(enclosingClassDeclaration instanceof LazyFunction){
                 // local and toplevel methods
-                methodDecl = (LazyMethod)enclosingClassDeclaration;
+                methodDecl = (LazyFunction)enclosingClassDeclaration;
             }else if(enclosingClassDeclaration instanceof LazyValue){
                 // local and toplevel attributes
                 if(enclosingClassDeclaration.isToplevel() && method.getName().equals(NamingBase.Unfix.set_.name()))
@@ -891,8 +891,8 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             container = ((LazyClass) javaClassScope).classMirror;
         }else if(javaClassScope instanceof LazyValue){
             container = ((LazyValue) javaClassScope).classMirror;
-        }else if(javaClassScope instanceof LazyMethod){
-            container = ((LazyMethod) javaClassScope).classMirror;
+        }else if(javaClassScope instanceof LazyFunction){
+            container = ((LazyFunction) javaClassScope).classMirror;
         }else if(javaClassScope instanceof SetterWithLocalDeclarations){
             container = ((SetterWithLocalDeclarations) javaClassScope).classMirror;
         }else{
@@ -1347,8 +1347,8 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         return value;
     }
 
-    protected LazyMethod makeToplevelMethod(ClassMirror classMirror) {
-        LazyMethod method = new LazyMethod(classMirror, this);
+    protected LazyFunction makeToplevelMethod(ClassMirror classMirror) {
+        LazyFunction method = new LazyFunction(classMirror, this);
         return method;
     }
     
@@ -1952,10 +1952,9 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             // Find the instantiator method
             MethodMirror instantiator = null;
             ClassMirror instantiatorClass = alias.isToplevel() ? alias.classMirror : alias.classMirror.getEnclosingClass();
+            String aliasName = NamingBase.getAliasInstantiatorMethodName(alias);
             for (MethodMirror method : instantiatorClass.getDirectMethods()) {
-                // If we're finding things based on their name, shouldn't we 
-                // we using Naming to do it?
-                if (method.getName().equals(alias.getName() + "$aliased$")) {
+                if (method.getName().equals(aliasName)) {
                     instantiator = method;
                     break;
                 }
@@ -3475,7 +3474,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     }
 
     @Override
-    public void complete(LazyMethod method)  {
+    public void complete(LazyFunction method)  {
         synchronized(getLock()){
             timer.startIgnore(TIMER_MODEL_LOADER_CATEGORY);
             try{
@@ -3534,7 +3533,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
      }
 
     // for subclasses
-    protected abstract void setAnnotationConstructor(LazyMethod method, MethodMirror meth);
+    protected abstract void setAnnotationConstructor(LazyFunction method, MethodMirror meth);
 
     public AnnotationProxyMethod makeInteropAnnotationConstructor(LazyInterface iface,
             AnnotationProxyClass klass, OutputElement oe, Package pkg){

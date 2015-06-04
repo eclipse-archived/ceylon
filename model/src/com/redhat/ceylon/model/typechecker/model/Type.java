@@ -121,6 +121,15 @@ public class Type extends Reference {
         this.declaration = declaration;
     }
     
+    /**
+     * Is this type a type constructor? Warning: this is
+     * not a "deep implementation", and a type constructor
+     * type can be hidden behind a type alias. Therefore,
+     * it's usually necessary to call 
+     * {@link Type#resolveAliases()} before testing this.
+     * 
+     * @return true if this type is a type constructor
+     */
     public boolean isTypeConstructor() {
         return typeConstructor;
     }
@@ -553,7 +562,7 @@ public class Type extends Reference {
                 return type.isAnything() || type.isObject();
             }
             else if (type.isTypeConstructor()) {
-                return isAnything() || isObject();
+                return false;
             }
             else if (isObject()) {
                 return type.isObject();
@@ -740,32 +749,37 @@ public class Type extends Reference {
         else {
             TypeParameter typeConstructorParam = 
                     getTypeConstructorParameter();
-            Type qt = getQualifyingType();
-            Type oqt = type.getQualifyingType();
+            Type qualifyingType = getQualifyingType();
+            Type otherQualifyingType = type.getQualifyingType();
             if (typeConstructorParam==null) {
                 List<Type> paramsAsArgs =
                         typeParametersAsArgList(otherDec);
-                Type rt =
-                        dec.appliedType(qt,
+                Type appliedType =
+                        dec.appliedType(
+                                qualifyingType,
                                 paramsAsArgs);
-                Type ort =
-                        otherDec.appliedType(oqt,
+                Type otherAppliedType =
+                        otherDec.appliedType(
+                                otherQualifyingType,
                                 paramsAsArgs);
-                return rt.isExactly(ort) &&
+                return appliedType.isExactly(otherAppliedType) &&
                         hasExactSameUpperBounds(type,
                                 paramsAsArgs);
             }
             else {
                 List<Type> paramsAsArgs = 
-                        typeParametersAsArgList(typeConstructorParam);
-                Type rt = 
-                        dec.appliedType(qt, 
+                        typeParametersAsArgList(
+                                typeConstructorParam);
+                Type appliedType = 
+                        dec.appliedType(
+                                qualifyingType, 
                                 paramsAsArgs);
-                Type ort = 
-                        otherDec.appliedType(oqt, 
+                Type otherAppliedType = 
+                        otherDec.appliedType(
+                                otherQualifyingType, 
                                 paramsAsArgs);
                 //resolves aliases:
-                return rt.isExactly(ort);
+                return appliedType.isExactly(otherAppliedType);
             }
         }
     }
@@ -777,23 +791,23 @@ public class Type extends Reference {
             return true;
         }
         else {
-            Type qt = 
-                    getQualifyingType();
-            Type oqt = 
-                    type.getQualifyingType();
+            Type qualifyingType = getQualifyingType();
+            Type otherQualifyingType = type.getQualifyingType();
             TypeParameter typeConstructorParam = 
                     getTypeConstructorParameter();
             if (typeConstructorParam == null) {
                 // occurs as the type of something
                 List<Type> paramsAsArgs = 
                         typeParametersAsArgList(otherDec);
-                Type rt =
-                        dec.appliedType(qt, 
+                Type appliedType =
+                        dec.appliedType(
+                                qualifyingType, 
                                 paramsAsArgs);
-                Type ort = 
-                        otherDec.appliedType(oqt, 
+                Type otherAppliedType = 
+                        otherDec.appliedType(
+                                otherQualifyingType, 
                                 paramsAsArgs);
-                return rt.isSubtypeOf(ort) &&
+                return appliedType.isSubtypeOf(otherAppliedType) &&
                         acceptsUpperBounds(type, 
                                 paramsAsArgs);
             }
@@ -801,15 +815,18 @@ public class Type extends Reference {
                 // occurs as a type argument to a type 
                 // constructor parameter
                 List<Type> paramsAsArgs = 
-                        typeParametersAsArgList(typeConstructorParam);
-                Type rt = 
-                        dec.appliedType(qt, 
+                        typeParametersAsArgList(
+                                typeConstructorParam);
+                Type appliedType = 
+                        dec.appliedType(
+                                qualifyingType, 
                                 paramsAsArgs);
-                Type ort = 
-                        otherDec.appliedType(oqt, 
+                Type otherAppliedType = 
+                        otherDec.appliedType(
+                                otherQualifyingType, 
                                 paramsAsArgs);
                 //resolves aliases:
-                return rt.isSubtypeOf(ort);
+                return appliedType.isSubtypeOf(otherAppliedType);
             }
         }
     }
@@ -1078,8 +1095,7 @@ public class Type extends Reference {
      *         variances and substitution of type arguments
      */
     public Type substitute(TypedReference source) {
-        Type receiver =
-                source.getQualifyingType();
+        Type receiver = source.getQualifyingType();
         return substitute(source.getTypeArguments(),
                 receiver==null ? null :
                     receiver.collectVarianceOverrides(),
@@ -1318,6 +1334,8 @@ public class Type extends Reference {
      * Given a type declaration, return a produced type of 
      * which this type is an invariant subtype.
      * 
+     * If this type is Nothing, always return null.
+     * 
      * @param dec a type declaration
      * 
      * @return a produced type of the given type declaration
@@ -1333,6 +1351,7 @@ public class Type extends Reference {
             return null;
         }
         if (isNothing()) {
+            //this is what the backend expects, apparently
             return null;
         }
         boolean complexType = 
@@ -1835,6 +1854,7 @@ public class Type extends Reference {
                 }
             }
             if (tp.isTypeConstructor()) {
+                //TODO: construct a type alias instead!
                 result.setTypeConstructor(true);
                 result.setTypeConstructorParameter(tp);
             }
@@ -2614,8 +2634,8 @@ public class Type extends Reference {
     }
 
     public List<Type> getSatisfiedTypes() {
-        List<Type> sts = 
-                getDeclaration().getSatisfiedTypes();
+        TypeDeclaration dec = getDeclaration();
+        List<Type> sts = dec.getSatisfiedTypes();
         if (getTypeArguments().isEmpty()) {
             return sts; 
         }
@@ -2630,8 +2650,8 @@ public class Type extends Reference {
     }
 
     public Type getExtendedType() {
-        Type et = 
-                getDeclaration().getExtendedType();
+        TypeDeclaration dec = getDeclaration();
+        Type et = dec.getExtendedType();
         if (et==null) {
             return null;
         }
@@ -2646,8 +2666,8 @@ public class Type extends Reference {
     }
 
     public List<Type> getCaseTypes() {
-        List<Type> cts = 
-                getDeclaration().getCaseTypes();
+        TypeDeclaration dec = getDeclaration();
+        List<Type> cts = dec.getCaseTypes();
         if (cts==null) {
             return null;
         }
@@ -3465,6 +3485,14 @@ public class Type extends Reference {
         }
     }
     
+    /**
+     * Eliminate type aliases from this type, recursively
+     * expanding them into their aliased types. Canonicalize
+     * the type by side-effect!
+     * 
+     * @return this type, with type aliases expanded, and 
+     *         then canonicalized
+     */
     public Type resolveAliases() {
         if (resolvedAliases == null) {
             // really compute it
