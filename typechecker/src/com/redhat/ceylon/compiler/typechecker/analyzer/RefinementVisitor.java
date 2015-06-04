@@ -42,7 +42,7 @@ import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Function;
 import com.redhat.ceylon.model.typechecker.model.Functional;
 import com.redhat.ceylon.model.typechecker.model.Generic;
-import com.redhat.ceylon.model.typechecker.model.LazyProducedType;
+import com.redhat.ceylon.model.typechecker.model.LazyType;
 import com.redhat.ceylon.model.typechecker.model.Package;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.ParameterList;
@@ -1289,14 +1289,19 @@ public class RefinementVisitor extends Visitor {
     public void visit(Tree.SpecifierStatement that) {
         super.visit(that);
         
-        List<Type> sig = 
-                new ArrayList<Type>();
+        List<Type> sig = new ArrayList<Type>();
         Tree.Term term = that.getBaseMemberExpression();
         while (term instanceof Tree.ParameterizedExpression) {
             sig.clear();
             Tree.ParameterizedExpression pe = 
                     (Tree.ParameterizedExpression) 
                         term;
+            Tree.TypeParameterList typeParameterList = 
+                    pe.getTypeParameterList();
+            if (typeParameterList!=null) {
+                //TODO: remove this for #1329
+                typeParameterList.addError("specification statements may not have type parameters");
+            }
             Tree.ParameterList pl = 
                     pe.getParameterLists()
                         .get(0);
@@ -1349,7 +1354,7 @@ public class RefinementVisitor extends Visitor {
                                         "' (rename parameter)");
                             }
                             else if (td instanceof Value) {
-                                refineValue((Value) td, 
+                                refineAttribute((Value) td, 
                                         bme, that, ci);
                             }
                             else if (td instanceof Function) {
@@ -1368,12 +1373,11 @@ public class RefinementVisitor extends Visitor {
         }
     }
 
-    private void refineValue(final Value sv, 
+    private void refineAttribute(final Value sv, 
             Tree.BaseMemberExpression bme,
             Tree.SpecifierStatement that, 
             ClassOrInterface c) {
-        final Reference rv = 
-                getRefinedMember(sv, c);
+        final Reference rv = getRefinedMember(sv, c);
         if (!sv.isFormal() && !sv.isDefault()
                 && !sv.isShortcutRefinement()) { //this condition is here to squash a dupe message
             that.addError("inherited attribute may not be assigned in initializer and is neither formal nor default so may not be refined: " + 
@@ -1405,7 +1409,7 @@ public class RefinementVisitor extends Visitor {
         that.setDeclaration(v);
         that.setRefined(sv);
         unit.addDeclaration(v);
-        v.setType(new LazyProducedType(unit) {
+        v.setType(new LazyType(unit) {
             @Override
             public Type initQualifyingType() {
                 return rv.getType().getQualifyingType();
@@ -1427,12 +1431,14 @@ public class RefinementVisitor extends Visitor {
             Tree.SpecifierStatement that, 
             ClassOrInterface c) {
         ClassOrInterface ci = 
-                (ClassOrInterface) sm.getContainer();
+                (ClassOrInterface) 
+                    sm.getContainer();
         Declaration refined = 
                 ci.getRefinedMember(sm.getName(), 
                         getSignature(sm), false);
-        Function root = refined instanceof Function ? 
-                (Function) refined : sm;
+        Function root = 
+                refined instanceof Function ? 
+                        (Function) refined : sm;
         if (!sm.isFormal() && !sm.isDefault()
                 && !sm.isShortcutRefinement()) { //this condition is here to squash a dupe message
             that.addError("inherited method is neither formal nor default so may not be refined: " + 
@@ -1441,22 +1447,37 @@ public class RefinementVisitor extends Visitor {
         final Reference rm = getRefinedMember(sm,c);
         Function m = new Function();
         m.setName(sm.getName());
-        List<Tree.ParameterList> tpls;
+        List<Tree.ParameterList> paramLists;
+        List<TypeParameter> typeParams;
         Tree.Term me = that.getBaseMemberExpression();
         if (me instanceof Tree.ParameterizedExpression) {
             Tree.ParameterizedExpression pe = 
                     (Tree.ParameterizedExpression) me;
-            tpls = pe.getParameterLists();
+            paramLists = pe.getParameterLists();
+            Tree.TypeParameterList typeParameterList = 
+                    pe.getTypeParameterList();
+            if (typeParameterList!=null) {
+                typeParams = new ArrayList<TypeParameter>();
+                for (Tree.TypeParameterDeclaration tpd: 
+                    typeParameterList.getTypeParameterDeclarations()) {
+                    typeParams.add(tpd.getDeclarationModel());
+                }
+            }
+            else {
+                typeParams = null;
+            }
         }
         else {
-            tpls = emptyList();
+            paramLists = emptyList();
+            typeParams = null;
         }
         int i=0;
         TypecheckerUnit unit = that.getUnit();
         for (ParameterList pl: sm.getParameterLists()) {
             ParameterList l = new ParameterList();
-            Tree.ParameterList tpl = tpls.size()<=i ? 
-                    null : tpls.get(i++);
+            Tree.ParameterList tpl = 
+                    paramLists.size()<=i ? null : 
+                        paramLists.get(i++);
             int j=0;
             for (final Parameter p: pl.getParameters()) {
                 //TODO: meaningful errors when parameters don't line up
@@ -1476,7 +1497,7 @@ public class RefinementVisitor extends Visitor {
                     v.setContainer(m);
                     v.setScope(m);
                     l.getParameters().add(vp);
-                    v.setType(new LazyProducedType(unit) {
+                    v.setType(new LazyType(unit) {
                         @Override
                         public Type initQualifyingType() {
                             return rm.getTypedParameter(p)
@@ -1511,9 +1532,66 @@ public class RefinementVisitor extends Visitor {
             }
             m.getParameterLists().add(l);
         }
-        if (!sm.getTypeParameters().isEmpty()) {
-            bme.addError("method has type parameters: " +  
-                    message(sm));
+        if (typeParams!=null) {
+            m.setTypeParameters(typeParams);
+            //TODO: check 'em!!
+        }
+        else if (!sm.getTypeParameters().isEmpty()) {
+            if (me instanceof Tree.ParameterizedExpression) {
+                bme.addError("refined method is generic: '" +
+                        sm.getName(unit) + 
+                        "' declares type parameters");
+            }
+            else {
+                //we're refining it by assigning a function
+                //reference using the = specifier, not =>
+                //copy the type parameters of the refined
+                //declaration
+                List<TypeParameter> typeParameters = 
+                        sm.getTypeParameters();
+                List<TypeParameter> tps = 
+                        new ArrayList<TypeParameter>
+                            (typeParameters.size());
+                Map<TypeParameter,Type> subs = 
+                        new HashMap<TypeParameter,Type>();
+                for (int j=0; j<typeParameters.size(); j++) {
+                    TypeParameter param = typeParameters.get(j);
+                    TypeParameter tp = new TypeParameter();
+                    tp.setName(param.getName());
+                    tp.setUnit(unit);
+                    tp.setScope(m);
+                    tp.setContainer(m);
+                    tp.setDeclaration(m);
+                    tp.setCovariant(param.isCovariant());
+                    tp.setContravariant(param.isContravariant());
+                    tps.add(tp);
+                    subs.put(param, tp.getType());
+                }
+                //we need to substitute these type parameters 
+                //into the upper bounds of the type parameters
+                //of the refined declaration
+                for (int j=0; j<typeParameters.size(); j++) {
+                    TypeParameter param = typeParameters.get(j);
+                    TypeParameter tp = tps.get(j);
+                    List<Type> sts = param.getSatisfiedTypes();
+                    ArrayList<Type> ssts = 
+                            new ArrayList<Type>(sts.size());
+                    for (Type st: sts) {
+                        ssts.add(st.substitute(subs, null));
+                    }
+                    tp.setSatisfiedTypes(ssts);
+                    List<Type> cts = param.getCaseTypes();
+                    if (cts!=null) {
+                        ArrayList<Type> scts = 
+                                new ArrayList<Type>(cts.size());
+                        for (Type ct: cts) {
+                            scts.add(ct.substitute(subs, null));
+                        }
+                        tp.setCaseTypes(scts);
+                    }
+                }
+                m.setTypeParameters(tps);
+            }
         }
         m.setShared(true);
         m.setActual(true);
@@ -1535,7 +1613,7 @@ public class RefinementVisitor extends Visitor {
             Specification spec = (Specification) scope;
             spec.setDeclaration(m);
         }
-        m.setType(new LazyProducedType(unit) {
+        m.setType(new LazyType(unit) {
             @Override
             public Type initQualifyingType() {
                 Type type = rm.getType();

@@ -21,6 +21,7 @@ import com.redhat.ceylon.compiler.typechecker.context.PhasedUnits;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ImportModule;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
+import com.redhat.ceylon.model.typechecker.context.TypeCache;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.ModuleImport;
 import com.redhat.ceylon.model.typechecker.util.ModuleManager;
@@ -80,26 +81,31 @@ public class ModuleValidator {
      *  - detect module version conflicts
      */
     public void verifyModuleDependencyTree() {
-        phasedUnitsOfDependencies = new ArrayList<PhasedUnits>();
-        LinkedList<Module> dependencyTree = new LinkedList<Module>();
-        // only verify modules we compile (and default/language), as that makes us traverse their dependencies anyways
-        Set<Module> compiledModules = moduleManagerUtil.getCompiledModules();
-        List<Module> modules = new ArrayList<Module>(compiledModules.size()+2);
-        // we must resolve the language module first because it contains definitions that must be in the classpath
-        // before any other JVM class is loaded, including the module descriptor annotations themselves
-        modules.add(context.getModules().getLanguageModule());
-        modules.add(context.getModules().getDefaultModule());
-        modules.addAll(compiledModules);
-        for (Module module : modules) {
-            dependencyTree.addLast(module);
-            //we don't care about propagated dependency here as top modules are independent from one another
-            verifyModuleDependencyTree(module.getImports(), dependencyTree, new ArrayList<Module>(), ImportDepth.First, searchedArtifacts);
-            dependencyTree.pollLast();
-        }
-        for (Module module : compiledModules) {
-            verifyNative(module);
-        }
-        moduleManager.addImplicitImports();
+        TypeCache.doWithoutCaching(new Runnable() {
+            @Override
+            public void run() {
+                phasedUnitsOfDependencies = new ArrayList<PhasedUnits>();
+                LinkedList<Module> dependencyTree = new LinkedList<Module>();
+                // only verify modules we compile (and default/language), as that makes us traverse their dependencies anyways
+                Set<Module> compiledModules = moduleManagerUtil.getCompiledModules();
+                List<Module> modules = new ArrayList<Module>(compiledModules.size()+2);
+                // we must resolve the language module first because it contains definitions that must be in the classpath
+                // before any other JVM class is loaded, including the module descriptor annotations themselves
+                modules.add(context.getModules().getLanguageModule());
+                modules.add(context.getModules().getDefaultModule());
+                modules.addAll(compiledModules);
+                for (Module module : modules) {
+                    dependencyTree.addLast(module);
+                    //we don't care about propagated dependency here as top modules are independent from one another
+                    verifyModuleDependencyTree(module.getImports(), dependencyTree, new ArrayList<Module>(), ImportDepth.First, searchedArtifacts);
+                    dependencyTree.pollLast();
+                }
+                for (Module module : compiledModules) {
+                    verifyNative(module);
+                }
+                moduleManager.addImplicitImports();
+            }
+        });
         executeExternalModulePhases();
     }
 

@@ -191,3 +191,25 @@ void moreTypeArgInference() {
     @type:"Float" value sum1 = add(*[1.0,2.0]);
     @type:"Integer" value sum2 = add(0,2);
 }
+
+void genericParameters() {
+    void accept(f) {
+        [T,T] f<T>(T t); 
+        value [Integer i, Integer j] = f(1);
+        value [Float x, Float y] = f(1.0);  
+    }
+    @error accept(identity);
+    function pair<T>(T t) => [t,t];
+    accept(pair);
+    accept(<T>(T t) => [t,t]);
+    accept { function f<T>(T t) => [t,t]; };
+    [Integer,Float] pipe(T f<T>(T t)) => [f(1), f(1.0)];
+    value [Integer i1,Float f1] = pipe(identity);
+    value [Integer i2,Float f2] = pipe(<T>(T t) => t);
+    value [Integer i3,Float f3] = pipe { function f<T>(T t) => t; };  
+}
+
+void splitAssignment() {
+    {Elem*} newStream<Elem>({Elem*} chars);
+    newStream = <T>({T*} elems) => elems;
+}

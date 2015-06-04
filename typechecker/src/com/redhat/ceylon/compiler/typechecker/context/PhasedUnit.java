@@ -405,49 +405,35 @@ public class PhasedUnit {
     }
 
     public synchronized void analyseTypes() {
-        Boolean enabled = 
-                TypeCache.setEnabled(true);
-        try {
-            if (!fullyTyped) {
-                Type.resetDepth(-100);
-                //System.out.println("Run analysis phase for " + fileName);
-                rootNode.visit(new ExpressionVisitor(moduleManagerRef.get()));
-                rootNode.visit(new VisibilityVisitor());
-                rootNode.visit(new AnnotationVisitor());
-                rootNode.visit(new TypeArgumentVisitor());
-                fullyTyped = true;
-            }
-        }
-        finally {
-            TypeCache.setEnabled(enabled);
+        if (!fullyTyped) {
+            Type.resetDepth(-100);
+            //System.out.println("Run analysis phase for " + fileName);
+            rootNode.visit(new ExpressionVisitor(moduleManagerRef.get()));
+            rootNode.visit(new VisibilityVisitor());
+            rootNode.visit(new AnnotationVisitor());
+            rootNode.visit(new TypeArgumentVisitor());
+            fullyTyped = true;
         }
     }
     
     public synchronized void analyseFlow() {
-        Boolean enabled = 
-                TypeCache.setEnabled(true);
-        try {
-            if (!flowAnalyzed) {
-                rootNode.visit(new TypeHierarchyVisitor());
-                //System.out.println("Validate control flow for " + fileName);
-                rootNode.visit(new ControlFlowVisitor());
-                //System.out.println("Validate self references for " + fileName);
-                //System.out.println("Validate specification for " + fileName);
-                for (Declaration d: unit.getDeclarations()) {
-                    if (d.getName()!=null) {
-                        rootNode.visit(new SpecificationVisitor(d));
-                        if (d instanceof TypeDeclaration) {
-                            TypeDeclaration td = 
-                                    (TypeDeclaration) d;
-                            rootNode.visit(new SelfReferenceVisitor(td));
-                        }
+        if (!flowAnalyzed) {
+            rootNode.visit(new TypeHierarchyVisitor());
+            //System.out.println("Validate control flow for " + fileName);
+            rootNode.visit(new ControlFlowVisitor());
+            //System.out.println("Validate self references for " + fileName);
+            //System.out.println("Validate specification for " + fileName);
+            for (Declaration d: unit.getDeclarations()) {
+                if (d.getName()!=null) {
+                    rootNode.visit(new SpecificationVisitor(d));
+                    if (d instanceof TypeDeclaration) {
+                        TypeDeclaration td = 
+                                (TypeDeclaration) d;
+                        rootNode.visit(new SelfReferenceVisitor(td));
                     }
                 }
-                flowAnalyzed = true;
             }
-        }
-        finally {
-            TypeCache.setEnabled(enabled);
+            flowAnalyzed = true;
         }
     }
 

@@ -390,3 +390,5 @@ void testWithMethod() {
     WithMethod.New2((x) => print("hello " + x.string))
             .accept(3.0);
 }
+
+@error shared new(){}

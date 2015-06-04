@@ -117,6 +117,9 @@ void testOpAliases() {
     //Integer sign = ornum.sign;
     String onstr = ornum.string;
     Or<Float,Integer> ornum2 = ornum;
+    
+    Or<String,List<String>> orstr = "";
+    Integer len  = orstr.size;
 }
 
 abstract class S(String s) => String(s);

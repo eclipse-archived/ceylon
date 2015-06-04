@@ -130,7 +130,7 @@ interface L<A,B=Anything> satisfies N<A,B> {}
 void testSubtyping(High<U> h1, 
         High<V> h2, 
         High<W> h3, 
-        High<U|V> h4, 
+        High<<Y>=>U<Y>|V<Y>> h4, 
         High<T> h5, 
         High<S> h6,
         High<M> h7,
@@ -166,3 +166,8 @@ void testVariances() {
     Array<in Nothing> a2 = some<String,Array>(Array {"hello", "world"});
 }
 
+
+Integer typeConstructorNotSupertypeOfObject(String s) {
+    @error <T> => T t = s of Object;
+    return t<Integer>;
+}

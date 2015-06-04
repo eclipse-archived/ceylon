@@ -223,8 +223,20 @@ void test<T>() {
     @error:"metamodel reference to local"
     value localFunctionDecl = `localFunction`;
     
-    class LocalClass(String arg) {}
+    class LocalClass(String arg) {
+        shared String fun() => "hello";
+    }
+    @type:"Method<LocalClass,String,[]>" value localClassFun = `LocalClass.fun`;
     @type:"Class<LocalClass,Nothing>" value localClass = `LocalClass`;
+
+    class OtherLocalClass {
+        shared new New() {}
+        shared String fun() => "hello"; 
+    }
+    @type:"Class<OtherLocalClass,Nothing>" value otherLocalClass = `OtherLocalClass`;
+    @type:"Constructor<OtherLocalClass,Nothing>" value otherLocalClassCtor = `OtherLocalClass.New`;
+    @type:"Method<OtherLocalClass,String,[]>" value otherLocalClassFun = `OtherLocalClass.fun`;
+    
 }
 
 

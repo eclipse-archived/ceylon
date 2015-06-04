@@ -49,7 +49,7 @@ import com.redhat.ceylon.model.typechecker.model.ImportList;
 import com.redhat.ceylon.model.typechecker.model.Interface;
 import com.redhat.ceylon.model.typechecker.model.InterfaceAlias;
 import com.redhat.ceylon.model.typechecker.model.IntersectionType;
-import com.redhat.ceylon.model.typechecker.model.LazyProducedType;
+import com.redhat.ceylon.model.typechecker.model.LazyType;
 import com.redhat.ceylon.model.typechecker.model.ModelUtil;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.NamedArgumentList;
@@ -646,7 +646,7 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
         
     private void defaultExtendedToBasic(Class c) {
         //default supertype for classes
-        c.setExtendedType(new LazyProducedType(unit) {
+        c.setExtendedType(new LazyType(unit) {
             @Override
             public Map<TypeParameter, Type> 
             initTypeArguments() {
@@ -661,7 +661,7 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
 
     private void defaultExtendedToObject(Interface c) {
         //default supertype for interfaces
-        c.setExtendedType(new LazyProducedType(unit) {
+        c.setExtendedType(new LazyType(unit) {
             @Override
             public Map<TypeParameter, Type> 
             initTypeArguments() {
@@ -676,7 +676,7 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
 
     private void defaultExtendedToAnything(TypeParameter c) {
         //default supertype for interfaces
-        c.setExtendedType(new LazyProducedType(unit) {
+        c.setExtendedType(new LazyType(unit) {
             @Override
             public Map<TypeParameter, Type> 
             initTypeArguments() {
@@ -1306,8 +1306,7 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
         p.setSequenced(type instanceof Tree.SequencedType);
         that.setParameterModel(p);
         super.visit(that);
-        Value v = (Value) 
-                td.getDeclarationModel();
+        Value v = (Value) td.getDeclarationModel();
         p.setName(v.getName());
         p.setModel(v);
         v.setInitializerParameter(p);
@@ -2013,7 +2012,7 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
             final boolean packageQualified = 
                     that.getPackageQualified();
             Type t = 
-                    new LazyProducedType(unit) {
+                    new LazyType(unit) {
                 @Override
                 public TypeDeclaration initDeclaration() {
                     return packageQualified ?
@@ -2047,7 +2046,7 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
             final Tree.TypeArgumentList tal = 
                     that.getTypeArgumentList();
             Type t = 
-                    new LazyProducedType(unit) {
+                    new LazyType(unit) {
                 @Override
                 public TypeDeclaration initDeclaration() {
                     if (outerType==null) {
@@ -2089,7 +2088,7 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
         if (inExtends) {
             final Tree.Type elem = that.getElementType();
             Type t = 
-                    new LazyProducedType(unit) {
+                    new LazyType(unit) {
                 Type iterableType() {
                     final Type elementType;
                     final boolean atLeastOne;
@@ -2139,7 +2138,7 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
             final List<Tree.Type> ets = 
                     that.getElementTypes();
             Type t = 
-                    new LazyProducedType(unit) {
+                    new LazyType(unit) {
                 private Type tupleType() {
                     return getTupleType(ets, unit);
                 }
@@ -2163,7 +2162,7 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
                 that.getDefiniteType();
         if (inExtends) {
             Type t = 
-                    new LazyProducedType(unit) {
+                    new LazyType(unit) {
                 @Override
                 public TypeDeclaration initDeclaration() {
                     List<Type> types = 
@@ -2192,7 +2191,7 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
                 that.getStaticTypes();
         if (inExtends) {
             Type t = 
-                    new LazyProducedType(unit) {
+                    new LazyType(unit) {
                 @Override
                 public TypeDeclaration initDeclaration() {
                     List<Type> types = 
@@ -2225,7 +2224,7 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
             final List<Tree.StaticType> sts = 
                     that.getStaticTypes();
             Type t = 
-                    new LazyProducedType(unit) {
+                    new LazyType(unit) {
                 @Override
                 public TypeDeclaration initDeclaration() {
                     final List<Type> types = 
@@ -2261,7 +2260,7 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
                     that.getLength();
             Type t;
             if (length==null) {
-                t = new LazyProducedType(unit) {
+                t = new LazyType(unit) {
                     @Override
                     public TypeDeclaration initDeclaration() {
                         return unit.getSequentialDeclaration();
@@ -2297,7 +2296,7 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
     }
     
     private final class StaticLengthSequenceType 
-            extends LazyProducedType {
+            extends LazyType {
         private final Tree.StaticType elementType;
         private final int len;
 
@@ -2339,7 +2338,7 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
                         .getTypeModel();
             final boolean atLeastOne = that.getAtLeastOne();
             Type t = 
-                    new LazyProducedType(unit) {
+                    new LazyType(unit) {
                 @Override
                 public TypeDeclaration initDeclaration() {
                     return atLeastOne ? 
@@ -2370,7 +2369,7 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
             final Tree.StaticType valueType = 
                     that.getValueType();
             Type t = 
-                    new LazyProducedType(unit) {
+                    new LazyType(unit) {
                 @Override
                 public TypeDeclaration initDeclaration() {
                     return unit.getEntryDeclaration();
@@ -2402,7 +2401,7 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
                 final List<Tree.Type> args = 
                         that.getArgumentTypes();
                 Type t = 
-                        new LazyProducedType(unit) {
+                        new LazyType(unit) {
                     @Override
                     public TypeDeclaration initDeclaration() {
                         return unit.getCallableDeclaration();
@@ -2452,7 +2451,7 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
         if (inExtends) {
             final Scope scope = that.getScope();
             Type t = 
-                    new LazyProducedType(unit) {
+                    new LazyType(unit) {
                 @Override
                 public TypeDeclaration initDeclaration() {
                     ClassOrInterface ci = 

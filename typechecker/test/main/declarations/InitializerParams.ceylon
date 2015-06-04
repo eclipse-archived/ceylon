@@ -168,7 +168,7 @@ interface InitializerParams {
         shared String name;
     }
     
-    @error class Qux(bar){ void bar<T>(); }
+    class Qux(bar){ void bar<T>(); }
     
     @error shared class BrokenVis(baz) {
         Baz baz;

@@ -6,7 +6,8 @@ import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.getTy
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.getTypeDeclaration;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.getTypeMember;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.getTypedDeclaration;
-import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.isGeneric;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.setTypeConstructor;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.unwrapAliasedTypeConstructor;
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.formatPath;
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.name;
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.unwrapExpressionUntilTerm;
@@ -885,7 +886,7 @@ public class TypeVisitor extends Visitor {
     //TODO: big copy/paste from Unit.getTupleType(), to 
     //      eliminate the canonicalization (since aliases  
     //      are not yet resolvable in this phase)
-    public static Type getTupleType(
+    private static Type getTupleType(
             List<Type> elemTypes, 
             boolean variadic, boolean atLeastOne, 
             int firstDefaulted,
@@ -1066,6 +1067,11 @@ public class TypeVisitor extends Visitor {
         
         Tree.TypeArgumentList tal = 
                 that.getTypeArgumentList();
+        
+        if (tal!=null) {
+            dec = unwrapAliasedTypeConstructor(dec);
+        }
+        
         List<TypeParameter> params = 
                 dec.getTypeParameters();
         List<Type> typeArgs = 
@@ -1500,8 +1506,7 @@ public class TypeVisitor extends Visitor {
         TypeAlias ta = that.getDeclarationModel();
         ta.setExtendedType(null);
         super.visit(that);
-        Tree.SatisfiedTypes sts = 
-                that.getSatisfiedTypes();
+        Tree.SatisfiedTypes sts = that.getSatisfiedTypes();
         if (sts!=null) {
             sts.addError("type alias may not satisfy a type");
         }
@@ -1511,14 +1516,14 @@ public class TypeVisitor extends Visitor {
             that.addError("missing aliased type");
         }
         else {
-            Tree.StaticType et = 
-                    typeSpecifier.getType();
+            Tree.StaticType et = typeSpecifier.getType();
             if (et==null) {
                 that.addError("malformed aliased type");
             }
             else {
                 Type type = et.getTypeModel();
                 if (type!=null) {
+                    setTypeConstructor(et, null);
                     ta.setExtendedType(type);
                 }
             }
@@ -1964,10 +1969,10 @@ public class TypeVisitor extends Visitor {
             mov.setInitializerParameter(p);
             p.setModel(mov);
         }
-        if (isGeneric(a)) {
+        /*if (isGeneric(a)) {
             that.addError("parameter declaration is generic: '" + 
                     name + "' may not declare type parameters");
-        }
+        }*/
         if (p.isDefaulted()) {
             checkDefaultArg(that.getSpecifierExpression(), p);
         }
@@ -2112,13 +2117,9 @@ public class TypeVisitor extends Visitor {
             Declaration impl =
                     getNativeDeclaration(dec, backend);
             if (impl==null && getNativeDeclaration(dec, Backend.None) != null) {
-                // HACK to make the JS language module compile
-                // Remove this once the problem has been fixed!
-                if (backendSupport.supportsBackend(Backend.Java) && !backendSupport.supportsBackend(Backend.JavaScript)) {
-                    that.addError("no native implementation for backend: native '" 
-                            + dec.getName(unit) + 
-                            "' is not implemented for one or more backends");
-                }
+                that.addError("no native implementation for backend: native '" 
+                        + dec.getName(unit) + 
+                        "' is not implemented for one or more backends");
             }
             return inBackend == null || impl==null ? 
                     dec : impl;

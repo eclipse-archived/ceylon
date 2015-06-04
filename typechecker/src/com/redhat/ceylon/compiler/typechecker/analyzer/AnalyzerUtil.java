@@ -168,7 +168,7 @@ public class AnalyzerUtil {
      * default type arguments.
      * 
      * @param tas the type argument list
-     * @param qt the qualifying type
+     * @param qualifyingType the qualifying type
      * @param typeParameters the list of type parameters
      * 
      * @return a list of type arguments to the given type
@@ -176,7 +176,7 @@ public class AnalyzerUtil {
      */
     static List<Type> getTypeArguments(
             Tree.TypeArguments tas,
-    		Type qt, 
+    		Type qualifyingType, 
     		List<TypeParameter> typeParameters) {
         if (tas instanceof Tree.TypeArgumentList) {
             
@@ -186,9 +186,9 @@ public class AnalyzerUtil {
                     new HashMap<TypeParameter,Type>();
             Map<TypeParameter,SiteVariance> vars = 
                     new HashMap<TypeParameter,SiteVariance>();
-            if (qt!=null) {
-                typeArgs.putAll(qt.getTypeArguments());
-                vars.putAll(qt.getVarianceOverrides());
+            if (qualifyingType!=null) {
+                typeArgs.putAll(qualifyingType.getTypeArguments());
+                vars.putAll(qualifyingType.getVarianceOverrides());
             }
             
 //            if (tas instanceof Tree.TypeArgumentList) {
@@ -982,7 +982,7 @@ public class AnalyzerUtil {
             return false;
         }
         else {
-            if (t instanceof Tree.IntersectionType) {
+            /*if (t instanceof Tree.IntersectionType) {
                 Tree.IntersectionType it = 
                         (Tree.IntersectionType) t;
                 for (Tree.StaticType st: it.getStaticTypes()) {
@@ -1002,12 +1002,16 @@ public class AnalyzerUtil {
                     }
                 }
             }
-            else if (t instanceof Tree.SimpleType) {
+            else*/ 
+            if (t instanceof Tree.SimpleType) {
                 Tree.SimpleType s = 
                         (Tree.SimpleType) t;
                 if (s.getTypeArgumentList()==null) {
-                    pt.setTypeConstructor(true);
-                    pt.setTypeConstructorParameter(typeParam);
+                    if (typeParam!=null || 
+                            isGeneric(s.getDeclarationModel())) {
+                        pt.setTypeConstructor(true);
+                        pt.setTypeConstructorParameter(typeParam);
+                    }
                 }
             }
             return pt.isTypeConstructor();
@@ -1096,6 +1100,35 @@ public class AnalyzerUtil {
         else {
             return false;
         }
+    }
+
+    static TypeDeclaration unwrapAliasedTypeConstructor(
+            TypeDeclaration dec) {
+        TypeDeclaration d = dec;
+        while (!isGeneric(d) && d.isAlias()) {
+            Type et = d.getExtendedType();
+            if (et==null) break;
+            et = et.resolveAliases();
+            d = et.getDeclaration();
+            if (et.isTypeConstructor() && isGeneric(d)) {
+                return d;
+            }
+        }
+        return dec;
+    }
+
+    static Type unwrapAliasedTypeConstructor(Type type) {
+        TypeDeclaration d = type.getDeclaration();
+        while (!isGeneric(d) && d.isAlias()) {
+            Type et = d.getExtendedType();
+            if (et==null) break;
+            d = et.getDeclaration();
+            et = et.resolveAliases();
+            if (et.isTypeConstructor() && isGeneric(d)) {
+                return et;
+            }
+        }
+        return type;
     }
 
 }

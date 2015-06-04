@@ -132,7 +132,7 @@ public class TypeChecker {
     }
 
     private void executePhases(PhasedUnits phasedUnits, boolean forceSilence) {
-        final List<PhasedUnit> listOfUnits = phasedUnits.getPhasedUnits();
+        List<PhasedUnit> listOfUnits = phasedUnits.getPhasedUnits();
 
         phasedUnits.getModuleManager().prepareForTypeChecking();
         phasedUnits.visitModules();
@@ -145,12 +145,33 @@ public class TypeChecker {
             languageModule.setVersion(LANGUAGE_MODULE_VERSION);
         }
 
-        final ModuleValidator moduleValidator = new ModuleValidator(context, phasedUnits);
+        ModuleValidator moduleValidator = 
+                new ModuleValidator(context, phasedUnits);
         if (verifyDependencies) {
             moduleValidator.verifyModuleDependencyTree();
         }
-        phasedUnitsOfDependencies = moduleValidator.getPhasedUnitsOfDependencies();
+        phasedUnitsOfDependencies = 
+                moduleValidator.getPhasedUnitsOfDependencies();
 
+        executePhases(listOfUnits);
+
+        if (!forceSilence) {
+            for (PhasedUnit pu : listOfUnits) {
+                if (verbose) {
+                    pu.display();
+                }
+                pu.generateStatistics(statsVisitor);
+                pu.runAssertions(assertionVisitor);
+            }
+            if (verbose||statistics) {
+            	statsVisitor.print();
+            }
+            assertionVisitor.print(verbose);
+        }
+        
+    }
+
+    protected void executePhases(List<PhasedUnit> listOfUnits) {
         for (PhasedUnit pu : listOfUnits) {
             pu.validateTree();
             pu.scanDeclarations();
@@ -170,20 +191,6 @@ public class TypeChecker {
         for (PhasedUnit pu: listOfUnits) {
             pu.analyseUsage();
         }
-
-        if (!forceSilence) {
-            for (PhasedUnit pu : listOfUnits) {
-                if (verbose) {
-                    pu.display();
-                }
-                pu.generateStatistics(statsVisitor);
-                pu.runAssertions(assertionVisitor);
-            }
-            if(verbose||statistics)
-            	statsVisitor.print();
-            assertionVisitor.print(verbose);
-        }
-        
     }
     
     public int getErrors(){
