@@ -481,11 +481,8 @@ public class JsonPackage extends com.redhat.ceylon.model.typechecker.model.Packa
             boolean first = true;
             for (List<Map<String,Object>> plist : paramLists) {
                 ParameterList _params = parseParameters(plist, md, allparms);
-                if (first) {
-                    first = false;
-                } else {
-                    _params.setNamedParametersSupported(false);
-                }
+                _params.setNamedParametersSupported(first);
+                first = false;
                 md.addParameterList(_params);
             }
         }
@@ -874,12 +871,6 @@ public class JsonPackage extends com.redhat.ceylon.model.typechecker.model.Packa
                 if (ptparm.containsKey(MetamodelGenerator.KEY_PACKAGE) || ptparm.containsKey(MetamodelGenerator.KEY_TYPES)) {
                     //Substitute for proper type
                     final Type _pt = getTypeFromJson(ptparm, container, typeParams);
-                    if (ptparm.containsKey(MetamodelGenerator.KEY_US_VARIANCE)) {
-                        if (variances == null) {
-                            variances = new HashMap<>();
-                        }
-                        variances.put(_cparm, SiteVariance.values()[(int)ptparm.get(MetamodelGenerator.KEY_US_VARIANCE)]);
-                    }
                     concretes.put(_cparm, _pt);
                 } else if (ptparm.containsKey(MetamodelGenerator.KEY_NAME) && typeParams != null) {
                     //Look for type parameter with same name
@@ -888,6 +879,13 @@ public class JsonPackage extends com.redhat.ceylon.model.typechecker.model.Packa
                             concretes.put(_cparm, typeParam.getType());
                         }
                     }
+                }
+                Integer usv = (Integer)ptparm.get(MetamodelGenerator.KEY_US_VARIANCE);
+                if (usv != null) {
+                    if (variances == null) {
+                        variances = new HashMap<>();
+                    }
+                    variances.put(_cparm, SiteVariance.values()[usv]);
                 }
             }
             if (!concretes.isEmpty()) {
