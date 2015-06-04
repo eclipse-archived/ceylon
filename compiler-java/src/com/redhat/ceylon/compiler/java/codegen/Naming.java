@@ -686,10 +686,6 @@ public class Naming extends NamingBase implements LocalId {
         return suffixName(Suffix.$new$, classOrCtor.getName());
     }
     
-    String getAliasInstantiatorMethodName(Class model) {
-        return suffixName(Suffix.$aliased$, model.getName());
-    }
-    
     JCExpression makeInstantiatorMethodName(JCExpression qual, Class model) {
         return makeQualIdent(qual, getInstantiatorMethodName(model));
     }

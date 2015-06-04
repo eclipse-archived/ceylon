@@ -32,7 +32,7 @@ final class Bug1477StringNode {
     private Bug1477StringNode() {
     }
     
-    static .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1477Node<.ceylon.language.String> Bug1477StringNode$aliased$(final .ceylon.language.String name, final .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1477Node<.ceylon.language.String>> children) {
+    static .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1477Node<.ceylon.language.String> Bug1477StringNode$aliased$$priv$(final .ceylon.language.String name, final .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1477Node<.ceylon.language.String>> children) {
         throw new .ceylon.language.Exception();
     }
 }

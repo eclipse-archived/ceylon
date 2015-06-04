@@ -62,6 +62,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.SequencedArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierOrInitializerExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierStatement;
+import com.redhat.ceylon.model.loader.NamingBase;
 import com.redhat.ceylon.model.loader.NamingBase.Suffix;
 import com.redhat.ceylon.model.loader.NamingBase.Unfix;
 import com.redhat.ceylon.model.loader.model.AnnotationTarget;
@@ -109,6 +110,7 @@ import com.sun.tools.javac.tree.JCTree.JCVariableDecl;
 import com.sun.tools.javac.util.Context;
 import com.sun.tools.javac.util.List;
 import com.sun.tools.javac.util.ListBuffer;
+import com.sun.tools.javac.util.Name;
 
 /**
  * This transformer deals with class/interface declarations
@@ -238,7 +240,9 @@ public class ClassTransformer extends AbstractTransformer {
             ListBuffer<JCTree> trees = ListBuffer.lb();
             trees.addAll(transformAnnotationClass((Tree.AnyClass)def));
             transformAnnotationClassConstructor((Tree.AnyClass)def, classBuilder);
-            classBuilder.addAnnotationTypeMethod(model.getType());
+            // you only need that method if you satisfy Annotation which is erased to j.l.a.Annotation
+            if(model.inherits(typeFact().getAnnotationDeclaration()))
+                classBuilder.addAnnotationTypeMethod(model.getType());
             trees.addAll(classBuilder.build());
             result = trees.toList();
         } else {
@@ -536,7 +540,7 @@ public class ClassTransformer extends AbstractTransformer {
      */
     private MethodDefinitionBuilder transformClassAliasInstantiator(
             final Tree.AnyClass def, Class model, Type aliasedClass) {
-        MethodDefinitionBuilder instantiator = MethodDefinitionBuilder.systemMethod(this, naming.getAliasInstantiatorMethodName(model));
+        MethodDefinitionBuilder instantiator = MethodDefinitionBuilder.systemMethod(this, NamingBase.getAliasInstantiatorMethodName(model));
         int f = 0;
         if (Strategy.defaultParameterMethodStatic(def.getDeclarationModel())) {
             f = STATIC;
@@ -1863,6 +1867,11 @@ public class ClassTransformer extends AbstractTransformer {
                     continue;
                 }
             }
+            if(innerType.isAlias()
+                    && innerTypeTree != null
+                    && Decl.isAncestorLocal(innerTypeTree))
+                // for the same reason we do not generate aliases in transform(ClassOrInterface def) let's not list them
+                continue;
             JCAnnotation atMember;
             // interfaces are moved to toplevel so they can lose visibility of member types if they are local
             if(Decl.isLocal(model) && model instanceof Interface)
@@ -1900,7 +1909,10 @@ public class ClassTransformer extends AbstractTransformer {
         boolean inlineObjectInToplevelAttr = Decl.isTopLevelObjectExpressionType(model);
         if(scope == null || (scope instanceof Package && !inlineObjectInToplevelAttr))
             return;
-        if(scope instanceof ClassOrInterface && !inlineObjectInToplevelAttr){
+        if(scope instanceof ClassOrInterface 
+                && !inlineObjectInToplevelAttr
+                // we do not check for types inside initialiser section which are private and not captured because we treat them as members
+                && !(model instanceof Interface && Decl.hasLocalNotInitializerAncestor(model))){
             ClassOrInterface container = (ClassOrInterface) scope;
             List<JCAnnotation> atContainer = makeAtContainer(container.getType());
             classBuilder.annotations(atContainer);

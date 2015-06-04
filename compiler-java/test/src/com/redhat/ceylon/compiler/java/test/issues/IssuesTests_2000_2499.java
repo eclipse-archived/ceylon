@@ -281,12 +281,48 @@ public class IssuesTests_2000_2499 extends CompilerTests {
     }
     
     @Test
+    public void testBug2143() {
+        compareWithJavaSource("bug21xx/Bug2143");
+    }
+
+    @Test
+    public void testBug2150() {
+        compareWithJavaSource("bug21xx/Bug2150");
+    }
+
+    @Test
+    public void testBug2151() {
+        compareWithJavaSource("bug21xx/Bug2151");
+    }
+
+    @Test
+    public void testBug2159() {
+        compareWithJavaSource("bug21xx/Bug2159");
+    }
+
+    @Test
     public void testBug2164() {
         compareWithJavaSource("bug21xx/Bug2164");
     }
 
     @Test
+    public void testBug2165() {
+        compareWithJavaSource("bug21xx/Bug2165");
+    }
+
+    @Test
+    public void testBug2168() {
+        compile("bug21xx/Bug2168.ceylon");
+    }
+
+    @Test
     public void testBug2170() {
         compareWithJavaSource("bug21xx/Bug2170");
+    }
+
+    @Test
+    public void testBug2186() {
+        assertErrors("bug21xx/Bug2186",
+                new CompilerError(4, "missing invocation expression"));
     }
 }

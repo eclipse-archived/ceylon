@@ -204,7 +204,7 @@ final class AnnotationTargetClassAlias {
     private AnnotationTargetClassAlias() {
     }
     
-    static .com.redhat.ceylon.compiler.java.test.annotations.AnnotationTargetClass AnnotationTargetClassAlias$aliased$(@.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget$annotation$
+    static .com.redhat.ceylon.compiler.java.test.annotations.AnnotationTargetClass AnnotationTargetClassAlias$aliased$$priv$(@.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget$annotation$
     final .java.lang.String parameter) {
         throw new .ceylon.language.Exception();
     }
@@ -214,7 +214,7 @@ class AnnotationTargetOuter implements .com.redhat.ceylon.compiler.java.runtime.
     AnnotationTargetOuter() {
     }
     
-    .com.redhat.ceylon.compiler.java.test.annotations.AnnotationTargetClass InnerAlias$aliased$(@.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget$annotation$
+    .com.redhat.ceylon.compiler.java.test.annotations.AnnotationTargetClass InnerAlias$aliased$$priv$(@.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget$annotation$
     final .java.lang.String parameter) {
         throw new .ceylon.language.Exception();
     }

@@ -1,0 +1,54 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug21xx;
+
+final class bug2150_ {
+    
+    private bug2150_() {
+    }
+    
+    static void bug2150() {
+        final boolean b = (
+            let
+            {
+                .ceylon.language.Boolean $ceylontmp$0 = (.ceylon.language.Boolean)new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.Boolean, .java.lang.Object>(.ceylon.language.true_.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$, 1, true){
+                    
+                    @.java.lang.Override
+                    protected final .java.lang.Object $evaluate$(int $index$) {
+                        switch ($index$) {
+                        case 0: 
+                            return new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Boolean, .java.lang.Object>(.ceylon.language.Boolean.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$){
+                                
+                                public final .ceylon.language.Iterator<.ceylon.language.Boolean> iterator() {
+                                    return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Boolean>(.ceylon.language.Boolean.$TypeDescriptor$){
+                                        {
+                                        }
+                                        private boolean $next$0$exhausted$;
+                                        
+                                        private final boolean $next$0() {
+                                            if ($next$0$exhausted$) return false;
+                                            $next$0$exhausted$ = true;
+                                            if (true) {
+                                                return true;
+                                            }
+                                            return false;
+                                        }
+                                        
+                                        public final .java.lang.Object next() {
+                                            if (this.$next$0()) {
+                                                return .ceylon.language.Boolean.instance(true);
+                                            } else return .ceylon.language.finished_.get_();
+                                        }
+                                    };
+                                }
+                            };
+                        
+                        default: 
+                            return null;
+                        
+                        }
+                    }
+                }.getFirst();
+            }
+            returning $ceylontmp$0 != null ? $ceylontmp$0 : .ceylon.language.Boolean.instance(false);
+        ).booleanValue();
+    }
+}

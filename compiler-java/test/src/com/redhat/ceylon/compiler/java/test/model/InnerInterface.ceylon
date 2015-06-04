@@ -28,4 +28,8 @@ shared interface InnerInterfaceContainer {
         shared interface InnerInterface{}
         shared class InnerClass(){}
     }
+    interface InnerInterfacePrivate{}
+}
+shared class ClassContainer(){
+    interface InnerInterfacePrivate{}
 }

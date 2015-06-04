@@ -187,7 +187,7 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
     }
 
     @Option(longName="auto-export-maven-dependencies")
-    @Description("When using JBoss Modules (the default), treats all module dependencies between"+
+    @Description("When using JBoss Modules (the default), treats all module dependencies between " +
                  "Maven modules as shared.")
     public void setAutoExportMavenDependencies(boolean autoExportMavenDependencies) {
         this.autoExportMavenDependencies = autoExportMavenDependencies;
@@ -287,10 +287,12 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
             "If no `warnings` are given then suppresss the reporting of all warnings, " +
             "otherwise just suppresss those which are present. " +
             "Allowed flags include: " +
-            "`filenameNonAscii`, `filenameClaselessCollision`, `deprecation`, "+
+            "`filenameNonAscii`, `filenameCaselessCollision`, `deprecation`, "+
             "`compilerAnnotation`, `doclink`, `expressionTypeNothing`, "+
             "`unusedDeclaration`, `unusedImport`, `ceylonNamespace`, "+
-            "`javaNamespace`, `suppressedAlready`, `suppressesNothing`.")
+            "`javaNamespace`, `suppressedAlready`, `suppressesNothing`, "+
+            "`unknownWarning`, `ambiguousAnnotation`, `similarModule`, "+
+            "`importsOtherJdk`, `javaAnnotationElement`.")
     public void setSuppressWarning(EnumSet<Warning> warnings) {
         this.suppressWarnings = warnings;
     }

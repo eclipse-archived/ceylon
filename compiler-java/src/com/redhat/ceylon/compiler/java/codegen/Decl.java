@@ -931,4 +931,16 @@ public class Decl {
             scope = scope.getContainer();
         }
     }
+    
+    public static boolean hasLocalNotInitializerAncestor(Declaration decl){
+        if(isLocalNotInitializer(decl))
+            return true;
+        Scope container = decl.getContainer();
+        while(container != null){
+            if(ModelUtil.isLocalNotInitializerScope(container))
+                return true;
+            container = container.getContainer();
+        }
+        return false;
+    }
 }

@@ -575,6 +575,9 @@ public class Flow extends TreeScanner {
      *  rather than (un)inits on exit.
      */
     void scanCond(JCTree tree) {
+        // Ceylon: moved it up from the else block because with Let we can have true/false and
+        // still need scanning for expressions/statements
+        scan(tree);
         if (tree.type.isFalse()) {
             if (inits == null) merge();
             initsWhenTrue = inits.dup();
@@ -592,7 +595,6 @@ public class Flow extends TreeScanner {
             initsWhenTrue = inits;
             uninitsWhenTrue = uninits;
         } else {
-            scan(tree);
             if (inits != null)
                 split(tree.type != syms.unknownType);
         }
@@ -811,6 +813,16 @@ public class Flow extends TreeScanner {
     public void visitBlock(JCBlock tree) {
         int nextadrPrev = nextadr;
         scanStats(tree.stats);
+        nextadr = nextadrPrev;
+    }
+
+    @Override
+    public void visitLetExpr(LetExpr tree) {
+        int nextadrPrev = nextadr;
+        if(tree.stats != null)
+            scanStats(tree.stats);
+        if(tree.expr != null)
+            scanExpr(tree.expr);
         nextadr = nextadrPrev;
     }
 

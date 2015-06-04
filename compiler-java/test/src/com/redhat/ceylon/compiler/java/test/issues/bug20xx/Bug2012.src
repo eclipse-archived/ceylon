@@ -25,8 +25,8 @@ final class bug2012_ {
             }
         }.iterator();
         loop_0: while (!((elem$0 = truth$iterator$$1.next()) instanceof .ceylon.language.Finished)) {
-            final .ceylon.language.Boolean truth = (.ceylon.language.Boolean)elem$0;
-            final boolean theTruth = ((.ceylon.language.Boolean)truth).booleanValue();
+            final boolean truth = ((.ceylon.language.Boolean)elem$0).booleanValue();
+            final boolean theTruth = truth;
         }
     }
 }
