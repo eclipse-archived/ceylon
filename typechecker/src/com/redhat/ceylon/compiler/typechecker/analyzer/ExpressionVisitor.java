@@ -7924,7 +7924,7 @@ public class ExpressionVisitor extends Visitor {
                         argType!=null && 
                         !argType.isUnknown();
                 if (argTypeMeaningful) {
-                    if (argType.isTypeConstructor() && 
+                    /*if (argType.isTypeConstructor() && 
                             !param.isTypeConstructor()) {
                         typeArgNode(tas, i, parent)
                             .addError("type argument must be a regular type: parameter '" + 
@@ -7933,7 +7933,8 @@ public class ExpressionVisitor extends Visitor {
                                     argType.asString(unit) + 
                                     "' is a type constructor");
                     }
-                    else if (!argType.isTypeConstructor() && 
+                    else*/
+                    if (!argType.isTypeConstructor() && 
                             param.isTypeConstructor()) {
                         typeArgNode(tas, i, parent)
                             .addError("type argument must be a type constructor: parameter '" + 
