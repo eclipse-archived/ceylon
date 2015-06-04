@@ -373,3 +373,5 @@ class Foobar {
     @error class First() => Foobar.Partial();
     @error shared class Second() => Foobar.New();
 }
+
+@error shared new(){}
