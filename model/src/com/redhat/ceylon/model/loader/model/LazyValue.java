@@ -394,7 +394,7 @@ public class LazyValue extends Value implements LazyElement, LocalDeclarationCon
 
     @Override
     public boolean isDeprecated() {
-        load();
+        // requires no lazy-loading
         return super.isDeprecated();
     }
 }

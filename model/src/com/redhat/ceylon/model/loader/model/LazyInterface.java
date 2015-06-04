@@ -353,7 +353,7 @@ public class LazyInterface extends Interface implements LazyContainer {
 
     @Override
     public boolean isDeprecated() {
-        load();
+        // requires no lazy-loading
         return super.isDeprecated();
     }
 }
