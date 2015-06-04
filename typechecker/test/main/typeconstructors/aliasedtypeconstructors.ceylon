@@ -19,10 +19,11 @@ void testDoSomething() {
     addInts(2, 3);
 }
 
-//TODO: fix this:
-//alias MyMapFunction => Map;
+Map<String,String> theMap = nothing;
+alias YourMapFunction => Map;
+YourMapFunction<String,String> yourMap = theMap;
 alias MyMapFunction => <U,V> => Map;
-MyMapFunction<String,String> map = nothing;
+MyMapFunction<String,String> myMap = theMap;
 
 alias CurriedMapTypeFunction
         =>  <Key> given Key satisfies Object
@@ -33,7 +34,11 @@ StringKeyedMap<Integer> strIntMapRef = strIntMap;
 
 interface Second<Box> given Box<T> {}
 interface Boxy<T> {}
-//TODO: FIX THIS!
-//alias BoxRef => Boxy;
-alias BoxRef => <T> => Boxy<T>;
-Second<BoxRef> second = nothing;
+alias BoxRef1 => Boxy;
+alias BoxRef2 => <T> => Boxy<T>;
+Second<BoxRef1> second = nothing;
+Second<BoxRef2> third = nothing;
+
+alias Union => <T> => List<T>|Boxy<T>;
+Union<String> union = nothing;
+List<String>|Boxy<String> verbose = union;

@@ -8,17 +8,17 @@ void testAdvancedStuff() {
     Functor<Float, Foo<Integer>.Bar> func1 = nothing;
     Foo<Integer>.Bar<String> fmap1 = func1.fmap(Float.string);
     
-    Functor<Float, List|Set> func2 = nothing;
+    Functor<Float, <T>=>List<T>|Set<T>> func2 = nothing;
     List<Integer>|Set<Integer> fmap2 = func2.fmap(Float.integer);
     
     Functor<Integer,List>|Functor<Integer,Set> xfun = nothing;
     List<String>|Set<String> xfmap = xfun.fmap(Object.string);
-    Functor<Integer, out List|Set> xf = xfun;
+    Functor<Integer, out <U>=>List<U>|Set<U>> xf = xfun;
 
     Functor<Integer,List>&Functor<Integer,Set> yfun = nothing;
     Nothing n = yfun;
     @error List<String>&Set<String> yfmap1 = yfun.fmap(Object.string);
-    Functor<Integer, out List&Set> yf = yfun;
+    Functor<Integer, out <T>=>List<T>&Set<T>> yf = yfun;
     List<String>&Set<String> yfmap2 = yf.fmap(Object.string);
     
     Functor<Float,List> | Functor<Float,Sequence> f = nothing;
@@ -26,11 +26,11 @@ void testAdvancedStuff() {
     
     Functor<Float,List> | Functor<Integer,Sequence> g = nothing;
     @type:"List<String>" value result2 = g.fmap(Object.string);
-    Functor<Float|Integer, out List|Sequence> gg = g;
+    Functor<Float|Integer, out <T>=>List<T>|Sequence<T>> gg = g;
     
     Functor<Float,out List> & Functor<Integer,out Sequence> h = nothing;
     @type:"Sequence<String>" value result3 = h.fmap(Object.string);
-    Functor<Float|Integer, out List&Sequence> hh = h;
+    Functor<Float|Integer, out <T>=>List<T>&Sequence<T>> hh = h;
     
     Functor<Integer, Nothing> funny = 
             object satisfies Functor<Integer, Nothing> {

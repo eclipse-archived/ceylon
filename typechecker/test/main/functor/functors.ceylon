@@ -107,5 +107,5 @@ void tryit(Map<Integer,Integer> map, Float float, Float? x,
     
     String|List<String>? result
             //TODO: improve type inference here!
-            = toString<Object,<<T>=>T?>|List>(functor);
+            = toString<Object,<<T>=>T?|List<T>>>(functor);
 }

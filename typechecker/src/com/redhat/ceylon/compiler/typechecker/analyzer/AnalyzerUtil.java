@@ -985,7 +985,7 @@ public class AnalyzerUtil {
             return false;
         }
         else {
-            if (t instanceof Tree.IntersectionType) {
+            /*if (t instanceof Tree.IntersectionType) {
                 Tree.IntersectionType it = 
                         (Tree.IntersectionType) t;
                 for (Tree.StaticType st: it.getStaticTypes()) {
@@ -1005,12 +1005,16 @@ public class AnalyzerUtil {
                     }
                 }
             }
-            else if (t instanceof Tree.SimpleType) {
+            else*/ 
+            if (t instanceof Tree.SimpleType) {
                 Tree.SimpleType s = 
                         (Tree.SimpleType) t;
                 if (s.getTypeArgumentList()==null) {
-                    pt.setTypeConstructor(true);
-                    pt.setTypeConstructorParameter(typeParam);
+                    if (typeParam!=null || 
+                            isGeneric(s.getDeclarationModel())) {
+                        pt.setTypeConstructor(true);
+                        pt.setTypeConstructorParameter(typeParam);
+                    }
                 }
             }
             return pt.isTypeConstructor();

@@ -6,6 +6,7 @@ import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.getTy
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.getTypeDeclaration;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.getTypeMember;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.getTypedDeclaration;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.setTypeConstructor;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.unwrapAliasedTypeConstructor;
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.formatPath;
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.name;
@@ -1515,6 +1516,7 @@ public class TypeVisitor extends Visitor {
             else {
                 Type type = et.getTypeModel();
                 if (type!=null) {
+                    setTypeConstructor(et, null);
                     ta.setExtendedType(type);
                 }
             }
