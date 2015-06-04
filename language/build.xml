@@ -560,6 +560,9 @@
             sysrep="${build.test.repo}"
             encoding="UTF-8"
             out="${build.test}">
+            <suppressWarning>unusedDeclaration</suppressWarning>
+            <suppressWarning>unusedImport</suppressWarning>
+            <suppressWarning>expressionTypeNothing</suppressWarning>
             <files>
                 <include name="**/*.ceylon"/>
                 <include name="**/*.java"/>
@@ -690,6 +693,9 @@
             resource="${test.res}"
             sysrep="${build.test.repo}"
             out="${build.test}">
+            <suppressWarning>unusedDeclaration</suppressWarning>
+            <suppressWarning>unusedImport</suppressWarning>
+            <suppressWarning>expressionTypeNothing</suppressWarning>
             <files>
                 <include name="**/*.ceylon"/>
                 <include name="**/*.txt"/>
