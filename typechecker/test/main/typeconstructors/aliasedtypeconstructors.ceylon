@@ -55,3 +55,12 @@ alias Wrapper<Box> given Box<E>
     {A*} as, {B*} bs)
         given Box<E>
         =>  as.map(wrap).chain(bs.map(wrap));
+
+
+alias MapWithKey<Key> => <Value> => Map<Key,Value>;
+
+Map<String,Integer[]> mapFromStringKeyAndInteger = nothing;
+    
+alias MapWithStringKey => MapWithKey<String>;
+    
+MapWithStringKey<Integer[]> referenceToMap = mapFromStringKeyAndInteger;
