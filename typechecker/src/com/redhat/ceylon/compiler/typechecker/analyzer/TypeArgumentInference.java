@@ -1537,9 +1537,12 @@ public class TypeArgumentInference {
         else if (dec instanceof Value) {
             Value value = (Value) dec;
             Type type = value.getType();
-            if (type.isTypeConstructor()) {
-                return type.getDeclaration()
-                        .getTypeParameters();
+            if (type!=null) {
+                type = type.resolveAliases();
+                if (type.isTypeConstructor()) {
+                    return type.getDeclaration()
+                            .getTypeParameters();
+                }
             }
         }
         return null;
