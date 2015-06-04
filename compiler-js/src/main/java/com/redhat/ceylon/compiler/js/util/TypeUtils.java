@@ -462,17 +462,15 @@ public class TypeUtils {
                 gen.out(",'", t.isFloat() ? "f" : "i", "','",
                         term.getUnit().getFilename(), " ", term.getLocation(), "')");
             } else {
-                String tmp = gen.getNames().createTempVariable();
-                gen.out("(", tmp, "=");
+                gen.out(gen.getClAlias(), "ndtc$(");
                 term.visit(gen);
-                gen.out(",", gen.getClAlias(), "is$(", tmp, ",");
+                gen.out(",");
                 if (t.isTypeParameter() && typeArguments != null
                         && typeArguments.containsKey(t.getDeclaration())) {
                     t = typeArguments.get(t.getDeclaration());
                 }
                 TypeUtils.typeNameOrList(term, t, gen, skipSelfDecl);
-                gen.out(")?", tmp, ":function(){throw new TypeError('Expected ", t.asQualifiedString(),
-                        " (", term.getUnit().getFilename(), " ", term.getLocation(), ")')}())");
+                gen.out(",'", term.getUnit().getFilename(), " ", term.getLocation(), "')");
             }
         }
     }
