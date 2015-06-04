@@ -314,4 +314,10 @@ public class IssuesTests_2000_2499 extends CompilerTests {
     public void testBug2170() {
         compareWithJavaSource("bug21xx/Bug2170");
     }
+
+    @Test
+    public void testBug2186() {
+        assertErrors("bug21xx/Bug2186",
+                new CompilerError(4, "missing invocation expression"));
+    }
 }
