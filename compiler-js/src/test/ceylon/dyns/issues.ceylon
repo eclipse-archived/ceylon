@@ -199,6 +199,12 @@ shared void issues() {
         check(n465_2[2]=="a", "#465.7");
         check(n465_2[3]=="b", "#465.8");
     }
+    Float r576;
+    dynamic {
+        Float n576 = Math.log(100.0);
+        r576 = n576 / Math.\iLN10;
+    }
+    check(r576 == 2.0, "#576");
     /*try {
         dynamic {
             foo.bar |= 1;
