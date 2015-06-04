@@ -37,6 +37,7 @@ import static com.redhat.ceylon.model.typechecker.model.ModelUtil.appliedType;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.argumentSatisfiesEnumeratedConstraint;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.canonicalIntersection;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.findMatchingOverloadedClass;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.genericFunctionType;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getContainingClassOrInterface;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getInterveningRefinements;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getNativeDeclaration;
@@ -261,17 +262,19 @@ public class ExpressionVisitor extends Visitor {
         if (type instanceof Tree.VoidModifier) {
             fun.setType(unit.getAnythingType());            
         }
-        TypedReference pr = fun.getTypedReference();
+        TypedReference reference = fun.getTypedReference();
         Type fullType;
         //if the anonymous function has type parameters,
         //then the type of the expression is a type 
         //constructor, so create a fake type alias
         if (isGeneric(fun)) {
             Scope scope = that.getScope();
-            fullType = genericFunctionType(fun, scope, fun, pr);
+            fullType = 
+                    genericFunctionType(fun, scope, fun, 
+                            reference, unit);
         }
         else {
-            fullType = pr.getFullType();
+            fullType = reference.getFullType();
         }
         that.setTypeModel(fullType);
     }
@@ -3904,13 +3907,13 @@ public class ExpressionVisitor extends Visitor {
         return result;
     }
     
-    private void checkNamedArgument(Tree.NamedArgument a, 
-            Reference pr, Parameter p) {
-        a.setParameter(p);
+    private void checkNamedArgument(Tree.NamedArgument arg, 
+            Reference reference, Parameter param) {
+        arg.setParameter(param);
         Type argType = null;
-        if (a instanceof Tree.SpecifiedArgument) {
+        if (arg instanceof Tree.SpecifiedArgument) {
             Tree.SpecifiedArgument sa = 
-                    (Tree.SpecifiedArgument) a;
+                    (Tree.SpecifiedArgument) arg;
             Tree.Expression e = 
                     sa.getSpecifierExpression()
                         .getExpression();
@@ -3918,39 +3921,40 @@ public class ExpressionVisitor extends Visitor {
                 argType = e.getTypeModel();
             }
         }
-        else if (a instanceof Tree.TypedArgument) {
-            Tree.TypedArgument ta = 
-                    (Tree.TypedArgument) a;
-            TypedDeclaration model = 
-                    ta.getDeclarationModel();
+        else if (arg instanceof Tree.TypedArgument) {
+            Tree.TypedArgument typedArg = 
+                    (Tree.TypedArgument) arg;
+            TypedDeclaration argDec = 
+                    typedArg.getDeclarationModel();
             TypedReference argRef = 
-                    model.getTypedReference();
-            if (isGeneric(model)) {
-                argType = genericFunctionType(
-                        (Generic) model, 
-                        a.getScope(), //TODO!!! 
-                        model, 
-                        argRef);
+                    argDec.getTypedReference();
+            if (isGeneric(argDec)) {
+                argType = 
+                        genericFunctionType(
+                                (Generic) argDec, 
+                                arg.getScope(), //TODO!!! 
+                                argDec, argRef, unit);
             }
             else {
                 argType = argRef.getFullType();
             }
-            checkArgumentToVoidParameter(p, ta);
+            checkArgumentToVoidParameter(param, typedArg);
             if (!dynamic && 
                     isTypeUnknown(argType)) {
-                a.addError("could not determine type of named argument: '" + 
-                        p.getName() + "'");
+                arg.addError("could not determine type of named argument: '" + 
+                        param.getName() + "'");
             }
         }
-        TypedReference paramRef = pr.getTypedParameter(p);
-        FunctionOrValue model = p.getModel();
+        TypedReference paramRef = 
+                reference.getTypedParameter(param);
+        FunctionOrValue paramModel = param.getModel();
         Type paramType;
-        if (isGeneric(model)) {
-            paramType = genericFunctionType(
-                    (Generic) model, 
-                    a.getScope(), //TODO!!! 
-                    model, 
-                    paramRef);
+        if (isGeneric(paramModel)) {
+            paramType = 
+                    ModelUtil.genericFunctionType(
+                            (Generic) paramModel, 
+                            arg.getScope(), //TODO!!! 
+                            paramModel, paramRef, unit);
         }
         else {
             paramType = paramRef.getFullType();
@@ -3959,17 +3963,17 @@ public class ExpressionVisitor extends Visitor {
         if (!isTypeUnknown(argType) && 
                 !isTypeUnknown(paramType)) {
             Node node;
-            if (a instanceof Tree.SpecifiedArgument) {
-                Tree.SpecifiedArgument sa = 
-                        (Tree.SpecifiedArgument) a;
-                node = sa.getSpecifierExpression();
+            if (arg instanceof Tree.SpecifiedArgument) {
+                Tree.SpecifiedArgument specifiedArg = 
+                        (Tree.SpecifiedArgument) arg;
+                node = specifiedArg.getSpecifierExpression();
             }
             else {
-                node = a;
+                node = arg;
             }
             checkAssignable(argType, paramType, node,
                     "named argument must be assignable to parameter " + 
-                            argdesc(p, pr), 
+                            argdesc(param, reference), 
                     2100);
         }
     }
@@ -4513,11 +4517,11 @@ public class ExpressionVisitor extends Visitor {
             a.setParameter(p);
             Type paramType;
             if (isGeneric(model)) {
-                paramType = genericFunctionType(
-                        (Generic) model, 
-                        a.getScope(), //TODO!!! 
-                        model, 
-                        paramRef);
+                paramType = 
+                        genericFunctionType(
+                                (Generic) model, 
+                                a.getScope(), //TODO!!! 
+                                model, paramRef, unit);
             }
             else {
                 paramType = paramRef.getFullType();
@@ -5864,23 +5868,6 @@ public class ExpressionVisitor extends Visitor {
         }
     }
 
-    protected Type genericFunctionType(Generic g, Scope scope,
-            Declaration member, Reference pr) {
-        List<TypeParameter> typeParameters = 
-                g.getTypeParameters();
-        TypeAlias ta = new TypeAlias();
-        ta.setContainer(scope);
-        ta.setName("Anonymous#" + member.getName());
-        ta.setAnonymous(true);
-        ta.setScope(scope);
-        ta.setUnit(unit);
-        ta.setExtendedType(pr.getFullType());
-        ta.setTypeParameters(typeParameters);
-        Type t = ta.getType();
-        t.setTypeConstructor(true);
-        return t;
-    }
-    
     private static String baseDescription(Tree.BaseType that) {
         return "'" + name(that.getIdentifier()) +"'";
     }
@@ -5939,16 +5926,18 @@ public class ExpressionVisitor extends Visitor {
             Tree.StaticMemberOrTypeExpression that,
             TypedDeclaration member) {
         if (isGeneric(member) && member instanceof Function) {
-            Generic g = (Generic) member;
+            Generic generic = (Generic) member;
             Scope scope = that.getScope();
             Type outerType = 
                     scope.getDeclaringType(member);
-            TypedReference pr = 
-                    member.appliedTypedReference(
-                            outerType, NO_TYPE_ARGS);
-            that.setTarget(pr);
-            Type t = genericFunctionType(g, scope, member, pr);
-            that.setTypeModel(t);
+            TypedReference target = 
+                    member.appliedTypedReference(outerType, 
+                            NO_TYPE_ARGS);
+            that.setTarget(target);
+            Type functionType = 
+                    genericFunctionType(generic, scope, 
+                            member, target, unit);
+            that.setTypeModel(functionType);
         }
     }
 
@@ -6059,14 +6048,16 @@ public class ExpressionVisitor extends Visitor {
             Type receiverType,
             TypedDeclaration member) {
         if (isGeneric(member) && member instanceof Function) {
-            Generic g = (Generic) member;
+            Generic generic = (Generic) member;
             Scope scope = that.getScope();
-            TypedReference pr = 
+            TypedReference target = 
                     receiverType.getTypedMember(member, 
                             NO_TYPE_ARGS);
-            that.setTarget(pr);
-            Type t = genericFunctionType(g, scope, member, pr);
-            that.setTypeModel(t);
+            that.setTarget(target);
+            Type functionType = 
+                    genericFunctionType(generic, scope, 
+                            member, target, unit);
+            that.setTypeModel(functionType);
         }
     }
     
@@ -6497,16 +6488,18 @@ public class ExpressionVisitor extends Visitor {
             Tree.StaticMemberOrTypeExpression that,
             TypeDeclaration type) {
         if (isGeneric(type) && type instanceof Class) {
-            Generic g = (Generic) type;
+            Generic generic = (Generic) type;
             Scope scope = that.getScope();
             Type outerType = 
                     scope.getDeclaringType(type);
-            Type pt = 
+            Type target = 
                     type.appliedType(outerType, 
-                            typeParametersAsArgList(g));
-            that.setTarget(pt);
-            Type t = genericFunctionType(g, scope, type, pt);
-            that.setTypeModel(t);
+                            typeParametersAsArgList(generic));
+            that.setTarget(target);
+            Type functionType = 
+                    genericFunctionType(generic, scope, 
+                            type, target, unit);
+            that.setTypeModel(functionType);
         }
     }
 
@@ -6769,14 +6762,16 @@ public class ExpressionVisitor extends Visitor {
             Type outerType,
             TypeDeclaration type) {
         if (isGeneric(type) && type instanceof Class) {
-            Generic g = (Generic) type;
+            Generic generic = (Generic) type;
             Scope scope = that.getScope();
-            Type pt =
+            Type target =
                     outerType.getTypeMember(type, 
-                            typeParametersAsArgList(g));
-            that.setTarget(pt);
-            Type t = genericFunctionType(g, scope, type, pt);
-            that.setTypeModel(t);
+                            typeParametersAsArgList(generic));
+            that.setTarget(target);
+            Type functionType = 
+                    genericFunctionType(generic, scope, 
+                            type, target, unit);
+            that.setTypeModel(functionType);
         }
     }
 
