@@ -274,7 +274,7 @@ final class sequenceDefaults_Boolean_ {
             false})
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static final .ceylon.language.Iterable<? extends .ceylon.language.Boolean, ? extends .java.lang.Object> sequenceDefaults_Boolean$seq() {
-        return (.ceylon.language.Iterable<? extends .ceylon.language.Boolean, ? extends .java.lang.Object>)(.ceylon.language.Iterable)(.ceylon.language.Sequence<? extends .ceylon.language.Boolean>).ceylon.language.Tuple.instance(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.true_.$TypeDescriptor$, .ceylon.language.false_.$TypeDescriptor$), new .java.lang.Object[]{
+        return (.ceylon.language.Sequence<? extends .ceylon.language.Boolean>).ceylon.language.Tuple.instance(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.true_.$TypeDescriptor$, .ceylon.language.false_.$TypeDescriptor$), new .java.lang.Object[]{
                 .ceylon.language.Boolean.instance(true),
                 .ceylon.language.Boolean.instance(false)});
     }
@@ -342,7 +342,7 @@ final class sequenceArguments_Boolean_ {
     @.ceylon.language.AnnotationAnnotation$annotation$
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.annotations::SequenceDefaults_Boolean")
     static .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Boolean sequenceArguments_Boolean() {
-        return new .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Boolean((.ceylon.language.Iterable<? extends .ceylon.language.Boolean, ? extends .java.lang.Object>)(.ceylon.language.Iterable)(.ceylon.language.Sequence<? extends .ceylon.language.Boolean>).ceylon.language.Tuple.instance(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.false_.$TypeDescriptor$, .ceylon.language.true_.$TypeDescriptor$), new .java.lang.Object[]{
+        return new .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Boolean((.ceylon.language.Sequence<? extends .ceylon.language.Boolean>).ceylon.language.Tuple.instance(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.false_.$TypeDescriptor$, .ceylon.language.true_.$TypeDescriptor$), new .java.lang.Object[]{
                 .ceylon.language.Boolean.instance(false),
                 .ceylon.language.Boolean.instance(true)}));
     }

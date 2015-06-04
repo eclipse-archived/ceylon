@@ -49,7 +49,7 @@ final class test_booleans_ {
         }
         final .ceylon.language.Iterable<? extends .ceylon.language.Character, ? extends .java.lang.Object> it = .ceylon.language.String.instance("foo");
         java.take_booleans(items);
-        java.take_booleans(.com.redhat.ceylon.compiler.java.test.interop.booleanArray_.booleanArray((.ceylon.language.Iterable<? extends .ceylon.language.Boolean, ? extends .java.lang.Object>)(.ceylon.language.Iterable)(.ceylon.language.Sequence<? extends .ceylon.language.Boolean>).ceylon.language.Tuple.instance(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.true_.$TypeDescriptor$, .ceylon.language.false_.$TypeDescriptor$), new .java.lang.Object[]{
+        java.take_booleans(.com.redhat.ceylon.compiler.java.test.interop.booleanArray_.booleanArray((.ceylon.language.Sequence<? extends .ceylon.language.Boolean>).ceylon.language.Tuple.instance(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.true_.$TypeDescriptor$, .ceylon.language.false_.$TypeDescriptor$), new .java.lang.Object[]{
                 .ceylon.language.Boolean.instance(true),
                 .ceylon.language.Boolean.instance(true),
                 .ceylon.language.Boolean.instance(false)})));
