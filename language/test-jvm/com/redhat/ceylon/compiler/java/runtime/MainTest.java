@@ -27,6 +27,7 @@ import org.junit.Test;
 
 import com.redhat.ceylon.cmr.impl.IOUtils;
 import com.redhat.ceylon.common.FileUtil;
+import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.compiler.java.runtime.Main.ClassPath;
 import com.redhat.ceylon.compiler.java.runtime.Main.ClassPath.Module;
 import com.redhat.ceylon.compiler.java.runtime.Main.ClassPath.ModuleNotFoundException;
@@ -81,7 +82,8 @@ public class MainTest {
         File destDir = new File("build/mainTest");
         FileUtil.delete(destDir);
         destDir.mkdirs();
-        CompilationTask task = compiler.getTask(null, null, null, Arrays.asList("-d", destDir.getPath(), "-cp", "build/classes"), null, units);
+        CompilationTask task = compiler.getTask(null, null, null, Arrays.asList("-d", destDir.getPath(), 
+                "-cp", "build/classes"+File.pathSeparator+"ide-dist/ceylon.language-"+Versions.CEYLON_VERSION_NUMBER+".car"), null, units);
         Boolean result = task.call();
         assertTrue(result != null && result.booleanValue());
 
