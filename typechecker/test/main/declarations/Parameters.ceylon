@@ -83,3 +83,6 @@ class Parameters() {
     value anon2 = (@error function arg()) => 0;
     
 }
+
+class ClassAlias(String key, String item="") 
+        => Entry<String,String>(key, item);

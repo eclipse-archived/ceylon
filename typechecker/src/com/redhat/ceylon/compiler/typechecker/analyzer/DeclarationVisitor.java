@@ -1222,6 +1222,9 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
             sie = ip.getSpecifierExpression();
         }
         if (sie!=null) {
+            if (scope instanceof ClassAlias) {
+                sie.addUnsupportedError("defaulted parameters are not yet supported for class aliases");
+            }
             new Visitor() {
                 public void visit(Tree.AssignmentOp that) {
                     that.addError("assignment may not occur in default argument expression");
