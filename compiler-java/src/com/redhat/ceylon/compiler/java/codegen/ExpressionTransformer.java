@@ -3847,7 +3847,12 @@ public class ExpressionTransformer extends AbstractTransformer {
                 if (expr.getStaticMethodReference()
                         && Decl.isEnumeratedConstructor((Value)member)) {
                     CallBuilder callBuilder = CallBuilder.instance(this);
-                    JCExpression qualExpr = naming.makeTypeDeclarationExpression(null, (TypeDeclaration)member.getContainer(), DeclNameFlag.QUALIFIED);
+                    JCExpression qualExpr;
+                    if (((Class) member.getContainer()).isToplevel()) {
+                        qualExpr = naming.makeTypeDeclarationExpression(null, (TypeDeclaration)member.getContainer(), DeclNameFlag.QUALIFIED);
+                    } else {
+                        qualExpr = primary instanceof Tree.QualifiedMemberOrTypeExpression ? transformExpression(((Tree.QualifiedMemberOrTypeExpression)primary).getPrimary()) : null;
+                    }
                     callBuilder.invoke(naming.makeQualifiedName(qualExpr, (TypedDeclaration)member, Naming.NA_GETTER | Naming.NA_MEMBER));
                     return callBuilder.build();
                 } else {
