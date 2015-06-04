@@ -187,6 +187,8 @@ public class ConstructorTests extends CompilerTests {
     
     @Test
     public void testCtorSingletonCtors() {
-        compareWithJavaSource("constructor/SingletonCtors");
+        //compareWithJavaSource("constructor/SingletonCtors");
+        compile("constructor/SingletonCtors.ceylon");
+        run("com.redhat.ceylon.compiler.java.test.structure.constructor.singletonCtors");
     }
 }

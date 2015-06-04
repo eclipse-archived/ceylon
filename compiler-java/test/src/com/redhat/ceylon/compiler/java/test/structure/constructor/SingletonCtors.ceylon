@@ -46,35 +46,19 @@ class ClassMemberSingletonCtors() {
         assert(other.MemberClass.one != this.MemberClass.one);
     }
 }
-/*interface InterfaceMemberSingletonCtors {
-    shared class MemberClass {
-        shared actual String string;
-        shared new one {
-            string="one";
-        }
-    }
-    shared formal class MemberClass {
-        shared actual String string;
-        shared new one {
-            string="one";
-        }
-    }
-    shared default class MemberClass {
-        shared actual String string;
-        shared new one {
-            string="one";
-        }
-    }
-    //void use(MemberClass member) {
-    //    assert(member == MemberClass.one);
-    //}
-}
-void localSingletonCtors() {
+@noanno
+Basic localSingletonCtors() {
     class LocalClass {
         shared actual String string;
         shared new one {
             string="one";
         }
     }
-    print(LocalClass.one);
-}*/
+    return LocalClass.one;
+}
+@noanno
+void singletonCtors() {
+    Basic o1 = localSingletonCtors();
+    Basic o2 = localSingletonCtors();
+    print(o1===o2);
+}
