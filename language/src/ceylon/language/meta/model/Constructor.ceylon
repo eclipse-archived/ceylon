@@ -16,6 +16,6 @@ shared sealed interface Constructor<out Type=Anything, in Arguments=Nothing>
     "The declaration for this model."
     shared actual formal ConstructorDeclaration declaration;
     
-    //"The container class of this constructor"
-    //shared formal actual Class<Type> container;
+    "The container class of this constructor"
+    shared formal actual Class<Type,Nothing> container;
 }
