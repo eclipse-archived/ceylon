@@ -101,6 +101,9 @@ public class Metamodel {
     private static RuntimeModuleManager moduleManager;
     
     // FIXME: this will need better thinking in terms of memory usage
+    private static Map<java.lang.Class, ceylon.language.meta.declaration.NestableDeclaration> classToDeclaration
+    = new HashMap<java.lang.Class, ceylon.language.meta.declaration.NestableDeclaration>();
+    
     private static Map<com.redhat.ceylon.model.typechecker.model.Declaration, Object> typeCheckModelToRuntimeModel
         = new HashMap<com.redhat.ceylon.model.typechecker.model.Declaration, Object>();
 
@@ -130,6 +133,7 @@ public class Metamodel {
         moduleManager = new RuntimeModuleManager();
         moduleManager.initCoreModules(new Modules());
         moduleManager.prepareForTypeChecking();
+        classToDeclaration.clear();
         typeCheckModelToRuntimeModel.clear();
         typeCheckModulesToRuntimeModel.clear();
         typeCheckPackagesToRuntimeModel.clear();
@@ -1181,13 +1185,20 @@ public class Metamodel {
      * In theory this can only be used for ClassOrInterface or TypeAlias.
      */
     public static ceylon.language.meta.declaration.NestableDeclaration getOrCreateMetamodel(java.lang.Class<?> klass){
-        // FIXME: is this really enough?
-        String typeName = klass.getName();
-        com.redhat.ceylon.model.typechecker.model.Module module = moduleManager.findModuleForClass(klass);
-        com.redhat.ceylon.model.typechecker.model.TypeDeclaration decl = 
-                (com.redhat.ceylon.model.typechecker.model.TypeDeclaration) 
-                    moduleManager.getModelLoader().getDeclaration(module, typeName, DeclarationType.TYPE);
-        return (ceylon.language.meta.declaration.NestableDeclaration) getOrCreateMetamodel(decl);
+        synchronized(getLock()){
+            ceylon.language.meta.declaration.NestableDeclaration result = classToDeclaration.get(klass);
+            if (result == null) {
+                // FIXME: is this really enough?
+                String typeName = klass.getName();
+                com.redhat.ceylon.model.typechecker.model.Module module = moduleManager.findModuleForClass(klass);
+                com.redhat.ceylon.model.typechecker.model.TypeDeclaration decl = 
+                        (com.redhat.ceylon.model.typechecker.model.TypeDeclaration) 
+                            moduleManager.getModelLoader().getDeclaration(module, typeName, DeclarationType.TYPE);
+                result = (ceylon.language.meta.declaration.NestableDeclaration) getOrCreateMetamodel(decl);
+                classToDeclaration.put(klass, result);
+            }
+            return result;
+        }
     }
 
     public static TypeDescriptor getTypeDescriptorForFunction(Reference appliedFunction) {
