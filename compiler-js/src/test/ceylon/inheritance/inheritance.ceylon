@@ -12,5 +12,6 @@ shared void test() {
   testDefaulted();
   testIssues();
   bug218();
+  testForwardDeclarations();
   results();
 }

@@ -9,7 +9,10 @@ interface A {
   shared formal String b();
 }
 
-shared void test() {
+class TopChild578() extends TopParent578.Foo(){}
+class TopParent578 { shared new Foo(){} }
+
+shared void testForwardDeclarations() {
   check(C().b()=="ab", "inherited forward decl 1");
   check(Impl1().b()=="ab", "inherited forward decl 2");
   check(Impl2().b()=="ab", "inherited forward decl 3");
@@ -18,7 +21,10 @@ shared void test() {
   check(o469_1 is Test469, "#469 toplevel");
   Object o469_2=Outer469().bar();
   check(o469_2 is Outer469.Inner469, "#469 nested");
-  results();
+  check((TopChild578() of Anything) exists, "#578.1");
+  class LocalChild578() extends LocalParent578.Foo(){}
+  class LocalParent578 { shared new Foo(){} }
+  check((LocalChild578() of Anything) exists, "#578.2");
 }
 
 shared Test468 test468=Test468();
