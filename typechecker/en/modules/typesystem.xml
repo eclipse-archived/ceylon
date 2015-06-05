@@ -2460,50 +2460,31 @@ interface NumberLiteral
                 </listitem>
             </itemizedlist>
             
-            <para>The types of the argument expressions and the declared types of the corresponding 
-            parameters determine an <emphasis>inferred lower bound</emphasis> or 
-            <emphasis>inferred upper bound</emphasis> for each type parameter.</para>
+            <para>The types of the argument expressions and the declared types of the 
+            corresponding parameters determine an <emphasis>inferred lower bound</emphasis> 
+            or <emphasis>inferred upper bound</emphasis> for each type parameter.</para>
             
             <para>If a list of argument expressions has types <literal>A1,A2,...</literal> 
-            and the corresponding list of parameters has declared types <literal>P1,P2,...</literal>, 
-            the inferred lower bound for a type parameter <literal>T</literal> of the generic
-            declaration is the conjunction of:</para>
+            and the corresponding list of parameters has declared types <literal>P1,P2,...</literal>
+            then:</para>
             
             <itemizedlist>
-                <!--listitem>
-                    <para>the lower bound <literal>X</literal> explicitly declared by a type 
-                    constraint on <literal>T</literal> of form <literal>given T abstracts X</literal>, 
-                    if any, with</para>
-                </listitem-->
-                <listitem>
-                    <para>all inferred lower bounds <literal>Ai</literal> on <literal>Pi</literal> 
-                    for <literal>T</literal>.</para>
-                </listitem>
+	            <listitem>
+		            <para>The inferred lower bound for a type parameter <literal>T</literal> 
+		            of the generic declaration is the conjunction of all inferred lower bounds 
+		            <literal>Ai</literal> on <literal>Pi</literal> for <literal>T</literal>.</para>
+		            </listitem>
+		            <listitem>
+		            <para>The inferred upper bound for a type parameter <literal>T</literal> 
+		            of the generic declaration is the conjunction of all inferred upper bounds 
+		            <literal>Ai</literal> on <literal>Pi</literal> for <literal>T</literal>.</para>
+	            </listitem>
             </itemizedlist>
             
-            <para>The inferred upper bound for a type parameter <literal>T</literal> of the generic
-            declaration is the conjunction of:</para>
-            
-            <itemizedlist>
-                <listitem>
-                    <para>all upper bounds <literal>Xi</literal> explicitly declared by a type 
-                    constraint on <literal>T</literal> of form <literal>given T satisfies Xi</literal>, 
-                    if any, with</para>
-                </listitem>
-                <listitem>
-                    <para>all inferred upper bounds <literal>Ai</literal> on <literal>Pi</literal> 
-                    for <literal>T</literal>.</para>
-                </listitem>
-            </itemizedlist>
-            
-            <comment><para>TODO: What should we do about upper bound constraints that involve
-            other type parameters? Currently the typechecker simply ignores any upper bound 
-            that involves any type parameter.</para></comment>
-            
-            <para>Given types <literal>A</literal> and <literal>P</literal>, we determine 
-            the <emphasis>inferred lower bound</emphasis> <literal>A</literal> on 
-            <literal>P</literal> for <literal>T</literal> according to the nature of 
-            <literal>A</literal> and <literal>P</literal>:</para>
+            <para>Given types <literal>A</literal> and <literal>P</literal>, we determine the 
+            <emphasis>inferred lower bound</emphasis> <literal>A</literal> on <literal>P</literal> 
+            for <literal>T</literal> according to the nature of <literal>A</literal> and 
+            <literal>P</literal>:</para>
             
             <itemizedlist>
                 <listitem>
@@ -2743,6 +2724,14 @@ interface NumberLiteral
             bound with no type is eliminated. If the resulting inferred upper or lower bound has no 
             type, type argument inference is impossible for the type argument, and type arguments 
             must be specified explicitly.</para>
+            
+            <para>Finally, when every type parameter <literal>Pi</literal> has been assigned an 
+            inferred type argument <literal>Ai</literal>, each inferred type argument is adjusted
+            according to the upper bound type constraints on <literal>Pi</literal>. The final
+            inferred type argument is the intersection of <literal>Ai</literal> with every type
+            <literal>Vj</literal> formed by substituting all <literal>Ai</literal>s for their
+            corresponding <literal>Pi</literal>s in an upper bound <literal>Uj</literal> of
+            <literal>Pi</literal>.</para>
             
             <para>If the inferred type argument does not satisfy the generic type 
             constraints on <literal>T</literal>, a compilation error results.</para>
