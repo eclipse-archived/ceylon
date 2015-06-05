@@ -221,6 +221,7 @@ public class Symtab {
     public final Type ceylonAtPackageType;
     public final Type ceylonAtImportType;
     public final Type ceylonAtNameType;
+    public final Type ceylonAtEnumeratedType;
     public final Type ceylonAtSequencedType;
     public final Type ceylonAtDefaultedType;
     public final Type ceylonAtTypeInfoType;
@@ -628,6 +629,7 @@ public class Symtab {
         ceylonAtModuleType = enterClass("com.redhat.ceylon.compiler.java.metadata.Module");
         ceylonAtPackageType = enterClass("com.redhat.ceylon.compiler.java.metadata.Package");
         ceylonAtNameType = enterClass("com.redhat.ceylon.compiler.java.metadata.Name");
+        ceylonAtEnumeratedType = enterClass("com.redhat.ceylon.compiler.java.metadata.Enumerated");
         ceylonAtSequencedType = enterClass("com.redhat.ceylon.compiler.java.metadata.Sequenced");
         ceylonAtDefaultedType = enterClass("com.redhat.ceylon.compiler.java.metadata.Defaulted");
         ceylonAtTypeInfoType = enterClass("com.redhat.ceylon.compiler.java.metadata.TypeInfo");

@@ -4898,6 +4898,9 @@ public class ClassTransformer extends AbstractTransformer {
         } else if (!Decl.isDefaultConstructor(ctor)) {
             ctorDb.modelAnnotations(makeAtName(ctor.getName()));
         }
+        if (Decl.isEnumeratedConstructor(ctor)) {
+            ctorDb.modelAnnotations(makeAtEnumerated());
+        }
         
         ctorDb.modifiers(mods);
         
