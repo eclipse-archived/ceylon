@@ -153,11 +153,10 @@ public class MetamodelGenerator {
         m.put(KEY_NAME, "Tuple");
         m.put(KEY_PACKAGE, "$");
         List<Type> targs = tt.getTypeArgumentList(); //Element, First, Rest
-        int min = from.getUnit().getTupleMinimumLength(tt);
-        if (targs.get(0).equals(targs.get(1))) {
+        if (from.getUnit().isHomogeneousTuple(tt)) {
+            int min = from.getUnit().getHomogeneousTupleLength(tt);
             m.put(KEY_TYPE, typeMap(targs.get(1), from));
             m.put("count", min);
-            System.out.println(tt + " count " + min);
         } else {
             encodeTypes(from.getUnit().getTupleElementTypes(tt), m, KEY_TYPES, from);
         }
