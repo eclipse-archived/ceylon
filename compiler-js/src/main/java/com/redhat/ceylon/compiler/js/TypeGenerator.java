@@ -115,10 +115,11 @@ public class TypeGenerator {
             final List<Tree.StaticType> supers = satisfiedTypes == null ? Collections.<Tree.StaticType>emptyList()
                     : new ArrayList<Tree.StaticType>(satisfiedTypes.getTypes().size()+1);
 
+            boolean removeExtendedTypeAlias = false;
             if (extendedType != null) {
+                removeExtendedTypeAlias = !extendedType.getType().getDeclarationModel().isClassOrInterfaceMember();
                 if (satisfiedTypes == null) {
-                    String fname = gen.typeFunctionName(extendedType.getType(),
-                            !extendedType.getType().getDeclarationModel().isMember(), d);
+                    String fname = gen.typeFunctionName(extendedType.getType(), removeExtendedTypeAlias, d);
                     gen.out(",", fname);
                 } else {
                     supers.add(extendedType.getType());
@@ -129,8 +130,9 @@ public class TypeGenerator {
             if (satisfiedTypes != null) {
                 supers.addAll(satisfiedTypes.getTypes());
                 Collections.sort(supers, new StaticTypeComparator());
+                final Tree.SimpleType et = extendedType == null ? null : extendedType.getType();
                 for (Tree.StaticType satType : supers) {
-                    String fname = gen.typeFunctionName(satType, true, d);
+                    String fname = gen.typeFunctionName(satType, satType==et?removeExtendedTypeAlias:true, d);
                     gen.out(",", fname);
                 }
             }
