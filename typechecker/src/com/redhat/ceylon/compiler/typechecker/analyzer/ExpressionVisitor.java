@@ -6935,7 +6935,11 @@ public class ExpressionVisitor extends Visitor {
     private boolean typeConstructorArgumentsInferrable(
             Declaration dec, 
             Tree.StaticMemberOrTypeExpression smte) {
-        if (dec instanceof Value) {
+        if (smte.getTypeArguments() 
+                instanceof Tree.TypeArgumentList) {
+            return false;
+        }
+        else if (dec instanceof Value) {
             Value value = (Value) dec;
             TypedReference param = 
                     smte.getTargetParameter();
