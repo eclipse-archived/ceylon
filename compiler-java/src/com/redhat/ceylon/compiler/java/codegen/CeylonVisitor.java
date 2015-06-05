@@ -21,6 +21,7 @@
 package com.redhat.ceylon.compiler.java.codegen;
 
 import static com.sun.tools.javac.code.Flags.PRIVATE;
+import static com.sun.tools.javac.code.Flags.PUBLIC;
 import static com.sun.tools.javac.code.Flags.FINAL;
 import static com.sun.tools.javac.code.Flags.STATIC;
 
@@ -216,14 +217,10 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
                         null,//gen.naming.makeTypeDeclarationName(Decl.getConstructedClass(ctor.getEnumerated())), 
                         null, 
                         singletonModel.getName(), singletonModel, false);
-                if (clz.isToplevel()) {
-                    
-                } else {
-                   
-                }
+                adb.modelAnnotations(gen.makeAtEnumerated());
                 adb.immutable();// not setter
                 if (clz.isToplevel()) {
-                    adb.modifiers(PRIVATE | STATIC | FINAL);
+                    adb.modifiers((singletonModel.isShared() ? PUBLIC : PRIVATE) | STATIC | FINAL);
                     adb.initialValue(gen.make().NewClass(null, null, 
                             gen.naming.makeTypeDeclarationExpression(null, Decl.getConstructedClass(ctor.getEnumerated())), 
                             List.<JCExpression>of(
