@@ -108,6 +108,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     private static final String CEYLON_PACKAGE_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.Package";
     public static final String CEYLON_IGNORE_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.Ignore";
     private static final String CEYLON_CLASS_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.Class";
+    private static final String CEYLON_ENUMERATED_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.Enumerated";
     //private static final String CEYLON_CONSTRUCTOR_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.Constructor";
     //private static final String CEYLON_PARAMETERLIST_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.ParameterList";
     public static final String CEYLON_NAME_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.Name";
@@ -949,6 +950,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     private static Declaration selectTypeOrSetter(Declaration member, boolean wantsSetter) {
         // if we found a type or a method/value we're good to go
         if (member instanceof ClassOrInterface
+                || member instanceof Constructor
                 || member instanceof Function) {
             return member;
         }
@@ -2014,7 +2016,17 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         if (klass instanceof LazyClass) {
             constructor = ((LazyClass)klass).getConstructor();
         }
-            
+        
+        // Set up enumerated constructors before looking at getters,
+        // because the type of the getter is the constructor's type
+        Boolean hasConstructors = hasConstructors(classMirror);
+        if (hasConstructors != null && hasConstructors) {
+            ((Class)klass).setConstructors(true);
+            for (MethodMirror ctor : getClassConstructors(classMirror)) {
+                addConstructor((Class)klass, classMirror, ctor);
+            }
+        }
+        
         // Turn a list of possibly overloaded methods into a map
         // of lists that contain methods with the same name
         Map<String, List<MethodMirror>> methods = new LinkedHashMap<String, List<MethodMirror>>();
@@ -2098,14 +2110,6 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 && !isDefaultNamedCtor(classMirror, constructor)
                 && (!(klass instanceof LazyClass) || !((LazyClass)klass).isAnonymous()))
             setParameters((Class)klass, classMirror, constructor, isCeylon, klass);
-        
-        Boolean hasConstructors = hasConstructors(classMirror);
-        if (hasConstructors != null && hasConstructors) {
-            ((Class)klass).setConstructors(true);
-            for (MethodMirror ctor : getClassConstructors(classMirror)) {
-                addConstructor((Class)klass, classMirror, ctor);
-            }
-        }
         
         // Now marry-up attributes and parameters)
         if (klass instanceof Class) {
@@ -2207,6 +2211,10 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         constructor.setUnit(klass.getUnit());
         constructor.setExtendedType(klass.getType());
         setDeclarationVisibilityAndDeprecation(constructor, ctor, ctor, classMirror, isCeylon);
+        if (ctor.getAnnotation(CEYLON_ENUMERATED_ANNOTATION) != null) {
+            constructor.setAnonymous(true);
+            klass.setEnumerated(true);
+        }
         setAnnotations(constructor, ctor);
         setParameters(constructor, classMirror, ctor, true, klass);
         klass.addMember(constructor);
@@ -2242,7 +2250,8 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 continue;
             if(methodMirror.isStaticInit())
                 continue;
-            if(isCeylon && methodMirror.isStatic())
+            if(isCeylon && methodMirror.isStatic()
+                    && methodMirror.getAnnotation(CEYLON_ENUMERATED_ANNOTATION) == null)
                 continue;
             // FIXME: temporary, because some private classes from the jdk are
             // referenced in private methods but not available
@@ -2883,7 +2892,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 decl.setDefault(true);
             }
         }
-        decl.setStaticallyImportable(methodMirror.isStatic());
+        decl.setStaticallyImportable(methodMirror.isStatic() && methodMirror.getAnnotation(CEYLON_ENUMERATED_ANNOTATION) == null);
 
         decl.setActualCompleter(this);
     }
