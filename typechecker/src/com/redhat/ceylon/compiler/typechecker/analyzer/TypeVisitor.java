@@ -1416,7 +1416,7 @@ public class TypeVisitor extends Visitor {
             }
             else {
                 Type type = ct.getTypeModel();
-                if (type!=null) {
+                if (type!=null && !type.isUnknown()) {
                     TypeDeclaration dec = 
                             type.getDeclaration();
                     td.setConstructor(dec);
@@ -1487,13 +1487,15 @@ public class TypeVisitor extends Visitor {
             }
             else {
                 Type type = et.getTypeModel();
-                if (type!=null) {
-                    if (type.getDeclaration() instanceof Interface) {
+                if (type!=null && !type.isUnknown()) {
+                    TypeDeclaration dec = 
+                            type.getDeclaration();
+                    if (dec instanceof Interface) {
                         id.setExtendedType(type);
                     } 
                     else {
                         et.addError("not an interface: '" + 
-                                type.getDeclaration().getName(unit) + 
+                                dec.getName(unit) + 
                                 "'");
                     }
                 }
