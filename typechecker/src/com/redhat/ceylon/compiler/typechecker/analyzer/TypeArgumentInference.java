@@ -11,6 +11,8 @@ import static com.redhat.ceylon.model.typechecker.model.ModelUtil.addToIntersect
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.addToUnion;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.appliedType;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.canonicalIntersection;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.intersectionOfSupertypes;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.intersectionType;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isTypeUnknown;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.typeParametersAsArgList;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.union;
@@ -25,6 +27,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.NamedArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
+import com.redhat.ceylon.model.typechecker.model.Constructor;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
 import com.redhat.ceylon.model.typechecker.model.Functional;
@@ -471,6 +474,7 @@ public class TypeArgumentInference {
                     parameters,
                     findingUpperBounds,
                     inferredTypes, 
+                    invoked,
                     foundParameters);
         }
         Parameter sp = 
@@ -513,10 +517,11 @@ public class TypeArgumentInference {
 
     private void inferTypeArgFromNamedArg(
             Tree.NamedArgument arg, 
-            TypeParameter tp, Type qt, 
+            TypeParameter tp, Type receiverType, 
             ParameterList parameters, 
             boolean findingUpperBounds,
             List<Type> inferredTypes, 
+            Declaration invoked, 
             Set<Parameter> foundParameters) {
         Type type = null;
         if (arg instanceof Tree.SpecifiedArgument) {
@@ -543,13 +548,14 @@ public class TypeArgumentInference {
                             foundParameters);
             if (parameter!=null) {
                 foundParameters.add(parameter);
-                Type pt = 
-                        qt.getTypedParameter(parameter)
-                            .getFullType();
+                Type paramType = 
+                        parameterType(receiverType, 
+                                parameter, invoked);
                 addToUnionOrIntersection(
                         findingUpperBounds,
                         inferredTypes,
-                        inferTypeArg(tp, pt, type,
+                        inferTypeArg(tp, 
+                                paramType, type,
                                 findingUpperBounds, 
                                 arg));
             }
@@ -581,13 +587,20 @@ public class TypeArgumentInference {
                     List<Parameter> subList = 
                             params.subList(i, 
                                     params.size());
-                    Type ptt = 
+                    Type parameterTypeTuple = 
                             unit.getParameterTypesAsTupleType(
-                                    subList, receiverType);
+                                    subList, 
+                                    //Note: this is an abuse
+                                    //of the API - the parameters
+                                    //don't really belong to
+                                    //this type, they belong
+                                    //to the invoked declaration
+                                    receiverType);
                     addToUnionOrIntersection(
                             findingUpperBounds, 
                             inferredTypes, 
-                            inferTypeArg(tp, ptt, at, 
+                            inferTypeArg(tp, 
+                                    parameterTypeTuple, at, 
                                     findingUpperBounds, 
                                     pal));
                 }
@@ -611,34 +624,14 @@ public class TypeArgumentInference {
                         break;
                     }
                     else {
-                        //this is sorta rubbish: we use the
-                        //type that declares the member with
-                        //the parameter to substitute type
-                        //args into the parameter type, which
-                        //is I guess an abuse of the API
-                        Scope container = 
-                                parameter.getDeclaration()
-                                    .getContainer();
-                        Type dt = receiverType;
-                        if (container instanceof TypeDeclaration) {
-                            TypeDeclaration td = 
-                                    (TypeDeclaration) 
-                                        container;
-                            Type supertype = 
-                                    receiverType.getSupertype(td);
-                            dt = supertype==null ? 
-                                    receiverType : supertype;
-                        }
-                        else {
-                            dt = receiverType;
-                        }
-                        Type pt = 
-                                dt.getTypedParameter(parameter)
-                                    .getFullType();
+                        Type parameterType = 
+                                parameterType(receiverType,
+                                        parameter, invoked);
                         addToUnionOrIntersection(
                                 findingUpperBounds, 
                                 inferredTypes,
-                                inferTypeArg(tp, pt, at,
+                                inferTypeArg(tp, 
+                                        parameterType, at,
                                         findingUpperBounds, 
                                         pal));
                     }
@@ -647,6 +640,103 @@ public class TypeArgumentInference {
         }
         return unionOrIntersection(findingUpperBounds, 
                 inferredTypes);
+    }
+    
+    /**
+     * Compute the type of the given parameter as best we
+     * can from all type arguments that we actually have at
+     * our disposal. That's obviously not all of them, since
+     * some of them we're trying to infer.
+     * 
+     * @param receiverType a qualifying type
+     * @param parameter the parameter
+     * @param invoked the declaration to which the parameter
+     *        belongs
+     *        
+     * @return the type of the parameter, taking into 
+     *         account type arguments available in the
+     *         qualifying type.
+     */
+    private static Type parameterType(Type receiverType, 
+            Parameter parameter, Declaration invoked) {
+        if (receiverType == null || 
+                !invoked.isClassOrInterfaceMember()) {
+            return parameter.getModel()
+                    .getReference()
+                    .getFullType();
+        }
+        else {
+            //this is sorta rubbish: we use the type that 
+            //declares the member with the parameter to 
+            //substitute type args into the parameter type, 
+            //which I guess is an abuse of the API
+            Type supertype = 
+                    getDeclaringSupertype(receiverType, 
+                            invoked);
+            if (supertype==null) {
+                return null;
+            }
+            else {
+                return supertype.getTypedParameter(parameter)
+                        .getFullType();
+            }
+        }
+    }
+    
+    /**
+     * Search for the supertype of the given type to which
+     * the given declaration directly or indirectly belongs.
+     * 
+     * Since we can use arguments to qualified invocations 
+     * to infer type arguments to qualifying invocations,
+     * the given declaration is not necessarily a (direct)
+     * member of the type.
+     *  
+     * @param qualifyingType some direct or indirect 
+     *        qualifying type
+     * @param invoked the thing being directly invoked
+     * 
+     * @return the supertype of the the given type in which
+     *         the member is nested directly or indirectly
+     */
+    private static Type getDeclaringSupertype(
+            Type qualifyingType,
+            Declaration invoked) {
+        if (invoked instanceof Constructor) {
+            Scope container = invoked.getContainer();
+            if (container instanceof Declaration) {
+                invoked = (Declaration) container;
+            }
+            else {
+                return null;
+            }
+        }
+        Scope supertypeDec = invoked.getContainer();
+        if (supertypeDec instanceof TypeDeclaration) {
+            return qualifyingType.getSupertype(
+                    (TypeDeclaration) supertypeDec);
+        }
+        else {
+            return null;
+        }
+        //Maybe TODO: I think something like this would
+        //let you use arguments to an invocation to infer
+        //type arguments to outer qualifying types!
+        /*Type qualifyingType = receiverType;
+        Type supertype;
+        do {
+            supertype = 
+                    qualifyingType.getSupertype(supertypeDec);
+            Scope container = supertypeDec.getContainer();
+            if (container instanceof TypeDeclaration) {
+                supertypeDec = (TypeDeclaration) container;
+            }
+            else {
+                break;
+            }
+        }
+        while (supertype==null && qualifyingType!=null);
+        return supertype;*/
     }
 
     private Type inferTypeArgumentFromPositionalArgs(
@@ -1102,10 +1192,11 @@ public class TypeArgumentInference {
      * @param that the invocation
      * @param type the type whose type arguments we're
      *             inferring (the qualifying type)
+     * @param receiverType 
      */
     List<Type> getInferredTypeArgsForStaticReference(
             Tree.InvocationExpression that, 
-            TypeDeclaration type) {
+            TypeDeclaration type, Type receiverType) {
         Tree.PositionalArgumentList pal = 
                 that.getPositionalArgumentList();
         Tree.MemberOrTypeExpression primary = 
@@ -1138,12 +1229,12 @@ public class TypeArgumentInference {
                     else {
                         Type at = arg.getTypeModel();
                         Type tt = type.getType();
-                        List<TypeParameter> tps = 
+                        List<TypeParameter> typeParams = 
                                 type.getTypeParameters();
                         List<Type> typeArgs = 
                                 new ArrayList<Type>
-                                    (tps.size());
-                        for (TypeParameter tp: tps) {
+                                    (typeParams.size());
+                        for (TypeParameter tp: typeParams) {
                             Type it = 
                                     inferTypeArg(tp, tt, at,
                                             false, //TODO: is this 100% correct?
@@ -1154,13 +1245,11 @@ public class TypeArgumentInference {
                                         tp.getName() + 
                                         "' could not be inferred");
                             }
-                            else {
-                                it = constrainInferredType(
-                                        tp, it);
-                            }
                             typeArgs.add(it);
                         }
-                        return typeArgs;
+                        return constrainInferredTypes(
+                                typeParams, typeArgs,
+                                receiverType, invoked);
                     }
                 }
             }
@@ -1176,20 +1265,21 @@ public class TypeArgumentInference {
      * declaration. 
      * 
      * @param that the invocation
-     * @param declaration the thing actually being invoked
+     * @param invoked the thing actually being invoked
      * @param generic the thing we're inferring type 
      *        arguments for, which may not be the thing
      *        actually being invoked
+     * @param receiverType 
      *        
      * @return a list of inferred type arguments
      */
     List<Type> getInferredTypeArgsForReference(
             Tree.InvocationExpression that,
-            Declaration declaration,
-            Generic generic) {
-        if (declaration instanceof Functional) {
+            Declaration invoked,
+            Generic generic, Type receiverType) {
+        if (invoked instanceof Functional) {
             Functional functional = 
-                    (Functional) declaration;
+                    (Functional) invoked;
             List<ParameterList> parameterLists = 
                     functional.getParameterLists();
             if (parameterLists.isEmpty()) {
@@ -1201,21 +1291,20 @@ public class TypeArgumentInference {
                 List<TypeParameter> typeParameters = 
                         generic.getTypeParameters();
                 for (TypeParameter tp: typeParameters) {
-                    Type qt = getTargetQualifyingType(that);
                     ParameterList pl = parameterLists.get(0);
                     Type it = 
-                            inferTypeArgument(that, qt, tp, 
-                                    pl, declaration);
+                            inferTypeArgument(that, 
+                                    receiverType, tp, 
+                                    pl, invoked);
                     if (it==null || it.containsUnknowns()) {
                         that.addError("could not infer type argument from given arguments: type parameter '" + 
                                 tp.getName() + "' could not be inferred");
                     }
-                    else {
-                        it = constrainInferredType(tp, it);
-                    }
                     typeArgs.add(it);
                 }
-                return typeArgs;
+                return constrainInferredTypes(
+                        typeParameters, typeArgs, 
+                        receiverType, invoked);
             }
         }
         else {
@@ -1225,7 +1314,7 @@ public class TypeArgumentInference {
 
     private Type inferTypeArgument(
             Tree.InvocationExpression that,
-            Type qt, TypeParameter tp, 
+            Type receiverType, TypeParameter tp, 
             ParameterList parameters, 
             Declaration invoked) {
         Tree.PositionalArgumentList pal = 
@@ -1234,11 +1323,11 @@ public class TypeArgumentInference {
                 that.getNamedArgumentList();
         if (pal!=null) {
             return inferTypeArgumentFromPositionalArgs(tp, 
-                    parameters, qt, pal, invoked);
+                    parameters, receiverType, pal, invoked);
         }
         else if (nal!=null) {
             return inferTypeArgumentFromNamedArgs(tp, 
-                    parameters, qt, nal, invoked);
+                    parameters, receiverType, nal, invoked);
         }
         else {
             //impossible
@@ -1246,21 +1335,6 @@ public class TypeArgumentInference {
         }
     }
     
-    private Type getTargetQualifyingType(
-            Tree.InvocationExpression that) {
-        Tree.Primary primary = that.getPrimary();
-        if (primary instanceof Tree.QualifiedMemberOrTypeExpression) {
-            Tree.QualifiedMemberOrTypeExpression qmte = 
-                    (Tree.QualifiedMemberOrTypeExpression) 
-                        primary;
-            return qmte.getPrimary().getTypeModel();
-        }
-        else {
-            //TODO: wouldn't null be more correct?!
-            return unit.getUnknownType();
-        }
-    }
-
     private static boolean[] specifiedParameters(
             int argumentCount, int total) {
         boolean[] specified = 
@@ -1576,38 +1650,89 @@ public class TypeArgumentInference {
             return null;
         }
     }
-
+    
+    private List<Type> constrainInferredTypes(
+            List<TypeParameter> typeParameters,
+            List<Type> inferredTypeArgs,
+            Type qualifyingType,
+            Declaration declaration) {
+        int size = inferredTypeArgs.size();
+        boolean found = false;
+        for (int i=0; i<size; i++) {
+            List<Type> bounds = 
+                    typeParameters.get(i)
+                        .getSatisfiedTypes();
+            if (!bounds.isEmpty()) {
+                found = true;
+            }
+        }
+        if (found) {
+            Reference ref;
+            if (qualifyingType == null) {
+                ref = declaration.appliedReference(null, 
+                        inferredTypeArgs);
+            }
+            else {
+                ref = qualifyingType.getTypedReference(
+                        declaration, inferredTypeArgs);
+            }
+            Map<TypeParameter, Type> args =
+                    ref.getTypeArguments();
+//            Map<TypeParameter, Type> qualifyingArgs = 
+//                    qualifyingType.getTypeArguments();
+//            Map<TypeParameter,Type> args =
+//                    new HashMap<TypeParameter,Type>
+//                        (size + qualifyingArgs.size());
+//            args.putAll(qualifyingArgs);
+//            for (int i=0; i<size; i++) {
+//                args.put(typeParameters.get(i), 
+//                        inferredTypeArgs.get(i));
+//            }
+            ArrayList<Type> result = 
+                    new ArrayList<Type>
+                        (size);
+            for (int i=0; i<size; i++) {
+                TypeParameter tp = typeParameters.get(i);
+                Type arg = inferredTypeArgs.get(i);
+                Type constrainedArg = 
+                        constrainInferredType(tp, arg, args);
+                result.add(constrainedArg);
+            }
+            return result;
+        }
+        else {
+            return inferredTypeArgs;
+        }
+    }
+    
     /**
      * Apply upper bound type constraints to an inferred 
      * type argument.
      *  
      * @param tp the type parameter
-     * @param ta the inferred type argument
+     * @param inferredTypeArg the inferred type argument
+     * @param argMap 
      * 
      * @return the improved type argument
      */
     private Type constrainInferredType(TypeParameter tp, 
-            Type ta) {
+            Type inferredTypeArg,
+            Map<TypeParameter, Type> argMap) {
         //Note: according to the language spec we should only 
         //      do this for contravariant  parameters, but in
         //      fact it also helps for special cases like
         //      emptyOrSingleton(null)
-        List<Type> sts = tp.getSatisfiedTypes();
-        List<Type> list = 
-                new ArrayList<Type>
-                    (sts.size()+1);
-        addToIntersection(list, ta, unit);
         //Intersect the inferred type with any upper bound 
-        //constraints on the type:
-        for (Type st: sts) {
-            //TODO: substitute in the other inferred type 
-            //      args of the invocation
-            //TODO: st.getProducedType(receiver, dec, typeArgs);
-            if (!st.involvesTypeParameters()) {
-                addToIntersection(list, st, unit);
-            }
+        //constraints on the type and then substitute in all 
+        //the inferred type args
+        Type bounds = 
+                intersectionOfSupertypes(tp)
+                    .substitute(argMap, null);
+        if (bounds.involvesTypeParameters()) {
+            bounds.asSourceCodeString(unit);
         }
-        return canonicalIntersection(list, unit);
+        return intersectionType(bounds, inferredTypeArg, 
+                unit);
     }
 
 

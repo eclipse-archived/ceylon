@@ -3243,10 +3243,13 @@ public class ExpressionVisitor extends Visitor {
                     ClassOrInterface ci = 
                             (ClassOrInterface) 
                                 type.getContainer();
+                    Type qualifyingType = 
+                            scope.getDeclaringType(type);
                     List<Type> inferredArgs = 
                             new TypeArgumentInference(unit)
                                 .getInferredTypeArgsForReference(
-                                        that, type, ci);
+                                        that, type, ci,
+                                        qualifyingType);
                     receivingType = 
                             ci.appliedType(null, 
                                     inferredArgs);
@@ -3272,9 +3275,15 @@ public class ExpressionVisitor extends Visitor {
             if (type!=null) {
                 setArgumentParameters(that, type);
                 Tree.Primary primary = qte.getPrimary();
-                Type receivingType = 
-                        primary.getTypeModel()
-                            .resolveAliases();
+                Type receivingType;
+                if (primary instanceof Tree.Package) {
+                    receivingType = null;
+                }
+                else {
+                    receivingType = 
+                            primary.getTypeModel()
+                                .resolveAliases();
+                }
                 List<Type> typeArgs = 
                         getOrInferTypeArguments(that, type, 
                                 reference, receivingType);
@@ -3299,9 +3308,12 @@ public class ExpressionVisitor extends Visitor {
                     resolveBaseMemberExpression(bme, true);
             if (base!=null) {
                 setArgumentParameters(that, base);
+                Scope scope = that.getScope();
+                Type qualifyingType = 
+                        scope.getDeclaringType(base);
                 List<Type> typeArgs = 
                         getOrInferTypeArguments(that, base, 
-                                reference, null);
+                                reference, qualifyingType);
                 tas.setTypeModels(typeArgs);
                 visitBaseMemberExpression(bme, base, 
                         typeArgs, tas);
@@ -3318,9 +3330,15 @@ public class ExpressionVisitor extends Visitor {
             if (member!=null) {
                 setArgumentParameters(that, member);
                 Tree.Primary primary = qme.getPrimary();
-                Type receivingType = 
-                        primary.getTypeModel()
-                            .resolveAliases();
+                Type receivingType;
+                if (primary instanceof Tree.Package) {
+                    receivingType = null;
+                }
+                else {
+                    receivingType = 
+                            primary.getTypeModel()
+                                .resolveAliases();
+                }
                 List<Type> typeArgs = 
                         getOrInferTypeArguments(that, 
                                 member, reference, 
@@ -3420,7 +3438,7 @@ public class ExpressionVisitor extends Visitor {
             }
             else {
                 return getInferredTypeArguments(that, 
-                        (Generic) dec);
+                        (Generic) dec, receiverType);
             }
         }
         else if (dec instanceof Value) {
@@ -3483,12 +3501,13 @@ public class ExpressionVisitor extends Visitor {
      *        parameters
      * @param generic the model of the thing with type 
      *        parameters
+     * @param receiverType 
      *        
      * @return a list of inferred type arguments
      */
     private List<Type> getInferredTypeArguments(
             Tree.InvocationExpression that, 
-            Generic generic) {
+            Generic generic, Type receiverType) {
         Tree.Term primary =
                 unwrapExpressionUntilTerm(that.getPrimary());
         if (primary instanceof Tree.StaticMemberOrTypeExpression) {
@@ -3503,14 +3522,15 @@ public class ExpressionVisitor extends Visitor {
                         (TypeDeclaration) generic;
                 return new TypeArgumentInference(unit)
                         .getInferredTypeArgsForStaticReference(
-                                that, type);
+                                that, type, receiverType);
             }
             else {
                 Declaration declaration = 
                         pmte.getDeclaration();
                 return new TypeArgumentInference(unit)
                         .getInferredTypeArgsForReference(
-                                that, declaration, generic);
+                                that, declaration, generic,
+                                receiverType);
             }
         }
         else {
