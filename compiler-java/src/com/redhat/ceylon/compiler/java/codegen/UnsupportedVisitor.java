@@ -110,6 +110,20 @@ public class UnsupportedVisitor extends Visitor {
         super.visit(that);
     }
     
+    public void visit(Tree.Constructor that) {
+        if (!Decl.isForBackend(that))
+            return;
+        interopAnnotationTargeting(AnnotationUtil.outputs(that), that.getAnnotationList());
+        super.visit(that);
+    }
+    
+    public void visit(Tree.Enumerated that) {
+        if (!Decl.isForBackend(that))
+            return;
+        interopAnnotationTargeting(AnnotationUtil.outputs(that), that.getAnnotationList());
+        super.visit(that);
+    }
+    
     public void visit(Tree.AnyInterface that) {
         if (!Decl.isForBackend(that))
             return;

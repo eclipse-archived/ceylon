@@ -44,6 +44,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.ParameterList;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Return;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.model.loader.NamingBase.Suffix;
+import com.redhat.ceylon.model.loader.model.OutputElement;
 import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.model.typechecker.model.Constructor;
@@ -218,6 +219,9 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
                         null, 
                         singletonModel.getName(), singletonModel, false);
                 adb.modelAnnotations(gen.makeAtEnumerated());
+                
+                adb.userAnnotations(gen.expressionGen().transformAnnotations(false, OutputElement.GETTER, ctor));
+                adb.fieldAnnotations(gen.expressionGen().transformAnnotations(false, OutputElement.FIELD, ctor));
                 adb.immutable();// not setter
                 if (clz.isToplevel()) {
                     adb.modifiers((singletonModel.isShared() ? PUBLIC : PRIVATE) | STATIC | FINAL);
