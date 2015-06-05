@@ -1678,16 +1678,6 @@ public class TypeArgumentInference {
             }
             Map<TypeParameter, Type> args =
                     ref.getTypeArguments();
-//            Map<TypeParameter, Type> qualifyingArgs = 
-//                    qualifyingType.getTypeArguments();
-//            Map<TypeParameter,Type> args =
-//                    new HashMap<TypeParameter,Type>
-//                        (size + qualifyingArgs.size());
-//            args.putAll(qualifyingArgs);
-//            for (int i=0; i<size; i++) {
-//                args.put(typeParameters.get(i), 
-//                        inferredTypeArgs.get(i));
-//            }
             ArrayList<Type> result = 
                     new ArrayList<Type>
                         (size);
@@ -1728,9 +1718,6 @@ public class TypeArgumentInference {
         Type bounds = 
                 intersectionOfSupertypes(tp)
                     .substitute(argMap, null);
-        if (bounds.involvesTypeParameters()) {
-            bounds.asSourceCodeString(unit);
-        }
         return intersectionType(bounds, inferredTypeArg, 
                 unit);
     }
