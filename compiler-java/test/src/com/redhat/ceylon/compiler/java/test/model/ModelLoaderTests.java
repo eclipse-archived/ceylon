@@ -1101,6 +1101,11 @@ public class ModelLoaderTests extends CompilerTests {
     public void loadClassWithAttributeAndConflictingMethods(){
         verifyCompilerClassLoading("KlassWithAttributeAndConflictingMethods.ceylon");
     }
+    
+    @Test
+    public void loadClassSingletonConstructors(){
+        verifyCompilerClassLoading("SingletonConstructors.ceylon");
+    }
 
     @Test
     public void loadTypeParameters(){
