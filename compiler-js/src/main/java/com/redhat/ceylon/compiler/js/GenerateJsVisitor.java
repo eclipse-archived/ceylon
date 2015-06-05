@@ -904,9 +904,9 @@ public class GenerateJsVisitor extends Visitor
         if (removeAlias && !isImported(type.getUnit().getPackage(), d)) {
             int idx = tfn.lastIndexOf('.');
             if (idx > 0) {
-                tfn = tfn.substring(0, idx+1) + "$init$" + tfn.substring(idx+1) + "()";
+                tfn = tfn.substring(0, idx+1) + "$init$" + names.name(d) + "()";
             } else {
-                tfn = "$init$" + tfn + "()";
+                tfn = "$init$" + names.name(d) + "()";
             }
         }
         return tfn;
