@@ -3316,9 +3316,7 @@ public class Type extends Reference {
                     TypeParameter tp = params.get(i);
                     Type arg = args.get(i);
                     if (isCovariant(tp)) {
-                        Type bound = 
-                                //TODO: BUG, this could
-                                //cause a stack overflow!
+                        Type bound =
                                 intersectionOfSupertypes(tp)
                                     .substitute(this);
                         if (!arg.isSubtypeOf(bound)) {
@@ -4116,13 +4114,30 @@ public class Type extends Reference {
                 //use-site variance is "in", replace the
                 //type parameter with its upper bounds,
                 //throwing away the use-site lower bound
-                //TODO: BUG HERE! This can cause a stack
-                //      when the upper bound involves
-                //      the type parameter covariantly
-                return applyVarianceOverrides(
-                        intersectionOfSupertypes(tp), 
-                        covariant, contravariant, 
-                        overrides);
+                List<Type> bounds = tp.getSatisfiedTypes();
+                List<Type> list = 
+                        new ArrayList<Type>
+                            (bounds.size()+1);
+                for (Type bound: bounds) {
+                    //ignore bounds in which the type 
+                    //parameter itself occurs covariantly
+                    //because they would result in a 
+                    //stack overflow here
+                    //TODO: perhaps we should just 
+                    //      substitute Anything for the
+                    //      type parameter in such bounds,
+                    //      which would be a little more
+                    //      precise
+                    if (!bound.occursCovariantly(tp)) {
+                        Type applied = 
+                                applyVarianceOverrides(
+                                        bound, 
+                                        covariant, contravariant, 
+                                        overrides);
+                        addToIntersection(list, applied, unit);
+                    }
+                }
+                return canonicalIntersection(list, unit);
             }
             else {
                 return type;
