@@ -949,7 +949,15 @@ public class Type extends Reference {
             if (!otherBound.isExactly(bound)) {
                 return false;
             }
-            //TODO: check enumerated bounds!!!
+            Type otherEnumBound = 
+                    unionOfCaseTypes(otherParam)
+                        .substitute(otherArgs, none);
+            Type enumBound = 
+                    unionOfCaseTypes(param)
+                        .substitute(args, none);
+            if (!otherEnumBound.isExactly(enumBound)) {
+                return false;
+            }
         }
         return true;
     }
