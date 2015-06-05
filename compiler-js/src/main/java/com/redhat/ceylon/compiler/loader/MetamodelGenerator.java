@@ -148,6 +148,22 @@ public class MetamodelGenerator {
         return last;
     }
 
+    private Map<String,Object> tupleTypeMap(Type tt, Declaration from) {
+        final Map<String, Object> m = new HashMap<>();
+        m.put(KEY_NAME, "Tuple");
+        m.put(KEY_PACKAGE, "$");
+        List<Type> targs = tt.getTypeArgumentList(); //Element, First, Rest
+        int min = from.getUnit().getTupleMinimumLength(tt);
+        if (targs.get(0).equals(targs.get(1))) {
+            m.put(KEY_TYPE, typeMap(targs.get(1), from));
+            m.put("count", min);
+            System.out.println(tt + " count " + min);
+        } else {
+            encodeTypes(from.getUnit().getTupleElementTypes(tt), m, KEY_TYPES, from);
+        }
+        return m;
+    }
+
     /** Create a map for the specified Type.
      * Includes name, package, module and type parameters, unless it's a union or intersection
      * type, in which case it contains a "comp" key with an "i" or "u" and a key "types" with
@@ -166,6 +182,8 @@ public class MetamodelGenerator {
             m.put("comp", pt.isUnion() ? "u" : "i");
             m.put(KEY_TYPES, subs);
             return m;
+        } else if (pt.isTuple() && !pt.involvesTypeParameters()) {
+            return tupleTypeMap(pt, from);
         }
         TypeDeclaration d = pt.getDeclaration();
         if (d.isToplevel() || pt.isTypeParameter()) {

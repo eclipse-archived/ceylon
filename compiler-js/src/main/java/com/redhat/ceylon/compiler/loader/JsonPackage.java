@@ -3,6 +3,7 @@ package com.redhat.ceylon.compiler.loader;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getSignature;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -829,6 +830,30 @@ public class JsonPackage extends com.redhat.ceylon.model.typechecker.model.Packa
                     Declaration d = rp.getDirectMember(tname, null, false);
                     if (d instanceof TypeDeclaration) {
                         td = (TypeDeclaration)d;
+                        if (td.isTuple()) {
+                            if (m.containsKey(MetamodelGenerator.KEY_TYPES)) {
+                                @SuppressWarnings("unchecked")
+                                List<Map<String,Object>> elemaps = (List<Map<String,Object>>)m.get(MetamodelGenerator.KEY_TYPES);
+                                ArrayList<Type> elems = new ArrayList<>(elemaps.size());
+                                for (Map<String,Object> elem : elemaps) {
+                                    elems.add(getTypeFromJson(elem, container, typeParams));
+                                }
+                                Type tail = elems.get(elems.size()-1);
+                                if ((tail.isSequence() || tail.isSequential())
+                                        && !tail.isTuple() && !tail.isEmpty()) {
+                                    elems.remove(elems.size()-1);
+                                } else {
+                                    tail = null;
+                                }
+                                return u2.getTupleType(elems, tail, -1);
+                            } else if (m.containsKey("count")) {
+                                @SuppressWarnings("unchecked")
+                                Map<String,Object> elem = (Map<String,Object>)m.get(MetamodelGenerator.KEY_TYPE);
+                                Type[] elems = new Type[(int)m.remove("count")];
+                                Arrays.fill(elems, getTypeFromJson(elem, container, typeParams));
+                                return u2.getTupleType(Arrays.asList(elems), null, -1);
+                            }
+                        }
                     } else if (d instanceof FunctionOrValue) {
                         td = ((FunctionOrValue)d).getTypeDeclaration();
                     }
