@@ -45,6 +45,11 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @interface TypeOrConstructorTarget {}
 
+//... when applied to a Ceylon singleton constructor
+@Target({ElementType.CONSTRUCTOR, ElementType.FIELD, ElementType.METHOD}) 
+@Retention(RetentionPolicy.RUNTIME)
+@interface ConstructorOrFieldOrMethodTarget {}
+
 // ... when applied to a Ceylon reference value (field, or getter or setter)
 @Target({ElementType.FIELD, ElementType.METHOD}) 
 @Retention(RetentionPolicy.RUNTIME)

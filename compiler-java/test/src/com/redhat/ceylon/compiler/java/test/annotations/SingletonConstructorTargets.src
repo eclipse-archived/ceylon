@@ -1,0 +1,69 @@
+package com.redhat.ceylon.compiler.java.test.annotations;
+
+class SingletonConstructorTargets implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    private static final class fieldAnnotated_ {
+        
+        private fieldAnnotated_() {
+        }
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    public SingletonConstructorTargets(.com.redhat.ceylon.compiler.java.test.annotations.SingletonConstructorTargets.fieldAnnotated_ $name$) {
+    }
+    @.com.redhat.ceylon.compiler.java.test.annotations.FieldTarget
+    @.com.redhat.ceylon.compiler.java.test.annotations.ConstructorOrFieldOrMethodTarget
+    private static final .com.redhat.ceylon.compiler.java.test.annotations.SingletonConstructorTargets fieldAnnotated;
+    static {
+        fieldAnnotated = new SingletonConstructorTargets((.com.redhat.ceylon.compiler.java.test.annotations.SingletonConstructorTargets.fieldAnnotated_)null);
+    }
+    
+    public static final .com.redhat.ceylon.compiler.java.test.annotations.SingletonConstructorTargets getFieldAnnotated() {
+        return fieldAnnotated;
+    }
+    
+    private static final class methodAnnotated_ {
+        
+        private methodAnnotated_() {
+        }
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    public SingletonConstructorTargets(.com.redhat.ceylon.compiler.java.test.annotations.SingletonConstructorTargets.methodAnnotated_ $name$) {
+    }
+    private static final .com.redhat.ceylon.compiler.java.test.annotations.SingletonConstructorTargets methodAnnotated;
+    static {
+        methodAnnotated = new SingletonConstructorTargets((.com.redhat.ceylon.compiler.java.test.annotations.SingletonConstructorTargets.methodAnnotated_)null);
+    }
+    
+    @.com.redhat.ceylon.compiler.java.test.annotations.MethodTarget
+    @.com.redhat.ceylon.compiler.java.test.annotations.ConstructorOrFieldOrMethodTarget
+    public static final .com.redhat.ceylon.compiler.java.test.annotations.SingletonConstructorTargets getMethodAnnotated() {
+        return methodAnnotated;
+    }
+    
+    private static final class constructorAnnotated_ {
+        
+        private constructorAnnotated_() {
+        }
+    }
+    
+    @.com.redhat.ceylon.compiler.java.test.annotations.ConstructorOrFieldOrMethodTarget
+    @.ceylon.language.SharedAnnotation$annotation$
+    public SingletonConstructorTargets(.com.redhat.ceylon.compiler.java.test.annotations.SingletonConstructorTargets.constructorAnnotated_ $name$) {
+    }
+    private static final .com.redhat.ceylon.compiler.java.test.annotations.SingletonConstructorTargets constructorAnnotated;
+    static {
+        constructorAnnotated = new SingletonConstructorTargets((.com.redhat.ceylon.compiler.java.test.annotations.SingletonConstructorTargets.constructorAnnotated_)null);
+    }
+    
+    public static final .com.redhat.ceylon.compiler.java.test.annotations.SingletonConstructorTargets getConstructorAnnotated() {
+        return constructorAnnotated;
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.annotations.SingletonConstructorTargets.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.SingletonConstructorTargets.class);
+}

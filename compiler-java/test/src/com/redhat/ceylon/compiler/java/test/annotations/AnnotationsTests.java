@@ -301,4 +301,10 @@ public class AnnotationsTests extends CompilerTests {
     public void testBug2116(){
         compareWithJavaSource("Bug2116");
     }
+    
+    @Test
+    public void testSingletonConstructorTargets(){
+        compile("Targets.java");
+        compareWithJavaSource("SingletonConstructorTargets");
+    }
  }
