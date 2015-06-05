@@ -2576,11 +2576,13 @@ public class ModelUtil {
         return pkg != null ? pkg.getModule() : null;
     }
 
-    public static ClassOrInterface getClassOrInterfaceContainer(Element decl){
+    public static ClassOrInterface getClassOrInterfaceContainer(
+            Element decl) {
         return getClassOrInterfaceContainer(decl, true);
     }
     
-    public static ClassOrInterface getClassOrInterfaceContainer(Element decl, boolean includingDecl){
+    public static ClassOrInterface getClassOrInterfaceContainer(
+            Element decl, boolean includingDecl) {
         if (!includingDecl) {
             decl = (Element) decl.getContainer();
         }
@@ -2635,11 +2637,11 @@ public class ModelUtil {
      * @return true if the declaration is within a class or interface
      */
     public static boolean withinClassOrInterface(Declaration decl) {
-        return decl.getContainer() instanceof com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
+        return decl.getContainer() instanceof ClassOrInterface;
     }
 
     public static boolean withinClass(Declaration decl) {
-        return decl.getContainer() instanceof com.redhat.ceylon.model.typechecker.model.Class;
+        return decl.getContainer() instanceof Class;
     }
 
     public static boolean isLocalToInitializer(Declaration decl) {
