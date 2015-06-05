@@ -2261,7 +2261,9 @@ interface NumberLiteral
                 <listitem>
                     <para>Every occurrence of <literal>T</literal> in a covariant
                     position is replaced by the intersection of the upper bound type
-                    constraints on <literal>T</literal>.</para>
+                    constraints on <literal>T</literal> in which <literal>T</literal>
+                    itself does not occur covariantly, or by <literal>Anything</literal>
+                    if there are no such constraints.</para>
                 </listitem>
                 <listitem>
                     <para>Every applied type expression <literal>E</literal> involving
@@ -2374,7 +2376,8 @@ interface NumberLiteral
             only if for every <literal>A</literal> in the list of type arguments specified
             in <literal>Y</literal> and corresponding <literal>B</literal> in the list of type 
             arguments specified in <literal>Z</literal>, <literal>A</literal> is exactly the 
-            same type as <literal>B</literal>.</para>
+            same type as <literal>B</literal>, and the variance of <literal>A</literal> is
+            the same as <literal>B</literal>.</para>
             
             <!--
             <para>For a generic type <literal>T&lt;n&gt;</literal>, the types 
@@ -2385,8 +2388,8 @@ interface NumberLiteral
             
             <para>For a generic type <literal>X</literal>, and instantiations 
             <literal>Y</literal> and <literal>Z</literal> of <literal>X</literal>, 
-            <literal>Y</literal> is a subtype of <literal>Z</literal> if and only if, for 
-            every type parameter <literal>T</literal> of <literal>X</literal>, and 
+            <literal>Y</literal> is a subtype of <literal>Z</literal> if and only if, 
+            for every type parameter <literal>T</literal> of <literal>X</literal>, and 
             corresponding arguments <literal>A</literal> specified in <literal>Y</literal> 
             and <literal>B</literal> specified in <literal>Z</literal>:</para>
             
@@ -2395,7 +2398,9 @@ interface NumberLiteral
                     <para>
                         <literal>B</literal> is a covariant type argument, and
                         the type <literal>B</literal> is the intersection of 
-                        all upper bounds on <literal>T</literal>, or
+                        all upper bound constraints on <literal>T</literal> or 
+                        <literal>Anything</literal> if there are no such upper 
+                        bound constraints, or
                     </para>
                 </listitem>
                 <listitem>
