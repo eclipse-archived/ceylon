@@ -1920,8 +1920,9 @@ public class Unit {
         }
     }
     
-    public Type getParameterTypesAsTupleType(List<Parameter> params, 
-            Reference pr) {
+    public Type getParameterTypesAsTupleType(
+            List<Parameter> params, 
+            Reference reference) {
         List<Type> paramTypes = 
                 new ArrayList<Type>
                     (params.size());
@@ -1931,24 +1932,39 @@ public class Unit {
         boolean atLeastOne = false;
         for (int i=0; i<=max; i++) {
             Parameter p = params.get(i);
-            Type ft;
+            Type fullType;
             if (p.getModel() == null) {
-                ft = getUnknownType();
+                fullType = getUnknownType();
             }
             else {
-                ft = pr.getTypedParameter(p).getFullType();
+                if (reference==null) {
+                    //this special case is here because
+                    //TypeArgumentInference abuses this
+                    //API by passing a qualifying type
+                    //which does not actually own the
+                    //given parameters directly
+                    fullType =
+                            p.getModel()
+                                .getReference()
+                                .getFullType();
+                }
+                else {
+                    fullType = 
+                            reference.getTypedParameter(p)
+                                .getFullType();
+                }
                 if (firstDefaulted<0 && p.isDefaulted()) {
                     firstDefaulted = i;
                 }
                 if (i==max && p.isSequenced()) {
                     sequenced = true;
                     atLeastOne = p.isAtLeastOne();
-                    if (ft!=null) {
-                        ft = getIteratedType(ft);
+                    if (fullType!=null) {
+                        fullType = getIteratedType(fullType);
                     }
                 }
             }
-            paramTypes.add(ft);
+            paramTypes.add(fullType);
         }
         return getTupleType(paramTypes, 
                 sequenced, atLeastOne, 
