@@ -1369,9 +1369,15 @@ public class Type extends Reference {
         }
         
         while (dec.isAlias()) {
-            dec = dec.getExtendedType().getDeclaration();
-            if (dec==null) {
+            Type et = dec.getExtendedType();
+            if (et==null) {
                 return null;
+            }
+            else {
+                dec = et.getDeclaration();
+                if (dec==null) {
+                    return null;
+                }
             }
         }
         
