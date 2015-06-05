@@ -171,8 +171,7 @@ public class TypeArgumentInference {
                         //in the upper bounds
                         !visited.contains(tp2)) {
                     visited.add(tp2);
-                    List<Type> sts = 
-                            tp2.getSatisfiedTypes();
+                    List<Type> sts = tp2.getSatisfiedTypes();
                     List<Type> list = 
                             new ArrayList<Type>
                                 (sts.size());
@@ -229,8 +228,7 @@ public class TypeArgumentInference {
                 Type pt = paramType;
                 Type apt = argType;
                 if (argType.isUnion()) {
-                    for (Type act: 
-                            argType.getCaseTypes()) {
+                    for (Type act: argType.getCaseTypes()) {
                         //some element of the argument union 
                         //is already a subtype of the 
                         //parameter union, so throw it away 
@@ -245,8 +243,7 @@ public class TypeArgumentInference {
                 }
                 if (pt.isUnion())  {
                     boolean found = false;
-                    for (Type ct: 
-                            pt.getCaseTypes()) {
+                    for (Type ct: pt.getCaseTypes()) {
                         if (ct.isTypeParameter()) {
                             if (found) {
                                 return null;
@@ -259,8 +256,7 @@ public class TypeArgumentInference {
                             pt.getTypeArguments();
                     Map<TypeParameter, SiteVariance> variances = 
                             pt.getVarianceOverrides();
-                    List<Type> cts = 
-                            pt.getCaseTypes();
+                    List<Type> cts = pt.getCaseTypes();
                     List<Type> list = 
                             new ArrayList<Type>
                                 (cts.size());
@@ -622,7 +618,7 @@ public class TypeArgumentInference {
                         //is I guess an abuse of the API
                         Scope container = 
                                 parameter.getDeclaration()
-                                .getContainer();
+                                    .getContainer();
                         Type dt = receiverType;
                         if (container instanceof TypeDeclaration) {
                             TypeDeclaration td = 
@@ -671,13 +667,13 @@ public class TypeArgumentInference {
             Tree.PositionalArgument arg = args.get(i);
             Type at = arg.getTypeModel();
             if (arg instanceof Tree.SpreadArgument) {
-                Type tt = 
+                Type tailType = 
                         unit.getTailType(paramTypesAsTuple, 
                                 i);
                 addToUnionOrIntersection(
                         findingUpperBounds, 
                         inferredTypes,
-                        inferTypeArg(tp, tt, at, 
+                        inferTypeArg(tp, tailType, at, 
                                 findingUpperBounds, 
                                 pal));
             }
@@ -1115,8 +1111,7 @@ public class TypeArgumentInference {
         Tree.MemberOrTypeExpression primary = 
                 (Tree.MemberOrTypeExpression) 
                     that.getPrimary();
-        Declaration invoked = 
-                primary.getDeclaration();
+        Declaration invoked = primary.getDeclaration();
         if (pal == null) {
             return null;
         }
@@ -1281,8 +1276,7 @@ public class TypeArgumentInference {
     private static boolean[] specifiedParameters(
             Tree.PositionalArgumentList args,
             ParameterList parameters) {
-        List<Parameter> params = 
-                parameters.getParameters();
+        List<Parameter> params = parameters.getParameters();
         boolean[] specified = 
                 new boolean[params.size()];
         for (Tree.PositionalArgument arg: 
@@ -1301,8 +1295,7 @@ public class TypeArgumentInference {
     private static boolean[] specifiedParameters(
             Tree.NamedArgumentList args,
             ParameterList parameters) {
-        List<Parameter> params = 
-                parameters.getParameters();
+        List<Parameter> params = parameters.getParameters();
         boolean[] specified = 
                 new boolean[params.size()];
         for (Tree.NamedArgument arg: 
