@@ -4,6 +4,7 @@ import java.lang.reflect.Method;
 import java.util.Arrays;
 
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
+import com.redhat.ceylon.model.loader.NamingBase;
 import com.redhat.ceylon.model.typechecker.model.ClassAlias;
 
 class Reflection {
@@ -89,8 +90,9 @@ class Reflection {
         } else {
             searchClass = javaClass;
         }
+        String aliasName = NamingBase.getAliasInstantiatorMethodName(container);
         for (java.lang.reflect.Method method : searchClass.getDeclaredMethods()) {
-            if (method.getName().equals(container.getName() + "$aliased$")) {
+            if (method.getName().equals(aliasName)) {
                 return method;
             }
         }

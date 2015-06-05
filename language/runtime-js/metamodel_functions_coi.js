@@ -285,6 +285,26 @@ function coicase$(coi){
 }
 //ClassOrInterface.string
 function coistr$(coi) {
+  if (coi.tipo===Tuple && coi.$$targs$$.Target$Type.t==='T' && coi.$$targs$$.Target$Type.l){
+    var tn='[';
+    var ttl=coi.$$targs$$.Target$Type.l;
+    for (var i=0; i<ttl.length;i++) {
+      if (i>0)tn+=',';
+      if (ttl[i].t==='u' && ttl[i].l.length===2 && ttl[i].seq) {
+        if (ttl[i].l[0].t===Sequential || ttl[i].l[0].t===Sequence) {
+          tn+=qname$(ttl[i].l[1])+(ttl[i].seq===2?'+':'*');
+          continue;
+        } else if (ttl[i].l[1].t===Sequential || ttl[i].l[1].t===Sequence) {
+          tn+=qname$(ttl[i].l[0])+(ttl[i].seq===2?'+':'*');
+          continue;
+        }
+      }
+      tn+=qname$(ttl[i]);
+      if (ttl[i].seq)tn+=ttl[i].seq===2?'+':'*';
+    }
+    tn+=']';
+    return tn;
+  }
   var mm=getrtmm$$(coi.tipo);
   var cc=[coi];
   var src=coicont$(coi);
