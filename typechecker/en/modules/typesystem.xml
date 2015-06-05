@@ -2397,16 +2397,14 @@ interface NumberLiteral
                 <listitem>
                     <para>
                         <literal>B</literal> is a covariant type argument, and
-                        the type <literal>B</literal> is the intersection of 
-                        all upper bound constraints on <literal>T</literal> or 
-                        <literal>Anything</literal> if there are no such upper 
-                        bound constraints, or
+                        <literal>B</literal> is a supertype of every upper bound 
+                        on <literal>T</literal>, or
                     </para>
                 </listitem>
                 <listitem>
                     <para>
-                        <literal>B</literal> is a contravariant type argument, and
-                        the type <literal>B</literal> is precisely 
+                        <literal>B</literal> is a contravariant type argument, 
+                        and the type <literal>B</literal> is precisely 
                         <literal>Nothing</literal>, or
                     </para>
                 </listitem>
