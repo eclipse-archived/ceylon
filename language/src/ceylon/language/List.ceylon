@@ -855,7 +855,7 @@ shared interface List<out Element=Anything>
             object satisfies Iterator<Element> {
                 variable value i=0;
                 next() => if (i < outer.size)
-                    then o.getElement(from + i)
+                    then o.getElement(from + i++)
                     else finished;
                 string => "``outer.string``.iterator()";
             };
