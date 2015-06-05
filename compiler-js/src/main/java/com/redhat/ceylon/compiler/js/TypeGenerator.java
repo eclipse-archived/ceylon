@@ -115,11 +115,9 @@ public class TypeGenerator {
             final List<Tree.StaticType> supers = satisfiedTypes == null ? Collections.<Tree.StaticType>emptyList()
                     : new ArrayList<Tree.StaticType>(satisfiedTypes.getTypes().size()+1);
 
-            boolean removeExtendedTypeAlias = false;
             if (extendedType != null) {
-                removeExtendedTypeAlias = !extendedType.getType().getDeclarationModel().isClassOrInterfaceMember();
                 if (satisfiedTypes == null) {
-                    String fname = gen.typeFunctionName(extendedType.getType(), removeExtendedTypeAlias, d);
+                    String fname = typeFunctionName(extendedType.getType(), d, gen);
                     gen.out(",", fname);
                 } else {
                     supers.add(extendedType.getType());
@@ -130,9 +128,8 @@ public class TypeGenerator {
             if (satisfiedTypes != null) {
                 supers.addAll(satisfiedTypes.getTypes());
                 Collections.sort(supers, new StaticTypeComparator());
-                final Tree.SimpleType et = extendedType == null ? null : extendedType.getType();
                 for (Tree.StaticType satType : supers) {
-                    String fname = gen.typeFunctionName(satType, satType==et?removeExtendedTypeAlias:true, d);
+                    String fname = typeFunctionName(satType, d, gen);
                     gen.out(",", fname);
                 }
             }
@@ -168,6 +165,40 @@ public class TypeGenerator {
         }
         gen.out(initname, "()");
         gen.endLine(true);
+    }
+
+    /** Returns the name of the type or its $init$ function if it's local. */
+    static String typeFunctionName(final Tree.StaticType type, final ClassOrInterface coi,
+            final GenerateJsVisitor gen) {
+        TypeDeclaration d = type.getTypeModel().getDeclaration();
+        final boolean removeAlias = d == null || !d.isClassOrInterfaceMember() || d instanceof Interface;
+        if ((removeAlias && d.isAlias()) || d instanceof Constructor) {
+            Type extendedType = d.getExtendedType();
+            d = extendedType==null ? null : extendedType.getDeclaration();
+        }
+        final boolean inProto = gen.opts.isOptimize()
+                && (type.getScope().getContainer() instanceof TypeDeclaration);
+        final boolean imported = gen.isImported(type.getUnit().getPackage(), d);
+        final String initName = "$init$" + gen.getNames().name(d) + "()";
+        if (!imported && !d.isClassOrInterfaceMember()) {
+            return initName;
+        }
+        if (inProto && coi.isMember() && !d.isAlias() && (coi.getContainer() == ModelUtil.getContainingDeclaration(d)
+                || ModelUtil.contains(d, coi))) {
+            //A member class that extends or satisfies another member of its same container,
+            //use its $init$ function
+            return initName;
+        }
+        String tfn = gen.memberAccessBase(type, d, false, gen.qualifiedPath(type, d, inProto));
+        if (removeAlias && !imported) {
+            int idx = tfn.lastIndexOf('.');
+            if (idx > 0) {
+                tfn = tfn.substring(0, idx+1) + initName;
+            } else {
+                tfn = initName;
+            }
+        }
+        return tfn;
     }
 
     static void interfaceDefinition(final Tree.InterfaceDefinition that, final GenerateJsVisitor gen) {

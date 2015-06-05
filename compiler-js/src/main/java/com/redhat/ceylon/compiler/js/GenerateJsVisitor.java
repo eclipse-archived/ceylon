@@ -885,33 +885,6 @@ public class GenerateJsVisitor extends Visitor
         }
     }
 
-    /** Returns the name of the type or its $init$ function if it's local. */
-    String typeFunctionName(final Tree.StaticType type, boolean removeAlias, final ClassOrInterface coi) {
-        TypeDeclaration d = type.getTypeModel().getDeclaration();
-        if ((removeAlias && d!=null && d.isAlias()) || d instanceof Constructor) {
-            Type extendedType = d.getExtendedType();
-            d = extendedType==null ? null : extendedType.getDeclaration();
-        }
-        final boolean inProto = opts.isOptimize()
-                && (type.getScope().getContainer() instanceof TypeDeclaration);
-        if (inProto && coi.isMember() && !d.isAlias() && (coi.getContainer() == ModelUtil.getContainingDeclaration(d)
-                || ModelUtil.contains(d, coi))) {
-            //A member class that extends or satisfies another member of its same container,
-            //use its $init$ function
-            return "$init$" +  names.name(d) + "()";
-        }
-        String tfn = memberAccessBase(type, d, false, qualifiedPath(type, d, inProto));
-        if (removeAlias && !isImported(type.getUnit().getPackage(), d)) {
-            int idx = tfn.lastIndexOf('.');
-            if (idx > 0) {
-                tfn = tfn.substring(0, idx+1) + "$init$" + names.name(d) + "()";
-            } else {
-                tfn = "$init$" + names.name(d) + "()";
-            }
-        }
-        return tfn;
-    }
-
     void addToPrototype(Node node, ClassOrInterface d, List<Tree.Statement> statements) {
         final boolean isSerial = d instanceof Class
                 && ((Class)d).isSerializable();
