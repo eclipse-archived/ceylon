@@ -2397,6 +2397,7 @@ interface NumberLiteral
                 <listitem>
                     <para>
                         <literal>B</literal> is a covariant type argument, and
+                        <literal>A</literal> is contravariant, and
                         <literal>B</literal> is a supertype of every upper bound 
                         on <literal>T</literal>, or
                     </para>
@@ -2404,8 +2405,9 @@ interface NumberLiteral
                 <listitem>
                     <para>
                         <literal>B</literal> is a contravariant type argument, 
-                        and the type <literal>B</literal> is precisely 
-                        <literal>Nothing</literal>, or
+                        and <literal>A</literal> is covariant, and the type 
+                        <literal>B</literal> is precisely <literal>Nothing</literal>, 
+                        or
                     </para>
                 </listitem>
                 <listitem>
