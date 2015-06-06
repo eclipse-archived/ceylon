@@ -117,7 +117,7 @@ public abstract class Declaration
         if (qualifiedNameAsStringCache == null) {
             String qualifier = getContainer().getQualifiedNameString();
             String name = getName();
-            if (qualifier.isEmpty()) {
+            if (qualifier==null || qualifier.isEmpty()) {
                 qualifiedNameAsStringCache = name; 
             }
             else if (getContainer() instanceof Package) {

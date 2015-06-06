@@ -303,6 +303,9 @@ public class Type extends Reference {
                     type.isTypeConstructor()) {
                 return false;
             }
+            else if (isUnknown() || type.isUnknown()) {
+                return false;
+            }
             else {
                 TypeDeclaration dec = 
                         getDeclaration();
@@ -321,6 +324,9 @@ public class Type extends Reference {
                         if (qt!=tqt) {
                             return false;
                         }
+                    }
+                    else if (qt.isUnknown() || tqt.isUnknown()) {
+                        return false;
                     }
                     else {
                         Scope odc = otherDec.getContainer();
@@ -573,6 +579,9 @@ public class Type extends Reference {
             else if (isInterface() && type.isClass()) {
                 return type.isObject();
             }
+            else if (isUnknown() || type.isUnknown()) {
+                return false;
+            }
             else {
                 if (isTuple() && type.isTuple()) {
                     return isSubtypeOfTuple(type);
@@ -589,18 +598,16 @@ public class Type extends Reference {
                             supertype.trueQualifyingType();
                     Type tqt =
                             type.trueQualifyingType();
-                    if (stqt==null) {
-                        if (tqt!=null) {
-                            //probably extraneous!
+                    if (stqt==null || tqt==null) {
+                        if (tqt!=stqt) {
                             return false;
                         }
                     }
+                    else if (tqt.isUnknown() || stqt.isUnknown()) {
+                        return false;
+                    }
                     else {
-                        if (tqt==null) {
-                            //probably extraneous!
-                            return false;
-                        }
-                        else if (!otherDec.isMember()) {
+                        if (!otherDec.isMember()) {
                             //local types with a qualifying typed 
                             //declaration do not need to obtain the
                             //qualifying type's supertype
