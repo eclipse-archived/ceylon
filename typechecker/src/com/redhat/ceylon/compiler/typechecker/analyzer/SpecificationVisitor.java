@@ -1079,7 +1079,7 @@ public class SpecificationVisitor extends Visitor {
             if (!declaration.isAnonymous()) {
                 if (isSharedDeclarationUninitialized()) {
                     getDeclaration(that)
-                    .addError("must be definitely specified by class initializer: " + 
+                        .addError("must be definitely specified by class initializer: " + 
                             message(declaration) + " is shared", 
                             1401);
                 }

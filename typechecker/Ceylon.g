@@ -361,6 +361,10 @@ enumeratedObject returns [Enumerated declaration]
         { $declaration.setIdentifier($memberName.identifier); }
       )?
       (
+        dc=delegatedConstructor
+        { $declaration.setDelegatedConstructor($dc.delegatedConstructor); }
+      )?
+      (
         block
         { $declaration.setBlock($block.block); }
       | { displayRecognitionError(getTokenNames(), 
@@ -885,12 +889,18 @@ constructor returns [Constructor declaration]
         parameters
         { $declaration.setParameterList($parameters.parameterList); }
       )?
-      (  
+      (
         dc=delegatedConstructor
         { $declaration.setDelegatedConstructor($dc.delegatedConstructor); }
       )?
-      block
-      { $declaration.setBlock($block.block); }
+      (
+        block
+        { $declaration.setBlock($block.block); }
+      | { displayRecognitionError(getTokenNames(), 
+              new MismatchedTokenException(LBRACE, input)); }
+        SEMICOLON
+        { $declaration.setEndToken($SEMICOLON); }
+      )
     ;
 
 delegatedConstructor returns [DelegatedConstructor delegatedConstructor]

@@ -138,6 +138,7 @@
     CLASS_BODY)
 
 ^(ENUMERATED:DECLARATION
+    DELEGATED_CONSTRUCTOR?
     BLOCK
     Value declarationModel;
     Constructor enumerated;)

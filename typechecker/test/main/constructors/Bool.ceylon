@@ -82,6 +82,62 @@ class WithAbstractSingleton {
     @error shared abstract new instance {}
 }
 
+class ExtendingObjectWithSingleton extends Object {
+    shared new instance extends Object() {}
+    equals(Object that) => true;
+    hash => 1;
+}
+
+class ExtendingObjectWithSingletonViaConstructor extends Object {
+    shared Integer count;
+    new New() extends Object() {
+        count = 0;
+    }
+    shared new instance extends New() {}
+    equals(Object that) => true;
+    hash => 1;
+}
+
+class ExtendingObjectWithConstructorViaConstructor extends Object {
+    shared Integer count;
+    new New() extends Object() {
+        count = 0;
+    }
+    shared new Instance() extends New() {}
+    equals(Object that) => true;
+    hash => 1;
+}
+
+class ExtendingObjectWithSingletonViaPartialConstructor extends Object {
+    shared Integer count;
+    abstract new New() extends Object() {}
+    shared new instance extends New() {
+        count = 0;
+    }
+    equals(Object that) => true;
+    hash => 1;
+}
+
+class ExtendingObjectWithBrokenSingletonViaPartialConstructor extends Object {
+    @error shared Integer count;
+    abstract new New() extends Object() {}
+    shared new instance extends New() {}
+    equals(Object that) => true;
+    hash => 1;
+}
+
+class ExtendingObjectWithSingletonBad1 extends Object {
+    @error shared new instance {}
+    equals(Object that) => true;
+    hash => 1;
+}
+
+@error class ExtendingObjectWithSingletonBad2 extends Object() {
+    @error shared new instance {}
+    equals(Object that) => true;
+    hash => 1;
+}
+
 class OuterClass() {
     @error class InnerBool of true|false {
         shared actual String string;

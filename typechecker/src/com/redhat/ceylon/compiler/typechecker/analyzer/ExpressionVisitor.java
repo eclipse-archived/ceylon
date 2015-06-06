@@ -8398,17 +8398,47 @@ public class ExpressionVisitor extends Visitor {
     @Override 
     public void visit(Tree.Enumerated that) {
         Constructor e = that.getEnumerated();
+        checkDelegatedConstructor(that.getDelegatedConstructor(), 
+                e, that);
+        TypeDeclaration occ = enterConstructorDelegation(e);
         Tree.Type rt = beginReturnScope(fakeVoid(that));
         Declaration od = beginReturnDeclaration(e);
         super.visit(that);
         endReturnDeclaration(od);
         endReturnScope(rt, null);
+        endConstructorDelegation(occ);
     }
     
     @Override 
     public void visit(Tree.Constructor that) {
         Constructor c = that.getDeclarationModel();
-        if (that.getDelegatedConstructor()==null) {
+        checkDelegatedConstructor(that.getDelegatedConstructor(), 
+                c, that);
+        TypeDeclaration occ = enterConstructorDelegation(c);
+        Tree.Type rt = beginReturnScope(fakeVoid(that));
+        Declaration od = beginReturnDeclaration(c);
+        super.visit(that);
+        endReturnDeclaration(od);
+        endReturnScope(rt, null);
+        endConstructorDelegation(occ);
+    }
+
+    private void endConstructorDelegation(TypeDeclaration occ) {
+        constructorClass = occ;
+    }
+
+    private TypeDeclaration enterConstructorDelegation(Constructor c) {
+        TypeDeclaration occ = constructorClass;
+        Type et = c.getExtendedType();
+        constructorClass = 
+                et==null ? null :
+                    et.getDeclaration();
+        return occ;
+    }
+
+    protected void checkDelegatedConstructor(Tree.DelegatedConstructor dc,
+            Constructor c, Node node) {
+        if (dc==null) {
             if (c.isClassMember()) {
                 Class clazz = (Class) c.getContainer();
                 Type et = clazz.getExtendedType();
@@ -8416,26 +8446,13 @@ public class ExpressionVisitor extends Visitor {
                     TypeDeclaration superclass = 
                             et.getDeclaration();
                     if (superclass!=null) {
-                        that.addError("constructor must explicitly delegate to some superclass constructor: '" +
+                        node.addError("constructor must explicitly delegate to some superclass constructor: '" +
                                 clazz.getName() + "' extends '" + 
                                 superclass.getName() + "'");
                     }
                 }
             }
         }
-        TypeDeclaration occ = constructorClass;
-        Type et = 
-                that.getDeclarationModel()
-                    .getExtendedType();
-        constructorClass = 
-                et==null ? null :
-                    et.getDeclaration();
-        Tree.Type rt = beginReturnScope(fakeVoid(that));
-        Declaration od = beginReturnDeclaration(c);
-        super.visit(that);
-        endReturnDeclaration(od);
-        endReturnScope(rt, null);
-        constructorClass = occ;
     }
     
     @Override 

@@ -316,7 +316,8 @@ public class InheritanceVisitor extends Visitor {
                         that.getInvocationExpression();
                 Class clazz = (Class) td;
                 boolean hasConstructors = 
-                        clazz.hasConstructors();
+                        clazz.hasConstructors() || 
+                        clazz.hasEnumerated();
                 boolean anonymous = clazz.isAnonymous();
                 if (ie==null) { 
                     if (!hasConstructors || anonymous) {

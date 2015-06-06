@@ -5,6 +5,7 @@ import java.util.List;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
+import com.redhat.ceylon.model.typechecker.model.Constructor;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
 import com.redhat.ceylon.model.typechecker.model.Type;
@@ -164,18 +165,33 @@ public class TypeArgumentVisitor extends Visitor {
     
     private TypeDeclaration constructorClass;
     
-    @Override public void visit(Tree.Constructor that) {
+    private void endConstructor(TypeDeclaration occ) {
+        constructorClass = occ;
+    }
+
+    private TypeDeclaration beginConstructor(Constructor c) {
         TypeDeclaration occ = constructorClass;
-        Type et = 
-                that.getDeclarationModel()
-                    .getExtendedType();
+        Type et = c.getExtendedType();
         constructorClass = 
                 et==null ? null :
                     et.getDeclaration();
-        super.visit(that);
-        constructorClass = occ;
+        return occ;
     }
     
+    @Override public void visit(Tree.Constructor that) {
+        TypeDeclaration occ = 
+                beginConstructor(that.getDeclarationModel());
+        super.visit(that);
+        endConstructor(occ);
+    }
+
+    @Override public void visit(Tree.Enumerated that) {
+        TypeDeclaration occ = 
+                beginConstructor(that.getEnumerated());
+        super.visit(that);
+        endConstructor(occ);
+    }
+
     private void check(Tree.Type that, boolean variable, 
             Declaration d) {
         if (that!=null) {
