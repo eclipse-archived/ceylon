@@ -31,6 +31,7 @@ public abstract class TypeDeclaration extends Declaration
     private boolean inconsistentType;
     private boolean dynamic;
 	private boolean sealed;
+    private List<TypedDeclaration> caseValues;
 
 	/** 
 	 * true if the type arguments of this type are not 
@@ -1040,6 +1041,14 @@ public abstract class TypeDeclaration extends Declaration
 
     public boolean isSequence() {
         return false;
+    }
+    
+    public List<TypedDeclaration> getCaseValues() {
+        return caseValues;
+    }
+
+    public void setCaseValues(List<TypedDeclaration> caseValues) {
+        this.caseValues = caseValues;
     }
 
 }
