@@ -1832,7 +1832,10 @@ public class TypeVisitor extends Visitor {
         List<Tree.BaseMemberExpression> bmes = 
                 that.getBaseMemberExpressions();
         List<Tree.StaticType> cts = that.getTypes();
-        List<Type> list = 
+        List<TypedDeclaration> caseValues = 
+                new ArrayList<TypedDeclaration>
+                    (bmes.size());
+        List<Type> caseTypes = 
                 new ArrayList<Type>
                     (bmes.size()+cts.size());
         if (td instanceof TypeParameter) {
@@ -1848,9 +1851,10 @@ public class TypeVisitor extends Visitor {
                                 name(bme.getIdentifier()), 
                                 null, false, bme.getUnit());
                 if (od!=null) {
+                    caseValues.add(od);
                     Type type = od.getType();
                     if (type!=null) {
-                        list.add(type);
+                        caseTypes.add(type);
                     }
                 }
             }
@@ -1878,11 +1882,11 @@ public class TypeVisitor extends Visitor {
                                     td.getName() + "'");
                         }
                         else if (type.isClassOrInterface()) {
-                            list.add(type);
+                            caseTypes.add(type);
                         }
                         else if (type.isTypeParameter()) {
                             if (td instanceof TypeParameter) {
-                                list.add(type);
+                                caseTypes.add(type);
                             }
                             else {
                                 TypeParameter tp = 
@@ -1893,7 +1897,7 @@ public class TypeVisitor extends Visitor {
                                 }
                                 else {
                                     tp.setSelfTypedDeclaration(td);
-                                    list.add(type);
+                                    caseTypes.add(type);
                                 }
                                 if (cts.size()>1) {
                                     ct.addError("a type may not have more than one self type");
@@ -1912,12 +1916,12 @@ public class TypeVisitor extends Visitor {
                 }
             }
         }
-        if (!list.isEmpty()) {
-            if (list.size() == 1 && 
-                    list.get(0).getDeclaration()
+        if (!caseTypes.isEmpty()) {
+            if (caseTypes.size() == 1 && 
+                    caseTypes.get(0).getDeclaration()
                         .isSelfType()) {
                 Scope scope = 
-                        list.get(0)
+                        caseTypes.get(0)
                             .getDeclaration()
                             .getContainer();
                 if (scope instanceof ClassOrInterface) {
@@ -1935,15 +1939,15 @@ public class TypeVisitor extends Visitor {
                             (ClassOrInterface) td;
                     if (!ci.isAbstract()) {
                         Class c = (Class) ci;
-                        if (!c.hasEnumerated() || 
-                             c.hasConstructors()) {
+                        if (!c.hasEnumerated()) {
                             that.addError("non-abstract class has enumerated subtypes: '" +
                                     td.getName() + "'", 905);
                         }
                     }
                 }
             }
-            td.setCaseTypes(list);
+            td.setCaseTypes(caseTypes);
+            td.setCaseValues(caseValues);
         }
     }
 

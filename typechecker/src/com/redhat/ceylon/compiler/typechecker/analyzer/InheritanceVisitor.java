@@ -37,6 +37,7 @@ import com.redhat.ceylon.model.typechecker.model.TypeParameter;
 import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.model.typechecker.model.Unit;
 import com.redhat.ceylon.model.typechecker.model.UnknownType;
+import com.redhat.ceylon.model.typechecker.model.Value;
 
 /**
  * Enforces a number of rules surrounding inheritance.
@@ -888,4 +889,40 @@ public class InheritanceVisitor extends Visitor {
             }
         }
     }
+    
+    @Override
+    public void visit(Tree.Enumerated that) {
+        super.visit(that);
+        Value v = that.getDeclarationModel();
+        Scope container = v.getContainer();
+        if (container instanceof Class) {
+            Class cl = (Class) container;
+            List<TypedDeclaration> caseValues = 
+                    cl.getCaseValues();
+            if (caseValues!=null 
+                    && !caseValues.contains(v) && 
+                    !cl.isAbstract()) {
+                that.addError("enumerated instance does not occur in of clause of non-abstract enumerated class");
+            }
+        }
+    }
+    
+    @Override
+    public void visit(Tree.Constructor that) {
+        super.visit(that);
+        Constructor c = that.getDeclarationModel();
+        Scope container = 
+                c.getContainer();
+        if (container instanceof Class) {
+            Class cl = (Class) container;
+            List<TypedDeclaration> caseValues = 
+                    cl.getCaseValues();
+            if (caseValues!=null && 
+                    !c.isAbstract() &&
+                    !cl.isAbstract()) {
+                that.addError("non-abstract enumerated class may not have partial constructor");
+            }
+        }
+    }
+
 }

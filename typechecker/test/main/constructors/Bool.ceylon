@@ -44,6 +44,27 @@ class BrokenBool of true|false {
     }
 }
 
+class IncompleteBool1 of true {
+    shared actual String string;
+    shared new true {
+        string = "true";
+    }
+    @error shared new false {
+        string = "false";
+    }
+}
+
+class IncompleteBool2 of true|false {
+    shared actual String string;
+    shared new true {
+        string = "true";
+    }
+    shared new false {
+        string = "false";
+    }
+    @error new New() { string=""; }
+}
+
 @error class UnidentifiableBool 
         of true|false extends Object {
     shared actual String string;
@@ -166,22 +187,24 @@ class OuterClass() {
     case (InnerBool.false) {}
 }
 
-@error class BoolWithNew1 of true|false {
+class BoolWithNew1 of true|false {
     shared new true {}
     shared new false {}
-    shared new New() {}
-    @error switch(bool)
-    case (BoolWithNew.true) {}
-    case (BoolWithNew.false) {}
+    @error shared new New() {}
+    BoolWithNew1 bool = true;
+    switch(bool)
+    case (BoolWithNew1.true) {}
+    case (BoolWithNew1.false) {}
 }
 
 class BoolWithNew2 {
     shared new true {}
     shared new false {}
     shared new New() {}
+    BoolWithNew2 bool = true;
     @error switch(bool)
-    case (BoolWithNew.true) {}
-    case (BoolWithNew.false) {}
+    case (BoolWithNew2.true) {}
+    case (BoolWithNew2.false) {}
 }
 
 interface InterFace {

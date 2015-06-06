@@ -1080,8 +1080,8 @@ public class SpecificationVisitor extends Visitor {
                 if (isSharedDeclarationUninitialized()) {
                     getDeclaration(that)
                         .addError("must be definitely specified by class initializer: " + 
-                            message(declaration) + " is shared", 
-                            1401);
+                                message(declaration) + " is shared", 
+                                1401);
                 }
             }
         }
