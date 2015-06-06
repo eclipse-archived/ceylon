@@ -407,8 +407,14 @@ objectExpression returns [ObjectExpression objectExpression]
         satisfiedTypes
         { $objectExpression.setSatisfiedTypes($satisfiedTypes.satisfiedTypes); } 
       )?
-      classBody
-      { $objectExpression.setClassBody($classBody.classBody); }
+      (
+        classBody
+        { $objectExpression.setClassBody($classBody.classBody); }
+        | { displayRecognitionError(getTokenNames(), 
+              new MismatchedTokenException(LBRACE, input)); }
+        SEMICOLON
+        { $objectExpression.setEndToken($SEMICOLON); }
+      )
     ;
 
 voidOrInferredMethodDeclaration returns [AnyMethod declaration]
