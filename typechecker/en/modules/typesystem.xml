@@ -2386,10 +2386,10 @@ interface NumberLiteral
             equivalent dimension expressions.</para>
             -->
             
-            <para>For a generic type <literal>X</literal>, and instantiations 
-            <literal>Y</literal> and <literal>Z</literal> of <literal>X</literal>, 
+            <para>For a generic type <literal>G</literal>, and instantiations 
+            <literal>Y</literal> and <literal>Z</literal> of <literal>G</literal>, 
             <literal>Y</literal> is a subtype of <literal>Z</literal> if and only if, 
-            for every type parameter <literal>T</literal> of <literal>X</literal>, and 
+            for every type parameter <literal>T</literal> of <literal>G</literal>, and 
             corresponding arguments <literal>A</literal> specified in <literal>Y</literal> 
             and <literal>B</literal> specified in <literal>Z</literal>:</para>
             
@@ -2398,9 +2398,8 @@ interface NumberLiteral
                     <para>
                         <literal>B</literal> is a covariant type argument, and
                         <literal>A</literal> is contravariant, and
-                        <literal>B</literal> is precisely <literal>Anything</literal>
-                        or there exists an upper bound on <literal>T</literal>
-                        which is a subtype of <literal>B</literal>, or
+                        <literal>T</literal> is a subtype of <literal>B</literal>,
+                        or
                     </para>
                 </listitem>
                 <listitem>
@@ -2837,32 +2836,32 @@ value consumer = Consumer(delegate1, delegate2);]]></programlisting>
         <section id="inheritedinstantiations">
             <title>Inherited instantiations</title>
             
-            <para>For a generic type <literal>Y</literal>, inheritance produces subtypes 
+            <para>For a generic type <literal>G</literal>, inheritance produces subtypes 
             with <emphasis>inherited instantiations</emphasis> of the generic type.</para>
             
             <itemizedlist>
             <listitem>
                 <para>If a type <literal>X</literal> directly extends or satisfies an 
-                instantiation <literal>V</literal> of <literal>Y</literal>, then 
+                instantiation <literal>V</literal> of <literal>G</literal>, then 
                 <literal>X</literal> has the inherited instantiation <literal>V</literal> 
-                of <literal>Y</literal>.</para>
+                of <literal>G</literal>.</para>
             </listitem>
             <listitem>
-                <para>If a generic type <literal>X</literal> extends or satisfies an 
-                instantiation <literal>V</literal> of <literal>Y</literal>, that may 
-                involve the type parameters of <literal>X</literal>, then for any 
-                instantiation <literal>U</literal> of <literal>X</literal>, we can 
-                construct an instantiation <literal>W</literal> of <literal>Y</literal> 
-                by, for every type parameter <literal>T</literal> of <literal>X</literal>, 
+                <para>If a generic type <literal>H</literal> extends or satisfies an 
+                instantiation <literal>V</literal> of <literal>G</literal>, that may 
+                involve the type parameters of <literal>H</literal>, then for any 
+                instantiation <literal>U</literal> of <literal>H</literal>, we can 
+                construct an instantiation <literal>W</literal> of <literal>G</literal> 
+                by, for every type parameter <literal>T</literal> of <literal>H</literal>, 
                 substituting the type argument of <literal>T</literal> given in 
                 <literal>U</literal> everywhere <literal>T</literal> occurs in 
                 <literal>V</literal>, and then <literal>U</literal> has the inherited 
-                instantiation <literal>W</literal> of <literal>Y</literal>.</para>
+                instantiation <literal>W</literal> of <literal>G</literal>.</para>
             </listitem>
             <listitem>
                 <para>If a type <literal>X</literal> is a subtype of a type 
                 <literal>Y</literal>, and <literal>Y</literal> has an inherited 
-                instantiation <literal>W</literal> of a generic type <literal>Z</literal>, 
+                instantiation <literal>W</literal> of a generic type <literal>G</literal>, 
                 then <literal>X</literal> also has this inherited instantiation.</para>
             </listitem>
             </itemizedlist>
