@@ -1749,14 +1749,11 @@ public class Unit {
     
     public Type getValueMetatype(TypedReference pr) {
         boolean variable = pr.getDeclaration().isVariable();
-        Type getType = pr.getType();
-        TypeDeclaration typeDec = 
-                getType == null ? null :
-                    getType.getDeclaration();
-        boolean constructor = typeDec instanceof Constructor;
-        if (constructor) {
-            getType = getType.getExtendedType();
-        }
+        boolean constructor = 
+                pr.getDeclaration()
+                    .getTypeDeclaration() 
+                        instanceof Constructor;
+        Type getType = denotableType(pr.getType());
         Type setType = variable ? getType : getNothingType();
         Type qualifyingType = pr.getQualifyingType();
         if (qualifyingType!=null && !constructor) {
