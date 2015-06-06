@@ -1,3 +1,9 @@
+import ceylon.language.meta.declaration {
+    ValueDeclaration
+}
+import ceylon.language.meta.model {
+    Value
+}
 class Bool of true|false {
     shared actual String string;
     shared new true {
@@ -21,15 +27,21 @@ class BoolOpen {
 Bool t = Bool.true;
 BoolOpen f = BoolOpen.false;
 
-void tryit(Bool bool, BoolOpen boolOpen) {
-    switch(bool)
+void inferredTypes() {
+    @type:"Bool" value t = Bool.true;
+    @type:"Value<Bool,Nothing>" value model = `Bool.true`;
+    @type:"ReferenceDeclaration" value valueref = `value Bool.true`;
+}
+
+void switchIt(Bool bool, BoolOpen boolOpen) {
+    switch (bool)
     case (Bool.true) {}
     case (Bool.false) {}
     
-    @error switch(bool)
+    @error switch (bool)
     case (Bool.true) {}
     
-    @error switch(boolOpen)
+    @error switch (boolOpen)
     case (BoolOpen.true) {}
     case (BoolOpen.false) {}
 }
