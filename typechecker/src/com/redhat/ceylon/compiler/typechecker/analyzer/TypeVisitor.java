@@ -1662,7 +1662,8 @@ public class TypeVisitor extends Visitor {
         inheritedType(that.getType());
         checkExtendedTypeExpression(that.getType());
         TypeDeclaration td = 
-                (TypeDeclaration) that.getScope();
+                (TypeDeclaration) 
+                    that.getScope();
         if (!td.isAlias()) {
             Tree.SimpleType et = that.getType();
             if (et!=null) {

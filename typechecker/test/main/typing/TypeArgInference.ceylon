@@ -339,3 +339,21 @@ void testBlahBlahBlah() {
     @type:"BlahBlahBlah<Object,String&Integer&Float>" 
     BlahBlahBlah(strings, ints);
 }
+
+void inferenceWithSafeMemberOp() {
+    
+    [Integer*]? ints = [1,2,3];
+    ints?.reduce(plus<Integer>);
+    // Integer(Integer, Integer) is not assignable to Nothing(Integer, Integer)
+    
+    ints?.follow("a");
+    // String is not assignable to Nothing
+    
+    {[Integer*]*} intss = {[1,2,3], [0,-1]};
+    intss*.reduce(plus<Integer>);
+    // Integer(Integer, Integer) is not assignable to Nothing(Integer, Integer)
+    
+    intss*.follow("a");
+    // String is not assignable to Nothing
+    
+}

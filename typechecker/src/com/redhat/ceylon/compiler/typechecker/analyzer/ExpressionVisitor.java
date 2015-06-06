@@ -966,12 +966,12 @@ public class ExpressionVisitor extends Visitor {
         }
     }
     
-    private void checkOptional(Type t, Tree.Term term) {
-        if (!isTypeUnknown(t) && 
-                !unit.isOptionalType(t) && 
+    private void checkOptional(Type type, Tree.Term term) {
+        if (!isTypeUnknown(type) && 
+                !unit.isOptionalType(type) && 
                 !hasUncheckedNulls(term)) {
             term.addError("expression must be of optional type: '" +
-                    t.asString(unit) + 
+                    type.asString(unit) + 
                     "' is not optional");
         }
     }
@@ -2585,13 +2585,27 @@ public class ExpressionVisitor extends Visitor {
         }
     }
     
-    private Type unwrap(Type pt, 
+    private void checkMemberOperator(Type pt, 
             Tree.QualifiedMemberOrTypeExpression mte) {
-        Type result;
         Tree.MemberOperator op = mte.getMemberOperator();
         Tree.Primary p = mte.getPrimary();
         if (op instanceof Tree.SafeMemberOp)  {
             checkOptional(pt, p);
+        }
+        else if (op instanceof Tree.SpreadOp) {
+            if (!unit.isIterableType(pt)) {
+                p.addError("expression must be of iterable type: '" +
+                        pt.asString(unit) + 
+                        "' is not a subtype of 'Iterable'");
+            }
+        }
+    }
+    
+    private Type unwrap(Type pt, 
+            Tree.QualifiedMemberOrTypeExpression mte) {
+        Type result;
+        Tree.MemberOperator op = mte.getMemberOperator();
+        if (op instanceof Tree.SafeMemberOp)  {
             result = unit.getDefiniteType(pt);
         }
         else if (op instanceof Tree.SpreadOp) {
@@ -2599,9 +2613,6 @@ public class ExpressionVisitor extends Visitor {
                 result = unit.getIteratedType(pt);
             }
             else {
-                p.addError("expression must be of iterable type: '" +
-                        pt.asString(unit) + 
-                        "' is not a subtype of 'Iterable'");
                 result = pt;
             }
         }
@@ -3286,20 +3297,13 @@ public class ExpressionVisitor extends Visitor {
                     resolveQualifiedTypeExpression(qte, true);
             if (type!=null) {
                 setArgumentParameters(that, type);
-                Tree.Primary primary = qte.getPrimary();
-                Type receivingType;
-                if (primary instanceof Tree.Package) {
-                    receivingType = null;
-                }
-                else {
-                    receivingType = 
-                            primary.getTypeModel()
-                                .resolveAliases();
-                }
+                Type receivingType = getReceivingType(qte);
                 List<Type> typeArgs = 
                         getOrInferTypeArguments(that, type, 
-                                reference, receivingType);
+                                reference, 
+                                unwrap(receivingType, qte));
                 tas.setTypeModels(typeArgs);
+                Tree.Primary primary = qte.getPrimary();
                 if (primary instanceof Tree.Package) {
                     visitBaseTypeExpression(qte, type, 
                             typeArgs, tas, null);
@@ -3341,21 +3345,13 @@ public class ExpressionVisitor extends Visitor {
                             true);
             if (member!=null) {
                 setArgumentParameters(that, member);
-                Tree.Primary primary = qme.getPrimary();
-                Type receivingType;
-                if (primary instanceof Tree.Package) {
-                    receivingType = null;
-                }
-                else {
-                    receivingType = 
-                            primary.getTypeModel()
-                                .resolveAliases();
-                }
+                Type receivingType = getReceivingType(qme);
                 List<Type> typeArgs = 
                         getOrInferTypeArguments(that, 
                                 member, reference, 
-                                receivingType);
+                                unwrap(receivingType, qme));
                 tas.setTypeModels(typeArgs);
+                Tree.Primary primary = qme.getPrimary();
                 if (primary instanceof Tree.Package) {
                     visitBaseMemberExpression(qme, 
                             member, typeArgs, tas);
@@ -3366,6 +3362,18 @@ public class ExpressionVisitor extends Visitor {
                             tas);
                 }
             }
+        }
+    }
+
+    private Type getReceivingType(
+            Tree.QualifiedMemberOrTypeExpression reference) {
+        Tree.Primary primary = reference.getPrimary();
+        if (primary instanceof Tree.Package) {
+            return null;
+        }
+        else {
+            return primary.getTypeModel()
+                    .resolveAliases();
         }
     }
     
@@ -6263,6 +6271,7 @@ public class ExpressionVisitor extends Visitor {
             TypedDeclaration member, 
             List<Type> typeArgs, 
             Tree.TypeArguments tal) {
+        checkMemberOperator(receivingType, that);
         Type receiverType =
                 accountForStaticReferenceReceiverType(that, 
                         unwrap(receivingType, that));
@@ -7027,6 +7036,7 @@ public class ExpressionVisitor extends Visitor {
             TypeDeclaration memberType, 
             List<Type> typeArgs, 
             Tree.TypeArguments tal) {
+        checkMemberOperator(receivingType, that);
         Type receiverType =
                 accountForStaticReferenceReceiverType(that, 
                         unwrap(receivingType, that));

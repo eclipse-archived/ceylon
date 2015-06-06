@@ -1136,7 +1136,7 @@ satisfiedTypes returns [SatisfiedTypes satisfiedTypes]
           i=INTERSECTION_OP
           { $satisfiedTypes.setEndToken($i); }
         | 
-          COMMA|UNION_OP
+          (COMMA|UNION_OP)
           { displayRecognitionError(getTokenNames(), 
               new MismatchedTokenException(INTERSECTION_OP, input)); }
         )
@@ -1160,7 +1160,7 @@ caseTypes returns [CaseTypes caseTypes]
           u=UNION_OP 
           { $caseTypes.setEndToken($u); }
         | 
-          COMMA|INTERSECTION_OP
+          (COMMA|INTERSECTION_OP)
           { displayRecognitionError(getTokenNames(), 
               new MismatchedTokenException(UNION_OP, input)); }
         )

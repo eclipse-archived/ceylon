@@ -2398,8 +2398,9 @@ interface NumberLiteral
                     <para>
                         <literal>B</literal> is a covariant type argument, and
                         <literal>A</literal> is contravariant, and
-                        <literal>B</literal> is a supertype of every upper bound 
-                        on <literal>T</literal>, or
+                        <literal>B</literal> is precisely <literal>Anything</literal>
+                        or there exists an upper bound on <literal>T</literal>
+                        which is a subtype of <literal>B</literal>, or
                     </para>
                 </listitem>
                 <listitem>
