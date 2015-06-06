@@ -2584,13 +2584,27 @@ public class ExpressionVisitor extends Visitor {
         }
     }
     
-    private Type unwrap(Type pt, 
+    private void checkMemberOperator(Type pt, 
             Tree.QualifiedMemberOrTypeExpression mte) {
-        Type result;
         Tree.MemberOperator op = mte.getMemberOperator();
         Tree.Primary p = mte.getPrimary();
         if (op instanceof Tree.SafeMemberOp)  {
             checkOptional(pt, p);
+        }
+        else if (op instanceof Tree.SpreadOp) {
+            if (!unit.isIterableType(pt)) {
+                p.addError("expression must be of iterable type: '" +
+                        pt.asString(unit) + 
+                        "' is not a subtype of 'Iterable'");
+            }
+        }
+    }
+    
+    private Type unwrap(Type pt, 
+            Tree.QualifiedMemberOrTypeExpression mte) {
+        Type result;
+        Tree.MemberOperator op = mte.getMemberOperator();
+        if (op instanceof Tree.SafeMemberOp)  {
             result = unit.getDefiniteType(pt);
         }
         else if (op instanceof Tree.SpreadOp) {
@@ -2598,9 +2612,6 @@ public class ExpressionVisitor extends Visitor {
                 result = unit.getIteratedType(pt);
             }
             else {
-                p.addError("expression must be of iterable type: '" +
-                        pt.asString(unit) + 
-                        "' is not a subtype of 'Iterable'");
                 result = pt;
             }
         }
@@ -6262,6 +6273,7 @@ public class ExpressionVisitor extends Visitor {
             TypedDeclaration member, 
             List<Type> typeArgs, 
             Tree.TypeArguments tal) {
+        checkMemberOperator(receivingType, that);
         Type receiverType =
                 accountForStaticReferenceReceiverType(that, 
                         unwrap(receivingType, that));
@@ -7020,6 +7032,7 @@ public class ExpressionVisitor extends Visitor {
             TypeDeclaration memberType, 
             List<Type> typeArgs, 
             Tree.TypeArguments tal) {
+        checkMemberOperator(receivingType, that);
         Type receiverType =
                 accountForStaticReferenceReceiverType(that, 
                         unwrap(receivingType, that));
