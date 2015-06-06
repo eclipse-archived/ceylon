@@ -965,12 +965,12 @@ public class ExpressionVisitor extends Visitor {
         }
     }
     
-    private void checkOptional(Type t, Tree.Term term) {
-        if (!isTypeUnknown(t) && 
-                !unit.isOptionalType(t) && 
+    private void checkOptional(Type type, Tree.Term term) {
+        if (!isTypeUnknown(type) && 
+                !unit.isOptionalType(type) && 
                 !hasUncheckedNulls(term)) {
             term.addError("expression must be of optional type: '" +
-                    t.asString(unit) + 
+                    type.asString(unit) + 
                     "' is not optional");
         }
     }
@@ -3296,20 +3296,13 @@ public class ExpressionVisitor extends Visitor {
                     resolveQualifiedTypeExpression(qte, true);
             if (type!=null) {
                 setArgumentParameters(that, type);
-                Tree.Primary primary = qte.getPrimary();
-                Type receivingType;
-                if (primary instanceof Tree.Package) {
-                    receivingType = null;
-                }
-                else {
-                    receivingType = 
-                            primary.getTypeModel()
-                                .resolveAliases();
-                }
+                Type receivingType = getReceivingType(qte);
                 List<Type> typeArgs = 
                         getOrInferTypeArguments(that, type, 
-                                reference, receivingType);
+                                reference, 
+                                unwrap(receivingType, qte));
                 tas.setTypeModels(typeArgs);
+                Tree.Primary primary = qte.getPrimary();
                 if (primary instanceof Tree.Package) {
                     visitBaseTypeExpression(qte, type, 
                             typeArgs, tas, null);
@@ -3351,21 +3344,13 @@ public class ExpressionVisitor extends Visitor {
                             true);
             if (member!=null) {
                 setArgumentParameters(that, member);
-                Tree.Primary primary = qme.getPrimary();
-                Type receivingType;
-                if (primary instanceof Tree.Package) {
-                    receivingType = null;
-                }
-                else {
-                    receivingType = 
-                            primary.getTypeModel()
-                                .resolveAliases();
-                }
+                Type receivingType = getReceivingType(qme);
                 List<Type> typeArgs = 
                         getOrInferTypeArguments(that, 
                                 member, reference, 
-                                receivingType);
+                                unwrap(receivingType, qme));
                 tas.setTypeModels(typeArgs);
+                Tree.Primary primary = qme.getPrimary();
                 if (primary instanceof Tree.Package) {
                     visitBaseMemberExpression(qme, 
                             member, typeArgs, tas);
@@ -3376,6 +3361,18 @@ public class ExpressionVisitor extends Visitor {
                             tas);
                 }
             }
+        }
+    }
+
+    private Type getReceivingType(
+            Tree.QualifiedMemberOrTypeExpression reference) {
+        Tree.Primary primary = reference.getPrimary();
+        if (primary instanceof Tree.Package) {
+            return null;
+        }
+        else {
+            return primary.getTypeModel()
+                    .resolveAliases();
         }
     }
     
