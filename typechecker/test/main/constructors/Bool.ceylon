@@ -44,6 +44,19 @@ class BrokenBool of true|false {
     }
 }
 
+@error class UnidentifiableBool 
+        of true|false extends Object {
+    shared actual String string;
+    shared new true extends Object() {
+        string = "true";
+    }
+    shared new false extends Object() {
+        string = "false";
+    }
+    equals(Object that) => 1==1;
+    hash => 1;
+}
+
 
 class PrivateBool of true|false {
     shared actual String string;

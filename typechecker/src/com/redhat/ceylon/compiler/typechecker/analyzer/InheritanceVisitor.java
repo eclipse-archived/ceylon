@@ -308,7 +308,8 @@ public class InheritanceVisitor extends Visitor {
         super.visit(that);
         
         TypeDeclaration td = 
-                (TypeDeclaration) that.getScope();
+                (TypeDeclaration) 
+                    that.getScope();
         if (!td.isAlias()) {
             Tree.SimpleType et = that.getType();
             if (et!=null) {
@@ -507,6 +508,7 @@ public class InheritanceVisitor extends Visitor {
                     TypeDeclaration caseDec = 
                             type.getDeclaration();
                     if (caseDec instanceof Constructor) {
+                        //enumerated singleton constructors
                         if (!caseDec.isAnonymous()) {
                             bme.addError("case must be an enumerated instance of a toplevel class: '" + 
                                     value.getName(unit) + 
@@ -515,15 +517,22 @@ public class InheritanceVisitor extends Visitor {
                         else {
                             Scope scope = caseDec.getContainer();
                             if (scope instanceof Class) {
-                                if (!((Class) scope).isToplevel()) {
+                                Class c = (Class) scope;
+                                if (!c.isToplevel()) {
                                     bme.addError("case must be an enumerated instance of a toplevel class: '" + 
-                                            value.getName(unit) + 
+                                            c.getName(unit) + 
                                             "' is not toplevel");
+                                }
+                                else if (!c.inherits(unit.getIdentifiableDeclaration())) {
+                                    bme.addError("case must be an enumerated instance of an identifiable class: '" + 
+                                            c.getName(unit) + 
+                                            "' is not a subtype of 'Identifiable'");
                                 }
                             }
                         }
                     }
                     else {
+                        //enumerated anonymous subclasses
                         if (!caseDec.isAnonymous()) {
                             bme.addError("case must be a toplevel anonymous class: '" + 
                                     value.getName(unit) + 
