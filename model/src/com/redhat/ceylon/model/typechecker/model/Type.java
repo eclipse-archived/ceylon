@@ -160,7 +160,10 @@ public class Type extends Reference {
         checkDepth();
         incDepth();
         try {
-            if (isNothing()) {
+            if (isUnknown() || type.isUnknown()) {
+                return this==type;
+            }
+            else if (isNothing()) {
                 return type.isNothing();
             }
             else if (type.isNothing()) {
@@ -301,9 +304,6 @@ public class Type extends Reference {
             }
             else if (isTypeConstructor() ||
                     type.isTypeConstructor()) {
-                return false;
-            }
-            else if (isUnknown() || type.isUnknown()) {
                 return false;
             }
             else {
@@ -502,11 +502,14 @@ public class Type extends Reference {
             if (isNothing()) {
                 return true;
             }
-            else if (type.isNothing()) {
-                return false;
-            }
             else if (type.isAnything()) {
                 return true;
+            }
+            else if (isUnknown() || type.isUnknown()) {
+                return this==type;
+            }
+            else if (type.isNothing()) {
+                return false;
             }
             else if (isAnything()) {
                 return false;
@@ -578,9 +581,6 @@ public class Type extends Reference {
             }
             else if (isInterface() && type.isClass()) {
                 return type.isObject();
-            }
-            else if (isUnknown() || type.isUnknown()) {
-                return false;
             }
             else {
                 if (isTuple() && type.isTuple()) {
@@ -1487,8 +1487,7 @@ public class Type extends Reference {
             if (isWellDefined()) {
                 //now let's call the two most difficult methods
                 //in the whole code base:
-                Type result = 
-                        getPrincipalInstantiation(c);
+                Type result = getPrincipalInstantiation(c);
                 result = getPrincipalInstantiationFromCases(c, result);
                 if (result==null || result.isNothing()) {
                     return null;
