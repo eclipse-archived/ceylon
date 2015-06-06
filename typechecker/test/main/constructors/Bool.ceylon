@@ -78,6 +78,10 @@ class BrokenFlow {
     shared new instance {}
 }
 
+class WithAbstractSingleton {
+    @error shared abstract new instance {}
+}
+
 class OuterClass() {
     @error class InnerBool of true|false {
         shared actual String string;
