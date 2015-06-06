@@ -85,7 +85,7 @@ public class UnknownType extends TypeDeclaration {
         this.errorReporter = errorReporter;
     }
     
-    public ErrorReporter getErrorReporter(){
+    public ErrorReporter getErrorReporter() {
         return errorReporter;
     }
 
