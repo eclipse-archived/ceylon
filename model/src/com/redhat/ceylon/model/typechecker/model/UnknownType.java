@@ -17,15 +17,15 @@ public class UnknownType extends TypeDeclaration {
     public static class ErrorReporter {
         private String message;
         
-        public ErrorReporter(String message){
+        public ErrorReporter(String message) {
             this.message = message;
         }
         
-        public String getMessage(){
+        public String getMessage() {
             return message;
         }
         
-        public void reportError(){}
+        public void reportError() {}
     }
     
     @Override
@@ -90,7 +90,7 @@ public class UnknownType extends TypeDeclaration {
     }
 
     public void reportErrors() {
-        if(errorReporter != null){
+        if (errorReporter != null) {
             errorReporter.reportError();
         }
     }
