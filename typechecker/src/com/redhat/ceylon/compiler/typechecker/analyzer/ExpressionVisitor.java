@@ -5672,7 +5672,11 @@ public class ExpressionVisitor extends Visitor {
     
     @Override public void visit(Tree.LetExpression that) {
         super.visit(that);
-        Tree.Expression e = that.getLetClause().getExpression();
+        Tree.LetClause lc = that.getLetClause();
+        if (lc.getVariables().isEmpty()) {
+            lc.addError("let clause must declare at least one variable or pattern");
+        }
+        Tree.Expression e = lc.getExpression();
         if (e!=null) {
             that.setTypeModel(e.getTypeModel());
         }
