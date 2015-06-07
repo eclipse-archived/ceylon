@@ -252,8 +252,12 @@
                 one parameter list, or a list of constructor schemas.</para>
             </listitem>
             <listitem>
-                <para>A <emphasis>constructor schema</emphasis> is a name (an initial 
-                uppercase identifier) with exactly one parameter list.</para>
+                <para>A <emphasis>callable constructor schema</emphasis> is a name (an 
+                initial uppercase identifier) with exactly one parameter list.</para>
+            </listitem>
+            <listitem>
+                <para>A <emphasis>value constructor schema</emphasis> is a name (an 
+                initial lowercase identifier).</para>
             </listitem>
             <listitem>
                 <para>A <emphasis>parameter list</emphasis> is a list of names (initial 
@@ -1113,15 +1117,17 @@ alias Y => List<X>;  //error: circular type alias definition]]></programlisting>
             <para>A class may extend another class, in which case the first class is a 
             subtype of the second class and inherits its members. A class which extends 
             another class may have a constructor, as defined in <xref linkend="constructors"/>, 
-            which delegates to a constructor of the second class. Extension and constructor 
-            delegation is specified using the <literal>extends</literal> clause.</para>
+            which delegates to a callable constructor of the second class. Extension and 
+            constructor delegation is specified using the <literal>extends</literal> 
+            clause.</para>
             
             <para>The <literal>extends</literal> clause must specify exactly one class.</para>
             
             <para>An <literal>extends</literal> clause has a reference to a superclass or
             superclass constructor, followed by an optional positional argument list, as
             defined in <xref linkend="positionalarguments"/>. The <literal>extends</literal> 
-            clause may not refer to a partial constructor of the superclass.</para>
+            clause may not refer to a partial constructor of the superclass, nor to a value
+            constructor of the superclass.</para>
             
             <synopsis>ExtendedType: "extends" (Extension | SuperclassExtension) PositionalArguments?</synopsis>
             
@@ -1139,7 +1145,7 @@ alias Y => List<X>;  //error: circular type alias definition]]></programlisting>
                     <literal>super</literal> is treated according to <xref linkend="super"/>.</para>
                 </listitem>
                 <listitem>
-                    <para>Ff a qualifying type occurs, the specification is treated as a 
+                    <para>If a qualifying type occurs, the specification is treated as a 
                     constructor expression, as defined by 
                     <xref linkend="constructorexpressions"/>.</para>
                 </listitem>
@@ -1852,9 +1858,9 @@ interface NumberLiteral
                     position.</para>
                 </listitem>
                 <listitem>
-                    <para>Any constructor parameter type of the class is an invariant 
-                    position of the immediately containing type, but a contravariant 
-                    position of any outer containing type.</para>
+                    <para>Any callable constructor parameter type of the class is an 
+                    invariant position of the class itself, but a contravariant position of 
+                    any outer containing type.</para>
                 </listitem>
                 <listitem>
                     <para>Any upper bound of a type parameter of the class is a contravariant 
@@ -2202,7 +2208,8 @@ interface NumberLiteral
                     <para>function or method parameter types,</para>
                 </listitem>
                 <listitem>
-                    <para>class initializer and constructor parameter types, and</para>
+                    <para>class initializer and callable constructor parameter types, 
+                    and</para>
                 </listitem>
                 <listitem>
                     <para>type arguments of extended classes and satisfied interfaces.</para>
@@ -2459,9 +2466,9 @@ interface NumberLiteral
                     class.</para>
                 </listitem>
                 <listitem>
-                    <para>In the case of a direct invocation of a constructor, type 
-                    arguments are inferred for the type parameters of the class to which
-                    the constructor belongs.</para>
+                    <para>In the case of a direct invocation of a callable constructor, 
+                    type arguments are inferred for the type parameters of the class to 
+                    which the constructor belongs.</para>
                 </listitem>
             </itemizedlist>
             

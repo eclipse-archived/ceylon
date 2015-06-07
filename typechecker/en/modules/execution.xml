@@ -1016,8 +1016,8 @@ String result = middleObject.string;</programlisting>
             
             <para>Evaluation of an invocation expression, as defined in 
             <xref linkend="invocationexpressions"/>, results in <emphasis>invocation</emphasis>
-            of a function or constructor, or <emphasis>instantiation</emphasis> of a class. 
-            Every invocation has a callable expression:</para>
+            of a function or callable constructor, or <emphasis>instantiation</emphasis> of a 
+            class. Every invocation has a callable expression:</para>
             
             <itemizedlist>
                 <listitem>

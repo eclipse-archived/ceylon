@@ -413,7 +413,7 @@ TypeConstraints?
     <section id="parameters">
         <title>Parameters</title>
         
-        <para>A function, class, or constructor declaration may declare 
+        <para>A function, class, or callable constructor declaration may declare 
         <emphasis>parameters</emphasis>. A parameter is a value or function belonging to the 
         declaration it parameterizes. Parameters are distinguished from other values or 
         functions because they occur in a <emphasis>parameter list</emphasis>. A value or 
@@ -421,12 +421,13 @@ TypeConstraints?
         
         <itemizedlist>
             <listitem>
-                <para>declared inline in a parameter list of the function, class, or constructor, 
-                or</para>
+                <para>declared inline in a parameter list of the function, class, or 
+                constructor, or</para>
             </listitem>
             <listitem>
-                <para>declared normally, within the body of the class, function, or constructor,
-                but named in a parameter list of the class or function.</para>
+                <para>declared normally, within the body of the class, function, or 
+                constructor, but named in a parameter list of the class, function, or 
+                constructor.</para>
             </listitem>
         </itemizedlist>
         
@@ -448,9 +449,9 @@ TypeConstraints?
         
         <para>A parameter declaration may only occur in a parameter list, or directly, as
         defined by <xref linkend="blockstructure"/>, in the body of a class, function, or
-        constructor. A parameter declaration may not occur directly in the body of a getter 
-        or in a body of a control structure. Nor may a parameter declaration appear as a 
-        toplevel declaration in a compilation unit.</para>
+        callable constructor. A parameter declaration may not occur directly in the body of a 
+        getter, setter, or value constructor, nor in the body of a control structure. Nor may a 
+        parameter declaration appear as a toplevel declaration in a compilation unit.</para>
         
         <synopsis>ParameterDeclaration: (ValueParameter | CallableParameter | VariadicParameter) ";"</synopsis>
         
@@ -1099,7 +1100,7 @@ TypeConstraints?
 }</programlisting>
         
         <para>If a class does not specify an initializer parameter list, it must have
-        at least one constructor.</para>
+        at least one constructor, as defined below in <xref linkend="constructors"/>.</para>
         
         <section id="callabletypeofclass">
             <title>Callable type of a class</title>
@@ -1430,9 +1431,10 @@ TypeConstraints?
             -->
             
             <para>A subclass with an initializer parameter list must pass arguments to 
-            each superclass initialization parameter or constructor parameter in the 
-            <literal>extends</literal> clause. A subclass with no initializer parameter 
-            list may not pass arguments in the <literal>extends</literal> clause.</para>
+            each superclass initialization parameter or callable constructor parameter 
+            in the <literal>extends</literal> clause. A subclass with no initializer 
+            parameter list may not pass arguments in the <literal>extends</literal> 
+            clause.</para>
             
             <programlisting>shared class SpecialKey1()
         extends Key( SpecialLock() ) {
@@ -1786,16 +1788,16 @@ shared class Branch<Element>(String name, Node<Element> left, Node<Element> righ
             <title>Class aliases</title>
             
             <para>A <emphasis>class alias</emphasis> is a class declaration which specifies 
-            a reference to a class or constructor of a class, followed by a positional 
-            argument list, as defined in <xref linkend="positionalarguments"/>.</para>
+            a reference to a class or callable constructor of a class, followed by a 
+            positional argument list, as defined in <xref linkend="positionalarguments"/>.</para>
             
             <synopsis>ClassSpecifier: "=>" (Extension | SuperclassExtension) PositionalArguments</synopsis>
             
-            <para>The specification of the class or class constructor is treated as a value 
-            expression, as in <xref linkend="extendedclass"/>. The type of this value 
-            expression must be a <emphasis>class type</emphasis>, that is, a reference
-            to a class with no type parameters or an instantiation of a generic class, and 
-            is called the <emphasis>aliased type</emphasis>.</para>
+            <para>The specification of the class or callable constructor is treated as a 
+            value expression, as in <xref linkend="extendedclass"/>. The type of this value 
+            expression must be a <emphasis>class type</emphasis>, that is, a reference to a 
+            class with no type parameters or an instantiation of a generic class, and is 
+            called the <emphasis>aliased type</emphasis>.</para>
             
             <para>A class alias simply assigns an alternative name to the aliased type. A 
             reference to the alias may occur anywhere a reference to a class may occur.</para>

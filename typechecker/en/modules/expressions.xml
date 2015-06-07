@@ -577,7 +577,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             expression that references a class with constructors, followed by an
             identifier, with an optional list of type arguments.</para>
             
-            <synopsis>ConstructorExpression: (BaseExpression | MemberExpression) "." TypeName TypeArguments?</synopsis>
+            <synopsis>ConstructorExpression: (BaseExpression | MemberExpression) "." (MemberName | TypeName) TypeArguments?</synopsis>
             
             <para>A constructor expression is a reference to a constructor of a 
             class.</para>
@@ -592,8 +592,8 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             of the qualified realization.</para>
             
             <para>If the constructor expression is qualified by a member expression,
-            the member expression produces the instance upon which the constructor
-            is invoked. When a constructor expression is executed, the member 
+            its receiver expression produces the instance upon which the constructor
+            is invoked. When a constructor expression is executed, the receiver 
             expression is evaluated to produce the receiving instance which is held 
             until the constructor is invoked or evaluated, as defined in 
             <xref linkend="evaluationinvocationandassignment"/>.</para>
@@ -604,13 +604,14 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             <title>Value references</title>
             
             <para>A <emphasis>value reference</emphasis> is a base expression or 
-            member expression that references a value declaration.</para>
+            member expression that references a value declaration or value constructor
+            declaration.</para>
             
             <para>The type of a value reference expression is the type of the 
-            realization of the referenced value.</para>
+            realization of the referenced value or value constructor.</para>
             
-            <para>A value declaration is never generic, so a value reference never
-            has a type argument list.</para>
+            <para>A value or value constructor declaration is never generic, so a value 
+            reference never has a type argument list.</para>
             
             <para>A value reference that does not occur within any <literal>dynamic</literal>
             block may not refer to a value declaration or value parameter with no type.</para>
@@ -631,7 +632,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             
             <para>A <emphasis>callable reference</emphasis> is a base expression,
             member expression, or constructor expression that references something&mdash;a 
-            function, class, or constructor&mdash;that can be <emphasis>invoked</emphasis> 
+            function, class, or callable constructor&mdash;that can be <emphasis>invoked</emphasis> 
             or <emphasis>instantiated</emphasis> by specifying a list of arguments.</para>
             
             <para>If a callable reference refers to a class with a default constructor,
@@ -644,7 +645,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             reference is invoked.</para>
             
             <para>The type of a callable reference expression is the callable type of
-            the realization of the referenced function, class, or constructor.</para>
+            the realization of the referenced function, class, or callable constructor.</para>
             
             <para>If a callable reference expression refers to a generic declaration, 
             it must either:</para>
@@ -674,8 +675,8 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
                 </listitem>
             </itemizedlist>
             
-            <para>A callable reference may not appear as the receiver expression of
-            a member expression.</para>
+            <para>A callable reference may not occur as the receiver expression of a 
+            member expression.</para>
             
             <comment><para>Note: this restriction exists to eliminate an ambiguity in
             the interpretation of static expressions such as <literal>Person.string</literal>
@@ -727,7 +728,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             <synopsis>StaticExpression: PackageQualifier? (TypeName TypeArguments? ".")+ (MemberName | TypeName) TypeArguments?</synopsis>
             
             <para>A static expression is a reference to a member of a type: an attribute, method, 
-            or member class.</para>
+            or member class, or to a constructor of a member class of the type.</para>
             
             <para>The referenced member is determined by resolving the qualified reference as defined 
             by <xref linkend="qualifiedreferenceresolution"/>. The qualified realization for the 
@@ -765,50 +766,73 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             
             <para>If a static expression <literal>T.m</literal> for a generic type <literal>T</literal> 
             with no explicit type argument list occurs as the argument to a parameter <literal>p</literal>
-            of type <literal>Return(*Arg)</literal> in a direct or indirect invocation 
-            expression, then the type arguments of <literal>T</literal> are inferred according to the 
-            rules defined in <xref linkend="typeargumentinference"/> as if <literal>Arg</literal> 
-            were the type of a positional argument list, and <literal>[T]</literal> were the type of 
-            a parameter list, unless the invocation is a direct invocation expression, and the invoked 
-            function or class is generic, and <literal>Arg</literal> involves type parameters of the
-            invoked function or class.</para>
+            of type <literal>Return(*Arg)</literal> in a direct or indirect invocation expression, 
+            then the type arguments of <literal>T</literal> are inferred according to the rules defined 
+            in <xref linkend="typeargumentinference"/> as if <literal>Arg</literal> were the type of a 
+            positional argument list, and <literal>[T]</literal> were the type of a parameter list, 
+            unless the invocation is a direct invocation expression, and the invoked function or class 
+            is generic, and <literal>Arg</literal> involves type parameters of the invoked function or 
+            class.</para>
             
         </section>
         
         <section id="staticvaluereferences">
             <title>Static value references</title>
             
-            <para>A <emphasis>static value reference</emphasis> is a static 
-            expression that references an attribute declaration.</para>
+            <para>A <emphasis>static value reference</emphasis> is a static expression that 
+            references an attribute declaration or member class value constructor declaration.
+            </para>
             
             <programlisting>List&lt;Anything&gt;.size</programlisting>
             
-            <para>The type of a static value reference expression for an attribute 
-            whose realization is of type <literal>X</literal>, and with qualifying 
-            type <literal>T</literal>, is <literal>X(T)</literal>.</para>
+            <para>The type of a static value reference expression is:</para>
             
-            <para>A value declaration is never generic, so a static value reference 
-            never ends in a type argument list.</para>
+            <itemizedlist>
+                <listitem>
+		            <para><literal>X(T)</literal> for an attribute whose realization is of 
+		            type <literal>X</literal>, and with qualifying type <literal>T</literal>,
+		            or</para>
+                </listitem>
+                <listitem>
+		            <para><literal>T.X(T)</literal> for a member class value constructor whose 
+		            realization is of type <literal>T.X</literal>, and with qualifying type 
+		            <literal>T.X</literal>.</para>
+                </listitem>
+            </itemizedlist>
+            
+            <para>A value or value constructor declaration is never generic, so a static value 
+            reference never ends in a type argument list.</para>
             
         </section>
         
         <section id="staticcallablereferences">
             <title>Static callable references</title>
             
-            <para>A <emphasis>static callable reference</emphasis> is a static 
-            expression that references something&mdash;a method or member 
-            class&mdash;that can be <emphasis>invoked</emphasis> or 
+            <para>A <emphasis>static callable reference</emphasis> is a static expression that 
+            references something&mdash;a method or member class, or a callable constructor of
+            a member class&mdash;that can be <emphasis>invoked</emphasis> or 
             <emphasis>instantiated</emphasis>.</para>
             
             <programlisting>List&lt;String&gt;.filter</programlisting>
             <programlisting>Iterable&lt;Integer&gt;.map&lt;String&gt;</programlisting>
             
-            <para>The type of a static callable reference expression for a method
-            or member class whose realization has callable type <literal>C</literal>, 
-            and with qualifying type <literal>T</literal>, is <literal>C(T)</literal>.</para>
+            <para>The type of a static callable reference expression is:</para>
             
-            <para>If a callable reference expression refers to a generic declaration, 
-            it must end in an explicit type argument list.</para>
+            <itemizedlist>
+                <listitem>
+                    <para><literal>R(*A)(T)</literal> for a method, member class, or member class 
+                    constructor whose realization has callable type <literal>R(*A)</literal>, and 
+                    with qualifying type <literal>T</literal>, or</para>
+                </listitem>
+                <listitem>
+                    <para><literal>T.X(*A)(T)</literal> for a member class constructor whose 
+                    realization has callable type <literal>T.X(*A)</literal>, and with qualifying 
+                    type <literal>T.X</literal>.</para>
+                </listitem>
+            </itemizedlist>
+            
+            <para>If a callable reference expression refers to a generic declaration, it must 
+            end in an explicit type argument list.</para>
             
         </section>
     
@@ -849,7 +873,8 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             
             <para>Any invocation expression where the invoked expression is a callable 
             reference expression is called a <emphasis>direct invocation expression</emphasis> 
-            of the function, class, or constructor to which the callable reference refers.</para> 
+            of the function, class, or callable constructor to which the callable reference 
+            refers.</para> 
             
             <comment><para>TODO: Should we consider <literal>x{y=1;}{z=2;}</literal> a legal
             direct invocation if <literal>x</literal> has multiple parameter lists?</para></comment>
@@ -860,13 +885,14 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
                 <listitem>
                     <para>the compiler has one item of additional information about the schema 
                     of the method or class that is not reified by the <literal>Callable</literal> 
-                    interface: the names of the parameters of the function or class, and
-                    therefore named arguments may be used, and</para>
+                    interface: the names of the parameters of the function, class, or callable
+                    constructor, and therefore named arguments may be used, and</para>
                 </listitem>
                 <listitem>
                     <para>type argument inference is possible, as defined in 
                     <xref linkend="typeargumentinference"/>, since the compiler has access to 
-                    the type parameters and constraints of the function, class, or constructor.</para>
+                    the type parameters and constraints of the function or class, or of the class
+                    to which the callable constructor belongs.</para>
                 </listitem>
             </itemizedlist>
             
@@ -880,10 +906,10 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             <para>If the function has no return type, and occurs within a <literal>dynamic</literal> 
             block, then the whole direct invocation expression has no type.</para>
             
-            <para>In a direct invocation expression of a function, class, or constructor, the 
-            restriction above on the argument list type is equivalent to the following 
-            requirements. Given the parameter list of the realization of the function or class, 
-            and the arguments of the direct invocation:</para>
+            <para>In a direct invocation expression of a function, class, or callable 
+            constructor, the restriction above on the argument list type is equivalent to the 
+            following requirements. Given the parameter list of the realization of the function, 
+            class, or callable constructor, and the arguments of the direct invocation:</para>
             
             <itemizedlist>
                 <listitem>
@@ -919,8 +945,8 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             
             <para>Furthermore, if type argument are inferred, then the inferred type 
             arguments must conform, as defined by <xref linkend="typeargumentsandconstraints"/>, 
-            to the type parameter list of the realization of the function, class, or
-            constructor.</para>
+            to the type parameter list of the realization of the function or class, or
+            class to which the callable constructor belongs.</para>
             
             <para>If an argument expression has no type, or if its parameter has no type, 
             and the invocation occurs within a <literal>dynamic</literal> block, then the 
@@ -937,9 +963,9 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             <para>When no argument is assigned to a defaulted parameter by the caller, 
             the default argument defined by the parameter declaration of the realization,
             as defined by <xref linkend="typeargumentsandconstraints"/>, of the function, 
-            class, or constructor is used. The default argument expression is evaluated 
-            every time the method is invoked with no argument specified for the defaulted 
-            parameter.</para>
+            class, or callable constructor is used. The default argument expression is 
+            evaluated every time the method is invoked with no argument specified for the 
+            defaulted parameter.</para>
             
             <para>This class:</para>
             
@@ -3142,8 +3168,9 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             <listitem><para>the type itself,</para></listitem>
             <listitem><para>the callable type of the class,</para></listitem>
             <listitem><para>the callable type of the function,</para></listitem>
-            <listitem><para>the type of the value, or</para></listitem>
-            <listitem><para>the callable type of the constructor.</para></listitem>
+            <listitem><para>the type of the value,</para></listitem>
+            <listitem><para>the type of the value constructor, or</para></listitem>
+            <listitem><para>the callable type of the callable constructor.</para></listitem>
         </itemizedlist>
         
         <synopsis>Meta: TypeMeta | BaseMeta | MemberMeta | ConstructorMeta</synopsis>
@@ -3192,7 +3219,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         followed by a constructor name, with an optional list of type arguments, 
         surrounded by backticks.</para>
         
-        <synopsis>ConstructorMeta: "`" PrimaryType "." TypeName TypeArguments? "`"</synopsis>
+        <synopsis>ConstructorMeta: "`" PrimaryType "." ()MemberName | TypeName) TypeArguments? "`"</synopsis>
         
         <para>The constructor metamodel expression qualifier is a type that is an
         instantiation of a class.</para>
@@ -3228,9 +3255,14 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
                     <literal>Class&lt;R,P&gt;</literal>,</para>
                 </listitem>
                 <listitem>
-                    <para>for a constructor of a toplevel class of callable 
-                    type <literal>R(*P)</literal>, the type is 
+                    <para>for a callable constructor of a toplevel class of 
+                    callable type <literal>R(*P)</literal>, the type is 
                     <literal>Constructor&lt;R,P&gt;</literal>,</para>
+                </listitem>
+                <listitem>
+                    <para>for a value constructor of a toplevel class of 
+                    type <literal>R</literal>, the type is 
+                    <literal>Value&lt;R&gt;</literal>,</para>
                 </listitem>
                 <listitem>
                     <para>for a class nested in a block of callable type 
@@ -3265,9 +3297,15 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
                     <literal>MemberClass&lt;T,R,P&gt;</literal>, and</para>
                 </listitem>
                 <listitem>
-                    <para>for a constructor of a member class of callable 
-                    type <literal>R(*P)</literal>, the type is 
+                    <para>for a callable constructor of a member class of 
+                    callable type <literal>R(*P)</literal>, the type is 
                     <literal>MemberClassConstructor&lt;T,R,P&gt;</literal>, 
+                    and</para>
+                </listitem>
+                <listitem>
+                    <para>for a value of a member class of type 
+                    <literal>R</literal>, the type is 
+                    <literal>Attribute&lt;T,R&gt;</literal>, 
                     and</para>
                 </listitem>
                 <listitem>
@@ -3389,7 +3427,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             
             <synopsis>ConstructorKeyword: "new"</synopsis>
             
-            <synopsis>ConstructorDec: "`" ConstructorKeyword PackageQualifier? MemberDecQualifier TypeName "`"</synopsis>
+            <synopsis>ConstructorDec: "`" ConstructorKeyword PackageQualifier? MemberDecQualifier (MemberName | TypeName) "`"</synopsis>
             
             <para>A reference expression is a reference to a declaration. The 
             referenced declaration is determined according to
@@ -3471,8 +3509,12 @@ Module languageModule = `module ceylon.language`;</programlisting>
                     <literal>FunctionDeclaration</literal>,</para>
                 </listitem>
                 <listitem>
-                    <para>for a constructor, the type is 
+                    <para>for a callable constructor, the type is 
                     <literal>ConstructorDeclaration</literal>,</para>
+                </listitem>
+                <listitem>
+                    <para>for a value constructor, the type is 
+                    <literal>ValueDeclaration</literal>,</para>
                 </listitem>
                 <listitem>
                     <para>for a type parameter, the type is 
