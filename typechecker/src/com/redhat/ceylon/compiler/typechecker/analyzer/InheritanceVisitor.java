@@ -404,6 +404,7 @@ public class InheritanceVisitor extends Visitor {
             Type type = t.getTypeModel();
             if (!isTypeUnknown(type)) {
                 type = type.resolveAliases();
+                TypeDeclaration dec = type.getDeclaration();
                 if (td instanceof ClassOrInterface &&
                         !inLanguageModule(unit)) {
                     if (unit.isCallableType(type)) {
@@ -411,21 +412,21 @@ public class InheritanceVisitor extends Visitor {
                     }
                     TypeDeclaration cad = 
                             unit.getConstrainedAnnotationDeclaration();
-                    if (type.getDeclaration().equals(cad)) {
+                    if (dec.equals(cad)) {
                         t.addError("directly satisfies 'ConstrainedAnnotation'");
                     }
                 }
-                if (!set.add(type.getDeclaration())) {
+                if (!set.add(dec)) {
                     //this error is not really truly necessary
                     //but the spec says it is an error, and
                     //the backend doesn't like it
                     t.addError("duplicate satisfied type: '" + 
-                            type.getDeclaration().getName(unit) +
-                            "' of '" + td.getName() + "'");
+                            dec.getName(unit) + "' of '" + 
+                            td.getName() + "'");
                 }
                 if (td instanceof ClassOrInterface) {
                     TypeDeclaration std = 
-                            type.getDeclaration();
+                            dec;
                     if (std.isSealed() && 
                             !inSameModule(std, unit)) {
                         String moduleName = 
