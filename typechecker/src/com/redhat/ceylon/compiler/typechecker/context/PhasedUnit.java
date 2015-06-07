@@ -343,21 +343,21 @@ public class PhasedUnit {
 
     protected DeclarationVisitor createDeclarationVisitor() {
         return new DeclarationVisitor(pkg, 
-                        fileName,
-                        unitFile.getPath(), 
-                        pathRelativeToSrcDir) {
-                            @Override
-                            protected boolean shouldIgnoreOverload(Declaration overload, Declaration declaration) {
-                                return PhasedUnit.this.shouldIgnoreOverload(overload, declaration);
-                            }
-                            @Override
-                            protected TypecheckerUnit createUnit() {
-                                return PhasedUnit.this.createUnit();
-                            }
-                            @Override
-                            protected boolean isAllowedToChangeModel(Declaration declaration) {
-                                return PhasedUnit.this.isAllowedToChangeModel(declaration);
-                            }
+                fileName,
+                unitFile.getPath(), 
+                pathRelativeToSrcDir) {
+            @Override
+            protected boolean shouldIgnoreOverload(Declaration overload, Declaration declaration) {
+                return PhasedUnit.this.shouldIgnoreOverload(overload, declaration);
+            }
+            @Override
+            protected TypecheckerUnit createUnit() {
+                return PhasedUnit.this.createUnit();
+            }
+            @Override
+            protected boolean isAllowedToChangeModel(Declaration declaration) {
+                return PhasedUnit.this.isAllowedToChangeModel(declaration);
+            }
         };
     }
 
