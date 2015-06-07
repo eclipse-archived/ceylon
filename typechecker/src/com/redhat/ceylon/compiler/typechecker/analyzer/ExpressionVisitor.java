@@ -8862,11 +8862,11 @@ public class ExpressionVisitor extends Visitor {
                         result.getName(unit) + "' is a value");
             }
             else {
-                TypedReference pr = 
+                TypedReference reference = 
                         value.appliedTypedReference(outerType, 
                                 NO_TYPE_ARGS);
-                that.setTarget(pr);
-                that.setTypeModel(unit.getValueMetatype(pr));
+                that.setTarget(reference);
+                that.setTypeModel(unit.getValueMetatype(reference));
             }
         }
     }
