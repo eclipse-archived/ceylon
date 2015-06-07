@@ -224,3 +224,18 @@ interface InterFace {
         @error new instance {}
     }
 }
+
+class BoolWithDelegation of true|false {
+    shared actual String string;
+    abstract new WithName(String name) {
+        string = name;
+    }
+    shared new true extends WithName("true") {}
+    shared new false extends WithName("false") {}
+}
+
+void switchBoolWithDelegation(BoolWithDelegation bool) {
+    switch (bool)
+    case (BoolWithDelegation.true) {}
+    case (BoolWithDelegation.false) {}
+}
