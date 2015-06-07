@@ -239,3 +239,16 @@ void switchBoolWithDelegation(BoolWithDelegation bool) {
     case (BoolWithDelegation.true) {}
     case (BoolWithDelegation.false) {}
 }
+
+
+class WithNestedBool() {
+    @error class Bool of true|false {
+        shared actual String string;
+        shared new true {
+            string = "true";
+        }
+        shared new false {
+            string = "false";
+        }
+    }
+}
