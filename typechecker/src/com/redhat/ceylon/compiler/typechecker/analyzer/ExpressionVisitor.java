@@ -3261,7 +3261,6 @@ public class ExpressionVisitor extends Visitor {
                 Scope scope = that.getScope();
                 if (type.isClassOrInterfaceMember() &&
                         !type.isStaticallyImportable() &&
-//                        type instanceof Constructor && 
                         !type.isDefinedInScope(scope)) {
                     ClassOrInterface ci = 
                             (ClassOrInterface) 
@@ -3559,7 +3558,7 @@ public class ExpressionVisitor extends Visitor {
     }
     
     /**
-     * Determine if a reference is really a reference, 
+     * Determine if a reference is really a static reference, 
      * taking into account that it might be something that 
      * looks like a static reference, but really isn't, a 
      * constructor reference, or a reference to a static
@@ -3577,7 +3576,7 @@ public class ExpressionVisitor extends Visitor {
             if (declaration==null) {
                 return true;
             }
-            else if (declaration instanceof Constructor) {
+            else if (isConstructor(declaration)) {
                 return false;
             }
             else {
@@ -6391,8 +6390,7 @@ public class ExpressionVisitor extends Visitor {
             Tree.MemberOrTypeExpression primary = 
                     (Tree.MemberOrTypeExpression) 
                         that.getPrimary();
-            if (member instanceof Constructor ||
-                    type.getDeclaration() instanceof Constructor) {
+            if (isConstructor(member)) {
                 //Ceylon named constructor
                 if (primary.getStaticMethodReference()) {
                     Tree.QualifiedMemberOrTypeExpression qmte = 
@@ -6460,6 +6458,13 @@ public class ExpressionVisitor extends Visitor {
         else {
             return type;
         }
+    }
+
+    private static boolean isConstructor(Declaration member) {
+        return member instanceof Constructor ||
+                member instanceof Value && 
+                    ((Value) member).getTypeDeclaration() 
+                            instanceof Constructor;
     }
     
     private Type getStaticReferenceType(Type type, Type rt) {
