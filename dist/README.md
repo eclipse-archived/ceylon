@@ -34,35 +34,55 @@ Read more about Ceylon at <http://ceylon-lang.org>.
 
 To begin, make sure you have:
 
-- the [Java 7 JDK][] and [Ant 1.8+][] installed, with both 
-  functioning correctly,
-- [Git set up][] correctly, and
-- [GitHub SSH][] access set up correctly.
+- the [Java 7 JDK][] and [Ant 1.8+][] installed and that both are working
+correctly (if you installed Ant using your platform's package manager make
+sure it installed the `ant-junit.jar` as well, which can be found in a package
+named `ant-junit` or `ant-optional` depending on your distribution)
+- [Git set up][] correctly
+- created a new directory for the Ceylon project
+- opened a terminal and changed to the newly created directory
 
 [Java 7 JDK]: http://www.oracle.com/technetwork/java/javase/downloads/index.html
 [Ant 1.8+]: http://ant.apache.org/
 [Git set up]: https://help.github.com/articles/set-up-git
-[GitHub SSH]: https://help.github.com/articles/generating-ssh-keys
 
-For the rest of the steps we will assume you have cloned the 
-`ceylon-dist` repository and you are currently inside it reading 
-this file. If not, first:
+And now you either set things up for HTTPS access (recommended for most people):
 
-- create a new directory for the Ceylon project, and then
-- inside that directory, clone `ceylon-dist` by typing:
+- Clone ceylon-dist:
 
 <!-- lang: bash -->
-    $ git clone git@github.com:ceylon/ceylon-dist.git
+    $ git clone https://github.com/ceylon/ceylon-dist.git
+        
+(If you encounter an issue like "fatal: unable to access 'https://github.com/ceylon/ceylon-dist.git/': 
+Failed connect to github.com:443; No error", make sure you've set up your proxy as git config, ie: 
+<!-- lang: bash -->
+        $ git config --global http.proxy http://userName:password@proxyServer:port 
 
-Now you have everything you need continue with the following steps.
-
-- Go into the newly created `ceylon-dist` directory and run the 
-  setup:
+that should fix it.)
+        
+- Go into the newly created ceylon-dist directory and run the setup
 
 <!-- lang: bash -->
     $ cd ceylon-dist ; ant setup
 
-- Now, to build the complete distribution, run:
+Or you set things up for SSH access (mainly contributors with push access):
+
+- Make sure you have [GitHub SSH][] access set up correctly
+- Clone ceylon-dist:
+
+[GitHub SSH]: https://help.github.com/articles/generating-ssh-keys
+
+<!-- lang: bash -->
+    $ git clone git@github.com:ceylon/ceylon-dist.git
+
+- Go into the newly created ceylon-dist directory and run the setup
+
+<!-- lang: bash -->
+    $ cd ceylon-dist ; ant setup-admins
+
+After performing one of the two above setups continue with the following:
+
+- Build the complete distribution by running
 
 <!-- lang: bash -->
     $ ant clean publish-all
