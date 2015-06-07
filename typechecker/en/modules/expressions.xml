@@ -3414,20 +3414,22 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             <para>A <emphasis>value reference expression</emphasis> or
             <emphasis>function reference expression</emphasis> is an optional 
             member declaration qualifier, followed by the name of a function,
-            value, or anonymous class, with the keyword <literal>value</literal> 
-            or <literal>function</literal>, surrounded by backticks.</para>
+            value, value constructor, or anonymous class, with the keyword 
+            <literal>value</literal> or <literal>function</literal>, surrounded 
+            by backticks.</para>
             
             <synopsis>MemberKeyword: "value" | "function"</synopsis>
             
             <synopsis>MemberDec: "`" MemberKeyword PackageQualifier? MemberDecQualifier? MemberName "`"</synopsis>
             
             <para>A <emphasis>constructor reference expression</emphasis> is a 
-            member declaration qualifier, followed by the name of a constructor,
-            with the keyword <literal>new</literal>, surrounded by backticks.</para>
+            member declaration qualifier, followed by the name of a callable 
+            constructor, with the keyword <literal>new</literal>, surrounded by 
+            backticks.</para>
             
             <synopsis>ConstructorKeyword: "new"</synopsis>
             
-            <synopsis>ConstructorDec: "`" ConstructorKeyword PackageQualifier? MemberDecQualifier (MemberName | TypeName) "`"</synopsis>
+            <synopsis>ConstructorDec: "`" ConstructorKeyword PackageQualifier? MemberDecQualifier TypeName "`"</synopsis>
             
             <para>A reference expression is a reference to a declaration. The 
             referenced declaration is determined according to
