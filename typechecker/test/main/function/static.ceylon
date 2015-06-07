@@ -129,3 +129,24 @@ void testMissingTypeArgs() {
     @error:"does not accept type arguments" value notand = Integer<>.and;
     @error:"does not accept type arguments" value nottaand = Integer.and<>;
 }
+
+
+class OuterClass() {
+    shared class InnerClass {
+        shared String name => "Gavin";
+        shared void reset() {}
+        shared new instance {}
+        shared new New() {}
+    }
+}
+
+void testOuterInner() {
+    @type:"OuterClass.InnerClass(OuterClass)"
+    value i = OuterClass.InnerClass.instance;
+    @type:"OuterClass.InnerClass()(OuterClass)" 
+    value c = OuterClass.InnerClass.New;
+    @type:"String(OuterClass.InnerClass)" 
+    value n = OuterClass.InnerClass.name;
+    @type:"Anything()(OuterClass.InnerClass)" 
+    value r = OuterClass.InnerClass.reset;
+}
