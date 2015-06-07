@@ -85,7 +85,7 @@ After performing one of the two above setups continue with the following:
 - Build the complete distribution by running
 
 <!-- lang: bash -->
-    $ ant clean publish-all
+    $ ant clean publish
 
 After this you'll have a newly built distribution in the `dist` 
 folder of your current directory. You can run the `ceylon` command 
@@ -103,10 +103,10 @@ If at any time you want to update the distribution to the latest
 code from GitHub just run
 
 <!-- lang: bash -->
-    $ ant update-all
-    $ ant clean publish-all
+    $ ant update
+    $ ant clean publish
 
-NB: The `update-all` command assumes that your projects are "clean", 
+NB: The `update` command assumes that your projects are "clean", 
 that is you don't have uncommitted changes. If that's not the case 
 you'll have to manually update those projects or first stash your 
 changes (using `git stash`).
