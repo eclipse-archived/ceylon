@@ -17,10 +17,10 @@ class Bool of true|false {
 class BoolOpen {
     shared actual String string;
     shared new true {
-        string = "true";
+        string => "true";
     }
     shared new false {
-        string = "false";
+        string => "false";
     }
 }
 
@@ -228,7 +228,7 @@ interface InterFace {
 class BoolWithDelegation of true|false {
     shared actual String string;
     abstract new WithName(String name) {
-        string = name;
+        string => name;
     }
     shared new true extends WithName("true") {}
     shared new false extends WithName("false") {}
