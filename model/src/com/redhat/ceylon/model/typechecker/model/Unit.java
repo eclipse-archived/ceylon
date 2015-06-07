@@ -140,8 +140,8 @@ public class Unit {
     }
     
     /**
-     * Search the imports of a compilation unit
-     * for the named toplevel declaration.
+     * Search the imports of a compilation unit for the 
+     * named toplevel declaration.
      */
     public Declaration getImportedDeclaration(String name, 
             List<Type> signature, boolean ellipsis) {
@@ -161,7 +161,14 @@ public class Unit {
         }
         return null;
     }
-
+    
+    /**
+     * Does this import element import a new name directly 
+     * into the toplevel namespace of the compilation unit.
+     * 
+     * @return true if the imported name or alias is added
+     *         to the namespace of the compilation unit
+     */
     static boolean isToplevelImport(Import i, Declaration d) {
         return d.isToplevel() || 
             d.isStaticallyImportable() ||
@@ -170,8 +177,8 @@ public class Unit {
     }
     
     /**
-     * Search the imports of a compilation unit
-     * for the named member declaration.
+     * Search the imports of a compilation unit for the 
+     * named member declaration.
      */
     public Declaration getImportedDeclaration(TypeDeclaration td, 
             String name, List<Type> signature, 
