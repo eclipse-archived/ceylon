@@ -2829,18 +2829,33 @@ print(greeting);</programlisting>
         
         <synopsis>ConstructorDeclaration: Annotations ConstructorHeader Block</synopsis>
         
-        <para>All constructor declarations specify the constructor name, if any, 
-        exactly one parameter list, and, optionally, an <literal>extends</literal> 
+        <para>The are two basic kinds of constructor:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>A <emphasis>callable constructor</emphasis> declaration 
+                specifies the constructor name, if any, which must be an initial 
+                uppercase identifier, and exactly one parameter list.</para> 
+            </listitem>
+            <listitem>
+                <para>A <emphasis>value constructor</emphasis> declaration 
+                specifies just the constructor name, which must be an initial 
+                lowercase identifier.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <para>Any constructor declaration may, optionally, have an <literal>extends</literal> 
         clause.</para>
         
-        <synopsis>ConstructorHeader: "new" TypeName? Parameters ExtendedType?</synopsis>
+        <synopsis>ConstructorHeader: "new" (TypeName? Parameters | MemberName) ExtendedType?</synopsis>
         
         <para>If two constructors belong to the same class, then the constructors 
         must have distinct names. A class may have at most one constructor with no
         name.</para>
         
         <para>If a constructor has no name, then the constructor is called the 
-        <emphasis>default constructor</emphasis> of the class to which it belongs.</para>
+        <emphasis>default constructor</emphasis> of the class to which it belongs.
+        The default constructor is always a callable constructor.</para>
         
         <para>Every default constructor must be annotated <literal>shared</literal>.</para>
         
@@ -2850,6 +2865,10 @@ print(greeting);</programlisting>
         
         <para>A class with an initializer parameter list may not declare constructors.</para>
         
+        <para>A generic class may not declare value constructors.</para>
+        
+        <para>A class nested directly inside an interface may not declare value constructors.</para>
+        
         <para>A member class annotated <literal>formal</literal>, <literal>default</literal>,
         or <literal>actual</literal> may not declare constructors.</para>
         
@@ -2857,6 +2876,10 @@ print(greeting);</programlisting>
     shared Float x;
     shared Float y;
     
+    shared new origin {
+        x = 0.0;
+        y = 0.0;
+    }
     shared new Cartesian(Float x, Float y) {
         this.x = x; 
         this.y = y;
@@ -2882,12 +2905,12 @@ print(greeting);</programlisting>
         <section id="callabletypeofaconstructor">
             <title>Callable type of a constructor</title>
             
-            <para>The <emphasis>callable type</emphasis> of a constructor captures 
-            the type of the class, and parameter types of the constructor. The
-            callable type is <literal>T(*P)</literal>, where <literal>T</literal> 
-            is the applied type formed by the class with its own type parameters 
-            as type arguments, and <literal>P</literal> is the type of the parameter 
-            list of the constructor.</para>
+            <para>For a callable constructor, the <emphasis>callable type</emphasis> 
+            of the constructor captures the type of the class, and parameter types of 
+            the constructor. The callable type is <literal>T(*P)</literal>, where 
+            <literal>T</literal> is the applied type formed by the class with its own 
+            type parameters as type arguments, and <literal>P</literal> is the type of 
+            the parameter list of the constructor.</para>
             
             <para>A constructor of an <literal>abstract</literal> class is not 
             callable, except from the <literal>extends</literal> clause of a subclass, 
@@ -2897,17 +2920,22 @@ print(greeting);</programlisting>
             <literal>extends</literal> clause of another constructor of the same
             class.</para>
             
+            <para>The type of a value constructor is simply <literal>T</literal>,
+            where <literal>T</literal> is the class to which it belongs.</para>
+            
         </section>
         
         <section id="partialconstructors">
             <title>Partial constructors</title>
             
-            <para>A constructor annotated <literal>abstract</literal> is called a
-            <emphasis>partial constructor</emphasis>.</para>
+            <para>A callable constructor annotated <literal>abstract</literal> is 
+            called a <emphasis>partial constructor</emphasis>.</para>
             
             <para>A partial constructor may not be annotated <literal>shared</literal>.</para>
             
             <para>A default constructor may not be annotated <literal>abstract</literal>.</para>
+            
+            <para>A value constructor may not be annotated <literal>abstract</literal>.</para>
             
         </section>
         
@@ -2920,13 +2948,15 @@ print(greeting);</programlisting>
             
             <itemizedlist>
                 <listitem>
-                    <para>a different constructor of the same class, specifying 
-                    arguments for the parameters of the constructor, or,</para>
+                    <para>a different callable constructor of the same class, 
+                    specifying arguments for the parameters of the constructor, 
+                    or,</para>
                 </listitem>
                 <listitem>
-                    <para>a constructor of its immediate superclass, specifying
-                    arguments for the parameters of the superclass constructor, 
-                    if the superclass declares constructors, or, otherwise</para>
+                    <para>a callable constructor of its immediate superclass, 
+                    specifying arguments for the parameters of the superclass 
+                    constructor, if the superclass declares constructors, or, 
+                    otherwise</para>
                 </listitem>
                 <listitem>
                     <para>the initializer of its immediate superclass, specifying
