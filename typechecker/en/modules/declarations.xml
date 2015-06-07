@@ -422,12 +422,12 @@ TypeConstraints?
         <itemizedlist>
             <listitem>
                 <para>declared inline in a parameter list of the function, class, or 
-                constructor, or</para>
+                callable constructor, or</para>
             </listitem>
             <listitem>
                 <para>declared normally, within the body of the class, function, or 
-                constructor, but named in a parameter list of the class, function, or 
-                constructor.</para>
+                callable constructor, but named in a parameter list of the class, function, 
+                or callable constructor.</para>
             </listitem>
         </itemizedlist>
         
