@@ -1718,13 +1718,13 @@ public class Unit {
     	return t.getDeclaration().isIterable();
     }
     
-    public TypeDeclaration getLanguageModuleModelTypeDeclaration
-            (String name) {
+    public TypeDeclaration 
+    getLanguageModuleModelTypeDeclaration(String name) {
         return (TypeDeclaration) 
                 getLanguageModuleModelDeclaration(name);
     }
-    public TypeDeclaration getLanguageModuleDeclarationTypeDeclaration
-            (String name) {
+    public TypeDeclaration 
+    getLanguageModuleDeclarationTypeDeclaration(String name) {
         return (TypeDeclaration) 
                 getLanguageModuleDeclarationDeclaration(name);
     }
@@ -1754,16 +1754,28 @@ public class Unit {
         return modifiers;
     }
     
-    public Type getValueMetatype(TypedReference pr) {
-        boolean variable = pr.getDeclaration().isVariable();
-        boolean constructor = 
-                pr.getDeclaration()
-                    .getTypeDeclaration() 
-                        instanceof Constructor;
-        Type getType = denotableType(pr.getType());
-        Type setType = variable ? getType : getNothingType();
-        Type qualifyingType = pr.getQualifyingType();
-        if (qualifyingType!=null && !constructor) {
+    public Type getValueMetatype(TypedReference reference) {
+        TypedDeclaration declaration = 
+                reference.getDeclaration();
+        boolean variable = declaration.isVariable();
+        Type getType;
+        Type setType = getNothingType();
+        Type qualifyingType = reference.getQualifyingType();
+        if (declaration.getTypeDeclaration() 
+                instanceof Constructor) {
+            getType = denotableType(reference.getType());
+            if (qualifyingType!=null) {
+                qualifyingType = 
+                        qualifyingType.getQualifyingType();
+            }            
+        }
+        else {
+            getType = reference.getType();
+            if (variable) {
+                setType = getType;
+            }
+        }
+        if (qualifyingType!=null) {
             TypeDeclaration ad = 
                     getLanguageModuleModelTypeDeclaration(
                             "Attribute");
@@ -1778,23 +1790,25 @@ public class Unit {
         }
     }
     
-    public Type getFunctionMetatype(TypedReference pr) {
-        TypedDeclaration d = pr.getDeclaration();
-        Functional f = (Functional) d;
-        if (f.getParameterLists().isEmpty()) {
+    public Type getFunctionMetatype(TypedReference reference) {
+        TypedDeclaration dec = reference.getDeclaration();
+        Functional fun = (Functional) dec;
+        if (fun.getParameterLists().isEmpty()) {
             return null;
         }
-        ParameterList fpl = f.getFirstParameterList();
+        ParameterList fpl = fun.getFirstParameterList();
         List<Parameter> params = fpl.getParameters();
         Type parameterTuple = 
-                getParameterTypesAsTupleType(params, pr);
-        Type returnType = 
-                getCallableReturnType(pr.getFullType());
+                getParameterTypesAsTupleType(params, 
+                        reference);
+        Type fullType = reference.getFullType();
+        Type returnType = getCallableReturnType(fullType);
         if (returnType == null) {
             return null;
         }
         else {
-            Type qualifyingType = pr.getQualifyingType();
+            Type qualifyingType = 
+                    reference.getQualifyingType();
             if (qualifyingType!=null) {
                 TypeDeclaration md = 
                         getLanguageModuleModelTypeDeclaration(
@@ -1812,8 +1826,8 @@ public class Unit {
         }
     }
     
-    public Type getConstructorMetatype(Type pr) {
-        TypeDeclaration d = pr.getDeclaration();
+    public Type getConstructorMetatype(Type reference) {
+        TypeDeclaration d = reference.getDeclaration();
         Functional f = (Functional) d;
         if (f.getParameterLists().isEmpty()) {
             return null;
@@ -1826,23 +1840,26 @@ public class Unit {
             Class c = (Class) scope;
             if (c.isClassOrInterfaceMember() || c.isToplevel()) {
                 parameterTuple = 
-                        getParameterTypesAsTupleType(params, pr);
+                        getParameterTypesAsTupleType(params, 
+                                reference);
             }
             else {
                 parameterTuple = getNothingType();
             }
         }
+        Type fullType = reference.getFullType();
         Type returnType = 
-                denotableType(getCallableReturnType(pr.getFullType()));
+                denotableType(getCallableReturnType(fullType));
         if (returnType == null) {
             return null;
         }
         else {
-            Type qt = pr.getQualifyingType();
-            if (qt!=null && 
-                    qt.getDeclaration()
+            Type qualifyingType = 
+                    reference.getQualifyingType();
+            if (qualifyingType!=null && 
+                    qualifyingType.getDeclaration()
                         .isClassOrInterfaceMember()) {
-                Type qqt = qt.getQualifyingType();
+                Type qqt = qualifyingType.getQualifyingType();
                 TypeDeclaration mccd = 
                         getLanguageModuleModelTypeDeclaration(
                                 "MemberClassConstructor");
@@ -1859,80 +1876,76 @@ public class Unit {
         }
     }
     
-    public Type getClassMetatype(Type literalType) {
-        Class c = (Class) literalType.getDeclaration();
+    public Type getClassMetatype(Type type) {
+        Class c = (Class) type.getDeclaration();
         ParameterList parameterList = c.getParameterList();
         Type parameterTuple;
         if ((c.isClassOrInterfaceMember() || c.isToplevel()) &&
                 parameterList!=null) {
-        	parameterTuple = 
-        	        getParameterTypesAsTupleType(
-        	                parameterList.getParameters(), 
-        	                literalType);
+        	List<Parameter> params = 
+        	        parameterList.getParameters();
+            parameterTuple = 
+        	        getParameterTypesAsTupleType(params, type);
         }
         else {
         	parameterTuple = getNothingType();
         }
-        Type qualifyingType = 
-                literalType.getQualifyingType();
+        Type qualifyingType = type.getQualifyingType();
         if (qualifyingType!=null) {
             TypeDeclaration mcd = 
                     getLanguageModuleModelTypeDeclaration(
                             "MemberClass");
             return appliedType(mcd, qualifyingType, 
-                    literalType, parameterTuple);
+                    type, parameterTuple);
         }
         else {
             TypeDeclaration cd = 
                     getLanguageModuleModelTypeDeclaration(
                             "Class");
-            return appliedType(cd, literalType, 
+            return appliedType(cd, type, 
                     parameterTuple);
         }
     }
     
-    public Type getInterfaceMetatype(Type literalType) {
-        Type qualifyingType = 
-                literalType.getQualifyingType();
+    public Type getInterfaceMetatype(Type type) {
+        Type qualifyingType = type.getQualifyingType();
         if (qualifyingType!=null) {
             TypeDeclaration mid = 
                     getLanguageModuleModelTypeDeclaration(
                             "MemberInterface");
-            return appliedType(mid, qualifyingType, 
-                    literalType);
+            return appliedType(mid, qualifyingType, type);
         }
         else {
             TypeDeclaration id = 
                     getLanguageModuleModelTypeDeclaration(
                             "Interface");
-            return appliedType(id, literalType);
+            return appliedType(id, type);
         }
     }
 
-    public Type getTypeMetaType(Type literalType) {
-        if (literalType.isUnion()) {
+    public Type getTypeMetaType(Type type) {
+        if (type.isUnion()) {
             TypeDeclaration utd = 
                     getLanguageModuleModelTypeDeclaration(
                             "UnionType");
-            return appliedType(utd, literalType);
+            return appliedType(utd, type);
         }
-        else if (literalType.isIntersection()) {
+        else if (type.isIntersection()) {
             TypeDeclaration itd = 
                     getLanguageModuleModelTypeDeclaration(
                             "IntersectionType");
-            return appliedType(itd, literalType);
+            return appliedType(itd, type);
         }
         else {
             TypeDeclaration td = 
                     getLanguageModuleModelTypeDeclaration(
                             "Type");
-            return appliedType(td, literalType);
+            return appliedType(td, type);
         }
     }
     
     public Type getParameterTypesAsTupleType(
-            List<Parameter> params, 
-            Reference reference) {
+            List<Parameter> params, Reference reference) {
         List<Type> paramTypes = 
                 new ArrayList<Type>
                     (params.size());
@@ -2003,8 +2016,6 @@ public class Unit {
         return tail;
     }
     
-
-    
     public Type getType(TypeDeclaration td) {
         return td==null ?
                 getUnknownType() :
@@ -2058,7 +2069,9 @@ public class Unit {
     }
     
     public Type getValueDeclarationType(TypedDeclaration value) {
-        return !(value instanceof Value) || ((Value) value).isTransient() ? 
+        return !(value instanceof Value) || 
+                ((Value) value).isTransient() || 
+                ((Value) value).getTypeDeclaration() instanceof Constructor ? 
                 getValueDeclarationType() :
                 getType(getLanguageModuleDeclarationTypeDeclaration("ReferenceDeclaration"));
     }
