@@ -231,10 +231,12 @@ void test<T>() {
 
     class OtherLocalClass {
         shared new New() {}
+        shared new instance {}
         shared String fun() => "hello"; 
     }
     @type:"Class<OtherLocalClass,Nothing>" value otherLocalClass = `OtherLocalClass`;
     @type:"Constructor<OtherLocalClass,Nothing>" value otherLocalClassCtor = `OtherLocalClass.New`;
+    @type:"Value<OtherLocalClass,Nothing>" value otherLocalClassSingCtor = `OtherLocalClass.instance`;
     @type:"Method<OtherLocalClass,String,[]>" value otherLocalClassFun = `OtherLocalClass.fun`;
     
 }
@@ -305,10 +307,12 @@ class Foo<S>() {
 class Bar {
     shared new () {}
     shared new Baz(String string) {}
+    shared new instance {}
 }
 
 class Baz {
     shared new Baz(String string) {}
+    shared new instance {}
 }
 
 void meta() {
@@ -380,9 +384,16 @@ void meta() {
     @type:"ConstructorDeclaration" value cd9 = `new Bar`;
     //@type:"ConstructorDeclaration" value cd10a = `new Bar.Bar`;
     @type:"ConstructorDeclaration" value cd10b = `new Bar.Baz`;
+    @type:"ValueDeclaration" value cd10c = `value Bar.instance`;
+    @type:"ConstructorDeclaration" value cd10d = `new Baz.Baz`;
+    @type:"ValueDeclaration" value cd10e = `value Baz.instance`;
     @error value cd11 = `class Bar.Baz`;
     @error value cd12 = `interface Bar.Baz`;
+    @error value cd15 =  `new Bar.instance`;
     @type:"Constructor<Bar,Tuple<String,String,Empty>>" value cd13 = `Bar.Baz`;
+    @type:"Value<Bar,Nothing>" value cd17 = `Bar.instance`;
+    @type:"Constructor<Baz,Tuple<String,String,Empty>>" value cd18 = `Baz.Baz`;
+    @type:"Value<Baz,Nothing>" value cd19 = `Baz.instance`;
     @error value cd14 = `new Foo`;
 }
 
