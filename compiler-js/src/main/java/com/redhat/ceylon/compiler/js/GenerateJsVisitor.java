@@ -1036,7 +1036,10 @@ public class GenerateJsVisitor extends Visitor
     }
 
     private void addObjectToPrototype(ClassOrInterface type, final Tree.ObjectDefinition objDef) {
-        TypeGenerator.objectDefinition(objDef, this);
+        //Don't even bother with nodes that have errors
+        if (errVisitor.hasErrors(objDef))return;
+        comment(objDef);
+        Singletons.objectDefinition(objDef, this);
         Value d = objDef.getDeclarationModel();
         Class c = (Class) d.getTypeDeclaration();
         out(names.self(type), ".", names.name(c), "=", names.name(c), ";",
@@ -1050,7 +1053,8 @@ public class GenerateJsVisitor extends Visitor
         if (errVisitor.hasErrors(that))return;
         Value d = that.getDeclarationModel();
         if (!(opts.isOptimize() && d.isClassOrInterfaceMember())) {
-            TypeGenerator.objectDefinition(that, this);
+            comment(that);
+            Singletons.objectDefinition(that, this);
         } else {
             //Don't even bother with nodes that have errors
             if (errVisitor.hasErrors(that))return;
@@ -1069,7 +1073,7 @@ public class GenerateJsVisitor extends Visitor
         if (errVisitor.hasErrors(that))return;
         out("function(){");
         try {
-            TypeGenerator.defineObject(that, null, that.getSatisfiedTypes(),
+            Singletons.defineObject(that, null, that.getSatisfiedTypes(),
                     that.getExtendedType(), that.getClassBody(), null, this);
         } catch (Exception e) {
             e.printStackTrace();
