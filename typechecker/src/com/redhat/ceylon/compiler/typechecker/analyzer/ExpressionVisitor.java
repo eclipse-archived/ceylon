@@ -2523,9 +2523,6 @@ public class ExpressionVisitor extends Visitor {
     
     @Override public void visit(Tree.Return that) {
         super.visit(that);
-        if (returnDeclaration instanceof Constructor) {
-            that.addUnsupportedError("return in constructor is not yet supported");
-        }
         if (returnType==null) {
             //misplaced return statements are already handled by ControlFlowVisitor
             //missing return types declarations already handled by TypeVisitor
