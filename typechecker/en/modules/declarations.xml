@@ -941,7 +941,7 @@ TypeConstraints?
         </section>
         
         <section id="interfaceswithcases">
-            <title>Interfaces with enumerated cases</title>
+            <title>Enumerated interfaces</title>
             
             <para>An interface declaration may enumerate a list of cases of the interface.</para>
             
@@ -1744,7 +1744,7 @@ String escapedSearchString = sql.escape(searchString);</programlisting>
         </section>
         
         <section id="classeswithcases">
-            <title>Classes with enumerated cases</title>
+            <title>Enumerated classes</title>
             
             <para>A class declaration may enumerate a list of cases of the class.</para>
             
@@ -1763,19 +1763,38 @@ shared class Leaf<Element>(String name, Element element)
 shared class Branch<Element>(String name, Node<Element> left, Node<Element> right) 
         extends Node<Element>(name) { ... }]]></programlisting>
             
-            <para>The cases may be classes or toplevel anonymous classes. A case may 
-            be an <literal>abstract</literal> class. Each case must be a direct 
-            subclass of the enumerated class. A class may not be a case of itself. A 
-            class declaration may not list the same case twice.</para>
-                        
-            <para>If a class has an <literal>of</literal> clause, then every class 
-            that directly extends the class must occur as exactly one of the enumerated 
-            cases of the class.</para>
+            <programlisting>shared class Status of enabled | disabled {
+    shared new enabled {}
+    shared new disabled {}
+}</programlisting>
             
-            <para>A non-<literal>abstract</literal> class may not have an 
-            <literal>of</literal> clause.</para>
+            <para>For an <literal>abstract</literal> class, the cases may be classes
+            or toplevel anonymous classes. Each case must be a direct subclass of 
+            the enumerated class. A case may be an <literal>abstract</literal>
+            class.</para>
             
-            <comment><para>Note: in a future release of the language, we will introduce 
+            <para>If an <literal>abstract</literal> class has an <literal>of</literal> 
+            clause, then every class that directly extends the class must occur as 
+            exactly one of the enumerated cases of the class.</para>
+            
+            <para>For a non-<literal>abstract</literal> toplevel class, the cases must
+            be value constructors of the class.</para>
+            
+            <para>If a non-<literal>abstract</literal> class has an <literal>of</literal> 
+            clause, then every constructor of the class must occur as exactly one of 
+            the enumerated cases of the class, and the class must be a subtype of
+            <literal>Identifiable</literal> in <literal>ceylon.language</literal>.</para>
+            
+            <para>A non-<literal>abstract</literal> class with an initializer parameter 
+            list or a callable constructor may not specify an <literal>of</literal> 
+            clause.</para>
+            
+            <para>A non-<literal>abstract</literal>, non-toplevel class may not specify 
+            an <literal>of</literal> clause.</para>
+            
+            <para>A class declaration may not list the same case twice.</para>
+            
+            <comment><para>Note: in a future release of the language, we may introduce 
             an abbreviated syntax like:</para>
             <programlisting>shared abstract class Boolean(shared actual String string) 
         of object true ("true") | 

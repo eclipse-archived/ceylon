@@ -1121,7 +1121,8 @@ alias Y => List<X>;  //error: circular type alias definition]]></programlisting>
             constructor delegation is specified using the <literal>extends</literal> 
             clause.</para>
             
-            <para>The <literal>extends</literal> clause must specify exactly one class.</para>
+            <para>The <literal>extends</literal> clause must specify exactly one class
+            or constructor.</para>
             
             <para>An <literal>extends</literal> clause has a reference to a superclass or
             superclass constructor, followed by an optional positional argument list, as
@@ -1344,23 +1345,22 @@ alias Y => List<X>;  //error: circular type alias definition]]></programlisting>
             <literal>B</literal> covers <literal>A</literal>.</para>
             
             <para>Case enumeration allows safe use of a type in a <literal>switch</literal> 
-            statement, or as the subject of the <literal>of</literal> operator. The 
-            compiler is able to statically validate that the <literal>switch</literal> 
-            contains an exhaustive list of all cases of the type, by checking that the
-            union of cases enumerated in the <literal>switch</literal> covers the type,
-            or that the second operand of <literal>of</literal> covers the type.</para>
+            statement, or as the subject of the <literal>of</literal> operator. The compiler 
+            is able to statically validate that the <literal>switch</literal> contains an 
+            exhaustive list of all cases of the type, by checking that the union of cases 
+            enumerated in the <literal>switch</literal> covers the type, or that the second 
+            operand of <literal>of</literal> covers the type.</para>
             
             <comment>
             <para>Note: however, a type is <emphasis>not</emphasis> considered automatically 
             assignable to the union of its cases, or to its self type. Instead, the type
-            must be <emphasis>explicitly</emphasis> narrowed to the union of its cases, 
-            nor to its self type, using either the <literal>of</literal> operator or the
+            must be <emphasis>explicitly</emphasis> narrowed to the union of its cases, nor 
+            to its self type, using either the <literal>of</literal> operator or the
             <literal>switch</literal> construct. This narrowing type conversion can be
             statically checked&mdash;if <literal>X</literal> covers <literal>Y</literal>
-            then <literal>Y of X</literal> is guaranteed to succeed at runtime.
-            Unfortunately, and quite unintuitively, the compiler is not able to analyse 
-            coverage implicitly at the same time as assignability, because that results in 
-            undecidability!</para>
+            then <literal>Y of X</literal> is guaranteed to succeed at runtime. Unfortunately, 
+            and quite unintuitively, the compiler is not able to analyse coverage implicitly 
+            at the same time as assignability, because that results in undecidability!</para>
             </comment>
         
         </section>
@@ -1368,18 +1368,18 @@ alias Y => List<X>;  //error: circular type alias definition]]></programlisting>
         <section id="cases">
             <title>Cases</title>
             
-            <para>The <literal>of</literal> clause does triple duty. It's used to define
-            self types and type families, enumerated types, and enumerated type 
-            constraints. The <literal>of</literal> clause may specify multiple types, 
-            called <emphasis>cases</emphasis>.</para>
+            <para>The <literal>of</literal> clause does triple duty. It's used to define 
+            self types and type families, enumerated types, and enumerated type constraints. 
+            The <literal>of</literal> clause may specify multiple elements, called 
+            <emphasis>cases</emphasis>.</para>
             
             <synopsis>CaseTypes: "of" CaseType ("|" CaseType)*</synopsis>
             
             <synopsis>CaseType: MemberName | PrimaryType</synopsis>
             
             <para>A type occurring in the <literal>of</literal> clause may not involve
-            variance annotations <literal>in</literal> or <literal>out</literal>,
-            defined below in <xref linkend="typeargumentvariance"/>.</para>
+            variance annotations <literal>in</literal> or <literal>out</literal>, defined 
+            below in <xref linkend="typeargumentvariance"/>.</para>
                                
             <para>If an interface or <literal>abstract</literal> class with an 
             <literal>of</literal> clause has exactly one case, and it is a type parameter 
@@ -1417,7 +1417,7 @@ alias Y => List<X>;  //error: circular type alias definition]]></programlisting>
             
             <programlisting>Comparable&lt;Item&gt; comp = ... ;
 Item item = comp of Item;</programlisting>
-        
+            
             <para>Otherwise, an interface or <literal>abstract</literal> class with an 
             <literal>of</literal> clause may have multiple cases, but each case must be 
             either:</para>
@@ -1428,8 +1428,9 @@ Item item = comp of Item;</programlisting>
                     class, or</para>
                 </listitem>
                 <listitem>
-                    <para>a value reference to a toplevel anonymous class that is a 
-                    subtype of the interface or <literal>abstract</literal> class.</para>
+                    <para>a value reference to a toplevel anonymous class, as defined
+                    in <xref linkend="anonymousclasses"/>, that is a subtype of the 
+                    interface or <literal>abstract</literal> class.</para>
                 </listitem>
             </itemizedlist>
             
@@ -1438,6 +1439,13 @@ Item item = comp of Item;</programlisting>
             or <literal>abstract</literal> class must be a subtype of exactly one of 
             the enumerated subtypes. A class or interface may not be a subtype of more 
             than one case of an enumerated type.</para>
+            
+            <para>If a concrete class has an <literal>of</literal> clause, then each
+            case must be a value reference to a value constructor of the class, as 
+            defined in <xref linkend="constructors"/>, and the class must be a toplevel 
+            class. Then the concrete class is an enumerated type, and there may be no 
+            additional non-partial constructors of the class that are not listed in the 
+            <literal>of</literal> clause.</para>
             
             <programlisting>of larger | smaller | equal</programlisting>
             
@@ -1453,7 +1461,8 @@ Item item = comp of Item;</programlisting>
                     <para>two instantiations of the same type declaration, or</para>
                 </listitem>
                 <listitem>
-                    <para>two value references to a single toplevel anonymous class.</para>
+                    <para>two value references to the same toplevel anonymous class
+                    or value constructor.</para>
                 </listitem>
             </itemizedlist>
             

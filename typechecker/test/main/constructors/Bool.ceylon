@@ -44,6 +44,10 @@ void switchIt(Bool bool, BoolOpen boolOpen) {
     @error switch (boolOpen)
     case (BoolOpen.true) {}
     case (BoolOpen.false) {}
+    
+    switch (boolOpen)
+    case (BoolOpen.true) {}
+    else {}
 }
 
 class BrokenBool of true|false {

@@ -2129,14 +2129,19 @@ if (is Usable tx) { ... }</programlisting>
             <itemizedlist>
                 <listitem>
                     <para>a <emphasis>value case</emphasis>&mdash;a list of string literals, 
-                    character literals, integer literals, negated integer literals, and/or 
-                    value references to anonymous classes, or</para>
+                    character literals, integer literals, negated integer literals, value 
+                    references to value constructors, and/or value references to anonymous 
+                    classes, or</para>
                 </listitem>
                 <listitem>
                     <para>a <emphasis>type case</emphasis>&mdash;an assignability condition 
                     of form <literal>is V</literal> for some type <literal>V</literal>.</para>
                 </listitem>
             </itemizedlist>
+            
+            <para>For a value case, each value reference must be to an anonymous class that
+            is a subtype of <literal>Identifiable|Null</literal> or to a value constructor 
+            for a class that is a subtype of <literal>Identifiable</literal>.</para>
             
             <synopsis>CaseCondition: "(" (ValueCase | TypeCase) ")"</synopsis>
             <synopsis>ValueCase: CaseValue ("|" CaseValue)*</synopsis>
@@ -2156,10 +2161,11 @@ if (is Usable tx) { ... }</programlisting>
                 </listitem>
             </itemizedlist>
             
-            <!--para>The type of every case condition must be a subtype of the switched type.</para-->
-            
-            <para>For a value case, each value reference must be to an anonymous class that
-            is a subtype of <literal>Identifiable|Null</literal>.</para>
+            <comment><para>Note: to each value constructor, the compiler assigns an internal
+            type which is a subtype of the type of the class to which the constructor belongs.
+            The union of all internal value constructor types for value constructors listed 
+            in the <literal>of</literal> clause of the class declaration covers the class 
+            type.</para></comment>
             
             <para>For a case of type <literal>U</literal> of a <literal>switch</literal> with 
             switched type <literal>V</literal>, as defined below in 
@@ -2343,8 +2349,8 @@ else {
             
             <synopsis>SwitchVariableOrExpression: Expression | Variable Specifier</synopsis>
             
-            <para>The <emphasis>switched type</emphasis> is the type of the expression
-            or inline variable.</para>
+            <para>The <emphasis>switched type</emphasis> is the type of the expression or 
+            inline variable.</para>
             
             <comment><para>Note: there is an ambiguity here between assignment expressions
             and inline variable declarations. This ambiguity is resolved in favor of 
@@ -2475,8 +2481,8 @@ case (is Float) {
             <synopsis>Fail: "else" Block</synopsis>
             
             <para>Every <literal>for/else</literal> conditional construct has an 
-            <literal>for</literal> clause. The construct may optionally include
-            an <literal>else</literal> clause, as specified in 
+            <literal>for</literal> clause. The construct may optionally include an 
+            <literal>else</literal> clause, as specified in 
             <xref linkend="executionofloops"/>.</para>
             
             <para>The <literal>for</literal> iterator has an <emphasis>iterator 
