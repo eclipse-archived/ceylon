@@ -5,6 +5,7 @@ import java.util.Arrays;
 import ceylon.language.Iterator;
 import ceylon.language.Sequential;
 import ceylon.language.Annotated;
+import ceylon.language.meta.declaration.AnnotatedDeclaration;
 import ceylon.language.meta.model.Type;
 import ceylon.language.meta.model.ClassOrInterface;
 import ceylon.language.ConstrainedAnnotation;
@@ -342,7 +343,7 @@ class Predicates {
         /** Acceps the Declaration if the required annotation is present */
         @Override
         public boolean accept(Declaration memberModel) {
-            FreeNestableDeclaration member = Metamodel.getOrCreateMetamodel(memberModel);
+            AnnotatedDeclaration member = Metamodel.getOrCreateMetamodel(memberModel);
             Sequential<? extends A> annotations = Metamodel.<A>annotations(annotation, member);
             return !annotations.getEmpty();
         }
