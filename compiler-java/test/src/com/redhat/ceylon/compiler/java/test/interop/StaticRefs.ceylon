@@ -34,7 +34,8 @@ void staticRefs() {
     value memoryBean = ManagementFactory.memoryMXBean;
     MemoryMXBean? memoryBean2 = ManagementFactory.memoryMXBean;
     ManagementFactory.memoryMXBean.gc();
-    value on = ManagementFactory.getPlatformMXBean((nothing of Class<MemoryMXBean>)).objectName;
+    Class<MemoryMXBean> klass = nothing;
+    value on = ManagementFactory.getPlatformMXBean(klass).objectName;
     
     value a = JavaWithStaticMembers.attribute;
     value a2 = JavaWithStaticMembersSubClass.attribute;
