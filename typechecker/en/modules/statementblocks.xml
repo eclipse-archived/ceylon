@@ -1586,7 +1586,8 @@ else {
                 </listitem>
                 <listitem>
                     <para>The constructors of a class definitely initialize a declaration if
-                    every constructor of the class definitely initializes the declaration.</para>
+                    every non-partial constructor of the class definitely initializes the 
+                    declaration.</para>
                 </listitem>
             </itemizedlist>
             
@@ -1717,14 +1718,13 @@ else {
                     the declaration.</para>
                 </listitem>
                 <listitem>
-                    <para>A constructor of a class possibly initializes a declaration if the 
-                    body of the constructor possibly initializes the declaration, or if the 
-                    constructor delegates to a constructor which possibly initializes the 
-                    declaration.</para>
+                    <para>A constructor of a class possibly initializes a declaration if the body 
+                    of the constructor possibly initializes the declaration, or if the constructor 
+                    delegates to a constructor which possibly initializes the declaration.</para>
                 </listitem>
                 <listitem>
-                    <para>The constructors of a class possibly initialize a declaration if
-                    at least one constructor of the class definitely initializes the declaration.</para>
+                    <para>The constructors of a class possibly initialize a declaration if at least 
+                    one constructor of the class possibly initializes the declaration.</para>
                 </listitem>
             </itemizedlist>
             
