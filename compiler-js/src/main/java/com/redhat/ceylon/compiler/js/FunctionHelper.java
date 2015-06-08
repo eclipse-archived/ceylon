@@ -152,7 +152,8 @@ public class FunctionHelper {
         if (!gen.opts.isOptimize()) {
             new GenerateJsVisitor.SuperVisitor(superDecs).visit(that.getClassBody());
         }
-        TypeGenerator.callSupertypes(sts == null ? null : sts.getTypes(), xt == null? null : xt.getType(), c,
+        TypeGenerator.callSupertypes(sts == null ? null : TypeUtils.getTypes(sts.getTypes()),
+                xt == null? null : xt.getType(), c,
                 that, superDecs, xt == null ? null : xt.getInvocationExpression(),
                 xt == null ? null : c.getParameterList(), gen);
         

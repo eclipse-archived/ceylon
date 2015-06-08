@@ -9,7 +9,6 @@ import com.redhat.ceylon.compiler.js.GenerateJsVisitor.SuperVisitor;
 import com.redhat.ceylon.compiler.js.util.TypeUtils;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.StaticType;
 import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
@@ -20,7 +19,7 @@ import com.redhat.ceylon.model.typechecker.model.Value;
 
 public class Singletons {
     
-    static void defineObject(final Node that, final Value d, final Tree.SatisfiedTypes sats,
+    static void defineObject(final Node that, final Value d, final List<Type> sats,
             final Tree.ExtendedType superType, final Tree.ClassBody body, final Tree.AnnotationList annots,
             final GenerateJsVisitor gen) {
         final boolean addToPrototype = gen.opts.isOptimize() && d != null && d.isClassOrInterfaceMember();
@@ -33,8 +32,8 @@ public class Singletons {
         gen.out(GenerateJsVisitor.function, className);
         Map<TypeParameter, Type> targs=new HashMap<TypeParameter, Type>();
         if (sats != null) {
-            for (StaticType st : sats.getTypes()) {
-                Map<TypeParameter, Type> stargs = st.getTypeModel().getTypeArguments();
+            for (Type st : sats) {
+                Map<TypeParameter, Type> stargs = st.getTypeArguments();
                 if (stargs != null && !stargs.isEmpty()) {
                     targs.putAll(stargs);
                 }
@@ -65,7 +64,7 @@ public class Singletons {
             gen.out(selfName, ".$$targs$$=$$targs$$");
             gen.endLine(true);
         }
-        TypeGenerator.callSupertypes(sats == null ? null : sats.getTypes(),
+        TypeGenerator.callSupertypes(sats,
                 superType == null ? null : superType.getType(), c, that, superDecs,
                 superType == null ? null : superType.getInvocationExpression(),
                 superType == null ? null : ((Class) c.getExtendedType().getDeclaration()).getParameterList(), gen);
@@ -154,7 +153,9 @@ public class Singletons {
     }
 
     static void objectDefinition(final Tree.ObjectDefinition that, final GenerateJsVisitor gen) {
-        defineObject(that, that.getDeclarationModel(), that.getSatisfiedTypes(), that.getExtendedType(),
+        final Tree.SatisfiedTypes sts = that.getSatisfiedTypes();
+        defineObject(that, that.getDeclarationModel(),
+                sts == null ? null : TypeUtils.getTypes(sts.getTypes()), that.getExtendedType(),
                 that.getClassBody(), that.getAnnotationList(), gen);
         //Objects defined inside methods need their init sections are exec'd
         if (!that.getDeclarationModel().isToplevel() && !that.getDeclarationModel().isClassOrInterfaceMember()) {

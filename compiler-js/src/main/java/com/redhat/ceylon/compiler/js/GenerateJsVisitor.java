@@ -1073,7 +1073,8 @@ public class GenerateJsVisitor extends Visitor
         if (errVisitor.hasErrors(that))return;
         out("function(){");
         try {
-            Singletons.defineObject(that, null, that.getSatisfiedTypes(),
+            final Tree.SatisfiedTypes sts = that.getSatisfiedTypes();
+            Singletons.defineObject(that, null, sts == null ? null : TypeUtils.getTypes(sts.getTypes()),
                     that.getExtendedType(), that.getClassBody(), null, this);
         } catch (Exception e) {
             e.printStackTrace();

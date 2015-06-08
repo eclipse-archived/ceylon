@@ -9,6 +9,7 @@ import java.util.Map;
 
 import com.redhat.ceylon.compiler.js.GenerateJsVisitor.PrototypeInitCallback;
 import com.redhat.ceylon.compiler.js.GenerateJsVisitor.SuperVisitor;
+import com.redhat.ceylon.compiler.js.util.TypeComparator;
 import com.redhat.ceylon.compiler.js.util.TypeUtils;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
@@ -223,7 +224,8 @@ public class TypeGenerator {
                     ",$$targs$$,", gen.getNames().name(d), ")");
             gen.endLine(true);
         }
-        callSupertypes(sats == null ? null : sats.getTypes(), null, d, that, superDecs, null, null, gen);
+        callSupertypes(sats == null ? null : TypeUtils.getTypes(sats.getTypes()),
+                null, d, that, superDecs, null, null, gen);
         if (!d.isToplevel() && d.getContainer() instanceof Function && !((Function)d.getContainer()).getTypeParameters().isEmpty()) {
             gen.out(gen.getClAlias(), "set_type_args(", gen.getNames().self(d),
                     ",", gen.getNames().typeArgsParamName((Function)d.getContainer()), ",",
@@ -383,7 +385,8 @@ public class TypeGenerator {
             new SuperVisitor(superDecs).visit(that.getClassBody());
         }
         final Tree.ExtendedType extendedType = that.getExtendedType();
-        callSupertypes(sats == null ? null : sats.getTypes(), extendedType == null ? null : extendedType.getType(),
+        callSupertypes(sats == null ? null : TypeUtils.getTypes(sats.getTypes()),
+                extendedType == null ? null : extendedType.getType(),
                 d, that, superDecs, extendedType == null ? null : extendedType.getInvocationExpression(),
                 extendedType == null ? null : ((Class) d.getExtendedType().getDeclaration()).getParameterList(), gen);
 
@@ -504,29 +507,29 @@ public class TypeGenerator {
         copySuperMembers(typeDecl, superDecs, d, gen);
     }
 
-    static void callSupertypes(final List<Tree.StaticType> sats, final Tree.SimpleType supertype,
+    static void callSupertypes(final List<Type> sats, final Tree.SimpleType supertype,
             final ClassOrInterface d, final Node that, final List<Declaration> superDecs,
             final Tree.InvocationExpression invoke, final ParameterList plist, final GenerateJsVisitor gen) {
         if (sats != null) {
-            final ArrayList<Tree.StaticType> supers = new ArrayList<>(sats.size()+1);
+            final ArrayList<Type> supers = new ArrayList<>(sats.size()+1);
             supers.addAll(sats);
             if (supertype != null) {
-                supers.add(supertype);
+                supers.add(supertype.getTypeModel());
             }
-            Collections.sort(supers, new StaticTypeComparator());
+            Collections.sort(supers, new TypeComparator());
             HashSet<String> myTypeArgs = new HashSet<>();
             for (TypeParameter tp : d.getTypeParameters()) {
                 myTypeArgs.add(tp.getName());
             }
-            for (Tree.StaticType st: supers) {
-                if (st == supertype) {
+            for (Type st: supers) {
+                if (supertype != null && st == supertype.getTypeModel()) {
                     callSuperclass(supertype, invoke, (Class)d, plist, that, false, superDecs, gen);
                 } else {
-                    TypeDeclaration typeDecl = st.getTypeModel().getDeclaration();
+                    TypeDeclaration typeDecl = st.getDeclaration();
                     gen.qualify(that, typeDecl);
                     gen.out(gen.getNames().name((ClassOrInterface)typeDecl), "(");
                     if (typeDecl.getTypeParameters() != null && !typeDecl.getTypeParameters().isEmpty()) {
-                        TypeUtils.printTypeArguments(that, st.getTypeModel().getTypeArguments(), gen, d.isToplevel(), null);
+                        TypeUtils.printTypeArguments(that, st.getTypeArguments(), gen, d.isToplevel(), null);
                         gen.out(",");
                     }
                     gen.out(gen.getNames().self(d), ")");
