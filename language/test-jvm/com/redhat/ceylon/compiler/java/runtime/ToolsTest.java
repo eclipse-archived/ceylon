@@ -33,8 +33,8 @@ import com.redhat.ceylon.compiler.java.runtime.tools.impl.JavaRunnerImpl;
 public class ToolsTest {
     
     private static final String BuildToolsBuildDir = "build/toolsTest";
-    private static final String BuildToolsClassesDir = BuildToolsBuildDir + "/classes";
-    private static final String BuildToolsRunnerClassesDir = BuildToolsBuildDir + "/launcher-classes";
+    private static final String BuildToolsClassesDir = BuildToolsBuildDir + "/classes"; // we generate this one in initFlatRepo()
+    private static final String BuildToolsRunnerClassesDir = BuildToolsBuildDir + "/launcher-classes"; // this one is where the IDE/build puts ToolsTestRunner
     private static final String OutputRepository = BuildToolsBuildDir + "/modules";
     private static String SystemRepo = BuildToolsBuildDir + "/repo";
     private static String FlatRepoLib = BuildToolsBuildDir + "/lib";
