@@ -25,6 +25,7 @@ import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 import com.redhat.ceylon.compiler.java.metadata.Variance;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
+import com.redhat.ceylon.model.typechecker.model.Functional;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
 
 @Ceylon(major = 8)
@@ -575,14 +576,22 @@ public class AppliedClass<Type, Arguments extends Sequential<? extends Object>>
     
     @TypeParameters(@TypeParameter(value="Arguments", satisfies="ceylon.language::Sequential<ceylon.language::Anything>"))
     @TypeInfo("ceylon.language.meta.model::Constructor<Type,Arguments>|ceylon.language::Null")
-    public <Arguments extends Sequential<?extends Object>> ceylon.language.meta.model.Constructor<Type,Arguments> getConstructor(TypeDescriptor reified$Arguments,String name) {
+    public <Arguments extends Sequential<?extends Object>> ceylon.language.meta.model.Constructor<Type,Arguments> getConstructor(@Ignore TypeDescriptor $reifiedArguments, String name) {
         checkInit();
         final FreeConstructor ctor = (FreeConstructor)((FreeClass)declaration).getConstructorDeclaration(name);
         if(ctor == null)
             return null;
-        TypeDescriptor reifiedType = null;//TODO
-        TypeDescriptor reifiedArguments = null;//TODO
-        return new AppliedConstructor<Type,Arguments>(reifiedType, reifiedArguments, this, ctor.constructor.appliedType(this.producedType, Collections.<com.redhat.ceylon.model.typechecker.model.Type>emptyList()), ctor, this.instance);
+        com.redhat.ceylon.model.typechecker.model.Type constructorType = ctor.constructor.appliedType(this.producedType, Collections.<com.redhat.ceylon.model.typechecker.model.Type>emptyList());
+        // anonymous classes don't have parameter lists
+        TypeDescriptor actualReifiedArguments = Metamodel.getTypeDescriptorForArguments(declaration.declaration.getUnit(), (Functional)ctor.constructor, this.producedType);
+
+        // This is all very ugly but we're trying to make it cheaper and friendlier than just checking the full type and showing
+        // implementation types to the user, such as AppliedMemberClass
+        Metamodel.checkReifiedTypeArgument("memberApply", "Constructor<$1,$2>",
+                // this line is bullshit since it's always true, but otherwise we can't substitute the error message above :(
+                Variance.OUT, this.producedType, $reifiedType,
+                Variance.IN, Metamodel.getProducedType(actualReifiedArguments), $reifiedArguments);
+        return new AppliedConstructor<Type,Arguments>(this.$reifiedType, actualReifiedArguments, this, constructorType, ctor, this.instance);
     }
     
 }
