@@ -1,6 +1,7 @@
 package com.redhat.ceylon.model.typechecker.model;
 
 import java.util.List;
+import java.util.Objects;
 
 public class Interface extends ClassOrInterface {
 
@@ -14,26 +15,26 @@ public class Interface extends ClassOrInterface {
 
     @Override
     public boolean isEmpty() {
-        return getQualifiedNameString()
-                .equals("ceylon.language::Empty");
+        return Objects.equals(getQualifiedNameString(),
+                "ceylon.language::Empty");
     }
 
     @Override
     public boolean isSequence() {
-        return getQualifiedNameString()
-                .equals("ceylon.language::Sequence");
+        return Objects.equals(getQualifiedNameString(),
+                "ceylon.language::Sequence");
     }
 
     @Override
     public boolean isSequential() {
-        return getQualifiedNameString()
-                .equals("ceylon.language::Sequential");
+        return Objects.equals(getQualifiedNameString(),
+                "ceylon.language::Sequential");
     }
 
     @Override
     public boolean isIterable() {
-        return getQualifiedNameString()
-                .equals("ceylon.language::Iterable");
+        return Objects.equals(getQualifiedNameString(),
+                "ceylon.language::Iterable");
     }
 
     @Override
