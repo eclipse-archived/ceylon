@@ -42,8 +42,6 @@ public class JavaCompilerImpl implements Compiler {
             String message = diagnostic.getMessage(Locale.getDefault());
             long line = diagnostic.getLineNumber();
             long column = diagnostic.getColumnNumber();
-            if(column != -1)
-                column += 1; // make it 1-based, like line numbers
             JavaFileObject source = diagnostic.getSource();
             File file = null;
             if(source != null) {
