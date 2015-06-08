@@ -1,5 +1,5 @@
 @noanno
-interface Bug2082 of eBug2082, fBug2082 {
+interface Bug2082 of eBug2082 | fBug2082 {
     shared Boolean isNeat(String val) => false;
 }
 @noanno
