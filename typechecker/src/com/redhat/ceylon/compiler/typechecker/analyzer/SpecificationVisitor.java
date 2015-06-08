@@ -820,12 +820,12 @@ public class SpecificationVisitor extends Visitor {
     @Override
     public void visit(Tree.Enumerated that) {
         Value v = that.getDeclarationModel();
-        if (v==declaration) {
+        Constructor e = that.getEnumerated();
+        if (v==declaration || e==declaration) {
             declare();
             specify();
         }
         super.visit(that);
-        Constructor e = that.getEnumerated();
         if (declaration.getContainer()==e.getContainer() &&
                 that==lastConstructor && 
                 initedByEveryConstructor) {
@@ -1035,7 +1035,8 @@ public class SpecificationVisitor extends Visitor {
     
     @Override
     public void visit(Tree.ObjectDefinition that) {
-        if (that.getDeclarationModel()==declaration) {
+        if (that.getDeclarationModel()==declaration ||
+            that.getAnonymousClass()==declaration) {
             declare();
             specify();
         }
@@ -1057,6 +1058,18 @@ public class SpecificationVisitor extends Visitor {
                 Tree.Declaration d = (Tree.Declaration) s;
                 if (d.getDeclarationModel()==declaration) {
                     return d;
+                }
+            }
+            if (s instanceof Tree.ObjectDefinition) {
+                Tree.ObjectDefinition o = (Tree.ObjectDefinition) s;
+                if (o.getAnonymousClass()==declaration) {
+                    return o;
+                }
+            }
+            if (s instanceof Tree.Enumerated) {
+                Tree.Enumerated e = (Tree.Enumerated) s;
+                if (e.getEnumerated()==declaration) {
+                    return e;
                 }
             }
         }

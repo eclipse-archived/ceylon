@@ -3574,7 +3574,7 @@ public class ExpressionVisitor extends Visitor {
                 return true;
             }
             else if (isConstructor(declaration) || 
-                    isAnonymousClassMember(declaration)) {
+                    isObjectClassMember(declaration)) {
                 return false;
             }
             else {
@@ -6389,7 +6389,7 @@ public class ExpressionVisitor extends Visitor {
                     (Tree.MemberOrTypeExpression) 
                         that.getPrimary();
             if (isConstructor(member) ||
-                isAnonymousClassMember(member)) {
+                isObjectClassMember(member)) {
                 //Ceylon named constructor
                 if (primary.getStaticMethodReference()) {
                     Tree.QualifiedMemberOrTypeExpression qmte = 
@@ -6459,9 +6459,9 @@ public class ExpressionVisitor extends Visitor {
         }
     }
 
-    private static boolean isAnonymousClassMember(Declaration member) {
+    private static boolean isObjectClassMember(Declaration member) {
         return member.isClassMember() && 
-            ((Class) member.getContainer()).isAnonymous();
+            ((Class) member.getContainer()).isObjectClass();
     }
 
     private static boolean isConstructor(Declaration member) {
@@ -6613,7 +6613,7 @@ public class ExpressionVisitor extends Visitor {
                     return false;
                 }
                 else if (c.getParameterList()==null &&
-                        !c.isAnonymous()) {
+                        !c.isObjectClass()) {
                     that.addError("class cannot be instantiated: '" +
                             type.getName(unit) + 
                             "' does not have a default constructor");
@@ -7382,15 +7382,17 @@ public class ExpressionVisitor extends Visitor {
         }
         else if (term instanceof Tree.MemberOrTypeExpression) {
             TypeDeclaration dec = type.getDeclaration();
-            boolean isToplevelInstance = 
-                    dec.isAnonymous() && dec.isToplevel();
-            boolean isToplevelClassInstance = 
+            boolean isToplevelObject = 
+                    dec instanceof Class &&
+                    ((Class) dec).isObjectClass() && 
+                    dec.isToplevel();
+            boolean isToplevelValueConstructor = 
                     dec instanceof Constructor &&
-                    dec.isAnonymous() &&
+                    ((Constructor) dec).isValueConstructor() &&
                     dec.getContainer().isToplevel();
-            if (!isToplevelInstance && 
-                !isToplevelClassInstance) {
-                e.addError("case must refer to a toplevel object declaration or literal value");
+            if (!isToplevelObject && 
+                !isToplevelValueConstructor) {
+                e.addError("case must refer to a toplevel object declaration, value constructor for a toplevel class, or literal value");
             }
             else {
                 Type ut = unionType(
@@ -7402,7 +7404,7 @@ public class ExpressionVisitor extends Visitor {
             }
         }
         else if (term!=null) {
-            e.addError("case must be a literal value or refer to a toplevel object declaration");
+            e.addError("case must be a literal value or refer to a toplevel object declaration or value constructor for a toplevel class");
         }
     }
 

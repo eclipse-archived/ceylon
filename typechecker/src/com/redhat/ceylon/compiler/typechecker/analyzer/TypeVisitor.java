@@ -1838,8 +1838,8 @@ public class TypeVisitor extends Visitor {
         List<Tree.BaseMemberExpression> bmes = 
                 that.getBaseMemberExpressions();
         List<Tree.StaticType> cts = that.getTypes();
-        List<TypedDeclaration> caseValues = 
-                new ArrayList<TypedDeclaration>
+        List<Declaration> caseValues = 
+                new ArrayList<Declaration>
                     (bmes.size());
         List<Type> caseTypes = 
                 new ArrayList<Type>
@@ -1891,18 +1891,13 @@ public class TypeVisitor extends Visitor {
                             caseTypes.add(type);
                         }
                         else if (ctd instanceof Constructor) {
-                            if (!ctd.isAnonymous()) {
+                            Constructor c = (Constructor) ctd;
+                            if (!c.isValueConstructor()) {
                                 ct.addError("case type must be a value constructor");
                             }
                             else {
                                 caseTypes.add(type);
-                                TypedDeclaration value = 
-                                        getTypedDeclaration(
-                                                td, 
-                                                ctd.getName(), 
-                                                null, false, 
-                                                unit);
-                                caseValues.add(value);
+                                caseValues.add(c);
                             }
                         }
                         else if (type.isTypeParameter()) {

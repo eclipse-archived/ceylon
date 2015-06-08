@@ -887,17 +887,19 @@ public class InheritanceVisitor extends Visitor {
     @Override
     public void visit(Tree.Enumerated that) {
         super.visit(that);
+        Constructor e = that.getEnumerated();
         Value v = that.getDeclarationModel();
-        Scope container = v.getContainer();
+        Scope container = e.getContainer();
         if (container instanceof Class) {
             Class cl = (Class) container;
-            List<TypedDeclaration> caseValues = 
+            List<Declaration> caseValues = 
                     cl.getCaseValues();
-            if (caseValues!=null 
-                    && !caseValues.contains(v) && 
+            if (caseValues!=null && 
+                    !caseValues.contains(e) && 
+                    !caseValues.contains(v) &&
                     !cl.isAbstract()) {
                 that.addError("value constructor is not an enumerated instance of non-abstract enumerated class: '" +
-                        v.getName() + 
+                        e.getName() + 
                         "' is not listed in the of clause of '" + 
                         cl.getName() + "'");
             }
@@ -908,11 +910,10 @@ public class InheritanceVisitor extends Visitor {
     public void visit(Tree.Constructor that) {
         super.visit(that);
         Constructor c = that.getDeclarationModel();
-        Scope container = 
-                c.getContainer();
+        Scope container = c.getContainer();
         if (container instanceof Class) {
             Class cl = (Class) container;
-            List<TypedDeclaration> caseValues = 
+            List<Declaration> caseValues = 
                     cl.getCaseValues();
             if (caseValues!=null && 
                     !c.isAbstract() &&

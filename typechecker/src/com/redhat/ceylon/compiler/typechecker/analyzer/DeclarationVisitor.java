@@ -826,8 +826,10 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
 
     @Override
     public void visit(Tree.Enumerated that) {
+        char initial = name(that.getIdentifier()).charAt(0);
         Constructor e = new Constructor();
-        e.setAnonymous(true);
+        e.setValueConstructor(true);
+        e.setAnonymous(Character.isLowerCase(initial));
         Type at;
         if (scope instanceof Class) {
             Class clazz = (Class) scope;
@@ -857,11 +859,12 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
             that.addError("value constructor declaration must occur directly in the body of a class");
         }
         that.setEnumerated(e);
-        visitDeclaration(that, e);
+        visitDeclaration(that, e, false);
         Value v = new Value();
+        v.setAnonymous(Character.isUpperCase(initial));
         v.setType(at);
         that.setDeclarationModel(v);
-        visitDeclaration(that, v);
+        visitDeclaration(that, v, false);
         Scope o = enterScope(e);
         super.visit(that);
         exitScope(o);
@@ -1014,14 +1017,17 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
     
     @Override
     public void visit(Tree.ObjectDefinition that) {
+        char initial = name(that.getIdentifier()).charAt(0);
         Class c = new Class();
+        c.setObjectClass(true);
+        c.setAnonymous(Character.isLowerCase(initial));
         defaultExtendedToBasic(c);
-        c.setAnonymous(true);
         that.setAnonymousClass(c);
         visitDeclaration(that, c, false);
         Value v = new Value();
+        v.setAnonymous(Character.isUpperCase(initial));
         that.setDeclarationModel(v);
-        visitDeclaration(that, v);
+        visitDeclaration(that, v, false);
         Type t = c.getType();
         that.getType().setTypeModel(t);
         v.setType(t);
