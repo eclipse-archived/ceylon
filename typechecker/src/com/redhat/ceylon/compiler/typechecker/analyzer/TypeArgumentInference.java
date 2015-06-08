@@ -656,10 +656,15 @@ public class TypeArgumentInference {
      *         account type arguments available in the
      *         qualifying type.
      */
-    private static Type parameterType(Type receiverType, 
+    private Type parameterType(Type receiverType, 
             Parameter parameter, Declaration invoked) {
         if (receiverType == null || 
-                !invoked.isClassOrInterfaceMember()) {
+                !invoked.isClassOrInterfaceMember() ||
+                //this is probably a ref to a static method
+                //method of a Java class and we don't need
+                //the qualifying type
+                //TODO: check getStaticMethodReference()
+                unit.isCallableType(receiverType)) {
             return parameter.getModel()
                     .getReference()
                     .getFullType();
