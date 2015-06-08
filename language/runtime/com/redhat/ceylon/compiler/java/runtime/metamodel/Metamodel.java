@@ -1010,6 +1010,9 @@ public class Metamodel {
     
     protected static <AT extends java.lang.annotation.Annotation> Class<AT> getJavaAnnotationClass(
             Class<? extends Annotation> ceylonAnnotationClass) {
+        if(ceylonAnnotationClass == ceylon.language.Annotation.class
+                || ceylonAnnotationClass == ceylon.language.ConstrainedAnnotation.class)
+            return (Class<AT>) java.lang.annotation.Annotation.class;
         String suffix;
         if (ceylon.language.SequencedAnnotation.class.isAssignableFrom(ceylonAnnotationClass)) {
             suffix = "$annotations$";
