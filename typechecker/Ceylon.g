@@ -359,6 +359,8 @@ enumeratedObject returns [Enumerated declaration]
       (
         memberName
         { $declaration.setIdentifier($memberName.identifier); }
+      | typeName
+        { $declaration.setIdentifier($typeName.identifier); }
       )?
       (
         dc=delegatedConstructor
@@ -379,8 +381,11 @@ objectDeclaration returns [ObjectDefinition declaration]
       { $declaration = new ObjectDefinition($OBJECT_DEFINITION); 
         $declaration.setType(new ValueModifier(null)); }
       (
-        memberNameDeclaration
-        { $declaration.setIdentifier($memberNameDeclaration.identifier); }
+        memberName
+        { $declaration.setIdentifier($memberName.identifier); }
+      |
+        typeName
+        { $declaration.setIdentifier($typeName.identifier); }
       )?
       ( 
         extendedType
@@ -882,8 +887,8 @@ constructor returns [Constructor declaration]
     : NEW
       { $declaration = new Constructor($NEW); }
       (
-        typeName
-        { $declaration.setIdentifier($typeName.identifier); }
+        typeNameDeclaration
+        { $declaration.setIdentifier($typeNameDeclaration.identifier); }
       )?
       (
         parameters
@@ -1467,10 +1472,10 @@ declaration returns [Declaration declaration]
       { $declaration=$inferredAttributeDeclaration.declaration; }
     | typedMethodOrAttributeDeclaration
       { $declaration=$typedMethodOrAttributeDeclaration.declaration; }
-    | (NEW LIDENTIFIER) => enumeratedObject
-      { $declaration=$enumeratedObject.declaration; }
-    | constructor
+    | (NEW UIDENTIFIER? LPAREN) => constructor
       { $declaration=$constructor.declaration; }
+    | enumeratedObject
+      { $declaration=$enumeratedObject.declaration; }
     /*| { displayRecognitionError(getTokenNames(), 
               new MismatchedTokenException(CLASS_DEFINITION, input)); }
       SEMICOLON

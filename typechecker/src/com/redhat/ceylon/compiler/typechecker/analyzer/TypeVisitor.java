@@ -89,6 +89,7 @@ public class TypeVisitor extends Visitor {
     private boolean inDelegatedConstructor;
     private boolean inTypeLiteral;
     private boolean inExtendsOrClassAlias;
+    private boolean inOf;
     private Backend inBackend = null;
     
     public TypeVisitor(BackendSupport backendSupport) {
@@ -995,6 +996,7 @@ public class TypeVisitor extends Visitor {
     public void visit(Tree.QualifiedType that) {
         boolean onl = inTypeLiteral;
         boolean oiea = inExtendsOrClassAlias;
+        boolean oio = inOf;
         boolean oidc = inDelegatedConstructor;
         inTypeLiteral = false;
         inExtendsOrClassAlias = false;
@@ -1003,6 +1005,7 @@ public class TypeVisitor extends Visitor {
         inExtendsOrClassAlias = oiea;
         inDelegatedConstructor = oidc;
         inTypeLiteral = onl;
+        inOf = oio;
         
         Tree.StaticType ot = that.getOuterType();        
         Type pt = ot.getTypeModel();
@@ -1060,7 +1063,8 @@ public class TypeVisitor extends Visitor {
                 //either a class with parameters or a 
                 //constructor is allowed
                 !inExtendsOrClassAlias && 
-                !inDelegatedConstructor) {
+                !inDelegatedConstructor &&
+                !inOf) {
             that.addError("constructor is not a type: '" + 
                     dec.getName(unit) + "'");
         }
@@ -1292,12 +1296,12 @@ public class TypeVisitor extends Visitor {
         else if (pl!=null && cd.hasEnumerated()) {
             pl.addError("class with parameters may not declare enumerated instances: class '" + 
                     cd.getName() + 
-                    "' has a parameter list and an enumerated instance");
+                    "' has a parameter list and a value constructor");
         }
         if (pl==null && 
                 !cd.hasConstructors() && 
                 !cd.hasEnumerated()) {
-            that.addError("class without parameters must declare at least one constructor or enumerated instance: class '" + 
+            that.addError("class without parameters must declare at least one constructor: class '" + 
                     cd.getName() + 
                     "' has neither parameter list nor constructors", 
                     1001);
@@ -1825,7 +1829,9 @@ public class TypeVisitor extends Visitor {
 
     @Override 
     public void visit(Tree.CaseTypes that) {
+        inOf = true;
         super.visit(that);
+        inOf = false;
         TypeDeclaration td = 
                 (TypeDeclaration) 
                     that.getScope();
@@ -1883,6 +1889,21 @@ public class TypeVisitor extends Visitor {
                         }
                         else if (type.isClassOrInterface()) {
                             caseTypes.add(type);
+                        }
+                        else if (ctd instanceof Constructor) {
+                            if (!ctd.isAnonymous()) {
+                                ct.addError("case type must be a value constructor");
+                            }
+                            else {
+                                caseTypes.add(type);
+                                TypedDeclaration value = 
+                                        getTypedDeclaration(
+                                                td, 
+                                                ctd.getName(), 
+                                                null, false, 
+                                                unit);
+                                caseValues.add(value);
+                            }
                         }
                         else if (type.isTypeParameter()) {
                             if (td instanceof TypeParameter) {

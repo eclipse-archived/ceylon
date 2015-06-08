@@ -152,9 +152,10 @@ public class AnalyzerUtil {
         if (type!=null) {
             TypeDeclaration typeDeclaration = 
                     type.getDeclaration();
-            if (typeDeclaration instanceof Class &&
+            if ((typeDeclaration instanceof Class ||
+                 typeDeclaration instanceof Constructor) &&
                     typeDeclaration.isAnonymous() &&
-                    isNamed(name,typeDeclaration)) {
+                    isNamed(name, typeDeclaration)) {
                 return typeDeclaration;
             }
         }

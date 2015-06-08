@@ -3573,7 +3573,8 @@ public class ExpressionVisitor extends Visitor {
             if (declaration==null) {
                 return true;
             }
-            else if (isConstructor(declaration)) {
+            else if (isConstructor(declaration) || 
+                    isAnonymousClassMember(declaration)) {
                 return false;
             }
             else {
@@ -6387,7 +6388,8 @@ public class ExpressionVisitor extends Visitor {
             Tree.MemberOrTypeExpression primary = 
                     (Tree.MemberOrTypeExpression) 
                         that.getPrimary();
-            if (isConstructor(member)) {
+            if (isConstructor(member) ||
+                isAnonymousClassMember(member)) {
                 //Ceylon named constructor
                 if (primary.getStaticMethodReference()) {
                     Tree.QualifiedMemberOrTypeExpression qmte = 
@@ -6455,6 +6457,11 @@ public class ExpressionVisitor extends Visitor {
         else {
             return type;
         }
+    }
+
+    private static boolean isAnonymousClassMember(Declaration member) {
+        return member.isClassMember() && 
+            ((Class) member.getContainer()).isAnonymous();
     }
 
     private static boolean isConstructor(Declaration member) {
@@ -6605,7 +6612,8 @@ public class ExpressionVisitor extends Visitor {
                             type.getName(unit) + "' is abstract");
                     return false;
                 }
-                else if (c.getParameterList()==null) {
+                else if (c.getParameterList()==null &&
+                        !c.isAnonymous()) {
                     that.addError("class cannot be instantiated: '" +
                             type.getName(unit) + 
                             "' does not have a default constructor");
