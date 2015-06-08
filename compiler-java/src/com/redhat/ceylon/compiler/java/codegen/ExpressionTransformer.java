@@ -1376,10 +1376,12 @@ public class ExpressionTransformer extends AbstractTransformer {
                                 List.of(expr.getType().getTypeModel().getQualifyingType(), 
                                         typeFact().getNothingType()))), 
                         classLiteral);
+                Type callableType = expr.getTypeModel().getFullType();
+                JCExpression reifiedArgumentsExpr = makeReifiedTypeArgument(typeFact().getCallableTuple(callableType));
                 return make().Apply(null, 
                         naming.makeQualIdent(typeCast, "getConstructor"),
                         List.<JCExpression>of(
-                                makeNull(),
+                                reifiedArgumentsExpr,
                                 make().Literal(expr.getDeclaration().getName())));
             } else {
                 return makeTypeLiteralCall(expr.getType().getTypeModel(), true, expr.getTypeModel());

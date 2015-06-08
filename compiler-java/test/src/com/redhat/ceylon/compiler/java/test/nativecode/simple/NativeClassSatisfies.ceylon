@@ -25,12 +25,12 @@ interface NativeClassSatisfiesSuper2 {
     shared formal void test2(Integer i);
 }
 
-native class NativeClassSatisfies() satisfies NativeClassSatisfiesSuper1, NativeClassSatisfiesSuper2 {
+native class NativeClassSatisfies() satisfies NativeClassSatisfiesSuper1 & NativeClassSatisfiesSuper2 {
     native shared actual void test1(Integer i);
     native shared actual void test2(Integer i);
 }
 
-native("jvm") class NativeClassSatisfies() satisfies NativeClassSatisfiesSuper1, NativeClassSatisfiesSuper2 {
+native("jvm") class NativeClassSatisfies() satisfies NativeClassSatisfiesSuper1 & NativeClassSatisfiesSuper2 {
     native("jvm") shared actual void test1(Integer i) {
         throw Exception("NativeClassSatisfies-JVM");
     }
@@ -39,7 +39,7 @@ native("jvm") class NativeClassSatisfies() satisfies NativeClassSatisfiesSuper1,
     }
 }
 
-native("js") class NativeClassSatisfies() satisfies NativeClassSatisfiesSuper1, NativeClassSatisfiesSuper2 {
+native("js") class NativeClassSatisfies() satisfies NativeClassSatisfiesSuper1 & NativeClassSatisfiesSuper2 {
     native("js") shared actual void test1(Integer i) {
         throw Exception("NativeClassSatisfies-JS");
     }

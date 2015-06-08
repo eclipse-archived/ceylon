@@ -22,13 +22,13 @@ class Bug1477Node<TItem>(TItem item, Bug1477Node<TItem>[] children = []){
 }
 
 @noanno
-class Bug1477StringNode(String name, Bug1477StringNode[] children = []) 
+class Bug1477StringNode(String name, Bug1477StringNode[] children) 
         => Bug1477Node<String>(name, children);
 
 @noanno
 void bug1477test(){
     value tree = Bug1477StringNode {
         name = "aaa";
-        children = [ Bug1477StringNode("bbb") ];
+        children = [ Bug1477StringNode("bbb", []) ];
     };
 }

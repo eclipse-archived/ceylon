@@ -32,6 +32,7 @@ import static com.sun.tools.javac.code.Flags.STATIC;
 import java.lang.annotation.RetentionPolicy;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -116,6 +117,13 @@ import com.sun.tools.javac.util.Name;
  * This transformer deals with class/interface declarations
  */
 public class ClassTransformer extends AbstractTransformer {
+
+    private static final Comparator<Declaration> DeclarationComparator = new Comparator<Declaration>(){
+        @Override
+        public int compare(Declaration a, Declaration b) {
+            return a.getQualifiedNameString().compareTo(b.getQualifiedNameString());
+        }
+    };
 
     public static ClassTransformer getInstance(Context context) {
         ClassTransformer trans = context.get(ClassTransformer.class);
@@ -1959,19 +1967,25 @@ public class ClassTransformer extends AbstractTransformer {
             for(Type interfaceDecl : model.getSatisfiedTypes()){
                 collectInterfaces((Interface) interfaceDecl.getDeclaration(), satisfiedInterfaces);
             }
-            // now see if we refined them
-            for(Interface iface : satisfiedInterfaces){
-                // skip those we can't do anything about
-                if(!supportsReified(iface) || !CodegenUtil.isCompanionClassNeeded(iface))
-                    continue;
-                Type thisType = model.getType().getSupertype(iface);
-                Type superClassType = model.getExtendedType().getSupertype(iface);
-                if(thisType != null
-                        && superClassType != null
-                        && !thisType.isExactly(superClassType)
-                        && thisType.isSubtypeOf(superClassType)){
-                    // we're refining it
-                    classBuilder.refineReifiedType(thisType);
+            if(!satisfiedInterfaces.isEmpty()){
+                // sort it to facilitate test comparisons that work in JDK7 and 8
+                ArrayList<Interface> sortedInterfaces = new ArrayList<Interface>(satisfiedInterfaces.size());
+                sortedInterfaces.addAll(satisfiedInterfaces);
+                Collections.sort(sortedInterfaces, DeclarationComparator);
+                // now see if we refined them
+                for(Interface iface : sortedInterfaces){
+                    // skip those we can't do anything about
+                    if(!supportsReified(iface) || !CodegenUtil.isCompanionClassNeeded(iface))
+                        continue;
+                    Type thisType = model.getType().getSupertype(iface);
+                    Type superClassType = model.getExtendedType().getSupertype(iface);
+                    if(thisType != null
+                            && superClassType != null
+                            && !thisType.isExactly(superClassType)
+                            && thisType.isSubtypeOf(superClassType)){
+                        // we're refining it
+                        classBuilder.refineReifiedType(thisType);
+                    }
                 }
             }
         }

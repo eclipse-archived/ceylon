@@ -1447,7 +1447,7 @@ public class ModelLoaderTests extends CompilerTests {
         assertErrors("bogusTopLevelClassUser",
                 new CompilerError(-1, "Constructor for 'com.redhat.ceylon.compiler.java.test.model.BogusTopLevelClass' should take 1 reified type arguments (TypeDescriptor) but has '0': skipping constructor."),
                 new CompilerError(-1, "Invalid type signature for self type of com.redhat.ceylon.compiler.java.test.model::BogusTopLevelClass: com.redhat.ceylon.compiler.java.test.model::MissingType is not a type parameter"),
-
+                new CompilerError(2, "Error while loading the com.redhat.ceylon.compiler.java.test.model/1 module:\n   Error while resolving type of extended type for com.redhat.ceylon.compiler.java.test.model::BogusTopLevelClass:\n   Could not find type 'com.redhat.ceylon.compiler.java.test.model.MissingType'"),
                 // FIXME: I wish I knew how to get rid of that one...
                 new CompilerError(3, "constructor BogusTopLevelClass in class com.redhat.ceylon.compiler.java.test.model.BogusTopLevelClass<T> cannot be applied to given types;\n  required: no arguments\n  found: com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor\n  reason: actual and formal argument lists differ in length")
         );

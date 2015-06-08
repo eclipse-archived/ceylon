@@ -87,14 +87,14 @@ void literalsRuntime2<T>(){
     assert(`new LitParameterisedClassWithConstructors.Other`.name == "Other");
     
     // Constructor models
-    assert(exists c1 = `LitClassWithConstructors`.getConstructor(""));
-    assert(exists c2 = `LitClassWithConstructors.Member`.getConstructor(""));
+    assert(exists c1 = `LitClassWithConstructors`.getConstructor<[Integer]>(""));
+    assert(exists c2 = `LitClassWithConstructors.Member`.getConstructor<[Integer]>(""));
     assert(`new LitClassWithConstructors` == c1.declaration);
     assert(`new LitClassWithConstructors.Other` == `LitClassWithConstructors.Other`.declaration);
     assert(`new LitClassWithConstructors.Member` == c2.declaration);
     assert(`new LitClassWithConstructors.Member.Other` == `LitClassWithConstructors.Member.Other`.declaration);
     
-    assert(exists c3 = `LitParameterisedClassWithConstructors<String>`.getConstructor(""));
+    assert(exists c3 = `LitParameterisedClassWithConstructors<String>`.getConstructor<[String]>(""));
     assert(`new LitParameterisedClassWithConstructors` == c3.declaration);
     assert(`new LitParameterisedClassWithConstructors.Other` == `LitParameterisedClassWithConstructors<String>.Other`.declaration);
 }
