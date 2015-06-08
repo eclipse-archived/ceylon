@@ -914,7 +914,7 @@ public class InheritanceVisitor extends Visitor {
             if (caseValues!=null && 
                     !c.isAbstract() &&
                     !cl.isAbstract()) {
-                that.addError("non-abstract enumerated class may not have partial constructor");
+                that.addError("non-abstract enumerated class may not have non-partial constructor");
             }
         }
     }

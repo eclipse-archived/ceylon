@@ -82,6 +82,17 @@ class IncompleteBool2 of true|false {
     @error new New() { string=""; }
 }
 
+@error class IncompleteBool3 of true|false|New {
+    shared actual String string;
+    shared new true {
+        string = "true";
+    }
+    shared new false {
+        string = "false";
+    }
+    @error new New() { string=""; }
+}
+
 class UnidentifiableBool 
         of true|false extends Object {
     shared actual String string;
