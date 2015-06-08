@@ -574,8 +574,8 @@
             <rep url="aether"/>
         </ceylon-compile>
         <javac
-            srcdir="${test-jvm.src}"
-            destdir="${build.test}"
+            srcdir="${test-jvm-tools.src}"
+            destdir="${build.tools-test}"
             debug="true"
             encoding="UTF-8"
             classpathref="test.compile.classpath"
@@ -586,8 +586,8 @@
             <include name="**/*.java"/>
         </javac>
         <javac
-            srcdir="${test-jvm-tools.src}"
-            destdir="${build.tools-test}"
+            srcdir="${test-jvm.src}"
+            destdir="${build.test}"
             debug="true"
             encoding="UTF-8"
             classpathref="test.compile.classpath"

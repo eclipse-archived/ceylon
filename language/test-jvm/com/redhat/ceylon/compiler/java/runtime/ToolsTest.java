@@ -110,7 +110,8 @@ public class ToolsTest {
         toolsTestClassesDest.mkdirs();
         final Path toolsTestClassesDestPath = toolsTestClassesDest.toPath();
 
-        Files.walkFileTree(new File("build/classes/"+MainTest.getCurrentPackagePathPart()).toPath(), new SimpleFileVisitor<Path>(){
+        File dir = new File("build/test/"+MainTest.getCurrentPackagePathPart());
+        Files.walkFileTree(dir.toPath(), new SimpleFileVisitor<Path>(){
             @Override
             public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
                 String name = file.getFileName().toString();
@@ -122,7 +123,6 @@ public class ToolsTest {
                 return FileVisitResult.CONTINUE;
             }
         });
-        
 
         // we're ready to compile!
     }
