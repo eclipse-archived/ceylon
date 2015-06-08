@@ -4,6 +4,7 @@ import ceylon.language.meta.declaration {
 import ceylon.language.meta.model {
     Value
 }
+
 class Bool of true|false {
     shared actual String string;
     shared new true {
@@ -81,7 +82,7 @@ class IncompleteBool2 of true|false {
     @error new New() { string=""; }
 }
 
-@error class UnidentifiableBool 
+class UnidentifiableBool 
         of true|false extends Object {
     shared actual String string;
     shared new true extends Object() {
@@ -92,6 +93,9 @@ class IncompleteBool2 of true|false {
     }
     equals(Object that) => 1==1;
     hash => 1;
+    @error switch(this)
+    case (UnidentifiableBool.true) {}
+    case (UnidentifiableBool.false) {}
 }
 
 

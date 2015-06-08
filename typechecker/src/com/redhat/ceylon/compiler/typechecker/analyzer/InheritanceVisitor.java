@@ -511,26 +511,19 @@ public class InheritanceVisitor extends Visitor {
                             type.getDeclaration();
                     if (caseDec instanceof Constructor) {
                         //enumerated singleton constructors
-                        if (!caseDec.isAnonymous()) {
-                            bme.addError("case must be an enumerated instance of a toplevel class: '" + 
-                                    value.getName(unit) + 
-                                    "' is not an enumerated instance");
-                        }
-                        else {
-                            Scope scope = caseDec.getContainer();
-                            if (scope instanceof Class) {
-                                Class c = (Class) scope;
-                                if (!c.isToplevel()) {
-                                    bme.addError("case must be an enumerated instance of a toplevel class: '" + 
-                                            c.getName(unit) + 
-                                            "' is not toplevel");
-                                }
-                                else if (!c.inherits(unit.getIdentifiableDeclaration())) {
-                                    bme.addError("case must be an enumerated instance of an identifiable class: '" + 
-                                            c.getName(unit) + 
-                                            "' is not a subtype of 'Identifiable'");
-                                }
+                        Scope scope = caseDec.getContainer();
+                        if (scope instanceof Class) {
+                            Class c = (Class) scope;
+                            if (!c.isToplevel()) {
+                                bme.addError("case must be an enumerated instance of a toplevel class: '" + 
+                                        c.getName(unit) + 
+                                        "' is not toplevel");
                             }
+                            /*else if (!c.inherits(unit.getIdentifiableDeclaration())) {
+                                bme.addError("case must be an enumerated instance of an identifiable class: '" + 
+                                        c.getName(unit) + 
+                                        "' is not a subtype of 'Identifiable'");
+                            }*/
                         }
                     }
                     else {

@@ -870,8 +870,8 @@ TypeConstraints?
         <section id="interfaceinheritance">
             <title>Interface inheritance</title>
             
-            <para>An interface may satisfy any number of other interfaces.<!--and may satisfy
-            a single class--></para>
+            <para>An interface may satisfy any number of other interfaces,<!--and may satisfy
+            a single class--> as defined in <xref linkend="satisfiedinterfaces"/>.</para>
         
             <programlisting>shared interface List&lt;Element&gt;
         satisfies Collection&lt;Element&gt; &amp; Correspondence&lt;Integer,Element&gt;
@@ -943,7 +943,8 @@ TypeConstraints?
         <section id="interfaceswithcases">
             <title>Enumerated interfaces</title>
             
-            <para>An interface declaration may enumerate a list of cases of the interface.</para>
+            <para>An interface declaration may enumerate a list of cases of the interface, 
+            as defined in <xref linkend="cases"/>.</para>
             
             <programlisting>shared interface Node&lt;Element&gt; 
             of Root&lt;Element&gt; | Branch&lt;Element&gt; | Leaf&lt;Element&gt; { ... }</programlisting>
@@ -954,7 +955,7 @@ TypeConstraints?
             interface declaration may not list the same case twice.</para>
                     
             <para>If an interface has an <literal>of</literal> clause, then every interface 
-            or class which is a subtype of the interface must occurs as exactly one of the 
+            or class which is a subtype of the interface must occur as exactly one of the 
             enumerated cases of the interface.</para>
                     
         </section>
@@ -1367,7 +1368,8 @@ TypeConstraints?
         <section id="classinheritance">
              <title>Class inheritance</title>
         
-            <para>A class may extend another class.</para>
+            <para>A class may extend another class, as defined in 
+            <xref linkend="extendedclass"/>.</para>
             
             <programlisting>shared class Customer(Name name, Organization? org = null) 
         extends Person(name, org) { 
@@ -1380,7 +1382,8 @@ TypeConstraints?
             <literal>ceylon.language</literal>.
             </para>
             
-            <para>A class may satisfy any number of interfaces.</para>
+            <para>A class may satisfy any number of interfaces, as defined in 
+            <xref linkend="satisfiedinterfaces"/>.</para>
     
             <programlisting>class Token() 
         extends Datetime()
@@ -1746,7 +1749,45 @@ String escapedSearchString = sql.escape(searchString);</programlisting>
         <section id="classeswithcases">
             <title>Enumerated classes</title>
             
-            <para>A class declaration may enumerate a list of cases of the class.</para>
+            <para>A class declaration may enumerate a list of cases of the class, as
+            defined in <xref linkend="cases"/>.</para>
+            
+            <itemizedlist>
+                <listitem>
+		            <para>For an <literal>abstract</literal> class, the cases may be 
+		            classes or toplevel anonymous classes. Each case must be a direct 
+		            subclass of the enumerated class. A case may itself be an 
+		            <literal>abstract</literal> class.</para>            
+                </listitem>
+                <listitem>
+                    <para>For a non-<literal>abstract</literal> toplevel class, the 
+                    cases must be value constructors of the class.</para>
+                </listitem>
+            </itemizedlist>
+            
+            <para>The cases listed in the <literal>of</literal> clause must exhaust
+            every means by which an instance of the class may be instantiated:</para>
+            
+             <itemizedlist>
+                <listitem>
+		            <para>if an <literal>abstract</literal> class has an 
+		            <literal>of</literal> clause, then every class that directly 
+		            extends the class must occur as exactly one of the enumerated 
+		            cases of the class listed in the <literal>of</literal> clause,
+		            or</para>
+                </listitem>
+                <listitem>
+		            <para>if a non-<literal>abstract</literal> class has an 
+		            <literal>of</literal> clause, then every non-partial constructor 
+		            of the class must occur as exactly one of the enumerated cases of 
+		            the class listed in the <literal>of</literal> clause.</para>
+                </listitem>
+            </itemizedlist>
+            
+            <!--para>Furthermore, if a class has an <literal>of</literal> clause, then 
+            the class must be a subtype of the interface <literal>Identifiable</literal> 
+            defined in <literal>ceylon.language</literal> unless it is the class
+            <literal>Null</literal> defined in <literal>ceylon.language</literal>.</para-->
             
             <programlisting>shared abstract class Boolean() 
         of true | false {}
@@ -1764,26 +1805,10 @@ shared class Branch<Element>(String name, Node<Element> left, Node<Element> righ
         extends Node<Element>(name) { ... }]]></programlisting>
             
             <programlisting>shared class Status of enabled | disabled {
-    shared new enabled {}
-    shared new disabled {}
+    shared actual String string;
+    shared new enabled { string => "enabled"; }
+    shared new disabled { string => "disabled"; }
 }</programlisting>
-            
-            <para>For an <literal>abstract</literal> class, the cases may be classes
-            or toplevel anonymous classes. Each case must be a direct subclass of 
-            the enumerated class. A case may be an <literal>abstract</literal>
-            class.</para>
-            
-            <para>If an <literal>abstract</literal> class has an <literal>of</literal> 
-            clause, then every class that directly extends the class must occur as 
-            exactly one of the enumerated cases of the class.</para>
-            
-            <para>For a non-<literal>abstract</literal> toplevel class, the cases must
-            be value constructors of the class.</para>
-            
-            <para>If a non-<literal>abstract</literal> class has an <literal>of</literal> 
-            clause, then every constructor of the class must occur as exactly one of 
-            the enumerated cases of the class, and the class must be a subtype of
-            <literal>Identifiable</literal> in <literal>ceylon.language</literal>.</para>
             
             <para>A non-<literal>abstract</literal> class with an initializer parameter 
             list or a callable constructor may not specify an <literal>of</literal> 
@@ -2965,7 +2990,8 @@ print(greeting);</programlisting>
             
             <para>Every constructor of any class which does not directly extend
             <literal>Basic</literal> defined in <literal>ceylon.language</literal>
-            must explicitly delegate to either:</para>
+            must explicitly delegate, as defined in <xref linkend="extendedclass"/>, 
+            to either:</para>
             
             <itemizedlist>
                 <listitem>
