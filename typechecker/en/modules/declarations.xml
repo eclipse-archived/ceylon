@@ -2884,15 +2884,6 @@ print(greeting);</programlisting>
         constructor and no named constructors is indistinguishable from a class with an
         initializer parameter list.</para></comment>
         
-        <para>A class with an initializer parameter list may not declare constructors.</para>
-        
-        <para>A generic class may not declare value constructors.</para>
-        
-        <para>A class nested directly inside an interface may not declare value constructors.</para>
-        
-        <para>A member class annotated <literal>formal</literal>, <literal>default</literal>,
-        or <literal>actual</literal> may not declare constructors.</para>
-        
         <programlisting>shared class Point {
     shared Float x;
     shared Float y;
@@ -2914,6 +2905,15 @@ print(greeting);</programlisting>
     
     string => "(``x``, ``y``)";
 }</programlisting>
+        
+        <para>A class with an initializer parameter list may not declare constructors.</para>
+        
+        <para>A generic class may not declare value constructors.</para>
+        
+        <para>A class nested directly inside an interface may not declare value constructors.</para>
+        
+        <para>A member class annotated <literal>formal</literal>, <literal>default</literal>,
+        or <literal>actual</literal> may not declare constructors.</para>
         
         <comment><para>Note: in a future release of the language, we might relax this 
         restriction, and simply require that every <literal>actual</literal> class 
