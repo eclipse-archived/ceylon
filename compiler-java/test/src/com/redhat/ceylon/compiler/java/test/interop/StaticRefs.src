@@ -57,7 +57,8 @@ final class staticRefs_ {
         final .java.lang.management.MemoryMXBean memoryBean = .com.redhat.ceylon.compiler.java.Util.checkNull(.java.lang.management.ManagementFactory.getMemoryMXBean());
         final .java.lang.management.MemoryMXBean memoryBean2 = .java.lang.management.ManagementFactory.getMemoryMXBean();
         .com.redhat.ceylon.compiler.java.Util.checkNull(.java.lang.management.ManagementFactory.getMemoryMXBean()).gc();
-        final .javax.management.ObjectName on = .com.redhat.ceylon.compiler.java.Util.checkNull(.com.redhat.ceylon.compiler.java.Util.checkNull(.java.lang.management.ManagementFactory.<.java.lang.management.MemoryMXBean>getPlatformMXBean((.java.lang.Class<.java.lang.management.MemoryMXBean>).ceylon.language.nothing_.get_())).getObjectName());
+        final .java.lang.Class<.java.lang.management.MemoryMXBean> klass = (.java.lang.Class<.java.lang.management.MemoryMXBean>).ceylon.language.nothing_.get_();
+        final .javax.management.ObjectName on = .com.redhat.ceylon.compiler.java.Util.checkNull(.com.redhat.ceylon.compiler.java.Util.checkNull(.java.lang.management.ManagementFactory.<.java.lang.management.MemoryMXBean>getPlatformMXBean(klass)).getObjectName());
         final .com.redhat.ceylon.compiler.java.test.interop.JavaWithStaticMembers a = .com.redhat.ceylon.compiler.java.Util.checkNull(.com.redhat.ceylon.compiler.java.test.interop.JavaWithStaticMembers.getAttribute());
         final .com.redhat.ceylon.compiler.java.test.interop.JavaWithStaticMembersSubClass a2 = .com.redhat.ceylon.compiler.java.Util.checkNull(.com.redhat.ceylon.compiler.java.test.interop.JavaWithStaticMembersSubClass.getAttribute());
     }
