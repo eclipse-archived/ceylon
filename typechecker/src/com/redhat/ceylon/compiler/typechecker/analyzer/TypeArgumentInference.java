@@ -585,8 +585,7 @@ public class TypeArgumentInference {
                 if (arg instanceof Tree.SpreadArgument) {
                     at = spreadType(at, unit, true);
                     List<Parameter> subList = 
-                            params.subList(i, 
-                                    params.size());
+                            params.subList(i, params.size());
                     Type parameterTypeTuple = 
                             unit.getParameterTypesAsTupleType(
                                     subList, 
@@ -1278,16 +1277,14 @@ public class TypeArgumentInference {
             Declaration invoked,
             Generic generic, Type receiverType) {
         if (invoked instanceof Functional) {
-            Functional functional = 
-                    (Functional) invoked;
+            Functional functional = (Functional) invoked;
             List<ParameterList> parameterLists = 
                     functional.getParameterLists();
             if (parameterLists.isEmpty()) {
                 return null;
             }
             else {
-                List<Type> typeArgs = 
-                        new ArrayList<Type>();
+                List<Type> typeArgs = new ArrayList<Type>();
                 List<TypeParameter> typeParameters = 
                         generic.getTypeParameters();
                 for (TypeParameter tp: typeParameters) {
