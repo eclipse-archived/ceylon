@@ -2,6 +2,7 @@ package com.redhat.ceylon.compiler.js.util;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -1394,4 +1395,19 @@ public class TypeUtils {
         }
         return isNative;
     }
+
+    public static List<Type> getTypes(List<Tree.StaticType> treeTypes) {
+        if (treeTypes == null) {
+            return null;
+        }
+        if (treeTypes.isEmpty()) {
+            return Collections.emptyList();
+        }
+        final ArrayList<Type> r = new ArrayList<>(treeTypes.size());
+        for (Tree.StaticType st : treeTypes) {
+            r.add(st.getTypeModel());
+        }
+        return r;
+    }
+
 }
