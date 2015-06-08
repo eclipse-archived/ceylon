@@ -836,25 +836,25 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
             at = e.appliedType(ot, NO_TYPE_ARGS);
             clazz.setEnumerated(true);
             if (clazz.isAnonymous()) {
-                that.addError("anonymous class may not have an enumerated instance: '" + 
+                that.addError("anonymous class may not have a value constructor: '" + 
                         clazz.getName() + "' is an anonymous class");
             }
             else if (clazz.isAbstract()) {
-                that.addError("abstract class may not have an enumerated instance: '" + 
+                that.addError("abstract class may not have a value constructor: '" + 
                         clazz.getName() + "' is abstract");
             }
             else if (!clazz.getTypeParameters().isEmpty()) {
-                that.addError("generic class may not have an enumerated instance: '" + 
+                that.addError("generic class may not have a value constructor: '" + 
                         clazz.getName() + "' is generic");
             }
             else if (scope.getContainer() instanceof Interface) {
-                that.addError("class nested inside an interface may not have enumerated instances: '" +
+                that.addError("class nested inside an interface may not have a value constructor: '" +
                         clazz.getName() + "' belongs to an interface");
             }
         }
         else {
             at = null;
-            that.addError("enumerated instance declaration must occur directly in the body of a class");
+            that.addError("value constructor declaration must occur directly in the body of a class");
         }
         that.setEnumerated(e);
         visitDeclaration(that, e);

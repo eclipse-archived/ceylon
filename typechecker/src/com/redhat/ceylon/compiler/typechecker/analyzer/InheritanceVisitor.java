@@ -515,12 +515,12 @@ public class InheritanceVisitor extends Visitor {
                         if (scope instanceof Class) {
                             Class c = (Class) scope;
                             if (!c.isToplevel()) {
-                                bme.addError("case must be an enumerated instance of a toplevel class: '" + 
+                                bme.addError("case must be a value constructor of a toplevel class: '" + 
                                         c.getName(unit) + 
                                         "' is not toplevel");
                             }
                             /*else if (!c.inherits(unit.getIdentifiableDeclaration())) {
-                                bme.addError("case must be an enumerated instance of an identifiable class: '" + 
+                                bme.addError("case must be a value constructor of an identifiable class: '" + 
                                         c.getName(unit) + 
                                         "' is not a subtype of 'Identifiable'");
                             }*/
@@ -896,7 +896,7 @@ public class InheritanceVisitor extends Visitor {
             if (caseValues!=null 
                     && !caseValues.contains(v) && 
                     !cl.isAbstract()) {
-                that.addError("enumerated instance does not occur in of clause of non-abstract enumerated class");
+                that.addError("value constructor does not occur in of clause of non-abstract enumerated class");
             }
         }
     }
@@ -914,7 +914,7 @@ public class InheritanceVisitor extends Visitor {
             if (caseValues!=null && 
                     !c.isAbstract() &&
                     !cl.isAbstract()) {
-                that.addError("non-abstract enumerated class may not have non-partial constructor");
+                that.addError("non-abstract enumerated class may not have non-partial callable constructor");
             }
         }
     }
