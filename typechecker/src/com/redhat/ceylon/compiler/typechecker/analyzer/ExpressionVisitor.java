@@ -2604,26 +2604,23 @@ public class ExpressionVisitor extends Visitor {
             return null;
         }
         else {
-            Type result;
             Tree.MemberOperator op = mte.getMemberOperator();
             if (op instanceof Tree.SafeMemberOp)  {
-                result = unit.getDefiniteType(type);
+                return unit.getDefiniteType(type);
             }
             else if (op instanceof Tree.SpreadOp) {
                 if (unit.isIterableType(type)) {
-                    result = unit.getIteratedType(type);
+                    Type it = unit.getIteratedType(type);
+                    return it==null ?
+                            unit.getUnknownType() : it;
                 }
                 else {
-                    result = type;
+                    return type;
                 }
             }
             else {
-                result = type;
+                return type;
             }
-            if (result==null) {
-                result = unit.getUnknownType();
-            }
-            return result;
         }
     }
     
