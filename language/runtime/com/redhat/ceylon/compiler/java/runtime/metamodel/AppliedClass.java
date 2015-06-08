@@ -587,7 +587,7 @@ public class AppliedClass<Type, Arguments extends Sequential<? extends Object>>
 
         // This is all very ugly but we're trying to make it cheaper and friendlier than just checking the full type and showing
         // implementation types to the user, such as AppliedMemberClass
-        Metamodel.checkReifiedTypeArgument("memberApply", "Constructor<$1,$2>",
+        Metamodel.checkReifiedTypeArgument("getConstructor", "Constructor<$1,$2>",
                 // this line is bullshit since it's always true, but otherwise we can't substitute the error message above :(
                 Variance.OUT, this.producedType, $reifiedType,
                 Variance.IN, Metamodel.getProducedType(actualReifiedArguments), $reifiedArguments);
