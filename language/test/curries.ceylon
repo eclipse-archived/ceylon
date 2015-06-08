@@ -143,4 +143,7 @@ shared void testCurries() {
     value _f5=unflatten(u6695);
     check(_f5([1,2,3])==6,"#669.18");
     check(_f5([1,2,3,4])==10, "#669.19");
+    //699
+    String(Object) jvf699 = compose(identity<String>, Object.string);
+    check(jvf699(5)=="5", "#699.20");
 }

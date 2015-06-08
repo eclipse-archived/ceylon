@@ -33,8 +33,8 @@ import com.redhat.ceylon.compiler.java.runtime.tools.impl.JavaRunnerImpl;
 public class ToolsTest {
     
     private static final String BuildToolsBuildDir = "build/toolsTest";
-    private static final String BuildToolsClassesDir = BuildToolsBuildDir + "/classes";
-    private static final String BuildToolsRunnerClassesDir = BuildToolsBuildDir + "/launcher-classes";
+    private static final String BuildToolsClassesDir = BuildToolsBuildDir + "/classes"; // we generate this one in initFlatRepo()
+    private static final String BuildToolsRunnerClassesDir = BuildToolsBuildDir + "/launcher-classes"; // this one is where the IDE/build puts ToolsTestRunner
     private static final String OutputRepository = BuildToolsBuildDir + "/modules";
     private static String SystemRepo = BuildToolsBuildDir + "/repo";
     private static String FlatRepoLib = BuildToolsBuildDir + "/lib";
@@ -110,7 +110,8 @@ public class ToolsTest {
         toolsTestClassesDest.mkdirs();
         final Path toolsTestClassesDestPath = toolsTestClassesDest.toPath();
 
-        Files.walkFileTree(new File("build/classes/"+MainTest.getCurrentPackagePathPart()).toPath(), new SimpleFileVisitor<Path>(){
+        File dir = new File("build/test/"+MainTest.getCurrentPackagePathPart());
+        Files.walkFileTree(dir.toPath(), new SimpleFileVisitor<Path>(){
             @Override
             public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
                 String name = file.getFileName().toString();
@@ -122,7 +123,6 @@ public class ToolsTest {
                 return FileVisitResult.CONTINUE;
             }
         });
-        
 
         // we're ready to compile!
     }

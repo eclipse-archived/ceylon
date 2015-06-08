@@ -851,13 +851,12 @@ shared interface List<out Element=Anything>
         clone() => outer.clone().Rest(from);
         
         iterator() 
-                => let (iter = outer.iterator()) 
+                => let (o = outer)
             object satisfies Iterator<Element> {
                 variable value i=0;
-                while (i++<from) {
-                    iter.next();
-                }
-                next() => iter.next();
+                next() => if (i < outer.size)
+                    then o.getElement(from + i++)
+                    else finished;
                 string => "``outer.string``.iterator()";
             };
         

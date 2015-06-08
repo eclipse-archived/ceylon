@@ -43,3 +43,21 @@ function pndo$(o) {
   }
 }
 ex$.pndo$=pndo$;
+//check if numbers are really numbers
+function ndnc$(n,t,loc) {
+  if (t==='f') {
+    if (typeof(n)==='number')return Float(n);
+    if (is$(n,{t:Float}))return n;
+  } else if (t==='i') {
+    if (typeof(n)==='number')return Math.floor(n);
+    if (is$(n,{t:Integer}))return n;
+  }
+  throw new TypeError('Expected ' + (t==='f'?'Float':'Integer') + ' (' + loc + ')');
+}
+ex$.ndnc$=ndnc$;
+//Check if an object if really of a certain type
+function ndtc$(o,t,loc) {
+  if (is$(o,t))return o;
+  throw new TypeError('Expected ' + qname$(t) + ' (' + loc + ')');
+}
+ex$.ndtc$=ndtc$;

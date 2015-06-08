@@ -64,7 +64,7 @@ function tpl$(elems,types,spread){
   that.getFromFirst.$crtmm$=Tuple.$$.prototype.getFromFirst.$crtmm$;
   that.iterator=function(){
     if (spread) {
-      return ChainedIterator(elems,spread,{Element$ChainedIterator:types,Other$ChainedIterator:spread.$$targs$$.Element$Sequence});
+      return ChainedIterator(elems,spread,{Element$ChainedIterator:types,Other$ChainedIterator:spread.$$targs$$.Element$Sequential});
     }
     return elems.iterator();
   }

@@ -44,6 +44,8 @@ function type$meta(x,$$targs$$) {
     var _ta={T:{t:x.getT$all()[x.getT$name()]}, A:{t:Sequential,a:{Element$Iterable:{t:Anything}}}};
     var mytargs;
     if (x.$$targs$$) {
+      //Tuple with tuple targs
+      if (_ta.T.t===Tuple && x.$$targs$$.t==='T')return type$meta(x,{Type$type:x.$$targs$$});
       _ta.T.a=x.$$targs$$;
     }
     if (x.outer$) {
