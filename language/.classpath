@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="runtime"/>
-	<classpathentry kind="src" path="test-jvm"/>
+	<classpathentry kind="src" output="build/test" path="test-jvm"/>
 	<classpathentry kind="src" output="build/toolsTest/launcher-classes" path="test-jvm-tools"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>

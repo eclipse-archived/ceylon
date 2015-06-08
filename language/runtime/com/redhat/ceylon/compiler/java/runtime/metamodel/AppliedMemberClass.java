@@ -42,7 +42,10 @@ public class AppliedMemberClass<Container, Type, Arguments extends Sequential<? 
         // anonymous classes don't have constructors
         // local classes have constructors but if they capture anything it will get extra parameters that nobody knows about
         // FIXME: so we really want to disallow that in the metamodel?
-        if(!decl.isAnonymous() && !Metamodel.isLocalType(decl)){
+        if(!decl.isAnonymous() 
+                && !Metamodel.isLocalType(decl)
+                // classes with constructors and no default constructor get Nothing
+                && decl.getParameterList() != null){
             // get a list of produced parameter types
             java.util.List<com.redhat.ceylon.model.typechecker.model.Type> parameterProducedTypes = Metamodel.getParameterProducedTypes(decl.getParameterList().getParameters(), producedType);
             this.parameterTypes = Metamodel.getAppliedMetamodelSequential(parameterProducedTypes);
