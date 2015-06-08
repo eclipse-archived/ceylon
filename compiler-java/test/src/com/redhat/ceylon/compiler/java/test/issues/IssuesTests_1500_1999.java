@@ -883,7 +883,7 @@ public class IssuesTests_1500_1999 extends CompilerTests {
     public void testBug1882_JDK8() {
         Assume.assumeTrue("Runs on JDK8", JDKUtils.jdk == JDKUtils.JDK.JDK8);
         assertErrors("bug18xx/bug1882/module",
-                new CompilerError(Kind.WARNING, "module.ceylon", 2, "You import JDK7, which is provided by the JDK8 you are running on, but we cannot check that you are not using any JDK8-specific classes or methods. Upgrade your import to JDK8 if you depend on JDK8 classes or methods.")
+                new CompilerError(Kind.WARNING, "module.ceylon", 3, "You import JDK7, which is provided by the JDK8 you are running on, but we cannot check that you are not using any JDK8-specific classes or methods. Upgrade your import to JDK8 if you depend on JDK8 classes or methods.")
                 );
     }
 

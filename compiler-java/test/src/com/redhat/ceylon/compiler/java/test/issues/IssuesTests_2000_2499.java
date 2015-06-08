@@ -27,6 +27,8 @@ import org.junit.Test;
 
 import com.redhat.ceylon.compiler.java.test.CompilerError;
 import com.redhat.ceylon.compiler.java.test.CompilerTests;
+import com.redhat.ceylon.model.cmr.JDKUtils;
+import com.redhat.ceylon.model.cmr.JDKUtils.JDK;
 
 
 public class IssuesTests_2000_2499 extends CompilerTests {
@@ -275,9 +277,16 @@ public class IssuesTests_2000_2499 extends CompilerTests {
 
     @Test
     public void testBug2136() {
-        assertErrors("bug21xx/Bug2136",
-                new CompilerError(Kind.WARNING, null, 1, "imported declaration is deprecated: 'StringBufferInputStream'"),
-                new CompilerError(Kind.WARNING, null, 3, "type is deprecated: 'StringBufferInputStream'"));
+        if(JDKUtils.jdk == JDK.JDK8){
+            assertErrors("bug21xx/Bug2136",
+                    new CompilerError(Kind.WARNING, null, 22, "You import JDK7, which is provided by the JDK8 you are running on, but we cannot check that you are not using any JDK8-specific classes or methods. Upgrade your import to JDK8 if you depend on JDK8 classes or methods."),
+                    new CompilerError(Kind.WARNING, null, 1, "imported declaration is deprecated: 'StringBufferInputStream'"),
+                    new CompilerError(Kind.WARNING, null, 3, "type is deprecated: 'StringBufferInputStream'"));
+        }else{
+            assertErrors("bug21xx/Bug2136",
+                    new CompilerError(Kind.WARNING, null, 1, "imported declaration is deprecated: 'StringBufferInputStream'"),
+                    new CompilerError(Kind.WARNING, null, 3, "type is deprecated: 'StringBufferInputStream'"));
+        }
     }
     
     @Test
