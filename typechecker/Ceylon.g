@@ -882,8 +882,10 @@ constructor returns [Constructor declaration]
     : NEW
       { $declaration = new Constructor($NEW); }
       (
-        memberNameDeclaration
-        { $declaration.setIdentifier($memberNameDeclaration.identifier); }
+        memberName
+        { $declaration.setIdentifier($memberName.identifier); }
+      | typeName
+        { $declaration.setIdentifier($typeName.identifier); }
       )?
       (
         parameters
