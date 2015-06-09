@@ -57,7 +57,7 @@ function spread$(a,f,targs) {
   if (arg.length===1 && is$(arg[0],{t:Tuple})) {
     //Possible spread, check the metamodel
     var mm=getrtmm$$(f);
-    if (arg[0].size===mm.ps.length && mm.ps.length>1) {
+    if (arg[0].size===mm.ps.length && mm.ps.length>=1) {
       //Simple mapping
       var all=[];
       for (var i=0; i<mm.ps.length;i++){
