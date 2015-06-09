@@ -1370,7 +1370,7 @@ public class TypeUtils {
      * meant for the JavaScript backend
      */
     public static boolean isForBackend(Declaration decl) {
-        String backend = decl.getNative();
+        String backend = decl.getNativeBackend();
         return backend != null && backend.equals(Backend.JavaScript.nativeAnnotation);
     }
     
@@ -1382,11 +1382,11 @@ public class TypeUtils {
      * in the Ceylon code with the same name)
      */
     public static boolean isNativeExternal(Declaration decl) {
-        boolean isNative = decl.isNative() && decl.getNative().isEmpty();
+        boolean isNative = decl.isNative() && decl.getNativeBackend().isEmpty();
         if (isNative) {
             if (decl.getOverloads() != null) {
                 for (Declaration d : decl.getOverloads()) {
-                    if (!d.getNative().isEmpty()) {
+                    if (!d.getNativeBackend().isEmpty()) {
                         isNative = false;
                         break;
                     }
