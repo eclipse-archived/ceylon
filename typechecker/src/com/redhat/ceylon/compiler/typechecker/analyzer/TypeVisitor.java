@@ -654,7 +654,7 @@ public class TypeVisitor extends Visitor {
     
     @Override public void visit(Tree.Declaration that) {
         Backend ib = inBackend;
-        String nat = that.getDeclarationModel().getNative();
+        String nat = that.getDeclarationModel().getNativeBackend();
         inBackend = Backend.fromAnnotation(nat);
         super.visit(that);
         inBackend = ib;
@@ -2100,7 +2100,7 @@ public class TypeVisitor extends Visitor {
     
     private Declaration handleHeader(Declaration dec, 
             Node that) {
-        if (Backend.None.nativeAnnotation.equals(dec.getNative())
+        if (Backend.None.nativeAnnotation.equals(dec.getNativeBackend())
                 && !backendSupport.supportsBackend(Backend.None)) {
             BackendSupport backend = 
                     inBackend == null ?
