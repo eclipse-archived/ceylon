@@ -180,7 +180,7 @@ public class TypeArgumentVisitor extends Visitor {
     
     @Override public void visit(Tree.Constructor that) {
         TypeDeclaration occ = 
-                beginConstructor(that.getDeclarationModel());
+                beginConstructor(that.getConstructor());
         super.visit(that);
         endConstructor(occ);
     }

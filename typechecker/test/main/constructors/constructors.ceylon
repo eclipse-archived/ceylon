@@ -1,18 +1,18 @@
 @error class WithBothInitAndDefaultConst() {
-    shared new WithBothInitAndDefaultConst() {}
+    shared new withBothInitAndDefaultConst() {}
 }
 
 class WithNeitherInitNorConst() {} //TODO: should be an error
 
 class WithConst extends Basic {
-    shared new Const() {}
+    shared new const() {}
 }
 
 @error class WithNoConst extends Basic() {}
 @error class WithInit() extends Basic {}
 
 @error class WithConstAndParams() {
-    new Const() {}
+    new const() {}
 }
 
 class WithDefaultConst {
@@ -32,12 +32,12 @@ class ExtendsWithConstBroken extends WithConst {
 }
 
 class ExtendsWithConstOk extends WithConst {
-    shared new () extends Const() {}
+    shared new () extends const() {}
 }
 
 class WithConstAndDefaultConst {
     shared new () {}
-    new Const() {}
+    new const() {}
 }
 
 class WithAttributes {
@@ -49,7 +49,7 @@ class WithAttributes {
         count = 0;
         init = count;
     }
-    new ConstWithParameter(Integer initial) {
+    new constWithParameter(Integer initial) {
         count = initial;
         init = initial;
     }
@@ -70,7 +70,7 @@ class WithSharedAttributes {
         count = 0;
         init = count;
     }
-    new ConstWithParameter(Integer initial) {
+    new constWithParameter(Integer initial) {
         count = initial;
         init = initial;
     }
@@ -89,7 +89,7 @@ class BrokenWithAttributes {
     shared new () {
         init = 0;
     }
-    new ConstWithParameter(Integer initial) {
+    new constWithParameter(Integer initial) {
         count = initial;
     }
     void inc() {
@@ -107,7 +107,7 @@ class BrokenWithSharedAttributes {
     shared new () {
         init = 0;
     }
-    new ConstWithParameter(Integer initial) {
+    new constWithParameter(Integer initial) {
         count = initial;
     }
     shared void inc() {
@@ -126,7 +126,7 @@ class WithAttributesAndMisplacedStatement {
         count = 0;
         init = count;
     }
-    new ConstWithParameter(Integer initial) {
+    new constWithParameter(Integer initial) {
         count = initial;
         init = initial;
     }
@@ -143,7 +143,7 @@ abstract class WithSplitInitializer {
     shared String name;
     shared Float x;
     shared new() { x=0.0; }
-    shared new New() { x=1.0; }
+    shared new create() { x=1.0; }
     name = "Gavin";
     Integer count = 1;
 }
@@ -159,7 +159,7 @@ class WithAttributesAndMispacedUsage {
         count = 0;
         init = count;
     }
-    new ConstWithParameter(Integer initial) {
+    new constWithParameter(Integer initial) {
         @error print(init);
         count = initial;
         init = initial;
@@ -173,13 +173,13 @@ class WithAttributesAndMispacedUsage {
 }
 
 class Alias1() => WithDefaultConst();
-class Alias2() => WithConst.Const();
+class Alias2() => WithConst.const();
 @error class BrokenAlias1() => WithConst();
 @error class BrokenAlias2() => WithConst;
 @error class AliasWithNoParams => WithNeitherInitNorConst();
 
 class Super {
-    shared new New() {}
+    shared new create() {}
 }
 
 class Broken extends Super {
@@ -187,20 +187,20 @@ class Broken extends Super {
 }
 
 class MoreBroken extends Super {
-    @error new Broken() extends Basic() {}
+    @error new broken() extends Basic() {}
 }
 
 class Sub1 extends Super {
-    new New() extends Super.New() {}
+    new create() extends Super.create() {}
 }
 class BrokenSub1 extends Super {
-    @error new New() extends Super.New {}
+    @error new create() extends Super.create {}
 }
 
-class Sub2() extends Super.New() {}
-@error class BrokenSub2() extends Super.New {}
+class Sub2() extends Super.create() {}
+@error class BrokenSub2() extends Super.create {}
 
-class Alias() => Super.New();
+class Alias() => Super.create();
 
 class Sub3() extends Alias() {}
 class Sub4 extends Alias {
@@ -218,36 +218,36 @@ shared class SharedWithConstructor {
 }
 
 abstract class AbstractWithConstructor {
-    shared new ConstructorForAbstract() {}
+    shared new constructorForAbstract() {}
 }
 
 class InheritsAbstractWithConstructor1() 
-        extends AbstractWithConstructor.ConstructorForAbstract() {
+        extends AbstractWithConstructor.constructorForAbstract() {
 }
 
 class InheritsAbstractWithConstructor2 
         extends AbstractWithConstructor {
-    shared new Constructor() extends ConstructorForAbstract() {}
+    shared new constructor() extends constructorForAbstract() {}
 }
 
 void testRefs<T>() {
     @error value val1 = WithConst;
     @error value val2 = T;
     @error value val3 = Identifiable;
-    @error value val4 = AbstractWithConstructor.ConstructorForAbstract;
+    @error value val4 = AbstractWithConstructor.constructorForAbstract;
     
     @type:"InheritsAbstractWithConstructor1" 
     value new1 = InheritsAbstractWithConstructor1();
     
     @type:"InheritsAbstractWithConstructor2" 
-    value new2 = InheritsAbstractWithConstructor2.Constructor();
+    value new2 = InheritsAbstractWithConstructor2.constructor();
 }
 
 shared class C<out X> {
     shared new ({X*} items) {}
     shared class B<out Y> {
         shared new (@error [X*] items) {}
-        shared new Other([Y*] items) {}
+        shared new other([Y*] items) {}
     }
 }
 
@@ -259,14 +259,14 @@ shared class Subtype extends Supertype {
     Integer xsub = 1;
     shared Integer ysub = 1;
     
-    @error shared new Subtype() extends Supertype(xsub) {}
-    @error shared new New() extends Supertype(ysub) {}
-    @error shared new Extra() extends Supertype(ysub) {}
+    @error shared new subtype() extends Supertype(xsub) {}
+    @error shared new create() extends Supertype(ysub) {}
+    @error shared new extra() extends Supertype(ysub) {}
 }
 
 class WithDupeConstructor {
-    new Dupe() {}
-    @error new Dupe(String string) {}
+    new dupe() {}
+    @error new dupe(String string) {}
 }
 class WithDupeDefaultConstructor {
     shared new () {}
@@ -284,7 +284,7 @@ shared class Thing {
         this.name = name;
     }
     
-    sealed shared new Another(String name) {
+    sealed shared new another(String name) {
         this.name = name;
     }
 }
@@ -292,11 +292,11 @@ shared class Thing {
 shared class WithPartialConstructor {
     Float length;
     String name;
-    abstract new WithLength(Float x, Float y) {
+    abstract new withLength(Float x, Float y) {
         length = (x^2+y^2)^0.5;
     }
-    shared new WithNameAndCoords(String name, Float x, Float y) 
-            extends WithLength(x, y) {
+    shared new withNameAndCoords(String name, Float x, Float y) 
+            extends withLength(x, y) {
         this.name = name;
     }
     string = "``name``:``length``";
@@ -305,12 +305,12 @@ shared class WithPartialConstructor {
 shared class WithNonPartialConstructorDelegation {
     Float length;
     String name;
-    new WithLengthAndName(Float x, Float y, String name) {
+    new withLengthAndName(Float x, Float y, String name) {
         length = (x^2+y^2)^0.5;
         this.name = name;
     }
-    shared new WithNameAndCoords(String name, Float x, Float y) 
-            extends WithLengthAndName(x, y, name) {}
+    shared new withNameAndCoords(String name, Float x, Float y) 
+            extends withLengthAndName(x, y, name) {}
     string = "``name``:``length``";
 }
 
@@ -321,7 +321,7 @@ shared class WithDefaultConstructorDelegation {
         length = (x^2+y^2)^0.5;
         this.name = name;
     }
-    shared new WithNameAndCoords(String name, Float x, Float y) 
+    shared new withNameAndCoords(String name, Float x, Float y) 
             extends WithDefaultConstructorDelegation(x, y, name) {}
     string = "``name``:``length``";
 }
@@ -329,65 +329,65 @@ shared class WithDefaultConstructorDelegation {
 shared class WithBrokenPartialConstructor {
     Float length;
     String name;
-    abstract new WithLength(Float x, Float y) {
+    abstract new withLength(Float x, Float y) {
         //length = (x^2+y^2)^0.5;
     }
-    @error shared abstract new WithBrokenLength(Float x, Float y) {
+    @error shared abstract new withBrokenLength(Float x, Float y) {
         length = (x^2+y^2)^0.5;
     }
-    shared new WithNameAndCoords(String name, Float x, Float y) 
-            extends WithLength(x, y) {
+    shared new withNameAndCoords(String name, Float x, Float y) 
+            extends withLength(x, y) {
         this.name = name;
     }
     @error string = "``name``:``length``";
-    @error print(WithLength(1.0, 2.0));
+    @error print(withLength(1.0, 2.0));
 }
 
 class WithBrokenDelegation<Element> {
     
     shared new(){}
     
-    @error shared new Foo(Element f) 
+    @error shared new foo(Element f) 
             extends WithBrokenDelegation<Integer>(){} 
     
-    shared new Foo0(Element f) 
+    shared new foo0(Element f) 
             extends WithBrokenDelegation<Element>(){} 
     
-    shared new Baz(){}
+    shared new baz(){}
     
-    @error shared new Bar(Element f) 
-            extends WithBrokenDelegation<Integer>.Baz(){}
+    @error shared new bar(Element f) 
+            extends WithBrokenDelegation<Integer>.baz(){}
     
-    shared new Bar0(Element f) 
-            extends WithBrokenDelegation<Element>.Baz(){} 
+    shared new bar0(Element f) 
+            extends WithBrokenDelegation<Element>.baz(){} 
 }
 
 class WithInnerClassExtendingPartialConstructor {
-    abstract new Partial() {}   
-    @error shared class Inner() extends Partial() {}
+    abstract new partial() {}   
+    @error shared class Inner() extends partial() {}
 }
 
 class Foobar {
-    abstract new Partial() {}
-    new New() {}
-    @error class First() => Foobar.Partial();
-    @error shared class Second() => Foobar.New();
+    abstract new partial() {}
+    new create() {}
+    @error class First() => Foobar.partial();
+    @error shared class Second() => Foobar.create();
 }
 
 class WithMethod {
     shared void accept(Float x);
-    shared new New1() {
+    shared new new1() {
         accept(Float x) => print(x);
     }
-    shared new New2(void accept(Float x)) {
+    shared new new2(void accept(Float x)) {
         this.accept = accept;
     }
 }
 
 void testWithMethod() {
-    WithMethod.New1()
+    WithMethod.new1()
             .accept(1.0);
-    WithMethod.New2((x) => print("hello " + x.string))
+    WithMethod.new2((x) => print("hello " + x.string))
             .accept(3.0);
 }
 

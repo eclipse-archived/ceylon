@@ -882,8 +882,8 @@ constructor returns [Constructor declaration]
     : NEW
       { $declaration = new Constructor($NEW); }
       (
-        typeName
-        { $declaration.setIdentifier($typeName.identifier); }
+        memberNameDeclaration
+        { $declaration.setIdentifier($memberNameDeclaration.identifier); }
       )?
       (
         parameters
@@ -1042,7 +1042,7 @@ packageQualifiedClass returns [SimpleType type, ExtendedTypeExpression expressio
               qt.setOuterType($type);
               qt.setEndToken($m2); 
               $type=qt; }
-            t2=typeNameWithArguments
+            t2=memberNameWithArguments
             { if ($t2.identifier!=null) {
                 qt.setEndToken(null);
                 qt.setIdentifier($t2.identifier);
@@ -1074,7 +1074,7 @@ unqualifiedClass returns [SimpleType type, ExtendedTypeExpression expression]
           qt.setEndToken($m3); 
           $type=qt; }
         (
-          t3=typeNameWithArguments
+          t3=memberNameWithArguments
           { if ($t3.identifier!=null) {
               qt.setEndToken(null);
               qt.setIdentifier($t3.identifier);
@@ -1085,6 +1085,14 @@ unqualifiedClass returns [SimpleType type, ExtendedTypeExpression expression]
             $expression.setExtendedType($type); }
         )?
       )?
+    | t4=memberNameWithArguments
+      { bt = new BaseType(null);
+        bt.setIdentifier($t4.identifier);
+        if ($t4.typeArgumentList!=null)
+            bt.setTypeArgumentList($t4.typeArgumentList);
+        $type=bt; 
+        $expression = new ExtendedTypeExpression(null);
+        $expression.setExtendedType($type); }
     ;
 
 superQualifiedClass returns [SimpleType type, ExtendedTypeExpression expression]
@@ -1104,6 +1112,16 @@ superQualifiedClass returns [SimpleType type, ExtendedTypeExpression expression]
           }
           if ($t4.typeArgumentList!=null)
             qt.setTypeArgumentList($t4.typeArgumentList);
+          $expression = new ExtendedTypeExpression(null);
+          $expression.setExtendedType($type); }
+      |
+        t5=memberNameWithArguments 
+        { if ($t5.identifier!=null) {
+            qt.setEndToken(null);
+            qt.setIdentifier($t5.identifier);
+          }
+          if ($t5.typeArgumentList!=null)
+            qt.setTypeArgumentList($t5.typeArgumentList);
           $expression = new ExtendedTypeExpression(null);
           $expression.setExtendedType($type); }
       )?
@@ -1467,10 +1485,11 @@ declaration returns [Declaration declaration]
       { $declaration=$inferredAttributeDeclaration.declaration; }
     | typedMethodOrAttributeDeclaration
       { $declaration=$typedMethodOrAttributeDeclaration.declaration; }
-    | (NEW LIDENTIFIER) => enumeratedObject
-      { $declaration=$enumeratedObject.declaration; }
-    | constructor
+    | (NEW (LIDENTIFIER|UIDENTIFIER)? LPAREN) => 
+      constructor
       { $declaration=$constructor.declaration; }
+    | enumeratedObject
+      { $declaration=$enumeratedObject.declaration; }
     /*| { displayRecognitionError(getTokenNames(), 
               new MismatchedTokenException(CLASS_DEFINITION, input)); }
       SEMICOLON
@@ -3502,6 +3521,16 @@ typeNameWithArguments returns [Identifier identifier,
                                TypeArgumentList typeArgumentList]
     : typeName
       { $identifier = $typeName.identifier; } 
+      (
+        typeArguments
+        { $typeArgumentList = $typeArguments.typeArgumentList; }
+      )?
+    ;
+    
+memberNameWithArguments returns [Identifier identifier, 
+                                 TypeArgumentList typeArgumentList]
+    : memberName
+      { $identifier = $memberName.identifier; } 
       (
         typeArguments
         { $typeArgumentList = $typeArguments.typeArgumentList; }

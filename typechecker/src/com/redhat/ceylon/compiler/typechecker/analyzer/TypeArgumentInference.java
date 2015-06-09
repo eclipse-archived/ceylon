@@ -5,6 +5,7 @@ import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.getMa
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.getTupleType;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.getUnspecifiedParameter;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.involvesTypeParams;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.isConstructor;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.isGeneric;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.spreadType;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.addToIntersection;
@@ -27,7 +28,6 @@ import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.NamedArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
-import com.redhat.ceylon.model.typechecker.model.Constructor;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
 import com.redhat.ceylon.model.typechecker.model.Functional;
@@ -706,7 +706,7 @@ public class TypeArgumentInference {
     private static Type getDeclaringSupertype(
             Type qualifyingType,
             Declaration invoked) {
-        if (invoked instanceof Constructor) {
+        if (isConstructor(invoked)) {
             Scope container = invoked.getContainer();
             if (container instanceof Declaration) {
                 invoked = (Declaration) container;

@@ -79,10 +79,10 @@ class IncompleteBool2 of true|false {
     shared new false {
         string = "false";
     }
-    @error new New() { string=""; }
+    @error new create() { string=""; }
 }
 
-@error class IncompleteBool3 of true|false|New {
+@error class IncompleteBool3 of true|false|create {
     shared actual String string;
     shared new true {
         string = "true";
@@ -90,7 +90,7 @@ class IncompleteBool2 of true|false {
     shared new false {
         string = "false";
     }
-    @error new New() { string=""; }
+    @error new create() { string=""; }
 }
 
 class UnidentifiableBool 
@@ -155,28 +155,28 @@ class ExtendingObjectWithSingleton extends Object {
 
 class ExtendingObjectWithSingletonViaConstructor extends Object {
     shared Integer count;
-    new New() extends Object() {
+    new create() extends Object() {
         count = 0;
     }
-    shared new instance extends New() {}
+    shared new instance extends create() {}
     equals(Object that) => true;
     hash => 1;
 }
 
 class ExtendingObjectWithConstructorViaConstructor extends Object {
     shared Integer count;
-    new New() extends Object() {
+    new create() extends Object() {
         count = 0;
     }
-    shared new Instance() extends New() {}
+    shared new instance() extends create() {}
     equals(Object that) => true;
     hash => 1;
 }
 
 class ExtendingObjectWithSingletonViaPartialConstructor extends Object {
     shared Integer count;
-    abstract new New() extends Object() {}
-    shared new instance extends New() {
+    abstract new create() extends Object() {}
+    shared new instance extends create() {
         count = 0;
     }
     equals(Object that) => true;
@@ -185,8 +185,8 @@ class ExtendingObjectWithSingletonViaPartialConstructor extends Object {
 
 class ExtendingObjectWithBrokenSingletonViaPartialConstructor extends Object {
     @error shared Integer count;
-    abstract new New() extends Object() {}
-    shared new instance extends New() {}
+    abstract new create() extends Object() {}
+    shared new instance extends create() {}
     equals(Object that) => true;
     hash => 1;
 }
@@ -221,7 +221,7 @@ class OuterClass() {
 class BoolWithNew1 of true|false {
     shared new true {}
     shared new false {}
-    @error shared new New() {}
+    @error shared new create() {}
     BoolWithNew1 bool = true;
     switch(bool)
     case (BoolWithNew1.true) {}
@@ -231,7 +231,7 @@ class BoolWithNew1 of true|false {
 class BoolWithNew2 {
     shared new true {}
     shared new false {}
-    shared new New() {}
+    shared new create() {}
     BoolWithNew2 bool = true;
     @error switch(bool)
     case (BoolWithNew2.true) {}
@@ -246,11 +246,11 @@ interface InterFace {
 
 class BoolWithDelegation of true|false {
     shared actual String string;
-    abstract new WithName(String name) {
+    abstract new withName(String name) {
         string => name;
     }
-    shared new true extends WithName("true") {}
-    shared new false extends WithName("false") {}
+    shared new true extends withName("true") {}
+    shared new false extends withName("false") {}
 }
 
 void switchBoolWithDelegation(BoolWithDelegation bool) {

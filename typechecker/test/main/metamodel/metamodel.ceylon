@@ -230,12 +230,12 @@ void test<T>() {
     @type:"Class<LocalClass,Nothing>" value localClass = `LocalClass`;
 
     class OtherLocalClass {
-        shared new New() {}
+        shared new create() {}
         shared new instance {}
         shared String fun() => "hello"; 
     }
     @type:"Class<OtherLocalClass,Nothing>" value otherLocalClass = `OtherLocalClass`;
-    @type:"Constructor<OtherLocalClass,Nothing>" value otherLocalClassCtor = `OtherLocalClass.New`;
+    @type:"Constructor<OtherLocalClass,Nothing>" value otherLocalClassCtor = `OtherLocalClass.create`;
     @type:"Value<OtherLocalClass,Nothing>" value otherLocalClassSingCtor = `OtherLocalClass.instance`;
     @type:"Method<OtherLocalClass,String,[]>" value otherLocalClassFun = `OtherLocalClass.fun`;
     
@@ -306,12 +306,12 @@ class Foo<S>() {
 
 class Bar {
     shared new () {}
-    shared new Baz(String string) {}
+    shared new baz(String string) {}
     shared new instance {}
 }
 
 class Baz {
-    shared new Baz(String string) {}
+    shared new baz(String string) {}
     shared new instance {}
 }
 
@@ -383,16 +383,16 @@ void meta() {
     @type:"Class<Baz,Nothing>" value cd16 = `Baz`;
     @type:"ConstructorDeclaration" value cd9 = `new Bar`;
     //@type:"ConstructorDeclaration" value cd10a = `new Bar.Bar`;
-    @type:"ConstructorDeclaration" value cd10b = `new Bar.Baz`;
+    @type:"ConstructorDeclaration" value cd10b = `new Bar.baz`;
     @type:"ValueDeclaration" value cd10c = `value Bar.instance`;
-    @type:"ConstructorDeclaration" value cd10d = `new Baz.Baz`;
+    @type:"ConstructorDeclaration" value cd10d = `new Baz.baz`;
     @type:"ValueDeclaration" value cd10e = `value Baz.instance`;
-    @error value cd11 = `class Bar.Baz`;
-    @error value cd12 = `interface Bar.Baz`;
+    @error value cd11 = `class Bar.baz`;
+    @error value cd12 = `interface Bar.baz`;
     @error value cd15 =  `new Bar.instance`;
-    @type:"Constructor<Bar,Tuple<String,String,Empty>>" value cd13 = `Bar.Baz`;
+    @type:"Constructor<Bar,Tuple<String,String,Empty>>" value cd13 = `Bar.baz`;
     @type:"Value<Bar,Nothing>" value cd17 = `Bar.instance`;
-    @type:"Constructor<Baz,Tuple<String,String,Empty>>" value cd18 = `Baz.Baz`;
+    @type:"Constructor<Baz,Tuple<String,String,Empty>>" value cd18 = `Baz.baz`;
     @type:"Value<Baz,Nothing>" value cd19 = `Baz.instance`;
     @error value cd14 = `new Foo`;
 }

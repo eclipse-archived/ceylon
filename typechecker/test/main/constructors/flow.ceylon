@@ -3,12 +3,12 @@ class Foobar1 {
     shared Integer c;    
     c = 3;
     
-    shared new Foo(Integer val) {
+    shared new foo(Integer val) {
         a = val;
         return;        
     }
     
-    shared new Bar(Integer val) {
+    shared new bar(Integer val) {
         print(c);
         a = val;
     }
@@ -24,13 +24,13 @@ class Foobar2 {
     @error return;
     
     @error
-    shared new Foo(Integer val) {
+    shared new foo(Integer val) {
         a = val;
         return;        
     }
     
     @error
-    shared new Bar(Integer val) {
+    shared new bar(Integer val) {
         print(c);
         a = val;
     }
@@ -42,12 +42,12 @@ class Foobar3 {
     shared Integer c;    
     c = 3;
     
-    shared new Foo(Integer val) {
+    shared new foo(Integer val) {
         @error return;
         @error a = val;
     }
     
-    shared new Bar(Integer val) {
+    shared new bar(Integer val) {
         print(c);
         a = val;
     }

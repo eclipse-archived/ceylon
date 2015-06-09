@@ -4,22 +4,22 @@ class ClassContainer() {
     
     shared object memberObject {
         shared class Ctor {
-            shared new Ctor() {}
-            shared new Other() {}
+            shared new ctor() {}
+            shared new other() {}
         }
     }
     
     shared void test(ClassContainer other){
         MemberClassConstructor<\ImemberObject,\ImemberObject.Ctor,[]> ctorCtor 
-                = `\ImemberObject.Ctor.Ctor`;
+                = `\ImemberObject.Ctor.\Ictor`;
         print(ctorCtor(other.memberObject)());
         MemberClassConstructor<\ImemberObject,\ImemberObject.Ctor,[]> ctorOther
-                = `\ImemberObject.Ctor.Other`;
+                = `\ImemberObject.Ctor.\Iother`;
         print(ctorOther(other.memberObject)());
         @error:"constructor is not a type" 
-        MemberClassConstructor<\ImemberObject,\ImemberObject.Ctor.Ctor,[]> ctorCtor2;
+        MemberClassConstructor<\ImemberObject,\ImemberObject.Ctor.\Ictor,[]> ctorCtor2;
         @error:"constructor is not a type" 
-        MemberClassConstructor<\ImemberObject,\ImemberObject.Ctor.Other,[]> ctorOther2;
+        MemberClassConstructor<\ImemberObject,\ImemberObject.Ctor.\Iother,[]> ctorOther2;
     }
     
 }

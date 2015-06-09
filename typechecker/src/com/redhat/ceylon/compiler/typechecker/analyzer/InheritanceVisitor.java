@@ -904,7 +904,7 @@ public class InheritanceVisitor extends Visitor {
     @Override
     public void visit(Tree.Constructor that) {
         super.visit(that);
-        Constructor c = that.getDeclarationModel();
+        Constructor c = that.getConstructor();
         Scope container = 
                 c.getContainer();
         if (container instanceof Class) {

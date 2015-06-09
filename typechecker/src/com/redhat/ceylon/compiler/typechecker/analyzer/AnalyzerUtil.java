@@ -27,6 +27,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.TypeVariance;
 import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.Constructor;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
+import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
 import com.redhat.ceylon.model.typechecker.model.Generic;
 import com.redhat.ceylon.model.typechecker.model.Interface;
 import com.redhat.ceylon.model.typechecker.model.Module;
@@ -152,9 +153,10 @@ public class AnalyzerUtil {
         if (type!=null) {
             TypeDeclaration typeDeclaration = 
                     type.getDeclaration();
-            if (typeDeclaration instanceof Class &&
+            if ((typeDeclaration instanceof Class ||
+                typeDeclaration instanceof Constructor) &&
                     typeDeclaration.isAnonymous() &&
-                    isNamed(name,typeDeclaration)) {
+                    isNamed(name, typeDeclaration)) {
                 return typeDeclaration;
             }
         }
@@ -1129,6 +1131,14 @@ public class AnalyzerUtil {
             }
         }
         return type;
+    }
+
+    static boolean isConstructor(Declaration member) {
+        return member instanceof Constructor ||
+                member instanceof FunctionOrValue && 
+                    ((FunctionOrValue) member)
+                        .getTypeDeclaration() 
+                            instanceof Constructor;
     }
 
 }

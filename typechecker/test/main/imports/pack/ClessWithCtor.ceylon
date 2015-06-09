@@ -1,4 +1,4 @@
 shared class ClassWithCtor {
     shared new () {} 
-    shared new Other() {}
+    shared new other() {}
 }

@@ -1,20 +1,20 @@
-import constructors.p1 { Imported { New } }
+import constructors.p1 { Imported { create } }
 
 shared class Foo {
-    shared new New() {}
+    shared new create() {}
 }
 
 shared class Generic<T> {
-    shared new Broken(T t) {}
+    shared new broken(T t) {}
 }
 
 shared class Imported<T> {
-    shared new New(T t) {}
+    shared new create(T t) {}
     void method() {
         @type:"Imported<T>"
-        value gen = New(nothing);
+        value gen = create(nothing);
         @error
-        value oops = New("");
+        value oops = create("");
     }
 }
 

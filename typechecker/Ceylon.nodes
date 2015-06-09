@@ -147,7 +147,8 @@
     PARAMETER_LIST?
     DELEGATED_CONSTRUCTOR?
     BLOCK
-    Constructor declarationModel;)
+    Function declarationModel;
+    Constructor constructor;)
 
 ^(DELEGATED_CONSTRUCTOR
     SIMPLE_TYPE? type

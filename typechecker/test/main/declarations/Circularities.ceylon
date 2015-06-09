@@ -49,7 +49,7 @@ class Bad1WithCircularConstraints() satisfies CircularConstraints<Object,Object,
 class Bad2WithCircularConstraints() satisfies CircularConstraints<String,String,Object> {}
 
 @error class Circ satisfies Circ {
-    shared new Circ() {}  
+    shared new circ() {}  
 }
 
 alias Stt<T> => Sett<T>;

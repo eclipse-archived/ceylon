@@ -20,6 +20,7 @@ import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.getTy
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.getUnspecifiedParameter;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.inSameModule;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.involvesTypeParams;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.isConstructor;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.isGeneric;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.isIndirectInvocation;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.notAssignableMessage;
@@ -3256,28 +3257,8 @@ public class ExpressionVisitor extends Visitor {
                     resolveBaseTypeExpression(bte, true);
             if (type!=null) {
                 setArgumentParameters(that, type);
-                Type receivingType;
-                Scope scope = that.getScope();
-                if (type.isClassOrInterfaceMember() &&
-                        !type.isStaticallyImportable() &&
-                        !type.isDefinedInScope(scope)) {
-                    ClassOrInterface ci = 
-                            (ClassOrInterface) 
-                                type.getContainer();
-                    Type qualifyingType = 
-                            scope.getDeclaringType(type);
-                    List<Type> inferredArgs = 
-                            new TypeArgumentInference(unit)
-                                .getInferredTypeArgsForReference(
-                                        that, type, ci,
-                                        qualifyingType);
-                    receivingType = 
-                            ci.appliedType(null, 
-                                    inferredArgs);
-                }
-                else {
-                    receivingType = null;
-                }
+                Type receivingType = 
+                        getBaseReceivingType(that, type);
                 List<Type> typeArgs = 
                         getOrInferTypeArguments(that, type, 
                                 reference, receivingType);
@@ -3322,15 +3303,14 @@ public class ExpressionVisitor extends Visitor {
                     resolveBaseMemberExpression(bme, true);
             if (base!=null) {
                 setArgumentParameters(that, base);
-                Scope scope = that.getScope();
-                Type qualifyingType = 
-                        scope.getDeclaringType(base);
+                Type receivingType = 
+                        getBaseReceivingType(that, base);
                 List<Type> typeArgs = 
                         getOrInferTypeArguments(that, base, 
-                                reference, qualifyingType);
+                                reference, receivingType);
                 tas.setTypeModels(typeArgs);
                 visitBaseMemberExpression(bme, base, 
-                        typeArgs, tas);
+                        typeArgs, tas, receivingType);
             }
         }
         
@@ -3352,7 +3332,7 @@ public class ExpressionVisitor extends Visitor {
                 Tree.Primary primary = qme.getPrimary();
                 if (primary instanceof Tree.Package) {
                     visitBaseMemberExpression(qme, 
-                            member, typeArgs, tas);
+                            member, typeArgs, tas, null);
                 }
                 else {
                     visitQualifiedMemberExpression(qme, 
@@ -3360,6 +3340,30 @@ public class ExpressionVisitor extends Visitor {
                             tas);
                 }
             }
+        }
+    }
+
+    protected Type getBaseReceivingType(
+            Tree.InvocationExpression that,
+            Declaration dec) {
+        Scope scope = that.getScope();
+        if (dec.isClassOrInterfaceMember() &&
+                !dec.isStaticallyImportable() &&
+                !dec.isDefinedInScope(scope)) {
+            ClassOrInterface ci = 
+                    (ClassOrInterface) 
+                        dec.getContainer();
+            Type qualifyingType = 
+                    scope.getDeclaringType(dec);
+            List<Type> inferredArgs = 
+                    new TypeArgumentInference(unit)
+                        .getInferredTypeArgsForReference(
+                                that, dec, ci,
+                                qualifyingType);
+            return ci.appliedType(null, inferredArgs);
+        }
+        else {
+            return null;
         }
     }
 
@@ -5955,7 +5959,7 @@ public class ExpressionVisitor extends Visitor {
             if (typeArgs!=null) {
                 tal.setTypeModels(typeArgs);
                 visitBaseMemberExpression(that, member, 
-                        typeArgs, tal);
+                        typeArgs, tal, null);
                 //otherwise infer type arguments later
             }
             else {
@@ -6054,7 +6058,7 @@ public class ExpressionVisitor extends Visitor {
                 tal.setTypeModels(typeArgs);
                 if (primary instanceof Tree.Package) {
                     visitBaseMemberExpression(that, member, 
-                            typeArgs, tal);
+                            typeArgs, tal, null);
                 }
                 else {
                     visitQualifiedMemberExpression(that, 
@@ -6459,13 +6463,6 @@ public class ExpressionVisitor extends Visitor {
         }
     }
 
-    private static boolean isConstructor(Declaration member) {
-        return member instanceof Constructor ||
-                member instanceof Value && 
-                    ((Value) member).getTypeDeclaration() 
-                            instanceof Constructor;
-    }
-    
     private Type getStaticReferenceType(Type type, Type rt) {
         return appliedType(unit.getCallableDeclaration(), type,
                 appliedType(unit.getTupleDeclaration(), rt, rt, 
@@ -6476,12 +6473,16 @@ public class ExpressionVisitor extends Visitor {
             Tree.StaticMemberOrTypeExpression that, 
             TypedDeclaration member, 
             List<Type> typeArgs, 
-            Tree.TypeArguments tal) {
+            Tree.TypeArguments tal, 
+            Type receivingType) {
         if (acceptsTypeArguments(member, null, typeArgs, 
                 tal, that)) {
             Type outerType = 
                     that.getScope()
                         .getDeclaringType(member);
+            if (outerType==null) {
+                outerType = receivingType;
+            }
             TypedReference pr = 
                     member.appliedTypedReference(outerType, 
                             typeArgs, that.getAssigned());
@@ -7085,14 +7086,14 @@ public class ExpressionVisitor extends Visitor {
             TypeDeclaration baseType, 
             List<Type> typeArgs, 
             Tree.TypeArguments tal, 
-            Type qt) {
+            Type receivingType) {
         if (acceptsTypeArguments(baseType, null, typeArgs, 
                 tal, that)) {
             Type outerType = 
                     that.getScope()
                         .getDeclaringType(baseType);
             if (outerType==null) {
-                outerType = qt;
+                outerType = receivingType;
             }
             Type type = 
                     baseType.appliedType(outerType, 
@@ -8419,7 +8420,7 @@ public class ExpressionVisitor extends Visitor {
     
     @Override 
     public void visit(Tree.Constructor that) {
-        Constructor c = that.getDeclarationModel();
+        Constructor c = that.getConstructor();
         checkDelegatedConstructor(that.getDelegatedConstructor(), 
                 c, that);
         TypeDeclaration occ = enterConstructorDelegation(c);

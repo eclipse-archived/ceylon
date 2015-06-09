@@ -3,6 +3,7 @@ package com.redhat.ceylon.compiler.typechecker.analyzer;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.NO_TYPE_ARGS;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.getPackageTypeDeclaration;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.getTypeDeclaration;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.isConstructor;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.TypeVisitor.getTupleType;
 import static com.redhat.ceylon.compiler.typechecker.parser.CeylonLexer.SPECIFY;
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.buildAnnotations;
@@ -180,7 +181,7 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
             Declaration model,
             Tree.Identifier id) {
         if (id==null || id.isMissingToken()) {
-            if (model instanceof Constructor) {
+            if (that instanceof Tree.Constructor) {
                 return true;                
             }
             else {
@@ -770,9 +771,13 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
     @Override
     public void visit(Tree.Constructor that) {
         Constructor c = new Constructor();
+        c.setAnonymous(true);
+        Type at;
         if (scope instanceof Class) {
             Class clazz = (Class) scope;
-            c.setExtendedType(clazz.getType());
+            Type ot = clazz.getType();
+            c.setExtendedType(ot);
+            at = c.appliedType(ot, NO_TYPE_ARGS);
             clazz.setConstructors(true);
             if (clazz.isAnonymous()) {
                 that.addError("anonymous class may not have constructor: '" + 
@@ -781,10 +786,15 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
             
         }
         else {
+            at = null;
             that.addError("constructor declaration must occur directly in the body of a class");
         }
-        that.setDeclarationModel(c);
+        that.setConstructor(c);
         visitDeclaration(that, c);
+        Function f = new Function();
+        f.setType(at);
+        that.setDeclarationModel(f);
+        visitDeclaration(that, f);
         Scope o = enterScope(c);
         super.visit(that);
         exitScope(o);
@@ -796,9 +806,12 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
         }
         else {
             ParameterList model = 
-                    that.getParameterList().getModel();
+                    that.getParameterList()
+                        .getModel();
             model.setFirst(true);
             c.addParameterList(model);
+            //TODO: fix this
+            f.addParameterList(model);
         }
         if (that.getIdentifier()==null) {
             //default constructor
@@ -1669,8 +1682,17 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
             if (model instanceof Class) {
                 ((Class) model).setAbstract(true);
             }
-            else if (model instanceof Constructor) {
-                ((Constructor) model).setAbstract(true);
+            else if (isConstructor(model)) {
+                if (model instanceof Constructor) {
+                    //ignore for now
+                }
+                else if (model instanceof Function) {
+                    ((Constructor)((Function) model).getTypeDeclaration()).setAbstract(true);
+                }
+                else {
+                    that.addError("declaration is not a callable constructor, and may not be annotated abstract", 
+                            1800);
+                }
             }
             else {
                 that.addError("declaration is not a class, and may not be annotated abstract", 
@@ -1690,8 +1712,17 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
             if (model instanceof ClassOrInterface) {
                 ((ClassOrInterface) model).setSealed(true);
             }
-            else if (model instanceof Constructor) {
-                ((Constructor) model).setSealed(true);
+            else if (isConstructor(model)) {
+                if (model instanceof Constructor) {
+                    //ignore for now
+                }
+                else if (model instanceof Function) {
+                    ((Function) model).getTypeDeclaration().setSealed(true);
+                }
+                else {
+                    that.addError("declaration is not a callable constructor, and may not be annotated sealed", 
+                            1800);
+                }
             }
             else {
                 that.addError("declaration is not a class or interface, and may not be annotated sealed", 
