@@ -2212,7 +2212,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         constructor.setExtendedType(klass.getType());
         setDeclarationVisibilityAndDeprecation(constructor, ctor, ctor, classMirror, isCeylon);
         if (ctor.getAnnotation(CEYLON_ENUMERATED_ANNOTATION) != null) {
-            constructor.setAnonymous(true);
+//            constructor.setAnonymous(true);
             klass.setEnumerated(true);
         }
         setAnnotations(constructor, ctor);

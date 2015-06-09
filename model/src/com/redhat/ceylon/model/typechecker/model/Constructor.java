@@ -9,8 +9,7 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * A method. Note that a method must have
- * at least one parameter list.
+ * A constructor.
  *
  * @author Gavin King
  */
@@ -25,8 +24,11 @@ public class Constructor extends TypeDeclaration implements Functional {
     private List<Declaration> overloads;
     private List<Declaration> members = new ArrayList<Declaration>(3);
     private List<Annotation> annotations = new ArrayList<Annotation>(4);
-    private boolean anonymous;
     
+    public boolean isValueConstructor() {
+        return parameterList==null;
+    }
+
     @Override
     public boolean isAbstract() {
         return abstr;
@@ -235,14 +237,10 @@ public class Constructor extends TypeDeclaration implements Functional {
         }
         return "new " + toStringName() + params;
     }
-
-    public void setAnonymous(boolean anonymous) {
-        this.anonymous = anonymous;
-    }
     
     @Override
     public boolean isAnonymous() {
-        return anonymous;
+        return true;
     }
     
     @Override

@@ -46,11 +46,16 @@ public class Class extends ClassOrInterface implements Functional {
     public boolean isAnonymous() {
         return anonymous;
     }
-
+    
     public void setAnonymous(boolean anonymous) {
         this.anonymous = anonymous;
     }
-
+    
+    @Override
+    public boolean isObjectClass() {
+        return anonymous;
+    }
+    
     /**
      * Return true if we have are anonymous and have a name 
      * which is not system-generated. Currently only object 

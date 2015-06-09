@@ -91,6 +91,14 @@ public abstract class TypeDeclaration extends Declaration
     public boolean isFinal() {
     	return false;
     }
+    
+    public boolean isObjectClass() {
+        return false;
+    }
+
+    public boolean isValueConstructor() {
+        return false;
+    }
 
     @Override
     public List<TypeParameter> getTypeParameters() {
