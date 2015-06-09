@@ -392,38 +392,7 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
         if (name!=null) {
             if (model instanceof Setter) {
                 Setter setter = (Setter) model;
-                //a setter must have a matching getter
-                Tree.AnnotationList al = 
-                        that.getAnnotationList();
-                Declaration member = 
-                        getDirectMemberForBackend(
-                                model.getContainer(), name, 
-                                getNativeBackend(al, unit));
-                if (member==null) {
-                    that.addError("setter with no matching getter: '" + 
-                            name + "'");
-                }
-                else if (!(member instanceof Value)) {
-                    that.addError("setter name does not resolve to matching getter: '" + 
-                            name + "'");
-                }
-                else if (!((Value) member).isTransient() && 
-                        !isNativeHeader(member)) {
-                    that.addError("matching value is a reference or is forward-declared: '" + 
-                            name + "'");
-                }
-                else {
-                    Value getter = (Value) member;
-                    setter.setGetter(getter);
-                    if (getter.isVariable()) {
-                        that.addError("duplicate setter for getter: '" + 
-                                name + "'");
-                    }
-                    else {
-                        getter.setSetter(setter);
-                    }
-                    setter.setNativeBackend(getter.getNativeBackend());
-                }
+                checkGetterForSetter(that, setter, unit);
             }
             else {
                 // this isn't the correct scope for declaration
@@ -437,62 +406,35 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
                                     null, false);
                     if (member!=null && member!=model) {
                         boolean dup = false;
-                        boolean memberCanBeNative = 
-                                member instanceof Function || 
-                                member instanceof Value || 
-                                member instanceof Class;
-                        boolean modelCanBeNative = 
-                                model instanceof Function || 
-                                model instanceof Value || 
-                                model instanceof Class;
-                        if (member instanceof Function && 
-                            model instanceof Function &&
-                            scope instanceof ClassOrInterface) {
-                            //even though Ceylon does not 
-                            //officially support overloading,
-                            //we actually do let you overload
-                            //a method that is refining an
-                            //overloaded method inherited from
-                            //a Java superclass
-                            Function abstraction;
-                            Function method = (Function) member;
-                            Function newMethod = (Function) model;
-                            newMethod.setOverloaded(true);
-                            if (!method.isAbstraction()) {
-                                //create the "abstraction" 
-                                //for the overloaded method
-                                method.setOverloaded(true);
-                                abstraction = new Function();
-                                abstraction.setAbstraction(true);
-                                abstraction.setType(
-                                        new UnknownType(unit)
-                                            .getType());
-                                abstraction.setName(name);
-                                abstraction.setShared(true);
-                                abstraction.setActual(true);
-                                abstraction.setContainer(scope);
-                                abstraction.setScope(scope);
-                                abstraction.setUnit(unit);
-                                abstraction.initOverloads(
-                                        method, newMethod);
-                                scope.addMember(abstraction);
-                            }
-                            else {
-                                abstraction = method;
-                                abstraction.getOverloads()
-                                    .add(model);
-                            }
+                        boolean possibleOverloadedMethod = 
+                                member instanceof Function && 
+                                model instanceof Function &&
+                                !(that instanceof Tree.Constructor ||
+                                  that instanceof Tree.Enumerated) &&
+                                scope instanceof ClassOrInterface;
+                        if (possibleOverloadedMethod) {
+                            // anticipate that it might be
+                            // an overloaded method 
+                            // overriding a method inherited 
+                            // from a Java superclass - then
+                            // further checking happens in
+                            // RefinementVisitor
+                            initOverload(model, member, 
+                                    scope, unit);
                             dup = true;
                         }
-                        else if (memberCanBeNative && 
-                                modelCanBeNative &&
-                                model.isNative()) {
-                            // Just to make sure no error gets reported
+                        else if (canBeNative(member) && 
+                                 canBeNative(model) &&
+                                 model.isNative()) {
+                            // just to make sure no error 
+                            // gets reported
                         }
                         else {
                             dup = true;
-                            that.addError("duplicate declaration name: '" + 
-                                    name + "'");
+                            if (!model.isAnonymous()) {
+                                that.addError("duplicate declaration name: '" + 
+                                        name + "'");
+                            }
                         }
                         if (dup) {
                             unit.getDuplicateDeclarations()
@@ -517,6 +459,90 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
                         .add(defaultConstructor);
                 }
             }
+        }
+    }
+
+    protected static boolean canBeNative(Declaration member) {
+        return member instanceof Function || 
+        member instanceof Value || 
+        member instanceof Class;
+    }
+
+    private static void checkGetterForSetter(Tree.Declaration that,
+            Setter setter, Unit unit) {
+        //a setter must have a matching getter
+        Tree.AnnotationList al = 
+                that.getAnnotationList();
+        String name = setter.getName();
+        Declaration member = 
+                getDirectMemberForBackend(
+                        setter.getContainer(), name, 
+                        getNativeBackend(al, unit));
+        if (member==null) {
+            that.addError("setter with no matching getter: '" + 
+                    name + "'");
+        }
+        else if (!(member instanceof Value)) {
+            that.addError("setter name does not resolve to matching getter: '" + 
+                    name + "'");
+        }
+        else if (!((Value) member).isTransient() && 
+                !isNativeHeader(member)) {
+            that.addError("matching value is a reference or is forward-declared: '" + 
+                    name + "'");
+        }
+        else {
+            Value getter = (Value) member;
+            setter.setGetter(getter);
+            if (getter.isVariable()) {
+                that.addError("duplicate setter for getter: '" + 
+                        name + "'");
+            }
+            else {
+                getter.setSetter(setter);
+            }
+            setter.setNativeBackend(getter.getNativeBackend());
+        }
+    }
+
+    private static void initOverload(
+            Declaration model, Declaration member,
+            Scope scope, Unit unit) {
+        //even though Ceylon does not 
+        //officially support overloading,
+        //we actually do let you overload
+        //a method that is refining an
+        //overloaded method inherited from
+        //a Java superclass
+        Function abstraction;
+        Function method = 
+                (Function) member;
+        Function newMethod = 
+                (Function) model;
+        newMethod.setOverloaded(true);
+        if (!method.isAbstraction()) {
+            //create the "abstraction" 
+            //for the overloaded method
+            method.setOverloaded(true);
+            abstraction = new Function();
+            abstraction.setAbstraction(true);
+            abstraction.setType(
+                    new UnknownType(unit)
+                        .getType());
+            abstraction.setName(model.getName());
+            abstraction.setShared(true);
+            abstraction.setActual(true);
+            abstraction.setContainer(scope);
+            abstraction.setScope(scope);
+            abstraction.setUnit(unit);
+            abstraction.initOverloads(
+                    method, newMethod);
+            scope.addMember(abstraction);
+        }
+        else {
+            abstraction = method;
+            abstraction.getOverloads()
+                .add(model);
         }
     }
 
