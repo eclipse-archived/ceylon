@@ -8861,6 +8861,7 @@ public class ExpressionVisitor extends Visitor {
         else {
             outerType = null;
         }
+        boolean constructor = isConstructor(result);
         if (result instanceof Function) {
             Function method = (Function) result;
             if (method.isAbstraction()) {
@@ -8879,12 +8880,18 @@ public class ExpressionVisitor extends Visitor {
                     }
                     if (acceptsTypeArguments(method,
                             outerType, typeArgs, tal, that)) {
-                        TypedReference pr = 
-                                outerType==null ? 
-                                        method.appliedTypedReference(null, typeArgs) : 
-                                        outerType.getTypedMember(method, typeArgs);
-                                that.setTarget(pr);
-                                that.setTypeModel(unit.getFunctionMetatype(pr));
+                        TypedReference pr;
+                        if (outerType==null) {
+                            pr = method.appliedTypedReference(null, typeArgs);
+                        }
+                        else {
+                            pr = outerType.getTypedMember(method, typeArgs);
+                        }
+                        that.setTarget(pr);
+                        Type metatype = constructor ?
+                                unit.getConstructorMetatype(pr) :
+                                unit.getFunctionMetatype(pr);
+                        that.setTypeModel(metatype);
                     }
                 }
                 else {

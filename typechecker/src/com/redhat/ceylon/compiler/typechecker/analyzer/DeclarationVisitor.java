@@ -809,9 +809,11 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
                     that.getParameterList()
                         .getModel();
             model.setFirst(true);
-            c.addParameterList(model);
-            //TODO: fix this
-            f.addParameterList(model);
+            if (model!=null) {
+                c.addParameterList(model);
+                //TODO: fix this
+                f.addParameterList(model);
+            }
         }
         if (that.getIdentifier()==null) {
             //default constructor

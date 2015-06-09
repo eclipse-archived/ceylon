@@ -300,11 +300,11 @@ public class AnnotationVisitor extends Visitor {
     @Override 
     public void visit(Tree.Constructor that) {
         super.visit(that);
-        TypeDeclaration c = that.getConstructor();
+        Function f = that.getDeclarationModel();
         Unit unit = that.getUnit();
         checkAnnotations(that.getAnnotationList(),
                 unit.getConstructorDeclarationType(),
-                unit.getConstructorMetatype(c.getType()));
+                unit.getConstructorMetatype(f.getTypedReference()));
     }
     
     @Override 
