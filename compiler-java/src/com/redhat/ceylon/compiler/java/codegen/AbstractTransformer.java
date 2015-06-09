@@ -4182,6 +4182,9 @@ public abstract class AbstractTransformer implements Transformation {
                 // or parhaps a A|B|C|D and we're testing for C|D
                 java.util.List<Type> cases = expressionType.getCaseTypes();
                 if (cases != null) {
+                    java.util.List<Type> copiedCases = new ArrayList<>(cases.size());
+                    copiedCases.addAll(cases);
+                    cases = copiedCases;
                     if ((testedType.isClassOrInterface()
                             || testedType.isTypeParameter())
                             && cases.remove(testedType)) { 
