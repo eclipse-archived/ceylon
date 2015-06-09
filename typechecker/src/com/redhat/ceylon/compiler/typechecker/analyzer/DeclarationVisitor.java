@@ -132,23 +132,19 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
             Declaration model, boolean checkDupe) {
         visitElement(that, model);
         
-        Declaration modelToAdd = model;
         Tree.Identifier id = that.getIdentifier();
         if (setModelName(that, model, id)) {
             if (checkDupe) {
-                modelToAdd = 
-                        checkForNativeAnnotation(that, 
-                                model, scope);
+                checkForNativeAnnotation(that, 
+                        model, scope);
                 checkForDuplicateDeclaration(that, 
                         model, scope);
             }
         }
         //that.setDeclarationModel(model);
-        if (modelToAdd != null) {
-            unit.addDeclaration(modelToAdd);
-            Scope sc = getContainer(that);
-            sc.addMember(modelToAdd);
-        }
+        unit.addDeclaration(model);
+        Scope sc = getContainer(that);
+        sc.addMember(model);
         
         handleDeclarationAnnotations(that, model);        
         
@@ -194,11 +190,9 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
         }
     }
     
-    private Declaration checkForNativeAnnotation(
+    private void checkForNativeAnnotation(
             Tree.Declaration that, 
             Declaration model, Scope scope) {
-        Declaration modelToAdd = model;
-        
         Unit unit = model.getUnit();
         Tree.AnnotationList al = that.getAnnotationList();
         Tree.Annotation a = 
@@ -313,10 +307,6 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
                                     name + "'");
                         }
                     }
-                    if (!model.isMember() || 
-                            !isInNativeContainer(model)) {
-                        modelToAdd = null;
-                    }
                 }
             }
             else if (!(model instanceof Setter) && 
@@ -331,7 +321,6 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
                 }
             }
         }
-        return modelToAdd;
     }
     
     private boolean hasOverload(String backend, 
