@@ -666,7 +666,7 @@ public class TypeGenerator {
     static void classConstructor(final Tree.Constructor that, final Tree.ClassDefinition cdef,
             final List<Tree.Constructor> constructors, final GenerateJsVisitor gen) {
         gen.comment(that);
-        Constructor d = that.getDeclarationModel();
+        Constructor d = that.getConstructor();
         final Class container = cdef.getDeclarationModel();
         final String fullName = gen.getNames().name(container) + "_" + gen.getNames().name(d);
         if (!TypeUtils.isNativeExternal(d) || !gen.stitchNative(d, that)) {
@@ -686,7 +686,7 @@ public class TypeGenerator {
                     ((Constructor)superdec).getFirstParameterList();
             }
             gen.out("function ", fullName);
-            final boolean forceAbstract = localConstructorDelegation(that.getDeclarationModel(), constructors);
+            final boolean forceAbstract = localConstructorDelegation(that.getConstructor(), constructors);
             if (forceAbstract) {
                 gen.out("$$a");
             }
@@ -749,7 +749,7 @@ public class TypeGenerator {
                     }
                 } else {
                     for (Tree.Constructor _cns : constructors) {
-                        if (_cns.getDeclarationModel() == superdec) {
+                        if (_cns.getConstructor() == superdec) {
                             pseudo1 = _cns;
                         }
                     }

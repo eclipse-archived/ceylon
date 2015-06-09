@@ -68,7 +68,7 @@ public class MetamodelVisitor extends Visitor {
     }
     @Override public void visit(final Tree.Constructor that) {
         if (errorFree(that)) {
-            gen.encodeConstructor(that.getDeclarationModel());
+            gen.encodeConstructor(that.getConstructor());
             super.visit(that);
         }
     }
