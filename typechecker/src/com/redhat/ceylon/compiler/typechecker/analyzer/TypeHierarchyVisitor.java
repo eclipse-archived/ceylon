@@ -1,6 +1,7 @@
 package com.redhat.ceylon.compiler.typechecker.analyzer;
 
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.NO_TYPE_ARGS;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.isConstructor;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.message;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getNativeDeclaration;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isAbstraction;
@@ -552,10 +553,11 @@ public class TypeHierarchyVisitor extends Visitor {
             type = new Type();
             type.declaration = declaration;
             for (Declaration member: declaration.getMembers()) {
-                if (!(member instanceof FunctionOrValue || 
+                if (!(member instanceof FunctionOrValue ||
                       member instanceof Class) || 
-                        member.isStaticallyImportable() ||
-                        isAbstraction(member)) {
+                    isConstructor(member) ||
+                    member.isStaticallyImportable() ||
+                    isAbstraction(member)) {
                     continue;
                 }
                 if (declaration.isNative() && member.isNative()) {

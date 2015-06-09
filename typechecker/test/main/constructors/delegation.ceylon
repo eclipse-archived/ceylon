@@ -36,7 +36,7 @@ class C0  {
 class C1 extends A {
     @error new create() extends Point(1.0,0.0) {}
 }
-@error class C2 extends New {
+@error class C2 extends create {
     @error new create() extends create() {}
 }
 class C3 extends A {

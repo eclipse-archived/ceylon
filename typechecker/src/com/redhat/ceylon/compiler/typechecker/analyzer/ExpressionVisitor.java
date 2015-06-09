@@ -6013,7 +6013,9 @@ public class ExpressionVisitor extends Visitor {
                     handleAbstractionOrHeader(member, that);
             that.setDeclaration(member);
             if (error) {
-                checkBaseVisibility(that, member, name);
+                if (checkConcreteConstructor(member, that)) {
+                    checkBaseVisibility(that, member, name);
+                }
             }
         }
         return member;
@@ -6243,9 +6245,11 @@ public class ExpressionVisitor extends Visitor {
                     member.setOtherInstanceAccess(true);
                 }
                 if (error) {
-                    checkQualifiedVisibility(that, 
-                            member, name, container, 
-                            selfReference);
+                    if (checkConcreteConstructor(member, that)) {
+                        checkQualifiedVisibility(that, 
+                                member, name, container, 
+                                selfReference);
+                    }
                     checkSuperMember(that);
                 }
             }
@@ -6595,6 +6599,40 @@ public class ExpressionVisitor extends Visitor {
         return type;
     }
     
+    private boolean checkConcreteConstructor(TypedDeclaration member,
+            Tree.StaticMemberOrTypeExpression that) {
+        if (isConstructor(member)) {
+            Scope container = member.getContainer();
+            Constructor cons = 
+                    (Constructor) 
+                        member.getTypeDeclaration();
+            if (cons.isAbstract()) {
+                that.addError("partial constructor cannot be invoked: '" +
+                        member.getName(unit) + "' is abstract");
+                return false;
+            }
+            else if (container instanceof Class) {
+                Class c = (Class) container;
+                if (c.isAbstract()) {
+                    that.addError("class cannot be instantiated: '" +
+                            member.getName(unit) + 
+                            "' is a constructor for the abstract class '" +
+                            c.getName(unit));
+                    return false;
+                }
+                else {
+                    return true;
+                }
+            }
+            else {
+                return false;
+            }
+        }
+        else {
+            return true;
+        }
+    }
+
     private boolean checkConcreteClass(TypeDeclaration type,
             Tree.MemberOrTypeExpression that) {
         if (that.getStaticMethodReferencePrimary()) {
@@ -6621,7 +6659,7 @@ public class ExpressionVisitor extends Visitor {
             else if (type instanceof Constructor) {
                 Scope container = type.getContainer();
                 if (type.isAbstract()) {
-                    that.addError("abstract constructor cannot be invoked: '" +
+                    that.addError("partial constructor cannot be invoked: '" +
                             type.getName(unit) + "' is abstract");
                     return false;
                 }

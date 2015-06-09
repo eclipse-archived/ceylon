@@ -510,14 +510,21 @@ public class InheritanceVisitor extends Visitor {
                     TypeDeclaration caseDec = 
                             type.getDeclaration();
                     if (caseDec instanceof Constructor) {
-                        //enumerated singleton constructors
                         Scope scope = caseDec.getContainer();
                         if (scope instanceof Class) {
+                            //enumerated singleton constructors
+                            Constructor cons = 
+                                    (Constructor) caseDec;
                             Class c = (Class) scope;
                             if (!c.isToplevel()) {
                                 bme.addError("case must be a value constructor of a toplevel class: '" + 
                                         c.getName(unit) + 
                                         "' is not toplevel");
+                            }
+                            else if (!cons.getParameterLists().isEmpty()) {
+                                bme.addError("case must be a value constructor of a toplevel class: '" + 
+                                        cons.getName(unit) + 
+                                        "' is not a value constructor");
                             }
                             /*else if (!c.inherits(unit.getIdentifiableDeclaration())) {
                                 bme.addError("case must be a value constructor of an identifiable class: '" + 

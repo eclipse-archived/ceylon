@@ -796,7 +796,7 @@ public class AnalyzerUtil {
             }
             if (that.getStaticMethodReference()) {
                 if (d.isStaticallyImportable() || 
-                        d instanceof Constructor) {
+                        isConstructor(d)) {
                     Tree.QualifiedMemberOrTypeExpression qmte = 
                             (Tree.QualifiedMemberOrTypeExpression) 
                                 that;
