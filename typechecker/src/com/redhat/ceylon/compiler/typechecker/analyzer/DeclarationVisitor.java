@@ -132,6 +132,12 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
             Declaration model, boolean checkDupe) {
         visitElement(that, model);
         
+        handleDeclarationAnnotations(that, model);
+        
+        setVisibleScope(model);
+        
+        checkFormalMember(that, model);
+        
         Tree.Identifier id = that.getIdentifier();
         if (setModelName(that, model, id)) {
             if (checkDupe) {
@@ -145,12 +151,6 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
         unit.addDeclaration(model);
         Scope sc = getContainer(that);
         sc.addMember(model);
-        
-        handleDeclarationAnnotations(that, model);        
-        
-        setVisibleScope(model);
-        
-        checkFormalMember(that, model);
     }
 
     private void visitArgument(Tree.NamedArgument that, 
