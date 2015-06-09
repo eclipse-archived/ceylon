@@ -61,6 +61,10 @@ public class TypeGenerator {
             satisfiedTypes = objectDef.getSatisfiedTypes();
             decl = (ClassOrInterface)objectDef.getAnonymousClass();
             stmts = objectDef.getClassBody().getStatements();
+        } else if (type instanceof Tree.Enumerated) {
+            Tree.Enumerated vc = (Tree.Enumerated)type;
+            stmts = vc.getBlock().getStatements();
+            decl = (ClassOrInterface)vc.getDeclarationModel().getTypeDeclaration().getContainer();
         } else {
             stmts = null;
             decl = null;
@@ -85,6 +89,7 @@ public class TypeGenerator {
     static void typeInitialization(final Tree.ExtendedType extendedType, final Tree.SatisfiedTypes satisfiedTypes,
             final ClassOrInterface d, PrototypeInitCallback callback, final GenerateJsVisitor gen) {
 
+        if (d == null)Thread.dumpStack();
         final boolean isInterface = d instanceof com.redhat.ceylon.model.typechecker.model.Interface;
         String initFuncName = isInterface ? "initTypeProtoI" : "initTypeProto";
 
@@ -287,11 +292,13 @@ public class TypeGenerator {
         if (d.isClassOrInterfaceMember() && ((ClassOrInterface)d.getContainer()).isDynamic())return;
         final Tree.ParameterList plist = that.getParameterList();
         final List<Tree.Constructor> constructors;
+        final List<Tree.Enumerated> enums;
         final Tree.SatisfiedTypes sats = that.getSatisfiedTypes();
         //Find the constructors, if any
         Tree.Constructor defconstr = null;
         if (d.hasConstructors()) {
             constructors = new ArrayList<>(3);
+            enums = new ArrayList<>(3);
             for (Tree.Statement st : that.getClassBody().getStatements()) {
                 if (st instanceof Tree.Constructor) {
                     Tree.Constructor constr = (Tree.Constructor)st;
@@ -299,10 +306,13 @@ public class TypeGenerator {
                     if (constr.getDeclarationModel().getName() == null) {
                         defconstr = constr;
                     }
+                } else if (st instanceof Tree.Enumerated) {
+                    enums.add((Tree.Enumerated)st);
                 }
             }
         } else {
             constructors = Collections.emptyList();
+            enums = null;
         }
         gen.comment(that);
         if (gen.shouldStitch(d)) {
@@ -429,6 +439,11 @@ public class TypeGenerator {
         }
         for (Tree.Constructor cnstr : constructors) {
             classConstructor(cnstr, that, constructors, gen);
+        }
+        if (enums != null) {
+            for (Tree.Enumerated e : enums) {
+                Singletons.valueConstructor(e, gen);
+            }
         }
         //Add reference to metamodel
         gen.out(gen.getNames().name(d), ".$crtmm$=");

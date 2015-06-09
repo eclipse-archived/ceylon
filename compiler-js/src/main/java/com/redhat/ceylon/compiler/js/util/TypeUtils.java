@@ -1005,7 +1005,9 @@ public class TypeUtils {
                 outputQualifiedTypename(node, gen.isImported(pkg, type), pt, gen, false);
             } else {
                 gen.out("{t:");
-                outputQualifiedTypename(node, gen.isImported(pkg, type), pt, gen, false);
+                //For constructors, output the type of the class
+                final Type qt = type instanceof Constructor ? pt.getQualifyingType() : pt;
+                outputQualifiedTypename(node, gen.isImported(pkg, type), qt, gen, false);
                 //Type Parameters
                 if (!pt.getTypeArgumentList().isEmpty()) {
                     gen.out(",a:{");

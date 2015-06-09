@@ -489,7 +489,8 @@ public class GenerateJsVisitor extends Visitor
                             out("}());");
                         }
                     }
-                } else if (st instanceof Tree.Constructor == false && go) {
+                } else if (st instanceof Tree.Constructor == false &&
+                        st instanceof Tree.Enumerated == false && go) {
                     //Ignore return statements directly in main constructor scope
                     st.visit(this);
                     if (!opts.isMinify())beginNewLine();
@@ -923,6 +924,14 @@ public class GenerateJsVisitor extends Visitor
                 for (Statement s: statements) {
                     if (s instanceof Tree.ClassOrInterface) {
                         addToPrototype(d, s, plist);
+                    } else if (s instanceof Tree.Enumerated) {
+                        //Add a simple attribute which really returns the singleton from the class
+                        final Tree.Enumerated vc = (Tree.Enumerated)s;
+                        defineAttribute(names.self(d), names.name(vc.getDeclarationModel()));
+                        out("{return ", names.name(d), ".", names.name(vc.getDeclarationModel()),
+                                ";},undefined,");
+                        TypeUtils.encodeForRuntime(vc.getDeclarationModel(), vc.getAnnotationList(), this);
+                        out(");");
                     }
                 }
                 if (d.isMember()) {
@@ -1074,8 +1083,10 @@ public class GenerateJsVisitor extends Visitor
         out("function(){");
         try {
             final Tree.SatisfiedTypes sts = that.getSatisfiedTypes();
+            final Tree.ExtendedType et = that.getExtendedType();
             Singletons.defineObject(that, null, sts == null ? null : TypeUtils.getTypes(sts.getTypes()),
-                    that.getExtendedType(), that.getClassBody(), null, this);
+                    et == null ? null : et.getType(), et == null ? null : et.getInvocationExpression(),
+                    that.getClassBody(), null, this);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -1855,26 +1866,45 @@ public class GenerateJsVisitor extends Visitor
         if (errVisitor.hasErrors(that))return;
         //Big TODO: make sure the member is actually
         //          refined by the current class!
+        final Declaration d = that.getDeclaration();
         if (that.getMemberOperator() instanceof Tree.SafeMemberOp) {
             generateSafeOp(that);
         } else if (that.getMemberOperator() instanceof Tree.SpreadOp) {
             SequenceGenerator.generateSpread(that, this);
-        } else if (that.getDeclaration() instanceof Function && that.getSignature() == null) {
+        } else if (d instanceof Function && that.getSignature() == null) {
             //TODO right now this causes that all method invocations are done this way
             //we need to filter somehow to only use this pattern when the result is supposed to be a callable
             //looks like checking for signature is a good way (not THE way though; named arg calls don't have signature)
             generateCallable(that, null);
-        } else if (that.getStaticMethodReference() && that.getDeclaration()!=null) {
-            out("function($O$){return ");
-            if (that.getDeclaration() instanceof Function) {
-                if (BmeGenerator.hasTypeParameters(that)) {
-                    BmeGenerator.printGenericMethodReference(this, that, "$O$", "$O$."+names.name(that.getDeclaration()));
-                } else {
-                    out(getClAlias(), "JsCallable($O$,$O$.", names.name(that.getDeclaration()), ")");
+        } else if (that.getStaticMethodReference() && d!=null) {
+            if (d instanceof Value && ((Value)d).getTypeDeclaration() instanceof Constructor) {
+                boolean wrap = false;
+                if (that.getPrimary() instanceof Tree.QualifiedMemberOrTypeExpression) {
+                    Tree.QualifiedMemberOrTypeExpression prim = (Tree.QualifiedMemberOrTypeExpression)that.getPrimary();
+                    if (prim.getStaticMethodReference()) {
+                        wrap=true;
+                        out("function(_$){return _$");
+                    } else {
+                        prim.getPrimary().visit(this);
+                    }
+                    out(".");
                 }
-                out(";}");
+                out(names.name((TypeDeclaration)d.getContainer()), ".", names.name(d));
+                if (wrap) {
+                    out(";}");
+                }
             } else {
-                out("$O$.", names.name(that.getDeclaration()), ";}");
+                out("function($O$){return ");
+                if (d instanceof Function) {
+                    if (BmeGenerator.hasTypeParameters(that)) {
+                        BmeGenerator.printGenericMethodReference(this, that, "$O$", "$O$."+names.name(d));
+                    } else {
+                        out(getClAlias(), "JsCallable($O$,$O$.", names.name(d), ")");
+                    }
+                    out(";}");
+                } else {
+                    out("$O$.", names.name(d), ";}");
+                }
             }
         } else {
             final String lhs = generateToString(new GenerateCallback() {
@@ -3614,6 +3644,26 @@ public class GenerateJsVisitor extends Visitor
         that.getSpecifierExpression().visit(this);
         new Destructurer(that.getPattern(), this, directAccess, expvar, false);
         endLine(true);
+    }
+
+    public void visit(Tree.Enumerated that) {
+        if (errVisitor.hasErrors(that))return;
+        comment(that);
+        Singletons.valueConstructor(that, this);
+    }
+
+    public void visit(final Tree.ExtendedTypeExpression that) {
+        if (errVisitor.hasErrors(that))return;
+        final Declaration d = that.getDeclaration();
+        if (d instanceof Constructor) {
+            qualify(that, (Declaration)d.getContainer());
+            out(names.name((Declaration)d.getContainer()), "_");
+        } else {
+            if (qualify(that, d)) {
+                out(".");
+            }
+        }
+        out(names.name(d));
     }
 
     boolean isNaturalLiteral(Tree.Term that) {
