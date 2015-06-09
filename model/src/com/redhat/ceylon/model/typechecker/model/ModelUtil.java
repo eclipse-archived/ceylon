@@ -2405,16 +2405,20 @@ public class ModelUtil {
         }
     }
     
+    public static boolean isNative(Declaration dec) {
+        return dec != null && dec.isNative();
+    }
+    
     public static boolean isNativeHeader(Declaration dec) {
-        return dec.isNative() && dec.getNativeBackend().isEmpty();
+        return dec != null && dec.isNative() && dec.getNativeBackend().isEmpty();
     }
     
     public static boolean isNativeImplementation(Declaration dec) {
-        return dec.isNative() && !dec.getNativeBackend().isEmpty();
+        return dec != null && dec.isNative() && !dec.getNativeBackend().isEmpty();
     }
     
     public static boolean hasNativeImplementation(Declaration dec) {
-        if (dec.isNative()) {
+        if (isNative(dec)) {
             List<Declaration> overloads = dec.getOverloads();
             if (overloads != null) {
                 for (Declaration overload: overloads) {
