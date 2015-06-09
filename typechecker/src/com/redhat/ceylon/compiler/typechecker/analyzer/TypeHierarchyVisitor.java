@@ -560,7 +560,7 @@ public class TypeHierarchyVisitor extends Visitor {
                 }
                 if (declaration.isNative() && member.isNative()) {
                     // Make sure we get the right member declaration (the one for the same backend as its container)
-                    member = getNativeDeclaration(member, Backend.fromAnnotation(declaration.getNative()));
+                    member = getNativeDeclaration(member, Backend.fromAnnotation(declaration.getNativeBackend()));
                     if (member == null) {
                         continue;
                     }

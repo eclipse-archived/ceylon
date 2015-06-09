@@ -1986,7 +1986,7 @@ public class ExpressionVisitor extends Visitor {
     
     @Override public void visit(Tree.Declaration that) {
         Backend ib = inBackend;
-        String nat = that.getDeclarationModel().getNative();
+        String nat = that.getDeclarationModel().getNativeBackend();
         inBackend = Backend.fromAnnotation(nat);
         super.visit(that);
         inBackend = ib;

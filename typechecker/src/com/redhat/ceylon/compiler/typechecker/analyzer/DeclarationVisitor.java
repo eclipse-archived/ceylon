@@ -231,7 +231,7 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
                             moduleBackend + "\"' for '" + 
                             name + "'");
                 }
-                model.setNative(backend);
+                model.setNativeBackend(backend);
                 Declaration member = 
                         scope.getDirectMember(name, 
                                 null, false);
@@ -240,7 +240,7 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
                     Declaration container = 
                             (Declaration) 
                                 model.getContainer();
-                    String cbackend = container.getNative();
+                    String cbackend = container.getNativeBackend();
                     if (!cbackend.equals(backend)) {
                         that.addError("native backend name on member conflicts with its container: '" + 
                                 name + "' of '" + 
@@ -352,7 +352,7 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
             List<Declaration> overloads) {
         if (overloads!=null) {
             for (Declaration overload: overloads) {
-                if (backend.equals(overload.getNative()) && 
+                if (backend.equals(overload.getNativeBackend()) && 
                         !shouldIgnoreOverload(
                                 overload, declaration)) {
                     return true;
@@ -421,7 +421,7 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
                     else {
                         getter.setSetter(setter);
                     }
-                    setter.setNative(getter.getNative());
+                    setter.setNativeBackend(getter.getNativeBackend());
                 }
             }
             else {
@@ -1662,7 +1662,7 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
         Tree.Annotation na = 
                 getAnnotation(al, "native", unit);
         if (na != null) {
-            model.setNative(getAnnotationArgument(na, ""));
+            model.setNativeBackend(getAnnotationArgument(na, ""));
         }
         if (model.isFormal() && model.isDefault()) {
             that.addError("declaration may not be annotated both formal and default", 
