@@ -45,9 +45,9 @@ import com.redhat.ceylon.model.loader.model.LazyClass;
 import com.redhat.ceylon.model.loader.model.LazyClassAlias;
 import com.redhat.ceylon.model.loader.model.LazyContainer;
 import com.redhat.ceylon.model.loader.model.LazyElement;
+import com.redhat.ceylon.model.loader.model.LazyFunction;
 import com.redhat.ceylon.model.loader.model.LazyInterface;
 import com.redhat.ceylon.model.loader.model.LazyInterfaceAlias;
-import com.redhat.ceylon.model.loader.model.LazyFunction;
 import com.redhat.ceylon.model.loader.model.LazyModule;
 import com.redhat.ceylon.model.loader.model.LazyPackage;
 import com.redhat.ceylon.model.loader.model.LazyTypeAlias;
@@ -2021,7 +2021,6 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         // because the type of the getter is the constructor's type
         Boolean hasConstructors = hasConstructors(classMirror);
         if (hasConstructors != null && hasConstructors) {
-            ((Class)klass).setConstructors(true);
             for (MethodMirror ctor : getClassConstructors(classMirror)) {
                 addConstructor((Class)klass, classMirror, ctor);
             }
@@ -2203,7 +2202,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     }
 
     private void addConstructor(Class klass, ClassMirror classMirror, MethodMirror ctor) {
-        boolean isCeylon = (classMirror.getAnnotation(CEYLON_CEYLON_ANNOTATION) != null);
+        boolean isCeylon = classMirror.getAnnotation(CEYLON_CEYLON_ANNOTATION) != null;
         Constructor constructor = new Constructor();
         constructor.setName(getCtorName(ctor));
         constructor.setContainer(klass);
@@ -2211,13 +2210,36 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         constructor.setUnit(klass.getUnit());
         constructor.setExtendedType(klass.getType());
         setDeclarationVisibilityAndDeprecation(constructor, ctor, ctor, classMirror, isCeylon);
-        if (ctor.getAnnotation(CEYLON_ENUMERATED_ANNOTATION) != null) {
-//            constructor.setAnonymous(true);
-            klass.setEnumerated(true);
-        }
         setAnnotations(constructor, ctor);
         setParameters(constructor, classMirror, ctor, true, klass);
         klass.addMember(constructor);
+        if (ctor.getAnnotation(CEYLON_ENUMERATED_ANNOTATION) != null) {
+            klass.setEnumerated(true);
+            Value v = new Value();
+            v.setName(constructor.getName());
+            v.setType(constructor.getType());
+            v.setContainer(klass);
+            v.setScope(klass);
+            v.setUnit(klass.getUnit());
+            v.setVisibleScope(constructor.getVisibleScope());
+            v.setShared(constructor.isShared());
+            v.setDeprecated(constructor.isDeprecated());
+            klass.addMember(v);
+        }
+        else {
+            klass.setConstructors(true);
+            Function f = new Function();
+            f.setName(constructor.getName());
+            f.setType(constructor.getType());
+            f.addParameterList(constructor.getParameterList());
+            f.setContainer(klass);
+            f.setScope(klass);
+            f.setUnit(klass.getUnit());
+            f.setVisibleScope(constructor.getVisibleScope());
+            f.setShared(constructor.isShared());
+            f.setDeprecated(constructor.isDeprecated());
+            klass.addMember(f);
+        }
     }
     
     private boolean isMethodOverloaded(List<MethodMirror> methodMirrors) {
