@@ -152,7 +152,7 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
             if (stmt instanceof Tree.Constructor) {
                 Tree.Constructor ctor = (Tree.Constructor)stmt;
                 classBuilder.getInitBuilder().constructor(ctor);
-                Constructor ctorModel = ctor.getDeclarationModel();
+                Constructor ctorModel = ctor.getConstructor();
                 if (ctor.getDelegatedConstructor() != null) {
                     // error recovery
                     if(ctor.getDelegatedConstructor().getInvocationExpression() != null){
@@ -199,7 +199,7 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
                         ctor.getParameterList(), 
                         ctor.getDelegatedConstructor(),
                         ctor.getBlock(),
-                        ctor.getDeclarationModel(), 
+                        ctor.getConstructor(), 
                         delegates);
             } else if (stmt instanceof Tree.Enumerated) {
                 Tree.Enumerated ctor = (Tree.Enumerated)stmt;

@@ -231,7 +231,7 @@ public class MethodOrValueReferenceVisitor extends Visitor {
                             Tree.ExtendedTypeExpression ete = (Tree.ExtendedTypeExpression)ctor.getDelegatedConstructor().getInvocationExpression().getPrimary();
                             if (ete.getDeclaration() instanceof Constructor
                                     && ete.getDeclaration().getContainer().equals(that.getDeclarationModel())) {
-                                    delegatedTo.put(ctor.getDeclarationModel(), (Constructor)ete.getDeclaration());
+                                    delegatedTo.put(ctor.getConstructor(), (Constructor)ete.getDeclaration());
                             }
                         }
                     }
