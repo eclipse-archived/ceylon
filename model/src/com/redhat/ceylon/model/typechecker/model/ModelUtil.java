@@ -2406,11 +2406,11 @@ public class ModelUtil {
     }
     
     public static boolean isNativeHeader(Declaration dec) {
-        return dec.isNative() && dec.getNative().isEmpty();
+        return dec.isNative() && dec.getNativeBackend().isEmpty();
     }
     
     public static boolean isNativeImplementation(Declaration dec) {
-        return dec.isNative() && !dec.getNative().isEmpty();
+        return dec.isNative() && !dec.getNativeBackend().isEmpty();
     }
     
     public static boolean hasNativeImplementation(Declaration dec) {
@@ -2419,7 +2419,7 @@ public class ModelUtil {
             if (overloads != null) {
                 for (Declaration overload: overloads) {
                     if (overload.isNative() && 
-                            !overload.getNative().isEmpty()) {
+                            !overload.getNativeBackend().isEmpty()) {
                         return true;
                     }
                 }
@@ -2451,7 +2451,7 @@ public class ModelUtil {
             Declaration abstraction = null;
             if (backendSupport.supportsBackend(
                     Backend.fromAnnotation(
-                            dec.getNative()))) {
+                            dec.getNativeBackend()))) {
                 abstraction = dec;
             }
             else {
@@ -2461,7 +2461,7 @@ public class ModelUtil {
                     for (Declaration d: overloads) {
                         if (backendSupport.supportsBackend(
                                 Backend.fromAnnotation(
-                                        d.getNative()))) {
+                                        d.getNativeBackend()))) {
                             abstraction = d;
                             break;
                         }

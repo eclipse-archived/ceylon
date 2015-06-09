@@ -216,15 +216,15 @@ public class LazyFunction extends Function implements LazyElement, LocalDeclarat
     }
 
     @Override
-    public String getNative() {
+    public String getNativeBackend() {
         load();
-        return super.getNative();
+        return super.getNativeBackend();
     }
     
     @Override
-    public void setNative(String backend) {
+    public void setNativeBackend(String backend) {
         load();
-        super.setNative(backend);
+        super.setNativeBackend(backend);
     }
 
     @Override
