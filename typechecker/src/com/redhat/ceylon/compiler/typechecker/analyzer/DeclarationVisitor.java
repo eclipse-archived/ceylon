@@ -225,9 +225,12 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
                             name + "'");
                 }
                 model.setNativeBackend(backend);
-                Declaration member = 
-                        scope.getDirectMember(name, 
+                Declaration member = getDirectMemberForBackend(
+                        model.getContainer(), name, "");
+                if (member == null) {
+                    member = scope.getDirectMember(name,
                                 null, false);
+                }
                 if (model.isMember() && 
                         isInNativeContainer(model)) {
                     Declaration container = 
@@ -252,6 +255,19 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
                                 break;
                             }
                         }
+                    }
+                }
+                if (member == null || !member.isNativeHeader()) {
+                    // Abstraction-less native implementation, check
+                    // it's not shared
+                    if (!backend.equals(Backend.None.nativeAnnotation)
+                            && model.isShared()
+                            && (model.isToplevel()
+                                    || (model.isMember()
+                                            && ((Declaration)model.getContainer()).isNative()
+                                            && ((Declaration)model.getContainer()).isShared()))) {
+                        that.addError("native implementation must have a header: " +
+                                model.getName());
                     }
                 }
                 if (member == null) {

@@ -164,16 +164,6 @@ public class RefinementVisitor extends Visitor {
         Declaration abstraction = 
                 getNativeDeclaration(dec, Backend.None);
         if (abstraction == null) {
-            // Abstraction-less native implementation, check 
-            // it's not shared
-            if (dec.isShared()
-                    && (dec.isToplevel()
-                            || (dec.isMember()
-                                    && ((Declaration)dec.getContainer()).isNative()
-                                    && ((Declaration)dec.getContainer()).isShared()))) {
-                that.addError("native implementation must have a header: " + 
-                        dec.getName());
-            }
             // If there's no abstraction we just compare to 
             // the first implementation in the list
             abstraction = dec.getOverloads().get(0);
