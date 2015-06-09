@@ -20,6 +20,7 @@
 package com.redhat.ceylon.compiler.java.test.nativecode;
 
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.redhat.ceylon.compiler.java.test.CompilerError;
@@ -256,7 +257,7 @@ public class NativeTests extends CompilerTests {
         );
     }
     
-    @Test
+    @Test @Ignore("We do away with incremental compilation for now")
     public void testNativeIncremental() {
         compile("modincremental/test.ceylon", "modincremental/testheader.ceylon", "modincremental/module.ceylon");
         testNativeModule("modincremental");

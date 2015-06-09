@@ -366,7 +366,7 @@ public class Decl {
     }
     
     public static String getNative(Declaration decl) {
-        return decl.getNative();
+        return decl.getNativeBackend();
     }
     
     public static boolean isForBackend(Tree.Declaration decl) {
