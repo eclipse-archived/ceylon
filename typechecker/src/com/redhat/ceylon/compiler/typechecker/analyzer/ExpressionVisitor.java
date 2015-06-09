@@ -2598,43 +2598,45 @@ public class ExpressionVisitor extends Visitor {
         }
     }
     
-    private Type unwrap(Type pt, 
+    private Type unwrap(Type type, 
             Tree.QualifiedMemberOrTypeExpression mte) {
-        Type result;
-        Tree.MemberOperator op = mte.getMemberOperator();
-        if (op instanceof Tree.SafeMemberOp)  {
-            result = unit.getDefiniteType(pt);
-        }
-        else if (op instanceof Tree.SpreadOp) {
-            if (unit.isIterableType(pt)) {
-                result = unit.getIteratedType(pt);
-            }
-            else {
-                result = pt;
-            }
+        if (type==null) {
+            return null;
         }
         else {
-            result = pt;
+            Tree.MemberOperator op = mte.getMemberOperator();
+            if (op instanceof Tree.SafeMemberOp)  {
+                return unit.getDefiniteType(type);
+            }
+            else if (op instanceof Tree.SpreadOp) {
+                if (unit.isIterableType(type)) {
+                    Type it = unit.getIteratedType(type);
+                    return it==null ?
+                            unit.getUnknownType() : it;
+                }
+                else {
+                    return type;
+                }
+            }
+            else {
+                return type;
+            }
         }
-        if (result==null) {
-            result = unit.getUnknownType();
-        }
-        return result;
     }
     
-    Type wrap(Type pt, Type receivingType, 
+    Type wrap(Type type, Type receivingType, 
             Tree.QualifiedMemberOrTypeExpression mte) {
         Tree.MemberOperator op = mte.getMemberOperator();
         if (op instanceof Tree.SafeMemberOp)  {
-            return unit.getOptionalType(pt);
+            return unit.getOptionalType(type);
         }
         else if (op instanceof Tree.SpreadOp) {
             return unit.isNonemptyIterableType(receivingType) ?
-                    unit.getSequenceType(pt) :
-                    unit.getSequentialType(pt);
+                    unit.getSequenceType(type) :
+                    unit.getSequentialType(type);
         }
         else {
-            return pt;
+            return type;
         }
     }
     

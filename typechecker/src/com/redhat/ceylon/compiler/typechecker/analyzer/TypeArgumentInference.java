@@ -585,8 +585,7 @@ public class TypeArgumentInference {
                 if (arg instanceof Tree.SpreadArgument) {
                     at = spreadType(at, unit, true);
                     List<Parameter> subList = 
-                            params.subList(i, 
-                                    params.size());
+                            params.subList(i, params.size());
                     Type parameterTypeTuple = 
                             unit.getParameterTypesAsTupleType(
                                     subList, 
@@ -657,10 +656,15 @@ public class TypeArgumentInference {
      *         account type arguments available in the
      *         qualifying type.
      */
-    private static Type parameterType(Type receiverType, 
+    private Type parameterType(Type receiverType, 
             Parameter parameter, Declaration invoked) {
         if (receiverType == null || 
-                !invoked.isClassOrInterfaceMember()) {
+                !invoked.isClassOrInterfaceMember() ||
+                //this is probably a ref to a static method
+                //method of a Java class and we don't need
+                //the qualifying type
+                //TODO: check getStaticMethodReference()
+                unit.isCallableType(receiverType)) {
             return parameter.getModel()
                     .getReference()
                     .getFullType();
@@ -1278,16 +1282,14 @@ public class TypeArgumentInference {
             Declaration invoked,
             Generic generic, Type receiverType) {
         if (invoked instanceof Functional) {
-            Functional functional = 
-                    (Functional) invoked;
+            Functional functional = (Functional) invoked;
             List<ParameterList> parameterLists = 
                     functional.getParameterLists();
             if (parameterLists.isEmpty()) {
                 return null;
             }
             else {
-                List<Type> typeArgs = 
-                        new ArrayList<Type>();
+                List<Type> typeArgs = new ArrayList<Type>();
                 List<TypeParameter> typeParameters = 
                         generic.getTypeParameters();
                 for (TypeParameter tp: typeParameters) {

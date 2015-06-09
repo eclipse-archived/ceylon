@@ -1294,7 +1294,7 @@ public class TypeVisitor extends Visitor {
                     "' has a parameter list and a constructor");
         }
         else if (pl!=null && cd.hasEnumerated()) {
-            pl.addError("class with parameters may not declare enumerated instances: class '" + 
+            pl.addError("class with parameters may not declare constructors: class '" + 
                     cd.getName() + 
                     "' has a parameter list and a value constructor");
         }
