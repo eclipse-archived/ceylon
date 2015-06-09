@@ -2401,8 +2401,8 @@ public class ModelUtil {
             TypeDeclaration td, Declaration dec) {
         return td.isToplevel() && 
                 (dec instanceof Constructor ||
-                dec instanceof Value && 
-                ((Value) dec).getTypeDeclaration() 
+                dec instanceof FunctionOrValue && 
+                ((FunctionOrValue) dec).getTypeDeclaration() 
                         instanceof Constructor);
     }
 
