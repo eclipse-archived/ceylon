@@ -1,6 +1,8 @@
 package com.redhat.ceylon.model.typechecker.model;
 
 import static com.redhat.ceylon.model.typechecker.model.DeclarationKind.CONSTRUCTOR;
+import static java.util.Collections.emptyList;
+import static java.util.Collections.singletonList;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +18,7 @@ public class Constructor extends TypeDeclaration implements Functional {
 
     public Constructor() {}
     
-    private List<ParameterList> parameterLists = new ArrayList<ParameterList>(1);
+    private ParameterList parameterList;
     private boolean overloaded;
     private boolean abstraction;
     private boolean abstr;
@@ -34,19 +36,29 @@ public class Constructor extends TypeDeclaration implements Functional {
         this.abstr = isAbstract;
     }
     
+    public ParameterList getParameterList() {
+        return parameterList;
+    }
+    
     @Override
     public ParameterList getFirstParameterList() {
-        return getParameterLists().get(0);
+        return getParameterList();
     }
 
     @Override
     public List<ParameterList> getParameterLists() {
-        return parameterLists;
+        ParameterList parameterList = getParameterList();
+        if (parameterList==null) {
+            return emptyList();
+        }
+        else {
+            return singletonList(parameterList);
+        }
     }
 
     @Override
     public void addParameterList(ParameterList pl) {
-        parameterLists.add(pl);
+        parameterList = pl;
     }
     
     @Override

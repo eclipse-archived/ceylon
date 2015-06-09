@@ -1826,13 +1826,32 @@ public class Unit {
         }
     }
     
-    public Type getConstructorMetatype(Type reference) {
-        TypeDeclaration d = reference.getDeclaration();
-        Functional f = (Functional) d;
-        if (f.getParameterLists().isEmpty()) {
+    public Type getConstructorMetatype(TypedReference reference) {
+        TypeDeclaration d = 
+                reference.getDeclaration()
+                    .getTypeDeclaration();
+        if (d==null) {
             return null;
         }
+        return getConstructorMetatype(reference, d);
+    }
+
+    public Type getConstructorMetatype(Type type) {
+        TypeDeclaration d = type.getDeclaration();
+        if (d==null) {
+            return null;
+        }
+        return getConstructorMetatype(type, d);
+    }
+
+    private Type getConstructorMetatype(
+            Reference reference, 
+            TypeDeclaration d) {
+        Functional f = (Functional) d;
         ParameterList fpl = f.getFirstParameterList();
+        if (fpl==null) {
+            return null;
+        }
         List<Parameter> params = fpl.getParameters();
         Type parameterTuple = getNothingType();
         Scope scope = d.getContainer();
