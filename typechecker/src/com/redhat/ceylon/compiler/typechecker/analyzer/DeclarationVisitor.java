@@ -318,18 +318,6 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
                         modelToAdd = null;
                     }
                 }
-// Re-enable when we support native member/inner declarations
-//              Scope container = model.getContainer();
-//              if (container instanceof Declaration) {
-//                  Declaration ci = (Declaration) container;
-//                  if (!ci.isNative()) {
-//                      that.addError("native member belongs to a non-native declaration: '" + 
-//                              model.getName() + "' of '" + ci.getName());
-//                  } else if (!model.getNative().equals(ci.getNative())) {
-//                      that.addError("native member and its native declaration are not for the same backend: '" + 
-//                              model.getName() + "' of '" + ci.getName());
-//                  }
-//              }
             }
             else if (!(model instanceof Setter) && 
                     !backend.equals(Backend.None.nativeAnnotation)) {
