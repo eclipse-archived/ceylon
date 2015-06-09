@@ -535,7 +535,7 @@ public class InheritanceVisitor extends Visitor {
                     }
                     else {
                         //enumerated anonymous subclasses
-                        if (!caseDec.isAnonymous()) {
+                        if (!caseDec.isObjectClass()) {
                             bme.addError("case must be a toplevel anonymous class: '" + 
                                     value.getName(unit) + 
                                     "' is not an anonymous class");

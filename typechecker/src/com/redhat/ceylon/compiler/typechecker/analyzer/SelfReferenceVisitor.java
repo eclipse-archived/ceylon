@@ -5,6 +5,7 @@ import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.eliminatePare
 
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.BaseMemberExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Parameter;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Super;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
@@ -274,23 +275,33 @@ public class SelfReferenceVisitor extends Visitor {
             that.addError("leaks outer reference in initializer: '" + 
                     typeDeclaration.getName() + "'");
         }
-        if (typeDeclaration.isAnonymous() && mayNotLeakAnonymousClass() && 
+        if (typeDeclaration.isObjectClass() && 
+                mayNotLeakAnonymousClass() && 
         		t instanceof Tree.BaseMemberExpression) {
-        	Declaration declaration = ((Tree.BaseMemberExpression)t).getDeclaration();
+        	Tree.BaseMemberExpression bme = 
+        	        (Tree.BaseMemberExpression) t;
+            Declaration declaration = 
+        	        bme.getDeclaration();
         	if (declaration instanceof TypedDeclaration) {
-        		if (((TypedDeclaration) declaration).getTypeDeclaration()==typeDeclaration) {
+        		TypedDeclaration td = 
+        		        (TypedDeclaration) declaration;
+                if (td.getTypeDeclaration()==typeDeclaration) {
                     that.addError("object leaks self reference in initializer: '" + 
                             typeDeclaration.getName() + "'");
         		}
         	}
         }
-        if (typeDeclaration.isAnonymous() && mayNotLeakAnonymousClass() && t 
+        if (typeDeclaration.isObjectClass() && 
+                mayNotLeakAnonymousClass() && t 
         		instanceof Tree.QualifiedMemberExpression) {
-        	Tree.QualifiedMemberExpression qme = (Tree.QualifiedMemberExpression) t;
+        	Tree.QualifiedMemberExpression qme = 
+        	        (Tree.QualifiedMemberExpression) t;
         	if (qme.getPrimary() instanceof Tree.Outer) {
         		Declaration declaration = qme.getDeclaration();
         		if (declaration instanceof TypedDeclaration) {
-        			if (((TypedDeclaration) declaration).getTypeDeclaration()==typeDeclaration) {
+        			TypedDeclaration td = 
+        			        (TypedDeclaration) declaration;
+                    if (td.getTypeDeclaration()==typeDeclaration) {
         				that.addError("object leaks self reference in initializer: '" + 
         						typeDeclaration.getName() + "'");
         			}

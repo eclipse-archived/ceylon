@@ -71,7 +71,8 @@ public class AnnotationVisitor extends Visitor {
         }
         else {
             for (Type ct: cts) {
-                if (!ct.getDeclaration().isAnonymous()) {
+                if (!ct.getDeclaration()
+                        .isObjectClass()) {
                     return false;
                 }
             }
@@ -213,7 +214,8 @@ public class AnnotationVisitor extends Visitor {
                 }
                 else if (d instanceof Value &&
                         (((Value) d).isEnumValue() || 
-                         ((Value) d).getTypeDeclaration().isAnonymous())) {
+                         ((Value) d).getTypeDeclaration()
+                             .isObjectClass())) {
                     //ok
                 }
                 else {

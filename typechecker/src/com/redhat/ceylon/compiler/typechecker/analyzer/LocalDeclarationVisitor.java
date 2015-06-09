@@ -72,7 +72,7 @@ public class LocalDeclarationVisitor extends Visitor implements NaturalVisitor {
     public static boolean isTopLevelObjectExpressionType(Declaration model) {
         return model instanceof Class
                 && model.isAnonymous()
-                && model.getContainer() instanceof Package
+                && model.isToplevel()
                 && !model.isNamed();
     }
     

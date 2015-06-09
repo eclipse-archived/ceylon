@@ -7416,10 +7416,9 @@ public class ExpressionVisitor extends Visitor {
         else if (term instanceof Tree.MemberOrTypeExpression) {
             TypeDeclaration dec = type.getDeclaration();
             boolean isToplevelInstance = 
-                    dec.isAnonymous() && dec.isToplevel();
+                    dec.isObjectClass() && dec.isToplevel();
             boolean isToplevelClassInstance = 
-                    dec instanceof Constructor &&
-                    dec.isAnonymous() &&
+                    dec.isValueConstructor() &&
                     dec.getContainer().isToplevel();
             if (!isToplevelInstance && 
                 !isToplevelClassInstance) {
@@ -8826,12 +8825,7 @@ public class ExpressionVisitor extends Visitor {
             return name + " is a value";
         }
         else if (result instanceof Constructor) {
-            if (result.isAnonymous()) {
-                return name + " is a singleton instance";
-            }
-            else {
-                return name + " is a constructor";
-            }
+            return name + " is a constructor";
         }
         else if (result instanceof Class) {
             return name + " is a class";

@@ -6,6 +6,7 @@ import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.getTy
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.getTypeDeclaration;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.getTypeMember;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.getTypedDeclaration;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.isConstructor;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.setTypeConstructor;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.unwrapAliasedTypeConstructor;
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.formatPath;
@@ -164,7 +165,7 @@ public class TypeVisitor extends Visitor {
         for (Declaration dec: importedType.getMembers()) {
             if (dec.isShared() && 
                     (dec.isStaticallyImportable() || 
-                            dec instanceof Constructor) && 
+                            isConstructor(dec)) && 
                     !dec.isAnonymous() && 
                     !ignoredMembers.contains(dec.getName())) {
                 addWildcardImport(til, dec, importedType);
@@ -383,7 +384,7 @@ public class TypeVisitor extends Visitor {
         if (importedDec instanceof Value) {
             Value value = (Value) importedDec;
             TypeDeclaration td = value.getTypeDeclaration();
-            return td.isAnonymous() && td.equals(dec);
+            return td.isObjectClass() && td.equals(dec);
         }
         else {
             return false;
@@ -398,7 +399,7 @@ public class TypeVisitor extends Visitor {
             if (d instanceof Value) {
                 Value v = (Value) d;
                 TypeDeclaration td = v.getTypeDeclaration();
-                if (td.isAnonymous()) {
+                if (td.isObjectClass()) {
                     d = td;
                 }
             }
@@ -1993,8 +1994,7 @@ public class TypeVisitor extends Visitor {
             }
             else {
                 TypeDeclaration td = v.getTypeDeclaration();
-                return !(td instanceof Class) || 
-                        !td.isAnonymous();
+                return td==null || !td.isObjectClass();
             }
         }
         else if (a instanceof Function) {

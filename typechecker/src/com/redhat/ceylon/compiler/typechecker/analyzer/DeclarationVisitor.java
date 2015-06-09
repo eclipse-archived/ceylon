@@ -771,7 +771,7 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
     @Override
     public void visit(Tree.Constructor that) {
         Constructor c = new Constructor();
-        c.setAnonymous(true);
+//        c.setAnonymous(true);
         Type at;
         if (scope instanceof Class) {
             Class clazz = (Class) scope;
@@ -842,7 +842,7 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
     @Override
     public void visit(Tree.Enumerated that) {
         Constructor e = new Constructor();
-        e.setAnonymous(true);
+//        e.setAnonymous(true);
         Type at;
         if (scope instanceof Class) {
             Class clazz = (Class) scope;
