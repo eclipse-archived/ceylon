@@ -158,14 +158,14 @@ public abstract class Declaration
     }
 
     public boolean isNative() {
-        return getNative() != null;
+        return getNativeBackend() != null;
     }
     
-    public String getNative() {
+    public String getNativeBackend() {
     	return nativeBackend;
     }
     
-    public void setNative(String backend) {
+    public void setNativeBackend(String backend) {
     	this.nativeBackend=backend;
     }
 
@@ -404,8 +404,8 @@ public abstract class Declaration
             }
             else if (this.isNative() != that.isNative() ||
                     (this.isNative() && 
-                            !this.getNative()
-                                .equals(that.getNative()))) {
+                            !this.getNativeBackend()
+                                .equals(that.getNativeBackend()))) {
                 return false;
             }
             else if (this instanceof Functional && 

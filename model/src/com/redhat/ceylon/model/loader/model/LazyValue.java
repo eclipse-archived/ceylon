@@ -235,15 +235,15 @@ public class LazyValue extends Value implements LazyElement, LocalDeclarationCon
     }
 
     @Override
-    public String getNative() {
+    public String getNativeBackend() {
         load();
-        return super.getNative();
+        return super.getNativeBackend();
     }
     
     @Override
-    public void setNative(String backend) {
+    public void setNativeBackend(String backend) {
         load();
-        super.setNative(backend);
+        super.setNativeBackend(backend);
     }
 
     @Override
