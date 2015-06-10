@@ -151,6 +151,15 @@ public class NativeTests extends CompilerTests {
     }
     
     @Test
+    public void testNativeSetterInvalid() {
+        testNativeErrors("NativeSetterInvalid",
+                new CompilerError(21, "setter must be marked native: 'nativeSetterInvalid'"),
+                new CompilerError(24, "setter must be marked native: 'nativeSetterInvalid'"),
+                new CompilerError(27, "setter must be marked native: 'nativeSetterInvalid'")
+        );
+    }
+    
+    @Test
     public void testNativeAttributeSharedInvalid() {
         testNativeErrors("NativeAttributeSharedInvalid",
                 new CompilerError(20, "native implementation must have a header: nativeAttributeSharedInvalid"),
