@@ -126,14 +126,14 @@ import com.sun.tools.javac.util.Position.LineMap;
  */
 public abstract class AbstractTransformer implements Transformation {
 
-    private final static TypePrinter typeSerialiser = new TypePrinter(false){
-        protected boolean printFullyQualified() {
-            return true;
-        }
-        protected boolean printQualifier() {
-            return true;
-        }
-    };
+    private final static TypePrinter typeSerialiser = new TypePrinter(
+            true,//printAbbreviated 
+            true,//printTypeParameters 
+            false,//printTypeParameterDetail 
+            true,//printQualifyingType 
+            false,//escapeLowercased 
+            true,//printFullyQualified 
+            true);//printQualifier
 
     private Context context;
     private TreeMaker make;
