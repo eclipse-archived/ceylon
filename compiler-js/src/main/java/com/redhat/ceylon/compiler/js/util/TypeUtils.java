@@ -1382,18 +1382,8 @@ public class TypeUtils {
      * in the Ceylon code with the same name)
      */
     public static boolean isNativeExternal(Declaration decl) {
-        boolean isNative = decl.isNative() && decl.getNativeBackend().isEmpty();
-        if (isNative) {
-            if (decl.getOverloads() != null) {
-                for (Declaration d : decl.getOverloads()) {
-                    if (!d.getNativeBackend().isEmpty()) {
-                        isNative = false;
-                        break;
-                    }
-                }
-            }
-        }
-        return isNative;
+        return decl.isNative() && decl.isNativeHeader()
+                && (decl.getOverloads() == null || decl.getOverloads().isEmpty());
     }
 
     public static List<Type> getTypes(List<Tree.StaticType> treeTypes) {
