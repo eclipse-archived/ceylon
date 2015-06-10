@@ -93,10 +93,18 @@ native("jvm") class NativeClassMismatch7() satisfies NativeClassMismatchSuper1 {
 }
 
 
+native class NativeClassMismatch8jvm() satisfies NativeClassMismatchSuper1 {
+    native shared actual void test1(Integer i);
+}
+
 native("jvm") class NativeClassMismatch8jvm() satisfies NativeClassMismatchSuper1 {
     native("jvm") shared actual void test1(Integer i) {
         NativeClassMismatch8js().test2(i);
     }
+}
+
+native class NativeClassMismatch8js() satisfies NativeClassMismatchSuper2 {
+    native shared actual void test2(Integer i);
 }
 
 native("js") class NativeClassMismatch8js() satisfies NativeClassMismatchSuper2 {
