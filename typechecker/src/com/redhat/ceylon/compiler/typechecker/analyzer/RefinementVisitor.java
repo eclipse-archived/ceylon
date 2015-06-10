@@ -24,7 +24,10 @@ import static java.util.Collections.emptyList;
 import static java.util.Collections.emptyMap;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -166,39 +169,45 @@ public class RefinementVisitor extends Visitor {
         // Find the header
         Declaration header =
                 getNativeHeader(dec.getContainer(), dec.getName());
-        if (dec!=header && header!=null) {
-            checkSameDeclaration(that, dec, header);
+        if (dec!=header) {
+            checkNativeDeclaration(that, dec, header);
         }
     }
     
-    private void checkSameDeclaration(Tree.Declaration that, 
+    private void checkNativeDeclaration(Tree.Declaration that, 
             Declaration dec, Declaration header) {
         if (dec instanceof Function && 
-                header instanceof Function) {
-            checkSameMethod(that, 
+                (header == null ||
+                header instanceof Function)) {
+            checkNativeMethod(that, 
                     (Function) dec, 
                     (Function) header);
         }
         else if (dec instanceof Value &&
-                header instanceof Value) {
-            checkSameValue(that, 
+                (header == null ||
+                header instanceof Value)) {
+            checkNativeValue(that, 
                     (Value) dec, 
                     (Value) header);
         }
         else if (dec instanceof Class &&
-                header instanceof Class) {
-            checkSameClass(that, 
+                (header == null ||
+                header instanceof Class)) {
+            checkNativeClass(that, 
                     (Class) dec, 
                     (Class) header);
         }
-        else {
+        else if (header != null) {
             that.addError("native declarations not of same type: " + 
                     message(dec));
         }
     }
     
-    private void checkSameClass(Tree.Declaration that, 
+    private void checkNativeClass(Tree.Declaration that, 
             Class dec, Class header) {
+        if (header == null) {
+            return;
+        }
         if (dec.isShared() && !header.isShared()) {
             that.addError("native header is not shared: " +
                     message(dec));
@@ -267,11 +276,77 @@ public class RefinementVisitor extends Visitor {
                 dec.getTypeParameters(),
                 header.getTypeParameters(),
                 true);
-        // TODO check shared members
+        
+        checkMissingMemberImpl(that, dec, header);
+    }
+
+    private void checkMissingMemberImpl(Tree.Declaration that, Class dec, Class header) {
+        List<Declaration> hdrMembers = getNativeMembers(header);
+        List<Declaration> implMembers = getNativeMembers(dec);
+        Iterator<Declaration> hdrIter = hdrMembers.iterator();
+        Iterator<Declaration> implIter = implMembers.iterator();
+        boolean hdrNext = true;
+        boolean implNext = true;
+        Declaration hdr = null;
+        Declaration impl = null;
+        while (hdrIter.hasNext() && implIter.hasNext()) {
+            if (hdrNext) {
+                hdr = hdrIter.next();
+            }
+            if (implNext) {
+                impl = implIter.next();
+            }
+            int cmp = declarationCmp.compare(hdr, impl);
+            if (cmp < 0) {
+                that.addError("native header '" + hdr.getName() +
+                        "' of '" + containerName(hdr) +
+                        "' has no native implementation");
+                return;
+            } else if (cmp > 0) {
+                hdrNext = false;
+                implNext = true;
+            } else {
+                hdrNext = true;
+                implNext = true;
+            }
+        }
+        if (hdrIter.hasNext()) {
+            hdr = hdrIter.next();
+            that.addError("native header '" + hdr.getName() +
+                    "' of '" + containerName(hdr) +
+                    "' has no native implementation");
+        }
     }
     
-    private void checkSameMethod(Tree.Declaration that, 
+    private static final Comparator<Declaration> declarationCmp =
+            new Comparator<Declaration>() {
+        @Override
+        public int compare(Declaration o1, Declaration o2) {
+            return o1.getName().compareTo(o2.getName());
+        }
+    };
+    
+    private List<Declaration> getNativeMembers(Class dec) {
+        List<Declaration> members = dec.getMembers();
+        ArrayList<Declaration> nats = new ArrayList<Declaration>(members.size());
+        for (Declaration m : members) {
+            if (m.isNative() && !m.isFormal() && !m.isActual() && !m.isDefault()) {
+                nats.add(m);
+            }
+        }
+        Collections.sort(nats, declarationCmp);
+        return nats;
+    }
+
+    private void checkNativeMethod(Tree.Declaration that, 
             Function dec, Function header) {
+        if (header == null) {
+            if (dec.isMember() && !dec.isFormal() && !dec.isActual() && !dec.isDefault()) {
+                that.addError("native member does not implement any header member: " +
+                        message(dec));
+            }
+            return;
+        }
         Type at = header.getType();
         if (!dec.getType().isExactly(at)) {
             that.addError("native implementation must have the same return type as native header: " +
@@ -307,8 +382,15 @@ public class RefinementVisitor extends Visitor {
                 true);
     }
     
-    private void checkSameValue(Tree.Declaration that, 
+    private void checkNativeValue(Tree.Declaration that, 
             Value dec, Value header) {
+        if (header == null) {
+            if (dec.isMember() && !dec.isFormal() && !dec.isActual() && !dec.isDefault()) {
+                that.addError("native member does not implement any header member: " +
+                        message(dec));
+            }
+            return;
+        }
         Type at = header.getType();
         if (!dec.getType().isExactly(at)) {
             that.addError("native implementation must have the same type as native header: " +
@@ -993,9 +1075,13 @@ public class RefinementVisitor extends Visitor {
     
     private static String containerName(
             Reference member) {
+        return containerName(member.getDeclaration());
+    }
+
+    private static String containerName(
+            Declaration member) {
         Scope container = 
-                member.getDeclaration()
-                    .getContainer();
+                member.getContainer();
         if (container instanceof Declaration) {
             Declaration dec = (Declaration) container;
             return dec.getName();
