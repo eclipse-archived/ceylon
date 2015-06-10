@@ -14,6 +14,7 @@ import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.unwrapExpress
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.appliedType;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getContainingClassOrInterface;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getNativeDeclaration;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getNativeHeader;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.intersection;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.intersectionOfSupertypes;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isNativeImplementation;
@@ -2114,7 +2115,7 @@ public class TypeVisitor extends Visitor {
                         "' is not implemented for one or more backends");
             } else {
                 Declaration hdr =
-                        getNativeDeclaration(dec, Backend.None);
+                        getNativeHeader(dec.getContainer(), dec.getName());
                 if (hdr==null) {
                     that.addError("native implementation must have a header: "
                             + dec.getName(unit));

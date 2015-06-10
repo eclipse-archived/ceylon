@@ -14,13 +14,11 @@ import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.messa
 import static com.redhat.ceylon.compiler.typechecker.analyzer.DeclarationVisitor.setVisibleScope;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.ExpressionVisitor.getRefinedMember;
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.name;
-import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getDirectMemberForBackend;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getInheritedDeclarations;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getInterveningRefinements;
-import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getNativeDeclaration;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getNativeHeader;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getRealScope;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getSignature;
-import static com.redhat.ceylon.model.typechecker.model.ModelUtil.hasNativeImplementation;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isOverloadedVersion;
 import static java.util.Collections.emptyList;
 import static java.util.Collections.emptyMap;
@@ -30,7 +28,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.compiler.typechecker.context.TypecheckerUnit;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
@@ -153,7 +150,7 @@ public class RefinementVisitor extends Visitor {
                 }
             }
             
-            if (hasNativeImplementation(dec)) {
+            if (dec.isNative() && !dec.isNativeHeader()) {
                 checkNative(that, dec);
             }
         }
@@ -161,22 +158,14 @@ public class RefinementVisitor extends Visitor {
     }
 
     private void checkNative(Tree.Declaration that, Declaration dec) {
-        Scope container = dec.getContainer();
-        if (container instanceof Declaration) {
-            Declaration cd = (Declaration)container;
-            if (cd.isNative() && !cd.isNativeHeader()) {
-                // We first need to find the header for the conotainer
-                container =
-                        (Scope)getDirectMemberForBackend(cd.getContainer(),
-                                cd.getName(),
-                                Backend.None.nativeAnnotation);
-            }
+        if (dec instanceof Setter) {
+            // We ignore setter assuming the check done for their
+            // getters will have been enough
+            return;
         }
         // Find the header
         Declaration header =
-                getDirectMemberForBackend(container,
-                        dec.getName(),
-                        Backend.None.nativeAnnotation);
+                getNativeHeader(dec.getContainer(), dec.getName());
         if (dec!=header && header!=null) {
             checkSameDeclaration(that, dec, header);
         }

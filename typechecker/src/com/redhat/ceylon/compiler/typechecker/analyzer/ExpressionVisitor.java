@@ -41,6 +41,7 @@ import static com.redhat.ceylon.model.typechecker.model.ModelUtil.genericFunctio
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getContainingClassOrInterface;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getInterveningRefinements;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getNativeDeclaration;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getNativeHeader;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getOuterClassOrInterface;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getSignature;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getTypeArgumentMap;
@@ -8868,7 +8869,7 @@ public class ExpressionVisitor extends Visitor {
                             "' is not implemented for one or more backends");
                 } else {
                     Declaration hdr =
-                            getNativeDeclaration(dec, Backend.None);
+                            getNativeHeader(dec.getContainer(), dec.getName());
                     if (hdr==null) {
                         that.addError("native implementation must have a header: "
                                 + dec.getName(unit));
