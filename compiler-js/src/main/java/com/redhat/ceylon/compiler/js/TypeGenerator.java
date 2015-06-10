@@ -502,19 +502,34 @@ public class TypeGenerator {
                 }
             }
             //If the supertype has type arguments, add them to the call
-            if (typeDecl.getTypeParameters() != null && !typeDecl.getTypeParameters().isEmpty()) {
+            List<TypeParameter> typeParams;
+            if (typeDecl instanceof Constructor) {
+                //Output the type arguments to the constructor,
+                //UNLESS you're in the same class, then just pass the type arguments object
+                typeParams = ((Class)typeDecl.getContainer()).getTypeParameters();
+                if (typeParams != null && !typeParams.isEmpty()) {
+                    typeParams = null;
+                    if (ModelUtil.contains(d, typeDecl)) {
+                        gen.out("$$targs$$,");
+                    } else {
+                        TypeUtils.printTypeArguments(that,
+                                extendedType.getTypeModel().getQualifyingType().getTypeArguments(),
+                                gen, false, null);
+                        gen.out(",");
+                    }
+                }
+            } else {
+                typeParams = typeDecl.getTypeParameters();
+            }
+            if (typeParams != null && !typeParams.isEmpty()) {
                 List<Type> typeArgs = null;
                 if (extendedType.getTypeArgumentList() != null) {
                     typeArgs = extendedType.getTypeArgumentList().getTypeModels();
                 }
                 TypeUtils.printTypeArguments(that,
-                        TypeUtils.matchTypeParametersWithArguments(typeDecl.getTypeParameters(), typeArgs),
+                        TypeUtils.matchTypeParametersWithArguments(typeParams, typeArgs),
                         gen, false, null);
                 gen.out(",");
-            }
-            if (typeDecl instanceof Constructor && ((Class)typeDecl.getContainer()).getTypeParameters()!=null
-                            && !((Class)typeDecl.getContainer()).getTypeParameters().isEmpty()) {
-                gen.out("$$targs$$,");
             }
             gen.out(gen.getNames().self(d), ")");
             gen.endLine(true);
