@@ -106,9 +106,9 @@ public class NativeTests extends CompilerTests {
     @Test
     public void testNativeMethodMismatch() {
         testNativeErrors("NativeMethodMismatch",
-                new CompilerError(25, "native abstraction is not shared: 'nativeMethodMismatch1'"),
-                new CompilerError(30, "native implementation must have the same return type as native abstraction: 'nativeMethodMismatch2' must have the type 'Anything'"),
-                new CompilerError(34, "native implementation must have the same return type as native abstraction: 'nativeMethodMismatch2' must have the type 'Anything'"),
+                new CompilerError(25, "native header is not shared: 'nativeMethodMismatch1'"),
+                new CompilerError(30, "native implementation must have the same return type as native header: 'nativeMethodMismatch2' must have the type 'Anything'"),
+                new CompilerError(34, "native implementation must have the same return type as native header: 'nativeMethodMismatch2' must have the type 'Anything'"),
                 new CompilerError(40, "member does not have the same number of parameters as native header: 'nativeMethodMismatch3'"),
                 new CompilerError(44, "type of parameter 's' of 'nativeMethodMismatch3' is different to type of corresponding parameter 'i' of native header 'nativeMethodMismatch3': 'String' is not exactly 'Integer'"),
                 new CompilerError(51, "no native implementation for backend: native 'nativeMethodMismatch4js' is not implemented for one or more backends"),
@@ -169,8 +169,8 @@ public class NativeTests extends CompilerTests {
     @Test
     public void testNativeAttributeMismatch() {
         testNativeErrors("NativeAttributeMismatch",
-                new CompilerError(24, "native abstraction is not shared: 'nativeAttributeMismatch1'"),
-                new CompilerError(28, "native implementation must have the same type as native abstraction: 'nativeAttributeMismatch2' must have the type 'Integer'"));
+                new CompilerError(24, "native header is not shared: 'nativeAttributeMismatch1'"),
+                new CompilerError(28, "native implementation must have the same type as native header: 'nativeAttributeMismatch2' must have the type 'Integer'"));
     }
     
     // Classes
@@ -210,7 +210,7 @@ public class NativeTests extends CompilerTests {
     @Test
     public void testNativeClassMismatch() {
         testNativeErrors("NativeClassMismatch",
-                new CompilerError(35, "native abstraction is not shared: 'NativeClassMismatch1'"),
+                new CompilerError(35, "native header is not shared: 'NativeClassMismatch1'"),
                 new CompilerError(40, "member does not have the same number of parameters as native header: 'NativeClassMismatch2'"),
                 new CompilerError(42, "type of parameter 's' of 'NativeClassMismatch2' is different to type of corresponding parameter 'i' of native header 'NativeClassMismatch2': 'String' is not exactly 'Integer'"),
                 new CompilerError(57, "native classes do not satisfy the same interfaces: 'NativeClassMismatch4'"),
