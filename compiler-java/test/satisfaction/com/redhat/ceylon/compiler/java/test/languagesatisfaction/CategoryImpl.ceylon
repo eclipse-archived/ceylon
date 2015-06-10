@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-class CategoryImpl() satisfies Category {
+class CategoryImpl() satisfies Category<> {
     shared actual Boolean contains(Object element) {
         return false;
     }
