@@ -34,7 +34,7 @@ class Bug1184 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
     final .java.lang.String s4, @.com.redhat.ceylon.compiler.java.metadata.Name("s")
     @.com.redhat.ceylon.compiler.java.metadata.Sequenced
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Sequential<ceylon.language::String>")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String[]")
     final .ceylon.language.Sequential<? extends .ceylon.language.String> s) {
         return narySequenced$canonical$(s1, s2, s3, s4, s);
     }

@@ -13,7 +13,7 @@ class Bug747 extends .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug747
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     public final void main(@.com.redhat.ceylon.compiler.java.metadata.Name("s")
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Null|ceylon.language::String")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String?")
     final .java.lang.String s) {
         final .ceylon.language.String uc = (
             let

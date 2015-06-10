@@ -38,7 +38,7 @@ public class MethodClass implements .com.redhat.ceylon.compiler.java.runtime.mod
     private final .ceylon.language.Callable<? extends .java.lang.Object> methodSpec;
     
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Callable<ceylon.language::Anything,ceylon.language::Empty>")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything()")
     public final .ceylon.language.Callable<? extends .java.lang.Object> getMethodSpec() {
         return methodSpec;
     }

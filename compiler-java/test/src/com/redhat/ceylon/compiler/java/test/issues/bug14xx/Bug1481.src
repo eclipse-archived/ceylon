@@ -65,7 +65,7 @@ public final class Bug1481Heap$impl<Key, Item> {
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
-    @.com.redhat.ceylon.compiler.java.metadata.TypeAlias("ceylon.language::Entry<Key,Item>")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeAlias("Key->Item")
     @.ceylon.language.SharedAnnotation$annotation$
     @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1481Heap.class)
     public final class HEntry {
@@ -75,7 +75,7 @@ public final class Bug1481Heap$impl<Key, Item> {
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
-    @.com.redhat.ceylon.compiler.java.metadata.TypeAlias("ceylon.language::Entry<Key,Item>")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeAlias("Key->Item")
     @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1481Heap.class)
     final class HEntry2 {
         

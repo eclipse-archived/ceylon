@@ -24,7 +24,7 @@ final class bug2002Builder2_ {
     
     @.com.redhat.ceylon.compiler.java.metadata.FunctionalParameter("()")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
-            value = "ceylon.language::Callable<ceylon.language::Sequential<Head|Tail>,ceylon.language::Empty>",
+            value = "<Head|Tail>[]()",
             erased = true)
     @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({
             @.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
@@ -43,7 +43,7 @@ final class bug2002Builder2_ {
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("Head")
     final Head head, @.com.redhat.ceylon.compiler.java.metadata.Name("tail")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
-            value = "ceylon.language::Callable<ceylon.language::Sequential<Tail>,ceylon.language::Empty>",
+            value = "Tail[]()",
             erased = true)
     final .ceylon.language.Callable<? extends .ceylon.language.Sequential<? extends Tail>> tail) {
         return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Sequential<? extends .java.lang.Object>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequential.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union($reified$Head, $reified$Tail)), .ceylon.language.Empty.$TypeDescriptor$, "<Head|Tail>[]()", (short)-1){
@@ -90,7 +90,7 @@ final class bug2002BuilderTest1_ {
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
-            value = "ceylon.language::Callable<ceylon.language::Sequential<ceylon.language::String|ceylon.language::Integer>,ceylon.language::Empty>",
+            value = "<ceylon.language::String|ceylon.language::Integer>[]()",
             erased = true)
     public static .ceylon.language.Callable<? extends .ceylon.language.Sequential<? extends .java.lang.Object>> get_() {
         if (bug2002BuilderTest1_.$init$value) {
@@ -134,7 +134,7 @@ final class bug2002BuilderTest2_ {
         }
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Callable<ceylon.language::Sequential<ceylon.language::Boolean>,ceylon.language::Empty>")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Boolean[]()")
     public static .ceylon.language.Callable<? extends .ceylon.language.Sequential<? extends .ceylon.language.Boolean>> get_() {
         if (bug2002BuilderTest2_.$init$value) {
             return value;

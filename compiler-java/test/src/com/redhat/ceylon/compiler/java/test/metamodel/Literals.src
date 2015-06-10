@@ -99,13 +99,13 @@ class LitClassWithParameters implements .com.redhat.ceylon.compiler.java.runtime
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     final long attributeAndParameter, @.com.redhat.ceylon.compiler.java.metadata.Name("parameterMethod")
     @.com.redhat.ceylon.compiler.java.metadata.FunctionalParameter("()")
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Callable<ceylon.language::Integer,ceylon.language::Empty>")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer()")
     final .ceylon.language.Callable<? extends .ceylon.language.Integer> parameterMethod, @.com.redhat.ceylon.compiler.java.metadata.Name("sharedMethodAndParameter")
     @.com.redhat.ceylon.compiler.java.metadata.FunctionalParameter("()")
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Callable<ceylon.language::Integer,ceylon.language::Empty>")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer()")
     final .ceylon.language.Callable<? extends .ceylon.language.Integer> sharedMethodAndParameter, @.com.redhat.ceylon.compiler.java.metadata.Name("methodAndParameter")
     @.com.redhat.ceylon.compiler.java.metadata.FunctionalParameter("()")
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Callable<ceylon.language::Integer,ceylon.language::Empty>")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer()")
     final .ceylon.language.Callable<? extends .ceylon.language.Integer> methodAndParameter) {
         this.parameterAndSharedAttribute = parameterAndSharedAttribute;
         this.sharedAttributeAndParameter = sharedAttributeAndParameter;
@@ -163,13 +163,13 @@ class LitParameterisedClassWithParameters<T> implements .com.redhat.ceylon.compi
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     final long attributeAndParameter, @.com.redhat.ceylon.compiler.java.metadata.Name("parameterMethod")
     @.com.redhat.ceylon.compiler.java.metadata.FunctionalParameter("()")
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Callable<ceylon.language::Integer,ceylon.language::Empty>")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer()")
     final .ceylon.language.Callable<? extends .ceylon.language.Integer> parameterMethod, @.com.redhat.ceylon.compiler.java.metadata.Name("sharedMethodAndParameter")
     @.com.redhat.ceylon.compiler.java.metadata.FunctionalParameter("()")
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Callable<ceylon.language::Integer,ceylon.language::Empty>")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer()")
     final .ceylon.language.Callable<? extends .ceylon.language.Integer> sharedMethodAndParameter, @.com.redhat.ceylon.compiler.java.metadata.Name("methodAndParameter")
     @.com.redhat.ceylon.compiler.java.metadata.FunctionalParameter("()")
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Callable<ceylon.language::Integer,ceylon.language::Empty>")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer()")
     final .ceylon.language.Callable<? extends .ceylon.language.Integer> methodAndParameter) {
         this.$reified$T = $reified$T;
         this.parameterAndSharedAttribute = parameterAndSharedAttribute;

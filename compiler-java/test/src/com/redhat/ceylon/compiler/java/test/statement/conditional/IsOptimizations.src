@@ -239,7 +239,7 @@ class IsOpt implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTyp
         if (!(val instanceof .ceylon.language.String || val instanceof .ceylon.language.Integer)) {
         }
         .java.lang.Object val$57;
-        if ((val$57 = val) instanceof .com.redhat.ceylon.compiler.java.test.statement.conditional.IsOptInvar && .com.redhat.ceylon.compiler.java.Util.isReified(val$57, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.conditional.IsOptInvar.class, .ceylon.language.Integer.$TypeDescriptor$))) {
+        if (!((val$57 = val) instanceof .com.redhat.ceylon.compiler.java.test.statement.conditional.IsOptInvar && .com.redhat.ceylon.compiler.java.Util.isReified(val$57, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.conditional.IsOptInvar.class, .ceylon.language.String.$TypeDescriptor$)) || val$57 instanceof .ceylon.language.String || val$57 instanceof .ceylon.language.Integer)) {
             final .com.redhat.ceylon.compiler.java.test.statement.conditional.IsOptInvar<.ceylon.language.Integer> val$58 = (.com.redhat.ceylon.compiler.java.test.statement.conditional.IsOptInvar<.ceylon.language.Integer>)(.com.redhat.ceylon.compiler.java.test.statement.conditional.IsOptInvar)val$57;
         }
     }

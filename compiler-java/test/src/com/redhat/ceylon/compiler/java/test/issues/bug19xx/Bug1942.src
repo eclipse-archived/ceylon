@@ -92,7 +92,7 @@ class Bug1942 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     private final void f$priv$(@.com.redhat.ceylon.compiler.java.metadata.Name("g")
     @.com.redhat.ceylon.compiler.java.metadata.FunctionalParameter("!()")
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Callable<ceylon.language::Anything,ceylon.language::Empty>")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything()")
     final .ceylon.language.Callable<? extends .java.lang.Object> g) {
         f$priv$(g);
     }
