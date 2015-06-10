@@ -1601,14 +1601,14 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
                 model.setFormal(true);
             }
         }
+        if (model.isFormal() && model.isDefault()) {
+            that.addError("declaration may not be annotated both formal and default",
+                    1320);
+        }
         Tree.Annotation na = 
                 getAnnotation(al, "native", unit);
         if (na != null) {
             model.setNativeBackend(getAnnotationArgument(na, ""));
-        }
-        if (model.isFormal() && model.isDefault()) {
-            that.addError("declaration may not be annotated both formal and default", 
-                    1320);
         }
         if (hasAnnotation(al, "actual", unit)) {
             model.setActual(true);
