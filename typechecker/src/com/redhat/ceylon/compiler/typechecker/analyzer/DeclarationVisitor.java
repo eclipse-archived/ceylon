@@ -384,13 +384,22 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
             if (model instanceof Setter) {
                 Setter setter = (Setter) model;
                 //a setter must have a matching getter
+                Declaration g;
                 Tree.AnnotationList al = 
                         that.getAnnotationList();
                 Declaration member = 
-                        getDirectMemberForBackend(
-                                model.getContainer(), name, 
+                        getDirectMemberForBackend(model.getContainer(),
+                                name,
                                 getNativeBackend(al, unit));
-                if (member==null) {
+                if (member == null
+                        && (g = getDirectMemberForBackend(scope, name,
+                                Backend.None.nativeAnnotation)) != null
+                        && g instanceof Value) {
+                    setter.setGetter((Value)g);
+                    that.addError("setter must be marked native: '" +
+                            name + "'");
+                }
+                else if (member==null) {
                     that.addError("setter with no matching getter: '" + 
                             name + "'");
                 }
@@ -1163,7 +1172,8 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
         
         if (that.getSpecifierExpression()==null &&
                 that.getBlock()==null &&
-                !isNativeHeader(s)) {
+                !isNativeHeader(s) &&
+                !isNativeHeader(s.getGetter())) {
             that.addError("setter declaration must have a body or => specifier");
         }
     }
