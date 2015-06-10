@@ -2524,6 +2524,11 @@ public class GenerateJsVisitor extends Visitor
     }
 
     public String qualifiedPath(final Node that, final Declaration d, final boolean inProto) {
+        if (d instanceof Constructor) {
+            Class c = (Class)d.getContainer();
+            final String rval = qualifiedPath(that, c, inProto);
+            return rval.isEmpty() ? names.name(c) : rval + "." + names.name(c);
+        }
         final boolean isMember = d.isClassOrInterfaceMember();
         final boolean imported = isImported(that == null ? null : that.getUnit().getPackage(), d);
         if (!isMember && imported) {
