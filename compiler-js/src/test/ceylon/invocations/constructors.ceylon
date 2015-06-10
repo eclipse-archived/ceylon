@@ -123,6 +123,14 @@ class Test541 {
   shared new() extends Bar() {}
 }
 
+class Test582<A>{
+  shared A a;
+  shared new Bar(A i){
+    check(`A`==`Integer`, "#582");
+    a=i;
+  }
+}
+
 void testConstructors() {
   check(ToplevelBug476.Bar().x==2, "#476 toplevel");
   class NestedBug476 {
@@ -176,4 +184,6 @@ void testConstructors() {
   check(Test565().string=="abcd", "#565");
   Test541();
   Test540();
+  value test582 = object extends Test582<Integer>.Bar(42){};
+  check(test582.a==42);
 }
