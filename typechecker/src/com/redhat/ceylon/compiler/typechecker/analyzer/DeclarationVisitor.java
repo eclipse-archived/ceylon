@@ -207,12 +207,6 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
                     that instanceof Tree.AnyAttribute;
             if (canBeNative && 
                     (model.isToplevel() || model.isMember())) {
-                if (!isHeader &&
-                        !Backend.validAnnotation(backend)) {
-                    a.addError("illegal native backend name: '\"" + 
-                            backend + 
-                            "\"' (must be either '\"jvm\"' or '\"js\"')");
-                }
                 String moduleBackend = 
                         unit.getPackage()
                             .getModule()
@@ -1619,7 +1613,13 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
         Tree.Annotation na = 
                 getAnnotation(al, "native", unit);
         if (na != null) {
-            model.setNativeBackend(getAnnotationArgument(na, ""));
+            String backend = getAnnotationArgument(na, "");
+            if (!Backend.validAnnotation(backend)) {
+                na.addError("illegal native backend name: '\"" +
+                        backend +
+                        "\"' (must be either '\"jvm\"' or '\"js\"')");
+            }
+            model.setNativeBackend(backend);
         }
         if (hasAnnotation(al, "actual", unit)) {
             model.setActual(true);
