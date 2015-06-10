@@ -239,7 +239,7 @@ public class TypeUtils {
             TypeDeclaration d = pt.getDeclaration();
             subs = d.getUnit().getTupleElementTypes(pt);
             final Type lastType = subs.get(subs.size()-1);
-            if (pt.involvesTypeParameters()) {
+            if (pt.involvesTypeParameters() && !d.getUnit().isHomogeneousTuple(pt)) {
                 //Revert to outputting normal Tuple with its type arguments
                 gen.out("{t:", gen.getClAlias(), "Tuple,a:");
                 printTypeArguments(node, pt.getTypeArguments(), gen, skipSelfDecl, pt.getVarianceOverrides());
