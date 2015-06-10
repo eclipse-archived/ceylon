@@ -2410,11 +2410,11 @@ public class ModelUtil {
     }
     
     public static boolean isNativeHeader(Declaration dec) {
-        return dec != null && dec.isNative() && dec.getNativeBackend().isEmpty();
+        return dec != null && dec.isNativeHeader();
     }
     
     public static boolean isNativeImplementation(Declaration dec) {
-        return dec != null && dec.isNative() && !dec.getNativeBackend().isEmpty();
+        return dec != null && dec.isNative() && !dec.isNativeHeader();
     }
     
     public static boolean hasNativeImplementation(Declaration dec) {
@@ -2522,11 +2522,14 @@ public class ModelUtil {
             Scope scope, String name, String backend) {
         for (Declaration dec: scope.getMembers()) {
             if (isResolvable(dec) && isNamed(name, dec)) {
-                Declaration nativeDec = 
-                        getNativeDeclaration(dec, 
-                                Backend.fromAnnotation(backend));
-                if (nativeDec != null) {
-                    return nativeDec;
+                String nat = dec.getNativeBackend();
+                if (nat==null) {
+                    return dec;
+                }
+                else {
+                    if (nat.equals(backend)) {
+                        return dec;
+                    }
                 }
             }
         }
