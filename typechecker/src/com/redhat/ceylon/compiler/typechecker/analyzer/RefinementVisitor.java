@@ -14,6 +14,7 @@ import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.messa
 import static com.redhat.ceylon.compiler.typechecker.analyzer.DeclarationVisitor.setVisibleScope;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.ExpressionVisitor.getRefinedMember;
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.name;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getDirectMemberForBackend;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getInheritedDeclarations;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getInterveningRefinements;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getNativeDeclaration;
@@ -160,14 +161,22 @@ public class RefinementVisitor extends Visitor {
     }
 
     private void checkNative(Tree.Declaration that, Declaration dec) {
-        // Find the header first (if it exists)
-        Declaration header =
-                getNativeDeclaration(dec, Backend.None);
-        if (header == null) {
-            // If there's no abstraction we just compare to 
-            // the first implementation in the list
-            header = dec.getOverloads().get(0);
+        Scope container = dec.getContainer();
+        if (container instanceof Declaration) {
+            Declaration cd = (Declaration)container;
+            if (cd.isNative() && !cd.isNativeHeader()) {
+                // We first need to find the header for the conotainer
+                container =
+                        (Scope)getDirectMemberForBackend(cd.getContainer(),
+                                cd.getName(),
+                                Backend.None.nativeAnnotation);
+            }
         }
+        // Find the header
+        Declaration header =
+                getDirectMemberForBackend(container,
+                        dec.getName(),
+                        Backend.None.nativeAnnotation);
         if (dec!=header && header!=null) {
             checkSameDeclaration(that, dec, header);
         }
