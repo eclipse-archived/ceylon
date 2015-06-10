@@ -431,10 +431,8 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
                         }
                         else {
                             dup = true;
-                            if (!model.isAnonymous()) {
-                                that.addError("duplicate declaration name: '" + 
-                                        name + "'");
-                            }
+                            that.addError("duplicate declaration name: '" + 
+                                    name + "'");
                         }
                         if (dup) {
                             unit.getDuplicateDeclarations()
@@ -797,7 +795,6 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
     @Override
     public void visit(Tree.Constructor that) {
         Constructor c = new Constructor();
-//        c.setAnonymous(true);
         Type at;
         if (scope instanceof Class) {
             Class clazz = (Class) scope;
@@ -816,7 +813,7 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
             that.addError("constructor declaration must occur directly in the body of a class");
         }
         that.setConstructor(c);
-        visitDeclaration(that, c);
+        visitDeclaration(that, c, false);
         Function f = new Function();
         f.setType(at);
         that.setDeclarationModel(f);
@@ -868,7 +865,6 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
     @Override
     public void visit(Tree.Enumerated that) {
         Constructor e = new Constructor();
-//        e.setAnonymous(true);
         Type at;
         if (scope instanceof Class) {
             Class clazz = (Class) scope;
@@ -898,7 +894,7 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
             that.addError("value constructor declaration must occur directly in the body of a class");
         }
         that.setEnumerated(e);
-        visitDeclaration(that, e);
+        visitDeclaration(that, e, false);
         Value v = new Value();
         v.setType(at);
         that.setDeclarationModel(v);
