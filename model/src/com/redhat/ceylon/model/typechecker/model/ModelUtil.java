@@ -2417,21 +2417,6 @@ public class ModelUtil {
         return dec != null && dec.isNative() && !dec.isNativeHeader();
     }
     
-    public static boolean hasNativeImplementation(Declaration dec) {
-        if (isNative(dec)) {
-            List<Declaration> overloads = dec.getOverloads();
-            if (overloads != null) {
-                for (Declaration overload: overloads) {
-                    if (overload.isNative() && 
-                            !overload.getNativeBackend().isEmpty()) {
-                        return true;
-                    }
-                }
-            }
-        }
-        return false;
-    }
-    
     public static boolean isInNativeContainer(Declaration dec) {
         Scope container = dec.getContainer();
         if (container instanceof Declaration) {
@@ -2534,6 +2519,38 @@ public class ModelUtil {
             }
         }
         return null;
+    }
+    
+    /**
+     * Find the header with the given name that occurs
+     * directly in the given scope or if that scope is
+     * itself a native implementation first look up
+     * the scope's native header and find the requested
+     * header there.
+     *  
+     * @param scope any scope
+     * @param name the name of a declaration
+     * 
+     * @return the matching declaration
+     */
+    public static Declaration getNativeHeader(Scope container, String name) {
+        if (container instanceof Declaration) {
+            Declaration cd = (Declaration)container;
+            if (cd.isNative() && !cd.isNativeHeader()) {
+                // The container is a native implementation so
+                // we first need to find _its_ header
+                container =
+                        (Scope)getDirectMemberForBackend(cd.getContainer(),
+                                cd.getName(),
+                                Backend.None.nativeAnnotation);
+            }
+        }
+        // Find the header
+        Declaration header =
+                getDirectMemberForBackend(container,
+                        name,
+                        Backend.None.nativeAnnotation);
+        return header;
     }
     
     public static boolean eq(Object decl, Object other) {
