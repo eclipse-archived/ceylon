@@ -226,7 +226,8 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
                 }
                 model.setNativeBackend(backend);
                 Declaration member = getDirectMemberForBackend(
-                        model.getContainer(), name, "");
+                        model.getContainer(), name,
+                        Backend.None.nativeAnnotation);
                 if (member == null) {
                     member = scope.getDirectMember(name,
                                 null, false);
