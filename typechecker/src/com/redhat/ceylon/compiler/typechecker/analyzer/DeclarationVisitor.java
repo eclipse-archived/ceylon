@@ -199,6 +199,7 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
                 getAnnotation(al, "native", unit);
         if (a != null) {
             String backend = getAnnotationArgument(a, Backend.None.nativeAnnotation);
+            boolean isHeader = backend.equals(Backend.None.nativeAnnotation);
             String name = model.getName();
             boolean canBeNative = 
                     that instanceof Tree.AnyMethod ||
@@ -206,7 +207,7 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
                     that instanceof Tree.AnyAttribute;
             if (canBeNative && 
                     (model.isToplevel() || model.isMember())) {
-                if (!backend.equals(Backend.None.nativeAnnotation) && 
+                if (!isHeader &&
                         !Backend.validAnnotation(backend)) {
                     a.addError("illegal native backend name: '\"" + 
                             backend + 
@@ -216,7 +217,7 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
                         unit.getPackage()
                             .getModule()
                             .getNative();
-                if (!backend.equals(Backend.None.nativeAnnotation) && 
+                if (!isHeader &&
                         moduleBackend != null && 
                         !backend.equals(moduleBackend)) {
                     that.addError("native backend name on declaration conflicts with module descriptor: '\"" + 
@@ -261,7 +262,7 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
                 if (member == null || (member.isNative() && !member.isNativeHeader())) {
                     // Abstraction-less native implementation, check
                     // it's not shared
-                    if (!backend.equals(Backend.None.nativeAnnotation)
+                    if (!isHeader
                             && (model.isToplevel()
                                     || (model.isMember()
                                             && ((Declaration)model.getContainer()).isNative()
@@ -287,7 +288,7 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
                                 member.getOverloads();
                         if (hasOverload(backend, model, 
                                 overloads)) {
-                            if (backend.equals(Backend.None.nativeAnnotation)) {
+                            if (isHeader) {
                                 that.addError("duplicate native header: '" + 
                                         name + "'");
                             }
@@ -314,7 +315,7 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
                         }
                     }
                     else {
-                        if (backend.equals(Backend.None.nativeAnnotation)) {
+                        if (isHeader) {
                             that.addError("native header for non-native declaration: '" + 
                                     name + "'");
                         }
@@ -326,7 +327,7 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
                 }
             }
             else if (!(model instanceof Setter) && 
-                    !backend.equals(Backend.None.nativeAnnotation)) {
+                    !isHeader) {
                 if (!canBeNative) {
                     that.addError("native declaration is not a class, method or attribute: '" + 
                             name + "'");
