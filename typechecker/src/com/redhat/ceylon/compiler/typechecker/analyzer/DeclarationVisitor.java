@@ -257,11 +257,10 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
                         }
                     }
                 }
-                if (member == null || !member.isNativeHeader()) {
+                if (member == null || (member.isNative() && !member.isNativeHeader())) {
                     // Abstraction-less native implementation, check
                     // it's not shared
                     if (!backend.equals(Backend.None.nativeAnnotation)
-                            && model.isShared()
                             && (model.isToplevel()
                                     || (model.isMember()
                                             && ((Declaration)model.getContainer()).isNative()
