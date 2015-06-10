@@ -805,12 +805,8 @@ public class SpecificationVisitor extends Visitor {
     @Override
     public void visit(Tree.Constructor that) {
         Function f = that.getDeclarationModel();
-        if (f==declaration) {
-            declare();
-            specify();
-        }
         Constructor c = that.getConstructor();
-        if (c==declaration) {
+        if (f==declaration || c==declaration) {
             declare();
             specify();
         }
@@ -825,12 +821,8 @@ public class SpecificationVisitor extends Visitor {
     @Override
     public void visit(Tree.Enumerated that) {
         Value v = that.getDeclarationModel();
-        if (v==declaration) {
-            declare();
-            specify();
-        }
         Constructor e = that.getEnumerated();
-        if (e==declaration) {
+        if (v==declaration || e==declaration) {
             declare();
             specify();
         }
