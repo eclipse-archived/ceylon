@@ -896,7 +896,10 @@ public class InheritanceVisitor extends Visitor {
             if (caseValues!=null 
                     && !caseValues.contains(v) && 
                     !cl.isAbstract()) {
-                that.addError("value constructor does not occur in of clause of non-abstract enumerated class");
+                that.addError("value constructor does not occur in of clause of non-abstract enumerated class: '" +
+                        v.getName() + 
+                        "' is not listed in the of clause of '" + 
+                        cl.getName() + "'");
             }
         }
     }
