@@ -13,6 +13,7 @@ public abstract class FunctionOrValue extends TypedDeclaration {
     private boolean overloaded;
     private boolean abstraction;
     private List<Declaration> overloads;
+    private boolean implemented;
     
     @Override
     public List<Annotation> getAnnotations() {
@@ -101,6 +102,14 @@ public abstract class FunctionOrValue extends TypedDeclaration {
         for (Declaration d: initial) {
             overloads.add(d);
         }
+    }
+    
+    public boolean isImplemented() {
+        return implemented;
+    }
+    
+    public void setImplemented(boolean implemented) {
+        this.implemented = implemented;
     }
 
 }

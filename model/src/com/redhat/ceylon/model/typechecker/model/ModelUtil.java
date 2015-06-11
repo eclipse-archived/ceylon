@@ -2553,6 +2553,13 @@ public class ModelUtil {
         return header;
     }
     
+    public static boolean isImplemented(Declaration decl) {
+        if (decl instanceof FunctionOrValue) {
+            return ((FunctionOrValue)decl).isImplemented();
+        }
+        return false;
+    }
+    
     public static boolean eq(Object decl, Object other) {
         if (decl == null) {
             return other == null;
