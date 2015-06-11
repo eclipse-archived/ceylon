@@ -17,6 +17,7 @@ import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getNativeDecla
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getNativeHeader;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.intersection;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.intersectionOfSupertypes;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isImplemented;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isNativeImplementation;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isToplevelAnonymousClass;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isToplevelClassConstructor;
@@ -2114,9 +2115,11 @@ public class TypeVisitor extends Visitor {
             Declaration impl =
                     getNativeDeclaration(dec, backend);
             if (impl==null && hdr != null) {
-                that.addError("no native implementation for backend: native '" 
-                        + dec.getName(unit) + 
-                        "' is not implemented for one or more backends");
+                if (!isImplemented(hdr)) {
+                    that.addError("no native implementation for backend: native '"
+                            + dec.getName(unit) +
+                            "' is not implemented for one or more backends");
+                }
             } else if (hdr==null) {
                 that.addError("native implementation must have a header: "
                         + dec.getName(unit));
