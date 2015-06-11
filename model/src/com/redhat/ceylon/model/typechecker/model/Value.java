@@ -15,8 +15,6 @@ public class Value extends FunctionOrValue implements Scope {
     private boolean enumValue;
     private boolean specifiedInForElse;
     private boolean inferred;
-    private boolean overloaded;
-    private boolean abstraction;
 
     private Setter setter;
     // used for object declarations that use their own value binding in their body
@@ -90,24 +88,6 @@ public class Value extends FunctionOrValue implements Scope {
         this.inferred = inferred;
     }
 
-    @Override
-    public boolean isOverloaded() {
-        return overloaded;
-    }
-    
-    public void setOverloaded(boolean overloaded) {
-        this.overloaded = overloaded;
-    }
-    
-    public void setAbstraction(boolean abstraction) {
-        this.abstraction = abstraction;
-    }
-    
-    @Override
-    public boolean isAbstraction() {
-        return abstraction;
-    }
-    
     @Override
     public String toString() {
         Type type = getType();
