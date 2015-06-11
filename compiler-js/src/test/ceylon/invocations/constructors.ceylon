@@ -131,6 +131,14 @@ class Test582<A>{
   }
 }
 
+class Test584 {
+    shared new Foo(){
+      check(true,"#584");
+    }
+}
+class Boom584() => Test584.Foo();
+class Check584() extends Boom584(){}
+
 void testConstructors() {
   check(ToplevelBug476.Bar().x==2, "#476 toplevel");
   class NestedBug476 {
@@ -186,4 +194,5 @@ void testConstructors() {
   Test540();
   value test582 = object extends Test582<Integer>.Bar(42){};
   check(test582.a==42);
+  Check584();
 }
