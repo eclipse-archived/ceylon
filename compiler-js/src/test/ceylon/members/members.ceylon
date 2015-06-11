@@ -148,5 +148,6 @@ shared void test() {
     Object test551 = Foo551().b;
     check(test551 is Foo551.Bar, "#551");
 
+    testConstructors();
     results();
 }
