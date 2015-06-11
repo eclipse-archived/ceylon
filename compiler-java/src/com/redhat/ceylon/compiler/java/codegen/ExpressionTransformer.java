@@ -3619,6 +3619,24 @@ public class ExpressionTransformer extends AbstractTransformer {
         }
     }
 
+    public void makeHeaderSuperInvocation(Class decl, Node node, ClassDefinitionBuilder classBuilder) {
+        java.util.List<ParameterList> paramLists = decl.getParameterLists();
+        if(!paramLists.isEmpty()) {
+            boolean prevFnCall = withinInvocation(true);
+            try {
+                CallBuilder callBuilder = CallBuilder.instance(this);
+                callBuilder.invoke(naming.makeSuper());
+                for (Parameter p : paramLists.get(0).getParameters()) {
+                    callBuilder.argument(make().Ident(naming.makeQuotedName(p.getName())));
+                }
+                JCExpression superExpr = callBuilder.build();
+                classBuilder.getInitBuilder().delegateCall(at(node).Exec(superExpr));
+            } finally {
+                withinInvocation(prevFnCall);
+            }
+        }
+    }
+
     /**
      * Transform a delegated constructor call ({@code extends XXX()})
      * which may be either a superclass initializer/constructor or a 

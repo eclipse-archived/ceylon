@@ -2507,6 +2507,9 @@ public abstract class AbstractTransformer implements Transformation {
         if ((flags & JT_NON_QUALIFIED) == 0) {
             args.add(DeclNameFlag.QUALIFIED);
         }
+        if ((flags & JT_EXTENDS) != 0) {
+            args.add(DeclNameFlag.NATIVEHEADER);
+        }
         DeclNameFlag[] opts = args.toArray(new DeclNameFlag[args.size()]);
         return opts;
     }

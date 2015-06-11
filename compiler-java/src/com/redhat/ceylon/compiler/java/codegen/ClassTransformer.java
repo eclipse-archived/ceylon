@@ -111,7 +111,6 @@ import com.sun.tools.javac.tree.JCTree.JCVariableDecl;
 import com.sun.tools.javac.util.Context;
 import com.sun.tools.javac.util.List;
 import com.sun.tools.javac.util.ListBuffer;
-import com.sun.tools.javac.util.Name;
 
 /**
  * This transformer deals with class/interface declarations
@@ -154,7 +153,7 @@ public class ClassTransformer extends AbstractTransformer {
         if (def instanceof Tree.AnyInterface) {
             javaClassName = naming.makeTypeDeclarationName(model, QUALIFIED).replaceFirst(".*\\.", "");
         } else {
-            javaClassName = Naming.quoteClassName(def.getIdentifier().getText());
+            javaClassName = Naming.quoteClassDefinitionName(ceylonClassName, model.isNativeHeader());
         }
         ClassDefinitionBuilder instantiatorImplCb;
         ClassDefinitionBuilder instantiatorDeclCb;
@@ -232,8 +231,8 @@ public class ClassTransformer extends AbstractTransformer {
             .caseTypes(model.getCaseTypes(), model.getSelfType())
             .defs((List)childDefs);
         
-        // aliases don't need a $getType method
-        if(!model.isAlias()){
+        // aliases and native headers don't need a $getType method
+        if(!model.isAlias() && !model.isNativeHeader()){
             // only classes get a $getType method
             if(model instanceof Class)
                 classBuilder.addGetTypeMethod(model.getType());
@@ -2976,7 +2975,7 @@ public class ClassTransformer extends AbstractTransformer {
 
         result |= transformDeclarationSharedFlags(cdecl);
         // aliases cannot be abstract, especially since they're just placeholders
-        result |= (cdecl instanceof Class) && (cdecl.isAbstract() || cdecl.isFormal()) && !cdecl.isAlias() ? ABSTRACT : 0;
+        result |= (cdecl instanceof Class) && (cdecl.isAbstract() || cdecl.isFormal() || cdecl.isNativeHeader()) && !cdecl.isAlias() ? ABSTRACT : 0;
         result |= (cdecl instanceof Interface) ? INTERFACE : 0;
         // aliases are always final placeholders, final classes are also final
         result |= (cdecl instanceof Class) && (cdecl.isAlias() || cdecl.isFinal())  ? FINAL : 0;

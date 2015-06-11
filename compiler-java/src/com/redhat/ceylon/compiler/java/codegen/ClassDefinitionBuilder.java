@@ -414,7 +414,12 @@ public class ClassDefinitionBuilder {
             ret = ret.prependList(gen.makeAtIgnore());
         }else{
             if (hasConstructors || thisType != null) {
-                ret = ret.prependList(gen.makeAtClass(thisType, extendingType, hasConstructors));
+                Type exType = extendingType;
+                if (extendingType != null
+                        && extendingType.getDeclaration().isNativeHeader()) {
+                    exType = extendingType.getExtendedType();
+                }
+                ret = ret.prependList(gen.makeAtClass(thisType, exType, hasConstructors));
             }
             ret = ret.prependList(this.annotations.toList());
         }
