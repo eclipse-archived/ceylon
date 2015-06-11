@@ -113,6 +113,30 @@ native("js") class NativeClassMismatch8js() satisfies NativeClassMismatchSuper2 
     }
 }
 
+native class NativeClassMismatch9() {
+    native shared void test1(Integer i);
+    native shared void test2(Integer i);
+    native shared void test3(Integer i);
+    native shared void test4(Integer i);
+    native shared void test5(Integer i);
+}
+
+native("jvm") class NativeClassMismatch9() {
+    native("jvm") shared void test1(Integer i) {}
+    native("jvm") shared void test2(String s) {}
+    native("jvm") shared String test3(Integer i) { return ""; }
+    native("jvm") shared void test4() {}
+    native("jvm") shared void testX(Integer i) {}
+}
+
+native("js") class NativeClassMismatch9() {
+    native("js") shared void test1(Integer i) {}
+    native("js") shared void test2(String s) {}
+    native("js") shared String test3(Integer i) { return ""; }
+    native("js") shared void test4() {}
+    native("js") shared void testX(Integer i) {}
+}
+
 void nativeClassMismatch8() {
     NativeClassMismatch8jvm().test1(0);
     NativeClassMismatch8js().test2(0);
