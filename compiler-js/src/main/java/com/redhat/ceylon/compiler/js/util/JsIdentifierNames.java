@@ -195,6 +195,9 @@ public class JsIdentifierNames {
      * Determine the identifier to be used for the self variable of the given type.
      */
     public String self(TypeDeclaration decl) {
+        if (decl instanceof Constructor) {
+            decl = (TypeDeclaration)decl.getContainer();
+        }
         String name = sanitize(decl.getName());
         if (decl.isShared() || decl.isToplevel()) {
             name += nestingSuffix(decl, true);
