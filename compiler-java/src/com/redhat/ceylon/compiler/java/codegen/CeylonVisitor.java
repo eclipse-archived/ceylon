@@ -350,7 +350,13 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
         if (plan instanceof Drop) {
             return;
         }
-        if (!Decl.isForBackend(decl))
+        // To accept this method it is either not native, native for this
+        // backend or it's a native header with an implementation and there
+        // is no native implementation specifically for this backend
+        boolean accept = Decl.isForBackend(decl)
+                || (Decl.isHeaderWithoutBackend(decl)
+                    && Decl.isImplemented(decl));
+        if (!accept)
             return;
         int annots = gen.checkCompilerAnnotations(decl, defs);
         if (Decl.withinClassOrInterface(decl) && !Decl.isLocalToInitializer(decl)) {
@@ -376,7 +382,13 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
         if (plan instanceof Drop) {
             return;
         }
-        if (!Decl.isForBackend(decl))
+        // To accept this method it is either not native, native for this
+        // backend or it's a native header with an implementation and there
+        // is no native implementation specifically for this backend
+        boolean accept = Decl.isForBackend(decl)
+                || (Decl.isHeaderWithoutBackend(decl)
+                    && Decl.isImplemented(decl));
+        if (!accept)
             return;
         int annots = gen.checkCompilerAnnotations(decl, defs);
         if (Decl.withinClass(decl) && !Decl.isLocalToInitializer(decl)) {
@@ -407,7 +419,13 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
             // because there's little chance we'll be able to generate a correct setter
             return;
         }
-        if (!Decl.isForBackend(decl))
+        // To accept this method it is either not native, native for this
+        // backend or it's a native header with an implementation and there
+        // is no native implementation specifically for this backend
+        boolean accept = Decl.isForBackend(decl)
+                || (Decl.isHeaderWithoutBackend(decl)
+                    && Decl.isImplemented(decl));
+        if (!accept)
             return;
         int annots = gen.checkCompilerAnnotations(decl, defs);
         if (Decl.withinClass(decl) && !Decl.isLocalToInitializer(decl)) {
@@ -432,7 +450,13 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
         if (plan instanceof Drop) {
             return;
         }
-        if (!Decl.isForBackend(decl))
+        // To accept this method it is either not native, native for this
+        // backend or it's a native header with an implementation and there
+        // is no native implementation specifically for this backend
+        boolean accept = Decl.isForBackend(decl)
+                || (Decl.isHeaderWithoutBackend(decl)
+                    && Decl.isImplemented(decl));
+        if (!accept)
             return;
         int annots = gen.checkCompilerAnnotations(decl, defs);
         if (Decl.withinClassOrInterface(decl)
