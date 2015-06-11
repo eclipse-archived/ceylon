@@ -1324,7 +1324,7 @@ public class GenerateJsVisitor extends Visitor
 
     @Override
     public void visit(final Tree.AttributeGetterDefinition that) {
-        if (errVisitor.hasErrors(that))return;
+        if (errVisitor.hasErrors(that) || !TypeUtils.acceptNative(that))return;
         Value d = that.getDeclarationModel();
         if (opts.isOptimize()&&d.isClassOrInterfaceMember()) return;
         comment(that);
@@ -1434,7 +1434,7 @@ public class GenerateJsVisitor extends Visitor
 
     @Override
     public void visit(final Tree.AttributeSetterDefinition that) {
-        if (errVisitor.hasErrors(that))return;
+        if (errVisitor.hasErrors(that) || !TypeUtils.acceptNative(that))return;
         Setter d = that.getDeclarationModel();
         if ((opts.isOptimize()&&d.isClassOrInterfaceMember()) || defineAsProperty(d)) return;
         comment(that);
@@ -1478,7 +1478,7 @@ public class GenerateJsVisitor extends Visitor
 
     @Override
     public void visit(final Tree.AttributeDeclaration that) {
-        if (errVisitor.hasErrors(that))return;
+        if (errVisitor.hasErrors(that) || !TypeUtils.acceptNative(that))return;
         final Value d = that.getDeclarationModel();
         //Check if the attribute corresponds to a class parameter
         //This is because of the new initializer syntax
