@@ -1361,10 +1361,16 @@ public class TypeUtils {
      * Returns true if the declaration is:
      *  - not native or
      *  - native with a "js" argument
-     *  - native with no argument and all its overloads are also native without arguments
+     *  - native header and no overloads
+     *  - native header with a default implementation
+     *    and no implementation for this backend 
      */
     public static boolean acceptNative(Declaration decl) {
-        return !decl.isNative() || isForBackend(decl) || isNativeExternal(decl);
+        return !decl.isNative()
+                || isForBackend(decl)
+                || isNativeExternal(decl)
+                || (isHeaderWithoutBackend(decl)
+                    && isImplemented(decl));
     }
     
     /**
@@ -1388,6 +1394,19 @@ public class TypeUtils {
                 && (decl.getOverloads() == null || decl.getOverloads().isEmpty());
     }
 
+    public static boolean isHeaderWithoutBackend(Declaration decl) {
+        return decl.isNativeHeader()
+                && (ModelUtil.getNativeDeclaration(decl, Backend.JavaScript) == null);
+    }
+    
+    public static boolean isImplemented(Declaration decl) {
+        if (decl instanceof FunctionOrValue) {
+            return ((FunctionOrValue)decl).isImplemented();
+        } else {
+            return false;
+        }
+    }
+    
     public static List<Type> getTypes(List<Tree.StaticType> treeTypes) {
         if (treeTypes == null) {
             return null;
