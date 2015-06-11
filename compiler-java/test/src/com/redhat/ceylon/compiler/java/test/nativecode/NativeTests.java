@@ -97,6 +97,11 @@ public class NativeTests extends CompilerTests {
     }
     
     @Test
+    public void testNativeMethodHeaderImpl() {
+        testNative("NativeMethodHeaderImpl");
+    }
+    
+    @Test
     public void testNativeMethodSharedInvalid() {
         testNativeErrors("NativeMethodSharedInvalid",
                 new CompilerError(20, "native implementation must have a header: 'nativeMethodSharedInvalid'"),
@@ -148,6 +153,11 @@ public class NativeTests extends CompilerTests {
     @Test
     public void testNativeSetterVariable() {
         testNative("NativeSetterVariable");
+    }
+    
+    @Test
+    public void testNativeAttributeHeaderImpl() {
+        testNative("NativeAttributeHeaderImpl");
     }
     
     @Test
