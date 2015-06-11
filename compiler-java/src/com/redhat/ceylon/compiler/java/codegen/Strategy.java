@@ -90,8 +90,8 @@ class Strategy {
                 && ((FunctionOrValue)decl).isParameter()) {
             decl = (Declaration) decl.getContainer();
         } 
-        if (decl instanceof Constructor) {
-            decl = (Declaration) decl.getContainer();
+        if (Decl.isConstructor(decl)) {
+            decl = Decl.getConstructedClass(decl);
         }
         
         if ((decl instanceof Function || decl instanceof Class) 
@@ -119,8 +119,8 @@ class Strategy {
                 && ((FunctionOrValue)decl).isParameter()) {
             decl = (Element) decl.getContainer();
         }
-        if (decl instanceof Constructor) {
-            decl = (Class)decl.getContainer();
+        if (decl instanceof Declaration && Decl.isConstructor((Declaration)decl)) {
+            decl = (Class)Decl.getConstructedClass((Declaration)decl);
         }
         // Only top-level methods have static default value methods
         return ((decl instanceof Function && !((Function)decl).isParameter())
@@ -135,13 +135,15 @@ class Strategy {
     }
     
     public static boolean defaultParameterMethodOnOuter(Element elem) {
+        if (elem instanceof Declaration 
+                && Decl.isConstructor((Declaration)elem)) {
+            elem = Decl.getConstructedClass((Declaration)elem);
+        }
         if (elem instanceof FunctionOrValue
                 && ((FunctionOrValue)elem).isParameter()) {
             elem = (Element) ((FunctionOrValue)elem).getContainer();
         }
-        if (elem instanceof Constructor) {
-            elem = (Class)elem.getContainer();
-        }
+        
         // Only inner classes have their default value methods on their outer
         return (elem instanceof Class) 
                 && !((Class)elem).isToplevel()

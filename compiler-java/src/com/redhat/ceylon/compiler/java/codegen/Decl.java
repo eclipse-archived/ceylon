@@ -157,6 +157,7 @@ public class Decl {
     
     public static boolean isMethodOrSharedOrCapturedParam(Declaration decl) {
         return decl instanceof Function 
+                && !isConstructor(decl)
                     && (!((Function)decl).isParameter() || decl.isShared() || decl.isCaptured());
     }
 
@@ -794,11 +795,16 @@ public class Decl {
     }
     
     public static boolean isConstructorPrimary(Tree.Term term) {
-        return term instanceof Tree.MemberOrTypeExpression
-                && ((Tree.MemberOrTypeExpression)term).getDeclaration() != null
-                && (((Tree.MemberOrTypeExpression)term).getDeclaration() instanceof Constructor
-                        || (((Tree.MemberOrTypeExpression)term).getDeclaration() instanceof Class
-                                && ((Class)((Tree.MemberOrTypeExpression)term).getDeclaration()).hasConstructors()));
+        if (term instanceof Tree.MemberOrTypeExpression) {
+            Declaration decl = ((Tree.MemberOrTypeExpression)term).getDeclaration();
+            return decl != null
+                    && (isConstructor(decl)
+                    || (decl instanceof Class
+                            && ((Class)decl).hasConstructors()));
+        } else {
+            return false;
+        }
+        
     }
     
     
@@ -887,6 +893,10 @@ public class Decl {
     }
     
     public static Class getConstructedClass(Declaration classOrCtor) {
+        if (classOrCtor instanceof FunctionOrValue &&
+                ((FunctionOrValue)classOrCtor).getTypeDeclaration() instanceof Constructor) {
+            classOrCtor = ((FunctionOrValue)classOrCtor).getTypeDeclaration();
+        }
         if (classOrCtor instanceof Constructor) {
             return (Class)classOrCtor.getContainer();
         } else if (classOrCtor instanceof Class) {
@@ -942,5 +952,20 @@ public class Decl {
             container = container.getContainer();
         }
         return false;
+    }
+
+    public static boolean isConstructor(Declaration decl) {
+        return getConstructor(decl) != null;
+    }
+    
+    public static Constructor getConstructor(Declaration decl) {
+        if (decl instanceof Constructor) {
+            return (Constructor)decl;
+        } else if (decl instanceof FunctionOrValue
+                && ((FunctionOrValue)decl).getTypeDeclaration() instanceof Constructor) {
+            return (Constructor)((FunctionOrValue)decl).getTypeDeclaration();
+        } else {
+            return null;
+        }
     }
 }

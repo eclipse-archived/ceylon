@@ -655,17 +655,17 @@ public class Naming extends NamingBase implements LocalId {
 
 
     public static String getDefaultedParamMethodName(Declaration decl, Parameter param) {
-        if (decl instanceof Function) {
-            if(decl.isAnonymous())
-                return prefixName(Prefix.$default$, param.getName());
-            return compoundName(((Function) decl).getName(), CodegenUtil.getTopmostRefinedDeclaration(param.getModel()).getName());
-        } else if (decl instanceof Constructor) {
-            Constructor constructor = (Constructor)decl;
+        if (Decl.isConstructor(decl)) {
+            Constructor constructor = Decl.getConstructor(decl);
             if (Decl.isDefaultConstructor(constructor)) {
                 return compoundName(Decl.getConstructedClass(constructor).getName(), param.getName());
             } else {
                 return compoundName(Decl.getConstructedClass(constructor).getName(), decl.getName(), param.getName());
             }
+        } else if (decl instanceof Function) {
+            if(decl.isAnonymous())
+                return prefixName(Prefix.$default$, param.getName());
+            return compoundName(((Function) decl).getName(), CodegenUtil.getTopmostRefinedDeclaration(param.getModel()).getName());
         } else if (decl instanceof ClassOrInterface ) {
             if (decl.isToplevel() || Decl.isLocalNotInitializer(decl)) {
                 return prefixName(Prefix.$default$, param.getName());

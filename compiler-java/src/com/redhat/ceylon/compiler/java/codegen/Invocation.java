@@ -51,6 +51,7 @@ import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.model.typechecker.model.Constructor;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Function;
+import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
 import com.redhat.ceylon.model.typechecker.model.Functional;
 import com.redhat.ceylon.model.typechecker.model.Interface;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
@@ -236,9 +237,9 @@ abstract class Invocation {
         }
             
         JCExpression actualPrimExpr;
-        if (getPrimary() instanceof Tree.QualifiedTypeExpression
-                && ((Tree.QualifiedTypeExpression)getPrimary()).getPrimary() instanceof Tree.BaseTypeExpression
-                && !(getPrimaryDeclaration() instanceof Constructor)) {
+        if (getPrimary() instanceof Tree.QualifiedMemberOrTypeExpression
+                && ((Tree.QualifiedMemberOrTypeExpression)getPrimary()).getPrimary() instanceof Tree.BaseMemberOrTypeExpression
+                && !Decl.isConstructor(getPrimaryDeclaration())) {
             actualPrimExpr = gen.naming.makeQualifiedThis(primaryExpr);
         } else {
             actualPrimExpr = primaryExpr;
@@ -369,6 +370,9 @@ abstract class Invocation {
 
     protected Constructor getConstructorFromPrimary(
             Declaration primaryDeclaration) {
+        if (Decl.isConstructor(primaryDeclaration)) {
+            primaryDeclaration = Decl.getConstructor(primaryDeclaration);
+        }
         if (primaryDeclaration instanceof Constructor) {
             return (Constructor)primaryDeclaration;
         } else if (primaryDeclaration instanceof ClassAlias) {
@@ -1293,7 +1297,7 @@ class NamedArgumentInvocation extends Invocation {
         case STATIC:
             break;
         case OUTER:
-            if(getQmePrimary() != null && getPrimaryDeclaration() instanceof Constructor == false)
+            if(getQmePrimary() != null && !Decl.isConstructor(getPrimaryDeclaration()))
                 thisExpr = callVarName.makeIdent();
             break;
         case OUTER_COMPANION:

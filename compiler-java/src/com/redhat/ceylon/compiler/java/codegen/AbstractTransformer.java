@@ -4886,6 +4886,9 @@ public abstract class AbstractTransformer implements Transformation {
         if(declaration instanceof ClassOrInterface){
             // Java constructors don't support reified type arguments
             return Decl.isCeylon((TypeDeclaration) declaration);
+        }else if(Decl.isConstructor(declaration)){
+            // Java constructors don't support reified type arguments
+            return Decl.isCeylon(Decl.getConstructor(declaration));
         }else if(declaration instanceof Function){
             if (((Function)declaration).isParameter()) {
                 // those can never be parameterised
@@ -4902,9 +4905,6 @@ public abstract class AbstractTransformer implements Transformation {
             if(container == null)
                 return true;
             return supportsReified(container);
-        }else if(declaration instanceof Constructor){
-            // Java constructors don't support reified type arguments
-            return Decl.isCeylon((Constructor) declaration);
         }else{
             throw BugException.unhandledDeclarationCase(declaration);
         }
@@ -4933,8 +4933,8 @@ public abstract class AbstractTransformer implements Transformation {
         Declaration declaration = producedReference.getDeclaration();
         if(declaration instanceof ClassOrInterface)
             return ((ClassOrInterface)declaration).getTypeParameters();
-        else if(declaration instanceof Constructor)
-            return ((Class)((Constructor)declaration).getContainer()).getTypeParameters();
+        else if(Decl.isConstructor(declaration))
+            return (Decl.getConstructedClass(declaration)).getTypeParameters();
         else
             return ((Function)declaration).getTypeParameters();
     }

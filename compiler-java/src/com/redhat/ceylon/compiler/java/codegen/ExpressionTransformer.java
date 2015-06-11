@@ -3653,7 +3653,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             at(builder.getNode());
             JCExpression expr = null;
             Scope outerDeclaration;
-            if (primaryDeclaration instanceof Constructor) {
+            if (Decl.isConstructor(primaryDeclaration)) {
                 outerDeclaration= builder.getPrimaryDeclaration().getContainer().getContainer();
             } else {
                 outerDeclaration= builder.getPrimaryDeclaration().getContainer();

@@ -5,6 +5,7 @@ import java.util.Map;
 import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.Constructor;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
+import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
 
 public class CtorDelegation {
     
@@ -19,7 +20,14 @@ public class CtorDelegation {
      */
     public CtorDelegation(Constructor ctor, Declaration extending){
         this.ctor = ctor;
-        this.extending = extending;
+        if (extending instanceof FunctionOrValue) {
+            this.extending = ((FunctionOrValue)extending).getTypeDeclaration();
+        } else {
+            this.extending = extending;
+        }
+        if (!(extending instanceof Class || extending instanceof Constructor)) {
+            throw new RuntimeException();
+        }
     }
 
     /**
