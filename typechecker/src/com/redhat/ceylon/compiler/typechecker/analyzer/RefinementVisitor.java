@@ -19,6 +19,7 @@ import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getIntervening
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getNativeHeader;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getRealScope;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getSignature;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isImplemented;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isOverloadedVersion;
 import static java.util.Collections.emptyList;
 import static java.util.Collections.emptyMap;
@@ -298,10 +299,14 @@ public class RefinementVisitor extends Visitor {
             }
             int cmp = declarationCmp.compare(hdr, impl);
             if (cmp < 0) {
-                that.addError("native header '" + hdr.getName() +
-                        "' of '" + containerName(hdr) +
-                        "' has no native implementation");
-                return;
+                if (!isImplemented(hdr)) {
+                    that.addError("native header '" + hdr.getName() +
+                            "' of '" + containerName(hdr) +
+                            "' has no native implementation");
+                    return;
+                }
+                hdrNext = true;
+                implNext = false;
             } else if (cmp > 0) {
                 hdrNext = false;
                 implNext = true;
@@ -312,9 +317,11 @@ public class RefinementVisitor extends Visitor {
         }
         if (hdrIter.hasNext()) {
             hdr = hdrIter.next();
-            that.addError("native header '" + hdr.getName() +
-                    "' of '" + containerName(hdr) +
-                    "' has no native implementation");
+            if (!isImplemented(hdr)) {
+                that.addError("native header '" + hdr.getName() +
+                        "' of '" + containerName(hdr) +
+                        "' has no native implementation");
+            }
         }
     }
     
