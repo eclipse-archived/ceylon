@@ -916,6 +916,7 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
     @Override
     public void visit(Tree.MethodArgument that) {
         Function m = new Function();
+        m.setImplemented(that.getBlock() != null);
         that.setDeclarationModel(m);
         visitArgument(that, m);
         Scope o = enterScope(m);
@@ -1006,6 +1007,7 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
         Tree.SpecifierOrInitializerExpression sie = 
                 that.getSpecifierOrInitializerExpression();
         v.setTransient(sie instanceof Tree.LazySpecifierExpression);
+        v.setImplemented(sie != null);
         visitDeclaration(that, v);
         super.visit(that);
         if (v.isInterfaceMember() && 
@@ -1052,6 +1054,7 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
         Tree.SpecifierExpression sie = 
                 that.getSpecifierExpression();
         Function m = that.getDeclarationModel();
+        m.setImplemented(sie != null);
         if (m.isFormal() && sie!=null) {
             that.addError("formal methods may not have a specification", 
                     1307);
@@ -1078,6 +1081,7 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
     public void visit(Tree.MethodDefinition that) {
         super.visit(that);
         Function m = that.getDeclarationModel();
+        m.setImplemented(that.getBlock() != null);
         Tree.Type type = that.getType();
         if (type instanceof Tree.FunctionModifier) {
             if (m.isToplevel()) {
@@ -1095,6 +1099,7 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
     public void visit(Tree.AttributeGetterDefinition that) {
         Value g = new Value();
         g.setTransient(true);
+        g.setImplemented(that.getBlock() != null);
         that.setDeclarationModel(g);
         visitDeclaration(that, g);
         Scope o = enterScope(g);
@@ -1117,6 +1122,7 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
     public void visit(Tree.AttributeArgument that) {
         Value g = new Value();
         g.setTransient(true);
+        g.setImplemented(that.getBlock() != null);
         that.setDeclarationModel(g);
         visitArgument(that, g);
         Scope o = enterScope(g);
@@ -1127,6 +1133,7 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
     @Override
     public void visit(Tree.AttributeSetterDefinition that) {
         Setter s = new Setter();
+        s.setImplemented(that.getBlock() != null);
         that.setDeclarationModel(s);
         visitDeclaration(that, s);
         Scope o = enterScope(s);
@@ -1602,6 +1609,9 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
                         "\"' (must be either '\"jvm\"' or '\"js\"')");
             }
             model.setNativeBackend(backend);
+        }
+        if (model.isNative() && model.isFormal()) {
+            that.addError("declaration may not be annotated both formal and native");
         }
         if (hasAnnotation(al, "actual", unit)) {
             model.setActual(true);
