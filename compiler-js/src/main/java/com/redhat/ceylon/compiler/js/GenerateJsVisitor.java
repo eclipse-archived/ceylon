@@ -35,42 +35,25 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeGetterDefinition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeSetterDefinition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.BaseMemberExpression;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.BaseMemberOrTypeExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.BaseTypeExpression;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.Block;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.ClassDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ClassDefinition;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.CompilationUnit;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.CompilerAnnotation;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.ElementOrRange;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.ElementRange;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ExtendedType;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.Identifier;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.ImportModule;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.InitializerParameter;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.InterfaceDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.InterfaceDefinition;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.InvocationExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.LazySpecifierExpression;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.MemberOrTypeExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.MethodDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.MethodDefinition;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.ObjectDefinition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Outer;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ParameterDeclaration;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.ParameterizedExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.QualifiedMemberExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.QualifiedMemberOrTypeExpression;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.QualifiedType;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierOrInitializerExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierStatement;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Statement;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.StaticMemberOrTypeExpression;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.Super;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.This;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.TypeAliasDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.model.typechecker.model.Annotation;
 import com.redhat.ceylon.model.typechecker.model.Class;
@@ -124,14 +107,14 @@ public class GenerateJsVisitor extends Visitor
         @Override
         public void visit(QualifiedMemberOrTypeExpression qe) {
             Term primary = eliminateParensAndWidening(qe.getPrimary());
-            if (primary instanceof Super) {
+            if (primary instanceof Tree.Super) {
                 decs.add(qe.getDeclaration());
             }
             super.visit(qe);
         }
 
         @Override
-        public void visit(QualifiedType that) {
+        public void visit(Tree.QualifiedType that) {
             if (that.getOuterType() instanceof Tree.SuperType) {
                 decs.add(that.getDeclarationModel());
             }
@@ -158,7 +141,7 @@ public class GenerateJsVisitor extends Visitor
         @Override
         public void visit(QualifiedMemberOrTypeExpression qe) {
             if (qe.getPrimary() instanceof Outer ||
-                    qe.getPrimary() instanceof This) {
+                    qe.getPrimary() instanceof Tree.This) {
                 if ( qe.getDeclaration().equals(dec) ) {
                     found = true;
                 }
@@ -172,7 +155,7 @@ public class GenerateJsVisitor extends Visitor
     public final JsWriter out;
     private final PrintWriter verboseOut;
     public final Options opts;
-    private CompilationUnit root;
+    private Tree.CompilationUnit root;
     static final String function="function ";
 
     public Package getCurrentPackage() {
@@ -323,7 +306,7 @@ public class GenerateJsVisitor extends Visitor
                 out("ex$.$mod$imps=function(){return{");
                 if (!opts.isMinify())endLine();
                 boolean first=true;
-                for (final ImportModule im : md.getImportModuleList().getImportModules()) {
+                for (final Tree.ImportModule im : md.getImportModuleList().getImportModules()) {
                     final StringBuilder path=new StringBuilder("'");
                     if (im.getImportPath()==null) {
                         if (im.getQuotedLiteral()==null) {
@@ -333,7 +316,7 @@ public class GenerateJsVisitor extends Visitor
                             path.append(ql.substring(1, ql.length()-1));
                         }
                     } else {
-                        for (Identifier id : im.getImportPath().getIdentifiers()) {
+                        for (Tree.Identifier id : im.getImportPath().getIdentifiers()) {
                             if (path.length()>1)path.append('.');
                             path.append(id.getText());
                         }
@@ -411,7 +394,7 @@ public class GenerateJsVisitor extends Visitor
             endLine(true);
         }
 
-        for (CompilerAnnotation ca: that.getCompilerAnnotations()) {
+        for (Tree.CompilerAnnotation ca: that.getCompilerAnnotations()) {
             ca.visit(this);
         }
         if (that.getImportList() != null) {
@@ -805,11 +788,7 @@ public class GenerateJsVisitor extends Visitor
         out("return ");
         TypeDeclaration aliased = ext.getType().getDeclarationModel();
         final String aliasedName;
-        if (aliased instanceof Constructor) {
-            aliasedName = names.name((Class)aliased.getContainer()) + "_" + names.name(aliased);
-        } else {
-            aliasedName = names.name(aliased);
-        }
+        aliasedName = names.name(aliased);
         qualify(that, aliased);
         Scope superscope = getSuperMemberScope(ext.getType());
         if (superscope != null) {
@@ -987,16 +966,16 @@ public class GenerateJsVisitor extends Visitor
             addClassToPrototype(d, (ClassDefinition) s);
         } else if (s instanceof InterfaceDefinition) {
             addInterfaceToPrototype(d, (InterfaceDefinition) s);
-        } else if (s instanceof ObjectDefinition) {
-            addObjectToPrototype(d, (ObjectDefinition) s);
-        } else if (s instanceof ClassDeclaration) {
-            addClassDeclarationToPrototype(d, (ClassDeclaration) s);
+        } else if (s instanceof Tree.ObjectDefinition) {
+            addObjectToPrototype(d, (Tree.ObjectDefinition) s);
+        } else if (s instanceof Tree.ClassDeclaration) {
+            addClassDeclarationToPrototype(d, (Tree.ClassDeclaration) s);
         } else if (s instanceof InterfaceDeclaration) {
             addInterfaceDeclarationToPrototype(d, (InterfaceDeclaration) s);
         } else if (s instanceof SpecifierStatement) {
             addSpecifierToPrototype(d, (SpecifierStatement) s);
-        } else if (s instanceof TypeAliasDeclaration) {
-            addAliasDeclarationToPrototype(d, (TypeAliasDeclaration)s);
+        } else if (s instanceof Tree.TypeAliasDeclaration) {
+            addAliasDeclarationToPrototype(d, (Tree.TypeAliasDeclaration)s);
         }
         //This fixes #231 for prototype style
         if (params != null && s instanceof Tree.Declaration) {
@@ -1790,8 +1769,8 @@ public class GenerateJsVisitor extends Visitor
 
     /** Returns true if the top-level declaration for the term is annotated "nativejs" */
     static boolean isNativeJs(final Tree.Term t) {
-        if (t instanceof MemberOrTypeExpression) {
-            return isNativeJs(((MemberOrTypeExpression)t).getDeclaration());
+        if (t instanceof Tree.MemberOrTypeExpression) {
+            return isNativeJs(((Tree.MemberOrTypeExpression)t).getDeclaration());
         }
         return false;
     }
@@ -1938,13 +1917,13 @@ public class GenerateJsVisitor extends Visitor
             // Check for "super.member"
             QualifiedMemberOrTypeExpression qmte = (QualifiedMemberOrTypeExpression) node;
             final Term primary = eliminateParensAndWidening(qmte.getPrimary());
-            if (primary instanceof Super) {
+            if (primary instanceof Tree.Super) {
                 scope = qmte.getDeclaration().getContainer();
             }
         }
-        else if (node instanceof QualifiedType) {
+        else if (node instanceof Tree.QualifiedType) {
             // Check for super.Membertype
-            QualifiedType qtype = (QualifiedType) node;
+            Tree.QualifiedType qtype = (Tree.QualifiedType) node;
             if (qtype.getOuterType() instanceof Tree.SuperType) { 
                 scope = qtype.getDeclarationModel().getContainer();
             }
@@ -1959,8 +1938,8 @@ public class GenerateJsVisitor extends Visitor
                 sb.append(lhs);
             }
         }
-        else if (node instanceof BaseMemberOrTypeExpression) {
-            BaseMemberOrTypeExpression bmte = (BaseMemberOrTypeExpression) node;
+        else if (node instanceof Tree.BaseMemberOrTypeExpression) {
+            Tree.BaseMemberOrTypeExpression bmte = (Tree.BaseMemberOrTypeExpression) node;
             Declaration bmd = bmte.getDeclaration();
             if (bmd.isParameter() && bmd.getContainer() instanceof ClassAlias) {
                 return names.name(bmd);
@@ -1978,8 +1957,8 @@ public class GenerateJsVisitor extends Visitor
         final StringBuilder sb = new StringBuilder(getMember(node, decl, lhs));
         final boolean isConstructor = decl instanceof Constructor;
         if (sb.length() > 0) {
-            if (node instanceof BaseMemberOrTypeExpression) {
-                Declaration bmd = ((BaseMemberOrTypeExpression)node).getDeclaration();
+            if (node instanceof Tree.BaseMemberOrTypeExpression) {
+                Declaration bmd = ((Tree.BaseMemberOrTypeExpression)node).getDeclaration();
                 if (bmd.isParameter() && bmd.getContainer() instanceof ClassAlias) {
                     return sb.toString();
                 }
@@ -2429,9 +2408,9 @@ public class GenerateJsVisitor extends Visitor
                 }
             }
         }
-        else if ((term instanceof ParameterizedExpression)
+        else if ((term instanceof Tree.ParameterizedExpression)
                 && (specStmt.getSpecifierExpression() != null)) {
-            final ParameterizedExpression paramExpr = (ParameterizedExpression)term;
+            final Tree.ParameterizedExpression paramExpr = (Tree.ParameterizedExpression)term;
             if (paramExpr.getPrimary() instanceof BaseMemberExpression) {
                 // func(params) => expr;
                 final BaseMemberExpression bme2 = (BaseMemberExpression) paramExpr.getPrimary();
@@ -2912,7 +2891,7 @@ public class GenerateJsVisitor extends Visitor
                 || t instanceof QualifiedMemberExpression
                 || t instanceof Tree.IsOp || t instanceof Tree.Exists || t instanceof Tree.IdenticalOp
                 || t instanceof Tree.InOp || t instanceof Tree.Nonempty
-                || (t instanceof InvocationExpression && ((InvocationExpression)t).getNamedArgumentList() == null);
+                || (t instanceof Tree.InvocationExpression && ((Tree.InvocationExpression)t).getNamedArgumentList() == null);
         if (omitParens) {
             Operators.unaryOp(that, "!", null, this);
         } else {
@@ -3320,7 +3299,7 @@ public class GenerateJsVisitor extends Visitor
 
     private void visitIndex(final Tree.IndexExpression that) {
         that.getPrimary().visit(this);
-        ElementOrRange eor = that.getElementOrRange();
+        Tree.ElementOrRange eor = that.getElementOrRange();
         if (eor instanceof Tree.Element) {
             final Tree.Expression _elemexpr = ((Tree.Element)eor).getExpression();
             final String _end;
@@ -3336,7 +3315,7 @@ public class GenerateJsVisitor extends Visitor
             }
             out(_end);
         } else {//range, or spread?
-            ElementRange er = (ElementRange)eor;
+            Tree.ElementRange er = (Tree.ElementRange)eor;
             Expression sexpr = er.getLength();
             if (sexpr == null) {
                 if (er.getLowerBound() == null) {
@@ -3423,7 +3402,7 @@ public class GenerateJsVisitor extends Visitor
     }
 
     /** Determines whether the specified block should be enclosed in a function. */
-    public boolean shouldEncloseBlock(Block block) {
+    public boolean shouldEncloseBlock(Tree.Block block) {
         // just check if the block contains a captured declaration
         for (Tree.Statement statement : block.getStatements()) {
             if (statement instanceof Tree.Declaration) {
