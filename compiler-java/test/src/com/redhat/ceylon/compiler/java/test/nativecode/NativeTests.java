@@ -211,6 +211,11 @@ public class NativeTests extends CompilerTests {
     }
     
     @Test
+    public void testNativeClassWithImpl() {
+        testNative("NativeClassWithImpl");
+    }
+    
+    @Test
     public void testNativeClassSharedInvalid() {
         testNativeErrors("NativeClassSharedInvalid",
                 new CompilerError(20, "native implementation must have a header: 'NativeClassSharedInvalid'"),
