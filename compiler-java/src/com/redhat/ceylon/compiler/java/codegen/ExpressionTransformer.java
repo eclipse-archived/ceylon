@@ -3316,7 +3316,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 callBuilder.invoke(naming.makeInstantiatorMethodName(transformedPrimary.expr, Decl.getConstructedClass(ctor)));
             } else {
                 if (Decl.getConstructedClass(invocation.getPrimaryDeclaration()).isMember()
-                        && invocation.getPrimary() instanceof Tree.QualifiedTypeExpression
+                        && invocation.getPrimary() instanceof Tree.QualifiedMemberOrTypeExpression
                         && !(((Tree.QualifiedMemberOrTypeExpression)invocation.getPrimary()).getPrimary() instanceof Tree.BaseTypeExpression)) {
                     callBuilder.instantiate(new ExpressionAndType(transformedPrimary.expr, null),
                             makeJavaType(invocation.getReturnType(), JT_CLASS_NEW | (transformedPrimary.expr ==  null ? 0 : JT_NON_QUALIFIED)));
