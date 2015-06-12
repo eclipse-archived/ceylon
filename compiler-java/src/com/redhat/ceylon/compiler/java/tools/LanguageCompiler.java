@@ -564,9 +564,9 @@ public class LanguageCompiler extends JavaCompiler {
                     String be = getNativeBackend(im.getAnnotationList(), im.getUnit());
                     if (im.getImportPath() != null) {
                         Module m = (Module)im.getImportPath().getModel();
-                        if (be != null && m.isNative() && !be.equals(m.getNative())) {
+                        if (be != null && m.isNative() && !be.equals(m.getNativeBackend())) {
                             im.addError("native backend name conflicts with imported module: '\"" + 
-                                    be + "\"' is not '\"" + m.getNative() + "\"'", Backend.Java);
+                                    be + "\"' is not '\"" + m.getNativeBackend() + "\"'", Backend.Java);
                         }
                     }
                 }

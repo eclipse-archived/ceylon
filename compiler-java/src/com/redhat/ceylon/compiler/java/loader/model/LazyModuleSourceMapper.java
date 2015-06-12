@@ -124,7 +124,7 @@ public class LazyModuleSourceMapper extends ModuleSourceMapper {
             if(!module.isDefault() && !moduleManager.getModelLoader().loadCompiledModule(module)){
                 // we didn't find module.class so it must be a java module if it's not the default module
                 ((LazyModule)module).setJava(true);
-                module.setNative(Backend.Java.nativeAnnotation);
+                module.setNativeBackend(Backend.Java.nativeAnnotation);
                 
                 List<ArtifactResult> deps = artifact.dependencies();
                 for (ArtifactResult dep : deps) {
@@ -156,7 +156,7 @@ public class LazyModuleSourceMapper extends ModuleSourceMapper {
                         List<ModuleImport> newModuleImports = new ArrayList<>();
                         for (ModuleDependencyInfo dep : newModuleInfo.getDependencies()) {
                             Module dependency = moduleManager.getOrCreateModule(ModuleManager.splitModuleName(dep.getName()), dep.getVersion());
-                            Backend backend = Backend.fromAnnotation(dependency.getNative());
+                            Backend backend = Backend.fromAnnotation(dependency.getNativeBackend());
                             moduleImport = new ModuleImport(dependency, dep.isOptional(), dep.isExport(), backend);
                             newModuleImports.add(moduleImport);
                         }

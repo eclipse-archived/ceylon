@@ -339,7 +339,7 @@ public class JarEntryManifestFileObject implements JavaFileObject {
             StringBuilder requires = new StringBuilder();
             boolean distImportAlreadyFound = false;
             for (ModuleImport anImport : module.getImports()) {
-                if (!isForBackend(anImport.getNative(), Backend.Java)) {
+                if (!isForBackend(anImport.getNativeBackend(), Backend.Java)) {
                     continue;
                 }
                 Module m = anImport.getModule();
