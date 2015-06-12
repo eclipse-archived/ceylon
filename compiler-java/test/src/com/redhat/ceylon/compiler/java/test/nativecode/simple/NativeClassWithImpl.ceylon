@@ -23,26 +23,43 @@ shared class NativeClassWithImplBase(Integer i) {
 
 native shared class NativeClassWithImpl(Integer x, Integer y)
         extends NativeClassWithImplBase(x) {
-    native shared Integer test(Integer i) => 0;
+    native shared void test() {}
     native shared Integer foo => 0;
     native shared Integer bar => 0;
     native assign bar {}
+    native shared void test2() {}
+    shared void nat() {}
 }
 
 native("jvm") shared class NativeClassWithImpl(Integer x, Integer y)
         extends NativeClassWithImplBase(x) {
+    void jvmimpl() {}
+    native("jvm") shared void test2() {
+        base();
+        test();
+        nat();
+        jvmimpl();
+    }
 }
 
 native("js") shared class NativeClassWithImpl(Integer x, Integer y)
         extends NativeClassWithImplBase(x) {
+    void jsimpl() {}
+    native("js") shared void test2() {
+        base();
+        test();
+        nat();
+        jsimpl();
+    }
 }
 
 
 void testNativeClassWithImpl() {
     value a = NativeClassWithImpl(1, 2).base();
-    value b = NativeClassWithImpl(1, 2).test(0);
+    NativeClassWithImpl(1, 2).test();
     value c = NativeClassWithImpl(1, 2).foo;
     value d = NativeClassWithImpl(1, 2).bar;
     NativeClassWithImpl(1, 2).bar = a;
+    NativeClassWithImpl(1, 2).test2();
     throw Exception("NativeClassWithImpl-JVM");
 }
