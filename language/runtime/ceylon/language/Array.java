@@ -101,17 +101,17 @@ public final class Array<Element>
     }
     
     @Ignore
-    public static final Array.OfSize OfSize = null;
+    public static final Array.ofSize_ ofSize_ = null;
     
     @Ceylon(major = 8)
     @Ignore
-    public static final class OfSize {
-        private OfSize() {}
+    public static final class ofSize_ {
+        private ofSize_() {}
     }
     
     @Name("OfSize")
     public Array(@Ignore final TypeDescriptor $reifiedElement, 
-    @Ignore Array.OfSize $name$, 
+    @Ignore Array.ofSize_ $name$, 
     @Name("size")
     @TypeInfo("ceylon.language::Integer")
     final long size,

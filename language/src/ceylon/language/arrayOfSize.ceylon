@@ -5,7 +5,7 @@
 throws (`class AssertionError`, 
         "if `size>runtime.maxArraySize`")
 see (`value runtime.maxArraySize`)
-deprecated ("Use [[Array.OfSize]]")
+deprecated ("Use [[Array.ofSize]]")
 shared Array<Element> arrayOfSize<Element>(
         "The size of the resulting array. If the size is 
          non-positive, an empty array will be created."
@@ -14,4 +14,4 @@ shared Array<Element> arrayOfSize<Element>(
          All elements of the resulting array will have the 
          same value." 
         Element element) 
-        => Array.OfSize(size, element);
+        => Array.ofSize(size, element);

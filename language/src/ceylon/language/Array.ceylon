@@ -22,7 +22,7 @@ shared final native class Array<Element>
     throws (`class AssertionError`, 
         "if `size>runtime.maxArraySize`")
     see (`value runtime.maxArraySize`)
-    shared native new OfSize(
+    shared native new ofSize(
             "The size of the resulting array. If the size is 
              non-positive, an empty array will be created."
             Integer size, 
