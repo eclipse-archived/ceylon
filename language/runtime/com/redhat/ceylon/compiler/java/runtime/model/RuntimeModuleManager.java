@@ -87,7 +87,7 @@ public class RuntimeModuleManager extends ReflectionModuleManager {
                 if(!modelLoader.loadCompiledModule(module)){
                     // we didn't find module.class so it must be a java module if it's not the default module
                     ((LazyModule)module).setJava(true);
-                    module.setNative(Backend.Java.nativeAnnotation);
+                    module.setNativeBackend(Backend.Java.nativeAnnotation);
 
                     // Java modules must have their dependencies set by the artifact result, as there is no module info in the jar
                     for (ArtifactResult dep : artifact.dependencies()) {
