@@ -2115,7 +2115,7 @@ public class TypeVisitor extends Visitor {
             Declaration impl =
                     getNativeDeclaration(dec, backend);
             if (impl==null && hdr != null) {
-                if (!isImplemented(hdr)) {
+                if (!isImplemented(hdr) && hdr.isShared()) {
                     that.addError("no native implementation for backend: native '"
                             + dec.getName(unit) +
                             "' is not implemented for one or more backends");
