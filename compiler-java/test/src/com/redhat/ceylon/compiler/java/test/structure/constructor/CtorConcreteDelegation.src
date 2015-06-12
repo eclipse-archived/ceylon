@@ -24,45 +24,45 @@ class CtorConcreteDelegationSuper<T> implements .com.redhat.ceylon.compiler.java
 }
 class C<T> extends .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorConcreteDelegationSuper<T> {
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
-    private static final .com.redhat.ceylon.compiler.java.test.structure.constructor.C.X$delegation$ X$delegation$ = null;
+    private static final .com.redhat.ceylon.compiler.java.test.structure.constructor.C.x$delegation$_ x$delegation$_ = null;
     
-    private static final class X$delegation$ {
+    private static final class x$delegation$_ {
         
-        private X$delegation$() {
+        private x$delegation$_() {
         }
     }
     
-    private C(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, .com.redhat.ceylon.compiler.java.test.structure.constructor.C.X$delegation$ $name$) {
+    private C(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, .com.redhat.ceylon.compiler.java.test.structure.constructor.C.x$delegation$_ $name$) {
         super($reified$T);
         this.$reified$T = $reified$T;
         .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("1");
         .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("X");
     }
-    public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.C.X X = null;
+    public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.C.x_ x_ = null;
     
-    public static final class X {
+    public static final class x_ {
         
-        private X() {
+        private x_() {
         }
     }
     
-    public C(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, .com.redhat.ceylon.compiler.java.test.structure.constructor.C.X $name$) {
-        this($reified$T, .com.redhat.ceylon.compiler.java.test.structure.constructor.C.X$delegation$);
+    public C(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, .com.redhat.ceylon.compiler.java.test.structure.constructor.C.x_ $name$) {
+        this($reified$T, .com.redhat.ceylon.compiler.java.test.structure.constructor.C.x$delegation$_);
         .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("2");
         .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("3");
         .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("4");
         .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("5");
     }
-    public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.C.Y Y = null;
+    public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.C.y_ y_ = null;
     
-    public static final class Y {
+    public static final class y_ {
         
-        private Y() {
+        private y_() {
         }
     }
     
-    public C(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, .com.redhat.ceylon.compiler.java.test.structure.constructor.C.Y $name$) {
-        this($reified$T, .com.redhat.ceylon.compiler.java.test.structure.constructor.C.X$delegation$);
+    public C(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, .com.redhat.ceylon.compiler.java.test.structure.constructor.C.y_ $name$) {
+        this($reified$T, .com.redhat.ceylon.compiler.java.test.structure.constructor.C.x$delegation$_);
         .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("2");
         $return$$0: do {
             .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("Y");
@@ -71,30 +71,30 @@ class C<T> extends .com.redhat.ceylon.compiler.java.test.structure.constructor.C
         .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("4");
         .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("5");
     }
-    private static final .com.redhat.ceylon.compiler.java.test.structure.constructor.C.Z$delegation$ Z$delegation$ = null;
+    private static final .com.redhat.ceylon.compiler.java.test.structure.constructor.C.z$delegation$_ z$delegation$_ = null;
     
-    private static final class Z$delegation$ {
+    private static final class z$delegation$_ {
         
-        private Z$delegation$() {
+        private z$delegation$_() {
         }
     }
     
-    private C(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, .com.redhat.ceylon.compiler.java.test.structure.constructor.C.Z$delegation$ $name$) {
-        this($reified$T, .com.redhat.ceylon.compiler.java.test.structure.constructor.C.X$delegation$);
+    private C(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, .com.redhat.ceylon.compiler.java.test.structure.constructor.C.z$delegation$_ $name$) {
+        this($reified$T, .com.redhat.ceylon.compiler.java.test.structure.constructor.C.x$delegation$_);
         .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("2");
         .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("3");
         .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("Z");
     }
-    public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.C.Z Z = null;
+    public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.C.z_ z_ = null;
     
-    public static final class Z {
+    public static final class z_ {
         
-        private Z() {
+        private z_() {
         }
     }
     
-    public C(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, .com.redhat.ceylon.compiler.java.test.structure.constructor.C.Z $name$) {
-        this($reified$T, .com.redhat.ceylon.compiler.java.test.structure.constructor.C.X$delegation$);
+    public C(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, .com.redhat.ceylon.compiler.java.test.structure.constructor.C.z_ $name$) {
+        this($reified$T, .com.redhat.ceylon.compiler.java.test.structure.constructor.C.x$delegation$_);
         .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("2");
         .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("3");
         $return$$1: do {
@@ -103,16 +103,16 @@ class C<T> extends .com.redhat.ceylon.compiler.java.test.structure.constructor.C
         .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("4");
         .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("5");
     }
-    public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.C.Alpha Alpha = null;
+    public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.C.alpha_ alpha_ = null;
     
-    public static final class Alpha {
+    public static final class alpha_ {
         
-        private Alpha() {
+        private alpha_() {
         }
     }
     
-    public C(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, .com.redhat.ceylon.compiler.java.test.structure.constructor.C.Alpha $name$) {
-        this($reified$T, .com.redhat.ceylon.compiler.java.test.structure.constructor.C.Z$delegation$);
+    public C(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, .com.redhat.ceylon.compiler.java.test.structure.constructor.C.alpha_ $name$) {
+        this($reified$T, .com.redhat.ceylon.compiler.java.test.structure.constructor.C.z$delegation$_);
         .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("4");
         $return$$2: do {
             .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("alpha");
@@ -132,43 +132,43 @@ class ExtendsBasic<X> implements .com.redhat.ceylon.compiler.java.runtime.model.
     private final X getWho$priv$() {
         return who;
     }
-    private static final .com.redhat.ceylon.compiler.java.test.structure.constructor.ExtendsBasic.For$delegation$ For$delegation$ = null;
+    private static final .com.redhat.ceylon.compiler.java.test.structure.constructor.ExtendsBasic.pour$delegation$_ pour$delegation$_ = null;
     
-    private static final class For$delegation$ {
+    private static final class pour$delegation$_ {
         
-        private For$delegation$() {
+        private pour$delegation$_() {
         }
     }
     
-    private ExtendsBasic(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$X, .com.redhat.ceylon.compiler.java.test.structure.constructor.ExtendsBasic.For$delegation$ $name$, final X who$param$) {
+    private ExtendsBasic(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$X, .com.redhat.ceylon.compiler.java.test.structure.constructor.ExtendsBasic.pour$delegation$_ $name$, final X who$param$) {
         this.$reified$X = $reified$X;
         .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("1");
         .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("For");
         this.who = who$param$;
     }
-    public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.ExtendsBasic.For For = null;
+    public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.ExtendsBasic.pour_ pour_ = null;
     
-    public static final class For {
+    public static final class pour_ {
         
-        private For() {
+        private pour_() {
         }
     }
     
-    public ExtendsBasic(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$X, .com.redhat.ceylon.compiler.java.test.structure.constructor.ExtendsBasic.For $name$, final X who$param$) {
-        this($reified$X, .com.redhat.ceylon.compiler.java.test.structure.constructor.ExtendsBasic.For$delegation$, who$param$);
+    public ExtendsBasic(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$X, .com.redhat.ceylon.compiler.java.test.structure.constructor.ExtendsBasic.pour_ $name$, final X who$param$) {
+        this($reified$X, .com.redhat.ceylon.compiler.java.test.structure.constructor.ExtendsBasic.pour$delegation$_, who$param$);
         .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("2");
         .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("3");
     }
-    public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.ExtendsBasic.World World = null;
+    public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.ExtendsBasic.monde_ monde_ = null;
     
-    public static final class World {
+    public static final class monde_ {
         
-        private World() {
+        private monde_() {
         }
     }
     
-    public ExtendsBasic(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$X, .com.redhat.ceylon.compiler.java.test.structure.constructor.ExtendsBasic.World $name$) {
-        this($reified$X, .com.redhat.ceylon.compiler.java.test.structure.constructor.ExtendsBasic.For$delegation$, (X)null);
+    public ExtendsBasic(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$X, .com.redhat.ceylon.compiler.java.test.structure.constructor.ExtendsBasic.monde_ $name$) {
+        this($reified$X, .com.redhat.ceylon.compiler.java.test.structure.constructor.ExtendsBasic.pour$delegation$_, (X)null);
         .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("2");
         $return$$3: do {
             .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("World");
@@ -187,39 +187,39 @@ class Hello implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTyp
     private final .java.lang.String getWho$priv$() {
         return who;
     }
-    private static final .com.redhat.ceylon.compiler.java.test.structure.constructor.Hello.For$delegation$ For$delegation$ = null;
+    private static final .com.redhat.ceylon.compiler.java.test.structure.constructor.Hello.pour$delegation$_ pour$delegation$_ = null;
     
-    private static final class For$delegation$ {
+    private static final class pour$delegation$_ {
         
-        private For$delegation$() {
+        private pour$delegation$_() {
         }
     }
     
-    private Hello(.com.redhat.ceylon.compiler.java.test.structure.constructor.Hello.For$delegation$ $name$, final .java.lang.String who$param$) {
+    private Hello(.com.redhat.ceylon.compiler.java.test.structure.constructor.Hello.pour$delegation$_ $name$, final .java.lang.String who$param$) {
         this.who = who$param$;
     }
-    public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.Hello.For For = null;
+    public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.Hello.pour_ pour_ = null;
     
-    public static final class For {
+    public static final class pour_ {
         
-        private For() {
+        private pour_() {
         }
     }
     
-    public Hello(.com.redhat.ceylon.compiler.java.test.structure.constructor.Hello.For $name$, final .java.lang.String who$param$) {
-        this(.com.redhat.ceylon.compiler.java.test.structure.constructor.Hello.For$delegation$, who$param$);
+    public Hello(.com.redhat.ceylon.compiler.java.test.structure.constructor.Hello.pour_ $name$, final .java.lang.String who$param$) {
+        this(.com.redhat.ceylon.compiler.java.test.structure.constructor.Hello.pour$delegation$_, who$param$);
         .ceylon.language.print_.print(.ceylon.language.String.instance("Hello " + getWho$priv$()));
     }
-    public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.Hello.World World = null;
+    public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.Hello.monde_ monde_ = null;
     
-    public static final class World {
+    public static final class monde_ {
         
-        private World() {
+        private monde_() {
         }
     }
     
-    public Hello(.com.redhat.ceylon.compiler.java.test.structure.constructor.Hello.World $name$) {
-        this(.com.redhat.ceylon.compiler.java.test.structure.constructor.Hello.For$delegation$, "world");
+    public Hello(.com.redhat.ceylon.compiler.java.test.structure.constructor.Hello.monde_ $name$) {
+        this(.com.redhat.ceylon.compiler.java.test.structure.constructor.Hello.pour$delegation$_, "world");
         $return$$4: do {
         }         while (false);
         .ceylon.language.print_.print(.ceylon.language.String.instance("Hello " + getWho$priv$()));
@@ -242,22 +242,22 @@ public final class runCtorConcreteDelegation_ {
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     public static void runCtorConcreteDelegation() {
         .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().reset();
-        new .com.redhat.ceylon.compiler.java.test.structure.constructor.C<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.structure.constructor.C.X);
+        new .com.redhat.ceylon.compiler.java.test.structure.constructor.C<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.structure.constructor.C.x_);
         .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().check("[super, 1, X, 2, 3, 4, 5]");
         .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().reset();
-        new .com.redhat.ceylon.compiler.java.test.structure.constructor.C<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.structure.constructor.C.Y);
+        new .com.redhat.ceylon.compiler.java.test.structure.constructor.C<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.structure.constructor.C.y_);
         .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().check("[super, 1, X, 2, Y, 3, 4, 5]");
         .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().reset();
-        new .com.redhat.ceylon.compiler.java.test.structure.constructor.C<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.structure.constructor.C.Z);
+        new .com.redhat.ceylon.compiler.java.test.structure.constructor.C<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.structure.constructor.C.z_);
         .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().check("[super, 1, X, 2, 3, Z, 4, 5]");
         .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().reset();
-        new .com.redhat.ceylon.compiler.java.test.structure.constructor.C<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.structure.constructor.C.Alpha);
+        new .com.redhat.ceylon.compiler.java.test.structure.constructor.C<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.structure.constructor.C.alpha_);
         .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().check("[super, 1, X, 2, 3, Z, 4, alpha, 5]");
         .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().reset();
-        new .com.redhat.ceylon.compiler.java.test.structure.constructor.ExtendsBasic<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.structure.constructor.ExtendsBasic.For, .ceylon.language.String.instance("tom"));
+        new .com.redhat.ceylon.compiler.java.test.structure.constructor.ExtendsBasic<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.structure.constructor.ExtendsBasic.pour_, .ceylon.language.String.instance("tom"));
         .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().check("[1, For, 2, 3]");
         .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().reset();
-        new .com.redhat.ceylon.compiler.java.test.structure.constructor.ExtendsBasic(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, .com.redhat.ceylon.compiler.java.test.structure.constructor.ExtendsBasic.World);
+        new .com.redhat.ceylon.compiler.java.test.structure.constructor.ExtendsBasic(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, .com.redhat.ceylon.compiler.java.test.structure.constructor.ExtendsBasic.monde_);
         .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().check("[1, For, 2, World, 3]");
     }
     

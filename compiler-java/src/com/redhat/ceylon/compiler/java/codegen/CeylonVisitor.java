@@ -418,7 +418,7 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
         stmts.addAll(classBuilder.getInitBuilder().copyStatementsBetween(
                 delegation.getExtendingConstructor(), ctorModel));
         stmts.addAll(gen.statementGen().transformBlock(block));
-        String ctorName = (!Decl.isDefaultConstructor(ctorModel) ? gen.naming.makeTypeDeclarationName(ctorModel) : "") + Naming.Suffix.$delegation$;
+        String ctorName = (!Decl.isDefaultConstructor(ctorModel) ? gen.naming.makeTypeDeclarationName(ctorModel, DeclNameFlag.DELEGATION) : Naming.Suffix.$delegation$.toString());
         classBuilder.defs(gen.classGen().makeNamedConstructor(ctor, parameterList, ctorModel, classBuilder, false, PRIVATE, true, ctorName, stmts.toList(),
                 DeclNameFlag.QUALIFIED, DeclNameFlag.DELEGATION));
         

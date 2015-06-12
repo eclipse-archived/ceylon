@@ -229,9 +229,9 @@ public class MethodOrValueReferenceVisitor extends Visitor {
                     if (ctor.getDelegatedConstructor() != null) {
                         if (ctor.getDelegatedConstructor().getInvocationExpression().getPrimary() instanceof Tree.ExtendedTypeExpression) {
                             Tree.ExtendedTypeExpression ete = (Tree.ExtendedTypeExpression)ctor.getDelegatedConstructor().getInvocationExpression().getPrimary();
-                            if (ete.getDeclaration() instanceof Constructor
-                                    && ete.getDeclaration().getContainer().equals(that.getDeclarationModel())) {
-                                    delegatedTo.put(ctor.getConstructor(), (Constructor)ete.getDeclaration());
+                            if (Decl.isConstructor(ete.getDeclaration())
+                                    && Decl.getConstructedClass(ete.getDeclaration()).equals(that.getDeclarationModel())) {
+                                    delegatedTo.put(ctor.getConstructor(), Decl.getConstructor(ete.getDeclaration()));
                             }
                         }
                     }
@@ -239,8 +239,8 @@ public class MethodOrValueReferenceVisitor extends Visitor {
             }
             for (Tree.Statement stmt : that.getClassBody().getStatements()) {
             if (stmt instanceof Tree.Constructor &&
-                        (delegatedTo.containsKey(((Tree.Constructor)stmt).getDeclarationModel())
-                        || delegatedTo.containsValue(((Tree.Constructor)stmt).getDeclarationModel()))) {
+                        (delegatedTo.containsKey(Decl.getConstructor(((Tree.Constructor)stmt).getDeclarationModel()))
+                        || delegatedTo.containsValue(Decl.getConstructor(((Tree.Constructor)stmt).getDeclarationModel())))) {
                     boolean cs = enterCapturingScope();
                     stmt.visit(this);
                     exitCapturingScope(cs);

@@ -1,15 +1,15 @@
 package com.redhat.ceylon.compiler.java.test.structure.constructor;
 
 class CtorAbstractCtorSuper implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
-    public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorSuper.Foo Foo = null;
+    public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorSuper.foo_ foo_ = null;
     
-    public static final class Foo {
+    public static final class foo_ {
         
-        private Foo() {
+        private foo_() {
         }
     }
     
-    public CtorAbstractCtorSuper(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorSuper.Foo $name$, final boolean b$param$) {
+    public CtorAbstractCtorSuper(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorSuper.foo_ $name$, final boolean b$param$) {
         .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("super");
     }
     
@@ -32,30 +32,30 @@ class CtorAbstractCtorPartial extends .com.redhat.ceylon.compiler.java.test.stru
     private final long getY$priv$() {
         return y;
     }
-    private static final .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartial.Partial Partial = null;
+    private static final .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartial.partial_ partial_ = null;
     
-    private static final class Partial {
+    private static final class partial_ {
         
-        private Partial() {
+        private partial_() {
         }
     }
     
-    private CtorAbstractCtorPartial(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartial.Partial $name$, final long x$param$) {
-        super(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorSuper.Foo, true);
+    private CtorAbstractCtorPartial(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartial.partial_ $name$, final long x$param$) {
+        super(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorSuper.foo_, true);
         .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("a");
         .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("Partial");
         this.x = x$param$;
     }
-    public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartial.Rest Rest = null;
+    public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartial.rest_ rest_ = null;
     
-    public static final class Rest {
+    public static final class rest_ {
         
-        private Rest() {
+        private rest_() {
         }
     }
     
-    public CtorAbstractCtorPartial(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartial.Rest $name$, final long y$param$) {
-        this(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartial.Partial, 1L);
+    public CtorAbstractCtorPartial(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartial.rest_ $name$, final long y$param$) {
+        this(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartial.partial_, 1L);
         .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("b");
         $return$$0: do {
             .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("Rest");
@@ -85,30 +85,30 @@ class CtorAbstractCtorPartialShared extends .com.redhat.ceylon.compiler.java.tes
     public final long getY() {
         return y;
     }
-    private static final .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialShared.Partial Partial = null;
+    private static final .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialShared.partial_ partial_ = null;
     
-    private static final class Partial {
+    private static final class partial_ {
         
-        private Partial() {
+        private partial_() {
         }
     }
     
-    private CtorAbstractCtorPartialShared(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialShared.Partial $name$, final long x$param$) {
-        super(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorSuper.Foo, true);
+    private CtorAbstractCtorPartialShared(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialShared.partial_ $name$, final long x$param$) {
+        super(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorSuper.foo_, true);
         .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("a");
         .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("Partial");
         this.x = x$param$;
     }
-    public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialShared.Rest Rest = null;
+    public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialShared.rest_ rest_ = null;
     
-    public static final class Rest {
+    public static final class rest_ {
         
-        private Rest() {
+        private rest_() {
         }
     }
     
-    public CtorAbstractCtorPartialShared(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialShared.Rest $name$, final long y$param$) {
-        this(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialShared.Partial, 1L);
+    public CtorAbstractCtorPartialShared(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialShared.rest_ $name$, final long y$param$) {
+        this(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialShared.partial_, 1L);
         .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("b");
         $return$$1: do {
             .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("Rest");
@@ -140,30 +140,30 @@ class CtorAbstractCtorPartialCaptured extends .com.redhat.ceylon.compiler.java.t
     public final long capture() {
         return getX$priv$() + getY$priv$();
     }
-    private static final .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialCaptured.Partial Partial = null;
+    private static final .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialCaptured.partial_ partial_ = null;
     
-    private static final class Partial {
+    private static final class partial_ {
         
-        private Partial() {
+        private partial_() {
         }
     }
     
-    private CtorAbstractCtorPartialCaptured(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialCaptured.Partial $name$, final long x$param$) {
-        super(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorSuper.Foo, true);
+    private CtorAbstractCtorPartialCaptured(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialCaptured.partial_ $name$, final long x$param$) {
+        super(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorSuper.foo_, true);
         .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("a");
         .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("Partial");
         this.x = x$param$;
     }
-    public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialCaptured.Rest Rest = null;
+    public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialCaptured.rest_ rest_ = null;
     
-    public static final class Rest {
+    public static final class rest_ {
         
-        private Rest() {
+        private rest_() {
         }
     }
     
-    public CtorAbstractCtorPartialCaptured(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialCaptured.Rest $name$, final long y$param$) {
-        this(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialCaptured.Partial, 1L);
+    public CtorAbstractCtorPartialCaptured(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialCaptured.rest_ $name$, final long y$param$) {
+        this(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialCaptured.partial_, 1L);
         .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("b");
         $return$$2: do {
             .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("Rest");
@@ -245,16 +245,16 @@ class CtorAbstractCtorPartialVariable extends .com.redhat.ceylon.compiler.java.t
             return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialVariable.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialVariable.yCapturer2_.class));
         }
     }
-    private static final .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialVariable.Partial Partial = null;
+    private static final .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialVariable.partial_ partial_ = null;
     
-    private static final class Partial {
+    private static final class partial_ {
         
-        private Partial() {
+        private partial_() {
         }
     }
     
-    private CtorAbstractCtorPartialVariable(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialVariable.Partial $name$, final long x$param$) {
-        super(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorSuper.Foo, true);
+    private CtorAbstractCtorPartialVariable(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialVariable.partial_ $name$, final long x$param$) {
+        super(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorSuper.foo_, true);
         .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("a");
         .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("Partial");
         this.setX$priv$(x$param$);
@@ -284,16 +284,16 @@ class CtorAbstractCtorPartialVariable extends .com.redhat.ceylon.compiler.java.t
         final xCapturer_ xCapturer = new xCapturer_();
         xCapturer.capture(1L);
     }
-    public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialVariable.Rest Rest = null;
+    public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialVariable.rest_ rest_ = null;
     
-    public static final class Rest {
+    public static final class rest_ {
         
-        private Rest() {
+        private rest_() {
         }
     }
     
-    public CtorAbstractCtorPartialVariable(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialVariable.Rest $name$, final long y$param$) {
-        this(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialVariable.Partial, 1L);
+    public CtorAbstractCtorPartialVariable(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialVariable.rest_ $name$, final long y$param$) {
+        this(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialVariable.partial_, 1L);
         .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("b");
         $return$$9: do {
             
@@ -431,16 +431,16 @@ class CtorAbstractCtorPartialSharedVariable extends .com.redhat.ceylon.compiler.
             return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialSharedVariable.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialSharedVariable.yCapturer2_.class));
         }
     }
-    private static final .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialSharedVariable.Partial Partial = null;
+    private static final .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialSharedVariable.partial_ partial_ = null;
     
-    private static final class Partial {
+    private static final class partial_ {
         
-        private Partial() {
+        private partial_() {
         }
     }
     
-    private CtorAbstractCtorPartialSharedVariable(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialSharedVariable.Partial $name$, final long x$param$) {
-        super(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorSuper.Foo, true);
+    private CtorAbstractCtorPartialSharedVariable(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialSharedVariable.partial_ $name$, final long x$param$) {
+        super(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorSuper.foo_, true);
         .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("a");
         .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("Partial");
         this.setX(x$param$);
@@ -470,16 +470,16 @@ class CtorAbstractCtorPartialSharedVariable extends .com.redhat.ceylon.compiler.
         final xCapturer_ xCapturer = new xCapturer_();
         xCapturer.capture(1L);
     }
-    public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialSharedVariable.Rest Rest = null;
+    public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialSharedVariable.rest_ rest_ = null;
     
-    public static final class Rest {
+    public static final class rest_ {
         
-        private Rest() {
+        private rest_() {
         }
     }
     
-    public CtorAbstractCtorPartialSharedVariable(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialSharedVariable.Rest $name$, final long y$param$) {
-        this(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialSharedVariable.Partial, 1L);
+    public CtorAbstractCtorPartialSharedVariable(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialSharedVariable.rest_ $name$, final long y$param$) {
+        this(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialSharedVariable.partial_, 1L);
         .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("b");
         $return$$20: do {
             
@@ -621,16 +621,16 @@ class CtorAbstractCtorPartialCapturedVariable extends .com.redhat.ceylon.compile
     public final long capture() {
         return getX$priv$() + getY$priv$();
     }
-    private static final .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialCapturedVariable.Partial Partial = null;
+    private static final .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialCapturedVariable.partial_ partial_ = null;
     
-    private static final class Partial {
+    private static final class partial_ {
         
-        private Partial() {
+        private partial_() {
         }
     }
     
-    private CtorAbstractCtorPartialCapturedVariable(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialCapturedVariable.Partial $name$, final long x$param$) {
-        super(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorSuper.Foo, true);
+    private CtorAbstractCtorPartialCapturedVariable(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialCapturedVariable.partial_ $name$, final long x$param$) {
+        super(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorSuper.foo_, true);
         .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("a");
         .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("Partial");
         this.setX$priv$(x$param$);
@@ -660,16 +660,16 @@ class CtorAbstractCtorPartialCapturedVariable extends .com.redhat.ceylon.compile
         final xCapturer_ xCapturer = new xCapturer_();
         xCapturer.capture(1L);
     }
-    public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialCapturedVariable.Rest Rest = null;
+    public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialCapturedVariable.rest_ rest_ = null;
     
-    public static final class Rest {
+    public static final class rest_ {
         
-        private Rest() {
+        private rest_() {
         }
     }
     
-    public CtorAbstractCtorPartialCapturedVariable(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialCapturedVariable.Rest $name$, final long y$param$) {
-        this(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialCapturedVariable.Partial, 1L);
+    public CtorAbstractCtorPartialCapturedVariable(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialCapturedVariable.rest_ $name$, final long y$param$) {
+        this(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialCapturedVariable.partial_, 1L);
         .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("b");
         $return$$31: do {
             
@@ -742,22 +742,22 @@ class CtorAbstractCtorPartialCapturedVariable extends .com.redhat.ceylon.compile
 }
 class CtorAbstractCtorGeneric<T> extends .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorSuper {
     
-    CtorAbstractCtorGeneric(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorGeneric.Partial $name$) {
+    CtorAbstractCtorGeneric(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorGeneric.partial_ $name$) {
         (
             let
             {
-                T $ceylontmp$x$36 = .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorGeneric.<T>CtorAbstractCtorGeneric$Partial$x($reified$T);
+                T $ceylontmp$x$36 = .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorGeneric.<T>CtorAbstractCtorGeneric$partial$x($reified$T);
                 this($reified$T, $name$, $ceylontmp$x$36);
             }
             returning null;
         );
     }
     
-    CtorAbstractCtorGeneric(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorGeneric.Rest $name$) {
+    CtorAbstractCtorGeneric(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorGeneric.rest_ $name$) {
         (
             let
             {
-                T $ceylontmp$y$38 = .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorGeneric.<T>CtorAbstractCtorGeneric$Rest$y($reified$T);
+                T $ceylontmp$y$38 = .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorGeneric.<T>CtorAbstractCtorGeneric$rest$y($reified$T);
                 this($reified$T, $name$, $ceylontmp$y$38);
             }
             returning null;
@@ -776,39 +776,39 @@ class CtorAbstractCtorGeneric<T> extends .com.redhat.ceylon.compiler.java.test.s
     private final T getY$priv$() {
         return y;
     }
-    private static final .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorGeneric.Partial Partial = null;
+    private static final .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorGeneric.partial_ partial_ = null;
     
-    public static final <T>T CtorAbstractCtorGeneric$Partial$x(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+    public static final <T>T CtorAbstractCtorGeneric$partial$x(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
         return null;
     }
     
-    private static final class Partial {
+    private static final class partial_ {
         
-        private Partial() {
+        private partial_() {
         }
     }
     
-    private CtorAbstractCtorGeneric(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorGeneric.Partial $name$, final T x$param$) {
-        super(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorSuper.Foo, true);
+    private CtorAbstractCtorGeneric(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorGeneric.partial_ $name$, final T x$param$) {
+        super(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorSuper.foo_, true);
         this.$reified$T = $reified$T;
         .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("a");
         .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("Partial");
         this.x = x$param$;
     }
-    public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorGeneric.Rest Rest = null;
+    public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorGeneric.rest_ rest_ = null;
     
-    public static final <T>T CtorAbstractCtorGeneric$Rest$y(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+    public static final <T>T CtorAbstractCtorGeneric$rest$y(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
         return null;
     }
     
-    public static final class Rest {
+    public static final class rest_ {
         
-        private Rest() {
+        private rest_() {
         }
     }
     
-    public CtorAbstractCtorGeneric(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorGeneric.Rest $name$, final T y$param$) {
-        this($reified$T, .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorGeneric.Partial);
+    public CtorAbstractCtorGeneric(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorGeneric.rest_ $name$, final T y$param$) {
+        this($reified$T, .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorGeneric.partial_);
         .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("b");
         $return$$37: do {
             .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("Rest");
@@ -835,25 +835,25 @@ public final class runCtorAbstractCtor_ {
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     public static void runCtorAbstractCtor() {
         .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().reset();
-        new .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartial(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartial.Rest, 1L);
+        new .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartial(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartial.rest_, 1L);
         .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().check("[super, a, Partial, b, Rest, c]");
         .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().reset();
-        new .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialShared(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialShared.Rest, 1L);
+        new .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialShared(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialShared.rest_, 1L);
         .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().check("[super, a, Partial, b, Rest, c]");
         .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().reset();
-        new .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialCaptured(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialCaptured.Rest, 1L);
+        new .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialCaptured(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialCaptured.rest_, 1L);
         .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().check("[super, a, Partial, b, Rest, c]");
         .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().reset();
-        new .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialVariable(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialVariable.Rest, 1L);
+        new .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialVariable(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialVariable.rest_, 1L);
         .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().check("[super, a, Partial, b, Rest, c]");
         .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().reset();
-        new .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialSharedVariable(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialSharedVariable.Rest, 1L);
+        new .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialSharedVariable(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialSharedVariable.rest_, 1L);
         .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().check("[super, a, Partial, b, Rest, c]");
         .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().reset();
-        new .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialCapturedVariable(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialCapturedVariable.Rest, 1L);
+        new .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialCapturedVariable(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialCapturedVariable.rest_, 1L);
         .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().check("[super, a, Partial, b, Rest, c]");
         .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().reset();
-        new .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorGeneric<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorGeneric.Rest, .ceylon.language.Integer.instance(1L));
+        new .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorGeneric<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorGeneric.rest_, .ceylon.language.Integer.instance(1L));
         .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().check("[super, a, Partial, b, Rest, c]");
     }
     
