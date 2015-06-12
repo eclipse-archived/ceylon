@@ -10,7 +10,10 @@ public abstract class FunctionOrValue extends TypedDeclaration {
     private Parameter initializerParameter;
     private List<Declaration> members = new ArrayList<Declaration>(3);
     private List<Annotation> annotations = new ArrayList<Annotation>(4);
+    private boolean overloaded;
+    private boolean abstraction;
     private List<Declaration> overloads;
+    private boolean implemented;
     
     @Override
     public List<Annotation> getAnnotations() {
@@ -66,6 +69,24 @@ public abstract class FunctionOrValue extends TypedDeclaration {
     }
 
     @Override
+    public boolean isOverloaded() {
+        return overloaded;
+    }
+    
+    public void setOverloaded(boolean overloaded) {
+        this.overloaded = overloaded;
+    }
+    
+    public void setAbstraction(boolean abstraction) {
+        this.abstraction = abstraction;
+    }
+    
+    @Override
+    public boolean isAbstraction() {
+        return abstraction;
+    }
+    
+    @Override
     public List<Declaration> getOverloads() {
         return overloads;
     }
@@ -81,6 +102,14 @@ public abstract class FunctionOrValue extends TypedDeclaration {
         for (Declaration d: initial) {
             overloads.add(d);
         }
+    }
+    
+    public boolean isImplemented() {
+        return implemented;
+    }
+    
+    public void setImplemented(boolean implemented) {
+        this.implemented = implemented;
     }
 
 }

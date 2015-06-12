@@ -12,6 +12,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+import com.redhat.ceylon.common.Backend;
+
 /**
  * Represents a named, annotated program element:
  * a class, interface, type parameter, parameter,
@@ -159,6 +161,10 @@ public abstract class Declaration
 
     public boolean isNative() {
         return getNativeBackend() != null;
+    }
+    
+    public boolean isNativeHeader() {
+        return Backend.None.nativeAnnotation.equals(getNativeBackend());
     }
     
     public String getNativeBackend() {

@@ -3,12 +3,15 @@ package com.redhat.ceylon.model.loader;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.intersection;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.union;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
 import com.redhat.ceylon.model.loader.model.FunctionOrValueInterface;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
+import com.redhat.ceylon.model.typechecker.model.ModelUtil;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.Package;
 import com.redhat.ceylon.model.typechecker.model.Scope;
@@ -19,8 +22,74 @@ import com.redhat.ceylon.model.typechecker.model.TypeParameter;
 import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.model.typechecker.model.Unit;
 
+
+/**
+ * <pThe sub-grammar from the spec looks like this:</p>
+ * <blockquote><pre>
+ * Type: UnionType | EntryType
+ * 
+ * EntryType: UnionType "->" UnionType
+ * 
+ * UnionType: IntersectionType ("|" IntersectionType)*
+ * 
+ * IntersectionType: PrimaryType ("&" PrimaryType)*
+ * 
+ * PrimaryType: AtomicType | OptionalType | SequenceType | CallableType
+ * 
+ * AtomicType: QualifiedType | EmptyType | TupleType | IterableType
+ * 
+ * OptionalType: PrimaryType "?"
+ * 
+ * SequenceType: PrimaryType "[" "]"
+ * 
+ * CallableType: PrimaryType "(" (TypeList? | SpreadType) ")"
+ * 
+ * 
+ * QualifiedType: BaseType ("." TypeNameWithArguments)*
+ * 
+ * BaseType: PackageQualifier? TypeNameWithArguments | GroupedType
+ * 
+ * TypeNameWithArguments: TypeName TypeArguments?
+ * 
+ * PackageQualifier: "package" "."
+ * 
+ * GroupedType: "<" Type ">"
+ * 
+ * 
+ * TypeArguments: "<" ((TypeArgument ",")* TypeArgument)? ">"
+ * 
+ * TypeArgument: Variance Type
+ * 
+ * Variance: ("out" | "in")?
+ * 
+ * SpreadType: "*" UnionType
+ * 
+ * IterableType: "{" UnionType ("*"|"+") "}"
+ * 
+ * EmptyType: "[" "]"
+ * 
+ * TupleType: "[" TypeList "]" | PrimaryType "[" DecimalLiteral "]"
+ * 
+ * 
+ * TypeList: (DefaultedType ",")* (DefaultedType | VariadicType)
+ * 
+ * DefaultedType: Type "="?
+ * 
+ * VariadicType: UnionType ("*" | "+")
+ *
+ * </pre></blockquote>
+ * @see com.redhat.ceylon.model.typechecker.util.TypePrinter
+ */
 public class TypeParser {
     public class Part {
+        public Part(){}
+        public Part(String name) {
+            this.name = name;
+        }
+        public Part(String name, List<Type> parameters) {
+            this.name = name;
+            this.parameters = parameters;
+        }
         String name;
         List<Type> parameters;
         List<SiteVariance> variance;
@@ -42,9 +111,6 @@ public class TypeParser {
         this.loader = loader;
     }
     
-    /*
-     * type: unionType EOT
-     */
     public Type decodeType(String type, Scope scope, Module moduleScope, Unit unit){
         // save the previous state (this method is reentrant)
         char[] oldType = lexer.type;
@@ -75,13 +141,30 @@ public class TypeParser {
         }
     }
 
+    /**
+     * <blockquote><pre>
+     * Type: UnionType | EntryType
+     * EntryType: UnionType "->" UnionType
+     * </pre></blockquote>
+     */
     /*
-     * type: unionType EOT
+     * type: unionType | entryType EOT
+     * entryType: unionType -> unionType
      */
     private Type parseType(){
-        return parseUnionType();
+        Type type = parseUnionType();
+        if (lexer.lookingAt(TypeLexer.THIN_ARROW)) {
+            lexer.eat(TypeLexer.THIN_ARROW);
+            type = unit.getEntryType(type, parseUnionType()); 
+        }
+        return type;
     }
 
+    /**
+     * <blockquote><pre>
+     * UnionType: IntersectionType ("|" IntersectionType)*
+     * </pre></blockquote>
+     */
     /*
      * unionType: intersectionType (| intersectionType)*
      */
@@ -100,46 +183,356 @@ public class TypeParser {
         }
     }
 
+    /**
+     * <blockquote><pre>
+     * IntersectionType: PrimaryType ("&" PrimaryType)*
+     * </pre></blockquote>
+     */
     /*
-     * intersectionType: qualifiedType (& qualifiedType)*
+     *  intersectionType: qualifiedType (& qualifiedType)*
      */
     private Type parseIntersectionType() {
-        Type firstType = parseQualifiedType();
+        Type firstType = parsePrimaryType();
         if(lexer.lookingAt(TypeLexer.AND)){
             List<Type> satisfiedTypes = new LinkedList<Type>();
             satisfiedTypes.add(firstType);
             while(lexer.lookingAt(TypeLexer.AND)){
                 lexer.eat();
-                satisfiedTypes.add(parseQualifiedType());
+                satisfiedTypes.add(parsePrimaryType());
             }
             return intersection(satisfiedTypes, unit);
         }else{
             return firstType;
         }
     }
-
-    /*
-     * qualifiedType: compoundQualifiedType | simpleQualifiedType
+    
+    /**
+     * <blockquote><pre>
+     * PrimaryType: AtomicType | OptionalType | SequenceType | CallableType
+     * </pre></blockquote>
+     * Where:
+     * <blockquote><pre>
+     * QualifiedType: BaseType ("." TypeNameWithArguments)*
+     * BaseType: PackageQualifier? TypeNameWithArguments | GroupedType
+     * </pre></blockquote>
      */
-    private Type parseQualifiedType() {
-        if (lexer.lookingAt(TypeLexer.LT)) {
-            return parseCompoundQualifiedType();
-        } else {
-            return parseSimpleQualifiedType();
-        }
+    /* primaryType: compoundQualifiedType | simpleQualifiedType
+     */
+    private Type parsePrimaryType() {
+        Type type = parseAtomicType();
+        // PrimaryType
+        type = parsePrimaryType(type);
+        return type;
     }
 
-    /*
-     * qualifiedType: < unionType > . typeNameWithArguments (. typeNameWithArguments)*
+    /**
+     * Spec says:
+     * <blockquote><pre>
+     * AtomicType: QualifiedType | EmptyType | TupleType | IterableType)
+     * </pre></blockquote>
+     * We implement this, but we've merged {@code EmptyType} and {@code TupleType}
+     * in {@link #parseEmptyOrTupleType()}
      */
-    private Type parseCompoundQualifiedType() {
+    protected Type parseAtomicType() {
+        Type type;
+        if (lexer.lookingAt(TypeLexer.OPEN_SQ)) {
+            type = parseEmptyOrTupleType();
+        } else if (lexer.lookingAt(TypeLexer.OPEN_BR)) {
+            type = parseIterableAbbreviatedType();
+        } else {
+            type = parseQualifiedType();
+        }
+        return type;
+    }
+
+    /**
+     * Spec says:
+     * <blockquote><pre>
+     * PrimaryType: AtomicType | OptionalType | SequenceType | CallableType
+     * </pre></blockquote>
+     * We rely on our caller to have parsed the "primary type" and just handle
+     * the postfix {@code ?}, {@code [...]} or {@code (...)}
+     */
+    protected Type parsePrimaryType(Type type) {
+        while (lexer.lookingAt(TypeLexer.QN)
+                || lexer.lookingAt(TypeLexer.OPEN_SQ)
+                || lexer.lookingAt(TypeLexer.OPEN_PAR)) {
+            if (lexer.lookingAt(TypeLexer.QN)) {
+                type = parseOptionalType(type);
+            } else if (lexer.lookingAt(TypeLexer.OPEN_SQ)) {
+                type = parseSequenceType(type);
+            } else if (lexer.lookingAt(TypeLexer.OPEN_PAR)) {
+                type = parseCallableType(type);
+            }
+        }
+        return type;
+    }
+    
+    /**
+     * Spec says:
+     * <blockquote><pre>
+     * CallableType: PrimaryType "(" (TypeList? | SpreadType) ")"
+     * SpreadType: "*" UnionType
+     * </pre></blockquote>
+     * We rely on our caller to have parsed the primary type, and just handle 
+     * the parenthesized argument list type.
+     */
+    private Type parseCallableType(Type primaryType) {
+        lexer.eat(TypeLexer.OPEN_PAR);
+        Type arguments;
+        if (lexer.lookingAt(TypeLexer.STAR)) {
+            lexer.eat(TypeLexer.STAR);
+            arguments = parseUnionType();
+        } else {
+            if (!lexer.lookingAt(TypeLexer.CLOSE_PAR)) {
+                TypeList typeList = parseTypeList();
+                arguments = typeList.asTuple();
+            } else {
+                arguments = unit.getEmptyType();
+            }
+        }
+        lexer.eat(TypeLexer.CLOSE_PAR);
+        return unit.getCallableDeclaration().appliedType(null, Arrays.asList(primaryType, arguments));
+    }
+
+    /**
+     * Spec says:
+     * <blockquote><pre>
+     *     SequenceType: PrimaryType "[" "]"
+     * </pre></blockquote>
+     * This method also handles the right hand variant of:
+     * <blockquote><pre>
+     *     TupleType: "[" TypeList "]" | PrimaryType "[" DecimalLiteral "]"
+     * </blockquote></pre>
+     * because it's more easily done here.
+     */
+    private Type parseSequenceType(Type elementType) {
+        lexer.eat(TypeLexer.OPEN_SQ);
+        Type result;
+        if (lexer.lookingAt(TypeLexer.WORD)) {
+            int length = lexer.eatDigits();
+            result = unit.getEmptyType();
+            while (length > 0) {
+                result = unit.getTupleDeclaration().appliedType(null, Arrays.asList(elementType, elementType, result));
+                length--;
+            }
+        } else {
+            result = unit.getSequentialType(elementType);
+        }
+        lexer.eat(TypeLexer.CLOSE_SQ);
+        return result;
+    }
+
+    /**
+     * Spec says:
+     * <blockquote><pre>
+     * OptionalType: PrimaryType "?"
+     * </pre></blockquote>
+     * We rely on our caller to have parsed the primary type
+     */
+    private Type parseOptionalType(Type type) {
+        lexer.eat(TypeLexer.QN);
+        return unit.getOptionalType(type);
+    }
+
+    /**
+     * Spec says:
+     * <blockquote><pre>
+     * IterableType: "{" UnionType ("*"|"+") "}"
+     * </blockquote></pre>
+     */
+    private Type parseIterableAbbreviatedType() {
+        lexer.eat(TypeLexer.OPEN_BR);
+        Type iterated = parseUnionType();
+        Type result = null;
+        if (lexer.lookingAt(TypeLexer.PLUS)) {
+            lexer.eat(TypeLexer.PLUS);
+            result = unit.getNonemptyIterableType(iterated);
+        } else if (lexer.lookingAt(TypeLexer.STAR)) {
+            lexer.eat(TypeLexer.STAR);
+            result = unit.getIterableType(iterated);
+        } else {
+            throw new TypeParserException("Expected multiplicity in abbreviated Iterable type: "+lexer.index);
+        }
+        lexer.eat(TypeLexer.CLOSE_BR);
+        return result;
+    }
+
+    /**
+     * Spec says:
+     * <blockquote><pre>
+     * EmptyType: "[" "]"
+     * TupleType: "[" TypeList "]" | PrimaryType "[" DecimalLiteral "]"
+     * </blockquote></pre>
+     * This method doesn't handle the {@code X[123]} alternative of 
+     * TupleType, that's done in {@link #parseSequenceType(Type)} instead.
+     */
+    private Type parseEmptyOrTupleType() {
+        lexer.eat(TypeLexer.OPEN_SQ);
+        if (lexer.lookingAt(TypeLexer.CLOSE_SQ)) {
+            return parseEmptyType();
+        }
+        TypeList typeList = parseTypeList();
+        final Type result = typeList.asTuple();
+        lexer.eat(TypeLexer.CLOSE_SQ);
+        return result;
+    }
+    
+    /**
+     * Spec says:
+     * <blockquote><pre>
+     * EmptyType: "[" "]"
+     * </blockquote></pre>
+     */
+    protected Type parseEmptyType() {
+        lexer.eat(TypeLexer.CLOSE_SQ);
+        return unit.getEmptyType();
+    }
+    
+    /**
+     * Helper for parsing tuple types.
+     */
+    class TypeList {
+        
+        public TypeList(List<Type> types, boolean variadic, boolean atLeastOne) {
+            super();
+            this.types = types;
+            this.variadic = variadic;
+            this.atLeastOne = atLeastOne;
+        }
+        public Type getFirst() {
+            return types.get(0);
+        }
+        List<Type> types;
+        boolean variadic;
+        boolean atLeastOne;
+        Type getLast() {
+            return types.get(types.size()-1);
+        }
+        
+        Type asTuple() {
+            final Type result;
+            if (types.size() == 0) {
+                result = parseEmptyType();
+            } else {
+                final Type sequentialType;
+                if (variadic) {
+                    Part part = new Part("Sequence", Collections.singletonList(getLast()));
+                    sequentialType = loadType("ceylon.language", 
+                            atLeastOne ? "ceylon.language.Sequence" : "ceylon.language.Sequential", 
+                                    part, null);
+                } else {
+                    sequentialType = unit.getEmptyType();
+                }
+                
+                if (variadic && types.size() == 1) {
+                    result = sequentialType;
+                } else {
+                    Part part = new Part();
+                    Type union = getLast();
+                    Type tupleType = sequentialType;
+                    for (int ii  = types.size()-(variadic? 2 : 1); ii >= 0; ii--) {
+                        Type t = types.get(ii);
+                        union = ModelUtil.unionType(union, t, unit);
+                        part.parameters = Arrays.asList(union, t, tupleType);
+                        part.name = "Tuple";
+                        tupleType = loadType("ceylon.language", "ceylon.language.Tuple", part, null);
+                    }
+                    result = tupleType;
+                }
+            }
+            return result;
+        }
+    }
+    
+    /**
+     * Spec says:
+     * <blockquote><pre>
+     * TypeList: (DefaultedType ",")* (DefaultedType | VariadicType)
+     * DefaultedType: Type "="?
+     * VariadicType: UnionType ("*" | "+")
+     * </blockquote></pre>
+     * We don't care about defaulted types though.
+     */
+    private TypeList parseTypeList() {
+        ArrayList<Type> types= new ArrayList<>();
+        types.add(parseType());
+        while(lexer.lookingAt(TypeLexer.COMMA)){
+            lexer.eat(TypeLexer.COMMA);
+            // XXX When the last type is matching VariadicType
+            // we should be using parseUnionType, not parseType().
+            types.add(parseType());
+        }
+        boolean variadic;
+        boolean atLeastOne;
+        if (lexer.lookingAt(TypeLexer.STAR)){
+            lexer.eat(TypeLexer.STAR);
+            variadic = true;
+            atLeastOne = false;
+        } else if (lexer.lookingAt(TypeLexer.PLUS)){
+            lexer.eat(TypeLexer.PLUS);
+            variadic = true;
+            atLeastOne = true;
+        } else {
+            variadic = false;
+            atLeastOne = false;
+        }
+        return new TypeList(types, variadic, atLeastOne);
+    }
+
+    /**
+     * Spec says: 
+     * <blockquote><pre>
+     * GroupedType: "<" Type ">"
+     * </pre></blockquote>
+     */
+    private Type parseGroupedType() {
         lexer.eat(TypeLexer.LT);
-        Type unionType = parseUnionType();
+        Type unionType = parseType();
         lexer.eat(TypeLexer.GT);
-        lexer.eat(TypeLexer.DOT);
-        Part part = parseTypeNameWithArguments();
-        String fullName = part.name;
-        Type qualifyingType = loadType("", fullName, part, unionType);
+        return unionType;
+    }
+    
+    /**
+     * Spec says: 
+     * <blockquote><pre>
+     * QualifiedType: BaseType ("." TypeNameWithArguments)*
+     * BaseType: PackageQualifier? TypeNameWithArguments | GroupedType
+     * TypeNameWithArguments: TypeName TypeArguments?
+     * PackageQualifier: "package" "."
+     * GroupedType: "<" Type ">"
+     * </blockquote></pre>
+     * We implement this quite differently, because we handle 
+     * {@code package.qualification::}, which the spec doesn't 
+     * have to cover at all.
+     */
+    private Type parseQualifiedType() {
+        Type baseType;
+        if (lexer.lookingAt(TypeLexer.LT)){
+            baseType = parseGroupedType();
+        } else {
+            BaseType bt = parseBaseType();
+            
+            String fullName = bt.fullName;
+            Type qualifyingType = bt.qualifyingType;
+            while(lexer.lookingAt(TypeLexer.DOT)){
+                lexer.eat();
+                Part part = parseTypeNameWithArguments();
+                fullName = fullName + '.' + part.name;
+                qualifyingType = loadType(bt.pkg, fullName, part, qualifyingType);
+            }
+            if(qualifyingType == null){
+                throw new ModelResolutionException("Could not find type '"+fullName+"'");
+            }
+            if(qualifyingType instanceof Type == false){
+                throw new ModelResolutionException("Type is a declaration (should be a Type): '"+fullName+"'");
+            }
+            baseType = (Type) qualifyingType;
+        }
+        
+        Part part;
+        String fullName = "";
+        Type qualifyingType = baseType;
         while(lexer.lookingAt(TypeLexer.DOT)){
             lexer.eat();
             part = parseTypeNameWithArguments();
@@ -154,11 +547,24 @@ public class TypeParser {
         }
         return (Type) qualifyingType;
     }
-
-    /*
-     * qualifiedType: [packageName (. packageName)* ::] typeNameWithArguments (. typeNameWithArguments)*
+    
+    /**
+     * Helper for parsing base types.
      */
-    private Type parseSimpleQualifiedType() {
+    static class BaseType {
+        String pkg;
+        String fullName;
+        Type qualifyingType;
+        public BaseType(String pkg, Type qualifyingType, String fullName) {
+            super();
+            this.pkg = pkg;
+            this.qualifyingType = qualifyingType;
+            this.fullName = fullName;
+        }
+    }
+    
+    private BaseType parseBaseType() {
+        
         String pkg;
         
         if (hasPackage()) {
@@ -179,19 +585,10 @@ public class TypeParser {
         Part part = parseTypeNameWithArguments();
         String fullName = (pkg.isEmpty()) ? part.name : pkg + "." + part.name;
         Type qualifyingType = loadType(pkg, fullName, part, null);
-        while(lexer.lookingAt(TypeLexer.DOT)){
-            lexer.eat();
-            part = parseTypeNameWithArguments();
-            fullName = fullName + '.' + part.name;
-            qualifyingType = loadType(pkg, fullName, part, qualifyingType);
-        }
         if(qualifyingType == null){
             throw new ModelResolutionException("Could not find type '"+fullName+"'");
         }
-        if(qualifyingType instanceof Type == false){
-            throw new ModelResolutionException("Type is a declaration (should be a Type): '"+fullName+"'");
-        }
-        return (Type) qualifyingType;
+        return new BaseType(pkg, qualifyingType, fullName);
     }
 
     private boolean hasPackage() {
@@ -265,8 +662,14 @@ public class TypeParser {
         }
     }
 
-    /*
-     * typeNameWithArguments: WORD (< variance type (, variance type)* >)?
+    /**
+     * Spec says:
+     * <blockquote><pre>
+     * TypeNameWithArguments: TypeName TypeArguments?
+     * TypeArguments: "<" ((TypeArgument ",")* TypeArgument)? ">"
+     * TypeArgument: Variance Type
+     * Variance: ("out" | "in")?
+     * </pre></blockquote>
      */
     private Part parseTypeNameWithArguments() {
         Part type = new Part();
@@ -286,8 +689,12 @@ public class TypeParser {
         return type;
     }
 
-    /*
-     * variance: [in |out ]?
+    /**
+     * Spec says:
+     * <blockquote><pre>
+     * Variance: ("out" | "in")?
+     * </blockquote></pre>
+     * Which is what we do, but by updating the given part.
      */
     private void parseTypeArgumentVariance(Part type) {
         SiteVariance variance = null;

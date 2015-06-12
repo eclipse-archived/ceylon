@@ -15,6 +15,10 @@ import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.model.typechecker.model.TypeParameter;
 import com.redhat.ceylon.model.typechecker.model.Unit;
 
+/**
+ * Pretty-prints a type expression.
+ * @see com.redhat.ceylon.model.loader.TypeParser
+ */
 public class TypePrinter {
 
     public static final TypePrinter DEFAULT = 
@@ -23,15 +27,17 @@ public class TypePrinter {
     public static final TypePrinter ESCAPED = 
             new TypePrinter(true, true, false, true, true);
 
-    private boolean printAbbreviated;
-    private boolean printTypeParameters;
-    private boolean printTypeParameterDetail;
-    private boolean printQualifyingType;
-    private boolean printQualifier;
-    private boolean printFullyQualified;
-    private boolean escapeLowercased;
+    private final boolean printAbbreviated;
+    private final boolean printTypeParameters;
+    private final boolean printTypeParameterDetail;
+    private final boolean printQualifyingType;
+    private final boolean printQualifier;
+    private final boolean printFullyQualified;
+    private final boolean escapeLowercased;
     
-    public TypePrinter() {}
+    public TypePrinter() {
+        this(false, false, false, false, false, false, false);
+    }
 
     public TypePrinter(boolean printAbbreviated) {
         this(printAbbreviated, true, false, true, false);
@@ -42,11 +48,23 @@ public class TypePrinter {
             boolean printTypeParameterDetail,
             boolean printQualifyingType,
             boolean escapeLowercased) {
+        this(printAbbreviated, printTypeParameters, printTypeParameterDetail, printQualifyingType, escapeLowercased, false, false);
+    }
+    
+    public TypePrinter(boolean printAbbreviated, 
+            boolean printTypeParameters, 
+            boolean printTypeParameterDetail,
+            boolean printQualifyingType,
+            boolean escapeLowercased,
+            boolean printFullyQualified,
+            boolean printQualifier) {
         this.printAbbreviated = printAbbreviated;
         this.printTypeParameters = printTypeParameters;
         this.printTypeParameterDetail = printTypeParameterDetail;
         this.printQualifyingType = printQualifyingType;
         this.escapeLowercased = escapeLowercased;
+        this.printFullyQualified = printFullyQualified;
+        this.printQualifier = printQualifier;
     }
     
     protected boolean printAbbreviated() {

@@ -2423,27 +2423,16 @@ public class ModelUtil {
         }
     }
     
+    public static boolean isNative(Declaration dec) {
+        return dec != null && dec.isNative();
+    }
+    
     public static boolean isNativeHeader(Declaration dec) {
-        return dec.isNative() && dec.getNativeBackend().isEmpty();
+        return dec != null && dec.isNativeHeader();
     }
     
     public static boolean isNativeImplementation(Declaration dec) {
-        return dec.isNative() && !dec.getNativeBackend().isEmpty();
-    }
-    
-    public static boolean hasNativeImplementation(Declaration dec) {
-        if (dec.isNative()) {
-            List<Declaration> overloads = dec.getOverloads();
-            if (overloads != null) {
-                for (Declaration overload: overloads) {
-                    if (overload.isNative() && 
-                            !overload.getNativeBackend().isEmpty()) {
-                        return true;
-                    }
-                }
-            }
-        }
-        return false;
+        return dec != null && dec.isNative() && !dec.isNativeHeader();
     }
     
     public static boolean isInNativeContainer(Declaration dec) {
@@ -2536,15 +2525,57 @@ public class ModelUtil {
             Scope scope, String name, String backend) {
         for (Declaration dec: scope.getMembers()) {
             if (isResolvable(dec) && isNamed(name, dec)) {
-                Declaration nativeDec = 
-                        getNativeDeclaration(dec, 
-                                Backend.fromAnnotation(backend));
-                if (nativeDec != null) {
-                    return nativeDec;
+                String nat = dec.getNativeBackend();
+                if (nat==null) {
+                    return dec;
+                }
+                else {
+                    if (nat.equals(backend)) {
+                        return dec;
+                    }
                 }
             }
         }
         return null;
+    }
+    
+    /**
+     * Find the header with the given name that occurs
+     * directly in the given scope or if that scope is
+     * itself a native implementation first look up
+     * the scope's native header and find the requested
+     * header there.
+     *  
+     * @param scope any scope
+     * @param name the name of a declaration
+     * 
+     * @return the matching declaration
+     */
+    public static Declaration getNativeHeader(Scope container, String name) {
+        if (container instanceof Declaration) {
+            Declaration cd = (Declaration)container;
+            if (cd.isNative() && !cd.isNativeHeader()) {
+                // The container is a native implementation so
+                // we first need to find _its_ header
+                container =
+                        (Scope)getDirectMemberForBackend(cd.getContainer(),
+                                cd.getName(),
+                                Backend.None.nativeAnnotation);
+            }
+        }
+        // Find the header
+        Declaration header =
+                getDirectMemberForBackend(container,
+                        name,
+                        Backend.None.nativeAnnotation);
+        return header;
+    }
+    
+    public static boolean isImplemented(Declaration decl) {
+        if (decl instanceof FunctionOrValue) {
+            return ((FunctionOrValue)decl).isImplemented();
+        }
+        return false;
     }
     
     public static boolean eq(Object decl, Object other) {

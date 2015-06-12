@@ -19,8 +19,6 @@ public class Function extends FunctionOrValue implements Generic, Scope, Functio
 
     private List<TypeParameter> typeParameters = emptyList();
     private List<ParameterList> parameterLists = new ArrayList<ParameterList>(1);
-    private boolean overloaded;
-    private boolean abstraction;
     private boolean declaredVoid;
     private Object annotationConstructor;
     private boolean deferred;
@@ -62,24 +60,6 @@ public class Function extends FunctionOrValue implements Generic, Scope, Functio
         parameterLists.add(pl);
     }
 
-    @Override
-    public boolean isOverloaded() {
-        return overloaded;
-    }
-    
-    public void setOverloaded(boolean overloaded) {
-        this.overloaded = overloaded;
-    }
-    
-    public void setAbstraction(boolean abstraction) {
-        this.abstraction = abstraction;
-    }
-    
-    @Override
-    public boolean isAbstraction() {
-        return abstraction;
-    }
-    
     @Override
     public boolean isDeclaredVoid() {
         return declaredVoid;
