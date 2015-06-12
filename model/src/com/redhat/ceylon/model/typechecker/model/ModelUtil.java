@@ -2539,10 +2539,13 @@ public class ModelUtil {
             if (cd.isNative() && !cd.isNativeHeader()) {
                 // The container is a native implementation so
                 // we first need to find _its_ header
-                container =
+                Scope c =
                         (Scope)getDirectMemberForBackend(cd.getContainer(),
                                 cd.getName(),
                                 Backend.None.nativeAnnotation);
+                if (c != null) {
+                    container = c;
+                }
             }
         }
         // Find the header
