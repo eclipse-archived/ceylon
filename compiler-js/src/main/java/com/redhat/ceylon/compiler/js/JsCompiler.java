@@ -142,7 +142,7 @@ public class JsCompiler {
                     Module importedModule = (Module) that.getImportPath().getModel();
                     if (importedModule.isJava()) {
                         isJavaModule = true;
-                        moduleNativeBackend = importedModule.getNative();
+                        moduleNativeBackend = importedModule.getNativeBackend();
                     }
                 }
                 if (that.getQuotedLiteral() != null) {
@@ -196,11 +196,11 @@ public class JsCompiler {
                 Unit currentUnit, Unit declarationUnit) {
             boolean isFromAJavaNativeModuleImport;
             Module declarationModule = declarationUnit.getPackage().getModule();
-            String moduleNativeBackend = declarationModule.getNative();
+            String moduleNativeBackend = declarationModule.getNativeBackend();
             String importNativeBackend = null;
             for(ModuleImport moduleImport : currentUnit.getPackage().getModule().getImports()) {
                 if (declarationModule.equals(moduleImport.getModule())) {
-                    importNativeBackend = moduleImport.getNative();
+                    importNativeBackend = moduleImport.getNativeBackend();
                     break;
                 }
             }
@@ -484,9 +484,9 @@ public class JsCompiler {
                     String be = getNativeBackend(im.getAnnotationList(), im.getUnit());
                     if (im.getImportPath() != null) {
                         Module m = (Module)im.getImportPath().getModel();
-                        if (be != null && m.isNative() && !be.equals(m.getNative())) {
+                        if (be != null && m.isNative() && !be.equals(m.getNativeBackend())) {
                             im.addError("native backend name conflicts with imported module: '\"" + 
-                                    be + "\"' is not '\"" + m.getNative() + "\"'", Backend.JavaScript);
+                                    be + "\"' is not '\"" + m.getNativeBackend() + "\"'", Backend.JavaScript);
                         }
                     }
                 }

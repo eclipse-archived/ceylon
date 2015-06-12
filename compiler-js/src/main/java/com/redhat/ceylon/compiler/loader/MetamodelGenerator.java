@@ -90,7 +90,7 @@ public class MetamodelGenerator {
         if (!module.getImports().isEmpty()) {
             ArrayList<Object> imps = new ArrayList<>(module.getImports().size());
             for (ModuleImport mi : module.getImports()) {
-                if (!isForBackend(mi.getNative(), Backend.JavaScript)) {
+                if (!isForBackend(mi.getNativeBackend(), Backend.JavaScript)) {
                     continue;
                 }
                 if (mi.getModule().getVersion() == null) { //#416
