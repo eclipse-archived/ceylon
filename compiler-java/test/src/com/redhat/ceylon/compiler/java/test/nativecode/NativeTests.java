@@ -99,6 +99,7 @@ public class NativeTests extends CompilerTests {
     @Test
     public void testNativeMethodHeaderImpl() {
         testNative("NativeMethodHeaderImpl");
+        testNative("NativeMethodHeaderImpl");
     }
     
     @Test
@@ -157,6 +158,7 @@ public class NativeTests extends CompilerTests {
     
     @Test
     public void testNativeAttributeHeaderImpl() {
+        testNative("NativeAttributeHeaderImpl");
         testNative("NativeAttributeHeaderImpl");
     }
     
