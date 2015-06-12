@@ -16,13 +16,13 @@ class CtorMemberClassOfNestedAnonymousClass implements .com.redhat.ceylon.compil
             return new Ctor();
         }
         
-        public .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorMemberClassOfNestedAnonymousClass.memberObject_.Ctor Ctor$new$(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorMemberClassOfNestedAnonymousClass.memberObject_.Ctor$Other $name$) {
+        public .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorMemberClassOfNestedAnonymousClass.memberObject_.Ctor Ctor$new$(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorMemberClassOfNestedAnonymousClass.memberObject_.Ctor$other $name$) {
             return new Ctor($name$);
         }
         
-        class Ctor$Other {
+        class Ctor$other {
             
-            private Ctor$Other() {
+            private Ctor$other() {
             }
         }
         
@@ -31,7 +31,7 @@ class CtorMemberClassOfNestedAnonymousClass implements .com.redhat.ceylon.compil
             public Ctor() {
             }
             
-            public Ctor(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorMemberClassOfNestedAnonymousClass.memberObject_.Ctor$Other $name$) {
+            public Ctor(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorMemberClassOfNestedAnonymousClass.memberObject_.Ctor$other $name$) {
             }
             
             @.java.lang.Override
@@ -65,7 +65,7 @@ final class ctorMemberClassOfNestedAnonymousClass_ {
     private static final .java.lang.Throwable $initException$;
     static {
         try {
-            value = new .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorMemberClassOfNestedAnonymousClass().getMemberObject().Ctor$new$((.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorMemberClassOfNestedAnonymousClass.memberObject_.Ctor$Other)null);
+            value = new .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorMemberClassOfNestedAnonymousClass().getMemberObject().Ctor$new$((.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorMemberClassOfNestedAnonymousClass.memberObject_.Ctor$other)null);
             $initException$ = null;
             $init$value = true;
         } catch (.java.lang.Throwable x) {
