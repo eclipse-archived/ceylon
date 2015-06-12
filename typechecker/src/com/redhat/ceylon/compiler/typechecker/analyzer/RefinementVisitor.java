@@ -154,7 +154,10 @@ public class RefinementVisitor extends Visitor {
                 }
             }
             
-            if (dec.isNative() && !dec.isNativeHeader()) {
+            if ((dec.isNative() && !dec.isNativeHeader())
+                    || (dec.isMember()
+                            && ((Declaration)dec.getContainer()).isNative()
+                            && !((Declaration)dec.getContainer()).isNativeHeader())) {
                 checkNative(that, dec);
             }
         }
@@ -177,6 +180,17 @@ public class RefinementVisitor extends Visitor {
     
     private void checkNativeDeclaration(Tree.Declaration that, 
             Declaration dec, Declaration header) {
+        if (header == null && dec.isMember()) {
+            if (dec.isNative() && !dec.isFormal() && !dec.isActual() && !dec.isDefault()) {
+                that.addError("native member does not implement any header member: " +
+                        message(dec));
+            }
+            if (!dec.isNative() && dec.isShared()) {
+                that.addError("non-native shared members not allowed in native implementations: " +
+                        message(dec));
+            }
+            return;
+        }
         if (dec instanceof Function && 
                 (header == null ||
                 header instanceof Function)) {
@@ -348,10 +362,6 @@ public class RefinementVisitor extends Visitor {
     private void checkNativeMethod(Tree.Declaration that, 
             Function dec, Function header) {
         if (header == null) {
-            if (dec.isMember() && !dec.isFormal() && !dec.isActual() && !dec.isDefault()) {
-                that.addError("native member does not implement any header member: " +
-                        message(dec));
-            }
             return;
         }
         Type at = header.getType();
@@ -392,10 +402,6 @@ public class RefinementVisitor extends Visitor {
     private void checkNativeValue(Tree.Declaration that, 
             Value dec, Value header) {
         if (header == null) {
-            if (dec.isMember() && !dec.isFormal() && !dec.isActual() && !dec.isDefault()) {
-                that.addError("native member does not implement any header member: " +
-                        message(dec));
-            }
             return;
         }
         Type at = header.getType();
