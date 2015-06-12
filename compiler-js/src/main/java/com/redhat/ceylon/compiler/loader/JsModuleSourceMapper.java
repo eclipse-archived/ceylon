@@ -73,7 +73,7 @@ public class JsModuleSourceMapper extends ModuleSourceMapper {
                 }
                 //This will cause the dependency to be loaded later
                 JsonModule mod = (JsonModule)getModuleManager().getOrCreateModule(ModuleManager.splitModuleName(depname), depv);
-                Backend backend = Backend.fromAnnotation(mod.getNative());
+                Backend backend = Backend.fromAnnotation(mod.getNativeBackend());
                 ModuleImport imp = new ModuleImport(mod, optional, export, backend);
                 module.addImport(imp);
             }
