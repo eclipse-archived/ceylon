@@ -267,7 +267,7 @@ public class CallableBuilder {
         final ParameterList parameterList = methodClassOrCtor.getFirstParameterList();
         Type type = typeModel;
         JCExpression target;
-        boolean hasOuter = !(methodClassOrCtor instanceof Constructor
+        boolean hasOuter = !(Decl.isConstructor((Declaration)methodClassOrCtor)
                 && gen.getNumParameterLists(typeModel) == 1);
         if (!hasOuter) {
             type = typeModel;
@@ -290,6 +290,18 @@ public class CallableBuilder {
             if (!((TypedDeclaration)methodClassOrCtor).isShared()) {
                 accessType = Decl.getPrivateAccessType(qmte);
             }
+        } else if (Decl.isConstructor((Declaration)methodClassOrCtor)) {
+            Constructor ctor = Decl.getConstructor((Declaration)methodClassOrCtor);
+            Class cls = Decl.getConstructedClass(ctor);
+            if (Strategy.generateInstantiator(ctor)) {
+                callBuilder.invoke(gen.naming.makeInstantiatorMethodName(target, cls));
+            } else {
+                callBuilder.instantiate( 
+                        gen.makeJavaType(gen.getReturnTypeOfCallable(typeModel), JT_CLASS_NEW));
+                if (!ctor.isShared()) {
+                    accessType = Decl.getPrivateAccessType(qmte);
+                }
+            }
         } else if (methodClassOrCtor instanceof Function
                 && ((Function)methodClassOrCtor).isParameter()) {
             callBuilder.invoke(gen.naming.makeQualifiedName(target, (Function)methodClassOrCtor, Naming.NA_MEMBER));
@@ -304,18 +316,6 @@ public class CallableBuilder {
                     accessType = Decl.getPrivateAccessType(qmte);
                 }
             }
-        } else if (methodClassOrCtor instanceof Constructor) {
-            Constructor ctor = (Constructor)methodClassOrCtor;
-            Class cls = Decl.getConstructedClass(ctor);
-            if (Strategy.generateInstantiator(ctor)) {
-                callBuilder.invoke(gen.naming.makeInstantiatorMethodName(target, cls));
-            } else {
-                callBuilder.instantiate( 
-                        gen.makeJavaType(gen.getReturnTypeOfCallable(typeModel), JT_CLASS_NEW));
-                if (!ctor.isShared()) {
-                    accessType = Decl.getPrivateAccessType(qmte);
-                }
-            }
         } else {
             throw BugException.unhandledDeclarationCase((Declaration)methodClassOrCtor, qmte);
         }
@@ -326,10 +326,10 @@ public class CallableBuilder {
             callBuilder.argument(reifiedArgument.expression);
         }
         
-        if (methodClassOrCtor instanceof Constructor
-                && !Decl.isDefaultConstructor((Constructor)methodClassOrCtor)) {
+        if (Decl.isConstructor((Declaration)methodClassOrCtor)
+                && !Decl.isDefaultConstructor(Decl.getConstructor((Declaration)methodClassOrCtor))) {
             // invoke the param class ctor
-            Constructor ctor = (Constructor)methodClassOrCtor;
+            Constructor ctor = Decl.getConstructor((Declaration)methodClassOrCtor);
             callBuilder.argument(gen.naming.makeNamedConstructorName(ctor, false));
             for (Parameter parameter : parameterList.getParameters()) {
                 callBuilder.argument(gen.naming.makeQuotedIdent(Naming.getAliasedParameterName(parameter)));
@@ -361,7 +361,8 @@ public class CallableBuilder {
         }
         JCExpression innerInvocation = callBuilder.build();
         // Need to worry about boxing for Function and FunctionalParameter 
-        if (methodClassOrCtor instanceof TypedDeclaration) {
+        if (methodClassOrCtor instanceof TypedDeclaration
+                && !Decl.isConstructor((Declaration)methodClassOrCtor)) {
             // use the method return type since the function is actually applied
             Type returnType = gen.getReturnTypeOfCallable(type);
             innerInvocation = gen.expressionGen().applyErasureAndBoxing(innerInvocation, 

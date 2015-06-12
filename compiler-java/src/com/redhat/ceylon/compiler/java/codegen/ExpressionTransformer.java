@@ -3301,6 +3301,31 @@ public class ExpressionTransformer extends AbstractTransformer {
     private JCExpression transformInvocation(Invocation invocation, CallBuilder callBuilder,
             TransformedInvocationPrimary transformedPrimary) {
         invocation.location(callBuilder);
+        if (Decl.isConstructorPrimary(invocation.getPrimary())) {
+            Tree.StaticMemberOrTypeExpression qte = (Tree.StaticMemberOrTypeExpression)invocation.getPrimary();
+            // instantiator
+            Constructor ctor = Decl.getConstructor(qte.getDeclaration());
+            if (Strategy.generateInstantiator(ctor)) {
+                callBuilder.typeArguments(List.<JCExpression>nil());
+                java.util.List<Type> typeModels = qte.getTypeArguments().getTypeModels();
+                if (typeModels!=null) {
+                    for (Type tm : typeModels) {
+                        callBuilder.typeArgument(makeJavaType(tm, AbstractTransformer.JT_TYPE_ARGUMENT));
+                    }
+                }
+                callBuilder.invoke(naming.makeInstantiatorMethodName(transformedPrimary.expr, Decl.getConstructedClass(ctor)));
+            } else {
+                if (Decl.getConstructedClass(invocation.getPrimaryDeclaration()).isMember()
+                        && invocation.getPrimary() instanceof Tree.QualifiedTypeExpression
+                        && !(((Tree.QualifiedMemberOrTypeExpression)invocation.getPrimary()).getPrimary() instanceof Tree.BaseTypeExpression)) {
+                    callBuilder.instantiate(new ExpressionAndType(transformedPrimary.expr, null),
+                            makeJavaType(invocation.getReturnType(), JT_CLASS_NEW | (transformedPrimary.expr ==  null ? 0 : JT_NON_QUALIFIED)));
+                } else {
+                    callBuilder.instantiate(
+                            makeJavaType(invocation.getReturnType(), JT_CLASS_NEW)/*transformedPrimary.expr*/);
+                }
+            }
+        } else
         if(invocation.getQmePrimary() != null 
                 && isJavaArray(invocation.getQmePrimary().getTypeModel())
                 && transformedPrimary.selector != null
@@ -3447,7 +3472,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                     }
                 }
             }else{
-                if (classType.getDeclaration() instanceof Constructor) {
+                if (Decl.isConstructor(classType.getDeclaration())) {
                     classType = classType.getExtendedType();
                 }
                 JCExpression typeExpr = makeJavaType(classType, AbstractTransformer.JT_CLASS_NEW);
@@ -4117,12 +4142,12 @@ public class ExpressionTransformer extends AbstractTransformer {
             // only useful for the typechecker resolving
             
             Tree.Primary primary = expr.getPrimary();
-            if (expr.getDeclaration() instanceof Constructor) {
-                Constructor ctor = (Constructor)expr.getDeclaration();
-                if (primary instanceof Tree.QualifiedTypeExpression) {
+            if (Decl.isConstructor(expr.getDeclaration())) {
+                Constructor ctor = Decl.getConstructor(expr.getDeclaration());
+                if (primary instanceof Tree.QualifiedMemberOrTypeExpression) {
                     // foo.Class.Ctor => foo
-                    primary = ((Tree.QualifiedTypeExpression)primary).getPrimary();
-                } else if (primary instanceof Tree.BaseTypeExpression) {
+                    primary = ((Tree.QualifiedMemberOrTypeExpression)primary).getPrimary();
+                } else if (primary instanceof Tree.BaseMemberOrTypeExpression) {
                     // Class.Ctor => null
                     return null;
                 }
@@ -4533,10 +4558,11 @@ public class ExpressionTransformer extends AbstractTransformer {
                 selector = naming.selector((Function)decl);
             }
         }
+        boolean isCtor = decl instanceof Function && ((Function)decl).getTypeDeclaration() instanceof Constructor;
         if (result == null) {
-            boolean useGetter = !(decl instanceof Function || decl instanceof Constructor) && !mustUseField && !mustUseParameter;
+            boolean useGetter = !(decl instanceof Function || isCtor) && !mustUseField && !mustUseParameter;
             if (qualExpr == null && selector == null
-                    && !(decl instanceof Constructor)) {
+                    && !(isCtor)) {
                 useGetter = Decl.isClassAttribute(decl) && CodegenUtil.isErasedAttribute(decl.getName());
                 if (useGetter) {
                     selector = naming.selector((TypedDeclaration)decl);

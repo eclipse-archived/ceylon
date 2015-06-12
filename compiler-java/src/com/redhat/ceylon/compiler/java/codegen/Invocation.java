@@ -237,8 +237,8 @@ abstract class Invocation {
         }
             
         JCExpression actualPrimExpr;
-        if (getPrimary() instanceof Tree.QualifiedMemberOrTypeExpression
-                && ((Tree.QualifiedMemberOrTypeExpression)getPrimary()).getPrimary() instanceof Tree.BaseMemberOrTypeExpression
+        if (getPrimary() instanceof Tree.QualifiedTypeExpression
+                && ((Tree.QualifiedTypeExpression)getPrimary()).getPrimary() instanceof Tree.BaseTypeExpression
                 && !Decl.isConstructor(getPrimaryDeclaration())) {
             actualPrimExpr = gen.naming.makeQualifiedThis(primaryExpr);
         } else {
@@ -271,8 +271,8 @@ abstract class Invocation {
             if (declaration instanceof Constructor) {
                 selector = null;
             }
-        } else if (getPrimary() instanceof Tree.QualifiedTypeExpression) {
-            Tree.QualifiedTypeExpression type = (Tree.QualifiedTypeExpression)getPrimary();
+        } else if (getPrimary() instanceof Tree.QualifiedMemberOrTypeExpression) {
+            Tree.QualifiedMemberOrTypeExpression type = (Tree.QualifiedMemberOrTypeExpression)getPrimary();
             Declaration declaration = type.getDeclaration();
             if (declaration instanceof Constructor 
                     && Strategy.generateInstantiator(declaration)) {
@@ -281,6 +281,13 @@ abstract class Invocation {
                 }
             }
         } else {
+            if (getPrimary() instanceof Tree.BaseMemberOrTypeExpression) {
+                Tree.BaseMemberOrTypeExpression type = (Tree.BaseMemberOrTypeExpression)getPrimary();
+                Declaration declaration = type.getDeclaration();
+                if (declaration instanceof Constructor) {
+                    selector = null;
+                }
+            }
             if (isIndirect()) {
                 if (getPrimaryDeclaration() != null
                         && (Decl.isGetter(getPrimaryDeclaration())

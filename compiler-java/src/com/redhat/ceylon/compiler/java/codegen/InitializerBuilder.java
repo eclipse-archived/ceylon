@@ -101,7 +101,7 @@ public class InitializerBuilder implements ParameterizedBuilder<InitializerBuild
     public InitializerBuilder constructor(
             com.redhat.ceylon.compiler.typechecker.tree.Tree.Constructor ctor) {
         if (ctor != null) {
-            this.init.add(ctor.getDeclarationModel());
+            this.init.add(ctor.getConstructor());
         }
         return this;
     }
