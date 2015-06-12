@@ -21,7 +21,7 @@
 shared void objectDeclContainingClassWithCtor() {
     object foo{
         shared class Bar{
-            shared new Baz(){
+            shared new baz(){
             }
         }
     }

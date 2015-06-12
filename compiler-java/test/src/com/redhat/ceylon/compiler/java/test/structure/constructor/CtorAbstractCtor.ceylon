@@ -1,6 +1,6 @@
 @noanno
 class CtorAbstractCtorSuper {
-    shared new Foo(Boolean b) {
+    shared new foo(Boolean b) {
         checker.note("super");
     }
 }
@@ -10,12 +10,12 @@ class CtorAbstractCtorPartial extends CtorAbstractCtorSuper {
     Integer x;
     Integer y;
     checker.note("a");
-    abstract new Partial(Integer x) extends Foo(true) {
+    abstract new partial(Integer x) extends foo(true) {
         checker.note("Partial");
         this.x = x;
     }
     checker.note("b");
-    shared new Rest(Integer y) extends Partial(1) {
+    shared new rest(Integer y) extends partial(1) {
         checker.note("Rest");
         this.y = y;
         print(this.x);
@@ -28,12 +28,12 @@ class CtorAbstractCtorPartialShared extends CtorAbstractCtorSuper {
     shared Integer x;
     shared Integer y;
     checker.note("a");
-    abstract new Partial(Integer x) extends Foo(true) {
+    abstract new partial(Integer x) extends foo(true) {
         checker.note("Partial");
         this.x = x;
     }
     checker.note("b");
-    shared new Rest(Integer y) extends Partial(1) {
+    shared new rest(Integer y) extends partial(1) {
         checker.note("Rest");
         this.y = y;
     }
@@ -44,12 +44,12 @@ class CtorAbstractCtorPartialCaptured extends CtorAbstractCtorSuper {
     Integer x;
     Integer y;
     checker.note("a");
-    abstract new Partial(Integer x) extends Foo(true) {
+    abstract new partial(Integer x) extends foo(true) {
         checker.note("Partial");
         this.x = x;
     }
     checker.note("b");
-    shared new Rest(Integer y) extends Partial(1) {
+    shared new rest(Integer y) extends partial(1) {
         checker.note("Rest");
         this.y = y;
     }
@@ -65,7 +65,7 @@ class CtorAbstractCtorPartialVariable extends CtorAbstractCtorSuper {
     variable Integer x;
     variable Integer y;
     checker.note("a");
-    abstract new Partial(Integer x) extends Foo(true) {
+    abstract new partial(Integer x) extends foo(true) {
         checker.note("Partial");
         this.x = x;
         object xCapturer {
@@ -76,7 +76,7 @@ class CtorAbstractCtorPartialVariable extends CtorAbstractCtorSuper {
         xCapturer.capture(1);
     }
     checker.note("b");
-    shared new Rest(Integer y) extends Partial(1) {
+    shared new rest(Integer y) extends partial(1) {
         object xCapturer {
             shared Integer capture(Integer incr) {
                 return outer.x+=incr;
@@ -113,7 +113,7 @@ class CtorAbstractCtorPartialSharedVariable extends CtorAbstractCtorSuper {
     shared variable Integer x;
     shared variable Integer y;
     checker.note("a");
-    abstract new Partial(Integer x) extends Foo(true) {
+    abstract new partial(Integer x) extends foo(true) {
         checker.note("Partial");
         this.x = x;
         object xCapturer {
@@ -124,7 +124,7 @@ class CtorAbstractCtorPartialSharedVariable extends CtorAbstractCtorSuper {
         xCapturer.capture(1);
     }
     checker.note("b");
-    shared new Rest(Integer y) extends Partial(1) {
+    shared new rest(Integer y) extends partial(1) {
         object xCapturer {
             shared Integer capture(Integer incr) {
                 return outer.x+=incr;
@@ -161,7 +161,7 @@ class CtorAbstractCtorPartialCapturedVariable extends CtorAbstractCtorSuper {
     variable Integer x;
     variable Integer y;
     checker.note("a");
-    abstract new Partial(Integer x) extends Foo(true) {
+    abstract new partial(Integer x) extends foo(true) {
         checker.note("Partial");
         this.x = x;
         object xCapturer {
@@ -172,7 +172,7 @@ class CtorAbstractCtorPartialCapturedVariable extends CtorAbstractCtorSuper {
         xCapturer.capture(1);
     }
     checker.note("b");
-    shared new Rest(Integer y) extends Partial(1) {
+    shared new rest(Integer y) extends partial(1) {
         object xCapturer {
             shared Integer capture(Integer incr) {
                 return outer.x+=incr;
@@ -213,12 +213,12 @@ class CtorAbstractCtorGeneric<T> extends CtorAbstractCtorSuper {
     T? x;
     T? y;
     checker.note("a");
-    abstract new Partial(T? x=null) extends Foo(true) {
+    abstract new partial(T? x=null) extends foo(true) {
         checker.note("Partial");
         this.x = x;
     }
     checker.note("b");
-    shared new Rest(T? y=null) extends Partial() {
+    shared new rest(T? y=null) extends partial() {
         checker.note("Rest");
         this.y = y;
         print(this.x);
@@ -229,25 +229,25 @@ class CtorAbstractCtorGeneric<T> extends CtorAbstractCtorSuper {
 
 shared void runCtorAbstractCtor() {
     checker.reset();
-    CtorAbstractCtorPartial.Rest(1);
+    CtorAbstractCtorPartial.rest(1);
     checker.check("[super, a, Partial, b, Rest, c]");
     checker.reset();
-    CtorAbstractCtorPartialShared.Rest(1);
+    CtorAbstractCtorPartialShared.rest(1);
     checker.check("[super, a, Partial, b, Rest, c]");
     checker.reset();
-    CtorAbstractCtorPartialCaptured.Rest(1);
+    CtorAbstractCtorPartialCaptured.rest(1);
     checker.check("[super, a, Partial, b, Rest, c]");
     
     checker.reset();
-    CtorAbstractCtorPartialVariable.Rest(1);
+    CtorAbstractCtorPartialVariable.rest(1);
     checker.check("[super, a, Partial, b, Rest, c]");
     checker.reset();
-    CtorAbstractCtorPartialSharedVariable.Rest(1);
+    CtorAbstractCtorPartialSharedVariable.rest(1);
     checker.check("[super, a, Partial, b, Rest, c]");
     checker.reset();
-    CtorAbstractCtorPartialCapturedVariable.Rest(1);
+    CtorAbstractCtorPartialCapturedVariable.rest(1);
     checker.check("[super, a, Partial, b, Rest, c]");
     checker.reset();
-    CtorAbstractCtorGeneric.Rest(1);
+    CtorAbstractCtorGeneric.rest(1);
     checker.check("[super, a, Partial, b, Rest, c]");
 }

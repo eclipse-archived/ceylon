@@ -23,7 +23,7 @@ class CtorDelegationExtendDefault {
         print("In Default");
     }
     
-    shared new Alt() extends CtorDelegationExtendDefault("") {
+    shared new alt() extends CtorDelegationExtendDefault("") {
         print("In Alt");
     }
 }

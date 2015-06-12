@@ -24,14 +24,14 @@ class CtorReturn {
         return;
     }
     print("B");
-    shared new Baz() {
+    shared new baz() {
         if(true) {
             return;
         }
         //print("D");
     }
     print("C");
-    shared new Gee(Boolean b) {
+    shared new gee(Boolean b) {
         if(b) {
             return;
         }

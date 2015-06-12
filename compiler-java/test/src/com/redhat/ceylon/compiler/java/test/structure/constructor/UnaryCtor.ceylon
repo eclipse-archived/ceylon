@@ -22,15 +22,15 @@ class UnaryCtor {
     shared new (String s1) {
         s = s1;
     }
-    new FromInteger(Integer i) {
+    new fromInteger(Integer i) {
         s = i.string;
     }
-    shared new SharedFromInteger(Integer i) {
+    shared new sharedFromInteger(Integer i) {
         s = i.string;
     }
     void use() {
         value o1 = UnaryCtor{s1="";};
-        value o3 = FromInteger{i=0;};
-        value o4 = UnaryCtor.FromInteger{i=0;};
+        value o3 = fromInteger{i=0;};
+        value o4 = UnaryCtor.fromInteger{i=0;};
     }
 }

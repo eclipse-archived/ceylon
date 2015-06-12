@@ -4,19 +4,19 @@ class CtorConcreteDelegationSuper<T>() {
 @noanno
 class C<T> extends CtorConcreteDelegationSuper<T> {
     checker.note("1");
-    shared new X() extends CtorConcreteDelegationSuper<T>() {
+    shared new x() extends CtorConcreteDelegationSuper<T>() {
         checker.note("X");
     }
     checker.note("2");
-    shared new Y() extends X() {
+    shared new y() extends x() {
         checker.note("Y");
     }
     checker.note("3");
-    shared new Z() extends X() {
+    shared new z() extends x() {
         checker.note("Z");
     }
     checker.note("4");
-    shared new Alpha() extends Z() {
+    shared new alpha() extends z() {
         checker.note("alpha");
     }
     
@@ -27,13 +27,13 @@ class C<T> extends CtorConcreteDelegationSuper<T> {
 class ExtendsBasic<X> {
     checker.note("1");
     X? who;
-    shared new For(X? who) {
+    shared new pour(X? who) {
         checker.note("For");
         this.who = who;
     }
     checker.note("2");
-    shared new World()
-            extends For(null) {
+    shared new monde()
+            extends pour(null) {
         checker.note("World");
     }
     checker.note("3");
@@ -41,35 +41,35 @@ class ExtendsBasic<X> {
 @noanno
 class Hello {
     String who;
-    shared new For(String who) {
+    shared new pour(String who) {
         this.who = who;
     }
-    shared new World()
-            extends For("world") {}
+    shared new monde()
+            extends pour("world") {}
     print("Hello " + who);
 }
 shared void runCtorConcreteDelegation() {
     checker.reset();
-    C<String>.X();
+    C<String>.x();
     checker.check("[super, 1, X, 2, 3, 4, 5]");
     
     checker.reset();
-    C<String>.Y();
+    C<String>.y();
     checker.check("[super, 1, X, 2, Y, 3, 4, 5]");
     
     checker.reset();
-    C<String>.Z();
+    C<String>.z();
     checker.check("[super, 1, X, 2, 3, Z, 4, 5]");
     
     checker.reset();
-    C<String>.Alpha();
+    C<String>.alpha();
     checker.check("[super, 1, X, 2, 3, Z, 4, alpha, 5]");
     
     checker.reset();
-    ExtendsBasic.For("tom");
+    ExtendsBasic.pour("tom");
     checker.check("[1, For, 2, 3]");
     
     checker.reset();
-    ExtendsBasic.World();
+    ExtendsBasic.monde();
     checker.check("[1, For, 2, World, 3]");
 }

@@ -10,20 +10,20 @@ class ClassAliasCtor implements .com.redhat.ceylon.compiler.java.runtime.model.R
     final long i$param$) {
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassAliasCtor.Other Other = null;
+    public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassAliasCtor.other_ other_ = null;
     
     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public static final class Other {
+    public static final class other_ {
         
-        private Other() {
+        private other_() {
         }
     }
     
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Name("Other")
+    @.com.redhat.ceylon.compiler.java.metadata.Name("other")
     public ClassAliasCtor(@.com.redhat.ceylon.compiler.java.metadata.Ignore
-    .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassAliasCtor.Other $name$, @.com.redhat.ceylon.compiler.java.metadata.Name("i")
+    .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassAliasCtor.other_ $name$, @.com.redhat.ceylon.compiler.java.metadata.Name("i")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     final long i$param$) {
     }
@@ -67,7 +67,7 @@ final class ClassAliasCtorQualDefault {
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 @.com.redhat.ceylon.compiler.java.metadata.Alias(
         value = "com.redhat.ceylon.compiler.java.test.structure.constructor::ClassAliasCtor",
-        constructor = "Other")
+        constructor = "other")
 final class ClassAliasCtorOther {
     
     private ClassAliasCtorOther() {
@@ -83,7 +83,7 @@ final class ClassAliasCtorOther {
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 @.com.redhat.ceylon.compiler.java.metadata.Alias(
         value = "com.redhat.ceylon.compiler.java.test.structure.constructor::ClassAliasCtor",
-        constructor = "Other")
+        constructor = "other")
 final class ClassAliasCtorAlias {
     
     private ClassAliasCtorAlias() {

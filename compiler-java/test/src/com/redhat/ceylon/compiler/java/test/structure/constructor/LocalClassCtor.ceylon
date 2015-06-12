@@ -5,7 +5,7 @@ void localClassCtor(Integer i) {
         shared new (Integer j) {
             sum = i+j;
         }
-        shared new Other(Integer j) {
+        shared new other(Integer j) {
             sum = i+j;
         }
     }
@@ -13,11 +13,11 @@ void localClassCtor(Integer i) {
         shared new (Integer j) extends LocalClassCtor(j) {
             
         }
-        shared new Other(Integer j) extends super.Other(j){
+        shared new other(Integer j) extends super.other(j){
             
         }
     }
     LocalClassCtorSub(0);
     LocalClassCtorSub(0);
-    LocalClassCtorSub.Other(0);
+    LocalClassCtorSub.other(0);
 }

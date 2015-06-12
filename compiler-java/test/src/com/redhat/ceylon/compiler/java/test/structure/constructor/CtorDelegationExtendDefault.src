@@ -5,15 +5,15 @@ class CtorDelegationExtendDefault implements .com.redhat.ceylon.compiler.java.ru
     public CtorDelegationExtendDefault(final .java.lang.String _$param$) {
         .ceylon.language.print_.print(.ceylon.language.String.instance("In Default"));
     }
-    public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationExtendDefault.Alt Alt = null;
+    public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationExtendDefault.alt_ alt_ = null;
     
-    public static final class Alt {
+    public static final class alt_ {
         
-        private Alt() {
+        private alt_() {
         }
     }
     
-    public CtorDelegationExtendDefault(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationExtendDefault.Alt $name$) {
+    public CtorDelegationExtendDefault(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationExtendDefault.alt_ $name$) {
         this("");
         .ceylon.language.print_.print(.ceylon.language.String.instance("In Alt"));
     }

@@ -2,13 +2,13 @@
 void localConstructors<X>(X x) {
     class C<Y> {
         shared new (X x, Y? y=null) {}
-        shared new NonDefault(Y y) {}
+        shared new nonDefault(Y y) {}
     }
     variable C<String> c = C<String>(x);
     c = C<String>(x, "");
-    c = C<String>.NonDefault("");
+    c = C<String>.nonDefault("");
     class Sub<Z> extends C<Z> {
         shared new (Z z) extends C<Z>(x, z) {}
-        shared new NonDefault(Z z) extends super.NonDefault(z) {}
+        shared new nonDefault(Z z) extends super.nonDefault(z) {}
     }
 }

@@ -5,19 +5,19 @@ class ClassMemberCtorAlias implements .com.redhat.ceylon.compiler.java.runtime.m
     ClassMemberCtorAlias() {
     }
     
-    public static final class Member$Other {
+    public static final class Member$other {
         
-        private Member$Other() {
+        private Member$other() {
         }
     }
-    public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberCtorAlias.Member$Other Member$Other = null;
+    public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberCtorAlias.Member$other Member$other = null;
     
     class Member implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
         
         public Member(final long i$param$) {
         }
         
-        public Member(.com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberCtorAlias.Member$Other $name$, final long i$param$) {
+        public Member(.com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberCtorAlias.Member$other $name$, final long i$param$) {
         }
         
         @.java.lang.Override
@@ -48,7 +48,7 @@ class ClassMemberCtorAlias implements .com.redhat.ceylon.compiler.java.runtime.m
     
     private final void use$priv$() {
         new .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberCtorAlias.Member(0L);
-        new .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberCtorAlias.Member(.com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberCtorAlias.Member$Other, 0L);
+        new .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberCtorAlias.Member(.com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberCtorAlias.Member$other, 0L);
     }
     
     class AliasMemberSub extends .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberCtorAlias.Member {
@@ -66,7 +66,7 @@ class ClassMemberCtorAlias implements .com.redhat.ceylon.compiler.java.runtime.m
     class AliasOtherSub extends .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberCtorAlias.Member {
         
         AliasOtherSub(final long k) {
-            super(.com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberCtorAlias.Member$Other, k);
+            super(.com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberCtorAlias.Member$other, k);
         }
         
         @.java.lang.Override

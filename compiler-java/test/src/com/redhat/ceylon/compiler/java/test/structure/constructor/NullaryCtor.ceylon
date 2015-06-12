@@ -22,15 +22,15 @@ shared class NullaryConstructors {
     shared new () {
         
     }
-    new Foo() {
+    new foo() {
         
     }
-    shared new Bar() {
+    shared new bar() {
         
     }
     shared void use() {
         value o1 = NullaryConstructors();
-        value o3 = Foo();
-        value o4 = NullaryConstructors.Foo();
+        value o3 = foo();
+        value o4 = NullaryConstructors.foo();
     }
 }

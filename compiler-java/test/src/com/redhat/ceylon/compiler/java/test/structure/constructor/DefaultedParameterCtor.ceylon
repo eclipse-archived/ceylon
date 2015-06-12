@@ -21,19 +21,19 @@
 class DefaultedParameterCtor {
     shared new (String s="") {
     }
-    new One(String s="") {
+    new one(String s="") {
     }
-    new Two(String s="", Integer i=0) {
+    new two(String s="", Integer i=0) {
     }
     void use() {
-        One();
-        One("");
-        DefaultedParameterCtor.One();
-        DefaultedParameterCtor.One("");
+        one();
+        one("");
+        DefaultedParameterCtor.one();
+        DefaultedParameterCtor.one("");
         
-        One{};
-        One{s="";};
-        DefaultedParameterCtor.One{};
-        DefaultedParameterCtor.One{s="";};
+        one{};
+        one{s="";};
+        DefaultedParameterCtor.one{};
+        DefaultedParameterCtor.one{s="";};
     }
 }

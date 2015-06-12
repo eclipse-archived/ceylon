@@ -50,7 +50,7 @@ class SingletonCtors implements .com.redhat.ceylon.compiler.java.runtime.model.R
         one = new SingletonCtors((.com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtors.one_)null);
     }
     
-    private static final .com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtors getOne() {
+    public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtors getOne() {
         return one;
     }
     
@@ -68,7 +68,7 @@ class SingletonCtors implements .com.redhat.ceylon.compiler.java.runtime.model.R
         two = new SingletonCtors((.com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtors.two_)null);
     }
     
-    private static final .com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtors getTwo() {
+    public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtors getTwo() {
         return two;
     }
     

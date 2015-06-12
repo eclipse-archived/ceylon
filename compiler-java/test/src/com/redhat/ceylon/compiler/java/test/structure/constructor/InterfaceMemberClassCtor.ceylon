@@ -22,36 +22,36 @@ interface InterfaceMemberClassCtor {
     class Member {
         shared new (Integer i=0) {
         }
-        shared new Other(Integer i=1) {
+        shared new other(Integer i=1) {
         }
     }
     shared class SharedMember {
         shared new (Integer i=2) {
         }
-        shared new Other(Integer i=3) {
+        shared new other(Integer i=3) {
         }
     }
     void use(InterfaceMemberClassCtor other) {
         Member(0);
         Member(1);
-        Member.Other(2);
+        Member.other(2);
         SharedMember(3);
         SharedMember(4);
-        SharedMember.Other(5);
+        SharedMember.other(5);
          
         this.Member(6);
         this.Member(7);
-        this.Member.Other(8);
+        this.Member.other(8);
         this.SharedMember(9);
         this.SharedMember(10);
-        this.SharedMember.Other(11);
+        this.SharedMember.other(11);
         
         other.Member(12);
         other.Member(13);
-        other.Member.Other(14);
+        other.Member.other(14);
         other.SharedMember(15);
         other.SharedMember(16);
-        other.SharedMember.Other(17);
+        other.SharedMember.other(17);
     }
 }
 class InterfaceMemberClassCtorImpl() satisfies InterfaceMemberClassCtor {
@@ -61,5 +61,5 @@ class InterfaceMemberClassCtorImpl() satisfies InterfaceMemberClassCtor {
 void useInterfaceMemberClassCtor(InterfaceMemberClassCtor other) {
     other.SharedMember(0);
     other.SharedMember(0);
-    other.SharedMember.Other(0);
+    other.SharedMember.other(0);
 }

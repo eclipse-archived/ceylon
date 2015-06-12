@@ -19,7 +19,7 @@
  */
 @noanno
 class CtorContainingClassDecl {
-    shared new Bar() {
+    shared new bar() {
         class Baz(){}
     }
 }

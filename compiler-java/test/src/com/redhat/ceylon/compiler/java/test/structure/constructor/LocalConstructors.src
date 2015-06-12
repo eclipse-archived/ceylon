@@ -33,13 +33,13 @@ final class localConstructors_ {
                 this.$reified$Y = $reified$Y;
             }
             
-            class NonDefault {
+            class nonDefault_ {
                 
-                private NonDefault() {
+                private nonDefault_() {
                 }
             }
             
-            private C(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Y, C.NonDefault $name$, final Y y$param$) {
+            private C(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Y, C.nonDefault_ $name$, final Y y$param$) {
                 this.$reified$Y = $reified$Y;
             }
             
@@ -50,7 +50,7 @@ final class localConstructors_ {
         }
         C<.ceylon.language.String> c = new C<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, x);
         c = new C<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, x, .ceylon.language.String.instance(""));
-        c = new C<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, (C.NonDefault)null, .ceylon.language.String.instance(""));
+        c = new C<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, (C.nonDefault_)null, .ceylon.language.String.instance(""));
         
         class Sub<Z> extends C<Z> {
             private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Z;
@@ -60,14 +60,14 @@ final class localConstructors_ {
                 this.$reified$Z = $reified$Z;
             }
             
-            class NonDefault {
+            class nonDefault_ {
                 
-                private NonDefault() {
+                private nonDefault_() {
                 }
             }
             
-            private Sub(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Z, Sub.NonDefault $name$, final Z z$param$) {
-                super($reified$Z, (C.NonDefault)null, z$param$);
+            private Sub(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Z, Sub.nonDefault_ $name$, final Z z$param$) {
+                super($reified$Z, (C.nonDefault_)null, z$param$);
                 this.$reified$Z = $reified$Z;
             }
             

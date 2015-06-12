@@ -23,7 +23,7 @@ class CtorIntermixedStatementsAndConstructors {
     shared Integer c;
     shared Integer b = 6;
     
-    shared new Foo(Integer val) {
+    shared new foo(Integer val) {
         a = val;
     }
     
@@ -31,7 +31,7 @@ class CtorIntermixedStatementsAndConstructors {
     shared Integer d = 5;
     shared Integer e;
     
-    shared new Bar(Integer val) {
+    shared new far(Integer val) {
         a = val;
     }
     

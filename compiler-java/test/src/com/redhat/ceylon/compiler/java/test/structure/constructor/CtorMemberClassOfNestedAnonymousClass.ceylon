@@ -3,10 +3,10 @@ class CtorMemberClassOfNestedAnonymousClass(){
     shared object memberObject {
         shared class Ctor {
             shared new () {}
-            shared new Other() {}
+            shared new other() {}
         }
     }
 }
 @noanno
 CtorMemberClassOfNestedAnonymousClass.\ImemberObject.Ctor ctorMemberClassOfNestedAnonymousClass 
-        = CtorMemberClassOfNestedAnonymousClass().memberObject.Ctor.Other();
+        = CtorMemberClassOfNestedAnonymousClass().memberObject.Ctor.other();

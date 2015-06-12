@@ -31,41 +31,37 @@ class CtorIntermixedStatementsAndConstructors implements .com.redhat.ceylon.comp
     public final long getF() {
         return f;
     }
-    public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorIntermixedStatementsAndConstructors.Foo Foo = null;
+    public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorIntermixedStatementsAndConstructors.foo_ foo_ = null;
     
-    public static final class Foo {
+    public static final class foo_ {
         
-        private Foo() {
+        private foo_() {
         }
     }
     
-    public CtorIntermixedStatementsAndConstructors(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorIntermixedStatementsAndConstructors.Foo $name$, final long val$param$) {
+    public CtorIntermixedStatementsAndConstructors(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorIntermixedStatementsAndConstructors.foo_ $name$, final long val$param$) {
         this.b = 6L;
-        $return$$0: do {
-            a = val$param$;
-        }         while (false);
         c = 3L;
         this.d = 5L;
         e = 24L;
         this.f = 7L;
+        a = val$param$;
     }
-    public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorIntermixedStatementsAndConstructors.Bar Bar = null;
+    public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorIntermixedStatementsAndConstructors.far_ far_ = null;
     
-    public static final class Bar {
+    public static final class far_ {
         
-        private Bar() {
+        private far_() {
         }
     }
     
-    public CtorIntermixedStatementsAndConstructors(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorIntermixedStatementsAndConstructors.Bar $name$, final long val$param$) {
+    public CtorIntermixedStatementsAndConstructors(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorIntermixedStatementsAndConstructors.far_ $name$, final long val$param$) {
         this.b = 6L;
         c = 3L;
         this.d = 5L;
-        $return$$1: do {
-            a = val$param$;
-        }         while (false);
         e = 24L;
         this.f = 7L;
+        a = val$param$;
     }
     
     @.java.lang.Override

@@ -19,25 +19,25 @@
  */
 @noanno
 class SequencedParameterCtor {
-    new PossiblyEmpty(String* s) {
+    new possiblyEmpty(String* s) {
         
     }
-    new NonEmpty(String+ s) {
+    new nonEmpty(String+ s) {
         
     }
     void use() {
-        SequencedParameterCtor.PossiblyEmpty();
-        SequencedParameterCtor.PossiblyEmpty("");
-        PossiblyEmpty();
-        PossiblyEmpty("");
-        SequencedParameterCtor.NonEmpty("");
-        NonEmpty("");
+        SequencedParameterCtor.possiblyEmpty();
+        SequencedParameterCtor.possiblyEmpty("");
+        possiblyEmpty();
+        possiblyEmpty("");
+        SequencedParameterCtor.nonEmpty("");
+        nonEmpty("");
         
-        SequencedParameterCtor.PossiblyEmpty{s=[];};
-        SequencedParameterCtor.PossiblyEmpty{s=[""];};
-        PossiblyEmpty{s=[];};
-        PossiblyEmpty{s=[""];};
-        SequencedParameterCtor.NonEmpty{s=[""];};
-        NonEmpty{s=[""];};
+        SequencedParameterCtor.possiblyEmpty{s=[];};
+        SequencedParameterCtor.possiblyEmpty{s=[""];};
+        possiblyEmpty{s=[];};
+        possiblyEmpty{s=[""];};
+        SequencedParameterCtor.nonEmpty{s=[""];};
+        nonEmpty{s=[""];};
     }
 }

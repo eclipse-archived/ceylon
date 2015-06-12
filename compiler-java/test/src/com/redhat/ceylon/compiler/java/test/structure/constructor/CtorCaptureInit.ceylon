@@ -32,7 +32,7 @@ class CtorCaptureInit {
     String capturedByCtor;
     variable Integer local = 0;
     local+=2; 
-    new WithAttributes() {
+    new withAttributes() {
         count = 0;
         sharedCount = 0;
         init = count;

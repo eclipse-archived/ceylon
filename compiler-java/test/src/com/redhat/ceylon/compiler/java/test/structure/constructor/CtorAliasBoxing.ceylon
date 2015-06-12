@@ -20,12 +20,12 @@
 @noanno
 class CtorAliasBoxing {
     shared actual String string;
-    shared new Bar(String string) {
+    shared new bar(String string) {
         this.string = string;
     }
 }
 @noanno
-class CtorAliasBoxingAlias(String str) => CtorAliasBoxing.Bar(str);
+class CtorAliasBoxingAlias(String str) => CtorAliasBoxing.bar(str);
 @noanno
 class CtorAliasBoxingAlias2(String str) => CtorAliasBoxingAlias(str);
 @noanno

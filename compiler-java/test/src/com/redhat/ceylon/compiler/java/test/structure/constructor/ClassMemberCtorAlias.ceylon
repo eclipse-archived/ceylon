@@ -2,10 +2,10 @@
 class ClassMemberCtorAlias() {
     class Member {
         shared new (Integer i) {}
-        shared new Other(Integer i) {}
+        shared new other(Integer i) {}
     }
     class AliasMember(Integer j) => Member(j);
-    class AliasOther(Integer j) => Member.Other(j);
+    class AliasOther(Integer j) => Member.other(j);
     void use() {
         AliasMember(0);
         AliasOther(0);

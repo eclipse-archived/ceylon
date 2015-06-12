@@ -7,15 +7,15 @@ class CtorAliasBoxing implements .com.redhat.ceylon.compiler.java.runtime.model.
     public final .java.lang.String toString() {
         return string;
     }
-    public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAliasBoxing.Bar Bar = null;
+    public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAliasBoxing.bar_ bar_ = null;
     
-    public static final class Bar {
+    public static final class bar_ {
         
-        private Bar() {
+        private bar_() {
         }
     }
     
-    public CtorAliasBoxing(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAliasBoxing.Bar $name$, final .java.lang.String string$param$) {
+    public CtorAliasBoxing(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAliasBoxing.bar_ $name$, final .java.lang.String string$param$) {
         this.string = string$param$;
     }
     
@@ -49,7 +49,7 @@ final class ctorAliasBoxing_ {
     }
     
     static void ctorAliasBoxing() {
-        final .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAliasBoxing x = new .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAliasBoxing(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAliasBoxing.Bar, "hello");
-        final .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAliasBoxing x2 = new .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAliasBoxing(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAliasBoxing.Bar, "hello");
+        final .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAliasBoxing x = new .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAliasBoxing(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAliasBoxing.bar_, "hello");
+        final .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAliasBoxing x2 = new .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAliasBoxing(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAliasBoxing.bar_, "hello");
     }
 }

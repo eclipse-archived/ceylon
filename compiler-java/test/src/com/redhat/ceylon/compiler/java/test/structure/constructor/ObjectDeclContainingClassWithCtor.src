@@ -12,19 +12,19 @@ public final class objectDeclContainingClassWithCtor_ {
             private foo_() {
             }
             
-            .java.lang.Object Bar$new$(foo_.Bar$Baz $name$) {
+            .java.lang.Object Bar$new$(foo_.Bar$baz $name$) {
                 return new Bar($name$);
             }
             
-            class Bar$Baz {
+            class Bar$baz {
                 
-                private Bar$Baz() {
+                private Bar$baz() {
                 }
             }
             
             class Bar implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
                 
-                private Bar(foo_.Bar$Baz $name$) {
+                private Bar(foo_.Bar$baz $name$) {
                 }
                 
                 @.java.lang.Override

@@ -14,13 +14,13 @@ final class localClassCtor_ {
                 sum = i + j$param$;
             }
             
-            class Other {
+            class other_ {
                 
-                private Other() {
+                private other_() {
                 }
             }
             
-            private LocalClassCtor(LocalClassCtor.Other $name$, final long j$param$) {
+            private LocalClassCtor(LocalClassCtor.other_ $name$, final long j$param$) {
                 final long sum;
                 sum = i + j$param$;
             }
@@ -37,14 +37,14 @@ final class localClassCtor_ {
                 super(j$param$);
             }
             
-            class Other {
+            class other_ {
                 
-                private Other() {
+                private other_() {
                 }
             }
             
-            private LocalClassCtorSub(LocalClassCtorSub.Other $name$, final long j$param$) {
-                super((LocalClassCtor.Other)null, j$param$);
+            private LocalClassCtorSub(LocalClassCtorSub.other_ $name$, final long j$param$) {
+                super((LocalClassCtor.other_)null, j$param$);
             }
             
             @.java.lang.Override
@@ -54,6 +54,6 @@ final class localClassCtor_ {
         }
         new LocalClassCtorSub(0L);
         new LocalClassCtorSub(0L);
-        new LocalClassCtorSub((LocalClassCtorSub.Other)null, 0L);
+        new LocalClassCtorSub((LocalClassCtorSub.other_)null, 0L);
     }
 }
