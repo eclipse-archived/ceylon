@@ -127,6 +127,7 @@ native("jvm") class NativeClassMismatch9() {
     native("jvm") shared String test3(Integer i) { return ""; }
     native("jvm") shared void test4() {}
     native("jvm") shared void testX(Integer i) {}
+    shared void testY(Integer i) {}
 }
 
 native("js") class NativeClassMismatch9() {
@@ -135,6 +136,7 @@ native("js") class NativeClassMismatch9() {
     native("js") shared String test3(Integer i) { return ""; }
     native("js") shared void test4() {}
     native("js") shared void testX(Integer i) {}
+    shared void testY(Integer i) {}
 }
 
 void nativeClassMismatch8() {
