@@ -2211,7 +2211,6 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         constructor.setExtendedType(klass.getType());
         setDeclarationVisibilityAndDeprecation(constructor, ctor, ctor, classMirror, isCeylon);
         setAnnotations(constructor, ctor);
-        setParameters(constructor, classMirror, ctor, true, klass);
         klass.addMember(constructor);
         if (ctor.getAnnotation(CEYLON_ENUMERATED_ANNOTATION) != null) {
             klass.setEnumerated(true);
@@ -2227,6 +2226,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             klass.addMember(v);
         }
         else {
+            setParameters(constructor, classMirror, ctor, true, klass);
             klass.setConstructors(true);
             Function f = new Function();
             f.setName(constructor.getName());
