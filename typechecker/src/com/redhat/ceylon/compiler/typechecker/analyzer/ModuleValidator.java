@@ -192,7 +192,7 @@ public class ModuleValidator {
         List<Module> visibleDependencies = new ArrayList<Module>();
         visibleDependencies.add(dependencyTree.getLast()); //first addition => no possible conflict
         for (ModuleImport moduleImport : moduleImports) {
-            if (moduleImport.isNative() && !moduleManager.supportsBackend(Backend.fromAnnotation(moduleImport.getNative()))) {
+            if (moduleImport.isNative() && !moduleManager.supportsBackend(Backend.fromAnnotation(moduleImport.getNativeBackend()))) {
                 //import is not for this backend
                 continue;
             }
@@ -337,9 +337,9 @@ public class ModuleValidator {
                     node.addError(new ModuleSourceMapper.ModuleDependencyAnalysisError(node, "native import for cross-platform module" +
                             " (mark either the module or the import as native)"));
                 }
-            } else if (importedModule.isNative() && !be.equals(importedModule.getNative())) {
+            } else if (importedModule.isNative() && !be.equals(importedModule.getNativeBackend())) {
                 node.addError(new ModuleSourceMapper.ModuleDependencyAnalysisError(node, "native backend name conflicts with imported module: '\"" + 
-                        be + "\"' is not '\"" + importedModule.getNative() + "\"'"));
+                        be + "\"' is not '\"" + importedModule.getNativeBackend() + "\"'"));
             }
         }
     }

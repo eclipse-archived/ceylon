@@ -191,14 +191,14 @@ public class ExpressionVisitor extends Visitor {
     public ExpressionVisitor(TypecheckerUnit unit, BackendSupport backendSupport) {
         this.unit = unit;
         this.backendSupport = backendSupport;
-        String nat = unit.getPackage().getModule().getNative();
+        String nat = unit.getPackage().getModule().getNativeBackend();
         inBackend = Backend.fromAnnotation(nat);
     }
     
     @Override public void visit(Tree.CompilationUnit that) {
         unit = that.getUnit();
         Backend ib = inBackend;
-        String nat = unit.getPackage().getModule().getNative();
+        String nat = unit.getPackage().getModule().getNativeBackend();
         inBackend = Backend.fromAnnotation(nat);
         super.visit(that);
         inBackend = ib;

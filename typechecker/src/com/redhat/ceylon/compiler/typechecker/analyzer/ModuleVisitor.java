@@ -163,7 +163,7 @@ public class ModuleVisitor extends Visitor {
                         mainModule.setAvailable(true);
                         mainModule.getAnnotations().clear();
                         buildAnnotations(that.getAnnotationList(), mainModule.getAnnotations());
-                        mainModule.setNative(moduleBackend);
+                        mainModule.setNativeBackend(moduleBackend);
                     }
                 }
             }

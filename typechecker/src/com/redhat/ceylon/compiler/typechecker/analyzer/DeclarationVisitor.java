@@ -208,7 +208,7 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
                 String moduleBackend = 
                         unit.getPackage()
                             .getModule()
-                            .getNative();
+                            .getNativeBackend();
                 if (!isHeader &&
                         moduleBackend != null && 
                         !backend.equals(moduleBackend)) {
