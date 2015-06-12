@@ -20,8 +20,12 @@
 native shared Integer nativeMissingMethod();
 native shared class NativeMissingClass() {}
 
+native Integer nativeMissingMethod2();
+native("js") Integer nativeMissingMethod2() => 1;
+
 shared void test() {
     nativeMissingMethod();
+    nativeMissingMethod2();
     NativeMissingClass nmc = NativeMissingClass();
 }
 

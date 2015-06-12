@@ -17,16 +17,16 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-class NativeNonNativeMixed1() {}
-native("jvm") class NativeNonNativeMixed1() {}
-native("js") class NativeNonNativeMixed1() {}
+shared class NativeNonNativeMixed1() {}
+native("jvm") shared class NativeNonNativeMixed1() {}
+native("js") shared class NativeNonNativeMixed1() {}
 
-variable String nativeNonNativeMixed2 = "Foo";
-native variable String nativeNonNativeMixed2;
-native("jvm") variable String nativeNonNativeMixed2 = "Bar";
-native("js") variable String nativeNonNativeMixed2 = "Baz";
+shared variable String nativeNonNativeMixed2 = "Foo";
+native shared variable String nativeNonNativeMixed2;
+native("jvm") shared variable String nativeNonNativeMixed2 = "Bar";
+native("js") shared variable String nativeNonNativeMixed2 = "Baz";
 
-native variable String nativeNonNativeMixed3;
-variable String nativeNonNativeMixed3 = "Foo";
-native("jvm") variable String nativeNonNativeMixed3 = "Bar";
-native("js") variable String nativeNonNativeMixed3 = "Baz";
+native shared variable String nativeNonNativeMixed3;
+shared variable String nativeNonNativeMixed3 = "Foo";
+native("jvm") shared variable String nativeNonNativeMixed3 = "Bar";
+native("js") shared variable String nativeNonNativeMixed3 = "Baz";

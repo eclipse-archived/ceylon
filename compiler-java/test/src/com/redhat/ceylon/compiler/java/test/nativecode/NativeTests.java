@@ -351,9 +351,10 @@ public class NativeTests extends CompilerTests {
         testNativeErrors("NativeMissing",
                 new CompilerError(20, "no native implementation for backend: native 'nativeMissingMethod' is not implemented for one or more backends"),
                 new CompilerError(21, "no native implementation for backend: native 'NativeMissingClass' is not implemented for one or more backends"),
-                new CompilerError(24, "no native implementation for backend: native 'nativeMissingMethod' is not implemented for one or more backends"),
-                new CompilerError(25, "no native implementation for backend: native 'NativeMissingClass' is not implemented for one or more backends"),
-                new CompilerError(28, "no native implementation for backend: native 'NativeMissingClass' is not implemented for one or more backends")
+                new CompilerError(27, "no native implementation for backend: native 'nativeMissingMethod' is not implemented for one or more backends"),
+                new CompilerError(28, "no native implementation for backend: native 'nativeMissingMethod2' is not implemented for one or more backends"),
+                new CompilerError(29, "no native implementation for backend: native 'NativeMissingClass' is not implemented for one or more backends"),
+                new CompilerError(32, "no native implementation for backend: native 'NativeMissingClass' is not implemented for one or more backends")
         );
     }
 }
