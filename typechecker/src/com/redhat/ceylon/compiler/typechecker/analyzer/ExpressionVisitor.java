@@ -8874,9 +8874,6 @@ public class ExpressionVisitor extends Visitor {
                                 + dec.getName(unit) +
                                 "' is not implemented for one or more backends");
                     }
-                } else if (hdr==null) {
-                    that.addError("native implementation must have a header: "
-                            + dec.getName(unit));
                 }
                 return inBackend == null || impl==null ? 
                         dec : impl;
