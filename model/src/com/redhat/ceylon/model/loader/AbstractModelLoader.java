@@ -1704,7 +1704,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             // this attribute to false by default, so it should work
             if (isJdk && module instanceof LazyModule) {
                 ((LazyModule)module).setJava(true);
-                module.setNative(Backend.Java.nativeAnnotation);
+                module.setNativeBackend(Backend.Java.nativeAnnotation);
             }
 
             // FIXME: this can't be that easy.
@@ -2370,7 +2370,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                     setOverloads(decl, al);
                 }
             } else if (annotated instanceof Module) {
-                ((Module)annotated).setNative(nativeBackend);
+                ((Module)annotated).setNativeBackend(nativeBackend);
             }
         }
     }

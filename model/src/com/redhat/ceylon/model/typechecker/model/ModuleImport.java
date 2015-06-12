@@ -46,10 +46,10 @@ public class ModuleImport implements Annotated {
     }
     
     public boolean isNative() {
-        return getNative() != null;
+        return getNativeBackend() != null;
     }
     
-    public String getNative() {
+    public String getNativeBackend() {
         return nativeBackend;
     }
     
@@ -69,7 +69,7 @@ public class ModuleImport implements Annotated {
             module = moduleImportOverride.getModule();
             optional = moduleImportOverride.isOptional();
             export = moduleImportOverride.isExport();
-            nativeBackend = moduleImportOverride.getNative();
+            nativeBackend = moduleImportOverride.getNativeBackend();
             return true;
         }
         return false;
