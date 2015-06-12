@@ -54,7 +54,7 @@ public class NativeTests extends CompilerTests {
     }
     
     private void testNativeModule(String dir) {
-        testNativeModule(dir, "test.ceylon", "module.ceylon");
+        testNativeModule(dir, "test.ceylon", "package.ceylon", "module.ceylon");
     }
     
     private void testNativeModule(String dir, String... files) {
@@ -264,6 +264,12 @@ public class NativeTests extends CompilerTests {
     @Test
     public void testNativeModule() {
         testNativeModule("modok");
+    }
+    
+    @Test
+    public void testNativeModuleImport() {
+        testNativeModule("modsample");
+        testNativeModule("modimport");
     }
     
     @Test
