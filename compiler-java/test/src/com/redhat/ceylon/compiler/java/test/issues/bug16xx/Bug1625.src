@@ -77,12 +77,12 @@ interface Bug1625_3<T> {
     public abstract .java.lang.Object f(@.com.redhat.ceylon.compiler.java.metadata.Name("t")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("T")
     final T t, @.com.redhat.ceylon.compiler.java.metadata.Name("ts")
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Sequential<T>")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("T[]")
     final .ceylon.language.Sequential<? extends T> ts);
     
     @.ceylon.language.FormalAnnotation$annotation$
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Sequential<T>")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("T[]")
     public abstract .ceylon.language.Sequential<? extends T> getTs();
 }
 class Bug1625_3Impl<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1625_3<T> {

@@ -31,10 +31,10 @@ class ExceptionTypesException extends .ceylon.language.Exception {
     
     ExceptionTypesException(@.com.redhat.ceylon.compiler.java.metadata.Name("description")
     @.com.redhat.ceylon.compiler.java.metadata.Defaulted
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Null|ceylon.language::String")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String?")
     final .ceylon.language.String description, @.com.redhat.ceylon.compiler.java.metadata.Name("cause")
     @.com.redhat.ceylon.compiler.java.metadata.Defaulted
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Null|ceylon.language::Throwable")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Throwable?")
     final .java.lang.Throwable cause) {
         super(description, cause);
     }
@@ -85,7 +85,7 @@ final class exceptionTypesUsage_ {
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     final long i, @.com.redhat.ceylon.compiler.java.metadata.Name("f")
     @.com.redhat.ceylon.compiler.java.metadata.FunctionalParameter("()")
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Callable<ceylon.language::Throwable,ceylon.language::Empty>")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Throwable()")
     final .ceylon.language.Callable<? extends .java.lang.Throwable> f) {
         {
             long sel$3 = i;

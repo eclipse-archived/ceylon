@@ -379,6 +379,27 @@ public class Decl {
         return backend == null || backend.equals(Backend.Java.nativeAnnotation);
     }
     
+    public static boolean isHeaderWithoutBackend(Tree.Declaration decl) {
+        return isHeaderWithoutBackend(decl.getDeclarationModel());
+    }
+    
+    public static boolean isHeaderWithoutBackend(Declaration decl) {
+        return decl.isNativeHeader()
+                && (ModelUtil.getNativeDeclaration(decl, Backend.Java) == null);
+    }
+    
+    public static boolean isImplemented(Tree.Declaration decl) {
+        return isImplemented(decl.getDeclarationModel());
+    }
+    
+    public static boolean isImplemented(Declaration decl) {
+        if (decl instanceof FunctionOrValue) {
+            return ((FunctionOrValue)decl).isImplemented();
+        } else {
+            return false;
+        }
+    }
+    
     public static boolean isDeferred(Tree.Declaration decl) {
         return isDeferred(decl.getDeclarationModel());
     }

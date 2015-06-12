@@ -35,7 +35,7 @@ public interface My1543Iterable<Element, Absent> extends .ceylon.language.Catego
     @.ceylon.language.SharedAnnotation$annotation$
     @.ceylon.language.FormalAnnotation$annotation$
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
-            value = "ceylon.language::Iterable<Element|Other,ceylon.language::Nothing>",
+            value = "{Element|Other+}",
             erased = true)
     @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
             value = "Other",
@@ -63,7 +63,7 @@ public interface My1543Sequential<Element> extends .com.redhat.ceylon.compiler.j
     @.ceylon.language.FormalAnnotation$annotation$
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
-            value = "ceylon.language::Tuple<Other|Element,Other,ceylon.language::Sequential<Element>>",
+            value = "[Other, Element*]",
             erased = true,
             untrusted = true)
     @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
@@ -79,7 +79,7 @@ public interface My1543Sequential<Element> extends .com.redhat.ceylon.compiler.j
     @.ceylon.language.SharedAnnotation$annotation$
     @.ceylon.language.FormalAnnotation$annotation$
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
-            value = "ceylon.language::Tuple<Other|Element,Other,ceylon.language::Sequential<Element>>",
+            value = "[Other, Element*]",
             erased = true)
     @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
             value = "Other",
@@ -94,14 +94,14 @@ public interface My1543Sequential<Element> extends .com.redhat.ceylon.compiler.j
     @.ceylon.language.SharedAnnotation$annotation$
     @.ceylon.language.FormalAnnotation$annotation$
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
-            value = "ceylon.language::Tuple<ceylon.language::Integer|Element,ceylon.language::Integer,ceylon.language::Sequential<Element>>",
+            value = "[ceylon.language::Integer, Element*]",
             erased = true)
     public abstract .ceylon.language.Sequence getA();
     
     @.ceylon.language.SharedAnnotation$annotation$
     @.ceylon.language.FormalAnnotation$annotation$
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
-            value = "ceylon.language::Tuple<ceylon.language::Integer|Element,ceylon.language::Integer,ceylon.language::Sequential<Element>>",
+            value = "[ceylon.language::Integer, Element*]",
             erased = true)
     public abstract .ceylon.language.Sequence m();
 }
@@ -120,7 +120,7 @@ public interface My1543Sequence<Element> extends .com.redhat.ceylon.compiler.jav
     @.ceylon.language.FormalAnnotation$annotation$
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
-            value = "ceylon.language::Tuple<Other|Element,Other,ceylon.language::Sequence<Element>>",
+            value = "[Other, Element+]",
             erased = true,
             untrusted = true)
     @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
@@ -145,7 +145,7 @@ public interface My1543Empty extends .com.redhat.ceylon.compiler.java.test.issue
     @.ceylon.language.ActualAnnotation$annotation$
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
-            value = "ceylon.language::Tuple<Other,Other,ceylon.language::Empty>",
+            value = "[Other]",
             erased = true,
             untrusted = true)
     @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
@@ -162,7 +162,7 @@ public interface My1543Empty extends .com.redhat.ceylon.compiler.java.test.issue
     @.ceylon.language.ActualAnnotation$annotation$
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
-            value = "ceylon.language::Tuple<Other,Other,ceylon.language::Empty>",
+            value = "[Other]",
             erased = true,
             untrusted = true)
     @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
@@ -179,7 +179,7 @@ public interface My1543Empty extends .com.redhat.ceylon.compiler.java.test.issue
     @.ceylon.language.ActualAnnotation$annotation$
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
-            value = "ceylon.language::Tuple<ceylon.language::Integer,ceylon.language::Integer,ceylon.language::Empty>",
+            value = "[ceylon.language::Integer]",
             erased = true,
             untrusted = true)
     @.com.redhat.ceylon.compiler.java.metadata.Transient
@@ -189,7 +189,7 @@ public interface My1543Empty extends .com.redhat.ceylon.compiler.java.test.issue
     @.ceylon.language.ActualAnnotation$annotation$
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
-            value = "ceylon.language::Tuple<ceylon.language::Integer,ceylon.language::Integer,ceylon.language::Empty>",
+            value = "[ceylon.language::Integer]",
             erased = true,
             untrusted = true)
     public .ceylon.language.Sequence m();

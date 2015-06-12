@@ -20,7 +20,7 @@ final class booleanArray_ {
     
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("java.lang::BooleanArray")
     static boolean[] booleanArray(@.com.redhat.ceylon.compiler.java.metadata.Name("values")
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Iterable<ceylon.language::Boolean,ceylon.language::Null>")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("{ceylon.language::Boolean*}")
     final .ceylon.language.Iterable<? extends .ceylon.language.Boolean, ? extends .java.lang.Object> values) {
         final boolean[] ret = new boolean[.com.redhat.ceylon.compiler.java.Util.toInt(values.getSize())];
         long idx = 0L;

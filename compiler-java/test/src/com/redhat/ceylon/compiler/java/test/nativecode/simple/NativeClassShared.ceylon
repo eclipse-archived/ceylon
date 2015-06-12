@@ -21,7 +21,7 @@ native shared class NativeClassShared() {
     native shared Integer test(Integer i);
     native shared Integer foo;
     native shared Integer bar;
-    assign bar;
+    native assign bar;
 }
 
 native("jvm") shared class NativeClassShared() {
@@ -30,7 +30,7 @@ native("jvm") shared class NativeClassShared() {
     }
     native("jvm") shared Integer foo => 0;
     native("jvm") shared Integer bar => 0;
-    assign bar { test(0); }
+    native("jvm") assign bar { test(0); }
 }
 
 native("js") shared class NativeClassShared() {
@@ -39,7 +39,7 @@ native("js") shared class NativeClassShared() {
     }
     native("js") shared Integer foo => 0;
     native("js") shared Integer bar => 0;
-    assign bar {test(0); }
+    native("js") assign bar {test(0); }
 }
 
 void testNativeClassShared() {

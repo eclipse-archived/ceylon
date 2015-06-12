@@ -191,7 +191,7 @@ public class LocalKlass implements .com.redhat.ceylon.compiler.java.runtime.mode
             @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
             final long arg1, @.com.redhat.ceylon.compiler.java.metadata.Name("t")
             @.com.redhat.ceylon.compiler.java.metadata.Sequenced
-            @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Sequential<T>")
+            @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("T[]")
             final .ceylon.language.Sequential<? extends T> t) {
                 (
                     let

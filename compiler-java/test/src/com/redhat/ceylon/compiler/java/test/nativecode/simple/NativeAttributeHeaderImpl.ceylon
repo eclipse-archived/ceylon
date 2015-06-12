@@ -17,9 +17,14 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-native void conflicting();
+native shared String nativeAttributeHeaderImpl {
+    throw Exception("NativeAttributeHeaderImpl-JVM");
+}
 
-native("js") void conflicting() {}
+native("js") shared String nativeAttributeHeaderImpl {
+    throw Exception("NativeAttributeHeaderImpl-JS");
+}
 
-shared void test() {
+void testNativeAttributeHeaderImpl() {
+    value x = nativeAttributeHeaderImpl;
 }

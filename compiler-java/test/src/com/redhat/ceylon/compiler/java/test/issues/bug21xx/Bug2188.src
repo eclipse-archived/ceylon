@@ -1,0 +1,34 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug21xx;
+
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Attribute
+@.com.redhat.ceylon.compiler.java.metadata.Name("bug2188")
+final class bug2188_ {
+    
+    private bug2188_() {
+    }
+    private static final .ceylon.language.Sequence<? extends .java.lang.Object> value;
+    private static volatile boolean $init$value = false;
+    private static final .java.lang.Throwable $initException$;
+    static {
+        try {
+            value = (.ceylon.language.Sequence<? extends .java.lang.Object>).ceylon.language.nothing_.get_();
+            $initException$ = null;
+            $init$value = true;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            value = null;
+            $init$value = false;
+        }
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Null[1000]")
+    public static .ceylon.language.Sequence<? extends .java.lang.Object> get_() {
+        if (bug2188_.$init$value) {
+            return value;
+        } else {
+            if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'bug2188\' before it was set");
+        }
+    }
+}

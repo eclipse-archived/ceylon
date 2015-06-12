@@ -21,6 +21,7 @@ package com.redhat.ceylon.compiler.java.test.model;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,11 +29,17 @@ import java.util.Map;
 import org.junit.Test;
 import org.junit.Assert;
 
+import com.redhat.ceylon.compiler.java.metadata.Variance;
+
+import static com.redhat.ceylon.compiler.java.metadata.Variance.*;
+
 import com.redhat.ceylon.model.loader.ModelLoader;
 import com.redhat.ceylon.model.loader.ModelResolutionException;
 import com.redhat.ceylon.model.loader.TypeParser;
 import com.redhat.ceylon.model.loader.TypeParserException;
 import com.redhat.ceylon.model.typechecker.model.Class;
+import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
+import com.redhat.ceylon.model.typechecker.model.Interface;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.IntersectionType;
 import com.redhat.ceylon.model.typechecker.model.Module;
@@ -44,53 +51,173 @@ import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.model.typechecker.model.TypeParameter;
 import com.redhat.ceylon.model.typechecker.model.UnionType;
 import com.redhat.ceylon.model.typechecker.model.Unit;
+import com.redhat.ceylon.model.typechecker.util.TypePrinter;
 
 public class TypeParserTests {
+    private static final Unit mockLangUnit = new Unit();
+    private static final Unit mockPkgUnit = new Unit();
+    private static final Unit mockDefaultUnit = new Unit();
     
-    private static final Unit mockUnit = new Unit();
-    private static final Module mockModule = new Module(){
-        private Package mockPackage = new Package(){
-            public Module getModule() {
-                mockModule.setName(Arrays.asList(""));
-                return mockModule;
-            }
-        };
-        public Package getPackage(String name) {
-            mockPackage.setName(Arrays.asList(""));
-            return mockPackage;
+    private static final class MockPackage extends Package {
+        ArrayList<Declaration> members = new ArrayList<>();
+        private final Module module;
+        public MockPackage(Module module) {
+            this.module = module;
+            super.setModule(module);
         }
-        
+
+        public Module getModule() {
+            return module;
+        }
+
+        @Override
+        public void addMember(Declaration m) {
+            members.add(m);
+        }
+
+        @Override
+        public List<Declaration> getMembers() {
+            return members;
+        }
+    }
+    
+    private static final Module mockLang = new Module(){
+        public Package getPackage(String name) {
+            return mockLangPackage;
+        }
     };
+    private static final Package mockLangPackage = new MockPackage(mockLang);
+    
+    static {
+        mockLang.setUnit(mockLangUnit);
+        mockLang.setLanguageModule(mockLang);
+        mockLang.setName(Arrays.asList("ceylon", "language"));
+        mockLang.setAvailable(true);
+    
+        mockLangPackage.setUnit(mockLangUnit);
+        mockLangPackage.setName(Arrays.asList("ceylon", "language"));
+        
+        mockLang.getPackages().add(mockLangPackage);
+        mockLangUnit.setPackage(mockLangPackage);
+    }
+    
+    
+    private static final Module mockDefaultModule = new Module(){
+        
+        public Package getPackage(String name) {
+            if (name.isEmpty()) {
+                return mockDefaultPackage;
+            } else if ("pkg".equals(name)) {
+                return mockDefaultPackage;
+            } else if ("ceylon.language".equals(name)) {
+                return mockLangPackage;
+            }
+            throw new RuntimeException(name);
+        }
+    };
+    private static final Package mockDefaultPackage = new MockPackage(mockDefaultModule);
+    static {
+        mockDefaultModule.setLanguageModule(mockLang);
+        mockDefaultModule.setName(Arrays.asList(""));
+        mockDefaultModule.setUnit(mockDefaultUnit);
+    
+        mockDefaultPackage.setUnit(mockDefaultUnit);
+        mockDefaultPackage.setName(Arrays.asList(""));
+        mockDefaultUnit.setPackage(mockDefaultPackage);
+    }
+    
+    private static final Module mockPkgModule = new Module(){
+        
+        public Package getPackage(String name) {
+            if ("pkg".equals(name)) {
+                return mockPkgPackage;
+            } else if (name.isEmpty()) {
+                return mockDefaultPackage;
+            } else if ("ceylon.language".equals(name)) {
+                return mockLangPackage;
+            }
+            throw new RuntimeException();
+        }
+    };
+    private static final Package mockPkgPackage = new MockPackage(mockPkgModule);
+    static {
+        mockPkgModule.setLanguageModule(mockLang);
+        mockPkgModule.setName(Arrays.asList("pkg"));
+        mockPkgModule.setUnit(mockPkgUnit);
+    
+        mockPkgPackage.setUnit(mockPkgUnit);
+        mockPkgPackage.setName(Arrays.asList("pkg"));
+        mockPkgUnit.setPackage(mockPkgPackage);
+    }
     
     static class MockLoader implements ModelLoader {
 
         static final ModelLoader instance = new MockLoader();
 
-        private Map<String, Class> classes = new HashMap<String,Class>();
-        private Module mod = mockModule;
-        private Package pkg = mockModule.getPackage("");
-        private Unit unit = mockUnit;
+        private Map<String, ClassOrInterface> classes = new HashMap<String,ClassOrInterface>();
+        private Module defaultModule = mockDefaultModule;
+        private Package defaultPkg = mockDefaultModule.getPackage("");
+        private Unit unit = mockDefaultUnit;
+        private Module lang = mockLang;
+        private Package langPkg = mockLang.getPackage("ceylon.language");
         
         private MockLoader(){
-            mod.setName(Arrays.asList(""));
-            mod.setLanguageModule(new Module());
-            pkg.setName(Arrays.asList(""));
-            pkg.setModule(mod);
-            unit.setPackage(pkg);
-            Class a = makeClass("a");
+            //defaultModule.setName(Arrays.asList(""));
+            //defaultModule.setLanguageModule(lang);
+            //defaultPkg.setName(Arrays.asList(""));
+            //defaultPkg.setModule(defaultModule);
+            //unit.setPackage(defaultPkg);
+            Class a = makeClass("a", defaultPkg);
             makeClass("b", a);
-            makeClass("b");
-            makeClass("c");
-            makeClass("d");
-            makeClass("e");
-            makeClass("f");
-            Class t2 = makeParameterisedClass("t2");
-            makeParameterisedClass("t2", t2);
+            makeClass("b", defaultPkg);
+            makeClass("c", defaultPkg);
+            makeClass("d", defaultPkg);
+            makeClass("e", defaultPkg);
+            makeClass("f", defaultPkg);
+            Class t2 = makeParameterisedClass(defaultPkg, "t2", null, null, makeTp("A", Variance.NONE), makeTp("B", Variance.NONE));
+            makeParameterisedClass(t2, "t2", null, null, makeTp("A", Variance.NONE), makeTp("B", Variance.NONE));
             Package otherPkg = new Package();
+            otherPkg.setUnit(mockPkgUnit);
             otherPkg.setName(Arrays.asList("pkg"));
-            makeClass("a", otherPkg);
-            Class b = makeClass("b", otherPkg);
-            makeClass("c", b);
+            Module otherModeul = new Module();
+            otherModeul.setUnit(mockPkgUnit);
+            otherPkg.setModule(otherModeul);
+            makeClass("u", otherPkg);
+            Class b = makeClass("v", otherPkg);
+            makeClass("w", b);
+            makeClass("package", otherPkg);
+            
+            langPkg.addMember(makeInterface("Empty", langPkg));
+            langPkg.addMember(makeClass("Null", langPkg));
+            langPkg.addMember(makeClass("Boolean", langPkg));
+            langPkg.addMember(makeInterface("Nothing", langPkg));// a lie, it's not an interface
+            
+            TypeParameter itElement = makeTp("Element", OUT);
+            Interface iterable = makeParameterisedInterface(langPkg, "Iterable", null, 
+                    itElement, 
+                    makeTp("Absent", OUT));
+            langPkg.addMember(iterable);
+            TypeParameter seqElement = makeTp("Element", OUT);
+            Interface sequential = makeParameterisedInterface(langPkg, 
+                    "Sequential", new Type[]{iterable.appliedType(null, Collections.singletonList(seqElement.getType()))},seqElement);
+            langPkg.addMember(sequential);
+            TypeParameter seqlElement = makeTp("Element", OUT);
+            Interface sequence = makeParameterisedInterface(langPkg, 
+                    "Sequence", new Type[]{sequential.appliedType(null, Collections.singletonList(seqlElement.getType()))}, 
+                    seqlElement);
+            langPkg.addMember(sequence);
+            
+            TypeParameter tupElement = makeTp("Element", OUT);
+            langPkg.addMember(makeParameterisedClass(langPkg, "Tuple", null, new Type[]{sequential.appliedType(null, Collections.singletonList(tupElement.getType()))},
+                    tupElement, 
+                    makeTp("First", OUT),
+                    makeTp("Rest", OUT)));
+            
+            langPkg.addMember(makeParameterisedInterface(langPkg, "Callable", null,
+                    makeTp("Result", OUT), makeTp("Arguments", IN)));
+            langPkg.addMember(makeParameterisedClass(langPkg, "Entry", null, null,
+                    makeTp("Key", OUT), 
+                    makeTp("Item", OUT)));
         }
 
         
@@ -102,46 +229,74 @@ public class TypeParserTests {
 
         @Override
         public Declaration getDeclaration(Module module, String pkg, String name, Scope scope) {
-            Class klass = classes.get(name);
+            ClassOrInterface klass = classes.get(name);
             if(klass == null)
                 throw new ModelResolutionException("Unknown type: "+name);
             return klass;
         }
         
         private Class makeParameterisedClass(String name) {
-            return makeParameterisedClass(name, null);
+            return makeParameterisedClass(null, name, null, null);
         }
         
-        private Class makeParameterisedClass(String name, Class container) {
-            Class klass = makeClass(name, container);
-            List<TypeParameter> typeParameters = new ArrayList<TypeParameter>(2);
-            TypeParameter typeParam = new TypeParameter();
-            typeParam.setName("A");
-            typeParameters.add(typeParam);
-            typeParam = new TypeParameter();
-            typeParam.setName("B");
-            typeParameters.add(typeParam);
+        private Class makeParameterisedClass(Scope container, String name, Type extended, Type[] satisfied, TypeParameter...  tps) {
+            return makeParameterizedClassOrInterface(makeClass(name, container), tps, extended, satisfied);
+        }
+        private Interface makeParameterisedInterface(Scope container, String name, Type[] satisfied, TypeParameter...tps) {
+            return makeParameterizedClassOrInterface(makeInterface(name, container), tps, null, satisfied);
+        }
+        private <T extends ClassOrInterface> T makeParameterizedClassOrInterface(T klass, TypeParameter[] tps, Type extended, Type[] satisfied) {
+            if (extended != null) {
+                klass.setExtendedType(extended);
+            }
+            if (satisfied != null) {
+                klass.setSatisfiedTypes(Arrays.asList(satisfied));
+            }
+            List<TypeParameter> typeParameters = new ArrayList<TypeParameter>(tps.length);
+            for (TypeParameter tp : tps) {
+                tp.setUnit(klass.getUnit());
+                tp.setContainer(klass);
+                tp.setDeclaration(klass);
+                typeParameters.add(tp);
+            }
             klass.setTypeParameters(typeParameters );
             return klass;
         }
 
-        private Class makeClass(String name) {
-            return makeClass(name, null);
+        TypeParameter makeTp(String name, Variance v) {
+            TypeParameter typeParam = new TypeParameter();
+            
+            typeParam.setName(name);
+            typeParam.setContravariant(v == Variance.IN);
+            typeParam.setCovariant(v == Variance.OUT);
+            return typeParam;
         }
         
         private Class makeClass(String name, Scope container) {
-            Class klass = new Class();
+            return makeClassOrInterface(new Class(), name, container);
+        }
+        private Interface makeInterface(String name, Scope container) {
+            return makeClassOrInterface(new Interface(), name, container);
+        }
+        private <T extends ClassOrInterface> T makeClassOrInterface(T klass, String name, Scope container) {
             klass.setName(name);
-            klass.setUnit(unit);
             klass.setShared(true);
-            if(container != null){
-                container.addMember(klass);
-                klass.setContainer(container);
-                classes.put(container.getQualifiedNameString()+"."+name, klass);
-            }else{
-                klass.setContainer(pkg);
-                classes .put(name, klass);
+            
+            container.addMember(klass);
+            klass.setContainer(container);
+            if (container instanceof Package) {
+                klass.setUnit(((Package)container).getUnit());
+            } else if (container instanceof ClassOrInterface) {
+                klass.setUnit(((ClassOrInterface)container).getUnit());
+            } else {
+                throw new RuntimeException(""+container);
             }
+            if (container.getQualifiedNameString().isEmpty()) {
+                classes.put(name, klass);
+            } else {
+                classes.put(container.getQualifiedNameString()+"."+name, klass);
+            }
+            
             return klass;
         }
 
@@ -160,7 +315,7 @@ public class TypeParserTests {
     
     @Test
     public void testUnion(){
-        Type type = new TypeParser(MockLoader.instance).decodeType("a|b|c", null, mockModule, mockUnit);
+        Type type = new TypeParser(MockLoader.instance).decodeType("a|b|c", null, mockDefaultModule, mockPkgUnit);
         Assert.assertNotNull(type);
         TypeDeclaration declaration = type.getDeclaration();
         Assert.assertNotNull(declaration);
@@ -178,7 +333,7 @@ public class TypeParserTests {
 
     @Test
     public void testIntersection(){
-        Type type = new TypeParser(MockLoader.instance).decodeType("a&b&c", null, mockModule, mockUnit);
+        Type type = new TypeParser(MockLoader.instance).decodeType("a&b&c", null, mockDefaultModule, mockPkgUnit);
         Assert.assertNotNull(type);
         TypeDeclaration declaration = type.getDeclaration();
         Assert.assertNotNull(declaration);
@@ -196,7 +351,7 @@ public class TypeParserTests {
 
     @Test
     public void testIntersectionAndUnion(){
-        Type type = new TypeParser(MockLoader.instance).decodeType("a&b|c", null, mockModule, mockUnit);
+        Type type = new TypeParser(MockLoader.instance).decodeType("a&b|c", null, mockDefaultModule, mockPkgUnit);
         Assert.assertNotNull(type);
         TypeDeclaration declaration = type.getDeclaration();
         Assert.assertNotNull(declaration);
@@ -221,7 +376,7 @@ public class TypeParserTests {
 
     @Test
     public void testParams(){
-        Type type = new TypeParser(MockLoader.instance).decodeType("t2<b,c>", null, mockModule, mockUnit);
+        Type type = new TypeParser(MockLoader.instance).decodeType("t2<b,c>", null, mockDefaultModule, mockPkgUnit);
         assertTypeWithParameters(type);
         
         Assert.assertTrue(type.getVarianceOverrides().isEmpty());
@@ -229,7 +384,7 @@ public class TypeParserTests {
 
     @Test
     public void testParamsVariance1(){
-        Type type = new TypeParser(MockLoader.instance).decodeType("t2<in b,out c>", null, mockModule, mockUnit);
+        Type type = new TypeParser(MockLoader.instance).decodeType("t2<in b,out c>", null, mockDefaultModule, mockPkgUnit);
         assertTypeWithParameters(type);
 
         Map<TypeParameter, SiteVariance> varianceOverrides = type.getVarianceOverrides();
@@ -242,7 +397,7 @@ public class TypeParserTests {
 
     @Test
     public void testParamsVariance2(){
-        Type type = new TypeParser(MockLoader.instance).decodeType("t2<b,out c>", null, mockModule, mockUnit);
+        Type type = new TypeParser(MockLoader.instance).decodeType("t2<b,out c>", null, mockDefaultModule, mockPkgUnit);
         assertTypeWithParameters(type);
 
         Map<TypeParameter, SiteVariance> varianceOverrides = type.getVarianceOverrides();
@@ -255,7 +410,7 @@ public class TypeParserTests {
 
     @Test
     public void testParamsVariance3(){
-        Type type = new TypeParser(MockLoader.instance).decodeType("t2<in b,c>", null, mockModule, mockUnit);
+        Type type = new TypeParser(MockLoader.instance).decodeType("t2<in b,c>", null, mockDefaultModule, mockPkgUnit);
         assertTypeWithParameters(type);
 
         Map<TypeParameter, SiteVariance> varianceOverrides = type.getVarianceOverrides();
@@ -282,7 +437,7 @@ public class TypeParserTests {
 
     @Test
     public void testUnionParams(){
-        Type type = new TypeParser(MockLoader.instance).decodeType("a|t2<b|c,t2<d,e|f>>", null, mockModule, mockUnit);
+        Type type = new TypeParser(MockLoader.instance).decodeType("a|t2<b|c,t2<d,e|f>>", null, mockDefaultModule, mockPkgUnit);
         Assert.assertNotNull(type);
         TypeDeclaration declaration = type.getDeclaration();
         Assert.assertNotNull(declaration);
@@ -350,7 +505,7 @@ public class TypeParserTests {
 
     @Test
     public void testQualified(){
-        Type type = new TypeParser(MockLoader.instance).decodeType("a.b", null, mockModule, mockUnit);
+        Type type = new TypeParser(MockLoader.instance).decodeType("a.b", null, mockDefaultModule, mockPkgUnit);
         Assert.assertNotNull(type);
         TypeDeclaration declaration = type.getDeclaration();
         Assert.assertNotNull(declaration);
@@ -367,7 +522,7 @@ public class TypeParserTests {
 
     @Test
     public void testQualifiedAndParameterised(){
-        Type type = new TypeParser(MockLoader.instance).decodeType("t2<a,b>.t2<c,d>", null, mockModule, mockUnit);
+        Type type = new TypeParser(MockLoader.instance).decodeType("t2<a,b>.t2<c,d>", null, mockDefaultModule, mockPkgUnit);
         Assert.assertNotNull(type);
         TypeDeclaration declaration = type.getDeclaration();
         Assert.assertNotNull(declaration);
@@ -406,45 +561,349 @@ public class TypeParserTests {
 
     @Test
     public void testPackageQualified(){
-        Type type = new TypeParser(MockLoader.instance).decodeType("pkg::b", null, mockModule, mockUnit);
+        Type type = new TypeParser(MockLoader.instance).decodeType("pkg::v", null, mockDefaultModule, mockPkgUnit);
         Assert.assertNotNull(type);
         TypeDeclaration declaration = type.getDeclaration();
         Assert.assertNotNull(declaration);
         Assert.assertTrue(declaration instanceof Class);
-        Assert.assertEquals("pkg::b", declaration.getQualifiedNameString());
+        Assert.assertEquals("pkg::v", declaration.getQualifiedNameString());
 
         Assert.assertNull(type.getQualifyingType());
     }
 
     @Test
     public void testComplexQualified(){
-        Type type = new TypeParser(MockLoader.instance).decodeType("<pkg::a&pkg::b>.c", null, mockModule, mockUnit);
+        Type type = new TypeParser(MockLoader.instance).decodeType("<pkg::u&pkg::v>.w", null, mockDefaultModule, mockPkgUnit);
         Assert.assertNotNull(type);
         TypeDeclaration declaration = type.getDeclaration();
         Assert.assertNotNull(declaration);
         Assert.assertTrue(declaration instanceof Class);
-        Assert.assertEquals("pkg::b.c", declaration.getQualifiedNameString());
+        Assert.assertEquals("pkg::v.w", declaration.getQualifiedNameString());
 
         Type qualifyingType = type.getQualifyingType();
         Assert.assertNotNull(qualifyingType);
         TypeDeclaration qualifyingDeclaration = qualifyingType.getDeclaration();
         Assert.assertNotNull(qualifyingDeclaration);
         Assert.assertTrue(qualifyingDeclaration instanceof IntersectionType);
-        Assert.assertEquals("a&b", qualifyingDeclaration.getName());
+        Assert.assertEquals("u&v", qualifyingDeclaration.getName());
+    }
+    
+    @Test
+    public void testEmptyAbbrev(){
+        Type type = new TypeParser(MockLoader.instance).decodeType("[]", null, mockDefaultModule, mockPkgUnit);
+        Assert.assertNotNull(type);
+        TypeDeclaration declaration = type.getDeclaration();
+        Assert.assertNotNull(declaration);
+        Assert.assertTrue(declaration instanceof Interface);
+        Assert.assertEquals("ceylon.language::Empty", declaration.getQualifiedNameString());
+        Assert.assertNull(type.getQualifyingType());
+    }
+    
+    @Test
+    public void testSequenceAbbrev(){
+        Type type = new TypeParser(MockLoader.instance).decodeType("[a+]", null, mockDefaultModule, mockPkgUnit);
+        Assert.assertNotNull(type);
+        TypeDeclaration declaration = type.getDeclaration();
+        Assert.assertNotNull(declaration);
+        Assert.assertTrue(declaration instanceof Interface);
+        Assert.assertEquals("ceylon.language::Sequence", declaration.getQualifiedNameString());
+        Assert.assertEquals("[a+]", type.asString());
+        Assert.assertNull(type.getQualifyingType());
     }
 
+    @Test
+    public void testSequentialAbbrev(){
+        Type type = new TypeParser(MockLoader.instance).decodeType("[a*]", null, mockDefaultModule, mockPkgUnit);
+        Assert.assertNotNull(type);
+        TypeDeclaration declaration = type.getDeclaration();
+        Assert.assertNotNull(declaration);
+        Assert.assertTrue(declaration instanceof Interface);
+        Assert.assertEquals("ceylon.language::Sequential", declaration.getQualifiedNameString());
+        Assert.assertEquals("a[]", type.asString());
+        Assert.assertNull(type.getQualifyingType());
+    }
+    
+    @Test
+    public void testTuple1Abbrev(){
+        Type type = new TypeParser(MockLoader.instance).decodeType("[a]", null, mockDefaultModule, mockPkgUnit);
+        Assert.assertNotNull(type);
+        TypeDeclaration declaration = type.getDeclaration();
+        Assert.assertNotNull(declaration);
+        Assert.assertTrue(declaration instanceof Class);
+        Assert.assertEquals("ceylon.language::Tuple", declaration.getQualifiedNameString());
+        Assert.assertEquals("[a]", type.asString());
+        Assert.assertNull(type.getQualifyingType());
+    }
+    
+    @Test
+    public void testTuple2Abbrev(){
+        Type type = new TypeParser(MockLoader.instance).decodeType("[a,b]", null, mockDefaultModule, mockPkgUnit);
+        Assert.assertNotNull(type);
+        TypeDeclaration declaration = type.getDeclaration();
+        Assert.assertNotNull(declaration);
+        Assert.assertTrue(declaration instanceof Class);
+        Assert.assertEquals("ceylon.language::Tuple", declaration.getQualifiedNameString());
+        Assert.assertEquals("[a, b]", type.asString());
+        Assert.assertNull(type.getQualifyingType());
+    }
+    
+    @Test
+    public void testTuple3Abbrev(){
+        Type type = new TypeParser(MockLoader.instance).decodeType("[a,b,c]", null, mockDefaultModule, mockPkgUnit);
+        Assert.assertNotNull(type);
+        TypeDeclaration declaration = type.getDeclaration();
+        Assert.assertNotNull(declaration);
+        Assert.assertTrue(declaration instanceof Class);
+        Assert.assertEquals("ceylon.language::Tuple", declaration.getQualifiedNameString());
+        Assert.assertEquals("[a, b, c]", type.asString());
+        Assert.assertNull(type.getQualifyingType());
+    }
+    
+    @Test
+    public void testTuple1OrMoreAbbrev(){
+        Type type = new TypeParser(MockLoader.instance).decodeType("[a,b*]", null, mockDefaultModule, mockPkgUnit);
+        Assert.assertNotNull(type);
+        TypeDeclaration declaration = type.getDeclaration();
+        Assert.assertNotNull(declaration);
+        Assert.assertTrue(declaration instanceof Class);
+        Assert.assertEquals("ceylon.language::Tuple", declaration.getQualifiedNameString());
+        Assert.assertEquals("[a, b*]", type.asString());
+        Assert.assertNull(type.getQualifyingType());
+    }
+    
+    @Test
+    public void testTuple2OrMoreAbbrev(){
+        Type type = new TypeParser(MockLoader.instance).decodeType("[a,b+]", null, mockDefaultModule, mockPkgUnit);
+        Assert.assertNotNull(type);
+        TypeDeclaration declaration = type.getDeclaration();
+        Assert.assertNotNull(declaration);
+        Assert.assertTrue(declaration instanceof Class);
+        Assert.assertEquals("ceylon.language::Tuple", declaration.getQualifiedNameString());
+        Assert.assertEquals("[a, b+]", type.asString());
+        Assert.assertNull(type.getQualifyingType());
+    }
+    
+    @Test
+    public void testTuple2OrMoreAbbrev2(){
+        Type type = new TypeParser(MockLoader.instance).decodeType("[a,b,c*]", null, mockDefaultModule, mockPkgUnit);
+        Assert.assertNotNull(type);
+        TypeDeclaration declaration = type.getDeclaration();
+        Assert.assertNotNull(declaration);
+        Assert.assertTrue(declaration instanceof Class);
+        Assert.assertEquals("ceylon.language::Tuple", declaration.getQualifiedNameString());
+        Assert.assertEquals("[a, b, c*]", type.asString());
+        Assert.assertNull(type.getQualifyingType());
+    }
+    
+    @Test
+    public void testTuple3OrMoreAbbrev(){
+        Type type = new TypeParser(MockLoader.instance).decodeType("[a,b,c+]", null, mockDefaultModule, mockPkgUnit);
+        Assert.assertNotNull(type);
+        TypeDeclaration declaration = type.getDeclaration();
+        Assert.assertNotNull(declaration);
+        Assert.assertTrue(declaration instanceof Class);
+        Assert.assertEquals("ceylon.language::Tuple", declaration.getQualifiedNameString());
+        Assert.assertEquals("[a, b, c+]", type.asString());
+        Assert.assertNull(type.getQualifyingType());
+    }
+    
+    @Test
+    public void testHomoTuple1(){
+        Type type = new TypeParser(MockLoader.instance).decodeType("a[1]", null, mockDefaultModule, mockPkgUnit);
+        Assert.assertNotNull(type);
+        TypeDeclaration declaration = type.getDeclaration();
+        Assert.assertNotNull(declaration);
+        Assert.assertTrue(declaration instanceof Class);
+        Assert.assertEquals("ceylon.language::Tuple", declaration.getQualifiedNameString());
+        Assert.assertEquals("[a]", type.asString());
+        Assert.assertNull(type.getQualifyingType());
+    }
+    
+    @Test
+    public void testHomoTuple2(){
+        Type type = new TypeParser(MockLoader.instance).decodeType("a[2]", null, mockDefaultModule, mockPkgUnit);
+        Assert.assertNotNull(type);
+        TypeDeclaration declaration = type.getDeclaration();
+        Assert.assertNotNull(declaration);
+        Assert.assertTrue(declaration instanceof Class);
+        Assert.assertEquals("ceylon.language::Tuple", declaration.getQualifiedNameString());
+        Assert.assertEquals("a[2]", type.asString());
+        Assert.assertNull(type.getQualifyingType());
+    }
+    
+    @Test
+    public void testIterableAbbrev(){
+        try {
+            new TypeParser(MockLoader.instance).decodeType("{a}", null, mockDefaultModule, mockPkgUnit);
+            Assert.fail();
+        } catch ( TypeParserException e) {
+            Assert.assertEquals("com.redhat.ceylon.model.loader.TypeParserException: Expected multiplicity in abbreviated Iterable type: 2", e.toString());
+        }
+    }
+    
+    @Test
+    public void testPossiblyEmptyIterableAbbrev(){
+        Type type = new TypeParser(MockLoader.instance).decodeType("{a*}", null, mockDefaultModule, mockPkgUnit);
+        Assert.assertNotNull(type);
+        TypeDeclaration declaration = type.getDeclaration();
+        Assert.assertNotNull(declaration);
+        Assert.assertTrue(declaration instanceof Interface);
+        Assert.assertEquals("ceylon.language::Iterable", declaration.getQualifiedNameString());
+        Assert.assertEquals("{a*}", type.asString());
+        Assert.assertNull(type.getQualifyingType());
+    }
+    
+    @Test
+    public void testNonEmptyIterableAbbrev(){
+        Type type = new TypeParser(MockLoader.instance).decodeType("{a+}", null, mockDefaultModule, mockPkgUnit);
+        Assert.assertNotNull(type);
+        TypeDeclaration declaration = type.getDeclaration();
+        Assert.assertNotNull(declaration);
+        Assert.assertTrue(declaration instanceof Interface);
+        Assert.assertEquals("ceylon.language::Iterable", declaration.getQualifiedNameString());
+        Assert.assertEquals("{a+}", type.asString());
+        Assert.assertNull(type.getQualifyingType());
+    }
+    
+    @Test
+    public void testCallableAbbrev(){
+        Type type = new TypeParser(MockLoader.instance).decodeType("a(b)", null, mockDefaultModule, mockPkgUnit);
+        Assert.assertNotNull(type);
+        TypeDeclaration declaration = type.getDeclaration();
+        Assert.assertNotNull(declaration);
+        Assert.assertTrue(declaration instanceof Interface);
+        Assert.assertEquals("ceylon.language::Callable", declaration.getQualifiedNameString());
+        Assert.assertEquals("a(b)", type.asString());
+        Assert.assertNull(type.getQualifyingType());
+        
+        type = new TypeParser(MockLoader.instance).decodeType("a(b,pkg::u*)", null, mockPkgModule, mockPkgUnit);
+        Assert.assertNotNull(type);
+        declaration = type.getDeclaration();
+        Assert.assertNotNull(declaration);
+        Assert.assertTrue(declaration instanceof Interface);
+        Assert.assertEquals("ceylon.language::Callable", declaration.getQualifiedNameString());
+        Assert.assertEquals("ceylon.language::Callable<a,ceylon.language::Tuple<b|pkg::u,b,ceylon.language::Sequential<pkg::u>>>", printType(type));
+        Assert.assertNull(type.getQualifyingType());
+    }
+    
+    @Test
+    public void testSpreadCallableAbbrev(){
+        Type type = new TypeParser(MockLoader.instance).decodeType("a(*[b,a])", null, mockDefaultModule, mockPkgUnit);
+        Assert.assertNotNull(type);
+        TypeDeclaration declaration = type.getDeclaration();
+        Assert.assertNotNull(declaration);
+        Assert.assertTrue(declaration instanceof Interface);
+        Assert.assertEquals("ceylon.language::Callable", declaration.getQualifiedNameString());
+        Assert.assertEquals("a(b, a)", type.asString());
+        Assert.assertNull(type.getQualifyingType());
+    }
+    
+    @Test
+    public void testEntryAbbrev(){
+        Type type = new TypeParser(MockLoader.instance).decodeType(" a -> b ", null, mockDefaultModule, mockDefaultUnit);
+        Assert.assertNotNull(type);
+        TypeDeclaration declaration = type.getDeclaration();
+        Assert.assertNotNull(declaration);
+        Assert.assertTrue(declaration instanceof Class);
+        Assert.assertEquals("ceylon.language::Entry", declaration.getQualifiedNameString());
+        Assert.assertEquals("ceylon.language::Entry<a,b>", printType(type));
+        Assert.assertNull(type.getQualifyingType());
+        
+        type = new TypeParser(MockLoader.instance).decodeType("pkg::u|pkg::v->b", null, mockPkgModule, mockPkgUnit);
+        Assert.assertNotNull(type);
+        declaration = type.getDeclaration();
+        Assert.assertNotNull(declaration);
+        Assert.assertTrue(declaration instanceof Class);
+        Assert.assertEquals("ceylon.language::Entry", declaration.getQualifiedNameString());
+        Assert.assertEquals("ceylon.language::Entry<pkg::u|pkg::v,b>", printType(type));
+        Assert.assertNull(type.getQualifyingType());
+    }
+    
+    @Test
+    public void testOptionalAbbrev(){
+        Type type = new TypeParser(MockLoader.instance).decodeType("a?", null, mockDefaultModule, mockPkgUnit);
+        Assert.assertNotNull(type);
+        TypeDeclaration declaration = type.getDeclaration();
+        Assert.assertNotNull(declaration);
+        Assert.assertTrue(declaration instanceof UnionType);
+        Assert.assertEquals("ceylon.language::Null|a", printType(type));
+        Assert.assertNull(type.getQualifyingType());
+        
+        type = new TypeParser(MockLoader.instance).decodeType("pkg::u&pkg::v?", null, mockDefaultModule, mockPkgUnit);
+        Assert.assertNotNull(type);
+        declaration = type.getDeclaration();
+        Assert.assertNotNull(declaration);
+        Assert.assertTrue(declaration instanceof IntersectionType);
+        Assert.assertEquals("pkg::u&<ceylon.language::Null|pkg::v>", printType(type));
+        Assert.assertNull(type.getQualifyingType());
+        
+        type = new TypeParser(MockLoader.instance).decodeType("pkg::u|pkg::v[]?", null, mockDefaultModule, mockPkgUnit);
+        Assert.assertNotNull(type);
+        declaration = type.getDeclaration();
+        Assert.assertNotNull(declaration);
+        Assert.assertTrue(declaration instanceof UnionType);
+        Assert.assertEquals("pkg::u|ceylon.language::Null|ceylon.language::Sequential<pkg::v>", printType(type));
+        Assert.assertNull(type.getQualifyingType());
+    }
+
+    @Test
+    public void testCallableOfEntry(){
+        Type type = new TypeParser(MockLoader.instance).decodeType("ceylon.language::Boolean(ceylon.language::Nothing->ceylon.language::Nothing)", null, mockDefaultModule, mockPkgUnit);
+        Assert.assertNotNull(type);
+        TypeDeclaration declaration = type.getDeclaration();
+        Assert.assertNotNull(declaration);
+        Assert.assertTrue(declaration instanceof Interface);
+        Assert.assertEquals("ceylon.language::Callable<ceylon.language::Boolean,ceylon.language::Tuple<ceylon.language::Entry<ceylon.language::Nothing,ceylon.language::Nothing>,ceylon.language::Entry<ceylon.language::Nothing,ceylon.language::Nothing>,ceylon.language::Empty>>", printType(type));
+        Assert.assertNull(type.getQualifyingType());
+    }
+    
+    @Test
+    public void testOptionalEntry(){
+        Type type = new TypeParser(MockLoader.instance).decodeType("<ceylon.language::Boolean->a>?", null, mockDefaultModule, mockPkgUnit);
+        Assert.assertNotNull(type);
+        TypeDeclaration declaration = type.getDeclaration();
+        Assert.assertNotNull(declaration);
+        Assert.assertTrue(declaration instanceof UnionType);
+        Assert.assertEquals("ceylon.language::Null|ceylon.language::Entry<ceylon.language::Boolean,a>", printType(type));
+        Assert.assertNull(type.getQualifyingType());
+    }
+
+    @Test
+    public void testTypeCallPackage(){
+        Type type = new TypeParser(MockLoader.instance).decodeType("pkg::package", null, mockDefaultModule, mockPkgUnit);
+        Assert.assertNotNull(type);
+        TypeDeclaration declaration = type.getDeclaration();
+        Assert.assertNotNull(declaration);
+        Assert.assertTrue(declaration instanceof Class);
+        Assert.assertEquals("pkg::package", printType(type));
+        Assert.assertNull(type.getQualifyingType());
+    }
+    
+    
     @Test(expected = ModelResolutionException.class)
     public void testParameterisedPackage(){
-        new TypeParser(MockLoader.instance).decodeType("unknown<a>.b", null, mockModule, mockUnit);
+        new TypeParser(MockLoader.instance).decodeType("unknown<a>.b", null, mockDefaultModule, mockPkgUnit);
     }
 
     @Test(expected = ModelResolutionException.class)
     public void testUnknownMember(){
-        new TypeParser(MockLoader.instance).decodeType("a.unknown", null, mockModule, mockUnit);
+        new TypeParser(MockLoader.instance).decodeType("a.unknown", null, mockDefaultModule, mockPkgUnit);
     }
 
     @Test(expected = TypeParserException.class)
     public void testInvalidType(){
-        new TypeParser(MockLoader.instance).decodeType("t2<a,b", null, mockModule, mockUnit);
+        new TypeParser(MockLoader.instance).decodeType("t2<a,b", null, mockDefaultModule, mockPkgUnit);
+    }
+    
+    TypePrinter typePrinter = new TypePrinter(
+            false, 
+            true, 
+            false, 
+            false, 
+            false, 
+            true, 
+            true);
+    String printType(Type t) {
+        return typePrinter.print(t, t.getDeclaration().getUnit());
     }
 }

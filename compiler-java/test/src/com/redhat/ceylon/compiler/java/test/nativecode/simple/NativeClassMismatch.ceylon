@@ -93,16 +93,48 @@ native("jvm") class NativeClassMismatch7() satisfies NativeClassMismatchSuper1 {
 }
 
 
+native class NativeClassMismatch8jvm() satisfies NativeClassMismatchSuper1 {
+    native shared actual void test1(Integer i);
+}
+
 native("jvm") class NativeClassMismatch8jvm() satisfies NativeClassMismatchSuper1 {
     native("jvm") shared actual void test1(Integer i) {
         NativeClassMismatch8js().test2(i);
     }
 }
 
+native class NativeClassMismatch8js() satisfies NativeClassMismatchSuper2 {
+    native shared actual void test2(Integer i);
+}
+
 native("js") class NativeClassMismatch8js() satisfies NativeClassMismatchSuper2 {
     native("js") shared actual void test2(Integer i) {
         NativeClassMismatch8jvm().test1(i);
     }
+}
+
+native class NativeClassMismatch9() {
+    native shared void test1(Integer i);
+    native shared void test2(Integer i);
+    native shared void test3(Integer i);
+    native shared void test4(Integer i);
+    native shared void test5(Integer i);
+}
+
+native("jvm") class NativeClassMismatch9() {
+    native("jvm") shared void test1(Integer i) {}
+    native("jvm") shared void test2(String s) {}
+    native("jvm") shared String test3(Integer i) { return ""; }
+    native("jvm") shared void test4() {}
+    native("jvm") shared void testX(Integer i) {}
+}
+
+native("js") class NativeClassMismatch9() {
+    native("js") shared void test1(Integer i) {}
+    native("js") shared void test2(String s) {}
+    native("js") shared String test3(Integer i) { return ""; }
+    native("js") shared void test4() {}
+    native("js") shared void testX(Integer i) {}
 }
 
 void nativeClassMismatch8() {
