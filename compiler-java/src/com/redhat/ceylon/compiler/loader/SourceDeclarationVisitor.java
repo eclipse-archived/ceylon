@@ -40,9 +40,11 @@ public abstract class SourceDeclarationVisitor extends Visitor implements Natura
     // it will also return `true` for methods and attributes that
     // have an implementation. In all other cases returns `false`.
     protected boolean checkNative(Tree.Declaration decl){
-        return isForBackend(decl.getAnnotationList(), Backend.Java, decl.getUnit())
-                || (isForBackend(decl.getAnnotationList(), Backend.None, decl.getUnit())
-                        && hasImplementation(decl));
+        // Commented out because of https://github.com/ceylon/ceylon-compiler/issues/2196
+//        return isForBackend(decl.getAnnotationList(), Backend.Java, decl.getUnit())
+//                || (isForBackend(decl.getAnnotationList(), Backend.None, decl.getUnit())
+//                        && hasImplementation(decl));
+        return true;
     }
     
     private boolean hasImplementation(Declaration decl) {
@@ -61,7 +63,7 @@ public abstract class SourceDeclarationVisitor extends Visitor implements Natura
         else if (decl instanceof Tree.MethodDefinition) {
             return ((Tree.MethodDefinition)decl).getBlock() != null;
         }
-        return false;
+        return true;
     }
     
     @Override

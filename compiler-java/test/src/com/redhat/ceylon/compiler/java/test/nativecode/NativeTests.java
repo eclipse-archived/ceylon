@@ -285,7 +285,7 @@ public class NativeTests extends CompilerTests {
         testNativeModule("otherref");
     }
     
-    @Test
+    @Test @Ignore("see https://github.com/ceylon/ceylon-compiler/issues/2196")
     public void testNativeWithJava() {
         testNativeModule("withjava", "NativeClass.java", "test.ceylon", "module.ceylon");
     }
