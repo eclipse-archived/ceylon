@@ -186,6 +186,7 @@ class Strategy {
                 && Decl.isToplevel(def) 
                 && Decl.isShared(def)
                 && !Decl.isAbstract(def)
+                && !def.getDeclarationModel().isNativeHeader()
                 && hasNoRequiredParameters((Class)def.getDeclarationModel());
     }
     
