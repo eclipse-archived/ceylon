@@ -139,6 +139,21 @@ class Test584 {
 class Boom584() => Test584.Foo();
 class Check584() extends Boom584(){}
 
+class Test573 {
+    value sb = StringBuilder();
+    sb.append("1");
+    shared new (){
+        sb.append("2");
+    }
+    shared new Bar() extends Test573(){
+        sb.append("3");
+    }
+    shared new Baz() extends Bar(){
+        sb.append("4");
+    }
+    string => sb.string;
+}
+
 void testConstructors() {
   check(ToplevelBug476.Bar().x==2, "#476 toplevel");
   class NestedBug476 {
@@ -195,4 +210,7 @@ void testConstructors() {
   value test582 = object extends Test582<Integer>.Bar(42){};
   check(test582.a==42);
   Check584();
+  check(Test573().string=="12", "#573.1 expected cd got ``Test573()``");
+  check(Test573.Bar().string=="123", "#573.2 expected cde got ``Test573.Bar()``");
+  check(Test573.Baz().string=="1234", "#573.3 expected cdef got ``Test573.Baz()``");
 }
