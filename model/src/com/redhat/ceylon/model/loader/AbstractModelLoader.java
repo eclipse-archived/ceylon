@@ -2363,11 +2363,14 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             if (annotated instanceof Declaration) {
                 Declaration decl = (Declaration)annotated;
                 decl.setNativeBackend(nativeBackend);
-                List<Declaration> al = getOverloads(decl);
-                if (al == null) {
-                    al = new ArrayList<Declaration>(3);
-                    al.add(decl);
-                    setOverloads(decl, al);
+                if (decl.isNativeHeader()) {
+                    // FIXME we need to add the native implementations
+                    // to this list somehow!!
+                    List<Declaration> al = getOverloads(decl);
+                    if (al == null) {
+                        al = new ArrayList<Declaration>(2);
+                        setOverloads(decl, al);
+                    }
                 }
             } else if (annotated instanceof Module) {
                 ((Module)annotated).setNativeBackend(nativeBackend);
