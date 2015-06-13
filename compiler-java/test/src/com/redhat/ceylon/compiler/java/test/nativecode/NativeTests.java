@@ -53,11 +53,16 @@ public class NativeTests extends CompilerTests {
         assertErrors(dir + "/" + test, expectedErrors);
     }
     
-    private void testNativeModule(String dir) {
-        testNativeModule(dir, "test.ceylon", "package.ceylon", "module.ceylon");
+    private ModuleWithArtifact testNativeModule(String dir) {
+        return testNativeModule(dir, null, "test.ceylon", "package.ceylon", "module.ceylon");
     }
     
-    private void testNativeModule(String dir, String... files) {
+    private ModuleWithArtifact testNativeModule(String dir, ModuleWithArtifact extraModule) {
+        return testNativeModule(dir, extraModule, "test.ceylon", "package.ceylon", "module.ceylon");
+    }
+    
+    private ModuleWithArtifact testNativeModule(String dir, ModuleWithArtifact extraModule, String... files) {
+        ModuleWithArtifact mainModule = null;
         boolean ok = false;
         try {
             String[] paths = new String[files.length];
@@ -65,7 +70,13 @@ public class NativeTests extends CompilerTests {
                 paths[i] = dir + "/" + files[i];
             }
             compile(paths);
-            run("com.redhat.ceylon.compiler.java.test.nativecode." + dir + ".test", new ModuleWithArtifact("com.redhat.ceylon.compiler.java.test.nativecode." + dir, "1.0"));
+            String main = "com.redhat.ceylon.compiler.java.test.nativecode." + dir + ".test";
+            mainModule = new ModuleWithArtifact("com.redhat.ceylon.compiler.java.test.nativecode." + dir, "1.0");
+            if (extraModule != null) {
+                run(main, mainModule, extraModule);
+            } else {
+                run(main, mainModule);
+            }
         } catch (RuntimeException ex) {
             assert(("ceylon.language.Exception \"" + dir + "-JVM\"").equals(ex.getMessage()));
             ok = true;
@@ -73,6 +84,7 @@ public class NativeTests extends CompilerTests {
         if (!ok) {
             Assert.fail("Test terminated incorrectly");
         }
+        return mainModule;
     }
     
     private void testNativeModuleErrors(String dir, CompilerError... expectedErrors) {
@@ -268,8 +280,8 @@ public class NativeTests extends CompilerTests {
     
     @Test
     public void testNativeModuleImport() {
-        testNativeModule("modsample");
-        testNativeModule("modimport");
+        ModuleWithArtifact sampleMod = testNativeModule("modsample");
+        testNativeModule("modimport", sampleMod);
     }
     
     @Test
@@ -293,7 +305,7 @@ public class NativeTests extends CompilerTests {
     
     @Test @Ignore("see https://github.com/ceylon/ceylon-compiler/issues/2196")
     public void testNativeWithJava() {
-        testNativeModule("withjava", "NativeClass.java", "test.ceylon", "module.ceylon");
+        testNativeModule("withjava", null, "NativeClass.java", "test.ceylon", "module.ceylon");
     }
     
     @Test
