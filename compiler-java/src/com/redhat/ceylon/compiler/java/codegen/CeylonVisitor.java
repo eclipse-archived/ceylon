@@ -506,7 +506,11 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
     public void visit(Tree.ExtendedType extendedType) {
         ClassOrInterface forDefinition = classBuilder.getForDefinition();
         Type thisType = forDefinition != null ? forDefinition.getType() : null;
-        if (forDefinition == null || !forDefinition.isNative() || forDefinition.isNativeHeader()) {
+        ClassOrInterface hdrDefinition = null;
+        if (forDefinition != null && forDefinition.isNative() && !forDefinition.isNativeHeader()) {
+            hdrDefinition = (ClassOrInterface)ModelUtil.getNativeHeader(forDefinition.getContainer(), forDefinition.getName());
+        }
+        if (hdrDefinition == null) {
             Type extended = extendedType.getType().getTypeModel();
             if (extended.getDeclaration() instanceof Constructor) {
                 extended = extended.getQualifyingType();
@@ -514,7 +518,6 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
             classBuilder.extending(thisType, extended, ((Class)thisType.getDeclaration()).hasConstructors());
             gen.expressionGen().transformSuperInvocation(extendedType, classBuilder);
         } else {
-            ClassOrInterface hdrDefinition = (ClassOrInterface)ModelUtil.getNativeHeader(forDefinition.getContainer(), forDefinition.getName());
             classBuilder.extending(thisType, hdrDefinition.getType(), ((Class)thisType.getDeclaration()).hasConstructors());
             gen.expressionGen().makeHeaderSuperInvocation((Class)forDefinition, extendedType, classBuilder);
         }
