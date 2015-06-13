@@ -363,4 +363,9 @@ public class NativeTests extends CompilerTests {
                 new CompilerError(32, "no native implementation for backend: native 'NativeMissingClass' is not implemented for one or more backends")
         );
     }
+    
+    @Test
+    public void testNativeDelegate() {
+        testNative("NativeDelegate");
+    }
 }
