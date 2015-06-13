@@ -235,7 +235,7 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
                     // Abstraction-less native implementation, check
                     // it's not shared
                     if (!isHeader
-                            && (model.isToplevel()
+                            && ((model.isToplevel() && model.isShared())
                                     || (model.isMember()
                                             && ((Declaration)model.getContainer()).isNative()
                                             && ((Declaration)model.getContainer()).isShared()))) {
