@@ -201,13 +201,13 @@ public class TypeVisitor extends Visitor {
             if (alias!=null) {
                 Import o = unit.getImport(dec.getName());
                 if (o!=null && o.isWildcardImport()) {
-                    if (o.getDeclaration().equals(dec)) {
+                    if (o.getDeclaration().equals(dec) || dec.isNativeHeader()) {
                         //this case only happens in the IDE,
                         //due to reuse of the Unit
                         unit.getImports().remove(o);
                         il.getImports().remove(o);
                     }
-                    else {
+                    else if (!dec.isNative()) {
                         i.setAmbiguous(true);
                         o.setAmbiguous(true);
                     }
