@@ -81,7 +81,7 @@ public class NativeTests extends CompilerTests {
     
     // Methods
     
-    @Test @Ignore("While we can't have header-less natives")
+    @Test
     public void testNativeMethodPrivate() {
         testNative("NativeMethodPrivate");
     }
@@ -126,7 +126,7 @@ public class NativeTests extends CompilerTests {
     
     // Attributes
     
-    @Test @Ignore("While we can't have header-less natives")
+    @Test
     public void testNativeAttributePrivate() {
         testNative("NativeAttributePrivate");
     }
@@ -187,7 +187,7 @@ public class NativeTests extends CompilerTests {
     
     // Classes
     
-    @Test @Ignore("While we can't have header-less natives")
+    @Test
     public void testNativeClassPrivate() {
         testNative("NativeClassPrivate");
     }
