@@ -181,7 +181,7 @@ public class RefinementVisitor extends Visitor {
     private void checkNativeDeclaration(Tree.Declaration that, 
             Declaration dec, Declaration header) {
         if (header == null && dec.isMember()) {
-            if (dec.isNative() && !dec.isFormal() && !dec.isActual() && !dec.isDefault()) {
+            if (dec.isNative() && dec.isShared() && !dec.isFormal() && !dec.isActual() && !dec.isDefault()) {
                 that.addError("native member does not implement any header member: " +
                         message(dec));
             }
@@ -494,8 +494,9 @@ public class RefinementVisitor extends Visitor {
                 type.getRefinedMember(name, 
                         signature, false);
         boolean legallyOverloaded = 
-                !isOverloadedVersion(member);
-        if (root == null || root.equals(member)) {
+                !isOverloadedVersion(member) ||
+                member.isNative();
+        if (root == null || root.equals(member) || (root.isNative() && member.isNative())) {
             member.setRefinedDeclaration(member);
             if (member.isActual()) {
                 that.addError("actual member does not refine any inherited member: " + 

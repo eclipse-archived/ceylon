@@ -8862,12 +8862,19 @@ public class ExpressionVisitor extends Visitor {
                         inBackend == null ?
                                 backendSupport : 
                                 inBackend.backendSupport;
-                Declaration hdr = dec;
-                if (!hdr.isNativeHeader()) {
+                Declaration impl;
+                Declaration hdr;
+                if (dec.isNativeHeader()) {
+                    hdr = dec;
+                    impl = getNativeDeclaration(hdr, backend);
+                } else {
                     hdr = getNativeHeader(dec.getContainer(), dec.getName());
+                    if (hdr == null || backend.supportsBackend(Backend.fromAnnotation(dec.getNativeBackend()))) {
+                        impl = dec;
+                    } else {
+                        impl = getNativeDeclaration(hdr, backend);
+                    }
                 }
-                Declaration impl =
-                        getNativeDeclaration(dec, backend);
                 if (impl==null && hdr != null) {
                     if (!isImplemented(hdr)) {
                         that.addError("no native implementation for backend: native '"

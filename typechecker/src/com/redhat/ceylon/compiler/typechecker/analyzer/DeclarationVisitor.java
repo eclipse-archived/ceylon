@@ -203,8 +203,7 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
                     that instanceof Tree.AnyMethod ||
                     that instanceof Tree.AnyClass ||
                     that instanceof Tree.AnyAttribute;
-            if (canBeNative && 
-                    (model.isToplevel() || model.isMember())) {
+            if (canBeNative) {
                 String moduleBackend = 
                         unit.getPackage()
                             .getModule()
@@ -216,6 +215,14 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
                             backend + "\"' is not '\"" + 
                             moduleBackend + "\"' for '" + 
                             name + "'");
+                }
+                if (!model.isToplevel() && !model.isMember() && isHeader) {
+                    that.addError("native header can not be local: '" + 
+                                    name + "'");
+                }
+                if (model.isMember() && model.isShared() && that instanceof Tree.AnyClass) {
+                    that.addError("native member classes are not supported: '" + 
+                                    name + "'");
                 }
                 model.setNativeBackend(backend);
                 Declaration member = getNativeHeader(model.getContainer(), name);
@@ -307,10 +314,6 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
                 if (!canBeNative) {
                     that.addError("native declaration is not a class, method or attribute: '" + 
                             name + "'");
-                }
-                else {
-                    that.addError("native declaration can not be local: '" + 
-                                    name + "'");
                 }
             }
         }
@@ -424,7 +427,8 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
                                 model instanceof Class;
                         if (member instanceof Function && 
                             model instanceof Function &&
-                            scope instanceof ClassOrInterface) {
+                            scope instanceof ClassOrInterface &&
+                            !member.isNative()) {
                             //even though Ceylon does not 
                             //officially support overloading,
                             //we actually do let you overload
