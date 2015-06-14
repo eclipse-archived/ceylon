@@ -263,7 +263,9 @@ public class Stitcher {
                         //Compile all the listed files
                         exitCode = stitch(infile, jsout);
                         //Unshared declarations
-                        jsout.publishUnsharedDeclarations(names);
+                        if (names != null) {
+                            jsout.publishUnsharedDeclarations(names);
+                        }
                         //Close the commonJS wrapper
                         JsCompiler.endWrapper(writer);
                     } finally {
