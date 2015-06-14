@@ -2545,6 +2545,11 @@ public class ModelUtil {
                                 cd.getName(),
                                 Backend.None.nativeAnnotation);
                 if (c != null) {
+                    // Is this the Value part of an object?
+                    if (c instanceof Value && isObject((Value)c)) {
+                        // Then use the Class part as the container
+                        c = ((Value)c).getType().getDeclaration();
+                    }
                     container = c;
                 }
             }
@@ -2557,6 +2562,11 @@ public class ModelUtil {
         return header;
     }
     
+    // Check if the Value is part of an object (is there a better way to check this?)
+    public static boolean isObject(Value v) {
+        return v.getType().getDeclaration().getQualifiedNameString().equals(v.getQualifiedNameString());
+    }
+
     public static boolean isImplemented(Declaration decl) {
         if (decl instanceof FunctionOrValue) {
             return ((FunctionOrValue)decl).isImplemented();
