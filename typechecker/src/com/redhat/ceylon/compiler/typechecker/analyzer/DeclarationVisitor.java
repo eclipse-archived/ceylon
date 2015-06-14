@@ -216,10 +216,6 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
                             moduleBackend + "\"' for '" + 
                             name + "'");
                 }
-                if (!model.isToplevel() && !model.isMember() && isHeader) {
-                    that.addError("native header can not be local: '" + 
-                                    name + "'");
-                }
                 if (model.isMember() && model.isShared() && that instanceof Tree.AnyClass) {
                     that.addError("native member classes are not supported: '" + 
                                     name + "'");
