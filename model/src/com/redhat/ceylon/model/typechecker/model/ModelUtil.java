@@ -174,8 +174,9 @@ public class ModelUtil {
     
     public static boolean isOverloadedVersion(Declaration decl) {
         return decl!=null && 
-                decl.isOverloaded() && 
-                !decl.isAbstraction();
+                (decl.isOverloaded() && 
+                !decl.isAbstraction()) &&
+                !decl.isNative();
     }
 
     static boolean hasMatchingSignature(
