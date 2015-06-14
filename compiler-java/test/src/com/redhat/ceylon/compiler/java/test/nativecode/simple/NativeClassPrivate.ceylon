@@ -17,14 +17,26 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-native("jvm") class  NativeClassPrivate() {
-    throw Exception("NativeClassPrivate-JVM");
+native("jvm") class NativeClassPrivate() {
+    native("jvm") shared Integer test(Integer i) {
+        throw Exception("NativeClassPrivate-JVM");
+    }
+    native("jvm") shared Integer foo => 0;
+    native("jvm") shared Integer bar => 0;
+    native("jvm") assign bar { test(0); }
 }
 
 native("js") class NativeClassPrivate() {
-    throw Exception("NativeClassPrivate-JS");
+    native("js") shared Integer test(Integer i) {
+        throw Exception("NativeClassPrivate-JS");
+    }
+    native("js") shared Integer foo => 0;
+    native("js") shared Integer bar => 0;
+    native("js") assign bar {test(0); }
 }
 
 void testNativeClassPrivate() {
-    value x = NativeClassPrivate();
+    value x = NativeClassPrivate().foo;
+    value y = NativeClassPrivate().bar;
+    NativeClassPrivate().bar = x;
 }
