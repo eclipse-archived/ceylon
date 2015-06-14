@@ -115,6 +115,11 @@ public class NativeTests extends CompilerTests {
     }
     
     @Test
+    public void testNativeMethodLocal() {
+        testNative("NativeMethodLocal");
+    }
+    
+    @Test
     public void testNativeMethodSharedInvalid() {
         testNativeErrors("NativeMethodSharedInvalid",
                 new CompilerError(20, "native implementation must have a header: 'nativeMethodSharedInvalid'"),
@@ -175,6 +180,11 @@ public class NativeTests extends CompilerTests {
     }
     
     @Test
+    public void testNativeAttributeLocal() {
+        testNative("NativeAttributeLocal");
+    }
+    
+    @Test
     public void testNativeSetterInvalid() {
         testNativeErrors("NativeSetterInvalid",
                 new CompilerError(21, "setter must be marked native: 'nativeSetterInvalid'"),
@@ -227,6 +237,26 @@ public class NativeTests extends CompilerTests {
     @Test
     public void testNativeClassWithImpl() {
         testNative("NativeClassWithImpl");
+    }
+    
+    @Test
+    public void testNativeClassSharedMembers() {
+        testNative("NativeClassSharedMembers");
+    }
+    
+    @Test
+    public void testNativeClassMembersWithImpl() {
+        testNative("NativeClassMembersWithImpl");
+    }
+    
+    @Test
+    public void testNativeClassMembers() {
+        testNative("NativeClassMembers");
+    }
+    
+    @Test
+    public void testNativeClassLocal() {
+        testNative("NativeClassLocal");
     }
     
     @Test
