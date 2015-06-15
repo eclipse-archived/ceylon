@@ -1042,13 +1042,13 @@ public abstract class AbstractTransformer implements Transformation {
         // first look in super types
         if(typeDecl.getExtendedType() != null){
             TypedDeclaration refinedDecl = getFirstRefinedDeclaration(typeDecl.getExtendedType().getDeclaration(), decl, signature, visited, false);
-            if(refinedDecl != null)
+            if(refinedDecl != null && refinedDecl.isShared())
                 return refinedDecl;
         }
         // look in interfaces
         for(Type interf : typeDecl.getSatisfiedTypes()){
             TypedDeclaration refinedDecl = getFirstRefinedDeclaration(interf.getDeclaration(), decl, signature, visited, false);
-            if(refinedDecl != null)
+            if(refinedDecl != null && refinedDecl.isShared())
                 return refinedDecl;
         }
         // not found
