@@ -246,12 +246,12 @@ public class NativeTests extends CompilerTests {
     
     @Test
     public void testNativeClassMembersWithImpl() {
-        testNative("NativeClassMembersWithImpl");
+        testNative("ClassNativeMembersWithImpl");
     }
     
     @Test
-    public void testNativeClassMembers() {
-        testNative("NativeClassMembers");
+    public void testClassNativeMembers() {
+        testNative("ClassNativeMembers");
     }
     
     @Test

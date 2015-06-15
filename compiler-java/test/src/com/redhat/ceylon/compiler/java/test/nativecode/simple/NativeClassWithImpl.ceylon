@@ -53,13 +53,49 @@ native("js") shared class NativeClassWithImpl(Integer x, Integer y)
     }
 }
 
+native shared class NativeClassWithImpl2(Integer x, Integer y) {
+    native shared void test() {}
+    native shared Integer foo => 0;
+    native shared Integer bar => 0;
+    native assign bar {}
+    native shared void test2() {}
+    shared void nat() {}
+}
+
+native("jvm") shared class NativeClassWithImpl2(Integer x, Integer y) {
+    void jvmimpl() {}
+    native("jvm") shared void test2() {
+        test();
+        nat();
+        jvmimpl();
+    }
+}
+
+native("js") shared class NativeClassWithImpl2(Integer x, Integer y) {
+    void jsimpl() {}
+    native("js") shared void test2() {
+        test();
+        nat();
+        jsimpl();
+    }
+}
+
 
 void testNativeClassWithImpl() {
-    value a = NativeClassWithImpl(1, 2).base();
-    NativeClassWithImpl(1, 2).test();
-    value c = NativeClassWithImpl(1, 2).foo;
-    value d = NativeClassWithImpl(1, 2).bar;
-    NativeClassWithImpl(1, 2).bar = a;
-    NativeClassWithImpl(1, 2).test2();
+    value klz = NativeClassWithImpl(1, 2);
+    value a = klz.base();
+    klz.test();
+    value c = klz.foo;
+    value d = klz.bar;
+    klz.bar = a;
+    klz.test2();
+    
+    value klz2 = NativeClassWithImpl(1, 2);
+    klz2.test();
+    value c2 = klz2.foo;
+    value d2 = klz2.bar;
+    klz2.bar = a;
+    klz2.test2();
+    
     throw Exception("NativeClassWithImpl-JVM");
 }
