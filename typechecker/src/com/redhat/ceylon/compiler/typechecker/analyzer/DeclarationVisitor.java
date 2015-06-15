@@ -33,6 +33,7 @@ import com.redhat.ceylon.compiler.typechecker.context.TypecheckerUnit;
 import com.redhat.ceylon.compiler.typechecker.tree.NaturalVisitor;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.ObjectDefinition;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.ClassAlias;
@@ -199,10 +200,11 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
             String backend = model.getNativeBackend();
             boolean isHeader = model.isNativeHeader();
             String name = model.getName();
-            boolean canBeNative = 
-                    that instanceof Tree.AnyMethod ||
-                    that instanceof Tree.AnyClass ||
-                    that instanceof Tree.AnyAttribute;
+            boolean canBeNative =
+                    that instanceof Tree.AnyMethod
+                    || that instanceof Tree.AnyClass
+                    || that instanceof Tree.AnyAttribute
+                    || that instanceof ObjectDefinition;
             if (canBeNative) {
                 String moduleBackend = 
                         unit.getPackage()
@@ -308,7 +310,7 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
             else if (!(model instanceof Setter) && 
                     !isHeader) {
                 if (!canBeNative) {
-                    that.addError("native declaration is not a class, method or attribute: '" + 
+                    that.addError("native declaration is not a class, method, attribute or object: '" + 
                             name + "'");
                 }
             }
