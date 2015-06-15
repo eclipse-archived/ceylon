@@ -5,7 +5,7 @@ function unflatten(ff, $$$mptypes) {
   if (mm && mm.ps) {
     if (mm.ps.length===0)return ff;
     var last=mm.ps[mm.ps.length-1];
-    var iadic=variadicness(mm.ps[mm.ps.length-1].$t);
+    var iadic=variadicness(last.$t);
     if (is$(last,{t:Tuple}))iadic=0;
     var ru;
     if (iadic && mm.ps.length===1) {
@@ -38,12 +38,21 @@ function unflatten(ff, $$$mptypes) {
     } else {
       ru=function rut(tup,$mptypes) {
         var a=[];
-        for (var i=0;i<tup.size;i++) {
-          a.push(tup.$_get(i));
+        if (tup.size>mm.ps.length) {
+          var _t=tup;
+          for (var i=0;i<mm.ps.length-1;i++) {
+            a.push(_t.head);
+            _t=_t.rest;
+          }
+          a.push(_t);
+        } else {
+          for (var i=0;i<tup.size;i++) {
+            a.push(tup.$_get(i));
+          }
+          //Fill positions of defaulted args
+          for (var i=tup.size;i<mm.ps.length;i++)a.push(undefined);
+          if ($mptypes)a.push($mptypes);
         }
-        //Fill positions of defaulted args
-        for (var i=tup.size;i<mm.ps.length;i++)a.push(undefined);
-        if ($mptypes)a.push($mptypes);
         return ff.apply(0,a);
       }
     }
