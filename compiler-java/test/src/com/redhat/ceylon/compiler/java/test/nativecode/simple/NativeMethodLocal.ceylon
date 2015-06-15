@@ -18,6 +18,7 @@
  * MA  02110-1301, USA.
  */
 void testNativeMethodLocal() {
+    native void nativeMethodLocal();
     native("jvm") void nativeMethodLocal() {
         throw Exception("NativeMethodLocal-JVM");
     }

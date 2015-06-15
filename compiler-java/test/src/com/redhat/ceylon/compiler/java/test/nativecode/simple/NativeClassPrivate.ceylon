@@ -17,6 +17,13 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
+native class NativeClassPrivate() {
+    native shared Integer test(Integer i);
+    native shared Integer foo;
+    native shared Integer bar;
+    native assign bar;
+}
+
 native("jvm") class NativeClassPrivate() {
     native("jvm") shared Integer test(Integer i) {
         throw Exception("NativeClassPrivate-JVM");

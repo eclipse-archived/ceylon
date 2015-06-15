@@ -18,6 +18,11 @@
  * MA  02110-1301, USA.
  */
 void testNativeClassLocal() {
+    native class NativeClassLocal() {
+        native shared Integer test(Integer i);
+        native shared Integer foo;
+        native shared variable Integer bar;
+    }
     native("jvm") class NativeClassLocal() {
         native("jvm") shared Integer test(Integer i) {
             throw Exception("NativeClassLocal-JVM");

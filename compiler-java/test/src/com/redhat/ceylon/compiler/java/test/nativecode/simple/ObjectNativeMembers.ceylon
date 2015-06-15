@@ -18,6 +18,7 @@
  * MA  02110-1301, USA.
  */
 shared object objectNativeMembers {
+    native Integer testPrivate(Integer i);
     native("jvm") Integer testPrivate(Integer i) {
         return i;
     }
@@ -25,9 +26,13 @@ shared object objectNativeMembers {
         return i;
     }
     
+    native Integer attrPrivate;
     native("jvm") Integer attrPrivate => 1;
     native("js") Integer attrPrivate => 2;
     
+    native class ClassPrivate(Integer i) {
+        native shared void test();
+    }
     native("jvm") class ClassPrivate(Integer i) {
         native("jvm") shared void test() {
             throw Exception("ObjectNativeMembers-JVM");
@@ -39,6 +44,9 @@ shared object objectNativeMembers {
         }
     }
     
+    native object objectPrivate {
+        native shared Integer test(Integer i);
+    }
     native("jvm") object objectPrivate {
         native("jvm") shared Integer test(Integer i) {
             return i;

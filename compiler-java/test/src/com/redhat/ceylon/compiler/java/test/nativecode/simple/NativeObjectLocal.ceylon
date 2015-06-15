@@ -18,6 +18,13 @@
  * MA  02110-1301, USA.
  */
 void testNativeObjectLocal() {
+    native object nativeObjectLocal {
+        native shared Integer test(Integer i);
+        native shared Integer foo;
+        native shared Integer bar;
+        native assign bar;
+    }
+    
     native("jvm") object nativeObjectLocal {
         native("jvm") shared Integer test(Integer i) {
             throw Exception("NativeObjectLocal-JVM");
