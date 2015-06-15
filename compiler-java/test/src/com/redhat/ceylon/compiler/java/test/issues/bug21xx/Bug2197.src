@@ -1,0 +1,91 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug21xx;
+
+final class bug2197_copyTo_ {
+    
+    private bug2197_copyTo_() {
+    }
+    private static final .java.lang.Object value;
+    private static volatile boolean $init$value = false;
+    private static final .java.lang.Throwable $initException$;
+    static {
+        try {
+            value = (
+                let
+                {
+                    final .java.lang.String $instance$ = "";
+                }
+                returning new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Array.class, .ceylon.language.Character.$TypeDescriptor$), .ceylon.language.Integer.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Array.class, .ceylon.language.Character.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Empty.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Empty.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Empty.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$))))))), "Anything(Array<Character>, Integer=, Integer=, Integer=)", (short)-1){
+                    
+                    @.java.lang.Override
+                    public .java.lang.Object $call$(final .java.lang.Object $param$0) {
+                        final .ceylon.language.Array $ceylontmp$destination = (.ceylon.language.Array<.ceylon.language.Character>)(.ceylon.language.Array)$param$0;
+                        return (
+                            let
+                            {
+                                .ceylon.language.String.copyTo($instance$, $ceylontmp$destination);
+                            }
+                            returning null;
+                        );
+                    }
+                    
+                    @.java.lang.Override
+                    public .java.lang.Object $call$(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {
+                        final .ceylon.language.Array $ceylontmp$destination = (.ceylon.language.Array<.ceylon.language.Character>)(.ceylon.language.Array)$param$0;
+                        final long $ceylontmp$sourcePosition = ((.ceylon.language.Integer)$param$1).longValue();
+                        return (
+                            let
+                            {
+                                .ceylon.language.String.copyTo($instance$, $ceylontmp$destination, $ceylontmp$sourcePosition);
+                            }
+                            returning null;
+                        );
+                    }
+                    
+                    @.java.lang.Override
+                    public .java.lang.Object $call$(final .java.lang.Object $param$0, final .java.lang.Object $param$1, final .java.lang.Object $param$2) {
+                        final .ceylon.language.Array $ceylontmp$destination = (.ceylon.language.Array<.ceylon.language.Character>)(.ceylon.language.Array)$param$0;
+                        final long $ceylontmp$sourcePosition = ((.ceylon.language.Integer)$param$1).longValue();
+                        final long $ceylontmp$destinationPosition = ((.ceylon.language.Integer)$param$2).longValue();
+                        return (
+                            let
+                            {
+                                .ceylon.language.String.copyTo($instance$, $ceylontmp$destination, $ceylontmp$sourcePosition, $ceylontmp$destinationPosition);
+                            }
+                            returning null;
+                        );
+                    }
+                    
+                    @.java.lang.Override
+                    public .java.lang.Object $call$(final .java.lang.Object... $param$0) {
+                        final .ceylon.language.Array $ceylontmp$destination = (.ceylon.language.Array<.ceylon.language.Character>)(.ceylon.language.Array)$param$0[0];
+                        final long $ceylontmp$sourcePosition = $param$0.length > 1 ? ((.ceylon.language.Integer)$param$0[1]).longValue() : .ceylon.language.String.instance("").copyTo$sourcePosition($ceylontmp$destination);
+                        final long $ceylontmp$destinationPosition = $param$0.length > 2 ? ((.ceylon.language.Integer)$param$0[2]).longValue() : .ceylon.language.String.instance("").copyTo$destinationPosition($ceylontmp$destination, $ceylontmp$sourcePosition);
+                        final long $ceylontmp$length = $param$0.length > 3 ? ((.ceylon.language.Integer)$param$0[3]).longValue() : .ceylon.language.String.instance("").copyTo$length($ceylontmp$destination, $ceylontmp$sourcePosition, $ceylontmp$destinationPosition);
+                        return (
+                            let
+                            {
+                                .ceylon.language.String.copyTo($instance$, $ceylontmp$destination, $ceylontmp$sourcePosition, $ceylontmp$destinationPosition, $ceylontmp$length);
+                            }
+                            returning null;
+                        );
+                    }
+                };
+            );
+            $initException$ = null;
+            $init$value = true;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            value = null;
+            $init$value = false;
+        }
+    }
+    
+    public static .java.lang.Object get_() {
+        if (bug2197_copyTo_.$init$value) {
+            return value;
+        } else {
+            if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'bug2197_copyTo\' before it was set");
+        }
+    }
+}
