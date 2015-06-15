@@ -17,15 +17,19 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-native shared Integer nativeInvalidTypes();
+shared object objectNativeMembersWithImpl {
+    native shared void testShared(Integer i) {
+        throw Exception("ObjectNativeMembersWithImpl-JVM");
+    }
+    native("js") shared void testShared(Integer i) {
+        throw Exception("ObjectNativeMembersWithImpl-JS");
+    }
 
-native("jvm") shared Integer nativeInvalidTypes => 1;
-
-native("js") shared class \InativeInvalidTypes() {
+    native shared Integer attrShared => 1;
+    native("js") shared Integer attrShared => 2;
 }
 
-native("foo") shared Integer nativeInvalidTypes() => 2;
-
-native("jvm") shared interface NativeInvalidInterface1;
-
-native("jvm") shared interface NativeInvalidInterface2 {}
+void testObjectNativeMembersWithImpl() {
+    value x = objectNativeMembersWithImpl.attrShared;
+    objectNativeMembersWithImpl.testShared(x);
+}

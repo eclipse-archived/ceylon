@@ -301,6 +301,38 @@ public class NativeTests extends CompilerTests {
         );
     }
     
+    // Objects
+    
+    @Test
+    public void testNativeObjectPrivate() {
+        testNative("NativeObjectPrivate");
+    }
+    
+    @Test
+    public void testNativeObjectShared() {
+        testNative("NativeObjectShared");
+    }
+    
+    @Test
+    public void testNativeObjectWithImpl() {
+        testNative("NativeObjectWithImpl");
+    }
+    
+    @Test
+    public void testObjectNativeMembers() {
+        testNative("ObjectNativeMembers");
+    }
+    
+    @Test
+    public void testObjectNativeMembersWithImpl() {
+        testNative("ObjectNativeMembersWithImpl");
+    }
+    
+    @Test
+    public void testNativeObjectLocal() {
+        testNative("NativeObjectLocal");
+    }
+    
     // Modules
     
     @Test
@@ -360,9 +392,8 @@ public class NativeTests extends CompilerTests {
                 new CompilerError(22, "native declarations not of same type: 'nativeInvalidTypes'"),
                 new CompilerError(24, "native declarations not of same type: 'nativeInvalidTypes'"),
                 new CompilerError(27, "illegal native backend name: '\"foo\"' (must be either '\"jvm\"' or '\"js\"')"),
-                new CompilerError(29, "native declaration is not a class, method or attribute: 'NativeInvalidInterface1'"),
-                new CompilerError(31, "native declaration is not a class, method or attribute: 'NativeInvalidInterface2'"),
-                new CompilerError(33, "native declaration is not a class, method or attribute: 'nativeInvalidObject'")
+                new CompilerError(29, "native declaration is not a class, method, attribute or object: 'NativeInvalidInterface1'"),
+                new CompilerError(31, "native declaration is not a class, method, attribute or object: 'NativeInvalidInterface2'")
         );
     }
     
