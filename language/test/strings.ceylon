@@ -565,7 +565,7 @@ shared void strings() {
     } else {
         fail("String.locateLast 1");
     }
-    value charr=Array.OfSize(3,'x');
+    value charr=Array.ofSize(3,'x');
     "abc".copyTo(charr);
     check(charr==Array{'a','b','c'}, "String.copyTo");
     check("abc".lookup(2).key, "String.lookup 1");

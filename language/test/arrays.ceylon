@@ -220,18 +220,18 @@ shared void testArrays() {
     check(!a12.lookup(9).item exists, "Array.lookup 6");
 
     //constructor
-    value a13=Array.OfSize(5,1);
-    check(a13.size==5, "Array.OfSize 1");
-    check(every { for (i in a13) i==1 }, "Array.OfSize 2");
+    value a13=Array.ofSize(5,1);
+    check(a13.size==5, "Array.ofSize 1");
+    check(every { for (i in a13) i==1 }, "Array.ofSize 2");
     try {
-        check(Array.OfSize(-1,1).size==0, "Array.OfSize(-1) should be empty");
+        check(Array.ofSize(-1,1).size==0, "Array.ofSize(-1) should be empty");
     } catch (Throwable ex) {
-        fail("Array.OfSize(-1)");
+        fail("Array.ofSize(-1)");
     }
     try {
-        Array.OfSize(runtime.maxArraySize+1,1);
-        fail("Array.OfSize(runtime.maxArraySize+1)");
+        Array.ofSize(runtime.maxArraySize+1,1);
+        fail("Array.ofSize(runtime.maxArraySize+1)");
     } catch (Throwable t) {
-        check(t is AssertionError, "Array.OfSize 4");
+        check(t is AssertionError, "Array.ofSize 4");
     }
 }

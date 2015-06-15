@@ -109,7 +109,7 @@ public final class Array<Element>
         private ofSize_() {}
     }
     
-    @Name("OfSize")
+    @Name("ofSize")
     public Array(@Ignore final TypeDescriptor $reifiedElement, 
     @Ignore Array.ofSize_ $name$, 
     @Name("size")
