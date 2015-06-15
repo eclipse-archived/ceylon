@@ -894,7 +894,7 @@ public class ExpressionTransformer extends AbstractTransformer {
 
     private VarianceCastResult getVarianceCastResult(Type expectedType, Type exprType) {
         // exactly the same type, doesn't need casting
-        if(exprType.isExactly(expectedType))
+        if(expectedType == null || exprType.isExactly(expectedType))
             return null;
         // if we're not trying to put it into an interface, there's no need
         if(!(expectedType.getDeclaration() instanceof Interface))
@@ -3630,7 +3630,10 @@ public class ExpressionTransformer extends AbstractTransformer {
                     callBuilder.argument(make().Ident(naming.makeQuotedName(p.getName())));
                 }
                 JCExpression superExpr = callBuilder.build();
-                classBuilder.getInitBuilder().delegateCall(at(node).Exec(superExpr));
+                if (node != null) {
+                    at(node);
+                }
+                classBuilder.getInitBuilder().delegateCall(make().Exec(superExpr));
             } finally {
                 withinInvocation(prevFnCall);
             }

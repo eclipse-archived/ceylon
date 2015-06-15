@@ -340,7 +340,9 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
         if (plan instanceof Drop) {
             return;
         }
-        if (!Decl.isForBackend(decl))
+        boolean accept = Decl.isForBackend(decl)
+                || decl.getDeclarationModel().isNativeHeader();
+        if (!accept)
             return;
         int annots = gen.checkCompilerAnnotations(decl, defs);
         if (Decl.withinClass(decl)) {

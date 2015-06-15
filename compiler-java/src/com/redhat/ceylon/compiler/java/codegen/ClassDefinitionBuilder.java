@@ -31,11 +31,14 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.model.typechecker.model.Annotation;
 import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
+import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Generic;
 import com.redhat.ceylon.model.typechecker.model.Interface;
+import com.redhat.ceylon.model.typechecker.model.ModelUtil;
 import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.model.typechecker.model.TypeParameter;
+import com.redhat.ceylon.model.typechecker.model.Value;
 import com.sun.tools.javac.code.BoundKind;
 import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.JCAnnotation;
@@ -109,8 +112,8 @@ public class ClassDefinitionBuilder {
         return builder;
     }
     
-    public static ClassDefinitionBuilder object(AbstractTransformer gen, String ceylonClassName, boolean isLocal) {
-        return klass(gen, Naming.quoteClassName(ceylonClassName), ceylonClassName, isLocal);
+    public static ClassDefinitionBuilder object(AbstractTransformer gen, String javaClassName, String ceylonClassName, boolean isLocal) {
+        return klass(gen, javaClassName, ceylonClassName, isLocal);
     }
     
     public static ClassDefinitionBuilder methodWrapper(AbstractTransformer gen, String ceylonClassName, boolean shared) {
@@ -167,12 +170,27 @@ public class ClassDefinitionBuilder {
             throw new BugException("already built");
         }
         built = true;
+        
+        // For native class (and objects) implementations that don't define
+        // a class to extend we force them to extend their native header
+        // (when they _do_ extend it is handled in CeylonVisitor.visit(Tree.ExtendedType))
+        if (extendingType == null && forDefinition != null && forDefinition.isNative() && !forDefinition.isNativeHeader()) {
+            Declaration hdrDefinition = ModelUtil.getNativeHeader(forDefinition.getContainer(), forDefinition.getName());
+            if (hdrDefinition != null) {
+                if (hdrDefinition instanceof Value && ModelUtil.isObject((Value)hdrDefinition)) {
+                    hdrDefinition = ((Value)hdrDefinition).getType().getDeclaration();
+                }
+                Type tp = forDefinition.getType();
+                extending(tp, ((ClassOrInterface)hdrDefinition).getType(), ((Class)tp.getDeclaration()).hasConstructors());
+                gen.expressionGen().makeHeaderSuperInvocation((Class)forDefinition, null, this);
+            }
+        }
+        
         ListBuffer<JCTree> defs = ListBuffer.lb();
         appendDefinitionsTo(defs);
         if (!typeParamAnnotations.isEmpty() || typeParams.size() != typeParamAnnotations.size()) {
             annotations(gen.makeAtTypeParameters(typeParamAnnotations.toList()));
         }
-        
         
         JCTree.JCClassDecl klass = gen.make().ClassDef(
                 gen.make().Modifiers(modifiers, getAnnotations()),

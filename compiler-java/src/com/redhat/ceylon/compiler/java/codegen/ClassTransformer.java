@@ -3062,7 +3062,7 @@ public class ClassTransformer extends AbstractTransformer {
     private int transformObjectDeclFlags(Value cdecl) {
         int result = 0;
 
-        result |= FINAL;
+        result |= cdecl.isNativeHeader() ? ABSTRACT : FINAL;
         result |= !Decl.isAncestorLocal(cdecl) && Decl.isShared(cdecl) ? PUBLIC : 0;
 
         return result;
@@ -4657,13 +4657,16 @@ public class ClassTransformer extends AbstractTransformer {
         naming.clearSubstitutions(klass);
         
         String name = klass.getName();
+        String javaClassName = Naming.quoteClassDefinitionName(name, model != null && model.isNativeHeader());
         ClassDefinitionBuilder objectClassBuilder = ClassDefinitionBuilder.object(
-                this, name, Decl.isLocal(klass)).forDefinition(klass);
+                this, javaClassName, name, Decl.isLocal(klass)).forDefinition(klass);
         
         // Make sure top types satisfy reified type
-        addReifiedTypeInterface(objectClassBuilder, klass);
-        if(supportsReifiedAlias(klass))
-            objectClassBuilder.reifiedAlias(klass.getType());
+        if (model == null || !model.isNativeHeader()) {
+            addReifiedTypeInterface(objectClassBuilder, klass);
+            if(supportsReifiedAlias(klass))
+                objectClassBuilder.reifiedAlias(klass.getType());
+        }
         
         CeylonVisitor visitor = gen().visitor;
         final ListBuffer<JCTree> prevDefs = visitor.defs;
@@ -4689,7 +4692,8 @@ public class ClassTransformer extends AbstractTransformer {
         
         if (model != null
                 && Decl.isToplevel(model)
-                && def instanceof Tree.ObjectDefinition) {
+                && def instanceof Tree.ObjectDefinition
+                && !model.isNativeHeader()) {
             // generate a field and getter
             AttributeDefinitionBuilder builder = AttributeDefinitionBuilder
                     // TODO attr build take a JCExpression className
@@ -4714,12 +4718,14 @@ public class ClassTransformer extends AbstractTransformer {
         // make sure we set the container in case we move it out
         addAtContainer(objectClassBuilder, klass);
 
-        objectClassBuilder.getInitBuilder().modifiers(PRIVATE);
         objectClassBuilder
             .annotations(makeAtObject())
             .satisfies(klass.getSatisfiedTypes())
-            .defs((List)childDefs)
-            .addGetTypeMethod(klass.getType());
+            .defs((List)childDefs);
+        if (model == null || !model.isNativeHeader()) {
+            objectClassBuilder.getInitBuilder().modifiers(PRIVATE);
+            objectClassBuilder.addGetTypeMethod(klass.getType());
+        }
         
         if(model != null)
             objectClassBuilder
