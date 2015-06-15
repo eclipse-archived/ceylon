@@ -4,20 +4,20 @@ package com.redhat.ceylon.compiler.java.test.structure.constructor;
 @.com.redhat.ceylon.compiler.java.metadata.Class(constructors = true)
 class CtorDelegationClassRefsSuper implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationClassRefsSuper.Super Super = null;
+    public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationClassRefsSuper.sup_ sup_ = null;
     
     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public static final class Super {
+    public static final class sup_ {
         
-        private Super() {
+        private sup_() {
         }
     }
     
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Name("Super")
+    @.com.redhat.ceylon.compiler.java.metadata.Name("sup")
     public CtorDelegationClassRefsSuper(@.com.redhat.ceylon.compiler.java.metadata.Ignore
-    .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationClassRefsSuper.Super $name$) {
+    .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationClassRefsSuper.sup_ $name$) {
         .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("Super");
     }
     
@@ -35,59 +35,59 @@ class CtorDelegationClassRefsSuper implements .com.redhat.ceylon.compiler.java.r
         extendsType = "com.redhat.ceylon.compiler.java.test.structure.constructor::CtorDelegationClassRefsSuper")
 class CtorDelegationClassRefs extends .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationClassRefsSuper {
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    private static final .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationClassRefs.Abstract Abstract = null;
+    private static final .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationClassRefs.abstract_ abstract_ = null;
     
     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    private static final class Abstract {
+    private static final class abstract_ {
         
-        private Abstract() {
+        private abstract_() {
         }
     }
     
     @.ceylon.language.AbstractAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Name("Abstract")
+    @.com.redhat.ceylon.compiler.java.metadata.Name("abstract")
     private CtorDelegationClassRefs(@.com.redhat.ceylon.compiler.java.metadata.Ignore
-    .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationClassRefs.Abstract $name$) {
-        super(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationClassRefsSuper.Super);
+    .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationClassRefs.abstract_ $name$) {
+        super(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationClassRefsSuper.sup_);
         .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("1");
         .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("Abstract");
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    private static final .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationClassRefs.Concrete$delegation$ Concrete$delegation$ = null;
+    private static final .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationClassRefs.concrete$delegation$_ concrete$delegation$_ = null;
     
     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    private static final class Concrete$delegation$ {
+    private static final class concrete$delegation$_ {
         
-        private Concrete$delegation$() {
+        private concrete$delegation$_() {
         }
     }
     
     @.ceylon.language.SharedAnnotation$annotation$
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     private CtorDelegationClassRefs(@.com.redhat.ceylon.compiler.java.metadata.Ignore
-    .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationClassRefs.Concrete$delegation$ $name$) {
-        this(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationClassRefs.Abstract);
+    .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationClassRefs.concrete$delegation$_ $name$) {
+        this(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationClassRefs.abstract_);
         .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("2");
         .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("Concrete");
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationClassRefs.Concrete Concrete = null;
+    public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationClassRefs.concrete_ concrete_ = null;
     
     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public static final class Concrete {
+    public static final class concrete_ {
         
-        private Concrete() {
+        private concrete_() {
         }
     }
     
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Name("Concrete")
+    @.com.redhat.ceylon.compiler.java.metadata.Name("concrete")
     public CtorDelegationClassRefs(@.com.redhat.ceylon.compiler.java.metadata.Ignore
-    .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationClassRefs.Concrete $name$) {
-        this(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationClassRefs.Abstract);
+    .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationClassRefs.concrete_ $name$) {
+        this(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationClassRefs.abstract_);
         .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("2");
         $return$$0: do {
             .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("Concrete");
@@ -96,21 +96,21 @@ class CtorDelegationClassRefs extends .com.redhat.ceylon.compiler.java.test.stru
         .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("4");
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationClassRefs.Concrete2 Concrete2 = null;
+    public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationClassRefs.concrete2_ concrete2_ = null;
     
     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public static final class Concrete2 {
+    public static final class concrete2_ {
         
-        private Concrete2() {
+        private concrete2_() {
         }
     }
     
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Name("Concrete2")
+    @.com.redhat.ceylon.compiler.java.metadata.Name("concrete2")
     public CtorDelegationClassRefs(@.com.redhat.ceylon.compiler.java.metadata.Ignore
-    .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationClassRefs.Concrete2 $name$) {
-        this(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationClassRefs.Concrete$delegation$);
+    .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationClassRefs.concrete2_ $name$) {
+        this(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationClassRefs.concrete$delegation$_);
         .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("3");
         $return$$1: do {
             .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("Concrete2");
@@ -136,24 +136,24 @@ final class runCtorDelegationClassRefs_ {
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     static void runCtorDelegationClassRefs() {
         .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().reset();
-        .ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationClassRefs> ref = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationClassRefs>(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationClassRefs.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "CtorDelegationClassRefs.Concrete()", (short)-1){
+        .ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationClassRefs> ref = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationClassRefs>(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationClassRefs.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "CtorDelegationClassRefs.concrete()", (short)-1){
             
             @.java.lang.Override
             @.com.redhat.ceylon.compiler.java.metadata.Ignore
             public .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationClassRefs $call$() {
-                return new .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationClassRefs(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationClassRefs.Concrete);
+                return new .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationClassRefs(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationClassRefs.concrete_);
             }
         };
         .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().check("[]");
         ref.$call$();
         .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().check("[Super, 1, Abstract, 2, Concrete, 3, 4]");
         .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().reset();
-        ref = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationClassRefs>(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationClassRefs.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "CtorDelegationClassRefs.Concrete2()", (short)-1){
+        ref = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationClassRefs>(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationClassRefs.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "CtorDelegationClassRefs.concrete2()", (short)-1){
             
             @.java.lang.Override
             @.com.redhat.ceylon.compiler.java.metadata.Ignore
             public .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationClassRefs $call$() {
-                return new .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationClassRefs(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationClassRefs.Concrete2);
+                return new .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationClassRefs(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationClassRefs.concrete2_);
             }
         };
         .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().check("[]");

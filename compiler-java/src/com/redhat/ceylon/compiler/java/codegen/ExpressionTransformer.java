@@ -4664,7 +4664,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         if (qualExpr == null 
                 // statics are not members that can be inherited
                 && !decl.isStaticallyImportable()
-                && !(decl instanceof Constructor)
+                && !Decl.isConstructor(decl)
                 && decl.isMember()
                 // dodge variable refinements with assert/is (these will be turned to locals
                 // and have a name mapping)

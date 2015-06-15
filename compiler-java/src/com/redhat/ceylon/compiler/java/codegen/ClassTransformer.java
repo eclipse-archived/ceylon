@@ -1062,7 +1062,7 @@ public class ClassTransformer extends AbstractTransformer {
             pdb.userAnnotations(expressionGen().transformAnnotations(p instanceof Tree.ParameterDeclaration
                     && !(param.getModel().isShared() || param.getModel().isCaptured()), OutputElement.PARAMETER, member));
         } else if (p instanceof Tree.ParameterDeclaration &&
-                param.getDeclaration() instanceof Constructor) {
+                Decl.isConstructor(param.getDeclaration())) {
             pdb.userAnnotations(expressionGen().transformAnnotations(true, OutputElement.PARAMETER, ((Tree.ParameterDeclaration)p).getTypedDeclaration()));
         }
 

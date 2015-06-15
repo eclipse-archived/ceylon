@@ -2,10 +2,10 @@ shared class Ctor {
     shared new () {
         
     }
-    shared new Other() {
+    shared new other() {
         
     }
-    shared new Third() {
+    shared new third() {
         
     }
 }

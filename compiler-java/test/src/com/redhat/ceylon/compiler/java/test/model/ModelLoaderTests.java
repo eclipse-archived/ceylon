@@ -366,7 +366,9 @@ public class ModelLoaderTests extends CompilerTests {
             if(validDeclaration instanceof ClassOrInterface){
                 Assert.assertTrue(name+" [ClassOrInterface]", modelDeclaration instanceof ClassOrInterface);
                 compareClassOrInterfaceDeclarations((ClassOrInterface)validDeclaration, (ClassOrInterface)modelDeclaration);
-            }else if(validDeclaration instanceof Function){
+            } else if(Decl.isConstructor(validDeclaration)){
+                Assert.assertTrue(name+" [Constructor]", Decl.isConstructor(modelDeclaration));
+            } else if(validDeclaration instanceof Function){
                 Assert.assertTrue(name+" [Method]", modelDeclaration instanceof Function);
                 compareMethodDeclarations((Function)validDeclaration, (Function)modelDeclaration);
             }else if(validDeclaration instanceof Value || validDeclaration instanceof Setter){
@@ -519,7 +521,7 @@ public class ModelLoaderTests extends CompilerTests {
                 if(!validMember.isShared())
                     continue;
                 Declaration modelMember = lookupMember(modelDeclaration, validMember);
-                Assert.assertNotNull(validMember.getClass().getSimpleName() + " " + validMember.getQualifiedNameString()+" [member] not found in loaded model", modelMember);
+                Assert.assertNotNull(validMember.getClass().getSimpleName() + " " + validMember.getQualifiedNameString()+" ["+validMember.getDeclarationKind()+"] not found in loaded model", modelMember);
                 compareDeclarations(modelMember.getQualifiedNameString(), validMember, modelMember);
             }
             // and not more
@@ -565,12 +567,14 @@ public class ModelLoaderTests extends CompilerTests {
         private Declaration lookupMember(ClassOrInterface container, Declaration referenceMember) {
             String name = referenceMember.getName();
             for(Declaration member : container.getMembers()){
+                if ((referenceMember instanceof Constructor && member instanceof FunctionOrValue)
+                        || (referenceMember instanceof FunctionOrValue && member instanceof Constructor)) {
+                    continue;
+                }
                 if (name == null 
-                        && referenceMember instanceof Constructor 
                         && member.getName() == null) {
                     return member;
-                }
-                if(member.getName() != null 
+                } else if(member.getName() != null 
                         && member.getName().equals(name)){
                     // we have a special case if we're asking for a Value and we find a Class, it means it's an "object"'s
                     // class with the same name so we ignore it

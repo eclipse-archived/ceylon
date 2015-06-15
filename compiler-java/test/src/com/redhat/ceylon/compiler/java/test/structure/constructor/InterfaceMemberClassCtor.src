@@ -138,7 +138,7 @@ final class InterfaceMemberClassCtor$impl {
         new .com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor$impl.Member(.com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor$impl.Member$other, 2L);
         $this.SharedMember$new$(3L);
         $this.SharedMember$new$(4L);
-        SharedMember$new$(.com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor$impl.SharedMember$other, 5L);
+        $this.SharedMember$new$(.com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor$impl.SharedMember$other, 5L);
         $this.$com$redhat$ceylon$compiler$java$test$structure$constructor$InterfaceMemberClassCtor$impl().new Member(6L);
         $this.$com$redhat$ceylon$compiler$java$test$structure$constructor$InterfaceMemberClassCtor$impl().new Member(7L);
         new .com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor$impl.Member(.com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor$impl.Member$other, 8L);

@@ -285,12 +285,7 @@ public class CallableBuilder {
         }
         CallBuilder callBuilder = CallBuilder.instance(gen);
         Type accessType = gen.getParameterTypeOfCallable(typeModel, 0);
-        if (methodClassOrCtor instanceof Function) {
-            callBuilder.invoke(gen.naming.makeQualifiedName(target, (Function)methodClassOrCtor, Naming.NA_MEMBER));
-            if (!((TypedDeclaration)methodClassOrCtor).isShared()) {
-                accessType = Decl.getPrivateAccessType(qmte);
-            }
-        } else if (Decl.isConstructor((Declaration)methodClassOrCtor)) {
+        if (Decl.isConstructor((Declaration)methodClassOrCtor)) {
             Constructor ctor = Decl.getConstructor((Declaration)methodClassOrCtor);
             Class cls = Decl.getConstructedClass(ctor);
             if (Strategy.generateInstantiator(ctor)) {
@@ -305,6 +300,11 @@ public class CallableBuilder {
         } else if (methodClassOrCtor instanceof Function
                 && ((Function)methodClassOrCtor).isParameter()) {
             callBuilder.invoke(gen.naming.makeQualifiedName(target, (Function)methodClassOrCtor, Naming.NA_MEMBER));
+        } else if (methodClassOrCtor instanceof Function) {
+            callBuilder.invoke(gen.naming.makeQualifiedName(target, (Function)methodClassOrCtor, Naming.NA_MEMBER));
+            if (!((TypedDeclaration)methodClassOrCtor).isShared()) {
+                accessType = Decl.getPrivateAccessType(qmte);
+            }
         } else if (methodClassOrCtor instanceof Class) {
             Class cls = (Class)methodClassOrCtor;
             if (Strategy.generateInstantiator(cls)) {

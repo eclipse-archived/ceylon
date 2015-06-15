@@ -226,7 +226,8 @@ public class MethodOrValueReferenceVisitor extends Visitor {
             for (Tree.Statement stmt : that.getClassBody().getStatements()) {
                 if (stmt instanceof Tree.Constructor) {
                     Tree.Constructor ctor = (Tree.Constructor)stmt;
-                    if (ctor.getDelegatedConstructor() != null) {
+                    if (ctor.getDelegatedConstructor() != null
+                            && ctor.getDelegatedConstructor().getInvocationExpression() != null) {
                         if (ctor.getDelegatedConstructor().getInvocationExpression().getPrimary() instanceof Tree.ExtendedTypeExpression) {
                             Tree.ExtendedTypeExpression ete = (Tree.ExtendedTypeExpression)ctor.getDelegatedConstructor().getInvocationExpression().getPrimary();
                             if (Decl.isConstructor(ete.getDeclaration())

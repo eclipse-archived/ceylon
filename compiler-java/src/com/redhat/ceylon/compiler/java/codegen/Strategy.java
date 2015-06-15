@@ -282,8 +282,8 @@ class Strategy {
                                 && model.isMember()
                                 && cls.isShared()
                                 && !cls.isAnonymous()));
-        } else if (model instanceof Constructor) {
-            Constructor ctor = (Constructor)model;
+        } else if (Decl.isConstructor(model)) {
+            Constructor ctor = Decl.getConstructor(model);
             Class cls = Decl.getConstructedClass(ctor);
             return cls.isMember()
                     && cls.isShared()

@@ -1,16 +1,16 @@
 import com.redhat.ceylon.compiler.java.test.structure.importIt.ctor{
     X=Ctor{
-        Other,
-        Y=Third
+        other,
+        y=third
     }
 }
 @noanno
 void importConstructor() {
     X();
-    Other();
-    Y();
-    value x = X;
-    value other = Other;
-    value y = Y;
+    other();
+    y();
+    value x1 = X;
+    value other1 = other;
+    value y1 = y;
     
 }

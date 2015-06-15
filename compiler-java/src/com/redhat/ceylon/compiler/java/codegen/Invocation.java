@@ -268,23 +268,27 @@ abstract class Invocation {
                 // we must be invoking a member imported from an object
                 // in which case the qualifer is needed.
             }
-            if (declaration instanceof Constructor) {
+            if (Decl.isConstructor(declaration)) {
                 selector = null;
             }
-        } else if (getPrimary() instanceof Tree.QualifiedMemberOrTypeExpression) {
-            Tree.QualifiedMemberOrTypeExpression type = (Tree.QualifiedMemberOrTypeExpression)getPrimary();
-            Declaration declaration = type.getDeclaration();
-            if (declaration instanceof Constructor 
-                    && Strategy.generateInstantiator(declaration)) {
-                if (Decl.withinInterface(Decl.getConstructedClass(declaration))) {
-                    actualPrimExpr = primaryExpr != null ? primaryExpr : gen.naming.makeQuotedThis();
-                }
-            }
         } else {
-            if (getPrimary() instanceof Tree.BaseMemberOrTypeExpression) {
+            
+            if (getPrimary() instanceof Tree.QualifiedMemberOrTypeExpression) {
+                Tree.QualifiedMemberOrTypeExpression type = (Tree.QualifiedMemberOrTypeExpression)getPrimary();
+                Declaration declaration = type.getDeclaration();
+                if (Decl.isConstructor(declaration)) {
+                    if (Decl.withinInterface(Decl.getConstructedClass(declaration))) {
+                        if (Strategy.generateInstantiator(declaration)) {
+                            actualPrimExpr = primaryExpr != null ? primaryExpr : gen.naming.makeQuotedThis();
+                        } else {
+                            actualPrimExpr = null;
+                        }
+                    }
+                }
+            } else if (getPrimary() instanceof Tree.BaseMemberOrTypeExpression) {
                 Tree.BaseMemberOrTypeExpression type = (Tree.BaseMemberOrTypeExpression)getPrimary();
                 Declaration declaration = type.getDeclaration();
-                if (declaration instanceof Constructor) {
+                if (Decl.isConstructor(declaration)) {
                     selector = null;
                 }
             }
