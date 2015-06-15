@@ -65,9 +65,7 @@ public class Constructors {
                     container, superplist, that, callAbstract, null, gen);
         }
         //If there's a delegated constructor, run the statements after that one and before this one
-        gen.out("\n/* A STMTS " + d, " */\n");
         gen.generateConstructorStatements(that, classStatementsBetweenConstructors(cdef, delcons, that));
-        gen.out("\n/* A END STMTS " + d, " STMTS */\n");
         gen.out("return ", me, ";");
         gen.endBlockNewLine(true);
         gen.out("function ", fullName);
@@ -75,16 +73,13 @@ public class Constructors {
                 container, gen);
         gen.beginBlock();
         if (!d.isAbstract()) {
-            gen.out("\n/* 3 " + d, " !isAbstract*/\n");
             gen.out("$init$", gen.getNames().name(container), "();");
             gen.endLine();
             gen.declareSelf(container);
             gen.referenceOuter(container);
-            gen.out("\n/* 3 END " + d, " !isAbstract*/\n");
         }
         gen.initParameters(that.getParameterList(), container, null);
         if (!d.isAbstract()) {
-            gen.out("\n/* 4 " + d, " !isAbstract*/\n");
             //Call common initializer
             gen.out(gen.getNames().name(container), "$$c(");
             if (withTargs) {
@@ -92,7 +87,6 @@ public class Constructors {
             }
             gen.out(me, ");");
             gen.endLine();
-            gen.out("\n/* 4 END " + d, " !isAbstract*/\n");
         }
         gen.out(fullName, "$$a");
         TypeGenerator.generateParameters(cdef.getTypeParameterList(), that.getParameterList(),
@@ -101,9 +95,7 @@ public class Constructors {
         if (d.isNative()) {
             gen.stitchConstructorHelper(cdef, "_cons_before");
         }
-        gen.out("\n/* B STMTS */\n");
         gen.visitStatements(classStatementsAfterConstructor(cdef, that));
-        gen.out("\n/* B END STMTS */\n");
         if (d.isNative()) {
             gen.stitchConstructorHelper(cdef, "_cons_after");
         }
