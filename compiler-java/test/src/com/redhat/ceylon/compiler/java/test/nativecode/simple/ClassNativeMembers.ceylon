@@ -31,19 +31,29 @@ shared class ClassNativeMembers() {
     native("js") Integer attrPrivate => 2;
     
     native class ClassPrivate(Integer i) {
-        native shared void test();
+        native shared Integer test();
     }
     native("jvm") class ClassPrivate(Integer i) {
-        native("jvm") shared void test() {
+        native("jvm") shared Integer test() => i;
+    }
+    native("js") class ClassPrivate(Integer i) {
+        native("js") shared Integer test() => i;
+    }
+
+    native shared class ClassShared() {
+        native shared Integer test();
+    }
+    native("jvm") shared class ClassShared() {
+        native("jvm") shared Integer test() {
             throw Exception("ClassNativeMembers-JVM");
         }
     }
-    native("js") class ClassPrivate(Integer i) {
-        native("js") shared void test() {
+    native("js") shared class ClassShared() {
+        native("js") shared Integer test() {
             throw Exception("ClassNativeMembers-JS");
         }
     }
-
+    
     native object objectPrivate {
         native shared Integer test(Integer i);
     }
@@ -78,5 +88,6 @@ shared class ClassNativeMembers() {
 }
 
 void testClassNativeMembers() {
-    value x = ClassNativeMembers().test();
+    ClassNativeMembers().test();
+    value y = ClassNativeMembers().ClassShared().test();
 }
