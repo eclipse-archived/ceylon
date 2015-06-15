@@ -81,7 +81,7 @@ class Test557<F> extends Parent {
     sb528.append(",2");
     shared new Bar(F f) extends Parent() {
         this.f = f;
-        print(`F`==`Integer`);
+        check(`F`==`Integer`, "#557.3");
     }
     sb528.append(",3");
 
@@ -191,10 +191,10 @@ void testConstructors() {
   check(Test555(42).f==42, "#555.1");
   sb528.clear();
   Test557(1);
-  check(sb528.string=="1,2,3,4", "#557.1");
+  check(sb528.string=="1,2,3,4", "#557.1 expected 1,2,3,4 got ``sb528``");
   sb528.clear();
   Test557.Bar(1);
-  check(sb528.string=="1,2,3,4", "#557.2");
+  check(sb528.string=="1,2,3,4", "#557.2 expected 1,2,3,4 got ``sb528``");
   sb528.clear();
   Anything test566 = Test566().Bar.Baz();
   check(test566 exists, "#566");
