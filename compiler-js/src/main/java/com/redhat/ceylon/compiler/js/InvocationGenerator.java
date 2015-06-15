@@ -452,6 +452,9 @@ public class InvocationGenerator {
                         }
                     } else if (pd.isSequenced()) {
                         arg.visit(gen);
+                        if (!arg.getTypeModel().isSequential()) {
+                            gen.out(".sequence()");
+                        }
                     } else {
                         final String specialSpreadVar = gen.getNames().createTempVariable();
                         gen.out("(", specialSpreadVar, "=");
