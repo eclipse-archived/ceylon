@@ -42,6 +42,7 @@ import static com.redhat.ceylon.model.typechecker.model.ModelUtil.genericFunctio
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getContainingClassOrInterface;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getInterveningRefinements;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getNativeDeclaration;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getNativeHeader;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getOuterClassOrInterface;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getSignature;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getTypeArgumentMap;
@@ -49,6 +50,7 @@ import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getTypeParamet
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.intersectionOfSupertypes;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.intersectionType;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isAbstraction;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isImplemented;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isOverloadedVersion;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isTypeUnknown;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.typeParametersAsArgList;
@@ -8946,12 +8948,21 @@ public class ExpressionVisitor extends Visitor {
                         inBackend == null ?
                                 backendSupport : 
                                 inBackend.backendSupport;
+                Declaration hdr = dec;
+                if (!hdr.isNativeHeader()) {
+                    hdr = getNativeHeader(dec.getContainer(), dec.getName());
+                }
                 Declaration impl =
                         getNativeDeclaration(dec, backend);
-                if (impl==null) {
-                    that.addError("no native implementation for backend: native '" 
-                            + dec.getName(unit) + 
-                            "' is not implemented for one or more backends");
+                if (impl==null && hdr != null) {
+                    if (!isImplemented(hdr)) {
+                        that.addError("no native implementation for backend: native '"
+                                + dec.getName(unit) +
+                                "' is not implemented for one or more backends");
+                    }
+                } else if (hdr==null) {
+                    that.addError("native implementation must have a header: "
+                            + dec.getName(unit));
                 }
                 return inBackend == null || impl==null ? 
                         dec : impl;

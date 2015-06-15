@@ -17,20 +17,21 @@ import static com.redhat.ceylon.compiler.typechecker.analyzer.ExpressionVisitor.
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.name;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getInheritedDeclarations;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getInterveningRefinements;
-import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getNativeDeclaration;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getNativeHeader;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getRealScope;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getSignature;
-import static com.redhat.ceylon.model.typechecker.model.ModelUtil.hasNativeImplementation;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isOverloadedVersion;
 import static java.util.Collections.emptyList;
 import static java.util.Collections.emptyMap;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.compiler.typechecker.context.TypecheckerUnit;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
@@ -153,7 +154,7 @@ public class RefinementVisitor extends Visitor {
                 }
             }
             
-            if (hasNativeImplementation(dec)) {
+            if (dec.isNative() && !dec.isNativeHeader()) {
                 checkNative(that, dec);
             }
         }
@@ -161,187 +162,256 @@ public class RefinementVisitor extends Visitor {
     }
 
     private void checkNative(Tree.Declaration that, Declaration dec) {
-        // Find the header first (if it exists)
-        Declaration abstraction = 
-                getNativeDeclaration(dec, Backend.None);
-        if (abstraction == null) {
-            // Abstraction-less native implementation, check 
-            // it's not shared
-            if (dec.isShared()
-                    && (dec.isToplevel()
-                            || (dec.isMember()
-                                    && ((Declaration)dec.getContainer()).isNative()
-                                    && ((Declaration)dec.getContainer()).isShared()))) {
-                that.addError("native implementation must have a header: " + 
-                        dec.getName());
-            }
-            // If there's no abstraction we just compare to 
-            // the first implementation in the list
-            abstraction = dec.getOverloads().get(0);
+        if (dec instanceof Setter) {
+            // We ignore setter assuming the check done for their
+            // getters will have been enough
+            return;
         }
-        if (dec!=abstraction && abstraction!=null) {
-            checkSameDeclaration(that, dec, abstraction);
+        // Find the header
+        Declaration header =
+                getNativeHeader(dec.getContainer(), dec.getName());
+        if (dec!=header) {
+            checkNativeDeclaration(that, dec, header);
         }
     }
     
-    private void checkSameDeclaration(Tree.Declaration that, 
-            Declaration dec, Declaration abstraction) {
+    private void checkNativeDeclaration(Tree.Declaration that, 
+            Declaration dec, Declaration header) {
         if (dec instanceof Function && 
-                abstraction instanceof Function) {
-            checkSameMethod(that, 
+                (header == null ||
+                header instanceof Function)) {
+            checkNativeMethod(that, 
                     (Function) dec, 
-                    (Function) abstraction);
+                    (Function) header);
         }
         else if (dec instanceof Value &&
-                abstraction instanceof Value) {
-            checkSameValue(that, 
+                (header == null ||
+                header instanceof Value)) {
+            checkNativeValue(that, 
                     (Value) dec, 
-                    (Value) abstraction);
+                    (Value) header);
         }
         else if (dec instanceof Class &&
-                abstraction instanceof Class) {
-            checkSameClass(that, 
+                (header == null ||
+                header instanceof Class)) {
+            checkNativeClass(that, 
                     (Class) dec, 
-                    (Class) abstraction);
+                    (Class) header);
         }
-        else {
+        else if (header != null) {
             that.addError("native declarations not of same type: " + 
                     message(dec));
         }
     }
     
-    private void checkSameClass(Tree.Declaration that, 
-            Class dec, Class abstraction) {
-        if (dec.isShared() && !abstraction.isShared()) {
-            that.addError("native abstraction is not shared: " + 
+    private void checkNativeClass(Tree.Declaration that, 
+            Class dec, Class header) {
+        if (header == null) {
+            return;
+        }
+        if (dec.isShared() && !header.isShared()) {
+            that.addError("native header is not shared: " +
                     message(dec));
         }
-        if (!dec.isShared() && abstraction.isShared()) {
-            that.addError("native abstraction is shared: " + 
+        if (!dec.isShared() && header.isShared()) {
+            that.addError("native header is shared: " +
                     message(dec));
         }
-        if (dec.isAbstract() && !abstraction.isAbstract()) {
-            that.addError("native abstraction is not abstract: " + 
+        if (dec.isAbstract() && !header.isAbstract()) {
+            that.addError("native header is not abstract: " +
                     message(dec));
         }
-        if (!dec.isAbstract() && abstraction.isAbstract()) {
-            that.addError("native abstraction is abstract: " + 
+        if (!dec.isAbstract() && header.isAbstract()) {
+            that.addError("native header is abstract: " +
                     message(dec));
         }
-        if (dec.isFinal() && !abstraction.isFinal()) {
-            that.addError("native abstraction is not final: " + 
+        if (dec.isFinal() && !header.isFinal()) {
+            that.addError("native header is not final: " +
                     message(dec));
         }
-        if (!dec.isFinal() && abstraction.isFinal()) {
-            that.addError("native abstraction is final: " + 
+        if (!dec.isFinal() && header.isFinal()) {
+            that.addError("native header is final: " +
                     message(dec));
         }
-        if (dec.isSealed() && !abstraction.isSealed()) {
-            that.addError("native abstraction is not sealed: " + 
+        if (dec.isSealed() && !header.isSealed()) {
+            that.addError("native header is not sealed: " +
                     message(dec));
         }
-        if (!dec.isSealed() && abstraction.isSealed()) {
-            that.addError("native abstraction is sealed: " + 
+        if (!dec.isSealed() && header.isSealed()) {
+            that.addError("native header is sealed: " +
                     message(dec));
         }
-        if (dec.isAnnotation() && !abstraction.isAnnotation()) {
-            that.addError("native abstraction is not an annotation type: " + 
+        if (dec.isAnnotation() && !header.isAnnotation()) {
+            that.addError("native header is not an annotation type: " +
                     message(dec));
         }
-        if (!dec.isAnnotation() && abstraction.isAnnotation()) {
-            that.addError("native abstraction is an annotation type: " + 
+        if (!dec.isAnnotation() && header.isAnnotation()) {
+            that.addError("native header is an annotation type: " +
                     message(dec));
         }
         Type dext = dec.getExtendedType();
-        Type aext = abstraction.getExtendedType();
+        Type aext = header.getExtendedType();
         if ((dext != null && aext == null)
                 || (dext == null && aext != null)
                 || !dext.isExactly(aext)) {
-            that.addError("native classes do not extend the same type: " + 
+            that.addError("native classes do not extend the same type: " +
                     message(dec));
         }
         List<Type> dst = 
                 dec.getSatisfiedTypes();
         List<Type> ast = 
-                abstraction.getSatisfiedTypes();
+                header.getSatisfiedTypes();
         if (dst.size() != ast.size() || 
                 !dst.containsAll(ast)) {
-            that.addError("native classes do not satisfy the same interfaces: " + 
+            that.addError("native classes do not satisfy the same interfaces: " +
                     message(dec));
         }
         // FIXME probably not the right tests
-        checkClassParameters(that, 
-                dec, abstraction, 
-                dec.getReference(), 
-                abstraction.getReference(), 
+        checkClassParameters(that,
+                dec, header,
+                dec.getReference(),
+                header.getReference(),
                 true);
-        checkRefiningMemberTypeParameters(that, 
-                dec, abstraction,
-                dec.getTypeParameters(), 
-                abstraction.getTypeParameters(), 
+        checkRefiningMemberTypeParameters(that,
+                dec, header,
+                dec.getTypeParameters(),
+                header.getTypeParameters(),
                 true);
-        // TODO check shared members
+        
+        checkMissingMemberImpl(that, dec, header);
+    }
+
+    private void checkMissingMemberImpl(Tree.Declaration that, Class dec, Class header) {
+        List<Declaration> hdrMembers = getNativeMembers(header);
+        List<Declaration> implMembers = getNativeMembers(dec);
+        Iterator<Declaration> hdrIter = hdrMembers.iterator();
+        Iterator<Declaration> implIter = implMembers.iterator();
+        boolean hdrNext = true;
+        boolean implNext = true;
+        Declaration hdr = null;
+        Declaration impl = null;
+        while (hdrIter.hasNext() && implIter.hasNext()) {
+            if (hdrNext) {
+                hdr = hdrIter.next();
+            }
+            if (implNext) {
+                impl = implIter.next();
+            }
+            int cmp = declarationCmp.compare(hdr, impl);
+            if (cmp < 0) {
+                that.addError("native header '" + hdr.getName() +
+                        "' of '" + containerName(hdr) +
+                        "' has no native implementation");
+                return;
+            } else if (cmp > 0) {
+                hdrNext = false;
+                implNext = true;
+            } else {
+                hdrNext = true;
+                implNext = true;
+            }
+        }
+        if (hdrIter.hasNext()) {
+            hdr = hdrIter.next();
+            that.addError("native header '" + hdr.getName() +
+                    "' of '" + containerName(hdr) +
+                    "' has no native implementation");
+        }
     }
     
-    private void checkSameMethod(Tree.Declaration that, 
-            Function dec, Function abstraction) {
-        Type at = abstraction.getType();
+    private static final Comparator<Declaration> declarationCmp =
+            new Comparator<Declaration>() {
+        @Override
+        public int compare(Declaration o1, Declaration o2) {
+            return o1.getName().compareTo(o2.getName());
+        }
+    };
+    
+    private List<Declaration> getNativeMembers(Class dec) {
+        List<Declaration> members = dec.getMembers();
+        ArrayList<Declaration> nats = new ArrayList<Declaration>(members.size());
+        for (Declaration m : members) {
+            if (m.isNative() && !m.isFormal() && !m.isActual() && !m.isDefault()) {
+                nats.add(m);
+            }
+        }
+        Collections.sort(nats, declarationCmp);
+        return nats;
+    }
+
+    private void checkNativeMethod(Tree.Declaration that, 
+            Function dec, Function header) {
+        if (header == null) {
+            if (dec.isMember() && !dec.isFormal() && !dec.isActual() && !dec.isDefault()) {
+                that.addError("native member does not implement any header member: " +
+                        message(dec));
+            }
+            return;
+        }
+        Type at = header.getType();
         if (!dec.getType().isExactly(at)) {
-            that.addError("native implementation must have the same return type as native abstraction: " + 
-                    message(dec) + " must have the type '" + 
+            that.addError("native implementation must have the same return type as native header: " +
+                    message(dec) + " must have the type '" +
                     at.asString(that.getUnit()) + "'");
         }
-        if (dec.isShared() && !abstraction.isShared()) {
-            that.addError("native abstraction is not shared: " + 
+        if (dec.isShared() && !header.isShared()) {
+            that.addError("native header is not shared: " +
                     message(dec));
         }
-        if (!dec.isShared() && abstraction.isShared()) {
-            that.addError("native abstraction is shared: " + 
+        if (!dec.isShared() && header.isShared()) {
+            that.addError("native header is shared: " +
                     message(dec));
         }
-        if (dec.isAnnotation() && !abstraction.isAnnotation()) {
-            that.addError("native abstraction is not an annotation constructor: " + 
+        if (dec.isAnnotation() && !header.isAnnotation()) {
+            that.addError("native header is not an annotation constructor: " +
                     message(dec));
         }
-        if (!dec.isAnnotation() && abstraction.isAnnotation()) {
-            that.addError("native abstraction is an annotation constructor: " + 
+        if (!dec.isAnnotation() && header.isAnnotation()) {
+            that.addError("native header is an annotation constructor: " +
                     message(dec));
         }
         // FIXME probably not the right tests
-        checkRefiningMemberParameters(that, 
-                dec, abstraction, 
-                dec.getReference(), 
-                abstraction.getReference(), 
+        checkRefiningMemberParameters(that,
+                dec, header,
+                dec.getReference(),
+                header.getReference(),
                 true);
-        checkRefiningMemberTypeParameters(that, 
-                dec, abstraction,
-                dec.getTypeParameters(), 
-                abstraction.getTypeParameters(), 
+        checkRefiningMemberTypeParameters(that,
+                dec, header,
+                dec.getTypeParameters(),
+                header.getTypeParameters(),
                 true);
     }
     
-    private void checkSameValue(Tree.Declaration that, 
-            Value dec, Value abstraction) {
-        Type at = abstraction.getType();
+    private void checkNativeValue(Tree.Declaration that, 
+            Value dec, Value header) {
+        if (header == null) {
+            if (dec.isMember() && !dec.isFormal() && !dec.isActual() && !dec.isDefault()) {
+                that.addError("native member does not implement any header member: " +
+                        message(dec));
+            }
+            return;
+        }
+        Type at = header.getType();
         if (!dec.getType().isExactly(at)) {
-            that.addError("native implementation must have the same type as native abstraction: " + 
-                    message(dec) + " must have the type '" + 
+            that.addError("native implementation must have the same type as native header: " +
+                    message(dec) + " must have the type '" +
                     at.asString(that.getUnit()) + "'");
         }
-        if (dec.isShared() && !abstraction.isShared()) {
-            that.addError("native abstraction is not shared: " + 
+        if (dec.isShared() && !header.isShared()) {
+            that.addError("native header is not shared: " +
                     message(dec));
         }
-        if (!dec.isShared() && abstraction.isShared()) {
-            that.addError("native abstraction is shared: " + 
+        if (!dec.isShared() && header.isShared()) {
+            that.addError("native header is shared: " +
                     message(dec));
         }
-        if (dec.isVariable() && !abstraction.isVariable()) {
-            that.addError("native abstraction is not variable: " + 
+        if (dec.isVariable() && !header.isVariable()) {
+            that.addError("native header is not variable: " +
                     message(dec));
         }
-        if (!dec.isVariable() && abstraction.isVariable()) {
-            that.addError("native abstraction is variable: " + 
+        if (!dec.isVariable() && header.isVariable()) {
+            that.addError("native header is variable: " +
                     message(dec));
         }
     }
@@ -628,7 +698,7 @@ public class RefinementVisitor extends Visitor {
 		if (refinedParamLists.size()!=refiningParamLists.size()) {
 		    String subject = 
 		            forNative ? 
-    		            "native abstraction" : 
+    		            "native header" :
     		            "refined member";
 		    String current = 
 		            forNative ? 
@@ -1003,9 +1073,13 @@ public class RefinementVisitor extends Visitor {
     
     private static String containerName(
             Reference member) {
+        return containerName(member.getDeclaration());
+    }
+
+    private static String containerName(
+            Declaration member) {
         Scope container = 
-                member.getDeclaration()
-                    .getContainer();
+                member.getContainer();
         if (container instanceof Declaration) {
             Declaration dec = (Declaration) container;
             return dec.getName();

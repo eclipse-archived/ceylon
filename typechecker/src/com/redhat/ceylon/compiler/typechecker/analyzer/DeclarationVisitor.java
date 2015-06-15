@@ -15,6 +15,7 @@ import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.hasAnnotation
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.name;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getContainingClassOrInterface;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getDirectMemberForBackend;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getNativeHeader;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getTypeArgumentMap;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.intersectionOfSupertypes;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isInNativeContainer;
@@ -134,29 +135,25 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
             Declaration model, boolean checkDupe) {
         visitElement(that, model);
         
-        Declaration modelToAdd = model;
+        handleDeclarationAnnotations(that, model);
+        
+        setVisibleScope(model);
+        
+        checkFormalMember(that, model);
+        
         Tree.Identifier id = that.getIdentifier();
         if (setModelName(that, model, id)) {
             if (checkDupe) {
-                modelToAdd = 
-                        checkForNativeAnnotation(that, 
-                                model, scope);
+                checkForNativeAnnotation(that, 
+                        model, scope);
                 checkForDuplicateDeclaration(that, 
                         model, scope);
             }
         }
         //that.setDeclarationModel(model);
-        if (modelToAdd != null) {
-            unit.addDeclaration(modelToAdd);
-            Scope sc = getContainer(that);
-            sc.addMember(modelToAdd);
-        }
-        
-        handleDeclarationAnnotations(that, model);        
-        
-        setVisibleScope(model);
-        
-        checkFormalMember(that, model);
+        unit.addDeclaration(model);
+        Scope sc = getContainer(that);
+        sc.addMember(model);
     }
 
     private void visitArgument(Tree.NamedArgument that, 
@@ -196,17 +193,13 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
         }
     }
     
-    private Declaration checkForNativeAnnotation(
+    private void checkForNativeAnnotation(
             Tree.Declaration that, 
             Declaration model, Scope scope) {
-        Declaration modelToAdd = model;
-        
         Unit unit = model.getUnit();
-        Tree.AnnotationList al = that.getAnnotationList();
-        Tree.Annotation a = 
-                getAnnotation(al, "native", unit);
-        if (a != null) {
-            String backend = getAnnotationArgument(a, "");
+        if (model.isNative()) {
+            String backend = model.getNativeBackend();
+            boolean isHeader = model.isNativeHeader();
             String name = model.getName();
             boolean canBeNative = 
                     that instanceof Tree.AnyMethod ||
@@ -214,17 +207,11 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
                     that instanceof Tree.AnyAttribute;
             if (canBeNative && 
                     (model.isToplevel() || model.isMember())) {
-                if (!backend.isEmpty() && 
-                        !Backend.validAnnotation(backend)) {
-                    a.addError("illegal native backend name: '\"" + 
-                            backend + 
-                            "\"' (must be either '\"jvm\"' or '\"js\"')");
-                }
                 String moduleBackend = 
                         unit.getPackage()
                             .getModule()
                             .getNative();
-                if (!backend.isEmpty() && 
+                if (!isHeader &&
                         moduleBackend != null && 
                         !backend.equals(moduleBackend)) {
                     that.addError("native backend name on declaration conflicts with module descriptor: '\"" + 
@@ -233,9 +220,7 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
                             name + "'");
                 }
                 model.setNativeBackend(backend);
-                Declaration member = 
-                        scope.getDirectMember(name, 
-                                null, false);
+                Declaration member = getNativeHeader(model.getContainer(), name);
                 if (model.isMember() && 
                         isInNativeContainer(model)) {
                     Declaration container = 
@@ -247,66 +232,68 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
                                 name + "' of '" + 
                                 container.getName() + "'");
                     }
-                    
-                    List<Declaration> overloads = 
-                            container.getOverloads();
-                    if (overloads != null) {
-                        for (Declaration ol: overloads) {
-                            Declaration m = 
-                                    ol.getDirectMember(name, 
-                                            null, false);
-                            if (m != null) {
-                                member = m;
-                                break;
-                            }
-                        }
+                }
+                if (member == null || (member.isNative() && !member.isNativeHeader())) {
+                    // Abstraction-less native implementation, check
+                    // it's not shared
+                    if (!isHeader
+                            && (model.isToplevel()
+                                    || (model.isMember()
+                                            && ((Declaration)model.getContainer()).isNative()
+                                            && ((Declaration)model.getContainer()).isShared()))) {
+                        that.addError("native implementation must have a header: '" +
+                                model.getName() + "'");
                     }
                 }
                 if (member == null) {
-                    if (model instanceof FunctionOrValue) {
-                        FunctionOrValue m = 
-                                (FunctionOrValue) model;
-                        m.initOverloads(m);
-                    }
-                    else if (model instanceof Class) {
-                        Class c = (Class) model;
-                        c.initOverloads(c);
+                    if (model.isNativeHeader()) {
+                        // Deal with implementations from the ModelLoader
+                        Declaration loadedDecl =
+                                model.getContainer().getDirectMember(
+                                        name, null, false);
+                        // Initialize the header's overloads
+                        if (model instanceof FunctionOrValue) {
+                            FunctionOrValue m = 
+                                    (FunctionOrValue) model;
+                            if (loadedDecl != null
+                                    && loadedDecl instanceof FunctionOrValue) {
+                                m.initOverloads((FunctionOrValue)loadedDecl);
+                            } else {
+                                m.initOverloads();
+                            }
+                        }
+                        else if (model instanceof Class) {
+                            Class c = (Class) model;
+                            if (loadedDecl != null
+                                    && loadedDecl instanceof Class) {
+                                c.initOverloads((Class)loadedDecl);
+                            } else {
+                                c.initOverloads();
+                            }
+                        }
                     }
                 }
                 else {
                     if (member.isNative()) {
                         List<Declaration> overloads = 
                                 member.getOverloads();
-                        if (hasOverload(backend, model, 
+                        if (isHeader && member.isNativeHeader()) {
+                            that.addError("duplicate native header: '" + 
+                                    name + "'");
+                        }
+                        else if (hasOverload(backend, model,
                                 overloads)) {
-                            if (backend.isEmpty()) {
-                                that.addError("duplicate native header: '" + 
-                                        name + "'");
-                            }
-                            else {
-                                that.addError("duplicate native implementation: '" + 
-                                        name + "'");
-                            }
+                            that.addError("duplicate native implementation: '" + 
+                                    name + "'");
                         }
                         if (isAllowedToChangeModel(member) && 
                                 !hasModelInOverloads(model, 
                                         overloads)) {
                             overloads.add(model);
                         }
-                        //note that all native "overloads"
-                        //have to share the same list!
-                        if (model instanceof FunctionOrValue) {
-                            FunctionOrValue m = 
-                                    (FunctionOrValue) model;
-                            m.setOverloads(overloads);
-                        }
-                        else if (model instanceof Class) {
-                            Class c = (Class) model;
-                            c.setOverloads(overloads);
-                        }
                     }
                     else {
-                        if (backend.isEmpty()) {
+                        if (isHeader) {
                             that.addError("native header for non-native declaration: '" + 
                                     name + "'");
                         }
@@ -315,26 +302,10 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
                                     name + "'");
                         }
                     }
-                    if (!model.isMember() || 
-                            !isInNativeContainer(model)) {
-                        modelToAdd = null;
-                    }
                 }
-// Re-enable when we support native member/inner declarations
-//              Scope container = model.getContainer();
-//              if (container instanceof Declaration) {
-//                  Declaration ci = (Declaration) container;
-//                  if (!ci.isNative()) {
-//                      that.addError("native member belongs to a non-native declaration: '" + 
-//                              model.getName() + "' of '" + ci.getName());
-//                  } else if (!model.getNative().equals(ci.getNative())) {
-//                      that.addError("native member and its native declaration are not for the same backend: '" + 
-//                              model.getName() + "' of '" + ci.getName());
-//                  }
-//              }
             }
             else if (!(model instanceof Setter) && 
-                    !backend.isEmpty()) {
+                    !isHeader) {
                 if (!canBeNative) {
                     that.addError("native declaration is not a class, method or attribute: '" + 
                             name + "'");
@@ -345,7 +316,6 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
                 }
             }
         }
-        return modelToAdd;
     }
     
     private boolean hasOverload(String backend, 
@@ -392,7 +362,9 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
         if (name!=null) {
             if (model instanceof Setter) {
                 Setter setter = (Setter) model;
+
                 checkGetterForSetter(that, setter, unit);
+
             }
             else {
                 // this isn't the correct scope for declaration
@@ -1019,6 +991,7 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
     @Override
     public void visit(Tree.MethodArgument that) {
         Function m = new Function();
+        m.setImplemented(that.getBlock() != null);
         that.setDeclarationModel(m);
         visitArgument(that, m);
         Scope o = enterScope(m);
@@ -1109,6 +1082,7 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
         Tree.SpecifierOrInitializerExpression sie = 
                 that.getSpecifierOrInitializerExpression();
         v.setTransient(sie instanceof Tree.LazySpecifierExpression);
+        v.setImplemented(sie != null);
         visitDeclaration(that, v);
         super.visit(that);
         if (v.isInterfaceMember() && 
@@ -1155,6 +1129,7 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
         Tree.SpecifierExpression sie = 
                 that.getSpecifierExpression();
         Function m = that.getDeclarationModel();
+        m.setImplemented(sie != null);
         if (m.isFormal() && sie!=null) {
             that.addError("formal methods may not have a specification", 
                     1307);
@@ -1181,6 +1156,7 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
     public void visit(Tree.MethodDefinition that) {
         super.visit(that);
         Function m = that.getDeclarationModel();
+        m.setImplemented(that.getBlock() != null);
         Tree.Type type = that.getType();
         if (type instanceof Tree.FunctionModifier) {
             if (m.isToplevel()) {
@@ -1198,6 +1174,7 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
     public void visit(Tree.AttributeGetterDefinition that) {
         Value g = new Value();
         g.setTransient(true);
+        g.setImplemented(that.getBlock() != null);
         that.setDeclarationModel(g);
         visitDeclaration(that, g);
         Scope o = enterScope(g);
@@ -1220,6 +1197,7 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
     public void visit(Tree.AttributeArgument that) {
         Value g = new Value();
         g.setTransient(true);
+        g.setImplemented(that.getBlock() != null);
         that.setDeclarationModel(g);
         visitArgument(that, g);
         Scope o = enterScope(g);
@@ -1230,6 +1208,7 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
     @Override
     public void visit(Tree.AttributeSetterDefinition that) {
         Setter s = new Setter();
+        s.setImplemented(that.getBlock() != null);
         that.setDeclarationModel(s);
         visitDeclaration(that, s);
         Scope o = enterScope(s);
@@ -1252,7 +1231,8 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
         
         if (that.getSpecifierExpression()==null &&
                 that.getBlock()==null &&
-                !isNativeHeader(s)) {
+                !isNativeHeader(s) &&
+                !isNativeHeader(s.getGetter())) {
             that.addError("setter declaration must have a body or => specifier");
         }
     }
@@ -1690,14 +1670,23 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
                 model.setFormal(true);
             }
         }
+        if (model.isFormal() && model.isDefault()) {
+            that.addError("declaration may not be annotated both formal and default",
+                    1320);
+        }
         Tree.Annotation na = 
                 getAnnotation(al, "native", unit);
         if (na != null) {
-            model.setNativeBackend(getAnnotationArgument(na, ""));
+            String backend = getAnnotationArgument(na, "");
+            if (!Backend.validAnnotation(backend)) {
+                na.addError("illegal native backend name: '\"" +
+                        backend +
+                        "\"' (must be either '\"jvm\"' or '\"js\"')");
+            }
+            model.setNativeBackend(backend);
         }
-        if (model.isFormal() && model.isDefault()) {
-            that.addError("declaration may not be annotated both formal and default", 
-                    1320);
+        if (model.isNative() && model.isFormal()) {
+            that.addError("declaration may not be annotated both formal and native");
         }
         if (hasAnnotation(al, "actual", unit)) {
             model.setActual(true);
