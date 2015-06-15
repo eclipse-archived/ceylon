@@ -31,7 +31,7 @@ import com.redhat.ceylon.model.typechecker.model.Value;
 
 public class TypeGenerator {
 
-    private static final ErrorVisitor errVisitor = new ErrorVisitor();
+    static final ErrorVisitor errVisitor = new ErrorVisitor();
 
     /** Generates a function to initialize the specified type. */
     static void initializeType(final Node type, final GenerateJsVisitor gen) {
@@ -322,7 +322,7 @@ public class TypeGenerator {
             }
             if (d.hasConstructors()) {
                 for (Tree.Constructor cnstr : constructors) {
-                    classConstructor(cnstr, that, constructors, gen);
+                    Constructors.classConstructor(cnstr, that, constructors, gen);
                 }
             }
             if (bye)return;
@@ -428,7 +428,7 @@ public class TypeGenerator {
             gen.endLine();
         }
         for (Tree.Constructor cnstr : constructors) {
-            classConstructor(cnstr, that, constructors, gen);
+            Constructors.classConstructor(cnstr, that, constructors, gen);
         }
         //Add reference to metamodel
         gen.out(gen.getNames().name(d), ".$crtmm$=");
@@ -642,139 +642,6 @@ public class TypeGenerator {
                 }
             }
             return 0;
-        }
-    }
-
-    static boolean localConstructorDelegation(final TypeDeclaration that, final List<Tree.Constructor> constructors) {
-        if (that.isAbstract()) {
-            return true;
-        }
-        for (Tree.Constructor cnst : constructors) {
-            if (cnst.getDelegatedConstructor() != null) {
-                final TypeDeclaration superdec = cnst.getDelegatedConstructor().getType().getDeclarationModel();
-                if (superdec instanceof Class && that.getName()==null) {
-                    //Default constructor
-                    return true;
-                } else if (superdec.equals(that)) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-    static void classConstructor(final Tree.Constructor that, final Tree.ClassDefinition cdef,
-            final List<Tree.Constructor> constructors, final GenerateJsVisitor gen) {
-        gen.comment(that);
-        Constructor d = that.getDeclarationModel();
-        final Class container = cdef.getDeclarationModel();
-        final String fullName = gen.getNames().name(container) + "_" + gen.getNames().name(d);
-        if (!TypeUtils.isNativeExternal(d) || !gen.stitchNative(d, that)) {
-            final Tree.DelegatedConstructor delcons = that.getDelegatedConstructor();
-            final TypeDeclaration superdec;
-            final ParameterList superplist;
-            final boolean callAbstract;
-            if (delcons == null) {
-                superdec = null;
-                superplist = null;
-                callAbstract = false;
-            } else {
-                superdec = delcons.getType().getDeclarationModel();
-                callAbstract = superdec instanceof Class ? superdec==container :
-                    ((Constructor)superdec).getContainer()==container;
-                superplist = superdec instanceof Class ? ((Class)superdec).getParameterList() :
-                    ((Constructor)superdec).getFirstParameterList();
-            }
-            gen.out("function ", fullName);
-            final boolean forceAbstract = localConstructorDelegation(that.getDeclarationModel(), constructors);
-            if (forceAbstract) {
-                gen.out("$$a");
-            }
-            final boolean withTargs = generateParameters(cdef.getTypeParameterList(), that.getParameterList(),
-                    container, gen);
-            final String me = gen.getNames().self(container);
-            gen.beginBlock();
-            if (forceAbstract) {
-                gen.initParameters(that.getParameterList(), container, null);
-                if (delcons != null) {
-                    callSuperclass(delcons.getType(), delcons.getInvocationExpression(),
-                            container, superplist, that, callAbstract, null, gen);
-                }
-                if (!callAbstract) {
-                    gen.generateClassStatements(cdef, that, null, 1);
-                }
-                gen.out("return ", me, ";");
-                gen.endBlockNewLine(true);
-                gen.out("function ", fullName);
-                generateParameters(cdef.getTypeParameterList(), that.getParameterList(),
-                        container, gen);
-                gen.beginBlock();
-            }
-            if (!d.isAbstract()) {
-                gen.out("$init$", gen.getNames().name(container), "();");
-                gen.endLine();
-                gen.declareSelf(container);
-                gen.referenceOuter(container);
-            }
-            gen.initParameters(that.getParameterList(), container, null);
-            if (!d.isAbstract()) {
-                //Call common initializer
-                gen.out(gen.getNames().name(container), "$$c(");
-                if (withTargs) {
-                    gen.out("$$targs$$,");
-                }
-                gen.out(me, ");");
-                gen.endLine();
-            }
-            if (forceAbstract) {
-                gen.out(fullName, "$$a");
-                generateParameters(cdef.getTypeParameterList(), that.getParameterList(),
-                        container, gen);
-                gen.endLine(true);
-            } else if (delcons != null) {
-                callSuperclass(delcons.getType(), delcons.getInvocationExpression(),
-                        container, superplist, that, callAbstract, null, gen);
-            }
-            if (d.isNative()) {
-                gen.stitchConstructorHelper(cdef, "_cons_before");
-            }
-            if (callAbstract) {
-                //Pass the delegated constructor
-                Tree.Constructor pseudo1 = null;
-                if (superdec instanceof Class) {
-                    for (Tree.Constructor _cns : constructors) {
-                        if (_cns.getDeclarationModel().getName() == null) {
-                            pseudo1 = _cns;
-                        }
-                    }
-                } else {
-                    for (Tree.Constructor _cns : constructors) {
-                        if (_cns.getDeclarationModel() == superdec) {
-                            pseudo1 = _cns;
-                        }
-                    }
-                }
-                gen.generateClassStatements(cdef, pseudo1, that, 2);
-            } else if (forceAbstract) {
-                gen.generateClassStatements(cdef, that, null, 2);
-            } else {
-                gen.generateClassStatements(cdef, that, null, 0);
-            }
-            if (d.isNative()) {
-                gen.stitchConstructorHelper(cdef, "_cons_after");
-            }
-            gen.out("return ", me, ";");
-            gen.endBlockNewLine(true);
-        }
-        //Add reference to metamodel
-        gen.out(fullName, ".$crtmm$=");
-        TypeUtils.encodeForRuntime(d, that.getAnnotationList(), gen);
-        gen.endLine(true);
-        gen.out(gen.getNames().name(container), ".", fullName, "=", fullName);
-        gen.endLine(true);
-        if (gen.outerSelf(container)) {
-            gen.out(".", fullName, "=", fullName);
-            gen.endLine(true);
         }
     }
 
