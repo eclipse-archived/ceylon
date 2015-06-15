@@ -179,4 +179,9 @@ void spreadIssues() {
   compose(identity<Anything>, f553_2)(test553);
   //559
   check(["1","2","3"]==mapper559(Integer.string)([1,2,3]), "#559");
+  variable value t587 = 1;
+  value b587 = {t587}*.plus;
+  check(b587(1)==[2], "#587.1");
+  t587=2;
+  check(b587(1)==[3], "#587.2");
 }
