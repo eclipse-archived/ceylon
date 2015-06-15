@@ -183,6 +183,10 @@ public class RefinementVisitor extends Visitor {
             // so we choose another declaration to be the "header"
             List<Declaration> decls = getNativeMembers(dec.getContainer(), dec.getName());
             if (decls.size() > 1) {
+                if (!dec.isShared()) {
+                    that.addError("native implementation must have a header: " +
+                            message(dec));
+                }
                 if (decls.get(0) != dec) {
                     header = decls.get(0);
                 } else {
