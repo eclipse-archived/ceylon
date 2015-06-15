@@ -1,6 +1,5 @@
 package com.redhat.ceylon.compiler.js;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -113,75 +112,26 @@ public class SequenceGenerator {
     static void generateSpread(final Tree.QualifiedMemberOrTypeExpression that, final GenerateJsVisitor gen) {
         //Determine if it's a method or attribute
         boolean isMethod = that.getDeclaration() instanceof Function;
-        //Define a function
-        gen.out("(function()");
-        gen.beginBlock();
-        if (gen.opts.isComment() && !gen.opts.isMinify()) {
-            gen.out("//SpreadOp");
-            gen.location(that);
-            gen.endLine();
-        }
-        //Declare an array to store the values/references
-        String tmplist = gen.getNames().createTempVariable();
-        gen.out("var ", tmplist, "=[]"); gen.endLine(true);
-        //Get an iterator
-        String iter = gen.getNames().createTempVariable();
-        gen.out("var ", iter, "=");
-        gen.supervisit(that);
-        gen.out(".iterator()"); gen.endLine(true);
-        //Iterate
-        String elem = gen.getNames().createTempVariable();
-        gen.out("var ", elem); gen.endLine(true);
-        gen.out("while((", elem, "=", iter, ".next())!==", gen.getClAlias(), "finished())");
-        gen.beginBlock();
-        //Add value or reference to the array
-        gen.out(tmplist, ".push(");
         if (isMethod) {
-            gen.out("{o:", elem, ", f:", gen.memberAccess(that, elem), "}");
-        } else {
-            gen.out(gen.memberAccess(that, elem));
-        }
-        gen.out(");");
-        gen.endBlockNewLine();
-        //Gather arguments to pass to the callable
-        //Return the array of values or a Callable with the arguments
-        gen.out("return ");
-        if (isMethod) {
-            Function m = (Function)that.getDeclaration();
-            ArrayList<String> tmpvars = null;
-            if (m.getParameterLists().size() > 1) {
-                tmpvars = new ArrayList<>(m.getParameterLists().size());
-                for (int i=0;i<m.getParameterLists().size()-1;i++) {
-                    tmpvars.add(gen.getNames().createTempVariable());
-                    gen.out(gen.getClAlias(), "mplclist$(", tmplist, ",");
-                }
-            }
-            gen.out(gen.getClAlias(), "JsCallableList(", tmplist);
-            if (that.getTypeArguments() != null && that.getTypeArguments().getTypeModels()!=null && !that.getTypeArguments().getTypeModels().isEmpty()) {
+            gen.out(gen.getClAlias(), "JsCallableList(");
+            gen.supervisit(that);
+            gen.out(",function(e,a){return ",
+                    gen.memberAccess(that, "e"), ".apply(e,a);}");
+            if (that.getTypeArguments() != null && that.getTypeArguments().getTypeModels()!=null
+                    && !that.getTypeArguments().getTypeModels().isEmpty()) {
                 gen.out(",");
                 TypeUtils.printTypeArguments(that, TypeUtils.matchTypeParametersWithArguments(
                         ((Function)that.getDeclaration()).getTypeParameters(),
                         that.getTypeArguments().getTypeModels()), gen, true, null);
             }
             gen.out(")");
-            if (m.getParameterLists().size() > 1) {
-                for (int i=tmpvars.size()-1;i>=0;i--) {
-                    gen.out(",");
-                    TypeUtils.encodeParameterListForRuntime(true, that, m.getParameterLists().get(i+1), gen);
-                    gen.out(",");
-                    TypeUtils.printTypeArguments(that, that.getTypeModel().getTypeArguments(), gen, true, null);
-                    gen.out(")");
-                }
-            }
-            gen.out(";");
         } else {
-            gen.out(gen.getClAlias(), "sequence(", tmplist, ",{Element$sequence:");
+            gen.supervisit(that);
+            gen.out(".collect(function(e){return ", gen.memberAccess(that, "e"),
+                    ";},{Result$collect:");
             TypeUtils.typeNameOrList(that, that.getTypeModel().getTypeArgumentList().get(0), gen, true);
-            gen.out(",Absent$sequence:{t:", gen.getClAlias(), "Null}})||",
-                    gen.getClAlias(), "empty();");
+            gen.out("})");
         }
-        gen.endBlock();
-        gen.out("())");
     }
 
     static boolean isSpread(List<Tree.PositionalArgument> args) {
