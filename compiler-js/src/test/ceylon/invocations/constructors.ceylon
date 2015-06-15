@@ -154,6 +154,23 @@ class Test573 {
     string => sb.string;
 }
 
+class Other573 {
+    value sb = StringBuilder().append("1");
+    shared new (){
+        sb.append("a");
+    }
+    sb.append("2");
+    shared new Bar() extends Other573(){
+        sb.append("b");
+    }
+    sb.append("3");
+    shared new Baz() extends Bar(){
+        sb.append("c");
+    }
+    sb.append("4");
+    string => sb.string;
+}
+
 void testConstructors() {
   check(ToplevelBug476.Bar().x==2, "#476 toplevel");
   class NestedBug476 {
@@ -213,4 +230,7 @@ void testConstructors() {
   check(Test573().string=="12", "#573.1 expected cd got ``Test573()``");
   check(Test573.Bar().string=="123", "#573.2 expected cde got ``Test573.Bar()``");
   check(Test573.Baz().string=="1234", "#573.3 expected cdef got ``Test573.Baz()``");
+  check(Other573().string=="1a234", "#573.4 expected cd got ``Other573()``");
+  check(Other573.Bar().string=="1a2b34", "#573.5 expected cde got ``Other573.Bar()``");
+  check(Other573.Baz().string=="1a2b3c4", "#573.6 expected cdef got ``Other573.Baz()``");
 }
