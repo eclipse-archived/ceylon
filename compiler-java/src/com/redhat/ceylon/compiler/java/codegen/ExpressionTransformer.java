@@ -4186,10 +4186,14 @@ public class ExpressionTransformer extends AbstractTransformer {
                     method, producedReference, parameterList));
         } else if (decl instanceof Class) {
             Class class_ = (Class)decl;
-            final ParameterList parameterList = class_.getFirstParameterList();
-            Reference producedReference = qmte.getTarget();
-            return utilInvocation().checkNull(makeJavaStaticInvocation(gen(),
-                    class_, producedReference, parameterList));
+            if (class_.isStaticallyImportable()) {
+                return naming.makeTypeDeclarationExpression(null, class_, Naming.DeclNameFlag.QUALIFIED);
+            } else {
+                final ParameterList parameterList = class_.getFirstParameterList();
+                Reference producedReference = qmte.getTarget();
+                return utilInvocation().checkNull(makeJavaStaticInvocation(gen(),
+                        class_, producedReference, parameterList));
+            }
         } else {
             return makeErroneous(qmte, "compiler bug: unsupported static");
         }
