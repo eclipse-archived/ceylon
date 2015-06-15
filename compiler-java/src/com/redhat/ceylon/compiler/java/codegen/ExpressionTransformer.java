@@ -4459,8 +4459,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         } else if (Decl.isValueOrSharedOrCapturedParam(decl)) {
             if (decl.isToplevel()) {
                 // ERASURE
-                if ("null".equals(decl.getName())) {
-                    // FIXME this is a pretty brain-dead way to go about erase I think
+                if (isNullValue(decl)) {
                     result = makeNull();
                 } else if (isBooleanTrue(decl)) {
                     result = makeBoolean(true);
