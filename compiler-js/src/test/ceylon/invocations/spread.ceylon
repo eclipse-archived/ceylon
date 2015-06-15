@@ -131,6 +131,15 @@ void f553_2(Object     xs) {
 [Result*]([Element*]) mapper559<Element, Result>(Result(Element) f)
     =>  shuffle(curry(map559<Result, Element>))(f);
 
+object o583 {
+  shared [B*]([A*]) lift<A, B>(B(A) f)
+    =>  shuffle(curry(map<A,B>))(f);
+  shared [B*] map<A,B>([A*] list, B(A) f)
+    =>  list.collect<B>(f);
+  shared [Integer*] double([Integer*] list)
+    =>  uncurry(Sequential<Integer>.collect<Integer>)(list,2.times);
+}
+
 void spreadIssues() {
   void exec1(String(String, String) op, [String, String] args) {
     check(op(*args)=="Ceylon", "#486.1");
@@ -190,4 +199,15 @@ void spreadIssues() {
   check(t588==[1], "#588.1");
   v588=2;
   check(t588==[1], "#588.2");
+
+  value d583 = o583.lift(2.times);
+  check(d583([1,2,3])==[2,4,6], "#583.1");
+  check(o583.double([1,2,3])==[2,4,6], "#583.2");
+  Anything redux583(Anything _, Anything x) => x;
+  Anything(Anything) id583 = curry(redux583)(null);
+  if (exists test583=id583([1,2,3])) {
+    check(test583==[1,2,3], "#583.3");
+  } else {
+    fail("#583.3");
+  }
 }
