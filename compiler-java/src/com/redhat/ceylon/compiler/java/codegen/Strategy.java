@@ -280,7 +280,8 @@ class Strategy {
                         (Decl.isCeylon(cls)
                                 && model.isMember()
                                 && cls.isShared()
-                                && !cls.isAnonymous()));
+                                && !cls.isAnonymous()
+                                && !cls.isNativeHeader()));
         } else if (model instanceof Constructor) {
             Constructor ctor = (Constructor)model;
             Class cls = Decl.getConstructedClass(ctor);
