@@ -184,4 +184,10 @@ void spreadIssues() {
   check(b587(1)==[2], "#587.1");
   t587=2;
   check(b587(1)==[3], "#587.2");
+  function f588(Integer* u) => u;
+  variable value v588 = 1;
+  value t588 = f588(*{v588});
+  check(t588==[1], "#588.1");
+  v588=2;
+  check(t588==[1], "#588.2");
 }
