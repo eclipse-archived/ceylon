@@ -435,59 +435,31 @@ public class GenerateJsVisitor extends Visitor
         out(")");
     }
 
-    /** Generate the statements for a class initializer, considering the specified constructor, if any.
-     * @param cdef the class definition for which the body is generated.
-     * @param cnstr The constructor for which the statements are being generated (optional)
-     * @param cnst2 An optional constructor for which statements should also be generated
-     * (used in pseudo abstract constructor generation)
-     * @param filter Indicates if the generation should start or stop at a certain point:
-     * 0 means don't stop, 1 means stop after generating the constructor's statements,
-     * 2 means start after the constructor's statements, and include the second constructor's statements. */
-    void generateClassStatements(final Tree.ClassDefinition cdef, final Tree.Constructor cnstr,
-            final Tree.Constructor cnst2, final int filter) {
-        if (cnstr == null) {
-            visitStatements(cdef.getClassBody().getStatements());
-        } else {
-            List<String> oldRetainedVars = retainedVars.reset(null);
-            final List<? extends Statement> prevStatements = currentStatements;
-            currentStatements = cdef.getClassBody().getStatements();
-            boolean go = filter < 2;
-            for (Tree.Statement st : cdef.getClassBody().getStatements()) {
-                if (st == cnstr || st == cnst2) {
-                    if (filter == 2 && st == cnstr) {
-                        go=true;
-                    } else {
-                        ReturnConstructorVisitor rcv = new ReturnConstructorVisitor(cnstr);
-                        if (rcv.isReturns()) {
-                            out("(function(){");
-                        }
-                        for (Tree.Statement s2 : ((Tree.Constructor)st).getBlock().getStatements()) {
-                            //Ignore return statements directly in main constructor scope
-                            s2.visit(this);
-                            if (!opts.isMinify())beginNewLine();
-                            retainedVars.emitRetainedVars(this);
-                        }
-                        go=filter!=1;
-                        if (rcv.isReturns()) {
-                            out("}());");
-                        }
-                    }
-                } else if (st instanceof Tree.Constructor == false &&
-                        st instanceof Tree.Enumerated == false && go) {
-                    //Ignore return statements directly in main constructor scope
-                    st.visit(this);
-                    if (!opts.isMinify())beginNewLine();
-                    retainedVars.emitRetainedVars(this);
-                    //Remove attribute declaration in lexical style so that
-                    //every constructor adds metamodel to that attribute
-                    if (!opts.isOptimize() && cnstr != null && st instanceof Tree.AttributeDeclaration) {
-                        generatedAttributes.remove(((Tree.AttributeDeclaration)st).getDeclarationModel());
-                    }
-                }
-            }
-            retainedVars.reset(oldRetainedVars);
-            currentStatements = prevStatements;
+    void generateConstructorStatements(final Tree.Constructor cnstr,
+            List<? extends Tree.Statement> stmts) {
+        final List<String> oldRetainedVars = retainedVars.reset(null);
+        final List<? extends Statement> prevStatements = currentStatements;
+        currentStatements = stmts;
+        ReturnConstructorVisitor rcv = new ReturnConstructorVisitor(cnstr);
+        if (rcv.isReturns()) {
+            out("(function(){");
         }
+        for (Tree.Statement s2 : stmts) {
+            //Ignore return statements directly in main constructor scope
+            s2.visit(this);
+            if (!opts.isMinify())beginNewLine();
+            retainedVars.emitRetainedVars(this);
+            //Remove attribute declaration in lexical style so that
+            //every constructor adds metamodel to that attribute
+            if (!opts.isOptimize() && cnstr != null && s2 instanceof Tree.AttributeDeclaration) {
+                generatedAttributes.remove(((Tree.AttributeDeclaration)s2).getDeclarationModel());
+            }
+        }
+        if (rcv.isReturns()) {
+            out("}());");
+        }
+        retainedVars.reset(oldRetainedVars);
+        currentStatements = prevStatements;
     }
 
     void visitStatements(List<? extends Statement> statements) {
