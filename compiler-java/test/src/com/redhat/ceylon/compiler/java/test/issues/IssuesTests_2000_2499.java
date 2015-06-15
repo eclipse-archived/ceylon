@@ -350,4 +350,9 @@ public class IssuesTests_2000_2499 extends CompilerTests {
         compareWithJavaSource("bug21xx/Bug2197");
     }
     
+    @Test
+    @Ignore
+    public void testBug2198() {
+        compareWithJavaSource("bug21xx/Bug2198");
+    }
 }
