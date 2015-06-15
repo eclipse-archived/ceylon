@@ -83,7 +83,8 @@ public class MethodOrValueReferenceVisitor extends Visitor {
                 return;
             }
             TypedDeclaration d = (TypedDeclaration) decl;
-            if (Decl.equal(d, declaration)) {
+            if (Decl.equal(d, declaration) || (d.isNativeHeader() && d.getOverloads().contains(declaration))) {
+                d = declaration;
                 if (Decl.isParameter(d)) {
                     // a reference from a default argument 
                     // expression of the same parameter 
@@ -95,8 +96,8 @@ public class MethodOrValueReferenceVisitor extends Visitor {
                     
                     // Accessing another instance's member passed to a class initializer
                     if (that instanceof Tree.QualifiedMemberExpression) {
-                        if (decl instanceof TypedDeclaration
-                                && ((TypedDeclaration)decl).getOtherInstanceAccess()) {
+                        if (d instanceof TypedDeclaration
+                                && ((TypedDeclaration)d).getOtherInstanceAccess()) {
                             ((FunctionOrValue)d).setCaptured(true);
                         }
                     }
@@ -104,7 +105,7 @@ public class MethodOrValueReferenceVisitor extends Visitor {
                     if (isCapturableMplParameter(d)) {
                         ((FunctionOrValue)d).setCaptured(true);
                     }
-                } else if (Decl.isValue(d) || Decl.isGetter(decl)) {
+                } else if (Decl.isValue(d) || Decl.isGetter(d)) {
                     Value v = (Value) d;
                     v.setCaptured(true);
                     if (Decl.isObjectValue(d)){

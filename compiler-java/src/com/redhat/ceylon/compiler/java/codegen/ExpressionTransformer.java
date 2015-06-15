@@ -33,6 +33,7 @@ import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.Map;
 
+import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.compiler.java.codegen.Invocation.TransformedInvocationPrimary;
 import com.redhat.ceylon.compiler.java.codegen.Naming.DeclNameFlag;
 import com.redhat.ceylon.compiler.java.codegen.Naming.Substitution;
@@ -65,6 +66,7 @@ import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
 import com.redhat.ceylon.model.typechecker.model.Functional;
 import com.redhat.ceylon.model.typechecker.model.Generic;
 import com.redhat.ceylon.model.typechecker.model.Interface;
+import com.redhat.ceylon.model.typechecker.model.ModelUtil;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.Package;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
@@ -4420,6 +4422,15 @@ public class ExpressionTransformer extends AbstractTransformer {
                 decl = ((TypedDeclaration) decl).getOriginalDeclaration();
             }else{
                 break;
+            }
+        }
+        
+        // Make sure we're using the correct declaration in case of natives
+        // (the header might look like a field while the implementation is a getter)
+        if (decl.isNativeHeader()) {
+            Declaration d = ModelUtil.getNativeDeclaration(decl, Backend.Java);
+            if (d != null) {
+                decl = d;
             }
         }
         
