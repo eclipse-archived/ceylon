@@ -4734,37 +4734,39 @@ public class ClassTransformer extends AbstractTransformer {
         
         List<JCTree> result = objectClassBuilder.build();
         
-        if (makeLocalInstance) {
-            if(model.isSelfCaptured()){
-                // if it's captured we need to box it and define the var before the class, so it can access it
-                JCNewClass newInstance = makeNewClass(objectClassBuilder.getClassName(), false, null);
-                JCFieldAccess setter = naming.makeSelect(Naming.getLocalValueName(model), Naming.getSetterName(model));
-                JCStatement assign = make().Exec(make().Assign(setter, newInstance));
-                result = result.prepend(assign);
-
-                JCVariableDecl localDecl = makeVariableBoxDecl(null, model);
-                result = result.prepend(localDecl);
-            }else{
-                // not captured, we can define the var after the class
-                JCVariableDecl localDecl = makeLocalIdentityInstance(name, objectClassBuilder.getClassName(), false);
-                result = result.append(localDecl);
-            }
-            
-        } else if (model != null && Decl.withinClassOrInterface(model)) {
-            boolean visible = Decl.isCaptured(model);
-            int modifiers = FINAL | ((visible) ? PRIVATE : 0);
-            JCExpression type = makeJavaType(klass.getType());
-            JCExpression initialValue = makeNewClass(makeJavaType(klass.getType()), null);
-            containingClassBuilder.field(modifiers, name, type, initialValue, !visible);
-            
-            if (visible) {
-                AttributeDefinitionBuilder getter = AttributeDefinitionBuilder
-                .getter(this, name, model)
-                .modifiers(transformAttributeGetSetDeclFlags(model, false));
-                if (def instanceof Tree.ObjectDefinition) {
-                    getter.userAnnotations(expressionGen().transformAnnotations(true, OutputElement.GETTER, ((Tree.ObjectDefinition)def)));
+        if (model == null || !model.isNativeHeader()) {
+            if (makeLocalInstance) {
+                if(model.isSelfCaptured()){
+                    // if it's captured we need to box it and define the var before the class, so it can access it
+                    JCNewClass newInstance = makeNewClass(objectClassBuilder.getClassName(), false, null);
+                    JCFieldAccess setter = naming.makeSelect(Naming.getLocalValueName(model), Naming.getSetterName(model));
+                    JCStatement assign = make().Exec(make().Assign(setter, newInstance));
+                    result = result.prepend(assign);
+    
+                    JCVariableDecl localDecl = makeVariableBoxDecl(null, model);
+                    result = result.prepend(localDecl);
+                }else{
+                    // not captured, we can define the var after the class
+                    JCVariableDecl localDecl = makeLocalIdentityInstance(name, objectClassBuilder.getClassName(), false);
+                    result = result.append(localDecl);
                 }
-                result = result.appendList(getter.build());
+                
+            } else if (model != null && Decl.withinClassOrInterface(model)) {
+                boolean visible = Decl.isCaptured(model);
+                int modifiers = FINAL | ((visible) ? PRIVATE : 0);
+                JCExpression type = makeJavaType(klass.getType());
+                JCExpression initialValue = makeNewClass(makeJavaType(klass.getType()), null);
+                containingClassBuilder.field(modifiers, name, type, initialValue, !visible);
+                
+                if (visible) {
+                    AttributeDefinitionBuilder getter = AttributeDefinitionBuilder
+                    .getter(this, name, model)
+                    .modifiers(transformAttributeGetSetDeclFlags(model, false));
+                    if (def instanceof Tree.ObjectDefinition) {
+                        getter.userAnnotations(expressionGen().transformAnnotations(true, OutputElement.GETTER, ((Tree.ObjectDefinition)def)));
+                    }
+                    result = result.appendList(getter.build());
+                }
             }
         }
         
