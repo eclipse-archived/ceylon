@@ -27,9 +27,22 @@ shared object objectNativeMembersWithImpl {
 
     native shared Integer attrShared => 1;
     native("js") shared Integer attrShared => 2;
+    
+    native shared object objectShared {
+        native shared Integer test(Integer i) {
+            return i;
+        }
+    }
+    native("jvm") shared object objectShared {}
+    native("js") shared object objectShared {
+        native("js") shared Integer test(Integer i) {
+            return i;
+        }
+    }
 }
 
 void testObjectNativeMembersWithImpl() {
     value x = objectNativeMembersWithImpl.attrShared;
-    objectNativeMembersWithImpl.testShared(x);
+    value y = objectNativeMembersWithImpl.objectShared.test(x);
+    objectNativeMembersWithImpl.testShared(y);
 }
