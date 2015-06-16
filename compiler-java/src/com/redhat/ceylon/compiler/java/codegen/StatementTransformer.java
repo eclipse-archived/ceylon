@@ -3476,7 +3476,7 @@ public class StatementTransformer extends AbstractTransformer {
                         makeJavaType(caughtType), 
                         expressionGen().applyErasureAndBoxing(exceptionVar.makeIdent(), 
                                 supertype, true, true, BoxingStrategy.BOXED, caughtType, 0)));
-            elsePart = make().If(makeOptimizedTypeTest(null, exceptionVar, caughtType, caughtType), 
+            elsePart = make().If(makeOptimizedTypeTest(null, exceptionVar, caughtType, supertype), 
                     make().Block(0, catchBlock), 
                     elsePart);
         }
