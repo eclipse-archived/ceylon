@@ -45,7 +45,7 @@ public class Destructurer extends Visitor {
         this.expvar = expvar;
         this.first=first;
         that.visit(this);
-        if (!attribs.isEmpty()) {
+        if (jsw != null && !attribs.isEmpty()) {
             for (Value attr : attribs) {
                 jsw.write(";", names.self((TypeDeclaration)attr.getContainer()), ".",
                         names.name(attr), "=", names.name(attr));
