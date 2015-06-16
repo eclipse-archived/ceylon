@@ -57,6 +57,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeGetterDefinition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeSetterDefinition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.BaseMemberExpression;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.FunctionArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.LazySpecifierExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.MethodDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SequencedArgument;
@@ -2722,7 +2723,19 @@ public class ClassTransformer extends AbstractTransformer {
 
                 java.util.List<Tree.ParameterList> parameterListTrees = null;
                 if(op.getBaseMemberExpression() instanceof Tree.ParameterizedExpression){
-                    parameterListTrees = ((Tree.ParameterizedExpression)op.getBaseMemberExpression()).getParameterLists();
+                    parameterListTrees = new ArrayList<>(m.getParameterLists().size());
+                    parameterListTrees.addAll(((Tree.ParameterizedExpression)op.getBaseMemberExpression()).getParameterLists());
+                    Tree.Term term = specifierExpression.getExpression().getTerm();
+                    // mpl refined by single pl with anonymous functions
+                    // we bring each anonymous function pl up to the mpl method
+                    // and give it the given block of expr as it's specifier
+                    while (term instanceof Tree.FunctionArgument
+                            && m.getParameterLists().size() > 1) {
+                        FunctionArgument functionArgument = (Tree.FunctionArgument)term;
+                        specifierExpression.setExpression(functionArgument.getExpression());
+                        parameterListTrees.addAll(functionArgument.getParameterLists());
+                        term = functionArgument.getExpression().getTerm();
+                    }
                 }
 
                 int plIndex = 0;
