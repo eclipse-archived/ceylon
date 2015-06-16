@@ -20,6 +20,7 @@
 package com.redhat.ceylon.compiler.java.test.metamodel;
 
 import java.io.File;
+import java.util.Arrays;
 
 import org.junit.Test;
 
@@ -100,6 +101,13 @@ public class MetamodelTests extends CompilerTests {
     public void testBugCL566() {
         compareWithJavaSource("BugCL566");
         run("com.redhat.ceylon.compiler.java.test.metamodel.bugCl566");
+    }
+
+    @Test
+    public void testBugCL645() throws Throwable {
+        compile("bugCL645.ceylon");
+        runInJBossModules("run", "com.redhat.ceylon.compiler.java.test.metamodel/123", 
+                Arrays.asList("--run", "com.redhat.ceylon.compiler.java.test.metamodel::bugCL645"));
     }
 }
 
