@@ -1997,7 +1997,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     }
 
     private void complete(ClassOrInterface klass, ClassMirror classMirror) {
-        Map<MethodMirror, List<MethodMirror>> variables = new HashMap<MethodMirror, List<MethodMirror>>();
+        List<MethodMirror> variables = new LinkedList<MethodMirror>();
         boolean isFromJDK = isFromJDK(classMirror);
         boolean isCeylon = (classMirror.getAnnotation(CEYLON_CEYLON_ANNOTATION) != null);
         
@@ -2028,6 +2028,12 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 logWarning("CompanionClass missing for "+klass);
         }
 
+        boolean seenStringAttribute = false;
+        boolean seenHashAttribute = false;
+        boolean seenStringGetter = false;
+        boolean seenHashGetter = false;
+        MethodMirror stringSetter = null;
+        MethodMirror hashSetter = null;
         // Add the methods
         for(List<MethodMirror> methodMirrors : methods.values()){
             boolean isOverloaded = isMethodOverloaded(methodMirrors);
@@ -2043,17 +2049,32 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                     addValue(klass, methodMirror, getJavaAttributeName(methodName), isCeylon);
                 } else if(isSetter(methodMirror)) {
                     // We skip setters for now and handle them later
-                    variables.put(methodMirror, methodMirrors);
+                    variables.add(methodMirror);
                 } else if(isHashAttribute(methodMirror)) {
                     // ERASURE
                     // Un-erasing 'hash' attribute from 'hashCode' method
                     addValue(klass, methodMirror, "hash", isCeylon);
+                    seenHashAttribute = true;
                 } else if(isStringAttribute(methodMirror)) {
                     // ERASURE
                     // Un-erasing 'string' attribute from 'toString' method
                     addValue(klass, methodMirror, "string", isCeylon);
+                    seenStringAttribute = true;
                 } else if(!methodMirror.getName().equals("hash")
                         && !methodMirror.getName().equals("string")){
+                    if(isStringGetter(methodMirror))
+                        seenStringGetter = true;
+                    else if(isHashGetter(methodMirror))
+                        seenHashGetter = true;
+                    else if(isStringSetter(methodMirror)){
+                        stringSetter = methodMirror;
+                        // we will perhaps add it later
+                        continue;
+                    }else if(isHashSetter(methodMirror)){
+                        hashSetter = methodMirror;
+                        // we will perhaps add it later
+                        continue;
+                    }
                     // normal method
                     Function m = addMethod(klass, methodMirror, classMirror, isCeylon, isOverloaded);
                     if (m.isOverloaded()) {
@@ -2121,8 +2142,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         }
 
         // Now mark all Values for which Setters exist as variable
-        for(Entry<MethodMirror, List<MethodMirror>> setterEntry : variables.entrySet()){
-            MethodMirror setter = setterEntry.getKey();
+        for(MethodMirror setter : variables){
             String name = getJavaAttributeName(setter.getName());
             // make sure we handle private postfixes
             name = JvmBackendUtil.strip(name, isCeylon, setter.isPublic());
@@ -2163,6 +2183,37 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             }
         }
 
+        // special cases if we have hashCode() setHash() and no getHash()
+        if(hashSetter != null){
+            boolean addSetter = true;
+            if(seenHashAttribute && !seenHashGetter){
+                Declaration attr = klass.getDirectMember("hash", null, false);
+                if(attr instanceof JavaBeanValue){
+                    ((JavaBeanValue) attr).setVariable(true);
+                    ((JavaBeanValue) attr).setSetterName(hashSetter.getName());
+                    addSetter = false;
+                }
+            }
+            if(addSetter){
+                addMethod(klass, hashSetter, classMirror, isCeylon, false);
+            }
+        }
+        // special cases if we have toString() setString() and no getString()
+        if(stringSetter != null){
+            boolean addSetter = true;
+            if(seenStringAttribute && !seenStringGetter){
+                Declaration attr = klass.getDirectMember("string", null, false);
+                if(attr instanceof JavaBeanValue){
+                    ((JavaBeanValue) attr).setVariable(true);
+                    ((JavaBeanValue) attr).setSetterName(stringSetter.getName());
+                    addSetter = false;
+                }
+            }
+            if(addSetter){
+                addMethod(klass, stringSetter, classMirror, isCeylon, false);
+            }
+        }
+        
         // In some cases, where all constructors are ignored, we can end up with no constructor, so
         // pretend we have one which takes no parameters (eg. ceylon.language.String).
         if(klass instanceof Class
@@ -2610,7 +2661,31 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         boolean hasBooleanReturn = (methodMirror.getReturnType().getKind() == TypeKind.BOOLEAN);
         return (matchesGet && hasNonVoidReturn || matchesIs && hasBooleanReturn) && hasNoParams;
     }
-    
+
+    private boolean isStringGetter(MethodMirror methodMirror) {
+        if(!isNonGenericMethod(methodMirror))
+            return false;
+        String name = methodMirror.getName();
+        boolean matchesGet = "getString".equals(name);
+        boolean matchesIs = "isString".equals(name);
+        boolean hasNoParams = methodMirror.getParameters().size() == 0;
+        boolean hasNonVoidReturn = (methodMirror.getReturnType().getKind() != TypeKind.VOID);
+        boolean hasBooleanReturn = (methodMirror.getReturnType().getKind() == TypeKind.BOOLEAN);
+        return (matchesGet && hasNonVoidReturn || matchesIs && hasBooleanReturn) && hasNoParams;
+    }
+
+    private boolean isHashGetter(MethodMirror methodMirror) {
+        if(!isNonGenericMethod(methodMirror))
+            return false;
+        String name = methodMirror.getName();
+        boolean matchesGet = "getHash".equals(name);
+        boolean matchesIs = "isHash".equals(name);
+        boolean hasNoParams = methodMirror.getParameters().size() == 0;
+        boolean hasNonVoidReturn = (methodMirror.getReturnType().getKind() != TypeKind.VOID);
+        boolean hasBooleanReturn = (methodMirror.getReturnType().getKind() == TypeKind.BOOLEAN);
+        return (matchesGet && hasNonVoidReturn || matchesIs && hasBooleanReturn) && hasNoParams;
+    }
+
     private boolean isSetter(MethodMirror methodMirror) {
         if(!isNonGenericMethod(methodMirror))
             return false;
@@ -2618,6 +2693,26 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         boolean matchesSet = name.length() > 3 && name.startsWith("set") 
                 && isStartOfJavaBeanPropertyName(name.codePointAt(3))
                 && !"setString".equals(name) && !"setHash".equals(name) && !"setEquals".equals(name);
+        boolean hasOneParam = methodMirror.getParameters().size() == 1;
+        boolean hasVoidReturn = (methodMirror.getReturnType().getKind() == TypeKind.VOID);
+        return matchesSet && hasOneParam && hasVoidReturn;
+    }
+
+    private boolean isStringSetter(MethodMirror methodMirror) {
+        if(!isNonGenericMethod(methodMirror))
+            return false;
+        String name = methodMirror.getName();
+        boolean matchesSet = name.equals("setString");
+        boolean hasOneParam = methodMirror.getParameters().size() == 1;
+        boolean hasVoidReturn = (methodMirror.getReturnType().getKind() == TypeKind.VOID);
+        return matchesSet && hasOneParam && hasVoidReturn;
+    }
+
+    private boolean isHashSetter(MethodMirror methodMirror) {
+        if(!isNonGenericMethod(methodMirror))
+            return false;
+        String name = methodMirror.getName();
+        boolean matchesSet = name.equals("setHash");
         boolean hasOneParam = methodMirror.getParameters().size() == 1;
         boolean hasVoidReturn = (methodMirror.getReturnType().getKind() == TypeKind.VOID);
         return matchesSet && hasOneParam && hasVoidReturn;
