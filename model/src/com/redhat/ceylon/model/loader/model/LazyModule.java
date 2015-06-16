@@ -180,6 +180,8 @@ public abstract class LazyModule extends Module {
             int sep = path.lastIndexOf('/');
             if(sep != -1)
                 path = path.substring(0, sep);
+            else
+                path = "";// default package
             String pkg = path;
             // make sure we unquote any package part
             pkg = pkg.replace("$", "");

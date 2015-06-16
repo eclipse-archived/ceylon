@@ -151,6 +151,8 @@ public class CachedTOCJars {
             if (jar != null) {
                 try {
                     // add a trailing / to only list members
+                    boolean emptyPackage = path.isEmpty();
+                    // only used for non-empty packages
                     path += "/";
                     ZipFile zf = new ZipFile(jar);
                     try{
@@ -160,9 +162,17 @@ public class CachedTOCJars {
                             ZipEntry entry = entries.nextElement();
                             String name = entry.getName();
                             // only cache class files
-                            if(!entry.isDirectory() && name.startsWith(path)){
-                                String part = name.substring(path.length());
-                                if(part.indexOf('/') == -1)
+                            if(!entry.isDirectory()){
+                                String part = null;
+                                if(!emptyPackage && name.startsWith(path)){
+                                    // keep only the part after the package name
+                                    part = name.substring(path.length());
+                                }else if(emptyPackage){
+                                    // keep it all, we'll filter later those in subfolders
+                                    part = name;
+                                }
+                                // only keep those not in subfolders
+                                if(part != null && part.indexOf('/') == -1)
                                     ret.add(name);
                             }
                         }
