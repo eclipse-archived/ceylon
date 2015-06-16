@@ -237,7 +237,7 @@ public class FreeClass
         return instantiate(typeArguments, empty_.get_());
     }
 
-    @TypeInfo("ceylon.language::Anything")
+    @TypeInfo("ceylon.language::Object")
     @Override
     public java.lang.Object instantiate(
             @Name("typeArguments") @Defaulted 
@@ -272,10 +272,10 @@ public class FreeClass
     }
 
     @SuppressWarnings("unchecked")
-    @TypeInfo("ceylon.language::Anything")
+    @TypeInfo("ceylon.language::Object")
     @Override
     public java.lang.Object memberInstantiate(
-            @Name("container") @TypeInfo("ceylon.language::Anything")
+            @Name("container") @TypeInfo("ceylon.language::Object")
             java.lang.Object container,
             @Name("typeArguments") @Defaulted 
             @TypeInfo("ceylon.language::Sequential<ceylon.language.meta.model::Type<ceylon.language::Anything>>")
