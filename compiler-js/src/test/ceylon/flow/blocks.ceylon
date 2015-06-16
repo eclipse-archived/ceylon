@@ -81,3 +81,21 @@ void issue526() {
   task();
   check(sb.string=="nested nested nested task", "#526.2");
 }
+
+void issue589() {
+  value sb = StringBuilder();
+  variable {Anything()*} closures = [];
+  for (x in ["4", "3"]) {
+    closures = closures.follow(() => sb.append(x));
+  }
+
+  value it = ["2", "1"].iterator();
+  while (!is Finished x = it.next()) {
+    closures = closures.follow(() => sb.append(x));
+  }
+
+  for (f in closures) {
+    f();
+  }
+  check(sb.string=="1234", "#589 expected 1234 got ``sb``");
+}
