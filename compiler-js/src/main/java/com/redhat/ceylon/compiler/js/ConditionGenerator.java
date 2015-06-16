@@ -131,10 +131,8 @@ public class ConditionGenerator {
             Tree.Block block, String keyword) {
         final List<VarHolder> vars = gatherVariables(conditions, true);
         specialConditions(vars, conditions, keyword);
-        final Set<Value> caps = getCaptured(vars);
-        //TODO pass caps
         if (block != null) {
-            gen.encloseBlockInFunction(block, true);
+            gen.encloseBlockInFunction(block, true, getCaptured(vars));
         }
         return vars;
     }
@@ -221,20 +219,23 @@ public class ConditionGenerator {
         final List<VarHolder> vars = specialConditionsAndBlock(ifClause.getConditionList(), ifBlock, "if");
         if (anoserque != null) {
             final Tree.Variable elsevar = anoserque.getVariable();
+            final Value elseDec = elsevar != null ? elsevar.getDeclarationModel() : null;
             if (elsevar != null) {
                 for (VarHolder vh : vars) {
-                    if (vh.var.getDeclarationModel().getName().equals(elsevar.getDeclarationModel().getName())) {
-                        names.forceName(elsevar.getDeclarationModel(), vh.name);
-                        directAccess.add(elsevar.getDeclarationModel());
+                    if (vh.var.getDeclarationModel().getName().equals(elseDec.getName())) {
+                        names.forceName(elseDec, vh.name);
+                        directAccess.add(elseDec);
                         break;
                     }
                 }
             }
             gen.out("else");
-            gen.encloseBlockInFunction(anoserque.getBlock(), true);
-            if (elsevar != null) {
-                directAccess.remove(elsevar.getDeclarationModel());
-                names.forceName(elsevar.getDeclarationModel(), null);
+            gen.encloseBlockInFunction(anoserque.getBlock(), true,
+                    elseDec != null && elseDec.isCaptured() ?
+                            Collections.singleton(elseDec) : null);
+            if (elseDec != null) {
+                directAccess.remove(elseDec);
+                names.forceName(elseDec, null);
             }
         }
         for (VarHolder v : vars) {
@@ -399,13 +400,15 @@ public class ConditionGenerator {
         gen.out("if(");
         final Tree.CaseItem item = cc.getCaseItem();
         Tree.Variable caseVar = null;
+        Value caseDec = null;
         if (item instanceof IsCase) {
             IsCase isCaseItem = (IsCase) item;
             gen.generateIsOfType(item, expvar, isCaseItem.getType().getTypeModel(), null, false);
             caseVar = isCaseItem.getVariable();
             if (caseVar != null) {
-                directAccess.add(caseVar.getDeclarationModel());
-                names.forceName(caseVar.getDeclarationModel(), expvar);
+                caseDec = caseVar.getDeclarationModel();
+                directAccess.add(caseDec);
+                names.forceName(caseDec, expvar);
             }
         } else if (item instanceof Tree.SatisfiesCase) {
             item.addError("case(satisfies) not yet supported", Backend.JavaScript);
@@ -443,11 +446,13 @@ public class ConditionGenerator {
             gen.out(";");
         } else {
             gen.out(" ");
-            gen.encloseBlockInFunction(cc.getBlock(), true);
+            Set<Value> cap = caseDec != null && caseDec.isCaptured() ?
+                    Collections.singleton(caseDec) : null;
+            gen.encloseBlockInFunction(cc.getBlock(), true, cap);
         }
-        if (caseVar != null) {
-            directAccess.remove(caseVar.getDeclarationModel());
-            names.forceName(caseVar.getDeclarationModel(), null);
+        if (caseDec != null) {
+            directAccess.remove(caseDec);
+            names.forceName(caseDec, null);
         }
     }
 
@@ -476,16 +481,7 @@ public class ConditionGenerator {
         vh.destr.getSpecifierExpression().visit(gen);
         gen.out(")");
         vh.vars=d.getVariables();
-        Set<Value> caps = null;
-        for (Tree.Variable v : vh.vars) {
-            if (v.getDeclarationModel() != null && v.getDeclarationModel().isCaptured()) {
-                if (caps == null) {
-                    caps = new HashSet<>();
-                }
-                caps.add(v.getDeclarationModel());
-            }
-        }
-        vh.captured=caps;
+        vh.captured=d.getCapturedValues();
     }
 
     /** Get all the captured variables from the set of VarHolders. */

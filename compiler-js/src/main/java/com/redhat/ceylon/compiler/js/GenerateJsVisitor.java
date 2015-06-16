@@ -3220,7 +3220,7 @@ public class GenerateJsVisitor extends Visitor
             out("break;");
         } else {
             ContinueBreakVisitor top=continues.peek();
-            if (that.getScope()==top.getScope()) {
+            if (top.belongs(that)) {
                 out(top.getBreakName(), "=true; return;");
             } else {
                 out("break;");
@@ -3232,7 +3232,7 @@ public class GenerateJsVisitor extends Visitor
             out("continue;");
         } else {
             ContinueBreakVisitor top=continues.peek();
-            if (that.getScope()==top.getScope()) {
+            if (top.belongs(that)) {
                 out(top.getContinueName(), "=true; return;");
             } else {
                 out("continue;");
@@ -3374,28 +3374,45 @@ public class GenerateJsVisitor extends Visitor
         FunctionHelper.methodArgument(that, this);
     }
 
-    /** Determines whether the specified block should be enclosed in a function. */
-    public boolean shouldEncloseBlock(Tree.Block block) {
-        // just check if the block contains a captured declaration
-        for (Tree.Statement statement : block.getStatements()) {
-            if (statement instanceof Tree.Declaration) {
-                if (((Tree.Declaration) statement).getDeclarationModel().isCaptured()) {
-                    return true;
-                }
-            }
+    void outputCapturedValues(Set<Value> caps) {
+        if (caps == null || caps.isEmpty()) {
+            return;
         }
-        return false;
+        boolean first=true;
+        for (Value v : caps) {
+            if (first) {
+                out("var ");
+            } else {
+                out(",");
+            }
+            first=false;
+            final String cn = names.createTempVariable();
+            out(cn, "=", names.name(v));
+            names.forceName(v, cn);
+        }
+        out(";");
+    }
+    void forgetCapturedValues(Set<Value> caps) {
+        if (caps == null) {
+            return;
+        }
+        for (Value v : caps) {
+            directAccess.remove(v);
+            names.forceName(v, null);
+        }
     }
 
     /** Encloses the block in a function, IF NEEDED. */
-    void encloseBlockInFunction(final Tree.Block block, final boolean markBlock) {
-        final boolean wrap=shouldEncloseBlock(block);
-        final ContinueBreakVisitor cbv = new ContinueBreakVisitor(block, names);
+    void encloseBlockInFunction(final Tree.Block block, final boolean markBlock,
+            final Set<Value> capturedValues) {
+        boolean wrap = (capturedValues != null && !capturedValues.isEmpty())
+                || new BlockWithCaptureVisitor(block).hasCapture();
+        if (markBlock) {
+            beginBlock();
+        }
         if (wrap) {
+            final ContinueBreakVisitor cbv = new ContinueBreakVisitor(block, names);
             continues.push(cbv);
-            if (markBlock) {
-                beginBlock();
-            }
             boolean vars=false;
             if (cbv.isContinues()) {
                 out("var ", cbv.getContinueName(), "=false");
@@ -3405,29 +3422,23 @@ public class GenerateJsVisitor extends Visitor
                 out(vars?",":"var ", cbv.getBreakName(), "=false");
                 vars=true;
             }
-            out(vars?",":"var ", cbv.getReturnName(), "=(function()");
-            if (!markBlock) {
-                beginBlock();
-            }
+            out(vars?",":"var ", cbv.getReturnName(), "=(function(){");
+            outputCapturedValues(capturedValues);
         }
-        if (markBlock) {
-            block.visit(this);
-        } else {
-            visitStatements(block.getStatements());
-        }
+        visitStatements(block.getStatements());
         if (wrap) {
-            continues.pop();
-            if (!markBlock)endBlock();
-            out("());if(", cbv.getReturnName(), "!==undefined){return ", cbv.getReturnName(), ";}");
+            final ContinueBreakVisitor cbv = continues.pop();
+            out("}());if(", cbv.getReturnName(), "!==undefined){return ", cbv.getReturnName(), ";}");
             if (cbv.isContinues()) {
-                out("else if(", cbv.getContinueName(),"===true){continue;}");
+                out("else if(", cbv.getContinueName(),"){continue;}");
             }
             if (cbv.isBreaks()) {
-                out("else if(", cbv.getBreakName(),"===true){break;}");
+                out("else if(", cbv.getBreakName(),"){break;}");
             }
-            if (markBlock) {
-                endBlockNewLine();
-            }
+            forgetCapturedValues(capturedValues);
+        }
+        if (markBlock) {
+            endBlockNewLine();
         }
     }
 
