@@ -2217,15 +2217,34 @@ public class StatementTransformer extends AbstractTransformer {
         
         @Override
         protected JCExpression makeIndexedAccess() {
-            if (step == null && elementType.isExactly(typeFact().getIntegerType())) {
-                return make().Binary(JCTree.PLUS, indexName.makeIdent(), indexableName.makeIdent());
-            } else {
-                return make().Conditional(make().Binary(JCTree.EQ, stepName.makeIdent(), make().Literal(1L)),
-                        make().Binary(JCTree.PLUS, indexName.makeIdent(), indexableName.makeIdent()),
-                        make().Apply(null,
+            if (elementType.isExactly(typeFact().getIntegerType())) {
+                if (step == null) {
+                    return make().Binary(JCTree.PLUS, indexName.makeIdent(), indexableName.makeIdent());
+                } else{ 
+                    return make().Conditional(make().Binary(JCTree.EQ, stepName.makeIdent(), make().Literal(1L)),
+                            make().Binary(JCTree.PLUS, indexName.makeIdent(), indexableName.makeIdent()),
+                            make().Apply(null,
+                                naming.makeSelect(makeJavaType(elementType, JT_NO_PRIMITIVES), "neighbour"),
+                                List.<JCExpression>of(
+                                        indexableName.makeIdent(), indexName.makeIdent())));
+                }
+            } else {// must be character
+                if (step == null) {
+                    return make().Apply(null,
                             naming.makeSelect(makeJavaType(elementType, JT_NO_PRIMITIVES), "neighbour"),
                             List.<JCExpression>of(
-                                    indexableName.makeIdent(), indexName.makeIdent())));
+                                    indexableName.makeIdent(), indexName.makeIdent()));
+                } else {
+                    return make().Conditional(make().Binary(JCTree.EQ, stepName.makeIdent(), make().Literal(1L)),
+                            make().Apply(null,
+                                    naming.makeSelect(makeJavaType(elementType, JT_NO_PRIMITIVES), "codepoint"),
+                                    List.<JCExpression>of(
+                            make().Binary(JCTree.PLUS, indexName.makeIdent(), indexableName.makeIdent()))),
+                            make().Apply(null,
+                                naming.makeSelect(makeJavaType(elementType, JT_NO_PRIMITIVES), "neighbour"),
+                                List.<JCExpression>of(
+                                        indexableName.makeIdent(), indexName.makeIdent())));
+                }
             }
         }
         
