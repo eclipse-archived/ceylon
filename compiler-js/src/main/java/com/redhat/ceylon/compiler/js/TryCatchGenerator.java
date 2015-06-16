@@ -2,11 +2,13 @@ package com.redhat.ceylon.compiler.js;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
+import com.redhat.ceylon.model.typechecker.model.Value;
 
 public class TryCatchGenerator {
 
@@ -45,6 +47,7 @@ public class TryCatchGenerator {
             gen.endLine(true);
         }
         gen.out("try");
+        Set<Value> caps = null;
         if (resources != null) {
             gen.out("{");
             //Initialize the resources
@@ -58,9 +61,15 @@ public class TryCatchGenerator {
                     gen.out(";", tvar, ".obtain();", resourceVar.var, "=", tvar);
                 }
                 gen.endLine(true);
+                if (resourceVar.captured != null) {
+                    if (caps == null) {
+                        caps = new HashSet<>(resourceVars.size());
+                    }
+                    caps.add(resourceVar.captured);
+                }
             }
         }
-        gen.encloseBlockInFunction(that.getTryClause().getBlock(), true);
+        gen.encloseBlockInFunction(that.getTryClause().getBlock(), true, caps);
         if (resources != null) {
             //Destroy/release resources
             Collections.reverse(resourceVars);
@@ -123,7 +132,7 @@ public class TryCatchGenerator {
 
         if (that.getFinallyClause() != null) {
             gen.out("finally");
-            gen.encloseBlockInFunction(that.getFinallyClause().getBlock(), true);
+            gen.encloseBlockInFunction(that.getFinallyClause().getBlock(), true, caps);
         }
     }
 
@@ -131,16 +140,20 @@ public class TryCatchGenerator {
         final boolean destroy;
         final String var;
         final Tree.Resource r;
+        final Value captured;
         Res(Tree.Resource r) {
             this.r = r;
             if (r.getVariable() != null) {
                 destroy = r.getVariable().getType().getTypeModel().isSubtypeOf(
                         r.getUnit().getDestroyableType());
                 var = gen.getNames().name(r.getVariable().getDeclarationModel());
+                captured = r.getVariable().getDeclarationModel().isCaptured() ?
+                        r.getVariable().getDeclarationModel() : null;
             } else {
                 destroy = r.getExpression().getTypeModel().isSubtypeOf(
                         r.getUnit().getDestroyableType());
                 var = gen.getNames().createTempVariable();
+                captured = null;
             }
         }
     }

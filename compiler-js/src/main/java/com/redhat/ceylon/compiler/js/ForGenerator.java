@@ -1,10 +1,12 @@
 package com.redhat.ceylon.compiler.js;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.NaturalLiteral;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
+import com.redhat.ceylon.model.typechecker.model.Value;
 
 public class ForGenerator {
 
@@ -26,28 +28,31 @@ public class ForGenerator {
         }
         final Tree.ForIterator foriter = that.getForClause().getForIterator();
         boolean hasElse = that.getElseClause() != null && !that.getElseClause().getBlock().getStatements().isEmpty();
-        final String itemVar = generateForLoop(foriter, hasElse);
-        gen.encloseBlockInFunction(that.getForClause().getBlock(), false);
+        final Set<Value> caps = new HashSet<>();
+        final String itemVar = generateForLoop(foriter, hasElse, caps);
+        gen.encloseBlockInFunction(that.getForClause().getBlock(), false, caps);
         //If there's an else block, check for normal termination
         gen.endBlock();
         if (hasElse) {
             gen.endLine();
             gen.out("if(", gen.getClAlias(), "finished()", "===", itemVar, ")");
-            gen.encloseBlockInFunction(that.getElseClause().getBlock(), true);
+            gen.encloseBlockInFunction(that.getElseClause().getBlock(), true, null);
         }
     }
 
     /** Generates code for the beginning of a "for" loop, returning the name of the variable used for the item. */
-    private String generateForLoop(Tree.ForIterator that, boolean hasElse) {
+    private String generateForLoop(Tree.ForIterator that, boolean hasElse, Set<Value> capturedValues) {
         final Tree.SpecifierExpression iterable = that.getSpecifierExpression();
         final String itemVar;
         boolean captured=false;
         if (that instanceof Tree.ValueIterator) {
-            captured=((Tree.ValueIterator)that).getVariable().getDeclarationModel().isCaptured();
+            final Value val = ((Tree.ValueIterator)that).getVariable().getDeclarationModel();
+            captured=val.isCaptured();
             if (captured) {
                 itemVar = gen.getNames().createTempVariable();
+                capturedValues.add(val);
             } else {
-                itemVar = gen.getNames().name(((Tree.ValueIterator)that).getVariable().getDeclarationModel());
+                itemVar = gen.getNames().name(val);
             }
         } else {
             itemVar = gen.getNames().createTempVariable();
@@ -67,7 +72,11 @@ public class ForGenerator {
             directAccess.add(((Tree.ValueIterator)that).getVariable().getDeclarationModel());
         } else if (that instanceof Tree.PatternIterator) {
             gen.out("var ");
-            new Destructurer(((Tree.PatternIterator) that).getPattern(), gen, directAccess, itemVar, true);
+            Destructurer d = new Destructurer(((Tree.PatternIterator) that).getPattern(), gen, directAccess,
+                    itemVar, true);
+            if (d.getCapturedValues() != null) {
+                capturedValues.addAll(d.getCapturedValues());
+            }
             gen.endLine(true);
         }
         return itemVar;
