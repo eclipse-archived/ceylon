@@ -342,218 +342,216 @@ public final class @Classname@ implements ReifiedType {
      * elements of this primitive Java array.
      */
     @TypeInfo("ceylon.language::Iterable<@BoxedTypeName@,ceylon.language::Null>")
-    public @Classname@Iterable getIterable() {
+    public ceylon.language.Iterable<@BoxedType@,ceylon.language.Null> getIterable() {
         throw Util.makeJavaArrayWrapperException();
     }
     
     @Ignore
-    public static @Classname@Iterable getIterable(@PrimitiveType@[] value) {
+    public static ceylon.language.Iterable<@BoxedType@,ceylon.language.Null> getIterable(@PrimitiveType@[] value) {
         return new @Classname@Iterable(value);
     }
+}
+
+/* Implement Iterable */
+class @Classname@Iterable 
+extends BaseIterable<@BoxedType@, ceylon.language.Null> {
     
-    /* Implement Iterable */
+    /** The array over which we iterate */
+    private final @PrimitiveType@[] array;
+    /** The index where iteration starts */
+    private final int start;
+    /** The step size of iteration */
+    private final int step;
+    /** The index one beyond where iteration ends */
+    private final int end;
+    
     @Ignore
-    public static class @Classname@Iterable 
-    extends BaseIterable<@BoxedType@, ceylon.language.Null> {
-        
-        /** The array over which we iterate */
-        private final @PrimitiveType@[] array;
-        /** The index where iteration starts */
-        private final int start;
-        /** The step size of iteration */
-        private final int step;
-        /** The index one beyond where iteration ends */
-        private final int end;
-        
-        @Ignore
-        public @Classname@Iterable(@PrimitiveType@[] array) {
-            this(array, 0, array.length, 1);
+    public @Classname@Iterable(@PrimitiveType@[] array) {
+        this(array, 0, array.length, 1);
+    }
+    
+    @Ignore
+    private @Classname@Iterable(@PrimitiveType@[] array, 
+            int start, int end, int step) {
+        super(@BoxedType@.$TypeDescriptor$, Null.$TypeDescriptor$);
+        if (start < 0) {
+            throw new ceylon.language.AssertionError("start must be positive");
+        }
+        if (end < 0) {
+            throw new ceylon.language.AssertionError("end must be positive");
+        }
+        if (step <= 0) {
+            throw new ceylon.language.AssertionError("step size must be greater than zero");
         }
         
-        @Ignore
-        private @Classname@Iterable(@PrimitiveType@[] array, 
-                int start, int end, int step) {
-        	super(@BoxedType@.$TypeDescriptor$, Null.$TypeDescriptor$);
-            if (start < 0) {
-                throw new ceylon.language.AssertionError("start must be positive");
+        this.array = array;
+        this.start = start;
+        this.end = end;
+        this.step = step;
+    }
+    
+    @Override
+    public boolean containsAny(Iterable<? extends Object, ? extends Object> arg0) {
+        Iterator<? extends Object> iter = arg0.iterator();
+        Object item;
+        while (!((item = iter.next()) instanceof Finished)) {
+            if (item instanceof @BoxedType@) {
+                for (int ii = this.start; ii < this.end; ii+=this.step) {
+                    if (array[ii] == ((@BoxedType@)item).@UnboxMethod@()) {
+                        return true;
+                    }
+                }
             }
-            if (end < 0) {
-                throw new ceylon.language.AssertionError("end must be positive");
+        }
+        return false;
+    }
+    
+    @Override
+    public boolean containsEvery(
+            Iterable<? extends Object, ? extends Object> arg0) {
+        Iterator<? extends Object> iter = arg0.iterator();
+        Object item;
+        OUTER: while (!((item = iter.next()) instanceof Finished)) {
+            if (item instanceof @BoxedType@) {
+                for (int ii = this.start; ii < this.end; ii+=this.step) {
+                    if (array[ii] == ((@BoxedType@)item).@UnboxMethod@()) {
+                        continue OUTER;
+                    }
+                }
+            } 
+            return false;
+        }
+        return true;
+    }
+    
+    @Override
+    public boolean any(Callable<? extends ceylon.language.Boolean> arg0) {
+        for (int ii=this.start; ii < this.end; ii+=this.step) {
+            if (arg0.$call$(@BoxedType@.instance(array[ii])).booleanValue()) {
+                return true;
             }
-            if (step <= 0) {
-                throw new ceylon.language.AssertionError("step size must be greater than zero");
+        }
+        return false;
+    }
+    
+    @Override
+    public boolean contains(Object item) {
+        for (int ii = this.start; ii < this.end; ii+=this.step) {
+            if (item instanceof @BoxedType@ 
+                    && array[ii] == ((@BoxedType@)item).@UnboxMethod@()) {
+                return true;
             }
+        }
+        return false;
+    }
+    
+    @Override
+    public <Default> Iterable<? extends Object, ? extends Null> defaultNullElements(
+            @Ignore
+            TypeDescriptor $reified$Default, 
+            Default defaultValue) {
+        return this;
+    }
+    
+    @Override
+    public Iterable<? extends @BoxedType@, ? extends Object> getCoalesced() {
+        return this;
+    }
+    
+    @Override
+    public boolean getEmpty() {
+        return this.end <= this.start;
+    }
+    
+    @Override
+    public long getSize() {
+        return java.lang.Math.max(0, (this.end-this.start+this.step-1)/this.step);
+    }
+    
+    @Override
+    public @BoxedType@ getFirst() {
+        return this.getEmpty() ? null : @BoxedType@.instance(this.array[this.start]);
+    }
+    
+    
+    @Override
+    public @BoxedType@ getLast() {
+        return this.getEmpty() ? null : @BoxedType@.instance(this.array[this.end-1]);
+    }
+    
+    @Override
+    public @Classname@Iterable getRest() {
+        return new @Classname@Iterable(this.array, this.start+1, this.end, this.step);
+    }
+    
+    @Override
+    public Sequential<? extends @BoxedType@> sequence() {
+        // Note: Sequential is immutable, and we don't know where the array
+        // came from, so however we create the sequence we must take a copy
+        //TODO: use a more efficient imple, like in List.sequence()
+        return super.sequence();
+    }
+    
+    @Override
+    public Iterator<? extends @BoxedType@> iterator() {
+        if (this.getEmpty()) {
+            return (Iterator)ceylon.language.emptyIterator_.get_();
+        }
+        return new Iterator<@BoxedType@>() {
             
-            this.array = array;
-            this.start = start;
-            this.end = end;
-            this.step = step;
-        }
-        
-        @Override
-        public boolean containsAny(Iterable<? extends Object, ? extends Object> arg0) {
-            Iterator<? extends Object> iter = arg0.iterator();
-            Object item;
-            while (!((item = iter.next()) instanceof Finished)) {
-                if (item instanceof @BoxedType@) {
-                    for (int ii = this.start; ii < this.end; ii+=this.step) {
-                        if (array[ii] == ((@BoxedType@)item).@UnboxMethod@()) {
-                            return true;
-                        }
-                    }
+            private int index = @Classname@Iterable.this.start;
+            
+            @Override
+            public Object next() {
+                if (index < @Classname@Iterable.this.end) {
+                    @BoxedType@ result = @BoxedType@.instance(@Classname@Iterable.this.array[index]);
+                    index += @Classname@Iterable.this.step;
+                    return result;
+                } else {
+                    return finished_.get_();
                 }
             }
-            return false;
-        }
-        
-        @Override
-        public boolean containsEvery(
-                Iterable<? extends Object, ? extends Object> arg0) {
-            Iterator<? extends Object> iter = arg0.iterator();
-            Object item;
-            OUTER: while (!((item = iter.next()) instanceof Finished)) {
-                if (item instanceof @BoxedType@) {
-                    for (int ii = this.start; ii < this.end; ii+=this.step) {
-                        if (array[ii] == ((@BoxedType@)item).@UnboxMethod@()) {
-                            continue OUTER;
-                        }
-                    }
-                } 
-                return false;
-            }
-            return true;
-        }
-        
-        @Override
-        public boolean any(Callable<? extends ceylon.language.Boolean> arg0) {
-            for (int ii=this.start; ii < this.end; ii+=this.step) {
-                if (arg0.$call$(@BoxedType@.instance(array[ii])).booleanValue()) {
-                    return true;
-                }
-            }
-            return false;
-        }
-        
-        @Override
-        public boolean contains(Object item) {
-            for (int ii = this.start; ii < this.end; ii+=this.step) {
-                if (item instanceof @BoxedType@ 
-                        && array[ii] == ((@BoxedType@)item).@UnboxMethod@()) {
-                    return true;
-                }
-            }
-            return false;
-        }
-        
-        @Override
-        public <Default> Iterable<? extends Object, ? extends Null> defaultNullElements(
-                @Ignore
-                TypeDescriptor $reified$Default, 
-                Default defaultValue) {
+        };
+    }
+    
+    @Override
+    public boolean longerThan(long length) {
+        return this.getSize() > length;
+    }
+    
+    @Override
+    public boolean shorterThan(long length) {
+        return this.getSize() < length;
+    }
+    
+    @Override
+    public @Classname@Iterable by(long step) {
+        return new @Classname@Iterable(this.array, 
+                this.start, 
+                this.end, 
+                com.redhat.ceylon.compiler.java.Util.toInt(this.step*step));
+    }
+    
+    @Override
+    public @Classname@Iterable skip(long skip) {
+        if (skip <= 0) {
             return this;
         }
-        
-        @Override
-        public Iterable<? extends @BoxedType@, ? extends Object> getCoalesced() {
+        return new @Classname@Iterable(this.array, 
+                com.redhat.ceylon.compiler.java.Util.toInt(this.start+skip*this.step), 
+                this.end, 
+                this.step);
+    }
+    
+    @Override
+    public @Classname@Iterable take(long take) {
+        if (take >= this.getSize()) {
             return this;
         }
-        
-        @Override
-        public boolean getEmpty() {
-            return this.end <= this.start;
-        }
-        
-        @Override
-        public long getSize() {
-            return java.lang.Math.max(0, (this.end-this.start+this.step-1)/this.step);
-        }
-        
-        @Override
-        public @BoxedType@ getFirst() {
-            return this.getEmpty() ? null : @BoxedType@.instance(this.array[this.start]);
-        }
-        
-        
-        @Override
-        public @BoxedType@ getLast() {
-            return this.getEmpty() ? null : @BoxedType@.instance(this.array[this.end-1]);
-        }
-        
-        @Override
-        public @Classname@Iterable getRest() {
-            return new @Classname@Iterable(this.array, this.start+1, this.end, this.step);
-        }
-        
-        @Override
-        public Sequential<? extends @BoxedType@> sequence() {
-            // Note: Sequential is immutable, and we don't know where the array
-            // came from, so however we create the sequence we must take a copy
-        	//TODO: use a more efficient imple, like in List.sequence()
-            return super.sequence();
-        }
-        
-        @Override
-        public Iterator<? extends @BoxedType@> iterator() {
-            if (this.getEmpty()) {
-                return (Iterator)ceylon.language.emptyIterator_.get_();
-            }
-            return new Iterator<@BoxedType@>() {
-                
-                private int index = @Classname@Iterable.this.start;
-                
-                @Override
-                public Object next() {
-                    if (index < @Classname@Iterable.this.end) {
-                        @BoxedType@ result = @BoxedType@.instance(@Classname@Iterable.this.array[index]);
-                        index += @Classname@Iterable.this.step;
-                        return result;
-                    } else {
-                        return finished_.get_();
-                    }
-                }
-            };
-        }
-        
-        @Override
-        public boolean longerThan(long length) {
-            return this.getSize() > length;
-        }
-        
-        @Override
-        public boolean shorterThan(long length) {
-            return this.getSize() < length;
-        }
-        
-        @Override
-        public @Classname@Iterable by(long step) {
-            return new @Classname@Iterable(this.array, 
-                    this.start, 
-                    this.end, 
-                    com.redhat.ceylon.compiler.java.Util.toInt(this.step*step));
-        }
-        
-        @Override
-        public @Classname@Iterable skip(long skip) {
-            if (skip <= 0) {
-                return this;
-            }
-            return new @Classname@Iterable(this.array, 
-                    com.redhat.ceylon.compiler.java.Util.toInt(this.start+skip*this.step), 
-                    this.end, 
-                    this.step);
-        }
-        
-        @Override
-        public @Classname@Iterable take(long take) {
-            if (take >= this.getSize()) {
-                return this;
-            }
-            return new @Classname@Iterable(this.array, 
-                    this.start, 
-                    com.redhat.ceylon.compiler.java.Util.toInt(take*this.step+1), 
-                    this.step);
-        }
-        
+        return new @Classname@Iterable(this.array, 
+                this.start, 
+                com.redhat.ceylon.compiler.java.Util.toInt(take*this.step+1), 
+                this.step);
     }
     
 }

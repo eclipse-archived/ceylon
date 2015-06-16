@@ -306,59 +306,12 @@ public final class ObjectArray<T> implements ReifiedType {
      * of this Java object array.
      */
     @TypeInfo("ceylon.language::Iterable<T|ceylon.language::Null,ceylon.language::Null>")
-    public ObjectArrayIterable<T> getIterable() {
+    public ceylon.language.Iterable<T,ceylon.language.Null> getIterable() {
         throw Util.makeJavaArrayWrapperException();
     }
     
     @Ignore
-    public static <T> ObjectArrayIterable<T> getIterable(T[] value) {
+    public static <T> ceylon.language.Iterable<T,ceylon.language.Null> getIterable(T[] value) {
         return new ObjectArrayIterable<T>(value, value.length);
     }
-    
-    /* Implement Iterable */
-    @Ignore
-    public static final class ObjectArrayIterable<T> 
-    extends AbstractArrayIterable<T, Object[]> {
-
-        public ObjectArrayIterable(Object[] array, int start, int len, int step) {
-            super(TypeDescriptor.klass(array.getClass().getComponentType()), 
-                    array, start, len, step);
-        }
-
-        public ObjectArrayIterable(Object[] array, int length) {
-            super(TypeDescriptor.klass(array.getClass().getComponentType()),
-                    array, length);
-        }
-        
-        public ObjectArrayIterable(TypeDescriptor reifiedElement, Object[] array) {
-            super(reifiedElement, array, array.length);
-        }
-
-        @Override
-        protected ObjectArrayIterable<T> newInstance(Object[] array, int start,
-                int len, int step) {
-            return new ObjectArrayIterable<T>(array, start, len, step);
-        }
-
-        @Override
-        protected T get(Object[] array, int index) {
-            return (T)array[index];
-        }
-        
-        @Override
-        public ObjectArrayIterable<T> take(long take) {
-            return (ObjectArrayIterable<T>)super.take(take);
-        }
-        
-        @Override
-        public ObjectArrayIterable<T> skip(long take) {
-            return (ObjectArrayIterable<T>)super.skip(take);
-        }
-        
-        @Override
-        public ObjectArrayIterable<T> by(long take) {
-            return (ObjectArrayIterable<T>)super.by(take);
-        }
-    }
-
 }
