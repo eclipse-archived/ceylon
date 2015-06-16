@@ -15,12 +15,12 @@ class ArrayIterationStatic implements .com.redhat.ceylon.compiler.java.runtime.m
     }
     
     private final void arrayOfIntegersBy$priv$(final .ceylon.language.Array<.ceylon.language.Integer> array) {
-        final .java.lang.Object array$3 = array.toArray();
-        final int length$4 = .com.redhat.ceylon.compiler.java.Util.arrayLength(array$3);
-        final int step$6 = .com.redhat.ceylon.compiler.java.Util.toInt(5L);
-        if (step$6 <= 0) throw new .ceylon.language.AssertionError("Assertion failed" + ": step size must be greater than zero" + (.java.lang.System.lineSeparator() + "\tviolated " + "step > 0"));
-        loop_1: for (int i$5 = 0; i$5 < length$4; i$5 += step$6) {
-            final long element = .com.redhat.ceylon.compiler.java.Util.getIntegerArray(array$3, i$5);
+        final .java.lang.Object array$4 = array.toArray();
+        final int length$5 = .com.redhat.ceylon.compiler.java.Util.arrayLength(array$4);
+        final int step$3 = .com.redhat.ceylon.compiler.java.Util.toInt(5L);
+        if (step$3 <= 0) throw new .ceylon.language.AssertionError("Assertion failed" + ": step size must be greater than zero" + (.java.lang.System.lineSeparator() + "\tviolated " + "step > 0"));
+        loop_1: for (int i$6 = 0; i$6 < length$5; i$6 += step$3) {
+            final long element = .com.redhat.ceylon.compiler.java.Util.getIntegerArray(array$4, i$6);
             .ceylon.language.print_.print(.ceylon.language.Integer.instance(element + 5L));
         }
     }

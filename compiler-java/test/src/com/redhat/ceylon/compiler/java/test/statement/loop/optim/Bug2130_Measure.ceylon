@@ -345,7 +345,7 @@ void compareMeasureCharacterBy2130(Character start, Integer length, Integer by, 
         throw Exception("(``start``:``length``).by(``by``): ``problems``");
     }
 }
-
+ 
 void bug2130Measure() {
     compareMeasureInteger2130 { start = 0; length = 0; };
     compareMeasureInteger2130 { start = 0; length = -1; };
@@ -377,10 +377,50 @@ void bug2130Measure() {
         compareMeasureIntegerBy2130 { start = 0; length = -1; by = step; };
         compareMeasureIntegerBy2130 { start = 0; length = 1; by = step; };
         compareMeasureIntegerBy2130 { start = 0; length = 10; by = step; };
-        // TODO compareMeasureIntegerBy2130(runtime.maxIntegerValue, 10, step);
-        // TODO compareMeasureIntegerBy2130(runtime.minIntegerValue, 10, step);
+        compareMeasureIntegerBy2130(runtime.minIntegerValue, 10, step);
+        compareMeasureIntegerBy2130(runtime.maxIntegerValue, 10, step);
     }
-    compareMeasureIntegerBy2130 { start = runtime.maxIntegerValue-5; length = 10; by=3; };
     compareMeasureIntegerBy2130 { start = runtime.minIntegerValue-5; length = 10; by=3; };
+    compareMeasureIntegerBy2130 { start = runtime.maxIntegerValue-5; length = 10; by=3; };
+    
+    // Characters
+    compareMeasureCharacter2130 { start = '\0'; length = 0; };
+    compareMeasureCharacter2130 { start = '\0'; length = -1; };
+    compareMeasureCharacter2130 { start = '\0'; length = 1; };
+    compareMeasureCharacter2130 { start = '\0'; length = 10; };
+    compareMeasureCharacter2130 { start = '\0'; length = 10; };
+    compareMeasureCharacter2130{
+        start='\0'; 
+        length=100; 
+        breakAfter=10;
+    };
+    value maxCharacterValue = #10FFFF.character;
+    value minCharacterValue = 0.character;
+    compareMeasureCharacter2130{
+        start=maxCharacterValue.neighbour(-2); 
+        length=100; 
+        breakAfter=10;
+    };
+    compareMeasureCharacter2130{
+        start='\0'.neighbour(1); 
+        length=100; 
+        breakAfter=10;
+    };
+    
+    compareMeasureCharacter2130 { start = maxCharacterValue; length = 10; };
+    compareMeasureCharacter2130 { start = minCharacterValue; length = 10; };
+    compareMeasureCharacter2130 { start = maxCharacterValue.neighbour(-5); length = 10; };
+    //compareMeasureCharacter2130 { start = minCharacterValue.neighbour(-5); length = 10; };
+    
+    for (step in [-1, 0, 1, 2, runtime.maxIntegerValue]) {
+        compareMeasureCharacterBy2130 { start = '\0'; length = 0; by = step; };
+        compareMeasureCharacterBy2130 { start = '\0'; length = -1; by = step; };
+        compareMeasureCharacterBy2130 { start = '\0'; length = 1; by = step; };
+        compareMeasureCharacterBy2130 { start = '\0'; length = 10; by = step; };
+        compareMeasureCharacterBy2130(minCharacterValue, 10, step);
+        compareMeasureCharacterBy2130(maxCharacterValue, 10, step);
+    }
+    //compareMeasureCharacterBy2130 { start = minCharacterValue-5; length = 10; by=3; };
+    compareMeasureCharacterBy2130 { start = maxCharacterValue.neighbour(-5); length = 10; by=3; };
     
 }

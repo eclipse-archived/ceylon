@@ -51,20 +51,20 @@ class OptimizedForWithSegment implements .com.redhat.ceylon.compiler.java.runtim
     
     private final void by$priv$() {
         long sum = 0L;
-        final long start$12 = 1L;
-        final long length$13 = 10L;
-        final long step$15 = 3L;
-        if (length$13 > 0 && step$15 <= 0) throw new .ceylon.language.AssertionError("Assertion failed" + ": step size must be greater than zero" + (.java.lang.System.lineSeparator() + "\tviolated " + "step > 0"));
-        loop_4: for (long i$14 = 0; i$14 < length$13; i$14 = .ceylon.language.Integer.neighbour(i$14, step$15)) {
-            final long i = .ceylon.language.Integer.neighbour(start$12, i$14);
+        final long start$13 = 1L;
+        final long length$14 = 10L;
+        final long step$12 = 3L;
+        if (length$14 > 0 && step$12 <= 0) throw new .ceylon.language.AssertionError("Assertion failed" + ": step size must be greater than zero" + (.java.lang.System.lineSeparator() + "\tviolated " + "step > 0"));
+        loop_4: for (long i$15 = 0; i$15 < length$14; i$15 = step$12 == 1L ? i$15 + 1L : .ceylon.language.Integer.neighbour(i$15, step$12)) {
+            final long i = step$12 == 1L ? i$15 + start$13 : .ceylon.language.Integer.neighbour(start$13, i$15);
             sum += i;
         }
-        final long start$16 = 1L;
-        final long length$17 = 10L;
-        final long step$19 = 3L;
-        if (length$17 > 0 && step$19 <= 0) throw new .ceylon.language.AssertionError("Assertion failed" + ": step size must be greater than zero" + (.java.lang.System.lineSeparator() + "\tviolated " + "step > 0"));
-        loop_5: for (long i$18 = 0; i$18 < length$17; i$18 = .ceylon.language.Integer.neighbour(i$18, step$19)) {
-            final long i = .ceylon.language.Integer.neighbour(start$16, i$18);
+        final long start$17 = 1L;
+        final long length$18 = 10L;
+        final long step$16 = 3L;
+        if (length$18 > 0 && step$16 <= 0) throw new .ceylon.language.AssertionError("Assertion failed" + ": step size must be greater than zero" + (.java.lang.System.lineSeparator() + "\tviolated " + "step > 0"));
+        loop_5: for (long i$19 = 0; i$19 < length$18; i$19 = step$16 == 1L ? i$19 + 1L : .ceylon.language.Integer.neighbour(i$19, step$16)) {
+            final long i = step$16 == 1L ? i$19 + start$17 : .ceylon.language.Integer.neighbour(start$17, i$19);
             sum += i;
         }
     }
