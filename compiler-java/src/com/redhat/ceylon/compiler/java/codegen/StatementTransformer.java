@@ -1645,7 +1645,7 @@ public class StatementTransformer extends AbstractTransformer {
         protected final SyntheticName indexName;
         protected final Tree.Term baseIterable;
         protected final Tree.Term step;
-        
+        protected final SyntheticName stepName;
         IndexedAccessIterationOptimization(Tree.ForStatement stmt, Tree.Term baseIterable, Tree.Term step, Type elementType, String indexableName) {
             this(stmt, baseIterable, step, elementType, indexableName, "length", "i");
         }
@@ -1654,6 +1654,11 @@ public class StatementTransformer extends AbstractTransformer {
             super(stmt);
             this.baseIterable = baseIterable;
             this.step = step;
+            if (step != null) {
+                stepName = naming.alias("step");
+            } else {
+                stepName = null;
+            }
             this.elementType = elementType;
             this.indexableName = naming.alias(indexableName);
             this.lengthName = naming.alias(lengthName);
@@ -1681,10 +1686,10 @@ public class StatementTransformer extends AbstractTransformer {
             }
             
             // int step = ...
-            final SyntheticName stepName;
+            
             if (this.step != null) {
                 JCExpression stepExpr = makeStepExpr();
-                stepName = naming.alias("step");
+                
                 result.add(makeVar(FINAL, stepName, 
                         makeIndexType(), 
                         stepExpr));
@@ -1698,8 +1703,6 @@ public class StatementTransformer extends AbstractTransformer {
                                     .build()),
                         null));
                 
-            } else {
-                stepName = null;
             }
             
             // int i = 0;
@@ -2217,10 +2220,12 @@ public class StatementTransformer extends AbstractTransformer {
             if (step == null && elementType.isExactly(typeFact().getIntegerType())) {
                 return make().Binary(JCTree.PLUS, indexName.makeIdent(), indexableName.makeIdent());
             } else {
-                return make().Apply(null,
-                        naming.makeSelect(makeJavaType(elementType, JT_NO_PRIMITIVES), "neighbour"),
-                        List.<JCExpression>of(
-                                indexableName.makeIdent(), indexName.makeIdent()));
+                return make().Conditional(make().Binary(JCTree.EQ, stepName.makeIdent(), make().Literal(1L)),
+                        make().Binary(JCTree.PLUS, indexName.makeIdent(), indexableName.makeIdent()),
+                        make().Apply(null,
+                            naming.makeSelect(makeJavaType(elementType, JT_NO_PRIMITIVES), "neighbour"),
+                            List.<JCExpression>of(
+                                    indexableName.makeIdent(), indexName.makeIdent())));
             }
         }
         
@@ -2250,10 +2255,12 @@ public class StatementTransformer extends AbstractTransformer {
                 return make().Unary(JCTree.POSTINC, indexName.makeIdent());
             } else {
                 return make().Assign(indexName.makeIdent(),
-                        make().Apply(null,
-                                naming.makeSelect(make().Type(syms().ceylonIntegerType), "neighbour"),
-                                List.<JCExpression>of(
-                                        indexName.makeIdent(), stepName.makeIdent())));
+                        make().Conditional(make().Binary(JCTree.EQ, stepName.makeIdent(), make().Literal(1L)),
+                                make().Binary(JCTree.PLUS, indexName.makeIdent(), make().Literal(1L)),
+                            make().Apply(null,
+                                    naming.makeSelect(make().Type(syms().ceylonIntegerType), "neighbour"),
+                                    List.<JCExpression>of(
+                                            indexName.makeIdent(), stepName.makeIdent()))));
             }
         }
     }
