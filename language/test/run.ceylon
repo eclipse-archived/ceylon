@@ -57,6 +57,8 @@ shared void run() {
     testPredicates();
     print("Destructuring");
     testDestructuring();
+    print("Metamodel in default module");
+    testMetamodelInDefaultModule();
 
     // ATTENTION!
     // When you add new test methods here make sure they are "shared" and marked "@test"!
