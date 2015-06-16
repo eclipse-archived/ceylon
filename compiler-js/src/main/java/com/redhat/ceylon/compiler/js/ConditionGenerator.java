@@ -1,6 +1,8 @@
 package com.redhat.ceylon.compiler.js;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -129,6 +131,8 @@ public class ConditionGenerator {
             Tree.Block block, String keyword) {
         final List<VarHolder> vars = gatherVariables(conditions, true);
         specialConditions(vars, conditions, keyword);
+        final Set<Value> caps = getCaptured(vars);
+        //TODO pass caps
         if (block != null) {
             gen.encloseBlockInFunction(block, true);
         }
@@ -472,6 +476,28 @@ public class ConditionGenerator {
         vh.destr.getSpecifierExpression().visit(gen);
         gen.out(")");
         vh.vars=d.getVariables();
+        Set<Value> caps = null;
+        for (Tree.Variable v : vh.vars) {
+            if (v.getDeclarationModel() != null && v.getDeclarationModel().isCaptured()) {
+                if (caps == null) {
+                    caps = new HashSet<>();
+                }
+                caps.add(v.getDeclarationModel());
+            }
+        }
+        vh.captured=caps;
+    }
+
+    /** Get all the captured variables from the set of VarHolders. */
+    Set<Value> getCaptured(List<VarHolder> vars) {
+        Set<Value> caps = new HashSet<>(3);
+        for (VarHolder vh : vars) {
+            Set<Value> c2 = vh.getCaptured();
+            if (c2 != null && !c2.isEmpty()) {
+                caps.addAll(c2);
+            }
+        }
+        return caps;
     }
 
     /** Holder for a special condition's variable, its right-hand side term,
@@ -482,10 +508,14 @@ public class ConditionGenerator {
         final String name;
         final Tree.Destructure destr;
         Set<Tree.Variable> vars;
+        Set<Value> captured;
         private VarHolder(Tree.Statement st, Tree.Term rhs, String varName) {
             if (st instanceof Tree.Variable) {
                 var = (Tree.Variable)st;
                 destr = null;
+                if (var.getDeclarationModel() != null && var.getDeclarationModel().isCaptured()) {
+                    captured = Collections.singleton(var.getDeclarationModel());
+                }
             } else {
                 var = null;
                 destr = (Tree.Destructure)st;
@@ -503,6 +533,27 @@ public class ConditionGenerator {
                     names.forceName(v.getDeclarationModel(), null);
                 }
             }
+        }
+        public Set<Value> getCaptured() {
+            return captured;
+        }
+        public String toString() {
+            if (var != null) {
+                return "VarHolder(" + var.getDeclarationModel() + ")";
+            } else if (vars != null) {
+                final StringBuilder sb = new StringBuilder();
+                for (Tree.Variable v : vars) {
+                    if (sb.length() == 0) {
+                        sb.append("VarHolder[");
+                    } else {
+                        sb.append(",");
+                    }
+                    sb.append(v.getDeclarationModel());
+                }
+                sb.append("]");
+                return sb.toString();
+            }
+            return "VarHolder[???]";
         }
     }
 
