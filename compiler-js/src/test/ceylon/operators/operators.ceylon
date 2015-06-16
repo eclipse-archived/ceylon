@@ -557,12 +557,12 @@ class TestSet<out Element>({Element*} e) satisfies Set<Element>
 void testSetOperators() {
   variable Set<Integer> s1 = TestSet{1,2,3,4};
   Set<Integer> s2 = TestSet{4,5,6};
-  check((s1|s2).size == 6, "|");
-  check((s1~s2).size == 3, "~");
-  check((s1&s2).size == 1, "&");
-  check((s1|=s2).size == 6, "|=");
-  check((s1&=s2) == s2, "&=");
-  check((s1~=s2).size == 0, "~=");
+  check((s1|s2).size == 6, "Set |");
+  check((s1~s2).size == 3, "Set ~");
+  check((s1&s2).size == 1, "Set &");
+  check((s1|=s2).size == 6, "Set |=");
+  check((s1&=s2) == s2, "Set &=");
+  check((s1~=s2).size == 0, "Set ~=");
 }
 
 void testIssues() {
