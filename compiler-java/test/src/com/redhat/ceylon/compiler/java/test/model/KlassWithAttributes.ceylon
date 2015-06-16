@@ -88,6 +88,10 @@ shared class KlassWithAttributes() extends KlassWithAttributesSuper1() {
     shared actual Integer defaultAttr = 3;
     shared actual Integer defaultGetter {return 3;}
     shared actual Integer defaultGetterSetter {return 3;} assign defaultGetterSetter {}
+    
+    // special attributes
+    shared actual variable String string = "123";
+    shared actual variable Integer hash = 123;
 }
 
 shared class KlassWithAttributesAsParameters(foo, bar, gee) {
