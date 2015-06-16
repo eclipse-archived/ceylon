@@ -9,6 +9,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
+import com.redhat.ceylon.model.typechecker.model.Value;
 
 /** Recursively generates code for a destructuring pattern that may contain other
  * patterns.
@@ -24,7 +25,8 @@ public class Destructurer extends Visitor {
     private final Set<Declaration> directAccess;
     private boolean first;
     private final Set<Tree.Variable> added = new HashSet<>();
-    private final Set<Declaration> attribs = new HashSet<>();
+    private final Set<Value> attribs = new HashSet<>();
+    private final Set<Value> caps = new HashSet<>();
 
     /** Generate the code for the specified pattern. If null is passed instead of a
      * generator, no code is output but the patterns are still visited and their
@@ -44,7 +46,7 @@ public class Destructurer extends Visitor {
         this.first=first;
         that.visit(this);
         if (!attribs.isEmpty()) {
-            for (Declaration attr : attribs) {
+            for (Value attr : attribs) {
                 jsw.write(";", names.self((TypeDeclaration)attr.getContainer()), ".",
                         names.name(attr), "=", names.name(attr));
             }
@@ -92,11 +94,15 @@ public class Destructurer extends Visitor {
 
     public void visit(final Tree.VariablePattern that) {
         Tree.Variable v = that.getVariable();
+        final Value d = v.getDeclarationModel();
         if (directAccess != null) {
-            directAccess.add(v.getDeclarationModel());
+            directAccess.add(d);
         }
-        if (v.getDeclarationModel().isClassOrInterfaceMember()) {
-            attribs.add(v.getDeclarationModel());
+        if (d.isClassOrInterfaceMember()) {
+            attribs.add(d);
+        }
+        if (d.isCaptured()) {
+            caps.add(d);
         }
         added.add(v);
         if (first) {
@@ -105,13 +111,13 @@ public class Destructurer extends Visitor {
             jsw.write(",");
         }
         if (jsw != null) {
-            jsw.write(names.name(v.getDeclarationModel()), "=",expvar);
+            jsw.write(names.name(d), "=",expvar);
         }
     }
 
     /** Returns the declarations gathered by this Destructurer. */
-    public Set<Declaration> getDeclarations() {
-        final HashSet<Declaration> decs = new HashSet<>(added.size());
+    public Set<Value> getDeclarations() {
+        final HashSet<Value> decs = new HashSet<>(added.size());
         for (Tree.Variable v : added) {
             decs.add(v.getDeclarationModel());
         }
@@ -122,4 +128,7 @@ public class Destructurer extends Visitor {
         return added;
     }
 
+    public Set<Value> getCapturedValues() {
+        return caps;
+    }
 }
