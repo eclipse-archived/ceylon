@@ -66,6 +66,8 @@ shared sealed interface ValueDeclaration
     
     "Reads the current value of this attribute on the given container instance."
     throws(`class IncompatibleTypeException`, "If the specified container is not compatible with this attribute.")
+    throws(`class StorageException`,
+           "If this attribute is not stored at runtime, for example if it is neither shared nor captured.")
     shared default Anything memberGet(Object container)
             => memberApply<Nothing, Anything, Nothing>(`Nothing`).bind(container).get();
 
@@ -75,6 +77,8 @@ shared sealed interface ValueDeclaration
 
     "Sets the current value of this attribute on the given container instance."
     throws(`class IncompatibleTypeException`, "If the specified container or new value type is not compatible with this attribute.")
+    throws(`class StorageException`,
+           "If this attribute is not stored at runtime, for example if it is neither shared nor captured.")
     shared formal void memberSet(Object container, Anything newValue);
     //=> memberApply<Nothing, Anything, Nothing>(`Nothing`).bind(container).setIfAssignable(newValue);
 
