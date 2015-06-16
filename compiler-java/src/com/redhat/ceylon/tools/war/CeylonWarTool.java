@@ -71,7 +71,10 @@ public class CeylonWarTool extends ModuleLoadingTool {
     
     @OptionArgument(argumentName="moduleOrFile", shortName='x')
     @Description("Excludes modules from the WAR file. Can be a module name or " + 
-    		"a file containing module names. Can be specified multiple times.")
+    		"a file containing module names. Can be specified multiple times. Note that "+
+            "this excludes the module from the WAR file, but if your modules require that "+
+    		"module to be present at runtime it will still be required and may cause your "+
+            "application to fail to start if it is not provided at runtime.")
     public void setExcludeModule(List<String> exclusions) {
     	for (String each : exclusions) {
     		File xFile = new File(each);
