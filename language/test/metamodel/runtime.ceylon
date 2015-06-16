@@ -2063,6 +2063,7 @@ shared void run() {
     sandbox(bug610);
     sandbox(bug642);
     sandbox(bug647);
+    sandbox(bug670);
     sandbox(bug676);
     sandbox(bug692);
     sandbox(bug693);
