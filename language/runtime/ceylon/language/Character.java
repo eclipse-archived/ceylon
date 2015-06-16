@@ -319,7 +319,7 @@ public final class Character
     	return codePoint<=other.codePoint;
     }
 
-    static int codepoint(long value) {
+    public static int codepoint(long value) {
         if (value>0x10FFFF || value<0) {
             throw new OverflowException(value + " is not a 32-bit integer");
         }
