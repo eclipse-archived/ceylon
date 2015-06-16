@@ -1,4 +1,4 @@
-import ceylon.language.meta.model { Value, Attribute, AppliedType = Type, IncompatibleTypeException }
+import ceylon.language.meta.model { Value, Attribute, AppliedType = Type, IncompatibleTypeException, StorageException }
 
 """A value declaration.
    
