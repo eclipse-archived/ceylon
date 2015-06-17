@@ -6,11 +6,11 @@ final class bug1878A_ {
     }
     
     static boolean bug1878A() {
-        final long $ceylontmp$start$0 = 1L;
-        final long $ceylontmp$end$1 = 1L;
-        final boolean $ceylontmp$increasing$2 = .ceylon.language.Integer.offset($ceylontmp$end$1, $ceylontmp$start$0) >= 0;
+        final long $ceylontmp$first$0 = 1L;
+        final long $ceylontmp$last$1 = 1L;
+        final boolean $ceylontmp$increasing$2 = .ceylon.language.Integer.offset($ceylontmp$last$1, $ceylontmp$first$0) >= 0;
         final long $ceylontmp$incr$3 = $ceylontmp$increasing$2 ? 1L : -1L;
-        loop_0: for (long _$4 = $ceylontmp$start$0; $ceylontmp$increasing$2 ? _$4 - $ceylontmp$end$1 <= 0L : _$4 - $ceylontmp$end$1 >= 0L; _$4 += $ceylontmp$incr$3) {
+        loop_0: for (long _$4 = $ceylontmp$first$0; $ceylontmp$increasing$2 ? _$4 - $ceylontmp$last$1 <= 0L : _$4 - $ceylontmp$last$1 >= 0L; _$4 += $ceylontmp$incr$3) {
             final long _ = _$4;
             return false;
         }

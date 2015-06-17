@@ -6,11 +6,11 @@ final class keywordInForLoop_ {
     }
     
     static void keywordInForLoop(final .ceylon.language.Sequence<? extends .ceylon.language.Integer> seq) {
-        final long $ceylontmp$start$0 = 1L;
-        final long $ceylontmp$end$1 = 10L;
-        final boolean $ceylontmp$increasing$2 = .ceylon.language.Integer.offset($ceylontmp$end$1, $ceylontmp$start$0) >= 0;
+        final long $ceylontmp$first$0 = 1L;
+        final long $ceylontmp$last$1 = 10L;
+        final boolean $ceylontmp$increasing$2 = .ceylon.language.Integer.offset($ceylontmp$last$1, $ceylontmp$first$0) >= 0;
         final long $ceylontmp$incr$3 = $ceylontmp$increasing$2 ? 1L : -1L;
-        loop_0: for (long byte$4 = $ceylontmp$start$0; $ceylontmp$increasing$2 ? byte$4 - $ceylontmp$end$1 <= 0L : byte$4 - $ceylontmp$end$1 >= 0L; byte$4 += $ceylontmp$incr$3) {
+        loop_0: for (long byte$4 = $ceylontmp$first$0; $ceylontmp$increasing$2 ? byte$4 - $ceylontmp$last$1 <= 0L : byte$4 - $ceylontmp$last$1 >= 0L; byte$4 += $ceylontmp$incr$3) {
             final long $byte = byte$4;
             if ($byte > 5L) {
             }

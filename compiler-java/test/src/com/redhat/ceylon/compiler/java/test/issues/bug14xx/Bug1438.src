@@ -12,11 +12,11 @@ public final class bug1438_ {
             foo = "if";
         } else {
             boolean doforelse$2 = true;
-            final long $ceylontmp$start$3 = 0L;
-            final long $ceylontmp$end$4 = 10L;
-            final boolean $ceylontmp$increasing$5 = .ceylon.language.Integer.offset($ceylontmp$end$4, $ceylontmp$start$3) >= 0;
+            final long $ceylontmp$first$3 = 0L;
+            final long $ceylontmp$last$4 = 10L;
+            final boolean $ceylontmp$increasing$5 = .ceylon.language.Integer.offset($ceylontmp$last$4, $ceylontmp$first$3) >= 0;
             final long $ceylontmp$incr$6 = $ceylontmp$increasing$5 ? 1L : -1L;
-            loop_0: for (long i$7 = $ceylontmp$start$3; $ceylontmp$increasing$5 ? i$7 - $ceylontmp$end$4 <= 0L : i$7 - $ceylontmp$end$4 >= 0L; i$7 += $ceylontmp$incr$6) {
+            loop_0: for (long i$7 = $ceylontmp$first$3; $ceylontmp$increasing$5 ? i$7 - $ceylontmp$last$4 <= 0L : i$7 - $ceylontmp$last$4 >= 0L; i$7 += $ceylontmp$incr$6) {
                 final long i = i$7;
                 if (.ceylon.language.system_.get_().getMilliseconds() % 2L == 0L) {
                     foo$0 = "break";
@@ -49,11 +49,11 @@ public final class bug1438_2_ {
         .java.lang.String foo$11 = null;
         if (.ceylon.language.system_.get_().getMilliseconds() % 2L == 0L) {
             boolean doforelse$13 = true;
-            final long $ceylontmp$start$14 = 0L;
-            final long $ceylontmp$end$15 = 10L;
-            final boolean $ceylontmp$increasing$16 = .ceylon.language.Integer.offset($ceylontmp$end$15, $ceylontmp$start$14) >= 0;
+            final long $ceylontmp$first$14 = 0L;
+            final long $ceylontmp$last$15 = 10L;
+            final boolean $ceylontmp$increasing$16 = .ceylon.language.Integer.offset($ceylontmp$last$15, $ceylontmp$first$14) >= 0;
             final long $ceylontmp$incr$17 = $ceylontmp$increasing$16 ? 1L : -1L;
-            loop_1: for (long i$18 = $ceylontmp$start$14; $ceylontmp$increasing$16 ? i$18 - $ceylontmp$end$15 <= 0L : i$18 - $ceylontmp$end$15 >= 0L; i$18 += $ceylontmp$incr$17) {
+            loop_1: for (long i$18 = $ceylontmp$first$14; $ceylontmp$increasing$16 ? i$18 - $ceylontmp$last$15 <= 0L : i$18 - $ceylontmp$last$15 >= 0L; i$18 += $ceylontmp$incr$17) {
                 final long i = i$18;
                 if (.ceylon.language.system_.get_().getMilliseconds() % 2L == 0L) {
                     foo$11 = "break";

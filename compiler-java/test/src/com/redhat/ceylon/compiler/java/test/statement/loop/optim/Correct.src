@@ -71,11 +71,11 @@ class Correct implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     private final long rangeOpIteration$priv$() {
         long sum = 0L;
-        final long $ceylontmp$start$3 = 1L;
-        final long $ceylontmp$end$4 = 10L;
-        final boolean $ceylontmp$increasing$5 = .ceylon.language.Integer.offset($ceylontmp$end$4, $ceylontmp$start$3) >= 0;
+        final long $ceylontmp$first$3 = 1L;
+        final long $ceylontmp$last$4 = 10L;
+        final boolean $ceylontmp$increasing$5 = .ceylon.language.Integer.offset($ceylontmp$last$4, $ceylontmp$first$3) >= 0;
         final long $ceylontmp$incr$6 = $ceylontmp$increasing$5 ? 1L : -1L;
-        loop_1: for (long i$7 = $ceylontmp$start$3; $ceylontmp$increasing$5 ? i$7 - $ceylontmp$end$4 <= 0L : i$7 - $ceylontmp$end$4 >= 0L; i$7 += $ceylontmp$incr$6) {
+        loop_1: for (long i$7 = $ceylontmp$first$3; $ceylontmp$increasing$5 ? i$7 - $ceylontmp$last$4 <= 0L : i$7 - $ceylontmp$last$4 >= 0L; i$7 += $ceylontmp$incr$6) {
             final long i = i$7;
             sum += i;
         }
@@ -85,11 +85,11 @@ class Correct implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     private final long rangeOpIterationReverse$priv$() {
         long sum = 0L;
-        final long $ceylontmp$start$9 = 10L;
-        final long $ceylontmp$end$10 = 1L;
-        final boolean $ceylontmp$increasing$11 = .ceylon.language.Integer.offset($ceylontmp$end$10, $ceylontmp$start$9) >= 0;
+        final long $ceylontmp$first$9 = 10L;
+        final long $ceylontmp$last$10 = 1L;
+        final boolean $ceylontmp$increasing$11 = .ceylon.language.Integer.offset($ceylontmp$last$10, $ceylontmp$first$9) >= 0;
         final long $ceylontmp$incr$12 = $ceylontmp$increasing$11 ? 1L : -1L;
-        loop_2: for (long i$13 = $ceylontmp$start$9; $ceylontmp$increasing$11 ? i$13 - $ceylontmp$end$10 <= 0L : i$13 - $ceylontmp$end$10 >= 0L; i$13 += $ceylontmp$incr$12) {
+        loop_2: for (long i$13 = $ceylontmp$first$9; $ceylontmp$increasing$11 ? i$13 - $ceylontmp$last$10 <= 0L : i$13 - $ceylontmp$last$10 >= 0L; i$13 += $ceylontmp$incr$12) {
             final long i = i$13;
             sum += i;
         }
@@ -241,11 +241,11 @@ class Correct implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     private final long javaArrayIterationStatic$priv$() {
         final int[] array = new int[.com.redhat.ceylon.compiler.java.Util.toInt(10L)];
-        final long $ceylontmp$start$31 = 1L;
-        final long $ceylontmp$end$32 = 10L;
-        final boolean $ceylontmp$increasing$33 = .ceylon.language.Integer.offset($ceylontmp$end$32, $ceylontmp$start$31) >= 0;
+        final long $ceylontmp$first$31 = 1L;
+        final long $ceylontmp$last$32 = 10L;
+        final boolean $ceylontmp$increasing$33 = .ceylon.language.Integer.offset($ceylontmp$last$32, $ceylontmp$first$31) >= 0;
         final long $ceylontmp$incr$34 = $ceylontmp$increasing$33 ? 1L : -1L;
-        loop_8: for (long index$35 = $ceylontmp$start$31; $ceylontmp$increasing$33 ? index$35 - $ceylontmp$end$32 <= 0L : index$35 - $ceylontmp$end$32 >= 0L; index$35 += $ceylontmp$incr$34) {
+        loop_8: for (long index$35 = $ceylontmp$first$31; $ceylontmp$increasing$33 ? index$35 - $ceylontmp$last$32 <= 0L : index$35 - $ceylontmp$last$32 >= 0L; index$35 += $ceylontmp$incr$34) {
             final long index = index$35;
             array[.com.redhat.ceylon.compiler.java.Util.toInt(index - 1L)] = .com.redhat.ceylon.compiler.java.Util.toInt(index);
         }

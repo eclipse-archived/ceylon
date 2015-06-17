@@ -19,19 +19,19 @@ class OptimizedForWithRange implements .com.redhat.ceylon.compiler.java.runtime.
     
     private final void literals$priv$() {
         long sum = 0L;
-        final long $ceylontmp$start$0 = 1L;
-        final long $ceylontmp$end$1 = 10L;
-        final boolean $ceylontmp$increasing$2 = .ceylon.language.Integer.offset($ceylontmp$end$1, $ceylontmp$start$0) >= 0;
+        final long $ceylontmp$first$0 = 1L;
+        final long $ceylontmp$last$1 = 10L;
+        final boolean $ceylontmp$increasing$2 = .ceylon.language.Integer.offset($ceylontmp$last$1, $ceylontmp$first$0) >= 0;
         final long $ceylontmp$incr$3 = $ceylontmp$increasing$2 ? 1L : -1L;
-        loop_0: for (long i$4 = $ceylontmp$start$0; $ceylontmp$increasing$2 ? i$4 - $ceylontmp$end$1 <= 0L : i$4 - $ceylontmp$end$1 >= 0L; i$4 += $ceylontmp$incr$3) {
+        loop_0: for (long i$4 = $ceylontmp$first$0; $ceylontmp$increasing$2 ? i$4 - $ceylontmp$last$1 <= 0L : i$4 - $ceylontmp$last$1 >= 0L; i$4 += $ceylontmp$incr$3) {
             final long i = i$4;
             sum += i;
         }
-        final int $ceylontmp$start$5 = 97;
-        final int $ceylontmp$end$6 = 122;
-        final boolean $ceylontmp$increasing$7 = .ceylon.language.Character.offset($ceylontmp$end$6, $ceylontmp$start$5) >= 0;
+        final int $ceylontmp$first$5 = 97;
+        final int $ceylontmp$last$6 = 122;
+        final boolean $ceylontmp$increasing$7 = .ceylon.language.Character.offset($ceylontmp$last$6, $ceylontmp$first$5) >= 0;
         final long $ceylontmp$incr$8 = $ceylontmp$increasing$7 ? 1 : -1;
-        loop_1: for (int c$9 = $ceylontmp$start$5; $ceylontmp$increasing$7 ? c$9 - $ceylontmp$end$6 <= 0 : c$9 - $ceylontmp$end$6 >= 0; c$9 = .ceylon.language.Character.neighbour(c$9, $ceylontmp$incr$8)) {
+        loop_1: for (int c$9 = $ceylontmp$first$5; $ceylontmp$increasing$7 ? c$9 - $ceylontmp$last$6 <= 0 : c$9 - $ceylontmp$last$6 >= 0; c$9 = .ceylon.language.Character.neighbour(c$9, $ceylontmp$incr$8)) {
             final int c = c$9;
             sum += .ceylon.language.Character.getInteger(c);
         }
@@ -39,19 +39,19 @@ class OptimizedForWithRange implements .com.redhat.ceylon.compiler.java.runtime.
     
     private final void expressions$priv$() {
         long sum = 0L;
-        final long $ceylontmp$start$10 = getStart$priv$();
-        final long $ceylontmp$end$11 = getEnd$priv$();
-        final boolean $ceylontmp$increasing$12 = .ceylon.language.Integer.offset($ceylontmp$end$11, $ceylontmp$start$10) >= 0;
+        final long $ceylontmp$first$10 = getStart$priv$();
+        final long $ceylontmp$last$11 = getEnd$priv$();
+        final boolean $ceylontmp$increasing$12 = .ceylon.language.Integer.offset($ceylontmp$last$11, $ceylontmp$first$10) >= 0;
         final long $ceylontmp$incr$13 = $ceylontmp$increasing$12 ? 1L : -1L;
-        loop_2: for (long i$14 = $ceylontmp$start$10; $ceylontmp$increasing$12 ? i$14 - $ceylontmp$end$11 <= 0L : i$14 - $ceylontmp$end$11 >= 0L; i$14 += $ceylontmp$incr$13) {
+        loop_2: for (long i$14 = $ceylontmp$first$10; $ceylontmp$increasing$12 ? i$14 - $ceylontmp$last$11 <= 0L : i$14 - $ceylontmp$last$11 >= 0L; i$14 += $ceylontmp$incr$13) {
             final long i = i$14;
             sum += i;
         }
-        final long $ceylontmp$start$15 = getStart$priv$() + 10L;
-        final long $ceylontmp$end$16 = getEnd$priv$() + 10L;
-        final boolean $ceylontmp$increasing$17 = .ceylon.language.Integer.offset($ceylontmp$end$16, $ceylontmp$start$15) >= 0;
+        final long $ceylontmp$first$15 = getStart$priv$() + 10L;
+        final long $ceylontmp$last$16 = getEnd$priv$() + 10L;
+        final boolean $ceylontmp$increasing$17 = .ceylon.language.Integer.offset($ceylontmp$last$16, $ceylontmp$first$15) >= 0;
         final long $ceylontmp$incr$18 = $ceylontmp$increasing$17 ? 1L : -1L;
-        loop_3: for (long i$19 = $ceylontmp$start$15; $ceylontmp$increasing$17 ? i$19 - $ceylontmp$end$16 <= 0L : i$19 - $ceylontmp$end$16 >= 0L; i$19 += $ceylontmp$incr$18) {
+        loop_3: for (long i$19 = $ceylontmp$first$15; $ceylontmp$increasing$17 ? i$19 - $ceylontmp$last$16 <= 0L : i$19 - $ceylontmp$last$16 >= 0L; i$19 += $ceylontmp$incr$18) {
             final long i = i$19;
             sum += i;
         }
@@ -59,23 +59,23 @@ class OptimizedForWithRange implements .com.redhat.ceylon.compiler.java.runtime.
     
     private final void by$priv$() {
         long sum = 0L;
-        final long $ceylontmp$start$20 = 1L;
-        final long $ceylontmp$end$21 = 10L;
-        final long $ceylontmp$by$22 = 3L;
-        if ($ceylontmp$by$22 <= 0) throw new .ceylon.language.AssertionError("Assertion failed" + ": step size must be greater than zero" + (.java.lang.System.lineSeparator() + "\tviolated " + "step > 0"));
-        final boolean $ceylontmp$increasing$23 = $ceylontmp$by$22 == 1 ? .ceylon.language.Integer.offset($ceylontmp$end$21, $ceylontmp$start$20) >= 0 : .ceylon.language.Integer.offsetSign($ceylontmp$end$21, $ceylontmp$start$20) >= 0;
-        final long $ceylontmp$incr$24 = $ceylontmp$by$22 == 1 ? $ceylontmp$increasing$23 ? $ceylontmp$by$22 : -1L : $ceylontmp$increasing$23 ? $ceylontmp$by$22 : -$ceylontmp$by$22;
-        loop_4: for (long i$25 = $ceylontmp$start$20; $ceylontmp$by$22 == 1 ? $ceylontmp$increasing$23 ? i$25 - $ceylontmp$end$21 <= 0L : i$25 - $ceylontmp$end$21 >= 0L : $ceylontmp$increasing$23 ? .ceylon.language.Integer.offsetSign(i$25, $ceylontmp$end$21) <= 0L && .ceylon.language.Integer.offsetSign(i$25, $ceylontmp$start$20) >= 0L : .ceylon.language.Integer.offsetSign(i$25, $ceylontmp$end$21) >= 0L && .ceylon.language.Integer.offsetSign(i$25, $ceylontmp$start$20) <= 0L; $ceylontmp$by$22 == 1 ? (i$25 += $ceylontmp$incr$24) : (i$25 = .ceylon.language.Integer.neighbour(i$25, $ceylontmp$incr$24))) {
+        final long $ceylontmp$step$24 = 3L;
+        if ($ceylontmp$step$24 <= 0) throw new .ceylon.language.AssertionError("Assertion failed" + ": step size must be greater than zero" + (.java.lang.System.lineSeparator() + "\tviolated " + "step > 0"));
+        final long $ceylontmp$first$20 = 1L;
+        final long $ceylontmp$last$21 = 10L;
+        final boolean $ceylontmp$increasing$22 = $ceylontmp$step$24 == 1 ? .ceylon.language.Integer.offset($ceylontmp$last$21, $ceylontmp$first$20) >= 0 : .ceylon.language.Integer.offsetSign($ceylontmp$last$21, $ceylontmp$first$20) >= 0;
+        final long $ceylontmp$incr$23 = $ceylontmp$step$24 == 1 ? $ceylontmp$increasing$22 ? $ceylontmp$step$24 : -1L : $ceylontmp$increasing$22 ? $ceylontmp$step$24 : -$ceylontmp$step$24;
+        loop_4: for (long i$25 = $ceylontmp$first$20; $ceylontmp$step$24 == 1 ? $ceylontmp$increasing$22 ? i$25 - $ceylontmp$last$21 <= 0L : i$25 - $ceylontmp$last$21 >= 0L : $ceylontmp$increasing$22 ? .ceylon.language.Integer.offsetSign(i$25, $ceylontmp$last$21) <= 0L && .ceylon.language.Integer.offsetSign(i$25, $ceylontmp$first$20) >= 0L : .ceylon.language.Integer.offsetSign(i$25, $ceylontmp$last$21) >= 0L && .ceylon.language.Integer.offsetSign(i$25, $ceylontmp$first$20) <= 0L; $ceylontmp$step$24 == 1 ? (i$25 += $ceylontmp$incr$23) : (i$25 = .ceylon.language.Integer.neighbour(i$25, $ceylontmp$incr$23))) {
             final long i = i$25;
             sum += i;
         }
-        final long $ceylontmp$start$26 = 1L;
-        final long $ceylontmp$end$27 = 10L;
-        final long $ceylontmp$by$28 = 3L;
-        if ($ceylontmp$by$28 <= 0) throw new .ceylon.language.AssertionError("Assertion failed" + ": step size must be greater than zero" + (.java.lang.System.lineSeparator() + "\tviolated " + "step > 0"));
-        final boolean $ceylontmp$increasing$29 = $ceylontmp$by$28 == 1 ? .ceylon.language.Integer.offset($ceylontmp$end$27, $ceylontmp$start$26) >= 0 : .ceylon.language.Integer.offsetSign($ceylontmp$end$27, $ceylontmp$start$26) >= 0;
-        final long $ceylontmp$incr$30 = $ceylontmp$by$28 == 1 ? $ceylontmp$increasing$29 ? $ceylontmp$by$28 : -1L : $ceylontmp$increasing$29 ? $ceylontmp$by$28 : -$ceylontmp$by$28;
-        loop_5: for (long i$31 = $ceylontmp$start$26; $ceylontmp$by$28 == 1 ? $ceylontmp$increasing$29 ? i$31 - $ceylontmp$end$27 <= 0L : i$31 - $ceylontmp$end$27 >= 0L : $ceylontmp$increasing$29 ? .ceylon.language.Integer.offsetSign(i$31, $ceylontmp$end$27) <= 0L && .ceylon.language.Integer.offsetSign(i$31, $ceylontmp$start$26) >= 0L : .ceylon.language.Integer.offsetSign(i$31, $ceylontmp$end$27) >= 0L && .ceylon.language.Integer.offsetSign(i$31, $ceylontmp$start$26) <= 0L; $ceylontmp$by$28 == 1 ? (i$31 += $ceylontmp$incr$30) : (i$31 = .ceylon.language.Integer.neighbour(i$31, $ceylontmp$incr$30))) {
+        final long $ceylontmp$step$30 = 3L;
+        if ($ceylontmp$step$30 <= 0) throw new .ceylon.language.AssertionError("Assertion failed" + ": step size must be greater than zero" + (.java.lang.System.lineSeparator() + "\tviolated " + "step > 0"));
+        final long $ceylontmp$first$26 = 1L;
+        final long $ceylontmp$last$27 = 10L;
+        final boolean $ceylontmp$increasing$28 = $ceylontmp$step$30 == 1 ? .ceylon.language.Integer.offset($ceylontmp$last$27, $ceylontmp$first$26) >= 0 : .ceylon.language.Integer.offsetSign($ceylontmp$last$27, $ceylontmp$first$26) >= 0;
+        final long $ceylontmp$incr$29 = $ceylontmp$step$30 == 1 ? $ceylontmp$increasing$28 ? $ceylontmp$step$30 : -1L : $ceylontmp$increasing$28 ? $ceylontmp$step$30 : -$ceylontmp$step$30;
+        loop_5: for (long i$31 = $ceylontmp$first$26; $ceylontmp$step$30 == 1 ? $ceylontmp$increasing$28 ? i$31 - $ceylontmp$last$27 <= 0L : i$31 - $ceylontmp$last$27 >= 0L : $ceylontmp$increasing$28 ? .ceylon.language.Integer.offsetSign(i$31, $ceylontmp$last$27) <= 0L && .ceylon.language.Integer.offsetSign(i$31, $ceylontmp$first$26) >= 0L : .ceylon.language.Integer.offsetSign(i$31, $ceylontmp$last$27) >= 0L && .ceylon.language.Integer.offsetSign(i$31, $ceylontmp$first$26) <= 0L; $ceylontmp$step$30 == 1 ? (i$31 += $ceylontmp$incr$29) : (i$31 = .ceylon.language.Integer.neighbour(i$31, $ceylontmp$incr$29))) {
             final long i = i$31;
             sum += i;
         }
@@ -89,11 +89,11 @@ class OptimizedForWithRange implements .com.redhat.ceylon.compiler.java.runtime.
             final long i = ((.ceylon.language.Integer)elem$32).longValue();
             sum += i;
         }
-        final long $ceylontmp$start$34 = 1L;
-        final long $ceylontmp$end$35 = 10L;
-        final boolean $ceylontmp$increasing$36 = .ceylon.language.Integer.offset($ceylontmp$end$35, $ceylontmp$start$34) >= 0;
+        final long $ceylontmp$first$34 = 1L;
+        final long $ceylontmp$last$35 = 10L;
+        final boolean $ceylontmp$increasing$36 = .ceylon.language.Integer.offset($ceylontmp$last$35, $ceylontmp$first$34) >= 0;
         final long $ceylontmp$incr$37 = $ceylontmp$increasing$36 ? 1L : -1L;
-        loop_7: for (long i$38 = $ceylontmp$start$34; $ceylontmp$increasing$36 ? i$38 - $ceylontmp$end$35 <= 0L : i$38 - $ceylontmp$end$35 >= 0L; i$38 += $ceylontmp$incr$37) {
+        loop_7: for (long i$38 = $ceylontmp$first$34; $ceylontmp$increasing$36 ? i$38 - $ceylontmp$last$35 <= 0L : i$38 - $ceylontmp$last$35 >= 0L; i$38 += $ceylontmp$incr$37) {
             final long i = i$38;
             sum += i;
         }
@@ -101,30 +101,30 @@ class OptimizedForWithRange implements .com.redhat.ceylon.compiler.java.runtime.
     
     private final void flow$priv$() {
         long sum = 0L;
-        final long $ceylontmp$start$39 = 1L;
-        final long $ceylontmp$end$40 = 10L;
-        final boolean $ceylontmp$increasing$41 = .ceylon.language.Integer.offset($ceylontmp$end$40, $ceylontmp$start$39) >= 0;
+        final long $ceylontmp$first$39 = 1L;
+        final long $ceylontmp$last$40 = 10L;
+        final boolean $ceylontmp$increasing$41 = .ceylon.language.Integer.offset($ceylontmp$last$40, $ceylontmp$first$39) >= 0;
         final long $ceylontmp$incr$42 = $ceylontmp$increasing$41 ? 1L : -1L;
-        loop_8: for (long withElse$43 = $ceylontmp$start$39; $ceylontmp$increasing$41 ? withElse$43 - $ceylontmp$end$40 <= 0L : withElse$43 - $ceylontmp$end$40 >= 0L; withElse$43 += $ceylontmp$incr$42) {
+        loop_8: for (long withElse$43 = $ceylontmp$first$39; $ceylontmp$increasing$41 ? withElse$43 - $ceylontmp$last$40 <= 0L : withElse$43 - $ceylontmp$last$40 >= 0L; withElse$43 += $ceylontmp$incr$42) {
             final long withElse = withElse$43;
             sum += withElse;
         }
         sum = 0L;
-        final long $ceylontmp$start$44 = 10L;
-        final long $ceylontmp$end$45 = 1L;
-        final boolean $ceylontmp$increasing$46 = .ceylon.language.Integer.offset($ceylontmp$end$45, $ceylontmp$start$44) >= 0;
+        final long $ceylontmp$first$44 = 10L;
+        final long $ceylontmp$last$45 = 1L;
+        final boolean $ceylontmp$increasing$46 = .ceylon.language.Integer.offset($ceylontmp$last$45, $ceylontmp$first$44) >= 0;
         final long $ceylontmp$incr$47 = $ceylontmp$increasing$46 ? 1L : -1L;
-        loop_9: for (long breaks$48 = $ceylontmp$start$44; $ceylontmp$increasing$46 ? breaks$48 - $ceylontmp$end$45 <= 0L : breaks$48 - $ceylontmp$end$45 >= 0L; breaks$48 += $ceylontmp$incr$47) {
+        loop_9: for (long breaks$48 = $ceylontmp$first$44; $ceylontmp$increasing$46 ? breaks$48 - $ceylontmp$last$45 <= 0L : breaks$48 - $ceylontmp$last$45 >= 0L; breaks$48 += $ceylontmp$incr$47) {
             final long breaks = breaks$48;
             sum += breaks;
             break loop_9;
         }
         boolean doforelse$49 = true;
-        final long $ceylontmp$start$50 = 10L;
-        final long $ceylontmp$end$51 = 1L;
-        final boolean $ceylontmp$increasing$52 = .ceylon.language.Integer.offset($ceylontmp$end$51, $ceylontmp$start$50) >= 0;
+        final long $ceylontmp$first$50 = 10L;
+        final long $ceylontmp$last$51 = 1L;
+        final boolean $ceylontmp$increasing$52 = .ceylon.language.Integer.offset($ceylontmp$last$51, $ceylontmp$first$50) >= 0;
         final long $ceylontmp$incr$53 = $ceylontmp$increasing$52 ? 1L : -1L;
-        loop_10: for (long breaksWithElse$54 = $ceylontmp$start$50; $ceylontmp$increasing$52 ? breaksWithElse$54 - $ceylontmp$end$51 <= 0L : breaksWithElse$54 - $ceylontmp$end$51 >= 0L; breaksWithElse$54 += $ceylontmp$incr$53) {
+        loop_10: for (long breaksWithElse$54 = $ceylontmp$first$50; $ceylontmp$increasing$52 ? breaksWithElse$54 - $ceylontmp$last$51 <= 0L : breaksWithElse$54 - $ceylontmp$last$51 >= 0L; breaksWithElse$54 += $ceylontmp$incr$53) {
             final long breaksWithElse = breaksWithElse$54;
             sum += breaksWithElse;
             doforelse$49 = false;
@@ -134,11 +134,11 @@ class OptimizedForWithRange implements .com.redhat.ceylon.compiler.java.runtime.
             sum = 0L;
         }
         boolean doforelse$55 = true;
-        final long $ceylontmp$start$56 = 10L;
-        final long $ceylontmp$end$57 = 1L;
-        final boolean $ceylontmp$increasing$58 = .ceylon.language.Integer.offset($ceylontmp$end$57, $ceylontmp$start$56) >= 0;
+        final long $ceylontmp$first$56 = 10L;
+        final long $ceylontmp$last$57 = 1L;
+        final boolean $ceylontmp$increasing$58 = .ceylon.language.Integer.offset($ceylontmp$last$57, $ceylontmp$first$56) >= 0;
         final long $ceylontmp$incr$59 = $ceylontmp$increasing$58 ? 1L : -1L;
-        loop_11: for (long breaksWithElse$60 = $ceylontmp$start$56; $ceylontmp$increasing$58 ? breaksWithElse$60 - $ceylontmp$end$57 <= 0L : breaksWithElse$60 - $ceylontmp$end$57 >= 0L; breaksWithElse$60 += $ceylontmp$incr$59) {
+        loop_11: for (long breaksWithElse$60 = $ceylontmp$first$56; $ceylontmp$increasing$58 ? breaksWithElse$60 - $ceylontmp$last$57 <= 0L : breaksWithElse$60 - $ceylontmp$last$57 >= 0L; breaksWithElse$60 += $ceylontmp$incr$59) {
             final long breaksWithElse = breaksWithElse$60;
             sum += breaksWithElse;
             if (breaksWithElse == 5L) {
@@ -149,21 +149,21 @@ class OptimizedForWithRange implements .com.redhat.ceylon.compiler.java.runtime.
         if (doforelse$55) {
             sum = 0L;
         }
-        final long $ceylontmp$start$62 = 10L;
-        final long $ceylontmp$end$63 = 1L;
-        final boolean $ceylontmp$increasing$64 = .ceylon.language.Integer.offset($ceylontmp$end$63, $ceylontmp$start$62) >= 0;
+        final long $ceylontmp$first$62 = 10L;
+        final long $ceylontmp$last$63 = 1L;
+        final boolean $ceylontmp$increasing$64 = .ceylon.language.Integer.offset($ceylontmp$last$63, $ceylontmp$first$62) >= 0;
         final long $ceylontmp$incr$65 = $ceylontmp$increasing$64 ? 1L : -1L;
-        loop_12: for (long returns$66 = $ceylontmp$start$62; $ceylontmp$increasing$64 ? returns$66 - $ceylontmp$end$63 <= 0L : returns$66 - $ceylontmp$end$63 >= 0L; returns$66 += $ceylontmp$incr$65) {
+        loop_12: for (long returns$66 = $ceylontmp$first$62; $ceylontmp$increasing$64 ? returns$66 - $ceylontmp$last$63 <= 0L : returns$66 - $ceylontmp$last$63 >= 0L; returns$66 += $ceylontmp$incr$65) {
             final long returns = returns$66;
             sum += returns;
             break loop_12;
         }
         boolean doforelse$67 = true;
-        final long $ceylontmp$start$68 = 10L;
-        final long $ceylontmp$end$69 = 1L;
-        final boolean $ceylontmp$increasing$70 = .ceylon.language.Integer.offset($ceylontmp$end$69, $ceylontmp$start$68) >= 0;
+        final long $ceylontmp$first$68 = 10L;
+        final long $ceylontmp$last$69 = 1L;
+        final boolean $ceylontmp$increasing$70 = .ceylon.language.Integer.offset($ceylontmp$last$69, $ceylontmp$first$68) >= 0;
         final long $ceylontmp$incr$71 = $ceylontmp$increasing$70 ? 1L : -1L;
-        loop_13: for (long returnsWithElse$72 = $ceylontmp$start$68; $ceylontmp$increasing$70 ? returnsWithElse$72 - $ceylontmp$end$69 <= 0L : returnsWithElse$72 - $ceylontmp$end$69 >= 0L; returnsWithElse$72 += $ceylontmp$incr$71) {
+        loop_13: for (long returnsWithElse$72 = $ceylontmp$first$68; $ceylontmp$increasing$70 ? returnsWithElse$72 - $ceylontmp$last$69 <= 0L : returnsWithElse$72 - $ceylontmp$last$69 >= 0L; returnsWithElse$72 += $ceylontmp$incr$71) {
             final long returnsWithElse = returnsWithElse$72;
             sum += returnsWithElse;
             doforelse$67 = false;
@@ -173,11 +173,11 @@ class OptimizedForWithRange implements .com.redhat.ceylon.compiler.java.runtime.
             sum = 0L;
         }
         boolean doforelse$73 = true;
-        final long $ceylontmp$start$74 = 10L;
-        final long $ceylontmp$end$75 = 1L;
-        final boolean $ceylontmp$increasing$76 = .ceylon.language.Integer.offset($ceylontmp$end$75, $ceylontmp$start$74) >= 0;
+        final long $ceylontmp$first$74 = 10L;
+        final long $ceylontmp$last$75 = 1L;
+        final boolean $ceylontmp$increasing$76 = .ceylon.language.Integer.offset($ceylontmp$last$75, $ceylontmp$first$74) >= 0;
         final long $ceylontmp$incr$77 = $ceylontmp$increasing$76 ? 1L : -1L;
-        loop_14: for (long returnsWithElse$78 = $ceylontmp$start$74; $ceylontmp$increasing$76 ? returnsWithElse$78 - $ceylontmp$end$75 <= 0L : returnsWithElse$78 - $ceylontmp$end$75 >= 0L; returnsWithElse$78 += $ceylontmp$incr$77) {
+        loop_14: for (long returnsWithElse$78 = $ceylontmp$first$74; $ceylontmp$increasing$76 ? returnsWithElse$78 - $ceylontmp$last$75 <= 0L : returnsWithElse$78 - $ceylontmp$last$75 >= 0L; returnsWithElse$78 += $ceylontmp$incr$77) {
             final long returnsWithElse = returnsWithElse$78;
             sum += returnsWithElse;
             if (returnsWithElse == 5L) {
@@ -188,21 +188,21 @@ class OptimizedForWithRange implements .com.redhat.ceylon.compiler.java.runtime.
         if (doforelse$73) {
             sum = 0L;
         }
-        final long $ceylontmp$start$80 = 10L;
-        final long $ceylontmp$end$81 = 1L;
-        final boolean $ceylontmp$increasing$82 = .ceylon.language.Integer.offset($ceylontmp$end$81, $ceylontmp$start$80) >= 0;
+        final long $ceylontmp$first$80 = 10L;
+        final long $ceylontmp$last$81 = 1L;
+        final boolean $ceylontmp$increasing$82 = .ceylon.language.Integer.offset($ceylontmp$last$81, $ceylontmp$first$80) >= 0;
         final long $ceylontmp$incr$83 = $ceylontmp$increasing$82 ? 1L : -1L;
-        loop_15: for (long throws$84 = $ceylontmp$start$80; $ceylontmp$increasing$82 ? throws$84 - $ceylontmp$end$81 <= 0L : throws$84 - $ceylontmp$end$81 >= 0L; throws$84 += $ceylontmp$incr$83) {
+        loop_15: for (long throws$84 = $ceylontmp$first$80; $ceylontmp$increasing$82 ? throws$84 - $ceylontmp$last$81 <= 0L : throws$84 - $ceylontmp$last$81 >= 0L; throws$84 += $ceylontmp$incr$83) {
             final long $throws = throws$84;
             sum += $throws;
             break loop_15;
         }
         boolean doforelse$85 = true;
-        final long $ceylontmp$start$86 = 10L;
-        final long $ceylontmp$end$87 = 1L;
-        final boolean $ceylontmp$increasing$88 = .ceylon.language.Integer.offset($ceylontmp$end$87, $ceylontmp$start$86) >= 0;
+        final long $ceylontmp$first$86 = 10L;
+        final long $ceylontmp$last$87 = 1L;
+        final boolean $ceylontmp$increasing$88 = .ceylon.language.Integer.offset($ceylontmp$last$87, $ceylontmp$first$86) >= 0;
         final long $ceylontmp$incr$89 = $ceylontmp$increasing$88 ? 1L : -1L;
-        loop_16: for (long throwsWithElse$90 = $ceylontmp$start$86; $ceylontmp$increasing$88 ? throwsWithElse$90 - $ceylontmp$end$87 <= 0L : throwsWithElse$90 - $ceylontmp$end$87 >= 0L; throwsWithElse$90 += $ceylontmp$incr$89) {
+        loop_16: for (long throwsWithElse$90 = $ceylontmp$first$86; $ceylontmp$increasing$88 ? throwsWithElse$90 - $ceylontmp$last$87 <= 0L : throwsWithElse$90 - $ceylontmp$last$87 >= 0L; throwsWithElse$90 += $ceylontmp$incr$89) {
             final long throwsWithElse = throwsWithElse$90;
             sum += throwsWithElse;
             doforelse$85 = false;
@@ -212,11 +212,11 @@ class OptimizedForWithRange implements .com.redhat.ceylon.compiler.java.runtime.
             sum = 0L;
         }
         boolean doforelse$91 = true;
-        final long $ceylontmp$start$92 = 10L;
-        final long $ceylontmp$end$93 = 1L;
-        final boolean $ceylontmp$increasing$94 = .ceylon.language.Integer.offset($ceylontmp$end$93, $ceylontmp$start$92) >= 0;
+        final long $ceylontmp$first$92 = 10L;
+        final long $ceylontmp$last$93 = 1L;
+        final boolean $ceylontmp$increasing$94 = .ceylon.language.Integer.offset($ceylontmp$last$93, $ceylontmp$first$92) >= 0;
         final long $ceylontmp$incr$95 = $ceylontmp$increasing$94 ? 1L : -1L;
-        loop_17: for (long throwsWithElse$96 = $ceylontmp$start$92; $ceylontmp$increasing$94 ? throwsWithElse$96 - $ceylontmp$end$93 <= 0L : throwsWithElse$96 - $ceylontmp$end$93 >= 0L; throwsWithElse$96 += $ceylontmp$incr$95) {
+        loop_17: for (long throwsWithElse$96 = $ceylontmp$first$92; $ceylontmp$increasing$94 ? throwsWithElse$96 - $ceylontmp$last$93 <= 0L : throwsWithElse$96 - $ceylontmp$last$93 >= 0L; throwsWithElse$96 += $ceylontmp$incr$95) {
             final long throwsWithElse = throwsWithElse$96;
             sum += throwsWithElse;
             if (throwsWithElse == 5L) {
@@ -230,11 +230,11 @@ class OptimizedForWithRange implements .com.redhat.ceylon.compiler.java.runtime.
     }
     
     private final void captured$priv$() {
-        final long $ceylontmp$start$98 = 0L;
-        final long $ceylontmp$end$99 = 10L;
-        final boolean $ceylontmp$increasing$100 = .ceylon.language.Integer.offset($ceylontmp$end$99, $ceylontmp$start$98) >= 0;
+        final long $ceylontmp$first$98 = 0L;
+        final long $ceylontmp$last$99 = 10L;
+        final boolean $ceylontmp$increasing$100 = .ceylon.language.Integer.offset($ceylontmp$last$99, $ceylontmp$first$98) >= 0;
         final long $ceylontmp$incr$101 = $ceylontmp$increasing$100 ? 1L : -1L;
-        loop_18: for (long i$102 = $ceylontmp$start$98; $ceylontmp$increasing$100 ? i$102 - $ceylontmp$end$99 <= 0L : i$102 - $ceylontmp$end$99 >= 0L; i$102 += $ceylontmp$incr$101) {
+        loop_18: for (long i$102 = $ceylontmp$first$98; $ceylontmp$increasing$100 ? i$102 - $ceylontmp$last$99 <= 0L : i$102 - $ceylontmp$last$99 >= 0L; i$102 += $ceylontmp$incr$101) {
             final long i = i$102;
             
             final class x_ {

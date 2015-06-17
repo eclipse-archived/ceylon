@@ -13,11 +13,11 @@ final class bug1507_ {
                 i = new .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1507IntWrapper(2L);
             } else {
                 boolean doforelse$2 = true;
-                final long $ceylontmp$start$3 = 0L;
-                final long $ceylontmp$end$4 = new .java.util.Random().nextInt(.com.redhat.ceylon.compiler.java.Util.toInt(10L));
-                final boolean $ceylontmp$increasing$5 = .ceylon.language.Integer.offset($ceylontmp$end$4, $ceylontmp$start$3) >= 0;
+                final long $ceylontmp$first$3 = 0L;
+                final long $ceylontmp$last$4 = new .java.util.Random().nextInt(.com.redhat.ceylon.compiler.java.Util.toInt(10L));
+                final boolean $ceylontmp$increasing$5 = .ceylon.language.Integer.offset($ceylontmp$last$4, $ceylontmp$first$3) >= 0;
                 final long $ceylontmp$incr$6 = $ceylontmp$increasing$5 ? 1L : -1L;
-                loop_0: for (long j$7 = $ceylontmp$start$3; $ceylontmp$increasing$5 ? j$7 - $ceylontmp$end$4 <= 0L : j$7 - $ceylontmp$end$4 >= 0L; j$7 += $ceylontmp$incr$6) {
+                loop_0: for (long j$7 = $ceylontmp$first$3; $ceylontmp$increasing$5 ? j$7 - $ceylontmp$last$4 <= 0L : j$7 - $ceylontmp$last$4 >= 0L; j$7 += $ceylontmp$incr$6) {
                     final long j = j$7;
                     .java.lang.Object k$9;
                     if ((k$9 = .com.redhat.ceylon.compiler.java.test.issues.bug15xx.bug1507generateInt_.bug1507generateInt(j == 0L)) != null) {
@@ -239,11 +239,11 @@ final class bug1507test6_ {
         final boolean found;
         boolean found$50 = false;
         boolean doforelse$51 = true;
-        final long $ceylontmp$start$52 = 1L;
-        final long $ceylontmp$end$53 = 2L;
-        final boolean $ceylontmp$increasing$54 = .ceylon.language.Integer.offset($ceylontmp$end$53, $ceylontmp$start$52) >= 0;
+        final long $ceylontmp$first$52 = 1L;
+        final long $ceylontmp$last$53 = 2L;
+        final boolean $ceylontmp$increasing$54 = .ceylon.language.Integer.offset($ceylontmp$last$53, $ceylontmp$first$52) >= 0;
         final long $ceylontmp$incr$55 = $ceylontmp$increasing$54 ? 1L : -1L;
-        loop_6: for (long i$56 = $ceylontmp$start$52; $ceylontmp$increasing$54 ? i$56 - $ceylontmp$end$53 <= 0L : i$56 - $ceylontmp$end$53 >= 0L; i$56 += $ceylontmp$incr$55) {
+        loop_6: for (long i$56 = $ceylontmp$first$52; $ceylontmp$increasing$54 ? i$56 - $ceylontmp$last$53 <= 0L : i$56 - $ceylontmp$last$53 >= 0L; i$56 += $ceylontmp$incr$55) {
             final long i = i$56;
             if (i == 0L) {
                 found$50 = true;

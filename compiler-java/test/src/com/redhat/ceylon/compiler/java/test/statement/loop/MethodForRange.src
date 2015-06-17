@@ -6,11 +6,11 @@ class MethodForRange implements .com.redhat.ceylon.compiler.java.runtime.model.R
     }
     
     public final void m() {
-        final long $ceylontmp$start$0 = 1L;
-        final long $ceylontmp$end$1 = 10L;
-        final boolean $ceylontmp$increasing$2 = .ceylon.language.Integer.offset($ceylontmp$end$1, $ceylontmp$start$0) >= 0;
+        final long $ceylontmp$first$0 = 1L;
+        final long $ceylontmp$last$1 = 10L;
+        final boolean $ceylontmp$increasing$2 = .ceylon.language.Integer.offset($ceylontmp$last$1, $ceylontmp$first$0) >= 0;
         final long $ceylontmp$incr$3 = $ceylontmp$increasing$2 ? 1L : -1L;
-        loop_0: for (long i$4 = $ceylontmp$start$0; $ceylontmp$increasing$2 ? i$4 - $ceylontmp$end$1 <= 0L : i$4 - $ceylontmp$end$1 >= 0L; i$4 += $ceylontmp$incr$3) {
+        loop_0: for (long i$4 = $ceylontmp$first$0; $ceylontmp$increasing$2 ? i$4 - $ceylontmp$last$1 <= 0L : i$4 - $ceylontmp$last$1 >= 0L; i$4 += $ceylontmp$incr$3) {
             final long i = i$4;
             if (i > 5L) {
             }

@@ -67,11 +67,11 @@ final class bug1227_ifBreak_returnElse_opt_ {
         final long from;
         long from$12 = 0L;
         boolean doforelse$13 = true;
-        final long $ceylontmp$start$14 = 1L;
-        final long $ceylontmp$end$15 = 10L;
-        final boolean $ceylontmp$increasing$16 = .ceylon.language.Integer.offset($ceylontmp$end$15, $ceylontmp$start$14) >= 0;
+        final long $ceylontmp$first$14 = 1L;
+        final long $ceylontmp$last$15 = 10L;
+        final boolean $ceylontmp$increasing$16 = .ceylon.language.Integer.offset($ceylontmp$last$15, $ceylontmp$first$14) >= 0;
         final long $ceylontmp$incr$17 = $ceylontmp$increasing$16 ? 1L : -1L;
-        loop_1: for (long index$18 = $ceylontmp$start$14; $ceylontmp$increasing$16 ? index$18 - $ceylontmp$end$15 <= 0L : index$18 - $ceylontmp$end$15 >= 0L; index$18 += $ceylontmp$incr$17) {
+        loop_1: for (long index$18 = $ceylontmp$first$14; $ceylontmp$increasing$16 ? index$18 - $ceylontmp$last$15 <= 0L : index$18 - $ceylontmp$last$15 >= 0L; index$18 += $ceylontmp$incr$17) {
             final long index = index$18;
             if (someBoolean) {
                 from$12 = index;
@@ -145,11 +145,11 @@ final class bug1227_ifBreak_specifiedElse_opt_ {
         final long from;
         long from$34 = 0L;
         boolean doforelse$35 = true;
-        final long $ceylontmp$start$36 = 1L;
-        final long $ceylontmp$end$37 = 10L;
-        final boolean $ceylontmp$increasing$38 = .ceylon.language.Integer.offset($ceylontmp$end$37, $ceylontmp$start$36) >= 0;
+        final long $ceylontmp$first$36 = 1L;
+        final long $ceylontmp$last$37 = 10L;
+        final boolean $ceylontmp$increasing$38 = .ceylon.language.Integer.offset($ceylontmp$last$37, $ceylontmp$first$36) >= 0;
         final long $ceylontmp$incr$39 = $ceylontmp$increasing$38 ? 1L : -1L;
-        loop_3: for (long index$40 = $ceylontmp$start$36; $ceylontmp$increasing$38 ? index$40 - $ceylontmp$end$37 <= 0L : index$40 - $ceylontmp$end$37 >= 0L; index$40 += $ceylontmp$incr$39) {
+        loop_3: for (long index$40 = $ceylontmp$first$36; $ceylontmp$increasing$38 ? index$40 - $ceylontmp$last$37 <= 0L : index$40 - $ceylontmp$last$37 >= 0L; index$40 += $ceylontmp$incr$39) {
             final long index = index$40;
             if (someBoolean) {
                 from$34 = index;
@@ -252,11 +252,11 @@ final class bug1227_ifBreak_elseBreak_specifiedElse_opt_ {
         final long from;
         long from$58 = 0L;
         boolean doforelse$59 = true;
-        final long $ceylontmp$start$60 = 1L;
-        final long $ceylontmp$end$61 = 10L;
-        final boolean $ceylontmp$increasing$62 = .ceylon.language.Integer.offset($ceylontmp$end$61, $ceylontmp$start$60) >= 0;
+        final long $ceylontmp$first$60 = 1L;
+        final long $ceylontmp$last$61 = 10L;
+        final boolean $ceylontmp$increasing$62 = .ceylon.language.Integer.offset($ceylontmp$last$61, $ceylontmp$first$60) >= 0;
         final long $ceylontmp$incr$63 = $ceylontmp$increasing$62 ? 1L : -1L;
-        loop_5: for (long index$64 = $ceylontmp$start$60; $ceylontmp$increasing$62 ? index$64 - $ceylontmp$end$61 <= 0L : index$64 - $ceylontmp$end$61 >= 0L; index$64 += $ceylontmp$incr$63) {
+        loop_5: for (long index$64 = $ceylontmp$first$60; $ceylontmp$increasing$62 ? index$64 - $ceylontmp$last$61 <= 0L : index$64 - $ceylontmp$last$61 >= 0L; index$64 += $ceylontmp$incr$63) {
             final long index = index$64;
             if (someBoolean) {
                 from$58 = index;
@@ -364,11 +364,11 @@ final class bug1227_ifReturn_specifiedElse_opt_ {
         final boolean someBoolean = ((.ceylon.language.Boolean).ceylon.language.nothing_.get_()).booleanValue();
         final long from;
         long from$81 = 0L;
-        final long $ceylontmp$start$82 = 1L;
-        final long $ceylontmp$end$83 = 10L;
-        final boolean $ceylontmp$increasing$84 = .ceylon.language.Integer.offset($ceylontmp$end$83, $ceylontmp$start$82) >= 0;
+        final long $ceylontmp$first$82 = 1L;
+        final long $ceylontmp$last$83 = 10L;
+        final boolean $ceylontmp$increasing$84 = .ceylon.language.Integer.offset($ceylontmp$last$83, $ceylontmp$first$82) >= 0;
         final long $ceylontmp$incr$85 = $ceylontmp$increasing$84 ? 1L : -1L;
-        loop_7: for (long index$86 = $ceylontmp$start$82; $ceylontmp$increasing$84 ? index$86 - $ceylontmp$end$83 <= 0L : index$86 - $ceylontmp$end$83 >= 0L; index$86 += $ceylontmp$incr$85) {
+        loop_7: for (long index$86 = $ceylontmp$first$82; $ceylontmp$increasing$84 ? index$86 - $ceylontmp$last$83 <= 0L : index$86 - $ceylontmp$last$83 >= 0L; index$86 += $ceylontmp$incr$85) {
             final long index = index$86;
             if (someBoolean) {
                 from$81 = index;
@@ -445,11 +445,11 @@ final class bug1227_ifThrow_specifiedElse_opt_ {
         final boolean someBoolean = ((.ceylon.language.Boolean).ceylon.language.nothing_.get_()).booleanValue();
         final long from;
         long from$102 = 0L;
-        final long $ceylontmp$start$103 = 1L;
-        final long $ceylontmp$end$104 = 10L;
-        final boolean $ceylontmp$increasing$105 = .ceylon.language.Integer.offset($ceylontmp$end$104, $ceylontmp$start$103) >= 0;
+        final long $ceylontmp$first$103 = 1L;
+        final long $ceylontmp$last$104 = 10L;
+        final boolean $ceylontmp$increasing$105 = .ceylon.language.Integer.offset($ceylontmp$last$104, $ceylontmp$first$103) >= 0;
         final long $ceylontmp$incr$106 = $ceylontmp$increasing$105 ? 1L : -1L;
-        loop_9: for (long index$107 = $ceylontmp$start$103; $ceylontmp$increasing$105 ? index$107 - $ceylontmp$end$104 <= 0L : index$107 - $ceylontmp$end$104 >= 0L; index$107 += $ceylontmp$incr$106) {
+        loop_9: for (long index$107 = $ceylontmp$first$103; $ceylontmp$increasing$105 ? index$107 - $ceylontmp$last$104 <= 0L : index$107 - $ceylontmp$last$104 >= 0L; index$107 += $ceylontmp$incr$106) {
             final long index = index$107;
             if (someBoolean) {
                 from$102 = index;
