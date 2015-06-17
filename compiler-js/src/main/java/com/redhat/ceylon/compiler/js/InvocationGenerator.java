@@ -502,6 +502,9 @@ public class InvocationGenerator {
                     gen.boxUnboxEnd(boxType);
                 } else {
                     ((Tree.Comprehension)arg).visit(gen);
+                    if (!arg.getTypeModel().isSequential()) {
+                        gen.out(".sequence()");
+                    }
                 }
                 if (opened) {
                     gen.out(",");
