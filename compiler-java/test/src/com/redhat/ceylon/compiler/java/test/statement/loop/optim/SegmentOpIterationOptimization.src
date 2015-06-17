@@ -101,30 +101,30 @@ class OptimizedForWithSegment implements .com.redhat.ceylon.compiler.java.runtim
             sum += breaks;
             break loop_9;
         }
-        boolean doforelse$33 = true;
-        final long start$30 = 1L;
-        final long length$31 = 10L;
-        loop_10: for (long i$32 = 0; i$32 < length$31; i$32++) {
-            final long breaksWithElse = i$32 + start$30;
+        boolean doforelse$30 = true;
+        final long start$31 = 1L;
+        final long length$32 = 10L;
+        loop_10: for (long i$33 = 0; i$33 < length$32; i$33++) {
+            final long breaksWithElse = i$33 + start$31;
             sum += breaksWithElse;
-            doforelse$33 = false;
+            doforelse$30 = false;
             break loop_10;
         }
-        if (doforelse$33) {
+        if (doforelse$30) {
             sum = 0L;
         }
-        boolean doforelse$37 = true;
-        final long start$34 = 1L;
-        final long length$35 = 10L;
-        loop_11: for (long i$36 = 0; i$36 < length$35; i$36++) {
-            final long breaksWithElse = i$36 + start$34;
+        boolean doforelse$34 = true;
+        final long start$35 = 1L;
+        final long length$36 = 10L;
+        loop_11: for (long i$37 = 0; i$37 < length$36; i$37++) {
+            final long breaksWithElse = i$37 + start$35;
             sum += breaksWithElse;
             if (breaksWithElse == 5L) {
-                doforelse$37 = false;
+                doforelse$34 = false;
                 break loop_11;
             }
         }
-        if (doforelse$37) {
+        if (doforelse$34) {
             sum = 0L;
         }
         final long start$39 = 1L;
@@ -134,30 +134,30 @@ class OptimizedForWithSegment implements .com.redhat.ceylon.compiler.java.runtim
             sum += returns;
             break loop_12;
         }
-        boolean doforelse$45 = true;
-        final long start$42 = 1L;
-        final long length$43 = 10L;
-        loop_13: for (long i$44 = 0; i$44 < length$43; i$44++) {
-            final long returnsWithElse = i$44 + start$42;
+        boolean doforelse$42 = true;
+        final long start$43 = 1L;
+        final long length$44 = 10L;
+        loop_13: for (long i$45 = 0; i$45 < length$44; i$45++) {
+            final long returnsWithElse = i$45 + start$43;
             sum += returnsWithElse;
-            doforelse$45 = false;
+            doforelse$42 = false;
             break loop_13;
         }
-        if (doforelse$45) {
+        if (doforelse$42) {
             sum = 0L;
         }
-        boolean doforelse$49 = true;
-        final long start$46 = 1L;
-        final long length$47 = 10L;
-        loop_14: for (long i$48 = 0; i$48 < length$47; i$48++) {
-            final long returnsWithElse = i$48 + start$46;
+        boolean doforelse$46 = true;
+        final long start$47 = 1L;
+        final long length$48 = 10L;
+        loop_14: for (long i$49 = 0; i$49 < length$48; i$49++) {
+            final long returnsWithElse = i$49 + start$47;
             sum += returnsWithElse;
             if (returnsWithElse == 5L) {
-                doforelse$49 = false;
+                doforelse$46 = false;
                 break loop_14;
             }
         }
-        if (doforelse$49) {
+        if (doforelse$46) {
             sum = 0L;
         }
         final long start$51 = 1L;
@@ -167,30 +167,30 @@ class OptimizedForWithSegment implements .com.redhat.ceylon.compiler.java.runtim
             sum += $throws;
             break loop_15;
         }
-        boolean doforelse$57 = true;
-        final long start$54 = 1L;
-        final long length$55 = 10L;
-        loop_16: for (long i$56 = 0; i$56 < length$55; i$56++) {
-            final long throwsWithElse = i$56 + start$54;
+        boolean doforelse$54 = true;
+        final long start$55 = 1L;
+        final long length$56 = 10L;
+        loop_16: for (long i$57 = 0; i$57 < length$56; i$57++) {
+            final long throwsWithElse = i$57 + start$55;
             sum += throwsWithElse;
-            doforelse$57 = false;
+            doforelse$54 = false;
             break loop_16;
         }
-        if (doforelse$57) {
+        if (doforelse$54) {
             sum = 0L;
         }
-        boolean doforelse$61 = true;
-        final long start$58 = 1L;
-        final long length$59 = 10L;
-        loop_17: for (long i$60 = 0; i$60 < length$59; i$60++) {
-            final long throwsWithElse = i$60 + start$58;
+        boolean doforelse$58 = true;
+        final long start$59 = 1L;
+        final long length$60 = 10L;
+        loop_17: for (long i$61 = 0; i$61 < length$60; i$61++) {
+            final long throwsWithElse = i$61 + start$59;
             sum += throwsWithElse;
             if (throwsWithElse == 5L) {
-                doforelse$61 = false;
+                doforelse$58 = false;
                 break loop_17;
             }
         }
-        if (doforelse$61) {
+        if (doforelse$58) {
             sum = 0L;
         }
     }

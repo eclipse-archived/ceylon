@@ -68,11 +68,11 @@ class ArrayIterationStatic implements .com.redhat.ceylon.compiler.java.runtime.m
     }
     
     private final void arrayOfIntegersWithBreak$priv$(final .ceylon.language.Array<.ceylon.language.Integer> array) {
-        boolean doforelse$23 = true;
-        final .java.lang.Object array$20 = array.toArray();
-        final int length$21 = .com.redhat.ceylon.compiler.java.Util.arrayLength(array$20);
-        loop_7: for (int i$22 = 0; i$22 < length$21; i$22++) {
-            final long element = .com.redhat.ceylon.compiler.java.Util.getIntegerArray(array$20, i$22);
+        boolean doforelse$20 = true;
+        final .java.lang.Object array$21 = array.toArray();
+        final int length$22 = .com.redhat.ceylon.compiler.java.Util.arrayLength(array$21);
+        loop_7: for (int i$23 = 0; i$23 < length$22; i$23++) {
+            final long element = .com.redhat.ceylon.compiler.java.Util.getIntegerArray(array$21, i$23);
             
             final class x_ {
                 
@@ -85,11 +85,11 @@ class ArrayIterationStatic implements .com.redhat.ceylon.compiler.java.runtime.m
             }
             final x_ x = new x_();
             if (element == 10L) {
-                doforelse$23 = false;
+                doforelse$20 = false;
                 break loop_7;
             }
         }
-        if (doforelse$23) {
+        if (doforelse$20) {
             .ceylon.language.print_.print(.ceylon.language.String.instance("foo"));
         }
     }

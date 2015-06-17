@@ -116,21 +116,21 @@ final class bug1507test2_ {
         final boolean found;
         boolean found$20 = false;
         final .ceylon.language.Array<.ceylon.language.Integer> array = .ceylon.language.arrayOfSize_.<.ceylon.language.Integer>arrayOfSize(.ceylon.language.Integer.$TypeDescriptor$, 2L, .ceylon.language.Integer.instance(0L));
-        boolean doforelse$24 = true;
-        final .java.lang.Object array$21 = array.toArray();
-        final int length$22 = .com.redhat.ceylon.compiler.java.Util.arrayLength(array$21);
-        loop_2: for (int i$23 = 0; i$23 < length$22; i$23++) {
-            final long i = .com.redhat.ceylon.compiler.java.Util.getIntegerArray(array$21, i$23);
+        boolean doforelse$21 = true;
+        final .java.lang.Object array$22 = array.toArray();
+        final int length$23 = .com.redhat.ceylon.compiler.java.Util.arrayLength(array$22);
+        loop_2: for (int i$24 = 0; i$24 < length$23; i$24++) {
+            final long i = .com.redhat.ceylon.compiler.java.Util.getIntegerArray(array$22, i$24);
             if (i == 0L) {
                 found$20 = true;
                 final boolean found$26 = found$20;
-                doforelse$24 = false;
+                doforelse$21 = false;
                 break loop_2;
             } else {
                 .ceylon.language.process_.get_().write("");
             }
         }
-        if (doforelse$24) {
+        if (doforelse$21) {
             found$20 = false;
             final boolean found$27 = found$20;
         }
@@ -146,21 +146,21 @@ final class bug1507test3_ {
     static void bug1507test3() {
         final boolean found;
         boolean found$28 = false;
-        boolean doforelse$32 = true;
-        final long start$29 = 1L;
-        final long length$30 = 2L;
-        loop_3: for (long i$31 = 0; i$31 < length$30; i$31++) {
-            final long i = i$31 + start$29;
+        boolean doforelse$29 = true;
+        final long start$30 = 1L;
+        final long length$31 = 2L;
+        loop_3: for (long i$32 = 0; i$32 < length$31; i$32++) {
+            final long i = i$32 + start$30;
             if (i == 0L) {
                 found$28 = true;
                 final boolean found$34 = found$28;
-                doforelse$32 = false;
+                doforelse$29 = false;
                 break loop_3;
             } else {
                 .ceylon.language.process_.get_().write("");
             }
         }
-        if (doforelse$32) {
+        if (doforelse$29) {
             found$28 = false;
             final boolean found$35 = found$28;
         }
