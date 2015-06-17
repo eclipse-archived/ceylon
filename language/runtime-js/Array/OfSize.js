@@ -1,4 +1,4 @@
-function $_Array_OfSize(s,e,t$) {
+function $_Array_ofSize(s,e,t$) {
   asrt$(s<=runtime().maxArraySize,
         "Invalid array size","0:0","Array.ceylon");
   $init$$_Array();
