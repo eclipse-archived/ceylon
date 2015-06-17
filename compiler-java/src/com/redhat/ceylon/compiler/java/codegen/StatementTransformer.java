@@ -2700,45 +2700,24 @@ public class StatementTransformer extends AbstractTransformer {
     
     
     /**
-     * <p>Transformation of {@code for} loops over {@code Range<Integer>} 
-     * or {@code Range<Character>} which avoids allocating a {@code Range} and
+     * <p>Transformation of {@code for} loops over {@code Span<Integer>} 
+     * or {@code Span<Character>} which avoids allocating a {@code Span} and
      * using an {@code Iterator} like 
      * {@link #ForStatementTransformation} but instead outputs a C-style 
-     * {@code for} loop. Because a Range is never empty we can also omit
+     * {@code for} loop. Because a Span is never empty we can also omit
      * code for handling {@code else} clauses of {@code for} statements when 
      * we know the {@code for} block returns normally</p>
      * 
-     * <p>This is able to optimize statements like the following:</p>
-     * <ul>
-     * <li>{@code for (i in lhs..rhs) ... }</li>
-     * <li>{@code for (i in (lhs..rhs).by(increment)) ... }</li>
-     * <ul>
-     * <p>where {@code lhs}, {@code rhs} and {@code increment} are 
-     * expressions (not necessarily literals or compile-time constants).</p>
-     * 
-     * <p>Given a statement like {@code for (i in (lhs..rhs).by(increment) ...} 
-     * we generate something like this:</p>
-     * <pre>
-     *  long by$ = by;
-     *  if (by$ <= 0) {
-     *      throw new Exception(ceylon.language.String.instance("step size must be greater than zero"));
-     *  }
-     *  final long start$ = lhs;
-     *  final long end$ = rhs;
-     *  final boolean increasing$ = start <= end;
-     *  final long inc$ = (increasing$ ? by$ : -by$);
-     *  for (long i = start$; (increasing$ ? i-end$ <= 0 : i-end$ >= 0); i+=inc$) {
-     *      USERBLOCK
-     *  }
-     * </pre>
-     * 
-     * <p>In the case where we have a simple range with no {@code by()} 
-     * invocation then the test for negative step size is omitted.</p>
+     * <p>This is able to optimize statements like {@code for (i in lhs..rhs) ... },
+     * where {@code lhs}, {@code rhs} and {@code increment} are 
+     * expressions (not necessarily literals or compile-time constants).
+     * See {@link SpanOpWithStepIterationOptimization} for optimization of 
+     * statements like {@code for (i in (lhs..rhs).by(increment)) ... }
      * 
      * <p>The transformation is complicated by:</p>
      * <ul>
      *   <li>Not knowing at compile-time whether {@code lhs < rhs}, which 
-     *       complicated the {@code for} termination condition</li>
+     *       complicates the {@code for} termination condition</li>
      *   <li>Needing to worry about {@code int} or {@code long} overflow
      *       (hence the {@code i-end$ <= 0} rather than the more natural
      *       {@code i <= end}.</li>
@@ -2913,6 +2892,14 @@ public class StatementTransformer extends AbstractTransformer {
         }
     }
     
+    /**
+     * Optimization for statements like 
+     * {@code for (i in (lhs..rhs).by(increment)) ... }
+     * This differs somewhat from the case without an increment because the 
+     * semantics of the iterator we're effectively inlining is quite different.
+     * Annoyingly {@code Span.by} returns {@code this} when {@code step==1},
+     * which is behaviour we have to replicate.
+     */
     class SpanOpWithStepIterationOptimization extends SpanOpIterationOptimization {
 
         protected final SyntheticName stepName = naming.temp("step");
