@@ -1878,6 +1878,7 @@ public class GenerateJsVisitor extends Visitor
             generateCallable(that, null);
         } else if (that.getStaticMethodReference() && d!=null) {
             if (d instanceof Value && ((Value)d).getTypeDeclaration() instanceof Constructor) {
+                //TODO this won't work anymore I think
                 boolean wrap = false;
                 if (that.getPrimary() instanceof Tree.QualifiedMemberOrTypeExpression) {
                     Tree.QualifiedMemberOrTypeExpression prim = (Tree.QualifiedMemberOrTypeExpression)that.getPrimary();
@@ -1893,18 +1894,22 @@ public class GenerateJsVisitor extends Visitor
                 if (wrap) {
                     out(";}");
                 }
-            } else {
-                out("function($O$){return ");
-                if (d instanceof Function) {
+            } else if (d instanceof Function) {
+                Function fd = (Function)d;
+                if (fd.getTypeDeclaration() instanceof Constructor) {
+                    qualify(that, fd.getTypeDeclaration());
+                    out(names.name(fd));
+                } else {
+                    out("function($O$){return ");
                     if (BmeGenerator.hasTypeParameters(that)) {
                         BmeGenerator.printGenericMethodReference(this, that, "$O$", "$O$."+names.name(d));
                     } else {
                         out(getClAlias(), "JsCallable($O$,$O$.", names.name(d), ")");
                     }
                     out(";}");
-                } else {
-                    out("$O$.", names.name(d), ";}");
                 }
+            } else {
+                out("function($O$){return $O$.", names.name(d), ";}");
             }
         } else {
             final String lhs = generateToString(new GenerateCallback() {
