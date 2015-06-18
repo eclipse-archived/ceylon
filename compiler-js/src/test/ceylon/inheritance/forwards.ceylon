@@ -9,8 +9,8 @@ interface A {
   shared formal String b();
 }
 
-class TopChild578() extends TopParent578.Foo(){}
-class TopParent578 { shared new Foo(){} }
+class TopChild578() extends TopParent578.foo(){}
+class TopParent578 { shared new foo(){} }
 
 shared void testForwardDeclarations() {
   check(C().b()=="ab", "inherited forward decl 1");
@@ -22,8 +22,8 @@ shared void testForwardDeclarations() {
   Object o469_2=Outer469().bar();
   check(o469_2 is Outer469.Inner469, "#469 nested");
   check((TopChild578() of Anything) exists, "#578.1");
-  class LocalChild578() extends LocalParent578.Foo(){}
-  class LocalParent578 { shared new Foo(){} }
+  class LocalChild578() extends LocalParent578.foo(){}
+  class LocalParent578 { shared new foo(){} }
   check((LocalChild578() of Anything) exists, "#578.2");
 }
 
