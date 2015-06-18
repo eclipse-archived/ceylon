@@ -23,3 +23,8 @@ Boolean bug1878A() {
         return false; // Ceylon Backend Error: missing return statement
     }
 }
+Boolean bug1878A2() {
+    for (_ in (1..1).by(2)) {
+        return false; // Ceylon Backend Error: missing return statement
+    }
+}
