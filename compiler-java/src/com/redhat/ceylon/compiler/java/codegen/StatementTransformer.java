@@ -2845,10 +2845,6 @@ public class StatementTransformer extends AbstractTransformer {
             // The actual loop
             result.append(make().Labelled(this.label, makeLoop(blockStatements)));
             
-            if (getBlock().getDefinitelyReturns()) {
-                // in case Ceylon knows the loop definitely returns, but javac doesn't 
-                result.append(makeFlowAppeaser(getBlock()));
-            }
             
             return result;
         }
@@ -3076,13 +3072,16 @@ public class StatementTransformer extends AbstractTransformer {
                             make().Literal(1L))),
                     make().Exec(makeIncrementElement()), 
                     null));
-            // if (step != 1) $n=neighbour($i, $step)
-            blockStatements = blockStatements.append(
-                make().If(
-                    make().Binary(JCTree.NE, 
-                        stepName.makeIdent(), 
-                        make().Literal(1L)),
-                    make().Exec(makeIncrementElement()), null));
+            
+            if (!getBlock().getDefinitelyReturns()) {
+                // if (step != 1) $n=neighbour($i, $step)
+                blockStatements = blockStatements.append(
+                    make().If(
+                        make().Binary(JCTree.NE, 
+                            stepName.makeIdent(), 
+                            make().Literal(1L)),
+                        make().Exec(makeIncrementElement()), null));
+            }
             
             return blockStatements;
         }
