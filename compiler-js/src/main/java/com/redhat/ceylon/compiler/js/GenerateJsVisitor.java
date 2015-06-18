@@ -1928,9 +1928,18 @@ public class GenerateJsVisitor extends Visitor
             if (name == null) {
                 name = memberAccess(that, "");
             }
-            if (d instanceof Constructor) {
-                qualify(that, d);
-                out(names.name(d));
+            if (TypeUtils.isConstructor(d)) {
+                Constructor cd = TypeUtils.getConstructor(d);
+                final boolean hasTargs = BmeGenerator.hasTypeParameters(
+                        (Tree.BaseTypeExpression)that.getPrimary());
+                if (hasTargs) {
+                    BmeGenerator.printGenericMethodReference(this,
+                            (Tree.BaseTypeExpression)that.getPrimary(), "0",
+                            qualifiedPath(that, cd) + "_" + names.name(cd));
+                } else {
+                    qualify(that, cd);
+                    out(names.name(cd));
+                }
             } else {
                 out("function(x){return ");
                 if (BmeGenerator.hasTypeParameters(that)) {
