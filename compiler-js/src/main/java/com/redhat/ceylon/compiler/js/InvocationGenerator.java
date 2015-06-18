@@ -12,7 +12,6 @@ import com.redhat.ceylon.compiler.js.util.RetainedVars;
 import com.redhat.ceylon.compiler.js.util.TypeUtils;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.model.typechecker.model.Class;
-import com.redhat.ceylon.model.typechecker.model.Constructor;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Function;
 import com.redhat.ceylon.model.typechecker.model.Functional;
@@ -43,15 +42,14 @@ public class InvocationGenerator {
     private Map<TypeParameter,Type> getTypeArguments(Tree.Primary typeArgSource) {
         if (typeArgSource instanceof Tree.StaticMemberOrTypeExpression) {
             Tree.StaticMemberOrTypeExpression smote = (Tree.StaticMemberOrTypeExpression) typeArgSource;
-            final boolean hasTargs = smote.getDeclaration().getContainer() instanceof Generic
-                    && !((Generic)smote.getDeclaration().getContainer()).getTypeParameters().isEmpty();
-            if (hasTargs && (smote.getDeclaration() instanceof Constructor
-                    || (smote.getDeclaration() instanceof Function &&
-                            ((Function)smote.getDeclaration()).getTypeDeclaration() instanceof Constructor))) {
+            final Declaration d = smote.getDeclaration();
+            final boolean hasTargs = d != null && d.getContainer() instanceof Generic
+                    && !((Generic)d.getContainer()).getTypeParameters().isEmpty();
+            if (hasTargs && TypeUtils.isConstructor(d)) {
                 return smote.getTarget().getTypeArguments();
-            } else if (smote.getDeclaration() instanceof Functional) {
+            } else if (d instanceof Functional) {
                 Map<TypeParameter,Type> targs = TypeUtils.matchTypeParametersWithArguments(
-                        ((Generic)smote.getDeclaration()).getTypeParameters(),
+                        ((Generic)d).getTypeParameters(),
                         smote.getTypeArguments() == null ? null :
                         smote.getTypeArguments().getTypeModels());
                 if (targs == null) {
