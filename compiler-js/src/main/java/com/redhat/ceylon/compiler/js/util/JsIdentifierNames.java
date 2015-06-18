@@ -9,7 +9,6 @@ import java.util.Set;
 import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.compiler.js.JsCompiler;
 import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
-import com.redhat.ceylon.model.typechecker.model.Constructor;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Function;
 import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
@@ -224,7 +223,7 @@ public class JsIdentifierNames {
     private String nestingSuffix(Declaration decl, final boolean forSelf) {
         String suffix = "";
         if (decl instanceof TypeDeclaration && (forSelf || !decl.isAnonymous())
-                && decl instanceof Constructor == false) {
+                && !TypeUtils.isConstructor(decl)) {
             // The generated suffix consists of the names of the enclosing types.
             StringBuilder sb = new StringBuilder();
             // Use the original declaration if it's an overriden class: an overriding
@@ -256,7 +255,7 @@ public class JsIdentifierNames {
     private String getName(Declaration decl, boolean forGetterSetter, boolean priv) {
         if (decl == null) { return null; }
         String name = decl.getName();
-        if (name == null && decl instanceof com.redhat.ceylon.model.typechecker.model.Constructor) {
+        if (name == null && TypeUtils.isConstructor(decl)) {
             return "$c$";
         }
         if (name.startsWith("anonymous#")) {

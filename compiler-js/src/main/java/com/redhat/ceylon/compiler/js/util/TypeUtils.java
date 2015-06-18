@@ -1412,4 +1412,19 @@ public class TypeUtils {
         return r;
     }
 
+    public static boolean isConstructor(Declaration d) {
+        return d instanceof Constructor || (d instanceof Function &&
+                ((Function)d).getTypeDeclaration() instanceof Constructor);
+    }
+
+    public static Constructor getConstructor(Declaration d) {
+        if (d instanceof Constructor) {
+            return (Constructor)d;
+        }
+        if (d instanceof Function && ((Function)d).getTypeDeclaration() instanceof Constructor) {
+            return (Constructor)((Function)d).getTypeDeclaration();
+        }
+        return null;
+    }
+
 }
