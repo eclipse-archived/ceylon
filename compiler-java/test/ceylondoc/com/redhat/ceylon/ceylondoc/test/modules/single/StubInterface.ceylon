@@ -22,6 +22,7 @@ tagged("stubTag1a", "stubTag1b", "stubTagWithVeryLongName ... !!!")
 shared interface StubInterface of StubInterfaceA | StubClass | stubInterfaceB {
 
   "Description of StubInterface.formalMethodFromStubInterface"
+  see(`interface`)
   shared formal void formalMethodFromStubInterface();
   
   "Description of StubInterface.defaultDeprecatedMethodFromStubInterface"
