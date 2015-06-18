@@ -95,7 +95,7 @@ void compareSpanInteger2130(Integer start, Integer end, Integer[]? expect = null
     }
     
     if (problems nonempty) {
-        throw Exception("(``start``..``end``).by(``by``): ``problems``");
+        throw Exception("(``start``..``end``): ``problems``");
     }
 }
 
@@ -389,12 +389,13 @@ void bug2130Span() {
         };
         
     }
-    
     compareSpanCharacter2130 { start = '\0'; end = '\0'; };
     compareSpanCharacter2130('\0', '\0'.neighbour { offset = 1; });
-    // TODO compareSpanCharacter2130('\0'.neighbour(1), '\0');
+    compareSpanCharacter2130 { start = 'z'; end = 'a'; };// pb with Spans whose last is zero
+    compareSpanCharacter2130 { start = '\0'.neighbour(1); end = '\0'; };// pb with Spans whose last is zero
     compareSpanCharacter2130('\0'.neighbour(1), '\0'.neighbour { offset = 1; });
-    // TODO compareSpanCharacter2130('\{#10FFFF}', '\{#10FFFF}');
+    compareSpanCharacter2130('\{#10FFFF}', '\{#10FFFF}');
+    compareSpanCharacter2130('\0', '\{#10FFFF}');
     compareSpanCharacter2130 { start = 'a'; end = 'z'; };
     compareSpanCharacter2130 { start = 'z'; end = 'a'; };
     for (step in [-1, 0, 1, 2, runtime.maxIntegerValue]) {
