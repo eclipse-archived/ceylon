@@ -9,14 +9,22 @@ final class bug1878Init_ {
     
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     static void bug1878Init() {
-        final long $ceylontmp$first$0 = 1L;
-        final long $ceylontmp$last$1 = 1L;
-        final boolean $ceylontmp$increasing$2 = .ceylon.language.Integer.offset($ceylontmp$last$1, $ceylontmp$first$0) >= 0;
-        final long $ceylontmp$incr$3 = $ceylontmp$increasing$2 ? 1L : -1L;
-        loop_0: for (long _$4 = $ceylontmp$first$0; $ceylontmp$increasing$2 ? _$4 - $ceylontmp$last$1 <= 0L : _$4 - $ceylontmp$last$1 >= 0L; _$4 += $ceylontmp$incr$3) {
-            final long _ = _$4;
-            .com.redhat.ceylon.compiler.java.test.statement.loop.bug1878_.set_(false);
-        }
+        final long $ceylontmp$first$1 = 1L;
+        final long $ceylontmp$last$2 = 1L;
+        final boolean $ceylontmp$increasing$3 = .ceylon.language.Integer.offset($ceylontmp$last$2, $ceylontmp$first$1) >= 0;
+        final long $ceylontmp$incr$4 = $ceylontmp$increasing$3 ? 1L : -1L;
+        long _$7 = $ceylontmp$first$1;
+        long $ceylontmp$element$6 = $ceylontmp$first$1;
+        boolean $ceylontmp$f$5 = false;
+        loop_0: do {
+            if ($ceylontmp$f$5) $ceylontmp$element$6 += $ceylontmp$incr$4;
+            $ceylontmp$f$5 = true;
+            _$7 = $ceylontmp$element$6;
+            final long _ = _$7;
+            $ceylontmp$continue$0: do {
+                .com.redhat.ceylon.compiler.java.test.statement.loop.bug1878_.set_(false);
+            }             while (false);
+        }         while ($ceylontmp$increasing$3 ? _$7 - $ceylontmp$last$2 != 0L : _$7 - $ceylontmp$last$2 != 0L);
     }
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
@@ -54,14 +62,22 @@ class Bug1878 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     private final void loopInit$priv$() {
-        final long $ceylontmp$first$5 = 1L;
-        final long $ceylontmp$last$6 = 1L;
-        final boolean $ceylontmp$increasing$7 = .ceylon.language.Integer.offset($ceylontmp$last$6, $ceylontmp$first$5) >= 0;
-        final long $ceylontmp$incr$8 = $ceylontmp$increasing$7 ? 1L : -1L;
-        loop_1: for (long _$9 = $ceylontmp$first$5; $ceylontmp$increasing$7 ? _$9 - $ceylontmp$last$6 <= 0L : _$9 - $ceylontmp$last$6 >= 0L; _$9 += $ceylontmp$incr$8) {
-            final long _ = _$9;
-            setFoo$priv$(false);
-        }
+        final long $ceylontmp$first$9 = 1L;
+        final long $ceylontmp$last$10 = 1L;
+        final boolean $ceylontmp$increasing$11 = .ceylon.language.Integer.offset($ceylontmp$last$10, $ceylontmp$first$9) >= 0;
+        final long $ceylontmp$incr$12 = $ceylontmp$increasing$11 ? 1L : -1L;
+        long _$15 = $ceylontmp$first$9;
+        long $ceylontmp$element$14 = $ceylontmp$first$9;
+        boolean $ceylontmp$f$13 = false;
+        loop_1: do {
+            if ($ceylontmp$f$13) $ceylontmp$element$14 += $ceylontmp$incr$12;
+            $ceylontmp$f$13 = true;
+            _$15 = $ceylontmp$element$14;
+            final long _ = _$15;
+            $ceylontmp$continue$8: do {
+                setFoo$priv$(false);
+            }             while (false);
+        }         while ($ceylontmp$increasing$11 ? _$15 - $ceylontmp$last$10 != 0L : _$15 - $ceylontmp$last$10 != 0L);
     }
     
     @.java.lang.Override

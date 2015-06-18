@@ -168,8 +168,8 @@ final class compareSpanInteger2130_ {
                         }
                         returning $ceylontmp$op$35;
                     );
-                } while (false);
-            } while ($ceylontmp$increasing$18 ? i$22 - $ceylontmp$last$17 != 0L : i$22 - $ceylontmp$last$17 != 0L);
+                }                 while (false);
+            }             while ($ceylontmp$increasing$18 ? i$22 - $ceylontmp$last$17 != 0L : i$22 - $ceylontmp$last$17 != 0L);
         } catch (final .java.lang.Throwable t) {
             t2 = t;
         }
@@ -412,9 +412,9 @@ final class compareSpanIntegerBy2130_ {
                         }
                         returning $ceylontmp$op$92;
                     );
-                } while (false);
+                }                 while (false);
                 if ($ceylontmp$step$78 != 1L) $ceylontmp$step$78 == 1 ? ($ceylontmp$element$76 += $ceylontmp$incr$74) : ($ceylontmp$element$76 = .ceylon.language.Integer.neighbour($ceylontmp$element$76, $ceylontmp$incr$74));
-            } while ($ceylontmp$step$78 == 1L ? $ceylontmp$step$78 == 1 ? $ceylontmp$increasing$73 ? i$77 - $ceylontmp$last$72 != 0L : i$77 - $ceylontmp$last$72 != 0L : $ceylontmp$increasing$73 ? .ceylon.language.Integer.offsetSign(i$77, $ceylontmp$last$72) <= 0L && .ceylon.language.Integer.offsetSign(i$77, $ceylontmp$first$71) >= 0L : .ceylon.language.Integer.offsetSign(i$77, $ceylontmp$last$72) >= 0L && .ceylon.language.Integer.offsetSign(i$77, $ceylontmp$first$71) <= 0L : $ceylontmp$step$78 == 1 ? $ceylontmp$increasing$73 ? $ceylontmp$element$76 - $ceylontmp$last$72 != 0L : $ceylontmp$element$76 - $ceylontmp$last$72 != 0L : $ceylontmp$increasing$73 ? .ceylon.language.Integer.offsetSign($ceylontmp$element$76, $ceylontmp$last$72) <= 0L && .ceylon.language.Integer.offsetSign($ceylontmp$element$76, $ceylontmp$first$71) >= 0L : .ceylon.language.Integer.offsetSign($ceylontmp$element$76, $ceylontmp$last$72) >= 0L && .ceylon.language.Integer.offsetSign($ceylontmp$element$76, $ceylontmp$first$71) <= 0L);
+            }             while ($ceylontmp$step$78 == 1L ? $ceylontmp$step$78 == 1 ? $ceylontmp$increasing$73 ? i$77 - $ceylontmp$last$72 != 0L : i$77 - $ceylontmp$last$72 != 0L : $ceylontmp$increasing$73 ? .ceylon.language.Integer.offsetSign(i$77, $ceylontmp$last$72) <= 0L && .ceylon.language.Integer.offsetSign(i$77, $ceylontmp$first$71) >= 0L : .ceylon.language.Integer.offsetSign(i$77, $ceylontmp$last$72) >= 0L && .ceylon.language.Integer.offsetSign(i$77, $ceylontmp$first$71) <= 0L : $ceylontmp$step$78 == 1 ? $ceylontmp$increasing$73 ? $ceylontmp$element$76 - $ceylontmp$last$72 != 0L : $ceylontmp$element$76 - $ceylontmp$last$72 != 0L : $ceylontmp$increasing$73 ? .ceylon.language.Integer.offsetSign($ceylontmp$element$76, $ceylontmp$last$72) <= 0L && .ceylon.language.Integer.offsetSign($ceylontmp$element$76, $ceylontmp$first$71) >= 0L : .ceylon.language.Integer.offsetSign($ceylontmp$element$76, $ceylontmp$last$72) >= 0L && .ceylon.language.Integer.offsetSign($ceylontmp$element$76, $ceylontmp$first$71) <= 0L);
         } catch (final .java.lang.Throwable t) {
             t2 = t;
         }
@@ -626,8 +626,8 @@ final class compareSpanCharacter2130_ {
                         }
                         returning $ceylontmp$op$150;
                     );
-                } while (false);
-            } while ($ceylontmp$increasing$132 ? i$136 - $ceylontmp$last$131 != 0 : i$136 - $ceylontmp$last$131 != 0);
+                }                 while (false);
+            }             while ($ceylontmp$increasing$132 ? i$136 - $ceylontmp$last$131 != 0 : i$136 - $ceylontmp$last$131 != 0);
         } catch (final .java.lang.Throwable t) {
             t2 = t;
         }
@@ -843,9 +843,9 @@ final class compareSpanCharacterBy2130_ {
                         }
                         returning $ceylontmp$op$206;
                     );
-                } while (false);
+                }                 while (false);
                 if ($ceylontmp$step$192 != 1L) $ceylontmp$step$192 == 1 ? ($ceylontmp$element$190 = .ceylon.language.Character.neighbour($ceylontmp$element$190, $ceylontmp$incr$188)) : ($ceylontmp$element$190 = .ceylon.language.Character.neighbour($ceylontmp$element$190, $ceylontmp$incr$188));
-            } while ($ceylontmp$step$192 == 1L ? $ceylontmp$step$192 == 1 ? $ceylontmp$increasing$187 ? i$191 - $ceylontmp$last$186 != 0 : i$191 - $ceylontmp$last$186 != 0 : $ceylontmp$increasing$187 ? .ceylon.language.Character.offsetSign(i$191, $ceylontmp$last$186) <= 0 && .ceylon.language.Character.offsetSign(i$191, $ceylontmp$first$185) >= 0 : .ceylon.language.Character.offsetSign(i$191, $ceylontmp$last$186) >= 0 && .ceylon.language.Character.offsetSign(i$191, $ceylontmp$first$185) <= 0 : $ceylontmp$step$192 == 1 ? $ceylontmp$increasing$187 ? $ceylontmp$element$190 - $ceylontmp$last$186 != 0 : $ceylontmp$element$190 - $ceylontmp$last$186 != 0 : $ceylontmp$increasing$187 ? .ceylon.language.Character.offsetSign($ceylontmp$element$190, $ceylontmp$last$186) <= 0 && .ceylon.language.Character.offsetSign($ceylontmp$element$190, $ceylontmp$first$185) >= 0 : .ceylon.language.Character.offsetSign($ceylontmp$element$190, $ceylontmp$last$186) >= 0 && .ceylon.language.Character.offsetSign($ceylontmp$element$190, $ceylontmp$first$185) <= 0);
+            }             while ($ceylontmp$step$192 == 1L ? $ceylontmp$step$192 == 1 ? $ceylontmp$increasing$187 ? i$191 - $ceylontmp$last$186 != 0 : i$191 - $ceylontmp$last$186 != 0 : $ceylontmp$increasing$187 ? .ceylon.language.Character.offsetSign(i$191, $ceylontmp$last$186) <= 0 && .ceylon.language.Character.offsetSign(i$191, $ceylontmp$first$185) >= 0 : .ceylon.language.Character.offsetSign(i$191, $ceylontmp$last$186) >= 0 && .ceylon.language.Character.offsetSign(i$191, $ceylontmp$first$185) <= 0 : $ceylontmp$step$192 == 1 ? $ceylontmp$increasing$187 ? $ceylontmp$element$190 - $ceylontmp$last$186 != 0 : $ceylontmp$element$190 - $ceylontmp$last$186 != 0 : $ceylontmp$increasing$187 ? .ceylon.language.Character.offsetSign($ceylontmp$element$190, $ceylontmp$last$186) <= 0 && .ceylon.language.Character.offsetSign($ceylontmp$element$190, $ceylontmp$first$185) >= 0 : .ceylon.language.Character.offsetSign($ceylontmp$element$190, $ceylontmp$last$186) >= 0 && .ceylon.language.Character.offsetSign($ceylontmp$element$190, $ceylontmp$first$185) <= 0);
         } catch (final .java.lang.Throwable t) {
             t2 = t;
         }

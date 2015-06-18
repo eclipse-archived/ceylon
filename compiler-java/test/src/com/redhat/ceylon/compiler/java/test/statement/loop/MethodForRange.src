@@ -6,15 +6,23 @@ class MethodForRange implements .com.redhat.ceylon.compiler.java.runtime.model.R
     }
     
     public final void m() {
-        final long $ceylontmp$first$0 = 1L;
-        final long $ceylontmp$last$1 = 10L;
-        final boolean $ceylontmp$increasing$2 = .ceylon.language.Integer.offset($ceylontmp$last$1, $ceylontmp$first$0) >= 0;
-        final long $ceylontmp$incr$3 = $ceylontmp$increasing$2 ? 1L : -1L;
-        loop_0: for (long i$4 = $ceylontmp$first$0; $ceylontmp$increasing$2 ? i$4 - $ceylontmp$last$1 <= 0L : i$4 - $ceylontmp$last$1 >= 0L; i$4 += $ceylontmp$incr$3) {
-            final long i = i$4;
-            if (i > 5L) {
-            }
-        }
+        final long $ceylontmp$first$1 = 1L;
+        final long $ceylontmp$last$2 = 10L;
+        final boolean $ceylontmp$increasing$3 = .ceylon.language.Integer.offset($ceylontmp$last$2, $ceylontmp$first$1) >= 0;
+        final long $ceylontmp$incr$4 = $ceylontmp$increasing$3 ? 1L : -1L;
+        long i$7 = $ceylontmp$first$1;
+        long $ceylontmp$element$6 = $ceylontmp$first$1;
+        boolean $ceylontmp$f$5 = false;
+        loop_0: do {
+            if ($ceylontmp$f$5) $ceylontmp$element$6 += $ceylontmp$incr$4;
+            $ceylontmp$f$5 = true;
+            i$7 = $ceylontmp$element$6;
+            final long i = i$7;
+            $ceylontmp$continue$0: do {
+                if (i > 5L) {
+                }
+            }             while (false);
+        }         while ($ceylontmp$increasing$3 ? i$7 - $ceylontmp$last$2 != 0L : i$7 - $ceylontmp$last$2 != 0L);
     }
     
     @.java.lang.Override

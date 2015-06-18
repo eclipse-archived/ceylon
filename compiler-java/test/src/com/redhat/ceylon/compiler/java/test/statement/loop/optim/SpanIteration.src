@@ -38,8 +38,8 @@ class IntegerSpans implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
             final long i = i$7;
             $ceylontmp$continue$0: do {
                 .ceylon.language.print_.print(.ceylon.language.String.instance(new .java.lang.StringBuilder().append("body ").append(i).toString()));
-            } while (false);
-        } while ($ceylontmp$increasing$3 ? i$7 - $ceylontmp$last$2 != 0L : i$7 - $ceylontmp$last$2 != 0L);
+            }             while (false);
+        }         while ($ceylontmp$increasing$3 ? i$7 - $ceylontmp$last$2 != 0L : i$7 - $ceylontmp$last$2 != 0L);
     }
     
     private final void withBreak$priv$() {
@@ -60,8 +60,8 @@ class IntegerSpans implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
                     break loop_1;
                 }
                 .ceylon.language.print_.print(.ceylon.language.String.instance(new .java.lang.StringBuilder().append("body ").append(i).toString()));
-            } while (false);
-        } while ($ceylontmp$increasing$11 ? i$15 - $ceylontmp$last$10 != 0L : i$15 - $ceylontmp$last$10 != 0L);
+            }             while (false);
+        }         while ($ceylontmp$increasing$11 ? i$15 - $ceylontmp$last$10 != 0L : i$15 - $ceylontmp$last$10 != 0L);
     }
     
     private final void withContinue$priv$() {
@@ -82,8 +82,8 @@ class IntegerSpans implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
                     break $ceylontmp$continue$17;
                 }
                 .ceylon.language.print_.print(.ceylon.language.String.instance(new .java.lang.StringBuilder().append("body ").append(i).toString()));
-            } while (false);
-        } while ($ceylontmp$increasing$20 ? i$24 - $ceylontmp$last$19 != 0L : i$24 - $ceylontmp$last$19 != 0L);
+            }             while (false);
+        }         while ($ceylontmp$increasing$20 ? i$24 - $ceylontmp$last$19 != 0L : i$24 - $ceylontmp$last$19 != 0L);
     }
     
     private final void withElseButNoExit$priv$() {
@@ -101,8 +101,8 @@ class IntegerSpans implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
             final long i = i$33;
             $ceylontmp$continue$26: do {
                 .ceylon.language.print_.print(.ceylon.language.String.instance(new .java.lang.StringBuilder().append("body ").append(i).toString()));
-            } while (false);
-        } while ($ceylontmp$increasing$29 ? i$33 - $ceylontmp$last$28 != 0L : i$33 - $ceylontmp$last$28 != 0L);
+            }             while (false);
+        }         while ($ceylontmp$increasing$29 ? i$33 - $ceylontmp$last$28 != 0L : i$33 - $ceylontmp$last$28 != 0L);
         .ceylon.language.print_.print(.ceylon.language.String.instance("else"));
     }
     
@@ -126,8 +126,8 @@ class IntegerSpans implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
                     break loop_4;
                 }
                 .ceylon.language.print_.print(.ceylon.language.String.instance(new .java.lang.StringBuilder().append("body ").append(i).toString()));
-            } while (false);
-        } while ($ceylontmp$increasing$38 ? i$42 - $ceylontmp$last$37 != 0L : i$42 - $ceylontmp$last$37 != 0L);
+            }             while (false);
+        }         while ($ceylontmp$increasing$38 ? i$42 - $ceylontmp$last$37 != 0L : i$42 - $ceylontmp$last$37 != 0L);
         if (doforelse$34) {
             .ceylon.language.print_.print(.ceylon.language.String.instance("else"));
         }
@@ -185,9 +185,9 @@ class IntegerSpansWithStep implements .com.redhat.ceylon.compiler.java.runtime.m
             final long i = i$51;
             $ceylontmp$continue$44: do {
                 .ceylon.language.print_.print(.ceylon.language.String.instance(new .java.lang.StringBuilder().append("body ").append(i).toString()));
-            } while (false);
+            }             while (false);
             if ($ceylontmp$step$52 != 1L) $ceylontmp$step$52 == 1 ? ($ceylontmp$element$50 += $ceylontmp$incr$48) : ($ceylontmp$element$50 = .ceylon.language.Integer.neighbour($ceylontmp$element$50, $ceylontmp$incr$48));
-        } while ($ceylontmp$step$52 == 1L ? $ceylontmp$step$52 == 1 ? $ceylontmp$increasing$47 ? i$51 - $ceylontmp$last$46 != 0L : i$51 - $ceylontmp$last$46 != 0L : $ceylontmp$increasing$47 ? .ceylon.language.Integer.offsetSign(i$51, $ceylontmp$last$46) <= 0L && .ceylon.language.Integer.offsetSign(i$51, $ceylontmp$first$45) >= 0L : .ceylon.language.Integer.offsetSign(i$51, $ceylontmp$last$46) >= 0L && .ceylon.language.Integer.offsetSign(i$51, $ceylontmp$first$45) <= 0L : $ceylontmp$step$52 == 1 ? $ceylontmp$increasing$47 ? $ceylontmp$element$50 - $ceylontmp$last$46 != 0L : $ceylontmp$element$50 - $ceylontmp$last$46 != 0L : $ceylontmp$increasing$47 ? .ceylon.language.Integer.offsetSign($ceylontmp$element$50, $ceylontmp$last$46) <= 0L && .ceylon.language.Integer.offsetSign($ceylontmp$element$50, $ceylontmp$first$45) >= 0L : .ceylon.language.Integer.offsetSign($ceylontmp$element$50, $ceylontmp$last$46) >= 0L && .ceylon.language.Integer.offsetSign($ceylontmp$element$50, $ceylontmp$first$45) <= 0L);
+        }         while ($ceylontmp$step$52 == 1L ? $ceylontmp$step$52 == 1 ? $ceylontmp$increasing$47 ? i$51 - $ceylontmp$last$46 != 0L : i$51 - $ceylontmp$last$46 != 0L : $ceylontmp$increasing$47 ? .ceylon.language.Integer.offsetSign(i$51, $ceylontmp$last$46) <= 0L && .ceylon.language.Integer.offsetSign(i$51, $ceylontmp$first$45) >= 0L : .ceylon.language.Integer.offsetSign(i$51, $ceylontmp$last$46) >= 0L && .ceylon.language.Integer.offsetSign(i$51, $ceylontmp$first$45) <= 0L : $ceylontmp$step$52 == 1 ? $ceylontmp$increasing$47 ? $ceylontmp$element$50 - $ceylontmp$last$46 != 0L : $ceylontmp$element$50 - $ceylontmp$last$46 != 0L : $ceylontmp$increasing$47 ? .ceylon.language.Integer.offsetSign($ceylontmp$element$50, $ceylontmp$last$46) <= 0L && .ceylon.language.Integer.offsetSign($ceylontmp$element$50, $ceylontmp$first$45) >= 0L : .ceylon.language.Integer.offsetSign($ceylontmp$element$50, $ceylontmp$last$46) >= 0L && .ceylon.language.Integer.offsetSign($ceylontmp$element$50, $ceylontmp$first$45) <= 0L);
     }
     
     private final void withBreak$priv$() {
@@ -210,9 +210,9 @@ class IntegerSpansWithStep implements .com.redhat.ceylon.compiler.java.runtime.m
                     break loop_6;
                 }
                 .ceylon.language.print_.print(.ceylon.language.String.instance(new .java.lang.StringBuilder().append("body ").append(i).toString()));
-            } while (false);
+            }             while (false);
             if ($ceylontmp$step$61 != 1L) $ceylontmp$step$61 == 1 ? ($ceylontmp$element$59 += $ceylontmp$incr$57) : ($ceylontmp$element$59 = .ceylon.language.Integer.neighbour($ceylontmp$element$59, $ceylontmp$incr$57));
-        } while ($ceylontmp$step$61 == 1L ? $ceylontmp$step$61 == 1 ? $ceylontmp$increasing$56 ? i$60 - $ceylontmp$last$55 != 0L : i$60 - $ceylontmp$last$55 != 0L : $ceylontmp$increasing$56 ? .ceylon.language.Integer.offsetSign(i$60, $ceylontmp$last$55) <= 0L && .ceylon.language.Integer.offsetSign(i$60, $ceylontmp$first$54) >= 0L : .ceylon.language.Integer.offsetSign(i$60, $ceylontmp$last$55) >= 0L && .ceylon.language.Integer.offsetSign(i$60, $ceylontmp$first$54) <= 0L : $ceylontmp$step$61 == 1 ? $ceylontmp$increasing$56 ? $ceylontmp$element$59 - $ceylontmp$last$55 != 0L : $ceylontmp$element$59 - $ceylontmp$last$55 != 0L : $ceylontmp$increasing$56 ? .ceylon.language.Integer.offsetSign($ceylontmp$element$59, $ceylontmp$last$55) <= 0L && .ceylon.language.Integer.offsetSign($ceylontmp$element$59, $ceylontmp$first$54) >= 0L : .ceylon.language.Integer.offsetSign($ceylontmp$element$59, $ceylontmp$last$55) >= 0L && .ceylon.language.Integer.offsetSign($ceylontmp$element$59, $ceylontmp$first$54) <= 0L);
+        }         while ($ceylontmp$step$61 == 1L ? $ceylontmp$step$61 == 1 ? $ceylontmp$increasing$56 ? i$60 - $ceylontmp$last$55 != 0L : i$60 - $ceylontmp$last$55 != 0L : $ceylontmp$increasing$56 ? .ceylon.language.Integer.offsetSign(i$60, $ceylontmp$last$55) <= 0L && .ceylon.language.Integer.offsetSign(i$60, $ceylontmp$first$54) >= 0L : .ceylon.language.Integer.offsetSign(i$60, $ceylontmp$last$55) >= 0L && .ceylon.language.Integer.offsetSign(i$60, $ceylontmp$first$54) <= 0L : $ceylontmp$step$61 == 1 ? $ceylontmp$increasing$56 ? $ceylontmp$element$59 - $ceylontmp$last$55 != 0L : $ceylontmp$element$59 - $ceylontmp$last$55 != 0L : $ceylontmp$increasing$56 ? .ceylon.language.Integer.offsetSign($ceylontmp$element$59, $ceylontmp$last$55) <= 0L && .ceylon.language.Integer.offsetSign($ceylontmp$element$59, $ceylontmp$first$54) >= 0L : .ceylon.language.Integer.offsetSign($ceylontmp$element$59, $ceylontmp$last$55) >= 0L && .ceylon.language.Integer.offsetSign($ceylontmp$element$59, $ceylontmp$first$54) <= 0L);
     }
     
     private final void withContinue$priv$() {
@@ -235,9 +235,9 @@ class IntegerSpansWithStep implements .com.redhat.ceylon.compiler.java.runtime.m
                     break $ceylontmp$continue$63;
                 }
                 .ceylon.language.print_.print(.ceylon.language.String.instance(new .java.lang.StringBuilder().append("body ").append(i).toString()));
-            } while (false);
+            }             while (false);
             if ($ceylontmp$step$71 != 1L) $ceylontmp$step$71 == 1 ? ($ceylontmp$element$69 += $ceylontmp$incr$67) : ($ceylontmp$element$69 = .ceylon.language.Integer.neighbour($ceylontmp$element$69, $ceylontmp$incr$67));
-        } while ($ceylontmp$step$71 == 1L ? $ceylontmp$step$71 == 1 ? $ceylontmp$increasing$66 ? i$70 - $ceylontmp$last$65 != 0L : i$70 - $ceylontmp$last$65 != 0L : $ceylontmp$increasing$66 ? .ceylon.language.Integer.offsetSign(i$70, $ceylontmp$last$65) <= 0L && .ceylon.language.Integer.offsetSign(i$70, $ceylontmp$first$64) >= 0L : .ceylon.language.Integer.offsetSign(i$70, $ceylontmp$last$65) >= 0L && .ceylon.language.Integer.offsetSign(i$70, $ceylontmp$first$64) <= 0L : $ceylontmp$step$71 == 1 ? $ceylontmp$increasing$66 ? $ceylontmp$element$69 - $ceylontmp$last$65 != 0L : $ceylontmp$element$69 - $ceylontmp$last$65 != 0L : $ceylontmp$increasing$66 ? .ceylon.language.Integer.offsetSign($ceylontmp$element$69, $ceylontmp$last$65) <= 0L && .ceylon.language.Integer.offsetSign($ceylontmp$element$69, $ceylontmp$first$64) >= 0L : .ceylon.language.Integer.offsetSign($ceylontmp$element$69, $ceylontmp$last$65) >= 0L && .ceylon.language.Integer.offsetSign($ceylontmp$element$69, $ceylontmp$first$64) <= 0L);
+        }         while ($ceylontmp$step$71 == 1L ? $ceylontmp$step$71 == 1 ? $ceylontmp$increasing$66 ? i$70 - $ceylontmp$last$65 != 0L : i$70 - $ceylontmp$last$65 != 0L : $ceylontmp$increasing$66 ? .ceylon.language.Integer.offsetSign(i$70, $ceylontmp$last$65) <= 0L && .ceylon.language.Integer.offsetSign(i$70, $ceylontmp$first$64) >= 0L : .ceylon.language.Integer.offsetSign(i$70, $ceylontmp$last$65) >= 0L && .ceylon.language.Integer.offsetSign(i$70, $ceylontmp$first$64) <= 0L : $ceylontmp$step$71 == 1 ? $ceylontmp$increasing$66 ? $ceylontmp$element$69 - $ceylontmp$last$65 != 0L : $ceylontmp$element$69 - $ceylontmp$last$65 != 0L : $ceylontmp$increasing$66 ? .ceylon.language.Integer.offsetSign($ceylontmp$element$69, $ceylontmp$last$65) <= 0L && .ceylon.language.Integer.offsetSign($ceylontmp$element$69, $ceylontmp$first$64) >= 0L : .ceylon.language.Integer.offsetSign($ceylontmp$element$69, $ceylontmp$last$65) >= 0L && .ceylon.language.Integer.offsetSign($ceylontmp$element$69, $ceylontmp$first$64) <= 0L);
     }
     
     private final void withElseButNoExit$priv$() {
@@ -257,9 +257,9 @@ class IntegerSpansWithStep implements .com.redhat.ceylon.compiler.java.runtime.m
             final long i = i$80;
             $ceylontmp$continue$73: do {
                 .ceylon.language.print_.print(.ceylon.language.String.instance(new .java.lang.StringBuilder().append("body ").append(i).toString()));
-            } while (false);
+            }             while (false);
             if ($ceylontmp$step$81 != 1L) $ceylontmp$step$81 == 1 ? ($ceylontmp$element$79 += $ceylontmp$incr$77) : ($ceylontmp$element$79 = .ceylon.language.Integer.neighbour($ceylontmp$element$79, $ceylontmp$incr$77));
-        } while ($ceylontmp$step$81 == 1L ? $ceylontmp$step$81 == 1 ? $ceylontmp$increasing$76 ? i$80 - $ceylontmp$last$75 != 0L : i$80 - $ceylontmp$last$75 != 0L : $ceylontmp$increasing$76 ? .ceylon.language.Integer.offsetSign(i$80, $ceylontmp$last$75) <= 0L && .ceylon.language.Integer.offsetSign(i$80, $ceylontmp$first$74) >= 0L : .ceylon.language.Integer.offsetSign(i$80, $ceylontmp$last$75) >= 0L && .ceylon.language.Integer.offsetSign(i$80, $ceylontmp$first$74) <= 0L : $ceylontmp$step$81 == 1 ? $ceylontmp$increasing$76 ? $ceylontmp$element$79 - $ceylontmp$last$75 != 0L : $ceylontmp$element$79 - $ceylontmp$last$75 != 0L : $ceylontmp$increasing$76 ? .ceylon.language.Integer.offsetSign($ceylontmp$element$79, $ceylontmp$last$75) <= 0L && .ceylon.language.Integer.offsetSign($ceylontmp$element$79, $ceylontmp$first$74) >= 0L : .ceylon.language.Integer.offsetSign($ceylontmp$element$79, $ceylontmp$last$75) >= 0L && .ceylon.language.Integer.offsetSign($ceylontmp$element$79, $ceylontmp$first$74) <= 0L);
+        }         while ($ceylontmp$step$81 == 1L ? $ceylontmp$step$81 == 1 ? $ceylontmp$increasing$76 ? i$80 - $ceylontmp$last$75 != 0L : i$80 - $ceylontmp$last$75 != 0L : $ceylontmp$increasing$76 ? .ceylon.language.Integer.offsetSign(i$80, $ceylontmp$last$75) <= 0L && .ceylon.language.Integer.offsetSign(i$80, $ceylontmp$first$74) >= 0L : .ceylon.language.Integer.offsetSign(i$80, $ceylontmp$last$75) >= 0L && .ceylon.language.Integer.offsetSign(i$80, $ceylontmp$first$74) <= 0L : $ceylontmp$step$81 == 1 ? $ceylontmp$increasing$76 ? $ceylontmp$element$79 - $ceylontmp$last$75 != 0L : $ceylontmp$element$79 - $ceylontmp$last$75 != 0L : $ceylontmp$increasing$76 ? .ceylon.language.Integer.offsetSign($ceylontmp$element$79, $ceylontmp$last$75) <= 0L && .ceylon.language.Integer.offsetSign($ceylontmp$element$79, $ceylontmp$first$74) >= 0L : .ceylon.language.Integer.offsetSign($ceylontmp$element$79, $ceylontmp$last$75) >= 0L && .ceylon.language.Integer.offsetSign($ceylontmp$element$79, $ceylontmp$first$74) <= 0L);
         .ceylon.language.print_.print(.ceylon.language.String.instance("else"));
     }
     
@@ -285,9 +285,9 @@ class IntegerSpansWithStep implements .com.redhat.ceylon.compiler.java.runtime.m
                     break loop_9;
                 }
                 .ceylon.language.print_.print(.ceylon.language.String.instance(new .java.lang.StringBuilder().append("body ").append(i).toString()));
-            } while (false);
+            }             while (false);
             if ($ceylontmp$step$91 != 1L) $ceylontmp$step$91 == 1 ? ($ceylontmp$element$89 += $ceylontmp$incr$87) : ($ceylontmp$element$89 = .ceylon.language.Integer.neighbour($ceylontmp$element$89, $ceylontmp$incr$87));
-        } while ($ceylontmp$step$91 == 1L ? $ceylontmp$step$91 == 1 ? $ceylontmp$increasing$86 ? i$90 - $ceylontmp$last$85 != 0L : i$90 - $ceylontmp$last$85 != 0L : $ceylontmp$increasing$86 ? .ceylon.language.Integer.offsetSign(i$90, $ceylontmp$last$85) <= 0L && .ceylon.language.Integer.offsetSign(i$90, $ceylontmp$first$84) >= 0L : .ceylon.language.Integer.offsetSign(i$90, $ceylontmp$last$85) >= 0L && .ceylon.language.Integer.offsetSign(i$90, $ceylontmp$first$84) <= 0L : $ceylontmp$step$91 == 1 ? $ceylontmp$increasing$86 ? $ceylontmp$element$89 - $ceylontmp$last$85 != 0L : $ceylontmp$element$89 - $ceylontmp$last$85 != 0L : $ceylontmp$increasing$86 ? .ceylon.language.Integer.offsetSign($ceylontmp$element$89, $ceylontmp$last$85) <= 0L && .ceylon.language.Integer.offsetSign($ceylontmp$element$89, $ceylontmp$first$84) >= 0L : .ceylon.language.Integer.offsetSign($ceylontmp$element$89, $ceylontmp$last$85) >= 0L && .ceylon.language.Integer.offsetSign($ceylontmp$element$89, $ceylontmp$first$84) <= 0L);
+        }         while ($ceylontmp$step$91 == 1L ? $ceylontmp$step$91 == 1 ? $ceylontmp$increasing$86 ? i$90 - $ceylontmp$last$85 != 0L : i$90 - $ceylontmp$last$85 != 0L : $ceylontmp$increasing$86 ? .ceylon.language.Integer.offsetSign(i$90, $ceylontmp$last$85) <= 0L && .ceylon.language.Integer.offsetSign(i$90, $ceylontmp$first$84) >= 0L : .ceylon.language.Integer.offsetSign(i$90, $ceylontmp$last$85) >= 0L && .ceylon.language.Integer.offsetSign(i$90, $ceylontmp$first$84) <= 0L : $ceylontmp$step$91 == 1 ? $ceylontmp$increasing$86 ? $ceylontmp$element$89 - $ceylontmp$last$85 != 0L : $ceylontmp$element$89 - $ceylontmp$last$85 != 0L : $ceylontmp$increasing$86 ? .ceylon.language.Integer.offsetSign($ceylontmp$element$89, $ceylontmp$last$85) <= 0L && .ceylon.language.Integer.offsetSign($ceylontmp$element$89, $ceylontmp$first$84) >= 0L : .ceylon.language.Integer.offsetSign($ceylontmp$element$89, $ceylontmp$last$85) >= 0L && .ceylon.language.Integer.offsetSign($ceylontmp$element$89, $ceylontmp$first$84) <= 0L);
         if (doforelse$82) {
             .ceylon.language.print_.print(.ceylon.language.String.instance("else"));
         }
@@ -338,8 +338,8 @@ class CharacterSpans implements .com.redhat.ceylon.compiler.java.runtime.model.R
             final int i = i$100;
             $ceylontmp$continue$93: do {
                 .ceylon.language.print_.print(.ceylon.language.String.instance(new .java.lang.StringBuilder().append("body ").appendCodePoint(i).toString()));
-            } while (false);
-        } while ($ceylontmp$increasing$96 ? i$100 - $ceylontmp$last$95 != 0 : i$100 - $ceylontmp$last$95 != 0);
+            }             while (false);
+        }         while ($ceylontmp$increasing$96 ? i$100 - $ceylontmp$last$95 != 0 : i$100 - $ceylontmp$last$95 != 0);
     }
     
     private final void withBreak$priv$() {
@@ -361,8 +361,8 @@ class CharacterSpans implements .com.redhat.ceylon.compiler.java.runtime.model.R
                     break loop_11;
                 }
                 .ceylon.language.print_.print(.ceylon.language.String.instance(new .java.lang.StringBuilder().append("body ").appendCodePoint(i).toString()));
-            } while (false);
-        } while ($ceylontmp$increasing$105 ? i$109 - $ceylontmp$last$104 != 0 : i$109 - $ceylontmp$last$104 != 0);
+            }             while (false);
+        }         while ($ceylontmp$increasing$105 ? i$109 - $ceylontmp$last$104 != 0 : i$109 - $ceylontmp$last$104 != 0);
     }
     
     private final void withContinue$priv$() {
@@ -384,8 +384,8 @@ class CharacterSpans implements .com.redhat.ceylon.compiler.java.runtime.model.R
                     break $ceylontmp$continue$112;
                 }
                 .ceylon.language.print_.print(.ceylon.language.String.instance(new .java.lang.StringBuilder().append("body ").appendCodePoint(i).toString()));
-            } while (false);
-        } while ($ceylontmp$increasing$115 ? i$119 - $ceylontmp$last$114 != 0 : i$119 - $ceylontmp$last$114 != 0);
+            }             while (false);
+        }         while ($ceylontmp$increasing$115 ? i$119 - $ceylontmp$last$114 != 0 : i$119 - $ceylontmp$last$114 != 0);
     }
     
     private final void withElseButNoExit$priv$() {
@@ -404,8 +404,8 @@ class CharacterSpans implements .com.redhat.ceylon.compiler.java.runtime.model.R
             final int i = i$129;
             $ceylontmp$continue$122: do {
                 .ceylon.language.print_.print(.ceylon.language.String.instance(new .java.lang.StringBuilder().append("body ").appendCodePoint(i).toString()));
-            } while (false);
-        } while ($ceylontmp$increasing$125 ? i$129 - $ceylontmp$last$124 != 0 : i$129 - $ceylontmp$last$124 != 0);
+            }             while (false);
+        }         while ($ceylontmp$increasing$125 ? i$129 - $ceylontmp$last$124 != 0 : i$129 - $ceylontmp$last$124 != 0);
         .ceylon.language.print_.print(.ceylon.language.String.instance("else"));
     }
     
@@ -430,8 +430,8 @@ class CharacterSpans implements .com.redhat.ceylon.compiler.java.runtime.model.R
                     break loop_14;
                 }
                 .ceylon.language.print_.print(.ceylon.language.String.instance(new .java.lang.StringBuilder().append("body ").appendCodePoint(i).toString()));
-            } while (false);
-        } while ($ceylontmp$increasing$135 ? i$139 - $ceylontmp$last$134 != 0 : i$139 - $ceylontmp$last$134 != 0);
+            }             while (false);
+        }         while ($ceylontmp$increasing$135 ? i$139 - $ceylontmp$last$134 != 0 : i$139 - $ceylontmp$last$134 != 0);
         if (doforelse$131) {
             .ceylon.language.print_.print(.ceylon.language.String.instance("else"));
         }
@@ -490,9 +490,9 @@ class CharacterSpansWithStep implements .com.redhat.ceylon.compiler.java.runtime
             final int i = i$149;
             $ceylontmp$continue$142: do {
                 .ceylon.language.print_.print(.ceylon.language.String.instance(new .java.lang.StringBuilder().append("body ").appendCodePoint(i).toString()));
-            } while (false);
+            }             while (false);
             if ($ceylontmp$step$150 != 1L) $ceylontmp$step$150 == 1 ? ($ceylontmp$element$148 = .ceylon.language.Character.neighbour($ceylontmp$element$148, $ceylontmp$incr$146)) : ($ceylontmp$element$148 = .ceylon.language.Character.neighbour($ceylontmp$element$148, $ceylontmp$incr$146));
-        } while ($ceylontmp$step$150 == 1L ? $ceylontmp$step$150 == 1 ? $ceylontmp$increasing$145 ? i$149 - $ceylontmp$last$144 != 0 : i$149 - $ceylontmp$last$144 != 0 : $ceylontmp$increasing$145 ? .ceylon.language.Character.offsetSign(i$149, $ceylontmp$last$144) <= 0 && .ceylon.language.Character.offsetSign(i$149, $ceylontmp$first$143) >= 0 : .ceylon.language.Character.offsetSign(i$149, $ceylontmp$last$144) >= 0 && .ceylon.language.Character.offsetSign(i$149, $ceylontmp$first$143) <= 0 : $ceylontmp$step$150 == 1 ? $ceylontmp$increasing$145 ? $ceylontmp$element$148 - $ceylontmp$last$144 != 0 : $ceylontmp$element$148 - $ceylontmp$last$144 != 0 : $ceylontmp$increasing$145 ? .ceylon.language.Character.offsetSign($ceylontmp$element$148, $ceylontmp$last$144) <= 0 && .ceylon.language.Character.offsetSign($ceylontmp$element$148, $ceylontmp$first$143) >= 0 : .ceylon.language.Character.offsetSign($ceylontmp$element$148, $ceylontmp$last$144) >= 0 && .ceylon.language.Character.offsetSign($ceylontmp$element$148, $ceylontmp$first$143) <= 0);
+        }         while ($ceylontmp$step$150 == 1L ? $ceylontmp$step$150 == 1 ? $ceylontmp$increasing$145 ? i$149 - $ceylontmp$last$144 != 0 : i$149 - $ceylontmp$last$144 != 0 : $ceylontmp$increasing$145 ? .ceylon.language.Character.offsetSign(i$149, $ceylontmp$last$144) <= 0 && .ceylon.language.Character.offsetSign(i$149, $ceylontmp$first$143) >= 0 : .ceylon.language.Character.offsetSign(i$149, $ceylontmp$last$144) >= 0 && .ceylon.language.Character.offsetSign(i$149, $ceylontmp$first$143) <= 0 : $ceylontmp$step$150 == 1 ? $ceylontmp$increasing$145 ? $ceylontmp$element$148 - $ceylontmp$last$144 != 0 : $ceylontmp$element$148 - $ceylontmp$last$144 != 0 : $ceylontmp$increasing$145 ? .ceylon.language.Character.offsetSign($ceylontmp$element$148, $ceylontmp$last$144) <= 0 && .ceylon.language.Character.offsetSign($ceylontmp$element$148, $ceylontmp$first$143) >= 0 : .ceylon.language.Character.offsetSign($ceylontmp$element$148, $ceylontmp$last$144) >= 0 && .ceylon.language.Character.offsetSign($ceylontmp$element$148, $ceylontmp$first$143) <= 0);
     }
     
     private final void withBreak$priv$() {
@@ -516,9 +516,9 @@ class CharacterSpansWithStep implements .com.redhat.ceylon.compiler.java.runtime
                     break loop_16;
                 }
                 .ceylon.language.print_.print(.ceylon.language.String.instance(new .java.lang.StringBuilder().append("body ").appendCodePoint(i).toString()));
-            } while (false);
+            }             while (false);
             if ($ceylontmp$step$160 != 1L) $ceylontmp$step$160 == 1 ? ($ceylontmp$element$158 = .ceylon.language.Character.neighbour($ceylontmp$element$158, $ceylontmp$incr$156)) : ($ceylontmp$element$158 = .ceylon.language.Character.neighbour($ceylontmp$element$158, $ceylontmp$incr$156));
-        } while ($ceylontmp$step$160 == 1L ? $ceylontmp$step$160 == 1 ? $ceylontmp$increasing$155 ? i$159 - $ceylontmp$last$154 != 0 : i$159 - $ceylontmp$last$154 != 0 : $ceylontmp$increasing$155 ? .ceylon.language.Character.offsetSign(i$159, $ceylontmp$last$154) <= 0 && .ceylon.language.Character.offsetSign(i$159, $ceylontmp$first$153) >= 0 : .ceylon.language.Character.offsetSign(i$159, $ceylontmp$last$154) >= 0 && .ceylon.language.Character.offsetSign(i$159, $ceylontmp$first$153) <= 0 : $ceylontmp$step$160 == 1 ? $ceylontmp$increasing$155 ? $ceylontmp$element$158 - $ceylontmp$last$154 != 0 : $ceylontmp$element$158 - $ceylontmp$last$154 != 0 : $ceylontmp$increasing$155 ? .ceylon.language.Character.offsetSign($ceylontmp$element$158, $ceylontmp$last$154) <= 0 && .ceylon.language.Character.offsetSign($ceylontmp$element$158, $ceylontmp$first$153) >= 0 : .ceylon.language.Character.offsetSign($ceylontmp$element$158, $ceylontmp$last$154) >= 0 && .ceylon.language.Character.offsetSign($ceylontmp$element$158, $ceylontmp$first$153) <= 0);
+        }         while ($ceylontmp$step$160 == 1L ? $ceylontmp$step$160 == 1 ? $ceylontmp$increasing$155 ? i$159 - $ceylontmp$last$154 != 0 : i$159 - $ceylontmp$last$154 != 0 : $ceylontmp$increasing$155 ? .ceylon.language.Character.offsetSign(i$159, $ceylontmp$last$154) <= 0 && .ceylon.language.Character.offsetSign(i$159, $ceylontmp$first$153) >= 0 : .ceylon.language.Character.offsetSign(i$159, $ceylontmp$last$154) >= 0 && .ceylon.language.Character.offsetSign(i$159, $ceylontmp$first$153) <= 0 : $ceylontmp$step$160 == 1 ? $ceylontmp$increasing$155 ? $ceylontmp$element$158 - $ceylontmp$last$154 != 0 : $ceylontmp$element$158 - $ceylontmp$last$154 != 0 : $ceylontmp$increasing$155 ? .ceylon.language.Character.offsetSign($ceylontmp$element$158, $ceylontmp$last$154) <= 0 && .ceylon.language.Character.offsetSign($ceylontmp$element$158, $ceylontmp$first$153) >= 0 : .ceylon.language.Character.offsetSign($ceylontmp$element$158, $ceylontmp$last$154) >= 0 && .ceylon.language.Character.offsetSign($ceylontmp$element$158, $ceylontmp$first$153) <= 0);
     }
     
     private final void withContinue$priv$() {
@@ -542,9 +542,9 @@ class CharacterSpansWithStep implements .com.redhat.ceylon.compiler.java.runtime
                     break $ceylontmp$continue$163;
                 }
                 .ceylon.language.print_.print(.ceylon.language.String.instance(new .java.lang.StringBuilder().append("body ").appendCodePoint(i).toString()));
-            } while (false);
+            }             while (false);
             if ($ceylontmp$step$171 != 1L) $ceylontmp$step$171 == 1 ? ($ceylontmp$element$169 = .ceylon.language.Character.neighbour($ceylontmp$element$169, $ceylontmp$incr$167)) : ($ceylontmp$element$169 = .ceylon.language.Character.neighbour($ceylontmp$element$169, $ceylontmp$incr$167));
-        } while ($ceylontmp$step$171 == 1L ? $ceylontmp$step$171 == 1 ? $ceylontmp$increasing$166 ? i$170 - $ceylontmp$last$165 != 0 : i$170 - $ceylontmp$last$165 != 0 : $ceylontmp$increasing$166 ? .ceylon.language.Character.offsetSign(i$170, $ceylontmp$last$165) <= 0 && .ceylon.language.Character.offsetSign(i$170, $ceylontmp$first$164) >= 0 : .ceylon.language.Character.offsetSign(i$170, $ceylontmp$last$165) >= 0 && .ceylon.language.Character.offsetSign(i$170, $ceylontmp$first$164) <= 0 : $ceylontmp$step$171 == 1 ? $ceylontmp$increasing$166 ? $ceylontmp$element$169 - $ceylontmp$last$165 != 0 : $ceylontmp$element$169 - $ceylontmp$last$165 != 0 : $ceylontmp$increasing$166 ? .ceylon.language.Character.offsetSign($ceylontmp$element$169, $ceylontmp$last$165) <= 0 && .ceylon.language.Character.offsetSign($ceylontmp$element$169, $ceylontmp$first$164) >= 0 : .ceylon.language.Character.offsetSign($ceylontmp$element$169, $ceylontmp$last$165) >= 0 && .ceylon.language.Character.offsetSign($ceylontmp$element$169, $ceylontmp$first$164) <= 0);
+        }         while ($ceylontmp$step$171 == 1L ? $ceylontmp$step$171 == 1 ? $ceylontmp$increasing$166 ? i$170 - $ceylontmp$last$165 != 0 : i$170 - $ceylontmp$last$165 != 0 : $ceylontmp$increasing$166 ? .ceylon.language.Character.offsetSign(i$170, $ceylontmp$last$165) <= 0 && .ceylon.language.Character.offsetSign(i$170, $ceylontmp$first$164) >= 0 : .ceylon.language.Character.offsetSign(i$170, $ceylontmp$last$165) >= 0 && .ceylon.language.Character.offsetSign(i$170, $ceylontmp$first$164) <= 0 : $ceylontmp$step$171 == 1 ? $ceylontmp$increasing$166 ? $ceylontmp$element$169 - $ceylontmp$last$165 != 0 : $ceylontmp$element$169 - $ceylontmp$last$165 != 0 : $ceylontmp$increasing$166 ? .ceylon.language.Character.offsetSign($ceylontmp$element$169, $ceylontmp$last$165) <= 0 && .ceylon.language.Character.offsetSign($ceylontmp$element$169, $ceylontmp$first$164) >= 0 : .ceylon.language.Character.offsetSign($ceylontmp$element$169, $ceylontmp$last$165) >= 0 && .ceylon.language.Character.offsetSign($ceylontmp$element$169, $ceylontmp$first$164) <= 0);
     }
     
     private final void withElseButNoExit$priv$() {
@@ -565,9 +565,9 @@ class CharacterSpansWithStep implements .com.redhat.ceylon.compiler.java.runtime
             final int i = i$181;
             $ceylontmp$continue$174: do {
                 .ceylon.language.print_.print(.ceylon.language.String.instance(new .java.lang.StringBuilder().append("body ").appendCodePoint(i).toString()));
-            } while (false);
+            }             while (false);
             if ($ceylontmp$step$182 != 1L) $ceylontmp$step$182 == 1 ? ($ceylontmp$element$180 = .ceylon.language.Character.neighbour($ceylontmp$element$180, $ceylontmp$incr$178)) : ($ceylontmp$element$180 = .ceylon.language.Character.neighbour($ceylontmp$element$180, $ceylontmp$incr$178));
-        } while ($ceylontmp$step$182 == 1L ? $ceylontmp$step$182 == 1 ? $ceylontmp$increasing$177 ? i$181 - $ceylontmp$last$176 != 0 : i$181 - $ceylontmp$last$176 != 0 : $ceylontmp$increasing$177 ? .ceylon.language.Character.offsetSign(i$181, $ceylontmp$last$176) <= 0 && .ceylon.language.Character.offsetSign(i$181, $ceylontmp$first$175) >= 0 : .ceylon.language.Character.offsetSign(i$181, $ceylontmp$last$176) >= 0 && .ceylon.language.Character.offsetSign(i$181, $ceylontmp$first$175) <= 0 : $ceylontmp$step$182 == 1 ? $ceylontmp$increasing$177 ? $ceylontmp$element$180 - $ceylontmp$last$176 != 0 : $ceylontmp$element$180 - $ceylontmp$last$176 != 0 : $ceylontmp$increasing$177 ? .ceylon.language.Character.offsetSign($ceylontmp$element$180, $ceylontmp$last$176) <= 0 && .ceylon.language.Character.offsetSign($ceylontmp$element$180, $ceylontmp$first$175) >= 0 : .ceylon.language.Character.offsetSign($ceylontmp$element$180, $ceylontmp$last$176) >= 0 && .ceylon.language.Character.offsetSign($ceylontmp$element$180, $ceylontmp$first$175) <= 0);
+        }         while ($ceylontmp$step$182 == 1L ? $ceylontmp$step$182 == 1 ? $ceylontmp$increasing$177 ? i$181 - $ceylontmp$last$176 != 0 : i$181 - $ceylontmp$last$176 != 0 : $ceylontmp$increasing$177 ? .ceylon.language.Character.offsetSign(i$181, $ceylontmp$last$176) <= 0 && .ceylon.language.Character.offsetSign(i$181, $ceylontmp$first$175) >= 0 : .ceylon.language.Character.offsetSign(i$181, $ceylontmp$last$176) >= 0 && .ceylon.language.Character.offsetSign(i$181, $ceylontmp$first$175) <= 0 : $ceylontmp$step$182 == 1 ? $ceylontmp$increasing$177 ? $ceylontmp$element$180 - $ceylontmp$last$176 != 0 : $ceylontmp$element$180 - $ceylontmp$last$176 != 0 : $ceylontmp$increasing$177 ? .ceylon.language.Character.offsetSign($ceylontmp$element$180, $ceylontmp$last$176) <= 0 && .ceylon.language.Character.offsetSign($ceylontmp$element$180, $ceylontmp$first$175) >= 0 : .ceylon.language.Character.offsetSign($ceylontmp$element$180, $ceylontmp$last$176) >= 0 && .ceylon.language.Character.offsetSign($ceylontmp$element$180, $ceylontmp$first$175) <= 0);
         .ceylon.language.print_.print(.ceylon.language.String.instance("else"));
     }
     
@@ -594,9 +594,9 @@ class CharacterSpansWithStep implements .com.redhat.ceylon.compiler.java.runtime
                     break loop_19;
                 }
                 .ceylon.language.print_.print(.ceylon.language.String.instance(new .java.lang.StringBuilder().append("body ").appendCodePoint(i).toString()));
-            } while (false);
+            }             while (false);
             if ($ceylontmp$step$193 != 1L) $ceylontmp$step$193 == 1 ? ($ceylontmp$element$191 = .ceylon.language.Character.neighbour($ceylontmp$element$191, $ceylontmp$incr$189)) : ($ceylontmp$element$191 = .ceylon.language.Character.neighbour($ceylontmp$element$191, $ceylontmp$incr$189));
-        } while ($ceylontmp$step$193 == 1L ? $ceylontmp$step$193 == 1 ? $ceylontmp$increasing$188 ? i$192 - $ceylontmp$last$187 != 0 : i$192 - $ceylontmp$last$187 != 0 : $ceylontmp$increasing$188 ? .ceylon.language.Character.offsetSign(i$192, $ceylontmp$last$187) <= 0 && .ceylon.language.Character.offsetSign(i$192, $ceylontmp$first$186) >= 0 : .ceylon.language.Character.offsetSign(i$192, $ceylontmp$last$187) >= 0 && .ceylon.language.Character.offsetSign(i$192, $ceylontmp$first$186) <= 0 : $ceylontmp$step$193 == 1 ? $ceylontmp$increasing$188 ? $ceylontmp$element$191 - $ceylontmp$last$187 != 0 : $ceylontmp$element$191 - $ceylontmp$last$187 != 0 : $ceylontmp$increasing$188 ? .ceylon.language.Character.offsetSign($ceylontmp$element$191, $ceylontmp$last$187) <= 0 && .ceylon.language.Character.offsetSign($ceylontmp$element$191, $ceylontmp$first$186) >= 0 : .ceylon.language.Character.offsetSign($ceylontmp$element$191, $ceylontmp$last$187) >= 0 && .ceylon.language.Character.offsetSign($ceylontmp$element$191, $ceylontmp$first$186) <= 0);
+        }         while ($ceylontmp$step$193 == 1L ? $ceylontmp$step$193 == 1 ? $ceylontmp$increasing$188 ? i$192 - $ceylontmp$last$187 != 0 : i$192 - $ceylontmp$last$187 != 0 : $ceylontmp$increasing$188 ? .ceylon.language.Character.offsetSign(i$192, $ceylontmp$last$187) <= 0 && .ceylon.language.Character.offsetSign(i$192, $ceylontmp$first$186) >= 0 : .ceylon.language.Character.offsetSign(i$192, $ceylontmp$last$187) >= 0 && .ceylon.language.Character.offsetSign(i$192, $ceylontmp$first$186) <= 0 : $ceylontmp$step$193 == 1 ? $ceylontmp$increasing$188 ? $ceylontmp$element$191 - $ceylontmp$last$187 != 0 : $ceylontmp$element$191 - $ceylontmp$last$187 != 0 : $ceylontmp$increasing$188 ? .ceylon.language.Character.offsetSign($ceylontmp$element$191, $ceylontmp$last$187) <= 0 && .ceylon.language.Character.offsetSign($ceylontmp$element$191, $ceylontmp$first$186) >= 0 : .ceylon.language.Character.offsetSign($ceylontmp$element$191, $ceylontmp$last$187) >= 0 && .ceylon.language.Character.offsetSign($ceylontmp$element$191, $ceylontmp$first$186) <= 0);
         if (doforelse$184) {
             .ceylon.language.print_.print(.ceylon.language.String.instance("else"));
         }
