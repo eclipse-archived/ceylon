@@ -32,6 +32,11 @@ public class OptimizationTests extends CompilerTests {
     }
     
     @Test
+    public void testLopOptimSpanIteration() {
+        compareWithJavaSource("loop/optim/SpanIteration");
+    }
+    
+    @Test
     public void testLopOptimBug2130_Span() {
         compareWithJavaSource("loop/optim/Bug2130_Span");
         //compile("loop/optim/Bug2130_Span.ceylon");
