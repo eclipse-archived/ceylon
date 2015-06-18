@@ -19,6 +19,7 @@ package com.redhat.ceylon.cmr.impl;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 
 import com.redhat.ceylon.cmr.api.CmrRepository;
@@ -57,6 +58,13 @@ public abstract class AbstractCeylonArtifactResult extends AbstractArtifactResul
         if(!resolved){
             Overrides overrides = ((CmrRepository)repository()).getRoot().getService(Overrides.class);
             this.infos = Configuration.getResolvers(manager).resolve(this, overrides);
+            if (infos == null) {
+                infos = new ModuleInfo(null, new HashSet<ModuleDependencyInfo>());
+                if(overrides != null) {
+                    infos = overrides.applyOverrides(name(), version(), infos);
+                }
+                
+            }
             resolved = true;
         }
         return infos;
