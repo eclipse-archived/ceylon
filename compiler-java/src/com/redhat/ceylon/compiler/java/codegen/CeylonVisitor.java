@@ -175,11 +175,10 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
                 Tree.Enumerated singleton = (Tree.Enumerated)stmt;
                 classBuilder.getInitBuilder().singleton(singleton);
                 Constructor ctorModel = singleton.getEnumerated();
-                /* TODO can singletons delegate?
-                 * if (singleton.getDelegatedConstructor() != null) {
+                 if (singleton.getDelegatedConstructor() != null) {
                     Tree.ExtendedTypeExpression p = (Tree.ExtendedTypeExpression)singleton.getDelegatedConstructor().getInvocationExpression().getPrimary();
                     delegates.put(ctorModel, new CtorDelegation(ctorModel, p.getDeclaration()));
-                } else*/ {
+                } else {
                     // implicitly delegating to superclass initializer
                     Type et = Decl.getConstructedClass(ctorModel).getExtendedType();
                     if (et!=null) {
@@ -208,66 +207,73 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
                         delegates);
             } else if (stmt instanceof Tree.Enumerated) {
                 Tree.Enumerated ctor = (Tree.Enumerated)stmt;
-                // generate a constructor
-                transformConstructor(ctor, 
-                        null,//ctor.getParameterList(), 
-                        null,//ctor.getDelegatedConstructor(),
-                        ctor.getBlock(),
-                        ctor.getEnumerated(), 
-                        delegates);
-                Class clz = Decl.getConstructedClass(ctor.getEnumerated());
-                Value singletonModel = ctor.getDeclarationModel();
-                // generate a field
-                AttributeDefinitionBuilder adb = AttributeDefinitionBuilder
-                .singleton(gen, 
-                        null,//gen.naming.makeTypeDeclarationName(Decl.getConstructedClass(ctor.getEnumerated())), 
-                        null, 
-                        singletonModel.getName(), singletonModel, false);
-                adb.modelAnnotations(gen.makeAtEnumerated());
-                
-                adb.userAnnotations(gen.expressionGen().transformAnnotations(false, OutputElement.GETTER, ctor));
-                adb.fieldAnnotations(gen.expressionGen().transformAnnotations(false, OutputElement.FIELD, ctor));
-                adb.immutable();// not setter
-                if (clz.isToplevel()) {
-                    adb.modifiers((singletonModel.isShared() ? PUBLIC : PRIVATE) | STATIC | FINAL);
-                    adb.initialValue(gen.make().NewClass(null, null, 
-                            gen.naming.makeTypeDeclarationExpression(null, Decl.getConstructedClass(ctor.getEnumerated())), 
-                            List.<JCExpression>of(
-                                    gen.make().TypeCast(
-                                            gen.naming.makeNamedConstructorType(ctor.getEnumerated(), false),
-                                    gen.makeNull())), null));
-                    classBuilder.defs(adb.build());
-                } else if (clz.isClassMember()){
-                    adb.modifiers(PRIVATE);
-                    // lazy
-                    SyntheticName field = gen.naming.synthetic(singletonModel);
-                    adb.initialValue(gen.makeNull());
-                    List<JCStatement> l = List.<JCStatement>of(
-                    gen.make().If(gen.make().Binary(JCTree.EQ, field.makeIdent(), gen.makeNull()),
-                            gen.make().Exec(gen.make().Assign(field.makeIdent(),
-                                    gen.make().NewClass(null, null, 
-                                            gen.naming.makeTypeDeclarationExpression(null, Decl.getConstructedClass(ctor.getEnumerated())), 
-                                            List.<JCExpression>of(
-                                                    gen.make().TypeCast(
-                                                            gen.naming.makeNamedConstructorType(ctor.getEnumerated(), false),
-                                                    gen.makeNull())), null))),
-                            null),
-                    gen.make().Return(field.makeIdent()));
-                    adb.getterBlock(gen.make().Block(0, l));
-                    classBuilder.getContainingClassBuilder().defs(gen.makeVar(PRIVATE, field, gen.naming.makeTypeDeclarationExpression(null, Decl.getConstructedClass(ctor.getEnumerated())), gen.makeNull()));
-                    classBuilder.getContainingClassBuilder().defs(adb.build());
-                } else {
-                    // LOCAL
-                    classBuilder.after(gen.makeVar(FINAL, gen.naming.quoteFieldName(singletonModel.getName()), 
-                            gen.naming.makeTypeDeclarationExpression(null, Decl.getConstructedClass(ctor.getEnumerated())), 
+                transformSingletonConstructor(delegates, ctor);
+            }
+        }
+    }
+
+
+
+    protected void transformSingletonConstructor(
+            HashMap<Constructor, CtorDelegation> delegates, Tree.Enumerated ctor) {
+        // generate a constructor
+        transformConstructor(ctor, 
+                null,//ctor.getParameterList(), 
+                ctor.getDelegatedConstructor(),
+                ctor.getBlock(),
+                ctor.getEnumerated(), 
+                delegates);
+        Class clz = Decl.getConstructedClass(ctor.getEnumerated());
+        Value singletonModel = ctor.getDeclarationModel();
+        // generate a field
+        AttributeDefinitionBuilder adb = AttributeDefinitionBuilder
+        .singleton(gen, 
+                null,//gen.naming.makeTypeDeclarationName(Decl.getConstructedClass(ctor.getEnumerated())), 
+                null, 
+                singletonModel.getName(), singletonModel, false);
+        adb.modelAnnotations(gen.makeAtEnumerated());
+        
+        adb.userAnnotations(gen.expressionGen().transformAnnotations(false, OutputElement.GETTER, ctor));
+        adb.fieldAnnotations(gen.expressionGen().transformAnnotations(false, OutputElement.FIELD, ctor));
+        adb.immutable();// not setter
+        if (clz.isToplevel()) {
+            adb.modifiers((singletonModel.isShared() ? PUBLIC : PRIVATE) | STATIC | FINAL);
+            adb.initialValue(gen.make().NewClass(null, null, 
+                    gen.naming.makeTypeDeclarationExpression(null, Decl.getConstructedClass(ctor.getEnumerated())), 
+                    List.<JCExpression>of(
+                            gen.make().TypeCast(
+                                    gen.naming.makeNamedConstructorType(ctor.getEnumerated(), false),
+                            gen.makeNull())), null));
+            classBuilder.defs(adb.build());
+        } else if (clz.isClassMember()){
+            adb.modifiers(PRIVATE);
+            // lazy
+            SyntheticName field = gen.naming.synthetic(singletonModel);
+            adb.initialValue(gen.makeNull());
+            List<JCStatement> l = List.<JCStatement>of(
+            gen.make().If(gen.make().Binary(JCTree.EQ, field.makeIdent(), gen.makeNull()),
+                    gen.make().Exec(gen.make().Assign(field.makeIdent(),
                             gen.make().NewClass(null, null, 
                                     gen.naming.makeTypeDeclarationExpression(null, Decl.getConstructedClass(ctor.getEnumerated())), 
                                     List.<JCExpression>of(
                                             gen.make().TypeCast(
                                                     gen.naming.makeNamedConstructorType(ctor.getEnumerated(), false),
-                                            gen.makeNull())), null)));
-                }
-            }
+                                            gen.makeNull())), null))),
+                    null),
+            gen.make().Return(field.makeIdent()));
+            adb.getterBlock(gen.make().Block(0, l));
+            classBuilder.getContainingClassBuilder().defs(gen.makeVar(PRIVATE, field, gen.naming.makeTypeDeclarationExpression(null, Decl.getConstructedClass(ctor.getEnumerated())), gen.makeNull()));
+            classBuilder.getContainingClassBuilder().defs(adb.build());
+        } else {
+            // LOCAL
+            classBuilder.after(gen.makeVar(FINAL, gen.naming.quoteFieldName(singletonModel.getName()), 
+                    gen.naming.makeTypeDeclarationExpression(null, Decl.getConstructedClass(ctor.getEnumerated())), 
+                    gen.make().NewClass(null, null, 
+                            gen.naming.makeTypeDeclarationExpression(null, Decl.getConstructedClass(ctor.getEnumerated())), 
+                            List.<JCExpression>of(
+                                    gen.make().TypeCast(
+                                            gen.naming.makeNamedConstructorType(ctor.getEnumerated(), false),
+                                    gen.makeNull())), null)));
         }
     }
     

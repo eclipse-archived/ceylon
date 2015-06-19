@@ -101,4 +101,8 @@ public class CtorDelegation {
         }
         return false;
     }
+    
+    public String toString() {
+        return ctor + " extends " + extending;
+    }
 }
