@@ -1231,12 +1231,17 @@ public class ExpressionTransformer extends AbstractTransformer {
         ClassOrInterface container = (ClassOrInterface) declaration.getContainer();
         // use the generated class to get to the declaration literal
         JCExpression metamodelCall = makeTypeDeclarationLiteral(container);
-        JCExpression metamodelCast = makeJavaType(typeFact().getLanguageModuleDeclarationTypeDeclaration("ClassOrInterfaceDeclaration").getType(), JT_NO_PRIMITIVES);
+        JCExpression metamodelCast = makeJavaType(typeFact().getLanguageModuleDeclarationTypeDeclaration(
+                Decl.isConstructor(declaration) ? "ClassDeclaration": "ClassOrInterfaceDeclaration").getType(), 
+                JT_NO_PRIMITIVES);
         metamodelCall = make().TypeCast(metamodelCast, metamodelCall);
 
         String memberClassName;
+        String memberAccessor;
         if(declaration instanceof Class)
             memberClassName = "ClassDeclaration";
+        else if (Decl.isConstructor(declaration))
+            memberClassName = "ConstructorDeclaration";
         else if(declaration instanceof Interface)
             memberClassName = "InterfaceDeclaration";
         else if(declaration instanceof Function)
@@ -1246,11 +1251,16 @@ public class ExpressionTransformer extends AbstractTransformer {
         }else{
             return makeErroneous(node, "compiler bug: " + declaration + " is not a supported declaration literal");
         }
+        if (Decl.isConstructor(declaration))
+            memberAccessor = "getConstructorDeclaration";
+        else
+            memberAccessor = f ? "getMemberDeclaration" : "getDeclaredMemberDeclaration";
+        
         TypeDeclaration metamodelDecl = (TypeDeclaration) typeFact().getLanguageModuleDeclarationDeclaration(memberClassName);
         JCExpression memberType = makeJavaType(metamodelDecl.getType());
         JCExpression reifiedMemberType = makeReifiedTypeArgument(metamodelDecl.getType());
         JCExpression memberCall = make().Apply(List.of(memberType), 
-                                               makeSelect(metamodelCall, f ? "getMemberDeclaration" : "getDeclaredMemberDeclaration"), 
+                                               makeSelect(metamodelCall, memberAccessor), 
                                                List.of(reifiedMemberType, ceylonLiteral(declaration.getName())));
         return memberCall;
     }
