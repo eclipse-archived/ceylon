@@ -418,6 +418,14 @@ public class TreeUtil {
             if (type!=null) {
                 return toString(type);
             }
+            else {
+                if (t instanceof Tree.InterfaceLiteral) {
+                    return "interface";
+                }
+                if (t instanceof Tree.ClassLiteral) {
+                    return "class";
+                }
+            }
             return null;
         }
         else if (t instanceof Tree.MemberLiteral) {

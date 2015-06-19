@@ -20,11 +20,16 @@ import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getIntervening
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getNativeHeader;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getRealScope;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getSignature;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isImplemented;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isNamed;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isObject;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isOverloadedVersion;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isResolvable;
 import static java.util.Collections.emptyList;
 import static java.util.Collections.emptyMap;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -154,7 +159,10 @@ public class RefinementVisitor extends Visitor {
                 }
             }
             
-            if (dec.isNative() && !dec.isNativeHeader()) {
+            if ((dec.isNative() && !dec.isNativeHeader())
+                    || (dec.isMember()
+                            && ((Declaration)dec.getContainer()).isNative()
+                            && !((Declaration)dec.getContainer()).isNativeHeader())) {
                 checkNative(that, dec);
             }
         }
@@ -170,13 +178,88 @@ public class RefinementVisitor extends Visitor {
         // Find the header
         Declaration header =
                 getNativeHeader(dec.getContainer(), dec.getName());
+        if (header == null) {
+            // We don't have a header but we still need to maintain
+            // the same interface as the rest of the implementations,
+            // so we choose another declaration to be the "header"
+            List<Declaration> decls = getNativeMembers(dec.getContainer(), dec.getName());
+            if (decls.size() > 1) {
+                if (!dec.isShared()) {
+                    that.addError("native implementation must have a header: " +
+                            message(dec));
+                }
+                if (decls.get(0) != dec) {
+                    header = decls.get(0);
+                } else {
+                    header = decls.get(1);
+                }
+            }
+        }
         if (dec!=header) {
             checkNativeDeclaration(that, dec, header);
         }
     }
     
+    // This methods retrieves a list of all the native members
+    // of a given name in the given scope. And if the scope itself
+    // is a native implementation we'll go look for all the
+    // members in the other implementations as well. But only if
+    // there wasn't a native header for the scope, because that
+    // case is already handled elsewhere
+    private List<Declaration> getNativeMembers(
+            Scope container, String name) {
+        ArrayList<Declaration> lst = new ArrayList<Declaration>();
+        ArrayList<Scope> containers = new ArrayList<Scope>();
+        if (container instanceof Declaration) {
+            Declaration cd = (Declaration)container;
+            if (cd.isNative() && !cd.isNativeHeader()) {
+                // The container is a native implementation so
+                // we first need to find _its_ implementations
+                // but only if there's no header
+                Declaration header =
+                        getNativeHeader(cd.getContainer(), cd.getName());
+                if (header == null) {
+                    List<Declaration> cs = getNativeMembers(cd.getContainer(), cd.getName());
+                    for (Declaration c : cs) {
+                        // Is this the Value part of an object?
+                        if (c instanceof Value && isObject((Value)c)) {
+                            // Then use the Class part as the container
+                            c = ((Value)c).getType().getDeclaration();
+                        }
+                        containers.add((Scope)c);
+                    }
+                }
+            } else {
+                containers.add(container);
+            }
+        } else {
+            containers.add(container);
+        }
+        for (Scope s : containers) {
+            for (Declaration dec: s.getMembers()) {
+                if (isResolvable(dec)
+                        && isNamed(name, dec)
+                        && dec.isNative()) {
+                    lst.add(dec);
+                }
+            }
+        }
+        return lst;
+    }
+    
     private void checkNativeDeclaration(Tree.Declaration that, 
             Declaration dec, Declaration header) {
+        if (header == null && dec.isMember()) {
+            if (dec.isNative() && dec.isShared() && !dec.isFormal() && !dec.isActual() && !dec.isDefault()) {
+                that.addError("native member does not implement any header member: " +
+                        message(dec));
+            }
+            if (!dec.isNative() && dec.isShared()) {
+                that.addError("non-native shared members not allowed in native implementations: " +
+                        message(dec));
+            }
+            return;
+        }
         if (dec instanceof Function && 
                 (header == null ||
                 header instanceof Function)) {
@@ -282,8 +365,8 @@ public class RefinementVisitor extends Visitor {
     }
 
     private void checkMissingMemberImpl(Tree.Declaration that, Class dec, Class header) {
-        List<Declaration> hdrMembers = getNativeMembers(header);
-        List<Declaration> implMembers = getNativeMembers(dec);
+        List<Declaration> hdrMembers = getNativeClassMembers(header);
+        List<Declaration> implMembers = getNativeClassMembers(dec);
         Iterator<Declaration> hdrIter = hdrMembers.iterator();
         Iterator<Declaration> implIter = implMembers.iterator();
         boolean hdrNext = true;
@@ -299,10 +382,14 @@ public class RefinementVisitor extends Visitor {
             }
             int cmp = declarationCmp.compare(hdr, impl);
             if (cmp < 0) {
-                that.addError("native header '" + hdr.getName() +
-                        "' of '" + containerName(hdr) +
-                        "' has no native implementation");
-                return;
+                if (!isImplemented(hdr)) {
+                    that.addError("native header '" + hdr.getName() +
+                            "' of '" + containerName(hdr) +
+                            "' has no native implementation");
+                    return;
+                }
+                hdrNext = true;
+                implNext = false;
             } else if (cmp > 0) {
                 hdrNext = false;
                 implNext = true;
@@ -313,9 +400,11 @@ public class RefinementVisitor extends Visitor {
         }
         if (hdrIter.hasNext()) {
             hdr = hdrIter.next();
-            that.addError("native header '" + hdr.getName() +
-                    "' of '" + containerName(hdr) +
-                    "' has no native implementation");
+            if (!isImplemented(hdr)) {
+                that.addError("native header '" + hdr.getName() +
+                        "' of '" + containerName(hdr) +
+                        "' has no native implementation");
+            }
         }
     }
     
@@ -327,7 +416,7 @@ public class RefinementVisitor extends Visitor {
         }
     };
     
-    private List<Declaration> getNativeMembers(Class dec) {
+    private List<Declaration> getNativeClassMembers(Class dec) {
         List<Declaration> members = dec.getMembers();
         ArrayList<Declaration> nats = new ArrayList<Declaration>(members.size());
         for (Declaration m : members) {
@@ -342,10 +431,6 @@ public class RefinementVisitor extends Visitor {
     private void checkNativeMethod(Tree.Declaration that, 
             Function dec, Function header) {
         if (header == null) {
-            if (dec.isMember() && !dec.isFormal() && !dec.isActual() && !dec.isDefault()) {
-                that.addError("native member does not implement any header member: " +
-                        message(dec));
-            }
             return;
         }
         Type at = header.getType();
@@ -386,14 +471,11 @@ public class RefinementVisitor extends Visitor {
     private void checkNativeValue(Tree.Declaration that, 
             Value dec, Value header) {
         if (header == null) {
-            if (dec.isMember() && !dec.isFormal() && !dec.isActual() && !dec.isDefault()) {
-                that.addError("native member does not implement any header member: " +
-                        message(dec));
-            }
             return;
         }
         Type at = header.getType();
-        if (!dec.getType().isExactly(at)) {
+        if (!dec.getType().isExactly(at)
+                && !sameObjects(dec, header)) {
             that.addError("native implementation must have the same type as native header: " +
                     message(dec) + " must have the type '" +
                     at.asString(that.getUnit()) + "'");
@@ -416,6 +498,10 @@ public class RefinementVisitor extends Visitor {
         }
     }
     
+    private boolean sameObjects(Value dec, Value header) {
+        return isObject(dec) && isObject(header) && dec.getQualifiedNameString().equals(header.getQualifiedNameString());
+    }
+
     private void checkClassParameters(Tree.Declaration that,
             Declaration dec, Declaration refined,
             Reference refinedMember, 
@@ -479,8 +565,9 @@ public class RefinementVisitor extends Visitor {
                 type.getRefinedMember(name, 
                         signature, false);
         boolean legallyOverloaded = 
-                !isOverloadedVersion(member);
-        if (root == null || root.equals(member)) {
+                !isOverloadedVersion(member) ||
+                member.isNative();
+        if (root == null || root.equals(member) || (root.isNative() && member.isNative())) {
             member.setRefinedDeclaration(member);
             if (member.isActual()) {
                 that.addError("actual member does not refine any inherited member: " + 

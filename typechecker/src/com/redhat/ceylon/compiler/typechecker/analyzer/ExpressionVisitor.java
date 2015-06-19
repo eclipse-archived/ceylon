@@ -193,14 +193,14 @@ public class ExpressionVisitor extends Visitor {
     public ExpressionVisitor(TypecheckerUnit unit, BackendSupport backendSupport) {
         this.unit = unit;
         this.backendSupport = backendSupport;
-        String nat = unit.getPackage().getModule().getNative();
+        String nat = unit.getPackage().getModule().getNativeBackend();
         inBackend = Backend.fromAnnotation(nat);
     }
     
     @Override public void visit(Tree.CompilationUnit that) {
         unit = that.getUnit();
         Backend ib = inBackend;
-        String nat = unit.getPackage().getModule().getNative();
+        String nat = unit.getPackage().getModule().getNativeBackend();
         inBackend = Backend.fromAnnotation(nat);
         super.visit(that);
         inBackend = ib;
@@ -8948,21 +8948,25 @@ public class ExpressionVisitor extends Visitor {
                         inBackend == null ?
                                 backendSupport : 
                                 inBackend.backendSupport;
-                Declaration hdr = dec;
-                if (!hdr.isNativeHeader()) {
+                Declaration impl;
+                Declaration hdr;
+                if (dec.isNativeHeader()) {
+                    hdr = dec;
+                    impl = getNativeDeclaration(hdr, backend);
+                } else {
                     hdr = getNativeHeader(dec.getContainer(), dec.getName());
+                    if (hdr == null || backend.supportsBackend(Backend.fromAnnotation(dec.getNativeBackend()))) {
+                        impl = dec;
+                    } else {
+                        impl = getNativeDeclaration(hdr, backend);
+                    }
                 }
-                Declaration impl =
-                        getNativeDeclaration(dec, backend);
                 if (impl==null && hdr != null) {
                     if (!isImplemented(hdr)) {
                         that.addError("no native implementation for backend: native '"
                                 + dec.getName(unit) +
                                 "' is not implemented for one or more backends");
                     }
-                } else if (hdr==null) {
-                    that.addError("native implementation must have a header: "
-                            + dec.getName(unit));
                 }
                 return inBackend == null || impl==null ? 
                         dec : impl;

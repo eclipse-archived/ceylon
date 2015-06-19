@@ -826,6 +826,14 @@
                     <para><literal>[]</literal> means <literal>Empty</literal>,</para>
                 </listitem>
                 <listitem>
+                    <para><literal>[X]</literal> means <literal>Tuple&lt;X,X,[]&gt;</literal>
+                    for any type <literal>X</literal>,</para>
+                </listitem>
+                <listitem>
+                    <para><literal>[X=]</literal> means <literal>[]|[X]</literal>
+                    for any type <literal>X</literal>,</para>
+                </listitem>
+                <listitem>
                     <para><literal>[X*]</literal> means <literal>Sequential&lt;X&gt;</literal> 
                     for any type <literal>X</literal>,</para>
                 </listitem>
@@ -835,23 +843,23 @@
                 </listitem>
                 <listitem>
                     <para><literal>[X,Y]</literal> means 
-                    <literal>Tuple&lt;X|Y,X,Tuple&lt;Y,Y,[]&gt;&gt;</literal> for 
-                    any types <literal>X,Y</literal>,</para>
-                </listitem>
-                <listitem>
-                    <para><literal>[X,Y*]</literal> means 
-                    <literal>Tuple&lt;X|Y,X,Sequential&lt;Y&gt;&gt;</literal> for 
-                    any types <literal>X,Y</literal>,</para>
-                </listitem>
-                <listitem>
-                    <para><literal>[X,Y+]</literal> means 
-                    <literal>Tuple&lt;X|Y,X,Sequence&lt;Y&gt;&gt;</literal> for 
+                    <literal>Tuple&lt;X|Y,X,[Y]&gt;</literal> for 
                     any types <literal>X,Y</literal>,</para>
                 </listitem>
                 <listitem>
                     <para><literal>[X,Y=]</literal> means 
-                    <literal>Tuple&lt;X|Y,X,Tuple&lt;Y,Y,[]&gt;&gt;|Tuple&lt;X,X,[]&gt;</literal> 
-                    for any types <literal>X,Y</literal>, and, finally,</para>
+                    <literal>Tuple&lt;X|Y,X,[Y=]&gt;</literal> 
+                    for any types <literal>X,Y</literal>,</para>
+                </listitem>
+                <listitem>
+                    <para><literal>[X,Y*]</literal> means 
+                    <literal>Tuple&lt;X|Y,X,[Y*]&gt;</literal> for 
+                    any types <literal>X,Y</literal>,</para>
+                </listitem>
+                <listitem>
+                    <para><literal>[X,Y+]</literal> means 
+                    <literal>Tuple&lt;X|Y,X,[Y+]&gt;</literal> for 
+                    any types <literal>X,Y</literal>, and, finally,</para>
                 </listitem>
                 <listitem>
                     <para><literal>X[1]</literal> means <literal>[X]</literal>,
@@ -870,17 +878,17 @@
                     <para>A tuple type abbreviation of form <literal>[X, ... ]</literal>
                     means the type <literal>Tuple&lt;X|Y,X,T&gt;</literal> where 
                     <literal>T</literal> is the type meant by the type abbreviation formed 
-                    by removing the first type <literal>X</literal> from the list of types 
-                    in the original tuple type abbreviation, and <literal>T</literal> has 
-                    the principal instantiation <literal>Y[]</literal>, as defined in
+                    by removing the first element type <literal>X</literal> from the list of 
+                    types in the original tuple type abbreviation, and <literal>T</literal> 
+                    has the principal instantiation <literal>Y[]</literal>, as defined in
                     <xref linkend="principalinstantiations"/>.</para>
                 </listitem>
                 <listitem>
-                    <para>A tuple type abbreviation of form <literal>[ ..., Y= ]</literal>
-                    means the type <literal>U|V</literal> where <literal>U</literal> is the 
-                    type meant by the whole tuple type abbreviation, and <literal>V</literal> 
-                    is the type meant by the type abbreviation formed by removing the last 
-                    type <literal>Y</literal> from the list of types in the whole tuple type 
+                    <para>A tuple type abbreviation of form <literal>[X=, ... ]</literal>
+                    means the type <literal>Empty|T</literal> where <literal>T</literal> is the 
+                    type meant by the tuple type abbreviation <literal>[X, ... ]</literal>,
+                    formed by removing the <literal>=</literal> from the first element type 
+                    <literal>X=</literal> of the list of types in the original tuple type 
                     abbreviation.</para>
                 </listitem>
             </itemizedlist>
