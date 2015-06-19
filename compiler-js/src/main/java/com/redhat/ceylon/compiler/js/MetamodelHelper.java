@@ -216,7 +216,7 @@ public class MetamodelHelper {
         final Class anonClass = d.isMember()&&d.getContainer() instanceof Class && ((Class)d.getContainer()).isAnonymous()?(Class)d.getContainer():null;
         if (that instanceof Tree.FunctionLiteral || d instanceof Function) {
             if (TypeUtils.isConstructor(d)) {
-                constructorLiteral(ltype, TypeUtils.getConstructor(d), that, gen);
+                constructorLiteral(ref.getType(), TypeUtils.getConstructor(d), that, gen);
                 return;
             }
             gen.out(gen.getClAlias(), d.isMember()?"AppliedMethod$jsint(":"AppliedFunction$jsint(");
