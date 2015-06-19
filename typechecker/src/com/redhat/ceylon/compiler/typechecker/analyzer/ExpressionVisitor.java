@@ -7421,7 +7421,7 @@ public class ExpressionVisitor extends Visitor {
                     dec.isObjectClass() && dec.isToplevel();
             boolean isToplevelClassInstance = 
                     dec.isValueConstructor() &&
-                    dec.getContainer().isToplevel();
+                    (dec.getContainer().isToplevel() || dec.isStaticallyImportable());
             if (!isToplevelInstance && 
                 !isToplevelClassInstance) {
                 e.addError("case must refer to a toplevel object declaration, value constructor for a toplevel class, or literal value");
