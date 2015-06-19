@@ -174,8 +174,9 @@ public class ModelUtil {
     
     public static boolean isOverloadedVersion(Declaration decl) {
         return decl!=null && 
-                decl.isOverloaded() && 
-                !decl.isAbstraction();
+                (decl.isOverloaded() && 
+                !decl.isAbstraction()) &&
+                !decl.isNative();
     }
 
     static boolean hasMatchingSignature(
@@ -2557,10 +2558,18 @@ public class ModelUtil {
             if (cd.isNative() && !cd.isNativeHeader()) {
                 // The container is a native implementation so
                 // we first need to find _its_ header
-                container =
+                Scope c =
                         (Scope)getDirectMemberForBackend(cd.getContainer(),
                                 cd.getName(),
                                 Backend.None.nativeAnnotation);
+                if (c != null) {
+                    // Is this the Value part of an object?
+                    if (c instanceof Value && isObject((Value)c)) {
+                        // Then use the Class part as the container
+                        c = ((Value)c).getType().getDeclaration();
+                    }
+                    container = c;
+                }
             }
         }
         // Find the header
@@ -2571,6 +2580,11 @@ public class ModelUtil {
         return header;
     }
     
+    // Check if the Value is part of an object (is there a better way to check this?)
+    public static boolean isObject(Value v) {
+        return v.getType().getDeclaration().getQualifiedNameString().equals(v.getQualifiedNameString());
+    }
+
     public static boolean isImplemented(Declaration decl) {
         if (decl instanceof FunctionOrValue) {
             return ((FunctionOrValue)decl).isImplemented();

@@ -254,14 +254,14 @@ public class Module
     }
 
     public boolean isNative() {
-        return getNative() != null;
+        return getNativeBackend() != null;
     }
     
-    public String getNative() {
+    public String getNativeBackend() {
         return nativeBackend;
     }
     
-    public void setNative(String backend) {
+    public void setNativeBackend(String backend) {
         this.nativeBackend=backend;
     }
     
