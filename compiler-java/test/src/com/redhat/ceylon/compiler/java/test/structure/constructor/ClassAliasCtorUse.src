@@ -25,21 +25,21 @@ final class useClassAliasCtor_ {
             }
             returning new .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassAliasCtor(arg$1$0);
         );
-        final .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassAliasCtor z = new .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassAliasCtor(.com.redhat.ceylon.compiler.java.test.structure.constructor.ClassAliasCtor.Other, 0L);
+        final .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassAliasCtor z = new .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassAliasCtor(.com.redhat.ceylon.compiler.java.test.structure.constructor.ClassAliasCtor.other_, 0L);
         final .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassAliasCtor z1 = (
             let
             {
                 long arg$2$0 = 0L;
             }
-            returning new .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassAliasCtor(.com.redhat.ceylon.compiler.java.test.structure.constructor.ClassAliasCtor.Other, arg$2$0);
+            returning new .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassAliasCtor(.com.redhat.ceylon.compiler.java.test.structure.constructor.ClassAliasCtor.other_, arg$2$0);
         );
-        final .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassAliasCtor zz = new .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassAliasCtor(.com.redhat.ceylon.compiler.java.test.structure.constructor.ClassAliasCtor.Other, 0L);
+        final .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassAliasCtor zz = new .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassAliasCtor(.com.redhat.ceylon.compiler.java.test.structure.constructor.ClassAliasCtor.other_, 0L);
         final .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassAliasCtor zz1 = (
             let
             {
                 long arg$3$0 = 0L;
             }
-            returning new .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassAliasCtor(.com.redhat.ceylon.compiler.java.test.structure.constructor.ClassAliasCtor.Other, arg$3$0);
+            returning new .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassAliasCtor(.com.redhat.ceylon.compiler.java.test.structure.constructor.ClassAliasCtor.other_, arg$3$0);
         );
     }
 }
@@ -86,7 +86,7 @@ class ClassAliasCtorOtherSub extends .com.redhat.ceylon.compiler.java.test.struc
     ClassAliasCtorOtherSub(@.com.redhat.ceylon.compiler.java.metadata.Name("j")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     final long j) {
-        super(.com.redhat.ceylon.compiler.java.test.structure.constructor.ClassAliasCtor.Other, j);
+        super(.com.redhat.ceylon.compiler.java.test.structure.constructor.ClassAliasCtor.other_, j);
     }
     
     @.java.lang.Override
@@ -104,7 +104,7 @@ class ClassAliasCtorAliasSub extends .com.redhat.ceylon.compiler.java.test.struc
     ClassAliasCtorAliasSub(@.com.redhat.ceylon.compiler.java.metadata.Name("j")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     final long j) {
-        super(.com.redhat.ceylon.compiler.java.test.structure.constructor.ClassAliasCtor.Other, j);
+        super(.com.redhat.ceylon.compiler.java.test.structure.constructor.ClassAliasCtor.other_, j);
     }
     
     @.java.lang.Override
@@ -125,7 +125,7 @@ class ClassAliasCtorAliasSub2 extends .com.redhat.ceylon.compiler.java.test.stru
     public ClassAliasCtorAliasSub2(@.com.redhat.ceylon.compiler.java.metadata.Name("j")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     final long j$param$) {
-        super(.com.redhat.ceylon.compiler.java.test.structure.constructor.ClassAliasCtor.Other, j$param$);
+        super(.com.redhat.ceylon.compiler.java.test.structure.constructor.ClassAliasCtor.other_, j$param$);
     }
     
     @.java.lang.Override
