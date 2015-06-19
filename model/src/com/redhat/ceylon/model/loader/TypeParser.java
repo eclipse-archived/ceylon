@@ -1,7 +1,7 @@
 package com.redhat.ceylon.model.loader;
 
-import static com.redhat.ceylon.model.typechecker.model.ModelUtil.intersection;
-import static com.redhat.ceylon.model.typechecker.model.ModelUtil.union;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.intersectionType;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.unionType;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -169,18 +169,12 @@ public class TypeParser {
      * unionType: intersectionType (| intersectionType)*
      */
     private Type parseUnionType() {
-        Type firstType = parseIntersectionType();
-        if(lexer.lookingAt(TypeLexer.OR)){
-            List<Type> caseTypes = new LinkedList<Type>();
-            caseTypes.add(firstType);
-            while(lexer.lookingAt(TypeLexer.OR)){
-                lexer.eat();
-                caseTypes.add(parseIntersectionType());
-            }
-            return union(caseTypes, unit);
-        }else{
-            return firstType;
+        Type type = parseIntersectionType();
+        while(lexer.lookingAt(TypeLexer.OR)){
+            lexer.eat();
+            type = unionType(parseIntersectionType(), type, unit);
         }
+        return type;
     }
 
     /**
@@ -192,18 +186,12 @@ public class TypeParser {
      *  intersectionType: qualifiedType (& qualifiedType)*
      */
     private Type parseIntersectionType() {
-        Type firstType = parsePrimaryType();
-        if(lexer.lookingAt(TypeLexer.AND)){
-            List<Type> satisfiedTypes = new LinkedList<Type>();
-            satisfiedTypes.add(firstType);
-            while(lexer.lookingAt(TypeLexer.AND)){
-                lexer.eat();
-                satisfiedTypes.add(parsePrimaryType());
-            }
-            return intersection(satisfiedTypes, unit);
-        }else{
-            return firstType;
+        Type type = parsePrimaryType();
+        while(lexer.lookingAt(TypeLexer.AND)){
+            lexer.eat();
+            type = intersectionType(parsePrimaryType(), type, unit);
         }
+        return type;
     }
     
     /**
@@ -394,11 +382,12 @@ public class TypeParser {
      */
     class TypeList {
         
-        public TypeList(List<Type> types, boolean variadic, boolean atLeastOne) {
+        public TypeList(List<Type> types, boolean variadic, boolean atLeastOne, int defaulted) {
             super();
             this.types = types;
             this.variadic = variadic;
             this.atLeastOne = atLeastOne;
+            this.defaulted = defaulted;
         }
         public Type getFirst() {
             return types.get(0);
@@ -406,42 +395,41 @@ public class TypeParser {
         List<Type> types;
         boolean variadic;
         boolean atLeastOne;
+        /**
+         * The number of defaulted types.
+         * For instance, the types <code>A,B,C,D,E</code> with <code>defaulted = 3</code>
+         * signify the type list <code>A,B,C=,D=,E=</code>.
+         * <p>
+         * A possibly-empty variadic type element is also considered defaulted;
+         * for instance, the types <code>A,B,C,D,E</code> with <code>defaulted = 3</code>,
+         * <code>variadic = true</code>, <code>atLeastOne = false</code>
+         * signify the type list <code>A,B,C=,D=,E*</code>.
+         */
+        int defaulted;
         Type getLast() {
             return types.get(types.size()-1);
         }
         
         Type asTuple() {
-            final Type result;
             if (types.size() == 0) {
-                result = parseEmptyType();
-            } else {
-                final Type sequentialType;
-                if (variadic) {
-                    Part part = new Part("Sequence", Collections.singletonList(getLast()));
-                    sequentialType = loadType("ceylon.language", 
-                            atLeastOne ? "ceylon.language.Sequence" : "ceylon.language.Sequential", 
-                                    part, null);
-                } else {
-                    sequentialType = unit.getEmptyType();
-                }
-                
-                if (variadic && types.size() == 1) {
-                    result = sequentialType;
-                } else {
-                    Part part = new Part();
-                    Type union = getLast();
-                    Type tupleType = sequentialType;
-                    for (int ii  = types.size()-(variadic? 2 : 1); ii >= 0; ii--) {
-                        Type t = types.get(ii);
-                        union = ModelUtil.unionType(union, t, unit);
-                        part.parameters = Arrays.asList(union, t, tupleType);
-                        part.name = "Tuple";
-                        tupleType = loadType("ceylon.language", "ceylon.language.Tuple", part, null);
-                    }
-                    result = tupleType;
-                }
+                return unit.getEmptyType();
             }
-            return result;
+            if (types.size() == 1 && variadic) {
+                return loadType("ceylon.language",
+                    atLeastOne ? "ceylon.language.Sequence" : "ceylon.language.Sequential",
+                    new Part("Sequence", Collections.singletonList(getLast())), null);
+            }
+            if (types.size() == defaulted) {
+                return unionType(new TypeList(types, variadic, atLeastOne, defaulted - 1).asTuple(), unit.getEmptyType(), unit);
+            }
+            else {
+                Type head = types.get(0);
+                Type tail = new TypeList(types.subList(1, types.size()), variadic, atLeastOne, defaulted).asTuple();
+                Type tailElementType = unit.getSequentialElementType(tail);
+                Type elementType = unionType(tailElementType, head, unit);
+                Part part = new Part("Tuple", Arrays.asList(elementType, head, tail));
+                return loadType("ceylon.language", "ceylon.language.Tuple", part, null);
+            }
         }
     }
     
@@ -452,16 +440,26 @@ public class TypeParser {
      * DefaultedType: Type "="?
      * VariadicType: UnionType ("*" | "+")
      * </blockquote></pre>
-     * We don't care about defaulted types though.
      */
     private TypeList parseTypeList() {
         ArrayList<Type> types= new ArrayList<>();
+        int defaulted = 0;
         types.add(parseType());
+        if (lexer.lookingAt(TypeLexer.EQ)){
+            defaulted++;
+            lexer.eat(TypeLexer.EQ);
+        }
         while(lexer.lookingAt(TypeLexer.COMMA)){
             lexer.eat(TypeLexer.COMMA);
             // XXX When the last type is matching VariadicType
             // we should be using parseUnionType, not parseType().
             types.add(parseType());
+            if (lexer.lookingAt(TypeLexer.EQ)){
+                lexer.eat(TypeLexer.EQ);
+                defaulted++;
+            } else if (defaulted > 0 && !lexer.lookingAt(TypeLexer.STAR)){
+                throw new TypeParserException("Non-defaulted argument after defaulted one: "+lexer.index);
+            }
         }
         boolean variadic;
         boolean atLeastOne;
@@ -469,15 +467,19 @@ public class TypeParser {
             lexer.eat(TypeLexer.STAR);
             variadic = true;
             atLeastOne = false;
+            defaulted++;
         } else if (lexer.lookingAt(TypeLexer.PLUS)){
             lexer.eat(TypeLexer.PLUS);
             variadic = true;
             atLeastOne = true;
+            if (defaulted > 0){
+                throw new TypeParserException("Nonempty variadic argument after defaulted one: "+lexer.index);
+            }
         } else {
             variadic = false;
             atLeastOne = false;
         }
-        return new TypeList(types, variadic, atLeastOne);
+        return new TypeList(types, variadic, atLeastOne, defaulted);
     }
 
     /**

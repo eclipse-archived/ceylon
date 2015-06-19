@@ -23,6 +23,7 @@ public class TypeLexer {
     public final static int PLUS = STAR + 1;// +
     public final static int THIN_ARROW = PLUS + 1;// ->
     public final static int QN = THIN_ARROW + 1;// ?
+    public final static int EQ = QN + 1;// =
 
     // type string to parse
     char[] type;
@@ -76,6 +77,7 @@ public class TypeLexer {
         case '*': token = STAR; break;
         case '+': token = PLUS; break;
         case '?': token = QN; break;
+        case '=': token = EQ; break;
         case '-':
             if((index + 1) < type.length
                     && type[index + 1] == '>')
@@ -129,6 +131,7 @@ public class TypeLexer {
             case '*':
             case '+':
             case '-':
+            case '=':
             case ' ':// note: break on ws
                 break FOR;
             }
@@ -189,6 +192,7 @@ public class TypeLexer {
         case PLUS: return "PLUS";
         case THIN_ARROW: return "THIN_ARROW";
         case QN: return "QN";
+        case EQ: return "EQ";
         }
         // cannot happen
         throw new TypeParserException("Unhandled token: "+token);
