@@ -9,7 +9,7 @@ shared class CtorSuper {
         print("");
     }
     
-    shared new Constructor2(Integer j) {
+    shared new constructor2(Integer j) {
         v = j * j;
         v2 = v^3;
         print(v2);
@@ -26,8 +26,8 @@ shared class CtorSuper2 extends CtorSuper {
         print("");
     }
     
-    shared new Constructor2(Integer j) 
-            extends CtorSuper.Constructor2(j){
+    shared new constructor2(Integer j) 
+            extends CtorSuper.constructor2(j){
         v = j * j;
         print(v);
         print("");
