@@ -25,7 +25,7 @@ import com.redhat.ceylon.ceylondoc.test.modules.single.a { A1, AliasA2 = A2 }
  * MA  02110-1301, USA.
  */
 "This is `StubClass`"
-see(`interface StubInterface`, `value stubTopLevelAttribute`, `function stubTopLevelMethod`, `module com.redhat.ceylon.ceylondoc.test.modules.single`, `package com.redhat.ceylon.ceylondoc.test.modules.single.a`)
+see(`class`, `interface StubInterface`, `value stubTopLevelAttribute`, `function stubTopLevelMethod`, `module com.redhat.ceylon.ceylondoc.test.modules.single`, `package com.redhat.ceylon.ceylondoc.test.modules.single.a`)
 tagged("stubTag1", "stubTag2")
 throws(`class StubException`)
 shared class StubClass(

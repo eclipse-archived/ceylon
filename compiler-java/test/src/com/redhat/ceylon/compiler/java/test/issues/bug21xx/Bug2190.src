@@ -1,0 +1,42 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug21xx;
+
+final class bug2190_ {
+    
+    private bug2190_() {
+    }
+    
+    public static .ceylon.language.Iterable<? extends .ceylon.language.Character, ? extends .java.lang.Object> get_() {
+        return (.ceylon.language.Iterable<? extends .ceylon.language.Character, ? extends .java.lang.Object>).ceylon.language.String.<.ceylon.language.Character, .java.lang.Object>flatMap(.ceylon.language.Character.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$, "abc", (.ceylon.language.Callable<? extends .ceylon.language.Iterable<? extends .ceylon.language.Character, ? extends .java.lang.Object>>)(.ceylon.language.Callable)new .com.redhat.ceylon.compiler.java.language.AbstractCallable(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Iterable.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, .ceylon.language.Null.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Iterable.class, .ceylon.language.Character.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Character.$TypeDescriptor$, .ceylon.language.Character.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "<{}|{Character+}>(Character)", (short)-1){
+            
+            @.java.lang.Override
+            public .java.lang.Object $call$(final .java.lang.Object $param$0) {
+                final int c = ((.ceylon.language.Character)$param$0).intValue();
+                return (
+                    let
+                    {
+                        .java.lang.Object $ceylontmp$ifResult$0;
+                        if (c == 98) {
+                            $ceylontmp$ifResult$0 = .ceylon.language.empty_.get_();
+                        } else {
+                            $ceylontmp$ifResult$0 = new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.Character, .java.lang.Object>(.ceylon.language.Character.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 1, false){
+                                
+                                @.java.lang.Override
+                                protected final .java.lang.Object $evaluate$(int $index$) {
+                                    switch ($index$) {
+                                    case 0: 
+                                        return .ceylon.language.Character.instance(.ceylon.language.Character.getUppercased(c));
+                                    
+                                    default: 
+                                        return null;
+                                    
+                                    }
+                                }
+                            };
+                        }
+                    }
+                    returning $ceylontmp$ifResult$0;
+                );
+            }
+        });
+    }
+}

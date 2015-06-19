@@ -29,5 +29,3 @@ native("foo") shared Integer nativeInvalidTypes() => 2;
 native("jvm") shared interface NativeInvalidInterface1;
 
 native("jvm") shared interface NativeInvalidInterface2 {}
-
-native("jvm") shared object nativeInvalidObject {}

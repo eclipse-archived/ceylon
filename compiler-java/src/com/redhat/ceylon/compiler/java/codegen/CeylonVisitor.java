@@ -49,6 +49,7 @@ import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.model.typechecker.model.Constructor;
 import com.redhat.ceylon.model.typechecker.model.Interface;
+import com.redhat.ceylon.model.typechecker.model.ModelUtil;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
@@ -128,7 +129,11 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
         if (plan instanceof Drop) {
             return;
         }
-        if (!Decl.isForBackend(decl))
+        // To accept this method it is either not native, native for this
+        // backend or it's a native header
+        boolean accept = Decl.isForBackend(decl)
+                || decl.getDeclarationModel().isNativeHeader();
+        if (!accept)
             return;
         int annots = gen.checkCompilerAnnotations(decl, defs);
 
@@ -441,7 +446,9 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
         if (plan instanceof Drop) {
             return;
         }
-        if (!Decl.isForBackend(decl))
+        boolean accept = Decl.isForBackend(decl)
+                || decl.getDeclarationModel().isNativeHeader();
+        if (!accept)
             return;
         int annots = gen.checkCompilerAnnotations(decl, defs);
         if (Decl.withinClass(decl)) {
@@ -606,15 +613,22 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
 
     public void visit(Tree.ExtendedType extendedType) {
         ClassOrInterface forDefinition = classBuilder.getForDefinition();
-        Type thisType;
-        Type extended;
-        thisType = forDefinition != null ? forDefinition.getType() : null;
-        extended = extendedType.getType().getTypeModel();
-        if (extended.getDeclaration() instanceof Constructor) {
-            extended = extended.getQualifyingType();
+        Type thisType = forDefinition != null ? forDefinition.getType() : null;
+        ClassOrInterface hdrDefinition = null;
+        if (forDefinition != null && forDefinition.isNative() && !forDefinition.isNativeHeader()) {
+            hdrDefinition = (ClassOrInterface)ModelUtil.getNativeHeader(forDefinition.getContainer(), forDefinition.getName());
         }
-        classBuilder.extending(thisType, extended, ((Class)thisType.getDeclaration()).hasConstructors());
-        gen.expressionGen().transformSuperInvocation(extendedType, classBuilder);
+        if (hdrDefinition == null) {
+            Type extended = extendedType.getType().getTypeModel();
+            if (extended.getDeclaration() instanceof Constructor) {
+                extended = extended.getQualifyingType();
+            }
+            classBuilder.extending(thisType, extended, ((Class)thisType.getDeclaration()).hasConstructors());
+            gen.expressionGen().transformSuperInvocation(extendedType, classBuilder);
+        } else {
+            classBuilder.extending(thisType, hdrDefinition.getType(), ((Class)thisType.getDeclaration()).hasConstructors());
+            gen.expressionGen().makeHeaderSuperInvocation((Class)forDefinition, extendedType, classBuilder);
+        }
     }
 
     public void visit(Tree.ClassSpecifier extendedType) {

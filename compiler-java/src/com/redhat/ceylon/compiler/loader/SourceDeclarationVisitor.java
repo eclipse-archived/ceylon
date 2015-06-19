@@ -24,6 +24,7 @@ import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.isForBackend;
 import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.compiler.typechecker.tree.NaturalVisitor;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.Declaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ModuleDescriptor;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PackageDescriptor;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
@@ -35,9 +36,34 @@ public abstract class SourceDeclarationVisitor extends Visitor implements Natura
     public abstract void loadFromSource(Tree.Declaration decl);
     
     // Returns `true` if the declaration is not marked `native` or if
-    // it has a "jvm" argument, in all other cases returns `false`.
+    // it has a "jvm" argument. In the case it is a native header
+    // it will also return `true` for methods and attributes that
+    // have an implementation. In all other cases returns `false`.
     protected boolean checkNative(Tree.Declaration decl){
-        return isForBackend(decl.getAnnotationList(), Backend.Java, decl.getUnit());
+        // Commented out because of https://github.com/ceylon/ceylon-compiler/issues/2196
+//        return isForBackend(decl.getAnnotationList(), Backend.Java, decl.getUnit())
+//                || (isForBackend(decl.getAnnotationList(), Backend.None, decl.getUnit())
+//                        && hasImplementation(decl));
+        return true;
+    }
+    
+    private boolean hasImplementation(Declaration decl) {
+        if (decl instanceof Tree.AttributeDeclaration) {
+            return ((Tree.AttributeDeclaration)decl).getSpecifierOrInitializerExpression() != null;
+        }
+        else if (decl instanceof Tree.AttributeGetterDefinition) {
+            return ((Tree.AttributeGetterDefinition)decl).getBlock() != null;
+        }
+        else if (decl instanceof Tree.AttributeSetterDefinition) {
+            return ((Tree.AttributeSetterDefinition)decl).getBlock() != null;
+        }
+        else if (decl instanceof Tree.MethodDeclaration) {
+            return ((Tree.MethodDeclaration)decl).getSpecifierExpression() != null;
+        }
+        else if (decl instanceof Tree.MethodDefinition) {
+            return ((Tree.MethodDefinition)decl).getBlock() != null;
+        }
+        return true;
     }
     
     @Override

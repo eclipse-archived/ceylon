@@ -33,6 +33,7 @@ import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.Map;
 
+import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.compiler.java.codegen.Invocation.TransformedInvocationPrimary;
 import com.redhat.ceylon.compiler.java.codegen.Naming.DeclNameFlag;
 import com.redhat.ceylon.compiler.java.codegen.Naming.Substitution;
@@ -65,6 +66,7 @@ import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
 import com.redhat.ceylon.model.typechecker.model.Functional;
 import com.redhat.ceylon.model.typechecker.model.Generic;
 import com.redhat.ceylon.model.typechecker.model.Interface;
+import com.redhat.ceylon.model.typechecker.model.ModelUtil;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.Package;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
@@ -894,7 +896,7 @@ public class ExpressionTransformer extends AbstractTransformer {
 
     private VarianceCastResult getVarianceCastResult(Type expectedType, Type exprType) {
         // exactly the same type, doesn't need casting
-        if(exprType.isExactly(expectedType))
+        if(expectedType == null || exprType.isExactly(expectedType))
             return null;
         // if we're not trying to put it into an interface, there's no need
         if(!(expectedType.getDeclaration() instanceof Interface))
@@ -3644,6 +3646,27 @@ public class ExpressionTransformer extends AbstractTransformer {
         }
     }
 
+    public void makeHeaderSuperInvocation(Class decl, Node node, ClassDefinitionBuilder classBuilder) {
+        java.util.List<ParameterList> paramLists = decl.getParameterLists();
+        if(!paramLists.isEmpty()) {
+            boolean prevFnCall = withinInvocation(true);
+            try {
+                CallBuilder callBuilder = CallBuilder.instance(this);
+                callBuilder.invoke(naming.makeSuper());
+                for (Parameter p : paramLists.get(0).getParameters()) {
+                    callBuilder.argument(make().Ident(naming.makeQuotedName(p.getName())));
+                }
+                JCExpression superExpr = callBuilder.build();
+                if (node != null) {
+                    at(node);
+                }
+                classBuilder.getInitBuilder().delegateCall(make().Exec(superExpr));
+            } finally {
+                withinInvocation(prevFnCall);
+            }
+        }
+    }
+
     /**
      * Transform a delegated constructor call ({@code extends XXX()})
      * which may be either a superclass initializer/constructor or a 
@@ -4211,10 +4234,14 @@ public class ExpressionTransformer extends AbstractTransformer {
                     method, producedReference, parameterList));
         } else if (decl instanceof Class) {
             Class class_ = (Class)decl;
-            final ParameterList parameterList = class_.getFirstParameterList();
-            Reference producedReference = qmte.getTarget();
-            return utilInvocation().checkNull(makeJavaStaticInvocation(gen(),
-                    class_, producedReference, parameterList));
+            if (class_.isStaticallyImportable()) {
+                return naming.makeTypeDeclarationExpression(null, class_, Naming.DeclNameFlag.QUALIFIED);
+            } else {
+                final ParameterList parameterList = class_.getFirstParameterList();
+                Reference producedReference = qmte.getTarget();
+                return utilInvocation().checkNull(makeJavaStaticInvocation(gen(),
+                        class_, producedReference, parameterList));
+            }
         } else {
             return makeErroneous(qmte, "compiler bug: unsupported static");
         }
@@ -4441,6 +4468,15 @@ public class ExpressionTransformer extends AbstractTransformer {
             }
         }
         
+        // Make sure we're using the correct declaration in case of natives
+        // (the header might look like a field while the implementation is a getter)
+        if (decl.isNativeHeader()) {
+            Declaration d = ModelUtil.getNativeDeclaration(decl, Backend.Java);
+            if (d != null) {
+                decl = d;
+            }
+        }
+        
         // Explanation: primaryExpr and qualExpr both specify what is to come before the selector
         // but the important difference is that primaryExpr is used for those situations where
         // the result comes from the actual Ceylon code while qualExpr is used for those situations
@@ -4477,8 +4513,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         } else if (Decl.isValueOrSharedOrCapturedParam(decl)) {
             if (decl.isToplevel()) {
                 // ERASURE
-                if ("null".equals(decl.getName())) {
-                    // FIXME this is a pretty brain-dead way to go about erase I think
+                if (isNullValue(decl)) {
                     result = makeNull();
                 } else if (isBooleanTrue(decl)) {
                     result = makeBoolean(true);

@@ -36,13 +36,18 @@ import com.redhat.ceylon.compiler.java.codegen.Naming.SyntheticName;
 import com.redhat.ceylon.compiler.java.codegen.recovery.HasErrorException;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.Break;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.CaseClause;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Condition;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.Continue;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.ForStatement;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.RangeOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Return;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierOrInitializerExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Statement;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Switched;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Variable;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.model.loader.NamingBase.Suffix;
@@ -51,13 +56,13 @@ import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.model.typechecker.model.ConditionScope;
 import com.redhat.ceylon.model.typechecker.model.ControlBlock;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
+import com.redhat.ceylon.model.typechecker.model.ModelUtil;
 import com.redhat.ceylon.model.typechecker.model.Package;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.Scope;
 import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
-import com.redhat.ceylon.model.typechecker.model.ModelUtil;
 import com.redhat.ceylon.model.typechecker.model.Value;
 import com.sun.tools.javac.code.Flags;
 //import com.sun.tools.javac.code.Type;
@@ -70,6 +75,7 @@ import com.sun.tools.javac.tree.JCTree.JCBinary;
 import com.sun.tools.javac.tree.JCTree.JCBlock;
 import com.sun.tools.javac.tree.JCTree.JCCase;
 import com.sun.tools.javac.tree.JCTree.JCCatch;
+import com.sun.tools.javac.tree.JCTree.JCConditional;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
 import com.sun.tools.javac.tree.JCTree.JCExpressionStatement;
 import com.sun.tools.javac.tree.JCTree.JCForLoop;
@@ -105,6 +111,12 @@ public class StatementTransformer extends AbstractTransformer {
     boolean noExpressionlessReturn = false;
 
     private final Set<Optimization> disabledOptimizations;
+    
+    private final Transformer<JCStatement, Tree.Return> defaultReturnTransformer = new DefaultReturnTransformer();
+    private Transformer<JCStatement, Tree.Return> returnTransformer = defaultReturnTransformer;
+    private final Transformer<List<JCStatement>, Tree.Break> defaultBreakTransformer = new DefaultBreakTransformer();
+    private final Transformer<JCStatement, Tree.Continue> defaultContinueTransformer = new DefaultContinueTransformer();
+    private Transformer<JCStatement, Tree.Continue> continueTransformer = defaultContinueTransformer;
     
     public static StatementTransformer getInstance(Context context) {
         StatementTransformer trans = context.get(StatementTransformer.class);
@@ -1645,7 +1657,7 @@ public class StatementTransformer extends AbstractTransformer {
         protected final SyntheticName indexName;
         protected final Tree.Term baseIterable;
         protected final Tree.Term step;
-        
+        protected final SyntheticName stepName;
         IndexedAccessIterationOptimization(Tree.ForStatement stmt, Tree.Term baseIterable, Tree.Term step, Type elementType, String indexableName) {
             this(stmt, baseIterable, step, elementType, indexableName, "length", "i");
         }
@@ -1654,6 +1666,11 @@ public class StatementTransformer extends AbstractTransformer {
             super(stmt);
             this.baseIterable = baseIterable;
             this.step = step;
+            if (step != null) {
+                stepName = naming.alias("step");
+            } else {
+                stepName = null;
+            }
             this.elementType = elementType;
             this.indexableName = naming.alias(indexableName);
             this.lengthName = naming.alias(lengthName);
@@ -1681,10 +1698,10 @@ public class StatementTransformer extends AbstractTransformer {
             }
             
             // int step = ...
-            final SyntheticName stepName;
+            
             if (this.step != null) {
                 JCExpression stepExpr = makeStepExpr();
-                stepName = naming.alias("step");
+                
                 result.add(makeVar(FINAL, stepName, 
                         makeIndexType(), 
                         stepExpr));
@@ -1698,8 +1715,6 @@ public class StatementTransformer extends AbstractTransformer {
                                     .build()),
                         null));
                 
-            } else {
-                stepName = null;
             }
             
             // int i = 0;
@@ -2079,10 +2094,10 @@ public class StatementTransformer extends AbstractTransformer {
     }
     
     /**
-     * Returns a {@link RangeOpIterationOptimization} if that optimization applies
+     * Returns a {@link SpanOpIterationOptimization} if that optimization applies
      * to the given {@code for} statement, otherwise null.
      * @param stmt The for statement
-     * @return a {@link RangeOpIterationOptimization} or null.
+     * @return a {@link SpanOpIterationOptimization} or null.
      */
     private ForStatementTransformation spanOpIteration(Tree.ForStatement stmt) {
         if (isOptimizationDisabled(stmt, Optimization.SpanOpIteration)) {
@@ -2164,8 +2179,9 @@ public class StatementTransformer extends AbstractTransformer {
         } else {
             return optimizationFailed(stmt, Optimization.SpanOpIteration, "The RangeOp doesn't produce a Range<Integer>/Range<Character>");
         }
-        return new RangeOpIterationOptimization(stmt, 
-                range, increment, type);
+        return increment == null ?
+                new SpanOpIterationOptimization(stmt, range, increment, type) : 
+                new SpanOpWithStepIterationOptimization(stmt, range, increment, type);
     }
     
     /**
@@ -2214,13 +2230,34 @@ public class StatementTransformer extends AbstractTransformer {
         
         @Override
         protected JCExpression makeIndexedAccess() {
-            if (step == null && elementType.isExactly(typeFact().getIntegerType())) {
-                return make().Binary(JCTree.PLUS, indexName.makeIdent(), indexableName.makeIdent());
-            } else {
-                return make().Apply(null,
-                        naming.makeSelect(makeJavaType(elementType, JT_NO_PRIMITIVES), "neighbour"),
-                        List.<JCExpression>of(
-                                indexableName.makeIdent(), indexName.makeIdent()));
+            if (elementType.isExactly(typeFact().getIntegerType())) {
+                if (step == null) {
+                    return make().Binary(JCTree.PLUS, indexName.makeIdent(), indexableName.makeIdent());
+                } else{ 
+                    return make().Conditional(make().Binary(JCTree.EQ, stepName.makeIdent(), make().Literal(1L)),
+                            make().Binary(JCTree.PLUS, indexName.makeIdent(), indexableName.makeIdent()),
+                            make().Apply(null,
+                                naming.makeSelect(makeJavaType(elementType, JT_NO_PRIMITIVES), "neighbour"),
+                                List.<JCExpression>of(
+                                        indexableName.makeIdent(), indexName.makeIdent())));
+                }
+            } else {// must be character
+                if (step == null) {
+                    return make().Apply(null,
+                            naming.makeSelect(makeJavaType(elementType, JT_NO_PRIMITIVES), "neighbour"),
+                            List.<JCExpression>of(
+                                    indexableName.makeIdent(), indexName.makeIdent()));
+                } else {
+                    return make().Conditional(make().Binary(JCTree.EQ, stepName.makeIdent(), make().Literal(1L)),
+                            make().Apply(null,
+                                    naming.makeSelect(makeJavaType(elementType, JT_NO_PRIMITIVES), "codepoint"),
+                                    List.<JCExpression>of(
+                            make().Binary(JCTree.PLUS, indexName.makeIdent(), indexableName.makeIdent()))),
+                            make().Apply(null,
+                                naming.makeSelect(makeJavaType(elementType, JT_NO_PRIMITIVES), "neighbour"),
+                                List.<JCExpression>of(
+                                        indexableName.makeIdent(), indexName.makeIdent())));
+                }
             }
         }
         
@@ -2250,10 +2287,12 @@ public class StatementTransformer extends AbstractTransformer {
                 return make().Unary(JCTree.POSTINC, indexName.makeIdent());
             } else {
                 return make().Assign(indexName.makeIdent(),
-                        make().Apply(null,
-                                naming.makeSelect(make().Type(syms().ceylonIntegerType), "neighbour"),
-                                List.<JCExpression>of(
-                                        indexName.makeIdent(), stepName.makeIdent())));
+                        make().Conditional(make().Binary(JCTree.EQ, stepName.makeIdent(), make().Literal(1L)),
+                                make().Binary(JCTree.PLUS, indexName.makeIdent(), make().Literal(1L)),
+                            make().Apply(null,
+                                    naming.makeSelect(make().Type(syms().ceylonIntegerType), "neighbour"),
+                                    List.<JCExpression>of(
+                                            indexName.makeIdent(), stepName.makeIdent()))));
             }
         }
     }
@@ -2292,11 +2331,18 @@ public class StatementTransformer extends AbstractTransformer {
     class ForStatementTransformation {
         
         protected Tree.ForStatement stmt;
-        protected final Name label; 
+        protected final Name label;
+        protected final Name failVar;
         
         ForStatementTransformation(Tree.ForStatement stmt) {
             this.stmt = stmt;
             this.label = getLabel(stmt.getForClause().getControlBlock());
+            if (needsFailVar()) {
+                // boolean $doforelse$X = true;
+                failVar = naming.aliasName("doforelse");
+            } else {
+                failVar = null;
+            }
         }
         
         protected final Tree.ForIterator getForIterator() {
@@ -2352,7 +2398,7 @@ public class StatementTransformer extends AbstractTransformer {
 
                 if (needsFailVar()) {
                     // boolean $doforelse$X = true;
-                    JCVariableDecl failtest_decl = make().VarDef(make().Modifiers(0), naming.aliasName("doforelse"), make().TypeIdent(TypeTags.BOOLEAN), make().Literal(TypeTags.BOOLEAN, 1));
+                    JCVariableDecl failtest_decl = make().VarDef(make().Modifiers(0), failVar, make().TypeIdent(TypeTags.BOOLEAN), make().Literal(TypeTags.BOOLEAN, 1));
                     outer.append(failtest_decl);
                     currentForFailVariable = failtest_decl.getName();
                 } else {
@@ -2662,219 +2708,418 @@ public class StatementTransformer extends AbstractTransformer {
     
     
     /**
-     * <p>Transformation of {@code for} loops over {@code Range<Integer>} 
-     * or {@code Range<Character>} which avoids allocating a {@code Range} and
+     * <p>Transformation of {@code for} loops over {@code Span<Integer>} 
+     * or {@code Span<Character>} which avoids allocating a {@code Span} and
      * using an {@code Iterator} like 
      * {@link #ForStatementTransformation} but instead outputs a C-style 
-     * {@code for} loop. Because a Range is never empty we can also omit
+     * {@code while} loop. Because a Span is never empty we can also omit
      * code for handling {@code else} clauses of {@code for} statements when 
      * we know the {@code for} block returns normally</p>
      * 
-     * <p>This is able to optimize statements like the following:</p>
-     * <ul>
-     * <li>{@code for (i in lhs..rhs) ... }</li>
-     * <li>{@code for (i in (lhs..rhs).by(increment)) ... }</li>
-     * <ul>
-     * <p>where {@code lhs}, {@code rhs} and {@code increment} are 
-     * expressions (not necessarily literals or compile-time constants).</p>
-     * 
-     * <p>Given a statement like {@code for (i in (lhs..rhs).by(increment) ...} 
-     * we generate something like this:</p>
-     * <pre>
-     *  long by$ = by;
-     *  if (by$ <= 0) {
-     *      throw new Exception(ceylon.language.String.instance("step size must be greater than zero"));
-     *  }
-     *  final long start$ = lhs;
-     *  final long end$ = rhs;
-     *  final boolean increasing$ = start <= end;
-     *  final long inc$ = (increasing$ ? by$ : -by$);
-     *  for (long i = start$; (increasing$ ? i-end$ <= 0 : i-end$ >= 0); i+=inc$) {
-     *      USERBLOCK
-     *  }
-     * </pre>
-     * 
-     * <p>In the case where we have a simple range with no {@code by()} 
-     * invocation then the test for negative step size is omitted.</p>
+     * <p>This is able to optimize statements like {@code for (i in first..last) ... },
+     * where {@code first}, {@code last} are 
+     * expressions (not necessarily literals or compile-time constants).
+     * See {@link SpanOpWithStepIterationOptimization} for optimization of 
+     * statements like {@code for (i in (first..last).by(step)) ... }
      * 
      * <p>The transformation is complicated by:</p>
      * <ul>
      *   <li>Not knowing at compile-time whether {@code lhs < rhs}, which 
-     *       complicated the {@code for} termination condition</li>
+     *       complicates the {@code for} termination condition</li>
      *   <li>Needing to worry about {@code int} or {@code long} overflow
      *       (hence the {@code i-end$ <= 0} rather than the more natural
      *       {@code i <= end}.</li>
      * </ul>
      */
-    class RangeOpIterationOptimization extends ForStatementTransformation {
+    class SpanOpIterationOptimization extends ForStatementTransformation {
         public static final String OPT_NAME = "RangeOpIteration";
-        private final Tree.RangeOp range;
-        private final Tree.Term lhs;
-        private final Tree.Term rhs;
-        private final Tree.Term increment;// if null then increment is +/-1
-        private final com.sun.tools.javac.code.Type type;
-        private final Type pt;
-        public RangeOpIterationOptimization(
+        protected final Tree.RangeOp span;
+        protected final Tree.Term first;
+        protected final Tree.Term last;
+        protected final Tree.Term step;// if null then increment is +/-1
+        protected final com.sun.tools.javac.code.Type type;
+        protected final Type pt;
+        /** the name of the statement label for continue jumps */
+        protected final SyntheticName continueName = naming.temp("continue");
+        /** the variable holding the Span.first */
+        protected final SyntheticName firstName = naming.temp("first");
+        /** the variable holding the Span.last */
+        protected final SyntheticName lastName = naming.temp("last");
+        /** whether this is an increasing span */
+        protected final SyntheticName increasingName = naming.temp("increasing");
+        /** the increment +/-1 for iteration with a step */
+        protected final SyntheticName incrementName = naming.temp("incr");
+        /** f: whether this is the first iteration */
+        protected final SyntheticName fName = naming.temp("f");
+        /** the current element */
+        protected final SyntheticName elementName = naming.temp("element");
+        /** The (aliased) iteration variable, that is the {@code i} in {@code for (i in first..last) */
+        protected final SyntheticName varname;
+        
+        public SpanOpIterationOptimization(
                 Tree.ForStatement stmt,
                 Tree.RangeOp range,
-                Tree.Term increment,
+                Tree.Term step,
                 com.sun.tools.javac.code.Type type) {
             super(stmt);
-            this.range = range;
-            this.lhs = range.getLeftTerm();
-            this.rhs = range.getRightTerm();
-            this.increment = increment;
+            this.span = range;
+            this.first = range.getLeftTerm();
+            this.last = range.getRightTerm();
+            this.step = step;
             this.type = type;
-            if (type.tag == syms().intType.tag) {
+            if (isCharacterSpan()) {
                 this.pt = typeFact().getCharacterType();
-            } else if (type.tag == syms().longType.tag) {
+            } else if (isIntegerSpan()) {
                 this.pt = typeFact().getIntegerType();
             } else {
                 throw new BugException(range, "unhandled Range type: " + type.tag); 
             }
+            varname = naming.alias(getVariable().getIdentifier().getText());
         }
-        private Tree.Variable getVariable() {
+        
+        protected final boolean isIntegerSpan() {
+            return type.tag == syms().longType.tag;
+        }
+        
+        protected final boolean isCharacterSpan() {
+            return type.tag == syms().intType.tag;
+        }
+        
+        protected Tree.Variable getVariable() {
             return ((Tree.ValueIterator)stmt.getForClause().getForIterator()).getVariable();
         }
-        private JCExpression makeType(boolean boxed) {
+        
+        protected JCExpression makeType(boolean boxed) {
             return makeJavaType(pt, boxed ? JT_NO_PRIMITIVES : 0);
         }
-        private Type getType() {
+        
+        protected Type getType() {
             return pt;
         }
-        private boolean haveStep() {
-            return increment != null;
-        }
+        
         @Override
         protected ListBuffer<JCStatement> transformForClause() {
             ListBuffer<JCStatement> result = ListBuffer.<JCStatement>lb();
+            at(span);
+            // Generate variable decls we'll need
+            prelude(result);
+            
+            /* We're transforming a Ceylon for clause to a Java while clause
+               and we want to execute POST-STATEMENTS before the while CONDITION is 
+               tested. That means we need to change how we will 
+               transform continue statements occurring in the TRANSFORMED-BODY, 
+               so we still execute those POST-STATEMENTS statements. 
+               We generate this:
+                   do {
+                     PRE-STATEMENTS 
+                     label: do { 
+                       TRANSFORMED-BODY 
+                     } while(false);
+                     POST-STATEMENTS
+                   } while(CONDITION);
+               and continues in that body becomes a break: label
+            */
+            Tree.ControlClause prevForclause = currentForClause;
+            currentForClause = stmt.getForClause();
+            Transformer<JCStatement, Continue> currentContinueTransformer = continueTransformer;
+            continueTransformer = new Transformer<JCTree.JCStatement, Tree.Continue>() {
+                
+                @Override
+                public JCStatement transform(Continue tree) {
+                    return at(tree).Break(continueName.asName());
+                }
+            };
+            List<JCStatement> blockStatements = List.<JCStatement>of(make().Labelled(
+                continueName.asName(),
+                // The inner do {...} while (false) used purely as a jump target for continues
+                make().DoLoop(
+                    make().Block(0, transformBlock(getBlock())),
+                    make().Literal(false)
+                )));
+            continueTransformer = currentContinueTransformer;
+            currentForClause = prevForclause;
+            
+            // Now add the PRE- and POST-STATEMENTS
+            blockStatements = decorateBlock(blockStatements);
+            
+            // The actual loop
+            result.append(make().Labelled(this.label, makeLoop(blockStatements)));
+            
+            
+            return result;
+        }
+        
+        /** 
+         * Appends statements to appear before the loop, 
+         * typically adding variables 
+         */
+        protected void prelude(ListBuffer<JCStatement> result) {
             
             // Note: Must invoke lhs, rhs and increment in the correct order!
             // long start = <lhs>
-            SyntheticName start = naming.temp("start");
-            result.append(make().VarDef(make().Modifiers(FINAL), start.asName(), makeType(false), 
-                    expressionGen().transformExpression(lhs, BoxingStrategy.UNBOXED, getType())));
+            at(first);
+            result.append(makeVar(FINAL, firstName, makeType(false), 
+                    expressionGen().transformExpression(first, BoxingStrategy.UNBOXED, getType())));
             // long end = <rhs>
-            SyntheticName end = naming.temp("end");
-            result.append(make().VarDef(make().Modifiers(FINAL), end.asName(), makeType(false), 
-                    expressionGen().transformExpression(rhs, BoxingStrategy.UNBOXED, getType())));
-            
-            final SyntheticName by;
-            if (haveStep()) {
-                by = naming.temp("by");
-                // by = increment;
-                result.append(make().VarDef(make().Modifiers(FINAL), by.asName(), make().Type(syms().longType), 
-                        expressionGen().transformExpression(increment, BoxingStrategy.UNBOXED, getType())));
-                // if (by <= 0) throw Exception("step size must be greater than zero");
-                result.append(make().If(
-                        make().Binary(JCTree.LE, by.makeIdent(), make().Literal(0)),
-                        makeThrowAssertionException(
-                                new AssertionExceptionMessageBuilder(null)
-                                    .appendViolatedCondition("step > 0")
-                                    .prependAssertionDoc("step size must be greater than zero")
-                                    .build()),
-                        null));
-            } else {
-                by = null;
+            at(last);
+            result.append(makeVar(FINAL, lastName, makeType(false), 
+                    expressionGen().transformExpression(last, BoxingStrategy.UNBOXED, getType())));
+            at(span);
+            result.append(makeVar(FINAL, increasingName, make().Type(syms().booleanType),
+                    makeIncreasingExpr()));
+                    
+            if (isCharacterSpan()) {
+                /* Because Character.successor and .predecessor can throw when 
+                   a Span is constructed, we need to replicate the following logic here:
+                       Boolean recursive = first.offsetSign(first.successor) > 0 
+                           && last.predecessor.offsetSign(last) > 0;
+                 */
+                at(span);
+                result.append(makeVar(naming.temp(), make().Type(syms().booleanType), 
+                    make().Binary(JCTree.AND,
+                        make().Binary(JCTree.GT,
+                            make().Apply(null,
+                                naming.makeQualIdent(make().QualIdent(syms().ceylonCharacterType.tsym), "offsetSign"),
+                                List.<JCExpression>of(
+                                    firstName.makeIdent(),
+                                    make().Apply(null,
+                                        naming.makeQualIdent(make().QualIdent(syms().ceylonCharacterType.tsym), "getSuccessor"),
+                                            List.<JCExpression>of(firstName.makeIdent())))),
+                            make().Literal(0L)),
+                        make().Binary(JCTree.GT,
+                            make().Apply(null,
+                                naming.makeQualIdent(make().QualIdent(syms().ceylonCharacterType.tsym), "offsetSign"),
+                                List.<JCExpression>of(
+                                    make().Apply(null,
+                                        naming.makeQualIdent(make().QualIdent(syms().ceylonCharacterType.tsym), "getPredecessor"),
+                                        List.<JCExpression>of(lastName.makeIdent())), 
+                                    lastName.makeIdent())), 
+                            make().Literal(0L))
+                    )
+                ));
             }
-            
-            SyntheticName increasing = naming.temp("increasing");
-            JCBinary incrExpr = make().Binary(JCTree.GE, make().Apply(null,
+            at(span);
+            result.append(makeVar(FINAL, incrementName, make().Type(syms().longType), 
+                    makeIncrementExpr()));
+            result.append(makeVar(varname, makeType(false), firstName.makeIdent()));
+            result.append(makeVar(elementName, makeType(false), firstName.makeIdent()));
+            result.append(makeVar(fName, make().Type(syms().booleanType), make().Literal(false)));
+        }
+        
+        /** The initial value of the {@code long $increment} variable */
+        protected JCExpression makeIncrementExpr() {
+            return at(span).Conditional(
+                    increasingName.makeIdent(), 
+                    makeIncreasingIncrement(), makeDecreasingIncrement());
+        }
+        
+        /** The initial value of the {@code boolean $increasing} variable */
+        protected JCExpression makeIncreasingExpr() {
+            JCBinary incrExpr = at(span).Binary(JCTree.GE, make().Apply(null,
                     naming.makeSelect(makeType(true), "offset"),
-                    List.<JCExpression>of(end.makeIdent(), start.makeIdent())),
+                    List.<JCExpression>of(lastName.makeIdent(), firstName.makeIdent())),
                     make().Literal(0));
-            result.append(make().VarDef(make().Modifiers(FINAL), increasing.asName(), make().Type(syms().booleanType),
-                    unitStep(by, incrExpr, make().Binary(JCTree.GE, make().Apply(null,
-                            naming.makeSelect(makeType(true), "offsetSign"),
-                            List.<JCExpression>of(end.makeIdent(), start.makeIdent())),
-                            make().Literal(0)))));
-            
-            SyntheticName incr = naming.temp("incr");
-            
-            result.append(make().VarDef(make().Modifiers(FINAL), incr.asName(), make().Type(syms().longType), 
-                    unitStep(by, make().Conditional(
-                            increasing.makeIdent(), 
-                            makeIncreasingIncrement(by), makeDecreasingIncrement(null)),
-                            make().Conditional(
-                                    increasing.makeIdent(), 
-                                    makeIncreasingIncrement(by), makeDecreasingIncrement(by)))));
-            
-            SyntheticName varname = naming.alias(getVariable().getIdentifier().getText());
-            JCVariableDecl init = make().VarDef(make().Modifiers(0), varname.asName(), makeType(false), start.makeIdent());
-            
-            Tree.ControlClause prevForclause = currentForClause;
-            currentForClause = stmt.getForClause();
-            List<JCStatement> blockStatements = transformBlock(getBlock());
-            currentForClause = prevForclause;
-            
+            return incrExpr;
+        }
+        
+        /** The expression for an increasing increment */
+        protected JCExpression makeIncreasingIncrement() {
+            if (isCharacterSpan()) {
+                // long incr = start < end ? 1 : -1
+                return make().Literal(1);
+            } else if (isIntegerSpan()) {
+                return make().Literal(1L);
+            } else {
+                return makeErroneous(span, "unhandled Span type: " + type.tag);
+            }
+        }
+        
+        /** The expression for a decreasing increment */
+        protected JCExpression makeDecreasingIncrement() {
+            if (isCharacterSpan()) {
+                // long incr = start < end ? 1 : -1
+                return make().Literal(-1);
+            } else if (isIntegerSpan()) {
+                return make().Literal(-1L);
+            } else {
+                return makeErroneous(span, "unhandled Span type: " + type.tag);
+            }
+        }
+        
+        /** Prepend statements to the transformed block */
+        protected List<JCStatement> decorateBlock(
+                List<JCStatement> blockStatements) {
+            blockStatements = blockStatements.prepend(makeDeclareOrAssignTheirLoopVar());
+            blockStatements = blockStatements.prepend(make().Exec(makeAssignOurVar()));
+            blockStatements = blockStatements.prepend(
+                make().Exec(make().Assign(fName.makeIdent(), make().Literal(true))));
+            blockStatements = blockStatements.prepend(
+                make().If(fName.makeIdent(), make().Exec(makeIncrementElement()), null));
+            return blockStatements;
+        }
+        
+        /** Declare or assign the loop variable {@code i = <whatever>} */
+        protected JCStatement makeDeclareOrAssignTheirLoopVar() {
             boolean elemBoxed = BooleanUtil.isFalse(getVariable().getDeclarationModel().getUnboxed());
             JCExpression elemInit = varname.makeIdent();
             if (elemBoxed) {
                 elemInit = boxType(elemInit, getType());
             }
-            blockStatements = blockStatements.prepend(make().VarDef(make().Modifiers(FINAL), 
+            return make().VarDef(make().Modifiers(FINAL), 
                     names().fromString(Naming.getVariableName(getVariable())), 
                     makeType(elemBoxed),
-                    elemInit));
-            
-            // for (long i = start; (increasing ? i -end <= 0 : i -end >= 0); i+=inc) {
-            JCExpression cond = make().Conditional(increasing.makeIdent(),
-                        make().Binary(JCTree.LE, make().Binary(JCTree.MINUS, varname.makeIdent(), end.makeIdent()), makeZero()), 
-                        make().Binary(JCTree.GE, make().Binary(JCTree.MINUS, varname.makeIdent(), end.makeIdent()), makeZero()));
-            cond = unitStep(by, cond,
-                    make().Conditional(increasing.makeIdent(),
-                        make().Binary(JCTree.AND, 
-                            make().Binary(JCTree.LE, make().Apply(null,
-                                    naming.makeSelect(makeType(true), "offsetSign"),
-                                    List.<JCExpression>of(varname.makeIdent(), end.makeIdent())), 
-                                    makeZero()),
-                            make().Binary(JCTree.GE, make().Apply(null,
-                                    naming.makeSelect(makeType(true), "offsetSign"),
-                                    List.<JCExpression>of(varname.makeIdent(), start.makeIdent())), 
-                                    makeZero())
-                        ),
-                        make().Binary(JCTree.AND, 
-                                make().Binary(JCTree.GE, make().Apply(null,
-                                        naming.makeSelect(makeType(true), "offsetSign"),
-                                        List.<JCExpression>of(varname.makeIdent(), end.makeIdent())), 
-                                        makeZero()),
-                                make().Binary(JCTree.LE, make().Apply(null,
-                                        naming.makeSelect(makeType(true), "offsetSign"),
-                                        List.<JCExpression>of(varname.makeIdent(), start.makeIdent())), 
-                                        makeZero())
-                        )
-                    )
-                );
-            JCExpression stepExpr;
-            if (type.tag == syms().intType.tag) {
-                stepExpr = make().Assign(varname.makeIdent(), make().Apply(null,
-                        naming.makeSelect(makeType(true), "neighbour"),
-                        List.<JCExpression>of(varname.makeIdent(), incr.makeIdent())));
-            } else {
-                stepExpr = make().Assignop(JCTree.PLUS_ASG, varname.makeIdent(), incr.makeIdent());
-            }
-            
-            stepExpr = unitStep(by, stepExpr, make().Assign(varname.makeIdent(),
-                    make().Apply(null,
-                            naming.makeSelect(makeType(true), "neighbour"),
-                            List.<JCExpression>of(varname.makeIdent(), incr.makeIdent()))));
-            
-            List<JCExpressionStatement> step = List.<JCExpressionStatement>of(make().Exec(
-                    stepExpr));
-            result.append(make().Labelled(this.label, make().ForLoop(
-                    List.<JCStatement>of(init), 
-                    cond, 
-                    step, 
-                    make().Block(0, blockStatements))));
-            
-            if (getBlock().getDefinitelyReturns()) {
-                result.append(makeFlowAppeaser(getBlock()));
-            }
-            
-            return result;
+                    elemInit);
         }
         
-        private JCExpression unitStep(Naming.SyntheticName by, JCExpression withoutBy, JCExpression withBy) {
+        protected final JCExpression makeAssignOurVar() {
+            return make().Assign(varname.makeIdent(), elementName.makeIdent());
+        }
+        
+        /** 
+         * The expression used to increment {@code $element} 
+         */
+        protected JCExpression makeIncrementElement() {
+            JCExpression stepExpr;
+            if (isCharacterSpan()) {
+                stepExpr = at(span).Assign(elementName.makeIdent(), make().Apply(null,
+                        naming.makeSelect(makeType(true), "neighbour"),
+                        List.<JCExpression>of(elementName.makeIdent(), incrementName.makeIdent())));
+            } else {
+                stepExpr = at(span).Assignop(JCTree.PLUS_ASG, elementName.makeIdent(), incrementName.makeIdent());
+            }
+            return stepExpr;
+        }
+        
+        protected JCStatement makeLoop(
+                List<JCStatement> blockStatements) {
+            return make().DoLoop(make().Block(0, blockStatements), makeLoopCondition(varname));
+        }
+        
+        /** The expression used for the condition on the {@code while} loop */
+        protected JCExpression makeLoopCondition(SyntheticName varname) {
+            JCExpression cond = at(span).Conditional(increasingName.makeIdent(),
+                        make().Binary(JCTree.NE, make().Binary(JCTree.MINUS, varname.makeIdent(), lastName.makeIdent()), makeZero()), 
+                        make().Binary(JCTree.NE, make().Binary(JCTree.MINUS, varname.makeIdent(), lastName.makeIdent()), makeZero()));
+            return cond;
+        }
+        
+        protected JCExpression makeZero() {
+            if (isCharacterSpan()) {
+                return make().Literal(0);
+            } else if (isIntegerSpan()) {
+                return make().Literal(0L);
+            } else {
+                return makeErroneous(span, "unhandled Range type: " + type.tag);
+            }
+        }
+    }
+    
+    /**
+     * Optimization for statements like 
+     * {@code for (i in (lhs..rhs).by(increment)) ... }
+     * This differs somewhat from the case without an increment because the 
+     * semantics of the iterator we're effectively inlining is quite different.
+     * Annoyingly {@code Span.by} returns {@code this} when {@code step==1},
+     * which is behaviour we have to replicate. That means that the 
+     * {@code for} loop has to be structurally the same as the 
+     * step-less {@code for} loop.
+     */
+    class SpanOpWithStepIterationOptimization extends SpanOpIterationOptimization {
+        /** The variable holding the Span.by(step) */
+        protected final SyntheticName stepName = naming.temp("step");
+        
+        public SpanOpWithStepIterationOptimization(ForStatement stmt,
+                RangeOp range, Term increment,
+                com.sun.tools.javac.code.Type type) {
+            super(stmt, range, increment, type);
+        }
+        
+        @Override
+        protected void prelude(ListBuffer<JCStatement> result) {
+            // $step = increment;
+            result.append(at(step).VarDef(make().Modifiers(FINAL), stepName.asName(), make().Type(syms().longType), 
+                    expressionGen().transformExpression(step, BoxingStrategy.UNBOXED, getType())));
+            // if ($step <= 0) throw Exception("step size must be greater than zero");
+            result.append(at(step).If(
+                    make().Binary(JCTree.LE, stepName.makeIdent(), make().Literal(0)),
+                    makeThrowAssertionException(
+                            new AssertionExceptionMessageBuilder(null)
+                                .appendViolatedCondition("step > 0")
+                                .prependAssertionDoc("step size must be greater than zero")
+                                .build()),
+                    null));
+                    
+            super.prelude(result);
+        }
+        
+        @Override
+        protected final List<JCStatement> decorateBlock(
+                List<JCStatement> blockStatements) {
+            // i = $i
+            blockStatements = blockStatements.prepend(makeDeclareOrAssignTheirLoopVar());
+            // $i = $n
+            blockStatements = blockStatements.prepend(make().Exec(makeAssignOurVar()));
+            // $f = true;
+            blockStatements = blockStatements.prepend(
+                make().Exec(make().Assign(fName.makeIdent(), make().Literal(true))));
+            // if ($f && step == 1) n=neighbour($i, $step);
+            blockStatements = blockStatements.prepend(
+                make().If(
+                    make().Binary(JCTree.AND, 
+                        fName.makeIdent(), 
+                        make().Binary(JCTree.EQ, 
+                            stepName.makeIdent(), 
+                            make().Literal(1L))),
+                    make().Exec(makeIncrementElement()), 
+                    null));
+            
+            if (!getBlock().getDefinitelyReturns()) {
+                // if (step != 1) $n=neighbour($i, $step)
+                blockStatements = blockStatements.append(
+                    make().If(
+                        make().Binary(JCTree.NE, 
+                            stepName.makeIdent(), 
+                            make().Literal(1L)),
+                        make().Exec(makeIncrementElement()), null));
+            }
+            
+            return blockStatements;
+        }
+        
+        @Override
+        protected JCStatement makeLoop(
+                List<JCStatement> blockStatements) {
+                // loop condition is on varname if step == 1 otherwise on n 
+            return make().DoLoop(make().Block(0, blockStatements),
+            make().Conditional(make().Binary(JCTree.EQ, 
+                        stepName.makeIdent(), 
+                        make().Literal(1L)),
+            makeLoopCondition(varname), makeLoopCondition(elementName)));
+        }
+        
+        @Override
+        protected JCExpression makeIncrementExpr() {
+            JCConditional l = make().Conditional(
+                    increasingName.makeIdent(), 
+                    makeIncreasingIncrement(), super.makeDecreasingIncrement());
+            return unitStep(stepName, l,
+                    at(span).Conditional(
+                            increasingName.makeIdent(), 
+                            makeIncreasingIncrement(), makeDecreasingIncrement()));
+        }
+        
+        @Override
+        protected JCExpression makeIncreasingExpr() {
+            return unitStep(stepName, 
+                    super.makeIncreasingExpr(), 
+                    at(span).Binary(JCTree.GE, 
+                            make().Apply(null,
+                                    naming.makeSelect(makeType(true), "offsetSign"),
+                                    List.<JCExpression>of(lastName.makeIdent(), firstName.makeIdent())),
+                        make().Literal(0)));
+        }
+        
+        private  JCExpression unitStep(Naming.SyntheticName by, JCExpression withoutBy, JCExpression withBy) {
             if (by == null) {
                 return withoutBy;
             } else {
@@ -2883,41 +3128,54 @@ public class StatementTransformer extends AbstractTransformer {
             }
         }
         
-        private JCExpression makeIncreasingIncrement(SyntheticName by) {
-            if (by != null) {
-                // long incr = increasing ? by : -by;
-                return by.makeIdent();
-            } else if (type.tag == syms().intType.tag) {
-                // long incr = start < end ? 1 : -1
-                return make().Literal(1);
-            } else if (type.tag == syms().longType.tag) {
-                return make().Literal(1L);
-            } else {
-                return makeErroneous(range, "unhandled Range type: " + type.tag);
-            }
+        @Override
+        protected JCExpression makeIncreasingIncrement() {
+            // long incr = increasing ? by : -by;
+            return stepName.makeIdent();
         }
         
-        private JCExpression makeDecreasingIncrement(SyntheticName by) {
-            if (by != null) {
-                // long incr = increasing ? by : -by;
-                return make().Unary(JCTree.NEG, by.makeIdent());
-            } else if (type.tag == syms().intType.tag) {
-                // long incr = start < end ? 1 : -1
-                return make().Literal(-1);
-            } else if (type.tag == syms().longType.tag) {
-                return make().Literal(-1L);
-            } else {
-                return makeErroneous(range, "unhandled Range type: " + type.tag);
-            }
+        @Override
+        protected JCExpression makeDecreasingIncrement() {
+            // long incr = increasing ? by : -by;
+            return make().Unary(JCTree.NEG, stepName.makeIdent());
         }
-        private JCExpression makeZero() {
-            if (type.tag == syms().intType.tag) {
-                return make().Literal(0);
-            } else if (type.tag == syms().longType.tag) {
-                return make().Literal(0L);
-            } else {
-                return makeErroneous(range, "unhandled Range type: " + type.tag);
-            }
+        
+        @Override
+        protected JCExpression makeLoopCondition(SyntheticName varname) {
+            JCExpression cond = unitStep(stepName, super.makeLoopCondition(varname),
+                    at(span).Conditional(increasingName.makeIdent(),
+                        make().Binary(JCTree.AND, 
+                            make().Binary(JCTree.LE, make().Apply(null,
+                                    naming.makeSelect(makeType(true), "offsetSign"),
+                                    List.<JCExpression>of(varname.makeIdent(), lastName.makeIdent())), 
+                                    makeZero()),
+                            make().Binary(JCTree.GE, make().Apply(null,
+                                    naming.makeSelect(makeType(true), "offsetSign"),
+                                    List.<JCExpression>of(varname.makeIdent(), firstName.makeIdent())), 
+                                    makeZero())
+                        ),
+                        make().Binary(JCTree.AND, 
+                                make().Binary(JCTree.GE, make().Apply(null,
+                                        naming.makeSelect(makeType(true), "offsetSign"),
+                                        List.<JCExpression>of(varname.makeIdent(), lastName.makeIdent())), 
+                                        makeZero()),
+                                make().Binary(JCTree.LE, make().Apply(null,
+                                        naming.makeSelect(makeType(true), "offsetSign"),
+                                        List.<JCExpression>of(varname.makeIdent(), firstName.makeIdent())), 
+                                        makeZero())
+                        )
+                    )
+                );
+            return cond;
+        }
+        
+        @Override
+        protected JCExpression makeIncrementElement() {
+            JCExpression stepExpr  = unitStep(stepName, super.makeIncrementElement(), make().Assign(elementName.makeIdent(),
+                    at(step).Apply(null,
+                            naming.makeSelect(makeType(true), "neighbour"),
+                            List.<JCExpression>of(elementName.makeIdent(), incrementName.makeIdent()))));
+            return stepExpr;
         }
     }
 
@@ -3152,29 +3410,42 @@ public class StatementTransformer extends AbstractTransformer {
     
     List<JCStatement> transform(Tree.Break stmt) {
         // break;
+        return defaultBreakTransformer.transform(stmt);
+    }
+    class DefaultBreakTransformer implements Transformer<List<JCStatement>, Tree.Break> {
+
+        @Override
+        public List<JCStatement> transform(Break stmt) {
+           // Remove the inner substitutions for any deferred values specified 
+            // in the control block
+            closeInnerSubstituionsForSpecifiedValues(currentForClause);
+            
+            JCStatement brk = at(stmt).Break(getLabel(stmt));
         
-        // Remove the inner substitutions for any deferred values specified 
-        // in the control block
-        closeInnerSubstituionsForSpecifiedValues(currentForClause);
-        
-        JCStatement brk = at(stmt).Break(getLabel(stmt));
-    
-        if (currentForFailVariable != null) {
-            JCIdent failtest_id = at(stmt).Ident(currentForFailVariable);
-            List<JCStatement> list = List.<JCStatement> of(at(stmt).Exec(at(stmt).Assign(failtest_id, make().Literal(TypeTags.BOOLEAN, 0))));
-            list = list.append(brk);
-            return list;
-        } else {
-            return List.<JCStatement> of(brk);
+            if (currentForFailVariable != null) {
+                JCIdent failtest_id = at(stmt).Ident(currentForFailVariable);
+                List<JCStatement> list = List.<JCStatement> of(at(stmt).Exec(at(stmt).Assign(failtest_id, make().Literal(TypeTags.BOOLEAN, 0))));
+                list = list.append(brk);
+                return list;
+            } else {
+                return List.<JCStatement> of(brk);
+            }
         }
     }
 
     JCStatement transform(Tree.Continue stmt) {
         // continue;
-        return at(stmt).Continue(getLabel(stmt));
+        return continueTransformer.transform(stmt);
     }
-    private Transformer<JCStatement, Tree.Return> defaultReturnTransformer = new DefaultReturnTransformer();
-    private Transformer<JCStatement, Tree.Return> returnTransformer = defaultReturnTransformer;
+    class DefaultContinueTransformer implements Transformer<JCStatement, Tree.Continue> {
+
+        @Override
+        public JCStatement transform(Continue stmt) {
+            return at(stmt).Continue(getLabel(stmt));
+        }
+        
+    }
+    
     Transformer<JCStatement, Tree.Return> returnTransformer(Transformer<JCStatement, Tree.Return> tx) {
         Transformer<JCStatement, Tree.Return> result = this.returnTransformer;
         this.returnTransformer = tx;
@@ -3476,7 +3747,7 @@ public class StatementTransformer extends AbstractTransformer {
                         makeJavaType(caughtType), 
                         expressionGen().applyErasureAndBoxing(exceptionVar.makeIdent(), 
                                 supertype, true, true, BoxingStrategy.BOXED, caughtType, 0)));
-            elsePart = make().If(makeOptimizedTypeTest(null, exceptionVar, caughtType, caughtType), 
+            elsePart = make().If(makeOptimizedTypeTest(null, exceptionVar, caughtType, supertype), 
                     make().Block(0, catchBlock), 
                     elsePart);
         }
@@ -3555,11 +3826,17 @@ public class StatementTransformer extends AbstractTransformer {
     }
 
     protected List<JCStatement> transformCaseClause(Tree.CaseClause caseClause, String tmpVar, Tree.Term outerExpression){
+        int p = unblock();
+        List<JCStatement> result;
         if(caseClause.getBlock() != null)
-            return transformBlock(caseClause.getBlock());
-        if(caseClause.getExpression() != null)
-            return evaluateAndAssign(tmpVar, caseClause.getExpression(), outerExpression);
-        return List.<JCStatement>of(make().Exec(makeErroneous(caseClause, "Only block or expression allowed")));
+            result = transformBlock(caseClause.getBlock());
+        else if(caseClause.getExpression() != null)
+            result = evaluateAndAssign(tmpVar, caseClause.getExpression(), outerExpression);
+        else
+            result = List.<JCStatement>of(make().Exec(makeErroneous(caseClause, "Only block or expression allowed")));
+        _at(p);
+        block();
+        return result;
     }
 
     protected Type switchExpressionType(Tree.SwitchClause switchClause) {
@@ -3957,6 +4234,8 @@ public class StatementTransformer extends AbstractTransformer {
     }
 
     JCStatement transform(Node node, Tree.SwitchClause switchClause, Tree.SwitchCaseList caseList, String tmpVar, Tree.Term outerExpression) {
+        at(switchClause);
+        block();
         SwitchTransformation transformation = null;
         Type exprType = switchExpressionType(switchClause);
         Boolean switchUnboxed = switchExpressionUnboxed(switchClause);
@@ -4038,7 +4317,9 @@ public class StatementTransformer extends AbstractTransformer {
         if (transformation == null) {
             transformation = new IfElseChain();
         }
-        return transformation.transformSwitch(node, switchClause, caseList, tmpVar, outerExpression);
+        JCStatement result = transformation.transformSwitch(node, switchClause, caseList, tmpVar, outerExpression);
+        unblock();
+        return result;
     }
 
     private boolean isSwitchAllMatchCases(Tree.SwitchCaseList caseList) {

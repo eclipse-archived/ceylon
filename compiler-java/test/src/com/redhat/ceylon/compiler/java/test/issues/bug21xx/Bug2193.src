@@ -1,0 +1,46 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug21xx;
+
+interface Bug2193Foo {
+    
+    public .com.redhat.ceylon.compiler.java.test.issues.bug21xx.Bug2193Foo$impl $com$redhat$ceylon$compiler$java$test$issues$bug21xx$Bug2193Foo$impl();
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug21xx.Bug2193Foo.class);
+}
+final class Bug2193Foo$impl {
+    
+    Bug2193Foo$impl(.com.redhat.ceylon.compiler.java.test.issues.bug21xx.Bug2193Foo $this) {
+        this.$this = $this;
+    }
+    private final .com.redhat.ceylon.compiler.java.test.issues.bug21xx.Bug2193Foo $this;
+    
+    private long a$priv$() {
+        return ((.ceylon.language.Integer).ceylon.language.nothing_.get_()).longValue();
+    }
+}
+interface Bug2193Bar {
+    
+    public abstract .java.lang.String a();
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug21xx.Bug2193Bar.class);
+}
+class Bug2193Baz implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug21xx.Bug2193Foo, .com.redhat.ceylon.compiler.java.test.issues.bug21xx.Bug2193Bar {
+    
+    Bug2193Baz() {
+        this.$com$redhat$ceylon$compiler$java$test$issues$bug21xx$Bug2193Foo$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug21xx.Bug2193Foo$impl(this);
+    }
+    protected final .com.redhat.ceylon.compiler.java.test.issues.bug21xx.Bug2193Foo$impl $com$redhat$ceylon$compiler$java$test$issues$bug21xx$Bug2193Foo$this$;
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.issues.bug21xx.Bug2193Foo$impl $com$redhat$ceylon$compiler$java$test$issues$bug21xx$Bug2193Foo$impl() {
+        return $com$redhat$ceylon$compiler$java$test$issues$bug21xx$Bug2193Foo$this$;
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.String a() {
+        return ((.ceylon.language.String).ceylon.language.nothing_.get_()).toString();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug21xx.Bug2193Baz.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug21xx.Bug2193Baz.class);
+}

@@ -39,8 +39,8 @@ native("jvm") Integer nativeDuplicates4() => 1;
 
 native("jvm") Integer nativeDuplicates4() => 1;
 
-native Integer nativeDuplicates5();
+native shared Integer nativeDuplicates5();
 
-native("js") Integer nativeDuplicates5() => 1;
+native("js") shared Integer nativeDuplicates5() => 1;
 
-native("js") Integer nativeDuplicates5() => 1;
+native("js") shared Integer nativeDuplicates5() => 1;

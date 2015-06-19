@@ -188,6 +188,7 @@ class Strategy {
                 && Decl.isToplevel(def) 
                 && Decl.isShared(def)
                 && !Decl.isAbstract(def)
+                && !def.getDeclarationModel().isNativeHeader()
                 && hasNoRequiredParameters((Class)def.getDeclarationModel());
     }
     
@@ -281,7 +282,8 @@ class Strategy {
                         (Decl.isCeylon(cls)
                                 && model.isMember()
                                 && cls.isShared()
-                                && !cls.isAnonymous()));
+                                && !cls.isAnonymous()
+                                && !cls.isNativeHeader()));
         } else if (Decl.isConstructor(model)) {
             Constructor ctor = Decl.getConstructor(model);
             Class cls = Decl.getConstructedClass(ctor);

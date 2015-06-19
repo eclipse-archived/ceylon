@@ -53,11 +53,16 @@ public class NativeTests extends CompilerTests {
         assertErrors(dir + "/" + test, expectedErrors);
     }
     
-    private void testNativeModule(String dir) {
-        testNativeModule(dir, "test.ceylon", "module.ceylon");
+    private ModuleWithArtifact testNativeModule(String dir) {
+        return testNativeModule(dir, null, "test.ceylon", "package.ceylon", "module.ceylon");
     }
     
-    private void testNativeModule(String dir, String... files) {
+    private ModuleWithArtifact testNativeModule(String dir, ModuleWithArtifact extraModule) {
+        return testNativeModule(dir, extraModule, "test.ceylon", "package.ceylon", "module.ceylon");
+    }
+    
+    private ModuleWithArtifact testNativeModule(String dir, ModuleWithArtifact extraModule, String... files) {
+        ModuleWithArtifact mainModule = null;
         boolean ok = false;
         try {
             String[] paths = new String[files.length];
@@ -65,7 +70,13 @@ public class NativeTests extends CompilerTests {
                 paths[i] = dir + "/" + files[i];
             }
             compile(paths);
-            run("com.redhat.ceylon.compiler.java.test.nativecode." + dir + ".test", new ModuleWithArtifact("com.redhat.ceylon.compiler.java.test.nativecode." + dir, "1.0"));
+            String main = "com.redhat.ceylon.compiler.java.test.nativecode." + dir + ".test";
+            mainModule = new ModuleWithArtifact("com.redhat.ceylon.compiler.java.test.nativecode." + dir, "1.0");
+            if (extraModule != null) {
+                run(main, mainModule, extraModule);
+            } else {
+                run(main, mainModule);
+            }
         } catch (RuntimeException ex) {
             assert(("ceylon.language.Exception \"" + dir + "-JVM\"").equals(ex.getMessage()));
             ok = true;
@@ -73,6 +84,7 @@ public class NativeTests extends CompilerTests {
         if (!ok) {
             Assert.fail("Test terminated incorrectly");
         }
+        return mainModule;
     }
     
     private void testNativeModuleErrors(String dir, CompilerError... expectedErrors) {
@@ -81,7 +93,7 @@ public class NativeTests extends CompilerTests {
     
     // Methods
     
-    @Test @Ignore("While we can't have header-less natives")
+    @Test
     public void testNativeMethodPrivate() {
         testNative("NativeMethodPrivate");
     }
@@ -99,6 +111,12 @@ public class NativeTests extends CompilerTests {
     @Test
     public void testNativeMethodHeaderImpl() {
         testNative("NativeMethodHeaderImpl");
+        testNative("NativeMethodHeaderImpl");
+    }
+    
+    @Test
+    public void testNativeMethodLocal() {
+        testNative("NativeMethodLocal");
     }
     
     @Test
@@ -125,7 +143,7 @@ public class NativeTests extends CompilerTests {
     
     // Attributes
     
-    @Test @Ignore("While we can't have header-less natives")
+    @Test
     public void testNativeAttributePrivate() {
         testNative("NativeAttributePrivate");
     }
@@ -158,6 +176,12 @@ public class NativeTests extends CompilerTests {
     @Test
     public void testNativeAttributeHeaderImpl() {
         testNative("NativeAttributeHeaderImpl");
+        testNative("NativeAttributeHeaderImpl");
+    }
+    
+    @Test
+    public void testNativeAttributeLocal() {
+        testNative("NativeAttributeLocal");
     }
     
     @Test
@@ -185,7 +209,7 @@ public class NativeTests extends CompilerTests {
     
     // Classes
     
-    @Test @Ignore("While we can't have header-less natives")
+    @Test
     public void testNativeClassPrivate() {
         testNative("NativeClassPrivate");
     }
@@ -208,6 +232,31 @@ public class NativeTests extends CompilerTests {
     @Test
     public void testNativeClassSatisfies() {
         testNative("NativeClassSatisfies");
+    }
+    
+    @Test
+    public void testNativeClassWithImpl() {
+        testNative("NativeClassWithImpl");
+    }
+    
+    @Test
+    public void testNativeClassSharedMembers() {
+        testNative("NativeClassSharedMembers");
+    }
+    
+    @Test
+    public void testNativeClassMembersWithImpl() {
+        testNative("ClassNativeMembersWithImpl");
+    }
+    
+    @Test
+    public void testClassNativeMembers() {
+        testNative("ClassNativeMembers");
+    }
+    
+    @Test
+    public void testNativeClassLocal() {
+        testNative("NativeClassLocal");
     }
     
     @Test
@@ -240,14 +289,48 @@ public class NativeTests extends CompilerTests {
                 new CompilerError(127, "native implementation must have the same return type as native header: 'test3' in 'NativeClassMismatch9' must have the type 'Anything'"),
                 new CompilerError(128, "member does not have the same number of parameters as native header: 'test4'"),
                 new CompilerError(129, "native member does not implement any header member: 'testX' in 'NativeClassMismatch9'"),
-                new CompilerError(132, "native header 'test5' of 'NativeClassMismatch9' has no native implementation"),
-                new CompilerError(134, "type of parameter 's' of 'test2' is different to type of corresponding parameter 'i' of native header 'test2': 'String' is not exactly 'Integer'"),
-                new CompilerError(135, "native implementation must have the same return type as native header: 'test3' in 'NativeClassMismatch9' must have the type 'Anything'"),
-                new CompilerError(136, "member does not have the same number of parameters as native header: 'test4'"),
-                new CompilerError(137, "native member does not implement any header member: 'testX' in 'NativeClassMismatch9'"),
-                new CompilerError(142, "no native implementation for backend: native 'NativeClassMismatch8js' is not implemented for one or more backends"),
-                new CompilerError(142, "no native implementation for backend: native 'test2' is not implemented for one or more backends")
+                new CompilerError(130, "non-native shared members not allowed in native implementations: 'testY' in 'NativeClassMismatch9'"),
+                new CompilerError(133, "native header 'test5' of 'NativeClassMismatch9' has no native implementation"),
+                new CompilerError(135, "type of parameter 's' of 'test2' is different to type of corresponding parameter 'i' of native header 'test2': 'String' is not exactly 'Integer'"),
+                new CompilerError(136, "native implementation must have the same return type as native header: 'test3' in 'NativeClassMismatch9' must have the type 'Anything'"),
+                new CompilerError(137, "member does not have the same number of parameters as native header: 'test4'"),
+                new CompilerError(138, "native member does not implement any header member: 'testX' in 'NativeClassMismatch9'"),
+                new CompilerError(139, "non-native shared members not allowed in native implementations: 'testY' in 'NativeClassMismatch9'"),
+                new CompilerError(144, "no native implementation for backend: native 'NativeClassMismatch8js' is not implemented for one or more backends"),
+                new CompilerError(144, "no native implementation for backend: native 'test2' is not implemented for one or more backends")
         );
+    }
+    
+    // Objects
+    
+    @Test
+    public void testNativeObjectPrivate() {
+        testNative("NativeObjectPrivate");
+    }
+    
+    @Test
+    public void testNativeObjectShared() {
+        testNative("NativeObjectShared");
+    }
+    
+    @Test
+    public void testNativeObjectWithImpl() {
+        testNative("NativeObjectWithImpl");
+    }
+    
+    @Test
+    public void testObjectNativeMembers() {
+        testNative("ObjectNativeMembers");
+    }
+    
+    @Test
+    public void testObjectNativeMembersWithImpl() {
+        testNative("ObjectNativeMembersWithImpl");
+    }
+    
+    @Test
+    public void testNativeObjectLocal() {
+        testNative("NativeObjectLocal");
     }
     
     // Modules
@@ -255,6 +338,12 @@ public class NativeTests extends CompilerTests {
     @Test
     public void testNativeModule() {
         testNativeModule("modok");
+    }
+    
+    @Test
+    public void testNativeModuleImport() {
+        ModuleWithArtifact sampleMod = testNativeModule("modsample");
+        testNativeModule("modimport", sampleMod);
     }
     
     @Test
@@ -276,9 +365,9 @@ public class NativeTests extends CompilerTests {
         testNativeModule("otherref");
     }
     
-    @Test
+    @Test @Ignore("see https://github.com/ceylon/ceylon-compiler/issues/2196")
     public void testNativeWithJava() {
-        testNativeModule("withjava", "NativeClass.java", "test.ceylon", "module.ceylon");
+        testNativeModule("withjava", null, "NativeClass.java", "test.ceylon", "module.ceylon");
     }
     
     @Test
@@ -303,9 +392,8 @@ public class NativeTests extends CompilerTests {
                 new CompilerError(22, "native declarations not of same type: 'nativeInvalidTypes'"),
                 new CompilerError(24, "native declarations not of same type: 'nativeInvalidTypes'"),
                 new CompilerError(27, "illegal native backend name: '\"foo\"' (must be either '\"jvm\"' or '\"js\"')"),
-                new CompilerError(29, "native declaration is not a class, method or attribute: 'NativeInvalidInterface1'"),
-                new CompilerError(31, "native declaration is not a class, method or attribute: 'NativeInvalidInterface2'"),
-                new CompilerError(33, "native declaration is not a class, method or attribute: 'nativeInvalidObject'")
+                new CompilerError(29, "native declaration is not a class, method, attribute or object: 'NativeInvalidInterface1'"),
+                new CompilerError(31, "native declaration is not a class, method, attribute or object: 'NativeInvalidInterface2'")
         );
     }
     
@@ -342,9 +430,15 @@ public class NativeTests extends CompilerTests {
         testNativeErrors("NativeMissing",
                 new CompilerError(20, "no native implementation for backend: native 'nativeMissingMethod' is not implemented for one or more backends"),
                 new CompilerError(21, "no native implementation for backend: native 'NativeMissingClass' is not implemented for one or more backends"),
-                new CompilerError(24, "no native implementation for backend: native 'nativeMissingMethod' is not implemented for one or more backends"),
-                new CompilerError(25, "no native implementation for backend: native 'NativeMissingClass' is not implemented for one or more backends"),
-                new CompilerError(28, "no native implementation for backend: native 'NativeMissingClass' is not implemented for one or more backends")
+                new CompilerError(27, "no native implementation for backend: native 'nativeMissingMethod' is not implemented for one or more backends"),
+                new CompilerError(28, "no native implementation for backend: native 'nativeMissingMethod2' is not implemented for one or more backends"),
+                new CompilerError(29, "no native implementation for backend: native 'NativeMissingClass' is not implemented for one or more backends"),
+                new CompilerError(32, "no native implementation for backend: native 'NativeMissingClass' is not implemented for one or more backends")
         );
+    }
+    
+    @Test
+    public void testNativeDelegate() {
+        testNative("NativeDelegate");
     }
 }

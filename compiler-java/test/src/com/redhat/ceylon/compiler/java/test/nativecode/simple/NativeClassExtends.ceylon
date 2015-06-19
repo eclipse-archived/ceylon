@@ -20,6 +20,7 @@
 
 abstract class NativeClassExtendsSuper() {
     shared formal void test(Integer i);
+    shared void test2(Integer i) {}
 }
 
 native class NativeClassExtends() extends NativeClassExtendsSuper() {
@@ -40,4 +41,5 @@ native("js") class NativeClassExtends() extends NativeClassExtendsSuper() {
 
 shared void testNativeClassExtends() {
     value x = NativeClassExtends().test(0);
+    value y = NativeClassExtends().test2(1);
 }

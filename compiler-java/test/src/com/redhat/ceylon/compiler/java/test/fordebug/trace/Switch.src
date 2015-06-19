@@ -1,0 +1,99 @@
+package com.redhat.ceylon.compiler.java.test.fordebug.trace;
+
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Method
+public final class swtch_ {
+    
+    private swtch_() {
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
+    public static void swtch() {
+        final .java.lang.String s = "xyz";
+        switch_0: switch (s) {
+        case "abc": 
+            {
+            }
+            break switch_0;
+        
+        case "xyz": 
+            {
+                .ceylon.language.print_.print(.ceylon.language.String.instance(s));
+            }
+            break switch_0;
+        
+        default: 
+            {
+            }
+        
+        }
+        final .ceylon.language.String s2 = .ceylon.language.String.instance("xyz");
+        {
+            .ceylon.language.String sel$0 = s2;
+            if (sel$0 != null && sel$0.toString().equals("abc")) {
+            } else if (sel$0 != null && sel$0.toString().equals("xyz")) {
+                .ceylon.language.print_.print(s2);
+            } else {
+                final .ceylon.language.String s2$1 = (.ceylon.language.String)sel$0;
+            }
+        }
+        final .ceylon.language.String s3 = .ceylon.language.String.instance("xyz");
+        {
+            .ceylon.language.String sel$2 = s3;
+            if (sel$2 == null) {
+            } else if (sel$2 != null && sel$2.toString().equals("abc")) {
+            } else if (sel$2 != null && sel$2.toString().equals("xyz")) {
+                .ceylon.language.print_.print(s3);
+            } else {
+                final .java.lang.String s3$3 = ((.ceylon.language.String)sel$2).toString();
+            }
+        }
+        final long i = 42L;
+        {
+            long sel$4 = i;
+            if (sel$4 == 2L) {
+            } else if (sel$4 == 42L) {
+                .ceylon.language.print_.print(.ceylon.language.Integer.instance(i + 1L));
+            } else {
+            }
+        }
+        final .ceylon.language.Integer i2 = .ceylon.language.Integer.instance(42L);
+        {
+            .ceylon.language.Integer sel$5 = i2;
+            if (sel$5 != null && sel$5.longValue() == 2L) {
+            } else if (sel$5 != null && sel$5.longValue() == 42L) {
+                .ceylon.language.print_.print(i2);
+            } else {
+                final .ceylon.language.Integer i2$6 = (.ceylon.language.Integer)sel$5;
+            }
+        }
+        final .ceylon.language.Integer i3 = .ceylon.language.Integer.instance(42L);
+        {
+            .ceylon.language.Integer sel$7 = i3;
+            if (sel$7 == null) {
+            } else if (sel$7 != null && sel$7.longValue() == 2L) {
+            } else if (sel$7 != null && sel$7.longValue() == 42L) {
+                .ceylon.language.print_.print(i3);
+            } else {
+                final long i3$8 = ((.ceylon.language.Integer)sel$7).longValue();
+            }
+        }
+        final .java.lang.Object is1 = .ceylon.language.Integer.instance(42L);
+        {
+            .java.lang.Object sel$9 = is1;
+            if (sel$9 instanceof .ceylon.language.String) {
+                final .java.lang.String is1$11 = ((.ceylon.language.String)sel$9).toString();
+            } else if (sel$9 instanceof .ceylon.language.Integer) {
+                final long is1$10 = ((.ceylon.language.Integer)sel$9).longValue();
+                .ceylon.language.print_.print(i3);
+            } else throw new .com.redhat.ceylon.compiler.java.language.EnumeratedTypeError("Supposedly exhaustive switch was not exhaustive");
+        }
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.fordebug.trace.swtch_.swtch();
+    }
+}

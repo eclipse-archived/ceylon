@@ -85,4 +85,12 @@ public class TraceTests extends DebuggerTests {
                 "trace/Bug2047"
                 );
     }
+    
+    @Test
+    public void testSwitch() throws Exception {
+        compileAndTrace(
+                "com.redhat.ceylon.compiler.java.test.fordebug.trace.swtch_",
+                "trace/Switch"
+                );
+    }
 }

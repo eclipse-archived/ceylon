@@ -111,6 +111,7 @@ public class Naming extends NamingBase implements LocalId {
     private static final String ANNO_POSTFIX = Suffix.$annotation$.toString();
     private static final String ANNOS_POSTFIX = Suffix.$annotations$.toString();
     private static final String DELEGATION_POSTFIX = Suffix.$delegation$.toString();
+    private static final String HEADER_POSTFIX = Suffix.$header$.toString();
 
     static enum DeclNameFlag {
         /** 
@@ -127,7 +128,9 @@ public class Naming extends NamingBase implements LocalId {
         /** The name of the annotation type of this thing */
         ANNOTATIONS,
         /** Quoted */
-        DELEGATION
+        DELEGATION,
+        /** For a native header */
+        NATIVEHEADER
     }
     
     /** Quote the given name by prefixing it with a dollar ($) */
@@ -465,13 +468,16 @@ public class Naming extends NamingBase implements LocalId {
                     && Decl.isLocalNotInitializer(klass)
                     && last) {
                     typeDeclarationBuilder.append(IMPL_POSTFIX);
+                } else if (flags.contains(DeclNameFlag.NATIVEHEADER)
+                        && decl.isNativeHeader() && last) {
+                    typeDeclarationBuilder.append(HEADER_POSTFIX);
                 } else if (flags.contains(DeclNameFlag.ANNOTATION)
                         && last) {
                     typeDeclarationBuilder.append(ANNO_POSTFIX);
                 } else if (flags.contains(DeclNameFlag.ANNOTATIONS)
                         && last) {
                     typeDeclarationBuilder.append(ANNOS_POSTFIX);
-                }else if (flags.contains(DeclNameFlag.DELEGATION)
+                } else if (flags.contains(DeclNameFlag.DELEGATION)
                         && last) {
                     typeDeclarationBuilder.append(DELEGATION_POSTFIX);
                 }
@@ -1147,6 +1153,14 @@ public class Naming extends NamingBase implements LocalId {
 
     static String quoteClassName(String name) {
         name = escapeClassName(name);
+        return JvmBackendUtil.isInitialLowerCase(name) ? name + "_" : name;
+    }
+    
+    static String quoteClassDefinitionName(String name, boolean isHeader) {
+        name = escapeClassName(name);
+        if (isHeader) {
+            name = suffixName(Suffix.$header$, name);
+        }
         return JvmBackendUtil.isInitialLowerCase(name) ? name + "_" : name;
     }
     

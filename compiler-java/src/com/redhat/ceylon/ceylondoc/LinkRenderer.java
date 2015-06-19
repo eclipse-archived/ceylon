@@ -56,6 +56,7 @@ import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Element;
 import com.redhat.ceylon.model.typechecker.model.Function;
 import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
+import com.redhat.ceylon.model.typechecker.model.Interface;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.NothingType;
 import com.redhat.ceylon.model.typechecker.model.Package;
@@ -402,6 +403,19 @@ public class LinkRenderer {
                 }
             }
         }
+        if( text.equals("interface") ) {
+            Interface interf = getCurrentInterface();
+            if( interf != null ) {
+                return processProducedType(interf.getType());
+            }
+        }
+        if( text.equals("class") ) {
+            Class clazz = getCurrentClass();
+            if( clazz != null ) {
+                return processProducedType(clazz.getType());
+            }
+        }
+        
         
         String declName;
         Scope currentScope;
@@ -1016,4 +1030,32 @@ public class LinkRenderer {
         return null;
     }
     
+    private Interface getCurrentInterface() {
+        Object o = scope;
+        while (o != null) {
+            if (o instanceof Interface) {
+                return (Interface) o;
+            } else if (o instanceof Declaration) {
+                o = ((Declaration) o).getContainer();
+            } else {
+                o = null;
+            }
+        }
+        return null;
+    }
+
+    private Class getCurrentClass() {
+        Object o = scope;
+        while (o != null) {
+            if (o instanceof Class) {
+                return (Class) o;
+            } else if (o instanceof Declaration) {
+                o = ((Declaration) o).getContainer();
+            } else {
+                o = null;
+            }
+        }
+        return null;
+    }
+
 }

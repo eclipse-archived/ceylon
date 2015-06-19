@@ -18,12 +18,12 @@
  * MA  02110-1301, USA.
  */
 
-abstract class NativeClassMismatchSuper() {}
+shared abstract class NativeClassMismatchSuper() {}
 
-interface NativeClassMismatchSuper1 {
+shared interface NativeClassMismatchSuper1 {
     shared formal void test1(Integer i);
 }
-interface NativeClassMismatchSuper2 {
+shared interface NativeClassMismatchSuper2 {
     shared formal void test2(Integer i);
 }
 
@@ -77,11 +77,11 @@ native("js") class NativeClassMismatch5() satisfies NativeClassMismatchSuper2 {
 }
 
 
-class NativeClassMismatch6() {}
+shared class NativeClassMismatch6() {}
 
-native class NativeClassMismatch6() {}
+native shared class NativeClassMismatch6() {}
 
-native("js") class NativeClassMismatch6() {}
+native("js") shared class NativeClassMismatch6() {}
 
 
 native class NativeClassMismatch7() satisfies NativeClassMismatchSuper1 {
@@ -93,21 +93,21 @@ native("jvm") class NativeClassMismatch7() satisfies NativeClassMismatchSuper1 {
 }
 
 
-native class NativeClassMismatch8jvm() satisfies NativeClassMismatchSuper1 {
+native shared class NativeClassMismatch8jvm() satisfies NativeClassMismatchSuper1 {
     native shared actual void test1(Integer i);
 }
 
-native("jvm") class NativeClassMismatch8jvm() satisfies NativeClassMismatchSuper1 {
+native("jvm") shared class NativeClassMismatch8jvm() satisfies NativeClassMismatchSuper1 {
     native("jvm") shared actual void test1(Integer i) {
         NativeClassMismatch8js().test2(i);
     }
 }
 
-native class NativeClassMismatch8js() satisfies NativeClassMismatchSuper2 {
+native shared class NativeClassMismatch8js() satisfies NativeClassMismatchSuper2 {
     native shared actual void test2(Integer i);
 }
 
-native("js") class NativeClassMismatch8js() satisfies NativeClassMismatchSuper2 {
+native("js") shared class NativeClassMismatch8js() satisfies NativeClassMismatchSuper2 {
     native("js") shared actual void test2(Integer i) {
         NativeClassMismatch8jvm().test1(i);
     }
@@ -127,6 +127,7 @@ native("jvm") class NativeClassMismatch9() {
     native("jvm") shared String test3(Integer i) { return ""; }
     native("jvm") shared void test4() {}
     native("jvm") shared void testX(Integer i) {}
+    shared void testY(Integer i) {}
 }
 
 native("js") class NativeClassMismatch9() {
@@ -135,6 +136,7 @@ native("js") class NativeClassMismatch9() {
     native("js") shared String test3(Integer i) { return ""; }
     native("js") shared void test4() {}
     native("js") shared void testX(Integer i) {}
+    shared void testY(Integer i) {}
 }
 
 void nativeClassMismatch8() {
