@@ -459,7 +459,11 @@ public class InvocationGenerator {
                         final String specialSpreadVar = gen.getNames().createTempVariable();
                         gen.out("(", specialSpreadVar, "=");
                         args.get(args.size()-1).visit(gen);
-                        gen.out(".sequence(),");
+                        if (TypeUtils.isSequential(args.get(args.size()-1).getTypeModel())) {
+                            gen.out(",");
+                        } else {
+                            gen.out(".sequence(),");
+                        }
                         if (pd.isDefaulted()) {
                             gen.out(gen.getClAlias(), "nn$(",
                                     specialSpreadVar, ".$_get(0))?", specialSpreadVar,
