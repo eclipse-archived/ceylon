@@ -708,6 +708,19 @@ public class TypeParserTests {
     }
     
     @Test
+    public void testTuple1To3Abbrev(){
+        Type type = new TypeParser(MockLoader.instance).decodeType("[a,b=,c=]", null, mockDefaultModule, mockPkgUnit);
+        Assert.assertNotNull(type);
+        TypeDeclaration declaration = type.getDeclaration();
+        Assert.assertNotNull(declaration);
+        Assert.assertTrue(declaration instanceof Class);
+        Assert.assertEquals("ceylon.language::Tuple", declaration.getQualifiedNameString());
+        Assert.assertEquals("[a, b=, c=]", type.asString());
+        Assert.assertEquals("ceylon.language::Tuple<a|b|c,a,ceylon.language::Empty|ceylon.language::Tuple<b|c,b,ceylon.language::Empty|ceylon.language::Tuple<c,c,ceylon.language::Empty>>>", printType(type));
+        Assert.assertNull(type.getQualifyingType());
+    }
+    
+    @Test
     public void testHomoTuple1(){
         Type type = new TypeParser(MockLoader.instance).decodeType("a[1]", null, mockDefaultModule, mockPkgUnit);
         Assert.assertNotNull(type);
@@ -783,6 +796,15 @@ public class TypeParserTests {
         Assert.assertTrue(declaration instanceof Interface);
         Assert.assertEquals("ceylon.language::Callable", declaration.getQualifiedNameString());
         Assert.assertEquals("ceylon.language::Callable<a,ceylon.language::Tuple<b|pkg::u,b,ceylon.language::Sequential<pkg::u>>>", printType(type));
+        Assert.assertNull(type.getQualifyingType());
+        
+        type = new TypeParser(MockLoader.instance).decodeType("a(b=,pkg::u*)", null, mockPkgModule, mockPkgUnit);
+        Assert.assertNotNull(type);
+        declaration = type.getDeclaration();
+        Assert.assertNotNull(declaration);
+        Assert.assertTrue(declaration instanceof Interface);
+        Assert.assertEquals("ceylon.language::Callable", declaration.getQualifiedNameString());
+        Assert.assertEquals("ceylon.language::Callable<a,ceylon.language::Empty|ceylon.language::Tuple<b|pkg::u,b,ceylon.language::Sequential<pkg::u>>>", printType(type));
         Assert.assertNull(type.getQualifyingType());
     }
     
