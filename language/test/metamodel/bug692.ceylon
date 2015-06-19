@@ -3,13 +3,13 @@ import ceylon.language.meta.model {...}
 
 class Bug692 {
     shared new () {}
-    shared new NoArg() {}
-    shared new OneArg(String s) {}
+    shared new noArg() {}
+    shared new oneArg(String s) {}
 }
 
 @test
 shared void bug692() {
-    Constructor<Bug692,[String]> constructor = `Bug692.OneArg`;
+    Constructor<Bug692,[String]> constructor = `Bug692.oneArg`;
     
     print(type(constructor));
     // and

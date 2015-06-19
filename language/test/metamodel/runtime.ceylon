@@ -1659,147 +1659,147 @@ shared void checkConstructors2() {
     `ClassWithDefaultConstructor`("");
     `ClassWithDefaultConstructor`.apply("");
     `ClassWithDefaultConstructor`.namedApply{"s"-> ""};
-    assert(exists cwndc = `ClassWithNonDefaultConstructor`.getConstructor<[String]>("New"));
+    assert(exists cwndc = `ClassWithNonDefaultConstructor`.getConstructor<[String]>("nnew"));
     cwndc("");
     cwndc.apply("");
     cwndc.namedApply{"s"-> ""};
-    assert(exists uc = `UninstantiableClass`.getConstructor<[String]>("New"));
+    assert(exists uc = `UninstantiableClass`.getConstructor<[String]>("nnew"));
     uc("");
     uc.apply("");
     uc.namedApply{"s"-> ""};
     
-    `ClassConstructorsOfEveryArity.Fixed0`();
-    `ClassConstructorsOfEveryArity.Fixed1`("1");
-    `ClassConstructorsOfEveryArity.Fixed2`("1", "2");
-    `ClassConstructorsOfEveryArity.Fixed3`("1", "2", "3");
-    `ClassConstructorsOfEveryArity.Fixed4`("1", "2", "3", "4");
-    `ClassConstructorsOfEveryArity.Fixed5`("1", "2", "3", "4", "5");
+    `ClassConstructorsOfEveryArity.fixed0`();
+    `ClassConstructorsOfEveryArity.fixed1`("1");
+    `ClassConstructorsOfEveryArity.fixed2`("1", "2");
+    `ClassConstructorsOfEveryArity.fixed3`("1", "2", "3");
+    `ClassConstructorsOfEveryArity.fixed4`("1", "2", "3", "4");
+    `ClassConstructorsOfEveryArity.fixed5`("1", "2", "3", "4", "5");
     
-    `ClassConstructorsOfEveryArity.Star1`();
-    `ClassConstructorsOfEveryArity.Star1`("1");
-    `ClassConstructorsOfEveryArity.Star1`("1", "2");
+    `ClassConstructorsOfEveryArity.star1`();
+    `ClassConstructorsOfEveryArity.star1`("1");
+    `ClassConstructorsOfEveryArity.star1`("1", "2");
     
-    `ClassConstructorsOfEveryArity.Star2`("1");
-    `ClassConstructorsOfEveryArity.Star2`("1", "2");
-    `ClassConstructorsOfEveryArity.Star2`("1", "2", "3");
+    `ClassConstructorsOfEveryArity.star2`("1");
+    `ClassConstructorsOfEveryArity.star2`("1", "2");
+    `ClassConstructorsOfEveryArity.star2`("1", "2", "3");
     
-    `ClassConstructorsOfEveryArity.Star3`("1", "2");
-    `ClassConstructorsOfEveryArity.Star3`("1", "2", "3");
-    `ClassConstructorsOfEveryArity.Star3`("1", "2", "3", "4");
+    `ClassConstructorsOfEveryArity.star3`("1", "2");
+    `ClassConstructorsOfEveryArity.star3`("1", "2", "3");
+    `ClassConstructorsOfEveryArity.star3`("1", "2", "3", "4");
     
-    `ClassConstructorsOfEveryArity.Star4`("1", "2", "3");
-    `ClassConstructorsOfEveryArity.Star4`("1", "2", "3", "4");
-    `ClassConstructorsOfEveryArity.Star4`("1", "2", "3", "4", "5");
+    `ClassConstructorsOfEveryArity.star4`("1", "2", "3");
+    `ClassConstructorsOfEveryArity.star4`("1", "2", "3", "4");
+    `ClassConstructorsOfEveryArity.star4`("1", "2", "3", "4", "5");
     
-    `ClassConstructorsOfEveryArity.Star5`("1", "2", "3", "4");
-    `ClassConstructorsOfEveryArity.Star5`("1", "2", "3", "4", "5");
-    `ClassConstructorsOfEveryArity.Star5`("1", "2", "3", "4", "5", "6");
+    `ClassConstructorsOfEveryArity.star5`("1", "2", "3", "4");
+    `ClassConstructorsOfEveryArity.star5`("1", "2", "3", "4", "5");
+    `ClassConstructorsOfEveryArity.star5`("1", "2", "3", "4", "5", "6");
     
-    `ClassConstructorsOfEveryArity.Plus1`("1");
-    `ClassConstructorsOfEveryArity.Plus1`("1", "2");
+    `ClassConstructorsOfEveryArity.plus1`("1");
+    `ClassConstructorsOfEveryArity.plus1`("1", "2");
     
-    `ClassConstructorsOfEveryArity.Plus2`("1", "2");
-    `ClassConstructorsOfEveryArity.Plus2`("1", "2", "3");
+    `ClassConstructorsOfEveryArity.plus2`("1", "2");
+    `ClassConstructorsOfEveryArity.plus2`("1", "2", "3");
     
-    `ClassConstructorsOfEveryArity.Plus3`("1", "2", "3");
-    `ClassConstructorsOfEveryArity.Plus3`("1", "2", "3", "4");
+    `ClassConstructorsOfEveryArity.plus3`("1", "2", "3");
+    `ClassConstructorsOfEveryArity.plus3`("1", "2", "3", "4");
     
-    `ClassConstructorsOfEveryArity.Plus4`("1", "2", "3", "4");
-    `ClassConstructorsOfEveryArity.Plus4`("1", "2", "3", "4", "5");
+    `ClassConstructorsOfEveryArity.plus4`("1", "2", "3", "4");
+    `ClassConstructorsOfEveryArity.plus4`("1", "2", "3", "4", "5");
     
-    `ClassConstructorsOfEveryArity.Plus5`("1", "2", "3", "4", "5");
-    `ClassConstructorsOfEveryArity.Plus5`("1", "2", "3", "4", "5", "6");
+    `ClassConstructorsOfEveryArity.plus5`("1", "2", "3", "4", "5");
+    `ClassConstructorsOfEveryArity.plus5`("1", "2", "3", "4", "5", "6");
     
     // apply
-    `ClassConstructorsOfEveryArity.Fixed0`.apply();
-    `ClassConstructorsOfEveryArity.Fixed1`.apply("1");
-    `ClassConstructorsOfEveryArity.Fixed2`.apply("1", "2");
-    `ClassConstructorsOfEveryArity.Fixed3`.apply("1", "2", "3");
-    `ClassConstructorsOfEveryArity.Fixed4`.apply("1", "2", "3", "4");
-    `ClassConstructorsOfEveryArity.Fixed5`.apply("1", "2", "3", "4", "5");
+    `ClassConstructorsOfEveryArity.fixed0`.apply();
+    `ClassConstructorsOfEveryArity.fixed1`.apply("1");
+    `ClassConstructorsOfEveryArity.fixed2`.apply("1", "2");
+    `ClassConstructorsOfEveryArity.fixed3`.apply("1", "2", "3");
+    `ClassConstructorsOfEveryArity.fixed4`.apply("1", "2", "3", "4");
+    `ClassConstructorsOfEveryArity.fixed5`.apply("1", "2", "3", "4", "5");
     
     // TODO # 599 `ClassConstructorsOfEveryArity.Star1`.apply();
-    `ClassConstructorsOfEveryArity.Star1`.apply("1");
-    `ClassConstructorsOfEveryArity.Star1`.apply("1", "2");
+    `ClassConstructorsOfEveryArity.star1`.apply("1");
+    `ClassConstructorsOfEveryArity.star1`.apply("1", "2");
     
     // TODO # 599 `ClassConstructorsOfEveryArity.Star2`.apply("1");
-    `ClassConstructorsOfEveryArity.Star2`.apply("1", "2");
-    `ClassConstructorsOfEveryArity.Star2`.apply("1", "2", "3");
+    `ClassConstructorsOfEveryArity.star2`.apply("1", "2");
+    `ClassConstructorsOfEveryArity.star2`.apply("1", "2", "3");
     
     // TODO # 599 `ClassConstructorsOfEveryArity.Star3`.apply("1", "2");
-    `ClassConstructorsOfEveryArity.Star3`.apply("1", "2", "3");
-    `ClassConstructorsOfEveryArity.Star3`.apply("1", "2", "3", "4");
+    `ClassConstructorsOfEveryArity.star3`.apply("1", "2", "3");
+    `ClassConstructorsOfEveryArity.star3`.apply("1", "2", "3", "4");
     
     // TODO # 599 `ClassConstructorsOfEveryArity.Star4`.apply("1", "2", "3");
-    `ClassConstructorsOfEveryArity.Star4`.apply("1", "2", "3", "4");
-    `ClassConstructorsOfEveryArity.Star4`.apply("1", "2", "3", "4", "5");
+    `ClassConstructorsOfEveryArity.star4`.apply("1", "2", "3", "4");
+    `ClassConstructorsOfEveryArity.star4`.apply("1", "2", "3", "4", "5");
     
     // TODO # 599 `ClassConstructorsOfEveryArity.Star5`.apply("1", "2", "3", "4");
-    `ClassConstructorsOfEveryArity.Star5`.apply("1", "2", "3", "4", "5");
-    `ClassConstructorsOfEveryArity.Star5`.apply("1", "2", "3", "4", "5", "6");
+    `ClassConstructorsOfEveryArity.star5`.apply("1", "2", "3", "4", "5");
+    `ClassConstructorsOfEveryArity.star5`.apply("1", "2", "3", "4", "5", "6");
     
-    `ClassConstructorsOfEveryArity.Plus1`.apply("1");
-    `ClassConstructorsOfEveryArity.Plus1`.apply("1", "2");
+    `ClassConstructorsOfEveryArity.plus1`.apply("1");
+    `ClassConstructorsOfEveryArity.plus1`.apply("1", "2");
     
-    `ClassConstructorsOfEveryArity.Plus2`.apply("1", "2");
-    `ClassConstructorsOfEveryArity.Plus2`.apply("1", "2", "3");
+    `ClassConstructorsOfEveryArity.plus2`.apply("1", "2");
+    `ClassConstructorsOfEveryArity.plus2`.apply("1", "2", "3");
     
-    `ClassConstructorsOfEveryArity.Plus3`.apply("1", "2", "3");
-    `ClassConstructorsOfEveryArity.Plus3`.apply("1", "2", "3", "4");
+    `ClassConstructorsOfEveryArity.plus3`.apply("1", "2", "3");
+    `ClassConstructorsOfEveryArity.plus3`.apply("1", "2", "3", "4");
     
-    `ClassConstructorsOfEveryArity.Plus4`.apply("1", "2", "3", "4");
-    `ClassConstructorsOfEveryArity.Plus4`.apply("1", "2", "3", "4", "5");
+    `ClassConstructorsOfEveryArity.plus4`.apply("1", "2", "3", "4");
+    `ClassConstructorsOfEveryArity.plus4`.apply("1", "2", "3", "4", "5");
     
-    `ClassConstructorsOfEveryArity.Plus5`.apply("1", "2", "3", "4", "5");
-    `ClassConstructorsOfEveryArity.Plus5`.apply("1", "2", "3", "4", "5", "6");
+    `ClassConstructorsOfEveryArity.plus5`.apply("1", "2", "3", "4", "5");
+    `ClassConstructorsOfEveryArity.plus5`.apply("1", "2", "3", "4", "5", "6");
     
     // namedApply
-    `ClassConstructorsOfEveryArity.Fixed0`.namedApply({});
-    `ClassConstructorsOfEveryArity.Fixed1`.namedApply{"s1"->"1"};
-    `ClassConstructorsOfEveryArity.Fixed2`.namedApply{"s1"->"1", "s2"->"2"};
-    `ClassConstructorsOfEveryArity.Fixed3`.namedApply{"s1"->"1", "s2"->"2", "s3"->"3"};
-    `ClassConstructorsOfEveryArity.Fixed4`.namedApply{"s1"->"1", "s2"->"2", "s3"->"3", "s4"->"4"};
-    `ClassConstructorsOfEveryArity.Fixed5`.namedApply{"s1"->"1", "s2"->"2", "s3"->"3", "s4"->"4", "s5"->"5"};
+    `ClassConstructorsOfEveryArity.fixed0`.namedApply({});
+    `ClassConstructorsOfEveryArity.fixed1`.namedApply{"s1"->"1"};
+    `ClassConstructorsOfEveryArity.fixed2`.namedApply{"s1"->"1", "s2"->"2"};
+    `ClassConstructorsOfEveryArity.fixed3`.namedApply{"s1"->"1", "s2"->"2", "s3"->"3"};
+    `ClassConstructorsOfEveryArity.fixed4`.namedApply{"s1"->"1", "s2"->"2", "s3"->"3", "s4"->"4"};
+    `ClassConstructorsOfEveryArity.fixed5`.namedApply{"s1"->"1", "s2"->"2", "s3"->"3", "s4"->"4", "s5"->"5"};
     
-    `ClassConstructorsOfEveryArity.Star1`.namedApply{"s1"->{}};
-    `ClassConstructorsOfEveryArity.Star1`.namedApply{"s1"->["1"]};
-    `ClassConstructorsOfEveryArity.Star1`.namedApply{"s1"->["1", "2"]};
+    `ClassConstructorsOfEveryArity.star1`.namedApply{"s1"->{}};
+    `ClassConstructorsOfEveryArity.star1`.namedApply{"s1"->["1"]};
+    `ClassConstructorsOfEveryArity.star1`.namedApply{"s1"->["1", "2"]};
     
-    `ClassConstructorsOfEveryArity.Star2`.namedApply{"s1"->"1", "s2"->{}};
-    `ClassConstructorsOfEveryArity.Star2`.namedApply{"s1"->"1", "s2"->["1"]};
-    `ClassConstructorsOfEveryArity.Star2`.namedApply{"s1"->"1", "s2"->["1", "2"]};
+    `ClassConstructorsOfEveryArity.star2`.namedApply{"s1"->"1", "s2"->{}};
+    `ClassConstructorsOfEveryArity.star2`.namedApply{"s1"->"1", "s2"->["1"]};
+    `ClassConstructorsOfEveryArity.star2`.namedApply{"s1"->"1", "s2"->["1", "2"]};
     
-    `ClassConstructorsOfEveryArity.Star3`.namedApply{"s1"->"1", "s2"->"2", "s3"->{}};
-    `ClassConstructorsOfEveryArity.Star3`.namedApply{"s1"->"1", "s2"->"2", "s3"->["1"]};
-    `ClassConstructorsOfEveryArity.Star3`.namedApply{"s1"->"1", "s2"->"2", "s3"->["1", "2"]};
+    `ClassConstructorsOfEveryArity.star3`.namedApply{"s1"->"1", "s2"->"2", "s3"->{}};
+    `ClassConstructorsOfEveryArity.star3`.namedApply{"s1"->"1", "s2"->"2", "s3"->["1"]};
+    `ClassConstructorsOfEveryArity.star3`.namedApply{"s1"->"1", "s2"->"2", "s3"->["1", "2"]};
     
-    `ClassConstructorsOfEveryArity.Star4`.namedApply{"s1"->"1", "s2"->"2", "s3"-> "3", "s4"->{}};
-    `ClassConstructorsOfEveryArity.Star4`.namedApply{"s1"->"1", "s2"->"2", "s3"-> "3", "s4"->["1"]};
-    `ClassConstructorsOfEveryArity.Star4`.namedApply{"s1"->"1", "s2"->"2", "s3"-> "3", "s4"->["1", "2"]};
+    `ClassConstructorsOfEveryArity.star4`.namedApply{"s1"->"1", "s2"->"2", "s3"-> "3", "s4"->{}};
+    `ClassConstructorsOfEveryArity.star4`.namedApply{"s1"->"1", "s2"->"2", "s3"-> "3", "s4"->["1"]};
+    `ClassConstructorsOfEveryArity.star4`.namedApply{"s1"->"1", "s2"->"2", "s3"-> "3", "s4"->["1", "2"]};
     
-    `ClassConstructorsOfEveryArity.Star5`.namedApply{"s1"->"1", "s2"->"2", "s3"-> "3", "s4"->"4", "s5"->{}};
-    `ClassConstructorsOfEveryArity.Star5`.namedApply{"s1"->"1", "s2"->"2", "s3"-> "3", "s4"->"4", "s5"->["1"]};
-    `ClassConstructorsOfEveryArity.Star5`.namedApply{"s1"->"1", "s2"->"2", "s3"-> "3", "s4"->"4", "s5"->["1", "2"]};
+    `ClassConstructorsOfEveryArity.star5`.namedApply{"s1"->"1", "s2"->"2", "s3"-> "3", "s4"->"4", "s5"->{}};
+    `ClassConstructorsOfEveryArity.star5`.namedApply{"s1"->"1", "s2"->"2", "s3"-> "3", "s4"->"4", "s5"->["1"]};
+    `ClassConstructorsOfEveryArity.star5`.namedApply{"s1"->"1", "s2"->"2", "s3"-> "3", "s4"->"4", "s5"->["1", "2"]};
     
-    //`ClassConstructorsOfEveryArity.Plus1`.namedApply("s1"->{});
-    `ClassConstructorsOfEveryArity.Plus1`.namedApply{"s1"->["1"]};
-    `ClassConstructorsOfEveryArity.Plus1`.namedApply{"s1"->["1", "2"]};
+    //`ClassConstructorsOfEveryArity.plus1`.namedApply("s1"->{});
+    `ClassConstructorsOfEveryArity.plus1`.namedApply{"s1"->["1"]};
+    `ClassConstructorsOfEveryArity.plus1`.namedApply{"s1"->["1", "2"]};
     
-    //`ClassConstructorsOfEveryArity.Plus2`.namedApply{"s1"->"1", "s2"->{}};
-    `ClassConstructorsOfEveryArity.Plus2`.namedApply{"s1"->"1", "s2"->["1"]};
-    `ClassConstructorsOfEveryArity.Plus2`.namedApply{"s1"->"1", "s2"->["1", "2"]};
+    //`ClassConstructorsOfEveryArity.plus2`.namedApply{"s1"->"1", "s2"->{}};
+    `ClassConstructorsOfEveryArity.plus2`.namedApply{"s1"->"1", "s2"->["1"]};
+    `ClassConstructorsOfEveryArity.plus2`.namedApply{"s1"->"1", "s2"->["1", "2"]};
     
-    //`ClassConstructorsOfEveryArity.Plus3`.namedApply{"s1"->"1", "s2"->"2", "s3"->{}};
-    `ClassConstructorsOfEveryArity.Plus3`.namedApply{"s1"->"1", "s2"->"2", "s3"->["1"]};
-    `ClassConstructorsOfEveryArity.Plus3`.namedApply{"s1"->"1", "s2"->"2", "s3"->["1", "2"]};
+    //`ClassConstructorsOfEveryArity.plus3`.namedApply{"s1"->"1", "s2"->"2", "s3"->{}};
+    `ClassConstructorsOfEveryArity.plus3`.namedApply{"s1"->"1", "s2"->"2", "s3"->["1"]};
+    `ClassConstructorsOfEveryArity.plus3`.namedApply{"s1"->"1", "s2"->"2", "s3"->["1", "2"]};
     
-    //`ClassConstructorsOfEveryArity.Plus4`.namedApply{"s1"->"1", "s2"->"2", "s3"-> "3", "s4"->{}};
-    `ClassConstructorsOfEveryArity.Plus4`.namedApply{"s1"->"1", "s2"->"2", "s3"-> "3", "s4"->["1"]};
-    `ClassConstructorsOfEveryArity.Plus4`.namedApply{"s1"->"1", "s2"->"2", "s3"-> "3", "s4"->["1", "2"]};
+    //`ClassConstructorsOfEveryArity.plus4`.namedApply{"s1"->"1", "s2"->"2", "s3"-> "3", "s4"->{}};
+    `ClassConstructorsOfEveryArity.plus4`.namedApply{"s1"->"1", "s2"->"2", "s3"-> "3", "s4"->["1"]};
+    `ClassConstructorsOfEveryArity.plus4`.namedApply{"s1"->"1", "s2"->"2", "s3"-> "3", "s4"->["1", "2"]};
     
-    //`ClassConstructorsOfEveryArity.Plus5`.namedApply{"s1"->"1", "s2"->"2", "s3"-> "3", "s4"->"4", "s5"->{}};
-    `ClassConstructorsOfEveryArity.Plus5`.namedApply{"s1"->"1", "s2"->"2", "s3"-> "3", "s4"->"4", "s5"->["1"]};
-    `ClassConstructorsOfEveryArity.Plus5`.namedApply{"s1"->"1", "s2"->"2", "s3"-> "3", "s4"->"4", "s5"->["1", "2"]};
+    //`ClassConstructorsOfEveryArity.plus5`.namedApply{"s1"->"1", "s2"->"2", "s3"-> "3", "s4"->"4", "s5"->{}};
+    `ClassConstructorsOfEveryArity.plus5`.namedApply{"s1"->"1", "s2"->"2", "s3"-> "3", "s4"->"4", "s5"->["1"]};
+    `ClassConstructorsOfEveryArity.plus5`.namedApply{"s1"->"1", "s2"->"2", "s3"-> "3", "s4"->"4", "s5"->["1", "2"]};
 }
 
 @test

@@ -4,14 +4,14 @@ import ceylon.language.meta{
 }
 
 
-see(`new Constructor`) 
+see(`new constructor`) 
 class CompilerBug2116Class {
-    shared new Constructor() {}
+    shared new constructor() {}
 }
 
 @test
 shared void compilerBug2116() {
-    assert(exists classexpect = `class CompilerBug2116Class`.getConstructorDeclaration("Constructor"),
+    assert(exists classexpect = `class CompilerBug2116Class`.getConstructorDeclaration("constructor"),
         exists classsee = annotations(`SeeAnnotation`, `class CompilerBug2116Class`).first,
         exists classfirst = classsee.programElements.first,
         classexpect==classfirst);

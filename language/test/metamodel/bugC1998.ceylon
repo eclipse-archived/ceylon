@@ -21,8 +21,8 @@ class ClassContainer1998(){
             }
             shared class Klass() {}
             shared class Ctor {
-                shared new Ctor() {}
-                shared new Other() {}
+                shared new ctor() {}
+                shared new other() {}
             }
         }
         shared void test(ClassContainer1998 other){
@@ -42,8 +42,8 @@ class ClassContainer1998(){
         shared Integer method() => 2;
         shared class Klass() {}
         shared class Ctor {
-            shared new Ctor() {}
-            shared new Other() {}
+            shared new ctor() {}
+            shared new other() {}
         }
     }
     shared void test(ClassContainer1998 other){
@@ -70,8 +70,8 @@ object toplevel1998 {
             shared Integer method() => 2;
             shared class Klass() {}
             shared class Ctor {
-                shared new Ctor() {}
-                shared new Other() {}
+                shared new ctor() {}
+                shared new other() {}
             }
         }
         shared void test(Member other){

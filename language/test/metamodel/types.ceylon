@@ -435,25 +435,25 @@ shared class Constructors<T> {
     shared new (T? t=null){
         arg = t;
     }
-    shared new Other(Integer i){
+    shared new otherCtor(Integer i){
         arg = i;
     }
-    new NonShared(Boolean b){
+    new nonSharedCtor(Boolean b){
         arg = b;
     }
     shared class Member {
         shared new (T? t=null) {}
-        shared new Other(Integer i) {}
-        new NonShared(Boolean b) {}
-        shared MemberClassConstructor<Constructors<T>, Member, [Boolean]> nonShared => `NonShared`;
-        shared ConstructorDeclaration nonSharedDecl => `new NonShared`;
+        shared new otherCtor(Integer i) {}
+        new nonSharedCtor(Boolean b) {}
+        shared MemberClassConstructor<Constructors<T>, Member, [Boolean]> nonShared => `nonSharedCtor`;
+        shared ConstructorDeclaration nonSharedDecl => `new nonSharedCtor`;
     }
     class NonSharedMember {
         shared new (T? t=null) {}
-        shared new Other(Integer i) {}
-        new NonShared(Boolean b) {}
-        shared MemberClassConstructor<Constructors<T>, NonSharedMember, [Boolean]> nonShared => `NonShared`;
-        shared ConstructorDeclaration nonSharedDecl => `new NonShared`;
+        shared new otherCtor(Integer i) {}
+        new nonSharedCtor(Boolean b) {}
+        shared MemberClassConstructor<Constructors<T>, NonSharedMember, [Boolean]> nonShared => `nonSharedCtor`;
+        shared ConstructorDeclaration nonSharedDecl => `new nonSharedCtor`;
     }
     shared void test() {
         testDeclarations();
@@ -466,17 +466,17 @@ shared class Constructors<T> {
         value member = Member();
         print(type(`Member`.getConstructor<[T?]|[]>("")));
         assert(is MemberClassConstructor<Constructors<T>,Member,[T?]|[]> memberMember = `Member`.getConstructor<[T?]|[]>(""));
-        value memberOther = `Member.Other`;
+        value memberOther = `Member.otherCtor`;
         value memberNonShared = member.nonShared;
         
         value nonSharedMember = NonSharedMember();
         assert(exists nonSharedMemberMember = `NonSharedMember`.getConstructor<[T?]|[]>(""));
-        value nonSharedMemberOther = `NonSharedMember.Other`;
+        value nonSharedMemberOther = `NonSharedMember.otherCtor`;
         value nonSharedMemberNonShared = nonSharedMember.nonShared;
         
         // declaration
         assert(`new Member` == memberMember.declaration);
-        assert(`new Member.Other` == memberOther.declaration);
+        assert(`new Member.otherCtor` == memberOther.declaration);
         assert(member.nonSharedDecl == memberNonShared.declaration);
         //containers
         //assert(type(member) == memberMember.container);
@@ -525,13 +525,13 @@ shared class Constructors<T> {
     }
     shared void testModels() {
         assert(exists def = `Constructors<T>`.getConstructor<[T?]|[]>(""));
-        value other = `Other`;
-        value nonShared = `NonShared`;
+        value other = `otherCtor`;
+        value nonShared = `nonSharedCtor`;
         
         // declaration
         assert(`new Constructors` == def.declaration);
-        assert(`new Other` == other.declaration);
-        assert(`new NonShared` == nonShared.declaration);
+        assert(`new otherCtor` == other.declaration);
+        assert(`new nonSharedCtor` == nonShared.declaration);
         //container
         //assert(type(this) == def.container);
         //assert(type(this) == other.container);
@@ -612,20 +612,20 @@ shared class Constructors<T> {
     
     shared void testDeclarations() {
         value def = `new Constructors`;
-        value other = `new Other`;
-        value nonShared = `new NonShared`;
+        value other = `new otherCtor`;
+        value nonShared = `new nonSharedCtor`;
         
         assert(def.defaultConstructor);
         assert(!other.defaultConstructor);
         assert(!nonShared.defaultConstructor);
         
         assert("" == def.name);
-        assert("Other" == other.name);
-        assert("NonShared" == nonShared.name);
+        assert("otherCtor" == other.name);
+        assert("nonSharedCtor" == nonShared.name);
         
         assert("metamodel::Constructors" == def.qualifiedName);
-        assert("metamodel::Constructors.Other" == other.qualifiedName);
-        assert("metamodel::Constructors.NonShared" == nonShared.qualifiedName);
+        assert("metamodel::Constructors.otherCtor" == other.qualifiedName);
+        assert("metamodel::Constructors.nonSharedCtor" == nonShared.qualifiedName);
         
         assert(!def.annotation);
         assert(!other.annotation);
@@ -674,9 +674,9 @@ shared class Constructors<T> {
         
         assert(exists c1 = cls.getConstructorDeclaration(""),
             def == c1);
-        assert(exists c2 = cls.getConstructorDeclaration("Other"),
+        assert(exists c2 = cls.getConstructorDeclaration("otherCtor"),
             other == c2);
-        assert(exists c3 = cls.getConstructorDeclaration("NonShared"),
+        assert(exists c3 = cls.getConstructorDeclaration("nonSharedCtor"),
             nonShared == c3);
         
         assert(exists c4 = cls.defaultConstructorDeclaration,
@@ -697,21 +697,21 @@ shared interface InterfaceConstructors<T> {
         shared new (T? t=null) {
             
         }
-        new NonShared(T? t=null) {
+        new nonSharedCtor(T? t=null) {
             
         }
-        shared MemberClassConstructor<InterfaceConstructors<T>, Member, []|[T?]> nonShared => `NonShared`; 
-        shared ConstructorDeclaration nonSharedDecl => `new NonShared`;
+        shared MemberClassConstructor<InterfaceConstructors<T>, Member, []|[T?]> nonShared => `nonSharedCtor`; 
+        shared ConstructorDeclaration nonSharedDecl => `new nonSharedCtor`;
     }
     class NonSharedMember {
         shared new (T? t=null) {
             
         }
-        new NonShared(T? t=null) {
+        new nonSharedCtor(T? t=null) {
             
         }
-        shared MemberClassConstructor<InterfaceConstructors<T>, NonSharedMember, []|[T?]> nonShared => `NonShared`; 
-        shared ConstructorDeclaration nonSharedDecl => `new NonShared`;
+        shared MemberClassConstructor<InterfaceConstructors<T>, NonSharedMember, []|[T?]> nonShared => `nonSharedCtor`; 
+        shared ConstructorDeclaration nonSharedDecl => `new nonSharedCtor`;
     }
     shared void test() {
         assert(is T tt = "");
@@ -745,30 +745,30 @@ class ClassWithDefaultConstructor {
     }
 }
 class ClassWithNonDefaultConstructor {
-    shared new New(String s) {
+    shared new nnew(String s) {
     }
 }
 class UninstantiableClass {
-    shared new New(String s) {
+    shared new nnew(String s) {
     }
 }
 class ClassConstructorsOfEveryArity {
-    shared new Fixed0() {}
-    shared new Fixed1(String s1) {}
-    shared new Fixed2(String s1, String s2) {}
-    shared new Fixed3(String s1, String s2, String s3) {}
-    shared new Fixed4(String s1, String s2, String s3, String s4) {}
-    shared new Fixed5(String s1, String s2, String s3, String s4, String s5) {}
+    shared new fixed0() {}
+    shared new fixed1(String s1) {}
+    shared new fixed2(String s1, String s2) {}
+    shared new fixed3(String s1, String s2, String s3) {}
+    shared new fixed4(String s1, String s2, String s3, String s4) {}
+    shared new fixed5(String s1, String s2, String s3, String s4, String s5) {}
     
-    shared new Star1(String* s1) {}
-    shared new Star2(String s1, String* s2) {}
-    shared new Star3(String s1, String s2, String* s3) {}
-    shared new Star4(String s1, String s2, String s3, String* s4) {}
-    shared new Star5(String s1, String s2, String s3, String s4, String* s5) {}
+    shared new star1(String* s1) {}
+    shared new star2(String s1, String* s2) {}
+    shared new star3(String s1, String s2, String* s3) {}
+    shared new star4(String s1, String s2, String s3, String* s4) {}
+    shared new star5(String s1, String s2, String s3, String s4, String* s5) {}
     
-    shared new Plus1(String+ s1) {}
-    shared new Plus2(String s1, String+ s2) {}
-    shared new Plus3(String s1, String s2, String+ s3) {}
-    shared new Plus4(String s1, String s2, String s3, String+ s4) {}
-    shared new Plus5(String s1, String s2, String s3, String s4, String+ s5) {}
+    shared new plus1(String+ s1) {}
+    shared new plus2(String s1, String+ s2) {}
+    shared new plus3(String s1, String s2, String+ s3) {}
+    shared new plus4(String s1, String s2, String s3, String+ s4) {}
+    shared new plus5(String s1, String s2, String s3, String s4, String+ s5) {}
 }

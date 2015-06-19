@@ -2,8 +2,8 @@ import ceylon.language.meta.model {...}
 
 class Bug693 {
     shared new () {}
-    shared new NoArg() {}
-    shared new OneArg(String s) {}
+    shared new noArg() {}
+    shared new oneArg(String s) {}
 }
 
 @test
