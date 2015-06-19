@@ -11,6 +11,7 @@ import com.redhat.ceylon.compiler.js.util.TypeUtils;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.TypeArguments;
 import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
+import com.redhat.ceylon.model.typechecker.model.Constructor;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Functional;
 import com.redhat.ceylon.model.typechecker.model.Generic;
@@ -22,7 +23,8 @@ import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
 
 public class BmeGenerator {
 
-    static void generateBme(final Tree.BaseMemberExpression bme, final GenerateJsVisitor gen, final boolean forInvoke) {
+    static void generateBme(final Tree.BaseMemberExpression bme, final GenerateJsVisitor gen) {
+        final boolean forInvoke = bme.getDirectlyInvoked();
         Declaration decl = bme.getDeclaration();
         if (decl != null) {
             String name = decl.getName();
@@ -34,6 +36,14 @@ public class BmeGenerator {
                     gen.out(name);
                     return;
                 }
+            }
+            if (forInvoke && TypeUtils.isConstructor(decl)) {
+                Constructor cd = TypeUtils.getConstructor(decl);
+                if (!gen.qualify(bme, cd)) {
+                    gen.out(gen.getNames().name((Declaration)cd.getContainer()), "_");
+                }
+                gen.out(gen.getNames().name(cd));
+                return;
             }
         }
         String exp = gen.memberAccess(bme, null);
@@ -160,16 +170,16 @@ public class BmeGenerator {
         }, lhs, gen);
     }
 
-    static void generateQte(final Tree.QualifiedTypeExpression that, final GenerateJsVisitor gen, boolean forInvoke) {
-        if (forInvoke && that.getMemberOperator() instanceof Tree.SafeMemberOp==false) {
+    static void generateQte(final Tree.QualifiedTypeExpression that, final GenerateJsVisitor gen) {
+        if (that.getDirectlyInvoked() && that.getMemberOperator() instanceof Tree.SafeMemberOp==false) {
             if (gen.isInDynamicBlock() && that.getDeclaration() == null) {
                 gen.out("new ");
             }
             Tree.Primary prim = that.getPrimary();
             if (prim instanceof Tree.BaseMemberExpression) {
-                generateBme((Tree.BaseMemberExpression)prim, gen, forInvoke);
+                generateBme((Tree.BaseMemberExpression)prim, gen);
             } else if (prim instanceof Tree.QualifiedTypeExpression) {
-                generateQte((Tree.QualifiedTypeExpression)prim, gen, forInvoke);
+                generateQte((Tree.QualifiedTypeExpression)prim, gen);
             } else {
                 prim.visit(gen);
             }
