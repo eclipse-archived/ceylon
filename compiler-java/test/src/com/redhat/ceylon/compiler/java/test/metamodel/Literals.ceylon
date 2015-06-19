@@ -48,18 +48,18 @@ class LitParameterisedClass<T>(T t){
 }
 class LitClassWithConstructors {
     shared new (Integer i) {}
-    shared new Other(Integer i) {}
+    shared new other(Integer i) {}
     
     shared class Member {
         shared new (Boolean b) {
         }
-        shared new Other(Boolean b) {
+        shared new other(Boolean b) {
         }
     }
 }
 class LitParameterisedClassWithConstructors<T> extends LitClassWithConstructors{
     shared new (T t) extends LitClassWithConstructors(1) {}
-    shared new Other(T t) extends LitClassWithConstructors(1) {}
+    shared new other(T t) extends LitClassWithConstructors(1) {}
 }
 interface LitInterface{
     shared interface Member{}
@@ -95,12 +95,12 @@ void literals<T>(){
     // constructors
     assert(exists Constructor<LitClassWithConstructors, [Integer]> ctor = `LitClassWithConstructors`.getConstructor<[Integer]>(""));
     ConstructorDeclaration ctorDecl = `new LitClassWithConstructors`;
-    Constructor<LitClassWithConstructors, [Integer]> ctorOther = `LitClassWithConstructors.Other`; 
-    ConstructorDeclaration ctorOtherDecl = `new LitClassWithConstructors.Other`;
+    Constructor<LitClassWithConstructors, [Integer]> ctorOther = `LitClassWithConstructors.other`; 
+    ConstructorDeclaration ctorOtherDecl = `new LitClassWithConstructors.other`;
     assert(exists Constructor<LitParameterisedClassWithConstructors<String>, [String]> ctor2 = `LitParameterisedClassWithConstructors<String>`.getConstructor<[String]>(""));
     ConstructorDeclaration ctorDecl2 = `new LitParameterisedClassWithConstructors`;
-    Constructor<LitParameterisedClassWithConstructors<String>, [String]> ctorOther2 = `LitParameterisedClassWithConstructors<String>.Other`;
-    ConstructorDeclaration ctorDeclOther2 = `new LitParameterisedClassWithConstructors.Other`;
+    Constructor<LitParameterisedClassWithConstructors<String>, [String]> ctorOther2 = `LitParameterisedClassWithConstructors<String>.other`;
+    ConstructorDeclaration ctorDeclOther2 = `new LitParameterisedClassWithConstructors.other`;
     
     // Interfaces
     

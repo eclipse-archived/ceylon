@@ -82,20 +82,20 @@ void literalsRuntime2<T>(){
     assert(`new LitClassWithConstructors`.name == "");
     assert(`new LitClassWithConstructors`.qualifiedName == "com.redhat.ceylon.compiler.java.test.metamodel::LitClassWithConstructors");
     print(`new LitClassWithConstructors`.string == "new com.redhat.ceylon.compiler.java.test.metamodel::LitClassWithConstructors");
-    assert(`new LitClassWithConstructors.Other`.name == "Other");
+    assert(`new LitClassWithConstructors.other`.name == "other");
     assert(`new LitParameterisedClassWithConstructors`.name == ""); 
-    assert(`new LitParameterisedClassWithConstructors.Other`.name == "Other");
+    assert(`new LitParameterisedClassWithConstructors.other`.name == "other");
     
     // Constructor models
     assert(exists c1 = `LitClassWithConstructors`.getConstructor<[Integer]>(""));
     assert(exists c2 = `LitClassWithConstructors.Member`.getConstructor<[Integer]>(""));
     assert(`new LitClassWithConstructors` == c1.declaration);
-    assert(`new LitClassWithConstructors.Other` == `LitClassWithConstructors.Other`.declaration);
+    assert(`new LitClassWithConstructors.other` == `LitClassWithConstructors.other`.declaration);
     assert(`new LitClassWithConstructors.Member` == c2.declaration);
-    assert(`new LitClassWithConstructors.Member.Other` == `LitClassWithConstructors.Member.Other`.declaration);
+    assert(`new LitClassWithConstructors.Member.other` == `LitClassWithConstructors.Member.other`.declaration);
     
     assert(exists c3 = `LitParameterisedClassWithConstructors<String>`.getConstructor<[String]>(""));
     assert(`new LitParameterisedClassWithConstructors` == c3.declaration);
-    assert(`new LitParameterisedClassWithConstructors.Other` == `LitParameterisedClassWithConstructors<String>.Other`.declaration);
+    assert(`new LitParameterisedClassWithConstructors.other` == `LitParameterisedClassWithConstructors<String>.other`.declaration);
 }
 

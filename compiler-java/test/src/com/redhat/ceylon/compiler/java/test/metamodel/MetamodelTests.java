@@ -109,5 +109,12 @@ public class MetamodelTests extends CompilerTests {
         runInJBossModules("run", "com.redhat.ceylon.compiler.java.test.metamodel/123", 
                 Arrays.asList("--run", "com.redhat.ceylon.compiler.java.test.metamodel::bugCL645"));
     }
+    
+    @Test
+    public void testConstructorLiterals() {
+        //compareWithJavaSource("ConstructorLiterals");
+        compile("ConstructorLiterals.ceylon");
+        run("com.redhat.ceylon.compiler.java.test.metamodel.constructorLiterals");
+    }
 }
 
