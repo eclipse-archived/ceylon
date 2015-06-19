@@ -3826,11 +3826,17 @@ public class StatementTransformer extends AbstractTransformer {
     }
 
     protected List<JCStatement> transformCaseClause(Tree.CaseClause caseClause, String tmpVar, Tree.Term outerExpression){
+        int p = unblock();
+        List<JCStatement> result;
         if(caseClause.getBlock() != null)
-            return transformBlock(caseClause.getBlock());
-        if(caseClause.getExpression() != null)
-            return evaluateAndAssign(tmpVar, caseClause.getExpression(), outerExpression);
-        return List.<JCStatement>of(make().Exec(makeErroneous(caseClause, "Only block or expression allowed")));
+            result = transformBlock(caseClause.getBlock());
+        else if(caseClause.getExpression() != null)
+            result = evaluateAndAssign(tmpVar, caseClause.getExpression(), outerExpression);
+        else
+            result = List.<JCStatement>of(make().Exec(makeErroneous(caseClause, "Only block or expression allowed")));
+        _at(p);
+        block();
+        return result;
     }
 
     protected Type switchExpressionType(Tree.SwitchClause switchClause) {
@@ -4228,6 +4234,8 @@ public class StatementTransformer extends AbstractTransformer {
     }
 
     JCStatement transform(Node node, Tree.SwitchClause switchClause, Tree.SwitchCaseList caseList, String tmpVar, Tree.Term outerExpression) {
+        at(switchClause);
+        block();
         SwitchTransformation transformation = null;
         Type exprType = switchExpressionType(switchClause);
         Boolean switchUnboxed = switchExpressionUnboxed(switchClause);
@@ -4309,7 +4317,9 @@ public class StatementTransformer extends AbstractTransformer {
         if (transformation == null) {
             transformation = new IfElseChain();
         }
-        return transformation.transformSwitch(node, switchClause, caseList, tmpVar, outerExpression);
+        JCStatement result = transformation.transformSwitch(node, switchClause, caseList, tmpVar, outerExpression);
+        unblock();
+        return result;
     }
 
     private boolean isSwitchAllMatchCases(Tree.SwitchCaseList caseList) {
