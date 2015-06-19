@@ -11,7 +11,7 @@ class Test585_1(){
 
 class Test585_2(){    
     shared class Bar {      
-        shared new Baz(){
+        shared new baz(){
             Object b = outer;
             check(b is Test585_2, "#585.2");
         }               
@@ -20,5 +20,5 @@ class Test585_2(){
 
 void testConstructors() {
   Test585_1().Bar();
-  Test585_2().Bar.Baz();
+  Test585_2().Bar.baz();
 }

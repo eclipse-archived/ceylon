@@ -58,6 +58,6 @@ shared object object249{
 
 //For testing of 461
 shared class TestClass461 {
-  shared new TestConstructor() {}
+  shared new testConstructor() {}
   shared void test() => check(true, "Import toplevel constructor");
 }

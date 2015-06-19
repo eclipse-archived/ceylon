@@ -1,7 +1,7 @@
 import check {...}
 import misc {
   testObject461 { objectTest=test },
-  TestClass461 { TestConstructor }
+  TestClass461 { testConstructor }
 }
 
 shared class Counter(Integer initCount=0) {
@@ -138,7 +138,7 @@ shared void test() {
     check(AliasMemberTest().f2().s=="A", "alias method member 2");
     Test451();
     objectTest();
-    TestConstructor().test();
+    testConstructor().test();
     check(2==Test509(1).Inner(2).a, "#509");
 
     class Foo551(){ 

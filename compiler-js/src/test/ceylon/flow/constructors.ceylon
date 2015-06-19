@@ -3,14 +3,14 @@ import check { check }
 class Issue525<T> satisfies Identifiable {
   value sb=StringBuilder().append("a");
   shared T t;
-  shared new Foo(T x) {
+  shared new foo(T x) {
     if (x is String) {
       sb.append("b");
     }
     t=x;
   }
   sb.append("c");
-  shared new Bar(T x) {
+  shared new bar(T x) {
     if (x is Integer) {
       sb.append("d");
     }
@@ -21,8 +21,8 @@ class Issue525<T> satisfies Identifiable {
 }
 
 shared void test525() {
-  value f1=Issue525.Foo("x");
-  value f2=Issue525.Bar(1);
+  value f1=Issue525.foo("x");
+  value f2=Issue525.bar(1);
   check(f1.t=="x", "#525.1");
   check(f2.t==1, "#525.2");
   check(f1.string=="abce", "#525.3");
