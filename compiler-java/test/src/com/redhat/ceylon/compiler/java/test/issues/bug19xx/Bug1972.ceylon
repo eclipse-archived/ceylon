@@ -20,7 +20,7 @@
 @noanno
 class Bug1972 {
     shared new (String? x=null) {}
-    new Other() {}
+    new other() {}
     void m() {
         Bug1972(null);
     }

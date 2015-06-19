@@ -19,6 +19,6 @@
  */
 @noanno
 class Foo{ 
-    shared new Bar(){}
-    shared new Baz() extends Bar{} 
+    shared new bar(){}
+    shared new baz() extends bar{} 
 }

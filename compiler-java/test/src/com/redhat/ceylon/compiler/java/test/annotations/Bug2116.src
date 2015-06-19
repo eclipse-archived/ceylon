@@ -1,24 +1,24 @@
 package com.redhat.ceylon.compiler.java.test.annotations;
 
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
-@.ceylon.language.SeeAnnotation$annotations$({@.ceylon.language.SeeAnnotation$annotation$(programElements = "::1.2.3:com.redhat.ceylon.compiler.java.test.annotations::CBug2116.cCtor")})
+@.ceylon.language.SeeAnnotation$annotations$({@.ceylon.language.SeeAnnotation$annotation$(programElements = "::1.2.3:com.redhat.ceylon.compiler.java.test.annotations::CBug2116.cctor")})
 @.com.redhat.ceylon.compiler.java.metadata.Class(constructors = true)
 class Bug2116 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public static final .com.redhat.ceylon.compiler.java.test.annotations.Bug2116.Ctor Ctor = null;
+    public static final .com.redhat.ceylon.compiler.java.test.annotations.Bug2116.ctor_ ctor_ = null;
     
     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public static final class Ctor {
+    public static final class ctor_ {
         
-        private Ctor() {
+        private ctor_() {
         }
     }
     
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Name("Ctor")
+    @.com.redhat.ceylon.compiler.java.metadata.Name("ctor")
     public Bug2116(@.com.redhat.ceylon.compiler.java.metadata.Ignore
-    .com.redhat.ceylon.compiler.java.test.annotations.Bug2116.Ctor $name$) {
+    .com.redhat.ceylon.compiler.java.test.annotations.Bug2116.ctor_ $name$) {
     }
     
     @.java.lang.Override

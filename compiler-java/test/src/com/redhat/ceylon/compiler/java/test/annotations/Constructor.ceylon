@@ -15,7 +15,7 @@ class Constructor {
          String s;
     }
     "docannotation"
-    constructorAnnotation shared new Other("ctor param doc" String s) {
+    constructorAnnotation shared new other("ctor param doc" String s) {
         
     }
 }

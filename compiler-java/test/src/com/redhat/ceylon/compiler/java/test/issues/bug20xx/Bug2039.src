@@ -10,15 +10,15 @@ class Bug2039 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     public Bug2039(final .ceylon.language.Callable<? extends .java.lang.Object> somefunc$param$) {
         this.somefunc = somefunc$param$;
     }
-    public static final .com.redhat.ceylon.compiler.java.test.issues.bug20xx.Bug2039.Test2 Test2 = null;
+    public static final .com.redhat.ceylon.compiler.java.test.issues.bug20xx.Bug2039.test2_ test2_ = null;
     
-    public static final class Test2 {
+    public static final class test2_ {
         
-        private Test2() {
+        private test2_() {
         }
     }
     
-    public Bug2039(.com.redhat.ceylon.compiler.java.test.issues.bug20xx.Bug2039.Test2 $name$, final .java.lang.Object ret) {
+    public Bug2039(.com.redhat.ceylon.compiler.java.test.issues.bug20xx.Bug2039.test2_ $name$, final .java.lang.Object ret) {
         
         final class somef_ {
             

@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-see (`new Bug2116.Ctor`)
+see (`new Bug2116.ctor`)
 class Bug2116 {
-    shared new Ctor() {}
+    shared new ctor() {}
 }

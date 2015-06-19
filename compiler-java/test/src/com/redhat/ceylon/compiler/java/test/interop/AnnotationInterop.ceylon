@@ -89,7 +89,7 @@ class AnnotationInterop() {
 class CPAnnoTest2 {
     generated({"by you"})
     shared new (generated({"by me"}) String x) { }
-    shared new Other(generated({"by me"}) String x) { }
+    shared new other(generated({"by me"}) String x) { }
 }
 
 generated({JarFile.\iMANIFEST_NAME})

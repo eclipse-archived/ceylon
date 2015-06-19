@@ -104,20 +104,20 @@ class CPAnnoTest2 implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
     final .java.lang.String x$param$) {
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public static final .com.redhat.ceylon.compiler.java.test.interop.CPAnnoTest2.Other Other = null;
+    public static final .com.redhat.ceylon.compiler.java.test.interop.CPAnnoTest2.other_ other_ = null;
     
     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public static final class Other {
+    public static final class other_ {
         
-        private Other() {
+        private other_() {
         }
     }
     
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Name("Other")
+    @.com.redhat.ceylon.compiler.java.metadata.Name("other")
     public CPAnnoTest2(@.com.redhat.ceylon.compiler.java.metadata.Ignore
-    .com.redhat.ceylon.compiler.java.test.interop.CPAnnoTest2.Other $name$, @.com.redhat.ceylon.compiler.java.metadata.Name("x")
+    .com.redhat.ceylon.compiler.java.test.interop.CPAnnoTest2.other_ $name$, @.com.redhat.ceylon.compiler.java.metadata.Name("x")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
     @.javax.annotation.Generated({"by me"})
     final .java.lang.String x$param$) {

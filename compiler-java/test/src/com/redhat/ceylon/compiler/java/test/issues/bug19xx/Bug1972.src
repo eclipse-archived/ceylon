@@ -23,15 +23,15 @@ class Bug1972 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     
     public Bug1972(final .ceylon.language.String x$param$) {
     }
-    private static final .com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bug1972.Other Other = null;
+    private static final .com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bug1972.other_ other_ = null;
     
-    private static final class Other {
+    private static final class other_ {
         
-        private Other() {
+        private other_() {
         }
     }
     
-    private Bug1972(.com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bug1972.Other $name$) {
+    private Bug1972(.com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bug1972.other_ $name$) {
     }
     
     @.java.lang.Override

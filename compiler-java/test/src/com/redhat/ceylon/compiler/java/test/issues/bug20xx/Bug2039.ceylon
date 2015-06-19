@@ -23,7 +23,7 @@ class Bug2039 {
     shared new (Object(Object?*) somefunc) {
         this.somefunc = somefunc;
     }
-    shared new Test2(Object ret) {
+    shared new test2(Object ret) {
         Object somef(Object?* b) => ret;
         this.somefunc = somef;
     }

@@ -66,15 +66,15 @@ public class Bug2164 implements .com.redhat.ceylon.compiler.java.runtime.model.R
             }
         };
     }
-    public static final .com.redhat.ceylon.compiler.java.test.issues.bug21xx.Bug2164.A A = null;
+    public static final .com.redhat.ceylon.compiler.java.test.issues.bug21xx.Bug2164.a_ a_ = null;
     
-    public static final class A {
+    public static final class a_ {
         
-        private A() {
+        private a_() {
         }
     }
     
-    public Bug2164(.com.redhat.ceylon.compiler.java.test.issues.bug21xx.Bug2164.A $name$) {
+    public Bug2164(.com.redhat.ceylon.compiler.java.test.issues.bug21xx.Bug2164.a_ $name$) {
         $return$$4: do {
         }         while (false);
         final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> local = new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$, 1, true){
