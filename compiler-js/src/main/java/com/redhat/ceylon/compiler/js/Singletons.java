@@ -11,20 +11,23 @@ import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
+import com.redhat.ceylon.model.typechecker.model.Constructor;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.ModelUtil;
 import com.redhat.ceylon.model.typechecker.model.Type;
+import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.model.typechecker.model.TypeParameter;
 import com.redhat.ceylon.model.typechecker.model.Value;
 
 public class Singletons {
     
     static void defineObject(final Node that, final Value d, final List<Type> sats,
-            final Tree.ExtendedType superType, final Tree.ClassBody body, final Tree.AnnotationList annots,
-            final GenerateJsVisitor gen) {
+            final Tree.SimpleType superType, final Tree.InvocationExpression superCall,
+            final Tree.Body body, final Tree.AnnotationList annots, final GenerateJsVisitor gen) {
         final boolean addToPrototype = gen.opts.isOptimize() && d != null && d.isClassOrInterfaceMember();
         final boolean isObjExpr = that instanceof Tree.ObjectExpression;
-        final Class c = (Class)(isObjExpr ? ((Tree.ObjectExpression)that).getAnonymousClass() : d.getTypeDeclaration());
+        final TypeDeclaration _td = isObjExpr ? ((Tree.ObjectExpression)that).getAnonymousClass() : d.getTypeDeclaration();
+        final Class c = (Class)(_td instanceof Constructor ? ((Constructor)_td).getContainer() : _td);
         final String className = gen.getNames().name(c);
         final String objectName = gen.getNames().name(d);
         final String selfName = gen.getNames().self(c);
@@ -64,9 +67,7 @@ public class Singletons {
             gen.out(selfName, ".$$targs$$=$$targs$$");
             gen.endLine(true);
         }
-        TypeGenerator.callSupertypes(sats,
-                superType == null ? null : superType.getType(), c, that, superDecs,
-                superType == null ? null : superType.getInvocationExpression(),
+        TypeGenerator.callSupertypes(sats, superType, c, that, superDecs, superCall,
                 superType == null ? null : ((Class) c.getExtendedType().getDeclaration()).getParameterList(), gen);
         
         body.visit(gen);
@@ -154,13 +155,48 @@ public class Singletons {
 
     static void objectDefinition(final Tree.ObjectDefinition that, final GenerateJsVisitor gen) {
         final Tree.SatisfiedTypes sts = that.getSatisfiedTypes();
+        final Tree.ExtendedType et = that.getExtendedType();
         defineObject(that, that.getDeclarationModel(),
-                sts == null ? null : TypeUtils.getTypes(sts.getTypes()), that.getExtendedType(),
+                sts == null ? null : TypeUtils.getTypes(sts.getTypes()),
+                et == null ? null : et.getType(), et == null ? null : et.getInvocationExpression(),
                 that.getClassBody(), that.getAnnotationList(), gen);
         //Objects defined inside methods need their init sections are exec'd
         if (!that.getDeclarationModel().isToplevel() && !that.getDeclarationModel().isClassOrInterfaceMember()) {
             gen.out(gen.getNames().objectName(that.getDeclarationModel()), "();");
         }
+    }
+
+    static void valueConstructor(final Tree.Enumerated that, final GenerateJsVisitor gen) {
+        final Value d = that.getDeclarationModel();
+        final Constructor c = that.getEnumerated();
+        final Tree.DelegatedConstructor dc = that.getDelegatedConstructor();
+        final TypeDeclaration td = (TypeDeclaration)c.getContainer();
+        final String objvar = gen.getNames().self(td);
+        final String typevar = gen.getNames().name(td);
+        final String singvar = gen.getNames().name(d);
+        final String tmpvar = gen.getNames().createTempVariable();
+        gen.defineAttribute(typevar, singvar);
+        gen.out("{if(", typevar, ".", tmpvar, "===undefined){");
+        if (dc==null) {
+            gen.out("$init$", typevar, "();");
+        }
+        gen.out("var ", objvar, "=");
+        if (dc == null) {
+            gen.out("new ", typevar, ".$$;");
+            if (td.isClassOrInterfaceMember()) {
+                gen.out(objvar, ".outer$=");
+                gen.outerSelf(td);
+                gen.out(";");
+            }
+            gen.out(typevar, "$$c(", objvar, ");");
+        } else {
+            dc.getInvocationExpression().visit(gen);
+            gen.endLine(true);
+        }
+        gen.visitStatements(that.getBlock().getStatements());
+        gen.out(typevar, ".", tmpvar, "=", objvar, ";}return ", typevar, ".", tmpvar, ";},undefined,");
+        TypeUtils.encodeForRuntime(d, that.getAnnotationList(), gen);
+        gen.out(");");
     }
 
 }

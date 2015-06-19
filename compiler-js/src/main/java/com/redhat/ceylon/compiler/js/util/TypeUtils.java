@@ -1005,7 +1005,9 @@ public class TypeUtils {
                 outputQualifiedTypename(node, gen.isImported(pkg, type), pt, gen, false);
             } else {
                 gen.out("{t:");
-                outputQualifiedTypename(node, gen.isImported(pkg, type), pt, gen, false);
+                //For constructors, output the type of the class
+                final Type qt = type instanceof Constructor ? pt.getQualifyingType() : pt;
+                outputQualifiedTypename(node, gen.isImported(pkg, type), qt, gen, false);
                 //Type Parameters
                 if (!pt.getTypeArgumentList().isEmpty()) {
                     gen.out(",a:{");
@@ -1417,6 +1419,21 @@ public class TypeUtils {
             r.add(st.getTypeModel());
         }
         return r;
+    }
+
+    public static boolean isConstructor(Declaration d) {
+        return d instanceof Constructor || (d instanceof Function &&
+                ((Function)d).getTypeDeclaration() instanceof Constructor);
+    }
+
+    public static Constructor getConstructor(Declaration d) {
+        if (d instanceof Constructor) {
+            return (Constructor)d;
+        }
+        if (d instanceof Function && ((Function)d).getTypeDeclaration() instanceof Constructor) {
+            return (Constructor)((Function)d).getTypeDeclaration();
+        }
+        return null;
     }
 
 }
