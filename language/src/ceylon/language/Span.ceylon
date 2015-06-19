@@ -127,20 +127,25 @@ class Span<Element>(first, last)
     Iterator<Element> iterator() 
             => object
             satisfies Iterator<Element> {
-        variable Element|Finished current = first;
+        variable Boolean firstTime = true;
+        variable Element|Finished element = first;
         shared actual Element|Finished next() {
-            if (!is Finished c = current) {
-                if (c.offset(last) != 0) {
-                    value result = c;
-                    this.current = outer.next(c);
-                    return result;
+            if (!is Finished c = element) {
+                Element result;
+                if (firstTime) {
+                    firstTime = false;
+                    result = c;
                 } else {
-                    value result = c;
-                    this.current = finished;
-                    return result;
+                    result = outer.next(c);
                 }
+                if (result.offset(last) == 0) {
+                    this.element = finished;
+                } else {
+                    this.element  = result;
+                }
+                return result;
             } else {
-                return current;
+                return element ;
             }
         }
         string => "(``outer``).iterator()";

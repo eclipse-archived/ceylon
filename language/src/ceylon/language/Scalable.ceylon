@@ -1,8 +1,8 @@
 "Abstract supertype of types that support scaling by a 
  numeric factor. Examples of such types include vectors and 
- matrices. The _scale_ operator `**` accepts a scale factor
- as its first operand, and an instance of `Scalable` as its
- second operand.
+ matrices. The _scale_ operator `a ** x` accepts a scale 
+ factor as its first operand, and an instance of `Scalable` 
+ as its second operand.
  
      Vector scaled = 2.0 ** Vector(x,y,z);
  

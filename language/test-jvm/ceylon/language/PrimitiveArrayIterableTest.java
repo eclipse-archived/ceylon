@@ -5,20 +5,19 @@ import org.junit.Test;
 
 import com.redhat.ceylon.compiler.java.language.AbstractCallable;
 import com.redhat.ceylon.compiler.java.language.IntArray;
-import com.redhat.ceylon.compiler.java.language.IntArray.IntArrayIterable;
 import com.redhat.ceylon.compiler.java.language.ObjectArray;
-import com.redhat.ceylon.compiler.java.language.ObjectArray.ObjectArrayIterable;
+import com.redhat.ceylon.compiler.java.language.ObjectArrayIterable;
 
 public class PrimitiveArrayIterableTest {
 
     @Test
     public void testIntArrayIterable() {
-        IntArrayIterable zero_ten = IntArray.getIterable(new int[]{-1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11}).skip(1).take(11);
-        IntArrayIterable zero_five = IntArray.getIterable(new int[]{0, 1, 2, 3, 4, 5});
-        IntArrayIterable five_ten = IntArray.getIterable(new int[]{5, 6, 7, 8, 9, 10});
-        IntArrayIterable empty = IntArray.getIterable(new int[]{});
-        IntArrayIterable ten = IntArray.getIterable(new int[]{10});
-        IntArrayIterable zero = IntArray.getIterable(new int[]{0});
+        ceylon.language.Iterable<? extends ceylon.language.Integer,? extends java.lang.Object> zero_ten = IntArray.getIterable(new int[]{-1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11}).skip(1).take(11);
+        ceylon.language.Iterable<? extends ceylon.language.Integer,? extends java.lang.Object> zero_five = IntArray.getIterable(new int[]{0, 1, 2, 3, 4, 5});
+        ceylon.language.Iterable<? extends ceylon.language.Integer,? extends java.lang.Object> five_ten = IntArray.getIterable(new int[]{5, 6, 7, 8, 9, 10});
+        ceylon.language.Iterable<? extends ceylon.language.Integer,? extends java.lang.Object> empty = IntArray.getIterable(new int[]{});
+        ceylon.language.Iterable<? extends ceylon.language.Integer,? extends java.lang.Object> ten = IntArray.getIterable(new int[]{10});
+        ceylon.language.Iterable<? extends ceylon.language.Integer,? extends java.lang.Object> zero = IntArray.getIterable(new int[]{0});
         
         // getSize
         Assert.assertEquals(11, zero_ten.getSize());
@@ -37,22 +36,22 @@ public class PrimitiveArrayIterableTest {
         Assert.assertFalse(zero.getEmpty());
         
         // getFirst
-        Assert.assertEquals(0, zero_ten.getFirst().value);
-        Assert.assertEquals(10, ten.getFirst().value);
-        Assert.assertEquals(0, zero.getFirst().value);
+        Assert.assertEquals(0, ((ceylon.language.Integer)zero_ten.getFirst()).value);
+        Assert.assertEquals(10, ((ceylon.language.Integer)ten.getFirst()).value);
+        Assert.assertEquals(0, ((ceylon.language.Integer)zero.getFirst()).value);
         Assert.assertEquals(null, empty.getFirst());
         
         // getLast
-        Assert.assertEquals(10, zero_ten.getLast().value);
-        Assert.assertEquals(10, ten.getLast().value);
-        Assert.assertEquals(0, zero.getLast().value);
+        Assert.assertEquals(10, ((ceylon.language.Integer)zero_ten.getLast()).value);
+        Assert.assertEquals(10, ((ceylon.language.Integer)ten.getLast()).value);
+        Assert.assertEquals(0, ((ceylon.language.Integer)zero.getLast()).value);
         Assert.assertEquals(null, empty.getLast());
         
         // getRest
         Assert.assertEquals("[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]", 
                 zero_ten.getRest().sequence().toString());
-        Assert.assertEquals(1, zero_ten.getRest().getFirst().value);
-        Assert.assertEquals(10, zero_ten.getRest().getLast().value);
+        Assert.assertEquals(1, ((ceylon.language.Integer)zero_ten.getRest().getFirst()).value);
+        Assert.assertEquals(10, ((ceylon.language.Integer)zero_ten.getRest().getLast()).value);
         Assert.assertEquals("[2, 3, 4, 5, 6, 7, 8, 9, 10]", 
                 zero_ten.getRest().getRest().sequence().toString());
         Assert.assertEquals("[]", ten.getRest().sequence().toString());
@@ -140,15 +139,15 @@ public class PrimitiveArrayIterableTest {
         Assert.assertFalse(zero_ten.contains(ceylon.language.Integer.instance(-1)));
         
         // taking
-        IntArrayIterable zero_seven = zero_ten.take(8);
+        ceylon.language.Iterable<? extends ceylon.language.Integer,? extends java.lang.Object> zero_seven = zero_ten.take(8);
         Assert.assertEquals("[0, 1, 2, 3, 4, 5, 6, 7]", zero_seven.sequence().toString());
         
         // skipping
-        IntArrayIterable two_seven = zero_ten.take(8).skip(2);
+        ceylon.language.Iterable<? extends ceylon.language.Integer,? extends java.lang.Object> two_seven = zero_ten.take(8).skip(2);
         Assert.assertEquals("[2, 3, 4, 5, 6, 7]", two_seven.sequence().toString());
         
         // by
-        IntArrayIterable zero_ten_evens = zero_ten.by(2);
+        ceylon.language.Iterable<? extends ceylon.language.Integer,? extends java.lang.Object> zero_ten_evens = zero_ten.by(2);
         Assert.assertEquals("[0, 2, 4, 6, 8, 10]", zero_ten_evens.sequence().toString());
         Assert.assertEquals(6, zero_ten_evens.getSize());
         Assert.assertTrue(zero_ten_evens.longerThan(5));
@@ -171,7 +170,7 @@ public class PrimitiveArrayIterableTest {
         for (int ii = 0; ii < ints.length; ii++) {
             result[ii] = ceylon.language.Integer.instance(ints[ii]);
         }
-        return ObjectArray.<ceylon.language.Integer>getIterable(result);
+        return (ObjectArrayIterable<Integer>) ObjectArray.<ceylon.language.Integer>getIterable(result);
     }
     
     @Test

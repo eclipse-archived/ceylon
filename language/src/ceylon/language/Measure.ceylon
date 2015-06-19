@@ -44,8 +44,17 @@ class Measure<Element>(first, size)
             => object satisfies Iterator<Element> {
         variable value count = 0;
         variable value current = first;
-        next() => ++count > size
-                    then finished else current++;
+        shared actual Element|Finished next() {
+             //++count > size
+             //       then finished else current++;
+             if (count >= size) {
+                 return finished;
+             } else if (count++ == 0) {
+                return current;
+            } else {
+                return ++current;
+            }
+        }
         string => "(``outer.string``).iterator()";
     };
     

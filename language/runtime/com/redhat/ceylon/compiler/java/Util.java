@@ -23,7 +23,7 @@ import ceylon.language.finished_;
 import ceylon.language.sequence_;
 
 import com.redhat.ceylon.compiler.java.language.AbstractArrayIterable;
-import com.redhat.ceylon.compiler.java.language.ObjectArray.ObjectArrayIterable;
+import com.redhat.ceylon.compiler.java.language.ObjectArrayIterable;
 import com.redhat.ceylon.compiler.java.metadata.Class;
 import com.redhat.ceylon.compiler.java.metadata.Name;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;

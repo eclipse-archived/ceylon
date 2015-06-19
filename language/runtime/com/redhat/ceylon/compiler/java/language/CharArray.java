@@ -342,218 +342,216 @@ public final class CharArray implements ReifiedType {
      * elements of this primitive Java array.
      */
     @TypeInfo("ceylon.language::Iterable<ceylon.language::Character,ceylon.language::Null>")
-    public CharArrayIterable getIterable() {
+    public ceylon.language.Iterable<ceylon.language.Character,ceylon.language.Null> getIterable() {
         throw Util.makeJavaArrayWrapperException();
     }
     
     @Ignore
-    public static CharArrayIterable getIterable(char[] value) {
+    public static ceylon.language.Iterable<ceylon.language.Character,ceylon.language.Null> getIterable(char[] value) {
         return new CharArrayIterable(value);
     }
+}
+
+/* Implement Iterable */
+class CharArrayIterable 
+extends BaseIterable<ceylon.language.Character, ceylon.language.Null> {
     
-    /* Implement Iterable */
+    /** The array over which we iterate */
+    private final char[] array;
+    /** The index where iteration starts */
+    private final int start;
+    /** The step size of iteration */
+    private final int step;
+    /** The index one beyond where iteration ends */
+    private final int end;
+    
     @Ignore
-    public static class CharArrayIterable 
-    extends BaseIterable<ceylon.language.Character, ceylon.language.Null> {
-        
-        /** The array over which we iterate */
-        private final char[] array;
-        /** The index where iteration starts */
-        private final int start;
-        /** The step size of iteration */
-        private final int step;
-        /** The index one beyond where iteration ends */
-        private final int end;
-        
-        @Ignore
-        public CharArrayIterable(char[] array) {
-            this(array, 0, array.length, 1);
+    public CharArrayIterable(char[] array) {
+        this(array, 0, array.length, 1);
+    }
+    
+    @Ignore
+    private CharArrayIterable(char[] array, 
+            int start, int end, int step) {
+        super(ceylon.language.Character.$TypeDescriptor$, Null.$TypeDescriptor$);
+        if (start < 0) {
+            throw new ceylon.language.AssertionError("start must be positive");
+        }
+        if (end < 0) {
+            throw new ceylon.language.AssertionError("end must be positive");
+        }
+        if (step <= 0) {
+            throw new ceylon.language.AssertionError("step size must be greater than zero");
         }
         
-        @Ignore
-        private CharArrayIterable(char[] array, 
-                int start, int end, int step) {
-        	super(ceylon.language.Character.$TypeDescriptor$, Null.$TypeDescriptor$);
-            if (start < 0) {
-                throw new ceylon.language.AssertionError("start must be positive");
+        this.array = array;
+        this.start = start;
+        this.end = end;
+        this.step = step;
+    }
+    
+    @Override
+    public boolean containsAny(Iterable<? extends Object, ? extends Object> arg0) {
+        Iterator<? extends Object> iter = arg0.iterator();
+        Object item;
+        while (!((item = iter.next()) instanceof Finished)) {
+            if (item instanceof ceylon.language.Character) {
+                for (int ii = this.start; ii < this.end; ii+=this.step) {
+                    if (array[ii] == ((ceylon.language.Character)item).intValue()) {
+                        return true;
+                    }
+                }
             }
-            if (end < 0) {
-                throw new ceylon.language.AssertionError("end must be positive");
+        }
+        return false;
+    }
+    
+    @Override
+    public boolean containsEvery(
+            Iterable<? extends Object, ? extends Object> arg0) {
+        Iterator<? extends Object> iter = arg0.iterator();
+        Object item;
+        OUTER: while (!((item = iter.next()) instanceof Finished)) {
+            if (item instanceof ceylon.language.Character) {
+                for (int ii = this.start; ii < this.end; ii+=this.step) {
+                    if (array[ii] == ((ceylon.language.Character)item).intValue()) {
+                        continue OUTER;
+                    }
+                }
+            } 
+            return false;
+        }
+        return true;
+    }
+    
+    @Override
+    public boolean any(Callable<? extends ceylon.language.Boolean> arg0) {
+        for (int ii=this.start; ii < this.end; ii+=this.step) {
+            if (arg0.$call$(ceylon.language.Character.instance(array[ii])).booleanValue()) {
+                return true;
             }
-            if (step <= 0) {
-                throw new ceylon.language.AssertionError("step size must be greater than zero");
+        }
+        return false;
+    }
+    
+    @Override
+    public boolean contains(Object item) {
+        for (int ii = this.start; ii < this.end; ii+=this.step) {
+            if (item instanceof ceylon.language.Character 
+                    && array[ii] == ((ceylon.language.Character)item).intValue()) {
+                return true;
             }
+        }
+        return false;
+    }
+    
+    @Override
+    public <Default> Iterable<? extends Object, ? extends Null> defaultNullElements(
+            @Ignore
+            TypeDescriptor $reified$Default, 
+            Default defaultValue) {
+        return this;
+    }
+    
+    @Override
+    public Iterable<? extends ceylon.language.Character, ? extends Object> getCoalesced() {
+        return this;
+    }
+    
+    @Override
+    public boolean getEmpty() {
+        return this.end <= this.start;
+    }
+    
+    @Override
+    public long getSize() {
+        return java.lang.Math.max(0, (this.end-this.start+this.step-1)/this.step);
+    }
+    
+    @Override
+    public ceylon.language.Character getFirst() {
+        return this.getEmpty() ? null : ceylon.language.Character.instance(this.array[this.start]);
+    }
+    
+    
+    @Override
+    public ceylon.language.Character getLast() {
+        return this.getEmpty() ? null : ceylon.language.Character.instance(this.array[this.end-1]);
+    }
+    
+    @Override
+    public CharArrayIterable getRest() {
+        return new CharArrayIterable(this.array, this.start+1, this.end, this.step);
+    }
+    
+    @Override
+    public Sequential<? extends ceylon.language.Character> sequence() {
+        // Note: Sequential is immutable, and we don't know where the array
+        // came from, so however we create the sequence we must take a copy
+        //TODO: use a more efficient imple, like in List.sequence()
+        return super.sequence();
+    }
+    
+    @Override
+    public Iterator<? extends ceylon.language.Character> iterator() {
+        if (this.getEmpty()) {
+            return (Iterator)ceylon.language.emptyIterator_.get_();
+        }
+        return new Iterator<ceylon.language.Character>() {
             
-            this.array = array;
-            this.start = start;
-            this.end = end;
-            this.step = step;
-        }
-        
-        @Override
-        public boolean containsAny(Iterable<? extends Object, ? extends Object> arg0) {
-            Iterator<? extends Object> iter = arg0.iterator();
-            Object item;
-            while (!((item = iter.next()) instanceof Finished)) {
-                if (item instanceof ceylon.language.Character) {
-                    for (int ii = this.start; ii < this.end; ii+=this.step) {
-                        if (array[ii] == ((ceylon.language.Character)item).intValue()) {
-                            return true;
-                        }
-                    }
+            private int index = CharArrayIterable.this.start;
+            
+            @Override
+            public Object next() {
+                if (index < CharArrayIterable.this.end) {
+                    ceylon.language.Character result = ceylon.language.Character.instance(CharArrayIterable.this.array[index]);
+                    index += CharArrayIterable.this.step;
+                    return result;
+                } else {
+                    return finished_.get_();
                 }
             }
-            return false;
-        }
-        
-        @Override
-        public boolean containsEvery(
-                Iterable<? extends Object, ? extends Object> arg0) {
-            Iterator<? extends Object> iter = arg0.iterator();
-            Object item;
-            OUTER: while (!((item = iter.next()) instanceof Finished)) {
-                if (item instanceof ceylon.language.Character) {
-                    for (int ii = this.start; ii < this.end; ii+=this.step) {
-                        if (array[ii] == ((ceylon.language.Character)item).intValue()) {
-                            continue OUTER;
-                        }
-                    }
-                } 
-                return false;
-            }
-            return true;
-        }
-        
-        @Override
-        public boolean any(Callable<? extends ceylon.language.Boolean> arg0) {
-            for (int ii=this.start; ii < this.end; ii+=this.step) {
-                if (arg0.$call$(ceylon.language.Character.instance(array[ii])).booleanValue()) {
-                    return true;
-                }
-            }
-            return false;
-        }
-        
-        @Override
-        public boolean contains(Object item) {
-            for (int ii = this.start; ii < this.end; ii+=this.step) {
-                if (item instanceof ceylon.language.Character 
-                        && array[ii] == ((ceylon.language.Character)item).intValue()) {
-                    return true;
-                }
-            }
-            return false;
-        }
-        
-        @Override
-        public <Default> Iterable<? extends Object, ? extends Null> defaultNullElements(
-                @Ignore
-                TypeDescriptor $reified$Default, 
-                Default defaultValue) {
+        };
+    }
+    
+    @Override
+    public boolean longerThan(long length) {
+        return this.getSize() > length;
+    }
+    
+    @Override
+    public boolean shorterThan(long length) {
+        return this.getSize() < length;
+    }
+    
+    @Override
+    public CharArrayIterable by(long step) {
+        return new CharArrayIterable(this.array, 
+                this.start, 
+                this.end, 
+                com.redhat.ceylon.compiler.java.Util.toInt(this.step*step));
+    }
+    
+    @Override
+    public CharArrayIterable skip(long skip) {
+        if (skip <= 0) {
             return this;
         }
-        
-        @Override
-        public Iterable<? extends ceylon.language.Character, ? extends Object> getCoalesced() {
+        return new CharArrayIterable(this.array, 
+                com.redhat.ceylon.compiler.java.Util.toInt(this.start+skip*this.step), 
+                this.end, 
+                this.step);
+    }
+    
+    @Override
+    public CharArrayIterable take(long take) {
+        if (take >= this.getSize()) {
             return this;
         }
-        
-        @Override
-        public boolean getEmpty() {
-            return this.end <= this.start;
-        }
-        
-        @Override
-        public long getSize() {
-            return java.lang.Math.max(0, (this.end-this.start+this.step-1)/this.step);
-        }
-        
-        @Override
-        public ceylon.language.Character getFirst() {
-            return this.getEmpty() ? null : ceylon.language.Character.instance(this.array[this.start]);
-        }
-        
-        
-        @Override
-        public ceylon.language.Character getLast() {
-            return this.getEmpty() ? null : ceylon.language.Character.instance(this.array[this.end-1]);
-        }
-        
-        @Override
-        public CharArrayIterable getRest() {
-            return new CharArrayIterable(this.array, this.start+1, this.end, this.step);
-        }
-        
-        @Override
-        public Sequential<? extends ceylon.language.Character> sequence() {
-            // Note: Sequential is immutable, and we don't know where the array
-            // came from, so however we create the sequence we must take a copy
-        	//TODO: use a more efficient imple, like in List.sequence()
-            return super.sequence();
-        }
-        
-        @Override
-        public Iterator<? extends ceylon.language.Character> iterator() {
-            if (this.getEmpty()) {
-                return (Iterator)ceylon.language.emptyIterator_.get_();
-            }
-            return new Iterator<ceylon.language.Character>() {
-                
-                private int index = CharArrayIterable.this.start;
-                
-                @Override
-                public Object next() {
-                    if (index < CharArrayIterable.this.end) {
-                        ceylon.language.Character result = ceylon.language.Character.instance(CharArrayIterable.this.array[index]);
-                        index += CharArrayIterable.this.step;
-                        return result;
-                    } else {
-                        return finished_.get_();
-                    }
-                }
-            };
-        }
-        
-        @Override
-        public boolean longerThan(long length) {
-            return this.getSize() > length;
-        }
-        
-        @Override
-        public boolean shorterThan(long length) {
-            return this.getSize() < length;
-        }
-        
-        @Override
-        public CharArrayIterable by(long step) {
-            return new CharArrayIterable(this.array, 
-                    this.start, 
-                    this.end, 
-                    com.redhat.ceylon.compiler.java.Util.toInt(this.step*step));
-        }
-        
-        @Override
-        public CharArrayIterable skip(long skip) {
-            if (skip <= 0) {
-                return this;
-            }
-            return new CharArrayIterable(this.array, 
-                    com.redhat.ceylon.compiler.java.Util.toInt(this.start+skip*this.step), 
-                    this.end, 
-                    this.step);
-        }
-        
-        @Override
-        public CharArrayIterable take(long take) {
-            if (take >= this.getSize()) {
-                return this;
-            }
-            return new CharArrayIterable(this.array, 
-                    this.start, 
-                    com.redhat.ceylon.compiler.java.Util.toInt(take*this.step+1), 
-                    this.step);
-        }
-        
+        return new CharArrayIterable(this.array, 
+                this.start, 
+                com.redhat.ceylon.compiler.java.Util.toInt(take*this.step+1), 
+                this.step);
     }
     
 }

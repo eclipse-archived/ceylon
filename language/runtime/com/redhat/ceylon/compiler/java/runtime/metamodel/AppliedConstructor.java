@@ -490,9 +490,9 @@ public class AppliedConstructor<Type, Arguments extends Sequential<? extends Obj
         if (this == other) {
             return true;
         } else if (other instanceof AppliedConstructor) {
-            return this.getDeclaration().getName().equals(((AppliedConstructor<?,?>)other).getDeclaration().getName())
-                    && this.instance.equals(((AppliedConstructor<?,?>)other).instance);
-                    
+            AppliedConstructor<?,?> otherConstr = (AppliedConstructor<?,?>) other;
+            return getDeclaration().equals(otherConstr.getDeclaration())
+                    && Util.eq(instance, otherConstr.instance);
         } else {
             return false;
         }

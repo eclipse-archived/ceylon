@@ -32,10 +32,13 @@ initExistingTypeProto($JsCallable, Function, 'ceylon.language::JsCallable', Call
 function nop$(){return null;}
 
 //This is used for method references
+//o: The object used for "this"
+//f: The function itself
+//targs: The type arguments to pass in the function call
 function JsCallable(o,f,targs) {
   if (o===null || o===undefined) return nop$;
   if (f.jsc$)f=f.jsc$;
-  var f2 = function c2() {
+  var f2=function c2() {
     var arg=spread$(arguments,f,targs);
     if (targs)arg.push(targs);
     return f.apply(o, arg);
@@ -48,7 +51,7 @@ function JsCallable(o,f,targs) {
   f2.$crtmm$=f.$crtmm$||Callable.$crtmm$;
   return f2;
 }
-JsCallable.$crtmm$=function(){return{ sts:[{t:Callable,a:{Return$Callable:'Return$Callable',Arguments$Callable:'Arguments$Callable'}}],
+JsCallable.$crtmm$=function(){return{sts:[{t:Callable,a:{Return$Callable:'Return$Callable',Arguments$Callable:'Arguments$Callable'}}],
   tp:{Return$Callable:{dv:'out'}, Arguments$Callable:{dv:'in'}},pa:1,mod:$CCMM$,d:['$','Callable']};}
 
 function spread$(a,f,targs) {
@@ -57,7 +60,7 @@ function spread$(a,f,targs) {
   if (arg.length===1 && is$(arg[0],{t:Tuple})) {
     //Possible spread, check the metamodel
     var mm=getrtmm$$(f);
-    if (arg[0].size===mm.ps.length && mm.ps.length>1) {
+    if (arg[0].size===mm.ps.length && mm.ps.length>=1) {
       //Simple mapping
       var all=[];
       for (var i=0; i<mm.ps.length;i++){
@@ -109,36 +112,29 @@ function spread$(a,f,targs) {
 }
 
 //This is used for spread method references
-function JsCallableList(value,$mpt) {
-    return function() {
-        var a=arguments;
-        if ($mpt) {
-          a=[].slice.call(arguments,0);
-          a.push($mpt);
-        }
-        var rval = Array(value.length);
-        for (var i = 0; i < value.length; i++) {
-            var c = value[i];
-            rval[i] = c.f.apply(c.o, a);
-        }
-        return value.length===0?empty():sequence(rval,{Element$sequence:{t:Callable},Absent$sequence:{t:Nothing}});
-    };
+//Pass it a list (or Iterable, really) and a function to execute on the item with the specified arguments
+function JsCallableList(list,fun,$mpt) {
+  return function sprop() {
+    var len=list.size;
+    if (len===0)return empty();
+    var a=arguments;
+    if ($mpt) {
+      a=[].slice.call(arguments,0);
+      a.push($mpt);
+    }
+    var rval=Array(len);
+    var iter=list.iterator(),item,i=0;
+    while((item=iter.next())!==finished()){
+        rval[i++] = fun(item,a);
+    }
+    return sequence(rval,{Element$sequence:{t:Callable},Absent$sequence:{t:Nothing}});
+  };
 }
 JsCallableList.$crtmm$={tp:{Return$Callable:{dv:'out'}, Arguments$Callable:{dv:'in'}},pa:1,mod:$CCMM$,d:['$','Callable']};
-function mplclist$(orig,clist,params,targs) {
-  return $JsCallable(function() {
-    var a=clist.apply(0,arguments);
-    if (!is$(a,{t:Sequential}))return mplclist$(orig,a,params,targs);
-    var b=Array(orig.length);
-    for (var i=0;i<b.length;i++)b[i]={o:orig[i].o,f:a.$_get(i)};
-    return JsCallableList(b);
-  },params,targs);
-}
 function mkseq$(t,seq) {
   if (seq)t.seq=seq;
   return t;
 }
-ex$.mplclist$=mplclist$;
 ex$.JsCallableList=JsCallableList;
 ex$.JsCallable=JsCallable;
 ex$.$JsCallable=$JsCallable;

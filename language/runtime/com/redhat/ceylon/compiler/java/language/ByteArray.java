@@ -342,218 +342,216 @@ public final class ByteArray implements ReifiedType {
      * elements of this primitive Java array.
      */
     @TypeInfo("ceylon.language::Iterable<ceylon.language::Byte,ceylon.language::Null>")
-    public ByteArrayIterable getIterable() {
+    public ceylon.language.Iterable<ceylon.language.Byte,ceylon.language.Null> getIterable() {
         throw Util.makeJavaArrayWrapperException();
     }
     
     @Ignore
-    public static ByteArrayIterable getIterable(byte[] value) {
+    public static ceylon.language.Iterable<ceylon.language.Byte,ceylon.language.Null> getIterable(byte[] value) {
         return new ByteArrayIterable(value);
     }
+}
+
+/* Implement Iterable */
+class ByteArrayIterable 
+extends BaseIterable<ceylon.language.Byte, ceylon.language.Null> {
     
-    /* Implement Iterable */
+    /** The array over which we iterate */
+    private final byte[] array;
+    /** The index where iteration starts */
+    private final int start;
+    /** The step size of iteration */
+    private final int step;
+    /** The index one beyond where iteration ends */
+    private final int end;
+    
     @Ignore
-    public static class ByteArrayIterable 
-    extends BaseIterable<ceylon.language.Byte, ceylon.language.Null> {
-        
-        /** The array over which we iterate */
-        private final byte[] array;
-        /** The index where iteration starts */
-        private final int start;
-        /** The step size of iteration */
-        private final int step;
-        /** The index one beyond where iteration ends */
-        private final int end;
-        
-        @Ignore
-        public ByteArrayIterable(byte[] array) {
-            this(array, 0, array.length, 1);
+    public ByteArrayIterable(byte[] array) {
+        this(array, 0, array.length, 1);
+    }
+    
+    @Ignore
+    private ByteArrayIterable(byte[] array, 
+            int start, int end, int step) {
+        super(ceylon.language.Byte.$TypeDescriptor$, Null.$TypeDescriptor$);
+        if (start < 0) {
+            throw new ceylon.language.AssertionError("start must be positive");
+        }
+        if (end < 0) {
+            throw new ceylon.language.AssertionError("end must be positive");
+        }
+        if (step <= 0) {
+            throw new ceylon.language.AssertionError("step size must be greater than zero");
         }
         
-        @Ignore
-        private ByteArrayIterable(byte[] array, 
-                int start, int end, int step) {
-        	super(ceylon.language.Byte.$TypeDescriptor$, Null.$TypeDescriptor$);
-            if (start < 0) {
-                throw new ceylon.language.AssertionError("start must be positive");
+        this.array = array;
+        this.start = start;
+        this.end = end;
+        this.step = step;
+    }
+    
+    @Override
+    public boolean containsAny(Iterable<? extends Object, ? extends Object> arg0) {
+        Iterator<? extends Object> iter = arg0.iterator();
+        Object item;
+        while (!((item = iter.next()) instanceof Finished)) {
+            if (item instanceof ceylon.language.Byte) {
+                for (int ii = this.start; ii < this.end; ii+=this.step) {
+                    if (array[ii] == ((ceylon.language.Byte)item).byteValue()) {
+                        return true;
+                    }
+                }
             }
-            if (end < 0) {
-                throw new ceylon.language.AssertionError("end must be positive");
+        }
+        return false;
+    }
+    
+    @Override
+    public boolean containsEvery(
+            Iterable<? extends Object, ? extends Object> arg0) {
+        Iterator<? extends Object> iter = arg0.iterator();
+        Object item;
+        OUTER: while (!((item = iter.next()) instanceof Finished)) {
+            if (item instanceof ceylon.language.Byte) {
+                for (int ii = this.start; ii < this.end; ii+=this.step) {
+                    if (array[ii] == ((ceylon.language.Byte)item).byteValue()) {
+                        continue OUTER;
+                    }
+                }
+            } 
+            return false;
+        }
+        return true;
+    }
+    
+    @Override
+    public boolean any(Callable<? extends ceylon.language.Boolean> arg0) {
+        for (int ii=this.start; ii < this.end; ii+=this.step) {
+            if (arg0.$call$(ceylon.language.Byte.instance(array[ii])).booleanValue()) {
+                return true;
             }
-            if (step <= 0) {
-                throw new ceylon.language.AssertionError("step size must be greater than zero");
+        }
+        return false;
+    }
+    
+    @Override
+    public boolean contains(Object item) {
+        for (int ii = this.start; ii < this.end; ii+=this.step) {
+            if (item instanceof ceylon.language.Byte 
+                    && array[ii] == ((ceylon.language.Byte)item).byteValue()) {
+                return true;
             }
+        }
+        return false;
+    }
+    
+    @Override
+    public <Default> Iterable<? extends Object, ? extends Null> defaultNullElements(
+            @Ignore
+            TypeDescriptor $reified$Default, 
+            Default defaultValue) {
+        return this;
+    }
+    
+    @Override
+    public Iterable<? extends ceylon.language.Byte, ? extends Object> getCoalesced() {
+        return this;
+    }
+    
+    @Override
+    public boolean getEmpty() {
+        return this.end <= this.start;
+    }
+    
+    @Override
+    public long getSize() {
+        return java.lang.Math.max(0, (this.end-this.start+this.step-1)/this.step);
+    }
+    
+    @Override
+    public ceylon.language.Byte getFirst() {
+        return this.getEmpty() ? null : ceylon.language.Byte.instance(this.array[this.start]);
+    }
+    
+    
+    @Override
+    public ceylon.language.Byte getLast() {
+        return this.getEmpty() ? null : ceylon.language.Byte.instance(this.array[this.end-1]);
+    }
+    
+    @Override
+    public ByteArrayIterable getRest() {
+        return new ByteArrayIterable(this.array, this.start+1, this.end, this.step);
+    }
+    
+    @Override
+    public Sequential<? extends ceylon.language.Byte> sequence() {
+        // Note: Sequential is immutable, and we don't know where the array
+        // came from, so however we create the sequence we must take a copy
+        //TODO: use a more efficient imple, like in List.sequence()
+        return super.sequence();
+    }
+    
+    @Override
+    public Iterator<? extends ceylon.language.Byte> iterator() {
+        if (this.getEmpty()) {
+            return (Iterator)ceylon.language.emptyIterator_.get_();
+        }
+        return new Iterator<ceylon.language.Byte>() {
             
-            this.array = array;
-            this.start = start;
-            this.end = end;
-            this.step = step;
-        }
-        
-        @Override
-        public boolean containsAny(Iterable<? extends Object, ? extends Object> arg0) {
-            Iterator<? extends Object> iter = arg0.iterator();
-            Object item;
-            while (!((item = iter.next()) instanceof Finished)) {
-                if (item instanceof ceylon.language.Byte) {
-                    for (int ii = this.start; ii < this.end; ii+=this.step) {
-                        if (array[ii] == ((ceylon.language.Byte)item).byteValue()) {
-                            return true;
-                        }
-                    }
+            private int index = ByteArrayIterable.this.start;
+            
+            @Override
+            public Object next() {
+                if (index < ByteArrayIterable.this.end) {
+                    ceylon.language.Byte result = ceylon.language.Byte.instance(ByteArrayIterable.this.array[index]);
+                    index += ByteArrayIterable.this.step;
+                    return result;
+                } else {
+                    return finished_.get_();
                 }
             }
-            return false;
-        }
-        
-        @Override
-        public boolean containsEvery(
-                Iterable<? extends Object, ? extends Object> arg0) {
-            Iterator<? extends Object> iter = arg0.iterator();
-            Object item;
-            OUTER: while (!((item = iter.next()) instanceof Finished)) {
-                if (item instanceof ceylon.language.Byte) {
-                    for (int ii = this.start; ii < this.end; ii+=this.step) {
-                        if (array[ii] == ((ceylon.language.Byte)item).byteValue()) {
-                            continue OUTER;
-                        }
-                    }
-                } 
-                return false;
-            }
-            return true;
-        }
-        
-        @Override
-        public boolean any(Callable<? extends ceylon.language.Boolean> arg0) {
-            for (int ii=this.start; ii < this.end; ii+=this.step) {
-                if (arg0.$call$(ceylon.language.Byte.instance(array[ii])).booleanValue()) {
-                    return true;
-                }
-            }
-            return false;
-        }
-        
-        @Override
-        public boolean contains(Object item) {
-            for (int ii = this.start; ii < this.end; ii+=this.step) {
-                if (item instanceof ceylon.language.Byte 
-                        && array[ii] == ((ceylon.language.Byte)item).byteValue()) {
-                    return true;
-                }
-            }
-            return false;
-        }
-        
-        @Override
-        public <Default> Iterable<? extends Object, ? extends Null> defaultNullElements(
-                @Ignore
-                TypeDescriptor $reified$Default, 
-                Default defaultValue) {
+        };
+    }
+    
+    @Override
+    public boolean longerThan(long length) {
+        return this.getSize() > length;
+    }
+    
+    @Override
+    public boolean shorterThan(long length) {
+        return this.getSize() < length;
+    }
+    
+    @Override
+    public ByteArrayIterable by(long step) {
+        return new ByteArrayIterable(this.array, 
+                this.start, 
+                this.end, 
+                com.redhat.ceylon.compiler.java.Util.toInt(this.step*step));
+    }
+    
+    @Override
+    public ByteArrayIterable skip(long skip) {
+        if (skip <= 0) {
             return this;
         }
-        
-        @Override
-        public Iterable<? extends ceylon.language.Byte, ? extends Object> getCoalesced() {
+        return new ByteArrayIterable(this.array, 
+                com.redhat.ceylon.compiler.java.Util.toInt(this.start+skip*this.step), 
+                this.end, 
+                this.step);
+    }
+    
+    @Override
+    public ByteArrayIterable take(long take) {
+        if (take >= this.getSize()) {
             return this;
         }
-        
-        @Override
-        public boolean getEmpty() {
-            return this.end <= this.start;
-        }
-        
-        @Override
-        public long getSize() {
-            return java.lang.Math.max(0, (this.end-this.start+this.step-1)/this.step);
-        }
-        
-        @Override
-        public ceylon.language.Byte getFirst() {
-            return this.getEmpty() ? null : ceylon.language.Byte.instance(this.array[this.start]);
-        }
-        
-        
-        @Override
-        public ceylon.language.Byte getLast() {
-            return this.getEmpty() ? null : ceylon.language.Byte.instance(this.array[this.end-1]);
-        }
-        
-        @Override
-        public ByteArrayIterable getRest() {
-            return new ByteArrayIterable(this.array, this.start+1, this.end, this.step);
-        }
-        
-        @Override
-        public Sequential<? extends ceylon.language.Byte> sequence() {
-            // Note: Sequential is immutable, and we don't know where the array
-            // came from, so however we create the sequence we must take a copy
-        	//TODO: use a more efficient imple, like in List.sequence()
-            return super.sequence();
-        }
-        
-        @Override
-        public Iterator<? extends ceylon.language.Byte> iterator() {
-            if (this.getEmpty()) {
-                return (Iterator)ceylon.language.emptyIterator_.get_();
-            }
-            return new Iterator<ceylon.language.Byte>() {
-                
-                private int index = ByteArrayIterable.this.start;
-                
-                @Override
-                public Object next() {
-                    if (index < ByteArrayIterable.this.end) {
-                        ceylon.language.Byte result = ceylon.language.Byte.instance(ByteArrayIterable.this.array[index]);
-                        index += ByteArrayIterable.this.step;
-                        return result;
-                    } else {
-                        return finished_.get_();
-                    }
-                }
-            };
-        }
-        
-        @Override
-        public boolean longerThan(long length) {
-            return this.getSize() > length;
-        }
-        
-        @Override
-        public boolean shorterThan(long length) {
-            return this.getSize() < length;
-        }
-        
-        @Override
-        public ByteArrayIterable by(long step) {
-            return new ByteArrayIterable(this.array, 
-                    this.start, 
-                    this.end, 
-                    com.redhat.ceylon.compiler.java.Util.toInt(this.step*step));
-        }
-        
-        @Override
-        public ByteArrayIterable skip(long skip) {
-            if (skip <= 0) {
-                return this;
-            }
-            return new ByteArrayIterable(this.array, 
-                    com.redhat.ceylon.compiler.java.Util.toInt(this.start+skip*this.step), 
-                    this.end, 
-                    this.step);
-        }
-        
-        @Override
-        public ByteArrayIterable take(long take) {
-            if (take >= this.getSize()) {
-                return this;
-            }
-            return new ByteArrayIterable(this.array, 
-                    this.start, 
-                    com.redhat.ceylon.compiler.java.Util.toInt(take*this.step+1), 
-                    this.step);
-        }
-        
+        return new ByteArrayIterable(this.array, 
+                this.start, 
+                com.redhat.ceylon.compiler.java.Util.toInt(take*this.step+1), 
+                this.step);
     }
     
 }

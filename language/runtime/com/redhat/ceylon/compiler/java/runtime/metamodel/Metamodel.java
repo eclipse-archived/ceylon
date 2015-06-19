@@ -50,7 +50,7 @@ import com.redhat.ceylon.compiler.java.language.IntArray;
 import com.redhat.ceylon.compiler.java.language.InternalMap;
 import com.redhat.ceylon.compiler.java.language.LongArray;
 import com.redhat.ceylon.compiler.java.language.ObjectArray;
-import com.redhat.ceylon.compiler.java.language.ObjectArray.ObjectArrayIterable;
+import com.redhat.ceylon.compiler.java.language.ObjectArrayIterable;
 import com.redhat.ceylon.compiler.java.language.ReifiedTypeError;
 import com.redhat.ceylon.compiler.java.language.ShortArray;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;

@@ -342,218 +342,216 @@ public final class DoubleArray implements ReifiedType {
      * elements of this primitive Java array.
      */
     @TypeInfo("ceylon.language::Iterable<ceylon.language::Float,ceylon.language::Null>")
-    public DoubleArrayIterable getIterable() {
+    public ceylon.language.Iterable<ceylon.language.Float,ceylon.language.Null> getIterable() {
         throw Util.makeJavaArrayWrapperException();
     }
     
     @Ignore
-    public static DoubleArrayIterable getIterable(double[] value) {
+    public static ceylon.language.Iterable<ceylon.language.Float,ceylon.language.Null> getIterable(double[] value) {
         return new DoubleArrayIterable(value);
     }
+}
+
+/* Implement Iterable */
+class DoubleArrayIterable 
+extends BaseIterable<ceylon.language.Float, ceylon.language.Null> {
     
-    /* Implement Iterable */
+    /** The array over which we iterate */
+    private final double[] array;
+    /** The index where iteration starts */
+    private final int start;
+    /** The step size of iteration */
+    private final int step;
+    /** The index one beyond where iteration ends */
+    private final int end;
+    
     @Ignore
-    public static class DoubleArrayIterable 
-    extends BaseIterable<ceylon.language.Float, ceylon.language.Null> {
-        
-        /** The array over which we iterate */
-        private final double[] array;
-        /** The index where iteration starts */
-        private final int start;
-        /** The step size of iteration */
-        private final int step;
-        /** The index one beyond where iteration ends */
-        private final int end;
-        
-        @Ignore
-        public DoubleArrayIterable(double[] array) {
-            this(array, 0, array.length, 1);
+    public DoubleArrayIterable(double[] array) {
+        this(array, 0, array.length, 1);
+    }
+    
+    @Ignore
+    private DoubleArrayIterable(double[] array, 
+            int start, int end, int step) {
+        super(ceylon.language.Float.$TypeDescriptor$, Null.$TypeDescriptor$);
+        if (start < 0) {
+            throw new ceylon.language.AssertionError("start must be positive");
+        }
+        if (end < 0) {
+            throw new ceylon.language.AssertionError("end must be positive");
+        }
+        if (step <= 0) {
+            throw new ceylon.language.AssertionError("step size must be greater than zero");
         }
         
-        @Ignore
-        private DoubleArrayIterable(double[] array, 
-                int start, int end, int step) {
-        	super(ceylon.language.Float.$TypeDescriptor$, Null.$TypeDescriptor$);
-            if (start < 0) {
-                throw new ceylon.language.AssertionError("start must be positive");
+        this.array = array;
+        this.start = start;
+        this.end = end;
+        this.step = step;
+    }
+    
+    @Override
+    public boolean containsAny(Iterable<? extends Object, ? extends Object> arg0) {
+        Iterator<? extends Object> iter = arg0.iterator();
+        Object item;
+        while (!((item = iter.next()) instanceof Finished)) {
+            if (item instanceof ceylon.language.Float) {
+                for (int ii = this.start; ii < this.end; ii+=this.step) {
+                    if (array[ii] == ((ceylon.language.Float)item).doubleValue()) {
+                        return true;
+                    }
+                }
             }
-            if (end < 0) {
-                throw new ceylon.language.AssertionError("end must be positive");
+        }
+        return false;
+    }
+    
+    @Override
+    public boolean containsEvery(
+            Iterable<? extends Object, ? extends Object> arg0) {
+        Iterator<? extends Object> iter = arg0.iterator();
+        Object item;
+        OUTER: while (!((item = iter.next()) instanceof Finished)) {
+            if (item instanceof ceylon.language.Float) {
+                for (int ii = this.start; ii < this.end; ii+=this.step) {
+                    if (array[ii] == ((ceylon.language.Float)item).doubleValue()) {
+                        continue OUTER;
+                    }
+                }
+            } 
+            return false;
+        }
+        return true;
+    }
+    
+    @Override
+    public boolean any(Callable<? extends ceylon.language.Boolean> arg0) {
+        for (int ii=this.start; ii < this.end; ii+=this.step) {
+            if (arg0.$call$(ceylon.language.Float.instance(array[ii])).booleanValue()) {
+                return true;
             }
-            if (step <= 0) {
-                throw new ceylon.language.AssertionError("step size must be greater than zero");
+        }
+        return false;
+    }
+    
+    @Override
+    public boolean contains(Object item) {
+        for (int ii = this.start; ii < this.end; ii+=this.step) {
+            if (item instanceof ceylon.language.Float 
+                    && array[ii] == ((ceylon.language.Float)item).doubleValue()) {
+                return true;
             }
+        }
+        return false;
+    }
+    
+    @Override
+    public <Default> Iterable<? extends Object, ? extends Null> defaultNullElements(
+            @Ignore
+            TypeDescriptor $reified$Default, 
+            Default defaultValue) {
+        return this;
+    }
+    
+    @Override
+    public Iterable<? extends ceylon.language.Float, ? extends Object> getCoalesced() {
+        return this;
+    }
+    
+    @Override
+    public boolean getEmpty() {
+        return this.end <= this.start;
+    }
+    
+    @Override
+    public long getSize() {
+        return java.lang.Math.max(0, (this.end-this.start+this.step-1)/this.step);
+    }
+    
+    @Override
+    public ceylon.language.Float getFirst() {
+        return this.getEmpty() ? null : ceylon.language.Float.instance(this.array[this.start]);
+    }
+    
+    
+    @Override
+    public ceylon.language.Float getLast() {
+        return this.getEmpty() ? null : ceylon.language.Float.instance(this.array[this.end-1]);
+    }
+    
+    @Override
+    public DoubleArrayIterable getRest() {
+        return new DoubleArrayIterable(this.array, this.start+1, this.end, this.step);
+    }
+    
+    @Override
+    public Sequential<? extends ceylon.language.Float> sequence() {
+        // Note: Sequential is immutable, and we don't know where the array
+        // came from, so however we create the sequence we must take a copy
+        //TODO: use a more efficient imple, like in List.sequence()
+        return super.sequence();
+    }
+    
+    @Override
+    public Iterator<? extends ceylon.language.Float> iterator() {
+        if (this.getEmpty()) {
+            return (Iterator)ceylon.language.emptyIterator_.get_();
+        }
+        return new Iterator<ceylon.language.Float>() {
             
-            this.array = array;
-            this.start = start;
-            this.end = end;
-            this.step = step;
-        }
-        
-        @Override
-        public boolean containsAny(Iterable<? extends Object, ? extends Object> arg0) {
-            Iterator<? extends Object> iter = arg0.iterator();
-            Object item;
-            while (!((item = iter.next()) instanceof Finished)) {
-                if (item instanceof ceylon.language.Float) {
-                    for (int ii = this.start; ii < this.end; ii+=this.step) {
-                        if (array[ii] == ((ceylon.language.Float)item).doubleValue()) {
-                            return true;
-                        }
-                    }
+            private int index = DoubleArrayIterable.this.start;
+            
+            @Override
+            public Object next() {
+                if (index < DoubleArrayIterable.this.end) {
+                    ceylon.language.Float result = ceylon.language.Float.instance(DoubleArrayIterable.this.array[index]);
+                    index += DoubleArrayIterable.this.step;
+                    return result;
+                } else {
+                    return finished_.get_();
                 }
             }
-            return false;
-        }
-        
-        @Override
-        public boolean containsEvery(
-                Iterable<? extends Object, ? extends Object> arg0) {
-            Iterator<? extends Object> iter = arg0.iterator();
-            Object item;
-            OUTER: while (!((item = iter.next()) instanceof Finished)) {
-                if (item instanceof ceylon.language.Float) {
-                    for (int ii = this.start; ii < this.end; ii+=this.step) {
-                        if (array[ii] == ((ceylon.language.Float)item).doubleValue()) {
-                            continue OUTER;
-                        }
-                    }
-                } 
-                return false;
-            }
-            return true;
-        }
-        
-        @Override
-        public boolean any(Callable<? extends ceylon.language.Boolean> arg0) {
-            for (int ii=this.start; ii < this.end; ii+=this.step) {
-                if (arg0.$call$(ceylon.language.Float.instance(array[ii])).booleanValue()) {
-                    return true;
-                }
-            }
-            return false;
-        }
-        
-        @Override
-        public boolean contains(Object item) {
-            for (int ii = this.start; ii < this.end; ii+=this.step) {
-                if (item instanceof ceylon.language.Float 
-                        && array[ii] == ((ceylon.language.Float)item).doubleValue()) {
-                    return true;
-                }
-            }
-            return false;
-        }
-        
-        @Override
-        public <Default> Iterable<? extends Object, ? extends Null> defaultNullElements(
-                @Ignore
-                TypeDescriptor $reified$Default, 
-                Default defaultValue) {
+        };
+    }
+    
+    @Override
+    public boolean longerThan(long length) {
+        return this.getSize() > length;
+    }
+    
+    @Override
+    public boolean shorterThan(long length) {
+        return this.getSize() < length;
+    }
+    
+    @Override
+    public DoubleArrayIterable by(long step) {
+        return new DoubleArrayIterable(this.array, 
+                this.start, 
+                this.end, 
+                com.redhat.ceylon.compiler.java.Util.toInt(this.step*step));
+    }
+    
+    @Override
+    public DoubleArrayIterable skip(long skip) {
+        if (skip <= 0) {
             return this;
         }
-        
-        @Override
-        public Iterable<? extends ceylon.language.Float, ? extends Object> getCoalesced() {
+        return new DoubleArrayIterable(this.array, 
+                com.redhat.ceylon.compiler.java.Util.toInt(this.start+skip*this.step), 
+                this.end, 
+                this.step);
+    }
+    
+    @Override
+    public DoubleArrayIterable take(long take) {
+        if (take >= this.getSize()) {
             return this;
         }
-        
-        @Override
-        public boolean getEmpty() {
-            return this.end <= this.start;
-        }
-        
-        @Override
-        public long getSize() {
-            return java.lang.Math.max(0, (this.end-this.start+this.step-1)/this.step);
-        }
-        
-        @Override
-        public ceylon.language.Float getFirst() {
-            return this.getEmpty() ? null : ceylon.language.Float.instance(this.array[this.start]);
-        }
-        
-        
-        @Override
-        public ceylon.language.Float getLast() {
-            return this.getEmpty() ? null : ceylon.language.Float.instance(this.array[this.end-1]);
-        }
-        
-        @Override
-        public DoubleArrayIterable getRest() {
-            return new DoubleArrayIterable(this.array, this.start+1, this.end, this.step);
-        }
-        
-        @Override
-        public Sequential<? extends ceylon.language.Float> sequence() {
-            // Note: Sequential is immutable, and we don't know where the array
-            // came from, so however we create the sequence we must take a copy
-        	//TODO: use a more efficient imple, like in List.sequence()
-            return super.sequence();
-        }
-        
-        @Override
-        public Iterator<? extends ceylon.language.Float> iterator() {
-            if (this.getEmpty()) {
-                return (Iterator)ceylon.language.emptyIterator_.get_();
-            }
-            return new Iterator<ceylon.language.Float>() {
-                
-                private int index = DoubleArrayIterable.this.start;
-                
-                @Override
-                public Object next() {
-                    if (index < DoubleArrayIterable.this.end) {
-                        ceylon.language.Float result = ceylon.language.Float.instance(DoubleArrayIterable.this.array[index]);
-                        index += DoubleArrayIterable.this.step;
-                        return result;
-                    } else {
-                        return finished_.get_();
-                    }
-                }
-            };
-        }
-        
-        @Override
-        public boolean longerThan(long length) {
-            return this.getSize() > length;
-        }
-        
-        @Override
-        public boolean shorterThan(long length) {
-            return this.getSize() < length;
-        }
-        
-        @Override
-        public DoubleArrayIterable by(long step) {
-            return new DoubleArrayIterable(this.array, 
-                    this.start, 
-                    this.end, 
-                    com.redhat.ceylon.compiler.java.Util.toInt(this.step*step));
-        }
-        
-        @Override
-        public DoubleArrayIterable skip(long skip) {
-            if (skip <= 0) {
-                return this;
-            }
-            return new DoubleArrayIterable(this.array, 
-                    com.redhat.ceylon.compiler.java.Util.toInt(this.start+skip*this.step), 
-                    this.end, 
-                    this.step);
-        }
-        
-        @Override
-        public DoubleArrayIterable take(long take) {
-            if (take >= this.getSize()) {
-                return this;
-            }
-            return new DoubleArrayIterable(this.array, 
-                    this.start, 
-                    com.redhat.ceylon.compiler.java.Util.toInt(take*this.step+1), 
-                    this.step);
-        }
-        
+        return new DoubleArrayIterable(this.array, 
+                this.start, 
+                com.redhat.ceylon.compiler.java.Util.toInt(take*this.step+1), 
+                this.step);
     }
     
 }

@@ -12,6 +12,7 @@ import java.util.Arrays;
 import ceylon.language.null_;
 import ceylon.language.meta.model.IncompatibleTypeException;
 import ceylon.language.meta.model.MutationException;
+import ceylon.language.meta.model.StorageException;
 
 import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
@@ -168,7 +169,7 @@ public class AppliedValue<Get, Set>
                 }
             }
         }else
-            throw Metamodel.newModelError("Unsupported attribute type: "+decl);
+            throw new StorageException("Attribute "+decl.getName()+" is neither captured nor shared so it has no physical storage allocated and cannot be read by the metamodel");
     }
 
     private void initSetter(com.redhat.ceylon.model.typechecker.model.Value decl, java.lang.Class<?> javaClass, 

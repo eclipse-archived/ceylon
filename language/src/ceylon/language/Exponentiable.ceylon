@@ -1,18 +1,20 @@
 "Abstraction of [[numeric types|Numeric]] that may be raised 
- to a power using the _exponentiation_ operator ^.
+ to a power using the _exponentiation_ operator `x ^ n` 
+ which accepts an instance of `Exponentiable` as its first
+ operand, and an exponent as its second operand.
  
      function exp(Float x) => e^x;
  
  The exponentiation operation should obey the usual index
  laws, including:
  
- - `x^0 = 1`,
- - `x^1 = x`,
- - `x^(-1) = 1/x` 
- - `x^(m+n) = x^m * x^n`
- - `x^(m-n) = x^m / x^n`
- - `x^(m*n) = (x^m)^n`
- - `(x*y)^n = x^n * y^n`
+ - `x^0 == 1`
+ - `x^1 == x`
+ - `x^(-1) == 1/x`
+ - `x^(m+n) == x^m * x^n`
+ - `x^(m-n) == x^m / x^n`
+ - `x^(m*n) == (x^m)^n`
+ - `(x*y)^n == x^n * y^n`
  
  where `0` is the additive identity, and `1` is the 
  multiplicative identity.

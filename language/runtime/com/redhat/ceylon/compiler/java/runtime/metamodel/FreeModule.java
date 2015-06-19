@@ -17,7 +17,7 @@ import ceylon.language.meta.declaration.Package;
 import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.language.ByteArrayResource;
 import com.redhat.ceylon.compiler.java.language.FileResource;
-import com.redhat.ceylon.compiler.java.language.ObjectArray.ObjectArrayIterable;
+import com.redhat.ceylon.compiler.java.language.ObjectArrayIterable;
 import com.redhat.ceylon.compiler.java.language.ZipResource;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Name;

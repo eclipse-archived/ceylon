@@ -1467,6 +1467,13 @@ public final class String
             Callable<? extends Result> f) {
         return instance(value).map($reifiedResult, f);
     }
+    
+    @Ignore
+    public static <Result, OtherAbsent> Iterable<? extends Result, ?> 
+    flatMap(@Ignore TypeDescriptor $reified$Result, @Ignore TypeDescriptor $reified$OtherAbsent, java.lang.String value, 
+            Callable<? extends Iterable<? extends Result, ? extends OtherAbsent>> collecting) {
+        return instance(value).flatMap($reified$Result, $reified$OtherAbsent, collecting);
+    }
 
     @SuppressWarnings("rawtypes")
     @Ignore
