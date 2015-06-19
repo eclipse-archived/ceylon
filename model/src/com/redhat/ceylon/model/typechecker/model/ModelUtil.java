@@ -999,14 +999,16 @@ public class ModelUtil {
                 }
             }
         }
-        //now turn the type argument tuple into a
-        //map from type parameter to argument
-        for (int i=0; 
-                i<typeParameters.size() && 
-                i<typeArguments.size(); 
-                i++) {
-            map.put(typeParameters.get(i), 
-                    typeArguments.get(i));
+        if (typeArguments!=null) {
+            //now turn the type argument tuple into a
+            //map from type parameter to argument
+            for (int i=0; 
+                    i<typeParameters.size() && 
+                    i<typeArguments.size(); 
+                    i++) {
+                map.put(typeParameters.get(i), 
+                        typeArguments.get(i));
+            }
         }
         return map;
     }
