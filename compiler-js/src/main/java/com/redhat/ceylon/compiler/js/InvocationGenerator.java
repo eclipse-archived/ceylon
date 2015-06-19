@@ -451,7 +451,7 @@ public class InvocationGenerator {
                         }
                     } else if (pd.isSequenced()) {
                         arg.visit(gen);
-                        if (!arg.getTypeModel().isSequential()) {
+                        if (!TypeUtils.isSequential(arg.getTypeModel())) {
                             gen.out(".sequence()");
                         }
                     } else {
