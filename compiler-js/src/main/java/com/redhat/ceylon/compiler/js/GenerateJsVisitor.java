@@ -1732,7 +1732,7 @@ public class GenerateJsVisitor extends Visitor
 
     @Override
     public void visit(final Tree.BaseMemberExpression that) {
-        BmeGenerator.generateBme(that, this, false);
+        BmeGenerator.generateBme(that, this);
     }
 
     /** Tells whether a declaration can be accessed directly (using its name) or
@@ -1848,8 +1848,8 @@ public class GenerateJsVisitor extends Visitor
             } else if (d instanceof Function) {
                 Function fd = (Function)d;
                 if (fd.getTypeDeclaration() instanceof Constructor) {
-                    qualify(that, fd.getTypeDeclaration());
-                    out(names.name(fd));
+                    that.getPrimary().visit(this);
+                    out("_", names.name(fd));
                 } else {
                     out("function($O$){return ");
                     if (BmeGenerator.hasTypeParameters(that)) {
@@ -2101,7 +2101,7 @@ public class GenerateJsVisitor extends Visitor
 
     @Override
     public void visit(final Tree.QualifiedTypeExpression that) {
-        BmeGenerator.generateQte(that, this, false);
+        BmeGenerator.generateQte(that, this);
     }
 
     public void visit(final Tree.Dynamic that) {
