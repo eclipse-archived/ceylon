@@ -3158,8 +3158,7 @@ public class ExpressionVisitor extends Visitor {
                                     type.getName() + "'");
                         }
                     }
-                    for (Type st: 
-                            ci.getSatisfiedTypes()) {
+                    for (Type st: ci.getSatisfiedTypes()) {
                         //TODO: might be better to pass the 
                         //      signature here in order to 
                         //      avoid an error when a 
@@ -7962,7 +7961,8 @@ public class ExpressionVisitor extends Visitor {
                     typeArguments==null ||
                     typeArguments.isEmpty();
             if (dec instanceof TypeAlias && !empty) {
-                dec = unwrapAliasedTypeConstructor((TypeAlias) dec);
+                TypeAlias alias = (TypeAlias) dec;
+                dec = unwrapAliasedTypeConstructor(alias);
                 return checkTypeArgumentAgainstDeclaration(
                         receiverType, dec, typeArguments, 
                         tas, parent);
@@ -8056,6 +8056,7 @@ public class ExpressionVisitor extends Visitor {
                         !sts.isEmpty() || 
                         param.getCaseTypes()!=null;
                 boolean enforceConstraints = 
+                        modelLiteral ||
                         !(parent instanceof Tree.SimpleType) ||
                         ((Tree.SimpleType) parent).getInherited();
                 if (//!isCondition && 
@@ -8578,6 +8579,7 @@ public class ExpressionVisitor extends Visitor {
     }
     
     private boolean declarationLiteral = false;
+    private boolean modelLiteral = false;
     
     @Override
     public void visit(Tree.TypeArgumentList that) {
@@ -8596,11 +8598,15 @@ public class ExpressionVisitor extends Visitor {
             that instanceof Tree.TypeParameterLiteral) {
             declarationLiteral = true;
         }
+        else {
+            modelLiteral = true;
+        }
         try {
             super.visit(that);
         }
         finally {
             declarationLiteral = false;
+            modelLiteral = false;
         }
         Type t;
         TypeDeclaration d;
@@ -8631,7 +8637,6 @@ public class ExpressionVisitor extends Visitor {
 		        return; //EARLY EXIT!!
 		    }
 		}
-        // FIXME: should we disallow type parameters in there?
         if (t!=null) {
             that.setDeclaration(d);
             that.setWantsDeclaration(true);
@@ -8727,11 +8732,15 @@ public class ExpressionVisitor extends Visitor {
             that instanceof Tree.ValueLiteral) {
             declarationLiteral = true;
         }
+        else {
+            modelLiteral = true;
+        }
         try {
             super.visit(that);
         }
         finally {
             declarationLiteral = false;
+            modelLiteral = false;
         }
         Tree.Identifier id = that.getIdentifier();
         if (id!=null) {
