@@ -191,17 +191,33 @@ public abstract class AbstractTransformer implements Transformation {
         }
     }
     
+
+    boolean blocked = false;
+    int block() {
+        gen().blocked = true;
+        return make.pos;
+    }
+    int unblock() {
+        gen().blocked = false;
+        return make.pos;
+    }
+    protected void _at(int pos) {
+        if (!gen().blocked) {
+            make.at(pos);
+        }
+    }
+    
     @Override
     public Factory at(Node node) {
         if (node == null) {
-            make.at(Position.NOPOS);
+            _at(Position.NOPOS);
             
         }
         else {
             Token token = node.getToken();
             if (token != null) {
                 int tokenStartPosition = getMap().getStartPosition(token.getLine()) + token.getCharPositionInLine();
-                make().at(tokenStartPosition);
+                _at(tokenStartPosition);
                 if (javaPositionsRetriever != null) {
                     javaPositionsRetriever.addCeylonNode(tokenStartPosition, node);
                 }
@@ -212,13 +228,13 @@ public abstract class AbstractTransformer implements Transformation {
     
     public Factory at(Node node, Token token) {
         if (token == null) {
-            make.at(Position.NOPOS);
+            _at(Position.NOPOS);
             
         }
         else {
             if (token != null) {
                 int tokenStartPosition = getMap().getStartPosition(token.getLine()) + token.getCharPositionInLine();
-                make().at(tokenStartPosition);
+                _at(tokenStartPosition);
                 if (javaPositionsRetriever != null) {
                     javaPositionsRetriever.addCeylonNode(tokenStartPosition, node);
                 }
@@ -243,7 +259,7 @@ public abstract class AbstractTransformer implements Transformation {
          */
         @Override
         public void close() {
-            make.at(pos);
+            _at(pos);
         }
     }
     
@@ -253,7 +269,7 @@ public abstract class AbstractTransformer implements Transformation {
      */
     public SavedPosition savePosition(int at) {
         SavedPosition saved = new SavedPosition(make.pos);
-        make.at(at);
+        _at(at);
         return saved;
     }
     
@@ -270,7 +286,7 @@ public abstract class AbstractTransformer implements Transformation {
      */
     public SavedPosition noPosition() {
         SavedPosition saved = new SavedPosition(make.pos);
-        make.at(Position.NOPOS);
+        _at(Position.NOPOS);
         return saved;
     }
     
