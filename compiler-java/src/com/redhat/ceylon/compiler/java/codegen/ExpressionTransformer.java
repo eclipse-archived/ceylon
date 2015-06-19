@@ -1152,7 +1152,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             }
             JCExpression typeCall = makeTypeLiteralCall(containerType, false, expr.getTypeModel());
             // make sure we cast it to ClassOrInterface
-            TypeDeclaration classOrInterfaceDeclaration = (TypeDeclaration) typeFact().getLanguageModuleModelDeclaration("ClassOrInterface");
+            TypeDeclaration classOrInterfaceDeclaration = (TypeDeclaration) typeFact().getLanguageModuleModelDeclaration(Decl.isConstructor(declaration) ? "ClassModel" : "ClassOrInterface");
             JCExpression classOrInterfaceTypeExpr = makeJavaType(
                     classOrInterfaceDeclaration.appliedReference(null, Arrays.asList(containerType)).getType());
 
@@ -1163,7 +1163,13 @@ public class ExpressionTransformer extends AbstractTransformer {
             JCExpression reifiedContainerExpr = makeReifiedTypeArgument(containerType);
             
             // make a raw call and cast
-            if(declaration instanceof Function){
+            if (Decl.isConstructor(declaration)) {
+                Type callableType = producedReference.getFullType();
+                JCExpression reifiedArgumentsExpr = makeReifiedTypeArgument(typeFact().getCallableTuple(callableType));
+                List<JCExpression> arguments = List.of(reifiedArgumentsExpr, ceylonLiteral(declaration.getName()));
+                JCExpression classModel = makeSelect(typeCall, "getConstructor");
+                memberCall = make().Apply(null, classModel, arguments);
+            } else if(declaration instanceof Function){
                 // we need to get types for each type argument
                 JCExpression closedTypesExpr = null;
                 if(expr.getTypeArgumentList() != null) {
