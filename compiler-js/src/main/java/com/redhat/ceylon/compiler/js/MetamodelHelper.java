@@ -10,6 +10,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ValueLiteral;
 import com.redhat.ceylon.model.typechecker.model.Class;
+import com.redhat.ceylon.model.typechecker.model.Constructor;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Function;
 import com.redhat.ceylon.model.typechecker.model.Module;
@@ -25,7 +26,7 @@ public class MetamodelHelper {
 
     static void generateOpenType(final Tree.MetaLiteral that, final Declaration d, final GenerateJsVisitor gen) {
         final Module m = d.getUnit().getPackage().getModule();
-        final boolean isConstructor = d instanceof com.redhat.ceylon.model.typechecker.model.Constructor
+        final boolean isConstructor = TypeUtils.isConstructor(d)
                 || that instanceof Tree.NewLiteral;
         if (d instanceof TypeParameter == false) {
             if (JsCompiler.isCompilingLanguageModule()) {
@@ -132,9 +133,9 @@ public class MetamodelHelper {
     static void generateClosedTypeLiteral(final Tree.TypeLiteral that, final GenerateJsVisitor gen) {
         final Type ltype = that.getType().getTypeModel();
         final TypeDeclaration td = ltype.getDeclaration();
-        final Map<TypeParameter,Type> targs = that.getType().getTypeModel().getTypeArguments();
+        final Map<TypeParameter,Type> targs = ltype.getTypeArguments();
         final boolean isConstructor = that instanceof Tree.NewLiteral
-                || td instanceof com.redhat.ceylon.model.typechecker.model.Constructor;
+                || TypeUtils.isConstructor(td);
         if (ltype.isClass()) {
             if (td.isClassOrInterfaceMember()) {
                 gen.out(gen.getClAlias(), "$init$AppliedMemberClass$jsint()(");
@@ -154,26 +155,11 @@ public class MetamodelHelper {
             if (targs != null && !targs.isEmpty()) {
                 gen.out(",undefined,");
                 TypeUtils.printTypeArguments(that, targs, gen, false,
-                        that.getType().getTypeModel().getVarianceOverrides());
+                        ltype.getVarianceOverrides());
             }
             gen.out(")");
         } else if (isConstructor) {
-            Class _pc = ltype.isClass() ? (Class)td : (Class)td.getContainer();
-            if (_pc.isToplevel()) {
-                gen.out(gen.getClAlias(), "$init$AppliedConstructor$jsint()(");
-            } else {
-                gen.out(gen.getClAlias(), "$init$AppliedMemberConstructor$jsint()(");
-            }
-            TypeUtils.outputQualifiedTypename(null, gen.isImported(gen.getCurrentPackage(), _pc), _pc.getType(), gen, false);
-            gen.out(".", gen.getNames().name(_pc), "_", gen.getNames().name(td), ",");
-            TypeUtils.printTypeArguments(that, that.getTypeModel().getTypeArguments(), gen, false,
-                    that.getTypeModel().getVarianceOverrides());
-            if (targs != null && !targs.isEmpty()) {
-                gen.out(",undefined,");
-                TypeUtils.printTypeArguments(that, targs, gen, false,
-                        that.getType().getTypeModel().getVarianceOverrides());
-            }
-            gen.out(")");
+            constructorLiteral(ltype, TypeUtils.getConstructor(td), that, gen);
         } else if (ltype.isInterface()) {
             if (td.isToplevel()) {
                 gen.out(gen.getClAlias(), "$init$AppliedInterface$jsint()(");
@@ -187,7 +173,7 @@ public class MetamodelHelper {
             if (targs != null && !targs.isEmpty()) {
                 gen.out(",undefined,");
                 TypeUtils.printTypeArguments(that, targs, gen, false,
-                        that.getType().getTypeModel().getVarianceOverrides());
+                        ltype.getVarianceOverrides());
             }
             gen.out(")");
         } else if (ltype.isNothing()) {
@@ -203,12 +189,36 @@ public class MetamodelHelper {
         }
     }
 
+    private static void constructorLiteral(final Type ltype, final Constructor cd,
+            final Tree.MetaLiteral meta, final GenerateJsVisitor gen) {
+        Class _pc = (Class)cd.getContainer();
+        if (_pc.isToplevel()) {
+            gen.out(gen.getClAlias(), "$init$AppliedConstructor$jsint()(");
+        } else {
+            gen.out(gen.getClAlias(), "$init$AppliedMemberConstructor$jsint()(");
+        }
+        TypeUtils.outputQualifiedTypename(null, gen.isImported(gen.getCurrentPackage(), _pc), _pc.getType(), gen, false);
+        gen.out("_", gen.getNames().name(cd), ",");
+        TypeUtils.printTypeArguments(meta, meta.getTypeModel().getTypeArguments(), gen, false,
+                meta.getTypeModel().getVarianceOverrides());
+        if (ltype != null && ltype.getTypeArguments() != null && !ltype.getTypeArguments().isEmpty()) {
+            gen.out(",undefined,");
+            TypeUtils.printTypeArguments(meta, ltype.getTypeArguments(), gen, false,
+                    ltype.getVarianceOverrides());
+        }
+        gen.out(")");
+    }
+
     static void generateMemberLiteral(final Tree.MemberLiteral that, final GenerateJsVisitor gen) {
         final com.redhat.ceylon.model.typechecker.model.Reference ref = that.getTarget();
         final Type ltype = that.getType() == null ? null : that.getType().getTypeModel();
         final Declaration d = ref.getDeclaration();
         final Class anonClass = d.isMember()&&d.getContainer() instanceof Class && ((Class)d.getContainer()).isAnonymous()?(Class)d.getContainer():null;
         if (that instanceof Tree.FunctionLiteral || d instanceof Function) {
+            if (TypeUtils.isConstructor(d)) {
+                constructorLiteral(ltype, TypeUtils.getConstructor(d), that, gen);
+                return;
+            }
             gen.out(gen.getClAlias(), d.isMember()?"AppliedMethod$jsint(":"AppliedFunction$jsint(");
             if (anonClass != null) {
                 gen.qualify(that, anonClass);
