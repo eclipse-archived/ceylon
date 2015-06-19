@@ -741,17 +741,17 @@ public class CeylonDocToolTests {
         assertMatchInFile(destDir, "StubClassWithConstructors.type.html", 
                 Pattern.compile("<span class='identifier'>StubClassWithConstructors</span>\\(\\)"));
         assertMatchInFile(destDir, "StubClassWithConstructors.type.html", 
-                Pattern.compile("Ctor1"));
+                Pattern.compile("ctor1"));
         assertMatchInFile(destDir, "StubClassWithConstructors.type.html", 
-                Pattern.compile("Ctor2"));
+                Pattern.compile("ctor2"));
         
         if( includeNonShared ) {
             assertMatchInFile(destDir, "StubClassWithConstructors.type.html", 
-                    Pattern.compile("CtorInternal"));
+                    Pattern.compile("ctorInternal"));
         }
         else {
             assertNoMatchInFile(destDir, "StubClassWithConstructors.type.html", 
-                    Pattern.compile("CtorInternal"));
+                    Pattern.compile("ctorInternal"));
         }
     }
 

@@ -22,10 +22,10 @@ shared class StubClassWithConstructors {
 	shared new () {}
 	
 	"Lorem ipsum dolor sit amet, consectetur..."
-	shared new Ctor1() {}
+	shared new ctor1() {}
 	
-	shared new Ctor2(String s) {}
+	shared new ctor2(String s) {}
 	
-	new CtorInternal() {}
+	new ctorInternal() {}
    
 }
