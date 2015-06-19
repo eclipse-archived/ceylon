@@ -357,8 +357,8 @@ enumeratedObject returns [Enumerated declaration]
     : NEW
       { $declaration = new Enumerated($NEW); }
       (
-        memberName
-        { $declaration.setIdentifier($memberName.identifier); }
+        memberNameDeclaration
+        { $declaration.setIdentifier($memberNameDeclaration.identifier); }
       )?
       (
         dc=delegatedConstructor
@@ -882,10 +882,8 @@ constructor returns [Constructor declaration]
     : NEW
       { $declaration = new Constructor($NEW); }
       (
-        memberName
-        { $declaration.setIdentifier($memberName.identifier); }
-      | typeName
-        { $declaration.setIdentifier($typeName.identifier); }
+        memberNameDeclaration
+        { $declaration.setIdentifier($memberNameDeclaration.identifier); }
       )?
       (
         parameters
