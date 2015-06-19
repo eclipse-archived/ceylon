@@ -25,6 +25,7 @@ public class Class extends ClassOrInterface implements Functional {
     private List<Declaration> overloads;
     private List<Reference> unimplementedFormals = 
             Collections.<Reference>emptyList();
+    private boolean valueConstructor;
 
     public boolean hasConstructors() {
         return constructors;
@@ -40,6 +41,15 @@ public class Class extends ClassOrInterface implements Functional {
 
     public void setEnumerated(boolean enumerated) {
         this.enumerated = enumerated;
+    }
+    
+    @Override
+    public boolean isValueConstructor() {
+        return valueConstructor;
+    }
+    
+    public void setValueConstructor(boolean valueConstructor) {
+        this.valueConstructor = valueConstructor;
     }
     
     @Override
