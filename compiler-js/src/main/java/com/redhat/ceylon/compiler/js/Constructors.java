@@ -15,7 +15,7 @@ public class Constructors {
     static void classConstructor(final Tree.Constructor that, final Tree.ClassDefinition cdef,
             final List<Tree.Constructor> constructors, final GenerateJsVisitor gen) {
         gen.comment(that);
-        Constructor d = that.getDeclarationModel();
+        Constructor d = TypeUtils.getConstructor(that.getDeclarationModel());
         final Class container = cdef.getDeclarationModel();
         final String fullName = gen.getNames().name(container) + "_" + gen.getNames().name(d);
         if (!TypeUtils.isNativeExternal(d) || !gen.stitchNative(d, that)) {
@@ -36,7 +36,7 @@ public class Constructors {
     private static void generateConstructor(final Tree.Constructor that, final Tree.ClassDefinition cdef,
             final List<Tree.Constructor> constructors, final String fullName,
             final GenerateJsVisitor gen) {
-        final Constructor d = that.getDeclarationModel();
+        final Constructor d = TypeUtils.getConstructor(that.getDeclarationModel());
         final Class container = cdef.getDeclarationModel();
         final Tree.DelegatedConstructor delcons = that.getDelegatedConstructor();
         final TypeDeclaration superdec;
@@ -123,7 +123,8 @@ public class Constructors {
                 }
             } else {
                 for (Tree.Statement st : cdef.getClassBody().getStatements()) {
-                    if (st instanceof Tree.Constructor && ((Tree.Constructor) st).getDeclarationModel() == xtd) {
+                    if (st instanceof Tree.Constructor &&
+                            TypeUtils.getConstructor(((Tree.Constructor) st).getDeclarationModel()) == xtd) {
                         c1 = (Tree.Constructor)st;
                         break;
                     }

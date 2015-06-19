@@ -13,7 +13,7 @@ public class ReturnConstructorVisitor extends Visitor {
 
     public ReturnConstructorVisitor(Tree.Constructor constructorNode) {
         node = constructorNode;
-        d = node.getDeclarationModel();
+        d = node.getConstructor();
         node.getBlock().visit(this);
     }
 

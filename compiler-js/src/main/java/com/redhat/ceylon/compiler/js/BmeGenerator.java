@@ -175,7 +175,7 @@ public class BmeGenerator {
             }
             if (gen.isInDynamicBlock() && that.getDeclaration() == null) {
                 gen.out(".", that.getIdentifier().getText());
-            } else if (that.getDeclaration() instanceof com.redhat.ceylon.model.typechecker.model.Constructor) {
+            } else if (TypeUtils.isConstructor(that.getDeclaration())) {
                 gen.out("_", gen.getNames().name(that.getDeclaration()));
             } else {
                 gen.out(".", gen.getNames().name(that.getDeclaration()));

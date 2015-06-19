@@ -226,6 +226,17 @@ public class JsonPackage extends com.redhat.ceylon.model.typechecker.model.Packa
                 plist.setNamedParametersSupported(true);
                 cnst.addParameterList(plist);
                 cls.addMember(cnst);
+                Function cf = new Function();
+                cf.setName(cnst.getName());
+                cf.setType(cnst.getType());
+                cf.addParameterList(plist);
+                cf.setContainer(cls);
+                cf.setScope(cls);
+                cf.setUnit(cls.getUnit());
+                cf.setVisibleScope(cnst.getVisibleScope());
+                cf.setShared(cnst.isShared());
+                cf.setDeprecated(cnst.isDeprecated());
+                cls.addMember(cf);
             }
         } else {
             ParameterList plist = parseParameters((List<Map<String,Object>>)m.remove(MetamodelGenerator.KEY_PARAMS),
