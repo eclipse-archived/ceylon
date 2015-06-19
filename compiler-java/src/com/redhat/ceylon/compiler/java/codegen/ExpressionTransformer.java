@@ -3890,26 +3890,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                             producedReference).build();
                 }
             } 
-            if (member instanceof Function) {
-                Function method = (Function)member;
-                if (!method.isParameter()) {
-                    Reference producedReference = method.appliedReference(qualifyingType, typeArguments.getTypeModels());
-                    return CallableBuilder.unboundFunctionalMemberReference(
-                            gen(), 
-                            expr,
-                            expr.getTypeModel(), 
-                            method, 
-                            producedReference).build();
-                } else {
-                    Reference producedReference = method.appliedReference(qualifyingType, typeArguments.getTypeModels());
-                    return CallableBuilder.unboundFunctionalMemberReference(
-                            gen(), 
-                            expr,
-                            expr.getTypeModel(), 
-                            method, 
-                            producedReference).build();
-                }
-            } else if (member instanceof Value) {
+            if (member instanceof Value) {
                 if (expr.getStaticMethodReference()
                         && Decl.isEnumeratedConstructor((Value)member)) {
                     CallBuilder callBuilder = CallBuilder.instance(this);
@@ -3933,6 +3914,33 @@ public class ExpressionTransformer extends AbstractTransformer {
                             expr.getTypeModel(), 
                             ((TypedDeclaration)member)).build();
                 }
+            } else if (Decl.isConstructor(member)) {
+                Reference producedReference = expr.getTarget();
+                return CallableBuilder.unboundFunctionalMemberReference(
+                        gen(), 
+                        expr,
+                        expr.getTypeModel(), 
+                        Decl.getConstructor(member), 
+                        producedReference).build();
+            } else if (member instanceof Function) {
+                Function method = (Function)member;
+                if (!method.isParameter()) {
+                    Reference producedReference = method.appliedReference(qualifyingType, typeArguments.getTypeModels());
+                    return CallableBuilder.unboundFunctionalMemberReference(
+                            gen(), 
+                            expr,
+                            expr.getTypeModel(), 
+                            method, 
+                            producedReference).build();
+                } else {
+                    Reference producedReference = method.appliedReference(qualifyingType, typeArguments.getTypeModels());
+                    return CallableBuilder.unboundFunctionalMemberReference(
+                            gen(), 
+                            expr,
+                            expr.getTypeModel(), 
+                            method, 
+                            producedReference).build();
+                }
             } else if (member instanceof Class) {
                 Reference producedReference = expr.getTarget();
                 return CallableBuilder.unboundFunctionalMemberReference(
@@ -3940,14 +3948,6 @@ public class ExpressionTransformer extends AbstractTransformer {
                         expr,
                         expr.getTypeModel(), 
                         (Class)member, 
-                        producedReference).build();
-            } else if (member instanceof Constructor) {
-                Reference producedReference = expr.getTarget();
-                return CallableBuilder.unboundFunctionalMemberReference(
-                        gen(), 
-                        expr,
-                        expr.getTypeModel(), 
-                        (Constructor)member, 
                         producedReference).build();
             } else {
                 return makeErroneous(expr, "compiler bug: member reference of " + expr + " not supported yet");
