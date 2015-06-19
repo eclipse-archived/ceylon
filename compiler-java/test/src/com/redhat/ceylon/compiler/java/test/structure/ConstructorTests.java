@@ -198,4 +198,9 @@ public class ConstructorTests extends CompilerTests {
         //compile("constructor/SingletonCtors.ceylon");
         run("com.redhat.ceylon.compiler.java.test.structure.constructor.singletonCtorDelegation");
     }
+    
+    @Test
+    public void testCtorOfObjectSubclass() {
+        compareWithJavaSource("constructor/CtorOfObjectSubclass");
+    }
 }
