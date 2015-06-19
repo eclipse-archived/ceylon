@@ -1945,8 +1945,9 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             if (constructorName != null 
                     && !constructorName.isEmpty()) {
                 Declaration constructor = alias.getExtendedType().getDeclaration().getMember(constructorName, null, false);
-                if (constructor instanceof TypeDeclaration) {
-                    alias.setConstructor((TypeDeclaration)constructor);
+                if (constructor instanceof FunctionOrValue
+                        && ((FunctionOrValue)constructor).getTypeDeclaration() instanceof Constructor) {
+                    alias.setConstructor(((FunctionOrValue)constructor).getTypeDeclaration());
                 } else {
                     logError("class aliased constructor " + constructorName + " which is no longer a constructor of " + alias.getExtendedType().getDeclaration().getQualifiedNameString());
                 }
