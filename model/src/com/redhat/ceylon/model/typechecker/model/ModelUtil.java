@@ -2829,4 +2829,12 @@ public class ModelUtil {
         type.setTypeConstructor(true);
         return type;
     }
+
+    public static boolean isConstructor(Declaration member) {
+        return member instanceof Constructor ||
+                member instanceof FunctionOrValue && 
+                    ((FunctionOrValue) member)
+                        .getTypeDeclaration() 
+                            instanceof Constructor;
+    }
 }
