@@ -26,6 +26,7 @@ import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.isInd
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.notAssignableMessage;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.spreadType;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.unwrapAliasedTypeConstructor;
+import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.eliminateParensAndWidening;
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.hasError;
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.hasUncheckedNulls;
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.isEffectivelyBaseMemberExpression;
@@ -6270,7 +6271,7 @@ public class ExpressionVisitor extends Visitor {
     private void checkSuperMember(
             Tree.QualifiedMemberOrTypeExpression that) {
         Tree.Term term = 
-                TreeUtil.eliminateParensAndWidening(that.getPrimary());
+                eliminateParensAndWidening(that.getPrimary());
         if (term instanceof Tree.Super) {
             checkSuperInvocation(that);
         }
