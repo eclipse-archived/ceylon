@@ -142,7 +142,7 @@ atr$(FunctionalDeclaration$meta$declaration.$$.prototype,'parameterDeclarations'
     if (p.$pt === 'f') {
       rv.push(FunParamDecl(this,p));
     } else {
-      rv.push(ValParamDecl(this,p));
+      rv.push(ValParamDecl$jsint(this,p));
     }
   }
   this.params$$=rv.length===0?empty():ArraySequence(rv,{Element$ArraySequence:{t:FunctionOrValueDeclaration$meta$declaration},Absent$Iterable:{t:Null}});
