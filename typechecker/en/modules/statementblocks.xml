@@ -714,8 +714,9 @@ Integer f(Integer n) => n+package.n;</programlisting>
                 </listitem>
                 <listitem>
                     <para>the type name in an unqualified type in a static expression, 
-                    as defined by <xref linkend="staticexpressions"/>, for example 
-                    <literal>Sequence</literal> in 
+                    as defined by <xref linkend="staticexpressions"/>, or constructor
+                    expression, as defined by <xref linkend="constructorexpressions"/>, 
+                    for example <literal>Sequence</literal> in 
                     <literal>Sequence.iterator</literal>.</para>
                 </listitem>
             </itemizedlist>
