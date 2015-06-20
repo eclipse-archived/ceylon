@@ -65,3 +65,38 @@ void ijklmnIntersection(IJ&KL cdef, KL&MN efgh, AB&MN abgh) {
 }
 
 
+interface IBase {
+    shared default String someString => "IBase";
+    shared default String someStringF() => "IBaseF";
+}
+
+interface ISub1 satisfies IBase {
+    shared actual default String someString => "I1";
+    shared actual default String someStringF() => "I1F";
+}
+
+interface ISub2 satisfies IBase {
+    shared actual default String someString => "I2";
+    shared actual default String someStringF() => "I2F";
+}
+
+class Parent() satisfies IBase {
+    shared actual default String someString = "parentClass";
+    shared actual default String someStringF() => "parentClassF";
+}
+
+class Bad() extends Parent() satisfies ISub1 & ISub2 {
+    @error shared actual default String someString => super.someString;
+    @error shared actual default String someStringF() => super.someStringF();
+}
+
+class Good() extends Parent() satisfies ISub1 & ISub2 {
+    shared actual default String someString => (super of Parent).someString;
+    shared actual default String someStringF() => (super of Parent).someStringF();
+}
+
+shared
+void runIt() {
+    print(Bad().someString + Bad().someStringF());
+    print(Good().someString + Good().someStringF());
+}
