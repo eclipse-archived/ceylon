@@ -1602,6 +1602,7 @@ public class Type extends Reference {
         //for the given declaration
         
         Type result = null;
+        Type lowerBound = null;
         
         Type extendedType = getInternalExtendedType();
         if (extendedType!=null) {
@@ -1609,6 +1610,7 @@ public class Type extends Reference {
                     extendedType.getSupertype(c);
             if (possibleResult!=null) {
                 result = possibleResult;
+                lowerBound = possibleResult;
             }
         }
         
@@ -1621,13 +1623,21 @@ public class Type extends Reference {
             Type possibleResult = 
                     satisfiedType.getSupertype(c);
             if (possibleResult!=null) {
-                if (result==null || 
-                        possibleResult.isSubtypeOf(result)) {
+                if (result==null) {
                     result = possibleResult;
+                    lowerBound = possibleResult;
                 }
-                else if (!result.isSubtypeOf(possibleResult)) {
-                    //TODO: this is still needed even though we keep intersections 
-                    //      in canonical form because you can have stuff like
+                else if (result.isSubtypeOf(possibleResult)) {
+                    //just ignore this possible result 
+                }
+                else if (possibleResult.isSubtypeOf(lowerBound)) {
+                    result = possibleResult;
+                    lowerBound = possibleResult;
+                }
+                else {
+                    //TODO: this is still needed even though 
+                    //      we keep intersections in canonical 
+                    //      form because you can have stuff like
                     //      empty of Iterable<String>&Sized
                     TypeDeclaration rd = 
                             result.getDeclaration();
@@ -1671,14 +1681,16 @@ public class Type extends Reference {
                                 possibleResult, result, unit);
                     }
                     else {
-                        //ambiguous! we can't decide between the two 
-                        //supertypes which both satisfy the criteria
+                        //ambiguous! we can't decide between 
+                        //the two supertypes which both 
+                        //satisfy the criteria
                         if (c.isMemberLookup() && 
                                 !satisfiedTypes.isEmpty()) {
-                            //for the case of a member lookup, try to find
-                            //a common supertype by forming the union of 
-                            //the two possible results (since A|B is always
-                            //a supertype of A&B)
+                            //for the case of a member lookup, 
+                            //try to find a common supertype 
+                            //by forming the union of the two 
+                            //possible results (since A|B is 
+                            //always a supertype of A&B)
                             List<Type> caseTypes = 
                                     new ArrayList<Type>(2);
                             //if (extendedType!=null) caseTypes.add(extendedType);
@@ -1690,6 +1702,12 @@ public class Type extends Reference {
                             if (result==null) {
                                 return unit.getUnknownType();
                             }
+                            List<Type> types = 
+                                    new ArrayList<Type>(2);
+                            types.add(lowerBound);
+                            types.add(possibleResult);
+                            lowerBound = 
+                                    intersection(types, unit);
                         }
                         else {
                             return unit.getUnknownType();
