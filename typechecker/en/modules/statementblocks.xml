@@ -702,8 +702,9 @@ Integer f(Integer n) => n+package.n;</programlisting>
                     in <literal>Sequence&lt;String&gt;</literal>,</para>
                 </listitem>
                 <listitem>
-                    <para>the value, function, or type name in a base expression, 
-                    as defined by <xref linkend="baseexpressions"/>, for example 
+                    <para>the value, function, constructor, or type name in a base 
+                    expression, as defined by <xref linkend="baseexpressions"/>, 
+                    for example 
                     <literal>counter</literal> in <literal>counter.count</literal>, 
                     <literal>entries</literal> and <literal>people</literal> in 
                     <literal>entries(people*.name)</literal>, or 

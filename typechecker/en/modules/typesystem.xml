@@ -169,9 +169,9 @@
         <title>Identifier naming</title>
 
         <para>The Ceylon compiler enforces identifier naming conventions. Types 
-        and constructors must be named with an initial uppercase letter. Values, 
-        functions, and parameters must be named with an initial lowercase letter 
-        or underscore. The grammar for identifiers is defined by 
+        must be named with an initial uppercase letter. Values, functions, and
+        constructors must be named with an initial lowercase letter or underscore. 
+        The grammar for identifiers is defined by 
         <xref linkend="identifiersandkeywords"/>.</para>
         
         <synopsis>TypeName: UIdentifier</synopsis>
@@ -190,8 +190,8 @@
                 constructors share a single namespace,</para>
             </listitem>
             <listitem>
-                <para>functions and values, including parameters, share a single 
-                namespace, and</para>
+                <para>functions and values, including parameters, and constructors 
+                share a single namespace, and</para>
             </listitem>
             <listitem>
                 <para>packages and modules have their own dedicated namespace.</para>
@@ -253,7 +253,7 @@
             </listitem>
             <listitem>
                 <para>A <emphasis>callable constructor schema</emphasis> is a name (an 
-                initial uppercase identifier) with exactly one parameter list.</para>
+                initial lowercase identifier) with exactly one parameter list.</para>
             </listitem>
             <listitem>
                 <para>A <emphasis>value constructor schema</emphasis> is a name (an 
@@ -689,17 +689,6 @@
             <xref linkend="unqualifiedreferenceresolution"/> and 
             <xref linkend="qualifiedreferenceresolution"/>.</para>
             
-            <para>The type argument list, if any, must conform, as defined by
-            <xref linkend="typeargumentsandconstraints"/>, to the type parameter list of the 
-            realization of the type declaration, as defined by 
-            <xref linkend="realizations"/>.</para>
-            
-            <comment><para>Note: this is too heavy-handed. There is no reason to enforce 
-            type constraints in any place other than generic class instantiations, generic 
-            function invocations, <literal>extends</literal>, and <literal>satisfies</literal>. 
-            However, this restriction makes interoperation with Java generics more 
-            straightforward.</para></comment>
-            
             <para>If the type is a class, interface, or type alias nested inside a containing 
             class or interface, the type must be fully qualified by its containing types, 
             except when used inside the body of a containing type.</para>
@@ -1132,35 +1121,59 @@ alias Y => List<X>;  //error: circular type alias definition]]></programlisting>
             <para>The <literal>extends</literal> clause must specify exactly one class
             or constructor.</para>
             
-            <para>An <literal>extends</literal> clause has a reference to a superclass or
-            superclass constructor, followed by an optional positional argument list, as
-            defined in <xref linkend="positionalarguments"/>. The <literal>extends</literal> 
-            clause may not refer to a partial constructor of the superclass, nor to a value
-            constructor of the superclass.</para>
+            <synopsis>ExtendedType: "extends" (Extension | Construction)</synopsis>
             
-            <synopsis>ExtendedType: "extends" (Extension | SuperclassExtension) PositionalArguments?</synopsis>
+            <para>An <literal>extends</literal> clause of a class or constructor has 
+            either:</para>
             
-            <synopsis>Extension: PackageQualifier? TypeNameWithArguments? TypeNameWithArguments</synopsis>
-            <synopsis>SuperclassExtension: "super" "." TypeNameWithArguments</synopsis>
+            <itemizedlist>
+                <listitem>
+                    <para>a reference to a superclass, followed by an optional positional 
+                    argument list, as defined in <xref linkend="positionalarguments"/>, 
+                    or</para>
+                </listitem>
+                <listitem>
+                    <para>a reference to a superclass constructor, always followed by a 
+                    positional argument list.</para>
+                </listitem>
+            </itemizedlist>
+            
+            <para>In the case that the <literal>extends</literal> clause refers to a 
+            constructor, the superclass is taken to be the class to which the constructor 
+            belongs.</para>
+            
+            <synopsis>Extension: (BaseExtension | SuperExtension) PositionalArguments?</synopsis>
+            <synopsis>Construction: (BaseConstruction | SuperConstruction) PositionalArguments</synopsis>
+            
+            <para>The <literal>extends</literal> clause may not refer to a partial 
+            constructor of the superclass, nor to a value constructor of the superclass.
+            </para>
+            
+            <synopsis>BaseExtension: PackageQualifier? TypeNameWithArguments</synopsis>
+            <synopsis>SuperExtension: "super" "." TypeNameWithArguments</synopsis>
+            <synopsis>BaseConstruction: (PackageQualifier? TypeNameWithArguments ".")? MemberNameWithArguments</synopsis>
+            <synopsis>SuperConstruction: "super" "." MemberNameWithArguments</synopsis>
             
             <para>The specification of the superclass or superclass constructor is treated 
             as a value expression, not as a type expression.</para>
             
             <itemizedlist>
                 <listitem>
-                    <para>If the qualifier <literal>super</literal> occurs, the specification
-                    is treated as a member expression, as defined by 
+                    <para>If the qualifier <literal>super</literal> occurs, the 
+                    specification is treated as a member expression, as defined by 
                     <xref linkend="memberexpressions"/>, where the qualifier 
-                    <literal>super</literal> is treated according to <xref linkend="super"/>.</para>
+                    <literal>super</literal> is treated according to 
+                    <xref linkend="super"/>.</para>
                 </listitem>
                 <listitem>
-                    <para>If a qualifying type occurs, the specification is treated as a 
-                    constructor expression, as defined by 
+                    <para>If a qualifying type occurs, the specification is treated 
+                    as a constructor expression, as defined by 
                     <xref linkend="constructorexpressions"/>.</para>
                 </listitem>
                 <listitem>
-                    <para>Otherwise, if no qualifier occurs, the specification is treated as 
-                    a base expression, as defined by <xref linkend="baseexpressions"/>.</para>
+                    <para>Otherwise, if no qualifier occurs, the specification is 
+                    treated as a base expression, as defined by 
+                    <xref linkend="baseexpressions"/>.</para>
                 </listitem>
             </itemizedlist>
             
@@ -1199,6 +1212,7 @@ alias Y => List<X>;  //error: circular type alias definition]]></programlisting>
             
             <programlisting>extends Singleton&lt;String&gt;("")</programlisting>
             <programlisting>extends Person(name, org)</programlisting>
+            <programlisting>extends withName(name)</programlisting>
             
             <para>A member class annotated <literal>actual</literal> may use the qualifier 
             <literal>super</literal> in the <literal>extends</literal> clause to refer to the 
@@ -2335,7 +2349,8 @@ interface NumberLiteral
                 <listitem>
                     <para>A type argument to a type parameter <literal>T</literal> with an 
                     upper bound must be a type which is a subtype of all upper bounds of
-                    <literal>T</literal>.</para>
+                    <literal>T</literal> in the realization of the generic declaration, as
+                    defined in <xref linkend="realizations"/>.</para>
                 </listitem>
                 <!--listitem>
                     <para>A type argument to a type parameter with a lower bound must be a 
@@ -2344,10 +2359,11 @@ interface NumberLiteral
                 <listitem>
                     <para>A type argument to a type parameter <literal>T</literal> with an 
                     enumerated bound must be a subtype of one of the enumerated types of the
-                    bound on <literal>T</literal>, or it must be a type parameter <literal>A</literal> 
-                    with an enumerated bound where every enumerated type of the bound on
-                    <literal>A</literal> is a subtype of one of the enumerated types of the 
-                    bound on <literal>T</literal>.</para>
+                    bound on <literal>T</literal> in the realization of the generic declaration, 
+                    or it must be a type parameter <literal>A</literal> with an enumerated bound 
+                    where every enumerated type of the bound on <literal>A</literal> is a subtype 
+                    of one of the enumerated types of the bound on <literal>T</literal> in the 
+                    realization of the generic declaration.</para>
                 </listitem>
                 <!--
                 <listitem>

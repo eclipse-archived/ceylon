@@ -2880,20 +2880,24 @@ print(greeting);</programlisting>
         <itemizedlist>
             <listitem>
                 <para>A <emphasis>callable constructor</emphasis> declaration 
-                specifies the constructor name, if any, which must be an initial 
-                uppercase identifier, and exactly one parameter list.</para> 
+                specifies the constructor name, if any, and exactly one parameter 
+                list.</para> 
             </listitem>
             <listitem>
                 <para>A <emphasis>value constructor</emphasis> declaration 
-                specifies just the constructor name, which must be an initial 
-                lowercase identifier.</para>
+                specifies just the constructor name.</para>
             </listitem>
         </itemizedlist>
-        
+                
         <para>Any constructor declaration may, optionally, have an <literal>extends</literal> 
         clause.</para>
         
-        <synopsis>ConstructorHeader: "new" (TypeName? Parameters | MemberName) ExtendedType?</synopsis>
+        <para>A constructor name must be an initial lowercase identifier.</para>
+        
+        <synopsis>ConstructorHeader: ValueConstructorHeader | CallableConstructorHeader</synopsis>
+        
+        <synopsis>CallableConstructorHeader: "new" MemberName? Parameters ExtendedType?</synopsis>
+        <synopsis>ValueConstructorHeader: "new" MemberName ExtendedType?</synopsis>
         
         <para>If two constructors belong to the same class, then the constructors 
         must have distinct names. A class may have at most one constructor with no
@@ -2917,16 +2921,16 @@ print(greeting);</programlisting>
         x = 0.0;
         y = 0.0;
     }
-    shared new Cartesian(Float x, Float y) {
+    shared new cartesian(Float x, Float y) {
         this.x = x; 
         this.y = y;
     }
-    shared new Polar(Float r, Float theta) {
+    shared new polar(Float r, Float theta) {
         this.x = r * cos(theta);
         this.y = r * sin(theta);
     }
     shared new (Float x, Float y) 
-            extends Cartesian(x, y) {}
+            extends cartesian(x, y) {}
     
     string => "(``x``, ``y``)";
 }</programlisting>

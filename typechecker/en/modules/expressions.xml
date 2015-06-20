@@ -577,7 +577,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             expression that references a class with constructors, followed by an
             identifier, with an optional list of type arguments.</para>
             
-            <synopsis>ConstructorExpression: (BaseExpression | MemberExpression) "." (MemberName | TypeName) TypeArguments?</synopsis>
+            <synopsis>ConstructorExpression: (BaseExpression | MemberExpression) "." MemberName TypeArguments?</synopsis>
             
             <para>A constructor expression is a reference to a constructor of a 
             class.</para>
