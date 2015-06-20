@@ -2321,12 +2321,16 @@ interface NumberLiteral
             
             <itemizedlist>
                 <listitem>
-                    <para>a base expression or member expression, or</para>
+                    <para>a base expression or member expression</para>
                 </listitem>
                 <listitem>
                     <para>an applied type expression that occurs directly in a 
                     <literal>satisfies</literal>, <literal>of</literal>, or 
-                    <literal>extends</literal> clause.</para>
+                    <literal>extends</literal> clause, or</para>
+                </listitem>
+                <listitem>
+                    <para>a metamodel expression, as defined by
+                    <xref linkend="metamodelexpressions"/>.</para>
                 </listitem>
             </itemizedlist>
             
