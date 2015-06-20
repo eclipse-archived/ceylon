@@ -20,7 +20,6 @@ import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.getTy
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.getUnspecifiedParameter;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.inSameModule;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.involvesTypeParams;
-import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.isConstructor;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.isGeneric;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.isIndirectInvocation;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.notAssignableMessage;
@@ -51,6 +50,7 @@ import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getTypeParamet
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.intersectionOfSupertypes;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.intersectionType;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isAbstraction;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isConstructor;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isImplemented;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isOverloadedVersion;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isTypeUnknown;
@@ -76,7 +76,6 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Pattern;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.VoidModifier;
-import com.redhat.ceylon.compiler.typechecker.tree.TreeUtil;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;

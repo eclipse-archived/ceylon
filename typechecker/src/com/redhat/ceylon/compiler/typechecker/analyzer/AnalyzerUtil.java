@@ -7,6 +7,7 @@ import static com.redhat.ceylon.model.typechecker.model.ModelUtil.appliedType;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.intersectionType;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isBooleanFalse;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isBooleanTrue;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isConstructor;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isNamed;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isTypeUnknown;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.unionType;
@@ -27,7 +28,6 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.TypeVariance;
 import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.Constructor;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
-import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
 import com.redhat.ceylon.model.typechecker.model.Generic;
 import com.redhat.ceylon.model.typechecker.model.Interface;
 import com.redhat.ceylon.model.typechecker.model.Module;
@@ -1131,14 +1131,6 @@ public class AnalyzerUtil {
             }
         }
         return type;
-    }
-
-    static boolean isConstructor(Declaration member) {
-        return member instanceof Constructor ||
-                member instanceof FunctionOrValue && 
-                    ((FunctionOrValue) member)
-                        .getTypeDeclaration() 
-                            instanceof Constructor;
     }
 
 }

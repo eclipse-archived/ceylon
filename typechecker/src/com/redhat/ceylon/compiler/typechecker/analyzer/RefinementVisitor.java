@@ -10,7 +10,6 @@ import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.check
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.declaredInPackage;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.getTypeErrorNode;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.getTypedDeclaration;
-import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.isConstructor;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.message;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.DeclarationVisitor.setVisibleScope;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.ExpressionVisitor.getRefinedMember;
@@ -20,6 +19,7 @@ import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getIntervening
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getNativeHeader;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getRealScope;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getSignature;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isConstructor;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isImplemented;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isNamed;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isObject;
@@ -29,7 +29,6 @@ import static java.util.Collections.emptyList;
 import static java.util.Collections.emptyMap;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;

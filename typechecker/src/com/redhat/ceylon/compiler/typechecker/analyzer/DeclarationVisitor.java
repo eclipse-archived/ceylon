@@ -3,7 +3,6 @@ package com.redhat.ceylon.compiler.typechecker.analyzer;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.NO_TYPE_ARGS;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.getPackageTypeDeclaration;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.getTypeDeclaration;
-import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.isConstructor;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.TypeVisitor.getTupleType;
 import static com.redhat.ceylon.compiler.typechecker.parser.CeylonLexer.SPECIFY;
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.buildAnnotations;
@@ -18,6 +17,7 @@ import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getDirectMembe
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getNativeHeader;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getTypeArgumentMap;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.intersectionOfSupertypes;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isConstructor;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isInNativeContainer;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isNativeHeader;
 import static java.lang.Integer.parseInt;
@@ -375,13 +375,13 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
                                     null, false);
                     if (member!=null && member!=model) {
                         boolean dup = false;
-/*<<<<<<< HEAD
                         boolean possibleOverloadedMethod = 
                                 member instanceof Function && 
                                 model instanceof Function &&
                                 !(that instanceof Tree.Constructor ||
                                   that instanceof Tree.Enumerated) &&
-                                scope instanceof ClassOrInterface;
+                                scope instanceof ClassOrInterface &&
+                                !member.isNative();
                         if (possibleOverloadedMethod) {
                             // anticipate that it might be
                             // an overloaded method 
@@ -391,21 +391,6 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
                             // RefinementVisitor
                             initOverload(model, member, 
                                     scope, unit);
-=======*/
-                        if (member instanceof Function && 
-                            model instanceof Function &&
-                            !(that instanceof Tree.Constructor ||
-                                    that instanceof Tree.Enumerated) &&
-                            scope instanceof ClassOrInterface &&
-                            !member.isNative()) {
-                            //even though Ceylon does not 
-                            //officially support overloading,
-                            //we actually do let you overload
-                            //a method that is refining an
-                            //overloaded method inherited from
-                            //a Java superclass
-                            initOverload(model, member, scope, unit);
-//>>>>>>> origin/master
                             dup = true;
                         }
                         else if (canBeNative(member) && 
@@ -1738,7 +1723,7 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
             if (model instanceof ClassOrInterface) {
                 ((ClassOrInterface) model).setSealed(true);
             }
-            else if (isConstructor(model)) {
+            else if (ModelUtil.isConstructor(model)) {
                 if (model instanceof Constructor) {
                     //ignore for now
                 }

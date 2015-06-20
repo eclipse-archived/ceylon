@@ -6,7 +6,6 @@ import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.getTy
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.getTypeDeclaration;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.getTypeMember;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.getTypedDeclaration;
-import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.isConstructor;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.setTypeConstructor;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.unwrapAliasedTypeConstructor;
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.formatPath;
@@ -18,6 +17,7 @@ import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getNativeDecla
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getNativeHeader;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.intersection;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.intersectionOfSupertypes;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isConstructor;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isImplemented;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isNativeImplementation;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isToplevelAnonymousClass;
