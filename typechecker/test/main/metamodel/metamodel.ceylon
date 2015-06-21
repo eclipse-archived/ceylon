@@ -395,6 +395,8 @@ void meta() {
     @type:"Constructor<Baz,Tuple<String,String,Empty>>" value cd18 = `Baz.baz`;
     @type:"Value<Baz,Nothing>" value cd19 = `Baz.instance`;
     @error value cd14 = `new Foo`;
+    
+    @error value broke = `Map<Anything,Anything>`;
 }
 
 void testPackagesModules() {
