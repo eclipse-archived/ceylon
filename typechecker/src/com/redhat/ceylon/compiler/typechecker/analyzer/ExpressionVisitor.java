@@ -7625,9 +7625,11 @@ public class ExpressionVisitor extends Visitor {
                                     caseUnionType(switchCaseList);
                             if (caseUnionType!=null) {
                                 Type complementType = 
-                                        /*unit.denotableType(*/
                                         switchExpressionType
                                             .minus(caseUnionType);
+                                complementType =
+                                        unit.denotableType(
+                                                complementType);
                                 var.getType()
                                     .setTypeModel(complementType);
                                 var.getDeclarationModel()
