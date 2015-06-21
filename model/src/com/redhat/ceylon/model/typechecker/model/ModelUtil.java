@@ -118,7 +118,9 @@ public class ModelUtil {
         while (!(scope instanceof Package)) {
             if (scope instanceof ClassOrInterface) {
                 if (foundInner) {
-                    return ((ClassOrInterface) scope).getType();
+                    ClassOrInterface ci = 
+                            (ClassOrInterface) scope;
+                    return ci.getType();
                 }
                 else {
                     foundInner = true;
@@ -168,7 +170,7 @@ public class ModelUtil {
             return true;
         }
         else {
-            return  !d.isOverloaded() || d.isAbstraction();
+            return !d.isOverloaded() || d.isAbstraction();
         }
     }
     
@@ -182,7 +184,8 @@ public class ModelUtil {
     static boolean hasMatchingSignature(
             Declaration dec, 
             List<Type> signature, boolean ellipsis) {
-        return hasMatchingSignature(dec, signature, ellipsis, true);
+        return hasMatchingSignature(dec, 
+                signature, ellipsis, true);
     }
     
     static boolean hasMatchingSignature(
@@ -204,8 +207,7 @@ public class ModelUtil {
                     f.getParameterLists();
             if (pls!=null && !pls.isEmpty()) {
                 ParameterList pl = pls.get(0);
-                List<Parameter> params = 
-                        pl.getParameters();
+                List<Parameter> params = pl.getParameters();
                 int size = params.size();
                 boolean hasSeqParam = 
                         pl.hasSequencedParameter();
@@ -221,7 +223,8 @@ public class ModelUtil {
                 }
                 for (int i=0; i<size; i++) {
                     FunctionOrValue pm = 
-                            params.get(i).getModel();
+                            params.get(i)
+                                .getModel();
                     if (pm==null) {
                         return false;
                     }
@@ -238,9 +241,10 @@ public class ModelUtil {
                     }
                 }
                 if (hasSeqParam) {
+                    FunctionOrValue model = 
+                            params.get(size).getModel();
                     Type pdt = 
-                            params.get(size).getModel()
-                            .appliedReference(null, 
+                            model.appliedReference(null, 
                                     NO_TYPE_ARGS)
                             .getFullType();
                     if (pdt==null || 
@@ -255,8 +259,7 @@ public class ModelUtil {
                                 .get(0);  
                     for (int i=size; i<sigSize; i++) {
                         if (spread && i==sigSize-1) {
-                            Type sdt = 
-                                    signature.get(i);
+                            Type sdt = signature.get(i);
                             Type isdt = 
                                     unit.getIteratedType(sdt);
                             if (!matches(isdt, ipdt, unit)) {
@@ -302,17 +305,13 @@ public class ModelUtil {
         //Ignore optionality for resolving overloads, since
         //all Java parameters are treated as optional
         //Except in the case of primitive parameters
-        Type nvt = 
-                unit.getNullValueDeclaration()
-                    .getType();
+        Type nvt = unit.getNullType();
         if (nvt.isSubtypeOf(argType) && 
                 !nvt.isSubtypeOf(paramType)) {
             return false; //only for primitives
         }
-        Type defParamType = 
-                unit.getDefiniteType(paramType);
-        Type defArgType = 
-                unit.getDefiniteType(argType);
+        Type defParamType = unit.getDefiniteType(paramType);
+        Type defArgType = unit.getDefiniteType(argType);
         Type nt = unit.getNullType();
         if (defArgType.isSubtypeOf(nt)) {
             return true;
@@ -342,10 +341,10 @@ public class ModelUtil {
             List<Type> signature) {
         if (d instanceof Functional && 
             r instanceof Functional) {
-            List<ParameterList> dpls = 
-                    ((Functional) d).getParameterLists();
-            List<ParameterList> rpls = 
-                    ((Functional) r).getParameterLists();
+            Functional df = (Functional) d;
+            Functional rf = (Functional) r;
+            List<ParameterList> dpls = df.getParameterLists();
+            List<ParameterList> rpls = rf.getParameterLists();
             if (dpls!=null && !dpls.isEmpty() && 
                     rpls!=null && !rpls.isEmpty()) {
                 ParameterList dpls0 = dpls.get(0);
