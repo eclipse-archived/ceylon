@@ -392,3 +392,11 @@ void testWithMethod() {
 }
 
 @error shared new(){}
+
+class WithMemberRefInDelegation {
+    shared new create(String s) {}
+    String hello = "hello";
+    @error shared new broken1 extends create(hello) {}
+    function str(Integer j) => j.string;
+    @error shared new broken2(Integer i) extends create(str(i)) {} 
+}

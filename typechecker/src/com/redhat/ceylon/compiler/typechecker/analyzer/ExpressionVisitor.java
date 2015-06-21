@@ -5934,13 +5934,8 @@ public class ExpressionVisitor extends Visitor {
         TypedDeclaration member = 
                 resolveBaseMemberExpression(that, 
                         notDirectlyInvoked);
+        checkExtendsClauseReference(that, member);
         if (member!=null && notDirectlyInvoked) {
-            if (inExtendsClause &&
-                    constructorClass!=null &&
-                    member.getContainer()
-                        .equals(constructorClass)) {
-                that.addError("reference to class member from constructor extends clause");
-            }
             Tree.TypeArguments tal = that.getTypeArguments();
             List<Type> typeArgs;
             if (typeConstructorArgumentsInferrable(member, that)) {
@@ -5967,6 +5962,20 @@ public class ExpressionVisitor extends Visitor {
                 visitGenericBaseMemberReference(that, member);
 //                typeArgumentsImplicit(that);
             }
+        }
+    }
+
+    private void checkExtendsClauseReference(
+            Tree.BaseMemberOrTypeExpression that,
+            Declaration member) {
+        if (inExtendsClause &&
+                constructorClass!=null &&
+                member!=null &&
+                member.getContainer()
+                    .equals(constructorClass) &&
+                !member.isStaticallyImportable() &&
+                !isConstructor(member)) {
+            that.addError("reference to class member from constructor extends clause");
         }
     }
 
@@ -6521,6 +6530,7 @@ public class ExpressionVisitor extends Visitor {
         TypeDeclaration type = 
                 resolveBaseTypeExpression(that, 
                         notDirectlyInvoked);
+        checkExtendsClauseReference(that, type);
         if (type!=null && notDirectlyInvoked) {
             Tree.TypeArguments tal = that.getTypeArguments();
             List<Type> typeArgs;
