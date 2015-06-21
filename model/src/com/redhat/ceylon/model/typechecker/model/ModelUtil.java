@@ -2581,14 +2581,18 @@ public class ModelUtil {
         return header;
     }
     
-    // Check if the Value is part of an object (is there a better way to check this?)
+    // Check if the Value is part of an object (is there a 
+    // better way to check this?)
     public static boolean isObject(Value v) {
-        return v.getType().getDeclaration().getQualifiedNameString().equals(v.getQualifiedNameString());
+        return v.getType().getDeclaration()
+                .getQualifiedNameString()
+                .equals(v.getQualifiedNameString());
     }
 
     public static boolean isImplemented(Declaration decl) {
         if (decl instanceof FunctionOrValue) {
-            return ((FunctionOrValue)decl).isImplemented();
+            FunctionOrValue fov = (FunctionOrValue) decl;
+            return fov.isImplemented();
         }
         return false;
     }
