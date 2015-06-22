@@ -96,4 +96,5 @@ void issues() {
     issue703=issue703.withTrailing(1);
     issue703=issue703.withTrailing(1);
     check("ceylon.language::Integer," in type(issue703).string, "lang#703.2");
+    check(type(identity<Integer>).string=="ceylon.language::identity<ceylon.language::Integer>", "#591");
 }
