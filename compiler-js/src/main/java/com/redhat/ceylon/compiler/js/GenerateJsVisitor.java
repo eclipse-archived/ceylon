@@ -3629,8 +3629,14 @@ public class GenerateJsVisitor extends Visitor
 
     public void visit(Tree.Enumerated that) {
         if (errVisitor.hasErrors(that))return;
+        if (opts.isOptimize())return;
         comment(that);
-        Singletons.valueConstructor(that, this);
+        TypeDeclaration klass = (TypeDeclaration)that.getEnumerated().getContainer();
+        defineAttribute(names.self(klass), names.name(that.getDeclarationModel()));
+        out("{return ", names.name(klass), ".", names.name(that.getDeclarationModel()),
+                ";},undefined,");
+        TypeUtils.encodeForRuntime(that.getDeclarationModel(), that.getAnnotationList(), this);
+        out(");");
     }
 
     public void visit(final Tree.ExtendedTypeExpression that) {
