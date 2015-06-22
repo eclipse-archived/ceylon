@@ -1,73 +1,3 @@
-//Create a proper Tuple from a simplified tuple type description
-function retpl$(t) { //receives {t:'T',l:[...]}
-  if (t.t!=='T')return t;
-  var e;
-  var r={t:Empty};
-  for (var i=t.l.length-1;i>=0;i--){
-    var f=retpl$(t.l[i]);
-    var e=(r.a&&r.a.Element$Tuple)||f;
-    if (r.a&&r.a.Element$Tuple){
-      if (e.l) {
-        var l2=[];for(var j=0;j<e.l.length;j++)l2.push(e.l[j]);
-        l2.unshift(f);
-        e={t:'u',l:l2};
-      } else {
-        e = {t:'u',l:[f,e]};
-      }
-    }
-    r={t:Tuple,a:{First$Tuple:f,Element$Tuple:e,Rest$Tuple:r}};
-  }
-  return r;
-}
-//Create a simplified Tuple {t:'T',l:[...]} from a proper {t:Tuple,a:...}
-//based on Unit.getTupleElementTypes
-function detpl$(t) {
-  if (t.t==='T')return t;
-  if (t.t===Empty)return t;
-  function stet(args,count) {
-    if (t.t==='u') {
-      if (t.l.length!==2)return null;
-      var caseA=t.l[0];
-      var caseB=t.l[1];
-      if (caseA.t===Empty && caseB.t===Tuple)return stet(caseB,count);
-      if (caseB.t===Empty && caseA.t===Tuple)return stet(caseA,count);
-      return null;
-    }
-    if (args.t===Tuple) {
-      var first=args.a.First$Tuple;
-      var rest=args.a.Rest$Tuple;
-      var ret=stet(rest,count+1);
-      if (ret===null)return null;
-      ret[count]=first;
-      return ret;
-    }
-    if (args.t===Empty) {
-      var ret=Array(count);
-      for(var i=0;i<count;i++)ret[i]=null;
-      return ret;
-    }
-    if (args.t===Sequential || args.t===Sequence || args.t===Range) {
-      var ret=Array(count+1);
-      for (var i=0;i<count;i++)ret[i]=null;
-      ret[count]=args;
-      return ret;
-    }
-    return null;
-  }
-  var simpleResult=stet(t,0);
-  if (simpleResult)return {t:'T',l:simpleResult};
-  if (t.a && t.a.First$Tuple && t.a.Element$Tuple && t.a.Rest$Tuple) {
-    var result = detpl$(t.a.Rest$Tuple);
-    if (result.l===undefined)return result;
-    var arg=t.a.First$Tuple || {t:Anything};
-    result.l.unshift(arg);
-    return result;
-  } else if (t.a && (t.a.Element$Sequential || t.a.Element$Sequence)) {
-    return t.a.Element$Sequential || t.a.Element$Sequence;
-  }
-  throw new TypeError("detpl$ requires a proper Tuple {t:Tuple,a:{First$Tuple:F,Element$Tuple:E,Rest$Tuple:R}}");
-}
-
 //Validate parameters:
 //ps are the params defined in the metamodel
 //t is the tuple with parameters to pass
@@ -87,6 +17,8 @@ function validate$params(ps,t,msg,nothrow) {
     }
   } else if (t.t===Empty) {
     if (!ps || ps.length===0)return true;
+  } else if (t.t==='u' && ps.length===1) {
+    if (extendsType(ps[0].$t,t))return true;
   } else { //it's already a tuple, navigate it
     console.trace("TODO!!!! validate$params with Tuple type");
   }

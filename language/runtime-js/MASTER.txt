@@ -28,7 +28,7 @@ COMPILE .
 
 Now compile the metamodel packages, also with some native code in between...
 
-COMPILE modules.js, meta/, meta/model/ClassOrInterface, ClassOrInterface_addons.js, meta/model/Member, Member_addons.js, meta/model/, AppliedAttribute.js, meta/declaration/NestableDeclaration, NestableDeclaration_addons.js, meta/declaration/GenericDeclaration, GenericDeclaration_addons.js, meta/declaration/ClassOrInterfaceDeclaration, meta/declaration/FunctionalDeclaration, declaration_addons.js, meta/declaration/, OpenSetter.js, FunParamDecl.js, metamodel_functions_core.js, metamodel_functions2.js, metamodel_functions3.js, metamodel_functions_ocoi.js, metamodel_functions5.js, metamodel_functions_coi.js, metamodel_functions_funs.js, metamodel_functions_anns.js
+COMPILE modules.js, meta/, meta/model/ClassOrInterface, ClassOrInterface_addons.js, meta/model/Member, Member_addons.js, meta/model/, AppliedAttribute.js, meta/declaration/NestableDeclaration, NestableDeclaration_addons.js, meta/declaration/GenericDeclaration, GenericDeclaration_addons.js, meta/declaration/ClassOrInterfaceDeclaration, meta/declaration/FunctionalDeclaration, declaration_addons.js, meta/declaration/, OpenSetter.js, FunParamDecl.js, metamodel_functions_core.js, metamodel_functions_params.js, metamodel_functions3.js, metamodel_functions_ocoi.js, metamodel_functions5.js, metamodel_functions_coi.js, metamodel_functions_funs.js, metamodel_functions_anns.js
 
 And finally, the serialization package and some native stuff in JS
 

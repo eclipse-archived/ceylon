@@ -22,7 +22,7 @@ function type$meta(x,$$targs$$) {
   }
   if (mm===undefined&&x.rt$)mm=$_Array.$crtmm$;
   if (mm===undefined)throw new Error("Cannot retrieve metamodel for " + x);
-  var _cntr=mm.$cont ? get_model(getrtmm$$(mm.$cont)) : undefined;
+  var _cntr=mm.$cont && !is$(x,{t:AppliedConstructor$jsint}) ? get_model(getrtmm$$(mm.$cont)) : undefined;
   var _classOrInterfaceMember = _cntr && (_cntr.mt==='c' || _cntr.mt==='i' || _cntr.mt==='o');
   if (mm.$t) { //it's a value
     if (typeof(x)==='function') { //It's a callable
