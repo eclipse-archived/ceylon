@@ -224,4 +224,9 @@ public class ConstructorTests extends CompilerTests {
         //compile("constructor/DelegatingToDefault.ceylon");
         run("com.redhat.ceylon.compiler.java.test.structure.constructor.delegatingToDefault");
     }
+    
+    @Test
+    public void testCtorDelegationWithTypeParameter() {
+        compareWithJavaSource("constructor/DelegationWithTypeParameter");
+    }
 }
