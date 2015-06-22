@@ -462,7 +462,7 @@ public class Naming extends NamingBase implements LocalId {
             TypeDeclaration klass = (TypeDeclaration)scope;
             if(klass.isAnonymous() && !klass.isNamed())
                 typeDeclarationBuilder.clear();
-            typeDeclarationBuilder.append(escapeClassName(klass.getName()));
+            typeDeclarationBuilder.append(escapeClassName(klass.getName() != null ? klass.getName() : ""));
             if (Decl.isCeylon(klass)) {
                 if (flags.contains(DeclNameFlag.COMPANION)
                     && Decl.isLocalNotInitializer(klass)
