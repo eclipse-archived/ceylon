@@ -35,6 +35,7 @@ shared void run() {
     misc();
     switches();
     testSort();
+    testConstructors();
     print("Array/Collection");
     testArrays();
     print("Map & Set tests");
@@ -53,9 +54,8 @@ shared void run() {
     testCurries();
     print("Resources");
     testResources();
-    print("Predicates");
+    print("Predicates, destructuring");
     testPredicates();
-    print("Destructuring");
     testDestructuring();
     print("Metamodel in default module");
     testMetamodelInDefaultModule();
