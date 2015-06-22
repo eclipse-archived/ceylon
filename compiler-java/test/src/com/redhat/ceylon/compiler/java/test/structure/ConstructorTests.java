@@ -201,6 +201,7 @@ public class ConstructorTests extends CompilerTests {
     }
     
     @Test
+    @Ignore
     public void testCtorOfObjectSubclass() {
         compareWithJavaSource("constructor/CtorOfObjectSubclass");
     }
