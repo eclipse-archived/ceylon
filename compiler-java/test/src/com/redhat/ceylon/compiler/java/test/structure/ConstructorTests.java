@@ -1,5 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.structure;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.redhat.ceylon.compiler.java.test.CompilerTests;
@@ -207,5 +208,11 @@ public class ConstructorTests extends CompilerTests {
     @Test
     public void testCtorWithUnsharedField() {
         compareWithJavaSource("constructor/CtorWithUnsharedField");
+    }
+    
+    @Test
+    @Ignore
+    public void testCtorExtendingCtorWithDefaultParameter() {
+        compareWithJavaSource("constructor/ExtendingCtorWithDefaultParameter");
     }
 }
