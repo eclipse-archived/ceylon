@@ -203,4 +203,9 @@ public class ConstructorTests extends CompilerTests {
     public void testCtorOfObjectSubclass() {
         compareWithJavaSource("constructor/CtorOfObjectSubclass");
     }
+    
+    @Test
+    public void testCtorWithUnsharedField() {
+        compareWithJavaSource("constructor/CtorWithUnsharedField");
+    }
 }
