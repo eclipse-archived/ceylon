@@ -301,7 +301,9 @@ public class CeylonCompileJsTool extends OutputRepoUsingTool {
                 append("Adding source directories to typechecker:" + roots).newline();
             }
             for (File root : roots) {
-                tcb.addSrcDirectory(root);
+                if (root.exists() && root.isDirectory()) {
+                    tcb.addSrcDirectory(root);
+                }
             }
             tcb.setSourceFiles(onlySources);
             if (!resolver.getSourceModules().isEmpty()) {
