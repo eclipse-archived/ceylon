@@ -1,9 +1,20 @@
 package com.redhat.ceylon.compiler.java.test.structure.constructor;
 
 class CtorDelegationExtendDefault implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    private static final .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationExtendDefault.$delegation$ $delegation$ = null;
+    
+    private static final class $delegation$ {
+        
+        private $delegation$() {
+        }
+    }
+    
+    private CtorDelegationExtendDefault(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationExtendDefault.$delegation$ $name$, final .java.lang.String _$param$) {
+        .ceylon.language.print_.print(.ceylon.language.String.instance("In Default"));
+    }
     
     public CtorDelegationExtendDefault(final .java.lang.String _$param$) {
-        .ceylon.language.print_.print(.ceylon.language.String.instance("In Default"));
+        this(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationExtendDefault.$delegation$, _$param$);
     }
     public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationExtendDefault.alt_ alt_ = null;
     
