@@ -44,6 +44,7 @@ function JsCallable(o,f,targs) {
     return f.apply(o, arg);
   };
   f2.c2$=f;
+  f2.$$targs$$=targs;
   f2.equals=function(x){
     if (x.c2$)return x.c2$===f || x.c2$.equals(f);
     return x===f || x.equals(f);

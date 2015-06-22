@@ -27,9 +27,9 @@ function type$meta(x,$$targs$$) {
   if (mm.$t) { //it's a value
     if (typeof(x)==='function') { //It's a callable
       if (_classOrInterfaceMember) {
-        return AppliedMethod$jsint(x,undefined,{Type$AppliedMethod:mm.$t,Arguments$AppliedMethod:{t:Nothing},Container$AppliedMethod:{t:mm.$cont}});
+        return AppliedMethod$jsint(x,undefined,{Type$AppliedMethod:mm.$t,Arguments$AppliedMethod:{t:Nothing},Container$AppliedMethod:{t:mm.$cont}},x.$$targs$$);
       }
-      return AppliedFunction$jsint(x,{Type$Function:mm.$t,Arguments$Function:{t:Nothing}});
+      return AppliedFunction$jsint(x,{Type$Function:mm.$t,Arguments$Function:{t:Nothing}},undefined,x.$$targs$$);
     }
     var rv=_classOrInterfaceMember?AppliedMemberClass$jsint(mm.$t.t, {Type$AppliedMemberClass:mm.$t,Arguments$AppliedMemberClass:{t:Nothing},Container$AppliedMemberClass:{t:mm.$cont}})
            : AppliedClass$jsint(mm.$t.t, {Type$AppliedClass:mm.$t,Arguments$AppliedClass:{t:Nothing}});
