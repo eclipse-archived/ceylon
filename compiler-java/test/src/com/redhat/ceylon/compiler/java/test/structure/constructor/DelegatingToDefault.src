@@ -1,0 +1,53 @@
+package com.redhat.ceylon.compiler.java.test.structure.constructor;
+
+class DelegatingToDefault implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    private static final .com.redhat.ceylon.compiler.java.test.structure.constructor.DelegatingToDefault.$delegation$ $delegation$ = null;
+    
+    private static final class $delegation$ {
+        
+        private $delegation$() {
+        }
+    }
+    
+    private DelegatingToDefault(.com.redhat.ceylon.compiler.java.test.structure.constructor.DelegatingToDefault.$delegation$ $name$) {
+        .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("a");
+        .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("b");
+    }
+    
+    public DelegatingToDefault() {
+        this(.com.redhat.ceylon.compiler.java.test.structure.constructor.DelegatingToDefault.$delegation$);
+    }
+    public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.DelegatingToDefault.baz_ baz_ = null;
+    
+    public static final class baz_ {
+        
+        private baz_() {
+        }
+    }
+    
+    public DelegatingToDefault(.com.redhat.ceylon.compiler.java.test.structure.constructor.DelegatingToDefault.baz_ $name$) {
+        this();
+        .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("c");
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.constructor.DelegatingToDefault.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.DelegatingToDefault.class);
+}
+public final class delegatingToDefault_ {
+    
+    private delegatingToDefault_() {
+    }
+    
+    public static void delegatingToDefault() {
+        new .com.redhat.ceylon.compiler.java.test.structure.constructor.DelegatingToDefault(.com.redhat.ceylon.compiler.java.test.structure.constructor.DelegatingToDefault.baz_);
+        .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().check("[a, b, c]");
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.structure.constructor.delegatingToDefault_.delegatingToDefault();
+    }
+}

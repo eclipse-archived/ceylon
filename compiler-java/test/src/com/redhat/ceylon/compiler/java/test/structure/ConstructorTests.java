@@ -215,4 +215,12 @@ public class ConstructorTests extends CompilerTests {
     public void testCtorExtendingCtorWithDefaultParameter() {
         compareWithJavaSource("constructor/ExtendingCtorWithDefaultParameter");
     }
+    
+    @Test
+    public void testCtorDelegatingToDefault() {
+        compile("constructor/checker.ceylon");
+        compareWithJavaSource("constructor/DelegatingToDefault");
+        //compile("constructor/DelegatingToDefault.ceylon");
+        run("com.redhat.ceylon.compiler.java.test.structure.constructor.delegatingToDefault");
+    }
 }
