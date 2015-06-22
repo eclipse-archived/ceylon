@@ -20,9 +20,9 @@
 
 package com.redhat.ceylon.compiler.java.codegen;
 
+import static com.sun.tools.javac.code.Flags.FINAL;
 import static com.sun.tools.javac.code.Flags.PRIVATE;
 import static com.sun.tools.javac.code.Flags.PUBLIC;
-import static com.sun.tools.javac.code.Flags.FINAL;
 import static com.sun.tools.javac.code.Flags.STATIC;
 
 import java.util.HashMap;
@@ -37,10 +37,6 @@ import com.redhat.ceylon.compiler.java.codegen.recovery.TransformationPlan;
 import com.redhat.ceylon.compiler.typechecker.tree.NaturalVisitor;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.Declaration;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.DelegatedConstructor;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.Enumerated;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.ParameterList;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Return;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.model.loader.NamingBase.Suffix;
