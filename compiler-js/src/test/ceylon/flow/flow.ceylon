@@ -199,6 +199,5 @@ shared void test() {
     issue589();
     testConditions();
     testSwitches();
-    test525();
     results();
 }

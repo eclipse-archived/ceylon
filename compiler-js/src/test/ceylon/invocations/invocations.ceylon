@@ -33,6 +33,5 @@ shared void test() {
     testSpread();
     spreadIssues();
     testIssues();
-    testConstructors();
     results();
 }
