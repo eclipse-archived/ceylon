@@ -31,6 +31,7 @@ import static com.sun.tools.javac.code.Flags.STATIC;
 
 import java.lang.annotation.RetentionPolicy;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.EnumSet;
@@ -1041,7 +1042,9 @@ public class ClassTransformer extends AbstractTransformer {
                 naming.makeName(model, Naming.NA_IDENT_PARAMETER_ALIASED))));
     }
     
-
+    /** 
+     * Transform the parameter and its annotations and add it to the given builder 
+     */
     private void transformParameter(ParameterizedBuilder<?> classBuilder, 
             Tree.Parameter p, Parameter param, Tree.TypedDeclaration member) {
         JCExpression type = makeJavaType(param.getModel(), param.getType(), 0);
@@ -1089,7 +1092,7 @@ public class ClassTransformer extends AbstractTransformer {
                 makeAttributeForValueParameter(classBuilder, param, member);
                 makeMethodForFunctionalParameter(classBuilder, param, member);
             }
-            transformClassOrCtorParameters(def, model, null, def, def.getParameterList(), 
+            transformClassOrCtorParameters(def, model, null, def, def.getParameterList(), false,
                     classBuilder,
                     classBuilder.getInitBuilder(), 
                     generateInstantiator, instantiatorDeclCb,
@@ -1113,6 +1116,7 @@ public class ClassTransformer extends AbstractTransformer {
             Constructor constructor,
             Tree.Declaration node,
             Tree.ParameterList paramList,
+            boolean delegationConstructor,
             ClassDefinitionBuilder classBuilder,
             ParameterizedBuilder<?> constructorBuilder,
             boolean generateInstantiator, 
@@ -1127,6 +1131,7 @@ public class ClassTransformer extends AbstractTransformer {
                     (TypedDeclaration)CodegenUtil.getTopmostRefinedDeclaration(param.getParameterModel().getModel()));
             at(param);
             Tree.TypedDeclaration member = def != null ? Decl.getMemberDeclaration(def, param) : null;
+            // transform the parameter and its annotations
             transformParameter(constructorBuilder, param, paramModel, member);
             
             if (Strategy.hasDefaultParameterValueMethod(paramModel)
@@ -1154,29 +1159,34 @@ public class ClassTransformer extends AbstractTransformer {
                 default:
                     cbForDevaultValues = classBuilder.getCompanionBuilder(cls);
                 }
-                if ((Strategy.hasDefaultParameterValueMethod(paramModel) 
-                            || (refinedParam != null && Strategy.hasDefaultParameterValueMethod(refinedParam)))) { 
-                    if (!generateInstantiator || Decl.equal(refinedParam, paramModel)) {
-                        cbForDevaultValues.method(makeParamDefaultValueMethod(false, constructor != null ? constructor : cls, paramList, param));
-                        if (cbForDevaultValuesDecls != null) {
-                            cbForDevaultValuesDecls.method(makeParamDefaultValueMethod(true, constructor != null ? constructor : cls, paramList, param));
+                if (!delegationConstructor) {
+                    if ((Strategy.hasDefaultParameterValueMethod(paramModel) 
+                                || (refinedParam != null && Strategy.hasDefaultParameterValueMethod(refinedParam)))) { 
+                        if (!generateInstantiator || Decl.equal(refinedParam, paramModel)) {
+                            // transform the default value into a method
+                            cbForDevaultValues.method(makeParamDefaultValueMethod(false, constructor != null ? constructor : cls, paramList, param));
+                            if (cbForDevaultValuesDecls != null) {
+                                cbForDevaultValuesDecls.method(makeParamDefaultValueMethod(true, constructor != null ? constructor : cls, paramList, param));
+                            }
+                        } else if (Strategy.hasDelegatedDpm(cls) && cls.getContainer() instanceof Class) {
+                            // generate a dpm which delegates to the companion
+                            java.util.List<Parameter> parameters = paramList.getModel().getParameters();
+                            MethodDefinitionBuilder mdb = 
+                            makeDelegateToCompanion((Interface)cls.getRefinedDeclaration().getContainer(),
+                                    paramModel.getModel().appliedTypedReference(cls.getType(), null),
+                                    ((TypeDeclaration)cls.getContainer()).getType(),
+                                    FINAL | (transformClassDeclFlags(cls) & ~ABSTRACT), 
+                                    List.<TypeParameter>nil(), Collections.<java.util.List<Type>>emptyList(),
+                                    paramModel.getType(), 
+                                    Naming.getDefaultedParamMethodName(cls, paramModel),
+                                    parameters.subList(0, parameters.indexOf(paramModel)), 
+                                    false, 
+                                    Naming.getDefaultedParamMethodName(cls, paramModel));
+                            cbForDevaultValues.method(mdb);
                         }
-                    } else if (Strategy.hasDelegatedDpm(cls) && cls.getContainer() instanceof Class) {
-                        java.util.List<Parameter> parameters = paramList.getModel().getParameters();
-                        MethodDefinitionBuilder mdb = 
-                        makeDelegateToCompanion((Interface)cls.getRefinedDeclaration().getContainer(),
-                                paramModel.getModel().appliedTypedReference(cls.getType(), null),
-                                ((TypeDeclaration)cls.getContainer()).getType(),
-                                FINAL | (transformClassDeclFlags(cls) & ~ABSTRACT), 
-                                List.<TypeParameter>nil(), Collections.<java.util.List<Type>>emptyList(),
-                                paramModel.getType(), 
-                                Naming.getDefaultedParamMethodName(cls, paramModel),
-                                parameters.subList(0, parameters.indexOf(paramModel)), 
-                                false, 
-                                Naming.getDefaultedParamMethodName(cls, paramModel));
-                        cbForDevaultValues.method(mdb);
                     }
                 }
+                 
                 boolean addOverloadedConstructor = false;
                 if (generateInstantiator) {
                     if (Decl.withinInterface(cls)) {
@@ -1206,15 +1216,16 @@ public class ClassTransformer extends AbstractTransformer {
                     MethodDefinitionBuilder overloadBuilder;
                     DefaultedArgumentConstructor dac;
                     if (constructor != null) {
-                        dac = new DefaultedArgumentConstructor(classBuilder.addConstructor(), constructor, node, paramList);
+                        dac = new DefaultedArgumentConstructor(classBuilder.addConstructor(), constructor, node, paramList, delegationConstructor);
                     } else {
-                        dac = new DefaultedArgumentConstructor(classBuilder.addConstructor(), cls, node, paramList);
+                        dac = new DefaultedArgumentConstructor(classBuilder.addConstructor(), cls, node, paramList, delegationConstructor);
                     }
                     overloadBuilder = dac.makeOverload(
                             paramList.getModel(),
                             param.getParameterModel(),
                             cls.getTypeParameters());
                 }
+            
             }
         }
     }
@@ -4285,11 +4296,13 @@ public class ClassTransformer extends AbstractTransformer {
         protected final Constructor constructor;
         
         protected Naming.SyntheticName companionInstanceName = null;
+        private final boolean delegationConstructor;
 
-        DefaultedArgumentClass(DaoBody daoBody, MethodDefinitionBuilder mdb, Class klass, Constructor constructor) {
+        DefaultedArgumentClass(DaoBody daoBody, MethodDefinitionBuilder mdb, Class klass, Constructor constructor, boolean delegationConstructor) {
             super(daoBody, mdb);
             this.klass = klass;
             this.constructor = constructor;
+            this.delegationConstructor = delegationConstructor;
         }
         
         @Override
@@ -4302,7 +4315,11 @@ public class ClassTransformer extends AbstractTransformer {
             super.appendImplicitParameters(typeParameterList);
             if (constructor != null
                     && !Decl.isDefaultConstructor(constructor)) {
-                overloadBuilder.parameter(makeConstructorNameParameter(constructor));
+                if (delegationConstructor) {
+                    overloadBuilder.parameter(makeConstructorNameParameter(constructor, DeclNameFlag.QUALIFIED, DeclNameFlag.DELEGATION));
+                } else {
+                    overloadBuilder.parameter(makeConstructorNameParameter(constructor));
+                }
             }
         }
         
@@ -4369,12 +4386,12 @@ public class ClassTransformer extends AbstractTransformer {
      */
     class DefaultedArgumentConstructor extends DefaultedArgumentClass {
 
-        DefaultedArgumentConstructor(MethodDefinitionBuilder mdb, Class klass, Tree.Declaration node, Tree.ParameterList pl) {
-            super(new DaoThis(node, pl), mdb, klass, null);
+        DefaultedArgumentConstructor(MethodDefinitionBuilder mdb, Class klass, Tree.Declaration node, Tree.ParameterList pl, boolean delegationConstructor) {
+            super(new DaoThis(node, pl), mdb, klass, null, delegationConstructor);
         }
         
-        DefaultedArgumentConstructor(MethodDefinitionBuilder mdb, Constructor constructor, Tree.Declaration node, Tree.ParameterList pl) {
-            super(new DaoThis(node, pl), mdb, (Class)constructor.getContainer(), constructor);
+        DefaultedArgumentConstructor(MethodDefinitionBuilder mdb, Constructor constructor, Tree.Declaration node, Tree.ParameterList pl, boolean delegationConstructor) {
+            super(new DaoThis(node, pl), mdb, (Class)constructor.getContainer(), constructor, delegationConstructor);
         }
         
         @Override
@@ -4408,7 +4425,7 @@ public class ClassTransformer extends AbstractTransformer {
         private boolean forCompanionClass;
 
         DefaultedArgumentInstantiator(DaoBody daoBody, Class klass, Constructor ctor, boolean forCompanionClass) {
-            super(daoBody, MethodDefinitionBuilder.systemMethod(ClassTransformer.this, naming.getInstantiatorMethodName(klass)), klass, ctor);
+            super(daoBody, MethodDefinitionBuilder.systemMethod(ClassTransformer.this, naming.getInstantiatorMethodName(klass)), klass, ctor, false);
             this.forCompanionClass = forCompanionClass;
         }
 
@@ -4951,7 +4968,8 @@ public class ClassTransformer extends AbstractTransformer {
         }
         // Add the rest of the parameters (this worries about aliasing)
         if (parameterList != null) {
-            transformClassOrCtorParameters(null, (Class)ctor.getContainer(), ctor, that, parameterList, 
+            transformClassOrCtorParameters(null, (Class)ctor.getContainer(), ctor, that, 
+                    parameterList, Arrays.asList(declFlags).contains(DeclNameFlag.DELEGATION),
                     classBuilder, ctorDb, generateInstantiator, decl, impl);
         }
         
