@@ -606,7 +606,9 @@ final class inlineObjectTopLevel_ {
                     
                     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
                     @.com.redhat.ceylon.compiler.java.metadata.Name("anonymous#2")
-                    @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(isPackageLocal = true)
+                    @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(
+                            isPackageLocal = true,
+                            qualifier = "1inlineObjectTopLevel$1")
                     @.com.redhat.ceylon.compiler.java.metadata.Object
                     class anonymous_2_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
                         

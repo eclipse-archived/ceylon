@@ -522,11 +522,6 @@ abstract class Bug446<T> implements .com.redhat.ceylon.compiler.java.runtime.mod
     }
     
     @.java.lang.Override
-    public .ceylon.language.Entry<? extends .ceylon.language.Boolean, ? extends T> lookup(final .ceylon.language.Integer key) {
-        return $ceylon$language$Correspondence$this$.lookup(key);
-    }
-    
-    @.java.lang.Override
     public boolean definesEvery(final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> keys) {
         return $ceylon$language$Correspondence$this$.definesEvery(keys);
     }
