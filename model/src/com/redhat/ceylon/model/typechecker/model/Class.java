@@ -338,7 +338,10 @@ public class Class extends ClassOrInterface implements Functional {
         else if (dec instanceof Class && equals(dec)) {
             return true;
         }
-        else if (dec.isFinal()) {
+        else if (dec.isFinal() &&
+                //take into account constructors 
+                //of final Java classes
+                !dec.isAbstraction()) {
             //cannot possibly be true, 
             //since dec is nonequal
             return false;
