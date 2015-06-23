@@ -56,14 +56,14 @@ shared native final class Float(Float float)
      Produces `false` for a finite number, `+0.0`, `-0.0`, 
      or undefined."
     see (`value infinity`, `value finite`)
-    shared Boolean infinite => 
-            this==infinity || this==-infinity;
+    shared Boolean infinite 
+            => this==infinity || this==-infinity;
     
     "Determines whether this value is finite. Produces
      `false` for `infinity`, `-infinity`, and undefined."
     see (`value infinite`, `value infinity`)
-    shared Boolean finite =>
-            this!=infinity && this!=-infinity 
+    shared Boolean finite 
+            => this!=infinity && this!=-infinity 
                     && !this.undefined;
     
     "The sign of this value. Produces `1` for a positive 
