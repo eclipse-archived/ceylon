@@ -203,8 +203,7 @@ public class ModelUtil {
             }
             Functional f = (Functional) dec;
             Unit unit = dec.getUnit();
-            List<ParameterList> pls = 
-                    f.getParameterLists();
+            List<ParameterList> pls = f.getParameterLists();
             if (pls!=null && !pls.isEmpty()) {
                 ParameterList pl = pls.get(0);
                 List<Parameter> params = pl.getParameters();
@@ -223,8 +222,7 @@ public class ModelUtil {
                 }
                 for (int i=0; i<size; i++) {
                     FunctionOrValue pm = 
-                            params.get(i)
-                                .getModel();
+                            params.get(i).getModel();
                     if (pm==null) {
                         return false;
                     }
@@ -268,8 +266,7 @@ public class ModelUtil {
                             }
                         }
                         else {
-                            Type sdt = 
-                                    signature.get(i);
+                            Type sdt = signature.get(i);
                             if (!matches(sdt, ipdt, unit)) {
                                 return false;
                             }
@@ -668,11 +665,11 @@ public class ModelUtil {
             return 2;
         }
         if (underlyingType.equals("int") || 
-                underlyingType.equals("double")) {
+            underlyingType.equals("double")) {
             return 1;
         }
         if (underlyingType.equals("short") || 
-                underlyingType.equals("float")) {
+            underlyingType.equals("float")) {
             return 0;
         }
         return 0;
@@ -681,10 +678,10 @@ public class ModelUtil {
     static boolean strictlyBetterMatch(Declaration d, Declaration r) {
         if (d instanceof Functional && 
             r instanceof Functional) {
-            List<ParameterList> dpls = 
-                    ((Functional) d).getParameterLists();
-            List<ParameterList> rpls = 
-                    ((Functional) r).getParameterLists();
+            Functional fd = (Functional) d;
+            Functional fr = (Functional) r;
+            List<ParameterList> dpls = fd.getParameterLists();
+            List<ParameterList> rpls = fr.getParameterLists();
             if (dpls!=null && !dpls.isEmpty() && 
                     rpls!=null && !rpls.isEmpty()) {
                 ParameterList dpls0 = dpls.get(0);
@@ -831,8 +828,7 @@ public class ModelUtil {
             return unit.getObjectDeclaration();
         }
         else if (paramType.isIntersection()) {
-            List<Type> sts = 
-                    paramType.getSatisfiedTypes();
+            List<Type> sts = paramType.getSatisfiedTypes();
             if (sts.size()==2) {
                 //attempt to eliminate Basic from the 
                 //intersection - very useful for anonymous
@@ -1142,7 +1138,6 @@ public class ModelUtil {
             list.add(pt);
         }
         else if (pt.isUnion()) {
-            // cheaper c-for than foreach
             List<Type> caseTypes = 
                     pt.getCaseTypes();
             for ( int i=0, size=caseTypes.size(); 
@@ -1153,7 +1148,6 @@ public class ModelUtil {
         }
         else if (pt.isWellDefined()) {
             boolean add=true;
-            // cheaper c-for than foreach
             for (int i=0; i<list.size(); i++) {
                 Type t = list.get(i);
                 if (pt.isSubtypeOf(t)) {
@@ -1535,10 +1529,10 @@ public class ModelUtil {
     }
 
     /**
-     * Given two instantiations of a qualified type constructor, 
-     * determine the qualifying type of the principal 
-     * instantiation of that type constructor for the 
-     * intersection of the two types.
+     * Given two instantiations of a qualified type 
+     * constructor, determine the qualifying type of the 
+     * principal instantiation of that type constructor for 
+     * the intersection of the two types.
      */
     static Type principalQualifyingType(
             Type pt, Type t, 
@@ -1658,8 +1652,7 @@ public class ModelUtil {
      * duplicates. 
      */
     public static Type unionType(
-            Type lhst, Type rhst, 
-            Unit unit) {
+            Type lhst, Type rhst, Unit unit) {
         List<Type> list = new ArrayList<Type>(2);
         addToUnion(list, rhst);
         addToUnion(list, lhst);
@@ -1673,8 +1666,7 @@ public class ModelUtil {
      * canonicalizing, and eliminating duplicates. 
      */
     public static Type intersectionType(
-            Type lhst, Type rhst, 
-            Unit unit) {
+            Type lhst, Type rhst, Unit unit) {
         Type simpleIntersection = 
                 getSimpleIntersection(lhst, rhst);
         if (simpleIntersection != null) {
@@ -1735,31 +1727,31 @@ public class ModelUtil {
         if (a == null || b == null) {
             return null;
         }
-        TypeDeclaration aDecl = a.getDeclaration();
-        TypeDeclaration bDecl = b.getDeclaration();
-        if (aDecl == null || bDecl == null) {
+        TypeDeclaration ad = a.getDeclaration();
+        TypeDeclaration bd = b.getDeclaration();
+        if (ad == null || bd == null) {
             return null;
         }
         if (!a.isClassOrInterface()) {
             if (a.isUnion() && b.isClassOrInterface()) {
                 return getSimpleIntersection(b, 
-                        (ClassOrInterface) bDecl, a);
+                        (ClassOrInterface) bd, a);
             }
             return null;
         }
-        if (!b.isClassOrInterface()) {
+        else if (!b.isClassOrInterface()) {
             // here aDecl MUST BE a ClassOrInterface as per flow
             if (b.isUnion()) {
                 return getSimpleIntersection(a, 
-                        (ClassOrInterface) aDecl, b);
+                        (ClassOrInterface) ad, b);
             }
             return null;
         }
-        String aName = aDecl.getQualifiedNameString();
-        String bName = bDecl.getQualifiedNameString();
-        if (aName.equals(bName)
-                && aDecl.getTypeParameters().isEmpty()
-                && bDecl.getTypeParameters().isEmpty())
+        String an = ad.getQualifiedNameString();
+        String bn = bd.getQualifiedNameString();
+        if (an.equals(bn)
+                && ad.getTypeParameters().isEmpty()
+                && bd.getTypeParameters().isEmpty())
             return a;
         if (a.isAnything()) {
             // everything is an Anything
@@ -1772,30 +1764,38 @@ public class ModelUtil {
         if (a.isObject()) {
             // every ClassOrInterface is an object except Null
             if (b.isNull() || b.isNullValue()) {
-                return aDecl.getUnit().getNothingType();
+                return ad.getUnit().getNothingType();
             }
-            return b;
+            else {
+                return b;
+            }
         }
         if (b.isObject()) {
             // every ClassOrInterface is an object except Null
             if (a.isNull() || a.isNullValue()) {
-                return aDecl.getUnit().getNothingType();
+                return bd.getUnit().getNothingType();
             }
-            return a;
+            else {
+                return a;
+            }
         }
         if (a.isNull()) {
             // only null is null
             if (b.isNull() || b.isNullValue()) {
                 return b;
             }
-            return aDecl.getUnit().getNothingType();
+            else {
+                return ad.getUnit().getNothingType();
+            }
         }
         if (b.isNull()) {
             // only null is null
             if (a.isNull() || a.isNullValue()) {
                 return a;
             }
-            return aDecl.getUnit().getNothingType();
+            else {
+                return bd.getUnit().getNothingType();
+            }
         }
         // not simple
         return null;
