@@ -242,7 +242,7 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
                             gen.makeNull())), null));
             classBuilder.defs(adb.build());
         } else if (clz.isClassMember()){
-            adb.modifiers(PRIVATE);
+            adb.modifiers(singletonModel.isShared() ? 0 : PRIVATE);
             // lazy
             SyntheticName field = gen.naming.synthetic(singletonModel);
             adb.initialValue(gen.makeNull());

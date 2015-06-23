@@ -4974,7 +4974,14 @@ public class ClassTransformer extends AbstractTransformer {
                 classMods |= PRIVATE| STATIC | FINAL ;
             } else if (clz.isMember()) {
                 classMods &= ~(PRIVATE | PROTECTED | PUBLIC);
-                classMods |= PRIVATE| STATIC | FINAL ;
+                classMods |= FINAL ;
+                if (!Decl.isAncestorLocal(ctor)) {
+                    classMods |= STATIC;
+                    
+                }
+                if (!ctor.isShared()) {
+                    classMods |= PRIVATE;
+                }
             } else {
                 classMods &= ~(PRIVATE | PROTECTED | PUBLIC);
                 classMods |= FINAL ;
