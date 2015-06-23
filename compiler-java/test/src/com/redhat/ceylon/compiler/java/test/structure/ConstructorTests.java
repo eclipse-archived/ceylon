@@ -3,6 +3,7 @@ package com.redhat.ceylon.compiler.java.test.structure;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import com.redhat.ceylon.compiler.java.test.CompilerError;
 import com.redhat.ceylon.compiler.java.test.CompilerTests;
 
 public class ConstructorTests extends CompilerTests {
@@ -233,5 +234,11 @@ public class ConstructorTests extends CompilerTests {
     @Test
     public void testCtorSingletonCtorsInMemberClasses() {
         compareWithJavaSource("constructor/SingletonCtorsInMemberClasses");
+    }
+    
+    @Test
+    public void testCtorBug2213() {
+        assertErrors("constructor/CtorBug2213",
+                new CompilerError(24, "missing invocation expression"));
     }
 }
