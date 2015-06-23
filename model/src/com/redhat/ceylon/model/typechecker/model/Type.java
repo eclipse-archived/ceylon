@@ -5,6 +5,7 @@ import static com.redhat.ceylon.model.typechecker.model.ModelUtil.NO_TYPE_ARGS;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.addToIntersection;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.addToUnion;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.canonicalIntersection;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getNativeHeader;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getTypeArgumentMap;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getVarianceMap;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.intersection;
@@ -1914,7 +1915,8 @@ public class Type extends Reference {
         if (dec.isMember() && 
                 !dec.isStaticallyImportable()) {
             TypeDeclaration outer = 
-                    (TypeDeclaration) dec.getContainer();
+                    (TypeDeclaration) 
+                        dec.getContainer();
             List<Type> list = 
                     new ArrayList<Type>
                         (caseTypes.size());
@@ -2644,9 +2646,12 @@ public class Type extends Reference {
             // Native implementations have the same extended type as
             // their header, but headers can actually have methods
             // of their own so we set the extended type to the header
-            Declaration hdr = ModelUtil.getNativeHeader(dec.getContainer(), dec.getName());
+            Declaration hdr = 
+                    getNativeHeader(dec.getContainer(), 
+                            dec.getName());
             if (hdr instanceof TypeDeclaration) {
-                et = ((TypeDeclaration)hdr).getType();
+                TypeDeclaration td = (TypeDeclaration) hdr;
+                et = td.getType();
             }
         }
         if (et==null) {
@@ -2758,8 +2763,7 @@ public class Type extends Reference {
             TypeDeclaration ptd = type.getDeclaration();
             Unit unit = ptd.getUnit();
             if (type.isUnion()) {
-                List<Type> cts = 
-                        type.getCaseTypes();
+                List<Type> cts = type.getCaseTypes();
                 List<Type> types = 
                         new ArrayList<Type>
                             (cts.size());
@@ -2774,8 +2778,7 @@ public class Type extends Reference {
                 return union(types, unit);
             }
             else if (type.isIntersection()) {
-                List<Type> sts = 
-                        type.getSatisfiedTypes();
+                List<Type> sts = type.getSatisfiedTypes();
                 List<Type> types = 
                         new ArrayList<Type>
                             (sts.size());
@@ -2856,8 +2859,7 @@ public class Type extends Reference {
                 TypeParameter typeConstructorParameter,
                 boolean covariant, boolean contravariant, 
                 Unit unit) {
-            List<Type> tal = 
-                    type.getTypeArgumentList();
+            List<Type> tal = type.getTypeArgumentList();
             List<TypeParameter> tpl = 
                     typeConstructorParameter.getTypeParameters();
             List<Type> sta = 
@@ -3075,15 +3077,13 @@ public class Type extends Reference {
                 //parameter
                 for (TypeParameter tp: 
                         dec.getTypeParameters()) {
-                    TypeParameter stp = 
-                            new TypeParameter();
+                    TypeParameter stp = new TypeParameter();
                     stp.setName(tp.getName());
                     stp.setScope(tp.getScope());
                     stp.setContainer(tp.getContainer());
                     stp.setUnit(tp.getUnit());
                     stp.setDeclaration(ta);
-                    List<Type> sts = 
-                            tp.getSatisfiedTypes();
+                    List<Type> sts = tp.getSatisfiedTypes();
                     List<Type> ssts = 
                             new ArrayList<Type>
                                 (sts.size());
@@ -3093,8 +3093,7 @@ public class Type extends Reference {
                                 covariant, contravariant));
                     }
                     stp.setSatisfiedTypes(ssts);
-                    List<Type> cts = 
-                            tp.getCaseTypes();
+                    List<Type> cts = tp.getCaseTypes();
                     if (cts!=null) {
                         List<Type> scts = 
                                 new ArrayList<Type>
@@ -3287,8 +3286,7 @@ public class Type extends Reference {
         //of X are the intersection (U|V)&B canonicalized to
         //the union U&B|V&B
         if (isIntersection()) {
-            List<Type> sts = 
-                    getSatisfiedTypes();
+            List<Type> sts = getSatisfiedTypes();
             List<Type> list = 
                     new ArrayList<Type>
                         (sts.size());
@@ -3477,13 +3475,11 @@ public class Type extends Reference {
                 //enumerated type U of A|B|... to 
                 //the union type T&A|T&B|...
                 Type stu = et.getUnionOfCases();
-                if (stu.isUnion()) {
-                    Type it = 
-                            intersectionType(stu, type, unit);
-                    if (it.isSubtypeOf(this)) {
-                        return true;
-                    }
-                }
+                if (stu.isUnion() && 
+                        intersectionType(stu, type, unit)
+                            .isSubtypeOf(this)) {
+                  return true;
+               }
             }
             //X covers Y if Y satisfies Z and X covers Z
             for (Type st: type.getSatisfiedTypes()) {
@@ -3494,13 +3490,11 @@ public class Type extends Reference {
                 //for an enumerated type U of A|B|... to 
                 //the union type T&A|T&B|...
                 Type stu = st.getUnionOfCases();
-                if (stu.isUnion()) {
-                    Type it = 
-                            intersectionType(stu, type, unit);
-                    if (it.isSubtypeOf(this)) {
-                        return true;
-                    }
-                }
+                if (stu.isUnion() && 
+                        intersectionType(stu, type, unit)
+                            .isSubtypeOf(this)) {
+                  return true;
+               }
             }
             return false;
         }
