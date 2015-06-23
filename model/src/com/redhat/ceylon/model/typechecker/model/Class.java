@@ -328,13 +328,20 @@ public class Class extends ClassOrInterface implements Functional {
         if (dec.isAnything()) {
             return true;
         }
-//        else if (dec.isObject()) {
-//            return !isAnything() && !isNull() &&
-//            !getQualifiedNameString().equals("ceylon.language::null");
-//        }
-//        else 
-        if (dec instanceof Class &&  equals(dec)) {
+        else if (dec.isObject()) {
+            return !isAnything() && 
+                !isNull() && !isNullValue();
+        }
+        else if (dec.isNull()) {
+            return isNull() || isNullValue();
+        }
+        else if (dec instanceof Class && equals(dec)) {
             return true;
+        }
+        else if (dec.isFinal()) {
+            //cannot possibly be true, 
+            //since dec is nonequal
+            return false;
         }
         else {
             //TODO: optimize this to avoid walking the
