@@ -148,3 +148,78 @@ class MethodIfNonEmptySequence() {
         }
     }
 }
+
+
+interface Case0 {
+    
+    interface Top<out T> {
+        shared default T? s => null;
+        shared default T? m() => null;
+    }
+    interface A {}
+    interface B {}
+    interface Left satisfies Top<B> {}
+    interface Middle<out T> satisfies Top<T> {
+        shared actual default T? s => super.s;
+        shared actual default T? m() => super.m();
+    }
+    interface Right satisfies Middle<A> {}
+    class Bottom() satisfies Left&Middle<B>&Right {}
+    
+}
+
+interface Case1 {
+    
+    interface Top<out T> {
+        shared default T? s => null;
+        shared default T? m() => null;
+    }
+    interface A {}
+    interface B {}
+    interface Left satisfies Middle<A> {}
+    interface Middle<out T> satisfies Top<T> {
+        shared actual default T? s => super.s;
+        shared actual default T? m() => super.m();
+    }
+    interface Right satisfies Top<B> {}
+    class Bottom() satisfies Left&Middle<B>&Right {}
+    
+}
+
+
+
+interface Case2 {
+    
+    interface Top<out T> {
+        shared default T? s => null;
+        shared default T? m() => null;
+    }
+    interface A {}
+    interface B {}
+    interface Left satisfies Top<A> {}
+    interface Middle<out T> satisfies Top<T> {
+        shared actual default T? s => super.s;
+        shared actual default T? m() => super.m();
+    }
+    interface Right satisfies Middle<A> {}
+    class Bottom() satisfies Left&Middle<B>&Right {}
+    
+}
+
+interface Case3 {
+    
+    interface Top<out T> {
+        shared default T? s => null;
+        shared default T? m() => null;
+    }
+    interface A {}
+    interface B {}
+    interface Left satisfies Middle<A> {}
+    interface Middle<out T> satisfies Top<T> {
+        shared actual default T? s => super.s;
+        shared actual default T? m() => super.m();
+    }
+    interface Right satisfies Top<A> {}
+    class Bottom() satisfies Left&Middle<B>&Right {}
+    
+}
