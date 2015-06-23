@@ -212,9 +212,13 @@ public class ConstructorTests extends CompilerTests {
     }
     
     @Test
-    @Ignore
     public void testCtorExtendingCtorWithDefaultParameter() {
         compareWithJavaSource("constructor/ExtendingCtorWithDefaultParameter");
+    }
+    
+    @Test
+    public void testCtorBug2187() {
+        compareWithJavaSource("constructor/Bug2187");
     }
     
     @Test
@@ -245,4 +249,5 @@ public class ConstructorTests extends CompilerTests {
     public void testCtorBug2172() {
         compareWithJavaSource("constructor/Bug2172");
     }
+    
 }
