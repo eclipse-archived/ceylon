@@ -2235,10 +2235,10 @@ public class ModelUtil {
             }
             args.add(arg);
         }
-        Type pqt = 
-                principalQualifyingType(first, second, 
-                        dec, unit);
-        Type result = dec.appliedType(pqt, args);
+        Type result =
+                dec.appliedType(principalQualifyingType(
+                        first, second, dec, unit), 
+                        args);
         result.setVarianceOverrides(varianceOverrides);
         return result;
     }
