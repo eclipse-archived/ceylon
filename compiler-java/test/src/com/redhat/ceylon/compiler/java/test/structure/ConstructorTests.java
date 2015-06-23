@@ -202,7 +202,6 @@ public class ConstructorTests extends CompilerTests {
     }
     
     @Test
-    @Ignore
     public void testCtorOfObjectSubclass() {
         compareWithJavaSource("constructor/CtorOfObjectSubclass");
     }
@@ -240,5 +239,10 @@ public class ConstructorTests extends CompilerTests {
     public void testCtorBug2213() {
         assertErrors("constructor/CtorBug2213",
                 new CompilerError(24, "missing invocation expression"));
+    }
+    
+    @Test
+    public void testCtorBug2172() {
+        compareWithJavaSource("constructor/Bug2172");
     }
 }
