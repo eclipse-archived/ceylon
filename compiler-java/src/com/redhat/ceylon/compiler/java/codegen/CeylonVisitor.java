@@ -152,6 +152,9 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
         for (Tree.Statement stmt : that.getStatements()) {
             if (stmt instanceof Tree.Constructor) {
                 Tree.Constructor ctor = (Tree.Constructor)stmt;
+                if (gen.errors().hasDeclarationError(ctor) instanceof Drop) {
+                    continue;
+                }
                 classBuilder.getInitBuilder().constructor(ctor);
                 Constructor ctorModel = ctor.getConstructor();
                 if (ctor.getDelegatedConstructor() != null) {
@@ -169,6 +172,9 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
                 }
             } else if (stmt instanceof Tree.Enumerated) {
                 Tree.Enumerated singleton = (Tree.Enumerated)stmt;
+                if (gen.errors().hasDeclarationError(singleton) instanceof Drop) {
+                    continue;
+                }
                 classBuilder.getInitBuilder().singleton(singleton);
                 Constructor ctorModel = singleton.getEnumerated();
                  if (singleton.getDelegatedConstructor() != null) {
@@ -195,6 +201,9 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
         for (Tree.Statement stmt : that.getStatements()) {
             if (stmt instanceof Tree.Constructor) {
                 Tree.Constructor ctor = (Tree.Constructor)stmt;
+                if (gen.errors().hasDeclarationError(ctor) instanceof Drop) {
+                    continue;
+                }
                 transformConstructor(ctor, 
                         ctor.getParameterList(), 
                         ctor.getDelegatedConstructor(),
@@ -203,6 +212,9 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
                         delegates);
             } else if (stmt instanceof Tree.Enumerated) {
                 Tree.Enumerated ctor = (Tree.Enumerated)stmt;
+                if (gen.errors().hasDeclarationError(ctor) instanceof Drop) {
+                    continue;
+                }
                 transformSingletonConstructor(delegates, ctor);
             }
         }
