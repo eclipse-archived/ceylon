@@ -1599,8 +1599,8 @@ public class Type extends Reference {
     }
     
     private Type getPrincipalInstantiation(Criteria c) {
-        //search for the most-specific supertype 
-        //for the given declaration
+        // search for the most-specific supertype for the
+        // declaration that satisfies the given Criteria
         
         Type result = null;
         Type lowerBound = null;
@@ -1617,9 +1617,8 @@ public class Type extends Reference {
         
         List<Type> satisfiedTypes = 
                 getInternalSatisfiedTypes();
-        // cheaper iteration
-        for (int i=0, l=satisfiedTypes.size(); 
-                i<l; i++) {
+        for (int i=0, size=satisfiedTypes.size(); 
+                i<size; i++) {
             Type satisfiedType = satisfiedTypes.get(i);
             Type possibleResult = 
                     satisfiedType.getSupertype(c);
@@ -1636,45 +1635,17 @@ public class Type extends Reference {
                     lowerBound = possibleResult;
                 }
                 else {
-                    //TODO: this is still needed even though 
-                    //      we keep intersections in canonical 
-                    //      form because you can have stuff like
-                    //      empty of Iterable<String>&Sized
+                    //try to find a supertype of both types
+                    //and form a principal instantiation 
                     TypeDeclaration rd = 
                             result.getDeclaration();
                     TypeDeclaration prd = 
                             possibleResult.getDeclaration();
                     
-                    //Resolve ambiguities in favor of
-                    //the most-refined declaration
-                    /*if (rd.equals(prd)) {
-                        List<Type> args = constructPrincipalInstantiation(
-                                rd, result, possibleResult);
-                        //TODO: broken for member types! ugh :-(
-                        result = rd.getProducedType(result.getQualifyingType(), args);
-                    }
-                    else if (rd.inherits(prd)) {
-                    }
-                    else if (prd.inherits(rd)) {
-                        result = possibleResult;
-                    }*/
-                    
                     TypeDeclaration d = null;
                     if (rd.equals(prd)) {
                         d = rd;
                     }
-                    //Resolve ambiguities in favor of 
-                    //least-refined declaration (in
-                    //order to take advantage of most
-                    //specific type arguments)
-                    /*else if (rd.inherits(prd)) {
-                        d=prd;
-                        result=result.getSupertype(d);
-                    }
-                    else if (prd.inherits(rd)) {
-                        d=rd;
-                        possibleResult=possibleResult.getSupertype(d);
-                    }*/
                     
                     Unit unit = getDeclaration().getUnit();
                     if (d!=null) {
