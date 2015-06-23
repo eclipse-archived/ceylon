@@ -252,8 +252,9 @@ public class ModelUtil {
                                 .isEmpty()) {
                         return false;
                     }
-                    //Note: don't use Unit.getIterableType() because this
-                    //      gets called from model loader out-of-phase
+                    //Note: don't use Unit.getIterableType() 
+                    //      because this gets called from 
+                    //      model loader out-of-phase
                     Type ipdt = 
                             pdt.getTypeArgumentList()
                                 .get(0);  
@@ -303,8 +304,8 @@ public class ModelUtil {
             return false;
         }
         //Ignore optionality for resolving overloads, since
-        //all Java parameters are treated as optional
-        //Except in the case of primitive parameters
+        //all Java parameters are treated as optional,
+        //except primitive-typed parameters
         Type nvt = unit.getNullType();
         if (nvt.isSubtypeOf(argType) && 
                 !nvt.isSubtypeOf(paramType)) {
@@ -496,14 +497,16 @@ public class ModelUtil {
                 underlyingTypeCoercionScoreB) {
             if (underlyingTypeCoercionScoreA > 0 && 
                     underlyingTypeCoercionScoreB > 0) {
-                // both truncations, prefer the smaller truncation
+                // both truncations, prefer the smaller 
+                // truncation
                 if (underlyingTypeCoercionScoreA > 
                 underlyingTypeCoercionScoreB) {
                     return true;
                 }
             }
             else if(underlyingTypeCoercionScoreA > 0) {
-                // A is a truncation, B is a widening, prefer widening
+                // A is a truncation, B is a widening, 
+                // prefer widening
                 return true;
             }
             else if(underlyingTypeCoercionScoreA == 0) {
@@ -511,16 +514,18 @@ public class ModelUtil {
                 return false;
             }
             else if(underlyingTypeCoercionScoreB == 0) {
-                // B is a perfect match but A is not, so it's worse
+                // B is a perfect match but A is not, 
+                // so it's worse
                 return true;
             }
             else if(underlyingTypeCoercionScoreB > 0) {
-                // A is a widening, B is a truncation, so it's not worse
+                // A is a widening, B is a truncation, 
+                // so it's not worse
                 return false;
             }
             else {
-                // A is a widening and B is a widening too, A is worse than B
-                // if it widens more than B
+                // A is a widening and B is a widening too, 
+                // A is worse than B if it widens more than B
                 return underlyingTypeCoercionScoreA < 
                         underlyingTypeCoercionScoreB;
             }
@@ -591,9 +596,11 @@ public class ModelUtil {
     }
 
     /**
-     * Returns 0 of there's no coercion, > 0 if we have to truncate the argument type to fit the param type,
-     * the higher for the worse truncation, or < 0 if we have to widen the argument type to fit the param
-     * type, the lower for the worse widening.
+     * Returns 0 of there's no coercion, > 0 if we have to 
+     * truncate the argument type to fit the param type,
+     * the higher for the worse truncation, or < 0 if we 
+     * have to widen the argument type to fit the param type, 
+     * the lower for the worse widening.
      */
     private static int getCoercionScore(
             Type argumentType, 
