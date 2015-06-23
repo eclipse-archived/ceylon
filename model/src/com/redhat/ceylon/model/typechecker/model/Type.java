@@ -4000,6 +4000,10 @@ public class Type extends Reference {
         return getDeclaration().isNull();
     }
     
+    public boolean isNullValue() {
+        return getDeclaration().isNullValue();
+    }
+    
     public boolean isBasic() {
         return getDeclaration().isBasic();
     }

@@ -1003,6 +1003,10 @@ public abstract class TypeDeclaration extends Declaration
         return false;
     }
     
+    boolean isNullValue() {
+        return false;
+    }
+    
     public boolean isBasic() {
         return false;
     }

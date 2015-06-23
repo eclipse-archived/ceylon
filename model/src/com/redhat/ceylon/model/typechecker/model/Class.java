@@ -270,6 +270,12 @@ public class Class extends ClassOrInterface implements Functional {
     }
 
     @Override
+    boolean isNullValue() {
+        return Objects.equals(getQualifiedNameString(),
+                "ceylon.language::null");
+    }
+
+    @Override
     public boolean isBasic() {
         return Objects.equals(getQualifiedNameString(),
                 "ceylon.language::Basic");

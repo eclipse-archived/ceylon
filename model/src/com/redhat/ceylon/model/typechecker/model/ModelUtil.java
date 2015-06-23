@@ -1560,8 +1560,8 @@ public class ModelUtil {
     }
     
     /**
-     * Determine if a type of form X<P>&X<Q> is equivalent to
-     * Nothing where X<T> is invariant in T.
+     * Determine if a type of form X<P>&X<Q> is equivalent
+     * to Nothing where X<T> is invariant in T.
      * 
      * @param p the argument type P
      * @param q the argument type Q
@@ -1742,16 +1742,16 @@ public class ModelUtil {
         }
         if (!a.isClassOrInterface()) {
             if (a.isUnion() && b.isClassOrInterface()) {
-                return getSimpleIntersection(
-                        b, (ClassOrInterface) bDecl, a);
+                return getSimpleIntersection(b, 
+                        (ClassOrInterface) bDecl, a);
             }
             return null;
         }
         if (!b.isClassOrInterface()) {
             // here aDecl MUST BE a ClassOrInterface as per flow
             if (b.isUnion()) {
-                return getSimpleIntersection(
-                        a, (ClassOrInterface) aDecl, b);
+                return getSimpleIntersection(a, 
+                        (ClassOrInterface) aDecl, b);
             }
             return null;
         }
@@ -1761,42 +1761,38 @@ public class ModelUtil {
                 && aDecl.getTypeParameters().isEmpty()
                 && bDecl.getTypeParameters().isEmpty())
             return a;
-        if (aName.equals("ceylon.language::Anything")) {
+        if (a.isAnything()) {
             // everything is an Anything
             return b;
         }
-        if (bName.equals("ceylon.language::Anything")) {
+        if (b.isAnything()) {
             // everything is an Anything
             return a;
         }
-        if (aName.equals("ceylon.language::Object")) {
+        if (a.isObject()) {
             // every ClassOrInterface is an object except Null
-            if (bName.equals("ceylon.language::Null") || 
-                bName.equals("ceylon.language::null")) {
+            if (b.isNull() || b.isNullValue()) {
                 return aDecl.getUnit().getNothingType();
             }
             return b;
         }
-        if (bName.equals("ceylon.language::Object")) {
+        if (b.isObject()) {
             // every ClassOrInterface is an object except Null
-            if (aName.equals("ceylon.language::Null") || 
-                aName.equals("ceylon.language::null")) {
+            if (a.isNull() || a.isNullValue()) {
                 return aDecl.getUnit().getNothingType();
             }
             return a;
         }
-        if (aName.equals("ceylon.language::Null")) {
+        if (a.isNull()) {
             // only null is null
-            if (bName.equals("ceylon.language::Null") || 
-                bName.equals("ceylon.language::null")) {
+            if (b.isNull() || b.isNullValue()) {
                 return b;
             }
             return aDecl.getUnit().getNothingType();
         }
-        if (bName.equals("ceylon.language::Null")) {
+        if (b.isNull()) {
             // only null is null
-            if (aName.equals("ceylon.language::Null") || 
-                aName.equals("ceylon.language::null")) {
+            if (a.isNull() || a.isNullValue()) {
                 return a;
             }
             return aDecl.getUnit().getNothingType();
@@ -1813,29 +1809,19 @@ public class ModelUtil {
             return null;
         }
 
-        String aName = aDecl.getQualifiedNameString();
         // we only handle Object and Null intersections
-        if (!aName.equals("ceylon.language::Object") && 
-            !aName.equals("ceylon.language::Null")) {
+        boolean aIsObject = a.isObject();
+        boolean aIsNull = a.isNull();
+        if (!aIsObject && !aIsNull) {
             return null;
         }
         
         Type caseA = b.getCaseTypes().get(0);
-        TypeDeclaration caseADecl = caseA.getDeclaration();
-
         Type caseB = b.getCaseTypes().get(1);
-        TypeDeclaration caseBDecl = caseB.getDeclaration();
-
-        boolean isANull = 
-                caseA.isClass() && 
-                "ceylon.language::Null"
-                    .equals(caseADecl.getQualifiedNameString());
-        boolean isBNull = 
-                caseB.isClass() && 
-                "ceylon.language::Null"
-                    .equals(caseBDecl.getQualifiedNameString());
+        boolean isANull = caseA.isNull();
+        boolean isBNull = caseB.isNull();
         
-        if (aName.equals("ceylon.language::Object")) {
+        if (aIsObject) {
             if (isANull) {
                 return simpleObjectIntersection(aDecl, caseB);
             }
@@ -1845,7 +1831,7 @@ public class ModelUtil {
             // too complex
             return null;
         }
-        if (aName.equals("ceylon.language::Null")) {
+        if (aIsNull) {
             if (isANull) {
                 return caseA;
             }
@@ -1876,10 +1862,7 @@ public class ModelUtil {
                 return canonicalIntersection(types, unit);
             }
             for (Type sat: satisfiedTypes) {
-                if (sat.isClassOrInterface() && 
-                        sat.getDeclaration()
-                            .getQualifiedNameString()
-                            .equals("ceylon.language::Object")) {
+                if (sat.isObject()) {
                     // it is already an Object
                     return type;
                 }
