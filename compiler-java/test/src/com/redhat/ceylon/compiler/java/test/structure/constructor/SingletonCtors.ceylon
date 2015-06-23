@@ -40,6 +40,9 @@ class ClassMemberSingletonCtors() {
         shared new one {
             string="one";
         }
+        new nonShared {
+            string="nonShared";
+        }
     }
     void use(ClassMemberSingletonCtors other) {
         assert(other.MemberClass.one != MemberClass.one);

@@ -1,0 +1,84 @@
+package com.redhat.ceylon.compiler.java.test.structure.constructor;
+
+class SingletonCtorsInMemberClasses implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    SingletonCtorsInMemberClasses() {
+    }
+    
+    static final class Bar$bar {
+        
+        private Bar$bar() {
+        }
+    }
+    private Bar bar = null;
+    
+    .com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtorsInMemberClasses.Bar getBar() {
+        if (bar == null) bar = new Bar((.com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtorsInMemberClasses.Bar$bar)null);
+        return bar;
+    }
+    
+    public class Bar implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+        
+        public Bar(.com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtorsInMemberClasses.Bar$bar $name$) {
+        }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtorsInMemberClasses.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtorsInMemberClasses.Bar.class));
+        }
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtorsInMemberClasses.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtorsInMemberClasses.class);
+}
+public final class singletonCtorsInMemberClasses_ {
+    
+    private singletonCtorsInMemberClasses_() {
+    }
+    
+    public static void singletonCtorsInMemberClasses() {
+        .ceylon.language.print_.print(new .com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtorsInMemberClasses().getBar());
+        
+        class Foo implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+            
+            Foo() {
+            }
+            
+            final class Bar$bar {
+                
+                private Bar$bar() {
+                }
+            }
+            private Bar bar = null;
+            
+            Foo.Bar getBar() {
+                if (bar == null) bar = new Bar((Foo.Bar$bar)null);
+                return bar;
+            }
+            
+            class Bar implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+                
+                private Bar(Foo.Bar$bar $name$) {
+                }
+                
+                @.java.lang.Override
+                public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                    return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue(.com.redhat.ceylon.compiler.java.test.structure.constructor.singletonCtorsInMemberClasses_.class), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(Foo.class)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(Foo.Bar.class));
+                }
+            }
+            
+            @.java.lang.Override
+            public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue(.com.redhat.ceylon.compiler.java.test.structure.constructor.singletonCtorsInMemberClasses_.class), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(Foo.class));
+            }
+        }
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.structure.constructor.singletonCtorsInMemberClasses_.singletonCtorsInMemberClasses();
+    }
+}

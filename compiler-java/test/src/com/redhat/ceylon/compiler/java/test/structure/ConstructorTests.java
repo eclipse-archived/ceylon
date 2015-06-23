@@ -229,4 +229,9 @@ public class ConstructorTests extends CompilerTests {
     public void testCtorDelegationWithTypeParameter() {
         compareWithJavaSource("constructor/DelegationWithTypeParameter");
     }
+    
+    @Test
+    public void testCtorSingletonCtorsInMemberClasses() {
+        compareWithJavaSource("constructor/SingletonCtorsInMemberClasses");
+    }
 }
