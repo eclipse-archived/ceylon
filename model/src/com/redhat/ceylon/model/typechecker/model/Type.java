@@ -1663,23 +1663,23 @@ public class Type extends Reference {
                             //by forming the union of the two 
                             //possible results (since A|B is 
                             //always a supertype of A&B)
-                            List<Type> caseTypes = 
-                                    new ArrayList<Type>(2);
-                            //if (extendedType!=null) caseTypes.add(extendedType);
-                            //caseTypes.addAll(satisfiedTypes);
-                            caseTypes.add(result);
-                            caseTypes.add(possibleResult);
-                            result = union(caseTypes, unit)
-                                    .getSupertype(c);
-                            if (result==null) {
-                                return unit.getUnknownType();
-                            }
                             List<Type> types = 
                                     new ArrayList<Type>(2);
                             types.add(lowerBound);
                             types.add(possibleResult);
                             lowerBound = 
                                     intersection(types, unit);
+                            List<Type> lbsts = 
+                                    lowerBound.getSatisfiedTypes();
+                            List<Type> caseTypes = 
+                                    new ArrayList<Type>
+                                        (lbsts.size());
+                            caseTypes.addAll(lbsts);
+                            result = union(caseTypes, unit)
+                                    .getSupertype(c);
+                            if (result==null) {
+                                return unit.getUnknownType();
+                            }
                         }
                         else {
                             return unit.getUnknownType();
