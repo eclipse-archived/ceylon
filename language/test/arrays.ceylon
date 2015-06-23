@@ -212,12 +212,12 @@ shared void testArrays() {
     check(!a12.lastOccurrence(0) exists, "Array.lastOccurrence 3");
     check(a12.occurs(5), "Array.occurs 1");
     check(!a12.occurs(4), "Array.occurs 2");
-    check(a12.lookup(6).key, "Array.lookup 1");
+    /*check(a12.lookup(6).key, "Array.lookup 1");
     check(a12.lookup(6).item exists, "Array.lookup 2");
     check(a12.lookup(5).key, "Array.lookup 3");
     check(!a12.lookup(5).item exists, "Array.lookup 4");
     check(!a12.lookup(9).key, "Array.lookup 5");
-    check(!a12.lookup(9).item exists, "Array.lookup 6");
+    check(!a12.lookup(9).item exists, "Array.lookup 6");*/
 
     //constructor
     value a13=Array.ofSize(5,1);

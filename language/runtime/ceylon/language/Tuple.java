@@ -1024,7 +1024,7 @@ public final class Tuple<Element, First extends Element,
         return getFromFirst(index.value);
     }
     
-    @Override @Ignore
+    /*@Override @Ignore
     public Entry<? extends Boolean,? extends Element> 
     lookup(Integer index) {
         boolean defined = defines(index);
@@ -1035,7 +1035,7 @@ public final class Tuple<Element, First extends Element,
                 $getReifiedElement$(),
                 Boolean.instance(defined), 
                 item);
-    }
+    }*/
 
     @Override @Ignore
     public boolean includes(List<? extends java.lang.Object> list) {

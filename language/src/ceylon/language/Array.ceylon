@@ -46,7 +46,7 @@ shared final native class Array<Element>
      the index falls outside the bounds of this array."
     shared actual native Element? getFromFirst(Integer index);
     
-    shared actual native Boolean->Element? lookup(Integer index);
+    //shared actual native Boolean->Element? lookup(Integer index);
     
     shared actual native Integer? lastIndex;
     

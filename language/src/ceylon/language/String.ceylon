@@ -335,7 +335,7 @@ shared native final class String(characters)
      `string.size-1`."
     shared actual native Character? getFromFirst(Integer index);
     
-    shared actual native Boolean->Character? lookup(Integer index);
+    //shared actual native Boolean->Character? lookup(Integer index);
     
     "Determines if the given object is a `String` and, if 
      so, if it occurs as a substring of this string, or if 

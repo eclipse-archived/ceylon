@@ -1227,7 +1227,7 @@ public final class Array<Element>
         }
     }
     
-    @Override
+    /*@Override
     @TypeInfo("ceylon.language::Entry<ceylon.language::Boolean,ceylon.language::Null|Element>")
     public Entry<? extends Boolean, ? extends Element> lookup(@Name("index") Integer index) {
         long ind = index.longValue();
@@ -1239,7 +1239,7 @@ public final class Array<Element>
                 $reifiedElement,
                 Boolean.instance(defined), 
                 item);
-    }
+    }*/
     
     // Used by the jvm backend code to avoid boxing the index
     @SuppressWarnings("unchecked")

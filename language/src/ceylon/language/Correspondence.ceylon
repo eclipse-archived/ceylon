@@ -35,7 +35,7 @@ shared interface Correspondence<in Key, out Item=Anything>
          `value Correspondence.keys`)
     shared formal Boolean defines(Key key);
     
-    "Return a boolean value indicating whether there is an
+    /*"Return a boolean value indicating whether there is an
      item with the given [[key]], together with the 
      [[item|Item]] for that key, if any.
      
@@ -55,13 +55,7 @@ shared interface Correspondence<in Key, out Item=Anything>
     Boolean->Item? lookup(Key key)
             => if (defines(key))
                then true -> get(key)
-               else false -> null;
-    
-    /*<\Itrue->Item>|<\Ifalse->Null> lookup(Object key)
-            => if (defines(key), 
-                   is Item item = get(key))
-            then true->item 
-            else false->null;*/
+               else false -> null;*/
     
     "The `Category` of all keys for which a value is defined
      by this `Correspondence`."
