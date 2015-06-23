@@ -2884,133 +2884,148 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
     
     private List<ExpressionAndType> transformArgumentsForSimpleInvocation(SimpleInvocation invocation, CallBuilder callBuilder) {
-        List<ExpressionAndType> result = List.<ExpressionAndType>nil();
-        int numArguments = invocation.getNumArguments();
-        if (invocation.getNumParameters() == 0) {
-            // skip transforming arguments
-            // (Usually, numArguments would already be null, but it's possible to call a
-            //  parameterless function with a *[] argument - see #1593.)
-            numArguments = 0;
-        }
-        boolean wrapIntoArray = false;
-        ListBuffer<JCExpression> arrayWrap = new ListBuffer<JCExpression>();
-        
-        for (int argIndex = 0; argIndex < numArguments; argIndex++) {
-            BoxingStrategy boxingStrategy = invocation.getParameterBoxingStrategy(argIndex);
-            Type parameterType = invocation.getParameterType(argIndex);
-            // for Java methods of variadic primitives, it's better to wrap them ourselves into an array
-            // to avoid ambiguity of foo(1,2) for foo(int...) and foo(Object...) methods
-            if(!wrapIntoArray
-                    && invocation.isParameterSequenced(argIndex)
-                    && invocation.isJavaMethod()
-                    && boxingStrategy == BoxingStrategy.UNBOXED
-                    && willEraseToPrimitive(typeFact().getDefiniteType(parameterType))
-                    && !invocation.isSpread())
-                wrapIntoArray = true;
-
-            ExpressionAndType exprAndType;
-            if (invocation.isArgumentSpread(argIndex)) {
-                if (!invocation.isParameterSequenced(argIndex)) {
-                    result = transformSpreadTupleArgument(invocation, callBuilder,
-                            result, argIndex);
-                    break;
-                }
-                if(invocation.isJavaMethod()){
-                    // if it's a java method we need a special wrapping
-                    exprAndType = transformSpreadArgument(invocation,
-                            numArguments, argIndex, boxingStrategy,
-                            parameterType);
-                    argIndex = numArguments;
-                }else{
-                    Type argType = invocation.getArgumentType(argIndex);
-                    if (argType.getSupertype(typeFact().getSequentialDeclaration()) != null) {
-                        exprAndType = transformArgument(invocation, argIndex,
-                                boxingStrategy);
-                    } else if (argType.getSupertype(typeFact().getIterableDeclaration()) != null) {
-                        exprAndType = transformArgument(invocation, argIndex,
-                                boxingStrategy);
-                        JCExpression sequential = iterableToSequential(exprAndType.expression);
-                        if(invocation.isParameterVariadicPlus(argIndex)){
-                            Type iteratedType = typeFact().getIteratedType(argType);
-                            sequential = utilInvocation().castSequentialToSequence(sequential, iteratedType);
-                        }
-                        exprAndType = new ExpressionAndType(sequential, exprAndType.type);
-                    } else {
-                        exprAndType = new ExpressionAndType(makeErroneous(invocation.getNode(), "compiler bug: unexpected spread argument"), makeErroneous(invocation.getNode(), "compiler bug: unexpected spread argument"));
-                    }
-                }
-            } else if (!invocation.isParameterSequenced(argIndex)
-                    // if it's sequenced, Java and there's no spread at all, pass it along
-                    || (invocation.isParameterSequenced(argIndex) && invocation.isJavaMethod() && !invocation.isSpread())) {
-                exprAndType = transformArgument(invocation, argIndex,
-                        boxingStrategy);
-                // Callable has a variadic 1-param method that if you invoke it with a Java Object[] will confuse javac and give
-                // preference to the variadic method instead of the $call$(Object) one, so we force a cast to Object to resolve it
-                // This is not required for primitive arrays since they are not Object[]
-                if(numArguments == 1 
-                        && invocation.isIndirect()){
-                    Type argumentType = invocation.getArgumentType(0);
-                    if(isJavaObjectArray(argumentType)
-                            || isNull(argumentType)){
-                        exprAndType = new ExpressionAndType(make().TypeCast(makeJavaType(typeFact().getObjectType()), exprAndType.expression),
-                                exprAndType.type);
-                    }
-                }else if(invocation.isParameterSequenced(argIndex) && invocation.isJavaMethod() && !invocation.isSpread()){
-                    // in fact, the very same problem happens when passing null or object arrays to a java variadic method
-                    Type argumentType = invocation.getArgumentType(argIndex);
-                    if(isJavaObjectArray(argumentType)
-                            || isNull(argumentType)){
-                        // remove any ambiguity
-                        exprAndType = new ExpressionAndType(make().TypeCast(makeJavaType(parameterType), exprAndType.expression),
-                                exprAndType.type);
-                    }
-                }
-            } else {
-                // we must have a sequenced param
-                if(invocation.isSpread()){
-                    exprAndType = transformSpreadArgument(invocation,
-                            numArguments, argIndex, boxingStrategy,
-                            parameterType);
-                    argIndex = numArguments;
-                }else{
-                    exprAndType = transformVariadicArgument(invocation,
-                            numArguments, argIndex, parameterType);
-                    argIndex = numArguments;
-                }
-            }
-            if(!wrapIntoArray) {
-                if (argIndex== 0 
-                        && invocation.isCallable()
-                        && !invocation.isArgumentSpread(numArguments-1)
-                        ) {
-                    exprAndType = new ExpressionAndType(
-                            make().TypeCast(make().Type(syms().objectType), exprAndType.expression),
-                            make().Type(syms().objectType));
-                }
-                result = result.append(exprAndType);
-            } else {
-                arrayWrap.append(exprAndType.expression);
-            }
-        }
-        if (invocation.isIndirect()
-                && invocation.isParameterSequenced(numArguments)
-                && !invocation.isArgumentSpread(numArguments-1)
-                && ((IndirectInvocation)invocation).getNumParameters() > numArguments) {
-            // Calling convention for indirect variadic invocation's requires
-            // explicit variadic argument (can't use the overloading trick)
-            result = result.append(new ExpressionAndType(makeEmptyAsSequential(true), make().Erroneous()));
-        }
-        if(wrapIntoArray){
-            // must have at least one arg, so take the last one
-            Type parameterType = invocation.getParameterType(numArguments-1);
-            JCExpression arrayType = makeJavaType(parameterType, JT_RAW);
-            
-            JCNewArray arrayExpr = make().NewArray(arrayType, List.<JCExpression>nil(), arrayWrap.toList());
-            JCExpression arrayTypeExpr = make().TypeArray(makeJavaType(parameterType, JT_RAW));
-            result = result.append(new ExpressionAndType(arrayExpr, arrayTypeExpr));
-        }
-        
         final Constructor superConstructor = invocation.getConstructor();
+        CtorDelegation constructorDelegation;
+        if (invocation instanceof SuperInvocation) {
+            constructorDelegation = ((SuperInvocation)invocation).getDelegation();
+        } else {
+            constructorDelegation = null;
+        }
+        
+        List<ExpressionAndType> result = List.<ExpressionAndType>nil();
+        if (!(invocation instanceof SuperInvocation)
+                || !((SuperInvocation)invocation).isDelegationDelegation() ) {
+            int numArguments = invocation.getNumArguments();
+            if (invocation.getNumParameters() == 0) {
+                // skip transforming arguments
+                // (Usually, numArguments would already be null, but it's possible to call a
+                //  parameterless function with a *[] argument - see #1593.)
+                numArguments = 0;
+            }
+            boolean wrapIntoArray = false;
+            ListBuffer<JCExpression> arrayWrap = new ListBuffer<JCExpression>();
+            
+            for (int argIndex = 0; argIndex < numArguments; argIndex++) {
+                BoxingStrategy boxingStrategy = invocation.getParameterBoxingStrategy(argIndex);
+                Type parameterType = invocation.getParameterType(argIndex);
+                // for Java methods of variadic primitives, it's better to wrap them ourselves into an array
+                // to avoid ambiguity of foo(1,2) for foo(int...) and foo(Object...) methods
+                if(!wrapIntoArray
+                        && invocation.isParameterSequenced(argIndex)
+                        && invocation.isJavaMethod()
+                        && boxingStrategy == BoxingStrategy.UNBOXED
+                        && willEraseToPrimitive(typeFact().getDefiniteType(parameterType))
+                        && !invocation.isSpread())
+                    wrapIntoArray = true;
+    
+                ExpressionAndType exprAndType;
+                if (invocation.isArgumentSpread(argIndex)) {
+                    if (!invocation.isParameterSequenced(argIndex)) {
+                        result = transformSpreadTupleArgument(invocation, callBuilder,
+                                result, argIndex);
+                        break;
+                    }
+                    if(invocation.isJavaMethod()){
+                        // if it's a java method we need a special wrapping
+                        exprAndType = transformSpreadArgument(invocation,
+                                numArguments, argIndex, boxingStrategy,
+                                parameterType);
+                        argIndex = numArguments;
+                    }else{
+                        Type argType = invocation.getArgumentType(argIndex);
+                        if (argType.getSupertype(typeFact().getSequentialDeclaration()) != null) {
+                            exprAndType = transformArgument(invocation, argIndex,
+                                    boxingStrategy);
+                        } else if (argType.getSupertype(typeFact().getIterableDeclaration()) != null) {
+                            exprAndType = transformArgument(invocation, argIndex,
+                                    boxingStrategy);
+                            JCExpression sequential = iterableToSequential(exprAndType.expression);
+                            if(invocation.isParameterVariadicPlus(argIndex)){
+                                Type iteratedType = typeFact().getIteratedType(argType);
+                                sequential = utilInvocation().castSequentialToSequence(sequential, iteratedType);
+                            }
+                            exprAndType = new ExpressionAndType(sequential, exprAndType.type);
+                        } else {
+                            exprAndType = new ExpressionAndType(makeErroneous(invocation.getNode(), "compiler bug: unexpected spread argument"), makeErroneous(invocation.getNode(), "compiler bug: unexpected spread argument"));
+                        }
+                    }
+                } else if (!invocation.isParameterSequenced(argIndex)
+                        // if it's sequenced, Java and there's no spread at all, pass it along
+                        || (invocation.isParameterSequenced(argIndex) && invocation.isJavaMethod() && !invocation.isSpread())) {
+                    exprAndType = transformArgument(invocation, argIndex,
+                            boxingStrategy);
+                    // Callable has a variadic 1-param method that if you invoke it with a Java Object[] will confuse javac and give
+                    // preference to the variadic method instead of the $call$(Object) one, so we force a cast to Object to resolve it
+                    // This is not required for primitive arrays since they are not Object[]
+                    if(numArguments == 1 
+                            && invocation.isIndirect()){
+                        Type argumentType = invocation.getArgumentType(0);
+                        if(isJavaObjectArray(argumentType)
+                                || isNull(argumentType)){
+                            exprAndType = new ExpressionAndType(make().TypeCast(makeJavaType(typeFact().getObjectType()), exprAndType.expression),
+                                    exprAndType.type);
+                        }
+                    }else if(invocation.isParameterSequenced(argIndex) && invocation.isJavaMethod() && !invocation.isSpread()){
+                        // in fact, the very same problem happens when passing null or object arrays to a java variadic method
+                        Type argumentType = invocation.getArgumentType(argIndex);
+                        if(isJavaObjectArray(argumentType)
+                                || isNull(argumentType)){
+                            // remove any ambiguity
+                            exprAndType = new ExpressionAndType(make().TypeCast(makeJavaType(parameterType), exprAndType.expression),
+                                    exprAndType.type);
+                        }
+                    }
+                } else {
+                    // we must have a sequenced param
+                    if(invocation.isSpread()){
+                        exprAndType = transformSpreadArgument(invocation,
+                                numArguments, argIndex, boxingStrategy,
+                                parameterType);
+                        argIndex = numArguments;
+                    }else{
+                        exprAndType = transformVariadicArgument(invocation,
+                                numArguments, argIndex, parameterType);
+                        argIndex = numArguments;
+                    }
+                }
+                if(!wrapIntoArray) {
+                    if (argIndex== 0 
+                            && invocation.isCallable()
+                            && !invocation.isArgumentSpread(numArguments-1)
+                            ) {
+                        exprAndType = new ExpressionAndType(
+                                make().TypeCast(make().Type(syms().objectType), exprAndType.expression),
+                                make().Type(syms().objectType));
+                    }
+                    result = result.append(exprAndType);
+                } else {
+                    arrayWrap.append(exprAndType.expression);
+                }
+            }
+            if (invocation.isIndirect()
+                    && invocation.isParameterSequenced(numArguments)
+                    && !invocation.isArgumentSpread(numArguments-1)
+                    && ((IndirectInvocation)invocation).getNumParameters() > numArguments) {
+                // Calling convention for indirect variadic invocation's requires
+                // explicit variadic argument (can't use the overloading trick)
+                result = result.append(new ExpressionAndType(makeEmptyAsSequential(true), make().Erroneous()));
+            }
+            if(wrapIntoArray){
+                // must have at least one arg, so take the last one
+                Type parameterType = invocation.getParameterType(numArguments-1);
+                JCExpression arrayType = makeJavaType(parameterType, JT_RAW);
+                
+                JCNewArray arrayExpr = make().NewArray(arrayType, List.<JCExpression>nil(), arrayWrap.toList());
+                JCExpression arrayTypeExpr = make().TypeArray(makeJavaType(parameterType, JT_RAW));
+                result = result.append(new ExpressionAndType(arrayExpr, arrayTypeExpr));
+            }
+            
+        } else {
+            for (Parameter p : constructorDelegation.getConstructor().getParameterList().getParameters()) {
+                result = result.append(new ExpressionAndType(naming.makeName(p.getModel(), Naming.NA_IDENT | Naming.NA_ALIASED), null));
+            }
+        }
+        
         boolean concreteDelegation = invocation instanceof SuperInvocation
                 && ((SuperInvocation)invocation).getDelegation().isConcreteSelfDelegation();
         if (superConstructor == null && 
@@ -3653,7 +3668,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 try {
                     JCExpression superExpr = transformConstructorDelegation(extendedType, 
                             new CtorDelegation(null, primaryDeclaration), 
-                            extendedType.getInvocationExpression(), classBuilder);
+                            extendedType.getInvocationExpression(), classBuilder, false);
                     classBuilder.getInitBuilder().delegateCall(at(extendedType).Exec(superExpr));
                 } finally {
                     withinInvocation(prevFnCall);
@@ -3695,7 +3710,7 @@ public class ExpressionTransformer extends AbstractTransformer {
      */
     JCExpression transformConstructorDelegation(Node extendedType,
             CtorDelegation delegation,
-            Tree.InvocationExpression invocation, ClassDefinitionBuilder classBuilder) {
+            Tree.InvocationExpression invocation, ClassDefinitionBuilder classBuilder, boolean forDelegationConstructor) {
         Declaration primaryDeclaration = ((Tree.MemberOrTypeExpression)invocation.getPrimary()).getDeclaration();
         java.util.List<ParameterList> paramLists = ((Functional)primaryDeclaration).getParameterLists();
         if(paramLists.isEmpty()){
@@ -3705,7 +3720,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         SuperInvocation builder = new SuperInvocation(this,
                 classBuilder.getForDefinition(),
                 delegation, invocation,
-                paramLists.get(0));
+                paramLists.get(0), forDelegationConstructor);
         
         CallBuilder callBuilder = CallBuilder.instance(this);
         boolean prevFnCall = withinInvocation(true);

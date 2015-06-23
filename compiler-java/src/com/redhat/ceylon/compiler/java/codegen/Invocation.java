@@ -913,12 +913,14 @@ class SuperInvocation extends PositionalInvocation {
     
     private final ClassOrInterface sub;
     private CtorDelegation delegation;
+    private boolean delegationDelegation;
     
     SuperInvocation(AbstractTransformer gen,
             ClassOrInterface sub,
             CtorDelegation delegation,
             Tree.InvocationExpression invocation,
-            ParameterList parameterList) {
+            ParameterList parameterList, 
+            boolean delegationDelegation) {
         super(gen, 
                 invocation.getPrimary(), 
                 unaliasedPrimaryDeclaration(invocation),
@@ -927,6 +929,7 @@ class SuperInvocation extends PositionalInvocation {
                 parameterList.getParameters());
         this.sub = sub;
         this.delegation = delegation;
+        this.delegationDelegation = delegationDelegation;
     }
     
     CtorDelegation getDelegation() {
@@ -942,6 +945,10 @@ class SuperInvocation extends PositionalInvocation {
         // For the constructor we need the possibly-aliased primary declaration
         Declaration primaryDeclaration = ((Tree.MemberOrTypeExpression)getPrimary()).getDeclaration();
         return getConstructorFromPrimary(primaryDeclaration);
+    }
+
+    public boolean isDelegationDelegation() {
+        return delegationDelegation;
     }
 
 }

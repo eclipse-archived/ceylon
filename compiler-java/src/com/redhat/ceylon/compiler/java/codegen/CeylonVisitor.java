@@ -325,7 +325,7 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
             if (chainedCtorInvocation != null) {
                 delegateExpr = gen.make().Exec(gen.expressionGen().transformConstructorDelegation(chainedCtorInvocation, 
                         delegation.isSelfDelegation() ? delegation : new CtorDelegation(ctorModel, ctorModel), 
-                                chainedCtorInvocation, classBuilder));
+                                chainedCtorInvocation, classBuilder, true));
             } else {
                 // In this case there is no extends clause in the source code
                 // so we have to construct the argument list "by hand".
@@ -346,7 +346,7 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
             
         } else if (delegatedCtor != null) {
             stmts.add(gen.make().Exec(gen.expressionGen().transformConstructorDelegation(
-                    delegatedCtor, delegation, delegatedCtor.getInvocationExpression(), classBuilder)));
+                    delegatedCtor, delegation, delegatedCtor.getInvocationExpression(), classBuilder, false)));
         } else {
             // no explicit extends clause
         }
@@ -431,7 +431,7 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
         if (chainedCtorInvocation != null) {
             stmts.add(gen.make().Exec(gen.expressionGen().transformConstructorDelegation(
                     delegatedCtor, 
-                    delegation, chainedCtorInvocation, classBuilder)));
+                    delegation, chainedCtorInvocation, classBuilder, false)));
         }
         
         stmts.addAll(classBuilder.getInitBuilder().copyStatementsBetween(
