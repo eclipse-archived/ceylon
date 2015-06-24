@@ -1478,10 +1478,8 @@ public class ModelUtil {
         Interface nst = unit.getSequenceDeclaration();
         if (pd.inherits(nst) && qd.inherits(st) ||
             qd.inherits(nst) && pd.inherits(st)) {
-            Type pet = 
-                    unit.getSequentialElementType(p);
-            Type qet = 
-                    unit.getSequentialElementType(q);
+            Type pet = unit.getSequentialElementType(p);
+            Type qet = unit.getSequentialElementType(q);
             if (emptyMeet(pet, qet, unit)) {
                 return true;
             }
