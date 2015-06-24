@@ -1498,10 +1498,8 @@ public class ModelUtil {
             }
         }
         if (pd.inherits(td) && qd.inherits(st)) {
-            List<Type> pal = 
-                    p.getTypeArgumentList();
-            Type qet = 
-                    unit.getSequentialElementType(q);
+            List<Type> pal = p.getTypeArgumentList();
+            Type qet = unit.getSequentialElementType(q);
             if (pal.size()>=3) {
                 if (emptyMeet(pal.get(1), qet, unit) ||
                     emptyMeet(pal.get(2), 
@@ -1512,10 +1510,8 @@ public class ModelUtil {
             }
         }
         if (qd.inherits(td) && pd.inherits(st)) {
-            List<Type> qal = 
-                    q.getTypeArgumentList();
-            Type pet = 
-                    unit.getSequentialElementType(p);
+            List<Type> qal = q.getTypeArgumentList();
+            Type pet = unit.getSequentialElementType(p);
             if (qal.size()>=3) {
                 if (emptyMeet(qal.get(1), pet, unit) ||
                     emptyMeet(qal.get(2), 
@@ -1533,20 +1529,23 @@ public class ModelUtil {
      * constructor, determine the qualifying type of the 
      * principal instantiation of that type constructor for 
      * the intersection of the two types.
+     * 
+     * @param p the first instantiation
+     * @param q the second instantiation
+     * @param td the type constructor
      */
     static Type principalQualifyingType(
-            Type pt, Type t, 
-            TypeDeclaration td, Unit unit) {
-        Type ptqt = pt.getQualifyingType();
-        Type tqt = t.getQualifyingType();
+            Type p, Type q, TypeDeclaration td, Unit unit) {
+        Type pqt = p.getQualifyingType();
+        Type qqt = q.getQualifyingType();
         Scope tdc = td.getContainer();
-        if (ptqt!=null && tqt!=null && 
+        if (pqt!=null && qqt!=null && 
                 tdc instanceof TypeDeclaration) {
             TypeDeclaration qtd = (TypeDeclaration) tdc;
-            Type pst = ptqt.getSupertype(qtd);
-            Type st = tqt.getSupertype(qtd);
-            if (pst!=null && st!=null) {
-                return principalInstantiation(qtd, pst, st, 
+            Type pst = pqt.getSupertype(qtd);
+            Type qst = qqt.getSupertype(qtd);
+            if (pst!=null && qst!=null) {
+                return principalInstantiation(qtd, pst, qst, 
                         unit);
             }
         }
@@ -2116,6 +2115,11 @@ public class ModelUtil {
      *   same type where one argument is a type parameter
      * 
      * Nevertheless, we give it our best shot!
+     * 
+     * @param dec the type constructor
+     * @param first the first instantiation
+     * @param second the second instantiation
+     * 
      */
     public static Type principalInstantiation(
             TypeDeclaration dec, 
