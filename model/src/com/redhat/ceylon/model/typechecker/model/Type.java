@@ -1370,18 +1370,12 @@ public class Type extends Reference {
             //this is what the backend expects, apparently
             return null;
         }
-        boolean complexType = 
-                dec instanceof UnionType || 
-                dec instanceof IntersectionType;
-        boolean canCache = 
-                !complexType && 
-                !hasUnderlyingType() && 
-                collectVarianceOverrides().isEmpty() &&
-                TypeCache.isEnabled();
-        TypeCache cache = dec.getUnit().getCache();
-        if (canCache && 
-                cache.containsKey(this, dec)) {
-            return cache.get(this, dec);
+        boolean canCache = canCacheSupertype(dec);
+        if (canCache) {
+            TypeCache cache = dec.getUnit().getCache();
+            if (cache.containsKey(this, dec)) {
+                return cache.get(this, dec);
+            }
         }
         
         while (dec.isAlias()) {
@@ -1413,9 +1407,20 @@ public class Type extends Reference {
         }
         
         if (canCache) {
+            TypeCache cache = dec.getUnit().getCache();
             cache.put(this, dec, superType);
         }
         return superType;
+    }
+
+    private boolean canCacheSupertype(TypeDeclaration dec) {
+        boolean complexType = 
+                dec instanceof UnionType || 
+                dec instanceof IntersectionType;
+        return !complexType && 
+                !hasUnderlyingType() && 
+                collectVarianceOverrides().isEmpty() &&
+                TypeCache.isEnabled();
     }
 
     private boolean isSimpleSupertypeLookup(TypeDeclaration dec) {
@@ -1433,11 +1438,10 @@ public class Type extends Reference {
             return true;
         }
         List<Type> tal = getTypeArgumentList();
-        for (int i=0, l=tal.size(); 
-                i<l; i++) {
+        for (int i=0, size=tal.size(); 
+                i<size; i++) {
             Type ta = tal.get(i);
-            if (ta != null && 
-                    ta.hasUnderlyingType()) {
+            if (ta!=null && ta.hasUnderlyingType()) {
                 return true;
             }
         }
