@@ -1533,18 +1533,24 @@ public class ModelUtil {
      * @param td the type constructor
      */
     static Type principalQualifyingType(
-            Type p, Type q, TypeDeclaration td, Unit unit) {
+            Type p, Type q, Declaration td, Unit unit) {
         Type pqt = p.getQualifyingType();
         Type qqt = q.getQualifyingType();
         Scope tdc = td.getContainer();
-        if (pqt!=null && qqt!=null && 
-                tdc instanceof TypeDeclaration) {
-            TypeDeclaration qtd = (TypeDeclaration) tdc;
-            Type pst = pqt.getSupertype(qtd);
-            Type qst = qqt.getSupertype(qtd);
-            if (pst!=null && qst!=null) {
-                return principalInstantiation(qtd, pst, qst, 
-                        unit);
+        if (pqt!=null && qqt!=null) {
+            if (tdc instanceof TypeDeclaration) {
+                TypeDeclaration qtd = (TypeDeclaration) tdc;
+                Type pst = pqt.getSupertype(qtd);
+                Type qst = qqt.getSupertype(qtd);
+                if (pst!=null && qst!=null) {
+                    return principalInstantiation(qtd, pst, qst, 
+                            unit);
+                }
+            }
+            else {
+                if (pqt.isExactly(qqt)) {
+                    return pqt;
+                }
             }
         }
         return null;
