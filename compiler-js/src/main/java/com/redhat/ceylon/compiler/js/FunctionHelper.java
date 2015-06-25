@@ -207,7 +207,7 @@ public class FunctionHelper {
                 if (gen.opts.isOptimize() && m.isMember()) { return; }
                 gen.comment(that);
                 gen.initDefaultedParameters(that.getParameterLists().get(0), m);
-                if (!(gen.opts.isOptimize() && m.isClassOrInterfaceMember()) && gen.shouldStitch(m)) {
+                if (!(gen.opts.isOptimize() && m.isClassOrInterfaceMember()) && TypeUtils.isNativeExternal(m)) {
                     if (gen.stitchNative(m, that)) {
                         gen.spitOut("Stitching in native method " + m.getQualifiedNameString() + ", ignoring Ceylon declaration");
                         if (m.isShared()) {
@@ -254,7 +254,7 @@ public class FunctionHelper {
             }
             //Only the first paramlist can have defaults
             gen.initDefaultedParameters(that.getParameterLists().get(0), m);
-            if (!(gen.opts.isOptimize() && m.isClassOrInterfaceMember()) && gen.shouldStitch(m)) {
+            if (!(gen.opts.isOptimize() && m.isClassOrInterfaceMember()) && TypeUtils.isNativeExternal(m)) {
                 if (gen.stitchNative(m, that)) {
                     if (!JsCompiler.isCompilingLanguageModule()) {
                         gen.spitOut("Stitching in native method " + m.getQualifiedNameString()
@@ -266,14 +266,14 @@ public class FunctionHelper {
                 }
             }
         } else if (m == that.getScope() && m.getContainer() instanceof TypeDeclaration && m.isMember()
-                && (m.isFormal() || gen.shouldStitch(m))) {
+                && (m.isFormal() || TypeUtils.isNativeExternal(m))) {
             gen.out(gen.getNames().self((TypeDeclaration)m.getContainer()), ".",
                     gen.getNames().name(m), "=");
             if (m.isFormal()) {
                 gen.out("{$fml:1,$crtmm$:");
                 TypeUtils.encodeForRuntime(that, m, gen);
                 gen.out("};");
-            } else if (gen.shouldStitch(m)) {
+            } else if (TypeUtils.isNativeExternal(m)) {
                 if (gen.stitchNative(m, that)) {
                     if (!JsCompiler.isCompilingLanguageModule()) {
                         gen.spitOut("Stitching in native method " + m.getQualifiedNameString()
@@ -289,7 +289,7 @@ public class FunctionHelper {
 
     static void methodDefinition(final Tree.MethodDefinition that, final GenerateJsVisitor gen, final boolean needsName) {
         final Function d = that.getDeclarationModel();
-        if (gen.shouldStitch(d)) {
+        if (TypeUtils.isNativeExternal(d)) {
             if (gen.stitchNative(d, that)) {
                 gen.spitOut("Stitching in native method " + d.getQualifiedNameString() + ", ignoring Ceylon definition");
                 if (d.isShared()) {
