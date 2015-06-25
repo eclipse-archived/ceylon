@@ -4,6 +4,8 @@ import java.util.Map;
 
 import com.redhat.ceylon.compiler.js.util.TypeUtils;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
+import com.redhat.ceylon.model.typechecker.model.ModelUtil;
 import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.SiteVariance;
 import com.redhat.ceylon.model.typechecker.model.TypeParameter;
@@ -125,6 +127,258 @@ public class Operators {
             BmeGenerator.generateMemberAccess(qme, applyFunc, primaryVar, gen);
             gen.out(",", oldValueVar, ")");
         }
+    }
+
+    static void indexOp(final Tree.IndexExpression that, final GenerateJsVisitor gen) {
+        that.getPrimary().visit(gen);
+        Tree.ElementOrRange eor = that.getElementOrRange();
+        if (eor instanceof Tree.Element) {
+            final Tree.Expression _elemexpr = ((Tree.Element)eor).getExpression();
+            final String _end;
+            if (ModelUtil.isTypeUnknown(that.getPrimary().getTypeModel()) && gen.isInDynamicBlock()) {
+                gen.out("[");
+                _end = "]";
+            } else {
+                gen.out(".$_get(");
+                _end = ")";
+            }
+            if (!gen.isNaturalLiteral(_elemexpr.getTerm())) {
+                _elemexpr.visit(gen);
+            }
+            gen.out(_end);
+        } else {//range, or spread?
+            Tree.ElementRange er = (Tree.ElementRange)eor;
+            Expression sexpr = er.getLength();
+            if (sexpr == null) {
+                if (er.getLowerBound() == null) {
+                    gen.out(".spanTo(");
+                } else if (er.getUpperBound() == null) {
+                    gen.out(".spanFrom(");
+                } else {
+                    gen.out(".span(");
+                }
+            } else {
+                gen.out(".measure(");
+            }
+            if (er.getLowerBound() != null) {
+                if (!gen.isNaturalLiteral(er.getLowerBound().getTerm())) {
+                    er.getLowerBound().visit(gen);
+                }
+                if (er.getUpperBound() != null || sexpr != null) {
+                    gen.out(",");
+                }
+            }
+            if (er.getUpperBound() != null) {
+                if (!gen.isNaturalLiteral(er.getUpperBound().getTerm())) {
+                    er.getUpperBound().visit(gen);
+                }
+            } else if (sexpr != null) {
+                sexpr.visit(gen);
+            }
+            gen.out(")");
+        }
+    }
+
+    static void segmentOrRange(final Tree.BinaryOperatorExpression that,
+            String op, String typeArgumentName, GenerateJsVisitor gen) {
+        final Tree.Term left  = that.getLeftTerm();
+        final Tree.Term right = that.getRightTerm();
+        gen.out(gen.getClAlias(), op, "(");
+        left.visit(gen);
+        gen.out(",");
+        right.visit(gen);
+        gen.out(",{", typeArgumentName, "$", op, ":");
+        TypeUtils.typeNameOrList(that,
+                ModelUtil.unionType(left.getTypeModel(), right.getTypeModel(), that.getUnit()),
+                gen, false);
+        gen.out("})");
+    }
+
+    static void withinOp(final Tree.WithinOp that, GenerateJsVisitor gen) {
+        final String ttmp = gen.getNames().createTempVariable();
+        gen.out("(", ttmp, "=");
+        gen.box(that.getTerm());
+        gen.out(",");
+        if (gen.isInDynamicBlock() && ModelUtil.isTypeUnknown(that.getTerm().getTypeModel())) {
+            final String tmpl = gen.getNames().createTempVariable();
+            final String tmpu = gen.getNames().createTempVariable();
+            gen.out(tmpl, "=");
+            gen.box(that.getLowerBound().getTerm());
+            gen.out(",", tmpu, "=");
+            gen.box(that.getUpperBound().getTerm());
+            gen.out(",((", ttmp, ".compare&&",ttmp,".compare(", tmpl);
+            if (that.getLowerBound() instanceof Tree.OpenBound) {
+                gen.out(")===", gen.getClAlias(), "larger())||", ttmp, ">", tmpl, ")");
+            } else {
+                gen.out(")!==", gen.getClAlias(), "smaller())||", ttmp, ">=", tmpl, ")");
+            }
+            gen.out("&&((", ttmp, ".compare&&",ttmp,".compare(", tmpu);
+            if (that.getUpperBound() instanceof Tree.OpenBound) {
+                gen.out(")===", gen.getClAlias(), "smaller())||", ttmp, "<", tmpu, ")");
+            } else {
+                gen.out(")!==", gen.getClAlias(), "larger())||", ttmp, "<=", tmpu, ")");
+            }
+        } else {
+            gen.out(ttmp, ".compare(");
+            gen.box(that.getLowerBound().getTerm());
+            if (that.getLowerBound() instanceof Tree.OpenBound) {
+                gen.out(")===", gen.getClAlias(), "larger()");
+            } else {
+                gen.out(")!==", gen.getClAlias(), "smaller()");
+            }
+            gen.out("&&");
+            gen.out(ttmp, ".compare(");
+            gen.box(that.getUpperBound().getTerm());
+            if (that.getUpperBound() instanceof Tree.OpenBound) {
+                gen.out(")===", gen.getClAlias(), "smaller()");
+            } else {
+                gen.out(")!==", gen.getClAlias(), "larger()");
+            }
+        }
+        gen.out(")");
+    }
+
+    static void largeAs(Tree.LargeAsOp that, GenerateJsVisitor gen) {
+        if (gen.isInDynamicBlock() && ModelUtil.isTypeUnknown(that.getLeftTerm().getTypeModel())) {
+            //Try to use compare() if it exists
+            String ltmp = gen.getNames().createTempVariable();
+            String rtmp = gen.getNames().createTempVariable();
+            gen.out("(", ltmp, "=");
+            gen.box(that.getLeftTerm());
+            gen.out(",", rtmp, "=");
+            gen.box(that.getRightTerm());
+            gen.out(",(", ltmp, ".compare&&", ltmp, ".compare(", rtmp, ")!==",
+                    gen.getClAlias(), "smaller())||", ltmp, ">=", rtmp, ")");
+        } else {
+            final boolean usenat = gen.canUseNativeComparator(that.getLeftTerm(), that.getRightTerm());
+            if (usenat) {
+                simpleBinaryOp(that, "(", ">=", ")", gen);
+            } else {
+                gen.out("(");
+                simpleBinaryOp(that, null, ".compare(", ")", gen);
+                gen.out("!==", gen.getClAlias(), "smaller())");
+            }
+        }
+    }
+
+    static void smallAs(Tree.SmallAsOp that, GenerateJsVisitor gen) {
+        if (gen.isInDynamicBlock() && ModelUtil.isTypeUnknown(that.getLeftTerm().getTypeModel())) {
+            //Try to use compare() if it exists
+            String ltmp = gen.getNames().createTempVariable();
+            String rtmp = gen.getNames().createTempVariable();
+            gen.out("(", ltmp, "=");
+            gen.box(that.getLeftTerm());
+            gen.out(",", rtmp, "=");
+            gen.box(that.getRightTerm());
+            gen.out(",(", ltmp, ".compare&&", ltmp, ".compare(", rtmp, ")!==",
+                    gen.getClAlias(), "larger())||", ltmp, "<=", rtmp, ")");
+        } else {
+            final boolean usenat = gen.canUseNativeComparator(that.getLeftTerm(), that.getRightTerm());
+            if (usenat) {
+                simpleBinaryOp(that, "(", "<=", ")", gen);
+            } else {
+                gen.out("(");
+                simpleBinaryOp(that, null, ".compare(", ")", gen);
+                gen.out("!==", gen.getClAlias(), "larger()");
+                gen.out(")");
+            }
+        }
+    }
+
+    static void larger(Tree.LargerOp that, GenerateJsVisitor gen) {
+        if (gen.isInDynamicBlock() && ModelUtil.isTypeUnknown(that.getLeftTerm().getTypeModel())) {
+            //Try to use compare() if it exists
+            String ltmp = gen.getNames().createTempVariable();
+            String rtmp = gen.getNames().createTempVariable();
+            gen.out("(", ltmp, "=");
+            gen.box(that.getLeftTerm());
+            gen.out(",", rtmp, "=");
+            gen.box(that.getRightTerm());
+            gen.out(",(", ltmp, ".compare&&", ltmp, ".compare(", rtmp, ").equals(",
+                    gen.getClAlias(), "larger()))||", ltmp, ">", rtmp, ")");
+        } else {
+            final boolean usenat = gen.canUseNativeComparator(that.getLeftTerm(), that.getRightTerm());
+            if (usenat) {
+                simpleBinaryOp(that, "(", ">", ")", gen);
+            } else {
+                simpleBinaryOp(that, null, ".compare(", ")", gen);
+                gen.out(".equals(", gen.getClAlias(), "larger())");
+            }
+        }
+    }
+
+    static void smaller(Tree.SmallerOp that, GenerateJsVisitor gen) {
+        if (gen.isInDynamicBlock() && ModelUtil.isTypeUnknown(that.getLeftTerm().getTypeModel())) {
+            //Try to use compare() if it exists
+            String ltmp = gen.getNames().createTempVariable();
+            String rtmp = gen.getNames().createTempVariable();
+            gen.out("(", ltmp, "=");
+            gen.box(that.getLeftTerm());
+            gen.out(",", rtmp, "=");
+            gen.box(that.getRightTerm());
+            gen.out(",(", ltmp, ".compare&&", ltmp, ".compare(", rtmp, ").equals(",
+                    gen.getClAlias(), "smaller()))||", ltmp, "<", rtmp, ")");
+        } else {
+            final boolean usenat = gen.canUseNativeComparator(that.getLeftTerm(), that.getRightTerm());
+            if (usenat) {
+                simpleBinaryOp(that, "(", "<", ")", gen);
+            } else {
+                simpleBinaryOp(that, null, ".compare(", ")", gen);
+                gen.out(".equals(", gen.getClAlias(), "smaller())");
+            }
+        }
+    }
+
+    static void notEqual(Tree.NotEqualOp that, GenerateJsVisitor gen) {
+        if (gen.isInDynamicBlock() && ModelUtil.isTypeUnknown(that.getLeftTerm().getTypeModel())) {
+            //Try to use equals() if it exists
+            String ltmp = gen.getNames().createTempVariable();
+            String rtmp = gen.getNames().createTempVariable();
+            gen.out("(", ltmp, "=");
+            gen.box(that.getLeftTerm());
+            gen.out(",", rtmp, "=");
+            gen.box(that.getRightTerm());
+            gen.out(",(", ltmp, ".equals&&!", ltmp, ".equals(", rtmp, "))||", ltmp, "!==", rtmp, ")");
+        } else {
+            final boolean usenat = gen.canUseNativeComparator(that.getLeftTerm(), that.getRightTerm());
+            simpleBinaryOp(that, usenat?"!(":"(!", usenat?"==":".equals(", usenat?")":"))", gen);
+        }
+    }
+
+    static void equal(Tree.EqualOp that, GenerateJsVisitor gen) {
+        if (gen.isInDynamicBlock() && ModelUtil.isTypeUnknown(that.getLeftTerm().getTypeModel())) {
+            //Try to use equals() if it exists
+            String ltmp = gen.getNames().createTempVariable();
+            String rtmp = gen.getNames().createTempVariable();
+            gen.out("(", ltmp, "=");
+            gen.box(that.getLeftTerm());
+            gen.out(",", rtmp, "=");
+            gen.box(that.getRightTerm());
+            gen.out(",(", ltmp, ".equals&&", ltmp, ".equals(", rtmp, "))||", ltmp, "===", rtmp, ")");
+        } else {
+            final boolean usenat = gen.canUseNativeComparator(that.getLeftTerm(), that.getRightTerm());
+            simpleBinaryOp(that, usenat?"((":null, usenat?").valueOf()==(":".equals(",
+                    usenat?").valueOf())":")", gen);
+        }
+    }
+
+    static void neg(Tree.NegativeOp that, GenerateJsVisitor gen) {
+        Tree.Term term = that.getTerm();
+        if (term instanceof Tree.Expression) {
+            term = ((Tree.Expression)term).getTerm();
+        }
+        if (term instanceof Tree.NaturalLiteral) {
+            long t = gen.parseNaturalLiteral((Tree.NaturalLiteral)term, true);
+            gen.out("(", Long.toString(t), ")");
+            if (t == 0) {
+                //Force -0
+                gen.out(".negated");
+            }
+            return;
+        }
+        final Type d = term.getTypeModel();
+        final boolean isint = d.isSubtypeOf(that.getUnit().getIntegerType());
+        Operators.unaryOp(that, isint?"(-":null, isint?")":".negated", gen);
     }
 
 }

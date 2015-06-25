@@ -10,6 +10,8 @@ import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Functional;
 import com.redhat.ceylon.model.typechecker.model.Function;
 import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
+import com.redhat.ceylon.model.typechecker.model.Scope;
+import com.redhat.ceylon.model.typechecker.model.Setter;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.model.typechecker.model.ModelUtil;
 import com.redhat.ceylon.model.typechecker.model.Value;
@@ -54,8 +56,8 @@ public class AttributeGenerator {
         } else {
             varName = gen.getNames().name(decl);
         }
-        final boolean initVal = decl.isToplevel() && !gen.shouldStitch(decl);
-        boolean stitch = gen.shouldStitch(decl);
+        final boolean initVal = decl.isToplevel() && !TypeUtils.isNativeExternal(decl);
+        boolean stitch = TypeUtils.isNativeExternal(decl);
         gen.out("var ", varName);
         if (expr != null) {
             if (initVal) {
@@ -202,11 +204,11 @@ public class AttributeGenerator {
         final String atname = d.isShared() ? gen.getNames().name(d) + "_" :
             gen.getNames().privateName(d);
         if (d.isFormal()) {
-            gen.generateAttributeMetamodel(that, false, false);
+            generateAttributeMetamodel(that, false, false, gen);
         } else if (that.getSpecifierOrInitializerExpression() == null) {
             gen.defineAttribute(gen.getNames().self(outer), gen.getNames().name(d));
             gen.out("{");
-            if (gen.shouldStitch(d)) {
+            if (TypeUtils.isNativeExternal(d)) {
                 //this is for native member attribute declaration with no value
                 gen.stitchNative(d, that);
             } else {
@@ -251,7 +253,7 @@ public class AttributeGenerator {
                 param = ((Functional)d.getContainer()).getParameter(d.getName());
             }
             if ((that.getSpecifierOrInitializerExpression() != null) || d.isVariable() || param != null
-                    || d.isLate() || gen.shouldStitch(d)) {
+                    || d.isLate() || TypeUtils.isNativeExternal(d)) {
                 if (that.getSpecifierOrInitializerExpression()
                                 instanceof LazySpecifierExpression) {
                     // attribute is defined by a lazy expression ("=>" syntax)
@@ -259,7 +261,7 @@ public class AttributeGenerator {
                     gen.beginBlock();
                     gen.initSelf(that);
                     Expression expr = that.getSpecifierOrInitializerExpression().getExpression();
-                    boolean stitch = gen.shouldStitch(d);
+                    boolean stitch = TypeUtils.isNativeExternal(d);
                     if (stitch) {
                         stitch=gen.stitchNative(d, that);
                         if (stitch) {
@@ -305,7 +307,7 @@ public class AttributeGenerator {
                     if (d.isLate()) {
                         gen.generateUnitializedAttributeReadCheck("this."+privname, gen.getNames().name(d));
                     }
-                    if (gen.shouldStitch(d)) {
+                    if (TypeUtils.isNativeExternal(d)) {
                         if (gen.stitchNative(d, that)) {
                             gen.spitOut("Stitching in native getter " + d.getQualifiedNameString() +
                                     ", ignoring Ceylon declaration");
@@ -339,6 +341,69 @@ public class AttributeGenerator {
     public static boolean defineAsProperty(Declaration d) {
         // for now, only define member attributes as properties, not toplevel attributes
         return d.isMember() && d instanceof FunctionOrValue && !(d instanceof Function);
+    }
+
+    /** Generate runtime metamodel info for an attribute declaration or definition. */
+    static void generateAttributeMetamodel(final Tree.TypedDeclaration that,
+            final boolean addGetter, final boolean addSetter, GenerateJsVisitor gen) {
+        //No need to define all this for local values
+        Scope _scope = that.getScope();
+        while (_scope != null) {
+            //TODO this is bound to change for local decl metamodel
+            if (_scope instanceof Declaration) {
+                if (_scope instanceof Function)return;
+                else break;
+            }
+            _scope = _scope.getContainer();
+        }
+        Declaration d = that.getDeclarationModel();
+        if (d instanceof Setter) d = ((Setter)d).getGetter();
+        final String pname = gen.getNames().getter(d, false);
+        final String pnameMeta = gen.getNames().getter(d, true);
+        if (!gen.isGeneratedAttribute(d)) {
+            if (d.isToplevel()) {
+                gen.out("var ");
+            } else if (gen.outerSelf(d)) {
+                gen.out(".");
+            }
+            //issue 297 this is only needed in some cases
+            gen.out(pnameMeta, "={$crtmm$:");
+            TypeUtils.encodeForRuntime(d, that.getAnnotationList(), gen);
+            gen.out("}"); gen.endLine(true);
+            if (d.isToplevel()) {
+                gen.out("ex$.", pnameMeta, "=", pnameMeta);
+                gen.endLine(true);
+            }
+            gen.addGeneratedAttribute(d);
+        }
+        if (addGetter) {
+            if (!d.isToplevel()) {
+                if (gen.outerSelf(d))gen.out(".");
+            }
+            gen.out(pnameMeta, ".get=");
+            if (gen.isCaptured(d) && !defineAsProperty(d)) {
+                gen.out(pname);
+                gen.endLine(true);
+                gen.out(pname, ".$crtmm$=", pnameMeta, ".$crtmm$");
+            } else {
+                if (d.isToplevel()) {
+                    gen.out(pname);
+                } else {
+                    gen.out("function(){return ", gen.getNames().name(d), "}");
+                }
+            }
+            gen.endLine(true);
+        }
+        if (addSetter) {
+            final String pset = gen.getNames().setter(d instanceof Setter ? ((Setter)d).getGetter() : d);
+            if (!d.isToplevel()) {
+                if (gen.outerSelf(d))gen.out(".");
+            }
+            gen.out(pnameMeta, ".set=", pset);
+            gen.endLine(true);
+            gen.out("if(", pset, ".$crtmm$===undefined)", pset, ".$crtmm$=", pnameMeta, ".$crtmm$");
+            gen.endLine(true);
+        }
     }
 
 }

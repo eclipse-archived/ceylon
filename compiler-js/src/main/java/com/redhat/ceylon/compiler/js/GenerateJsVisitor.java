@@ -697,7 +697,7 @@ public class GenerateJsVisitor extends Visitor
 
     private void addClassToPrototype(ClassOrInterface type, final Tree.ClassDefinition classDef) {
         if (type.isDynamic())return;
-        TypeGenerator.classDefinition(classDef, this);
+        ClassGenerator.classDefinition(classDef, this);
         final String tname = names.name(classDef.getDeclarationModel());
         out(names.self(type), ".", tname, "=", tname);
         endLine(true);
@@ -707,7 +707,7 @@ public class GenerateJsVisitor extends Visitor
     public void visit(final Tree.ClassDefinition that) {
         if (!TypeUtils.acceptNative(that)) return;
         if (opts.isOptimize() && that.getDeclarationModel().isClassOrInterfaceMember()) return;
-        TypeGenerator.classDefinition(that, this);
+        ClassGenerator.classDefinition(that, this);
     }
 
     private void interfaceDeclaration(final Tree.InterfaceDeclaration that) {
@@ -1051,10 +1051,6 @@ public class GenerateJsVisitor extends Visitor
         FunctionHelper.methodDeclaration(null, that, this);
     }
 
-    boolean shouldStitch(Declaration d) {
-        return TypeUtils.isNativeExternal(d);
-    }
-
     private File getStitchedFilename(final Declaration d, final String suffix) {
         String fqn = d.getQualifiedNameString();
         String name = d.getName();
@@ -1310,7 +1306,7 @@ public class GenerateJsVisitor extends Visitor
         }
         else {
             out(function, names.getter(d, false), "()");
-            if (shouldStitch(d)) {
+            if (TypeUtils.isNativeExternal(d)) {
                 out("{");
                 if (stitchNative(d, that)) {
                     spitOut("Stitching in native attribute " + d.getQualifiedNameString()
@@ -1326,7 +1322,7 @@ public class GenerateJsVisitor extends Visitor
             out(names.getter(d, false), ".$crtmm$=");
             TypeUtils.encodeForRuntime(that, d, this);
             if (!shareGetter(d)) { out(";"); }
-            generateAttributeMetamodel(that, true, false);
+            AttributeGenerator.generateAttributeMetamodel(that, true, false, this);
         }
     }
 
@@ -1336,7 +1332,7 @@ public class GenerateJsVisitor extends Visitor
         if (!opts.isOptimize()||!d.isClassOrInterfaceMember()) return;
         comment(that);
         defineAttribute(names.self(outer), names.name(d));
-        if (shouldStitch(d)) {
+        if (TypeUtils.isNativeExternal(d)) {
             out("{");
             if (stitchNative(d, that)) {
                 spitOut("Stitching in native getter " + d.getQualifiedNameString() +
@@ -1407,7 +1403,7 @@ public class GenerateJsVisitor extends Visitor
         out(names.setter(d.getGetter()), ".$crtmm$=");
         TypeUtils.encodeForRuntime(d, that.getAnnotationList(), this);
         endLine(true);
-        generateAttributeMetamodel(that, false, true);
+        AttributeGenerator.generateAttributeMetamodel(that, false, true, this);
     }
 
     boolean isCaptured(Declaration d) {
@@ -1438,6 +1434,13 @@ public class GenerateJsVisitor extends Visitor
         return shared;
     }
 
+    void addGeneratedAttribute(Declaration d) {
+        generatedAttributes.add(d);
+    }
+    boolean isGeneratedAttribute(Declaration d) {
+        return generatedAttributes.contains(d);
+    }
+
     @Override
     public void visit(final Tree.AttributeDeclaration that) {
         if (errVisitor.hasErrors(that) || !TypeUtils.acceptNative(that))return;
@@ -1449,7 +1452,7 @@ public class GenerateJsVisitor extends Visitor
         if (d.isFormal()) {
             if (!opts.isOptimize()) {
                 comment(that);
-                generateAttributeMetamodel(that, false, false);
+                AttributeGenerator.generateAttributeMetamodel(that, false, false, this);
             }
         } else {
             SpecifierOrInitializerExpression specInitExpr =
@@ -1461,7 +1464,7 @@ public class GenerateJsVisitor extends Visitor
                 //Stitch native member attribute declaration with no value
                 final boolean eagerExpr = specInitExpr != null
                         && !(specInitExpr instanceof LazySpecifierExpression); 
-                if (eagerExpr && !shouldStitch(d)) {
+                if (eagerExpr && !TypeUtils.isNativeExternal(d)) {
                     comment(that);
                     outerSelf(d);
                     out(".", names.privateName(d), "=");
@@ -1483,7 +1486,7 @@ public class GenerateJsVisitor extends Visitor
                 }
                 initSelf(that);
                 boolean genatr=true;
-                if (shouldStitch(d)) {
+                if (TypeUtils.isNativeExternal(d)) {
                     if (stitchNative(d, that)) {
                         spitOut("Stitching in native attribute " + d.getQualifiedNameString() +
                                 ", ignoring Ceylon declaration");
@@ -1541,71 +1544,8 @@ public class GenerateJsVisitor extends Visitor
                 addMeta |= ModelUtil.getContainingDeclaration(d).isAnonymous();
             }
             if (addMeta) {
-                generateAttributeMetamodel(that, addGetter, addSetter);
+                AttributeGenerator.generateAttributeMetamodel(that, addGetter, addSetter, this);
             }
-        }
-    }
-
-    /** Generate runtime metamodel info for an attribute declaration or definition. */
-    void generateAttributeMetamodel(final Tree.TypedDeclaration that,
-            final boolean addGetter, final boolean addSetter) {
-        //No need to define all this for local values
-        Scope _scope = that.getScope();
-        while (_scope != null) {
-            //TODO this is bound to change for local decl metamodel
-            if (_scope instanceof Declaration) {
-                if (_scope instanceof Function)return;
-                else break;
-            }
-            _scope = _scope.getContainer();
-        }
-        Declaration d = that.getDeclarationModel();
-        if (d instanceof Setter) d = ((Setter)d).getGetter();
-        final String pname = names.getter(d, false);
-        final String pnameMeta = names.getter(d, true);
-        if (!generatedAttributes.contains(d)) {
-            if (d.isToplevel()) {
-                out("var ");
-            } else if (outerSelf(d)) {
-                out(".");
-            }
-            //issue 297 this is only needed in some cases
-            out(pnameMeta, "={$crtmm$:");
-            TypeUtils.encodeForRuntime(d, that.getAnnotationList(), this);
-            out("}"); endLine(true);
-            if (d.isToplevel()) {
-                out("ex$.", pnameMeta, "=", pnameMeta);
-                endLine(true);
-            }
-            generatedAttributes.add(d);
-        }
-        if (addGetter) {
-            if (!d.isToplevel()) {
-                if (outerSelf(d))out(".");
-            }
-            out(pnameMeta, ".get=");
-            if (isCaptured(d) && !defineAsProperty(d)) {
-                out(pname);
-                endLine(true);
-                out(pname, ".$crtmm$=", pnameMeta, ".$crtmm$");
-            } else {
-                if (d.isToplevel()) {
-                    out(pname);
-                } else {
-                    out("function(){return ", names.name(d), "}");
-                }
-            }
-            endLine(true);
-        }
-        if (addSetter) {
-            final String pset = names.setter(d instanceof Setter ? ((Setter)d).getGetter() : d);
-            if (!d.isToplevel()) {
-                if (outerSelf(d))out(".");
-            }
-            out(pnameMeta, ".set=", pset);
-            endLine(true);
-            out("if(", pset, ".$crtmm$===undefined)", pset, ".$crtmm$=", pnameMeta, ".$crtmm$");
-            endLine(true);
         }
     }
 
@@ -2843,22 +2783,7 @@ public class GenerateJsVisitor extends Visitor
     }
 
     @Override public void visit(final Tree.NegativeOp that) {
-        Tree.Term term = that.getTerm();
-        if (term instanceof Tree.Expression) {
-            term = ((Tree.Expression)term).getTerm();
-        }
-        if (term instanceof Tree.NaturalLiteral) {
-            long t = parseNaturalLiteral((Tree.NaturalLiteral)term, true);
-            out("(", Long.toString(t), ")");
-            if (t == 0) {
-                //Force -0
-                out(".negated");
-            }
-            return;
-        }
-        final Type d = term.getTypeModel();
-        final boolean isint = d.isSubtypeOf(that.getUnit().getIntegerType());
-        Operators.unaryOp(that, isint?"(-":null, isint?")":".negated", this);
+        Operators.neg(that, this);
     }
 
     @Override public void visit(final Tree.PositiveOp that) {
@@ -2869,36 +2794,11 @@ public class GenerateJsVisitor extends Visitor
     }
 
     @Override public void visit(final Tree.EqualOp that) {
-        if (dynblock > 0 && ModelUtil.isTypeUnknown(that.getLeftTerm().getTypeModel())) {
-            //Try to use equals() if it exists
-            String ltmp = names.createTempVariable();
-            String rtmp = names.createTempVariable();
-            out("(", ltmp, "=");
-            box(that.getLeftTerm());
-            out(",", rtmp, "=");
-            box(that.getRightTerm());
-            out(",(", ltmp, ".equals&&", ltmp, ".equals(", rtmp, "))||", ltmp, "===", rtmp, ")");
-        } else {
-            final boolean usenat = canUseNativeComparator(that.getLeftTerm(), that.getRightTerm());
-            Operators.simpleBinaryOp(that, usenat?"((":null, usenat?").valueOf()==(":".equals(",
-                    usenat?").valueOf())":")", this);
-        }
+        Operators.equal(that, this);
     }
 
     @Override public void visit(final Tree.NotEqualOp that) {
-        if (dynblock > 0 && ModelUtil.isTypeUnknown(that.getLeftTerm().getTypeModel())) {
-            //Try to use equals() if it exists
-            String ltmp = names.createTempVariable();
-            String rtmp = names.createTempVariable();
-            out("(", ltmp, "=");
-            box(that.getLeftTerm());
-            out(",", rtmp, "=");
-            box(that.getRightTerm());
-            out(",(", ltmp, ".equals&&!", ltmp, ".equals(", rtmp, "))||", ltmp, "!==", rtmp, ")");
-        } else {
-            final boolean usenat = canUseNativeComparator(that.getLeftTerm(), that.getRightTerm());
-            Operators.simpleBinaryOp(that, usenat?"!(":"(!", usenat?"==":".equals(", usenat?")":"))", this);
-        }
+        Operators.notEqual(that, this);
     }
 
     @Override public void visit(final Tree.NotOp that) {
@@ -2924,7 +2824,7 @@ public class GenerateJsVisitor extends Visitor
     }
 
     /** Returns true if both Terms' types is either Integer or Boolean. */
-    private boolean canUseNativeComparator(final Tree.Term left, final Tree.Term right) {
+    boolean canUseNativeComparator(final Tree.Term left, final Tree.Term right) {
         if (left == null || right == null || left.getTypeModel() == null || right.getTypeModel() == null) {
             return false;
         }
@@ -2937,138 +2837,22 @@ public class GenerateJsVisitor extends Visitor
     }
 
     @Override public void visit(final Tree.SmallerOp that) {
-        if (dynblock > 0 && ModelUtil.isTypeUnknown(that.getLeftTerm().getTypeModel())) {
-            //Try to use compare() if it exists
-            String ltmp = names.createTempVariable();
-            String rtmp = names.createTempVariable();
-            out("(", ltmp, "=");
-            box(that.getLeftTerm());
-            out(",", rtmp, "=");
-            box(that.getRightTerm());
-            out(",(", ltmp, ".compare&&", ltmp, ".compare(", rtmp, ").equals(",
-                    getClAlias(), "smaller()))||", ltmp, "<", rtmp, ")");
-        } else {
-            final boolean usenat = canUseNativeComparator(that.getLeftTerm(), that.getRightTerm());
-            if (usenat) {
-                Operators.simpleBinaryOp(that, "(", "<", ")", this);
-            } else {
-                Operators.simpleBinaryOp(that, null, ".compare(", ")", this);
-                out(".equals(", getClAlias(), "smaller())");
-            }
-        }
+        Operators.smaller(that, this);
     }
 
     @Override public void visit(final Tree.LargerOp that) {
-        if (dynblock > 0 && ModelUtil.isTypeUnknown(that.getLeftTerm().getTypeModel())) {
-            //Try to use compare() if it exists
-            String ltmp = names.createTempVariable();
-            String rtmp = names.createTempVariable();
-            out("(", ltmp, "=");
-            box(that.getLeftTerm());
-            out(",", rtmp, "=");
-            box(that.getRightTerm());
-            out(",(", ltmp, ".compare&&", ltmp, ".compare(", rtmp, ").equals(",
-                    getClAlias(), "larger()))||", ltmp, ">", rtmp, ")");
-        } else {
-            final boolean usenat = canUseNativeComparator(that.getLeftTerm(), that.getRightTerm());
-            if (usenat) {
-                Operators.simpleBinaryOp(that, "(", ">", ")", this);
-            } else {
-                Operators.simpleBinaryOp(that, null, ".compare(", ")", this);
-                out(".equals(", getClAlias(), "larger())");
-            }
-        }
+        Operators.larger(that, this);
     }
 
     @Override public void visit(final Tree.SmallAsOp that) {
-        if (dynblock > 0 && ModelUtil.isTypeUnknown(that.getLeftTerm().getTypeModel())) {
-            //Try to use compare() if it exists
-            String ltmp = names.createTempVariable();
-            String rtmp = names.createTempVariable();
-            out("(", ltmp, "=");
-            box(that.getLeftTerm());
-            out(",", rtmp, "=");
-            box(that.getRightTerm());
-            out(",(", ltmp, ".compare&&", ltmp, ".compare(", rtmp, ")!==",
-                    getClAlias(), "larger())||", ltmp, "<=", rtmp, ")");
-        } else {
-            final boolean usenat = canUseNativeComparator(that.getLeftTerm(), that.getRightTerm());
-            if (usenat) {
-                Operators.simpleBinaryOp(that, "(", "<=", ")", this);
-            } else {
-                out("(");
-                Operators.simpleBinaryOp(that, null, ".compare(", ")", this);
-                out("!==", getClAlias(), "larger()");
-                out(")");
-            }
-        }
+        Operators.smallAs(that, this);
     }
 
     @Override public void visit(final Tree.LargeAsOp that) {
-        if (dynblock > 0 && ModelUtil.isTypeUnknown(that.getLeftTerm().getTypeModel())) {
-            //Try to use compare() if it exists
-            String ltmp = names.createTempVariable();
-            String rtmp = names.createTempVariable();
-            out("(", ltmp, "=");
-            box(that.getLeftTerm());
-            out(",", rtmp, "=");
-            box(that.getRightTerm());
-            out(",(", ltmp, ".compare&&", ltmp, ".compare(", rtmp, ")!==",
-                    getClAlias(), "smaller())||", ltmp, ">=", rtmp, ")");
-        } else {
-            final boolean usenat = canUseNativeComparator(that.getLeftTerm(), that.getRightTerm());
-            if (usenat) {
-                Operators.simpleBinaryOp(that, "(", ">=", ")", this);
-            } else {
-                out("(");
-                Operators.simpleBinaryOp(that, null, ".compare(", ")", this);
-                out("!==", getClAlias(), "smaller()");
-                out(")");
-            }
-        }
+        Operators.largeAs(that, this);
     }
     public void visit(final Tree.WithinOp that) {
-        final String ttmp = names.createTempVariable();
-        out("(", ttmp, "=");
-        box(that.getTerm());
-        out(",");
-        if (dynblock > 0 && ModelUtil.isTypeUnknown(that.getTerm().getTypeModel())) {
-            final String tmpl = names.createTempVariable();
-            final String tmpu = names.createTempVariable();
-            out(tmpl, "=");
-            box(that.getLowerBound().getTerm());
-            out(",", tmpu, "=");
-            box(that.getUpperBound().getTerm());
-            out(",((", ttmp, ".compare&&",ttmp,".compare(", tmpl);
-            if (that.getLowerBound() instanceof Tree.OpenBound) {
-                out(")===", getClAlias(), "larger())||", ttmp, ">", tmpl, ")");
-            } else {
-                out(")!==", getClAlias(), "smaller())||", ttmp, ">=", tmpl, ")");
-            }
-            out("&&((", ttmp, ".compare&&",ttmp,".compare(", tmpu);
-            if (that.getUpperBound() instanceof Tree.OpenBound) {
-                out(")===", getClAlias(), "smaller())||", ttmp, "<", tmpu, ")");
-            } else {
-                out(")!==", getClAlias(), "larger())||", ttmp, "<=", tmpu, ")");
-            }
-        } else {
-            out(ttmp, ".compare(");
-            box(that.getLowerBound().getTerm());
-            if (that.getLowerBound() instanceof Tree.OpenBound) {
-                out(")===", getClAlias(), "larger()");
-            } else {
-                out(")!==", getClAlias(), "smaller()");
-            }
-            out("&&");
-            out(ttmp, ".compare(");
-            box(that.getUpperBound().getTerm());
-            if (that.getUpperBound() instanceof Tree.OpenBound) {
-                out(")===", getClAlias(), "smaller()");
-            } else {
-                out(")!==", getClAlias(), "larger()");
-            }
-        }
-        out(")");
+        Operators.withinOp(that, this);
     }
 
    @Override public void visit(final Tree.AndOp that) {
@@ -3086,30 +2870,12 @@ public class GenerateJsVisitor extends Visitor
    }
 
    @Override public void visit(final Tree.RangeOp that) {
-       out(getClAlias(), "span(");
-       that.getLeftTerm().visit(this);
-       out(",");
-       that.getRightTerm().visit(this);
-       out(",{Element$span:");
-       TypeUtils.typeNameOrList(that,
-               ModelUtil.unionType(that.getLeftTerm().getTypeModel(), that.getRightTerm().getTypeModel(), that.getUnit()),
-               this, false);
-       out("})");
+       Operators.segmentOrRange(that, "span", "Element", this);
    }
 
    @Override
    public void visit(final Tree.SegmentOp that) {
-       final Tree.Term left  = that.getLeftTerm();
-       final Tree.Term right = that.getRightTerm();
-       out(getClAlias(), "measure(");
-       left.visit(this);
-       out(",");
-       right.visit(this);
-       out(",{Element$measure:");
-       TypeUtils.typeNameOrList(that,
-               ModelUtil.unionType(left.getTypeModel(), right.getTypeModel(), that.getUnit()),
-               this, false);
-       out("})");
+       Operators.segmentOrRange(that, "measure", "Element", this);
    }
 
    @Override public void visit(final Tree.ThenOp that) {
@@ -3314,53 +3080,8 @@ public class GenerateJsVisitor extends Visitor
     }
 
     private void visitIndex(final Tree.IndexExpression that) {
-        that.getPrimary().visit(this);
-        Tree.ElementOrRange eor = that.getElementOrRange();
-        if (eor instanceof Tree.Element) {
-            final Tree.Expression _elemexpr = ((Tree.Element)eor).getExpression();
-            final String _end;
-            if (ModelUtil.isTypeUnknown(that.getPrimary().getTypeModel()) && dynblock > 0) {
-                out("[");
-                _end = "]";
-            } else {
-                out(".$_get(");
-                _end = ")";
-            }
-            if (!isNaturalLiteral(_elemexpr.getTerm())) {
-                _elemexpr.visit(this);
-            }
-            out(_end);
-        } else {//range, or spread?
-            Tree.ElementRange er = (Tree.ElementRange)eor;
-            Expression sexpr = er.getLength();
-            if (sexpr == null) {
-                if (er.getLowerBound() == null) {
-                    out(".spanTo(");
-                } else if (er.getUpperBound() == null) {
-                    out(".spanFrom(");
-                } else {
-                    out(".span(");
-                }
-            } else {
-                out(".measure(");
-            }
-            if (er.getLowerBound() != null) {
-                if (!isNaturalLiteral(er.getLowerBound().getTerm())) {
-                    er.getLowerBound().visit(this);
-                }
-                if (er.getUpperBound() != null || sexpr != null) {
-                    out(",");
-                }
-            }
-            if (er.getUpperBound() != null) {
-                if (!isNaturalLiteral(er.getUpperBound().getTerm())) {
-                    er.getUpperBound().visit(this);
-                }
-            } else if (sexpr != null) {
-                sexpr.visit(this);
-            }
-            out(")");
-        }
+        if (errVisitor.hasErrors(that))return;
+        Operators.indexOp(that, this);
     }
 
     public void visit(final Tree.IndexExpression that) {
