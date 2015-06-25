@@ -32,4 +32,5 @@ org.eclipse.equinox.console,
 org.apache.felix.gogo.runtime,
 org.apache.felix.gogo.shell,
 org.sat4j.core,
-org.sat4j.pb
+org.sat4j.pb,
+org.tukaani.xz
