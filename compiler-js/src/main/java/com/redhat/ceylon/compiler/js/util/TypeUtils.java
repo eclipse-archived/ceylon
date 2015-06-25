@@ -1354,7 +1354,7 @@ public class TypeUtils {
     }
     
     public static boolean acceptNative(Tree.Declaration node) {
-        return acceptNative(node.getDeclarationModel());
+        return node.getDeclarationModel() != null && acceptNative(node.getDeclarationModel());
     }
     
     /**
@@ -1434,6 +1434,11 @@ public class TypeUtils {
             return (Constructor)((Function)d).getTypeDeclaration();
         }
         return null;
+    }
+
+    public static boolean makeAbstractNative(ClassOrInterface d) {
+        return d.isNative() && d.isNativeHeader() &&
+                ModelUtil.getNativeDeclaration(d, Backend.JavaScript) != null;
     }
 
 }

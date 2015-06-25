@@ -21,8 +21,6 @@ public class ClassGenerator {
         //Don't even bother with nodes that have errors
         if (TypeGenerator.errVisitor.hasErrors(that))return;
         final Class d = that.getDeclarationModel();
-        gen.out("/* " + d, " native=" + d.isNative(), " header=" + d.isNativeHeader(),
-                " backend=" + d.getNativeBackend(), " ext=" + that.getExtendedType(), " */");
         //If it's inside a dynamic interface, don't generate anything
         if (d.isClassOrInterfaceMember() && ((ClassOrInterface)d.getContainer()).isDynamic())return;
         final Tree.ParameterList plist = that.getParameterList();
@@ -45,10 +43,12 @@ public class ClassGenerator {
             constructors = null;
         }
         gen.comment(that);
+        final boolean nativeAbstract = TypeUtils.makeAbstractNative(d);
+        final String typeName = gen.getNames().name(d) + (nativeAbstract ? "$$N" : "");
         if (TypeUtils.isNativeExternal(d)) {
             boolean bye = false;
             if (d.hasConstructors() && defconstr == null) {
-                gen.out(GenerateJsVisitor.function, gen.getNames().name(d));
+                gen.out(GenerateJsVisitor.function, typeName);
                 gen.out("(){");
                 gen.generateThrow("Exception", d.getQualifiedNameString() + " has no default constructor.", that);
                 gen.out(";}"); gen.endLine();
@@ -67,14 +67,14 @@ public class ClassGenerator {
             }
             if (bye)return;
         }
-        gen.out(GenerateJsVisitor.function, gen.getNames().name(d));
+        gen.out(GenerateJsVisitor.function, typeName);
         //If there's a default constructor, create a different function with this code
         if (d.hasConstructors() || d.hasEnumerated()) {
             if (defconstr == null) {
                 gen.out("(){");
                 gen.generateThrow("Exception", d.getQualifiedNameString() + " has no default constructor.", that);
                 gen.out(";}"); gen.endLine();
-                gen.out(GenerateJsVisitor.function, gen.getNames().name(d));
+                gen.out(GenerateJsVisitor.function, typeName);
             }
             gen.out("$$c");
         }
@@ -82,7 +82,7 @@ public class ClassGenerator {
         gen.beginBlock();
         if (!d.hasConstructors()) {
             //This takes care of top-level attributes defined before the class definition
-            gen.out("$init$", gen.getNames().name(d), "();");
+            gen.out("$init$", typeName, "();");
             gen.endLine();
             gen.declareSelf(d);
             gen.referenceOuter(d);
@@ -162,8 +162,8 @@ public class ClassGenerator {
                     }
                 }
             }
-            gen.out(GenerateJsVisitor.function, gen.getNames().name(d), "(){return ",
-                    gen.getNames().name(d), "_", gen.getNames().name(defconstr.getDeclarationModel()), ".apply(",
+            gen.out(GenerateJsVisitor.function, typeName, "(){return ",
+                    typeName, "_", gen.getNames().name(defconstr.getDeclarationModel()), ".apply(",
                     _this, ",arguments);}");
             gen.endLine();
         }
@@ -180,10 +180,12 @@ public class ClassGenerator {
             }
         }
         //Add reference to metamodel
-        gen.out(gen.getNames().name(d), ".$crtmm$=");
+        gen.out(typeName, ".$crtmm$=");
         TypeUtils.encodeForRuntime(d, that.getAnnotationList(), gen);
         gen.endLine(true);
-        gen.share(d);
+        if (!nativeAbstract) {
+            gen.share(d);
+        }
         TypeGenerator.initializeType(that, gen);
         if (d.isSerializable()) {
             SerializationHelper.addDeserializer(that, d, gen);

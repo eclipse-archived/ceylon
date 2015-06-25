@@ -92,7 +92,8 @@ public class TypeGenerator {
         final boolean isInterface = d instanceof com.redhat.ceylon.model.typechecker.model.Interface;
         String initFuncName = isInterface ? "initTypeProtoI" : "initTypeProto";
 
-        final String typename = gen.getNames().name(d);
+        final boolean nativeAbstract = TypeUtils.makeAbstractNative(d);
+        final String typename = gen.getNames().name(d) + (nativeAbstract ? "$$N" : "");
         final String initname;
         if (d.isAnonymous()) {
             final String _initname = gen.getNames().objectName(d);
@@ -114,27 +115,32 @@ public class TypeGenerator {
             genIniter = !gen.stitchInitializer(d);
         }
         if (genIniter) {
-            final String qns = TypeUtils.qualifiedNameSkippingMethods(d);
+            final String qns = TypeUtils.qualifiedNameSkippingMethods(d) + (nativeAbstract ? "$$N" : "");
             gen.out(gen.getClAlias(), initFuncName, "(", typename, ",'", qns, "'");
             final List<Tree.StaticType> supers = satisfiedTypes == null ? Collections.<Tree.StaticType>emptyList()
                     : new ArrayList<Tree.StaticType>(satisfiedTypes.getTypes().size()+1);
 
-            if (extendedType != null) {
-                if (satisfiedTypes == null) {
-                    String fname = typeFunctionName(extendedType.getType(), d, gen);
-                    gen.out(",", fname);
-                } else {
-                    supers.add(extendedType.getType());
+            if (d.isNative() && !d.isNativeHeader() && TypeUtils.isForBackend(d)) {
+                //Just extend the native abstract type
+                gen.out(",$init$", typename, "$$N()");
+            } else {
+                if (extendedType != null) {
+                    if (satisfiedTypes == null) {
+                        String fname = typeFunctionName(extendedType.getType(), d, gen);
+                        gen.out(",", fname);
+                    } else {
+                        supers.add(extendedType.getType());
+                    }
+                } else if (!isInterface) {
+                    gen.out(",", gen.getClAlias(), "Basic");
                 }
-            } else if (!isInterface) {
-                gen.out(",", gen.getClAlias(), "Basic");
-            }
-            if (satisfiedTypes != null) {
-                supers.addAll(satisfiedTypes.getTypes());
-                Collections.sort(supers, new StaticTypeComparator());
-                for (Tree.StaticType satType : supers) {
-                    String fname = typeFunctionName(satType, d, gen);
-                    gen.out(",", fname);
+                if (satisfiedTypes != null) {
+                    supers.addAll(satisfiedTypes.getTypes());
+                    Collections.sort(supers, new StaticTypeComparator());
+                    for (Tree.StaticType satType : supers) {
+                        String fname = typeFunctionName(satType, d, gen);
+                        gen.out(",", fname);
+                    }
                 }
             }
             gen.out(");");

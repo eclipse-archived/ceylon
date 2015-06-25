@@ -705,7 +705,6 @@ public class GenerateJsVisitor extends Visitor
 
     @Override
     public void visit(final Tree.ClassDefinition that) {
-        if (!TypeUtils.acceptNative(that)) return;
         if (opts.isOptimize() && that.getDeclarationModel().isClassOrInterfaceMember()) return;
         ClassGenerator.classDefinition(that, this);
     }
@@ -859,6 +858,7 @@ public class GenerateJsVisitor extends Visitor
             
             out("(function(", names.self(d), ")");
             beginBlock();
+            final String typename = names.name(d) + (TypeUtils.makeAbstractNative(d) ? "$$N" : "");
             if (enter) {
                 //Generated attributes with corresponding parameters will remove them from the list
                 if (plist != null) {
@@ -879,7 +879,7 @@ public class GenerateJsVisitor extends Visitor
                         //Add a simple attribute which really returns the singleton from the class
                         final Tree.Enumerated vc = (Tree.Enumerated)s;
                         defineAttribute(names.self(d), names.name(vc.getDeclarationModel()));
-                        out("{return ", names.name(d), ".", names.name(vc.getDeclarationModel()),
+                        out("{return ", typename, ".", names.name(vc.getDeclarationModel()),
                                 ";},undefined,");
                         TypeUtils.encodeForRuntime(vc.getDeclarationModel(), vc.getAnnotationList(), this);
                         out(");");
@@ -888,7 +888,7 @@ public class GenerateJsVisitor extends Visitor
                 if (d.isMember()) {
                     ClassOrInterface coi = ModelUtil.getContainingClassOrInterface(d.getContainer());
                     if (coi != null && d.inherits(coi)) {
-                        out(names.self(d), ".", names.name(d),"=", names.name(d), ";");
+                        out(names.self(d), ".", typename,"=", typename, ";");
                     }
                 }
             }
@@ -896,7 +896,7 @@ public class GenerateJsVisitor extends Visitor
                 SerializationHelper.addSerializer(node, (Class)d, this);
             }
             endBlock();
-            out(")(", names.name(d), ".$$.prototype)");
+            out(")(", typename, ".$$.prototype)");
             endLine(true);
             
             currentStatements = prevStatements;
@@ -982,7 +982,11 @@ public class GenerateJsVisitor extends Visitor
             if (opts.isOptimize() && d.isClassOrInterfaceMember()) {
                 out("this.");
             }
-            out(names.name(d), ".$$;");
+            if (TypeUtils.makeAbstractNative(d)) {
+                out(names.name(d), "$$N.$$;");
+            } else {
+                out(names.name(d), ".$$;");
+            }
         }
         endLine();
     }
