@@ -1,6 +1,14 @@
 "A fixed-sized array of mutable elements. An _empty_ array 
- is an array of [[size]] `0`. Any element of an array may be
- set to a new value.
+ is an array of [[size]] `0`. An array may be created with
+ a list of initial elements, or, via the constructor 
+ [[ofSize]], with a size and single initial value for all 
+ elements.
+ 
+     value array = Array { \"hello\", \"world\" };
+     value ints = Array<Integer>.ofSize(1k, 0);
+ 
+ Arrays are mutable. Any element of an array may be set to a 
+ new value.
  
      value array = Array { \"hello\", \"world\" };
      array.set(0, \"goodbye\");
