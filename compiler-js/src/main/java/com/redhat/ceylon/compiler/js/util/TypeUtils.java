@@ -877,6 +877,10 @@ public class TypeUtils {
                         gen.out(path, ".");
                     }
                     gen.out(gen.getNames().name(_cont));
+                    if (_cont instanceof ClassOrInterface
+                            && TypeUtils.makeAbstractNative((ClassOrInterface)_cont)) {
+                        gen.out("$$N");
+                    }
                 }
             }
         }
