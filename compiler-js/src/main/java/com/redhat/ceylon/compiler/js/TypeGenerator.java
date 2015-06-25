@@ -298,7 +298,6 @@ public class TypeGenerator {
         Tree.Constructor defconstr = null;
         if (d.hasConstructors()) {
             constructors = new ArrayList<>(3);
-            enums = new ArrayList<>(3);
             for (Tree.Statement st : that.getClassBody().getStatements()) {
                 if (st instanceof Tree.Constructor) {
                     Tree.Constructor constr = (Tree.Constructor)st;
@@ -306,12 +305,19 @@ public class TypeGenerator {
                     if (constr.getDeclarationModel().getName() == null) {
                         defconstr = constr;
                     }
-                } else if (st instanceof Tree.Enumerated) {
+                }
+            }
+        } else {
+            constructors = null;
+        }
+        if (d.hasEnumerated()) {
+            enums = new ArrayList<>(3);
+            for (Tree.Statement st : that.getClassBody().getStatements()) {
+                if (st instanceof Tree.Enumerated) {
                     enums.add((Tree.Enumerated)st);
                 }
             }
         } else {
-            constructors = Collections.emptyList();
             enums = null;
         }
         gen.comment(that);
@@ -339,7 +345,7 @@ public class TypeGenerator {
         }
         gen.out(GenerateJsVisitor.function, gen.getNames().name(d));
         //If there's a default constructor, create a different function with this code
-        if (d.hasConstructors()) {
+        if (d.hasConstructors() || d.hasEnumerated()) {
             if (defconstr == null) {
                 gen.out("(){");
                 gen.generateThrow("Exception", d.getQualifiedNameString() + " has no default constructor.", that);
@@ -437,10 +443,12 @@ public class TypeGenerator {
                     _this, ",arguments);}");
             gen.endLine();
         }
-        for (Tree.Constructor cnstr : constructors) {
-            Constructors.classConstructor(cnstr, that, constructors, gen);
+        if (d.hasConstructors()) {
+            for (Tree.Constructor cnstr : constructors) {
+                Constructors.classConstructor(cnstr, that, constructors, gen);
+            }
         }
-        if (enums != null) {
+        if (d.hasEnumerated()) {
             for (Tree.Enumerated e : enums) {
                 Singletons.valueConstructor(e, gen);
             }
