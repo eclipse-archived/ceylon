@@ -5,7 +5,7 @@
  elements.
  
      value array = Array { \"hello\", \"world\" };
-     value ints = Array<Integer>.ofSize(1k, 0);
+     value ints = Array.ofSize(1k, 0);
  
  Arrays are mutable. Any element of an array may be set to a 
  new value.
