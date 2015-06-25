@@ -98,8 +98,10 @@ public final class process_ implements ReifiedType {
         }
     }
     
-    public void exit(@Name("code") long code) {
+    @TypeInfo("ceylon.language::Nothing")
+    public java.lang.Object exit(@Name("code") long code) {
         System.exit(Util.toInt(code));
+        return null;
     }
     
     @TypeInfo("ceylon.language::Null|ceylon.language::String")

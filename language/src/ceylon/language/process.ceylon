@@ -66,7 +66,7 @@ shared native object process {
     
     "Force the virtual machine to terminate with the given
      exit code."
-    shared native void exit(Integer code);
+    shared native Nothing exit(Integer code);
     
     string => "process";
     
