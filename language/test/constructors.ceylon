@@ -240,6 +240,10 @@ class TestJs585_2(){
     }   
 }
 
+class Js594 {
+    shared new foo{}
+}
+
 @test
 void testConstructors() {
   value o=Outer1129();
@@ -329,4 +333,6 @@ void testConstructors() {
   check(OtherJs573.baz().string=="1a2b3c4", "#573.6 expected cdef got ``OtherJs573.baz()``");
   TestJs585_1().Bar();
   TestJs585_2().Bar.baz();
+  Anything test594 = Js594.foo;
+  check(test594 exists, "JS #594");
 }
