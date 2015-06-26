@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.compiler.js.GenerateJsVisitor.SuperVisitor;
 import com.redhat.ceylon.compiler.js.util.TypeUtils;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
@@ -31,8 +32,22 @@ public class Singletons {
         final String className = gen.getNames().name(c);
         final String objectName = gen.getNames().name(d);
         final String selfName = gen.getNames().self(c);
+        final boolean genClass;
+        final boolean genObj;
 
-        gen.out(GenerateJsVisitor.function, className);
+        if (d != null && d.isNative()) {
+            if (d.isNativeHeader()) {
+                genClass = true;
+                genObj = ModelUtil.getNativeDeclaration(d, Backend.JavaScript) == null;
+            } else {
+                genObj = TypeUtils.isForBackend(d);
+                genClass = genObj;
+            }
+        } else {
+            genClass = true;
+            genObj = true;
+        }
+
         Map<TypeParameter, Type> targs=new HashMap<TypeParameter, Type>();
         if (sats != null) {
             for (Type st : sats) {
@@ -42,41 +57,47 @@ public class Singletons {
                 }
             }
         }
-        gen.out(targs.isEmpty()?"()":"($$targs$$)");
-        gen.beginBlock();
-        if (isObjExpr) {
-            gen.out("var ", selfName, "=new ", className, ".$$;");
-            final ClassOrInterface coi = ModelUtil.getContainingClassOrInterface(c.getContainer());
-            if (coi != null) {
-                gen.out(selfName, ".outer$=", gen.getNames().self(coi));
+        if (genClass) {
+            gen.out(GenerateJsVisitor.function, className, targs.isEmpty()?"()":"($$targs$$)");
+            gen.beginBlock();
+            if (isObjExpr) {
+                gen.out("var ", selfName, "=new ", className, ".$$;");
+                final ClassOrInterface coi = ModelUtil.getContainingClassOrInterface(c.getContainer());
+                if (coi != null) {
+                    gen.out(selfName, ".outer$=", gen.getNames().self(coi));
+                    gen.endLine(true);
+                }
+            } else {
+                if (c.isMember()) {
+                    gen.initSelf(that);
+                }
+                gen.instantiateSelf(c);
+                gen.referenceOuter(c);
+            }
+
+            //TODO should we generate all this code for native headers?
+            final List<Declaration> superDecs = new ArrayList<Declaration>();
+            if (!gen.opts.isOptimize()) {
+                new SuperVisitor(superDecs).visit(body);
+            }
+            if (!targs.isEmpty()) {
+                gen.out(selfName, ".$$targs$$=$$targs$$");
                 gen.endLine(true);
             }
-        } else {
-            if (c.isMember()) {
-                gen.initSelf(that);
-            }
-            gen.instantiateSelf(c);
-            gen.referenceOuter(c);
-        }
-        
-        final List<Declaration> superDecs = new ArrayList<Declaration>();
-        if (!gen.opts.isOptimize()) {
-            new SuperVisitor(superDecs).visit(body);
-        }
-        if (!targs.isEmpty()) {
-            gen.out(selfName, ".$$targs$$=$$targs$$");
+            TypeGenerator.callSupertypes(sats, superType, c, that, superDecs, superCall,
+                    superType == null ? null : ((Class) c.getExtendedType().getDeclaration()).getParameterList(), gen);
+            
+            body.visit(gen);
+            gen.out("return ", selfName, ";");
+            gen.endBlock();
+            gen.out(";", className, ".$crtmm$=");
+            TypeUtils.encodeForRuntime(that, c, gen);
             gen.endLine(true);
+            TypeGenerator.initializeType(that, gen);
         }
-        TypeGenerator.callSupertypes(sats, superType, c, that, superDecs, superCall,
-                superType == null ? null : ((Class) c.getExtendedType().getDeclaration()).getParameterList(), gen);
-        
-        body.visit(gen);
-        gen.out("return ", selfName, ";");
-        gen.endBlock();
-        gen.out(";", className, ".$crtmm$=");
-        TypeUtils.encodeForRuntime(that, c, gen);
-        gen.endLine(true);
-        TypeGenerator.initializeType(that, gen);
+        if (!genObj) {
+            return;
+        }
         final String objvar = (addToPrototype ? "this.":"")+gen.getNames().createTempVariable();
 
         if (d != null && !addToPrototype) {
@@ -148,7 +169,7 @@ public class Singletons {
                 gen.out("ex$.", objectGetterNameMM, "=", objectGetterNameMM);
                 gen.endLine(true);
             }
-        } else if (that instanceof Tree.ObjectExpression) {
+        } else if (isObjExpr) {
             gen.out("return ", className, "();");
         }
     }
@@ -162,6 +183,7 @@ public class Singletons {
                 that.getClassBody(), that.getAnnotationList(), gen);
         //Objects defined inside methods need their init sections are exec'd
         if (!that.getDeclarationModel().isToplevel() && !that.getDeclarationModel().isClassOrInterfaceMember()) {
+            gen.out("/*ESTO*/");
             gen.out(gen.getNames().objectName(that.getDeclarationModel()), "();");
         }
     }

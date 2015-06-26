@@ -38,6 +38,7 @@ public class TypeGenerator {
         Tree.SatisfiedTypes satisfiedTypes = null;
         final ClassOrInterface decl;
         final List<Tree.Statement> stmts;
+        Value objDecl = null;
         if (type instanceof Tree.ClassDefinition) {
             Tree.ClassDefinition classDef = (Tree.ClassDefinition) type;
             extendedType = classDef.getExtendedType();
@@ -54,6 +55,7 @@ public class TypeGenerator {
             satisfiedTypes = objectDef.getSatisfiedTypes();
             decl = (ClassOrInterface)objectDef.getDeclarationModel().getTypeDeclaration();
             stmts = objectDef.getClassBody().getStatements();
+            objDecl = objectDef.getDeclarationModel();
         } else if (type instanceof Tree.ObjectExpression) {
             Tree.ObjectExpression objectDef = (Tree.ObjectExpression) type;
             extendedType = objectDef.getExtendedType();
@@ -76,7 +78,7 @@ public class TypeGenerator {
                 }
             }
         };
-        typeInitialization(extendedType, satisfiedTypes, decl, callback, gen);
+        typeInitialization(extendedType, satisfiedTypes, decl, callback, gen, objDecl);
     }
 
     /** This is now the main method to generate the type initialization code.
@@ -86,9 +88,9 @@ public class TypeGenerator {
      * @param callback A callback to add something more to the type initializer in prototype style.
      */
     static void typeInitialization(final Tree.ExtendedType extendedType, final Tree.SatisfiedTypes satisfiedTypes,
-            final ClassOrInterface d, PrototypeInitCallback callback, final GenerateJsVisitor gen) {
+            final ClassOrInterface d, PrototypeInitCallback callback, final GenerateJsVisitor gen,
+            final Value objectDeclaration) {
 
-        if (d == null)Thread.dumpStack();
         final boolean isInterface = d instanceof com.redhat.ceylon.model.typechecker.model.Interface;
         String initFuncName = isInterface ? "initTypeProtoI" : "initTypeProto";
 
@@ -96,7 +98,15 @@ public class TypeGenerator {
         final String typename = gen.getNames().name(d) + (nativeAbstract ? "$$N" : "");
         final String initname;
         if (d.isAnonymous()) {
-            final String _initname = gen.getNames().objectName(d);
+            String _initname = gen.getNames().objectName(d);
+            if (objectDeclaration != null && objectDeclaration.isNative()
+                    && objectDeclaration.isNativeHeader() && TypeUtils.makeAbstractNative(objectDeclaration)) {
+                if (_initname.endsWith("()")) {
+                    _initname = _initname.substring(0, _initname.length()-2) + "$$N()";
+                } else {
+                    _initname += "$$N";
+                }
+            }
             if (d.isToplevel()) {
                 initname = "$init$" + _initname.substring(0, _initname.length()-2);
             } else {
@@ -122,7 +132,15 @@ public class TypeGenerator {
 
             if (TypeUtils.extendsNativeHeader(d)) {
                 //Just extend the native abstract type
-                gen.out(",$init$", typename, "$$N()");
+                if (d.isAnonymous()) {
+                    String objn = gen.getNames().objectName(d);
+                    if (objn.endsWith("()")) {
+                        objn=objn.substring(0,objn.length()-2);
+                    }
+                    gen.out(",$init$", objn, "$$N()");
+                } else {
+                    gen.out(",$init$", typename, "$$N()");
+                }
             } else {
                 if (extendedType != null) {
                     if (satisfiedTypes == null) {

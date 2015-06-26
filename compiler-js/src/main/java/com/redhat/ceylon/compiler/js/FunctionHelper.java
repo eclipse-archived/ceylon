@@ -170,7 +170,7 @@ public class FunctionHelper {
             public void addToPrototypeCallback() {
                 gen.addToPrototype(that, c, body.getStatements());
             }
-        }, gen);
+        }, gen, null);
         gen.out("return ", gen.getNames().name(c), "(new ", gen.getNames().name(c), ".$$);");
         gen.endBlock();
         gen.out("())");
