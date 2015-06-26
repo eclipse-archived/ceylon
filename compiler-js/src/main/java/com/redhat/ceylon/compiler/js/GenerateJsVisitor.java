@@ -841,12 +841,8 @@ public class GenerateJsVisitor extends Visitor
                 && ((Class)d).isSerializable();
         boolean enter = opts.isOptimize();
         ArrayList<Parameter> plist = null;
-        ClassOrInterface natd = (ClassOrInterface)ModelUtil.getNativeDeclaration(d, Backend.JavaScript);
-        final boolean isAbstractNative = d.isNative() && d.isNativeHeader() && natd != null;
+        final boolean isAbstractNative = TypeUtils.makeAbstractNative(d);
         final String typename = names.name(d) + (isAbstractNative ? "$$N" : "");
-        if (isAbstractNative) {
-            d = natd;
-        }
         if (enter) {
             enter = !statements.isEmpty();
             if (d instanceof Class) {
