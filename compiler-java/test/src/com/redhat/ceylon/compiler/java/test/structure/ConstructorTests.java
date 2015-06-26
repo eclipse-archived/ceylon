@@ -255,4 +255,9 @@ public class ConstructorTests extends CompilerTests {
         compareWithJavaSource("constructor/SingletonCtorExtendingGenericClass");
     }
     
+    @Test
+    public void testCtorSingletonExtendingNamed() {
+        compareWithJavaSource("constructor/SingletonExtendingNamed");
+    }
+    
 }
