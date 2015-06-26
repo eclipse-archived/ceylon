@@ -182,7 +182,7 @@ public class ClassDefinitionBuilder {
                     hdrDefinition = ((Value)hdrDefinition).getType().getDeclaration();
                 }
                 Type tp = forDefinition.getType();
-                extending(tp, ((ClassOrInterface)hdrDefinition).getType(), ((Class)tp.getDeclaration()).hasConstructors());
+                extending(tp, ((ClassOrInterface)hdrDefinition).getType());
                 gen.expressionGen().makeHeaderSuperInvocation((Class)forDefinition, null, this);
             }
         }
@@ -369,11 +369,11 @@ public class ClassDefinitionBuilder {
         return typeParameter(param.getDeclarationModel());
     }
 
-    public ClassDefinitionBuilder extending(Type thisType, Type extendingType, boolean hasConstructors) {
+    public ClassDefinitionBuilder extending(Type thisType, Type extendingType) {
         if (!isAlias) {
             this.thisType = thisType;
             this.extendingType = extendingType;
-            this.hasConstructors = hasConstructors;
+            this.hasConstructors = ((Class)thisType.getDeclaration()).hasConstructors() || ((Class)thisType.getDeclaration()).hasEnumerated();
         }
         return this;
     }

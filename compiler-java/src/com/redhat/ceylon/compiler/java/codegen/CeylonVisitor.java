@@ -637,10 +637,10 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
             if (extended.getDeclaration() instanceof Constructor) {
                 extended = extended.getQualifyingType();
             }
-            classBuilder.extending(thisType, extended, ((Class)thisType.getDeclaration()).hasConstructors());
+            classBuilder.extending(thisType, extended);
             gen.expressionGen().transformSuperInvocation(extendedType, classBuilder);
         } else {
-            classBuilder.extending(thisType, hdrDefinition.getType(), ((Class)thisType.getDeclaration()).hasConstructors());
+            classBuilder.extending(thisType, hdrDefinition.getType());
             gen.expressionGen().makeHeaderSuperInvocation((Class)forDefinition, extendedType, classBuilder);
         }
     }

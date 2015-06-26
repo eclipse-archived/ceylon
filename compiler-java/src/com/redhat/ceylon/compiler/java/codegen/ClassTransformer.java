@@ -172,7 +172,7 @@ public class ClassTransformer extends AbstractTransformer {
         
         // Very special case for Anything
         if ("ceylon.language::Anything".equals(model.getQualifiedNameString())) {
-            classBuilder.extending(model.getType(), null, false);
+            classBuilder.extending(model.getType(), null);
         }
         
         if (def instanceof Tree.AnyClass) {
