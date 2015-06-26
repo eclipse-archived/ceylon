@@ -120,7 +120,7 @@ public class TypeGenerator {
             final List<Tree.StaticType> supers = satisfiedTypes == null ? Collections.<Tree.StaticType>emptyList()
                     : new ArrayList<Tree.StaticType>(satisfiedTypes.getTypes().size()+1);
 
-            if (d.isNative() && !d.isNativeHeader() && TypeUtils.isForBackend(d)) {
+            if (TypeUtils.extendsNativeHeader(d)) {
                 //Just extend the native abstract type
                 gen.out(",$init$", typename, "$$N()");
             } else {

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.compiler.js.GenerateJsVisitor.SuperVisitor;
 import com.redhat.ceylon.compiler.js.util.TypeUtils;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
@@ -12,6 +13,7 @@ import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Function;
 import com.redhat.ceylon.model.typechecker.model.ModelUtil;
+import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.TypeParameter;
 
@@ -23,6 +25,9 @@ public class ClassGenerator {
         final Class d = that.getDeclarationModel();
         //If it's inside a dynamic interface, don't generate anything
         if (d.isClassOrInterfaceMember() && ((ClassOrInterface)d.getContainer()).isDynamic())return;
+        if (d.isNative() && !d.isNativeHeader() && !TypeUtils.isForBackend(d)) {
+            return;
+        }
         final Tree.ParameterList plist = that.getParameterList();
         final List<Tree.Constructor> constructors;
         final Tree.SatisfiedTypes sats = that.getSatisfiedTypes();
@@ -43,8 +48,9 @@ public class ClassGenerator {
             constructors = null;
         }
         gen.comment(that);
-        final boolean nativeAbstract = TypeUtils.makeAbstractNative(d);
-        final String typeName = gen.getNames().name(d) + (nativeAbstract ? "$$N" : "");
+        final Class natd = (Class)ModelUtil.getNativeDeclaration(d, Backend.JavaScript);
+        final boolean isAbstractNative = d.isNative() && d.isNativeHeader() && natd != null;
+        final String typeName = gen.getNames().name(d) + (isAbstractNative ? "$$N" : "");
         if (TypeUtils.isNativeExternal(d)) {
             boolean bye = false;
             if (d.hasConstructors() && defconstr == null) {
@@ -78,7 +84,13 @@ public class ClassGenerator {
             }
             gen.out("$$c");
         }
-        final boolean withTargs = TypeGenerator.generateParameters(that.getTypeParameterList(), plist, d, gen);
+        if (plist != null && natd != null) {
+            for (Parameter p : d.getParameterList().getParameters()) {
+                gen.getNames().forceName(natd.getParameter(p.getName()).getModel(), gen.getNames().name(p));
+            }
+        }
+        final boolean withTargs = TypeGenerator.generateParameters(that.getTypeParameterList(), plist,
+                d, gen);
         gen.beginBlock();
         if (!d.hasConstructors()) {
             //This takes care of top-level attributes defined before the class definition
@@ -124,11 +136,16 @@ public class ClassGenerator {
         if (!gen.opts.isOptimize()) {
             that.getClassBody().visit(new SuperVisitor(superDecs));
         }
-        final Tree.ExtendedType extendedType = that.getExtendedType();
-        TypeGenerator.callSupertypes(sats == null ? null : TypeUtils.getTypes(sats.getTypes()),
-                extendedType == null ? null : extendedType.getType(),
-                d, that, superDecs, extendedType == null ? null : extendedType.getInvocationExpression(),
-                extendedType == null ? null : ((Class) d.getExtendedType().getDeclaration()).getParameterList(), gen);
+        if (TypeUtils.extendsNativeHeader(d)) {
+            gen.out(typeName, "$$N");
+            TypeGenerator.generateParameters(that.getTypeParameterList(), plist, d, gen);
+        } else {
+            final Tree.ExtendedType extendedType = that.getExtendedType();
+            TypeGenerator.callSupertypes(sats == null ? null : TypeUtils.getTypes(sats.getTypes()),
+                    extendedType == null ? null : extendedType.getType(),
+                    d, that, superDecs, extendedType == null ? null : extendedType.getInvocationExpression(),
+                    extendedType == null ? null : ((Class) d.getExtendedType().getDeclaration()).getParameterList(), gen);
+        }
 
         if (!gen.opts.isOptimize() && plist != null) {
             //Fix #231 for lexical scope
@@ -183,7 +200,7 @@ public class ClassGenerator {
         gen.out(typeName, ".$crtmm$=");
         TypeUtils.encodeForRuntime(d, that.getAnnotationList(), gen);
         gen.endLine(true);
-        if (!nativeAbstract) {
+        if (!isAbstractNative) {
             gen.share(d);
         }
         TypeGenerator.initializeType(that, gen);

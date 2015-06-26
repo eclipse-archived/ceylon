@@ -1376,7 +1376,11 @@ public class TypeUtils {
                 || (isHeaderWithoutBackend(decl)
                     && isImplemented(decl));
     }
-    
+
+    public static boolean extendsNativeHeader(ClassOrInterface d) {
+        return d.isNative() && !d.isNativeHeader() && TypeUtils.isForBackend(d);
+    }
+
     /**
      * Checks that the declaration is marked "native" and has a Ceylon implementation
      * meant for the JavaScript backend

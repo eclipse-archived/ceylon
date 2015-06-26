@@ -841,6 +841,12 @@ public class GenerateJsVisitor extends Visitor
                 && ((Class)d).isSerializable();
         boolean enter = opts.isOptimize();
         ArrayList<Parameter> plist = null;
+        ClassOrInterface natd = (ClassOrInterface)ModelUtil.getNativeDeclaration(d, Backend.JavaScript);
+        final boolean isAbstractNative = d.isNative() && d.isNativeHeader() && natd != null;
+        final String typename = names.name(d) + (isAbstractNative ? "$$N" : "");
+        if (isAbstractNative) {
+            d = natd;
+        }
         if (enter) {
             enter = !statements.isEmpty();
             if (d instanceof Class) {
@@ -858,7 +864,6 @@ public class GenerateJsVisitor extends Visitor
             
             out("(function(", names.self(d), ")");
             beginBlock();
-            final String typename = names.name(d) + (TypeUtils.makeAbstractNative(d) ? "$$N" : "");
             if (enter) {
                 //Generated attributes with corresponding parameters will remove them from the list
                 if (plist != null) {
@@ -892,7 +897,7 @@ public class GenerateJsVisitor extends Visitor
                     }
                 }
             }
-            if (isSerial) {
+            if (isSerial && !isAbstractNative) {
                 SerializationHelper.addSerializer(node, (Class)d, this);
             }
             endBlock();
@@ -1223,7 +1228,7 @@ public class GenerateJsVisitor extends Visitor
     void initParameters(final Tree.ParameterList params, TypeDeclaration typeDecl, Function m) {
         for (final Tree.Parameter param : params.getParameters()) {
             Parameter pd = param.getParameterModel();
-            final String paramName = names.name(pd);
+            String paramName = names.name(pd);
             if (pd.isDefaulted() || pd.isSequenced()) {
                 out("if(", paramName, "===undefined){", paramName, "=");
                 if (pd.isDefaulted()) {
