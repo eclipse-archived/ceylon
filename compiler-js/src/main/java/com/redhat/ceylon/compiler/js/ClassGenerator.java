@@ -84,13 +84,21 @@ public class ClassGenerator {
             }
             gen.out("$$c");
         }
-        if (plist != null && natd != null) {
-            for (Parameter p : d.getParameterList().getParameters()) {
-                gen.getNames().forceName(natd.getParameter(p.getName()).getModel(), gen.getNames().name(p));
+        //Force the names of the backend's native type unshared members to be the same as in the header's
+        //counterparts
+        if (natd != null) {
+            if (plist != null) {
+                for (Parameter p : d.getParameterList().getParameters()) {
+                    gen.getNames().forceName(natd.getParameter(p.getName()).getModel(), gen.getNames().name(p));
+                }
+            }
+            for (Declaration hd : d.getMembers()) {
+                if (!hd.isShared()) {
+                    gen.getNames().forceName(natd.getMember(hd.getName(), null, false), gen.getNames().name(hd));
+                }
             }
         }
-        final boolean withTargs = TypeGenerator.generateParameters(that.getTypeParameterList(), plist,
-                d, gen);
+        final boolean withTargs = TypeGenerator.generateParameters(that.getTypeParameterList(), plist, d, gen);
         gen.beginBlock();
         if (!d.hasConstructors()) {
             //This takes care of top-level attributes defined before the class definition
@@ -139,6 +147,7 @@ public class ClassGenerator {
         if (TypeUtils.extendsNativeHeader(d)) {
             gen.out(typeName, "$$N");
             TypeGenerator.generateParameters(that.getTypeParameterList(), plist, d, gen);
+            gen.endLine(true);
         } else {
             final Tree.ExtendedType extendedType = that.getExtendedType();
             TypeGenerator.callSupertypes(sats == null ? null : TypeUtils.getTypes(sats.getTypes()),

@@ -38,7 +38,18 @@ public class Singletons {
         if (d != null && d.isNative()) {
             if (d.isNativeHeader()) {
                 genClass = true;
-                genObj = ModelUtil.getNativeDeclaration(d, Backend.JavaScript) == null;
+                Value nv = (Value)ModelUtil.getNativeDeclaration(d, Backend.JavaScript);
+                genObj = nv == null;
+                if (nv != null) {
+                    //Force the names of unshared members of the native type to be the same as for its
+                    //header's counterparts
+                    for (Declaration nd : c.getMembers()) {
+                        if (!nd.isShared()) {
+                            gen.getNames().forceName(nv.getTypeDeclaration().getMember(
+                                    nd.getName(), null, false), gen.getNames().name(nd));
+                        }
+                    }
+                }
             } else {
                 genObj = TypeUtils.isForBackend(d);
                 genClass = genObj;
