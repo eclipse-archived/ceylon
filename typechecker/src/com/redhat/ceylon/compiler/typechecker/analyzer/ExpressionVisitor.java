@@ -6734,12 +6734,7 @@ public class ExpressionVisitor extends Visitor {
         Declaration dec = that.getDeclaration();
         if (dec instanceof Class) {
             Class c = (Class) dec;
-            if (c.getParameterList()==null) {
-                that.addError("class cannot be instantiated: '" +
-                        c.getName(unit) + 
-                        "' does not have a parameter list or default constructor");
-            }
-            if (c.isAbstraction()) { 
+            if (c.isAbstraction()) {
                 //if the constructor is overloaded
                 //resolve the right overloaded version
                 Declaration result = 
@@ -6752,6 +6747,7 @@ public class ExpressionVisitor extends Visitor {
                     TypeDeclaration td = 
                             (TypeDeclaration) result;
                     that.setDeclaration(td);
+                    c = (Class) td;
                     if (isOverloadedVersion(result)) {  
                         //it is a Java constructor
                         if (result.isPackageVisibility() && 
@@ -6763,6 +6759,11 @@ public class ExpressionVisitor extends Visitor {
                 }
                 //else report to user that we could not
                 //find a matching overloaded constructor
+            }
+            if (c.getParameterList()==null) {
+                that.addError("class cannot be instantiated: '" +
+                        c.getName(unit) + 
+                        "' does not have a parameter list or default constructor");
             }
         }
     }
