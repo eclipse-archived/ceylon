@@ -1,7 +1,10 @@
 shared void run() {
     testInlineExpressions();
-    print("Equality");
+    print("Equality, Comparable, clones");
     equality();
+    comparables();
+    bug1561();
+    clones();
     //complex();
     print("Booleans, Numbers, Bytes, Characters, Strings");
     booleans();
@@ -9,20 +12,17 @@ shared void run() {
     bytes();
     characters();
     strings();
-    print("Lists, sequences, tuples");
+    print("Lists, sequences, tuples, Array/Collection");
     lists();
     sequences();
     tuples();
+    testArrays();
     print("Iterators, Entries, Ranges, spans & measures");
     iterators();
     entriesAndRanges();
     spanmeasures();
     testRange();
     testRecursiveRange();
-    print("Comparables & Clones");
-    comparables();
-    bug1561();
-    clones();
     print("Types/satisfying interfaces, use-site variance");
     types();
     testSatisfaction();
@@ -36,8 +36,6 @@ shared void run() {
     switches();
     testSort();
     testConstructors();
-    print("Array/Collection");
-    testArrays();
     print("Map & Set tests");
     testMaps();
     testSets();
@@ -59,6 +57,8 @@ shared void run() {
     testDestructuring();
     print("Metamodel in default module");
     testMetamodelInDefaultModule();
+    print("Native extensions");
+    testNativeClassesAndObjects();
 
     // ATTENTION!
     // When you add new test methods here make sure they are "shared" and marked "@test"!
