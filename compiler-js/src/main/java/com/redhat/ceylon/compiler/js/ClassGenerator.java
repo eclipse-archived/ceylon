@@ -86,7 +86,7 @@ public class ClassGenerator {
         }
         //Force the names of the backend's native type unshared members to be the same as in the header's
         //counterparts
-        if (natd != null) {
+        if (isAbstractNative) {
             if (plist != null) {
                 for (Parameter p : d.getParameterList().getParameters()) {
                     gen.getNames().forceName(natd.getParameter(p.getName()).getModel(), gen.getNames().name(p));
