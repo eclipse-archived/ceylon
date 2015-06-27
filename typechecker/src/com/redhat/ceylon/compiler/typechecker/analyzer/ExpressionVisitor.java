@@ -3741,14 +3741,14 @@ public class ExpressionVisitor extends Visitor {
             Reference prf, Functional dec) {
         List<ParameterList> pls = dec.getParameterLists();
         if (pls.isEmpty()) {
-            if (dec instanceof TypeDeclaration) {
+            /*if (dec instanceof TypeDeclaration) {
                 that.addError("type has no parameter list: '" + 
                         dec.getName(unit) + "'");
             }
             else {
                 that.addError("function has no parameter list: '" +
                         dec.getName(unit) + "'");
-            }
+            }*/
         }
         else /*if (!dec.isOverloaded())*/ {
             ParameterList pl = pls.get(0);            
@@ -6734,6 +6734,11 @@ public class ExpressionVisitor extends Visitor {
         Declaration dec = that.getDeclaration();
         if (dec instanceof Class) {
             Class c = (Class) dec;
+            if (c.getParameterList()==null) {
+                that.addError("class cannot be instantiated: '" +
+                        c.getName(unit) + 
+                        "' does not have a parameter list or default constructor");
+            }
             if (c.isAbstraction()) { 
                 //if the constructor is overloaded
                 //resolve the right overloaded version
