@@ -147,8 +147,14 @@ public class ControlFlowVisitor extends Visitor {
 
     private void checkDefiniteReturn(Node that, String name) {
         if (!definitelyReturns) {
-            that.addError("does not definitely return: '" + 
-                    name + "' has branches which do not end in a return statement");
+            if (name==null) {
+                name = "anonymous function";
+            }
+            else {
+                name = "'" + name + "'";
+            }
+            that.addError("does not definitely return: " + 
+                    name + " has branches which do not end in a return statement");
         }
     }
 
@@ -198,7 +204,7 @@ public class ControlFlowVisitor extends Visitor {
         	boolean d = beginDefiniteReturnScope();
         	super.visit(that);
         	if (!(that.getType() instanceof Tree.VoidModifier)) {
-        		checkDefiniteReturn(that, "anonymous function");
+        		checkDefiniteReturn(that, null);
         	}
         	endDefiniteReturnScope(d);
         	endReturnScope(c);
