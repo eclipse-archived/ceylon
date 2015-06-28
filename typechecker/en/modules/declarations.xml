@@ -1634,9 +1634,9 @@ TypeConstraints?
         <section id="anonymousclasses">
             <title>Anonymous classes</title>
             
-            <para>An <literal>object</literal> declaration makes it possible to define
-            a class, instantiate the class, and declare a value referring to the 
-            resulting class instance in a single declaration.</para>
+            <para>An <literal>object</literal> or <emphasis>anonymous class</emphasis>
+            declaration is a compact way to define a class with a single value 
+            constructor, and declare a value aliasing this value constructor.</para>
             
             <synopsis>ObjectDeclaration: Annotations ObjectHeader ClassBody</synopsis>
             
@@ -1651,71 +1651,94 @@ TypeConstraints?
             <para>An <literal>object</literal> declaration specifies the name of the
             value and the schema, supertypes, and implementation of the class. It
             does not explicitly specify a type name. Instead, the type name is formed 
-            by prefixing the value name with `\I`, turning it into an initial uppercase
-            identifier, as specified by <xref linkend="identifiersandkeywords"/>.</para>
+            by prefixing the value name with <literal>\I</literal>, turning it into an 
+            initial uppercase identifier, as specified by 
+            <xref linkend="identifiersandkeywords"/>.</para>
             
             <para>An <literal>object</literal> class:</para>
             
             <itemizedlist>
                 <listitem>
-                    <para>may not be <literal>abstract</literal> nor 
+                    <para>is <literal>shared</literal>, if and only if the
+                    <literal>object</literal> is annotated 
+                    <literal>shared</literal>,</para>
+                </listitem>
+                <listitem>
+                    <para>is neither <literal>abstract</literal> nor 
                     <literal>formal</literal>, and</para>
                 </listitem>
                 <listitem>
-                    <para>is implicitly <literal>final</literal>, and therefore
-                    may not declare <literal>default</literal> members nor be
-                    extended by another class.</para>
+                    <para>is implicitly <literal>final</literal>.</para>
                 </listitem>
             </itemizedlist>
             
-            <para>If the <literal>object</literal> is annotated <literal>shared</literal>, 
-            the class is <literal>shared</literal>.</para>
+            <para>Therefore, members of an <literal>object</literal> may not be
+            declared <literal>formal</literal> nor <literal>default</literal>.</para>
+            
+            <para>The body of the <literal>object</literal> declaration is the body 
+            of the class. The class has no initializer parameter list. The class 
+            satisfies and/or extends the types specified by the <literal>object</literal>
+            declaration.</para>
+            
+            <para>The class has a single <literal>shared</literal> value constructor, 
+            with the same name as the <literal>object</literal> value that aliases it. 
+            The value constructor is the single enumerated case of the class. The body 
+            of the value constructor is empty. The value constructor has the same
+            <literal>extends</literal> clause as the <literal>object</literal> 
+            declaration.</para>
             
             <para>This class never appears in types inferred by local declaration type 
             inference or generic type argument inference. Instead, occurrences of the 
             class are replaced with the intersection of the extended type with all 
             satisfied types.</para>
             
-            <para>An <literal>object</literal> value is a reference, as defined in
-            <xref linkend="references"/>, and:</para>
+            <para>An <literal>object</literal> value is a getter, as defined in
+            <xref linkend="getters"/>, that simply returns a reference to the value
+            constructor of the class. The value:</para>
             
             <itemizedlist>
                 <listitem>
-                    <para>is non-<literal>variable</literal>, and</para>
+                    <para>is <literal>shared</literal>, if and only if the
+                    <literal>object</literal> is annotated 
+                    <literal>shared</literal>,</para>
                 </listitem>
                 <listitem>
-                    <para>may not be refined, nor declared <literal>default</literal>
-                    nor <literal>formal</literal>.</para>
+                    <para>may refine a member of a supertype, if and only if the 
+                    <literal>object</literal> is annotated 
+                    <literal>actual</literal>, and</para>
+                </listitem>
+                <listitem>
+                    <para>is neither <literal>default</literal> nor 
+                    <literal>formal</literal>.</para>
                 </listitem>
             </itemizedlist>
-             
-            <para>If the <literal>object</literal> is annotated <literal>shared</literal>, 
-            the value is <literal>shared</literal>. If the <literal>object</literal>
-            is annotated <literal>actual</literal>, it refines an attribute of a 
-            supertype.</para>
+                        
+            <para>Therefore, the <literal>object</literal> may not be annotated 
+            <literal>default</literal> nor <literal>formal</literal>.</para>
             
-            <para>Annotations applying to an <literal>object</literal> declaration are
-            considered annotations of the <literal>object</literal> value, and are
-            accessible via its <literal>ValueDeclaration</literal>, as defined in
-            <xref linkend="referenceexpressions"/>.</para>
+            <para>Annotations applying to an <literal>object</literal> declaration 
+            are considered annotations of the <literal>object</literal> value, and 
+            are accessible via its <literal>ValueDeclaration</literal>, as defined 
+            in <xref linkend="referenceexpressions"/>.</para>
             
             <para>The following declaration:</para>
             
             <programlisting>shared my object red extends Color('FF0000') {
      string => "Red";
 }</programlisting>
-   
+            
             <para>Is exactly equivalent to:</para>
             
-            <programlisting>shared final class \Ired() extends Color('FF0000') {
+            <programlisting>shared final class \Ired of red extends Color {
      string => "Red";
+     shared new red extends Color('FF0000') {}
 }
 
-shared my \Ired red = \Ired();</programlisting>
+shared my \Ired red => \Ired.red;</programlisting>
             
             <para>Where <literal>\Ired</literal> is the type name assigned by the 
             compiler.</para>
-                        
+            
             <programlisting>shared object sql {
     shared String escape(String string) { ... }
 }
@@ -1743,7 +1766,7 @@ String escapedSearchString = sql.escape(searchString);</programlisting>
             be a useful shortcut for specifying a callable parameter value in a named argument 
             list or refining a method declaration when the callable parameter or method has an 
             abstract return type.</para></comment-->
-                        
+            
         </section>
         
         <section id="classeswithcases">
