@@ -29,6 +29,11 @@ import com.sun.tools.javac.tree.JCTree.JCCompilationUnit;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
 import com.sun.tools.javac.tree.JCTree.JCFieldAccess;
 import com.sun.tools.javac.tree.JCTree.JCImport;
+import com.sun.tools.javac.tree.JCTree.JCMethodDecl;
+import com.sun.tools.javac.tree.JCTree.JCTypeApply;
+import com.sun.tools.javac.tree.JCTree.JCTypeParameter;
+import com.sun.tools.javac.tree.JCTree.JCVariableDecl;
+import com.sun.tools.javac.tree.JCTree.JCWildcard;
 import com.sun.tools.javac.util.List;
 
 /**
@@ -79,9 +84,54 @@ final class ImportScanner extends JCTree.Visitor {
 
     @Override
     public void visitClassDef(JCClassDecl that) {
-        // ignore
+        // we have to do field types, method signatures, type parameters and extends/implements, that's all
+        visit(that.defs);
+        visitType(that.extending);
+        for (JCExpression impl : that.implementing) {
+            visitType(impl);
+        }
+        visitTypeParameters(that.typarams);
     }
 
+    private void visitTypeParameters(List<JCTypeParameter> typarams) {
+        for(JCTypeParameter param : typarams){
+            for(JCExpression bound : param.bounds){
+                visitType(bound);
+            }
+        }
+    }
+
+    private void visitType(JCExpression type) {
+        if(type instanceof JCFieldAccess){
+            importPackage((JCFieldAccess) type);
+        }else if(type instanceof JCTypeApply){
+            JCTypeApply parameterisedType = (JCTypeApply) type;
+            visitType(parameterisedType.clazz);
+            for(JCExpression arg : parameterisedType.arguments){
+                visitType(arg);
+            }
+        }else if(type instanceof JCWildcard){
+            JCTree inner = ((JCWildcard)type).inner;
+            if(inner instanceof JCExpression)
+                visitType((JCExpression) inner);
+        }else{
+            System.err.println("WTF?: "+type);
+        }
+    }
+
+    @Override
+    public void visitVarDef(JCVariableDecl that) {
+        visitType(that.vartype);
+    }
+    
+    @Override
+    public void visitMethodDef(JCMethodDecl that) {
+        visitType(that.restype);
+        for(JCVariableDecl param : that.params){
+            visitVarDef(param);
+        }
+    }
+    
     @Override
     public void visitTree(JCTree thatceylonEnter) {
         // do nothing
