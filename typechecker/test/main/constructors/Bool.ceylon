@@ -104,9 +104,11 @@ class UnidentifiableBool
     }
     equals(Object that) => 1==1;
     hash => 1;
-    @error switch(this)
-    case (UnidentifiableBool.true) {}
-    case (UnidentifiableBool.false) {}
+    void m() {
+        @error switch(this)
+        case (UnidentifiableBool.true) {}
+        case (UnidentifiableBool.false) {}
+    }
 }
 
 
@@ -118,12 +120,14 @@ class PrivateBool of true|false {
     new false {
         string = "false";
     }
-    switch(this)
-    case (PrivateBool.true) {}
-    case (PrivateBool.false) {}
-    @error
-    switch(this)
-    case (PrivateBool.true) {}
+    void m() {
+        switch(this)
+        case (PrivateBool.true) {}
+        case (PrivateBool.false) {}
+        @error
+        switch(this)
+        case (PrivateBool.true) {}
+    }
 }
 
 abstract class AbstractSingleton {
@@ -222,20 +226,24 @@ class BoolWithNew1 of true|false {
     shared new true {}
     shared new false {}
     @error shared new create() {}
-    BoolWithNew1 bool = true;
-    switch(bool)
-    case (BoolWithNew1.true) {}
-    case (BoolWithNew1.false) {}
+    void m() {
+        BoolWithNew1 bool = true;
+        switch(bool)
+        case (BoolWithNew1.true) {}
+        case (BoolWithNew1.false) {}
+    }
 }
 
 class BoolWithNew2 {
     shared new true {}
     shared new false {}
     shared new create() {}
-    BoolWithNew2 bool = true;
-    @error switch(bool)
-    case (BoolWithNew2.true) {}
-    case (BoolWithNew2.false) {}
+    void m() {
+        BoolWithNew2 bool = true;
+        @error switch(bool)
+        case (BoolWithNew2.true) {}
+        case (BoolWithNew2.false) {}
+    }
 }
 
 interface InterFace {
@@ -270,4 +278,28 @@ class WithNestedBool() {
             string = "false";
         }
     }
+}
+
+class WithValueConstructorRefInInitializer {
+    shared new instance {
+        @error print(instance);
+    }
+    @error print(instance);
+    void method() {
+        print(instance);
+    }
+}
+
+class WithValueConstructorRefInInitializerSuper() {
+    @error print(WithValueConstructorRefInInitializerSub.instance);
+}
+
+class WithValueConstructorRefInInitializerSub
+        extends WithValueConstructorRefInInitializerSuper {
+    shared new instance 
+            extends WithValueConstructorRefInInitializerSuper() {
+        @error print(instance);
+    }
+    @error print(instance);
+    @error print(WithValueConstructorRefInInitializerSub.instance);
 }

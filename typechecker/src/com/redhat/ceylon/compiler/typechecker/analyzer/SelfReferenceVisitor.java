@@ -2,6 +2,7 @@ package com.redhat.ceylon.compiler.typechecker.analyzer;
 
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.getLastExecutableStatement;
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.eliminateParensAndWidening;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isConstructor;
 
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
@@ -14,6 +15,7 @@ import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
+import com.redhat.ceylon.model.typechecker.model.Value;
 /**
  * Validates that the initializer of a class does not leak 
  * self-references to the instance being initialized.
@@ -28,6 +30,7 @@ public class SelfReferenceVisitor extends Visitor {
     private boolean declarationSection = false;
     private int nestedLevel = -1;
     private boolean defaultArgument;
+    private boolean inCaseTypesList;
 
     public SelfReferenceVisitor(TypeDeclaration td) {
         typeDeclaration = td;
@@ -36,50 +39,89 @@ public class SelfReferenceVisitor extends Visitor {
     private void visitExtendedType(Tree.ExtendedTypeExpression that) {
         Declaration member = that.getDeclaration();
         if (member!=null && 
+                //TODO: are these 2 conditions really correct
                 !typeDeclaration.isAlias() && 
-                !(member instanceof Constructor)) {
-            if (!declarationSection && 
-                    isInherited(that, member)) {
-                Declaration container = 
-                        (Declaration) 
-                            member.getContainer();
-                that.addError("inherited member class may not be extended in initializer of '" +
-                    		typeDeclaration.getName() + 
-                    		"': '" + member.getName() + 
-                    		"' is inherited from '" + 
-                    		container.getName() + "'");
-            }
+                !(member instanceof Constructor) && 
+                isInherited(that, member)) {
+            Declaration container = 
+                    (Declaration) 
+                    member.getContainer();
+            that.addError("inherited member class may not be extended in initializer of '" +
+                    typeDeclaration.getName() + 
+                    "': '" + member.getName() + 
+                    "' is inherited from '" + 
+                    container.getName() + "'");
         }
     }
 
-    private void visitReference(Tree.Primary that) {
-        if (that instanceof Tree.MemberOrTypeExpression) {
-            Tree.MemberOrTypeExpression mte = 
-                    (Tree.MemberOrTypeExpression) that;
-            Declaration member = mte.getDeclaration();
-            if (member!=null) {
-                if (!declarationSection && 
-                        isInherited(that, member)) {
-                    Declaration container = 
-                            (Declaration) 
-                                member.getContainer();
-                    that.addError("inherited member may not be used in initializer of '" +
-                    		typeDeclaration.getName() + 
-                    		"': '" + member.getName() + 
-                    		"' is inherited from '" + 
-                    		container.getName() + "'");
-                }
-            }
+    private void checkReference(
+            Tree.MemberOrTypeExpression that) {
+        Declaration member = that.getDeclaration();
+        if (member!=null && 
+                isValueConstructor(that, member)) {
+            Declaration container = 
+                    (Declaration) 
+                    member.getContainer();
+            that.addError("value constructor may not be used in initializer of '" +
+                    typeDeclaration.getName() + 
+                    "': '" + member.getName() + 
+                    "' is a value constructor of '" +
+                    container.getName() + "'");
         }
     }
     
-    private boolean isInherited(Tree.Primary that, Declaration member) {
-        TypeDeclaration id = 
-                that.getScope()
-                    .getInheritingDeclaration(member);
-        return id==typeDeclaration;
+    private void checkMemberReference(
+            Tree.MemberOrTypeExpression that) {
+        Declaration member = that.getDeclaration();
+        if (member!=null &&
+                isInherited(that, member)) {
+            Declaration container = 
+                    (Declaration) 
+                    member.getContainer();
+            that.addError("inherited member may not be used in initializer of '" +
+                    typeDeclaration.getName() + 
+                    "': '" + member.getName() + 
+                    "' is inherited from '" + 
+                    container.getName() + "'");
+        }
+    }
+    
+    /**
+     * Is this a reference to a value constructor of the
+     * type declaration, or of a class that inherits the
+     * type declaration, from within the initializer section
+     * of the type declaration?
+     */
+    private boolean isValueConstructor(Tree.Primary that, 
+            Declaration member) {
+        return inInitializer() &&
+                !inCaseTypesList &&
+                member instanceof Value && 
+                isConstructor(member) && 
+                ((TypeDeclaration) member.getContainer())
+                    .inherits(typeDeclaration);
     }
 
+    /**
+     * Is this a reference to a member inherited by the
+     * type declaration from within the initializer section
+     * of the type declaration?
+     */
+    private boolean isInherited(Tree.Primary that, 
+            Declaration member) {
+        return inInitializer() &&
+                that.getScope()
+                    .getInheritingDeclaration(member)
+                == typeDeclaration;
+    }
+
+    @Override
+    public void visit(Tree.CaseTypes that) {
+        inCaseTypesList = true;
+        super.visit(that);
+        inCaseTypesList = false;
+    }
+    
     @Override
     public void visit(Tree.AnnotationList that) {}
 
@@ -92,29 +134,33 @@ public class SelfReferenceVisitor extends Visitor {
     @Override
     public void visit(Tree.BaseMemberExpression that) {
         super.visit(that);
-        visitReference(that);
+        checkMemberReference(that);
+        checkReference(that);
     }
 
     @Override
     public void visit(Tree.BaseTypeExpression that) {
         super.visit(that);
-        visitReference(that);
+        checkMemberReference(that);
+        checkReference(that);
     }
 
     @Override
     public void visit(Tree.QualifiedMemberExpression that) {
         super.visit(that);
         if (isSelfReference(that.getPrimary())) {
-            visitReference(that);
+            checkMemberReference(that);
         }
+        checkReference(that);
     }
 
     @Override
     public void visit(Tree.QualifiedTypeExpression that) {
         super.visit(that);
         if (isSelfReference(that.getPrimary())) {
-            visitReference(that);
+            checkMemberReference(that);
         }
+        checkReference(that);
     }
 
     private boolean isSelfReference(Tree.Term that) {
@@ -263,8 +309,12 @@ public class SelfReferenceVisitor extends Visitor {
         return nestedLevel==1;
     }
     
-    boolean inBody() {
+    private boolean inBody() {
         return nestedLevel>=0;
+    }
+    
+    private boolean inInitializer() {
+        return inBody() && !declarationSection;
     }
     
     @Override
