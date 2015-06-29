@@ -1636,7 +1636,7 @@ TypeConstraints?
             
             <para>An <literal>object</literal> or <emphasis>anonymous class</emphasis>
             declaration is a compact way to define a class with a single value 
-            constructor, and declare a value aliasing this value constructor.</para>
+            constructor, together with a getter aliasing this value constructor.</para>
             
             <synopsis>ObjectDeclaration: Annotations ObjectHeader ClassBody</synopsis>
             
@@ -1649,9 +1649,9 @@ TypeConstraints?
             <synopsis>ObjectInheritance: ExtendedType? SatisfiedTypes?</synopsis>
             
             <para>An <literal>object</literal> declaration specifies the name of the
-            value and the schema, supertypes, and implementation of the class. It
-            does not explicitly specify a type name. Instead, the type name is formed 
-            by prefixing the value name with <literal>\I</literal>, turning it into an 
+            value and the schema, supertypes, and implementation of the class. It does 
+            not explicitly specify a type name. Instead, the type name is formed by 
+            prefixing the value name with <literal>\I</literal>, turning it into an 
             initial uppercase identifier, as specified by 
             <xref linkend="identifiersandkeywords"/>.</para>
             
@@ -1659,13 +1659,27 @@ TypeConstraints?
             
             <itemizedlist>
                 <listitem>
+                    <para>satisfies and/or extends the types specified by the 
+                    <literal>object</literal> declaration,</para>
+                </listitem>
+                <listitem>
+                    <para>has no initializer parameter list,</para>
+                </listitem>
+                <listitem>
+                    <para>has a single <literal>shared</literal> value constructor 
+                    with the same name as the <literal>object</literal>, with an 
+                    empty body and the same <literal>extends</literal> clause as 
+                    the <literal>object</literal> declaration, which is the single 
+                    enumerated case of the class,</para>
+                </listitem>
+                <listitem>
                     <para>is <literal>shared</literal>, if and only if the
                     <literal>object</literal> is annotated 
                     <literal>shared</literal>,</para>
                 </listitem>
                 <listitem>
                     <para>is neither <literal>abstract</literal> nor 
-                    <literal>formal</literal>, and</para>
+                    <literal>formal</literal>,</para>
                 </listitem>
                 <listitem>
                     <para>is implicitly <literal>final</literal>.</para>
@@ -1676,16 +1690,7 @@ TypeConstraints?
             declared <literal>formal</literal> nor <literal>default</literal>.</para>
             
             <para>The body of the <literal>object</literal> declaration is the body 
-            of the class. The class has no initializer parameter list. The class 
-            satisfies and/or extends the types specified by the <literal>object</literal>
-            declaration.</para>
-            
-            <para>The class has a single <literal>shared</literal> value constructor, 
-            with the same name as the <literal>object</literal> value that aliases it. 
-            The value constructor is the single enumerated case of the class. The body 
-            of the value constructor is empty. The value constructor has the same
-            <literal>extends</literal> clause as the <literal>object</literal> 
-            declaration.</para>
+            of the class.</para>
             
             <para>This class never appears in types inferred by local declaration type 
             inference or generic type argument inference. Instead, occurrences of the 
@@ -1730,8 +1735,8 @@ TypeConstraints?
             <para>Is exactly equivalent to:</para>
             
             <programlisting>shared final class \Ired of red extends Color {
-     string => "Red";
      shared new red extends Color('FF0000') {}
+     string => "Red";
 }
 
 shared my \Ired red => \Ired.red;</programlisting>
