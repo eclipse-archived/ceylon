@@ -5,7 +5,7 @@ import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.eliminatePare
 
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.BaseMemberExpression;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.MemberOrTypeExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Parameter;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Super;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
@@ -40,10 +40,14 @@ public class SelfReferenceVisitor extends Visitor {
                 !(member instanceof Constructor)) {
             if (!declarationSection && 
                     isInherited(that, member)) {
+                Declaration container = 
+                        (Declaration) 
+                            member.getContainer();
                 that.addError("inherited member class may not be extended in initializer of '" +
-                    		typeDeclaration.getName() + "': '" + member.getName() + 
+                    		typeDeclaration.getName() + 
+                    		"': '" + member.getName() + 
                     		"' is inherited from '" + 
-                    		((Declaration) member.getContainer()).getName() + "'");
+                    		container.getName() + "'");
             }
         }
     }
@@ -56,17 +60,24 @@ public class SelfReferenceVisitor extends Visitor {
             if (member!=null) {
                 if (!declarationSection && 
                         isInherited(that, member)) {
+                    Declaration container = 
+                            (Declaration) 
+                                member.getContainer();
                     that.addError("inherited member may not be used in initializer of '" +
-                    		typeDeclaration.getName() + "': '" + member.getName() + 
+                    		typeDeclaration.getName() + 
+                    		"': '" + member.getName() + 
                     		"' is inherited from '" + 
-                    		((Declaration) member.getContainer()).getName() + "'");
+                    		container.getName() + "'");
                 }
             }
         }
     }
     
     private boolean isInherited(Tree.Primary that, Declaration member) {
-        return that.getScope().getInheritingDeclaration(member)==typeDeclaration;
+        TypeDeclaration id = 
+                that.getScope()
+                    .getInheritingDeclaration(member);
+        return id==typeDeclaration;
     }
 
     @Override
@@ -120,14 +131,17 @@ public class SelfReferenceVisitor extends Visitor {
             if (v!=null && v.getSpecifierExpression()!=null) {
                 Tree.Term term = v.getSpecifierExpression()
                         .getExpression().getTerm();
-                if (directlyInBody() && term instanceof Tree.Super) {
+                if (directlyInBody() 
+                        && term instanceof Tree.Super) {
                     term.addError("narrows super");
                 }
-                else if (mayNotLeakThis() && term instanceof Tree.This) {
+                else if (mayNotLeakThis() 
+                        && term instanceof Tree.This) {
                     term.addError("narrows this in initializer: '" + 
                             typeDeclaration.getName() + "'");
                 }
-                else if (mayNotLeakOuter() && term instanceof Tree.Outer) {
+                else if (mayNotLeakOuter() 
+                        && term instanceof Tree.Outer) {
                     term.addError("narrows outer in initializer: '" + 
                             typeDeclaration.getName() + "'");
                 }
@@ -224,7 +238,8 @@ public class SelfReferenceVisitor extends Visitor {
     @Override
     public void visit(Tree.ClassBody that) {
         if (directlyInBody()) {
-            Tree.Statement les = getLastExecutableStatement(that);
+            Tree.Statement les = 
+                    getLastExecutableStatement(that);
             declarationSection = les==null;
             lastExecutableStatement = les;
             super.visit(that);
@@ -280,8 +295,7 @@ public class SelfReferenceVisitor extends Visitor {
         		t instanceof Tree.BaseMemberExpression) {
         	Tree.BaseMemberExpression bme = 
         	        (Tree.BaseMemberExpression) t;
-            Declaration declaration = 
-        	        bme.getDeclaration();
+            Declaration declaration = bme.getDeclaration();
         	if (declaration instanceof TypedDeclaration) {
         		TypedDeclaration td = 
         		        (TypedDeclaration) declaration;
@@ -375,9 +389,13 @@ public class SelfReferenceVisitor extends Visitor {
     			Tree.Expression e = se.getExpression();
     			if (e!=null) {
     				if (e.getTerm() instanceof Tree.This) {
-    					Declaration d = ((Tree.MemberOrTypeExpression) lt).getDeclaration();
+    					Tree.MemberOrTypeExpression mte = 
+    					        (Tree.MemberOrTypeExpression) lt;
+                        Declaration d = mte.getDeclaration();
     					if (d instanceof FunctionOrValue) {
-    						if (((FunctionOrValue) d).isLate()) {
+    						FunctionOrValue fov = 
+    						        (FunctionOrValue) d;
+                            if (fov.isLate()) {
     							lt.visit(this);
     							return; //NOTE: EARLY EXIT!!
     						}
@@ -396,9 +414,13 @@ public class SelfReferenceVisitor extends Visitor {
         	Tree.Term lt = that.getLeftTerm();
 			if (lt instanceof Tree.MemberOrTypeExpression &&
 					that.getRightTerm() instanceof Tree.This) {
-        		Declaration d = ((Tree.MemberOrTypeExpression) lt).getDeclaration();
+        		MemberOrTypeExpression mte = 
+        		        (Tree.MemberOrTypeExpression) lt;
+                Declaration d = mte.getDeclaration();
         		if (d instanceof FunctionOrValue) {
-        			if (((FunctionOrValue) d).isLate()) {
+        			FunctionOrValue fov = 
+        			        (FunctionOrValue) d;
+                    if (fov.isLate()) {
         				return; //NOTE: EARLY EXIT!!
         			}
         		}
