@@ -10,9 +10,9 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.MemberOrTypeExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Parameter;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Super;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
-import com.redhat.ceylon.model.typechecker.model.Constructor;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
+import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.model.typechecker.model.Value;
@@ -36,12 +36,27 @@ public class SelfReferenceVisitor extends Visitor {
         typeDeclaration = td;
     }
     
-    private void visitExtendedType(Tree.ExtendedTypeExpression that) {
-        Declaration member = that.getDeclaration();
+    private Declaration resolveTypeAliases(Declaration member) {
+        if (member instanceof TypeDeclaration) {
+            TypeDeclaration superclass = 
+                    (TypeDeclaration) member;
+            while (superclass!=null && 
+                    superclass.isAlias()) {
+                Type et = superclass.getExtendedType();
+                superclass = 
+                        et == null ? null : 
+                            et.getDeclaration();
+            }
+            member = superclass;
+        }
+        return member;
+    }
+
+    private void visitExtendedType(
+            Tree.ExtendedTypeExpression that) {
+        Declaration member = 
+                resolveTypeAliases(that.getDeclaration());
         if (member!=null && 
-                //TODO: are these 2 conditions really correct
-                !typeDeclaration.isAlias() && 
-                !(member instanceof Constructor) && 
                 isInherited(that, member)) {
             Declaration container = 
                     (Declaration) 
@@ -56,7 +71,8 @@ public class SelfReferenceVisitor extends Visitor {
 
     private void checkReference(
             Tree.MemberOrTypeExpression that) {
-        Declaration member = that.getDeclaration();
+        Declaration member = 
+                resolveTypeAliases(that.getDeclaration());
         if (member!=null && 
                 isValueConstructor(that, member)) {
             Declaration container = 
@@ -72,7 +88,8 @@ public class SelfReferenceVisitor extends Visitor {
     
     private void checkMemberReference(
             Tree.MemberOrTypeExpression that) {
-        Declaration member = that.getDeclaration();
+        Declaration member = 
+                resolveTypeAliases(that.getDeclaration());
         if (member!=null &&
                 isInherited(that, member)) {
             Declaration container = 
@@ -165,31 +182,38 @@ public class SelfReferenceVisitor extends Visitor {
 
     private boolean isSelfReference(Tree.Term that) {
         Tree.Term term = eliminateParensAndWidening(that);
-        return (directlyInBody() && (term instanceof Tree.This || term instanceof Tree.Super))
-            || (directlyInNestedBody() && that instanceof Tree.Outer);
+        return directlyInBody() && 
+                    (term instanceof Tree.This || 
+                     term instanceof Tree.Super) || 
+               directlyInNestedBody() && 
+                     that instanceof Tree.Outer;
     }
 
     @Override
     public void visit(Tree.IsCondition that) {
         super.visit(that);
-        if ( inBody() ) {
+        if (inBody()) {
             Tree.Variable v = that.getVariable();
-            if (v!=null && v.getSpecifierExpression()!=null) {
-                Tree.Term term = v.getSpecifierExpression()
-                        .getExpression().getTerm();
-                if (directlyInBody() 
-                        && term instanceof Tree.Super) {
-                    term.addError("narrows super");
-                }
-                else if (mayNotLeakThis() 
-                        && term instanceof Tree.This) {
-                    term.addError("narrows this in initializer: '" + 
-                            typeDeclaration.getName() + "'");
-                }
-                else if (mayNotLeakOuter() 
-                        && term instanceof Tree.Outer) {
-                    term.addError("narrows outer in initializer: '" + 
-                            typeDeclaration.getName() + "'");
+            if (v!=null) {
+                Tree.SpecifierExpression se = 
+                        v.getSpecifierExpression();
+                if (se!=null) {
+                    Tree.Term term = 
+                            se.getExpression().getTerm();
+                    if (directlyInBody() 
+                            && term instanceof Tree.Super) {
+                        term.addError("narrows super");
+                    }
+                    else if (mayNotLeakThis() 
+                            && term instanceof Tree.This) {
+                        term.addError("narrows this in initializer: '" + 
+                                typeDeclaration.getName() + "'");
+                    }
+                    else if (mayNotLeakOuter() 
+                            && term instanceof Tree.Outer) {
+                        term.addError("narrows outer in initializer: '" + 
+                                typeDeclaration.getName() + "'");
+                    }
                 }
             }
         }
@@ -462,8 +486,9 @@ public class SelfReferenceVisitor extends Visitor {
         super.visit(that);
         if ( inBody() ) {
         	Tree.Term lt = that.getLeftTerm();
-			if (lt instanceof Tree.MemberOrTypeExpression &&
-					that.getRightTerm() instanceof Tree.This) {
+			Tree.Term rt = that.getRightTerm();
+            if (lt instanceof Tree.MemberOrTypeExpression &&
+					rt instanceof Tree.This) {
         		MemberOrTypeExpression mte = 
         		        (Tree.MemberOrTypeExpression) lt;
                 Declaration d = mte.getDeclaration();
@@ -475,7 +500,7 @@ public class SelfReferenceVisitor extends Visitor {
         			}
         		}
         	}
-            checkSelfReference(that, that.getRightTerm());    
+            checkSelfReference(that, rt);    
         }
     }
 
