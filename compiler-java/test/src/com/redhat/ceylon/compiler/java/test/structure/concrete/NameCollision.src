@@ -6,7 +6,7 @@ interface Iterable {
 class NameCollision implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.concrete.Iterable, .ceylon.language.Iterable<.ceylon.language.Integer, .java.lang.Object> {
     
     NameCollision() {
-        this.$ceylon$language$Iterable$this$ = new .ceylon.language.Iterable$impl<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$, this);
+        this.$ceylon$language$Iterable$this$ = new .ceylon.language.Iterable$impl(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$, this);
         this.$ceylon$language$Category$this$ = new .ceylon.language.Category$impl<.java.lang.Object>(.ceylon.language.Object.$TypeDescriptor$, this);
         this.empty = true;
     }

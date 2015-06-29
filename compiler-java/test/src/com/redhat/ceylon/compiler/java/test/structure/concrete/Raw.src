@@ -98,7 +98,7 @@ class RawInImplementor<X, Y> implements .com.redhat.ceylon.compiler.java.runtime
     RawInImplementor(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$X, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Y) {
         this.$reified$X = $reified$X;
         this.$reified$Y = $reified$Y;
-        this.$com$redhat$ceylon$compiler$java$test$structure$concrete$RawIn$this$ = new .com.redhat.ceylon.compiler.java.test.structure.concrete.RawIn$impl<.java.lang.Object, Y>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.intersection($reified$X, $reified$Y), $reified$Y, (.com.redhat.ceylon.compiler.java.test.structure.concrete.RawIn)this);
+        this.$com$redhat$ceylon$compiler$java$test$structure$concrete$RawIn$this$ = new .com.redhat.ceylon.compiler.java.test.structure.concrete.RawIn$impl(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.intersection($reified$X, $reified$Y), $reified$Y, (.com.redhat.ceylon.compiler.java.test.structure.concrete.RawIn)this);
     }
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$X;
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Y;
@@ -196,7 +196,7 @@ class RawOutImplementor<X, Y> implements .com.redhat.ceylon.compiler.java.runtim
     RawOutImplementor(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$X, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Y) {
         this.$reified$X = $reified$X;
         this.$reified$Y = $reified$Y;
-        this.$com$redhat$ceylon$compiler$java$test$structure$concrete$RawOut$this$ = new .com.redhat.ceylon.compiler.java.test.structure.concrete.RawOut$impl<.java.lang.Object, Y>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.intersection($reified$X, $reified$Y), $reified$Y, (.com.redhat.ceylon.compiler.java.test.structure.concrete.RawOut)this);
+        this.$com$redhat$ceylon$compiler$java$test$structure$concrete$RawOut$this$ = new .com.redhat.ceylon.compiler.java.test.structure.concrete.RawOut$impl(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.intersection($reified$X, $reified$Y), $reified$Y, (.com.redhat.ceylon.compiler.java.test.structure.concrete.RawOut)this);
     }
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$X;
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Y;

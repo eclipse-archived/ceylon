@@ -32,7 +32,7 @@ class RNParametersImpl<Element> implements .com.redhat.ceylon.compiler.java.runt
     
     RNParametersImpl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element) {
         this.$reified$Element = $reified$Element;
-        this.$com$redhat$ceylon$compiler$java$test$structure$klass$RNParameters$this$ = new .com.redhat.ceylon.compiler.java.test.structure.klass.RNParameters$impl<Element, .java.lang.Object>($reified$Element, .ceylon.language.Null.$TypeDescriptor$, this);
+        this.$com$redhat$ceylon$compiler$java$test$structure$klass$RNParameters$this$ = new .com.redhat.ceylon.compiler.java.test.structure.klass.RNParameters$impl($reified$Element, .ceylon.language.Null.$TypeDescriptor$, this);
     }
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element;
     protected final .com.redhat.ceylon.compiler.java.test.structure.klass.RNParameters$impl<Element, .java.lang.Object> $com$redhat$ceylon$compiler$java$test$structure$klass$RNParameters$this$;

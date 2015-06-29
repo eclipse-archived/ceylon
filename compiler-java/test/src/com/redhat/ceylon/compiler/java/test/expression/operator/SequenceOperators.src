@@ -5,7 +5,7 @@ public abstract class SequenceOperators implements .com.redhat.ceylon.compiler.j
     public SequenceOperators() {
         this.$ceylon$language$List$this$ = new .ceylon.language.List$impl<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, this);
         this.$ceylon$language$Collection$this$ = new .ceylon.language.Collection$impl<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, this);
-        this.$ceylon$language$Iterable$this$ = new .ceylon.language.Iterable$impl<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$, this);
+        this.$ceylon$language$Iterable$this$ = new .ceylon.language.Iterable$impl(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$, this);
         this.$ceylon$language$Category$this$ = new .ceylon.language.Category$impl<.java.lang.Object>(.ceylon.language.Object.$TypeDescriptor$, this);
         this.$ceylon$language$Correspondence$this$ = new .ceylon.language.Correspondence$impl<.ceylon.language.Integer, .ceylon.language.String>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, this);
         this.c1 = (.ceylon.language.Sequence<? extends .ceylon.language.String>).ceylon.language.Tuple.instance(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.String.instance("")});
@@ -999,7 +999,7 @@ public abstract class SequenceOperators2 implements .com.redhat.ceylon.compiler.
         this.$com$redhat$ceylon$compiler$java$test$expression$operator$List2$this$ = new .com.redhat.ceylon.compiler.java.test.expression.operator.List2$impl<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, this);
         this.$ceylon$language$List$this$ = new .ceylon.language.List$impl<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, this);
         this.$ceylon$language$Collection$this$ = new .ceylon.language.Collection$impl<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, this);
-        this.$ceylon$language$Iterable$this$ = new .ceylon.language.Iterable$impl<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$, this);
+        this.$ceylon$language$Iterable$this$ = new .ceylon.language.Iterable$impl(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$, this);
         this.$ceylon$language$Category$this$ = new .ceylon.language.Category$impl<.java.lang.Object>(.ceylon.language.Object.$TypeDescriptor$, this);
         this.$ceylon$language$Correspondence$this$ = new .ceylon.language.Correspondence$impl<.ceylon.language.Integer, .ceylon.language.String>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, this);
     }

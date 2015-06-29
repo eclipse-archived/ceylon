@@ -123,7 +123,7 @@ final class Bug1695It$impl<Element, Absent> {
 class Bug1695Emp implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1695It<.java.lang.Object, .java.lang.Object> {
     
     Bug1695Emp() {
-        this.$com$redhat$ceylon$compiler$java$test$issues$bug16xx$Bug1695It$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1695It$impl<.java.lang.Object, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, .ceylon.language.Null.$TypeDescriptor$, this);
+        this.$com$redhat$ceylon$compiler$java$test$issues$bug16xx$Bug1695It$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1695It$impl(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, .ceylon.language.Null.$TypeDescriptor$, this);
     }
     protected final .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1695It$impl<.java.lang.Object, .java.lang.Object> $com$redhat$ceylon$compiler$java$test$issues$bug16xx$Bug1695It$this$;
     

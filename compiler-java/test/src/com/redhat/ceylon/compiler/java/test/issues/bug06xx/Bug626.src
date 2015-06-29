@@ -3,7 +3,7 @@ package com.redhat.ceylon.compiler.java.test.issues.bug06xx;
 class Bug626 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.Iterable<.ceylon.language.Sequential<? extends .java.lang.Object>, .java.lang.Object> {
     
     Bug626() {
-        this.$ceylon$language$Iterable$this$ = new .ceylon.language.Iterable$impl<.ceylon.language.Sequential<? extends .java.lang.Object>, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequential.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType), .ceylon.language.Null.$TypeDescriptor$, this);
+        this.$ceylon$language$Iterable$this$ = new .ceylon.language.Iterable$impl(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequential.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType), .ceylon.language.Null.$TypeDescriptor$, this);
         this.$ceylon$language$Category$this$ = new .ceylon.language.Category$impl<.java.lang.Object>(.ceylon.language.Object.$TypeDescriptor$, this);
         this.hash = ((.ceylon.language.Integer).ceylon.language.nothing_.get_()).longValue();
     }

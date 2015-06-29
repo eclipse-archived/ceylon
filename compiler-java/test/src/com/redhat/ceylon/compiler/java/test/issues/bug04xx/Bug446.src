@@ -6,7 +6,7 @@ abstract class Bug446<T> implements .com.redhat.ceylon.compiler.java.runtime.mod
         this.$reified$T = $reified$T;
         this.$ceylon$language$List$this$ = new .ceylon.language.List$impl<T>($reified$T, this);
         this.$ceylon$language$Collection$this$ = new .ceylon.language.Collection$impl<T>($reified$T, this);
-        this.$ceylon$language$Iterable$this$ = new .ceylon.language.Iterable$impl<T, .java.lang.Object>($reified$T, .ceylon.language.Null.$TypeDescriptor$, this);
+        this.$ceylon$language$Iterable$this$ = new .ceylon.language.Iterable$impl($reified$T, .ceylon.language.Null.$TypeDescriptor$, this);
         this.$ceylon$language$Category$this$ = new .ceylon.language.Category$impl<.java.lang.Object>(.ceylon.language.Object.$TypeDescriptor$, this);
         this.$ceylon$language$Correspondence$this$ = new .ceylon.language.Correspondence$impl<.ceylon.language.Integer, T>(.ceylon.language.Integer.$TypeDescriptor$, $reified$T, this);
         this.string = ((.ceylon.language.String).ceylon.language.nothing_.get_()).toString();

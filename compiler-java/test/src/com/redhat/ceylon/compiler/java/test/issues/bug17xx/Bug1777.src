@@ -44,7 +44,7 @@ public abstract class Bug1777_Impl<Element> implements .com.redhat.ceylon.compil
     public Bug1777_Impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element) {
         this.$reified$Element = $reified$Element;
         this.$com$redhat$ceylon$compiler$java$test$issues$bug17xx$Bug1777$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug17xx.Bug1777$impl<Element>($reified$Element, this);
-        this.$ceylon$language$Iterable$this$ = new .ceylon.language.Iterable$impl<Element, .java.lang.Object>($reified$Element, .ceylon.language.Null.$TypeDescriptor$, this);
+        this.$ceylon$language$Iterable$this$ = new .ceylon.language.Iterable$impl($reified$Element, .ceylon.language.Null.$TypeDescriptor$, this);
         this.$ceylon$language$Category$this$ = new .ceylon.language.Category$impl<.java.lang.Object>(.ceylon.language.Object.$TypeDescriptor$, this);
     }
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element;
@@ -351,7 +351,7 @@ public abstract class Bug1777_2<Element> implements .com.redhat.ceylon.compiler.
     
     public Bug1777_2(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element) {
         this.$reified$Element = $reified$Element;
-        this.$ceylon$language$Iterable$this$ = new .ceylon.language.Iterable$impl<Element, .java.lang.Object>($reified$Element, .ceylon.language.Null.$TypeDescriptor$, this);
+        this.$ceylon$language$Iterable$this$ = new .ceylon.language.Iterable$impl($reified$Element, .ceylon.language.Null.$TypeDescriptor$, this);
         this.$ceylon$language$Category$this$ = new .ceylon.language.Category$impl<.java.lang.Object>(.ceylon.language.Object.$TypeDescriptor$, this);
     }
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element;

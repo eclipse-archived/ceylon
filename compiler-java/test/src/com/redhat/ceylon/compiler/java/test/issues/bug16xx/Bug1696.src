@@ -36,7 +36,7 @@ class Bug1696Extend<Other> implements .com.redhat.ceylon.compiler.java.runtime.m
     
     Bug1696Extend(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Other) {
         this.$reified$Other = $reified$Other;
-        this.$com$redhat$ceylon$compiler$java$test$issues$bug16xx$Bug1696$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1696$impl<.java.lang.Object, .ceylon.language.String>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.String.$TypeDescriptor$, $reified$Other), .ceylon.language.String.$TypeDescriptor$, (.com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1696)this);
+        this.$com$redhat$ceylon$compiler$java$test$issues$bug16xx$Bug1696$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1696$impl(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.String.$TypeDescriptor$, $reified$Other), .ceylon.language.String.$TypeDescriptor$, (.com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1696)this);
     }
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Other;
     protected final .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1696$impl<.java.lang.Object, .ceylon.language.String> $com$redhat$ceylon$compiler$java$test$issues$bug16xx$Bug1696$this$;
@@ -69,7 +69,7 @@ abstract class Bug1696MixinA2<T> implements .com.redhat.ceylon.compiler.java.run
     
     Bug1696MixinA2(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
         this.$reified$T = $reified$T;
-        this.$ceylon$language$Iterable$this$ = new .ceylon.language.Iterable$impl<T, .java.lang.Object>($reified$T, .ceylon.language.Null.$TypeDescriptor$, (.ceylon.language.Iterable<T, .java.lang.Object>)(.ceylon.language.Iterable)this);
+        this.$ceylon$language$Iterable$this$ = new .ceylon.language.Iterable$impl($reified$T, .ceylon.language.Null.$TypeDescriptor$, (.ceylon.language.Iterable<T, .java.lang.Object>)(.ceylon.language.Iterable)this);
         this.$ceylon$language$Category$this$ = new .ceylon.language.Category$impl<.java.lang.Object>(.ceylon.language.Object.$TypeDescriptor$, this);
     }
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
@@ -385,7 +385,7 @@ abstract class Bug1696MixinB2<T> implements .com.redhat.ceylon.compiler.java.run
     Bug1696MixinB2(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
         this.$reified$T = $reified$T;
         this.$com$redhat$ceylon$compiler$java$test$issues$bug16xx$Bug1696MixinB1$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1696MixinB1$impl(this);
-        this.$ceylon$language$Iterable$this$ = new .ceylon.language.Iterable$impl<T, .java.lang.Object>($reified$T, .ceylon.language.Null.$TypeDescriptor$, (.ceylon.language.Iterable<T, .java.lang.Object>)(.ceylon.language.Iterable)this);
+        this.$ceylon$language$Iterable$this$ = new .ceylon.language.Iterable$impl($reified$T, .ceylon.language.Null.$TypeDescriptor$, (.ceylon.language.Iterable<T, .java.lang.Object>)(.ceylon.language.Iterable)this);
         this.$ceylon$language$Category$this$ = new .ceylon.language.Category$impl<.java.lang.Object>(.ceylon.language.Object.$TypeDescriptor$, this);
     }
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
@@ -690,7 +690,7 @@ abstract class Bug1696MixinC2<T> implements .com.redhat.ceylon.compiler.java.run
     
     Bug1696MixinC2(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
         this.$reified$T = $reified$T;
-        this.$ceylon$language$Iterable$this$ = new .ceylon.language.Iterable$impl<T, .java.lang.Object>($reified$T, .ceylon.language.Null.$TypeDescriptor$, (.ceylon.language.Iterable<T, .java.lang.Object>)(.ceylon.language.Iterable)this);
+        this.$ceylon$language$Iterable$this$ = new .ceylon.language.Iterable$impl($reified$T, .ceylon.language.Null.$TypeDescriptor$, (.ceylon.language.Iterable<T, .java.lang.Object>)(.ceylon.language.Iterable)this);
         this.$ceylon$language$Category$this$ = new .ceylon.language.Category$impl<.java.lang.Object>(.ceylon.language.Object.$TypeDescriptor$, this);
     }
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
@@ -1006,7 +1006,7 @@ abstract class Bug1696MixinD2<T> implements .com.redhat.ceylon.compiler.java.run
     Bug1696MixinD2(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
         this.$reified$T = $reified$T;
         this.$com$redhat$ceylon$compiler$java$test$issues$bug16xx$Bug1696MixinD1$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1696MixinD1$impl(this);
-        this.$ceylon$language$Iterable$this$ = new .ceylon.language.Iterable$impl<T, .java.lang.Object>($reified$T, .ceylon.language.Null.$TypeDescriptor$, (.ceylon.language.Iterable<T, .java.lang.Object>)(.ceylon.language.Iterable)this);
+        this.$ceylon$language$Iterable$this$ = new .ceylon.language.Iterable$impl($reified$T, .ceylon.language.Null.$TypeDescriptor$, (.ceylon.language.Iterable<T, .java.lang.Object>)(.ceylon.language.Iterable)this);
         this.$ceylon$language$Category$this$ = new .ceylon.language.Category$impl<.java.lang.Object>(.ceylon.language.Object.$TypeDescriptor$, this);
     }
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;

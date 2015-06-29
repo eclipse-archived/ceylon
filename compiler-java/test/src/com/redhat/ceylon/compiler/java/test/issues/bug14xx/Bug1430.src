@@ -7,7 +7,7 @@ class Bug1430 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
         this.$ceylon$language$Sequential$this$ = new .ceylon.language.Sequential$impl<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, this);
         this.$ceylon$language$List$this$ = new .ceylon.language.List$impl<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, this);
         this.$ceylon$language$Collection$this$ = new .ceylon.language.Collection$impl<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, this);
-        this.$ceylon$language$Iterable$this$ = new .ceylon.language.Iterable$impl<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, this);
+        this.$ceylon$language$Iterable$this$ = new .ceylon.language.Iterable$impl(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, this);
         this.$ceylon$language$Category$this$ = new .ceylon.language.Category$impl<.java.lang.Object>(.ceylon.language.Object.$TypeDescriptor$, this);
         this.$ceylon$language$Correspondence$this$ = new .ceylon.language.Correspondence$impl<.ceylon.language.Integer, .ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, this);
     }

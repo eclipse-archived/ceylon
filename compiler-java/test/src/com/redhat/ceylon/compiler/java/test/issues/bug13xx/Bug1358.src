@@ -27,7 +27,7 @@ public class Bug1358ClassImpl<Element> implements .com.redhat.ceylon.compiler.ja
     
     public Bug1358ClassImpl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element) {
         this.$reified$Element = $reified$Element;
-        this.$com$redhat$ceylon$compiler$java$test$issues$bug13xx$Bug1358$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1358$impl<.java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union($reified$Element, .ceylon.language.Integer.$TypeDescriptor$), (.com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1358)this);
+        this.$com$redhat$ceylon$compiler$java$test$issues$bug13xx$Bug1358$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1358$impl(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union($reified$Element, .ceylon.language.Integer.$TypeDescriptor$), (.com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1358)this);
     }
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element;
     protected final .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1358$impl<.java.lang.Object> $com$redhat$ceylon$compiler$java$test$issues$bug13xx$Bug1358$this$;

@@ -3,7 +3,7 @@ package com.redhat.ceylon.compiler.java.test.structure.concrete;
 class UnionTypeArg implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.Iterable<.java.lang.Object, .java.lang.Object> {
     
     UnionTypeArg() {
-        this.$ceylon$language$Iterable$this$ = new .ceylon.language.Iterable$impl<.java.lang.Object, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$), .ceylon.language.Null.$TypeDescriptor$, (.ceylon.language.Iterable)this);
+        this.$ceylon$language$Iterable$this$ = new .ceylon.language.Iterable$impl(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$), .ceylon.language.Null.$TypeDescriptor$, (.ceylon.language.Iterable)this);
         this.$ceylon$language$Category$this$ = new .ceylon.language.Category$impl<.java.lang.Object>(.ceylon.language.Object.$TypeDescriptor$, (.ceylon.language.Category<? super .java.lang.Object>)(.ceylon.language.Category)this);
     }
     protected final .ceylon.language.Iterable$impl<.java.lang.Object, .java.lang.Object> $ceylon$language$Iterable$this$;
@@ -303,7 +303,7 @@ class UnionTypeArg implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
 class UnionTypeArgOverride implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.Iterable<.java.lang.Object, .java.lang.Object> {
     
     UnionTypeArgOverride() {
-        this.$ceylon$language$Iterable$this$ = new .ceylon.language.Iterable$impl<.java.lang.Object, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$), .ceylon.language.Null.$TypeDescriptor$, (.ceylon.language.Iterable)this);
+        this.$ceylon$language$Iterable$this$ = new .ceylon.language.Iterable$impl(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$), .ceylon.language.Null.$TypeDescriptor$, (.ceylon.language.Iterable)this);
         this.$ceylon$language$Category$this$ = new .ceylon.language.Category$impl<.java.lang.Object>(.ceylon.language.Object.$TypeDescriptor$, (.ceylon.language.Category<? super .java.lang.Object>)(.ceylon.language.Category)this);
     }
     protected final .ceylon.language.Iterable$impl<.java.lang.Object, .java.lang.Object> $ceylon$language$Iterable$this$;
