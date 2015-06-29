@@ -2585,9 +2585,9 @@ public class ClassTransformer extends AbstractTransformer {
         final JCExpression ifaceImplType;
         if(!Decl.isToplevel(iface) && !Decl.isLocal(iface)
                 && Decl.getClassOrInterfaceContainer(iface, false) instanceof Interface){
-            ifaceImplType = makeJavaType(bestSatisfiedType, JT_COMPANION | JT_SATISFIES | JT_NON_QUALIFIED);
+            ifaceImplType = makeJavaType(bestSatisfiedType, JT_COMPANION | JT_CLASS_NEW | JT_NON_QUALIFIED);
         } else {
-            ifaceImplType = makeJavaType(bestSatisfiedType, JT_COMPANION | JT_SATISFIES);
+            ifaceImplType = makeJavaType(bestSatisfiedType, JT_COMPANION | JT_CLASS_NEW);
         }
         
         JCExpression newInstance = make().NewClass(containerInstance, 
