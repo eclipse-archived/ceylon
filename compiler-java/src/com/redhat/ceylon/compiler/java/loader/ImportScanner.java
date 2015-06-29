@@ -114,8 +114,6 @@ final class ImportScanner extends JCTree.Visitor {
             JCTree inner = ((JCWildcard)type).inner;
             if(inner instanceof JCExpression)
                 visitType((JCExpression) inner);
-        }else{
-            System.err.println("WTF?: "+type);
         }
     }
 
