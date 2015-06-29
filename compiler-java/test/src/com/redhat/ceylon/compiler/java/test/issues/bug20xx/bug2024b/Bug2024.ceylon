@@ -23,5 +23,6 @@ import com.redhat.ceylon.compiler.java.test.issues.bug20xx.bug2024a {
 
 @noanno
 shared void bug2024() {
+    Instant();
 }
 
