@@ -19,6 +19,12 @@
  */
 package com.redhat.ceylon.compiler.java.test.issues;
 
+import static org.junit.Assert.assertTrue;
+
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
+
 import javax.tools.Diagnostic;
 import javax.tools.Diagnostic.Kind;
 
@@ -27,6 +33,7 @@ import org.junit.Test;
 
 import com.redhat.ceylon.compiler.java.test.CompilerError;
 import com.redhat.ceylon.compiler.java.test.CompilerTests;
+import com.redhat.ceylon.compiler.java.tools.CeyloncTaskImpl;
 import com.redhat.ceylon.model.cmr.JDKUtils;
 import com.redhat.ceylon.model.cmr.JDKUtils.JDK;
 
@@ -104,6 +111,17 @@ public class IssuesTests_2000_2499 extends CompilerTests {
         compile("bug20xx/bug2024a/module.ceylon", "bug20xx/bug2024a/package.ceylon", "bug20xx/bug2024a/Instant.ceylon");
         compile("bug20xx/bug2024b/module.ceylon", "bug20xx/bug2024b/Bug2024.ceylon", "bug20xx/bug2024b/Bug2024.java");
         compile("bug20xx/bug2024b/module.ceylon", "bug20xx/bug2024b/Bug2024.ceylon", "bug20xx/bug2024b/Bug2024B.java");
+        
+        // special case: a single package module
+        List<String> options = new LinkedList<String>();
+        options.add("-src");
+        options.add(getPackagePath()+"/bug20xx");
+        options.addAll(defaultOptions);
+        CeyloncTaskImpl task = getCompilerTask(options, 
+                null,
+                Arrays.asList("bug2024c"));
+        Boolean ret = task.call();
+        assertTrue(ret);
     }
     
     @Test @Ignore
