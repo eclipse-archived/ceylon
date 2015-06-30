@@ -28,6 +28,7 @@ import com.sun.tools.javac.tree.JCTree.JCClassDecl;
 import com.sun.tools.javac.tree.JCTree.JCCompilationUnit;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
 import com.sun.tools.javac.tree.JCTree.JCFieldAccess;
+import com.sun.tools.javac.tree.JCTree.JCIdent;
 import com.sun.tools.javac.tree.JCTree.JCImport;
 import com.sun.tools.javac.tree.JCTree.JCMethodDecl;
 import com.sun.tools.javac.tree.JCTree.JCTypeApply;
@@ -141,6 +142,8 @@ final class ImportScanner extends JCTree.Visitor {
         String pkgName;
         if(pid instanceof JCFieldAccess){
             pkgName = ((JCFieldAccess)pid).toString();
+        }else if(pid instanceof JCIdent){
+            pkgName = ((JCIdent)pid).toString();
         }else{
             // default package
             pkgName = "";
