@@ -16,7 +16,11 @@ shared Boolean corresponding<First,Second>(
     "The predicate function that compares an element of the
      [[first stream|firstIterable]] with the corresponding 
      element of the [[second stream|secondIterable]]."
-    Boolean comparing(First first, Second second)) {
+    Boolean comparing(First first, Second second)
+            => if (exists first, exists second) 
+                    then first==second
+                    else !first exists && 
+                         !second exists) {
     value firstIter = firstIterable.iterator();
     value secondIter = secondIterable.iterator();
     while (true) {
