@@ -17,15 +17,12 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-//import com.redhat.ceylon.compiler.java.test.issues.bug20xx.bug2024a {
-//    Instant
-//}
-import ceylon.time {
+import com.redhat.ceylon.compiler.java.test.issues.bug20xx.bug2024a {
     Instant
 }
 
 @noanno
 shared void bug2024() {
-    Instant(0);
+    Instant();
 }
 

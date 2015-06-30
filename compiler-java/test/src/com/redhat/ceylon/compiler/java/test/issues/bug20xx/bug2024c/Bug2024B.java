@@ -28,9 +28,8 @@ public class Bug2024B//<T>
 // FIXED:
 // extends com.redhat.ceylon.compiler.java.test.issues.bug20xx.bug2024a.Instant
 {
-    ceylon.time.Instant i = null;
     // FIXED:
-    //    com.redhat.ceylon.compiler.java.test.issues.bug20xx.bug2024a.Instant i = new com.redhat.ceylon.compiler.java.test.issues.bug20xx.bug2024a.Instant();
+    com.redhat.ceylon.compiler.java.test.issues.bug20xx.bug2024a.Instant i = new com.redhat.ceylon.compiler.java.test.issues.bug20xx.bug2024a.Instant();
     //    // this works
     //    Object i = new com.redhat.ceylon.compiler.java.test.issues.bug20xx.bug2024a.Instant();
     //    // this works
