@@ -1161,7 +1161,17 @@ public class ExpressionTransformer extends AbstractTransformer {
             }
             JCExpression typeCall = makeTypeLiteralCall(containerType, false, expr.getTypeModel());
             // make sure we cast it to ClassOrInterface
-            TypeDeclaration classOrInterfaceDeclaration = (TypeDeclaration) typeFact().getLanguageModuleModelDeclaration(Decl.isConstructor(declaration) ? "ClassModel" : "ClassOrInterface");
+            String metatypeName;
+            if (Decl.isConstructor(declaration)) {
+                if (Decl.getConstructedClass(declaration).isToplevel()) {
+                    metatypeName = "Class";
+                } else {
+                    metatypeName = "MemberClass";
+                }
+            } else {
+                metatypeName = "ClassOrInterface";
+            }
+            TypeDeclaration classOrInterfaceDeclaration = (TypeDeclaration) typeFact().getLanguageModuleModelDeclaration(metatypeName);
             JCExpression classOrInterfaceTypeExpr = makeJavaType(
                     classOrInterfaceDeclaration.appliedReference(null, Arrays.asList(containerType)).getType());
 
@@ -1174,8 +1184,19 @@ public class ExpressionTransformer extends AbstractTransformer {
             // make a raw call and cast
             if (Decl.isConstructor(declaration)) {
                 Type callableType = producedReference.getFullType();
-                JCExpression reifiedArgumentsExpr = makeReifiedTypeArgument(typeFact().getCallableTuple(callableType));
-                List<JCExpression> arguments = List.of(reifiedArgumentsExpr, ceylonLiteral(declaration.getName()));
+                /*JCExpression reifiedArgumentsExpr;
+                if (Decl.isEnumeratedConstructor(Decl.getConstructor(declaration))) {
+                    reifiedArgumentsExpr = makeReifiedTypeArgument(typeFact().getCallableTuple(callableType.getQualifyingType()));
+                } else {
+                    reifiedArgumentsExpr = makeReifiedTypeArgument(typeFact().getCallableTuple(callableType));
+                }*/
+                JCExpression reifiedArguments;
+                if (Decl.isEnumeratedConstructor(Decl.getConstructor(declaration))) {
+                    reifiedArguments = makeReifiedTypeArgument(typeFact().getNothingType());
+                } else {
+                    reifiedArguments = makeReifiedTypeArgument(typeFact().getCallableTuple(callableType));
+                }
+                List<JCExpression> arguments = List.of(reifiedArguments, ceylonLiteral(declaration.getName()));
                 JCExpression classModel = makeSelect(typeCall, "getConstructor");
                 memberCall = make().Apply(null, classModel, arguments);
             } else if(declaration instanceof Function){
@@ -1429,9 +1450,20 @@ public class ExpressionTransformer extends AbstractTransformer {
             JCExpression metamodelCall = makeTypeDeclarationLiteral(Decl.getConstructedClass(ctor));
             metamodelCall = make().TypeCast(
                     makeJavaType(typeFact().getClassDeclarationType(), JT_RAW), metamodelCall);
-            return make().Apply(null, 
+            metamodelCall = make().Apply(null, 
                     naming.makeQualIdent(metamodelCall, "getConstructorDeclaration"), 
                     List.<JCExpression>of(make().Literal(ctor.getName() == null ? "" : ctor.getName())));
+            if (Decl.isEnumeratedConstructor(ctor)) {
+                metamodelCall = make().TypeCast(
+                        makeJavaType(typeFact().getValueConstructorDeclarationType(), JT_RAW), metamodelCall);
+            } /*else if (Decl.isDefaultConstructor(ctor)){
+                metamodelCall = make().TypeCast(
+                        makeJavaType(typeFact().getDefaultConstructorDeclarationType(), JT_RAW), metamodelCall);
+            } */else {
+                metamodelCall = make().TypeCast(
+                        makeJavaType(typeFact().getCallableConstructorDeclarationType(), JT_RAW), metamodelCall);
+            }
+            return metamodelCall;
         }else if(expr.getDeclaration() instanceof ClassOrInterface
                  || expr.getDeclaration() instanceof TypeAlias){
             // use the generated class to get to the declaration literal
