@@ -76,6 +76,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Pattern;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.VoidModifier;
+import com.redhat.ceylon.compiler.typechecker.treegen.Util;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
@@ -8991,7 +8992,8 @@ public class ExpressionVisitor extends Visitor {
                     }
                 }
                 if (impl==null && hdr != null) {
-                    if (!isImplemented(hdr)) {
+                    Module module = dec.getUnit().getPackage().getModule();
+                    if (!isImplemented(hdr) && !module.equals(module.getLanguageModule())) {
                         that.addError("no native implementation for backend: native '"
                                 + dec.getName(unit) +
                                 "' is not implemented for one or more backends");
