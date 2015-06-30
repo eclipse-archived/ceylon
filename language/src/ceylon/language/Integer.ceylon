@@ -38,7 +38,8 @@
      #21_D4
      $10_0001_1101_0100"
 see (`value runtime.integerSize`,
-     `function parseInteger`)
+     `function parseInteger`,
+     `function formatInteger`)
 shared native final class Integer(Integer integer)
         extends Object()
         satisfies Integral<Integer> &
@@ -171,6 +172,7 @@ shared native final class Integer(Integer integer)
     shared actual native Integer plusInteger(Integer integer);
     shared actual native Integer powerOfInteger(Integer integer);
     
+    see (`function formatInteger`)
     shared actual native String string;
 
     shared actual native Boolean largerThan(Integer other); 
