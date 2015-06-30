@@ -118,8 +118,15 @@
    some streams do not support value equality. It follows 
    that the `==` operator should not be used to compare 
    generic streams, unless the streams are known to share
-   some additional structure."""
-see (`interface Collection`)
+   some additional structure.
+   
+   To compare two streams, taking order into account, use
+   the function [[corresponding]].
+   
+       {Float*} xs = ... ;
+       {Float*} ys = ... ;
+       Boolean same = corresponding(xs, ys);"""
+see (`interface Collection`, `function corresponding`)
 by ("Gavin")
 shared interface Iterable<out Element=Anything, 
                           out Absent=Null>
