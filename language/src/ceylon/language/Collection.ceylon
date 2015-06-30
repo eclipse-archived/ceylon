@@ -19,7 +19,9 @@
  notion of [[value equality|Object.equals]], but the
  definition of equality depends upon the kind of collection.
  Equality for `Map`s and `Set`s has a quite different
- definition to equality for `List`s."
+ definition to equality for `List`s. Instances of two 
+ different kinds of collection are never equal&mdash;for
+ example, a `Map` is never equal to a `List`."
 see (`interface List`, `interface Map`, `interface Set`)
 shared interface Collection<out Element=Anything>
         satisfies {Element*} {

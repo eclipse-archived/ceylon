@@ -109,11 +109,16 @@
    [[sequence]] materializes the current elements of a
    stream into a sequence.
    
-   Unlike [[Collection]], `Iterable` does not define or 
+   There is no meaningful generic definition of equality for 
+   streams. For some streams&mdash;for example, 
+   `List`s&mdash;order is significant; for others&mdash;for 
+   example, `Set`s&mdash;order is not significant. Therefore, 
+   unlike [[Collection]], `Iterable` does not define or 
    require any form of [[value equality|Object.equals]], and 
-   some streams do not support value equality. Therefore, 
-   the use of the `==` operator to compare generic iterables 
-   is extremely fragile and strongly discouraged."""
+   some streams do not support value equality. It follows 
+   that the `==` operator should not be used to compare 
+   generic streams, unless the streams are known to share
+   some additional structure."""
 see (`interface Collection`)
 by ("Gavin")
 shared interface Iterable<out Element=Anything, 
