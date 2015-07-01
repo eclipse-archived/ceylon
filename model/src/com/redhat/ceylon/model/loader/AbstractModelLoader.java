@@ -1245,15 +1245,15 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         return JavaVisibility.PRIVATE;
     }
 
-    private Declaration makeClassAlias(ClassMirror classMirror) {
+    protected Declaration makeClassAlias(ClassMirror classMirror) {
         return new LazyClassAlias(classMirror, this);
     }
 
-    private Declaration makeTypeAlias(ClassMirror classMirror) {
+    protected Declaration makeTypeAlias(ClassMirror classMirror) {
         return new LazyTypeAlias(classMirror, this);
     }
 
-    private Declaration makeInterfaceAlias(ClassMirror classMirror) {
+    protected Declaration makeInterfaceAlias(ClassMirror classMirror) {
         return new LazyInterfaceAlias(classMirror, this);
     }
 
