@@ -194,7 +194,7 @@ public class LazyValue extends Value implements LazyElement, LocalDeclarationCon
 
     @Override
     public String getQualifiedNameString() {
-        load();
+//        load();
         return super.getQualifiedNameString();
     }
 
@@ -236,13 +236,11 @@ public class LazyValue extends Value implements LazyElement, LocalDeclarationCon
 
     @Override
     public String getNativeBackend() {
-        load();
         return super.getNativeBackend();
     }
     
     @Override
     public void setNativeBackend(String backend) {
-        load();
         super.setNativeBackend(backend);
     }
 

@@ -1347,11 +1347,17 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
 
     protected LazyValue makeToplevelAttribute(ClassMirror classMirror) {
         LazyValue value = new LazyValue(classMirror, this);
+
+        manageNativeBackend(value, classMirror);
+
         return value;
     }
 
     protected LazyFunction makeToplevelMethod(ClassMirror classMirror) {
         LazyFunction method = new LazyFunction(classMirror, this);
+
+        manageNativeBackend(method, classMirror);
+
         return method;
     }
     
@@ -1383,6 +1389,9 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         klass.setActualCompleter(this);
         klass.setFinal(classMirror.isFinal());
         klass.setStaticallyImportable(!klass.isCeylon() && classMirror.isStatic());
+        
+        manageNativeBackend(klass, classMirror);
+        
         return klass;
     }
 
@@ -2439,7 +2448,16 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 hasCeylonDeprecated = true;
             }
         }
-        
+
+        if (annotated instanceof Declaration
+                && ((Declaration)annotated).getNativeBackend() != null) {
+            // Do nothing : 
+            //    it has already been managed when in the makeLazyXXX() function
+        } else {
+            manageNativeBackend(annotated, classMirror);
+        }
+    }
+    private void manageNativeBackend(Annotated annotated, AnnotatedMirror classMirror) {
         // Set "native" annotation
         String nativeBackend = getAnnotationStringValue(classMirror, CEYLON_LANGUAGE_NATIVE_ANNOTATION, "backend");
         if (nativeBackend != null) {

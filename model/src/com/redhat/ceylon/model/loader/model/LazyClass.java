@@ -295,13 +295,11 @@ public class LazyClass extends Class implements LazyContainer {
 
     @Override
     public String getNativeBackend() {
-        load();
         return super.getNativeBackend();
     }
     
     @Override
     public void setNativeBackend(String backend) {
-        load();
         super.setNativeBackend(backend);
     }
 
@@ -373,7 +371,7 @@ public class LazyClass extends Class implements LazyContainer {
 
     @Override
     public boolean isAnnotation() {
-        load();
+//        load();
         return super.isAnnotation();
     }
     
