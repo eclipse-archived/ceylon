@@ -290,7 +290,7 @@ public class LazyFunction extends Function implements LazyElement, LocalDeclarat
 
     @Override
     public Unit getUnit() {
-        load();
+//        load();
         return super.getUnit();
     }
 
