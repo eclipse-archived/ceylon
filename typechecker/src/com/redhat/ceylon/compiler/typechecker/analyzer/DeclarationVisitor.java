@@ -359,9 +359,7 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
         if (name!=null) {
             if (model instanceof Setter) {
                 Setter setter = (Setter) model;
-
-                checkGetterForSetter(that, setter, unit);
-
+                checkGetterForSetter(that, setter, scope);
             }
             else {
                 // this isn't the correct scope for declaration
@@ -437,16 +435,25 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
     }
 
     private static void checkGetterForSetter(Tree.Declaration that,
-            Setter setter, Unit unit) {
+            Setter setter, Scope scope) {
         //a setter must have a matching getter
+        Declaration g;
         Tree.AnnotationList al = 
                 that.getAnnotationList();
         String name = setter.getName();
         Declaration member = 
                 getDirectMemberForBackend(
                         setter.getContainer(), name, 
-                        getNativeBackend(al, unit));
-        if (member==null) {
+                        getNativeBackend(al, setter.getUnit()));
+        if (member == null
+                && (g = getDirectMemberForBackend(scope, name,
+                        Backend.None.nativeAnnotation)) != null
+                && g instanceof Value) {
+            setter.setGetter((Value)g);
+            that.addError("setter must be marked native: '" +
+                    name + "'");
+        }
+        else if (member==null) {
             that.addError("setter with no matching getter: '" + 
                     name + "'");
         }
