@@ -22,6 +22,9 @@
     <property name="ceylon.module-resolver.dir" value="com/redhat/ceylon/module-resolver/${module.com.redhat.ceylon.module-resolver.version}" />
     <property name="ceylon.module-resolver.jar" value="${ceylon.module-resolver.dir}/com.redhat.ceylon.module-resolver-${module.com.redhat.ceylon.module-resolver.version}.jar" />
     <property name="ceylon.module-resolver.lib" location="${ceylon.repo.dir}/${ceylon.module-resolver.jar}" />
+    <property name="ceylon.maven-support.dir" value="com/redhat/ceylon/maven-support/${module.com.redhat.ceylon.maven-support.version}" />
+    <property name="ceylon.maven-support.jar" value="${ceylon.maven-support.dir}/com.redhat.ceylon.maven-support-${module.com.redhat.ceylon.maven-support.version}.jar" />
+    <property name="ceylon.maven-support.lib" location="${ceylon.repo.dir}/${ceylon.maven-support.jar}" />
     <property name="ceylon.bootstrap.dir" value="ceylon/bootstrap/${module.ceylon.bootstrap.version}" />
     <property name="ceylon.bootstrap.jar" value="${ceylon.bootstrap.dir}/ceylon.bootstrap-${module.ceylon.bootstrap.version}.jar" />
     <property name="ceylon.bootstrap.lib" location="${ceylon.repo.dir}/${ceylon.bootstrap.jar}" />
@@ -86,6 +89,7 @@
         <pathelement path="${ceylon.compiler.lib}" />
         <pathelement path="${ceylon.language.lib}" />
         <pathelement path="${ceylon-tests.car}" />
+        <pathelement path="${ceylon.maven-support.lib}" />
         <pathelement path="${shrinkwrap-maven-uberjar.lib}" />
         <pathelement path="${jboss-logmanager.lib}" />
         <pathelement path="${jandex.lib}" />
@@ -96,6 +100,7 @@
         <pathelement path="${httpclient.lib}" />
         <pathelement path="${commons-codec.lib}" />
         <pathelement path="${commons-logging.lib}" />
+        <pathelement path="${json.lib}" />
     </path>
 
     <!-- ################################################################## -->
@@ -208,10 +213,10 @@
             <src path="${test.src}"/>
             <include name="com/redhat/ceylon/compiler/java/test/**" />
             <exclude name="com/redhat/ceylon/compiler/java/test/interop/mixed/**" />
+            <exclude name="com/redhat/ceylon/compiler/java/test/interop/Bug*" />
             <exclude name="com/redhat/ceylon/compiler/java/test/cmr/modules/bug1062/**" />
             <exclude name="com/redhat/ceylon/compiler/java/test/recovery/modules/bug1411/**" />
-            <exclude name="com/redhat/ceylon/compiler/java/test/issues/bug20xx/bug2024b/**" />
-            <exclude name="com/redhat/ceylon/compiler/java/test/issues/bug20xx/bug2024c/**" />
+            <exclude name="com/redhat/ceylon/compiler/java/test/issues/*/**" />
             <include name="com/redhat/ceylon/tools/**" />
             <exclude name="com/redhat/ceylon/tools/test/bug1183/**" />
             <include name="com/redhat/ceylon/itest/**" />
@@ -352,6 +357,12 @@
                     <include name="com/redhat/ceylon/compiler/java/test/ConcurrentTests.java" />
                 </fileset>
             </batchtest>
+        	<!--
+            <test fork="yes" todir="${test.reports}"
+            	name="com.redhat.ceylon.compiler.java.test.model.ModelLoaderTests"
+            	methods="loadJavaKeywords">
+            </test>
+            -->
 
             <assertions>
                 <enable/>
