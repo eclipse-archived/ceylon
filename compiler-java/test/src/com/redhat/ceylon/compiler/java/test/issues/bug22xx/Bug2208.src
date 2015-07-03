@@ -1,0 +1,720 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug22xx;
+
+public abstract class Sup implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    public Sup() {
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug22xx.Sup.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug22xx.Sup.class);
+}
+public class Sub1 extends .com.redhat.ceylon.compiler.java.test.issues.bug22xx.Sup {
+    
+    public Sub1() {
+        super();
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.issues.bug22xx.Sub1();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug22xx.Sub1.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug22xx.Sub1.class);
+}
+public class Sub2 extends .com.redhat.ceylon.compiler.java.test.issues.bug22xx.Sup {
+    
+    public Sub2() {
+        super();
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.issues.bug22xx.Sub2();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug22xx.Sub2.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug22xx.Sub2.class);
+}
+public interface I<S extends .com.redhat.ceylon.compiler.java.test.issues.bug22xx.Sup> {
+    
+    public .com.redhat.ceylon.compiler.java.test.issues.bug22xx.I$impl<S> $com$redhat$ceylon$compiler$java$test$issues$bug22xx$I$impl();
+    
+    public abstract .java.lang.Object toT();
+    
+    public abstract S toT$s();
+    
+    public abstract .java.lang.Object toT(final S s);
+    
+    public abstract S toT$s2(final S s);
+    
+    public abstract .java.lang.Object toT(final S s, final S s2);
+    
+    public .java.lang.Object toT2();
+    
+    public abstract S toT2$s();
+    
+    public .java.lang.Object toT2(final S s);
+    
+    public abstract S toT2$s2(final S s);
+    
+    public .java.lang.Object toT2(final S s, final S s2);
+    
+    public abstract .com.redhat.ceylon.compiler.java.test.issues.bug22xx.I$impl<S>.Inner Inner$new$(final S s, final S s2);
+    
+    public abstract S $default$Inner$s();
+    
+    public abstract .com.redhat.ceylon.compiler.java.test.issues.bug22xx.I$impl<S>.Inner Inner$new$();
+    
+    public abstract S $default$Inner$s2(final S s);
+    
+    public abstract .com.redhat.ceylon.compiler.java.test.issues.bug22xx.I$impl<S>.Inner Inner$new$(final S s);
+    
+    public .com.redhat.ceylon.compiler.java.test.issues.bug22xx.I$impl<S>.Inner2 Inner2$new$(final S s, final S s2);
+    
+    public abstract S $default$Inner2$s();
+    
+    public .com.redhat.ceylon.compiler.java.test.issues.bug22xx.I$impl<S>.Inner2 Inner2$new$();
+    
+    public abstract S $default$Inner2$s2(final S s);
+    
+    public .com.redhat.ceylon.compiler.java.test.issues.bug22xx.I$impl<S>.Inner2 Inner2$new$(final S s);
+}
+public final class I$impl<S extends .com.redhat.ceylon.compiler.java.test.issues.bug22xx.Sup> {
+    
+    public I$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$S, .com.redhat.ceylon.compiler.java.test.issues.bug22xx.I<S> $this) {
+        this.$reified$S = $reified$S;
+        this.$this = $this;
+    }
+    private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$S;
+    private final .com.redhat.ceylon.compiler.java.test.issues.bug22xx.I<S> $this;
+    
+    public void $refine$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$S) {
+        this.$reified$S = $reified$S;
+    }
+    
+    public final S toT$s() {
+        return (S).ceylon.language.nothing_.get_();
+    }
+    
+    public final S toT$s2(final S s) {
+        return (S).ceylon.language.nothing_.get_();
+    }
+    
+    public .java.lang.Object toT2() {
+        return (
+            let
+            {
+                S $ceylontmp$s$0 = toT2$s();
+                S $ceylontmp$s2$1 = toT2$s2($ceylontmp$s$0);
+            }
+            returning toT2$canonical$($ceylontmp$s$0, $ceylontmp$s2$1);
+        );
+    }
+    
+    public final S toT2$s() {
+        return (S).ceylon.language.nothing_.get_();
+    }
+    
+    public .java.lang.Object toT2(final S s) {
+        return (
+            let
+            {
+                S $ceylontmp$s2$2 = toT2$s2(s);
+            }
+            returning toT2$canonical$(s, $ceylontmp$s2$2);
+        );
+    }
+    
+    public final S toT2$s2(final S s) {
+        return (S).ceylon.language.nothing_.get_();
+    }
+    
+    private .java.lang.Object toT2$canonical$(final S s, final S s2) {
+        return null;
+    }
+    
+    public .java.lang.Object toT2(final S s, final S s2) {
+        return toT2$canonical$(s, s2);
+    }
+    
+    public final S $default$Inner$s() {
+        return (S).ceylon.language.nothing_.get_();
+    }
+    
+    public final S $default$Inner$s2(final S s) {
+        return (S).ceylon.language.nothing_.get_();
+    }
+    
+    public abstract class Inner implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+        
+        public Inner() {
+            (
+                let
+                {
+                    S $ceylontmp$s$3 = $default$Inner$s();
+                    S $ceylontmp$s2$4 = $default$Inner$s2($ceylontmp$s$3);
+                    this($ceylontmp$s$3, $ceylontmp$s2$4);
+                }
+                returning null;
+            );
+        }
+        
+        public Inner(final S s) {
+            (
+                let
+                {
+                    S $ceylontmp$s2$5 = $default$Inner$s2(s);
+                    this(s, $ceylontmp$s2$5);
+                }
+                returning null;
+            );
+        }
+        
+        protected Inner(final S s, final S s2) {
+        }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug22xx.I.class, .com.redhat.ceylon.compiler.java.test.issues.bug22xx.I$impl.this.$reified$S), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug22xx.I$impl.Inner.class));
+        }
+    }
+    
+    public .com.redhat.ceylon.compiler.java.test.issues.bug22xx.I$impl<S>.Inner2 Inner2$new$(final S s, final S s2) {
+        return new Inner2(s, s2);
+    }
+    
+    public final S $default$Inner2$s() {
+        return (S).ceylon.language.nothing_.get_();
+    }
+    
+    public .com.redhat.ceylon.compiler.java.test.issues.bug22xx.I$impl<S>.Inner2 Inner2$new$() {
+        return (
+            let
+            {
+                S $ceylontmp$s$6 = $default$Inner2$s();
+                S $ceylontmp$s2$7 = $default$Inner2$s2($ceylontmp$s$6);
+            }
+            returning new Inner2($ceylontmp$s$6, $ceylontmp$s2$7);
+        );
+    }
+    
+    public final S $default$Inner2$s2(final S s) {
+        return (S).ceylon.language.nothing_.get_();
+    }
+    
+    public .com.redhat.ceylon.compiler.java.test.issues.bug22xx.I$impl<S>.Inner2 Inner2$new$(final S s) {
+        return (
+            let
+            {
+                S $ceylontmp$s2$8 = $default$Inner2$s2(s);
+            }
+            returning new Inner2(s, $ceylontmp$s2$8);
+        );
+    }
+    
+    public class Inner2 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+        
+        protected Inner2(final S s, final S s2) {
+        }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug22xx.I.class, .com.redhat.ceylon.compiler.java.test.issues.bug22xx.I$impl.this.$reified$S), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug22xx.I$impl.Inner2.class));
+        }
+    }
+}
+public class C implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug22xx.I<.com.redhat.ceylon.compiler.java.test.issues.bug22xx.Sup> {
+    
+    public C() {
+        this.$com$redhat$ceylon$compiler$java$test$issues$bug22xx$I$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug22xx.I$impl(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.com.redhat.ceylon.compiler.java.test.issues.bug22xx.Sub1.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.issues.bug22xx.Sub2.$TypeDescriptor$), (.com.redhat.ceylon.compiler.java.test.issues.bug22xx.I)this);
+    }
+    protected final .com.redhat.ceylon.compiler.java.test.issues.bug22xx.I$impl<.com.redhat.ceylon.compiler.java.test.issues.bug22xx.Sup> $com$redhat$ceylon$compiler$java$test$issues$bug22xx$I$this$;
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.issues.bug22xx.I$impl $com$redhat$ceylon$compiler$java$test$issues$bug22xx$I$impl() {
+        return $com$redhat$ceylon$compiler$java$test$issues$bug22xx$I$this$;
+    }
+    
+    @.java.lang.Override
+    public final .com.redhat.ceylon.compiler.java.test.issues.bug22xx.Sup toT$s() {
+        return (.com.redhat.ceylon.compiler.java.test.issues.bug22xx.Sup)$com$redhat$ceylon$compiler$java$test$issues$bug22xx$I$this$.toT$s();
+    }
+    
+    @.java.lang.Override
+    public final .com.redhat.ceylon.compiler.java.test.issues.bug22xx.Sup toT$s2(final .com.redhat.ceylon.compiler.java.test.issues.bug22xx.Sup s) {
+        return (.com.redhat.ceylon.compiler.java.test.issues.bug22xx.Sup)$com$redhat$ceylon$compiler$java$test$issues$bug22xx$I$this$.toT$s2(s);
+    }
+    
+    @.java.lang.Override
+    public final .com.redhat.ceylon.compiler.java.test.issues.bug22xx.Sup toT2$s() {
+        return (.com.redhat.ceylon.compiler.java.test.issues.bug22xx.Sup)$com$redhat$ceylon$compiler$java$test$issues$bug22xx$I$this$.toT2$s();
+    }
+    
+    @.java.lang.Override
+    public .java.lang.Object toT2() {
+        return (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.issues.bug22xx.Sup $ceylontmp$s$9 = toT2$s();
+                .com.redhat.ceylon.compiler.java.test.issues.bug22xx.Sup $ceylontmp$s2$10 = toT2$s2($ceylontmp$s$9);
+            }
+            returning toT2$canonical$($ceylontmp$s$9, $ceylontmp$s2$10);
+        );
+    }
+    
+    @.java.lang.Override
+    public final .com.redhat.ceylon.compiler.java.test.issues.bug22xx.Sup toT2$s2(final .com.redhat.ceylon.compiler.java.test.issues.bug22xx.Sup s) {
+        return (.com.redhat.ceylon.compiler.java.test.issues.bug22xx.Sup)$com$redhat$ceylon$compiler$java$test$issues$bug22xx$I$this$.toT2$s2(s);
+    }
+    
+    @.java.lang.Override
+    public .java.lang.Object toT2(final .com.redhat.ceylon.compiler.java.test.issues.bug22xx.Sup s) {
+        return (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.issues.bug22xx.Sup $ceylontmp$s2$11 = toT2$s2(s);
+            }
+            returning toT2$canonical$(s, $ceylontmp$s2$11);
+        );
+    }
+    
+    @.java.lang.Override
+    public .java.lang.Object toT2(final .com.redhat.ceylon.compiler.java.test.issues.bug22xx.Sup s, final .com.redhat.ceylon.compiler.java.test.issues.bug22xx.Sup s2) {
+        return $com$redhat$ceylon$compiler$java$test$issues$bug22xx$I$this$.toT2(s, s2);
+    }
+    
+    private .java.lang.Object toT2$canonical$(final .com.redhat.ceylon.compiler.java.test.issues.bug22xx.Sup s, final .com.redhat.ceylon.compiler.java.test.issues.bug22xx.Sup s2) {
+        return $com$redhat$ceylon$compiler$java$test$issues$bug22xx$I$this$.toT2(s, s2);
+    }
+    
+    @.java.lang.Override
+    public final .com.redhat.ceylon.compiler.java.test.issues.bug22xx.Sup $default$Inner2$s() {
+        return (.com.redhat.ceylon.compiler.java.test.issues.bug22xx.Sup)$com$redhat$ceylon$compiler$java$test$issues$bug22xx$I$this$.$default$Inner2$s();
+    }
+    
+    @.java.lang.Override
+    public final .com.redhat.ceylon.compiler.java.test.issues.bug22xx.I$impl.Inner2 Inner2$new$() {
+        return (.com.redhat.ceylon.compiler.java.test.issues.bug22xx.I$impl.Inner2)$com$redhat$ceylon$compiler$java$test$issues$bug22xx$I$this$.Inner2$new$();
+    }
+    
+    @.java.lang.Override
+    public final .com.redhat.ceylon.compiler.java.test.issues.bug22xx.Sup $default$Inner2$s2(final .com.redhat.ceylon.compiler.java.test.issues.bug22xx.Sup s) {
+        return (.com.redhat.ceylon.compiler.java.test.issues.bug22xx.Sup)$com$redhat$ceylon$compiler$java$test$issues$bug22xx$I$this$.$default$Inner2$s2(s);
+    }
+    
+    @.java.lang.Override
+    public final .com.redhat.ceylon.compiler.java.test.issues.bug22xx.I$impl.Inner2 Inner2$new$(final .com.redhat.ceylon.compiler.java.test.issues.bug22xx.Sup s) {
+        return (.com.redhat.ceylon.compiler.java.test.issues.bug22xx.I$impl.Inner2)$com$redhat$ceylon$compiler$java$test$issues$bug22xx$I$this$.Inner2$new$(s);
+    }
+    
+    @.java.lang.Override
+    public final .com.redhat.ceylon.compiler.java.test.issues.bug22xx.I$impl.Inner2 Inner2$new$(final .com.redhat.ceylon.compiler.java.test.issues.bug22xx.Sup s, final .com.redhat.ceylon.compiler.java.test.issues.bug22xx.Sup s2) {
+        return (.com.redhat.ceylon.compiler.java.test.issues.bug22xx.I$impl.Inner2)$com$redhat$ceylon$compiler$java$test$issues$bug22xx$I$this$.Inner2$new$(s, s2);
+    }
+    
+    public final .java.lang.Object toT() {
+        return (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.issues.bug22xx.Sup $ceylontmp$s$12 = toT$s();
+                .com.redhat.ceylon.compiler.java.test.issues.bug22xx.Sup $ceylontmp$s2$13 = toT$s2($ceylontmp$s$12);
+            }
+            returning toT$canonical$($ceylontmp$s$12, $ceylontmp$s2$13);
+        );
+    }
+    
+    public final .java.lang.Object toT(final .com.redhat.ceylon.compiler.java.test.issues.bug22xx.Sup s) {
+        return (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.issues.bug22xx.Sup $ceylontmp$s2$14 = toT$s2(s);
+            }
+            returning toT$canonical$(s, $ceylontmp$s2$14);
+        );
+    }
+    
+    private .java.lang.Object toT$canonical$(final .com.redhat.ceylon.compiler.java.test.issues.bug22xx.Sup s, final .com.redhat.ceylon.compiler.java.test.issues.bug22xx.Sup s2) {
+        return null;
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.Object toT(final .com.redhat.ceylon.compiler.java.test.issues.bug22xx.Sup s, final .com.redhat.ceylon.compiler.java.test.issues.bug22xx.Sup s2) {
+        return toT$canonical$(s, s2);
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.issues.bug22xx.C.Inner Inner$new$(final .com.redhat.ceylon.compiler.java.test.issues.bug22xx.Sup s, final .com.redhat.ceylon.compiler.java.test.issues.bug22xx.Sup s2) {
+        return new Inner(s, s2);
+    }
+    
+    @.java.lang.Override
+    public final .com.redhat.ceylon.compiler.java.test.issues.bug22xx.Sup $default$Inner$s() {
+        return (.com.redhat.ceylon.compiler.java.test.issues.bug22xx.Sup)$com$redhat$ceylon$compiler$java$test$issues$bug22xx$I$this$.$default$Inner$s();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.issues.bug22xx.C.Inner Inner$new$() {
+        return (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.issues.bug22xx.Sup $ceylontmp$s$15 = $default$Inner$s();
+                .com.redhat.ceylon.compiler.java.test.issues.bug22xx.Sup $ceylontmp$s2$16 = $default$Inner$s2($ceylontmp$s$15);
+            }
+            returning new Inner($ceylontmp$s$15, $ceylontmp$s2$16);
+        );
+    }
+    
+    @.java.lang.Override
+    public final .com.redhat.ceylon.compiler.java.test.issues.bug22xx.Sup $default$Inner$s2(final .com.redhat.ceylon.compiler.java.test.issues.bug22xx.Sup s) {
+        return (.com.redhat.ceylon.compiler.java.test.issues.bug22xx.Sup)$com$redhat$ceylon$compiler$java$test$issues$bug22xx$I$this$.$default$Inner$s2(s);
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.issues.bug22xx.C.Inner Inner$new$(final .com.redhat.ceylon.compiler.java.test.issues.bug22xx.Sup s) {
+        return (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.issues.bug22xx.Sup $ceylontmp$s2$17 = $default$Inner$s2(s);
+            }
+            returning new Inner(s, $ceylontmp$s2$17);
+        );
+    }
+    
+    public class Inner extends .com.redhat.ceylon.compiler.java.test.issues.bug22xx.I$impl.Inner {
+        
+        protected Inner(final .java.lang.Object s, final .java.lang.Object s2) {
+            $com$redhat$ceylon$compiler$java$test$issues$bug22xx$I$this$.super((.com.redhat.ceylon.compiler.java.test.issues.bug22xx.Sup)s, (.com.redhat.ceylon.compiler.java.test.issues.bug22xx.Sup)s2);
+        }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.issues.bug22xx.C.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug22xx.C.Inner.class));
+        }
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.issues.bug22xx.C();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug22xx.C.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug22xx.C.class);
+}
+public interface Range {
+    
+    public abstract .java.lang.Object getStep();
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug22xx.Range.class);
+}
+public abstract class DateRange implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug22xx.Range {
+    
+    public DateRange() {
+        (
+            let
+            {
+                .ceylon.language.String $ceylontmp$step$18 = .com.redhat.ceylon.compiler.java.test.issues.bug22xx.DateRange.$default$step();
+                this($ceylontmp$step$18);
+            }
+            returning null;
+        );
+    }
+    
+    public DateRange(final .ceylon.language.String step) {
+        this.step = step;
+    }
+    
+    public static .ceylon.language.String $default$step() {
+        return (.ceylon.language.String).ceylon.language.nothing_.get_();
+    }
+    private final .ceylon.language.String step;
+    
+    @.java.lang.Override
+    public final .ceylon.language.String getStep() {
+        return step;
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug22xx.DateRange.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug22xx.DateRange.class);
+}
+public interface Completion<Element, T extends .ceylon.language.Sequential<? extends Element>> {
+    
+    public .com.redhat.ceylon.compiler.java.test.issues.bug22xx.Completion$impl<Element, ? extends T> $com$redhat$ceylon$compiler$java$test$issues$bug22xx$Completion$impl();
+    
+    public .java.lang.Object completed();
+    
+    public abstract .ceylon.language.Callable<? extends .java.lang.Object> completed$onRejected();
+    
+    public .java.lang.Object completed(final .ceylon.language.Callable<? extends .java.lang.Object> onRejected);
+}
+public final class Completion$impl<Element, T extends .ceylon.language.Sequential<? extends Element>> {
+    
+    public Completion$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, .com.redhat.ceylon.compiler.java.test.issues.bug22xx.Completion<Element, ? extends T> $this) {
+        this.$reified$Element = $reified$Element;
+        this.$reified$T = $reified$T;
+        this.$this = $this;
+    }
+    private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element;
+    private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
+    private final .com.redhat.ceylon.compiler.java.test.issues.bug22xx.Completion<Element, ? extends T> $this;
+    
+    public void $refine$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        this.$reified$T = $reified$T;
+        this.$reified$Element = $reified$Element;
+    }
+    
+    public .java.lang.Object completed() {
+        return (
+            let
+            {
+                .ceylon.language.Callable<? extends .java.lang.Object> $ceylontmp$onRejected$19 = completed$onRejected();
+            }
+            returning completed$canonical$($ceylontmp$onRejected$19);
+        );
+    }
+    
+    public final .ceylon.language.Callable<? extends .java.lang.Object> completed$onRejected() {
+        return (.ceylon.language.Callable<? extends .java.lang.Object>).ceylon.language.nothing_.get_();
+    }
+    
+    private .java.lang.Object completed$canonical$(final .ceylon.language.Callable<? extends .java.lang.Object> onRejected) {
+        return null;
+    }
+    
+    public .java.lang.Object completed(final .ceylon.language.Callable<? extends .java.lang.Object> onRejected) {
+        return completed$canonical$(onRejected);
+    }
+}
+public abstract class Promise<Value> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug22xx.Completion<Value, .ceylon.language.Sequence<? extends Value>> {
+    
+    public Promise(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Value) {
+        this.$reified$Value = $reified$Value;
+        this.$com$redhat$ceylon$compiler$java$test$issues$bug22xx$Completion$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug22xx.Completion$impl<Value, .ceylon.language.Sequence<? extends Value>>($reified$Value, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, $reified$Value, $reified$Value, .ceylon.language.Empty.$TypeDescriptor$), this);
+    }
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Value;
+    protected final .com.redhat.ceylon.compiler.java.test.issues.bug22xx.Completion$impl<Value, .ceylon.language.Sequence<? extends Value>> $com$redhat$ceylon$compiler$java$test$issues$bug22xx$Completion$this$;
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.issues.bug22xx.Completion$impl<Value, ? extends .ceylon.language.Sequence<? extends Value>> $com$redhat$ceylon$compiler$java$test$issues$bug22xx$Completion$impl() {
+        return $com$redhat$ceylon$compiler$java$test$issues$bug22xx$Completion$this$;
+    }
+    
+    @.java.lang.Override
+    public final .ceylon.language.Callable<? extends .java.lang.Object> completed$onRejected() {
+        return (.ceylon.language.Callable<? extends .java.lang.Object>)(.ceylon.language.Callable)$com$redhat$ceylon$compiler$java$test$issues$bug22xx$Completion$this$.completed$onRejected();
+    }
+    
+    public final .java.lang.Object completed() {
+        return (
+            let
+            {
+                .ceylon.language.Callable<? extends .java.lang.Object> $ceylontmp$onRejected$20 = completed$onRejected();
+            }
+            returning completed$canonical$($ceylontmp$onRejected$20);
+        );
+    }
+    
+    private .java.lang.Object completed$canonical$(final .ceylon.language.Callable<? extends .java.lang.Object> onRejected) {
+        return null;
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.Object completed(final .ceylon.language.Callable<? extends .java.lang.Object> onRejected) {
+        return completed$canonical$(onRejected);
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug22xx.Promise.class, $reified$Value);
+    }
+}
+interface FormalMethods<A, B> {
+    
+    public .com.redhat.ceylon.compiler.java.test.issues.bug22xx.FormalMethods$impl<A, B> $com$redhat$ceylon$compiler$java$test$issues$bug22xx$FormalMethods$impl();
+    
+    public .java.lang.Object tpMethodBUnary();
+    
+    public abstract B tpMethodBUnary$arg();
+    
+    public .java.lang.Object tpMethodBUnary(final B arg);
+}
+final class FormalMethods$impl<A, B> {
+    
+    FormalMethods$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$A, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$B, .com.redhat.ceylon.compiler.java.test.issues.bug22xx.FormalMethods<A, B> $this) {
+        this.$reified$A = $reified$A;
+        this.$reified$B = $reified$B;
+        this.$this = $this;
+    }
+    private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$A;
+    private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$B;
+    private final .com.redhat.ceylon.compiler.java.test.issues.bug22xx.FormalMethods<A, B> $this;
+    
+    public void $refine$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$A, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$B) {
+        this.$reified$B = $reified$B;
+        this.$reified$A = $reified$A;
+    }
+    
+    public .java.lang.Object tpMethodBUnary() {
+        return (
+            let
+            {
+                B $ceylontmp$arg$21 = tpMethodBUnary$arg();
+            }
+            returning tpMethodBUnary$canonical$($ceylontmp$arg$21);
+        );
+    }
+    
+    public final B tpMethodBUnary$arg() {
+        return (B).ceylon.language.nothing_.get_();
+    }
+    
+    private .java.lang.Object tpMethodBUnary$canonical$(final B arg) {
+        return null;
+    }
+    
+    public .java.lang.Object tpMethodBUnary(final B arg) {
+        return tpMethodBUnary$canonical$(arg);
+    }
+}
+class MissingActualMethods implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug22xx.FormalMethods<.ceylon.language.Integer, .ceylon.language.String> {
+    
+    MissingActualMethods() {
+        this.$com$redhat$ceylon$compiler$java$test$issues$bug22xx$FormalMethods$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug22xx.FormalMethods$impl<.ceylon.language.Integer, .ceylon.language.String>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, this);
+    }
+    protected final .com.redhat.ceylon.compiler.java.test.issues.bug22xx.FormalMethods$impl<.ceylon.language.Integer, .ceylon.language.String> $com$redhat$ceylon$compiler$java$test$issues$bug22xx$FormalMethods$this$;
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.issues.bug22xx.FormalMethods$impl<.ceylon.language.Integer, .ceylon.language.String> $com$redhat$ceylon$compiler$java$test$issues$bug22xx$FormalMethods$impl() {
+        return $com$redhat$ceylon$compiler$java$test$issues$bug22xx$FormalMethods$this$;
+    }
+    
+    @.java.lang.Override
+    public final .ceylon.language.String tpMethodBUnary$arg() {
+        return $com$redhat$ceylon$compiler$java$test$issues$bug22xx$FormalMethods$this$.tpMethodBUnary$arg();
+    }
+    
+    @.java.lang.Override
+    public .java.lang.Object tpMethodBUnary() {
+        return (
+            let
+            {
+                .ceylon.language.String $ceylontmp$arg$22 = tpMethodBUnary$arg();
+            }
+            returning tpMethodBUnary$canonical$($ceylontmp$arg$22);
+        );
+    }
+    
+    @.java.lang.Override
+    public .java.lang.Object tpMethodBUnary(final .ceylon.language.String arg) {
+        return $com$redhat$ceylon$compiler$java$test$issues$bug22xx$FormalMethods$this$.tpMethodBUnary(arg);
+    }
+    
+    private .java.lang.Object tpMethodBUnary$canonical$(final .ceylon.language.String arg) {
+        return $com$redhat$ceylon$compiler$java$test$issues$bug22xx$FormalMethods$this$.tpMethodBUnary(arg);
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug22xx.MissingActualMethods.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug22xx.MissingActualMethods.class);
+}
+class IfaceInst implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug22xx.InterfaceConstructors<.ceylon.language.String> {
+    
+    IfaceInst() {
+        this.$com$redhat$ceylon$compiler$java$test$issues$bug22xx$InterfaceConstructors$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug22xx.InterfaceConstructors$impl<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, this);
+    }
+    protected final .com.redhat.ceylon.compiler.java.test.issues.bug22xx.InterfaceConstructors$impl<.ceylon.language.String> $com$redhat$ceylon$compiler$java$test$issues$bug22xx$InterfaceConstructors$this$;
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.issues.bug22xx.InterfaceConstructors$impl<.ceylon.language.String> $com$redhat$ceylon$compiler$java$test$issues$bug22xx$InterfaceConstructors$impl() {
+        return $com$redhat$ceylon$compiler$java$test$issues$bug22xx$InterfaceConstructors$this$;
+    }
+    
+    @.java.lang.Override
+    public final .ceylon.language.String Member$t() {
+        return $com$redhat$ceylon$compiler$java$test$issues$bug22xx$InterfaceConstructors$this$.Member$t();
+    }
+    
+    @.java.lang.Override
+    public final .com.redhat.ceylon.compiler.java.test.issues.bug22xx.InterfaceConstructors$impl<.ceylon.language.String>.Member Member$new$() {
+        return $com$redhat$ceylon$compiler$java$test$issues$bug22xx$InterfaceConstructors$this$.Member$new$();
+    }
+    
+    @.java.lang.Override
+    public final .com.redhat.ceylon.compiler.java.test.issues.bug22xx.InterfaceConstructors$impl<.ceylon.language.String>.Member Member$new$(final .ceylon.language.String t$param$) {
+        return $com$redhat$ceylon$compiler$java$test$issues$bug22xx$InterfaceConstructors$this$.Member$new$(t$param$);
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug22xx.IfaceInst.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug22xx.IfaceInst.class);
+}
+public interface InterfaceConstructors<T> {
+    
+    public .com.redhat.ceylon.compiler.java.test.issues.bug22xx.InterfaceConstructors$impl<T> $com$redhat$ceylon$compiler$java$test$issues$bug22xx$InterfaceConstructors$impl();
+    
+    public .com.redhat.ceylon.compiler.java.test.issues.bug22xx.InterfaceConstructors$impl<T>.Member Member$new$(final T t$param$);
+    
+    public abstract T Member$t();
+    
+    public .com.redhat.ceylon.compiler.java.test.issues.bug22xx.InterfaceConstructors$impl<T>.Member Member$new$();
+}
+public final class InterfaceConstructors$impl<T> {
+    
+    public InterfaceConstructors$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, .com.redhat.ceylon.compiler.java.test.issues.bug22xx.InterfaceConstructors<T> $this) {
+        this.$reified$T = $reified$T;
+        this.$this = $this;
+    }
+    private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
+    private final .com.redhat.ceylon.compiler.java.test.issues.bug22xx.InterfaceConstructors<T> $this;
+    
+    public void $refine$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        this.$reified$T = $reified$T;
+    }
+    
+    public .com.redhat.ceylon.compiler.java.test.issues.bug22xx.InterfaceConstructors$impl<T>.Member Member$new$(final T t$param$) {
+        return new Member(t$param$);
+    }
+    
+    public final T Member$t() {
+        return null;
+    }
+    
+    public .com.redhat.ceylon.compiler.java.test.issues.bug22xx.InterfaceConstructors$impl<T>.Member Member$new$() {
+        return (
+            let
+            {
+                T $ceylontmp$t$23 = Member$t();
+            }
+            returning new Member($ceylontmp$t$23);
+        );
+    }
+    
+    public class Member implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+        
+        public Member(final T t$param$) {
+        }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug22xx.InterfaceConstructors.class, .com.redhat.ceylon.compiler.java.test.issues.bug22xx.InterfaceConstructors$impl.this.$reified$T), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug22xx.InterfaceConstructors$impl.Member.class));
+        }
+    }
+}
