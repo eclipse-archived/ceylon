@@ -457,8 +457,8 @@ class EC_ErasedMemberImpl<Element> implements .com.redhat.ceylon.compiler.java.r
     }
     
     @.java.lang.Override
-    public final Element defaultedParams$p() {
-        return (Element)$com$redhat$ceylon$compiler$java$test$expression$erasure$EC_ErasedMember$this$.defaultedParams$p();
+    public final .java.lang.Object defaultedParams$p() {
+        return $com$redhat$ceylon$compiler$java$test$expression$erasure$EC_ErasedMember$this$.defaultedParams$p();
     }
     
     @.java.lang.Override
@@ -482,8 +482,8 @@ class EC_ErasedMemberImpl<Element> implements .com.redhat.ceylon.compiler.java.r
     }
     
     @.java.lang.Override
-    public final Element $default$Class$p() {
-        return (Element)$com$redhat$ceylon$compiler$java$test$expression$erasure$EC_ErasedMember$this$.$default$Class$p();
+    public final .java.lang.Object $default$Class$p() {
+        return $com$redhat$ceylon$compiler$java$test$expression$erasure$EC_ErasedMember$this$.$default$Class$p();
     }
     
     @.java.lang.Override

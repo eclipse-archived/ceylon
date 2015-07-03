@@ -183,8 +183,8 @@ class InterfaceMemberClassCtorImpl implements .com.redhat.ceylon.compiler.java.r
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public final .com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor$impl.SharedMember SharedMember$new$(final long i) {
-        return $com$redhat$ceylon$compiler$java$test$structure$constructor$InterfaceMemberClassCtor$this$.SharedMember$new$(i);
+    public final .com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor$impl.SharedMember SharedMember$new$(final long i$param$) {
+        return $com$redhat$ceylon$compiler$java$test$structure$constructor$InterfaceMemberClassCtor$this$.SharedMember$new$(i$param$);
     }
     
     @.java.lang.Override
@@ -203,8 +203,8 @@ class InterfaceMemberClassCtorImpl implements .com.redhat.ceylon.compiler.java.r
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public final .com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor$impl.SharedMember SharedMember$new$(@.com.redhat.ceylon.compiler.java.metadata.Ignore
-    .com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor$impl.SharedMember$other $name$, final long i) {
-        return $com$redhat$ceylon$compiler$java$test$structure$constructor$InterfaceMemberClassCtor$this$.SharedMember$new$($name$, i);
+    .com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor$impl.SharedMember$other $name$, final long i$param$) {
+        return $com$redhat$ceylon$compiler$java$test$structure$constructor$InterfaceMemberClassCtor$this$.SharedMember$new$($name$, i$param$);
     }
     
     @.java.lang.Override

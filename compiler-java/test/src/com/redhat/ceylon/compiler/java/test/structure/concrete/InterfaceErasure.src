@@ -158,8 +158,8 @@ class InterfaceErasureImpl<Element> implements .com.redhat.ceylon.compiler.java.
     }
     
     @.java.lang.Override
-    public final Element defaultedParams$p() {
-        return (Element)$com$redhat$ceylon$compiler$java$test$structure$concrete$InterfaceErasure$this$.defaultedParams$p();
+    public final .java.lang.Object defaultedParams$p() {
+        return $com$redhat$ceylon$compiler$java$test$structure$concrete$InterfaceErasure$this$.defaultedParams$p();
     }
     
     @.java.lang.Override
@@ -175,8 +175,8 @@ class InterfaceErasureImpl<Element> implements .com.redhat.ceylon.compiler.java.
     }
     
     @.java.lang.Override
-    public final Element defaultedParams$p2(final .java.lang.Object p) {
-        return (Element)$com$redhat$ceylon$compiler$java$test$structure$concrete$InterfaceErasure$this$.defaultedParams$p2(p);
+    public final .java.lang.Object defaultedParams$p2(final .java.lang.Object p) {
+        return $com$redhat$ceylon$compiler$java$test$structure$concrete$InterfaceErasure$this$.defaultedParams$p2(p);
     }
     
     @.java.lang.Override
@@ -200,8 +200,8 @@ class InterfaceErasureImpl<Element> implements .com.redhat.ceylon.compiler.java.
     }
     
     @.java.lang.Override
-    public final Element $default$Class$p() {
-        return (Element)$com$redhat$ceylon$compiler$java$test$structure$concrete$InterfaceErasure$this$.$default$Class$p();
+    public final .java.lang.Object $default$Class$p() {
+        return $com$redhat$ceylon$compiler$java$test$structure$concrete$InterfaceErasure$this$.$default$Class$p();
     }
     
     @.java.lang.Override
@@ -210,8 +210,8 @@ class InterfaceErasureImpl<Element> implements .com.redhat.ceylon.compiler.java.
     }
     
     @.java.lang.Override
-    public final Element $default$Class$p2(final .java.lang.Object p) {
-        return (Element)$com$redhat$ceylon$compiler$java$test$structure$concrete$InterfaceErasure$this$.$default$Class$p2(p);
+    public final .java.lang.Object $default$Class$p2(final .java.lang.Object p) {
+        return $com$redhat$ceylon$compiler$java$test$structure$concrete$InterfaceErasure$this$.$default$Class$p2(p);
     }
     
     @.java.lang.Override
