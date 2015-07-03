@@ -372,32 +372,80 @@ public class MethodDefinitionBuilder
                 name, paramDecl, paramDecl.getModel(), paramType, flags, canWiden);
     }
     
-    public MethodDefinitionBuilder parameter(Parameter param, 
-            List<JCAnnotation> userAnnotations, int flags, boolean canWiden) {
+    static class NonWideningParam {
+        public final int flags;
+        public final Type nonWideningType;
+        public final TypedDeclaration nonWideningDecl;
+        NonWideningParam(int mods, Type nonWideningType, TypedDeclaration nonWideningDecl){
+            this.flags = mods;
+            this.nonWideningType = nonWideningType;
+            this.nonWideningDecl = nonWideningDecl;
+        }
+    }
+    
+    enum WideningRules {
+        // Stef: let me be very clear that I've no idea what those two are for
+        NONE, CAN_WIDEN, 
+        // this is so we get widening code enabled for mixin bridge methods
+        FOR_MIXIN;
+    }
+
+    public MethodDefinitionBuilder parameter(Parameter param,  
+            List<JCAnnotation> userAnnotations, int flags, WideningRules wideningRules) {
+        return parameter(param, null, userAnnotations, flags, wideningRules);
+    }
+    
+    public MethodDefinitionBuilder parameter(Parameter param, TypedReference typedRef, 
+            List<JCAnnotation> userAnnotations, int flags, WideningRules wideningRules) {
         String paramName = param.getName();
         String aliasedName = Naming.getAliasedParameterName(param);
         FunctionOrValue mov = CodegenUtil.findMethodOrValueForParam(param);
+        if(typedRef == null)
+            typedRef = gen.getTypedReference(mov);
         int mods = 0;
         if (!Decl.isNonTransientValue(mov) || !mov.isVariable() || mov.isCaptured()) {
             mods |= FINAL;
         }
+        NonWideningParam nonWideningParam = getNonWideningParam(typedRef, wideningRules);
+        flags |= nonWideningParam.flags;
+        return parameter(mods, param.getModel().getAnnotations(), userAnnotations, paramName, aliasedName, param, 
+                nonWideningParam.nonWideningDecl, nonWideningParam.nonWideningType, flags);
+    }
+
+    public NonWideningParam getNonWideningParam(FunctionOrValue mov, 
+            WideningRules wideningRules) {
+        return getNonWideningParam(gen.getTypedReference(mov), wideningRules);
+    }
+    
+    public NonWideningParam getNonWideningParam(TypedReference typedRef, 
+            WideningRules wideningRules) {
         TypedDeclaration nonWideningDecl = null;
+        int flags = 0;
         Type nonWideningType;
+        FunctionOrValue mov = (FunctionOrValue) typedRef.getDeclaration();
         if (Decl.isValue(mov)) {
-            TypedReference typedRef = gen.getTypedReference(mov);
             TypedReference nonWideningTypedRef = gen.nonWideningTypeDecl(typedRef);
             nonWideningType = gen.nonWideningType(typedRef, nonWideningTypedRef);
             nonWideningDecl = nonWideningTypedRef.getDeclaration();
         }else{
-            nonWideningType = param.getType();
-            nonWideningDecl = param.getModel();
+            // Stef: So here's the thing. I know this is wrong for Function where we should do getFullType(), BUT
+            // lots of methods call this and then feed the output into AT.makeJavaType(TypedDeclaration typeDecl, Type type, int flags)
+            // which adds the Callable type, so if we fix it here we have to remove it from there and there's lots of callers of that
+            // function which rely on its behaviour and frankly I've had enough of this refactoring, so a few callers of this function
+            // have to add the Callable back. It sucks, yeah, but so far it works, which is amazing enough that I don't want to touch it
+            // any more. More ambitious/courageous people are welcome to fix this properly.
+            nonWideningType = typedRef.getType();
+            nonWideningDecl = mov;
         }
+        if(!CodegenUtil.isUnBoxed(nonWideningDecl))
+            flags |= AbstractTransformer.JT_NO_PRIMITIVES;
         
         // make sure we don't accidentally narrow value parameters that would be erased in the topmost declaration
-        if(canWiden
-                && param.getModel() instanceof Value){
-            TypedDeclaration refinedParameter = (TypedDeclaration)CodegenUtil.getTopmostRefinedDeclaration(param.getModel());
-            if(!Decl.equal(refinedParameter, param.getModel())){
+        if(wideningRules != WideningRules.NONE
+                && mov instanceof Value){
+            TypedDeclaration refinedParameter = (TypedDeclaration)CodegenUtil.getTopmostRefinedDeclaration(mov);
+            // mixin bridge methods have the same rules as when refining stuff except they are their own refined decl
+            if(wideningRules == WideningRules.FOR_MIXIN || !Decl.equal(refinedParameter, mov)){
                 Type refinedParameterType;
                 // we don't have to use produced typed references with type params applied here because we want to know the
                 // erasure status of the compilation of the refined parameter, so it's OK if we end up with unbound type parameters
@@ -407,7 +455,7 @@ public class MethodDefinitionBuilder
                 else
                     refinedParameterType = refinedParameter.getType();
                 // if the supertype method itself got erased to Object, we can't do better than this
-                if(gen.willEraseToObject(refinedParameterType) && !gen.willEraseToBestBounds(param))
+                if(gen.willEraseToObject(refinedParameterType) && !gen.willEraseToBestBounds(mov))
                     nonWideningType = gen.typeFact().getObjectType();
                 else if (CodegenUtil.isRaw(refinedParameter)) {
                     flags |= AbstractTransformer.JT_RAW;
@@ -416,10 +464,25 @@ public class MethodDefinitionBuilder
                 }
             }
         }
-        if (gen.rawParameters(param.getDeclaration())) {
+        // keep in sync with gen.willEraseToBestBounds()
+        if (wideningRules != WideningRules.NONE
+                && (gen.typeFact().isUnion(nonWideningType) 
+                        || gen.typeFact().isIntersection(nonWideningType))) {
+            final Type refinedType = ((TypedDeclaration)CodegenUtil.getTopmostRefinedDeclaration(nonWideningDecl)).getType();
+            if (refinedType.isTypeParameter()
+                    && !refinedType.getSatisfiedTypes().isEmpty()) {
+                nonWideningType = refinedType.getSatisfiedTypes().get(0);
+                // Could be parameterized, and type param won't be in scope, so have to go raw
+                flags |= AbstractTransformer.JT_RAW;
+            }
+        }
+        // this is to be done on the parameter's containing method, to see if that method must have raw parameters
+        if (mov.isParameter()
+                && mov.getContainer() instanceof Declaration
+                && gen.rawParameters((Declaration) mov.getContainer())) {
             flags |= AbstractTransformer.JT_RAW;
         }
-        return parameter(mods, param.getModel().getAnnotations(), userAnnotations, paramName, aliasedName, param, nonWideningDecl, nonWideningType, flags, canWiden);
+        return new NonWideningParam(flags, nonWideningType, nonWideningDecl);
     }
 
     public MethodDefinitionBuilder isOverride(boolean isOverride) {

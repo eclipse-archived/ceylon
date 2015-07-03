@@ -42,6 +42,8 @@ import java.util.Set;
 
 import org.antlr.runtime.Token;
 
+import com.redhat.ceylon.compiler.java.codegen.MethodDefinitionBuilder.NonWideningParam;
+import com.redhat.ceylon.compiler.java.codegen.MethodDefinitionBuilder.WideningRules;
 import com.redhat.ceylon.compiler.java.codegen.Naming.DeclNameFlag;
 import com.redhat.ceylon.compiler.java.codegen.Naming.Substitution;
 import com.redhat.ceylon.compiler.java.codegen.Naming.SyntheticName;
@@ -349,7 +351,7 @@ public class ClassTransformer extends AbstractTransformer {
                 mdb.reifiedTypeParameter(tp);
             }
             for (Parameter param : parameterList) {
-                mdb.parameter(param, null, 0, false);
+                mdb.parameter(param, null, 0, WideningRules.NONE);
             }
             mdb.resultType(refined, 0);
             mdb.body(makeThrowUnresolvedCompilationError(error));
@@ -1811,7 +1813,7 @@ public class ClassTransformer extends AbstractTransformer {
             for (Parameter param : parameters) {
 
                 if (Strategy.hasDefaultParameterOverload(param)) {
-                    MethodDefinitionBuilder overload = new DefaultedArgumentMethodTyped(null, MethodDefinitionBuilder.method(this, method), typedMember)
+                    MethodDefinitionBuilder overload = new DefaultedArgumentMethodTyped(null, MethodDefinitionBuilder.method(this, method), typedMember, true)
                     .makeOverload(
                             method.getFirstParameterList(),
                             param,
@@ -2126,7 +2128,7 @@ public class ClassTransformer extends AbstractTransformer {
                             if (Strategy.hasDefaultParameterOverload(param)) {
                                 if ((method.isDefault() || method.isShared() && !method.isFormal())
                                         && Decl.equal(method, subMethod)) {
-                                    MethodDefinitionBuilder overload = new DefaultedArgumentMethodTyped(new DaoThis((Tree.AnyMethod)null, null), MethodDefinitionBuilder.method(this, subMethod), typedMember)
+                                    MethodDefinitionBuilder overload = new DefaultedArgumentMethodTyped(new DaoThis((Tree.AnyMethod)null, null), MethodDefinitionBuilder.method(this, subMethod), typedMember, true)
                                         .makeOverload(
                                             subMethod.getFirstParameterList(),
                                             param,
@@ -2401,19 +2403,29 @@ public class ClassTransformer extends AbstractTransformer {
                 returnType = typedMember.getType();
             }else if (typedMember instanceof TypedReference) {
                 TypedReference typedRef = (TypedReference) typedMember;
-                // This is very much like for method refinement: if the supertype is erased -> go raw.
-                // Except for some reason we only need to do it with multiple inheritance with different type
-                // arguments, so let's not go overboard
-                int flags = 0;
-                if(CodegenUtil.hasTypeErased((TypedDeclaration)member.getRefinedDeclaration()) ||
-                        CodegenUtil.hasTypeErased((TypedDeclaration)member)
-                        && isInheritedTwiceWithDifferentTypeArguments(currentType, iface)){
-                    flags |= AbstractTransformer.JT_RAW;
+                if(delegateType == DelegateType.OTHER){
+                    // This is very much like for method refinement: if the supertype is erased -> go raw.
+                    // Except for some reason we only need to do it with multiple inheritance with different type
+                    // arguments, so let's not go overboard
+                    int flags = 0;
+                    if(CodegenUtil.hasTypeErased((TypedDeclaration)member.getRefinedDeclaration()) ||
+                            CodegenUtil.hasTypeErased((TypedDeclaration)member)
+                            && isInheritedTwiceWithDifferentTypeArguments(currentType, iface)){
+                        flags |= AbstractTransformer.JT_RAW;
+                    }
+                    concreteWrapper.resultTypeNonWidening(currentType, typedRef, typedMember.getType(), flags);
+                    // FIXME: this is redundant with what we computed in the previous line in concreteWrapper.resultTypeNonWidening
+                    TypedReference nonWideningTypedRef = gen().nonWideningTypeDecl(typedRef, currentType);
+                    returnType = gen().nonWideningType(typedRef, nonWideningTypedRef);
+                }else{
+                    // for default value
+                    NonWideningParam nonWideningParam = concreteWrapper.getNonWideningParam(typedRef, 
+                            currentType.getDeclaration() instanceof Class ? WideningRules.FOR_MIXIN : WideningRules.NONE);
+                    returnType = nonWideningParam.nonWideningType;
+                    if(member instanceof Function)
+                        returnType = typeFact().getCallableType(returnType);
+                    concreteWrapper.resultType(null, makeJavaType(returnType, nonWideningParam.flags));
                 }
-                concreteWrapper.resultTypeNonWidening(currentType, typedRef, typedMember.getType(), flags);
-                // FIXME: this is redundant with what we computed in the previous line in concreteWrapper.resultTypeNonWidening
-                TypedReference nonWideningTypedRef = gen().nonWideningTypeDecl(typedRef, currentType);
-                returnType = gen().nonWideningType(typedRef, nonWideningTypedRef);
             } else {
                 concreteWrapper.resultType(null, makeJavaType((Type)typedMember));
                 returnType = (Type) typedMember;
@@ -2433,14 +2445,8 @@ public class ClassTransformer extends AbstractTransformer {
         }
         for (Parameter param : parameters) {
             final TypedReference typedParameter = typedMember.getTypedParameter(param);
-            Type type;
-            // if the supertype method itself got erased to Object, we can't do better than this
-            if(gen().willEraseToObject(param.getType()) && !gen().willEraseToBestBounds(param))
-                type = typeFact().getObjectType();
-            else
-                type = typedParameter.getType();
-            concreteWrapper.parameter(param, type, FINAL, 0, true);
-            arguments.add(naming.makeName(param.getModel(), Naming.NA_MEMBER));
+            concreteWrapper.parameter(param, typedParameter, null, FINAL, WideningRules.FOR_MIXIN);
+            arguments.add(naming.makeName(param.getModel(), Naming.NA_MEMBER | Naming.NA_ALIASED));
         }
         if(includeBody){
             JCExpression qualifierThis = makeUnquotedIdent(getCompanionFieldName(iface));
@@ -3438,6 +3444,10 @@ public class ClassTransformer extends AbstractTransformer {
         
         boolean hasOverloads = false;
         Tree.ParameterList parameterList = parameterLists.get(0);
+        int flags = 0;
+        if (rawParameters(methodModel)) {
+            flags |= JT_RAW;
+        }
         for (final Tree.Parameter parameter : parameterList.getParameters()) {
             Parameter parameterModel = parameter.getParameterModel();
             List<JCAnnotation> annotations = null;
@@ -3449,11 +3459,7 @@ public class ClassTransformer extends AbstractTransformer {
                 if(typedDeclaration != null)
                     annotations = expressionGen().transformAnnotations(true, OutputElement.PARAMETER, typedDeclaration);
             }
-            int flags = 0;
-            if (rawParameters(methodModel)) {
-                flags |= JT_RAW;
-            }
-            methodBuilder.parameter(parameterModel, annotations, flags, true);
+            methodBuilder.parameter(parameterModel, annotations, flags, WideningRules.CAN_WIDEN);
 
             if (Strategy.hasDefaultParameterValueMethod(parameterModel)
                     || Strategy.hasDefaultParameterOverload(parameterModel)) {
@@ -4012,7 +4018,7 @@ public class ClassTransformer extends AbstractTransformer {
                 if (currentParameter != null && Decl.equal(parameter, currentParameter)) {
                     break;
                 }
-                overloadBuilder.parameter(parameter, null, 0, false);
+                overloadBuilder.parameter(parameter, null, 0, getWideningRules(parameter));
             }
         }
         
@@ -4028,13 +4034,17 @@ public class ClassTransformer extends AbstractTransformer {
                 ListBuffer<JCExpression> args);
         
         protected Type parameterType(Parameter parameterModel) {
-            Type paramType = null;
-            if (parameterModel.getModel() instanceof Function) {
-                paramType = typeFact().getCallableType(parameterModel.getType());
-            } else {
-                paramType = parameterModel.getType();
-            }
+            NonWideningParam nonWideningParam = overloadBuilder.getNonWideningParam(parameterModel.getModel(), getWideningRules(parameterModel));
+            Type paramType = nonWideningParam.nonWideningType;
+            if (parameterModel.getModel() instanceof Function)
+                paramType = typeFact().getCallableType(paramType);
             return paramType;
+        }
+
+        private WideningRules getWideningRules(Parameter parameterModel) {
+            // static methods don't have to refine anything from the supertype so they're not bound to
+            // widening issues
+            return defaultParameterMethodStatic() ? WideningRules.NONE : WideningRules.CAN_WIDEN;
         }
 
         protected abstract void initVars(Parameter currentParameter, ListBuffer<JCStatement> vars);
@@ -4176,10 +4186,12 @@ public class ClassTransformer extends AbstractTransformer {
      */
     class DefaultedArgumentMethodTyped extends DefaultedArgumentMethod {
         private TypedReference typedMember;
+        private boolean forMixin;
 
-        DefaultedArgumentMethodTyped(DaoBody daoBody, MethodDefinitionBuilder mdb, TypedReference typedMember) {
+        DefaultedArgumentMethodTyped(DaoBody daoBody, MethodDefinitionBuilder mdb, TypedReference typedMember, boolean forMixin) {
             super(daoBody, mdb, (Function)typedMember.getDeclaration());
             this.typedMember = typedMember;
+            this.forMixin = forMixin;
         }
 
         @Override
@@ -4200,28 +4212,18 @@ public class ClassTransformer extends AbstractTransformer {
                 if (currentParameter != null && Decl.equal(param, currentParameter)) {
                     break;
                 }
-                Type type = paramType(param);
-                overloadBuilder.parameter(param, type, FINAL, 0, true);
+                final TypedReference typedParameter = typedMember.getTypedParameter(param);
+                overloadBuilder.parameter(param, typedParameter, null, 0, forMixin ? WideningRules.FOR_MIXIN : WideningRules.CAN_WIDEN);
             }
         }
         
         @Override
         protected Type parameterType(Parameter parameter) {
-            Type paramType = paramType(parameter);
-            if (parameter.getModel() instanceof Function) {
-                paramType = typeFact().getCallableType(parameter.getType());
-            }
-            return paramType;
-        }
-
-        private Type paramType(Parameter parameter) {
             final TypedReference typedParameter = typedMember.getTypedParameter(parameter);
-            Type paramType;
-            // if the supertype method itself got erased to Object, we can't do better than this
-            if (gen().willEraseToObject(parameter.getType()) && !gen().willEraseToBestBounds(parameter)) {
-                paramType = typeFact().getObjectType();
-            } else {
-                paramType = typedParameter.getType();
+            NonWideningParam nonWideningParam = overloadBuilder.getNonWideningParam(typedParameter, forMixin ? WideningRules.FOR_MIXIN : WideningRules.CAN_WIDEN);
+            Type paramType = nonWideningParam.nonWideningType;
+            if (parameter.getModel() instanceof Function) {
+                paramType = typeFact().getCallableType(paramType);
             }
             return paramType;
         }
@@ -4627,7 +4629,8 @@ public class ClassTransformer extends AbstractTransformer {
                 && !noBody)){
             modifiers |= PRIVATE;
         }
-        if (Strategy.defaultParameterMethodStatic(container)) {
+        boolean staticMethod = Strategy.defaultParameterMethodStatic(container);
+        if (staticMethod) {
             // static default parameter methods should be consistently public so that if non-shared class Top and
             // shared class Bottom which extends Top both have the same default param name, we don't get an error
             // if the Bottom class tries to "hide" a static public method with a private one
@@ -4644,17 +4647,20 @@ public class ClassTransformer extends AbstractTransformer {
             copyTypeParameters((Generic)container, methodBuilder);
             methodBuilder.reifiedTypeParameters(((Generic)container).getTypeParameters());
         }
+        WideningRules wideningRules = !staticMethod && container instanceof Class
+                ? WideningRules.CAN_WIDEN : WideningRules.NONE;
         // Add any of the preceding parameters as parameters to the method
         for (Tree.Parameter p : params.getParameters()) {
             if (p.equals(currentParam)) {
                 break;
             }
             at(p);
-            methodBuilder.parameter(p.getParameterModel(), null, 0, container instanceof Class);
+            methodBuilder.parameter(p.getParameterModel(), null, 0, wideningRules);
         }
 
         // The method's return type is the same as the parameter's type
-        methodBuilder.resultType(parameter.getModel(), parameter.getType(), 0);
+        NonWideningParam nonWideningParam = methodBuilder.getNonWideningParam(currentParam.getParameterModel().getModel(), wideningRules); 
+        methodBuilder.resultType(nonWideningParam.nonWideningDecl, nonWideningParam.nonWideningType, nonWideningParam.flags);
 
         // The implementation of the method
         if (noBody) {
