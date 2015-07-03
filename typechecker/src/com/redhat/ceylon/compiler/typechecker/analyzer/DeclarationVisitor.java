@@ -13,7 +13,6 @@ import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.getNativeBack
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.hasAnnotation;
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.name;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getContainingClassOrInterface;
-import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getDirectMemberForBackend;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getNativeHeader;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getTypeArgumentMap;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.intersectionOfSupertypes;
@@ -442,11 +441,11 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
                 that.getAnnotationList();
         String name = setter.getName();
         Declaration member = 
-                getDirectMemberForBackend(
-                        setter.getContainer(), name, 
+                setter.getContainer().getDirectMemberForBackend(
+                        name, 
                         getNativeBackend(al, setter.getUnit()));
         if (member == null
-                && (g = getDirectMemberForBackend(scope, name,
+                && (g = scope.getDirectMemberForBackend(name,
                         Backend.None.nativeAnnotation)) != null
                 && g instanceof Value) {
             setter.setGetter((Value)g);
