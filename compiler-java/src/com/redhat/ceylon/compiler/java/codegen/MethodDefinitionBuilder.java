@@ -318,14 +318,14 @@ public class MethodDefinitionBuilder
             TypedDeclaration nonWideningDecl, 
             Type nonWideningType, 
             int flags, boolean canWiden) {
-        return parameter(modifiers, annos, null, name, name, decl, nonWideningDecl, nonWideningType, flags, canWiden);
+        return parameter(modifiers, annos, null, name, name, decl, nonWideningDecl, nonWideningType, flags);
     }
     
     private MethodDefinitionBuilder parameter(long modifiers, 
             java.util.List<Annotation> modelAnnotations, List<JCAnnotation> userAnnotations,
             String name, String aliasedName, 
             Parameter decl, TypedDeclaration nonWideningDecl, Type nonWideningType, 
-            int flags, boolean canWiden) {
+            int flags) {
         ParameterDefinitionBuilder pdb = ParameterDefinitionBuilder.explicitParameter(gen, decl);
         pdb.modifiers(modifiers);
         pdb.modelAnnotations(modelAnnotations);
@@ -337,7 +337,7 @@ public class MethodDefinitionBuilder
                 nonWideningType)) {
             pdb.type(gen.make().Type(gen.syms().objectType), gen.makeJavaTypeAnnotations(decl.getModel()));
         } else {
-            pdb.type(paramType(gen, nonWideningDecl, nonWideningType, flags, canWiden), gen.makeJavaTypeAnnotations(decl.getModel()));
+            pdb.type(paramType(gen, nonWideningDecl, nonWideningType, flags), gen.makeJavaTypeAnnotations(decl.getModel()));
         }
         return parameter(pdb);
     }
@@ -361,21 +361,8 @@ public class MethodDefinitionBuilder
     }
 
     static JCExpression paramType(AbstractTransformer gen, TypedDeclaration nonWideningDecl,
-            Type nonWideningType, int flags, boolean canWiden) {
-        // keep in sync with gen.willEraseToBestBounds()
-        if (canWiden
-                && (gen.typeFact().isUnion(nonWideningType) 
-                        || gen.typeFact().isIntersection(nonWideningType))) {
-            final Type refinedType = ((TypedDeclaration)CodegenUtil.getTopmostRefinedDeclaration(nonWideningDecl)).getType();
-            if (refinedType.isTypeParameter()
-                    && !refinedType.getSatisfiedTypes().isEmpty()) {
-                nonWideningType = refinedType.getSatisfiedTypes().get(0);
-                // Could be parameterized, and type param won't be in scope, so have to go raw
-                flags |= AbstractTransformer.JT_RAW;
-            }
-        }
-        JCExpression type = gen.makeJavaType(nonWideningDecl, nonWideningType, flags);
-        return type;
+            Type nonWideningType, int flags) {
+        return gen.makeJavaType(nonWideningDecl, nonWideningType, flags);
     }
     
     public MethodDefinitionBuilder parameter(Parameter paramDecl, 
