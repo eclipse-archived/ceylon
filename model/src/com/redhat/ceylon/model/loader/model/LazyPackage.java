@@ -1,6 +1,7 @@
 package com.redhat.ceylon.model.loader.model;
 
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.lookupMember;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.lookupMemberForBackend;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -61,14 +62,21 @@ public class LazyPackage extends Package {
 
             }
         }
-        Declaration ret = getDirectMemberMemoised(name, signature, ellipsis);
+        Declaration ret = getDirectMemberMemoised(name, signature, ellipsis, null);
         if(canCache){
             cache.put(name, ret);
         }
         return ret;
     }
     
-    private Declaration getDirectMemberMemoised(String name, List<Type> signature, boolean ellipsis) {
+    @Override
+    public Declaration getDirectMemberForBackend(String name, String backend) {
+        // FIXME: do we want to cache those calls too? If yes we need to add the backend type in the cache key
+        // and invalidate properly in flushCache()
+        return getDirectMemberMemoised(name, null, false, backend);
+    }
+    
+    private Declaration getDirectMemberMemoised(String name, List<Type> signature, boolean ellipsis, String backend) {
         synchronized(modelLoader.getLock()){
 
             String pkgName = getQualifiedNameString();
@@ -79,7 +87,9 @@ public class LazyPackage extends Package {
 
             // make sure we iterate over a copy of compiledDeclarations, to avoid lazy loading to modify it and
             // cause a ConcurrentModificationException: https://github.com/ceylon/ceylon-compiler/issues/399
-            Declaration d = lookupMember(compiledDeclarations, name, signature, ellipsis);
+            Declaration d = backend != null 
+                    ? lookupMemberForBackend(compiledDeclarations, name, backend)
+                    : lookupMember(compiledDeclarations, name, signature, ellipsis);
             if (d != null) {
                 return d;
             }
@@ -96,12 +106,17 @@ public class LazyPackage extends Package {
                     if (c.isAbstraction() && signature != null) {
                         ArrayList<Declaration> list = new ArrayList<Declaration>(c.getOverloads());
                         list.add(c);
-                        return lookupMember(list, name, signature, ellipsis);
+                        return backend != null 
+                                ? lookupMemberForBackend(list, name, backend)
+                                : lookupMember(list, name, signature, ellipsis);
                     }
                 }
-                return d;
+                // if we're not looking for a backend, or we found the right backend, fine
+                // if not, keep looking
+                if(isForBackend(d, backend))
+                    return d;
             }
-            d = getDirectMemberFromSource(name);
+            d = getDirectMemberFromSource(name, backend);
             
             if (d == null
                     && Character.isLowerCase(name.codePointAt(0))
@@ -117,7 +132,9 @@ public class LazyPackage extends Package {
                             && ((LazyInterface)possibleAnnotationType).isAnnotationType()) {
                         // addMember() will have added a Function if we found an annotation type
                         // so now we can look for the constructor again
-                        d = lookupMember(compiledDeclarations, name, signature, ellipsis);
+                        d = backend != null 
+                                ? lookupMemberForBackend(compiledDeclarations, name, backend)
+                                : lookupMember(compiledDeclarations, name, signature, ellipsis);
                     }
                 }
             }
@@ -125,10 +142,17 @@ public class LazyPackage extends Package {
         }
     }
 
-    private Declaration getDirectMemberFromSource(String name) {
+    private boolean isForBackend(Declaration d, String backend) {
+        return backend == null 
+                || d.getNativeBackend() == null 
+                || backend.equals(d.getNativeBackend());
+    }
+
+    private Declaration getDirectMemberFromSource(String name, String backend) {
         for (Declaration d: super.getMembers()) {
             if (com.redhat.ceylon.model.typechecker.model.ModelUtil.isResolvable(d) /* && d.isShared() */ 
-            && com.redhat.ceylon.model.typechecker.model.ModelUtil.isNamed(name, d)) {
+            && com.redhat.ceylon.model.typechecker.model.ModelUtil.isNamed(name, d)
+            && isForBackend(d, backend)) {
                 return d;
             }
         }

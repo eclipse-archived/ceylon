@@ -34,7 +34,17 @@ public interface Scope {
     public Declaration getDirectMember(String name, 
             List<Type> signature, 
             boolean ellipsis);
-    
+
+    /**
+     * Get a member declared directly in this scope for the given backend
+     * 
+     * @param name the name of the member
+     * @param backend the native backend name
+     * 
+     * @return the best matching member
+     */
+    public Declaration getDirectMemberForBackend(String name, String backend);
+
     /**
      * Resolve a qualified reference.
      * 
@@ -137,5 +147,4 @@ public interface Scope {
     public void addMember(Declaration declaration);
     
     public boolean isToplevel();
-    
 }

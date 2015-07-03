@@ -5,6 +5,7 @@ import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isNameMatching
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isOverloadedVersion;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isResolvable;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.lookupMember;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.lookupMemberForBackend;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -145,6 +146,13 @@ public class Package
             List<Type> signature, boolean ellipsis) {
         return lookupMember(getMembers(), 
                 name, signature, ellipsis);
+    }
+
+    @Override
+    public Declaration getDirectMemberForBackend(String name, 
+            String backend) {
+        return lookupMemberForBackend(getMembers(), 
+                name, backend);
     }
 
     @Override

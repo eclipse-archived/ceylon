@@ -52,7 +52,12 @@ public class ImportList implements Scope {
     public Declaration getDirectMember(String name, List<Type> signature, boolean ellipsis) {
         return getContainer().getDirectMember(name, signature, ellipsis);
     }
-    
+
+    @Override
+    public Declaration getDirectMemberForBackend(String name, String backend) {
+        return getContainer().getDirectMemberForBackend(name, backend);
+    }
+
     @Override
     public boolean isInherited(Declaration d) {
         return false;

@@ -2521,9 +2521,9 @@ public class ModelUtil {
      * 
      * @return the matching declaration
      */
-    public static Declaration getDirectMemberForBackend(
-            Scope scope, String name, String backend) {
-        for (Declaration dec: scope.getMembers()) {
+    public static Declaration lookupMemberForBackend(
+            List<Declaration> members, String name, String backend) {
+        for (Declaration dec: members) {
             if (isResolvable(dec) && isNamed(name, dec)) {
                 String nat = dec.getNativeBackend();
                 if (nat==null) {
@@ -2558,7 +2558,7 @@ public class ModelUtil {
                 // The container is a native implementation so
                 // we first need to find _its_ header
                 Scope c =
-                        (Scope)getDirectMemberForBackend(cd.getContainer(),
+                        (Scope)cd.getContainer().getDirectMemberForBackend(
                                 cd.getName(),
                                 Backend.None.nativeAnnotation);
                 if (c != null) {
@@ -2573,7 +2573,7 @@ public class ModelUtil {
         }
         // Find the header
         Declaration header =
-                getDirectMemberForBackend(container,
+                container.getDirectMemberForBackend(
                         name,
                         Backend.None.nativeAnnotation);
         return header;

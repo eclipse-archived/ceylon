@@ -4,6 +4,7 @@ import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isNameMatching
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isOverloadedVersion;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isResolvable;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.lookupMember;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.lookupMemberForBackend;
 import static java.util.Collections.emptyList;
 
 import java.util.List;
@@ -77,7 +78,16 @@ public abstract class Element {
         return lookupMember(getMembers(), 
                 name, signature, ellipsis);
     }
-    
+
+    /**
+     * Search only directly inside this scope for the given backend.
+     */
+    public Declaration getDirectMemberForBackend(String name, 
+            String backend) {
+        return lookupMemberForBackend(getMembers(), 
+                name, backend);
+    }
+
     /**
      * Search only this scope, including members inherited 
      * by the scope, without considering containing scopes 
