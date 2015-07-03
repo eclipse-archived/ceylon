@@ -442,4 +442,9 @@ public class NativeTests extends CompilerTests {
     public void testNativeDelegate() {
         testNative("NativeDelegate");
     }
+    
+    @Test
+    public void testBugSpec1372() {
+        testNative("BugSpec1372");
+    }
 }
