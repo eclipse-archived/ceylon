@@ -344,6 +344,9 @@ public class MethodDefinitionBuilder
 
     private boolean isParamTypeLocalToMethod(Parameter parameter,
             Type nonWideningType) {
+        // error recovery
+        if(nonWideningType == null)
+            return false;
         Declaration method = parameter.getDeclaration();
         TypeDeclaration paramTypeDecl = nonWideningType.getDeclaration();
         if (paramTypeDecl instanceof TypeParameter
