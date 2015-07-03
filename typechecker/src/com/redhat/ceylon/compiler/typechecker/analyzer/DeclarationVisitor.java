@@ -444,20 +444,22 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
                 setter.getContainer().getDirectMemberForBackend(
                         name, 
                         getNativeBackend(al, setter.getUnit()));
-        if (member == null
-                && (g = scope.getDirectMemberForBackend(name,
-                        Backend.None.nativeAnnotation)) != null
-                && g instanceof Value) {
-            setter.setGetter((Value)g);
-            that.addError("setter must be marked native: '" +
-                    name + "'");
-        }
-        else if (member==null) {
+        if (member==null) {
             that.addError("setter with no matching getter: '" + 
                     name + "'");
         }
         else if (!(member instanceof Value)) {
             that.addError("setter name does not resolve to matching getter: '" + 
+                    name + "'");
+        }
+        else if (member.isNative() && !setter.isNative()) {
+            setter.setGetter((Value)member);
+            that.addError("setter must be marked native: '" +
+                    name + "'");
+        }
+        else if (!member.isNative() && setter.isNative()) {
+            setter.setGetter((Value)member);
+            that.addError("native setter for non-native getter: '" +
                     name + "'");
         }
         else if (!((Value) member).isTransient() && 
