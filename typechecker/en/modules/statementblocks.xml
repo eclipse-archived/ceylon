@@ -1105,6 +1105,11 @@ Integer f(Integer n) => n+package.n;</programlisting>
             
             <programlisting>value [x, y, z] = [1.0, 2.0, 0.0];</programlisting>
             <programlisting>value [first, *rest] = sequence;</programlisting>
+            
+            <comment><para>Note: Ceylon does not support parallel assignment 
+            statements of form <literal>value x, y, z = 1.0, 2.0, 0.0;</literal>
+            since the infix <literal>=</literal> symbol has a higher precedence 
+            than the comma <literal>,</literal> throughout the language.</para></comment>
                 
         </section>
         
@@ -1852,6 +1857,12 @@ else {
             
             <para>A <emphasis>negated</emphasis> assignability condition is one which starts 
             with <literal>!</literal>.</para>
+            
+            <comment><para>Note: the prefix form <literal>is Type val</literal> reads a 
+            little unnaturally in English. But for a condition with a specifier, the 
+            form <literal>is Type val = expression</literal> is much less ambiguous than
+            <literal>val = expression is Type</literal>, which looks like an assignment
+            of a boolean value.</para></comment>
             
             <comment><para>TODO: are we going to allow <literal>is Type this</literal> and 
             <literal>is Type outer</literal> to narrow the type of a self reference?</para></comment>
