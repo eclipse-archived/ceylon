@@ -47,7 +47,7 @@ import com.redhat.ceylon.model.typechecker.model.Value;
  */
 public class TypeHierarchyVisitor extends Visitor {
 
-    private final Map<TypeDeclaration,Type> types = new HashMap<TypeDeclaration, Type>();
+    private final Map<TypeDeclKey,Type> types = new HashMap<TypeDeclKey, Type>();
 
     private static final class Type {
         public Map<String,Members> membersByName = new HashMap<String, Members>();
@@ -66,6 +66,32 @@ public class TypeHierarchyVisitor extends Visitor {
         @Override
         public String toString() {
             return declaration.getName();
+        }
+    }
+    
+    // Special wrapper class for TypeDeclarations that takes into
+    // account the native backend property when determining equality
+    private static final class TypeDeclKey {
+        public final TypeDeclaration decl;
+        public TypeDeclKey(TypeDeclaration decl) {
+            this.decl = decl;
+        }
+        @Override
+        public int hashCode() {
+            return decl.hashCode();
+        }
+        @Override
+        public boolean equals(Object obj) {
+            if (this == obj)
+                return true;
+            if (obj == null)
+                return false;
+            if (getClass() != obj.getClass())
+                return false;
+            TypeDeclKey other = (TypeDeclKey) obj;
+            return decl.equals(other.decl) && 
+                    (!decl.isNative() ||
+                            decl.getNativeBackend().equals(other.decl.getNativeBackend()));
         }
     }
     
@@ -548,7 +574,7 @@ public class TypeHierarchyVisitor extends Visitor {
     }*/
 
     private Type getOrBuildType(TypeDeclaration declaration) {
-        Type type = types.get(declaration);
+        Type type = types.get(new TypeDeclKey(declaration));
         if (type == null) {
             type = new Type();
             type.declaration = declaration;
@@ -596,7 +622,7 @@ public class TypeHierarchyVisitor extends Visitor {
                     members.shared.add(member);
                 }
             }
-            types.put(declaration,type);
+            types.put(new TypeDeclKey(declaration),type);
         }
         return type;
     }
