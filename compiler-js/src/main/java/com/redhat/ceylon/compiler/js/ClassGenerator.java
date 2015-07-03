@@ -168,6 +168,9 @@ public class ClassGenerator {
             if (TypeUtils.isNativeExternal(d)) {
                 gen.stitchConstructorHelper(that, "_cons_before");
             }
+            //TODO should we generate all this code for native headers?
+            //Really we should merge the body of the header with that of the impl
+            //It's the only way to make this shit work in lexical scope mode
             gen.visitStatements(that.getClassBody().getStatements());
             if (d.isNative()) {
                 gen.stitchConstructorHelper(that, "_cons_after");

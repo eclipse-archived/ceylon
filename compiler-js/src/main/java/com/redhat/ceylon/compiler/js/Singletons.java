@@ -87,6 +87,8 @@ public class Singletons {
             }
 
             //TODO should we generate all this code for native headers?
+            //Really we should merge the body of the header with that of the impl
+            //It's the only way to make this shit work in lexical scope mode
             final List<Declaration> superDecs = new ArrayList<Declaration>();
             if (!gen.opts.isOptimize()) {
                 new SuperVisitor(superDecs).visit(body);
