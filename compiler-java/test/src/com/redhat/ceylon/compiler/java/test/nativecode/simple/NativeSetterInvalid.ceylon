@@ -25,3 +25,6 @@ assign nativeSetterInvalid {}
 
 native("js") shared Integer nativeSetterInvalid => 1;
 assign nativeSetterInvalid {}
+
+shared Integer nativeSetterInvalid2 => 1;
+native assign nativeSetterInvalid2;

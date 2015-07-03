@@ -189,7 +189,8 @@ public class NativeTests extends CompilerTests {
         testNativeErrors("NativeSetterInvalid",
                 new CompilerError(21, "setter must be marked native: 'nativeSetterInvalid'"),
                 new CompilerError(24, "setter must be marked native: 'nativeSetterInvalid'"),
-                new CompilerError(27, "setter must be marked native: 'nativeSetterInvalid'")
+                new CompilerError(27, "setter must be marked native: 'nativeSetterInvalid'"),
+                new CompilerError(30, "native setter for non-native getter: 'nativeSetterInvalid2'")
         );
     }
     
