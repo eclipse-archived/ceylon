@@ -1396,10 +1396,14 @@ public abstract class AbstractTransformer implements Transformation {
     
     // keep in sync with MethodDefinitionBuilder.paramType()
     public boolean willEraseToBestBounds(Parameter param) {
-        Type type = param.getType();
+        return willEraseToBestBounds(param.getModel());
+    }
+    
+    public boolean willEraseToBestBounds(FunctionOrValue paramModel) {
+        Type type = paramModel.getType();
         if (typeFact().isUnion(type) 
                 || typeFact().isIntersection(type)) {
-            final Type refinedType = ((TypedDeclaration)CodegenUtil.getTopmostRefinedDeclaration(param.getModel())).getType();
+            final Type refinedType = ((TypedDeclaration)CodegenUtil.getTopmostRefinedDeclaration(paramModel)).getType();
             if (refinedType.isTypeParameter()
                     && !refinedType.getSatisfiedTypes().isEmpty()) {
                 return true;
