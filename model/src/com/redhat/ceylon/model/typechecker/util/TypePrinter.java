@@ -48,7 +48,11 @@ public class TypePrinter {
             boolean printTypeParameterDetail,
             boolean printQualifyingType,
             boolean escapeLowercased) {
-        this(printAbbreviated, printTypeParameters, printTypeParameterDetail, printQualifyingType, escapeLowercased, false, false);
+        this(printAbbreviated, 
+                printTypeParameters, 
+                printTypeParameterDetail, 
+                printQualifyingType, 
+                escapeLowercased, false, false);
     }
     
     public TypePrinter(boolean printAbbreviated, 
@@ -155,9 +159,9 @@ public class TypePrinter {
                 if (abbreviateIterable(pt)) {
                     Type it = u.getIteratedType(pt);
                     Type nt = pt.getTypeArgumentList().get(1);
-                    if (it.isNothing() && !nt.isNothing()) {
+                    /*if (it.isNothing() && !nt.isNothing()) {
                     	return "{}";
-                    }
+                    }*/
                     String itn = print(it, unit);
                     String many = nt.isNothing() ? "+" : "*";
                     if (isPrimitiveAbbreviatedType(it) || 
