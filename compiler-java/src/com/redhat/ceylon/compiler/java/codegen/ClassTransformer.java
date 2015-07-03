@@ -1181,7 +1181,8 @@ public class ClassTransformer extends AbstractTransformer {
                                     Naming.getDefaultedParamMethodName(cls, paramModel),
                                     parameters.subList(0, parameters.indexOf(paramModel)), 
                                     false, 
-                                    Naming.getDefaultedParamMethodName(cls, paramModel));
+                                    Naming.getDefaultedParamMethodName(cls, paramModel),
+                                    DelegateType.FOR_DEFAULT_VALUE);
                             cbForDevaultValues.method(mdb);
                         }
                     }
@@ -1830,7 +1831,8 @@ public class ClassTransformer extends AbstractTransformer {
                     naming.selector(method), 
                     method.getFirstParameterList().getParameters(),
                     ((Function) member).getTypeErased(),
-                    null, 
+                    null,
+                    DelegateType.OTHER,
                     false);
             classBuilder.method(concreteMemberDelegate);
         } else if (member instanceof Value
@@ -1849,6 +1851,7 @@ public class ClassTransformer extends AbstractTransformer {
                         Collections.<Parameter>emptyList(),
                         attr.getTypeErased(),
                         null,
+                        DelegateType.OTHER,
                         false);
                 classBuilder.method(getterDelegate);
             }
@@ -1864,6 +1867,7 @@ public class ClassTransformer extends AbstractTransformer {
                         Collections.<Parameter>singletonList(((Setter)member).getParameter()),
                         ((Setter) member).getTypeErased(),
                         null,
+                        DelegateType.OTHER,
                         false);
                 classBuilder.method(setterDelegate);
             }
@@ -2012,6 +2016,10 @@ public class ClassTransformer extends AbstractTransformer {
         }
     }
 
+    enum DelegateType {
+        FOR_DEFAULT_VALUE, OTHER;
+    }
+    
     /**
      * Generates companion fields ($Foo$impl) and methods
      */
@@ -2110,7 +2118,8 @@ public class ClassTransformer extends AbstractTransformer {
                                         Naming.getDefaultedParamMethodName(method, param), 
                                         parameters.subList(0, parameters.indexOf(param)),
                                         param.getModel().getTypeErased(),
-                                        null);
+                                        null,
+                                        DelegateType.FOR_DEFAULT_VALUE);
                                 classBuilder.method(defaultValueDelegate);
                             }
 
@@ -2144,7 +2153,8 @@ public class ClassTransformer extends AbstractTransformer {
                                 naming.selector(method), 
                                 method.getFirstParameterList().getParameters(),
                                 ((Function) member).getTypeErased(),
-                                null);
+                                null,
+                                DelegateType.OTHER);
                         classBuilder.method(concreteMemberDelegate);
                     }
 
@@ -2161,7 +2171,8 @@ public class ClassTransformer extends AbstractTransformer {
                                 Naming.selector(method, Naming.NA_CANONICAL_METHOD), 
                                 method.getFirstParameterList().getParameters(),
                                 ((Function) member).getTypeErased(),
-                                naming.selector(method));
+                                naming.selector(method),
+                                DelegateType.OTHER);
                         classBuilder.method(canonicalMethod);
                     }
                 }
@@ -2181,7 +2192,8 @@ public class ClassTransformer extends AbstractTransformer {
                                 Naming.getGetterName(attr), 
                                 Collections.<Parameter>emptyList(),
                                 attr.getTypeErased(),
-                                null);
+                                null,
+                                DelegateType.OTHER);
                         classBuilder.method(getterDelegate);
                     }
                     if (member instanceof Setter) { 
@@ -2195,7 +2207,8 @@ public class ClassTransformer extends AbstractTransformer {
                                 Naming.getSetterName(attr), 
                                 Collections.<Parameter>singletonList(((Setter)member).getParameter()),
                                 ((Setter) member).getTypeErased(),
-                                null);
+                                null,
+                                DelegateType.OTHER);
                         classBuilder.method(setterDelegate);
                     }
                     if (Decl.isValue(member) 
@@ -2275,6 +2288,7 @@ public class ClassTransformer extends AbstractTransformer {
                         parameters.subList(0, parameters.indexOf(param)),
                         param.getModel().getTypeErased(),
                         null,
+                        DelegateType.FOR_DEFAULT_VALUE,
                         includeBody);
                 classBuilder.method(defaultValueDelegate);
             }
@@ -2290,6 +2304,7 @@ public class ClassTransformer extends AbstractTransformer {
                         parameters.subList(0, parameters.indexOf(param)),
                         false,
                         null,
+                        DelegateType.OTHER,
                         includeBody);
                 classBuilder.method(overload);
             }
@@ -2305,6 +2320,7 @@ public class ClassTransformer extends AbstractTransformer {
                 parameters,
                 false,
                 null,
+                DelegateType.OTHER,
                 includeBody);
         classBuilder.method(overload);
     }
@@ -2334,9 +2350,10 @@ public class ClassTransformer extends AbstractTransformer {
             final String methodName,
             final java.util.List<Parameter> parameters, 
             boolean typeErased,
-            final String targetMethodName) {
+            final String targetMethodName, 
+            DelegateType delegateType) {
         return makeDelegateToCompanion(iface, typedMember, currentType, mods, typeParameters,
-                producedTypeParameterBounds, methodType, methodName, parameters, typeErased, targetMethodName, true);
+                producedTypeParameterBounds, methodType, methodName, parameters, typeErased, targetMethodName, delegateType, true);
     }
     
     /**
@@ -2353,6 +2370,7 @@ public class ClassTransformer extends AbstractTransformer {
             final java.util.List<Parameter> parameters, 
             boolean typeErased,
             final String targetMethodName,
+            DelegateType delegateType, 
             boolean includeBody) {
         final MethodDefinitionBuilder concreteWrapper = MethodDefinitionBuilder.systemMethod(gen(), methodName);
         concreteWrapper.modifiers(mods);
