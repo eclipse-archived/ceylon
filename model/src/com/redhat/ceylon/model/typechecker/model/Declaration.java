@@ -408,12 +408,6 @@ public abstract class Declaration
                     !thisContainer.equals(thatContainer)) {
                 return false;
             }
-            else if (this.isNative() != that.isNative() ||
-                    (this.isNative() && 
-                            !this.getNativeBackend()
-                                .equals(that.getNativeBackend()))) {
-                return false;
-            }
             else if (this instanceof Functional && 
                     that instanceof Functional) {
                 boolean thisIsAbstraction = 
