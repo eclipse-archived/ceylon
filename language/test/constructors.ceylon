@@ -256,6 +256,30 @@ class Test595 extends Parent595 {
     constructorSB.append("d");
 }
 
+class Test597 {
+  constructorSB.append("a");
+  shared new foo {
+    constructorSB.append("b");
+  }
+  constructorSB.append("c");
+}
+
+class Test599 {
+    shared Integer i();
+    shared Integer j();
+    shared Integer k;
+    shared new (){
+        Integer l;
+        l=2;
+        check(l==2, "#599.1");
+        i() => 3;
+        j = () {
+          return 5;
+        };
+        k=8;
+    }
+}
+
 @test
 void testConstructors() {
   value o=Outer1129();
@@ -348,6 +372,13 @@ void testConstructors() {
   Anything test594 = Js594.foo;
   check(test594 exists, "JS #594");
   constructorSB.clear();
-  value unused1=Test595.bar;
+  variable Object unused=Test595.bar;
   check(constructorSB.string=="abcd", "JS #595");
+  constructorSB.clear();
+  unused=Test597.foo;
+  check(constructorSB.string=="abc", "JS #597");
+  value t599=Test599();
+  check(t599.i() == 3, "JS #599.2");
+  check(t599.j() == 5, "JS #599.3");
+  check(t599.k == 8, "JS #599.4");
 }
