@@ -412,10 +412,7 @@ public class TypeParser {
          * For instance, the types <code>A,B,C,D,E</code> with <code>defaulted = 3</code>
          * signify the type list <code>A,B,C=,D=,E=</code>.
          * <p>
-         * A possibly-empty variadic type element is also considered defaulted;
-         * for instance, the types <code>A,B,C,D,E</code> with <code>defaulted = 3</code>,
-         * <code>variadic = true</code>, <code>atLeastOne = false</code>
-         * signify the type list <code>A,B,C=,D=,E*</code>.
+         * Variadics are not counted as defaulted.
          */
         int defaulted;
         Type getLast() {
