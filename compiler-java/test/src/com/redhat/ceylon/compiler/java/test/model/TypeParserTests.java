@@ -715,11 +715,36 @@ public class TypeParserTests {
         Assert.assertNotNull(declaration);
         Assert.assertTrue(declaration instanceof Class);
         Assert.assertEquals("ceylon.language::Tuple", declaration.getQualifiedNameString());
-        Assert.assertEquals("[a, b=, c=]", type.asString());
+        // can only test this for Callable as TypeNamePrinter only prints '=' for Callable
+//        Assert.assertEquals("[a, b=, c=]", type.asString());
         Assert.assertEquals("ceylon.language::Tuple<a|b|c,a,ceylon.language::Empty|ceylon.language::Tuple<b|c,b,ceylon.language::Empty|ceylon.language::Tuple<c,c,ceylon.language::Empty>>>", printType(type));
         Assert.assertNull(type.getQualifyingType());
     }
-    
+
+    // [a,b=,c+] it not allowed (for good reason)
+    @Test
+    public void testTuple1To3StarAbbrev(){
+        Type type = new TypeParser(MockLoader.instance).decodeType("[a,b=,c*]", null, mockDefaultModule, mockPkgUnit);
+        Assert.assertNotNull(type);
+        TypeDeclaration declaration = type.getDeclaration();
+        Assert.assertNotNull(declaration);
+        Assert.assertTrue(declaration instanceof Class);
+        Assert.assertEquals("ceylon.language::Tuple", declaration.getQualifiedNameString());
+        Assert.assertEquals("ceylon.language::Tuple<a|b|c,a,ceylon.language::Empty|ceylon.language::Tuple<b|c,b,ceylon.language::Sequential<c>>>", printType(type));
+        Assert.assertNull(type.getQualifyingType());
+    }
+
+    @Test
+    public void testTuple0To1Abbrev(){
+        Type type = new TypeParser(MockLoader.instance).decodeType("[a=]", null, mockDefaultModule, mockPkgUnit);
+        Assert.assertNotNull(type);
+        TypeDeclaration declaration = type.getDeclaration();
+        Assert.assertNotNull(declaration);
+        Assert.assertTrue(declaration instanceof UnionType);
+        Assert.assertEquals("ceylon.language::Empty|ceylon.language::Tuple<a,a,ceylon.language::Empty>", printType(type));
+        Assert.assertNull(type.getQualifyingType());
+    }
+
     @Test
     public void testHomoTuple1(){
         Type type = new TypeParser(MockLoader.instance).decodeType("a[1]", null, mockDefaultModule, mockPkgUnit);
