@@ -106,8 +106,8 @@ public class Constructors {
     /** Gather all class initializer statements that are between two constructors (or just before
      * the second constructor, if the first one is null), including the statements from the
      * second constructor */
-    private static List<? extends Tree.Statement> classStatementsBetweenConstructors(
-            final Tree.ClassDefinition cdef, final Tree.DelegatedConstructor dc, final Tree.Constructor c2) {
+    static List<? extends Tree.Statement> classStatementsBetweenConstructors(
+            final Tree.ClassDefinition cdef, final Tree.DelegatedConstructor dc, final Tree.Declaration c2) {
         ArrayList<Tree.Statement> stmts = new ArrayList<>(cdef.getClassBody().getStatements().size());
         //Find the constructor
         Tree.Constructor c1 = null;
@@ -137,7 +137,11 @@ public class Constructors {
                 go = true;
             }
             if (st == c2) {
-                stmts.addAll(c2.getBlock().getStatements());
+                if (c2 instanceof Tree.Constructor) {
+                    stmts.addAll(((Tree.Constructor)c2).getBlock().getStatements());
+                } else if (c2 instanceof Tree.Enumerated) {
+                    stmts.addAll(((Tree.Enumerated)c2).getBlock().getStatements());
+                }
                 return stmts;
             }
             if (go && st instanceof Tree.Constructor == false) {
@@ -149,7 +153,7 @@ public class Constructors {
     }
 
     static List<? extends Tree.Statement> classStatementsAfterConstructor(
-            final Tree.ClassDefinition cdef, final Tree.Constructor cnstr) {
+            final Tree.ClassDefinition cdef, final Tree.Declaration cnstr) {
         final ArrayList<Tree.Statement> stmts = new ArrayList<>(cdef.getClassBody().getStatements().size());
         boolean go=false;
         for (Tree.Statement st : cdef.getClassBody().getStatements()) {

@@ -201,7 +201,8 @@ public class Singletons {
         }
     }
 
-    static void valueConstructor(final Tree.Enumerated that, final GenerateJsVisitor gen) {
+    static void valueConstructor(final Tree.ClassDefinition cdef,
+            final Tree.Enumerated that, final GenerateJsVisitor gen) {
         final Value d = that.getDeclarationModel();
         final Constructor c = that.getEnumerated();
         final Tree.DelegatedConstructor dc = that.getDelegatedConstructor();
@@ -228,7 +229,14 @@ public class Singletons {
             dc.getInvocationExpression().visit(gen);
             gen.endLine(true);
         }
-        gen.visitStatements(that.getBlock().getStatements());
+        List<? extends Tree.Statement> stmts = Constructors.classStatementsBetweenConstructors(cdef, null, that);
+        if (!stmts.isEmpty()) {
+            gen.visitStatements(stmts);
+        }
+        stmts = Constructors.classStatementsAfterConstructor(cdef, that);
+        if (!stmts.isEmpty()) {
+            gen.visitStatements(stmts);
+        }
         gen.out(typevar, ".", tmpvar, "=", objvar, ";}return ", typevar, ".", tmpvar, ";},undefined,");
         TypeUtils.encodeForRuntime(d, that.getAnnotationList(), gen);
         gen.out(");");

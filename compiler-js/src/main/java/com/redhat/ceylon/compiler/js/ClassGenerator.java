@@ -204,7 +204,7 @@ public class ClassGenerator {
         if (d.hasEnumerated()) {
             for (Tree.Statement st : that.getClassBody().getStatements()) {
                 if (st instanceof Tree.Enumerated) {
-                    Singletons.valueConstructor((Tree.Enumerated)st, gen);
+                    Singletons.valueConstructor(that, (Tree.Enumerated)st, gen);
                 }
             }
         }
