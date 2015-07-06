@@ -9,7 +9,6 @@ import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.messa
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.isEffectivelyBaseMemberExpression;
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.isSelfReference;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getContainingDeclarationOfScope;
-import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isInNativeContainer;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isNativeHeader;
 
 import java.util.ArrayList;
@@ -874,13 +873,6 @@ public class SpecificationVisitor extends Visitor {
 	                        declaration.getName() + 
 	                        "' may not be forward declared");
 	            }
-                else if (declaration.isClassMember() && 
-                        !isNativeHeader(declaration) &&
-                        isInNativeContainer(declaration)) {
-                    that.addError("member in native container must be native: '" +
-                                declaration.getName() + "'", 
-                                1450);
-                }
 	            else if (declaration.isClassMember() && 
 	                    !isNativeHeader(declaration) &&
 	                    !declaration.isFormal() && 
