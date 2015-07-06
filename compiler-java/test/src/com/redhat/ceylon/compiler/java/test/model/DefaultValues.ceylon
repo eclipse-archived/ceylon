@@ -17,6 +17,9 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
+shared Anything(Anything=) defaultValueCallable = nothing;
+shared Anything(Anything=,Anything*) defaultValueCallable2 = nothing;
+
 shared class DefaultValues (Integer a, Integer b = 2) {
     shared void method(Integer c, Integer d = a){} 
 }

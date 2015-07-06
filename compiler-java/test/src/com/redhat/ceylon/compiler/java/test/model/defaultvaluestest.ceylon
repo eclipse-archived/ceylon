@@ -19,3 +19,7 @@
  */
 DefaultValues defaultValuesTest = DefaultValues(1);
 Integer defaultValuesTest2 = defaultValuesMethod(1);
+void defaultValuesTestFunction(){
+    defaultValueCallable();
+    defaultValueCallable2();
+}
