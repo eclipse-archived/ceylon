@@ -2622,8 +2622,7 @@ public class Type extends Reference {
             // their header, but headers can actually have methods
             // of their own so we set the extended type to the header
             Declaration hdr = 
-                    getNativeHeader(dec.getContainer(), 
-                            dec.getName());
+                    getNativeHeader(dec);
             if (hdr instanceof TypeDeclaration) {
                 TypeDeclaration td = (TypeDeclaration) hdr;
                 et = td.getType();
