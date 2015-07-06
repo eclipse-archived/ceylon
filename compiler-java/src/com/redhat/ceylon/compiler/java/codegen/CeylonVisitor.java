@@ -630,7 +630,7 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
         Type thisType = forDefinition != null ? forDefinition.getType() : null;
         ClassOrInterface hdrDefinition = null;
         if (forDefinition != null && forDefinition.isNative() && !forDefinition.isNativeHeader()) {
-            hdrDefinition = (ClassOrInterface)ModelUtil.getNativeHeader(forDefinition.getContainer(), forDefinition.getName());
+            hdrDefinition = (ClassOrInterface)ModelUtil.getNativeHeader(forDefinition);
         }
         if (hdrDefinition == null) {
             Type extended = extendedType.getType().getTypeModel();

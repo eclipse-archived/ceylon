@@ -176,7 +176,7 @@ public class ClassDefinitionBuilder {
         // a class to extend we force them to extend their native header
         // (when they _do_ extend it is handled in CeylonVisitor.visit(Tree.ExtendedType))
         if (extendingType == null && forDefinition != null && forDefinition.isNative() && !forDefinition.isNativeHeader()) {
-            Declaration hdrDefinition = ModelUtil.getNativeHeader(forDefinition.getContainer(), forDefinition.getName());
+            Declaration hdrDefinition = ModelUtil.getNativeHeader(forDefinition);
             if (hdrDefinition != null) {
                 if (hdrDefinition instanceof Value && ModelUtil.isObject((Value)hdrDefinition)) {
                     hdrDefinition = ((Value)hdrDefinition).getType().getDeclaration();
