@@ -2540,7 +2540,15 @@ public class ModelUtil {
     }
     
     public static Declaration getNativeHeader(Declaration dec) {
-        return getNativeHeader(dec.getContainer(), dec.getName());
+        Declaration header = getNativeHeader(dec.getContainer(), dec.getName());
+        // In case of objects make sure we return the same type of
+        // declaration we were called with
+        if (dec instanceof ClassOrInterface
+                && header instanceof Value
+                && ModelUtil.isObject((Value)header)) {
+            header = ((Value)header).getType().getDeclaration();
+        }
+        return header;
     }
     
     /**
