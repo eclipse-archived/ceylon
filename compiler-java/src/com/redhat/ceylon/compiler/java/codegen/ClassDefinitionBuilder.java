@@ -178,9 +178,6 @@ public class ClassDefinitionBuilder {
         if (extendingType == null && forDefinition != null && forDefinition.isNative() && !forDefinition.isNativeHeader()) {
             Declaration hdrDefinition = ModelUtil.getNativeHeader(forDefinition);
             if (hdrDefinition != null) {
-                if (hdrDefinition instanceof Value && ModelUtil.isObject((Value)hdrDefinition)) {
-                    hdrDefinition = ((Value)hdrDefinition).getType().getDeclaration();
-                }
                 Type tp = forDefinition.getType();
                 extending(tp, ((ClassOrInterface)hdrDefinition).getType());
                 gen.expressionGen().makeHeaderSuperInvocation((Class)forDefinition, null, this);
