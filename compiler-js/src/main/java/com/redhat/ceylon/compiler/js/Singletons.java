@@ -212,19 +212,24 @@ public class Singletons {
         final String singvar = gen.getNames().name(d);
         final String tmpvar = gen.getNames().createTempVariable();
         gen.defineAttribute(typevar, singvar);
-        gen.out("{if(", typevar, ".", tmpvar, "===undefined){");
+        gen.out("{if(");
+        if (td.isClassOrInterfaceMember()) {
+            gen.outerSelf(td);
+            gen.out(".");
+        }
+        gen.out(typevar, ".", tmpvar, "===undefined){");
         if (dc==null) {
             gen.out("$init$", typevar, "();");
         }
         gen.out("var ", objvar, "=");
         if (dc == null) {
             gen.out("new ", typevar, ".$$;");
+            //gen.out(typevar, "$$c(", objvar, ");");
             if (td.isClassOrInterfaceMember()) {
                 gen.out(objvar, ".outer$=");
                 gen.outerSelf(td);
                 gen.out(";");
             }
-            gen.out(typevar, "$$c(", objvar, ");");
         } else {
             dc.getInvocationExpression().visit(gen);
             gen.endLine(true);
