@@ -2539,6 +2539,10 @@ public class ModelUtil {
         return null;
     }
     
+    public static Declaration getNativeHeader(Declaration dec) {
+        return getNativeHeader(dec.getContainer(), dec.getName());
+    }
+    
     /**
      * Find the header with the given name that occurs
      * directly in the given scope or if that scope is
