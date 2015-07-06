@@ -44,6 +44,7 @@ import com.redhat.ceylon.model.loader.model.OutputElement;
 import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.model.typechecker.model.Constructor;
+import com.redhat.ceylon.model.typechecker.model.Function;
 import com.redhat.ceylon.model.typechecker.model.Interface;
 import com.redhat.ceylon.model.typechecker.model.ModelUtil;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
@@ -483,7 +484,8 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
         // is no native implementation specifically for this backend
         boolean accept = Decl.isForBackend(decl)
                 || (Decl.isHeaderWithoutBackend(decl)
-                    && Decl.isImplemented(decl));
+                    && Decl.isImplemented(decl))
+                || Decl.isHeaderInHeader(decl);
         if (!accept)
             return;
         int annots = gen.checkCompilerAnnotations(decl, defs);
@@ -583,7 +585,8 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
         // is no native implementation specifically for this backend
         boolean accept = Decl.isForBackend(decl)
                 || (Decl.isHeaderWithoutBackend(decl)
-                    && Decl.isImplemented(decl));
+                        && Decl.isImplemented(decl))
+                || Decl.isHeaderInHeader(decl);
         if (!accept)
             return;
         int annots = gen.checkCompilerAnnotations(decl, defs);

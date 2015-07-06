@@ -238,7 +238,8 @@ class Strategy {
     
     
     public static boolean createField(Parameter p, Value v) {
-        return !Decl.withinInterface(v) 
+        return !Decl.withinInterface(v)
+                && !Decl.isHeaderInHeader(v)
                 && (p == null 
                         || (useField(v)));
     }

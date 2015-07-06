@@ -84,6 +84,7 @@ import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
 import com.redhat.ceylon.model.typechecker.model.Functional;
 import com.redhat.ceylon.model.typechecker.model.Generic;
 import com.redhat.ceylon.model.typechecker.model.Interface;
+import com.redhat.ceylon.model.typechecker.model.ModelUtil;
 import com.redhat.ceylon.model.typechecker.model.Package;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.ParameterList;
@@ -3063,8 +3064,8 @@ public class ClassTransformer extends AbstractTransformer {
             result |= def.isShared() ? PUBLIC : 0;
         } else {
             result |= def.isShared() ? PUBLIC : PRIVATE;
-            result |= def.isFormal() && !def.isDefault() ? ABSTRACT : 0;
-            result |= !(def.isFormal() || def.isDefault() || def.getContainer() instanceof Interface) ? FINAL : 0;
+            result |= (def.isFormal() && !def.isDefault()) || Decl.isHeaderInHeader(def) ? ABSTRACT : 0;
+            result |= !(def.isFormal() || def.isDefault() || def.getContainer() instanceof Interface || Decl.isHeaderInHeader(def)) ? FINAL : 0;
         }
 
         return result;
@@ -3105,8 +3106,8 @@ public class ClassTransformer extends AbstractTransformer {
         int result = 0;
 
         result |= tdecl.isShared() ? PUBLIC : PRIVATE;
-        result |= ((tdecl.isFormal() && !tdecl.isDefault()) && !forCompanion) ? ABSTRACT : 0;
-        result |= !(tdecl.isFormal() || tdecl.isDefault() || Decl.withinInterface(tdecl)) || forCompanion ? FINAL : 0;
+        result |= (((tdecl.isFormal() && !tdecl.isDefault()) || Decl.isHeaderInHeader(tdecl)) && !forCompanion) ? ABSTRACT : 0;
+        result |= !(tdecl.isFormal() || tdecl.isDefault() || Decl.withinInterface(tdecl) || Decl.isHeaderInHeader(tdecl)) || forCompanion ? FINAL : 0;
 
         return result;
     }
@@ -3168,7 +3169,7 @@ public class ClassTransformer extends AbstractTransformer {
             builder.notActual();
         return builder
             .modifiers(transformAttributeGetSetDeclFlags(decl.getDeclarationModel(), forCompanion))
-            .isFormal((Decl.isFormal(decl) || Decl.withinInterface(decl)) && !forCompanion);
+            .isFormal((Decl.isFormal(decl) || Decl.withinInterface(decl) || Decl.isHeaderInHeader(decl)) && !forCompanion);
     }
     
     private AttributeDefinitionBuilder makeGetter(Tree.AttributeDeclaration decl, boolean forCompanion, boolean lazy) {
@@ -3578,7 +3579,9 @@ public class ClassTransformer extends AbstractTransformer {
         List<JCStatement> body = null;
         final Function model = def.getDeclarationModel();
         
-        if (model.isDeferred()) {
+        if (Decl.isHeaderInHeader(model)) {
+            // Do nothing
+        } else if (model.isDeferred()) {
             // Uninitialized or deferred initialized method => Make a Callable field
             String fieldName = naming.selector(model);
             final Parameter initializingParameter = CodegenUtil.findParamForDecl(def);
