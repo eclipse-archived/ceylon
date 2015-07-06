@@ -39,9 +39,17 @@ public class InvocationGenerator {
         retainedVars = rv;
     }
 
-    private Map<TypeParameter,Type> getTypeArguments(Tree.Primary typeArgSource) {
-        if (typeArgSource instanceof Tree.StaticMemberOrTypeExpression) {
-            Tree.StaticMemberOrTypeExpression smote = (Tree.StaticMemberOrTypeExpression) typeArgSource;
+    public void generateInvocation(Tree.InvocationExpression that) {
+        if (that.getNamedArgumentList()!=null) {
+            namedInvocation(that);
+        } else {
+            positionalInvocation(that);
+        }
+    }
+
+    private Map<TypeParameter,Type> getTypeArguments(Tree.Primary p) {
+        if (p instanceof Tree.StaticMemberOrTypeExpression) {
+            Tree.StaticMemberOrTypeExpression smote = (Tree.StaticMemberOrTypeExpression)p;
             final Declaration d = smote.getDeclaration();
             final boolean hasTargs = d != null && d.getContainer() instanceof Generic
                     && !((Generic)d.getContainer()).getTypeParameters().isEmpty();
@@ -57,207 +65,210 @@ public class InvocationGenerator {
                 }
                 return targs;
             }
+        } else if (p instanceof Tree.ExtendedTypeExpression) {
+            Tree.ExtendedTypeExpression ete = (Tree.ExtendedTypeExpression)p;
+            return ete.getTarget().getTypeArguments();
         }
         return null;
     }
 
-    public void generateInvocation(Tree.InvocationExpression that) {
+    private void namedInvocation(final Tree.InvocationExpression that) {
         final Tree.Primary typeArgSource = that.getPrimary();
-        if (that.getNamedArgumentList()!=null) {
-            Tree.NamedArgumentList argList = that.getNamedArgumentList();
-            if (gen.isInDynamicBlock() && typeArgSource instanceof Tree.MemberOrTypeExpression
-                    && ((Tree.MemberOrTypeExpression)typeArgSource).getDeclaration() == null) {
-                final String fname = names.createTempVariable();
-                gen.out("(", fname, "=");
-                //Call a native js constructor passing a native js object as parameter
-                if (typeArgSource instanceof Tree.QualifiedTypeExpression) {
-                    BmeGenerator.generateQte((Tree.QualifiedTypeExpression)typeArgSource, gen);
-                } else {
-                    typeArgSource.visit(gen);
-                }
-                gen.out(",", fname, ".$$===undefined?new ", fname, "(");
-                nativeObject(argList);
-                gen.out("):", fname, "(");
-                nativeObject(argList);
-                gen.out("))");
+        Tree.NamedArgumentList argList = that.getNamedArgumentList();
+        if (gen.isInDynamicBlock() && typeArgSource instanceof Tree.MemberOrTypeExpression
+                && ((Tree.MemberOrTypeExpression)typeArgSource).getDeclaration() == null) {
+            final String fname = names.createTempVariable();
+            gen.out("(", fname, "=");
+            //Call a native js constructor passing a native js object as parameter
+            if (typeArgSource instanceof Tree.QualifiedTypeExpression) {
+                BmeGenerator.generateQte((Tree.QualifiedTypeExpression)typeArgSource, gen);
             } else {
-                gen.out("(");
-                Map<String, String> argVarNames = defineNamedArguments(typeArgSource, argList);
-                if (typeArgSource instanceof Tree.BaseMemberExpression) {
-                    BmeGenerator.generateBme((Tree.BaseMemberExpression)typeArgSource, gen);
-                } else if (typeArgSource instanceof Tree.QualifiedTypeExpression) {
-                    BmeGenerator.generateQte((Tree.QualifiedTypeExpression)typeArgSource, gen);
-                } else {
-                    typeArgSource.visit(gen);
-                }
-                if (typeArgSource instanceof Tree.MemberOrTypeExpression) {
-                    Tree.MemberOrTypeExpression mte = (Tree.MemberOrTypeExpression) typeArgSource;
-                    if (mte.getDeclaration() instanceof Functional) {
-                        Functional f = (Functional) mte.getDeclaration();
-                        Map<TypeParameter, Type> targs = getTypeArguments(typeArgSource);
-                        applyNamedArguments(argList, f, argVarNames, gen.getSuperMemberScope(mte)!=null, targs);
-                    }
-                }
-                gen.out(")");
+                typeArgSource.visit(gen);
             }
-        }
-        else {
-            final Tree.PositionalArgumentList argList = that.getPositionalArgumentList();
-            final Map<TypeParameter, Type> targs = getTypeArguments(typeArgSource);
-            if (gen.isInDynamicBlock() && typeArgSource instanceof Tree.BaseTypeExpression
-                    && ((Tree.BaseTypeExpression)typeArgSource).getDeclaration() == null) {
-                gen.out("(");
-                //Could be a dynamic object, or a Ceylon one
-                //We might need to call "new" so we need to get all the args to pass directly later
-                final List<String> argnames = generatePositionalArguments(typeArgSource,
-                        argList, argList.getPositionalArguments(), false, true);
-                if (!argnames.isEmpty()) {
-                    gen.out(",");
-                }
-                final String fname = names.createTempVariable();
-                gen.out(fname,"=");
-                if (typeArgSource instanceof Tree.QualifiedTypeExpression) {
-                    BmeGenerator.generateQte((Tree.QualifiedTypeExpression)typeArgSource, gen);
-                } else {
-                    typeArgSource.visit(gen);
-                }
-                String fuckingargs = "";
-                if (!argnames.isEmpty()) {
-                    fuckingargs = argnames.toString().substring(1);
-                    fuckingargs = fuckingargs.substring(0, fuckingargs.length()-1);
-                }
-                gen.out(",", fname, ".$$===undefined?new ", fname, "(", fuckingargs, "):", fname, "(", fuckingargs, "))");
-                //TODO we lose type args for now
-                return;
+            gen.out(",", fname, ".$$===undefined?new ", fname, "(");
+            nativeObject(argList);
+            gen.out("):", fname, "(");
+            nativeObject(argList);
+            gen.out("))");
+        } else {
+            gen.out("(");
+            Map<String, String> argVarNames = defineNamedArguments(typeArgSource, argList);
+            if (typeArgSource instanceof Tree.BaseMemberExpression) {
+                BmeGenerator.generateBme((Tree.BaseMemberExpression)typeArgSource, gen);
+            } else if (typeArgSource instanceof Tree.QualifiedTypeExpression) {
+                BmeGenerator.generateQte((Tree.QualifiedTypeExpression)typeArgSource, gen);
             } else {
-                if (typeArgSource instanceof Tree.BaseMemberExpression) {
-                    final Tree.BaseMemberExpression _bme = (Tree.BaseMemberExpression)typeArgSource;
-                    if (gen.isInDynamicBlock() && _bme.getDeclaration() != null &&
-                            "ceylon.language::print".equals(_bme.getDeclaration().getQualifiedNameString())) {
-                        Tree.PositionalArgument printArg =  that.getPositionalArgumentList().getPositionalArguments().get(0);
-                        if (ModelUtil.isTypeUnknown(printArg.getTypeModel())) {
-                            gen.out(gen.getClAlias(), "pndo$(/*DYNAMIC arg*/"); //#397
-                            printArg.visit(gen);
-                            gen.out(")");
-                            return;
-                        }
-                    }
-                    BmeGenerator.generateBme(_bme, gen);
-                } else if (typeArgSource instanceof Tree.QualifiedTypeExpression) {
-                    BmeGenerator.generateQte((Tree.QualifiedTypeExpression)typeArgSource, gen);
-                } else {
-                    typeArgSource.visit(gen);
-                }
-
-                if (gen.opts.isOptimize() && (gen.getSuperMemberScope(typeArgSource) != null)) {
-                    gen.out(".call(", names.self(ModelUtil.getContainingClassOrInterface(typeArgSource.getScope())));
-                    if (!argList.getPositionalArguments().isEmpty()) {
-                        gen.out(",");
-                    }
-                } else {
-                    gen.out("(");
-                }
-                //Check if args have params
-                boolean fillInParams = !argList.getPositionalArguments().isEmpty();
-                for (Tree.PositionalArgument arg : argList.getPositionalArguments()) {
-                    fillInParams &= arg.getParameter() == null;
-                }
-                if (fillInParams) {
-                    //Get the callable and try to assign params from there
-                    Interface cd = that.getUnit().getCallableDeclaration();
-                    final Type ed = that.getUnit().getEmptyType();
-                    Class td = that.getUnit().getTupleDeclaration();
-                    Type callable = typeArgSource.getTypeModel().getSupertype(cd);
-                    if (callable != null) {
-                        //This is a tuple with the arguments to the callable
-                        //(can be union with empty if first param is defaulted)
-                        Type callableArgs = callable.getTypeArgumentList().get(1);
-                        boolean isUnion=false;
-                        if (callableArgs.isUnion()) {
-                            if (callableArgs.getCaseTypes().size() == 2) {
-                                callableArgs = callableArgs.minus(ed);
-                            }
-                            isUnion=callableArgs.isUnion();
-                        }
-                        //This is the type of the first argument
-                        boolean isSequenced = !(isUnion || td.equals(
-                                callableArgs.getDeclaration()));
-                        Type argtype = isUnion ? callableArgs :
-                            callableArgs.isTypeParameter() ? callableArgs :
-                            callableArgs.getTypeArgumentList().get(
-                                isSequenced ? 0 : 1);
-                        Parameter p = null;
-                        int c = 0;
-                        for (Tree.PositionalArgument arg : argList.getPositionalArguments()) {
-                            if (p == null) {
-                                p = new Parameter();
-                                p.setName("arg"+c);
-                                p.setDeclaration(typeArgSource.getTypeModel().getDeclaration());
-                                Value v = new Value();
-                                v.setContainer(that.getPositionalArgumentList().getScope());
-                                v.setType(argtype);
-                                p.setModel(v);
-                                if (callableArgs == null || isSequenced) {
-                                    p.setSequenced(true);
-                                } else if (!isSequenced) {
-                                    Type next = isUnion ? null : callableArgs.getTypeArgumentList().get(2);
-                                    if (next != null && next.getSupertype(td) == null) {
-                                        //It's not a tuple, so no more regular parms. It can be:
-                                        //empty|tuple if defaulted params
-                                        //empty if no more params
-                                        //sequential if sequenced param
-                                        if (next.isUnion()) {
-                                            //empty|tuple
-                                            callableArgs = next.minus(ed);
-                                            isSequenced = !td.equals(callableArgs.getDeclaration());
-                                            argtype = callableArgs.getTypeArgumentList().get(isSequenced ? 0 : 1);
-                                        } else {
-                                            //we'll bet on sequential (if it's empty we don't care anyway)
-                                            argtype = next;
-                                            callableArgs = null;
-                                        }
-                                    } else {
-                                        //If it's a tuple then there are more params
-                                        callableArgs = next;
-                                        argtype = callableArgs == null ? null : callableArgs.getTypeArgumentList().get(1);
-                                    }
-                                }
-                            }
-                            arg.setParameter(p);
-                            c++;
-                            if (!p.isSequenced()) {
-                                p = null;
-                            }
-                        }
-                    }
-                }
-                generatePositionalArguments(typeArgSource, argList, argList.getPositionalArguments(), false, false);
+                typeArgSource.visit(gen);
             }
-            if (targs != null && !targs.isEmpty()
-                    && typeArgSource instanceof Tree.StaticMemberOrTypeExpression
-                    && ((Tree.StaticMemberOrTypeExpression)typeArgSource).getDeclaration() instanceof Functional) {
-                if (argList.getPositionalArguments().size() > 0) {
-                    gen.out(",");
-                }
-                Functional bmed = (Functional)((Tree.StaticMemberOrTypeExpression)typeArgSource).getDeclaration();
-                //If there are fewer arguments than there are parameters...
-                final int argsSize = argList.getPositionalArguments().size();
-                int paramArgDiff = ((Functional) bmed).getFirstParameterList().getParameters().size() - argsSize;
-                if (paramArgDiff > 0) {
-                    final Tree.PositionalArgument parg = argsSize > 0 ? argList.getPositionalArguments().get(argsSize-1) : null;
-                    if (parg instanceof Tree.Comprehension || parg instanceof Tree.SpreadArgument) {
-                        paramArgDiff--;
-                    }
-                    for (int i=0; i < paramArgDiff; i++) {
-                        gen.out("undefined,");
-                    }
-                }
-                if (targs != null && !targs.isEmpty()) {
-                    TypeUtils.printTypeArguments(typeArgSource, targs, gen, false, null);
+            if (typeArgSource instanceof Tree.MemberOrTypeExpression) {
+                Tree.MemberOrTypeExpression mte = (Tree.MemberOrTypeExpression) typeArgSource;
+                if (mte.getDeclaration() instanceof Functional) {
+                    Functional f = (Functional) mte.getDeclaration();
+                    Map<TypeParameter, Type> targs = getTypeArguments(typeArgSource);
+                    applyNamedArguments(argList, f, argVarNames, gen.getSuperMemberScope(mte)!=null, targs);
                 }
             }
             gen.out(")");
         }
+    }
+
+    private void positionalInvocation(final Tree.InvocationExpression that) {
+        final Tree.Primary typeArgSource = that.getPrimary();
+        final Tree.PositionalArgumentList argList = that.getPositionalArgumentList();
+        final Map<TypeParameter, Type> targs = getTypeArguments(typeArgSource);
+        if (gen.isInDynamicBlock() && typeArgSource instanceof Tree.BaseTypeExpression
+                && ((Tree.BaseTypeExpression)typeArgSource).getDeclaration() == null) {
+            gen.out("(");
+            //Could be a dynamic object, or a Ceylon one
+            //We might need to call "new" so we need to get all the args to pass directly later
+            final List<String> argnames = generatePositionalArguments(typeArgSource,
+                    argList, argList.getPositionalArguments(), false, true);
+            if (!argnames.isEmpty()) {
+                gen.out(",");
+            }
+            final String fname = names.createTempVariable();
+            gen.out(fname,"=");
+            if (typeArgSource instanceof Tree.QualifiedTypeExpression) {
+                BmeGenerator.generateQte((Tree.QualifiedTypeExpression)typeArgSource, gen);
+            } else {
+                typeArgSource.visit(gen);
+            }
+            String fuckingargs = "";
+            if (!argnames.isEmpty()) {
+                fuckingargs = argnames.toString().substring(1);
+                fuckingargs = fuckingargs.substring(0, fuckingargs.length()-1);
+            }
+            gen.out(",", fname, ".$$===undefined?new ", fname, "(", fuckingargs, "):", fname, "(", fuckingargs, "))");
+            //TODO we lose type args for now
+            return;
+        } else {
+            if (typeArgSource instanceof Tree.BaseMemberExpression) {
+                final Tree.BaseMemberExpression _bme = (Tree.BaseMemberExpression)typeArgSource;
+                if (gen.isInDynamicBlock() && _bme.getDeclaration() != null &&
+                        "ceylon.language::print".equals(_bme.getDeclaration().getQualifiedNameString())) {
+                    Tree.PositionalArgument printArg =  that.getPositionalArgumentList().getPositionalArguments().get(0);
+                    if (ModelUtil.isTypeUnknown(printArg.getTypeModel())) {
+                        gen.out(gen.getClAlias(), "pndo$(/*DYNAMIC arg*/"); //#397
+                        printArg.visit(gen);
+                        gen.out(")");
+                        return;
+                    }
+                }
+                BmeGenerator.generateBme(_bme, gen);
+            } else if (typeArgSource instanceof Tree.QualifiedTypeExpression) {
+                BmeGenerator.generateQte((Tree.QualifiedTypeExpression)typeArgSource, gen);
+            } else {
+                typeArgSource.visit(gen);
+            }
+
+            if (gen.opts.isOptimize() && (gen.getSuperMemberScope(typeArgSource) != null)) {
+                gen.out(".call(", names.self(ModelUtil.getContainingClassOrInterface(typeArgSource.getScope())));
+                if (!argList.getPositionalArguments().isEmpty()) {
+                    gen.out(",");
+                }
+            } else {
+                gen.out("(");
+            }
+            //Check if args have params
+            boolean fillInParams = !argList.getPositionalArguments().isEmpty();
+            for (Tree.PositionalArgument arg : argList.getPositionalArguments()) {
+                fillInParams &= arg.getParameter() == null;
+            }
+            if (fillInParams) {
+                //Get the callable and try to assign params from there
+                Interface cd = that.getUnit().getCallableDeclaration();
+                final Type ed = that.getUnit().getEmptyType();
+                Class td = that.getUnit().getTupleDeclaration();
+                Type callable = typeArgSource.getTypeModel().getSupertype(cd);
+                if (callable != null) {
+                    //This is a tuple with the arguments to the callable
+                    //(can be union with empty if first param is defaulted)
+                    Type callableArgs = callable.getTypeArgumentList().get(1);
+                    boolean isUnion=false;
+                    if (callableArgs.isUnion()) {
+                        if (callableArgs.getCaseTypes().size() == 2) {
+                            callableArgs = callableArgs.minus(ed);
+                        }
+                        isUnion=callableArgs.isUnion();
+                    }
+                    //This is the type of the first argument
+                    boolean isSequenced = !(isUnion || td.equals(
+                            callableArgs.getDeclaration()));
+                    Type argtype = isUnion ? callableArgs :
+                        callableArgs.isTypeParameter() ? callableArgs :
+                        callableArgs.getTypeArgumentList().get(
+                            isSequenced ? 0 : 1);
+                    Parameter p = null;
+                    int c = 0;
+                    for (Tree.PositionalArgument arg : argList.getPositionalArguments()) {
+                        if (p == null) {
+                            p = new Parameter();
+                            p.setName("arg"+c);
+                            p.setDeclaration(typeArgSource.getTypeModel().getDeclaration());
+                            Value v = new Value();
+                            v.setContainer(that.getPositionalArgumentList().getScope());
+                            v.setType(argtype);
+                            p.setModel(v);
+                            if (callableArgs == null || isSequenced) {
+                                p.setSequenced(true);
+                            } else if (!isSequenced) {
+                                Type next = isUnion ? null : callableArgs.getTypeArgumentList().get(2);
+                                if (next != null && next.getSupertype(td) == null) {
+                                    //It's not a tuple, so no more regular parms. It can be:
+                                    //empty|tuple if defaulted params
+                                    //empty if no more params
+                                    //sequential if sequenced param
+                                    if (next.isUnion()) {
+                                        //empty|tuple
+                                        callableArgs = next.minus(ed);
+                                        isSequenced = !td.equals(callableArgs.getDeclaration());
+                                        argtype = callableArgs.getTypeArgumentList().get(isSequenced ? 0 : 1);
+                                    } else {
+                                        //we'll bet on sequential (if it's empty we don't care anyway)
+                                        argtype = next;
+                                        callableArgs = null;
+                                    }
+                                } else {
+                                    //If it's a tuple then there are more params
+                                    callableArgs = next;
+                                    argtype = callableArgs == null ? null : callableArgs.getTypeArgumentList().get(1);
+                                }
+                            }
+                        }
+                        arg.setParameter(p);
+                        c++;
+                        if (!p.isSequenced()) {
+                            p = null;
+                        }
+                    }
+                }
+            }
+            generatePositionalArguments(typeArgSource, argList, argList.getPositionalArguments(), false, false);
+        }
+        if (targs != null && !targs.isEmpty()
+                && typeArgSource instanceof Tree.MemberOrTypeExpression
+                && ((Tree.MemberOrTypeExpression)typeArgSource).getDeclaration() instanceof Functional) {
+            if (argList.getPositionalArguments().size() > 0) {
+                gen.out(",");
+            }
+            Functional bmed = (Functional)((Tree.MemberOrTypeExpression)typeArgSource).getDeclaration();
+            //If there are fewer arguments than there are parameters...
+            final int argsSize = argList.getPositionalArguments().size();
+            int paramArgDiff = ((Functional) bmed).getFirstParameterList().getParameters().size() - argsSize;
+            if (paramArgDiff > 0) {
+                final Tree.PositionalArgument parg = argsSize > 0 ? argList.getPositionalArguments().get(argsSize-1) : null;
+                if (parg instanceof Tree.Comprehension || parg instanceof Tree.SpreadArgument) {
+                    paramArgDiff--;
+                }
+                for (int i=0; i < paramArgDiff; i++) {
+                    gen.out("undefined,");
+                }
+            }
+            if (targs != null && !targs.isEmpty()) {
+                TypeUtils.printTypeArguments(typeArgSource, targs, gen, false, null);
+            }
+        }
+        gen.out(")");
     }
 
     /** Generates the code to evaluate the expressions in the named argument list and assign them

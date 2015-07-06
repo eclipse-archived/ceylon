@@ -3390,9 +3390,7 @@ public class GenerateJsVisitor extends Visitor
             qualify(that, (Declaration)d.getContainer());
             out(names.name((Declaration)d.getContainer()), "_");
         } else {
-            if (qualify(that, d)) {
-                out(".");
-            }
+            qualify(that, d);
         }
         out(names.name(d));
     }

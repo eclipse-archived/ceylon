@@ -224,7 +224,6 @@ public class Singletons {
         gen.out("var ", objvar, "=");
         if (dc == null) {
             gen.out("new ", typevar, ".$$;");
-            //gen.out(typevar, "$$c(", objvar, ");");
             if (td.isClassOrInterfaceMember()) {
                 gen.out(objvar, ".outer$=");
                 gen.outerSelf(td);
