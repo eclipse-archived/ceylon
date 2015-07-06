@@ -445,8 +445,11 @@ public class GenerateJsVisitor extends Visitor
             out("(function(){");
         }
         for (Tree.Statement s2 : stmts) {
-            //Ignore return statements directly in main constructor scope
-            s2.visit(this);
+            if (s2 instanceof Tree.SpecifierStatement) {
+                specifierStatement(cnstr.getConstructor(), (Tree.SpecifierStatement)s2);
+            } else {
+                s2.visit(this);
+            }
             if (!opts.isMinify())beginNewLine();
             retainedVars.emitRetainedVars(this);
             //Remove attribute declaration in lexical style so that
@@ -2188,7 +2191,41 @@ public class GenerateJsVisitor extends Visitor
             specifierStatement(null, that);
         }
     }
-    
+
+    private void assignment(final TypeDeclaration outer, final Declaration d, final Tree.Expression expr) {
+        FunctionOrValue vdec = (FunctionOrValue)d;
+        final String atname = d.isShared() ? names.name(d)+"_" : names.privateName(d);
+        if (outer instanceof Constructor) {
+            if (d.isClassOrInterfaceMember()) {
+                out(names.self(outer), ".", atname, "=");
+            } else {
+                out(names.name(d), "=");
+            }
+            expr.visit(this);
+            endLine(true);
+        }
+        if (d.isClassOrInterfaceMember()) {
+            defineAttribute(names.self(outer), names.name(d));
+            out("{");
+            if (vdec.isLate()) {
+                generateUnitializedAttributeReadCheck("this."+atname, names.name(d));
+            }
+            out("return this.", atname, ";}");
+            if (vdec.isVariable() || vdec.isLate()) {
+                final String par = getNames().createTempVariable();
+                out(",function(", par, "){");
+                generateImmutableAttributeReassignmentCheck(vdec, "this."+atname, names.name(d));
+                out("return this.", atname, "=", par, ";}");
+            } else {
+                out(",undefined");
+            }
+            out(",");
+            TypeUtils.encodeForRuntime(expr, d, this);
+            out(")");
+            endLine(true);
+        }
+    }
+
     private void specifierStatement(final TypeDeclaration outer,
             final Tree.SpecifierStatement specStmt) {
         final Tree.Expression expr = specStmt.getSpecifierExpression().getExpression();
@@ -2243,27 +2280,8 @@ public class GenerateJsVisitor extends Visitor
             else if (outer != null) {
                 // "attr = expr;" in a prototype definition
                 //since #451 we now generate an attribute here
-                if (bmeDecl.isMember() && (bmeDecl instanceof Value) && bmeDecl.isActual()) {
-                    Value vdec = (Value)bmeDecl;
-                    final String atname = vdec.isShared() ? names.name(vdec)+"_" : names.privateName(vdec);
-                    defineAttribute(names.self(outer), names.name(vdec));
-                    out("{");
-                    if (vdec.isLate()) {
-                        generateUnitializedAttributeReadCheck("this."+atname, names.name(vdec));
-                    }
-                    out("return this.", atname, ";}");
-                    if (vdec.isVariable() || vdec.isLate()) {
-                        final String par = getNames().createTempVariable();
-                        out(",function(", par, "){");
-                        generateImmutableAttributeReassignmentCheck(vdec, "this."+atname, names.name(vdec));
-                        out("return this.", atname, "=", par, ";}");
-                    } else {
-                        out(",undefined");
-                    }
-                    out(",");
-                    TypeUtils.encodeForRuntime(expr, vdec, this);
-                    out(")");
-                    endLine(true);
+                if (outer instanceof Constructor || (bmeDecl.isMember() && (bmeDecl instanceof Value) && bmeDecl.isActual())) {
+                    assignment(outer, bmeDecl, expr);
                 }
             }
             else if (bmeDecl instanceof FunctionOrValue) {
