@@ -2583,12 +2583,15 @@ public class ModelUtil {
         return header;
     }
     
-    // Check if the Value is part of an object (is there a 
-    // better way to check this?)
+    // Check if the Value is part of an object
     public static boolean isObject(Value v) {
-        return v.getType().getDeclaration()
-                .getQualifiedNameString()
-                .equals(v.getQualifiedNameString());
+        Type type = v.getType();
+        // Check type because in case of compile errors it can be null
+        if (type != null) {
+            TypeDeclaration typeDecl = type.getDeclaration();
+            return typeDecl.isAnonymous();
+        }
+        return false;
     }
 
     public static boolean isImplemented(Declaration decl) {
