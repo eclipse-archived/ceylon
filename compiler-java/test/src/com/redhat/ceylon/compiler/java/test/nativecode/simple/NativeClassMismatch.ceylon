@@ -113,6 +113,11 @@ native("js") shared class NativeClassMismatch8js() satisfies NativeClassMismatch
     }
 }
 
+void nativeClassMismatch8() {
+    NativeClassMismatch8jvm().test1(0);
+    NativeClassMismatch8js().test2(0);
+}
+
 native class NativeClassMismatch9() {
     native shared void test1(Integer i);
     native shared void test2(Integer i);
@@ -139,7 +144,24 @@ native("js") class NativeClassMismatch9() {
     shared void testY(Integer i) {}
 }
 
-void nativeClassMismatch8() {
-    NativeClassMismatch8jvm().test1(0);
-    NativeClassMismatch8js().test2(0);
+native shared class NativeClassMismatch10(Integer x, Integer y) {
+    native shared void test() { privmeth(); }
+    native shared Integer foo => privattr;
+    native shared void test2();
+    native void privmeth();
+    native Integer privattr;
+}
+
+native("jvm") shared class NativeClassMismatch10(Integer x, Integer y) {
+    native("jvm") shared void test2() {
+        test();
+        value x = foo;
+    }
+}
+
+native("js") shared class NativeClassMismatch10(Integer x, Integer y) {
+    native("js") shared void test2() {
+        test();
+        value x = foo;
+    }
 }

@@ -22,6 +22,9 @@ native shared class NativeClassShared() {
     native shared Integer foo;
     native shared Integer bar;
     native assign bar;
+    shared void access() {
+        test(foo + bar);
+    }
 }
 
 native("jvm") shared class NativeClassShared() {

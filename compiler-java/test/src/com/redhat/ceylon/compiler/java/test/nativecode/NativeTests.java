@@ -285,20 +285,28 @@ public class NativeTests extends CompilerTests {
                 new CompilerError(106, "no native implementation for backend: native 'NativeClassMismatch8js' is not implemented for one or more backends"),
                 new CompilerError(112, "no native implementation for backend: native 'NativeClassMismatch8jvm' is not implemented for one or more backends"),
                 new CompilerError(112, "no native implementation for backend: native 'test1' is not implemented for one or more backends"),
-                new CompilerError(124, "native header 'test5' of 'NativeClassMismatch9' has no native implementation"),
-                new CompilerError(126, "type of parameter 's' of 'test2' is different to type of corresponding parameter 'i' of native header 'test2': 'String' is not exactly 'Integer'"),
-                new CompilerError(127, "native implementation must have the same return type as native header: 'test3' in 'NativeClassMismatch9' must have the type 'Anything'"),
-                new CompilerError(128, "member does not have the same number of parameters as native header: 'test4'"),
-                new CompilerError(129, "native member does not implement any header member: 'testX' in 'NativeClassMismatch9'"),
-                new CompilerError(130, "non-native shared members not allowed in native implementations: 'testY' in 'NativeClassMismatch9'"),
-                new CompilerError(133, "native header 'test5' of 'NativeClassMismatch9' has no native implementation"),
-                new CompilerError(135, "type of parameter 's' of 'test2' is different to type of corresponding parameter 'i' of native header 'test2': 'String' is not exactly 'Integer'"),
-                new CompilerError(136, "native implementation must have the same return type as native header: 'test3' in 'NativeClassMismatch9' must have the type 'Anything'"),
-                new CompilerError(137, "member does not have the same number of parameters as native header: 'test4'"),
-                new CompilerError(138, "native member does not implement any header member: 'testX' in 'NativeClassMismatch9'"),
-                new CompilerError(139, "non-native shared members not allowed in native implementations: 'testY' in 'NativeClassMismatch9'"),
-                new CompilerError(144, "no native implementation for backend: native 'NativeClassMismatch8js' is not implemented for one or more backends"),
-                new CompilerError(144, "no native implementation for backend: native 'test2' is not implemented for one or more backends")
+                new CompilerError(118, "no native implementation for backend: native 'NativeClassMismatch8js' is not implemented for one or more backends"),
+                new CompilerError(118, "no native implementation for backend: native 'test2' is not implemented for one or more backends"),
+                new CompilerError(129, "native header 'test5' of 'NativeClassMismatch9' has no native implementation"),
+                new CompilerError(131, "type of parameter 's' of 'test2' is different to type of corresponding parameter 'i' of native header 'test2': 'String' is not exactly 'Integer'"),
+                new CompilerError(132, "native implementation must have the same return type as native header: 'test3' in 'NativeClassMismatch9' must have the type 'Anything'"),
+                new CompilerError(133, "member does not have the same number of parameters as native header: 'test4'"),
+                new CompilerError(134, "native member does not implement any header member: 'testX' in 'NativeClassMismatch9'"),
+                new CompilerError(135, "non-native shared members not allowed in native implementations: 'testY' in 'NativeClassMismatch9'"),
+                new CompilerError(138, "native header 'test5' of 'NativeClassMismatch9' has no native implementation"),
+                new CompilerError(140, "type of parameter 's' of 'test2' is different to type of corresponding parameter 'i' of native header 'test2': 'String' is not exactly 'Integer'"),
+                new CompilerError(141, "native implementation must have the same return type as native header: 'test3' in 'NativeClassMismatch9' must have the type 'Anything'"),
+                new CompilerError(142, "member does not have the same number of parameters as native header: 'test4'"),
+                new CompilerError(143, "native member does not implement any header member: 'testX' in 'NativeClassMismatch9'"),
+                new CompilerError(144, "non-native shared members not allowed in native implementations: 'testY' in 'NativeClassMismatch9'"),
+                new CompilerError(148, "cannot find symbol\n" + 
+                        "  symbol:   method privmeth$priv$()\n" + 
+                        "  location: class com.redhat.ceylon.compiler.java.test.nativecode.simple.NativeClassMismatch10$header$"),
+                new CompilerError(149, "cannot find symbol\n" + 
+                        "  symbol:   method getPrivattr$priv$()\n" + 
+                        "  location: class com.redhat.ceylon.compiler.java.test.nativecode.simple.NativeClassMismatch10$header$"),
+                new CompilerError(151, "member in native header must be non-native or shared: 'privmeth' of 'NativeClassMismatch10'"),
+                new CompilerError(152, "member in native header must be non-native or shared: 'privattr' of 'NativeClassMismatch10'")
         );
     }
     
