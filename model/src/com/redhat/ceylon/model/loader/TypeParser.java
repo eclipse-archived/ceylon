@@ -1,7 +1,7 @@
 package com.redhat.ceylon.model.loader;
 
-import static com.redhat.ceylon.model.typechecker.model.ModelUtil.intersectionType;
-import static com.redhat.ceylon.model.typechecker.model.ModelUtil.unionType;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.intersection;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.union;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -169,12 +169,18 @@ public class TypeParser {
      * unionType: intersectionType (| intersectionType)*
      */
     private Type parseUnionType() {
-        Type type = parseIntersectionType();
-        while(lexer.lookingAt(TypeLexer.OR)){
-            lexer.eat();
-            type = unionType(parseIntersectionType(), type, unit);
+        Type firstType = parseIntersectionType();
+        if(lexer.lookingAt(TypeLexer.OR)){
+            List<Type> caseTypes = new LinkedList<Type>();
+            caseTypes.add(firstType);
+            while(lexer.lookingAt(TypeLexer.OR)){
+                lexer.eat();
+                caseTypes.add(parseIntersectionType());
+            }
+            return union(caseTypes, unit);
+        }else{
+            return firstType;
         }
-        return type;
     }
 
     /**
@@ -186,12 +192,18 @@ public class TypeParser {
      *  intersectionType: qualifiedType (& qualifiedType)*
      */
     private Type parseIntersectionType() {
-        Type type = parsePrimaryType();
-        while(lexer.lookingAt(TypeLexer.AND)){
-            lexer.eat();
-            type = intersectionType(parsePrimaryType(), type, unit);
+        Type firstType = parsePrimaryType();
+        if(lexer.lookingAt(TypeLexer.AND)){
+            List<Type> satisfiedTypes = new LinkedList<Type>();
+            satisfiedTypes.add(firstType);
+            while(lexer.lookingAt(TypeLexer.AND)){
+                lexer.eat();
+                satisfiedTypes.add(parsePrimaryType());
+            }
+            return intersection(satisfiedTypes, unit);
+        }else{
+            return firstType;
         }
-        return type;
     }
     
     /**
@@ -411,25 +423,79 @@ public class TypeParser {
         }
         
         Type asTuple() {
+            final Type result;
             if (types.size() == 0) {
-                return unit.getEmptyType();
+                result = unit.getEmptyType();
+            } else {
+                final Type sequentialType;
+                if (variadic) {
+                    Part part = new Part("Sequence", Collections.singletonList(getLast()));
+                    sequentialType = loadType("ceylon.language", 
+                            atLeastOne ? "ceylon.language.Sequence" : "ceylon.language.Sequential", 
+                                    part, null);
+                } else {
+                    sequentialType = unit.getEmptyType();
+                }
+                
+                if (variadic && types.size() == 1) {
+                    result = sequentialType;
+                } else {
+                    Part part = new Part();
+                    // if we're variadic we put the element type there because we skip it below
+                    // if we're not variadic we are not going to skip it so let's not union it with itself
+                    Type union = variadic ? getLast() : null;
+                    Type tupleType = sequentialType;
+                    // A,B= 
+                    // union = null
+                    // tupleType = []
+                    // t = B
+                    // union = B
+                    // tupleType = [B]
+                    // tupleType = [B]|[]
+                    // t = A
+                    // union = A|B
+                    // tupleType = [A,[B]|[]]
+
+                    // A=,B= 
+                    // union = null
+                    // tupleType = []
+                    // t = B
+                    // union = B
+                    // tupleType = [B]
+                    // tupleType = [B]|[]
+                    // t = A
+                    // union = A|B
+                    // tupleType = [A,[B]|[]]
+                    // tupleType = [A,[B]|[]]|[]
+
+                    // A=,B* 
+                    // union = B
+                    // tupleType = [B*]
+                    // t = A
+                    // union = A|B
+                    // tupleType = [A,[B*]]
+                    // tupleType = [A,[B*]]|[]
+
+                    int makeDefaulted = defaulted;
+                    for (int ii  = types.size()-(variadic? 2 : 1); ii >= 0; ii--) {
+                        Type t = types.get(ii);
+                        // FIXME: subtyping in the type parser may cause issues
+                        if(union != null) // any second element (variadic or not)
+                            union = ModelUtil.unionType(union, t, unit);
+                        else
+                            union = t; // any first element
+                        part.parameters = Arrays.asList(union, t, tupleType);
+                        part.name = "Tuple";
+                        tupleType = loadType("ceylon.language", "ceylon.language.Tuple", part, null);
+                        if(makeDefaulted > 0){
+                            makeDefaulted--;
+                            tupleType = union(Arrays.asList(unit.getEmptyType(), tupleType), unit);
+                        }
+                    }
+                    result = tupleType;
+                }
             }
-            if (types.size() == 1 && variadic) {
-                return loadType("ceylon.language",
-                    atLeastOne ? "ceylon.language.Sequence" : "ceylon.language.Sequential",
-                    new Part("Sequence", Collections.singletonList(getLast())), null);
-            }
-            if (types.size() == defaulted) {
-                return unionType(new TypeList(types, variadic, atLeastOne, defaulted - 1).asTuple(), unit.getEmptyType(), unit);
-            }
-            else {
-                Type head = types.get(0);
-                Type tail = new TypeList(types.subList(1, types.size()), variadic, atLeastOne, defaulted).asTuple();
-                Type tailElementType = unit.getSequentialElementType(tail);
-                Type elementType = unionType(tailElementType, head, unit);
-                Part part = new Part("Tuple", Arrays.asList(elementType, head, tail));
-                return loadType("ceylon.language", "ceylon.language.Tuple", part, null);
-            }
+            return result;
         }
     }
     
@@ -467,7 +533,6 @@ public class TypeParser {
             lexer.eat(TypeLexer.STAR);
             variadic = true;
             atLeastOne = false;
-            defaulted++;
         } else if (lexer.lookingAt(TypeLexer.PLUS)){
             lexer.eat(TypeLexer.PLUS);
             variadic = true;
