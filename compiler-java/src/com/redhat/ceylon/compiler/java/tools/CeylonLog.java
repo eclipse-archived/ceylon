@@ -69,8 +69,6 @@ public class CeylonLog extends Log {
         });
     }
 
-    private boolean majorVersionWarning = false;
-
     protected CeylonLog(Context context) {
         super(context);
         sourceLanguage = SourceLanguage.instance(context);
@@ -118,14 +116,9 @@ public class CeylonLog extends Log {
 
     @Override
     public void warning(String key, Object... args) {
-        // limit the number of warnings for Java 7 classes
+        // remove warnings for Java 7 classes
         if("big.major.version".equals(key)){
-            // change the key to a more helpful message
-            key = "ceylon.big.major.version";
-            if(!majorVersionWarning )
-                majorVersionWarning = true;
-            else // we already warned once
-                return;
+            return;
         }
         super.warning(key, args);
     }

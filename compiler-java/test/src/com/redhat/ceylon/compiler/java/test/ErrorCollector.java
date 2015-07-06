@@ -62,10 +62,6 @@ public class ErrorCollector implements DiagnosticListener<FileObject> {
         System.err.println(diagnostic.getKind().toString() + ":" 
                 + diagnostic.getMessage(null));
         
-        if (diagnostic.getMessage(Locale.getDefault()).startsWith("It looks like you are using class files from a Java newer than 1.7.")) {
-            return;
-        }
-        
         actualErrors.add(new CompilerError(diagnostic.getKind(),
                 diagnostic.getSource() != null ? diagnostic.getSource().getName() : null,
                 diagnostic.getLineNumber(),
