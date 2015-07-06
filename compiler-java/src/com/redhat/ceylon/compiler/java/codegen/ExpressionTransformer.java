@@ -1865,6 +1865,7 @@ public class ExpressionTransformer extends AbstractTransformer {
 
     public JCExpression transform(Tree.DefaultOp op, Type expectedType) {
         Term elseTerm = unwrapExpressionUntilTerm(op.getRightTerm());
+        Type typeModel = typeFact().denotableType(op.getTypeModel());
         if (unwrapExpressionUntilTerm(op.getLeftTerm()) instanceof Tree.ThenOp) {
             // Optimize cond then foo else bar (avoids unnecessary boxing in particular)
             Tree.ThenOp then = (Tree.ThenOp)unwrapExpressionUntilTerm(op.getLeftTerm());
@@ -1872,20 +1873,20 @@ public class ExpressionTransformer extends AbstractTransformer {
             Term thenTerm = then.getRightTerm();
             JCExpression cond = transformExpression(condTerm, BoxingStrategy.UNBOXED, condTerm.getTypeModel());
             JCExpression thenpart = transformExpression(thenTerm, CodegenUtil.getBoxingStrategy(op), 
-                    op.getTypeModel());
+                    typeModel);
             JCExpression elsepart = transformExpression(elseTerm, CodegenUtil.getBoxingStrategy(op), 
-                    op.getTypeModel());
+                    typeModel);
             return make().Conditional(cond, thenpart, elsepart);
         }
-        JCExpression left = transformExpression(op.getLeftTerm(), BoxingStrategy.BOXED, typeFact().getOptionalType(op.getTypeModel()));
+        JCExpression left = transformExpression(op.getLeftTerm(), BoxingStrategy.BOXED, typeFact().getOptionalType(typeModel));
         // make sure we do not insert null checks if we're going to allow testing for null
-        Type rightExpectedType = getOptionalTypeForInteropIfAllowed(expectedType, op.getTypeModel(), elseTerm);
+        Type rightExpectedType = getOptionalTypeForInteropIfAllowed(expectedType, typeModel, elseTerm);
         JCExpression right = transformExpression(elseTerm, BoxingStrategy.BOXED, rightExpectedType);
         Naming.SyntheticName varName = naming.temp();
         JCExpression varIdent = varName.makeIdent();
         JCExpression test = at(op).Binary(JCTree.NE, varIdent, makeNull());
         JCExpression cond = make().Conditional(test , varIdent, right);
-        JCExpression typeExpr = makeJavaType(op.getTypeModel(), JT_NO_PRIMITIVES);
+        JCExpression typeExpr = makeJavaType(typeModel, JT_NO_PRIMITIVES);
         return makeLetExpr(varName, null, typeExpr, left, cond);
     }
 
