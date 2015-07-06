@@ -18,6 +18,16 @@
  * MA  02110-1301, USA.
  */
 @noanno
+abstract class Bug2150Boolean() of bug2150True | bug2150False {}
+@noanno
+object bug2150True extends Bug2150Boolean() {}
+@noanno
+object bug2150False extends Bug2150Boolean() {}
+
+@noanno
 void bug2150(){
     Boolean b = { if (true) true }.first else false;
+    Bug2150Boolean mb = { if (true) bug2150True }.first else bug2150False; // error: required MyBoolean, found Object
+    
+    Comparison c = { if (true) smaller}.first else larger; // error: required Comparison, found Object
 }
