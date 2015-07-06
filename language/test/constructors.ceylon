@@ -70,37 +70,37 @@ class IssueJs525<T> satisfies Identifiable {
   string = sb.string;
 }
 
-StringBuilder js528 = StringBuilder();
+StringBuilder constructorSB = StringBuilder();
 class TestJs528 {
-    js528.append("1");
+    constructorSB.append("1");
     shared new c1() {
-        js528.append(", 1.5");
+        constructorSB.append(", 1.5");
     }
-    js528.append(", 2");
+    constructorSB.append(", 2");
     shared new c2() extends c1() {
-        js528.append(", 2.5");
+        constructorSB.append(", 2.5");
     }
-    js528.append(", 3");
+    constructorSB.append(", 3");
     shared new c3() extends c1() {
-        js528.append(", 3.5");
+        constructorSB.append(", 3.5");
     }
-    js528.append(", 4");
+    constructorSB.append(", 4");
 }
 
 class TestJs528Default {
-    js528.append("1");
+    constructorSB.append("1");
     shared new () {
-        js528.append(", 1.5");
+        constructorSB.append(", 1.5");
     }
-    js528.append(", 2");
+    constructorSB.append(", 2");
     shared new c2() extends TestJs528Default() {
-        js528.append(", 2.5");
+        constructorSB.append(", 2.5");
     }
-    js528.append(", 3");
+    constructorSB.append(", 3");
     shared new c3() extends TestJs528Default() {
-        js528.append(", 3.5");
+        constructorSB.append(", 3.5");
     }
-    js528.append(", 4");
+    constructorSB.append(", 4");
 }
 
 class TestJs538 {
@@ -141,18 +141,18 @@ class TestJs555<F> {
 class ParentConstr() {}
 
 class TestJs557<F> extends ParentConstr {
-    js528.append("1");
+    constructorSB.append("1");
     shared F f;
-    js528.append(",2");
+    constructorSB.append(",2");
     shared new bar(F f) extends ParentConstr() {
         this.f = f;
         check(`F`==`Integer`, "#557.3");
     }
-    js528.append(",3");
+    constructorSB.append(",3");
 
     shared new (F f) extends bar(f){
     }
-    js528.append(",4");
+    constructorSB.append(",4");
 }
 
 class TestJs565 {
@@ -244,6 +244,18 @@ class Js594 {
     shared new foo{}
 }
 
+class Parent595() {
+    constructorSB.append("a");
+}
+
+class Test595 extends Parent595 {
+    constructorSB.append("b");
+    shared new bar extends Parent595() {
+        constructorSB.append("c");
+    }
+    constructorSB.append("d");
+}
+
 @test
 void testConstructors() {
   value o=Outer1129();
@@ -285,32 +297,32 @@ void testConstructors() {
   check((f2 of Object) is IssueJs525<Integer>, "#525.8");
 
   TestJs528.c1();
-  check(js528.string=="1, 1.5, 2, 3, 4", "#528.1");
-  js528.clear();
+  check(constructorSB.string=="1, 1.5, 2, 3, 4", "#528.1");
+  constructorSB.clear();
   TestJs528.c2();
-  check(js528.string=="1, 1.5, 2, 2.5, 3, 4", "#528.2");
-  js528.clear();
+  check(constructorSB.string=="1, 1.5, 2, 2.5, 3, 4", "#528.2");
+  constructorSB.clear();
   TestJs528.c3();
-  check(js528.string=="1, 1.5, 2, 3, 3.5, 4", "#528.3");
-  js528.clear();
+  check(constructorSB.string=="1, 1.5, 2, 3, 3.5, 4", "#528.3");
+  constructorSB.clear();
   TestJs528Default();
-  check(js528.string=="1, 1.5, 2, 3, 4", "#536.1");
-  js528.clear();
+  check(constructorSB.string=="1, 1.5, 2, 3, 4", "#536.1");
+  constructorSB.clear();
   TestJs528Default.c2();
-  check(js528.string=="1, 1.5, 2, 2.5, 3, 4", "#536.2");
-  js528.clear();
+  check(constructorSB.string=="1, 1.5, 2, 2.5, 3, 4", "#536.2");
+  constructorSB.clear();
   TestJs528Default.c3();
-  check(js528.string=="1, 1.5, 2, 3, 3.5, 4", "#536.3");
-  js528.clear();
+  check(constructorSB.string=="1, 1.5, 2, 3, 3.5, 4", "#536.3");
+  constructorSB.clear();
   check(curry(TestJs538.foo)(1)(2).hash == 3, "#538.2");
   check(TestJs555(42).f==42, "#555.1");
-  js528.clear();
+  constructorSB.clear();
   TestJs557(1);
-  check(js528.string=="1,2,3,4", "#557.1 expected 1,2,3,4 got ``js528``");
-  js528.clear();
+  check(constructorSB.string=="1,2,3,4", "#557.1 expected 1,2,3,4 got ``constructorSB``");
+  constructorSB.clear();
   TestJs557.bar(1);
-  check(js528.string=="1,2,3,4", "#557.2 expected 1,2,3,4 got ``js528``");
-  js528.clear();
+  check(constructorSB.string=="1,2,3,4", "#557.2 expected 1,2,3,4 got ``constructorSB``");
+  constructorSB.clear();
   Anything test566 = TestJs566().Bar.baz();
   check(test566 exists, "#566");
   class TestJs564{ 
@@ -335,4 +347,7 @@ void testConstructors() {
   TestJs585_2().Bar.baz();
   Anything test594 = Js594.foo;
   check(test594 exists, "JS #594");
+  constructorSB.clear();
+  value unused1=Test595.bar;
+  check(constructorSB.string=="abcd", "JS #595");
 }
