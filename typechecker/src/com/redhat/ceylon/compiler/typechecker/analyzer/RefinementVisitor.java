@@ -176,7 +176,7 @@ public class RefinementVisitor extends Visitor {
         }
         // Find the header
         Declaration header =
-                getNativeHeader(dec.getContainer(), dec.getName());
+                getNativeHeader(dec);
         if (header == null) {
             // We don't have a header but we still need to maintain
             // the same interface as the rest of the implementations,
@@ -216,7 +216,7 @@ public class RefinementVisitor extends Visitor {
                 // we first need to find _its_ implementations
                 // but only if there's no header
                 Declaration header =
-                        getNativeHeader(cd.getContainer(), cd.getName());
+                        getNativeHeader(cd);
                 if (header == null) {
                     List<Declaration> cs = getNativeMembers(cd.getContainer(), cd.getName());
                     for (Declaration c : cs) {

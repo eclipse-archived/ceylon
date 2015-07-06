@@ -2125,7 +2125,7 @@ public class TypeVisitor extends Visitor {
                             inBackend.backendSupport;
             Declaration hdr = dec;
             if (!hdr.isNativeHeader()) {
-                hdr = getNativeHeader(dec.getContainer(), dec.getName());
+                hdr = getNativeHeader(dec);
             }
             Declaration impl =
                     getNativeDeclaration(dec, backend);

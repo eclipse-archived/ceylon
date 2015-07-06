@@ -220,7 +220,7 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
                             name + "'");
                 }
                 model.setNativeBackend(backend);
-                Declaration member = getNativeHeader(model.getContainer(), name);
+                Declaration member = getNativeHeader(model);
                 if (model.isMember() && 
                         isInNativeContainer(model)) {
                     Declaration container = 

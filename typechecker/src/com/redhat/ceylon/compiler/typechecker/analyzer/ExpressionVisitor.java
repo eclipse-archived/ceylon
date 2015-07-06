@@ -8983,7 +8983,7 @@ public class ExpressionVisitor extends Visitor {
                     impl = getNativeDeclaration(hdr, backend);
                 }
                 else {
-                    hdr = getNativeHeader(dec.getContainer(), dec.getName());
+                    hdr = getNativeHeader(dec);
                     if (hdr == null || backend.supportsBackend(Backend.fromAnnotation(dec.getNativeBackend()))) {
                         impl = dec;
                     }
