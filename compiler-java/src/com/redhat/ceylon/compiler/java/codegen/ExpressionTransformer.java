@@ -3678,13 +3678,20 @@ public class ExpressionTransformer extends AbstractTransformer {
         }
     }
 
+    // Creates a super() call for native implementations to pass their
+    // arguments on to their native header (type parameters and normal
+    // parameters are always exactly the same)
     public void makeHeaderSuperInvocation(Class decl, Node node, ClassDefinitionBuilder classBuilder) {
+        java.util.List<TypeParameter> tparamLists = decl.getTypeParameters();
         java.util.List<ParameterList> paramLists = decl.getParameterLists();
-        if(!paramLists.isEmpty()) {
+        if (!tparamLists.isEmpty() || !paramLists.isEmpty()) {
             boolean prevFnCall = withinInvocation(true);
             try {
                 CallBuilder callBuilder = CallBuilder.instance(this);
                 callBuilder.invoke(naming.makeSuper());
+                for (TypeParameter tp : tparamLists) {
+                    callBuilder.argument(makeUnquotedIdent(naming.getTypeArgumentDescriptorName(tp)));
+                }
                 for (Parameter p : paramLists.get(0).getParameters()) {
                     callBuilder.argument(makeUnquotedIdent(Naming.getAliasedParameterName(p)));
                 }
