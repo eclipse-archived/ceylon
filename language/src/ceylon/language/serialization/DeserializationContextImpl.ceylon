@@ -31,11 +31,11 @@ class DeserializationContextImpl<Id>() satisfies DeserializationContext<Id>
     // that's not ambiguous because Partial never leaks, so it's impossible
     // for a client to use the API to instantiate a Partial
     // they can only end up in the map due to our implementation.
-    NativeMap<Id,Anything> instances = NativeMapImpl<Id,Anything>();
+    NativeMap<Id,Anything> instances = nativeMap<Id,Anything>();
     
     //"""a cache of "attribute" (represented as a TypeDescriptor and an attribute name)
      //  to its type"""
-    shared NativeMapImpl<TypeDescriptor.Class->String, ProducedType> memberTypeCache = NativeMapImpl<TypeDescriptor.Class->String, ProducedType>();
+    shared NativeMap<TypeDescriptor.Class->String, ProducedType> memberTypeCache = nativeMap<TypeDescriptor.Class->String, ProducedType>();
     
     shared Anything leakInstance(Id id) => instances.get(id);
     
@@ -113,7 +113,7 @@ class DeserializationContextImpl<Id>() satisfies DeserializationContext<Id>
     }
     
     shared actual Instance reconstruct<Instance>(Id instanceId) {
-        NativeDeque deque = NativeDequeImpl();
+        NativeDeque deque = NativeDeque();
         value root = instances.get(instanceId);
         if (!root exists) {
             if (instances.contains(instanceId)) {

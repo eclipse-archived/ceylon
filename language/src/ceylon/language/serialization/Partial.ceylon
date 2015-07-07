@@ -19,7 +19,7 @@ abstract class Partial(id) {
     
     "The state, mapping references to the 
      id of the corresponding value in the [[DeserializationContext]]."
-    shared variable NativeMap<ReachableReference, Object>? state = NativeMapImpl<ReachableReference, Object>();
+    shared variable NativeMap<ReachableReference, Object>? state = nativeMap<ReachableReference, Object>();
     
     "Add some state."
     shared void addState(ReachableReference attrOrIndex, Object partialOrComplete) {
