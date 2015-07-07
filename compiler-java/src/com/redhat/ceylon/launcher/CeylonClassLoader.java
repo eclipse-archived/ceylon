@@ -222,16 +222,7 @@ public class CeylonClassLoader extends URLClassLoader {
                 urls.add(parentUrls.nextElement());
             }
         }
-        return new Enumeration<URL>() {
-            Iterator<URL> iter = urls.iterator();
-
-            public boolean hasMoreElements() {
-                return iter.hasNext();
-            }
-            public URL nextElement() {
-                return iter.next();
-            }
-        };
+        return Collections.enumeration(urls);
     }
 
     @Override
