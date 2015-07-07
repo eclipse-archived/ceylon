@@ -18,28 +18,30 @@
  * MA  02110-1301, USA.
  */
 
-abstract class NativeClassExtendsSuper() {
-    shared formal void test(Integer i);
-    shared void test2(Integer i) {}
+abstract class NativeClassExtendsSuper<A,B>(shared A a, B b) {
+    shared formal A test();
+    shared B test2() { return b; }
 }
 
-native class NativeClassExtends() extends NativeClassExtendsSuper() {
-    native shared actual void test(Integer i);
+native class NativeClassExtends<A,B,C>(A a, B b, C c) extends NativeClassExtendsSuper<A,B>(a, b) {
+    native shared actual A test();
+    native shared C test3() { return c; }
 }
 
-native("jvm") class NativeClassExtends() extends NativeClassExtendsSuper() {
-    native("jvm") shared actual void test(Integer i) {
+native("jvm") class NativeClassExtends<A,B,C>(A a, B b, C c) extends NativeClassExtendsSuper<A,B>(a, b) {
+    native("jvm") shared actual A test() {
         throw Exception("NativeClassExtends-JVM");
     }
+    native("jvm") shared C test3() { return c; }
 }
 
-native("js") class NativeClassExtends() extends NativeClassExtendsSuper() {
-    native("js") shared actual void test(Integer i) {
+native("js") class NativeClassExtends<A,B,C>(A a, B b, C c) extends NativeClassExtendsSuper<A,B>(a, b) {
+    native("js") shared actual A test() {
         throw Exception("NativeClassExtends-JS");
     }
 }
 
 shared void testNativeClassExtends() {
-    value x = NativeClassExtends().test(0);
-    value y = NativeClassExtends().test2(1);
+    value x = NativeClassExtends<Integer,String,Boolean>(1, "foo", true).test();
+    value y = NativeClassExtends<Integer,String,Boolean>(2, "bar", false).test2();
 }
