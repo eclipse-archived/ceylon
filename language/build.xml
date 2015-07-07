@@ -483,8 +483,7 @@
                 <exclude name="ceylon/language/meta/typeLiteral.ceylon"/>
                 <include name="ceylon/language/meta/typeLiteral_.java"/>
                 
-                <exclude name="ceylon/language/serialization/serialization.ceylon"/>
-                <include name="ceylon/language/serialization/serialization_.java"/>
+
                 <include name="ceylon/language/serialization/PartialImpl.java"/>
                 <include name="ceylon/language/serialization/NativeDequeImpl.java"/>
                 <include name="ceylon/language/serialization/NativeMapImpl.java"/>
@@ -517,7 +516,7 @@
     </target>
 
     <!-- Rule to compile and test -->
-    <target name="build" depends="ceylon.language.java,ceylon.language.js">
+    <target name="build" depends="ceylon.language.java">
         <!-- Temporary hack to prevent problems in the IDE when the compilation fails -->
         <mkdir dir="${ide.dist}"/>
         <copy todir="${ide.dist}">
