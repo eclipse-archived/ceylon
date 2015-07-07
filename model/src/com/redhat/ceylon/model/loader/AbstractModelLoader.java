@@ -2269,6 +2269,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         constructor.setContainer(klass);
         constructor.setScope(klass);
         constructor.setUnit(klass.getUnit());
+        constructor.setAbstract(ctor.getAnnotation(CEYLON_LANGUAGE_ABSTRACT_ANNOTATION) != null);
         constructor.setExtendedType(klass.getType());
         setDeclarationVisibilityAndDeprecation(constructor, ctor, ctor, classMirror, isCeylon);
         setAnnotations(constructor, ctor);
