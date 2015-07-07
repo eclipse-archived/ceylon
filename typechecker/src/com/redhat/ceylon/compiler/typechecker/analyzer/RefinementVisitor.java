@@ -433,7 +433,7 @@ public class RefinementVisitor extends Visitor {
             return;
         }
         Type at = header.getType();
-        if (!dec.getType().isExactly(at)) {
+        if (dec.getType() != null && !dec.getType().isExactly(at)) {
             that.addError("native implementation must have the same return type as native header: " +
                     message(dec) + " must have the type '" +
                     at.asString(that.getUnit()) + "'");
@@ -473,7 +473,7 @@ public class RefinementVisitor extends Visitor {
             return;
         }
         Type at = header.getType();
-        if (!dec.getType().isExactly(at)
+        if (dec.getType() != null && !dec.getType().isExactly(at)
                 && !sameObjects(dec, header)) {
             that.addError("native implementation must have the same type as native header: " +
                     message(dec) + " must have the type '" +
