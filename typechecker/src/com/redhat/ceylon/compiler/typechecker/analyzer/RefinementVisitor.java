@@ -372,7 +372,8 @@ public class RefinementVisitor extends Visitor {
         boolean implNext = true;
         Declaration hdr = null;
         Declaration impl = null;
-        while (hdrIter.hasNext() && implIter.hasNext()) {
+        while ((hdrIter.hasNext() || !hdrNext)
+                && (implIter.hasNext() || !implNext)) {
             if (hdrNext) {
                 hdr = hdrIter.next();
             }
@@ -385,7 +386,6 @@ public class RefinementVisitor extends Visitor {
                     that.addError("native header '" + hdr.getName() +
                             "' of '" + containerName(hdr) +
                             "' has no native implementation");
-                    return;
                 }
                 hdrNext = true;
                 implNext = false;
@@ -397,7 +397,7 @@ public class RefinementVisitor extends Visitor {
                 implNext = true;
             }
         }
-        if (hdrIter.hasNext()) {
+        while (hdrIter.hasNext()) {
             hdr = hdrIter.next();
             if (!isImplemented(hdr)) {
                 that.addError("native header '" + hdr.getName() +
