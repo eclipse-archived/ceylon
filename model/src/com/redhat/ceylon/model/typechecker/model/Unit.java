@@ -1883,16 +1883,45 @@ public class Unit {
                 Type qqt = qualifyingType.getQualifyingType();
                 TypeDeclaration mccd = 
                         getLanguageModuleModelTypeDeclaration(
-                                "MemberClassConstructor");
+                                "MemberClassCallableConstructor");
                 return appliedType(mccd, qqt, returnType, 
                         parameterTuple);
             }
             else {
                 TypeDeclaration cd = 
                         getLanguageModuleModelTypeDeclaration(
-                                "Constructor");
+                                "CallableConstructor");
                 return appliedType(cd, returnType, 
                         parameterTuple);
+            }
+        }
+    }
+    
+    public Type getValueConstructorMetatype(
+            Reference reference) {
+        Type fullType = reference.getFullType();
+        Type returnType = 
+                fullType;
+        if (returnType == null) {
+            return null;
+        }
+        else {
+            Type qualifyingType = 
+                    reference.getQualifyingType();
+            if (qualifyingType!=null && 
+                    qualifyingType.getDeclaration()
+                        .isClassOrInterfaceMember()) {
+                Type qqt = qualifyingType.getQualifyingType();
+                TypeDeclaration mccd = 
+                        getLanguageModuleModelTypeDeclaration(
+                                "MemberClassValueConstructor");
+                return appliedType(mccd, qqt, returnType);
+            }
+            else {
+                TypeDeclaration cd = 
+                        getLanguageModuleModelTypeDeclaration(
+                                "ValueConstructor");
+                return appliedType(cd, returnType);
             }
         }
     }
@@ -2060,13 +2089,21 @@ public class Unit {
     }
     
     public Type getClassDeclarationType(Class clazz) {
-        return clazz.hasConstructors() ?
+        return clazz.hasConstructors() || clazz.hasEnumerated() ?
                 getType(getLanguageModuleDeclarationTypeDeclaration("ClassWithConstructorsDeclaration")) :
                 getType(getLanguageModuleDeclarationTypeDeclaration("ClassWithInitializerDeclaration"));
     }
     
     public Type getConstructorDeclarationType() {
         return getType(getLanguageModuleDeclarationTypeDeclaration("ConstructorDeclaration"));
+    }
+    
+    public Type getCallableConstructorDeclarationType() {
+        return getType(getLanguageModuleDeclarationTypeDeclaration("CallableConstructorDeclaration"));
+    }
+    
+    public Type getValueConstructorDeclarationType() {
+        return getType(getLanguageModuleDeclarationTypeDeclaration("ValueConstructorDeclaration"));
     }
     
     public Type getInterfaceDeclarationType() {
