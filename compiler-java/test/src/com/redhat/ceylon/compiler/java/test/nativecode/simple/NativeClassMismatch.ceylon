@@ -148,6 +148,8 @@ native shared class NativeClassMismatch10(Integer x, Integer y) {
     native shared void test() { privmeth(); }
     native shared Integer foo => privattr;
     native shared void test2();
+    native shared void test3();
+    native shared void test4();
     native void privmeth();
     native Integer privattr;
 }

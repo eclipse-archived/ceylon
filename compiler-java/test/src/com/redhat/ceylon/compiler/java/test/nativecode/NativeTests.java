@@ -305,8 +305,12 @@ public class NativeTests extends CompilerTests {
                 new CompilerError(149, "cannot find symbol\n" + 
                         "  symbol:   method getPrivattr$priv$()\n" + 
                         "  location: class com.redhat.ceylon.compiler.java.test.nativecode.simple.NativeClassMismatch10$header$"),
-                new CompilerError(151, "member in native header must be non-native or shared: 'privmeth' of 'NativeClassMismatch10'"),
-                new CompilerError(152, "member in native header must be non-native or shared: 'privattr' of 'NativeClassMismatch10'")
+                new CompilerError(153, "member in native header must be non-native or shared: 'privmeth' of 'NativeClassMismatch10'"),
+                new CompilerError(154, "member in native header must be non-native or shared: 'privattr' of 'NativeClassMismatch10'"),
+                new CompilerError(157, "native header 'test3' of 'NativeClassMismatch10' has no native implementation"),
+                new CompilerError(157, "native header 'test4' of 'NativeClassMismatch10' has no native implementation"),
+                new CompilerError(164, "native header 'test3' of 'NativeClassMismatch10' has no native implementation"),
+                new CompilerError(164, "native header 'test4' of 'NativeClassMismatch10' has no native implementation")
         );
     }
     
