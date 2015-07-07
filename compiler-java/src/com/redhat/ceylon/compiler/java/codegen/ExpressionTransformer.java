@@ -3686,7 +3686,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 CallBuilder callBuilder = CallBuilder.instance(this);
                 callBuilder.invoke(naming.makeSuper());
                 for (Parameter p : paramLists.get(0).getParameters()) {
-                    callBuilder.argument(make().Ident(naming.makeQuotedName(p.getName())));
+                    callBuilder.argument(makeUnquotedIdent(Naming.getAliasedParameterName(p)));
                 }
                 JCExpression superExpr = callBuilder.build();
                 if (node != null) {
