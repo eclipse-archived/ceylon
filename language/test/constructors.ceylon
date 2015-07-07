@@ -280,6 +280,14 @@ class Test599 {
     }
 }
 
+class Test596(shared String s){
+    shared class Bar{
+        shared new bar{
+            check(s=="596", "JS #596");
+        }
+    }
+}
+
 @test
 void testConstructors() {
   value o=Outer1129();
@@ -381,4 +389,7 @@ void testConstructors() {
   check(t599.i() == 3, "JS #599.2");
   check(t599.j() == 5, "JS #599.3");
   check(t599.k == 8, "JS #599.4");
+  check(Test596("596").Bar.bar!=t599, "JS #596.2");
+  value t596=Test596("596");
+  check(t596.Bar.bar!=t599, "JS#596.3");
 }
