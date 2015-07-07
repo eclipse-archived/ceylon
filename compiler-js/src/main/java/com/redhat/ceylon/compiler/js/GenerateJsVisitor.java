@@ -883,8 +883,8 @@ public class GenerateJsVisitor extends Visitor
                         //Add a simple attribute which really returns the singleton from the class
                         final Tree.Enumerated vc = (Tree.Enumerated)s;
                         defineAttribute(names.self(d), names.name(vc.getDeclarationModel()));
-                        out("{return ", typename, ".", names.name(vc.getDeclarationModel()),
-                                ";},undefined,");
+                        out("{return ", typename, "_", names.name(vc.getDeclarationModel()),
+                                "();},undefined,");
                         TypeUtils.encodeForRuntime(vc.getDeclarationModel(), vc.getAnnotationList(), this);
                         out(");");
                     }
@@ -1789,7 +1789,7 @@ public class GenerateJsVisitor extends Visitor
                     }
                     out(".");
                 }
-                out(names.name((TypeDeclaration)d.getContainer()), ".", names.name(d));
+                out(names.name((TypeDeclaration)d.getContainer()), "_", names.name(d), "()");
                 if (wrap) {
                     out(";}");
                 }
@@ -3377,8 +3377,8 @@ public class GenerateJsVisitor extends Visitor
         comment(that);
         TypeDeclaration klass = (TypeDeclaration)that.getEnumerated().getContainer();
         defineAttribute(names.self(klass), names.name(that.getDeclarationModel()));
-        out("{return ", names.name(klass), ".", names.name(that.getDeclarationModel()),
-                ";},undefined,");
+        out("{return ", names.name(klass), "_", names.name(that.getDeclarationModel()),
+                "();},undefined,");
         TypeUtils.encodeForRuntime(that.getDeclarationModel(), that.getAnnotationList(), this);
         out(");");
     }
