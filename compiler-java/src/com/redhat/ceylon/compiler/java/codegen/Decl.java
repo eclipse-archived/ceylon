@@ -388,23 +388,6 @@ public class Decl {
                 && (ModelUtil.getNativeDeclaration(decl, Backend.Java) == null);
     }
     
-    public static boolean isHeaderInHeader(Tree.Declaration decl) {
-        return isHeaderInHeader(decl.getDeclarationModel());
-    }
-    
-    /**
-     * Determines if the declaration is a native header with no default
-     * implementation that is itself a member of a container which is
-     * also a native header (class or object)
-     * @param decl The Declaration to check
-     * @return True if the Declaration matches the above rules
-     */
-    public static boolean isHeaderInHeader(Declaration decl) {
-        return (decl.isNativeHeader()
-                && !isImplemented(decl)
-                && ModelUtil.isInNativeHeaderContainer(decl));
-    }
-    
     public static boolean isImplemented(Tree.Declaration decl) {
         return isImplemented(decl.getDeclarationModel());
     }

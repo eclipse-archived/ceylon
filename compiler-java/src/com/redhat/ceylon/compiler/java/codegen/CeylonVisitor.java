@@ -44,9 +44,7 @@ import com.redhat.ceylon.model.loader.model.OutputElement;
 import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.model.typechecker.model.Constructor;
-import com.redhat.ceylon.model.typechecker.model.Function;
 import com.redhat.ceylon.model.typechecker.model.Interface;
-import com.redhat.ceylon.model.typechecker.model.ModelUtil;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
@@ -126,10 +124,8 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
         if (plan instanceof Drop) {
             return;
         }
-        // To accept this method it is either not native, native for this
-        // backend or it's a native header
-        boolean accept = Decl.isForBackend(decl)
-                || decl.getDeclarationModel().isNativeHeader();
+        // To accept this class it is either not native or native for this backend
+        boolean accept = Decl.isForBackend(decl);
         if (!accept)
             return;
         int annots = gen.checkCompilerAnnotations(decl, defs);
@@ -461,8 +457,8 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
         if (plan instanceof Drop) {
             return;
         }
-        boolean accept = Decl.isForBackend(decl)
-                || decl.getDeclarationModel().isNativeHeader();
+        // To accept this object it is either not native or native for this backend
+        boolean accept = Decl.isForBackend(decl);
         if (!accept)
             return;
         int annots = gen.checkCompilerAnnotations(decl, defs);
@@ -484,8 +480,7 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
         // is no native implementation specifically for this backend
         boolean accept = Decl.isForBackend(decl)
                 || (Decl.isHeaderWithoutBackend(decl)
-                    && Decl.isImplemented(decl))
-                || Decl.isHeaderInHeader(decl);
+                    && Decl.isImplemented(decl));
         if (!accept)
             return;
         int annots = gen.checkCompilerAnnotations(decl, defs);
@@ -585,8 +580,7 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
         // is no native implementation specifically for this backend
         boolean accept = Decl.isForBackend(decl)
                 || (Decl.isHeaderWithoutBackend(decl)
-                        && Decl.isImplemented(decl))
-                || Decl.isHeaderInHeader(decl);
+                        && Decl.isImplemented(decl));
         if (!accept)
             return;
         int annots = gen.checkCompilerAnnotations(decl, defs);
@@ -631,21 +625,12 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
     public void visit(Tree.ExtendedType extendedType) {
         ClassOrInterface forDefinition = classBuilder.getForDefinition();
         Type thisType = forDefinition != null ? forDefinition.getType() : null;
-        ClassOrInterface hdrDefinition = null;
-        if (forDefinition != null && forDefinition.isNative() && !forDefinition.isNativeHeader()) {
-            hdrDefinition = (ClassOrInterface)ModelUtil.getNativeHeader(forDefinition);
+        Type extended = extendedType.getType().getTypeModel();
+        if (extended.getDeclaration() instanceof Constructor) {
+            extended = extended.getQualifyingType();
         }
-        if (hdrDefinition == null) {
-            Type extended = extendedType.getType().getTypeModel();
-            if (extended.getDeclaration() instanceof Constructor) {
-                extended = extended.getQualifyingType();
-            }
-            classBuilder.extending(thisType, extended);
-            gen.expressionGen().transformSuperInvocation(extendedType, classBuilder);
-        } else {
-            classBuilder.extending(thisType, hdrDefinition.getType());
-            gen.expressionGen().makeHeaderSuperInvocation((Class)forDefinition, extendedType, classBuilder);
-        }
+        classBuilder.extending(thisType, extended);
+        gen.expressionGen().transformSuperInvocation(extendedType, classBuilder);
     }
 
     public void visit(Tree.ClassSpecifier extendedType) {

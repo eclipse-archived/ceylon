@@ -31,14 +31,11 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.model.typechecker.model.Annotation;
 import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
-import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Generic;
 import com.redhat.ceylon.model.typechecker.model.Interface;
-import com.redhat.ceylon.model.typechecker.model.ModelUtil;
 import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.model.typechecker.model.TypeParameter;
-import com.redhat.ceylon.model.typechecker.model.Value;
 import com.sun.tools.javac.code.BoundKind;
 import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.JCAnnotation;
@@ -172,18 +169,6 @@ public class ClassDefinitionBuilder {
         }
         built = true;
         
-        // For native class (and objects) implementations that don't define
-        // a class to extend we force them to extend their native header
-        // (when they _do_ extend it is handled in CeylonVisitor.visit(Tree.ExtendedType))
-        if (extendingType == null && forDefinition != null && forDefinition.isNative() && !forDefinition.isNativeHeader()) {
-            Declaration hdrDefinition = ModelUtil.getNativeHeader(forDefinition);
-            if (hdrDefinition != null) {
-                Type tp = forDefinition.getType();
-                extending(tp, ((ClassOrInterface)hdrDefinition).getType());
-                gen.expressionGen().makeHeaderSuperInvocation((Class)forDefinition, null, this);
-            }
-        }
-        
         ListBuffer<JCTree> defs = ListBuffer.lb();
         appendDefinitionsTo(defs);
         if (!typeParamAnnotations.isEmpty() || typeParams.size() != typeParamAnnotations.size()) {
@@ -202,8 +187,6 @@ public class ClassDefinitionBuilder {
         // Generate a companion class if we're building an interface
         // or the companion actually has some content 
         // (e.g. initializer with defaulted params)
-        
-        
         if (isInterface()) {
             if (this == getTopLevelBuilder()) {
                 klasses.appendList(before.toList());
