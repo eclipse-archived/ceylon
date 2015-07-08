@@ -58,7 +58,7 @@ public class SupertypeVisitor extends Visitor {
     private void checkForUndecidability(
             Tree.ExtendedType etn, 
             Tree.SatisfiedTypes stn, 
-            TypeDeclaration d, 
+            TypeDeclaration type, 
             Tree.TypeDeclaration that) {
         boolean errors = false;
         
@@ -69,16 +69,16 @@ public class SupertypeVisitor extends Visitor {
                     TypeDeclaration td = t.getDeclaration();
                     if (!(td instanceof UnknownType) &&
                         !(td instanceof TypeAlias)) {
-                        if (td == d) {
-                            brokenSatisfiedType(d, st, null);
+                        if (td == type) {
+                            brokenSatisfiedType(type, st, null);
                             errors = true;
                         }
                         else {
                             List<TypeDeclaration> list = 
                                     t.isRecursiveRawTypeDefinition(
-                                            singleton(d));
+                                            singleton(type));
                             if (!list.isEmpty()) {
-                                brokenSatisfiedType(d, st, list);
+                                brokenSatisfiedType(type, st, list);
                                 errors = true;
                             }
                         }
@@ -94,16 +94,16 @@ public class SupertypeVisitor extends Visitor {
             	    TypeDeclaration td = t.getDeclaration();
                     if (!(td instanceof UnknownType) &&
                         !(td instanceof TypeAlias)) {
-                        if (td == d) {
-                            brokenExtendedType(d, et, null);
+                        if (td == type) {
+                            brokenExtendedType(type, et, null);
                             errors = true;
                         }
                         else {
                     		List<TypeDeclaration> list = 
                     		        t.isRecursiveRawTypeDefinition(
-                    		                singleton(d));
+                    		                singleton(type));
                     		if (!list.isEmpty()) {
-                	            brokenExtendedType(d, et, list);
+                	            brokenExtendedType(type, et, list);
                     			errors = true;
                     		}
                         }
@@ -113,12 +113,13 @@ public class SupertypeVisitor extends Visitor {
         }
         
         if (!errors) {
-            Unit unit = d.getUnit();
+            Unit unit = type.getUnit();
             List<Type> list = 
                     new ArrayList<Type>();
             try {
                 List<Type> supertypes = 
-                        d.getType().getSupertypes();
+                        type.getType()
+                            .getSupertypes();
                 for (Type st: supertypes) {
                     addToIntersection(list, st, unit);
                 }
@@ -128,16 +129,16 @@ public class SupertypeVisitor extends Visitor {
 				canonicalIntersection(list, unit);
             }
             catch (DecidabilityException re) {
-                brokenHierarchy(d, that, unit);
+                brokenHierarchy(type, that, unit);
                 return;
             }
             if (stn!=null) {
                 for (Tree.StaticType st: stn.getTypes()) {
                     Type t = st.getTypeModel();
                     if (t!=null) {
-                        if (checkSupertypeVariance(t, d, st)) {
-                            d.getSatisfiedTypes().remove(t);
-                            d.clearProducedTypeCache();
+                        if (checkSupertypeVariance(t, type, st)) {
+                            type.getSatisfiedTypes().remove(t);
+                            type.clearProducedTypeCache();
                         }
                     }
                 }
@@ -147,9 +148,9 @@ public class SupertypeVisitor extends Visitor {
                 if (et!=null) {
                 	Type t = et.getTypeModel();
                 	if (t!=null) {
-                		if (checkSupertypeVariance(t, d, et)) {
-                	        d.setExtendedType(unit.getBasicType());
-                            d.clearProducedTypeCache();
+                		if (checkSupertypeVariance(t, type, et)) {
+                	        type.setExtendedType(unit.getBasicType());
+                            type.clearProducedTypeCache();
                 		}
                 	}
                 }
