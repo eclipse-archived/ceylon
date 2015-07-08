@@ -299,3 +299,12 @@ class Invariant<T>(shared T t) {}
 Invariant<Bug824_Z>&Invariant<Bug824_X> inv = Invariant<Bug824_X>(Bug824_W2());
 String name = inv.t.name;
 
+class WithSharedAliasOfTypeParameter<T>() {
+    shared alias AliasOfTypeParameter => T;
+}
+class WithInheritedSharedAliasOfTypeParameter() 
+        extends WithSharedAliasOfTypeParameter<String>() {}
+void testSharedAliasOfTypeParameter() {
+    WithSharedAliasOfTypeParameter<String>.AliasOfTypeParameter y1 = "";
+    WithInheritedSharedAliasOfTypeParameter.AliasOfTypeParameter y2 = "";
+}
