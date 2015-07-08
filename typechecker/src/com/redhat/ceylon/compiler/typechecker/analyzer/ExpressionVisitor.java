@@ -451,6 +451,7 @@ public class ExpressionVisitor extends Visitor {
     private void destructure(Tree.Pattern pattern,
             Tree.SpecifierExpression se, Type type) {
         if (type!=null) {
+            type = type.resolveAliases();
             if (pattern instanceof Tree.TuplePattern) {
                 destructure(se, type, 
                         (Tree.TuplePattern) pattern);

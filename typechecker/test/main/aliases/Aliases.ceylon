@@ -304,7 +304,11 @@ class WithSharedAliasOfTypeParameter<T>() {
 }
 class WithInheritedSharedAliasOfTypeParameter() 
         extends WithSharedAliasOfTypeParameter<String>() {}
+class WithInheritedSharedAliasOfTupleTypeParameter() 
+        extends WithSharedAliasOfTypeParameter<[String,Integer]>() {}
 void testSharedAliasOfTypeParameter() {
     WithSharedAliasOfTypeParameter<String>.AliasOfTypeParameter y1 = "";
     WithInheritedSharedAliasOfTypeParameter.AliasOfTypeParameter y2 = "";
+    WithInheritedSharedAliasOfTupleTypeParameter.AliasOfTypeParameter y3 = ["",1];
+    value [s,i] = y3;
 }
