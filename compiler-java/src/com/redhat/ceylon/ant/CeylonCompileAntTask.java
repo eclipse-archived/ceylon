@@ -47,7 +47,6 @@ import org.apache.tools.ant.types.FileSet;
 import org.apache.tools.ant.types.Path;
 import org.apache.tools.ant.types.Reference;
 
-import com.redhat.ceylon.ant.LazyCeylonAntTask.Src;
 import com.redhat.ceylon.common.Constants;
 
 public class CeylonCompileAntTask extends LazyCeylonAntTask  {
