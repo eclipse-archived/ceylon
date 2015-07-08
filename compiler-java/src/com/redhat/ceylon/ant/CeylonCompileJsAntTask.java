@@ -89,6 +89,15 @@ public class CeylonCompileJsAntTask extends LazyCeylonAntTask {
         }
     }
 
+    public void addConfiguredResource(Src res) {
+        Path p = new Path(getProject(), res.value);
+        if (this.res == null) {
+            this.res = p;
+        } else {
+            this.res.append(p);
+        }
+    }
+
     public List<File> getResource() {
         if (this.res == null) {
             return Collections.singletonList(getProject().resolveFile(Constants.DEFAULT_RESOURCE_DIR));

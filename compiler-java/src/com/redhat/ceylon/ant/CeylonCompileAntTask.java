@@ -47,6 +47,7 @@ import org.apache.tools.ant.types.FileSet;
 import org.apache.tools.ant.types.Path;
 import org.apache.tools.ant.types.Reference;
 
+import com.redhat.ceylon.ant.LazyCeylonAntTask.Src;
 import com.redhat.ceylon.common.Constants;
 
 public class CeylonCompileAntTask extends LazyCeylonAntTask  {
@@ -160,6 +161,15 @@ public class CeylonCompileAntTask extends LazyCeylonAntTask  {
             this.res = res;
         } else {
             this.res.append(res);
+        }
+    }
+
+    public void addConfiguredResource(Src res) {
+        Path p = new Path(getProject(), res.value);
+        if (this.res == null) {
+            this.res = p;
+        } else {
+            this.res.append(p);
         }
     }
 

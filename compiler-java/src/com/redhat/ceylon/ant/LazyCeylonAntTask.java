@@ -66,6 +66,27 @@ abstract class LazyCeylonAntTask extends OutputRepoUsingCeylonAntTask implements
         }
     }
 
+    public static class Src {
+        String value;
+        
+        public void setValue(String value) {
+            this.value = value;
+        }
+
+        public void addText(String value) {
+            this.value = value;
+        }
+    }
+    
+    public void addConfiguredSrc(Src src) {
+        Path p = new Path(getProject(), src.value);
+        if (this.src == null) {
+            this.src = p;
+        } else {
+            this.src.append(p);
+        }
+    }
+
     public List<File> getSrc() {
         if (this.src == null) {
             return Collections.singletonList(getProject().resolveFile(Constants.DEFAULT_SOURCE_DIR));
