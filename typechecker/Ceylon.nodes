@@ -137,12 +137,14 @@
 ^(CLASS_DEFINITION:ANY_CLASS
     CLASS_BODY)
 
+"A value constructor."
 ^(ENUMERATED:DECLARATION
     DELEGATED_CONSTRUCTOR?
     BLOCK
     Value declarationModel;
     Constructor enumerated;)
 
+"A callable constructor."
 ^(CONSTRUCTOR:DECLARATION
     PARAMETER_LIST?
     DELEGATED_CONSTRUCTOR?
