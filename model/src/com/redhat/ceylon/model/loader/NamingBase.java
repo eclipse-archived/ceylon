@@ -80,7 +80,6 @@ public class NamingBase {
         $element$,
         $exhausted$,
         $getter$,
-        $header$,
         $impl, // special case, since it's used in type names
         $iterable$,
         $iteration$,
