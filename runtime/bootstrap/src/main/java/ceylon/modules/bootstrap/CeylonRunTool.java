@@ -143,6 +143,16 @@ public class CeylonRunTool extends RepoUsingTool {
     @Override
     public void run() throws IOException {
         setSystemProperties();
+
+        if (compileFlags == null) {
+            compileFlags = DefaultToolOptions.getRunToolCompileFlags();
+            if (compileFlags.isEmpty()) {
+                compileFlags = COMPILE_NEVER;
+            }
+        } else if (compileFlags.isEmpty()) {
+            compileFlags = COMPILE_ONCE;
+        }
+        
         String module = ModuleUtil.moduleName(moduleNameOptVersion);
         String version = checkModuleVersionsOrShowSuggestions(
                 getRepositoryManager(),
@@ -155,7 +165,11 @@ public class CeylonRunTool extends RepoUsingTool {
         if (version == null) {
             return;
         }
-        if(flatClasspath){
+        if (!version.isEmpty()) {
+            moduleNameOptVersion = ModuleUtil.makeModuleName(module, version);
+        }
+        
+        if (flatClasspath) {
             startInFlatClasspath(module, version);
             return;
         }
@@ -221,19 +235,6 @@ public class CeylonRunTool extends RepoUsingTool {
             }
         }
 
-        if (compileFlags == null) {
-            compileFlags = DefaultToolOptions.getRunToolCompileFlags();
-            if (compileFlags.isEmpty()) {
-                compileFlags = COMPILE_NEVER;
-            }
-        } else if (compileFlags.isEmpty()) {
-            compileFlags = COMPILE_ONCE;
-        }
-        
-        if (!version.isEmpty()) {
-            moduleNameOptVersion = ModuleUtil.makeModuleName(module, version);
-        }
-        
         argList.add(moduleNameOptVersion);
         argList.addAll(args);
 
@@ -268,8 +269,8 @@ public class CeylonRunTool extends RepoUsingTool {
     
     private void startInFlatClasspath(String module, String version) {
         JavaRunnerOptions options = new JavaRunnerOptions();
-        if(repo != null){
-            for(URI userRepository : repo){
+        if(repo != null) {
+            for (URI userRepository : repo) {
                 options.addUserRepository(userRepository.toASCIIString());
             }
         }
