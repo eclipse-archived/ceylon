@@ -419,7 +419,7 @@ public class RefinementVisitor extends Visitor {
         List<Declaration> members = dec.getMembers();
         ArrayList<Declaration> nats = new ArrayList<Declaration>(members.size());
         for (Declaration m : members) {
-            if (m.isNative() && m.isShared() && !m.isFormal() && !m.isActual() && !m.isDefault()) {
+            if (m.isNative() && !m.isFormal() && !m.isActual() && !m.isDefault()) {
                 nats.add(m);
             }
         }
