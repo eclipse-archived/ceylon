@@ -934,6 +934,26 @@ public class ModelUtil {
         return true;
     }
     
+    private static int countTypeParameters(
+            Declaration declaration) {
+        int count = 0;
+        while (true) {
+            if (declaration instanceof Generic) {
+                Generic g = (Generic) declaration;
+                count += g.getTypeParameters().size();
+            }
+            if (declaration.isClassOrInterfaceMember()) {
+                declaration = 
+                        (Declaration) 
+                            declaration.getContainer();
+            }
+            else {
+                break;
+            }
+        }
+        return count;
+    }
+
     /**
      * Given a declaration, a list of type arguments to the 
      * declaration, and a receiving type, collect together
@@ -960,24 +980,23 @@ public class ModelUtil {
     getTypeArgumentMap(Declaration declaration, 
             Type receivingType, 
             List<Type> typeArguments) {        
-        List<TypeParameter> typeParameters = 
-                getTypeParameters(declaration);
-        int count = countTypeParameters(receivingType, 
-                typeParameters);
+        int count = countTypeParameters(declaration);
         if (count==0) {
             return EMPTY_TYPE_ARG_MAP;
         }
         else {
             return aggregateTypeArguments(receivingType, 
-                    typeArguments, typeParameters, count);
+                    typeArguments, declaration, count);
         }
     }
 
     private static Map<TypeParameter, Type> 
     aggregateTypeArguments(Type receivingType, 
             List<Type> typeArguments,
-            List<TypeParameter> typeParameters, 
+            Declaration declaration,
             int count) {
+        List<TypeParameter> typeParameters = 
+                getTypeParameters(declaration);
         Map<TypeParameter,Type> map = 
                 new HashMap<TypeParameter,Type>
                     (count);
@@ -985,20 +1004,15 @@ public class ModelUtil {
         //from the whole qualified type!
         if (receivingType!=null) {
             if (receivingType.isIntersection()) {
-                for (Type dt: 
+                for (Type supertype: 
                         receivingType.getSatisfiedTypes()) {
-                    while (dt!=null) {
-                        map.putAll(dt.getTypeArguments());
-                        dt = dt.getQualifyingType();
-                    }
+                    aggregateTypeArguments(map, 
+                            supertype, declaration);
                 }
             }
             else {
-                Type dt = receivingType;
-                while (dt!=null) {
-                    map.putAll(dt.getTypeArguments());
-                    dt = dt.getQualifyingType();
-                }
+                aggregateTypeArguments(map, 
+                        receivingType, declaration);
             }
         }
         if (typeArguments!=null) {
@@ -1015,6 +1029,25 @@ public class ModelUtil {
         return map;
     }
 
+    private static void aggregateTypeArguments(
+            Map<TypeParameter, Type> map, 
+            Type dt, Declaration d) {
+        while (dt!=null) {
+            if (d.isClassOrInterfaceMember()) {
+                TypeDeclaration declaringType = 
+                        (TypeDeclaration) 
+                            d.getContainer();
+                Type aqt = dt.getSupertype(declaringType);
+                if (aqt==null) {
+                    break;
+                }
+                map.putAll(aqt.getTypeArguments());
+                dt = aqt.getQualifyingType();
+                d = aqt.getDeclaration();
+            }
+        }
+    }
+    
     public static Map<TypeParameter,SiteVariance> 
     getVarianceMap(Declaration declaration, 
             Type receivingType, 
@@ -1023,16 +1056,12 @@ public class ModelUtil {
             return EMPTY_VARIANCE_MAP;
         }
         else {
-            List<TypeParameter> typeParameters = 
-                    getTypeParameters(declaration);
-            int count = countTypeParameters(receivingType, 
-                    typeParameters);
-            if (count==0) {
+            if (countTypeParameters(declaration)==0) {
                 return EMPTY_VARIANCE_MAP;
             }
             else {
                 return aggregateVariances(receivingType, 
-                        variances, typeParameters);
+                        variances, declaration);
             }
         }
     }
@@ -1040,29 +1069,26 @@ public class ModelUtil {
     private static Map<TypeParameter, SiteVariance> 
     aggregateVariances(Type receivingType, 
             List<SiteVariance> variances,
-            List<TypeParameter> typeParameters) {
+            Declaration declaration) {
         Map<TypeParameter,SiteVariance> map = 
                 new HashMap<TypeParameter,SiteVariance>();
         //make sure we collect all type arguments
         //from the whole qualified type!
         if (receivingType!=null) {
             if (receivingType.isIntersection()) {
-                for (Type dt: 
+                for (Type supertype: 
                         receivingType.getSatisfiedTypes()) {
-                    while (dt!=null) {
-                        map.putAll(dt.getVarianceOverrides());
-                        dt = dt.getQualifyingType();
-                    }
+                    aggregateVariances(map, supertype, 
+                            declaration);
                 }
             }
             else {
-                Type dt = receivingType;
-                while (dt!=null) {
-                    map.putAll(dt.getVarianceOverrides());
-                    dt = dt.getQualifyingType();
-                }
+                aggregateVariances(map, receivingType, 
+                        declaration);
             }
         }
+        List<TypeParameter> typeParameters = 
+                getTypeParameters(declaration);
         for (int i=0; 
                 i<typeParameters.size() && 
                 i<variances.size(); 
@@ -1075,7 +1101,26 @@ public class ModelUtil {
         return map;
     }
 
-    private static int countTypeParameters(
+    private static void aggregateVariances(
+            Map<TypeParameter,SiteVariance> map, 
+            Type dt, Declaration d) {
+        while (dt!=null) {
+            if (d.isClassOrInterfaceMember()) {
+                TypeDeclaration declaringType = 
+                        (TypeDeclaration) 
+                            d.getContainer();
+                Type aqt = dt.getSupertype(declaringType);
+                if (aqt==null) {
+                    break;
+                }
+                map.putAll(dt.getVarianceOverrides());
+                dt = aqt.getQualifyingType();
+                d = aqt.getDeclaration();
+            }
+        }
+    }
+
+    /*private static int countTypeParameters(
             Type receivingType,
             List<TypeParameter> typeParameters) {
         int count = typeParameters.size();
@@ -1083,11 +1128,11 @@ public class ModelUtil {
         //from the whole qualified type!
         if (receivingType!=null) {
             if (receivingType.isIntersection()) {
-                for (Type dt: 
+                for (Type supertype: 
                         receivingType.getSatisfiedTypes()) {
-                    while (dt!=null) {
-                        count += dt.getTypeArguments().size();
-                        dt = dt.getQualifyingType();
+                    while (supertype!=null) {
+                        count += supertype.getTypeArguments().size();
+                        supertype = supertype.getQualifyingType();
                     }
                 }
             }
@@ -1100,7 +1145,7 @@ public class ModelUtil {
             }
         }
         return count;
-    }
+    }*/
 
     public static List<TypeParameter> getTypeParameters(
             Declaration declaration) {

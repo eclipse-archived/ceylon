@@ -2733,6 +2733,9 @@ public class Type extends Reference {
 
         Type substitute(Type type, 
                 boolean covariant, boolean contravariant) {
+//            checkDepth();
+//            try {
+//                incDepth();
             TypeDeclaration dec;
             TypeDeclaration ptd = type.getDeclaration();
             Unit unit = ptd.getUnit();
@@ -2826,6 +2829,10 @@ public class Type extends Reference {
                 return substitutedType(dec, type,
                         covariant, contravariant);
             }
+//            }
+//            finally {
+//                decDepth();
+//            }
         }
 
         private Type substitutedAppliedTypeConstructor(
@@ -2951,50 +2958,47 @@ public class Type extends Reference {
         private Type substitutedType(
                 TypeDeclaration dec, Type type,
                 boolean covariant, boolean contravariant) {
-            Type receiverType = 
-                    type.getQualifyingType();
-            Type result = new Type();
-            result.setDeclaration(dec);
-            result.setTypeConstructor(type.isTypeConstructor());
-            result.setTypeConstructorParameter(
-                    type.getTypeConstructorParameter());
-            Map<TypeParameter, Type> typeArguments = 
-                    type.getTypeArguments();
-            Map<TypeParameter, Type> typeArgs;
+            Type result;
+            Type receiverType = type.getQualifyingType();
             if (receiverType!=null) {
-                //we have to aggregate the type arguments of
-                //the receiver since the contract is that
-                //a qualified type carries with it all the
-                //arguments of the qualifying type duped in
-                //its own map of type arguments
-                result.setQualifyingType(
-                        substitute(receiverType,
-                                covariant, contravariant));
-                Map<TypeParameter, Type> receiverTypeArgs = 
-                        receiverType.getTypeArguments();
-                typeArgs = new HashMap<TypeParameter, Type>
-                            (typeArguments.size() + 
-                             receiverTypeArgs.size());
+                receiverType = 
+                        substitute(receiverType, 
+                                covariant, contravariant);
+                List<Type> typeArgumentList =
+                        type.getTypeArgumentList();
+                List<Type> args = new ArrayList<Type>();
+                for (int i=0, s=typeArgumentList.size();
+                        i<s; i++) {
+                    args.add(substitute(
+                            typeArgumentList.get(i), 
+                            covariant, contravariant));
+                }
+                result = dec.appliedType(receiverType, args);
+            }
+            else {
+                result = new Type();
+                result.setDeclaration(dec);
+                Map<TypeParameter, Type> typeArguments = 
+                        type.getTypeArguments();
+                Map<TypeParameter, Type> typeArgs = 
+                        new HashMap<TypeParameter, Type>
+                            (typeArguments.size());
                 for (Map.Entry<TypeParameter, Type> e: 
-                        receiverTypeArgs.entrySet()) {
+                        typeArguments.entrySet()) {
                     substituteTypeArgument(typeArgs, type, 
                             covariant, contravariant, 
                             e.getKey(), e.getValue());
                 }
+                result.setTypeArguments(typeArgs);
             }
-            else {
-                typeArgs = new HashMap<TypeParameter, Type>
-                            (typeArguments.size());
-            }
-            for (Map.Entry<TypeParameter, Type> e: 
-                    typeArguments.entrySet()) {
-                substituteTypeArgument(typeArgs, type, 
-                        covariant, contravariant, 
-                        e.getKey(), e.getValue());
-            }
-            result.setTypeArguments(typeArgs);
-            result.setVarianceOverrides(type.getVarianceOverrides());
-            result.setUnderlyingType(type.getUnderlyingType());
+            result.setTypeConstructor(
+                    type.isTypeConstructor());
+            result.setTypeConstructorParameter(
+                    type.getTypeConstructorParameter());
+            result.setVarianceOverrides(
+                    type.getVarianceOverrides());
+            result.setUnderlyingType(
+                    type.getUnderlyingType());
             return result;
         }
 
@@ -3014,8 +3018,8 @@ public class Type extends Reference {
                     co = covariant;
                     contra = contravariant;
                 }
-                typeArgs.put(tp, substitute(arg,
-                        co, contra));
+                typeArgs.put(tp, 
+                        substitute(arg, co, contra));
             }
         }
         
