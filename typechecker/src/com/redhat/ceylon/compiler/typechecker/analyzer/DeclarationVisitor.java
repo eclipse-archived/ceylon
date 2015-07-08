@@ -778,6 +778,8 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
     @Override
     public void visit(Tree.Constructor that) {
         Constructor c = new Constructor();
+        that.setConstructor(c);
+        visitDeclaration(that, c, false);
         Type at;
         if (scope instanceof Class) {
             Class clazz = (Class) scope;
@@ -795,8 +797,6 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
             at = null;
             that.addError("constructor declaration must occur directly in the body of a class");
         }
-        that.setConstructor(c);
-        visitDeclaration(that, c, false);
         Function f = new Function();
         f.setType(at);
         that.setDeclarationModel(f);
@@ -848,6 +848,8 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
     @Override
     public void visit(Tree.Enumerated that) {
         Constructor e = new Constructor();
+        that.setEnumerated(e);
+        visitDeclaration(that, e, false);
         Type at;
         if (scope instanceof Class) {
             Class clazz = (Class) scope;
@@ -876,8 +878,6 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
             at = null;
             that.addError("value constructor declaration must occur directly in the body of a class");
         }
-        that.setEnumerated(e);
-        visitDeclaration(that, e, false);
         Value v = new Value();
         v.setType(at);
         that.setDeclarationModel(v);
@@ -1120,7 +1120,7 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
         if (type instanceof Tree.ValueModifier) {
             if (v.isToplevel()) {
                 if (sie==null) {
-                    type.addError("toplevel values must explicitly specify a type");
+                    type.addError("toplevel value must explicitly specify a type");
                 }
                 else {
                     type.addError("toplevel value must explicitly specify a type", 
@@ -1133,7 +1133,7 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
             }
         }
     }
-
+    
     @Override
     public void visit(Tree.MethodDeclaration that) {
         super.visit(that);
