@@ -227,7 +227,7 @@ public class Singletons {
         }
         List<? extends Tree.Statement> stmts = Constructors.classStatementsBetweenConstructors(cdef, null, that);
         if (!stmts.isEmpty()) {
-            gen.visitStatements(stmts);
+            gen.generateConstructorStatements(that, stmts);
         }
         stmts = Constructors.classStatementsAfterConstructor(cdef, that);
         if (!stmts.isEmpty()) {

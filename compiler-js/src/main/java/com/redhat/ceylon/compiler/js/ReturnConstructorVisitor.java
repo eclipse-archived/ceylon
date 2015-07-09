@@ -7,14 +7,24 @@ import com.redhat.ceylon.model.typechecker.model.ModelUtil;
 
 public class ReturnConstructorVisitor extends Visitor {
 
-    private final Tree.Constructor node;
+    private final Tree.Declaration node;
     private final Constructor d;
     private boolean ret;
 
-    public ReturnConstructorVisitor(Tree.Constructor constructorNode) {
+    public ReturnConstructorVisitor(Tree.Declaration constructorNode) {
         node = constructorNode;
-        d = node.getConstructor();
-        node.getBlock().visit(this);
+        final Tree.Block block;
+        if (constructorNode instanceof Tree.Constructor) {
+            d = ((Tree.Constructor)node).getConstructor();
+            block = ((Tree.Constructor)node).getBlock();
+        } else if (constructorNode instanceof Tree.Enumerated) {
+            d = ((Tree.Enumerated)node).getEnumerated();
+            block = ((Tree.Enumerated)node).getBlock();
+        } else {
+            throw new CompilerErrorException("Bug in the JS compiler. "+
+                    "A ReturnConstructorVisitor must be created with an Enumerated or Constructor node.");
+        }
+        block.visit(this);
     }
 
     public void visit(Tree.Return that) {

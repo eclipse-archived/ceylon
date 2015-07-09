@@ -435,7 +435,9 @@ public class GenerateJsVisitor extends Visitor
         out(")");
     }
 
-    void generateConstructorStatements(final Tree.Constructor cnstr,
+    /** Like visitStatements but for constructors, because we need to check if a statement is
+     * a specifier expression and generate it regardless of lexical/prototype mode. */
+    void generateConstructorStatements(final Tree.Declaration cnstr,
             List<? extends Tree.Statement> stmts) {
         final List<String> oldRetainedVars = retainedVars.reset(null);
         final List<? extends Statement> prevStatements = currentStatements;
@@ -446,7 +448,11 @@ public class GenerateJsVisitor extends Visitor
         }
         for (Tree.Statement s2 : stmts) {
             if (s2 instanceof Tree.SpecifierStatement) {
-                specifierStatement(cnstr.getConstructor(), (Tree.SpecifierStatement)s2);
+                if (cnstr instanceof Tree.Constructor) {
+                    specifierStatement(((Tree.Constructor)cnstr).getConstructor(), (Tree.SpecifierStatement)s2);
+                } else if (cnstr instanceof Tree.Enumerated) {
+                    specifierStatement(((Tree.Enumerated)cnstr).getEnumerated(), (Tree.SpecifierStatement)s2);
+                }
             } else {
                 s2.visit(this);
             }
