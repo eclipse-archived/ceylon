@@ -134,19 +134,23 @@ public class InfoToolTests extends AbstractToolTests {
     public void testAetherModuleVersions() throws Exception {
         ToolModel<CeylonInfoTool> model = pluginLoader.loadToolModel("info");
         Assert.assertNotNull(model);
-        CeylonInfoTool tool = pluginFactory.bindArguments(model, getMainTool(), Collections.<String>singletonList("com.sparkjava:spark-core"));
+        CeylonInfoTool tool = pluginFactory.bindArguments(model, getMainTool(), Collections.<String>singletonList("asm:asm-commons"));
         
         StringBuilder b = new StringBuilder();
         tool.setOut(b);
         tool.run();
         
         Assert.assertTrue(b.toString().contains(
-            "    com.sparkjava:spark-core/1.0\n"+
-            "    com.sparkjava:spark-core/1.1\n"+
-            "    com.sparkjava:spark-core/1.1.1\n"+
-            "    com.sparkjava:spark-core/2.0.0\n"+
-            "    com.sparkjava:spark-core/2.1\n"
-            ));
+                "    asm:asm-commons/2.0\n"+
+                "    asm:asm-commons/2.1\n"+
+                "    asm:asm-commons/2.2\n"+
+                "    asm:asm-commons/2.2.1\n"+
+                "    asm:asm-commons/3.0\n"+
+                "    asm:asm-commons/3.1\n"+
+                "    asm:asm-commons/3.2\n"+
+                "    asm:asm-commons/3.3\n"+
+                "    asm:asm-commons/3.3.1"
+                ));
 
     }
 
@@ -154,16 +158,17 @@ public class InfoToolTests extends AbstractToolTests {
     public void testAetherModuleVersionSearch() throws Exception {
         ToolModel<CeylonInfoTool> model = pluginLoader.loadToolModel("info");
         Assert.assertNotNull(model);
-        CeylonInfoTool tool = pluginFactory.bindArguments(model, getMainTool(), Collections.<String>singletonList("com.sparkjava:spark-core/1"));
+        CeylonInfoTool tool = pluginFactory.bindArguments(model, getMainTool(), Collections.<String>singletonList("asm:asm-commons/2"));
 
         StringBuilder b = new StringBuilder();
         tool.setOut(b);
         tool.run();
         
         Assert.assertTrue(b.toString().contains(
-                "    com.sparkjava:spark-core/1.0\n"+
-                "    com.sparkjava:spark-core/1.1\n"+
-                "    com.sparkjava:spark-core/1.1.1\n"
+                "    asm:asm-commons/2.0\n"+
+                "    asm:asm-commons/2.1\n"+
+                "    asm:asm-commons/2.2\n"+
+                "    asm:asm-commons/2.2.1"
                 ));
     }
 
