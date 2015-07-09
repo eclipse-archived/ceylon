@@ -81,6 +81,56 @@ native("js") shared class NativeClassWithImpl2(Integer x, Integer y) {
 }
 
 
+native shared class NativeClassWithImpl3(Integer x, Integer y) {
+    native shared void test() { privmeth(); }
+    native shared Integer foo => privattr;
+    native shared void test2();
+    native void privmeth() {}
+    native Integer privattr => 0;
+}
+
+native("jvm") shared class NativeClassWithImpl3(Integer x, Integer y) {
+    native("jvm") shared void test2() {
+        test();
+        value x = foo;
+    }
+}
+
+native("js") shared class NativeClassWithImpl3(Integer x, Integer y) {
+    native("js") shared void test2() {
+        test();
+        value x = foo;
+    }
+}
+
+
+native shared class NativeClassWithImpl4(Integer x, Integer y) {
+    native shared void test() { privmeth(); }
+    native shared Integer foo => privattr;
+    native shared void test2();
+    native void privmeth();
+    native Integer privattr;
+}
+
+native("jvm") shared class NativeClassWithImpl4(Integer x, Integer y) {
+    native("jvm") shared void test2() {
+        test();
+        value x = foo;
+    }
+    native("jvm") void privmeth() {}
+    native("jvm") Integer privattr => 0;
+}
+
+native("js") shared class NativeClassWithImpl4(Integer x, Integer y) {
+    native("js") shared void test2() {
+        test();
+        value x = foo;
+    }
+    native("js") void privmeth() {}
+    native("js") Integer privattr => 0;
+}
+
+
 void testNativeClassWithImpl() {
     value klz = NativeClassWithImpl(1, 2);
     value a = klz.base();
@@ -90,12 +140,18 @@ void testNativeClassWithImpl() {
     klz.bar = a;
     klz.test2();
     
-    value klz2 = NativeClassWithImpl(1, 2);
+    value klz2 = NativeClassWithImpl2(1, 2);
     klz2.test();
     value c2 = klz2.foo;
     value d2 = klz2.bar;
     klz2.bar = a;
     klz2.test2();
+    
+    value klz3 = NativeClassWithImpl3(1, 2);
+    klz3.test2();
+    
+    value klz4 = NativeClassWithImpl4(1, 2);
+    klz4.test2();
     
     throw Exception("NativeClassWithImpl-JVM");
 }
