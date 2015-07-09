@@ -299,18 +299,10 @@ public class NativeTests extends CompilerTests {
                 new CompilerError(142, "member does not have the same number of parameters as native header: 'test4'"),
                 new CompilerError(143, "native member does not implement any header member: 'testX' in 'NativeClassMismatch9'"),
                 new CompilerError(144, "non-native shared members not allowed in native implementations: 'testY' in 'NativeClassMismatch9'"),
-                new CompilerError(148, "cannot find symbol\n" + 
-                        "  symbol:   method privmeth$priv$()\n" + 
-                        "  location: class com.redhat.ceylon.compiler.java.test.nativecode.simple.NativeClassMismatch10$header$"),
-                new CompilerError(149, "cannot find symbol\n" + 
-                        "  symbol:   method getPrivattr$priv$()\n" + 
-                        "  location: class com.redhat.ceylon.compiler.java.test.nativecode.simple.NativeClassMismatch10$header$"),
-                new CompilerError(153, "member in native header must be non-native or shared: 'privmeth' of 'NativeClassMismatch10'"),
-                new CompilerError(154, "member in native header must be non-native or shared: 'privattr' of 'NativeClassMismatch10'"),
-                new CompilerError(157, "native header 'test3' of 'NativeClassMismatch10' has no native implementation"),
-                new CompilerError(157, "native header 'test4' of 'NativeClassMismatch10' has no native implementation"),
-                new CompilerError(164, "native header 'test3' of 'NativeClassMismatch10' has no native implementation"),
-                new CompilerError(164, "native header 'test4' of 'NativeClassMismatch10' has no native implementation")
+                new CompilerError(155, "native header 'privattr' of 'NativeClassMismatch10' has no native implementation"),
+                new CompilerError(155, "native header 'privmeth' of 'NativeClassMismatch10' has no native implementation"),
+                new CompilerError(162, "native header 'privattr' of 'NativeClassMismatch10' has no native implementation"),
+                new CompilerError(162, "native header 'privmeth' of 'NativeClassMismatch10' has no native implementation")
         );
     }
     

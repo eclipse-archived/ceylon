@@ -38,6 +38,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.NaturalVisitor;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Return;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.Statement;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.model.loader.NamingBase.Suffix;
 import com.redhat.ceylon.model.loader.model.OutputElement;
@@ -65,6 +66,7 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
     boolean inInitializer = false;
     final LabelVisitor lv;
     private final GetterSetterPairingVisitor getterSetterPairing;
+    private final Map<String, Tree.Declaration> headers;
 
     /** For compilation units 
      * @param lv */
@@ -76,6 +78,7 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
         this.classBuilder = null;
         this.lv = lv;
         this.getterSetterPairing = gspv;
+        this.headers = new HashMap<String, Tree.Declaration>();
     }
 
 
@@ -124,6 +127,11 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
         if (plan instanceof Drop) {
             return;
         }
+        if (Decl.isNativeHeader(decl)) {
+            // It's a native header, remember it for later when we deal with its implementation
+            headers.put(decl.getDeclarationModel().getName(), decl);
+            return;
+        }
         // To accept this class it is either not native or native for this backend
         boolean accept = Decl.isForBackend(decl);
         if (!accept)
@@ -146,7 +154,7 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
         // Transform executable statements and declarations in the body
         // except constructors. Record how constructors delegate.
         HashMap<Constructor, CtorDelegation> delegates = new HashMap<Constructor, CtorDelegation>();
-        for (Tree.Statement stmt : that.getStatements()) {
+        for (Tree.Statement stmt : getBodyStatements(that)) {
             if (stmt instanceof Tree.Constructor) {
                 Tree.Constructor ctor = (Tree.Constructor)stmt;
                 if (gen.errors().hasDeclarationError(ctor) instanceof Drop) {
@@ -195,7 +203,7 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
         }
         
         // Now transform constructors
-        for (Tree.Statement stmt : that.getStatements()) {
+        for (Tree.Statement stmt : getBodyStatements(that)) {
             if (stmt instanceof Tree.Constructor) {
                 Tree.Constructor ctor = (Tree.Constructor)stmt;
                 if (gen.errors().hasDeclarationError(ctor) instanceof Drop) {
@@ -217,7 +225,55 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
         }
     }
 
+    private java.util.List<Statement> getBodyStatements(Tree.ClassBody that) {
+        java.util.List<Statement> stmts = that.getStatements();
+        if (classBuilder.getForDefinition().isNative()) {
+            // In case of a native implementation we look for its header
+            Tree.Declaration hdr = headers.get(classBuilder.getForDefinition().getName());
+            if (hdr != null) {
+                // And if the header exists we go through the declarations in
+                // its body and add them to our list of statements as if they
+                // were part of the native implementation when a) it has a
+                // default implementation and b) we can't find a matching
+                // declaration in our (original) list of statements
+                java.util.List<Statement> hdrstmts;
+                if (hdr instanceof Tree.ClassDefinition) {
+                    hdrstmts = ((Tree.ClassDefinition)hdr).getClassBody().getStatements();
+                } else if (hdr instanceof Tree.ObjectDefinition) {
+                    hdrstmts = ((Tree.ObjectDefinition)hdr).getClassBody().getStatements();
+                } else {
+                    hdrstmts = null;
+                }
+                if (hdrstmts != null && !hdrstmts.isEmpty()) {
+                    java.util.Set<String> names = getDeclarationNames(stmts);
+                    java.util.LinkedList<Statement> newstmts = new java.util.LinkedList<Statement>(stmts);
+                    for (Statement stmt : hdrstmts) {
+                        if (stmt instanceof Tree.Declaration) {
+                            Tree.Declaration decl = (Tree.Declaration)stmt;
+                            if (Decl.isImplemented(decl)
+                                    && !names.contains(decl.getDeclarationModel().getName())) {
+                                newstmts.addFirst(decl);
+                            }
+                        }
+                    }
+                    stmts = newstmts;
+                }
+            }
+        }
+        return stmts;
+    }
 
+    private java.util.Set<String> getDeclarationNames(java.util.List<Statement> stmts) {
+        java.util.HashSet<String> names = new java.util.HashSet<String>();
+        for (Statement stmt : stmts) {
+            if (stmt instanceof Tree.Declaration) {
+                Tree.Declaration decl = (Tree.Declaration)stmt;
+                String declName = decl.getDeclarationModel().getName();
+                names.add(declName);
+            }
+        }
+        return names;
+    }
 
     protected void transformSingletonConstructor(
             HashMap<Constructor, CtorDelegation> delegates, Tree.Enumerated ctor) {
@@ -455,6 +511,11 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
     public void visit(Tree.ObjectDefinition decl) {
         TransformationPlan plan = gen.errors().hasDeclarationAndMarkBrokenness(decl);
         if (plan instanceof Drop) {
+            return;
+        }
+        if (Decl.isNativeHeader(decl)) {
+            // It's a native header, remember it for later when we deal with its implementation
+            headers.put(decl.getDeclarationModel().getName(), decl);
             return;
         }
         // To accept this object it is either not native or native for this backend

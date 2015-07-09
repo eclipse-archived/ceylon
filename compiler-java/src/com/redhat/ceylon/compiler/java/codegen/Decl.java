@@ -362,6 +362,14 @@ public class Decl {
         return decl.isNative();
     }
     
+    public static boolean isNativeHeader(Tree.Declaration decl) {
+        return isNativeHeader(decl.getDeclarationModel());
+    }
+    
+    public static boolean isNativeHeader(Declaration decl) {
+        return decl.isNativeHeader();
+    }
+    
     public static String getNative(Tree.Declaration decl) {
         return getNative(decl.getDeclarationModel());
     }
