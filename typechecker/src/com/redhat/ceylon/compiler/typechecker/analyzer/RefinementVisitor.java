@@ -411,6 +411,8 @@ public class RefinementVisitor extends Visitor {
             new Comparator<Declaration>() {
         @Override
         public int compare(Declaration o1, Declaration o2) {
+            if (o1.getName() == null) return -1;
+            if (o2.getName() == null) return 1;
             return o1.getName().compareTo(o2.getName());
         }
     };
@@ -502,28 +504,33 @@ public class RefinementVisitor extends Visitor {
     }
 
     private void checkClassParameters(Tree.Declaration that,
-            Declaration dec, Declaration refined,
+            Class dec, Class refined,
             Reference refinedMember, 
             Reference refiningMember,
             boolean forNative) {
-        List<ParameterList> refiningParamLists = 
-                ((Functional) dec).getParameterLists();
-        List<ParameterList> refinedParamLists = 
-                ((Functional) refined).getParameterLists();
-        if (refinedParamLists.size()!=refiningParamLists.size()) {
-            that.addError("native classes must have the same number of parameter lists: " + 
+        if (dec.hasConstructors() != refined.hasConstructors()) {
+            that.addError("native classes must all have parameters or all have constructors: " + 
                     message(dec));
-        }
-        for (int i=0; 
-                i<refinedParamLists.size() && 
-                i<refiningParamLists.size(); 
-                i++) {
-            checkParameterTypes(that, 
-                    getParameterList(that, i), 
-                    refiningMember, refinedMember, 
-                    refiningParamLists.get(i), 
-                    refinedParamLists.get(i),
-                    forNative);
+        } else if (!dec.hasConstructors()) {
+            List<ParameterList> refiningParamLists = 
+                    dec.getParameterLists();
+            List<ParameterList> refinedParamLists = 
+                    refined.getParameterLists();
+            if (refinedParamLists.size()!=refiningParamLists.size()) {
+                that.addError("native classes must have the same number of parameter lists: " + 
+                        message(dec));
+            }
+            for (int i=0; 
+                    i<refinedParamLists.size() && 
+                    i<refiningParamLists.size(); 
+                    i++) {
+                checkParameterTypes(that, 
+                        getParameterList(that, i), 
+                        refiningMember, refinedMember, 
+                        refiningParamLists.get(i), 
+                        refinedParamLists.get(i),
+                        forNative);
+            }
         }
     }
 
@@ -1394,6 +1401,10 @@ public class RefinementVisitor extends Visitor {
         else if (that instanceof Tree.AnyClass) {
             Tree.AnyClass ac = (Tree.AnyClass) that;
             return ac.getParameterList();
+        }
+        else if (that instanceof Tree.Constructor) {
+            Tree.Constructor con = (Tree.Constructor) that;
+            return con.getParameterList();
         }
         else {
             return null;

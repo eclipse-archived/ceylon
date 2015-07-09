@@ -202,8 +202,10 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
             boolean isHeader = model.isNativeHeader();
             String name = model.getName();
             boolean canBeNative =
-                    that instanceof Tree.AnyMethod
-                    || that instanceof Tree.AnyClass
+                    that instanceof Tree.AnyClass
+                    || that instanceof Tree.Constructor
+                    || that instanceof Tree.Enumerated
+                    || that instanceof Tree.AnyMethod
                     || that instanceof Tree.AnyAttribute
                     || that instanceof ObjectDefinition;
             if (canBeNative) {
@@ -307,7 +309,7 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
             else if (!(model instanceof Setter) && 
                     !isHeader) {
                 if (!canBeNative) {
-                    that.addError("native declaration is not a class, method, attribute or object: '" + 
+                    that.addError("native declaration is not a class, constructor, method, attribute or object: '" + 
                             name + "'");
                 }
             }
