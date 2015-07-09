@@ -24,6 +24,7 @@ import java.util.Set;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ClassBody;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.TypeVariance;
 import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.Constructor;
@@ -313,9 +314,10 @@ public class AnalyzerUtil {
             //shortcut refinement statements with => aren't really "executable"
             Tree.SpecifierStatement ss = 
                     (Tree.SpecifierStatement) s;
-            return !(ss.getSpecifierExpression() 
-                    instanceof Tree.LazySpecifierExpression) || 
-                    !ss.getRefinement();
+            Tree.SpecifierExpression se = 
+                    ss.getSpecifierExpression();
+            return !(ss.getRefinement() &&
+                    se instanceof Tree.LazySpecifierExpression);
         }
         else if (s instanceof Tree.ExecutableStatement) {
             return true;
@@ -326,8 +328,8 @@ public class AnalyzerUtil {
                         (Tree.AttributeDeclaration) s;
                 Tree.SpecifierOrInitializerExpression sie = 
                         ad.getSpecifierOrInitializerExpression();
-        		return sie!=null && 
-        		        !(sie instanceof Tree.LazySpecifierExpression);
+        		return !(sie==null ||
+        		        sie instanceof Tree.LazySpecifierExpression);
             }
             else if (s instanceof Tree.ObjectDefinition) {
                 Tree.ObjectDefinition o = 

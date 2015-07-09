@@ -643,10 +643,8 @@ public class SpecificationVisitor extends Visitor {
 //                    name(bme.getIdentifier()), null, false, bme.getUnit());
 	        Declaration member = bme.getDeclaration();
 	        if (member==declaration) {
-	        	if ((declaration.isFormal() || 
-	        	     declaration.isDefault()) && 
+	        	if (declaration.isFormal() && 
 	        	        !isForwardReferenceable()) {
-	        	    //TODO: is this error correct?! look at the condition above
 	        	    bme.addError("member is formal and may not be specified: '" +
 	        				member.getName() + "' is declared formal");
 	        	}
@@ -752,6 +750,7 @@ public class SpecificationVisitor extends Visitor {
 	            if (lazy && parameterized) {
 	                se.visit(this);
 	            }
+	            checkDeclarationSection(that);
 	        }
 	        else {
 	            super.visit(that);
