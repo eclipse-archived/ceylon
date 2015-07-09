@@ -56,7 +56,7 @@ shared native("js") object baseNativeObject extends NativeBase(4) {
 }
 
 @test
-void testNativeClassesAndObjects() {
+shared void testNativeClassesAndObjects() {
     try {
         value c=NativeHeader(2,2);
         value s=c.test2();
