@@ -135,7 +135,7 @@ public class BmeGenerator {
         String plainName = null;
         if (decl == null && gen.isInDynamicBlock()) {
             plainName = expr.getIdentifier().getText();
-        } else if (GenerateJsVisitor.isNativeJs(decl)) {
+        } else if (TypeUtils.isNativeJs(decl)) {
             // direct access to a native element
             plainName = decl.getName();
         }
@@ -191,7 +191,7 @@ public class BmeGenerator {
                 gen.out(".", gen.getNames().name(that.getDeclaration()));
             }
         } else {
-            gen.generateCallable(that, gen.getNames().name(that.getDeclaration()));
+            FunctionHelper.generateCallable(that, gen.getNames().name(that.getDeclaration()), gen);
         }
     }
 

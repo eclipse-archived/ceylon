@@ -1450,4 +1450,40 @@ public class TypeUtils {
                 ModelUtil.getNativeDeclaration(d, Backend.JavaScript) != null;
     }
 
+    public static Declaration getToplevel(Declaration d) {
+        while (d != null && !d.isToplevel()) {
+            Scope s = d.getContainer();
+            // Skip any non-declaration elements
+            while (s != null && !(s instanceof Declaration)) {
+                s = s.getContainer();
+            }
+            d = (Declaration) s;
+        }
+        return d;
+    }
+
+    /** Returns true if the top-level declaration for the term is annotated "nativejs" */
+    public static boolean isNativeJs(final Tree.Term t) {
+        if (t instanceof Tree.MemberOrTypeExpression) {
+            return isNativeJs(((Tree.MemberOrTypeExpression)t).getDeclaration());
+        }
+        return false;
+    }
+
+    /** Returns true if the declaration is annotated "nativejs" */
+    public static boolean isNativeJs(Declaration d) {
+        return hasAnnotationByName(TypeUtils.getToplevel(d), "nativejs") || TypeUtils.isUnknown(d);
+    }
+
+    private static boolean hasAnnotationByName(Declaration d, String name){
+        if (d != null) {
+            for(Annotation annotation : d.getAnnotations()) {
+                if (annotation.getName().equals(name)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
 }

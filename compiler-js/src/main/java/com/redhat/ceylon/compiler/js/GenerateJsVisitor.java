@@ -1300,7 +1300,7 @@ public class GenerateJsVisitor extends Visitor
         Value d = that.getDeclarationModel();
         if (opts.isOptimize()&&d.isClassOrInterfaceMember()) return;
         comment(that);
-        if (defineAsProperty(d)) {
+        if (AttributeGenerator.defineAsProperty(d)) {
             defineAttribute(names.self((TypeDeclaration)d.getContainer()), names.name(d));
             AttributeGenerator.getter(that, this, true);
             final AttributeSetterDefinition setterDef = associatedSetterDefinition(d);
@@ -1408,7 +1408,8 @@ public class GenerateJsVisitor extends Visitor
     public void visit(final Tree.AttributeSetterDefinition that) {
         if (errVisitor.hasErrors(that) || !TypeUtils.acceptNative(that))return;
         Setter d = that.getDeclarationModel();
-        if ((opts.isOptimize()&&d.isClassOrInterfaceMember()) || defineAsProperty(d)) return;
+        if ((opts.isOptimize()&&d.isClassOrInterfaceMember()) ||
+                AttributeGenerator.defineAsProperty(d)) return;
         comment(that);
         out("function ", names.setter(d.getGetter()), "(", names.name(d.getParameter()), ")");
         AttributeGenerator.setter(that, this);
@@ -1462,7 +1463,7 @@ public class GenerateJsVisitor extends Visitor
         //Check if the attribute corresponds to a class parameter
         //This is because of the new initializer syntax
         final Parameter param = d.isParameter() ? ((Functional)d.getContainer()).getParameter(d.getName()) : null;
-        final boolean asprop = defineAsProperty(d);
+        final boolean asprop = AttributeGenerator.defineAsProperty(d);
         if (d.isFormal()) {
             if (!opts.isOptimize()) {
                 comment(that);
@@ -1697,71 +1698,9 @@ public class GenerateJsVisitor extends Visitor
 
     private boolean accessThroughGetter(Declaration d) {
         return (d instanceof FunctionOrValue) && !(d instanceof Function)
-                && !defineAsProperty(d);
+                && !AttributeGenerator.defineAsProperty(d);
     }
     
-    private boolean defineAsProperty(Declaration d) {
-        return AttributeGenerator.defineAsProperty(d);
-    }
-
-    /** Returns true if the top-level declaration for the term is annotated "nativejs" */
-    static boolean isNativeJs(final Tree.Term t) {
-        if (t instanceof Tree.MemberOrTypeExpression) {
-            return isNativeJs(((Tree.MemberOrTypeExpression)t).getDeclaration());
-        }
-        return false;
-    }
-
-    /** Returns true if the declaration is annotated "nativejs" */
-    static boolean isNativeJs(Declaration d) {
-        return hasAnnotationByName(getToplevel(d), "nativejs") || TypeUtils.isUnknown(d);
-    }
-
-    private static Declaration getToplevel(Declaration d) {
-        while (d != null && !d.isToplevel()) {
-            Scope s = d.getContainer();
-            // Skip any non-declaration elements
-            while (s != null && !(s instanceof Declaration)) {
-                s = s.getContainer();
-            }
-            d = (Declaration) s;
-        }
-        return d;
-    }
-
-    private static boolean hasAnnotationByName(Declaration d, String name){
-        if (d != null) {
-            for(Annotation annotation : d.getAnnotations()) {
-                if (annotation.getName().equals(name)) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-    private void generateSafeOp(final Tree.QualifiedMemberOrTypeExpression that) {
-        boolean isMethod = that.getDeclaration() instanceof Function;
-        String lhsVar = createRetainedTempVar();
-        out("(", lhsVar, "=");
-        super.visit(that);
-        out(",");
-        if (isMethod) {
-            out(getClAlias(), "JsCallable(", lhsVar, ",");
-        }
-        out(getClAlias(),"nn$(", lhsVar, ")?");
-        if (isMethod && !((Function)that.getDeclaration()).getTypeParameters().isEmpty()) {
-            //Function ref with type parameters
-            BmeGenerator.printGenericMethodReference(this, that, lhsVar, memberAccess(that, lhsVar));
-        } else {
-            out(memberAccess(that, lhsVar));
-        }
-        out(":null)");
-        if (isMethod) {
-            out(")");
-        }
-    }
-
     void supervisit(final Tree.QualifiedMemberOrTypeExpression that) {
         super.visit(that);
     }
@@ -1773,14 +1712,14 @@ public class GenerateJsVisitor extends Visitor
         //          refined by the current class!
         final Declaration d = that.getDeclaration();
         if (that.getMemberOperator() instanceof Tree.SafeMemberOp) {
-            generateSafeOp(that);
+            Operators.generateSafeOp(that, this);
         } else if (that.getMemberOperator() instanceof Tree.SpreadOp) {
             SequenceGenerator.generateSpread(that, this);
         } else if (d instanceof Function && that.getSignature() == null) {
             //TODO right now this causes that all method invocations are done this way
             //we need to filter somehow to only use this pattern when the result is supposed to be a callable
             //looks like checking for signature is a good way (not THE way though; named arg calls don't have signature)
-            generateCallable(that, null);
+            FunctionHelper.generateCallable(that, null, this);
         } else if (that.getStaticMethodReference() && d!=null) {
             if (d instanceof Value && ((Value)d).getTypeDeclaration() instanceof Constructor) {
                 //TODO this won't work anymore I think
@@ -1826,56 +1765,6 @@ public class GenerateJsVisitor extends Visitor
         }
     }
 
-    void generateCallable(final Tree.QualifiedMemberOrTypeExpression that, String name) {
-        final Declaration d = that.getDeclaration();
-        if (that.getPrimary() instanceof Tree.BaseTypeExpression) {
-            //it's a static method ref
-            if (name == null) {
-                name = memberAccess(that, "");
-            }
-            if (TypeUtils.isConstructor(d)) {
-                Constructor cd = TypeUtils.getConstructor(d);
-                final boolean hasTargs = BmeGenerator.hasTypeParameters(
-                        (Tree.BaseTypeExpression)that.getPrimary());
-                if (hasTargs) {
-                    BmeGenerator.printGenericMethodReference(this,
-                            (Tree.BaseTypeExpression)that.getPrimary(), "0",
-                            qualifiedPath(that, cd) + "_" + names.name(cd));
-                } else {
-                    qualify(that, cd);
-                    out(names.name(cd));
-                }
-            } else {
-                out("function(x){return ");
-                if (BmeGenerator.hasTypeParameters(that)) {
-                    BmeGenerator.printGenericMethodReference(this, that, "x", "x."+name);
-                } else {
-                    out(getClAlias(), "JsCallable(x,x.", name, ")");
-                }
-                out(";}");
-            }
-            return;
-        }
-        if (d.isToplevel() && d instanceof Function) {
-            //Just output the name
-            out(names.name(d));
-            return;
-        }
-        String primaryVar = createRetainedTempVar();
-        out("(", primaryVar, "=");
-        that.getPrimary().visit(this);
-        out(",");
-        final String member = (name == null) ? memberAccess(that, primaryVar) : (primaryVar+"."+name);
-        if (that.getDeclaration() instanceof Function
-                && !((Function)that.getDeclaration()).getTypeParameters().isEmpty()) {
-            //Function ref with type parameters
-            BmeGenerator.printGenericMethodReference(this, that, primaryVar, member);
-        } else {
-            out(getClAlias(), "JsCallable(", primaryVar, ",", getClAlias(), "nn$(", primaryVar, ")?", member, ":null)");
-        }
-        out(")");
-    }
-    
     /**
      * Checks if the given node is a MemberOrTypeExpression or QualifiedType which
      * represents an access to a supertype member and returns the scope of that
@@ -1945,7 +1834,7 @@ public class GenerateJsVisitor extends Visitor
                 sb.append(scope.getQualifiedNameString());
             }
             sb.append("']");
-            if (defineAsProperty(decl)) {
+            if (AttributeGenerator.defineAsProperty(decl)) {
                 return getClAlias() + (setter ? "attrSetter(" : "attrGetter(")
                         + sb.toString() + ",'" + names.name(decl) + "')";
             }
@@ -1972,7 +1861,7 @@ public class GenerateJsVisitor extends Visitor
         if (decl == null && dynblock > 0) {
             plainName = expr.getIdentifier().getText();
         }
-        else if (isNativeJs(decl)) {
+        else if (TypeUtils.isNativeJs(decl)) {
             if (decl==null) {
                 expr.addUnexpectedError("Expression with no declaration outside of dynamic block");
                 return "<NULL>";
@@ -1985,7 +1874,7 @@ public class GenerateJsVisitor extends Visitor
                     ? (lhs + "." + plainName) : plainName;            
         }
         boolean protoCall = opts.isOptimize() && (getSuperMemberScope(expr) != null);
-        if (accessDirectly(decl) && !(protoCall && defineAsProperty(decl))) {
+        if (accessDirectly(decl) && !(protoCall && AttributeGenerator.defineAsProperty(decl))) {
             // direct access, without getter
             return memberAccessBase(expr, decl, false, lhs);
         }
@@ -2093,17 +1982,17 @@ public class GenerateJsVisitor extends Visitor
 
     // Make sure fromTerm is compatible with toTerm by boxing or unboxing it when necessary
     int boxUnboxStart(final Tree.Term fromTerm, final Tree.Term toTerm) {
-        return boxUnboxStart(fromTerm, isNativeJs(toTerm));
+        return boxUnboxStart(fromTerm, TypeUtils.isNativeJs(toTerm));
     }
 
     // Make sure fromTerm is compatible with toDecl by boxing or unboxing it when necessary
     int boxUnboxStart(final Tree.Term fromTerm, TypedDeclaration toDecl) {
-        return boxUnboxStart(fromTerm, isNativeJs(toDecl));
+        return boxUnboxStart(fromTerm, TypeUtils.isNativeJs(toDecl));
     }
 
     int boxUnboxStart(final Tree.Term fromTerm, boolean toNative) {
         // Box the value
-        final boolean fromNative = isNativeJs(fromTerm);
+        final boolean fromNative = TypeUtils.isNativeJs(fromTerm);
         final Type fromType = fromTerm.getTypeModel();
         final String fromTypeName = ModelUtil.isTypeUnknown(fromType) ? "UNKNOWN" : fromType.asQualifiedString();
         if (fromNative != toNative || fromTypeName.startsWith("ceylon.language::Callable<")) {
@@ -2256,7 +2145,7 @@ public class GenerateJsVisitor extends Visitor
             final Declaration bmeDecl = smte.getDeclaration();
             if (specStmt.getSpecifierExpression() instanceof LazySpecifierExpression) {
                 // attr => expr;
-                final boolean property = defineAsProperty(bmeDecl);
+                final boolean property = AttributeGenerator.defineAsProperty(bmeDecl);
                 if (property) {
                     defineAttribute(qualifiedPath(specStmt, bmeDecl), names.name(bmeDecl));
                 } else  {
@@ -2483,7 +2372,7 @@ public class GenerateJsVisitor extends Visitor
         return path.length() > 0;
     }
 
-    private String qualifiedPath(final Node that, final Declaration d) {
+    String qualifiedPath(final Node that, final Declaration d) {
         return qualifiedPath(that, d, false);
     }
 
@@ -2563,7 +2452,7 @@ public class GenerateJsVisitor extends Visitor
             }
         }
         else if (d != null) {
-            if (isMember && (d.isShared() || inProto || (!d.isParameter() && defineAsProperty(d)))) {
+            if (isMember && (d.isShared() || inProto || (!d.isParameter() && AttributeGenerator.defineAsProperty(d)))) {
                 TypeDeclaration id = d instanceof TypeAlias ? (TypeDeclaration)d :
                     that.getScope().getInheritingDeclaration(d);
                 if (id==null) {
@@ -2769,7 +2658,7 @@ public class GenerateJsVisitor extends Visitor
 
         } else if (lhs instanceof QualifiedMemberExpression) {
             QualifiedMemberExpression lhsQME = (QualifiedMemberExpression) lhs;
-            if (isNativeJs(lhsQME)) {
+            if (TypeUtils.isNativeJs(lhsQME)) {
                 // ($1.foo = Box($1.foo).operator($2))
                 final String tmp = names.createTempVariable();
                 final String dec = isInDynamicBlock() && lhsQME.getDeclaration() == null ?

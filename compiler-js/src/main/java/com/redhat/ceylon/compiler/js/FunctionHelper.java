@@ -10,6 +10,7 @@ import com.redhat.ceylon.compiler.loader.MetamodelGenerator;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.model.typechecker.model.Class;
+import com.redhat.ceylon.model.typechecker.model.Constructor;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Function;
 import com.redhat.ceylon.model.typechecker.model.Type;
@@ -477,4 +478,56 @@ public class FunctionHelper {
         }
     }
 
+    static void generateCallable(final Tree.QualifiedMemberOrTypeExpression that, String name,
+            final GenerateJsVisitor gen) {
+        final Declaration d = that.getDeclaration();
+        if (that.getPrimary() instanceof Tree.BaseTypeExpression) {
+            //it's a static method ref
+            if (name == null) {
+                name = gen.memberAccess(that, "");
+            }
+            if (TypeUtils.isConstructor(d)) {
+                Constructor cd = TypeUtils.getConstructor(d);
+                final boolean hasTargs = BmeGenerator.hasTypeParameters(
+                        (Tree.BaseTypeExpression)that.getPrimary());
+                if (hasTargs) {
+                    BmeGenerator.printGenericMethodReference(gen,
+                            (Tree.BaseTypeExpression)that.getPrimary(), "0",
+                            gen.qualifiedPath(that, cd) + "_" + gen.getNames().name(cd));
+                } else {
+                    gen.qualify(that, cd);
+                    gen.out(gen.getNames().name(cd));
+                }
+            } else {
+                gen.out("function(x){return ");
+                if (BmeGenerator.hasTypeParameters(that)) {
+                    BmeGenerator.printGenericMethodReference(gen, that, "x", "x."+name);
+                } else {
+                    gen.out(gen.getClAlias(), "JsCallable(x,x.", name, ")");
+                }
+                gen.out(";}");
+            }
+            return;
+        }
+        if (d.isToplevel() && d instanceof Function) {
+            //Just output the name
+            gen.out(gen.getNames().name(d));
+            return;
+        }
+        String primaryVar = gen.createRetainedTempVar();
+        gen.out("(", primaryVar, "=");
+        that.getPrimary().visit(gen);
+        gen.out(",");
+        final String member = (name == null) ? gen.memberAccess(that, primaryVar) : (primaryVar+"."+name);
+        if (that.getDeclaration() instanceof Function
+                && !((Function)that.getDeclaration()).getTypeParameters().isEmpty()) {
+            //Function ref with type parameters
+            BmeGenerator.printGenericMethodReference(gen, that, primaryVar, member);
+        } else {
+            gen.out(gen.getClAlias(), "JsCallable(", primaryVar, ",", gen.getClAlias(),
+                    "nn$(", primaryVar, ")?", member, ":null)");
+        }
+        gen.out(")");
+    }
+    
 }

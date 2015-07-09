@@ -5,6 +5,7 @@ import java.util.Map;
 import com.redhat.ceylon.compiler.js.util.TypeUtils;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
+import com.redhat.ceylon.model.typechecker.model.Function;
 import com.redhat.ceylon.model.typechecker.model.ModelUtil;
 import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.SiteVariance;
@@ -379,6 +380,29 @@ public class Operators {
         final Type d = term.getTypeModel();
         final boolean isint = d.isSubtypeOf(that.getUnit().getIntegerType());
         Operators.unaryOp(that, isint?"(-":null, isint?")":".negated", gen);
+    }
+
+    static void generateSafeOp(final Tree.QualifiedMemberOrTypeExpression that,
+            final GenerateJsVisitor gen) {
+        boolean isMethod = that.getDeclaration() instanceof Function;
+        String lhsVar = gen.createRetainedTempVar();
+        gen.out("(", lhsVar, "=");
+        gen.supervisit(that);
+        gen.out(",");
+        if (isMethod) {
+            gen.out(gen.getClAlias(), "JsCallable(", lhsVar, ",");
+        }
+        gen.out(gen.getClAlias(),"nn$(", lhsVar, ")?");
+        if (isMethod && !((Function)that.getDeclaration()).getTypeParameters().isEmpty()) {
+            //Function ref with type parameters
+            BmeGenerator.printGenericMethodReference(gen, that, lhsVar, gen.memberAccess(that, lhsVar));
+        } else {
+            gen.out(gen.memberAccess(that, lhsVar));
+        }
+        gen.out(":null)");
+        if (isMethod) {
+            gen.out(")");
+        }
     }
 
 }
