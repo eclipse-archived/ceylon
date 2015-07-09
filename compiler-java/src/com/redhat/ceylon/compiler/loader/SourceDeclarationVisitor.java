@@ -61,7 +61,7 @@ public abstract class SourceDeclarationVisitor extends Visitor implements Natura
         else if (decl instanceof Tree.MethodDefinition) {
             return ((Tree.MethodDefinition)decl).getBlock() != null;
         }
-        return true;
+        return false;
     }
     
     @Override
