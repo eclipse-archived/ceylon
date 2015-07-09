@@ -23,7 +23,7 @@ final class id_ {
             value = ( // line 2
                 let
                 {
-                    .ceylon.language.Callable arg$0$0 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "Anything(Anything)", (short)-1){ // line 3
+                    .ceylon.language.Callable arg$0$0 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.Anything.$TypeDescriptor$), "Anything(Anything)", (short)-1){ // line 3
                          // line 3
                         @.java.lang.Override // line 3
                         public .java.lang.Object $call$(final .java.lang.Object $param$0) { // line 3

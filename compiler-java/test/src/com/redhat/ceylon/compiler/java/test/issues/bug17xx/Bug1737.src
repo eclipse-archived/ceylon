@@ -34,7 +34,7 @@ public final class bug1737_ {
             {
                 final .com.redhat.ceylon.compiler.java.test.issues.bug17xx.Bug1737Thrower<.ceylon.language.Integer> $instance$ = doneThrower;
             }
-            returning new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "String(Integer)", (short)-1){
+            returning new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.Integer.$TypeDescriptor$), "String(Integer)", (short)-1){
                 
                 @.java.lang.Override
                 public .ceylon.language.String $call$(final .java.lang.Object $param$0) {
@@ -48,7 +48,7 @@ public final class bug1737_ {
             {
                 final .com.redhat.ceylon.compiler.java.test.issues.bug17xx.Bug1737Thrower<.ceylon.language.Integer> $instance$ = doneThrower;
             }
-            returning new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "Anything(Integer)", (short)-1){
+            returning new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.Integer.$TypeDescriptor$), "Anything(Integer)", (short)-1){
                 
                 @.java.lang.Override
                 public .java.lang.Object $call$(final .java.lang.Object $param$0) {
@@ -68,7 +68,7 @@ public final class bug1737_ {
             {
                 final .com.redhat.ceylon.compiler.java.test.issues.bug17xx.Bug1737Thrower<.ceylon.language.Integer> $instance$ = doneThrower;
             }
-            returning new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "Anything(Integer)", (short)-1){
+            returning new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.Integer.$TypeDescriptor$), "Anything(Integer)", (short)-1){
                 
                 @.java.lang.Override
                 public .java.lang.Object $call$(final .java.lang.Object $param$0) {

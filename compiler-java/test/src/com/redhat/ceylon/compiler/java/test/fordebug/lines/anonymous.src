@@ -29,7 +29,7 @@ final class anonymous_ {
         .com.redhat.ceylon.compiler.java.test.fordebug.lines.Doer id = ( // line 3
             let
             {
-                .ceylon.language.Callable arg$0$0 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "Anything(Anything)", (short)-1) // line 4
+                .ceylon.language.Callable arg$0$0 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.Anything.$TypeDescriptor$), "Anything(Anything)", (short)-1) // line 4
                 @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1") // line 4
                 @.com.redhat.ceylon.compiler.java.metadata.Name("do") // line 4
                 @.com.redhat.ceylon.compiler.java.metadata.Method // line 4
@@ -48,7 +48,7 @@ final class anonymous_ {
         id = ( // line 6
             let
             {
-                .ceylon.language.Callable arg$1$0 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "Anything(Anything)", (short)-1) // line 7
+                .ceylon.language.Callable arg$1$0 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.Anything.$TypeDescriptor$), "Anything(Anything)", (short)-1) // line 7
                 @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "2") // line 9
                 @.com.redhat.ceylon.compiler.java.metadata.Name("do") // line 9
                 @.com.redhat.ceylon.compiler.java.metadata.Method // line 9

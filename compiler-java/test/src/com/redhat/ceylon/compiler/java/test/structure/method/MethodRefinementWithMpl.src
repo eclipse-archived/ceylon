@@ -14,7 +14,7 @@ class MethodRefinementWithMplSub implements .com.redhat.ceylon.compiler.java.run
     
     @.java.lang.Override
     public final .ceylon.language.Callable<? extends .ceylon.language.String> two(final .java.lang.String s) {
-        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "String(Integer)", (short)-1){
+        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.Integer.$TypeDescriptor$), "String(Integer)", (short)-1){
             
             @.java.lang.Override
             public .ceylon.language.String $call$(final .java.lang.Object $param$0) {
@@ -26,12 +26,12 @@ class MethodRefinementWithMplSub implements .com.redhat.ceylon.compiler.java.run
     
     @.java.lang.Override
     public final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .ceylon.language.String>> three(final .java.lang.String s) {
-        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .ceylon.language.String>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Boolean.$TypeDescriptor$, .ceylon.language.Boolean.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "String(Boolean)(Integer)", (short)-1){
+        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .ceylon.language.String>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.Boolean.$TypeDescriptor$)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.Integer.$TypeDescriptor$), "String(Boolean)(Integer)", (short)-1){
             
             @.java.lang.Override
             public .ceylon.language.Callable<? extends .ceylon.language.String> $call$(final .java.lang.Object $param$0) {
                 final long i = ((.ceylon.language.Integer)$param$0).longValue();
-                return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Boolean.$TypeDescriptor$, .ceylon.language.Boolean.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "String(Boolean)", (short)-1){
+                return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.Boolean.$TypeDescriptor$), "String(Boolean)", (short)-1){
                     
                     @.java.lang.Override
                     public .ceylon.language.String $call$(final .java.lang.Object $param$0) {

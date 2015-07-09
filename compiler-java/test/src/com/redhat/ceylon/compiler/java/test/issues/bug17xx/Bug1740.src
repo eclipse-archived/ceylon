@@ -17,7 +17,7 @@ class Bug1740 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
                 {
                     final .java.lang.Object $instance$ = bar$3;
                 }
-                returning new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Boolean>(.ceylon.language.Boolean.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Object.$TypeDescriptor$, .ceylon.language.Object.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "Boolean(Object)", (short)-1){
+                returning new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Boolean>(.ceylon.language.Boolean.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.Object.$TypeDescriptor$), "Boolean(Object)", (short)-1){
                     
                     @.java.lang.Override
                     public .ceylon.language.Boolean $call$(final .java.lang.Object $param$0) {

@@ -7,7 +7,7 @@ final class importObjectMembers_ {
     
     static void importObjectMembers() {
         .com.redhat.ceylon.compiler.java.test.structure.importIt.obj.toplevel_.get_().fn();
-        final .ceylon.language.Callable<? extends .java.lang.Object> fnRef = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Empty.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$)), "Anything(String=)", (short)-1){
+        final .ceylon.language.Callable<? extends .java.lang.Object> fnRef = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, 0, .ceylon.language.String.$TypeDescriptor$), "Anything(String=)", (short)-1){
             
             @.java.lang.Override
             public .java.lang.Object $call$() {

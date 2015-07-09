@@ -35,7 +35,7 @@ class DeferredMethodInitializationMultipleSpecification implements .com.redhat.c
         }
         final s_ s = new s_();
         if (b) {
-            s.s$priv$ = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "String(String)", (short)-1){
+            s.s$priv$ = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.String.$TypeDescriptor$), "String(String)", (short)-1){
                 
                 @.java.lang.Override
                 public .ceylon.language.String $call$(final .java.lang.Object $param$0) {

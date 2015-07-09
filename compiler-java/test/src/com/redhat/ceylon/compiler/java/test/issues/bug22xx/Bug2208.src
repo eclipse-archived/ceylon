@@ -503,7 +503,7 @@ public abstract class Promise<Value> implements .com.redhat.ceylon.compiler.java
     
     public Promise(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Value) {
         this.$reified$Value = $reified$Value;
-        this.$com$redhat$ceylon$compiler$java$test$issues$bug22xx$Completion$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug22xx.Completion$impl<Value, .ceylon.language.Sequence<? extends Value>>($reified$Value, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, $reified$Value, $reified$Value, .ceylon.language.Empty.$TypeDescriptor$), this);
+        this.$com$redhat$ceylon$compiler$java$test$issues$bug22xx$Completion$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug22xx.Completion$impl<Value, .ceylon.language.Sequence<? extends Value>>($reified$Value, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, $reified$Value), this);
     }
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Value;
     protected final .com.redhat.ceylon.compiler.java.test.issues.bug22xx.Completion$impl<Value, .ceylon.language.Sequence<? extends Value>> $com$redhat$ceylon$compiler$java$test$issues$bug22xx$Completion$this$;

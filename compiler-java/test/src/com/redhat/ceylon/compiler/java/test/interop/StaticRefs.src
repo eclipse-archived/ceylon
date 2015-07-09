@@ -10,7 +10,7 @@ final class staticRefs_ {
         final .java.io.PrintStream stdout = .com.redhat.ceylon.compiler.java.Util.checkNull(.java.lang.System.out);
         final .java.io.PrintStream stderr = .com.redhat.ceylon.compiler.java.Util.checkNull(.java.lang.System.err);
         final .java.lang.Thread.State runnableState = .java.lang.Thread.State.RUNNABLE;
-        final .ceylon.language.Callable<? extends .java.lang.Object> exitRef = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "Anything(Integer)", (short)-1){
+        final .ceylon.language.Callable<? extends .java.lang.Object> exitRef = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.Integer.$TypeDescriptor$), "Anything(Integer)", (short)-1){
             
             @.java.lang.Override
             public .java.lang.Object $call$(final .java.lang.Object $param$0) {
@@ -24,7 +24,7 @@ final class staticRefs_ {
                 );
             }
         };
-        final .ceylon.language.Callable<? extends .ceylon.language.Integer> compareRef = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Boolean.$TypeDescriptor$, .ceylon.language.Boolean.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Boolean.$TypeDescriptor$, .ceylon.language.Boolean.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$)), "Integer(Boolean, Boolean)", (short)-1){
+        final .ceylon.language.Callable<? extends .ceylon.language.Integer> compareRef = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.Boolean.$TypeDescriptor$, .ceylon.language.Boolean.$TypeDescriptor$), "Integer(Boolean, Boolean)", (short)-1){
             
             @.java.lang.Override
             public .ceylon.language.Integer $call$(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {

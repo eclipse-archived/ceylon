@@ -23,7 +23,7 @@ class FunctionalParameterDefault implements .com.redhat.ceylon.compiler.java.run
     }
     
     public static .ceylon.language.Callable<? extends .ceylon.language.String> $default$m() {
-        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "String(String)", (short)-1){
+        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.String.$TypeDescriptor$), "String(String)", (short)-1){
             
             @.java.lang.Override
             public .ceylon.language.String $call$(final .java.lang.Object $param$0) {
@@ -42,7 +42,7 @@ class FunctionalParameterDefault implements .com.redhat.ceylon.compiler.java.run
 class FunctionalParameterDefaultSub extends .com.redhat.ceylon.compiler.java.test.structure.klass.FunctionalParameterDefault {
     
     FunctionalParameterDefaultSub() {
-        super(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "String(String)", (short)-1){
+        super(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.String.$TypeDescriptor$), "String(String)", (short)-1){
             
             @.java.lang.Override
             public .ceylon.language.String $call$(final .java.lang.Object $param$0) {

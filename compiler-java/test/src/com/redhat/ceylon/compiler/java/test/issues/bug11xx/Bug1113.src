@@ -12,17 +12,17 @@ final class bug1113_ {
             return f$2.$call$();
         }
         .java.lang.Object f$4;
-        if (.com.redhat.ceylon.compiler.java.Util.isReified(f$4 = f, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, $reified$Ret, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$)))) {
+        if (.com.redhat.ceylon.compiler.java.Util.isReified(f$4 = f, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, $reified$Ret, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.String.$TypeDescriptor$)))) {
             final .ceylon.language.Callable<? extends Ret> f$5 = (.ceylon.language.Callable<? extends Ret>)(.ceylon.language.Callable)f$4;
             return f$5.$call$((.java.lang.Object).ceylon.language.String.instance("foo"));
         }
         .java.lang.Object f$7;
-        if (.com.redhat.ceylon.compiler.java.Util.isReified(f$7 = f, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, $reified$Ret, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$))))) {
+        if (.com.redhat.ceylon.compiler.java.Util.isReified(f$7 = f, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, $reified$Ret, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$)))) {
             final .ceylon.language.Callable<? extends Ret> f$8 = (.ceylon.language.Callable<? extends Ret>)(.ceylon.language.Callable)f$7;
             return f$8.$call$((.java.lang.Object).ceylon.language.String.instance("foo"), .ceylon.language.String.instance("bar"));
         }
         .java.lang.Object f$10;
-        if (.com.redhat.ceylon.compiler.java.Util.isReified(f$10 = f, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, $reified$Ret, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$)))) {
+        if (.com.redhat.ceylon.compiler.java.Util.isReified(f$10 = f, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, $reified$Ret, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.Integer.$TypeDescriptor$)))) {
             final .ceylon.language.Callable<? extends Ret> f$11 = (.ceylon.language.Callable<? extends Ret>)(.ceylon.language.Callable)f$10;
             return f$11.$call$((.java.lang.Object).ceylon.language.Integer.instance(1L));
         }

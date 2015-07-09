@@ -22,7 +22,7 @@ final class bug2022_ {
                 
                 }
             }
-        }.<.ceylon.language.Integer>map(.ceylon.language.Integer.$TypeDescriptor$, new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.true_.$TypeDescriptor$, .ceylon.language.false_.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.true_.$TypeDescriptor$, .ceylon.language.false_.$TypeDescriptor$), .ceylon.language.Empty.$TypeDescriptor$), "Integer(true|false)", (short)-1){
+        }.<.ceylon.language.Integer>map(.ceylon.language.Integer.$TypeDescriptor$, new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.true_.$TypeDescriptor$, .ceylon.language.false_.$TypeDescriptor$)), "Integer(true|false)", (short)-1){
             
             @.java.lang.Override
             public .ceylon.language.Integer $call$(final .java.lang.Object $param$0) {

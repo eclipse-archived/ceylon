@@ -20,7 +20,7 @@ final class anonFunctionNullary_ {
                 return .ceylon.language.String.instance("");
             }
         };
-        final .ceylon.language.Callable<? extends .ceylon.language.Sequential<? extends .ceylon.language.String>> s3 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Sequence<? extends .ceylon.language.String>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), .ceylon.language.Empty.$TypeDescriptor$, "[String]()", (short)-1){
+        final .ceylon.language.Callable<? extends .ceylon.language.Sequential<? extends .ceylon.language.String>> s3 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Sequence<? extends .ceylon.language.String>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.String.$TypeDescriptor$), .ceylon.language.Empty.$TypeDescriptor$, "[String]()", (short)-1){
             
             @.java.lang.Override
             public .ceylon.language.Sequence<? extends .ceylon.language.String> $call$() {
@@ -41,7 +41,7 @@ final class anonFunctionNullary_ {
                 return .ceylon.language.Integer.instance(1L);
             }
         };
-        final .ceylon.language.Callable<? extends .ceylon.language.Sequential<? extends .ceylon.language.Integer>> i3 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Sequence<? extends .ceylon.language.Integer>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), .ceylon.language.Empty.$TypeDescriptor$, "[Integer]()", (short)-1){
+        final .ceylon.language.Callable<? extends .ceylon.language.Sequential<? extends .ceylon.language.Integer>> i3 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Sequence<? extends .ceylon.language.Integer>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.Integer.$TypeDescriptor$), .ceylon.language.Empty.$TypeDescriptor$, "[Integer]()", (short)-1){
             
             @.java.lang.Override
             public .ceylon.language.Sequence<? extends .ceylon.language.Integer> $call$() {
@@ -62,14 +62,14 @@ final class anonFunctionNullary_ {
                 return .ceylon.language.Float.instance(1.0);
             }
         };
-        final .ceylon.language.Callable<? extends .ceylon.language.Sequential<? extends .ceylon.language.Float>> f3 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Sequence<? extends .ceylon.language.Float>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Float.$TypeDescriptor$, .ceylon.language.Float.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), .ceylon.language.Empty.$TypeDescriptor$, "[Float]()", (short)-1){
+        final .ceylon.language.Callable<? extends .ceylon.language.Sequential<? extends .ceylon.language.Float>> f3 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Sequence<? extends .ceylon.language.Float>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.Float.$TypeDescriptor$), .ceylon.language.Empty.$TypeDescriptor$, "[Float]()", (short)-1){
             
             @.java.lang.Override
             public .ceylon.language.Sequence<? extends .ceylon.language.Float> $call$() {
                 return (.ceylon.language.Sequence<? extends .ceylon.language.Float>).ceylon.language.Tuple.instance(.ceylon.language.Float.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.Float.instance(1.0)});
             }
         };
-        final .ceylon.language.Callable if3 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Sequence<? extends .java.lang.Object>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Float.$TypeDescriptor$), .ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Float.$TypeDescriptor$, .ceylon.language.Float.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$)), .ceylon.language.Empty.$TypeDescriptor$, "[Integer, Float]()", (short)-1){
+        final .ceylon.language.Callable if3 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Sequence<? extends .java.lang.Object>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Float.$TypeDescriptor$), .ceylon.language.Empty.$TypeDescriptor$, "[Integer, Float]()", (short)-1){
             
             @.java.lang.Override
             public .ceylon.language.Sequence $call$() {
@@ -92,7 +92,7 @@ final class anonFunctionNullary_ {
                 return .ceylon.language.Boolean.instance(true);
             }
         };
-        final .ceylon.language.Callable<? extends .ceylon.language.Sequential<? extends .ceylon.language.Boolean>> b3 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Sequence<? extends .ceylon.language.Boolean>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Boolean.$TypeDescriptor$, .ceylon.language.Boolean.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), .ceylon.language.Empty.$TypeDescriptor$, "[Boolean]()", (short)-1){
+        final .ceylon.language.Callable<? extends .ceylon.language.Sequential<? extends .ceylon.language.Boolean>> b3 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Sequence<? extends .ceylon.language.Boolean>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.Boolean.$TypeDescriptor$), .ceylon.language.Empty.$TypeDescriptor$, "[Boolean]()", (short)-1){
             
             @.java.lang.Override
             public .ceylon.language.Sequence<? extends .ceylon.language.Boolean> $call$() {
@@ -113,7 +113,7 @@ final class anonFunctionNullary_ {
                 return .ceylon.language.larger_.get_();
             }
         };
-        final .ceylon.language.Callable<? extends .ceylon.language.Sequential<? extends .ceylon.language.Comparison>> c3 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Sequence<? extends .ceylon.language.Comparison>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Comparison.$TypeDescriptor$, .ceylon.language.Comparison.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Comparison.$TypeDescriptor$, .ceylon.language.Comparison.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$)), .ceylon.language.Empty.$TypeDescriptor$, "Comparison[2]()", (short)-1){
+        final .ceylon.language.Callable<? extends .ceylon.language.Sequential<? extends .ceylon.language.Comparison>> c3 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Sequence<? extends .ceylon.language.Comparison>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.Comparison.$TypeDescriptor$, .ceylon.language.Comparison.$TypeDescriptor$), .ceylon.language.Empty.$TypeDescriptor$, "Comparison[2]()", (short)-1){
             
             @.java.lang.Override
             public .ceylon.language.Sequence<? extends .ceylon.language.Comparison> $call$() {
@@ -136,14 +136,14 @@ final class anonFunctionNullary_ {
                 return t;
             }
         };
-        final .ceylon.language.Callable<? extends .ceylon.language.Sequential<? extends T>> t3 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Sequence<? extends T>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, $reified$T, $reified$T, .ceylon.language.Empty.$TypeDescriptor$), .ceylon.language.Empty.$TypeDescriptor$, "[T]()", (short)-1){
+        final .ceylon.language.Callable<? extends .ceylon.language.Sequential<? extends T>> t3 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Sequence<? extends T>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, $reified$T), .ceylon.language.Empty.$TypeDescriptor$, "[T]()", (short)-1){
             
             @.java.lang.Override
             public .ceylon.language.Sequence<? extends T> $call$() {
                 return (.ceylon.language.Sequence<? extends T>).ceylon.language.Tuple.instance($reified$T, new .java.lang.Object[]{t});
             }
         };
-        final .ceylon.language.Callable it3 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Sequence<? extends .java.lang.Object>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union($reified$T, .ceylon.language.Integer.$TypeDescriptor$), $reified$T, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$)), .ceylon.language.Empty.$TypeDescriptor$, "[T, Integer]()", (short)-1){
+        final .ceylon.language.Callable it3 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Sequence<? extends .java.lang.Object>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, $reified$T, .ceylon.language.Integer.$TypeDescriptor$), .ceylon.language.Empty.$TypeDescriptor$, "[T, Integer]()", (short)-1){
             
             @.java.lang.Override
             public .ceylon.language.Sequence $call$() {

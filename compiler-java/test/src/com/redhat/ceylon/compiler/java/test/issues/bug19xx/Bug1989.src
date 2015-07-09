@@ -38,7 +38,7 @@ public class Bug1989 implements .com.redhat.ceylon.compiler.java.runtime.model.R
     }
     
     public static .ceylon.language.Callable<? extends .java.lang.Object> $default$fp(final .ceylon.language.Callable<? extends .java.lang.Object> fp2) {
-        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$), .ceylon.language.Empty.$TypeDescriptor$), "Anything(String?)", (short)-1){
+        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$)), "Anything(String?)", (short)-1){
             
             @.java.lang.Override
             public .java.lang.Object $call$(final .java.lang.Object $param$0) {

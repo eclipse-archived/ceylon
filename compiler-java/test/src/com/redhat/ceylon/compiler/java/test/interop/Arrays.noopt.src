@@ -68,7 +68,7 @@ final class test_booleans_ {
             returning new boolean[arg$6$0];
         );
         new boolean[.com.redhat.ceylon.compiler.java.Util.toInt(2L)];
-        final .ceylon.language.Callable<? extends .java.lang.Object> ctorRef = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<boolean[]>(.com.redhat.ceylon.compiler.java.language.BooleanArray.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Boolean.$TypeDescriptor$), .ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Empty.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Boolean.$TypeDescriptor$, .ceylon.language.Boolean.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$))), "BooleanArray(Integer, Boolean=)", (short)-1){
+        final .ceylon.language.Callable<? extends .java.lang.Object> ctorRef = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<boolean[]>(.com.redhat.ceylon.compiler.java.language.BooleanArray.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, 1, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Boolean.$TypeDescriptor$), "BooleanArray(Integer, Boolean=)", (short)-1){
             
             @.java.lang.Override
             public boolean[] $call$(final .java.lang.Object $param$0) {
@@ -171,7 +171,7 @@ final class test_bytes_ {
         }
         java.take_bytes(items);
         new byte[.com.redhat.ceylon.compiler.java.Util.toInt(2L)];
-        final .ceylon.language.Callable<? extends .java.lang.Object> ctorRef = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<byte[]>(.com.redhat.ceylon.compiler.java.language.ByteArray.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Byte.$TypeDescriptor$), .ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Empty.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Byte.$TypeDescriptor$, .ceylon.language.Byte.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$))), "ByteArray(Integer, Byte=)", (short)-1){
+        final .ceylon.language.Callable<? extends .java.lang.Object> ctorRef = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<byte[]>(.com.redhat.ceylon.compiler.java.language.ByteArray.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, 1, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Byte.$TypeDescriptor$), "ByteArray(Integer, Byte=)", (short)-1){
             
             @.java.lang.Override
             public byte[] $call$(final .java.lang.Object $param$0) {
@@ -222,7 +222,7 @@ final class test_shorts_ {
         }
         java.take_shorts(items);
         new short[.com.redhat.ceylon.compiler.java.Util.toInt(2L)];
-        final .ceylon.language.Callable<? extends .java.lang.Object> ctorRef = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<short[]>(.com.redhat.ceylon.compiler.java.language.ShortArray.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Empty.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$))), "ShortArray(Integer, Integer=)", (short)-1){
+        final .ceylon.language.Callable<? extends .java.lang.Object> ctorRef = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<short[]>(.com.redhat.ceylon.compiler.java.language.ShortArray.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, 1, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$), "ShortArray(Integer, Integer=)", (short)-1){
             
             @.java.lang.Override
             public short[] $call$(final .java.lang.Object $param$0) {
@@ -273,7 +273,7 @@ final class test_ints_ {
         }
         java.take_ints(items);
         new int[.com.redhat.ceylon.compiler.java.Util.toInt(2L)];
-        final .ceylon.language.Callable<? extends .java.lang.Object> ctorRef = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<int[]>(.com.redhat.ceylon.compiler.java.language.IntArray.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Empty.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$))), "IntArray(Integer, Integer=)", (short)-1){
+        final .ceylon.language.Callable<? extends .java.lang.Object> ctorRef = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<int[]>(.com.redhat.ceylon.compiler.java.language.IntArray.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, 1, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$), "IntArray(Integer, Integer=)", (short)-1){
             
             @.java.lang.Override
             public int[] $call$(final .java.lang.Object $param$0) {
@@ -324,7 +324,7 @@ final class test_longs_ {
         }
         java.take_longs(items);
         new long[.com.redhat.ceylon.compiler.java.Util.toInt(2L)];
-        final .ceylon.language.Callable<? extends .java.lang.Object> ctorRef = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<long[]>(.com.redhat.ceylon.compiler.java.language.LongArray.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Empty.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$))), "LongArray(Integer, Integer=)", (short)-1){
+        final .ceylon.language.Callable<? extends .java.lang.Object> ctorRef = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<long[]>(.com.redhat.ceylon.compiler.java.language.LongArray.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, 1, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$), "LongArray(Integer, Integer=)", (short)-1){
             
             @.java.lang.Override
             public long[] $call$(final .java.lang.Object $param$0) {
@@ -375,7 +375,7 @@ final class test_floats_ {
         }
         java.take_floats(items);
         new float[.com.redhat.ceylon.compiler.java.Util.toInt(2L)];
-        final .ceylon.language.Callable<? extends .java.lang.Object> ctorRef = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<float[]>(.com.redhat.ceylon.compiler.java.language.FloatArray.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Float.$TypeDescriptor$), .ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Empty.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Float.$TypeDescriptor$, .ceylon.language.Float.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$))), "FloatArray(Integer, Float=)", (short)-1){
+        final .ceylon.language.Callable<? extends .java.lang.Object> ctorRef = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<float[]>(.com.redhat.ceylon.compiler.java.language.FloatArray.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, 1, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Float.$TypeDescriptor$), "FloatArray(Integer, Float=)", (short)-1){
             
             @.java.lang.Override
             public float[] $call$(final .java.lang.Object $param$0) {
@@ -426,7 +426,7 @@ final class test_doubles_ {
         }
         java.take_doubles(items);
         new double[.com.redhat.ceylon.compiler.java.Util.toInt(2L)];
-        final .ceylon.language.Callable<? extends .java.lang.Object> ctorRef = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<double[]>(.com.redhat.ceylon.compiler.java.language.DoubleArray.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Float.$TypeDescriptor$), .ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Empty.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Float.$TypeDescriptor$, .ceylon.language.Float.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$))), "DoubleArray(Integer, Float=)", (short)-1){
+        final .ceylon.language.Callable<? extends .java.lang.Object> ctorRef = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<double[]>(.com.redhat.ceylon.compiler.java.language.DoubleArray.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, 1, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Float.$TypeDescriptor$), "DoubleArray(Integer, Float=)", (short)-1){
             
             @.java.lang.Override
             public double[] $call$(final .java.lang.Object $param$0) {

@@ -106,7 +106,7 @@ final class bug1877_ {
                 }
             }
         }.iterator());
-        final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .java.lang.Object>> fa = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .java.lang.Object>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .com.redhat.ceylon.compiler.java.test.issues.bug18xx.Bug1877.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.issues.bug18xx.Bug1877.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "Anything()(Bug1877)", (short)-1){
+        final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .java.lang.Object>> fa = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .java.lang.Object>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .com.redhat.ceylon.compiler.java.test.issues.bug18xx.Bug1877.$TypeDescriptor$), "Anything()(Bug1877)", (short)-1){
             
             @.java.lang.Override
             public .ceylon.language.Callable<? extends .java.lang.Object> $call$(final .java.lang.Object $param$0) {
@@ -127,7 +127,7 @@ final class bug1877_ {
             }
         };
         final .com.redhat.ceylon.compiler.java.test.issues.bug18xx.Bug1877 b = new .com.redhat.ceylon.compiler.java.test.issues.bug18xx.Bug1877();
-        final .ceylon.language.Callable<? extends .java.lang.Object> fb = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .java.lang.Object>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .com.redhat.ceylon.compiler.java.test.issues.bug18xx.Bug1877.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.issues.bug18xx.Bug1877.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "Anything()(Bug1877)", (short)-1){
+        final .ceylon.language.Callable<? extends .java.lang.Object> fb = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .java.lang.Object>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .com.redhat.ceylon.compiler.java.test.issues.bug18xx.Bug1877.$TypeDescriptor$), "Anything()(Bug1877)", (short)-1){
             
             @.java.lang.Override
             public .ceylon.language.Callable<? extends .java.lang.Object> $call$(final .java.lang.Object $param$0) {
@@ -147,7 +147,7 @@ final class bug1877_ {
                 };
             }
         }.$call$(b);
-        final .java.lang.Object fc = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .java.lang.Object>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .com.redhat.ceylon.compiler.java.test.issues.bug18xx.Bug1877.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.issues.bug18xx.Bug1877.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "Anything()(Bug1877)", (short)-1){
+        final .java.lang.Object fc = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .java.lang.Object>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .com.redhat.ceylon.compiler.java.test.issues.bug18xx.Bug1877.$TypeDescriptor$), "Anything()(Bug1877)", (short)-1){
             
             @.java.lang.Override
             public .ceylon.language.Callable<? extends .java.lang.Object> $call$(final .java.lang.Object $param$0) {

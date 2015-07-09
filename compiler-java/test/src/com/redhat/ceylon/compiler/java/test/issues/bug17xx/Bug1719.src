@@ -14,7 +14,7 @@ class Bug1719Sub implements .com.redhat.ceylon.compiler.java.runtime.model.Reifi
     
     @.java.lang.Override
     public final .ceylon.language.Callable<? extends .java.lang.Object> fun() {
-        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "Anything(Anything)", (short)-1){
+        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.Anything.$TypeDescriptor$), "Anything(Anything)", (short)-1){
             
             @.java.lang.Override
             public .java.lang.Object $call$(final .java.lang.Object $param$0) {
@@ -33,7 +33,7 @@ class Bug1719Sub implements .com.redhat.ceylon.compiler.java.runtime.model.Reifi
     
     @.java.lang.Override
     public final .ceylon.language.Callable<? extends .java.lang.Object> moreFun() {
-        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), .ceylon.language.Empty.$TypeDescriptor$), "Anything(Anything())", (short)-1){
+        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$)), "Anything(Anything())", (short)-1){
             
             @.java.lang.Override
             public .java.lang.Object $call$(final .java.lang.Object $param$0) {

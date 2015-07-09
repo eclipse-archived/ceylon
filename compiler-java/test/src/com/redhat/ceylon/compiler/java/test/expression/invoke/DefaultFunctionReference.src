@@ -17,7 +17,7 @@ final class defaultFunctionReference_ {
     }
     
     public static final .ceylon.language.Callable<? extends .java.lang.Object> defaultFunctionReference$f() {
-        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Object.$TypeDescriptor$, .ceylon.language.Object.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "Anything(Object)", (short)-1){
+        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.Object.$TypeDescriptor$), "Anything(Object)", (short)-1){
             
             @.java.lang.Override
             public .java.lang.Object $call$(final .java.lang.Object $param$0) {

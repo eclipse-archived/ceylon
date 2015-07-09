@@ -10,7 +10,7 @@ public final class bug2047_ {
     @.ceylon.language.SharedAnnotation$annotation$
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     public static void bug2047() {
-        final .ceylon.language.Callable<? extends .ceylon.language.String> f = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "String(String)", (short)-1)
+        final .ceylon.language.Callable<? extends .ceylon.language.String> f = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.String.$TypeDescriptor$), "String(String)", (short)-1)
         @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration
         @.com.redhat.ceylon.compiler.java.metadata.Name("anonymous#0")
         @.com.redhat.ceylon.compiler.java.metadata.Method

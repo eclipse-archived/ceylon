@@ -19,7 +19,7 @@ final class methodArgumentNamedIncovation2_ {
         (
             let
             {
-                .ceylon.language.Callable arg$0$0 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "String(Integer)", (short)-1){
+                .ceylon.language.Callable arg$0$0 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.Integer.$TypeDescriptor$), "String(Integer)", (short)-1){
                     
                     @.java.lang.Override
                     public .ceylon.language.String $call$(final .java.lang.Object $param$0) {
@@ -42,7 +42,7 @@ final class methodArgumentNamedIncovation2_ {
         (
             let
             {
-                .ceylon.language.Callable arg$2$0 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<A>($reified$A, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, $reified$B, $reified$B, .ceylon.language.Empty.$TypeDescriptor$), "A(B)", (short)-1){
+                .ceylon.language.Callable arg$2$0 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<A>($reified$A, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, $reified$B), "A(B)", (short)-1){
                     
                     @.java.lang.Override
                     public A $call$(final .java.lang.Object $param$0) {

@@ -42,7 +42,7 @@ final class bug1313_ {
             {
                 final long $instance$ = 1L;
             }
-            returning new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "Integer(Integer)", (short)-1){
+            returning new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.Integer.$TypeDescriptor$), "Integer(Integer)", (short)-1){
                 
                 @.java.lang.Override
                 @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -57,7 +57,7 @@ final class bug1313_ {
             {
                 final .java.lang.String $instance$ = "";
             }
-            returning new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "String(String)", (short)-1){
+            returning new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.String.$TypeDescriptor$), "String(String)", (short)-1){
                 
                 @.java.lang.Override
                 @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -72,7 +72,7 @@ final class bug1313_ {
             {
                 final .java.lang.String $instance$ = "";
             }
-            returning new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$)), "String(String, String)", (short)-1){
+            returning new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$), "String(String, String)", (short)-1){
                 
                 @.java.lang.Override
                 @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -88,7 +88,7 @@ final class bug1313_ {
             {
                 final .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1313 $instance$ = new .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1313();
             }
-            returning new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1313>(.com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1313.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1313.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1313.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "Bug1313(Bug1313)", (short)-1){
+            returning new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1313>(.com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1313.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1313.$TypeDescriptor$), "Bug1313(Bug1313)", (short)-1){
                 
                 @.java.lang.Override
                 @.com.redhat.ceylon.compiler.java.metadata.Ignore

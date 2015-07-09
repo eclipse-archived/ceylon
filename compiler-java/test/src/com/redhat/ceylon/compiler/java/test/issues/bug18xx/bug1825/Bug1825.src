@@ -21,7 +21,7 @@ final class bug1825_ {
                     returning new .ceylon.collection.HashMap(arg$1$reified$0, arg$1$reified$1, arg$1$0, arg$1$1, arg$1$2);
                 );
             }
-            returning new .com.redhat.ceylon.compiler.java.language.AbstractCallable(.ceylon.language.Null.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Object.$TypeDescriptor$, .ceylon.language.Object.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "Null(Object)", (short)-1){
+            returning new .com.redhat.ceylon.compiler.java.language.AbstractCallable(.ceylon.language.Null.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.Object.$TypeDescriptor$), "Null(Object)", (short)-1){
                 
                 @.java.lang.Override
                 public .java.lang.Object $call$(final .java.lang.Object $param$0) {

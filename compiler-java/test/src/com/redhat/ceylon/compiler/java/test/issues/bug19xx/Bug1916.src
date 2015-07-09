@@ -6,7 +6,7 @@ final class bug1916_ {
     }
     
     static .ceylon.language.Callable<? extends .ceylon.language.Boolean> bug1916(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> predicate) {
-        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Boolean>(.ceylon.language.Boolean.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "Boolean(Anything)", (short)-1){
+        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Boolean>(.ceylon.language.Boolean.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.Anything.$TypeDescriptor$), "Boolean(Anything)", (short)-1){
             
             @.java.lang.Override
             public .ceylon.language.Boolean $call$(final .java.lang.Object $param$0) {
@@ -36,7 +36,7 @@ final class bug1916_2_ {
     }
     
     static .ceylon.language.Callable<? extends .ceylon.language.Boolean> bug1916_2(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> predicate) {
-        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Boolean>(.ceylon.language.Boolean.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "Boolean(Anything)", (short)-1){
+        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Boolean>(.ceylon.language.Boolean.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.Anything.$TypeDescriptor$), "Boolean(Anything)", (short)-1){
             
             @.java.lang.Override
             public .ceylon.language.Boolean $call$(final .java.lang.Object $param$0) {

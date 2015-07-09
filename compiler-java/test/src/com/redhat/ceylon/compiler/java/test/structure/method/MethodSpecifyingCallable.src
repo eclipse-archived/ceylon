@@ -19,7 +19,7 @@ class MethodSpecifyingCallable implements .com.redhat.ceylon.compiler.java.runti
                 return .ceylon.language.nothing_.get_();
             }
         };
-        this.oneParam = new .com.redhat.ceylon.compiler.java.language.AbstractCallable(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "Nothing(Integer)", (short)-1){
+        this.oneParam = new .com.redhat.ceylon.compiler.java.language.AbstractCallable(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.Integer.$TypeDescriptor$), "Nothing(Integer)", (short)-1){
             
             @.java.lang.Override
             public .java.lang.Object $call$(final .java.lang.Object $param$0) {
@@ -98,7 +98,7 @@ class MethodSpecifyingCallable implements .com.redhat.ceylon.compiler.java.runti
                 return .ceylon.language.nothing_.get_();
             }
         };
-        this.secondSequencedParam = new .com.redhat.ceylon.compiler.java.language.AbstractCallable(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequential.class, .ceylon.language.Integer.$TypeDescriptor$)), "Nothing(Integer, Integer*)", (short)1){
+        this.secondSequencedParam = new .com.redhat.ceylon.compiler.java.language.AbstractCallable(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(true, false, -1, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$), "Nothing(Integer, Integer*)", (short)1){
             
             @.java.lang.Override
             public .java.lang.Object $callvariadic$(final .ceylon.language.Sequential $param$0) {
