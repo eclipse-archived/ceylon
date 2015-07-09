@@ -133,7 +133,12 @@ public class TypePrinter {
                             u.getSequentialElementType(pt);
                     String etn = print(et, unit);
                     int len = u.getHomogeneousTupleLength(pt);
-                    return etn +  "[" + len + "]";
+                    if (isPrimitiveAbbreviatedType(et)) {
+                        return etn + "[" + len + "]";
+                    }
+                    else {
+                        return "<" + etn + ">[" + len + "]";
+                    }
                 }
                 if (abbreviateSequential(pt)) {
                     Type it = u.getIteratedType(pt);
@@ -213,7 +218,8 @@ public class TypePrinter {
                     }
                 }
                 if (abbreviateTuple(pt)) {
-                    String elemTypes = getTupleElementTypeNames(pt, unit);
+                    String elemTypes = 
+                            getTupleElementTypeNames(pt, unit);
                     if (elemTypes!=null) {
                         return "[" + elemTypes + "]";
                     }
