@@ -4,6 +4,7 @@ import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.hasError;
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.name;
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.unwrapExpressionUntilTerm;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.appliedType;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getNativeHeader;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.intersectionType;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isBooleanFalse;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isBooleanTrue;
@@ -90,11 +91,22 @@ public class AnalyzerUtil {
         Declaration result = 
                 scope.getMemberOrParameter(unit, 
                         name, signature, ellipsis);
+        if (result == null) {
+            if (scope instanceof Declaration) {
+                // If we couldn't find the declaration in the current
+                // scope and the scope is a native implementation we
+                // will try again with its header
+                Declaration decl = (Declaration)scope;
+                if (decl.isNative() && !decl.isNativeHeader()) {
+                    result = getNativeHeader(decl.getScope(), name);
+                }
+            }
+        }
         if (result instanceof TypedDeclaration) {
-        	return (TypedDeclaration) result;
+            return (TypedDeclaration) result;
         }
         else {
-        	return null;
+            return null;
         }
     }
     
@@ -104,6 +116,17 @@ public class AnalyzerUtil {
         Declaration result = 
                 scope.getMemberOrParameter(unit, 
                         name, signature, ellipsis);
+        if (result == null) {
+            if (scope instanceof Declaration) {
+                // If we couldn't find the declaration in the current
+                // scope and the scope is a native implementation we
+                // will try again with its header
+                Declaration decl = (Declaration)scope;
+                if (decl.isNative() && !decl.isNativeHeader()) {
+                    result = getNativeHeader(decl.getScope(), name);
+                }
+            }
+        }
         if (result instanceof TypeDeclaration) {
         	return (TypeDeclaration) result;
         }
