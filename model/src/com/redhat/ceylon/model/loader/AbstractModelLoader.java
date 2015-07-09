@@ -936,6 +936,9 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         }else{
             // must be a Declaration
             for(Declaration member : container.getMembers()){
+                // avoid constructors with no name
+                if(member.getName() == null)
+                    continue;
                 if(!member.getName().equals(name))
                     continue;
                 Declaration result = selectTypeOrSetter(member, wantsSetter);
