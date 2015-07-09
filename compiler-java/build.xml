@@ -226,6 +226,9 @@
         <copy todir="${build.classes}">
             <fileset dir="${test.src}">
                 <include name="META-INF/**" />
+                <include name="**/*.txt" />
+                <include name="**/*.md" />
+                <include name="**/*.properties" />
             </fileset>
         </copy>
     </target>
