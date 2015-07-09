@@ -4987,6 +4987,16 @@ public abstract class AbstractTransformer implements Transformation {
             // FIXME: refactor this shite
             List<JCExpression> typeTestArguments = List.nil();
             java.util.List<Type> typeParameters = pt.getCaseTypes();
+            if(typeParameters.size() == 2){
+                Type alternative = null;
+                if(typeParameters.get(0).isEmpty())
+                    alternative = typeParameters.get(1);
+                else if(typeParameters.get(1).isEmpty())
+                    alternative = typeParameters.get(0);
+                if(alternative != null && alternative.isTuple()){
+                    return makeTupleTypeDescriptor(alternative, true);
+                }
+            }
             for(int i=typeParameters.size()-1;i>=0;i--){
                 typeTestArguments = typeTestArguments.prepend(makeReifiedTypeArgument(typeParameters.get(i)));
             }
@@ -5016,6 +5026,9 @@ public abstract class AbstractTransformer implements Transformation {
             if(supportsReifiedAlias((ClassOrInterface) declaration)){
                 JCExpression qualifier = naming.makeDeclarationName(declaration, DeclNameFlag.QUALIFIED);
                 return makeSelect(qualifier, naming.getTypeDescriptorAliasName());
+            }
+            if(pt.isTuple()){
+                return makeTupleTypeDescriptor(pt, false);
             }
             // no alias, must build it
             List<JCExpression> typeTestArguments = makeReifiedTypeArgumentsResolved(pt.getTypeArgumentList(), qualified);
@@ -5101,6 +5114,86 @@ public abstract class AbstractTransformer implements Transformation {
         }
     }
     
+    private JCExpression makeTupleTypeDescriptor(Type pt, boolean firstElementOptional) {
+        java.util.List<Type> tupleElementTypes = typeFact().getTupleElementTypes(pt);
+        boolean isVariadic = typeFact().isTupleLengthUnbounded(pt);
+        boolean atLeastOne = false;
+        boolean needsRestSplit = false;
+        Type restType = null;
+        
+        if(isVariadic){
+            // unwrap the last element
+            restType = tupleElementTypes.get(tupleElementTypes.size()-1);
+            tupleElementTypes.set(tupleElementTypes.size()-1, typeFact.getSequentialElementType(restType));
+            atLeastOne = restType.getDeclaration().inherits(typeFact().getSequenceDeclaration());
+            // the last rest element may be a type param, in which case we resolve it at runtime
+            needsRestSplit = !restType.getDeclaration().equals(typeFact.getSequenceDeclaration())
+                    && !restType.getDeclaration().equals(typeFact.getSequentialDeclaration());
+        }
+        
+        int firstDefaulted;
+        if(!firstElementOptional){
+            // only do this crazy computation if the first element is not optional (case of []|[A] which is a union type really)
+            int minimumLength = typeFact().getTupleMinimumLength(pt);
+            // ignore atLeastOne in the computation
+            // [A,B=] -> 1
+            // [A=,B*] -> 0
+            // [A,B+] -> 2
+            // [B*] -> 0
+            // [B+] -> 1
+            if(atLeastOne)
+                minimumLength--;
+            // [A,B=] -> 1
+            // [A=,B*] -> 0
+            // [A,B+] -> 1
+            // [B*] -> 0
+            // [B+] -> 0
+
+            // [A,B=] -> 2
+            // [A=,B*] -> 1
+            // [A,B+] -> 1
+            // [B*] -> 0
+            // [B+] -> 0
+            int nonVariadicParams = tupleElementTypes.size();
+            if(isVariadic)
+                nonVariadicParams--;
+
+            // [A,B=] -> 2!=1 -> 1
+            // [A=,B*] -> 1!=0 -> 0
+            // [A,B+] -> 1==1 -> -1
+            // [B*] -> 0==0 -> -1
+            // [B+] -> 0==0 -> -1
+            firstDefaulted = nonVariadicParams != minimumLength ? minimumLength : -1;
+        }else{
+            firstDefaulted = 0;
+        }
+
+        JCExpression restTypeDescriptor = null;
+        JCExpression restElementTypeDescriptor = null;
+        if(needsRestSplit){
+            Type restElementType = tupleElementTypes.get(tupleElementTypes.size()-1);
+            tupleElementTypes.remove(tupleElementTypes.size()-1);
+            restTypeDescriptor = makeReifiedTypeArgumentResolved(restType, false);
+            restElementTypeDescriptor = makeReifiedTypeArgumentResolved(restElementType, false);
+        }
+        
+        ListBuffer<JCExpression> args = new ListBuffer<JCExpression>();
+        if(needsRestSplit){
+            args.append(restTypeDescriptor);
+            args.append(restElementTypeDescriptor);
+        }else{
+            args.append(makeBoolean(isVariadic));
+            args.append(makeBoolean(atLeastOne));
+        }
+        args.append(makeInteger(firstDefaulted));
+        for(Type element : tupleElementTypes){
+            args.append(makeReifiedTypeArgumentResolved(element, false));
+        }
+        JCExpression tupleDescriptor = make().Apply(null, makeSelect(makeTypeDescriptorType(), 
+                needsRestSplit ? "tupleWithRest": "tuple"), args.toList());
+        return tupleDescriptor;
+    }
+
     protected boolean hasTypeArguments(Type type){
         if(!type.getTypeArguments().isEmpty())
             return true;
