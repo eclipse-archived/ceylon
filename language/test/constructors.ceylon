@@ -279,6 +279,21 @@ class Test599 {
         k=8;
     }
 }
+class Test599Value {
+    shared Integer i();
+    shared Integer j();
+    shared Integer k;
+    shared new foo {
+        Integer l;
+        l=2;
+        check(l==2, "#599.5");
+        i() => 3;
+        j = () {
+          return 5;
+        };
+        k=8;
+    }
+}
 
 class Test596(shared String s){
     shared class Bar{
@@ -389,6 +404,9 @@ void testConstructors() {
   check(t599.i() == 3, "JS #599.2");
   check(t599.j() == 5, "JS #599.3");
   check(t599.k == 8, "JS #599.4");
+  check(Test599Value.foo.i() == 3, "JS#599.6");
+  check(Test599Value.foo.j() == 5, "JS#599.7");
+  check(Test599Value.foo.k == 8, "JS#599.8");
   check(Test596("596").Bar.bar!=t599, "JS #596.2");
   value t596=Test596("596");
   check(t596.Bar.bar!=t599, "JS#596.3");
