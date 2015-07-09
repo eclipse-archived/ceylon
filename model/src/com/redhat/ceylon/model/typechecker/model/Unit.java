@@ -888,7 +888,19 @@ public class Unit {
         Type st = type.getSupertype(sd);
         if (st!=null && 
                 st.getTypeArguments().size()==1) {
-            return st.getTypeArgumentList().get(0);
+            Type et = st.getTypeArgumentList().get(0);
+            if (type.isTuple() && et.isUnion()) {
+                //total hack to accommodate the fact that
+                //tuple types are created with unsimplified
+                //unions
+                Unit unit = et.getDeclaration().getUnit();
+                List<Type> types = new ArrayList<Type>();
+                for (Type ct: et.getCaseTypes()) {
+                    addToUnion(types, ct);
+                }
+                return union(types, unit).getType();
+            }
+            return et;
         }
         else {
             return null;
