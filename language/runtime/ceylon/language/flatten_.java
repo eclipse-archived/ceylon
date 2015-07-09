@@ -36,15 +36,9 @@ public final class flatten_ {
             	if ($reifiedArgs instanceof TypeDescriptor.Class) {
             		//optimization for common cases
             		TypeDescriptor.Class reifiedClass = (TypeDescriptor.Class) $reifiedArgs;
-            		Class<?> clazz = reifiedClass.getClass();
-					if (clazz.equals(Tuple.class) ||
-            			clazz.equals(Sequence.class) ||
-            			clazz.equals(Sequential.class)) {
-						return reifiedClass.getTypeArguments()[0];
-            		}
-					else if (clazz.equals(Empty.class)) {
-						return TypeDescriptor.NothingType;
-					}
+            		TypeDescriptor sequenceElement = reifiedClass.getSequenceElement();
+            		if(sequenceElement != null)
+            		    return sequenceElement;
             	}
                 TypeDescriptor[] types = new TypeDescriptor[args.length + (tail != null ? 1 : 0)];
                 for (int i = 0; i <args.length; i++) {

@@ -6,13 +6,18 @@ import static com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.getPro
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 
 import ceylon.language.Anything;
 import ceylon.language.AssertionError;
 import ceylon.language.Basic;
+import ceylon.language.Empty;
 import ceylon.language.Identifiable;
 import ceylon.language.Null;
+import ceylon.language.Sequence;
+import ceylon.language.Sequential;
+import ceylon.language.empty_;
 import ceylon.language.null_;
 
 import com.redhat.ceylon.compiler.java.language.BooleanArray;
@@ -159,7 +164,7 @@ public abstract class TypeDescriptor {
     }
 
     public static class Class extends Generic implements QualifiableTypeDescriptor {
-        private java.lang.Class<?> klass;
+        protected final java.lang.Class<?> klass;
 
         public Class(java.lang.Class<?> klass, Variance[] useSiteVariance, TypeDescriptor[] typeArguments){
             super(useSiteVariance, typeArguments);
@@ -340,8 +345,178 @@ public abstract class TypeDescriptor {
         public boolean containsNull() {
             return klass==Null.class || klass == null_.class || klass==Anything.class;
         }
-    }
 
+        public TypeDescriptor getSequenceElement() {
+            if(klass == ceylon.language.Tuple.class ||
+                    klass == Sequence.class ||
+                    klass == Sequential.class)
+                return typeArguments[0];
+            if(klass == Empty.class)
+                return NothingType;
+            return null;
+        }
+
+        public TypeDescriptor getTupleFirstElement() {
+            return typeArguments[1];
+        }
+
+        public TypeDescriptor getTupleRest() {
+            return typeArguments[2];
+        }
+}
+
+    // FIXME: fix all calls to getTypeArguments()
+    // FIXME: implement getSequenceElement
+    public static class Tuple extends Class {
+
+        private final TypeDescriptor[] elements;
+        private final boolean variadic, atLeastOne;
+        private final int firstDefaulted;
+        // only set when requested
+        private TypeDescriptor elementUnion;
+        private TypeDescriptor rest;
+
+        public Tuple(boolean variadic, boolean atLeastOne, int firstDefaulted, TypeDescriptor[] elements) {
+            super(ceylon.language.Tuple.class, NO_VARIANCE, null);
+            // make sure we have at least one non-variadic element
+            if(elements.length < (variadic ? 2 : 1))
+                throw new AssertionError("Not enough elements in a tuple (logic error): please report bug");
+            this.elements = elements;
+            this.variadic = variadic;
+            this.atLeastOne = atLeastOne;
+            this.firstDefaulted = firstDefaulted;
+        }
+        
+        public boolean isGeneric() {
+            return true;
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if(this == obj)
+                return true;
+            if(obj == null || obj instanceof Tuple == false)
+                return false;
+            Tuple other = (Tuple) obj;
+            if(klass != other.klass)
+                return false;
+            return Arrays.equals(elements, other.elements)
+                    && variadic == other.variadic
+                    && atLeastOne == other.atLeastOne
+                    && firstDefaulted == other.firstDefaulted;
+        }
+        
+        @Override
+        public int hashCode() {
+            int ret = 17;
+            ret = 37 * ret + "tuple".hashCode();
+            ret = 37 * ret + Arrays.hashCode(elements);
+            ret = 37 * ret + (variadic ? 1 : 0);
+            ret = 37 * ret + (atLeastOne ? 1 : 0);
+            ret = 37 * ret + firstDefaulted;
+            return  ret;
+        }
+
+        @Override
+        public boolean is(TypeDescriptor instanceType) {
+            // special case for all-optional tuple which really is a union type of []|[X...]
+            // super.is will treat us as Tuple, so we have to allow for Empty to be allowed in subtyping
+            if(firstDefaulted == 0
+                    && (instanceType == empty_.$TypeDescriptor$
+                        || instanceType == Empty.$TypeDescriptor$))
+                return true;
+            return super.is(instanceType);
+        }
+        
+        protected void stringTo(StringBuilder b) {
+            b.append("[");
+            int lastNonVariadic = variadic ? elements.length - 2 : elements.length - 1;
+            for(int i=0;i<elements.length;i++){
+                if(i>0) {
+                    b.append(",");
+                }
+                elements[i].stringTo(b);
+                if(i <= lastNonVariadic){
+                    if(firstDefaulted >= 0 && i >= firstDefaulted)
+                        b.append("=");
+                }else{
+                    // we're in the variadic one
+                    b.append(atLeastOne ? "+" : "*");
+                }
+            }
+            b.append("]");
+        }
+
+        @Override
+        public Type toProducedType(Type qualifyingType, RuntimeModuleManager moduleManager){
+            // FIXME: is this really enough?
+            String typeName = klass.getName();
+            Module module = moduleManager.findModuleForClass(klass);
+            TypeDeclaration decl = (TypeDeclaration) moduleManager.getModelLoader().getDeclaration(module, typeName, DeclarationType.TYPE);
+            List<Type> elemTypes = new ArrayList<Type>(elements.length);
+            for(TypeDescriptor element : elements){
+                elemTypes.add(Metamodel.getProducedType(element));
+            }
+            return decl.getUnit().getTupleType(elemTypes, variadic, atLeastOne, firstDefaulted);
+        }
+        
+        @Override
+        public TypeDescriptor getSequenceElement() {
+            // that one's expensive so we cache it
+            if(elementUnion == null){
+                elementUnion = union(elements);
+            }
+            return elementUnion;
+        }
+        
+        @Override
+        public TypeDescriptor getTupleFirstElement() {
+            return elements[0];
+        }
+        
+        @Override
+        public TypeDescriptor getTupleRest() {
+            // that one's expensive so we cache it
+            if(rest == null){
+                if(variadic){
+                    // there's no such thing as a variadic tuple of length 1: that's a Sequential
+                    if(elements.length == 1)
+                        throw new AssertionError("Variadic tuple of length 1: that's a bug please report it");
+                    if(elements.length == 2){
+                        // we extract the variadic part
+                        if(atLeastOne)
+                            rest = TypeDescriptor.klass(Sequence.class, elements[1]);
+                        else
+                            rest = TypeDescriptor.klass(Sequential.class, elements[1]);
+                    }else{
+                        // we have at least one element + variadic left
+                        rest = makeTupleRest();
+                    }
+                }else{
+                    // we have no tuples of length 0
+                    if(elements.length == 1)
+                        rest = Empty.$TypeDescriptor$;
+                    else{
+                        // we have at least one element left
+                        rest = makeTupleRest();
+                    }
+                }
+            }
+            return rest;
+        }
+
+        private TypeDescriptor makeTupleRest() {
+            TypeDescriptor[] newElements = new TypeDescriptor[elements.length-1];
+            System.arraycopy(elements, 1, newElements, 0, newElements.length);
+            int firstDefaulted = this.firstDefaulted;
+            // -1 stays -1
+            // 0 stays 0 (if we're defaulted, the rest will be too)
+            if(firstDefaulted >= 1)
+                firstDefaulted--;
+            return new Tuple(variadic, atLeastOne, firstDefaulted, newElements);
+        }
+    }
+    
     public static class FunctionOrValue extends Generic implements QualifiableTypeDescriptor {
 
         private final String name;
@@ -796,7 +971,195 @@ public abstract class TypeDescriptor {
     }
 
     public static TypeDescriptor klass(java.lang.Class<?> klass, Variance[] useSiteVariance, TypeDescriptor... typeArguments) {
+        // special-case for Tuples because we want to unwrap them even if someone constructs them manually
+        TypeDescriptor tuple = unwrapTupleType(klass, useSiteVariance, typeArguments, false);
+        if(tuple != null)
+            return tuple;
         return new Class(klass, useSiteVariance, typeArguments);
+    }
+
+    private static TypeDescriptor.Tuple unwrapTupleType(java.lang.Class<?> klass, Variance[] useSiteVariance, TypeDescriptor[] typeArguments, boolean allOptional) {
+        if(klass != ceylon.language.Tuple.class 
+                || (useSiteVariance != null && useSiteVariance != NO_VARIANCE))
+            return null;
+        if(typeArguments.length != 3)
+            return null;
+        List<TypeDescriptor> elementTypes = new LinkedList<TypeDescriptor>();
+        boolean variadic = false;
+        boolean atLeastOne = false;
+        int firstDefaulted = allOptional ? 0 : -1;
+        do{
+            TypeDescriptor first = typeArguments[1];
+            TypeDescriptor rest = typeArguments[2];
+            
+            elementTypes.add(first);
+            if(rest.equals(Empty.$TypeDescriptor$)){
+                // that's the last one
+                break;
+            }else if(rest instanceof TypeDescriptor.Tuple){
+                Tuple restTuple = (Tuple) rest;
+                return combineTuples(elementTypes, firstDefaulted, restTuple);
+            }else if(rest instanceof TypeDescriptor.Class){
+                Class restClass = (Class) rest;
+                if(restClass.getKlass() == ceylon.language.Tuple.class){
+                    // move to the next one
+                    typeArguments = restClass.getTypeArguments();
+                    // and loop
+                }else if(restClass.getKlass() == Sequence.class){
+                    // that's the last one
+                    if(restClass.getTypeArguments().length != 1)
+                        return null;
+                    // add the sequence element type
+                    elementTypes.add(restClass.getTypeArguments()[0]);
+                    variadic = atLeastOne = true;
+                    // and we're done
+                    break;
+                }else if(restClass.getKlass() == Sequential.class){
+                    // that's the last one
+                    if(restClass.getTypeArguments().length != 1)
+                        return null;
+                    // add the sequential element type
+                    elementTypes.add(restClass.getTypeArguments()[0]);
+                    variadic = true;
+                    // and we're done
+                    break;
+                }else{
+                    // no idea
+                    return null;
+                }
+            }else if(rest instanceof TypeDescriptor.Union){
+                // could be an optional
+                Union restUnion = (Union) rest;
+                if(restUnion.members.length != 2)
+                    return null;
+                TypeDescriptor alternative = null;
+                if(restUnion.members[0] == Empty.$TypeDescriptor$){
+                    alternative = restUnion.members[1];
+                }else if(restUnion.members[1] == Empty.$TypeDescriptor$){
+                    alternative = restUnion.members[0];
+                }
+                if(alternative == null)
+                    return null;
+                // record the first defaulted if it's the first
+                if(firstDefaulted == -1){
+                    // so if we have N elements, N is the index of the first defaulted one (the next element) 
+                    firstDefaulted = elementTypes.size();
+                }
+                // now, it MUST be a tuple IIRC
+                if(alternative instanceof TypeDescriptor.Tuple){
+                    Tuple restTuple = (Tuple) alternative;
+                    return combineTuples(elementTypes, firstDefaulted, restTuple);
+                }else if(alternative instanceof TypeDescriptor.Class){
+                    if(((TypeDescriptor.Class) alternative).getKlass() == ceylon.language.Tuple.class){
+                        // we're good, go on and loop
+                        typeArguments = ((TypeDescriptor.Class) alternative).getTypeArguments();
+                    }else{
+                        // no idea
+                        return null;
+                    }
+                }else{
+                    // no idea
+                    return null;
+                }
+            }else{
+                // no idea
+                return null;
+            }
+        }while(true);
+        
+        return new Tuple(variadic, atLeastOne, firstDefaulted, elementTypes.toArray(new TypeDescriptor[elementTypes.size()]));
+    }
+
+    private static Tuple combineTuples(List<TypeDescriptor> elementTypes, int firstDefaulted, Tuple restTuple) {
+        // combine it
+        TypeDescriptor[] newElements = new TypeDescriptor[elementTypes.size() + restTuple.elements.length];
+        newElements = elementTypes.toArray(newElements);
+        System.arraycopy(restTuple.elements, 0, newElements, elementTypes.size(), restTuple.elements.length);
+        // if we have defaulted params, keep that
+        // if not, inherit and shift
+        if(firstDefaulted == -1){
+            firstDefaulted = restTuple.firstDefaulted;
+            if(firstDefaulted != -1)
+                firstDefaulted += elementTypes.size();
+        }
+        // trust the tuple for variadic since we can't have any of our own
+        return new Tuple(restTuple.variadic, restTuple.atLeastOne, firstDefaulted, newElements);
+    }
+
+    private static Tuple combineTuples(TypeDescriptor[] elementTypes, int firstDefaulted, Tuple restTuple) {
+        // combine it
+        TypeDescriptor[] newElements = new TypeDescriptor[elementTypes.length + restTuple.elements.length];
+        System.arraycopy(elementTypes, 0, newElements, 0, elementTypes.length);
+        System.arraycopy(restTuple.elements, 0, newElements, elementTypes.length, restTuple.elements.length);
+        // if we have defaulted params, keep that
+        // if not, inherit and shift
+        if(firstDefaulted == -1){
+            firstDefaulted = restTuple.firstDefaulted;
+            if(firstDefaulted != -1)
+                firstDefaulted += elementTypes.length;
+        }
+        // trust the tuple for variadic since we can't have any of our own
+        return new Tuple(restTuple.variadic, restTuple.atLeastOne, firstDefaulted, newElements);
+    }
+
+    /**
+     * Optimisation for tuples
+     * @param variadic true if the last element is a sequential/sequence
+     * @param atLeastOne true if the last element is a sequence, false for sequential
+     * @param firstDefaulted index of the first optional element, or -1 if all required
+     * @param elements the tuple elements, where the last one may represent the element type of the variadic parameter, if any
+     */
+    public static TypeDescriptor tuple(boolean variadic, boolean atLeastOne, int firstDefaulted, TypeDescriptor... elements) {
+        return new Tuple(variadic, atLeastOne, firstDefaulted, elements);
+    }
+
+    /**
+     * Optimisation for tuples whose rest element is only known at runtime
+     * @param rest the rest of this tuple, which we can try to merge if it's a valid tuple part
+     * @param restElement the element type of the rest tuple
+     * @param firstDefaulted index of the first optional element, or -1 if all required
+     * @param elements the tuple elements, where the last one may represent the element type of the variadic parameter, if any
+     */
+    public static TypeDescriptor tupleWithRest(TypeDescriptor rest, TypeDescriptor restElement, int firstDefaulted, TypeDescriptor... elements) {
+        // easy :)
+        if(rest == Empty.$TypeDescriptor$)
+            return tuple(false, false, firstDefaulted, elements);
+        if(rest instanceof Tuple){
+            // easy: merge because Tuple cannot be a degenerate tuple
+            return combineTuples(elements, firstDefaulted, (Tuple)rest);
+        }else if(rest instanceof Class){
+            Class restClass = (Class)rest;
+            if(restClass.klass == Sequence.class || restClass.klass == Sequential.class){
+                // that's also rather easy
+                TypeDescriptor[] newElements = new TypeDescriptor[elements.length+1];
+                System.arraycopy(elements, 0, newElements, 0, elements.length);
+                newElements[newElements.length-1] = restClass.getSequenceElement();
+                return tuple(true, restClass.klass == Sequence.class, firstDefaulted, newElements);
+            }
+            // is it a standard tuple?
+            Tuple restTuple = unwrapTupleType(restClass.klass, restClass.useSiteVariance, restClass.typeArguments, false);
+            if(restTuple != null){
+                // merge
+                return combineTuples(elements, firstDefaulted, restTuple);
+            }else{
+                return makeDegenerateTuple(elements, firstDefaulted, restTuple, restElement);
+            }
+        }else{
+            return makeDegenerateTuple(elements, firstDefaulted, rest, restElement);
+        }
+    }
+
+    private static TypeDescriptor makeDegenerateTuple(TypeDescriptor[] elements, int firstDefaulted, TypeDescriptor rest, TypeDescriptor restElementType) {
+        // build it backwards
+        for(int i=elements.length-1;i>=0;i--){
+            TypeDescriptor first = elements[i];
+            restElementType = union(restElementType, first);
+            // don't call klass() because it would try to unwrap the tuple
+            rest = new Class(ceylon.language.Tuple.class, NO_VARIANCE, new TypeDescriptor[]{restElementType, first, rest});
+            if(firstDefaulted != -1 && firstDefaulted <= i)
+                rest = union(Empty.$TypeDescriptor$, rest);
+        }
+        return rest;
     }
 
     /**
@@ -821,6 +1184,27 @@ public abstract class TypeDescriptor {
         if(single != null)
             return single;
         members = removeDuplicates(members);
+        
+        // special-case for Tuples because we want to unwrap them even if someone constructs them manually
+        if(members.length == 2){
+            TypeDescriptor alternative = null;
+            if(members[0].equals(Empty.$TypeDescriptor$))
+                alternative = members[1];
+            else if(members[1].equals(Empty.$TypeDescriptor$))
+                alternative = members[0];
+            if(alternative instanceof Tuple){
+                // damn, so we have a []|[A] that we want to turn into a [A=]
+                Tuple tuple = (Tuple) alternative;
+                // trust the tuple on variadic, and same list of elements
+                return new Tuple(tuple.variadic, tuple.atLeastOne, 0, tuple.elements);
+            }else if(alternative instanceof Class){
+                Class klass = (Class) alternative;
+                TypeDescriptor tuple = unwrapTupleType(klass.getKlass(), klass.useSiteVariance, klass.getTypeArguments(), true);
+                if(tuple != null)
+                    return tuple;
+            }
+        }
+
         return new Union(members);
     }
 

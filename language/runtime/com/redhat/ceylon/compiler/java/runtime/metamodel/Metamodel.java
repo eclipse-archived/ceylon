@@ -274,7 +274,7 @@ public class Metamodel {
         if (!result
                 && !(instance instanceof ReifiedType)// we lack reified types
                 && type instanceof TypeDescriptor.Class// we're testing for a generic type
-                && ((TypeDescriptor.Class)type).getTypeArguments().length > 0
+                && ((TypeDescriptor.Class)type).isGeneric()
                 && ((TypeDescriptor.Class)type).getKlass().isInstance(instance)// the instance is an instance of the base type
                 && !reifiedByInheritance(instance.getClass(), ((TypeDescriptor.Class)type).getKlass())// the type isn't reified by inheritance
                 ) {
