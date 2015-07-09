@@ -346,3 +346,12 @@ class DEF() extends ABC() {
         print("Nope");
     }
 }
+
+
+class Options(shared default String abc) {}
+
+class OptionsExt(String abc) extends Options(abc) {}
+
+class OptionsExtExt() extends OptionsExt("initial") {
+    shared actual variable String abc = "initial";
+}
