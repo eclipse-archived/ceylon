@@ -8846,7 +8846,10 @@ public class ExpressionVisitor extends Visitor {
             that.setTypeModel(unit.getFunctionDeclarationType());
         }
         else {
-            checkNonlocal(that, result);
+            // constructors look like functions but they're always members, they can't
+            // ever be local
+            if(!ModelUtil.isConstructor(result))
+                checkNonlocal(that, result);
             setMetamodelType(that, result);
         }
     }
