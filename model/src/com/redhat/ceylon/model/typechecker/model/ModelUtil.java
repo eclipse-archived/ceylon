@@ -1044,7 +1044,8 @@ public class ModelUtil {
                 map.putAll(aqt.getTypeArguments());
                 dt = aqt.getQualifyingType();
                 d = aqt.getDeclaration();
-            }
+            }else
+                break;
         }
     }
     
