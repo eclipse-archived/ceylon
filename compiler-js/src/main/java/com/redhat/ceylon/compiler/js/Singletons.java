@@ -210,7 +210,7 @@ public class Singletons {
         final String objvar = gen.getNames().self(td);
         final String typevar = gen.getNames().name(td);
         final String singvar = gen.getNames().name(d);
-        gen.out("var ", objvar, ";function ", typevar, "_", singvar, "(){if(",
+        gen.out("var ", objvar, "=undefined;function ", typevar, "_", singvar, "(){if(",
                 objvar, "===undefined){");
         if (dc==null) {
             gen.out("$init$", typevar, "();");
