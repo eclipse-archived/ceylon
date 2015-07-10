@@ -485,6 +485,8 @@
                 
 
                 <include name="ceylon/language/serialization/PartialImpl.java"/>
+                <exclude name="ceylon/language/serialization/reach.ceylon"/>
+                <include name="ceylon/language/serialization/reach_.java"/>
             </files>
         </ceylon-compile>
     </target>

@@ -1,6 +1,7 @@
 package com.redhat.ceylon.compiler.java.runtime.serialization;
 
 import ceylon.language.serialization.Element;
+import ceylon.language.serialization.reach_;
 
 import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
@@ -39,7 +40,7 @@ public class ElementImpl implements Element, ReifiedType {
     public java.lang.Object referred(
             @TypeInfo("ceylon.language::Anything")
             java.lang.Object instance) {
-        return ((Serializable)instance).$get$(this);
+        return reach_.get().get(instance, this);
     }
     
     @Override

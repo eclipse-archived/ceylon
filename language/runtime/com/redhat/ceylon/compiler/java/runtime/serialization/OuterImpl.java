@@ -1,6 +1,7 @@
 package com.redhat.ceylon.compiler.java.runtime.serialization;
 
 import ceylon.language.serialization.Outer;
+import ceylon.language.serialization.reach_;
 
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Class;
@@ -32,7 +33,7 @@ public class OuterImpl implements Outer, ReifiedType {
     public java.lang.Object referred(
             @TypeInfo("ceylon.language::Anything")
             java.lang.Object instance) {
-        return ((Serializable)instance).$get$(this);
+        return reach_.get().get(instance, this);
     }
     
     @Override

@@ -12,6 +12,7 @@ import ceylon.language.impl.BaseIterator;
 import ceylon.language.serialization.Element;
 import ceylon.language.serialization.ReachableReference;
 import ceylon.language.serialization.References;
+import ceylon.language.serialization.reach_;
 
 import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
@@ -26,7 +27,7 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
  */
 public class ReferencesImpl extends BaseIterable<Entry<? extends ReachableReference, ? extends Object>, java.lang.Object> implements References {
 
-    private final Serializable instance;
+    private final Object instance;
 
     ReferencesImpl(Serializable instance) {
         super(TypeDescriptor.klass(Entry.class, 
@@ -66,23 +67,7 @@ public class ReferencesImpl extends BaseIterable<Entry<? extends ReachableRefere
 
             @Override
             public Iterator<? extends ReachableReference> iterator() {
-                return new BaseIterator<ReachableReference>(ReachableReference.$TypeDescriptor$) {
-                    java.util.Iterator<ReachableReference> it = instance.$references$().iterator();
-                    int index = 0;
-                    @Override
-                    public Object next() {
-                        if (it.hasNext()) {
-                            return it.next();
-                        } else if (instance instanceof Array
-                                && index < ((Array<?>)instance).getSize()) {
-                            Element result = new ElementImpl(index);
-                            index++;
-                            return result;
-                        } else {
-                            return finished_.get_();
-                        }
-                    }
-                };
+                return reach_.get().references(instance);
             }
         };
     }

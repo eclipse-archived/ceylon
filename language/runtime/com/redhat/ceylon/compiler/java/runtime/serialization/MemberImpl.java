@@ -2,6 +2,7 @@ package com.redhat.ceylon.compiler.java.runtime.serialization;
 
 import ceylon.language.meta.declaration.ValueDeclaration;
 import ceylon.language.serialization.Member;
+import ceylon.language.serialization.reach_;
 
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Class;
@@ -36,7 +37,7 @@ public class MemberImpl implements Member, ReifiedType {
     public java.lang.Object referred(
             @TypeInfo("ceylon.language::Anything")
             java.lang.Object instance) {
-        return ((Serializable)instance).$get$(this);
+        return reach_.get().get(instance, this);
     }
     
     @TypeInfo("ceylon.language.meta.declaration::ValueDeclaration")
