@@ -45,11 +45,11 @@ class PartialImpl extends Partial {
         if (classModel == null) {
             throw new DeserializationException("no class specified for instance with id " + getId());
         } 
-        TypeDescriptor[] typeArguments = ((TypeDescriptor.Class)((ReifiedType)classModel).$getType$()).getTypeArguments();
+        
         if (classModel instanceof AppliedClass) {
-            return ((TypeDescriptor.Class)typeArguments[0]);
+            return ((TypeDescriptor.Class)((TypeDescriptor.Class)((ReifiedType)classModel).$getType$()).getTypeArgument(0));
         } else if (classModel instanceof AppliedMemberClass) {
-            return ((TypeDescriptor.Class)((TypeDescriptor.Member)typeArguments[1]).getMember());
+            return ((TypeDescriptor.Class)((TypeDescriptor.Member)((TypeDescriptor.Class)((ReifiedType)classModel).$getType$()).getTypeArgument(1)).getMember());
         } else {
             throw new AssertionError("unexpected class model for instance with id " + getId() + ": " 
                     + (classModel != null ? classModel.getClass().getName() : "null")); 
@@ -59,9 +59,8 @@ class PartialImpl extends Partial {
     private TypeDescriptor.Class getOuterClassTypeDescriptor() {
         ClassModel<?, ?> classModel = getClazz();
         if (classModel instanceof AppliedMemberClass) {
-            TypeDescriptor[] typeArguments = ((TypeDescriptor.Class)((ReifiedType)classModel).$getType$()).getTypeArguments();
             // MemberClass<Container, Type, Arguments>
-            return (TypeDescriptor.Class)typeArguments[0];
+            return (TypeDescriptor.Class)((TypeDescriptor.Class)((ReifiedType)classModel).$getType$()).getTypeArgument(0);
         } else {
             return null; 
         }
@@ -186,7 +185,7 @@ class PartialImpl extends Partial {
         ((Tuple<?,?,?>)instance).$completeInit$(first, rest);
         // now check compatibility (do this after initialization 
         // because Tuple$getType$ requires the tuple is initialized!
-        Type firstMemberType = Metamodel.getModuleManager().getCachedType(getClassTypeDescriptor().getTypeArguments()[1]);
+        Type firstMemberType = Metamodel.getModuleManager().getCachedType(getClassTypeDescriptor().getTypeArgument(1));
         Type firstInstanceType = Metamodel.getModuleManager().getCachedType(
                 Metamodel.getTypeDescriptor(first));
         if (!firstInstanceType.isSubtypeOf(firstMemberType)) {
@@ -194,7 +193,7 @@ class PartialImpl extends Partial {
         }
         Type restInstanceType = Metamodel.getModuleManager().getCachedType(
                 Metamodel.getTypeDescriptor(rest));
-        Type restMemberType = Metamodel.getModuleManager().getCachedType(getClassTypeDescriptor().getTypeArguments()[2]);
+        Type restMemberType = Metamodel.getModuleManager().getCachedType(getClassTypeDescriptor().getTypeArgument(2));
         if (!restInstanceType.isSubtypeOf(restMemberType)) {
             throw notAssignable(restMember, restMemberType, restInstanceType);
         }
