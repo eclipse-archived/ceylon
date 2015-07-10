@@ -401,7 +401,7 @@ shared void testConstructors() {
   check(constructorSB.string=="abcd", "JS #595");
   constructorSB.clear();
   unused=Test597.foo;
-  check(constructorSB.string=="abc", "JS #597");
+  check(constructorSB.string=="abc", "JS #597 expected abc got ``constructorSB``");
   value t599=Test599();
   check(t599.i() == 3, "JS #599.2");
   check(t599.j() == 5, "JS #599.3");
