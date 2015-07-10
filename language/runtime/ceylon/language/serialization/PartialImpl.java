@@ -25,8 +25,6 @@ import com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel;
 import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 import com.redhat.ceylon.compiler.java.runtime.serialization.$Serialization$;
-import com.redhat.ceylon.compiler.java.runtime.serialization.ElementImpl;
-import com.redhat.ceylon.compiler.java.runtime.serialization.MemberImpl;
 import com.redhat.ceylon.compiler.java.runtime.serialization.Serializable;
 import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
 import com.redhat.ceylon.model.typechecker.model.Type;

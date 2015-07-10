@@ -2,5 +2,6 @@
  and to get an instance."
 native object reach {
     shared native Iterator<ReachableReference> references(Anything instance);
-    shared native Anything get(Anything instance, ReachableReference ref);
+    shared native Anything getAnything(Anything instance, ReachableReference ref);
+    shared native Object getObject(Anything instance, ReachableReference ref);
 }

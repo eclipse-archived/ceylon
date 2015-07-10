@@ -16,7 +16,9 @@ public class classDeclaration_ {
     private classDeclaration_(){}
     
     @TypeInfo("ceylon.language.meta.declaration::ClassDeclaration")
-    public static ClassDeclaration classDeclaration(java.lang.Object instance) {
+    public static ClassDeclaration classDeclaration(
+            @TypeInfo("ceylon.language::Anything")
+            java.lang.Object instance) {
         return (ClassDeclaration)Metamodel.getOrCreateMetamodel(instance.getClass());
     }
 }

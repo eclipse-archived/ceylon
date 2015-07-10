@@ -9,23 +9,26 @@ import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Name;
 import com.redhat.ceylon.compiler.java.metadata.Object;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
-import com.redhat.ceylon.compiler.java.runtime.serialization.ElementImpl;
 import com.redhat.ceylon.compiler.java.runtime.serialization.Serializable;
 
 @Ceylon(major=8)
 @Object
-public class reach_ {
+class reach_ {
 
     private reach_() {}
     private static final reach_ value = new reach_();
     
-    public static reach_ get() {
+    public static reach_ get_() {
         return value;
+    }
+    
+    public String toString() {
+        return "reach";
     }
     
     // shared native Anything get(ReachableReference ref);
     @TypeInfo("ceylon.language::Anything")
-    public java.lang.Object get(
+    public java.lang.Object getAnything(
             @Name("instance")
             @TypeInfo("ceylon.language::Anything")
             java.lang.Object i, 
@@ -35,6 +38,20 @@ public class reach_ {
         final Serializable instance = (Serializable)i;
         return instance.$get$(ref);
     }
+    
+    @TypeInfo("ceylon.language::Object")
+    public java.lang.Object getObject(
+            @Name("instance")
+            @TypeInfo("ceylon.language::Anything")
+            java.lang.Object i, 
+            @Name("ref")
+            @TypeInfo("ceylon.language.serialization::ReachableReference")
+            ReachableReference ref) {
+        final Serializable instance = (Serializable)i;
+        return instance.$get$(ref);
+    }
+    
+    
     @TypeInfo("ceylon.language::Iterator<ceylon.language.serialization::ReachableReference>")
     public Iterator<? extends ReachableReference> references(
             @Name("instance")

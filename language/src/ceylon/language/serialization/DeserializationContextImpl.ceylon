@@ -13,11 +13,6 @@ import ceylon.language.meta.model {
 import com.redhat.ceylon.compiler.java.runtime.model{
     TypeDescriptor
 }
-import com.redhat.ceylon.compiler.java.runtime.serialization {
-    MemberImpl,
-    ElementImpl,
-    OuterImpl
-}
 import com.redhat.ceylon.model.typechecker.model{
     ProducedType=Type
 }

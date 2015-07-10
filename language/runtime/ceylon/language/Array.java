@@ -20,6 +20,7 @@ import ceylon.language.impl.rethrow_;
 import ceylon.language.meta.declaration.ClassDeclaration;
 import ceylon.language.meta.declaration.ValueDeclaration;
 import ceylon.language.serialization.Member;
+import ceylon.language.serialization.MemberImpl;
 import ceylon.language.serialization.ReachableReference;
 
 import com.redhat.ceylon.compiler.java.Util;
@@ -40,7 +41,6 @@ import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 import com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 import com.redhat.ceylon.compiler.java.runtime.serialization.$Serialization$;
-import com.redhat.ceylon.compiler.java.runtime.serialization.MemberImpl;
 import com.redhat.ceylon.compiler.java.runtime.serialization.Serializable;
 
 @Ceylon(major = 8)
