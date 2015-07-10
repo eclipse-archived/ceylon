@@ -110,7 +110,7 @@ public abstract class TypeDescriptor {
         }
         
         public boolean isGeneric() {
-            return typeArguments.length>0;
+            return getTypeArguments().length>0;
         }
 
         protected boolean equals(Generic other) {
@@ -385,6 +385,11 @@ public abstract class TypeDescriptor {
             this.variadic = variadic;
             this.atLeastOne = atLeastOne;
             this.firstDefaulted = firstDefaulted;
+        }
+        
+        @Override
+        public TypeDescriptor[] getTypeArguments() {
+            return new TypeDescriptor[]{getSequenceElement(), getTupleFirstElement(), getTupleRest()};
         }
         
         public boolean isGeneric() {
