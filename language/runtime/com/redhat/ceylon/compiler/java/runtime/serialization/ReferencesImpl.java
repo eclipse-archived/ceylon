@@ -16,6 +16,14 @@ import ceylon.language.serialization.References;
 import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 
+/**
+ * Implementation of ceylon.language.serialization.References
+ * 
+ * This has to be implemented in Java because it needs to call
+ * {@link Serializable#$references$()},
+ * whose name is not permitted in Ceylon, 
+ * but must be illegal so it cannot collide with a user class member 
+ */
 public class ReferencesImpl extends BaseIterable<Entry<? extends ReachableReference, ? extends Object>, java.lang.Object> implements References {
 
     private final Serializable instance;
@@ -78,19 +86,4 @@ public class ReferencesImpl extends BaseIterable<Entry<? extends ReachableRefere
             }
         };
     }
-/*
-    @Override
-    public Object reference(ReachableReference ref) {
-        return ref.reference(instance);
-        /*if (ref instanceof Member) {
-            return instance.$get$(((Member)ref).getAttribute().getQualifiedName());
-        } else if (ref instanceof Element) {
-            return instance.$get$((int)((Element)ref).getIndex());
-        } else if (ref instanceof Outer) {
-            return instance.$get$(null);
-        } else {
-            throw new AssertionError();
-        }* /
-    }
-*/
 }

@@ -15,7 +15,7 @@ import ceylon.language.meta.declaration {
    associate each method invocation with the instance(s) to pertains to. 
    The only constraint is that [[reconstruct]] will throw if the context 
    lacks enough information to fully initialize the requested instance 
-   _or any instance reachable from it_. 
+   _or any instance reachable from it_. Reference cycles are supported.
  
    For example, given
  
@@ -25,6 +25,7 @@ import ceylon.language.meta.declaration {
        }
        class Company(name) {
            String name;
+           shared late Person owner;
        }
      
    And an instance graph corresponding to:
@@ -32,6 +33,7 @@ import ceylon.language.meta.declaration {
        value wonkaInc = Company("Wonka Inc.");
        value willy = Person("Willy Wonka", wonkaInc);
        value umpaLumpa = Person("Umpa lumpa", wonkaInc);
+       wonkaInc.owner = willy;
 
    Then we could reconstruct that instance graph like so:
    
@@ -42,6 +44,7 @@ import ceylon.language.meta.declaration {
        dc.attribute("ul", `value Person.name`, "uln");
        dc.attribute("ul", `value.Person.employer`, "wi");
        dc.attribute("wi", `value Company.name`, "win");
+       dc.attribute("wi", `value Company.owner`, "ww");
        
        dc.attributeValue("win", "Wonka Inc.");
        dc.attributeValue("wwn", "Willy Wonka");

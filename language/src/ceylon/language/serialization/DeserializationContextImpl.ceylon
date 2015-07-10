@@ -25,27 +25,36 @@ import ceylon.language.serialization {
     DeserializationException
 }
 
+"Implementation of [[DeserializationContext]] using a few native helper classes."
 class DeserializationContextImpl<Id>() satisfies DeserializationContext<Id> 
         given Id satisfies Object {
-    // item is either a Partial or the actual instance
-    // that's not ambiguous because Partial never leaks, so it's impossible
-    // for a client to use the API to instantiate a Partial
-    // they can only end up in the map due to our implementation.
+    """The `Item` in the instances map is either a `Partial` or the actual instance
+       that's not ambiguous because `Partial` never leaks, so it's impossible
+       for a client to use the API to instantiate a `Partial`
+       they can only end up in the map due to our implementation.
+    """
     NativeMap<Id,Anything> instances = nativeMap<Id,Anything>();
     
-    //"""a cache of "attribute" (represented as a TypeDescriptor and an attribute name)
-     //  to its type"""
+    """a cache of "attribute" (represented as a TypeDescriptor and an attribute name)
+       to its type"""
     shared NativeMap<TypeDescriptor.Class->String, ProducedType> memberTypeCache = nativeMap<TypeDescriptor.Class->String, ProducedType>();
     
+    """Get the [[Partial]] or instance with the given id"""
     shared Anything leakInstance(Id id) => instances.get(id);
     
     shared actual void attribute(Id instanceId, ValueDeclaration attribute, Id attributeValueId) {
         attributeOrElement(instanceId, MemberImpl(attribute), attributeValueId);
     }
     
+    "A [[DeserializationException]] to day that the instance with the given id has already been instantiated."
     shared DeserializationException alreadyComplete(Id instanceId) 
         => DeserializationException("instance referred to by id ``instanceId`` already complete.");
     
+    "Get or create the [[Partial]] for `instanceId`; 
+     add the given `attributeValueId` to its partial state."
+    throws(`class DeserializationException`, 
+        "If the `instanceId` corresponds to a reconstructed 
+         instance or to a partial that's already been instantiated")
     void attributeOrElement(Id instanceId, ReachableReference attributeOrIndex, Id attributeValueId) {
         Partial referring;
         switch(r=instances.get(instanceId))
@@ -77,6 +86,7 @@ class DeserializationContextImpl<Id>() satisfies DeserializationContext<Id>
         getOrCreatePartial(instanceId).clazz = clazz;
     }
     
+    "Get or create a [[Partial]] for the given `instanceId`."
     Partial getOrCreatePartial(Id instanceId) {
         Partial partial;
         switch(r=instances.get(instanceId))

@@ -1,6 +1,5 @@
 package com.redhat.ceylon.compiler.java.runtime.serialization;
 
-import ceylon.language.meta.declaration.ClassDeclaration;
 import ceylon.language.meta.declaration.ValueDeclaration;
 import ceylon.language.serialization.Member;
 
@@ -10,6 +9,14 @@ import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 
+/**
+ * Implementation of ceylon.language.serialization.Member
+ * 
+ * This has to be implemented in Java because it needs to call
+ * {@link Serializable#$get$(ceylon.language.serialization.ReachableReference)},
+ * whose name is not permitted in Ceylon, 
+ * but must be illegal so it cannot collide with a user class member 
+ */
 @Ceylon(major=8, minor=0)
 @Class(identifiable=false)
 public class MemberImpl implements Member, ReifiedType {
