@@ -7,6 +7,7 @@ import java.util.Map;
 import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.compiler.js.GenerateJsVisitor.SuperVisitor;
 import com.redhat.ceylon.compiler.js.util.TypeUtils;
+import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
@@ -111,50 +112,15 @@ public class ClassGenerator {
         if (withTargs) {
             gen.out(gen.getClAlias(), "set_type_args(", me, ",$$targs$$);");
             gen.endLine();
-        } else {
-            //Check if any of the satisfied types have type arguments
-            if (sats != null) {
-                for(Tree.StaticType sat : sats.getTypes()) {
-                    boolean first = true;
-                    Map<TypeParameter,Type> targs = sat.getTypeModel().getTypeArguments();
-                    if (targs != null && !targs.isEmpty()) {
-                        if (first) {
-                            gen.out(me, ".$$targs$$=");
-                            TypeUtils.printTypeArguments(that, targs, gen, false, null);
-                            gen.endLine(true);
-                            first = false;
-                        } else {
-                            gen.out("/*TODO: more type arguments*/");
-                        }
-                    }
-                }
-            }
+        } else if (sats != null) {
+            addSatisfiedTypeArguments(sats, that, me, gen);
         }
-        if (!d.isToplevel() && d.getContainer() instanceof Function
-                && !((Function)d.getContainer()).getTypeParameters().isEmpty()) {
-            gen.out(gen.getClAlias(), "set_type_args(", me, ",",
-                    gen.getNames().typeArgsParamName((Function)d.getContainer()), ")");
-            gen.endLine(true);
-        }
+        addFunctionTypeArguments(d, me, gen);
         if (plist != null) {
             gen.initParameters(plist, d, null);
         }
 
-        final List<Declaration> superDecs = new ArrayList<Declaration>(3);
-        if (!gen.opts.isOptimize()) {
-            that.getClassBody().visit(new SuperVisitor(superDecs));
-        }
-        if (TypeUtils.extendsNativeHeader(d)) {
-            gen.out(typeName, "$$N");
-            TypeGenerator.generateParameters(that.getTypeParameterList(), plist, d, gen);
-            gen.endLine(true);
-        } else {
-            final Tree.ExtendedType extendedType = that.getExtendedType();
-            TypeGenerator.callSupertypes(sats == null ? null : TypeUtils.getTypes(sats.getTypes()),
-                    extendedType == null ? null : extendedType.getType(),
-                    d, that, superDecs, extendedType == null ? null : extendedType.getInvocationExpression(),
-                    extendedType == null ? null : ((Class) d.getExtendedType().getDeclaration()).getParameterList(), gen);
-        }
+        callSupertypes(that, d, typeName, gen);
 
         if (!gen.opts.isOptimize() && plist != null) {
             //Fix #231 for lexical scope
@@ -218,6 +184,57 @@ public class ClassGenerator {
         TypeGenerator.initializeType(that, gen);
         if (d.isSerializable()) {
             SerializationHelper.addDeserializer(that, d, gen);
+        }
+    }
+
+    public static void addSatisfiedTypeArguments(final Tree.SatisfiedTypes sats,
+            final Node node, final String objname, final GenerateJsVisitor gen) {
+        //Check if any of the satisfied types have type arguments
+        for(Tree.StaticType sat : sats.getTypes()) {
+            boolean first = true;
+            Map<TypeParameter,Type> targs = sat.getTypeModel().getTypeArguments();
+            if (targs != null && !targs.isEmpty()) {
+                if (first) {
+                    gen.out(objname, ".$$targs$$=");
+                    TypeUtils.printTypeArguments(node, targs, gen, false, null);
+                    gen.endLine(true);
+                    first = false;
+                } else {
+                    gen.out("/*TODO: more type arguments 1*/");
+                }
+            }
+        }
+    }
+
+    public static void addFunctionTypeArguments(final Class d, final String objname,
+            final GenerateJsVisitor gen) {
+        if (!d.isToplevel() && d.getContainer() instanceof Function
+                && !((Function)d.getContainer()).getTypeParameters().isEmpty()) {
+            gen.out(gen.getClAlias(), "set_type_args(", objname, ",",
+                    gen.getNames().typeArgsParamName((Function)d.getContainer()), ")");
+            gen.endLine(true);
+        }
+    }
+
+    public static void callSupertypes(Tree.ClassDefinition that, Class d,
+            String typeName, GenerateJsVisitor gen) {
+        final List<Declaration> superDecs = new ArrayList<Declaration>(3);
+        if (!gen.opts.isOptimize()) {
+            that.getClassBody().visit(new SuperVisitor(superDecs));
+        }
+        if (TypeUtils.extendsNativeHeader(d)) {
+            gen.out(typeName, "$$N");
+            TypeGenerator.generateParameters(that.getTypeParameterList(),
+                    that.getParameterList(), d, gen);
+            gen.endLine(true);
+        } else {
+            final Tree.ExtendedType extendedType = that.getExtendedType();
+            final Tree.SatisfiedTypes sats = that.getSatisfiedTypes();
+            TypeGenerator.callSupertypes(
+                    sats == null ? null : TypeUtils.getTypes(sats.getTypes()),
+                    extendedType == null ? null : extendedType.getType(),
+                    d, that, superDecs, extendedType == null ? null : extendedType.getInvocationExpression(),
+                    extendedType == null ? null : ((Class) d.getExtendedType().getDeclaration()).getParameterList(), gen);
         }
     }
 

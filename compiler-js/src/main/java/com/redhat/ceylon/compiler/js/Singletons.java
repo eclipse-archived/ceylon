@@ -225,6 +225,8 @@ public class Singletons {
             dc.getInvocationExpression().visit(gen);
             gen.endLine(true);
         }
+        ClassGenerator.addFunctionTypeArguments(cdef.getDeclarationModel(), objvar, gen);
+        ClassGenerator.callSupertypes(cdef, cdef.getDeclarationModel(), typevar, gen);
         List<? extends Tree.Statement> stmts = Constructors.classStatementsBetweenConstructors(cdef, null, that);
         if (!stmts.isEmpty()) {
             gen.generateConstructorStatements(that, stmts);
