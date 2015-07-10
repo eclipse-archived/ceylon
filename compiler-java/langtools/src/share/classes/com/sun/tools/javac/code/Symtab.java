@@ -692,11 +692,11 @@ public class Symtab {
         ceylonSerializableType = enterClass("com.redhat.ceylon.compiler.java.runtime.serialization.Serializable");
         ceylonReachableReferenceType = enterClass("ceylon.language.serialization.ReachableReference");
         ceylonMemberType = enterClass("ceylon.language.serialization.Member");
-        ceylonMemberImplType = enterClass("com.redhat.ceylon.compiler.java.runtime.serialization.MemberImpl");
+        ceylonMemberImplType = enterClass("ceylon.language.impl.MemberImpl");
         ceylonOuterType = enterClass("ceylon.language.serialization.Outer");
-        ceylonOuterImplType = enterClass("com.redhat.ceylon.compiler.java.runtime.serialization.OuterImpl");
+        ceylonOuterImplType = enterClass("ceylon.language.impl.outerImpl_");
         ceylonElementType = enterClass("ceylon.language.serialization.Element");
-        ceylonElementImplType = enterClass("com.redhat.ceylon.compiler.java.runtime.serialization.ElementImpl");
+        ceylonElementImplType = enterClass("ceylon.language.impl.ElementImpl");
         ceylonUninitializedLateValueType = enterClass("ceylon.language.serialization.UninitializedLateValue");
         
         

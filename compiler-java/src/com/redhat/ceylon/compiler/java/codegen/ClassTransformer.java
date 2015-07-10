@@ -1467,7 +1467,8 @@ public class ClassTransformer extends AbstractTransformer {
             JCExpressionStatement outer = make().Exec(make().Apply(null,
                     naming.makeQualIdent(r.makeIdent(), "add"),
                     List.<JCExpression>of(
-                            naming.makeQualIdent(make().Type(syms().ceylonOuterImplType), "instance"))));
+                            make().Apply(null,
+                            naming.makeQualIdent(make().Type(syms().ceylonOuterImplType), "get_"), List.<JCExpression>nil()))));
             stmts.add(outer);
         }
         
