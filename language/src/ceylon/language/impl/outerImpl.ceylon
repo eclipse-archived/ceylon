@@ -2,8 +2,8 @@ import ceylon.language.serialization {
     Outer
 }
 
-// XXX this needs to be shared because it's used by Serializable classes
-// but it's not part of the language module API
+"Implementation of [[Element]], in ceylon.language.impl because although 
+ compiled user classes depend on it, it is not part of the public API."
 shared object outerImpl satisfies Outer {
     "The outer instance of the given member [[instance]]."
     shared actual Object referred(/*<Instance>*/Object instance) {

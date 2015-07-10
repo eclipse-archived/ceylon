@@ -4,6 +4,9 @@ import ceylon.language.meta.declaration {
 import ceylon.language.serialization {
     Member, UninitializedLateValue
 }
+
+"Implementation of [[Element]], in ceylon.language.impl because although 
+ compiled user classes depend on it, it is not part of the public API."
 shared class MemberImpl(attribute) satisfies Member {
     shared actual ValueDeclaration attribute;
     

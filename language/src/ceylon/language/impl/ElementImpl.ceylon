@@ -2,6 +2,8 @@ import ceylon.language.serialization {
     Element
 }
 
+"Implementation of [[Element]], in ceylon.language.impl because although 
+ compiled user classes depend on it, it is not part of the public API."
 shared class ElementImpl(index) satisfies Element {
     shared actual Integer index;
     
