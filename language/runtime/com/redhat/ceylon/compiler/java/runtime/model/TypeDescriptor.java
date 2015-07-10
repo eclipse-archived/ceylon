@@ -105,12 +105,24 @@ public abstract class TypeDescriptor {
             this.useSiteVariance = useSiteVariance;
         }
 
+        /**
+         * Use {@link #getNumTypeArguments()} 
+         * and {@link #getTypeArgument(int)} if you only need a single type argument.
+         */
         public TypeDescriptor[] getTypeArguments() {
             return typeArguments;
         }
         
+        public int getNumTypeArguments() {
+            return typeArguments.length;
+        }
+        
+        public TypeDescriptor getTypeArgument(int index) {
+            return typeArguments[index];
+        }
+        
         public boolean isGeneric() {
-            return getTypeArguments().length>0;
+            return getNumTypeArguments()>0;
         }
 
         protected boolean equals(Generic other) {
@@ -390,6 +402,22 @@ public abstract class TypeDescriptor {
         @Override
         public TypeDescriptor[] getTypeArguments() {
             return new TypeDescriptor[]{getSequenceElement(), getTupleFirstElement(), getTupleRest()};
+        }
+        
+        @Override
+        public int getNumTypeArguments() {
+            return 3;
+        }
+        
+        @Override
+        public TypeDescriptor getTypeArgument(int index) {
+            switch(index){
+            case 0: return getSequenceElement();
+            case 1: return getTupleFirstElement();
+            case 2: return getTupleRest();
+            default:
+                throw new RuntimeException();
+            }
         }
         
         public boolean isGeneric() {
