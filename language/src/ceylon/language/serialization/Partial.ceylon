@@ -24,7 +24,7 @@ abstract class Partial(id) {
      **id** of the corresponding value in the [[DeserializationContext]].
      nullified by a successful call to [[initialize]]."
     //The Value type is not Id to save space
-    shared variable NativeMap<ReachableReference, Object>? state = nativeMap<ReachableReference, Object>();
+    shared variable NativeMap<ReachableReference, Object>? state = NativeMap<ReachableReference, Object>();
     
     "Add some state."
     shared void addState(ReachableReference attrOrIndex, Object partialOrComplete) {
