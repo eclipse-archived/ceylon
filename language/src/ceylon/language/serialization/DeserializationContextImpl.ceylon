@@ -19,6 +19,9 @@ import com.redhat.ceylon.model.typechecker.model{
 import ceylon.language.serialization {
     DeserializationException
 }
+import ceylon.language.impl {
+    MemberImpl, ElementImpl
+}
 
 "Implementation of [[DeserializationContext]] using a few native helper classes."
 class DeserializationContextImpl<Id>() satisfies DeserializationContext<Id> 

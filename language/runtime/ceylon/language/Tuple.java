@@ -16,7 +16,7 @@ import ceylon.language.impl.rethrow_;
 import ceylon.language.meta.declaration.ClassDeclaration;
 import ceylon.language.meta.declaration.ValueDeclaration;
 import ceylon.language.serialization.Member;
-import ceylon.language.serialization.MemberImpl;
+import ceylon.language.impl.MemberImpl;
 import ceylon.language.serialization.ReachableReference;
 
 import com.redhat.ceylon.compiler.java.Util;

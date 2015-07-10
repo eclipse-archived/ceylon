@@ -1,4 +1,8 @@
-import ceylon.language.impl{BaseIterator, BaseIterable}
+import ceylon.language.impl{
+    BaseIterator, 
+    BaseIterable,
+    reach
+}
 
 "Exposes the instances directly reachable from a given instance."
 shared sealed interface References/*<Instance>*/

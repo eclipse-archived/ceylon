@@ -1,9 +1,11 @@
-package ceylon.language.serialization;
+package ceylon.language.impl;
 
 import ceylon.language.Array;
 import ceylon.language.Iterator;
 import ceylon.language.finished_;
 import ceylon.language.impl.BaseIterator;
+import ceylon.language.serialization.Element;
+import ceylon.language.serialization.ReachableReference;
 
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Name;
@@ -13,7 +15,7 @@ import com.redhat.ceylon.compiler.java.runtime.serialization.Serializable;
 
 @Ceylon(major=8)
 @Object
-class reach_ {
+public class reach_ {
 
     private reach_() {}
     private static final reach_ value = new reach_();

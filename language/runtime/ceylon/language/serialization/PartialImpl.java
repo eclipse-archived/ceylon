@@ -6,13 +6,15 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 
-import ceylon.language.Anything;
 import ceylon.language.AssertionError;
 import ceylon.language.Collection;
 import ceylon.language.Entry;
 import ceylon.language.String;
 import ceylon.language.Tuple;
 import ceylon.language.impl.rethrow_;
+import ceylon.language.impl.ElementImpl;
+import ceylon.language.impl.MemberImpl;
+import ceylon.language.impl.outerImpl_;
 import ceylon.language.meta.declaration.ClassDeclaration;
 import ceylon.language.meta.declaration.ValueDeclaration;
 import ceylon.language.meta.model.ClassModel;
