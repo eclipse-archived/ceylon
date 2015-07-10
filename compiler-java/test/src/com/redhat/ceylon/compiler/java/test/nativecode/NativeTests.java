@@ -402,8 +402,8 @@ public class NativeTests extends CompilerTests {
                 new CompilerError(22, "native declarations not of same type: 'nativeInvalidTypes'"),
                 new CompilerError(24, "native declarations not of same type: 'nativeInvalidTypes'"),
                 new CompilerError(27, "illegal native backend name: '\"foo\"' (must be either '\"jvm\"' or '\"js\"')"),
-                new CompilerError(29, "native declaration is not a class, method, attribute or object: 'NativeInvalidInterface1'"),
-                new CompilerError(31, "native declaration is not a class, method, attribute or object: 'NativeInvalidInterface2'")
+                new CompilerError(29, "native declaration is not a class, constructor, method, attribute or object: 'NativeInvalidInterface1'"),
+                new CompilerError(31, "native declaration is not a class, constructor, method, attribute or object: 'NativeInvalidInterface2'")
         );
     }
     
