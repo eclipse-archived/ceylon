@@ -25,8 +25,11 @@ shared void bug719() {
     Bug719AnnoMethod annoMethod = Bug719AnnoMethod();
     
     assert(type(annoMethod).getDeclaredMethods<Bug719AnnoMethod,Anything,Nothing>().size == 2);
+    assert(type(annoMethod).getDeclaredMethods<>().size == 2);
     assert(type(annoMethod).getMethods<Bug719AnnoMethod,Anything,Nothing>(`Bug719SomeAnnotation`).size == 1);
+    assert(type(annoMethod).getMethods<>(`Bug719SomeAnnotation`).size == 1);
     assert(`Bug719AnnoMethod`.getMethods<Bug719AnnoMethod,Anything,Nothing>(`Bug719SomeAnnotation`).size == 1);
+    assert(`Bug719AnnoMethod`.getMethods<>(`Bug719SomeAnnotation`).size == 1);
     
     assert(`Bug719AnnoMethod`.declaration
         .annotatedMemberDeclarations<FunctionDeclaration, Bug719SomeAnnotation>().size == 1);
