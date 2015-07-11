@@ -249,29 +249,15 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
                 }
                 if (member == null) {
                     if (model.isNativeHeader()) {
-                        // Deal with implementations from the ModelLoader
-                        Declaration loadedDecl =
-                                model.getContainer().getDirectMember(
-                                        name, null, false);
                         // Initialize the header's overloads
                         if (model instanceof FunctionOrValue) {
                             FunctionOrValue m = 
                                     (FunctionOrValue) model;
-                            if (loadedDecl != null
-                                    && loadedDecl instanceof FunctionOrValue) {
-                                m.initOverloads((FunctionOrValue)loadedDecl);
-                            } else {
-                                m.initOverloads();
-                            }
+                            m.initOverloads();
                         }
                         else if (model instanceof Class) {
                             Class c = (Class) model;
-                            if (loadedDecl != null
-                                    && loadedDecl instanceof Class) {
-                                c.initOverloads((Class)loadedDecl);
-                            } else {
-                                c.initOverloads();
-                            }
+                            c.initOverloads();
                         }
                     }
                 }
