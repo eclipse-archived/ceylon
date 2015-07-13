@@ -365,7 +365,7 @@ shared void testConstructors() {
   check(curry(TestJs538.foo)(1)(2).hash == 3, "#538.2");
   check(TestJs555(42).f==42, "#555.1");
   constructorSB.clear();
-  // enable back when https://github.com/ceylon/ceylon-compiler/issues/2233 is fixed
+  fail("enable back when https://github.com/ceylon/ceylon-compiler/issues/2233 is fixed");
   //TestJs557(1);
   //check(constructorSB.string=="1,2,3,4", "#557.1 expected 1,2,3,4 got ``constructorSB``");
   //constructorSB.clear();
@@ -412,4 +412,6 @@ shared void testConstructors() {
   check(Test596("596").Bar.bar!=t599, "JS #596.2");
   value t596=Test596("596");
   check(t596.Bar.bar!=t599, "JS#596.3");
+  check(t596.Bar.bar===t596.Bar.bar, "JS#596.4");
+  check(!(t596.Bar.bar===Test596("596").Bar.bar), "JS#596.5");
 }
