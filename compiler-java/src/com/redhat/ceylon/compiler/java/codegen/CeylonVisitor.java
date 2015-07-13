@@ -40,6 +40,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Return;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Statement;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
+import com.redhat.ceylon.model.loader.NamingBase.Prefix;
 import com.redhat.ceylon.model.loader.NamingBase.Suffix;
 import com.redhat.ceylon.model.loader.model.OutputElement;
 import com.redhat.ceylon.model.typechecker.model.Class;
@@ -309,7 +310,7 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
         } else if (clz.isClassMember()){
             adb.modifiers(singletonModel.isShared() ? 0 : PRIVATE);
             // lazy
-            SyntheticName field = gen.naming.synthetic(singletonModel);
+            SyntheticName field = gen.naming.synthetic(Prefix.$instance$, clz.getName(), singletonModel.getName());
             adb.initialValue(gen.makeNull());
             List<JCStatement> l = List.<JCStatement>of(
             gen.make().If(gen.make().Binary(JCTree.EQ, field.makeIdent(), gen.makeNull()),
@@ -327,7 +328,8 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
             classBuilder.getContainingClassBuilder().defs(adb.build());
         } else {
             // LOCAL
-            classBuilder.after(gen.makeVar(FINAL, gen.naming.quoteFieldName(singletonModel.getName()), 
+            
+            classBuilder.after(gen.makeVar(FINAL, gen.naming.synthetic(Prefix.$instance$, clz.getName(), singletonModel.getName()), 
                     gen.naming.makeTypeDeclarationExpression(null, Decl.getConstructedClass(ctor.getEnumerated())), 
                     gen.make().NewClass(null, null, 
                             gen.naming.makeTypeDeclarationExpression(null, Decl.getConstructedClass(ctor.getEnumerated())), 
@@ -335,6 +337,7 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
                                     gen.make().TypeCast(
                                             gen.naming.makeNamedConstructorType(ctor.getEnumerated(), false),
                                     gen.makeNull())), null)));
+            gen.naming.addVariableSubst(singletonModel, gen.naming.synthetic(Prefix.$instance$, clz.getName(), singletonModel.getName()).getName());
         }
     }
     
