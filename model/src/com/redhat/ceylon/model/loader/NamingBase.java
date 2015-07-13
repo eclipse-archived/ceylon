@@ -110,7 +110,8 @@ public class NamingBase {
         $iterator$,
         $reified$,
         $superarg$,
-        $pattern$
+        $pattern$,
+        $instance$
     }
 
     public static String suffixName(Suffix suffix, String s) {
@@ -203,7 +204,13 @@ public class NamingBase {
         if (decl instanceof JavaBeanValue) {
             return ((JavaBeanValue)decl).getGetterName();
         }
+        
         if (ModelUtil.withinClassOrInterface(decl) && !ModelUtil.isLocalToInitializer(decl) && !indirect) {
+            if (decl instanceof Value
+                    && ((Value)decl).getType() != null
+                    && ((Value)decl).getType().getDeclaration() instanceof com.redhat.ceylon.model.typechecker.model.Constructor) {
+                return getGetterName(((Class)decl.getContainer()).getName() + "$" + decl.getName());
+            }
             return getErasedGetterName(decl);
         } else if (decl instanceof TypedDeclaration && JvmBackendUtil.isBoxedVariable((TypedDeclaration)decl)) {
             return name(Unfix.ref);
