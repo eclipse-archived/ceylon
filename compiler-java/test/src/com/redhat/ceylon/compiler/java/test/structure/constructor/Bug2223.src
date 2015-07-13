@@ -1,0 +1,115 @@
+package com.redhat.ceylon.compiler.java.test.structure.constructor;
+
+public class Bug2223 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    public Bug2223() {
+        final long foo = 1L;
+    }
+    
+    static final class Foo$foo {
+        
+        private Foo$foo() {
+        }
+    }
+    private Foo $instance$Foo$foo = null;
+    
+    .com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2223.Foo getFoo$foo() {
+        if ($instance$Foo$foo == null) $instance$Foo$foo = new Foo((.com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2223.Foo$foo)null);
+        return $instance$Foo$foo;
+    }
+    
+    class Foo implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+        
+        public Foo(.com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2223.Foo$foo $name$) {
+        }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2223.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2223.Foo.class));
+        }
+    }
+    
+    static final class Bar$foo {
+        
+        private Bar$foo() {
+        }
+    }
+    private Bar $instance$Bar$foo = null;
+    
+    .com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2223.Bar getBar$foo() {
+        if ($instance$Bar$foo == null) $instance$Bar$foo = new Bar((.com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2223.Bar$foo)null);
+        return $instance$Bar$foo;
+    }
+    
+    class Bar implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+        
+        public Bar(.com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2223.Bar$foo $name$) {
+        }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2223.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2223.Bar.class));
+        }
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2223();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2223.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2223.class);
+}
+public final class bug2223_ {
+    
+    private bug2223_() {
+    }
+    
+    public static void bug2223() {
+        
+        class Foo implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+            
+            final class foo_ {
+                
+                private foo_() {
+                }
+            }
+            
+            private Foo(Foo.foo_ $name$) {
+            }
+            
+            @.java.lang.Override
+            public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue(.com.redhat.ceylon.compiler.java.test.structure.constructor.bug2223_.class), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(Foo.class));
+            }
+        }
+        final Foo $instance$Foo$foo = new Foo((Foo.foo_)null);
+        
+        class Bar implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+            
+            final class foo_ {
+                
+                private foo_() {
+                }
+            }
+            
+            private Bar(Bar.foo_ $name$) {
+            }
+            
+            @.java.lang.Override
+            public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue(.com.redhat.ceylon.compiler.java.test.structure.constructor.bug2223_.class), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(Bar.class));
+            }
+        }
+        final Bar $instance$Bar$foo = new Bar((Bar.foo_)null);
+        final long foo = 1L;
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.structure.constructor.bug2223_.bug2223();
+    }
+}

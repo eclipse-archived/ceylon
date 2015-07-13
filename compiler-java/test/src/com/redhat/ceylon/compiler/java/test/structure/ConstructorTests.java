@@ -260,4 +260,8 @@ public class ConstructorTests extends CompilerTests {
         compareWithJavaSource("constructor/SingletonExtendingNamed");
     }
     
+    @Test
+    public void testCtorBug2223() {
+        compareWithJavaSource("constructor/Bug2223");
+    }
 }
