@@ -6210,10 +6210,17 @@ public class ExpressionVisitor extends Visitor {
                 if (ci!=null && 
                         d.inherits(ci) && 
                         !(d instanceof NothingType)) {
+                    //just in case the current class is a 
+                    //superclass of the receiver type, and
+                    //has a private member with the given
+                    //name, check the current class
                     Declaration direct = 
                             ci.getDirectMember(name, 
                                     signature, ellipsis);
-                    if (direct instanceof TypedDeclaration) {
+                    if (direct instanceof TypedDeclaration &&
+                            //ignore it if shared, since it
+                            //might be refined by the subtype
+                            !direct.isShared()) {
                         member = (TypedDeclaration) direct;
                     }
                     else {

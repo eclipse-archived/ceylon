@@ -49,3 +49,27 @@ class Bar() extends Foo() {
 }
 
 }
+
+interface NoHiding {
+
+class Super() {
+    shared default Anything fu = null;
+    
+    shared default void bar(Sub sub) {
+        String x = sub.fu;
+    }
+}
+
+class Sub() extends Super() {
+    shared actual String fu = "";
+    
+    shared actual void bar(Sub sub) {
+        String x = sub.fu;
+    }
+}
+
+void bar(Sub sub) {
+    String x = sub.fu;
+}
+
+}
