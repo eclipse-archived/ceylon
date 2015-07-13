@@ -6183,15 +6183,14 @@ public class ExpressionVisitor extends Visitor {
                 id!=null && 
                 !id.getText().equals("");
         if (nameNonempty && checkMember(that)) {
-            Tree.Primary p = that.getPrimary();
+            Tree.Primary primary = that.getPrimary();
             String name = name(id);
-            List<Type> signature = 
-                    that.getSignature();
+            List<Type> signature = that.getSignature();
             boolean ellipsis = that.getEllipsis();
             String container;
             boolean ambiguous;
             TypedDeclaration member;
-            if (p instanceof Tree.Package) {
+            if (primary instanceof Tree.Package) {
                 Package pack = unit.getPackage();
                 container = "package '" + 
                         pack.getNameAsString() + "'";
@@ -6201,8 +6200,8 @@ public class ExpressionVisitor extends Visitor {
             }
             else {
                 Type pt = 
-                        p.getTypeModel()
-                         .resolveAliases(); //needed for aliases like "alias Id<T> => T"
+                        primary.getTypeModel()
+                            .resolveAliases(); //needed for aliases like "alias Id<T> => T"
                 TypeDeclaration d = getDeclaration(that, pt);
                 container = "type '" + d.getName(unit) + "'";
                 Scope scope = that.getScope();
@@ -6251,7 +6250,7 @@ public class ExpressionVisitor extends Visitor {
                 that.setDeclaration(member);
                 resetSuperReference(that);
                 boolean selfReference = 
-                        isSelfReference(p);
+                        isSelfReference(primary);
                 if (!selfReference && 
                         !member.isShared()) {
                     member.setOtherInstanceAccess(true);
@@ -6603,8 +6602,8 @@ public class ExpressionVisitor extends Visitor {
             if (error) {
                 if (checkConcreteClass(type, that)) {
                     if (checkSealedReference(type, that)) {
-                        checkBaseTypeAndConstructorVisibility(that, 
-                                name, type);
+                        checkBaseTypeAndConstructorVisibility(
+                                that, name, type);
                     }
                 }
             }
@@ -6892,16 +6891,15 @@ public class ExpressionVisitor extends Visitor {
             Tree.QualifiedTypeExpression that,
             boolean error) {
         if (checkMember(that)) {
-            Tree.Primary p = that.getPrimary();
+            Tree.Primary primary = that.getPrimary();
             Tree.Identifier id = that.getIdentifier();
-            List<Type> signature = 
-                    that.getSignature();
+            List<Type> signature = that.getSignature();
             boolean ellipsis = that.getEllipsis();
             String name = name(id);
             String container;
             boolean ambiguous;
             TypeDeclaration type;
-            if (p instanceof Tree.Package) {
+            if (primary instanceof Tree.Package) {
                 Package pack = unit.getPackage();
                 container = "package '" + 
                         pack.getNameAsString() + "'";
@@ -6911,8 +6909,8 @@ public class ExpressionVisitor extends Visitor {
             }
             else {
                 Type pt = 
-                        p.getTypeModel()
-                         .resolveAliases(); //needed for aliases like "alias Id<T> => T"
+                        primary.getTypeModel()
+                            .resolveAliases(); //needed for aliases like "alias Id<T> => T"
                 TypeDeclaration d = getDeclaration(that, pt);
                 container = "type '" + d.getName(unit) + "'";
                 Scope scope = that.getScope();
@@ -6960,15 +6958,15 @@ public class ExpressionVisitor extends Visitor {
                         handleAbstractionOrHeader(type, that);
                 that.setDeclaration(type);
                 resetSuperReference(that);
-                if (!isSelfReference(p) && 
+                if (!isSelfReference(primary) && 
                         !type.isShared()) {
                     type.setOtherInstanceAccess(true);
                 }
                 if (error) {
                     if (checkConcreteClass(type, that)) {
                         if (checkSealedReference(type, that)) {
-                            checkQualifiedTypeAndConstructorVisibility(that, 
-                                    type, name, container);
+                            checkQualifiedTypeAndConstructorVisibility(
+                                    that, type, name, container);
                         }
                     }
                     if (!inExtendsClause) {
