@@ -163,14 +163,30 @@ public class InheritanceVisitor extends Visitor {
     private void validateEnumeratedSupertypes(Node that, ClassOrInterface d) {
         Type type = d.getType();
         Unit unit = that.getUnit();
+        if (d instanceof Class) {
+            Type superclass = d.getExtendedType();
+            if (superclass!=null && 
+                    superclass.isAnything() &&
+                    !type.isObject() && !type.isNull()) {
+                //a class which directly extends Anything 
+                //must be handled as a special case here 
+                //because of a performance optimization in 
+                //Class.inherits()
+                that.addError("not a subtype of any case of root type: '" + 
+                        d.getName(unit) + 
+                        "' directly inherits 'Anything'");
+            }
+        }
         for (Type supertype: type.getSupertypes()) {
             if (!type.isExactly(supertype)) {
-                TypeDeclaration std = supertype.getDeclaration();
+                TypeDeclaration std = 
+                        supertype.getDeclaration();
                 List<Type> cts = std.getCaseTypes();
                 if (cts!=null && 
                         !cts.isEmpty()) {
                     if (cts.size()==1 && 
-                            cts.get(0).getDeclaration()
+                            cts.get(0)
+                                .getDeclaration()
                                 .isSelfType()) {
                         continue;
                     }
@@ -188,7 +204,8 @@ public class InheritanceVisitor extends Visitor {
                     }
                     if (types.isEmpty()) {
                         that.addError("not a subtype of any case of enumerated supertype: '" + 
-                                d.getName(unit) + "' is a subtype of '" + 
+                                d.getName(unit) + 
+                                "' inherits '" + 
                                 std.getName(unit) + "'");
                     }
                     else if (types.size()>1) {
@@ -201,7 +218,8 @@ public class InheritanceVisitor extends Visitor {
                         sb.setLength(sb.length()-5);
                         that.addError("concrete type is a subtype of multiple cases of enumerated supertype '" +
                                 std.getName(unit) + "': '" + 
-                                d.getName(unit) + "' is a subtype of " + sb);
+                                d.getName(unit) +
+                                "' inherits " + sb);
                     }
                 }
             }

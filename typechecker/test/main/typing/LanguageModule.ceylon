@@ -30,3 +30,5 @@ class LanguageModule() {
     @type:"Empty|Tuple<Integer,Integer,Empty>" emptyOrSingleton(1==1 then 1);
 
 }
+
+@error class Dumbthing() extends Anything() {}
