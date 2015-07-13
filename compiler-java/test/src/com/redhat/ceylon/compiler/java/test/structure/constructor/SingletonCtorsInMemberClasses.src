@@ -10,11 +10,11 @@ class SingletonCtorsInMemberClasses implements .com.redhat.ceylon.compiler.java.
         private Bar$bar() {
         }
     }
-    private Bar bar = null;
+    private Bar $instance$Bar$bar = null;
     
-    .com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtorsInMemberClasses.Bar getBar() {
-        if (bar == null) bar = new Bar((.com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtorsInMemberClasses.Bar$bar)null);
-        return bar;
+    .com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtorsInMemberClasses.Bar getBar$bar() {
+        if ($instance$Bar$bar == null) $instance$Bar$bar = new Bar((.com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtorsInMemberClasses.Bar$bar)null);
+        return $instance$Bar$bar;
     }
     
     public class Bar implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
@@ -40,7 +40,7 @@ public final class singletonCtorsInMemberClasses_ {
     }
     
     public static void singletonCtorsInMemberClasses() {
-        .ceylon.language.print_.print(new .com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtorsInMemberClasses().getBar());
+        .ceylon.language.print_.print(new .com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtorsInMemberClasses().getBar$bar());
         
         class Foo implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
             
@@ -52,11 +52,11 @@ public final class singletonCtorsInMemberClasses_ {
                 private Bar$bar() {
                 }
             }
-            private Bar bar = null;
+            private Bar $instance$Bar$bar = null;
             
-            Foo.Bar getBar() {
-                if (bar == null) bar = new Bar((Foo.Bar$bar)null);
-                return bar;
+            Foo.Bar getBar$bar() {
+                if ($instance$Bar$bar == null) $instance$Bar$bar = new Bar((Foo.Bar$bar)null);
+                return $instance$Bar$bar;
             }
             
             class Bar implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {

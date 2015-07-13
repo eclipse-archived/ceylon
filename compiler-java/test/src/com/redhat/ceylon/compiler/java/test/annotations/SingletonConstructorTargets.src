@@ -18,7 +18,7 @@ class SingletonConstructorTargets implements .com.redhat.ceylon.compiler.java.ru
         fieldAnnotated = new SingletonConstructorTargets((.com.redhat.ceylon.compiler.java.test.annotations.SingletonConstructorTargets.fieldAnnotated_)null);
     }
     
-    public static final .com.redhat.ceylon.compiler.java.test.annotations.SingletonConstructorTargets getFieldAnnotated() {
+    public static final .com.redhat.ceylon.compiler.java.test.annotations.SingletonConstructorTargets getSingletonConstructorTargets$fieldAnnotated() {
         return fieldAnnotated;
     }
     
@@ -38,7 +38,7 @@ class SingletonConstructorTargets implements .com.redhat.ceylon.compiler.java.ru
     
     @.com.redhat.ceylon.compiler.java.test.annotations.MethodTarget
     @.com.redhat.ceylon.compiler.java.test.annotations.ConstructorOrFieldOrMethodTarget
-    public static final .com.redhat.ceylon.compiler.java.test.annotations.SingletonConstructorTargets getMethodAnnotated() {
+    public static final .com.redhat.ceylon.compiler.java.test.annotations.SingletonConstructorTargets getSingletonConstructorTargets$methodAnnotated() {
         return methodAnnotated;
     }
     
@@ -57,7 +57,7 @@ class SingletonConstructorTargets implements .com.redhat.ceylon.compiler.java.ru
         constructorAnnotated = new SingletonConstructorTargets((.com.redhat.ceylon.compiler.java.test.annotations.SingletonConstructorTargets.constructorAnnotated_)null);
     }
     
-    public static final .com.redhat.ceylon.compiler.java.test.annotations.SingletonConstructorTargets getConstructorAnnotated() {
+    public static final .com.redhat.ceylon.compiler.java.test.annotations.SingletonConstructorTargets getSingletonConstructorTargets$constructorAnnotated() {
         return constructorAnnotated;
     }
     

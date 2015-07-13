@@ -34,7 +34,7 @@ class SingletonExtendingNamed_Bar extends .com.redhat.ceylon.compiler.java.test.
         bar = new SingletonExtendingNamed_Bar((.com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonExtendingNamed_Bar.bar_)null);
     }
     
-    public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonExtendingNamed_Bar getBar() {
+    public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonExtendingNamed_Bar getSingletonExtendingNamed_Bar$bar() {
         return bar;
     }
     

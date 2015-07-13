@@ -11,9 +11,9 @@ class SingletonCtors implements .com.redhat.ceylon.compiler.java.runtime.model.R
     public final long use(final .com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtors inst) {
         {
             .com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtors sel$0 = inst;
-            if (sel$0 == .com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtors.getOne()) {
+            if (sel$0 == .com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtors.getSingletonCtors$one()) {
                 return 1L;
-            } else if (sel$0 == .com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtors.getTwo()) {
+            } else if (sel$0 == .com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtors.getSingletonCtors$two()) {
                 return 2L;
             } else {
                 final .com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtors inst$1 = (.com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtors)sel$0;
@@ -25,9 +25,9 @@ class SingletonCtors implements .com.redhat.ceylon.compiler.java.runtime.model.R
     public final long use2(final .com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtors inst) {
         {
             .com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtors sel$2 = inst;
-            if (sel$2 == getOne()) {
+            if (sel$2 == getSingletonCtors$one()) {
                 return 1L;
-            } else if (sel$2 == getTwo()) {
+            } else if (sel$2 == getSingletonCtors$two()) {
                 return 2L;
             } else {
                 final .com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtors inst$3 = (.com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtors)sel$2;
@@ -50,7 +50,7 @@ class SingletonCtors implements .com.redhat.ceylon.compiler.java.runtime.model.R
         one = new SingletonCtors((.com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtors.one_)null);
     }
     
-    public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtors getOne() {
+    public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtors getSingletonCtors$one() {
         return one;
     }
     
@@ -68,7 +68,7 @@ class SingletonCtors implements .com.redhat.ceylon.compiler.java.runtime.model.R
         two = new SingletonCtors((.com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtors.two_)null);
     }
     
-    public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtors getTwo() {
+    public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtors getSingletonCtors$two() {
         return two;
     }
     
@@ -88,11 +88,11 @@ class ClassMemberSingletonCtors implements .com.redhat.ceylon.compiler.java.runt
         private MemberClass$one() {
         }
     }
-    private MemberClass one = null;
+    private MemberClass $instance$MemberClass$one = null;
     
-    .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberSingletonCtors.MemberClass getOne() {
-        if (one == null) one = new MemberClass((.com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberSingletonCtors.MemberClass$one)null);
-        return one;
+    .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberSingletonCtors.MemberClass getMemberClass$one() {
+        if ($instance$MemberClass$one == null) $instance$MemberClass$one = new MemberClass((.com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberSingletonCtors.MemberClass$one)null);
+        return $instance$MemberClass$one;
     }
     
     private static final class MemberClass$nonShared {
@@ -100,11 +100,11 @@ class ClassMemberSingletonCtors implements .com.redhat.ceylon.compiler.java.runt
         private MemberClass$nonShared() {
         }
     }
-    private MemberClass nonShared = null;
+    private MemberClass $instance$MemberClass$nonShared = null;
     
     private .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberSingletonCtors.MemberClass get_() {
-        if (nonShared == null) nonShared = new MemberClass((.com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberSingletonCtors.MemberClass$nonShared)null);
-        return nonShared;
+        if ($instance$MemberClass$nonShared == null) $instance$MemberClass$nonShared = new MemberClass((.com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberSingletonCtors.MemberClass$nonShared)null);
+        return $instance$MemberClass$nonShared;
     }
     
     public class MemberClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
@@ -130,11 +130,11 @@ class ClassMemberSingletonCtors implements .com.redhat.ceylon.compiler.java.runt
     }
     
     private final void use$priv$(final .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberSingletonCtors other) {
-        if (!other.getOne().equals(getOne())) {
+        if (!other.getMemberClass$one().equals(getMemberClass$one())) {
         } else {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "other.MemberClass.one != MemberClass.one"));
         }
-        if (!other.getOne().equals(.com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberSingletonCtors.this.getOne())) {
+        if (!other.getMemberClass$one().equals(.com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberSingletonCtors.this.getMemberClass$one())) {
         } else {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "other.MemberClass.one != this.MemberClass.one"));
         }
@@ -176,8 +176,8 @@ final class localSingletonCtors_ {
                 return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue(.com.redhat.ceylon.compiler.java.test.structure.constructor.localSingletonCtors_.class), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(LocalClass.class));
             }
         }
-        final LocalClass one = new LocalClass((LocalClass.one_)null);
-        return one;
+        final LocalClass $instance$LocalClass$one = new LocalClass((LocalClass.one_)null);
+        return $instance$LocalClass$one;
     }
 }
 final class singletonCtors_ {

@@ -49,7 +49,7 @@ class SingletonCtorDelegation implements .com.redhat.ceylon.compiler.java.runtim
         origin = new SingletonCtorDelegation((.com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtorDelegation.origin_)null);
     }
     
-    public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtorDelegation getOrigin() {
+    public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtorDelegation getSingletonCtorDelegation$origin() {
         return origin;
     }
     
@@ -67,7 +67,7 @@ class SingletonCtorDelegation implements .com.redhat.ceylon.compiler.java.runtim
         oneone = new SingletonCtorDelegation((.com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtorDelegation.oneone_)null);
     }
     
-    public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtorDelegation getOneone() {
+    public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtorDelegation getSingletonCtorDelegation$oneone() {
         return oneone;
     }
     
@@ -117,7 +117,7 @@ class SingletonCtorAbstractDelegation implements .com.redhat.ceylon.compiler.jav
         origin = new SingletonCtorAbstractDelegation((.com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtorAbstractDelegation.origin_)null);
     }
     
-    public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtorAbstractDelegation getOrigin() {
+    public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtorAbstractDelegation getSingletonCtorAbstractDelegation$origin() {
         return origin;
     }
     
@@ -135,7 +135,7 @@ class SingletonCtorAbstractDelegation implements .com.redhat.ceylon.compiler.jav
         oneone = new SingletonCtorAbstractDelegation((.com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtorAbstractDelegation.oneone_)null);
     }
     
-    public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtorAbstractDelegation getOneone() {
+    public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtorAbstractDelegation getSingletonCtorAbstractDelegation$oneone() {
         return oneone;
     }
     
@@ -155,35 +155,35 @@ public final class singletonCtorDelegation_ {
     @.ceylon.language.SharedAnnotation$annotation$
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     public static void singletonCtorDelegation() {
-        if (.com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtorDelegation.getOrigin().equals(.com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtorDelegation.getOrigin())) {
+        if (.com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtorDelegation.getSingletonCtorDelegation$origin().equals(.com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtorDelegation.getSingletonCtorDelegation$origin())) {
         } else {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "SingletonCtorDelegation.origin == SingletonCtorDelegation.origin"));
         }
-        if (.com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtorDelegation.getOneone().equals(.com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtorDelegation.getOneone())) {
+        if (.com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtorDelegation.getSingletonCtorDelegation$oneone().equals(.com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtorDelegation.getSingletonCtorDelegation$oneone())) {
         } else {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "SingletonCtorDelegation.oneone == SingletonCtorDelegation.oneone"));
         }
-        if (1.0 == .com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtorDelegation.getOneone().getX()) {
+        if (1.0 == .com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtorDelegation.getSingletonCtorDelegation$oneone().getX()) {
         } else {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "1.0 == SingletonCtorDelegation.oneone.x"));
         }
-        if (1.0 == .com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtorDelegation.getOneone().getY()) {
+        if (1.0 == .com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtorDelegation.getSingletonCtorDelegation$oneone().getY()) {
         } else {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "1.0 == SingletonCtorDelegation.oneone.y"));
         }
-        if (.com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtorAbstractDelegation.getOrigin().equals(.com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtorAbstractDelegation.getOrigin())) {
+        if (.com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtorAbstractDelegation.getSingletonCtorAbstractDelegation$origin().equals(.com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtorAbstractDelegation.getSingletonCtorAbstractDelegation$origin())) {
         } else {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "SingletonCtorAbstractDelegation.origin == SingletonCtorAbstractDelegation.origin"));
         }
-        if (.com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtorAbstractDelegation.getOneone().equals(.com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtorAbstractDelegation.getOneone())) {
+        if (.com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtorAbstractDelegation.getSingletonCtorAbstractDelegation$oneone().equals(.com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtorAbstractDelegation.getSingletonCtorAbstractDelegation$oneone())) {
         } else {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "SingletonCtorAbstractDelegation.oneone == SingletonCtorAbstractDelegation.oneone"));
         }
-        if (1.0 == .com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtorAbstractDelegation.getOneone().getX()) {
+        if (1.0 == .com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtorAbstractDelegation.getSingletonCtorAbstractDelegation$oneone().getX()) {
         } else {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "1.0 == SingletonCtorAbstractDelegation.oneone.x"));
         }
-        if (1.0 == .com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtorAbstractDelegation.getOneone().getY()) {
+        if (1.0 == .com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtorAbstractDelegation.getSingletonCtorAbstractDelegation$oneone().getY()) {
         } else {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "1.0 == SingletonCtorAbstractDelegation.oneone.y"));
         }

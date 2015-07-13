@@ -28,7 +28,7 @@ class SingletonCtorExtendingGenericClass_Sub extends .com.redhat.ceylon.compiler
         bar = new SingletonCtorExtendingGenericClass_Sub((.com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtorExtendingGenericClass_Sub.bar_)null);
     }
     
-    public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtorExtendingGenericClass_Sub getBar() {
+    public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtorExtendingGenericClass_Sub getSingletonCtorExtendingGenericClass_Sub$bar() {
         return bar;
     }
     
