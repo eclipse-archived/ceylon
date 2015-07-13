@@ -1672,6 +1672,9 @@ public class Gen extends JCTree.Visitor {
     }
 
     public void visitThrow(JCThrow tree) {
+        while (code.state.stacksize > 0) { 
+            code.emitop0(pop);
+        }
         genExpr(tree.expr, tree.expr.type).load();
         code.emitop0(athrow);
     }
