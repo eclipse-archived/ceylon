@@ -210,10 +210,14 @@ public class Singletons {
         final String objvar = gen.getNames().self(td);
         final String typevar = gen.getNames().name(td);
         final String singvar = gen.getNames().name(d);
-        gen.out("var ", objvar, "=undefined;function ", typevar, "_", singvar, "(){if(",
-                objvar, "===undefined){");
+        final boolean nested = cdef.getDeclarationModel().isClassOrInterfaceMember();
+        gen.out(nested?"this.":"var ", objvar, "=undefined;function ", typevar, "_", singvar,
+                "(){if(", nested?"this.":"", objvar, "===undefined){");
         if (dc==null) {
             gen.out("$init$", typevar, "();");
+        }
+        if (nested) {
+            gen.out("var ");
         }
         gen.out(objvar, "=");
         if (dc == null) {
@@ -235,7 +239,10 @@ public class Singletons {
         if (!stmts.isEmpty()) {
             gen.visitStatements(stmts);
         }
-        gen.out("}return ", objvar, ";};", typevar, "_", singvar, ".$crtmm$=");
+        if (nested) {
+            gen.out("this.", objvar, "=", objvar, ";");
+        }
+        gen.out("}return ", nested?"this.":"", objvar, ";};", typevar, "_", singvar, ".$crtmm$=");
         TypeUtils.encodeForRuntime(d, that.getAnnotationList(), gen);
         gen.out(";");
         if (td.isClassOrInterfaceMember()) {
