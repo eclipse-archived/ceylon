@@ -214,7 +214,7 @@ public class TypeParameter extends TypeDeclaration {
         }
         else {
             List<Type> sts = getSatisfiedTypes();
-            for (int i = 0, s=sts.size(); i<s; i++) {
+            for (int i=0, s=sts.size(); i<s; i++) {
                 Type st = sts.get(i);
                 if (st.getDeclaration().inherits(dec)) {
                     return true;
