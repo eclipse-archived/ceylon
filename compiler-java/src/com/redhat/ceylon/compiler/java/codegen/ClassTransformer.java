@@ -5014,7 +5014,8 @@ public class ClassTransformer extends AbstractTransformer {
             if (clz.isToplevel()) {
                 classMods &= ~(PRIVATE | PROTECTED | PUBLIC);
                 classMods |= PRIVATE| STATIC | FINAL ;
-            } else if (clz.isMember()) {
+            } else if (clz.isMember()
+                    && Decl.isToplevel((Declaration)clz.getContainer())) {
                 classMods &= ~(PRIVATE | PROTECTED | PUBLIC);
                 classMods |= FINAL ;
                 if (!Decl.isAncestorLocal(ctor)) {
