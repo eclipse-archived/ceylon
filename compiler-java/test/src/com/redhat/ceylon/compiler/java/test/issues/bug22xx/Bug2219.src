@@ -1,0 +1,33 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug22xx;
+
+public final class bug2219_ {
+    
+    private bug2219_() {
+    }
+    
+    public static void bug2219() {
+        final .java.lang.Object foo = .ceylon.language.Integer.instance(1L);
+        final .java.lang.String s = new .ceylon.language.String(.ceylon.language.String.instance((
+            let
+            {
+                .java.lang.String $ceylontmp$ifResult$0;
+                {
+                    .java.lang.Object sel$1 = foo;
+                    if (sel$1 instanceof .ceylon.language.Integer) {
+                        final long foo$3 = ((.ceylon.language.Integer)sel$1).longValue();
+                        $ceylontmp$ifResult$0 = "integer";
+                    } else if (sel$1 instanceof .ceylon.language.Float) {
+                        final double foo$2 = ((.ceylon.language.Float)sel$1).doubleValue();
+                        $ceylontmp$ifResult$0 = "float";
+                    } else throw new .com.redhat.ceylon.compiler.java.language.EnumeratedTypeError("Supposedly exhaustive switch was not exhaustive");
+                }
+            }
+            returning $ceylontmp$ifResult$0;
+        ))).toString();
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.issues.bug22xx.bug2219_.bug2219();
+    }
+}
