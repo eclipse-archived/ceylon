@@ -32,3 +32,4 @@ class LanguageModule() {
 }
 
 @error class Dumbthing() extends Anything() {}
+@error class Numbthing() extends Null() {}
