@@ -5945,8 +5945,9 @@ public class ExpressionVisitor extends Visitor {
                             .getInferredTypeArgsForFunctionRef(that);
             }
             else if (explicitTypeArguments(member, tal)) {
-                typeArgs = getTypeArguments(tal, null, 
-                        getTypeParameters(member));
+                typeArgs = 
+                        getTypeArguments(tal, null, 
+                                getTypeParameters(member));
             }
             else {
                 typeArgs = 
@@ -6058,9 +6059,9 @@ public class ExpressionVisitor extends Visitor {
                             .getInferredTypeArgsForFunctionRef(that);
             }
             else if (explicitTypeArguments(member, tal)) {
-                typeArgs = getTypeArguments(tal, 
-                        receiverType, 
-                        getTypeParameters(member));
+                typeArgs = 
+                        getTypeArguments(tal, receiverType, 
+                                getTypeParameters(member));
             }
             else {
                 typeArgs = 
@@ -6536,9 +6537,9 @@ public class ExpressionVisitor extends Visitor {
             Tree.TypeArguments tal = that.getTypeArguments();
             List<Type> typeArgs;
             if (explicitTypeArguments(type, tal)) {
-                List<TypeParameter> tps = 
-                        type.getTypeParameters();
-                typeArgs = getTypeArguments(tal, null, tps);
+                typeArgs = 
+                        getTypeArguments(tal, null, 
+                                type.getTypeParameters());
             }
             else {
                 typeArgs = 
@@ -6824,10 +6825,9 @@ public class ExpressionVisitor extends Visitor {
                         .resolveAliases();
             List<Type> typeArgs;
             if (explicitTypeArguments(type, tal)) {
-                List<TypeParameter> tps = 
-                        type.getTypeParameters();
-                typeArgs = getTypeArguments(tal, receiverType, 
-                        tps);
+                typeArgs = 
+                        getTypeArguments(tal, receiverType, 
+                                type.getTypeParameters());
             }
             else {
                 typeArgs = 
