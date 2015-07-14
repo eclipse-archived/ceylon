@@ -2603,6 +2603,13 @@ public class ModelUtil {
                 && ModelUtil.isObject((Value)header)) {
             header = ((Value)header).getType().getDeclaration();
         }
+        // In case of constructors we make sure we return the same
+        // type of declaration we were called with
+        else if (dec instanceof Constructor
+                && header instanceof FunctionOrValue
+                && isConstructor(header)) {
+            header = getConstructor(header);
+        }
         return header;
     }
     
@@ -2639,10 +2646,16 @@ public class ModelUtil {
             }
         }
         // Find the header
-        Declaration header =
-                container.getDirectMemberForBackend(
-                        name,
-                        Backend.None.nativeAnnotation);
+        Declaration header;
+        if (container instanceof Class && name == null) {
+            // Special case for the default constructor
+            header = ((Class)container).getDefaultConstructorFunctionOrValue();
+        } else {
+            header =
+                    container.getDirectMemberForBackend(
+                            name,
+                            Backend.None.nativeAnnotation);
+        }
         return header;
     }
     
@@ -2907,5 +2920,16 @@ public class ModelUtil {
                     ((FunctionOrValue) member)
                         .getTypeDeclaration() 
                             instanceof Constructor;
+    }
+    
+    public static Constructor getConstructor(Declaration member) {
+        if (member instanceof Constructor) {
+            return (Constructor)member;
+        } else if (member instanceof FunctionOrValue
+                && ((FunctionOrValue)member).getTypeDeclaration() instanceof Constructor) {
+            return (Constructor)((FunctionOrValue)member).getTypeDeclaration();
+        } else {
+            return null;
+        }
     }
 }
