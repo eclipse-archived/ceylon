@@ -1300,10 +1300,22 @@ public class TypeVisitor extends Visitor {
         if (pl==null && 
                 !cd.hasConstructors() && 
                 !cd.hasEnumerated()) {
-            that.addError("class without parameters must declare at least one constructor: class '" + 
-                    cd.getName() + 
-                    "' has neither parameter list nor constructors", 
-                    1001);
+            boolean error = true;
+            if (cd.isNative() && !cd.isNativeHeader()) {
+                Declaration hdr = getNativeHeader(cd);
+                if (hdr != null && hdr instanceof Class) {
+                    Class hcd = (Class)hdr;
+                    if (hcd.hasConstructors() || hcd.hasEnumerated()) {
+                        error = false;
+                    }
+                }
+            }
+            if (error) {
+                that.addError("class without parameters must declare at least one constructor: class '" + 
+                        cd.getName() + 
+                        "' has neither parameter list nor constructors", 
+                        1001);
+            }
         }
     }
 
