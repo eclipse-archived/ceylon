@@ -104,6 +104,21 @@ public class Class extends ClassOrInterface implements Functional {
         }
     }
     
+    public FunctionOrValue getDefaultConstructorFunctionOrValue() {
+        if (constructors) {
+            for (Declaration dec: getMembers()) {
+                if (dec instanceof FunctionOrValue &&
+                        dec.getName()==null) {
+                    return (FunctionOrValue) dec;
+                }
+            }
+            return null;
+        }
+        else {
+            return null;
+        }
+    }
+    
     @Override
     public boolean isSealed() {
         if (parameterList==null) {
