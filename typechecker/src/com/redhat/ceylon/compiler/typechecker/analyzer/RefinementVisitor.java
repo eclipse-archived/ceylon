@@ -349,11 +349,10 @@ public class RefinementVisitor extends Visitor {
                     message(dec));
         }
         // FIXME probably not the right tests
-        checkClassParameters(that,
+        checkNativeClassParameters(that,
                 dec, header,
                 dec.getReference(),
-                header.getReference(),
-                true);
+                header.getReference());
         checkRefiningMemberTypeParameters(that,
                 dec, header,
                 dec.getTypeParameters(),
@@ -503,19 +502,18 @@ public class RefinementVisitor extends Visitor {
         return isObject(dec) && isObject(header) && dec.getQualifiedNameString().equals(header.getQualifiedNameString());
     }
 
-    private void checkClassParameters(Tree.Declaration that,
-            Class dec, Class refined,
-            Reference refinedMember, 
-            Reference refiningMember,
-            boolean forNative) {
-        if (dec.hasConstructors() != refined.hasConstructors()) {
+    private void checkNativeClassParameters(Tree.Declaration that,
+            Class dec, Class header,
+            Reference decRef, 
+            Reference hdrRef) {
+        if (dec.hasConstructors() != header.hasConstructors()) {
             that.addError("native classes must all have parameters or all have constructors: " + 
                     message(dec));
         } else if (!dec.hasConstructors()) {
             List<ParameterList> refiningParamLists = 
                     dec.getParameterLists();
             List<ParameterList> refinedParamLists = 
-                    refined.getParameterLists();
+                    header.getParameterLists();
             if (refinedParamLists.size()!=refiningParamLists.size()) {
                 that.addError("native classes must have the same number of parameter lists: " + 
                         message(dec));
@@ -526,10 +524,10 @@ public class RefinementVisitor extends Visitor {
                     i++) {
                 checkParameterTypes(that, 
                         getParameterList(that, i), 
-                        refiningMember, refinedMember, 
+                        hdrRef, decRef, 
                         refiningParamLists.get(i), 
                         refinedParamLists.get(i),
-                        forNative);
+                        true);
             }
         }
     }
