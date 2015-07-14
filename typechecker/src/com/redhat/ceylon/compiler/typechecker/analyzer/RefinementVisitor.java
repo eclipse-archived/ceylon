@@ -410,6 +410,7 @@ public class RefinementVisitor extends Visitor {
             new Comparator<Declaration>() {
         @Override
         public int compare(Declaration o1, Declaration o2) {
+            if (o1.getName() == null && o2.getName() == null) return 0;
             if (o1.getName() == null) return -1;
             if (o2.getName() == null) return 1;
             return o1.getName().compareTo(o2.getName());
