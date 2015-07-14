@@ -25,7 +25,7 @@ class CtorDelegationExtendDefault implements .com.redhat.ceylon.compiler.java.ru
     }
     
     public CtorDelegationExtendDefault(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationExtendDefault.alt_ $name$) {
-        this("");
+        this(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationExtendDefault.$delegation$, "");
         .ceylon.language.print_.print(.ceylon.language.String.instance("In Alt"));
     }
     

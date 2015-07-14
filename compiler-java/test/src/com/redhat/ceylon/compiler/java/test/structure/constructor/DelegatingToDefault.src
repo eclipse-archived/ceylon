@@ -26,7 +26,7 @@ class DelegatingToDefault implements .com.redhat.ceylon.compiler.java.runtime.mo
     }
     
     public DelegatingToDefault(.com.redhat.ceylon.compiler.java.test.structure.constructor.DelegatingToDefault.baz_ $name$) {
-        this();
+        this(.com.redhat.ceylon.compiler.java.test.structure.constructor.DelegatingToDefault.$delegation$);
         .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("c");
     }
     
