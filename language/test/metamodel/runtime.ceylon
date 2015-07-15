@@ -933,6 +933,7 @@ shared void checkAliases(){
     assert(is OpenClassOrInterfaceType aliasedType = aliasDeclaration.openType);
     assert(aliasedType.declaration.name == "NoParams");
     assert(aliasedType.typeArguments.size == 0);
+    assert(aliasedType.typeArgumentList.size == 0);
     // check that getMember also works
     assert(exists aliasDeclaration2 = pkg.getMember<AliasDeclaration>("TypeAliasToClass"));
     assert(aliasDeclaration2.name == "TypeAliasToClass");
@@ -949,8 +950,10 @@ shared void checkAliases(){
     assert(is OpenClassOrInterfaceType aliasedTypeTP = aliasDeclarationTP.openType);
     assert(aliasedTypeTP.declaration.name == "TypeParams");
     assert(aliasedTypeTP.typeArguments.size == 1);
+    assert(aliasedTypeTP.typeArgumentList.size == 1);
     assert(exists aliasedDeclarationTPTypeParam = aliasedTypeTP.declaration.getTypeParameterDeclaration("T"));
     assert(is OpenTypeVariable aliasedTypeTPArg = aliasedTypeTP.typeArguments[aliasedDeclarationTPTypeParam]);
+    assert(exists aliasedTypeTPArg2 = aliasedTypeTP.typeArgumentList[0], aliasedTypeTPArg == aliasedTypeTPArg2);
     assert(aliasedTypeTPArg.declaration.name == "J");
 
     // get one pointing to a union
@@ -1830,6 +1833,93 @@ shared void checkTypeArguments() {
     assert(`Integer` == functionModelTa);
 }
 
+// grrr, no open type literals
+TypeParams<String> d1() => nothing;
+TypeParams<String> d1b() => nothing;
+TypeParams<in String> d2() => nothing;
+TypeParams<out String> d3() => nothing;
+
+@test
+shared void checkUseSiteVariance(){
+    value argModel = `String`;
+    assert(exists tpDecl1 = `class TypeParams`.typeParameterDeclarations.first);
+
+    // this one is invarant
+    value classModel1 = `TypeParams<String>`;
+    assert(classModel1.typeArgumentWithVarianceList == [[argModel, invariant]]);
+    assert(classModel1.typeArgumentWithVariances.size == 1);
+    assert(eq(classModel1.typeArgumentWithVariances[tpDecl1], [argModel, invariant]));
+    assert(classModel1.string == "metamodel::TypeParams<ceylon.language::String>");
+
+    value classModel2 = `TypeParams<in String>`;
+    assert(classModel2.typeArgumentWithVarianceList == [[argModel, contravariant]]);
+    assert(classModel2.typeArgumentWithVariances.size == 1);
+    assert(eq(classModel2.typeArgumentWithVariances[tpDecl1], [argModel, contravariant]));
+    assert(classModel2.string == "metamodel::TypeParams<in ceylon.language::String>");
+
+    value classModel3 = `TypeParams<out String>`;
+    assert(classModel3.typeArgumentWithVarianceList == [[argModel, covariant]]);
+    assert(classModel3.typeArgumentWithVariances.size == 1);
+    assert(eq(classModel3.typeArgumentWithVariances[tpDecl1], [argModel, covariant]));
+    assert(classModel3.string == "metamodel::TypeParams<out ceylon.language::String>");
+
+    assert(classModel1 == `TypeParams<String>`);
+    assert(classModel2 != classModel1);
+    assert(classModel2 != classModel3);
+
+    assert(classModel1.hash == `TypeParams<String>`.hash);
+    assert(classModel2.hash != classModel1.hash);
+    assert(classModel2.hash != classModel3.hash);
+
+    // this one is covariant
+    assert(exists tpDecl2 = `interface Top`.typeParameterDeclarations.first);
+    value classModel1b = `Top<String>`;
+    assert(classModel1b.typeArgumentWithVarianceList == [[argModel, invariant]]);
+    assert(classModel1b.typeArgumentWithVariances.size == 1);
+    assert(eq(classModel1b.typeArgumentWithVariances[tpDecl2], [argModel, invariant]));
+    assert(classModel1b.string == "metamodel::Top<ceylon.language::String>");
+    // we can't use use-site variance with variant type parameters
+
+    // function
+    assert(exists tpDecl3 = `function typeParams`.typeParameterDeclarations.first);
+    value functionModel = `typeParams<String>`;
+    assert(functionModel.typeArgumentWithVarianceList == [[argModel, invariant]]);
+    assert(functionModel.typeArgumentWithVariances.size == 1);
+    assert(eq(functionModel.typeArgumentWithVariances[tpDecl3], [argModel, invariant]));
+    assert(functionModel.string == "metamodel::typeParams<ceylon.language::String>");
+    
+    // declarations
+    value argDecl = `class String`.openType;
+    
+    // this one is invarant
+    assert(is OpenClassOrInterfaceType classDecl1 = `function d1`.openType);
+    assert(classDecl1.typeArgumentWithVarianceList == [[argDecl, invariant]]);
+    assert(classDecl1.typeArgumentWithVariances.size == 1);
+    assert(eq(classDecl1.typeArgumentWithVariances[tpDecl1], [argDecl, invariant]));
+    assert(classDecl1.string == "metamodel::TypeParams<ceylon.language::String>");
+    
+    assert(is OpenClassOrInterfaceType classDecl2 = `function d2`.openType);
+    assert(classDecl2.typeArgumentWithVarianceList == [[argDecl, contravariant]]);
+    assert(classDecl2.typeArgumentWithVariances.size == 1);
+    assert(eq(classDecl2.typeArgumentWithVariances[tpDecl1], [argDecl, contravariant]));
+    assert(classDecl2.string == "metamodel::TypeParams<in ceylon.language::String>");
+    
+    assert(is OpenClassOrInterfaceType classDecl3 = `function d3`.openType);
+    assert(classDecl3.typeArgumentWithVarianceList == [[argDecl, covariant]]);
+    assert(classDecl3.typeArgumentWithVariances.size == 1);
+    assert(eq(classDecl3.typeArgumentWithVariances[tpDecl1], [argDecl, covariant]));
+    assert(classDecl3.string == "metamodel::TypeParams<out ceylon.language::String>");
+    
+    assert(is OpenClassOrInterfaceType classDecl1b = `function d1b`.openType);
+    assert(classDecl1 == classDecl1b);
+    assert(classDecl2 != classDecl1);
+    assert(classDecl2 != classDecl3);
+
+    assert(classDecl1.hash == classDecl1b.hash);
+    assert(classDecl2.hash != classDecl1.hash);
+    assert(classDecl2.hash != classDecl3.hash);
+}
+
 Boolean eq(Anything a, Anything b){
     if(exists a){
         if(exists b){
@@ -2003,6 +2093,11 @@ shared void run() {
         checkTypeArguments();
         pass++;
     } catch (Exception|AssertionError e) { print("Failed apply type constraints"); e.printStackTrace(); }
+    try {
+        total++;
+        checkUseSiteVariance();
+        pass++;
+    } catch (Exception|AssertionError e) { print("Failed use-site variance"); e.printStackTrace(); }
     // ATTENTION!
     // When you add new test methods here make sure they are "shared" and marked "@test"!
 
