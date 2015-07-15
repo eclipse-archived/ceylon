@@ -12,6 +12,7 @@ import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.getAnnotation
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.getNativeBackend;
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.hasAnnotation;
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.name;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getConstructor;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getContainingClassOrInterface;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getNativeHeader;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getTypeArgumentMap;
@@ -787,6 +788,7 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
         Scope o = enterScope(c);
         super.visit(that);
         exitScope(o);
+        f.setImplemented(that.getBlock() != null);
         if (that.getParameterList()==null) {
             that.addError("missing parameter list in constructor declaration: '" + 
                     name(that.getIdentifier()) + 
@@ -868,6 +870,7 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
         Scope o = enterScope(e);
         super.visit(that);
         exitScope(o);
+        v.setImplemented(that.getBlock() != null);
     }
 
     @Override
