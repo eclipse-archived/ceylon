@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.compiler.js.JsCompiler;
 import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
@@ -13,6 +14,7 @@ import com.redhat.ceylon.model.typechecker.model.Constructor;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Function;
 import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
+import com.redhat.ceylon.model.typechecker.model.ModelUtil;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.Scope;
@@ -316,6 +318,13 @@ public class JsIdentifierNames {
                 rootName = '$' + rootName;
             }
             name += rootName;
+        }
+        if (decl.isAnonymous() && decl.isNative() && decl.isNativeHeader()) {
+            //Couldn't use ModelUtils.getNativeDeclaration with the backend
+            //because for some reason the anonymous class has null overloads.
+            if (decl.getContainer() != null && decl.getContainer().getDirectMemberForBackend(decl.getName(), "js") != null) {
+                name+="$$N";
+            }
         }
         if (decl instanceof TypeAlias) {
             name+="()";

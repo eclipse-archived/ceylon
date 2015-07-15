@@ -2390,10 +2390,14 @@ public class GenerateJsVisitor extends Visitor
         else if (opts.isOptimize() && !inProto) {
             if (isMember && !(d.isParameter() && !d.isCaptured())) {
                 TypeDeclaration id = that.getScope().getInheritingDeclaration(d);
+                TypeDeclaration nd = null;
                 if (id == null) {
                     //a local declaration of some kind,
                     //perhaps in an outer scope
                     id = (TypeDeclaration) d.getContainer();
+                    if (id.isNativeHeader()) {
+                        nd = (TypeDeclaration)ModelUtil.getNativeDeclaration(id, Backend.JavaScript);
+                    }
                 }
                 Scope scope = that.getScope();
                 if ((scope != null) && (that instanceof Tree.ClassDeclaration
@@ -2411,7 +2415,7 @@ public class GenerateJsVisitor extends Visitor
                         } else {
                             path.append(names.self((TypeDeclaration)scope.getContainer()));
                         }
-                        if (scope == id) {
+                        if (scope == id || (nd != null && scope==nd)) {
                             break;
                         }
                         scope = scope.getContainer();
@@ -2436,7 +2440,7 @@ public class GenerateJsVisitor extends Visitor
                     } else {
                         path.setLength(0);
                     }
-                    if (scope == id) {
+                    if (scope == id || (nd != null && scope==nd)) {
                         break;
                     }
                     scope = scope.getContainer();
