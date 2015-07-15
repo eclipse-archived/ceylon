@@ -155,7 +155,8 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
         // Transform executable statements and declarations in the body
         // except constructors. Record how constructors delegate.
         HashMap<Constructor, CtorDelegation> delegates = new HashMap<Constructor, CtorDelegation>();
-        for (Tree.Statement stmt : getBodyStatements(that)) {
+        java.util.List<Statement> stmts = getBodyStatements(that);
+        for (Tree.Statement stmt : stmts) {
             if (stmt instanceof Tree.Constructor) {
                 Tree.Constructor ctor = (Tree.Constructor)stmt;
                 if (gen.errors().hasDeclarationError(ctor) instanceof Drop) {
@@ -204,7 +205,7 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
         }
         
         // Now transform constructors
-        for (Tree.Statement stmt : getBodyStatements(that)) {
+        for (Tree.Statement stmt : stmts) {
             if (stmt instanceof Tree.Constructor) {
                 Tree.Constructor ctor = (Tree.Constructor)stmt;
                 if (gen.errors().hasDeclarationError(ctor) instanceof Drop) {
