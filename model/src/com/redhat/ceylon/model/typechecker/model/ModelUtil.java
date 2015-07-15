@@ -2674,6 +2674,9 @@ public class ModelUtil {
         if (decl instanceof FunctionOrValue) {
             FunctionOrValue fov = (FunctionOrValue) decl;
             return fov.isImplemented();
+        } else if (decl instanceof Constructor) {
+            // For now constructors are always implemented
+            return true;
         }
         return false;
     }
