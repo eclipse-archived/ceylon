@@ -11,4 +11,9 @@ shared sealed interface Generic {
     shared formal Map<TypeParameter, ClosedType<>> typeArguments;
     "The list of type arguments for this generic model."
     shared formal ClosedType<>[] typeArgumentList;
+
+    "The map of type parameter declaration to type arguments and use-site variance for this generic model."
+    shared formal Map<TypeParameter, TypeArgument> typeArgumentWithVariances;
+    "The list of type arguments for this generic model."
+    shared formal TypeArgument[] typeArgumentWithVarianceList;
 }

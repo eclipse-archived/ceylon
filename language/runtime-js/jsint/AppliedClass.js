@@ -45,6 +45,10 @@ function AppliedClass$jsint(tipo,$$targs$$,that,classTargs){
   },undefined,_proto.$prop$getTypeArguments.$crtmm$);
   atr$(that,'typeArgumentList',function(){return coitargl$(that);
   },undefined,_proto.$prop$getTypeArgumentList.$crtmm$);
+  atr$(that,'typeArgumentWithVariances',function(){return coitargv$(that);
+  },undefined,_proto.$prop$getTypeArgumentWithVariances.$crtmm$);
+  atr$(that,'typeArgumentWithVarianceList',function(){return coitargvl$(that);
+  },undefined,_proto.$prop$getTypeArgumentWithVarianceList.$crtmm$);
   atr$(that,'extendedType',function(){return coiexttype$(that);
   },undefined,_proto.$prop$getExtendedType.$crtmm$);
   atr$(that,'declaration',function(){return coimoddcl$(that);

@@ -56,6 +56,12 @@ function AppliedMemberClass$jsint(tipo,$$targs$$,that,myTargs){
   atr$(that,'typeArgumentList',function(){
     return coitargl$(that);
   },undefined,_proto.$prop$getTypeArgumentList.$crtmm$);
+  atr$(that,'typeArgumentWithVariances',function(){
+    return coitargv$(that);
+  },undefined,_proto.$prop$getTypeArgumentWithVariances.$crtmm$);
+  atr$(that,'typeArgumentWithVarianceList',function(){
+    return coitargvl$(that);
+  },undefined,_proto.$prop$getTypeArgumentWithVarianceList.$crtmm$);
   that.$_bind=_proto.$_bind;
   that.equals=_proto.equals;
   that.getAttribute=_proto.getAttribute;

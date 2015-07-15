@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 import ceylon.language.Array;
+import ceylon.language.Sequence;
 import ceylon.language.Sequential;
 import ceylon.language.empty_;
 
@@ -48,6 +49,7 @@ public class AppliedFunction<Type, Arguments extends Sequential<? extends Object
     private int firstDefaulted = -1;
     private int variadicIndex = -1;
     private ceylon.language.Map<? extends ceylon.language.meta.declaration.TypeParameter, ? extends ceylon.language.meta.model.Type<?>> typeArguments;
+    private ceylon.language.Map<? extends ceylon.language.meta.declaration.TypeParameter, ? extends Sequence<? extends Object>> typeArgumentWithVariances;
     private Object instance;
     private ceylon.language.meta.model.Type<?> container;
     private List<com.redhat.ceylon.model.typechecker.model.Type> parameterProducedTypes;
@@ -84,6 +86,7 @@ public class AppliedFunction<Type, Arguments extends Sequential<? extends Object
         this.declaration = function;
         
         this.typeArguments = Metamodel.getTypeArguments(declaration, appliedFunction);
+        this.typeArgumentWithVariances = Metamodel.getTypeArgumentWithVariances(declaration, appliedFunction);
 
         // get a list of produced parameter types
         this.parameterProducedTypes = Metamodel.getParameterProducedTypes(parameters, appliedFunction);
@@ -235,6 +238,18 @@ public class AppliedFunction<Type, Arguments extends Sequential<? extends Object
     @Override
     public ceylon.language.Sequential<? extends ceylon.language.meta.model.Type<?>> getTypeArgumentList() {
         return Metamodel.getTypeArgumentList(this);
+    }
+
+    @Override
+    @TypeInfo("ceylon.language::Map<ceylon.language.meta.declaration::TypeParameter,[ceylon.language.meta.model::Type<ceylon.language::Anything>,ceylon.language.meta.declaration::Variance]>")
+    public ceylon.language.Map<? extends ceylon.language.meta.declaration.TypeParameter, ? extends ceylon.language.Sequence<? extends Object>> getTypeArgumentWithVariances() {
+        return typeArgumentWithVariances;
+    }
+    
+    @Override
+    @TypeInfo("ceylon.language::Sequential<[ceylon.language.meta.model::Type<ceylon.language::Anything>,ceylon.language.meta.declaration::Variance]>")
+    public ceylon.language.Sequential<? extends ceylon.language.Sequence<? extends Object>> getTypeArgumentWithVarianceList() {
+        return Metamodel.getTypeArgumentWithVarianceList(this);
     }
 
     private void checkMethod(){
@@ -461,6 +476,7 @@ public class AppliedFunction<Type, Arguments extends Sequential<? extends Object
         // and if we don't have an instance we're a toplevel and have no containing type
         result = 37 * result + (instance == null ? 0 : instance.hashCode());
         result = 37 * result + getDeclaration().hashCode();
+        // so far, functions can't have use-site variance
         result = 37 * result + getTypeArguments().hashCode();
         return result;
     }
@@ -478,6 +494,7 @@ public class AppliedFunction<Type, Arguments extends Sequential<? extends Object
         // and if we don't have an instance we're a toplevel and have no containing type
         return getDeclaration().equals(other.getDeclaration())
                 && Util.eq(instance, other.instance)
+                // so far, functions can't have use-site variance
                 && getTypeArguments().equals(other.getTypeArguments());
     }
 

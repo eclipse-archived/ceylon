@@ -33,6 +33,21 @@ function ocoitarg$(coi) {
   }
   return empty();
 }
+//OpenClassOrInterface.typeArgumentWithVariances
+//(implementations are called FreeClass, FreeInterface)
+function ocoitargv$(coi) {
+  throw Exception("OpenClassOrInterfaceType.typeArgumentWithVariances not implemented");
+}
+//OpenClassOrInterface.typeArgumentList
+//(implementations are called FreeClass, FreeInterface)
+function ocoitargl$(coi) {
+  throw Exception("OpenClassOrInterfaceType.typeArgumentList not implemented");
+}
+//OpenClassOrInterface.typeArgumentVariantList
+//(implementations are called FreeClass, FreeInterface)
+function ocoitargvl$(coi) {
+  throw Exception("OpenClassOrInterfaceType.typeArgumentVariantList not implemented");
+}
 //OpenClassOrInterface.string
 function ocoistr$(coi){
   var s=coi.declaration.qualifiedName;

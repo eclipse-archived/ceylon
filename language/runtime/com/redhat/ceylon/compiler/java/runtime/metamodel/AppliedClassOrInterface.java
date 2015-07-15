@@ -7,6 +7,7 @@ import java.util.List;
 import ceylon.language.Array;
 import ceylon.language.Iterator;
 import ceylon.language.Map;
+import ceylon.language.Sequence;
 import ceylon.language.Sequential;
 import ceylon.language.empty_;
 import ceylon.language.finished_;
@@ -49,6 +50,7 @@ public abstract class AppliedClassOrInterface<Type>
     final com.redhat.ceylon.model.typechecker.model.Type producedType;
     protected final com.redhat.ceylon.compiler.java.runtime.metamodel.FreeClassOrInterface declaration;
     protected ceylon.language.Map<? extends ceylon.language.meta.declaration.TypeParameter, ? extends ceylon.language.meta.model.Type<?>> typeArguments;
+    private Map<? extends ceylon.language.meta.declaration.TypeParameter, ? extends Sequence<? extends Object>> typeArgumentWithVariances;
     protected ceylon.language.meta.model.ClassModel<? extends Object, ? super Sequential<? extends Object>> superclass;
     protected Sequential<ceylon.language.meta.model.InterfaceModel<? extends Object>> interfaces;
     @Ignore
@@ -81,6 +83,7 @@ public abstract class AppliedClassOrInterface<Type>
     protected void init() {
         com.redhat.ceylon.model.typechecker.model.ClassOrInterface decl = (com.redhat.ceylon.model.typechecker.model.ClassOrInterface) producedType.getDeclaration();
         this.typeArguments = Metamodel.getTypeArguments(declaration, producedType);
+        this.typeArgumentWithVariances = Metamodel.getTypeArgumentWithVariances(declaration, producedType);
         
         com.redhat.ceylon.model.typechecker.model.Type superType = decl.getExtendedType();
         if(superType != null){
@@ -108,6 +111,19 @@ public abstract class AppliedClassOrInterface<Type>
     @Override
     public ceylon.language.Sequential<? extends ceylon.language.meta.model.Type<?>> getTypeArgumentList() {
         return Metamodel.getTypeArgumentList(this);
+    }
+
+    @Override
+    @TypeInfo("ceylon.language::Map<ceylon.language.meta.declaration::TypeParameter,[ceylon.language.meta.model::Type<ceylon.language::Anything>,ceylon.language.meta.declaration::Variance]>")
+    public Map<? extends ceylon.language.meta.declaration.TypeParameter, ? extends ceylon.language.Sequence<? extends Object>> getTypeArgumentWithVariances() {
+        checkInit();
+        return typeArgumentWithVariances;
+    }
+    
+    @Override
+    @TypeInfo("ceylon.language::Sequential<[ceylon.language.meta.model::Type<ceylon.language::Anything>,ceylon.language.meta.declaration::Variance]>")
+    public ceylon.language.Sequential<? extends ceylon.language.Sequence<? extends Object>> getTypeArgumentWithVarianceList() {
+        return Metamodel.getTypeArgumentWithVarianceList(this);
     }
 
     @Override

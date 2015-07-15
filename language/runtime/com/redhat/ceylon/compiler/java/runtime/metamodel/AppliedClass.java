@@ -542,7 +542,7 @@ public class AppliedClass<Type, Arguments extends Sequential<? extends Object>>
         // and if we don't have an instance we're a toplevel and have no containing type
         result = 37 * result + (instance == null ? 0 : instance.hashCode());
         result = 37 * result + getDeclaration().hashCode();
-        result = 37 * result + getTypeArguments().hashCode();
+        result = 37 * result + getTypeArgumentWithVariances().hashCode();
         return result;
     }
     
@@ -559,7 +559,7 @@ public class AppliedClass<Type, Arguments extends Sequential<? extends Object>>
         // and if we don't have an instance we're a toplevel and have no containing type
         return getDeclaration().equals(other.getDeclaration())
                 && Util.eq(instance, other.instance)
-                && getTypeArguments().equals(other.getTypeArguments());
+                && getTypeArgumentWithVariances().equals(other.getTypeArgumentWithVariances());
     }
 
     @Override

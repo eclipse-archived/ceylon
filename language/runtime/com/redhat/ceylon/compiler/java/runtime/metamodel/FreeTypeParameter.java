@@ -85,13 +85,7 @@ public class FreeTypeParameter
 
     @Override
     public ceylon.language.meta.declaration.Variance getVariance(){
-        if(declaration.isInvariant())
-            return ceylon.language.meta.declaration.invariant_.get_();
-        if(declaration.isCovariant())
-            return ceylon.language.meta.declaration.covariant_.get_();
-        if(declaration.isContravariant())
-            return ceylon.language.meta.declaration.contravariant_.get_();
-        throw Metamodel.newModelError("Underlying declaration is neither invariant, covariant nor contravariant");
+        return Metamodel.getModelVariance(declaration);
     }
 
     @TypeInfo("ceylon.language::Null|ceylon.language.meta.declaration::OpenType")

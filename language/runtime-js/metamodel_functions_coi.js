@@ -503,6 +503,10 @@ function coitarg$(coi){
   }
   throw new Error("ClassOrInterface.typeArguments: missing metamodel!");
 }
+//ClassOrInterface.typeArguments
+function coitargv$(coi){
+  throw new Error("ClassOrInterface.typeArgumentWithVariances: not implemented");
+}
 //ClassOrInterface.typeArgumentList
 function coitargl$(coi){
   var mm = getrtmm$$(coi.tipo);
@@ -536,6 +540,10 @@ function coitargl$(coi){
     return empty();
   }
   throw new Error("ClassOrInterface.typeArgumentList: missing metamodel!");
+}
+//ClassOrInterface.typeArgumentList
+function coitargvl$(coi){
+  throw new Error("ClassOrInterface.typeArgumentWithVarianceList: not implemented");
 }
 //Resolve Type Argument
 function coirestarg$(root,type) {

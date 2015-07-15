@@ -78,7 +78,11 @@ function funtypearg$(fun) {
   }
   throw Exception("FunctionModel.typeArguments-we don't have a metamodel!");
 }
-//Function.typeArguments
+//Function.typeArgumentWithVariance
+function funtypeargv$(fun) {
+  throw Exception("FunctionModel.typeArgumentWithVariances not implemented");
+}
+//Function.typeArgumentList
 function funtypeargl$(fun) {
   var mm = fun.tipo.$crtmm$;
   if (mm) {
@@ -99,4 +103,8 @@ function funtypeargl$(fun) {
     return empty();
   }
   throw Exception("FunctionModel.typeArguments-we don't have a metamodel!");
+}
+//Function.typeArgumentWithVarianceList
+function funtypeargvl$(fun) {
+  throw Exception("FunctionModel.typeArgumentWithVarianceList not implemented");
 }

@@ -1,7 +1,7 @@
 import ceylon.language.meta.model {
   ClosedType=Type, Constructor, Functional, Applicable,
   Member, Class, ClassOrInterface, Attribute, Method,
-  ClassModel,InterfaceModel,MemberInterface,MemberClass
+  ClassModel,InterfaceModel,MemberInterface,MemberClass,TypeArgument
 }
 import ceylon.language.meta.declaration {
   ClassDeclaration,
@@ -18,6 +18,8 @@ shared native class AppliedClass<out Type=Anything, in Arguments=Nothing>() sati
   shared actual native ClassDeclaration declaration;
   shared actual native Map<TypeParameter, ClosedType> typeArguments;
   shared actual native ClosedType<Anything>[] typeArgumentList;
+  shared actual native Map<TypeParameter, TypeArgument> typeArgumentWithVariances;
+  shared actual native TypeArgument[] typeArgumentWithVarianceList;
   shared actual native ClassModel<Anything, Nothing>? extendedType;
   shared actual native InterfaceModel<Anything>[] satisfiedTypes;
   shared actual native Member<SubType, Kind>? getClassOrInterface<SubType, Kind>(String name, ClosedType* types)

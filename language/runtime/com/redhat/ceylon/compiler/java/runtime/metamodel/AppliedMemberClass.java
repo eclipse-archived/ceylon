@@ -186,7 +186,7 @@ public class AppliedMemberClass<Container, Type, Arguments extends Sequential<? 
         int result = 1;
         result = 37 * result + getDeclaringType().hashCode();
         result = 37 * result + getDeclaration().hashCode();
-        result = 37 * result + getTypeArguments().hashCode();
+        result = 37 * result + getTypeArgumentWithVariances().hashCode();
         return result;
     }
     
@@ -201,7 +201,7 @@ public class AppliedMemberClass<Container, Type, Arguments extends Sequential<? 
         ceylon.language.meta.model.MemberClass<?, ?, ?> other = (ceylon.language.meta.model.MemberClass<?, ?, ?>) obj;
         return getDeclaration().equals(other.getDeclaration())
                 && getDeclaringType().equals(other.getDeclaringType())
-                && getTypeArguments().equals(other.getTypeArguments());
+                && getTypeArgumentWithVariances().equals(other.getTypeArgumentWithVariances());
     }
 
     @Override
