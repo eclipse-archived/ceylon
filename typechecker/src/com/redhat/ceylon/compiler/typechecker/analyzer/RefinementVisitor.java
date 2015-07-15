@@ -507,28 +507,37 @@ public class RefinementVisitor extends Visitor {
             Class dec, Class header,
             Reference decRef, 
             Reference hdrRef) {
-        if (dec.hasConstructors() != header.hasConstructors()) {
-            that.addError("native classes must all have parameters or all have constructors: " + 
-                    message(dec));
-        } else if (!dec.hasConstructors()) {
-            List<ParameterList> refiningParamLists = 
-                    dec.getParameterLists();
-            List<ParameterList> refinedParamLists = 
-                    header.getParameterLists();
-            if (refinedParamLists.size()!=refiningParamLists.size()) {
-                that.addError("native classes must have the same number of parameter lists: " + 
+        // First check if the header has constructors and the dec has none and no parameters either
+        // (which means it will inherit the constructors from the header)
+        boolean checkok = (header.hasConstructors() || header.hasEnumerated())
+                && !dec.hasConstructors()
+                && !dec.hasEnumerated()
+                && dec.getParameterLists().isEmpty();
+        if (!checkok) {
+            if (dec.hasConstructors() != header.hasConstructors()
+                    || dec.hasEnumerated() != header.hasEnumerated()) {
+                that.addError("native classes must all have parameters or all have constructors: " + 
                         message(dec));
-            }
-            for (int i=0; 
-                    i<refinedParamLists.size() && 
-                    i<refiningParamLists.size(); 
-                    i++) {
-                checkParameterTypes(that, 
-                        getParameterList(that, i), 
-                        hdrRef, decRef, 
-                        refiningParamLists.get(i), 
-                        refinedParamLists.get(i),
-                        true);
+            } else if (!dec.hasConstructors() && !dec.hasEnumerated()) {
+                List<ParameterList> refiningParamLists = 
+                        dec.getParameterLists();
+                List<ParameterList> refinedParamLists = 
+                        header.getParameterLists();
+                if (refinedParamLists.size()!=refiningParamLists.size()) {
+                    that.addError("native classes must have the same number of parameter lists: " + 
+                            message(dec));
+                }
+                for (int i=0; 
+                        i<refinedParamLists.size() && 
+                        i<refiningParamLists.size(); 
+                        i++) {
+                    checkParameterTypes(that, 
+                            getParameterList(that, i), 
+                            hdrRef, decRef, 
+                            refiningParamLists.get(i), 
+                            refinedParamLists.get(i),
+                            true);
+                }
             }
         }
     }
