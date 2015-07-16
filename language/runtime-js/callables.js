@@ -22,8 +22,7 @@ function $JsCallable(f$,parms,targs) {
   f.getT$all=f$.getT$all;
   f.jsc$=f$;
   f.equals=function(o) {
-    if (o.jsc$)return o.jsc$===f$ || o.jsc$.equals(f$);
-    return o===f$ || o.equals(f$);
+    return false;
   }
   return f;
 }
@@ -46,8 +45,7 @@ function JsCallable(o,f,targs) {
   f2.c2$=f;
   f2.$$targs$$=targs;
   f2.equals=function(x){
-    if (x.c2$)return x.c2$===f || x.c2$.equals(f);
-    return x===f || x.equals(f);
+    return false;
   }
   f2.$crtmm$=f.$crtmm$||Callable.$crtmm$;
   return f2;

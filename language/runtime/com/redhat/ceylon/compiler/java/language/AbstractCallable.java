@@ -179,4 +179,9 @@ public abstract class AbstractCallable<Return> implements Callable<Return>, Reif
     public Return $callvariadic$(Object arg0, Object arg1, Object arg2) {
         return $callvariadic$(arg0, arg1, arg2, empty_.get_());
     }
+    
+    @Override
+    public boolean equals(Object obj) {
+        return false;
+    }
 }
