@@ -56,7 +56,7 @@ public class LazyPackage extends Package {
         if(canCache){
             if(cache.containsKey(name)) {
                 Declaration cachedDeclaration = cache.get(name);
-                if (cachedDeclaration != null || ! modelLoader.searchAgain(this, name)) {
+                if (! modelLoader.searchAgain(cachedDeclaration, this, name)) {
                     return cachedDeclaration;
                 }
 

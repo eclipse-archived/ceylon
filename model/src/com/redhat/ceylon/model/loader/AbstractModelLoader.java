@@ -312,11 +312,11 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         return true;
     }
 
-    public boolean searchAgain(Module module, String name) {
+    public boolean searchAgain(ClassMirror cachedMirror, Module module, String name) {
         return false;
     }
     
-    public boolean searchAgain(LazyPackage lazyPackage, String name) {
+    public boolean searchAgain(Declaration cachedDeclaration, LazyPackage lazyPackage, String name) {
         return false;
     }
     
@@ -350,7 +350,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 // we use containsKey to be able to cache null results
                 if(classMirrorCache.containsKey(cacheKey)) {
                     ClassMirror cachedMirror = classMirrorCache.get(cacheKey);
-                    if (cachedMirror != null || ! searchAgain(module, name)) {
+                    if (! searchAgain(cachedMirror, module, name)) {
                         return cachedMirror;
                     }
                 }
