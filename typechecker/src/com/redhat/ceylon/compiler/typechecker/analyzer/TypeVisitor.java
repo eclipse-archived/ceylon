@@ -2148,6 +2148,7 @@ public class TypeVisitor extends Visitor {
                     that.addError("no native implementation for backend: native '"
                             + dec.getName(unit) +
                             "' is not implemented for one or more backends");
+                    unit.getMissingNativeImplementations().add(hdr);
                 }
             }
             else if (hdr==null) {

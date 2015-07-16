@@ -12,7 +12,6 @@ import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.getAnnotation
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.getNativeBackend;
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.hasAnnotation;
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.name;
-import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getConstructor;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getContainingClassOrInterface;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getNativeHeader;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getTypeArgumentMap;
@@ -250,15 +249,51 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
                 }
                 if (member == null) {
                     if (model.isNativeHeader()) {
+                        // Deal with implementations from the ModelLoader
+                        ArrayList<FunctionOrValue> loadedFunctionsOrValues = null;
+                        ArrayList<Class> loadedClasses = null;
+                        for (Backend backendToSearch : Backend.values()) {
+                            if (backendToSearch.equals(Backend.None)) {
+                                continue;
+                            }
+                            Declaration overloadFromModelLoader = 
+                                    model.getContainer().getDirectMemberForBackend(name, backendToSearch.nativeAnnotation);
+                            if (overloadFromModelLoader instanceof FunctionOrValue) {
+                                if (loadedFunctionsOrValues == null) {
+                                    loadedFunctionsOrValues = new ArrayList<>();
+                                }
+                                loadedFunctionsOrValues.add((FunctionOrValue) overloadFromModelLoader);
+                            } else if (overloadFromModelLoader instanceof Class) {
+                                if (loadedClasses == null) {
+                                    loadedClasses = new ArrayList<>();
+                                }
+                                loadedClasses.add((Class) overloadFromModelLoader);
+                            }
+                        }
                         // Initialize the header's overloads
                         if (model instanceof FunctionOrValue) {
                             FunctionOrValue m = 
                                     (FunctionOrValue) model;
-                            m.initOverloads();
+
+                            if (loadedFunctionsOrValues != null) {
+                                m.initOverloads(
+                                        loadedFunctionsOrValues.toArray(
+                                                new FunctionOrValue[loadedFunctionsOrValues.size()]));
+                            } else {
+                                m.initOverloads();
+                            }
                         }
                         else if (model instanceof Class) {
                             Class c = (Class) model;
-                            c.initOverloads();
+
+                            if (loadedClasses != null) {
+                                c.initOverloads(
+                                        loadedClasses.toArray(
+                                                new Class[loadedClasses.size()]));
+
+                            } else {
+                                c.initOverloads();
+                            }
                         }
                     }
                 }
@@ -269,12 +304,16 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
                         if (isHeader && member.isNativeHeader()) {
                             that.addError("duplicate native header: '" + 
                                     name + "'");
+                            unit.getDuplicateDeclarations().add(member);
                         }
-                        else if (hasOverload(backend, model,
-                                overloads)) {
-                            that.addError("duplicate native implementation: '" + 
-                                    name + "'");
-                        }
+                        else {
+                            Declaration overload = findOverloadForBackend(backend, model, overloads);
+                            if (overload != null) {
+                                that.addError("duplicate native implementation: '" + 
+                                        name + "'");
+                                unit.getDuplicateDeclarations().add(overload);
+                            }
+                        } 
                         if (isAllowedToChangeModel(member) && 
                                 !hasModelInOverloads(model, 
                                         overloads)) {
@@ -303,7 +342,7 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
         }
     }
     
-    private boolean hasOverload(String backend, 
+    private Declaration findOverloadForBackend(String backend, 
             Declaration declaration, 
             List<Declaration> overloads) {
         if (overloads!=null) {
@@ -311,11 +350,11 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
                 if (backend.equals(overload.getNativeBackend()) && 
                         !shouldIgnoreOverload(
                                 overload, declaration)) {
-                    return true;
+                    return overload;
                 }
             }
         }
-        return false;
+        return null;
     }
 
     private boolean hasModelInOverloads(
