@@ -717,6 +717,8 @@
                 <exclude name="jvm/**"/>
             </files>
         </ceylon-compile-js>
+        <!-- Remove the modules.optional module to check for its unavailability at runtime -->
+        <delete dir="${build.test}/modules/optional"/>
     </target>
 
     <target name="test.js" depends="compile.tests.js,test.js.quick">
