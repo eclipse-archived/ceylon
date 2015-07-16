@@ -82,11 +82,7 @@ shared sealed interface ValueDeclaration
     shared formal void memberSet(Object container, Anything newValue);
     //=> memberApply<Nothing, Anything, Nothing>(`Nothing`).bind(container).setIfAssignable(newValue);
 
-    "Returns the setter declaration for this variable.
-     
-     For modelling purposes `variable` reference 
-     values have a SetterDeclaration even though there is no 
-     such setter explicit in the source code."
+    "Returns the setter declaration for this variable if there is one, `null` otherwise."
     shared formal SetterDeclaration? setter;
 
 }
