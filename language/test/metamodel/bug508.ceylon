@@ -1,5 +1,5 @@
 import ceylon.language.meta.declaration { ClassDeclaration }
-import ceylon.language.meta.model { Attribute }
+import ceylon.language.meta.model { Attribute, IncompatibleTypeException }
 
 abstract class Bug508Object() {
     shared formal class FormalClass(){}
@@ -40,7 +40,10 @@ shared void bug508() {
     assert(eq(gavinClass.getAttribute<Bug508Gavin>("gavinAttribute"), `Bug508Gavin.gavinAttribute`));
 
     assert(eq(gavinClass.getDeclaredAttribute<Bug508Gavin>("hash"), null));
-    assert(eq(gavinClass.getDeclaredAttribute<Object>("gavinAttribute"), null));
+    try{
+        gavinClass.getDeclaredAttribute<Object>("gavinAttribute");
+        assert(false);
+    }catch(IncompatibleTypeException x){}
     assert(eq(gavinClass.getDeclaredAttribute<Bug508Gavin>("gavinAttribute"), `Bug508Gavin.gavinAttribute`));
     assert(eq(gavinClass.getDeclaredAttribute<Nothing>("gavinAttribute"), `Bug508Gavin.gavinAttribute`));
 
@@ -51,7 +54,10 @@ shared void bug508() {
     assert(eq(gavinClass.getMethod<Bug508Gavin>("equals"), `Identifiable.equals`));
 
     assert(eq(gavinClass.getDeclaredMethod<Bug508Gavin>("equals"), null));
-    assert(eq(gavinClass.getDeclaredMethod<Object>("gavinMethod"), null));
+    try{
+        gavinClass.getDeclaredMethod<Object>("gavinMethod");
+        assert(false);
+    }catch(IncompatibleTypeException x){}
     assert(eq(gavinClass.getDeclaredMethod<Bug508Gavin>("gavinMethod"), `Bug508Gavin.gavinMethod`));
     assert(eq(gavinClass.getDeclaredMethod<Nothing>("gavinMethod"), `Bug508Gavin.gavinMethod`));
 
@@ -60,7 +66,10 @@ shared void bug508() {
     assert(eq(gavinClass.getInterface<Bug508Gavin>("PersonInterface"), `Bug508Person.PersonInterface`));
 
     assert(eq(gavinClass.getDeclaredInterface<Bug508Gavin>("PersonInterface"), null));
-    assert(eq(gavinClass.getDeclaredInterface<Object>("GavinInterface"), null));
+    try{
+        gavinClass.getDeclaredInterface<Object>("GavinInterface");
+        assert(false);
+    }catch(IncompatibleTypeException x){}
     assert(eq(gavinClass.getDeclaredInterface<Bug508Gavin>("GavinInterface"), `Bug508Gavin.GavinInterface`));
     assert(eq(gavinClass.getDeclaredInterface<Nothing>("GavinInterface"), `Bug508Gavin.GavinInterface`));
 
@@ -71,7 +80,10 @@ shared void bug508() {
     assert(eq(gavinClass.getClass<Bug508Gavin>("FormalClass"), `Bug508Person.FormalClass`));
 
     assert(eq(gavinClass.getDeclaredClass<Bug508Gavin>("PersonClass"), null));
-    assert(eq(gavinClass.getDeclaredClass<Object>("GavinClass"), null));
+    try{
+        gavinClass.getDeclaredClass<Object>("GavinClass");
+        assert(false);
+    }catch(IncompatibleTypeException x){}
     assert(eq(gavinClass.getDeclaredClass<Bug508Gavin>("GavinClass"), `Bug508Gavin.GavinClass`));
     assert(eq(gavinClass.getDeclaredClass<Nothing>("GavinClass"), `Bug508Gavin.GavinClass`));
 
@@ -87,12 +99,18 @@ shared void bug508() {
     assert(eq(gavinClass.getClassOrInterface<Nothing>("PersonInterface"), `Bug508Person.PersonInterface`));
     
     assert(eq(gavinClass.getDeclaredClassOrInterface<Bug508Gavin>("PersonClass"), null));
-    assert(eq(gavinClass.getDeclaredClassOrInterface<Object>("GavinClass"), null));
+    try{
+        gavinClass.getDeclaredClassOrInterface<Object>("GavinClass");
+        assert(false);
+    }catch(IncompatibleTypeException x){}
     assert(eq(gavinClass.getDeclaredClassOrInterface<Bug508Gavin>("GavinClass"), `Bug508Gavin.GavinClass`));
     assert(eq(gavinClass.getDeclaredClassOrInterface<Nothing>("GavinClass"), `Bug508Gavin.GavinClass`));
 
     assert(eq(gavinClass.getDeclaredClassOrInterface<Bug508Gavin>("PersonInterface"), null));
-    assert(eq(gavinClass.getDeclaredClassOrInterface<Object>("GavinInterface"), null));
+    try{
+        gavinClass.getDeclaredClassOrInterface<Object>("GavinInterface");
+        assert(false);
+    }catch(IncompatibleTypeException x){}
     assert(eq(gavinClass.getDeclaredClassOrInterface<Bug508Gavin>("GavinInterface"), `Bug508Gavin.GavinInterface`));
     assert(eq(gavinClass.getDeclaredClassOrInterface<Nothing>("GavinInterface"), `Bug508Gavin.GavinInterface`));
 

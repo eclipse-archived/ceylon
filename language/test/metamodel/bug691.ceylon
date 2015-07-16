@@ -15,4 +15,28 @@ shared void bug691() {
     assert(`Integer`.getAttribute<Object,Integer,Nothing>("hash") exists);
     // common supertype is Object, so it has this attribute
     assert(`Integer`.getAttribute<String,Integer,Nothing>("hash") exists);
+
+    // supertype not allowed
+    try{
+        `Integer`.getDeclaredAttribute<Anything,Boolean,Nothing>("unit");
+        assert(false);
+    }catch(IncompatibleTypeException x){}
+
+    // distinct type not allowed
+    try{
+        assert(!`Integer`.getDeclaredAttribute<String,Boolean,Nothing>("unit") exists);
+        assert(false);
+    }catch(IncompatibleTypeException x){}
+
+    // supertype not allowed
+    try{
+        `Integer`.getDeclaredMethod<Anything,Integer,Nothing>("plus");
+        assert(false);
+    }catch(IncompatibleTypeException x){}
+    
+    // distinct type not allowed
+    try{
+        assert(!`Integer`.getDeclaredMethod<String,Integer,Nothing>("plus") exists);
+        assert(false);
+    }catch(IncompatibleTypeException x){}
 }

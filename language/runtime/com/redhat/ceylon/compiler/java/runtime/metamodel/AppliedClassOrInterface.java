@@ -199,12 +199,12 @@ public abstract class AppliedClassOrInterface<Type>
                                                                              @Name("types") @Sequenced Sequential<? extends ceylon.language.meta.model.Type<?>> types) {
         
         checkInit();
-        final FreeFunction method = declaration.findDeclaredMethod(name);
-        if(method == null)
-            return null;
         // do not return the attribute if the container is not a subtype of this type
         com.redhat.ceylon.model.typechecker.model.Type reifiedContainer = Metamodel.getProducedType($reifiedContainer);
         if(!reifiedContainer.isSubtypeOf(producedType))
+            throw new IncompatibleTypeException("Specified container type '"+reifiedContainer.asString()+"' is not a valid subtype of this type");
+        final FreeFunction method = declaration.findDeclaredMethod(name);
+        if(method == null)
             return null;
         return method.memberApply($reifiedContainer, $reifiedType, $reifiedArguments, 
                 (ceylon.language.meta.model.Type<Container>)this, types);
@@ -269,12 +269,12 @@ public abstract class AppliedClassOrInterface<Type>
                                                                             @Name("types") @Sequenced Sequential<? extends ceylon.language.meta.model.Type<?>> types) {
         
         checkInit();
-        final FreeClassOrInterface type = declaration.findDeclaredType(name);
-        if(type == null)
-            return null;
         // do not return the attribute if the container is not a subtype of this type
         com.redhat.ceylon.model.typechecker.model.Type reifiedContainer = Metamodel.getProducedType($reifiedContainer);
         if(!reifiedContainer.isSubtypeOf(producedType))
+            throw new IncompatibleTypeException("Specified container type '"+reifiedContainer.asString()+"' is not a valid subtype of this type");
+        final FreeClassOrInterface type = declaration.findDeclaredType(name);
+        if(type == null)
             return null;
         return applyClassOrInterface($reifiedContainer, $reifiedKind, type, types);
     }
@@ -383,15 +383,15 @@ public abstract class AppliedClassOrInterface<Type>
                                                                             @Name("types") @Sequenced Sequential<? extends ceylon.language.meta.model.Type<?>> types) {
         
         checkInit();
+        // do not return the attribute if the container is not a subtype of this type
+        com.redhat.ceylon.model.typechecker.model.Type reifiedContainer = Metamodel.getProducedType($reifiedContainer);
+        if(!reifiedContainer.isSubtypeOf(producedType))
+            throw new IncompatibleTypeException("Specified container type '"+reifiedContainer.asString()+"' is not a valid subtype of this type");
         final FreeClassOrInterface type = declaration.findDeclaredType(name);
         if(type == null)
             return null;
         if(type instanceof FreeClass == false)
             throw new IncompatibleTypeException("Specified member is not a class: "+name);
-        // do not return the attribute if the container is not a subtype of this type
-        com.redhat.ceylon.model.typechecker.model.Type reifiedContainer = Metamodel.getProducedType($reifiedContainer);
-        if(!reifiedContainer.isSubtypeOf(producedType))
-            return null;
         return ((FreeClass)type).memberClassApply($reifiedContainer, $reifiedType, $reifiedArguments, 
                                                   (ceylon.language.meta.model.Type<Container>)this, types);
     }
@@ -461,15 +461,15 @@ public abstract class AppliedClassOrInterface<Type>
                                                                             @Name("types") @Sequenced Sequential<? extends ceylon.language.meta.model.Type<?>> types) {
         
         checkInit();
+        // do not return the attribute if the container is not a subtype of this type
+        com.redhat.ceylon.model.typechecker.model.Type reifiedContainer = Metamodel.getProducedType($reifiedContainer);
+        if(!reifiedContainer.isSubtypeOf(producedType))
+            throw new IncompatibleTypeException("Specified container type '"+reifiedContainer.asString()+"' is not a valid subtype of this type");
         final FreeClassOrInterface type = declaration.findDeclaredType(name);
         if(type == null)
             return null;
         if(type instanceof FreeInterface == false)
             throw new IncompatibleTypeException("Specified member is not an interface: "+name);
-        // do not return the attribute if the container is not a subtype of this type
-        com.redhat.ceylon.model.typechecker.model.Type reifiedContainer = Metamodel.getProducedType($reifiedContainer);
-        if(!reifiedContainer.isSubtypeOf(producedType))
-            return null;
         return (ceylon.language.meta.model.MemberInterface<Container, Type>) 
                 type.memberApply($reifiedContainer, $reifiedType, 
                                  (ceylon.language.meta.model.Type<Container>)this, types);
@@ -527,12 +527,12 @@ public abstract class AppliedClassOrInterface<Type>
                                                                         String name) {
         
         checkInit();
-        final FreeValue value = declaration.findDeclaredValue(name);
-        if(value == null)
-            return null;
         // do not return the attribute if the container is not a subtype of this type
         com.redhat.ceylon.model.typechecker.model.Type reifiedContainer = Metamodel.getProducedType($reifiedContainer);
         if(!reifiedContainer.isSubtypeOf(producedType))
+            throw new IncompatibleTypeException("Specified container type '"+reifiedContainer.asString()+"' is not a valid subtype of this type");
+        final FreeValue value = declaration.findDeclaredValue(name);
+        if(value == null)
             return null;
         return value.memberApply($reifiedContainer, $reifiedGet, $reifiedSet, 
                 (ceylon.language.meta.model.Type<Container>)this);
