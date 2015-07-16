@@ -51,6 +51,7 @@ import com.redhat.ceylon.compiler.typechecker.util.WarningSuppressionVisitor;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Import;
 import com.redhat.ceylon.model.typechecker.model.ImportableScope;
+import com.redhat.ceylon.model.typechecker.model.ModelUtil;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.ModuleImport;
 import com.redhat.ceylon.model.typechecker.model.Package;
@@ -117,7 +118,7 @@ public class JsCompiler {
             if (that.getImportModel() == null) {
                 return;
             }
-            Declaration importedDeclaration = importModel.getDeclaration();
+            Declaration importedDeclaration = nativeImplToJavascript(importModel.getDeclaration());
             if (importedDeclaration == null) {
                 return;
             }
@@ -159,10 +160,29 @@ public class JsCompiler {
                 }
             }
         }
+        
+        private Declaration nativeImplToJavascript(Declaration declaration) {
+            if (declaration == null) {
+                return null;
+            }
+            
+            if (declaration.isNative()) {
+                Declaration header = ModelUtil.getNativeHeader(declaration);
+                if (header != null) {
+                    Declaration javaScriptDecl = ModelUtil.getNativeDeclaration(header, Backend.JavaScript);
+                    if (javaScriptDecl != null) {
+                        declaration = javaScriptDecl;
+                    }
+                }
+            }
+            return declaration;
+        }
+        
         @Override
         public void visit(Tree.BaseMemberOrTypeExpression that) {
             if (hasErrors(that)) return;
-            Declaration declaration = that.getDeclaration();
+            Declaration declaration = nativeImplToJavascript(that.getDeclaration());
+            
             Unit declarationUnit = null;
             if (declaration != null) {
                 declarationUnit = declaration.getUnit();
@@ -175,10 +195,12 @@ public class JsCompiler {
             }
             super.visit(that);
         }
+        
         @Override
         public void visit(Tree.QualifiedMemberOrTypeExpression that) {
             if (hasErrors(that)) return;
-            Declaration declaration = that.getDeclaration();
+            Declaration declaration = nativeImplToJavascript(that.getDeclaration());
+
             Unit declarationUnit = null;
             if (declaration != null) {
                 declarationUnit = declaration.getUnit();
