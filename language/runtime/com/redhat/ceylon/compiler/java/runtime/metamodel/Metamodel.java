@@ -1586,7 +1586,8 @@ public class Metamodel {
         
         // now do a regular invocation
         Sequential<? extends Object> argumentSequence = values.sequence();
-        return Util.apply(function, argumentSequence);
+        // we can trust any variadic or pseudo-variadic since we checked parameter by parameter (no spreading possible)
+        return Util.apply(function, argumentSequence, null);
     }
     
     private static Map<String, Object> collectArguments(ceylon.language.Iterable<? extends ceylon.language.Entry<? extends ceylon.language.String,? extends Object>,? extends Object> arguments) {
@@ -1643,7 +1644,8 @@ public class Metamodel {
             i++;
         }
         // they are all good, let's call it
-        return Util.apply(function, arguments);
+        TypeDescriptor variadicElementType = variadicElement != null ? Metamodel.getTypeDescriptorForProducedType(variadicElement) : null;
+        return Util.apply(function, arguments, variadicElementType);
     }
     
     public static <K,C>K bind(ceylon.language.meta.model.Qualified<K,C> member, Type containerType, Object container){

@@ -47,6 +47,7 @@ public class Util {
     }
     
     private static final int INIT_ARRAY_SIZE = 10;
+    private static final Object[] NO_ELEMENTS = new Object[0];
     
     public static String declClassName(String name) {
         return name.replace("::", ".");
@@ -1160,23 +1161,41 @@ public class Util {
      * 
      * <strong>This method does not copy {@code elements} unless it has to</strong>
      */
-    @SuppressWarnings("unchecked")
     public static <T> Sequential<? extends T> sequentialCopy(
             TypeDescriptor $reifiedT,  
             int start, int length, Object[] elements, 
             Sequential<? extends T> rest) {
+        return sequentialCopy($reifiedT, start, length, elements, rest, false);
+    }
+    
+    /**
+     * Returns a Sequential made by concatenating the {@code length} elements 
+     * of {@code elements} starting from {@code state} with the elements of
+     * {@code rest}: <code> {*elements[start:length], *rest}</code>. 
+     * 
+     * <strong>This method does not copy {@code elements} unless it has to
+     * or unless forceCopy is true</strong>
+     */
+    @SuppressWarnings("unchecked")
+    public static <T> Sequential<? extends T> sequentialCopy(
+            TypeDescriptor $reifiedT,  
+            int start, int length, Object[] elements, 
+            Sequential<? extends T> rest,
+            boolean forceCopy) {
         if (length == 0) {
             if(rest.getEmpty()) {
                 return (Sequential<T>)empty_.get_();
             }
-            return rest;
+            // otherwise we MUST copy it
+            if(!forceCopy)
+                return rest;
         }
         // elements is not empty
         if(rest.getEmpty()) {
             return new ObjectArrayIterable<T>($reifiedT, elements)
                     .skip(start).take(length).sequence();
         }
-        // we have both, let's find the total size
+        // we have both (or must copy), let's find the total size
         int total = toInt(rest.getSize() + length);
         java.lang.Object[] newArray = new java.lang.Object[total];
         System.arraycopy(elements, start, newArray, 0, length);
@@ -1345,7 +1364,7 @@ public class Util {
             return false;
         return a.equals(b);
     }
-    
+
     /**
      * Applies the given function to the given arguments. The 
      * argument types are assumed to be correct and will not 
@@ -1357,13 +1376,43 @@ public class Util {
      * contrary, a portion of the given arguments may be packaged 
      * into a Sequential if the given function is variadic.
      * 
+     * This version trusts the type of the Sequential used for any variadic parameter
+     * and will not copy it.
+     * 
      * @param function the function to apply
      * @param arguments the argument values to pass to the function
      * @return the function's return value
      */
-    public static <Return> Return 
-    apply(Callable<? extends Return> function, 
-    		Sequential<? extends Object> arguments) {
+    public static <Return> Return apply(Callable<? extends Return> function, 
+                                        Sequential<? extends Object> arguments) {
+        return apply(function, arguments, null);
+    }
+
+    /**
+     * Applies the given function to the given arguments. The 
+     * argument types are assumed to be correct and will not 
+     * be checked. This method will properly deal with variadic 
+     * functions. The arguments are expected to be spread in the 
+     * given sequential, even in the case of variadic functions, 
+     * which means that there will be no spreading of any 
+     * Sequential instance in the given arguments. On the 
+     * contrary, a portion of the given arguments may be packaged 
+     * into a Sequential if the given function is variadic.
+     * 
+     * Any variadic parameter will be copied into a new sequence
+     * if variadicElementType is specified. Use this if you don't
+     * trust the arguments type (or its span types).
+     * 
+     * @param function the function to apply
+     * @param arguments the argument values to pass to the function
+     * @param variadicElementType if non-null, the type of variadic sequential elements
+     *        to pass to the receiver, copied from the given arguments list. Use this if
+     *        you do not trust the arguments sequence to be of the right type
+     * @return the function's return value
+     */
+    public static <Return> Return apply(Callable<? extends Return> function, 
+    		                            Sequential<? extends Object> arguments,
+    		                            TypeDescriptor variadicElementType) {
         int variadicParameterIndex = function.$getVariadicParameterIndex$();
         switch (toInt(arguments.getSize())) {
         case 0:
@@ -1372,52 +1421,52 @@ public class Util {
         case 1:
             // if the first param is variadic, just pass the sequence along
             if(variadicParameterIndex == 0)
-                return function.$callvariadic$(arguments);
+                return function.$callvariadic$(safeSpanFrom(arguments, 0, variadicElementType));
             return function.$call$(arguments.getFromFirst(0));
         case 2:
             switch(variadicParameterIndex) {
             // pass the sequence along
-            case 0: return function.$callvariadic$(arguments);
+            case 0: return function.$callvariadic$(safeSpanFrom(arguments, 0, variadicElementType));
             // extract the first, pass the rest
             case 1: return function.$callvariadic$(arguments.getFromFirst(0), 
-                    (Sequential<?>)arguments.spanFrom(Integer.instance(1)));
+                                                   safeSpanFrom(arguments, 1, variadicElementType));
             // no variadic param, or after we run out of elements to pass
             default:
                 return function.$call$(arguments.getFromFirst(0), 
-                                          arguments.getFromFirst(1));
+                                       arguments.getFromFirst(1));
             }
         case 3:
             switch(variadicParameterIndex) {
             // pass the sequence along
-            case 0: return function.$callvariadic$(arguments);
+            case 0: return function.$callvariadic$(safeSpanFrom(arguments, 0, variadicElementType));
             // extract the first, pass the rest
             case 1: return function.$callvariadic$(arguments.getFromFirst(0), 
-                    (Sequential<?>)arguments.spanFrom(Integer.instance(1)));
+                                                   safeSpanFrom(arguments, 1, variadicElementType));
             // extract the first and second, pass the rest
             case 2: return function.$callvariadic$(arguments.getFromFirst(0),
-                    arguments.getFromFirst(1),
-                    (Sequential<?>)arguments.spanFrom(Integer.instance(2)));
+                                                   arguments.getFromFirst(1),
+                                                   safeSpanFrom(arguments, 2, variadicElementType));
             // no variadic param, or after we run out of elements to pass
             default:
             return function.$call$(arguments.getFromFirst(0), 
-                    arguments.getFromFirst(1), 
-                    arguments.getFromFirst(2));
+                                   arguments.getFromFirst(1), 
+                                   arguments.getFromFirst(2));
             }
         default:
             switch(variadicParameterIndex) {
             // pass the sequence along
-            case 0: return function.$callvariadic$(arguments);
+            case 0: return function.$callvariadic$(safeSpanFrom(arguments, 0, variadicElementType));
             // extract the first, pass the rest
             case 1: return function.$callvariadic$(arguments.getFromFirst(0), 
-                    (Sequential<?>)arguments.spanFrom(Integer.instance(1)));
+                                                   safeSpanFrom(arguments, 1, variadicElementType));
             // extract the first and second, pass the rest
             case 2: return function.$callvariadic$(arguments.getFromFirst(0),
-                    arguments.getFromFirst(1),
-                    (Sequential<?>)arguments.spanFrom(Integer.instance(2)));
+                                                   arguments.getFromFirst(1),
+                                                   safeSpanFrom(arguments, 2, variadicElementType));
             case 3: return function.$callvariadic$(arguments.getFromFirst(0),
-                    arguments.getFromFirst(1),
-                    arguments.getFromFirst(2),
-                    (Sequential<?>)arguments.spanFrom(Integer.instance(3)));
+                                                   arguments.getFromFirst(1),
+                                                   arguments.getFromFirst(2),
+                                                   safeSpanFrom(arguments, 3, variadicElementType));
             // no variadic param
             case -1:
                 java.lang.Object[] args = Util.toArray(arguments, 
@@ -1439,12 +1488,34 @@ public class Util {
                 }
                 // add the remainder as a variadic arg if required
                 if(needsVariadic) {
-                    args[i] = arguments.spanFrom(Integer.instance(beforeVariadic));
+                    args[i] = safeSpanFrom(arguments, beforeVariadic, variadicElementType);
                     return function.$callvariadic$(args);
                 }
                 return function.$call$(args);
             }
         }
+    }
+
+    /**
+     * Makes sure the sub-sequence at arguments[start...] is copied in a sequence of the given type if it's given
+     * @param arguments total list of arguments (flat)
+     * @param start index of the start of the arguments we want to slice
+     * @param variadicElementType element type of the varargs sequence we need, or null if we don't care and trust it
+     * @return a new sequence or the original sequence's span
+     */
+    private static Sequential<?> safeSpanFrom(Sequential<? extends Object> arguments, int start, TypeDescriptor variadicElementType) {
+        if(variadicElementType == null){
+            if(start == 0)
+                return arguments;
+            return arguments.spanFrom(Integer.instance(start));
+        }
+        // we don't trust it, we need to copy it
+        Sequential<?> ret;
+        if(start == 0)
+            ret = arguments;
+        else
+            ret = arguments.spanFrom(Integer.instance(start));
+        return sequentialCopy(variadicElementType, 0, 0, NO_ELEMENTS, ret, true);
     }
 
     @SuppressWarnings("unchecked")
