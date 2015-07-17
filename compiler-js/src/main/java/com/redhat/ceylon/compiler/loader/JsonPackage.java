@@ -211,7 +211,6 @@ public class JsonPackage extends com.redhat.ceylon.model.typechecker.model.Packa
         if (m.containsKey(MetamodelGenerator.KEY_CONSTRUCTORS)) {
             final Map<String,Map<String,Object>> constructors = (Map<String,Map<String,Object>>)m.remove(
                     MetamodelGenerator.KEY_CONSTRUCTORS);
-            cls.setConstructors(true);
             for (Map.Entry<String, Map<String,Object>> cons : constructors.entrySet()) {
                 Constructor cnst = new Constructor();
                 cnst.setName("$def".equals(cons.getKey())?null:cons.getKey());
@@ -221,22 +220,39 @@ public class JsonPackage extends com.redhat.ceylon.model.typechecker.model.Packa
                 cnst.setExtendedType(cls.getType());
                 setAnnotations(cnst, (Integer)cons.getValue().remove(MetamodelGenerator.KEY_PACKED_ANNS),
                         (Map<String,Object>)cons.getValue().remove(MetamodelGenerator.KEY_ANNOTATIONS));
-                final ParameterList plist = parseParameters((List<Map<String,Object>>)cons.getValue().remove(
-                        MetamodelGenerator.KEY_PARAMS), cnst, allparms);
-                plist.setNamedParametersSupported(true);
-                cnst.addParameterList(plist);
+                final List<Map<String,Object>> modelPlist = (List<Map<String,Object>>)cons.getValue().remove(
+                        MetamodelGenerator.KEY_PARAMS);
                 cls.addMember(cnst);
-                Function cf = new Function();
-                cf.setName(cnst.getName());
-                cf.setType(cnst.getType());
-                cf.addParameterList(plist);
-                cf.setContainer(cls);
-                cf.setScope(cls);
-                cf.setUnit(cls.getUnit());
-                cf.setVisibleScope(cnst.getVisibleScope());
-                cf.setShared(cnst.isShared());
-                cf.setDeprecated(cnst.isDeprecated());
-                cls.addMember(cf);
+                if (modelPlist == null) {
+                    //It's a value constructor
+                    cls.setEnumerated(true);
+                    Value cv = new Value();
+                    cv.setName(cnst.getName());
+                    cv.setType(cnst.getType());
+                    cv.setContainer(cls);
+                    cv.setScope(cls);
+                    cv.setUnit(cls.getUnit());
+                    cv.setVisibleScope(cls.getVisibleScope());
+                    cv.setShared(cls.isShared());
+                    cv.setDeprecated(cls.isDeprecated());
+                    cls.addMember(cv);
+                } else {
+                    cls.setConstructors(true);
+                    final ParameterList plist = parseParameters(modelPlist, cnst, allparms);
+                    cnst.addParameterList(plist);
+                    plist.setNamedParametersSupported(true);
+                    Function cf = new Function();
+                    cf.setName(cnst.getName());
+                    cf.setType(cnst.getType());
+                    cf.addParameterList(plist);
+                    cf.setContainer(cls);
+                    cf.setScope(cls);
+                    cf.setUnit(cls.getUnit());
+                    cf.setVisibleScope(cnst.getVisibleScope());
+                    cf.setShared(cnst.isShared());
+                    cf.setDeprecated(cnst.isDeprecated());
+                    cls.addMember(cf);
+                }
             }
         } else {
             ParameterList plist = parseParameters((List<Map<String,Object>>)m.remove(MetamodelGenerator.KEY_PARAMS),
@@ -329,7 +345,7 @@ public class JsonPackage extends com.redhat.ceylon.model.typechecker.model.Packa
                 tp.put(MetamodelGenerator.KEY_METATYPE, maybe);
             } else {
                 TypeParameter tparm = new TypeParameter();
-                tparm.setUnit(u2);
+                tparm.setUnit(container.getUnit());
                 tparm.setDeclaration(container);
                 container.getMembers().add(tparm);
                 if (tp.containsKey(MetamodelGenerator.KEY_NAME)) {
@@ -352,10 +368,8 @@ public class JsonPackage extends com.redhat.ceylon.model.typechecker.model.Packa
                 tp.put(MetamodelGenerator.KEY_METATYPE, tparm);
             }
         }
-        if (container instanceof TypeDeclaration) {
-            ((TypeDeclaration) container).setTypeParameters(tparms);
-        } else if (container instanceof Function) {
-            ((Function) container).setTypeParameters(tparms);
+        if (container instanceof Generic) {
+            ((Generic) container).setTypeParameters(tparms);
         }
         //Second, add defaults and heritage
         for (Map<String,Object> tp : typeParams) {
@@ -790,8 +804,14 @@ public class JsonPackage extends com.redhat.ceylon.model.typechecker.model.Packa
             final String pname = (String)m.get(MetamodelGenerator.KEY_PACKAGE);
             if (pname == null) {
                 //It's a ref to a type parameter
-                final List<TypeParameter> containerTypeParameters = container instanceof Generic ?
-                    ((Generic)container).getTypeParameters() : null;
+                final List<TypeParameter> containerTypeParameters;
+                if (container instanceof Constructor) {
+                    containerTypeParameters = ((Generic)container.getContainer()).getTypeParameters();
+                } else if (container instanceof Generic) {
+                    containerTypeParameters = ((Generic)container).getTypeParameters();
+                } else {
+                    containerTypeParameters = null;
+                }
                 if (containerTypeParameters != null) {
                     for (TypeParameter typeParam : containerTypeParameters) {
                         if (typeParam.getName().equals(tname)) {
@@ -1000,6 +1020,8 @@ public class JsonPackage extends com.redhat.ceylon.model.typechecker.model.Packa
             if (d instanceof com.redhat.ceylon.model.typechecker.model.Class) {
                 ((com.redhat.ceylon.model.typechecker.model.Class)d).setFinal(hasAnnotationBit(bits, "final"));
                 ((com.redhat.ceylon.model.typechecker.model.Class)d).setAbstract(hasAnnotationBit(bits, "abstract"));
+            } else if (d instanceof Constructor) {
+                ((Constructor)d).setAbstract(hasAnnotationBit(bits, "abstract"));
             }
             if (hasAnnotationBit(bits, "late")) {
                 ((Value)d).setLate(true);
