@@ -464,14 +464,13 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
     private static void checkGetterForSetter(Tree.Declaration that,
             Setter setter, Scope scope) {
         //a setter must have a matching getter
-        Declaration g;
-        Tree.AnnotationList al = 
-                that.getAnnotationList();
+        Tree.AnnotationList al = that.getAnnotationList();
         String name = setter.getName();
+        Unit unit = setter.getUnit();
         Declaration member = 
-                setter.getContainer().getDirectMemberForBackend(
-                        name, 
-                        getNativeBackend(al, setter.getUnit()));
+                setter.getContainer()
+                    .getDirectMemberForBackend(name, 
+                        getNativeBackend(al, unit));
         if (member==null) {
             that.addError("setter with no matching getter: '" + 
                     name + "'");
