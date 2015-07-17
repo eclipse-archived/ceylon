@@ -9,6 +9,7 @@ import com.redhat.ceylon.compiler.js.GenerateJsVisitor.SuperVisitor;
 import com.redhat.ceylon.compiler.js.util.TypeUtils;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.util.NativeUtil;
 import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
@@ -26,7 +27,13 @@ public class ClassGenerator {
         final Class d = that.getDeclarationModel();
         //If it's inside a dynamic interface, don't generate anything
         if (d.isClassOrInterfaceMember() && ((ClassOrInterface)d.getContainer()).isDynamic())return;
-        if (d.isNative() && !d.isNativeHeader() && !TypeUtils.isForBackend(d)) {
+        if (NativeUtil.isNativeHeader(that) &&
+                ModelUtil.getNativeDeclaration(d, Backend.JavaScript) != null) {
+            // It's a native header, remember it for later when we deal with its implementation
+            gen.saveNativeHeader(that);
+            return;
+        }
+        if (!(NativeUtil.isForBackend(that, Backend.JavaScript) || NativeUtil.isHeaderWithoutBackend(that, Backend.JavaScript))) {
             return;
         }
         final Tree.ParameterList plist = that.getParameterList();
@@ -51,7 +58,7 @@ public class ClassGenerator {
         gen.comment(that);
         final Class natd = (Class)ModelUtil.getNativeDeclaration(d, Backend.JavaScript);
         final boolean isAbstractNative = d.isNative() && d.isNativeHeader() && natd != null;
-        final String typeName = gen.getNames().name(d) + (isAbstractNative ? "$$N" : "");
+        final String typeName = gen.getNames().name(d);
         if (TypeUtils.isNativeExternal(d)) {
             boolean bye = false;
             if (d.hasConstructors() && defconstr == null) {
@@ -134,11 +141,14 @@ public class ClassGenerator {
             if (TypeUtils.isNativeExternal(d)) {
                 gen.stitchConstructorHelper(that, "_cons_before");
             }
-            //TODO should we generate all this code for native headers?
-            //Really we should merge the body of the header with that of the impl
-            //It's the only way to make this shit work in lexical scope mode
-            gen.visitStatements(that.getClassBody().getStatements());
-            if (d.isNative()) {
+            final List<Tree.Statement> stmts;
+            if (NativeUtil.isForBackend(d, Backend.JavaScript)) {
+                stmts = NativeUtil.mergeStatements(that.getClassBody(), gen.getNativeHeader(d));
+            } else {
+                stmts = that.getClassBody().getStatements();
+            }
+            gen.visitStatements(stmts);
+            if (TypeUtils.isNativeExternal(d)) {
                 gen.stitchConstructorHelper(that, "_cons_after");
             }
             gen.out("return ", me, ";");
@@ -222,20 +232,13 @@ public class ClassGenerator {
         if (!gen.opts.isOptimize()) {
             that.getClassBody().visit(new SuperVisitor(superDecs));
         }
-        if (TypeUtils.extendsNativeHeader(d)) {
-            gen.out(typeName, "$$N");
-            TypeGenerator.generateParameters(that.getTypeParameterList(),
-                    that.getParameterList(), d, gen);
-            gen.endLine(true);
-        } else {
-            final Tree.ExtendedType extendedType = that.getExtendedType();
-            final Tree.SatisfiedTypes sats = that.getSatisfiedTypes();
-            TypeGenerator.callSupertypes(
-                    sats == null ? null : TypeUtils.getTypes(sats.getTypes()),
-                    extendedType == null ? null : extendedType.getType(),
-                    d, that, superDecs, extendedType == null ? null : extendedType.getInvocationExpression(),
-                    extendedType == null ? null : ((Class) d.getExtendedType().getDeclaration()).getParameterList(), gen);
-        }
+        final Tree.ExtendedType extendedType = that.getExtendedType();
+        final Tree.SatisfiedTypes sats = that.getSatisfiedTypes();
+        TypeGenerator.callSupertypes(
+                sats == null ? null : TypeUtils.getTypes(sats.getTypes()),
+                extendedType == null ? null : extendedType.getType(),
+                d, that, superDecs, extendedType == null ? null : extendedType.getInvocationExpression(),
+                extendedType == null ? null : ((Class) d.getExtendedType().getDeclaration()).getParameterList(), gen);
     }
 
 }

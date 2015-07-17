@@ -15,6 +15,7 @@ import com.redhat.ceylon.compiler.js.GenerateJsVisitor;
 import com.redhat.ceylon.compiler.loader.MetamodelGenerator;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.util.NativeUtil;
 import com.redhat.ceylon.model.typechecker.model.Annotation;
 import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
@@ -1371,25 +1372,16 @@ public class TypeUtils {
      */
     public static boolean acceptNative(Declaration decl) {
         return !decl.isNative()
-                || isForBackend(decl)
+                || NativeUtil.isForBackend(decl, Backend.JavaScript)
                 || isNativeExternal(decl)
-                || (isHeaderWithoutBackend(decl)
-                    && isImplemented(decl));
+                || (NativeUtil.isHeaderWithoutBackend(decl, Backend.JavaScript)
+                    && NativeUtil.isImplemented(decl));
     }
 
     public static boolean extendsNativeHeader(ClassOrInterface d) {
-        return d.isNative() && !d.isNativeHeader() && TypeUtils.isForBackend(d);
+        return d.isNative() && !d.isNativeHeader() && NativeUtil.isForBackend(d, Backend.JavaScript);
     }
 
-    /**
-     * Checks that the declaration is marked "native" and has a Ceylon implementation
-     * meant for the JavaScript backend
-     */
-    public static boolean isForBackend(Declaration decl) {
-        String backend = decl.getNativeBackend();
-        return backend != null && backend.equals(Backend.JavaScript.nativeAnnotation);
-    }
-    
     /**
      * Checks that the given declaration is defined in an external JavaScript file.
      * It does this by assuming that an external implementation will have a declaration
@@ -1402,19 +1394,6 @@ public class TypeUtils {
                 && (decl.getOverloads() == null || decl.getOverloads().isEmpty());
     }
 
-    public static boolean isHeaderWithoutBackend(Declaration decl) {
-        return decl.isNativeHeader()
-                && (ModelUtil.getNativeDeclaration(decl, Backend.JavaScript) == null);
-    }
-    
-    public static boolean isImplemented(Declaration decl) {
-        if (decl instanceof FunctionOrValue) {
-            return ((FunctionOrValue)decl).isImplemented();
-        } else {
-            return false;
-        }
-    }
-    
     public static List<Type> getTypes(List<Tree.StaticType> treeTypes) {
         if (treeTypes == null) {
             return null;

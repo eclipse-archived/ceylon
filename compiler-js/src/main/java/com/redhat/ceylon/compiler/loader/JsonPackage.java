@@ -243,7 +243,8 @@ public class JsonPackage extends com.redhat.ceylon.model.typechecker.model.Packa
                     plist.setNamedParametersSupported(true);
                     Function cf = new Function();
                     cf.setName(cnst.getName());
-                    cf.setType(cnst.getType());
+                    final Type ft = cnst.appliedType(cnst.getExtendedType(), Collections.<Type>emptyList());
+                    cf.setType(ft);
                     cf.addParameterList(plist);
                     cf.setContainer(cls);
                     cf.setScope(cls);

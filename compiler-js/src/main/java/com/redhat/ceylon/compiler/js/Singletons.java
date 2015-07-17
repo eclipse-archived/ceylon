@@ -32,14 +32,10 @@ public class Singletons {
         final String className = gen.getNames().name(c);
         final String objectName = gen.getNames().name(d);
         final String selfName = gen.getNames().self(c);
-        final boolean genClass;
-        final boolean genObj;
 
         if (d != null && d.isNative()) {
             if (d.isNativeHeader()) {
-                genClass = true;
                 Value nv = (Value)ModelUtil.getNativeDeclaration(d, Backend.JavaScript);
-                genObj = nv == null;
                 if (nv != null) {
                     //Force the names of unshared members of the native type to be the same as for its
                     //header's counterparts
@@ -50,13 +46,7 @@ public class Singletons {
                         }
                     }
                 }
-            } else {
-                genObj = TypeUtils.isForBackend(d);
-                genClass = genObj;
             }
-        } else {
-            genClass = true;
-            genObj = true;
         }
 
         Map<TypeParameter, Type> targs=new HashMap<TypeParameter, Type>();
@@ -68,7 +58,6 @@ public class Singletons {
                 }
             }
         }
-        if (genClass) {
             gen.out(GenerateJsVisitor.function, className, targs.isEmpty()?"()":"($$targs$$)");
             gen.beginBlock();
             if (isObjExpr) {
@@ -107,10 +96,6 @@ public class Singletons {
             TypeUtils.encodeForRuntime(that, c, gen);
             gen.endLine(true);
             TypeGenerator.initializeType(that, gen);
-        }
-        if (!genObj) {
-            return;
-        }
         final String objvar = (addToPrototype ? "this.":"")+gen.getNames().createTempVariable();
 
         if (d != null && !addToPrototype) {

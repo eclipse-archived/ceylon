@@ -9,6 +9,7 @@ import java.io.PrintWriter;
 import java.io.Writer;
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -55,6 +56,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.Statement;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.StaticMemberOrTypeExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
+import com.redhat.ceylon.compiler.typechecker.util.NativeUtil;
 import com.redhat.ceylon.model.typechecker.model.Annotation;
 import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.ClassAlias;
@@ -93,6 +95,7 @@ public class GenerateJsVisitor extends Visitor
     private final ErrorVisitor errVisitor = new ErrorVisitor();
     private int dynblock;
     private int exitCode = 0;
+    private final Map<String, Tree.Declaration> headers = new HashMap<String, Tree.Declaration>();
     protected static final BigInteger minLong = new BigInteger(Long.toString(Long.MIN_VALUE));
     protected static final BigInteger maxLong = new BigInteger(Long.toString(Long.MAX_VALUE));
     protected static final BigInteger maxUnsignedLong = new BigInteger("ffffffffffffffff", 16);
@@ -638,7 +641,6 @@ public class GenerateJsVisitor extends Visitor
 
     @Override
     public void visit(final Tree.ClassDeclaration that) {
-        if (!TypeUtils.acceptNative(that)) return;
         if (opts.isOptimize() && that.getDeclarationModel().isClassOrInterfaceMember()) return;
         classDeclaration(that);
     }
@@ -851,7 +853,7 @@ public class GenerateJsVisitor extends Visitor
         boolean enter = opts.isOptimize();
         ArrayList<Parameter> plist = null;
         final boolean isAbstractNative = TypeUtils.makeAbstractNative(d);
-        final String typename = names.name(d) + (isAbstractNative ? "$$N" : "");
+        final String typename = names.name(d);
         if (enter) {
             enter = !statements.isEmpty();
             if (d instanceof Class) {
@@ -992,11 +994,7 @@ public class GenerateJsVisitor extends Visitor
             if (opts.isOptimize() && d.isClassOrInterfaceMember()) {
                 out("this.");
             }
-            if (TypeUtils.makeAbstractNative(d)) {
-                out(names.name(d), "$$N.$$;");
-            } else {
-                out(names.name(d), ".$$;");
-            }
+            out(names.name(d), ".$$;");
         }
         endLine();
     }
@@ -1025,6 +1023,16 @@ public class GenerateJsVisitor extends Visitor
     @Override
     public void visit(final Tree.ObjectDefinition that) {
         if (errVisitor.hasErrors(that))return;
+        if (NativeUtil.isNativeHeader(that) &&
+                ModelUtil.getNativeDeclaration(that.getDeclarationModel(), Backend.JavaScript) != null) {
+            // It's a native header, remember it for later when we deal with its implementation
+            headers.put(that.getDeclarationModel().getQualifiedNameString(), that);
+            return;
+        }
+        // To accept this object it is either not native or native for this backend
+        if (!(NativeUtil.isForBackend(that, Backend.JavaScript) || NativeUtil.isHeaderWithoutBackend(that, Backend.JavaScript))) {
+            return;
+        }
         Value d = that.getDeclarationModel();
         if (!(opts.isOptimize() && d.isClassOrInterfaceMember())) {
             comment(that);
@@ -3303,5 +3311,12 @@ public class GenerateJsVisitor extends Visitor
             return true;
         }
         return false;
+    }
+
+    public void saveNativeHeader(Tree.Declaration that) {
+        headers.put(that.getDeclarationModel().getQualifiedNameString(), that);
+    }
+    public Tree.Declaration getNativeHeader(Declaration that) {
+        return headers.get(that.getQualifiedNameString());
     }
 }
