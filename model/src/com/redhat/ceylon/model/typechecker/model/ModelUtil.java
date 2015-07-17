@@ -2609,9 +2609,6 @@ public class ModelUtil {
                 && header instanceof FunctionOrValue
                 && isConstructor(header)) {
             header = getConstructor(header);
-            if (header == dec) {
-                header = ((Constructor)dec).getExtendedType().getDeclaration();
-            }
         }
         return header;
     }
