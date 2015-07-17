@@ -457,8 +457,8 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
 
     protected static boolean canBeNative(Declaration member) {
         return member instanceof Function || 
-        member instanceof Value || 
-        member instanceof Class;
+                member instanceof Value || 
+                member instanceof Class;
     }
 
     private static void checkGetterForSetter(Tree.Declaration that,
