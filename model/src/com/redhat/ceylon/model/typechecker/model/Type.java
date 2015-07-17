@@ -2617,21 +2617,6 @@ public class Type extends Reference {
     private Type getInternalExtendedType() {
         TypeDeclaration dec = getDeclaration();
         Type et = dec.getExtendedType();
-        if (dec.isNative() && !dec.isNativeHeader()) {
-            // Native implementations have the same extended 
-            // type as their header, but headers can 
-            // actually have methods of their own so we set 
-            // the extended type to the header
-            Declaration hdr = getNativeHeader(dec);
-            if (hdr instanceof Constructor) {
-                Constructor c = (Constructor) hdr;
-                et = c.getExtendedType();
-            }
-            else if (hdr instanceof TypeDeclaration) {
-                TypeDeclaration td = (TypeDeclaration) hdr;
-                et = td.getType();
-            }
-        }
         if (et==null) {
             return null;
         }
