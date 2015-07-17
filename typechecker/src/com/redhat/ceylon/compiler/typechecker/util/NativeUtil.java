@@ -96,22 +96,30 @@ public class NativeUtil {
         return decl.getNativeBackend();
     }
     
-    public static boolean isForBackend(Tree.Declaration decl) {
-        return isForBackend(decl.getDeclarationModel());
+    /**
+     * Checks that the declaration is marked "native" and has a Ceylon implementation
+     * meant for the specified backend
+     */
+    public static boolean isForBackend(Tree.Declaration decl, Backend backend) {
+        return isForBackend(decl.getDeclarationModel(), backend);
     }
     
-    public static boolean isForBackend(Declaration decl) {
-        String backend = getNative(decl);
-        return backend == null || backend.equals(Backend.Java.nativeAnnotation);
+    /**
+     * Checks that the declaration is marked "native" and has a Ceylon implementation
+     * meant for the specified backend
+     */
+    public static boolean isForBackend(Declaration decl, Backend backend) {
+        String be = getNative(decl);
+        return be == null || be.equals(backend.nativeAnnotation);
     }
     
-    public static boolean isHeaderWithoutBackend(Tree.Declaration decl) {
-        return isHeaderWithoutBackend(decl.getDeclarationModel());
+    public static boolean isHeaderWithoutBackend(Tree.Declaration decl, Backend backend) {
+        return isHeaderWithoutBackend(decl.getDeclarationModel(), backend);
     }
     
-    public static boolean isHeaderWithoutBackend(Declaration decl) {
+    public static boolean isHeaderWithoutBackend(Declaration decl, Backend backend) {
         return decl.isNativeHeader()
-                && (ModelUtil.getNativeDeclaration(decl, Backend.Java) == null);
+                && (ModelUtil.getNativeDeclaration(decl, backend) == null);
     }
     
 }
