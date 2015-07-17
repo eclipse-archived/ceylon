@@ -667,6 +667,11 @@ public class MetamodelGenerator {
         if (d instanceof Value && ((Value)d).isVariable()) {
             //Sometimes the value is not annotated, it only has a defined Setter
             bits |= (1 << annotationBits.indexOf("variable"));
+        } else if (d instanceof com.redhat.ceylon.model.typechecker.model.Class
+                && ((com.redhat.ceylon.model.typechecker.model.Class)d).isAbstract()) {
+            bits |= (1 << annotationBits.indexOf("abstract"));
+        } else if (d instanceof Constructor && ((Constructor)d).isAbstract()) {
+            bits |= (1 << annotationBits.indexOf("abstract"));
         }
         if (bits > 0 && m != null) {
             String key = d instanceof Module ? "$mod-pa" :
