@@ -17,17 +17,28 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-shared native class BugSpec1372() {
-    shared native BugSpec1372 returnMe();
+import com.redhat.ceylon.compiler.java.test.nativecode.modsample { TestClass, testMethod }
+import com.redhat.ceylon.compiler.java.test.nativecode.modok { Bar, foo }
+
+native("jvm")
+void nativeMethod() {}
+
+native("jvm")
+void test1() {
+    value x = nativeMethod();
 }
 
-shared native("jvm") class BugSpec1372() {
-    shared native("jvm") BugSpec1372 returnMe() {
-        throw Exception("BugSpec1372-JVM");
-    }
+void test2() {
+    value x = testMethod();
+    value y = TestClass();
 }
 
 native("jvm")
-void testBugSpec1372() {
-    BugSpec1372().returnMe();
+void test3() {
+    value x = foo();
+    value y = Bar();
+}
+
+shared void test() {
+    throw Exception("nativerefok-JVM");
 }

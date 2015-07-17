@@ -57,7 +57,15 @@ native("js") shared void nativeMethodMismatch4js() {
     nativeMethodMismatch4jvm();
 }
 
-void test() {
+native("jvm")
+void testjvm() {
     nativeMethodMismatch4jvm();
+}
+
+native("js")
+void testjs() {
     nativeMethodMismatch4js();
+}
+
+void test() {
 }

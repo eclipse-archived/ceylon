@@ -17,6 +17,11 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
+shared Integer foo() => 1;
+
+shared class Bar() {
+}
+
 shared void test() {
     throw Exception("modok-JVM");
 }

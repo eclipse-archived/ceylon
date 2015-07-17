@@ -113,8 +113,13 @@ native("js") shared class NativeClassMismatch8js() satisfies NativeClassMismatch
     }
 }
 
-void nativeClassMismatch8() {
+native("jvm")
+void nativeClassMismatch8jvm() {
     NativeClassMismatch8jvm().test1(0);
+}
+
+native("js")
+void nativeClassMismatch8js() {
     NativeClassMismatch8js().test2(0);
 }
 

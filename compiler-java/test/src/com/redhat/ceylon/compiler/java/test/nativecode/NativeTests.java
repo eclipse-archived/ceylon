@@ -54,14 +54,18 @@ public class NativeTests extends CompilerTests {
     }
     
     private ModuleWithArtifact testNativeModule(String dir) {
-        return testNativeModule(dir, null, "test.ceylon", "package.ceylon", "module.ceylon");
+        return testNativeModule(dir, null, null, "test.ceylon", "package.ceylon", "module.ceylon");
     }
     
     private ModuleWithArtifact testNativeModule(String dir, ModuleWithArtifact extraModule) {
-        return testNativeModule(dir, extraModule, "test.ceylon", "package.ceylon", "module.ceylon");
+        return testNativeModule(dir, extraModule, null, "test.ceylon", "package.ceylon", "module.ceylon");
     }
     
-    private ModuleWithArtifact testNativeModule(String dir, ModuleWithArtifact extraModule, String... files) {
+    private ModuleWithArtifact testNativeModule(String dir, ModuleWithArtifact extraModule1, ModuleWithArtifact extraModule2) {
+        return testNativeModule(dir, extraModule1, extraModule2, "test.ceylon", "package.ceylon", "module.ceylon");
+    }
+    
+    private ModuleWithArtifact testNativeModule(String dir, ModuleWithArtifact extraModule1, ModuleWithArtifact extraModule2, String... files) {
         ModuleWithArtifact mainModule = null;
         boolean ok = false;
         try {
@@ -72,8 +76,12 @@ public class NativeTests extends CompilerTests {
             compile(paths);
             String main = "com.redhat.ceylon.compiler.java.test.nativecode." + dir + ".test";
             mainModule = new ModuleWithArtifact("com.redhat.ceylon.compiler.java.test.nativecode." + dir, "1.0");
-            if (extraModule != null) {
-                run(main, mainModule, extraModule);
+            if (extraModule1 != null) {
+                if (extraModule2 != null) {
+                    run(main, mainModule, extraModule1, extraModule2);
+                } else {
+                    run(main, mainModule, extraModule1);
+                }
             } else {
                 run(main, mainModule);
             }
@@ -136,8 +144,7 @@ public class NativeTests extends CompilerTests {
                 new CompilerError(44, "type of parameter 's' of 'nativeMethodMismatch3' is different to type of corresponding parameter 'i' of native header 'nativeMethodMismatch3': 'String' is not exactly 'Integer'"),
                 new CompilerError(51, "no native implementation for backend: native 'nativeMethodMismatch4js' is not implemented for one or more backends"),
                 new CompilerError(54, "no native implementation for backend: native 'nativeMethodMismatch4js' is not implemented for one or more backends"),
-                new CompilerError(57, "no native implementation for backend: native 'nativeMethodMismatch4jvm' is not implemented for one or more backends"),
-                new CompilerError(62, "no native implementation for backend: native 'nativeMethodMismatch4js' is not implemented for one or more backends")
+                new CompilerError(57, "no native implementation for backend: native 'nativeMethodMismatch4jvm' is not implemented for one or more backends")
         );
     }
     
@@ -290,24 +297,22 @@ public class NativeTests extends CompilerTests {
                 new CompilerError(106, "no native implementation for backend: native 'NativeClassMismatch8js' is not implemented for one or more backends"),
                 new CompilerError(112, "no native implementation for backend: native 'NativeClassMismatch8jvm' is not implemented for one or more backends"),
                 new CompilerError(112, "no native implementation for backend: native 'test1' is not implemented for one or more backends"),
-                new CompilerError(118, "no native implementation for backend: native 'NativeClassMismatch8js' is not implemented for one or more backends"),
-                new CompilerError(118, "no native implementation for backend: native 'test2' is not implemented for one or more backends"),
-                new CompilerError(129, "native header 'test5' of 'NativeClassMismatch9' has no native implementation"),
-                new CompilerError(131, "type of parameter 's' of 'test2' is different to type of corresponding parameter 'i' of native header 'test2': 'String' is not exactly 'Integer'"),
-                new CompilerError(132, "native implementation must have the same return type as native header: 'test3' in 'NativeClassMismatch9' must have the type 'Anything'"),
-                new CompilerError(133, "member does not have the same number of parameters as native header: 'test4'"),
-                new CompilerError(134, "native member does not implement any header member: 'testX' in 'NativeClassMismatch9'"),
-                new CompilerError(135, "non-native shared members not allowed in native implementations: 'testY' in 'NativeClassMismatch9'"),
-                new CompilerError(138, "native header 'test5' of 'NativeClassMismatch9' has no native implementation"),
-                new CompilerError(140, "type of parameter 's' of 'test2' is different to type of corresponding parameter 'i' of native header 'test2': 'String' is not exactly 'Integer'"),
-                new CompilerError(141, "native implementation must have the same return type as native header: 'test3' in 'NativeClassMismatch9' must have the type 'Anything'"),
-                new CompilerError(142, "member does not have the same number of parameters as native header: 'test4'"),
-                new CompilerError(143, "native member does not implement any header member: 'testX' in 'NativeClassMismatch9'"),
-                new CompilerError(144, "non-native shared members not allowed in native implementations: 'testY' in 'NativeClassMismatch9'"),
-                new CompilerError(155, "native header 'privattr' of 'NativeClassMismatch10' has no native implementation"),
-                new CompilerError(155, "native header 'privmeth' of 'NativeClassMismatch10' has no native implementation"),
-                new CompilerError(162, "native header 'privattr' of 'NativeClassMismatch10' has no native implementation"),
-                new CompilerError(162, "native header 'privmeth' of 'NativeClassMismatch10' has no native implementation")
+                new CompilerError(134, "native header 'test5' of 'NativeClassMismatch9' has no native implementation"),
+                new CompilerError(136, "type of parameter 's' of 'test2' is different to type of corresponding parameter 'i' of native header 'test2': 'String' is not exactly 'Integer'"),
+                new CompilerError(137, "native implementation must have the same return type as native header: 'test3' in 'NativeClassMismatch9' must have the type 'Anything'"),
+                new CompilerError(138, "member does not have the same number of parameters as native header: 'test4'"),
+                new CompilerError(139, "native member does not implement any header member: 'testX' in 'NativeClassMismatch9'"),
+                new CompilerError(140, "non-native shared members not allowed in native implementations: 'testY' in 'NativeClassMismatch9'"),
+                new CompilerError(143, "native header 'test5' of 'NativeClassMismatch9' has no native implementation"),
+                new CompilerError(145, "type of parameter 's' of 'test2' is different to type of corresponding parameter 'i' of native header 'test2': 'String' is not exactly 'Integer'"),
+                new CompilerError(146, "native implementation must have the same return type as native header: 'test3' in 'NativeClassMismatch9' must have the type 'Anything'"),
+                new CompilerError(147, "member does not have the same number of parameters as native header: 'test4'"),
+                new CompilerError(148, "native member does not implement any header member: 'testX' in 'NativeClassMismatch9'"),
+                new CompilerError(149, "non-native shared members not allowed in native implementations: 'testY' in 'NativeClassMismatch9'"),
+                new CompilerError(160, "native header 'privattr' of 'NativeClassMismatch10' has no native implementation"),
+                new CompilerError(160, "native header 'privmeth' of 'NativeClassMismatch10' has no native implementation"),
+                new CompilerError(167, "native header 'privattr' of 'NativeClassMismatch10' has no native implementation"),
+                new CompilerError(167, "native header 'privmeth' of 'NativeClassMismatch10' has no native implementation")
         );
     }
     
@@ -377,7 +382,7 @@ public class NativeTests extends CompilerTests {
     
     @Test @Ignore("see https://github.com/ceylon/ceylon-compiler/issues/2196")
     public void testNativeWithJava() {
-        testNativeModule("withjava", null, "NativeClass.java", "test.ceylon", "module.ceylon");
+        testNativeModule("withjava", null, null, "NativeClass.java", "test.ceylon", "module.ceylon");
     }
     
     @Test
@@ -455,5 +460,22 @@ public class NativeTests extends CompilerTests {
     @Test
     public void testBugSpec1372() {
         testNative("BugSpec1372");
+    }
+    
+    @Test
+    public void testNativeRefOk() {
+        ModuleWithArtifact sampleMod = testNativeModule("modsample");
+        ModuleWithArtifact okMod = testNativeModule("modok");
+        testNativeModule("nativerefok", sampleMod, okMod);
+    }
+    
+    @Test
+    public void testNativeRefWrong() {
+        assertErrors(new String[] {"nativerefwrong/test.ceylon", "nativerefwrong/module.ceylon", "modsample/test.ceylon", "modsample/package.ceylon", "modsample/module.ceylon", "modok/test.ceylon", "modok/package.ceylon", "modok/module.ceylon"}, defaultOptions, null,
+                new CompilerError(30, "non-native declaration: 'test1' accesses native code: 'nativeMethodJvm', mark it or the module native"),
+                new CompilerError(34, "non-native declaration: 'test2' accesses native code: 'nativeMethodJs', mark it or the module native"),
+                new CompilerError(43, "non-native declaration: 'test4' accesses native code: 'foo', mark it or the module native"),
+                new CompilerError(44, "non-native declaration: 'test4' accesses native code: 'Bar', mark it or the module native")
+        );
     }
 }
