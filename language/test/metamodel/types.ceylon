@@ -1,12 +1,13 @@
 import ceylon.language.meta.declaration { 
     ClassDeclaration, 
-    ConstructorDeclaration 
+    CallableConstructorDeclaration,
+    ValueConstructorDeclaration 
 }
 import ceylon.language.meta.model { 
     Class, 
     MemberClass, 
-    MemberClassConstructor, 
-    Constructor,
+    Method, 
+    Function,
     InvocationException,
     IncompatibleTypeException
 }
@@ -445,15 +446,21 @@ shared class Constructors<T> {
         shared new (T? t=null) {}
         shared new otherCtor(Integer i) {}
         new nonSharedCtor(Boolean b) {}
-        shared MemberClassConstructor<Constructors<T>, Member, [Boolean]> nonShared => `nonSharedCtor`;
-        shared ConstructorDeclaration nonSharedDecl => `new nonSharedCtor`;
+        shared Method<Constructors<T>, Member, [Boolean]> nonShared {
+            assert(is Method<Constructors<T>, Member, [Boolean]> r = `Member`.getConstructor("nonSharedCtor"));
+            return r;
+        }
+        shared CallableConstructorDeclaration nonSharedDecl => `new nonSharedCtor`;
     }
     class NonSharedMember {
         shared new (T? t=null) {}
         shared new otherCtor(Integer i) {}
         new nonSharedCtor(Boolean b) {}
-        shared MemberClassConstructor<Constructors<T>, NonSharedMember, [Boolean]> nonShared => `nonSharedCtor`;
-        shared ConstructorDeclaration nonSharedDecl => `new nonSharedCtor`;
+        shared Method<Constructors<T>, NonSharedMember, [Boolean]> nonShared {
+            assert(is Method<Constructors<T>, NonSharedMember, [Boolean]> r = `NonSharedMember`.getConstructor("nonSharedCtor"));
+            return r;
+        }
+        shared CallableConstructorDeclaration nonSharedDecl => `new nonSharedCtor`;
     }
     shared void test() {
         testDeclarations();
@@ -464,13 +471,13 @@ shared class Constructors<T> {
     shared void testMemberModels() {
         // TODO test constructors of member classes of interfaces
         value member = Member();
-        print(type(`Member`.getConstructor<[T?]|[]>("")));
-        assert(is MemberClassConstructor<Constructors<T>,Member,[T?]|[]> memberMember = `Member`.getConstructor<[T?]|[]>(""));
+        print(type(`Member`.getConstructor("")));
+        assert(is Method<Constructors<T>,Member,[T?]|[]> memberMember = `Member`.getConstructor(""));
         value memberOther = `Member.otherCtor`;
         value memberNonShared = member.nonShared;
         
         value nonSharedMember = NonSharedMember();
-        assert(exists nonSharedMemberMember = `NonSharedMember`.getConstructor<[T?]|[]>(""));
+        assert(is Method<Constructors<T>,Member,[T?]|[]> nonSharedMemberMember = `NonSharedMember`.getConstructor(""));
         value nonSharedMemberOther = `NonSharedMember.otherCtor`;
         value nonSharedMemberNonShared = nonSharedMember.nonShared;
         
@@ -495,21 +502,21 @@ shared class Constructors<T> {
             `Boolean` == b);
         
         // call
-        Constructor<Member, []|[T?]> memberMemberCtor = memberMember(this);
+        Function<Member, []|[T?]> memberMemberCtor = memberMember(this);
         memberMemberCtor();
         assert(is T tt = "");
         memberMemberCtor(tt);
-        Constructor<Member, [Integer]> memberOtherCtor = memberOther(this);
+        Function<Member, [Integer]> memberOtherCtor = memberOther(this);
         memberOtherCtor(1);
-        Constructor<Member, [Boolean]> memberNonSharedCtor = memberNonShared(this);
+        Function<Member, [Boolean]> memberNonSharedCtor = memberNonShared(this);
         memberNonSharedCtor(true);
         
-        Constructor<NonSharedMember, []|[T?]> nonSharedMemberMemberCtor = nonSharedMemberMember(this);
+        Function<NonSharedMember, []|[T?]> nonSharedMemberMemberCtor = nonSharedMemberMember(this);
         nonSharedMemberMemberCtor();
         nonSharedMemberMemberCtor(tt);
-        Constructor<NonSharedMember, [Integer]> nonSharedMemberOtherCtor = nonSharedMemberOther(this);
+        Function<NonSharedMember, [Integer]> nonSharedMemberOtherCtor = nonSharedMemberOther(this);
         nonSharedMemberOtherCtor(1);
-        Constructor<NonSharedMember, [Boolean]> nonSharedMemberNonSharedCtor = nonSharedMemberNonShared(this);
+        Function<NonSharedMember, [Boolean]> nonSharedMemberNonSharedCtor = nonSharedMemberNonShared(this);
         nonSharedMemberNonSharedCtor(true);
 
         // bind
@@ -524,9 +531,9 @@ shared class Constructors<T> {
         nonSharedMemberNonShared.bind(this)(true);
     }
     shared void testModels() {
-        assert(exists def = `Constructors<T>`.getConstructor<[T?]|[]>(""));
+        assert(is Function<Constructors<T>,[T?]|[]> def = `Constructors<T>`.getConstructor(""));
         value other = `otherCtor`;
-        value nonShared = `nonSharedCtor`;
+        assert(is Function<Constructors<T>,[Boolean]> nonShared = `Constructors<T>`.getConstructor("nonSharedCtor"));
         
         // declaration
         assert(`new Constructors` == def.declaration);
@@ -700,8 +707,11 @@ shared interface InterfaceConstructors<T> {
         new nonSharedCtor(T? t=null) {
             
         }
-        shared MemberClassConstructor<InterfaceConstructors<T>, Member, []|[T?]> nonShared => `nonSharedCtor`; 
-        shared ConstructorDeclaration nonSharedDecl => `new nonSharedCtor`;
+        shared Method<InterfaceConstructors<T>, Member, []|[T?]> nonShared {
+            assert(is Method<InterfaceConstructors<T>, Member, []|[T?]> r = `Member`.getConstructor("nonSharedCtor"));
+            return r;
+        }
+        shared CallableConstructorDeclaration nonSharedDecl => `new nonSharedCtor`;
     }
     class NonSharedMember {
         shared new (T? t=null) {
@@ -710,16 +720,19 @@ shared interface InterfaceConstructors<T> {
         new nonSharedCtor(T? t=null) {
             
         }
-        shared MemberClassConstructor<InterfaceConstructors<T>, NonSharedMember, []|[T?]> nonShared => `nonSharedCtor`; 
-        shared ConstructorDeclaration nonSharedDecl => `new nonSharedCtor`;
+        shared Method<InterfaceConstructors<T>, NonSharedMember, []|[T?]> nonShared {
+            assert(is Method<InterfaceConstructors<T>, NonSharedMember, []|[T?]> r = `NonSharedMember`.getConstructor("nonSahredCtor"));
+            return r;
+        }
+        shared CallableConstructorDeclaration nonSharedDecl => `new nonSharedCtor`;
     }
     shared void test() {
         assert(is T tt = "");
         value memberInst = Member();
         value nonSharedMemberInst = NonSharedMember();
         
-        assert(exists mmm = `Member`.getConstructor<[T?]|[]>(""));
-        assert(exists nsm = `NonSharedMember`.getConstructor<[T?]|[]>(""));
+        assert(is Method<InterfaceConstructors<T>,Member,[T?]|[]> mmm = `Member`.getConstructor(""));
+        assert(is Method<InterfaceConstructors<T>,NonSharedMember,[T?]|[]> nsm = `NonSharedMember`.getConstructor(""));
         
         assert(`new Member` == mmm.declaration);
         assert(memberInst.nonSharedDecl == memberInst.nonShared.declaration);

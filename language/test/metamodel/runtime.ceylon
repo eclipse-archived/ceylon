@@ -1659,11 +1659,11 @@ shared void checkConstructors2() {
     `ClassWithDefaultConstructor`("");
     `ClassWithDefaultConstructor`.apply("");
     `ClassWithDefaultConstructor`.namedApply{"s"-> ""};
-    assert(exists cwndc = `ClassWithNonDefaultConstructor`.getConstructor<[String]>("nnew"));
+    assert(is Function<ClassWithNonDefaultConstructor,[String]> cwndc = `ClassWithNonDefaultConstructor`.getConstructor("nnew"));
     cwndc("");
     cwndc.apply("");
     cwndc.namedApply{"s"-> ""};
-    assert(exists uc = `UninstantiableClass`.getConstructor<[String]>("nnew"));
+    assert(is Function<UninstantiableClass,[String]> uc = `UninstantiableClass`.getConstructor("nnew"));
     uc("");
     uc.apply("");
     uc.namedApply{"s"-> ""};

@@ -9,8 +9,7 @@ class Bug694 {
 @test
 shared void bug694() {
     try{
-        `Bug694`.getConstructor<[Float]>("oneArg");
-        assert(false);
+        assert(is Function<Bug694, [Float]> k =`Bug694`.getConstructor("oneArg"));
     }catch(Exception x){
         assert(is IncompatibleTypeException x);
     }
