@@ -2623,7 +2623,9 @@ public class Type extends Reference {
             // of their own so we set the extended type to the header
             Declaration hdr = 
                     getNativeHeader(dec);
-            if (hdr instanceof TypeDeclaration) {
+            if (hdr instanceof Constructor) {
+                et = ((Constructor) hdr).getExtendedType();
+            } else if (hdr instanceof TypeDeclaration) {
                 TypeDeclaration td = (TypeDeclaration) hdr;
                 et = td.getType();
             }
