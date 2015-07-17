@@ -25,7 +25,6 @@ import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isBooleanTrue;
 
 import java.util.List;
 
-import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
@@ -352,18 +351,6 @@ public class Decl {
     
     public static boolean isToplevel(Declaration decl) {
         return decl.isToplevel();
-    }
-    
-    public static boolean isImplemented(Tree.Declaration decl) {
-        return isImplemented(decl.getDeclarationModel());
-    }
-    
-    public static boolean isImplemented(Declaration decl) {
-        if (decl instanceof FunctionOrValue) {
-            return ((FunctionOrValue)decl).isImplemented();
-        } else {
-            return false;
-        }
     }
     
     public static boolean isDeferred(Tree.Declaration decl) {

@@ -508,7 +508,7 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
         // is no native implementation specifically for this backend
         boolean accept = NativeUtil.isForBackend(decl)
                 || (NativeUtil.isHeaderWithoutBackend(decl)
-                    && Decl.isImplemented(decl));
+                    && NativeUtil.isImplemented(decl));
         if (!accept)
             return;
         int annots = gen.checkCompilerAnnotations(decl, defs);
@@ -540,7 +540,7 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
         // is no native implementation specifically for this backend
         boolean accept = NativeUtil.isForBackend(decl)
                 || (NativeUtil.isHeaderWithoutBackend(decl)
-                    && Decl.isImplemented(decl));
+                    && NativeUtil.isImplemented(decl));
         if (!accept)
             return;
         int annots = gen.checkCompilerAnnotations(decl, defs);
@@ -577,7 +577,7 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
         // is no native implementation specifically for this backend
         boolean accept = NativeUtil.isForBackend(decl)
                 || (NativeUtil.isHeaderWithoutBackend(decl)
-                    && Decl.isImplemented(decl));
+                    && NativeUtil.isImplemented(decl));
         if (!accept)
             return;
         int annots = gen.checkCompilerAnnotations(decl, defs);
@@ -608,7 +608,7 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
         // is no native implementation specifically for this backend
         boolean accept = NativeUtil.isForBackend(decl)
                 || (NativeUtil.isHeaderWithoutBackend(decl)
-                        && Decl.isImplemented(decl));
+                        && NativeUtil.isImplemented(decl));
         if (!accept)
             return;
         int annots = gen.checkCompilerAnnotations(decl, defs);
