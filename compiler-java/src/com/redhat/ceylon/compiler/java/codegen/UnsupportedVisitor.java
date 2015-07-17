@@ -77,63 +77,63 @@ public class UnsupportedVisitor extends Visitor {
     }
 
     public void visit(Tree.AttributeGetterDefinition that) {
-        if (!NativeUtil.isForBackend(that))
+        if (!NativeUtil.isForBackend(that, Backend.Java))
             return;
         interopAnnotationTargeting(AnnotationUtil.outputs(that), that.getAnnotationList());
         super.visit(that);
     }
 
     public void visit(Tree.AttributeSetterDefinition that) {
-        if (!NativeUtil.isForBackend(that))
+        if (!NativeUtil.isForBackend(that, Backend.Java))
             return;
         interopAnnotationTargeting(AnnotationUtil.outputs(that), that.getAnnotationList());
         super.visit(that);
     }
     
     public void visit(Tree.AttributeDeclaration that) {
-        if (!NativeUtil.isForBackend(that))
+        if (!NativeUtil.isForBackend(that, Backend.Java))
             return;
         interopAnnotationTargeting(AnnotationUtil.outputs(that), that.getAnnotationList());
         super.visit(that);
     }
     
     public void visit(Tree.ObjectDefinition that) {
-        if (!NativeUtil.isForBackend(that))
+        if (!NativeUtil.isForBackend(that, Backend.Java))
             return;
         interopAnnotationTargeting(AnnotationUtil.outputs(that), that.getAnnotationList());
         super.visit(that);
     }
     
     public void visit(Tree.AnyClass that) {
-        if (!NativeUtil.isForBackend(that))
+        if (!NativeUtil.isForBackend(that, Backend.Java))
             return;
         interopAnnotationTargeting(AnnotationUtil.outputs(that), that.getAnnotationList());
         super.visit(that);
     }
     
     public void visit(Tree.Constructor that) {
-        if (!NativeUtil.isForBackend(that))
+        if (!NativeUtil.isForBackend(that, Backend.Java))
             return;
         interopAnnotationTargeting(AnnotationUtil.outputs(that), that.getAnnotationList());
         super.visit(that);
     }
     
     public void visit(Tree.Enumerated that) {
-        if (!NativeUtil.isForBackend(that))
+        if (!NativeUtil.isForBackend(that, Backend.Java))
             return;
         interopAnnotationTargeting(AnnotationUtil.outputs(that), that.getAnnotationList());
         super.visit(that);
     }
     
     public void visit(Tree.AnyInterface that) {
-        if (!NativeUtil.isForBackend(that))
+        if (!NativeUtil.isForBackend(that, Backend.Java))
             return;
         interopAnnotationTargeting(AnnotationUtil.outputs(that), that.getAnnotationList());
         super.visit(that);
     }
     
     public void visit(Tree.AnyMethod that) {
-        if (!NativeUtil.isForBackend(that))
+        if (!NativeUtil.isForBackend(that, Backend.Java))
             return;
         interopAnnotationTargeting(AnnotationUtil.outputs(that), that.getAnnotationList());
         super.visit(that);

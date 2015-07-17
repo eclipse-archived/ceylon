@@ -135,7 +135,7 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
             return;
         }
         // To accept this class it is either not native or native for this backend
-        boolean accept = NativeUtil.isForBackend(decl);
+        boolean accept = NativeUtil.isForBackend(decl, Backend.Java);
         if (!accept)
             return;
         int annots = gen.checkCompilerAnnotations(decl, defs);
@@ -486,7 +486,7 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
             return;
         }
         // To accept this object it is either not native or native for this backend
-        boolean accept = NativeUtil.isForBackend(decl);
+        boolean accept = NativeUtil.isForBackend(decl, Backend.Java);
         if (!accept)
             return;
         int annots = gen.checkCompilerAnnotations(decl, defs);
@@ -506,8 +506,8 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
         // To accept this method it is either not native, native for this
         // backend or it's a native header with an implementation and there
         // is no native implementation specifically for this backend
-        boolean accept = NativeUtil.isForBackend(decl)
-                || (NativeUtil.isHeaderWithoutBackend(decl)
+        boolean accept = NativeUtil.isForBackend(decl, Backend.Java)
+                || (NativeUtil.isHeaderWithoutBackend(decl, Backend.Java)
                     && NativeUtil.isImplemented(decl));
         if (!accept)
             return;
@@ -538,8 +538,8 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
         // To accept this method it is either not native, native for this
         // backend or it's a native header with an implementation and there
         // is no native implementation specifically for this backend
-        boolean accept = NativeUtil.isForBackend(decl)
-                || (NativeUtil.isHeaderWithoutBackend(decl)
+        boolean accept = NativeUtil.isForBackend(decl, Backend.Java)
+                || (NativeUtil.isHeaderWithoutBackend(decl, Backend.Java)
                     && NativeUtil.isImplemented(decl));
         if (!accept)
             return;
@@ -575,8 +575,8 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
         // To accept this method it is either not native, native for this
         // backend or it's a native header with an implementation and there
         // is no native implementation specifically for this backend
-        boolean accept = NativeUtil.isForBackend(decl)
-                || (NativeUtil.isHeaderWithoutBackend(decl)
+        boolean accept = NativeUtil.isForBackend(decl, Backend.Java)
+                || (NativeUtil.isHeaderWithoutBackend(decl, Backend.Java)
                     && NativeUtil.isImplemented(decl));
         if (!accept)
             return;
@@ -606,8 +606,8 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
         // To accept this method it is either not native, native for this
         // backend or it's a native header with an implementation and there
         // is no native implementation specifically for this backend
-        boolean accept = NativeUtil.isForBackend(decl)
-                || (NativeUtil.isHeaderWithoutBackend(decl)
+        boolean accept = NativeUtil.isForBackend(decl, Backend.Java)
+                || (NativeUtil.isHeaderWithoutBackend(decl, Backend.Java)
                         && NativeUtil.isImplemented(decl));
         if (!accept)
             return;
