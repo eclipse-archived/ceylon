@@ -5,6 +5,7 @@ import java.util.EnumSet;
 import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
+import com.redhat.ceylon.compiler.typechecker.util.NativeUtil;
 import com.redhat.ceylon.model.loader.model.OutputElement;
 
 public class UnsupportedVisitor extends Visitor {
@@ -76,63 +77,63 @@ public class UnsupportedVisitor extends Visitor {
     }
 
     public void visit(Tree.AttributeGetterDefinition that) {
-        if (!Decl.isForBackend(that))
+        if (!NativeUtil.isForBackend(that))
             return;
         interopAnnotationTargeting(AnnotationUtil.outputs(that), that.getAnnotationList());
         super.visit(that);
     }
 
     public void visit(Tree.AttributeSetterDefinition that) {
-        if (!Decl.isForBackend(that))
+        if (!NativeUtil.isForBackend(that))
             return;
         interopAnnotationTargeting(AnnotationUtil.outputs(that), that.getAnnotationList());
         super.visit(that);
     }
     
     public void visit(Tree.AttributeDeclaration that) {
-        if (!Decl.isForBackend(that))
+        if (!NativeUtil.isForBackend(that))
             return;
         interopAnnotationTargeting(AnnotationUtil.outputs(that), that.getAnnotationList());
         super.visit(that);
     }
     
     public void visit(Tree.ObjectDefinition that) {
-        if (!Decl.isForBackend(that))
+        if (!NativeUtil.isForBackend(that))
             return;
         interopAnnotationTargeting(AnnotationUtil.outputs(that), that.getAnnotationList());
         super.visit(that);
     }
     
     public void visit(Tree.AnyClass that) {
-        if (!Decl.isForBackend(that))
+        if (!NativeUtil.isForBackend(that))
             return;
         interopAnnotationTargeting(AnnotationUtil.outputs(that), that.getAnnotationList());
         super.visit(that);
     }
     
     public void visit(Tree.Constructor that) {
-        if (!Decl.isForBackend(that))
+        if (!NativeUtil.isForBackend(that))
             return;
         interopAnnotationTargeting(AnnotationUtil.outputs(that), that.getAnnotationList());
         super.visit(that);
     }
     
     public void visit(Tree.Enumerated that) {
-        if (!Decl.isForBackend(that))
+        if (!NativeUtil.isForBackend(that))
             return;
         interopAnnotationTargeting(AnnotationUtil.outputs(that), that.getAnnotationList());
         super.visit(that);
     }
     
     public void visit(Tree.AnyInterface that) {
-        if (!Decl.isForBackend(that))
+        if (!NativeUtil.isForBackend(that))
             return;
         interopAnnotationTargeting(AnnotationUtil.outputs(that), that.getAnnotationList());
         super.visit(that);
     }
     
     public void visit(Tree.AnyMethod that) {
-        if (!Decl.isForBackend(that))
+        if (!NativeUtil.isForBackend(that))
             return;
         interopAnnotationTargeting(AnnotationUtil.outputs(that), that.getAnnotationList());
         super.visit(that);

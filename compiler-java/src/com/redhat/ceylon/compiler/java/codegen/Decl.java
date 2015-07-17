@@ -354,48 +354,6 @@ public class Decl {
         return decl.isToplevel();
     }
     
-    public static boolean isNative(Tree.Declaration decl) {
-        return isNative(decl.getDeclarationModel());
-    }
-    
-    public static boolean isNative(Declaration decl) {
-        return decl.isNative();
-    }
-    
-    public static boolean isNativeHeader(Tree.Declaration decl) {
-        return isNativeHeader(decl.getDeclarationModel());
-    }
-    
-    public static boolean isNativeHeader(Declaration decl) {
-        return decl.isNativeHeader();
-    }
-    
-    public static String getNative(Tree.Declaration decl) {
-        return getNative(decl.getDeclarationModel());
-    }
-    
-    public static String getNative(Declaration decl) {
-        return decl.getNativeBackend();
-    }
-    
-    public static boolean isForBackend(Tree.Declaration decl) {
-        return isForBackend(decl.getDeclarationModel());
-    }
-    
-    public static boolean isForBackend(Declaration decl) {
-        String backend = getNative(decl);
-        return backend == null || backend.equals(Backend.Java.nativeAnnotation);
-    }
-    
-    public static boolean isHeaderWithoutBackend(Tree.Declaration decl) {
-        return isHeaderWithoutBackend(decl.getDeclarationModel());
-    }
-    
-    public static boolean isHeaderWithoutBackend(Declaration decl) {
-        return decl.isNativeHeader()
-                && (ModelUtil.getNativeDeclaration(decl, Backend.Java) == null);
-    }
-    
     public static boolean isImplemented(Tree.Declaration decl) {
         return isImplemented(decl.getDeclarationModel());
     }
