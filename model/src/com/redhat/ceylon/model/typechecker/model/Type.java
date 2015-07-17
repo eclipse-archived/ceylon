@@ -5,7 +5,6 @@ import static com.redhat.ceylon.model.typechecker.model.ModelUtil.NO_TYPE_ARGS;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.addToIntersection;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.addToUnion;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.canonicalIntersection;
-import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getNativeHeader;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getTypeArgumentMap;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getVarianceMap;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.intersection;
