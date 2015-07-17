@@ -26,13 +26,13 @@ interface IBug2062<out Element> of SBug2062<Element>
     shared formal SBug2062<Element|Other> child<Other>([Other +] others);
     
     shared default void append<Other>(SBug2062<Other> other) {
-        IBug2062<Element|Other> v = if(nonempty others = other.elements) // error: incompatible types
+        IBug2062<Element|Other> v = if(nonempty others = (other.elements of [Other*])) // error: incompatible types
             then child(others) 
             else this;
         IBug2062<Element|Other> v2 = switch(otherElems = other.elements) 
             case (is [Element+]) child(otherElems)
             else this;
-        ClassOrInterface<IBug2062<Element>|SBug2062<Other>> x = if (nonempty others = other.elements)
+        ClassOrInterface<IBug2062<Element>|SBug2062<Other>> x = if (nonempty others = (other.elements of [Other*]))
             then `IBug2062<Element>` 
             else `SBug2062<Other>`;
         ClassOrInterface<IBug2062<Element>|SBug2062<Other>> x2 = switch(otherElems = other.elements)

@@ -43,12 +43,12 @@ final class IBug2062$impl<Element> {
             {
                 .com.redhat.ceylon.compiler.java.test.issues.bug20xx.IBug2062<? extends Element> $ceylontmp$ifResult$4;
                 {
-                    .ceylon.language.Sequential sel$5 = other.getElements();
-                    if (sel$5 instanceof .ceylon.language.Sequence && .com.redhat.ceylon.compiler.java.Util.isReified(sel$5, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequence.class, $reified$Element))) {
-                        final .java.lang.Object otherElems$7 = (.java.lang.Object)sel$5;
-                        $ceylontmp$ifResult$4 = (.com.redhat.ceylon.compiler.java.test.issues.bug20xx.IBug2062<? extends Element>)$this.<Element>child($reified$Element, (.ceylon.language.Sequence<? extends Element>)(.ceylon.language.Sequence)otherElems$7);
+                    .ceylon.language.Sequence sel$5 = other.getElements();
+                    if (.com.redhat.ceylon.compiler.java.Util.isReified(sel$5, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequence.class, $reified$Element))) {
+                        final .ceylon.language.Sequence otherElems$7 = (.ceylon.language.Sequence)sel$5;
+                        $ceylontmp$ifResult$4 = (.com.redhat.ceylon.compiler.java.test.issues.bug20xx.IBug2062<? extends Element>)$this.<.java.lang.Object>child(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.intersection($reified$Other, $reified$Element), (.ceylon.language.Sequence<? extends .java.lang.Object>)otherElems$7);
                     } else {
-                        final .ceylon.language.Sequential<? extends Other> otherElems$6 = (.ceylon.language.Sequential)sel$5;
+                        final .ceylon.language.Sequence<? extends Other> otherElems$6 = (.ceylon.language.Sequence)sel$5;
                         $ceylontmp$ifResult$4 = $this;
                     }
                 }
@@ -74,12 +74,12 @@ final class IBug2062$impl<Element> {
             {
                 .java.lang.Object $ceylontmp$ifResult$12;
                 {
-                    .ceylon.language.Sequential sel$13 = other.getElements();
-                    if (sel$13 instanceof .ceylon.language.Sequence && .com.redhat.ceylon.compiler.java.Util.isReified(sel$13, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequence.class, $reified$Element))) {
-                        final .java.lang.Object otherElems$15 = (.java.lang.Object)sel$13;
+                    .ceylon.language.Sequence sel$13 = other.getElements();
+                    if (.com.redhat.ceylon.compiler.java.Util.isReified(sel$13, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequence.class, $reified$Element))) {
+                        final .ceylon.language.Sequence otherElems$15 = (.ceylon.language.Sequence)sel$13;
                         $ceylontmp$ifResult$12 = (.ceylon.language.meta.model.Interface<? extends .com.redhat.ceylon.compiler.java.test.issues.bug20xx.IBug2062<? extends Element>>).ceylon.language.meta.typeLiteral_.typeLiteral(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug20xx.IBug2062.class, $reified$Element));
                     } else {
-                        final .ceylon.language.Sequential<? extends Other> otherElems$14 = (.ceylon.language.Sequential)sel$13;
+                        final .ceylon.language.Sequence<? extends Other> otherElems$14 = (.ceylon.language.Sequence)sel$13;
                         $ceylontmp$ifResult$12 = (.ceylon.language.meta.model.Class<? extends .com.redhat.ceylon.compiler.java.test.issues.bug20xx.SBug2062<? extends Other>, ? super .ceylon.language.Sequence<? extends .ceylon.language.Sequence<? extends Other>>>).ceylon.language.meta.typeLiteral_.typeLiteral(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug20xx.SBug2062.class, $reified$Other));
                     }
                 }
