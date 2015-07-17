@@ -4281,10 +4281,21 @@ public abstract class AbstractTransformer implements Transformation {
                 if (declaration.getSelfType() != null 
                         && declaration.getSelfType().getDeclaration() instanceof TypeParameter // of TypeArg
                         && declaration.getSelfType().isSubtypeOf(declaration.getType()) // given TypeArg satisfies SelfType<TypeArg>
-                        && testedType.getTypeArguments().get(declaration.getSelfType().getDeclaration()).getDeclaration() instanceof ClassOrInterface) {
-                    // "is SelfType<ClassOrInterface>" can be written "is ClassOrInterface" 
-                    return makeTypeTest(typeTester, firstTimeExpr, varName, testedType.getTypeArguments().get(declaration.getSelfType().getDeclaration()), expressionType);
-                } else if (canOptimiseReifiedTypeTest(testedType)) {
+                        ){
+                    Type selfTypeArg = testedType.getTypeArguments().get(declaration.getSelfType().getDeclaration());
+                    if(selfTypeArg.getDeclaration() instanceof ClassOrInterface) {
+                        // first check if the type is inhabited or not
+                        if(selfTypeArg.getDeclaration().inherits(declaration)){
+                            // "is SelfType<ClassOrInterface>" can be written "is ClassOrInterface" 
+                            return makeTypeTest(typeTester, firstTimeExpr, varName, selfTypeArg, expressionType);
+                        }else{
+                            // always false, for example Comparable<Anything> is uninhabited because Anything does not inherit from Comparable
+                            return typeTester.eval(varExpr, false);
+                        }
+                    }
+                    // if not, keep trying
+                } 
+                if (canOptimiseReifiedTypeTest(testedType)) {
                     // Use an instanceof
                     return typeTester.isInstanceof(varExpr, testedType);
                 } else {
