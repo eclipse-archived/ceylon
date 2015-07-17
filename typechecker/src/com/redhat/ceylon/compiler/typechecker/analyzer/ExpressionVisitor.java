@@ -52,6 +52,7 @@ import static com.redhat.ceylon.model.typechecker.model.ModelUtil.intersectionTy
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isAbstraction;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isConstructor;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isImplemented;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isInNativeContainer;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isOverloadedVersion;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isTypeUnknown;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.typeParametersAsArgList;
@@ -201,7 +202,9 @@ public class ExpressionVisitor extends Visitor {
         unit = that.getUnit();
         Backend ib = inBackend;
         String nat = unit.getPackage().getModule().getNativeBackend();
-        inBackend = Backend.fromAnnotation(nat);
+        if (nat != null) {
+            inBackend = Backend.fromAnnotation(nat);
+        }
         super.visit(that);
         inBackend = ib;
     }
@@ -1991,7 +1994,9 @@ public class ExpressionVisitor extends Visitor {
     @Override public void visit(Tree.Declaration that) {
         Backend ib = inBackend;
         String nat = that.getDeclarationModel().getNativeBackend();
-        inBackend = Backend.fromAnnotation(nat);
+        if (nat != null) {
+            inBackend = Backend.fromAnnotation(nat);
+        }
         super.visit(that);
         inBackend = ib;
     }
@@ -6022,7 +6027,7 @@ public class ExpressionVisitor extends Visitor {
         }
         else {
             member = (TypedDeclaration) 
-                    handleAbstractionOrHeader(member, that);
+                    handleAbstractionOrHeader(member, that, error);
             that.setDeclaration(member);
             if (error) {
                 if (checkConcreteConstructor(member, that)) {
@@ -6253,7 +6258,7 @@ public class ExpressionVisitor extends Visitor {
             }
             else {
                 member = (TypedDeclaration) 
-                        handleAbstractionOrHeader(member, that);
+                        handleAbstractionOrHeader(member, that, error);
                 that.setDeclaration(member);
                 resetSuperReference(that);
                 boolean selfReference = 
@@ -6604,7 +6609,7 @@ public class ExpressionVisitor extends Visitor {
         }
         else {
             type = (TypeDeclaration) 
-                    handleAbstractionOrHeader(type, that);
+                    handleAbstractionOrHeader(type, that, error);
             that.setDeclaration(type);
             if (error) {
                 if (checkConcreteClass(type, that)) {
@@ -6962,7 +6967,7 @@ public class ExpressionVisitor extends Visitor {
             }
             else {
                 type = (TypeDeclaration) 
-                        handleAbstractionOrHeader(type, that);
+                        handleAbstractionOrHeader(type, that, error);
                 that.setDeclaration(type);
                 resetSuperReference(that);
                 if (!isSelfReference(primary) && 
@@ -8977,31 +8982,55 @@ public class ExpressionVisitor extends Visitor {
     }*/
     
     private Declaration handleAbstractionOrHeader(Declaration dec, 
-            Tree.MemberOrTypeExpression that) {
+            Tree.MemberOrTypeExpression that, boolean error) {
+        Declaration impl = dec;
+        Declaration hdr = null;
+        Module ctxModule = that.getUnit().getPackage().getModule();
+        Module decModule = dec.getUnit().getPackage().getModule();
         if (dec.isNative()) {
-            if (!backendSupport.supportsBackend(Backend.None)) {
-                BackendSupport backend = 
-                        inBackend == null ?
-                                backendSupport : 
-                                inBackend.backendSupport;
-                Declaration impl;
-                Declaration hdr;
-                if (dec.isNativeHeader()) {
-                    hdr = dec;
-                    impl = getNativeDeclaration(hdr, backend);
-                }
-                else {
-                    hdr = getNativeHeader(dec);
-                    if (hdr == null || backend.supportsBackend(Backend.fromAnnotation(dec.getNativeBackend()))) {
-                        impl = dec;
-                    }
-                    else {
+            BackendSupport backend = 
+                    inBackend == null ?
+                            backendSupport : 
+                            inBackend.backendSupport;
+            if (dec.isNativeHeader()) {
+                hdr = dec;
+                impl = getNativeDeclaration(hdr, backend);
+            }
+            else {
+                Declaration tmp = getNativeHeader(dec);
+                if (tmp != dec) {
+                    hdr = tmp;
+                    if (hdr != null && !backend.supportsBackend(Backend.fromAnnotation(dec.getNativeBackend()))) {
                         impl = getNativeDeclaration(hdr, backend);
                     }
                 }
-                if (impl==null && hdr != null) {
-                    Module module = dec.getUnit().getPackage().getModule();
-                    if (!isImplemented(hdr) && !module.equals(module.getLanguageModule())) {
+            }
+        }
+        if (error
+                && impl != null
+                && (dec.isToplevel() || dec.isMember())
+                && that.getScope() instanceof Declaration
+                && (ctxModule != decModule
+                        && decModule.isNative()
+                    || ctxModule == decModule
+                        && dec.isNative()
+                        && hdr == null
+                        && !isInNativeContainer((Declaration)that.getScope()))) {
+            if ((hdr == null || !isImplemented(hdr))
+                    && (inBackend == null
+                            || impl.isNative() && !impl.getNativeBackend().equals(inBackend.nativeAnnotation)
+                            || decModule.isNative() && !decModule.getNativeBackend().equals(inBackend.nativeAnnotation))) {
+                that.addError("non-native declaration: '" +
+                        ((Declaration)that.getScope()).getName(unit) +
+                        "' accesses native code: '" +
+                        dec.getName(unit) +
+                        "', mark it or the module native");
+            }
+        }
+        if (dec.isNative()) {
+            if (!backendSupport.supportsBackend(Backend.None)) {
+                if (error && impl == null && hdr != null) {
+                    if (!isImplemented(hdr) && !decModule.equals(decModule.getLanguageModule())) {
                         that.addError("no native implementation for backend: native '"
                                 + dec.getName(unit) +
                                 "' is not implemented for one or more backends");
