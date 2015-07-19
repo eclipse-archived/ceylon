@@ -79,14 +79,7 @@ public class TypeUtils {
                     printTypeArguments(node, pt.getTypeArguments(), gen, skipSelfDecl, pt.getVarianceOverrides());
                 }
                 SiteVariance siteVariance = overrides == null ? null : overrides.get(e.getKey());
-                if (siteVariance != null) {
-                    gen.out(",", MetamodelGenerator.KEY_US_VARIANCE, ":");
-                    if (siteVariance == SiteVariance.IN) {
-                        gen.out("'in'");
-                    } else {
-                        gen.out("'out'");
-                    }
-                }
+                printSiteVariance(siteVariance, gen);
                 if (closeBracket) {
                     gen.out("}");
                 }
@@ -525,7 +518,7 @@ public class TypeUtils {
                 gen.out(MetamodelGenerator.KEY_DEFAULT, ":1,");
             }
             gen.out(MetamodelGenerator.KEY_TYPE, ":");
-            metamodelTypeNameOrList(resolveTargs, n, gen.getCurrentPackage(), ptype, gen);
+            metamodelTypeNameOrList(resolveTargs, n, gen.getCurrentPackage(), ptype, null, gen);
             if (p.getModel().getAnnotations() != null && !p.getModel().getAnnotations().isEmpty()) {
                 new ModelAnnotationGenerator(gen, p.getModel(), n).generateAnnotations();
             }
@@ -642,7 +635,7 @@ public class TypeUtils {
                     for (Type mt : _tuple.getCaseTypes()) {
                         if (mt.isTuple()) {
                             metamodelTypeNameOrList(resolveTargs, node, gen.getCurrentPackage(),
-                                    mt.getTypeArgumentList().get(1), gen);
+                                    mt.getTypeArgumentList().get(1), null, gen);
                             _tuple = mt.getTypeArgumentList().get(2);
                             break;
                         }
@@ -652,7 +645,7 @@ public class TypeUtils {
                     }
                 } else {
                     metamodelTypeNameOrList(resolveTargs, node, gen.getCurrentPackage(),
-                            _tuple.getTypeArgumentList().get(1), gen);
+                            _tuple.getTypeArgumentList().get(1), null, gen);
                     _tuple = _tuple.getTypeArgumentList().get(2);
                 }
             } else if (isSequential(_tuple)) {
@@ -666,16 +659,18 @@ public class TypeUtils {
                 }
                 //Handle Sequence, for nonempty variadic parameters
                 if (nameAndMetatype) {
-                    metamodelTypeNameOrList(resolveTargs, node, gen.getCurrentPackage(), _t2.getTypeArgumentList().get(0), gen);
+                    metamodelTypeNameOrList(resolveTargs, node, gen.getCurrentPackage(),
+                            _t2.getTypeArgumentList().get(0), null, gen);
                     gen.out(",seq:", Integer.toString(seq));
                 } else {
                     gen.out(gen.getClAlias(), "mkseq$(");
-                    metamodelTypeNameOrList(resolveTargs, node, gen.getCurrentPackage(), _t2.getTypeArgumentList().get(0), gen);
+                    metamodelTypeNameOrList(resolveTargs, node, gen.getCurrentPackage(),
+                            _t2.getTypeArgumentList().get(0), null, gen);
                     gen.out(",", Integer.toString(seq), ")");
                 }
                 _tuple = null;
             } else if (_tuple.isUnion()) {
-                metamodelTypeNameOrList(resolveTargs, node, gen.getCurrentPackage(), _tuple, gen);
+                metamodelTypeNameOrList(resolveTargs, node, gen.getCurrentPackage(), _tuple, null, gen);
                 _tuple=null;
             } else {
                 gen.out("\n/*WARNING3! Tuple is actually ", _tuple.asQualifiedString(), "*/");
@@ -804,7 +799,8 @@ public class TypeUtils {
             Class _cd = (Class)d;
             if (_cd.getExtendedType() != null) {
                 gen.out(",'super':");
-                metamodelTypeNameOrList(false, that, d.getUnit().getPackage(), _cd.getExtendedType(), gen);
+                metamodelTypeNameOrList(false, that, d.getUnit().getPackage(),
+                        _cd.getExtendedType(), null, gen);
             }
             //Parameter types
             if (_cd.getParameterList()!=null) {
@@ -823,7 +819,8 @@ public class TypeUtils {
 
             gen.out(",", MetamodelGenerator.KEY_TYPE, ":");
             //This needs a new setting to resolve types but not type parameters
-            metamodelTypeNameOrList(false, that, d.getUnit().getPackage(), ((FunctionOrValue)d).getType(), gen);
+            metamodelTypeNameOrList(false, that, d.getUnit().getPackage(),
+                    ((FunctionOrValue)d).getType(), null, gen);
             if (d instanceof Function) {
                 gen.out(",", MetamodelGenerator.KEY_PARAMS, ":");
                 //Parameter types of the first parameter list
@@ -896,7 +893,7 @@ public class TypeUtils {
             for (Type st : satisfies) {
                 if (!first)gen.out(",");
                 first=false;
-                metamodelTypeNameOrList(false, that, d.getUnit().getPackage(), st, gen);
+                metamodelTypeNameOrList(false, that, d.getUnit().getPackage(), st, null, gen);
             }
             gen.out("]");
         }
@@ -909,7 +906,7 @@ public class TypeUtils {
                 if (st.getDeclaration().isAnonymous()) {
                     gen.out(gen.getNames().getter(st.getDeclaration(), true));
                 } else {
-                    metamodelTypeNameOrList(false, that, d.getUnit().getPackage(), st, gen);
+                    metamodelTypeNameOrList(false, that, d.getUnit().getPackage(), st, null, gen);
                 }
             }
             gen.out("]");
@@ -945,7 +942,7 @@ public class TypeUtils {
                 for (Type st : typelist) {
                     if (!first2)gen.out(",");
                     first2=false;
-                    metamodelTypeNameOrList(false, node, d.getUnit().getPackage(), st, gen);
+                    metamodelTypeNameOrList(false, node, d.getUnit().getPackage(), st, null, gen);
                 }
                 gen.out("]");
                 comma = true;
@@ -958,7 +955,7 @@ public class TypeUtils {
                 for (Type st : typelist) {
                     if (!first3)gen.out(",");
                     first3=false;
-                    metamodelTypeNameOrList(false, node, d.getUnit().getPackage(), st, gen);
+                    metamodelTypeNameOrList(false, node, d.getUnit().getPackage(), st, null, gen);
                 }
                 gen.out("]");
                 comma = true;
@@ -966,7 +963,8 @@ public class TypeUtils {
             if (tp.getDefaultTypeArgument() != null) {
                 if (comma)gen.out(",");
                 gen.out("def:");
-                metamodelTypeNameOrList(false, node, d.getUnit().getPackage(), tp.getDefaultTypeArgument(), gen);
+                metamodelTypeNameOrList(false, node, d.getUnit().getPackage(),
+                        tp.getDefaultTypeArgument(), null, gen);
             }
             gen.out("}");
         }
@@ -985,7 +983,7 @@ public class TypeUtils {
      * @param gen The generator to use for output. */
     static void metamodelTypeNameOrList(final boolean resolveTargsFromScope, final Node node,
             final com.redhat.ceylon.model.typechecker.model.Package pkg,
-            Type pt, GenerateJsVisitor gen) {
+            Type pt, SiteVariance useSiteVariance, GenerateJsVisitor gen) {
         if (pt == null) {
             //In dynamic blocks we sometimes get a null producedType
             pt = node.getUnit().getAnythingType();
@@ -1014,21 +1012,33 @@ public class TypeUtils {
                 final Type qt = type instanceof Constructor ? pt.getQualifyingType() : pt;
                 outputQualifiedTypename(node, gen.isImported(pkg, type), qt, gen, false);
                 //Type Parameters
-                if (!pt.getTypeArgumentList().isEmpty()) {
+                if (!pt.getTypeArguments().isEmpty()) {
                     gen.out(",a:{");
                     boolean first = true;
                     for (Map.Entry<TypeParameter, Type> e : pt.getTypeArguments().entrySet()) {
                         if (first) first=false; else gen.out(",");
                         gen.out(e.getKey().getNameAsString(), "$", e.getKey().getDeclaration().getName(), ":");
-                        metamodelTypeNameOrList(resolveTargsFromScope, node, pkg, e.getValue(), gen);
+                        metamodelTypeNameOrList(resolveTargsFromScope, node, pkg, e.getValue(),
+                                pt.getVarianceOverrides().get(e.getKey()), gen);
                     }
                     gen.out("}");
                 }
+                printSiteVariance(useSiteVariance, gen);
                 gen.out("}");
             }
         }
     }
 
+    private static void printSiteVariance(SiteVariance sv, GenerateJsVisitor gen) {
+        if (sv != null) {
+            gen.out(",", MetamodelGenerator.KEY_US_VARIANCE, ":");
+            if (sv == SiteVariance.IN) {
+                gen.out("'in'");
+            } else {
+                gen.out("'out'");
+            }
+        }
+    }
     /** Appends an object with the type's type and list of union/intersection types; works only with union,
      * intersection and tuple types.
      * @return true if output was generated, false otherwise (it was a regular type) */
@@ -1073,7 +1083,7 @@ public class TypeUtils {
         boolean first = true;
         for (Type t : subs) {
             if (!first) gen.out(",");
-            metamodelTypeNameOrList(resolveTargs, node, pkg, t, gen);
+            metamodelTypeNameOrList(resolveTargs, node, pkg, t, null, gen);
             first = false;
         }
         gen.out("]}");
