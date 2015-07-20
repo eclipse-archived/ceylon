@@ -1032,20 +1032,17 @@ public class ModelUtil {
     private static void aggregateTypeArguments(
             Map<TypeParameter, Type> map, 
             Type dt, Declaration d) {
-        while (dt!=null) {
-            if (d.isClassOrInterfaceMember()) {
-                TypeDeclaration declaringType = 
-                        (TypeDeclaration) 
-                            d.getContainer();
-                Type aqt = dt.getSupertype(declaringType);
-                if (aqt==null) {
-                    break;
-                }
-                map.putAll(aqt.getTypeArguments());
-                dt = aqt.getQualifyingType();
-                d = aqt.getDeclaration();
-            }else
+        while (dt!=null && d.isClassOrInterfaceMember()) {
+            TypeDeclaration declaringType = 
+                    (TypeDeclaration) 
+                        d.getContainer();
+            Type aqt = dt.getSupertype(declaringType);
+            if (aqt==null) {
                 break;
+            }
+            map.putAll(aqt.getTypeArguments());
+            dt = aqt.getQualifyingType();
+            d = aqt.getDeclaration();
         }
     }
     
