@@ -13,7 +13,8 @@ public class MainForLanguage {
      * placed under a <nomodule> module.
      */
     public static void main(String[] args) throws Exception {
-        ClosableVirtualFile latestZippedLanguageSourceFile = MainHelper.getLatestZippedLanguageSourceFile();
+        ClosableVirtualFile latestZippedLanguageSourceFile = 
+                MainHelper.getLatestZippedLanguageSourceFile();
         new TypeCheckerBuilder()
                 .verbose(false)
                 .addSrcDirectory(latestZippedLanguageSourceFile)

@@ -25,15 +25,26 @@ public class MainForTest {
                 .addSrcDirectory( new File("test/main") )
                 .getTypeChecker();
         typeChecker.process();
-        Tree.CompilationUnit compilationUnit = typeChecker.getPhasedUnitFromRelativePath("ceylon/language/Object.ceylon").getCompilationUnit();
+        Tree.CompilationUnit compilationUnit = 
+                typeChecker.getPhasedUnitFromRelativePath(
+                        "ceylon/language/Object.ceylon")
+                    .getCompilationUnit();
         if ( compilationUnit == null ) {
-            throw new RuntimeException("Failed to pass getCompilationUnitFromRelativePath for files in .src");
+            throw new RuntimeException(
+                    "Failed to pass getCompilationUnitFromRelativePath for files in .src");
         }
-        compilationUnit = typeChecker.getPhasedUnitFromRelativePath("capture/Capture.ceylon").getCompilationUnit();
+        compilationUnit = 
+                typeChecker.getPhasedUnitFromRelativePath(
+                        "capture/Capture.ceylon")
+                    .getCompilationUnit();
         if ( compilationUnit == null ) {
-            throw new RuntimeException("Failed to pass getCompilationUnitFromRelativePath for files in real src dir");
+            throw new RuntimeException(
+                    "Failed to pass getCompilationUnitFromRelativePath for files in real src dir");
         }
-        compilationUnit = typeChecker.getPhasedUnitFromRelativePath("com/redhat/sample/multisource/Boo.ceylon").getCompilationUnit();
+        compilationUnit = 
+                typeChecker.getPhasedUnitFromRelativePath(
+                        "com/redhat/sample/multisource/Boo.ceylon")
+                    .getCompilationUnit();
         Module module = compilationUnit.getUnit().getPackage().getModule();
         if ( !"com.redhat.sample.multisource".equals( module.getNameAsString() ) ) {
             throw new RuntimeException("Unable to extract module name");
@@ -46,9 +57,13 @@ public class MainForTest {
                 .addSrcDirectory( new File("test/main/capture") )
                 .getTypeChecker();
         typeChecker.process();
-        compilationUnit = typeChecker.getPhasedUnitFromRelativePath("Capture.ceylon").getCompilationUnit();
+        compilationUnit = 
+                typeChecker.getPhasedUnitFromRelativePath(
+                        "Capture.ceylon")
+                    .getCompilationUnit();
         if ( compilationUnit == null ) {
-            throw new RuntimeException("Failed to pass getCompilationUnitFromRelativePath for top level files (no package) in real src dir");
+            throw new RuntimeException(
+                    "Failed to pass getCompilationUnitFromRelativePath for top level files (no package) in real src dir");
         }
 
         typeChecker = new TypeCheckerBuilder()
@@ -59,7 +74,8 @@ public class MainForTest {
                 .getTypeChecker();
         typeChecker.process();
 
-        ClosableVirtualFile latestZippedLanguageSourceFile = MainHelper.getLatestZippedLanguageSourceFile();
+        ClosableVirtualFile latestZippedLanguageSourceFile = 
+                MainHelper.getLatestZippedLanguageSourceFile();
         typeChecker = new TypeCheckerBuilder()
                 .verbose(false)
                 .addSrcDirectory( latestZippedLanguageSourceFile )

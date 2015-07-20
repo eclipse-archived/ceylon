@@ -24,10 +24,12 @@ public class Main {
             return;
         }
         
-        boolean noisy = "true".equals(System.getProperties().getProperty("verbose"));
-        //ClosableVirtualFile latestZippedLanguageSourceFile = MainHelper.getLatestZippedLanguageSourceFile();
+        String verbose = 
+                System.getProperties().getProperty("verbose");
+        //ClosableVirtualFile latestZippedLanguageSourceFile = 
+        //        MainHelper.getLatestZippedLanguageSourceFile();
         TypeCheckerBuilder tcb = new TypeCheckerBuilder()
-                .verbose(noisy)
+                .verbose("true".equals(verbose))
                 .statistics(true);
                 //.addSrcDirectory(latestZippedLanguageSourceFile);
         for (String path: args) {
