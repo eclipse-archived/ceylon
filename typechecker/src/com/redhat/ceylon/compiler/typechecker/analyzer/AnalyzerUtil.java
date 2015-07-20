@@ -57,10 +57,11 @@ public class AnalyzerUtil {
     
     static final List<Type> NO_TYPE_ARGS = emptyList();
     
-    static TypedDeclaration getTypedMember(TypeDeclaration d, String name,
-            List<Type> signature, boolean ellipsis, Unit unit) {
+    static TypedDeclaration getTypedMember(TypeDeclaration td, 
+            String name, List<Type> signature, boolean ellipsis, 
+            Unit unit) {
         Declaration member = 
-                d.getMember(name, unit, signature, ellipsis);
+                td.getMember(name, unit, signature, ellipsis);
         if (member instanceof TypedDeclaration) {
             return (TypedDeclaration) member;
         }
@@ -69,10 +70,11 @@ public class AnalyzerUtil {
         }
     }
 
-    static TypeDeclaration getTypeMember(TypeDeclaration d, String name,
-            List<Type> signature, boolean ellipsis, Unit unit) {
+    static TypeDeclaration getTypeMember(TypeDeclaration td, 
+            String name, List<Type> signature, boolean ellipsis, 
+            Unit unit) {
         Declaration member = 
-                d.getMember(name, unit, signature, ellipsis);
+                td.getMember(name, unit, signature, ellipsis);
         if (member instanceof TypeDeclaration) {
             return (TypeDeclaration) member;
         }
@@ -96,9 +98,11 @@ public class AnalyzerUtil {
                 // If we couldn't find the declaration in the current
                 // scope and the scope is a native implementation we
                 // will try again with its header
-                Declaration decl = (Declaration)scope;
-                if (decl.isNative() && !decl.isNativeHeader()) {
-                    result = getNativeHeader(decl.getScope(), name);
+                Declaration decl = (Declaration) scope;
+                if (decl.isNative() && 
+                        !decl.isNativeHeader()) {
+                    Scope ds = decl.getScope();
+                    result = getNativeHeader(ds, name);
                 }
             }
         }
@@ -122,8 +126,10 @@ public class AnalyzerUtil {
                 // scope and the scope is a native implementation we
                 // will try again with its header
                 Declaration decl = (Declaration)scope;
-                if (decl.isNative() && !decl.isNativeHeader()) {
-                    result = getNativeHeader(decl.getScope(), name);
+                if (decl.isNative() && 
+                        !decl.isNativeHeader()) {
+                    Scope ds = decl.getScope();
+                    result = getNativeHeader(ds, name);
                 }
             }
         }
@@ -139,12 +145,12 @@ public class AnalyzerUtil {
         }
     }
 
-    static TypedDeclaration getPackageTypedDeclaration(String name, 
-            List<Type> signature, boolean ellipsis,
+    static TypedDeclaration getPackageTypedDeclaration(
+            String name, List<Type> signature, boolean ellipsis,
             Unit unit) {
         Declaration result = 
-                unit.getPackage().getMember(name, 
-                        signature, ellipsis);
+                unit.getPackage()
+                    .getMember(name, signature, ellipsis);
         if (result instanceof TypedDeclaration) {
             return (TypedDeclaration) result;
         }
@@ -153,12 +159,12 @@ public class AnalyzerUtil {
         }
     }
     
-    static TypeDeclaration getPackageTypeDeclaration(String name, 
-            List<Type> signature, boolean ellipsis,
+    static TypeDeclaration getPackageTypeDeclaration(
+            String name, List<Type> signature, boolean ellipsis,
             Unit unit) {
         Declaration result = 
-                unit.getPackage().getMember(name, 
-                        signature, ellipsis);
+                unit.getPackage()
+                    .getMember(name, signature, ellipsis);
         if (result instanceof TypeDeclaration) {
             return (TypeDeclaration) result;
         }
@@ -281,18 +287,17 @@ public class AnalyzerUtil {
             //for missing arguments, use the default args
             for (int i=typeArguments.size(); i<size; i++) {
                 TypeParameter tp = typeParameters.get(i);
-            	Type dta = 
-            	        tp.getDefaultTypeArgument();
-            	if (dta==null || 
+                Declaration tpd = tp.getDeclaration();
+            	Type dta = tp.getDefaultTypeArgument();
+                if (dta==null || 
             	        //necessary to prevent stack overflow
             	        //for illegal recursively-defined
             	        //default type argument
-            	        dta.involvesDeclaration(tp.getDeclaration())) {
+            	        dta.involvesDeclaration(tpd)) {
             		break;
             	}
             	else {
-            	    Type da = 
-            	            dta.substitute(typeArgs, vars);
+            	    Type da = dta.substitute(typeArgs, vars);
             		typeArguments.add(da);
             		typeArgs.put(tp, da);
             	}
@@ -306,8 +311,10 @@ public class AnalyzerUtil {
         }
     }
     
-    public static Tree.Statement getLastExecutableStatement(Tree.ClassBody that) {
-        List<Tree.Statement> statements = that.getStatements();
+    public static Tree.Statement getLastExecutableStatement(
+            Tree.ClassBody that) {
+        List<Tree.Statement> statements = 
+                that.getStatements();
         Unit unit = that.getUnit();
         for (int i=statements.size()-1; i>=0; i--) {
             Tree.Statement s = statements.get(i);
