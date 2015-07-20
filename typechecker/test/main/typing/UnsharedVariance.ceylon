@@ -69,3 +69,10 @@ void backdoorVariance() {
          baz.Inner(t);
     }
 }
+
+class WithMethodWithForwardParam<out T, in S>() {
+    shared void method1()(t) { @error T t; }
+    shared void method2()(f) { void f(@error S t); }
+    shared void method3()(@error T t) {}
+    shared void method4()(void f(@error S t)) {}
+}
