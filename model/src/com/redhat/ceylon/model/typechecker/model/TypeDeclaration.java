@@ -213,7 +213,7 @@ public abstract class TypeDeclaration extends Declaration
         return type;
     }
 
-    private List<Declaration> getMembers(String name, 
+    private List<Declaration> getInheritableMembers(String name, 
             List<TypeDeclaration> visited) {
         if (visited.contains(this)) {
             return Collections.emptyList();
@@ -223,8 +223,10 @@ public abstract class TypeDeclaration extends Declaration
             List<Declaration> members = 
                     new ArrayList<Declaration>();
             for (Declaration d: getMembers()) {
-                if (d.getName()!=null && 
-                        d.getName().equals(name)) {
+                if (d.isShared() &&
+                        d.getName()!=null && 
+                        d.getName().equals(name) &&
+                        isResolvable(d)) {
                     members.add(d);
                 }
             }
@@ -269,12 +271,9 @@ public abstract class TypeDeclaration extends Declaration
             //if ( !(t instanceof TypeParameter) ) { //don't look for members in a type parameter with a self-referential lower bound
             for (Declaration member: 
                     st.getDeclaration()
-                        .getMembers(name, visited)) {
-                if (member.isShared() && 
-                        isResolvable(member)) {
-                    if (!contains(members, member)) {
-                    	members.add(member);
-                    }
+                        .getInheritableMembers(name, visited)) {
+                if (!contains(members, member)) {
+                    members.add(member);
                 }
             }
             //}
@@ -283,12 +282,9 @@ public abstract class TypeDeclaration extends Declaration
         if (et!=null) {
             for (Declaration member: 
                     et.getDeclaration()
-                        .getMembers(name, visited)) {
-                if (member.isShared() && 
-                        isResolvable(member)) {
-                    if (!contains(members, member)) {
-                    	members.add(member);
-                    }
+                        .getInheritableMembers(name, visited)) {
+                if (!contains(members, member)) {
+                    members.add(member);
                 }
             }
         }
