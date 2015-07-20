@@ -98,17 +98,24 @@ public class TypeVisitor extends Visitor {
         this.backendSupport = backendSupport;
     }
     
-    public TypeVisitor(TypecheckerUnit unit, BackendSupport backendSupport) {
+    public TypeVisitor(TypecheckerUnit unit, 
+            BackendSupport backendSupport) {
         this.unit = unit;
         this.backendSupport = backendSupport;
-        String nat = unit.getPackage().getModule().getNativeBackend();
+        String nat = 
+                unit.getPackage()
+                    .getModule()
+                    .getNativeBackend();
         inBackend = Backend.fromAnnotation(nat);
     }
     
     @Override public void visit(Tree.CompilationUnit that) {
         unit = that.getUnit();
         Backend ib = inBackend;
-        String nat = unit.getPackage().getModule().getNativeBackend();
+        String nat = 
+                unit.getPackage()
+                    .getModule()
+                    .getNativeBackend();
         inBackend = Backend.fromAnnotation(nat);
         super.visit(that);
         inBackend = ib;
@@ -127,7 +134,8 @@ public class TypeVisitor extends Visitor {
     @Override
     public void visit(Tree.Import that) {
         Package importedPackage = 
-                getPackage(that.getImportPath(), backendSupport);
+                getPackage(that.getImportPath(), 
+                        backendSupport);
         if (importedPackage!=null) {
             that.getImportPath().setModel(importedPackage);
             Tree.ImportMemberOrTypeList imtl = 
@@ -175,7 +183,8 @@ public class TypeVisitor extends Visitor {
         }
     }
     
-    private void addWildcardImport(ImportList il, Declaration dec) {
+    private void addWildcardImport(ImportList il, 
+            Declaration dec) {
         if (!hidesToplevel(dec)) {
             Import i = new Import();
             i.setAlias(dec.getName());
@@ -185,7 +194,8 @@ public class TypeVisitor extends Visitor {
         }
     }
     
-    private void addWildcardImport(ImportList il, Declaration dec, TypeDeclaration td) {
+    private void addWildcardImport(ImportList il, 
+            Declaration dec, TypeDeclaration td) {
         if (!hidesToplevel(dec)) {
             Import i = new Import();
             i.setAlias(dec.getName());
@@ -196,13 +206,15 @@ public class TypeVisitor extends Visitor {
         }
     }
     
-    private void addWildcardImport(ImportList il, Declaration dec, Import i) {
+    private void addWildcardImport(ImportList il, 
+            Declaration dec, Import i) {
         if (notOverloaded(dec)) {
             String alias = i.getAlias();
             if (alias!=null) {
                 Import o = unit.getImport(dec.getName());
                 if (o!=null && o.isWildcardImport()) {
-                    if (o.getDeclaration().equals(dec) || dec.isNativeHeader()) {
+                    if (o.getDeclaration().equals(dec) || 
+                            dec.isNativeHeader()) {
                         //this case only happens in the IDE,
                         //due to reuse of the Unit
                         unit.getImports().remove(o);
@@ -225,7 +237,8 @@ public class TypeVisitor extends Visitor {
             String nameToImport = 
                     formatPath(path.getIdentifiers());
             Module module = 
-                    path.getUnit().getPackage()
+                    path.getUnit()
+                        .getPackage()
                         .getModule();
             Package pkg = module.getPackage(nameToImport);
             if (pkg != null) {
@@ -245,8 +258,9 @@ public class TypeVisitor extends Visitor {
                 //all modules in the same source dir
                 Set<Module> visited = new HashSet<Module>();
                 for (ModuleImport mi: module.getImports()) {
-                    if (findModuleInTransitiveImports(mi.getModule(), 
-                            mod, visited)) {
+                    Module m = mi.getModule();
+                    if (findModuleInTransitiveImports(m, mod, 
+                            visited)) {
                         return mod; 
                     }
                 }
@@ -264,7 +278,8 @@ public class TypeVisitor extends Visitor {
             String nameToImport = 
                     formatPath(path.getIdentifiers());
             Module module = 
-                    path.getUnit().getPackage()
+                    path.getUnit()
+                        .getPackage()
                         .getModule();
             Package pkg = module.getPackage(nameToImport);
             if (pkg != null) {
@@ -289,7 +304,8 @@ public class TypeVisitor extends Visitor {
                 Set<Module> visited = new HashSet<Module>();
                 for (ModuleImport mi: module.getImports()) {
                     if (findModuleInTransitiveImports(
-                            mi.getModule(), pkg.getModule(), 
+                            mi.getModule(), 
+                            pkg.getModule(), 
                             visited)) {
                         return pkg; 
                     }
@@ -298,11 +314,14 @@ public class TypeVisitor extends Visitor {
                 for (ModuleImport mi: module.getImports()) {
                     if (mi.isNative()) {
                         Backend backend = 
-                                Backend.fromAnnotation(mi.getNativeBackend());
-                        String name = mi.getModule().getNameAsString();
-                        if (!backendSupport.supportsBackend(backend)
-                                && (nameToImport.equals(name)
-                                        || nameToImport.startsWith(name + "."))) {
+                                Backend.fromAnnotation(
+                                        mi.getNativeBackend());
+                        String name = 
+                                mi.getModule()
+                                    .getNameAsString();
+                        if (!backendSupport.supportsBackend(backend) && 
+                                (nameToImport.equals(name) || 
+                                 nameToImport.startsWith(name + "."))) {
                             return null;
                         }
                         if (!backendSupport.supportsBackend(Backend.Java) && 
@@ -314,19 +333,22 @@ public class TypeVisitor extends Visitor {
                 }
             }
             String help;
-            if(module.isDefault())
+            if (module.isDefault()) {
                 help = " (define a module and add module import to its module descriptor)";
-            else
+            }
+            else {
                 help = " (add module import to module descriptor of '" +
                         module.getNameAsString() + "')";
+            }
             path.addError("package not found in imported modules: '" + 
                     nameToImport + "'" + help, 7000);
         }
         return null;
     }
     
-    private static boolean findModuleInTransitiveImports(Module moduleToVisit, 
-            Module moduleToFind, Set<Module> visited) {
+    private static boolean findModuleInTransitiveImports(
+            Module moduleToVisit, Module moduleToFind, 
+            Set<Module> visited) {
         if (!visited.add(moduleToVisit)) {
             return false;
         }
@@ -337,7 +359,8 @@ public class TypeVisitor extends Visitor {
             for (ModuleImport imp: moduleToVisit.getImports()) {
                 // skip non-exported modules
                 if (imp.isExport() &&
-                        findModuleInTransitiveImports(imp.getModule(), 
+                        findModuleInTransitiveImports(
+                                imp.getModule(), 
                                 moduleToFind, visited)) {
                     return true;
                 }
