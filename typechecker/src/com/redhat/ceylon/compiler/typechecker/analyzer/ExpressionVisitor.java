@@ -18,6 +18,8 @@ import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.getTy
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.getTypedDeclaration;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.getTypedMember;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.getUnspecifiedParameter;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.importedModule;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.importedPackage;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.inSameModule;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.involvesTypeParams;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.isGeneric;
@@ -8588,15 +8590,17 @@ public class ExpressionVisitor extends Visitor {
     @Override
     public void visit(Tree.PackageLiteral that) {
         super.visit(that);
-        Package p;
-        if (that.getImportPath()==null) {
-            that.setImportPath(new Tree.ImportPath(null));
-            p = unit.getPackage();
+        Package pack;
+        Tree.ImportPath path = that.getImportPath();
+        if (path==null) {
+            path = new Tree.ImportPath(null);
+            that.setImportPath(path);
+            pack = unit.getPackage();
         }
         else {
-            p = TypeVisitor.getPackage(that.getImportPath(), backendSupport);
+            pack = importedPackage(path, backendSupport);
         }
-        that.getImportPath().setModel(p);
+        path.setModel(pack);
         that.setTypeModel(unit.getPackageDeclarationType());
     }
     
@@ -8609,7 +8613,7 @@ public class ExpressionVisitor extends Visitor {
             m = unit.getPackage().getModule();
         }
         else {
-            m = TypeVisitor.getModule(that.getImportPath());
+            m = importedModule(that.getImportPath());
         }
         that.getImportPath().setModel(m);
         that.setTypeModel(unit.getModuleDeclarationType());

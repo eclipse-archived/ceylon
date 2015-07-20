@@ -1,5 +1,6 @@
 package com.redhat.ceylon.compiler.typechecker.analyzer;
 
+import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.formatPath;
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.hasError;
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.name;
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.unwrapExpressionUntilTerm;
@@ -18,20 +19,26 @@ import static java.util.Collections.emptyList;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.redhat.ceylon.common.Backend;
+import com.redhat.ceylon.common.BackendSupport;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ClassBody;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.TypeVariance;
+import com.redhat.ceylon.model.cmr.JDKUtils;
 import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.Constructor;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Generic;
 import com.redhat.ceylon.model.typechecker.model.Interface;
 import com.redhat.ceylon.model.typechecker.model.Module;
+import com.redhat.ceylon.model.typechecker.model.ModuleImport;
+import com.redhat.ceylon.model.typechecker.model.Package;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.ParameterList;
 import com.redhat.ceylon.model.typechecker.model.Reference;
@@ -1161,6 +1168,145 @@ public class AnalyzerUtil {
             }
         }
         return type;
+    }
+
+    static Package importedPackage(Tree.ImportPath path, 
+                BackendSupport backendSupport) {
+            if (path!=null && 
+                    !path.getIdentifiers().isEmpty()) {
+                String nameToImport = 
+                        formatPath(path.getIdentifiers());
+                Module module = 
+                        path.getUnit()
+                            .getPackage()
+                            .getModule();
+                Package pkg = module.getPackage(nameToImport);
+                if (pkg != null) {
+                    if (pkg.getModule().equals(module)) {
+                        return pkg;
+                    }
+                    if (!pkg.isShared()) {
+                        path.addError("imported package is not shared: '" + 
+                                nameToImport + "'", 402);
+                    }
+    //                if (module.isDefault() && 
+    //                        !pkg.getModule().isDefault() &&
+    //                        !pkg.getModule().getNameAsString()
+    //                            .equals(Module.LANGUAGE_MODULE_NAME)) {
+    //                    path.addError("package belongs to a module and may not be imported by default module: " +
+    //                            nameToImport);
+    //                }
+                    //check that the package really does belong to
+                    //an imported module, to work around bug where
+                    //default package thinks it can see stuff in
+                    //all modules in the same source dir
+                    Set<Module> visited = new HashSet<Module>();
+                    for (ModuleImport mi: module.getImports()) {
+                        if (findModuleInTransitiveImports(
+                                mi.getModule(), 
+                                pkg.getModule(), 
+                                visited)) {
+                            return pkg; 
+                        }
+                    }
+                }
+                else {
+                    for (ModuleImport mi: module.getImports()) {
+                        if (mi.isNative()) {
+                            Backend backend = 
+                                    Backend.fromAnnotation(
+                                            mi.getNativeBackend());
+                            String name = 
+                                    mi.getModule()
+                                        .getNameAsString();
+                            if (!backendSupport.supportsBackend(backend) && 
+                                    (nameToImport.equals(name) || 
+                                     nameToImport.startsWith(name + "."))) {
+                                return null;
+                            }
+                            if (!backendSupport.supportsBackend(Backend.Java) && 
+                                    (JDKUtils.isJDKAnyPackage(nameToImport) || 
+                                     JDKUtils.isOracleJDKAnyPackage(nameToImport))) {
+                                return null;
+                            }
+                        }
+                    }
+                }
+                String help;
+                if (module.isDefault()) {
+                    help = " (define a module and add module import to its module descriptor)";
+                }
+                else {
+                    help = " (add module import to module descriptor of '" +
+                            module.getNameAsString() + "')";
+                }
+                path.addError("package not found in imported modules: '" + 
+                        nameToImport + "'" + help, 7000);
+            }
+            return null;
+        }
+
+    static Module importedModule(Tree.ImportPath path) {
+        if (path!=null && 
+                !path.getIdentifiers().isEmpty()) {
+            String nameToImport = 
+                    formatPath(path.getIdentifiers());
+            Module module = 
+                    path.getUnit()
+                        .getPackage()
+                        .getModule();
+            Package pkg = module.getPackage(nameToImport);
+            if (pkg != null) {
+                Module mod = pkg.getModule();
+                if (!pkg.getNameAsString()
+                        .equals(mod.getNameAsString())) {
+                    path.addError("not a module: '" + 
+                            nameToImport + "'");
+                    return null;
+                }
+                if (mod.equals(module)) {
+                    return mod;
+                }
+                //check that the package really does belong to
+                //an imported module, to work around bug where
+                //default package thinks it can see stuff in
+                //all modules in the same source dir
+                Set<Module> visited = new HashSet<Module>();
+                for (ModuleImport mi: module.getImports()) {
+                    Module m = mi.getModule();
+                    if (findModuleInTransitiveImports(m, mod, 
+                            visited)) {
+                        return mod; 
+                    }
+                }
+            }
+            path.addError("module not found in imported modules: '" + 
+                    nameToImport + "'", 7000);
+        }
+        return null;
+    }
+
+    private static boolean findModuleInTransitiveImports(
+            Module moduleToVisit, Module moduleToFind, 
+            Set<Module> visited) {
+        if (!visited.add(moduleToVisit)) {
+            return false;
+        }
+        else if (moduleToVisit.equals(moduleToFind)) {
+            return true;
+        }
+        else {
+            for (ModuleImport imp: moduleToVisit.getImports()) {
+                // skip non-exported modules
+                if (imp.isExport() &&
+                        findModuleInTransitiveImports(
+                                imp.getModule(), 
+                                moduleToFind, visited)) {
+                    return true;
+                }
+            }
+            return false;
+        }
     }
 
 }

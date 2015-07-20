@@ -3,6 +3,7 @@ package com.redhat.ceylon.compiler.typechecker.analyzer;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.model.typechecker.model.DecidabilityException;
+import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.TypeParameter;
 
@@ -18,12 +19,13 @@ public class DefaultTypeArgVisitor extends Visitor {
     public void visit(Tree.TypeParameterDeclaration that) {
         Tree.TypeSpecifier ts = that.getTypeSpecifier();
         if (ts!=null) {
-            TypeParameter tpd = that.getDeclarationModel();
-            Type dta = tpd.getDefaultTypeArgument();
+            TypeParameter tp = that.getDeclarationModel();
+            Declaration dec = tp.getDeclaration();
+            Type dta = tp.getDefaultTypeArgument();
             if (dta!=null) {
                 try {
-                    if (dta.involvesDeclaration(tpd.getDeclaration())) {
-                        tpd.setDefaultTypeArgument(null);
+                    if (dta.involvesDeclaration(dec)) {
+                        tp.setDefaultTypeArgument(null);
                     }
                 }
                 //Note: this might not be truly necessary, 
@@ -31,7 +33,7 @@ public class DefaultTypeArgVisitor extends Visitor {
                 //that crash in this way!
                 catch (DecidabilityException re) {
                     ts.addError("undecidable default type argument");
-                    tpd.setDefaultTypeArgument(null);
+                    tp.setDefaultTypeArgument(null);
                 }
             }
         }

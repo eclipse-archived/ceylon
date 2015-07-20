@@ -14,6 +14,7 @@ import com.redhat.ceylon.compiler.typechecker.analyzer.ControlFlowVisitor;
 import com.redhat.ceylon.compiler.typechecker.analyzer.DeclarationVisitor;
 import com.redhat.ceylon.compiler.typechecker.analyzer.DefaultTypeArgVisitor;
 import com.redhat.ceylon.compiler.typechecker.analyzer.ExpressionVisitor;
+import com.redhat.ceylon.compiler.typechecker.analyzer.ImportVisitor;
 import com.redhat.ceylon.compiler.typechecker.analyzer.InheritanceVisitor;
 import com.redhat.ceylon.compiler.typechecker.analyzer.LiteralVisitor;
 import com.redhat.ceylon.compiler.typechecker.analyzer.LocalDeclarationVisitor;
@@ -374,6 +375,7 @@ public class PhasedUnit {
         try {
             if (!typeDeclarationsScanned) {
                 //System.out.println("Scan type declarations for " + fileName);
+                rootNode.visit(new ImportVisitor(moduleManagerRef.get()));
                 rootNode.visit(new DefaultTypeArgVisitor());
                 rootNode.visit(new SupertypeVisitor(false)); //TODO: move to a new phase!
                 rootNode.visit(new TypeVisitor(moduleManagerRef.get()));
