@@ -91,7 +91,8 @@ public class TypeHierarchyVisitor extends Visitor {
             TypeDeclKey other = (TypeDeclKey) obj;
             return decl.equals(other.decl) && 
                     (!decl.isNative() ||
-                            decl.getNativeBackend().equals(other.decl.getNativeBackend()));
+                            decl.getNativeBackend()
+                                .equals(other.decl.getNativeBackend()));
         }
     }
     
@@ -392,7 +393,8 @@ public class TypeHierarchyVisitor extends Visitor {
             if (!members.formals.isEmpty()) {
                 if (members.actualsNonFormals.isEmpty()) {
                     Declaration example = members.formals.iterator().next();
-                    Declaration declaringType = (Declaration) example.getContainer();
+                    Declaration declaringType = 
+                            (Declaration) example.getContainer();
                     if (!clazz.equals(declaringType)) {
                         addUnimplementedFormal(clazz, example);
                         that.addError("formal member '" + example.getName() + 
@@ -405,7 +407,8 @@ public class TypeHierarchyVisitor extends Visitor {
                     if (isOverloadedVersion(f)) {
                         boolean found = false;
                         for (Declaration a: members.actualsNonFormals) {
-                            if (a.getRefinedDeclaration().equals(f.getRefinedDeclaration())) {
+                            if (a.getRefinedDeclaration()
+                                    .equals(f.getRefinedDeclaration())) {
                                 found = true;
                                 break;
                             }
@@ -424,7 +427,8 @@ public class TypeHierarchyVisitor extends Visitor {
                                     }
                                 }
                             }
-                            Declaration declaringType = (Declaration) f.getContainer();
+                            Declaration declaringType = 
+                                    (Declaration) f.getContainer();
                             addUnimplementedFormal(clazz, f);
                             that.addError("overloaded formal member '" + f.getName() + 
                                     "(" + paramTypes + ")' of '" + declaringType.getName() +
@@ -588,7 +592,8 @@ public class TypeHierarchyVisitor extends Visitor {
                 }
                 if (declaration.isNative() && member.isNative()) {
                     // Make sure we get the right member declaration (the one for the same backend as its container)
-                    member = getNativeDeclaration(member, Backend.fromAnnotation(declaration.getNativeBackend()));
+                    Backend backend = Backend.fromAnnotation(declaration.getNativeBackend());
+                    member = getNativeDeclaration(member, backend);
                     if (member == null) {
                         continue;
                     }
@@ -615,7 +620,7 @@ public class TypeHierarchyVisitor extends Visitor {
                 if (member.isDefault()) {
                     members.defaults.add(member);
                 }
-                if (!member.isFormal() && !member.isDefault()) {
+                if (!member.isFormal() && !member.isDefault() && member.isShared()) {
                     members.nonFormalsNonDefaults.add(member);
                 }
                 if (member.isShared()) {
