@@ -5189,7 +5189,7 @@ public class ClassTransformer extends AbstractTransformer {
         // Add the rest of the parameters (this worries about aliasing)
         if (parameterList != null) {
             transformClassOrCtorParameters(null, (Class)ctor.getContainer(), ctor, that, 
-                    parameterList, Arrays.asList(declFlags).contains(DeclNameFlag.DELEGATION),
+                    parameterList, contains(declFlags, DeclNameFlag.DELEGATION),
                     classBuilder, ctorDb, generateInstantiator, decl, impl);
         }
         
@@ -5199,7 +5199,16 @@ public class ClassTransformer extends AbstractTransformer {
         result.add(ctorDb.build());
         return result.toList();
     }
-
+    
+    <E extends Enum<E>> boolean contains(E[] values, E value) {
+        for (E v : values) {
+            if (v == value) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
     protected void transformConstructorName(
             ClassDefinitionBuilder classBuilder, ListBuffer<JCTree> result,
             Constructor ctor, Class clz, int classMods, String ctorName, DeclNameFlag...declFlags) {
@@ -5241,6 +5250,7 @@ public class ClassTransformer extends AbstractTransformer {
         }
         constructorNameClass.modifiers(classMods);
         constructorNameClass.annotations(makeAtIgnore());
+        constructorNameClass.annotations(makeAtConstructorName(ctor.getName(), contains(declFlags, DeclNameFlag.DELEGATION)));
         constructorNameClass.getInitBuilder().modifiers(PRIVATE);
         
         List<JCTree> ctorNameClassDecl = constructorNameClass.build();

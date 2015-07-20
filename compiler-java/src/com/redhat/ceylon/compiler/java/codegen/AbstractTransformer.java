@@ -3203,6 +3203,15 @@ public abstract class AbstractTransformer implements Transformation {
         return makeModelAnnotation(syms().ceylonAtIgnore);
     }
     
+    List<JCAnnotation> makeAtConstructorName(String name, boolean delegation) {
+        List<JCExpression> ass = List.<JCExpression>of(
+                make().Assign(naming.makeUnquotedIdent("value"), make().Literal(name == null ? "" : name)));
+        if (delegation) {
+            ass = ass.prepend(make().Assign(naming.makeUnquotedIdent("delegation"), make().Literal(true)));
+        } 
+        return makeModelAnnotation(syms().ceylonAtConstructorName, ass);
+    }
+    
     List<JCAnnotation> makeAtNoInitCheck() {
         return List.<JCAnnotation> of(make().Annotation(makeIdent(syms().ceylonAtNoInitCheckType), List.<JCExpression> nil()));
     }
