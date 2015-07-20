@@ -7024,17 +7024,25 @@ public class ExpressionVisitor extends Visitor {
     private TypeDeclaration getDeclaration(
             Tree.QualifiedMemberOrTypeExpression that,
             Type pt) {
+        TypeDeclaration td;
         if (that.getStaticMethodReference()) {
             Tree.MemberOrTypeExpression primary = 
                     (Tree.MemberOrTypeExpression) 
                         that.getPrimary();
-            TypeDeclaration td = (TypeDeclaration) 
+            td = (TypeDeclaration)
                     primary.getDeclaration();
-            return td==null ? new UnknownType(unit) : td;
+            td = td==null ? new UnknownType(unit) : td;
         }
         else {
-            return unwrap(pt, that).getDeclaration();
+            td = unwrap(pt, that).getDeclaration();
         }
+        if (td != null && td.isNative() && !td.isNativeHeader()) {
+            TypeDeclaration _td = (TypeDeclaration)ModelUtil.getNativeHeader(td);
+            if (_td != null) {
+                td = _td;
+            }
+        }
+        return td;
     }
 
     private boolean explicitTypeArguments
