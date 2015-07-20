@@ -26,6 +26,7 @@ import com.redhat.ceylon.compiler.java.metadata.Annotation;
 import com.redhat.ceylon.compiler.java.metadata.Annotations;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Class;
+import com.redhat.ceylon.compiler.java.metadata.ConstructorName;
 import com.redhat.ceylon.compiler.java.metadata.Defaulted;
 import com.redhat.ceylon.compiler.java.metadata.FunctionalParameter;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
@@ -105,6 +106,7 @@ public final class Array<Element>
     
     @Ceylon(major = 8)
     @Ignore
+    @ConstructorName("ofSize")
     public static final class ofSize_ {
         private ofSize_() {}
     }
