@@ -22,7 +22,6 @@ import ceylon.language.meta.model {
 shared class ConstructorLiterals<T> {
     shared T t;
     abstract new abstr() {
-        
     }
     shared new (T t) {
         this.t = t;
@@ -157,7 +156,8 @@ void callableCtorModelAssertions(CallableConstructor<ConstructorLiterals<String>
     
     // Make assertions about other callable constructors
     assert("hello" == `ConstructorLiterals<String>.variadic`("hello", "world").t);
-    //TODOassert("world" == `ConstructorLiterals<String>.defaulted`("hello", "world").t);
+    assert("hello" == `ConstructorLiterals<String>.defaulted`("hello").t);
+    assert("world" == `ConstructorLiterals<String>.defaulted`("hello", "world").t);
     
     assert(model == `new ConstructorLiterals.other`.apply<ConstructorLiterals<String>, [String]>(`String`));
 }
