@@ -8,22 +8,26 @@ import java.lang.reflect.Member;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
-
-import com.redhat.ceylon.compiler.java.Util;
-import com.redhat.ceylon.compiler.java.codegen.Decl;
-import com.redhat.ceylon.compiler.java.metadata.Ignore;
-import com.redhat.ceylon.compiler.java.metadata.Name;
-import com.redhat.ceylon.model.typechecker.model.Declaration;
-import com.redhat.ceylon.model.typechecker.model.Function;
-import com.redhat.ceylon.model.typechecker.model.Parameter;
-import com.redhat.ceylon.model.typechecker.model.Reference;
 
 import ceylon.language.Array;
 import ceylon.language.Callable;
 import ceylon.language.Sequential;
 import ceylon.language.empty_;
 import ceylon.language.meta.model.InvocationException;
+
+import com.redhat.ceylon.compiler.java.Util;
+import com.redhat.ceylon.compiler.java.codegen.Decl;
+import com.redhat.ceylon.compiler.java.metadata.ConstructorName;
+import com.redhat.ceylon.compiler.java.metadata.Ignore;
+import com.redhat.ceylon.compiler.java.metadata.Name;
+import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
+import com.redhat.ceylon.model.typechecker.model.Declaration;
+import com.redhat.ceylon.model.typechecker.model.Function;
+import com.redhat.ceylon.model.typechecker.model.Parameter;
+import com.redhat.ceylon.model.typechecker.model.Reference;
 
 /**
  * Dispatches to constructors
@@ -67,12 +71,12 @@ class ConstructorDispatch<Type, Arguments extends Sequential<? extends Object>>
             this.instance = instance;
         }
         
-        Member[] defaultedMethods = null;
         if(firstDefaulted != -1){
             // if we have 2 params and first is defaulted we need 2 + 1 - 0 = 3 methods:
             // f(), f(a) and f(a, b)
             this.dispatch = new MethodHandle[parameters.size() + 1 - firstDefaulted];
-            defaultedMethods = new Member[dispatch.length];
+        } else {
+            this.dispatch = new MethodHandle[1];
         }
 
         // get a list of produced parameter types
@@ -84,23 +88,40 @@ class ConstructorDispatch<Type, Arguments extends Sequential<? extends Object>>
         java.lang.Class<?> javaClass = Metamodel.getJavaClass(freeClass.declaration);
         // FIXME: faster lookup with types? but then we have to deal with erasure and stuff
         Member found = null;
+        
         if (freeConstructor != null && Decl.isConstructor(freeConstructor.declaration)) {
-            boolean variadic = false;// TODO
-            java.lang.reflect.Constructor<?> ctor = Metamodel.getJavaConstructor(Decl.getConstructor(freeConstructor.declaration));
-            constructor = reflectionToMethodHandle(constructorReference, 
-                    ctor, 
-                    javaClass, 
-                    this.instance, 
-                    parameterProducedTypes, 
-                    variadic, 
-                    false);
+            namedConstructorDispatch(constructorReference, freeConstructor,
+                    javaClass); 
         } else {
+            Member[] defaultedMethods = firstDefaulted != -1 ? new Member[dispatch.length] : null;
             if(MethodHandleUtil.isJavaArray(javaClass)){
                 found = MethodHandleUtil.setupArrayConstructor(javaClass, defaultedMethods);
             }else if(!javaClass.isMemberClass() 
                     || !Metamodel.isCeylon((com.redhat.ceylon.model.typechecker.model.Class)appliedClass.declaration.declaration)
                     // private ceylon member classes don't have any outer constructor method so treat them like java members
                     || !classDecl.isShared()){
+                    // find the MH for the primary constructor for a 
+                    // a Celon class which maps to a java constructor
+                    // or a Java class
+                defaultedMethods = findConstructors(freeConstructor, javaClass);
+                int i=0;
+                for(;i<defaultedMethods.length;i++){
+                    if(defaultedMethods[i] == null)
+                        throw Metamodel.newModelError("Missing defaulted constructor for "+ freeClass.getName()
+                                +" with "+(i+firstDefaulted)+" parameters in "+javaClass);
+                    dispatch[i] = reflectionToMethodHandle(constructorReference, 
+                            defaultedMethods[i], 
+                            javaClass, 
+                            this.instance, 
+                            parameterProducedTypes, 
+                            false, 
+                            false);
+                }
+                constructor = dispatch[defaultedMethods.length-1];
+                if (constructor == null) {
+                    throw new NullPointerException();
+                }
+                /*
                 for(Constructor<?> constr : javaClass.getDeclaredConstructors()){
                     if (constr.isAnnotationPresent(Name.class)){
                         continue;
@@ -119,7 +140,7 @@ class ConstructorDispatch<Type, Arguments extends Sequential<? extends Object>>
                                 implicitParameterCount += classDecl.getTypeParameters().size();
                             }
                             if (classDecl.isClassMember() && javaClass.isMemberClass() 
-                                    || classDecl.isInterfaceMember() && invokeOnCompanionInstance/*!declaration.constructor.isShared()*/) { 
+                                    || classDecl.isInterfaceMember() && invokeOnCompanionInstance/*!declaration.constructor.isShared()* /) { 
                                 // non-shared member classes don't get instantiators, so there's the 
                                 // synthetic outerthis parameter to account for.
                                 implicitParameterCount++;
@@ -136,13 +157,33 @@ class ConstructorDispatch<Type, Arguments extends Sequential<? extends Object>>
                         throw Metamodel.newModelError("More than one constructor found for: "+javaClass+", 1st: "+found+", 2nd: "+constr);
                     }
                     found = constr;
-                }
+                }*/
             }else{
+                // find the MH for the primary instantiatorfor a 
+                // A ceylon member class
                 String builderName = freeClass.getName() + "$new$";
                 // FIXME: this probably doesn't work for local classes
                 // FIXME: perhaps store and access the container class literal from an extra param of @Container?
                 java.lang.Class<?> outerJavaClass = Metamodel.getJavaClass((Declaration) freeClass.declaration.getContainer());
-                for(Method meth : outerJavaClass.getDeclaredMethods()){
+                defaultedMethods = findInstantiators(freeConstructor, outerJavaClass);
+                int i=0;
+                for(;i<defaultedMethods.length;i++){
+                    if(defaultedMethods[i] == null)
+                        throw Metamodel.newModelError("Missing defaulted constructor for "+ freeClass.getName()
+                                +" with "+(i+firstDefaulted)+" parameters in "+javaClass);
+                    dispatch[i] = reflectionToMethodHandle(constructorReference, 
+                            defaultedMethods[i], 
+                            javaClass, 
+                            this.instance, 
+                            parameterProducedTypes, 
+                            false, 
+                            false);
+                }
+                constructor = dispatch[defaultedMethods.length-1];
+                if (constructor == null) {
+                    throw new NullPointerException();
+                }
+                /*for(Method meth : outerJavaClass.getDeclaredMethods()){
                     // FIXME: we need a better way to look things up: they're all @Ignore...
     //                if(meth.isAnnotationPresent(Ignore.class))
     //                    continue;
@@ -164,18 +205,19 @@ class ConstructorDispatch<Type, Arguments extends Sequential<? extends Object>>
                         throw Metamodel.newModelError("More than one constructor method found for: "+javaClass+", 1st: "+found+", 2nd: "+meth);
                     }
                     found = meth;
-                }
+                }*/
             }
-        }
+        
         if(found != null){
-            boolean variadic = MethodHandleUtil.isVariadicMethodOrConstructor(found);
+            // now find the overloads
+            boolean jvmVarargs = MethodHandleUtil.isJvmVarargsMethodOrConstructor(found);
             constructor = reflectionToMethodHandle(constructorReference, 
                     found, 
                     javaClass, this.instance,
                     parameterProducedTypes, 
-                    variadic, 
+                    jvmVarargs, 
                     false);
-            if(defaultedMethods != null && !variadic){
+            if(defaultedMethods != null && !jvmVarargs){
                 // this won't find the last one, but it's method
                 int i=0;
                 for(;i<defaultedMethods.length-1;i++){
@@ -187,11 +229,11 @@ class ConstructorDispatch<Type, Arguments extends Sequential<? extends Object>>
                             javaClass, 
                             this.instance, 
                             parameterProducedTypes, 
-                            variadic, 
+                            jvmVarargs, 
                             false);
                 }
                 dispatch[i] = constructor;
-            }else if(variadic){
+            }else if(jvmVarargs){
                 // variadic methods don't have defaulted parameters, but we will simulate one because our calling convention is that
                 // we treat variadic methods as if the last parameter is optional
                 // firstDefaulted and dispatch already set up because getFirstDefaultedParameter treats java variadics like ceylon variadics
@@ -200,10 +242,11 @@ class ConstructorDispatch<Type, Arguments extends Sequential<? extends Object>>
                         javaClass, 
                         this.instance,
                         parameterProducedTypes, 
-                        variadic, 
+                        jvmVarargs, 
                         true);
                 dispatch[1] = constructor;
             }
+        }
         }
     }
     /*
@@ -267,6 +310,113 @@ class ConstructorDispatch<Type, Arguments extends Sequential<? extends Object>>
         
         return constructor;
     }*/
+
+    protected void namedConstructorDispatch(Reference constructorReference,
+            FreeCallableConstructor freeConstructor,
+            java.lang.Class<?> javaClass) {
+        // find the MH for the primary constructor for a Ceylon constructor
+        if (firstDefaulted != -1) {
+            final Constructor<?>[] defaultedMethods = findConstructors(freeConstructor, javaClass);
+            int i=0;
+            for(;i<defaultedMethods.length;i++){
+                if(defaultedMethods[i] == null)
+                    throw Metamodel.newModelError("Missing defaulted constructor for "+ freeClass.getName()
+                            +" with "+(i+firstDefaulted)+" parameters in "+javaClass);
+                dispatch[i] = reflectionToMethodHandle(constructorReference, 
+                        defaultedMethods[i], 
+                        javaClass, 
+                        this.instance, 
+                        parameterProducedTypes, 
+                        false, 
+                        false);
+            }
+            constructor = dispatch[defaultedMethods.length-1];
+        } else {
+            // TODO this doesn't really need to be a separate branch from the above.
+            java.lang.reflect.Constructor<?> ctor = Metamodel.getJavaConstructor(Decl.getConstructor(freeConstructor.declaration));
+            constructor = reflectionToMethodHandle(constructorReference, 
+                    ctor, 
+                    javaClass, 
+                    this.instance, 
+                    parameterProducedTypes, 
+                    false,// a Ceylon constructor is never jvm varargs (...) 
+                    false);
+        }
+    }
+
+    protected Constructor<?>[] findConstructors(
+            FreeCallableConstructor freeConstructor,
+            java.lang.Class<?> javaClass) {
+        final Constructor<?>[] defaultedMethods = new Constructor[dispatch.length];
+        String ctorName = freeConstructor == null ? null : freeConstructor.declaration.getName();
+        outer: for(Constructor<?> constr : javaClass.getDeclaredConstructors()) {
+            int ii = 0;
+            Class<?>[] pts = constr.getParameterTypes();
+            for (Class<?> pt : pts) {
+                // TODO need to exclude the serialization constructor too!
+                // TODO what if we find more constructors than defaulted methods contains?
+                // TODO badly need to abstract/refactor this shit, 
+                // so there's just one API for figuring out the dispatch array.
+                if (TypeDescriptor.class.isAssignableFrom(pt)) {
+                    ii++;
+                    continue;
+                }
+                ConstructorName annotation = pt.getAnnotation(ConstructorName.class);
+                if (ctorName != null) {
+                    if (annotation != null
+                        && ctorName.equals(annotation.value())
+                        && !annotation.delegation()) {
+                        ii++;
+                        defaultedMethods[firstDefaulted == -1 ? 0 : pts.length-ii-firstDefaulted] = constr;
+                    }
+                } else {
+                    // the default constructor
+                    if (annotation == null) {
+                        defaultedMethods[firstDefaulted == -1 ? 0 : pts.length-ii-firstDefaulted] = constr;
+                    }
+                }
+                continue outer;
+            }
+        }
+        return defaultedMethods;
+    }
+    
+    protected Method[] findInstantiators(
+            FreeCallableConstructor freeConstructor,
+            java.lang.Class<?> javaClass) {
+        final Method[] defaultedMethods = new Method[dispatch.length];
+        String ctorName = freeConstructor == null ? null : freeConstructor.declaration.getName();
+        outer: for(Method constr : javaClass.getDeclaredMethods()) {
+            int ii = 0;
+            Class<?>[] pts = constr.getParameterTypes();
+            for (Class<?> pt : pts) {
+                // TODO need to exclude the serialization constructor too!
+                // TODO what if we find more constructors than defaulted methods contains?
+                // TODO badly need to abstract/refactor this shit, 
+                // so there's just one API for figuring out the dispatch array.
+                if (TypeDescriptor.class.isAssignableFrom(pt)) {
+                    ii++;
+                    continue;
+                }
+                ConstructorName annotation = pt.getAnnotation(ConstructorName.class);
+                if (ctorName != null) {
+                    if (annotation != null
+                        && ctorName.equals(annotation.value())
+                        && !annotation.delegation()) {
+                        ii++;
+                        defaultedMethods[firstDefaulted == -1 ? 0 : pts.length-ii-firstDefaulted] = constr;
+                    }
+                } else {
+                    // the default constructor
+                    if (annotation == null) {
+                        defaultedMethods[firstDefaulted == -1 ? 0 : pts.length-ii-firstDefaulted] = constr;
+                    }
+                }
+                continue outer;
+            }
+        }
+        return defaultedMethods;
+    }
     
     private static MethodHandle reflectionToMethodHandle(
             Reference constructorReference,
@@ -274,7 +424,7 @@ class ConstructorDispatch<Type, Arguments extends Sequential<? extends Object>>
             java.lang.Class<?> javaClass, 
             Object instance, 
             List<com.redhat.ceylon.model.typechecker.model.Type> parameterProducedTypes,
-            boolean variadic, 
+            boolean jvmVarargs, 
             boolean bindVariadicParameterToEmptyArray) {
         // save the parameter types before we mess with "found"
         java.lang.Class<?>[] parameterTypes;
@@ -287,7 +437,7 @@ class ConstructorDispatch<Type, Arguments extends Sequential<? extends Object>>
         List<com.redhat.ceylon.model.typechecker.model.TypeParameter> reifiedTypeParameters;
         com.redhat.ceylon.model.typechecker.model.Constructor constructorModel;
         if (found instanceof java.lang.reflect.Method) {
-            com.redhat.ceylon.model.typechecker.model.Function functionModel = (com.redhat.ceylon.model.typechecker.model.Function)constructorReference.getDeclaration();
+            com.redhat.ceylon.model.typechecker.model.Generic functionModel = (com.redhat.ceylon.model.typechecker.model.Generic)constructorReference.getDeclaration();
             java.lang.reflect.Method foundMethod = (java.lang.reflect.Method)found;
             parameterTypes = foundMethod.getParameterTypes();
             returnType = foundMethod.getReturnType();
@@ -369,7 +519,7 @@ class ConstructorDispatch<Type, Arguments extends Sequential<? extends Object>>
         }
         // now convert all arguments (we may need to unbox)
         method = MethodHandleUtil.unboxArguments(method, skipParameters, 0, parameterTypes,
-                parameterProducedTypes, variadic, bindVariadicParameterToEmptyArray);
+                parameterProducedTypes, jvmVarargs, bindVariadicParameterToEmptyArray);
         return method;
     }
     
@@ -435,7 +585,7 @@ class ConstructorDispatch<Type, Arguments extends Sequential<? extends Object>>
             if(firstDefaulted == -1)
                 return (Type)constructor.invokeExact(arg0, arg1);
             // FIXME: proper checks
-            return (Type)dispatch[1-firstDefaulted].invokeExact(arg0, arg1);
+            return (Type)dispatch[2-firstDefaulted].invokeExact(arg0, arg1);
         } catch (Throwable e) {
             Util.rethrow(e);
             return null;
@@ -458,7 +608,7 @@ class ConstructorDispatch<Type, Arguments extends Sequential<? extends Object>>
             if(firstDefaulted == -1)
                 return (Type)constructor.invokeExact(arg0, arg1, arg2);
             // FIXME: proper checks
-            return (Type)dispatch[1-firstDefaulted].invokeExact(arg0, arg1, arg2);
+            return (Type)dispatch[3-firstDefaulted].invokeExact(arg0, arg1, arg2);
         } catch (Throwable e) {
             Util.rethrow(e);
             return null;
@@ -482,7 +632,7 @@ class ConstructorDispatch<Type, Arguments extends Sequential<? extends Object>>
             if(firstDefaulted == -1)
                 return (Type)constructor.invokeExact(args);
             // FIXME: proper checks
-            return (Type)dispatch[1-firstDefaulted].invokeExact(args);
+            return (Type)dispatch[args.length-firstDefaulted].invokeExact(args);
         } catch (Throwable e) {
             Util.rethrow(e);
             return null;
