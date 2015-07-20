@@ -58,10 +58,10 @@ public class TypeArgumentVisitor extends Visitor {
             boolean topLevel = 
                     parameterizedDeclaration==null; //i.e. toplevel parameter in a parameter declaration
             if (topLevel) {
-            	FunctionOrValue mv = (FunctionOrValue) dec;
+            	FunctionOrValue fov = (FunctionOrValue) dec;
                 parameterizedDeclaration = 
-            	        mv.getInitializerParameter()
-            	                .getDeclaration();
+            	        fov.getInitializerParameter()
+            	            .getDeclaration();
             }
 			check(that.getType(), false, 
 			        parameterizedDeclaration);
