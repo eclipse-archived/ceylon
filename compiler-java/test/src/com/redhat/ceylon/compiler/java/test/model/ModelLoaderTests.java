@@ -1442,10 +1442,6 @@ public class ModelLoaderTests extends CompilerTests {
                 new CompilerError(2, "Error while loading the com.redhat.ceylon.compiler.java.test.model/1 module:\n"
                         +"   Error while parsing type of toplevel method for com.redhat.ceylon.compiler.java.test.model::bogusTopLevelMethodInvalidType:\n"
                         +"   Expecting word but got AND"),
-                // FIXME: this is not great
-                new CompilerError(3, "could not determine type of function or value reference: 'bogusTopLevelMethodNoMethod': Error while loading the com.redhat.ceylon.compiler.java.test.model/1 module:\n"+
-                        "   Error while resolving toplevel method com.redhat.ceylon.compiler.java.test.model::bogusTopLevelMethodNoMethod: static method missing"),
-                // FIXME: this is not great
                 new CompilerError(4, "could not determine type of function or value reference: 'bogusTopLevelMethodNotStatic': Error while loading the com.redhat.ceylon.compiler.java.test.model/1 module:\n"+
                         "   Error while resolving toplevel method com.redhat.ceylon.compiler.java.test.model::bogusTopLevelMethodNotStatic: method is not static"),
                 new CompilerError(5, "could not determine type of function or value reference: 'bogusTopLevelMethodMissingType': Error while loading the com.redhat.ceylon.compiler.java.test.model/1 module:\n"+
