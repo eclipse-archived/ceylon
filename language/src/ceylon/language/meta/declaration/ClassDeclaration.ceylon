@@ -93,7 +93,7 @@ shared sealed interface ClassDeclaration
      Returns `null` if no such constructor matches. 
      This includes unshared constructors but not inherited constructors 
      (since constructors are not members)."
-    shared formal ConstructorDeclaration? getConstructorDeclaration(String name);
+    shared formal <CallableConstructorDeclaration|ValueConstructorDeclaration>? getConstructorDeclaration(String name);
     
     "Returns the list of constructors declared on this class. This includes unshared constructors."
     shared formal ConstructorDeclaration[] constructorDeclarations();
