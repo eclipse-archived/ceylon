@@ -198,6 +198,7 @@ class CPAnnoTest2 implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
     
     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    @.com.redhat.ceylon.compiler.java.metadata.ConstructorName("other")
     public static final class other_ {
         
         private other_() {

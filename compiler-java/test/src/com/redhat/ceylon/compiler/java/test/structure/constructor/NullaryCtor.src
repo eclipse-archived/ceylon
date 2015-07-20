@@ -21,6 +21,7 @@ public class NullaryConstructors implements .com.redhat.ceylon.compiler.java.run
     
     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    @.com.redhat.ceylon.compiler.java.metadata.ConstructorName("foo")
     private static final class foo_ {
         
         private foo_() {
@@ -36,6 +37,7 @@ public class NullaryConstructors implements .com.redhat.ceylon.compiler.java.run
     
     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    @.com.redhat.ceylon.compiler.java.metadata.ConstructorName("bar")
     public static final class bar_ {
         
         private bar_() {

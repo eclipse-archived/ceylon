@@ -8,6 +8,7 @@ class CtorDelegationClassRefsSuper implements .com.redhat.ceylon.compiler.java.r
     
     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    @.com.redhat.ceylon.compiler.java.metadata.ConstructorName("sup")
     public static final class sup_ {
         
         private sup_() {
@@ -39,6 +40,7 @@ class CtorDelegationClassRefs extends .com.redhat.ceylon.compiler.java.test.stru
     
     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    @.com.redhat.ceylon.compiler.java.metadata.ConstructorName("abstract")
     private static final class abstract_ {
         
         private abstract_() {
@@ -58,6 +60,9 @@ class CtorDelegationClassRefs extends .com.redhat.ceylon.compiler.java.test.stru
     
     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    @.com.redhat.ceylon.compiler.java.metadata.ConstructorName(
+            delegation = true,
+            value = "concrete")
     private static final class concrete$delegation$_ {
         
         private concrete$delegation$_() {
@@ -77,6 +82,7 @@ class CtorDelegationClassRefs extends .com.redhat.ceylon.compiler.java.test.stru
     
     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    @.com.redhat.ceylon.compiler.java.metadata.ConstructorName("concrete")
     public static final class concrete_ {
         
         private concrete_() {
@@ -100,6 +106,7 @@ class CtorDelegationClassRefs extends .com.redhat.ceylon.compiler.java.test.stru
     
     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    @.com.redhat.ceylon.compiler.java.metadata.ConstructorName("concrete2")
     public static final class concrete2_ {
         
         private concrete2_() {

@@ -24,6 +24,7 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
     
     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    @.com.redhat.ceylon.compiler.java.metadata.ConstructorName("nullary")
     public static final class Simple$nullary {
         
         private Simple$nullary() {
@@ -40,6 +41,7 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
     
     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    @.com.redhat.ceylon.compiler.java.metadata.ConstructorName("unary")
     public static final class Simple$unary {
         
         private Simple$unary() {
@@ -56,6 +58,7 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
     
     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    @.com.redhat.ceylon.compiler.java.metadata.ConstructorName("binary")
     public static final class Simple$binary {
         
         private Simple$binary() {
@@ -72,6 +75,7 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
     
     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    @.com.redhat.ceylon.compiler.java.metadata.ConstructorName("ternary")
     public static final class Simple$ternary {
         
         private Simple$ternary() {
@@ -88,6 +92,7 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
     
     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    @.com.redhat.ceylon.compiler.java.metadata.ConstructorName("nary")
     public static final class Simple$nary {
         
         private Simple$nary() {
@@ -392,6 +397,7 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
     
     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    @.com.redhat.ceylon.compiler.java.metadata.ConstructorName("nullary")
     public static final class Defaulted$nullary {
         
         private Defaulted$nullary() {
@@ -408,6 +414,7 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
     
     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    @.com.redhat.ceylon.compiler.java.metadata.ConstructorName("unary")
     public static final class Defaulted$unary {
         
         private Defaulted$unary() {
@@ -441,6 +448,7 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
     
     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    @.com.redhat.ceylon.compiler.java.metadata.ConstructorName("binary")
     public static final class Defaulted$binary {
         
         private Defaulted$binary() {
@@ -492,6 +500,7 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
     
     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    @.com.redhat.ceylon.compiler.java.metadata.ConstructorName("ternary")
     public static final class Defaulted$ternary {
         
         private Defaulted$ternary() {
@@ -562,6 +571,7 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
     
     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    @.com.redhat.ceylon.compiler.java.metadata.ConstructorName("nary")
     public static final class Defaulted$nary {
         
         private Defaulted$nary() {
@@ -1096,6 +1106,7 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
     
     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    @.com.redhat.ceylon.compiler.java.metadata.ConstructorName("nullary")
     public static final class Sequenced$nullary {
         
         private Sequenced$nullary() {
@@ -1112,6 +1123,7 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
     
     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    @.com.redhat.ceylon.compiler.java.metadata.ConstructorName("unary")
     public static final class Sequenced$unary {
         
         private Sequenced$unary() {
@@ -1140,6 +1152,7 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
     
     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    @.com.redhat.ceylon.compiler.java.metadata.ConstructorName("binary")
     public static final class Sequenced$binary {
         
         private Sequenced$binary() {
@@ -1168,6 +1181,7 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
     
     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    @.com.redhat.ceylon.compiler.java.metadata.ConstructorName("ternary")
     public static final class Sequenced$ternary {
         
         private Sequenced$ternary() {
@@ -1196,6 +1210,7 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
     
     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    @.com.redhat.ceylon.compiler.java.metadata.ConstructorName("nary")
     public static final class Sequenced$nary {
         
         private Sequenced$nary() {
@@ -1982,6 +1997,7 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
     
     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    @.com.redhat.ceylon.compiler.java.metadata.ConstructorName("nullary")
     public static final class Parameterized$nullary {
         
         private Parameterized$nullary() {
@@ -1998,6 +2014,7 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
     
     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    @.com.redhat.ceylon.compiler.java.metadata.ConstructorName("unary")
     public static final class Parameterized$unary {
         
         private Parameterized$unary() {
@@ -2014,6 +2031,7 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
     
     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    @.com.redhat.ceylon.compiler.java.metadata.ConstructorName("binary")
     public static final class Parameterized$binary {
         
         private Parameterized$binary() {
@@ -2030,6 +2048,7 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
     
     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    @.com.redhat.ceylon.compiler.java.metadata.ConstructorName("ternary")
     public static final class Parameterized$ternary {
         
         private Parameterized$ternary() {
@@ -2046,6 +2065,7 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
     
     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    @.com.redhat.ceylon.compiler.java.metadata.ConstructorName("nary")
     public static final class Parameterized$nary {
         
         private Parameterized$nary() {

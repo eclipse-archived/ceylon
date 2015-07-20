@@ -300,6 +300,7 @@ class ConstructorRefTp<T> implements .com.redhat.ceylon.compiler.java.runtime.mo
     
     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    @.com.redhat.ceylon.compiler.java.metadata.ConstructorName("unaryTp")
     public static final class unaryTp_ {
         
         private unaryTp_() {
@@ -321,6 +322,7 @@ class ConstructorRefTp<T> implements .com.redhat.ceylon.compiler.java.runtime.mo
     
     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    @.com.redhat.ceylon.compiler.java.metadata.ConstructorName("binaryTp")
     public static final class binaryTp_ {
         
         private binaryTp_() {
@@ -344,6 +346,7 @@ class ConstructorRefTp<T> implements .com.redhat.ceylon.compiler.java.runtime.mo
     
     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    @.com.redhat.ceylon.compiler.java.metadata.ConstructorName("ternaryTp")
     public static final class ternaryTp_ {
         
         private ternaryTp_() {
@@ -369,6 +372,7 @@ class ConstructorRefTp<T> implements .com.redhat.ceylon.compiler.java.runtime.mo
     
     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    @.com.redhat.ceylon.compiler.java.metadata.ConstructorName("naryTp")
     public static final class naryTp_ {
         
         private naryTp_() {

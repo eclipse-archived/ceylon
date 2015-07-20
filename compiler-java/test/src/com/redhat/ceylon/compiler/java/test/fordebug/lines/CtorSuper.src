@@ -34,6 +34,7 @@ public class CtorSuper implements .com.redhat.ceylon.compiler.java.runtime.model
      // line 12
     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8) // line 12
     @.com.redhat.ceylon.compiler.java.metadata.Ignore // line 12
+    @.com.redhat.ceylon.compiler.java.metadata.ConstructorName("constructor2") // line 12
     public static final class constructor2_ {
          // line 12
         private constructor2_() { // line 12
@@ -89,6 +90,7 @@ public class CtorSuper2 extends .com.redhat.ceylon.compiler.java.test.fordebug.l
      // line 29
     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8) // line 29
     @.com.redhat.ceylon.compiler.java.metadata.Ignore // line 29
+    @.com.redhat.ceylon.compiler.java.metadata.ConstructorName("constructor2") // line 29
     public static final class constructor2_ {
          // line 29
         private constructor2_() { // line 29

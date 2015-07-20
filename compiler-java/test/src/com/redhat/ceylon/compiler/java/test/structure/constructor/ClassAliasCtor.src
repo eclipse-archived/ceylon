@@ -14,6 +14,7 @@ class ClassAliasCtor implements .com.redhat.ceylon.compiler.java.runtime.model.R
     
     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    @.com.redhat.ceylon.compiler.java.metadata.ConstructorName("other")
     public static final class other_ {
         
         private other_() {

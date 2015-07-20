@@ -48,6 +48,7 @@ class UnaryCtor implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
     
     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    @.com.redhat.ceylon.compiler.java.metadata.ConstructorName("fromInteger")
     private static final class fromInteger_ {
         
         private fromInteger_() {
@@ -66,6 +67,7 @@ class UnaryCtor implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
     
     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    @.com.redhat.ceylon.compiler.java.metadata.ConstructorName("sharedFromInteger")
     public static final class sharedFromInteger_ {
         
         private sharedFromInteger_() {
