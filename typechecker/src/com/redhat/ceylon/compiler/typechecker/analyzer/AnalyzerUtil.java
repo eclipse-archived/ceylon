@@ -232,8 +232,7 @@ public class AnalyzerUtil {
             int count = types.size();
             for (int i=0; i<count; i++) {
                 Tree.Type type = types.get(i);
-                Type t = 
-                        type.getTypeModel();
+                Type t = type.getTypeModel();
                 if (t==null) {
                     typeArguments.add(null);
                 }
