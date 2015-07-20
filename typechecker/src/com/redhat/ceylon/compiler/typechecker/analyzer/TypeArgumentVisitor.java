@@ -203,7 +203,8 @@ public class TypeArgumentVisitor extends Visitor {
             Declaration d, Node that) {
         if (type!=null) {
             List<TypeParameter> errors = 
-                    type.checkVariance(!contravariant && !variable, 
+                    type.checkVariance(
+                            !contravariant && !variable, 
                             contravariant && !variable, 
                             parameterizedDeclaration);
             displayErrors(that, type, errors, d);
@@ -236,8 +237,9 @@ public class TypeArgumentVisitor extends Visitor {
                 that.addError(var + 
                         " type parameter '" + tp.getName() + 
                         "' of '" + declaration.getName() +
-                        "' appears in " + loc + " location in type: '" + 
-                        typename + "'");
+                        "' appears in " + loc + 
+                        " location in type: '" + typename + 
+                        "'");
             }
         }
     }
