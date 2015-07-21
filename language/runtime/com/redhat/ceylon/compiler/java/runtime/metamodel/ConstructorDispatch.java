@@ -643,9 +643,9 @@ class ConstructorDispatch<Type, Arguments extends Sequential<? extends Object>>
     public Type $call$(Object... args) {
         try {
             if(firstDefaulted == -1)
-                return (Type)constructor.invokeExact(args);
+                return (Type)constructor.invokeWithArguments(args);
             // FIXME: proper checks
-            return (Type)dispatch[args.length-firstDefaulted].invokeExact(args);
+            return (Type)dispatch[args.length-firstDefaulted].invokeWithArguments(args);
         } catch (Throwable e) {
             Util.rethrow(e);
             return null;
