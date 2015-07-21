@@ -243,12 +243,25 @@
               <striplinebreaks/>
           </filterchain>
         </loadfile>
+        <ceylon-p2 
+        	sysRep="${repoDir}/repo"
+            out="${build.dist}"
+        	repositoryName="Ceylon Distribution Bundles"
+            categoryPrefix="com.redhat.ceylon.dist"
+            categories="${p2}/category.xml">
+            <module name="com.redhat.ceylon.dist" version="${module.com.redhat.ceylon.dist.osgi.version}"/> 
+            <module name="com.redhat.ceylon.dist.repo" version="${module.com.redhat.ceylon.dist.osgi.version}.${qualifier}"/> 
+            <module name="ceylon.bootstrap" version="${module.ceylon.bootstrap.version}"/> 
+            <module name="ceylon.runtime" version="${module.ceylon.runtime.version}"/> 
+            <module name="org.slf4j.simple" version="1.6.1"/> 
+        </ceylon-p2>
+    	<!--
         <exec dir="${basedir}" executable="eclipse" failonerror="true">
             <arg value="-noSplash"/>
             <arg value="-clean"/>
             <arg value="-console"/>
             <arg value="-consolelog"/>
-            <arg value="--launcher.suppressErrors"/>
+            <arg value="- -launcher.suppressErrors"/>
             <arg value="-application"/>
             <arg value="org.eclipse.equinox.p2.publisher.FeaturesAndBundlesPublisher"/>
             <arg value="-metadataRepositoryName"/>
@@ -269,10 +282,10 @@
         </exec>
         <exec dir="${basedir}" executable="eclipse">
             <arg value="-noSplash"/>
-<!--            <arg value="-clean"/> -->
+<!- -            <arg value="-clean"/> - ->
             <arg value="-console"/>
             <arg value="-consolelog"/>
-            <arg value="--launcher.suppressErrors"/>
+            <arg value="- -launcher.suppressErrors"/>
             <arg value="-application"/>
             <arg value="org.eclipse.equinox.p2.publisher.CategoryPublisher"/>
             <arg value="-metadataRepository"/>
@@ -285,5 +298,6 @@
         	<arg value="-Dorg.eclipse.equinox.simpleconfigurator.configUrl=${bundlesInfoUrl}"/>
             <arg value="-Dosgi.bundles=${bundlesToStart}"/>
         </exec>
+        -->
     </target>
 </project>
