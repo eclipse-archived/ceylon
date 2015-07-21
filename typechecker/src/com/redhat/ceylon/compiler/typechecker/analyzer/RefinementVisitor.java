@@ -19,6 +19,7 @@ import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getIntervening
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getNativeHeader;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getRealScope;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getSignature;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.intersectionOfSupertypes;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isConstructor;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isImplemented;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isNamed;
@@ -353,11 +354,10 @@ public class RefinementVisitor extends Visitor {
                 dec, header,
                 dec.getReference(),
                 header.getReference());
-        checkRefiningMemberTypeParameters(that,
+        checkNativeTypeParameters(that,
                 dec, header,
                 dec.getTypeParameters(),
-                header.getTypeParameters(),
-                true);
+                header.getTypeParameters());
         
         checkMissingMemberImpl(that, dec, header);
     }
@@ -462,11 +462,10 @@ public class RefinementVisitor extends Visitor {
                 dec.getReference(),
                 header.getReference(),
                 true);
-        checkRefiningMemberTypeParameters(that,
+        checkNativeTypeParameters(that,
                 dec, header,
                 dec.getTypeParameters(),
-                header.getTypeParameters(),
-                true);
+                header.getTypeParameters());
     }
     
     private void checkNativeValue(Tree.Declaration that, 
@@ -537,6 +536,38 @@ public class RefinementVisitor extends Visitor {
                             refiningParamLists.get(i), 
                             refinedParamLists.get(i),
                             true);
+                }
+            }
+        }
+    }
+
+    private void checkNativeTypeParameters(
+            Tree.Declaration that,
+            Declaration impl, Declaration header, 
+            List<TypeParameter> implTypeParams,
+            List<TypeParameter> headerTypeParams) {
+        int headerSize = headerTypeParams.size();
+        int implSize = implTypeParams.size();
+        if (headerSize != implSize) {
+            that.addError("native header does not have the same number of type parameters as native implementation: " +
+                    message(impl));
+        } else {
+            for (int i = 0; i < headerSize; i++) {
+                TypeParameter headerTP = headerTypeParams.get(i);
+                TypeParameter implTP = implTypeParams.get(i);
+                if (!headerTP.getName().equals(implTP.getName())) {
+                    that.addError("type parameter does not have the same name as its header: '" +
+                            implTP.getName() +
+                            "' for " +
+                            message(impl));
+                }
+                Type headerIntersect = intersectionOfSupertypes(headerTP);
+                Type implIntersect = intersectionOfSupertypes(implTP);
+                if (!headerIntersect.isExactly(implIntersect)) {
+                    that.addError("type parameter does not have the same bounds as its header: '" +
+                            implTP.getName() +
+                            "' for " +
+                            message(impl));
                 }
             }
         }
@@ -736,7 +767,7 @@ public class RefinementVisitor extends Visitor {
                     ((Generic) refining).getTypeParameters();
             checkRefiningMemberTypeParameters(that, 
                     refining, refined, refinedTypeParams, 
-                    refiningTypeParams, false);
+                    refiningTypeParams);
             typeArgs = checkRefiningMemberUpperBounds(that, 
                     ci, refined, 
                     refinedTypeParams, 
@@ -883,29 +914,15 @@ public class RefinementVisitor extends Visitor {
 	        Tree.Declaration that,
 	        Declaration dec, Declaration refined, 
             List<TypeParameter> refinedTypeParams,
-            List<TypeParameter> refiningTypeParams,
-            boolean forNative) {
+            List<TypeParameter> refiningTypeParams) {
 	    int refiningSize = refiningTypeParams.size();
 	    int refinedSize = refinedTypeParams.size();
 	    if (refiningSize!=refinedSize) {
-	        String subject = 
-	                forNative ? 
-                        "native header" : 
-                        "refined member";
-	        String current = 
-	                forNative ? 
-	                    "native implementation" : 
-	                    "refining member";
 	        StringBuilder message = new StringBuilder();
-	        message.append(current) 
-	                .append(" does not have the same number of type parameters as ") 
-	                .append(subject)
-	                .append(": ") 
-	                .append(message(dec));
-            if (!forNative) {
-                message.append(" refines ")
-                        .append(message(refined));
-            }
+	        message.append("refining member does not have the same number of type parameters as refined member: ") 
+	                .append(message(dec))
+                    .append(" refines ")
+                    .append(message(refined));
             that.addError(message.toString());
 	    }
     }
