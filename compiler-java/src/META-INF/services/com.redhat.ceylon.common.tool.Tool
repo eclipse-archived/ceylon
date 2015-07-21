@@ -11,3 +11,4 @@ com.redhat.ceylon.tools.classpath.CeylonClasspathTool
 com.redhat.ceylon.tools.plugin.CeylonPluginTool
 com.redhat.ceylon.tools.war.CeylonWarTool
 com.redhat.ceylon.tools.browse.CeylonBrowseTool
+com.redhat.ceylon.tools.p2.CeylonP2Tool
