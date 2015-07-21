@@ -3052,13 +3052,23 @@ public class ExpressionTransformer extends AbstractTransformer {
             result = result.prepend(
                     new ExpressionAndType(naming.makeNamedConstructorName(delegateTo, true),
                             naming.makeNamedConstructorType(delegateTo, true)));
+            // Why only when the superclass is not generic?
+            if (Decl.getConstructedClass(constructorDelegation.getConstructor()).getExtendedType().getDeclaration().getTypeParameters().size() == 0) {
+                for (TypeParameter tp : Decl.getConstructedClass(constructorDelegation.getConstructor()).getTypeParameters()) {
+                    result = result.prepend(
+                            new ExpressionAndType(makeReifiedTypeArgument(tp.getType()),
+                                    make().Type(syms().ceylonTypeDescriptorType)));
+                }
+            }
         } else if (
                 superConstructor != null 
                 && constructorDelegation != null
                 && constructorDelegation.isSelfDelegation()) {
+            
             result = result.prepend(
                     new ExpressionAndType(naming.makeNamedConstructorName(superConstructor, concreteDelegation),
                             naming.makeNamedConstructorType(superConstructor, concreteDelegation)));
+            
         } else if (
                 superConstructor != null 
                         && !Decl.isDefaultConstructor(superConstructor)) {
