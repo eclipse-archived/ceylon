@@ -14,8 +14,11 @@ import java.util.List;
 
 import ceylon.language.Array;
 import ceylon.language.Callable;
+import ceylon.language.Entry;
+import ceylon.language.Iterable;
 import ceylon.language.Sequential;
 import ceylon.language.empty_;
+import ceylon.language.meta.model.Applicable;
 import ceylon.language.meta.model.InvocationException;
 
 import com.redhat.ceylon.compiler.java.Util;
@@ -37,9 +40,10 @@ import com.redhat.ceylon.model.typechecker.model.Reference;
  * @param <Arguments>
  */
 class ConstructorDispatch<Type, Arguments extends Sequential<? extends Object>> 
-    implements Callable<Type>, DefaultValueProvider  {
+    implements Callable<Type>, DefaultValueProvider, Applicable<Type, Arguments>  {
 
     private final FreeClass freeClass;
+    private final FreeCallableConstructor freeConstructor;
     private MethodHandle constructor;
     final int firstDefaulted;
     final int variadicIndex;
@@ -56,6 +60,7 @@ class ConstructorDispatch<Type, Arguments extends Sequential<? extends Object>>
             List<Parameter> parameters, Object instance) {
         this.constructorReference = constructorReference;
         freeClass = (FreeClass)appliedClass.declaration;
+        this.freeConstructor = freeConstructor;
         com.redhat.ceylon.model.typechecker.model.Class classDecl = (com.redhat.ceylon.model.typechecker.model.Class)appliedClass.declaration.declaration;
         //com.redhat.ceylon.model.typechecker.model.Constructor decl = freeConstructor.constructor;
         //List<Parameter> parameters = decl.getFirstParameterList().getParameters();
@@ -352,6 +357,10 @@ class ConstructorDispatch<Type, Arguments extends Sequential<? extends Object>>
         outer: for(Constructor<?> constr : javaClass.getDeclaredConstructors()) {
             int ii = 0;
             Class<?>[] pts = constr.getParameterTypes();
+            if (pts.length == 0) {
+                defaultedMethods[0] = constr;
+                continue outer;
+            }
             for (Class<?> pt : pts) {
                 // TODO need to exclude the serialization constructor too!
                 // TODO what if we find more constructors than defaulted methods contains?
@@ -389,6 +398,10 @@ class ConstructorDispatch<Type, Arguments extends Sequential<? extends Object>>
         outer: for(Method constr : javaClass.getDeclaredMethods()) {
             int ii = 0;
             Class<?>[] pts = constr.getParameterTypes();
+            if (pts.length == 0) {
+                defaultedMethods[0] = constr;
+                continue outer;
+            }
             for (Class<?> pt : pts) {
                 // TODO need to exclude the serialization constructor too!
                 // TODO what if we find more constructors than defaulted methods contains?
@@ -700,6 +713,34 @@ class ConstructorDispatch<Type, Arguments extends Sequential<? extends Object>>
         } catch (Throwable e) {
             Util.rethrow(e);
             return null;
+        }
+    }
+
+    @Override
+    public Type apply() {
+        return apply(empty_.get_());
+    }
+
+    @Override
+    public Type apply(Sequential<? extends Object> arguments) {
+        ceylon.language.meta.model.Constructor<Type, Sequential<? extends Object>> ctor = checkConstructor();
+       if (ctor != null) {
+           return ctor.apply(arguments);
+       } else {
+           return Metamodel.apply(this, arguments, parameterProducedTypes, firstDefaulted, variadicIndex);
+       }
+    }
+
+    @Override
+    public Type namedApply(
+            Iterable<? extends Entry<? extends ceylon.language.String, ? extends Object>, ? extends Object> arguments) {
+        ceylon.language.meta.model.Constructor<Type, Sequential<? extends Object>> ctor = checkConstructor();
+        if (ctor != null) {
+            return ctor.namedApply(arguments);
+        } else {
+            return Metamodel.namedApply(this, this, 
+                    (com.redhat.ceylon.model.typechecker.model.Functional)(freeConstructor != null ? freeConstructor.declaration : freeClass.declaration), 
+                    arguments, parameterProducedTypes);
         }
     }
 }

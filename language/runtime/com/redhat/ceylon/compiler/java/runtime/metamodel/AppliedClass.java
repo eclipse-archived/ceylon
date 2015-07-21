@@ -380,19 +380,19 @@ public class AppliedClass<Type, Arguments extends Sequential<? extends Object>>
 
     @Override
     public Type apply(Sequential<? extends Object> arguments) {
-        return ((AppliedCallableConstructor<Type, Arguments>)getDefaultConstructor()).apply(arguments);
+        return getDispatch().apply(arguments);
     }
 
     @Override
     public Type namedApply(
             Iterable<? extends Entry<? extends ceylon.language.String, ? extends Object>, ? extends Object> arguments) {
-        return ((AppliedCallableConstructor<Type, Arguments>)getDefaultConstructor()).namedApply(arguments);
+        return getDispatch().namedApply(arguments);
     }
 
     @Override
     public Object getDefaultParameterValue(Parameter parameter,
             Array<Object> values, int collectedValueCount) {
-        return ((AppliedCallableConstructor<Type, Arguments>)getDefaultConstructor()).getDefaultParameterValue(parameter, values, collectedValueCount);
+        return getDispatch().getDefaultParameterValue(parameter, values, collectedValueCount);
     }
     
 }
