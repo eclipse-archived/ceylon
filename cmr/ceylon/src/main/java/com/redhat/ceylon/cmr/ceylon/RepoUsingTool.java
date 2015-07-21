@@ -79,9 +79,13 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
     
     public RepoUsingTool(ResourceBundle bundle) {
         this.bundle = bundle;
-        this.log = new CMRJULLogger();
+        this.log = createLogger();
     }
     
+    protected Logger createLogger() {
+        return new CMRJULLogger();
+    }
+
     public List<String> getRepositoryAsStrings() {
         if (repo != null) {
             List<String> result = new ArrayList<String>(repo.size());
