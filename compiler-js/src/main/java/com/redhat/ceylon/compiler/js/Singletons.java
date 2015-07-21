@@ -194,6 +194,7 @@ public class Singletons {
         final Tree.DelegatedConstructor dc = that.getDelegatedConstructor();
         final TypeDeclaration td = (TypeDeclaration)c.getContainer();
         final String objvar = gen.getNames().createTempVariable();
+        final String selfvar = gen.getNames().self(td);
         final String typevar = gen.getNames().name(td);
         final String singvar = gen.getNames().name(d);
         final boolean nested = cdef.getDeclarationModel().isClassOrInterfaceMember();
@@ -203,17 +204,21 @@ public class Singletons {
             gen.out("$init$", typevar, "();");
         }
         if (nested) {
-            gen.out("var ");
+            gen.out("var ", selfvar, "=");
+        } else {
+            gen.out(objvar, "=");
         }
-        gen.out(objvar, "=");
         if (dc == null) {
             gen.out("new ", typevar, ".$$;");
             if (td.isClassOrInterfaceMember()) {
-                gen.out(objvar, ".outer$=this;");
+                gen.out(nested?selfvar:objvar, ".outer$=this;");
             }
         } else {
             dc.getInvocationExpression().visit(gen);
             gen.endLine(true);
+        }
+        if (!nested) {
+            gen.out("var ", selfvar, "=", objvar, ";");
         }
         ClassGenerator.addFunctionTypeArguments(cdef.getDeclarationModel(), objvar, gen);
         ClassGenerator.callSupertypes(cdef, cdef.getDeclarationModel(), typevar, gen);
@@ -227,7 +232,7 @@ public class Singletons {
             gen.visitStatements(stmts);
         }
         if (nested) {
-            gen.out("this.", objvar, "=", objvar, ";");
+            gen.out("this.", objvar, "=", selfvar, ";");
         }
         gen.out("}return ", nested?"this.":"", objvar, ";};", typevar, "_", singvar, ".$crtmm$=");
         TypeUtils.encodeForRuntime(d, that.getAnnotationList(), gen);
