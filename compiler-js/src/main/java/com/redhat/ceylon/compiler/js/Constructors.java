@@ -3,8 +3,10 @@ package com.redhat.ceylon.compiler.js;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.compiler.js.util.TypeUtils;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.util.NativeUtil;
 import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.Constructor;
 import com.redhat.ceylon.model.typechecker.model.ParameterList;
@@ -65,7 +67,7 @@ public class Constructors {
                     container, superplist, that, callAbstract, null, gen);
         }
         //If there's a delegated constructor, run the statements after that one and before this one
-        gen.generateConstructorStatements(that, classStatementsBetweenConstructors(cdef, delcons, that));
+        gen.generateConstructorStatements(that, classStatementsBetweenConstructors(cdef, delcons, that, gen));
         gen.out("return ", me, ";");
         gen.endBlockNewLine(true);
         gen.out("function ", fullName);
@@ -107,22 +109,28 @@ public class Constructors {
      * the second constructor, if the first one is null), including the statements from the
      * second constructor */
     static List<? extends Tree.Statement> classStatementsBetweenConstructors(
-            final Tree.ClassDefinition cdef, final Tree.DelegatedConstructor dc, final Tree.Declaration c2) {
-        ArrayList<Tree.Statement> stmts = new ArrayList<>(cdef.getClassBody().getStatements().size());
+            final Tree.ClassDefinition cdef, final Tree.DelegatedConstructor dc, final Tree.Declaration c2,
+            final GenerateJsVisitor gen) {
+        List<Tree.Statement> origs = cdef.getClassBody().getStatements();
+        if (NativeUtil.isForBackend(cdef.getDeclarationModel(), Backend.JavaScript)) {
+            origs = NativeUtil.mergeStatements(cdef.getClassBody(),
+                    gen.getNativeHeader(cdef.getDeclarationModel()));
+        }
+        ArrayList<Tree.Statement> stmts = new ArrayList<>(origs.size());
         //Find the constructor
         Tree.Constructor c1 = null;
         if (dc != null) {
             TypeDeclaration xtd = (TypeDeclaration)((Tree.ExtendedTypeExpression)dc.getInvocationExpression().getPrimary()).getDeclaration();
             if (xtd instanceof Class && xtd == cdef.getDeclarationModel()) {
                 //It's the default constructor
-                for (Tree.Statement st : cdef.getClassBody().getStatements()) {
+                for (Tree.Statement st : origs) {
                     if (st instanceof Tree.Constructor && ((Tree.Constructor) st).getDeclarationModel().getName()==null) {
                         c1 = (Tree.Constructor)st;
                         break;
                     }
                 }
             } else {
-                for (Tree.Statement st : cdef.getClassBody().getStatements()) {
+                for (Tree.Statement st : origs) {
                     if (st instanceof Tree.Constructor &&
                             TypeUtils.getConstructor(((Tree.Constructor) st).getDeclarationModel()) == xtd) {
                         c1 = (Tree.Constructor)st;
@@ -132,7 +140,7 @@ public class Constructors {
             }
         }
         boolean go = false;
-        for (Tree.Statement st : cdef.getClassBody().getStatements()) {
+        for (Tree.Statement st : origs) {
             if (st == c1 || c1 == null) {
                 go = true;
             }

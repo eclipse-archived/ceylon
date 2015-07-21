@@ -27,8 +27,8 @@ public class ClassGenerator {
         final Class d = that.getDeclarationModel();
         //If it's inside a dynamic interface, don't generate anything
         if (d.isClassOrInterfaceMember() && ((ClassOrInterface)d.getContainer()).isDynamic())return;
-        if (NativeUtil.isNativeHeader(that) &&
-                ModelUtil.getNativeDeclaration(d, Backend.JavaScript) != null) {
+        final Class natd = (Class)ModelUtil.getNativeDeclaration(d, Backend.JavaScript);
+        if (NativeUtil.isNativeHeader(that) && natd != null) {
             // It's a native header, remember it for later when we deal with its implementation
             gen.saveNativeHeader(that);
             return;
@@ -37,13 +37,21 @@ public class ClassGenerator {
             return;
         }
         final Tree.ParameterList plist = that.getParameterList();
-        final List<Tree.Constructor> constructors;
         final Tree.SatisfiedTypes sats = that.getSatisfiedTypes();
+        final List<Tree.Statement> stmts;
+        if (NativeUtil.isForBackend(d, Backend.JavaScript)) {
+            stmts = NativeUtil.mergeStatements(that.getClassBody(), gen.getNativeHeader(d));
+        } else {
+            stmts = that.getClassBody().getStatements();
+        }
         //Find the constructors, if any
+        final List<Tree.Constructor> constructors;
         Tree.Constructor defconstr = null;
-        if (d.hasConstructors()) {
+        final boolean hasConstructors = d.hasConstructors() || (natd != null && natd.hasConstructors());
+        final boolean hasEnumerated = d.hasEnumerated() || (natd != null && natd.hasEnumerated());
+        if (hasConstructors) {
             constructors = new ArrayList<>(3);
-            for (Tree.Statement st : that.getClassBody().getStatements()) {
+            for (Tree.Statement st : stmts) {
                 if (st instanceof Tree.Constructor) {
                     Tree.Constructor constr = (Tree.Constructor)st;
                     constructors.add(constr);
@@ -56,12 +64,11 @@ public class ClassGenerator {
             constructors = null;
         }
         gen.comment(that);
-        final Class natd = (Class)ModelUtil.getNativeDeclaration(d, Backend.JavaScript);
         final boolean isAbstractNative = d.isNative() && d.isNativeHeader() && natd != null;
         final String typeName = gen.getNames().name(d);
         if (TypeUtils.isNativeExternal(d)) {
             boolean bye = false;
-            if (d.hasConstructors() && defconstr == null) {
+            if (hasConstructors && defconstr == null) {
                 gen.out(GenerateJsVisitor.function, typeName);
                 gen.out("(){");
                 gen.generateThrow("Exception", d.getQualifiedNameString() + " has no default constructor.", that);
@@ -74,7 +81,7 @@ public class ClassGenerator {
                 TypeGenerator.initializeType(that, gen);
                 bye = true;
             }
-            if (d.hasConstructors()) {
+            if (hasConstructors) {
                 for (Tree.Constructor cnstr : constructors) {
                     Constructors.classConstructor(cnstr, that, constructors, gen);
                 }
@@ -83,7 +90,7 @@ public class ClassGenerator {
         }
         gen.out(GenerateJsVisitor.function, typeName);
         //If there's a default constructor, create a different function with this code
-        if (d.hasConstructors() || d.hasEnumerated()) {
+        if (hasConstructors || hasEnumerated) {
             if (defconstr == null) {
                 gen.out("(){");
                 gen.generateThrow("Exception", d.getQualifiedNameString() + " has no default constructor.", that);
@@ -108,7 +115,7 @@ public class ClassGenerator {
         }
         final boolean withTargs = TypeGenerator.generateParameters(that.getTypeParameterList(), plist, d, gen);
         gen.beginBlock();
-        if (!d.hasConstructors()) {
+        if (!hasConstructors) {
             //This takes care of top-level attributes defined before the class definition
             gen.out("$init$", typeName, "();");
             gen.endLine();
@@ -137,15 +144,9 @@ public class ClassGenerator {
                 }
             }
         }
-        if (!d.hasConstructors()) {
+        if (!hasConstructors) {
             if (TypeUtils.isNativeExternal(d)) {
                 gen.stitchConstructorHelper(that, "_cons_before");
-            }
-            final List<Tree.Statement> stmts;
-            if (NativeUtil.isForBackend(d, Backend.JavaScript)) {
-                stmts = NativeUtil.mergeStatements(that.getClassBody(), gen.getNativeHeader(d));
-            } else {
-                stmts = that.getClassBody().getStatements();
             }
             gen.visitStatements(stmts);
             if (TypeUtils.isNativeExternal(d)) {
@@ -172,13 +173,13 @@ public class ClassGenerator {
                     _this, ",arguments);}");
             gen.endLine();
         }
-        if (d.hasConstructors()) {
+        if (hasConstructors) {
             for (Tree.Constructor cnstr : constructors) {
                 Constructors.classConstructor(cnstr, that, constructors, gen);
             }
         }
-        if (d.hasEnumerated()) {
-            for (Tree.Statement st : that.getClassBody().getStatements()) {
+        if (hasEnumerated) {
+            for (Tree.Statement st : stmts) {
                 if (st instanceof Tree.Enumerated) {
                     Singletons.valueConstructor(that, (Tree.Enumerated)st, gen);
                 }

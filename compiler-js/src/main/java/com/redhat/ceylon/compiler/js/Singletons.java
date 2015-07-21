@@ -7,6 +7,7 @@ import java.util.Map;
 
 import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.compiler.js.GenerateJsVisitor.SuperVisitor;
+import com.redhat.ceylon.compiler.js.util.JsIdentifierNames;
 import com.redhat.ceylon.compiler.js.util.TypeUtils;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
@@ -192,7 +193,7 @@ public class Singletons {
         final Constructor c = that.getEnumerated();
         final Tree.DelegatedConstructor dc = that.getDelegatedConstructor();
         final TypeDeclaration td = (TypeDeclaration)c.getContainer();
-        final String objvar = gen.getNames().self(td);
+        final String objvar = gen.getNames().createTempVariable();
         final String typevar = gen.getNames().name(td);
         final String singvar = gen.getNames().name(d);
         final boolean nested = cdef.getDeclarationModel().isClassOrInterfaceMember();
@@ -216,7 +217,8 @@ public class Singletons {
         }
         ClassGenerator.addFunctionTypeArguments(cdef.getDeclarationModel(), objvar, gen);
         ClassGenerator.callSupertypes(cdef, cdef.getDeclarationModel(), typevar, gen);
-        List<? extends Tree.Statement> stmts = Constructors.classStatementsBetweenConstructors(cdef, null, that);
+        List<? extends Tree.Statement> stmts = Constructors.classStatementsBetweenConstructors(
+                cdef, null, that, gen);
         if (!stmts.isEmpty()) {
             gen.generateConstructorStatements(that, stmts);
         }
