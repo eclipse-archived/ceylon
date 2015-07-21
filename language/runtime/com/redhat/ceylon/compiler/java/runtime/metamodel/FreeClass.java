@@ -362,7 +362,7 @@ public class FreeClass
                 ctors.add(decl);
             }
         }
-        java.lang.Object[] array = ctors.toArray(new ConstructorDeclaration[ctors.size()]);
+        ceylon.language.meta.declaration.Declaration[] array = ctors.toArray(new ceylon.language.meta.declaration.Declaration[ctors.size()]);
         ObjectArrayIterable<ceylon.language.meta.declaration.Declaration> iterable = 
                 new ObjectArrayIterable<ceylon.language.meta.declaration.Declaration>(
                         TypeDescriptor.union(
