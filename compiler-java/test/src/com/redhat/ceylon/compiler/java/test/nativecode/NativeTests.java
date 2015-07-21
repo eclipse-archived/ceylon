@@ -144,7 +144,11 @@ public class NativeTests extends CompilerTests {
                 new CompilerError(44, "type of parameter 's' of 'nativeMethodMismatch3' is different to type of corresponding parameter 'i' of native header 'nativeMethodMismatch3': 'String' is not exactly 'Integer'"),
                 new CompilerError(51, "no native implementation for backend: native 'nativeMethodMismatch4js' is not implemented for one or more backends"),
                 new CompilerError(54, "no native implementation for backend: native 'nativeMethodMismatch4js' is not implemented for one or more backends"),
-                new CompilerError(57, "no native implementation for backend: native 'nativeMethodMismatch4jvm' is not implemented for one or more backends")
+                new CompilerError(57, "no native implementation for backend: native 'nativeMethodMismatch4jvm' is not implemented for one or more backends"),
+                new CompilerError(72, "native header does not have the same number of type parameters as native implementation: 'nativeMethodMismatch5'"),
+                new CompilerError(75, "native header does not have the same number of type parameters as native implementation: 'nativeMethodMismatch5'"),
+                new CompilerError(80, "type parameter does not have the same bounds as its header: 'T' for 'nativeMethodMismatch6'"),
+                new CompilerError(83, "type parameter does not have the same bounds as its header: 'T' for 'nativeMethodMismatch6'")
         );
     }
     
@@ -312,7 +316,12 @@ public class NativeTests extends CompilerTests {
                 new CompilerError(160, "native header 'privattr' of 'NativeClassMismatch10' has no native implementation"),
                 new CompilerError(160, "native header 'privmeth' of 'NativeClassMismatch10' has no native implementation"),
                 new CompilerError(167, "native header 'privattr' of 'NativeClassMismatch10' has no native implementation"),
-                new CompilerError(167, "native header 'privmeth' of 'NativeClassMismatch10' has no native implementation")
+                new CompilerError(167, "native header 'privmeth' of 'NativeClassMismatch10' has no native implementation"),
+                new CompilerError(177, "native header does not have the same number of type parameters as native implementation: 'NativeClassMismatch11'"),
+                new CompilerError(179, "native header does not have the same number of type parameters as native implementation: 'NativeClassMismatch11'"),
+                new CompilerError(184, "type parameter does not have the same bounds as its header: 'B' for 'NativeClassMismatch12'"),
+                new CompilerError(184, "type parameter does not have the same name as its header: 'B' for 'NativeClassMismatch12'"),
+                new CompilerError(186, "type parameter does not have the same bounds as its header: 'A' for 'NativeClassMismatch12'")
         );
     }
     

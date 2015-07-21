@@ -67,5 +67,21 @@ void testjs() {
     nativeMethodMismatch4js();
 }
 
+native shared void nativeMethodMismatch5<A,B>();
+
+native("jvm") shared void nativeMethodMismatch5<A,B,C>() {
+}
+
+native("js") shared void nativeMethodMismatch5() {
+}
+
+native shared void nativeMethodMismatch6<T>() given T satisfies Usable;
+
+native("jvm") shared void nativeMethodMismatch6<T>() {
+}
+
+native("js") shared void nativeMethodMismatch6<T>() given T satisfies Category {
+}
+
 void test() {
 }

@@ -170,3 +170,17 @@ native("js") shared class NativeClassMismatch10(Integer x, Integer y) {
         value x = foo;
     }
 }
+
+
+native shared class NativeClassMismatch11<A,B>() {}
+
+native("jvm") shared class NativeClassMismatch11<A,B,C>() {}
+
+native("js") shared class NativeClassMismatch11() {}
+
+
+native shared class NativeClassMismatch12<A>() given A satisfies Usable {}
+
+native("jvm") shared class NativeClassMismatch12<B>() {}
+
+native("js") shared class NativeClassMismatch12<A>() given A satisfies Category {}
