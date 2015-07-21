@@ -443,7 +443,7 @@ public class PhasedUnit {
         if (! usageAnalyzed) {
             ReferenceCounter rc = new ReferenceCounter();
             rootNode.visit(rc);
-            rootNode.visit(new UsageVisitor(rc));
+            rootNode.visit(new UsageVisitor(rc, moduleManagerRef.get()));
             rootNode.visit(new DeprecationVisitor());
             usageAnalyzed = true;
         }

@@ -8,6 +8,8 @@ import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.hasErrorOrWar
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isAbstraction;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isTypeUnknown;
 
+import com.redhat.ceylon.common.Backend;
+import com.redhat.ceylon.common.BackendSupport;
 import com.redhat.ceylon.compiler.typechecker.analyzer.Warning;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ImportMemberOrType;
@@ -23,12 +25,29 @@ import com.redhat.ceylon.model.typechecker.model.TypeParameter;
  */
 public class UsageVisitor extends Visitor {
 	
-    private ReferenceCounter rc;
+    private final ReferenceCounter rc;
+    private final BackendSupport backendSupport;
+    
+    private Backend inBackend = null;
 	
-	public UsageVisitor(ReferenceCounter rc) {
+	public UsageVisitor(ReferenceCounter rc,
+	        BackendSupport backendSupport) {
 		this.rc = rc;
+        this.backendSupport = backendSupport;
 	}
 	
+    @Override public void visit(Tree.CompilationUnit that) {
+        Backend ib = inBackend;
+        String nat = 
+                that.getUnit()
+                    .getPackage()
+                    .getModule()
+                    .getNativeBackend();
+        inBackend = Backend.fromAnnotation(nat);
+        super.visit(that);
+        inBackend = ib;
+    }
+    
     @Override
     public void visit(Tree.ImportMemberOrType that) {
         super.visit(that);
@@ -64,6 +83,11 @@ public class UsageVisitor extends Visitor {
 
     @Override
     public void visit(Tree.Declaration that) {
+        Backend ib = inBackend;
+        String nat = that.getDeclarationModel().getNativeBackend();
+        if (nat != null) {
+            inBackend = Backend.fromAnnotation(nat);
+        }
         super.visit(that);
         Declaration declaration = that.getDeclarationModel();
         if (declaration!=null && 
@@ -76,11 +100,13 @@ public class UsageVisitor extends Visitor {
         		!(declaration instanceof TypeParameter &&
         		    ((TypeParameter) declaration).getDeclaration() 
         		            instanceof TypeParameter)) {
-            that.addUsageWarning(Warning.unusedDeclaration,
-                    "declaration is never used: '" + 
-                        declaration.getName() + "'");
+            if (inBackend == null || backendSupport.supportsBackend(inBackend)) {
+                that.addUsageWarning(Warning.unusedDeclaration,
+                        "declaration is never used: '" + 
+                            declaration.getName() + "'");
+            }
         }
-        
+        inBackend = ib;
     }
 
     @Override
@@ -89,8 +115,10 @@ public class UsageVisitor extends Visitor {
         if (!hasErrorOrWarning(that)) {
             Type type = that.getTypeModel();
             if (!isTypeUnknown(type) && type.isNothing()) {
-                that.addUsageWarning(Warning.expressionTypeNothing,
-                        "expression has type 'Nothing'");
+                if (inBackend == null || backendSupport.supportsBackend(inBackend)) {
+                    that.addUsageWarning(Warning.expressionTypeNothing,
+                            "expression has type 'Nothing'");
+                }
             }
         }
     }
