@@ -304,6 +304,16 @@ class Test596(shared String s){
     }
 }
 
+class MultiValueCons satisfies Identifiable {
+  shared Integer num;
+  shared new one {
+    num=1;
+  }
+  shared new two {
+    num=2;
+  }
+}
+
 @test
 shared void testConstructors() {
   value o=Outer1129();
@@ -414,4 +424,7 @@ shared void testConstructors() {
   check(t596.Bar.bar!=t599, "JS#596.3");
   check(t596.Bar.bar===t596.Bar.bar, "JS#596.4");
   check(!(t596.Bar.bar===Test596("596").Bar.bar), "JS#596.5");
+  check(MultiValueCons.one.num==1, "Multiple enumerated 1");
+  check(MultiValueCons.two.num==2, "Multiple enumerated 2");
+  check(!((MultiValueCons.one of Identifiable)===(MultiValueCons.two of Identifiable)), "Multiple enumerated 3");
 }
