@@ -490,16 +490,6 @@ shared class Constructors<T> {
         //assert(type(member) == memberOther.container);
         //assert(type(member) == memberNonShared.container);
         
-        // parameterTypes
-        assert(memberMember.parameterTypes.size==1);
-        assert(exists t = memberMember.parameterTypes[0],
-            `String`.union(`Null`) == t);
-        assert(memberOther.parameterTypes.size==1);
-        assert(exists i = memberOther.parameterTypes[0],
-            `Integer` == i);
-        assert(memberNonShared.parameterTypes.size==1);
-        assert(exists b = memberNonShared.parameterTypes[0],
-            `Boolean` == b);
         
         // call
         Function<Member, []|[T?]> memberMemberCtor = memberMember(this);
@@ -543,16 +533,7 @@ shared class Constructors<T> {
         //assert(type(this) == def.container);
         //assert(type(this) == other.container);
         //assert(type(this) == nonShared.container);
-        // parameterTypes
-        assert(def.parameterTypes.size==1);
-        assert(exists t = def.parameterTypes[0],
-            `String`.union(`Null`) == t);
-        assert(other.parameterTypes.size==1);
-        assert(exists i = other.parameterTypes[0],
-            `Integer` == i);
-        assert(nonShared.parameterTypes.size==1);
-        assert(exists b = nonShared.parameterTypes[0],
-            `Boolean` == b);
+        
         // call
         "calling Constructor model of default constructor with defaulted argument" 
         assert(! def().arg exists);
@@ -685,9 +666,6 @@ shared class Constructors<T> {
             other == c2);
         assert(exists c3 = cls.getConstructorDeclaration("nonSharedCtor"),
             nonShared == c3);
-        
-        assert(exists c4 = cls.defaultConstructorDeclaration,
-            def == c4);
         
         value ctors = cls.constructorDeclarations();
         assert(ctors.size == 3);

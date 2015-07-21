@@ -45,9 +45,6 @@ shared void checkInitializers(){
     Anything fixedParams3 = fixedParamsType.declaration.instantiate([], "a", 1, 1.2, 'a', true, noParams);
     assert(is FixedParams fixedParams3);
 
-    // check its parameter types
-    assert(fixedParamsType.parameterTypes == [`String`, `Integer`, `Float`, `Character`, `Boolean`, `Object`]);
-
     // typed parameters
     value typeParamsType = type(TypeParams("a", 1));
     assert(is Class<TypeParams<String>, [String, Integer]> typeParamsType);
@@ -62,9 +59,6 @@ shared void checkInitializers(){
     Anything typeParams3 = typeParamsClass.instantiate([`String`], "a", 1);
     // this checks that we did pass the reified type arguments correctly
     assert(is TypeParams<String> typeParams3);
-
-    // check its parameter types
-    assert(typeParamsType.parameterTypes == [`String`, `Integer`]);
 
     // defaulted parameters
     value defaultedParamsType = typeLiteral<DefaultedParams>();
@@ -433,9 +427,7 @@ shared void checkMemberTypes(){
     assert(is Class<ContainerClass, []> containerClassType);
 
     assert(exists innerClassType = containerClassType.getClass<ContainerClass, ContainerClass.InnerClass, []>("InnerClass"));
-    // check its parameter types
-    assert(innerClassType.parameterTypes == []);
-
+    
     Anything o1 = innerClassType(containerClassInstance)();
     assert(is ContainerClass.InnerClass o1);
     Anything o1b = innerClassType.bind(containerClassInstance).apply();
@@ -448,9 +440,7 @@ shared void checkMemberTypes(){
     assert(`class ContainerClass.InnerClass`.qualifiedName == "metamodel::ContainerClass.InnerClass");
 
     assert(exists innerDefaultedClassType = containerClassType.getClass<ContainerClass, ContainerClass.DefaultedParams, [Integer, Integer=]>("DefaultedParams"));
-    // check its parameter types
-    assert(innerDefaultedClassType.parameterTypes == [`Integer`, `Integer`]);
-
+    
     Anything o1_2 = innerDefaultedClassType(containerClassInstance)(0);
     assert(is ContainerClass.DefaultedParams o1_2);
     Anything o1_2b = innerDefaultedClassType.bind(containerClassInstance).apply(0);
@@ -909,8 +899,6 @@ shared void checkObjectDeclaration(){
     // FIXME: this may actually be wrong and we may want to be able to instantiate them
     assert(!is Class<Anything, []> topLevelObjectClass);
     assert(is Class<Anything, Nothing> topLevelObjectClass);
-    
-    assert(topLevelObjectClass.parameterTypes == []);
     
     // make sure we get a proper exception when trying to instantiate it
     try{
