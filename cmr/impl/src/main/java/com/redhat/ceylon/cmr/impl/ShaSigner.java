@@ -18,8 +18,20 @@ import com.redhat.ceylon.common.log.Logger;
  *  Moved here from ceylon-compiler. */
 public class ShaSigner {
     
+    private static class NullLogger implements Logger {
+        @Override
+        public void error(String str) {}
+        @Override
+        public void warning(String str) {}
+        @Override
+        public void info(String str) {}
+        @Override
+        public void debug(String str) {}
+    }
+    private static Logger NULL_LOGGER = new NullLogger();
+
     public static File sign(File file, Logger log, boolean verbose){
-        String sha1 = sha1(file, log);
+        String sha1 = hash(file, "SHA-1", log);
         if(sha1 == null)
             return null;
         
@@ -61,14 +73,21 @@ public class ShaSigner {
         }
     }
 
-    private static String sha1(File file, Logger log) {
+    public static String sha1(File file) {
+        return hash(file, "SHA-1", NULL_LOGGER);
+    }
+    public static String md5(File file) {
+        return hash(file, "MD5", new NullLogger());
+    }
+    
+    private static String hash(File file, String hashAlgo, Logger log) {
         MessageDigest digest;
         try {
-            digest = MessageDigest.getInstance("SHA-1");
+            digest = MessageDigest.getInstance(hashAlgo);
         } catch (NoSuchAlgorithmException e) {
             // can't happen, specs say SHA-1 must be implemented
-            log.warning("Failed to get a SHA-1 message digest, your JRE does not follow the specs. "
-                    +"No SHA-1 signature will be made");
+            log.warning("Failed to get a "+hashAlgo+" message digest, your JRE does not follow the specs. "
+                    +"No "+hashAlgo+" signature will be made");
             return null;
         }
         FileInputStream is;
@@ -77,7 +96,7 @@ public class ShaSigner {
         } catch (FileNotFoundException e) {
             // can't happen since we just created the file
             log.warning("Failed to open archive file "+file.getPath()
-                    +", no SHA-1 signature will be made");
+                    +", no "+hashAlgo+" signature will be made");
             return null;
         }
         byte[] buffer = new byte[1024];
@@ -89,7 +108,7 @@ public class ShaSigner {
             }
         } catch (IOException e) {
             log.warning("Failed to read archive file "+file.getPath()
-                    +", no SHA-1 signature will be made");
+                    +", no "+hashAlgo+" signature will be made");
             return null;
         }finally{
             try {
