@@ -161,6 +161,9 @@ void visitMembers(ClassOrInterfaceDeclaration decl){
         case(is AliasDeclaration){
             // FIXME: implement
         }
+        case(is CallableConstructorDeclaration){
+            // FIXME: implement
+        }
     }
 }
 void visitFunction(FunctionDeclaration func) {

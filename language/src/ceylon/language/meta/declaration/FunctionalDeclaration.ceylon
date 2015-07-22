@@ -50,7 +50,7 @@ import ceylon.language.meta.model {
        }
    """
 shared sealed interface FunctionalDeclaration
-        satisfies GenericDeclaration & NestableDeclaration {
+        satisfies GenericDeclaration {
     
     "True if the current declaration is an annotation class or function."
     shared formal Boolean annotation;

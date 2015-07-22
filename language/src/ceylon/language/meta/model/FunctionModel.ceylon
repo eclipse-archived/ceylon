@@ -1,5 +1,6 @@
 import ceylon.language.meta.declaration {
-    FunctionalDeclaration
+    FunctionalDeclaration,
+    NestableDeclaration
 }
 import ceylon.language.meta.model {
     ClosedType = Type
@@ -17,7 +18,7 @@ shared sealed interface FunctionModel<out Type=Anything, in Arguments=Nothing>
         given Arguments satisfies Anything[] {
 
     "This function's declaration."
-    shared formal actual FunctionalDeclaration declaration;
+    shared formal actual NestableDeclaration&FunctionalDeclaration declaration;
 
     "This function's return closed type."
     shared formal ClosedType<Type> type;
