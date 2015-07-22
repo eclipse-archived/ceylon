@@ -152,103 +152,58 @@ public class AppliedClass<Type, Arguments extends Sequential<? extends Object>>
     @Override
     @Ignore
     public Type $callvariadic$() {
-        ConstructorDispatch<Type, Arguments> dc = getDispatch();
-        if (dc != null) {
-            return dc.$callvariadic$();
-        } else {
-            throw new AssertionError("class lacks a default constructor");
-        }
+        return $call$();
     }
     
     @Override
     @Ignore
     public Type $callvariadic$(Sequential<?> varargs) {
-        ConstructorDispatch<Type, Arguments> dc = getDispatch();
-        if (dc != null) {
-            return dc.$callvariadic$(varargs);
-        } else {
-            throw new AssertionError("class lacks a default constructor");
-        }
+        return $call$(varargs);
     }
 
     @Override
     @Ignore
     public Type $callvariadic$(Object arg0,
             Sequential<?> varargs) {
-        ConstructorDispatch<Type, Arguments> dc = getDispatch();
-        if (dc != null) {
-            return dc.$callvariadic$(arg0, varargs);
-        } else {
-            throw new AssertionError("class lacks a default constructor");
-        }
+        return $call$(arg0, varargs);
     }
 
     @Override
     @Ignore
     public Type $callvariadic$(Object arg0,
             Object arg1, Sequential<?> varargs) {
-        ConstructorDispatch<Type, Arguments> dc = getDispatch();
-        if (dc != null) {
-            return dc.$callvariadic$(arg0, arg1, varargs);
-        } else {
-            throw new AssertionError("class lacks a default constructor");
-        }
+        return $call$(arg0, arg1, varargs);
     }
 
     @Override
     @Ignore
     public Type $callvariadic$(Object arg0,
             Object arg1, Object arg2, Sequential<?> varargs) {
-        ConstructorDispatch<Type, Arguments> dc = getDispatch();
-        if (dc != null) {
-            return dc.$callvariadic$(arg0, arg1, arg2, varargs);
-        } else {
-            throw new AssertionError("class lacks a default constructor");
-        }
+        return $call$(arg0, arg1, arg2, varargs);
     }
 
     @Override
     @Ignore
     public Type $callvariadic$(Object... argsAndVarargs) {
-        ConstructorDispatch<Type, Arguments> dc = getDispatch();
-        if (dc != null) {
-            return dc.$callvariadic$((Object[])argsAndVarargs);
-        } else {
-            throw new AssertionError("class lacks a default constructor");
-        }
+        return $call$((Object[])argsAndVarargs);
     }
 
     @Override
     @Ignore
     public Type $callvariadic$(Object arg0) {
-        ConstructorDispatch<Type, Arguments> dc = getDispatch();
-        if (dc != null) {
-            return dc.$callvariadic$(arg0, empty_.get_());
-        } else {
-            throw new AssertionError("class lacks a default constructor");
-        }
+        return $call$(arg0, empty_.get_());
     }
 
     @Override
     @Ignore
     public Type $callvariadic$(Object arg0, Object arg1) {
-        ConstructorDispatch<Type, Arguments> dc = getDispatch();
-        if (dc != null) {
-            return dc.$callvariadic$(arg0, arg1, empty_.get_());
-        } else {
-            throw new AssertionError("class lacks a default constructor");
-        }
+        return $call$(arg0, arg1, empty_.get_());
     }
 
     @Override
     @Ignore
     public Type $callvariadic$(Object arg0, Object arg1, Object arg2) {
-        ConstructorDispatch<Type, Arguments> dc = getDispatch();
-        if (dc != null) {
-            return dc.$callvariadic$(arg0, arg1, arg2, empty_.get_());
-        } else {
-            throw new AssertionError("class lacks a default constructor");
-        }
+        return $call$(arg0, arg1, arg2, empty_.get_());
     }
 
     @Ignore
