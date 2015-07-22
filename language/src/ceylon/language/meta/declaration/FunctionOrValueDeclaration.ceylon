@@ -1,8 +1,7 @@
 "A function or value declaration."
 shared sealed interface FunctionOrValueDeclaration
     of FunctionDeclaration
-     | ValueDeclaration
-    satisfies NestableDeclaration {
+     | ValueDeclaration {
     
     "True if this function or value is a parameter to a [[FunctionalDeclaration]]."
     shared formal Boolean parameter;

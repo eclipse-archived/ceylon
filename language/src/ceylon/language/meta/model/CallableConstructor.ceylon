@@ -32,7 +32,7 @@ import ceylon.language.meta.model {
    of the constructor's class.
    """
 shared sealed interface CallableConstructor<out Type=Object, in Arguments=Nothing>
-        satisfies Function<Type, Arguments> 
+        satisfies FunctionModel<Type, Arguments> & Applicable<Type, Arguments>
         given Arguments satisfies Anything[] {
     
     "This constructor's declaration."
@@ -47,7 +47,7 @@ shared sealed interface CallableConstructor<out Type=Object, in Arguments=Nothin
 }
 
 shared sealed interface MemberClassCallableConstructor<in Container=Nothing, out Type=Object, in Arguments=Nothing>
-        satisfies Method<Container, Type, Arguments>
+        satisfies FunctionModel<Type, Arguments> & Qualified<CallableConstructor<Type, Arguments>, Container>
         given Arguments satisfies Anything[] {
 
 

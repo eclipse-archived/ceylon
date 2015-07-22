@@ -51,7 +51,17 @@ import ceylon.language.meta.model {
    """
 shared sealed interface ClassDeclaration 
         of ClassWithInitializerDeclaration | ClassWithConstructorsDeclaration
-        satisfies ClassOrInterfaceDeclaration & FunctionalDeclaration {
+        satisfies ClassOrInterfaceDeclaration {
+    "True if the current declaration is an annotation class or function."
+    shared formal Boolean annotation;
+    
+    // TODO remove this, not all classes have parameters!
+    "The list of parameter declarations for this functional declaration."
+    shared formal FunctionOrValueDeclaration[] parameterDeclarations;
+    
+    // TODO remove this, not all classes have parameters!
+    "Gets a parameter declaration by name. Returns `null` if no such parameter exists."
+    shared formal FunctionOrValueDeclaration? getParameterDeclaration(String name);
     
     "True if the class has an [[abstract|ceylon.language::abstract]] annotation."
     shared formal Boolean abstract;

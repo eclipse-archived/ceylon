@@ -7,8 +7,7 @@ import ceylon.language.meta.declaration {
     ConstructorDeclaration,
     FunctionDeclaration,
     Declaration,
-    ValueDeclaration,
-    FunctionOrValueDeclaration
+    ValueDeclaration
 }
 
 "The annotation class for the [[annotation]] meta-annotation."
@@ -25,7 +24,7 @@ shared annotation AnnotationAnnotation annotation()
 "The annotation class for the [[shared]] annotation."
 shared final sealed annotation class SharedAnnotation()
         satisfies OptionalAnnotation<SharedAnnotation,
-                FunctionOrValueDeclaration|ClassOrInterfaceDeclaration|ConstructorDeclaration|Package|Import> {}
+                FunctionDeclaration|ValueDeclaration|ClassOrInterfaceDeclaration|ConstructorDeclaration|Package|Import> {}
 
 "Annotation to mark a declaration as shared. A `shared` 
  declaration is visible outside the block of code in which 
@@ -82,7 +81,7 @@ shared annotation SealedAnnotation sealed()
 "The annotation class for the [[actual]] annotation."
 shared final sealed annotation class ActualAnnotation()
         satisfies OptionalAnnotation<ActualAnnotation,
-                FunctionOrValueDeclaration|ClassOrInterfaceDeclaration> {}
+                FunctionDeclaration|ValueDeclaration|ClassOrInterfaceDeclaration> {}
 
 "Annotation to mark a member of a type as refining a member 
  of a supertype."
@@ -92,7 +91,7 @@ shared annotation ActualAnnotation actual()
 "The annotation class for the [[formal]] annotation."
 shared final sealed annotation class FormalAnnotation()
         satisfies OptionalAnnotation<FormalAnnotation,
-                FunctionOrValueDeclaration|ClassOrInterfaceDeclaration> {}
+                FunctionDeclaration|ValueDeclaration|ClassOrInterfaceDeclaration> {}
 
 "Annotation to mark a member whose implementation must be 
  provided by subtypes."
@@ -102,7 +101,7 @@ shared annotation FormalAnnotation formal()
 "The annotation class for the [[default]] annotation."
 shared final sealed annotation class DefaultAnnotation()
         satisfies OptionalAnnotation<DefaultAnnotation,
-                FunctionOrValueDeclaration|ClassOrInterfaceDeclaration> {}
+                FunctionDeclaration|ValueDeclaration|ClassOrInterfaceDeclaration> {}
 
 "Annotation to mark a member whose implementation may be 
  refined by subtypes. Non-`default` declarations may not be 
@@ -188,7 +187,7 @@ shared final sealed annotation class ThrownExceptionAnnotation(
      that cause this exception to be thrown."
     shared String when)
         satisfies SequencedAnnotation<ThrownExceptionAnnotation,
-                FunctionOrValueDeclaration|ClassDeclaration|ConstructorDeclaration> {}
+                FunctionDeclaration|ValueDeclaration|ClassDeclaration|ConstructorDeclaration> {}
 
 "Annotation to document the exception types thrown by a 
  function, value, class, or constructor."
@@ -265,7 +264,7 @@ shared final sealed annotation class SuppressWarningsAnnotation(
     "The warning types to suppress."
     [String*] warnings)
         satisfies OptionalAnnotation<SuppressWarningsAnnotation, 
-            FunctionOrValueDeclaration|ClassOrInterfaceDeclaration|ConstructorDeclaration|Module|Package|Import> {}
+            FunctionDeclaration|ValueDeclaration|ClassOrInterfaceDeclaration|ConstructorDeclaration|Module|Package|Import> {}
 
 "Annotation to suppress compilation warnings of the 
  [[specified types|warnings]] when typechecking the 

@@ -8,6 +8,7 @@ import ceylon.language.meta.declaration.CallableConstructorDeclaration;
 import ceylon.language.meta.declaration.CallableConstructorDeclaration$impl;
 import ceylon.language.meta.declaration.ClassDeclaration;
 import ceylon.language.meta.declaration.FunctionOrValueDeclaration;
+import ceylon.language.meta.declaration.FunctionalDeclaration$impl;
 import ceylon.language.meta.declaration.Module;
 import ceylon.language.meta.declaration.OpenType;
 import ceylon.language.meta.declaration.Package;
@@ -159,6 +160,11 @@ public class FreeCallableConstructor
 
     @Override
     public CallableConstructorDeclaration$impl $ceylon$language$meta$declaration$CallableConstructorDeclaration$impl() {
+        return null;
+    }
+    
+    @Override
+    public FunctionalDeclaration$impl $ceylon$language$meta$declaration$FunctionalDeclaration$impl() {
         return null;
     }
 

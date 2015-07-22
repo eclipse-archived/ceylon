@@ -22,7 +22,7 @@ shared alias ConstructorDeclaration
         => CallableConstructorDeclaration|ValueConstructorDeclaration;
 
 shared sealed interface CallableConstructorDeclaration 
-        satisfies FunctionDeclaration {
+        satisfies FunctionalDeclaration {
     
     "True if the constructor has an [[abstract|ceylon.language::abstract]] annotation."
     shared formal Boolean abstract;
@@ -50,7 +50,7 @@ shared sealed interface CallableConstructorDeclaration
             given Arguments satisfies Anything[];
 }
 shared sealed interface ValueConstructorDeclaration 
-        satisfies ValueDeclaration {
+        satisfies ValueDeclaration & NestableDeclaration {
     
     "The class this constructor constructs"
     shared actual formal ClassDeclaration container; 
