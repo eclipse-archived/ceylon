@@ -460,7 +460,7 @@ class ConstructorDispatch<Type, Arguments extends Sequential<? extends Object>>
         java.lang.Class<?> returnType;
         MethodHandle method = null;
         boolean isJavaArray;
-        int mods;
+        boolean isStatic;
         int typeParametersCount;
         int skipParameters = 0;
         List<com.redhat.ceylon.model.typechecker.model.TypeParameter> reifiedTypeParameters;
@@ -470,7 +470,7 @@ class ConstructorDispatch<Type, Arguments extends Sequential<? extends Object>>
             java.lang.reflect.Method foundMethod = (java.lang.reflect.Method)found;
             parameterTypes = foundMethod.getParameterTypes();
             returnType = foundMethod.getReturnType();
-            mods = foundMethod.getModifiers();
+            isStatic = Modifier.isStatic(foundMethod.getModifiers());
             isJavaArray = MethodHandleUtil.isJavaArray(javaClass);
             typeParametersCount = foundMethod.getTypeParameters().length;
             try {
@@ -497,7 +497,7 @@ class ConstructorDispatch<Type, Arguments extends Sequential<? extends Object>>
             java.lang.reflect.Constructor<?> foundMethod = (java.lang.reflect.Constructor<?>)found;
             parameterTypes = foundMethod.getParameterTypes();
             returnType = javaClass;
-            mods = foundMethod.getModifiers();
+            isStatic = Modifier.isStatic(foundMethod.getDeclaringClass().getModifiers());
             foundMethod.setAccessible(true);
             try {
                 method = MethodHandles.lookup().unreflectConstructor(foundMethod);
@@ -522,18 +522,32 @@ class ConstructorDispatch<Type, Arguments extends Sequential<? extends Object>>
         } else {
             throw new RuntimeException();
         }
-
+        boolean isJavaMember = found instanceof java.lang.reflect.Constructor && instance != null && !isStatic;
         // box the return type
         method = MethodHandleUtil.boxReturnValue(method, returnType, constructorReference.getType());
         // we need to cast to Object because this is what comes out when calling it in $call
+        
+        
+        // if it's a java member we will be using the member constructor which has an extra synthetic parameter so we can't bind it
+        // until we have casted it first
+        if(isJavaMember) {
+            method = method.asType(MethodType.methodType(Object.class, parameterTypes));
+        }
         if(instance != null 
-                && (isJavaArray || !Modifier.isStatic(mods)))
+                && (isJavaArray || !isStatic)) {
             method = method.bindTo(instance);
-        method = method.asType(MethodType.methodType(Object.class, parameterTypes));
+        }
+     // if it was not a java member we have no extra synthetic instance parameter and we need to get rid of it before casting
+        if(!isJavaMember) {
+            method = method.asType(MethodType.methodType(Object.class, parameterTypes));
+        }
+        if(isJavaMember) {
+            skipParameters++; // skip the first parameter for boxing
+        }
         // insert any required type descriptors
         if(typeParametersCount != 0 && MethodHandleUtil.isReifiedTypeSupported(found, false)){
             List<com.redhat.ceylon.model.typechecker.model.Type> typeArguments = new ArrayList<com.redhat.ceylon.model.typechecker.model.Type>();
-            java.util.Map<com.redhat.ceylon.model.typechecker.model.TypeParameter, com.redhat.ceylon.model.typechecker.model.Type> typeArgumentMap = constructorReference.getQualifyingType().getTypeArguments();
+            java.util.Map<com.redhat.ceylon.model.typechecker.model.TypeParameter, com.redhat.ceylon.model.typechecker.model.Type> typeArgumentMap = constructorReference.getTypeArguments();
             for (com.redhat.ceylon.model.typechecker.model.TypeParameter tp : reifiedTypeParameters) {
                 typeArguments.add(typeArgumentMap.get(tp));
             }
@@ -720,7 +734,8 @@ class ConstructorDispatch<Type, Arguments extends Sequential<? extends Object>>
             throw Metamodel.newModelError("Default argument method for "+parameter.getName()+" requires wrong number of parameters: "+parameterCount+" should be "+collectedValueCount);
         
         // AFAIK default value methods cannot be Java-variadic 
-        MethodHandle methodHandle = reflectionToMethodHandle(constructorReference, found, javaClass, constructorReference.getType(), parameterProducedTypes, false, false);
+        MethodHandle methodHandle = reflectionToMethodHandle(constructorReference, found, 
+                javaClass, this.instance, parameterProducedTypes, false, false);
         // sucks that we have to copy the array, but that's the MH API
         java.lang.Object[] arguments = new java.lang.Object[collectedValueCount];
         System.arraycopy(values.toArray(), 0, arguments, 0, collectedValueCount);
