@@ -1485,7 +1485,7 @@ declaration returns [Declaration declaration]
       { $declaration=$inferredAttributeDeclaration.declaration; }
     | typedMethodOrAttributeDeclaration
       { $declaration=$typedMethodOrAttributeDeclaration.declaration; }
-    | (NEW (LIDENTIFIER|UIDENTIFIER)? LPAREN) => 
+    | (NEW (LIDENTIFIER)? LPAREN) => 
       constructor
       { $declaration=$constructor.declaration; }
     | enumeratedObject
