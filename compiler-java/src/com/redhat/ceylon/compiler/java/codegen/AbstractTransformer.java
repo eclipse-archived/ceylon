@@ -5005,7 +5005,9 @@ public abstract class AbstractTransformer implements Transformation {
                 else if(typeParameters.get(1).isEmpty())
                     alternative = typeParameters.get(0);
                 if(alternative != null && alternative.isTuple()){
-                    return makeTupleTypeDescriptor(alternative, true);
+                    JCExpression tupleType = makeTupleTypeDescriptor(alternative, true);
+                    if(tupleType != null)
+                        return tupleType;
                 }
             }
             for(int i=typeParameters.size()-1;i>=0;i--){
@@ -5039,7 +5041,9 @@ public abstract class AbstractTransformer implements Transformation {
                 return makeSelect(qualifier, naming.getTypeDescriptorAliasName());
             }
             if(pt.isTuple()){
-                return makeTupleTypeDescriptor(pt, false);
+                JCExpression tupleType = makeTupleTypeDescriptor(pt, false);
+                if(tupleType != null)
+                    return tupleType;
             }
             // no alias, must build it
             List<JCExpression> typeTestArguments = makeReifiedTypeArgumentsResolved(pt.getTypeArgumentList(), qualified);
@@ -5135,6 +5139,11 @@ public abstract class AbstractTransformer implements Transformation {
         if(isVariadic){
             // unwrap the last element
             restType = tupleElementTypes.get(tupleElementTypes.size()-1);
+            // types like Tuple<X,X,Anything> are invalid but allowed by the typechecker
+            // in this case we have variadic=true and restType.isUnknown so just refuse
+            // to optimise
+            if(restType.isUnknown())
+                return null;
             tupleElementTypes.set(tupleElementTypes.size()-1, typeFact.getSequentialElementType(restType));
             atLeastOne = restType.getDeclaration().inherits(typeFact().getSequenceDeclaration());
             // the last rest element may be a type param, in which case we resolve it at runtime
