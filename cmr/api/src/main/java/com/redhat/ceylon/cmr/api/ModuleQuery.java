@@ -21,6 +21,7 @@ public class ModuleQuery {
         JAR(ArtifactContext.JAR),
         JVM(ArtifactContext.CAR, ArtifactContext.JAR),
         JS(ArtifactContext.JS),
+        DART(ArtifactContext.DART),
         CODE(ArtifactContext.CAR, ArtifactContext.JAR, ArtifactContext.JS),
         CEYLON_CODE(ArtifactContext.CAR, ArtifactContext.JS),
         ALL(ArtifactContext.allSuffixes());

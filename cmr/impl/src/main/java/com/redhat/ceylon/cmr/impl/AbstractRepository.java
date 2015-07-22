@@ -442,7 +442,9 @@ public abstract class AbstractRepository implements CmrRepository {
                         // is it the right version?
                         || (suffix.equals(ArtifactContext.CAR)
                                 || suffix.equals(ArtifactContext.JS_MODEL) 
-                                || suffix.equals(ArtifactContext.JS))
+                                || suffix.equals(ArtifactContext.JS)
+                                || suffix.equals(ArtifactContext.DART)
+                                || suffix.equals(ArtifactContext.DART_MODEL))
                                 && !checkBinaryVersion(name, version, artifact, lookup)) {
                     if (lookup.getRetrieval() == Retrieval.ALL) {
                         break;
