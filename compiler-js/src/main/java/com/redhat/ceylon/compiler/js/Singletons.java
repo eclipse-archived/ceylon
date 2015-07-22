@@ -245,6 +245,8 @@ public class Singletons {
         if (td.isClassOrInterfaceMember()) {
             gen.outerSelf(td);
             gen.out(".", typevar, "_", singvar, "=", typevar, "_", singvar, ";");
+        } else if (td.isShared()) {
+            gen.out("ex$.", typevar, "_", singvar, "=", typevar, "_", singvar, ";");
         }
     }
 
