@@ -459,11 +459,16 @@ public class CeylonEnter extends Enter {
         compilerDelegate.typeCheck(listOfUnits);
 
         // This phase is proper to the Java backend 
+        ForcedCaptureVisitor fcv = new ForcedCaptureVisitor();
         for (PhasedUnit pu : listOfUnits) {
             Unit unit = pu.getUnit();
             final CompilationUnit compilationUnit = pu.getCompilationUnit();
+            compilationUnit.visit(fcv);
             for (Declaration d: unit.getDeclarations()) {
-                if (d instanceof TypedDeclaration && !(d instanceof Setter)) {
+                if (d instanceof TypedDeclaration 
+                        && !(d instanceof Setter)
+                        // skip already captured members
+                        && !d.isCaptured()) {
                     compilationUnit.visit(new MethodOrValueReferenceVisitor((TypedDeclaration) d));
                 }
             }
