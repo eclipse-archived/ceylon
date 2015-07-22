@@ -357,10 +357,6 @@ class ConstructorDispatch<Type, Arguments extends Sequential<? extends Object>>
         outer: for(Constructor<?> constr : javaClass.getDeclaredConstructors()) {
             int ii = 0;
             Class<?>[] pts = constr.getParameterTypes();
-            if (pts.length == 0) {
-                defaultedMethods[0] = constr;
-                continue outer;
-            }
             for (Class<?> pt : pts) {
                 // TODO need to exclude the serialization constructor too!
                 // TODO what if we find more constructors than defaulted methods contains?
@@ -376,18 +372,35 @@ class ConstructorDispatch<Type, Arguments extends Sequential<? extends Object>>
                         && ctorName.equals(annotation.value())
                         && !annotation.delegation()) {
                         ii++;
-                        defaultedMethods[firstDefaulted == -1 ? 0 : pts.length-ii-firstDefaulted] = constr;
+                        defaultedMethods[index(ii, pts)] = constr;
                     }
                 } else {
                     // the default constructor
                     if (annotation == null) {
-                        defaultedMethods[firstDefaulted == -1 ? 0 : pts.length-ii-firstDefaulted] = constr;
+                        defaultedMethods[index(ii, pts)] = constr;
+                        if (variadicIndex != -1) {
+                            defaultedMethods[index(ii, pts)] = constr;
+                        }
                     }
                 }
                 continue outer;
             }
+            defaultedMethods[index(ii, pts)] = constr;
         }
         return defaultedMethods;
+    }
+    
+    int index(int ii, Class<?>[] pts) {
+        if (firstDefaulted ==  -1) {
+            return 0;
+        } else {
+            if (variadicIndex == -1) {
+                return pts.length-ii-firstDefaulted;
+            } else {
+                return 0;
+            }
+        }
+        
     }
     
     protected Method[] findInstantiators(
@@ -417,12 +430,12 @@ class ConstructorDispatch<Type, Arguments extends Sequential<? extends Object>>
                         && ctorName.equals(annotation.value())
                         && !annotation.delegation()) {
                         ii++;
-                        defaultedMethods[firstDefaulted == -1 ? 0 : pts.length-ii-firstDefaulted] = constr;
+                        defaultedMethods[index(ii, pts)] = constr;
                     }
                 } else {
                     // the default constructor
                     if (annotation == null) {
-                        defaultedMethods[firstDefaulted == -1 ? 0 : pts.length-ii-firstDefaulted] = constr;
+                        defaultedMethods[index(ii, pts)] = constr;
                     }
                 }
                 continue outer;
