@@ -305,7 +305,7 @@ public class AnnotationVisitor extends Visitor {
         Function f = that.getDeclarationModel();
         Unit unit = that.getUnit();
         checkAnnotations(that.getAnnotationList(),
-                unit.getConstructorDeclarationType(),
+                unit.getCallableConstructorDeclarationType(),
                 unit.getConstructorMetatype(f.getTypedReference()));
     }
     
@@ -316,7 +316,7 @@ public class AnnotationVisitor extends Visitor {
         Unit unit = that.getUnit();
         //TODO: metamodel types for Enumerated!!
         checkAnnotations(that.getAnnotationList(),
-                unit.getValueDeclarationType(),
+                unit.getValueConstructorDeclarationType(),
                 unit.getValueMetatype(v.getTypedReference()));
     }
     
