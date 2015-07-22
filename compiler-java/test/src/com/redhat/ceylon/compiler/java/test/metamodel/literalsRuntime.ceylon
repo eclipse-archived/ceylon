@@ -1,4 +1,4 @@
-import ceylon.language.meta.model { Class }
+import ceylon.language.meta.model { Class, Function, Method }
 import ceylon.language.meta.declaration { ConstructorDeclaration }
 import ceylon.language.meta{type}
 
@@ -78,7 +78,6 @@ void literalsRuntime2<T>(){
     assert(`\Iobj.method<Integer>`.declaration == `function obj.method`);
 
     // ConstructorDeclarations
-    
     assert(`new LitClassWithConstructors`.name == "");
     assert(`new LitClassWithConstructors`.qualifiedName == "com.redhat.ceylon.compiler.java.test.metamodel::LitClassWithConstructors");
     print(`new LitClassWithConstructors`.string == "new com.redhat.ceylon.compiler.java.test.metamodel::LitClassWithConstructors");
@@ -87,14 +86,14 @@ void literalsRuntime2<T>(){
     assert(`new LitParameterisedClassWithConstructors.other`.name == "other");
     
     // Constructor models
-    assert(exists c1 = `LitClassWithConstructors`.getConstructor<[Integer]>(""));
-    assert(exists c2 = `LitClassWithConstructors.Member`.getConstructor<[Integer]>(""));
+    assert(is Function<LitClassWithConstructors, [Integer]> c1 = `LitClassWithConstructors`.getConstructor(""));
+    assert(is Method<LitClassWithConstructors, LitClassWithConstructors.Member, [Integer]> c2 = `LitClassWithConstructors.Member`.getConstructor(""));
     assert(`new LitClassWithConstructors` == c1.declaration);
     assert(`new LitClassWithConstructors.other` == `LitClassWithConstructors.other`.declaration);
     assert(`new LitClassWithConstructors.Member` == c2.declaration);
     assert(`new LitClassWithConstructors.Member.other` == `LitClassWithConstructors.Member.other`.declaration);
     
-    assert(exists c3 = `LitParameterisedClassWithConstructors<String>`.getConstructor<[String]>(""));
+    assert(is Function<LitParameterisedClassWithConstructors<String>, [String]> c3 = `LitParameterisedClassWithConstructors<String>`.getConstructor(""));
     assert(`new LitParameterisedClassWithConstructors` == c3.declaration);
     assert(`new LitParameterisedClassWithConstructors.other` == `LitParameterisedClassWithConstructors<String>.other`.declaration);
 }
