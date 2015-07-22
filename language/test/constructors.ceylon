@@ -141,21 +141,20 @@ class TestJs555<F> {
 class ParentConstr() {}
 class ParentConstr2<T>() {}
 
-// enable back when https://github.com/ceylon/ceylon-compiler/issues/2233 is fixed
-//class TestJs557<F> extends ParentConstr {
-//    constructorSB.append("1");
-//    shared F f;
-//    constructorSB.append(",2");
-//    shared new bar(F f) extends ParentConstr() {
-//        this.f = f;
-//        check(`F`==`Integer`, "#557.3");
-//    }
-//    constructorSB.append(",3");
-//
-//    shared new (F f) extends bar(f){
-//    }
-//    constructorSB.append(",4");
-//}
+class TestJs557<F> extends ParentConstr {
+    constructorSB.append("1");
+    shared F f;
+    constructorSB.append(",2");
+    shared new bar(F f) extends ParentConstr() {
+        this.f = f;
+        check(`F`==`Integer`, "#557.3");
+    }
+    constructorSB.append(",3");
+
+    shared new (F f) extends bar(f){
+    }
+    constructorSB.append(",4");
+}
 
 class TestJs565 {
   value sb=StringBuilder();
@@ -385,13 +384,12 @@ shared void testConstructors() {
   check(curry(TestJs538.foo)(1)(2).hash == 3, "#538.2");
   check(TestJs555(42).f==42, "#555.1");
   constructorSB.clear();
-  print("TestJs557: enable back when https://github.com/ceylon/ceylon-compiler/issues/2233 is fixed");
-  //TestJs557(1);
-  //check(constructorSB.string=="1,2,3,4", "#557.1 expected 1,2,3,4 got ``constructorSB``");
-  //constructorSB.clear();
-  //TestJs557.bar(1);
-  //check(constructorSB.string=="1,2,3,4", "#557.2 expected 1,2,3,4 got ``constructorSB``");
-  //constructorSB.clear();
+  TestJs557(1);
+  check(constructorSB.string=="1,2,3,4", "#557.1 expected 1,2,3,4 got ``constructorSB``");
+  constructorSB.clear();
+  TestJs557.bar(1);
+  check(constructorSB.string=="1,2,3,4", "#557.2 expected 1,2,3,4 got ``constructorSB``");
+  constructorSB.clear();
   Anything test566 = TestJs566().Bar.baz();
   check(test566 exists, "#566");
   class TestJs564{ 
