@@ -55,27 +55,39 @@ package com.redhat.ceylon.compiler.java.test.interop;
                         .java.lang.Thread.State.BLOCKED})})
 @.com.redhat.ceylon.compiler.java.test.interop.JAVAAnnotationAcronym
 @.com.redhat.ceylon.compiler.java.test.interop.javaAnnotationLowercase
+@.com.redhat.ceylon.compiler.java.test.interop.JavaAnnotationDefaultTarget
+@.com.redhat.ceylon.compiler.java.test.interop.JavaAnnotationOnEveryTarget
 class AnnotationInterop implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
+    @.com.redhat.ceylon.compiler.java.test.interop.JavaAnnotationDefaultTarget
+    @.com.redhat.ceylon.compiler.java.test.interop.JavaAnnotationOnEveryTarget
     AnnotationInterop() {
         this.tom = "";
     }
+    @.com.redhat.ceylon.compiler.java.test.interop.JavaAnnotationDefaultTarget
+    @.com.redhat.ceylon.compiler.java.test.interop.JavaAnnotationOnEveryTarget
     private .java.lang.String tom;
     
     @.javax.annotation.Resource(
             name = "tom",
             type = .com.redhat.ceylon.compiler.java.test.interop.AnnotationInterop.class,
             authenticationType = .javax.annotation.Resource.AuthenticationType.APPLICATION)
+    @.com.redhat.ceylon.compiler.java.test.interop.JavaAnnotationDefaultTarget
+    @.com.redhat.ceylon.compiler.java.test.interop.JavaAnnotationOnEveryTarget
     @.ceylon.language.SharedAnnotation$annotation$
     @.ceylon.language.VariableAnnotation$annotation$
     public final .java.lang.String getTom() {
         return tom;
     }
     
+    @.com.redhat.ceylon.compiler.java.test.interop.JavaAnnotationDefaultTarget
+    @.com.redhat.ceylon.compiler.java.test.interop.JavaAnnotationOnEveryTarget
     public final void setTom(final .java.lang.String tom) {
         this.tom = tom;
     }
     
+    @.com.redhat.ceylon.compiler.java.test.interop.JavaAnnotationDefaultTarget
+    @.com.redhat.ceylon.compiler.java.test.interop.JavaAnnotationOnEveryTarget
     @.javax.annotation.PostConstruct
     @.ceylon.language.SharedAnnotation$annotation$
     public final void afterConstrution() {
@@ -86,11 +98,89 @@ class AnnotationInterop implements .com.redhat.ceylon.compiler.java.runtime.mode
     public final void beforeDestruction() {
     }
     
+    @.ceylon.language.SharedAnnotation$annotation$
+    public final void method(@.com.redhat.ceylon.compiler.java.test.interop.JavaAnnotationDefaultTarget
+    @.com.redhat.ceylon.compiler.java.test.interop.JavaAnnotationOnEveryTarget
+    final long param) {
+        final long var = 2L;
+    }
+    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.test.interop.AnnotationInterop.$TypeDescriptor$;
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.interop.AnnotationInterop.class);
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@.com.redhat.ceylon.compiler.java.metadata.Ignore
+@.com.redhat.ceylon.compiler.java.test.interop.JavaAnnotationDefaultTarget
+@.com.redhat.ceylon.compiler.java.test.interop.JavaAnnotationOnEveryTarget
+@.java.lang.annotation.Target({
+        .java.lang.annotation.ElementType.CONSTRUCTOR,
+        .java.lang.annotation.ElementType.PARAMETER,
+        .java.lang.annotation.ElementType.METHOD,
+        .java.lang.annotation.ElementType.FIELD,
+        .java.lang.annotation.ElementType.TYPE})
+public @interface Anno$annotation$ {
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.ceylon.language.SharedAnnotation$annotation$
+@.ceylon.language.FinalAnnotation$annotation$
+@.ceylon.language.AnnotationAnnotation$annotation$
+@.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"ceylon.language::OptionalAnnotation<com.redhat.ceylon.compiler.java.test.interop::Anno,ceylon.language::Annotated,ceylon.language::Anything>"})
+public final class Anno implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.OptionalAnnotation<.com.redhat.ceylon.compiler.java.test.interop.Anno, .ceylon.language.Annotated, .java.lang.Object> {
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public Anno(.com.redhat.ceylon.compiler.java.test.interop.Anno$annotation$ anno) {
+        this();
+    }
+    
+    public Anno() {
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.interop.Anno();
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.interop.Anno.$TypeDescriptor$;
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.interop.Anno.class);
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .java.lang.Class<? extends .java.lang.annotation.Annotation> annotationType() {
+        return .com.redhat.ceylon.compiler.java.test.interop.Anno$annotation$.class;
+    }
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Method
+@.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
+        arguments = {},
+        primary = .com.redhat.ceylon.compiler.java.test.interop.Anno.class)
+public final class anno_ {
+    
+    private anno_() {
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.AnnotationAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.interop::Anno")
+    public static .com.redhat.ceylon.compiler.java.test.interop.Anno anno() {
+        return new .com.redhat.ceylon.compiler.java.test.interop.Anno();
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.interop.anno_.anno();
+    }
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 @.com.redhat.ceylon.compiler.java.metadata.Class(constructors = true)

@@ -431,6 +431,18 @@ public class InteropTests extends CompilerTests {
     public void testAnnotationInterop(){
         compile("JavaAnnotation.java");
         compareWithJavaSource("AnnotationInterop");
+        assertErrors("AnnotationInteropErrors",
+                new CompilerError(1, "function or value does not exist: 'javaAnnotationNoTarget__TYPE'"),
+                new CompilerError(2, "function or value does not exist: 'javaAnnotationNoTarget__CONSTRUCTOR'"),
+                new CompilerError(5, "function or value does not exist: 'javaAnnotationNoTarget__FIELD'"),
+                new CompilerError(6, "function or value does not exist: 'javaAnnotationNoTarget__GETTER'"),
+                new CompilerError(7, "function or value does not exist: 'javaAnnotationNoTarget__SETTER'"),
+                new CompilerError(10, "annotated program element does not satisfy annotation constraint: 'FunctionDeclaration' is not assignable to 'Nothing'"),
+                new CompilerError(10, "no target for javaAnnotationNoTarget annotation: @Target of @interface JavaAnnotationNoTarget lists [] but annotated element tranforms to [METHOD]"),
+                new CompilerError(11, "function or value does not exist: 'javaAnnotationNoTarget__PARAMETER'"),
+                new CompilerError(13, "function or value does not exist: 'javaAnnotationNoTarget__LOCAL_VARIABLE'"),
+                new CompilerError(18, "function or value does not exist: 'javaAnnotationNoTarget__ANNOTATION_TYPE'")
+                );
     }
     
     @Test

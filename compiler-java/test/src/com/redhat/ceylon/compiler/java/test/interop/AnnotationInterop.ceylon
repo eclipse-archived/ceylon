@@ -70,6 +70,10 @@ javaAnnotationAnnotation {
 }
 javaAnnotationAcronym
 javaAnnotationLowercase
+javaAnnotationDefaultTarget__TYPE
+javaAnnotationDefaultTarget__CONSTRUCTOR
+javaAnnotationOnEveryTarget__TYPE
+javaAnnotationOnEveryTarget__CONSTRUCTOR
 class AnnotationInterop() {
     
     resource{
@@ -77,14 +81,36 @@ class AnnotationInterop() {
         authenticationType=application;
         type=`AnnotationInterop`;
     }
+    javaAnnotationDefaultTarget__FIELD
+    javaAnnotationDefaultTarget__GETTER
+    javaAnnotationDefaultTarget__SETTER
+    javaAnnotationOnEveryTarget__FIELD
+    javaAnnotationOnEveryTarget__GETTER
+    javaAnnotationOnEveryTarget__SETTER
     shared variable String tom = "";
     
+    javaAnnotationDefaultTarget
+    javaAnnotationOnEveryTarget
     postConstruct
     shared void afterConstrution() {}
     
     preDestroy
     shared void beforeDestruction() {}
+    
+    shared void method(javaAnnotationDefaultTarget__PARAMETER
+                       javaAnnotationOnEveryTarget__PARAMETER 
+                       Integer param){
+        javaAnnotationDefaultTarget__LOCAL_VARIABLE
+        javaAnnotationOnEveryTarget__LOCAL_VARIABLE
+        anno 
+        Integer var = 2;
+    }
 }
+
+javaAnnotationDefaultTarget__ANNOTATION_TYPE
+javaAnnotationOnEveryTarget__ANNOTATION_TYPE
+shared final annotation class Anno() satisfies OptionalAnnotation<Anno>{}
+shared annotation Anno anno() => Anno();
 
 class CPAnnoTest2 {
     generated({"by you"})

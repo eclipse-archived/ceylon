@@ -1,5 +1,8 @@
 package com.redhat.ceylon.compiler.java.test.interop;
 
+import java.lang.annotation.Target;
+import java.lang.annotation.ElementType;
+
 @interface JavaAnnotationPrimitives {
     boolean b();
     byte o();
@@ -44,3 +47,18 @@ package com.redhat.ceylon.compiler.java.test.interop;
 
 @interface JAVAAnnotationAcronym {}
 @interface javaAnnotationLowercase {}
+
+@interface JavaAnnotationDefaultTarget {}
+@Target({})
+@interface JavaAnnotationNoTarget {}
+@Target({
+    ElementType.ANNOTATION_TYPE,
+    ElementType.CONSTRUCTOR,
+    ElementType.FIELD,
+    ElementType.LOCAL_VARIABLE,
+    ElementType.METHOD,
+    ElementType.PACKAGE,
+    ElementType.PARAMETER,
+    ElementType.TYPE,
+})
+@interface JavaAnnotationOnEveryTarget {}
