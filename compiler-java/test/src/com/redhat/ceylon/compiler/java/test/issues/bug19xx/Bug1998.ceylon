@@ -8,9 +8,7 @@ import ceylon.language.meta.model{
     Function,
     MemberClass,
     Class,
-    ClassOrInterface,
-    MemberClassConstructor,
-    Constructor
+    ClassOrInterface
 }
 
 class ClassContainer(){
@@ -39,9 +37,9 @@ class ClassContainer(){
             
             MemberClass<\Inested,\Inested.Ctor,[]> ctorClass = `\Inested.Ctor`;
             print(ctorClass(other.nestee.nested)());
-            assert(is MemberClassConstructor<\Inested,\Inested.Ctor,[]> ctorCtor = `\Inested.Ctor`.getConstructor<[]>(""));
+            assert(is Method<\Inested,\Inested.Ctor,[]> ctorCtor = `\Inested.Ctor`.getConstructor(""));
             print(ctorCtor(other.nestee.nested)());
-            MemberClassConstructor<\Inested,\Inested.Ctor,[]> ctorOther= `\Inested.Ctor.other`;
+            Method<\Inested,\Inested.Ctor,[]> ctorOther= `\Inested.Ctor.other`;
             print(ctorOther(other.nestee.nested)());
         }
     }
@@ -69,9 +67,9 @@ class ClassContainer(){
         assert(is MemberClass<ClassContainer.\ImemberObject,\ImemberObject.Klass,[]> xx=typeLiteral<\ImemberObject.Klass>());
         MemberClass<\ImemberObject,\ImemberObject.Ctor,[]> ctorClass = `\ImemberObject.Ctor`;
         print(ctorClass(other.memberObject)());
-        assert(is MemberClassConstructor<\ImemberObject,\ImemberObject.Ctor,[]> ctorCtor = `\ImemberObject.Ctor`.getConstructor<[]>(""));
+        assert(is Method<\ImemberObject,\ImemberObject.Ctor,[]> ctorCtor = `\ImemberObject.Ctor`.getConstructor(""));
         print(ctorCtor(other.memberObject)());
-        MemberClassConstructor<\ImemberObject,\ImemberObject.Ctor,[]> ctorOther= `\ImemberObject.Ctor.other`;
+        Method<\ImemberObject,\ImemberObject.Ctor,[]> ctorOther= `\ImemberObject.Ctor.other`;
         print(ctorOther(other.memberObject)());
     }
 }
@@ -95,9 +93,9 @@ object toplevel {
             print(c(other.memberObject)());
             MemberClass<\ImemberObject,\ImemberObject.Ctor,[]> ctorClass = `\ImemberObject.Ctor`;
             print(ctorClass(other.memberObject)());
-            assert(is MemberClassConstructor<\ImemberObject,\ImemberObject.Ctor,[]> ctorCtor = `\ImemberObject.Ctor`.getConstructor<[]>(""));
+            assert(is Method<\ImemberObject,\ImemberObject.Ctor,[]> ctorCtor = `\ImemberObject.Ctor`.getConstructor(""));
             print(ctorCtor(other.memberObject)());
-            MemberClassConstructor<\ImemberObject,\ImemberObject.Ctor,[]> ctorOther= `\ImemberObject.Ctor.other`;
+            Method<\ImemberObject,\ImemberObject.Ctor,[]> ctorOther= `\ImemberObject.Ctor.other`;
             print(ctorOther(other.memberObject)());
         }
     }
@@ -124,9 +122,9 @@ object toplevel {
             print(c(y)());
             MemberClass<\Iy,\Iy.Ctor,[]> ctorClass = `\Iy.Ctor`;
             print(ctorClass(y)());
-            assert(is MemberClassConstructor<\Iy,\Iy.Ctor,[]> ctorCtor = `\Iy.Ctor`.getConstructor<[]>(""));
+            assert(is Method<\Iy,\Iy.Ctor,[]> ctorCtor = `\Iy.Ctor`.getConstructor(""));
             print(ctorCtor(y)());
-            MemberClassConstructor<\Iy,\Iy.Ctor,[]> ctorOther= `\Iy.Ctor.other`;
+            Method<\Iy,\Iy.Ctor,[]> ctorOther= `\Iy.Ctor.other`;
             print(ctorOther(y)());
         }
     }
