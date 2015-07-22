@@ -77,7 +77,7 @@ public class ShaSigner {
         return hash(file, "SHA-1", NULL_LOGGER);
     }
     public static String md5(File file) {
-        return hash(file, "MD5", new NullLogger());
+        return hash(file, "MD5", NULL_LOGGER);
     }
     
     private static String hash(File file, String hashAlgo, Logger log) {
