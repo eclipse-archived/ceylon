@@ -481,8 +481,8 @@ public class MetamodelGenerator {
             m.put(KEY_NAME, d.getName());
         }
         final ParameterList plist = d.getFirstParameterList();
-        if (!plist.getParameters().isEmpty()) {
-            m.put(KEY_PARAMS, parameterListMap(plist, d));
+        if (plist != null) {
+            m.put(KEY_PARAMS, plist.getParameters().isEmpty() ? Collections.EMPTY_LIST : parameterListMap(plist, d));
         }
         encodeAnnotations(d.getAnnotations(), d, m);
         if (c.get(KEY_CONSTRUCTORS) == null) {

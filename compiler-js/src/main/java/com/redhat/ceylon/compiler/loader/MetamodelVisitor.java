@@ -73,6 +73,12 @@ public class MetamodelVisitor extends Visitor {
         }
     }
 
+    @Override public void visit(final Tree.Enumerated that) {
+        if (errorFree(that)) {
+            gen.encodeConstructor(that.getEnumerated());
+        }
+    }
+
     @Override
     public void visit(Tree.InterfaceDefinition that) {
         if (!TypeUtils.acceptNative(that)) return;
