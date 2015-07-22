@@ -98,8 +98,14 @@ function convert$params(mm,a,$$targs$$) {
       throw InvocationException$meta$model("Passing parameters to no-args callable");
     return [];
   }
+  //Convert to a native array
   if (a===undefined)a=[];
   else if (a.nativeArray)a=a.nativeArray();
+  else if (is$(a,{t:ArraySequence})) {
+    var _a=[];
+    for (var i=0;i<a.size;i++)_a.push(a.$_get(i));
+    a=_a;
+  }
   var fa=[],sarg;
   for (var i=0; i<ps.length;i++) { //check def/seq params
     var p=ps[i];
