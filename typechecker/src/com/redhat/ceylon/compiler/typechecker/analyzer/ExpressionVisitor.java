@@ -8778,7 +8778,11 @@ public class ExpressionVisitor extends Visitor {
                                 getDeclarationReferenceSuggestion(d));
                     }
                 }
-                that.setTypeModel(unit.getConstructorDeclarationType());
+                if (((Constructor)d).getContainer().getMember(d.getName(), null, false) instanceof Value) {
+                    that.setTypeModel(unit.getValueConstructorDeclarationType());
+                } else {
+                    that.setTypeModel(unit.getCallableConstructorDeclarationType());
+                }
             }
             else if (that instanceof Tree.InterfaceLiteral) {
                 if (!(d instanceof Interface)) {
@@ -9030,7 +9034,10 @@ public class ExpressionVisitor extends Visitor {
                         value.appliedTypedReference(outerType, 
                                 NO_TYPE_ARGS);
                 that.setTarget(reference);
-                that.setTypeModel(unit.getValueMetatype(reference));
+                Type metatype = constructor ?
+                        unit.getValueConstructorMetatype(reference):
+                        unit.getValueMetatype(reference);
+                that.setTypeModel(metatype);
             }
         }
     }
