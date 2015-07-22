@@ -100,8 +100,7 @@ function convert$params(mm,a,$$targs$$) {
   }
   if (a===undefined)a=[];
   else if (a.nativeArray)a=a.nativeArray();
-  var fa=[];
-  var sarg;
+  var fa=[],sarg;
   for (var i=0; i<ps.length;i++) { //check def/seq params
     var p=ps[i];
     var val_t=restype2$(sarg?sarg.$$targs$$.a.Element$Iterable:p.$t,$$targs$$);
@@ -123,11 +122,12 @@ function convert$params(mm,a,$$targs$$) {
         fa.push(a[i]);
         val_t={t:Iterable,a:{Element$Iterable:val_t}};
       } else {
-        sarg=[].rt$(val_t); fa.push(sarg);
+        sarg=[].rt$(val_t);
         for (var j=i; j<a.size;j++){
           if (!is$(a[j],val_t))throw IncompatibleTypeException$meta$model("Wrong type for argument " + j + ", expected " + typeLiteral$meta({Type$typeLiteral:val_t},$$targs$$).string + " got " + className(a[j]));
           sarg.push(a[j]);
         }
+        fa.push(sarg.size==0?empty():ArraySequence(sarg,{Element$ArraySequence:val_t}));
         i=j;
       }
     } else {
