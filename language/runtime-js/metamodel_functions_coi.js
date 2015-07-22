@@ -1,5 +1,6 @@
 //ClassOrInterface.getClassOrInterface
 function coigetcoi$(coi,name$2,types$3,$$$mptypes,noInherit){
+  if (noInherit && !extendsType($$$mptypes.Container$getClassOrInterface,{t:coi.tipo}))throw IncompatibleTypeException$meta$model("Incompatible container");
   if (!extendsType($$$mptypes.Kind$getClassOrInterface, {t:ClassOrInterface$meta$model}))throw IncompatibleTypeException$meta$model("Kind must be ClassOrInterface");
   var _tipo=mmfca$(coi.tipo,$$$mptypes.Container$getClassOrInterface);
   if(types$3===undefined){types$3=empty();}
@@ -125,7 +126,7 @@ function coiifc$(coi,name,types,cont,noInherit){
   return rv;
 }
 function coiatr$(coi,name,m,noInherit){
-  if (!extendsType({t:coi.tipo},m.Container$getAttribute && m.Container$getAttribute.t!==Nothing)) {
+  if (noInherit && !extendsType(m.Container$getAttribute,{t:coi.tipo})) {
     throw IncompatibleTypeException$meta$model("Incompatible Container type argument");
   }
   var _tipo=mmfca$(coi.tipo,m.Container$getAttribute);
@@ -177,7 +178,7 @@ function coigetatr$(coi,anntypes,$$$mptypes,noInherit){
   return mems.length==0?empty():ArraySequence(mems,{Element$ArraySequence:{t:Attribute$meta$model,a:{Set$Attribute:$$$mptypes.Set$getAttributes,Container$Attribute:$$$mptypes.Container$getAttributes,Get$Attribute:$$$mptypes.Get$getAttributes}}});
 }
 function coimtd$(coi,name,types,$$$mptypes,noInherit){
-  if (!extendsType({t:coi.tipo},$$$mptypes.Container$getMethod) && $$$mptypes.Container$getMethod.t!==Nothing) {
+  if (noInherit && !extendsType($$$mptypes.Container$getMethod,{t:coi.tipo})) {
     throw IncompatibleTypeException$meta$model("Incompatible Container type argument");
   }
   if (types===undefined)types=empty();
