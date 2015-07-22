@@ -1741,6 +1741,12 @@ public class GenerateJsVisitor extends Visitor
                         prim.getPrimary().visit(this);
                     }
                     out(".");
+                } else {
+                    if (d.getContainer() instanceof Declaration) {
+                        qualify(that.getPrimary(), (Declaration)d.getContainer());
+                    } else if (d.getContainer() instanceof Package) {
+                        out(names.moduleAlias(((Package)d.getContainer()).getModule()));
+                    }
                 }
                 out(names.name((TypeDeclaration)d.getContainer()), "_", names.name(d), "()");
                 if (wrap) {
