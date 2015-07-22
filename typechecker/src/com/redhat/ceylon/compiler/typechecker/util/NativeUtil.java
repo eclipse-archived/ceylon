@@ -16,7 +16,7 @@ import com.redhat.ceylon.model.typechecker.model.ModelUtil;
  */
 public class NativeUtil {
 
-    public static List<Tree.Statement> mergeStatements(Tree.ClassBody body, Tree.Declaration header) {
+    public static List<Tree.Statement> mergeStatements(Tree.Body body, Tree.Declaration header) {
         // And if the header exists we go through the declarations in
         // its body and add them to our list of statements as if they
         // were part of the native implementation when a) it has a
