@@ -409,6 +409,9 @@ class ConstructorDispatch<Type, Arguments extends Sequential<? extends Object>>
         final Method[] defaultedMethods = new Method[dispatch.length];
         String ctorName = freeConstructor == null ? null : freeConstructor.declaration.getName();
         outer: for(Method constr : javaClass.getDeclaredMethods()) {
+            if (constr.isSynthetic()) {
+                continue;
+            }
             int ii = 0;
             Class<?>[] pts = constr.getParameterTypes();
             if (pts.length == 0) {
