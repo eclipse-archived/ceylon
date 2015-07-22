@@ -7,10 +7,10 @@ import java.util.Map;
 
 import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.compiler.js.GenerateJsVisitor.SuperVisitor;
-import com.redhat.ceylon.compiler.js.util.JsIdentifierNames;
 import com.redhat.ceylon.compiler.js.util.TypeUtils;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.util.NativeUtil;
 import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.model.typechecker.model.Constructor;
@@ -34,20 +34,23 @@ public class Singletons {
         final String objectName = gen.getNames().name(d);
         final String selfName = gen.getNames().self(c);
 
-        if (d != null && d.isNative()) {
-            if (d.isNativeHeader()) {
-                Value nv = (Value)ModelUtil.getNativeDeclaration(d, Backend.JavaScript);
-                if (nv != null) {
-                    //Force the names of unshared members of the native type to be the same as for its
-                    //header's counterparts
-                    for (Declaration nd : c.getMembers()) {
-                        if (!nd.isShared()) {
-                            gen.getNames().forceName(nv.getTypeDeclaration().getMember(
-                                    nd.getName(), null, false), gen.getNames().name(nd));
-                        }
-                    }
-                }
+        final Value natd = d == null ? null : (Value)ModelUtil.getNativeDeclaration(d, Backend.JavaScript);
+        if (that instanceof Tree.Declaration) {
+            if (NativeUtil.isNativeHeader((Tree.Declaration)that) && natd != null) {
+                // It's a native header, remember it for later when we deal with its implementation
+                gen.saveNativeHeader((Tree.Declaration)that);
+                return;
             }
+            if (!(NativeUtil.isForBackend((Tree.Declaration)that, Backend.JavaScript)
+                    || NativeUtil.isHeaderWithoutBackend((Tree.Declaration)that, Backend.JavaScript))) {
+                return;
+            }
+        }
+        final List<Tree.Statement> stmts;
+        if (d != null && NativeUtil.isForBackend(d, Backend.JavaScript)) {
+            stmts = NativeUtil.mergeStatements(body, gen.getNativeHeader(d));
+        } else {
+            stmts = body.getStatements();
         }
 
         Map<TypeParameter, Type> targs=new HashMap<TypeParameter, Type>();
@@ -59,44 +62,47 @@ public class Singletons {
                 }
             }
         }
-            gen.out(GenerateJsVisitor.function, className, targs.isEmpty()?"()":"($$targs$$)");
-            gen.beginBlock();
-            if (isObjExpr) {
-                gen.out("var ", selfName, "=new ", className, ".$$;");
-                final ClassOrInterface coi = ModelUtil.getContainingClassOrInterface(c.getContainer());
-                if (coi != null) {
-                    gen.out(selfName, ".outer$=", gen.getNames().self(coi));
-                    gen.endLine(true);
-                }
-            } else {
-                if (c.isMember()) {
-                    gen.initSelf(that);
-                }
-                gen.instantiateSelf(c);
-                gen.referenceOuter(c);
-            }
-
-            //TODO should we generate all this code for native headers?
-            //Really we should merge the body of the header with that of the impl
-            //It's the only way to make this shit work in lexical scope mode
-            final List<Declaration> superDecs = new ArrayList<Declaration>();
-            if (!gen.opts.isOptimize()) {
-                new SuperVisitor(superDecs).visit(body);
-            }
-            if (!targs.isEmpty()) {
-                gen.out(selfName, ".$$targs$$=$$targs$$");
+        gen.out(GenerateJsVisitor.function, className, targs.isEmpty()?"()":"($$targs$$)");
+        gen.beginBlock();
+        if (isObjExpr) {
+            gen.out("var ", selfName, "=new ", className, ".$$;");
+            final ClassOrInterface coi = ModelUtil.getContainingClassOrInterface(c.getContainer());
+            if (coi != null) {
+                gen.out(selfName, ".outer$=", gen.getNames().self(coi));
                 gen.endLine(true);
             }
-            TypeGenerator.callSupertypes(sats, superType, c, that, superDecs, superCall,
-                    superType == null ? null : ((Class) c.getExtendedType().getDeclaration()).getParameterList(), gen);
-            
-            body.visit(gen);
-            gen.out("return ", selfName, ";");
-            gen.endBlock();
-            gen.out(";", className, ".$crtmm$=");
-            TypeUtils.encodeForRuntime(that, c, gen);
+        } else {
+            if (c.isMember()) {
+                gen.initSelf(that);
+            }
+            gen.instantiateSelf(c);
+            gen.referenceOuter(c);
+        }
+
+        //TODO should we generate all this code for native headers?
+        //Really we should merge the body of the header with that of the impl
+        //It's the only way to make this shit work in lexical scope mode
+        final List<Declaration> superDecs = new ArrayList<Declaration>();
+        if (!gen.opts.isOptimize()) {
+            final SuperVisitor superv = new SuperVisitor(superDecs);
+            for (Tree.Statement st : stmts) {
+                st.visit(superv);
+            }
+        }
+        if (!targs.isEmpty()) {
+            gen.out(selfName, ".$$targs$$=$$targs$$");
             gen.endLine(true);
-            TypeGenerator.initializeType(that, gen);
+        }
+        TypeGenerator.callSupertypes(sats, superType, c, that, superDecs, superCall,
+                superType == null ? null : ((Class) c.getExtendedType().getDeclaration()).getParameterList(), gen);
+        
+        gen.visitStatements(stmts);
+        gen.out("return ", selfName, ";");
+        gen.endBlock();
+        gen.out(";", className, ".$crtmm$=");
+        TypeUtils.encodeForRuntime(that, c, gen);
+        gen.endLine(true);
+        TypeGenerator.initializeType(that, gen);
         final String objvar = (addToPrototype ? "this.":"")+gen.getNames().createTempVariable();
 
         if (d != null && !addToPrototype) {
@@ -182,7 +188,6 @@ public class Singletons {
                 that.getClassBody(), that.getAnnotationList(), gen);
         //Objects defined inside methods need their init sections are exec'd
         if (!that.getDeclarationModel().isToplevel() && !that.getDeclarationModel().isClassOrInterfaceMember()) {
-            gen.out("/*ESTO*/");
             gen.out(gen.getNames().objectName(that.getDeclarationModel()), "();");
         }
     }
