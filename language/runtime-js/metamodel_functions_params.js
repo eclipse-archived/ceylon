@@ -75,7 +75,7 @@ function resolve$typearg(ta,mm,$$targs$$) {
   var r;
   if ($$targs$$ && $$targs$$[ta]) {
     r=$$targs$$[ta];
-    if (typeof(t)!=='string')return r;
+    if (typeof(r)!=='string')return r;
   }
   r=mm.tp?mm.tp[ta]:undefined;
   while (!r && mm.$cont) {
