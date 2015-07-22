@@ -28,7 +28,7 @@ public class AnnotationProxyClass extends Class {
         if (targetAnno != null) {
             @SuppressWarnings("unchecked")
             List<String> targets = (List<String>)targetAnno.getValue();
-            EnumSet<AnnotationTarget> result = EnumSet.<AnnotationTarget>noneOf(AnnotationTarget.class);
+            EnumSet<AnnotationTarget> result = EnumSet.noneOf(AnnotationTarget.class);
             for (String name : targets) {
                 result.add(AnnotationTarget.valueOf(name));
             }
