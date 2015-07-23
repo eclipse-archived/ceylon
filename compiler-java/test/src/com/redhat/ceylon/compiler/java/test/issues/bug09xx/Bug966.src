@@ -24,11 +24,6 @@ public abstract class Bug966<Element extends .ceylon.language.Enumerable<Element
     }
     
     @.java.lang.Override
-    public final boolean getEmpty() {
-        return $ceylon$language$Sequence$this$.getEmpty();
-    }
-    
-    @.java.lang.Override
     public .ceylon.language.Integer getLastIndex() {
         return $ceylon$language$Sequence$this$.getLastIndex();
     }
@@ -39,13 +34,23 @@ public abstract class Bug966<Element extends .ceylon.language.Enumerable<Element
     }
     
     @.java.lang.Override
-    public .ceylon.language.Sequence<? extends Element> sequence() {
-        return $ceylon$language$Sequence$this$.sequence();
+    public .java.lang.String toString() {
+        return $ceylon$language$Sequence$this$.toString();
+    }
+    
+    @.java.lang.Override
+    public final boolean getEmpty() {
+        return $ceylon$language$Sequence$this$.getEmpty();
     }
     
     @.java.lang.Override
     public .ceylon.language.Sequence<? extends Element> getReversed() {
         return $ceylon$language$Sequence$this$.getReversed();
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.Sequence<? extends Element> sequence() {
+        return $ceylon$language$Sequence$this$.sequence();
     }
     
     @.java.lang.Override
@@ -137,11 +142,6 @@ public abstract class Bug966<Element extends .ceylon.language.Enumerable<Element
     public .ceylon.language.Sequential spanTo(final .ceylon.language.Integer to) {
         return $ceylon$language$Sequence$this$.spanTo(to);
     }
-    
-    @.java.lang.Override
-    public .java.lang.String toString() {
-        return $ceylon$language$Sequence$this$.toString();
-    }
     protected final .ceylon.language.Sequential$impl<Element> $ceylon$language$Sequential$this$;
     
     @.java.lang.Override
@@ -181,6 +181,11 @@ public abstract class Bug966<Element extends .ceylon.language.Enumerable<Element
     }
     
     @.java.lang.Override
+    public int hashCode() {
+        return $ceylon$language$List$this$.hashCode();
+    }
+    
+    @.java.lang.Override
     public final Element get(final .ceylon.language.Integer index) {
         return $ceylon$language$List$this$.get(index);
     }
@@ -198,11 +203,6 @@ public abstract class Bug966<Element extends .ceylon.language.Enumerable<Element
     @.java.lang.Override
     public boolean equals(final .java.lang.Object that) {
         return $ceylon$language$List$this$.equals(that);
-    }
-    
-    @.java.lang.Override
-    public int hashCode() {
-        return $ceylon$language$List$this$.hashCode();
     }
     
     @.java.lang.Override
@@ -350,13 +350,33 @@ public abstract class Bug966<Element extends .ceylon.language.Enumerable<Element
     }
     
     @.java.lang.Override
-    public Element getFromFirst(final long index) {
-        return $ceylon$language$Iterable$this$.getFromFirst(index);
+    public .ceylon.language.Iterable getPaired() {
+        return (.ceylon.language.Iterable<? extends .ceylon.language.Sequence<? extends Element>, ? extends .java.lang.Object>)(.ceylon.language.Iterable)$ceylon$language$Iterable$this$.getPaired();
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.Iterable<? extends Element, ? extends .java.lang.Object> getCycled() {
+        return $ceylon$language$Iterable$this$.getCycled();
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.Iterable<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends Element>, ? extends .java.lang.Object> getIndexed() {
+        return $ceylon$language$Iterable$this$.getIndexed();
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.Iterable<? extends Element, ? extends .java.lang.Object> getCoalesced() {
+        return $ceylon$language$Iterable$this$.getCoalesced();
     }
     
     @.java.lang.Override
     public .ceylon.language.Iterable<? extends Element, ? extends .java.lang.Object> getExceptLast() {
         return $ceylon$language$Iterable$this$.getExceptLast();
+    }
+    
+    @.java.lang.Override
+    public Element getFromFirst(final long index) {
+        return $ceylon$language$Iterable$this$.getFromFirst(index);
     }
     
     @.java.lang.Override
@@ -470,21 +490,6 @@ public abstract class Bug966<Element extends .ceylon.language.Enumerable<Element
     }
     
     @.java.lang.Override
-    public .ceylon.language.Iterable<? extends Element, ? extends .java.lang.Object> getCoalesced() {
-        return $ceylon$language$Iterable$this$.getCoalesced();
-    }
-    
-    @.java.lang.Override
-    public .ceylon.language.Iterable<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends Element>, ? extends .java.lang.Object> getIndexed() {
-        return $ceylon$language$Iterable$this$.getIndexed();
-    }
-    
-    @.java.lang.Override
-    public .ceylon.language.Iterable getPaired() {
-        return (.ceylon.language.Iterable<? extends .ceylon.language.Sequence<? extends Element>, ? extends .java.lang.Object>)(.ceylon.language.Iterable)$ceylon$language$Iterable$this$.getPaired();
-    }
-    
-    @.java.lang.Override
     public .ceylon.language.Iterable<? extends .ceylon.language.Sequence<? extends Element>, ? extends .java.lang.Object> partition(final long length) {
         return $ceylon$language$Iterable$this$.partition(length);
     }
@@ -502,11 +507,6 @@ public abstract class Bug966<Element extends .ceylon.language.Enumerable<Element
     @.java.lang.Override
     public <Other, OtherAbsent>.ceylon.language.Iterable product(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Other, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$OtherAbsent, final .ceylon.language.Iterable<? extends Other, ? extends OtherAbsent> other) {
         return (.ceylon.language.Iterable<? extends .ceylon.language.Sequence<? extends .java.lang.Object>, ? extends OtherAbsent>)(.ceylon.language.Iterable)$ceylon$language$Iterable$this$.product($reified$Other, $reified$OtherAbsent, other);
-    }
-    
-    @.java.lang.Override
-    public .ceylon.language.Iterable<? extends Element, ? extends .java.lang.Object> getCycled() {
-        return $ceylon$language$Iterable$this$.getCycled();
     }
     
     @.java.lang.Override

@@ -20,8 +20,33 @@ class Bug979Iterable implements .com.redhat.ceylon.compiler.java.runtime.model.R
     }
     
     @.java.lang.Override
-    public boolean contains(final .java.lang.Object element) {
-        return $ceylon$language$Iterable$this$.contains(element);
+    public .ceylon.language.Iterable getPaired() {
+        return (.ceylon.language.Iterable<? extends .ceylon.language.Sequence<? extends .ceylon.language.String>, ? extends .java.lang.Object>)(.ceylon.language.Iterable)$ceylon$language$Iterable$this$.getPaired();
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> getCycled() {
+        return $ceylon$language$Iterable$this$.getCycled();
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.String getLast() {
+        return (.ceylon.language.String)$ceylon$language$Iterable$this$.getLast();
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.Iterable<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.String>, ? extends .java.lang.Object> getIndexed() {
+        return $ceylon$language$Iterable$this$.getIndexed();
+    }
+    
+    @.java.lang.Override
+    public .java.lang.String toString() {
+        return $ceylon$language$Iterable$this$.toString();
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> getCoalesced() {
+        return $ceylon$language$Iterable$this$.getCoalesced();
     }
     
     @.java.lang.Override
@@ -30,8 +55,28 @@ class Bug979Iterable implements .com.redhat.ceylon.compiler.java.runtime.model.R
     }
     
     @.java.lang.Override
+    public .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> getExceptLast() {
+        return $ceylon$language$Iterable$this$.getExceptLast();
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> getRest() {
+        return $ceylon$language$Iterable$this$.getRest();
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.String getFirst() {
+        return (.ceylon.language.String)$ceylon$language$Iterable$this$.getFirst();
+    }
+    
+    @.java.lang.Override
     public long getSize() {
         return $ceylon$language$Iterable$this$.getSize();
+    }
+    
+    @.java.lang.Override
+    public boolean contains(final .java.lang.Object element) {
+        return $ceylon$language$Iterable$this$.contains(element);
     }
     
     @.java.lang.Override
@@ -45,16 +90,6 @@ class Bug979Iterable implements .com.redhat.ceylon.compiler.java.runtime.model.R
     }
     
     @.java.lang.Override
-    public .ceylon.language.String getFirst() {
-        return (.ceylon.language.String)$ceylon$language$Iterable$this$.getFirst();
-    }
-    
-    @.java.lang.Override
-    public .ceylon.language.String getLast() {
-        return (.ceylon.language.String)$ceylon$language$Iterable$this$.getLast();
-    }
-    
-    @.java.lang.Override
     public .ceylon.language.String getFromFirst(final long index) {
         return $ceylon$language$Iterable$this$.getFromFirst(index);
     }
@@ -62,16 +97,6 @@ class Bug979Iterable implements .com.redhat.ceylon.compiler.java.runtime.model.R
     @.java.lang.Override
     public .ceylon.language.Sequential<? extends .ceylon.language.String> sequence() {
         return $ceylon$language$Iterable$this$.sequence();
-    }
-    
-    @.java.lang.Override
-    public .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> getRest() {
-        return $ceylon$language$Iterable$this$.getRest();
-    }
-    
-    @.java.lang.Override
-    public .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> getExceptLast() {
-        return $ceylon$language$Iterable$this$.getExceptLast();
     }
     
     @.java.lang.Override
@@ -210,21 +235,6 @@ class Bug979Iterable implements .com.redhat.ceylon.compiler.java.runtime.model.R
     }
     
     @.java.lang.Override
-    public .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> getCoalesced() {
-        return $ceylon$language$Iterable$this$.getCoalesced();
-    }
-    
-    @.java.lang.Override
-    public .ceylon.language.Iterable<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.String>, ? extends .java.lang.Object> getIndexed() {
-        return $ceylon$language$Iterable$this$.getIndexed();
-    }
-    
-    @.java.lang.Override
-    public .ceylon.language.Iterable getPaired() {
-        return (.ceylon.language.Iterable<? extends .ceylon.language.Sequence<? extends .ceylon.language.String>, ? extends .java.lang.Object>)(.ceylon.language.Iterable)$ceylon$language$Iterable$this$.getPaired();
-    }
-    
-    @.java.lang.Override
     public .ceylon.language.Iterable<? extends .ceylon.language.Sequence<? extends .ceylon.language.String>, ? extends .java.lang.Object> partition(final long length) {
         return $ceylon$language$Iterable$this$.partition(length);
     }
@@ -242,11 +252,6 @@ class Bug979Iterable implements .com.redhat.ceylon.compiler.java.runtime.model.R
     @.java.lang.Override
     public <Other, OtherAbsent>.ceylon.language.Iterable product(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Other, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$OtherAbsent, final .ceylon.language.Iterable<? extends Other, ? extends OtherAbsent> other) {
         return (.ceylon.language.Iterable<? extends .ceylon.language.Sequence<? extends .java.lang.Object>, ? extends .java.lang.Object>)(.ceylon.language.Iterable)$ceylon$language$Iterable$this$.product($reified$Other, $reified$OtherAbsent, other);
-    }
-    
-    @.java.lang.Override
-    public .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> getCycled() {
-        return $ceylon$language$Iterable$this$.getCycled();
     }
     
     @.java.lang.Override
@@ -272,11 +277,6 @@ class Bug979Iterable implements .com.redhat.ceylon.compiler.java.runtime.model.R
     
     private <Other>.ceylon.language.Iterable interpose$canonical$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Other, final Other element, final long step) {
         return (.ceylon.language.Iterable)$ceylon$language$Iterable$this$.interpose($reified$Other, element, step);
-    }
-    
-    @.java.lang.Override
-    public .java.lang.String toString() {
-        return $ceylon$language$Iterable$this$.toString();
     }
     protected final .ceylon.language.Category$impl<.java.lang.Object> $ceylon$language$Category$this$;
     
@@ -329,6 +329,11 @@ class Bug979Set extends .java.lang.Object implements .com.redhat.ceylon.compiler
     }
     
     @.java.lang.Override
+    public int hashCode() {
+        return $ceylon$language$Set$this$.hashCode();
+    }
+    
+    @.java.lang.Override
     public boolean contains(final .java.lang.Object element) {
         return $ceylon$language$Set$this$.contains(element);
     }
@@ -347,11 +352,6 @@ class Bug979Set extends .java.lang.Object implements .com.redhat.ceylon.compiler
     public boolean equals(final .java.lang.Object that) {
         return $ceylon$language$Set$this$.equals(that);
     }
-    
-    @.java.lang.Override
-    public int hashCode() {
-        return $ceylon$language$Set$this$.hashCode();
-    }
     protected final .ceylon.language.Collection$impl<.ceylon.language.String> $ceylon$language$Collection$this$;
     
     @.java.lang.Override
@@ -360,19 +360,59 @@ class Bug979Set extends .java.lang.Object implements .com.redhat.ceylon.compiler
     }
     
     @.java.lang.Override
-    public boolean getEmpty() {
-        return $ceylon$language$Collection$this$.getEmpty();
+    public .java.lang.String toString() {
+        return $ceylon$language$Collection$this$.toString();
     }
     
     @.java.lang.Override
-    public .java.lang.String toString() {
-        return $ceylon$language$Collection$this$.toString();
+    public boolean getEmpty() {
+        return $ceylon$language$Collection$this$.getEmpty();
     }
     protected final .ceylon.language.Iterable$impl<.ceylon.language.String, .java.lang.Object> $ceylon$language$Iterable$this$;
     
     @.java.lang.Override
     public .ceylon.language.Iterable$impl<? extends .ceylon.language.String, ? extends .java.lang.Object> $ceylon$language$Iterable$impl() {
         return $ceylon$language$Iterable$this$;
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.Iterable getPaired() {
+        return (.ceylon.language.Iterable<? extends .ceylon.language.Sequence<? extends .ceylon.language.String>, ? extends .java.lang.Object>)(.ceylon.language.Iterable)$ceylon$language$Iterable$this$.getPaired();
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> getCycled() {
+        return $ceylon$language$Iterable$this$.getCycled();
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.String getLast() {
+        return (.ceylon.language.String)$ceylon$language$Iterable$this$.getLast();
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.Iterable<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.String>, ? extends .java.lang.Object> getIndexed() {
+        return $ceylon$language$Iterable$this$.getIndexed();
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> getCoalesced() {
+        return $ceylon$language$Iterable$this$.getCoalesced();
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> getExceptLast() {
+        return $ceylon$language$Iterable$this$.getExceptLast();
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> getRest() {
+        return $ceylon$language$Iterable$this$.getRest();
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.String getFirst() {
+        return (.ceylon.language.String)$ceylon$language$Iterable$this$.getFirst();
     }
     
     @.java.lang.Override
@@ -391,16 +431,6 @@ class Bug979Set extends .java.lang.Object implements .com.redhat.ceylon.compiler
     }
     
     @.java.lang.Override
-    public .ceylon.language.String getFirst() {
-        return (.ceylon.language.String)$ceylon$language$Iterable$this$.getFirst();
-    }
-    
-    @.java.lang.Override
-    public .ceylon.language.String getLast() {
-        return (.ceylon.language.String)$ceylon$language$Iterable$this$.getLast();
-    }
-    
-    @.java.lang.Override
     public .ceylon.language.String getFromFirst(final long index) {
         return $ceylon$language$Iterable$this$.getFromFirst(index);
     }
@@ -408,16 +438,6 @@ class Bug979Set extends .java.lang.Object implements .com.redhat.ceylon.compiler
     @.java.lang.Override
     public .ceylon.language.Sequential<? extends .ceylon.language.String> sequence() {
         return $ceylon$language$Iterable$this$.sequence();
-    }
-    
-    @.java.lang.Override
-    public .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> getRest() {
-        return $ceylon$language$Iterable$this$.getRest();
-    }
-    
-    @.java.lang.Override
-    public .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> getExceptLast() {
-        return $ceylon$language$Iterable$this$.getExceptLast();
     }
     
     @.java.lang.Override
@@ -556,21 +576,6 @@ class Bug979Set extends .java.lang.Object implements .com.redhat.ceylon.compiler
     }
     
     @.java.lang.Override
-    public .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> getCoalesced() {
-        return $ceylon$language$Iterable$this$.getCoalesced();
-    }
-    
-    @.java.lang.Override
-    public .ceylon.language.Iterable<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.String>, ? extends .java.lang.Object> getIndexed() {
-        return $ceylon$language$Iterable$this$.getIndexed();
-    }
-    
-    @.java.lang.Override
-    public .ceylon.language.Iterable getPaired() {
-        return (.ceylon.language.Iterable<? extends .ceylon.language.Sequence<? extends .ceylon.language.String>, ? extends .java.lang.Object>)(.ceylon.language.Iterable)$ceylon$language$Iterable$this$.getPaired();
-    }
-    
-    @.java.lang.Override
     public .ceylon.language.Iterable<? extends .ceylon.language.Sequence<? extends .ceylon.language.String>, ? extends .java.lang.Object> partition(final long length) {
         return $ceylon$language$Iterable$this$.partition(length);
     }
@@ -588,11 +593,6 @@ class Bug979Set extends .java.lang.Object implements .com.redhat.ceylon.compiler
     @.java.lang.Override
     public <Other, OtherAbsent>.ceylon.language.Iterable product(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Other, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$OtherAbsent, final .ceylon.language.Iterable<? extends Other, ? extends OtherAbsent> other) {
         return (.ceylon.language.Iterable<? extends .ceylon.language.Sequence<? extends .java.lang.Object>, ? extends .java.lang.Object>)(.ceylon.language.Iterable)$ceylon$language$Iterable$this$.product($reified$Other, $reified$OtherAbsent, other);
-    }
-    
-    @.java.lang.Override
-    public .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> getCycled() {
-        return $ceylon$language$Iterable$this$.getCycled();
     }
     
     @.java.lang.Override

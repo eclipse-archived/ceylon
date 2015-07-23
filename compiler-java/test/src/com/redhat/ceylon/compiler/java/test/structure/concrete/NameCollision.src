@@ -18,6 +18,41 @@ class NameCollision implements .com.redhat.ceylon.compiler.java.runtime.model.Re
     }
     
     @.java.lang.Override
+    public .ceylon.language.Iterable getPaired() {
+        return (.ceylon.language.Iterable<? extends .ceylon.language.Sequence<? extends .ceylon.language.Integer>, ? extends .java.lang.Object>)(.ceylon.language.Iterable)$ceylon$language$Iterable$this$.getPaired();
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> getCycled() {
+        return $ceylon$language$Iterable$this$.getCycled();
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.Iterable<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.Integer>, ? extends .java.lang.Object> getIndexed() {
+        return $ceylon$language$Iterable$this$.getIndexed();
+    }
+    
+    @.java.lang.Override
+    public .java.lang.String toString() {
+        return $ceylon$language$Iterable$this$.toString();
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> getCoalesced() {
+        return $ceylon$language$Iterable$this$.getCoalesced();
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> getExceptLast() {
+        return $ceylon$language$Iterable$this$.getExceptLast();
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> getRest() {
+        return $ceylon$language$Iterable$this$.getRest();
+    }
+    
+    @.java.lang.Override
     public long getSize() {
         return $ceylon$language$Iterable$this$.getSize();
     }
@@ -40,16 +75,6 @@ class NameCollision implements .com.redhat.ceylon.compiler.java.runtime.model.Re
     @.java.lang.Override
     public .ceylon.language.Sequential<? extends .ceylon.language.Integer> sequence() {
         return $ceylon$language$Iterable$this$.sequence();
-    }
-    
-    @.java.lang.Override
-    public .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> getRest() {
-        return $ceylon$language$Iterable$this$.getRest();
-    }
-    
-    @.java.lang.Override
-    public .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> getExceptLast() {
-        return $ceylon$language$Iterable$this$.getExceptLast();
     }
     
     @.java.lang.Override
@@ -188,21 +213,6 @@ class NameCollision implements .com.redhat.ceylon.compiler.java.runtime.model.Re
     }
     
     @.java.lang.Override
-    public .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> getCoalesced() {
-        return $ceylon$language$Iterable$this$.getCoalesced();
-    }
-    
-    @.java.lang.Override
-    public .ceylon.language.Iterable<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.Integer>, ? extends .java.lang.Object> getIndexed() {
-        return $ceylon$language$Iterable$this$.getIndexed();
-    }
-    
-    @.java.lang.Override
-    public .ceylon.language.Iterable getPaired() {
-        return (.ceylon.language.Iterable<? extends .ceylon.language.Sequence<? extends .ceylon.language.Integer>, ? extends .java.lang.Object>)(.ceylon.language.Iterable)$ceylon$language$Iterable$this$.getPaired();
-    }
-    
-    @.java.lang.Override
     public .ceylon.language.Iterable<? extends .ceylon.language.Sequence<? extends .ceylon.language.Integer>, ? extends .java.lang.Object> partition(final long length) {
         return $ceylon$language$Iterable$this$.partition(length);
     }
@@ -220,11 +230,6 @@ class NameCollision implements .com.redhat.ceylon.compiler.java.runtime.model.Re
     @.java.lang.Override
     public <Other, OtherAbsent>.ceylon.language.Iterable product(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Other, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$OtherAbsent, final .ceylon.language.Iterable<? extends Other, ? extends OtherAbsent> other) {
         return (.ceylon.language.Iterable<? extends .ceylon.language.Sequence<? extends .java.lang.Object>, ? extends .java.lang.Object>)(.ceylon.language.Iterable)$ceylon$language$Iterable$this$.product($reified$Other, $reified$OtherAbsent, other);
-    }
-    
-    @.java.lang.Override
-    public .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> getCycled() {
-        return $ceylon$language$Iterable$this$.getCycled();
     }
     
     @.java.lang.Override
@@ -250,11 +255,6 @@ class NameCollision implements .com.redhat.ceylon.compiler.java.runtime.model.Re
     
     private <Other>.ceylon.language.Iterable interpose$canonical$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Other, final Other element, final long step) {
         return (.ceylon.language.Iterable)$ceylon$language$Iterable$this$.interpose($reified$Other, element, step);
-    }
-    
-    @.java.lang.Override
-    public .java.lang.String toString() {
-        return $ceylon$language$Iterable$this$.toString();
     }
     protected final .ceylon.language.Category$impl<.java.lang.Object> $ceylon$language$Category$this$;
     

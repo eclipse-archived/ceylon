@@ -171,14 +171,20 @@ public class Bug708Map<T> extends .java.lang.Object implements .com.redhat.ceylo
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public boolean equals(final .java.lang.Object that) {
-        return $ceylon$language$Map$this$.equals(that);
+    public int hashCode() {
+        return $ceylon$language$Map$this$.hashCode();
     }
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public int hashCode() {
-        return $ceylon$language$Map$this$.hashCode();
+    public .ceylon.language.Map getCoalescedMap() {
+        return (.ceylon.language.Map)$ceylon$language$Map$this$.getCoalescedMap();
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public boolean equals(final .java.lang.Object that) {
+        return $ceylon$language$Map$this$.equals(that);
     }
     
     @.java.lang.Override
@@ -197,12 +203,6 @@ public class Bug708Map<T> extends .java.lang.Object implements .com.redhat.ceylo
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public <OtherKey, OtherItem>.ceylon.language.Map patch(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$OtherKey, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$OtherItem, final .ceylon.language.Map<? extends OtherKey, ? extends OtherItem> other) {
         return (.ceylon.language.Map)$ceylon$language$Map$this$.patch($reified$OtherKey, $reified$OtherItem, other);
-    }
-    
-    @.java.lang.Override
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .ceylon.language.Map getCoalescedMap() {
-        return (.ceylon.language.Map)$ceylon$language$Map$this$.getCoalescedMap();
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     protected final .ceylon.language.Collection$impl<.ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .java.lang.Object>> $ceylon$language$Collection$this$;
@@ -229,6 +229,54 @@ public class Bug708Map<T> extends .java.lang.Object implements .com.redhat.ceylo
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .ceylon.language.Iterable getPaired() {
+        return (.ceylon.language.Iterable<? extends .ceylon.language.Sequence<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .java.lang.Object>>, ? extends .java.lang.Object>)(.ceylon.language.Iterable)$ceylon$language$Iterable$this$.getPaired();
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .ceylon.language.Iterable<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .java.lang.Object>, ? extends .java.lang.Object> getCycled() {
+        return $ceylon$language$Iterable$this$.getCycled();
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .ceylon.language.Entry getLast() {
+        return (.ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .java.lang.Object>)(.ceylon.language.Entry)$ceylon$language$Iterable$this$.getLast();
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .ceylon.language.Iterable<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .java.lang.Object>>, ? extends .java.lang.Object> getIndexed() {
+        return $ceylon$language$Iterable$this$.getIndexed();
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .ceylon.language.Iterable<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .java.lang.Object>, ? extends .java.lang.Object> getCoalesced() {
+        return $ceylon$language$Iterable$this$.getCoalesced();
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .ceylon.language.Iterable<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .java.lang.Object>, ? extends .java.lang.Object> getExceptLast() {
+        return $ceylon$language$Iterable$this$.getExceptLast();
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .ceylon.language.Iterable<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .java.lang.Object>, ? extends .java.lang.Object> getRest() {
+        return $ceylon$language$Iterable$this$.getRest();
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .ceylon.language.Entry getFirst() {
+        return (.ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .java.lang.Object>)(.ceylon.language.Entry)$ceylon$language$Iterable$this$.getFirst();
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public boolean longerThan(final long length) {
         return $ceylon$language$Iterable$this$.longerThan(length);
     }
@@ -241,18 +289,6 @@ public class Bug708Map<T> extends .java.lang.Object implements .com.redhat.ceylo
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .ceylon.language.Entry getFirst() {
-        return (.ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .java.lang.Object>)(.ceylon.language.Entry)$ceylon$language$Iterable$this$.getFirst();
-    }
-    
-    @.java.lang.Override
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .ceylon.language.Entry getLast() {
-        return (.ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .java.lang.Object>)(.ceylon.language.Entry)$ceylon$language$Iterable$this$.getLast();
-    }
-    
-    @.java.lang.Override
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public .ceylon.language.Entry getFromFirst(final long index) {
         return $ceylon$language$Iterable$this$.getFromFirst(index);
     }
@@ -261,18 +297,6 @@ public class Bug708Map<T> extends .java.lang.Object implements .com.redhat.ceylo
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public .ceylon.language.Sequential<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .java.lang.Object>> sequence() {
         return $ceylon$language$Iterable$this$.sequence();
-    }
-    
-    @.java.lang.Override
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .ceylon.language.Iterable<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .java.lang.Object>, ? extends .java.lang.Object> getRest() {
-        return $ceylon$language$Iterable$this$.getRest();
-    }
-    
-    @.java.lang.Override
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .ceylon.language.Iterable<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .java.lang.Object>, ? extends .java.lang.Object> getExceptLast() {
-        return $ceylon$language$Iterable$this$.getExceptLast();
     }
     
     @.java.lang.Override
@@ -439,24 +463,6 @@ public class Bug708Map<T> extends .java.lang.Object implements .com.redhat.ceylo
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .ceylon.language.Iterable<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .java.lang.Object>, ? extends .java.lang.Object> getCoalesced() {
-        return $ceylon$language$Iterable$this$.getCoalesced();
-    }
-    
-    @.java.lang.Override
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .ceylon.language.Iterable<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .java.lang.Object>>, ? extends .java.lang.Object> getIndexed() {
-        return $ceylon$language$Iterable$this$.getIndexed();
-    }
-    
-    @.java.lang.Override
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .ceylon.language.Iterable getPaired() {
-        return (.ceylon.language.Iterable<? extends .ceylon.language.Sequence<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .java.lang.Object>>, ? extends .java.lang.Object>)(.ceylon.language.Iterable)$ceylon$language$Iterable$this$.getPaired();
-    }
-    
-    @.java.lang.Override
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public .ceylon.language.Iterable<? extends .ceylon.language.Sequence<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .java.lang.Object>>, ? extends .java.lang.Object> partition(final long length) {
         return $ceylon$language$Iterable$this$.partition(length);
     }
@@ -477,12 +483,6 @@ public class Bug708Map<T> extends .java.lang.Object implements .com.redhat.ceylo
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public <Other, OtherAbsent>.ceylon.language.Iterable product(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Other, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$OtherAbsent, final .ceylon.language.Iterable<? extends Other, ? extends OtherAbsent> other) {
         return (.ceylon.language.Iterable<? extends .ceylon.language.Sequence<? extends .java.lang.Object>, ? extends .java.lang.Object>)(.ceylon.language.Iterable)$ceylon$language$Iterable$this$.product($reified$Other, $reified$OtherAbsent, other);
-    }
-    
-    @.java.lang.Override
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .ceylon.language.Iterable<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .java.lang.Object>, ? extends .java.lang.Object> getCycled() {
-        return $ceylon$language$Iterable$this$.getCycled();
     }
     
     @.java.lang.Override

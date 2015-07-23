@@ -46,13 +46,13 @@ abstract class BWMyInteger extends .java.lang.Object implements .com.redhat.ceyl
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger getMagnitude() {
-        return (.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger)$ceylon$language$Number$this$.getMagnitude();
+    public long getSign() {
+        return $ceylon$language$Number$this$.getSign();
     }
     
     @.java.lang.Override
-    public long getSign() {
-        return $ceylon$language$Number$this$.getSign();
+    public .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger getMagnitude() {
+        return (.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger)$ceylon$language$Number$this$.getMagnitude();
     }
     protected final .ceylon.language.Invertible$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger> $ceylon$language$Invertible$this$;
     
@@ -99,13 +99,13 @@ abstract class BWMyInteger extends .java.lang.Object implements .com.redhat.ceyl
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger getSuccessor() {
-        return (.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger)$ceylon$language$Enumerable$this$.getSuccessor();
+    public .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger getPredecessor() {
+        return (.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger)$ceylon$language$Enumerable$this$.getPredecessor();
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger getPredecessor() {
-        return (.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger)$ceylon$language$Enumerable$this$.getPredecessor();
+    public .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger getSuccessor() {
+        return (.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger)$ceylon$language$Enumerable$this$.getSuccessor();
     }
     
     @.java.lang.Override

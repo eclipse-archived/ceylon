@@ -35,13 +35,13 @@ public abstract class EqualityAndComparisonInteger extends .java.lang.Object imp
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger getMagnitude() {
-        return (.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger)$ceylon$language$Number$this$.getMagnitude();
+    public long getSign() {
+        return $ceylon$language$Number$this$.getSign();
     }
     
     @.java.lang.Override
-    public long getSign() {
-        return $ceylon$language$Number$this$.getSign();
+    public .com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger getMagnitude() {
+        return (.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger)$ceylon$language$Number$this$.getMagnitude();
     }
     protected final .ceylon.language.Invertible$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger> $ceylon$language$Invertible$this$;
     
@@ -88,13 +88,13 @@ public abstract class EqualityAndComparisonInteger extends .java.lang.Object imp
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger getSuccessor() {
-        return (.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger)$ceylon$language$Enumerable$this$.getSuccessor();
+    public .com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger getPredecessor() {
+        return (.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger)$ceylon$language$Enumerable$this$.getPredecessor();
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger getPredecessor() {
-        return (.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger)$ceylon$language$Enumerable$this$.getPredecessor();
+    public .com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger getSuccessor() {
+        return (.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger)$ceylon$language$Enumerable$this$.getSuccessor();
     }
     
     @.java.lang.Override

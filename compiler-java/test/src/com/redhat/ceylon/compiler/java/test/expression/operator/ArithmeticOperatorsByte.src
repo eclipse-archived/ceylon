@@ -43,13 +43,13 @@ abstract class MyByte extends .java.lang.Object implements .com.redhat.ceylon.co
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.test.expression.operator.MyByte getSuccessor() {
-        return (.com.redhat.ceylon.compiler.java.test.expression.operator.MyByte)$ceylon$language$Enumerable$this$.getSuccessor();
+    public .com.redhat.ceylon.compiler.java.test.expression.operator.MyByte getPredecessor() {
+        return (.com.redhat.ceylon.compiler.java.test.expression.operator.MyByte)$ceylon$language$Enumerable$this$.getPredecessor();
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.test.expression.operator.MyByte getPredecessor() {
-        return (.com.redhat.ceylon.compiler.java.test.expression.operator.MyByte)$ceylon$language$Enumerable$this$.getPredecessor();
+    public .com.redhat.ceylon.compiler.java.test.expression.operator.MyByte getSuccessor() {
+        return (.com.redhat.ceylon.compiler.java.test.expression.operator.MyByte)$ceylon$language$Enumerable$this$.getSuccessor();
     }
     
     @.java.lang.Override
