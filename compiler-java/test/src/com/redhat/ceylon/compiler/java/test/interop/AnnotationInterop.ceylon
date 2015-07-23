@@ -9,6 +9,8 @@ import javax.annotation{generated,
     }
 }
 import java.lang {
+    JString=String,
+    JBoolean=Boolean,
     Thread {
         State {
             runnable=\iRUNNABLE,
@@ -46,13 +48,13 @@ javaAnnotationPrimitives {
 }
 javaAnnotationClass {
     clas=`class String`;
-    classRaw=`class String`;
+    classRaw=`class JString`;
     classWithBound=`class Exception`;
-    classExact=`class String`;
-    classes={`class String`, `class Boolean`, `interface Sequential`};
-    classesRaw={`class String`, `class Boolean`, `interface Sequential`};
+    classExact=`class JString`;
+    classes={`class JString`, `class JBoolean`, `interface Sequential`};
+    classesRaw={`class JString`, `class JBoolean`, `interface Sequential`};
     classesWithBound={`class Exception`, `class AssertionError`};
-    classesExact={`class String`};
+    classesExact={`class JString`};
 }
 javaAnnotationEnum {
     threadState=neww;

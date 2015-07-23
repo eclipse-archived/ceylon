@@ -21,17 +21,17 @@ package com.redhat.ceylon.compiler.java.test.interop;
         da = {64.0},
         stra = {""})
 @.com.redhat.ceylon.compiler.java.test.interop.JavaAnnotationClass(
-        clas = .java.lang.String.class,
+        clas = .ceylon.language.String.class,
         classRaw = .java.lang.String.class,
         classWithBound = .java.lang.Exception.class,
         classExact = .java.lang.String.class,
         classes = {
                 .java.lang.String.class,
-                boolean.class,
+                .java.lang.Boolean.class,
                 .ceylon.language.Sequential.class},
         classesRaw = {
                 .java.lang.String.class,
-                boolean.class,
+                .java.lang.Boolean.class,
                 .ceylon.language.Sequential.class},
         classesWithBound = {
                 .java.lang.Exception.class,
