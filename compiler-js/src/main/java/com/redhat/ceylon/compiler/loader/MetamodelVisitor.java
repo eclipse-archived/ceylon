@@ -3,13 +3,13 @@ package com.redhat.ceylon.compiler.loader;
 
 import java.util.Map;
 
-import com.redhat.ceylon.compiler.js.util.TypeUtils;
 import com.redhat.ceylon.compiler.typechecker.analyzer.UsageWarning;
 import com.redhat.ceylon.compiler.typechecker.tree.Message;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.model.typechecker.model.Annotation;
+import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Function;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
@@ -34,7 +34,7 @@ public class MetamodelVisitor extends Visitor {
     }
 
     @Override public void visit(Tree.MethodDeclaration that) {
-        if (!TypeUtils.acceptNative(that)) return;
+        if (!isNativeHeader(that.getDeclarationModel())) return;
         if (errorFree(that)) {
             gen.encodeMethod(that.getDeclarationModel());
         }
@@ -42,7 +42,7 @@ public class MetamodelVisitor extends Visitor {
 
     /** Create and store the model of a method definition. */
     @Override public void visit(Tree.MethodDefinition that) {
-        if (!TypeUtils.acceptNative(that)) return;
+        if (!isNativeHeader(that.getDeclarationModel())) return;
         if (errorFree(that)) {
             gen.encodeMethod(that.getDeclarationModel());
             super.visit(that);
@@ -51,7 +51,7 @@ public class MetamodelVisitor extends Visitor {
 
     /** Create and store the metamodel info for an attribute. */
     @Override public void visit(Tree.AttributeDeclaration that) {
-        if (!TypeUtils.acceptNative(that)) return;
+        if (!isNativeHeader(that.getDeclarationModel())) return;
         if (errorFree(that)) {
             gen.encodeAttributeOrGetter(that.getDeclarationModel());
             super.visit(that);
@@ -60,7 +60,7 @@ public class MetamodelVisitor extends Visitor {
 
     @Override
     public void visit(Tree.ClassDefinition that) {
-        if (!TypeUtils.acceptNative(that)) return;
+        if (!isNativeHeader(that.getDeclarationModel())) return;
         if (errorFree(that)) {
             gen.encodeClass(that.getDeclarationModel());
             super.visit(that);
@@ -81,7 +81,7 @@ public class MetamodelVisitor extends Visitor {
 
     @Override
     public void visit(Tree.InterfaceDefinition that) {
-        if (!TypeUtils.acceptNative(that)) return;
+        if (!isNativeHeader(that.getDeclarationModel())) return;
         if (errorFree(that)) {
             gen.encodeInterface(that.getDeclarationModel());
             super.visit(that);
@@ -90,7 +90,7 @@ public class MetamodelVisitor extends Visitor {
 
     @Override
     public void visit(Tree.ObjectDefinition that) {
-        if (!TypeUtils.acceptNative(that)) return;
+        if (!isNativeHeader(that.getDeclarationModel())) return;
         if (errorFree(that)) {
             gen.encodeObject(that.getDeclarationModel());
             super.visit(that);
@@ -107,7 +107,7 @@ public class MetamodelVisitor extends Visitor {
 
     @Override
     public void visit(Tree.AttributeGetterDefinition that) {
-        if (!TypeUtils.acceptNative(that)) return;
+        if (!isNativeHeader(that.getDeclarationModel())) return;
         if (errorFree(that)) {
             gen.encodeAttributeOrGetter(that.getDeclarationModel());
             super.visit(that);
@@ -122,14 +122,14 @@ public class MetamodelVisitor extends Visitor {
     }
     @Override
     public void visit(Tree.ClassDeclaration that) {
-        if (!TypeUtils.acceptNative(that)) return;
+        if (!isNativeHeader(that.getDeclarationModel())) return;
         if (errorFree(that)) {
             gen.encodeClass(that.getDeclarationModel());
         }
     }
     @Override
     public void visit(Tree.InterfaceDeclaration that) {
-        if (!TypeUtils.acceptNative(that)) return;
+        if (!isNativeHeader(that.getDeclarationModel())) return;
         if (errorFree(that)) {
             gen.encodeInterface(that.getDeclarationModel());
         }
@@ -150,6 +150,7 @@ public class MetamodelVisitor extends Visitor {
     public void visit(Tree.SpecifierStatement st) {
         TypedDeclaration d = ((Tree.SpecifierStatement) st).getDeclaration();
         //Just add shared and actual annotations to this declaration
+        if (!isNativeHeader(d))return;
         if (d != null) {
             Annotation ann = new Annotation();
             ann.setName("shared");
@@ -179,5 +180,14 @@ public class MetamodelVisitor extends Visitor {
             gen.encodeClass(that.getAnonymousClass());
             super.visit(that);
         }
+    }
+
+    private static boolean isNativeHeader(Declaration d) {
+        if (d != null) {
+            if (d.isNative()) {
+                return d.isNativeHeader();
+            }
+        }
+        return true;
     }
 }
