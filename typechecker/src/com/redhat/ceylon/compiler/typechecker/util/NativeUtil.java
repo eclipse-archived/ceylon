@@ -41,6 +41,8 @@ public class NativeUtil {
                             && !names.contains(decl.getDeclarationModel().getName())) {
                         newstmts.addFirst(decl);
                     }
+                } else {
+                    newstmts.addFirst(stmt);
                 }
             }
             stmts = newstmts;
