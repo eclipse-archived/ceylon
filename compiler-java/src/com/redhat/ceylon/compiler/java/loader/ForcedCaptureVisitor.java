@@ -20,15 +20,20 @@
 
 package com.redhat.ceylon.compiler.java.loader;
 
+import com.redhat.ceylon.compiler.java.codegen.Decl;
 import com.redhat.ceylon.compiler.typechecker.tree.NaturalVisitor;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.Annotation;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.CompilerAnnotation;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
+import com.redhat.ceylon.model.typechecker.model.Module;
+import com.redhat.ceylon.model.typechecker.model.Type;
+import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 
 /**
- * Visitor that marks every Tree.TypedDeclaration that is a FunctionOrValue as captured
- * if it has a \@captured compiler annotation.
+ * Visitor that marks every Tree.TypedDeclaration that has non-language-module annotations
+ * as captured.
  *
  * @author Stéphane Épardaud <stef@epardaud.fr>
  */
@@ -41,11 +46,22 @@ public class ForcedCaptureVisitor extends Visitor implements NaturalVisitor{
     }
 
     private boolean isForcedCapture(Tree.TypedDeclaration that) {
-        if(that.getCompilerAnnotations() == null)
+        if(that.getAnnotationList() == null)
             return false;
-        for(CompilerAnnotation anno : that.getCompilerAnnotations()){
-            if(anno.getIdentifier() != null && anno.getIdentifier().getText().equals("captured"))
-                return true;
+        for(Annotation anno : that.getAnnotationList().getAnnotations()){
+            Type type = anno.getTypeModel();
+            if(type == null || !type.isClassOrInterface())
+                return false;
+            TypeDeclaration decl = type.getDeclaration();
+            if(decl == null)
+                return false;
+            Module module = Decl.getModule(decl);
+            if(module == null)
+                return false;
+            if(module.getLanguageModule() == module)
+                return false;
+            // does not come from the language module
+            return true;
         }
         return false;
     }
