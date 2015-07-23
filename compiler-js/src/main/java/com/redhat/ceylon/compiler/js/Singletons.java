@@ -213,13 +213,28 @@ public class Singletons {
         } else {
             gen.out(objvar, "=");
         }
-        if (dc == null) {
-            gen.out("new ", typevar, ".$$;");
-            if (td.isClassOrInterfaceMember()) {
-                gen.out(nested?selfvar:objvar, ".outer$=this;");
+        gen.out("new ", typevar, ".$$;");
+        if (td.isClassOrInterfaceMember()) {
+            gen.out(nested?selfvar:objvar, ".outer$=this;");
+        }
+        if (dc != null) {
+            Tree.InvocationExpression invoke = dc.getInvocationExpression();
+            invoke.getPrimary().visit(gen);
+            gen.out("(");
+            if (invoke.getNamedArgumentList() != null) {
+                //TODO
+            } else {
+                gen.getInvoker().generatePositionalArguments(invoke.getPrimary(), invoke.getPositionalArgumentList(), invoke.getPositionalArgumentList().getPositionalArguments(), false, false);
+                if (!invoke.getPositionalArgumentList().getPositionalArguments().isEmpty()) {
+                    gen.out(",");
+                }
             }
-        } else {
-            dc.getInvocationExpression().visit(gen);
+            if (!dc.getType().getTypeModel().getTypeArguments().isEmpty()) {
+                TypeUtils.printTypeArguments(dc, dc.getType().getTypeModel().getTypeArguments(), gen, false,
+                        dc.getType().getTypeModel().getVarianceOverrides());
+                gen.out(",");
+            }
+            gen.out(nested?selfvar:objvar, ")");
             gen.endLine(true);
         }
         if (!nested) {
