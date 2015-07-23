@@ -25,17 +25,31 @@
  */
 package com.redhat.ceylon.ant;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.DynamicAttribute;
 import org.apache.tools.ant.Project;
 import org.apache.tools.ant.UnsupportedAttributeException;
 import org.apache.tools.ant.types.Commandline;
 
-
 public class CeylonTestJsAntTask extends RepoUsingCeylonAntTask implements DynamicAttribute {
 
     static final String FAIL_MSG = "Test failed; see the error output for details.";
-    
+
+    public static class Test {
+        private String test;
+
+        public String getTest() {
+            return test;
+        }
+
+        public void setTest(String test) {
+            this.test = test;
+        }
+    }
+
     private final ModuleSet moduleSet = new ModuleSet();
     private String compileFlags;
     private String version;
@@ -43,6 +57,7 @@ public class CeylonTestJsAntTask extends RepoUsingCeylonAntTask implements Dynam
     private Boolean tap = false;
     private Boolean debug = true;
     private Boolean report = false;
+    private List<Test> tests = new ArrayList<Test>(0);
     
     public CeylonTestJsAntTask() {
         super("test-js");
@@ -113,6 +128,14 @@ public class CeylonTestJsAntTask extends RepoUsingCeylonAntTask implements Dynam
     public void setReport(Boolean report) {
         this.report = report;
     }
+
+    /**
+     * Adds a test to run.
+     * @param test
+     */
+    public void addTest(Test test) {
+        this.tests.add(test);
+    }
     
     /**
      * Check that all required attributes have been set and nothing silly has
@@ -150,7 +173,10 @@ public class CeylonTestJsAntTask extends RepoUsingCeylonAntTask implements Dynam
         if(report) {
             appendOption(cmd, "--report");
         }
-        
+        for (Test test : tests) {
+            appendOptionArgument(cmd, "--test", test.getTest());
+        }
+
         for (Module module : moduleSet.getModules()) {
             log("Adding module: "+module, Project.MSG_VERBOSE);
             cmd.createArgument().setValue(module.toSpec());
