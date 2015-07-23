@@ -221,13 +221,10 @@ public class Singletons {
             Tree.InvocationExpression invoke = dc.getInvocationExpression();
             invoke.getPrimary().visit(gen);
             gen.out("(");
-            if (invoke.getNamedArgumentList() != null) {
-                //TODO
-            } else {
-                gen.getInvoker().generatePositionalArguments(invoke.getPrimary(), invoke.getPositionalArgumentList(), invoke.getPositionalArgumentList().getPositionalArguments(), false, false);
-                if (!invoke.getPositionalArgumentList().getPositionalArguments().isEmpty()) {
-                    gen.out(",");
-                }
+            //For now, only positional invocations are allowed here
+            gen.getInvoker().generatePositionalArguments(invoke.getPrimary(), invoke.getPositionalArgumentList(), invoke.getPositionalArgumentList().getPositionalArguments(), false, false);
+            if (!invoke.getPositionalArgumentList().getPositionalArguments().isEmpty()) {
+                gen.out(",");
             }
             if (!dc.getType().getTypeModel().getTypeArguments().isEmpty()) {
                 TypeUtils.printTypeArguments(dc, dc.getType().getTypeModel().getTypeArguments(), gen, false,
