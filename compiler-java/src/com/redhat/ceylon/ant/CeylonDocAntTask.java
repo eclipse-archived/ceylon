@@ -53,6 +53,7 @@ public class CeylonDocAntTask extends LazyCeylonAntTask {
     private boolean includeSourceCode;
     private boolean ignoreMissingDoc;
     private boolean ignoreBrokenLink;
+    private boolean ignoreMissingThrows;
     
     public CeylonDocAntTask() {
         super("doc");
@@ -108,6 +109,13 @@ public class CeylonDocAntTask extends LazyCeylonAntTask {
      */
     public void setIgnoreBrokenLink(boolean ignoreBrokenLink) {
         this.ignoreBrokenLink = ignoreBrokenLink;
+    }
+    
+    /**
+     * Do not print warnings about missing throws annotations.
+     */
+    public void setIgnoreMissingThrows(boolean ignoreMissingThrows) {
+        this.ignoreMissingThrows = ignoreMissingThrows;
     }
     
     /**
@@ -191,6 +199,8 @@ public class CeylonDocAntTask extends LazyCeylonAntTask {
             appendOption(cmd, "--ignore-missing-doc");
         if(ignoreBrokenLink)
             appendOption(cmd, "--ignore-broken-link");
+        if(ignoreMissingThrows)
+            appendOption(cmd, "--ignore-missing-throws");
         for (File doc : getDoc()) {
             appendOptionArgument(cmd, "--doc", doc.getAbsolutePath());
         }
