@@ -869,7 +869,7 @@ public class Unit {
     
     public boolean isNonemptyIterableType(Type type) {
     	Type ft = getFirstType(type);
-    	return ft!=null && ft.isNothing();
+    	return ft!=null && ft.isExactlyNothing();
     }
 
     public Type getSetElementType(Type type) {
@@ -962,10 +962,10 @@ public class Unit {
         //and non-empty intersection with Value
         return !intersectionType(getNullType(), 
                         pt, this)
-                    .isNothing() &&
+                    .isExactlyNothing() &&
                 !intersectionType(getObjectType(), 
                         pt, this)
-                    .isNothing();
+                    .isExactlyNothing();
     }
     
     public boolean isPossiblyEmptyType(Type pt) {
@@ -975,10 +975,10 @@ public class Unit {
         //and non-empty intersection with Sequence<Nothing>
                !intersectionType(getEmptyType(), 
                            pt, this)
-                        .isNothing() &&
+                        .isExactlyNothing() &&
                !intersectionType(getSequentialType(getNothingType()), 
                            pt, this)
-                        .isNothing();
+                        .isExactlyNothing();
     }
     
     public boolean isCallableType(Type pt) {

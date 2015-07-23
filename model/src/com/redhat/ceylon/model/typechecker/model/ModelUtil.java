@@ -1173,7 +1173,7 @@ public class ModelUtil {
             Type pt) {
         if (pt==null || 
                 !list.isEmpty() && 
-                pt.isNothing()) {
+                pt.isExactlyNothing()) {
             return;
         }
         else if (pt.isAnything()) {
@@ -1221,7 +1221,7 @@ public class ModelUtil {
                 type.isAnything()) {
             return;
         }
-        else if (type.isNothing()) {
+        else if (type.isExactlyNothing()) {
             list.clear();
             list.add(type);
         }
@@ -1396,7 +1396,8 @@ public class ModelUtil {
         if (p==null || q==null) {
             return false;
         }
-        if (p.isNothing() || q.isNothing()) {
+        if (p.isExactlyNothing() || 
+            q.isExactlyNothing()) {
             return true;
         }
         TypeDeclaration pd = p.getDeclaration();

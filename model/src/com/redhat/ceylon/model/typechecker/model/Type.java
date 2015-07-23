@@ -147,6 +147,12 @@ public class Type extends Reference {
         this.typeConstructorParameter = typeConstructorParameter;
     }
     
+    public boolean isExactlyNothing() {
+        return isNothing() ||
+                isEmptySequenceType(this) ||
+                isEmptyTupleType(this);
+    }
+    
     /**
      * Is this type exactly the same type as the
      * given type? 
@@ -163,17 +169,17 @@ public class Type extends Reference {
             if (isUnknown() || type.isUnknown()) {
                 return this==type;
             }
-            else if (isNothing()) {
-                return type.isNothing();
-            }
-            else if (type.isNothing()) {
-                return isNothing();
-            }
             else if (isAnything()) {
                 return type.isAnything();
             }
             else if (type.isAnything()) {
                 return isAnything();
+            }
+            else if (isExactlyNothing()) {
+                return type.isExactlyNothing();
+            }
+            else if (type.isExactlyNothing()) {
+                return isExactlyNothing();
             }
             else if (isUnion()) {
                 List<Type> cases = getCaseTypes();
@@ -367,6 +373,48 @@ public class Type extends Reference {
             decDepth();
         }
     }
+
+    private static boolean isEmptySequenceType(Type type) {
+        if (type.isSequence()) {
+            Type et = 
+                    type.getDeclaration()
+                        .getUnit()
+                        .getSequentialElementType(type);
+            return et!=null && et.isNothing();
+        }
+        else {
+            return false;
+        }
+    }
+
+    private static boolean isEmptyTupleType(Type type) {
+        if (type.isTuple()) {
+            List<Type> tal = 
+                    type.getTypeArgumentList();
+            if (tal.size()>=1) {
+                Type elem = tal.get(0);
+                if (elem!=null &&
+                        elem.isNothing()) {
+                    return true;
+                }
+            }
+            if (tal.size()>=2) {
+                Type first = tal.get(1);
+                if (first!=null &&
+                        first.isNothing()) {
+                    return true;
+                }
+            }
+            if (tal.size()>=3) {
+                Type rest = tal.get(2);
+                if (rest!=null &&
+                        tal.get(2).isNothing()) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
     
     private boolean isExactlyTuple(Type type) {
         TypeDeclaration td = 
@@ -499,20 +547,20 @@ public class Type extends Reference {
         checkDepth();
         incDepth();
         try {
-            if (isNothing()) {
+            if (type.isAnything()) {
                 return true;
             }
-            else if (type.isAnything()) {
+            else if (isExactlyNothing()) {
                 return true;
             }
             else if (isUnknown() || type.isUnknown()) {
                 return this==type;
             }
-            else if (type.isNothing()) {
-                return false;
-            }
             else if (isAnything()) {
                 return false;
+            }
+            else if (type.isExactlyNothing()) {
+                return isExactlyNothing();
             }
             else if (isUnion()) {
                 for (Type ct: 

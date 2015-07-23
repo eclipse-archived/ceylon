@@ -49,7 +49,7 @@ public class IntersectionType extends TypeDeclaration {
     public String toString() {
         return getName();
     }
-    
+
     @Override
     public Type getType() {
         List<Type> sts = getSatisfiedTypes();
@@ -76,56 +76,57 @@ public class IntersectionType extends TypeDeclaration {
             return super.getType();
         }
     }
-    
+
     /**
      * Apply the distributive rule X&(Y|Z) == X&Y|X&Z to simplify the 
      * intersection to a canonical form with no parens. The result is 
      * a union of intersections, instead of an intersection of unions.
      */
-	public TypeDeclaration canonicalize() {
-	    List<Type> sts = getSatisfiedTypes();
-		if (sts.isEmpty()) {
-	        return unit.getAnythingDeclaration();
-	    }
-	    else if (sts.size()==1) {
-	    	Type st = sts.get(0);
-            if (st.isNothing()) {
-	    		return st.getDeclaration();
-	    	}
-	    }
-		for (Type st: sts) {
-			if (st.isUnion()) {
+    public TypeDeclaration canonicalize() {
+        List<Type> sts = getSatisfiedTypes();
+        if (sts.isEmpty()) {
+            return unit.getAnythingDeclaration();
+        }
+        else if (sts.size()==1) {
+            Type st = sts.get(0);
+            if (st.isExactlyNothing()) {
+                return unit.getNothingDeclaration();
+            }
+        }
+        for (Type st: sts) {
+            if (st.isUnion()) {
                 List<Type> caseTypes = st.getCaseTypes();
-				List<Type> ulist = 
-				        new ArrayList<Type>
-				            (caseTypes.size());
+                List<Type> ulist = 
+                        new ArrayList<Type>
+                            (caseTypes.size());
                 for (Type ct: caseTypes) {
-					List<Type> ilist = 
-					        new ArrayList<Type>
-					            (sts.size());
-					for (Type pt: sts) {
-						if (pt==st) {
-							addToIntersection(ilist, ct, 
-							        unit);
-						}
-						else {
-							addToIntersection(ilist, pt, 
-							        unit);
-						}
-					}
-					Type it = canonicalIntersection(ilist, 
-					        unit);
+                    List<Type> ilist = 
+                            new ArrayList<Type>
+                                (sts.size());
+                    for (Type pt: sts) {
+                        if (pt==st) {
+                            addToIntersection(ilist, ct, 
+                                    unit);
+                        }
+                        else {
+                            addToIntersection(ilist, pt, 
+                                    unit);
+                        }
+                    }
+                    Type it = 
+                            canonicalIntersection(ilist, 
+                                    unit);
                     addToUnion(ulist, it);
-				}
+                }
                 TypeDeclaration result = 
                         new UnionType(unit);
-				result.setCaseTypes(ulist);
-				return result;
-			}
-		}
-		return this;
-	}
-	
+                result.setCaseTypes(ulist);
+                return result;
+            }
+        }
+        return this;
+    }
+
     @Override
     public DeclarationKind getDeclarationKind() {
         return null;
