@@ -18,29 +18,29 @@ native class NativeMap<Key,Element>() {
 
 native("jvm") class NativeMap<Key,Element>() {
     
-    HashMap<Key, Element> map = HashMap<Key, Element>();
+    HashMap<Key, Element> m = HashMap<Key, Element>();
     
     shared native("jvm") void put(Key id, Element instance) {
-        map.put(id, instance);
+        m.put(id, instance);
     }
     
     shared native("jvm") Element? get(Key id) {
-        return map.get(id of Object?);
+        return m.get(id of Object?);
     }
     
     shared native("jvm") Boolean contains(Key id) {
-        return map.containsKey(id of Object?);
+        return m.containsKey(id of Object?);
     }
     
     shared native("jvm") Integer size {
-        return map.size();
+        return m.size();
     }
     
     shared native("jvm") Iterable<Element, Null> items {
         return object extends BaseIterable<Element,Null>() satisfies Identifiable {
             
             shared actual Iterator<Element> iterator() {
-                JavaIterator<Element> it = outer.map.values().iterator();
+                JavaIterator<Element> it = m.values().iterator();
                 return object extends BaseIterator<Element>() satisfies Identifiable {
                     
                     shared actual Element|Finished next() {
@@ -60,7 +60,7 @@ native("jvm") class NativeMap<Key,Element>() {
         return object extends BaseIterable<Key,Null>() satisfies Identifiable {
             
             shared actual Iterator<Key> iterator() {
-                JavaIterator<Key> it = outer.map.keySet().iterator();
+                JavaIterator<Key> it = m.keySet().iterator();
                 return object extends BaseIterator<Key>() satisfies Identifiable {
                     
                     shared actual Key|Finished next() {
@@ -76,6 +76,6 @@ native("jvm") class NativeMap<Key,Element>() {
     }
     
     shared native("jvm") actual String string {
-        return map.string;
+        return m.string;
     }
 }
