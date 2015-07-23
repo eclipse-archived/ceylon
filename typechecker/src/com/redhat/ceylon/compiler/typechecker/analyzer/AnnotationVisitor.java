@@ -198,7 +198,7 @@ public class AnnotationVisitor extends Visitor {
                 }
             }
             else if (term instanceof Tree.InvocationExpression) {
-                checkAnnotationInstantiation(a, e, pt);
+                checkAnnotationInstantiation(a, e, pt, "illegal annotation argument: must be a literal value, metamodel reference, annotation instantiation, or parameter reference");
             }
             else if (term instanceof Tree.BaseMemberExpression) {
                 Tree.BaseMemberExpression bme = 
@@ -459,7 +459,8 @@ public class AnnotationVisitor extends Visitor {
                         Tree.Expression e = 
                                 r.getExpression();
                         checkAnnotationInstantiation(a, e, 
-                                a.getType());
+                                a.getType(),
+                                "annotation constructor must return a newly-instantiated annotation");
                     }
                     else {
                         s.addError("annotation constructor body must return an annotation instance");
@@ -478,7 +479,8 @@ public class AnnotationVisitor extends Visitor {
             if (se!=null) {
                 checkAnnotationInstantiation(a, 
                         se.getExpression(), 
-                        a.getType());
+                        a.getType(),
+                        "annotation constructor must return a newly-instantiated annotation");
             }
         }
     }
@@ -497,7 +499,7 @@ public class AnnotationVisitor extends Visitor {
     }
     
     private void checkAnnotationInstantiation(Functional a, 
-            Tree.Expression e, Type pt) {
+            Tree.Expression e, Type pt, String errorMessage) {
         if (e!=null) {
             Tree.Term term = e.getTerm();
             if (term instanceof Tree.InvocationExpression) {
@@ -510,12 +512,12 @@ public class AnnotationVisitor extends Visitor {
                 if (!(primary instanceof Tree.BaseTypeExpression) && 
                     (!(primary instanceof Tree.BaseMemberExpression)
                             || !((Tree.BaseMemberExpression) primary).getDeclaration().isAnnotation())) {
-                    term.addError("annotation constructor must return a newly-instantiated annotation");
+                    term.addError(errorMessage);
                 }
                 checkAnnotationArguments(a, ie);
             }
             else {
-                term.addError("annotation constructor must return a newly-instantiated annotation");
+                term.addError(errorMessage);
             }
         }
     }
