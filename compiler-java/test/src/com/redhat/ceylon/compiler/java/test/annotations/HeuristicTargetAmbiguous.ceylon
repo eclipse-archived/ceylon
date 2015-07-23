@@ -28,8 +28,7 @@ class AmbiguousClass(s2,s3) {
     fieldOrMethodTarget
     shared String s = "";
     
-    // TODO the natural target here is a getter, but because it's not captured we don't generate any annotation
-    parameterOrFieldTarget
+    parameterOrFieldOrMethodTarget
     String s2;
     
     parameterOrFieldOrMethodTarget

@@ -20,8 +20,9 @@
 import javax.annotation { ... }
 
 class Bug2239() {
-    @captured
     postConstruct__SETTER
     postConstruct__GETTER
     late String em;
+
+    late String notCaptured;
 }

@@ -24,11 +24,27 @@ public class Bug2037 implements .com.redhat.ceylon.compiler.java.runtime.model.R
     
     public Bug2037(@.com.redhat.ceylon.compiler.java.metadata.Name("p1")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
-    @.javax.annotation.Generated({"by me"})
     final .java.lang.String p1, @.com.redhat.ceylon.compiler.java.metadata.Name("p2")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
-    @.javax.annotation.Generated({"by me"})
     final .java.lang.String p2) {
+        this.p1 = p1;
+        this.p2 = p2;
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    private final .java.lang.String p2;
+    
+    @.javax.annotation.Generated({"by me"})
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
+    private final .java.lang.String getP2$priv$() {
+        return p2;
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    private final .java.lang.String p1;
+    
+    @.javax.annotation.Generated({"by me"})
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
+    private final .java.lang.String getP1$priv$() {
+        return p1;
     }
     
     @.ceylon.language.SharedAnnotation$annotation$

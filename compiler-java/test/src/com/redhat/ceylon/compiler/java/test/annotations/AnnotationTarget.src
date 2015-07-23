@@ -97,11 +97,17 @@ interface AnnotationTargetClass$InnerInterface {
 @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget$annotation$
 class AnnotationTargetClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
-    AnnotationTargetClass(@.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget$annotation$
-    final .java.lang.String parameter) {
+    AnnotationTargetClass(final .java.lang.String parameter) {
+        this.parameter = parameter;
         this.attribute = true;
         this.varAttribute = true;
         this.obj = new .com.redhat.ceylon.compiler.java.test.annotations.AnnotationTargetClass.obj_();
+    }
+    private final .java.lang.String parameter;
+    
+    @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget$annotation$
+    private final .java.lang.String getParameter$priv$() {
+        return parameter;
     }
     private final boolean attribute;
     
@@ -162,8 +168,14 @@ class AnnotationTargetClass implements .com.redhat.ceylon.compiler.java.runtime.
         @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget$annotation$
         class LocalClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
             
-            LocalClass(@.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget$annotation$
-            final .java.lang.String parameter) {
+            LocalClass(final .java.lang.String parameter) {
+                this.parameter = parameter;
+            }
+            private final .java.lang.String parameter;
+            
+            @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget$annotation$
+            private final .java.lang.String getParameter$priv$() {
+                return parameter;
             }
             
             @.java.lang.Override
@@ -176,8 +188,14 @@ class AnnotationTargetClass implements .com.redhat.ceylon.compiler.java.runtime.
     @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget$annotation$
     class InnerClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
         
-        InnerClass(@.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget$annotation$
-        final .java.lang.String parameter) {
+        InnerClass(final .java.lang.String parameter) {
+            this.parameter = parameter;
+        }
+        private final .java.lang.String parameter;
+        
+        @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget$annotation$
+        private final .java.lang.String getParameter$priv$() {
+            return parameter;
         }
         
         @.java.lang.Override
@@ -204,8 +222,7 @@ final class AnnotationTargetClassAlias {
     private AnnotationTargetClassAlias() {
     }
     
-    static .com.redhat.ceylon.compiler.java.test.annotations.AnnotationTargetClass AnnotationTargetClassAlias$aliased$$priv$(@.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget$annotation$
-    final .java.lang.String parameter) {
+    static .com.redhat.ceylon.compiler.java.test.annotations.AnnotationTargetClass AnnotationTargetClassAlias$aliased$$priv$(final .java.lang.String parameter) {
         throw new .ceylon.language.Exception();
     }
 }
@@ -214,8 +231,7 @@ class AnnotationTargetOuter implements .com.redhat.ceylon.compiler.java.runtime.
     AnnotationTargetOuter() {
     }
     
-    .com.redhat.ceylon.compiler.java.test.annotations.AnnotationTargetClass InnerAlias$aliased$$priv$(@.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget$annotation$
-    final .java.lang.String parameter) {
+    .com.redhat.ceylon.compiler.java.test.annotations.AnnotationTargetClass InnerAlias$aliased$$priv$(final .java.lang.String parameter) {
         throw new .ceylon.language.Exception();
     }
     
@@ -304,8 +320,14 @@ final class AnnotationTargetInterface$impl {
     @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget$annotation$
     class InnerClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
         
-        InnerClass(@.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget$annotation$
-        final .java.lang.String parameter) {
+        InnerClass(final .java.lang.String parameter) {
+            this.parameter = parameter;
+        }
+        private final .java.lang.String parameter;
+        
+        @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget$annotation$
+        private final .java.lang.String getParameter$priv$() {
+            return parameter;
         }
         
         @.java.lang.Override

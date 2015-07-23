@@ -1,17 +1,19 @@
 package com.redhat.ceylon.compiler.java.test.annotations;
 
-@.com.redhat.ceylon.compiler.java.metadata.CompileTimeError
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 class SetterTarget implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     SetterTarget(@.com.redhat.ceylon.compiler.java.metadata.Name("param3")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
-    .java.lang.String param3, @.com.redhat.ceylon.compiler.java.metadata.Name("param4")
+    .java.lang.String param3$param$, @.com.redhat.ceylon.compiler.java.metadata.Name("param4")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
-    .java.lang.String param4) {
-        this.param3 = param3;
+    .java.lang.String param4$param$) {
+        this.param3 = param3$param$;
+        this.param4 = param4$param$;
         this.$init$attr = false;
-        throw new .com.redhat.ceylon.compiler.java.language.UnresolvedCompilationError("no target for methodTarget__SETTER annotation: @Target of @interface MethodTarget lists [SETTER] but annotated element tranforms to [LOCAL_VARIABLE]");
+        this.$init$attr2 = false;
+        this.attr3 = "";
+        this.attr4 = "";
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     private .java.lang.String attr;
@@ -42,6 +44,33 @@ class SetterTarget implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
         throw new .ceylon.language.InitializationError("Re-initialization of \'late\' attribute");
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    private .java.lang.String attr2;
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    private volatile boolean $init$attr2;
+    
+    @.ceylon.language.LateAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
+    private final .java.lang.String getAttr2$priv$() {
+        if (this.$init$attr2) {
+            return attr2;
+        } else {
+            throw new .ceylon.language.InitializationError("Accessing uninitialized \'late\' attribute \'attr2\'");
+        }
+    }
+    
+    @.com.redhat.ceylon.compiler.java.test.annotations.MethodTarget
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    private final void setAttr2$priv$(@.com.redhat.ceylon.compiler.java.metadata.Name("attr2")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
+    final .java.lang.String attr2) {
+        if (!this.$init$attr2) {
+            this.attr2 = attr2;
+            this.$init$attr2 = true;
+            return;
+        }
+        throw new .ceylon.language.InitializationError("Re-initialization of \'late\' attribute");
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     private .java.lang.String attr3;
     
     @.ceylon.language.SharedAnnotation$annotation$
@@ -58,6 +87,21 @@ class SetterTarget implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
         this.attr3 = attr3;
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    private .java.lang.String attr4;
+    
+    @.ceylon.language.VariableAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
+    private final .java.lang.String getAttr4$priv$() {
+        return attr4;
+    }
+    
+    @.com.redhat.ceylon.compiler.java.test.annotations.MethodTarget
+    private final void setAttr4$priv$(@.com.redhat.ceylon.compiler.java.metadata.Name("attr4")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
+    final .java.lang.String attr4) {
+        this.attr4 = attr4;
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     private .java.lang.String param3;
     
     @.ceylon.language.SharedAnnotation$annotation$
@@ -72,6 +116,21 @@ class SetterTarget implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
     final .java.lang.String param3) {
         this.param3 = param3;
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    private .java.lang.String param4;
+    
+    @.ceylon.language.VariableAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
+    private final .java.lang.String getParam4$priv$() {
+        return param4;
+    }
+    
+    @.com.redhat.ceylon.compiler.java.test.annotations.MethodTarget
+    private final void setParam4$priv$(@.com.redhat.ceylon.compiler.java.metadata.Name("param4")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
+    final .java.lang.String param4) {
+        this.param4 = param4;
     }
     
     @.java.lang.Override

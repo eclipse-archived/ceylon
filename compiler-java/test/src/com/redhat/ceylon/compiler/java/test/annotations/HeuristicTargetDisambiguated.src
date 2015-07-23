@@ -11,6 +11,7 @@ class AmbiguousClass implements .com.redhat.ceylon.compiler.java.runtime.model.R
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
     @.com.redhat.ceylon.compiler.java.test.annotations.ParameterOrFieldOrMethodTarget
     final .java.lang.String s3) {
+        this.s2 = s2;
         this.s3 = s3;
         this.s = "";
     }
@@ -22,6 +23,13 @@ class AmbiguousClass implements .com.redhat.ceylon.compiler.java.runtime.model.R
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
     public final .java.lang.String getS() {
         return s;
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    private final .java.lang.String s2;
+    
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
+    private final .java.lang.String getS2$priv$() {
+        return s2;
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     private final .java.lang.String s3;
