@@ -1,3 +1,4 @@
+import ceylon.interop.java{javaClass}
 javaAnnotationNoTarget__TYPE
 javaAnnotationNoTarget__CONSTRUCTOR
 class AnnotationInteropError() {
@@ -16,4 +17,7 @@ class AnnotationInteropError() {
 }
 
 javaAnnotationNoTarget__ANNOTATION_TYPE
+javaAnnotationClass2 {
+    clas=javaClass<String>();
+}
 shared final annotation class AnnoError() satisfies OptionalAnnotation<AnnoError>{}

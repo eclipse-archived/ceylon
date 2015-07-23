@@ -62,3 +62,7 @@ import java.lang.annotation.ElementType;
     ElementType.TYPE,
 })
 @interface JavaAnnotationOnEveryTarget {}
+
+@interface JavaAnnotationClass2 {
+    java.lang.Class<?> clas();
+}
