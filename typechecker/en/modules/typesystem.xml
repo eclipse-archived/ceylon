@@ -1670,7 +1670,7 @@ interface NumberLiteral
                     <literal>Y</literal> has the principal supertype instantiation 
                     <literal>Tuple&lt;J,B,V&gt;</literal>,
                     and <literal>A</literal> and <literal>B</literal> are disjoint 
-                    or <literal>U</literal> and <literal>C</literal> are disjoint.</para>
+                    or <literal>U</literal> and <literal>V</literal> are disjoint.</para>
                 </listitem>
             </itemizedlist>
             
