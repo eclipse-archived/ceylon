@@ -139,6 +139,7 @@ class TestJs555<F> {
 }
 
 class ParentConstr() {}
+class ParentConstr2<T>() {}
 
 // enable back when https://github.com/ceylon/ceylon-compiler/issues/2233 is fixed
 //class TestJs557<F> extends ParentConstr {
@@ -314,6 +315,15 @@ class MultiValueCons satisfies Identifiable {
   }
 }
 
+class Js603 extends ParentConstr {
+    shared new foo extends ParentConstr(){}
+    shared Integer i() => 42;
+}
+class Js603Params extends ParentConstr2<String> {
+    shared new foo extends ParentConstr2<String>(){}
+    shared Integer i() => 42;
+}
+
 @test
 shared void testConstructors() {
   value o=Outer1129();
@@ -427,4 +437,7 @@ shared void testConstructors() {
   check(MultiValueCons.one.num==1, "Multiple enumerated 1");
   check(MultiValueCons.two.num==2, "Multiple enumerated 2");
   check(!((MultiValueCons.one of Identifiable)===(MultiValueCons.two of Identifiable)), "Multiple enumerated 3");
+  check(Js603.foo.i() == 42, "JS#603 1");
+  check(Js603Params.foo.i() == 42, "JS#603 2");
+  check((Js603Params.foo of Object) is ParentConstr2<String>, "JS#603 3");
 }
