@@ -24,6 +24,20 @@ final class attributes_ {
         long syncInt = 0L;
         syncInt = java.getÉpardaud();
         java.setÉpardaud(0L);
+        sync = java.isConfusedAttr1();
+        java.setConfusedAttr1(sync);
+        syncInt = java.getConfusedAttr1();
+        syncInt = java.getConfusedAttr2();
+        java.setConfusedAttr2(syncInt);
+        sync = java.isConfusedAttr2();
+        sync = java.isConfusedAttr3();
+        java.setConfusedAttr3(sync);
+        sync = java.getConfusedAttr3();
+        java.setConfusedAttr3(syncInt);
+        syncInt = java.getConfusedAttr4();
+        java.setConfusedAttr4(syncInt);
+        sync = java.isConfusedAttr4();
+        java.setConfusedAttr4(sync);
     }
 }
 class CeylonAttributes extends .com.redhat.ceylon.compiler.java.test.interop.JavaBean implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
@@ -34,6 +48,10 @@ class CeylonAttributes extends .com.redhat.ceylon.compiler.java.test.interop.Jav
         this.booleanWithIs = false;
         this.url = "";
         this.urlEncoderForHTML = "";
+        this.confusedAttr1 = false;
+        this.confusedAttr2 = 1L;
+        this.confusedAttr3 = false;
+        this.confusedAttr4 = 1L;
     }
     private boolean booleanWithGet;
     
@@ -78,6 +96,78 @@ class CeylonAttributes extends .com.redhat.ceylon.compiler.java.test.interop.Jav
     @.java.lang.Override
     public final void setURLEncoderForHTML(final .java.lang.String urlEncoderForHTML) {
         this.urlEncoderForHTML = urlEncoderForHTML;
+    }
+    private boolean confusedAttr1;
+    
+    @.java.lang.Override
+    public final boolean isConfusedAttr1() {
+        return confusedAttr1;
+    }
+    
+    @.java.lang.Override
+    public final void setConfusedAttr1(final boolean confusedAttr1) {
+        this.confusedAttr1 = confusedAttr1;
+    }
+    
+    @.java.lang.Override
+    public final long getConfusedAttr1() {
+        return 1L;
+    }
+    private long confusedAttr2;
+    
+    @.java.lang.Override
+    public final long getConfusedAttr2() {
+        return confusedAttr2;
+    }
+    
+    @.java.lang.Override
+    public final void setConfusedAttr2(final long confusedAttr2) {
+        this.confusedAttr2 = confusedAttr2;
+    }
+    
+    @.java.lang.Override
+    public final boolean isConfusedAttr2() {
+        return false;
+    }
+    private boolean confusedAttr3;
+    
+    @.java.lang.Override
+    public final boolean isConfusedAttr3() {
+        return confusedAttr3;
+    }
+    
+    @.java.lang.Override
+    public final void setConfusedAttr3(final boolean confusedAttr3) {
+        this.confusedAttr3 = confusedAttr3;
+    }
+    
+    @.java.lang.Override
+    public final boolean getConfusedAttr3() {
+        return false;
+    }
+    
+    @.java.lang.Override
+    public final void setConfusedAttr3(final long i) {
+    }
+    private long confusedAttr4;
+    
+    @.java.lang.Override
+    public final long getConfusedAttr4() {
+        return confusedAttr4;
+    }
+    
+    @.java.lang.Override
+    public final void setConfusedAttr4(final long confusedAttr4) {
+        this.confusedAttr4 = confusedAttr4;
+    }
+    
+    @.java.lang.Override
+    public final boolean isConfusedAttr4() {
+        return false;
+    }
+    
+    @.java.lang.Override
+    public final void setConfusedAttr4(final boolean b) {
     }
     
     private final void m$priv$() {
