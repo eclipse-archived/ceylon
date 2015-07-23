@@ -18,10 +18,11 @@ import com.redhat.ceylon.model.typechecker.model.TypedReference;
 
 @Ceylon(major=8)
 @com.redhat.ceylon.compiler.java.metadata.Class
-@SatisfiedTypes("ceylon.language.meta.model::Attribute<Container,Type,ceylon.language::Nothing>")
+@SatisfiedTypes("ceylon.language.meta.model::MemberClassValueConstructor<Container,Type,Set>")
 @TypeParameters({
     @TypeParameter(value = "Container", variance = Variance.IN),
-    @TypeParameter(value = "Type", variance = Variance.OUT)
+    @TypeParameter(value = "Type", variance = Variance.OUT),
+    @TypeParameter(value = "Set", variance = Variance.IN)
 })
 public class AppliedValueMemberConstructor<Container, Type, Set>
         extends AppliedAttribute<Container, Type, Set> 

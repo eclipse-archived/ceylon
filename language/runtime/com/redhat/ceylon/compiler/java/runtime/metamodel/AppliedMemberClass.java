@@ -244,7 +244,7 @@ public class AppliedMemberClass<Container, Type, Arguments extends Sequential<? 
     @TypeParameters({@TypeParameter(
             value="Arguments",
             satisfies="ceylon.language::Anything[]")})
-    @TypeInfo("ceylon.language.meta.model::Method<Container,Type,Arguments>|ceylon.language.meta.model::Attribute<Container,Type>|ceylon.language::Null")
+    @TypeInfo("ceylon.language.meta.model::MemberClassCallableConstructor<Container,Type,Arguments>|ceylon.language.meta.model::MemberClassValueConstructor<Container,Type>|ceylon.language::Null")
     public <Arguments extends Sequential<? extends Object>>java.lang.Object getConstructor(
             @Ignore
             TypeDescriptor $reified$Arguments,
@@ -280,7 +280,7 @@ public class AppliedMemberClass<Container, Type, Arguments extends Sequential<? 
             return new AppliedCallableMemberConstructor<Container,Type,Sequential<? extends java.lang.Object>>(
                     $reifiedContainer, 
                     this.$reifiedType,
-                    Nothing.NothingType,// TODO it can't be Nothing!
+                    $reified$Arguments,// TODO it can't be Nothing!
                     reference, 
                     callableCtor, 
                     this);

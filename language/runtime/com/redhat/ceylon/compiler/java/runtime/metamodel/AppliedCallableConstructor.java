@@ -24,7 +24,7 @@ import com.redhat.ceylon.model.typechecker.model.Reference;
 
 @Ceylon(major=8)
 @com.redhat.ceylon.compiler.java.metadata.Class
-@SatisfiedTypes("ceylon.language.meta.model::Function<Type,Arguments>")
+@SatisfiedTypes("ceylon.language.meta.model::CallableConstructor<Type,Arguments>")
 @TypeParameters({
     @TypeParameter(value = "Type", variance = Variance.OUT),
     @TypeParameter(value = "Arguments", variance = Variance.IN)

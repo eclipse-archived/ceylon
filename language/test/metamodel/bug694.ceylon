@@ -9,7 +9,7 @@ class Bug694 {
 @test
 shared void bug694() {
     try{
-        assert(is CallableConstructor<Bug694, [Float]> k =`Bug694`.getConstructor("oneArg"));
+        `Bug694`.getConstructor<[Float]>("oneArg");
     }catch(Exception x){
         assert(is IncompatibleTypeException x);
     }

@@ -15,7 +15,7 @@ import com.redhat.ceylon.model.typechecker.model.TypedReference;
 
 @Ceylon(major=8)
 @com.redhat.ceylon.compiler.java.metadata.Class
-@SatisfiedTypes("ceylon.language.meta.model::Value<Type,ceylon.language::Nothing>")
+@SatisfiedTypes("ceylon.language.meta.model::ValueConstructor<Type,Set>")
 @TypeParameters({
     @TypeParameter(value = "Type", variance = Variance.OUT),
     @TypeParameter(value = "Set", variance = Variance.IN, defaultValue="ceylon.language::Nothing")

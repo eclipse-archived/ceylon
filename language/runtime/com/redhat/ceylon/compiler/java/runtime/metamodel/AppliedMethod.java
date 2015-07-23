@@ -23,7 +23,7 @@ import com.redhat.ceylon.model.typechecker.model.Reference;
 import com.redhat.ceylon.model.typechecker.model.TypedReference;
 
 @Ceylon(major = 8)
-@com.redhat.ceylon.compiler.java.metadata.Class
+@com.redhat.ceylon.compiler.java.metadata.Class(extendsType="ceylon.language::Basic")
 @TypeParameters({
     @TypeParameter(value = "Container", variance = Variance.IN),
     @TypeParameter(value = "Type", variance = Variance.OUT),
@@ -37,9 +37,9 @@ public class AppliedMethod<Container, Type, Arguments extends Sequential<? exten
     private Reference appliedFunction;
     private ceylon.language.meta.model.Type<Type> closedType;
     @Ignore
-    private TypeDescriptor $reifiedType;
+    protected TypeDescriptor $reifiedType;
     @Ignore
-    private TypeDescriptor $reifiedArguments;
+    protected TypeDescriptor $reifiedArguments;
     
     private Map<? extends ceylon.language.meta.declaration.TypeParameter, ? extends ceylon.language.meta.model.Type<?>> typeArguments;
     private Sequential<? extends ceylon.language.meta.model.Type<? extends Object>> parameterTypes;

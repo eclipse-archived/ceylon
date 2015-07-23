@@ -98,7 +98,7 @@ public class AppliedFunction<Type, Arguments extends Sequential<? extends Object
         java.lang.reflect.Method found = null;
         
         // FIXME: delay method setup for when we actually use it?
-        String name = Metamodel.getJavaMethodName((com.redhat.ceylon.model.typechecker.model.Function) function.declaration);
+        String name = Metamodel.getJavaMethodName((com.redhat.ceylon.model.typechecker.model.Functional) function.declaration);
         
         // special cases for some erased types
         if(javaClass == ceylon.language.Object.class

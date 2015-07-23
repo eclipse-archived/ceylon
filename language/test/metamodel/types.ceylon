@@ -449,7 +449,9 @@ shared class Constructors<T> {
         shared new otherCtor(Integer i) {}
         new nonSharedCtor(Boolean b) {}
         shared MemberClassCallableConstructor<Constructors<T>, Member, [Boolean]> nonShared {
-            assert(is MemberClassCallableConstructor<Constructors<T>, Member, [Boolean]> r = `Member`.getConstructor("nonSharedCtor"));
+            print("########## hello mum: `` `Member`.getConstructor<[Boolean]>("nonSharedCtor") else "null" ``");
+            print("########## hello mum: `` type(`Member`.getConstructor<[Boolean]>("nonSharedCtor")) ``");
+            assert(is MemberClassCallableConstructor<Constructors<T>, Member, [Boolean]> r = `Member`.getConstructor<[Boolean]>("nonSharedCtor"));
             return r;
         }
         shared CallableConstructorDeclaration nonSharedDecl => `new nonSharedCtor`;
@@ -459,7 +461,7 @@ shared class Constructors<T> {
         shared new otherCtor(Integer i) {}
         new nonSharedCtor(Boolean b) {}
         shared MemberClassCallableConstructor<Constructors<T>, NonSharedMember, [Boolean]> nonShared {
-            assert(is MemberClassCallableConstructor<Constructors<T>, NonSharedMember, [Boolean]> r = `NonSharedMember`.getConstructor("nonSharedCtor"));
+            assert(is MemberClassCallableConstructor<Constructors<T>, NonSharedMember, [Boolean]> r = `NonSharedMember`.getConstructor<[Boolean]>("nonSharedCtor"));
             return r;
         }
         shared CallableConstructorDeclaration nonSharedDecl => `new nonSharedCtor`;
@@ -474,12 +476,12 @@ shared class Constructors<T> {
         // TODO test constructors of member classes of interfaces
         value member = Member();
         print(type(`Member`.getConstructor("")));
-        assert(is MemberClassCallableConstructor<Constructors<T>,Member,[T?]|[]> memberMember = `Member`.getConstructor(""));
+        assert(is MemberClassCallableConstructor<Constructors<T>,Member,[T?]|[]> memberMember = `Member`.getConstructor<[T?]|[]>(""));
         value memberOther = `Member.otherCtor`;
         value memberNonShared = member.nonShared;
         
         value nonSharedMember = NonSharedMember();
-        assert(is MemberClassCallableConstructor<Constructors<T>,Member,[T?]|[]> nonSharedMemberMember = `NonSharedMember`.getConstructor(""));
+        assert(is MemberClassCallableConstructor<Constructors<T>,NonSharedMember,[T?]|[]> nonSharedMemberMember = `NonSharedMember`.getConstructor<[T?]|[]>(""));
         value nonSharedMemberOther = `NonSharedMember.otherCtor`;
         value nonSharedMemberNonShared = nonSharedMember.nonShared;
         
@@ -523,9 +525,9 @@ shared class Constructors<T> {
         nonSharedMemberNonShared.bind(this)(true);
     }
     shared void testModels() {
-        assert(is CallableConstructor<Constructors<T>,[T?]|[]> def = `Constructors<T>`.getConstructor(""));
+        assert(is CallableConstructor<Constructors<T>,[T?]|[]> def = `Constructors<T>`.getConstructor<[T?]|[]>(""));
         value other = `otherCtor`;
-        assert(is CallableConstructor<Constructors<T>,[Boolean]> nonShared = `Constructors<T>`.getConstructor("nonSharedCtor"));
+        assert(is CallableConstructor<Constructors<T>,[Boolean]> nonShared = `Constructors<T>`.getConstructor<[Boolean]>("nonSharedCtor"));
         
         // declaration
         assert(`new Constructors` == def.declaration);

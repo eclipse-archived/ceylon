@@ -1093,7 +1093,7 @@ public class Metamodel {
 		return new ObjectArrayIterable<A>($reifiedValues, (A[]) array).sequence();
     }
 
-    public static String getJavaMethodName(Function method) {
+    public static String getJavaMethodName(Functional method) {
         // FIXME: introduce a damn interface for getRealName()
         if(method instanceof JavaMethod)
             return ((JavaMethod)method).getRealName();
