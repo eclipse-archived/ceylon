@@ -4,6 +4,7 @@ import ceylon.language.meta.model{
     ValueConstructor,
     Method, 
     Value, 
+    Member,
     Attribute,
     IncompatibleTypeException, 
     StorageException,
@@ -13,10 +14,14 @@ import ceylon.language.meta.model{
 
 
 shared sealed interface ValueConstructorDeclaration 
-        satisfies ValueDeclaration & NestableDeclaration {
+        satisfies ValueableDeclaration & ConstructorDeclaration {
     
     "The class this constructor constructs"
     shared actual formal ClassDeclaration container; 
+    
+    shared actual formal ValueConstructor<Result,Set> apply<Result=Anything, Set=Nothing>();
+    
+    shared actual formal MemberClassValueConstructor<Container, Result, Set> memberApply<Container=Nothing, Result=Anything, Set=Nothing>(Type<Object> containerType);
     
     "Reads the current value of this toplevel value."
     shared actual default Object get()
@@ -28,16 +33,6 @@ shared sealed interface ValueConstructorDeclaration
         "If this attribute is not stored at runtime, for example if it is neither shared nor captured.")
     shared actual default Object memberGet(Object container)
             => memberApply<Nothing, Object>(`Nothing`).bind(container).get();
-    
-    "Applies the given closed type arguments to the declaration of the class 
-     enclosing this constructor declaration, returning a model 
-     for the constructor"
-    shared formal ValueConstructor<Result> constructorApply<Result=Object>();
-    
-    "Applies the given closed type arguments to the declaration of the member class 
-     enclosing this constructor declaration, returning a model 
-     for the constructor"
-    shared formal MemberClassValueConstructor<Container,Result> memberConstructorApply<Container=Nothing,Result=Object>(Type<Object> containerType);
     
     /*"Sets the current value of this toplevel value."
      shared actual default void set(Nothing newValue) {

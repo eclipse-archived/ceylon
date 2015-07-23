@@ -7,6 +7,7 @@ import ceylon.language.meta.model.ValueConstructor;
 
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes;
+import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 import com.redhat.ceylon.compiler.java.metadata.Variance;
@@ -22,14 +23,15 @@ import com.redhat.ceylon.model.typechecker.model.TypedReference;
     @TypeParameter(value = "Container", variance = Variance.IN),
     @TypeParameter(value = "Type", variance = Variance.OUT)
 })
-public class AppliedValueMemberConstructor<Container, Type>
-        extends AppliedAttribute<Container, Type, java.lang.Object> 
-        implements MemberClassValueConstructor<Container, Type>{
+public class AppliedValueMemberConstructor<Container, Type, Set>
+        extends AppliedAttribute<Container, Type, Set> 
+        implements MemberClassValueConstructor<Container, Type, Set>{
 
     final AppliedMemberClass<Container, Type, ?> clazz;
     
     public AppliedValueMemberConstructor(TypeDescriptor $reifiedContainer,
             TypeDescriptor $reifiedGet,
+            TypeDescriptor $reifiedSet,
             FreeValueConstructor declaration, TypedReference typedReference,
             AppliedMemberClass<Container, Type, ?> clazz) {
         super($reifiedContainer, $reifiedGet, Nothing.NothingType, declaration, typedReference,
@@ -51,8 +53,9 @@ public class AppliedValueMemberConstructor<Container, Type>
         return (ValueConstructorDeclaration)declaration;
     }
     
+    @TypeInfo("ceylon.language.meta.model::ValueConstructor<Type,Set>")
     @Override
-    public ValueConstructor<Type> bind(Object instance) {
+    public ValueConstructor<Type, Set> bind(Object instance) {
         return null;
     }
 }

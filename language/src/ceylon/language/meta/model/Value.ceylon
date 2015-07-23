@@ -1,3 +1,5 @@
+import ceylon.language.meta.declaration { ValueDeclaration }
+
 """A value model represents the model of a Ceylon value that you can read and inspect.
    
    A value is a toplevel binding, declared on a package.
@@ -13,13 +15,10 @@
        }
  """
 shared sealed interface Value<out Get=Anything, in Set=Nothing>
-        satisfies ValueModel<Get, Set> {
+        satisfies ValueModel<Get, Set>&Gettable<Get> {
 
-    "Reads the current value for this value binding. Note that in the case of getter
-     values, this can throw if the getter throws."
-    throws(`class StorageException`,
-           "If this attribute is not stored at runtime, for example if it is neither shared nor captured.")
-    shared formal Get get();
+    "This value's declaration."
+    shared formal actual ValueDeclaration declaration;
     
     "Changes this variable's value to the given new value. Note that in the case of
      setter attributes, this can throw if the setter throws."

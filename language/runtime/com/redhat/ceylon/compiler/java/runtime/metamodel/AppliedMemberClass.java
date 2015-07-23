@@ -288,9 +288,10 @@ public class AppliedMemberClass<Container, Type, Arguments extends Sequential<? 
             FreeValueConstructor callableCtor = (FreeValueConstructor)ctor;
             //com.redhat.ceylon.model.typechecker.model.Type constructorType = callableCtor.constructor.appliedType(this.producedType, Collections.<com.redhat.ceylon.model.typechecker.model.Type>emptyList());
             TypedDeclaration val = (TypedDeclaration)callableCtor.constructor.getContainer().getDirectMember(callableCtor.constructor.getName(), null, false);
-            return new AppliedValueMemberConstructor<Container, Type>(
+            return new AppliedValueMemberConstructor<Container, Type, java.lang.Object>(
                     $reifiedContainer, // <Container>
                     this.$reifiedType, // <Get>
+                    TypeDescriptor.NothingType,
                     callableCtor,
                     val.getTypedReference(),
                     this);

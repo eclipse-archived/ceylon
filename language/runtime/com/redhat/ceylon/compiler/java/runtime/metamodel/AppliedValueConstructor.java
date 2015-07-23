@@ -17,15 +17,17 @@ import com.redhat.ceylon.model.typechecker.model.TypedReference;
 @com.redhat.ceylon.compiler.java.metadata.Class
 @SatisfiedTypes("ceylon.language.meta.model::Value<Type,ceylon.language::Nothing>")
 @TypeParameters({
-    @TypeParameter(value = "Type", variance = Variance.OUT)
+    @TypeParameter(value = "Type", variance = Variance.OUT),
+    @TypeParameter(value = "Set", variance = Variance.IN, defaultValue="ceylon.language::Nothing")
 })
-public class AppliedValueConstructor<Type> 
-        extends AppliedValue<Type, java.lang.Object> 
-        implements ValueConstructor<Type> {
+public class AppliedValueConstructor<Type,Set> 
+        extends AppliedValue<Type, Set> 
+        implements ValueConstructor<Type,Set> {
 
     final AppliedClass<Type,?> clazz;
     
     public AppliedValueConstructor(TypeDescriptor $reifiedGet,
+            TypeDescriptor $reifiedSet,
             FreeValueConstructor value,
             TypedReference valueTypedReference,
             AppliedClass<Type,?> clazz, Object instance) {

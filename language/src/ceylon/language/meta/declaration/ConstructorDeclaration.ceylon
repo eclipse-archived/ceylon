@@ -11,6 +11,12 @@ import ceylon.language.meta.model{
     MemberClassValueConstructor
 }
 
-shared alias ConstructorDeclaration
-        => CallableConstructorDeclaration|ValueConstructorDeclaration;
+"""Abstraction over [[callable constructors|CallableConstructorDeclaration]]
+   and [[value constructors|ValueConstructorDeclaration]]
+"""
+shared interface ConstructorDeclaration
+        of CallableConstructorDeclaration|ValueConstructorDeclaration 
+        satisfies NestableDeclaration {
+    
+}
 

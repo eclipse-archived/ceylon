@@ -4,7 +4,7 @@
 shared sealed interface NestableDeclaration of 
                                         FunctionOrValueDeclaration |
                                         ClassOrInterfaceDeclaration |
-                                        CallableConstructorDeclaration |
+                                        ConstructorDeclaration |
                                         SetterDeclaration |
                                         AliasDeclaration
         satisfies AnnotatedDeclaration & TypedDeclaration & Contained {

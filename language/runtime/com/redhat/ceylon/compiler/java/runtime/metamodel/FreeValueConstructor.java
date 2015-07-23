@@ -149,7 +149,7 @@ public class FreeValueConstructor
         @TypeParameter("Get"),
         @TypeParameter("Set"),
     })
-    public <Get, Set> ceylon.language.meta.model.Value<Get,Set> apply(@Ignore TypeDescriptor $reifiedGet,
+    public <Get, Set> ceylon.language.meta.model.ValueConstructor<Get,Set> apply(@Ignore TypeDescriptor $reifiedGet,
                                                                       @Ignore TypeDescriptor $reifiedSet){
         // TODO if(!getToplevel())
         //    throw new ceylon.language.meta.model.TypeApplicationException("Cannot apply a member declaration with no container type: use memberApply");
@@ -169,7 +169,9 @@ public class FreeValueConstructor
                 Variance.OUT, getType, $reifiedGet,
                 Variance.IN, setType, $reifiedSet);
         // XXX This is a lie, and we only get away with it due to erasure
-        return (ceylon.language.meta.model.Value<Get,Set>)new AppliedValueConstructor<Get>(reifiedGet, this, typedReference, null, null);
+        return (ceylon.language.meta.model.ValueConstructor<Get,Set>)
+                new AppliedValueConstructor<Get,Set>(
+                        reifiedGet, TypeDescriptor.NothingType, this, typedReference, null, null);
     }
 
     @TypeInfo("ceylon.language.meta.model::Attribute<Container,Get,Set>")
@@ -180,7 +182,7 @@ public class FreeValueConstructor
     })
     @Override
     public <Container, Get, Set>
-        ceylon.language.meta.model.Attribute<Container, Get, Set> memberApply(
+        ceylon.language.meta.model.MemberClassValueConstructor<Container, Get, Set> memberApply(
                 @Ignore TypeDescriptor $reifiedContainer,
                 @Ignore TypeDescriptor $reifiedGet,
                 @Ignore TypeDescriptor $reifiedSet,
@@ -206,20 +208,7 @@ public class FreeValueConstructor
                 Variance.IN, memberQualifyingType, $reifiedContainer,
                 Variance.OUT, getType, $reifiedGet,
                 Variance.IN, setType, $reifiedSet);
-        return (ceylon.language.meta.model.Attribute)new AppliedValueMemberConstructor<Container,Get>(
-                reifiedContainer, reifiedGet, this, typedReference, null);
-    }
-    
-    @Override
-    public <Type> ValueConstructor<Type> constructorApply(TypeDescriptor $reified$Type) {
-        return (ValueConstructor)apply($reified$Type, Nothing.NothingType);
-    }
-    
-    @Override
-    public <Container,Type> MemberClassValueConstructor<Container,Type> memberConstructorApply(
-            TypeDescriptor $reified$Container, 
-            TypeDescriptor $reified$Type,
-            @Name("containerType") ceylon.language.meta.model.Type<? extends Object> containerType) {
-        return (MemberClassValueConstructor)memberApply($reified$Container, $reified$Type, Nothing.NothingType, containerType);
+        return (ceylon.language.meta.model.MemberClassValueConstructor)new AppliedValueMemberConstructor<Container,Get,Set>(
+                reifiedContainer, reifiedGet, TypeDescriptor.NothingType, this, typedReference, null);
     }
 }

@@ -22,6 +22,7 @@ import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 import com.redhat.ceylon.compiler.java.metadata.Variance;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
+import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.Nothing;
 import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.Function;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
@@ -324,8 +325,9 @@ public class AppliedClass<Type, Arguments extends Sequential<? extends Object>>
             FreeValueConstructor callableCtor = (FreeValueConstructor)ctor;
             com.redhat.ceylon.model.typechecker.model.Type constructorType = callableCtor.constructor.appliedType(this.producedType, Collections.<com.redhat.ceylon.model.typechecker.model.Type>emptyList());
             TypedDeclaration val = (TypedDeclaration)callableCtor.constructor.getContainer().getDirectMember(callableCtor.constructor.getName(), null, false);
-            return new AppliedValueConstructor<Type>(
+            return new AppliedValueConstructor<Type,java.lang.Object>(
                     this.$reifiedType,
+                    TypeDescriptor.NothingType,
                     callableCtor, val.getTypedReference(),
                     this, null);
         } else {

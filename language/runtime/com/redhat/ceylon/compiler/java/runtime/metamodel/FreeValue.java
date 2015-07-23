@@ -9,6 +9,7 @@ import ceylon.language.Anything;
 import ceylon.language.meta.declaration.OpenType;
 import ceylon.language.meta.declaration.SetterDeclaration;
 import ceylon.language.meta.declaration.ValueDeclaration$impl;
+import ceylon.language.meta.declaration.ValueableDeclaration$impl;
 
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
@@ -48,6 +49,12 @@ public class FreeValue
     public ValueDeclaration$impl $ceylon$language$meta$declaration$ValueDeclaration$impl() {
         return null;
     }
+    
+    @Override
+    @Ignore
+    public ValueableDeclaration$impl $ceylon$language$meta$declaration$ValueableDeclaration$impl() {
+        return null;
+    }
 
     @Override
     public boolean getVariable(){
@@ -73,10 +80,10 @@ public class FreeValue
     }
 
     @Override
-    @TypeInfo("ceylon.language.meta.model::Value<Get,Set>")
+    @TypeInfo(value="ceylon.language.meta.model::Value<Get,Set>", erased=true)
     @TypeParameters({
         @TypeParameter("Get"),
-        @TypeParameter("Set"),
+        @TypeParameter(value="Set", defaultValue="ceylon.language::Nothing"),
     })
     public <Get, Set> ceylon.language.meta.model.Value<Get,Set> apply(@Ignore TypeDescriptor $reifiedGet,
                                                                       @Ignore TypeDescriptor $reifiedSet){
@@ -102,7 +109,7 @@ public class FreeValue
     @TypeParameters({
         @TypeParameter("Container"),
         @TypeParameter("Get"),
-        @TypeParameter("Set"),
+        @TypeParameter(value="Set", defaultValue="ceylon.language::Nothing"),
     })
     @Override
     public <Container, Get, Set>

@@ -4,6 +4,7 @@ import ceylon.language.meta.model{
     Method
 }
 
+"""Abstraction over declarations which can be invoked, namely functions, methods and constructors """
 shared sealed interface FunctionDeclaration
         satisfies FunctionOrValueDeclaration & FunctionalDeclaration {
     

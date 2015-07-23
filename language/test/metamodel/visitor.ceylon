@@ -164,6 +164,9 @@ void visitMembers(ClassOrInterfaceDeclaration decl){
         case(is CallableConstructorDeclaration){
             // FIXME: implement
         }
+        case(is ValueConstructorDeclaration){
+            // FIXME: implement
+        }
     }
 }
 void visitFunction(FunctionDeclaration func) {

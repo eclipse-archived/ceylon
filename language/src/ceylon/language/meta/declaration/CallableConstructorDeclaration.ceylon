@@ -12,7 +12,7 @@ import ceylon.language.meta.model{
 }
 
 shared sealed interface CallableConstructorDeclaration 
-        satisfies FunctionalDeclaration & NestableDeclaration {
+        satisfies FunctionalDeclaration & ConstructorDeclaration {
     
     "True if the constructor has an [[abstract|ceylon.language::abstract]] annotation."
     shared formal Boolean abstract;
