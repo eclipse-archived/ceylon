@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.common.BackendSupport;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.CaseClause;
 import com.redhat.ceylon.model.typechecker.model.Annotation;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Function;
@@ -174,6 +175,25 @@ public class TreeUtil {
         else if (term instanceof Tree.Expression) {
             Tree.Expression e = (Tree.Expression) term;
             return hasUncheckedNulls(e.getTerm(), invoking);
+        }
+        else if (term instanceof Tree.LetExpression) {
+            Tree.LetExpression e = (Tree.LetExpression) term;
+            return hasUncheckedNulls(e.getLetClause().getExpression(), invoking);
+        }
+        else if (term instanceof Tree.IfExpression) {
+            Tree.IfExpression e = (Tree.IfExpression) term;
+            return hasUncheckedNulls(e.getIfClause().getExpression(), invoking)
+                    || hasUncheckedNulls(e.getElseClause().getExpression(), invoking);
+        }
+        else if (term instanceof Tree.SwitchExpression) {
+            Tree.SwitchExpression e = (Tree.SwitchExpression) term;
+            for(CaseClause clause : e.getSwitchCaseList().getCaseClauses()){
+                if(hasUncheckedNulls(clause.getExpression(), invoking))
+                    return true;
+            }
+            if(e.getSwitchCaseList().getElseClause() != null)
+                return hasUncheckedNulls(e.getSwitchCaseList().getElseClause().getExpression(), invoking);
+            return false;
         }
         else {
             return false;
