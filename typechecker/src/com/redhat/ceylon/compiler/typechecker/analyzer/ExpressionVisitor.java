@@ -9039,16 +9039,25 @@ public class ExpressionVisitor extends Visitor {
                 && impl != null
                 && (dec.isToplevel() || dec.isMember())
                 && that.getScope() instanceof Declaration
+                && (hdr == null || !isImplemented(hdr))
                 && (ctxModule != decModule
                         && decModule.isNative()
                     || ctxModule == decModule
                         && dec.isNative()
                         && hdr == null
-                        && !isInNativeContainer((Declaration)that.getScope()))) {
-            if ((hdr == null || !isImplemented(hdr))
-                    && (inBackend == null
-                            || impl.isNative() && !impl.getNativeBackend().equals(inBackend.nativeAnnotation)
-                            || decModule.isNative() && !decModule.getNativeBackend().equals(inBackend.nativeAnnotation))) {
+                        && !isInNativeContainer((Declaration)that.getScope()))
+                && (inBackend == null
+                    || impl.isNative()
+                        && !impl.getNativeBackend().equals(inBackend.nativeAnnotation)
+                    || decModule.isNative()
+                        && !decModule.getNativeBackend().equals(inBackend.nativeAnnotation))) {
+            if (inBackend != null) {
+                that.addError("native declaration: '" +
+                        ((Declaration)that.getScope()).getName(unit) +
+                        "' accesses native code for different backend: '" +
+                        dec.getName(unit) +
+                        "'");
+            } else {
                 that.addError("non-native declaration: '" +
                         ((Declaration)that.getScope()).getName(unit) +
                         "' accesses native code: '" +
