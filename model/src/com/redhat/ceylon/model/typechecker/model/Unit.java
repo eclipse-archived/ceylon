@@ -933,199 +933,24 @@ public class Unit {
     }
     
     public boolean isEntryType(Type pt) {
-//        return pt.getDeclaration()
-//                .inherits(getEntryDeclaration());
-        if (pt.isNothing() || pt.isEntry()) {
-            return true;
-        }
-
-        TypeDeclaration ptd = pt.getDeclaration();
-        if (ptd.isAlias()) {
-            return isEntryType(ptd.getExtendedType());
-        }
-        else if (pt.isTypeParameter() || 
-                pt.isIntersection()) {
-            List<Type> sts = ptd.getSatisfiedTypes();
-            for (Type st: sts) {
-                if (isEntryType(st)) {
-                    return true;
-                }
-            }
-            return false;
-        }
-        else if (pt.isUnion()) {
-            return ptd.inherits(getEntryDeclaration());
-        }
-        else {
-            return false;
-        }
+        return pt.getDeclaration()
+                .inherits(getEntryDeclaration());
     }
     
     public boolean isSequentialType(Type pt) {
-//        return pt.getDeclaration()
-//                .inherits(getSequentialDeclaration());
-        if (pt.isNothing() || pt.isSequential() ||
-                pt.isSequence() || pt.isEmpty() ||
-                pt.isRange() || pt.isTuple() || 
-                pt.isEmptyValue()) {
-            return true;
-        }
-        else if (pt.isAnything() || pt.isObject() || 
-                pt.isNull() || pt.isBasic()) {
-            return false;
-        }
-        
-        TypeDeclaration ptd = pt.getDeclaration();
-        if (ptd.isAlias()) {
-            return isSequentialType(ptd.getExtendedType());
-        }
-        else if (pt.isTypeParameter() || 
-                pt.isIntersection()) {
-            List<Type> sts = ptd.getSatisfiedTypes();
-            for (Type st: sts) {
-                if (isSequentialType(st)) {
-                    return true;
-                }
-            }
-            return false;
-        }
-        else if (pt.isUnion()) {
-            return ptd.inherits(getSequentialDeclaration());
-        }
-        else {
-            //handles Measure/Span
-            Type et = ptd.getExtendedType();
-            if (et!=null && et.isRange()) {
-                return true;
-            }
-            //handles misc direct impls of Sequence
-            List<Type> sts = ptd.getSatisfiedTypes();
-            for (Type st: sts) {
-                if (st.isSequence()) {
-                    return true;
-                }
-            }
-            return false;
-        }
+        return pt.getDeclaration().isSequentialType();
     }
     
     public boolean isSequenceType(Type pt) {
-//        return pt.getDeclaration()
-//                .inherits(getSequenceDeclaration());
-        if (pt.isNothing() || pt.isSequence() || 
-                pt.isRange() || pt.isTuple()) {
-            return true;
-        }
-        else if (pt.isAnything() || pt.isObject() || 
-                pt.isNull() || pt.isBasic()) {
-            return false;
-        }
-        
-        TypeDeclaration ptd = pt.getDeclaration();
-        if (ptd.isAlias()) {
-            Type.checkDepth();
-            Type.incDepth();
-            try {
-                return isSequenceType(ptd.getExtendedType());
-            }
-            finally {
-                Type.decDepth();
-            }
-        }
-        else if (pt.isTypeParameter() || 
-                pt.isIntersection()) {
-            List<Type> sts = ptd.getSatisfiedTypes();
-            for (Type st: sts) {
-                if (isSequenceType(st)) {
-                    return true;
-                }
-            }
-            return false;
-        }
-        else if (pt.isUnion()) {
-            return ptd.inherits(getSequenceDeclaration());
-        }
-        else {
-            //handles Measure/Span
-            Type et = ptd.getExtendedType();
-            if (et!=null && et.isRange()) {
-                return true;
-            }
-            //handles misc direct impls of Sequence
-            List<Type> sts = ptd.getSatisfiedTypes();
-            for (Type st: sts) {
-                if (st.isSequence()) {
-                    return true;
-                }
-            }
-            return false;
-        }
+        return pt.getDeclaration().isSequenceType();
     }
     
     public boolean isEmptyType(Type pt) {
-//        return pt.getDeclaration()
-//                .inherits(getEmptyDeclaration());
-        if (pt.isNothing() || pt.isEmpty() || 
-                pt.isEmptyValue()) {
-            return true;
-        }
-        
-        TypeDeclaration ptd = pt.getDeclaration();
-        if (ptd.isAlias()) {
-            return isEmptyType(ptd.getExtendedType());
-        }
-        else if (pt.isTypeParameter() || 
-                pt.isIntersection()) {
-            List<Type> sts = ptd.getSatisfiedTypes();
-            for (Type st: sts) {
-                if (isEmptyType(st)) {
-                    return true;
-                }
-            }
-            return false;
-        }
-        else if (pt.isUnion()) {
-            return ptd.inherits(getEmptyDeclaration());
-        }
-        else {
-            return false;
-        }
+        return pt.getDeclaration().isEmptyType();
     }
     
     public boolean isTupleType(Type pt) {
-//        return pt.getDeclaration()
-//                .inherits(getTupleDeclaration());
-        if (pt.isNothing() || pt.isTuple()) {
-            return true;
-        }
-        
-        TypeDeclaration ptd = pt.getDeclaration();
-        if (ptd.isAlias()) {
-            Type.checkDepth();
-            Type.incDepth();
-            try {
-                return isTupleType(ptd.getExtendedType());
-            }
-            finally {
-                Type.decDepth();
-            }
-        }
-        else if (pt.isTypeParameter() || 
-                pt.isIntersection()) {
-            List<Type> sts = ptd.getSatisfiedTypes();
-            for (Type st: sts) {
-                if (isTupleType(st)) {
-                    return true;
-                }
-            }
-            return false;
-        }
-        else if (pt.isUnion()) {
-            return ptd.inherits(getTupleDeclaration());
-        }
-        else {
-            return false;
-        }
+        return pt.getDeclaration().isTupleType();
     }
     
     public boolean isOptionalType(Type pt) {

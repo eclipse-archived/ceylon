@@ -147,19 +147,20 @@ public class Type extends Reference {
         this.typeConstructorParameter = typeConstructorParameter;
     }
     
-    private Boolean exactlyNothing;
+    private int exactlyNothing;
     
     public boolean isExactlyNothing() {
         if (isNothing()) {
             return true;
         }
         else {
-            if (exactlyNothing==null) {
+            if (exactlyNothing==0) {
                 exactlyNothing =
                         isEmptySequenceType() ||
-                        isEmptyTupleType();
+                        isEmptyTupleType() ?
+                                1 : -1;
             }
-            return exactlyNothing;
+            return exactlyNothing>0;
         }
     }
     

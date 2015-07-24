@@ -20,6 +20,78 @@ public class ClassAlias extends Class {
     }
     
     @Override
+    public boolean isEmptyType() {
+        Type et = getExtendedType();
+        if (et!=null) {
+            Type.checkDepth();
+            Type.incDepth();
+            try {
+                return et.getDeclaration().isEmptyType();
+            }
+            finally {
+                Type.decDepth();
+            }
+        }
+        else {
+            return false;
+        }
+    }
+    
+    @Override
+    public boolean isTupleType() {
+        Type et = getExtendedType();
+        if (et!=null) {
+            Type.checkDepth();
+            Type.incDepth();
+            try {
+                return et.getDeclaration().isTupleType();
+            }
+            finally {
+                Type.decDepth();
+            }
+        }
+        else {
+            return false;
+        }
+    }
+    
+    @Override
+    public boolean isSequentialType() {
+        Type et = getExtendedType();
+        if (et!=null) {
+            Type.checkDepth();
+            Type.incDepth();
+            try {
+                return et.getDeclaration().isSequentialType();
+            }
+            finally {
+                Type.decDepth();
+            }
+        }
+        else {
+            return false;
+        }
+    }
+    
+    @Override
+    public boolean isSequenceType() {
+        Type et = getExtendedType();
+        if (et!=null) {
+            Type.checkDepth();
+            Type.incDepth();
+            try {
+                return et.getDeclaration().isSequenceType();
+            }
+            finally {
+                Type.decDepth();
+            }
+        }
+        else {
+            return false;
+        }
+    }
+    
+    @Override
     void collectSupertypeDeclarations(
             List<TypeDeclaration> results) {
         Type et = getExtendedType();

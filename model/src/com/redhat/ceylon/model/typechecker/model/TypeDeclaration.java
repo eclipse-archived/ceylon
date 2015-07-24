@@ -1101,5 +1101,21 @@ public abstract class TypeDeclaration extends Declaration
     public void setCaseValues(List<TypedDeclaration> caseValues) {
         this.caseValues = caseValues;
     }
+    
+    public boolean isSequentialType() {
+        return false;
+    }
 
+    public boolean isSequenceType() {
+        return false;
+    }
+    
+    public boolean isEmptyType() {
+        return false;
+    }
+    
+    public boolean isTupleType() {
+        return false;
+    }
+    
 }

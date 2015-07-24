@@ -82,6 +82,21 @@ public class Interface extends ClassOrInterface {
     }
     
     @Override
+    public boolean isEmptyType() {
+        return isEmpty();
+    }
+    
+    @Override
+    public boolean isSequentialType() {
+        return isSequential() || isSequence() || isEmpty();
+    }
+    
+    @Override
+    public boolean isSequenceType() {
+        return isSequence();
+    }
+    
+    @Override
     public String toString() {
         return "interface " + toStringName();
     }

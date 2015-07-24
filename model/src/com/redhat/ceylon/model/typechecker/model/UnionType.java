@@ -123,6 +123,52 @@ public class UnionType extends TypeDeclaration {
 //        }
     }
     
+    private int sequentialType;
+    
+    private int sequenceType;
+    
+    private int emptyType;
+    
+    private int tupleType;
+    
+    @Override
+    public boolean isEmptyType() {
+        if (emptyType==0) {
+            Interface ed = getUnit().getEmptyDeclaration();
+            emptyType = inherits(ed) ? 1 : -1;
+        }
+        return emptyType>0;
+    }
+    
+    @Override
+    public boolean isTupleType() {
+        if (tupleType==0) {
+            Class td = getUnit().getTupleDeclaration();
+            tupleType = inherits(td) ? 1 : -1;
+        }
+        return tupleType>0;
+    }
+    
+    @Override
+    public boolean isSequenceType() {
+        if (sequenceType==0) {
+            Interface sd = 
+                    getUnit().getSequenceDeclaration();
+            sequenceType = inherits(sd) ? 1 : -1;
+        }
+        return sequenceType>0;
+    }
+    
+    @Override
+    public boolean isSequentialType() {
+        if (sequentialType==0) {
+            Interface sd = 
+                    getUnit().getSequentialDeclaration();
+            sequentialType = inherits(sd) ? 1 : -1;
+        }
+        return sequentialType>0;
+    }
+    
     @Override
     public boolean inherits(TypeDeclaration dec) {
         if (dec.isAnything()) {

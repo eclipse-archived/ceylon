@@ -426,6 +426,98 @@ public class Class extends ClassOrInterface implements Functional {
     }
     
     @Override
+    public boolean isEmptyType() {
+        return isEmptyValue();
+    }
+    
+    @Override
+    public boolean isTupleType() {
+        return isTuple();
+    }
+    
+    private int sequentialType;
+    
+    private int sequenceType;
+    
+    @Override
+    public boolean isSequentialType() {
+        if (sequentialType==0) {
+            sequentialType = 
+                    isSequentialTypeInternal() ? 1 : -1;
+        }
+        return sequentialType>0;
+    }
+
+    @Override
+    public boolean isSequenceType() {
+        if (sequenceType==0) {
+            sequenceType = 
+                    isSequenceTypeInternal() ? 1 : -1;
+        }
+        return sequenceType>0;
+    }
+
+    private boolean isSequentialTypeInternal() {
+        Package pack = getUnit().getPackage();
+        if (!pack.getNameAsString()
+                .equals(Module.LANGUAGE_MODULE_NAME)) {
+            return false;
+        }
+        else if (isAnything() || isObject() || 
+                isNull() || isBasic()) {
+            return false;
+        }
+        else if (isEmptyValue() || isRange() || isTuple()) {
+            return true;
+        }
+        else {
+            //handles Measure/Span
+            Type et = getExtendedType();
+            if (et!=null && et.isRange()) {
+                return true;
+            }
+            //handles misc direct impls of Sequence
+            List<Type> sts = getSatisfiedTypes();
+            for (Type st: sts) {
+                if (st.isSequence()) {
+                    return true;
+                }
+            }
+            return false;
+        }
+    }
+    
+    private boolean isSequenceTypeInternal() {
+        Package pack = getUnit().getPackage();
+        if (!pack.getNameAsString()
+                .equals(Module.LANGUAGE_MODULE_NAME)) {
+            return false;
+        }
+        else if (isAnything() || isObject() || 
+                isNull() || isBasic()) {
+            return false;
+        }
+        else if (isRange() || isTuple()) {
+            return true;
+        }
+        else {
+            //handles Measure/Span
+            Type et = getExtendedType();
+            if (et!=null && et.isRange()) {
+                return true;
+            }
+            //handles misc direct impls of Sequence
+            List<Type> sts = getSatisfiedTypes();
+            for (Type st: sts) {
+                if (st.isSequence()) {
+                    return true;
+                }
+            }
+            return false;
+        }
+    }
+    
+    @Override
     public String toString() {
         StringBuilder params = new StringBuilder();
         ParameterList list = getParameterList();

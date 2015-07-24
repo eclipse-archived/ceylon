@@ -26,6 +26,26 @@ public class NothingType extends TypeDeclaration {
     }
     
     @Override
+    public boolean isEmptyType() {
+        return true;
+    }
+    
+    @Override
+    public boolean isTupleType() {
+        return true;
+    }
+    
+    @Override
+    public boolean isSequenceType() {
+        return true;
+    }
+    
+    @Override
+    public boolean isSequentialType() {
+        return true;
+    }
+    
+    @Override
     public String getName() {
         return "Nothing";
     }
