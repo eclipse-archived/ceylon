@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.List;
 
 import com.redhat.ceylon.common.FileUtil;
+import com.redhat.ceylon.common.tools.CeylonTool;
 
 public abstract class CeylonBaseTool implements Tool {
     protected File cwd;
@@ -64,5 +65,10 @@ public abstract class CeylonBaseTool implements Tool {
 
     protected File applyCwd(File file) {
         return FileUtil.applyCwd(getCwd(), file);
+    }
+
+    @Override
+    public void initialize(CeylonTool mainTool) throws Exception {
+        // Empty default implementation for simple tools that don't need initialization
     }
 }
