@@ -922,11 +922,6 @@ public class Unit {
         return getNonemptyType(getDefiniteType(pt));
     }
     
-    public boolean isEntryType(Type pt) {
-        return pt.getDeclaration()
-                .inherits(getEntryDeclaration());
-    }
-    
     public boolean isIterableType(Type pt) {
         return pt.getDeclaration()
                 .inherits(getIterableDeclaration());
@@ -937,24 +932,200 @@ public class Unit {
                 .inherits(getUsableDeclaration());
     }
     
+    public boolean isEntryType(Type pt) {
+//        return pt.getDeclaration()
+//                .inherits(getEntryDeclaration());
+        if (pt.isNothing() || pt.isEntry()) {
+            return true;
+        }
+
+        TypeDeclaration ptd = pt.getDeclaration();
+        if (ptd.isAlias()) {
+            return isEntryType(ptd.getExtendedType());
+        }
+        else if (pt.isTypeParameter() || 
+                pt.isIntersection()) {
+            List<Type> sts = ptd.getSatisfiedTypes();
+            for (Type st: sts) {
+                if (isEntryType(st)) {
+                    return true;
+                }
+            }
+            return false;
+        }
+        else if (pt.isUnion()) {
+            return ptd.inherits(getEntryDeclaration());
+        }
+        else {
+            return false;
+        }
+    }
+    
     public boolean isSequentialType(Type pt) {
-        return pt.getDeclaration()
-                .inherits(getSequentialDeclaration());
+//        return pt.getDeclaration()
+//                .inherits(getSequentialDeclaration());
+        if (pt.isNothing() || pt.isSequential() ||
+                pt.isSequence() || pt.isEmpty() ||
+                pt.isRange() || pt.isTuple() || 
+                pt.isEmptyValue()) {
+            return true;
+        }
+        else if (pt.isAnything() || pt.isObject() || 
+                pt.isNull() || pt.isBasic()) {
+            return false;
+        }
+        
+        TypeDeclaration ptd = pt.getDeclaration();
+        if (ptd.isAlias()) {
+            return isSequentialType(ptd.getExtendedType());
+        }
+        else if (pt.isTypeParameter() || 
+                pt.isIntersection()) {
+            List<Type> sts = ptd.getSatisfiedTypes();
+            for (Type st: sts) {
+                if (isSequentialType(st)) {
+                    return true;
+                }
+            }
+            return false;
+        }
+        else if (pt.isUnion()) {
+            return ptd.inherits(getSequentialDeclaration());
+        }
+        else {
+            //handles Measure/Span
+            Type et = ptd.getExtendedType();
+            if (et!=null && et.isRange()) {
+                return true;
+            }
+            //handles misc direct impls of Sequence
+            List<Type> sts = ptd.getSatisfiedTypes();
+            for (Type st: sts) {
+                if (st.isSequence()) {
+                    return true;
+                }
+            }
+            return false;
+        }
     }
     
     public boolean isSequenceType(Type pt) {
-        return pt.getDeclaration()
-                .inherits(getSequenceDeclaration());
+//        return pt.getDeclaration()
+//                .inherits(getSequenceDeclaration());
+        if (pt.isNothing() || pt.isSequence() || 
+                pt.isRange() || pt.isTuple()) {
+            return true;
+        }
+        else if (pt.isAnything() || pt.isObject() || 
+                pt.isNull() || pt.isBasic()) {
+            return false;
+        }
+        
+        TypeDeclaration ptd = pt.getDeclaration();
+        if (ptd.isAlias()) {
+            Type.checkDepth();
+            Type.incDepth();
+            try {
+                return isSequenceType(ptd.getExtendedType());
+            }
+            finally {
+                Type.decDepth();
+            }
+        }
+        else if (pt.isTypeParameter() || 
+                pt.isIntersection()) {
+            List<Type> sts = ptd.getSatisfiedTypes();
+            for (Type st: sts) {
+                if (isSequenceType(st)) {
+                    return true;
+                }
+            }
+            return false;
+        }
+        else if (pt.isUnion()) {
+            return ptd.inherits(getSequenceDeclaration());
+        }
+        else {
+            //handles Measure/Span
+            Type et = ptd.getExtendedType();
+            if (et!=null && et.isRange()) {
+                return true;
+            }
+            //handles misc direct impls of Sequence
+            List<Type> sts = ptd.getSatisfiedTypes();
+            for (Type st: sts) {
+                if (st.isSequence()) {
+                    return true;
+                }
+            }
+            return false;
+        }
     }
     
     public boolean isEmptyType(Type pt) {
-        return pt.getDeclaration()
-                .inherits(getEmptyDeclaration());
+//        return pt.getDeclaration()
+//                .inherits(getEmptyDeclaration());
+        if (pt.isNothing() || pt.isEmpty() || 
+                pt.isEmptyValue()) {
+            return true;
+        }
+        
+        TypeDeclaration ptd = pt.getDeclaration();
+        if (ptd.isAlias()) {
+            return isEmptyType(ptd.getExtendedType());
+        }
+        else if (pt.isTypeParameter() || 
+                pt.isIntersection()) {
+            List<Type> sts = ptd.getSatisfiedTypes();
+            for (Type st: sts) {
+                if (isEmptyType(st)) {
+                    return true;
+                }
+            }
+            return false;
+        }
+        else if (pt.isUnion()) {
+            return ptd.inherits(getEmptyDeclaration());
+        }
+        else {
+            return false;
+        }
     }
     
     public boolean isTupleType(Type pt) {
-        return pt.getDeclaration()
-                .inherits(getTupleDeclaration());
+//        return pt.getDeclaration()
+//                .inherits(getTupleDeclaration());
+        if (pt.isNothing() || pt.isTuple()) {
+            return true;
+        }
+        
+        TypeDeclaration ptd = pt.getDeclaration();
+        if (ptd.isAlias()) {
+            Type.checkDepth();
+            Type.incDepth();
+            try {
+                return isTupleType(ptd.getExtendedType());
+            }
+            finally {
+                Type.decDepth();
+            }
+        }
+        else if (pt.isTypeParameter() || 
+                pt.isIntersection()) {
+            List<Type> sts = ptd.getSatisfiedTypes();
+            for (Type st: sts) {
+                if (isTupleType(st)) {
+                    return true;
+                }
+            }
+            return false;
+        }
+        else if (pt.isUnion()) {
+            return ptd.inherits(getTupleDeclaration());
+        }
+        else {
+            return false;
+        }
     }
     
     public boolean isOptionalType(Type pt) {
@@ -962,10 +1133,10 @@ public class Unit {
         //and non-empty intersection with Value
         return !intersectionType(getNullType(), 
                         pt, this)
-                    .isExactlyNothing() &&
+                    .isNothing() &&
                 !intersectionType(getObjectType(), 
                         pt, this)
-                    .isExactlyNothing();
+                    .isNothing();
     }
     
     public boolean isPossiblyEmptyType(Type pt) {
@@ -975,10 +1146,10 @@ public class Unit {
         //and non-empty intersection with Sequence<Nothing>
                !intersectionType(getEmptyType(), 
                            pt, this)
-                        .isExactlyNothing() &&
+                        .isNothing() &&
                !intersectionType(getSequentialType(getNothingType()), 
                            pt, this)
-                        .isExactlyNothing();
+                        .isNothing();
     }
     
     public boolean isCallableType(Type pt) {
@@ -994,8 +1165,7 @@ public class Unit {
     public Type denotableType(Type type) {
     	if (type!=null) {
     		if (type.isUnion()) {
-    		    List<Type> cts = 
-                        type.getCaseTypes();
+    		    List<Type> cts = type.getCaseTypes();
                 List<Type> list = 
                         new ArrayList<Type>
                             (cts.size()+1);
@@ -1006,8 +1176,7 @@ public class Unit {
                 return union(list, this);
     		}
             if (type.isIntersection()) {
-                List<Type> sts = 
-                        type.getSatisfiedTypes();
+                List<Type> sts = type.getSatisfiedTypes();
                 List<Type> list = 
                         new ArrayList<Type>
                             (sts.size()+1);
@@ -1030,8 +1199,7 @@ public class Unit {
     		    return type.getSupertype(ed);
     		}
     		if (dec instanceof Class && dec.isAnonymous()) {
-    			List<Type> sts = 
-    			        dec.getSatisfiedTypes();
+    			List<Type> sts = dec.getSatisfiedTypes();
     			List<Type> list = 
     			        new ArrayList<Type>
     			            (sts.size()+1);
@@ -1070,17 +1238,14 @@ public class Unit {
                             i<typeParamList.size() && 
                             i<typeArgList.size(); 
                             i++) {
-                        Type at = 
-                                typeArgList.get(i);
+                        Type at = typeArgList.get(i);
                         TypeParameter tp = 
                                 typeParamList.get(i);
                         typeArguments.add(tp.isCovariant() ? 
                                 denotableType(at) : at);
                     }
                     Type qt = type.getQualifyingType();
-                    Type dt = 
-                            dec.appliedType(qt, 
-                                    typeArguments);
+                    Type dt = dec.appliedType(qt, typeArguments);
                     dt.setUnderlyingType(type.getUnderlyingType());
                     dt.setVarianceOverrides(type.getVarianceOverrides());
                     dt.setTypeConstructor(type.isTypeConstructor());

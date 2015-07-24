@@ -33,7 +33,14 @@ public class ClassAlias extends Class {
     public boolean inherits(TypeDeclaration dec) {
         Type et = getExtendedType();
         if (et!=null) {
-            return et.getDeclaration().inherits(dec);
+            Type.checkDepth();
+            Type.incDepth();
+            try {
+                return et.getDeclaration().inherits(dec);
+            }
+            finally {
+                Type.decDepth();
+            }
         }
         return false;
     }

@@ -147,10 +147,20 @@ public class Type extends Reference {
         this.typeConstructorParameter = typeConstructorParameter;
     }
     
+    private Boolean exactlyNothing;
+    
     public boolean isExactlyNothing() {
-        return isNothing() ||
-                isEmptySequenceType(this) ||
-                isEmptyTupleType(this);
+        if (isNothing()) {
+            return true;
+        }
+        else {
+            if (exactlyNothing==null) {
+                exactlyNothing =
+                        isEmptySequenceType() ||
+                        isEmptyTupleType();
+            }
+            return exactlyNothing;
+        }
     }
     
     /**
@@ -374,41 +384,39 @@ public class Type extends Reference {
         }
     }
 
-    private static boolean isEmptySequenceType(Type type) {
-        if (type.isSequence()) {
-            Type et = 
-                    type.getDeclaration()
-                        .getUnit()
-                        .getSequentialElementType(type);
-            return et!=null && et.isNothing();
+    private boolean isEmptySequenceType() {
+        Unit unit = getDeclaration().getUnit();
+        if (unit.isSequenceType(this)) {
+            Type et = unit.getSequentialElementType(this);
+            return et!=null && et.isExactlyNothing();
         }
         else {
             return false;
         }
     }
 
-    private static boolean isEmptyTupleType(Type type) {
-        if (type.isTuple()) {
-            List<Type> tal = 
-                    type.getTypeArgumentList();
+    private boolean isEmptyTupleType() {
+        Unit unit = getDeclaration().getUnit();
+        if (unit.isTupleType(this)) {
+            List<Type> tal = getTypeArgumentList();
             if (tal.size()>=1) {
                 Type elem = tal.get(0);
                 if (elem!=null &&
-                        elem.isNothing()) {
+                        elem.isExactlyNothing()) {
                     return true;
                 }
             }
             if (tal.size()>=2) {
                 Type first = tal.get(1);
                 if (first!=null &&
-                        first.isNothing()) {
+                        first.isExactlyNothing()) {
                     return true;
                 }
             }
             if (tal.size()>=3) {
                 Type rest = tal.get(2);
                 if (rest!=null &&
-                        tal.get(2).isNothing()) {
+                        rest.isExactlyNothing()) {
                     return true;
                 }
             }
@@ -3555,6 +3563,11 @@ public class Type extends Reference {
             }
             try {
                 resolvedAliases = resolveAliasesInternal();
+                /*if (resolvedAliases.isExactlyNothing()) {
+                    resolvedAliases = 
+                            getDeclaration().getUnit()
+                                .getNothingType();
+                }*/
             }
             finally {
                 if (!isTuple()) {
@@ -4048,12 +4061,24 @@ public class Type extends Reference {
         return getDeclaration().isSequential();
     }
     
+    public boolean isRange() {
+        return getDeclaration().isRange();
+    }
+    
     public boolean isEmpty() {
         return getDeclaration().isEmpty();
     }
     
+    public boolean isEmptyValue() {
+        return getDeclaration().isEmptyValue();
+    }
+    
     public boolean isTuple() {
         return getDeclaration().isTuple();
+    }
+    
+    public boolean isEntry() {
+        return getDeclaration().isEntry();
     }
     
     public int getMemoisedHashCode() {

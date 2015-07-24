@@ -291,6 +291,12 @@ public class Class extends ClassOrInterface implements Functional {
     }
 
     @Override
+    boolean isEmptyValue() {
+        return Objects.equals(getQualifiedNameString(),
+                "ceylon.language::empty");
+    }
+
+    @Override
     public boolean isBasic() {
         return Objects.equals(getQualifiedNameString(),
                 "ceylon.language::Basic");
@@ -336,6 +342,18 @@ public class Class extends ClassOrInterface implements Functional {
     public boolean isTuple() {
         return Objects.equals(getQualifiedNameString(),
                 "ceylon.language::Tuple");
+    }
+    
+    @Override
+    public boolean isEntry() {
+        return Objects.equals(getQualifiedNameString(),
+                "ceylon.language::Entry");
+    }
+    
+    @Override
+    public boolean isRange() {
+        return Objects.equals(getQualifiedNameString(),
+                "ceylon.language::Range");
     }
     
     @Override

@@ -18,15 +18,27 @@ public class TypeAlias extends TypeDeclaration {
     @Override
     void collectSupertypeDeclarations(
             List<TypeDeclaration> results) {
-        getExtendedType()
-            .getDeclaration()
+        Type et = getExtendedType();
+        if (et!=null) {
+            et.getDeclaration()
                 .collectSupertypeDeclarations(results);
+        }
     }
     
     @Override
     public boolean inherits(TypeDeclaration dec) {
-        return getExtendedType()
-                .getDeclaration().inherits(dec);
+        Type et = getExtendedType();
+        if (et!=null) {
+            Type.checkDepth();
+            Type.incDepth();
+            try {
+                return et.getDeclaration().inherits(dec);
+            }
+            finally {
+                Type.decDepth();
+            }
+        }
+        return false;
     }
     
     @Override

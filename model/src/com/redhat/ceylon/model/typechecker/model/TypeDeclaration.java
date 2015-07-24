@@ -1066,6 +1066,14 @@ public abstract class TypeDeclaration extends Declaration
         return false;
     }
 
+    boolean isEmptyValue() {
+        return false;
+    }
+    
+    public boolean isEntry() {
+        return false;
+    }
+    
     public boolean isTuple() {
         return false;
     }
@@ -1082,6 +1090,10 @@ public abstract class TypeDeclaration extends Declaration
         return false;
     }
     
+    public boolean isRange() {
+        return false;
+    }
+
     public List<TypedDeclaration> getCaseValues() {
         return caseValues;
     }
