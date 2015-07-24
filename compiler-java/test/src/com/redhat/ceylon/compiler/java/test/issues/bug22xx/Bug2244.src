@@ -1,0 +1,191 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug22xx;
+
+public final class bug2244TestNulls1_ {
+    
+    private bug2244TestNulls1_() {
+    }
+    
+    public static .ceylon.language.String bug2244TestNulls1() {
+        return (
+            let
+            {
+                final .java.util.HashMap<.ceylon.language.String, .ceylon.language.String> map = new .java.util.HashMap<.ceylon.language.String, .ceylon.language.String>();
+            }
+            returning map.get(.ceylon.language.String.instance(""));
+        );
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.issues.bug22xx.bug2244TestNulls1_.bug2244TestNulls1();
+    }
+}
+public final class bug2244TestNulls1b_ {
+    
+    private bug2244TestNulls1b_() {
+    }
+    
+    public static .ceylon.language.String bug2244TestNulls1b() {
+        final .java.util.HashMap<.ceylon.language.String, .ceylon.language.String> map = new .java.util.HashMap<.ceylon.language.String, .ceylon.language.String>();
+        final .java.lang.String s = (
+            let
+            {
+                .java.lang.String $ceylontmp$ifResult$0;
+                if (true) {
+                    $ceylontmp$ifResult$0 = "";
+                } else {
+                    $ceylontmp$ifResult$0 = "";
+                }
+            }
+            returning $ceylontmp$ifResult$0;
+        );
+        final .java.lang.Object o = .ceylon.language.String.instance((
+            let
+            {
+                .java.lang.String $ceylontmp$ifResult$2;
+                if (true) {
+                    $ceylontmp$ifResult$2 = "";
+                } else {
+                    $ceylontmp$ifResult$2 = "";
+                }
+            }
+            returning $ceylontmp$ifResult$2;
+        ));
+        final .java.lang.Object a = .ceylon.language.String.instance((
+            let
+            {
+                .java.lang.String $ceylontmp$ifResult$4;
+                if (true) {
+                    $ceylontmp$ifResult$4 = "";
+                } else {
+                    $ceylontmp$ifResult$4 = "";
+                }
+            }
+            returning $ceylontmp$ifResult$4;
+        ));
+        return (
+            let
+            {
+                .ceylon.language.String $ceylontmp$ifResult$6;
+                if (true) {
+                    $ceylontmp$ifResult$6 = map.get(.ceylon.language.String.instance(""));
+                } else {
+                    $ceylontmp$ifResult$6 = .ceylon.language.String.instance("");
+                }
+            }
+            returning $ceylontmp$ifResult$6;
+        );
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.issues.bug22xx.bug2244TestNulls1b_.bug2244TestNulls1b();
+    }
+}
+public final class bug2244TestNulls1c_ {
+    
+    private bug2244TestNulls1c_() {
+    }
+    
+    public static .ceylon.language.String bug2244TestNulls1c() {
+        final .java.util.HashMap<.ceylon.language.String, .ceylon.language.String> map = new .java.util.HashMap<.ceylon.language.String, .ceylon.language.String>();
+        final .java.lang.String s = (
+            let
+            {
+                .java.lang.String $ceylontmp$ifResult$8;
+                {
+                    boolean sel$9 = true;
+                    if (sel$9 == true) {
+                        $ceylontmp$ifResult$8 = "";
+                    } else {
+                        $ceylontmp$ifResult$8 = "";
+                    }
+                }
+            }
+            returning $ceylontmp$ifResult$8;
+        );
+        final .java.lang.Object o = .ceylon.language.String.instance((
+            let
+            {
+                .java.lang.String $ceylontmp$ifResult$10;
+                {
+                    boolean sel$11 = true;
+                    if (sel$11 == true) {
+                        $ceylontmp$ifResult$10 = "";
+                    } else {
+                        $ceylontmp$ifResult$10 = "";
+                    }
+                }
+            }
+            returning $ceylontmp$ifResult$10;
+        ));
+        final .java.lang.Object a = .ceylon.language.String.instance((
+            let
+            {
+                .java.lang.String $ceylontmp$ifResult$12;
+                {
+                    boolean sel$13 = true;
+                    if (sel$13 == true) {
+                        $ceylontmp$ifResult$12 = "";
+                    } else {
+                        $ceylontmp$ifResult$12 = "";
+                    }
+                }
+            }
+            returning $ceylontmp$ifResult$12;
+        ));
+        return (
+            let
+            {
+                .ceylon.language.String $ceylontmp$ifResult$14;
+                {
+                    boolean sel$15 = true;
+                    if (sel$15 == true) {
+                        $ceylontmp$ifResult$14 = map.get(.ceylon.language.String.instance(""));
+                    } else throw new .com.redhat.ceylon.compiler.java.language.EnumeratedTypeError("Supposedly exhaustive switch was not exhaustive");
+                }
+            }
+            returning $ceylontmp$ifResult$14;
+        );
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.issues.bug22xx.bug2244TestNulls1c_.bug2244TestNulls1c();
+    }
+}
+public final class bug2244TestNulls2_ {
+    
+    private bug2244TestNulls2_() {
+    }
+    
+    public static .ceylon.language.String bug2244TestNulls2() {
+        return (
+            let
+            {
+                final .java.util.HashMap<.ceylon.language.String, .ceylon.language.String> map = new .java.util.HashMap<.ceylon.language.String, .ceylon.language.String>();
+            }
+            returning map.get(.ceylon.language.String.instance(""));
+        );
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.issues.bug22xx.bug2244TestNulls2_.bug2244TestNulls2();
+    }
+}
+public final class bug2244TestNulls3_ {
+    
+    private bug2244TestNulls3_() {
+    }
+    
+    public static .ceylon.language.String bug2244TestNulls3() {
+        final .java.util.HashMap<.ceylon.language.String, .ceylon.language.String> map = new .java.util.HashMap<.ceylon.language.String, .ceylon.language.String>();
+        return map.get(.ceylon.language.String.instance(""));
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.issues.bug22xx.bug2244TestNulls3_.bug2244TestNulls3();
+    }
+}
