@@ -114,8 +114,7 @@ public class SupertypeVisitor extends Visitor {
         
         if (!errors) {
             Unit unit = type.getUnit();
-            List<Type> list = 
-                    new ArrayList<Type>();
+            List<Type> list = new ArrayList<Type>();
             try {
                 List<Type> supertypes = 
                         type.getType()
