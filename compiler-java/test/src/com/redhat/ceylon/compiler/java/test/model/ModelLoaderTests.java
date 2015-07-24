@@ -1634,7 +1634,7 @@ public class ModelLoaderTests extends CompilerTests {
             typeChecker.process();
             for (PhasedUnit pu : typeChecker.getPhasedUnits().getPhasedUnits()) {
                 for (Declaration d : pu.getDeclarations()) {
-                    if (d.isNative() && d.isToplevel()) {
+                    if (d.isNativeHeader() && d.isToplevel()) {
                         String qualifiedNameString = d.getQualifiedNameString();
                         String key = d.getDeclarationKind()+":"+qualifiedNameString;
                         Declaration prev = nativeFromSource.put(key, d);
