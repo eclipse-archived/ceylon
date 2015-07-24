@@ -307,6 +307,15 @@ public class ExpressionTransformer extends AbstractTransformer {
         }else if(term instanceof Tree.DefaultOp){
             // special case to be able to pass expected type to else op
             result = transform((Tree.DefaultOp)term, expectedType);
+        }else if(term instanceof Tree.LetExpression){
+            // special case to be able to pass expected type to let op
+            result = transform((Tree.LetExpression)term, expectedType);
+        }else if(term instanceof Tree.IfExpression){
+            // special case to be able to pass expected type to if op
+            result = transform((Tree.IfExpression)term, expectedType);
+        }else if(term instanceof Tree.SwitchExpression){
+            // special case to be able to pass expected type to switch op
+            result = transform((Tree.SwitchExpression)term, expectedType);
         }else{
             CeylonVisitor v = gen().visitor;
             final ListBuffer<JCTree> prevDefs = v.defs;
@@ -6372,34 +6381,75 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
 
     public JCExpression transform(Tree.IfExpression op) {
+        return transformIf(op, op.getTypeModel());
+    }
+    
+    // this one does not trust the expected type
+    public JCExpression transform(Tree.IfExpression op, Type expectedType) {
+        return transformIf(op, getExpectedTypeForJavaNullChecks(op, expectedType));
+    }
+    
+    // this one trusts the expected type
+    private JCExpression transformIf(Tree.IfExpression op, Type expectedType) {
         String tmpVar = naming.newTemp("ifResult");
         Tree.Expression thenPart = op.getIfClause().getExpression();
         Tree.Expression elsePart = op.getElseClause() != null ? op.getElseClause().getExpression() : null;
         Tree.Variable elseVar = op.getElseClause() != null ? op.getElseClause().getVariable() : null;
         java.util.List<Tree.Condition> conditions = op.getIfClause().getConditionList().getConditions();
-        List<JCStatement> statements = statementGen().transformIf(conditions, thenPart, elseVar, elsePart, tmpVar, op);
+        List<JCStatement> statements = statementGen().transformIf(conditions, thenPart, elseVar, elsePart, tmpVar, op, expectedType);
         at(op);
-        JCExpression vartype = makeJavaType(typeFact().denotableType(op.getTypeModel()), CodegenUtil.getBoxingStrategy(op) == BoxingStrategy.UNBOXED ? 0 : JT_NO_PRIMITIVES);
+        JCExpression vartype = makeJavaType(typeFact().denotableType(expectedType), CodegenUtil.getBoxingStrategy(op) == BoxingStrategy.UNBOXED ? 0 : JT_NO_PRIMITIVES);
         return make().LetExpr(make().VarDef(make().Modifiers(0), names().fromString(tmpVar), vartype , null), statements, makeUnquotedIdent(tmpVar));
     }
 
-    public JCTree transform(Tree.SwitchExpression op) {
+    public JCExpression transform(Tree.SwitchExpression op) {
+        return transformSwitch(op, op.getTypeModel());
+    }
+
+    // this one does not trust the expected type
+    public JCExpression transform(Tree.SwitchExpression op, Type expectedType) {
+        return transformSwitch(op, getExpectedTypeForJavaNullChecks(op, expectedType));
+    }
+    
+    // this one trusts the expected type
+    private JCExpression transformSwitch(Tree.SwitchExpression op, Type expectedType) {
         String tmpVar = naming.newTemp("ifResult");
-        JCStatement switchExpr = statementGen().transform(op, op.getSwitchClause(), op.getSwitchCaseList(), tmpVar, op);
+        JCStatement switchExpr = statementGen().transform(op, op.getSwitchClause(), op.getSwitchCaseList(), tmpVar, op, expectedType);
         at(op);
-        JCExpression vartype = makeJavaType(typeFact().denotableType(op.getTypeModel()), CodegenUtil.getBoxingStrategy(op) == BoxingStrategy.UNBOXED ? 0 : JT_NO_PRIMITIVES);
+        JCExpression vartype = makeJavaType(typeFact().denotableType(expectedType), CodegenUtil.getBoxingStrategy(op) == BoxingStrategy.UNBOXED ? 0 : JT_NO_PRIMITIVES);
         return make().LetExpr(make().VarDef(make().Modifiers(0), names().fromString(tmpVar), vartype , null), 
                               List.<JCStatement>of(switchExpr), makeUnquotedIdent(tmpVar));
     }
 
-    public JCTree transform(LetExpression op) {
+    public JCExpression transform(Tree.LetExpression op) {
+        return transformLet(op, op.getTypeModel());
+    }
+
+    // this one does not trust the given expected type
+    public JCExpression transform(LetExpression op, Type expectedType) {
+        return transformLet(op, getExpectedTypeForJavaNullChecks(op, expectedType));
+    }
+    
+    private Type getExpectedTypeForJavaNullChecks(Term op, Type expectedType) {
+        // turns the expression type into an optional if it's not already, and if the
+        // expected type allows nulls and the term contains unchecked nulls
+        if(expectedType == null 
+                || !isOptional(expectedType) 
+                || !containsUncheckedNulls(op))
+            return op.getTypeModel();
+        else
+            return typeFact().getOptionalType(op.getTypeModel());
+    }
+
+    // this one trusts the expected type
+    private JCExpression transformLet(LetExpression op, Type expectedType) {
         ListBuffer<JCStatement> defs = new ListBuffer<JCStatement>();
         for(Tree.Statement stmt : op.getLetClause().getVariables()){
             defs.addAll(statementGen().transformVariableOrDestructure(stmt));
         }
         Tree.Term term = op.getLetClause().getExpression().getTerm();
         BoxingStrategy boxingStrategy = CodegenUtil.getBoxingStrategy(term);
-        JCExpression expr = transformExpression(term, boxingStrategy, op.getTypeModel());
+        JCExpression expr = transformExpression(term, boxingStrategy, expectedType);
         at(op);
         if (isAnything(op.getTypeModel()) 
                 && CodegenUtil.isUnBoxed(term)) {
