@@ -1108,8 +1108,9 @@ public class ExpressionVisitor extends Visitor {
         inferType(that, sie);
         Tree.Type type = that.getType();
         if (type!=null) {
-        	Type t = type.getTypeModel();
-        	if (type instanceof Tree.LocalModifier) {
+            Type t = type.getTypeModel();
+            if (type instanceof Tree.LocalModifier &&
+                    !isNativeForWrongBackend()) {
         		if (dec.isParameter()) {
         			type.addError("parameter may not have inferred type: '" + 
         					dec.getName() + 
@@ -6522,6 +6523,7 @@ public class ExpressionVisitor extends Visitor {
                             tal, outerType, typeArgs, 
                             pr.getFullType());
             if (!dynamic && 
+                    !isNativeForWrongBackend() &&
                     !isAbstraction(member) && 
                     isTypeUnknown(fullType)) {
                 that.addError("could not determine type of function or value reference: '" +
