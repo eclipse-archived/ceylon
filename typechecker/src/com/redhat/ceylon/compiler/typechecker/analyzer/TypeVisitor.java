@@ -396,9 +396,11 @@ public class TypeVisitor extends Visitor {
                         null, false, unit);
             }
             if (type==null) {
-                that.addError("type declaration does not exist: '" + 
-                        name + "'", 102);
-                unit.getUnresolvedReferences().add(id);
+                if (!isNativeForWrongBackend()) {
+                    that.addError("type declaration does not exist: '" + 
+                            name + "'", 102);
+                    unit.getUnresolvedReferences().add(id);
+                }
             }
             else {
                 type = (TypeDeclaration)handleHeader(type, that);
@@ -480,16 +482,18 @@ public class TypeVisitor extends Visitor {
                         getTypeMember(d, name, 
                                 null, false, unit);
                 if (type==null) {
-                    if (d.isMemberAmbiguous(name, unit, null, false)) {
-                        that.addError("member type declaration is ambiguous: '" + 
-                                name + "' for type '" + 
-                                d.getName() + "'");
-                    }
-                    else {
-                        that.addError("member type declaration does not exist: '" + 
-                                name + "' in type '" + 
-                                d.getName() + "'", 100);
-                        unit.getUnresolvedReferences().add(id);
+                    if (!isNativeForWrongBackend()) {
+                        if (d.isMemberAmbiguous(name, unit, null, false)) {
+                            that.addError("member type declaration is ambiguous: '" + 
+                                    name + "' for type '" + 
+                                    d.getName() + "'");
+                        }
+                        else {
+                            that.addError("member type declaration does not exist: '" + 
+                                    name + "' in type '" + 
+                                    d.getName() + "'", 100);
+                            unit.getUnresolvedReferences().add(id);
+                        }
                     }
                 }
                 else {
@@ -1613,5 +1617,12 @@ public class TypeVisitor extends Visitor {
         }
         return dec;
     }
+    
+    // We use this for situations where the backend compiler can't check the
+    // validity of the code for the other backend 
+    private boolean isNativeForWrongBackend() {
+        return inBackend != null && 
+                !backendSupport.supportsBackend(inBackend);
+    }    
     
 }
