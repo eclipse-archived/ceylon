@@ -44,5 +44,15 @@ void test4() {
     value y = Bar();
 }
 
+native("js")
+void test5() {
+    value x = nativeMethodJvm();
+}
+
+native("jvm")
+void test6() {
+    value x = nativeMethodJs();
+}
+
 shared void test() {
 }
