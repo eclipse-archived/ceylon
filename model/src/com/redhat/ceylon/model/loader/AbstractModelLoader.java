@@ -3802,6 +3802,18 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         setter.setScope(value.getContainer());
         setter.setType(value.getType());
         setter.setName(value.getName());
+        Parameter p = new Parameter();
+        p.setHidden(true);
+        Value v = new Value();
+        v.setType(value.getType());
+        v.setUnboxed(value.getUnboxed());
+        v.setInitializerParameter(p);
+        v.setContainer(setter);
+        p.setModel(v);
+        v.setName(setter.getName());
+        p.setName(setter.getName());
+        p.setDeclaration(setter);
+        setter.setParameter(p);
         value.setSetter(setter);
         setter.setGetter(value);
         return setter;
