@@ -1867,7 +1867,7 @@ shared class Branch<Element>(String name, Node<Element> left, Node<Element> righ
             a reference to a class or callable constructor of a class, followed by a 
             positional argument list, as defined in <xref linkend="positionalarguments"/>.</para>
             
-            <synopsis>ClassSpecifier: "=>" (Extension | SuperclassExtension) PositionalArguments</synopsis>
+            <synopsis>ClassSpecifier: "=>" (Extension | Construction)</synopsis>
             
             <para>The specification of the class or callable constructor is treated as a 
             value expression, as in <xref linkend="extendedclass"/>. The type of this value 

@@ -314,3 +314,25 @@ void testSharedAliasOfTypeParameter() {
     WithInheritedSharedAliasOfTupleTypeParameter.AliasOfTypeParameter y3 = ["",1];
     value [s,i] = y3;
 }
+
+
+class OuterX {
+    shared new create() {}
+    shared class In0() {}
+    shared class In1() {}
+    shared class In2 {
+        shared new create() {}
+    }
+}
+
+class OuterY extends OuterX {
+    shared new create() extends super.create() {}
+    class I0() => In0();
+    class I1() => super.In1();
+    class I2() => In2.create();
+    class X0() => super.create();
+    class X1() => OuterX.create();
+    class X2() => package.OuterX.create();
+    class Y0() => create();
+    class Y1() => package.OuterY.create();
+}
