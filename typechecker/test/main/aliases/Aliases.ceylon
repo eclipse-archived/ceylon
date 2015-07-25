@@ -60,6 +60,8 @@ class Aliases() {
     interface Seq<T> => T[];
     interface It<T> => {T*};
     interface Fun<T> => T(Object);
+    
+    class Cla(String str) => package.Class<String>(str);
 }
 
 interface Li0<U,V> => List<U>;
