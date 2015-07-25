@@ -80,7 +80,7 @@ public class CeylonDocToolTests {
     public TestName name = new TestName();
     
     private CeylonDocTool tool(List<File> sourceFolders, List<File> docFolders, List<String> moduleName, 
-            boolean haltOnError, boolean deleteDestDir, String... repositories)
+            boolean haltOnError, boolean deleteDestDir, boolean bootstrapCeylon, String... repositories)
             throws Exception {
         
         CeylonDocTool tool = new CeylonDocTool();
@@ -89,6 +89,7 @@ public class CeylonDocToolTests {
         tool.setModuleSpecs(moduleName);
         tool.setDocFolders(docFolders);
         tool.setHaltOnError(haltOnError);
+        tool.setBootstrapCeylon(bootstrapCeylon);
         File dir = new File("build", "CeylonDocToolTest/" + name.getMethodName());
         if (deleteDestDir && dir.exists()) {
             FileUtil.delete(dir);
@@ -101,16 +102,22 @@ public class CeylonDocToolTests {
     private CeylonDocTool tool(String pathname, String moduleName, 
             boolean throwOnError, String... repositories)
             throws Exception {
-        return tool(pathname, "doc", moduleName, throwOnError, repositories);
+        return tool(pathname, "doc", moduleName, throwOnError, false, repositories);
+    }
+
+    private CeylonDocTool tool(String pathname, String moduleName, 
+            boolean throwOnError, boolean bootstrapCeylon, String... repositories)
+            throws Exception {
+        return tool(pathname, "doc", moduleName, throwOnError, bootstrapCeylon, repositories);
     }
 
     private CeylonDocTool tool(String pathname, String docPath, String moduleName, 
-            boolean throwOnError, String... repositories)
+            boolean throwOnError, boolean bootstrapCeylon, String... repositories)
             throws Exception {
         return tool(Arrays.asList(new File(pathname)),
                 Arrays.asList(new File(docPath)),
                 Arrays.asList(moduleName),
-                throwOnError, true, repositories);
+                throwOnError, true, bootstrapCeylon, repositories);
     }
 
     protected void assertFileExists(File destDir, String path) {
@@ -201,7 +208,7 @@ public class CeylonDocToolTests {
         String docname = "test/ceylondoc-doc";
         String moduleName = "com.redhat.ceylon.ceylondoc.test.modules.single";
 
-        CeylonDocTool tool = tool(pathname, docname, moduleName, true);
+        CeylonDocTool tool = tool(pathname, docname, moduleName, true, false);
         tool.setIncludeNonShared(includeNonShared);
         tool.setIncludeSourceCode(true);
         tool.setHeader("<div class='navbar-inverse navbar-static-top'>" +
@@ -327,7 +334,7 @@ public class CeylonDocToolTests {
         modules.add("com.redhat.ceylon.ceylondoc.test.modules.dependency.c");
         modules.add("com.redhat.ceylon.ceylondoc.test.modules.externallinks");
 
-        CeylonDocTool tool = tool(Arrays.asList(new File("test/ceylondoc")), Collections.<File>emptyList(), modules, true, true, "build/ceylon-cars");
+        CeylonDocTool tool = tool(Arrays.asList(new File("test/ceylondoc")), Collections.<File>emptyList(), modules, true, true, false, "build/ceylon-cars");
         tool.setLinks(Arrays.asList(linkArgs));
         tool.run();
 
@@ -445,7 +452,7 @@ public class CeylonDocToolTests {
     public void ceylonLanguage() throws Exception {
         String pathname = "../ceylon.language/src";
         String moduleName = AbstractModelLoader.CEYLON_LANGUAGE;
-        CeylonDocTool tool = tool(pathname, moduleName, true);
+        CeylonDocTool tool = tool(pathname, moduleName, true, true);
         tool.setIncludeNonShared(false);
         tool.setIncludeSourceCode(true);
         tool.run();
@@ -487,7 +494,7 @@ public class CeylonDocToolTests {
 
         CeylonDocTool tool = tool(Arrays.asList(new File("../ceylon-sdk/source")),
                 Collections.<File>emptyList(),
-                Arrays.asList(fullModuleNames), true, false);
+                Arrays.asList(fullModuleNames), true, false, false);
         tool.setIncludeNonShared(false);
         tool.setIncludeSourceCode(true);
         tool.run();
@@ -605,7 +612,7 @@ public class CeylonDocToolTests {
                 tool(Arrays.asList(new File(pathname)),
                         Arrays.asList(new File("doc")),
                         Arrays.asList(moduleName),
-                        true, false);
+                        true, false, false);
         tool.setIncludeNonShared(true);
         tool.run();
     }
@@ -623,7 +630,7 @@ public class CeylonDocToolTests {
                 tool(Arrays.asList(new File(pathname)),
                         Arrays.asList(new File("doc")),
                         Arrays.asList(moduleName),
-                        true, false);
+                        true, false, false);
         tool.setIncludeNonShared(true);
         tool.run();
     }
@@ -637,7 +644,7 @@ public class CeylonDocToolTests {
                 tool(Arrays.asList(new File(pathname)),
                         Arrays.asList(new File("doc")),
                         Arrays.asList(moduleName),
-                        true, false);
+                        true, false, false);
         tool.run();
     }
     
@@ -654,7 +661,7 @@ public class CeylonDocToolTests {
                 tool(Arrays.asList(new File(pathname)),
                         Arrays.asList(new File("doc")),
                         Arrays.asList(moduleName),
-                        true, false);
+                        true, false, false);
         tool.run();
         
         File destDir = getOutputDir(tool, module);
