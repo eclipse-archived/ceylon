@@ -3444,10 +3444,12 @@ public abstract class AbstractTransformer implements Transformation {
      * {@code @TypeInfo} annotation 
      */
     private boolean needsJavaTypeAnnotations(Declaration decl) {
-        Declaration reqdecl = decl;
-        if (reqdecl instanceof FunctionOrValue
-                && ((FunctionOrValue)reqdecl).isParameter()) {
-            reqdecl = CodegenUtil.getParameterized(((FunctionOrValue)reqdecl));
+        Declaration reqdecl;
+        if (decl instanceof FunctionOrValue
+                && ((FunctionOrValue)decl).isParameter()) {
+            reqdecl = CodegenUtil.getParameterized(((FunctionOrValue)decl));
+        } else {
+            reqdecl = decl;
         }
         if (reqdecl instanceof TypeDeclaration) {
             return true;

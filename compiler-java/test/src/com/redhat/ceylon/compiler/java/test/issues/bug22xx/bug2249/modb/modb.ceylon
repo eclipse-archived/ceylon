@@ -4,7 +4,3 @@ shared class ClassWithInitializedAttribute() satisfies InterfaceWithInitializedA
     shared actual String initialValue() => "Initial";
     shared actual variable String? internalValue = null;
 }
-
-shared void run() {
-    print(ClassWithInitializedAttribute().attribute);
-}

@@ -71,6 +71,7 @@ import com.redhat.ceylon.model.loader.NamingBase;
 import com.redhat.ceylon.model.loader.NamingBase.Suffix;
 import com.redhat.ceylon.model.loader.NamingBase.Unfix;
 import com.redhat.ceylon.model.loader.model.AnnotationTarget;
+import com.redhat.ceylon.model.loader.model.JavaBeanValue;
 import com.redhat.ceylon.model.loader.model.LazyInterface;
 import com.redhat.ceylon.model.loader.model.OutputElement;
 import com.redhat.ceylon.model.typechecker.model.Class;
@@ -2183,7 +2184,11 @@ public class ClassTransformer extends AbstractTransformer {
                 TypedDeclaration attr = (TypedDeclaration)member;
                 final TypedReference typedMember = satisfiedType.getTypedMember(attr, null);
                 if (needsCompanionDelegate(model, member)) {
+                    Setter setter = (member instanceof Setter) ? (Setter)member : null;
                     if (member instanceof Value) {
+                        if (member instanceof JavaBeanValue) {
+                            setter = ((Value) member).getSetter();
+                        }
                         final MethodDefinitionBuilder getterDelegate = makeDelegateToCompanion(iface, 
                                 typedMember,
                                 model.getType(),
@@ -2198,17 +2203,17 @@ public class ClassTransformer extends AbstractTransformer {
                                 DelegateType.OTHER);
                         classBuilder.method(getterDelegate);
                     }
-                    if (member instanceof Setter) { 
+                    if (setter != null) {
                         final MethodDefinitionBuilder setterDelegate = makeDelegateToCompanion(iface, 
-                                typedMember,
+                                satisfiedType.getTypedMember(setter, null),
                                 model.getType(),
-                                PUBLIC | (((Setter)member).getGetter().isDefault() ? 0 : FINAL), 
+                                PUBLIC | (setter.getGetter().isDefault() ? 0 : FINAL), 
                                 Collections.<TypeParameter>emptyList(), 
                                 Collections.<java.util.List<Type>>emptyList(),
                                 typeFact().getAnythingType(), 
                                 Naming.getSetterName(attr), 
-                                Collections.<Parameter>singletonList(((Setter)member).getParameter()),
-                                ((Setter) member).getTypeErased(),
+                                Collections.<Parameter>singletonList(setter.getParameter()),
+                                setter.getTypeErased(),
                                 null,
                                 DelegateType.OTHER);
                         classBuilder.method(setterDelegate);
