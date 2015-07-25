@@ -429,4 +429,10 @@ public class IssuesTests_2000_2499 extends CompilerTests {
     public void testBug2244() {
         compareWithJavaSource("bug22xx/Bug2244"); 
     }
+    
+    @Test
+    public void testBug2249() {
+        compile("bug22xx/bug2249/moda/moda.ceylon", "bug22xx/bug2249/moda/package.ceylon", "bug22xx/bug2249/moda/module.ceylon");
+        compile("bug22xx/bug2249/modb/modb.ceylon", "bug22xx/bug2249/modb/module.ceylon");
+    }
 }
