@@ -955,7 +955,7 @@ TypeConstraints?
             interface declaration may not list the same case twice.</para>
                     
             <para>If an interface has an <literal>of</literal> clause, then every interface 
-            or class which is a subtype of the interface must occur as exactly one of the 
+            or class which directly inherits the interface must occur as exactly one of the 
             enumerated cases of the interface.</para>
                     
         </section>
