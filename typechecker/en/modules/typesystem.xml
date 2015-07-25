@@ -1582,6 +1582,12 @@ interface NumberLiteral
             
             <itemizedlist>
                 <listitem>
+                    <para><literal>X</literal> is a subtype of a type <literal>A</literal>
+                    and <literal>Y</literal> is a subtype of a type <literal>B</literal>,
+                    where <literal>A</literal> and <literal>B</literal> are distinct cases 
+                    of an enumerated type,</para>
+                </listitem>
+                <listitem>
                     <para><literal>X</literal> and <literal>Y</literal> are both classes and
                     <literal>X</literal> is not a subclass of <literal>Y</literal> and 
                     <literal>Y</literal> is not a subclass of <literal>X</literal>,</para>

@@ -956,7 +956,9 @@ TypeConstraints?
                     
             <para>If an interface has an <literal>of</literal> clause, then every interface 
             or class which directly inherits the interface must occur as exactly one of the 
-            enumerated cases of the interface.</para>
+            enumerated cases of the interface. Furthermore, any interface or class which
+            indirectly inherits the interface must inherit exactly one of the enumerated 
+            cases of the interface.</para>
                     
         </section>
         
@@ -1801,8 +1803,10 @@ String escapedSearchString = sql.escape(searchString);</programlisting>
 		            <para>if an <literal>abstract</literal> class has an 
 		            <literal>of</literal> clause, then every class that directly 
 		            extends the class must occur as exactly one of the enumerated 
-		            cases of the class listed in the <literal>of</literal> clause,
-		            or</para>
+		            cases of the class listed in the <literal>of</literal> clause
+		            and, furthermore, every class that indirectly inherits the 
+		            <literal>abstract</literal> class must inherit one of the
+		            enumerated cases of the class, or</para>
                 </listitem>
                 <listitem>
 		            <para>if a non-<literal>abstract</literal> class has an 
