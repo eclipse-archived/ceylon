@@ -763,8 +763,13 @@ TypeConstraints?
         
         <itemizedlist>
             <listitem>
-                <para>member (method, attribute, and member class) declarations, 
-                and</para>
+                <para>member (method, attribute, and member class) declarations,
+                </para>
+            </listitem>
+            <listitem>
+                <para>specification statements interpretable as attribute or method
+                refinement, as defined in <xref linkend="attributerefinement"/> and
+                <xref linkend="methodrefinement"/>, and</para>
             </listitem>
             <listitem>
                 <para>nested interface, type alias, and <literal>abstract</literal> 
@@ -772,7 +777,7 @@ TypeConstraints?
             </listitem>
         </itemizedlist>
         
-        <synopsis>InterfaceBody: "{" Declaration* "}"</synopsis>
+        <synopsis>InterfaceBody: "{" (Declaration | Specification)* "}"</synopsis>
         
         <para>Unlike the body of a class, method, or attribute, the body of an 
         interface is not executable, and does not directly contain procedural 
@@ -803,7 +808,8 @@ TypeConstraints?
             
             <itemizedlist>
                 <listitem>
-                    <para>a statement or control structure,</para>
+                    <para>a statement or control structure (except for specification
+                    statements interpretable as attribute or method refinement),</para>
                 </listitem>
                 <listitem>
                     <para>a reference declaration,</para>
