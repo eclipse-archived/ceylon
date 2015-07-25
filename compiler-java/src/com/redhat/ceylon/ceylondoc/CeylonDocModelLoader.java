@@ -54,9 +54,10 @@ public class CeylonDocModelLoader extends ReflectionModelLoader {
     Set<Module> modulesAddedToClassPath = new HashSet<Module>();
     private CeylonDocTool tool;
 
-    public CeylonDocModelLoader(ModuleManager moduleManager, Modules modules, CeylonDocTool tool){
+    public CeylonDocModelLoader(ModuleManager moduleManager, Modules modules, CeylonDocTool tool, boolean bootstrapCeylon){
         super(moduleManager, modules, new LoaderJULLogger());
         this.tool = tool;
+        this.isBootstrap = bootstrapCeylon;
     }
 
     @Override

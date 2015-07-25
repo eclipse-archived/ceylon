@@ -45,12 +45,14 @@ public class CeylonDocModuleManager extends ReflectionModuleManager {
     private List<ModuleSpec> modulesSpecs;
     private CeylonDocTool tool;
     private RepositoryManager outputRepositoryManager;
+    private boolean bootstrapCeylon;
 
-    public CeylonDocModuleManager(CeylonDocTool tool, Context context, List<ModuleSpec> modules, RepositoryManager outputRepositoryManager, Logger log) {
+    public CeylonDocModuleManager(CeylonDocTool tool, Context context, List<ModuleSpec> modules, RepositoryManager outputRepositoryManager, boolean bootstrapCeylon, Logger log) {
         super();
         this.outputRepositoryManager = outputRepositoryManager;
         this.modulesSpecs = modules;
         this.tool = tool;
+        this.bootstrapCeylon = bootstrapCeylon;
     }
 
     @Override
@@ -69,7 +71,7 @@ public class CeylonDocModuleManager extends ReflectionModuleManager {
 
     @Override
     protected AbstractModelLoader createModelLoader(Modules modules) {
-        return new CeylonDocModelLoader(this, modules, tool){
+        return new CeylonDocModelLoader(this, modules, tool, bootstrapCeylon){
             @Override
             protected boolean isLoadedFromSource(String className) {
                 return tool.getCompiledClasses().contains(className);

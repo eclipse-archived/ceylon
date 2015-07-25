@@ -54,6 +54,7 @@ import com.redhat.ceylon.common.config.DefaultToolOptions;
 import com.redhat.ceylon.common.log.Logger;
 import com.redhat.ceylon.common.tool.Argument;
 import com.redhat.ceylon.common.tool.Description;
+import com.redhat.ceylon.common.tool.Hidden;
 import com.redhat.ceylon.common.tool.Option;
 import com.redhat.ceylon.common.tool.OptionArgument;
 import com.redhat.ceylon.common.tool.ParsedBy;
@@ -157,6 +158,7 @@ public class CeylonDocTool extends OutputRepoUsingTool {
     private boolean ignoreBrokenLink;
     private boolean browse;
     private boolean haltOnError = true;
+    private boolean bootstrapCeylon;
     private List<File> sourceFolders = DefaultToolOptions.getCompilerSourceDirs();
     private List<File> docFolders = DefaultToolOptions.getCompilerDocDirs();
     private List<String> moduleSpecs = Arrays.asList("*");
@@ -265,6 +267,13 @@ public class CeylonDocTool extends OutputRepoUsingTool {
     @Description("Do not print warnings about broken links.")
     public void setIgnoreBrokenLink(boolean ignoreBrokenLink) {
         this.ignoreBrokenLink = ignoreBrokenLink;
+    }
+
+    @Hidden
+    @Option(longName = "bootstrap-ceylon")
+    @Description("Is used when documenting the Ceylon language module.")
+    public void setBootstrapCeylon(boolean bootstrapCeylon) {
+        this.bootstrapCeylon = bootstrapCeylon;
     }
 
     public void setHaltOnError(boolean haltOnError) {
@@ -389,7 +398,7 @@ public class CeylonDocTool extends OutputRepoUsingTool {
         builder.moduleManagerFactory(new ModuleManagerFactory(){
             @Override
             public ModuleManager createModuleManager(Context context) {
-                return new CeylonDocModuleManager(CeylonDocTool.this, context, modules, outputRepositoryManager, log);
+                return new CeylonDocModuleManager(CeylonDocTool.this, context, modules, outputRepositoryManager, bootstrapCeylon, log);
             }
 
             @Override
