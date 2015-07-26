@@ -783,12 +783,16 @@ public class TypeVisitor extends Visitor {
                 }
             }
             else {
-                boolean found = false;
-                for (Declaration m: cd.getMembers()) {
-                    if (m instanceof Constructor &&
-                            m.isShared()) {
-                        found = true;
-                        break;
+                // Check if the class has at least one shared constructor
+                boolean found = hasSharedConstructors(cd);
+                // If not found check if the declaration is a native implementation
+                if (!found && cd.isNative() && !cd.isNativeHeader()) {
+                    Declaration hdr = getNativeHeader(cd);
+                    // And check that it has a native header
+                    if (hdr instanceof Class) {
+                        Class hcd = (Class) hdr;
+                        // In that case we try again with the header
+                        found = hasSharedConstructors(hcd);
                     }
                 }
                 if (!found) {
@@ -800,6 +804,16 @@ public class TypeVisitor extends Visitor {
         }
     }
 
+    private boolean hasSharedConstructors(Class cd) {
+        for (Declaration m: cd.getMembers()) {
+            if (m instanceof Constructor &&
+                    m.isShared()) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
     @Override 
     public void visit(Tree.InterfaceDefinition that) {
         Interface id = that.getDeclarationModel();
