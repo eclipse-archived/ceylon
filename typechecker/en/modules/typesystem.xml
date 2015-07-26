@@ -607,38 +607,66 @@
             <literal>ceylon.language</literal>. However, it cannot be defined within
             the language.</para>
             
+            <comment><para>Note: an expression of type <literal>Nothing</literal> results 
+            in a compiler warning.</para></comment>
+            
             <para>Because of the restrictions imposed by Ceylon's mixin inheritance 
             model:</para>
             
             <itemizedlist>
-            <listitem>
-                <para>If <literal>X</literal> and <literal>Y</literal> are classes, and
-                <literal>X</literal> is not a subclass of <literal>Y</literal>, and 
-                <literal>Y</literal> is not a subclass of <literal>X</literal>, then
-                the intersection type <literal>X&amp;Y</literal> is equivalent to 
-                <literal>Nothing</literal>.</para>
-            </listitem>
-            <listitem>
-                <para>If <literal>X</literal> is an interface, the intersection type 
-                <literal>X&amp;Null</literal> is equivalent to <literal>Nothing</literal>.</para>
-            </listitem>
-            <listitem>
-                <para>If <literal>X</literal> is an interface, and <literal>Y</literal>
-                is a <literal>final</literal> class, and <literal>Y</literal> is not a
-                subtype of <literal>X</literal>, then the intersection type 
-                <literal>X&amp;Y</literal> is equivalent to <literal>Nothing</literal>.</para>
-            </listitem>
-            <listitem>
-                <para>If <literal>X&lt;T&gt;</literal> is invariant in its type parameter
-                <literal>T</literal>, and the distinct types <literal>A</literal> and 
-                <literal>B</literal> do not involve type parameters, then 
-                <literal>X&lt;A&gt;&amp;X&lt;B&gt;</literal> is equivalent to 
-                <literal>Nothing</literal>.</para>
-            </listitem>
+                <listitem>
+                    <para>If <literal>X</literal> and <literal>Y</literal> are classes, and
+                    <literal>X</literal> is not a subclass of <literal>Y</literal>, and 
+                    <literal>Y</literal> is not a subclass of <literal>X</literal>, then
+                    the intersection type <literal>X&amp;Y</literal> is equivalent to 
+                    <literal>Nothing</literal>.</para>
+                </listitem>
+                <listitem>
+                    <para>If <literal>X</literal> is an interface, the intersection type 
+                    <literal>X&amp;Null</literal> is equivalent to <literal>Nothing</literal>.</para>
+                </listitem>
+                <listitem>
+                    <para>If <literal>X</literal> is an interface, and <literal>Y</literal>
+                    is a <literal>final</literal> class, and <literal>Y</literal> is not a
+                    subtype of <literal>X</literal>, then the intersection type 
+                    <literal>X&amp;Y</literal> is equivalent to <literal>Nothing</literal>.</para>
+                </listitem>
+                <listitem>
+                    <para>If <literal>X&lt;T&gt;</literal> is invariant in its type parameter
+                    <literal>T</literal>, and the distinct types <literal>A</literal> and 
+                    <literal>B</literal> do not involve type parameters, then 
+                    <literal>X&lt;A&gt;&amp;X&lt;B&gt;</literal> is equivalent to 
+                    <literal>Nothing</literal>.</para>
+                </listitem>
+                <listitem>
+                    <para>If <literal>X</literal> is a subtype of a type <literal>A</literal>
+                    and <literal>Y</literal> is a subtype of a type <literal>B</literal>,
+                    where <literal>A</literal> and <literal>B</literal> are distinct cases 
+                    of an enumerated type, then the intersection type <literal>X&amp;Y</literal> 
+                    is equivalent to <literal>Nothing</literal>.</para>
+                </listitem>
             </itemizedlist>
             
-            <comment><para>Note: an expression of type <literal>Nothing</literal> results 
-            in a compiler warning.</para></comment>
+            <para>Furthermore, as a special case,</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para><literal>Sequence&lt;E&gt;</literal> is equivalent to 
+                    <literal>Nothing</literal> if <literal>E</literal> is equivalent 
+                    to <literal>Nothing</literal>, and</para>
+                </listitem>
+                <listitem>
+                    <para><literal>Tuple&lt;E,F,R&gt;</literal> is equivalent to 
+                    <literal>Nothing</literal> if any of <literal>E</literal>, 
+                    <literal>F</literal>, or <literal>R</literal> is equivalent to 
+                    <literal>Nothing</literal>.</para>
+                </listitem>
+            </itemizedlist>
+            
+            <comment><para>Note: the soundness of these rules is guaranteed by the 
+            implementations of the <literal>sealed</literal> types <literal>Sequence</literal>
+            and <literal>Tuple</literal> in the module <literal>ceylon.language</literal>.
+            </para></comment>
             
             <!--comment><para>TODO: Should the name of this type be a keyword, perhaps
             <literal>nothing</literal>, to emphasize that it is defined primitively?</para></comment-->
@@ -2524,16 +2552,16 @@ interface NumberLiteral
             then:</para>
             
             <itemizedlist>
-	            <listitem>
-		            <para>The inferred lower bound for a type parameter <literal>T</literal> 
-		            of the generic declaration is the conjunction of all inferred lower bounds 
-		            <literal>Ai</literal> on <literal>Pi</literal> for <literal>T</literal>.</para>
-		            </listitem>
-		            <listitem>
-		            <para>The inferred upper bound for a type parameter <literal>T</literal> 
-		            of the generic declaration is the conjunction of all inferred upper bounds 
-		            <literal>Ai</literal> on <literal>Pi</literal> for <literal>T</literal>.</para>
-	            </listitem>
+                <listitem>
+                    <para>The inferred lower bound for a type parameter <literal>T</literal> 
+                    of the generic declaration is the conjunction of all inferred lower bounds 
+                    <literal>Ai</literal> on <literal>Pi</literal> for <literal>T</literal>.</para>
+                    </listitem>
+                    <listitem>
+                    <para>The inferred upper bound for a type parameter <literal>T</literal> 
+                    of the generic declaration is the conjunction of all inferred upper bounds 
+                    <literal>Ai</literal> on <literal>Pi</literal> for <literal>T</literal>.</para>
+                </listitem>
             </itemizedlist>
             
             <para>Given types <literal>A</literal> and <literal>P</literal>, we determine the 
