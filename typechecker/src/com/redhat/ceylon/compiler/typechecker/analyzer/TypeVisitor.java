@@ -760,8 +760,8 @@ public class TypeVisitor extends Visitor {
             boolean error = true;
             if (cd.isNative() && !cd.isNativeHeader()) {
                 Declaration hdr = getNativeHeader(cd);
-                if (hdr != null && hdr instanceof Class) {
-                    Class hcd = (Class)hdr;
+                if (hdr instanceof Class) {
+                    Class hcd = (Class) hdr;
                     if (hcd.hasConstructors() || hcd.hasEnumerated()) {
                         error = false;
                     }
