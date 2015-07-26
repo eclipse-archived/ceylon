@@ -315,7 +315,7 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
             Declaration container = 
                     (Declaration)
                         model.getContainer();
-            return container.isNative() && 
+            return container.isNativeHeader() && 
                     container.isShared();
         }
         else {
