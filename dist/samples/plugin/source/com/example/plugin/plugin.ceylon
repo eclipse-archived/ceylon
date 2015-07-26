@@ -16,7 +16,13 @@
 import com.redhat.ceylon.common.tool {
     CeylonBaseTool,
     summary,
-    description }
+    description,
+    description__SETTER,
+    argument__SETTER,
+    option__SETTER,
+    optionArgument__SETTER }
+import java.lang { JString=String }
+import java.util { JList=List }
 
 summary("Just a test tool")
 description("""And a somewhat larger description,
@@ -24,8 +30,37 @@ description("""And a somewhat larger description,
                """)
 shared class CeylonExamplePluginTool() extends CeylonBaseTool() {
     
+    description__SETTER("A simple string option, use `--string-option=foobar`")
+    optionArgument__SETTER shared variable JString? stringOption = null;
+
+    description__SETTER("A simple flag, use `--simple-flag`")
+    option__SETTER shared variable Boolean simpleFlag = false;
+    
+    argument__SETTER{multiplicity="*";} shared variable JList<JString>? arguments = null;
+    
     shared actual void run() {
         print("Example plugin executed correctly!");
+        if (simpleFlag) {
+            print("The option --simple-flag is set.");
+        }
+        if (exists v=stringOption) {
+            print("The argument for option --string-option is '``v``'");
+        }
+        if (exists v=arguments) {
+            print("The following arguments were passed: ``v``");
+        }
+        if (exists v=verbose) {
+            print("Verbose mode was activated and set to: '``v``'");
+        }
+        if (exists v=cwd) {
+            print("The current working directory is set to: '``v``'");
+        }
+        if (exists v=defines) {
+            print("The following defines were passed: ``v``");
+        }
+        if (!simpleFlag && !stringOption exists && !arguments exists && !verbose exists && !cwd exists && !defines exists) {
+            print("No options or arguments were passed, try typing `ceylon example-plugin --help`");
+        }
     }
     
 }

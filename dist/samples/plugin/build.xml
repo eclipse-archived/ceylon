@@ -31,7 +31,7 @@
         <ceylon-plugin mode="pack">
             <module name="com.example.plugin" />
         </ceylon-plugin>
-        <ceylon-plugin mode="install" local="true">
+        <ceylon-plugin mode="install" local="true" force="true">
             <module name="com.example.plugin" />
         </ceylon-plugin>
     </target>
