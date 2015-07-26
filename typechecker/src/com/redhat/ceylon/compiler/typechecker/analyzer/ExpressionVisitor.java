@@ -3469,8 +3469,15 @@ public class ExpressionVisitor extends Visitor {
                         getTypeParameters(dec));
             }
             else {
-                return getInferredTypeArguments(that, 
-                        (Generic) dec, receiverType);
+                List<Type> typeArgs = 
+                        getInferredTypeArguments(that, 
+                            reference, (Generic) dec, 
+                            receiverType);
+                if (typeArgs==null) {
+                    reference.addError("type arguments could not be inferred: '" +
+                            dec.getName(unit) + "' is generic");
+                }
+                return typeArgs;
             }
         }
         else if (dec instanceof Value) {
@@ -3529,6 +3536,7 @@ public class ExpressionVisitor extends Visitor {
      * or qualifies a reference being invoked.
      * 
      * @param that the invocation
+     * @param reference 
      * @param reference the reference to a thing with type
      *        parameters
      * @param generic the model of the thing with type 
@@ -3538,7 +3546,10 @@ public class ExpressionVisitor extends Visitor {
      * @return a list of inferred type arguments
      */
     private List<Type> getInferredTypeArguments(
-            Tree.InvocationExpression that, 
+            Tree.InvocationExpression that,
+            //this is the reference to the thing we're
+            //inferring type arguments for
+            Tree.StaticMemberOrTypeExpression reference, 
             Generic generic, Type receiverType) {
         Tree.Term primary =
                 unwrapExpressionUntilTerm(that.getPrimary());
@@ -3550,11 +3561,18 @@ public class ExpressionVisitor extends Visitor {
                     (Tree.StaticMemberOrTypeExpression) 
                         primary;
             if (isStaticReference(pmte)) {
-                TypeDeclaration type = 
-                        (TypeDeclaration) generic;
-                return new TypeArgumentInference(unit)
-                        .getInferredTypeArgsForStaticReference(
-                                that, type, receiverType);
+                if (reference==pmte) {
+                    //can't infer type arguments for member
+                    //ref in static member reference
+                    return null;
+                }
+                else {
+                    TypeDeclaration type = 
+                            (TypeDeclaration) generic;
+                    return new TypeArgumentInference(unit)
+                            .getInferredTypeArgsForStaticReference(
+                                    that, type, receiverType);
+                }
             }
             else {
                 Declaration declaration = 
