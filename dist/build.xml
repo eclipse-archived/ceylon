@@ -341,6 +341,7 @@ Used with another target such as 'package'">
                 <include name="no-module/**"/>
                 <include name="with-module/**"/>
                 <include name="interop-java/**"/>
+                <include name="plugin/**"/>
             </fileset>
         </copy>
     </target>
