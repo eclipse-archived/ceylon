@@ -83,6 +83,10 @@ import com.redhat.ceylon.model.typechecker.model.Value;
  *
  */
 public abstract class DeclarationVisitor extends Visitor implements NaturalVisitor {
+    
+    private static final Class[] NO_CLASSES = new Class[0];
+    private static final FunctionOrValue[] NO_FUNCTIONS_OR_VALUES = new FunctionOrValue[0];
+    
     private final Package pkg;
     private final String filename;
     private Scope scope;
@@ -201,13 +205,7 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
             String backend = model.getNativeBackend();
             boolean isHeader = model.isNativeHeader();
             String name = model.getName();
-            boolean canBeNative =
-                    that instanceof Tree.AnyClass
-                    || that instanceof Tree.Constructor
-                    || that instanceof Tree.Enumerated
-                    || that instanceof Tree.AnyMethod
-                    || that instanceof Tree.AnyAttribute
-                    || that instanceof ObjectDefinition;
+            boolean canBeNative = canBeNative(that);
             if (canBeNative) {
                 String moduleBackend = 
                         unit.getPackage()
@@ -228,73 +226,28 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
                     Declaration container = 
                             (Declaration) 
                                 model.getContainer();
-                    String cbackend = container.getNativeBackend();
+                    String cbackend = 
+                            container.getNativeBackend();
                     if (!cbackend.equals(backend)) {
                         that.addError("native backend name on member conflicts with its container: '" + 
                                 name + "' of '" + 
                                 container.getName() + "'");
                     }
                 }
-                if (member == null || (member.isNative() && !member.isNativeHeader())) {
+                if (member == null || 
+                        (member.isNative() && 
+                         !member.isNativeHeader())) {
                     // Abstraction-less native implementation, check
                     // it's not shared
-                    if (!isHeader
-                            && ((model.isToplevel() && model.isShared())
-                                    || (model.isMember()
-                                            && ((Declaration)model.getContainer()).isNative()
-                                            && ((Declaration)model.getContainer()).isShared()))) {
+                    if (!isHeader && 
+                            mustHaveHeader(model)) {
                         that.addError("native implementation must have a header: '" +
                                 model.getName() + "'");
                     }
                 }
                 if (member == null) {
                     if (model.isNativeHeader()) {
-                        // Deal with implementations from the ModelLoader
-                        ArrayList<FunctionOrValue> loadedFunctionsOrValues = null;
-                        ArrayList<Class> loadedClasses = null;
-                        for (Backend backendToSearch : Backend.values()) {
-                            if (backendToSearch.equals(Backend.None)) {
-                                continue;
-                            }
-                            Declaration overloadFromModelLoader = 
-                                    model.getContainer().getDirectMemberForBackend(name, backendToSearch.nativeAnnotation);
-                            if (overloadFromModelLoader instanceof FunctionOrValue) {
-                                if (loadedFunctionsOrValues == null) {
-                                    loadedFunctionsOrValues = new ArrayList<>();
-                                }
-                                loadedFunctionsOrValues.add((FunctionOrValue) overloadFromModelLoader);
-                            } else if (overloadFromModelLoader instanceof Class) {
-                                if (loadedClasses == null) {
-                                    loadedClasses = new ArrayList<>();
-                                }
-                                loadedClasses.add((Class) overloadFromModelLoader);
-                            }
-                        }
-                        // Initialize the header's overloads
-                        if (model instanceof FunctionOrValue) {
-                            FunctionOrValue m = 
-                                    (FunctionOrValue) model;
-
-                            if (loadedFunctionsOrValues != null) {
-                                m.initOverloads(
-                                        loadedFunctionsOrValues.toArray(
-                                                new FunctionOrValue[loadedFunctionsOrValues.size()]));
-                            } else {
-                                m.initOverloads();
-                            }
-                        }
-                        else if (model instanceof Class) {
-                            Class c = (Class) model;
-
-                            if (loadedClasses != null) {
-                                c.initOverloads(
-                                        loadedClasses.toArray(
-                                                new Class[loadedClasses.size()]));
-
-                            } else {
-                                c.initOverloads();
-                            }
-                        }
+                        handleNativeHeader(model, name);
                     }
                 }
                 else {
@@ -304,14 +257,18 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
                         if (isHeader && member.isNativeHeader()) {
                             that.addError("duplicate native header: '" + 
                                     name + "'");
-                            unit.getDuplicateDeclarations().add(member);
+                            unit.getDuplicateDeclarations()
+                                .add(member);
                         }
                         else {
-                            Declaration overload = findOverloadForBackend(backend, model, overloads);
+                            Declaration overload = 
+                                    findOverloadForBackend(backend, 
+                                            model, overloads);
                             if (overload != null) {
                                 that.addError("duplicate native implementation: '" + 
                                         name + "'");
-                                unit.getDuplicateDeclarations().add(overload);
+                                unit.getDuplicateDeclarations()
+                                    .add(overload);
                             }
                         } 
                         if (isAllowedToChangeModel(member) && 
@@ -332,12 +289,92 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
                     }
                 }
             }
-            else if (!(model instanceof Setter) && 
-                    !isHeader) {
+            else if (!(model instanceof Setter) && !isHeader) {
                 if (!canBeNative) {
                     that.addError("native declaration is not a class, constructor, method, attribute or object: '" + 
                             name + "'");
                 }
+            }
+        }
+    }
+    
+    private static boolean canBeNative(Tree.Declaration that) {
+        return that instanceof Tree.AnyClass
+            || that instanceof Tree.Constructor
+            || that instanceof Tree.Enumerated
+            || that instanceof Tree.AnyMethod
+            || that instanceof Tree.AnyAttribute
+        || that instanceof ObjectDefinition;
+    }
+    
+    private static boolean mustHaveHeader(Declaration model) {
+        if (model.isToplevel() && model.isShared()) {
+            return true;
+        }
+        else if (model.isMember()) {
+            Declaration container = 
+                    (Declaration)
+                        model.getContainer();
+            return container.isNative() && 
+                    container.isShared();
+        }
+        else {
+            return false;
+        }
+    }
+    
+    private void handleNativeHeader(Declaration model, String name) {
+        // Deal with implementations from the ModelLoader
+        ArrayList<FunctionOrValue> loadedFunctionsOrValues = null;
+        ArrayList<Class> loadedClasses = null;
+        for (Backend backendToSearch: Backend.values()) {
+            if (backendToSearch.equals(Backend.None)) {
+                continue;
+            }
+            Declaration overloadFromModelLoader = 
+                    model.getContainer()
+                        .getDirectMemberForBackend(name, 
+                                backendToSearch.nativeAnnotation);
+            if (overloadFromModelLoader 
+                    instanceof FunctionOrValue) {
+                if (loadedFunctionsOrValues == null) {
+                    loadedFunctionsOrValues = 
+                            new ArrayList<FunctionOrValue>();
+                }
+                FunctionOrValue fov = 
+                        (FunctionOrValue) 
+                            overloadFromModelLoader;
+                loadedFunctionsOrValues.add(fov);
+            }
+            else if (overloadFromModelLoader instanceof Class) {
+                if (loadedClasses == null) {
+                    loadedClasses = new ArrayList<Class>();
+                }
+                Class c = (Class) overloadFromModelLoader;
+                loadedClasses.add(c);
+            }
+        }
+        // Initialize the header's overloads
+        if (model instanceof FunctionOrValue) {
+            FunctionOrValue m = (FunctionOrValue) model;
+            if (loadedFunctionsOrValues!=null) {
+                m.initOverloads(
+                        loadedFunctionsOrValues.toArray(
+                                NO_FUNCTIONS_OR_VALUES));
+            }
+            else {
+                m.initOverloads();
+            }
+        }
+        else if (model instanceof Class) {
+            Class c = (Class) model;
+            if (loadedClasses != null) {
+                c.initOverloads(
+                        loadedClasses.toArray(NO_CLASSES));
+
+            }
+            else {
+                c.initOverloads();
             }
         }
     }
@@ -348,8 +385,7 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
         if (overloads!=null) {
             for (Declaration overload: overloads) {
                 if (backend.equals(overload.getNativeBackend()) && 
-                        !shouldIgnoreOverload(
-                                overload, declaration)) {
+                    !shouldIgnoreOverload(overload, declaration)) {
                     return overload;
                 }
             }
