@@ -3473,10 +3473,10 @@ public class ExpressionVisitor extends Visitor {
                         getInferredTypeArguments(that, 
                             reference, (Generic) dec, 
                             receiverType);
-                if (typeArgs==null) {
+                /*if (typeArgs==null) {
                     reference.addError("type arguments could not be inferred: '" +
                             dec.getName(unit) + "' is generic");
-                }
+                }*/
                 return typeArgs;
             }
         }
@@ -6106,14 +6106,14 @@ public class ExpressionVisitor extends Visitor {
                             tal);
                 }
                 if (that.getStaticMethodReference()) {
-                    handleStaticPrimaryImplicitTypeArguments(
+                    handleStaticReferenceImplicitTypeArguments(
                             that);
                 }
                 //otherwise infer type arguments later
             }
             else {
                 if (that.getStaticMethodReference()) {
-                    handleStaticPrimaryImplicitTypeArguments(
+                    handleStaticReferenceImplicitTypeArguments(
                             that);
                 }
                 else {
@@ -6159,12 +6159,20 @@ public class ExpressionVisitor extends Visitor {
      * 
      * @param that the static reference
      */
-    private void handleStaticPrimaryImplicitTypeArguments(
+    private void handleStaticReferenceImplicitTypeArguments(
             Tree.QualifiedMemberOrTypeExpression that) {
         //we do this check later than usual, in order
         //to allow qualified refs to Java static members
         //without type arguments to the qualifying type
         if (isStaticReference(that)) {
+            Declaration member = that.getDeclaration();
+            Tree.TypeArguments tas = that.getTypeArguments();
+            if (member!=null &&
+                    !explicitTypeArguments(member, tas)) {
+                that.addError("type arguments could not be inferred: '" +
+                        member.getName(unit) + "' is generic");
+            }
+            //the reference to the qualifying type
             Tree.StaticMemberOrTypeExpression smte =
                     (Tree.StaticMemberOrTypeExpression) 
                         that.getPrimary();
@@ -6367,7 +6375,7 @@ public class ExpressionVisitor extends Visitor {
             //}
         }
         if (that.getStaticMethodReference()) {
-            handleStaticPrimaryImplicitTypeArguments(
+            handleStaticReferenceImplicitTypeArguments(
                     that);
         }
     }
@@ -6880,14 +6888,14 @@ public class ExpressionVisitor extends Visitor {
                             tal);
                 }
                 if (that.getStaticMethodReference()) {
-                    handleStaticPrimaryImplicitTypeArguments(
+                    handleStaticReferenceImplicitTypeArguments(
                             that);
                 }
                 //otherwise infer type arguments later
             }
             else {
                 if (that.getStaticMethodReference()) {
-                    handleStaticPrimaryImplicitTypeArguments(
+                    handleStaticReferenceImplicitTypeArguments(
                             that);
                 }
                 else if (!that.getStaticMethodReferencePrimary()) {
@@ -7173,7 +7181,7 @@ public class ExpressionVisitor extends Visitor {
                     that, memberType, fullType));
         }
         if (that.getStaticMethodReference()) {
-            handleStaticPrimaryImplicitTypeArguments(
+            handleStaticReferenceImplicitTypeArguments(
                     that);
         }
     }

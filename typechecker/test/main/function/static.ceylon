@@ -128,6 +128,13 @@ void testMissingTypeArgs() {
     @error:"missing argument to required parameter" value noand = Integer.and();
     @error:"does not accept type arguments" value notand = Integer<>.and;
     @error:"does not accept type arguments" value nottaand = Integer.and<>;
+
+    @error String.map("hello");
+    @error Iterable.map({1,2,3});
+    Iterable.filter({1,2,3});
+    @error Anything m = String.map;
+    @error Anything f = Iterable.filter;
+    {Integer*}(Boolean(Integer)) fi = Iterable.filter({1,2,3});
 }
 
 
