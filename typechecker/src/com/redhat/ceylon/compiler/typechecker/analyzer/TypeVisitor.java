@@ -754,24 +754,41 @@ public class TypeVisitor extends Visitor {
                     cd.getName() + 
                     "' has a parameter list and a value constructor");
         }
-        if (pl==null && 
-                !cd.hasConstructors() && 
+        if (pl==null) {
+            if (!cd.hasConstructors() && 
                 !cd.hasEnumerated()) {
-            boolean error = true;
-            if (cd.isNative() && !cd.isNativeHeader()) {
-                Declaration hdr = getNativeHeader(cd);
-                if (hdr instanceof Class) {
-                    Class hcd = (Class) hdr;
-                    if (hcd.hasConstructors() || hcd.hasEnumerated()) {
-                        error = false;
+                boolean error = true;
+                if (cd.isNative() && !cd.isNativeHeader()) {
+                    Declaration hdr = getNativeHeader(cd);
+                    if (hdr instanceof Class) {
+                        Class hcd = (Class) hdr;
+                        if (hcd.hasConstructors() || 
+                            hcd.hasEnumerated()) {
+                            error = false;
+                        }
                     }
                 }
+                if (error) {
+                    that.addError("class must have a parameter list or at least one constructor: class '" + 
+                            cd.getName() + 
+                            "' has neither parameter list nor constructor", 
+                            1001);
+                }
             }
-            if (error) {
-                that.addError("class without parameters must declare at least one constructor: class '" + 
-                        cd.getName() + 
-                        "' has neither parameter list nor constructors", 
-                        1001);
+            else {
+                boolean found = false;
+                for (Declaration m: cd.getMembers()) {
+                    if (m instanceof Constructor &&
+                            m.isShared()) {
+                        found = true;
+                        break;
+                    }
+                }
+                if (!found) {
+                    that.addError("class with constructors must declare at least one shared constructor: class '" + 
+                            cd.getName() + 
+                            "' has no shared constructor");
+                }
             }
         }
     }

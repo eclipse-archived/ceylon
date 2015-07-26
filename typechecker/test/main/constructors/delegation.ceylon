@@ -34,33 +34,33 @@ class C0  {
 }
 
 class C1 extends A {
-    @error new create() extends Point(1.0,0.0) {}
+    @error shared new create() extends Point(1.0,0.0) {}
 }
 @error class C2 extends create {
-    @error new create() extends create() {}
+    @error shared new create() extends create() {}
 }
 class C3 extends A {
-    @error new create() extends create() {}
+    @error shared new create() extends create() {}
 }
 class C4 extends A {
-    new create() extends super.create() {}
+    shared new create() extends super.create() {}
 }
 class C5 extends A {
-    @error new create() extends super.Point(1.0,2.0) {}
+    @error shared new create() extends super.Point(1.0,2.0) {}
 }
 class C6 extends B {
-    new create() extends super.point(1.0) {}
+    shared new create() extends super.point(1.0) {}
 }
 class C7 extends B {
-    new create() extends point(1.0) {}
+    shared new create() extends point(1.0) {}
 }
 
 class Oops1 extends Point {
-    new create() extends Point.diagonal(0.0) {}
+    shared new create() extends Point.diagonal(0.0) {}
 }
 
 class Oops2 extends E {
-    @error new create() extends Point.diagonal(0.0) {}
+    @error shared new create() extends Point.diagonal(0.0) {}
 }
 
 

@@ -1109,7 +1109,7 @@ TypeConstraints?
 }</programlisting>
         
         <para>If a class does not specify an initializer parameter list, it must have
-        at least one constructor, as defined below in <xref linkend="constructors"/>.</para>
+        at least one shared constructor, as defined below in <xref linkend="constructors"/>.</para>
         
         <section id="callabletypeofclass">
             <title>Callable type of a class</title>

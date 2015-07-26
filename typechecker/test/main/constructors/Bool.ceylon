@@ -114,10 +114,10 @@ class UnidentifiableBool
 
 class PrivateBool of true|false {
     shared actual String string;
-    new true {
+    shared new true {
         string = "true";
     }
-    new false {
+    shared new false {
         string = "false";
     }
     void m() {
@@ -130,11 +130,11 @@ class PrivateBool of true|false {
     }
 }
 
-abstract class AbstractSingleton {
+@error abstract class AbstractSingleton {
     @error new instance {}
 }
 
-class GenericSingleton<T> {
+@error class GenericSingleton<T> {
     @error new instance {}
 }
 
@@ -247,7 +247,7 @@ class BoolWithNew2 {
 }
 
 interface InterFace {
-    class Singleton {
+    @error class Singleton {
         @error new instance {}
     }
 }

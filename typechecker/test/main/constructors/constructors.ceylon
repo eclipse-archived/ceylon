@@ -188,13 +188,16 @@ class Broken extends Super {
 
 class MoreBroken extends Super {
     @error new broken() extends Basic() {}
+    shared new screate() extends create() {}
 }
 
 class Sub1 extends Super {
     new create() extends Super.create() {}
+    shared new screate() extends create() {}
 }
 class BrokenSub1 extends Super {
     @error new create() extends Super.create {}
+    shared new screate() extends create() {}
 }
 
 class Sub2() extends Super.create() {}
@@ -267,6 +270,7 @@ shared class Subtype extends Supertype {
 class WithDupeConstructor {
     new dupe() {}
     @error new dupe(String string) {}
+    shared new create() {}
 }
 class WithDupeDefaultConstructor {
     shared new () {}
@@ -275,6 +279,7 @@ class WithDupeDefaultConstructor {
 
 class WithUnsharedDefaultConstructor {
     @error new () {}
+    shared new create() {}
 }
 
 shared class Thing {
@@ -365,13 +370,15 @@ class WithBrokenDelegation<Element> {
 class WithInnerClassExtendingPartialConstructor {
     abstract new partial() {}   
     @error shared class Inner() extends partial() {}
+    shared new create() {}
 }
 
 class Foobar {
     abstract new partial() {}
-    new create() {}
+    shared new create() {}
     @error class First() => Foobar.partial();
-    @error shared class Second() => Foobar.create();
+    shared class Second() => Foobar.create();
+    @error shared class Third() => Foobar.none();
 }
 
 class WithMethod {
@@ -399,4 +406,9 @@ class WithMemberRefInDelegation {
     @error shared new broken1 extends create(hello) {}
     function str(Integer j) => j.string;
     @error shared new broken2(Integer i) extends create(str(i)) {} 
+}
+
+@error class WithNoSharedConstructor {
+    new instance {}
+    new create() {}
 }
