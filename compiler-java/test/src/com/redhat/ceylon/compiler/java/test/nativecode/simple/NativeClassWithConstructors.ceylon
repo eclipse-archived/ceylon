@@ -63,10 +63,12 @@ shared class NativeClassWithConstructors3 {
 
 native("jvm")
 shared class NativeClassWithConstructors3 {
+    native("jvm") new jvm(Integer x, Integer y) {}
 }
 
 native("js")
 shared class NativeClassWithConstructors3 {
+    native("js") new js(Integer x, Integer y) {}
 }
 
 
