@@ -19,10 +19,10 @@
  */
 @noanno
 class SequencedParameterCtor {
-    new possiblyEmpty(String* s) {
+    shared new possiblyEmpty(String* s) {
         
     }
-    new nonEmpty(String+ s) {
+    shared new nonEmpty(String+ s) {
         
     }
     void use() {

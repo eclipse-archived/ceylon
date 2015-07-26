@@ -63,25 +63,25 @@ class SequencedParameterCtor implements .com.redhat.ceylon.compiler.java.runtime
             returning new .com.redhat.ceylon.compiler.java.test.structure.constructor.SequencedParameterCtor(.com.redhat.ceylon.compiler.java.test.structure.constructor.SequencedParameterCtor.nonEmpty_, arg$5$0);
         );
     }
-    private static final .com.redhat.ceylon.compiler.java.test.structure.constructor.SequencedParameterCtor.possiblyEmpty_ possiblyEmpty_ = null;
+    public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.SequencedParameterCtor.possiblyEmpty_ possiblyEmpty_ = null;
     
-    private static final class possiblyEmpty_ {
+    public static final class possiblyEmpty_ {
         
         private possiblyEmpty_() {
         }
     }
     
-    private SequencedParameterCtor(.com.redhat.ceylon.compiler.java.test.structure.constructor.SequencedParameterCtor.possiblyEmpty_ $name$, final .ceylon.language.Sequential<? extends .ceylon.language.String> s$param$) {
+    public SequencedParameterCtor(.com.redhat.ceylon.compiler.java.test.structure.constructor.SequencedParameterCtor.possiblyEmpty_ $name$, final .ceylon.language.Sequential<? extends .ceylon.language.String> s$param$) {
     }
-    private static final .com.redhat.ceylon.compiler.java.test.structure.constructor.SequencedParameterCtor.nonEmpty_ nonEmpty_ = null;
+    public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.SequencedParameterCtor.nonEmpty_ nonEmpty_ = null;
     
-    private static final class nonEmpty_ {
+    public static final class nonEmpty_ {
         
         private nonEmpty_() {
         }
     }
     
-    private SequencedParameterCtor(.com.redhat.ceylon.compiler.java.test.structure.constructor.SequencedParameterCtor.nonEmpty_ $name$, final .ceylon.language.Sequence<? extends .ceylon.language.String> s$param$) {
+    public SequencedParameterCtor(.com.redhat.ceylon.compiler.java.test.structure.constructor.SequencedParameterCtor.nonEmpty_ $name$, final .ceylon.language.Sequence<? extends .ceylon.language.String> s$param$) {
     }
     
     @.java.lang.Override
