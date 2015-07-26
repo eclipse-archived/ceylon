@@ -16,8 +16,6 @@ import java.util.Map;
 import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.ImportPath;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.QuotedLiteral;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.ModuleImport;
@@ -86,12 +84,18 @@ public class ModuleVisitor extends Visitor {
         }
         else {
             String versionString = quoted.getText();
+            for (int i=0; i<versionString.length(); i++) {
+                if (Character.isWhitespace(versionString.charAt(i))) {
+                    quoted.addError("module version may not contain whitespace");
+                    break;
+                }
+            }
             if (versionString.length()<2) {
                 return "";
             }
             else {
                 if (versionString.charAt(0)=='\'') {
-                    quoted.addError("version should be double-quoted");
+                    quoted.addError("module version should be double-quoted");
                 }
                 return versionString.substring(1, versionString.length()-1);
             }
@@ -108,6 +112,12 @@ public class ModuleVisitor extends Visitor {
             return "";
         }
         else {
+            for (int i=0; i<nameString.length(); i++) {
+                if (Character.isWhitespace(nameString.charAt(i))) {
+                    quoted.addError("module name may not contain whitespace");
+                    break;
+                }
+            }
             if (addErrorOnInvalidQuotes && nameString.charAt(0)=='\'') {
                 quoted.addError("module name should be double-quoted");
             }
@@ -121,7 +131,7 @@ public class ModuleVisitor extends Visitor {
         super.visit(that);
         if (phase==Phase.SRC_MODULE) {
             String version = getVersionString(that.getVersion());
-            ImportPath importPath = that.getImportPath();
+            Tree.ImportPath importPath = that.getImportPath();
             List<String> name = getNameAsList(importPath);
             if (pkg.getNameAsString().isEmpty()) {
                 that.addError("module descriptor encountered in root source directory");
@@ -178,7 +188,7 @@ public class ModuleVisitor extends Visitor {
                             ip.addError("duplicate module import: '" + mp + "'");
                         }
                     }
-                    QuotedLiteral ql = im.getQuotedLiteral();
+                    Tree.QuotedLiteral ql = im.getQuotedLiteral();
                     if(ql != null){
                         String mp = getNameString(ql, false);
                         if (!set.add(mp)) {
