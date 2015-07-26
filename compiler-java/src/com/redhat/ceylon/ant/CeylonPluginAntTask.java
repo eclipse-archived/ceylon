@@ -57,6 +57,7 @@ public class CeylonPluginAntTask extends OutputRepoUsingCeylonAntTask {
     private Path script;
     private boolean force;
     private boolean system;
+    private boolean local;
 
     public void addConfiguredModule(Module module){
         this.moduleset.addConfiguredModule(module);
@@ -134,6 +135,14 @@ public class CeylonPluginAntTask extends OutputRepoUsingCeylonAntTask {
         this.system = system;
     }
 
+    public boolean getLocal() {
+        return local;
+    }
+
+    public void setLocal(boolean local) {
+        this.local = local;
+    }
+
     @Override
     protected void checkParameters() throws BuildException {
         if (this.moduleset.getModules().isEmpty()) {
@@ -154,6 +163,8 @@ public class CeylonPluginAntTask extends OutputRepoUsingCeylonAntTask {
         
         if (system) {
             appendOption(cmd, "--system");
+        } else if (local) {
+            appendOption(cmd, "--local");
         }
         
         for (File src : getSrc()) {
