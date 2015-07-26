@@ -757,13 +757,20 @@ public class TypeVisitor extends Visitor {
         if (pl==null) {
             if (!cd.hasConstructors() && 
                 !cd.hasEnumerated()) {
+                // No parameter list and no constructors or enumerated
+                // normally means something is wrong
                 boolean error = true;
+                // Check if the declaration is a native implementation
                 if (cd.isNative() && !cd.isNativeHeader()) {
                     Declaration hdr = getNativeHeader(cd);
+                    // Check that it has a native header
                     if (hdr instanceof Class) {
                         Class hcd = (Class) hdr;
+                        // And finally check if the header has any
+                        // constructors or enumerated
                         if (hcd.hasConstructors() || 
                             hcd.hasEnumerated()) {
+                            // In that case there's no error
                             error = false;
                         }
                     }
