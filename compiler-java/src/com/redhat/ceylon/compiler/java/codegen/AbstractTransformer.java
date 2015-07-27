@@ -768,8 +768,21 @@ public abstract class AbstractTransformer implements Transformation {
         }
         if(isTrueFalseUnion(type))
             type = typeFact().getBooleanType();
+        else if(containsJavaEnumInUnion(type))
+            type = typeFact().denotableType(type);
         
         return type;
+    }
+
+    private boolean containsJavaEnumInUnion(Type type) {
+        if(!type.isUnion())
+            return false;
+        for(Type caseType : type.getCaseTypes()){
+            if(caseType.isClass()
+                    && caseType.getDeclaration().isJavaEnum())
+                return true;
+        }
+        return false;
     }
 
     TypedReference getTypedReference(TypedDeclaration decl){
