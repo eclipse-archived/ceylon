@@ -15,7 +15,7 @@ final class bug1257SpreadNoneptyTypeArg_ {
     }
     
     static <Args extends .ceylon.language.Sequence<? extends .java.lang.Object>>void bug1257SpreadNoneptyTypeArg(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Args, final Args args) {
-        final .ceylon.language.Sequence<? extends .java.lang.Object> tup = (.ceylon.language.Sequence<? extends .java.lang.Object>).ceylon.language.Tuple.instance(.ceylon.language.Object.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.String.instance("hello")}, (.ceylon.language.Sequential<? extends .java.lang.Object>)(.ceylon.language.Sequential)args);
+        final .ceylon.language.Sequence<? extends .java.lang.Object> tup = (.ceylon.language.Sequence<? extends .java.lang.Object>).ceylon.language.Tuple.instance(.ceylon.language.Object.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.String.instance("hello")}, (.ceylon.language.Sequence<? extends .java.lang.Object>)(.ceylon.language.Sequence)args);
     }
 }
 final class bug1257SpreadEmptyIterTypeArg_ {
