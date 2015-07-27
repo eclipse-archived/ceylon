@@ -472,8 +472,6 @@
                 <include name="ceylon/language/printStackTrace_.java"/>
                 <exclude name="ceylon/language/String.ceylon"/>
                 <include name="ceylon/language/String.java"/>
-                <exclude name="ceylon/language/StringBuilder.ceylon"/>
-                <include name="ceylon/language/StringBuilder.java"/>
                 <include name="ceylon/language/string_.java"/>
                 <exclude name="ceylon/language/Tuple.ceylon"/>
                 <include name="ceylon/language/Tuple.java"/>
