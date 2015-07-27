@@ -1063,7 +1063,8 @@ public class TypeVisitor extends Visitor {
             }
         }
         if (sie==null && isNativeImplementation(dec)) {
-            that.addError("missing method body for native function implementation");
+            that.addError("missing body for native function: '" + 
+                    dec.getName() + "' must have a body");
         }
     }
     
@@ -1101,7 +1102,8 @@ public class TypeVisitor extends Visitor {
             }
         }
         if (sie==null && isNativeImplementation(dec)) {
-            that.addError("missing method body for native value implementation");
+            that.addError("missing body for native value: '" + 
+                    dec.getName() + "' must have a body");
         }
     }
     
