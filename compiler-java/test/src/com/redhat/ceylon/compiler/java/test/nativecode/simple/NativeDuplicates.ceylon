@@ -19,28 +19,28 @@
  */
 native shared Integer nativeDuplicates1();
 
-native shared Integer nativeDuplicates1();
+/*@error*/ native shared Integer nativeDuplicates1();
 
 native shared Integer nativeDuplicates2();
 
 native("jvm") shared Integer nativeDuplicates2() => 1;
 
-native("jvm") shared Integer nativeDuplicates2() => 1;
+/*@error*/ native("jvm") shared Integer nativeDuplicates2() => 1;
 
 native shared Integer nativeDuplicates3();
 
 native("js") shared Integer nativeDuplicates3() => 1;
 
-native("js") shared Integer nativeDuplicates3() => 1;
+/*@error*/ native("js") shared Integer nativeDuplicates3() => 1;
 
 native Integer nativeDuplicates4();
 
 native("jvm") Integer nativeDuplicates4() => 1;
 
-native("jvm") Integer nativeDuplicates4() => 1;
+/*@error*/ native("jvm") Integer nativeDuplicates4() => 1;
 
 native shared Integer nativeDuplicates5();
 
 native("js") shared Integer nativeDuplicates5() => 1;
 
-native("js") shared Integer nativeDuplicates5() => 1;
+/*@error*/ native("js") shared Integer nativeDuplicates5() => 1;

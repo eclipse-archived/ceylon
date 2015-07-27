@@ -17,8 +17,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-native("jvm") shared void nativeMethodSharedInvalid() {
+/*@error*/ native("jvm") shared void nativeMethodSharedInvalid() {
 }
 
-native("js") shared void nativeMethodSharedInvalid() {
+/*@error*/ native("js") shared void nativeMethodSharedInvalid() {
 }

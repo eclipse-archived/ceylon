@@ -32,14 +32,14 @@ native class NativeClassMismatch1() {}
 
 native("jvm") class NativeClassMismatch1() {}
 
-native("js") shared class NativeClassMismatch1() {}
+/*@error*/ native("js") shared class NativeClassMismatch1() {}
 
 
 native class NativeClassMismatch2(Integer i) {}
 
-native("jvm") class NativeClassMismatch2(Integer i, Boolean b) {}
+/*@error*/ native("jvm") class NativeClassMismatch2(Integer i, Boolean b) {}
 
-native("js") class NativeClassMismatch2(String s) {}
+native("js") class NativeClassMismatch2(/*@error*/ String s) {}
 
 
 native class NativeClassMismatch3() extends NativeClassMismatchSuper() {}
@@ -54,7 +54,7 @@ native class NativeClassMismatch4() satisfies NativeClassMismatchSuper1 & Native
     native shared actual void test2(Integer i);
 }
 
-native("jvm") class NativeClassMismatch4() satisfies NativeClassMismatchSuper1 {
+/*@error*/ native("jvm") class NativeClassMismatch4() satisfies NativeClassMismatchSuper1 {
     native("jvm") shared actual void test1(Integer i) {}
 }
 
@@ -72,24 +72,24 @@ native("jvm") class NativeClassMismatch5() satisfies NativeClassMismatchSuper1 {
     native("jvm") shared actual void test1(Integer i) {}
 }
 
-native("js") class NativeClassMismatch5() satisfies NativeClassMismatchSuper2 {
+/*@error*/ native("js") class NativeClassMismatch5() satisfies NativeClassMismatchSuper2 {
     native("js") shared actual void test2(Integer i) {}
 }
 
 
 shared class NativeClassMismatch6() {}
 
-native shared class NativeClassMismatch6() {}
+/*@error*/ native shared class NativeClassMismatch6() {}
 
-native("js") shared class NativeClassMismatch6() {}
+/*@error*/ native("js") shared class NativeClassMismatch6() {}
 
 
 native class NativeClassMismatch7() satisfies NativeClassMismatchSuper1 {
     native shared actual void test1(Integer i);
 }
 
-native("jvm") class NativeClassMismatch7() satisfies NativeClassMismatchSuper1 {
-    native("js") shared actual void test1(Integer i) {}
+/*@error*/ native("jvm") class NativeClassMismatch7() satisfies NativeClassMismatchSuper1 {
+    /*@error*/ native("js") shared actual void test1(Integer i) {}
 }
 
 
@@ -131,22 +131,22 @@ native class NativeClassMismatch9() {
     native shared void test5(Integer i);
 }
 
-native("jvm") class NativeClassMismatch9() {
+/*@error*/ native("jvm") class NativeClassMismatch9() {
     native("jvm") shared void test1(Integer i) {}
-    native("jvm") shared void test2(String s) {}
-    native("jvm") shared String test3(Integer i) { return ""; }
-    native("jvm") shared void test4() {}
-    native("jvm") shared void testX(Integer i) {}
-    shared void testY(Integer i) {}
+    native("jvm") shared void test2(/*@error*/ String s) {}
+    /*@error*/ native("jvm") shared String test3(Integer i) { return ""; }
+    /*@error*/ native("jvm") shared void test4() {}
+    /*@error*/ native("jvm") shared void testX(Integer i) {}
+    /*@error*/ shared void testY(Integer i) {}
 }
 
-native("js") class NativeClassMismatch9() {
+/*@error*/ native("js") class NativeClassMismatch9() {
     native("js") shared void test1(Integer i) {}
-    native("js") shared void test2(String s) {}
-    native("js") shared String test3(Integer i) { return ""; }
-    native("js") shared void test4() {}
-    native("js") shared void testX(Integer i) {}
-    shared void testY(Integer i) {}
+    native("js") shared void test2(/*@error*/ String s) {}
+    /*@error*/ native("js") shared String test3(Integer i) { return ""; }
+    /*@error*/ native("js") shared void test4() {}
+    /*@error*/ native("js") shared void testX(Integer i) {}
+    /*@error*/ shared void testY(Integer i) {}
 }
 
 native shared class NativeClassMismatch10(Integer x, Integer y) {
@@ -157,14 +157,14 @@ native shared class NativeClassMismatch10(Integer x, Integer y) {
     native Integer privattr;
 }
 
-native("jvm") shared class NativeClassMismatch10(Integer x, Integer y) {
+/*@error*/ native("jvm") shared class NativeClassMismatch10(Integer x, Integer y) {
     native("jvm") shared void test2() {
         test();
         value x = foo;
     }
 }
 
-native("js") shared class NativeClassMismatch10(Integer x, Integer y) {
+/*@error*/ native("js") shared class NativeClassMismatch10(Integer x, Integer y) {
     native("js") shared void test2() {
         test();
         value x = foo;
@@ -174,13 +174,13 @@ native("js") shared class NativeClassMismatch10(Integer x, Integer y) {
 
 native shared class NativeClassMismatch11<A,B>() {}
 
-native("jvm") shared class NativeClassMismatch11<A,B,C>() {}
+/*@error*/ native("jvm") shared class NativeClassMismatch11<A,B,C>() {}
 
-native("js") shared class NativeClassMismatch11() {}
+/*@error*/ native("js") shared class NativeClassMismatch11() {}
 
 
 native shared class NativeClassMismatch12<A>() given A satisfies Usable {}
 
-native("jvm") shared class NativeClassMismatch12<B>() {}
+/*@error*/ native("jvm") shared class NativeClassMismatch12<B>() {}
 
-native("js") shared class NativeClassMismatch12<A>() given A satisfies Category {}
+/*@error*/ native("js") shared class NativeClassMismatch12<A>() given A satisfies Category {}

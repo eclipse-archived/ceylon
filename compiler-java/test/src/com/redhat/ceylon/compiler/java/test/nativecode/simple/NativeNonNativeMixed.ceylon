@@ -18,15 +18,15 @@
  * MA  02110-1301, USA.
  */
 shared class NativeNonNativeMixed1() {}
-native("jvm") shared class NativeNonNativeMixed1() {}
-native("js") shared class NativeNonNativeMixed1() {}
+/*@error*/ native("jvm") shared class NativeNonNativeMixed1() {}
+/*@error*/ native("js") shared class NativeNonNativeMixed1() {}
 
 shared variable String nativeNonNativeMixed2 = "Foo";
-native shared variable String nativeNonNativeMixed2;
-native("jvm") shared variable String nativeNonNativeMixed2 = "Bar";
-native("js") shared variable String nativeNonNativeMixed2 = "Baz";
+/*@error*/ native shared variable String nativeNonNativeMixed2;
+/*@error*/ native("jvm") shared variable String nativeNonNativeMixed2 = "Bar";
+/*@error*/ native("js") shared variable String nativeNonNativeMixed2 = "Baz";
 
 native shared variable String nativeNonNativeMixed3;
-shared variable String nativeNonNativeMixed3 = "Foo";
+/*@error*/ shared variable String nativeNonNativeMixed3 = "Foo";
 native("jvm") shared variable String nativeNonNativeMixed3 = "Bar";
 native("js") shared variable String nativeNonNativeMixed3 = "Baz";

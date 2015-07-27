@@ -19,13 +19,13 @@
  */
 native shared Integer nativeInvalidTypes();
 
-native("jvm") shared Integer nativeInvalidTypes => 1;
+/*@error*/ native("jvm") shared Integer nativeInvalidTypes => 1;
 
-native("js") shared class \InativeInvalidTypes() {
+/*@error*/ native("js") shared class \InativeInvalidTypes() {
 }
 
-native("foo") shared Integer nativeInvalidTypes() => 2;
+/*@error*/ native("foo") shared Integer nativeInvalidTypes() => 2;
 
-native("jvm") shared interface NativeInvalidInterface1;
+/*@error*/ native("jvm") shared interface NativeInvalidInterface1;
 
-native("jvm") shared interface NativeInvalidInterface2 {}
+/*@error*/ native("jvm") shared interface NativeInvalidInterface2 {}

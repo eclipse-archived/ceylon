@@ -23,11 +23,11 @@ native shared class NativeMissingClass() {}
 native Integer nativeMissingMethod2();
 native("js") Integer nativeMissingMethod2() => 1;
 
-shared void test() {
+shared void testNativeMissingMethod() {
     nativeMissingMethod();
     nativeMissingMethod2();
     NativeMissingClass nmc = NativeMissingClass();
 }
 
-shared void test2(NativeMissingClass nmc) {
+shared void testNativeMissingMethod2(NativeMissingClass nmc) {
 }

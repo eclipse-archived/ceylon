@@ -18,13 +18,13 @@
  * MA  02110-1301, USA.
  */
 native shared Integer nativeSetterInvalid;
-assign nativeSetterInvalid;
+/*@error*/ assign nativeSetterInvalid;
 
 native("jvm") shared Integer nativeSetterInvalid => 1;
-assign nativeSetterInvalid {}
+/*@error*/ assign nativeSetterInvalid {}
 
 native("js") shared Integer nativeSetterInvalid => 1;
-assign nativeSetterInvalid {}
+/*@error*/ assign nativeSetterInvalid {}
 
 shared Integer nativeSetterInvalid2 => 1;
-native assign nativeSetterInvalid2;
+/*@error*/ native assign nativeSetterInvalid2;
