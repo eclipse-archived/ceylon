@@ -1623,7 +1623,14 @@ public class ExpressionTransformer extends AbstractTransformer {
                 Tree.SpreadArgument spreadExpr = (Tree.SpreadArgument) expr;
                 // make sure we get a spread part of the right type
                 Type spreadType = spreadExpr.getExpression().getTypeModel();
-                Type sequentialSpreadType = spreadType.getSupertype(typeFact().getSequentialDeclaration());
+                Type sequentialSpreadType = null;
+                // try to get a Sequence
+                if (typeFact().isNonemptyIterableType(spreadType))
+                    sequentialSpreadType = spreadType.getSupertype(typeFact().getSequenceDeclaration());
+                // failing that, try Sequential
+                if(sequentialSpreadType == null)
+                    sequentialSpreadType = spreadType.getSupertype(typeFact().getSequentialDeclaration());
+                
                 if(sequentialSpreadType != null){
                     tail = transformExpression(spreadExpr.getExpression(), BoxingStrategy.BOXED, sequentialSpreadType);
                 }else {
