@@ -1369,7 +1369,7 @@ public class TypeUtils {
     }
     
     public static boolean acceptNative(Tree.Declaration node) {
-        return node.getDeclarationModel() == null && acceptNative(node.getDeclarationModel());
+        return node.getDeclarationModel() == null || acceptNative(node.getDeclarationModel());
     }
     
     /**
@@ -1381,7 +1381,7 @@ public class TypeUtils {
      *    and no implementation for this backend 
      */
     public static boolean acceptNative(Declaration decl) {
-        return !decl.isNative()
+        return (!decl.isNative())
                 || NativeUtil.isForBackend(decl, Backend.JavaScript)
                 || isNativeExternal(decl)
                 || (NativeUtil.isHeaderWithoutBackend(decl, Backend.JavaScript)
