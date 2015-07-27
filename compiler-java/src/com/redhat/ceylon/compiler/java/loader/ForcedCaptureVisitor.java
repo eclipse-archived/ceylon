@@ -51,15 +51,15 @@ public class ForcedCaptureVisitor extends Visitor implements NaturalVisitor{
         for(Annotation anno : that.getAnnotationList().getAnnotations()){
             Type type = anno.getTypeModel();
             if(type == null || !type.isClassOrInterface())
-                return false;
+                continue;
             TypeDeclaration decl = type.getDeclaration();
             if(decl == null)
-                return false;
+                continue;
             Module module = Decl.getModule(decl);
             if(module == null)
-                return false;
+                continue;
             if(module.getLanguageModule() == module)
-                return false;
+                continue;
             // does not come from the language module
             return true;
         }
