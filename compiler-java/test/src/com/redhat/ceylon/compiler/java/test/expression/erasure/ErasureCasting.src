@@ -79,10 +79,10 @@ final class erasureCasting_ {
         if (a instanceof .com.redhat.ceylon.compiler.java.test.expression.erasure.EC_Parameterised) {
             ((.com.redhat.ceylon.compiler.java.test.expression.erasure.EC_Parameterised<? extends .java.lang.Object>)(.com.redhat.ceylon.compiler.java.test.expression.erasure.EC_Parameterised)a).t();
         }
-        final .java.lang.Object rawSequence = .ceylon.language.empty_.get_();
-        .java.lang.Object rawSequence$5;
+        final .ceylon.language.Empty rawSequence = .ceylon.language.empty_.get_();
+        .ceylon.language.Empty rawSequence$5;
         if ((rawSequence$5 = rawSequence) instanceof .ceylon.language.Sequence) {
-            final .ceylon.language.Sequence<? extends .java.lang.Object> rawSequence$6 = (.ceylon.language.Sequence<? extends .java.lang.Object>)(.ceylon.language.Sequence)rawSequence$5;
+            final .java.lang.Object rawSequence$6 = rawSequence$5;
         }
         final boolean bool = ((.ceylon.language.Boolean).ceylon.language.nothing_.get_()).booleanValue();
         .ceylon.language.String nonOptionalString$8;
