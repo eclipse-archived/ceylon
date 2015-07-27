@@ -191,7 +191,7 @@ public class CallableBuilder {
             boolean prevCallableInv = gen.expressionGen().withinSyntheticClassBody(true);
             try {
                 instanceFieldName = gen.naming.synthetic(Unfix.$instance$);
-                Type primaryType = qmte.getTarget().getQualifyingType();
+                Type primaryType = qmte.getPrimary().getTypeModel();
                 if (((Tree.QualifiedMemberOrTypeExpression)forwardCallTo).getMemberOperator() instanceof Tree.SafeMemberOp) {
                     primaryType = gen.typeFact().getOptionalType(primaryType);
                 }
