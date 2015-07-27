@@ -186,8 +186,8 @@
         
         <itemizedlist>
             <listitem>
-                <para>classes, interfaces, type aliases, type parameters, and
-                constructors share a single namespace,</para>
+                <para>classes, interfaces, type aliases, and type parameters
+                share a single namespace,</para>
             </listitem>
             <listitem>
                 <para>functions and values, including parameters, and constructors 
