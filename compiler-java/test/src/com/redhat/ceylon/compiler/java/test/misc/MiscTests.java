@@ -99,7 +99,7 @@ public class MiscTests extends CompilerTests {
                         "flatten", "className", "identityHash", "integerRangeByIterable",
                         "language", "modules", "operatingSystem", 
                         "printStackTrace", "process", "runtime", "system", 
-                        "StringBuilder", "Throwable", "type", "typeLiteral",
+                        "Throwable", "type", "typeLiteral",
                         "infinity", "unflatten",
                         "serialization", "deserialization"}) {
                     
