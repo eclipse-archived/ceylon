@@ -51,6 +51,7 @@ import org.junit.runners.Parameterized.Parameters;
 
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.ceylon.CeylonUtils;
+import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.compiler.java.codegen.CeylonTransformer;
 import com.redhat.ceylon.compiler.java.codegen.ClassTransformer;
@@ -86,6 +87,7 @@ import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Interface;
 import com.redhat.ceylon.model.typechecker.model.Function;
 import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
+import com.redhat.ceylon.model.typechecker.model.ModelUtil;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.Modules;
 import com.redhat.ceylon.model.typechecker.model.Package;
@@ -325,6 +327,13 @@ public class ModelLoaderTests extends CompilerTests {
         }
 
         public void compareDeclarations(String name, Declaration validDeclaration, Declaration modelDeclaration) {
+            if (validDeclaration.isNativeHeader()) {
+                // It's a native header, best to compare against its JVM implementation
+                Declaration impl = ModelUtil.getNativeDeclaration(validDeclaration, Backend.Java);
+                if (impl != null) {
+                    validDeclaration = impl;
+                }
+            }
             compareDeclarations(name, validDeclaration, modelDeclaration, false);
         }
         
@@ -530,6 +539,12 @@ public class ModelLoaderTests extends CompilerTests {
                 if(!modelMember.isShared())
                     continue;
                 Declaration validMember = lookupMember(validDeclaration, modelMember);
+                if (validMember == null && validDeclaration.isNative()) {
+                    Declaration hdr = ModelUtil.getNativeHeader(validDeclaration);
+                    if (hdr instanceof ClassOrInterface) {
+                        validMember = lookupMember((ClassOrInterface)hdr, modelMember);
+                    }
+                }
                 Assert.assertNotNull(modelMember.getQualifiedNameString()+" [extra member] encountered in loaded model", validMember);
             }
         }
