@@ -474,8 +474,11 @@
     </target>
 
     <target name="test"
-            depends="publish"
+            depends="publish,test.quick"
             description="Run rudimentary tests">
+    </target>
+
+    <target name="test.quick">
         <java classname="main.MainForTest">
             <classpath>
                 <pathelement location="${build.classes}"/>
@@ -485,8 +488,11 @@
     </target>
 
     <target name="test.language"
-            depends="publish"
+            depends="publish,test.language.quick"
             description="Run rudimentary tests">
+    </target>
+
+    <target name="test.language.quick">
         <java classname="main.MainForLanguage">
             <classpath>
                 <pathelement location="${build.classes}"/>
