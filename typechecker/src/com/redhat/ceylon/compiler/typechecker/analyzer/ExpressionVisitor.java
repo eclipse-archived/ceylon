@@ -6804,7 +6804,7 @@ public class ExpressionVisitor extends Visitor {
                 //else report to user that we could not
                 //find a matching overloaded constructor
             }
-            if (c.getParameterList()==null) {
+            if (!c.isAbstraction() && c.getParameterList()==null) {
                 that.addError("class cannot be instantiated: '" +
                         c.getName(unit) + 
                         "' does not have a parameter list or default constructor");
