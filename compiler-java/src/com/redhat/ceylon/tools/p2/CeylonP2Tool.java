@@ -1,8 +1,10 @@
 package com.redhat.ceylon.tools.p2;
 
 import java.io.File;
-import java.io.FileWriter;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.util.Collection;
@@ -313,7 +315,7 @@ public class CeylonP2Tool extends OutputRepoUsingTool {
     
     private void printContent(Map<String, ModuleInfo> allModules, Map<String, Feature> features, Map<String, Category> categoriesByName) throws XMLStreamException, IOException{
         File outFile = new File(out, "content.xml");
-        FileWriter fileWriter = new FileWriter(outFile);
+        Writer fileWriter = new OutputStreamWriter(new FileOutputStream(outFile), "UTF-8");
         XMLStreamWriter stupidWriter = XMLOutputFactory.newInstance().createXMLStreamWriter(fileWriter);
         XMLStreamWriter writer = new IndentingWriter(stupidWriter);
         writer.writeStartDocument("UTF-8", "1.0");
@@ -742,7 +744,7 @@ public class CeylonP2Tool extends OutputRepoUsingTool {
     private void printArtifacts(Map<String, ModuleInfo> allModules, Map<String, Feature> features) 
             throws IOException, XMLStreamException, FactoryConfigurationError {
         File outFile = new File(out, "artifacts.xml");
-        FileWriter fileWriter = new FileWriter(outFile);
+        Writer fileWriter = new OutputStreamWriter(new FileOutputStream(outFile), "UTF-8");
         XMLStreamWriter stupidWriter = XMLOutputFactory.newInstance().createXMLStreamWriter(fileWriter);
         XMLStreamWriter writer = new IndentingWriter(stupidWriter);
         writer.writeStartDocument("UTF-8", "1.0");
