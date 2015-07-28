@@ -2087,7 +2087,6 @@ shared void run() {
     sandbox(bugC1244);
     sandbox(bugC1523);
     sandbox(bugC1998);
-    sandbox(bugC2238);
     // those were filed for the JS compiler initially
     sandbox(bugJ505);
     // ATTENTION!
