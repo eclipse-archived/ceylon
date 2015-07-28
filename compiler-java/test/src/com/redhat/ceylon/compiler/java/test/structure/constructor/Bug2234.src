@@ -1,0 +1,128 @@
+package com.redhat.ceylon.compiler.java.test.structure.constructor;
+
+class Bug2234Sample implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    private static final class foo_ {
+        
+        private foo_() {
+        }
+    }
+    
+    public Bug2234Sample(.com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2234Sample.foo_ $name$) {
+    }
+    private static final .com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2234Sample foo;
+    static {
+        foo = new Bug2234Sample((.com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2234Sample.foo_)null);
+    }
+    
+    public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2234Sample getBug2234Sample$foo() {
+        return foo;
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2234Sample.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2234Sample.class);
+}
+class Bug2234 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    Bug2234() {
+        this.member = Inner$new$();
+    }
+    
+    static final class Inner$foo {
+        
+        private Inner$foo() {
+        }
+    }
+    private Inner $instance$Inner$foo = null;
+    
+    .com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2234.Inner getInner$foo() {
+        if ($instance$Inner$foo == null) $instance$Inner$foo = new Inner((.com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2234.Inner$foo)null);
+        return $instance$Inner$foo;
+    }
+    
+    public .com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2234.Inner Inner$new$() {
+        return new Inner();
+    }
+    
+    public class Inner implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+        private final .java.lang.String name;
+        
+        public final .java.lang.String getName() {
+            return name;
+        }
+        
+        public Inner(.com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2234.Inner$foo $name$) {
+            name = "foo";
+        }
+        
+        Inner getInner$foo() {
+            return .com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2234.this.getInner$foo();
+        }
+        
+        public Inner() {
+            name = "Inner";
+        }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2234.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2234.Inner.class));
+        }
+    }
+    private final .com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2234.Inner member;
+    
+    public final .com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2234.Inner getMember() {
+        return member;
+    }
+    
+    public final void test() {
+        .com.redhat.ceylon.compiler.java.test.structure.constructor.bug2234_check_.bug2234_check(getInner$foo().getName().equals("foo"), "#1129.4");
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2234.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2234.class);
+}
+final class bug2234_check_ {
+    
+    private bug2234_check_() {
+    }
+    
+    static void bug2234_check(final boolean b, final .java.lang.String s) {
+    }
+}
+final class bug2234_ {
+    
+    private bug2234_() {
+    }
+    
+    static void bug2234() {
+        final .com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2234 o = new .com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2234();
+        .com.redhat.ceylon.compiler.java.test.structure.constructor.bug2234_check_.bug2234_check(o.getInner$foo().getName().equals("foo"), "spec#1129.1");
+        .com.redhat.ceylon.compiler.java.test.structure.constructor.bug2234_check_.bug2234_check(new .com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2234().getInner$foo().getName().equals("foo"), "spec#1129.2");
+        final .com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2234.Inner oi = o.Inner$new$();
+        .com.redhat.ceylon.compiler.java.test.structure.constructor.bug2234_check_.bug2234_check(oi.getInner$foo().getName().equals("foo"), "spec#1129.3");
+        o.test();
+        final .ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2234.Inner> ref1 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2234.Inner>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2234.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2234.Inner.class)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2234.$TypeDescriptor$), "Bug2234.Inner.foo(Bug2234)", (short)-1){
+            
+            @.java.lang.Override
+            public .com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2234.Inner $call$(final .java.lang.Object $param$0) {
+                final .com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2234 $instance$ = (.com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2234)$param$0;
+                return $instance$.getInner$foo();
+            }
+        };
+        final .ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2234.Inner> ref2 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2234.Inner>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2234.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2234.Inner.class)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2234.$TypeDescriptor$), "Bug2234.Inner(Bug2234)", (short)-1){
+            
+            @.java.lang.Override
+            public .com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2234.Inner $call$(final .java.lang.Object $param$0) {
+                final .com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2234 $instance$ = (.com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2234)$param$0;
+                return $instance$.getMember();
+            }
+        };
+        .com.redhat.ceylon.compiler.java.test.structure.constructor.bug2234_check_.bug2234_check(ref1.$call$((.java.lang.Object)o).getName().equals("foo"), "spec#1129.5");
+    }
+}
