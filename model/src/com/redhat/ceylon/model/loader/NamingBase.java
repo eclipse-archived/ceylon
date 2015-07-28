@@ -205,10 +205,13 @@ public class NamingBase {
             return ((JavaBeanValue)decl).getGetterName();
         }
         
-        if (ModelUtil.withinClassOrInterface(decl) && !ModelUtil.isLocalToInitializer(decl) && !indirect) {
-            if (decl instanceof Value
-                    && ((Value)decl).getType() != null
-                    && ((Value)decl).getType().getDeclaration() instanceof com.redhat.ceylon.model.typechecker.model.Constructor) {
+        boolean enumeratedConstructor = (decl instanceof Value
+                                         && ((Value)decl).getType() != null
+                                         && ((Value)decl).getType().getDeclaration() instanceof com.redhat.ceylon.model.typechecker.model.Constructor);
+        if (ModelUtil.withinClassOrInterface(decl) 
+                && (!ModelUtil.isLocalToInitializer(decl) || enumeratedConstructor) 
+                && !indirect) {
+            if(enumeratedConstructor) {
                 return getGetterName(((Class)decl.getContainer()).getName() + "$" + decl.getName());
             }
             return getErasedGetterName(decl);
