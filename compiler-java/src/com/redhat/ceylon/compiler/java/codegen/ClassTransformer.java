@@ -1462,9 +1462,16 @@ public class ClassTransformer extends AbstractTransformer {
                 //if (Decl.isValueTypeDecl(simplifyType(value.getType()))) {
                 
                 if (value.isLate()) {
+                    JCExpression test;
+                    if(CodegenUtil.needsLateInitField(value, typeFact()))
+                        test = make().Unary(JCTree.NOT, 
+                                            naming.makeUnquotedIdent(Naming.getInitializationFieldName(value.getName())));
+                    else
+                        test = make().Binary(JCTree.EQ, 
+                                             naming.makeUnquotedIdent(value.getName()),
+                                             makeNull());
                     stmts.add(make().If(
-                            make().Unary(JCTree.NOT, 
-                                    naming.makeUnquotedIdent(naming.getInitializationFieldName(value.getName()))), 
+                            test, 
                             makeThrowAssertionException(make().Literal("instance cannot be serialized: " + member.getQualifiedNameString() + " has not been initialized")), 
                             null));
                 }
@@ -2931,8 +2938,8 @@ public class ClassTransformer extends AbstractTransformer {
                     }
                     // fields should be ignored, they are accessed by the getters
                     classBuilder.field(modifiers, attrName, type, initialValue, !useField, annos);
-                    if (model.isLate()) {
-                        classBuilder.field(PRIVATE | Flags.VOLATILE, Naming.getInitializationFieldName(attrName), 
+                    if (model.isLate() && CodegenUtil.needsLateInitField(model, typeFact())) {
+                        classBuilder.field(PRIVATE | Flags.VOLATILE | Flags.TRANSIENT, Naming.getInitializationFieldName(attrName), 
                                 make().Type(syms().booleanType), 
                                 make().Literal(false), false, makeAtIgnore());
                     }

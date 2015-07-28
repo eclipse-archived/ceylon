@@ -47,6 +47,7 @@ import com.redhat.ceylon.model.typechecker.model.Specification;
 import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
+import com.redhat.ceylon.model.typechecker.model.Unit;
 import com.redhat.ceylon.model.typechecker.model.Value;
 
 /**
@@ -407,5 +408,13 @@ public class CodegenUtil {
             throw new RuntimeException();
         }
         return result;
+    }
+
+    public static boolean needsLateInitField(TypedDeclaration attrType, Unit unit) {
+        return attrType.isLate()
+                // must be unboxed (except String)
+                && ((isUnBoxed(attrType) && !attrType.getType().isString())
+                    // or must be optional
+                    || unit.isOptionalType(attrType.getType()));
     }
 }
