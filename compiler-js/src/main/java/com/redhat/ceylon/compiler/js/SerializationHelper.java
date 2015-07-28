@@ -120,9 +120,9 @@ public class SerializationHelper {
             } else {
                 gen.out(",");
             }
-            gen.out(gen.getClAlias(), "OpenValue$jsint(", gen.getClAlias(), "lmp$(ex$,'",
-                    "ceylon.language".equals(pkgname) ? "$" : pkgname, "'),o.",
-                    gen.getNames().getter(v, true), ")");
+            gen.out(gen.getClAlias(), "MemberImpl$impl(", gen.getClAlias(), "OpenValue$jsint(",
+                    gen.getClAlias(), "lmp$(ex$,'", "ceylon.language".equals(pkgname) ? "$" : pkgname,
+                    "'),o.", gen.getNames().getter(v, true), "))");
         }
         gen.out("];};");
         gen.endLine();
