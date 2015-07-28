@@ -1,0 +1,58 @@
+package com.redhat.ceylon.compiler.java.test.structure.constructor;
+
+public class Bug2248C<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
+    public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2248C.c_ c_ = null;
+    
+    public static final class c_ {
+        
+        private c_() {
+        }
+    }
+    
+    public Bug2248C(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, .com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2248C.c_ $name$) {
+        this.$reified$T = $reified$T;
+    }
+    
+    public Bug2248C(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        this.$reified$T = $reified$T;
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2248C(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2248C.class, $reified$T);
+    }
+}
+public final class Bug2248D {
+    
+    private Bug2248D() {
+    }
+    
+    public static .com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2248C<.ceylon.language.Integer> Bug2248D$aliased$() {
+        throw new .ceylon.language.Exception();
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2248C(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, .com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2248C.c_);
+    }
+}
+public final class Bug2248E {
+    
+    private Bug2248E() {
+    }
+    
+    public static .com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2248C<.ceylon.language.Integer> Bug2248E$aliased$() {
+        throw new .ceylon.language.Exception();
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2248C(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
+    }
+}
