@@ -4217,7 +4217,9 @@ public class ExpressionTransformer extends AbstractTransformer {
                 if (primary instanceof Tree.QualifiedMemberOrTypeExpression) {
                     // foo.Class.Ctor => foo
                     primary = ((Tree.QualifiedMemberOrTypeExpression)primary).getPrimary();
-                } else if (primary instanceof Tree.BaseMemberOrTypeExpression) {
+                } else if (primary instanceof Tree.BaseMemberExpression) {
+                    // foo.member.Ctor => foo
+                } else if (primary instanceof Tree.BaseTypeExpression) {
                     // Class.Ctor => null
                     return null;
                 }
