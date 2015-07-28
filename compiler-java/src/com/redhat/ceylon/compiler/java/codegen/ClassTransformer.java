@@ -4849,10 +4849,17 @@ public class ClassTransformer extends AbstractTransformer {
      */
     private MethodDefinitionBuilder makeMainForClass(ClassOrInterface model) {
         at(null);
-        if(model.isAlias())
+        List<JCExpression> arguments = List.nil();
+        if(model.isAlias()){
+            TypeDeclaration constr = ((ClassAlias)model).getConstructor();
+            if(constr instanceof Constructor){
+                // must pass the constructor name arg
+                arguments = List.of(naming.makeNamedConstructorName((Constructor) constr, false));
+            }
             model = (ClassOrInterface) model.getExtendedType().getDeclaration();
+        }
         JCExpression nameId = makeJavaType(model.getType(), JT_RAW);
-        List<JCExpression> arguments = makeBottomReifiedTypeParameters(model.getTypeParameters());
+        arguments = makeBottomReifiedTypeParameters(model.getTypeParameters(), arguments);
         JCNewClass expr = make().NewClass(null, null, nameId, arguments, null);
         return makeMainMethod(model, expr);
     }
@@ -4864,14 +4871,14 @@ public class ClassTransformer extends AbstractTransformer {
     private MethodDefinitionBuilder makeMainForFunction(Function method) {
         at(null);
         JCExpression qualifiedName = naming.makeName(method, Naming.NA_FQ | Naming.NA_WRAPPER | Naming.NA_MEMBER);
-        List<JCExpression> arguments = makeBottomReifiedTypeParameters(method.getTypeParameters());
+        List<JCExpression> arguments = makeBottomReifiedTypeParameters(method.getTypeParameters(), List.<JCExpression>nil());
         MethodDefinitionBuilder mainMethod = makeMainMethod(method, make().Apply(null, qualifiedName, arguments));
         return mainMethod;
     }
     
     private List<JCExpression> makeBottomReifiedTypeParameters(
-            java.util.List<TypeParameter> typeParameters) {
-        List<JCExpression> arguments = List.nil();
+            java.util.List<TypeParameter> typeParameters, List<JCExpression> initialArguments) {
+        List<JCExpression> arguments = initialArguments;
         for(int i=typeParameters.size()-1;i>=0;i--){
             arguments = arguments.prepend(gen().makeNothingTypeDescriptor());
         }
