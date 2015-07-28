@@ -51,6 +51,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.LetExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.QualifiedMemberOrTypeExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
 import com.redhat.ceylon.model.loader.JvmBackendUtil;
 import com.redhat.ceylon.model.loader.NamingBase.Prefix;
@@ -3919,8 +3920,19 @@ public class ExpressionTransformer extends AbstractTransformer {
                         qualExpr = naming.makeTypeDeclarationExpression(null, (TypeDeclaration)member.getContainer(), DeclNameFlag.QUALIFIED);
                         callBuilder.invoke(naming.makeQualifiedName(qualExpr, (TypedDeclaration)member, Naming.NA_GETTER | Naming.NA_MEMBER));
                     } else if (class1.isMember()){
-                        qualExpr = primary instanceof Tree.QualifiedMemberOrTypeExpression ? transformExpression(((Tree.QualifiedMemberOrTypeExpression)primary).getPrimary()) : null;
-                        callBuilder.invoke(naming.makeQualifiedName(qualExpr, (TypedDeclaration)member, Naming.NA_GETTER | Naming.NA_MEMBER));
+                        // Stef: this is fugly but I couldn't find better. This makes sure that Outer.Inner.enumeratedConstructor
+                        // creates a Callable<Outer.Inner,[Outer]> that returns the enumeratedConstructor given an outer instance
+                        if(primary instanceof Tree.QualifiedMemberOrTypeExpression
+                                && ((Tree.QualifiedMemberOrTypeExpression) primary).getPrimary() instanceof Tree.BaseTypeExpression)
+                            return CallableBuilder.unboundValueMemberReference(
+                                gen(),
+                                expr,
+                                expr.getTypeModel(), 
+                                ((TypedDeclaration)member)).build();
+                        else{
+                            qualExpr = primary instanceof Tree.QualifiedMemberOrTypeExpression ? transformExpression(((Tree.QualifiedMemberOrTypeExpression)primary).getPrimary()) : null;
+                            callBuilder.invoke(naming.makeQualifiedName(qualExpr, (TypedDeclaration)member, Naming.NA_GETTER | Naming.NA_MEMBER));
+                        }
                     } else {
                         callBuilder.fieldRead(naming.makeName((TypedDeclaration)member, Naming.NA_IDENT));
                     }
