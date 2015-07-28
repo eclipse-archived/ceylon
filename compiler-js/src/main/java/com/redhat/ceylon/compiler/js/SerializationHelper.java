@@ -25,7 +25,6 @@ public class SerializationHelper {
      * an uninitialized instance and adds state to it. */
     static void addDeserializer(final Node that, final com.redhat.ceylon.model.typechecker.model.Class d,
             final GenerateJsVisitor gen) {
-        final String dc = gen.getNames().createTempVariable();
         final String cmodel = gen.getNames().createTempVariable();
         final String ni = gen.getNames().self(d);
         final String typename = gen.getNames().name(d);
@@ -180,7 +179,7 @@ public class SerializationHelper {
     static List<Value> serializableValues(com.redhat.ceylon.model.typechecker.model.Class d) {
         ArrayList<Value> vals = new ArrayList<>();
         for (Declaration m : d.getMembers()) {
-            if (!m.isFormal() && m instanceof Value && !m.isSetter() && m.isCaptured()) {
+            if (!m.isFormal() && m instanceof Value && !m.isSetter() && (m.isCaptured() || m.isShared())) {
                 Value v = (Value)m;
                 if (!v.isTransient()) {
                     vals.add(v);
