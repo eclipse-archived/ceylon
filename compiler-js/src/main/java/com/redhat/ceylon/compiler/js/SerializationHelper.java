@@ -10,72 +10,17 @@ import com.redhat.ceylon.compiler.js.util.TypeUtils;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Type;
+import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.model.typechecker.model.TypeParameter;
-import com.redhat.ceylon.model.typechecker.model.ModelUtil;
 import com.redhat.ceylon.model.typechecker.model.Value;
 
 public class SerializationHelper {
 
     /** Add serialize method to a class. Can be on the prototype or the instance, depending on the style being used. */
     static void addSerializer(final Node node, final com.redhat.ceylon.model.typechecker.model.Class d,
-            final GenerateJsVisitor gen) {
-        final String dc = gen.getNames().createTempVariable();
-        gen.out(gen.getNames().self(d), ".ser$$=function(", dc, ")");
-        gen.beginBlock();
-        gen.out("var ", gen.getNames().self(d), "=this;");
-        //Call super.ser$$ if possible
-        Type extendedType = d.getExtendedType();
-        while (extendedType != null && !(extendedType.isObject() || extendedType.isBasic())) {
-            com.redhat.ceylon.model.typechecker.model.Class et =  
-                (com.redhat.ceylon.model.typechecker.model.Class) extendedType.getDeclaration();
-            if (et.isSerializable()) {
-                gen.qualify(node, et);
-                gen.out(gen.getNames().name(et), ".$$.prototype.ser$$.call(this,", dc, ");");
-                extendedType = null;
-                gen.endLine();
-            } else {
-                extendedType = extendedType.getExtendedType();
-            }
-        }
-        gen.endLine();
-        //Put the outer instance if it's a member
-        if (d.isMember()) {
-            gen.out(dc, ".putOuterInstance(this.outer$,{Instance$putOuterInstance:",
-                    gen.getNames().name(ModelUtil.getContainingDeclaration(d)), "});");
-            gen.endLine();
-        }
-        //Get the type's package
-        String pkgname = d.getUnit().getPackage().getNameAsString();
-        if ("ceylon.language".equals(pkgname)) {
-            pkgname = "$";
-        }
-        //Serialize each value
-        List<Value> vals = serializableValues(d);
-        if (vals.size() > 1) {
-            final String pkvar = gen.getNames().createTempVariable();
-            gen.out("var ", pkvar, "=", gen.getClAlias(), "lmp$(ex$,'", pkgname, "');");
-            gen.endLine();
-            pkgname = pkvar;
-        } else {
-            pkgname = gen.getClAlias() + "lmp$(ex$,'" + pkgname + "')";
-        }
-        for (Value v : vals) {
-            final Type vt = v.getType();
-            final TypeDeclaration vd = vt.getDeclaration();
-            gen.out(dc, ".putValue(", gen.getClAlias(), "OpenValue$jsint(",
-                    pkgname, ",this.", gen.getNames().getter(v, true),")", ",",
-                    "this.", gen.getNames().name(v), ",{Instance$putValue:");
-            if (vt.isTypeParameter() && vd.getContainer() == d) {
-                gen.out("this.$$targs$$.", vd.getName(), "$", d.getName());
-            } else {
-                TypeUtils.typeNameOrList(node, vt, gen, false);
-            }
-            gen.out("});");
-            gen.endLine();
-        }
-        gen.endBlockNewLine();
-    }
+            final GenerateJsVisitor gen) {}
+
     /** Add deserialize method to a class. This one resides directly under the class constructor, since it creates
      * an uninitialized instance and adds state to it. */
     static void addDeserializer(final Node that, final com.redhat.ceylon.model.typechecker.model.Class d,
@@ -113,79 +58,74 @@ public class SerializationHelper {
         gen.out("return ", ni, ";");
         gen.endBlockNewLine();
 
-        //Now, the deserializer
-        gen.out(typename, ".deser$$=function(", dc, ",", cmodel, ",", ni, ")");
-        gen.beginBlock();
-        //Call super.deser$$ if possible
-        boolean create = true;
-        Type extendedType = d.getExtendedType();
-        while (create && !(extendedType.isObject() || extendedType.isBasic())) {
-            com.redhat.ceylon.model.typechecker.model.Class et = extendedType==null ? null : 
-                (com.redhat.ceylon.model.typechecker.model.Class) extendedType.getDeclaration();
-            if (et.isSerializable()) {
-                gen.qualify(that, et);
-                gen.out(gen.getNames().name(et), ".deser$$(", dc, ",", cmodel, ",", ni, ");");
-                gen.endLine();
-                create = false;
-            } else {
-                extendedType = extendedType.getExtendedType();
-                et = extendedType==null ? null : 
-                    (com.redhat.ceylon.model.typechecker.model.Class) extendedType.getDeclaration();
-            }
-        }
-        //Get the current package and module
-        String pkgname = d.getUnit().getPackage().getNameAsString();
-        if ("ceylon.language".equals(pkgname)) {
-            pkgname = "$";
-        }
-        List<Value> vals = serializableValues(d);
-        if (vals.size() > 1) {
-            final String pkvar = gen.getNames().createTempVariable();
-            gen.out("var ", pkvar, "=", gen.getClAlias(), "lmp$(ex$,'", pkgname, "');");
-            gen.endLine();
-            pkgname = pkvar;
-        } else {
-            pkgname = gen.getClAlias() + "lmp$(ex$,'" + pkgname + "')";
-        }
-        //Deserialize each value
-        final String atvar;
-        if (vals.isEmpty()) {
-            atvar = null;
-        } else {
-            atvar = gen.getNames().createTempVariable();
-            gen.out("var ", atvar);
-        }
+        final List<Value> vals = serializableValues(d);
+        //get
+        gen.out(typename, ".ser$get$=function(ref,o){var n=ref.attribute.qualifiedName;");
         first=true;
         for (Value v : vals) {
-            final Type vt = v.getType();
-            final TypeDeclaration vd = vt.getDeclaration();
-            final String valname;
-            if (v.isParameter()) {
-                valname = gen.getNames().name(d.getParameter(v.getName())) + "_";
-            } else {
-                valname = v.isLate() || v.isCaptured() ? gen.getNames().name(v)+ "_" : gen.getNames().privateName(v);
-            }
             if (first) {
-                first = false;
+                first=false;
             } else {
-                gen.out(atvar);
+                gen.out("else ");
             }
-            gen.out("=", dc, ".getValue(", gen.getClAlias(),
-                    "OpenValue$jsint(", pkgname, ",", ni, ".",
-                    gen.getNames().getter(v, true),")", ",{Instance$getValue:");
-            if (vt.isTypeParameter() && vd.getContainer() == d) {
-                gen.out(ni, ".$$targs$$.", vd.getName(), "$", d.getName());
-            } else {
-                TypeUtils.typeNameOrList(that, vt, gen, false);
-            }
-            gen.out("});");
-            gen.endLine();
-            gen.out(ni, ".", valname, "=", gen.getClAlias(), "is$(", atvar, ",{t:",
-                    gen.getClAlias(), "Reference$serialization})?",
-                    atvar, ".leak():", atvar, ";");
-            gen.endLine();
+            gen.out("if(n==='", v.getQualifiedNameString(), "')return o.", name(d, v, gen), ";");
         }
-        gen.endBlockNewLine();
+        final Class supertype;
+        if (d.getExtendedType() != null && d.getExtendedType().getDeclaration() != null
+                && d.getExtendedType().getDeclaration() instanceof Class
+                && ((Class)d.getExtendedType().getDeclaration()).isSerializable()) {
+            supertype = (Class)d.getExtendedType().getDeclaration();
+        } else {
+            supertype = null;
+        }
+        if (!first) {
+            gen.out("else ");
+        }
+        if (supertype != null) {
+            gen.out("return ");
+            gen.qualify(that, supertype);
+            gen.out(gen.getNames().name(supertype), ".ser$get$(ref,o);");
+        } else {
+            gen.out("throw new TypeError('unknown attribute');");
+        }
+        gen.out("};");
+        //set
+        gen.out(typename, ".ser$set$=function(ref,o,i){var n=ref.attribute.qualifiedName;");
+        first=true;
+        for (Value v : vals) {
+            if (first) {
+                first=false;
+            } else {
+                gen.out("else ");
+            }
+            gen.out("if(n==='", v.getQualifiedNameString(), "')o.", name(d, v, gen), "=i;");
+        }
+        if (!first) {
+            gen.out("else ");
+        }
+        if (supertype != null) {
+            gen.qualify(that, supertype);
+            gen.out(gen.getNames().name(supertype), ".ser$get$(ref,o,i);");
+        } else {
+            gen.out("throw new TypeError('unknown attribute');");
+        }
+        gen.out("};");
+        //References
+        gen.out(typename, ".ser$refs$=function(o){return [");
+        first=true;
+        final String pkgname = d.getUnit().getPackage().getNameAsString();
+        for (Value v : vals) {
+            if (first) {
+                first=false;
+            } else {
+                gen.out(",");
+            }
+            gen.out(gen.getClAlias(), "OpenValue$jsint(", gen.getClAlias(), "lmp$(ex$,'",
+                    "ceylon.language".equals(pkgname) ? "$" : pkgname, "'),o.",
+                    gen.getNames().getter(v, true), ")");
+        }
+        gen.out("];};");
+        gen.endLine();
     }
 
     /** Recursively add all the type arguments from extended and satisfied types. */
@@ -248,6 +188,13 @@ public class SerializationHelper {
             }
         }
         return vals;
+    }
+
+    static String name(Class d, Value v, GenerateJsVisitor gen) {
+        if (v.isParameter()) {
+            return gen.getNames().name(d.getParameter(v.getName())) + "_";
+        }
+        return v.isLate() || v.isCaptured() ? gen.getNames().name(v)+ "_" : gen.getNames().privateName(v);
     }
 
 }
