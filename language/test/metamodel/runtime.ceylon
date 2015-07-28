@@ -2057,12 +2057,14 @@ shared void run() {
     sandbox(bug536);
     sandbox(bug537);
     sandbox(bug538);
+    sandbox(bug539);
     sandbox(bug548);
     sandbox(bug599);
     sandbox(bug607);
     sandbox(bug610);
     sandbox(bug642);
     sandbox(bug647);
+    sandbox(bug661);
     sandbox(bug670);
     sandbox(bug675);
     sandbox(bug676);
@@ -2085,9 +2087,9 @@ shared void run() {
     sandbox(bugC1244);
     sandbox(bugC1523);
     sandbox(bugC1998);
-    sandbox(langbug539);
+    sandbox(bugC2238);
+    // those were filed for the JS compiler initially
     sandbox(bugJ505);
-    sandbox(bug661);
     // ATTENTION!
     // When you add new test methods here make sure they are "shared" and marked "@test"!
     print(pass==total then "Metamodel tests OK (``total`` total)" else "Metamodel tests ``pass``/``total``");
