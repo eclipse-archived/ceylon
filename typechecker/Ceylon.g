@@ -3755,17 +3755,20 @@ controlBlock returns [Block block]
     ;
 
 dynamic returns [DynamicStatement statement]
-    @init { DynamicClause dc = null; }
-    : { $statement=new DynamicStatement(null); }
-      DYNAMIC 
-      { dc = new DynamicClause($DYNAMIC);
-        $statement.setDynamicClause(dc); }
+    : dynamicClause
+      { $statement = new DynamicStatement(null); 
+        $statement.setDynamicClause($dynamicClause.dynamic); }
+    ;
+    
+dynamicClause returns [DynamicClause dynamic]
+    : DYNAMIC 
+      { $dynamic = new DynamicClause($DYNAMIC); }
       block
-      { dc.setBlock($block.block); }
+      { $dynamic.setBlock($block.block); }
     ;
 
 ifElse returns [IfStatement statement]
-    : { $statement=new IfStatement(null); }
+    : { $statement = new IfStatement(null); }
       ifBlock 
       { $statement.setIfClause($ifBlock.clause); }
       ( 
