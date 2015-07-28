@@ -1,0 +1,42 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug22xx;
+
+public final class bug2229_ {
+    
+    private bug2229_() {
+    }
+    
+    public static void bug2229() {
+        
+        final class bar_ {
+            
+            private bar_() {
+            }
+            
+            void bar() {
+                
+                class Baz implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+                    
+                    Baz() {
+                        i = 42L;
+                    }
+                    private final long i;
+                    
+                    public final long getI() {
+                        return i;
+                    }
+                    
+                    @.java.lang.Override
+                    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue(.com.redhat.ceylon.compiler.java.test.issues.bug22xx.bug2229_.class), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue("1bar")), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(Baz.class));
+                    }
+                }
+            }
+        }
+        final bar_ bar = new bar_();
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.issues.bug22xx.bug2229_.bug2229();
+    }
+}
