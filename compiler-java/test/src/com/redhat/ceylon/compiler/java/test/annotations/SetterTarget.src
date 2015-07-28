@@ -10,21 +10,17 @@ class SetterTarget implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
     .java.lang.String param4$param$) {
         this.param3 = param3$param$;
         this.param4 = param4$param$;
-        this.$init$attr = false;
-        this.$init$attr2 = false;
         this.attr3 = "";
         this.attr4 = "";
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     private .java.lang.String attr;
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    private volatile boolean $init$attr;
     
     @.ceylon.language.SharedAnnotation$annotation$
     @.ceylon.language.LateAnnotation$annotation$
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
     public final .java.lang.String getAttr() {
-        if (this.$init$attr) {
+        if (this.attr != null) {
             return attr;
         } else {
             throw new .ceylon.language.InitializationError("Accessing uninitialized \'late\' attribute \'attr\'");
@@ -36,22 +32,19 @@ class SetterTarget implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
     public final void setAttr(@.com.redhat.ceylon.compiler.java.metadata.Name("attr")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
     final .java.lang.String attr) {
-        if (!this.$init$attr) {
+        if (this.attr == null) {
             this.attr = attr;
-            this.$init$attr = true;
             return;
         }
         throw new .ceylon.language.InitializationError("Re-initialization of \'late\' attribute");
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     private .java.lang.String attr2;
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    private volatile boolean $init$attr2;
     
     @.ceylon.language.LateAnnotation$annotation$
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
     private final .java.lang.String getAttr2$priv$() {
-        if (this.$init$attr2) {
+        if (this.attr2 != null) {
             return attr2;
         } else {
             throw new .ceylon.language.InitializationError("Accessing uninitialized \'late\' attribute \'attr2\'");
@@ -63,9 +56,8 @@ class SetterTarget implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
     private final void setAttr2$priv$(@.com.redhat.ceylon.compiler.java.metadata.Name("attr2")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
     final .java.lang.String attr2) {
-        if (!this.$init$attr2) {
+        if (this.attr2 == null) {
             this.attr2 = attr2;
-            this.$init$attr2 = true;
             return;
         }
         throw new .ceylon.language.InitializationError("Re-initialization of \'late\' attribute");

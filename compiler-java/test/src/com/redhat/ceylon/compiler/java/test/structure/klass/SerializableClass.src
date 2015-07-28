@@ -95,17 +95,21 @@ class SerializableSubclass extends .com.redhat.ceylon.compiler.java.test.structu
     
     SerializableSubclass() {
         super();
-        this.$init$variablePartner = false;
-        this.$init$partner = false;
+        this.$init$variableInteger = false;
+        this.$init$integer = false;
     }
     
     @.java.lang.Override
     public void $serialize$(final .ceylon.language.serialization.Deconstructor deconstructor) {
         super.$serialize$(deconstructor);
-        if (!$init$variablePartner) throw new .ceylon.language.AssertionError("instance cannot be serialized: com.redhat.ceylon.compiler.java.test.structure.klass::SerializableSubclass.variablePartner has not been initialized");
+        if (variablePartner == null) throw new .ceylon.language.AssertionError("instance cannot be serialized: com.redhat.ceylon.compiler.java.test.structure.klass::SerializableSubclass.variablePartner has not been initialized");
         deconstructor.<.com.redhat.ceylon.compiler.java.test.structure.klass.SerializableSubclass>putValue(.com.redhat.ceylon.compiler.java.test.structure.klass.SerializableSubclass.$TypeDescriptor$, ((.ceylon.language.meta.declaration.ClassOrInterfaceDeclaration).com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.getOrCreateMetamodel(.com.redhat.ceylon.compiler.java.test.structure.klass.SerializableSubclass.class)).<.ceylon.language.meta.declaration.ValueDeclaration>getDeclaredMemberDeclaration(.ceylon.language.meta.declaration.ValueDeclaration.$TypeDescriptor$, "variablePartner"), this.getVariablePartner());
-        if (!$init$partner) throw new .ceylon.language.AssertionError("instance cannot be serialized: com.redhat.ceylon.compiler.java.test.structure.klass::SerializableSubclass.partner has not been initialized");
+        if (partner == null) throw new .ceylon.language.AssertionError("instance cannot be serialized: com.redhat.ceylon.compiler.java.test.structure.klass::SerializableSubclass.partner has not been initialized");
         deconstructor.<.com.redhat.ceylon.compiler.java.test.structure.klass.SerializableSubclass>putValue(.com.redhat.ceylon.compiler.java.test.structure.klass.SerializableSubclass.$TypeDescriptor$, ((.ceylon.language.meta.declaration.ClassOrInterfaceDeclaration).com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.getOrCreateMetamodel(.com.redhat.ceylon.compiler.java.test.structure.klass.SerializableSubclass.class)).<.ceylon.language.meta.declaration.ValueDeclaration>getDeclaredMemberDeclaration(.ceylon.language.meta.declaration.ValueDeclaration.$TypeDescriptor$, "partner"), this.getPartner());
+        if (!$init$variableInteger) throw new .ceylon.language.AssertionError("instance cannot be serialized: com.redhat.ceylon.compiler.java.test.structure.klass::SerializableSubclass.variableInteger has not been initialized");
+        deconstructor.<.ceylon.language.Integer>putValue(.ceylon.language.Integer.$TypeDescriptor$, ((.ceylon.language.meta.declaration.ClassOrInterfaceDeclaration).com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.getOrCreateMetamodel(.com.redhat.ceylon.compiler.java.test.structure.klass.SerializableSubclass.class)).<.ceylon.language.meta.declaration.ValueDeclaration>getDeclaredMemberDeclaration(.ceylon.language.meta.declaration.ValueDeclaration.$TypeDescriptor$, "variableInteger"), .ceylon.language.Integer.instance(this.getVariableInteger()));
+        if (!$init$integer) throw new .ceylon.language.AssertionError("instance cannot be serialized: com.redhat.ceylon.compiler.java.test.structure.klass::SerializableSubclass.integer has not been initialized");
+        deconstructor.<.ceylon.language.Integer>putValue(.ceylon.language.Integer.$TypeDescriptor$, ((.ceylon.language.meta.declaration.ClassOrInterfaceDeclaration).com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.getOrCreateMetamodel(.com.redhat.ceylon.compiler.java.test.structure.klass.SerializableSubclass.class)).<.ceylon.language.meta.declaration.ValueDeclaration>getDeclaredMemberDeclaration(.ceylon.language.meta.declaration.ValueDeclaration.$TypeDescriptor$, "integer"), .ceylon.language.Integer.instance(this.getInteger()));
     }
     
     @.java.lang.Override
@@ -125,12 +129,25 @@ class SerializableSubclass extends .com.redhat.ceylon.compiler.java.test.structu
             }
             returning valueOrRef$5 instanceof .ceylon.language.serialization.Reference ? ((.com.redhat.ceylon.compiler.java.runtime.serialization.$InstanceLeaker$<.com.redhat.ceylon.compiler.java.test.structure.klass.SerializableSubclass>)valueOrRef$5).$leakInstance$() : (.com.redhat.ceylon.compiler.java.test.structure.klass.SerializableSubclass)valueOrRef$5;
         ));
+        this.setVariableInteger((
+            let
+            {
+                .java.lang.Object valueOrRef$6 = deconstructed.<.ceylon.language.Integer>getValue(.ceylon.language.Integer.$TypeDescriptor$, ((.ceylon.language.meta.declaration.ClassOrInterfaceDeclaration).com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.getOrCreateMetamodel(.com.redhat.ceylon.compiler.java.test.structure.klass.SerializableSubclass.class)).<.ceylon.language.meta.declaration.ValueDeclaration>getDeclaredMemberDeclaration(.ceylon.language.meta.declaration.ValueDeclaration.$TypeDescriptor$, "variableInteger"));
+            }
+            returning valueOrRef$6 instanceof .ceylon.language.serialization.Reference ? ((.com.redhat.ceylon.compiler.java.runtime.serialization.$InstanceLeaker$<.ceylon.language.Integer>)valueOrRef$6).$leakInstance$() : (.ceylon.language.Integer)valueOrRef$6;
+        ).longValue());
+        this.setInteger((
+            let
+            {
+                .java.lang.Object valueOrRef$7 = deconstructed.<.ceylon.language.Integer>getValue(.ceylon.language.Integer.$TypeDescriptor$, ((.ceylon.language.meta.declaration.ClassOrInterfaceDeclaration).com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.getOrCreateMetamodel(.com.redhat.ceylon.compiler.java.test.structure.klass.SerializableSubclass.class)).<.ceylon.language.meta.declaration.ValueDeclaration>getDeclaredMemberDeclaration(.ceylon.language.meta.declaration.ValueDeclaration.$TypeDescriptor$, "integer"));
+            }
+            returning valueOrRef$7 instanceof .ceylon.language.serialization.Reference ? ((.com.redhat.ceylon.compiler.java.runtime.serialization.$InstanceLeaker$<.ceylon.language.Integer>)valueOrRef$7).$leakInstance$() : (.ceylon.language.Integer)valueOrRef$7;
+        ).longValue());
     }
     private .com.redhat.ceylon.compiler.java.test.structure.klass.SerializableSubclass variablePartner;
-    private volatile boolean $init$variablePartner;
     
     public final .com.redhat.ceylon.compiler.java.test.structure.klass.SerializableSubclass getVariablePartner() {
-        if (this.$init$variablePartner) {
+        if (this.variablePartner != null) {
             return variablePartner;
         } else {
             throw new .ceylon.language.InitializationError("Accessing uninitialized \'late\' attribute \'variablePartner\'");
@@ -139,13 +156,11 @@ class SerializableSubclass extends .com.redhat.ceylon.compiler.java.test.structu
     
     public final void setVariablePartner(final .com.redhat.ceylon.compiler.java.test.structure.klass.SerializableSubclass variablePartner) {
         this.variablePartner = variablePartner;
-        this.$init$variablePartner = true;
     }
     private .com.redhat.ceylon.compiler.java.test.structure.klass.SerializableSubclass partner;
-    private volatile boolean $init$partner;
     
     public final .com.redhat.ceylon.compiler.java.test.structure.klass.SerializableSubclass getPartner() {
-        if (this.$init$partner) {
+        if (this.partner != null) {
             return partner;
         } else {
             throw new .ceylon.language.InitializationError("Accessing uninitialized \'late\' attribute \'partner\'");
@@ -153,9 +168,42 @@ class SerializableSubclass extends .com.redhat.ceylon.compiler.java.test.structu
     }
     
     public final void setPartner(final .com.redhat.ceylon.compiler.java.test.structure.klass.SerializableSubclass partner) {
-        if (!this.$init$partner) {
+        if (this.partner == null) {
             this.partner = partner;
-            this.$init$partner = true;
+            return;
+        }
+        throw new .ceylon.language.InitializationError("Re-initialization of \'late\' attribute");
+    }
+    private long variableInteger;
+    private volatile transient boolean $init$variableInteger;
+    
+    public final long getVariableInteger() {
+        if (this.$init$variableInteger) {
+            return variableInteger;
+        } else {
+            throw new .ceylon.language.InitializationError("Accessing uninitialized \'late\' attribute \'variableInteger\'");
+        }
+    }
+    
+    public final void setVariableInteger(final long variableInteger) {
+        this.variableInteger = variableInteger;
+        this.$init$variableInteger = true;
+    }
+    private long integer;
+    private volatile transient boolean $init$integer;
+    
+    public final long getInteger() {
+        if (this.$init$integer) {
+            return integer;
+        } else {
+            throw new .ceylon.language.InitializationError("Accessing uninitialized \'late\' attribute \'integer\'");
+        }
+    }
+    
+    public final void setInteger(final long integer) {
+        if (!this.$init$integer) {
+            this.integer = integer;
+            this.$init$integer = true;
             return;
         }
         throw new .ceylon.language.InitializationError("Re-initialization of \'late\' attribute");

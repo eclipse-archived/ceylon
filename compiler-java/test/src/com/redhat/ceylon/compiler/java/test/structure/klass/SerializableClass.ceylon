@@ -30,4 +30,6 @@ serializable class SerializableClass() {
 serializable class SerializableSubclass() extends SerializableClass() {
     shared variable late SerializableSubclass variablePartner;
     shared late SerializableSubclass partner;
+    shared variable late Integer variableInteger;
+    shared late Integer integer;
 }

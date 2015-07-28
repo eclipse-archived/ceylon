@@ -36,7 +36,7 @@ class Bug1878 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     private boolean foo;
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    private volatile boolean $init$foo;
+    private volatile transient boolean $init$foo;
     
     @.ceylon.language.LateAnnotation$annotation$
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Boolean")

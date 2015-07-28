@@ -1,13 +1,179 @@
 package com.redhat.ceylon.compiler.java.test.structure.attribute;
 
-class ClassAttributeLate implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class ClassAttributeLate<T, U> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
-    ClassAttributeLate() {
+    ClassAttributeLate(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$U) {
+        this.$reified$T = $reified$T;
+        this.$reified$U = $reified$U;
+        this.$init$lateOptionalAttr = false;
+        this.$init$lateOptionalVariableAttr = false;
+        this.$init$lateGenericAttr = false;
+        this.$init$lateGenericVariableAttr = false;
         this.$init$lateAttr = false;
         this.$init$lateVariableAttr = false;
     }
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$U;
+    private .java.lang.String lateStringAttr;
+    
+    public final .java.lang.String getLateStringAttr() {
+        if (this.lateStringAttr != null) {
+            return lateStringAttr;
+        } else {
+            throw new .ceylon.language.InitializationError("Accessing uninitialized \'late\' attribute \'lateStringAttr\'");
+        }
+    }
+    
+    public final void setLateStringAttr(final .java.lang.String lateStringAttr) {
+        if (this.lateStringAttr == null) {
+            this.lateStringAttr = lateStringAttr;
+            return;
+        }
+        throw new .ceylon.language.InitializationError("Re-initialization of \'late\' attribute");
+    }
+    private .java.lang.String lateStringVariableAttr;
+    
+    public final .java.lang.String getLateStringVariableAttr() {
+        if (this.lateStringVariableAttr != null) {
+            return lateStringVariableAttr;
+        } else {
+            throw new .ceylon.language.InitializationError("Accessing uninitialized \'late\' attribute \'lateStringVariableAttr\'");
+        }
+    }
+    
+    public final void setLateStringVariableAttr(final .java.lang.String lateStringVariableAttr) {
+        this.lateStringVariableAttr = lateStringVariableAttr;
+    }
+    private .java.lang.Object lateNonNullAttr;
+    
+    public final .java.lang.Object getLateNonNullAttr() {
+        if (this.lateNonNullAttr != null) {
+            return lateNonNullAttr;
+        } else {
+            throw new .ceylon.language.InitializationError("Accessing uninitialized \'late\' attribute \'lateNonNullAttr\'");
+        }
+    }
+    
+    public final void setLateNonNullAttr(final .java.lang.Object lateNonNullAttr) {
+        if (this.lateNonNullAttr == null) {
+            this.lateNonNullAttr = lateNonNullAttr;
+            return;
+        }
+        throw new .ceylon.language.InitializationError("Re-initialization of \'late\' attribute");
+    }
+    private .java.lang.Object lateNonNullVariableAttr;
+    
+    public final .java.lang.Object getLateNonNullVariableAttr() {
+        if (this.lateNonNullVariableAttr != null) {
+            return lateNonNullVariableAttr;
+        } else {
+            throw new .ceylon.language.InitializationError("Accessing uninitialized \'late\' attribute \'lateNonNullVariableAttr\'");
+        }
+    }
+    
+    public final void setLateNonNullVariableAttr(final .java.lang.Object lateNonNullVariableAttr) {
+        this.lateNonNullVariableAttr = lateNonNullVariableAttr;
+    }
+    private .java.lang.Object lateOptionalAttr;
+    private volatile transient boolean $init$lateOptionalAttr;
+    
+    public final .java.lang.Object getLateOptionalAttr() {
+        if (this.$init$lateOptionalAttr) {
+            return lateOptionalAttr;
+        } else {
+            throw new .ceylon.language.InitializationError("Accessing uninitialized \'late\' attribute \'lateOptionalAttr\'");
+        }
+    }
+    
+    public final void setLateOptionalAttr(final .java.lang.Object lateOptionalAttr) {
+        if (!this.$init$lateOptionalAttr) {
+            this.lateOptionalAttr = lateOptionalAttr;
+            this.$init$lateOptionalAttr = true;
+            return;
+        }
+        throw new .ceylon.language.InitializationError("Re-initialization of \'late\' attribute");
+    }
+    private .java.lang.Object lateOptionalVariableAttr;
+    private volatile transient boolean $init$lateOptionalVariableAttr;
+    
+    public final .java.lang.Object getLateOptionalVariableAttr() {
+        if (this.$init$lateOptionalVariableAttr) {
+            return lateOptionalVariableAttr;
+        } else {
+            throw new .ceylon.language.InitializationError("Accessing uninitialized \'late\' attribute \'lateOptionalVariableAttr\'");
+        }
+    }
+    
+    public final void setLateOptionalVariableAttr(final .java.lang.Object lateOptionalVariableAttr) {
+        this.lateOptionalVariableAttr = lateOptionalVariableAttr;
+        this.$init$lateOptionalVariableAttr = true;
+    }
+    private T lateGenericAttr;
+    private volatile transient boolean $init$lateGenericAttr;
+    
+    public final T getLateGenericAttr() {
+        if (this.$init$lateGenericAttr) {
+            return lateGenericAttr;
+        } else {
+            throw new .ceylon.language.InitializationError("Accessing uninitialized \'late\' attribute \'lateGenericAttr\'");
+        }
+    }
+    
+    public final void setLateGenericAttr(final T lateGenericAttr) {
+        if (!this.$init$lateGenericAttr) {
+            this.lateGenericAttr = lateGenericAttr;
+            this.$init$lateGenericAttr = true;
+            return;
+        }
+        throw new .ceylon.language.InitializationError("Re-initialization of \'late\' attribute");
+    }
+    private T lateGenericVariableAttr;
+    private volatile transient boolean $init$lateGenericVariableAttr;
+    
+    public final T getLateGenericVariableAttr() {
+        if (this.$init$lateGenericVariableAttr) {
+            return lateGenericVariableAttr;
+        } else {
+            throw new .ceylon.language.InitializationError("Accessing uninitialized \'late\' attribute \'lateGenericVariableAttr\'");
+        }
+    }
+    
+    public final void setLateGenericVariableAttr(final T lateGenericVariableAttr) {
+        this.lateGenericVariableAttr = lateGenericVariableAttr;
+        this.$init$lateGenericVariableAttr = true;
+    }
+    private U lateGenericNonNullAttr;
+    
+    public final U getLateGenericNonNullAttr() {
+        if (this.lateGenericNonNullAttr != null) {
+            return lateGenericNonNullAttr;
+        } else {
+            throw new .ceylon.language.InitializationError("Accessing uninitialized \'late\' attribute \'lateGenericNonNullAttr\'");
+        }
+    }
+    
+    public final void setLateGenericNonNullAttr(final U lateGenericNonNullAttr) {
+        if (this.lateGenericNonNullAttr == null) {
+            this.lateGenericNonNullAttr = lateGenericNonNullAttr;
+            return;
+        }
+        throw new .ceylon.language.InitializationError("Re-initialization of \'late\' attribute");
+    }
+    private U lateGenericNonNullVariableAttr;
+    
+    public final U getLateGenericNonNullVariableAttr() {
+        if (this.lateGenericNonNullVariableAttr != null) {
+            return lateGenericNonNullVariableAttr;
+        } else {
+            throw new .ceylon.language.InitializationError("Accessing uninitialized \'late\' attribute \'lateGenericNonNullVariableAttr\'");
+        }
+    }
+    
+    public final void setLateGenericNonNullVariableAttr(final U lateGenericNonNullVariableAttr) {
+        this.lateGenericNonNullVariableAttr = lateGenericNonNullVariableAttr;
+    }
     private long lateAttr;
-    private volatile boolean $init$lateAttr;
+    private volatile transient boolean $init$lateAttr;
     
     public final long getLateAttr() {
         if (this.$init$lateAttr) {
@@ -26,7 +192,7 @@ class ClassAttributeLate implements .com.redhat.ceylon.compiler.java.runtime.mod
         throw new .ceylon.language.InitializationError("Re-initialization of \'late\' attribute");
     }
     private long lateVariableAttr;
-    private volatile boolean $init$lateVariableAttr;
+    private volatile transient boolean $init$lateVariableAttr;
     
     public final long getLateVariableAttr() {
         if (this.$init$lateVariableAttr) {
@@ -48,7 +214,6 @@ class ClassAttributeLate implements .com.redhat.ceylon.compiler.java.runtime.mod
     
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
-        return .com.redhat.ceylon.compiler.java.test.structure.attribute.ClassAttributeLate.$TypeDescriptor$;
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.attribute.ClassAttributeLate.class, $reified$T, $reified$U);
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.attribute.ClassAttributeLate.class);
 }

@@ -4,19 +4,16 @@ package com.redhat.ceylon.compiler.java.test.issues.bug22xx;
 class Bug2239 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     Bug2239() {
-        this.$init$em = false;
         final .java.lang.String notCaptured;
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     private .java.lang.String em;
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    private volatile boolean $init$em;
     
     @.javax.annotation.PostConstruct
     @.ceylon.language.LateAnnotation$annotation$
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
     private final .java.lang.String getEm$priv$() {
-        if (this.$init$em) {
+        if (this.em != null) {
             return em;
         } else {
             throw new .ceylon.language.InitializationError("Accessing uninitialized \'late\' attribute \'em\'");
@@ -28,9 +25,8 @@ class Bug2239 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     private final void setEm$priv$(@.com.redhat.ceylon.compiler.java.metadata.Name("em")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
     final .java.lang.String em) {
-        if (!this.$init$em) {
+        if (this.em == null) {
             this.em = em;
-            this.$init$em = true;
             return;
         }
         throw new .ceylon.language.InitializationError("Re-initialization of \'late\' attribute");
