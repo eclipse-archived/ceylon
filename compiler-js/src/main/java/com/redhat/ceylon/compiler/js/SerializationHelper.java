@@ -32,8 +32,7 @@ public class SerializationHelper {
         gen.out(typename, ".inst$$=function(", cmodel, ")");
         gen.beginBlock();
         if (d.isMember()) {
-            gen.out("//TODO getOuterInstance");
-            gen.endLine();
+            gen.out("/*TODO getOuterInstance*/");
         }
         gen.out("var ", ni, "=new ", gen.getNames().name(d), ".$$;");
         gen.endLine();
@@ -110,7 +109,12 @@ public class SerializationHelper {
         }
         gen.out("};");
         //References
-        gen.out(typename, ".ser$refs$=function(o){return [");
+        if (supertype == null) {
+            gen.out(typename, ".ser$refs$=function(o){return [");
+        } else {
+            gen.out(typename, ".ser$refs$=function(o){var a=",
+                    gen.getNames().name(supertype), ".ser$refs$(o);a.push(");
+        }
         first=true;
         final String pkgname = d.getUnit().getPackage().getNameAsString();
         for (Value v : vals) {
@@ -123,7 +127,11 @@ public class SerializationHelper {
                     gen.getClAlias(), "lmp$(ex$,'", "ceylon.language".equals(pkgname) ? "$" : pkgname,
                     "'),o.", gen.getNames().getter(v, true), "))");
         }
-        gen.out("];};");
+        if (supertype == null) {
+            gen.out("];};");
+        } else {
+            gen.out(");return a;};");
+        }
         gen.endLine();
     }
 
