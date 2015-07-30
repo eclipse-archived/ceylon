@@ -1,12 +1,12 @@
 package com.redhat.ceylon.common;
 
 public interface BackendSupport {
-    boolean supportsBackend(Backend backend);
+    boolean supportsBackend(String backend);
     
     public static final BackendSupport JAVA = new BackendSupport() {
         @Override
-        public boolean supportsBackend(Backend backend) {
-            return backend == Backend.Java;
+        public boolean supportsBackend(String backend) {
+            return Backend.Java.nativeAnnotation.equals(backend);
         }
 
         @Override
@@ -17,8 +17,8 @@ public interface BackendSupport {
     
     public static final BackendSupport JAVASCRIPT = new BackendSupport() {
         @Override
-        public boolean supportsBackend(Backend backend) {
-            return backend == Backend.JavaScript;
+        public boolean supportsBackend(String backend) {
+            return Backend.JavaScript.nativeAnnotation.equals(backend);
         }
 
         @Override
@@ -29,8 +29,8 @@ public interface BackendSupport {
     
     public static final BackendSupport HEADER = new BackendSupport() {
         @Override
-        public boolean supportsBackend(Backend backend) {
-            return backend == Backend.None;
+        public boolean supportsBackend(String backend) {
+            return Backend.None.nativeAnnotation.equals(backend);
         }
 
         @Override
