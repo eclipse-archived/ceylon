@@ -127,11 +127,6 @@ class C<T> extends .com.redhat.ceylon.compiler.java.test.structure.constructor.C
 }
 class ExtendsBasic<X> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$X;
-    private final X who;
-    
-    private final X getWho$priv$() {
-        return who;
-    }
     private static final .com.redhat.ceylon.compiler.java.test.structure.constructor.ExtendsBasic.pour$delegation$_ pour$delegation$_ = null;
     
     private static final class pour$delegation$_ {
@@ -143,8 +138,9 @@ class ExtendsBasic<X> implements .com.redhat.ceylon.compiler.java.runtime.model.
     private ExtendsBasic(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$X, .com.redhat.ceylon.compiler.java.test.structure.constructor.ExtendsBasic.pour$delegation$_ $name$, final X who$param$) {
         this.$reified$X = $reified$X;
         .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("1");
+        final X who;
         .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("For");
-        this.who = who$param$;
+        who = who$param$;
     }
     public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.ExtendsBasic.pour_ pour_ = null;
     
@@ -182,6 +178,7 @@ class ExtendsBasic<X> implements .com.redhat.ceylon.compiler.java.runtime.model.
     }
 }
 class Hello implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    @.com.redhat.ceylon.compiler.java.metadata.NoInitCheck
     private final .java.lang.String who;
     
     private final .java.lang.String getWho$priv$() {

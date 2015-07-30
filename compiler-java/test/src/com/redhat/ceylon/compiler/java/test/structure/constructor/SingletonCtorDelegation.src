@@ -78,13 +78,11 @@ class SingletonCtorDelegation implements .com.redhat.ceylon.compiler.java.runtim
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtorDelegation.class);
 }
 class SingletonCtorAbstractDelegation implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
-    @.com.redhat.ceylon.compiler.java.metadata.NoInitCheck
     private final double x;
     
     public final double getX() {
         return x;
     }
-    @.com.redhat.ceylon.compiler.java.metadata.NoInitCheck
     private final double y;
     
     public final double getY() {

@@ -1,6 +1,7 @@
 package com.redhat.ceylon.compiler.java.test.structure.constructor;
 
 class CtorUnsharedField implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    @.com.redhat.ceylon.compiler.java.metadata.NoInitCheck
     private final .java.lang.String who;
     
     private final .java.lang.String getWho$priv$() {
