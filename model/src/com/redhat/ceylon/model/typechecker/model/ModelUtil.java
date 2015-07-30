@@ -2510,8 +2510,7 @@ public class ModelUtil {
                 backendSupport != null) {
             Declaration abstraction = null;
             if (backendSupport.supportsBackend(
-                    Backend.fromAnnotation(
-                            dec.getNativeBackend()))) {
+                            dec.getNativeBackend())) {
                 abstraction = dec;
             }
             else {
@@ -2520,8 +2519,7 @@ public class ModelUtil {
                 if (overloads != null) {
                     for (Declaration d: overloads) {
                         if (backendSupport.supportsBackend(
-                                Backend.fromAnnotation(
-                                        d.getNativeBackend()))) {
+                                        d.getNativeBackend())) {
                             abstraction = d;
                             break;
                         }

@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.redhat.ceylon.common.Backend;
+import com.redhat.ceylon.common.BackendSupport;
 import com.redhat.ceylon.model.cmr.JDKUtils;
 import com.redhat.ceylon.model.loader.AbstractModelLoader;
 import com.redhat.ceylon.model.typechecker.model.Module;
@@ -68,8 +69,8 @@ public abstract class LazyModuleManager extends ModuleManager {
     }
 
     @Override
-    public boolean supportsBackend(Backend backend) {
-        return backend == Backend.Java;
+    public boolean supportsBackend(String backend) {
+        return BackendSupport.JAVA.supportsBackend(backend);
     }
     
     @Override
