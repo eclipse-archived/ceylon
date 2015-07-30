@@ -175,6 +175,14 @@ public abstract class Declaration
     	this.nativeBackend=backend;
     }
 
+    public String getScopedBackend() {
+        String backend = getNativeBackend();
+        if (backend == null) {
+            backend = getScope().getScopedBackend();
+        }
+        return backend;
+    }
+
     public boolean isDefault() {
         return def;
     }

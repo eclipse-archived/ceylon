@@ -58,4 +58,8 @@ public class Specification extends Element implements Scope {
         this.declaration = declaration;
     }
 
+    @Override
+    public String getScopedBackend() {
+        return getScope().getScopedBackend();
+    }
 }

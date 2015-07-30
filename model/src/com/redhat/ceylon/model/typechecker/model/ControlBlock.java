@@ -78,5 +78,8 @@ public class ControlBlock extends Element implements Scope {
         this.specifiedValues = assigned;
     }
     
-    
+    @Override
+    public String getScopedBackend() {
+        return getScope().getScopedBackend();
+    }
 }

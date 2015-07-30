@@ -110,6 +110,11 @@ public class Function extends FunctionOrValue implements Generic, Scope, Functio
     }
 
     @Override
+    public String getScopedBackend() {
+        return super.getScopedBackend();
+    }
+    
+    @Override
     public String toString() {
         Type type = getType();
         if (type==null) {

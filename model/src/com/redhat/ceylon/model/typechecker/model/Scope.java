@@ -147,4 +147,12 @@ public interface Scope {
     public void addMember(Declaration declaration);
     
     public boolean isToplevel();
+
+    /**
+     * Returns the native backend defined for this scope
+     * or any of its containing scopes. Will return
+     * <code>null</code> if no specific backend was
+     * defined.
+     */
+    public String getScopedBackend();
 }

@@ -130,4 +130,8 @@ public class ImportList implements Scope {
         return null;
     }
     
+    @Override
+    public String getScopedBackend() {
+        return getScope().getScopedBackend();
+    }
 }

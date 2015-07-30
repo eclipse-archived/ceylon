@@ -68,6 +68,11 @@ public class Setter extends FunctionOrValue implements Scope {
     }
     
     @Override
+    public String getScopedBackend() {
+        return super.getScopedBackend();
+    }
+    
+    @Override
     public String toString() {
         return "assign " + toStringName();
     }

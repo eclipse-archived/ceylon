@@ -1117,5 +1117,9 @@ public abstract class TypeDeclaration extends Declaration
     public boolean isTupleType() {
         return false;
     }
-    
+
+    @Override
+    public String getScopedBackend() {
+        return super.getScopedBackend();
+    }
 }

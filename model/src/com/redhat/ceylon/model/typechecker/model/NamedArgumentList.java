@@ -77,4 +77,8 @@ public class NamedArgumentList extends Element implements Scope {
         }
     }
     
+    @Override
+    public String getScopedBackend() {
+        return getScope().getScopedBackend();
+    }
 }

@@ -311,4 +311,8 @@ public class Package
 		this.unit = unit;
 	}
     
+    @Override
+    public String getScopedBackend() {
+        return getModule().getNativeBackend();
+    }
 }
