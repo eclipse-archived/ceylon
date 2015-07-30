@@ -119,10 +119,7 @@ public class TreeUtil {
     public static boolean isForBackend(String backendName, 
             BackendSupport backendSupport) {
         if (backendName != null) {
-            Backend backend = 
-                    Backend.fromAnnotation(backendName);
-            if (backend == null || 
-                    !backendSupport.supportsBackend(backend)) {
+            if (!backendSupport.supportsBackend(backendName)) {
                 return false;
             }
         }

@@ -1608,7 +1608,7 @@ public class TypeVisitor extends Visitor {
     private Declaration handleHeader(Declaration dec, 
             Node that) {
         if (Backend.None.nativeAnnotation.equals(dec.getNativeBackend())
-                && !backendSupport.supportsBackend(Backend.None)) {
+                && !backendSupport.supportsBackend(Backend.None.nativeAnnotation)) {
             Scope scope = that.getScope();
             if (scope == dec) {
                 scope = scope.getScope();
@@ -1648,9 +1648,7 @@ public class TypeVisitor extends Visitor {
     // We use this for situations where the backend compiler can't check the
     // validity of the code for the other backend 
     private boolean isNativeForWrongBackend(String backend) {
-        Backend be;
         return backend != null &&
-                (be = Backend.fromAnnotation(backend)) != null &&
-                !backendSupport.supportsBackend(be);
+                !backendSupport.supportsBackend(backend);
     }    
 }

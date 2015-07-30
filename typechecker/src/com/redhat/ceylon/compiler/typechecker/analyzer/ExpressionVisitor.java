@@ -9058,7 +9058,7 @@ public class ExpressionVisitor extends Visitor {
                 Declaration tmp = getNativeHeader(dec);
                 if (tmp != dec) {
                     hdr = tmp;
-                    if (hdr != null && !backend.supportsBackend(Backend.fromAnnotation(dec.getNativeBackend()))) {
+                    if (hdr != null && !backend.supportsBackend(dec.getNativeBackend())) {
                         impl = getNativeDeclaration(hdr, backend);
                     }
                 }
@@ -9096,7 +9096,7 @@ public class ExpressionVisitor extends Visitor {
             }
         }
         if (dec.isNative()) {
-            if (!backendSupport.supportsBackend(Backend.None)) {
+            if (!backendSupport.supportsBackend(Backend.None.nativeAnnotation)) {
                 if (error && impl == null && hdr != null) {
                     if (!isImplemented(hdr) && !decModule.equals(decModule.getLanguageModule())) {
                         that.addError("no native implementation for backend: native '"
@@ -9135,9 +9135,7 @@ public class ExpressionVisitor extends Visitor {
     // where in this case the backend compiler can't check the
     // validity of the code for the other backend 
     private boolean isNativeForWrongBackend(String backend) {
-        Backend be;
         return backend != null &&
-                (be = Backend.fromAnnotation(backend)) != null &&
-                !backendSupport.supportsBackend(be);
+                !backendSupport.supportsBackend(backend);
     }    
 }

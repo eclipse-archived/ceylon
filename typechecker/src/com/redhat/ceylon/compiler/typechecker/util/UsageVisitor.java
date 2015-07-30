@@ -83,13 +83,9 @@ public class UsageVisitor extends Visitor {
 
     @Override
     public void visit(Tree.Declaration that) {
-        Backend ib = inBackend;
-        String nat = that.getDeclarationModel().getNativeBackend();
-        if (nat != null) {
-            inBackend = Backend.fromAnnotation(nat);
-        }
         super.visit(that);
         Declaration declaration = that.getDeclarationModel();
+        String nat = declaration.getNativeBackend();
         if (declaration!=null && 
                 declaration.getName()!=null &&
         		!declaration.isShared() && 
@@ -100,13 +96,12 @@ public class UsageVisitor extends Visitor {
         		!(declaration instanceof TypeParameter &&
         		    ((TypeParameter) declaration).getDeclaration() 
         		            instanceof TypeParameter)) {
-            if (inBackend == null || backendSupport.supportsBackend(inBackend)) {
+            if (nat == null || backendSupport.supportsBackend(nat)) {
                 that.addUsageWarning(Warning.unusedDeclaration,
                         "declaration is never used: '" + 
                             declaration.getName() + "'");
             }
         }
-        inBackend = ib;
     }
 
     @Override
@@ -115,7 +110,8 @@ public class UsageVisitor extends Visitor {
         if (!hasErrorOrWarning(that)) {
             Type type = that.getTypeModel();
             if (!isTypeUnknown(type) && type.isNothing()) {
-                if (inBackend == null || backendSupport.supportsBackend(inBackend)) {
+                String nat = that.getScope().getScopedBackend();
+                if (nat == null || backendSupport.supportsBackend(nat)) {
                     that.addUsageWarning(Warning.expressionTypeNothing,
                             "expression has type 'Nothing'");
                 }

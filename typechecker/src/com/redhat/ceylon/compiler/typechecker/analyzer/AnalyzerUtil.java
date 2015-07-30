@@ -1213,18 +1213,15 @@ public class AnalyzerUtil {
                 else {
                     for (ModuleImport mi: module.getImports()) {
                         if (mi.isNative()) {
-                            Backend backend = 
-                                    Backend.fromAnnotation(
-                                            mi.getNativeBackend());
                             String name = 
                                     mi.getModule()
                                         .getNameAsString();
-                            if (!backendSupport.supportsBackend(backend) && 
+                            if (!backendSupport.supportsBackend(mi.getNativeBackend()) && 
                                     (nameToImport.equals(name) || 
                                      nameToImport.startsWith(name + "."))) {
                                 return null;
                             }
-                            if (!backendSupport.supportsBackend(Backend.Java) && 
+                            if (!backendSupport.supportsBackend(Backend.Java.nativeAnnotation) && 
                                     (JDKUtils.isJDKAnyPackage(nameToImport) || 
                                      JDKUtils.isOracleJDKAnyPackage(nameToImport))) {
                                 return null;
