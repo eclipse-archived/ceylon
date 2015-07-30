@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Set;
 
 import com.redhat.ceylon.common.Backend;
+import com.redhat.ceylon.common.BackendSupport;
 import com.redhat.ceylon.common.Constants;
 import com.redhat.ceylon.compiler.typechecker.context.Context;
 import com.redhat.ceylon.model.typechecker.model.Module;
