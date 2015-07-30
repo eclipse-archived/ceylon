@@ -705,10 +705,10 @@ public class TypeVisitor extends Visitor {
         o.getSatisfiedTypes().clear();
         defaultSuperclass(that.getExtendedType(), o);
         super.visit(that);
-        handleHeader(that.getDeclarationModel(), that);
         Type type = o.getType();
         that.getDeclarationModel().setType(type);
         that.getType().setTypeModel(type);
+        handleHeader(o, that);
     }
 
     @Override 

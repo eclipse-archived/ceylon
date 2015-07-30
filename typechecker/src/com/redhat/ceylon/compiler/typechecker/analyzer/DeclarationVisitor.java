@@ -248,6 +248,9 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
                 if (member == null) {
                     if (model.isNativeHeader()) {
                         handleNativeHeader(model, name);
+                        if (that instanceof Tree.ObjectDefinition) {
+                            handleNativeHeader(((Tree.ObjectDefinition)that).getAnonymousClass(), name);
+                        }
                     }
                 }
                 else {
@@ -275,6 +278,11 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
                                 !hasModelInOverloads(model, 
                                         overloads)) {
                             overloads.add(model);
+                            if (that instanceof Tree.ObjectDefinition) {
+                                Declaration objImplCls = ((Tree.ObjectDefinition)that).getAnonymousClass();
+                                Class objHdrCls = (Class)((Value)member).getType().getDeclaration();
+                                objHdrCls.getOverloads().add(objImplCls);
+                            }
                         }
                     }
                     else {
