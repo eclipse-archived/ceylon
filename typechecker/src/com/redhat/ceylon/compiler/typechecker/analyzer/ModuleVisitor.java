@@ -84,8 +84,10 @@ public class ModuleVisitor extends Visitor {
         }
         else {
             String versionString = quoted.getText();
-            for (int i=0; i<versionString.length(); i++) {
-                if (Character.isWhitespace(versionString.charAt(i))) {
+            for (int i=0; i<versionString.length();) {
+                int codePoint = versionString.codePointAt(i);
+                i += Character.charCount(codePoint);
+                if (Character.isWhitespace(codePoint)) {
                     quoted.addError("module version may not contain whitespace");
                     break;
                 }
@@ -112,8 +114,10 @@ public class ModuleVisitor extends Visitor {
             return "";
         }
         else {
-            for (int i=0; i<nameString.length(); i++) {
-                if (Character.isWhitespace(nameString.charAt(i))) {
+            for (int i=0; i<nameString.length();) {
+                int codePoint = nameString.codePointAt(i);
+                i += Character.charCount(codePoint);
+                if (Character.isWhitespace(codePoint)) {
                     quoted.addError("module name may not contain whitespace");
                     break;
                 }
