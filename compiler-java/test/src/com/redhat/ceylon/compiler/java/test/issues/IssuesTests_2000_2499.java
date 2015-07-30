@@ -460,4 +460,9 @@ public class IssuesTests_2000_2499 extends CompilerTests {
     public void testBug2253() {
         compareWithJavaSource("bug22xx/Bug2253"); 
     }
+
+    @Test
+    public void testBug2255() {
+        compareWithJavaSource("bug22xx/Bug2255"); 
+    }
 }
