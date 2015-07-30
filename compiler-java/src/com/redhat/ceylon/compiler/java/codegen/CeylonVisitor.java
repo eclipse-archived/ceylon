@@ -355,7 +355,7 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
             if (chainedCtorInvocation != null) {
                 delegateExpr = gen.make().Exec(gen.expressionGen().transformConstructorDelegation(chainedCtorInvocation, 
                         delegation.isSelfDelegation() ? delegation : new CtorDelegation(ctorModel, ctorModel), 
-                                chainedCtorInvocation, classBuilder, true));
+                        chainedCtorInvocation, classBuilder, !delegation.isSelfDelegation()));
             } else {
                 // In this case there is no extends clause in the source code
                 // so we have to construct the argument list "by hand".
