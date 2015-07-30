@@ -385,6 +385,8 @@ public class ClassDefinitionBuilder {
     private boolean ignoreAnnotations = false;
     private boolean noAnnotations = false;
 
+    private boolean hasDelegatingConstructors;
+
     /** 
      * The class will be generated with the {@code @Ignore} annotation only
      */
@@ -717,5 +719,14 @@ public class ClassDefinitionBuilder {
 
     public boolean isCompanionBuilder(){
         return isCompanion;
+    }
+
+    public ClassDefinitionBuilder hasDelegatingConstructors(boolean hasDelegatingConstructors) {
+        this.hasDelegatingConstructors = hasDelegatingConstructors;
+        return this;
+    }
+
+    public boolean hasDelegatingConstructors() {
+        return hasDelegatingConstructors;
     }
 }

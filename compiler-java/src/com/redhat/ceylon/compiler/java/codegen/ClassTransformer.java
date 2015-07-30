@@ -171,7 +171,8 @@ public class ClassTransformer extends AbstractTransformer {
         }
         ClassDefinitionBuilder classBuilder = ClassDefinitionBuilder
                 .klass(this, javaClassName, ceylonClassName, Decl.isLocal(model))
-                .forDefinition(model);
+                .forDefinition(model)
+                .hasDelegatingConstructors(CodegenUtil.hasDelegatingConstructors(def));
         
         // Very special case for Anything
         if ("ceylon.language::Anything".equals(model.getQualifiedNameString())) {
@@ -2935,7 +2936,7 @@ public class ClassTransformer extends AbstractTransformer {
                 } else {
                     
                     List<JCAnnotation> annos = makeAtIgnore().prependList(expressionGen().transformAnnotations(false, OutputElement.FIELD, decl));
-                    if (Decl.hasAbstractConstructor((Class)decl.getDeclarationModel().getContainer())) {
+                    if (classBuilder.hasDelegatingConstructors()) {
                         annos = annos.prependList(makeAtNoInitCheck());
                     }
                     // fields should be ignored, they are accessed by the getters

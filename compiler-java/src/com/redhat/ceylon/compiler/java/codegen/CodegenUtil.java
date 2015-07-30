@@ -417,4 +417,28 @@ public class CodegenUtil {
                     // or must be optional
                     || unit.isOptionalType(attrType.getType()));
     }
+
+
+    public static boolean hasDelegatingConstructors(Tree.ClassOrInterface def) {
+        if(def instanceof Tree.ClassDefinition == false)
+            return false;
+        for (Tree.Statement stmt : ((Tree.ClassDefinition)def).getClassBody().getStatements()) {
+            if (stmt instanceof Tree.Constructor) {
+                Tree.Constructor ctor = (Tree.Constructor)stmt;
+                // find every constructor which delegates to another constructor
+                if (ctor.getDelegatedConstructor() != null
+                        && ctor.getDelegatedConstructor().getInvocationExpression() != null) {
+                    if (ctor.getDelegatedConstructor().getInvocationExpression().getPrimary() instanceof Tree.ExtendedTypeExpression) {
+                        Tree.ExtendedTypeExpression ete = (Tree.ExtendedTypeExpression)ctor.getDelegatedConstructor().getInvocationExpression().getPrimary();
+                        // are we delegating to a constructor (not a supertype) of the same class (this class)?
+                        if (Decl.isConstructor(ete.getDeclaration())
+                                && Decl.getConstructedClass(ete.getDeclaration()).equals(def.getDeclarationModel())) {
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+        return false;
+    }
 }
