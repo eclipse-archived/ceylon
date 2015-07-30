@@ -30,7 +30,7 @@ void test() {
     @type:"Counter" value counter3 = Counter.withInitial { initial=1; };
     @error value counter4 = Counter.Clone(counter1);
     @error /*@type:"Counter"*/ value counter5 = Counter.Counter();
-    @type:"Counter" value counter6 = counter1.withInitial(2);
+    @error @type:"Counter" value counter6 = counter1.withInitial(2);
     Counter();
     Counter.withInitial(2);
     @error Counter(2);

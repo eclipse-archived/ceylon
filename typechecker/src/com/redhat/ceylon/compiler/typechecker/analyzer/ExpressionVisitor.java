@@ -78,6 +78,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Pattern;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.Primary;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.VoidModifier;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.model.typechecker.model.Class;
@@ -976,6 +977,14 @@ public class ExpressionVisitor extends Visitor {
         }
     }
 
+    private void checkIterable(Type pt, Tree.Primary p) {
+        if (!unit.isIterableType(pt)) {
+            p.addError("expression must be of iterable type: '" +
+                    pt.asString(unit) + 
+                    "' is not a subtype of 'Iterable'");
+        }
+    }
+    
     @Override public void visit(Tree.BooleanCondition that) {
         super.visit(that);
         if (that.getExpression()!=null) {
@@ -2587,14 +2596,10 @@ public class ExpressionVisitor extends Visitor {
             checkOptional(pt, p);
         }
         else if (op instanceof Tree.SpreadOp) {
-            if (!unit.isIterableType(pt)) {
-                p.addError("expression must be of iterable type: '" +
-                        pt.asString(unit) + 
-                        "' is not a subtype of 'Iterable'");
-            }
+            checkIterable(pt, p);
         }
     }
-    
+
     private Type unwrap(Type type, 
             Tree.QualifiedMemberOrTypeExpression mte) {
         if (type==null) {
@@ -6319,6 +6324,12 @@ public class ExpressionVisitor extends Visitor {
             List<Type> typeArgs, 
             Tree.TypeArguments tal) {
         checkMemberOperator(receivingType, that);
+        Tree.Primary primary = that.getPrimary();
+        if (isConstructor(member) &&
+                !(primary instanceof Tree.BaseTypeExpression ||
+                  primary instanceof Tree.QualifiedTypeExpression)) {
+            primary.addError("constructor reference must be qualified by a type expression");
+        }
         Type receiverType =
                 accountForStaticReferenceReceiverType(that, 
                         unwrap(receivingType, that));
