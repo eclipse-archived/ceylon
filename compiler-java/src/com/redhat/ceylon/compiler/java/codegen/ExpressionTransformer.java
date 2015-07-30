@@ -1882,6 +1882,8 @@ public class ExpressionTransformer extends AbstractTransformer {
     public JCExpression transform(Tree.DefaultOp op, Type expectedType) {
         Term elseTerm = unwrapExpressionUntilTerm(op.getRightTerm());
         Type typeModel = typeFact().denotableType(op.getTypeModel());
+        // make sure we do not insert null checks if we're going to allow testing for null
+        Type rightExpectedType = getOptionalTypeForInteropIfAllowed(expectedType, typeModel, elseTerm);
         if (unwrapExpressionUntilTerm(op.getLeftTerm()) instanceof Tree.ThenOp) {
             // Optimize cond then foo else bar (avoids unnecessary boxing in particular)
             Tree.ThenOp then = (Tree.ThenOp)unwrapExpressionUntilTerm(op.getLeftTerm());
@@ -1889,14 +1891,12 @@ public class ExpressionTransformer extends AbstractTransformer {
             Term thenTerm = then.getRightTerm();
             JCExpression cond = transformExpression(condTerm, BoxingStrategy.UNBOXED, condTerm.getTypeModel());
             JCExpression thenpart = transformExpression(thenTerm, CodegenUtil.getBoxingStrategy(op), 
-                    typeModel);
+                    rightExpectedType);
             JCExpression elsepart = transformExpression(elseTerm, CodegenUtil.getBoxingStrategy(op), 
-                    typeModel);
+                    rightExpectedType);
             return make().Conditional(cond, thenpart, elsepart);
         }
         JCExpression left = transformExpression(op.getLeftTerm(), BoxingStrategy.BOXED, typeFact().getOptionalType(typeModel));
-        // make sure we do not insert null checks if we're going to allow testing for null
-        Type rightExpectedType = getOptionalTypeForInteropIfAllowed(expectedType, typeModel, elseTerm);
         JCExpression right = transformExpression(elseTerm, BoxingStrategy.BOXED, rightExpectedType);
         Naming.SyntheticName varName = naming.temp();
         JCExpression varIdent = varName.makeIdent();
