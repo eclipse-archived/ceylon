@@ -1,0 +1,658 @@
+package com.redhat.ceylon.compiler.java.test.structure.constructor;
+
+class Test1 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    public Test1() {
+        final .java.lang.String name;
+        name = "a";
+        .ceylon.language.print_.print(.ceylon.language.String.instance(name));
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.constructor.Test1.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.Test1.class);
+}
+class Test2 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    public Test2() {
+        final .java.lang.String name = "a";
+        .ceylon.language.print_.print(.ceylon.language.String.instance(name));
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.constructor.Test2.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.Test2.class);
+}
+class Test3 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.Test3.a_ a_ = null;
+    
+    public static final class a_ {
+        
+        private a_() {
+        }
+    }
+    
+    public Test3(.com.redhat.ceylon.compiler.java.test.structure.constructor.Test3.a_ $name$) {
+        final .java.lang.String name;
+        name = "a";
+        .ceylon.language.print_.print(.ceylon.language.String.instance(name));
+    }
+    public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.Test3.b_ b_ = null;
+    
+    public static final class b_ {
+        
+        private b_() {
+        }
+    }
+    
+    public Test3(.com.redhat.ceylon.compiler.java.test.structure.constructor.Test3.b_ $name$) {
+        final .java.lang.String name;
+        name = "a";
+        .ceylon.language.print_.print(.ceylon.language.String.instance(name));
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.constructor.Test3.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.Test3.class);
+}
+class Test4 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.Test4.a_ a_ = null;
+    
+    public static final class a_ {
+        
+        private a_() {
+        }
+    }
+    
+    public Test4(.com.redhat.ceylon.compiler.java.test.structure.constructor.Test4.a_ $name$) {
+        final .java.lang.String name;
+        name = "a";
+        $return$$0: do {
+            .ceylon.language.print_.print(.ceylon.language.String.instance(name));
+        }         while (false);
+        .ceylon.language.print_.print(.ceylon.language.String.instance(name));
+    }
+    public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.Test4.b_ b_ = null;
+    
+    public static final class b_ {
+        
+        private b_() {
+        }
+    }
+    
+    public Test4(.com.redhat.ceylon.compiler.java.test.structure.constructor.Test4.b_ $name$) {
+        final .java.lang.String name;
+        name = "a";
+        $return$$1: do {
+            .ceylon.language.print_.print(.ceylon.language.String.instance(name));
+        }         while (false);
+        .ceylon.language.print_.print(.ceylon.language.String.instance(name));
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.constructor.Test4.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.Test4.class);
+}
+class TestA implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.TestA.a_ a_ = null;
+    
+    public static final class a_ {
+        
+        private a_() {
+        }
+    }
+    
+    public TestA(.com.redhat.ceylon.compiler.java.test.structure.constructor.TestA.a_ $name$) {
+        final .java.lang.String name = "a";
+        $return$$2: do {
+            .ceylon.language.print_.print(.ceylon.language.String.instance(name));
+        }         while (false);
+        .ceylon.language.print_.print(.ceylon.language.String.instance(name));
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.constructor.TestA.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.TestA.class);
+}
+class TestB1 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    @.com.redhat.ceylon.compiler.java.metadata.NoInitCheck
+    private final .java.lang.String name;
+    
+    private final .java.lang.String getName$priv$() {
+        return name;
+    }
+    private static final .com.redhat.ceylon.compiler.java.test.structure.constructor.TestB1.a$delegation$_ a$delegation$_ = null;
+    
+    private static final class a$delegation$_ {
+        
+        private a$delegation$_() {
+        }
+    }
+    
+    private TestB1(.com.redhat.ceylon.compiler.java.test.structure.constructor.TestB1.a$delegation$_ $name$) {
+        this.name = "a";
+        .ceylon.language.print_.print(.ceylon.language.String.instance(getName$priv$()));
+    }
+    public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.TestB1.a_ a_ = null;
+    
+    public static final class a_ {
+        
+        private a_() {
+        }
+    }
+    
+    public TestB1(.com.redhat.ceylon.compiler.java.test.structure.constructor.TestB1.a_ $name$) {
+        this(.com.redhat.ceylon.compiler.java.test.structure.constructor.TestB1.a$delegation$_);
+        .ceylon.language.print_.print(.ceylon.language.String.instance(getName$priv$()));
+    }
+    public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.TestB1.b_ b_ = null;
+    
+    public static final class b_ {
+        
+        private b_() {
+        }
+    }
+    
+    public TestB1(.com.redhat.ceylon.compiler.java.test.structure.constructor.TestB1.b_ $name$) {
+        this(.com.redhat.ceylon.compiler.java.test.structure.constructor.TestB1.a$delegation$_);
+        .ceylon.language.print_.print(.ceylon.language.String.instance(getName$priv$()));
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.constructor.TestB1.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.TestB1.class);
+}
+class TestB2 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    @.com.redhat.ceylon.compiler.java.metadata.NoInitCheck
+    private final .java.lang.String name;
+    
+    private final .java.lang.String getName$priv$() {
+        return name;
+    }
+    private static final .com.redhat.ceylon.compiler.java.test.structure.constructor.TestB2.a$delegation$_ a$delegation$_ = null;
+    
+    private static final class a$delegation$_ {
+        
+        private a$delegation$_() {
+        }
+    }
+    
+    private TestB2(.com.redhat.ceylon.compiler.java.test.structure.constructor.TestB2.a$delegation$_ $name$) {
+        this.name = "a";
+        .ceylon.language.print_.print(.ceylon.language.String.instance(getName$priv$()));
+    }
+    public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.TestB2.a_ a_ = null;
+    
+    public static final class a_ {
+        
+        private a_() {
+        }
+    }
+    
+    public TestB2(.com.redhat.ceylon.compiler.java.test.structure.constructor.TestB2.a_ $name$) {
+        this(.com.redhat.ceylon.compiler.java.test.structure.constructor.TestB2.a$delegation$_);
+    }
+    public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.TestB2.b_ b_ = null;
+    
+    public static final class b_ {
+        
+        private b_() {
+        }
+    }
+    
+    public TestB2(.com.redhat.ceylon.compiler.java.test.structure.constructor.TestB2.b_ $name$) {
+        this(.com.redhat.ceylon.compiler.java.test.structure.constructor.TestB2.a$delegation$_);
+        .ceylon.language.print_.print(.ceylon.language.String.instance(getName$priv$()));
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.constructor.TestB2.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.TestB2.class);
+}
+class TestB3 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    @.com.redhat.ceylon.compiler.java.metadata.NoInitCheck
+    private final .java.lang.String name;
+    
+    private final .java.lang.String getName$priv$() {
+        return name;
+    }
+    private static final .com.redhat.ceylon.compiler.java.test.structure.constructor.TestB3.a$delegation$_ a$delegation$_ = null;
+    
+    private static final class a$delegation$_ {
+        
+        private a$delegation$_() {
+        }
+    }
+    
+    private TestB3(.com.redhat.ceylon.compiler.java.test.structure.constructor.TestB3.a$delegation$_ $name$) {
+        this.name = "a";
+        .ceylon.language.print_.print(.ceylon.language.String.instance(getName$priv$()));
+    }
+    public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.TestB3.a_ a_ = null;
+    
+    public static final class a_ {
+        
+        private a_() {
+        }
+    }
+    
+    public TestB3(.com.redhat.ceylon.compiler.java.test.structure.constructor.TestB3.a_ $name$) {
+        this(.com.redhat.ceylon.compiler.java.test.structure.constructor.TestB3.a$delegation$_);
+        .ceylon.language.print_.print(.ceylon.language.String.instance(getName$priv$()));
+    }
+    public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.TestB3.b_ b_ = null;
+    
+    public static final class b_ {
+        
+        private b_() {
+        }
+    }
+    
+    public TestB3(.com.redhat.ceylon.compiler.java.test.structure.constructor.TestB3.b_ $name$) {
+        this(.com.redhat.ceylon.compiler.java.test.structure.constructor.TestB3.a$delegation$_);
+        $return$$3: do {
+        }         while (false);
+        .ceylon.language.print_.print(.ceylon.language.String.instance(getName$priv$()));
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.constructor.TestB3.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.TestB3.class);
+}
+class TestB4 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    @.com.redhat.ceylon.compiler.java.metadata.NoInitCheck
+    private final .java.lang.String name;
+    
+    private final .java.lang.String getName$priv$() {
+        return name;
+    }
+    private static final .com.redhat.ceylon.compiler.java.test.structure.constructor.TestB4.a$delegation$_ a$delegation$_ = null;
+    
+    private static final class a$delegation$_ {
+        
+        private a$delegation$_() {
+        }
+    }
+    
+    private TestB4(.com.redhat.ceylon.compiler.java.test.structure.constructor.TestB4.a$delegation$_ $name$) {
+        this.name = "a";
+        .ceylon.language.print_.print(.ceylon.language.String.instance(getName$priv$()));
+    }
+    public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.TestB4.a_ a_ = null;
+    
+    public static final class a_ {
+        
+        private a_() {
+        }
+    }
+    
+    public TestB4(.com.redhat.ceylon.compiler.java.test.structure.constructor.TestB4.a_ $name$) {
+        this(.com.redhat.ceylon.compiler.java.test.structure.constructor.TestB4.a$delegation$_);
+        .ceylon.language.print_.print(.ceylon.language.String.instance(getName$priv$()));
+    }
+    private static final .com.redhat.ceylon.compiler.java.test.structure.constructor.TestB4.b$delegation$_ b$delegation$_ = null;
+    
+    private static final class b$delegation$_ {
+        
+        private b$delegation$_() {
+        }
+    }
+    
+    private TestB4(.com.redhat.ceylon.compiler.java.test.structure.constructor.TestB4.b$delegation$_ $name$) {
+        this(.com.redhat.ceylon.compiler.java.test.structure.constructor.TestB4.a$delegation$_);
+    }
+    public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.TestB4.b_ b_ = null;
+    
+    public static final class b_ {
+        
+        private b_() {
+        }
+    }
+    
+    public TestB4(.com.redhat.ceylon.compiler.java.test.structure.constructor.TestB4.b_ $name$) {
+        this(.com.redhat.ceylon.compiler.java.test.structure.constructor.TestB4.a$delegation$_);
+        $return$$4: do {
+        }         while (false);
+        .ceylon.language.print_.print(.ceylon.language.String.instance(getName$priv$()));
+    }
+    public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.TestB4.c_ c_ = null;
+    
+    public static final class c_ {
+        
+        private c_() {
+        }
+    }
+    
+    public TestB4(.com.redhat.ceylon.compiler.java.test.structure.constructor.TestB4.c_ $name$) {
+        this(.com.redhat.ceylon.compiler.java.test.structure.constructor.TestB4.b$delegation$_);
+        $return$$5: do {
+        }         while (false);
+        .ceylon.language.print_.print(.ceylon.language.String.instance(getName$priv$()));
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.constructor.TestB4.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.TestB4.class);
+}
+class TestC implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    @.com.redhat.ceylon.compiler.java.metadata.NoInitCheck
+    private final .java.lang.String name;
+    
+    private final .java.lang.String getName$priv$() {
+        return name;
+    }
+    private static final .com.redhat.ceylon.compiler.java.test.structure.constructor.TestC.a$delegation$_ a$delegation$_ = null;
+    
+    private static final class a$delegation$_ {
+        
+        private a$delegation$_() {
+        }
+    }
+    
+    private TestC(.com.redhat.ceylon.compiler.java.test.structure.constructor.TestC.a$delegation$_ $name$) {
+    }
+    public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.TestC.a_ a_ = null;
+    
+    public static final class a_ {
+        
+        private a_() {
+        }
+    }
+    
+    public TestC(.com.redhat.ceylon.compiler.java.test.structure.constructor.TestC.a_ $name$) {
+        this(.com.redhat.ceylon.compiler.java.test.structure.constructor.TestC.a$delegation$_);
+    }
+    public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.TestC.b_ b_ = null;
+    
+    public static final class b_ {
+        
+        private b_() {
+        }
+    }
+    
+    public TestC(.com.redhat.ceylon.compiler.java.test.structure.constructor.TestC.b_ $name$) {
+        this(.com.redhat.ceylon.compiler.java.test.structure.constructor.TestC.a$delegation$_);
+        name = "b";
+        .ceylon.language.print_.print(.ceylon.language.String.instance(getName$priv$()));
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.constructor.TestC.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.TestC.class);
+}
+class TestC2 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    private static final .com.redhat.ceylon.compiler.java.test.structure.constructor.TestC2.a$delegation$_ a$delegation$_ = null;
+    
+    private static final class a$delegation$_ {
+        
+        private a$delegation$_() {
+        }
+    }
+    
+    private TestC2(.com.redhat.ceylon.compiler.java.test.structure.constructor.TestC2.a$delegation$_ $name$) {
+    }
+    public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.TestC2.a_ a_ = null;
+    
+    public static final class a_ {
+        
+        private a_() {
+        }
+    }
+    
+    public TestC2(.com.redhat.ceylon.compiler.java.test.structure.constructor.TestC2.a_ $name$) {
+        this(.com.redhat.ceylon.compiler.java.test.structure.constructor.TestC2.a$delegation$_);
+        final .java.lang.String name;
+    }
+    public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.TestC2.b_ b_ = null;
+    
+    public static final class b_ {
+        
+        private b_() {
+        }
+    }
+    
+    public TestC2(.com.redhat.ceylon.compiler.java.test.structure.constructor.TestC2.b_ $name$) {
+        this(.com.redhat.ceylon.compiler.java.test.structure.constructor.TestC2.a$delegation$_);
+        final .java.lang.String name;
+        name = "b";
+        .ceylon.language.print_.print(.ceylon.language.String.instance(name));
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.constructor.TestC2.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.TestC2.class);
+}
+class Super implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    @.com.redhat.ceylon.compiler.java.metadata.NoInitCheck
+    private final .java.lang.String name;
+    
+    private final .java.lang.String getName$priv$() {
+        return name;
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.NoInitCheck
+    private final .java.lang.String name2;
+    
+    private final .java.lang.String getName2$priv$() {
+        return name2;
+    }
+    
+    public Super() {
+    }
+    private static final .com.redhat.ceylon.compiler.java.test.structure.constructor.Super.constr$delegation$_ constr$delegation$_ = null;
+    
+    private static final class constr$delegation$_ {
+        
+        private constr$delegation$_() {
+        }
+    }
+    
+    private Super(.com.redhat.ceylon.compiler.java.test.structure.constructor.Super.constr$delegation$_ $name$) {
+        name = "Gavin";
+    }
+    public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.Super.constr_ constr_ = null;
+    
+    public static final class constr_ {
+        
+        private constr_() {
+        }
+    }
+    
+    public Super(.com.redhat.ceylon.compiler.java.test.structure.constructor.Super.constr_ $name$) {
+        this(.com.redhat.ceylon.compiler.java.test.structure.constructor.Super.constr$delegation$_);
+    }
+    public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.Super.default_ default_ = null;
+    
+    public static final class default_ {
+        
+        private default_() {
+        }
+    }
+    
+    public Super(.com.redhat.ceylon.compiler.java.test.structure.constructor.Super.default_ $name$) {
+        this(.com.redhat.ceylon.compiler.java.test.structure.constructor.Super.constr$delegation$_);
+        name2 = "";
+        .ceylon.language.print_.print(.ceylon.language.String.instance(getName$priv$()));
+        .ceylon.language.print_.print(.ceylon.language.String.instance(getName2$priv$()));
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.constructor.Super.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.Super.class);
+}
+class Super2 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    @.com.redhat.ceylon.compiler.java.metadata.NoInitCheck
+    private final .java.lang.String name;
+    
+    private final .java.lang.String getName$priv$() {
+        return name;
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.NoInitCheck
+    private final .java.lang.String name2;
+    
+    private final .java.lang.String getName2$priv$() {
+        return name2;
+    }
+    
+    public Super2() {
+    }
+    private static final .com.redhat.ceylon.compiler.java.test.structure.constructor.Super2.constr$delegation$_ constr$delegation$_ = null;
+    
+    private static final class constr$delegation$_ {
+        
+        private constr$delegation$_() {
+        }
+    }
+    
+    private Super2(.com.redhat.ceylon.compiler.java.test.structure.constructor.Super2.constr$delegation$_ $name$) {
+        name = "Gavin";
+    }
+    public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.Super2.constr_ constr_ = null;
+    
+    public static final class constr_ {
+        
+        private constr_() {
+        }
+    }
+    
+    public Super2(.com.redhat.ceylon.compiler.java.test.structure.constructor.Super2.constr_ $name$) {
+        this(.com.redhat.ceylon.compiler.java.test.structure.constructor.Super2.constr$delegation$_);
+    }
+    public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.Super2.default_ default_ = null;
+    
+    public static final class default_ {
+        
+        private default_() {
+        }
+    }
+    
+    public Super2(.com.redhat.ceylon.compiler.java.test.structure.constructor.Super2.default_ $name$) {
+        this(.com.redhat.ceylon.compiler.java.test.structure.constructor.Super2.constr$delegation$_);
+        name2 = "";
+        .ceylon.language.print_.print(.ceylon.language.String.instance(getName$priv$()));
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.constructor.Super2.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.Super2.class);
+}
+class Super3 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    public Super3() {
+        final .java.lang.String name;
+        final .java.lang.String name2;
+    }
+    private static final .com.redhat.ceylon.compiler.java.test.structure.constructor.Super3.constr$delegation$_ constr$delegation$_ = null;
+    
+    private static final class constr$delegation$_ {
+        
+        private constr$delegation$_() {
+        }
+    }
+    
+    private Super3(.com.redhat.ceylon.compiler.java.test.structure.constructor.Super3.constr$delegation$_ $name$) {
+        final .java.lang.String name;
+        final .java.lang.String name2;
+        name = "Gavin";
+    }
+    public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.Super3.constr_ constr_ = null;
+    
+    public static final class constr_ {
+        
+        private constr_() {
+        }
+    }
+    
+    public Super3(.com.redhat.ceylon.compiler.java.test.structure.constructor.Super3.constr_ $name$) {
+        this(.com.redhat.ceylon.compiler.java.test.structure.constructor.Super3.constr$delegation$_);
+    }
+    public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.Super3.default_ default_ = null;
+    
+    public static final class default_ {
+        
+        private default_() {
+        }
+    }
+    
+    public Super3(.com.redhat.ceylon.compiler.java.test.structure.constructor.Super3.default_ $name$) {
+        this(.com.redhat.ceylon.compiler.java.test.structure.constructor.Super3.constr$delegation$_);
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.constructor.Super3.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.Super3.class);
+}
+class Super4 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    public Super4() {
+        final .java.lang.String name;
+        name = "Foo";
+    }
+    private static final .com.redhat.ceylon.compiler.java.test.structure.constructor.Super4.constr$delegation$_ constr$delegation$_ = null;
+    
+    private static final class constr$delegation$_ {
+        
+        private constr$delegation$_() {
+        }
+    }
+    
+    private Super4(.com.redhat.ceylon.compiler.java.test.structure.constructor.Super4.constr$delegation$_ $name$) {
+        final .java.lang.String name;
+        name = "Gavin";
+    }
+    public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.Super4.constr_ constr_ = null;
+    
+    public static final class constr_ {
+        
+        private constr_() {
+        }
+    }
+    
+    public Super4(.com.redhat.ceylon.compiler.java.test.structure.constructor.Super4.constr_ $name$) {
+        this(.com.redhat.ceylon.compiler.java.test.structure.constructor.Super4.constr$delegation$_);
+    }
+    public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.Super4.default_ default_ = null;
+    
+    public static final class default_ {
+        
+        private default_() {
+        }
+    }
+    
+    public Super4(.com.redhat.ceylon.compiler.java.test.structure.constructor.Super4.default_ $name$) {
+        this(.com.redhat.ceylon.compiler.java.test.structure.constructor.Super4.constr$delegation$_);
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.constructor.Super4.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.Super4.class);
+}

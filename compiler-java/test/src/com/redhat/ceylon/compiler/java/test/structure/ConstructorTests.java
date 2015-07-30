@@ -217,6 +217,11 @@ public class ConstructorTests extends CompilerTests {
     }
     
     @Test
+    public void testCtorBug2171() {
+        compareWithJavaSource("constructor/Bug2171");
+    }
+
+    @Test
     public void testCtorBug2187() {
         compareWithJavaSource("constructor/Bug2187");
     }
