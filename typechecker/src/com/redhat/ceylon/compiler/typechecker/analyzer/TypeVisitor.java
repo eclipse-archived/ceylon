@@ -77,7 +77,6 @@ public class TypeVisitor extends Visitor {
     private boolean inDelegatedConstructor;
     private boolean inTypeLiteral;
     private boolean inExtendsOrClassAlias;
-    private Backend inBackend = null;
     
     public TypeVisitor(BackendSupport backendSupport) {
         this.backendSupport = backendSupport;
@@ -87,33 +86,15 @@ public class TypeVisitor extends Visitor {
             BackendSupport backendSupport) {
         this.unit = unit;
         this.backendSupport = backendSupport;
-        String nat = 
-                unit.getPackage()
-                    .getModule()
-                    .getNativeBackend();
-        inBackend = Backend.fromAnnotation(nat);
     }
     
     @Override public void visit(Tree.CompilationUnit that) {
         unit = that.getUnit();
-        Backend ib = inBackend;
-        String nat = 
-                unit.getPackage()
-                    .getModule()
-                    .getNativeBackend();
-        inBackend = Backend.fromAnnotation(nat);
         super.visit(that);
-        inBackend = ib;
     }
     
     @Override public void visit(Tree.Declaration that) {
-        Backend ib = inBackend;
-        String nat = that.getDeclarationModel().getNativeBackend();
-        if (nat != null) {
-            inBackend = Backend.fromAnnotation(nat);
-        }
         super.visit(that);
-        inBackend = ib;
     }
     
     public void visit(Tree.GroupedType that) {
@@ -396,7 +377,7 @@ public class TypeVisitor extends Visitor {
                         null, false, unit);
             }
             if (type==null) {
-                if (!isNativeForWrongBackend()) {
+                if (!isNativeForWrongBackend(scope.getScopedBackend())) {
                     that.addError("type declaration does not exist: '" + 
                             name + "'", 102);
                     unit.getUnresolvedReferences().add(id);
@@ -482,7 +463,7 @@ public class TypeVisitor extends Visitor {
                         getTypeMember(d, name, 
                                 null, false, unit);
                 if (type==null) {
-                    if (!isNativeForWrongBackend()) {
+                    if (!isNativeForWrongBackend(that.getScope().getScopedBackend())) {
                         if (d.isMemberAmbiguous(name, unit, null, false)) {
                             that.addError("member type declaration is ambiguous: '" + 
                                     name + "' for type '" + 
@@ -1628,10 +1609,16 @@ public class TypeVisitor extends Visitor {
             Node that) {
         if (Backend.None.nativeAnnotation.equals(dec.getNativeBackend())
                 && !backendSupport.supportsBackend(Backend.None)) {
-            BackendSupport backend = 
-                    inBackend == null ?
-                            backendSupport : 
-                            inBackend.backendSupport;
+            Scope scope = that.getScope();
+            if (scope == dec) {
+                scope = scope.getScope();
+            }
+            String inBackend = scope.getScopedBackend();
+            Backend be = Backend.fromAnnotation(inBackend);
+            BackendSupport backend =
+                    be == null ?
+                            backendSupport :
+                            be.backendSupport;
             Declaration hdr = dec;
             if (!hdr.isNativeHeader()) {
                 hdr = getNativeHeader(dec);
@@ -1660,9 +1647,10 @@ public class TypeVisitor extends Visitor {
     
     // We use this for situations where the backend compiler can't check the
     // validity of the code for the other backend 
-    private boolean isNativeForWrongBackend() {
-        return inBackend != null && 
-                !backendSupport.supportsBackend(inBackend);
+    private boolean isNativeForWrongBackend(String backend) {
+        Backend be;
+        return backend != null &&
+                (be = Backend.fromAnnotation(backend)) != null &&
+                !backendSupport.supportsBackend(be);
     }    
-    
 }

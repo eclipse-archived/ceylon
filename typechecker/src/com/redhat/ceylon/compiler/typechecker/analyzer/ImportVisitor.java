@@ -14,7 +14,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.common.BackendSupport;
 import com.redhat.ceylon.compiler.typechecker.context.TypecheckerUnit;
 import com.redhat.ceylon.compiler.typechecker.parser.CeylonLexer;
@@ -47,8 +46,6 @@ public class ImportVisitor extends Visitor {
     private TypecheckerUnit unit;
     private final BackendSupport backendSupport;
 
-    private Backend inBackend = null;
-    
     public ImportVisitor(BackendSupport backendSupport) {
         this.backendSupport = backendSupport;
     }
@@ -57,23 +54,11 @@ public class ImportVisitor extends Visitor {
             BackendSupport backendSupport) {
         this.unit = unit;
         this.backendSupport = backendSupport;
-        String nat = 
-                unit.getPackage()
-                    .getModule()
-                    .getNativeBackend();
-        inBackend = Backend.fromAnnotation(nat);
     }
     
     @Override public void visit(Tree.CompilationUnit that) {
         unit = that.getUnit();
-        Backend ib = inBackend;
-        String nat = 
-                unit.getPackage()
-                    .getModule()
-                    .getNativeBackend();
-        inBackend = Backend.fromAnnotation(nat);
         super.visit(that);
-        inBackend = ib;
         HashSet<String> set = new HashSet<String>();
         for (Tree.Import im: that.getImportList().getImports()) {
             Tree.ImportPath ip = im.getImportPath();

@@ -126,7 +126,6 @@ public class ExpressionVisitor extends Visitor {
 //    private boolean isCondition;
     private boolean dynamic;
     private boolean inExtendsClause = false;
-    private Backend inBackend = null;
     private TypeDeclaration constructorClass;
 
     private Node ifStatementOrExpression;
@@ -196,19 +195,11 @@ public class ExpressionVisitor extends Visitor {
     public ExpressionVisitor(TypecheckerUnit unit, BackendSupport backendSupport) {
         this.unit = unit;
         this.backendSupport = backendSupport;
-        String nat = unit.getPackage().getModule().getNativeBackend();
-        inBackend = Backend.fromAnnotation(nat);
     }
     
     @Override public void visit(Tree.CompilationUnit that) {
         unit = that.getUnit();
-        Backend ib = inBackend;
-        String nat = unit.getPackage().getModule().getNativeBackend();
-        if (nat != null) {
-            inBackend = Backend.fromAnnotation(nat);
-        }
         super.visit(that);
-        inBackend = ib;
     }
         
     private Declaration beginReturnDeclaration(Declaration d) {
@@ -1110,7 +1101,7 @@ public class ExpressionVisitor extends Visitor {
         if (type!=null) {
             Type t = type.getTypeModel();
             if (type instanceof Tree.LocalModifier &&
-                    !isNativeForWrongBackend()) {
+                    !isNativeForWrongBackend(dec.getScopedBackend())) {
         		if (dec.isParameter()) {
         			type.addError("parameter may not have inferred type: '" + 
         					dec.getName() + 
@@ -1995,13 +1986,7 @@ public class ExpressionVisitor extends Visitor {
     }
     
     @Override public void visit(Tree.Declaration that) {
-        Backend ib = inBackend;
-        String nat = that.getDeclarationModel().getNativeBackend();
-        if (nat != null) {
-            inBackend = Backend.fromAnnotation(nat);
-        }
         super.visit(that);
-        inBackend = ib;
     }
     
     private static VoidModifier fakeVoid(Node that) {
@@ -6038,7 +6023,7 @@ public class ExpressionVisitor extends Visitor {
                         that.getUnit());
         if (member==null) {
             if (!dynamic &&
-                    !isNativeForWrongBackend() &&
+                    !isNativeForWrongBackend(that.getScope().getScopedBackend()) &&
                     error) {
                 that.addError("function or value does not exist: '" +
                         name + "'", 100);
@@ -6357,7 +6342,7 @@ public class ExpressionVisitor extends Visitor {
                             ptr.getFullType(wrap(ptr.getType(), 
                                     receivingType, that)));
             if (!dynamic && 
-                    !isNativeForWrongBackend() &&
+                    !isNativeForWrongBackend(that.getScope().getScopedBackend()) &&
                     !isAbstraction(member) && 
                     isTypeUnknown(fullType)) {
                 //this occurs with an ambiguous reference
@@ -6550,7 +6535,7 @@ public class ExpressionVisitor extends Visitor {
                             tal, outerType, typeArgs, 
                             pr.getFullType());
             if (!dynamic && 
-                    !isNativeForWrongBackend() &&
+                    !isNativeForWrongBackend(that.getScope().getScopedBackend()) &&
                     !isAbstraction(member) && 
                     isTypeUnknown(fullType)) {
                 that.addError("could not determine type of function or value reference: '" +
@@ -6630,7 +6615,9 @@ public class ExpressionVisitor extends Visitor {
                         that.getEllipsis(), 
                         that.getUnit());
         if (type==null) {
-            if (!dynamic && !isNativeForWrongBackend() && error) {
+            if (error &&
+                    !dynamic &&
+                    !isNativeForWrongBackend(that.getScope().getScopedBackend())) {
                 that.addError("type does not exist: '" + 
                         name + "'", 
                         102);
@@ -9045,11 +9032,13 @@ public class ExpressionVisitor extends Visitor {
         Declaration hdr = null;
         Module ctxModule = that.getUnit().getPackage().getModule();
         Module decModule = dec.getUnit().getPackage().getModule();
+        String inBackend = that.getScope().getScopedBackend();
         if (dec.isNative()) {
+            Backend be = Backend.fromAnnotation(inBackend);
             BackendSupport backend = 
-                    inBackend == null ?
+                    be == null ?
                             backendSupport : 
-                            inBackend.backendSupport;
+                            be.backendSupport;
             if (dec.isNativeHeader()) {
                 hdr = dec;
                 impl = getNativeDeclaration(hdr, backend);
@@ -9077,9 +9066,10 @@ public class ExpressionVisitor extends Visitor {
                         && !isInNativeContainer((Declaration)that.getScope()))
                 && (inBackend == null
                     || impl.isNative()
-                        && !impl.getNativeBackend().equals(inBackend.nativeAnnotation)
+                        && !impl.getNativeBackend().equals(inBackend)
                     || decModule.isNative()
-                        && !decModule.getNativeBackend().equals(inBackend.nativeAnnotation))) {
+                        && !decModule.getNativeBackend().equals(inBackend))) {
+            String nb = that.getScope().getScopedBackend();
             if (inBackend != null) {
                 that.addError("native declaration: '" +
                         ((Declaration)that.getScope()).getName(unit) +
@@ -9133,8 +9123,10 @@ public class ExpressionVisitor extends Visitor {
     // We use this to check for similar situations as "dynamic"
     // where in this case the backend compiler can't check the
     // validity of the code for the other backend 
-    private boolean isNativeForWrongBackend() {
-        return inBackend != null && 
-                !backendSupport.supportsBackend(inBackend);
+    private boolean isNativeForWrongBackend(String backend) {
+        Backend be;
+        return backend != null &&
+                (be = Backend.fromAnnotation(backend)) != null &&
+                !backendSupport.supportsBackend(be);
     }    
 }
