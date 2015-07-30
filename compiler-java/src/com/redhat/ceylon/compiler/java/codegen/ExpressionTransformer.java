@@ -51,7 +51,6 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.LetExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.QualifiedMemberOrTypeExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
 import com.redhat.ceylon.model.loader.JvmBackendUtil;
 import com.redhat.ceylon.model.loader.NamingBase.Prefix;
@@ -6429,7 +6428,10 @@ public class ExpressionTransformer extends AbstractTransformer {
         java.util.List<Tree.Condition> conditions = op.getIfClause().getConditionList().getConditions();
         List<JCStatement> statements = statementGen().transformIf(conditions, thenPart, elseVar, elsePart, tmpVar, op, expectedType);
         at(op);
-        JCExpression vartype = makeJavaType(typeFact().denotableType(expectedType), CodegenUtil.getBoxingStrategy(op) == BoxingStrategy.UNBOXED ? 0 : JT_NO_PRIMITIVES);
+        // use the op model for the variable, not expected type, because expected type may be optional, where op
+        // says not optional (even in case of java interop which may return null), so we allow null values in j.l.String (unboxed)
+        // because the caller will insert the null check if the expected type is optional 
+        JCExpression vartype = makeJavaType(op.getTypeModel(), CodegenUtil.getBoxingStrategy(op) == BoxingStrategy.UNBOXED ? 0 : JT_NO_PRIMITIVES);
         return make().LetExpr(make().VarDef(make().Modifiers(0), names().fromString(tmpVar), vartype , null), statements, makeUnquotedIdent(tmpVar));
     }
 
@@ -6447,7 +6449,10 @@ public class ExpressionTransformer extends AbstractTransformer {
         String tmpVar = naming.newTemp("ifResult");
         JCStatement switchExpr = statementGen().transform(op, op.getSwitchClause(), op.getSwitchCaseList(), tmpVar, op, expectedType);
         at(op);
-        JCExpression vartype = makeJavaType(typeFact().denotableType(expectedType), CodegenUtil.getBoxingStrategy(op) == BoxingStrategy.UNBOXED ? 0 : JT_NO_PRIMITIVES);
+        // use the op model for the variable, not expected type, because expected type may be optional, where op
+        // says not optional (even in case of java interop which may return null), so we allow null values in j.l.String (unboxed)
+        // because the caller will insert the null check if the expected type is optional 
+        JCExpression vartype = makeJavaType(op.getTypeModel(), CodegenUtil.getBoxingStrategy(op) == BoxingStrategy.UNBOXED ? 0 : JT_NO_PRIMITIVES);
         return make().LetExpr(make().VarDef(make().Modifiers(0), names().fromString(tmpVar), vartype , null), 
                               List.<JCStatement>of(switchExpr), makeUnquotedIdent(tmpVar));
     }
