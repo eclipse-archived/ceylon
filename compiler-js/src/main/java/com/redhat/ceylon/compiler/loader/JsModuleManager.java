@@ -3,7 +3,7 @@ package com.redhat.ceylon.compiler.loader;
 import java.util.Arrays;
 import java.util.List;
 
-import com.redhat.ceylon.common.Backend;
+import com.redhat.ceylon.common.BackendSupport;
 import com.redhat.ceylon.common.Constants;
 import com.redhat.ceylon.compiler.typechecker.context.Context;
 import com.redhat.ceylon.model.typechecker.model.Module;
@@ -28,10 +28,11 @@ public class JsModuleManager extends ModuleManager {
     }
 
     @Override
-    public boolean supportsBackend(Backend backend) {
+    public boolean supportsBackend(String backend) {
         // HACK added `backend == Backend.None` to make the JS language module compile
         // Remove this once the problem has been fixed!
-        return backend == Backend.JavaScript || backend == Backend.None;
+        return BackendSupport.JAVASCRIPT.supportsBackend(backend)
+                || BackendSupport.HEADER.supportsBackend(backend);
     }
 
     @Override
