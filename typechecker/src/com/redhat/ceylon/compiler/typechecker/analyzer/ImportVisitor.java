@@ -5,6 +5,7 @@ import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.impor
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.formatPath;
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.name;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isConstructor;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isResolvable;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isToplevelAnonymousClass;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isToplevelClassConstructor;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.notOverloaded;
@@ -102,7 +103,7 @@ public class ImportVisitor extends Visitor {
             Set<String> ignoredMembers, ImportList il) {
         for (Declaration dec: importedPackage.getMembers()) {
             if (dec.isShared() && 
-                    !dec.isAnonymous() && 
+                    isResolvable(dec) &&
                     !ignoredMembers.contains(dec.getName()) &&
                     !isNonimportable(importedPackage, dec.getName())) {
                 addWildcardImport(il, dec);
@@ -116,7 +117,7 @@ public class ImportVisitor extends Visitor {
             if (dec.isShared() && 
                     (dec.isStaticallyImportable() || 
                             isConstructor(dec)) && 
-                    !dec.isAnonymous() && 
+                    isResolvable(dec) &&
                     !ignoredMembers.contains(dec.getName())) {
                 addWildcardImport(til, dec, importedType);
             }
