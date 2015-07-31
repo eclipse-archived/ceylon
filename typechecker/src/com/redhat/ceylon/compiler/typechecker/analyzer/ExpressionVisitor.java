@@ -31,6 +31,7 @@ import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.eliminatePare
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.hasError;
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.hasUncheckedNulls;
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.isEffectivelyBaseMemberExpression;
+import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.isForBackend;
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.isInstantiationExpression;
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.name;
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.unwrapExpressionUntilTerm;
@@ -9045,21 +9046,20 @@ public class ExpressionVisitor extends Visitor {
         Module decModule = dec.getUnit().getPackage().getModule();
         String inBackend = that.getScope().getScopedBackend();
         if (dec.isNative()) {
-            Backend be = Backend.fromAnnotation(inBackend);
-            BackendSupport backend = 
-                    be == null ?
-                            backendSupport : 
-                            be.backendSupport;
+            Set<String> backends = 
+                    inBackend == null ?
+                            backendSupport.supportedBackends() : 
+                            Collections.singleton(inBackend);
             if (dec.isNativeHeader()) {
                 hdr = dec;
-                impl = getNativeDeclaration(hdr, backend);
+                impl = getNativeDeclaration(hdr, backends);
             }
             else {
                 Declaration tmp = getNativeHeader(dec);
                 if (tmp != dec) {
                     hdr = tmp;
-                    if (hdr != null && !backend.supportsBackend(dec.getNativeBackend())) {
-                        impl = getNativeDeclaration(hdr, backend);
+                    if (hdr != null && !backends.contains(dec.getNativeBackend())) {
+                        impl = getNativeDeclaration(hdr, backends);
                     }
                 }
             }
@@ -9080,7 +9080,6 @@ public class ExpressionVisitor extends Visitor {
                         && !impl.getNativeBackend().equals(inBackend)
                     || decModule.isNative()
                         && !decModule.getNativeBackend().equals(inBackend))) {
-            String nb = that.getScope().getScopedBackend();
             if (inBackend != null) {
                 that.addError("native declaration: '" +
                         ((Declaration)that.getScope()).getName(unit) +
@@ -9096,7 +9095,7 @@ public class ExpressionVisitor extends Visitor {
             }
         }
         if (dec.isNative()) {
-            if (!backendSupport.supportsBackend(Backend.None.nativeAnnotation)) {
+            if (!isForBackend(Backend.None.nativeAnnotation, backendSupport)) {
                 if (error && impl == null && hdr != null) {
                     if (!isImplemented(hdr) && !decModule.equals(decModule.getLanguageModule())) {
                         that.addError("no native implementation for backend: native '"
@@ -9136,6 +9135,6 @@ public class ExpressionVisitor extends Visitor {
     // validity of the code for the other backend 
     private boolean isNativeForWrongBackend(String backend) {
         return backend != null &&
-                !backendSupport.supportsBackend(backend);
+                !isForBackend(backend, backendSupport);
     }    
 }

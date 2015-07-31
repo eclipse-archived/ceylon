@@ -2,6 +2,7 @@ package com.redhat.ceylon.compiler.typechecker.analyzer;
 
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.formatPath;
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.hasError;
+import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.isForBackend;
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.name;
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.unwrapExpressionUntilTerm;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.appliedType;
@@ -1216,12 +1217,12 @@ public class AnalyzerUtil {
                             String name = 
                                     mi.getModule()
                                         .getNameAsString();
-                            if (!backendSupport.supportsBackend(mi.getNativeBackend()) && 
+                            if (!isForBackend(mi.getNativeBackend(), backendSupport) && 
                                     (nameToImport.equals(name) || 
                                      nameToImport.startsWith(name + "."))) {
                                 return null;
                             }
-                            if (!backendSupport.supportsBackend(Backend.Java.nativeAnnotation) && 
+                            if (!isForBackend(Backend.Java.nativeAnnotation, backendSupport) && 
                                     (JDKUtils.isJDKAnyPackage(nameToImport) || 
                                      JDKUtils.isOracleJDKAnyPackage(nameToImport))) {
                                 return null;

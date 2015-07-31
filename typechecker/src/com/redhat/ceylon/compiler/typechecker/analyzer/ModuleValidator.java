@@ -1,6 +1,7 @@
 package com.redhat.ceylon.compiler.typechecker.analyzer;
 
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.getNativeBackend;
+import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.isForBackend;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -191,7 +192,7 @@ public class ModuleValidator {
         List<Module> visibleDependencies = new ArrayList<Module>();
         visibleDependencies.add(dependencyTree.getLast()); //first addition => no possible conflict
         for (ModuleImport moduleImport : moduleImports) {
-            if (moduleImport.isNative() && !moduleManager.supportsBackend(moduleImport.getNativeBackend())) {
+            if (moduleImport.isNative() && !isForBackend(moduleImport.getNativeBackend(), moduleManager)) {
                 //import is not for this backend
                 continue;
             }

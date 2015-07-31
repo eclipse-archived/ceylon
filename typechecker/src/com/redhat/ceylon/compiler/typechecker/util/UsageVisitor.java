@@ -5,6 +5,7 @@
 package com.redhat.ceylon.compiler.typechecker.util;
 
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.hasErrorOrWarning;
+import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.isForBackend;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isAbstraction;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isTypeUnknown;
 
@@ -96,7 +97,7 @@ public class UsageVisitor extends Visitor {
         		!(declaration instanceof TypeParameter &&
         		    ((TypeParameter) declaration).getDeclaration() 
         		            instanceof TypeParameter)) {
-            if (nat == null || backendSupport.supportsBackend(nat)) {
+            if (nat == null || isForBackend(nat, backendSupport)) {
                 that.addUsageWarning(Warning.unusedDeclaration,
                         "declaration is never used: '" + 
                             declaration.getName() + "'");
@@ -111,7 +112,7 @@ public class UsageVisitor extends Visitor {
             Type type = that.getTypeModel();
             if (!isTypeUnknown(type) && type.isNothing()) {
                 String nat = that.getScope().getScopedBackend();
-                if (nat == null || backendSupport.supportsBackend(nat)) {
+                if (nat == null || isForBackend(nat, backendSupport)) {
                     that.addUsageWarning(Warning.expressionTypeNothing,
                             "expression has type 'Nothing'");
                 }

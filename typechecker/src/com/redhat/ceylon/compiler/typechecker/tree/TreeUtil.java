@@ -1,6 +1,7 @@
 package com.redhat.ceylon.compiler.typechecker.tree;
 
 import java.util.List;
+import java.util.Set;
 
 import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.common.BackendSupport;
@@ -99,27 +100,35 @@ public class TreeUtil {
     
     public static boolean isForBackend(Tree.AnnotationList al, 
             Backend forBackend, Unit unit) {
-        return isForBackend(al, 
-                forBackend.backendSupport, 
-                unit);
+        String be = getNativeBackend(al, unit);
+        return isForBackend(be, forBackend);
     }
     
     public static boolean isForBackend(Tree.AnnotationList al, 
-            BackendSupport backendSupport, Unit unit) {
+            Set<String> backends, Unit unit) {
         String be = getNativeBackend(al, unit);
-        return isForBackend(be, backendSupport);
+        return isForBackend(be, backends);
     }
     
     public static boolean isForBackend(String backendName, 
             Backend forBackend) {
-        return isForBackend(backendName, 
-                forBackend.backendSupport);
+        if (backendName != null) {
+            if (!forBackend.nativeAnnotation.equals(backendName)) {
+                return false;
+            }
+        }
+        return true;
     }
     
     public static boolean isForBackend(String backendName, 
-            BackendSupport backendSupport) {
+            BackendSupport support) {
+        return isForBackend(backendName, support.supportedBackends());
+    }
+    
+    public static boolean isForBackend(String backendName, 
+            Set<String> backends) {
         if (backendName != null) {
-            if (!backendSupport.supportsBackend(backendName)) {
+            if (!backends.contains(backendName)) {
                 return false;
             }
         }

@@ -7,6 +7,7 @@ import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.getTy
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.getTypedDeclaration;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.setTypeConstructor;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.unwrapAliasedTypeConstructor;
+import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.isForBackend;
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.name;
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.unwrapExpressionUntilTerm;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.appliedType;
@@ -24,7 +25,9 @@ import static com.redhat.ceylon.model.typechecker.model.SiteVariance.OUT;
 import static java.lang.Integer.parseInt;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.common.BackendSupport;
@@ -1608,23 +1611,22 @@ public class TypeVisitor extends Visitor {
     private Declaration handleHeader(Declaration dec, 
             Node that) {
         if (Backend.None.nativeAnnotation.equals(dec.getNativeBackend())
-                && !backendSupport.supportsBackend(Backend.None.nativeAnnotation)) {
+                && !isForBackend(Backend.None.nativeAnnotation, backendSupport)) {
             Scope scope = that.getScope();
             if (scope == dec) {
                 scope = scope.getScope();
             }
             String inBackend = scope.getScopedBackend();
-            Backend be = Backend.fromAnnotation(inBackend);
-            BackendSupport backend =
-                    be == null ?
-                            backendSupport :
-                            be.backendSupport;
+            Set<String> backends =
+                    inBackend == null ?
+                            backendSupport.supportedBackends() :
+                            Collections.singleton(inBackend);
             Declaration hdr = dec;
             if (!hdr.isNativeHeader()) {
                 hdr = getNativeHeader(dec);
             }
             Declaration impl =
-                    getNativeDeclaration(dec, backend);
+                    getNativeDeclaration(dec, backends);
             if (impl==null && hdr != null) {
                 Module module = dec.getUnit().getPackage().getModule();
                 if (!isImplemented(hdr) && hdr.isShared()
@@ -1649,6 +1651,6 @@ public class TypeVisitor extends Visitor {
     // validity of the code for the other backend 
     private boolean isNativeForWrongBackend(String backend) {
         return backend != null &&
-                !backendSupport.supportsBackend(backend);
+                !isForBackend(backend, backendSupport);
     }    
 }
