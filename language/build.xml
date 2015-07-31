@@ -504,13 +504,17 @@
         </java>
     </target>
 
+    <target name="doc" depends="ceylon.language.doc">
+    </target>
+
     <!-- Rule to generate the documentation from the Ceylon sources -->
     <target name="ceylon.language.doc">
         <ceylon-doc
             executable="${ceylon.compiler.loc}"
             src="${module.language.src}"
             encoding="UTF-8"
-            out="${build.dist.repo}">
+            out="${build.dist.repo}"
+            bootstrapceylon="true">
             <module name="ceylon.language"/>
         </ceylon-doc>
     </target>
