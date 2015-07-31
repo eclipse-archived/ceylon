@@ -484,6 +484,7 @@ public class CeylonDocToolTests {
                 "ceylon.math",
                 "ceylon.net",
                 "ceylon.process",
+                "ceylon.promise",
                 "ceylon.test",
                 "ceylon.time",
                 "ceylon.transaction",
