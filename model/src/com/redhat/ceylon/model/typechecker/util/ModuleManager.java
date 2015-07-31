@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
+import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.common.BackendSupport;
 import com.redhat.ceylon.common.ModuleUtil;
 import com.redhat.ceylon.common.Versions;
@@ -227,7 +228,7 @@ public class ModuleManager implements BackendSupport {
      * native implementation for a declaration is not an error.
      */
     @Override
-    public boolean supportsBackend(String backend) {
-        return BackendSupport.HEADER.supportsBackend(backend);
+    public Set<String> supportedBackends() {
+        return Collections.singleton(Backend.None.nativeAnnotation);
     }
 }

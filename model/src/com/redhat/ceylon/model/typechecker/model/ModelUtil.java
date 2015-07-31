@@ -19,7 +19,6 @@ import java.util.Map;
 import java.util.Set;
 
 import com.redhat.ceylon.common.Backend;
-import com.redhat.ceylon.common.BackendSupport;
 
 
 
@@ -2501,15 +2500,15 @@ public class ModelUtil {
             Declaration decl, Backend backend) {
         return getNativeDeclaration(decl, 
                 backend == null ? null :
-                    backend.backendSupport);
+                    Collections.singleton(backend.nativeAnnotation));
     }
     
     public static Declaration getNativeDeclaration(
-            Declaration dec, BackendSupport backendSupport) {
+            Declaration dec, Set<String> backends) {
         if (dec.isNative() && 
-                backendSupport != null) {
+                backends != null) {
             Declaration abstraction = null;
-            if (backendSupport.supportsBackend(
+            if (backends.contains(
                             dec.getNativeBackend())) {
                 abstraction = dec;
             }
@@ -2518,7 +2517,7 @@ public class ModelUtil {
                         dec.getOverloads();
                 if (overloads != null) {
                     for (Declaration d: overloads) {
-                        if (backendSupport.supportsBackend(
+                        if (backends.contains(
                                         d.getNativeBackend())) {
                             abstraction = d;
                             break;
