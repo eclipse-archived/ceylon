@@ -54,6 +54,7 @@ public class CeylonDocAntTask extends LazyCeylonAntTask {
     private boolean ignoreMissingDoc;
     private boolean ignoreBrokenLink;
     private boolean ignoreMissingThrows;
+    private boolean bootstrapCeylon;
     
     public CeylonDocAntTask() {
         super("doc");
@@ -116,6 +117,13 @@ public class CeylonDocAntTask extends LazyCeylonAntTask {
      */
     public void setIgnoreMissingThrows(boolean ignoreMissingThrows) {
         this.ignoreMissingThrows = ignoreMissingThrows;
+    }
+    
+    /**
+     * To be set when documenting the Ceylon language module.
+     */
+    public void setBootstrapCeylon(boolean bootstrapCeylon) {
+        this.bootstrapCeylon = bootstrapCeylon;
     }
     
     /**
@@ -201,6 +209,8 @@ public class CeylonDocAntTask extends LazyCeylonAntTask {
             appendOption(cmd, "--ignore-broken-link");
         if(ignoreMissingThrows)
             appendOption(cmd, "--ignore-missing-throws");
+        if(bootstrapCeylon)
+            appendOption(cmd, "--bootstrap-ceylon");
         for (File doc : getDoc()) {
             appendOptionArgument(cmd, "--doc", doc.getAbsolutePath());
         }
