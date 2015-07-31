@@ -38,7 +38,7 @@ import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashMap;
+import java.util.IdentityHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -85,16 +85,16 @@ import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Element;
-import com.redhat.ceylon.model.typechecker.model.Interface;
 import com.redhat.ceylon.model.typechecker.model.Function;
 import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
+import com.redhat.ceylon.model.typechecker.model.Interface;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.NothingType;
 import com.redhat.ceylon.model.typechecker.model.Package;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
-import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.Referenceable;
 import com.redhat.ceylon.model.typechecker.model.Scope;
+import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.TypeAlias;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.model.typechecker.model.TypeParameter;
@@ -170,14 +170,14 @@ public class CeylonDocTool extends OutputRepoUsingTool {
     private final List<PhasedUnit> phasedUnits = new LinkedList<PhasedUnit>();
     private final List<Module> modules = new LinkedList<Module>();
     private final List<String> compiledClasses = new LinkedList<String>();
-    private final Map<TypeDeclaration, List<Class>> subclasses = new HashMap<TypeDeclaration, List<Class>>();
-    private final Map<TypeDeclaration, List<ClassOrInterface>> satisfyingClassesOrInterfaces = new HashMap<TypeDeclaration, List<ClassOrInterface>>();
-    private final Map<TypeDeclaration, List<Function>> annotationConstructors = new HashMap<TypeDeclaration, List<Function>>();
-    private final Map<Referenceable, PhasedUnit> modelUnitMap = new HashMap<Referenceable, PhasedUnit>();
-    private final Map<Referenceable, Node> modelNodeMap = new HashMap<Referenceable, Node>();
-    private final Map<Parameter, PhasedUnit> parameterUnitMap = new HashMap<Parameter, PhasedUnit>();
-    private final Map<Parameter, Node> parameterNodeMap = new HashMap<Parameter, Node>();
-    private final Map<String, Boolean> moduleUrlAvailabilityCache = new HashMap<String, Boolean>();
+    private final Map<TypeDeclaration, List<Class>> subclasses = new IdentityHashMap<TypeDeclaration, List<Class>>();
+    private final Map<TypeDeclaration, List<ClassOrInterface>> satisfyingClassesOrInterfaces = new IdentityHashMap<TypeDeclaration, List<ClassOrInterface>>();
+    private final Map<TypeDeclaration, List<Function>> annotationConstructors = new IdentityHashMap<TypeDeclaration, List<Function>>();
+    private final Map<Referenceable, PhasedUnit> modelUnitMap = new IdentityHashMap<Referenceable, PhasedUnit>();
+    private final Map<Referenceable, Node> modelNodeMap = new IdentityHashMap<Referenceable, Node>();
+    private final Map<Parameter, PhasedUnit> parameterUnitMap = new IdentityHashMap<Parameter, PhasedUnit>();
+    private final Map<Parameter, Node> parameterNodeMap = new IdentityHashMap<Parameter, Node>();
+    private final Map<String, Boolean> moduleUrlAvailabilityCache = new IdentityHashMap<String, Boolean>();
     private RepositoryManager outputRepositoryManager;
 
     public CeylonDocTool() {
@@ -1034,8 +1034,14 @@ public class CeylonDocTool extends OutputRepoUsingTool {
         return packages;
     }
 
-    protected boolean shouldInclude(Declaration decl){
-        return includeNonShared || decl.isShared();
+    protected boolean shouldInclude(Declaration decl) {
+        if (!includeNonShared && !decl.isShared()) {
+            return false;
+        }
+        if (decl.isNative() && !decl.isNativeHeader()) {
+            return false;
+        }
+        return true;
     }
     
     protected boolean shouldInclude(Package pkg) {
