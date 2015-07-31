@@ -1,16 +1,14 @@
 package com.redhat.ceylon.common;
 
 public enum Backend {
-    None("", BackendSupport.HEADER),
-    Java("jvm", BackendSupport.JAVA),
-    JavaScript("js", BackendSupport.JAVASCRIPT);
+    None(""),
+    Java("jvm"),
+    JavaScript("js");
     
     public final String nativeAnnotation;
-    public final BackendSupport backendSupport;
     
-    Backend(String nativeAnnotation, BackendSupport backendSupport) {
+    Backend(String nativeAnnotation) {
         this.nativeAnnotation = nativeAnnotation;
-        this.backendSupport = backendSupport;
     }
     
     public static boolean validAnnotation(String backend) {
