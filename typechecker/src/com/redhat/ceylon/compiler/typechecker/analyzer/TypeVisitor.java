@@ -1607,12 +1607,11 @@ public class TypeVisitor extends Visitor {
         }
     }
     
-    private Declaration handleHeader(Declaration dec, 
+    private Declaration handleHeader(Declaration hdr, 
             Node that) {
-        if (Backend.None.nativeAnnotation.equals(dec.getNativeBackend())
-                && !isForBackend(Backend.None.nativeAnnotation, backendSupport)) {
+        if (hdr.isNativeHeader()) {
             Scope scope = that.getScope();
-            if (scope == dec) {
+            if (scope == hdr) {
                 scope = scope.getScope();
             }
             Set<String> inBackends = scope.getScopedBackends();
@@ -1620,30 +1619,22 @@ public class TypeVisitor extends Visitor {
                     inBackends == null ?
                             backendSupport.supportedBackends() :
                             inBackends;
-            Declaration hdr = dec;
-            if (!hdr.isNativeHeader()) {
-                hdr = getNativeHeader(dec);
-            }
             Declaration impl =
-                    getNativeDeclaration(dec, backends);
-            if (impl==null && hdr != null) {
-                Module module = dec.getUnit().getPackage().getModule();
+                    getNativeDeclaration(hdr, backends);
+            if (impl == null && hdr != null) {
+                Module module = hdr.getUnit().getPackage().getModule();
                 if (!isImplemented(hdr) && hdr.isShared()
                         && !module.equals(module.getLanguageModule())) {
                     that.addError("no native implementation for backend: native '"
-                            + dec.getName(unit) +
+                            + hdr.getName(unit) +
                             "' is not implemented for one or more backends");
                     unit.getMissingNativeImplementations().add(hdr);
                 }
             }
-            else if (hdr==null) {
-                that.addError("native implementation must have a header: "
-                        + dec.getName(unit));
-            }
             return inBackends == null || impl==null ? 
-                    dec : impl;
+                    hdr : impl;
         }
-        return dec;
+        return hdr;
     }
     
     // We use this for situations where the backend compiler can't check the
