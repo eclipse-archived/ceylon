@@ -9,6 +9,8 @@ import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.isForBackend;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isAbstraction;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isTypeUnknown;
 
+import java.util.Set;
+
 import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.common.BackendSupport;
 import com.redhat.ceylon.compiler.typechecker.analyzer.Warning;
@@ -111,8 +113,8 @@ public class UsageVisitor extends Visitor {
         if (!hasErrorOrWarning(that)) {
             Type type = that.getTypeModel();
             if (!isTypeUnknown(type) && type.isNothing()) {
-                String nat = that.getScope().getScopedBackend();
-                if (nat == null || isForBackend(nat, backendSupport)) {
+                Set<String> inBackends = that.getScope().getScopedBackends();
+                if (inBackends == null || isForBackend(inBackends, backendSupport.supportedBackends())) {
                     that.addUsageWarning(Warning.expressionTypeNothing,
                             "expression has type 'Nothing'");
                 }

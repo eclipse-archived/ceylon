@@ -135,6 +135,16 @@ public class TreeUtil {
         return true;
     }
     
+    public static boolean isForBackend(Set<String> backendNames, 
+            Set<String> backends) {
+        if (backendNames != null) {
+            if (!backends.containsAll(backendNames)) {
+                return false;
+            }
+        }
+        return true;
+    }
+    
     public static String getNativeBackend(Tree.AnnotationList al, 
             Unit unit) {
         Tree.Annotation ann = 

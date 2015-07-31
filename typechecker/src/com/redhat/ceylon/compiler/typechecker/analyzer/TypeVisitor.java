@@ -25,7 +25,6 @@ import static com.redhat.ceylon.model.typechecker.model.SiteVariance.OUT;
 import static java.lang.Integer.parseInt;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -380,7 +379,7 @@ public class TypeVisitor extends Visitor {
                         null, false, unit);
             }
             if (type==null) {
-                if (!isNativeForWrongBackend(scope.getScopedBackend())) {
+                if (!isNativeForWrongBackend(scope.getScopedBackends())) {
                     that.addError("type declaration does not exist: '" + 
                             name + "'", 102);
                     unit.getUnresolvedReferences().add(id);
@@ -466,7 +465,7 @@ public class TypeVisitor extends Visitor {
                         getTypeMember(d, name, 
                                 null, false, unit);
                 if (type==null) {
-                    if (!isNativeForWrongBackend(that.getScope().getScopedBackend())) {
+                    if (!isNativeForWrongBackend(that.getScope().getScopedBackends())) {
                         if (d.isMemberAmbiguous(name, unit, null, false)) {
                             that.addError("member type declaration is ambiguous: '" + 
                                     name + "' for type '" + 
@@ -1616,11 +1615,11 @@ public class TypeVisitor extends Visitor {
             if (scope == dec) {
                 scope = scope.getScope();
             }
-            String inBackend = scope.getScopedBackend();
+            Set<String> inBackends = scope.getScopedBackends();
             Set<String> backends =
-                    inBackend == null ?
+                    inBackends == null ?
                             backendSupport.supportedBackends() :
-                            Collections.singleton(inBackend);
+                            inBackends;
             Declaration hdr = dec;
             if (!hdr.isNativeHeader()) {
                 hdr = getNativeHeader(dec);
@@ -1641,7 +1640,7 @@ public class TypeVisitor extends Visitor {
                 that.addError("native implementation must have a header: "
                         + dec.getName(unit));
             }
-            return inBackend == null || impl==null ? 
+            return inBackends == null || impl==null ? 
                     dec : impl;
         }
         return dec;
@@ -1649,8 +1648,8 @@ public class TypeVisitor extends Visitor {
     
     // We use this for situations where the backend compiler can't check the
     // validity of the code for the other backend 
-    private boolean isNativeForWrongBackend(String backend) {
-        return backend != null &&
-                !isForBackend(backend, backendSupport);
+    private boolean isNativeForWrongBackend(Set<String> backends) {
+        return backends != null &&
+                !isForBackend(backends, backendSupport.supportedBackends());
     }    
 }
