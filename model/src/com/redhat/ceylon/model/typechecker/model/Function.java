@@ -4,6 +4,7 @@ import static java.util.Collections.emptyList;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 /**
  * A function. Note that a function must have at least one 
@@ -110,8 +111,8 @@ public class Function extends FunctionOrValue implements Generic, Scope, Functio
     }
 
     @Override
-    public String getScopedBackend() {
-        return super.getScopedBackend();
+    public Set<String> getScopedBackends() {
+        return super.getScopedBackends();
     }
     
     @Override

@@ -1,5 +1,7 @@
 package com.redhat.ceylon.model.typechecker.model;
 
+import java.util.Set;
+
 
 /**
  * An attribute setter.
@@ -68,8 +70,8 @@ public class Setter extends FunctionOrValue implements Scope {
     }
     
     @Override
-    public String getScopedBackend() {
-        return super.getScopedBackend();
+    public Set<String> getScopedBackends() {
+        return super.getScopedBackends();
     }
     
     @Override

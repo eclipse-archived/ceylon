@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 //Note that this class exists to support
 //autocompletion in the IDE
@@ -131,7 +132,7 @@ public class ImportList implements Scope {
     }
     
     @Override
-    public String getScopedBackend() {
-        return getScope().getScopedBackend();
+    public Set<String> getScopedBackends() {
+        return getScope().getScopedBackends();
     }
 }

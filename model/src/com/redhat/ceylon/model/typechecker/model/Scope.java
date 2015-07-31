@@ -2,6 +2,7 @@ package com.redhat.ceylon.model.typechecker.model;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Represents a namespace which contains named
@@ -154,5 +155,5 @@ public interface Scope {
      * <code>null</code> if no specific backend was
      * defined.
      */
-    public String getScopedBackend();
+    public Set<String> getScopedBackends();
 }

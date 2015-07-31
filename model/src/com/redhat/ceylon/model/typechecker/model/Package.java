@@ -8,8 +8,10 @@ import static com.redhat.ceylon.model.typechecker.model.ModelUtil.lookupMember;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.lookupMemberForBackend;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeMap;
 
 public class Package 
@@ -312,7 +314,10 @@ public class Package
 	}
     
     @Override
-    public String getScopedBackend() {
-        return getModule().getNativeBackend();
+    public Set<String> getScopedBackends() {
+        String backend = getModule().getNativeBackend();
+        return (backend != null) ?
+                Collections.singleton(backend) :
+                null;
     }
 }

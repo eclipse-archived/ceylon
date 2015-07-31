@@ -1119,7 +1119,7 @@ public abstract class TypeDeclaration extends Declaration
     }
 
     @Override
-    public String getScopedBackend() {
-        return super.getScopedBackend();
+    public Set<String> getScopedBackends() {
+        return super.getScopedBackends();
     }
 }

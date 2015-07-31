@@ -79,7 +79,7 @@ public class ControlBlock extends Element implements Scope {
     }
     
     @Override
-    public String getScopedBackend() {
-        return getScope().getScopedBackend();
+    public Set<String> getScopedBackends() {
+        return getScope().getScopedBackends();
     }
 }

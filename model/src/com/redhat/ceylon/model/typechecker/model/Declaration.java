@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 
 import com.redhat.ceylon.common.Backend;
 
@@ -175,12 +176,13 @@ public abstract class Declaration
     	this.nativeBackend=backend;
     }
 
-    public String getScopedBackend() {
+    public Set<String> getScopedBackends() {
         String backend = getNativeBackend();
         if (backend == null) {
-            backend = getScope().getScopedBackend();
+            return getScope().getScopedBackends();
+        } else {
+            return Collections.singleton(backend);
         }
-        return backend;
     }
 
     public boolean isDefault() {
