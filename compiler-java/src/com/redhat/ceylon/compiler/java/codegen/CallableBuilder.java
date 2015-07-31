@@ -890,13 +890,12 @@ public class CallableBuilder {
         }
         private JCExpression makeInvocation(int arity, boolean isCallMethod) {
             Reference target = appliedReference();
-            TypeDeclaration primaryDeclaration = gen.getReturnTypeOfCallable(getTypeModel()).getDeclaration();
             CallableInvocation invocationBuilder = new CallableInvocation (
                     gen,
                     instanceFieldName,
                     instanceFieldIsBoxed,
                     forwardCallTo,
-                    primaryDeclaration,
+                    target.getDeclaration(),
                     target,
                     gen.getReturnTypeOfCallable(getTypeModel()),
                     forwardCallTo, 
