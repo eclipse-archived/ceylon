@@ -20,11 +20,13 @@
 package com.redhat.ceylon.ceylondoc;
 
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
-import com.redhat.ceylon.common.BackendSupport;
+import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.common.log.Logger;
 import com.redhat.ceylon.common.tools.ModuleSpec;
 import com.redhat.ceylon.compiler.java.util.Util;
@@ -65,9 +67,11 @@ public class CeylonDocModuleManager extends ReflectionModuleManager {
     }
     
     @Override
-    public boolean supportsBackend(String backend) {
-        return BackendSupport.JAVA.supportsBackend(backend)
-                || BackendSupport.HEADER.supportsBackend(backend);
+    public Set<String> supportedBackends() {
+        HashSet<String> result = new HashSet<String>();
+        result.add(Backend.Java.nativeAnnotation);
+        result.add(Backend.None.nativeAnnotation);
+        return result;
     }
 
     @Override
