@@ -1,7 +1,7 @@
 package com.redhat.ceylon.compiler.loader;
 
 import java.util.Arrays;
-import java.util.HashSet;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -31,10 +31,7 @@ public class JsModuleManager extends ModuleManager {
 
     @Override
     public Set<String> supportedBackends() {
-        HashSet<String> result = new HashSet<String>();
-        result.add(Backend.JavaScript.nativeAnnotation);
-        result.add(Backend.None.nativeAnnotation);
-        return result;
+        return Collections.singleton(Backend.JavaScript.nativeAnnotation);
     }
 
     @Override
