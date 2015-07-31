@@ -21,6 +21,97 @@ public class SerializationHelper {
     static void addSerializer(final Node node, final com.redhat.ceylon.model.typechecker.model.Class d,
             final GenerateJsVisitor gen) {}
 
+    private static void serializeGetter(final Node that, final String typename, final Class owner,
+            final List<Value> vals, final Class supertype, GenerateJsVisitor gen) {
+        gen.out(typename, ".ser$get$=function(ref,o){var n=ref.attribute.qualifiedName;");
+        boolean first=true;
+        for (Value v : vals) {
+            if (first) {
+                first=false;
+            } else {
+                gen.out("else ");
+            }
+            final String vname = name(owner, v, gen);
+            gen.out("if(n==='", v.getQualifiedNameString(), "')return o.", vname);
+            if (v.isLate()) {
+                gen.out("===undefined?", gen.getClAlias(), "uninitializedLateValue$serialization():o.", vname);
+            }
+            gen.endLine(true);
+        }
+        if (!first) {
+            gen.out("else ");
+        }
+        if (supertype != null) {
+            gen.out("return ");
+            gen.qualify(that, supertype);
+            gen.out(gen.getNames().name(supertype), ".ser$get$(ref,o);");
+        } else {
+            gen.out("throw new TypeError('unknown attribute');");
+        }
+        gen.endBlockNewLine(true);
+    }
+
+    private static void serializeSetter(final Node that, final String typename, final Class owner,
+            final List<Value> vals, final Class supertype, final GenerateJsVisitor gen) {
+        gen.out(typename, ".ser$set$=function(ref,o,i){var n=ref.attribute.qualifiedName;");
+        boolean first=true;
+        for (Value v : vals) {
+            if (first) {
+                first=false;
+            } else {
+                gen.out("else ");
+            }
+            gen.out("if(n==='", v.getQualifiedNameString(), "')");
+            if (v.isLate()) {
+                gen.out("{if (i!==", gen.getClAlias(), "uninitializedLateValue$serialization())");
+            }
+            gen.out("o.", name(owner, v, gen), "=i;");
+            if (v.isLate()) {
+                gen.out("}");
+            }
+            gen.endLine();
+        }
+        if (!first) {
+            gen.out("else ");
+        }
+        if (supertype != null) {
+            gen.qualify(that, supertype);
+            gen.out(gen.getNames().name(supertype), ".ser$get$(ref,o,i);");
+        } else {
+            gen.out("throw new TypeError('unknown attribute');");
+        }
+        gen.endBlockNewLine(true);
+    }
+
+    private static void serializeRefs(final Node that, final String typename, final Class owner,
+            final List<Value> vals, final Class supertype, GenerateJsVisitor gen) {
+        if (supertype == null) {
+            gen.out(typename, ".ser$refs$=function(o){return [");
+        } else {
+            gen.out(typename, ".ser$refs$=function(o){var a=");
+            gen.qualify(that, supertype);
+            gen.out(gen.getNames().name(supertype), ".ser$refs$(o);a.push(");
+        }
+        boolean first=true;
+        final String pkgname = owner.getUnit().getPackage().getNameAsString();
+        for (Value v : vals) {
+            if (first) {
+                first=false;
+            } else {
+                gen.out(",");
+            }
+            gen.out(gen.getClAlias(), "MemberImpl$impl(", gen.getClAlias(), "OpenValue$jsint(",
+                    gen.getClAlias(), "lmp$(ex$,'", "ceylon.language".equals(pkgname) ? "$" : pkgname,
+                    "'),o.", gen.getNames().getter(v, true), "))");
+        }
+        if (supertype == null) {
+            gen.out("];");
+        } else {
+            gen.out(");return a;");
+        }
+        gen.endBlockNewLine(true);
+    }
+
     /** Add deserialize method to a class. This one resides directly under the class constructor, since it creates
      * an uninitialized instance and adds state to it. */
     static void addDeserializer(final Node that, final com.redhat.ceylon.model.typechecker.model.Class d,
@@ -54,20 +145,9 @@ public class SerializationHelper {
         }
         setDeserializedTypeArguments(d, d.getExtendedType(), true, that, ni, gen, new HashSet<TypeDeclaration>());
         gen.out("return ", ni, ";");
-        gen.endBlockNewLine();
+        gen.endBlockNewLine(true);
 
         final List<Value> vals = serializableValues(d);
-        //get
-        gen.out(typename, ".ser$get$=function(ref,o){var n=ref.attribute.qualifiedName;");
-        first=true;
-        for (Value v : vals) {
-            if (first) {
-                first=false;
-            } else {
-                gen.out("else ");
-            }
-            gen.out("if(n==='", v.getQualifiedNameString(), "')return o.", name(d, v, gen), ";");
-        }
         final Class supertype;
         if (d.getExtendedType() != null && d.getExtendedType().getDeclaration() != null
                 && d.getExtendedType().getDeclaration() instanceof Class
@@ -76,63 +156,12 @@ public class SerializationHelper {
         } else {
             supertype = null;
         }
-        if (!first) {
-            gen.out("else ");
-        }
-        if (supertype != null) {
-            gen.out("return ");
-            gen.qualify(that, supertype);
-            gen.out(gen.getNames().name(supertype), ".ser$get$(ref,o);");
-        } else {
-            gen.out("throw new TypeError('unknown attribute');");
-        }
-        gen.out("};");
+        //get
+        serializeGetter(that, typename, d, vals, supertype, gen);
         //set
-        gen.out(typename, ".ser$set$=function(ref,o,i){var n=ref.attribute.qualifiedName;");
-        first=true;
-        for (Value v : vals) {
-            if (first) {
-                first=false;
-            } else {
-                gen.out("else ");
-            }
-            gen.out("if(n==='", v.getQualifiedNameString(), "')o.", name(d, v, gen), "=i;");
-        }
-        if (!first) {
-            gen.out("else ");
-        }
-        if (supertype != null) {
-            gen.qualify(that, supertype);
-            gen.out(gen.getNames().name(supertype), ".ser$get$(ref,o,i);");
-        } else {
-            gen.out("throw new TypeError('unknown attribute');");
-        }
-        gen.out("};");
+        serializeSetter(that, typename, d, vals, supertype, gen);
         //References
-        if (supertype == null) {
-            gen.out(typename, ".ser$refs$=function(o){return [");
-        } else {
-            gen.out(typename, ".ser$refs$=function(o){var a=",
-                    gen.getNames().name(supertype), ".ser$refs$(o);a.push(");
-        }
-        first=true;
-        final String pkgname = d.getUnit().getPackage().getNameAsString();
-        for (Value v : vals) {
-            if (first) {
-                first=false;
-            } else {
-                gen.out(",");
-            }
-            gen.out(gen.getClAlias(), "MemberImpl$impl(", gen.getClAlias(), "OpenValue$jsint(",
-                    gen.getClAlias(), "lmp$(ex$,'", "ceylon.language".equals(pkgname) ? "$" : pkgname,
-                    "'),o.", gen.getNames().getter(v, true), "))");
-        }
-        if (supertype == null) {
-            gen.out("];};");
-        } else {
-            gen.out(");return a;};");
-        }
-        gen.endLine();
+        serializeRefs(that, typename, d, vals, supertype, gen);
     }
 
     /** Recursively add all the type arguments from extended and satisfied types. */
