@@ -20,7 +20,6 @@
 package com.redhat.ceylon.ceylondoc;
 
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -68,10 +67,7 @@ public class CeylonDocModuleManager extends ReflectionModuleManager {
     
     @Override
     public Set<String> supportedBackends() {
-        HashSet<String> result = new HashSet<String>();
-        result.add(Backend.Java.nativeAnnotation);
-        result.add(Backend.None.nativeAnnotation);
-        return result;
+        return Collections.singleton(Backend.Java.nativeAnnotation);
     }
 
     @Override
