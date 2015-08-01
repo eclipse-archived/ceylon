@@ -23,7 +23,10 @@ public class SerializationHelper {
 
     private static void serializeGetter(final Node that, final String typename, final Class owner,
             final List<Value> vals, final Class supertype, GenerateJsVisitor gen) {
-        gen.out(typename, ".ser$get$=function(ref,o){var n=ref.attribute.qualifiedName;");
+        gen.out(typename, ".ser$get$=function(ref,o){");
+        if (!vals.isEmpty()) {
+            gen.out("var n=ref.attribute.qualifiedName;");
+        }
         boolean first=true;
         for (Value v : vals) {
             if (first) {
@@ -53,7 +56,13 @@ public class SerializationHelper {
 
     private static void serializeSetter(final Node that, final String typename, final Class owner,
             final List<Value> vals, final Class supertype, final GenerateJsVisitor gen) {
-        gen.out(typename, ".ser$set$=function(ref,o,i){var n=ref.attribute.qualifiedName;");
+        gen.out(typename, ".ser$set$=function(ref,o,i){",
+                "if(!", gen.getClAlias(), "is$(ref,{t:", gen.getClAlias(), "Member$serialization}))",
+                "throw ", gen.getClAlias(), "AssertionError('unexpected reachable reference');");
+        if (!vals.isEmpty()) {
+            gen.out("var n=ref.attribute.qualifiedName;");
+        }
+        gen.endLine();
         boolean first=true;
         for (Value v : vals) {
             if (first) {

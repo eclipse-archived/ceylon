@@ -33,7 +33,7 @@ public class JsModuleManager extends ModuleManager {
     public Set<String> getSupportedBackends() {
         return Collections.singleton(Backend.JavaScript.nativeAnnotation);
     }
-
+    
     @Override
     protected Module createModule(List<String> moduleName, String version) {
         final Module module = new JsonModule();
