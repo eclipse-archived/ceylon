@@ -83,6 +83,7 @@ public class PhasedUnit {
     private boolean moduleVisited = false;
     private EnumSet<Warning> suppressedWarnings = 
             EnumSet.noneOf(Warning.class);
+    
     public VirtualFile getSrcDir() {
         return srcDir;
     }
@@ -114,6 +115,7 @@ public class PhasedUnit {
         unit.setFullPath(unitFile.getPath());
         unit.setRelativePath(pathRelativeToSrcDir);
         unit.setPackage(pkg);
+        unit.setSupportedBackends(moduleManager.supportedBackends());
         pkg.removeUnit(unit);
         pkg.addUnit(unit);
         rootNode.setUnit(unit);
@@ -375,10 +377,10 @@ public class PhasedUnit {
         try {
             if (!typeDeclarationsScanned) {
                 //System.out.println("Scan type declarations for " + fileName);
-                rootNode.visit(new ImportVisitor(moduleManagerRef.get()));
+                rootNode.visit(new ImportVisitor());
                 rootNode.visit(new DefaultTypeArgVisitor());
                 rootNode.visit(new SupertypeVisitor(false)); //TODO: move to a new phase!
-                rootNode.visit(new TypeVisitor(moduleManagerRef.get()));
+                rootNode.visit(new TypeVisitor());
                 typeDeclarationsScanned = true;
             }
         }
@@ -410,7 +412,7 @@ public class PhasedUnit {
         if (!fullyTyped) {
             Type.resetDepth(-100);
             //System.out.println("Run analysis phase for " + fileName);
-            rootNode.visit(new ExpressionVisitor(moduleManagerRef.get()));
+            rootNode.visit(new ExpressionVisitor());
             rootNode.visit(new VisibilityVisitor());
             rootNode.visit(new AnnotationVisitor());
             rootNode.visit(new TypeArgumentVisitor());
@@ -443,7 +445,7 @@ public class PhasedUnit {
         if (! usageAnalyzed) {
             ReferenceCounter rc = new ReferenceCounter();
             rootNode.visit(rc);
-            rootNode.visit(new UsageVisitor(rc, moduleManagerRef.get()));
+            rootNode.visit(new UsageVisitor(rc));
             rootNode.visit(new DeprecationVisitor());
             usageAnalyzed = true;
         }

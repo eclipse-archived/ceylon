@@ -15,7 +15,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import com.redhat.ceylon.common.BackendSupport;
 import com.redhat.ceylon.compiler.typechecker.context.TypecheckerUnit;
 import com.redhat.ceylon.compiler.typechecker.parser.CeylonLexer;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
@@ -45,16 +44,12 @@ import com.redhat.ceylon.model.typechecker.model.Value;
 public class ImportVisitor extends Visitor {
     
     private TypecheckerUnit unit;
-    private final BackendSupport backendSupport;
 
-    public ImportVisitor(BackendSupport backendSupport) {
-        this.backendSupport = backendSupport;
+    public ImportVisitor() {
     }
     
-    public ImportVisitor(TypecheckerUnit unit, 
-            BackendSupport backendSupport) {
+    public ImportVisitor(TypecheckerUnit unit) {
         this.unit = unit;
-        this.backendSupport = backendSupport;
     }
     
     @Override public void visit(Tree.CompilationUnit that) {
@@ -75,8 +70,7 @@ public class ImportVisitor extends Visitor {
     @Override
     public void visit(Tree.Import that) {
         Package importedPackage = 
-                importedPackage(that.getImportPath(), 
-                        backendSupport);
+                importedPackage(that.getImportPath());
         if (importedPackage!=null) {
             that.getImportPath().setModel(importedPackage);
             Tree.ImportMemberOrTypeList imtl = 

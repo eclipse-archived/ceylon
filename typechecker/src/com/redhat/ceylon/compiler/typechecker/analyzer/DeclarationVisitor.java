@@ -643,6 +643,7 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
         unit.setFilename(filename);
         unit.setFullPath(fullPath);
         unit.setRelativePath(relativePath);
+        unit.setSupportedBackends(that.getUnit().supportedBackends());
         pkg.removeUnit(unit);
         pkg.addUnit(unit);
         super.visit(that);

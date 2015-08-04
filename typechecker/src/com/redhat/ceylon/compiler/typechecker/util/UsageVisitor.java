@@ -12,7 +12,6 @@ import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isTypeUnknown;
 import java.util.Set;
 
 import com.redhat.ceylon.common.Backend;
-import com.redhat.ceylon.common.BackendSupport;
 import com.redhat.ceylon.compiler.typechecker.analyzer.Warning;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ImportMemberOrType;
@@ -29,14 +28,11 @@ import com.redhat.ceylon.model.typechecker.model.TypeParameter;
 public class UsageVisitor extends Visitor {
 	
     private final ReferenceCounter rc;
-    private final BackendSupport backendSupport;
     
     private Backend inBackend = null;
 	
-	public UsageVisitor(ReferenceCounter rc,
-	        BackendSupport backendSupport) {
+	public UsageVisitor(ReferenceCounter rc) {
 		this.rc = rc;
-        this.backendSupport = backendSupport;
 	}
 	
     @Override public void visit(Tree.CompilationUnit that) {
@@ -99,7 +95,7 @@ public class UsageVisitor extends Visitor {
         		!(declaration instanceof TypeParameter &&
         		    ((TypeParameter) declaration).getDeclaration() 
         		            instanceof TypeParameter)) {
-            if (nat == null || isForBackend(nat, backendSupport)) {
+            if (nat == null || isForBackend(nat, that.getUnit())) {
                 that.addUsageWarning(Warning.unusedDeclaration,
                         "declaration is never used: '" + 
                             declaration.getName() + "'");
@@ -114,7 +110,7 @@ public class UsageVisitor extends Visitor {
             Type type = that.getTypeModel();
             if (!isTypeUnknown(type) && type.isNothing()) {
                 Set<String> inBackends = that.getScope().getScopedBackends();
-                if (inBackends == null || isForBackend(inBackends, backendSupport.supportedBackends())) {
+                if (inBackends == null || isForBackend(inBackends, that.getUnit())) {
                     that.addUsageWarning(Warning.expressionTypeNothing,
                             "expression has type 'Nothing'");
                 }

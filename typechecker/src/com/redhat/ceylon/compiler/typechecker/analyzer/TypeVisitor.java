@@ -28,7 +28,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import com.redhat.ceylon.common.BackendSupport;
 import com.redhat.ceylon.compiler.typechecker.context.TypecheckerUnit;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
@@ -73,20 +72,16 @@ import com.redhat.ceylon.model.typechecker.model.Value;
 public class TypeVisitor extends Visitor {
     
     private TypecheckerUnit unit;
-    private final BackendSupport backendSupport;
 
     private boolean inDelegatedConstructor;
     private boolean inTypeLiteral;
     private boolean inExtendsOrClassAlias;
     
-    public TypeVisitor(BackendSupport backendSupport) {
-        this.backendSupport = backendSupport;
+    public TypeVisitor() {
     }
     
-    public TypeVisitor(TypecheckerUnit unit, 
-            BackendSupport backendSupport) {
+    public TypeVisitor(TypecheckerUnit unit) {
         this.unit = unit;
-        this.backendSupport = backendSupport;
     }
     
     @Override public void visit(Tree.CompilationUnit that) {
@@ -1616,7 +1611,7 @@ public class TypeVisitor extends Visitor {
             Set<String> inBackends = scope.getScopedBackends();
             Set<String> backends =
                     inBackends == null ?
-                            backendSupport.supportedBackends() :
+                            unit.supportedBackends() :
                             inBackends;
             Declaration impl =
                     getNativeDeclaration(hdr, backends);
@@ -1640,6 +1635,6 @@ public class TypeVisitor extends Visitor {
     // validity of the code for the other backend 
     private boolean isNativeForWrongBackend(Set<String> backends) {
         return backends != null &&
-                !isForBackend(backends, backendSupport.supportedBackends());
+                !isForBackend(backends, unit.supportedBackends());
     }    
 }

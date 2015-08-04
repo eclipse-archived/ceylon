@@ -26,7 +26,6 @@ import java.util.Map;
 import java.util.Set;
 
 import com.redhat.ceylon.common.Backend;
-import com.redhat.ceylon.common.BackendSupport;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ClassBody;
@@ -1171,8 +1170,7 @@ public class AnalyzerUtil {
         return type;
     }
 
-    static Package importedPackage(Tree.ImportPath path, 
-                BackendSupport backendSupport) {
+    static Package importedPackage(Tree.ImportPath path) {
             if (path!=null && 
                     !path.getIdentifiers().isEmpty()) {
                 String nameToImport = 
@@ -1217,13 +1215,13 @@ public class AnalyzerUtil {
                             String name = 
                                     mi.getModule()
                                         .getNameAsString();
-                            if (!isForBackend(mi.getNativeBackend(), backendSupport) && 
-                                    (nameToImport.equals(name) || 
+                            if (!isForBackend(mi.getNativeBackend(), path.getUnit()) &&
+                                    (nameToImport.equals(name) ||
                                      nameToImport.startsWith(name + "."))) {
                                 return null;
                             }
-                            if (!isForBackend(Backend.Java.nativeAnnotation, backendSupport) && 
-                                    (JDKUtils.isJDKAnyPackage(nameToImport) || 
+                            if (!isForBackend(Backend.Java.nativeAnnotation, path.getUnit()) &&
+                                    (JDKUtils.isJDKAnyPackage(nameToImport) ||
                                      JDKUtils.isOracleJDKAnyPackage(nameToImport))) {
                                 return null;
                             }

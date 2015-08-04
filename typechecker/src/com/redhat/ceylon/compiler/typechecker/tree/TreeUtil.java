@@ -98,19 +98,13 @@ public class TreeUtil {
         return result;
     }
     
-    public static boolean isForBackend(Tree.AnnotationList al, 
+    public static boolean isForBackend(Tree.AnnotationList al,
             Backend forBackend, Unit unit) {
         String be = getNativeBackend(al, unit);
         return isForBackend(be, forBackend);
     }
     
-    public static boolean isForBackend(Tree.AnnotationList al, 
-            Set<String> backends, Unit unit) {
-        String be = getNativeBackend(al, unit);
-        return isForBackend(be, backends);
-    }
-    
-    public static boolean isForBackend(String backendName, 
+    public static boolean isForBackend(String backendName,
             Backend forBackend) {
         if (backendName != null) {
             if (!forBackend.nativeAnnotation.equals(backendName)) {
@@ -120,12 +114,12 @@ public class TreeUtil {
         return true;
     }
     
-    public static boolean isForBackend(String backendName, 
+    public static boolean isForBackend(String backendName,
             BackendSupport support) {
         return isForBackend(backendName, support.supportedBackends());
     }
     
-    public static boolean isForBackend(String backendName, 
+    public static boolean isForBackend(String backendName,
             Set<String> backends) {
         if (backendName != null) {
             if (!backends.contains(backendName)) {
@@ -133,6 +127,11 @@ public class TreeUtil {
             }
         }
         return true;
+    }
+    
+    public static boolean isForBackend(Set<String> backendNames,
+            BackendSupport support) {
+        return isForBackend(backendNames, support.supportedBackends());
     }
     
     public static boolean isForBackend(Set<String> backendNames, 
@@ -145,7 +144,7 @@ public class TreeUtil {
         return true;
     }
     
-    public static String getNativeBackend(Tree.AnnotationList al, 
+    public static String getNativeBackend(Tree.AnnotationList al,
             Unit unit) {
         Tree.Annotation ann = 
                 getAnnotation(al, "native", unit);

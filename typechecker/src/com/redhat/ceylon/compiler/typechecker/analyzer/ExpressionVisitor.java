@@ -71,7 +71,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import com.redhat.ceylon.common.BackendSupport;
 import com.redhat.ceylon.compiler.typechecker.context.TypecheckerUnit;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
@@ -132,7 +131,6 @@ public class ExpressionVisitor extends Visitor {
     private Node switchStatementOrExpression;
     
     private TypecheckerUnit unit;
-    private final BackendSupport backendSupport;
     
     private Tree.IfClause ifClause() {
         if (ifStatementOrExpression 
@@ -188,13 +186,11 @@ public class ExpressionVisitor extends Visitor {
         return null;
     }
     
-    public ExpressionVisitor(BackendSupport backendSupport) {
-        this.backendSupport = backendSupport;
+    public ExpressionVisitor() {
     }
     
-    public ExpressionVisitor(TypecheckerUnit unit, BackendSupport backendSupport) {
+    public ExpressionVisitor(TypecheckerUnit unit) {
         this.unit = unit;
-        this.backendSupport = backendSupport;
     }
     
     @Override public void visit(Tree.CompilationUnit that) {
@@ -8641,7 +8637,7 @@ public class ExpressionVisitor extends Visitor {
             pack = unit.getPackage();
         }
         else {
-            pack = importedPackage(path, backendSupport);
+            pack = importedPackage(path);
         }
         path.setModel(pack);
         that.setTypeModel(unit.getPackageDeclarationType());
@@ -9046,7 +9042,7 @@ public class ExpressionVisitor extends Visitor {
         if (dec.isNative()) {
             Set<String> backends = 
                     inBackends == null ?
-                            backendSupport.supportedBackends() : 
+                            unit.supportedBackends() :
                             inBackends;
             if (dec.isNativeHeader()) {
                 hdr = dec;
@@ -9131,6 +9127,6 @@ public class ExpressionVisitor extends Visitor {
     // validity of the code for the other backend 
     private boolean isNativeForWrongBackend(Set<String> backends) {
         return backends != null &&
-                !isForBackend(backends, backendSupport.supportedBackends());
+                !isForBackend(backends, unit.supportedBackends());
     }    
 }
