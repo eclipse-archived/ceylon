@@ -115,7 +115,7 @@ public class PhasedUnit {
         unit.setFullPath(unitFile.getPath());
         unit.setRelativePath(pathRelativeToSrcDir);
         unit.setPackage(pkg);
-        unit.setSupportedBackends(moduleManager.supportedBackends());
+        unit.setSupportedBackends(moduleManager.getSupportedBackends());
         pkg.removeUnit(unit);
         pkg.addUnit(unit);
         rootNode.setUnit(unit);

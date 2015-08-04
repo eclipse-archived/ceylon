@@ -24,7 +24,7 @@ public class TypecheckerUnit extends Unit implements BackendSupport {
     private Set<String> supportedBackends = new HashSet<String>();
 
     @Override
-    public Set<String> supportedBackends() {
+    public Set<String> getSupportedBackends() {
         return supportedBackends;
     }
     

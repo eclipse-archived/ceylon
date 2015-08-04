@@ -116,7 +116,7 @@ public class TreeUtil {
     
     public static boolean isForBackend(String backendName,
             BackendSupport support) {
-        return isForBackend(backendName, support.supportedBackends());
+        return isForBackend(backendName, support.getSupportedBackends());
     }
     
     public static boolean isForBackend(String backendName,
@@ -131,7 +131,7 @@ public class TreeUtil {
     
     public static boolean isForBackend(Set<String> backendNames,
             BackendSupport support) {
-        return isForBackend(backendNames, support.supportedBackends());
+        return isForBackend(backendNames, support.getSupportedBackends());
     }
     
     public static boolean isForBackend(Set<String> backendNames, 

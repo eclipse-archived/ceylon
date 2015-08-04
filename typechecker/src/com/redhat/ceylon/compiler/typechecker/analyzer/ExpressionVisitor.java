@@ -9042,7 +9042,7 @@ public class ExpressionVisitor extends Visitor {
         if (dec.isNative()) {
             Set<String> backends = 
                     inBackends == null ?
-                            unit.supportedBackends() :
+                            unit.getSupportedBackends() :
                             inBackends;
             if (dec.isNativeHeader()) {
                 hdr = dec;
@@ -9127,6 +9127,6 @@ public class ExpressionVisitor extends Visitor {
     // validity of the code for the other backend 
     private boolean isNativeForWrongBackend(Set<String> backends) {
         return backends != null &&
-                !isForBackend(backends, unit.supportedBackends());
+                !isForBackend(backends, unit.getSupportedBackends());
     }    
 }

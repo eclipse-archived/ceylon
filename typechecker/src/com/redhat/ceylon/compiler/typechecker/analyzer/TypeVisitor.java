@@ -1611,7 +1611,7 @@ public class TypeVisitor extends Visitor {
             Set<String> inBackends = scope.getScopedBackends();
             Set<String> backends =
                     inBackends == null ?
-                            unit.supportedBackends() :
+                            unit.getSupportedBackends() :
                             inBackends;
             Declaration impl =
                     getNativeDeclaration(hdr, backends);
@@ -1635,6 +1635,6 @@ public class TypeVisitor extends Visitor {
     // validity of the code for the other backend 
     private boolean isNativeForWrongBackend(Set<String> backends) {
         return backends != null &&
-                !isForBackend(backends, unit.supportedBackends());
+                !isForBackend(backends, unit.getSupportedBackends());
     }    
 }
