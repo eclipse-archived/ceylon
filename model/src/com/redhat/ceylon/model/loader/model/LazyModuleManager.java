@@ -70,7 +70,7 @@ public abstract class LazyModuleManager extends ModuleManager {
     }
 
     @Override
-    public Set<String> supportedBackends() {
+    public Set<String> getSupportedBackends() {
         return Collections.singleton(Backend.Java.nativeAnnotation);
     }
     

@@ -227,7 +227,7 @@ public class ModuleManager implements BackendSupport {
      * that any backend is acceptable.
      */
     @Override
-    public Set<String> supportedBackends() {
+    public Set<String> getSupportedBackends() {
         return Collections.emptySet();
     }
 }
