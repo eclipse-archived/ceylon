@@ -66,7 +66,7 @@ public class CeylonDocModuleManager extends ReflectionModuleManager {
     }
     
     @Override
-    public Set<String> supportedBackends() {
+    public Set<String> getSupportedBackends() {
         return Collections.singleton(Backend.Java.nativeAnnotation);
     }
 
