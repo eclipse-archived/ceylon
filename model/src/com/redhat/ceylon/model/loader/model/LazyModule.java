@@ -151,7 +151,7 @@ public abstract class LazyModule extends Module {
                 try {
                     zipFile = new ZipFile(artifact.artifact());
                 } catch (IOException e) {
-                    throw new RuntimeException(e);
+                    throw new RuntimeException("Error accessing artifact: " + artifact.artifact(), e);
                 }
                 try{
                     Enumeration<? extends ZipEntry> entries = zipFile.entries();
