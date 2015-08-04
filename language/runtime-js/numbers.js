@@ -289,10 +289,5 @@ atr$(JSNum$proto, 'strictlyPositive', function(){ return this>0 || (this==0 && !
 atr$(JSNum$proto, 'strictlyNegative', function() { return this<0 || this.fmz$ || (this==0 && (1/this==-Infinity)); },
   undefined,function(){return{an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:Float,d:['$','Float','$at','strictlyNegative']};});
 
-var $infinity = Float(Infinity);
-function infinity() { return $infinity; }
-ex$.$prop$getInfinity={get:infinity,$crtmm$:function(){return{mod:$CCMM$,$t:{t:Float},d:['$','infinity']};}};
-
 ex$.Integer=Integer;
 ex$.Float=Float;
-ex$.infinity=infinity;
