@@ -100,8 +100,7 @@ public class MiscTests extends CompilerTests {
                         "language", "modules", "operatingSystem", 
                         "printStackTrace", "process", "runtime", "system", 
                         "Throwable", "type", "typeLiteral",
-                        "infinity", "unflatten",
-                        "serialization", "deserialization"}) {
+                        "unflatten", "serialization", "deserialization"}) {
                     
                     if (s.equals(filename)) {
                         return true;
