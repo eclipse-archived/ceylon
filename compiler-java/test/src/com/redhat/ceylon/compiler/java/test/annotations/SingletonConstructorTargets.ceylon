@@ -1,14 +1,14 @@
 @nomodel
 class SingletonConstructorTargets {
-    fieldTarget
+    //fieldTarget
     constructorOrFieldOrMethodTarget__FIELD
     shared new fieldAnnotated {}
     
-    methodTarget
+    //methodTarget
     constructorOrFieldOrMethodTarget__GETTER
     shared new methodAnnotated {}
     
-    //constructorTarget
+    constructorTarget
     constructorOrFieldOrMethodTarget__CONSTRUCTOR
     shared new constructorAnnotated {}
 }

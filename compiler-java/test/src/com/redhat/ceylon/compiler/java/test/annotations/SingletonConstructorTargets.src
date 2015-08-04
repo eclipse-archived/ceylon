@@ -11,7 +11,6 @@ class SingletonConstructorTargets implements .com.redhat.ceylon.compiler.java.ru
     @.ceylon.language.SharedAnnotation$annotation$
     public SingletonConstructorTargets(.com.redhat.ceylon.compiler.java.test.annotations.SingletonConstructorTargets.fieldAnnotated_ $name$) {
     }
-    @.com.redhat.ceylon.compiler.java.test.annotations.FieldTarget
     @.com.redhat.ceylon.compiler.java.test.annotations.ConstructorOrFieldOrMethodTarget
     private static final .com.redhat.ceylon.compiler.java.test.annotations.SingletonConstructorTargets fieldAnnotated;
     static {
@@ -36,7 +35,6 @@ class SingletonConstructorTargets implements .com.redhat.ceylon.compiler.java.ru
         methodAnnotated = new SingletonConstructorTargets((.com.redhat.ceylon.compiler.java.test.annotations.SingletonConstructorTargets.methodAnnotated_)null);
     }
     
-    @.com.redhat.ceylon.compiler.java.test.annotations.MethodTarget
     @.com.redhat.ceylon.compiler.java.test.annotations.ConstructorOrFieldOrMethodTarget
     public static final .com.redhat.ceylon.compiler.java.test.annotations.SingletonConstructorTargets getSingletonConstructorTargets$methodAnnotated() {
         return methodAnnotated;
@@ -48,6 +46,7 @@ class SingletonConstructorTargets implements .com.redhat.ceylon.compiler.java.ru
         }
     }
     
+    @.com.redhat.ceylon.compiler.java.test.annotations.ConstructorTarget
     @.com.redhat.ceylon.compiler.java.test.annotations.ConstructorOrFieldOrMethodTarget
     @.ceylon.language.SharedAnnotation$annotation$
     public SingletonConstructorTargets(.com.redhat.ceylon.compiler.java.test.annotations.SingletonConstructorTargets.constructorAnnotated_ $name$) {

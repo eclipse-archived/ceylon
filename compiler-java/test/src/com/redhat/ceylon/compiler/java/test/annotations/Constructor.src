@@ -1,13 +1,10 @@
 package com.redhat.ceylon.compiler.java.test.annotations;
 
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
-@.java.lang.annotation.Target({
-        .java.lang.annotation.ElementType.CONSTRUCTOR,
-        .java.lang.annotation.ElementType.METHOD,
-        .java.lang.annotation.ElementType.FIELD})
+@.java.lang.annotation.Target({.java.lang.annotation.ElementType.CONSTRUCTOR})
 @interface ConstructorAnnotation$annotation$ {
 }
-final class ConstructorAnnotation implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.OptionalAnnotation {
+final class ConstructorAnnotation implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.OptionalAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.ConstructorAnnotation, .ceylon.language.meta.declaration.ConstructorDeclaration, .java.lang.Object> {
     
     ConstructorAnnotation(.com.redhat.ceylon.compiler.java.test.annotations.ConstructorAnnotation$annotation$ anno) {
         this();
@@ -76,10 +73,7 @@ final class callableConstructorAnnotation_ {
     }
 }
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
-@.java.lang.annotation.Target({
-        .java.lang.annotation.ElementType.CONSTRUCTOR,
-        .java.lang.annotation.ElementType.METHOD,
-        .java.lang.annotation.ElementType.FIELD})
+@.java.lang.annotation.Target({.java.lang.annotation.ElementType.CONSTRUCTOR})
 @interface ValueConstructorAnnotation$annotation$ {
 }
 final class ValueConstructorAnnotation implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.OptionalAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.ValueConstructorAnnotation, .ceylon.language.meta.declaration.ValueConstructorDeclaration, .java.lang.Object> {
