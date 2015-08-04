@@ -6,6 +6,7 @@ import ceylon.language.Sequential;
 import ceylon.language.empty_;
 import ceylon.language.meta.declaration.CallableConstructorDeclaration;
 import ceylon.language.meta.model.CallableConstructor;
+import ceylon.language.meta.model.ClassModel;
 
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
@@ -36,7 +37,7 @@ public class AppliedCallableConstructor<Type, Arguments extends Sequential<? ext
     private final TypeDescriptor $reified$Arguments;
     
     private final FreeClass freeClass;
-    final AppliedClass<Type,?> appliedClass;
+    final ClassModel<Type,?> appliedClass;
     private final FreeCallableConstructor freeConstructor;
     private final Reference constructorReference;
     private java.lang.Object instance;
@@ -48,7 +49,7 @@ public class AppliedCallableConstructor<Type, Arguments extends Sequential<? ext
     public AppliedCallableConstructor(TypeDescriptor $reified$Type,
             TypeDescriptor $reified$Arguments, Reference appliedFunction,
             FreeCallableConstructor freeConstructor,
-            AppliedClass<Type,?> clazz, Object instance) {
+            ClassModel<Type,?> clazz, Object instance) {
         this.$reified$Type = $reified$Type;
         this.$reified$Arguments = $reified$Arguments;
         this.freeClass = (FreeClass)clazz.getDeclaration();
@@ -77,12 +78,12 @@ public class AppliedCallableConstructor<Type, Arguments extends Sequential<? ext
     
     
     @Override
-    public ceylon.language.meta.model.Class<Type,?> getType() {
+    public ClassModel<Type,?> getType() {
         return appliedClass;
     }
     
     @Override
-    public ceylon.language.meta.model.Class<Type,?> getContainer() {
+    public ClassModel<Type,?> getContainer() {
         return appliedClass;
     }
     

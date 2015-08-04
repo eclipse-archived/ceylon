@@ -38,11 +38,11 @@ shared sealed interface CallableConstructor<out Type=Object, in Arguments=Nothin
     "This constructor's declaration."
     shared formal actual CallableConstructorDeclaration declaration;
     
-    shared formal actual Class<Type> type;
+    shared formal actual ClassModel<Type> type;
     
     "The class containing this constructor; the type of instances produced 
      by this constructor."
-    shared actual formal Class<Type> container;
+    shared actual formal ClassModel<Type> container;
     
 }
 

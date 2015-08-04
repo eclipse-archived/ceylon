@@ -19,6 +19,7 @@ import ceylon.language.Iterable;
 import ceylon.language.Sequential;
 import ceylon.language.empty_;
 import ceylon.language.meta.model.Applicable;
+import ceylon.language.meta.model.ClassModel;
 import ceylon.language.meta.model.InvocationException;
 
 import com.redhat.ceylon.compiler.java.Util;
@@ -55,13 +56,15 @@ class ConstructorDispatch<Type, Arguments extends Sequential<? extends Object>>
     
     ConstructorDispatch(
             Reference constructorReference,
-            AppliedClass<Type, ?> appliedClass,
+            ClassModel<Type, ?> appliedClass,
             FreeCallableConstructor freeConstructor,
             List<Parameter> parameters, Object instance) {
         this.constructorReference = constructorReference;
-        freeClass = (FreeClass)appliedClass.declaration;
+        freeClass = (FreeClass)
+                (appliedClass instanceof AppliedClass ?
+                ((AppliedClass)appliedClass).declaration : ((AppliedMemberClass)appliedClass).declaration);
         this.freeConstructor = freeConstructor;
-        com.redhat.ceylon.model.typechecker.model.Class classDecl = (com.redhat.ceylon.model.typechecker.model.Class)appliedClass.declaration.declaration;
+        com.redhat.ceylon.model.typechecker.model.Class classDecl = (com.redhat.ceylon.model.typechecker.model.Class)freeClass.declaration;
         //com.redhat.ceylon.model.typechecker.model.Constructor decl = freeConstructor.constructor;
         //List<Parameter> parameters = decl.getFirstParameterList().getParameters();
         this.firstDefaulted = Metamodel.getFirstDefaultedParameter(parameters);
@@ -102,7 +105,7 @@ class ConstructorDispatch<Type, Arguments extends Sequential<? extends Object>>
             if(MethodHandleUtil.isJavaArray(javaClass)){
                 found = MethodHandleUtil.setupArrayConstructor(javaClass, defaultedMethods);
             }else if(!javaClass.isMemberClass() 
-                    || !Metamodel.isCeylon((com.redhat.ceylon.model.typechecker.model.Class)appliedClass.declaration.declaration)
+                    || !Metamodel.isCeylon((com.redhat.ceylon.model.typechecker.model.Class)freeClass.declaration)
                     // private ceylon member classes don't have any outer constructor method so treat them like java members
                     || !classDecl.isShared()){
                     // find the MH for the primary constructor for a 
@@ -556,7 +559,8 @@ class ConstructorDispatch<Type, Arguments extends Sequential<? extends Object>>
         }
         // Now, if it's a constructor we need to insert the (null) constructor name argument
         if (constructorModel != null
-                && constructorModel.getName() != null) {
+                && constructorModel.getName() != null
+                && !constructorModel.getName().isEmpty()) {
             method = MethodHandleUtil.insertConstructorNameArgument(method, 0, constructorModel);
             skipParameters += 1;
         }

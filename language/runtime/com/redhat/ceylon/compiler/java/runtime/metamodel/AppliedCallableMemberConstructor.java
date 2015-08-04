@@ -7,6 +7,7 @@ import ceylon.language.Sequential;
 import ceylon.language.empty_;
 import ceylon.language.meta.declaration.CallableConstructorDeclaration;
 import ceylon.language.meta.model.CallableConstructor;
+import ceylon.language.meta.model.ClassModel;
 import ceylon.language.meta.model.MemberClass;
 import ceylon.language.meta.model.MemberClassCallableConstructor;
 
@@ -111,7 +112,7 @@ public class AppliedCallableMemberConstructor<Container, Type, Arguments extends
                 $reifiedType, $reifiedArguments, 
                 appliedFunction, 
                 declaration, 
-                (AppliedClass)getContainer().getContainer(), 
+                (ClassModel)getContainer().getContainer(), 
                 instance);
     }
 

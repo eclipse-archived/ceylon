@@ -256,7 +256,6 @@ public class AppliedMemberClass<Container, Type, Arguments extends Sequential<? 
             return null;
         if (ctor instanceof CallableConstructorDeclaration) {
             FreeCallableConstructor callableCtor = (FreeCallableConstructor)ctor;
-            com.redhat.ceylon.model.typechecker.model.Type constructorType = callableCtor.constructor.appliedType(this.producedType, Collections.<com.redhat.ceylon.model.typechecker.model.Type>emptyList());
             // anonymous classes don't have parameter lists
             //TypeDescriptor actualReifiedArguments = Metamodel.getTypeDescriptorForArguments(declaration.declaration.getUnit(), (Functional)callableCtor.constructor, this.producedType);
     
@@ -280,7 +279,7 @@ public class AppliedMemberClass<Container, Type, Arguments extends Sequential<? 
             return new AppliedCallableMemberConstructor<Container,Type,Sequential<? extends java.lang.Object>>(
                     $reifiedContainer, 
                     this.$reifiedType,
-                    $reified$Arguments,// TODO it can't be Nothing!
+                    $reified$Arguments,
                     reference, 
                     callableCtor, 
                     this);
