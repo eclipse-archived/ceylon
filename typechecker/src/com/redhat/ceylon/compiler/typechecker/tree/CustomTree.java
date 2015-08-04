@@ -17,7 +17,8 @@ public class CustomTree extends Tree {
                 getType().visit(visitor);
             if (getTypeParameterList()!=null)
                 getTypeParameterList().visit(visitor);
-            List<ParameterList> parameterLists = getParameterLists();
+            List<ParameterList> parameterLists = 
+                    getParameterLists();
             for (int i=0,l=parameterLists.size();i<l;i++)
                 parameterLists.get(i).visit(visitor);
             if (getTypeConstraintList()!=null)
@@ -44,8 +45,10 @@ public class CustomTree extends Tree {
             }
             else {
                 if (getSpecifierOrInitializerExpression()!=null &&
-                		!(getSpecifierOrInitializerExpression() instanceof LazySpecifierExpression))
-                    getSpecifierOrInitializerExpression().visit(visitor);
+                		!(getSpecifierOrInitializerExpression() 
+                		        instanceof LazySpecifierExpression))
+                    getSpecifierOrInitializerExpression()
+                            .visit(visitor);
                 super.visit(visitor);
             }
         }
@@ -56,8 +59,10 @@ public class CustomTree extends Tree {
             }
             else {
                 Walker.walkAnyAttribute(visitor, this);
-                if (getSpecifierOrInitializerExpression() instanceof LazySpecifierExpression)
-                	getSpecifierOrInitializerExpression().visit(visitor);
+                if (getSpecifierOrInitializerExpression() 
+                        instanceof LazySpecifierExpression)
+                	getSpecifierOrInitializerExpression()
+                	        .visit(visitor);
             }
         }
         @Override public String getNodeType() {
@@ -88,7 +93,8 @@ public class CustomTree extends Tree {
             }
             else {
                 Walker.walkTypedDeclaration(visitor, this);
-                List<ParameterList> parameterLists = getParameterLists();
+                List<ParameterList> parameterLists = 
+                        getParameterLists();
                 for (int i=0,l=parameterLists.size();i<l;i++)
                     parameterLists.get(i).visit(visitor);
             }
@@ -110,7 +116,8 @@ public class CustomTree extends Tree {
             }
             else {
                 if (getSpecifierExpression()!=null &&
-                		!(getSpecifierExpression() instanceof LazySpecifierExpression))
+                		!(getSpecifierExpression() 
+                		        instanceof LazySpecifierExpression))
                     getSpecifierExpression().visit(visitor);
                 super.visit(visitor);
             }
@@ -126,10 +133,12 @@ public class CustomTree extends Tree {
                 if (getTypeConstraintList()!=null)
                     getTypeConstraintList().visit(visitor);
                 Walker.walkTypedDeclaration(visitor, this);
-                List<ParameterList> parameterLists = getParameterLists();
+                List<ParameterList> parameterLists = 
+                        getParameterLists();
                 for (int i=0,l=parameterLists.size();i<l;i++)
                     parameterLists.get(i).visit(visitor);
-                if (getSpecifierExpression() instanceof LazySpecifierExpression)
+                if (getSpecifierExpression() 
+                        instanceof LazySpecifierExpression)
 //                if (getSpecifierExpression()!=null)
                 	getSpecifierExpression().visit(visitor);
             }
@@ -157,7 +166,8 @@ public class CustomTree extends Tree {
                     getTypeConstraintList().visit(visitor);
                 if (getType()!=null)
                     getType().visit(visitor);
-                List<ParameterList> parameterLists = getParameterLists();
+                List<ParameterList> parameterLists = 
+                        getParameterLists();
                 for (int i=0,l=parameterLists.size();i<l;i++)
                     parameterLists.get(i).visit(visitor);
                 if (getBlock()!=null)
