@@ -79,7 +79,7 @@ public class AppliedClass<Type, Arguments extends Sequential<? extends Object>>
                 if (!initialized) {
                     Reference reference;
                     if (!hasConstructors() && !hasEnumerated()) {
-                        reference = ((com.redhat.ceylon.model.typechecker.model.Class)declaration.declaration).appliedReference(producedType, null);
+                        reference = producedType;
                     } else {
                         reference = ((com.redhat.ceylon.model.typechecker.model.Class)declaration.declaration).getDefaultConstructor().appliedReference(producedType, null);
                     }
