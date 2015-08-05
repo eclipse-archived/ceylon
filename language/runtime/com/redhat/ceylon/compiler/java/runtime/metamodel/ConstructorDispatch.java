@@ -173,7 +173,7 @@ class ConstructorDispatch<Type, Arguments extends Sequential<? extends Object>>
                 // FIXME: this probably doesn't work for local classes
                 // FIXME: perhaps store and access the container class literal from an extra param of @Container?
                 java.lang.Class<?> outerJavaClass = Metamodel.getJavaClass((Declaration) freeClass.declaration.getContainer());
-                defaultedMethods = findInstantiators(freeConstructor, outerJavaClass);
+                defaultedMethods = findInstantiators(freeConstructor, builderName, outerJavaClass);
                 int i=0;
                 for(;i<defaultedMethods.length;i++){
                     if(defaultedMethods[i] == null)
@@ -408,11 +408,15 @@ class ConstructorDispatch<Type, Arguments extends Sequential<? extends Object>>
     
     protected Method[] findInstantiators(
             FreeCallableConstructor freeConstructor,
+            String builderName,
             java.lang.Class<?> javaClass) {
         final Method[] defaultedMethods = new Method[dispatch.length];
         String ctorName = freeConstructor == null ? null : freeConstructor.declaration.getName();
         outer: for(Method constr : javaClass.getDeclaredMethods()) {
             if (constr.isSynthetic()) {
+                continue;
+            }
+            if (!constr.getName().equals(builderName)) {
                 continue;
             }
             int ii = 0;
