@@ -113,7 +113,7 @@ public class AppliedCallableMemberConstructor<Container, Type, Arguments extends
                 $reifiedType, $reifiedArguments, 
                 appliedFunction, 
                 declaration, 
-                (ClassModel)getContainer().getContainer(), 
+                (ClassModel)getContainer(), 
                 instance);
     }
 
