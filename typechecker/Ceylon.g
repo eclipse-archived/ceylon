@@ -1035,7 +1035,7 @@ packageQualifiedClass returns [SimpleType type, ExtendedTypeExpression expressio
             if ($t1.typeArgumentList!=null)
                 bt.setTypeArgumentList($t1.typeArgumentList);
             $expression = new ExtendedTypeExpression(null);
-            $expression.setExtendedType($type); }
+            $expression.setType($type); }
           ( //constructor
             m2=MEMBER_OP
             { qt = new QualifiedType(null);
@@ -1050,7 +1050,7 @@ packageQualifiedClass returns [SimpleType type, ExtendedTypeExpression expressio
               if ($t2.typeArgumentList!=null)
                 qt.setTypeArgumentList($t2.typeArgumentList);
               $expression = new ExtendedTypeExpression(null);
-              $expression.setExtendedType($type); }
+              $expression.setType($type); }
           )?
         )?
       )?
@@ -1066,7 +1066,7 @@ unqualifiedClass returns [SimpleType type, ExtendedTypeExpression expression]
             bt.setTypeArgumentList($t0.typeArgumentList);
         $type=bt; 
         $expression = new ExtendedTypeExpression(null);
-        $expression.setExtendedType($type); }
+        $expression.setType($type); }
       ( //constructor:
         m3=MEMBER_OP
         { qt = new QualifiedType(null);
@@ -1082,7 +1082,7 @@ unqualifiedClass returns [SimpleType type, ExtendedTypeExpression expression]
             if ($t3.typeArgumentList!=null)
                 qt.setTypeArgumentList($t3.typeArgumentList);
             $expression = new ExtendedTypeExpression(null);
-            $expression.setExtendedType($type); }
+            $expression.setType($type); }
         )?
       )?
     | t4=memberNameWithArguments
@@ -1092,7 +1092,7 @@ unqualifiedClass returns [SimpleType type, ExtendedTypeExpression expression]
             bt.setTypeArgumentList($t4.typeArgumentList);
         $type=bt; 
         $expression = new ExtendedTypeExpression(null);
-        $expression.setExtendedType($type); }
+        $expression.setType($type); }
     ;
 
 superQualifiedClass returns [SimpleType type, ExtendedTypeExpression expression]
@@ -1113,7 +1113,7 @@ superQualifiedClass returns [SimpleType type, ExtendedTypeExpression expression]
           if ($t4.typeArgumentList!=null)
             qt.setTypeArgumentList($t4.typeArgumentList);
           $expression = new ExtendedTypeExpression(null);
-          $expression.setExtendedType($type); }
+          $expression.setType($type); }
       |
         t5=memberNameWithArguments 
         { if ($t5.identifier!=null) {
@@ -1123,7 +1123,7 @@ superQualifiedClass returns [SimpleType type, ExtendedTypeExpression expression]
           if ($t5.typeArgumentList!=null)
             qt.setTypeArgumentList($t5.typeArgumentList);
           $expression = new ExtendedTypeExpression(null);
-          $expression.setExtendedType($type); }
+          $expression.setType($type); }
       )?
 	  ;
 

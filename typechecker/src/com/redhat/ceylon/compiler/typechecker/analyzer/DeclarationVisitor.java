@@ -1161,10 +1161,17 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
         that.setDeclarationModel(v);
         Tree.SpecifierOrInitializerExpression sie = 
                 that.getSpecifierOrInitializerExpression();
-        v.setTransient(sie instanceof Tree.LazySpecifierExpression);
+        boolean lazy = 
+                sie instanceof Tree.LazySpecifierExpression;
+        v.setTransient(lazy);
         v.setImplemented(sie != null);
         visitDeclaration(that, v);
+        Scope o = null;
+//        if (lazy) 
+            o = enterScope(v);
         super.visit(that);
+//        if (lazy) 
+            exitScope(o);
         if (v.isInterfaceMember() && 
                 !v.isFormal() && !v.isNative()) {
             if (sie==null) {

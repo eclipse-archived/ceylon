@@ -28,99 +28,12 @@ public class CustomTree extends Tree {
             if (getBlock()!=null)
                 getBlock().visit(visitor);
         }
-        @Override public String getNodeType() {
-            return FunctionArgument.class.getSimpleName();
-        }
-    }
-
-    public static class AttributeDeclaration 
-            extends Tree.AttributeDeclaration {
-        public AttributeDeclaration(Token token) {
-            super(token);
-        }
-        @Override
-        public void visit(Visitor visitor) {
-            if (visitor instanceof NaturalVisitor) {
-                super.visit(visitor);
-            }
-            else {
-                if (getSpecifierOrInitializerExpression()!=null &&
-                		!(getSpecifierOrInitializerExpression() 
-                		        instanceof LazySpecifierExpression))
-                    getSpecifierOrInitializerExpression()
-                            .visit(visitor);
-                super.visit(visitor);
-            }
-        }
-        @Override
-        public void visitChildren(Visitor visitor) {
-            if (visitor instanceof NaturalVisitor) {
-                super.visitChildren(visitor);
-            }
-            else {
-                Walker.walkAnyAttribute(visitor, this);
-                if (getSpecifierOrInitializerExpression() 
-                        instanceof LazySpecifierExpression)
-                	getSpecifierOrInitializerExpression()
-                	        .visit(visitor);
-            }
-        }
-        @Override public String getNodeType() {
-            return AttributeDeclaration.class.getSimpleName();
-        }
-    }
-    
-    public static class Variable 
-            extends Tree.Variable {
-        public Variable(Token token) {
-            super(token);
-        }
-        @Override
-        public void visit(Visitor visitor) {
-            if (visitor instanceof NaturalVisitor) {
-                super.visit(visitor);
-            }
-            else {
-                if (getSpecifierExpression()!=null)
-                    getSpecifierExpression().visit(visitor);
-                super.visit(visitor);
-            }
-        }
-        @Override
-        public void visitChildren(Visitor visitor) {
-            if (visitor instanceof NaturalVisitor) {
-                super.visitChildren(visitor);
-            }
-            else {
-                Walker.walkTypedDeclaration(visitor, this);
-                List<ParameterList> parameterLists = 
-                        getParameterLists();
-                for (int i=0,l=parameterLists.size();i<l;i++)
-                    parameterLists.get(i).visit(visitor);
-            }
-        }
-        @Override public String getNodeType() {
-            return Variable.class.getSimpleName();
-        }
     }
 
     public static class MethodDeclaration
             extends Tree.MethodDeclaration {
         public MethodDeclaration(Token token) {
             super(token);
-        }
-        @Override
-        public void visit(Visitor visitor) {
-            if (visitor instanceof NaturalVisitor) {
-                super.visit(visitor);
-            }
-            else {
-                if (getSpecifierExpression()!=null &&
-                		!(getSpecifierExpression() 
-                		        instanceof LazySpecifierExpression))
-                    getSpecifierExpression().visit(visitor);
-                super.visit(visitor);
-            }
         }
         @Override
         public void visitChildren(Visitor visitor) {
@@ -137,14 +50,9 @@ public class CustomTree extends Tree {
                         getParameterLists();
                 for (int i=0,l=parameterLists.size();i<l;i++)
                     parameterLists.get(i).visit(visitor);
-                if (getSpecifierExpression() 
-                        instanceof LazySpecifierExpression)
-//                if (getSpecifierExpression()!=null)
+                if (getSpecifierExpression()!=null)
                 	getSpecifierExpression().visit(visitor);
             }
-        }
-        @Override public String getNodeType() {
-            return MethodDeclaration.class.getSimpleName();
         }
     }
     
@@ -173,9 +81,6 @@ public class CustomTree extends Tree {
                 if (getBlock()!=null)
                     getBlock().visit(visitor);
             }
-        }
-        @Override public String getNodeType() {
-            return MethodDefinition.class.getSimpleName();
         }
     }
     
@@ -221,9 +126,6 @@ public class CustomTree extends Tree {
                     getClassBody().visit(visitor);
             }
         }
-        @Override public String getNodeType() {
-            return ClassDefinition.class.getSimpleName();
-        }
     }
     
     public static class ExtendedTypeExpression 
@@ -232,13 +134,10 @@ public class CustomTree extends Tree {
         public ExtendedTypeExpression(Token token) {
             super(token);
         }
-        @Override public String getNodeType() {
-            return ExtendedTypeExpression.class.getSimpleName();
-        }
         public SimpleType getType() {
             return type;
         }
-        public void setExtendedType(SimpleType type) {
+        public void setType(SimpleType type) {
             this.type = type;
             connect(type);
         }
