@@ -122,7 +122,7 @@ class ConstructorDispatch<Type, Arguments extends Sequential<? extends Object>>
                             javaClass, 
                             this.instance, 
                             parameterProducedTypes, 
-                            false, 
+                            ((Constructor)defaultedMethods[i]).isVarArgs(), 
                             false);
                 }
                 constructor = dispatch[defaultedMethods.length-1];
@@ -382,7 +382,7 @@ class ConstructorDispatch<Type, Arguments extends Sequential<? extends Object>>
                     if (annotation == null) {
                         defaultedMethods[index(ii, pts)] = constr;
                         if (variadicIndex != -1) {
-                            defaultedMethods[index(ii, pts)] = constr;
+                            defaultedMethods[variadicIndex-1] = constr;
                         }
                     }
                 }

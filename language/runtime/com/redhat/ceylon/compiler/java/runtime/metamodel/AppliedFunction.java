@@ -191,7 +191,6 @@ public class AppliedFunction<Type, Arguments extends Sequential<? extends Object
         int typeParametersCount;
         int skipParameters = 0;
         List<com.redhat.ceylon.model.typechecker.model.TypeParameter> reifiedTypeParameters;
-        Constructor constructorModel;
         if (found instanceof java.lang.reflect.Method) {
             com.redhat.ceylon.model.typechecker.model.Function functionModel = (com.redhat.ceylon.model.typechecker.model.Function)appliedFunction.getDeclaration();
             java.lang.reflect.Method foundMethod = (java.lang.reflect.Method)found;
@@ -207,7 +206,7 @@ public class AppliedFunction<Type, Arguments extends Sequential<? extends Object
                     else if(foundMethod.getName().equals("set"))
                         method = MethodHandleUtil.getJavaArraySetterMethodHandle(javaClass);
                     else if(foundMethod.getName().equals("copyTo")){
-                        found = MethodHandleUtil.getJavaArrayCopyToMethod(javaClass, foundMethod);
+                        foundMethod = MethodHandleUtil.getJavaArrayCopyToMethod(javaClass, foundMethod);
                     }
                 }
                 if(method == null){
@@ -218,7 +217,6 @@ public class AppliedFunction<Type, Arguments extends Sequential<? extends Object
                 throw Metamodel.newModelError("Problem getting a MH for constructor for: "+javaClass, e);
             }
             reifiedTypeParameters = functionModel.getTypeParameters();
-            constructorModel = null;
         } else {
             throw new RuntimeException();
         }
