@@ -479,7 +479,7 @@ class ConstructorDispatch<Type, Arguments extends Sequential<? extends Object>>
             returnType = foundMethod.getReturnType();
             isStatic = Modifier.isStatic(foundMethod.getModifiers());
             isJavaArray = MethodHandleUtil.isJavaArray(javaClass);
-            typeParametersCount = foundMethod.getTypeParameters().length;
+            typeParametersCount = javaClass.getTypeParameters().length;
             try {
                 if(isJavaArray){
                     if(foundMethod.getName().equals("get"))
