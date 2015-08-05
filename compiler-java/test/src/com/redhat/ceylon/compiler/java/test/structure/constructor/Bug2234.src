@@ -105,7 +105,6 @@ final class bug2234_ {
         .com.redhat.ceylon.compiler.java.test.structure.constructor.bug2234_check_.bug2234_check(o.getInner$foo().getName().equals("foo"), "spec#1129.1");
         .com.redhat.ceylon.compiler.java.test.structure.constructor.bug2234_check_.bug2234_check(new .com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2234().getInner$foo().getName().equals("foo"), "spec#1129.2");
         final .com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2234.Inner oi = o.Inner$new$();
-        .com.redhat.ceylon.compiler.java.test.structure.constructor.bug2234_check_.bug2234_check(oi.getInner$foo().getName().equals("foo"), "spec#1129.3");
         o.test();
         final .ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2234.Inner> ref1 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2234.Inner>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2234.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2234.Inner.class)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2234.$TypeDescriptor$), "Bug2234.Inner.foo(Bug2234)", (short)-1){
             
