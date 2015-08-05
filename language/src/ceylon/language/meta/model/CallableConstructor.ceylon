@@ -42,7 +42,7 @@ shared sealed interface CallableConstructor<out Type=Object, in Arguments=Nothin
     
     "The class containing this constructor; the type of instances produced 
      by this constructor."
-    shared actual formal ClassModel<Type> container;
+    shared actual formal ClassModel<Type>? container;
     
 }
 

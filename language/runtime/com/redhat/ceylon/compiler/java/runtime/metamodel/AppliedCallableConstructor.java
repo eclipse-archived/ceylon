@@ -84,7 +84,7 @@ public class AppliedCallableConstructor<Type, Arguments extends Sequential<? ext
     
     @Override
     public ClassModel<Type,?> getContainer() {
-        return appliedClass;
+        return null;
     }
     
     @Override

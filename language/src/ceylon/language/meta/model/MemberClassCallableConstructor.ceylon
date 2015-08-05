@@ -16,7 +16,7 @@ shared sealed interface MemberClassCallableConstructor<in Container=Nothing, out
     
     "The class containing this constructor; the type of instances produced 
      by this constructor."
-    shared actual formal MemberClass<Container,Type> container;
+    shared actual formal Class<Type> container;
     
     shared actual formal CallableConstructor<Type, Arguments> bind(Object container);
 }
