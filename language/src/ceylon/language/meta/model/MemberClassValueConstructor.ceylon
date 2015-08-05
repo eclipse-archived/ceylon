@@ -34,7 +34,7 @@ shared sealed interface MemberClassValueConstructor<in Container=Nothing, out Ty
     
     "The class containing this constructor; the type of instances produced 
      by this constructor."
-    shared actual formal Class<Type> container;
+    shared actual formal ClassModel<Type> container;
     
     "Binds this attribute to the given container instance. The instance type is checked at runtime."
     throws(`class StorageException`,

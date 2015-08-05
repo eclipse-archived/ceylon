@@ -46,8 +46,8 @@ public class AppliedValueMemberConstructor<Container, Type, Set>
     }
     
     @Override
-    public ceylon.language.meta.model.Class<Type, ?> getContainer() {
-        return (ceylon.language.meta.model.Class)clazz.getContainer();
+    public ceylon.language.meta.model.ClassModel<Type, ?> getContainer() {
+        return (ceylon.language.meta.model.ClassModel)clazz.getContainer();
     }
     
     public ValueConstructorDeclaration getDeclaration() {

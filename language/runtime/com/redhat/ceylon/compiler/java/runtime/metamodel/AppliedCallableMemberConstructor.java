@@ -81,8 +81,8 @@ public class AppliedCallableMemberConstructor<Container, Type, Arguments extends
     }
     
     @Override
-    public Class<Type, ?> getContainer() {
-        return (Class)clazz.getContainer();
+    public ClassModel<Type, ?> getContainer() {
+        return (ClassModel)clazz.getContainer();
     }
     
     @Override
