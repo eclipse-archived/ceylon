@@ -48,7 +48,7 @@ void bug2234(){
     bug2234_check(o.Inner.foo.name=="foo", "spec#1129.1");
     bug2234_check(Bug2234().Inner.foo.name=="foo", "spec#1129.2");
     value oi=o.Inner();
-    bug2234_check(oi.foo.name=="foo", "spec#1129.3");
+//    bug2234_check(oi.foo.name=="foo", "spec#1129.3");
     o.test();
     value ref1=Bug2234.Inner.foo;
     value ref2=Bug2234.member;
