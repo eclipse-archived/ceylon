@@ -42,7 +42,7 @@ public class AppliedValueConstructor<Type,Set>
     
     @Override
     public ceylon.language.meta.model.Class<?,?> getContainer() {
-        return clazz;
+        return null;
     }
     
     @Override

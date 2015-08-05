@@ -25,6 +25,6 @@ shared sealed interface ValueConstructor<out Type=Object,in Set=Nothing>
     
     "The class containing this constructor; the type of instances produced 
      by this constructor."
-    shared actual formal Class<Type> container;
+    shared actual formal Class<Type>? container;
 }
 
