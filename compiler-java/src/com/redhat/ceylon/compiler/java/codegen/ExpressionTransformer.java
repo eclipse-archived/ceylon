@@ -1343,7 +1343,9 @@ public class ExpressionTransformer extends AbstractTransformer {
                 reifiedSet = makeReifiedTypeArgument(ptype);
                 closedTypeArgs.append(reifiedSet);
             }
-            toplevelCall = make().Apply(null, makeSelect(toplevelCall, "apply"), closedTypeArgs.toList());
+            toplevelCall = make().Apply(null, 
+                    makeSelect(toplevelCall, "apply"), 
+                    closedTypeArgs.toList());
             // add cast
             Type exprType = expr.getTypeModel().resolveAliases();
             JCExpression typeClass = makeJavaType(exprType, JT_NO_PRIMITIVES);
