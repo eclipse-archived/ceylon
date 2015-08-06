@@ -1,7 +1,5 @@
 package com.redhat.ceylon.compiler.java.runtime.metamodel;
 
-import java.util.Collections;
-
 import ceylon.language.AssertionError;
 import ceylon.language.Sequential;
 import ceylon.language.empty_;
@@ -10,7 +8,6 @@ import ceylon.language.meta.declaration.ClassDeclaration;
 import ceylon.language.meta.declaration.ValueConstructorDeclaration;
 import ceylon.language.meta.model.Class;
 import ceylon.language.meta.model.MemberClassCallableConstructor;
-import ceylon.language.meta.model.Qualified;
 
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Name;
@@ -18,9 +15,7 @@ import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
-import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.Nothing;
 import com.redhat.ceylon.model.typechecker.model.Function;
-import com.redhat.ceylon.model.typechecker.model.Functional;
 import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
 
 public class AppliedMemberClass<Container, Type, Arguments extends Sequential<? extends Object>> 

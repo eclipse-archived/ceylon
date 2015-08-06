@@ -3,16 +3,13 @@ package com.redhat.ceylon.compiler.java.runtime.metamodel;
 import ceylon.language.Sequential;
 import ceylon.language.empty_;
 import ceylon.language.meta.declaration.ValueConstructorDeclaration;
-import ceylon.language.meta.declaration.ValueDeclaration;
 import ceylon.language.meta.model.Member;
 import ceylon.language.meta.model.MemberClass;
 import ceylon.language.meta.model.MemberClassValueConstructor;
-import ceylon.language.meta.model.Value;
 import ceylon.language.meta.model.ValueConstructor;
 
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
-import com.redhat.ceylon.compiler.java.metadata.Name;
 import com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameter;

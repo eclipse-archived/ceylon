@@ -1,25 +1,18 @@
 package com.redhat.ceylon.compiler.java.runtime.metamodel;
 
-import java.lang.annotation.Annotation;
 import java.lang.reflect.AnnotatedElement;
-import java.lang.reflect.Method;
 import java.util.Collections;
-import java.util.List;
 
 import ceylon.language.Anything;
 import ceylon.language.Sequential;
 import ceylon.language.meta.declaration.ClassDeclaration;
-import ceylon.language.meta.declaration.FunctionOrValueDeclaration;
 import ceylon.language.meta.declaration.Module;
 import ceylon.language.meta.declaration.OpenType;
 import ceylon.language.meta.declaration.Package;
 import ceylon.language.meta.declaration.SetterDeclaration;
 import ceylon.language.meta.declaration.ValueConstructorDeclaration;
 import ceylon.language.meta.declaration.ValueConstructorDeclaration$impl;
-import ceylon.language.meta.declaration.ValueDeclaration$impl;
 import ceylon.language.meta.declaration.ValueableDeclaration$impl;
-import ceylon.language.meta.model.MemberClassValueConstructor;
-import ceylon.language.meta.model.ValueConstructor;
 
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
@@ -30,12 +23,8 @@ import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 import com.redhat.ceylon.compiler.java.metadata.Variance;
 import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
-import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.Nothing;
-import com.redhat.ceylon.model.loader.NamingBase;
 import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.Constructor;
-import com.redhat.ceylon.model.typechecker.model.Parameter;
-import com.redhat.ceylon.model.typechecker.model.Scope;
 import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.model.typechecker.model.Value;
