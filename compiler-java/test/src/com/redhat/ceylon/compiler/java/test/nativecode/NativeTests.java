@@ -489,4 +489,9 @@ public class NativeTests extends CompilerTests {
                 new CompilerError(54, "native declaration: 'test6' accesses native code for different backend: 'nativeMethodJs'")
         );
     }
+    
+    @Test
+    public void testNativeScopes() {
+        testNative("NativeScopes");
+    }
 }
