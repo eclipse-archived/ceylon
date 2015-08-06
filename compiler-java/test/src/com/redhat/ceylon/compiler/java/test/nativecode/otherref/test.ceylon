@@ -20,6 +20,33 @@
 import com.redhat.ceylon.testjs { run, Foo }
 
 native
+shared Object ref1;
+
+native("js")
+shared Object ref1 = run;
+
+native("jvm")
+shared Object ref1 = Exception("otherref-JVM");
+
+native
+shared Object ref2;
+
+native("js")
+shared Object ref2 => run;
+
+native("jvm")
+shared Object ref2 => Exception("otherref-JVM");
+
+native
+shared Object ref3;
+
+native("js")
+shared Object ref3 { return run; }
+
+native("jvm")
+shared Object ref3 { return Exception("otherref-JVM"); }
+
+native
 shared void test();
 
 native("js")
@@ -30,5 +57,6 @@ shared void test() {
 
 native("jvm")
 shared void test() {
-    throw Exception("otherref-JVM");
+    assert(is Throwable ref1);
+    throw ref1;
 }
