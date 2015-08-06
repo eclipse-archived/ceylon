@@ -99,19 +99,6 @@ public class AnalyzerUtil {
         Declaration result = 
                 scope.getMemberOrParameter(unit, 
                         name, signature, ellipsis);
-        if (result == null) {
-            if (scope instanceof Declaration) {
-                // If we couldn't find the declaration in the current
-                // scope and the scope is a native implementation we
-                // will try again with its header
-                Declaration decl = (Declaration) scope;
-                if (decl.isNative() && 
-                        !decl.isNativeHeader()) {
-                    Scope ds = decl.getScope();
-                    result = getNativeHeader(ds, name);
-                }
-            }
-        }
         if (result instanceof TypedDeclaration) {
             return (TypedDeclaration) result;
         }
@@ -126,19 +113,6 @@ public class AnalyzerUtil {
         Declaration result = 
                 scope.getMemberOrParameter(unit, 
                         name, signature, ellipsis);
-        if (result == null) {
-            if (scope instanceof Declaration) {
-                // If we couldn't find the declaration in the current
-                // scope and the scope is a native implementation we
-                // will try again with its header
-                Declaration decl = (Declaration)scope;
-                if (decl.isNative() && 
-                        !decl.isNativeHeader()) {
-                    Scope ds = decl.getScope();
-                    result = getNativeHeader(ds, name);
-                }
-            }
-        }
         if (result instanceof TypeDeclaration) {
         	return (TypeDeclaration) result;
         }
