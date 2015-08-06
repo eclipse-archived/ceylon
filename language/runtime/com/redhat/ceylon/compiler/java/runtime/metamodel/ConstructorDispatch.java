@@ -367,6 +367,7 @@ class ConstructorDispatch<Type, Arguments extends Sequential<? extends Object>>
         String ctorName = freeConstructor == null ? null : freeConstructor.declaration.getName();
         outer: for(Constructor<?> constr : javaClass.getDeclaredConstructors()) {
             int ii = 0;
+            boolean jvmVarargs = MethodHandleUtil.isJvmVarargsMethodOrConstructor(constr);
             Class<?>[] pts = constr.getParameterTypes();
             for (Class<?> pt : pts) {
                 // TODO need to exclude the serialization constructor too!
@@ -389,32 +390,32 @@ class ConstructorDispatch<Type, Arguments extends Sequential<? extends Object>>
                         && ctorName.equals(annotation.value())
                         && !annotation.delegation()) {
                         ii++;
-                        defaultedMethods[index(ii, pts)] = constr;
+                        defaultedMethods[index(ii, pts, jvmVarargs)] = constr;
                     }
                 } else {
                     // the default constructor
                     if (annotation == null) {
-                        defaultedMethods[index(ii, pts)] = constr;
-                        if (variadicIndex != -1) {
+                        defaultedMethods[index(ii, pts, jvmVarargs)] = constr;
+                        if (variadicIndex != -1 && jvmVarargs) {
                             defaultedMethods[variadicIndex-1] = constr;
                         }
                     }
                 }
                 continue outer;
             }
-            defaultedMethods[index(ii, pts)] = constr;
+            defaultedMethods[index(ii, pts, jvmVarargs)] = constr;
         }
         return defaultedMethods;
     }
     
-    int index(int ii, Class<?>[] pts) {
+    int index(int ii, Class<?>[] pts, boolean jvmVarargs) {
         if (firstDefaulted ==  -1) {
             return 0;
         } else {
             if (variadicIndex == -1) {
                 return pts.length-ii-firstDefaulted;
             } else {
-                return 0;
+                return jvmVarargs ? 0 : pts.length-ii-firstDefaulted;
             }
         }
         
@@ -439,6 +440,7 @@ class ConstructorDispatch<Type, Arguments extends Sequential<? extends Object>>
                 defaultedMethods[0] = constr;
                 continue outer;
             }
+            boolean jvmVarargs = MethodHandleUtil.isJvmVarargsMethodOrConstructor(constr);
             for (Class<?> pt : pts) {
                 // TODO need to exclude the serialization constructor too!
                 // TODO what if we find more constructors than defaulted methods contains?
@@ -454,12 +456,12 @@ class ConstructorDispatch<Type, Arguments extends Sequential<? extends Object>>
                         && ctorName.equals(annotation.value())
                         && !annotation.delegation()) {
                         ii++;
-                        defaultedMethods[index(ii, pts)] = constr;
+                        defaultedMethods[index(ii, pts, jvmVarargs)] = constr;
                     }
                 } else {
                     // the default constructor
                     if (annotation == null) {
-                        defaultedMethods[index(ii, pts)] = constr;
+                        defaultedMethods[index(ii, pts, jvmVarargs)] = constr;
                     }
                 }
                 continue outer;
