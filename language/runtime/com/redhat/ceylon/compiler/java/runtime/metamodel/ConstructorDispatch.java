@@ -169,11 +169,10 @@ class ConstructorDispatch<Type, Arguments extends Sequential<? extends Object>>
             }else{
                 // find the MH for the primary instantiatorfor a 
                 // A ceylon member class
-                String builderName = freeClass.getName() + "$new$";
                 // FIXME: this probably doesn't work for local classes
                 // FIXME: perhaps store and access the container class literal from an extra param of @Container?
                 java.lang.Class<?> outerJavaClass = Metamodel.getJavaClass((Declaration) freeClass.declaration.getContainer());
-                defaultedMethods = findInstantiators(freeConstructor, builderName, outerJavaClass);
+                defaultedMethods = findInstantiators(freeConstructor, outerJavaClass);
                 int i=0;
                 for(;i<defaultedMethods.length;i++){
                     if(defaultedMethods[i] == null)
@@ -324,7 +323,16 @@ class ConstructorDispatch<Type, Arguments extends Sequential<? extends Object>>
             java.lang.Class<?> javaClass) {
         // find the MH for the primary constructor for a Ceylon constructor
         if (firstDefaulted != -1) {
-            final Constructor<?>[] defaultedMethods = findConstructors(freeConstructor, javaClass);
+            com.redhat.ceylon.model.typechecker.model.Class classDecl = (com.redhat.ceylon.model.typechecker.model.Class)freeClass.declaration;
+            final Member[] defaultedMethods;
+            if (!javaClass.isMemberClass() 
+                    || !Metamodel.isCeylon((com.redhat.ceylon.model.typechecker.model.Class)freeClass.declaration)
+                    // private ceylon member classes don't have any outer constructor method so treat them like java members
+                    || !classDecl.isShared()) {
+                defaultedMethods = findConstructors(freeConstructor, javaClass);
+            } else {
+                defaultedMethods = findInstantiators(freeConstructor, javaClass.getEnclosingClass());
+            }
             int i=0;
             for(;i<defaultedMethods.length;i++){
                 if(defaultedMethods[i] == null)
@@ -365,7 +373,13 @@ class ConstructorDispatch<Type, Arguments extends Sequential<? extends Object>>
                 // TODO what if we find more constructors than defaulted methods contains?
                 // TODO badly need to abstract/refactor this shit, 
                 // so there's just one API for figuring out the dispatch array.
+                if (ii == 0 && javaClass.isMemberClass()) {
+                    // ignore the hidden outer instance parameter
+                    ii++;
+                    continue;
+                }
                 if (TypeDescriptor.class.isAssignableFrom(pt)) {
+                    // ignore the type descriptors
                     ii++;
                     continue;
                 }
@@ -408,8 +422,8 @@ class ConstructorDispatch<Type, Arguments extends Sequential<? extends Object>>
     
     protected Method[] findInstantiators(
             FreeCallableConstructor freeConstructor,
-            String builderName,
             java.lang.Class<?> javaClass) {
+        String builderName = freeClass.getName() + "$new$";
         final Method[] defaultedMethods = new Method[dispatch.length];
         String ctorName = freeConstructor == null ? null : freeConstructor.declaration.getName();
         outer: for(Method constr : javaClass.getDeclaredMethods()) {

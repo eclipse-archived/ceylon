@@ -92,8 +92,10 @@ public class AppliedCallableMemberConstructor<Container, Type, Arguments extends
     
     @Override
     public CallableConstructor<? extends Type, ? super Arguments> bind(@TypeInfo("ceylon.language::Object") @Name("container") Object instance) {
-        return (CallableConstructor<? extends Type, ? super Arguments>) 
-                Metamodel.bind(this, this.appliedFunction.getQualifyingType(), getContainer());
+        return bindTo(instance);/*(CallableConstructor<? extends Type, ? super Arguments>) 
+                Metamodel.bind(clazz, 
+                        this.appliedFunction.getQualifyingType().getQualifyingType(), 
+                        getContainer());*/
     }
     
     @Override
@@ -113,7 +115,7 @@ public class AppliedCallableMemberConstructor<Container, Type, Arguments extends
                 $reifiedType, $reifiedArguments, 
                 appliedFunction, 
                 declaration, 
-                (ClassModel)getContainer(), 
+                clazz,//(ClassModel)getContainer(), 
                 instance);
     }
 

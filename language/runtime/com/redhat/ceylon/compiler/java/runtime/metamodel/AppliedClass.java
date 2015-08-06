@@ -12,6 +12,7 @@ import ceylon.language.meta.declaration.CallableConstructorDeclaration;
 import ceylon.language.meta.declaration.ValueConstructorDeclaration;
 import ceylon.language.meta.model.Applicable;
 import ceylon.language.meta.model.CallableConstructor;
+import ceylon.language.meta.model.InvocationException;
 
 import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
@@ -73,10 +74,18 @@ public class AppliedClass<Type, Arguments extends Sequential<? extends Object>>
         return decl.hasEnumerated();
     }
     
+    void checkConstructor() {
+        if(((FreeClass)declaration).getAbstract())
+        throw new InvocationException("Abstract class cannot be instantiated");
+        if(((FreeClass)declaration).getAnonymous())
+        throw new InvocationException("Object class cannot be instantiated");
+    }
+    
     ConstructorDispatch<Type, Arguments> getDispatch() {
         if (!initialized) {
             synchronized(this) {
                 if (!initialized) {
+                    checkConstructor();
                     Reference reference;
                     if (!hasConstructors() && !hasEnumerated()) {
                         reference = producedType;
