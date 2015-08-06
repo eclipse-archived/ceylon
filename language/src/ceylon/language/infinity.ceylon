@@ -15,4 +15,4 @@ native shared Float infinity;
 
 native("jvm") shared Float infinity { return \iPOSITIVE_INFINITY; }
 
-native("js") shared Float infinity { return 1.0/0.0; }
+native("js") shared Float infinity { dynamic { return \iInfinity; } }
