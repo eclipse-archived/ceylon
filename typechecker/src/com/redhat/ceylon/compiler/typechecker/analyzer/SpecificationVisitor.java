@@ -55,7 +55,6 @@ public class SpecificationVisitor extends Visitor {
     private boolean endsInBreakReturnThrow = false;
     private boolean inExtends = false;
     private boolean inAnonFunctionOrComprehension = false;
-	private boolean withinAttributeInitializer = false;
     
     @Override
     public void visit(Tree.ExtendedType that) {
@@ -150,13 +149,25 @@ public class SpecificationVisitor extends Visitor {
     }
     
     private boolean isVariable() {
-        return declaration instanceof TypedDeclaration
-            && ((TypedDeclaration) declaration).isVariable();
+        if (declaration instanceof TypedDeclaration) {
+            TypedDeclaration td = 
+                    (TypedDeclaration) declaration;
+            return td.isVariable();
+        }
+        else {
+            return false;
+        }
     }
     
     private boolean isLate() {
-        return declaration instanceof FunctionOrValue
-            && ((FunctionOrValue) declaration).isLate();
+        if (declaration instanceof FunctionOrValue) {
+            FunctionOrValue fov = 
+                    (FunctionOrValue) declaration;
+            return fov.isLate();
+        }
+        else {
+            return false;
+        }
     }
     
     @Override
@@ -240,13 +251,7 @@ public class SpecificationVisitor extends Visitor {
                 //you are allowed to refer to later 
                 //declarations in a class declaration
                 //section or interface
-                if (withinAttributeInitializer && 
-                		member instanceof Value && 
-                		!(((Value) member).isTransient())) {
-                	that.addError("reference to value within its initializer: '" + 
-                            member.getName() + "'", 1460);
-                }
-                else if (!metamodel && 
+                if (!metamodel && 
                         !isForwardReferenceable() && 
                         !hasParameter) {
                     Scope container = 
@@ -603,45 +608,12 @@ public class SpecificationVisitor extends Visitor {
     }
     
     @Override
-    public void visit(Tree.CompilationUnit that) {
-    	for (Tree.Declaration st: that.getDeclarations()) {
-    	    if (st instanceof Tree.AttributeDeclaration) {
-    	        Tree.AttributeDeclaration ad =
-    	                (Tree.AttributeDeclaration) st;
-    	        withinAttributeInitializer = 
-    	                ad.getDeclarationModel()==declaration &&
-    	                !(ad.getSpecifierOrInitializerExpression()
-    	                        instanceof Tree.LazySpecifierExpression);
-    	    }
-    	    else {
-                withinAttributeInitializer = false;
-            }
-    		st.visit(this);
-    		withinAttributeInitializer = false;
-    	}
-    }
-
-    @Override
     public void visit(Tree.Body that) {
         if (hasParameter &&
                 that.getScope()==declaration.getContainer()) {
             hasParameter = false;
         }
-        for (Tree.Statement st: that.getStatements()) {
-            if (st instanceof Tree.AttributeDeclaration) {
-                Tree.AttributeDeclaration ad =
-                        (Tree.AttributeDeclaration) st;
-                withinAttributeInitializer =
-                        ad.getDeclarationModel()==declaration &&
-                        !(ad.getSpecifierOrInitializerExpression()
-                                instanceof Tree.LazySpecifierExpression);
-            }
-            else {
-                withinAttributeInitializer = false;
-            }
-            st.visit(this);
-    		withinAttributeInitializer = false;
-    	}
+        super.visit(that);
     }
 
     private static boolean isNonPartialConstructor(Scope scope) {
