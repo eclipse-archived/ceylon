@@ -703,7 +703,7 @@ shared interface InterfaceConstructors<T> {
             
         }
         shared MemberClassCallableConstructor<InterfaceConstructors<T>, NonSharedMember, []|[T?]> nonShared {
-            assert(is MemberClassCallableConstructor<InterfaceConstructors<T>, NonSharedMember, []|[T?]> r = `NonSharedMember`.getConstructor("nonSahredCtor"));
+            assert(is MemberClassCallableConstructor<InterfaceConstructors<T>, NonSharedMember, []|[T?]> r = `NonSharedMember`.getConstructor("nonSharedCtor"));
             return r;
         }
         shared CallableConstructorDeclaration nonSharedDecl => `new nonSharedCtor`;
