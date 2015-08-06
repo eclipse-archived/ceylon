@@ -1,9 +1,8 @@
 package com.redhat.ceylon.compiler.java.runtime.metamodel;
 
-import ceylon.language.Empty;
 import ceylon.language.Sequential;
 import ceylon.language.empty_;
-import ceylon.language.meta.declaration.Declaration;
+import ceylon.language.meta.declaration.ConstructorDeclaration;
 
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
@@ -38,14 +37,14 @@ public class FreeClassWithInitializer
     
     @TypeInfo("ceylon.language::Empty")
     @Override
-    public Empty constructorDeclarations() {
-        return empty_.get_();
+    public Sequential<? extends ConstructorDeclaration> constructorDeclarations() {
+        return (Sequential)empty_.get_();
     }
     
     @TypeInfo("ceylon.language::Empty")
     @Override
-    public <A extends java.lang.annotation.Annotation> Empty annotatedConstructorDeclarations(TypeDescriptor reified$Annotation) {
-        return empty_.get_();
+    public <A extends java.lang.annotation.Annotation> Sequential<? extends ConstructorDeclaration> annotatedConstructorDeclarations(TypeDescriptor reified$Annotation) {
+        return (Sequential)empty_.get_();
     }
 
 }

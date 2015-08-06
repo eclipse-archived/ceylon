@@ -348,7 +348,7 @@ public class FreeClass
     }
     
     @Ignore
-    private Sequential<? extends ceylon.language.meta.declaration.Declaration> filterConstructors(Predicate predicate) {
+    private Sequential<? extends ceylon.language.meta.declaration.ConstructorDeclaration> filterConstructors(Predicate predicate) {
         if (predicate == Predicates.false_()) {
             return (Sequential)empty_.get_();
         }
@@ -374,13 +374,13 @@ public class FreeClass
     
     @TypeInfo("ceylon.language::Sequential<ceylon.language.meta.declaration::ConstructorDeclaration>")
     @Override
-    public Sequential<? extends ceylon.language.meta.declaration.Declaration> constructorDeclarations() {
+    public Sequential<? extends ceylon.language.meta.declaration.ConstructorDeclaration> constructorDeclarations() {
         return filterConstructors(Predicates.TRUE);
     }
     
     @TypeInfo("ceylon.language::Sequential<ceylon.language.meta.declaration::ConstructorDeclaration>")
     @Override
-    public <A extends java.lang.annotation.Annotation> Sequential<? extends java.lang.Object> annotatedConstructorDeclarations(TypeDescriptor reified$Annotation) {
+    public <A extends java.lang.annotation.Annotation> Sequential<? extends ceylon.language.meta.declaration.ConstructorDeclaration> annotatedConstructorDeclarations(TypeDescriptor reified$Annotation) {
         return filterConstructors(Predicates.isDeclarationAnnotatedWith(reified$Annotation));
     }
 }
