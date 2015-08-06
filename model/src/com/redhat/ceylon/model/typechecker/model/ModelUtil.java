@@ -2127,6 +2127,12 @@ public class ModelUtil {
             }
             return true;
         }
+        else if (pt.isTypeAlias() && 
+                pt.getDeclaration().isAnonymous()) {
+            //for anonymous type constructors
+            return isCompletelyVisible(member,
+                    pt.getExtendedType());
+        }
         else {
             if (!isVisible(member, pt.getDeclaration())) {
                 return false;
