@@ -129,3 +129,34 @@ void withLocalCircular() {
 @error Integer circular = circular;
 @error Integer recursize => recursize;
 
+void testAssignmentInIfExpression(Boolean flag) {
+    variable String name;
+    value result = if (flag) then (name="A") else (name="B");
+    @error print(name); //unnecessary error!
+}
+void testBrokenAssignmentInIfExpression1(Boolean flag) {
+    variable String name;
+    value result = if (flag) then (name="A") else "B";
+    @error print(name);
+}
+void testBrokenAssignmentInIfExpression2(Boolean flag) {
+    variable String name;
+    value result = if (flag) then "A" else (name="B");
+    @error print(name);
+}
+
+void testAssignmentInSwitchExpression(Boolean flag) {
+    variable String name;
+    value result = switch (flag) case (true) (name="A") else (name="B");
+    @error print(name); //unnecessary error!
+}
+void testBrokenAssignmentInSwitchExpression1(Boolean flag) {
+    variable String name;
+    value result = switch (flag) case (true) (name="A") else "B";
+    @error print(name);
+}
+void testBrokenAssignmentInSwitchExpression2(Boolean flag) {
+    variable String name;
+    value result = switch (flag) case (true) "A" else (name="B");
+    @error print(name);
+}

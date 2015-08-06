@@ -316,6 +316,54 @@ public class SpecificationVisitor extends Visitor {
     }
     
     @Override
+    public void visit(Tree.IfExpression that) {
+        //TODO: reproduce the logic for IfStatement!
+        Tree.IfClause ifClause = that.getIfClause();
+        if (ifClause!=null) {
+            SpecificationState ss = 
+                    beginSpecificationScope();
+            ifClause.visit(this);
+            endSpecificationScope(ss);
+        }
+        Tree.ElseClause elseClause = that.getElseClause();
+        if (elseClause!=null) {
+            SpecificationState ss = 
+                    beginSpecificationScope();
+            elseClause.visit(this);
+            endSpecificationScope(ss);
+        }
+    }
+    
+    @Override
+    public void visit(Tree.SwitchExpression that) {
+      //TODO: reproduce the logic for SwitchStatement!
+        Tree.SwitchClause switchClause = 
+                that.getSwitchClause();
+        if (switchClause!=null) {
+            switchClause.visit(this);
+        }
+        Tree.SwitchCaseList switchCaseList = 
+                that.getSwitchCaseList();
+        if (switchCaseList!=null) {
+            for (Tree.CaseClause caseClause: 
+                    switchCaseList.getCaseClauses()) {
+                SpecificationState ss = 
+                        beginSpecificationScope();
+                caseClause.visit(this);
+                endSpecificationScope(ss);
+            }
+            Tree.ElseClause elseClause = 
+                    switchCaseList.getElseClause();
+            if (elseClause!=null) {
+                SpecificationState ss = 
+                        beginSpecificationScope();
+                elseClause.visit(this);
+                endSpecificationScope(ss);
+            }
+        }
+    }
+    
+    @Override
     public void visit(Tree.Comprehension that) {
         boolean oicoaf = inAnonFunctionOrComprehension;
         inAnonFunctionOrComprehension = declared&&inExtends;
