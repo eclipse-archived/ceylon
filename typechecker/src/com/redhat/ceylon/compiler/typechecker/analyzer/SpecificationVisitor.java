@@ -781,19 +781,29 @@ public class SpecificationVisitor extends Visitor {
             Scope scope = that.getScope();
             boolean constructor = 
                     scope instanceof Constructor;
+            boolean valueWithInitializer =
+                    scope instanceof Value &&
+                    !((Value) scope).isTransient();
             boolean c = false;
             if (!constructor) {
                 c = beginDisabledSpecificationScope();
             }
             boolean d = beginDeclarationScope();
-            SpecificationState as = 
-                    beginSpecificationScope();
+            SpecificationState as; 
+            if (!valueWithInitializer) {
+                as = beginSpecificationScope();
+            }
+            else {
+                as = null;
+            }
             super.visit(that);
             if (!constructor) {
                 endDisabledSpecificationScope(c);
             }
             endDeclarationScope(d);
-            endSpecificationScope(as);
+            if (!valueWithInitializer) {
+                endSpecificationScope(as);
+            }
             inLoop = l;
         }
         endsInBreakReturnThrow = oe;
