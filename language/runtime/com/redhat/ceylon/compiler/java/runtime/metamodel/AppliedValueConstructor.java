@@ -55,7 +55,7 @@ public class AppliedValueConstructor<Get,Set>
     protected final TypeDescriptor $reifiedGet;
     @Ignore
     protected final TypeDescriptor $reifiedSet;
-    protected final FreeValue declaration;
+    protected final FreeValueConstructor declaration;
     private MethodHandle getter;
     private MethodHandle setter;
     private final Object instance;

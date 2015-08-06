@@ -1,16 +1,23 @@
 package com.redhat.ceylon.compiler.java.runtime.metamodel;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.AnnotatedElement;
+import java.lang.reflect.Method;
 import java.util.Collections;
+import java.util.List;
 
+import ceylon.language.Anything;
 import ceylon.language.Sequential;
 import ceylon.language.meta.declaration.ClassDeclaration;
 import ceylon.language.meta.declaration.FunctionOrValueDeclaration;
 import ceylon.language.meta.declaration.Module;
 import ceylon.language.meta.declaration.OpenType;
 import ceylon.language.meta.declaration.Package;
+import ceylon.language.meta.declaration.SetterDeclaration;
 import ceylon.language.meta.declaration.ValueConstructorDeclaration;
 import ceylon.language.meta.declaration.ValueConstructorDeclaration$impl;
+import ceylon.language.meta.declaration.ValueDeclaration$impl;
+import ceylon.language.meta.declaration.ValueableDeclaration$impl;
 import ceylon.language.meta.model.MemberClassValueConstructor;
 import ceylon.language.meta.model.ValueConstructor;
 
@@ -24,8 +31,11 @@ import com.redhat.ceylon.compiler.java.metadata.Variance;
 import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.Nothing;
+import com.redhat.ceylon.model.loader.NamingBase;
 import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.Constructor;
+import com.redhat.ceylon.model.typechecker.model.Parameter;
+import com.redhat.ceylon.model.typechecker.model.Scope;
 import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.model.typechecker.model.Value;
@@ -33,7 +43,7 @@ import com.redhat.ceylon.model.typechecker.model.Value;
 @Ceylon(major = 8)
 @com.redhat.ceylon.compiler.java.metadata.Class
 public class FreeValueConstructor 
-        extends FreeValue
+        extends FreeFunctionOrValue
         implements ValueConstructorDeclaration, 
                 AnnotationBearing,
                 ReifiedType {
@@ -43,9 +53,15 @@ public class FreeValueConstructor
     
     final Constructor constructor;
     
+    private OpenType type;
+
+    private FreeSetter setter;
+
+    
     public FreeValueConstructor(Value value,
             com.redhat.ceylon.model.typechecker.model.Constructor constructor) {
         super(value);
+        this.type = Metamodel.getMetamodel(value.getType());
         this.constructor = constructor;
     }
 
@@ -211,4 +227,86 @@ public class FreeValueConstructor
         return (ceylon.language.meta.model.MemberClassValueConstructor)new AppliedValueMemberConstructor<Container,Get,Set>(
                 reifiedContainer, reifiedGet, TypeDescriptor.NothingType, this, typedReference, null);
     }
+    
+    
+    
+    
+    ////////////////////////////////////////
+    
+    
+    @Override
+    @Ignore
+    public ValueableDeclaration$impl $ceylon$language$meta$declaration$ValueableDeclaration$impl() {
+        return null;
+    }
+
+    //@Override
+    public boolean getVariable(){
+        return ((com.redhat.ceylon.model.typechecker.model.TypedDeclaration) declaration).isVariable();
+    }
+    
+    
+    //@Override
+    public boolean getObjectValue(){
+        return type instanceof ceylon.language.meta.declaration.OpenClassType
+                && ((ceylon.language.meta.declaration.OpenClassType) type).getDeclaration().getAnonymous();
+    }
+    
+    @TypeInfo("ceylon.language.meta.declaration::ClassDeclaration|ceylon.language::Null")
+    //@Override
+    public ceylon.language.meta.declaration.ClassDeclaration getObjectClass(){
+        if(type instanceof ceylon.language.meta.declaration.OpenClassType){
+            ceylon.language.meta.declaration.OpenClassType decl = (ceylon.language.meta.declaration.OpenClassType)type;
+            if(decl.getDeclaration().getAnonymous())
+                return decl.getDeclaration();
+        }
+        return null;
+    }
+
+    
+    @TypeInfo("ceylon.language::Anything")
+    @Override
+    public Object get(){
+        return apply(Anything.$TypeDescriptor$, TypeDescriptor.NothingType).get();
+    }
+
+    @TypeInfo("ceylon.language::Anything")
+    @Override
+    public Object memberGet(@Name("container") @TypeInfo("ceylon.language::Object") Object container){
+        ceylon.language.meta.model.Type<?> containerType = Metamodel.getAppliedMetamodel(Metamodel.getTypeDescriptor(container));
+        return memberApply(TypeDescriptor.NothingType, Anything.$TypeDescriptor$, TypeDescriptor.NothingType, containerType).bind(container).get();
+    }
+
+   
+    @TypeInfo("ceylon.language::Anything")
+    //@Override
+    public Object set(@TypeInfo("ceylon.language::Anything") @Name("newValue") Object newValue){
+        return apply(Anything.$TypeDescriptor$, TypeDescriptor.NothingType).$setIfAssignable(newValue);
+    }
+
+    @TypeInfo("ceylon.language::Anything")
+    //@Override
+    public Object memberSet(@Name("container") @TypeInfo("ceylon.language::Object") Object container,
+            @TypeInfo("ceylon.language::Anything") @Name("newValue") Object newValue){
+        ceylon.language.meta.model.Type<?> containerType = Metamodel.getAppliedMetamodel(Metamodel.getTypeDescriptor(container));
+        return memberApply(TypeDescriptor.NothingType, Anything.$TypeDescriptor$, TypeDescriptor.NothingType, containerType).bind(container).$setIfAssignable(newValue);
+    }
+    
+    @TypeInfo("ceylon.language.meta.declaration::SetterDeclaration|ceylon.language::Null")
+    //@Override
+    public SetterDeclaration getSetter() {
+        if(setter == null && ((com.redhat.ceylon.model.typechecker.model.Value)declaration).getSetter() != null){
+            synchronized(Metamodel.getLock()){
+                if(setter == null){
+                    // must be deferred because getter/setter refer to one another
+                    com.redhat.ceylon.model.typechecker.model.Setter setterModel = ((com.redhat.ceylon.model.typechecker.model.Value)declaration).getSetter();
+                    if(setterModel != null)
+                        this.setter = (FreeSetter) Metamodel.getOrCreateMetamodel(setterModel);
+                }
+            }
+        }
+        return setter;
+    }
+    
+    
 }

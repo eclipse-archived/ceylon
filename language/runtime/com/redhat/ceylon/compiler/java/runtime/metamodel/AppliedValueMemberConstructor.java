@@ -4,6 +4,7 @@ import ceylon.language.Sequential;
 import ceylon.language.empty_;
 import ceylon.language.meta.declaration.ValueConstructorDeclaration;
 import ceylon.language.meta.declaration.ValueDeclaration;
+import ceylon.language.meta.model.Member;
 import ceylon.language.meta.model.MemberClass;
 import ceylon.language.meta.model.MemberClassValueConstructor;
 import ceylon.language.meta.model.Value;
@@ -36,7 +37,7 @@ public class AppliedValueMemberConstructor<Container, Get, Set>
 
     final AppliedMemberClass<Container, Get, ?> clazz;
     
-    protected final FreeValue declaration;
+    protected final FreeValueConstructor declaration;
     protected final TypedReference typedReference;
     private final ceylon.language.meta.model.Type<? extends Get> closedType;
     @Ignore
@@ -84,7 +85,8 @@ public class AppliedValueMemberConstructor<Container, Get, Set>
     
     @Override
     protected ValueConstructor<? extends Get, ? super Set> bindTo(Object instance) {
-        return new AppliedValue<Get,Set>($reifiedGet, $reifiedSet, declaration, typedReference, getContainer(), instance);
+        return new AppliedValueConstructor<Get,Set>(
+                $reifiedGet, $reifiedSet, declaration, typedReference, (AppliedClass)clazz.getContainer(), instance);
     }
 
     @Ignore
@@ -175,7 +177,7 @@ public class AppliedValueMemberConstructor<Container, Get, Set>
             return false;
         ceylon.language.meta.model.MemberClassValueConstructor<?,?,?> other = (ceylon.language.meta.model.MemberClassValueConstructor<?,?,?>) obj;
         return getDeclaration().equals(other.getDeclaration())
-                && getDeclaringType().equals(other.getDeclaringType());
+                && getDeclaringType().equals(((Member<?,?>)other).getDeclaringType());
     }
 
     @Override

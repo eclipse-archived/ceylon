@@ -1,9 +1,13 @@
 package com.redhat.ceylon.compiler.java.runtime.metamodel;
 
 import java.lang.reflect.AnnotatedElement;
+import java.util.List;
 
+import ceylon.language.Anything;
+import ceylon.language.Iterator;
 import ceylon.language.Sequential;
 import ceylon.language.empty_;
+import ceylon.language.finished_;
 import ceylon.language.meta.declaration.CallableConstructorDeclaration;
 import ceylon.language.meta.declaration.CallableConstructorDeclaration$impl;
 import ceylon.language.meta.declaration.ClassDeclaration;
@@ -19,31 +23,51 @@ import ceylon.language.meta.model.Method;
 import ceylon.language.meta.model.Type;
 import ceylon.language.meta.model.TypeApplicationException;
 
+import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
+import com.redhat.ceylon.compiler.java.metadata.Defaulted;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
+import com.redhat.ceylon.compiler.java.metadata.Name;
+import com.redhat.ceylon.compiler.java.metadata.Sequenced;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
+import com.redhat.ceylon.compiler.java.metadata.Variance;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.Nothing;
 import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.Constructor;
+import com.redhat.ceylon.model.typechecker.model.Functional;
+import com.redhat.ceylon.model.typechecker.model.Generic;
+import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
+import com.redhat.ceylon.model.typechecker.model.TypedReference;
 
 @Ceylon(major = 8)
 @com.redhat.ceylon.compiler.java.metadata.Class
 public class FreeCallableConstructor
-        extends FreeFunction
+        extends FreeFunctionOrValue
         implements CallableConstructorDeclaration, 
-                AnnotationBearing {
-
+            ceylon.language.meta.declaration.FunctionalDeclaration, 
+            AnnotationBearing {
+    
+    private OpenType type;
+    
     @Ignore
     public static final TypeDescriptor $TypeDescriptor$ = TypeDescriptor.klass(FreeCallableConstructor.class);
     
     final Constructor constructor;
     private Sequential<FunctionOrValueDeclaration> parameterList;
+    private Sequential<? extends ceylon.language.meta.declaration.TypeParameter> typeParameters;
     
     public FreeCallableConstructor(com.redhat.ceylon.model.typechecker.model.Functional function, Constructor constructor) {
-        super(function);
+        super((com.redhat.ceylon.model.typechecker.model.Declaration)function);
+        List<com.redhat.ceylon.model.typechecker.model.TypeParameter> typeParameters = ((Generic) declaration).getTypeParameters();
+        ceylon.language.meta.declaration.TypeParameter[] typeParametersArray = new ceylon.language.meta.declaration.TypeParameter[typeParameters.size()];
+        int i=0;
+        for(com.redhat.ceylon.model.typechecker.model.TypeParameter tp : typeParameters){
+            typeParametersArray[i++] = new com.redhat.ceylon.compiler.java.runtime.metamodel.FreeTypeParameter(tp);
+        }
+        this.typeParameters = Util.sequentialWrapper(ceylon.language.meta.declaration.TypeParameter.$TypeDescriptor$, typeParametersArray);
         this.constructor = constructor;
         this.parameterList = FunctionalUtil.getParameters(constructor);
     }
@@ -180,7 +204,7 @@ public class FreeCallableConstructor
             throw new TypeApplicationException("Constructors do not accept type arguments");
         }
         // TODO Auto-generated method stub
-        super.invoke(typeArguments, arguments);
+        apply(Anything.$TypeDescriptor$, TypeDescriptor.NothingType, typeArguments).apply(arguments);
         return null;
     }
     
@@ -246,5 +270,58 @@ public class FreeCallableConstructor
     public boolean getDefaultConstructor() {
         return getName().isEmpty();
     }
+    
+    /////////////////////////////////////////
+   
+
+    @Override
+    @TypeInfo("ceylon.language::Sequential<ceylon.language.meta.declaration::TypeParameter>")
+    public Sequential<? extends ceylon.language.meta.declaration.TypeParameter> getTypeParameterDeclarations() {
+        return typeParameters;
+    }
+
+    @Override
+    @TypeInfo("ceylon.language.meta.declaration::TypeParameter|ceylon.language::Null")
+    public ceylon.language.meta.declaration.TypeParameter getTypeParameterDeclaration(@Name("name") String name) {
+        Iterator<? extends ceylon.language.meta.declaration.TypeParameter> iterator = typeParameters.iterator();
+        Object it;
+        while((it = iterator.next()) != finished_.get_()){
+            ceylon.language.meta.declaration.TypeParameter tp = (ceylon.language.meta.declaration.TypeParameter) it;
+            if(tp.getName().equals(name))
+                return tp;
+        }
+        return null;
+    }
+    
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+    @Ignore
+    @Override
+    public ceylon.language.Sequential<? extends ceylon.language.meta.model.Type<?>> invoke$typeArguments(){
+        return (ceylon.language.Sequential<? extends ceylon.language.meta.model.Type<?>>)(Sequential)empty_.get_();
+    }
+
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+    @Ignore
+    @Override
+    public java.lang.Object invoke(){
+        return invoke((ceylon.language.Sequential<? extends ceylon.language.meta.model.Type<?>>)(Sequential)empty_.get_());
+    }
+
+
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+    @Ignore
+    @Override
+    public ceylon.language.Sequential<? extends ceylon.language.meta.model.Type<?>> 
+        memberInvoke$typeArguments(java.lang.Object container){
+        return (ceylon.language.Sequential<? extends ceylon.language.meta.model.Type<?>>)(Sequential)empty_.get_();
+    }
+
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+    @Ignore
+    @Override
+    public java.lang.Object memberInvoke(java.lang.Object container){
+        return memberInvoke(container, (ceylon.language.Sequential<? extends ceylon.language.meta.model.Type<?>>)(Sequential)empty_.get_());
+    }
+
 
 }
