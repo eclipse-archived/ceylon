@@ -2487,15 +2487,6 @@ public class ModelUtil {
         return false;
     }
     
-    public static boolean isInNativeHeaderContainer(Declaration dec) {
-        Scope container = dec.getContainer();
-        if (container instanceof Declaration) {
-            Declaration d = (Declaration) container;
-            return d.isNativeHeader();
-        }
-        return false;
-    }
-    
     public static Declaration getNativeDeclaration(
             Declaration decl, Backend backend) {
         return getNativeDeclaration(decl, 
