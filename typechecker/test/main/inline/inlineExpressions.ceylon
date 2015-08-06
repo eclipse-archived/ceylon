@@ -118,7 +118,7 @@ void scopeContainingLets() {
     value x = let(y=1) y;
     value z = let(y=1) y;
     value w = let(y=1, @error y=3) y;
-    value u = let(@error u=1) u;
+    value u = let(u=1) u;
     @error value v = let() 42;
 }
 

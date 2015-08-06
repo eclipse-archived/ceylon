@@ -417,8 +417,7 @@ void testHardCase(J4 i) {
     
     J5 ni = nothing;
     
-    //this is an error after #595
-    @error switch(ni)
+    switch(ni)
     case (is N|J2|J3) {}
 }
 
