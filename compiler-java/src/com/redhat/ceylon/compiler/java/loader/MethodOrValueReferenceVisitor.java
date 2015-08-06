@@ -93,7 +93,12 @@ public class MethodOrValueReferenceVisitor extends Visitor {
                     // a reference from a default argument 
                     // expression of the same parameter 
                     // list does not capture a parameter
-                    boolean sameScope = d.getContainer().equals(that.getScope());
+                    Scope s = that.getScope();
+                    boolean sameScope = d.getContainer().equals(s)
+                            || (s instanceof Declaration
+                                    && (Decl.isParameter((Declaration)s) || (s instanceof Value && !((Value)s).isTransient()))
+                                    && d.getContainer().equals(s.getScope()))
+                                    ;
                     if (!sameScope || methodSpecifier || inLazySpecifierExpression) {
                         ((FunctionOrValue)d).setCaptured(true);
                     }
