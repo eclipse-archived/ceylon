@@ -16,9 +16,9 @@ public abstract class FreeFunctionOrValue
     
     protected Parameter parameter;
 
-    public FreeFunctionOrValue(com.redhat.ceylon.model.typechecker.model.TypedDeclaration declaration) {
+    public FreeFunctionOrValue(com.redhat.ceylon.model.typechecker.model.Declaration declaration) {
         super(declaration);
-        this.parameter = Metamodel.getParameterFromTypedDeclaration(declaration);
+        this.parameter = declaration instanceof com.redhat.ceylon.model.typechecker.model.TypedDeclaration ? Metamodel.getParameterFromTypedDeclaration((com.redhat.ceylon.model.typechecker.model.TypedDeclaration)declaration) : null;
     }
     
     @Override

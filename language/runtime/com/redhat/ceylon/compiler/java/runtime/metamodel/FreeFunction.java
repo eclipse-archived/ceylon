@@ -43,8 +43,8 @@ public class FreeFunction
 
     private Sequential<? extends ceylon.language.meta.declaration.FunctionOrValueDeclaration> parameterList;
 
-    public FreeFunction(com.redhat.ceylon.model.typechecker.model.TypedDeclaration declaration) {
-        super(declaration);
+    public FreeFunction(com.redhat.ceylon.model.typechecker.model.Functional declaration) {
+        super((com.redhat.ceylon.model.typechecker.model.Declaration)declaration);
 
         // FIXME: make lazy
         // FIXME: share with ClassOrInterface

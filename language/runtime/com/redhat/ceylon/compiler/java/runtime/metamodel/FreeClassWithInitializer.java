@@ -1,7 +1,13 @@
 package com.redhat.ceylon.compiler.java.runtime.metamodel;
 
+import ceylon.language.Empty;
+import ceylon.language.Sequential;
+import ceylon.language.empty_;
+import ceylon.language.meta.declaration.Declaration;
+
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
+import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 
 @Ceylon(major = 8)
@@ -28,6 +34,18 @@ public class FreeClassWithInitializer
     @Override
     public TypeDescriptor $getType$() {
         return $TypeDescriptor$;
+    }
+    
+    @TypeInfo("ceylon.language::Empty")
+    @Override
+    public Empty constructorDeclarations() {
+        return empty_.get_();
+    }
+    
+    @TypeInfo("ceylon.language::Empty")
+    @Override
+    public <A extends java.lang.annotation.Annotation> Empty annotatedConstructorDeclarations(TypeDescriptor reified$Annotation) {
+        return empty_.get_();
     }
 
 }
