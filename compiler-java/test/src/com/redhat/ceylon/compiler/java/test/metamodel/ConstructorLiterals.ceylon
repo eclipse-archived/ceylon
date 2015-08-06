@@ -173,7 +173,7 @@ void defaultCtorModelAssertions(Class<ConstructorLiterals<String>,[String]> defa
     assert("hello" == defaultCtorModel("hello").t);
     assert("hello" == defaultCtorModel.apply("hello").t);
     assert("hello" == defaultCtorModel.namedApply{"t"->"hello"}.t);
-    assert(`new ConstructorLiterals`.apply<ConstructorLiterals<String>,[String]>(`String`).container == `ConstructorLiterals<String>`);
+    assert(! `new ConstructorLiterals`.apply<ConstructorLiterals<String>,[String]>(`String`).container exists);
 }
 
 void memberDefaultCtorModelAssertions(MemberClass<ConstructorLiterals<String>, ConstructorLiterals<String>.Member, [String]> defaultMemberCtorModel) {
