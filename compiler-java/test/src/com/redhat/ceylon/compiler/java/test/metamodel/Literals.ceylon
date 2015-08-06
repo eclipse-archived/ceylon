@@ -93,13 +93,13 @@ void literals<T>(){
     MemberClass<LitParameterisedClass<Integer>,LitParameterisedClass<Integer>.Member<String>,[String]> parameterisedMemberClassType = `LitParameterisedClass<Integer>.Member<String>`;
     
     // constructors
-    assert(is Function<LitClassWithConstructors, [Integer]> ctor = `LitClassWithConstructors`.getConstructor(""));
+    assert(is CallableConstructor<LitClassWithConstructors, [Integer]> ctor = `LitClassWithConstructors`.getConstructor(""));
     ConstructorDeclaration ctorDecl = `new LitClassWithConstructors`;
-    Function<LitClassWithConstructors, [Integer]> ctorOther = `LitClassWithConstructors.other`; 
+    CallableConstructor<LitClassWithConstructors, [Integer]> ctorOther = `LitClassWithConstructors.other`; 
     ConstructorDeclaration ctorOtherDecl = `new LitClassWithConstructors.other`;
-    assert(is Function<LitParameterisedClassWithConstructors<String>, [String]> ctor2 = `LitParameterisedClassWithConstructors<String>`.getConstructor(""));
+    assert(is CallableConstructor<LitParameterisedClassWithConstructors<String>, [String]> ctor2 = `LitParameterisedClassWithConstructors<String>`.getConstructor(""));
     ConstructorDeclaration ctorDecl2 = `new LitParameterisedClassWithConstructors`;
-    Function<LitParameterisedClassWithConstructors<String>, [String]> ctorOther2 = `LitParameterisedClassWithConstructors<String>.other`;
+    CallableConstructor<LitParameterisedClassWithConstructors<String>, [String]> ctorOther2 = `LitParameterisedClassWithConstructors<String>.other`;
     ConstructorDeclaration ctorDeclOther2 = `new LitParameterisedClassWithConstructors.other`;
     
     // Interfaces

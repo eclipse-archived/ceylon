@@ -96,7 +96,7 @@ void valueCtorDeclAssertions(ValueConstructorDeclaration decl) {
     assert(decl.shared);
     assert(!decl.formal);
     assert(!decl.default);
-    assert(!decl.variable);
+    
     assert(is Identifiable got = decl.get(),
         got === ConstructorLiteralsSub.val);
     // TODO check exception type: decl.memberGet("");
@@ -107,7 +107,7 @@ void memberValueCtorDeclAssertions(ValueConstructorDeclaration decl) {
     assert(decl.shared);
     assert(!decl.formal);
     assert(!decl.default);
-    assert(!decl.variable);
+    
     // TODO assert(is Identifiable got = decl.get(),
     //    got === ConstructorLiteralsSub.val.Member2.val2);
 }
@@ -118,13 +118,13 @@ void callableCtorDeclAssertions(CallableConstructorDeclaration decl) {
     assert(!decl.defaultConstructor);
     // TODO decl.invoke([`String`], "fdvdfv").;
     assert(!decl.annotation);
-    assert(!decl.defaulted);
+    
     assert(is ValueDeclaration pd = decl.getParameterDeclaration("t"));
     assert("value com.redhat.ceylon.compiler.java.test.metamodel::ConstructorLiterals.other.t" == pd.string);
     assert(pd.parameter);
     // TODO assert(exists tp = decl.getTypeParameterDeclaration("T"));
     // TODO assert(`class ConstructorLiterals` == tp.container);
-    assert(!decl.variadic);
+    
     assert(!decl.actual);
     assert(!decl.abstract);
     assert(!decl.default);
@@ -137,7 +137,7 @@ void memberCallableCtorDeclAssertions(CallableConstructorDeclaration decl) {
 
 void valueCtorModelAssertions(ValueConstructor<ConstructorLiteralsSub> model) {
     assert("com.redhat.ceylon.compiler.java.test.metamodel::ConstructorLiteralsSub.val" == model.string);
-    assert(model == `new ConstructorLiteralsSub.val`.constructorApply<ConstructorLiteralsSub>());
+    assert(model == `new ConstructorLiteralsSub.val`.apply<ConstructorLiteralsSub,Nothing>());
 }
 void memberValueCtorModelAssertions(MemberClassValueConstructor<ConstructorLiteralsSub, ConstructorLiteralsSub.Member2> model) {
     assert("com.redhat.ceylon.compiler.java.test.metamodel::ConstructorLiteralsSub.Member2.val2" == model.string);
