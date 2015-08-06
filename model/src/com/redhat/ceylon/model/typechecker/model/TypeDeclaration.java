@@ -1,5 +1,6 @@
 package com.redhat.ceylon.model.typechecker.model;
 
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getNativeHeader;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getSignature;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getTypeArgumentMap;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.hasMatchingSignature;
@@ -560,14 +561,28 @@ public abstract class TypeDeclaration extends Declaration
                     return supertype;
                 }
             }
-            return dec;
         }
         else {
-            //now look for inherited shared declarations
-            return getSupertypeDeclaration(name, 
-                    signature, variadic)
-                    .getMember();
+            // If we couldn't find the declaration in the current
+            // scope and the scope is a native implementation we
+            // will try again with its header
+            if (isNative() &&
+                    !isNativeHeader()) {
+                Declaration hdr = getNativeHeader(this);
+                if (hdr != null) {
+                    dec = hdr.getDirectMember(name,
+                            signature, variadic);
+                }
+            }
+
+            if (dec == null) {
+                //now look for inherited shared declarations
+                dec = getSupertypeDeclaration(name,
+                        signature, variadic)
+                        .getMember();
+            }
         }
+        return dec;
     }
 
     /**
