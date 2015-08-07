@@ -28,31 +28,48 @@ void nativeMethodJs() {}
 
 void test1() {
     value x = nativeMethodJvm();
+    void test() {
+        value x = nativeMethodJvm();
+    }
 }
 
 void test2() {
     value x = nativeMethodJs();
+    void test() {
+        value x = nativeMethodJs();
+    }
 }
 
 void test3() {
     value x = testMethod();
     value y = TestClass();
+    void test() {
+        value x = testMethod();
+        value y = TestClass();
+    }
 }
 
 void test4() {
     value x = foo();
     value y = Bar();
+    void test() {
+        value x = foo();
+        value y = Bar();
+    }
 }
 
 native("js")
 void test5() {
     value x = nativeMethodJvm();
+    void test() {
+        value x = nativeMethodJvm();
+    }
 }
 
 native("jvm")
 void test6() {
     value x = nativeMethodJs();
-}
-
-shared void test() {
+    void test() {
+        value x = nativeMethodJs();
+    }
 }
