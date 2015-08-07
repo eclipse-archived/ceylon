@@ -7,9 +7,7 @@ public class Versions {
     
     /****************************************************************************************************
     * WARNING Don't forget to update:
-    * - ceylon.language/runtime-js/language/releaseVersion.js
-    * - ceylon.language/runtime-js/language/version.js
-    * - ceylon.language/runtime-js/language/versionName.js
+    * - ceylon.language/src/ceylon/language.ceylon
     * - ceylon.language/test/process.ceylon (versions, name, binary version)
     * - ceylon-dist/build.properties (versions)
     * - ceylon-dist/osgi/module.properties (versions)
