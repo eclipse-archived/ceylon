@@ -34,7 +34,6 @@ import com.redhat.ceylon.compiler.java.codegen.Naming.SyntheticName;
 import com.redhat.ceylon.compiler.java.codegen.recovery.Drop;
 import com.redhat.ceylon.compiler.java.codegen.recovery.HasErrorException;
 import com.redhat.ceylon.compiler.java.codegen.recovery.TransformationPlan;
-import com.redhat.ceylon.compiler.typechecker.tree.NaturalVisitor;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Return;
@@ -60,7 +59,7 @@ import com.sun.tools.javac.util.List;
 import com.sun.tools.javac.util.ListBuffer;
 import com.sun.tools.javac.util.Name;
 
-public class CeylonVisitor extends Visitor implements NaturalVisitor {
+public class CeylonVisitor extends Visitor {
     protected final CeylonTransformer gen;
     private final ToplevelAttributesDefinitionBuilder topattrBuilder;
     ListBuffer<JCTree> defs;

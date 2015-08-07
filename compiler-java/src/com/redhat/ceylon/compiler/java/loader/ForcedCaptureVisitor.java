@@ -21,10 +21,8 @@
 package com.redhat.ceylon.compiler.java.loader;
 
 import com.redhat.ceylon.compiler.java.codegen.Decl;
-import com.redhat.ceylon.compiler.typechecker.tree.NaturalVisitor;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Annotation;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.CompilerAnnotation;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
 import com.redhat.ceylon.model.typechecker.model.Module;
@@ -37,7 +35,7 @@ import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
  *
  * @author Stéphane Épardaud <stef@epardaud.fr>
  */
-public class ForcedCaptureVisitor extends Visitor implements NaturalVisitor{
+public class ForcedCaptureVisitor extends Visitor {
     
     public void visit(Tree.TypedDeclaration that) {
         if(isForcedCapture(that) && that.getDeclarationModel() instanceof FunctionOrValue)

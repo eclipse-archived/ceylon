@@ -32,7 +32,6 @@ import java.util.Map;
 
 import com.redhat.ceylon.common.JVMModuleUtil;
 import com.redhat.ceylon.compiler.java.util.Util;
-import com.redhat.ceylon.compiler.typechecker.tree.NaturalVisitor;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.model.loader.JvmBackendUtil;
@@ -238,7 +237,7 @@ public class Naming extends NamingBase implements LocalId {
      * determining the name munging necessary for "hoisting" interface declarations 
      * to top level.
      */
-    private class LocalIdVisitor extends Visitor implements NaturalVisitor {
+    private class LocalIdVisitor extends Visitor {
         
         private int localId = 0;
         
