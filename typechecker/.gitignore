@@ -22,3 +22,6 @@ Ceylon Language Specification*.pdf
 
 # Misc
 test/temp
+/Ceylon.tokens
+/CeylonLexer.java
+/CeylonParser.java

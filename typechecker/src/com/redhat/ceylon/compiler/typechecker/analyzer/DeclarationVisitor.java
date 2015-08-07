@@ -31,7 +31,6 @@ import java.util.Map;
 
 import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.compiler.typechecker.context.TypecheckerUnit;
-import com.redhat.ceylon.compiler.typechecker.tree.NaturalVisitor;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ObjectDefinition;
@@ -82,7 +81,7 @@ import com.redhat.ceylon.model.typechecker.model.Value;
  * @author Gavin King
  *
  */
-public abstract class DeclarationVisitor extends Visitor implements NaturalVisitor {
+public abstract class DeclarationVisitor extends Visitor {
     
     private static final Class[] NO_CLASSES = new Class[0];
     private static final FunctionOrValue[] NO_FUNCTIONS_OR_VALUES = new FunctionOrValue[0];

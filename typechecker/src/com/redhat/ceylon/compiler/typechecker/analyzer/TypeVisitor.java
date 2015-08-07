@@ -995,10 +995,6 @@ public class TypeVisitor extends Visitor {
         TypeAlias ta = that.getDeclarationModel();
         ta.setExtendedType(null);
         super.visit(that);
-        Tree.SatisfiedTypes sts = that.getSatisfiedTypes();
-        if (sts!=null) {
-            sts.addError("type alias may not satisfy a type");
-        }
         TypeSpecifier typeSpecifier = 
                 that.getTypeSpecifier();
         if (typeSpecifier==null) {

@@ -80,13 +80,10 @@
 "A class, interface, or type parameter declaration."
 ^(abstract TYPE_DECLARATION:DECLARATION
     TYPE_PARAMETER_LIST?
-    CASE_TYPES?
-    SATISFIED_TYPES?
     abstract TypeDeclaration declarationModel;)
 
 "A class or interface declaration."
 ^(abstract CLASS_OR_INTERFACE:TYPE_DECLARATION
-    TYPE_CONSTRAINT_LIST?
     abstract ClassOrInterface declarationModel;)
 
 "The constraints for a certain type parameter."
@@ -112,6 +109,8 @@
 
 "A set of type constraints on a certain type parameter."
 ^(TYPE_CONSTRAINT:TYPE_DECLARATION
+    CASE_TYPES?
+    SATISFIED_TYPES?
     ABSTRACTED_TYPE?
     TypeParameter declarationModel;)
 
@@ -130,7 +129,10 @@
 "A class declaration or alias."
 ^(ANY_CLASS:CLASS_OR_INTERFACE
     PARAMETER_LIST?
+    CASE_TYPES?
     EXTENDED_TYPE?
+    SATISFIED_TYPES?
+    TYPE_CONSTRAINT_LIST?
     Class declarationModel;)
 
 "A class declaration."
@@ -162,6 +164,9 @@
 
 "An interface declaration or alias."
 ^(ANY_INTERFACE:CLASS_OR_INTERFACE
+    CASE_TYPES?
+    SATISFIED_TYPES?
+    TYPE_CONSTRAINT_LIST?
     Interface declarationModel;)
 
 "An interface declaration."

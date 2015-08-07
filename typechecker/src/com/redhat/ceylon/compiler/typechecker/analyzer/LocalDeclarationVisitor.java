@@ -22,7 +22,6 @@ package com.redhat.ceylon.compiler.typechecker.analyzer;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.redhat.ceylon.compiler.typechecker.tree.NaturalVisitor;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.model.typechecker.model.Class;
@@ -52,7 +51,7 @@ import com.redhat.ceylon.model.typechecker.model.Value;
  *
  * @author Stéphane Épardaud <stef@epardaud.fr>
  */
-public class LocalDeclarationVisitor extends Visitor implements NaturalVisitor {
+public class LocalDeclarationVisitor extends Visitor {
 
     private Map<String,Integer> localNames;
     private String prefix;

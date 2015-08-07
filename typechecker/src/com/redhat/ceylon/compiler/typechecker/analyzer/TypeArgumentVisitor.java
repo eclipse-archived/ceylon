@@ -80,7 +80,21 @@ public class TypeArgumentVisitor extends Visitor {
         }
     }
     
-    @Override public void visit(Tree.ClassOrInterface that) {
+    @Override public void visit(Tree.AnyClass that) {
+        super.visit(that);
+        if (that.getExtendedType()!=null) {
+            check(that.getExtendedType().getType(), false, 
+                    that.getDeclarationModel());
+        }
+        if (that.getSatisfiedTypes()!=null) {
+            for (Tree.Type type: 
+                    that.getSatisfiedTypes().getTypes()) {
+                check(type, false, that.getDeclarationModel());
+            }
+        }
+    }
+    
+    @Override public void visit(Tree.AnyInterface that) {
         super.visit(that);
         if (that.getSatisfiedTypes()!=null) {
             for (Tree.Type type: 
@@ -128,14 +142,6 @@ public class TypeArgumentVisitor extends Visitor {
             check(that.getType().getTypeModel(), false, 
                     that.getDeclarationModel(),
                     that.getExpression());
-        }
-    }
-    
-    @Override public void visit(Tree.AnyClass that) {
-        super.visit(that);
-        if (that.getExtendedType()!=null) {
-            check(that.getExtendedType().getType(), false, 
-                    that.getDeclarationModel());
         }
     }
     
