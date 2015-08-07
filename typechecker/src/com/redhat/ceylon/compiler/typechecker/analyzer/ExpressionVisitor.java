@@ -9052,7 +9052,8 @@ public class ExpressionVisitor extends Visitor {
                 Declaration tmp = getNativeHeader(dec);
                 if (tmp != dec) {
                     hdr = tmp;
-                    if (hdr != null && !backends.contains(dec.getNativeBackend())) {
+                    if (hdr != null && (backends.isEmpty()
+                            || !backends.contains(dec.getNativeBackend()))) {
                         impl = getNativeDeclaration(hdr, backends);
                     }
                 }
