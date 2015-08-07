@@ -1,22 +1,23 @@
+
 "Contains information about the Ceylon language version."
 see (`value process`, `value runtime`, `value system`,
      `value operatingSystem`)
 shared native object language {
     
     "The Ceylon language version."
-    shared native String version;
+    shared String version => "1.1.1";
     
     "The Ceylon language major version."
-    shared native Integer majorVersion;
+    shared Integer majorVersion => 1;
     
     "The Ceylon language minor version."
-    shared native Integer minorVersion;
+    shared Integer minorVersion => 1;
     
     "The Ceylon language release version."
-    shared native Integer releaseVersion;
+    shared Integer releaseVersion => 1;
     
     "The Ceylon language release name."
-    shared native String versionName;
+    shared String versionName => "Pif Gadget";
     
     "The major version of the code generated for the 
      underlying runtime."
@@ -26,6 +27,22 @@ shared native object language {
      underlying runtime."
     shared native Integer minorVersionBinary;
     
-    shared native actual String string;
+    shared actual String string => "language";
+    
+}
+
+shared native("jvm") object language {
+    
+    shared native("jvm") Integer majorVersionBinary => 8;
+    
+    shared native("jvm") Integer minorVersionBinary => 0;
+    
+}
+
+shared native("js") object language {
+    
+    shared native("js") Integer majorVersionBinary => 8;
+    
+    shared native("js") Integer minorVersionBinary => 0;
     
 }
