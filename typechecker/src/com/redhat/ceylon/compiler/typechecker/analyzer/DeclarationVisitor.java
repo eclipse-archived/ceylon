@@ -17,7 +17,6 @@ import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getNativeHeade
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getTypeArgumentMap;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.intersectionOfSupertypes;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isConstructor;
-import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isInNativeContainer;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isNativeHeader;
 import static java.lang.Integer.parseInt;
 import static java.util.Collections.emptyList;
@@ -28,6 +27,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.compiler.typechecker.context.TypecheckerUnit;
@@ -211,29 +211,23 @@ public abstract class DeclarationVisitor extends Visitor implements NaturalVisit
                         unit.getPackage()
                             .getModule()
                             .getNativeBackend();
+                Set<String> backends = model.getScope().getScopedBackends();
                 if (!isHeader &&
-                        moduleBackend != null && 
+                        moduleBackend != null &&
                         !backend.equals(moduleBackend)) {
-                    that.addError("native backend name on declaration conflicts with module descriptor: '\"" + 
-                            backend + "\"' is not '\"" + 
-                            moduleBackend + "\"' for '" + 
+                    that.addError("native backend name on declaration conflicts with module descriptor: '\"" +
+                            backend + "\"' is not '\"" +
+                            moduleBackend + "\"' for '" +
+                            name + "'");
+                } else if (!isHeader &&
+                        backends != null &&
+                        !backends.contains(backend)) {
+                    that.addError("native backend name on declaration conflicts with its scope: '" +
                             name + "'");
                 }
                 model.setNativeBackend(backend);
                 Declaration member = getNativeHeader(model);
-                if (model.isMember() && 
-                        isInNativeContainer(model)) {
-                    Declaration container = 
-                            (Declaration) 
-                                model.getContainer();
-                    String cbackend = 
-                            container.getNativeBackend();
-                    if (!cbackend.equals(backend)) {
-                        that.addError("native backend name on member conflicts with its container: '" + 
-                                name + "' of '" + 
-                                container.getName() + "'");
-                    }
-                }
+                
                 if (member == null || 
                         (member.isNative() && 
                          !member.isNativeHeader())) {
