@@ -2499,7 +2499,8 @@ public class ModelUtil {
         if (dec.isNative() && 
                 backends != null) {
             Declaration abstraction = null;
-            if (backends.contains(
+            if (backends.isEmpty() && !dec.isNativeHeader()
+                    || backends.contains(
                             dec.getNativeBackend())) {
                 abstraction = dec;
             }
@@ -2508,7 +2509,8 @@ public class ModelUtil {
                         dec.getOverloads();
                 if (overloads != null) {
                     for (Declaration d: overloads) {
-                        if (backends.contains(
+                        if (backends.isEmpty() && !d.isNativeHeader()
+                                || backends.contains(
                                         d.getNativeBackend())) {
                             abstraction = d;
                             break;
