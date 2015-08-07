@@ -2466,25 +2466,12 @@ public class ModelUtil {
         }
     }
     
-    public static boolean isNative(Declaration dec) {
-        return dec != null && dec.isNative();
-    }
-    
     public static boolean isNativeHeader(Declaration dec) {
         return dec != null && dec.isNativeHeader();
     }
     
     public static boolean isNativeImplementation(Declaration dec) {
         return dec != null && dec.isNative() && !dec.isNativeHeader();
-    }
-    
-    public static boolean isInNativeContainer(Declaration dec) {
-        Scope container = dec.getContainer();
-        if (container instanceof Declaration) {
-            Declaration d = (Declaration) container;
-            return d.isNative();
-        }
-        return false;
     }
     
     public static Declaration getNativeDeclaration(
