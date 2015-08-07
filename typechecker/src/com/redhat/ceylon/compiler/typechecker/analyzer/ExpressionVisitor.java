@@ -9068,8 +9068,7 @@ public class ExpressionVisitor extends Visitor {
                         && decModule.isNative()
                     || ctxModule == decModule
                         && dec.isNative()
-                        && hdr == null
-                        && !isInNativeContainer((Declaration)that.getScope()))
+                        && hdr == null)
                 && (inBackends == null
                     || impl.isNative()
                         && !isForBackend(impl.getNativeBackend(), inBackends)
