@@ -295,7 +295,7 @@ public class NativeTests extends CompilerTests {
                 new CompilerError(82, "no native implementation for backend: native 'NativeClassMismatch6' is not implemented for one or more backends"),
                 new CompilerError(84, "native implementation for non-native header: 'NativeClassMismatch6'"),
                 new CompilerError(91, "formal member 'test1' of 'NativeClassMismatchSuper1' not implemented in class hierarchy"),
-                new CompilerError(92, "native backend name on member conflicts with its container: 'test1' of 'NativeClassMismatch7'"),
+                new CompilerError(92, "native backend name on declaration conflicts with its scope: 'test1'"),
                 new CompilerError(102, "no native implementation for backend: native 'NativeClassMismatch8js' is not implemented for one or more backends"),
                 new CompilerError(102, "no native implementation for backend: native 'test2' is not implemented for one or more backends"),
                 new CompilerError(106, "no native implementation for backend: native 'NativeClassMismatch8js' is not implemented for one or more backends"),
@@ -499,5 +499,15 @@ public class NativeTests extends CompilerTests {
     @Test
     public void testNativeScopes() {
         testNative("NativeScopes");
+    }
+    
+    @Test
+    public void testNativeScopesWrong() {
+        testNativeErrors("NativeScopesWrong",
+                new CompilerError(27, "native backend name on declaration conflicts with its scope: 'test3'"),
+                new CompilerError(32, "native backend name on declaration conflicts with its scope: 'test'"),
+                new CompilerError(42, "native backend name on declaration conflicts with its scope: 'test3'"),
+                new CompilerError(47, "native backend name on declaration conflicts with its scope: 'test'")
+        );
     }
 }
