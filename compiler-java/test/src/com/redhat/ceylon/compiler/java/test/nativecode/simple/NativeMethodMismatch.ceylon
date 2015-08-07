@@ -48,13 +48,13 @@ native("js") void nativeMethodMismatch3(/*@error*/ String s) {
 native shared void nativeMethodMismatch4jvm();
 
 native("jvm") shared void nativeMethodMismatch4jvm() {
-    nativeMethodMismatch4js();
+    /*@error*/ nativeMethodMismatch4js();
 }
 
 native shared void nativeMethodMismatch4js();
 
 native("js") shared void nativeMethodMismatch4js() {
-    nativeMethodMismatch4jvm();
+    /*@error*/ nativeMethodMismatch4jvm();
 }
 
 native("jvm")
