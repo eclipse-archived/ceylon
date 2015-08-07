@@ -1,3 +1,14 @@
+import java.lang {
+    System { currentTimeMillis, nanoTime }
+}
+import java.util {
+    TimeZone { defaultTimeZone=default },
+    Locale { defaultLocale=default }
+}
+import java.nio.charset {
+    Charset { defaultCharset }
+}
+
 "Represents the system on which the current process is 
  executing.
  
@@ -14,8 +25,8 @@ shared native object system {
      starting point."
     shared native Integer nanoseconds;
     
-    "Returns the offset from UTC, in milliseconds, of the 
-     default timezone for this system."
+    "Returns the offset, in milliseconds, to add to UTC to 
+     get the local time for default timezone for this system."
     shared native Integer timezoneOffset;
     
     "Returns the IETF language tag representing the default 
@@ -27,4 +38,64 @@ shared native object system {
     shared native String characterEncoding;
     
     string => "system";
+}
+
+shared native("jvm") object system {
+    
+    shared native("jvm") Integer milliseconds =>
+            currentTimeMillis();
+    
+    shared native("jvm") Integer nanoseconds =>
+            nanoTime();
+    
+    shared native("jvm") Integer timezoneOffset =>
+            defaultTimeZone.getOffset(milliseconds);
+    
+    shared native("jvm") String locale =>
+            defaultLocale.toLanguageTag();
+    
+    shared native("jvm") String characterEncoding =>
+            defaultCharset().name();
+    
+}
+
+shared native("js") object system {
+    
+    shared native("js") Integer milliseconds {
+        dynamic {
+            return \iDate.now();
+        }
+    }
+    
+    shared native("js") Integer nanoseconds {
+        dynamic {
+            return \iDate.now() * 1000000;
+        }
+    }
+    
+    shared native("js") Integer timezoneOffset {
+        dynamic {
+            return Date().getTimezoneOffset() * -60000;
+        }
+    }
+    
+    shared native("js") String locale {
+        return process.propertyValue("user.locale")
+            else normalizeLocaleTag(process.environmentVariableValue("LANG"))
+            else "en";
+    }
+    
+    String? normalizeLocaleTag(String? tag) {
+        if (exists tag, !tag.empty) {
+            Integer? p = tag.firstOccurrence('.');
+            String t = if (exists p) then tag[0:p] else tag;
+            return t.replace("_", "-");
+        } else {
+            return null;
+        }
+    }
+    
+    shared native("js") String characterEncoding =>
+            "UTF-16"; //JavaScript always uses UTF-16
+    
 }

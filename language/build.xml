@@ -462,8 +462,6 @@
                 <include name="ceylon/language/operatingSystem_.java"/>
                 <exclude name="ceylon/language/process.ceylon"/>
                 <include name="ceylon/language/process_.java"/>
-                <exclude name="ceylon/language/system.ceylon"/>
-                <include name="ceylon/language/system_.java"/>
                 <exclude name="ceylon/language/printStackTrace.ceylon"/>
                 <include name="ceylon/language/printStackTrace_.java"/>
                 <exclude name="ceylon/language/String.ceylon"/>
