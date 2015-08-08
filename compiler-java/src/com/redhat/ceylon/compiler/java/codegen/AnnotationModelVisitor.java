@@ -8,7 +8,6 @@ import java.util.List;
 
 import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.compiler.java.codegen.recovery.Errors;
-import com.redhat.ceylon.compiler.typechecker.tree.NaturalVisitor;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AnyMethod;
@@ -28,7 +27,7 @@ import com.redhat.ceylon.model.typechecker.model.Value;
  * 
  * @author tom
  */
-public class AnnotationModelVisitor extends Visitor implements NaturalVisitor {
+public class AnnotationModelVisitor extends Visitor {
     private java.util.List<AnnotationFieldName> fieldNames = new ArrayList<AnnotationFieldName>();
     /** The annotation constructor we are currently visiting */
     private AnyMethod annotationConstructor;

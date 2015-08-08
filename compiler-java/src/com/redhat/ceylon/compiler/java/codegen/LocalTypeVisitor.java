@@ -24,7 +24,6 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Set;
 
-import com.redhat.ceylon.compiler.typechecker.tree.NaturalVisitor;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
@@ -43,7 +42,7 @@ import com.redhat.ceylon.model.typechecker.model.Value;
  * 
  * @author Stéphane Épardaud <stef@epardaud.fr>
  */
-public class LocalTypeVisitor extends Visitor implements NaturalVisitor {
+public class LocalTypeVisitor extends Visitor {
 
     private HasTypeVisitor hasTypeVisitor = new HasTypeVisitor();
     

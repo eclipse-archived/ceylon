@@ -6,7 +6,6 @@ import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.compiler.typechecker.analyzer.AnalysisError;
 import com.redhat.ceylon.compiler.typechecker.analyzer.UsageWarning;
 import com.redhat.ceylon.compiler.typechecker.tree.Message;
-import com.redhat.ceylon.compiler.typechecker.tree.NaturalVisitor;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
@@ -21,7 +20,7 @@ import com.redhat.ceylon.model.typechecker.model.Value;
  * Unlike the {@link StatementErrorVisitor} and {@link ErrorVisitor}
  * this visitor does not fail fast.
  */
-class DeclarationErrorVisitor extends Visitor implements NaturalVisitor {
+class DeclarationErrorVisitor extends Visitor {
     private static final int TYPE_DECLARATION_DOES_NOT_EXIST = 102;
     private static final int FORMAL_MEMBER_UNIMPLEMENTED_IN_CLASS_HIERARCHY = 300;
     private static final int MEMBER_HAS_WRONG_NUMBER_OF_PARAMETERS = 9100;
