@@ -55,7 +55,6 @@ import static com.redhat.ceylon.model.typechecker.model.ModelUtil.intersectionTy
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isAbstraction;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isConstructor;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isImplemented;
-import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isInNativeContainer;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isOverloadedVersion;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isTypeUnknown;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.typeParametersAsArgList;
@@ -9052,7 +9051,8 @@ public class ExpressionVisitor extends Visitor {
                 Declaration tmp = getNativeHeader(dec);
                 if (tmp != dec) {
                     hdr = tmp;
-                    if (hdr != null && !backends.contains(dec.getNativeBackend())) {
+                    if (hdr != null && (backends.isEmpty()
+                            || !backends.contains(dec.getNativeBackend()))) {
                         impl = getNativeDeclaration(hdr, backends);
                     }
                 }
@@ -9067,8 +9067,7 @@ public class ExpressionVisitor extends Visitor {
                         && decModule.isNative()
                     || ctxModule == decModule
                         && dec.isNative()
-                        && hdr == null
-                        && !isInNativeContainer((Declaration)that.getScope()))
+                        && hdr == null)
                 && (inBackends == null
                     || impl.isNative()
                         && !isForBackend(impl.getNativeBackend(), inBackends)
