@@ -6614,15 +6614,17 @@ public class ExpressionVisitor extends Visitor {
             boolean error) {
         Tree.Identifier id = that.getIdentifier();
         String name = name(id);
+        Scope scope = that.getScope();
         TypeDeclaration type = 
-                getTypeDeclaration(that.getScope(), name, 
+                getTypeDeclaration(scope, name, 
                         that.getSignature(), 
                         that.getEllipsis(), 
                         that.getUnit());
         if (type==null) {
             if (error &&
                     !dynamic &&
-                    !isNativeForWrongBackend(that.getScope().getScopedBackends())) {
+                    !isNativeForWrongBackend(
+                            scope.getScopedBackends())) {
                 that.addError("type does not exist: '" + 
                         name + "'", 
                         102);
