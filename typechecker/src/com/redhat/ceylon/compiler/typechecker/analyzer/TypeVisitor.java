@@ -373,14 +373,16 @@ public class TypeVisitor extends Visitor {
                         null, false, unit);
             }
             if (type==null) {
-                if (!isNativeForWrongBackend(scope.getScopedBackends())) {
+                if (!isNativeForWrongBackend(
+                        scope.getScopedBackends())) {
                     that.addError("type declaration does not exist: '" + 
                             name + "'", 102);
                     unit.getUnresolvedReferences().add(id);
                 }
             }
             else {
-                type = (TypeDeclaration)handleHeader(type, that);
+                type = (TypeDeclaration) 
+                        handleHeader(type, that);
                 Type outerType = 
                         scope.getDeclaringType(type);
                 visitSimpleType(that, outerType, type);
@@ -398,8 +400,9 @@ public class TypeVisitor extends Visitor {
                     that.setTypeModel(intersectionOfSupertypes(ci));
                 }
                 else if (ci.isClassOrInterfaceMember()) {
-                    ClassOrInterface oci = (ClassOrInterface) 
-                            ci.getContainer();
+                    ClassOrInterface oci = 
+                            (ClassOrInterface) 
+                                ci.getContainer();
                     that.setTypeModel(intersectionOfSupertypes(oci));
                 }
                 else {
@@ -413,14 +416,14 @@ public class TypeVisitor extends Visitor {
     public void visit(Tree.MemberLiteral that) {
         super.visit(that);
         if (that.getType()!=null) {
-            Type pt = 
-                    that.getType().getTypeModel();
+            Type pt = that.getType().getTypeModel();
             if (pt!=null) {
-                if (that.getTypeArgumentList()!=null &&
+                Tree.TypeArgumentList tal = 
+                        that.getTypeArgumentList();
+                if (tal!=null &&
                         isTypeUnknown(pt) && 
                         !pt.isUnknown()) {
-                    that.getTypeArgumentList()
-                        .addError("qualifying type does not fully-specify type arguments");
+                    tal.addError("qualifying type does not fully-specify type arguments");
                 }
             }
         }
@@ -445,11 +448,13 @@ public class TypeVisitor extends Visitor {
 //            if (pt.isTypeConstructor()) {
 //                ot.addError("qualifying type may not be a type constructor");
 //            }
+            Tree.TypeArgumentList tal = 
+                    that.getTypeArgumentList();
             if (that.getMetamodel() && 
-                    that.getTypeArgumentList()!=null &&
-                    isTypeUnknown(pt) && !pt.isUnknown()) {
-                that.getTypeArgumentList()
-                    .addError("qualifying type does not fully-specify type arguments");
+                    tal!=null &&
+                    isTypeUnknown(pt) && 
+                    !pt.isUnknown()) {
+                tal.addError("qualifying type does not fully-specify type arguments");
             }
             TypeDeclaration d = pt.getDeclaration();
             Tree.Identifier id = that.getIdentifier();
@@ -459,7 +464,9 @@ public class TypeVisitor extends Visitor {
                         getTypeMember(d, name, 
                                 null, false, unit);
                 if (type==null) {
-                    if (!isNativeForWrongBackend(that.getScope().getScopedBackends())) {
+                    Scope scope = that.getScope();
+                    if (!isNativeForWrongBackend(
+                            scope.getScopedBackends())) {
                         if (d.isMemberAmbiguous(name, unit, null, false)) {
                             that.addError("member type declaration is ambiguous: '" + 
                                     name + "' for type '" + 
@@ -469,7 +476,8 @@ public class TypeVisitor extends Visitor {
                             that.addError("member type declaration does not exist: '" + 
                                     name + "' in type '" + 
                                     d.getName() + "'", 100);
-                            unit.getUnresolvedReferences().add(id);
+                            unit.getUnresolvedReferences()
+                                .add(id);
                         }
                     }
                 }
@@ -591,12 +599,12 @@ public class TypeVisitor extends Visitor {
     @Override 
     public void visit(Tree.SequencedType that) {
         super.visit(that);
-        Type type = 
-                that.getType().getTypeModel();
+        Type type = that.getType().getTypeModel();
         if (type!=null) {
-            Type et = that.getAtLeastOne() ? 
-                    unit.getSequenceType(type) : 
-                    unit.getSequentialType(type);
+            Type et = 
+                    that.getAtLeastOne() ? 
+                        unit.getSequenceType(type) : 
+                        unit.getSequentialType(type);
             that.setTypeModel(et);
         }
     }
@@ -604,8 +612,7 @@ public class TypeVisitor extends Visitor {
     @Override 
     public void visit(Tree.DefaultedType that) {
         super.visit(that);
-        Type type = 
-                that.getType().getTypeModel();
+        Type type = that.getType().getTypeModel();
         if (type!=null) {
             that.setTypeModel(type);
         }
@@ -763,7 +770,9 @@ public class TypeVisitor extends Visitor {
                 // Check if the class has at least one shared constructor
                 boolean found = hasSharedConstructors(cd);
                 // If not found check if the declaration is a native implementation
-                if (!found && cd.isNative() && !cd.isNativeHeader()) {
+                if (!found && 
+                        cd.isNative() && 
+                        !cd.isNativeHeader()) {
                     Declaration hdr = getNativeHeader(cd);
                     // And check that it has a native header
                     if (hdr instanceof Class) {
@@ -825,7 +834,8 @@ public class TypeVisitor extends Visitor {
                         dta.involvesDeclaration(dec)) {
                     type.addError("default type argument involves parameterized type: '" + 
                             dta.asString(unit) + 
-                            "' involves '" + dec.getName(unit) + 
+                            "' involves '" + 
+                            dec.getName(unit) + 
                             "'");
                     dta = null;
                 }
@@ -853,8 +863,7 @@ public class TypeVisitor extends Visitor {
             if (tpd!=null) {
                 TypeParameter tp = 
                         tpd.getDeclarationModel();
-                Type dta = 
-                        tp.getDefaultTypeArgument();
+                Type dta = tp.getDefaultTypeArgument();
                 if (dta!=null) {
                     params.add(tp);
                     if (dta.involvesTypeParameters(params)) {
@@ -969,8 +978,7 @@ public class TypeVisitor extends Visitor {
 //                that.addError("malformed aliased interface");
             }
             else if (!(et instanceof Tree.StaticType)) {
-                typeSpecifier
-                        .addError("aliased type must be an interface");
+                typeSpecifier.addError("aliased type must be an interface");
             }
             else {
                 Type type = et.getTypeModel();
