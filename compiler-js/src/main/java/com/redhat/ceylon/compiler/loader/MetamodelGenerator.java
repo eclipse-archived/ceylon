@@ -537,6 +537,9 @@ public class MetamodelGenerator {
     @SuppressWarnings("unchecked")
     public void encodeObject(Value d) {
         Map<String, Object> parent = findParent(d);
+        if (parent == null) {
+            return;
+        }
         if (!d.isToplevel()) {
             if (!parent.containsKey(KEY_OBJECTS)) {
                 parent.put(KEY_OBJECTS, new HashMap<>());
