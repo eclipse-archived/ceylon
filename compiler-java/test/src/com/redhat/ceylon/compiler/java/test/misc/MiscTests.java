@@ -97,9 +97,8 @@ public class MiscTests extends CompilerTests {
                         "Boolean", "Integer", "Float", "Character", "String", "Byte",
                         "Array", "Tuple", "Exception", "AssertionError", "Callable", 
                         "flatten", "className", "identityHash", "integerRangeByIterable",
-                        "language", "modules", "operatingSystem", 
-                        "printStackTrace", "process", "runtime", "system", 
-                        "Throwable", "type", "typeLiteral",
+                        "modules", "printStackTrace", "process",
+                        "runtime", "Throwable", "type", "typeLiteral",
                         "unflatten", "serialization", "deserialization"}) {
                     
                     if (s.equals(filename)) {
