@@ -74,7 +74,8 @@ public class SourceArgumentsResolver {
     }
 
     public void expandAndParse(List<String> modulesOrFiles, Backend forBackend) throws IOException {
-        List<String> expandedModulesOrFiles = ModuleWildcardsHelper.expandWildcards(sourceDirs , modulesOrFiles, forBackend);
+        Iterable<File> srcs = FileUtil.applyCwd(cwd, sourceDirs);
+        List<String> expandedModulesOrFiles = ModuleWildcardsHelper.expandWildcards(srcs, modulesOrFiles, forBackend);
         parse(expandedModulesOrFiles);
     }
     
