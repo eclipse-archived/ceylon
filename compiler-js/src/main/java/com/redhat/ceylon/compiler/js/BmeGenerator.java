@@ -48,9 +48,13 @@ public class BmeGenerator {
         }
         String exp = gen.memberAccess(bme, null);
         if (decl == null && gen.isInDynamicBlock()) {
-            gen.out("(typeof ", exp, "==='undefined'||", exp, "===null?");
-            gen.generateThrow(null, "Undefined or null reference: " + exp, bme);
-            gen.out(":", exp, ")");
+            if ("undefined".equals(exp)) {
+                gen.out(exp);
+            } else {
+                gen.out("(typeof ", exp, "==='undefined'||", exp, "===null?");
+                gen.generateThrow(null, "Undefined or null reference: " + exp, bme);
+                gen.out(":", exp, ")");
+            }
         } else {
             final boolean isCallable = !forInvoke && (decl instanceof Functional
                     || bme.getUnit().getCallableDeclaration().equals(bme.getTypeModel().getDeclaration()));
