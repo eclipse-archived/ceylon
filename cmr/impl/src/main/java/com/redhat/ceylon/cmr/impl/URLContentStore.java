@@ -184,24 +184,24 @@ public abstract class URLContentStore extends AbstractRemoteContentStore {
     }
     
     private boolean hostIsLocalMachine(String host) {
-//        return "localhost".equals(host) || "127.0.0.1".equals(host) || "::1".equals(host);
-        Enumeration<NetworkInterface> interfaces;
-        try {
-            interfaces = NetworkInterface.getNetworkInterfaces();
-            while (interfaces.hasMoreElements()) {
-                NetworkInterface nic = interfaces.nextElement();
-                Enumeration<InetAddress> addresses = nic.getInetAddresses();
-                while (addresses.hasMoreElements()) {
-                    InetAddress address = addresses.nextElement();
-                    if (host.equalsIgnoreCase(address.getHostName()) || host.equalsIgnoreCase(address.getHostAddress())) {
-                        return true;
-                    }
-                }
-            }
-        } catch (SocketException e) {
-            // Ignore error
-        }
-        return false;
+        return "localhost".equals(host) || "127.0.0.1".equals(host) || "::1".equals(host);
+//        Enumeration<NetworkInterface> interfaces;
+//        try {
+//            interfaces = NetworkInterface.getNetworkInterfaces();
+//            while (interfaces.hasMoreElements()) {
+//                NetworkInterface nic = interfaces.nextElement();
+//                Enumeration<InetAddress> addresses = nic.getInetAddresses();
+//                while (addresses.hasMoreElements()) {
+//                    InetAddress address = addresses.nextElement();
+//                    if (host.equalsIgnoreCase(address.getHostName()) || host.equalsIgnoreCase(address.getHostAddress())) {
+//                        return true;
+//                    }
+//                }
+//            }
+//        } catch (SocketException e) {
+//            // Ignore error
+//        }
+//        return false;
     }
     
     public void setUsername(String username) {
