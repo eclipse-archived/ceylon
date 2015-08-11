@@ -1,4 +1,4 @@
-import ceylon.language.meta.declaration { ClassDeclaration, FunctionDeclaration, ValueDeclaration, SetterDeclaration }
+import ceylon.language.meta.declaration { NestableDeclaration, ClassDeclaration, FunctionDeclaration, ValueDeclaration, SetterDeclaration }
 
 shared class Locals_OuterLocalClass<Outer>(){
 
@@ -466,8 +466,8 @@ void locals_testPackageLocals(){
     assert(is ClassDeclaration c1 = locals_packageLocalClass1);
     assert(is ClassDeclaration c2 = locals_packageLocalClass2);
     assert(c1 != c2);
-    assert(c1.container == `package metamodel`);
-    assert(c2.container == `package metamodel`);
+    assert(c1.container == `value locals_packageLocal1`);
+    assert(c2.container == `value locals_packageLocal2`);
     assert(!c1.toplevel, !c2.toplevel);
     Locals_ClassLocalsInFunctions().check();
 }
@@ -489,8 +489,10 @@ class Locals_ClassLocalsInFunctions(){
         assert(is ClassDeclaration c1 = localClass1);
         assert(is ClassDeclaration c2 = localClass2);
         assert(c1 != c2);
-        assert(c1.container == `class Locals_ClassLocalsInFunctions`);
-        assert(c2.container == `class Locals_ClassLocalsInFunctions`);
+        assert(is NestableDeclaration cc1 = c1.container);
+        assert(is NestableDeclaration cc2 = c2.container);
+        assert(cc1.container == `class Locals_ClassLocalsInFunctions`);
+        assert(cc2.container == `class Locals_ClassLocalsInFunctions`);
         assert(!c1.toplevel, !c2.toplevel);
     }
 }
