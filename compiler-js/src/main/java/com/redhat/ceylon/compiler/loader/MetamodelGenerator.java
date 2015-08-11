@@ -537,10 +537,7 @@ public class MetamodelGenerator {
     @SuppressWarnings("unchecked")
     public void encodeObject(Value d) {
         Map<String, Object> parent = findParent(d);
-        if (parent == null) {
-            return;
-        }
-        if (!d.isToplevel()) {
+        if (!d.isToplevel() && parent != null) {
             if (!parent.containsKey(KEY_OBJECTS)) {
                 parent.put(KEY_OBJECTS, new HashMap<>());
             }
@@ -556,7 +553,9 @@ public class MetamodelGenerator {
 
         //Certain annotations
         encodeAnnotations(d.getAnnotations(), d, m);
-        parent.put(TypeUtils.modelName(d.getTypeDeclaration()), m);
+        if (parent != null) {
+            parent.put(TypeUtils.modelName(d.getTypeDeclaration()), m);
+        }
     }
 
     @SuppressWarnings("unchecked")
