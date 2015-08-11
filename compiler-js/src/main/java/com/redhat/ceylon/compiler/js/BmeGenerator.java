@@ -20,6 +20,7 @@ import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.TypeParameter;
 import com.redhat.ceylon.model.typechecker.model.ModelUtil;
 import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
+import com.redhat.ceylon.model.typechecker.model.Value;
 
 public class BmeGenerator {
 
@@ -37,12 +38,15 @@ public class BmeGenerator {
                     return;
                 }
             }
-            if (forInvoke && TypeUtils.isConstructor(decl)) {
+            if (TypeUtils.isConstructor(decl)) {
                 Constructor cd = TypeUtils.getConstructor(decl);
                 if (!gen.qualify(bme, cd)) {
                     gen.out(gen.getNames().name((Declaration)cd.getContainer()), "_");
                 }
                 gen.out(gen.getNames().name(cd));
+                if (!forInvoke && decl instanceof Value) {
+                    gen.out("()");
+                }
                 return;
             }
         }
