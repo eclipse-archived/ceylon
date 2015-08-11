@@ -115,6 +115,11 @@ class Test509(shared Integer a) {
   shared class Inner(Integer b) extends Test509(b) {}
 }
 
+shared class Issue611 {
+    shared new test611 {
+    }
+}
+
 shared void test() {
     value c = Counter(0);
     check(c.count==0,"counter 1");
@@ -148,5 +153,7 @@ shared void test() {
     Object test551 = Foo551().b;
     check(test551 is Foo551.Bar, "#551");
 
+    Object i611 = Issue611.test611;
+    check(i611 is Issue611, "#611.1");
     results();
 }

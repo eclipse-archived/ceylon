@@ -1,4 +1,7 @@
-import members { Counter }
+import members {
+    Counter,
+    Issue611 { test611 }
+}
 import check { ... }
 
 shared void test() {
@@ -42,5 +45,7 @@ shared void test() {
     testReifiedRuntime();
     testStackTrace();
     testOptimisations();
+    Object i611 = test611;
+    check(i611 is Issue611, "#611.2");
     results();
 }
