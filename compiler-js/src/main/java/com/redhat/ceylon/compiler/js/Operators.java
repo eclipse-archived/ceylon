@@ -207,13 +207,15 @@ public class Operators {
             gen.box(that.getLowerBound().getTerm());
             gen.out(",", tmpu, "=");
             gen.box(that.getUpperBound().getTerm());
-            gen.out(",((", ttmp, ".compare&&",ttmp,".compare(", tmpl);
+            gen.out(",((", gen.getClAlias(), "nn$(", ttmp,")&&", ttmp, ".compare&&",
+                    ttmp,".compare(", tmpl);
             if (that.getLowerBound() instanceof Tree.OpenBound) {
                 gen.out(")===", gen.getClAlias(), "larger())||", ttmp, ">", tmpl, ")");
             } else {
                 gen.out(")!==", gen.getClAlias(), "smaller())||", ttmp, ">=", tmpl, ")");
             }
-            gen.out("&&((", ttmp, ".compare&&",ttmp,".compare(", tmpu);
+            gen.out("&&((", gen.getClAlias(), "nn$(", ttmp,")&&", ttmp, ".compare&&",
+                    ttmp,".compare(", tmpu);
             if (that.getUpperBound() instanceof Tree.OpenBound) {
                 gen.out(")===", gen.getClAlias(), "smaller())||", ttmp, "<", tmpu, ")");
             } else {
@@ -248,7 +250,8 @@ public class Operators {
             gen.box(that.getLeftTerm());
             gen.out(",", rtmp, "=");
             gen.box(that.getRightTerm());
-            gen.out(",(", ltmp, ".compare&&", ltmp, ".compare(", rtmp, ")!==",
+            gen.out(",(", gen.getClAlias(), "nn$(", ltmp,")&&", ltmp, ".compare&&",
+                    ltmp, ".compare(", rtmp, ")!==",
                     gen.getClAlias(), "smaller())||", ltmp, ">=", rtmp, ")");
         } else {
             final boolean usenat = gen.canUseNativeComparator(that.getLeftTerm(), that.getRightTerm());
@@ -271,7 +274,8 @@ public class Operators {
             gen.box(that.getLeftTerm());
             gen.out(",", rtmp, "=");
             gen.box(that.getRightTerm());
-            gen.out(",(", ltmp, ".compare&&", ltmp, ".compare(", rtmp, ")!==",
+            gen.out(",(", gen.getClAlias(), "nn$(", ltmp,")&&", ltmp, ".compare&&",
+                    ltmp, ".compare(", rtmp, ")!==",
                     gen.getClAlias(), "larger())||", ltmp, "<=", rtmp, ")");
         } else {
             final boolean usenat = gen.canUseNativeComparator(that.getLeftTerm(), that.getRightTerm());
@@ -295,7 +299,8 @@ public class Operators {
             gen.box(that.getLeftTerm());
             gen.out(",", rtmp, "=");
             gen.box(that.getRightTerm());
-            gen.out(",(", ltmp, ".compare&&", ltmp, ".compare(", rtmp, ").equals(",
+            gen.out(",(", gen.getClAlias(), "nn$(", ltmp,")&&", ltmp, ".compare&&",
+                    ltmp, ".compare(", rtmp, ").equals(",
                     gen.getClAlias(), "larger()))||", ltmp, ">", rtmp, ")");
         } else {
             final boolean usenat = gen.canUseNativeComparator(that.getLeftTerm(), that.getRightTerm());
@@ -317,7 +322,8 @@ public class Operators {
             gen.box(that.getLeftTerm());
             gen.out(",", rtmp, "=");
             gen.box(that.getRightTerm());
-            gen.out(",(", ltmp, ".compare&&", ltmp, ".compare(", rtmp, ").equals(",
+            gen.out(",(", gen.getClAlias(), "nn$(", ltmp,")&&", ltmp, ".compare&&",
+                    ltmp, ".compare(", rtmp, ").equals(",
                     gen.getClAlias(), "smaller()))||", ltmp, "<", rtmp, ")");
         } else {
             final boolean usenat = gen.canUseNativeComparator(that.getLeftTerm(), that.getRightTerm());
@@ -339,7 +345,8 @@ public class Operators {
             gen.box(that.getLeftTerm());
             gen.out(",", rtmp, "=");
             gen.box(that.getRightTerm());
-            gen.out(",(", ltmp, ".equals&&!", ltmp, ".equals(", rtmp, "))||", ltmp, "!==", rtmp, ")");
+            gen.out(",(", gen.getClAlias(), "nn$(", ltmp,")&&", ltmp, ".equals&&!",
+                    ltmp, ".equals(", rtmp, "))||", ltmp, "!==", rtmp, ")");
         } else {
             final boolean usenat = gen.canUseNativeComparator(that.getLeftTerm(), that.getRightTerm());
             simpleBinaryOp(that, usenat?"!(":"(!", usenat?"==":".equals(", usenat?")":"))", gen);
@@ -355,7 +362,8 @@ public class Operators {
             gen.box(that.getLeftTerm());
             gen.out(",", rtmp, "=");
             gen.box(that.getRightTerm());
-            gen.out(",(", ltmp, ".equals&&", ltmp, ".equals(", rtmp, "))||", ltmp, "===", rtmp, ")");
+            gen.out(",(", gen.getClAlias(), "nn$(", ltmp,")&&", ltmp, ".equals&&",
+                    ltmp, ".equals(", rtmp, "))||", ltmp, "===", rtmp, ")");
         } else {
             final boolean usenat = gen.canUseNativeComparator(that.getLeftTerm(), that.getRightTerm());
             simpleBinaryOp(that, usenat?"((":null, usenat?").valueOf()==(":".equals(",
