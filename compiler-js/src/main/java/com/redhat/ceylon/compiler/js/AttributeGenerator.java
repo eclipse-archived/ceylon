@@ -183,9 +183,11 @@ public class AttributeGenerator {
     }
 
     /** Generates a setter function. This is only needed for toplevel variable attributes. s*/
-    static void generateAttributeSetter(final Tree.AnyAttribute that, final Value d,
+    static boolean generateAttributeSetter(final Tree.AnyAttribute that, final Value d,
             final GenerateJsVisitor gen) {
-        if (!d.isToplevel())return;
+        if (!d.isToplevel()) {
+            return false;
+        }
         final String varName = gen.getNames().name(d);
         String paramVarName = gen.getNames().createTempVariable();
         gen.out(GenerateJsVisitor.function, gen.getNames().setter(d), "(", paramVarName, "){");
@@ -194,6 +196,7 @@ public class AttributeGenerator {
         gen.out("return ", varName, "=", paramVarName, ";}");
         gen.endLine(true);
         gen.shareSetter(d);
+        return true;
     }
 
     static void addGetterAndSetterToPrototype(final TypeDeclaration outer, final Tree.AttributeDeclaration that,

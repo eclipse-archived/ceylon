@@ -1480,7 +1480,7 @@ public class GenerateJsVisitor extends Visitor {
                         that.getSpecifierOrInitializerExpression();
             final boolean addGetter = (specInitExpr != null) || (param != null) || !d.isMember()
                     || d.isVariable() || d.isLate();
-            final boolean addSetter = (d.isVariable() || d.isLate()) && !asprop;
+            boolean setterGend=false;
             if (opts.isOptimize() && d.isClassOrInterfaceMember()) {
                 //Stitch native member attribute declaration with no value
                 final boolean eagerExpr = specInitExpr != null
@@ -1556,8 +1556,8 @@ public class GenerateJsVisitor extends Visitor {
                     AttributeGenerator.generateAttributeGetter(that, d, specInitExpr,
                             names.name(param), this, directAccess);
                 }
-                if (addSetter) {
-                    AttributeGenerator.generateAttributeSetter(that, d, this);
+                if ((d.isVariable() || d.isLate()) && !asprop) {
+                    setterGend=AttributeGenerator.generateAttributeSetter(that, d, this);
                 }
             }
             boolean addMeta=!opts.isOptimize() || d.isToplevel();
@@ -1565,7 +1565,7 @@ public class GenerateJsVisitor extends Visitor {
                 addMeta |= ModelUtil.getContainingDeclaration(d).isAnonymous();
             }
             if (addMeta) {
-                AttributeGenerator.generateAttributeMetamodel(that, addGetter, addSetter, this);
+                AttributeGenerator.generateAttributeMetamodel(that, addGetter, setterGend, this);
             }
         }
     }
