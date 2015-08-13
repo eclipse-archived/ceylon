@@ -5,7 +5,8 @@
      Float result = sum(values);
  
  For the case of a possibly-empty stream, form a nonempty 
- stream starting with the unit element.
+ stream starting with the unit element (the [[multiplicative
+ identity|Numeric]]).
  
      {Float*} values = ... ;
      Float result = product { 1.0, *values };"

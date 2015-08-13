@@ -5,7 +5,8 @@
      Float total = sum(values);
  
  For the case of a possibly-empty stream, form a nonempty 
- stream starting with the zero element.
+ stream starting with the zero element (the [[additive 
+ identity|Summable]]).
  
      {Float*} values = ... ;
      Float total = sum { 0.0, *values };"
