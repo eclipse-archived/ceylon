@@ -8,7 +8,7 @@
  stream starting with the unit element.
  
      {Float*} values = ... ;
-     Float result = product { 1, *values };"
+     Float result = product { 1.0, *values };"
 see (`function sum`)
 shared Value product<Value>({Value+} values) 
         given Value satisfies Numeric<Value> {
