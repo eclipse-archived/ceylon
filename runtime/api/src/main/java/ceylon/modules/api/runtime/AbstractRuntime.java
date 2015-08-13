@@ -17,10 +17,7 @@
 
 package ceylon.modules.api.runtime;
 
-import java.io.File;
 import java.lang.reflect.Modifier;
-import java.net.URL;
-import java.net.URLClassLoader;
 
 import ceylon.modules.CeylonRuntimeException;
 import ceylon.modules.Configuration;
@@ -28,7 +25,6 @@ import ceylon.modules.spi.Constants;
 import ceylon.modules.spi.runtime.ClassLoaderHolder;
 
 import com.redhat.ceylon.common.JVMModuleUtil;
-import com.redhat.ceylon.compiler.java.metadata.Module;
 
 /**
  * Abstract Ceylon Modules runtime.
@@ -41,40 +37,6 @@ public abstract class AbstractRuntime implements ceylon.modules.spi.runtime.Runt
     public static final String MODULE_INFO_CLASS = ".$module_";
     public static final String OLD_MODULE_INFO_CLASS = ".module_";
     public static final String RUN_INFO_CLASS = "run";
-
-    /**
-     * Load module instance.
-     *
-     * @param cl         the classloader used to load the module descriptor.
-     * @param moduleName the module name
-     * @return new module instance or null if no such descriptor
-     * @throws Exception for any error
-     */
-    public static Module loadModuleMetaData(ClassLoader cl, String moduleName) throws Exception {
-        final String moduleClassName = moduleName + MODULE_INFO_CLASS;
-        // try the new name first
-        try {
-            Class<?> klass = cl.loadClass(moduleClassName);
-            return klass.getAnnotation(Module.class);
-        } catch (ClassNotFoundException ignored) {
-        }
-        // then the old name
-        final String oldModuleClassName = moduleName + OLD_MODULE_INFO_CLASS;
-        try {
-            Class<?> klass = cl.loadClass(oldModuleClassName);
-            return klass.getAnnotation(Module.class);
-        } catch (ClassNotFoundException ignored) {
-        }
-        return null; // looks like no such module class is available
-
-    }
-
-    protected Module readModuleMetaData(String name, File moduleFile) throws Exception {
-        final URL url = moduleFile.toURI().toURL();
-        final ClassLoader parent = getClass().getClassLoader();
-        final ClassLoader cl = new URLClassLoader(new URL[]{url}, parent);
-        return loadModuleMetaData(cl, name);
-    }
 
     protected static void invokeRun(ClassLoaderHolder clh, String moduleName, String runClassName, final String[] args) throws Exception {
         final Class<?> runClass;
@@ -137,25 +99,6 @@ public abstract class AbstractRuntime implements ceylon.modules.spi.runtime.Runt
         String mv = (p > 0 ? exe.substring(p + 1) : null);
 
         final ClassLoaderHolder clh = createClassLoader(name, mv, conf);
-
-        mv = clh.getVersion();
-        final ClassLoader cl = clh.getClassLoader();
-
-        Module runtimeModule = loadModuleMetaData(cl, name);
-        if (runtimeModule != null) {
-            final String mn = runtimeModule.name();
-            if (name.equals(mn) == false) {
-                throw new CeylonRuntimeException("Input module name doesn't match module's name: " + name + " != " + mn);
-            }
-
-            final String version = runtimeModule.version();
-            if (mv.equals(version) == false && Constants.DEFAULT.toString().equals(name) == false) {
-                throw new CeylonRuntimeException("Input module version doesn't match module's version: " + mv + " != " + version);
-            }
-        } else if (Constants.DEFAULT.toString().equals(name) == false) {
-            // Don't throw, we might be executing a plain Java module!
-            //throw new CeylonRuntimeException("Missing module.class info: " + name); // TODO -- dump some more useful msg
-        }
 
         execute(conf, name, clh);
     }
