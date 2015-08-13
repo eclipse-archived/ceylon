@@ -132,7 +132,7 @@ public class AbstractTest {
     }
 
     protected RepositoryManager getRepositoryManager(boolean offline, int timeout, Proxy proxy) throws Exception {
-        return getRepositoryManager(offline, timeout, null);
+        return getRepositoryManager(offline, timeout, proxy, null);
     }
 
     protected RepositoryManager getRepositoryManager(boolean offline, int timeout, Proxy proxy, String overrideFileName) throws Exception {

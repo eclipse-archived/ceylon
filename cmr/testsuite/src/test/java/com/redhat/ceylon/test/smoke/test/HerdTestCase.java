@@ -21,6 +21,7 @@ import java.io.File;
 import java.util.SortedSet;
 
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.redhat.ceylon.cmr.api.ModuleDependencyInfo;
@@ -91,7 +92,7 @@ public class HerdTestCase extends AbstractTest {
     }
 
     @Test
-    //@Ignore("Required Herd running locally")
+    @Ignore("Required Herd running locally")
     public void testHerdCompleteEmptyJvm() throws Exception {
         ModuleDetails[] expected = new ModuleDetails[]{
                 ccollectionDetails,
@@ -157,7 +158,7 @@ public class HerdTestCase extends AbstractTest {
     static final SortedSet<ModuleVersionArtifact> carJsSrc = types(ART_CAR, ART_JS, art(".SRC"));
     
     @Test
-    //@Ignore("Required Herd running locally")
+    @Ignore("Required Herd running locally")
     public void testHerdCompleteCeyl() throws Exception {
         ModuleDetails[] expected = new ModuleDetails[]{
                 clangDetails,
@@ -223,7 +224,7 @@ public class HerdTestCase extends AbstractTest {
     
     
     @Test
-    //@Ignore("Required Herd running locally")
+    @Ignore("Required Herd running locally")
     public void testHerdCompleteCompleteName() throws Exception {
         ModuleDetails[] expected = new ModuleDetails[]{
                 jsonDetailsAll_jvm,
@@ -232,7 +233,7 @@ public class HerdTestCase extends AbstractTest {
     }
 
     @Test
-    //@Ignore("Required Herd running locally")
+    @Ignore("Required Herd running locally")
     public void testHerdCompleteCompleteNameApi1() throws Exception {
         ModuleDetails[] expected = new ModuleDetails[]{
                 jsonDetailsAll_Api1,
@@ -241,7 +242,7 @@ public class HerdTestCase extends AbstractTest {
     }
 
     @Test
-    //@Ignore("Required Herd running locally")
+    @Ignore("Required Herd running locally")
     public void testHerdCompleteForJs() throws Exception {
         ModuleDetails[] expected = new ModuleDetails[]{
                 jsonDetailsAll_js,
@@ -250,7 +251,7 @@ public class HerdTestCase extends AbstractTest {
     }
 
     @Test
-    //@Ignore("Required Herd running locally")
+    @Ignore("Required Herd running locally")
     public void testHerdCompleteForSrc() throws Exception {
         ModuleDetails[] expected = new ModuleDetails[]{
                 jsonDetailsAll_jvm,
@@ -259,7 +260,7 @@ public class HerdTestCase extends AbstractTest {
     }
 
     @Test
-    //@Ignore("Required Herd running locally")
+    @Ignore("Required Herd running locally")
     public void testHerdCompleteFilteredMembers() throws Exception {
         ModuleDetails[] expected = new ModuleDetails[]{
                 jsonDetailsAll_jvm,
@@ -268,7 +269,7 @@ public class HerdTestCase extends AbstractTest {
     }
 
     @Test
-    //@Ignore("Required Herd running locally")
+    @Ignore("Required Herd running locally")
     public void testHerdCompleteCeylonForCode() throws Exception {
         ModuleDetails[] expected = new ModuleDetails[]{
                 ccollectionDetails,
@@ -294,7 +295,7 @@ public class HerdTestCase extends AbstractTest {
     }
 
     @Test
-    //@Ignore("Required Herd running locally")
+    @Ignore("Required Herd running locally")
     public void testHerdCompleteCeylonForCar() throws Exception {
         ModuleDetails[] expected = new ModuleDetails[]{
                 ccollectionDetails,
@@ -319,7 +320,7 @@ public class HerdTestCase extends AbstractTest {
     }
 
     @Test
-    //@Ignore("Required Herd running locally")
+    @Ignore("Required Herd running locally")
     public void testHerdCompleteCeylonForJar() throws Exception {
         ModuleDetails[] expected = new ModuleDetails[]{
                 cruntimeDetails,
@@ -328,7 +329,7 @@ public class HerdTestCase extends AbstractTest {
     }
 
     @Test
-    //@Ignore("Required Herd running locally")
+    @Ignore("Required Herd running locally")
     public void testHerdCompleteCeylonForCeylonCode() throws Exception {
         ModuleDetails[] expected = new ModuleDetails[]{
                 new ModuleDetails("ceylon.collection", null, "Apache Software License", set("Stéphane Épardaud"), set("0.4", "0.5", "0.6", "0.6.1", "1.0.0", "1.1.0", CEYLON_RELEASE), deps(), carJsSrc, true, "The Herd"),
@@ -344,7 +345,7 @@ public class HerdTestCase extends AbstractTest {
     }
 
     @Test
-    //@Ignore("Required Herd running locally")
+    @Ignore("Required Herd running locally")
     public void testHerdCompleteForAll() throws Exception {
         ModuleDetails[] expected = new ModuleDetails[]{
                 jsonDetailsAll_jvm,
@@ -353,7 +354,7 @@ public class HerdTestCase extends AbstractTest {
     }
 
     @Test
-    //@Ignore("Required Herd running locally")
+    @Ignore("Required Herd running locally")
     public void testHerdCompleteStopsAfterCompleteName() throws Exception {
         ModuleDetails[] expected = new ModuleDetails[]{
         };
@@ -361,7 +362,7 @@ public class HerdTestCase extends AbstractTest {
     }
 
     @Test
-    //@Ignore("Required Herd running locally")
+    @Ignore("Required Herd running locally")
     public void testHerdCompleteCeylon() throws Exception {
         ModuleDetails[] expected = new ModuleDetails[]{
                 ccollectionDetails,
@@ -387,7 +388,7 @@ public class HerdTestCase extends AbstractTest {
     }
 
     @Test
-    //@Ignore("Required Herd running locally")
+    @Ignore("Required Herd running locally")
     public void testHerdCompleteCeylonDot() throws Exception {
         ModuleDetails[] expected = new ModuleDetails[]{
                 ccollectionDetails,
@@ -413,7 +414,7 @@ public class HerdTestCase extends AbstractTest {
     }
 
     @Test
-    //@Ignore("Required Herd running locally")
+    @Ignore("Required Herd running locally")
     public void testHerdCompleteVersions() throws Exception {
         ModuleVersionDetails[] expected = new ModuleVersionDetails[]{
                 jsonVersionDetail0_3_1,
@@ -490,7 +491,7 @@ public class HerdTestCase extends AbstractTest {
 
     
     @Test
-    //@Ignore("Required Herd running locally")
+    @Ignore("Required Herd running locally")
     public void testHerdCompleteVersionsComplete() throws Exception {
         ModuleVersionDetails[] expected = new ModuleVersionDetails[]{
                 jsonVersionDetail1_1_1,
@@ -499,7 +500,7 @@ public class HerdTestCase extends AbstractTest {
     }
 
     @Test
-    //@Ignore("Required Herd running locally")
+    @Ignore("Required Herd running locally")
     public void testHerdCompleteVersionsCompleteApi1() throws Exception {
         ModuleVersionDetails[] expected = new ModuleVersionDetails[]{
                 jsonVersionDetail0_5_Api1,
@@ -508,7 +509,7 @@ public class HerdTestCase extends AbstractTest {
     }
 
     @Test
-    //@Ignore("Required Herd running locally")
+    @Ignore("Required Herd running locally")
     public void testHerdCompleteVersionsBinaryIncompatible() throws Exception {
         ModuleVersionDetails[] expected = new ModuleVersionDetails[]{
         };
@@ -516,7 +517,7 @@ public class HerdTestCase extends AbstractTest {
     }
 
     @Test
-    //@Ignore("Required Herd running locally")
+    @Ignore("Required Herd running locally")
     public void testHerdCompleteVersionsFiltered() throws Exception {
         ModuleVersionDetails[] expected = new ModuleVersionDetails[]{
                 jsonVersionDetail1_0_0,
@@ -526,7 +527,7 @@ public class HerdTestCase extends AbstractTest {
     }
 
     @Test
-    //@Ignore("Required Herd running locally")
+    @Ignore("Required Herd running locally")
     public void testHerdCompleteVersionsMembersFiltered() throws Exception {
         ModuleVersionDetails[] expected = new ModuleVersionDetails[]{
                 jsonVersionDetail1_0_1,
@@ -535,7 +536,7 @@ public class HerdTestCase extends AbstractTest {
     }
 
     @Test
-    //@Ignore("Required Herd running locally")
+    @Ignore("Required Herd running locally")
     public void testHerdSearch() throws Exception {
         ModuleDetails[] expected = new ModuleDetails[]{
                 ccollectionDetails,
@@ -586,19 +587,19 @@ public class HerdTestCase extends AbstractTest {
     };
 
     @Test
-    //@Ignore("Required Herd running locally")
+    @Ignore("Required Herd running locally")
     public void testHerdCompleteBinaryIncompatible() throws Exception {
         testComplete("", binIncompatDetails, getRepositoryManager(), Type.JVM, 1234, 0);
     }
 
     @Test
-    //@Ignore("Required Herd running locally")
+    @Ignore("Required Herd running locally")
     public void testHerdSearchBinaryIncompatible() throws Exception {
         testSearchResults("", Type.JVM, binIncompatDetails, null, null, getRepositoryManager(), null, 1234, 0);
     }
 
     @Test
-    //@Ignore("Required Herd running locally")
+    @Ignore("Required Herd running locally")
     public void testHerdSearchFilteredJvm() throws Exception {
         ModuleDetails[] expected = new ModuleDetails[]{
                 clocaleDetails,
@@ -608,7 +609,7 @@ public class HerdTestCase extends AbstractTest {
     }
     
     @Test
-    //@Ignore("Required Herd running locally")
+    @Ignore("Required Herd running locally")
     public void testHerdSearchFilteredCar() throws Exception {
         ModuleDetails[] expected = new ModuleDetails[]{
                 clocaleDetails,
@@ -618,7 +619,7 @@ public class HerdTestCase extends AbstractTest {
     }
     
     @Test
-    //@Ignore("Required Herd running locally")
+    @Ignore("Required Herd running locally")
     public void testHerdSearchFilteredJar() throws Exception {
         ModuleDetails[] expected = new ModuleDetails[]{
                 cruntimeDetails,
@@ -627,7 +628,7 @@ public class HerdTestCase extends AbstractTest {
     }
     
     @Test
-    //@Ignore("Required Herd running locally")
+    @Ignore("Required Herd running locally")
     public void testHerdSearchFilteredJs() throws Exception {
         ModuleDetails[] expected = new ModuleDetails[]{
                 clangDetails,
@@ -638,7 +639,7 @@ public class HerdTestCase extends AbstractTest {
     }
     
     @Test
-    //@Ignore("Required Herd running locally")
+    @Ignore("Required Herd running locally")
     public void testHerdSearchFilteredComplete() throws Exception {
         ModuleDetails[] expected = new ModuleDetails[]{
                 jsonDetailsAll_jvm,
@@ -647,7 +648,7 @@ public class HerdTestCase extends AbstractTest {
     }
 
     @Test
-    //@Ignore("Required Herd running locally")
+    @Ignore("Required Herd running locally")
     public void testHerdSearchFilteredLicense() throws Exception {
         ModuleDetails[] expected = new ModuleDetails[]{
                 cdbcDetails,
@@ -656,7 +657,7 @@ public class HerdTestCase extends AbstractTest {
     }
 
     @Test
-    //@Ignore("Required Herd running locally")
+    @Ignore("Required Herd running locally")
     public void testHerdSearchFilteredAuthor() throws Exception {
         ModuleDetails[] expected = new ModuleDetails[]{
                 cdbcDetails,
@@ -666,7 +667,7 @@ public class HerdTestCase extends AbstractTest {
     }
     
     @Test
-    //@Ignore("Required Herd running locally")
+    @Ignore("Required Herd running locally")
     public void testHerdSearchFilteredDependencies() throws Exception {
         ModuleDetails[] expected = new ModuleDetails[]{
                 cfileDetails,
@@ -679,7 +680,7 @@ public class HerdTestCase extends AbstractTest {
     }
 
     @Test
-    //@Ignore("Required Herd running locally")
+    @Ignore("Required Herd running locally")
     public void testHerdSearchFilteredCompleteApi1() throws Exception {
         ModuleDetails[] expected = new ModuleDetails[]{
                 jsonDetailsAll_Api1,
@@ -688,7 +689,7 @@ public class HerdTestCase extends AbstractTest {
     }
 
     @Test
-    //@Ignore("Required Herd running locally")
+    @Ignore("Required Herd running locally")
     public void testHerdSearchPaged() throws Exception {
         ModuleDetails[] expected = new ModuleDetails[]{
                 cdbcDetails,
@@ -698,7 +699,7 @@ public class HerdTestCase extends AbstractTest {
     }
 
     @Test
-    //@Ignore("Required Herd running locally")
+    @Ignore("Required Herd running locally")
     public void testHerdAndRepoSearch() throws Exception {
         ModuleDetails[] expected = new ModuleDetails[]{
                 ccollectionDetails,
@@ -733,7 +734,7 @@ public class HerdTestCase extends AbstractTest {
     }
 
     @Test
-    //@Ignore("Required Herd running locally")
+    @Ignore("Required Herd running locally")
     public void testHerdAndRepoSearchPaged1() throws Exception {
         ModuleDetails[] expected = new ModuleDetails[]{
                 ccollectionDetails,
@@ -744,7 +745,7 @@ public class HerdTestCase extends AbstractTest {
     }
 
     @Test
-    //@Ignore("Required Herd running locally")
+    @Ignore("Required Herd running locally")
     public void testHerdAndRepoSearchPaged2() throws Exception {
         // first page
         ModuleDetails[] expected = new ModuleDetails[]{
@@ -817,7 +818,7 @@ public class HerdTestCase extends AbstractTest {
     }
 
     @Test
-    //@Ignore("Required Herd running locally")
+    @Ignore("Required Herd running locally")
     public void testHerdSearchModulesFilteredByMember() throws Exception {
         ModuleDetails[] expected = new ModuleDetails[]{
                 clangDetails,
@@ -828,7 +829,7 @@ public class HerdTestCase extends AbstractTest {
     }
 
     @Test
-    //@Ignore("Required Herd running locally")
+    @Ignore("Required Herd running locally")
     public void testHerdSearchModulesFilteredByNameAndMember() throws Exception {
         ModuleDetails[] expected = new ModuleDetails[]{
                 cprocessDetails,
@@ -838,7 +839,7 @@ public class HerdTestCase extends AbstractTest {
     }
 
     @Test
-    //@Ignore("Required Herd running locally")
+    @Ignore("Required Herd running locally")
     public void testHerdSearchModulesFilteredByExactMember() throws Exception {
         ModuleDetails[] expected = new ModuleDetails[]{
                 clangDetails,
@@ -848,7 +849,7 @@ public class HerdTestCase extends AbstractTest {
     }
 
     @Test
-    //@Ignore("Required Herd running locally")
+    @Ignore("Required Herd running locally")
     public void testHerdSearchModulesFilteredByExactMemberKeyword() throws Exception {
         ModuleDetails[] expected = new ModuleDetails[]{
                 cmathDetails,
@@ -858,7 +859,7 @@ public class HerdTestCase extends AbstractTest {
     }
 
     @Test
-    //@Ignore("Required Herd running locally")
+    @Ignore("Required Herd running locally")
     public void testHerdSearchModulesFilteredByMemberKeyword() throws Exception {
         ModuleDetails[] expected = new ModuleDetails[]{
                 cmathDetails,
@@ -868,7 +869,7 @@ public class HerdTestCase extends AbstractTest {
     }
 
     @Test
-    //@Ignore("Required Herd running locally")
+    @Ignore("Required Herd running locally")
     public void testHerdSearchModulesFilteredByPackage() throws Exception {
         ModuleDetails[] expected = new ModuleDetails[]{
                 clangDetails,
@@ -878,7 +879,7 @@ public class HerdTestCase extends AbstractTest {
     }
 
     @Test
-    //@Ignore("Required Herd running locally")
+    @Ignore("Required Herd running locally")
     public void testHerdSearchModulesFilteredByExactPackage() throws Exception {
         ModuleDetails[] expected = new ModuleDetails[]{
                 clangDetails,
