@@ -22,6 +22,6 @@ package biz.wiz.quiz;
  */
 public class run_ {
     public static void main(String[] args) throws Exception {
-        run_.class.getClassLoader().loadClass("helloworld");
+        run_.class.getClassLoader().loadClass("hello_");
     }
 }

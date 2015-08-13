@@ -25,7 +25,7 @@ import com.redhat.ceylon.compiler.java.metadata.Module;
 @Module(name = "io.xov.yalp",
         version = "11.0.2.Final",
         dependencies = {
-                @Import(name = "org.jboss.jboss-vfs", version = "3.1.0.Final"),
+                @Import(name = "org.jboss:jboss-vfs", version = "3.1.0.Final"),
                 @Import(name = "java.tls", version = "7")
         })
 public class $module_ {

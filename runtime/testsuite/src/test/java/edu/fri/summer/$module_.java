@@ -25,7 +25,7 @@ import com.redhat.ceylon.compiler.java.metadata.Module;
 @Module(name = "edu.fri.summer",
         version = "1.0.0.Beta23",
         dependencies = {
-                @Import(name = "org.jboss.modules.jboss-modules",
+                @Import(name = "org.jboss.modules:jboss-modules",
                         version = "1.3.3.Final")
         })
 public class $module_ {
