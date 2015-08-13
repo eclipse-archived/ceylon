@@ -7,6 +7,7 @@ import static java.lang.Character.isLowerCase;
 import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
 import static java.util.Collections.emptyMap;
+import static java.util.Collections.singleton;
 import static java.util.Collections.singletonList;
 
 import java.util.ArrayList;
@@ -2484,7 +2485,7 @@ public class ModelUtil {
             Declaration decl, Backend backend) {
         return getNativeDeclaration(decl, 
                 backend == null ? null :
-                    Collections.singleton(backend.nativeAnnotation));
+                    singleton(backend.nativeAnnotation));
     }
     
     public static Declaration getNativeDeclaration(
@@ -2492,9 +2493,10 @@ public class ModelUtil {
         if (dec.isNative() && 
                 backends != null) {
             Declaration abstraction = null;
-            if (backends.isEmpty() && !dec.isNativeHeader()
-                    || backends.contains(
-                            dec.getNativeBackend())) {
+            if (backends.isEmpty() && 
+                    !dec.isNativeHeader()
+                || backends.contains(
+                        dec.getNativeBackend())) {
                 abstraction = dec;
             }
             else {
@@ -2502,9 +2504,10 @@ public class ModelUtil {
                         dec.getOverloads();
                 if (overloads != null) {
                     for (Declaration d: overloads) {
-                        if (backends.isEmpty() && !d.isNativeHeader()
-                                || backends.contains(
-                                        d.getNativeBackend())) {
+                        if (backends.isEmpty() && 
+                                !d.isNativeHeader()
+                            || backends.contains(
+                                    d.getNativeBackend())) {
                             abstraction = d;
                             break;
                         }
@@ -2565,10 +2568,8 @@ public class ModelUtil {
                 if (nat==null) {
                     return dec;
                 }
-                else {
-                    if (nat.equals(backend)) {
-                        return dec;
-                    }
+                else if (nat.equals(backend)) {
+                    return dec;
                 }
             }
         }
@@ -2576,20 +2577,24 @@ public class ModelUtil {
     }
     
     public static Declaration getNativeHeader(Declaration dec) {
-        Declaration header = getNativeHeader(dec.getContainer(), dec.getName());
+        Declaration header = 
+                getNativeHeader(dec.getContainer(), 
+                        dec.getName());
         // In case of objects make sure we return the same type of
         // declaration we were called with
-        if (dec instanceof ClassOrInterface
-                && header instanceof Value
-                && ModelUtil.isObject((Value)header)) {
-            header = ((Value)header).getType().getDeclaration();
+        if (dec instanceof ClassOrInterface && 
+                header instanceof Value) {
+            Value value = (Value) header;
+            if (isObject(value)) {
+                return value.getType().getDeclaration();
+            }
         }
         // In case of constructors we make sure we return the same
         // type of declaration we were called with
-        else if (dec instanceof Constructor
+        if (dec instanceof Constructor
                 && header instanceof FunctionOrValue
                 && isConstructor(header)) {
-            header = getConstructor(header);
+            return getConstructor(header);
         }
         return header;
     }
@@ -2608,21 +2613,25 @@ public class ModelUtil {
      */
     public static Declaration getNativeHeader(Scope container, String name) {
         if (container instanceof Declaration) {
-            Declaration cd = (Declaration)container;
+            Declaration cd = (Declaration) container;
             if (cd.isNative() && !cd.isNativeHeader()) {
                 // The container is a native implementation so
                 // we first need to find _its_ header
-                Scope c =
-                        (Scope)cd.getContainer().getDirectMemberForBackend(
+                Declaration c =
+                        cd.getContainer()
+                            .getDirectMemberForBackend(
                                 cd.getName(),
                                 Backend.None.nativeAnnotation);
                 if (c != null) {
                     // Is this the Value part of an object?
-                    if (c instanceof Value && isObject((Value)c)) {
-                        // Then use the Class part as the container
-                        c = ((Value)c).getType().getDeclaration();
+                    if (c instanceof Value) {
+                        Value v = (Value) c;
+                        if (isObject(v)) {
+                            // Then use the Class part as the container
+                            c = v.getType().getDeclaration();
+                        }
                     }
-                    container = c;
+                    container = (Scope) c;
                 }
             }
         }
@@ -2630,8 +2639,10 @@ public class ModelUtil {
         Declaration header;
         if (container instanceof Class && name == null) {
             // Special case for the default constructor
-            header = ((Class)container).getDefaultConstructorFunctionOrValue();
-        } else {
+            Class c = (Class) container;
+            header = c.getDefaultConstructorFunctionOrValue();
+        }
+        else {
             header =
                     container.getDirectMemberForBackend(
                             name,
@@ -2641,21 +2652,20 @@ public class ModelUtil {
     }
     
     // Check if the Value is part of an object
-    public static boolean isObject(Value v) {
-        Type type = v.getType();
+    public static boolean isObject(Value value) {
+        Type type = value.getType();
         // Check type because in case of compile errors it can be null
-        if (type != null) {
-            TypeDeclaration typeDecl = type.getDeclaration();
-            return typeDecl.isAnonymous();
-        }
-        return false;
+        return type != null &&
+                type.getDeclaration()
+                    .isAnonymous();
     }
 
-    public static boolean isImplemented(Declaration decl) {
-        if (decl instanceof FunctionOrValue) {
-            FunctionOrValue fov = (FunctionOrValue) decl;
+    public static boolean isImplemented(Declaration dec) {
+        if (dec instanceof FunctionOrValue) {
+            FunctionOrValue fov = (FunctionOrValue) dec;
             return fov.isImplemented();
-        } else if (decl instanceof Constructor) {
+        }
+        else if (dec instanceof Constructor) {
             // For now constructors are always implemented
             return true;
         }
@@ -2665,7 +2675,8 @@ public class ModelUtil {
     public static boolean eq(Object decl, Object other) {
         if (decl == null) {
             return other == null;
-        } else {
+        }
+        else {
             return decl.equals(other);
         }
     }
