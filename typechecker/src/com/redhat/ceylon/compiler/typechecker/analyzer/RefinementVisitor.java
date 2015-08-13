@@ -200,7 +200,7 @@ public class RefinementVisitor extends Visitor {
             if (decls.size() > 1) {
                 if (!dec.isShared()) {
                     that.addError(
-                            "native implementation must have a header: " +
+                            "shared native implementation must have a header: " +
                                     message(dec));
                 }
                 header = 
