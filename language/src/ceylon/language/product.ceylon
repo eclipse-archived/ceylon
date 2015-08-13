@@ -1,5 +1,14 @@
 "Given a nonempty stream of [[Numeric]] values, return the 
- product of the values."
+ product of the values.
+ 
+     {Float+} values = ... ;
+     Float result = sum(values);
+ 
+ For the case of a possibly-empty stream, form a nonempty 
+ stream starting with the unit element.
+ 
+     {Float*} values = ... ;
+     Float result = product { 1, values };"
 see (`function sum`)
 shared Value product<Value>({Value+} values) 
         given Value satisfies Numeric<Value> {
