@@ -8,7 +8,7 @@
  stream starting with the zero element.
  
      {Float*} values = ... ;
-     Float total = sum { 0, values };"
+     Float total = sum { 0, *values };"
 see (`function product`)
 shared Value sum<Value>({Value+} values) 
         given Value satisfies Summable<Value> {
