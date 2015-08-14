@@ -320,11 +320,30 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         <synopsis>FunctionExpression: ("function" | "void")? Parameters+ (LazySpecifier | Block)</synopsis>
         
         <para>The parameters are the parameters of the function. The lazy 
-        specifier or block of code is the implementation of the function. 
-        If the <literal>void</literal> keyword is specified, the function 
-        is a <literal>void</literal> function. Otherwise, it is a 
-        non-<literal>void</literal> function, and its return type is 
-        inferred.</para>
+        specifier or block of code is the implementation of the function.</para>
+        
+        <para>An anonymous function may be considered <literal>void</literal>:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>if the <literal>void</literal> keyword is specified, 
+                the function is a <literal>void</literal> function, or</para>
+            </listitem>
+            <listitem>
+                <para>if the <literal>function</literal> keyword is specified,
+                the function is not a <literal>void</literal> function, or,
+                </para>
+            </listitem>
+            <listitem>
+                <para>otherwise, the function is <literal>void</literal> if 
+                and only if it is defined using a block in which no 
+                <literal>return</literal> statement with an expression occurs 
+                sequentially, as defined in <xref linkend="blockstructure"/>.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <para>If the function is not considered <literal>void</literal>, 
+        then its return type is inferred.</para>
         
         <para>The type of an anonymous function expression is the callable 
         type of the function, as specified in 
