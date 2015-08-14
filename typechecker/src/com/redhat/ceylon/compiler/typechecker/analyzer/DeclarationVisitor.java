@@ -1080,15 +1080,16 @@ public abstract class DeclarationVisitor extends Visitor {
     @Override
     public void visit(Tree.FunctionArgument that) {
         Tree.Type type = that.getType();
-        Function m = new Function();
-        m.setName("anonymous#"+fid++);
-        m.setAnonymous(true);
+        final Function f = new Function();
+        f.setName("anonymous#"+fid++);
+        f.setAnonymous(true);
         if (type.getToken()!=null) {
-            m.setDeclaredVoid(type instanceof Tree.VoidModifier);
+            f.setDeclaredVoid(type instanceof Tree.VoidModifier);
         }
         else {
-            if (that.getBlock()!=null) {
-                m.setDeclaredVoid(true);
+            Tree.Block block = that.getBlock();
+            if (block!=null) {
+                f.setDeclaredVoid(true);
                 new Visitor() {
                     @Override
                     public void visit(Tree.Declaration that) {}
@@ -1098,23 +1099,22 @@ public abstract class DeclarationVisitor extends Visitor {
                     public void visit(Tree.ObjectExpression that) {}
                     @Override
                     public void visit(Tree.Return that) {
-                        m.setDeclaredVoid(false);
+                        if (that.getExpression()!=null) {
+                            f.setDeclaredVoid(false);
+                        }
                         super.visit(that);
                     }
-                }.visit(that.getBlock());
-            }
-            else {
-                m.setDeclaredVoid(false);
+                }.visit(block);
             }
         }
-        that.setDeclarationModel(m);
-        visitArgument(that, m);
-        Scope o = enterScope(m);
-        Declaration d = beginDeclaration(m);
+        that.setDeclarationModel(f);
+        visitArgument(that, f);
+        Scope o = enterScope(f);
+        Declaration d = beginDeclaration(f);
         super.visit(that);
         endDeclaration(d);
         exitScope(o);
-        setParameterLists(m, that.getParameterLists(), that);
+        setParameterLists(f, that.getParameterLists(), that);
     }
     
     @Override

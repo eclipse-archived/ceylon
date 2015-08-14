@@ -230,7 +230,12 @@ public class ExpressionVisitor extends Visitor {
         Function fun = that.getDeclarationModel();
         Tree.Type type = that.getType();
         if (e==null) {
-            Tree.Type rt = beginReturnScope(type);
+            Tree.Type ret = 
+                    fun.isDeclaredVoid() && 
+                    !(type instanceof Tree.VoidModifier) ? 
+                            new Tree.VoidModifier(null) : 
+                            type;
+            Tree.Type rt = beginReturnScope(ret);
             Declaration od = 
                     beginReturnDeclaration(fun);
             super.visit(that);
@@ -254,7 +259,7 @@ public class ExpressionVisitor extends Visitor {
                 e.addError("anonymous function is declared void so specified expression must be a statement");
             }
         }
-        if (type instanceof Tree.VoidModifier) {
+        if (fun.isDeclaredVoid()) {
             fun.setType(unit.getAnythingType());            
         }
         TypedReference reference = fun.getTypedReference();
