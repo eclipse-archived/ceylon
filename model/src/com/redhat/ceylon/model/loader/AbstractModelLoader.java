@@ -3083,12 +3083,16 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             String relativeName = pkgName.isEmpty() ? qualifiedName : qualifiedName.substring(pkgName.length()+1);
             for(String name : relativeName.split("[\\$\\.]")){
                 if(!name.isEmpty()){
-                    path.add(0, klass.getName());
+                    path.add(name);
                 }
             }
             if(path.size() > 1){
                 // find the proper class mirror for the container
-                klass = loadClass(module, pkgName, path.get(0));
+                klass = loadClass(module, 
+                        pkgName, 
+                        new StringBuilder(pkgName)
+                            .append('.')
+                            .append(path.get(0)).toString());
                 if(klass == null)
                     return false;
             }
@@ -4785,7 +4789,21 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         synchronized(getLock()){
             // keep in sync with getOrCreateDeclaration
             for (Declaration decl : declarations) {
-                String fqn = decl.getQualifiedNameString().replace("::", ".");
+                String qualifiedNameString = decl.getQualifiedNameString();
+                String fqn;
+                if (qualifiedNameString.contains("::")) {
+                    String[] parts = qualifiedNameString.split("::");
+                    if (parts.length == 2) {
+                        String pkgName = parts[0];
+                        String className = parts[1];
+                        className = className.replace(".", "$");
+                        fqn = new StringBuilder(pkgName).append('.').append(className).toString();
+                    } else {
+                        fqn = qualifiedNameString;
+                    }
+                } else {
+                    fqn = qualifiedNameString;
+                }
                 Module module = ModelUtil.getModuleContainer(decl.getContainer());
                 Map<String, Declaration> firstCache = null;
                 Map<String, Declaration> secondCache = null;
