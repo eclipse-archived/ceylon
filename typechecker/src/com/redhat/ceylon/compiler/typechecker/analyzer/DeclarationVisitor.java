@@ -1079,20 +1079,42 @@ public abstract class DeclarationVisitor extends Visitor {
 
     @Override
     public void visit(Tree.FunctionArgument that) {
+        Tree.Type type = that.getType();
         Function m = new Function();
         m.setName("anonymous#"+fid++);
         m.setAnonymous(true);
+        if (type.getToken()!=null) {
+            m.setDeclaredVoid(type instanceof Tree.VoidModifier);
+        }
+        else {
+            if (that.getBlock()!=null) {
+                m.setDeclaredVoid(true);
+                new Visitor() {
+                    @Override
+                    public void visit(Tree.Declaration that) {}
+                    @Override
+                    public void visit(Tree.TypedArgument that) {}
+                    @Override
+                    public void visit(Tree.ObjectExpression that) {}
+                    @Override
+                    public void visit(Tree.Return that) {
+                        m.setDeclaredVoid(false);
+                        super.visit(that);
+                    }
+                }.visit(that.getBlock());
+            }
+            else {
+                m.setDeclaredVoid(false);
+            }
+        }
         that.setDeclarationModel(m);
         visitArgument(that, m);
         Scope o = enterScope(m);
-        Declaration d = 
-                beginDeclaration(that.getDeclarationModel());
+        Declaration d = beginDeclaration(m);
         super.visit(that);
         endDeclaration(d);
         exitScope(o);
         setParameterLists(m, that.getParameterLists(), that);
-        Tree.Type type = that.getType();
-        m.setDeclaredVoid(type instanceof Tree.VoidModifier);
     }
     
     @Override

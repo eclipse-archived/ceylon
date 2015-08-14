@@ -9,6 +9,10 @@ class Lambdas() {
     repeat(10, (Integer n) => print("Hello"));
     repeat(10, (Integer n) => print("Hello"));
     repeat(10, (Integer n) => print("Hello"));
+    
+    "hello world".each((ch) { print(ch.letter.string); });
+    @error "hello world".each((ch) { if (ch.letter) { return null; } });
+    repeat(10, (n) { print("Hello"); });
 
     @error repeat(10, (Float n) => print("Hello"));
     
