@@ -287,7 +287,7 @@ shared interface Iterable<out Element=Anything,
      
      For example:
      
-         words.each(void (word) {
+         words.each((word) {
              print(word.lowercased);
              print(word.uppercased);
          });
