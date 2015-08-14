@@ -1098,6 +1098,8 @@ public abstract class DeclarationVisitor extends Visitor {
                     @Override
                     public void visit(Tree.ObjectExpression that) {}
                     @Override
+                    public void visit(Tree.FunctionArgument that) {}
+                    @Override
                     public void visit(Tree.Return that) {
                         if (that.getExpression()!=null) {
                             f.setDeclaredVoid(false);
