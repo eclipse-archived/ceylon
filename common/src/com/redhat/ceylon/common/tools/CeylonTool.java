@@ -33,9 +33,11 @@ import java.util.List;
 import java.util.Map;
 
 import com.redhat.ceylon.common.Constants;
+import com.redhat.ceylon.common.FileUtil;
 import com.redhat.ceylon.common.OSUtil;
 import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.common.config.CeylonConfig;
+import com.redhat.ceylon.common.config.CeylonConfigFinder;
 import com.redhat.ceylon.common.tool.AnnotatedToolModel;
 import com.redhat.ceylon.common.tool.Argument;
 import com.redhat.ceylon.common.tool.ArgumentModel;
@@ -356,12 +358,18 @@ public class CeylonTool implements Tool {
         return result;
     }
 
-    private CeylonConfig setupConfig(Tool tool) {
+    private CeylonConfig setupConfig(Tool tool) throws IOException {
         if (tool instanceof CeylonBaseTool) {
             CeylonBaseTool cbt = (CeylonBaseTool)tool;
             File cwd = cbt.getCwd();
-            if (cwd != null) {
-                CeylonConfig config = CeylonConfig.createFromLocalDir(cwd);
+            File cfgFile = cbt.getConfig();
+            if (cfgFile != null) {
+                File absCfgFile = FileUtil.applyCwd(cwd, cfgFile);
+                CeylonConfig config = CeylonConfigFinder.DEFAULT.loadConfigFromFile(absCfgFile);
+                return CeylonConfig.set(config);
+            }
+            if (cwd != null && cwd.isDirectory()) {
+                CeylonConfig config = CeylonConfigFinder.loadDefaultConfig(cwd);
                 return CeylonConfig.set(config);
             }
         }
