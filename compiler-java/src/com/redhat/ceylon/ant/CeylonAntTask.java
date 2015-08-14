@@ -70,6 +70,7 @@ public abstract class CeylonAntTask extends Task {
     private boolean stacktraces;
 
     private String cwd;
+    private String config;
     private String verbose;
     private List<Define> defines = new ArrayList<Define>(0);
     
@@ -99,6 +100,18 @@ public abstract class CeylonAntTask extends Task {
      */
     public void setCwd(String cwd) {
         this.cwd = cwd;
+    }
+
+    protected String getConfig() {
+        return config;
+    }
+
+    /**
+     * Specifies the configuration file to use for this task
+     * @param config path to the configuration file
+     */
+    public void setConfig(String config) {
+        this.config = config;
     }
 
     public void setVerbose(String verbose){
@@ -281,6 +294,10 @@ public abstract class CeylonAntTask extends Task {
     protected void completeCommandline(Commandline cmd) {
         if (getCwd() != null) {
             appendOptionArgument(cmd, "--cwd", getCwd());
+        }
+        
+        if (getConfig() != null) {
+            appendOptionArgument(cmd, "--config", getConfig());
         }
         
         appendVerboseOption(cmd, verbose);
