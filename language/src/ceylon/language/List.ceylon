@@ -1029,4 +1029,73 @@ shared interface List<out Element=Anything>
         
     }
     
+    "The permutations of this list, as a stream of nonempty
+     [[sequences|Sequence]]. That is, a stream producing 
+     every sequence that has the same [[size]] as this list
+     and contains every element of this list exactly once.
+     
+     For example, 
+     
+         \"ABC\".permutations.map(String)
+     
+     is the stream of strings
+     `{ \"ABC\", \"ACB\", \"CAB\", \"CBA\", \"BCA\", \"BAC\" }`.
+     
+     If this list is empty, the resulting stream is empty."
+    shared {[Element+]*} permutations
+            => object satisfies {[Element+]*} {
+        
+        iterator()
+                => let (list=outer)
+                object satisfies Iterator<[Element+]> {
+            
+            value length = list.size;
+            value permutation = Array(0:length);
+            value indexes = Array(0:length);
+            value swaps = Array(0:length);
+            value directions = Array.ofSize(length, -1);
+            
+            variable value counter = length;
+            
+            shared actual [Element+]|Finished next() {
+                while (counter > 0) {
+                    if (counter == length) {
+                        counter--;
+                        value result 
+                                = permutation.collect((i) { 
+                            assert (exists elem = list[i]);
+                            return elem;
+                        });
+                        assert (nonempty result);
+                        return result;
+                    }
+                    else {
+                        assert (exists swap = swaps[counter],
+                            exists dir = directions[counter]);
+                        if (swap > 0) {
+                            assert (exists index 
+                                = indexes[counter]);
+                            value otherIndex = index + dir;
+                            assert (exists swapIndex 
+                                = permutation[otherIndex]);
+                            permutation.set(index, swapIndex);
+                            permutation.set(otherIndex, counter);
+                            indexes.set(swapIndex, index);
+                            indexes.set(counter, otherIndex);
+                            swaps.set(counter, swap-1);
+                            counter = length;
+                        }
+                        else {
+                            swaps.set(counter, counter);
+                            directions.set(counter, -dir);
+                            counter--;
+                        }
+                    }
+                }
+                return finished;
+            }
+        };
+        
+    };
+    
 }

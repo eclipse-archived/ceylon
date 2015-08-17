@@ -2166,8 +2166,6 @@ public final class String
     }
     
     @Ignore
-    @SuppressWarnings("rawtypes")
-    @TypeInfo("ceylon.language::Iterable<ceylon.language::Character,ceylon.language::Character,ceylon.language::Tuple<ceylon.language::Tuple<ceylon.language::Character,ceylon.language::Character,ceylon.language::Empty>>>")
     public static Iterable getPaired(java.lang.String value) {
         return instance(value).getPaired();
     }
@@ -2255,6 +2253,12 @@ public final class String
                        @Name("destinationPosition") @Defaulted long destinationPosition, 
                        @Name("length") @Defaulted long length){
         copyTo(value, destination, sourcePosition, destinationPosition, length);
+    }
+    
+    @Ignore
+    public static Iterable<? extends Sequence<? extends Character>, ? extends java.lang.Object>
+    getPermutations(java.lang.String value) {
+        return instance(value).getPermutations();
     }
     
 }
