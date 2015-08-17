@@ -442,4 +442,10 @@ public class LazyTypeAlias extends TypeAlias implements LazyContainer {
         // requires no lazy-loading
         return super.isDeprecated();
     }
+
+    @Override
+    public boolean isCeylon() {
+        // there are no aliases in Java
+        return true;
+    }
 }

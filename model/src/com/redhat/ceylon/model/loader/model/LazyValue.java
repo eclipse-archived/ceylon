@@ -395,4 +395,10 @@ public class LazyValue extends Value implements LazyElement, LocalDeclarationCon
         // requires no lazy-loading
         return super.isDeprecated();
     }
+
+    @Override
+    public boolean isCeylon() {
+        // there are no toplevels in Java
+        return true;
+    }
 }

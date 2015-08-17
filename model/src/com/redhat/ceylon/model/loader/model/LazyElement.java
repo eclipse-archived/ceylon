@@ -13,4 +13,6 @@ public interface LazyElement {
     public boolean isLocal();
     
     public void setLocal(boolean local);
+    
+    public boolean isCeylon();
 }

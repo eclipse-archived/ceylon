@@ -9,22 +9,20 @@ import com.redhat.ceylon.common.BooleanUtil;
 import com.redhat.ceylon.model.loader.mirror.AnnotatedMirror;
 import com.redhat.ceylon.model.loader.mirror.AnnotationMirror;
 import com.redhat.ceylon.model.loader.mirror.ClassMirror;
-import com.redhat.ceylon.model.loader.model.LazyClass;
-import com.redhat.ceylon.model.loader.model.LazyInterface;
 import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.ClassAlias;
 import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.model.typechecker.model.Constructor;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
-import com.redhat.ceylon.model.typechecker.model.Functional;
-import com.redhat.ceylon.model.typechecker.model.Interface;
 import com.redhat.ceylon.model.typechecker.model.Function;
 import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
+import com.redhat.ceylon.model.typechecker.model.Functional;
+import com.redhat.ceylon.model.typechecker.model.Interface;
 import com.redhat.ceylon.model.typechecker.model.ModelUtil;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
-import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.Scope;
 import com.redhat.ceylon.model.typechecker.model.Specification;
+import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.model.typechecker.model.Value;
@@ -123,14 +121,7 @@ public class JvmBackendUtil {
     }
 
     public static boolean isCeylon(TypeDeclaration declaration) {
-        if(declaration instanceof LazyClass){
-            return ((LazyClass)declaration).isCeylon();
-        }
-        if(declaration instanceof LazyInterface){
-            return ((LazyInterface)declaration).isCeylon();
-        }
-        // if it's not one of those it must be from source (Ceylon)
-        return true;
+        return ModelUtil.isCeylonDeclaration(declaration);
     }
 
     public static Declaration getTopmostRefinedDeclaration(Declaration decl){

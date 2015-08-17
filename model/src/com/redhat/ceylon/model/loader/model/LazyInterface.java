@@ -59,6 +59,7 @@ public class LazyInterface extends Interface implements LazyContainer {
         return !isCeylon();
     }
     
+    @Override
     public boolean isCeylon() {
         return isCeylon;
     }

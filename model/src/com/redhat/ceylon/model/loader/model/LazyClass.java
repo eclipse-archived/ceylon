@@ -65,6 +65,7 @@ public class LazyClass extends Class implements LazyContainer {
         return !isCeylon();
     }
     
+    @Override
     public boolean isCeylon() {
         return isCeylon;
     }

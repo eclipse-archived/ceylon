@@ -20,6 +20,7 @@ import java.util.Map;
 import java.util.Set;
 
 import com.redhat.ceylon.common.Backend;
+import com.redhat.ceylon.model.loader.model.LazyElement;
 
 
 
@@ -2926,5 +2927,13 @@ public class ModelUtil {
         } else {
             return null;
         }
+    }
+    
+    public static boolean isCeylonDeclaration(Declaration declaration){
+        if(declaration instanceof LazyElement){
+            return ((LazyElement)declaration).isCeylon();
+        }
+        // if it's not one of those it must be from source (Ceylon)
+        return true;
     }
 }

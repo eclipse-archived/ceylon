@@ -387,4 +387,10 @@ public class LazyFunction extends Function implements LazyElement, LocalDeclarat
         // requires no lazy-loading
         return super.isDeprecated();
     }
+
+    @Override
+    public boolean isCeylon() {
+        // there are no toplevels in Java
+        return true;
+    }
 }
