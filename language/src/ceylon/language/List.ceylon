@@ -1041,7 +1041,10 @@ shared interface List<out Element=Anything>
      is the stream of strings
      `{ \"ABC\", \"ACB\", \"CAB\", \"CBA\", \"BCA\", \"BAC\" }`.
      
-     If this list is empty, the resulting stream is empty."
+     If this list is empty, the resulting stream is empty.
+     
+     Note: the permutations are distinct if and only if this 
+     list has no repeated elements."
     shared {[Element+]*} permutations
             => object satisfies {[Element+]*} {
         
