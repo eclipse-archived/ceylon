@@ -72,7 +72,7 @@ shared sealed interface Sequence<out Element=Anything>
      sequence."
     shared default actual [Element+] reversed => Reverse();
     
-    "Produced a sequence formed by repeating the elements of
+    "Produces a sequence formed by repeating the elements of
      this sequence the given [[number of times|times]], or
      the [[empty sequence|empty]] if `times<=0`."
     shared default actual Element[] repeat(Integer times) 
