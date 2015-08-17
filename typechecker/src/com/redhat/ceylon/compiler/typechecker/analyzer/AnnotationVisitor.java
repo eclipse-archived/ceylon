@@ -848,6 +848,7 @@ public class AnnotationVisitor extends Visitor {
             Type t = ann.getTypeModel();
             if (t!=null) {
                 TypeDeclaration td = t.getDeclaration();
+                // this implicitly excludes Java annotations but they are checked in the backend for duplicates
                 if (td.inherits(od)) {
                     for (int j=0; j<i; j++) {
                         Tree.Annotation other = 
