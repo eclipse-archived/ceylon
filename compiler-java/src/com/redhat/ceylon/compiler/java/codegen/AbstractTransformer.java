@@ -456,10 +456,14 @@ public abstract class AbstractTransformer implements Transformation {
         if (canUnbox(type)) {
             if (isCeylonBoolean(type)) {
                 return makeBoolean(false);
-            } else if (isCeylonFloat(type)) {
+            } else if (isCeylonFloat(type)  && type.getUnderlyingType() == null) {
                 return make().Literal(0.0);
-            } else if (isCeylonInteger(type)) {
+            } else if ("float".equals(type.getUnderlyingType())) {
+                return make().Literal((float)0.0);
+            }  else if (isCeylonInteger(type) && type.getUnderlyingType() == null) {
                 return makeLong(0);
+            } else if ("int".equals(type.getUnderlyingType())) {
+                return make().Literal(0);
             } else if (isCeylonCharacter(type)) {
                 return make().Literal(0);
             } else if (isCeylonByte(type)) {
