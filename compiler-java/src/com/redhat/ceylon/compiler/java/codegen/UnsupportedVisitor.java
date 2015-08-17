@@ -1,9 +1,11 @@
 package com.redhat.ceylon.compiler.java.codegen;
 
 import java.util.EnumSet;
+import java.util.List;
 
 import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.Annotation;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.compiler.typechecker.util.NativeUtil;
 import com.redhat.ceylon.model.loader.model.OutputElement;
@@ -141,9 +143,11 @@ public class UnsupportedVisitor extends Visitor {
 
     private void interopAnnotationTargeting(EnumSet<OutputElement> outputs,
             Tree.AnnotationList annotationList) {
-        for (Tree.Annotation annotation : annotationList.getAnnotations()) {
+        List<Annotation> annotations = annotationList.getAnnotations();
+        for (Tree.Annotation annotation : annotations) {
             AnnotationUtil.interopAnnotationTargeting(outputs, annotation, true);
         }
+        AnnotationUtil.duplicateInteropAnnotation(outputs, annotations);
     }
 
 }

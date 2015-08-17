@@ -22,18 +22,23 @@ package com.redhat.ceylon.compiler.java.codegen;
 
 import java.util.EnumSet;
 import java.util.Iterator;
+import java.util.List;
 
 import static com.redhat.ceylon.model.loader.model.OutputElement.*;
 
 import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.compiler.typechecker.analyzer.Warning;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.Annotation;
 import com.redhat.ceylon.model.loader.model.AnnotationProxyClass;
 import com.redhat.ceylon.model.loader.model.AnnotationProxyMethod;
 import com.redhat.ceylon.model.loader.model.AnnotationTarget;
 import com.redhat.ceylon.model.loader.model.OutputElement;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Interface;
+import com.redhat.ceylon.model.typechecker.model.ModelUtil;
+import com.redhat.ceylon.model.typechecker.model.Type;
+import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.model.typechecker.model.Value;
 
 /**
@@ -184,5 +189,43 @@ public class AnnotationUtil {
             result.add(SETTER);
         }
         return result;
+    }
+
+    public static void duplicateInteropAnnotation(EnumSet<OutputElement> outputs, List<Annotation> annotations) {
+        for (int i=0; i<annotations.size(); i++) {
+            Tree.Annotation ann = annotations.get(i);
+            Type t = ann.getTypeModel();
+            EnumSet<OutputElement> mainTargets = interopAnnotationTargeting(outputs, ann, false);
+            if (t!=null && mainTargets != null) {
+                TypeDeclaration td = t.getDeclaration();
+                if (!ModelUtil.isCeylonDeclaration(td)) {
+                    for (int j=0; j<i; j++) {
+                        Tree.Annotation other = annotations.get(j);
+                        Type ot =  other.getTypeModel();
+                        if (ot!=null) {
+                            TypeDeclaration otd = ot.getDeclaration();
+                            if (otd.equals(td)) {
+                                // check if they have the same targets (if not that's fine)
+                                EnumSet<OutputElement> dupeTargets = interopAnnotationTargeting(outputs, other, false);
+                                if(dupeTargets != null){
+                                    EnumSet<OutputElement> sameTargets = intersection(mainTargets, dupeTargets);
+                                    if(!sameTargets.isEmpty()){
+                                        ann.addError("duplicate annotation: there are multiple annotations of type '" + 
+                                                td.getName() + "' for targets: '"+sameTargets+"'");
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private static EnumSet<OutputElement> intersection(EnumSet<OutputElement> mainTargets, EnumSet<OutputElement> dupeTargets) {
+        EnumSet<OutputElement> intersect = EnumSet.copyOf(mainTargets);
+        intersect.retainAll(dupeTargets);
+        return intersect;
     }
 }
