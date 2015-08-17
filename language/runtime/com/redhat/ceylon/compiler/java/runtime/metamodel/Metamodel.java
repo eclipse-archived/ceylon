@@ -64,6 +64,7 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
 import com.redhat.ceylon.model.cmr.JDKUtils;
 import com.redhat.ceylon.model.loader.ModelLoader.DeclarationType;
+import com.redhat.ceylon.model.loader.JvmBackendUtil;
 import com.redhat.ceylon.model.loader.NamingBase;
 import com.redhat.ceylon.model.loader.impl.reflect.mirror.ReflectionClass;
 import com.redhat.ceylon.model.loader.impl.reflect.mirror.ReflectionMethod;
@@ -1147,11 +1148,7 @@ public class Metamodel {
     }
     
     public static boolean isCeylon(com.redhat.ceylon.model.typechecker.model.ClassOrInterface declaration){
-        if(declaration instanceof LazyClass)
-            return ((LazyClass) declaration).isCeylon();
-        if(declaration instanceof LazyInterface)
-            return ((LazyInterface) declaration).isCeylon();
-        throw Metamodel.newModelError("Declaration type not supported: "+declaration);
+        return JvmBackendUtil.isCeylon(declaration);
     }
 
     public static TypeDescriptor getTypeDescriptorForArguments(com.redhat.ceylon.model.typechecker.model.Unit unit, 
