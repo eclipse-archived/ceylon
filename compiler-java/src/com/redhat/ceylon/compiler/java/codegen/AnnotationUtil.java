@@ -59,9 +59,6 @@ public class AnnotationUtil {
             } else {
                 possibleTargets = possibleCeylonTargets(AnnotationTarget.annotationTargets(annoClass));
             }
-            if (possibleTargets == null) {
-                return null;
-            }
             EnumSet<OutputElement> actualTargets = possibleTargets.clone();
             actualTargets.retainAll(outputs);
             
