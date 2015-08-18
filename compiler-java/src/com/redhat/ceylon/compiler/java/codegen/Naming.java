@@ -2082,6 +2082,29 @@ public class Naming extends NamingBase implements LocalId {
         DeclNameFlag[] flags = delegation ? new DeclNameFlag[]{DeclNameFlag.QUALIFIED, DeclNameFlag.DELEGATION}: new DeclNameFlag[]{DeclNameFlag.QUALIFIED};
         return makeTypeDeclarationExpression(null, constructor, flags);
     }
+
+    /**
+     * uRLDecoder is ambiguous because we generate the getURLDecoder getter which gets decoded to urlDecoder,
+     * so for those we have to remember the exact name
+     */
+    public static boolean isAmbiguousGetterName(TypedDeclaration attr) {
+        return isAmbiguousGetterName(attr.getName());
+    }
+
+    /**
+     * uRLDecoder is ambiguous because we generate the getURLDecoder getter which gets decoded to urlDecoder,
+     * so for those we have to remember the exact name.
+     */
+    public static boolean isAmbiguousGetterName(String name) {
+        int cpl = name.codePointCount(0, name.length());
+        if(cpl < 2)
+            return false;
+        int f = name.codePointAt(0);
+        if(!Character.isLowerCase(f) && f != '_')
+            return false;
+        int s = name.codePointAt(1);
+        return Character.isUpperCase(s);
+    }
 }
 
 

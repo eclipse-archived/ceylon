@@ -66,6 +66,7 @@ public class MethodDefinitionBuilder
     private final AbstractTransformer gen;
     
     private final String name;
+    private final String realName;
     
     private long modifiers;
 
@@ -104,11 +105,13 @@ public class MethodDefinitionBuilder
     }
     
     public static MethodDefinitionBuilder getter(AbstractTransformer gen, TypedDeclaration attr, boolean indirect) {
-        return new MethodDefinitionBuilder(gen, false, Naming.getGetterName(attr, indirect));
+        return new MethodDefinitionBuilder(gen, false, Naming.getGetterName(attr, indirect), 
+                Naming.isAmbiguousGetterName(attr) ? attr.getName() : null);
     }
     
     public static MethodDefinitionBuilder setter(AbstractTransformer gen, TypedDeclaration attr) {
-        return new MethodDefinitionBuilder(gen, false, Naming.getSetterName(attr));
+        return new MethodDefinitionBuilder(gen, false, Naming.getSetterName(attr),
+                Naming.isAmbiguousGetterName(attr) ? attr.getName() : null);
     }
     
     public static MethodDefinitionBuilder callable(AbstractTransformer gen) {
@@ -133,8 +136,13 @@ public class MethodDefinitionBuilder
     }
     
     private MethodDefinitionBuilder(AbstractTransformer gen, boolean ignoreAnnotations, String name) {
+        this(gen, ignoreAnnotations, name, null);
+    }
+    
+    private MethodDefinitionBuilder(AbstractTransformer gen, boolean ignoreAnnotations, String name, String realName) {
         this.gen = gen;
         this.name = name;
+        this.realName = realName;
         if (ignoreAnnotations) {
             this.annotationFlags = Annotations.ignore(this.annotationFlags);
         }
@@ -164,6 +172,9 @@ public class MethodDefinitionBuilder
             }
             if (isTransient) {
                 result.appendList(gen.makeAtTransient());
+            }
+            if(realName != null){
+                result.appendList(gen.makeAtName(realName));
             }
         }
         return result;
