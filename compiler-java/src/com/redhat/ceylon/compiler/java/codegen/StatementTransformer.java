@@ -652,8 +652,15 @@ public class StatementTransformer extends AbstractTransformer {
         at(expr);
         if(expectedType == null)
             expectedType = outerExpression.getTypeModel();
+        if (!expectedType.getDeclaration().isAnonymous()) {
+            expectedType = typeFact().denotableType(expectedType);
+        }
         BoxingStrategy boxingStrategy = CodegenUtil.getBoxingStrategy(outerExpression);
-        return List.<JCStatement>of(make().Exec(make().Assign(makeUnquotedIdent(tmpVar), expressionGen().transformExpression(expr, boxingStrategy, typeFact().denotableType(expectedType)))));
+        
+        return List.<JCStatement>of(make().Exec(make().Assign(
+                makeUnquotedIdent(tmpVar), 
+                expressionGen().transformExpression(expr, boxingStrategy, 
+                        expectedType))));
     }
     
     private JCBlock makeThenBlock(Cond cond, Node thenPart, Substitution subs, String tmpVar, Tree.Term outerExpression, Type expectedType) {
