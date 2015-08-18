@@ -130,8 +130,8 @@ public class NativeTests extends CompilerTests {
     @Test
     public void testNativeMethodSharedInvalid() {
         testNativeErrors("NativeMethodSharedInvalid",
-                new CompilerError(20, "native implementation must have a header: 'nativeMethodSharedInvalid'"),
-                new CompilerError(23, "native implementation must have a header: 'nativeMethodSharedInvalid'"));
+                new CompilerError(20, "shared native implementation must have a header: 'nativeMethodSharedInvalid'"),
+                new CompilerError(23, "shared native implementation must have a header: 'nativeMethodSharedInvalid'"));
     }
     
     @Test
@@ -208,8 +208,8 @@ public class NativeTests extends CompilerTests {
     @Test
     public void testNativeAttributeSharedInvalid() {
         testNativeErrors("NativeAttributeSharedInvalid",
-                new CompilerError(20, "native implementation must have a header: 'nativeAttributeSharedInvalid'"),
-                new CompilerError(22, "native implementation must have a header: 'nativeAttributeSharedInvalid'"));
+                new CompilerError(20, "shared native implementation must have a header: 'nativeAttributeSharedInvalid'"),
+                new CompilerError(22, "shared native implementation must have a header: 'nativeAttributeSharedInvalid'"));
     }
     
     @Test
@@ -279,8 +279,8 @@ public class NativeTests extends CompilerTests {
     @Test
     public void testNativeClassSharedInvalid() {
         testNativeErrors("NativeClassSharedInvalid",
-                new CompilerError(20, "native implementation must have a header: 'NativeClassSharedInvalid'"),
-                new CompilerError(22, "native implementation must have a header: 'NativeClassSharedInvalid'"));
+                new CompilerError(20, "shared native implementation must have a header: 'NativeClassSharedInvalid'"),
+                new CompilerError(22, "shared native implementation must have a header: 'NativeClassSharedInvalid'"));
     }
     
     @Test
