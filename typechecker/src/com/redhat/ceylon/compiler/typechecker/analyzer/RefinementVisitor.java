@@ -160,7 +160,7 @@ public class RefinementVisitor extends Visitor {
                 }
             }
             
-            if ((dec.isNative() && !dec.isNativeHeader())
+            if ((dec.isNativeImplementation())
                     || isNativeMember(dec)) {
                 checkNative(that, dec);
             }
@@ -170,11 +170,10 @@ public class RefinementVisitor extends Visitor {
 
     private static boolean isNativeMember(Declaration dec) {
         if (dec.isMember()) {
-                Declaration container = 
-                        (Declaration)
-                            dec.getContainer();
-                return container.isNative() && 
-                        !container.isNativeHeader();
+            Declaration container = 
+                    (Declaration)
+                        dec.getContainer();
+            return container.isNativeImplementation();
         }
         else {
             return false;
@@ -228,7 +227,7 @@ public class RefinementVisitor extends Visitor {
                 new ArrayList<Scope>();
         if (container instanceof Declaration) {
             Declaration cd = (Declaration)container;
-            if (cd.isNative() && !cd.isNativeHeader()) {
+            if (cd.isNativeImplementation()) {
                 // The container is a native implementation so
                 // we first need to find _its_ implementations
                 // but only if there's no header

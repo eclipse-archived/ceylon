@@ -228,8 +228,7 @@ public abstract class DeclarationVisitor extends Visitor {
                 Declaration member = getNativeHeader(model);
                 
                 if (member == null || 
-                        (member.isNative() && 
-                         !member.isNativeHeader())) {
+                        member.isNativeImplementation()) {
                     // Abstraction-less native implementation, check
                     // it's not shared
                     if (!isHeader && 

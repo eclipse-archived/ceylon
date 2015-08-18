@@ -745,7 +745,7 @@ public class TypeVisitor extends Visitor {
                 // normally means something is wrong
                 boolean error = true;
                 // Check if the declaration is a native implementation
-                if (cd.isNative() && !cd.isNativeHeader()) {
+                if (cd.isNativeImplementation()) {
                     Declaration hdr = getNativeHeader(cd);
                     // Check that it has a native header
                     if (hdr instanceof Class) {

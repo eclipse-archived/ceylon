@@ -7066,7 +7066,7 @@ public class ExpressionVisitor extends Visitor {
         else {
             td = unwrap(pt, that).getDeclaration();
         }
-        if (td != null && td.isNative() && !td.isNativeHeader()) {
+        if (td != null && td.isNativeImplementation()) {
             TypeDeclaration _td = (TypeDeclaration)ModelUtil.getNativeHeader(td);
             if (_td != null) {
                 td = _td;
