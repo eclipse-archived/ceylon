@@ -64,7 +64,7 @@ public class ClassGenerator {
             constructors = null;
         }
         gen.comment(that);
-        final boolean isAbstractNative = d.isNative() && d.isNativeHeader() && natd != null;
+        final boolean isAbstractNative = d.isNativeHeader() && natd != null;
         final String typeName = gen.getNames().name(d);
         if (TypeUtils.isNativeExternal(d)) {
             boolean bye = false;

@@ -317,7 +317,7 @@ public class JsIdentifierNames {
             }
             name += rootName;
         }
-        if (decl.isAnonymous() && decl.isNative() && decl.isNativeHeader()) {
+        if (decl.isAnonymous() && decl.isNativeHeader()) {
             //Couldn't use ModelUtils.getNativeDeclaration with the backend
             //because for some reason the anonymous class has null overloads.
             if (decl.getContainer() != null && decl.getContainer().getDirectMemberForBackend(decl.getName(), "js") != null) {

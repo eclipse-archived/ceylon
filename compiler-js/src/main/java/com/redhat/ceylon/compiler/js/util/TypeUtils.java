@@ -1396,7 +1396,7 @@ public class TypeUtils {
      * in the Ceylon code with the same name)
      */
     public static boolean isNativeExternal(Declaration decl) {
-        return decl.isNative() && decl.isNativeHeader()
+        return decl.isNativeHeader()
                 && (decl.getOverloads() == null || decl.getOverloads().isEmpty());
     }
 
@@ -1431,7 +1431,7 @@ public class TypeUtils {
 
     /** Tells whether the declaration is a native header with a native implementation for this backend. */
     public static boolean makeAbstractNative(Declaration d) {
-        return d.isNative() && d.isNativeHeader() &&
+        return d.isNativeHeader() &&
                 ModelUtil.getNativeDeclaration(d, Backend.JavaScript) != null;
     }
 
