@@ -352,9 +352,9 @@ public class CeylonVisitor extends Visitor {
 
             JCStatement delegateExpr;
             if (chainedCtorInvocation != null) {
-                delegateExpr = gen.make().Exec(gen.expressionGen().transformConstructorDelegation(chainedCtorInvocation, 
+                delegateExpr = gen.expressionGen().transformConstructorDelegation(chainedCtorInvocation, 
                         delegation.isSelfDelegation() ? delegation : new CtorDelegation(ctorModel, ctorModel), 
-                        chainedCtorInvocation, classBuilder, !delegation.isSelfDelegation()));
+                        chainedCtorInvocation, classBuilder, !delegation.isSelfDelegation());
             } else {
                 // In this case there is no extends clause in the source code
                 // so we have to construct the argument list "by hand".
@@ -374,8 +374,8 @@ public class CeylonVisitor extends Visitor {
             stmts.add(delegateExpr);
             
         } else if (delegatedCtor != null) {
-            stmts.add(gen.make().Exec(gen.expressionGen().transformConstructorDelegation(
-                    delegatedCtor, delegation, delegatedCtor.getInvocationExpression(), classBuilder, false)));
+            stmts.add(gen.expressionGen().transformConstructorDelegation(
+                    delegatedCtor, delegation, delegatedCtor.getInvocationExpression(), classBuilder, false));
         } else {
             // no explicit extends clause
         }
@@ -458,9 +458,9 @@ public class CeylonVisitor extends Visitor {
         ListBuffer<JCStatement> stmts = ListBuffer.lb();
         
         if (chainedCtorInvocation != null) {
-            stmts.add(gen.make().Exec(gen.expressionGen().transformConstructorDelegation(
+            stmts.add(gen.expressionGen().transformConstructorDelegation(
                     delegatedCtor, 
-                    delegation, chainedCtorInvocation, classBuilder, false)));
+                    delegation, chainedCtorInvocation, classBuilder, false));
         }
         
         stmts.addAll(classBuilder.getInitBuilder().copyStatementsBetween(

@@ -477,4 +477,14 @@ public class IssuesTests_2000_2499 extends CompilerTests {
                 new CompilerError(29, "duplicate annotation: there are multiple annotations of type 'Anno'"),
                 new CompilerError(31, "duplicate annotation: there are multiple annotations of type 'Transient' for targets: '[GETTER]'"));
     }
+    
+    @Test
+    public void testBug2269() {
+        compileAndRun("com.redhat.ceylon.compiler.java.test.issues.bug22xx.bug2269", "bug22xx/Bug2269.ceylon"); 
+    }
+    
+    @Test
+    public void testBug2274() {
+        compareWithJavaSource("bug22xx/Bug2274"); 
+    }
 }

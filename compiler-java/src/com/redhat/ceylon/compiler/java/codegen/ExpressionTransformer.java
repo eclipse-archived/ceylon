@@ -3702,10 +3702,10 @@ public class ExpressionTransformer extends AbstractTransformer {
             } else {
                 boolean prevFnCall = withinInvocation(true);
                 try {
-                    JCExpression superExpr = transformConstructorDelegation(extendedType, 
+                    JCStatement superExpr = transformConstructorDelegation(extendedType, 
                             new CtorDelegation(null, primaryDeclaration), 
                             extendedType.getInvocationExpression(), classBuilder, false);
-                    classBuilder.getInitBuilder().delegateCall(at(extendedType).Exec(superExpr));
+                    classBuilder.getInitBuilder().delegateCall(superExpr);
                 } finally {
                     withinInvocation(prevFnCall);
                 }
@@ -3723,7 +3723,7 @@ public class ExpressionTransformer extends AbstractTransformer {
      * @param classBuilder
      * @return
      */
-    JCExpression transformConstructorDelegation(Node extendedType,
+    JCStatement transformConstructorDelegation(Node extendedType,
             CtorDelegation delegation,
             Tree.InvocationExpression invocation, ClassDefinitionBuilder classBuilder, boolean forDelegationConstructor) {
         Declaration primaryDeclaration = ((Tree.MemberOrTypeExpression)invocation.getPrimary()).getDeclaration();
@@ -3789,7 +3789,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             JCExpression superExpr = callBuilder.invoke(expr)
                 .arguments(superArguments)
                 .build();
-            return superExpr;
+            return at(extendedType).Exec(superExpr);
             //classBuilder.getInitBuilder().superCall(at(extendedType).Exec(superExpr));
         } finally {
             withinInvocation(prevFnCall);
