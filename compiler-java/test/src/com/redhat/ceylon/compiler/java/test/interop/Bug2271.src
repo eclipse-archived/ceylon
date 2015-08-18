@@ -14,7 +14,9 @@ final class bug2271_ {
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("java.lang::Float?")
     final .java.lang.Float jf, @.com.redhat.ceylon.compiler.java.metadata.Name("jc")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("java.lang::Character?")
-    final .java.lang.Character jc) {
+    final .java.lang.Character jc, @.com.redhat.ceylon.compiler.java.metadata.Name("js")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("java.lang::Short?")
+    final .java.lang.Short js) {
         boolean $ceylontmp$if$0 = false;
         .ceylon.language.Integer i$1;
         final int i$3;
@@ -73,6 +75,26 @@ final class bug2271_ {
             c$11 = 0;
         }
         if ($ceylontmp$if$8) {
+        } else {
+        }
+        boolean $ceylontmp$if$12 = false;
+        .ceylon.language.Integer s$13;
+        final short s$15;
+        if ((s$13 = (
+            let
+            {
+                .java.lang.Short safe$14 = js;
+            }
+            returning safe$14 != null ? .ceylon.language.Integer.instance(safe$14.shortValue()) : null;
+        )) != null) {
+            s$15 = .com.redhat.ceylon.compiler.java.Util.toShort(s$13.longValue());
+            if (true) {
+                $ceylontmp$if$12 = true;
+            }
+        } else {
+            s$15 = (short)0;
+        }
+        if ($ceylontmp$if$12) {
         } else {
         }
     }
