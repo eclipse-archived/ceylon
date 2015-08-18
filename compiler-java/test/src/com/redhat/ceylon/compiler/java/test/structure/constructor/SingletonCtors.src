@@ -25,9 +25,9 @@ class SingletonCtors implements .com.redhat.ceylon.compiler.java.runtime.model.R
     public final long use2(final .com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtors inst) {
         {
             .com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtors sel$2 = inst;
-            if (sel$2 == getSingletonCtors$one()) {
+            if (sel$2 == .com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtors.getSingletonCtors$one()) {
                 return 1L;
-            } else if (sel$2 == getSingletonCtors$two()) {
+            } else if (sel$2 == .com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtors.getSingletonCtors$two()) {
                 return 2L;
             } else {
                 final .com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtors inst$3 = (.com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtors)sel$2;
