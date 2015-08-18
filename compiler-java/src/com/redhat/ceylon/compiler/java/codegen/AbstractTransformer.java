@@ -777,7 +777,9 @@ public abstract class AbstractTransformer implements Transformation {
             type = typeFact().getBooleanType();
         else if(containsJavaEnumInUnion(type))
             type = typeFact().denotableType(type);
-        
+        if (type.getDeclaration() instanceof Constructor) {
+            type = type.getExtendedType();
+        }
         return type;
     }
 
