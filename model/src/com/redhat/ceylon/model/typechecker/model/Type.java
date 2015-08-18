@@ -27,6 +27,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.redhat.ceylon.model.loader.model.FunctionOrValueInterface;
 import com.redhat.ceylon.model.typechecker.context.TypeCache;
 import com.redhat.ceylon.model.typechecker.model.UnknownType.ErrorReporter;
 import com.redhat.ceylon.model.typechecker.util.TypePrinter;
@@ -3993,7 +3994,11 @@ public class Type extends Reference {
     public boolean isClassOrInterface() {
         return getDeclaration() instanceof ClassOrInterface;
     }
-    
+
+    public boolean isFunctionOrValueInterface() {
+        return getDeclaration() instanceof FunctionOrValueInterface;
+    }
+
     public boolean isClass() {
         return getDeclaration() instanceof Class;
     }

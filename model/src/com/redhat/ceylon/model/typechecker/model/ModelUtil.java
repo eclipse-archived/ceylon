@@ -936,8 +936,9 @@ public class ModelUtil {
     }
     
     private static int countTypeParameters(
-            Declaration declaration) {
+            Declaration declaration, Type receivingType) {
         int count = 0;
+        boolean containsFunctionOrValueInterface = containsFunctionOrValueInterface(receivingType);
         while (true) {
             if (declaration instanceof Generic) {
                 Generic g = (Generic) declaration;
@@ -948,11 +949,34 @@ public class ModelUtil {
                         (Declaration) 
                             declaration.getContainer();
             }
+            else if(containsFunctionOrValueInterface){
+                // we are at runtime and we care about local types' generic ancestors
+                declaration = getFirstGenericContainer(declaration);
+                if(declaration == null)
+                    break;
+            }
             else {
                 break;
             }
         }
         return count;
+    }
+
+    private static Declaration getFirstGenericContainer(Declaration declaration) {
+        Scope container = declaration.getContainer();
+        while(container != null && container instanceof Generic == false)
+            container = container.getContainer();
+        // must be Generic or null, and every Generic is a Declaration
+        return (Declaration)container;
+    }
+
+    private static boolean containsFunctionOrValueInterface(Type receivingType) {
+        while(receivingType != null){
+            if(receivingType.isFunctionOrValueInterface())
+                return true;
+            receivingType = receivingType.getQualifyingType();
+        }
+        return false;
     }
 
     /**
@@ -981,7 +1005,7 @@ public class ModelUtil {
     getTypeArgumentMap(Declaration declaration, 
             Type receivingType, 
             List<Type> typeArguments) {        
-        int count = countTypeParameters(declaration);
+        int count = countTypeParameters(declaration, receivingType);
         if (count==0) {
             return EMPTY_TYPE_ARG_MAP;
         }
@@ -1033,12 +1057,20 @@ public class ModelUtil {
     private static void aggregateTypeArguments(
             Map<TypeParameter, Type> map, 
             Type dt, Declaration d) {
-        while (dt!=null && d.isClassOrInterfaceMember()) {
-            TypeDeclaration declaringType = 
-                    (TypeDeclaration) 
-                        d.getContainer();
-            Type aqt = dt.getSupertype(declaringType);
-            if (aqt==null) {
+        while (dt!=null){
+            Type aqt;
+            if(d.isClassOrInterfaceMember()) {
+                TypeDeclaration declaringType = 
+                        (TypeDeclaration) 
+                            d.getContainer();
+                aqt = dt.getSupertype(declaringType);
+                if (aqt==null) {
+                    break;
+                }
+            }else if(dt.isFunctionOrValueInterface()){
+                // just take it as-is
+                aqt = dt;
+            }else{
                 break;
             }
             map.putAll(aqt.getTypeArguments());
@@ -1055,7 +1087,7 @@ public class ModelUtil {
             return EMPTY_VARIANCE_MAP;
         }
         else {
-            if (countTypeParameters(declaration)==0) {
+            if (countTypeParameters(declaration, receivingType)==0) {
                 return EMPTY_VARIANCE_MAP;
             }
             else {
@@ -1104,18 +1136,24 @@ public class ModelUtil {
             Map<TypeParameter,SiteVariance> map, 
             Type dt, Declaration d) {
         while (dt!=null) {
+            Type aqt;
             if (d.isClassOrInterfaceMember()) {
                 TypeDeclaration declaringType = 
                         (TypeDeclaration) 
                             d.getContainer();
-                Type aqt = dt.getSupertype(declaringType);
+                aqt = dt.getSupertype(declaringType);
                 if (aqt==null) {
                     break;
                 }
-                map.putAll(dt.getVarianceOverrides());
-                dt = aqt.getQualifyingType();
-                d = aqt.getDeclaration();
+            }else if(dt.isFunctionOrValueInterface()){
+                // take it as-is
+                aqt = dt;
+            }else{
+                break;
             }
+            map.putAll(dt.getVarianceOverrides());
+            dt = aqt.getQualifyingType();
+            d = aqt.getDeclaration();
         }
     }
 
