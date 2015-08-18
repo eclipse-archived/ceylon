@@ -171,7 +171,7 @@ public class CeylonVisitor extends Visitor {
             if (stmt instanceof Tree.Constructor) {
                 Tree.Constructor ctor = (Tree.Constructor)stmt;
                 Constructor ctorModel = ctor.getConstructor();
-                if (gen.errors().hasDeclarationError(ctor) instanceof Drop) {
+                if (gen.errors().hasDeclarationAndMarkBrokenness(ctor) instanceof Drop) {
                     broken.put(ctorModel, CtorDelegation.brokenDelegation(ctorModel));
                     continue;
                 }
@@ -194,7 +194,7 @@ public class CeylonVisitor extends Visitor {
             } else if (stmt instanceof Tree.Enumerated) {
                 Tree.Enumerated singleton = (Tree.Enumerated)stmt;
                 Constructor ctorModel = singleton.getEnumerated();
-                if (gen.errors().hasDeclarationError(singleton) instanceof Drop) {
+                if (gen.errors().hasDeclarationAndMarkBrokenness(singleton) instanceof Drop) {
                     broken.put(ctorModel, CtorDelegation.brokenDelegation(ctorModel));
                     continue;
                 }
