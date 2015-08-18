@@ -29,6 +29,11 @@ class ListImplementor<X> implements .com.redhat.ceylon.compiler.java.runtime.mod
     }
     
     @.java.lang.Override
+    public final .ceylon.language.Iterable<? extends .ceylon.language.Sequence<? extends X>, ? extends .java.lang.Object> getPermutations() {
+        return $ceylon$language$List$this$.getPermutations();
+    }
+    
+    @.java.lang.Override
     public X getFirst() {
         return (X)$ceylon$language$List$this$.getFirst();
     }

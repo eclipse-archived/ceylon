@@ -147,6 +147,11 @@ class Bug837<Element extends .ceylon.language.Ordinal<? extends Element>> extend
     }
     
     @.java.lang.Override
+    public final .ceylon.language.Iterable<? extends .ceylon.language.Sequence<? extends Element>, ? extends .java.lang.Object> getPermutations() {
+        return $ceylon$language$List$this$.getPermutations();
+    }
+    
+    @.java.lang.Override
     public final Element get(final .ceylon.language.Integer index) {
         return $ceylon$language$List$this$.get(index);
     }

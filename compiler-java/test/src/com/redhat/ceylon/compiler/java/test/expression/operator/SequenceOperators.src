@@ -30,6 +30,11 @@ public abstract class SequenceOperators implements .com.redhat.ceylon.compiler.j
     }
     
     @.java.lang.Override
+    public final .ceylon.language.Iterable<? extends .ceylon.language.Sequence<? extends .ceylon.language.String>, ? extends .java.lang.Object> getPermutations() {
+        return $ceylon$language$List$this$.getPermutations();
+    }
+    
+    @.java.lang.Override
     public .ceylon.language.List<? extends .ceylon.language.String> getReversed() {
         return $ceylon$language$List$this$.getReversed();
     }
@@ -1029,6 +1034,11 @@ public abstract class SequenceOperators2 implements .com.redhat.ceylon.compiler.
     @.java.lang.Override
     public .ceylon.language.List<? extends .ceylon.language.Integer> getKeys() {
         return $ceylon$language$List$this$.getKeys();
+    }
+    
+    @.java.lang.Override
+    public final .ceylon.language.Iterable<? extends .ceylon.language.Sequence<? extends .ceylon.language.String>, ? extends .java.lang.Object> getPermutations() {
+        return $ceylon$language$List$this$.getPermutations();
     }
     
     @.java.lang.Override
