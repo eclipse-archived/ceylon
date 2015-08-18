@@ -1,0 +1,70 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug22xx;
+
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+class Bug2265 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    Bug2265() {
+        this.foo = null;
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    private .ceylon.language.String foo;
+    
+    @.ceylon.language.VariableAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String?")
+    private final .ceylon.language.String getFoo$priv$() {
+        return foo;
+    }
+    
+    private final void setFoo$priv$(@.com.redhat.ceylon.compiler.java.metadata.Name("foo")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String?")
+    final .ceylon.language.String foo) {
+        this.foo = foo;
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
+    public final void myFunction(@.com.redhat.ceylon.compiler.java.metadata.Name("param")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
+    final .java.lang.String param) {
+        setFoo$priv$(.ceylon.language.String.instance((
+            let
+            {
+                .java.lang.String $ceylontmp$ifResult$0;
+                switch_0: switch (param) {
+                case "foo": 
+                    {
+                        $ceylontmp$ifResult$0 = "foo";
+                    }
+                    break switch_0;
+                
+                default: 
+                    {
+                        $ceylontmp$ifResult$0 = "not foo";
+                    }
+                
+                }
+            }
+            returning $ceylontmp$ifResult$0;
+        )));
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug22xx.Bug2265.$TypeDescriptor$;
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug22xx.Bug2265.class);
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Method
+final class bug2265_ {
+    
+    private bug2265_() {
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
+    static void bug2265() {
+        new .com.redhat.ceylon.compiler.java.test.issues.bug22xx.Bug2265().myFunction("foo");
+    }
+}

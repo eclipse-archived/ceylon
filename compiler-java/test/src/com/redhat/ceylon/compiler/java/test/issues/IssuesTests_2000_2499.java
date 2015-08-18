@@ -484,6 +484,12 @@ public class IssuesTests_2000_2499 extends CompilerTests {
     }
 
     @Test
+    public void testBug2265() {
+        compareWithJavaSource("bug22xx/Bug2265");
+        run("com.redhat.ceylon.compiler.java.test.issues.bug22xx.bug2265");
+    }
+    
+    @Test
     public void testBug2269() {
         compileAndRun("com.redhat.ceylon.compiler.java.test.issues.bug22xx.bug2269", "bug22xx/Bug2269.ceylon"); 
     }
