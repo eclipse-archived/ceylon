@@ -117,6 +117,11 @@ public abstract class Bug1777_Impl<Element> implements .com.redhat.ceylon.compil
     }
     
     @.java.lang.Override
+    public final .ceylon.language.Iterable<? extends Element, ? extends .java.lang.Object> getDistinct() {
+        return $ceylon$language$Iterable$this$.getDistinct();
+    }
+    
+    @.java.lang.Override
     public long getSize() {
         return $ceylon$language$Iterable$this$.getSize();
     }
@@ -410,6 +415,11 @@ public abstract class Bug1777_2<Element> implements .com.redhat.ceylon.compiler.
     @.java.lang.Override
     public Element getFirst() {
         return (Element)$ceylon$language$Iterable$this$.getFirst();
+    }
+    
+    @.java.lang.Override
+    public final .ceylon.language.Iterable<? extends Element, ? extends .java.lang.Object> getDistinct() {
+        return $ceylon$language$Iterable$this$.getDistinct();
     }
     
     @.java.lang.Override

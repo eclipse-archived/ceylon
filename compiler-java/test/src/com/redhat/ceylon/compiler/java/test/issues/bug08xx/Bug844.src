@@ -398,6 +398,11 @@ public abstract class Bug844_Tuple<Element, First extends Element, Rest> extends
     }
     
     @.java.lang.Override
+    public final .ceylon.language.Iterable<? extends Element, ? extends .java.lang.Object> getDistinct() {
+        return $ceylon$language$Iterable$this$.getDistinct();
+    }
+    
+    @.java.lang.Override
     public Element getFromFirst(final long index) {
         return $ceylon$language$Iterable$this$.getFromFirst(index);
     }

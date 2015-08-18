@@ -303,6 +303,11 @@ class ListImplementor<X> implements .com.redhat.ceylon.compiler.java.runtime.mod
     }
     
     @.java.lang.Override
+    public final .ceylon.language.Iterable<? extends X, ? extends .java.lang.Object> getDistinct() {
+        return $ceylon$language$Iterable$this$.getDistinct();
+    }
+    
+    @.java.lang.Override
     public .ceylon.language.Sequential<? extends X> sequence() {
         return $ceylon$language$Iterable$this$.sequence();
     }

@@ -64,6 +64,11 @@ class UnionTypeArg implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
     }
     
     @.java.lang.Override
+    public final .ceylon.language.Iterable getDistinct() {
+        return (.ceylon.language.Iterable)$ceylon$language$Iterable$this$.getDistinct();
+    }
+    
+    @.java.lang.Override
     public long getSize() {
         return $ceylon$language$Iterable$this$.getSize();
     }
@@ -361,6 +366,11 @@ class UnionTypeArgOverride implements .com.redhat.ceylon.compiler.java.runtime.m
     @.java.lang.Override
     public .java.lang.Object getFirst() {
         return $ceylon$language$Iterable$this$.getFirst();
+    }
+    
+    @.java.lang.Override
+    public final .ceylon.language.Iterable getDistinct() {
+        return (.ceylon.language.Iterable)$ceylon$language$Iterable$this$.getDistinct();
     }
     
     @.java.lang.Override
