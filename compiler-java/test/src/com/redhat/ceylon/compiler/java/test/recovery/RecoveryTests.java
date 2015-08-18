@@ -232,6 +232,23 @@ public class RecoveryTests extends CompilerTests {
     }
     
     @Test
+    public void testRcvDeclarationMissingFunctionBody(){
+        compile(1,
+                "declaration/MissingFunctionBody.ceylon");
+    }
+    
+    @Test
+    public void testRcvDeclarationMissingConstructorBody(){
+        compile(1,
+                "declaration/MissingConstructorBody.ceylon");
+        compileAndRunWithUnresolvedCompilationError(
+                "declaration/MissingConstructorBody.ceylon",
+                "com.redhat.ceylon.compiler.java.test.recovery.declaration.MissingConstructorBody",
+                "constructor delegates to constructor with a compiler error: init");
+        checkClassHasCompileTimeErrorAnnotation("com.redhat.ceylon.compiler.java.test.recovery.declaration.MissingConstructorBody");
+    }
+    
+    @Test
     public void testMissingActualAttributes() {
         testDeclarationRecovery("FormalAttributes", "MissingActualAttributes", new ExpectedError() {
             @Override
