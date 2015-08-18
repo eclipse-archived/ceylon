@@ -92,6 +92,10 @@ shared class KlassWithAttributes() extends KlassWithAttributesSuper1() {
     // special attributes
     shared actual variable String string = "123";
     shared actual variable Integer hash = 123;
+    
+    shared variable Integer _M_PI = 2;
+    shared variable Integer _MPI = 2;
+    shared variable Integer mPI = 2;
 }
 
 shared class KlassWithAttributesAsParameters(foo, bar, gee) {

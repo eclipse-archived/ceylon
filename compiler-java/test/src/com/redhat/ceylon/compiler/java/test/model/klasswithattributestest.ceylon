@@ -19,3 +19,6 @@
  */
 KlassWithAttributes klassWithAttributes = KlassWithAttributes();
 KlassWithAttributesAsParameters klassWithAttributesAsParameters = KlassWithAttributesAsParameters(true, true, false);
+void test(){
+    Integer p = klassWithAttributes._M_PI;
+}
