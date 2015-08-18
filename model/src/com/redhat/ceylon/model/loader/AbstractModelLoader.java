@@ -801,11 +801,11 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                         type = "attribute";
                     }else if(isGetter(method)) {
                         // simple attribute
-                        name = getJavaAttributeName(name);
+                        name = getJavaAttributeName(method);
                         type = "attribute";
                     }else if(isSetter(method)) {
                         // simple attribute
-                        name = getJavaAttributeName(name);
+                        name = getJavaAttributeName(method);
                         type = "attribute setter";
                         isSetter = true;
                     }else{
@@ -2064,15 +2064,14 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         for(List<MethodMirror> methodMirrors : methods.values()){
             
             for (MethodMirror methodMirror : methodMirrors) {
-                String methodName = methodMirror.getName();
                 // same tests as in isMethodOverloaded()
                 if(methodMirror.isConstructor() || isInstantiator(methodMirror)) {
                     break;
                 } else if(isGetter(methodMirror)) {
-                    String name = getJavaAttributeName(methodName);
+                    String name = getJavaAttributeName(methodMirror);
                     putMultiMap(getters, name, methodMirror);
                 } else if(isSetter(methodMirror)) {
-                    String name = getJavaAttributeName(methodName);
+                    String name = getJavaAttributeName(methodMirror);
                     putMultiMap(setters, name, methodMirror);
                 } else if(isHashAttribute(methodMirror)) {
                     putMultiMap(getters, "hash", methodMirror);
@@ -2241,7 +2240,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         // Now mark all Values for which Setters exist as variable
         for(List<MethodMirror> variables : setters.values()){
             for(MethodMirror setter : variables){
-                String name = getJavaAttributeName(setter.getName());
+                String name = getJavaAttributeName(setter);
                 // make sure we handle private postfixes
                 name = JvmBackendUtil.strip(name, isCeylon, setter.isPublic());
                 Declaration decl = klass.getMember(name, null, false);
@@ -2981,6 +2980,13 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         decl.addMember(value);
     }
 
+    private String getJavaAttributeName(MethodMirror methodMirror) {
+        String name = getAnnotationStringValue(methodMirror, CEYLON_NAME_ANNOTATION);
+        if(name != null)
+            return name;
+        return getJavaAttributeName(methodMirror.getName());
+    }
+    
     private String getJavaAttributeName(String getterName) {
         if (getterName.startsWith("get") || getterName.startsWith("set")) {
             return NamingBase.getJavaBeanName(getterName.substring(3));

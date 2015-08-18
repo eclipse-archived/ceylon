@@ -162,7 +162,7 @@ public class NamingBase {
         
         for(int i=0;i<newName.length;i++){
             int codepoint = newName[i];
-            if(Character.isLowerCase(codepoint)){
+            if(Character.isLowerCase(codepoint) || codepoint == '_'){
                 // if we had more than one upper-case, we leave the last uppercase: getURLDecoder -> urlDecoder
                 if(i > 1){
                     newName[i-1] = Character.toUpperCase(newName[i-1]);
@@ -178,6 +178,8 @@ public class NamingBase {
      * Turns:
      * - urlDecoder -> URLDecoder
      * - url -> URL
+     * Warning: also turns:
+     * - uRLDecoder -> URLDecoder (which is then decoded to urlDecoder instead of the original, so we need to guard)
      */
     public static String getReverseJavaBeanName(String name){
         // turns urlDecoder -> URLDecoder
