@@ -1,0 +1,368 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug22xx;
+
+final class foo2266_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    private foo2266_() {
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug22xx.foo2266_.class);
+    private static final .com.redhat.ceylon.compiler.java.test.issues.bug22xx.foo2266_ value;
+    private static volatile boolean $init$value = false;
+    private static final .java.lang.Throwable $initException$;
+    static {
+        try {
+            value = new .com.redhat.ceylon.compiler.java.test.issues.bug22xx.foo2266_();
+            $initException$ = null;
+            $init$value = true;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            value = null;
+            $init$value = false;
+        }
+    }
+    
+    static .com.redhat.ceylon.compiler.java.test.issues.bug22xx.foo2266_ get_() {
+        if (foo2266_.$init$value) {
+            return value;
+        } else {
+            if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'foo2266\' before it was set");
+        }
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug22xx.foo2266_.$TypeDescriptor$;
+    }
+}
+final class bug2266_ {
+    
+    private bug2266_() {
+    }
+    
+    static void bug2266(final boolean b) {
+        final .java.lang.Object anon1 = (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.issues.bug22xx.foo2266_ $ceylontmp$ifResult$0;
+                if (b) {
+                    $ceylontmp$ifResult$0 = .com.redhat.ceylon.compiler.java.test.issues.bug22xx.foo2266_.get_();
+                } else {
+                    $ceylontmp$ifResult$0 = (.com.redhat.ceylon.compiler.java.test.issues.bug22xx.foo2266_).ceylon.language.nothing_.get_();
+                }
+            }
+            returning $ceylontmp$ifResult$0;
+        );
+        final .com.redhat.ceylon.compiler.java.test.issues.bug22xx.foo2266_ anon2 = (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.issues.bug22xx.foo2266_ $ceylontmp$ifResult$2;
+                if (b) {
+                    $ceylontmp$ifResult$2 = .com.redhat.ceylon.compiler.java.test.issues.bug22xx.foo2266_.get_();
+                } else {
+                    $ceylontmp$ifResult$2 = (.com.redhat.ceylon.compiler.java.test.issues.bug22xx.foo2266_).ceylon.language.nothing_.get_();
+                }
+            }
+            returning $ceylontmp$ifResult$2;
+        );
+        final .java.lang.Object anon3 = (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.issues.bug22xx.foo2266_ $ceylontmp$ifResult$4;
+                if (b) {
+                    $ceylontmp$ifResult$4 = .com.redhat.ceylon.compiler.java.test.issues.bug22xx.foo2266_.get_();
+                } else {
+                    $ceylontmp$ifResult$4 = (.com.redhat.ceylon.compiler.java.test.issues.bug22xx.foo2266_).ceylon.language.nothing_.get_();
+                }
+            }
+            returning $ceylontmp$ifResult$4;
+        );
+        final .java.lang.Object anon4 = (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.issues.bug22xx.foo2266_ $ceylontmp$ifResult$6;
+                if (b) {
+                    $ceylontmp$ifResult$6 = (.com.redhat.ceylon.compiler.java.test.issues.bug22xx.foo2266_).ceylon.language.nothing_.get_();
+                } else {
+                    $ceylontmp$ifResult$6 = .com.redhat.ceylon.compiler.java.test.issues.bug22xx.foo2266_.get_();
+                }
+            }
+            returning $ceylontmp$ifResult$6;
+        );
+        final .com.redhat.ceylon.compiler.java.test.issues.bug22xx.foo2266_ anon5 = (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.issues.bug22xx.foo2266_ $ceylontmp$ifResult$8;
+                if (b) {
+                    $ceylontmp$ifResult$8 = (.com.redhat.ceylon.compiler.java.test.issues.bug22xx.foo2266_).ceylon.language.nothing_.get_();
+                } else {
+                    $ceylontmp$ifResult$8 = .com.redhat.ceylon.compiler.java.test.issues.bug22xx.foo2266_.get_();
+                }
+            }
+            returning $ceylontmp$ifResult$8;
+        );
+        final .java.lang.Object anon6 = (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.issues.bug22xx.foo2266_ $ceylontmp$ifResult$10;
+                if (b) {
+                    $ceylontmp$ifResult$10 = (.com.redhat.ceylon.compiler.java.test.issues.bug22xx.foo2266_).ceylon.language.nothing_.get_();
+                } else {
+                    $ceylontmp$ifResult$10 = .com.redhat.ceylon.compiler.java.test.issues.bug22xx.foo2266_.get_();
+                }
+            }
+            returning $ceylontmp$ifResult$10;
+        );
+        final .java.lang.Object anon7 = (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.issues.bug22xx.foo2266_ $ceylontmp$ifResult$12;
+                {
+                    boolean sel$13 = b;
+                    if (sel$13 == true) {
+                        $ceylontmp$ifResult$12 = .com.redhat.ceylon.compiler.java.test.issues.bug22xx.foo2266_.get_();
+                    } else {
+                        $ceylontmp$ifResult$12 = (.com.redhat.ceylon.compiler.java.test.issues.bug22xx.foo2266_).ceylon.language.nothing_.get_();
+                    }
+                }
+            }
+            returning $ceylontmp$ifResult$12;
+        );
+        final .com.redhat.ceylon.compiler.java.test.issues.bug22xx.foo2266_ anon8 = (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.issues.bug22xx.foo2266_ $ceylontmp$ifResult$14;
+                {
+                    boolean sel$15 = b;
+                    if (sel$15 == true) {
+                        $ceylontmp$ifResult$14 = .com.redhat.ceylon.compiler.java.test.issues.bug22xx.foo2266_.get_();
+                    } else {
+                        $ceylontmp$ifResult$14 = (.com.redhat.ceylon.compiler.java.test.issues.bug22xx.foo2266_).ceylon.language.nothing_.get_();
+                    }
+                }
+            }
+            returning $ceylontmp$ifResult$14;
+        );
+        final .java.lang.Object anon9 = (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.issues.bug22xx.foo2266_ $ceylontmp$ifResult$16;
+                {
+                    boolean sel$17 = b;
+                    if (sel$17 == true) {
+                        $ceylontmp$ifResult$16 = .com.redhat.ceylon.compiler.java.test.issues.bug22xx.foo2266_.get_();
+                    } else {
+                        $ceylontmp$ifResult$16 = (.com.redhat.ceylon.compiler.java.test.issues.bug22xx.foo2266_).ceylon.language.nothing_.get_();
+                    }
+                }
+            }
+            returning $ceylontmp$ifResult$16;
+        );
+        final .java.lang.Object anon10 = (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.issues.bug22xx.foo2266_ $ceylontmp$ifResult$18;
+                {
+                    boolean sel$19 = b;
+                    if (sel$19 == true) {
+                        $ceylontmp$ifResult$18 = (.com.redhat.ceylon.compiler.java.test.issues.bug22xx.foo2266_).ceylon.language.nothing_.get_();
+                    } else {
+                        $ceylontmp$ifResult$18 = .com.redhat.ceylon.compiler.java.test.issues.bug22xx.foo2266_.get_();
+                    }
+                }
+            }
+            returning $ceylontmp$ifResult$18;
+        );
+        final .com.redhat.ceylon.compiler.java.test.issues.bug22xx.foo2266_ anon11 = (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.issues.bug22xx.foo2266_ $ceylontmp$ifResult$20;
+                {
+                    boolean sel$21 = b;
+                    if (sel$21 == true) {
+                        $ceylontmp$ifResult$20 = (.com.redhat.ceylon.compiler.java.test.issues.bug22xx.foo2266_).ceylon.language.nothing_.get_();
+                    } else {
+                        $ceylontmp$ifResult$20 = .com.redhat.ceylon.compiler.java.test.issues.bug22xx.foo2266_.get_();
+                    }
+                }
+            }
+            returning $ceylontmp$ifResult$20;
+        );
+        final .java.lang.Object anon12 = (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.issues.bug22xx.foo2266_ $ceylontmp$ifResult$22;
+                {
+                    boolean sel$23 = b;
+                    if (sel$23 == true) {
+                        $ceylontmp$ifResult$22 = (.com.redhat.ceylon.compiler.java.test.issues.bug22xx.foo2266_).ceylon.language.nothing_.get_();
+                    } else {
+                        $ceylontmp$ifResult$22 = .com.redhat.ceylon.compiler.java.test.issues.bug22xx.foo2266_.get_();
+                    }
+                }
+            }
+            returning $ceylontmp$ifResult$22;
+        );
+        final .ceylon.language.Comparison cmp1 = (
+            let
+            {
+                .ceylon.language.larger_ $ceylontmp$ifResult$24;
+                if (b) {
+                    $ceylontmp$ifResult$24 = .ceylon.language.larger_.get_();
+                } else {
+                    $ceylontmp$ifResult$24 = (.ceylon.language.larger_).ceylon.language.nothing_.get_();
+                }
+            }
+            returning $ceylontmp$ifResult$24;
+        );
+        final .ceylon.language.larger_ cmp2 = (
+            let
+            {
+                .ceylon.language.larger_ $ceylontmp$ifResult$26;
+                if (b) {
+                    $ceylontmp$ifResult$26 = .ceylon.language.larger_.get_();
+                } else {
+                    $ceylontmp$ifResult$26 = (.ceylon.language.larger_).ceylon.language.nothing_.get_();
+                }
+            }
+            returning $ceylontmp$ifResult$26;
+        );
+        final .ceylon.language.Comparison cmp3 = (
+            let
+            {
+                .ceylon.language.larger_ $ceylontmp$ifResult$28;
+                if (b) {
+                    $ceylontmp$ifResult$28 = .ceylon.language.larger_.get_();
+                } else {
+                    $ceylontmp$ifResult$28 = (.ceylon.language.larger_).ceylon.language.nothing_.get_();
+                }
+            }
+            returning $ceylontmp$ifResult$28;
+        );
+        final .ceylon.language.Comparison cmp4 = (
+            let
+            {
+                .ceylon.language.larger_ $ceylontmp$ifResult$30;
+                if (b) {
+                    $ceylontmp$ifResult$30 = (.ceylon.language.larger_).ceylon.language.nothing_.get_();
+                } else {
+                    $ceylontmp$ifResult$30 = .ceylon.language.larger_.get_();
+                }
+            }
+            returning $ceylontmp$ifResult$30;
+        );
+        final .ceylon.language.larger_ cmp5 = (
+            let
+            {
+                .ceylon.language.larger_ $ceylontmp$ifResult$32;
+                if (b) {
+                    $ceylontmp$ifResult$32 = (.ceylon.language.larger_).ceylon.language.nothing_.get_();
+                } else {
+                    $ceylontmp$ifResult$32 = .ceylon.language.larger_.get_();
+                }
+            }
+            returning $ceylontmp$ifResult$32;
+        );
+        final .ceylon.language.Comparison cmp6 = (
+            let
+            {
+                .ceylon.language.larger_ $ceylontmp$ifResult$34;
+                if (b) {
+                    $ceylontmp$ifResult$34 = (.ceylon.language.larger_).ceylon.language.nothing_.get_();
+                } else {
+                    $ceylontmp$ifResult$34 = .ceylon.language.larger_.get_();
+                }
+            }
+            returning $ceylontmp$ifResult$34;
+        );
+        final .ceylon.language.Comparison cmp7 = (
+            let
+            {
+                .ceylon.language.larger_ $ceylontmp$ifResult$36;
+                {
+                    boolean sel$37 = b;
+                    if (sel$37 == true) {
+                        $ceylontmp$ifResult$36 = .ceylon.language.larger_.get_();
+                    } else {
+                        $ceylontmp$ifResult$36 = (.ceylon.language.larger_).ceylon.language.nothing_.get_();
+                    }
+                }
+            }
+            returning $ceylontmp$ifResult$36;
+        );
+        final .ceylon.language.larger_ cmp8 = (
+            let
+            {
+                .ceylon.language.larger_ $ceylontmp$ifResult$38;
+                {
+                    boolean sel$39 = b;
+                    if (sel$39 == true) {
+                        $ceylontmp$ifResult$38 = .ceylon.language.larger_.get_();
+                    } else {
+                        $ceylontmp$ifResult$38 = (.ceylon.language.larger_).ceylon.language.nothing_.get_();
+                    }
+                }
+            }
+            returning $ceylontmp$ifResult$38;
+        );
+        final .ceylon.language.Comparison cmp9 = (
+            let
+            {
+                .ceylon.language.larger_ $ceylontmp$ifResult$40;
+                {
+                    boolean sel$41 = b;
+                    if (sel$41 == true) {
+                        $ceylontmp$ifResult$40 = .ceylon.language.larger_.get_();
+                    } else {
+                        $ceylontmp$ifResult$40 = (.ceylon.language.larger_).ceylon.language.nothing_.get_();
+                    }
+                }
+            }
+            returning $ceylontmp$ifResult$40;
+        );
+        final .ceylon.language.Comparison cmp10 = (
+            let
+            {
+                .ceylon.language.larger_ $ceylontmp$ifResult$42;
+                {
+                    boolean sel$43 = b;
+                    if (sel$43 == true) {
+                        $ceylontmp$ifResult$42 = (.ceylon.language.larger_).ceylon.language.nothing_.get_();
+                    } else {
+                        $ceylontmp$ifResult$42 = .ceylon.language.larger_.get_();
+                    }
+                }
+            }
+            returning $ceylontmp$ifResult$42;
+        );
+        final .ceylon.language.larger_ cmp11 = (
+            let
+            {
+                .ceylon.language.larger_ $ceylontmp$ifResult$44;
+                {
+                    boolean sel$45 = b;
+                    if (sel$45 == true) {
+                        $ceylontmp$ifResult$44 = (.ceylon.language.larger_).ceylon.language.nothing_.get_();
+                    } else {
+                        $ceylontmp$ifResult$44 = .ceylon.language.larger_.get_();
+                    }
+                }
+            }
+            returning $ceylontmp$ifResult$44;
+        );
+        final .ceylon.language.Comparison cmp12 = (
+            let
+            {
+                .ceylon.language.larger_ $ceylontmp$ifResult$46;
+                {
+                    boolean sel$47 = b;
+                    if (sel$47 == true) {
+                        $ceylontmp$ifResult$46 = (.ceylon.language.larger_).ceylon.language.nothing_.get_();
+                    } else {
+                        $ceylontmp$ifResult$46 = .ceylon.language.larger_.get_();
+                    }
+                }
+            }
+            returning $ceylontmp$ifResult$46;
+        );
+    }
+}
