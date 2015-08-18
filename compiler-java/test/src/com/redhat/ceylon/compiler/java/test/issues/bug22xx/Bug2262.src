@@ -1,0 +1,42 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug22xx;
+
+class Bug2262 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    private static final class bar_ {
+        
+        private bar_() {
+        }
+    }
+    
+    public Bug2262(.com.redhat.ceylon.compiler.java.test.issues.bug22xx.Bug2262.bar_ $name$) {
+    }
+    private static final .com.redhat.ceylon.compiler.java.test.issues.bug22xx.Bug2262 bar;
+    static {
+        bar = new Bug2262((.com.redhat.ceylon.compiler.java.test.issues.bug22xx.Bug2262.bar_)null);
+    }
+    
+    public static final .com.redhat.ceylon.compiler.java.test.issues.bug22xx.Bug2262 getBug2262$bar() {
+        return bar;
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug22xx.Bug2262.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug22xx.Bug2262.class);
+}
+public final class bug2262_ {
+    
+    private bug2262_() {
+    }
+    
+    public static void bug2262() {
+        final .com.redhat.ceylon.compiler.java.test.issues.bug22xx.Bug2262 f1 = .com.redhat.ceylon.compiler.java.test.issues.bug22xx.Bug2262.getBug2262$bar();
+        final .com.redhat.ceylon.compiler.java.test.issues.bug22xx.Bug2262 f2 = .com.redhat.ceylon.compiler.java.test.issues.bug22xx.Bug2262.getBug2262$bar();
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.issues.bug22xx.bug2262_.bug2262();
+    }
+}
