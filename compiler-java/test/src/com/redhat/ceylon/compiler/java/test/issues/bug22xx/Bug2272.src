@@ -1,0 +1,105 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug22xx;
+
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.LocalDeclarations({"1$1Local"})
+class Bug2272 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    Bug2272() {
+        final .ceylon.language.Callable<? extends .java.lang.Object> local1 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Anything()", (short)-1)
+        @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration
+        @.com.redhat.ceylon.compiler.java.metadata.Name("anonymous#1")
+        @.com.redhat.ceylon.compiler.java.metadata.Method
+        {
+            
+            @.java.lang.Override
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            public .java.lang.Object $call$() {
+                
+                @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+                @.com.redhat.ceylon.compiler.java.metadata.Name("Local")
+                @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
+                class Local implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+                    
+                    Local() {
+                    }
+                    
+                    @.java.lang.Override
+                    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+                    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.issues.bug22xx.Bug2272.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(Local.class));
+                    }
+                }
+                return null;
+            }
+        };
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug22xx.Bug2272.$TypeDescriptor$;
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug22xx.Bug2272.class);
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Attribute
+@.com.redhat.ceylon.compiler.java.metadata.Name("bug2272")
+@.com.redhat.ceylon.compiler.java.metadata.LocalDeclarations({"1$1PackageLocal"})
+final class bug2272_ {
+    
+    private bug2272_() {
+    }
+    private static final .ceylon.language.Callable<? extends .java.lang.Object> value;
+    private static volatile boolean $init$value = false;
+    private static final .java.lang.Throwable $initException$;
+    static {
+        try {
+            value = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Anything()", (short)-1)
+            @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration
+            @.com.redhat.ceylon.compiler.java.metadata.Name("anonymous#0")
+            @.com.redhat.ceylon.compiler.java.metadata.Method
+            {
+                
+                @.java.lang.Override
+                @.com.redhat.ceylon.compiler.java.metadata.Ignore
+                public .java.lang.Object $call$() {
+                    
+                    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+                    @.com.redhat.ceylon.compiler.java.metadata.Name("PackageLocal")
+                    @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(
+                            isPackageLocal = true,
+                            qualifier = "1bug2272$1")
+                    class PackageLocal implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+                        
+                        PackageLocal() {
+                        }
+                        
+                        @.java.lang.Override
+                        @.com.redhat.ceylon.compiler.java.metadata.Ignore
+                        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(PackageLocal.class);
+                        }
+                    }
+                    return null;
+                }
+            };
+            $initException$ = null;
+            $init$value = true;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            value = null;
+            $init$value = false;
+        }
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything()")
+    public static .ceylon.language.Callable<? extends .java.lang.Object> get_() {
+        if (bug2272_.$init$value) {
+            return value;
+        } else {
+            if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'bug2272\' before it was set");
+        }
+    }
+}
