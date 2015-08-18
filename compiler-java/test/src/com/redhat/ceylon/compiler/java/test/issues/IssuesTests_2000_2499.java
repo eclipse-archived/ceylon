@@ -488,7 +488,6 @@ public class IssuesTests_2000_2499 extends CompilerTests {
         compareWithJavaSource("bug22xx/Bug2264"); 
     }
 
-    @Ignore("File not committed")
     @Test
     public void testBug2265() {
         compareWithJavaSource("bug22xx/Bug2265");
