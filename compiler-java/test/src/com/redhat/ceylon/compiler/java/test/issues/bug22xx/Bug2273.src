@@ -1,0 +1,53 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug22xx;
+
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Class(constructors = true)
+class Bug2273 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .com.redhat.ceylon.compiler.java.test.issues.bug22xx.Bug2273.create_ create_ = null;
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final class create_ {
+        
+        private create_() {
+        }
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.Name("create")
+    public Bug2273(@.com.redhat.ceylon.compiler.java.metadata.Ignore
+    .com.redhat.ceylon.compiler.java.test.issues.bug22xx.Bug2273.create_ $name$) {
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug22xx.Bug2273.$TypeDescriptor$;
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug22xx.Bug2273.class);
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Method
+final class bug2273_ {
+    
+    private bug2273_() {
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.issues.bug22xx::Bug2273?")
+    static .com.redhat.ceylon.compiler.java.test.issues.bug22xx.Bug2273 bug2273() {
+        return (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.issues.bug22xx.Bug2273 $ceylontmp$ifResult$0;
+                if (true) {
+                    $ceylontmp$ifResult$0 = new .com.redhat.ceylon.compiler.java.test.issues.bug22xx.Bug2273(.com.redhat.ceylon.compiler.java.test.issues.bug22xx.Bug2273.create_);
+                } else {
+                    $ceylontmp$ifResult$0 = null;
+                }
+            }
+            returning $ceylontmp$ifResult$0;
+        );
+    }
+}
