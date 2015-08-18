@@ -281,7 +281,9 @@ public class MethodOrValueReferenceVisitor extends Visitor {
                         if(plan.delegate == null)
                             plan.before.addAll(statements);
                         // also add all the constructor's statements
-                        plan.before.addAll(ctor.getBlock().getStatements());
+                        if (ctor.getBlock() != null) {
+                            plan.before.addAll(ctor.getBlock().getStatements());
+                        }
                     }else{
                         statements.add(stmt);
                         // make sure all existing constructors get this statement too
