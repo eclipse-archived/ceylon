@@ -4686,7 +4686,9 @@ public class ExpressionTransformer extends AbstractTransformer {
                 }
             }
             
-            if (qualExpr == null && decl.isStaticallyImportable()
+            if (qualExpr == null 
+                    && (decl.isStaticallyImportable()
+                            || (decl instanceof Value && Decl.isEnumeratedConstructor((Value)decl)))
                     // make sure we only do this for things contained in a type, as otherwise
                     // it breaks for qualified calls to static methods in interfaces in Java 8
                     // it only breaks for interfaces because they are statically importable
