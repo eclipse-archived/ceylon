@@ -2479,7 +2479,7 @@ public class ModelUtil {
     }
     
     public static boolean isNativeImplementation(Declaration dec) {
-        return dec != null && dec.isNative() && !dec.isNativeHeader();
+        return dec != null && dec.isNativeImplementation();
     }
     
     public static Declaration getNativeDeclaration(
@@ -2615,7 +2615,7 @@ public class ModelUtil {
     public static Declaration getNativeHeader(Scope container, String name) {
         if (container instanceof Declaration) {
             Declaration cd = (Declaration) container;
-            if (cd.isNative() && !cd.isNativeHeader()) {
+            if (cd.isNativeImplementation()) {
                 // The container is a native implementation so
                 // we first need to find _its_ header
                 Declaration c =

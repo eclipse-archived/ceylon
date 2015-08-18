@@ -168,6 +168,10 @@ public abstract class Declaration
         return Backend.None.nativeAnnotation.equals(getNativeBackend());
     }
     
+    public boolean isNativeImplementation() {
+        return isNative() && !isNativeHeader();
+    }
+    
     public String getNativeBackend() {
     	return nativeBackend;
     }

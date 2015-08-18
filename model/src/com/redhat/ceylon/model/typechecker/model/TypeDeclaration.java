@@ -566,8 +566,7 @@ public abstract class TypeDeclaration extends Declaration
             // If we couldn't find the declaration in the current
             // scope and the scope is a native implementation we
             // will try again with its header
-            if (isNative() &&
-                    !isNativeHeader()) {
+            if (isNativeImplementation()) {
                 Declaration hdr = getNativeHeader(this);
                 if (hdr != null) {
                     dec = hdr.getDirectMember(name,
