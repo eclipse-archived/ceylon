@@ -22,6 +22,8 @@ package com.redhat.ceylon.compiler.java.codegen;
 import static com.redhat.ceylon.compiler.java.codegen.Naming.DeclNameFlag.COMPANION;
 import static com.redhat.ceylon.compiler.java.codegen.Naming.DeclNameFlag.QUALIFIED;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.io.File;
@@ -371,4 +373,17 @@ public class NamingTests {
         assertEquals("com.redhat.ceylon.compiler.java.codegen.Ca.getA", CodegenUtil.getJavaNameOfDeclaration(decl));
     }
 
+    @Test
+    public void testAmbiguousAttributeNames(){
+        assertFalse("", Naming.isAmbiguousGetterName(""));
+        assertFalse("my", Naming.isAmbiguousGetterName("my"));
+        assertFalse("myR", Naming.isAmbiguousGetterName("myR"));
+        assertFalse("myURL", Naming.isAmbiguousGetterName("myURL"));
+        assertFalse("myURLInput", Naming.isAmbiguousGetterName("myURLInput"));
+        assertFalse("myURLInput", Naming.isAmbiguousGetterName("myURLInput"));
+        assertTrue("mR", Naming.isAmbiguousGetterName("mR"));
+        assertTrue("mURL", Naming.isAmbiguousGetterName("mURL"));
+        assertTrue("mURLInput", Naming.isAmbiguousGetterName("mURLInput"));
+        assertTrue("mURLInput", Naming.isAmbiguousGetterName("mURLInput"));
+    }
 }
