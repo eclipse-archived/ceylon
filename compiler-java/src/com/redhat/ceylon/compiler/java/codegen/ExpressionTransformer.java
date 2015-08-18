@@ -3726,6 +3726,9 @@ public class ExpressionTransformer extends AbstractTransformer {
     JCStatement transformConstructorDelegation(Node extendedType,
             CtorDelegation delegation,
             Tree.InvocationExpression invocation, ClassDefinitionBuilder classBuilder, boolean forDelegationConstructor) {
+        if (delegation != null && delegation.isError()) {
+            return delegation.makeThrow(this);
+        }
         Declaration primaryDeclaration = ((Tree.MemberOrTypeExpression)invocation.getPrimary()).getDeclaration();
         java.util.List<ParameterList> paramLists = ((Functional)primaryDeclaration).getParameterLists();
         if(paramLists.isEmpty()){

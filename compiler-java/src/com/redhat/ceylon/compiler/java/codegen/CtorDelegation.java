@@ -6,11 +6,13 @@ import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.Constructor;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
+import com.sun.tools.javac.tree.JCTree.JCStatement;
 
 public class CtorDelegation {
     
     private final Constructor ctor;
     private final Declaration extending;
+    private String error;
     
     /**
      * 
@@ -32,7 +34,31 @@ public class CtorDelegation {
             throw new RuntimeException();
         }
     }
-
+    
+    private CtorDelegation(Constructor ctor, String errorMessage) {
+        this.ctor = ctor;
+        this.error = errorMessage;
+        this.extending = null;
+    }
+    
+    public static CtorDelegation brokenDelegation(Constructor ctorModel) {
+        String message;
+        if (ctorModel.getName() == null) {
+            message = "constructor delegates to default constructor which has a compiler error";
+        } else {
+            message = "constructor delegates to constructor with a compiler error: " + ctorModel.getName();
+        }
+        return new CtorDelegation(ctorModel, message);
+    }
+    
+    public boolean isError() {
+        return this.error != null;
+    }
+    
+    public JCStatement makeThrow(AbstractTransformer gen) {
+        return gen.makeThrowUnresolvedCompilationError(this.error);
+    }
+    
     /**
      * The constructor
      * @return

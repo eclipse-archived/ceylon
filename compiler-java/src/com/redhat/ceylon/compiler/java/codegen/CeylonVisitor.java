@@ -46,6 +46,7 @@ import com.redhat.ceylon.model.loader.model.OutputElement;
 import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.model.typechecker.model.Constructor;
+import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Interface;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.Type;
@@ -151,47 +152,64 @@ public class CeylonVisitor extends Visitor {
         gen.resetCompilerAnnotations(annots);
     }
     
+    CtorDelegation ctorDelegation(Constructor ctorModel, Declaration delegatedDecl, HashMap<Constructor, CtorDelegation> broken) {
+        CtorDelegation b = broken.get(delegatedDecl);
+        if (b != null) {
+            return b;
+        } else {
+            return new CtorDelegation(ctorModel, delegatedDecl);
+        }
+    }
+    
     public void visit(Tree.ClassBody that) {
         // Transform executable statements and declarations in the body
         // except constructors. Record how constructors delegate.
         HashMap<Constructor, CtorDelegation> delegates = new HashMap<Constructor, CtorDelegation>();
         java.util.List<Statement> stmts = getBodyStatements(that);
+        HashMap<Constructor, CtorDelegation> broken = new HashMap<Constructor, CtorDelegation>();
         for (Tree.Statement stmt : stmts) {
             if (stmt instanceof Tree.Constructor) {
                 Tree.Constructor ctor = (Tree.Constructor)stmt;
+                Constructor ctorModel = ctor.getConstructor();
                 if (gen.errors().hasDeclarationError(ctor) instanceof Drop) {
+                    broken.put(ctorModel, CtorDelegation.brokenDelegation(ctorModel));
                     continue;
                 }
                 classBuilder.getInitBuilder().constructor(ctor);
-                Constructor ctorModel = ctor.getConstructor();
                 if (ctor.getDelegatedConstructor() != null) {
                     // error recovery
                     if(ctor.getDelegatedConstructor().getInvocationExpression() != null){
                         Tree.ExtendedTypeExpression p = (Tree.ExtendedTypeExpression)ctor.getDelegatedConstructor().getInvocationExpression().getPrimary();
-                        delegates.put(ctorModel, new CtorDelegation(ctorModel, p.getDeclaration()));
+                        Declaration delegatedDecl = p.getDeclaration();
+                        delegates.put(ctorModel, ctorDelegation(ctorModel, delegatedDecl, broken));
                     }
                 } else {
                     // implicitly delegating to superclass initializer
                     Type et = Decl.getConstructedClass(ctorModel).getExtendedType();
                     if (et!=null) {
-                        delegates.put(ctorModel, new CtorDelegation(ctorModel, et.getDeclaration()));
+                        Declaration delegatedDecl = et.getDeclaration();
+                        delegates.put(ctorModel, ctorDelegation(ctorModel, delegatedDecl, broken));
                     }
                 }
             } else if (stmt instanceof Tree.Enumerated) {
                 Tree.Enumerated singleton = (Tree.Enumerated)stmt;
+                Constructor ctorModel = singleton.getEnumerated();
                 if (gen.errors().hasDeclarationError(singleton) instanceof Drop) {
+                    broken.put(ctorModel, CtorDelegation.brokenDelegation(ctorModel));
                     continue;
                 }
                 classBuilder.getInitBuilder().singleton(singleton);
-                Constructor ctorModel = singleton.getEnumerated();
+                
                  if (singleton.getDelegatedConstructor() != null) {
                     Tree.ExtendedTypeExpression p = (Tree.ExtendedTypeExpression)singleton.getDelegatedConstructor().getInvocationExpression().getPrimary();
-                    delegates.put(ctorModel, new CtorDelegation(ctorModel, p.getDeclaration()));
+                    Declaration delegatedDecl = p.getDeclaration();
+                    delegates.put(ctorModel, ctorDelegation(ctorModel, delegatedDecl, broken));
                 } else {
                     // implicitly delegating to superclass initializer
                     Type et = Decl.getConstructedClass(ctorModel).getExtendedType();
                     if (et!=null) {
-                        delegates.put(ctorModel, new CtorDelegation(ctorModel, et.getDeclaration()));
+                        Declaration delegatedDecl = et.getDeclaration();
+                        delegates.put(ctorModel, ctorDelegation(ctorModel, delegatedDecl, broken));
                     }
                 }
             } else {
