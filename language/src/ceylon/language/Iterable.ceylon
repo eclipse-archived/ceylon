@@ -1439,7 +1439,7 @@ shared interface Iterable<out Element=Anything,
             
             function hash(Element element, Integer size) 
                     => if (exists element) 
-                    then element.hash % size
+                    then element.hash.magnitude % size
                     else 0;
             
             Array<Entry?> rebuild(Array<Entry?> store) {
