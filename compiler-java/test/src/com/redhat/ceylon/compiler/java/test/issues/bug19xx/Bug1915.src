@@ -49,7 +49,7 @@ final class Itrable$impl<T> {
                                     
                                     @.java.lang.Override
                                     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
-                                        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug19xx.Itrable.class, .com.redhat.ceylon.compiler.java.test.issues.bug19xx.Itrable$impl.this.$reified$T), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(anonymous_0_.class)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue("iterator")), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(anonymous_1_.class));
+                                        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug19xx.Itrable.class, .com.redhat.ceylon.compiler.java.test.issues.bug19xx.Itrable$impl.this.$reified$T), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue("indexed")), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(anonymous_0_.class)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue("iterator")), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(anonymous_1_.class));
                                     }
                                 }
                             }
@@ -70,7 +70,7 @@ final class Itrable$impl<T> {
                     
                     @.java.lang.Override
                     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
-                        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug19xx.Itrable.class, .com.redhat.ceylon.compiler.java.test.issues.bug19xx.Itrable$impl.this.$reified$T), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(anonymous_0_.class));
+                        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug19xx.Itrable.class, .com.redhat.ceylon.compiler.java.test.issues.bug19xx.Itrable$impl.this.$reified$T), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue("indexed")), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(anonymous_0_.class));
                     }
                 }
             }

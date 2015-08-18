@@ -217,9 +217,7 @@ final class bug1845_3_ {
                 
                 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
                 @.com.redhat.ceylon.compiler.java.metadata.Name("Gee")
-                @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(
-                        isPackageLocal = true,
-                        qualifier = "1bug1845_3$1")
+                @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1bug1845_3$1")
                 class Gee implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
                     
                     Gee() {
@@ -228,7 +226,7 @@ final class bug1845_3_ {
                     @.java.lang.Override
                     @.com.redhat.ceylon.compiler.java.metadata.Ignore
                     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
-                        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(Gee.class);
+                        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue(bug1845_3_.class), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(Gee.class));
                     }
                 }
                 return null;

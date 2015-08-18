@@ -338,7 +338,7 @@ class InlineObjectInDefaultClassParam<T> implements .com.redhat.ceylon.compiler.
                 
                 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
                 @.com.redhat.ceylon.compiler.java.metadata.Name("anonymous#4")
-                @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.structure.klass.InlineObjectInDefaultClassParam.class)
+                @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
                 @.com.redhat.ceylon.compiler.java.metadata.Object
                 class anonymous_4_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
                     
@@ -388,7 +388,7 @@ class InlineObjectInDefaultClassParam<T> implements .com.redhat.ceylon.compiler.
                 
                 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
                 @.com.redhat.ceylon.compiler.java.metadata.Name("anonymous#3")
-                @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.structure.klass.InlineObjectInDefaultClassParam.class)
+                @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
                 @.com.redhat.ceylon.compiler.java.metadata.Object
                 class anonymous_3_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
                     

@@ -133,6 +133,4 @@ class Correct() {
         return iterationDynamic(iterable);
     }
     assert(expected == arrayIterationDynamic());
-    
-    
 }

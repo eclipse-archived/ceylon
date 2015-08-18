@@ -107,7 +107,7 @@ class Bug1942 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
                 
                 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
                 @.com.redhat.ceylon.compiler.java.metadata.Name("anonymous#1")
-                @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bug1942.class)
+                @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
                 @.com.redhat.ceylon.compiler.java.metadata.Object
                 class anonymous_1_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
                     
@@ -117,7 +117,7 @@ class Bug1942 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
                     @.java.lang.Override
                     @.com.redhat.ceylon.compiler.java.metadata.Ignore
                     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
-                        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bug1942.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(anonymous_1_.class));
+                        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bug1942.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue("a")), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(anonymous_1_.class));
                     }
                 }
             }
