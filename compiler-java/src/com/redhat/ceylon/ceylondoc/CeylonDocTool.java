@@ -1038,7 +1038,7 @@ public class CeylonDocTool extends OutputRepoUsingTool {
         if (!includeNonShared && !decl.isShared()) {
             return false;
         }
-        if (decl.isNative() && !decl.isNativeHeader()) {
+        if (decl.isNativeImplementation()) {
             return false;
         }
         return true;
