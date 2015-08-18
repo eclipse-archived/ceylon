@@ -85,6 +85,7 @@ import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.model.typechecker.model.TypeParameter;
 import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.model.typechecker.model.TypedReference;
+import com.redhat.ceylon.model.typechecker.model.Value;
 import com.redhat.ceylon.model.typechecker.util.TypePrinter;
 import com.sun.tools.javac.code.BoundKind;
 import com.sun.tools.javac.code.Symbol.TypeSymbol;
@@ -5328,10 +5329,13 @@ public abstract class AbstractTransformer implements Transformation {
         while(container != null){
             if(container instanceof Package)
                 return null;
-            if(container instanceof Declaration
-                    // skip anonymous methods
-                    && (container instanceof Function == false || !((Declaration) container).isAnonymous()))
-                return (Declaration) container;
+            if(container instanceof Declaration){
+                if(Decl.skipContainer(container)){
+                    // skip it and go on
+                }else{
+                    return (Declaration) container;
+                }
+            }
             container = container.getContainer();
         }
         // did not find anything

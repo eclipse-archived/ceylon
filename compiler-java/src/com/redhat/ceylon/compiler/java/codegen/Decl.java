@@ -835,7 +835,7 @@ public class Decl {
     public static boolean isTopLevelObjectExpressionType(Declaration model) {
         return model instanceof Class
                 && model.isAnonymous()
-                && model.getContainer() instanceof Package
+                && getNonSkippedContainer(model) instanceof Package
                 && !model.isNamed();
     }
 
@@ -941,5 +941,38 @@ public class Decl {
         } else {
             return null;
         }
+    }
+
+    public static Scope getNonSkippedContainer(Declaration decl){
+        if(decl instanceof Scope)
+            return getNonSkippedContainer((Scope)decl);
+        return getNonSkippedContainer(decl.getContainer());
+    }
+
+    public static Scope getNonSkippedContainer(Scope object){
+        Scope scope = object.getContainer();
+        while(skipContainer(scope))
+            scope = scope.getContainer();
+        return scope;
+    }
+
+    public static Scope getFirstDeclarationContainer(Scope object){
+        Scope scope = object.getContainer();
+        while(scope instanceof Package == false
+                && scope instanceof Declaration == false)
+            scope = scope.getContainer();
+        return scope;
+    }
+
+    public static boolean skipContainer(Scope container) {
+        // skip anonymous methods
+        if(container instanceof Function && ((Declaration) container).isAnonymous()){
+            return true;
+        }
+        if(container instanceof Value
+                && !((Value) container).isTransient()){
+            return true;
+        }
+        return false;
     }
 }
