@@ -1390,6 +1390,105 @@ shared interface Iterable<out Element=Anything,
         };
     }
     
+    "A stream that produces every element produced by this
+     stream exactly once. Duplicate elements of this stream
+     are eliminated.
+     
+     For example:
+     
+         String(\"hello world\".distinct)
+     
+     is the string `\"helo wrd\"`."
+    shared {Element*} distinct
+            => object satisfies {Element*} {
+        iterator() 
+                => let (elements=outer)
+                object satisfies Iterator<Element> {
+            
+            value it = elements.iterator();
+            variable value count = 0;
+            
+            class Entry(element, next) {
+                shared Entry? next;
+                shared Element element;
+                shared Boolean has(Anything element) {
+                    variable Entry? entry = this;
+                    while (exists e = entry) {
+                        if (exists element) {
+                            if (exists ee=e.element,
+                                element==ee) {
+                                return true;
+                            }
+                        }
+                        else {
+                            if (!e.element exists) {
+                                return true;
+                            }
+                        }
+                        entry = e.next;
+                    }
+                    return false;
+                }
+            }
+            
+            variable value store 
+                    = Array.ofSize {
+                size = 16;
+                element = null of Entry?;
+            };
+            
+            function hash(Element element, Integer size) 
+                    => if (exists element) 
+                    then element.hash % size
+                    else 0;
+            
+            Array<Entry?> rebuild(Array<Entry?> store) {
+                value newStore 
+                        = Array.ofSize {
+                    size = store.size*2;
+                    element = null of Entry?;
+                };
+                for (entries in store) {
+                    variable value ent = entries;
+                    while (exists e = ent) {
+                        value elem = e.element;
+                        value i = hash(elem, newStore.size);
+                        value rest = newStore[i];
+                        newStore.set(i, Entry(e.element, rest));
+                        ent = e.next;
+                    }
+                }
+                return newStore;
+            }
+            
+            shared actual Element|Finished next() {
+                while (true) {
+                    switch (element = it.next())
+                    case (is Finished) {
+                        return element;
+                    }
+                    else {
+                        value index = hash(element, store.size);
+                        value entry = store[index];
+                        if (exists entry,
+                                entry.has(element)) {
+                            //keep iterating
+                        }
+                        else {
+                            store.set(index, 
+                                Entry(element, entry));
+                            count++;
+                            if (count>store.size*2) {
+                                store = rebuild(store);
+                            }
+                            return element;
+                        }
+                    }
+                }
+            }
+        };
+    };
+    
     "A string of form `\"{ x, y, z }\"` where `x`, `y`, and 
      `z` are the `string` representations of the elements of 
      this collection, as produced by the iterator of the 

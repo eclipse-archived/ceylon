@@ -2261,4 +2261,10 @@ public final class String
         return instance(value).getPermutations();
     }
     
+    @Ignore
+    public static Iterable<? extends Character, ? extends java.lang.Object>
+    getDistinct(java.lang.String value) {
+        return instance(value).getDistinct();
+    }
+    
 }

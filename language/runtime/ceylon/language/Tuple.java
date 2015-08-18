@@ -1510,6 +1510,12 @@ public final class Tuple<Element, First extends Element,
     }
     
     @Override @Ignore
+    public Iterable<? extends Element, ? extends java.lang.Object>
+    getDistinct() {
+        return $ceylon$language$Iterable$impl().getDistinct();
+    }
+    
+    @Override @Ignore
     public java.lang.String toString() {
         StringBuilder sb = new StringBuilder();
         sb.appendCharacter('[');
