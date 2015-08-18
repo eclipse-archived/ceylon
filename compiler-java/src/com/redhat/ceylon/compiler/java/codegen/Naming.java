@@ -2088,7 +2088,7 @@ public class Naming extends NamingBase implements LocalId {
      * so for those we have to remember the exact name
      */
     public static boolean isAmbiguousGetterName(TypedDeclaration attr) {
-        return isAmbiguousGetterName(attr.getName());
+        return !attr.isToplevel() && isAmbiguousGetterName(attr.getName());
     }
 
     /**
