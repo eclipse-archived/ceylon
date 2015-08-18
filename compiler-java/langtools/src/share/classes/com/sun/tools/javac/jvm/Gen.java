@@ -85,6 +85,8 @@ public class Gen extends JCTree.Visitor {
      */
     private final Type methodType;
 
+    private SourceLanguage sourceLanguage;
+
     public static Gen instance(Context context) {
         Gen instance = context.get(genKey);
         if (instance == null)
@@ -150,6 +152,8 @@ public class Gen extends JCTree.Visitor {
         }
         this.jsrlimit = setjsrlimit;
         this.useJsrLocally = false; // reset in visitTry
+        
+        this.sourceLanguage = SourceLanguage.instance(context);
     }
 
     /** Switches
@@ -1639,14 +1643,18 @@ public class Gen extends JCTree.Visitor {
 
     public void visitBreak(JCBreak tree) {
         Env<GenContext> targetEnv = unwind(tree.target, env);
-        Assert.check(code.state.stacksize == 0);
+        if(!sourceLanguage.isCeylon()) {
+            Assert.check(code.state.stacksize == 0);
+        }
         targetEnv.info.addExit(code.branch(goto_));
         endFinalizerGaps(env, targetEnv);
     }
 
     public void visitContinue(JCContinue tree) {
         Env<GenContext> targetEnv = unwind(tree.target, env);
-        Assert.check(code.state.stacksize == 0);
+        if(!sourceLanguage.isCeylon()) {
+            Assert.check(code.state.stacksize == 0);
+        }
         targetEnv.info.addCont(code.branch(goto_));
         endFinalizerGaps(env, targetEnv);
     }
