@@ -4350,11 +4350,10 @@ public class ClassTransformer extends AbstractTransformer {
         @Override
         protected void appendImplicitParameters(java.util.List<TypeParameter> typeParameterList) {
             super.appendImplicitParameters(typeParameterList);
-            if (constructor != null
-                    && !Decl.isDefaultConstructor(constructor)) {
+            if (constructor != null) {
                 if (delegationConstructor) {
                     overloadBuilder.parameter(makeConstructorNameParameter(constructor, DeclNameFlag.QUALIFIED, DeclNameFlag.DELEGATION));
-                } else {
+                } else if (!Decl.isDefaultConstructor(constructor)){
                     overloadBuilder.parameter(makeConstructorNameParameter(constructor));
                 }
             }
