@@ -1510,6 +1510,12 @@ public final class Tuple<Element, First extends Element,
     }
     
     @Override @Ignore
+    public <Group> Map<? extends Group, ? extends Sequence<? extends Element>>
+    group(TypeDescriptor $reifiedGroup, Callable<? extends Group> fun) {
+        return $ceylon$language$Iterable$impl().group($reifiedGroup, fun);
+    }
+    
+    @Override @Ignore
     public Iterable<? extends Element, ? extends java.lang.Object>
     getDistinct() {
         return $ceylon$language$Iterable$impl().getDistinct();

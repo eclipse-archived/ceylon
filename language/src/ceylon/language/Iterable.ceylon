@@ -1399,8 +1399,8 @@ shared interface Iterable<out Element=Anything,
          String(\"hello world\".distinct)
      
      is the string `\"helo wrd\"`."
-    shared {Element*} distinct
-            => object satisfies {Element*} {
+    shared Iterable<Element,Absent> distinct
+            => object satisfies Iterable<Element,Absent> {
         iterator() 
                 => let (elements=outer)
                 object satisfies Iterator<Element> {
@@ -1415,8 +1415,8 @@ shared interface Iterable<out Element=Anything,
                     variable Entry? entry = this;
                     while (exists e = entry) {
                         if (exists element) {
-                            if (exists ee=e.element,
-                                element==ee) {
+                            if (exists ee = e.element,
+                                element == ee) {
                                 return true;
                             }
                         }
@@ -1442,20 +1442,22 @@ shared interface Iterable<out Element=Anything,
                     then element.hash.magnitude % size
                     else 0;
             
-            Array<Entry?> rebuild(Array<Entry?> store) {
+            function rebuild(Array<Entry?> store) {
                 value newStore 
                         = Array.ofSize {
                     size = store.size*2;
                     element = null of Entry?;
                 };
                 for (entries in store) {
-                    variable value ent = entries;
-                    while (exists e = ent) {
-                        value elem = e.element;
-                        value i = hash(elem, newStore.size);
-                        value rest = newStore[i];
-                        newStore.set(i, Entry(e.element, rest));
-                        ent = e.next;
+                    variable value entry = entries;
+                    while (exists e = entry) {
+                        value index = 
+                                hash(e.element, 
+                                    newStore.size);
+                        newStore.set(index, 
+                            Entry(e.element, 
+                                newStore[index]));
+                        entry = e.next;
                     }
                 }
                 return newStore;
@@ -1487,6 +1489,165 @@ shared interface Iterable<out Element=Anything,
                 }
             }
         };
+    };
+    
+    "Classifies the elements of this stream into a [[Map]] 
+     where each key is a value produced by the given 
+     [[grouping function|grouping]] and each corresponding
+     item is [[sequence|Sequence]] of all elements that 
+     produced the key when passed as arguments to the 
+     grouping function.
+     
+     For example:
+     
+         (0..10).group((i) => 2.divides(i) then \"even\" else \"odd\")
+     
+     produces the map 
+     `{ even->[0, 2, 4, 6, 8, 10], odd->[1, 3, 5, 7, 9] }`."
+    shared Map<Group,[Element+]> group<Group>
+            (Group grouping(Element element))
+            given Group satisfies Object
+            => object extends Object() 
+                      satisfies Map<Group,[Element+]> {
+        
+        class GroupEntry(group, elements, next = null) {
+            shared Group group;
+            shared variable ElementEntry elements;
+            shared GroupEntry? next;
+            shared GroupEntry? get(Object group) {
+                variable GroupEntry? entry = this;
+                while (exists e = entry) {
+                    if (group == e.group) {
+                        return e;
+                    }
+                    entry = e.next;
+                }
+                return null;
+            }
+            object stream satisfies {Element+} {
+                iterator() 
+                        => object satisfies Iterator<Element> {
+                    variable ElementEntry? current = elements;
+                    shared actual Element|Finished next() {
+                        if (exists c = current) {
+                            current = c.next;
+                            return c.element;
+                        }
+                        else {
+                            return finished;
+                        }
+                    }
+                };
+            }
+            shared [Element+] sequence {
+                value array = Array(stream);
+                array.reverseInPlace();
+                return ArraySequence(array);
+            }
+        }
+        
+        class ElementEntry(element, next = null) {
+            shared Element element;
+            shared variable ElementEntry? next;
+        }
+        
+        variable value store 
+                = Array.ofSize {
+            size = 16;
+            element = null of GroupEntry?;
+        };
+        
+        function hash(Object group, Integer size) 
+                => group.hash.magnitude % size;
+        
+        function rebuild(Array<GroupEntry?> store) {
+            value newStore 
+                    = Array.ofSize {
+                size = store.size*2;
+                element = null of GroupEntry?;
+            };
+            for (groups in store) {
+                variable value group = groups;
+                while (exists g = group) {
+                    value index = 
+                            hash(g.group, newStore.size);
+                    newStore.set(index, 
+                        GroupEntry(g.group, g.elements, 
+                            newStore[index]));
+                    group = g.next;
+                }
+            }
+            return newStore;
+        }
+        
+        variable value count = 0;
+        for (element in outer) {
+            value group = grouping(element);
+            value index = hash(group, store.size);
+            GroupEntry newEntry;
+            if (exists entries = store[index]) {
+                if (exists entry = entries.get(group)) {
+                    entry.elements 
+                            = ElementEntry(element, 
+                                entry.elements);
+                    continue;
+                }
+                else {
+                    newEntry 
+                            = GroupEntry(group, 
+                                ElementEntry(element), 
+                                    entries);
+                }
+            }
+            else {
+                newEntry 
+                        = GroupEntry(group,
+                            ElementEntry(element));
+            }
+            store.set(index, newEntry);
+            count++;
+            if (count>store.size*2) {
+                store = rebuild(store);
+            }
+        }
+        
+        size => count;
+        
+        iterator() 
+                => object satisfies Iterator<Group->[Element+]> {
+            variable value index = 0;
+            variable GroupEntry? entry = null;
+            shared actual <Group->[Element+]>|Finished next() {
+                if (exists e = entry) {
+                    entry = e.next;
+                    return e.group -> e.sequence;
+                }
+                else {
+                    while (true) {
+                        if (index>=store.size) {
+                            return finished;
+                        }
+                        else {
+                            entry = store[index++];
+                            if (exists e = entry) {
+                                entry = e.next;
+                                return e.group -> e.sequence;
+                            }
+                        }
+                    }
+                }
+            }
+        };        
+        
+        clone() => this;
+        
+        function group(Object key) 
+                => store[hash(key, store.size)]?.get(key);
+        
+        defines(Object key) => group(key) exists;
+        
+        get(Object key) => group(key)?.sequence;
+        
     };
     
     "A string of form `\"{ x, y, z }\"` where `x`, `y`, and 

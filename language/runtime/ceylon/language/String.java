@@ -2262,6 +2262,12 @@ public final class String
     }
     
     @Ignore
+    public static <Group> Iterable<? extends Entry<? extends Group, ? extends Sequence<? extends Character>>, ? extends java.lang.Object>
+    group(java.lang.String value, TypeDescriptor $reifiedGroup, Callable<? extends Group> fun) {
+        return instance(value).group($reifiedGroup, fun);
+    }
+    
+    @Ignore
     public static Iterable<? extends Character, ? extends java.lang.Object>
     getDistinct(java.lang.String value) {
         return instance(value).getDistinct();
