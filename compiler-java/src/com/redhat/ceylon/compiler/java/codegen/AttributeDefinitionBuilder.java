@@ -411,7 +411,7 @@ public class AttributeDefinitionBuilder {
         if (hasInitFlag()) {
             varInit = variableInit;
         }
-        JCTree.JCAssign init = owner.make().Assign(owner.makeUnquotedIdent(fieldName), varInit);
+        JCTree.JCAssign init = owner.make().Assign(owner.makeUnquotedIdent(Naming.quoteFieldName(fieldName)), varInit);
         List<JCStatement> stmts;
         if(isDeferredInitError()){
             // surround the init expression with a try/catch that saves the exception
