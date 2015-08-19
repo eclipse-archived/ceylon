@@ -12,27 +12,24 @@ shared {Element+} loop<Element>(
         Element first)(
         "The function that produces the next element of the
          stream, given the current element."
-        Element next(Element element)) {
-    value start = first;
-    object iterable satisfies {Element+} {
+        Element next(Element element))
+    => let (start = first) 
+    object satisfies {Element+} {
         first => start;
         empty => false;
         shared actual Nothing size {
             "stream is infinite"
             assert(false);
         }
-        function nextElement(Element element) => next(element);
-        shared actual Iterator<Element> iterator() {
+        function nextElement(Element element) 
+                => next(element);
+        iterator()
+                => object satisfies Iterator<Element> {
             variable Element current = start;
-            object iterator satisfies Iterator<Element> {
-                shared actual Element|Finished next() {
-                    Element result = current;
-                    current = nextElement(current);
-                    return result;
-                }
+            shared actual Element next() {
+                Element result = current;
+                current = nextElement(current);
+                return result;
             }
-            return iterator;
-        }
-    }
-    return iterable;
-}
+        };
+    };
