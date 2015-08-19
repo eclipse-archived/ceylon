@@ -27,7 +27,7 @@ import java.lang { ThreadLocal }
    An example:
    
        Contextual<String> stringValue = Contextual<String>();
-       Contextual<String> intValue = Contextual<Integer>();
+       Contextual<Integer> intValue = Contextual<Integer>();
        try (stringValue.Using("foo"),
                intValue.Using(system.milliseconds)) {
            print(stringValue.get()); // prints "foo"
