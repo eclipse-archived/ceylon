@@ -951,6 +951,14 @@ class SuperInvocation extends PositionalInvocation {
         return delegationDelegation;
     }
 
+    @Override
+    protected void addReifiedArguments(ListBuffer<ExpressionAndType> result) {
+        if (!isDelegationDelegation()) {
+            super.addReifiedArguments(result);
+        } else {
+            addReifiedArguments(gen, sub.getReference(), result);
+        }
+    }
 }
 
 
