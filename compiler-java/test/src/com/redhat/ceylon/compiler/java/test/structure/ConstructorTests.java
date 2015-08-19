@@ -183,6 +183,11 @@ public class ConstructorTests extends CompilerTests {
     }
     
     @Test
+    public void testCtorDelegationWithGenericSuper() {
+        compareWithJavaSource("constructor/CtorDelegationWithGenericSuper");
+    }
+    
+    @Test
     public void testCtorDelegationExtendDefault() {
         compareWithJavaSource("constructor/CtorDelegationExtendDefault");
     }

@@ -1,0 +1,51 @@
+package com.redhat.ceylon.compiler.java.test.structure.constructor;
+
+class CtorDelegationWithGenericSuperBar<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    CtorDelegationWithGenericSuperBar(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        this.$reified$T = $reified$T;
+    }
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationWithGenericSuperBar.class, $reified$T);
+    }
+}
+class CtorDelegationWithGenericSuperFoo<T, U> extends .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationWithGenericSuperBar<.ceylon.language.Boolean> {
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$U;
+    private static final .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationWithGenericSuperFoo.init$delegation$_ init$delegation$_ = null;
+    
+    private static final class init$delegation$_ {
+        
+        private init$delegation$_() {
+        }
+    }
+    
+    private CtorDelegationWithGenericSuperFoo(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$U, .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationWithGenericSuperFoo.init$delegation$_ $name$) {
+        super(.ceylon.language.Boolean.$TypeDescriptor$);
+        this.$reified$T = $reified$T;
+        this.$reified$U = $reified$U;
+    }
+    public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationWithGenericSuperFoo.init_ init_ = null;
+    
+    public static final class init_ {
+        
+        private init_() {
+        }
+    }
+    
+    public CtorDelegationWithGenericSuperFoo(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$U, .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationWithGenericSuperFoo.init_ $name$) {
+        this($reified$T, $reified$U, .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationWithGenericSuperFoo.init$delegation$_);
+    }
+    
+    public CtorDelegationWithGenericSuperFoo(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$U) {
+        this($reified$T, $reified$U, .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationWithGenericSuperFoo.init$delegation$_);
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationWithGenericSuperFoo.class, $reified$T, $reified$U);
+    }
+}
