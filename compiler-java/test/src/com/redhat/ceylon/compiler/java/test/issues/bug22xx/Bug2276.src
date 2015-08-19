@@ -1,0 +1,43 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug22xx;
+
+final class bug2276_accumulator_ {
+    
+    private bug2276_accumulator_() {
+    }
+    
+    static double bug2276_accumulator() {
+        final boolean b = true;
+        return 1.0 + (
+            let
+            {
+                double $ceylontmp$ifResult$0;
+                {
+                    boolean sel$1 = b;
+                    if (sel$1 == true) {
+                        $ceylontmp$ifResult$0 = 1.0;
+                    } else if (sel$1 == false) {
+                        $ceylontmp$ifResult$0 = 0.0;
+                    } else {
+                        .com.redhat.ceylon.compiler.java.Util.rethrow(new .com.redhat.ceylon.compiler.java.language.EnumeratedTypeError("Supposedly exhaustive switch was not exhaustive"));
+                        $ceylontmp$ifResult$0 = 0.0;
+                    }
+                }
+            }
+            returning $ceylontmp$ifResult$0;
+        );
+    }
+}
+public final class bug2276_ {
+    
+    private bug2276_() {
+    }
+    
+    public static void bug2276() {
+        .com.redhat.ceylon.compiler.java.test.issues.bug22xx.bug2276_accumulator_.bug2276_accumulator();
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.issues.bug22xx.bug2276_.bug2276();
+    }
+}
