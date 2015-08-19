@@ -32,7 +32,7 @@ import java.lang { ThreadLocal }
                intValue.Using(system.milliseconds)) {
            print(stringValue.get()); // prints "foo"
            print(intValue.get());    // prints the current time in ms
-           try (stringValue.Using("foo")) {
+           try (stringValue.Using("bar")) {
                print(stringValue.get()); // prints "bar"
                print(intValue.get());    // prints same number as before
            }
