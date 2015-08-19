@@ -269,6 +269,12 @@ public class ConstructorTests extends CompilerTests {
     }
     
     @Test
+    public void testCtorBug2176B() {
+        compile("constructor/Bug2176B1.ceylon");
+        compareWithJavaSource("constructor/Bug2176B2");
+    }
+    
+    @Test
     public void testCtorSingletonCtorExtendingGenericClass() {
         compareWithJavaSource("constructor/SingletonCtorExtendingGenericClass");
     }

@@ -1,0 +1,30 @@
+package com.redhat.ceylon.compiler.java.test.structure.constructor;
+
+final class bug2176B_ {
+    
+    private bug2176B_() {
+    }
+    private static final .com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2176B1 value;
+    private static volatile boolean $init$value = false;
+    private static final .java.lang.Throwable $initException$;
+    static {
+        try {
+            value = .com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2176B1.getBug2176B1$true_();
+            $initException$ = null;
+            $init$value = true;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            value = null;
+            $init$value = false;
+        }
+    }
+    
+    public static .com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2176B1 get_() {
+        if (bug2176B_.$init$value) {
+            return value;
+        } else {
+            if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'bug2176B\' before it was set");
+        }
+    }
+}
