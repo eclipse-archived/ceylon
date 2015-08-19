@@ -1,0 +1,79 @@
+package com.redhat.ceylon.compiler.java.test.structure.constructor;
+
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Members({@.com.redhat.ceylon.compiler.java.metadata.Member(klass = .com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2176C.Inner.class)})
+class Bug2176C implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    Bug2176C() {
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    static final class Inner$instance {
+        
+        private Inner$instance() {
+        }
+    }
+    private Inner $instance$Inner$instance = null;
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Enumerated
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.structure.constructor::Bug2176C.Inner.instance")
+    .com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2176C.Inner getInner$instance() {
+        if ($instance$Inner$instance == null) $instance$Inner$instance = new Inner((.com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2176C.Inner$instance)null);
+        return $instance$Inner$instance;
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2176C.class)
+    @.com.redhat.ceylon.compiler.java.metadata.Class(constructors = true)
+    public class Inner implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+        
+        @.ceylon.language.SharedAnnotation$annotation$
+        @.com.redhat.ceylon.compiler.java.metadata.Name("instance")
+        @.com.redhat.ceylon.compiler.java.metadata.Enumerated
+        public Inner(@.com.redhat.ceylon.compiler.java.metadata.Ignore
+        .com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2176C.Inner$instance $name$) {
+        }
+        
+        @.com.redhat.ceylon.compiler.java.metadata.Ignore
+        Inner getInner$instance() {
+            return .com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2176C.this.getInner$instance();
+        }
+        
+        @.java.lang.Override
+        @.com.redhat.ceylon.compiler.java.metadata.Ignore
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2176C.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2176C.Inner.class));
+        }
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2176C.$TypeDescriptor$;
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2176C.class);
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Method
+final class bug2176C_ {
+    
+    private bug2176C_() {
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
+    static void bug2176C() {
+        final .ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2176C.Inner> ref = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2176C.Inner>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2176C.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2176C.Inner.class)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2176C.$TypeDescriptor$), "Bug2176C.Inner.instance(Bug2176C)", (short)-1){
+            
+            @.java.lang.Override
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            public .com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2176C.Inner $call$(final .java.lang.Object $param$0) {
+                final .com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2176C $instance$ = (.com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2176C)$param$0;
+                return $instance$.getInner$instance();
+            }
+        };
+        final .com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2176C.Inner inst = ref.$call$((.java.lang.Object)new .com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2176C());
+    }
+}
