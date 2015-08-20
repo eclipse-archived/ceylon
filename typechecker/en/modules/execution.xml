@@ -239,7 +239,7 @@ void run() {
         or when an exception is thrown by an evaluation, assignment, invocation, or 
         instantiation.</para>
         
-        <section>
+        <section id="frames">
             <title>Frames</title>
         
             <para>When execution of a body begins, a <emphasis>frame</emphasis> is created.
@@ -294,7 +294,7 @@ void run() {
         
         </section>
         
-        <section>
+        <section id="currentinstancesandcurrentframes">
             <title>Current instances and current frames</title>
             
             <para>A frame may be the <emphasis>current frame</emphasis> for a body. When the 
@@ -586,7 +586,7 @@ String result = middleObject.string;</programlisting>
             
         </section>
         
-        <section if="lateinitialization">
+        <section id="lateinitialization">
             <title>Initialization of late references</title>
             
             <para>A reference annotated <literal>late</literal> may be uninitialized in a 
