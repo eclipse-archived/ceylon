@@ -15,6 +15,7 @@ function JSNumber(value) {
 initExistingType(JSNumber, Number, 'ceylon.language::JSNumber');
 JSNumber.$crtmm$=function(){return{nm:'JSNumber',mt:'c',pa:1,
   mod:$CCMM$,d:['$','Number']};}
+ex$.JSNumber=JSNumber;
 
 var origNumToString = Number.prototype.toString;
 inheritProto(JSNumber, $_Object, $_Number, $init$Integral(), $init$Exponentiable());
@@ -27,7 +28,7 @@ function Integer(value) {
     that.float$=false;
     return that;
 }
-initTypeProto(Integer, 'ceylon.language::Integer', $_Object,$_Number,
+initTypeProto(Integer, 'ceylon.language::Integer', $_Object,$_Number, JSNumber,
         $init$Integral(), $init$Exponentiable(), $init$Binary());
 Integer.$crtmm$=function(){return{an:function(){return[shared(),$_native(),$_final()];},mod:$CCMM$,d:['$','Integer']};}
 
@@ -39,7 +40,7 @@ function Float(value) {
     that.float$ = true;
     return that;
 }
-initTypeProto(Float, 'ceylon.language::Float', $_Object,$_Number,$init$Exponentiable());
+initTypeProto(Float, 'ceylon.language::Float', $_Object,$_Number,$init$Exponentiable(), JSNumber);
 Float.$crtmm$=function(){return{an:function(){return[shared(),$_native(),$_final()];},mod:$CCMM$,d:['$','Float']};}
 
 var JSNum$proto = Number.prototype;
