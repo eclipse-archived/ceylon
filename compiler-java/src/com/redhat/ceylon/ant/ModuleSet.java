@@ -32,6 +32,7 @@ import org.apache.tools.ant.types.DataType;
 public class ModuleSet extends DataType {
 
     private final LinkedHashSet<Module> modules = new LinkedHashSet<Module>();
+    private final LinkedHashSet<Pattern> patterns = new LinkedHashSet<Pattern>();
     
     public void addConfiguredModule(Module module) {
         this.modules.add(module);
@@ -44,6 +45,10 @@ public class ModuleSet extends DataType {
     public void addConfiguredModuleSet(ModuleSet moduleset) {
         this.modules.addAll(moduleset.getModules());
     }
+
+    public void addConfiguredPattern(Pattern pattern) {
+        this.patterns.add(pattern);
+    }
     
     public Set<Module> getModules() {
         LinkedHashSet<Module> result = new LinkedHashSet<Module>();        
@@ -52,9 +57,14 @@ public class ModuleSet extends DataType {
             ModuleSet referredModuleSet = (ModuleSet)getProject().getReference(getRefid().getRefId());    
             result.addAll(referredModuleSet.getModules());
         }
+        for (Pattern p : patterns) {
+            result.addAll(p.getModules());
+        }
         return result;
     }
 
-    
-    
+    @Override
+    public String toString() {
+        return "Modules: " + getModules().toString();
+    }
 }
