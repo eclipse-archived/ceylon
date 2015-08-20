@@ -751,6 +751,7 @@ public final class Tuple<Element, First extends Element,
         // Tuples as a special case and invokes $completeInit$() instead of $set$()
     }
 
+    @Ignore
     public void $completeInit$(java.lang.Object first, java.lang.Object rest) {
         Lookup lookup = MethodHandles.lookup();
         try {
