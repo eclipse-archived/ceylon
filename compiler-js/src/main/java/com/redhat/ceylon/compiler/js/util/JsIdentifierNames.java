@@ -18,6 +18,7 @@ import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.Scope;
 import com.redhat.ceylon.model.typechecker.model.TypeAlias;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
+import com.redhat.ceylon.model.typechecker.model.TypeParameter;
 
 /**
  * Manages the identifier names in the JavaScript code generated for a Ceylon
@@ -235,7 +236,7 @@ public class JsIdentifierNames {
             Scope scope = originalDeclaration(decl).getContainer();
             while (scope instanceof TypeDeclaration) {
                 sb.append('$');
-                sb.append(((TypeDeclaration) scope).getName());
+                sb.append(((TypeDeclaration) scope).getName().replaceAll("#", ""));
                 scope = scope.getContainer();
             }
             suffix = sb.toString();
@@ -361,6 +362,16 @@ public class JsIdentifierNames {
     /** The name for the argument that holds the type parameters of a method. */
     public String typeArgsParamName(Function m) {
         return "$" + Long.toString(Math.abs(m.getQualifiedNameString().hashCode()), 36) + "$";
+    }
+
+    public String typeParameterName(TypeParameter tp) {
+        final String cname;
+        if (tp.getDeclaration().isAnonymous()) {
+            cname = name(tp.getDeclaration());
+        } else {
+            cname = tp.getDeclaration().getName();
+        }
+        return tp.getName() + "$" + cname;
     }
 
     /** Replace any characters considered invalid in JS with some regular
