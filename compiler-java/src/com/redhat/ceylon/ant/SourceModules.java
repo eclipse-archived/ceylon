@@ -31,8 +31,9 @@ import org.apache.tools.ant.Project;
 import org.apache.tools.ant.ProjectComponent;
 import org.apache.tools.ant.types.FileSet;
 
-import com.redhat.ceylon.ant.ModuleDescriptorReader.NoSuchModuleException;
 import com.redhat.ceylon.common.Constants;
+import com.redhat.ceylon.common.ModuleDescriptorReader;
+import com.redhat.ceylon.common.ModuleDescriptorReader.NoSuchModuleException;
 import com.redhat.ceylon.launcher.CeylonClassLoader;
 import com.redhat.ceylon.launcher.ClassLoaderSetupException;
 

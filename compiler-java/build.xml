@@ -187,6 +187,7 @@
             <include name="com/redhat/ceylon/launcher/**" />
             <include name="com/redhat/ceylon/common/*" />
             <include name="com/redhat/ceylon/common/config/*" />
+            <include name="com/redhat/ceylon/common/tools/ModuleWildcardsHelper.java" />
         </javac>
         <copy todir="${build.classes}">
             <fileset dir="${ceylonc.src}">

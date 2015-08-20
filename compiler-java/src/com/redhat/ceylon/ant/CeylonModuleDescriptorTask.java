@@ -25,8 +25,9 @@ import java.io.File;
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Task;
 
-import com.redhat.ceylon.ant.ModuleDescriptorReader.NoSuchModuleException;
 import com.redhat.ceylon.common.Constants;
+import com.redhat.ceylon.common.ModuleDescriptorReader;
+import com.redhat.ceylon.common.ModuleDescriptorReader.NoSuchModuleException;
 import com.redhat.ceylon.launcher.CeylonClassLoader;
 import com.redhat.ceylon.launcher.ClassLoaderSetupException;
 
