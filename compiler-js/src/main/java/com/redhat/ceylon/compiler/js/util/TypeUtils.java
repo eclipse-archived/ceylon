@@ -57,7 +57,7 @@ public class TypeUtils {
             } else {
                 gen.out(",");
             }
-            gen.out(e.getKey().getName(), "$", e.getKey().getDeclaration().getName(), ":");
+            gen.out(gen.getNames().typeParameterName(e.getKey()), ":");
             final Type pt = e.getValue() == null ? null : e.getValue().resolveAliases();
             if (pt == null) {
                 gen.out("'", e.getKey().getName(), "'");
@@ -301,14 +301,14 @@ public class TypeUtils {
                     }
                     gen.out(".");
                 }
-                gen.out("$$targs$$.", tp.getName(), "$", tp.getDeclaration().getName());
+                gen.out("$$targs$$.", gen.getNames().typeParameterName(tp));
             } else {
                 //This can happen in expressions such as Singleton(n) when n is dynamic
                 gen.out("{/*NO PARENT*/t:", gen.getClAlias(), "Anything}");
             }
         } else if (tp.getContainer() instanceof TypeAlias) {
             if (parent == tp.getContainer()) {
-                gen.out("'", tp.getName(), "$", tp.getDeclaration().getName(), "'");
+                gen.out("'", gen.getNames().typeParameterName(tp), "'");
             } else {
                 //This can happen in expressions such as Singleton(n) when n is dynamic
                 gen.out("{/*NO PARENT ALIAS*/t:", gen.getClAlias(), "Anything}");
@@ -333,7 +333,7 @@ public class TypeUtils {
             //A type argument of the argument's type, in which case we must get the reified generic from the argument
             if (tp.getContainer() == parent) {
                 gen.out(gen.getNames().typeArgsParamName((Function)tp.getContainer()), ".",
-                        tp.getName(), "$", tp.getDeclaration().getName());
+                        gen.getNames().typeParameterName(tp));
             } else {
                 if (parent == null && node instanceof Tree.StaticMemberOrTypeExpression) {
                     if (tp.getContainer() == ((Tree.StaticMemberOrTypeExpression)node).getDeclaration()) {
@@ -926,7 +926,7 @@ public class TypeUtils {
             boolean comma = false;
             if (!first)gen.out(",");
             first=false;
-            gen.out(tp.getName(), "$", tp.getDeclaration().getName(), ":{");
+            gen.out(gen.getNames().typeParameterName(tp), ":{");
             if (tp.isCovariant()) {
                 gen.out(MetamodelGenerator.KEY_DS_VARIANCE, ":'out'");
                 comma = true;
@@ -996,10 +996,10 @@ public class TypeUtils {
                     //Attempt to resolve this to an argument if the scope allows for it
                     if (tpowner instanceof TypeDeclaration) {
                         gen.out(gen.getNames().self((TypeDeclaration)tpowner), ".",
-                                type.getNameAsString(), "$", tpowner.getName());
+                                gen.getNames().typeParameterName((TypeParameter)type));
                     } else if (tpowner instanceof Function) {
                         gen.out(gen.getNames().typeArgsParamName((Function)tpowner), ".",
-                                type.getNameAsString(), "$", tpowner.getName());
+                                gen.getNames().typeParameterName((TypeParameter)type));
                     }
                 } else {
                     gen.out("'", type.getNameAsString(), "$", tpowner.getName(), "'");
@@ -1017,7 +1017,7 @@ public class TypeUtils {
                     boolean first = true;
                     for (Map.Entry<TypeParameter, Type> e : pt.getTypeArguments().entrySet()) {
                         if (first) first=false; else gen.out(",");
-                        gen.out(e.getKey().getNameAsString(), "$", e.getKey().getDeclaration().getName(), ":");
+                        gen.out(gen.getNames().typeParameterName(e.getKey()), ":");
                         metamodelTypeNameOrList(resolveTargsFromScope, node, pkg, e.getValue(),
                                 pt.getVarianceOverrides().get(e.getKey()), gen);
                     }
