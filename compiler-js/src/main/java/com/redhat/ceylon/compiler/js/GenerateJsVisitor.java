@@ -2535,16 +2535,15 @@ public class GenerateJsVisitor extends Visitor {
             return;
         }
         out("return ");
-        if (dynblock > 0 && ModelUtil.isTypeUnknown(that.getExpression().getTypeModel())) {
-            Scope cont = ModelUtil.getRealScope(that.getScope()).getScope();
-            if (cont instanceof Declaration) {
-                final Type dectype = ((Declaration)cont).getReference().getType();
-                if (!ModelUtil.isTypeUnknown(dectype)) {
-                    TypeUtils.generateDynamicCheck(that.getExpression(), dectype, this, false,
-                            that.getExpression().getTypeModel().getTypeArguments());
-                    endLine(true);
-                    return;
-                }
+        final Type returnType = that.getExpression().getTypeModel();
+        if (dynblock > 0 && ModelUtil.isTypeUnknown(returnType)) {
+            Declaration cont = ModelUtil.getContainingDeclarationOfScope(that.getScope());
+            final Type dectype = ((Declaration)cont).getReference().getType();
+            if (!ModelUtil.isTypeUnknown(dectype)) {
+                TypeUtils.generateDynamicCheck(that.getExpression(), dectype, this, false,
+                        returnType.getTypeArguments());
+                endLine(true);
+                return;
             }
         }
         if (isNaturalLiteral(that.getExpression().getTerm())) {
