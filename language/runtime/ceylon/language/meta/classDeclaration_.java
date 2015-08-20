@@ -5,6 +5,7 @@ import ceylon.language.meta.declaration.ClassDeclaration;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Method;
+import com.redhat.ceylon.compiler.java.metadata.Name;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 import com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel;
 
@@ -18,6 +19,7 @@ public class classDeclaration_ {
     @TypeInfo("ceylon.language.meta.declaration::ClassDeclaration")
     public static ClassDeclaration classDeclaration(
             @TypeInfo("ceylon.language::Anything")
+            @Name("instance")
             java.lang.Object instance) {
         return (ClassDeclaration)Metamodel.getOrCreateMetamodel(instance.getClass());
     }

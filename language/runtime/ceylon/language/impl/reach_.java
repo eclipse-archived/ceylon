@@ -8,8 +8,10 @@ import ceylon.language.serialization.Element;
 import ceylon.language.serialization.ReachableReference;
 
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
+import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Name;
 import com.redhat.ceylon.compiler.java.metadata.Object;
+import com.redhat.ceylon.compiler.java.metadata.Transient;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 import com.redhat.ceylon.compiler.java.runtime.serialization.Serializable;
 
@@ -24,6 +26,8 @@ public class reach_ {
         return value;
     }
     
+    @Override
+    @Transient
     public String toString() {
         return "reach";
     }
