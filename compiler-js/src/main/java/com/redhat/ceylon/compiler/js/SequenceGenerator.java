@@ -194,13 +194,7 @@ public class SequenceGenerator {
                 }
                 count++;
             }
-            gen.out("],");
-            if (that.getTypeModel().asQualifiedString().startsWith("ceylon.language::Tuple")) {
-                TypeUtils.outputTypeList(that, that.getTypeModel(), gen, false);
-            } else {
-                //Let the function calculate it at runtime
-                gen.out("undefined");
-            }
+            gen.out("]");
             if (spread) {
                 gen.out(",");
                 positionalArguments.get(lim).visit(gen);

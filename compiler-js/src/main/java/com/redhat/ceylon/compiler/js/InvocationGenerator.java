@@ -621,7 +621,7 @@ public class InvocationGenerator {
             boolean first = true;
             for (Tree.PositionalArgument arg : argList.getSequencedArgument().getPositionalArguments()) {
                 if (arg instanceof Tree.SpreadArgument) {
-                    gen.out("],undefined,");
+                    gen.out("],");
                     arg.visit(gen);
                     gen.out(").nativeArray()");
                 } else {
