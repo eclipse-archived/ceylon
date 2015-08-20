@@ -36,7 +36,7 @@ public abstract class ModuleWildcardsHelper {
      * @return An expanded list of ModuleSpecs
      */
     public static List<ModuleSpec> expandSpecWildcards(File dir, List<ModuleSpec> modules, Backend forBackend) {
-        List<File> dirs = new ArrayList<>();
+        List<File> dirs = new ArrayList<File>();
         dirs.add(dir);
         return expandSpecWildcards(dirs, modules, forBackend);
     }
@@ -56,9 +56,9 @@ public abstract class ModuleWildcardsHelper {
      * @return An expanded list of ModuleSpecs
      */
     public static List<ModuleSpec> expandSpecWildcards(List<File> dirs, List<ModuleSpec> modules, Backend forBackend) {
-        List<ModuleSpec> result = new ArrayList<>(modules.size());
+        List<ModuleSpec> result = new ArrayList<ModuleSpec>(modules.size());
         for (ModuleSpec spec : modules) {
-            List<String> names = new ArrayList<>();
+            List<String> names = new ArrayList<String>();
             expandWildcard(names, dirs, spec.getName(), forBackend);
             for (String name : names) {
                 result.add(new ModuleSpec(name, spec.getVersion()));
@@ -82,7 +82,7 @@ public abstract class ModuleWildcardsHelper {
      * @return An expanded list of module names
      */
     public static List<String> expandWildcards(File dir, List<String> modules, Backend forBackend) {
-        List<File> dirs = new ArrayList<>();
+        List<File> dirs = new ArrayList<File>();
         dirs.add(dir);
         return expandWildcards(dirs, modules, forBackend);
     }
@@ -102,7 +102,7 @@ public abstract class ModuleWildcardsHelper {
      * @return An expanded list of module names
      */
     public static List<String> expandWildcards(Iterable<File> dirs, List<String> names, Backend forBackend) {
-        List<String> result = new ArrayList<>(names.size());
+        List<String> result = new ArrayList<String>(names.size());
         for (String name : names) {
             expandWildcard(result, dirs, name, forBackend);
         }
@@ -161,7 +161,7 @@ public abstract class ModuleWildcardsHelper {
     }
 
     private static List<String> findModules(Iterable<File> dirs, String modPath, Backend forBackend) {
-        List<String> modules = new ArrayList<>();
+        List<String> modules = new ArrayList<String>();
         for (File dir : dirs) {
             File modDir = new File(dir, modPath);
             if (modDir.isDirectory() && modDir.canRead()) {
