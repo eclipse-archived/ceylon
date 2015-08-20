@@ -2098,6 +2098,7 @@ public final class Array<Element>
         
     }
     
+    @Ignore
     @Override
     public java.util.Collection<ReachableReference> $references$() {
         /*if (attr == null) {
@@ -2130,6 +2131,7 @@ public final class Array<Element>
         throw new AssertionError("unknown reference " + indexOrAttr);
     }
     
+    @Ignore
     @Override
     public void $set$(ReachableReference reference, java.lang.Object instance) {
         if (reference instanceof Member
