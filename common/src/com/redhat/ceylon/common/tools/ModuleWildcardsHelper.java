@@ -110,20 +110,22 @@ public abstract class ModuleWildcardsHelper {
     }
 
     public static void expandWildcard(List<String> result, Iterable<File> dirs, String name, Backend forBackend) {
-        if ("*".equals(name)) {
-            List<String> modules = findModules(dirs, ".", forBackend);
-            result.addAll(modules);
-            return;
-        } else if (name.endsWith(".*")) {
-            String modName = name.substring(0, name.length() - 2);
-            if (isValidModuleDir(dirs, modName)) {
-                String modPath = modName.replace('.', File.separatorChar);
-                List<String> modules = findModules(dirs, modPath, forBackend);
-                result.addAll(modules);
-                return;
+        if (name.endsWith("*")) {
+            int p = name.lastIndexOf('.');
+            String parentPath = ".";
+            String namePrefix = "";
+            if (p >= 0) {
+                String parentName = name.substring(0, p);
+                parentPath = parentName.replace('.', File.separatorChar);
+                namePrefix = name.substring(p + 1, name.length() - 1);
+            } else {
+                namePrefix = name.substring(0, name.length() - 1);
             }
+            List<String> modules = findModules(dirs, parentPath, namePrefix, forBackend);
+            result.addAll(modules);
+        } else {
+            result.add(name);
         }
-        result.add(name);
     }
 
     public static boolean isValidModuleDir(Iterable<File> dirs, String name) {
@@ -160,36 +162,43 @@ public abstract class ModuleWildcardsHelper {
         return false;
     }
 
-    private static List<String> findModules(Iterable<File> dirs, String modPath, Backend forBackend) {
+    private static List<String> findModules(Iterable<File> dirs, String modPath, String prefix, Backend forBackend) {
         List<String> modules = new ArrayList<String>();
         for (File dir : dirs) {
             File modDir = new File(dir, modPath);
             if (modDir.isDirectory() && modDir.canRead()) {
-                findModules(modules, dir, modDir, forBackend);
+                findModules(modules, dir, modDir, prefix, forBackend, true);
             }
         }
         return modules;
     }
     
-    private static void findModules(List<String> modules, File root, File dir, Backend forBackend) {
+    private static void findModules(List<String> modules, File root, File dir, String prefix, Backend forBackend, boolean first) {
         File descriptor = new File(dir, Constants.MODULE_DESCRIPTOR);
         if (descriptor.isFile()) {
             File modDir = FileUtil.relativeFile(root, dir);
             String modName = modDir.getPath().replace(File.separatorChar, '.');
-            if (includeModule(modName, root, forBackend)) {
+            if (includeModule(modName, root, prefix, forBackend)) {
                 modules.add(modName);
             }
-        } else {
+        } else if (first || prefix == null) {
             File[] files = dir.listFiles();
             for (File f : files) {
                 if (f.isDirectory() && f.canRead() && isModuleName(f.getName())) {
-                    findModules(modules, root, f, forBackend);
+                    findModules(modules, root, f, prefix, forBackend, false);
                 }
             }
         }
     }
     
-    private static boolean includeModule(String name, File sourceRoot, Backend forBackend) {
+    private static boolean includeModule(String name, File sourceRoot, String prefix, Backend forBackend) {
+        if (prefix != null) {
+            int p = name.lastIndexOf('.');
+            String lastPart = (p >= 0) ? name.substring(p + 1) : name;
+            if (!lastPart.startsWith(prefix)) {
+                return false;
+            }
+        }
         if (forBackend != null) {
             try {
                 ModuleDescriptorReader mdr = new ModuleDescriptorReader(name, sourceRoot);
