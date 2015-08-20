@@ -38,8 +38,8 @@ function type$meta(x,$$targs$$) {
   }
   var c;
   if ($$targs$$.Type$type.t==='T') {
-    var rt=retpl$($$targs$$.Type$type);
-    c=AppliedClass$jsint(Tuple,{Type$AppliedClass:$$targs$$.Type$type, Arguments$AppliedClass:{t:'T',l:[$$targs$$.Type$type.l[0],rt.Rest$Tuple]}});
+    var rt=x.$$targs$$.l ? x.$$targs$$ : $$targs$$.Type$type;
+    c=AppliedClass$jsint(Tuple,{Type$AppliedClass:rt, Arguments$AppliedClass:{t:'T',l:[x.$$targs$$.First$Tuple,x.$$targs$$.Rest$Tuple]}});
   } else {
     var _ta={T:{t:x.getT$all()[x.getT$name()]}, A:{t:Sequential,a:{Element$Iterable:{t:Anything}}}};
     var mytargs;

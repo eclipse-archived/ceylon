@@ -1,5 +1,5 @@
 //internal
-function tpl$(elems,types,spread){
+function tpl$(elems,spread){
   if (spread!==undefined) {
     if (is$(spread,{t:Sequential})) {
     } else {
@@ -7,33 +7,30 @@ function tpl$(elems,types,spread){
       for (var iter=spread.iterator();(e=iter.next())!==finished();) {
         elems.push(e);
       }
-      types=undefined;
       spread=undefined;
     }
   }
   if (elems.size===0&&(spread===undefined||spread.size===0))return empty();
-  if (types===undefined || types.t!=='T') {
-    types=[];
-    for (var i=0; i < elems.size; i++){
-      if (elems[i]===null) {
-        types.push({t:Null});
-      } else if (elems[i]===undefined) {
-        types.push({t:Anything});
-      } else if (elems[i].getT$all && elems[i].getT$name) {
-        var _et={t:elems[i].getT$all()[elems[i].getT$name()]};
-        if (elems[i].$$targs$$)_et.a=elems[i].$$targs$$;
-        types.push(_et);
-      } else {
-        console.log("Tuple: WTF do I use for the type of " + elems[i]);
-        types.push({t:Anything});
-      }
+  var types=[];
+  for (var i=0; i < elems.size; i++){
+    if (elems[i]===null) {
+      types.push({t:Null});
+    } else if (elems[i]===undefined) {
+      types.push({t:Anything});
+    } else if (elems[i].getT$all && elems[i].getT$name) {
+      var _et={t:elems[i].getT$all()[elems[i].getT$name()]};
+      if (elems[i].$$targs$$)_et.a=elems[i].$$targs$$;
+      types.push(_et);
+    } else {
+      console.log("Tuple: WTF do I use for the type of " + elems[i]);
+      types.push({t:Anything});
     }
-    //Check if I need to do this
-    //if (spread && spread.$$targs$$) {
-    //  types.push(spread.$$targs$$.Element$Sequence);
-    //}
-    types={t:'T',l:types};
   }
+  //Check if I need to do this
+  //if (spread && spread.$$targs$$) {
+  //  types.push(spread.$$targs$$.Element$Sequence);
+  //}
+  types={t:'T',l:types};
   $init$Tuple();
   var that=new Tuple.$$;
   that.$$targs$$=types;
@@ -74,7 +71,7 @@ function tpl$(elems,types,spread){
   that.withLeading=function(a,b){
     var e2 = elems.slice(0); e2.unshift(a);
     var t2 = types.l.slice(0); t2.unshift(b.Other$withLeading);
-    return tpl$(e2,{t:'T',l:t2},spread);
+    return tpl$(e2,spread);
   }
   that.withLeading.$crtmm$=Tuple.$$.prototype.withLeading.$crtmm$;
   that.span=function(a,b){//from,to
@@ -117,7 +114,7 @@ function tpl$(elems,types,spread){
       return elems.spanFrom(x).chain(spread,{Other$chain:spread.$$targs$$.Element$Sequence,OtherAbsent$chain:{t:Nothing}}).sequence();
     }
     var r=elems.spanFrom(x);
-    return r.size===0?empty():tpl$(r,(types.t==='T'?types.l:types).slice(x));
+    return r.size===0?empty():tpl$(r);
   }
   that.spanFrom.$crtmm$=Tuple.$$.prototype.spanFrom.$crtmm$;
   that.measure=function(a,b){//from,length
@@ -161,11 +158,11 @@ function tpl$(elems,types,spread){
   that.equals.$crtmm$=List.$$.prototype.equals.$crtmm$;
   that.withTrailing=function(a,b){
     if (spread) {
-      return tpl$(elems,types,spread.withTrailing(a,b));
+      return tpl$(elems,spread.withTrailing(a,b));
     }
     var e2=elems.slice(0);e2.push(a);
     var t2=types.l.slice(0);t2.push(b.Other$withTrailing);
-    return tpl$(e2,{t:'T',l:t2});
+    return tpl$(e2);
   }
   that.withTrailing.$crtmm$=Sequential.$$.prototype.withTrailing.$crtmm$;
   that.chain=function(a,b){return elems.chain(a,b);}
@@ -178,7 +175,7 @@ function tpl$(elems,types,spread){
     return elems.hash+(spread?spread.hash:0);
   },undefined,List.$$.prototype.$prop$getHash.$crtmm$);
   atr$(that,'rest',function(){
-    return elems.size===1?spread||empty():tpl$(elems.slice(1),{t:'T',l:types.l.slice(1)},spread);
+    return elems.size===1?spread||empty():tpl$(elems.slice(1),spread);
   },undefined,Tuple.$$.prototype.$prop$getRest.$crtmm$);
   atr$(that,'size',function(){
     return elems.size+(spread?spread.size:0);

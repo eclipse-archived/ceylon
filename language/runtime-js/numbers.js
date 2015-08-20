@@ -63,6 +63,7 @@ atr$(JSNum$proto, 'string', function(){
   if (s.indexOf('.')<0 && nflt$(this))s+='.0';
   return s;
 },undefined,function(){return{an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:$_Object,d:['$','Object','$at','string']};});
+//Add a function to the specified prototype
 function $addnm$(nm,s) {
   var t={t:JSNumber};
   if (s===undefined)s=$_Number.$$.prototype[nm];

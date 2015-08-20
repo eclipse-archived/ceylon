@@ -33,7 +33,7 @@ function flatten(tf, $$$mptypes) {
           seqarg=ArraySequence(seqarg,{Element$ArraySequence:seqarg._elemTarg()});
         }
         if (argx===1&&t.length==0)return tf(seqarg);
-        return tf(tpl$(t,undefined,seqarg));
+        return tf(tpl$(t,seqarg));
       }
     } else {
       rf=function fft1(){
