@@ -481,18 +481,18 @@ public class NativeTests extends CompilerTests {
     @Test
     public void testNativeRefWrong() {
         assertErrors(new String[] {"nativerefwrong/test.ceylon", "nativerefwrong/module.ceylon", "modsample/test.ceylon", "modsample/package.ceylon", "modsample/module.ceylon", "modok/test.ceylon", "modok/package.ceylon", "modok/module.ceylon"}, defaultOptions, null,
-                new CompilerError(30, "non-native declaration: 'test1' accesses native code: 'nativeMethodJvm', mark it or the module native"),
-                new CompilerError(32, "non-native declaration: 'test' accesses native code: 'nativeMethodJvm', mark it or the module native"),
-                new CompilerError(37, "non-native declaration: 'test2' accesses native code: 'nativeMethodJs', mark it or the module native"),
-                new CompilerError(39, "non-native declaration: 'test' accesses native code: 'nativeMethodJs', mark it or the module native"),
-                new CompilerError(53, "non-native declaration: 'test4' accesses native code: 'foo', mark it or the module native"),
-                new CompilerError(54, "non-native declaration: 'test4' accesses native code: 'Bar', mark it or the module native"),
-                new CompilerError(56, "non-native declaration: 'test' accesses native code: 'foo', mark it or the module native"),
-                new CompilerError(57, "non-native declaration: 'test' accesses native code: 'Bar', mark it or the module native"),
-                new CompilerError(63, "native declaration: 'test5' accesses native code for different backend: 'nativeMethodJvm'"),
-                new CompilerError(65, "native declaration: 'test' accesses native code for different backend: 'nativeMethodJvm'"),
-                new CompilerError(71, "native declaration: 'test6' accesses native code for different backend: 'nativeMethodJs'"),
-                new CompilerError(73, "native declaration: 'test' accesses native code for different backend: 'nativeMethodJs'")
+                new CompilerError(30, "non-native declaration: 'x' accesses native code: 'nativeMethodJvm', mark it or the module native"),
+                new CompilerError(32, "non-native declaration: 'x' accesses native code: 'nativeMethodJvm', mark it or the module native"),
+                new CompilerError(37, "non-native declaration: 'x' accesses native code: 'nativeMethodJs', mark it or the module native"),
+                new CompilerError(39, "non-native declaration: 'x' accesses native code: 'nativeMethodJs', mark it or the module native"),
+                new CompilerError(53, "non-native declaration: 'x' accesses native code: 'foo', mark it or the module native"),
+                new CompilerError(54, "non-native declaration: 'y' accesses native code: 'Bar', mark it or the module native"),
+                new CompilerError(56, "non-native declaration: 'x' accesses native code: 'foo', mark it or the module native"),
+                new CompilerError(57, "non-native declaration: 'y' accesses native code: 'Bar', mark it or the module native"),
+                new CompilerError(63, "native declaration: 'x' accesses native code for different backend: 'nativeMethodJvm'"),
+                new CompilerError(65, "native declaration: 'x' accesses native code for different backend: 'nativeMethodJvm'"),
+                new CompilerError(71, "native declaration: 'x' accesses native code for different backend: 'nativeMethodJs'"),
+                new CompilerError(73, "native declaration: 'x' accesses native code for different backend: 'nativeMethodJs'")
         );
     }
     
