@@ -25,7 +25,10 @@ final class bug2061_ {
                         $ceylontmp$ifResult$2 = "";
                     } else if (sel$3.booleanValue() == false) {
                         $ceylontmp$ifResult$2 = "";
-                    } else throw new .com.redhat.ceylon.compiler.java.language.EnumeratedTypeError("Supposedly exhaustive switch was not exhaustive");
+                    } else {
+                        .com.redhat.ceylon.compiler.java.Util.rethrow(new .com.redhat.ceylon.compiler.java.language.EnumeratedTypeError("Supposedly exhaustive switch was not exhaustive"));
+                        $ceylontmp$ifResult$2 = null;
+                    }
                 }
             }
             returning $ceylontmp$ifResult$2;

@@ -142,7 +142,10 @@ public final class bug2244TestNulls1c_ {
                     boolean sel$15 = true;
                     if (sel$15 == true) {
                         $ceylontmp$ifResult$14 = map.get(.ceylon.language.String.instance(""));
-                    } else throw new .com.redhat.ceylon.compiler.java.language.EnumeratedTypeError("Supposedly exhaustive switch was not exhaustive");
+                    } else {
+                        .com.redhat.ceylon.compiler.java.Util.rethrow(new .com.redhat.ceylon.compiler.java.language.EnumeratedTypeError("Supposedly exhaustive switch was not exhaustive"));
+                        $ceylontmp$ifResult$14 = null;
+                    }
                 }
             }
             returning $ceylontmp$ifResult$14;

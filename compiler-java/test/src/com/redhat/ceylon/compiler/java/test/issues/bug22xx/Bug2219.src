@@ -19,7 +19,10 @@ public final class bug2219_ {
                     } else if (sel$1 instanceof .ceylon.language.Float) {
                         final double foo$2 = ((.ceylon.language.Float)sel$1).doubleValue();
                         $ceylontmp$ifResult$0 = "float";
-                    } else throw new .com.redhat.ceylon.compiler.java.language.EnumeratedTypeError("Supposedly exhaustive switch was not exhaustive");
+                    } else {
+                        .com.redhat.ceylon.compiler.java.Util.rethrow(new .com.redhat.ceylon.compiler.java.language.EnumeratedTypeError("Supposedly exhaustive switch was not exhaustive"));
+                        $ceylontmp$ifResult$0 = null;
+                    }
                 }
             }
             returning $ceylontmp$ifResult$0;
