@@ -51,8 +51,12 @@ public class ModuleDescriptorReader {
     }
 
     public ModuleDescriptorReader(String moduleName, File srcDir) throws NoSuchModuleException {
-        try {
-            Class<?> mdr = ModuleDescriptorReader.class.getClassLoader().loadClass("com.redhat.ceylon.compiler.ModuleDescriptorReader");
+        this(ModuleDescriptorReader.class.getClassLoader(), moduleName, srcDir);
+    }
+
+    public ModuleDescriptorReader(ClassLoader cl, String moduleName, File srcDir) throws NoSuchModuleException {
+        try{
+            Class<?> mdr = cl.loadClass("com.redhat.ceylon.compiler.ModuleDescriptorReader");
             this.moduleVersion = mdr.getMethod("getModuleVersion");
             this.moduleVersion.setAccessible(true);
             this.moduleName = mdr.getMethod("getModuleName");
@@ -69,8 +73,9 @@ public class ModuleDescriptorReader {
             constructor.setAccessible(true);
             this.instance = constructor.newInstance(moduleName, srcDir);
         } catch (InvocationTargetException e) {
-            if(e.getCause() instanceof NoSuchModuleException)
-                throw (NoSuchModuleException)e.getCause();
+            Throwable cause = e.getCause();
+            if(cause != null && cause.getClass().getName().equals("com.redhat.ceylon.common.ModuleDescriptorReader$NoSuchModuleException"))
+                throw new NoSuchModuleException(cause.getMessage());
             throw new RuntimeException(e);
         } catch (Exception e) {
             throw new RuntimeException(e);
