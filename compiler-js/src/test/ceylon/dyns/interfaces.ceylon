@@ -23,6 +23,23 @@ Node createNode(Node? k2) {
   }
 }
 
+//See #616
+dynamic JsStr {
+  shared formal Integer length;
+}
+T test616<T>(Boolean flag)
+    given T satisfies JsStr {
+  if (flag) {
+    //Test for scope here
+    dynamic {
+      return eval("new String()");
+    }
+  }
+  dynamic {
+    return eval("new String()");
+  }
+}
+
 void testDynamicInterfaces() {
   Object o = createNode(null);
   if (is Node n=o) {
@@ -44,4 +61,6 @@ void testDynamicInterfaces() {
   } else {
     fail("Dynamic interfaces #1");
   }
+  check((test616<JsStr>(true) of Object) is JsStr, "#616.1");
+  check((test616<JsStr>(false) of Object) is JsStr, "#616.2");
 }
