@@ -1256,8 +1256,8 @@ public class ExpressionTransformer extends AbstractTransformer {
         else if(declaration instanceof Function)
             memberClassName = "FunctionDeclaration";
         else if(declaration instanceof Value){
-            memberClassName = "ValueDeclaration";
-        }else{
+            memberClassName = ((Value)declaration).isTransient() ? "ValueDeclaration" : "ReferenceDeclaration";
+        } else { 
             return makeErroneous(node, "compiler bug: " + declaration + " is not a supported declaration literal");
         }
         if (Decl.isConstructor(declaration))
