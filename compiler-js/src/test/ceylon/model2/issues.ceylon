@@ -97,4 +97,12 @@ void issues() {
     issue703=issue703.withTrailing(1);
     check("ceylon.language::Integer," in type(issue703).string, "lang#703.2");
     check(type(identity<Integer>).string=="ceylon.language::identity<ceylon.language::Integer>", "#591");
+    //ceylon.language#724
+    Object a724 = 1;
+    Object b724 = 2;
+    if (is Comparison c724=`function Comparable.compare`.memberInvoke(a724, [], b724)) {
+        check(c724==smaller, "c.l#724 expected smaller got ``c724``");
+    } else {
+        fail("c.l#724 expected Comparison");
+    }
 }
