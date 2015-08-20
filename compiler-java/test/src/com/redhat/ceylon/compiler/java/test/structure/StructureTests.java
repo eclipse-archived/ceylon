@@ -384,6 +384,11 @@ public class StructureTests extends CompilerTests {
     }
     
     @Test
+    public void testKlsSerializableCycle() {
+        compareWithJavaSource("klass/SerializableCycle");
+    }
+    
+    @Test
     public void testKlsSharedParameter(){
         compareWithJavaSource("klass/SharedParameter");
     }

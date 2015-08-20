@@ -1,0 +1,67 @@
+package com.redhat.ceylon.compiler.java.test.structure.klass;
+
+class SerializableCycle implements .com.redhat.ceylon.compiler.java.runtime.serialization.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    public SerializableCycle(final .com.redhat.ceylon.compiler.java.runtime.serialization.$Serialization$ ignored) {
+    }
+    
+    SerializableCycle() {
+    }
+    
+    @.java.lang.Override
+    public .java.util.Collection<.ceylon.language.serialization.ReachableReference> $references$() {
+        .java.util.Collection<.ceylon.language.serialization.ReachableReference> reference = new .java.util.ArrayList<.ceylon.language.serialization.ReachableReference>();
+        reference.add(new .ceylon.language.impl.MemberImpl(((.ceylon.language.meta.declaration.ClassOrInterfaceDeclaration).com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.getOrCreateMetamodel(.com.redhat.ceylon.compiler.java.test.structure.klass.SerializableCycle.class)).<.ceylon.language.meta.declaration.ValueDeclaration>getDeclaredMemberDeclaration(.ceylon.language.meta.declaration.ValueDeclaration.$TypeDescriptor$, "ref")));
+        return reference;
+    }
+    
+    @.java.lang.Override
+    public .java.lang.Object $get$(final .ceylon.language.serialization.ReachableReference reference) {
+        switch (((.ceylon.language.serialization.Member)reference).getAttribute().getQualifiedName()) {
+        case "com.redhat.ceylon.compiler.java.test.structure.klass::SerializableCycle.ref": 
+            if (this.ref == null) return .ceylon.language.serialization.uninitializedLateValue_.get_();
+            return this.getRef();
+        
+        default: 
+            throw new .java.lang.RuntimeException("unknown attribute");
+        
+        }
+    }
+    
+    @.java.lang.Override
+    public void $set$(final .ceylon.language.serialization.ReachableReference reference, final .java.lang.Object instance) {
+        if (reference instanceof .ceylon.language.serialization.Member) switch (((.ceylon.language.serialization.Member)reference).getAttribute().getQualifiedName()) {
+        case "com.redhat.ceylon.compiler.java.test.structure.klass::SerializableCycle.ref": 
+            if (instance instanceof .ceylon.language.serialization.UninitializedLateValue) break;
+            this.setRef((.java.lang.Object)instance);
+            break;
+        
+        default: 
+            throw new .java.lang.RuntimeException("unknown attribute");
+        
+        } else throw new .ceylon.language.AssertionError("unexpected reachable reference " + reference);
+    }
+    private .java.lang.Object ref;
+    
+    public final .java.lang.Object getRef() {
+        if (this.ref != null) {
+            return ref;
+        } else {
+            throw new .ceylon.language.InitializationError("Accessing uninitialized \'late\' attribute \'ref\'");
+        }
+    }
+    
+    public final void setRef(final .java.lang.Object ref) {
+        if (this.ref == null) {
+            this.ref = ref;
+            return;
+        }
+        throw new .ceylon.language.InitializationError("Re-initialization of \'late\' attribute");
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.klass.SerializableCycle.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.SerializableCycle.class);
+}
