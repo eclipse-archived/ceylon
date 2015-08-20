@@ -66,6 +66,7 @@ import com.redhat.ceylon.model.typechecker.model.Function;
 import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
 import com.redhat.ceylon.model.typechecker.model.Functional;
 import com.redhat.ceylon.model.typechecker.model.Interface;
+import com.redhat.ceylon.model.typechecker.model.IntersectionType;
 import com.redhat.ceylon.model.typechecker.model.ModelUtil;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.Package;
@@ -2538,7 +2539,28 @@ public class GenerateJsVisitor extends Visitor {
         final Type returnType = that.getExpression().getTypeModel();
         if (dynblock > 0 && ModelUtil.isTypeUnknown(returnType)) {
             Declaration cont = ModelUtil.getContainingDeclarationOfScope(that.getScope());
-            final Type dectype = ((Declaration)cont).getReference().getType();
+            Type dectype = ((Declaration)cont).getReference().getType();
+            if (dectype != null && dectype.isTypeParameter() && !dectype.getSatisfiedTypes().isEmpty()) {
+                //Check for dynamic interfaces
+                List<Type> dyntypes = null;
+                for (Type tp : dectype.getSatisfiedTypes()) {
+                    if (tp.getDeclaration() != null && tp.getDeclaration().isDynamic()) {
+                        if (dyntypes == null) {
+                            dyntypes = new ArrayList<>(dectype.getSatisfiedTypes().size());
+                        }
+                        dyntypes.add(tp);
+                    }
+                }
+                if (dyntypes != null) {
+                    if (dyntypes.size() == 1) {
+                        dectype = dyntypes.get(0);
+                    } else {
+                        IntersectionType itype = new IntersectionType(that.getUnit());
+                        itype.setSatisfiedTypes(dyntypes);
+                        dectype = itype.getType();
+                    }
+                }
+            }
             if (!ModelUtil.isTypeUnknown(dectype)) {
                 TypeUtils.generateDynamicCheck(that.getExpression(), dectype, this, false,
                         returnType.getTypeArguments());
