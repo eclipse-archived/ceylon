@@ -114,6 +114,7 @@ import com.sun.tools.javac.tree.JCTree.JCNewClass;
 import com.sun.tools.javac.tree.JCTree.JCReturn;
 import com.sun.tools.javac.tree.JCTree.JCStatement;
 import com.sun.tools.javac.tree.JCTree.JCSwitch;
+import com.sun.tools.javac.tree.JCTree.JCUnary;
 import com.sun.tools.javac.tree.JCTree.JCVariableDecl;
 import com.sun.tools.javac.util.Context;
 import com.sun.tools.javac.util.List;
@@ -1529,8 +1530,16 @@ public class ClassTransformer extends AbstractTransformer {
                 ListBuffer<JCStatement> caseStmts = ListBuffer.<JCStatement>lb();
                 if (member instanceof Value
                         && ((Value)member).isLate()) {
+                    // TODO this should be encapsulated so the ADB and this
+                    // code can just call something common
+                    JCExpression test;
+                    if (CodegenUtil.needsLateInitField((Value)member, typeFact())) {
+                        test = make().Unary(JCTree.NOT, naming.makeUnquotedIdent(Naming.getInitializationFieldName(member.getName())));
+                    } else {
+                        test = make().Binary(JCTree.EQ, naming.makeQualifiedName(naming.makeThis(), (Value)member, Naming.NA_IDENT), makeNull());
+                    }
                     caseStmts.add(make().If(
-                            make().Unary(JCTree.NOT, naming.makeUnquotedIdent(Naming.getInitializationFieldName(member.getName()))),
+                            test,
                             make().Return(makeLanguageSerializationValue("uninitializedLateValue")), null));
                 }
                 caseStmts.add(make().Return(makeSerializationGetter((Value)member)));
