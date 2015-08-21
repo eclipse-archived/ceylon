@@ -10,7 +10,6 @@ import ceylon.language.meta.model {
     MemberClass,
     Class
 }
-
 import ceylon.language.serialization {
     DeserializationException
 }
