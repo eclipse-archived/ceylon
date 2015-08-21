@@ -11,11 +11,17 @@ function $_Array_$c$(elems,$$targs$$) {
 $_Array.inst$$=function(cm){
   return $_Array(undefined,cm.$$targs$$.Type$Class.a);
 }
-$_Array.deser$$=function(a,cm,b){
-  var tam=a.getValue(OpenValue$jsint(lmp$(ex$,'$'),$_Array.$$.prototype.$prop$getSize),{Instance$getValue:{t:Integer}});
-  var elemtarg={Instance$getElement:b.$$targs$$.Element$Array};
-  for (var i=0; i < tam; i++) {
-    var e=a.getElement(i,elemtarg);
-    b.push(is$(e,{t:Reference$serialization})?e.leak():e);
+$_Array.ser$set$=function(ref,o,i){
+  if (typeof(ref)==='number') {
+    o[ref]=i;
   }
+}
+$_Array.ser$get$=function(ref,o){
+  if (is$(ref,{t:Element$serialization})) {
+    return o.$_get(ref.index);
+  }
+  return o.size;
+}
+$_Array.ser$refs$=function(o){
+  return [MemberImpl$impl(OpenValue$jsint(lmp$(ex$,'$'),o.$prop$getSize))];
 }
