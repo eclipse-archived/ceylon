@@ -2,12 +2,6 @@ import ceylon.language.meta.declaration {
     ValueDeclaration
 }
 
-"The type of [[uninitializedLateValue]]."
-shared abstract class UninitializedLateValue() of uninitializedLateValue {}
-"A singleton used to indicate that a `late` [[Member]] of a particular 
- instance has not been initialized."
-shared object uninitializedLateValue extends UninitializedLateValue() {}
-
 "An instance referring to another instance via a reference attribute."
 shared sealed interface Member // or Reference
         satisfies ReachableReference {
@@ -22,3 +16,11 @@ shared sealed interface Member // or Reference
     shared actual formal Anything referred(Object/*<Instance>*/ instance);
     
 }
+
+"The type of [[uninitializedLateValue]]."
+shared abstract class UninitializedLateValue() of uninitializedLateValue {}
+
+"A singleton used to indicate that a `late` [[Member]] of a particular 
+ instance has not been initialized."
+shared object uninitializedLateValue extends UninitializedLateValue() {}
+

@@ -31,6 +31,7 @@ interface SerializationContext {
 native class SerializationContextImpl() satisfies SerializationContext {
     shared actual native References references(Anything instance);
 }
+
 native("jvm") class SerializationContextImpl() satisfies SerializationContext {
     shared actual native("jvm") References references(Anything instance) {
         if (classDeclaration(instance).serializable) {
@@ -40,30 +41,3 @@ native("jvm") class SerializationContextImpl() satisfies SerializationContext {
         }
     }
 }
-
-
-/**
- @Ceylon(major = 8)
- @Class
- @SatisfiedTypes("ceylon.language.serialization::SerializationContext")
- public class SerializationContextImpl  
-        implements SerializationContext, ReifiedType {
-    
-    
-    public References references(java.lang.Object instance) {
-        if (classDeclaration_.classDeclaration(instance).getSerializable()) {
-            return new ReferencesImpl((Serializable)instance);
-        } else {
-            throw new AssertionError("instance of non-serializable class: " + type_.type(TypeDescriptor.NothingType, instance));
-        }
-    }
-    
-    @Override
-    public TypeDescriptor $getType$() {
-        return TypeDescriptor.klass(SerializationContextImpl.class);
-    }
- }
- */
-
-
-

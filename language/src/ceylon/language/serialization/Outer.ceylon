@@ -1,6 +1,3 @@
-
-
-
 "A member instance referring to its outer instance."
 shared sealed interface Outer /*<Instance>*/
         satisfies ReachableReference/*<Instance>*/ {
