@@ -4501,6 +4501,9 @@ public abstract class AbstractTransformer implements Transformation {
             Declaration declaration = type.getDeclaration();
             boolean local = false;
             do{
+                // getDeclarationContainer will skip some containers we don't want to consider, so it's not good
+                // for checking locality, rely on isLocal for that.
+                local |= Decl.isLocal(declaration);
                 // it may be contained in a function or value, and we want its type
                 Declaration enclosingDeclaration = getDeclarationContainer(declaration);
                 if(enclosingDeclaration instanceof TypedDeclaration){
@@ -5269,7 +5272,8 @@ public abstract class AbstractTransformer implements Transformation {
                 }
                 // go up every containing typed declaration
             }while(declaration != null);
-        }
+        }else
+            return hasTypeArguments(qualifyingType);
         // did not find any
         return false;
     }
