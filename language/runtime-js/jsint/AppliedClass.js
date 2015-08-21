@@ -83,6 +83,8 @@ function AppliedClass$jsint(tipo,$$targs$$,that,classTargs){
   set_type_args(that,$$targs$$,AppliedClass$jsint);
   Class$meta$model({Arguments$Class:that.$$targs$$.Arguments$AppliedClass,
                    Type$Class:that.$$targs$$.Type$AppliedClass},that);
+  //This is for serialization
+  if (tipo===Tuple && classTargs)that.$$targs$$.Type$Class={t:Tuple,a:classTargs};
   that.tipo=tipo;
   return that;
 }
