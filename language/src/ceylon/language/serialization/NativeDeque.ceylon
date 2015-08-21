@@ -27,3 +27,48 @@ native("jvm") class NativeDeque() {
         return deque.string;
     }
 }
+
+native("js") class NativeDeque() {
+    dynamic deque;
+    dynamic {
+        deque=dynamic[null];
+        deque.shift();
+    }
+    shared native("js") void pushFront(Anything element) {
+        dynamic {
+            deque.unshift(element);
+        }
+    }
+    shared native("js") void pushBack(Anything element) {
+        dynamic {
+            deque.push(element);
+        }
+    }
+    shared native("js") Anything popFront() {
+        dynamic {
+            if (deque.length==0) {
+                return null;
+            }
+            return deque.shift();
+        }
+    }
+    shared native("js") Boolean empty {
+        dynamic {
+            return deque.length==0;
+        }
+    }
+    shared actual native("js") String string {
+        value sb=StringBuilder();
+        sb.append("[");
+        dynamic {
+            for (i in 0:deque.length) {
+                if (sb.size > 1) {
+                    sb.append(", ");
+                }
+                sb.append(deque[i]);
+            }
+        }
+        sb.append("]");
+        return sb.string;
+    }
+}
