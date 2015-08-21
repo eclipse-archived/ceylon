@@ -1,4 +1,4 @@
-function classDeclaration$meta(inst) {
+function classDeclaration$meta(o) {
   if (o==null) {
     return openClass$jsint(m$1.lmp$(ex$,'$'),Null);
   }
