@@ -1,7 +1,6 @@
 
 "A new [[SerializationContext]]."
-shared native SerializationContext serialization();
-shared native("jvm") SerializationContext serialization() 
+shared SerializationContext serialization() 
         => SerializationContextImpl();
 
 

@@ -28,12 +28,8 @@ interface SerializationContext {
     shared formal References references(Anything instance);
 }
 
-native class SerializationContextImpl() satisfies SerializationContext {
-    shared actual native References references(Anything instance);
-}
-
-native("jvm") class SerializationContextImpl() satisfies SerializationContext {
-    shared actual native("jvm") References references(Anything instance) {
+class SerializationContextImpl() satisfies SerializationContext {
+    shared actual References references(Anything instance) {
         if (classDeclaration(instance).serializable) {
             return ReferencesImpl(instance);
         } else {
