@@ -232,13 +232,13 @@ JSNum$proto.$_get = function(idx) {
     return (this & mask) != 0 ? true : false;
 }
 $addnm$('$_get',Binary.$$.prototype.$_get);
-JSNum$proto.set = function(idx,bit) {
-    if (idx < 0 || idx >31) {
-        return this;
-    } 
-    if (bit === undefined) { bit = true; }
-        var mask = idx > 1 ? 1 << idx : 1;
-    return (bit === true) ? this | mask : this & ~mask;
+JSNum$proto.set=function(idx,bit) {
+  if (idx<0 || idx>31) {
+    return this;
+  } 
+  if (bit === undefined) { bit = true; }
+  var mask = 1 << idx;
+  return (bit === true) ? this|mask : this & ~mask;
 }
 $addnm$('set',Binary.$$.prototype.set);
 JSNum$proto.flip = function(idx) {
