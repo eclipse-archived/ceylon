@@ -17,6 +17,10 @@ function restype$(root,t) {
   if (!thutarg$(t))return t;
   if (typeof t === 'string'){
     function ft$(rt) {
+      if (rt.a && rt.a[t]) {
+        t=rt.a[t];
+        return (typeof(t)==='string')?restype(root,t):t;
+      }
       var mm=getrtmm$$(rt.t?rt.t:rt);
       if (mm && mm.sts) {
         for (var i=0;i<mm.sts.length;i++){
