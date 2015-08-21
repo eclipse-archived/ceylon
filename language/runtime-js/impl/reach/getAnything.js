@@ -1,3 +1,3 @@
-function getAnything(inst,ref) {
-  return inst.getT$all()[getT$name()].ser$get$(ref,inst);
+function getAnything(o,ref) {
+  return o.getT$all()[o.getT$name()].ser$get$(ref,o);
 }
