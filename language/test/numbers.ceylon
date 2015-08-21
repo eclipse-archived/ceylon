@@ -797,4 +797,20 @@ void checkParseFloat() {
     check((-(-0.5).wholePart.magnitude).string=="-0.0", "#701.1");
     check(((-0.5).wholePart.magnitude of Anything) is Float, "#701.2");
     check(!((-0.5).wholePart.magnitude of Anything) is Integer, "#702.3");
+    //#715
+    for (i in 0:runtime.integerAddressableSize) {
+        check(0.set(i, true)==(2 ^ i).or(0), "#724.1"); // expected <2> but was <1>
+    }
+
+    for (i in 0:runtime.integerAddressableSize) {
+        check(0.flip(i)==(2 ^ i).or(0), "#724.2"); // ok
+    }
+
+    for (i in 0:runtime.integerAddressableSize) {
+        check(0.flip(i).clear(i)==0, "#724.3"); // expected <0> but was <2>
+    }
+
+    for (i in 0:runtime.integerAddressableSize) {
+        check(0.flip(i).set(i, false)==0, "#724.4"); // expected <0> but was <2>
+    }
 }
