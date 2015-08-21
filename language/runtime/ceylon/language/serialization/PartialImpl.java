@@ -279,7 +279,7 @@ class PartialImpl extends Partial {
                 Entry<TypeDescriptor.Class,String> cacheKey = new Entry<TypeDescriptor.Class,String>(
                         TypeDescriptor.klass(TypeDescriptor.Class.class), String.$TypeDescriptor$, 
                         classTypeDescriptor, String.instance(member.getAttribute().getQualifiedName()));
-                Type memberType = context.getMemberTypeCache().get(cacheKey);
+                Type memberType = (Type)context.getMemberTypeCache().get(cacheKey);
                 if (memberType == null) {
                     Type pt = Metamodel.getModuleManager().getCachedType(classTypeDescriptor);
                     while (!pt.getDeclaration().getQualifiedNameString().equals(((ClassDeclaration)member.getAttribute().getContainer()).getQualifiedName())) {

@@ -486,7 +486,7 @@
                 <exclude name="ceylon/language/meta/typeLiteral.ceylon"/>
                 <include name="ceylon/language/meta/typeLiteral_.java"/>
                 
-
+                <exclude name="ceylon/language/serialization/PartialImpl.ceylon"/>
                 <include name="ceylon/language/serialization/PartialImpl.java"/>
                 <exclude name="ceylon/language/impl/reach.ceylon"/>
                 <include name="ceylon/language/impl/reach_.java"/>
