@@ -63,7 +63,6 @@
       <os family="unix"/>
     </condition>
 
-
     <!-- Classpath for the build tools. -->
     <path id="lib.classpath">
         <fileset dir="${support.dir}/lib">
@@ -347,14 +346,26 @@
             description="Generates the Texinfo documentation only for a language (set lang)"/>
 
     <target name="lang.docinfo.install"
-            depends="lang.docinfo"
             if="hasInfo">
 
         <fail unless="lang" />
-        <exec executable="sudo" dir="${build.dir}/${lang}/info/">
-            <arg value="sh"/>
-            <arg value="-c"/>
-            <arg value="install --owner=root --group=root --mode=0644 ceylon-spec.info* /usr/share/info &amp;&amp; install-info --info-dir=/usr/share/info /usr/share/info/ceylon-spec.info"/>
+        <fail message="You need to be root to install the TexInfo files">
+          <condition>
+              <not><equals arg1="${user.name}" arg2="root"/></not>
+          </condition>
+        </fail>
+        <exec executable="install" dir="${build.dir}/${lang}/info/">
+            <arg value="--owner=root"/>
+            <arg value="--group=root"/>
+            <arg value="--mode=0644"/>
+            <arg value="ceylon-spec.info"/>
+            <arg value="ceylon-spec.info-1"/>
+            <arg value="ceylon-spec.info-2"/>
+            <arg value="/usr/share/info"/>
+        </exec>
+        <exec executable="install-info" dir="${build.dir}/${lang}/info/">
+            <arg value="--info-dir=/usr/share/info"/>
+            <arg value="/usr/share/info/ceylon-spec.info"/>
         </exec>
       
     </target>
