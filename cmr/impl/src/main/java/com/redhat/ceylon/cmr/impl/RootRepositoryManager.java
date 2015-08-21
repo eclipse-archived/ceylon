@@ -72,6 +72,7 @@ public class RootRepositoryManager extends AbstractNodeRepositoryManager {
         }
     }
 
+    @Override
     protected ArtifactResult getArtifactResult(ArtifactContext context, Node node) throws RepositoryException {
         if (node.isRemote()) {
             final boolean forceOp = context.isForceOperation();
@@ -164,7 +165,7 @@ public class RootRepositoryManager extends AbstractNodeRepositoryManager {
         return cs != null && cs.isOffline();
     }
 
-    protected File putContent(ArtifactContext context, Node node, InputStream stream) throws IOException {
+    private File putContent(ArtifactContext context, Node node, InputStream stream) throws IOException {
         log.debug("Creating local copy of external node: " + node + " at repo: " + 
                 (fileContentStore != null ? fileContentStore.getDisplayString() : null));
         if(fileContentStore == null)
