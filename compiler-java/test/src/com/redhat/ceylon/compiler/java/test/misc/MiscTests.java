@@ -99,7 +99,7 @@ public class MiscTests extends CompilerTests {
                         "flatten", "className", "identityHash", "integerRangeByIterable",
                         "modules", "printStackTrace", "process",
                         "runtime", "Throwable", "type", "typeLiteral", "classDeclaration", "reach",
-                        "unflatten", "serialization"}) {
+                        "unflatten", "serialization", "PartialImpl"}) {
                     if (s.equals(filename)) {
                         return true;
                     }
