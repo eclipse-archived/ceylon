@@ -9,6 +9,7 @@ class Bug2176C implements .com.redhat.ceylon.compiler.java.runtime.model.Reified
     
     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    @.com.redhat.ceylon.compiler.java.metadata.ConstructorName("instance")
     static final class Inner$instance {
         
         private Inner$instance() {
