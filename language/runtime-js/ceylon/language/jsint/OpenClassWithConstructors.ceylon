@@ -22,6 +22,7 @@ shared native class OpenClassWithConstructors(pkg, meta) satisfies ClassWithCons
     shared native actual Boolean abstract;
     shared native actual Boolean final;
     shared native actual Boolean annotation;
+    shared native actual Boolean serializable;
     shared native actual OpenType openType;
     shared native actual FunctionOrValueDeclaration? getParameterDeclaration(String name);
     shared native actual OpenClassType? extendedType;
