@@ -405,6 +405,9 @@
     <!-- Rule to build runtime classes from their Java and Ceylon sources -->
     <target name="ceylon.language.java"
             depends="generate.sources.java">
+        <!-- first removing any previous compiled artifacts from
+             the output repo because otherwise the build will fail -->
+        <delete dir="${ceylon.language.dist}" failonerror="false" />
         <!-- toplevel types -->
         <ceylon-compile
             executable="${ceylon.compiler.loc}"
