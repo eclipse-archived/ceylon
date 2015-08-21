@@ -1,0 +1,52 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug22xx;
+
+class Bug2279<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    Bug2279(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        this.$reified$T = $reified$T;
+        final .java.lang.Object bar = (
+            let
+            {
+                
+                class anonymous_0_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+                    
+                    private anonymous_0_() {
+                    }
+                    
+                    class Baz implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+                        
+                        Baz() {
+                        }
+                        
+                        private final void qux$priv$(final .java.lang.Object that) {
+                            final anonymous_0_.Baz that$2;
+                            .java.lang.Object that$1 = null;
+                            if (.com.redhat.ceylon.compiler.java.Util.isReified(that$1 = that, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug22xx.Bug2279.class, .com.redhat.ceylon.compiler.java.test.issues.bug22xx.Bug2279.this.$reified$T), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(anonymous_0_.class)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(anonymous_0_.Baz.class)))) {
+                                that$2 = (anonymous_0_.Baz)that$1;
+                            } else {
+                                throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is Baz that"));
+                            }
+                        }
+                        
+                        @.java.lang.Override
+                        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug22xx.Bug2279.class, .com.redhat.ceylon.compiler.java.test.issues.bug22xx.Bug2279.this.$reified$T), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(anonymous_0_.class)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(anonymous_0_.Baz.class));
+                        }
+                    }
+                    
+                    @.java.lang.Override
+                    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug22xx.Bug2279.class, .com.redhat.ceylon.compiler.java.test.issues.bug22xx.Bug2279.this.$reified$T), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(anonymous_0_.class));
+                    }
+                }
+            }
+            returning new anonymous_0_();
+        );
+    }
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug22xx.Bug2279.class, $reified$T);
+    }
+}
