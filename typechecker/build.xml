@@ -36,6 +36,7 @@
     <property name="db.style.fopdf" value="fopdf.xsl"/>
     <property name="db.style.html" value="html_chunk.xsl"/>
     <property name="db.style.htmlsingle" value="html.xsl"/>
+    <property name="db.style.info" value="texinfo.xsl"/>
 
     <!-- Local repository -->
     <property name="ceylon.repo.dir" location="${user.home}/.ceylon/repo"/>
@@ -56,6 +57,11 @@
     <property name="ceylon.module-resolver.dir" value="com/redhat/ceylon/module-resolver/${module.com.redhat.ceylon.module-resolver.version}"/>
     <property name="ceylon.module-resolver.jar" value="${ceylon.module-resolver.dir}/com.redhat.ceylon.module-resolver-${module.com.redhat.ceylon.module-resolver.version}.jar"/>
     <property name="ceylon.module-resolver.lib" location="${ceylon.repo.dir}/${ceylon.module-resolver.jar}"/>
+
+    
+    <condition property="hasInfo">
+      <os family="unix"/>
+    </condition>
 
 
     <!-- Classpath for the build tools. -->
@@ -104,6 +110,17 @@
 
     </target>
 
+    <target name="info"
+            depends="clean.doc"
+            description="Compile Texinfo documentation for all languages.">
+
+        <!-- TRANSLATOR: Duplicate this line for your language -->
+        <antcall target="lang.docinfo">
+            <param name="lang" value="en"/>
+        </antcall>
+
+    </target>
+
     <target name="revdiff"
             description="Generates a diff report for all translated versions.">
 
@@ -135,6 +152,7 @@
         <antcall target="lang.dochtml"/>
         <antcall target="lang.dochtmlsingle"/>
         <antcall target="lang.htmlmisc"/>
+        <antcall target="lang.docinfo"/>
     </target>
 
 
@@ -293,6 +311,44 @@
             </fileset>
         </copy>
 
+    </target>
+
+    <target name="lang.docinfo.texi">
+
+        <mkdir dir="${build.dir}/${lang}/info/"/>
+
+        <java classname="com.icl.saxon.StyleSheet" fork="true" dir="${basedir}" maxmemory="192m">
+            <classpath refid="lib.classpath"/>
+            <arg value="-o"/>
+            <arg value="${build.dir}/${lang}/info/ceylon-spec.texi"/>
+            <arg value="${basedir}/${lang}/master.xml"/>
+            <arg value="${basedir}/${lang}/styles/${db.style.info}"/>
+        </java>
+
+    </target>
+
+    <target name="lang.docinfo.make" if="hasInfo">
+
+        <exec executable="makeinfo" dir="${build.dir}/${lang}/info/">
+            <arg value="ceylon-spec.texi"/>
+        </exec>
+      
+    </target>
+
+    <target name="lang.docinfo"
+            depends="lang.docinfo.texi,lang.docinfo.make"
+            description="Generates the Texinfo documentation only for a language (set lang)"/>
+
+    <target name="lang.docinfo.install"
+            depends="lang.docinfo"
+            if="hasInfo">
+
+        <exec executable="sudo" dir="${build.dir}/${lang}/info/">
+            <arg value="sh"/>
+            <arg value="-c"/>
+            <arg value="install --owner=root --group=root --mode=0644 ceylon-spec.info* /usr/share/info &amp;&amp; install-info --info-dir=/usr/share/info /usr/share/info/ceylon-spec.info"/>
+        </exec>
+      
     </target>
 
     <target name="lang.revdiff"
