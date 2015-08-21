@@ -345,31 +345,6 @@
             depends="lang.docinfo.texi,lang.docinfo.make"
             description="Generates the Texinfo documentation only for a language (set lang)"/>
 
-    <target name="lang.docinfo.install"
-            if="hasInfo">
-
-        <fail unless="lang" />
-        <fail message="You need to be root to install the TexInfo files">
-          <condition>
-              <not><equals arg1="${user.name}" arg2="root"/></not>
-          </condition>
-        </fail>
-        <exec executable="install" dir="${build.dir}/${lang}/info/">
-            <arg value="--owner=root"/>
-            <arg value="--group=root"/>
-            <arg value="--mode=0644"/>
-            <arg value="ceylon-spec.info"/>
-            <arg value="ceylon-spec.info-1"/>
-            <arg value="ceylon-spec.info-2"/>
-            <arg value="/usr/share/info"/>
-        </exec>
-        <exec executable="install-info" dir="${build.dir}/${lang}/info/">
-            <arg value="--info-dir=/usr/share/info"/>
-            <arg value="/usr/share/info/ceylon-spec.info"/>
-        </exec>
-      
-    </target>
-
     <target name="lang.revdiff"
             description="Reports difference between English and translation (set lang)">
 
