@@ -180,7 +180,7 @@
     </target>
 
     <target name="lang.docpdf.customized" depends="lang.docpdf.prepare" if="custom.fop.userconfig.present">
-
+        <fail unless="lang" />
         <copy todir="${build.dir}/${lang}/pdf">
             <fileset dir="${basedir}/${lang}/fop">
                 <include name="*"/>
@@ -198,6 +198,7 @@
     </target>
 
     <target name="lang.docpdf.normal" depends="lang.docpdf.prepare" unless="custom.fop.userconfig.present">
+        <fail unless="lang" />
         <!-- Create a PDF from the XSL/FO. -->
         <java classname="org.apache.fop.apps.Fop" fork="true" dir="${basedir}" maxmemory="192m">
             <classpath refid="lib.classpath"/>
@@ -209,6 +210,7 @@
     <target name="lang.docpdf" depends="lang.docpdf.normal,lang.docpdf.customized"
             description="Generates the PDF documentation only for a language (set lang)">
         <!-- House keeping,delete temporary files. -->
+        <fail unless="lang" />
         <delete>
             <fileset dir="${build.dir}/${lang}/pdf" excludes="**/*.pdf"/>
         </delete>
@@ -218,6 +220,7 @@
     <target name="lang.dochtml"
             description="Generates the HTML documentation only for a language (set lang)">
 
+        <fail unless="lang" />
         <mkdir dir="${build.dir}/${lang}/html/"/>
 
         <java classname="com.icl.saxon.StyleSheet" fork="true" dir="${build.dir}/${lang}/html" maxmemory="192m">
@@ -260,6 +263,7 @@
     <target name="lang.dochtmlsingle"
             description="Generates the single-page HTML documentation only for a language (set lang)">
 
+        <fail unless="lang" />
         <mkdir dir="${build.dir}/${lang}/html_single/"/>
 
         <java classname="com.icl.saxon.StyleSheet" fork="true" dir="${basedir}" maxmemory="192m">
@@ -296,6 +300,7 @@
     </target>
 
     <target name="lang.htmlmisc">
+        <fail unless="lang" />
 
         <!-- Copy images and CSS for HTML documentation, language specific. -->
         <copy todir="${build.dir}/${lang}/shared/images">
@@ -315,6 +320,7 @@
 
     <target name="lang.docinfo.texi">
 
+        <fail unless="lang" />
         <mkdir dir="${build.dir}/${lang}/info/"/>
 
         <java classname="com.icl.saxon.StyleSheet" fork="true" dir="${basedir}" maxmemory="192m">
@@ -329,6 +335,7 @@
 
     <target name="lang.docinfo.make" if="hasInfo">
 
+        <fail unless="lang" />
         <exec executable="makeinfo" dir="${build.dir}/${lang}/info/">
             <arg value="ceylon-spec.texi"/>
         </exec>
@@ -343,6 +350,7 @@
             depends="lang.docinfo"
             if="hasInfo">
 
+        <fail unless="lang" />
         <exec executable="sudo" dir="${build.dir}/${lang}/info/">
             <arg value="sh"/>
             <arg value="-c"/>
@@ -354,6 +362,7 @@
     <target name="lang.revdiff"
             description="Reports difference between English and translation (set lang)">
 
+        <fail unless="lang" />
         <taskdef name="revdiff"
                  classname="org.hibernate.docproc.revdiff.RevDiffReportTask"
                  classpathref="lib.classpath">
@@ -368,6 +377,7 @@
 
     <target name="lang.section-check" depends="lang.dochtml"
             description="Reports missing unique chapter/section identifiers (set lang)">
+        <fail unless="lang" />
         <java classname="com.icl.saxon.StyleSheet" fork="true" dir="${build.dir}/${lang}/html" maxmemory="192m">
             <classpath refid="lib.classpath"/>
             <arg value="${basedir}/${lang}/master.xml"/>
