@@ -1001,7 +1001,7 @@ TypeConstraints?
         
         </section>
         
-        <section>
+        <section id="dynamicinterfaces">
             <title>Dynamic interfaces</title>
             
             <para>A <emphasis>dynamic interface</emphasis> is an interface declared with the 
