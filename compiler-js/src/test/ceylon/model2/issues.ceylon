@@ -105,4 +105,11 @@ void issues() {
     } else {
         fail("c.l#724 expected Comparison");
     }
+    //543
+    check(`module nesting`.annotations<AuthorsAnnotation>() nonempty, "#543.1");
+    if (exists p543=`module nesting`.members.first) {
+      check(p543.annotations<AuthorsAnnotation>() nonempty, "#543.2");
+    } else {
+      fail("WTF #543");
+    }
 }
