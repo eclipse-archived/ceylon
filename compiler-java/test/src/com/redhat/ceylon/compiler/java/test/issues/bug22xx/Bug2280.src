@@ -1,11 +1,11 @@
 package com.redhat.ceylon.compiler.java.test.issues.bug22xx;
 
-public final class badTypes_ {
+public final class bug2280_ {
     
-    private badTypes_() {
+    private bug2280_() {
     }
     
-    public static void badTypes() {
+    public static void bug2280() {
         
         final class bar_ {
             
@@ -133,6 +133,6 @@ public final class badTypes_ {
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.issues.bug22xx.badTypes_.badTypes();
+        .com.redhat.ceylon.compiler.java.test.issues.bug22xx.bug2280_.bug2280();
     }
 }

@@ -1,5 +1,5 @@
 @noanno
-shared void badTypes() {
+shared void bug2280() {
     void bar(String? f) {}
     void baz(Integer? f) {}
     void gee(Comparison? f) {}
