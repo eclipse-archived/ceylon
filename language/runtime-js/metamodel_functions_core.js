@@ -113,6 +113,16 @@ function _findTypeFromModel(pkg,mdl,cont) {
 }
 //Generate the qualified name of a type
 function qname$(mm) {
+  if (mm.t==='u' || mm.t==='i') {
+    var qn='';
+    for (var i=0; i < mm.l.length; i++) {
+      if (i>0) {
+        qn+= mm.t==='u' ? '|' : '&';
+      }
+      qn+=qname$(mm.l[i]);
+    }
+    return qn;
+  }
   if (mm.t) {
     mm=mm.t;
   }
