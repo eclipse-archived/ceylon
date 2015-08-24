@@ -26,6 +26,7 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.Nothing;
 import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.Function;
+import com.redhat.ceylon.model.typechecker.model.Functional;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.Reference;
 import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
@@ -324,12 +325,18 @@ public class AppliedClass<Type, Arguments extends Sequential<? extends Object>>
             } else {
                 throw Metamodel.newModelError("Unexpect declaration " +callableCtor.declaration);
             }
-            return new AppliedCallableConstructor<Type,Sequential<? extends java.lang.Object>>(
+            AppliedCallableConstructor<Type, Sequential<? extends Object>> appliedConstructor = new AppliedCallableConstructor<Type,Sequential<? extends java.lang.Object>>(
                     this.$reifiedType, 
                     $reified$Arguments,
                     reference, 
                     callableCtor, 
                     this, null);
+            Metamodel.checkReifiedTypeArgument("apply", "CallableConstructor<$1,$2>", 
+                    Variance.OUT, producedType, $reifiedType, 
+                    Variance.IN, Metamodel.getProducedTypeForArguments(
+                            declaration.declaration.getUnit(), 
+                            (Functional)callableCtor.declaration, reference), $reified$Arguments);
+            return appliedConstructor;
         } else if (ctor instanceof ValueConstructorDeclaration){
             FreeValueConstructor callableCtor = (FreeValueConstructor)ctor;
             com.redhat.ceylon.model.typechecker.model.Type constructorType = callableCtor.constructor.appliedType(this.producedType, Collections.<com.redhat.ceylon.model.typechecker.model.Type>emptyList());
