@@ -2652,7 +2652,8 @@ public class ClassTransformer extends AbstractTransformer {
                 if(isTurnedToRaw(typedMember.getQualifyingType())
                         // see note in BoxingVisitor.visit(QualifiedMemberExpression) about mixin super calls and variant type args
                         // in invariant locations
-                        || needsRawCastForMixinSuperCall(iface, methodType))
+                        || needsRawCastForMixinSuperCall(iface, methodType)
+                        || needsCastForErasedInstantiator(iface, methodName, member))
                     typeErased = true;
                 expr = gen().expressionGen().applyErasureAndBoxing(expr, methodType, typeErased, 
                         exprBoxed, boxingStrategy,
@@ -2661,6 +2662,12 @@ public class ClassTransformer extends AbstractTransformer {
             }
         }
         return concreteWrapper;
+    }
+
+    protected boolean needsCastForErasedInstantiator(Interface iface,
+            final String methodName, Declaration member) {
+        return Decl.isAncestorLocal(iface) && Decl.isAncestorLocal(member)
+                && methodName.endsWith(NamingBase.Suffix.$new$.toString());
     }
 
     private boolean isUnimplementedMemberClass(Type currentType, Reference typedMember) {
