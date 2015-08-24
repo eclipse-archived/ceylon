@@ -1,0 +1,69 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug22xx;
+
+interface bug2281$Bar_ {
+    
+    public .java.lang.Object Bar$impl();
+    
+    .java.lang.Object C$new$();
+}
+public final class bug2281_ {
+    
+    private bug2281_() {
+    }
+    
+    public static void bug2281() {
+        
+        final class Bar$impl {
+            
+            Bar$impl(.com.redhat.ceylon.compiler.java.test.issues.bug22xx.bug2281$Bar_ $this) {
+                this.$this = $this;
+            }
+            private final .com.redhat.ceylon.compiler.java.test.issues.bug22xx.bug2281$Bar_ $this;
+            
+            .java.lang.Object C$new$() {
+                return new C();
+            }
+            
+            class C implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+                
+                protected C() {
+                }
+                
+                @.java.lang.Override
+                public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                    return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue(.com.redhat.ceylon.compiler.java.test.issues.bug22xx.bug2281_.class), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug22xx.bug2281$Bar_.class)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(Bar$impl.C.class));
+                }
+            }
+        }
+        
+        class X implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug22xx.bug2281$Bar_ {
+            
+            X() {
+                this.$com$redhat$ceylon$compiler$java$test$issues$bug22xx$bug2281$Bar$this$ = new Bar$impl(this);
+            }
+            protected final Bar$impl $com$redhat$ceylon$compiler$java$test$issues$bug22xx$bug2281$Bar$this$;
+            
+            @.java.lang.Override
+            public Bar$impl Bar$impl() {
+                return $com$redhat$ceylon$compiler$java$test$issues$bug22xx$bug2281$Bar$this$;
+            }
+            
+            @.java.lang.Override
+            public final Bar$impl.C C$new$() {
+                return (Bar$impl.C)$com$redhat$ceylon$compiler$java$test$issues$bug22xx$bug2281$Bar$this$.C$new$();
+            }
+            
+            @.java.lang.Override
+            public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue(.com.redhat.ceylon.compiler.java.test.issues.bug22xx.bug2281_.class), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(X.class));
+            }
+        }
+        final X x = new X();
+        final Bar$impl.C c = (Bar$impl.C)x.C$new$();
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.issues.bug22xx.bug2281_.bug2281();
+    }
+}
