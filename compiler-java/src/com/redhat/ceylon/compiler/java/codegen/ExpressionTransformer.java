@@ -460,6 +460,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                     if(!isNullValue(exprType)
                             // include a cast even for null for interop and disambiguating bw overloads and null values
                             // of different types using the "of" operator
+                            || exprErased
                             || downCast){
                         // in some cases we may have an instance of Null, which is of type java.lang.Object, being
                         // returned in a context where we expect a String? (aka ceylon.language.String) so even though

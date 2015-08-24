@@ -597,6 +597,9 @@ public abstract class BoxingVisitor extends Visitor {
                 && CodegenUtil.isUnBoxed(elseExpr)
                 && !willEraseToObject(that.getUnit().denotableType(that.getTypeModel())))
             CodegenUtil.markUnBoxed(that);
+        if (that.getTypeModel().isExactly(that.getUnit().getNullValueDeclaration().getType())) {
+            CodegenUtil.markTypeErased(that);
+        }
         // An If expression can never be raw, type erased or untrusted because
         // it uses a Let with a new variable declaration, so the rawness, 
         // erasedness and untrustedness of its branches cannot propagate further 
@@ -634,6 +637,9 @@ public abstract class BoxingVisitor extends Visitor {
         if(unboxed 
                 && !willEraseToObject(that.getUnit().denotableType(that.getTypeModel())))
             CodegenUtil.markUnBoxed(that);
+        if (that.getTypeModel().isExactly(that.getUnit().getNullValueDeclaration().getType())) {
+            CodegenUtil.markTypeErased(that);
+        }
     }
     
     @Override
