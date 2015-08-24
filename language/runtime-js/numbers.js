@@ -106,7 +106,12 @@ JSNum$proto.timesInteger = function(other) {
 $addnm$('timesInteger');
 JSNum$proto.divided = function(other) {
   if (this.fmz$)return this;
-    if (nflt$(this)||nflt$(other)) { return Float(this/other); }
+    if (nflt$(this)||nflt$(other)) { 
+        var ret = Float(this/other);
+        // make sure that if we expect a negative result, we get one, like 1/-0 -> -Infinity
+        if(!this.negative && other.fmz$ && !ret.negative){ ret = ret.negated; }
+        return ret;
+    }
     if (other == 0) {
         throw Exception("Division by Zero");
     }
@@ -199,7 +204,10 @@ atr$(JSNum$proto, 'fractionalPart', function() {
 },undefined,function(){return{an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:$_Number,d:['$','Number','$at','fractionalPart']};});
 atr$(JSNum$proto, 'wholePart', function() {
     if (!nflt$(this)) { return this.valueOf(); }
-    return Float(this>=0 ? Math.floor(this) : Math.ceil(this));
+    var ret = this >= 0 ? Math.floor(this) : Math.ceil(this);
+    var wret = Float(ret);
+    if(ret == 0 && (this < 0 || this.fmz$)){ wret.fmz$ = true; }
+    return wret;
 },undefined,function(){return{an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:$_Number,d:['$','Number','$at','wholePart']};});
 atr$(JSNum$proto, 'sign', function(){ return this > 0 ? 1 : this < 0 ? -1 : 0; },
   undefined,function(){return{an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:$_Number,d:['$','Number','$at','sign']};});
