@@ -125,7 +125,7 @@ public class AppliedCallableConstructor<Type, Arguments extends Sequential<? ext
             return ctor.namedApply(arguments);
         } else {
             return Metamodel.namedApply(this, this, 
-                    (com.redhat.ceylon.model.typechecker.model.Functional)freeClass.declaration, 
+                    (com.redhat.ceylon.model.typechecker.model.Functional)(freeConstructor != null ? freeConstructor.declaration : freeClass.declaration), 
                     arguments, dispatch.getProducedParameterTypes());
         }
     }
