@@ -72,6 +72,8 @@ shared void numbers() {
     check((-1).wholePart==-1, "integer fractional");
     check(1.5.wholePart==1.0, "float fractional");
     
+    checkWholePart();
+    
     check((+2).sign==+1, "integer sign");
     check((-3).sign==-1, "integer sign");
     check(2.0.sign==+1, "integer sign");
@@ -813,4 +815,40 @@ void checkParseFloat() {
     for (i in 0:runtime.integerAddressableSize) {
         check(0.flip(i).set(i, false)==0, "#724.4"); // expected <0> but was <2>
     }
+}
+
+void checkWholePart(){
+    // Adapted from FloatTest.java
+    check(0.0 == -0.0.wholePart);
+    check(0.0 == +0.0.wholePart);
+    check(0.0 == +0.4.wholePart);
+    check(0.0 == -0.4.wholePart);
+    check(0.0 == +0.6.wholePart);
+    check(0.0 == -0.6.wholePart);
+    check(-1.0 == -1.0.wholePart);
+    check(+1.0 == +1.0.wholePart);
+    check(+1.0 == +1.4.wholePart);
+    check(-1.0 == -1.4.wholePart);
+    check(+1.0 == +1.6.wholePart);
+    check(-1.0 == -1.6.wholePart);
+    
+    check(+2097153 == +2097153.5.wholePart);
+    check(-2097153 == -2097153.5.wholePart);
+    
+    check(1/0.0 == infinity);
+    check(1/(-0.0) == -infinity);
+    
+    check(1 / -0.0 < 0.0, "preserve negative 0.aa");
+    check(1 / (-0.0).wholePart < 0.0, "preserve negative 0.a");
+    check(1 / +0.0.wholePart > 0.0, "preserve positive 0.b");
+    check(1 / (-0.4).wholePart < 0.0, "preserve negative 0.c");
+    check(1 / +0.4.wholePart > 0.0, "preserve positive 0.d");
+    check(1 / (-0.6).wholePart < 0.0, "preserve negative 0.e");
+    check(1 / +0.6.wholePart > 0.0, "preserve positive 0.f");
+    
+    check((-infinity).wholePart == -infinity);
+    check(infinity.wholePart == infinity);
+    value nan = 0.0/0.0;
+    check(nan.wholePart.undefined);
+
 }
