@@ -1030,75 +1030,108 @@ shared interface List<out Element=Anything>
     }
     
     "The permutations of this list, as a stream of nonempty
-     [[sequences|Sequence]]. That is, a stream producing 
-     every sequence that has the same [[size]] as this list
-     and contains every element of this list exactly once.
+     [[sequences|Sequence]]. That is, a stream producing
+     every distinct ordering of the elements of this list.
      
-     For example, 
+     For example,
      
          \"ABC\".permutations.map(String)
      
      is the stream of strings
-     `{ \"ABC\", \"ACB\", \"CAB\", \"CBA\", \"BCA\", \"BAC\" }`.
+     `{ \"ABC\", \"ACB\", \"BAC\", \"BCA\", \"CAB\", \"CBA\" }`.
      
      If this list is empty, the resulting stream is empty.
      
-     Note: the permutations are distinct if and only if this 
-     list has no repeated elements."
-    shared {[Element+]*} permutations
-            => object satisfies {[Element+]*} {
-        
-        iterator()
-                => let (list=outer)
-                object satisfies Iterator<[Element+]> {
-            
-            value length = list.size;
-            value permutation = Array(0:length);
-            value indexes = Array(0:length);
-            value swaps = Array(0:length);
-            value directions = Array.ofSize(length, -1);
-            
-            variable value counter = length;
-            
-            shared actual [Element+]|Finished next() {
-                while (counter > 0) {
-                    if (counter == length) {
-                        counter--;
-                        value result 
-                                = permutation.collect((i) { 
-                            assert (exists elem = list[i]);
-                            return elem;
-                        });
-                        assert (nonempty result);
-                        return result;
+     The permutations are enumerated lexicographically
+     according to the order of the first appearance in this
+     list of each [[distinct|Object.equals]] element. No
+     permutation is repeated. [[Null]] elements are treated
+     as equal to each other and distinct from any
+     [[Object]]."
+    shared {[Element+]*} permutations => object satisfies {[Element+]*} {
+        "Allows nulls to be grouped."
+        class Box(Element element) {
+            shared actual Boolean equals(Object that) {
+                assert (is Box that);
+                if (exists element) {
+                    if (exists other = that.element) {
+                        return element == other;
                     }
                     else {
-                        assert (exists swap = swaps[counter],
-                            exists dir = directions[counter]);
-                        if (swap > 0) {
-                            assert (exists index 
-                                = indexes[counter]);
-                            value otherIndex = index + dir;
-                            assert (exists swapIndex 
-                                = permutation[otherIndex]);
-                            permutation.set(index, swapIndex);
-                            permutation.set(otherIndex, counter);
-                            indexes.set(swapIndex, index);
-                            indexes.set(counter, otherIndex);
-                            swaps.set(counter, swap-1);
-                            counter = length;
-                        }
-                        else {
-                            swaps.set(counter, counter);
-                            directions.set(counter, -dir);
-                            counter--;
-                        }
+                        return false;
                     }
                 }
-                return finished;
+                else {
+                    return !that.element exists;
+                }
+            }
+            
+            hash => element?.hash else 0;
+        }
+        
+        value multiset =
+            outer
+            .indexed
+            .group(forItem(Box))
+            .items
+            .sort(
+                byIncreasing(
+                    compose(
+                        Entry<Integer, Element>.key,
+                        Sequence<Integer->Element>.first
+                    )
+                )
+            )
+            .indexed
+            .flatMap(
+                (entry) => let (index->entries = entry)
+                    entries.map((entry) => index->entry.item)
+            );
+        
+        empty => multiset.empty;
+        
+        iterator() => object satisfies Iterator<[Element+]> {
+            value elements = Array(multiset);
+            value reversed
+                = zipPairs(elements.keys.reversed, elements.reversed);
+            value paired = reversed.paired;
+            function greaterThan(Integer key)([Integer, Integer->Element] pair)
+                => pair[1].key > key;
+            function adjacentDecreasing([Integer, Integer->Element][2] pairs)
+                => greaterThan(pairs[1][1].key)(pairs[0]);
+            variable value initial = true;
+            
+            shared actual [Element+]|Finished next() {
+                if (initial) {
+                    initial = false;
+                }
+                else if (exists pairs = paired.find(adjacentDecreasing)) {
+                    value [k, entry] = pairs[1];
+                    value key = entry.key;
+                    assert (exists pair = reversed.find(greaterThan(key)));
+                    elements.set(k, pair[1]);
+                    elements.set(pair[0], entry);
+                    value from = k + 1;
+                    value to = k + (elements.size - from) / 2;
+                    value rest
+                        = zipPairs(from..to, elements.sublist(from, to));
+                    for ([i, j] in zipPairs(rest, reversed)) {
+                        elements.set(i[0], j[1]);
+                        elements.set(j[0], i[1]);
+                    }
+                }
+                else {
+                    return finished;
+                }
+                
+                if (nonempty permutation = elements*.item) {
+                    return permutation;
+                }
+                else {
+                    return finished;
+                }
             }
         };
-        
     };
     
 }
