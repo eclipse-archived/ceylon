@@ -3555,7 +3555,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             .build();
         if(invocation.handleBoxing)
             result = applyErasureAndBoxing(result, invocation.getReturnType(), 
-                    !invocation.unboxed, invocation.boxingStrategy, invocation.getReturnType());
+                    invocation.erased, !invocation.unboxed, invocation.boxingStrategy, invocation.getReturnType(), 0);
         return result;
     }
     

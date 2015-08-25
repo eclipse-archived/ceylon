@@ -3899,6 +3899,8 @@ public class ClassTransformer extends AbstractTransformer {
                 throw new BugException(term, "unhandled primary: " + term == null ? "null" : term.getNodeType());
             }
             invocation.handleBoxing(true);
+            invocation.setErased(CodegenUtil.hasTypeErased(term) 
+                    || getReturnTypeOfCallable(term.getTypeModel()).isNothing());
             bodyExpr = expressionGen().transformInvocation(invocation);
         } else {
             bodyExpr = expressionGen().transformExpression(model, term);
