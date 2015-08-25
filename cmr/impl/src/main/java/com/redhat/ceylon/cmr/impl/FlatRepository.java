@@ -19,10 +19,12 @@ package com.redhat.ceylon.cmr.impl;
 import java.io.File;
 import java.io.IOException;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.CmrRepository;
+import com.redhat.ceylon.cmr.api.ModuleDependencyInfo;
 import com.redhat.ceylon.cmr.api.ModuleInfo;
 import com.redhat.ceylon.cmr.api.Overrides;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
@@ -72,6 +74,14 @@ public class FlatRepository extends DefaultRepository {
                         if(dependencies != null)
                             break;
                     }
+                }
+                if (dependencies == null) {
+                    Overrides overrides = ((CmrRepository)repository()).getRoot().getService(Overrides.class);
+                    if(overrides != null) {
+                        dependencies = new ModuleInfo(null, new HashSet<ModuleDependencyInfo>());
+                        dependencies = overrides.applyOverrides(name(), version(), dependencies);
+                    }
+                    
                 }
             }
             return dependencies;
