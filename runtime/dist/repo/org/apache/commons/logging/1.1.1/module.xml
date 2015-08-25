@@ -29,4 +29,9 @@
 
     <dependencies>
     </dependencies>
+
+    <exports>
+        <!-- Uses Servlet -->
+        <exclude path="org/apache/commons/logging/impl/ServletContextCleaner*"/>
+    </exports>
 </module>

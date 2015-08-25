@@ -35,4 +35,9 @@
             </paths>
         </system>
     </dependencies>
+
+    <exports>
+        <!-- Uses Swing -->
+        <exclude path="antlr/debug/**"/>
+    </exports>
 </module>

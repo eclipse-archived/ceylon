@@ -45,4 +45,9 @@
 
     <dependencies>
     </dependencies>
+
+    <exports>
+        <!-- Uses Ant -->
+        <exclude path="org/jboss/jandex/JandexAntTask*"/>
+    </exports>
 </module>

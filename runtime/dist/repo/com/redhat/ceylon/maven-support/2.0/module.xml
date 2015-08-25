@@ -33,4 +33,17 @@
             </paths>
         </system>
     </dependencies>
+
+    <exports>
+        <!-- Uses Guice -->
+        <exclude path="org/eclipse/aether/impl/AetherModule*"/>
+        <exclude path="org/apache/maven/repository/internal/MavenAetherModule*"/>
+        <!-- Uses Plexus logging -->
+        <exclude path="org/eclipse/aether/internal/impl/PlexusLoggerFactory*"/>
+        <exclude path="org/sonatype/plexus/components/cipher/DefaultPlexusCipher*"/>
+        <exclude path="org/sonatype/plexus/components/sec/dispatcher/DefaultSecDispatcher*"/>
+        <!-- Uses Plexus Container -->
+        <exclude path="org/eclipse/aether/internal/connector/wagon/PlexusWagonConfigurator*"/>
+        <exclude path="org/eclipse/aether/internal/connector/wagon/PlexusWagonProvider*"/>
+    </exports>
 </module>
