@@ -18,6 +18,7 @@ import java.util.zip.ZipFile;
 
 import com.redhat.ceylon.common.FileUtil;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
+import com.redhat.ceylon.model.cmr.PathFilter;
 import com.redhat.ceylon.model.loader.ContentAwareArtifactResult;
 import com.redhat.ceylon.model.typechecker.model.Module;
 
@@ -50,7 +51,7 @@ public class CachedTOCJars {
                             while(entries.hasMoreElements()){
                                 ZipEntry entry = entries.nextElement();
                                 // only cache class files
-                                if(!entry.isDirectory()){
+                                if(!entry.isDirectory() && accept(entry.getName())){
                                     packages.add(getPackageName(entry.getName()));
                                     contents.add(entry.getName());
                                 }
@@ -63,6 +64,11 @@ public class CachedTOCJars {
                     }
                 }
             }
+        }
+
+        private boolean accept(String path) {
+            PathFilter filter = artifact.filter();
+            return filter == null || filter.accept(path);
         }
 
         private String getPackageName(String name) {
@@ -162,7 +168,7 @@ public class CachedTOCJars {
                             ZipEntry entry = entries.nextElement();
                             String name = entry.getName();
                             // only cache class files
-                            if(!entry.isDirectory()){
+                            if(!entry.isDirectory() && accept(name)){
                                 String part = null;
                                 if(!emptyPackage && name.startsWith(path)){
                                     // keep only the part after the package name
