@@ -3785,6 +3785,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 setValueTransientLateFlags(value, meth, true);
                 setAnnotations(value, meth);
                 markUnboxed(value, meth, meth.getReturnType());
+                markTypeErased(value, meth, meth.getReturnType());
 
                 TypeMirror setterClass = (TypeMirror) getAnnotationValue(value.classMirror, CEYLON_ATTRIBUTE_ANNOTATION, "setterClass");
                 // void.class is the default value, I guess it's a primitive?
