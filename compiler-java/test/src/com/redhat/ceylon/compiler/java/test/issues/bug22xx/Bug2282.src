@@ -1,0 +1,121 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug22xx;
+
+class Bug2282 extends .java.lang.Object implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    Bug2282() {
+        super();
+        this.hash = 1L;
+        this.equals$specifier$ = .ceylon.language.nothing_.get_();
+    }
+    private final long hash;
+    
+    @.java.lang.Override
+    public final int hashCode() {
+        return (int)(
+            let
+            {
+                long $ceylontmp$hash$0 = hash;
+            }
+            returning $ceylontmp$hash$0 ^ $ceylontmp$hash$0 >>> 32;
+        );
+    }
+    private final .java.lang.Object equals$specifier$;
+    
+    @.java.lang.Override
+    public final boolean equals(final .java.lang.Object that) {
+        return ((.ceylon.language.Boolean)((.ceylon.language.Callable<? extends .java.lang.Object>)equals$specifier$).$call$(that)).booleanValue();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug22xx.Bug2282.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug22xx.Bug2282.class);
+}
+interface Bug2282Z {
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug22xx.Bug2282Z.class);
+}
+interface Bug2282A extends .com.redhat.ceylon.compiler.java.test.issues.bug22xx.Bug2282Z {
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug22xx.Bug2282A.class);
+}
+interface Bug2282B extends .com.redhat.ceylon.compiler.java.test.issues.bug22xx.Bug2282Z {
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug22xx.Bug2282B.class);
+}
+final class bug2282k_ {
+    
+    private bug2282k_() {
+    }
+    
+    static .java.lang.Object bug2282k() {
+        return .ceylon.language.nothing_.get_();
+    }
+}
+abstract class Bug2282C implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    Bug2282C() {
+    }
+    
+    public abstract .com.redhat.ceylon.compiler.java.test.issues.bug22xx.Bug2282Z z();
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug22xx.Bug2282C.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug22xx.Bug2282C.class);
+}
+class Bug2282D extends .com.redhat.ceylon.compiler.java.test.issues.bug22xx.Bug2282C {
+    
+    Bug2282D() {
+        super();
+    }
+    
+    @.java.lang.Override
+    public final .com.redhat.ceylon.compiler.java.test.issues.bug22xx.Bug2282Z z() {
+        return (.com.redhat.ceylon.compiler.java.test.issues.bug22xx.Bug2282Z).com.redhat.ceylon.compiler.java.test.issues.bug22xx.bug2282k_.bug2282k();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug22xx.Bug2282D.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug22xx.Bug2282D.class);
+}
+final class bug2282M_ {
+    
+    private bug2282M_() {
+    }
+    
+    static <F>F bug2282M(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$F, final .java.lang.Object o) {
+        return (F).ceylon.language.nothing_.get_();
+    }
+}
+class Bug2282M extends .java.lang.Object implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    Bug2282M() {
+        super();
+        this.hash = 1L;
+    }
+    private final long hash;
+    
+    @.java.lang.Override
+    public final int hashCode() {
+        return (int)(
+            let
+            {
+                long $ceylontmp$hash$1 = hash;
+            }
+            returning $ceylontmp$hash$1 ^ $ceylontmp$hash$1 >>> 32;
+        );
+    }
+    
+    @.java.lang.Override
+    public final boolean equals(final .java.lang.Object that) {
+        return ((.ceylon.language.Boolean).com.redhat.ceylon.compiler.java.test.issues.bug22xx.bug2282M_.<.java.lang.Object>bug2282M(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, that)).booleanValue();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug22xx.Bug2282M.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug22xx.Bug2282M.class);
+}
