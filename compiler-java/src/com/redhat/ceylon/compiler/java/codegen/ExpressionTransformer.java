@@ -460,7 +460,6 @@ public class ExpressionTransformer extends AbstractTransformer {
                     if(!isNullValue(exprType)
                             // include a cast even for null for interop and disambiguating bw overloads and null values
                             // of different types using the "of" operator
-                            || exprErased
                             || downCast){
                         // in some cases we may have an instance of Null, which is of type java.lang.Object, being
                         // returned in a context where we expect a String? (aka ceylon.language.String) so even though
@@ -2824,6 +2823,9 @@ public class ExpressionTransformer extends AbstractTransformer {
                 flags |= ExpressionTransformer.EXPR_EXPECTED_TYPE_HAS_CONSTRAINED_TYPE_PARAMETERS;
             if(invocation.isParameterWithDependentCovariantTypeParameters(argIndex))
                 flags |= ExpressionTransformer.EXPR_EXPECTED_TYPE_HAS_DEPENDENT_COVARIANT_TYPE_PARAMETERS;
+            if (invocation.erasedArgument(unwrapExpressionUntilTerm(expr))) {
+                flags |= EXPR_DOWN_CAST;
+            }
             JCExpression ret = transformExpression(expr, 
                     boxingStrategy, 
                     type, flags);

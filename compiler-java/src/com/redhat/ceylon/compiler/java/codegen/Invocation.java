@@ -43,6 +43,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgumentList;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.QualifiedTypeExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SequencedArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
+import com.redhat.ceylon.compiler.typechecker.tree.TreeUtil;
 import com.redhat.ceylon.model.loader.JvmBackendUtil;
 import com.redhat.ceylon.model.loader.NamingBase.Suffix;
 import com.redhat.ceylon.model.typechecker.model.Class;
@@ -404,6 +405,17 @@ abstract class Invocation {
         }
     }
     
+
+    protected boolean erasedArgument(Tree.Term expr) {
+        // technically expr.getTypeErased() is all we need
+        // but it usually results in unnecessary casting of null
+        // the exception to that is if and switch expressions
+        // with all branches being null.
+        return expr.getTypeErased()
+                && gen.isNullValue(expr.getTypeModel())
+                && (expr instanceof Tree.SwitchExpression
+                        ||expr instanceof Tree.IfExpression);
+    }
 }
 
 abstract class SimpleInvocation extends Invocation {
@@ -1447,6 +1459,9 @@ class NamedArgumentInvocation extends Invocation {
         }
         if(isParameterWithDependentCovariantTypeParameters(declaredParam)) {
             exprFlags |= ExpressionTransformer.EXPR_EXPECTED_TYPE_HAS_DEPENDENT_COVARIANT_TYPE_PARAMETERS;
+        }
+        if (erasedArgument(TreeUtil.unwrapExpressionUntilTerm(expr))) {
+            exprFlags |= ExpressionTransformer.EXPR_DOWN_CAST;
         }
         JCExpression typeExpr = gen.makeJavaType(type, jtFlags);
         JCExpression argExpr = gen.expressionGen().transformExpression(expr, boxType, type, exprFlags);
