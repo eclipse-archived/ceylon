@@ -66,9 +66,9 @@ class ConstructorDispatch<Type, Arguments extends Sequential<? extends Object>>
         this.firstDefaulted = Metamodel.getFirstDefaultedParameter(parameters);
         this.variadicIndex = Metamodel.getVariadicParameter(parameters);
 
-        boolean invokeOnCompanionInstance = this.instance != null 
+        boolean invokeOnCompanionInstance = instance != null 
                 && classDecl.getContainer() instanceof com.redhat.ceylon.model.typechecker.model.Interface
-                && !classDecl.isShared();
+                && (freeConstructor != null || !classDecl.isShared());
         if (invokeOnCompanionInstance) {
             this.instance = Metamodel.getCompanionInstance(instance, (com.redhat.ceylon.model.typechecker.model.Interface)freeClass.declaration.getContainer());
         } else {
@@ -324,7 +324,7 @@ class ConstructorDispatch<Type, Arguments extends Sequential<? extends Object>>
             if (!javaClass.isMemberClass() 
                     || !Metamodel.isCeylon((com.redhat.ceylon.model.typechecker.model.Class)freeClass.declaration)
                     // private ceylon member classes don't have any outer constructor method so treat them like java members
-                    || !classDecl.isShared()) {
+                    || !(classDecl.isShared() && freeConstructor.getShared())) {
                 defaultedMethods = findConstructors(freeConstructor, javaClass);
             } else {
                 defaultedMethods = findInstantiators(freeConstructor, javaClass.getEnclosingClass());
@@ -399,7 +399,9 @@ class ConstructorDispatch<Type, Arguments extends Sequential<? extends Object>>
                 }
                 continue outer;
             }
-            defaultedMethods[index(ii, pts, jvmVarargs)] = constr;
+            if (freeConstructor == null || (ctorName == null || ctorName.isEmpty())) {
+                defaultedMethods[index(ii, pts, jvmVarargs)] = constr;
+            }
         }
         return defaultedMethods;
     }
