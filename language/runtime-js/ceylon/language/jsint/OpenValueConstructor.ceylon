@@ -1,17 +1,21 @@
 import ceylon.language.meta.declaration {
-  ConstructorDeclaration, FunctionOrValueDeclaration, Package,
+  ValueConstructorDeclaration, FunctionOrValueDeclaration, Package,
   ClassDeclaration, Module, OpenType
+}
+import ceylon.language.meta.model {
+  ValueConstructor, MemberClassValueConstructor, Type
 }
 import ceylon.language { AnnotationType=Annotation }
 
-shared native class OpenConstructor(containingPackage, shared Anything meta) satisfies ConstructorDeclaration {
-  shared actual native Boolean defaultConstructor;
+shared native class OpenValueConstructor(containingPackage, shared Anything meta) satisfies ValueConstructorDeclaration {
   shared actual native ClassDeclaration container;
+  shared actual native ValueConstructor<Result,Set> apply<Result=Anything, Set=Nothing>();
+  shared actual native MemberClassValueConstructor<Container, Result, Set> memberApply<Container=Nothing, Result=Anything, Set=Nothing>(Type<Object> containerType);
+
   shared actual native Boolean shared;
-  //FunctionalDeclaration
-  annotation=false;
-  shared actual native FunctionOrValueDeclaration[] parameterDeclarations;
-  shared actual native FunctionOrValueDeclaration? getParameterDeclaration(String name);
+  shared actual native Boolean formal;
+  shared actual native Boolean default;
+  shared actual native Boolean actual;
   //Contained
   toplevel=false;
   shared actual Package containingPackage;

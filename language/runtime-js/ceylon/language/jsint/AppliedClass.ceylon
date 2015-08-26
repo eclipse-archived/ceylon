@@ -1,7 +1,8 @@
 import ceylon.language.meta.model {
   ClosedType=Type, Constructor, Functional, Applicable,
   Member, Class, ClassOrInterface, Attribute, Method,
-  ClassModel,InterfaceModel,MemberInterface,MemberClass
+  ClassModel,InterfaceModel,MemberInterface,MemberClass,
+  CallableConstructor, ValueConstructor
 }
 import ceylon.language.meta.declaration {
   ClassDeclaration,
@@ -11,7 +12,11 @@ import ceylon.language.meta.declaration {
 shared native class AppliedClass<out Type=Anything, in Arguments=Nothing>() satisfies Class<Type,Arguments>
     given Arguments satisfies Anything[] {
 
-  shared actual native ClosedType<Anything>[] parameterTypes;
+  shared actual native <CallableConstructor<Type, Arguments>|Class<Type, Arguments>>? defaultConstructor;
+  shared actual native CallableConstructor<Type, Arguments>|ValueConstructor<Type>? getConstructor<Arguments>(String name)
+        given Arguments satisfies Anything[];
+
+  //shared actual native ClosedType<Anything>[] parameterTypes;
   shared actual native Type apply(Anything* arguments);
   shared actual native Type namedApply(Iterable<String->Anything> arguments);
 
@@ -48,9 +53,6 @@ shared native class AppliedClass<out Type=Anything, in Arguments=Nothing>() sati
 
   shared actual native Type[] caseValues;
 
-  shared actual native Constructor<Type, Arguments>? getConstructor<Arguments=Nothing>(String name)
-    given Arguments satisfies Anything[];
-  
   shared actual native ClosedType<Type|Other> union<Other>(ClosedType<Other> other);
   shared actual native ClosedType<Type&Other> intersection<Other>(ClosedType<Other> other);
 

@@ -39,4 +39,7 @@ shared native class OpenFunction(pkg, meta) satisfies FunctionDeclaration {
   shared actual native Boolean equals(Object other);
   shared actual String string => "function ``qualifiedName``";
   shared actual Integer hash => string.hash;
+
+  shared actual native Anything memberInvoke(Object container, Type<>[] typeArguments, Anything* arguments)/*
+            => memberApply<Nothing, Anything, Nothing>(`Nothing`, *typeArguments).bind(container).apply(*arguments)*/;
 }
