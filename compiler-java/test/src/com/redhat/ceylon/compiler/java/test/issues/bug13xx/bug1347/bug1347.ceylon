@@ -23,3 +23,9 @@ void foo(Test t, Interface i, List<Integer> l){
     }
     Integer res = l.stream().filter(pred).mapToInt(map).sum();
 }
+
+shared void test(){
+    Interface.staticMethod();
+    InnerClass.staticMethod();
+    InnerInterface.staticMethod();
+}

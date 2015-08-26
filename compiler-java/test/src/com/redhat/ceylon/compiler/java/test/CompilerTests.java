@@ -589,10 +589,15 @@ public abstract class CompilerTests {
         private String module;
         private String version;
         private File file;
+
         public ModuleWithArtifact(String module, String version) {
+            this(module, version, destDir, "car");
+        }
+
+        public ModuleWithArtifact(String module, String version, String repo, String extension) {
             this.module = module;
             this.version = version;
-            this.file = getModuleArchive(module,version);
+            this.file = getModuleArchive(module,version, repo, extension);
         }
     }
     
@@ -841,6 +846,10 @@ public abstract class CompilerTests {
 
     protected static File getModuleArchive(String moduleName, String version, String destDir) {
         return getArchiveName(moduleName, version, destDir, "car");
+    }
+
+    protected static File getModuleArchive(String moduleName, String version, String destDir, String extension) {
+        return getArchiveName(moduleName, version, destDir, extension);
     }
 
     protected File getSourceArchive(String moduleName, String version) {

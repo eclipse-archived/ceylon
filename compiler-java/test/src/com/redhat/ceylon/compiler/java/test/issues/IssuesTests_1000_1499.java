@@ -20,6 +20,7 @@
 package com.redhat.ceylon.compiler.java.test.issues;
 
 import java.util.Arrays;
+import java.util.List;
 
 import org.junit.Assume;
 import org.junit.Ignore;
@@ -606,8 +607,20 @@ public class IssuesTests_1000_1499 extends CompilerTests {
     @Test
     public void testBug1347() {
         Assume.assumeTrue("Runs on JDK8", JDKUtils.jdk == JDKUtils.JDK.JDK8);
+        assertErrors("bug13xx/bug1347/bug1347", Arrays.asList("-out", destDir, "-rep", "test/java8/modules"),
+                null, 
+                new CompilerError(12, "call to a static interface member is not allowed unless you set the -target flag to 8: --javac=-target=8"),
+                new CompilerError(14, "call to a static interface member is not allowed unless you set the -target flag to 8: --javac=-target=8"),
+                new CompilerError(16, "call to a static interface member is not allowed unless you set the -target flag to 8: --javac=-target=8"),
+                new CompilerError(28, "call to a static interface member is not allowed unless you set the -target flag to 8: --javac=-target=8"),
+                new CompilerError(30, "call to a static interface member is not allowed unless you set the -target flag to 8: --javac=-target=8"));
+
         ErrorCollector c = new ErrorCollector();
-        assertCompilesOk(c, getCompilerTask(Arrays.asList("-rep", "test/java8/modules"), c, "bug13xx/bug1347/bug1347.ceylon").call2());
+        assertCompilesOk(c, getCompilerTask(Arrays.asList("-target", "8", "-out", destDir, "-rep", "test/java8/modules"), c, 
+                "bug13xx/bug1347/bug1347.ceylon").call2());
+        run("com.redhat.ceylon.compiler.java.test.issues.bug13xx.bug1347.test", 
+                new ModuleWithArtifact("com.redhat.ceylon.compiler.java.test.issues.bug13xx.bug1347", "1"),
+                new ModuleWithArtifact("com.ceylon.java8", "1", "test/java8/modules", "jar"));
     }
 
     @Test
