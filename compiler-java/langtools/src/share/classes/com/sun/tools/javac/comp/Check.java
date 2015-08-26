@@ -115,6 +115,8 @@ public class Check {
 
         Target target = Target.instance(context);
         syntheticNameChar = target.syntheticNameChar();
+        // Ceylon
+        allowStaticInterfaceCalls = target.allowStaticInterfaceCalls();
 
         boolean verboseDeprecated = lint.isEnabled(LintCategory.DEPRECATION);
         boolean verboseUnchecked = lint.isEnabled(LintCategory.UNCHECKED);
@@ -138,6 +140,10 @@ public class Check {
     /** Switch: annotations enabled?
      */
     boolean allowAnnotations;
+
+    /** Ceylon: Switch: allow static interface method calls?
+     */
+    boolean allowStaticInterfaceCalls;
 
     /** Switch: covariant returns enabled?
      */
@@ -2468,6 +2474,13 @@ public class Check {
             s.attribute(syms.deprecatedType.tsym) == null) {
             log.warning(LintCategory.DEP_ANN,
                     pos, "missing.deprecated.annotation");
+        }
+    }
+
+    // Ceylon
+    void checkStaticInterfaceMethodCall(JCFieldAccess select) {
+        if (!allowStaticInterfaceCalls) {
+            log.error(select.pos(), "static.interface.method.call");
         }
     }
 

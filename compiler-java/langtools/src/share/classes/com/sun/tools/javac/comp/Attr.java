@@ -2519,6 +2519,15 @@ public class Attr extends JCTree.Visitor {
                 if (site1 != null) site = site1;
             }
         }
+        
+        // Ceylon: error if we try to select an interface static in < 1.8
+        if(sym != null 
+                && sym.isStatic() 
+                && (sym.kind & Kinds.MTH) != 0
+                && sitesym != null
+                && sitesym.isInterface()){
+            chk.checkStaticInterfaceMethodCall(tree);
+        }
 
         env.info.selectSuper = selectSuperPrev;
         result = checkId(tree, site, sym, env, pkind, pt, varArgs);

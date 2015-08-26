@@ -66,7 +66,11 @@ public enum Target {
     JDK1_6("1.6", 50, 0),
 
     /** JDK 7. */
-    JDK1_7("1.7", 51, 0);
+    JDK1_7("1.7", 51, 0),
+    /* Ceylon: backport from Java 8*/
+
+    /** JDK 8. */
+    JDK1_8("1.8", 52, 0);
 
     private static final Context.Key<Target> targetKey =
         new Context.Key<Target>();
@@ -99,6 +103,7 @@ public enum Target {
         tab.put("5", JDK1_5);
         tab.put("6", JDK1_6);
         tab.put("7", JDK1_7);
+        tab.put("8", JDK1_8);
     }
 
     public final String name;
@@ -315,5 +320,13 @@ public enum Target {
      */
     public boolean hasEnclosingMethodAttribute() {
         return compareTo(JDK1_5) >= 0 || this == JSR14;
+    }
+
+    /**
+     * We can only call static interface methods if the produced bytecode is 1.8, even
+     * in 1.7 source
+     */
+    public boolean allowStaticInterfaceCalls() {
+        return compareTo(JDK1_8) >= 0;
     }
 }
