@@ -49,6 +49,7 @@ import com.redhat.ceylon.model.typechecker.model.ControlBlock;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Functional;
 import com.redhat.ceylon.model.typechecker.model.Interface;
+import com.redhat.ceylon.model.typechecker.model.ModelUtil;
 import com.redhat.ceylon.model.typechecker.model.Function;
 import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
 import com.redhat.ceylon.model.typechecker.model.Package;
@@ -249,6 +250,10 @@ public class Naming extends NamingBase implements LocalId {
             if (!locals.containsKey(decl)) {
                 locals.put(decl, localId);
                 localId++;
+            }
+            Scope container = decl.getContainer();
+            if(container != null && ModelUtil.isLocalNotInitializerScope(container)){
+                local(container);
             }
         }
         
