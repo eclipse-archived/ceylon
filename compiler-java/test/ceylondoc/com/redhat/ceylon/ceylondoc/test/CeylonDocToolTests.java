@@ -677,6 +677,28 @@ public class CeylonDocToolTests {
                         + "<div class='annotations section'><span class='title'>Annotations: </span><ul><li>doc\\(<span class='literal'>&quot;fake doc&quot;</span>\\)"));
     }
 
+    @Test
+    public void bug2285() throws Exception {
+        String pathname = "test/ceylondoc-doesnotexist";
+        String moduleName = "com.redhat.ceylon.ceylondoc.test.modules.bug2285";
+        
+        Module module = new Module();
+        module.setName(Arrays.asList(moduleName));
+        module.setVersion("1");
+        
+        try{
+            CeylonDocTool tool = 
+                    tool(Arrays.asList(new File(pathname)),
+                            Arrays.asList(new File("doc")),
+                            Arrays.asList(moduleName),
+                            true, false, false);
+            tool.run();
+            Assert.fail();
+        }catch(RuntimeException x){
+            Assert.assertEquals("Can't find module: com.redhat.ceylon.ceylondoc.test.modules.bug2285", x.getMessage());
+        }
+    }
+
     private void assertFileExists(File destDir, boolean includeNonShared) {
         assertDirectoryExists(destDir, ".resources");
         assertFileExists(destDir, ".resources/index.js");
