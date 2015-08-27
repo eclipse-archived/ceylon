@@ -165,9 +165,16 @@ public class PhasedUnits extends PhasedUnitMap<PhasedUnit, PhasedUnit> {
         }
         
         // Get the name of the folder or the file's parent folder
-        String folderName = file.getPath().substring(srcDir.getPath().length() + 1);
-        if (!file.isFolder()) {
-            folderName = folderName.substring(0, folderName.length() - file.getName().length());
+        String srcPath = srcDir.getPath();
+        String filePath = file.getPath();
+        String folderName;
+        if(filePath.length() == srcPath.length()){
+            folderName = "";
+        }else{
+            folderName = filePath.substring(srcPath.length() + 1);
+            if (!file.isFolder()) {
+                folderName = folderName.substring(0, folderName.length() - file.getName().length());
+            }
         }
         
         // Check if the (file's) folder is found in the module filters 
