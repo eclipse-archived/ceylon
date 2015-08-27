@@ -179,13 +179,22 @@ public class ReflectionUtils {
             if(m.getParameterTypes().length != parameterTypes.length)
                 continue;
             int i=0;
-            // get the type argument mappings for that method's container
-            // FIXME: do we need to cache this?
-            Map<TypeVariable<?>, Class<?>> typeArguments = getTypeArguments(declaringClass, m.getDeclaringClass(), Collections.<TypeVariable<?>, Class<?>>emptyMap());
-            for(Type t : m.getGenericParameterTypes()){
-                Class<?> parameterErasure = getParameterErasure(typeArguments, t);
-                if(parameterErasure != parameterTypes[i++])
-                    continue NEXT_METHOD;
+            try {
+                // get the type argument mappings for that method's container
+                // FIXME: do we need to cache this?
+                Map<TypeVariable<?>, Class<?>> typeArguments = getTypeArguments(declaringClass, m.getDeclaringClass(), Collections.<TypeVariable<?>, Class<?>>emptyMap());
+                for(Type t : m.getGenericParameterTypes()){
+                    try{
+                        Class<?> parameterErasure = getParameterErasure(typeArguments, t);
+                        if(parameterErasure != parameterTypes[i++])
+                            continue NEXT_METHOD;
+                    }catch(ClassNotFoundException x){
+                        // if we can't get the param types, we're not overloading/overriding it anyways
+                        continue NEXT_METHOD;
+                    }
+                }
+            } catch (ClassNotFoundException e) {
+                throw new RuntimeException("Can't find type arguments for "+declaringClass, e);
             }
             // must be the same?
             return true;
@@ -205,13 +214,22 @@ public class ReflectionUtils {
             if(m.getParameterTypes().length != parameterTypes.length)
                 return true;
             int i=0;
-            // get the type argument mappings for that method's container
-            // FIXME: do we need to cache this?
-            Map<TypeVariable<?>, Class<?>> typeArguments = getTypeArguments(declaringClass, m.getDeclaringClass(), Collections.<TypeVariable<?>, Class<?>>emptyMap());
-            for(Type t : m.getGenericParameterTypes()){
-                Class<?> parameterErasure = getParameterErasure(typeArguments, t);
-                if(parameterErasure != parameterTypes[i++])
-                    return true;
+            try{
+                // get the type argument mappings for that method's container
+                // FIXME: do we need to cache this?
+                Map<TypeVariable<?>, Class<?>> typeArguments = getTypeArguments(declaringClass, m.getDeclaringClass(), Collections.<TypeVariable<?>, Class<?>>emptyMap());
+                for(Type t : m.getGenericParameterTypes()){
+                    try{
+                        Class<?> parameterErasure = getParameterErasure(typeArguments, t);
+                        if(parameterErasure != parameterTypes[i++])
+                            return true;
+                    }catch(ClassNotFoundException x){
+                        // if we can't get the param types, we're overloading it anyways
+                        return true;
+                    }
+                }
+            } catch (ClassNotFoundException e) {
+                throw new RuntimeException("Can't find type arguments for "+declaringClass, e);
             }
             // must be the overriding, check the next one
         }
@@ -225,7 +243,7 @@ public class ReflectionUtils {
                         || m.getName().equals("clone"));
     }
 
-    private static Class<?> getParameterErasure(Map<TypeVariable<?>, Class<?>> typeArguments, Type t) {
+    private static Class<?> getParameterErasure(Map<TypeVariable<?>, Class<?>> typeArguments, Type t) throws ClassNotFoundException {
         if(t instanceof Class){
             // non-parameterised, must be the same as the one we're looking up
             return (Class<?>) t;
@@ -247,42 +265,37 @@ public class ReflectionUtils {
         }else if(t instanceof GenericArrayType){
             GenericArrayType gt = (GenericArrayType) t;
             Class<?> componentType = getParameterErasure(typeArguments, gt.getGenericComponentType());
-            try {
-                ClassLoader classLoader = componentType.getClassLoader();
-                String name;
-                if(componentType.isArray()){
-                    // just add a leading "["
-                    name = "["+componentType.getName();
-                }else if(componentType == boolean.class){
-                    name = "[Z";
-                }else if(componentType == byte.class){
-                    name = "[B";
-                }else if(componentType == char.class){
-                    name = "[C";
-                }else if(componentType == double.class){
-                    name = "[D";
-                }else if(componentType == float.class){
-                    name = "[F";
-                }else if(componentType == int.class){
-                    name = "[I";
-                }else if(componentType == long.class){
-                    name = "[J";
-                }else if(componentType == short.class){
-                    name = "[S";
-                }else{
-                    // must be an object non-array class
-                    name = "[L"+componentType.getName()+";";
-                }
-                return classLoader != null ? classLoader.loadClass(name) : Class.forName(name);
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
-                throw new RuntimeException("Could not find generic array type: "+t, e);
+            ClassLoader classLoader = componentType.getClassLoader();
+            String name;
+            if(componentType.isArray()){
+                // just add a leading "["
+                name = "["+componentType.getName();
+            }else if(componentType == boolean.class){
+                name = "[Z";
+            }else if(componentType == byte.class){
+                name = "[B";
+            }else if(componentType == char.class){
+                name = "[C";
+            }else if(componentType == double.class){
+                name = "[D";
+            }else if(componentType == float.class){
+                name = "[F";
+            }else if(componentType == int.class){
+                name = "[I";
+            }else if(componentType == long.class){
+                name = "[J";
+            }else if(componentType == short.class){
+                name = "[S";
+            }else{
+                // must be an object non-array class
+                name = "[L"+componentType.getName()+";";
             }
+            return classLoader != null ? classLoader.loadClass(name) : Class.forName(name);
         }else
             throw new RuntimeException("Unknown parameter type: "+t);
     }
 
-    private static Map<TypeVariable<?>, Class<?>> getTypeArguments(Class<?> base, Class<?> searchedSuperType, Map<TypeVariable<?>, Class<?>> baseTypeArguments){
+    private static Map<TypeVariable<?>, Class<?>> getTypeArguments(Class<?> base, Class<?> searchedSuperType, Map<TypeVariable<?>, Class<?>> baseTypeArguments) throws ClassNotFoundException{
         // fast exit for non-generics
         if(searchedSuperType.getTypeParameters().length == 0)
             return Collections.<TypeVariable<?>, Class<?>>emptyMap();
@@ -310,7 +323,7 @@ public class ReflectionUtils {
         return null;
     }
 
-    private static Map<TypeVariable<?>, Class<?>> getTypeArgumentsForSuperType(Type superclass, Class<?> searchedSuperType, Map<TypeVariable<?>, Class<?>> baseTypeArguments) {
+    private static Map<TypeVariable<?>, Class<?>> getTypeArgumentsForSuperType(Type superclass, Class<?> searchedSuperType, Map<TypeVariable<?>, Class<?>> baseTypeArguments) throws ClassNotFoundException {
         if(superclass instanceof Class){
             // not generic, or raw
             Class<?> sc = (Class<?>) superclass;
@@ -324,7 +337,7 @@ public class ReflectionUtils {
         }
     }
 
-    private static Map<TypeVariable<?>, Class<?>> getTypeArgumentsMap(ParameterizedType pt, Map<TypeVariable<?>, Class<?>> baseTypeArguments) {
+    private static Map<TypeVariable<?>, Class<?>> getTypeArgumentsMap(ParameterizedType pt, Map<TypeVariable<?>, Class<?>> baseTypeArguments) throws ClassNotFoundException {
         Map<TypeVariable<?>, Class<?>> typeArgsMap = new HashMap<TypeVariable<?>, Class<?>>();
         addTypeArguments(pt, typeArgsMap, baseTypeArguments);
         while(pt.getOwnerType() instanceof ParameterizedType){
@@ -334,7 +347,7 @@ public class ReflectionUtils {
         return typeArgsMap;
     }
 
-    private static void addTypeArguments(ParameterizedType pt, Map<TypeVariable<?>, Class<?>> typeArgsMap, Map<TypeVariable<?>, Class<?>> baseTypeArguments) {
+    private static void addTypeArguments(ParameterizedType pt, Map<TypeVariable<?>, Class<?>> typeArgsMap, Map<TypeVariable<?>, Class<?>> baseTypeArguments) throws ClassNotFoundException {
         Class<?> sc = (Class<?>) pt.getRawType();
         Type[] typeArguments = pt.getActualTypeArguments();
         int i=0;
