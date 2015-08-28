@@ -126,4 +126,17 @@ public class StructureTests3 extends CompilerTests {
     public void testMcrLocalInterfaceFormalMemberClass(){
         compareWithJavaSource("mcr/LocalInterfaceFormalMemberClass");
     }
+    
+    @Test
+    public void testTypefnTypeFn1(){
+        compareWithJavaSource("typefn/TypeFn1");
+        run("com.redhat.ceylon.compiler.java.test.structure.typefn.genericFunctionReference");
+        run("com.redhat.ceylon.compiler.java.test.structure.typefn.genericLocalFunctionReference");
+        run("com.redhat.ceylon.compiler.java.test.structure.typefn.genericClassReference");
+    }
+    
+    @Test
+    public void testTypefnTypeConstructorsInDeclarations(){
+        compareWithJavaSource("typefn/TypeConstructorsInDeclarations");
+    }
 }

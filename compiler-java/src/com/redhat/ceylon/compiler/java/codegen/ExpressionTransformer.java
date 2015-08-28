@@ -4753,7 +4753,8 @@ public class ExpressionTransformer extends AbstractTransformer {
         }
         if (transformer == null
                 && decl instanceof TypedDeclaration 
-                && ((TypedDeclaration)decl).getType().isTypeConstructor()) {
+                && ((TypedDeclaration)decl).getType().isTypeConstructor()
+                && !expr.getTypeArguments().getTypeModels().isEmpty()) {
             // applying a type constructor
             ListBuffer<JCExpression> tds = ListBuffer.lb();
             for (Type t : expr.getTypeArguments().getTypeModels()) {
