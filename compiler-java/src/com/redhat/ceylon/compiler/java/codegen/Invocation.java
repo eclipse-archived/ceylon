@@ -306,7 +306,7 @@ abstract class Invocation {
                             List.<JCExpression>nil());
                 } else if (selector != null) {
                     actualPrimExpr = gen.naming.makeQualIdent(primaryExpr, selector);
-                } else {
+                } else if (getPrimaryDeclaration() == null || !((TypedDeclaration)getPrimaryDeclaration()).getType().isTypeConstructor()) {
                     actualPrimExpr = gen.naming.makeQualifiedName(primaryExpr, (TypedDeclaration)getPrimaryDeclaration(), Naming.NA_MEMBER);
                 }
                 actualPrimExpr = unboxCallableIfNecessary(actualPrimExpr, getPrimary());
@@ -777,9 +777,25 @@ abstract class DirectInvocation extends SimpleInvocation {
     
     @Override
     protected void addReifiedArguments(ListBuffer<ExpressionAndType> result) {
-        addReifiedArguments(gen, producedReference, result);
+        if (getPrimary().getTypeModel().isTypeConstructor()) {
+            addTypeConstructorArguments(getPrimary().getTypeModel().getTypeArgumentList(), result);
+        } else {
+            addReifiedArguments(gen, producedReference, result);
+        }
     }
     
+    private void addTypeConstructorArguments(
+            java.util.List<Type> typeArgumentList,
+            ListBuffer<ExpressionAndType> result) {
+        int ii = 0;
+        for(Type reifiedTypeArg : typeArgumentList)
+            result.append(new ExpressionAndType(
+                    gen.make().Indexed(
+                            gen.makeUnquotedIdent("applied"),
+                            gen.make().Literal(ii++)), 
+                    gen.makeTypeDescriptorType()));
+    }
+
     static void addReifiedArguments(AbstractTransformer gen, Reference producedReference, ListBuffer<ExpressionAndType> result) {
         java.util.List<JCExpression> reifiedTypeArgs = gen.makeReifiedTypeArguments(producedReference);
         for(JCExpression reifiedTypeArg : reifiedTypeArgs)
@@ -1508,7 +1524,7 @@ class NamedArgumentInvocation extends Invocation {
                 callableType, 
                 Collections.singletonList(methodArg.getParameterLists().get(0)),
                 gen.classGen().transformMplBody(methodArg.getParameterLists(), model, body));
-        JCNewClass callable = callableBuilder.build();
+        JCExpression callable = callableBuilder.build();
         JCExpression typeExpr = gen.makeJavaType(callableType, JT_RAW);
         JCVariableDecl varDecl = gen.makeVar(argName, typeExpr, callable);
         

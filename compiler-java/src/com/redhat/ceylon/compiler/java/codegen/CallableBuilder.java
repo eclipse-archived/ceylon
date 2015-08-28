@@ -26,6 +26,7 @@ import static com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.JT_NO_
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Map;
 
 import com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.BoxingStrategy;
 import com.redhat.ceylon.compiler.java.codegen.Naming.SyntheticName;
@@ -37,17 +38,17 @@ import com.redhat.ceylon.model.loader.model.FieldValue;
 import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.Constructor;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
-import com.redhat.ceylon.model.typechecker.model.Functional;
-import com.redhat.ceylon.model.typechecker.model.Interface;
 import com.redhat.ceylon.model.typechecker.model.Function;
 import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
+import com.redhat.ceylon.model.typechecker.model.Functional;
+import com.redhat.ceylon.model.typechecker.model.Interface;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.ParameterList;
 import com.redhat.ceylon.model.typechecker.model.Reference;
 import com.redhat.ceylon.model.typechecker.model.Type;
-import com.redhat.ceylon.model.typechecker.model.TypedReference;
-import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
+import com.redhat.ceylon.model.typechecker.model.TypeParameter;
 import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
+import com.redhat.ceylon.model.typechecker.model.TypedReference;
 import com.redhat.ceylon.model.typechecker.model.Value;
 import com.sun.tools.javac.code.Flags;
 import com.sun.tools.javac.tree.JCTree;
@@ -58,6 +59,7 @@ import com.sun.tools.javac.tree.JCTree.JCMethodDecl;
 import com.sun.tools.javac.tree.JCTree.JCMethodInvocation;
 import com.sun.tools.javac.tree.JCTree.JCNewClass;
 import com.sun.tools.javac.tree.JCTree.JCStatement;
+import com.sun.tools.javac.tree.JCTree.JCTypeParameter;
 import com.sun.tools.javac.tree.JCTree.JCVariableDecl;
 import com.sun.tools.javac.util.List;
 import com.sun.tools.javac.util.ListBuffer;
@@ -1505,7 +1507,7 @@ public class CallableBuilder {
         return this;
     }
     
-    public JCNewClass build() {
+    public JCExpression build() {
         // Generate a subclass of Callable
         ListBuffer<JCTree> classBody = new ListBuffer<JCTree>();
         gen.at(node);
@@ -1521,19 +1523,109 @@ public class CallableBuilder {
         
         int variadicIndex = isVariadic ? numParams - 1 : -1;
         
-        JCNewClass instance = gen.make().NewClass(null, 
+        Type callableType;
+        if (typeModel.isTypeConstructor()) {
+            callableType = typeModel.getDeclaration().getExtendedType();
+        } else {
+            callableType = typeModel;
+        }
+        
+        JCNewClass callableInstance = gen.make().NewClass(null, 
                 null, 
-                gen.makeJavaType(typeModel, JT_EXTENDS | JT_CLASS_NEW), 
-                List.<JCExpression>of(gen.makeReifiedTypeArgument(typeModel.getTypeArgumentList().get(0)),
-                                      gen.makeReifiedTypeArgument(typeModel.getTypeArgumentList().get(1)),
-                                      gen.make().Literal(typeModel.asString(true)),
+                gen.makeJavaType(callableType, JT_EXTENDS | JT_CLASS_NEW), 
+                List.<JCExpression>of(gen.makeReifiedTypeArgument(callableType.getTypeArgumentList().get(0)),
+                        gen.makeReifiedTypeArgument(callableType.getTypeArgumentList().get(1)),
+                                      gen.make().Literal(callableType.asString(true)),
                                       gen.make().TypeCast(gen.syms().shortType, gen.makeInteger(variadicIndex))),
                 classDef);
+        
+        JCExpression result;
+        if (typeModel.isTypeConstructor()) {
+            result = buildTypeConstructor(callableType, callableInstance);
+        } else {
+            result = callableInstance;
+        }
         gen.at(null);
         if (instanceSubstitution != null) {
             instanceSubstitution.close();
         }
-        return instance;
+        
+        return result;
+    }
+
+    protected JCExpression buildTypeConstructor(Type callableType,
+            JCNewClass callableInstance) {
+        JCExpression result;
+        // Wrap in an anonymous TypeConstructor subcla
+        
+        MethodDefinitionBuilder rawApply = MethodDefinitionBuilder.systemMethod(gen, Naming.Unfix.apply.toString());
+        rawApply.modifiers(Flags.PUBLIC);
+        rawApply.isOverride(true);
+        //for (TypeParameter tp : typeModel.getDeclaration().getTypeParameters()) {
+        //    apply.typeParameter(tp);
+        //}
+        rawApply.resultType(null, gen.makeJavaType(callableType, AbstractTransformer.JT_RAW));
+        {
+            ParameterDefinitionBuilder pdb = ParameterDefinitionBuilder.systemParameter(gen, "applied");
+            pdb.modifiers(Flags.FINAL);
+            pdb.type(gen.make().TypeArray(gen.make().Type(gen.syms().ceylonTypeDescriptorType)), null);
+            rawApply.parameter(pdb);
+        }
+        rawApply.body(List.<JCStatement>of(
+                gen.make().Return(gen.make().Apply(null, 
+                        gen.naming.makeUnquotedIdent(Naming.Unfix.$apply$.toString()), 
+                        List.<JCExpression>of(gen.naming.makeUnquotedIdent("applied"))))));
+        
+        
+        MethodDefinitionBuilder typedApply = MethodDefinitionBuilder.systemMethod(gen, Naming.Unfix.$apply$.toString());
+        typedApply.modifiers(Flags.PRIVATE);
+        //for (TypeParameter tp : typeModel.getDeclaration().getTypeParameters()) {
+        //    apply.typeParameter(tp);
+        //}
+        typedApply.resultType(null, gen.makeJavaType(callableType));
+        {
+            ParameterDefinitionBuilder pdb = ParameterDefinitionBuilder.systemParameter(gen, "applied");
+            pdb.modifiers(Flags.FINAL);
+            pdb.type(gen.make().TypeArray(gen.make().Type(gen.syms().ceylonTypeDescriptorType)), null);
+            typedApply.parameter(pdb);
+        }
+        ListBuffer<JCTypeParameter> typeParameters = ListBuffer.<JCTypeParameter>lb();
+        for (Map.Entry<TypeParameter, Type> ta : typeModel.getTypeArguments().entrySet()) {
+            Type typeArgument = ta.getValue();
+            TypeParameter typeParameter = ta.getKey();
+            typeParameters.add(gen.makeTypeParameter(typeParameter, null));
+            typedApply.body(gen.makeVar(Flags.FINAL, 
+                    gen.naming.getTypeArgumentDescriptorName(typeParameter), 
+                    gen.make().Type(gen.syms().ceylonTypeDescriptorType), 
+                    gen.make().Indexed(gen.makeUnquotedIdent("applied"),
+                            gen.make().Literal(typeModel.getTypeArgumentList().indexOf(typeArgument)))));
+        }
+        
+        typedApply.body(gen.make().Return(callableInstance));
+        //typedApply.body(body.toList());
+        
+        MethodDefinitionBuilder ctor = MethodDefinitionBuilder.constructor(gen);
+        ctor.body(gen.make().Exec(gen.make().Apply(null, gen.naming.makeSuper(), List.<JCExpression>of(gen.make().Literal(typeModel.asString(true))))));
+        
+        
+        SyntheticName n = gen.naming.synthetic(typeModel.getDeclaration().getName());
+        
+        JCClassDecl classDef = gen.make().ClassDef(
+                gen.make().Modifiers(0, List.<JCAnnotation>nil()),
+                n.asName(),//name,
+                typeParameters.toList(),
+                gen.make().QualIdent(gen.syms().ceylonAbstractTypeConstructorType.tsym),//extending
+                List.<JCExpression>nil(),//implementing,
+                List.<JCTree>of(ctor.build(), rawApply.build(), typedApply.build()));
+        result = gen.make().LetExpr(
+                List.<JCStatement>of(classDef),
+                gen.make().NewClass(null, 
+                        null, 
+                        n.makeIdent(),
+                        List.<JCExpression>nil(),
+                        //List.<JCExpression>of(gen.make().Literal(typeModel.asString(true))),
+                        null));
+        return result;
     }
 
     private java.util.List<Type> getParameterTypesFromCallableModel() {

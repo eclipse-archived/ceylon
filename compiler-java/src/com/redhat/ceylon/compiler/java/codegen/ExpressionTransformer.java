@@ -3564,8 +3564,15 @@ public class ExpressionTransformer extends AbstractTransformer {
             Tree.StaticMemberOrTypeExpression mte) {
         java.util.List<TypeParameter> tps = null;
         Declaration declaration = mte.getDeclaration();
+        
         if (declaration instanceof Generic) {
             tps = ((Generic)declaration).getTypeParameters();
+        }
+        if (mte.getTypeModel().isTypeConstructor()) {
+            for (TypeParameter tp : tps) {
+                callBuilder.typeArgument(makeJavaType(tp.getType(), JT_TYPE_ARGUMENT));
+            }
+            return;
         }
         if (tps != null) {
             for (TypeParameter tp : tps) {
@@ -4696,6 +4703,14 @@ public class ExpressionTransformer extends AbstractTransformer {
             }
             
             if (transformer != null) {
+                if (decl instanceof TypedDeclaration 
+                        && ((TypedDeclaration)decl).getType().isTypeConstructor()) {
+                    // This is a bit of a hack, but we're "invoking a type constructor" 
+                    // so recurse to get the applied expression. 
+                    qualExpr = transformMemberExpression(expr, qualExpr, null);
+                    selector = null;
+                }
+                
                 result = transformer.transform(qualExpr, selector);
             } else {
                 Tree.Primary qmePrimary = null;
@@ -4736,7 +4751,21 @@ public class ExpressionTransformer extends AbstractTransformer {
                 }
             }
         }
-        
+        if (transformer == null
+                && decl instanceof TypedDeclaration 
+                && ((TypedDeclaration)decl).getType().isTypeConstructor()) {
+            // applying a type constructor
+            ListBuffer<JCExpression> tds = ListBuffer.lb();
+            for (Type t : expr.getTypeArguments().getTypeModels()) {
+                tds.add(makeReifiedTypeArgument(t));
+            }
+            result = make().Apply(
+                    null,
+                    makeQualIdent(result, Naming.Unfix.apply.toString()),
+                    List.<JCExpression>of(make().NewArray(make().Type(syms().ceylonTypeDescriptorType),
+                            List.<JCExpression>nil(),
+                            tds.toList())));
+        }
         return result;
     }
 

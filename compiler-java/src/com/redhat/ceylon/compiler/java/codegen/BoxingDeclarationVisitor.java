@@ -121,7 +121,7 @@ public abstract class BoxingDeclarationVisitor extends Visitor {
 
         Type type = decl.getType();
         if(type != null){
-            if(hasErasure(type) || hasSubstitutedBounds(type)){
+            if(hasErasure(type) || hasSubstitutedBounds(type) || type.isTypeConstructor()){
                 decl.setTypeErased(true);
             }
             if(decl.isActual()

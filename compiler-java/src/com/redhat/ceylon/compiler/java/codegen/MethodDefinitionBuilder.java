@@ -358,6 +358,9 @@ public class MethodDefinitionBuilder
         // error recovery
         if(nonWideningType == null)
             return false;
+        if (parameter.getModel().getTypeErased()) {
+            return false;
+        }
         Declaration method = parameter.getDeclaration();
         TypeDeclaration paramTypeDecl = nonWideningType.getDeclaration();
         if (paramTypeDecl instanceof TypeParameter

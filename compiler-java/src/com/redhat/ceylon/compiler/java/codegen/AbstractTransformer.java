@@ -1874,6 +1874,10 @@ public abstract class AbstractTransformer implements Transformation {
             type = type.getExtendedType();
         }
         
+        if (type.isTypeConstructor()) {
+            return make().QualIdent(syms().ceylonAbstractTypeConstructorType.tsym);
+        }
+        
         // ERASURE
         if ((flags & JT_CLASS_LITERAL) == 0
                 // don't consider erasure for class literals since it would resolve aliases and we want class
