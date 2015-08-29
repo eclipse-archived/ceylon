@@ -1656,18 +1656,14 @@ shared interface Iterable<out Element=Anything,
      stream, or the string `\"{}\"` if this stream is empty. 
      If the stream is very long, the list of elements might 
      be truncated, as indicated by an ellipse."
-    shared actual default String string {
-        value elements = take(31).sequence();
-        if (elements.empty) {
-            return "{}";
-        }
-        else if (elements.size==31) {
-            return "{ ``commaList(elements.take(30))``, ... }";
-        }
-        else {
-            return "{ ``commaList(elements)`` }";
-        }
-    }
+    shared actual default String string 
+            => let (elements = take(31).sequence())
+            if (elements.empty) then 
+                "{}"
+            else if (elements.size==31) then 
+                "{ ``commaList(elements.take(30))``, ... }"
+            else
+                "{ ``commaList(elements)`` }";
     
 }
 
