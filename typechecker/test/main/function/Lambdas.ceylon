@@ -33,7 +33,7 @@ class Lambdas() {
     @error acceptLazyFloat(() { return 0; });
     @error acceptLazyFloat((String s) { return 0.0; });
     @error acceptLazyFloat(() {});
-    acceptLazyFloat(() { @error return; });
+    @error acceptLazyFloat(() { return; });
     @error acceptLazyFloat(() { if (1==1) { return 0.0; } });
 
     function foo(Float bar(Float x)(Integer y)) => bar(1.0)(0);
