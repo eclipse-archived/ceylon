@@ -1,6 +1,7 @@
 "Produces the [[stream|Iterable]] that results from repeated
  application of the given [[function|next]] to the given
- [[first]] element of the stream. The stream may be infinite.
+ [[first]] element of the stream. If the given function 
+ never returns [[finished]], the stream is infinite.
 
  For example:
 
@@ -12,23 +13,20 @@ shared {Element+} loop<Element>(
         Element first)(
         "The function that produces the next element of the
          stream, given the current element. The function may
-         return [[finished]] to indicate the end of the stream."
+         return [[finished]] to indicate the end of the 
+         stream."
         Element|Finished next(Element element))
     => let (start = first)
     object satisfies {Element+} {
         first => start;
         empty => false;
-        shared actual Nothing size {
-            "stream is infinite"
-            assert(false);
-        }
         function nextElement(Element element)
                 => next(element);
         iterator()
                 => object satisfies Iterator<Element> {
             variable Element|Finished current = start;
             shared actual Element|Finished next() {
-                if (is Element result = current) {
+                if (!is Finished result = current) {
                     current = nextElement(result);
                     return result;
                 }
