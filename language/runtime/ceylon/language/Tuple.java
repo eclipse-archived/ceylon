@@ -1190,6 +1190,7 @@ public final class Tuple<Element, First extends Element,
         for (int i=0; i<array.length; i++) {
             f.$call$(array[i]);
         }
+        rest.each(f);
         return null;
     }
 
