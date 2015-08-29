@@ -56,6 +56,7 @@ public class NamingBase {
         $sb$,
         $spreadVarargs$,
         $TypeDescriptor$,
+        $apply$, apply,
         
         $serialize$,
         deconstructor,
