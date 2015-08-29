@@ -1413,33 +1413,10 @@ shared interface Iterable<out Element=Anything,
             value it = elements.iterator();
             variable value count = 0;
             
-            class Entry(element, next) {
-                shared Entry? next;
-                shared Element element;
-                shared Boolean has(Anything element) {
-                    variable Entry? entry = this;
-                    while (exists e = entry) {
-                        if (exists element) {
-                            if (exists ee = e.element,
-                                element == ee) {
-                                return true;
-                            }
-                        }
-                        else {
-                            if (!e.element exists) {
-                                return true;
-                            }
-                        }
-                        entry = e.next;
-                    }
-                    return false;
-                }
-            }
-            
             variable value store 
                     = Array.ofSize {
                 size = 16;
-                element = null of Entry?;
+                element = null of ElementEntry<Element>?;
             };
             
             function hash(Element element, Integer size) 
@@ -1447,11 +1424,11 @@ shared interface Iterable<out Element=Anything,
                     then element.hash.magnitude % size
                     else 0;
             
-            function rebuild(Array<Entry?> store) {
+            function rebuild(Array<ElementEntry<Element>?> store) {
                 value newStore 
                         = Array.ofSize {
                     size = store.size*2;
-                    element = null of Entry?;
+                    element = null of ElementEntry<Element>?;
                 };
                 for (entries in store) {
                     variable value entry = entries;
@@ -1460,7 +1437,7 @@ shared interface Iterable<out Element=Anything,
                                 hash(e.element, 
                                     newStore.size);
                         newStore.set(index, 
-                            Entry(e.element, 
+                            ElementEntry(e.element, 
                                 newStore[index]));
                         entry = e.next;
                     }
@@ -1477,13 +1454,12 @@ shared interface Iterable<out Element=Anything,
                     else {
                         value index = hash(element, store.size);
                         value entry = store[index];
-                        if (exists entry,
-                                entry.has(element)) {
+                        if (exists entry, entry.has(element)) {
                             //keep iterating
                         }
                         else {
                             store.set(index, 
-                                Entry(element, entry));
+                                ElementEntry(element, entry));
                             count++;
                             if (count>store.size*2) {
                                 store = rebuild(store);
@@ -1505,7 +1481,7 @@ shared interface Iterable<out Element=Anything,
      
      For example:
      
-         (0..10).group((i) => 2.divides(i) then \"even\" else \"odd\")
+         (0..10).group((i) => i.even then \"even\" else \"odd\")
      
      produces the map 
      `{ even->[0, 2, 4, 6, 8, 10], odd->[1, 3, 5, 7, 9] }`."
@@ -1515,61 +1491,20 @@ shared interface Iterable<out Element=Anything,
             => object extends Object() 
                       satisfies Map<Group,[Element+]> {
         
-        class GroupEntry(group, elements, next = null) {
-            shared Group group;
-            shared variable ElementEntry elements;
-            shared GroupEntry? next;
-            shared GroupEntry? get(Object group) {
-                variable GroupEntry? entry = this;
-                while (exists e = entry) {
-                    if (group == e.group) {
-                        return e;
-                    }
-                    entry = e.next;
-                }
-                return null;
-            }
-            object stream satisfies {Element+} {
-                iterator() 
-                        => object satisfies Iterator<Element> {
-                    variable ElementEntry? current = elements;
-                    shared actual Element|Finished next() {
-                        if (exists c = current) {
-                            current = c.next;
-                            return c.element;
-                        }
-                        else {
-                            return finished;
-                        }
-                    }
-                };
-            }
-            shared [Element+] sequence {
-                value array = Array(stream);
-                array.reverseInPlace();
-                return ArraySequence(array);
-            }
-        }
-        
-        class ElementEntry(element, next = null) {
-            shared Element element;
-            shared variable ElementEntry? next;
-        }
-        
         variable value store 
                 = Array.ofSize {
             size = 16;
-            element = null of GroupEntry?;
+            element = null of GroupEntry<Group,Element>?;
         };
         
         function hash(Object group, Integer size) 
                 => group.hash.magnitude % size;
         
-        function rebuild(Array<GroupEntry?> store) {
+        function rebuild(Array<GroupEntry<Group,Element>?> store) {
             value newStore 
                     = Array.ofSize {
                 size = store.size*2;
-                element = null of GroupEntry?;
+                element = null of GroupEntry<Group,Element>?;
             };
             for (groups in store) {
                 variable value group = groups;
@@ -1589,7 +1524,7 @@ shared interface Iterable<out Element=Anything,
         for (element in outer) {
             value group = grouping(element);
             value index = hash(group, store.size);
-            GroupEntry newEntry;
+            GroupEntry<Group,Element> newEntry;
             if (exists entries = store[index]) {
                 if (exists entry = entries.get(group)) {
                     entry.elements 
@@ -1621,11 +1556,11 @@ shared interface Iterable<out Element=Anything,
         iterator() 
                 => object satisfies Iterator<Group->[Element+]> {
             variable value index = 0;
-            variable GroupEntry? entry = null;
+            variable GroupEntry<Group,Element>? entry = null;
             shared actual <Group->[Element+]>|Finished next() {
                 if (exists e = entry) {
                     entry = e.next;
-                    return e.group -> e.sequence;
+                    return e.group -> e.elements;
                 }
                 else {
                     while (true) {
@@ -1636,7 +1571,7 @@ shared interface Iterable<out Element=Anything,
                             entry = store[index++];
                             if (exists e = entry) {
                                 entry = e.next;
-                                return e.group -> e.sequence;
+                                return e.group -> e.elements;
                             }
                         }
                     }
@@ -1651,7 +1586,7 @@ shared interface Iterable<out Element=Anything,
         
         defines(Object key) => group(key) exists;
         
-        get(Object key) => group(key)?.sequence;
+        get(Object key) => group(key)?.elements;
         
     };
     
@@ -1674,3 +1609,107 @@ shared interface Iterable<out Element=Anything,
 
 String commaList({Anything*} elements)
         => ", ".join { for (e in elements) stringify(e) };
+
+class ElementEntry<Element>
+        (element, next = null)
+        extends Object()
+        satisfies [Element+] {
+    
+    shared Element element;
+    shared ElementEntry<Element>? next;
+    
+    first => element;
+    
+    shared Boolean has(Anything element) {
+        variable ElementEntry<Element>? entry = this;
+        while (exists e = entry) {
+            if (exists element) {
+                if (exists ee = e.element,
+                    element == ee) {
+                    return true;
+                }
+            }
+            else {
+                if (!e.element exists) {
+                    return true;
+                }
+            }
+            entry = e.next;
+        }
+        return false;
+    }
+    
+    shared actual Element? getFromFirst(Integer index) {
+        if (index<0) {
+            return null;
+        }
+        else {
+            variable ElementEntry<Element> entry = this;
+            for (i in 0:index) {
+                if (exists next = entry.next) {
+                    entry = next;
+                }
+                else {
+                    return null;
+                }
+            }
+            return entry.element;
+        }
+    }
+    
+    rest => next else [];
+    
+    shared actual Element last {
+        variable ElementEntry<Element> entry = this;
+        while (exists next = entry.next) {
+            entry = next;
+        }
+        return entry.element;
+    }
+    
+    shared actual Integer size {
+        variable value count = 1;
+        variable ElementEntry<Element> entry = this;
+        while (exists next = entry.next) {
+            entry = next;
+            count++;
+        }
+        return count;
+    }
+    
+    iterator() 
+            => object satisfies Iterator<Element> {
+        variable ElementEntry<Element>? entry = outer;
+        shared actual Element|Finished next() {
+            if (exists e = entry) {
+                entry = e.next;
+                return e.element;
+            }
+            else {
+                return finished;
+            }
+        }
+    };
+    
+}
+
+class GroupEntry<Group,Element>
+        (group, elements, next = null)
+        given Group satisfies Object {
+    
+    shared Group group;
+    shared variable ElementEntry<Element> elements;
+    shared GroupEntry<Group,Element>? next;
+    
+    shared GroupEntry<Group,Element>? get(Object group) {
+        variable GroupEntry<Group,Element>? entry = this;
+        while (exists e = entry) {
+            if (group == e.group) {
+                return e;
+            }
+            entry = e.next;
+        }
+        return null;
+    }
+    
+}
