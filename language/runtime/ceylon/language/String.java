@@ -2,9 +2,6 @@ package ceylon.language;
 
 import java.util.Locale;
 
-import ceylon.language.impl.BaseCharacterList;
-import ceylon.language.impl.BaseIterator;
-
 import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.language.AbstractCallable;
 import com.redhat.ceylon.compiler.java.language.StringInclusions;
@@ -25,6 +22,9 @@ import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 import com.redhat.ceylon.compiler.java.metadata.ValueType;
 import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
+
+import ceylon.language.impl.BaseCharacterList;
+import ceylon.language.impl.BaseIterator;
 
 @Ceylon(major = 8)
 @Class(extendsType="ceylon.language::Object", 
@@ -356,6 +356,11 @@ public final class String
             return new Span<Integer>(Integer.$TypeDescriptor$, 
                     Integer.instance(0), Integer.instance(size-1));
         }
+    }
+    
+    @Ignore
+    public static java.lang.Object indexes(java.lang.String value) {
+        return getKeys(value);
     }
 
     @Ignore

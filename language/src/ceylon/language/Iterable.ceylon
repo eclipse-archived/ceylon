@@ -246,6 +246,11 @@ shared interface Iterable<out Element=Anything,
                     then []
                     else ArraySequence(array);
     
+    "A [[Range]] containing all indexes of this stream, or 
+     `[]` if this list is empty. The resulting range is
+     equal to `0:size`."
+    shared default Range<Integer>|[] indexes() => 0:size;
+    
     "A stream containing all but the first element of this 
      stream. For a stream with an unstable iteration order, 
      a different stream might be produced each time `rest` 

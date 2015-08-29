@@ -56,10 +56,14 @@ shared sealed interface Sequence<out Element=Anything>
     see (`value size`)
     shared actual default Integer lastIndex => size-1;
     
-    "A nonempty sequence containing all indexes of this 
-     sequence, that is, every index in the range
-     `0..sequence.lastIndex`."
-    shared actual default [Integer+] keys => 0..lastIndex;
+    "An integer [[Range]] containing all indexes of this 
+     sequence, that is, the range `0..sequence.lastIndex`."
+    shared actual default Range<Integer> keys => indexes();
+    
+    "An integer [[Range]] containing all indexes of this 
+     sequence, that is, the range `0..sequence.lastIndex`."
+    shared actual default Range<Integer> indexes() 
+            => 0..lastIndex;
     
     "This nonempty sequence."
     shared default actual [Element+] sequence() => this;

@@ -1451,8 +1451,13 @@ public final class Tuple<Element, First extends Element,
     }
 
     @Override @Ignore
-    public Sequence<? extends Integer> getKeys() {
+    public Range getKeys() {
         return $ceylon$language$Sequence$impl().getKeys();
+    }
+
+    @Override @Ignore
+    public Range indexes() {
+        return $ceylon$language$Sequence$impl().indexes();
     }
 
     @Override @Ignore
