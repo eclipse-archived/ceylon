@@ -156,7 +156,7 @@ shared native final class Integer(Integer integer)
          i == 2*k
      
      Thus, `i` is even if and only if `i%2 == 0`."
-    shared native Boolean even;
+    shared native Boolean even => 2.divides(this);
     
     shared actual native Integer magnitude;    
     shared actual native Integer sign;
