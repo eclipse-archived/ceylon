@@ -29,6 +29,7 @@ import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ClassBody;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.ClassDefinition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.TypeVariance;
 import com.redhat.ceylon.model.cmr.JDKUtils;
 import com.redhat.ceylon.model.typechecker.model.Class;
@@ -1277,6 +1278,20 @@ public class AnalyzerUtil {
             }
             return false;
         }
+    }
+
+    static boolean isVeryAbstractClass(
+            Tree.ClassDefinition that,
+            Unit unit) {
+        String pname = 
+                unit.getPackage()
+                    .getQualifiedNameString();
+        String name = name(that.getIdentifier());
+        return "ceylon.language".equals(pname) &&
+                ("Anything".equalsIgnoreCase(name) ||
+                "Object".equalsIgnoreCase(name) ||
+                "Basic".equalsIgnoreCase(name) ||
+                "Null".equalsIgnoreCase(name));
     }
 
 }

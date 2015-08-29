@@ -3,6 +3,7 @@ package com.redhat.ceylon.compiler.typechecker.analyzer;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.NO_TYPE_ARGS;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.getPackageTypeDeclaration;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.getTypeDeclaration;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.isVeryAbstractClass;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.TypeVisitor.getTupleType;
 import static com.redhat.ceylon.compiler.typechecker.parser.CeylonLexer.SPECIFY;
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.buildAnnotations;
@@ -759,12 +760,7 @@ public abstract class DeclarationVisitor extends Visitor {
     @Override
     public void visit(Tree.ClassDefinition that) {
         Class c = new Class();
-        String pname = 
-                unit.getPackage()
-                    .getQualifiedNameString();
-        String name = name(that.getIdentifier());
-        if (!"ceylon.language".equals(pname) ||
-            !"Anything".equalsIgnoreCase(name)) {
+        if (!isVeryAbstractClass(that, unit)) {
             defaultExtendedToBasic(c);
         }
         that.setDeclarationModel(c);

@@ -5,6 +5,7 @@ import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.getTy
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.getTypeDeclaration;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.getTypeMember;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.getTypedDeclaration;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.isVeryAbstractClass;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.setTypeConstructor;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.unwrapAliasedTypeConstructor;
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.isForBackend;
@@ -675,19 +676,11 @@ public class TypeVisitor extends Visitor {
         }
     }
     
-    private void defaultSuperclass(Tree.ExtendedType et, 
-            TypeDeclaration cd) {
-        if (et==null) {
-            cd.setExtendedType(unit.getBasicType());
-        }
-    }
-
     @Override 
     public void visit(Tree.ObjectDefinition that) {
         Class o = that.getAnonymousClass();
-        o.setExtendedType(null);
+        o.setExtendedType(unit.getBasicType());
         o.getSatisfiedTypes().clear();
-        defaultSuperclass(that.getExtendedType(), o);
         super.visit(that);
         Type type = o.getType();
         that.getDeclarationModel().setType(type);
@@ -698,9 +691,8 @@ public class TypeVisitor extends Visitor {
     @Override 
     public void visit(Tree.ObjectArgument that) {
         Class o = that.getAnonymousClass();
-        o.setExtendedType(null);
+        o.setExtendedType(unit.getBasicType());
         o.getSatisfiedTypes().clear();
-        defaultSuperclass(that.getExtendedType(), o);
         super.visit(that);
         Type type = o.getType();
         that.getDeclarationModel().setType(type);
@@ -710,21 +702,21 @@ public class TypeVisitor extends Visitor {
     @Override 
     public void visit(Tree.ObjectExpression that) {
         Class o = that.getAnonymousClass();
-        o.setExtendedType(null);
+        o.setExtendedType(unit.getBasicType());
         o.getSatisfiedTypes().clear();
-        defaultSuperclass(that.getExtendedType(), o);
         super.visit(that);
     }
 
     @Override 
     public void visit(Tree.ClassDefinition that) {
         Class cd = that.getDeclarationModel();
-        cd.setExtendedType(null);
-        cd.getSatisfiedTypes().clear();
-        Class vd = unit.getAnythingDeclaration();
-        if (vd != null && !vd.equals(cd)) {
-            defaultSuperclass(that.getExtendedType(), cd);
+        if (!isVeryAbstractClass(that, unit)) {
+            cd.setExtendedType(unit.getBasicType());
         }
+        else {
+            cd.setExtendedType(null);
+        }
+        cd.getSatisfiedTypes().clear();
         super.visit(that);
         handleHeader(cd, that);
         Tree.ParameterList pl = that.getParameterList();
