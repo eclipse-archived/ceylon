@@ -1,7 +1,8 @@
 "Produces the [[stream|Iterable]] that results from repeated
  application of the given [[function|next]] to the given
- [[first]] element of the stream. If the given function 
- never returns [[finished]], the stream is infinite.
+ [[first]] element of the stream, until the function first
+ returns [[finished]]. If the given function never returns 
+ `finished`, the resulting stream is infinite.
 
  For example:
 
