@@ -13,12 +13,13 @@
  In addition, the following special values exist:
  
  - [[infinity]] and `-infinity`, and
- - undefined values.
+ - [[undefined values|undefined]], denoted [NaN][] by the
+   IEEE standard.
  
- As required by the IEEE standard, an undefined value, often
- denoted [NaN][], is not equal to any other value, nor even
- to itself. Thus, the definition of [[equals]] for `Float`
- violates the general contract defined by [[Object.equals]].
+ As required by the IEEE standard no undefined value is 
+ equal to any other value, nor even to itself. Thus, the 
+ definition of [[equals]] for `Float` violates the general 
+ contract defined by [[Object.equals]].
  
  A floating point value with a zero [[fractionalPart]] is
  considered equal to its [[integer]] part.
@@ -44,11 +45,22 @@ shared native final class Float(Float float)
         satisfies Number<Float> & 
                   Exponentiable<Float,Float> {
     
-    "Determines whether this value is undefined (that is, 
-     Not a Number or NaN). The undefined value has the 
-     property that it is not equal (`==`) to itself, and as 
-     a consequence the undefined value cannot sensibly be 
-     used in most collections."
+    "Determines whether this value is undefined. The IEEE
+     standard denotes undefined values [NaN][] (an 
+     abbreviation of Not a Number). Undefined values include:
+     
+     - _indeterminate forms_ including `0.0/0.0`, 
+       `infinity/infinity`, `0.0*infinity`, 
+       `infinity-infinity`, `0.0^0.0`, `1.0^infinity`,
+       and `infinity^0.0`, along with
+     - _complex numbers_ like `sqrt(-1.0)` and `log(-1.0)`.
+     
+     An undefined value has the property that it is not 
+     [[equal|Object.equals]] (`==`) to itself, and as a 
+     consequence the undefined value cannot sensibly be used 
+     in most collections.
+     
+     [NaN]: http://en.wikipedia.org/wiki/NaN"
     shared Boolean undefined => this!=this;
     
     "Determines whether this value is infinite in magnitude. 
@@ -140,6 +152,14 @@ shared native final class Float(Float float)
     shared actual native Float plusInteger(Integer integer);
     shared actual native Float powerOfInteger(Integer integer);
     
+    "A string representing this floating point number.
+     
+     - `\"NaN\"`, for any [[undefined value|undefined]]
+     - `\"Infinity\"`, for [[infinity]], 
+     - `\"-Infinity\"`, for [[-infinity]], or,
+     - a Ceylon floating point literal that evaluates to 
+       this floating point number, for example, `\"1.0\"`, 
+       `\"-0.0\"`, or `\"1.5E10\"`."
     shared actual native String string;
     
     shared actual native Boolean largerThan(Float other); 
