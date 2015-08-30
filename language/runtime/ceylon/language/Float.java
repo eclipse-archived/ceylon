@@ -109,7 +109,8 @@ public final class Float
     
     @Ignore
     public static double power(double value, double otherValue) {
-        if (otherValue==0.0) {
+        if (otherValue==0.0 && 
+                Double.isFinite(value)) {
             return 1.0;
         }
         else if (otherValue==1.0) {
