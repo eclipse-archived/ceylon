@@ -35,9 +35,6 @@ function AppliedMemberClass$jsint(tipo,$$targs$$,that,myTargs){
   var _proto=AppliedMemberClass$jsint.$$.prototype;
 
   that.$targs=myTargs;
-  atr$(that,'parameterTypes',function(){
-    return clsparamtypes(that);
-  },undefined,_proto.$prop$getParameterTypes.$crtmm$);
   atr$(that,'extendedType',function(){
     return coiexttype$(that);
   },undefined,_proto.$prop$getExtendedType.$crtmm$);
@@ -63,7 +60,6 @@ function AppliedMemberClass$jsint(tipo,$$targs$$,that,myTargs){
   that.getClass=_proto.getClass;
   that.getClassOrInterface=_proto.getClassOrInterface;
   that.getClasses=_proto.getClasses;
-  that.getConstructor=_proto.getConstructor;
   that.getDeclaredAttribute=_proto.getDeclaredAttribute;
   that.getDeclaredAttributes=_proto.getDeclaredAttributes;
   that.getDeclaredClass=_proto.getDeclaredClass;

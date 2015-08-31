@@ -49,8 +49,6 @@ function AppliedClass$jsint(tipo,$$targs$$,that,classTargs){
   },undefined,_proto.$prop$getExtendedType.$crtmm$);
   atr$(that,'declaration',function(){return coimoddcl$(that);
   },undefined,_proto.$prop$getDeclaration.$crtmm$);
-  atr$(that,'parameterTypes',function(){return clsparamtypes(that);
-  },undefined,_proto.$prop$getParameterTypes.$crtmm$);
   atr$(that,'caseValues',function(){return coicase$(that);
   },undefined,_proto.$prop$getCaseValues.$crtmm$);
   that.getMethod=_proto.getMethod;
@@ -71,6 +69,7 @@ function AppliedClass$jsint(tipo,$$targs$$,that,classTargs){
   that.getDeclaredInterface=_proto.getDeclaredInterface;
   that.getInterfaces=_proto.getInterfaces;
   that.getDeclaredInterfaces=_proto.getDeclaredInterfaces;
+  that.getConstructor=_proto.getConstructor;
   that.equals=_proto.equals;
   that.typeOf=_proto.typeOf;
   that.supertypeOf=_proto.supertypeOf;
@@ -78,7 +77,6 @@ function AppliedClass$jsint(tipo,$$targs$$,that,classTargs){
   that.exactly=_proto.exactly;
   that.union=_proto.union;
   that.intersection=_proto.intersection;
-  that.getConstructor=_proto.getConstructor;
   that.$targs=classTargs;
   set_type_args(that,$$targs$$,AppliedClass$jsint);
   Class$meta$model({Arguments$Class:that.$$targs$$.Arguments$AppliedClass,

@@ -1,7 +1,7 @@
-function OpenConstructor$jsint(pkg, meta, that){
+function OpenCallableConstructor$jsint(pkg, meta, that){
     if (meta===undefined)throw new Error("Constructor reference not found. Metamodel doesn't work with modules compiled in lexical scope style");
-    $init$OpenConstructor$jsint();
-    if (that===undefined)that=new OpenConstructor$jsint.$$;
+    $init$OpenCallableConstructor$jsint();
+    if (that===undefined)that=new OpenCallableConstructor$jsint.$$;
     that.containingPackage_=pkg;
     var _mm=getrtmm$$(meta);
     if (_mm === undefined) {
@@ -20,6 +20,6 @@ function OpenConstructor$jsint(pkg, meta, that){
     } else if (that.name_.indexOf('$')>0) {
       that.name_=that.name_.substring(0,that.name_.indexOf('$'));
     }
-    ConstructorDeclaration$meta$declaration(that);
+    CallableConstructorDeclaration$meta$declaration(that);
     return that;
 }

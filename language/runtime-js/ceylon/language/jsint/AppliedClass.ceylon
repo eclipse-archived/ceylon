@@ -21,7 +21,7 @@ shared native class AppliedClass<out Type=Anything, in Arguments=Nothing>() sati
   shared actual native Type namedApply(Iterable<String->Anything> arguments);
 
   shared actual native ClassDeclaration declaration;
-  shared actual native Map<TypeParameter, ClosedType> typeArguments;
+  shared actual native Map<TypeParameter, ClosedType<Anything>> typeArguments;
   shared actual native ClosedType<Anything>[] typeArgumentList;
   shared actual native ClassModel<Anything, Nothing>? extendedType;
   shared actual native InterfaceModel<Anything>[] satisfiedTypes;

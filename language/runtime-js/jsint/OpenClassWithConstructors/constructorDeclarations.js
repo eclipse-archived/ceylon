@@ -8,7 +8,7 @@ function() {
           m=getnpmem$(this.tipo,m);
           mm=m&&getrtmm$$(m);
           if (mm && mm.d[mm.d.length-2]==='$cn') {
-            c.push(OpenConstructor$jsint(this.pkg_,m));
+            c.push(OpenCallableConstructor$jsint(this.pkg_,m));
           }
         }
       }
