@@ -110,7 +110,7 @@ public final class Float
     @Ignore
     public static double power(double value, double otherValue) {
         if (otherValue==0.0 && 
-                Double.isFinite(value)) {
+                !Double.isNaN(value)) {
             return 1.0;
         }
         else if (otherValue==1.0) {
@@ -529,7 +529,8 @@ public final class Float
     }
     
     public static double powerOfInteger(double value, long integer) {
-        if (integer == 0) {
+        if (integer == 0 && 
+                !Double.isNaN(value)) {
             return 1.0;
         }
         else if (integer == 1) {
