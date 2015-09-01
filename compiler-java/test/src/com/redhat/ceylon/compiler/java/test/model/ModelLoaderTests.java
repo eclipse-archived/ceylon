@@ -403,8 +403,8 @@ public class ModelLoaderTests extends CompilerTests {
     
         protected void compareScopes(Declaration validDeclaration, Declaration modelDeclaration) {
             String name = validDeclaration.getQualifiedNameString();
-            Scope validContainer = validDeclaration.getScope();
-            Scope modelContainer = modelDeclaration.getScope();
+            Scope validContainer = validDeclaration.getContainer();
+            Scope modelContainer = modelDeclaration.getContainer();
             if(validContainer instanceof Declaration){
                 Assert.assertTrue(name+" [Scope is Declaration]", modelContainer instanceof Declaration);
                 compareDeclarations(name+" [scope]", (Declaration)validContainer, (Declaration)modelContainer);
