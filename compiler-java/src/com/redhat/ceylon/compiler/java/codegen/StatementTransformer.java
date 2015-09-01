@@ -3970,9 +3970,14 @@ public class StatementTransformer extends AbstractTransformer {
                 if(outerExpression != null){
                     // Actually this only works for statements. For expressions we're not allowed to throw,
                     // we get a verifier error at runtime otherwise: https://github.com/ceylon/ceylon-compiler/issues/2276
+                    
                     List<JCStatement> stmts = List.<JCStatement>of(make().Exec(make().Assign(
                             makeUnquotedIdent(tmpVar), 
-                            makeDefaultExprForType(expectedType))));
+                            expressionGen().applyErasureAndBoxing(makeDefaultExprForType(expectedType),
+                                    expectedType,
+                                    !canUnbox(expectedType),
+                                    CodegenUtil.getBoxingStrategy(outerExpression),
+                                    expectedType))));
                     stmts = stmts.prepend(make().Exec(utilInvocation().rethrow(makeNewEnumeratedTypeError())));
                     return make().Block(0L, stmts);
                 }else{
