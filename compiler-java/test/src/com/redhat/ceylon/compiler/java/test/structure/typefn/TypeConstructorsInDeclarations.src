@@ -1,0 +1,199 @@
+package com.redhat.ceylon.compiler.java.test.structure.typefn;
+
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Method
+final class consumesTc_ {
+    
+    private consumesTc_() {
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
+    static void consumesTc(@.com.redhat.ceylon.compiler.java.metadata.Name("tc")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
+            value = "<Any> => Any()",
+            erased = true)
+    final .com.redhat.ceylon.compiler.java.language.AbstractTypeConstructor tc) {
+        final .java.lang.Object a = ((.ceylon.language.Callable<? extends .java.lang.Object>)(.ceylon.language.Callable)tc.apply(new .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor[]{.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType})).$call$();
+    }
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Method
+final class producesTc_ {
+    
+    private producesTc_() {
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
+            value = "<Any> => Any()",
+            erased = true)
+    static .com.redhat.ceylon.compiler.java.language.AbstractTypeConstructor producesTc() {
+        return (.com.redhat.ceylon.compiler.java.language.AbstractTypeConstructor).ceylon.language.nothing_.get_();
+    }
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+class ConsumesTc implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    ConsumesTc(@.com.redhat.ceylon.compiler.java.metadata.Name("tc")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
+            value = "<Any> => Any()",
+            erased = true)
+    final .com.redhat.ceylon.compiler.java.language.AbstractTypeConstructor tc) {
+        final .java.lang.Object a = ((.ceylon.language.Callable<? extends .java.lang.Object>)(.ceylon.language.Callable)tc.apply(new .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor[]{.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType})).$call$();
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
+            value = "<Any> => Any()",
+            erased = true)
+    @.com.redhat.ceylon.compiler.java.metadata.Transient
+    public final .com.redhat.ceylon.compiler.java.language.AbstractTypeConstructor getValueTc() {
+        return (.com.redhat.ceylon.compiler.java.language.AbstractTypeConstructor).ceylon.language.nothing_.get_();
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
+    public final void consumesTc(@.com.redhat.ceylon.compiler.java.metadata.Name("tc")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
+            value = "<Any> => Any(Any)",
+            erased = true)
+    final .com.redhat.ceylon.compiler.java.language.AbstractTypeConstructor tc) {
+        final .java.lang.Object a = ((.ceylon.language.Callable<? extends .ceylon.language.String>)(.ceylon.language.Callable)tc.apply(new .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor[]{.ceylon.language.String.$TypeDescriptor$})).$call$((.java.lang.Object).ceylon.language.String.instance(""));
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
+            value = "<Any> => Any()",
+            erased = true)
+    public final .com.redhat.ceylon.compiler.java.language.AbstractTypeConstructor producesTc() {
+        return (.com.redhat.ceylon.compiler.java.language.AbstractTypeConstructor).ceylon.language.nothing_.get_();
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
+    private final void use$priv$(@.com.redhat.ceylon.compiler.java.metadata.Name("other")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.structure.typefn::ConsumesTc")
+    final .com.redhat.ceylon.compiler.java.test.structure.typefn.ConsumesTc other) {
+        final .com.redhat.ceylon.compiler.java.language.AbstractTypeConstructor pipeRef = (
+            let
+            {
+                
+                class Anonymous#identity<Value> extends .com.redhat.ceylon.compiler.java.language.AbstractTypeConstructor {
+                    
+                    Anonymous#identity() {
+                        super("<Value> => Value(Value)");
+                    }
+                    
+                    @.java.lang.Override
+                    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+                    public .ceylon.language.Callable apply(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor[] applied) {
+                        return $apply$(applied);
+                    }
+                    
+                    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+                    private .ceylon.language.Callable<? extends Value> $apply$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor[] applied) {
+                        final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Value = applied[0];
+                        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<Value>($reified$Value, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, $reified$Value), "Value(Value)", (short)-1){
+                            
+                            @.java.lang.Override
+                            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+                            public Value $call$(final .java.lang.Object $param$0) {
+                                final Value $ceylontmp$argument = (Value)$param$0;
+                                return .ceylon.language.identity_.<Value>identity(applied[0], $ceylontmp$argument);
+                            }
+                        };
+                    }
+                }
+            }
+            returning new Anonymous#identity();
+        );
+        this.consumesTc((
+            let
+            {
+                
+                class Anonymous#identity<Value> extends .com.redhat.ceylon.compiler.java.language.AbstractTypeConstructor {
+                    
+                    Anonymous#identity() {
+                        super("<Value> => Value(Value)");
+                    }
+                    
+                    @.java.lang.Override
+                    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+                    public .ceylon.language.Callable apply(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor[] applied) {
+                        return $apply$(applied);
+                    }
+                    
+                    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+                    private .ceylon.language.Callable<? extends Value> $apply$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor[] applied) {
+                        final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Value = applied[0];
+                        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<Value>($reified$Value, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, $reified$Value), "Value(Value)", (short)-1){
+                            
+                            @.java.lang.Override
+                            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+                            public Value $call$(final .java.lang.Object $param$0) {
+                                final Value $ceylontmp$argument = (Value)$param$0;
+                                return .ceylon.language.identity_.<Value>identity(applied[0], $ceylontmp$argument);
+                            }
+                        };
+                    }
+                }
+            }
+            returning new Anonymous#identity();
+        ));
+        other.consumesTc((
+            let
+            {
+                
+                class Anonymous#identity<Value> extends .com.redhat.ceylon.compiler.java.language.AbstractTypeConstructor {
+                    
+                    Anonymous#identity() {
+                        super("<Value> => Value(Value)");
+                    }
+                    
+                    @.java.lang.Override
+                    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+                    public .ceylon.language.Callable apply(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor[] applied) {
+                        return $apply$(applied);
+                    }
+                    
+                    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+                    private .ceylon.language.Callable<? extends Value> $apply$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor[] applied) {
+                        final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Value = applied[0];
+                        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<Value>($reified$Value, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, $reified$Value), "Value(Value)", (short)-1){
+                            
+                            @.java.lang.Override
+                            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+                            public Value $call$(final .java.lang.Object $param$0) {
+                                final Value $ceylontmp$argument = (Value)$param$0;
+                                return .ceylon.language.identity_.<Value>identity(applied[0], $ceylontmp$argument);
+                            }
+                        };
+                    }
+                }
+            }
+            returning new Anonymous#identity();
+        ));
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.typefn.ConsumesTc.$TypeDescriptor$;
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.typefn.ConsumesTc.class);
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Attribute
+@.com.redhat.ceylon.compiler.java.metadata.Name("valueTc")
+final class valueTc_ {
+    
+    private valueTc_() {
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
+            value = "<Any> => Any()",
+            erased = true)
+    @.com.redhat.ceylon.compiler.java.metadata.Transient
+    public static .com.redhat.ceylon.compiler.java.language.AbstractTypeConstructor get_() {
+        return (.com.redhat.ceylon.compiler.java.language.AbstractTypeConstructor).ceylon.language.nothing_.get_();
+    }
+}
