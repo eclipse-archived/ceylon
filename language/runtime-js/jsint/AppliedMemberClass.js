@@ -71,6 +71,7 @@ function AppliedMemberClass$jsint(tipo,$$targs$$,that,myTargs){
   that.getDeclaredMethods=_proto.getDeclaredMethods;
   that.getInterface=_proto.getInterface;
   that.getInterfaces=_proto.getInterfaces;
+  that.getConstructor=_proto.getConstructor;
   that.getMethod=_proto.getMethod;
   that.getMethods=_proto.getMethods;
   that.typeOf=_proto.typeOf;
