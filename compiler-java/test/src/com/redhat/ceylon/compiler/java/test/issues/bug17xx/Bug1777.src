@@ -152,6 +152,11 @@ public abstract class Bug1777_Impl<Element> implements .com.redhat.ceylon.compil
     }
     
     @.java.lang.Override
+    public .java.lang.Object indexes() {
+        return $ceylon$language$Iterable$this$.indexes();
+    }
+    
+    @.java.lang.Override
     public .java.lang.Object each(final .ceylon.language.Callable<? extends .java.lang.Object> step) {
         return $ceylon$language$Iterable$this$.each(step);
     }
@@ -455,6 +460,11 @@ public abstract class Bug1777_2<Element> implements .com.redhat.ceylon.compiler.
     @.java.lang.Override
     public .ceylon.language.Sequential<? extends Element> sequence() {
         return $ceylon$language$Iterable$this$.sequence();
+    }
+    
+    @.java.lang.Override
+    public .java.lang.Object indexes() {
+        return $ceylon$language$Iterable$this$.indexes();
     }
     
     @.java.lang.Override

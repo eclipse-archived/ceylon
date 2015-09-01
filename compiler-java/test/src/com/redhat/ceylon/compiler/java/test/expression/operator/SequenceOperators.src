@@ -354,6 +354,11 @@ public abstract class SequenceOperators implements .com.redhat.ceylon.compiler.j
     }
     
     @.java.lang.Override
+    public .java.lang.Object indexes() {
+        return $ceylon$language$Iterable$this$.indexes();
+    }
+    
+    @.java.lang.Override
     public .java.lang.Object each(final .ceylon.language.Callable<? extends .java.lang.Object> step) {
         return $ceylon$language$Iterable$this$.each(step);
     }
@@ -1368,6 +1373,11 @@ public abstract class SequenceOperators2 implements .com.redhat.ceylon.compiler.
     @.java.lang.Override
     public .ceylon.language.Sequential<? extends .ceylon.language.String> sequence() {
         return $ceylon$language$Iterable$this$.sequence();
+    }
+    
+    @.java.lang.Override
+    public .java.lang.Object indexes() {
+        return $ceylon$language$Iterable$this$.indexes();
     }
     
     @.java.lang.Override

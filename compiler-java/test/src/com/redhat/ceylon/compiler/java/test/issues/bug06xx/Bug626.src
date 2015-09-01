@@ -100,6 +100,11 @@ class Bug626 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
     }
     
     @.java.lang.Override
+    public .java.lang.Object indexes() {
+        return $ceylon$language$Iterable$this$.indexes();
+    }
+    
+    @.java.lang.Override
     public .java.lang.Object each(final .ceylon.language.Callable<? extends .java.lang.Object> step) {
         return $ceylon$language$Iterable$this$.each(step);
     }

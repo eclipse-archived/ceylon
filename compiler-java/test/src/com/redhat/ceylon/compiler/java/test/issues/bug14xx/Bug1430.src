@@ -19,7 +19,7 @@ class Bug1430 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     }
     
     @.java.lang.Override
-    public .ceylon.language.Sequence<? extends .ceylon.language.Integer> getKeys() {
+    public .ceylon.language.Range<.ceylon.language.Integer> getKeys() {
         return $ceylon$language$Sequence$this$.getKeys();
     }
     
@@ -31,6 +31,11 @@ class Bug1430 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     @.java.lang.Override
     public final boolean getEmpty() {
         return $ceylon$language$Sequence$this$.getEmpty();
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.Range indexes() {
+        return (.ceylon.language.Range<.ceylon.language.Integer>)(.ceylon.language.Range)$ceylon$language$Sequence$this$.indexes();
     }
     
     @.java.lang.Override
