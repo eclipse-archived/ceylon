@@ -1684,6 +1684,13 @@ public final class String
                 Integer.$TypeDescriptor$, Character.$TypeDescriptor$,
                 Integer.instance(resultIndex), result);
     }
+    
+    @Ignore
+    public static Iterable<? extends Entry<? extends Integer, ? extends Character>, ? extends java.lang.Object> 
+    locations(java.lang.String value,
+            Callable<? extends Boolean> selecting) {
+        return instance(value).locations(selecting);
+    }
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
     @Ignore

@@ -1446,6 +1446,12 @@ public final class Tuple<Element, First extends Element,
     }
 
     @Override @Ignore
+    public Iterable<? extends Entry<? extends Integer, ? extends Element>, ? extends java.lang.Object> 
+    locations(Callable<? extends Boolean> f) {
+        return $ceylon$language$Iterable$impl().locations(f);
+    }
+
+    @Override @Ignore
     public boolean getEmpty() {
         return false;
     }

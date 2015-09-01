@@ -13,16 +13,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 
-import ceylon.language.impl.BaseIterable;
-import ceylon.language.impl.BaseIterator;
-import ceylon.language.impl.BaseList;
-import ceylon.language.impl.rethrow_;
-import ceylon.language.impl.MemberImpl;
-import ceylon.language.meta.declaration.ClassDeclaration;
-import ceylon.language.meta.declaration.ValueDeclaration;
-import ceylon.language.serialization.Member;
-import ceylon.language.serialization.ReachableReference;
-
 import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.language.AbstractArrayIterable;
 import com.redhat.ceylon.compiler.java.metadata.Annotation;
@@ -42,6 +32,16 @@ import com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 import com.redhat.ceylon.compiler.java.runtime.serialization.$Serialization$;
 import com.redhat.ceylon.compiler.java.runtime.serialization.Serializable;
+
+import ceylon.language.impl.BaseIterable;
+import ceylon.language.impl.BaseIterator;
+import ceylon.language.impl.BaseList;
+import ceylon.language.impl.MemberImpl;
+import ceylon.language.impl.rethrow_;
+import ceylon.language.meta.declaration.ClassDeclaration;
+import ceylon.language.meta.declaration.ValueDeclaration;
+import ceylon.language.serialization.Member;
+import ceylon.language.serialization.ReachableReference;
 
 @Ceylon(major = 8)
 @Class(constructors=true, extendsType="ceylon.language::Basic")

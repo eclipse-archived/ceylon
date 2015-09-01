@@ -588,6 +588,7 @@ shared interface Iterable<out Element=Anything,
          (-10..10).find(Integer.positive)
      
      evaluates to `1`."
+    see (`function findLast`)
     shared default 
     Element? find(
             "The predicate the element must satisfy."
@@ -610,6 +611,7 @@ shared interface Iterable<out Element=Anything,
          (-10..10).findLast(3.divides)
      
      evaluates to `9`."
+    see (`function find`)
     shared default 
     Element? findLast(
             "The predicate the element must satisfy."
@@ -634,6 +636,7 @@ shared interface Iterable<out Element=Anything,
          (-10..10).locate(Integer.positive)
      
      evaluates to `11->1`."
+    see (`function locateLast`, `function locations`)
     shared default 
     <Integer->Element>? locate(
         "The predicate the element must satisfy."
@@ -659,6 +662,7 @@ shared interface Iterable<out Element=Anything,
          (-10..10).locateLast(3.divides)
      
      evaluates to `19->9`."
+    see (`function locate`, `function locations`)
     shared default 
     <Integer->Element>? locateLast(
         "The predicate the element must satisfy."
@@ -673,6 +677,44 @@ shared interface Iterable<out Element=Anything,
         }
         return last;
     }
+    
+    "A stream producing all elements of this stream which
+     satisfy the [[given predicate function|selecting]],
+     together with their positions in the stream.
+     
+     For example, the expression
+     
+         (-5..5).locations(3.divides)
+     
+     evaluates to the stream `{ 2->-3, 5->0, 8->3 }`.
+     
+     Note that this method is more efficient than the
+     alternative of applying [[filter]] to an [[indexed]]
+     stream."
+    see (`function locate`, `function locateLast`)
+    shared default
+    {<Integer->Element>*} locations(
+        "The predicate the element must satisfy."
+        Boolean selecting(Element&Object element)) 
+            => object satisfies {<Integer->Element>*} {
+        iterator() 
+                => let (iter = outer.iterator()) 
+            object satisfies Iterator<Integer->Element> {
+                variable value i=0;
+                shared actual <Integer->Element>|Finished next() {
+                    while (!is Finished next = iter.next()) { 
+                        if (exists next, selecting(next)) {
+                            return i++->next; 
+                        }
+                        else {
+                            i++;
+                        }
+                    }
+                    return finished;
+                }
+                string => outer.string + ".iterator()";
+            };
+    };
     
     "Return the largest value in the stream, as measured by
      the given [[comparator function|comparing]] imposing a 
@@ -1117,6 +1159,7 @@ shared interface Iterable<out Element=Anything,
          { \"hello\", null, \"world\" }.indexed
      
      results in the stream `{ 0->\"hello\", 1->null, 2->\"world\" }`."
+    see (`function locations`)
     shared default 
     Iterable<<Integer->Element>,Absent> indexed 
             => object
