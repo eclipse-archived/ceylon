@@ -19,6 +19,6 @@ shared native class AppliedCallableConstructor<out Type=Anything, in Arguments=N
   shared native actual Type namedApply({<String->Anything>*} arguments);
   shared native actual String string;
   //Generic
-  shared actual native Map<TypeParameter, ClosedType> typeArguments;
-  shared actual native ClosedType<Anything>[] typeArgumentList;
+  shared native actual Map<TypeParameter, ClosedType> typeArguments;
+  shared native actual ClosedType<Anything>[] typeArgumentList;
 }
