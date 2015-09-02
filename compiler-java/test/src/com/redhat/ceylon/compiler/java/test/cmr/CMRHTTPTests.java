@@ -27,6 +27,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -34,15 +35,20 @@ import java.util.jar.JarFile;
 import java.util.zip.ZipEntry;
 
 import org.junit.AfterClass;
+import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.junit.Assert;
 
+import com.redhat.ceylon.compiler.java.test.CompilerError;
 import com.redhat.ceylon.compiler.java.test.CompilerTests;
 import com.sun.net.httpserver.HttpServer;
 
 public class CMRHTTPTests extends CompilerTests {
 
+    enum TimeoutIn {
+        None, Head, GetInitial, GetMiddle, PutInitial, PutMiddle;
+    }
+    
     class RequestCounter{
         volatile int count;
         synchronized void add(){
@@ -72,10 +78,14 @@ public class CMRHTTPTests extends CompilerTests {
     private String getRepoUrl(int allocatedPort) {
         return "http://localhost:"+allocatedPort+"/repo";
     }
-    
+
     private HttpServer startServer(int port, File repo, boolean herd, RequestCounter rq) throws IOException{
+        return startServer(port, repo, herd, rq);
+    }
+
+    private HttpServer startServer(int port, File repo, boolean herd, RequestCounter rq, TimeoutIn timeoutIn) throws IOException{
         HttpServer server = HttpServer.create(new InetSocketAddress(port), 1);
-        server.createContext("/repo", new RepoFileHandler(repo.getPath(), herd, rq));
+        server.createContext("/repo", new RepoFileHandler(repo.getPath(), herd, rq, timeoutIn));
         // make sure we serve at least two concurrent connections, as each one might take a few ms to close
         ThreadPoolExecutor tpool = (ThreadPoolExecutor)Executors.newFixedThreadPool(2);
         server.setExecutor(tpool);
@@ -136,6 +146,104 @@ public class CMRHTTPTests extends CompilerTests {
         assertFalse(carFile.exists());
         
         rq.check(37);
+    }
+
+    @Test
+    public void testMdlHTTPTimeout() throws IOException {
+        String moduleA = "com.redhat.ceylon.compiler.java.test.cmr.modules.depend.a";
+        
+        // Clean up any cached version
+        File carFileInCache = getModuleArchive(moduleA, "6.6.6", cacheDir);
+        if(carFileInCache.exists())
+            carFileInCache.delete();
+
+        // Compile the first module in its own repo 
+        File repo = makeRepo();
+        
+        Boolean result = getCompilerTask(Arrays.asList("-out", repo.getPath()),
+                "modules/depend/a/module.ceylon", "modules/depend/a/package.ceylon", "modules/depend/a/A.ceylon").call();
+        Assert.assertEquals(Boolean.TRUE, result);
+        
+        File carFile = getModuleArchive(moduleA, "6.6.6", repo.getPath());
+        assertTrue(carFile.exists());
+
+        final int port = allocPortForTest();
+        final String repoAURL = getRepoUrl(port);
+        String[] files = new String[]{
+                "modules/depend/b/module.ceylon", 
+                "modules/depend/b/package.ceylon", 
+                "modules/depend/b/a.ceylon", 
+                "modules/depend/b/B.ceylon"
+        };
+        List<String> options = Arrays.asList("-out", destDir, "-rep", repoAURL, "-verbose:cmr", 
+                "-cp", getClassPathAsPath(), "-timeout", "1");
+        
+        // now serve the first repo over HTTP
+        HttpServer server = startServer(port, repo, false, null, TimeoutIn.GetMiddle); 
+        
+        try{
+            // then try to compile only one module (the other being loaded from its car) 
+            assertErrors(files, options, null,
+                         new CompilerError(24, "cannot find module artifact com.redhat.ceylon.compiler.java.test.cmr.modules.depend.a-6.6.6.car\n"+
+                                 "  due to connection error: java.net.SocketTimeoutException: Timed out reading com.redhat.ceylon.compiler.java.test.cmr.modules.depend.a-6.6.6.car from "+repoAURL+"\n"+
+                                 "  \t- dependency tree: com.redhat.ceylon.compiler.java.test.cmr.modules.depend.b/6.6.6 -> com.redhat.ceylon.compiler.java.test.cmr.modules.depend.a/6.6.6"));
+
+        }finally{
+            server.stop(1);
+        }
+        if(carFileInCache.exists())
+            carFileInCache.delete();
+
+        server = startServer(port, repo, false, null, TimeoutIn.GetInitial); 
+        
+        try{
+            // then try to compile only one module (the other being loaded from its car) 
+            assertErrors(files, options, null,
+                         new CompilerError(24, "cannot find module artifact com.redhat.ceylon.compiler.java.test.cmr.modules.depend.a-6.6.6.car\n"+
+                                 "  due to connection error: java.net.SocketTimeoutException: Timed out during connection to "+repoAURL+"/com/redhat/ceylon/compiler/java/test/cmr/modules/depend/a/6.6.6/com.redhat.ceylon.compiler.java.test.cmr.modules.depend.a-6.6.6.car\n"+
+                                 "  \t- dependency tree: com.redhat.ceylon.compiler.java.test.cmr.modules.depend.b/6.6.6 -> com.redhat.ceylon.compiler.java.test.cmr.modules.depend.a/6.6.6"));
+
+        }finally{
+            server.stop(1);
+        }
+        if(carFileInCache.exists())
+            carFileInCache.delete();
+
+        server = startServer(port, repo, false, null, TimeoutIn.Head); 
+        
+        try{
+            // then try to compile only one module (the other being loaded from its car) 
+            assertErrors(files, options, null,
+                         new CompilerError(24, "cannot find module artifact com.redhat.ceylon.compiler.java.test.cmr.modules.depend.a-6.6.6(.car|.jar)\n"+
+                                 "  \t- dependency tree: com.redhat.ceylon.compiler.java.test.cmr.modules.depend.b/6.6.6 -> com.redhat.ceylon.compiler.java.test.cmr.modules.depend.a/6.6.6"));
+
+        }finally{
+            server.stop(1);
+        }
+        
+        // now with put
+        server = startServer(port, repo, true, null, TimeoutIn.PutInitial); 
+
+        try{
+            // then try to compile our module by outputting to HTTP 
+            assertErrors("modules/single/module", Arrays.asList("-out", repoAURL, "-verbose:cmr", "-timeout", "1"), null,
+                    new CompilerError(-1, "Failed to write module to repository: com.redhat.ceylon.cmr.impl.CMRException: java.net.SocketTimeoutException: Timed out writing to "+repoAURL+"/com/redhat/ceylon/compiler/java/test/cmr/modules/single/6.6.6/com.redhat.ceylon.compiler.java.test.cmr.modules.single-6.6.6.src"));
+
+        }finally{
+            server.stop(1);
+        }
+
+        // now with put
+        server = startServer(port, repo, true, null, TimeoutIn.PutMiddle); 
+
+        try{
+            // then try to compile our module by outputting to HTTP 
+            assertErrors("modules/single/module", Arrays.asList("-out", repoAURL, "-verbose:cmr", "-timeout", "1"), null,
+                    new CompilerError(-1, "Failed to write module to repository: com.redhat.ceylon.cmr.impl.CMRException: java.net.SocketTimeoutException: Timed out writing to "+repoAURL+"/com/redhat/ceylon/compiler/java/test/cmr/modules/single/6.6.6/com.redhat.ceylon.compiler.java.test.cmr.modules.single-6.6.6.src"));
+
+        }finally{
+            server.stop(1);
+        }
     }
 
     

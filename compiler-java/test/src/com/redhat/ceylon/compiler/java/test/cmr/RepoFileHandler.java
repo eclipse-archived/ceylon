@@ -32,11 +32,16 @@ import java.util.Locale;
 import java.util.TimeZone;
 
 import com.redhat.ceylon.compiler.java.test.cmr.CMRHTTPTests.RequestCounter;
+import com.redhat.ceylon.compiler.java.test.cmr.CMRHTTPTests.TimeoutIn;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
 public class RepoFileHandler implements HttpHandler {
 
+    enum Method {
+        Get, Put;
+    }
+    
     private static final String DAV_LOCK_RESPONSE = "<?xml version='1.0' encoding='UTF-8' standalone='yes'?>"
             +"<prop xmlns='DAV:'>"
                 +"<lockdiscovery>"
@@ -56,11 +61,13 @@ public class RepoFileHandler implements HttpHandler {
     private String folder;
     private RequestCounter rq;
     private boolean herd;
+    private TimeoutIn timeoutIn;
 
-    public RepoFileHandler(String destdir, boolean herd, RequestCounter rq) {
+    public RepoFileHandler(String destdir, boolean herd, RequestCounter rq, TimeoutIn timeoutIn) {
         this.folder = destdir;
         this.rq = rq;
         this.herd = herd;
+        this.timeoutIn = timeoutIn;
     }
 
     @Override
@@ -115,15 +122,17 @@ public class RepoFileHandler implements HttpHandler {
             }
             
             if("PUT".equals(method)){
+                if(timeoutIn == TimeoutIn.PutInitial)
+                    timeout();
                 // make sure parents exist
                 file.getParentFile().mkdirs();
                 // save the file
                 FileOutputStream os = new FileOutputStream(file);
                 InputStream body = t.getRequestBody();
-                copy(body, os);
+                copy(body, os, Method.Put);
                 body.close();
                 os.close();
-                // OK
+                // OKGet
                 t.sendResponseHeaders(HttpURLConnection.HTTP_CREATED, -1);
                 t.close();
                 return;
@@ -132,17 +141,21 @@ public class RepoFileHandler implements HttpHandler {
             if(file.exists()){
                 if("GET".equals(method)){
                     log("Serving file "+file.getPath());
+                    if(timeoutIn == TimeoutIn.GetInitial)
+                        timeout();
                     t.sendResponseHeaders(HttpURLConnection.HTTP_OK, file.length());
                     OutputStream os = t.getResponseBody();
                     // only write the contents if it's not a directory, otherwise the CMR expects an empty 200 response
                     if(!file.isDirectory()){
                         InputStream is = new FileInputStream(file);
-                        copy(is, os);
+                        copy(is, os, Method.Get);
                     }
                     t.close();
                     return;
                 }
                 if("HEAD".equals(method)){
+                    if(timeoutIn == TimeoutIn.Head)
+                        timeout();
                     t.sendResponseHeaders(HttpURLConnection.HTTP_OK, -1);
                     t.close();
                     return;
@@ -200,13 +213,25 @@ public class RepoFileHandler implements HttpHandler {
         xml.append("</response>\n");
     }
 
-    private void copy(InputStream in, OutputStream out) throws IOException {
+    private void copy(InputStream in, OutputStream out, Method method) throws IOException {
         byte[] buf = new byte[1024];
         int read;
         while((read = in.read(buf)) != -1){
             out.write(buf, 0, read);
+            if((timeoutIn == TimeoutIn.GetMiddle && method == Method.Get)
+                    || (timeoutIn == TimeoutIn.PutMiddle && method == Method.Put))
+                timeout();
         }
         out.flush();
+    }
+
+    private void timeout() {
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
 
     private void log(String string) {
