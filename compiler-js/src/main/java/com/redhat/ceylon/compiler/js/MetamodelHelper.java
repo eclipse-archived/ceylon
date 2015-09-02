@@ -281,6 +281,10 @@ public class MetamodelHelper {
             }
             gen.out(")");
         } else if (that instanceof ValueLiteral || d instanceof Value) {
+            if (TypeUtils.isConstructor(d)) {
+                constructorLiteral(ref.getType(), TypeUtils.getConstructor(d), that, gen);
+                return;
+            }
             Value vd = (Value)d;
             if (vd.isMember()) {
                 gen.out(gen.getClAlias(), "$init$AppliedAttribute$meta$model()('");
