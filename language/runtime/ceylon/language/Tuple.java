@@ -1485,7 +1485,7 @@ public final class Tuple<Element, First extends Element,
     @Override @Ignore
     public Iterable<? extends Sequence<? extends Element>, ? extends java.lang.Object>
     getPermutations() {
-        return $ceylon$language$List$impl().getPermutations();
+        return $ceylon$language$Collection$impl().getPermutations();
     }
     
     @Override @Ignore
