@@ -505,7 +505,7 @@ public class CallableBuilder {
         innerInvocation = gen.expressionGen().applyErasureAndBoxing(innerInvocation, returnType, 
                 // make sure we use the type erased info as it has not been passed to the expression since the
                 // expression is a Callable
-                CodegenUtil.hasTypeErased(value), !CodegenUtil.isUnBoxed(value), 
+                qmte.getTypeErased(), !CodegenUtil.isUnBoxed(value), 
                 BoxingStrategy.BOXED, returnType, 0);
         
         ParameterList outerPl = new ParameterList();
