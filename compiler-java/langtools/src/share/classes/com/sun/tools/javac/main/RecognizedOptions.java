@@ -167,6 +167,7 @@ public class RecognizedOptions {
         D,
         CEYLONOUT,
         CEYLONOFFLINE,
+        CEYLONTIMEOUT,
         CEYLONCONTINUE,
         CEYLONFLATCLASSPATH,
         CEYLONAUTOEXPORTMAVENDEPENDENCIES,
@@ -239,6 +240,7 @@ public class RecognizedOptions {
         D,
         CEYLONOUT,
         CEYLONOFFLINE,
+        CEYLONTIMEOUT,
         CEYLONCONTINUE,
         CEYLONFLATCLASSPATH,
         CEYLONAUTOEXPORTMAVENDEPENDENCIES,
@@ -471,6 +473,7 @@ public class RecognizedOptions {
             } 
         },
         new COption(CEYLONOFFLINE,      "opt.ceylonoffline"),
+        new COption(CEYLONTIMEOUT,      "opt.arg.number",       "opt.ceylontimeout"),
         new COption(CEYLONCONTINUE,     "opt.ceyloncontinue"),
         new COption(CEYLONAUTOEXPORTMAVENDEPENDENCIES,          "opt.ceylonautoexportmavendependencies"),
         new COption(CEYLONFLATCLASSPATH,  "opt.ceylonflatclasspath"),

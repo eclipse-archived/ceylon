@@ -364,6 +364,11 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
             arguments.add("-offline");
         }
 
+        if (timeout != -1) {
+            arguments.add("-timeout");
+            arguments.add(String.valueOf(timeout*1000)); // we take in seconds, but compiler supports milliseconds
+        }
+
         if (flatClasspath) {
             arguments.add("-flat-classpath");
         }

@@ -261,6 +261,7 @@ public class CeyloncFileManager extends JavacFileManager implements StandardJava
                 .userRepos(userRepos)
                 .outRepo(outRepo)
                 .offline(getOfflineOption())
+                .timeout(getTimeoutOption())
                 .logger(getLogger())
                 .buildManager();
         
@@ -287,6 +288,7 @@ public class CeyloncFileManager extends JavacFileManager implements StandardJava
                 .logger(getLogger())
                 .user(user)
                 .password(password)
+                .timeout(getTimeoutOption())
                 .buildOutputManager();
         
         return outputRepoManager;
@@ -315,6 +317,14 @@ public class CeyloncFileManager extends JavacFileManager implements StandardJava
 
     private boolean getOfflineOption() {
         return options.get(OptionName.CEYLONOFFLINE) != null;
+    }
+
+    private int getTimeoutOption() {
+        String to = options.get(OptionName.CEYLONTIMEOUT);
+        if(to != null){
+            return Integer.parseInt(to);
+        }
+        return -1;
     }
 
     @Override
