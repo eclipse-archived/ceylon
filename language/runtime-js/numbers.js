@@ -129,7 +129,13 @@ JSNum$proto.remainder.$crtmm$=function(){return{mod:$CCMM$,$t:{t:Integer},ps:[{$
 JSNum$proto.divides=function(o){return o%this===0;}
 JSNum$proto.divides.$crtmm$=function(){return{mod:$CCMM$,$t:{t:$_Boolean},ps:[{$t:{t:Integer},nm:'other'}],d:['$','Integer','$m','divides']};};
 JSNum$proto.power = function(exp) {
-    if (nflt$(this)||nflt$(exp)) { return Float(Math.pow(this, exp)); }
+    if (nflt$(this)||nflt$(exp)) {
+        if(this == 1.0)
+            return this;
+        if(this == -1.0 && (exp == Infinity || exp == -Infinity))
+            return Float(1.0);
+        return Float(Math.pow(this, exp));
+    }
     if (exp<0 && this!=1 && this!=-1) {
         throw AssertionError("Negative exponent");
     }

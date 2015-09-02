@@ -145,6 +145,12 @@ public final class Float
         else if (otherValue==-0.25) {
             return 1.0/Math.sqrt(Math.sqrt(value));
         }
+        else if (value==1.0) {
+            return 1.0;
+        }
+        else if (value==-1.0 && (otherValue == Double.POSITIVE_INFINITY || otherValue == Double.NEGATIVE_INFINITY)) {
+            return 1.0;
+        }
         else {
             //NOTE: this function is _really_ slow!
             return Math.pow(value, otherValue);

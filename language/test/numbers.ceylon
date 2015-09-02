@@ -183,6 +183,25 @@ shared void numbers() {
     check((-3).float==-3.0, "negative integer float");
     
     check(1.plus { other=2; }.equals { that=3; }, "natural named args");
+    
+    check(0.0.power(0.0) == 1.0, "0 pow 0");
+    check(infinity.power(0.0) == 1.0, "infinity pow 0");
+    check((-infinity).power(0.0) == 1.0, "-infinity pow 0");
+    check((0.0/0.0).power(0.0) == 1.0, "undefined pow 0");
+
+    check(0.0.power(-0.0) == 1.0, "0 pow -0");
+    check(infinity.power(-0.0) == 1.0, "infinity pow -0");
+    check((-infinity).power(-0.0) == 1.0, "-infinity pow -0");
+    check((0.0/0.0).power(-0.0) == 1.0, "undefined pow -0");
+    
+    check(1.0.power(infinity) == 1.0, "1 pow infinity");
+    check(1.0.power(-infinity) == 1.0, "1 pow infinity");
+    check(1.0.power(0.0/0.0) == 1.0, "1 pow undefined");
+
+    check((-1.0).power(infinity) == 1.0, "-1 pow infinity");
+    check((-1.0).power(-infinity) == 1.0, "-1 pow infinity");
+    
+    check(1.5.power(infinity) == infinity, "1.5 pow infinity");
                 
     variable value i=0;
     for (x in 1..10) {
