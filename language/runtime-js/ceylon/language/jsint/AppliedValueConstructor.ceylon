@@ -5,7 +5,7 @@ import ceylon.language.meta.model {
   ValueConstructor, Class
 }
 
-shared native class AppliedValueConstructor<out Type=Object,in Set=Nothing>(Anything _tipo)
+shared native class AppliedValueConstructor<out Type=Object,in Set=Nothing>()
         satisfies ValueConstructor<Type, Set> {
   shared native actual Type get();
   shared native actual void set(Set newValue);
