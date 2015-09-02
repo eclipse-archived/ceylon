@@ -1,0 +1,42 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug22xx;
+
+public final class bug2291_ {
+    
+    private bug2291_() {
+    }
+    
+    public static void bug2291() {
+        
+        final class collect_ {
+            
+            private collect_() {
+            }
+            
+            .ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object> collect(final .ceylon.language.String s) {
+                return new .com.redhat.ceylon.compiler.java.language.LazyIterable<.java.lang.Object, .java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 2, true){
+                    
+                    @.java.lang.Override
+                    protected final .java.lang.Object $evaluate$(int $index$) {
+                        switch ($index$) {
+                        case 0: 
+                            return .ceylon.language.String.instance("");
+                        
+                        case 1: 
+                            return collect_.this.collect(null);
+                        
+                        default: 
+                            return null;
+                        
+                        }
+                    }
+                };
+            }
+        }
+        final collect_ collect = new collect_();
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.issues.bug22xx.bug2291_.bug2291();
+    }
+}
