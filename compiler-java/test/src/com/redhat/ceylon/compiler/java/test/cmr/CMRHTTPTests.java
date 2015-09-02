@@ -80,7 +80,7 @@ public class CMRHTTPTests extends CompilerTests {
     }
 
     private HttpServer startServer(int port, File repo, boolean herd, RequestCounter rq) throws IOException{
-        return startServer(port, repo, herd, rq);
+        return startServer(port, repo, herd, rq, TimeoutIn.None);
     }
 
     private HttpServer startServer(int port, File repo, boolean herd, RequestCounter rq, TimeoutIn timeoutIn) throws IOException{
