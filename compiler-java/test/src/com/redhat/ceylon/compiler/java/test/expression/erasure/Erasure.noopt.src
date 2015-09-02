@@ -224,6 +224,19 @@ class Test implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType
     private final void testUnion$priv$() {
         final .java.lang.Object middle = new .com.redhat.ceylon.compiler.java.test.expression.erasure.CLeft();
         ((.com.redhat.ceylon.compiler.java.test.expression.erasure.Top)middle).top();
+        final .ceylon.language.Callable<? extends .java.lang.Object> mtopref = (
+            let
+            {
+                final .com.redhat.ceylon.compiler.java.test.expression.erasure.Top $instance$ = (.com.redhat.ceylon.compiler.java.test.expression.erasure.Top)middle;
+            }
+            returning new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Anything()", (short)-1){
+                
+                @.java.lang.Override
+                public .java.lang.Object $call$() {
+                    return $instance$.top();
+                }
+            };
+        );
         final long n1 = ((.com.redhat.ceylon.compiler.java.test.expression.erasure.Top)middle).getTopAttribute();
         takesTop$priv$((.com.redhat.ceylon.compiler.java.test.expression.erasure.Top)middle);
         .java.lang.Object middle$1;
@@ -231,6 +244,19 @@ class Test implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType
             final .com.redhat.ceylon.compiler.java.test.expression.erasure.Left middle$2 = (.com.redhat.ceylon.compiler.java.test.expression.erasure.Left)middle$1;
             final long n2 = middle$2.getLeftAttribute();
             middle$2.left();
+            final .ceylon.language.Callable<? extends .java.lang.Object> mleftref = (
+                let
+                {
+                    final .com.redhat.ceylon.compiler.java.test.expression.erasure.Left $instance$ = middle$2;
+                }
+                returning new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Anything()", (short)-1){
+                    
+                    @.java.lang.Override
+                    public .java.lang.Object $call$() {
+                        return $instance$.left();
+                    }
+                };
+            );
             takesLeft$priv$(middle$2);
         }
     }
@@ -238,9 +264,61 @@ class Test implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType
     private final .com.redhat.ceylon.compiler.java.test.expression.erasure.Left testIntersection$priv$(final .java.lang.Object p1, final .java.lang.Object p1OrNull, final .java.lang.Object tops, final .java.lang.Object topsOrNull, final .java.lang.Object erasedTest) {
         final .java.lang.Object middle = new .com.redhat.ceylon.compiler.java.test.expression.erasure.CMiddle();
         ((.com.redhat.ceylon.compiler.java.test.expression.erasure.Top)middle).top();
+        final .ceylon.language.Callable<? extends .java.lang.Object> mtopref = (
+            let
+            {
+                final .com.redhat.ceylon.compiler.java.test.expression.erasure.Top $instance$ = (.com.redhat.ceylon.compiler.java.test.expression.erasure.Top)middle;
+            }
+            returning new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Anything()", (short)-1){
+                
+                @.java.lang.Override
+                public .java.lang.Object $call$() {
+                    return $instance$.top();
+                }
+            };
+        );
         ((.com.redhat.ceylon.compiler.java.test.expression.erasure.Left)middle).left();
+        final .ceylon.language.Callable<? extends .java.lang.Object> mlrefref = (
+            let
+            {
+                final .com.redhat.ceylon.compiler.java.test.expression.erasure.Left $instance$ = (.com.redhat.ceylon.compiler.java.test.expression.erasure.Left)middle;
+            }
+            returning new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Anything()", (short)-1){
+                
+                @.java.lang.Override
+                public .java.lang.Object $call$() {
+                    return $instance$.left();
+                }
+            };
+        );
         ((.com.redhat.ceylon.compiler.java.test.expression.erasure.Right)middle).right();
+        final .ceylon.language.Callable<? extends .java.lang.Object> mrightref = (
+            let
+            {
+                final .com.redhat.ceylon.compiler.java.test.expression.erasure.Right $instance$ = (.com.redhat.ceylon.compiler.java.test.expression.erasure.Right)middle;
+            }
+            returning new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Anything()", (short)-1){
+                
+                @.java.lang.Override
+                public .java.lang.Object $call$() {
+                    return $instance$.right();
+                }
+            };
+        );
         ((.com.redhat.ceylon.compiler.java.test.expression.erasure.Top)givesLeftAndRight$priv$()).top();
+        final .ceylon.language.Callable<? extends .java.lang.Object> lrtopref = (
+            let
+            {
+                final .com.redhat.ceylon.compiler.java.test.expression.erasure.Top $instance$ = (.com.redhat.ceylon.compiler.java.test.expression.erasure.Top).com.redhat.ceylon.compiler.java.test.expression.erasure.Test.this.givesLeftAndRight$priv$();
+            }
+            returning new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Anything()", (short)-1){
+                
+                @.java.lang.Override
+                public .java.lang.Object $call$() {
+                    return $instance$.top();
+                }
+            };
+        );
         new .com.redhat.ceylon.compiler.java.test.expression.erasure.CMiddle().top();
         long sync = 0L;
         sync = ((.com.redhat.ceylon.compiler.java.test.expression.erasure.Top)middle).getTopAttribute();

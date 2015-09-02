@@ -103,11 +103,13 @@ class Test(Integer&EmptyInterface n) {
     void testUnion(){
         Left|Right middle = CLeft();
         middle.top();
+        value mtopref = middle.top;
         Integer n1 = middle.topAttribute;
         takesTop(middle);
         if(is Left middle){
             Integer n2 = middle.leftAttribute;
             middle.left();
+            value mleftref = middle.left;
             takesLeft(middle);
         }
     }
@@ -124,9 +126,13 @@ class Test(Integer&EmptyInterface n) {
 
         // invocation
         middle.top();
+        value mtopref = middle.top;
         middle.left();
+        value mlrefref = middle.left;
         middle.right();
+        value mrightref = middle.right;
         givesLeftAndRight().top();
+        value lrtopref = givesLeftAndRight().top;
         CMiddle().top();
         
         // attribute access
