@@ -193,7 +193,13 @@ public class CallableBuilder {
             boolean prevCallableInv = gen.expressionGen().withinSyntheticClassBody(true);
             try {
                 instanceFieldName = gen.naming.synthetic(Unfix.$instance$);
-                Type primaryType = qmte.getPrimary().getTypeModel();
+                int varTypeFlags = Decl.isPrivateAccessRequiringCompanion(qmte) ? JT_COMPANION : 0;
+                Type primaryType;
+                if (Decl.isValueTypeDecl(qmte.getPrimary().getTypeModel())) {
+                    primaryType = qmte.getPrimary().getTypeModel();
+                } else {
+                    primaryType = qmte.getTarget().getQualifyingType();
+                }
                 if (((Tree.QualifiedMemberOrTypeExpression)forwardCallTo).getMemberOperator() instanceof Tree.SafeMemberOp) {
                     primaryType = gen.typeFact().getOptionalType(primaryType);
                 }
@@ -202,7 +208,7 @@ public class CallableBuilder {
                     primaryExpr = gen.naming.makeCompanionAccessorCall(primaryExpr, (Interface)qmte.getDeclaration().getContainer());
                 }
                 Type varType = qmte.getDeclaration().isShared() ? primaryType : Decl.getPrivateAccessType(qmte);
-                int varTypeFlags = Decl.isPrivateAccessRequiringCompanion(qmte) ? JT_COMPANION : 0;
+                
                 if (qmte.getPrimary().getUnboxed() == false) {
                     varTypeFlags |= JT_NO_PRIMITIVES;
                     instanceFieldIsBoxed = true;
