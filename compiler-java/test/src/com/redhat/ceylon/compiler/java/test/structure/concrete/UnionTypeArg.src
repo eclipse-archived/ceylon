@@ -164,6 +164,11 @@ class UnionTypeArg implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
     }
     
     @.java.lang.Override
+    public .ceylon.language.Iterable<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .java.lang.Object>, ? extends .java.lang.Object> locations(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
+        return (.ceylon.language.Iterable<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .java.lang.Object>, ? extends .java.lang.Object>)(.ceylon.language.Iterable)$ceylon$language$Iterable$this$.locations(selecting);
+    }
+    
+    @.java.lang.Override
     public .java.lang.Object max(final .ceylon.language.Callable<? extends .ceylon.language.Comparison> comparing) {
         return $ceylon$language$Iterable$this$.max(comparing);
     }
@@ -466,6 +471,11 @@ class UnionTypeArgOverride implements .com.redhat.ceylon.compiler.java.runtime.m
     @.java.lang.Override
     public .ceylon.language.Entry locateLast(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
         return (.ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .java.lang.Object>)(.ceylon.language.Entry)$ceylon$language$Iterable$this$.locateLast(selecting);
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.Iterable<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .java.lang.Object>, ? extends .java.lang.Object> locations(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
+        return (.ceylon.language.Iterable<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .java.lang.Object>, ? extends .java.lang.Object>)(.ceylon.language.Iterable)$ceylon$language$Iterable$this$.locations(selecting);
     }
     
     @.java.lang.Override

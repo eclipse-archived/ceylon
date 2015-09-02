@@ -409,6 +409,11 @@ public abstract class SequenceOperators implements .com.redhat.ceylon.compiler.j
     }
     
     @.java.lang.Override
+    public .ceylon.language.Iterable<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.String>, ? extends .java.lang.Object> locations(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
+        return $ceylon$language$Iterable$this$.locations(selecting);
+    }
+    
+    @.java.lang.Override
     public .ceylon.language.String max(final .ceylon.language.Callable<? extends .ceylon.language.Comparison> comparing) {
         return (.ceylon.language.String)$ceylon$language$Iterable$this$.max(comparing);
     }
@@ -1428,6 +1433,11 @@ public abstract class SequenceOperators2 implements .com.redhat.ceylon.compiler.
     @.java.lang.Override
     public .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.String> locateLast(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
         return $ceylon$language$Iterable$this$.locateLast(selecting);
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.Iterable<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.String>, ? extends .java.lang.Object> locations(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
+        return $ceylon$language$Iterable$this$.locations(selecting);
     }
     
     @.java.lang.Override

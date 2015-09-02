@@ -165,6 +165,11 @@ class Bug626 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
     }
     
     @.java.lang.Override
+    public .ceylon.language.Iterable<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.Sequential<? extends .java.lang.Object>>, ? extends .java.lang.Object> locations(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
+        return $ceylon$language$Iterable$this$.locations(selecting);
+    }
+    
+    @.java.lang.Override
     public .ceylon.language.Sequential max(final .ceylon.language.Callable<? extends .ceylon.language.Comparison> comparing) {
         return (.ceylon.language.Sequential<? extends .java.lang.Object>)(.ceylon.language.Sequential)$ceylon$language$Iterable$this$.max(comparing);
     }

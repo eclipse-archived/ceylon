@@ -457,6 +457,11 @@ public abstract class Bug476<T> implements .com.redhat.ceylon.compiler.java.runt
     }
     
     @.java.lang.Override
+    public .ceylon.language.Iterable<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends T>, ? extends .java.lang.Object> locations(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
+        return $ceylon$language$Iterable$this$.locations(selecting);
+    }
+    
+    @.java.lang.Override
     public T max(final .ceylon.language.Callable<? extends .ceylon.language.Comparison> comparing) {
         return (T)$ceylon$language$Iterable$this$.max(comparing);
     }
