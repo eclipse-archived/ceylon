@@ -89,30 +89,10 @@ shared interface Collection<out Element=Anything>
      repeated. [[Null]] elements are treated as equal to
      each other and distinct from any [[Object]]."
     shared {[Element+]*} permutations => object satisfies {[Element+]*} {
-        "Allows nulls to be grouped."
-        class Box(Element element) {
-            shared actual Boolean equals(Object that) {
-                assert (is Box that);
-                if (exists element) {
-                    if (exists other = that.element) {
-                        return element == other;
-                    }
-                    else {
-                        return false;
-                    }
-                }
-                else {
-                    return !that.element exists;
-                }
-            }
-            
-            hash => element?.hash else 0;
-        }
-        
         value multiset =
             outer
             .indexed
-            .group(forItem(Box))
+            .group(forItem((Element element) => element else nullElement))
             .items
             .sort(
                 byIncreasing(
@@ -175,3 +155,6 @@ shared interface Collection<out Element=Anything>
     };
     
 }
+
+"Used by [[Collection.permutations]] to group nulls together."
+object nullElement {}
