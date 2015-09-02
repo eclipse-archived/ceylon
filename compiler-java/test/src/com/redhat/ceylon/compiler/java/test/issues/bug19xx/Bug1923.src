@@ -105,7 +105,7 @@ public final class bug1923_ implements .com.redhat.ceylon.compiler.java.runtime.
         final .ceylon.language.Callable<? extends .java.lang.Object> fRef2 = (
             let
             {
-                final .com.redhat.ceylon.compiler.java.test.issues.bug19xx.bug1923_ $instance$ = .com.redhat.ceylon.compiler.java.test.issues.bug19xx.bug1923_.this;
+                final .com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bug1923 $instance$ = .com.redhat.ceylon.compiler.java.test.issues.bug19xx.bug1923_.this;
             }
             returning new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Anything()", (short)-1){
                 
