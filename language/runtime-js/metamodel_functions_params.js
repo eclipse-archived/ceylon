@@ -19,6 +19,8 @@ function validate$params(ps,t,msg,nothrow) {
     if (!ps || ps.length===0)return true;
   } else if (t.t==='u' && ps.length===1) {
     if (extendsType(ps[0].$t,t))return true;
+  } else if (t.t===Sequential || t.t===Sequence) {
+    if (extendsType(ps[0].$t,t.a.Element$Sequential||t.a.Element$Sequence))return true;
   } else { //it's already a tuple, navigate it
     console.trace("TODO!!!! validate$params with Tuple type");
   }
@@ -105,6 +107,10 @@ function convert$params(mm,a,$$targs$$) {
     var _a=[];
     for (var i=0;i<a.size;i++)_a.push(a.$_get(i));
     a=_a;
+  }
+  if (a.length===1 && Array.isArray(a[0]) && (ps.length!=1 || !extendsType(restype2$(ps[0].$t,$$targs$$),{t:$_Array}))) {
+    //We sometimes get an array with a single array (double wrapping)
+    a=a[0];
   }
   var fa=[],sarg;
   for (var i=0; i<ps.length;i++) { //check def/seq params

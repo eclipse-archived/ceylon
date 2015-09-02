@@ -17,7 +17,7 @@ function AppliedMemberClassCallableConstructor$jsint(tipo,$$targs$$,that,myTargs
         if (!nt.a)nt.a={};
         for (var nta in that.$targs)nt.a[nta]=that.$targs[nta];
       }
-      rv=AppliedMemberClassCallableConstructor$jsint(rv,{Type$AppliedMemberClassCallableConstructor:nt,Arguments$AppliedMemberClassCallableConstructor:{t:Sequential,a:{Element$Iterable:{t:Anything},Absent$Iterable:{t:Null}}}});//TODO generate metamodel for Arguments
+      rv=AppliedCallableConstructor$jsint(rv,{Type$AppliedCallableConstructor:nt,Arguments$AppliedCallableConstructor:{t:Sequential,a:{Element$Iterable:{t:Anything},Absent$Iterable:{t:Null}}}});//TODO generate metamodel for Arguments
       if (nt.a)rv.$targs=nt.a;
       rv.$bound=x;
       return rv;

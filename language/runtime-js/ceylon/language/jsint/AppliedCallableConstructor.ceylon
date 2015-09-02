@@ -3,11 +3,11 @@ import ceylon.language.meta.declaration {
 }
 import ceylon.language.meta.model {
   CallableConstructor, ClassModel,
-  ClosedType=Type
+  ClosedType=Type//, Function
 }
 
 shared native class AppliedCallableConstructor<out Type=Anything, in Arguments=Nothing>(Anything _tipo)
-    satisfies CallableConstructor<Type,Arguments>
+    satisfies CallableConstructor<Type,Arguments>// & Function<Type,Arguments>
     given Arguments satisfies Anything[] {
   shared native actual CallableConstructorDeclaration declaration;
   shared native actual ClassModel<Type> container;

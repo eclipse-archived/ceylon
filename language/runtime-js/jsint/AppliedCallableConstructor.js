@@ -35,6 +35,8 @@ function AppliedCallableConstructor$jsint(tipo,$$targs$$,that,myTargs) {
       },undefined,AppliedCallableConstructor$jsint.$$.prototype.$prop$getString.$crtmm$);
     }
   }
+  $_Function$meta$model({Arguments$Function:$$targs$$.Arguments$AppliedCallableConstructor,
+    Type$Function:$$targs$$.Type$AppliedCallableConstructor},that);
   CallableConstructor$meta$model({Type$CallableConstructor:$$targs$$.Type$AppliedCallableConstructor,Arguments$CallableConstructor:$$targs$$.Arguments$AppliedCallableConstructor},that);
   set_type_args(that,$$targs$$,AppliedCallableConstructor$jsint);
   that.$targs=myTargs;
