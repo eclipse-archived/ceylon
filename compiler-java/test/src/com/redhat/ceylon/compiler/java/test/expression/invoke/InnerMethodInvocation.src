@@ -16,7 +16,7 @@ public final class innerMethodInvocation_ {
                 if (n == 0L) {
                     return 1L;
                 } else {
-                    return n * fib(.ceylon.language.Integer.getPredecessor(n));
+                    return n * fib_.this.fib(.ceylon.language.Integer.getPredecessor(n));
                 }
             }
         }

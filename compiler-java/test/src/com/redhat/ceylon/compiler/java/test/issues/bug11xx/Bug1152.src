@@ -24,7 +24,7 @@ final class bug1152_ {
                     }
                 }
                 final g_ g = new g_();
-                $enum();
+                enum_.this.$enum();
             }
         }
         final enum_ enum = new enum_();
