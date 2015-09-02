@@ -20,6 +20,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.Proxy;
+import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -147,10 +148,14 @@ public class WebDAVContentStore extends URLContentStore {
             String token = null;
             if (!isHerd())
                 token = s.lock(pUrl); // local parent
+            final String url = getUrlAsString(node);
             try {
-                final String url = getUrlAsString(node);
                 s.put(url, stream);
                 return new WebDAVContentHandle(url);
+            } catch (SocketTimeoutException x) {
+                SocketTimeoutException ret = new SocketTimeoutException("Timed out writing to "+url);
+                ret.initCause(x);
+                throw ret;
             } finally {
                 if (!isHerd())
                     s.unlock(pUrl, token);

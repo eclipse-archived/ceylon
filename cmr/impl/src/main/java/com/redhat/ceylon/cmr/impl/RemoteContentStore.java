@@ -23,6 +23,7 @@ import java.io.InputStream;
 import java.io.Serializable;
 import java.net.HttpURLConnection;
 import java.net.Proxy;
+import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.Collections;
@@ -58,14 +59,20 @@ public class RemoteContentStore extends URLContentStore {
                 huc.setConnectTimeout(timeout);
                 huc.setReadTimeout(timeout * Constants.READ_TIMEOUT_MULTIPLIER);
                 addCredentials(huc);
-                InputStream stream = conn.getInputStream();
-                int code = huc.getResponseCode();
-                if (code != -1 && code != 200) {
-                    log.info("Got " + code + " for url: " + url);
-                    return null;
+                try{
+                    InputStream stream = conn.getInputStream();
+                    int code = huc.getResponseCode();
+                    if (code != -1 && code != 200) {
+                        log.info("Got " + code + " for url: " + url);
+                        return null;
+                    }
+                    log.debug("Got " + code + " for url: " + url);
+                    return stream;
+                }catch(SocketTimeoutException timeoutException){
+                    SocketTimeoutException newException = new SocketTimeoutException("Timed out during connection to "+url);
+                    newException.initCause(timeoutException);
+                    throw newException;
                 }
-                log.debug("Got " + code + " for url: " + url);
-                return stream;
             }
         }
         return null;

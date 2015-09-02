@@ -21,6 +21,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -127,7 +128,13 @@ public class FileContentStore implements ContentStore, StructureBuilder {
             file = new File(path + node.getLabel()); // just concat paths
         }
 
-        IOUtils.writeToFile(file, stream);
+        try{
+            IOUtils.writeToFile(file, stream);
+        }catch(SocketTimeoutException ex){
+            SocketTimeoutException newEx = new SocketTimeoutException("Timed out reading "+node.getDisplayString()+" from "+node.getStoreDisplayString());
+            newEx.initCause(ex);
+            throw newEx;
+        }
         return new FileContentHandle(node, file);
     }
 
