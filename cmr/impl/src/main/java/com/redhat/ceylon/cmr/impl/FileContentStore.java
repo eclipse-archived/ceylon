@@ -128,12 +128,18 @@ public class FileContentStore implements ContentStore, StructureBuilder {
             file = new File(path + node.getLabel()); // just concat paths
         }
 
+        boolean success = false;
         try{
             IOUtils.writeToFile(file, stream);
+            success = true;
         }catch(SocketTimeoutException ex){
             SocketTimeoutException newEx = new SocketTimeoutException("Timed out reading "+node.getDisplayString()+" from "+node.getStoreDisplayString());
             newEx.initCause(ex);
             throw newEx;
+        }finally{
+            // at least try to clean it up if it's partial
+            if(!success)
+                file.delete();
         }
         return new FileContentHandle(node, file);
     }
