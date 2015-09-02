@@ -5836,6 +5836,9 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
 
     private boolean isReferenceInSameScope(Tree.StaticMemberOrTypeExpression expr) {
+        if (isWithinSyntheticClassBody()) {
+            return false;
+        }
         Declaration decl = expr.getDeclaration();
         Scope s = expr.getScope();
         // are we in the same Declaration container?
