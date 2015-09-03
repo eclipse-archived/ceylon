@@ -143,7 +143,11 @@ shared native final class Float(Float float)
      Furthermore:
      
       - `0.0^infinity` evaluates to `0.0`, and
-      - `0.0^(-infinity)` evaluates to `infinity`."
+      - `0.0^(-infinity)` evaluates to `infinity`.
+     
+     If this is a [[negative]] number, and the 
+     [[given power|other]] is has a nonzero 
+     [[fractionalPart]], the result is [[undefined]]."
     shared actual native Float power(Float other);
     
     shared actual native Float wholePart;
