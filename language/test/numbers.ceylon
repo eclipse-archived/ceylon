@@ -183,6 +183,45 @@ shared void numbers() {
     check((-3).float==-3.0, "negative integer float");
     
     check(1.plus { other=2; }.equals { that=3; }, "natural named args");
+
+    Boolean positiveZero(Float num){
+        return num == 0.0 && (1 / num) > 0.0;
+    }
+    Boolean negativeZero(Float num){
+        return num == 0.0 && (1 / num) < 0.0;
+    }
+
+    check(0.0.powerOfInteger(-1) == infinity, "0 pow/int -1 = infinity");
+    check(0.0.powerOfInteger(-2) == infinity, "0 pow/int -2 = infinity");
+    check(positiveZero(0.0.powerOfInteger(1)), "0 pow/int 1 = 0");
+    check(positiveZero(0.0.powerOfInteger(2)), "0 pow/int 2 = 0");
+    check((-0.0).powerOfInteger(-1) == -infinity, "-0 pow/int -1 = -infinity");
+    check((-0.0).powerOfInteger(-2) == infinity, "-0 pow/int -2 = infinity");
+    check(negativeZero((-0.0).powerOfInteger(1)), "-0 pow/int 1 = -0");
+    check(positiveZero((-0.0).powerOfInteger(2)), "-0 pow/int 2 = 0");
+    
+    check(0.0.power(-1.0) == infinity, "0 pow -1 = infinity");
+    check(0.0.power(-2.0) == infinity, "0 pow -2 = infinity");
+    check(positiveZero(0.0.power(1.0)), "0 pow 1 = 0");
+    check(positiveZero(0.0.power(2.0)), "0 pow 2 = 0");
+    check((-0.0).power(-1.0) == -infinity, "-0 pow -1 = -infinity");
+    check((-0.0).power(-2.0) == infinity, "-0 pow -2 = infinity");
+    check(negativeZero((-0.0).power(1.0)), "-0 pow 1 = -0");
+    check(positiveZero((-0.0).power(2.0)), "-0 pow 2 = 0");
+
+    check(0.0.power(-1.1) == infinity, "0 pow -1.1 = infinity");
+    check(0.0.power(-2.1) == infinity, "0 pow -2.1 = infinity");
+    check(positiveZero(0.0.power(1.1)), "0 pow 1.1 = 0");
+    check(positiveZero(0.0.power(2.1)), "0 pow 2.1 = 0");
+    check((-0.0).power(-1.1) == infinity, "-0 pow -1.1 = infinity");
+    check((-0.0).power(-2.1) == infinity, "-0 pow -2.1 = infinity");
+    check(positiveZero((-0.0).power(1.1)), "-0 pow 1.1 = 0");
+    check(positiveZero((-0.0).power(2.1)), "-0 pow 2.1 = 0");
+    
+    check(0.0.power(-infinity) == infinity, "0 pow -infinity");
+    check((-0.0).power(-infinity) == infinity, "-0 pow -infinity");
+    check(0.0.power(infinity) == 0.0, "0 pow infinity");
+    check((-0.0).power(infinity) == 0.0, "-0 pow infinity");
     
     check(0.0.power(0.0) == 1.0, "0 pow 0");
     check(infinity.power(0.0) == 1.0, "infinity pow 0");

@@ -138,7 +138,10 @@ JSNum$proto.power = function(exp) {
             return this;
         if(this == -1.0 && (exp == Infinity || exp == -Infinity))
             return Float(1.0);
-        return Float(Math.pow(this, exp));
+        var ret = Float(Math.pow(this, exp));
+        if(this == 0.0 && this.fmz$ && exp.fractionalPart == 0 && !exp.wholePart.even)
+            ret = ret.negated;
+        return ret;
     }
     if (exp<0 && this!=1 && this!=-1) {
         throw AssertionError("Negative exponent");
@@ -150,7 +153,10 @@ JSNum$proto.powerOfInteger = function(exp) {
     if (nflt$(this)) {
         if(this == 1.0)
             return this;
-        return Float(Math.pow(this, exp));
+        var ret = Float(Math.pow(this, exp));
+        if(this == 0.0 && this.fmz$ && exp.fractionalPart == 0 && !exp.wholePart.even)
+            ret = ret.negated;
+        return ret;
     }
     if (exp<0 && this!=1 && this!=-1) {
         throw AssertionError("Negative exponent");
