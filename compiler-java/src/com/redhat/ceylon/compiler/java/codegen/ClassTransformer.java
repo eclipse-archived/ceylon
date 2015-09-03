@@ -28,6 +28,7 @@ import static com.sun.tools.javac.code.Flags.PRIVATE;
 import static com.sun.tools.javac.code.Flags.PROTECTED;
 import static com.sun.tools.javac.code.Flags.PUBLIC;
 import static com.sun.tools.javac.code.Flags.STATIC;
+import static com.sun.tools.javac.code.Flags.VARARGS;
 
 import java.lang.annotation.RetentionPolicy;
 import java.util.ArrayList;
@@ -51,6 +52,7 @@ import com.redhat.ceylon.compiler.java.codegen.StatementTransformer.DeferredSpec
 import com.redhat.ceylon.compiler.java.codegen.recovery.Drop;
 import com.redhat.ceylon.compiler.java.codegen.recovery.Errors;
 import com.redhat.ceylon.compiler.java.codegen.recovery.HasErrorException;
+import com.redhat.ceylon.compiler.java.codegen.recovery.ThrowerCatchallConstructor;
 import com.redhat.ceylon.compiler.java.codegen.recovery.ThrowerMethod;
 import com.redhat.ceylon.compiler.java.codegen.recovery.TransformationPlan;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
@@ -229,6 +231,21 @@ public class ClassTransformer extends AbstractTransformer {
         List<JCStatement> childDefs = visitClassOrInterfaceDefinition(def, classBuilder);
         // everything else is synthetic
         at(null);
+        TransformationPlan plan = errors().hasDeclarationError(def);
+        if (plan instanceof ThrowerCatchallConstructor) {
+            MethodDefinitionBuilder initBuilder = classBuilder.addConstructor();
+            initBuilder.body(statementGen().makeThrowUnresolvedCompilationError(plan.getErrorMessage().getMessage()));
+            // Although we have the class pl which we could use we don't know 
+            // that it won't collide with the default named constructor's pl
+            // which would cause a javac error about two constructors with the same sig
+            // so we generate a Object... here. There's still a risk of collision though
+            // when the default constructor has pl (ObjectArray).
+            ParameterDefinitionBuilder pdb = ParameterDefinitionBuilder.implicitParameter(this, "ignored");
+            pdb.modifiers(VARARGS);
+            pdb.type(make().TypeArray(make().Type(syms().objectType)), null);
+            initBuilder.parameter(pdb);
+        } 
+        
         // If it's a Class without initializer parameters...
         if (Strategy.generateMain(def)) {
             // ... then add a main() method
@@ -1096,6 +1113,11 @@ public class ClassTransformer extends AbstractTransformer {
         // do reified type params first
         classBuilder.reifiedTypeParameters(model.getTypeParameters());
         if (def.getParameterList() != null) {
+            TransformationPlan error = errors().hasDeclarationAndMarkBrokenness(def);
+            if (error instanceof ThrowerCatchallConstructor) {
+                InitializerBuilder initBuilder = classBuilder.getInitBuilder();
+                initBuilder.init(make().If(make().Literal(true),statementGen().makeThrowUnresolvedCompilationError(error.getErrorMessage().getMessage()), null));
+            }
             for (Tree.Parameter param : def.getParameterList().getParameters()) {
                 Tree.TypedDeclaration member = def != null ? Decl.getMemberDeclaration(def, param) : null;
                 makeAttributeForValueParameter(classBuilder, param, member);

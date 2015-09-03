@@ -28,6 +28,7 @@ class DeclarationErrorVisitor extends Visitor {
     private static final int COULD_NOT_DETERMINE_PARAMETER_TYPE_SAME_AS_CORRESPONDING_PARAMETER = 9210;
     private static final int REFINED_MEMBER_WRONG_NUM_PL = 9300;
     private static final int MISSING_PL_FUNCTION_DECL = 1000;
+    private static final int PL_AND_CONSTRUCTORS = 1002;
     
     private TransformationPlan plan;
     private final ExpressionErrorVisitor expressionVisitor;
@@ -107,7 +108,14 @@ class DeclarationErrorVisitor extends Visitor {
                             || (model instanceof Value
                                     && ((Value)model).getTypeDeclaration().isAnonymous()))) {
                     plan = new ThrowerMethod(that, message);
-                } else {
+                } 
+                else if (message.getCode() == PL_AND_CONSTRUCTORS
+                        && (model instanceof Class 
+                            || (model instanceof Value
+                                    && ((Value)model).getTypeDeclaration().isAnonymous()))) {
+                    plan = new ThrowerCatchallConstructor(that, message);
+                } 
+                else {
                     plan = new Drop(that, message);
                 } 
                 newplan(plan);
