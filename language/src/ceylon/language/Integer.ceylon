@@ -59,6 +59,12 @@ shared native final class Integer(Integer integer)
     shared actual native Integer times(Integer other);
     shared actual native Integer divided(Integer other);
     shared actual native Integer remainder(Integer other);
+    
+    "The result of raising this number to the given 
+     non-negative integer power, where `0^0` evaluates to 
+     `1`."
+    throws (`class AssertionError`, 
+            "if the given [[power|other]] is negative")
     shared actual native Integer power(Integer other);
     
     "Determines if the given object is equal to this `Integer`,
@@ -170,6 +176,12 @@ shared native final class Integer(Integer integer)
     
     shared actual native Integer timesInteger(Integer integer);    
     shared actual native Integer plusInteger(Integer integer);
+    
+    "The result of raising this number to the given 
+     non-negative integer power, where `0^0` evaluates to 
+     `1`."
+    throws (`class AssertionError`, 
+        "if the given [[power|integer]] is negative")
     shared actual native Integer powerOfInteger(Integer integer);
     
     see (`function formatInteger`)
