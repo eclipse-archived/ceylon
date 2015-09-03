@@ -249,6 +249,40 @@ public class RecoveryTests extends CompilerTests {
     }
     
     @Test
+    public void testRcvDeclarationClassPlAndCtors1(){
+        compileAndRunWithUnresolvedCompilationError(
+                "declaration/ClassPlAndCtors1.ceylon",
+                "com.redhat.ceylon.compiler.java.test.recovery.declaration.classPlAndCtors1",
+                "class with parameters may not declare constructors: class 'ClassPlAndCtors1' has a parameter list and a constructor");
+        checkClassHasCompileTimeErrorAnnotation("com.redhat.ceylon.compiler.java.test.recovery.declaration.ClassPlAndCtors1");
+    }
+    
+    @Test
+    public void testRcvDeclarationClassPlAndCtors2(){
+        compileAndRunWithUnresolvedCompilationError(
+                "declaration/ClassPlAndCtors2.ceylon",
+                "com.redhat.ceylon.compiler.java.test.recovery.declaration.classPlAndCtors2",
+                "no matching parameter declared by 'ClassPlAndCtors2': 'ClassPlAndCtors2' has 0 parameters");
+        checkClassHasCompileTimeErrorAnnotation("com.redhat.ceylon.compiler.java.test.recovery.declaration.ClassPlAndCtors2");
+    }
+
+    @Test
+    public void testRcvDeclarationClassPlAndCtors3(){
+        compileAndRunWithUnresolvedCompilationError(
+                "declaration/ClassPlAndCtors3.ceylon",
+                "com.redhat.ceylon.compiler.java.test.recovery.declaration.classPlAndCtors3",
+                "class with parameters may not declare constructors: class 'ClassPlAndCtors3' has a parameter list and a constructor");
+        checkClassHasCompileTimeErrorAnnotation("com.redhat.ceylon.compiler.java.test.recovery.declaration.ClassPlAndCtors3");
+    }
+    @Test
+    public void testRcvDeclarationClassPlAndCtors4(){
+        compileAndRunWithUnresolvedCompilationError(
+                "declaration/ClassPlAndCtors4.ceylon",
+                "com.redhat.ceylon.compiler.java.test.recovery.declaration.classPlAndCtors4",
+                "class with parameters may not declare constructors: class 'ClassPlAndCtors4' has a parameter list and a constructor");
+        checkClassHasCompileTimeErrorAnnotation("com.redhat.ceylon.compiler.java.test.recovery.declaration.ClassPlAndCtors4");
+    }
+    @Test
     public void testMissingActualAttributes() {
         testDeclarationRecovery("FormalAttributes", "MissingActualAttributes", new ExpectedError() {
             @Override
