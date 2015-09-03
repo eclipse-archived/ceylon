@@ -1,2 +1,4 @@
-console.log("IMPL AppliedClass.defaultConstructor");
-return null;
+if (this.$defcons$===undefined) {
+  this.$defcons$=this.getConstructor("");
+}
+return this.$defcons$;
