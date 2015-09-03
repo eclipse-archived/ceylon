@@ -189,6 +189,9 @@ shared void numbers() {
     check((-infinity).power(0.0) == 1.0, "-infinity pow 0");
     check((0.0/0.0).power(0.0) == 1.0, "undefined pow 0");
 
+    check(infinity.powerOfInteger(0) == 1.0, "infinity pow/int 0");
+    check((-infinity).powerOfInteger(0) == 1.0, "-infinity/int pow 0");
+
     check(0.0.power(-0.0) == 1.0, "0 pow -0");
     check(infinity.power(-0.0) == 1.0, "infinity pow -0");
     check((-infinity).power(-0.0) == 1.0, "-infinity pow -0");

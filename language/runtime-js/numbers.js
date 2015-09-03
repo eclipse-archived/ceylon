@@ -146,6 +146,18 @@ JSNum$proto.power = function(exp) {
     return toInt(Math.pow(this, exp));
 }
 $addnm$('power',Exponentiable.$$.prototype.power);
+JSNum$proto.powerOfInteger = function(exp) {
+    if (nflt$(this)) {
+        if(this == 1.0)
+            return this;
+        return Float(Math.pow(this, exp));
+    }
+    if (exp<0 && this!=1 && this!=-1) {
+        throw AssertionError("Negative exponent");
+    }
+    return toInt(Math.pow(this, exp));
+}
+$addnm$('powerOfInteger');
 atr$(JSNum$proto, 'negated', function() {
   if (this.valueOf()==0 && this.float$) {
     var f=Float(0.0);
