@@ -723,12 +723,12 @@ public class TypeVisitor extends Visitor {
         if (pl!=null && cd.hasConstructors()) {
             pl.addError("class with parameters may not declare constructors: class '" + 
                     cd.getName() + 
-                    "' has a parameter list and a constructor");
+                    "' has a parameter list and a constructor", 1002);
         }
         else if (pl!=null && cd.hasEnumerated()) {
             pl.addError("class with parameters may not declare constructors: class '" + 
                     cd.getName() + 
-                    "' has a parameter list and a value constructor");
+                    "' has a parameter list and a value constructor", 1003);
         }
         if (pl==null) {
             if (!cd.hasConstructors() && 
