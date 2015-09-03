@@ -104,4 +104,17 @@ shared void testConditions() {
     testNotExists("hey");
     testNotNonempty([]);
     testNotNonempty([1,2,3]);
+    //620
+    Integer[2]? i620=[1,0];
+    if (exists [v6201, v6202] = i620) {
+      check(v6202==0, "#620.1");
+    } else {
+      fail("#620.1");
+    }
+    Boolean[2]? b620=[true,false];
+    if (exists [v6203, v6204] = b620) {
+      check(!v6204, "#620.2");
+    } else {
+      fail("#620.2");
+    }
 }
