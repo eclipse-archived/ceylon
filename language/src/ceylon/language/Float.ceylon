@@ -50,9 +50,8 @@ shared native final class Float(Float float)
      abbreviation of Not a Number). Undefined values include:
      
      - _indeterminate forms_ including `0.0/0.0`, 
-       `infinity/infinity`, `0.0*infinity`, 
-       `infinity-infinity`, `0.0^0.0`, `1.0^infinity`,
-       and `infinity^0.0`, along with
+       `infinity/infinity`, `0.0*infinity`, and
+       `infinity-infinity`, along with
      - _complex numbers_ like `sqrt(-1.0)` and `log(-1.0)`.
      
      An undefined value has the property that it is not 
@@ -131,6 +130,20 @@ shared native final class Float(Float float)
     shared actual native Float minus(Float other);
     shared actual native Float times(Float other);
     shared actual native Float divided(Float other);
+    
+    "The result of raising this number to the given floating
+     point power, where, following the definition of the
+     IEEE `pow()` function, the following indeterminate 
+     forms all evaluate to `1.0`:
+     
+     - `0.0^0.0`,
+     - `infinity^0.0` and `(-infinity)^0.0`, 
+     - `1.0^infinity` and `(-1.0)^infinity`.
+     
+     Furthermore:
+     
+      - `0.0^infinity` evaluates to `0.0`, and
+      - `0.0^(-infinity)` evaluates to `infinity`."
     shared actual native Float power(Float other);
     
     shared actual native Float wholePart;
@@ -150,6 +163,13 @@ shared native final class Float(Float float)
     
     shared actual native Float timesInteger(Integer integer);    
     shared actual native Float plusInteger(Integer integer);
+    
+    "The result of raising this number to the given integer
+     power, where the following indeterminate forms evaluate 
+     to `1.0`:
+     
+     - `0.0^0`,
+     - `infinity^0` and `(-infinity)^0`."
     shared actual native Float powerOfInteger(Integer integer);
     
     "A string representing this floating point number.
