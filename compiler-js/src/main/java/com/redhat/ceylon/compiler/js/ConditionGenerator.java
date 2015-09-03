@@ -477,7 +477,7 @@ public class ConditionGenerator {
         }
         gen.out("return(");
         final Destructurer d=new Destructurer(vh.destr.getPattern(), gen, directAccess, expvar, true);
-        gen.out(");}(");
+        gen.out(",true);}(");
         vh.destr.getSpecifierExpression().visit(gen);
         gen.out(")");
         vh.vars=d.getVariables();
