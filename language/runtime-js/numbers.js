@@ -61,7 +61,11 @@ JSNum$proto.toString = origNumToString;
 atr$(JSNum$proto, 'string', function(){
   if (this.fmz$)return "-0.0";
   var s=this.toString();
-  if (s.indexOf('.')<0 && nflt$(this) && !isNaN(this))s+='.0';
+  if (s.indexOf('.')<0 && nflt$(this)
+      && this != Infinity 
+      && this != -Infinity 
+      && !isNaN(this))
+      s+='.0';
   return s;
 },undefined,function(){return{an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:$_Object,d:['$','Object','$at','string']};});
 //Add a function to the specified prototype
