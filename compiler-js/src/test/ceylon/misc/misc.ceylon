@@ -61,3 +61,20 @@ shared class TestClass461 {
   shared new testConstructor() {}
   shared void test() => check(true, "Import toplevel constructor");
 }
+
+shared void testBugCl733(){
+    // https://github.com/ceylon/ceylon.language/issues/733
+    value ignore = Array(1..4).keys.reversed;
+
+    BugCl733Class().One().Two();
+    BugCl733Class().OneInterface().TwoInterface();
+}
+
+shared class BugCl733Class() satisfies BugCl733Interface {
+    shared class One() extends BugCl733Class(){}
+    shared class Two() extends BugCl733Class(){}
+}
+shared interface BugCl733Interface {
+    shared class OneInterface() satisfies BugCl733Interface{}
+    shared class TwoInterface() satisfies BugCl733Interface{}
+}
