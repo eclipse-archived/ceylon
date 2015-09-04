@@ -6,6 +6,7 @@ import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 
+import com.redhat.ceylon.compiler.js.GenerateJsVisitor.InitDeferrer;
 import com.redhat.ceylon.compiler.js.GenerateJsVisitor.PrototypeInitCallback;
 import com.redhat.ceylon.compiler.js.GenerateJsVisitor.SuperVisitor;
 import com.redhat.ceylon.compiler.js.util.TypeComparator;
@@ -33,8 +34,9 @@ public class TypeGenerator {
 
     static final ErrorVisitor errVisitor = new ErrorVisitor();
 
-    /** Generates a function to initialize the specified type. */
-    static void initializeType(final Node type, final GenerateJsVisitor gen) {
+    /** Generates a function to initialize the specified type. 
+     * @param initDeferrer */
+    static void initializeType(final Node type, final GenerateJsVisitor gen, InitDeferrer initDeferrer) {
         Tree.ExtendedType extendedType = null;
         Tree.SatisfiedTypes satisfiedTypes = null;
         final ClassOrInterface decl;
@@ -79,7 +81,7 @@ public class TypeGenerator {
                 }
             }
         };
-        typeInitialization(extendedType, satisfiedTypes, decl, callback, gen, objDecl);
+        typeInitialization(extendedType, satisfiedTypes, decl, callback, gen, objDecl, initDeferrer);
     }
 
     /** This is now the main method to generate the type initialization code.
@@ -87,10 +89,11 @@ public class TypeGenerator {
      * @param satisfiedTypes The types satisfied by the type being initialized.
      * @param d The declaration for the type being initialized
      * @param callback A callback to add something more to the type initializer in prototype style.
+     * @param initDeferrer something which lets us put statements at the end of the container initialiser, if it's not null (it's null for toplevels)
      */
     static void typeInitialization(final Tree.ExtendedType extendedType, final Tree.SatisfiedTypes satisfiedTypes,
             final ClassOrInterface d, PrototypeInitCallback callback, final GenerateJsVisitor gen,
-            final Value objectDeclaration) {
+            final Value objectDeclaration, InitDeferrer initDeferrer) {
 
         final boolean isInterface = d instanceof com.redhat.ceylon.model.typechecker.model.Interface;
         String initFuncName = isInterface ? "initTypeProtoI" : "initTypeProto";
@@ -180,8 +183,12 @@ public class TypeGenerator {
             gen.out(".", initname, "=", initname);
             gen.endLine(true);
         }
-        gen.out(initname, "()");
-        gen.endLine(true);
+        if(initDeferrer != null){
+            initDeferrer.deferred.add(initname+"();");
+        }else{
+            gen.out(initname, "()");
+            gen.endLine(true);
+        }
     }
 
     /** Returns the name of the type or its $init$ function if it's local. */
@@ -218,7 +225,7 @@ public class TypeGenerator {
         return tfn;
     }
 
-    static void interfaceDefinition(final Tree.InterfaceDefinition that, final GenerateJsVisitor gen) {
+    static void interfaceDefinition(final Tree.InterfaceDefinition that, final GenerateJsVisitor gen, InitDeferrer initDeferrer) {
         //Don't even bother with nodes that have errors
         if (errVisitor.hasErrors(that))return;
         final Interface d = that.getDeclarationModel();
@@ -273,7 +280,7 @@ public class TypeGenerator {
         TypeUtils.encodeForRuntime(d, that.getAnnotationList(), gen);
         gen.endLine(true);
         gen.share(d);
-        initializeType(that, gen);
+        initializeType(that, gen, initDeferrer);
     }
 
     /** Outputs the parameter list of the type's constructor, including surrounding parens.

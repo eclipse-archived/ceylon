@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.redhat.ceylon.common.Backend;
+import com.redhat.ceylon.compiler.js.GenerateJsVisitor.InitDeferrer;
 import com.redhat.ceylon.compiler.js.GenerateJsVisitor.SuperVisitor;
 import com.redhat.ceylon.compiler.js.util.TypeUtils;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
@@ -21,7 +22,7 @@ import com.redhat.ceylon.model.typechecker.model.TypeParameter;
 
 public class ClassGenerator {
     
-    static void classDefinition(final Tree.ClassDefinition that, final GenerateJsVisitor gen) {
+    static void classDefinition(final Tree.ClassDefinition that, final GenerateJsVisitor gen, InitDeferrer initDeferrer) {
         //Don't even bother with nodes that have errors
         if (TypeGenerator.errVisitor.hasErrors(that))return;
         final Class d = that.getDeclarationModel();
@@ -78,7 +79,7 @@ public class ClassGenerator {
                 if (d.isShared()) {
                     gen.share(d);
                 }
-                TypeGenerator.initializeType(that, gen);
+                TypeGenerator.initializeType(that, gen, initDeferrer);
                 bye = true;
             }
             if (hasConstructors) {
@@ -192,7 +193,7 @@ public class ClassGenerator {
         if (!isAbstractNative) {
             gen.share(d);
         }
-        TypeGenerator.initializeType(that, gen);
+        TypeGenerator.initializeType(that, gen, initDeferrer);
         if (d.isSerializable()) {
             SerializationHelper.addDeserializer(that, d, gen);
         }

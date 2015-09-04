@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -690,9 +691,9 @@ public class GenerateJsVisitor extends Visitor {
         endLine(true);
     }
 
-    private void addInterfaceToPrototype(ClassOrInterface type, final Tree.InterfaceDefinition interfaceDef) {
+    private void addInterfaceToPrototype(ClassOrInterface type, final Tree.InterfaceDefinition interfaceDef, InitDeferrer initDeferrer) {
         if (type.isDynamic())return;
-        TypeGenerator.interfaceDefinition(interfaceDef, this);
+        TypeGenerator.interfaceDefinition(interfaceDef, this, initDeferrer);
         Interface d = interfaceDef.getDeclarationModel();
         out(names.self(type), ".", names.name(d), "=", names.name(d));
         endLine(true);
@@ -701,13 +702,17 @@ public class GenerateJsVisitor extends Visitor {
     @Override
     public void visit(final Tree.InterfaceDefinition that) {
         if (!(opts.isOptimize() && that.getDeclarationModel().isClassOrInterfaceMember())) {
-            TypeGenerator.interfaceDefinition(that, this);
+            TypeGenerator.interfaceDefinition(that, this, null);
         }
     }
 
-    private void addClassToPrototype(ClassOrInterface type, final Tree.ClassDefinition classDef) {
+    static class InitDeferrer{
+        List<String> deferred = new LinkedList<String>();
+    }
+    
+    private void addClassToPrototype(ClassOrInterface type, final Tree.ClassDefinition classDef, InitDeferrer initDeferrer) {
         if (type.isDynamic())return;
-        ClassGenerator.classDefinition(classDef, this);
+        ClassGenerator.classDefinition(classDef, this, initDeferrer);
         final String tname = names.name(classDef.getDeclarationModel());
         out(names.self(type), ".", tname, "=", tname);
         endLine(true);
@@ -716,7 +721,7 @@ public class GenerateJsVisitor extends Visitor {
     @Override
     public void visit(final Tree.ClassDefinition that) {
         if (opts.isOptimize() && that.getDeclarationModel().isClassOrInterfaceMember()) return;
-        ClassGenerator.classDefinition(that, this);
+        ClassGenerator.classDefinition(that, this, null);
     }
 
     private void interfaceDeclaration(final Tree.InterfaceDeclaration that) {
@@ -877,15 +882,16 @@ public class GenerateJsVisitor extends Visitor {
                         generateAttributeForParameter(node, (Class)d, p);
                     }
                 }
+                InitDeferrer initDeferrer = new InitDeferrer();
                 for (Statement s: statements) {
                     if (s instanceof Tree.ClassOrInterface == false && !(s instanceof Tree.AttributeDeclaration &&
                             ((Tree.AttributeDeclaration)s).getDeclarationModel().isParameter())) {
-                        addToPrototype(d, s, plist);
+                        addToPrototype(d, s, plist, initDeferrer);
                     }
                 }
                 for (Statement s: statements) {
                     if (s instanceof Tree.ClassOrInterface) {
-                        addToPrototype(d, s, plist);
+                        addToPrototype(d, s, plist, initDeferrer);
                     } else if (s instanceof Tree.Enumerated) {
                         //Add a simple attribute which really returns the singleton from the class
                         final Tree.Enumerated vc = (Tree.Enumerated)s;
@@ -895,6 +901,10 @@ public class GenerateJsVisitor extends Visitor {
                         TypeUtils.encodeForRuntime(vc.getDeclarationModel(), vc.getAnnotationList(), this);
                         out(");");
                     }
+                }
+                for(String stmt : initDeferrer.deferred){
+                    out(stmt);
+                    endLine();
                 }
                 if (d.isMember()) {
                     ClassOrInterface coi = ModelUtil.getContainingClassOrInterface(d.getContainer());
@@ -941,7 +951,7 @@ public class GenerateJsVisitor extends Visitor {
 
     private ClassOrInterface prototypeOwner;
 
-    private void addToPrototype(ClassOrInterface d, final Tree.Statement s, List<Parameter> params) {
+    private void addToPrototype(ClassOrInterface d, final Tree.Statement s, List<Parameter> params, InitDeferrer initDeferrer) {
         ClassOrInterface oldPrototypeOwner = prototypeOwner;
         prototypeOwner = d;
         if (s instanceof MethodDefinition) {
@@ -955,11 +965,11 @@ public class GenerateJsVisitor extends Visitor {
         } else if (s instanceof AttributeDeclaration) {
             AttributeGenerator.addGetterAndSetterToPrototype(d, (AttributeDeclaration) s, this);
         } else if (s instanceof ClassDefinition) {
-            addClassToPrototype(d, (ClassDefinition) s);
+            addClassToPrototype(d, (ClassDefinition) s, initDeferrer);
         } else if (s instanceof InterfaceDefinition) {
-            addInterfaceToPrototype(d, (InterfaceDefinition) s);
+            addInterfaceToPrototype(d, (InterfaceDefinition) s, initDeferrer);
         } else if (s instanceof Tree.ObjectDefinition) {
-            addObjectToPrototype(d, (Tree.ObjectDefinition) s);
+            addObjectToPrototype(d, (Tree.ObjectDefinition) s, initDeferrer);
         } else if (s instanceof Tree.ClassDeclaration) {
             addClassDeclarationToPrototype(d, (Tree.ClassDeclaration) s);
         } else if (s instanceof InterfaceDeclaration) {
@@ -1006,11 +1016,11 @@ public class GenerateJsVisitor extends Visitor {
         out(names.name(d), ".$$;");
     }
 
-    private void addObjectToPrototype(ClassOrInterface type, final Tree.ObjectDefinition objDef) {
+    private void addObjectToPrototype(ClassOrInterface type, final Tree.ObjectDefinition objDef, InitDeferrer initDeferrer) {
         //Don't even bother with nodes that have errors
         if (errVisitor.hasErrors(objDef))return;
         comment(objDef);
-        Singletons.objectDefinition(objDef, this);
+        Singletons.objectDefinition(objDef, this, initDeferrer);
         Value d = objDef.getDeclarationModel();
         Class c = (Class) d.getTypeDeclaration();
         out(names.self(type), ".", names.name(c), "=", names.name(c), ";",
@@ -1035,7 +1045,7 @@ public class GenerateJsVisitor extends Visitor {
         Value d = that.getDeclarationModel();
         if (!(opts.isOptimize() && d.isClassOrInterfaceMember())) {
             comment(that);
-            Singletons.objectDefinition(that, this);
+            Singletons.objectDefinition(that, this, null);
         } else {
             //Don't even bother with nodes that have errors
             if (errVisitor.hasErrors(that))return;
@@ -1058,7 +1068,7 @@ public class GenerateJsVisitor extends Visitor {
             final Tree.ExtendedType et = that.getExtendedType();
             Singletons.defineObject(that, null, sts == null ? null : TypeUtils.getTypes(sts.getTypes()),
                     et == null ? null : et.getType(), et == null ? null : et.getInvocationExpression(),
-                    that.getClassBody(), null, this);
+                    that.getClassBody(), null, this, null);
         } catch (Exception e) {
             e.printStackTrace();
         }

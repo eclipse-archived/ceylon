@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.redhat.ceylon.common.Backend;
+import com.redhat.ceylon.compiler.js.GenerateJsVisitor.InitDeferrer;
 import com.redhat.ceylon.compiler.js.GenerateJsVisitor.SuperVisitor;
 import com.redhat.ceylon.compiler.js.util.TypeUtils;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
@@ -25,7 +26,7 @@ public class Singletons {
     
     static void defineObject(final Node that, final Value d, final List<Type> sats,
             final Tree.SimpleType superType, final Tree.InvocationExpression superCall,
-            final Tree.Body body, final Tree.AnnotationList annots, final GenerateJsVisitor gen) {
+            final Tree.Body body, final Tree.AnnotationList annots, final GenerateJsVisitor gen, InitDeferrer initDeferrer) {
         final boolean addToPrototype = gen.opts.isOptimize() && d != null && d.isClassOrInterfaceMember();
         final boolean isObjExpr = that instanceof Tree.ObjectExpression;
         final TypeDeclaration _td = isObjExpr ? ((Tree.ObjectExpression)that).getAnonymousClass() : d.getTypeDeclaration();
@@ -102,7 +103,7 @@ public class Singletons {
         gen.out(";", className, ".$crtmm$=");
         TypeUtils.encodeForRuntime(that, c, gen);
         gen.endLine(true);
-        TypeGenerator.initializeType(that, gen);
+        TypeGenerator.initializeType(that, gen, initDeferrer);
         final String objvar = (addToPrototype ? "this.":"")+gen.getNames().createTempVariable();
 
         if (d != null && !addToPrototype) {
@@ -179,13 +180,13 @@ public class Singletons {
         }
     }
 
-    static void objectDefinition(final Tree.ObjectDefinition that, final GenerateJsVisitor gen) {
+    static void objectDefinition(final Tree.ObjectDefinition that, final GenerateJsVisitor gen, InitDeferrer initDeferrer) {
         final Tree.SatisfiedTypes sts = that.getSatisfiedTypes();
         final Tree.ExtendedType et = that.getExtendedType();
         defineObject(that, that.getDeclarationModel(),
                 sts == null ? null : TypeUtils.getTypes(sts.getTypes()),
                 et == null ? null : et.getType(), et == null ? null : et.getInvocationExpression(),
-                that.getClassBody(), that.getAnnotationList(), gen);
+                that.getClassBody(), that.getAnnotationList(), gen, initDeferrer);
         //Objects defined inside methods need their init sections are exec'd
         if (!that.getDeclarationModel().isToplevel() && !that.getDeclarationModel().isClassOrInterfaceMember()) {
             gen.out(gen.getNames().objectName(that.getDeclarationModel()), "();");
