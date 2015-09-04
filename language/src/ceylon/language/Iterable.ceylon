@@ -246,6 +246,11 @@ shared interface Iterable<out Element=Anything,
                     then []
                     else ArraySequence(array);
     
+    "A [[Range]] containing all indexes of this stream, or 
+     `[]` if this list is empty. The resulting range is
+     equal to `0:size`."
+    shared default Range<Integer>|[] indexes() => 0:size;
+    
     "A stream containing all but the first element of this 
      stream. For a stream with an unstable iteration order, 
      a different stream might be produced each time `rest` 
@@ -287,7 +292,7 @@ shared interface Iterable<out Element=Anything,
      
      For example:
      
-         words.each(void (word) {
+         words.each((word) {
              print(word.lowercased);
              print(word.uppercased);
          });
@@ -583,6 +588,7 @@ shared interface Iterable<out Element=Anything,
          (-10..10).find(Integer.positive)
      
      evaluates to `1`."
+    see (`function findLast`)
     shared default 
     Element? find(
             "The predicate the element must satisfy."
@@ -605,6 +611,7 @@ shared interface Iterable<out Element=Anything,
          (-10..10).findLast(3.divides)
      
      evaluates to `9`."
+    see (`function find`)
     shared default 
     Element? findLast(
             "The predicate the element must satisfy."
@@ -629,6 +636,7 @@ shared interface Iterable<out Element=Anything,
          (-10..10).locate(Integer.positive)
      
      evaluates to `11->1`."
+    see (`function locateLast`, `function locations`)
     shared default 
     <Integer->Element>? locate(
         "The predicate the element must satisfy."
@@ -654,6 +662,7 @@ shared interface Iterable<out Element=Anything,
          (-10..10).locateLast(3.divides)
      
      evaluates to `19->9`."
+    see (`function locate`, `function locations`)
     shared default 
     <Integer->Element>? locateLast(
         "The predicate the element must satisfy."
@@ -668,6 +677,44 @@ shared interface Iterable<out Element=Anything,
         }
         return last;
     }
+    
+    "A stream producing all elements of this stream which
+     satisfy the [[given predicate function|selecting]],
+     together with their positions in the stream.
+     
+     For example, the expression
+     
+         (-5..5).locations(3.divides)
+     
+     evaluates to the stream `{ 2->-3, 5->0, 8->3 }`.
+     
+     Note that this method is more efficient than the
+     alternative of applying [[filter]] to an [[indexed]]
+     stream."
+    see (`function locate`, `function locateLast`)
+    shared default
+    {<Integer->Element>*} locations(
+        "The predicate the element must satisfy."
+        Boolean selecting(Element&Object element)) 
+            => object satisfies {<Integer->Element>*} {
+        iterator() 
+                => let (iter = outer.iterator()) 
+            object satisfies Iterator<Integer->Element> {
+                variable value i=0;
+                shared actual <Integer->Element>|Finished next() {
+                    while (!is Finished next = iter.next()) { 
+                        if (exists next, selecting(next)) {
+                            return i++->next; 
+                        }
+                        else {
+                            i++;
+                        }
+                    }
+                    return finished;
+                }
+                string => outer.string + ".iterator()";
+            };
+    };
     
     "Return the largest value in the stream, as measured by
      the given [[comparator function|comparing]] imposing a 
@@ -1112,6 +1159,7 @@ shared interface Iterable<out Element=Anything,
          { \"hello\", null, \"world\" }.indexed
      
      results in the stream `{ 0->\"hello\", 1->null, 2->\"world\" }`."
+    see (`function locations`)
     shared default 
     Iterable<<Integer->Element>,Absent> indexed 
             => object
@@ -1390,26 +1438,321 @@ shared interface Iterable<out Element=Anything,
         };
     }
     
+    "A stream that produces every element produced by this
+     stream exactly once. Duplicate elements of this stream
+     are eliminated.
+     
+     For example:
+     
+         String(\"hello world\".distinct)
+     
+     is the string `\"helo wrd\"`."
+    shared Iterable<Element,Absent> distinct
+            => object satisfies Iterable<Element,Absent> {
+        iterator() 
+                => let (elements=outer)
+                object satisfies Iterator<Element> {
+            
+            value it = elements.iterator();
+            variable value count = 0;
+            
+            variable value store 
+                    = Array.ofSize {
+                size = 16;
+                element = null of ElementEntry<Element>?;
+            };
+            
+            function hash(Element element, Integer size) 
+                    => if (exists element) 
+                    then element.hash.magnitude % size
+                    else 0;
+            
+            function rebuild(Array<ElementEntry<Element>?> store) {
+                value newStore 
+                        = Array.ofSize {
+                    size = store.size*2;
+                    element = null of ElementEntry<Element>?;
+                };
+                for (entries in store) {
+                    variable value entry = entries;
+                    while (exists e = entry) {
+                        value index = 
+                                hash(e.element, 
+                                    newStore.size);
+                        newStore.set(index, 
+                            ElementEntry(e.element, 
+                                newStore[index]));
+                        entry = e.next;
+                    }
+                }
+                return newStore;
+            }
+            
+            shared actual Element|Finished next() {
+                while (true) {
+                    switch (element = it.next())
+                    case (is Finished) {
+                        return element;
+                    }
+                    else {
+                        value index = hash(element, store.size);
+                        value entry = store[index];
+                        if (exists entry, entry.has(element)) {
+                            //keep iterating
+                        }
+                        else {
+                            store.set(index, 
+                                ElementEntry(element, entry));
+                            count++;
+                            if (count>store.size*2) {
+                                store = rebuild(store);
+                            }
+                            return element;
+                        }
+                    }
+                }
+            }
+        };
+    };
+    
+    "Classifies the elements of this stream into a [[Map]] 
+     where each key is a value produced by the given 
+     [[grouping function|grouping]] and each corresponding
+     item is [[sequence|Sequence]] of all elements that 
+     produced the key when passed as arguments to the 
+     grouping function.
+     
+     For example:
+     
+         (0..10).group((i) => i.even then \"even\" else \"odd\")
+     
+     produces the map 
+     `{ even->[0, 2, 4, 6, 8, 10], odd->[1, 3, 5, 7, 9] }`."
+    shared Map<Group,[Element+]> group<Group>
+            (Group grouping(Element element))
+            given Group satisfies Object
+            => object extends Object() 
+                      satisfies Map<Group,[Element+]> {
+        
+        variable value store 
+                = Array.ofSize {
+            size = 16;
+            element = null of GroupEntry<Group,Element>?;
+        };
+        
+        function hash(Object group, Integer size) 
+                => group.hash.magnitude % size;
+        
+        function rebuild(Array<GroupEntry<Group,Element>?> store) {
+            value newStore 
+                    = Array.ofSize {
+                size = store.size*2;
+                element = null of GroupEntry<Group,Element>?;
+            };
+            for (groups in store) {
+                variable value group = groups;
+                while (exists g = group) {
+                    value index = 
+                            hash(g.group, newStore.size);
+                    newStore.set(index, 
+                        GroupEntry(g.group, g.elements, 
+                            newStore[index]));
+                    group = g.next;
+                }
+            }
+            return newStore;
+        }
+        
+        variable value count = 0;
+        for (element in outer) {
+            value group = grouping(element);
+            value index = hash(group, store.size);
+            GroupEntry<Group,Element> newEntry;
+            if (exists entries = store[index]) {
+                if (exists entry = entries.get(group)) {
+                    entry.elements 
+                            = ElementEntry(element, 
+                                entry.elements);
+                    continue;
+                }
+                else {
+                    newEntry 
+                            = GroupEntry(group, 
+                                ElementEntry(element), 
+                                    entries);
+                }
+            }
+            else {
+                newEntry 
+                        = GroupEntry(group,
+                            ElementEntry(element));
+            }
+            store.set(index, newEntry);
+            count++;
+            if (count>store.size*2) {
+                store = rebuild(store);
+            }
+        }
+        
+        size => count;
+        
+        iterator() 
+                => object satisfies Iterator<Group->[Element+]> {
+            variable value index = 0;
+            variable GroupEntry<Group,Element>? entry = null;
+            shared actual <Group->[Element+]>|Finished next() {
+                if (exists e = entry) {
+                    entry = e.next;
+                    return e.group -> e.elements;
+                }
+                else {
+                    while (true) {
+                        if (index>=store.size) {
+                            return finished;
+                        }
+                        else {
+                            entry = store[index++];
+                            if (exists e = entry) {
+                                entry = e.next;
+                                return e.group -> e.elements;
+                            }
+                        }
+                    }
+                }
+            }
+        };        
+        
+        clone() => this;
+        
+        function group(Object key) 
+                => store[hash(key, store.size)]?.get(key);
+        
+        defines(Object key) => group(key) exists;
+        
+        get(Object key) => group(key)?.elements;
+        
+    };
+    
     "A string of form `\"{ x, y, z }\"` where `x`, `y`, and 
      `z` are the `string` representations of the elements of 
      this collection, as produced by the iterator of the 
      stream, or the string `\"{}\"` if this stream is empty. 
      If the stream is very long, the list of elements might 
      be truncated, as indicated by an ellipse."
-    shared actual default String string {
-        value elements = take(31).sequence();
-        if (elements.empty) {
-            return "{}";
-        }
-        else if (elements.size==31) {
-            return "{ ``commaList(elements.take(30))``, ... }";
-        }
-        else {
-            return "{ ``commaList(elements)`` }";
-        }
-    }
+    shared actual default String string 
+            => let (elements = take(31).sequence())
+            if (elements.empty) then 
+                "{}"
+            else if (elements.size==31) then 
+                "{ ``commaList(elements.take(30))``, ... }"
+            else
+                "{ ``commaList(elements)`` }";
     
 }
 
 String commaList({Anything*} elements)
         => ", ".join { for (e in elements) stringify(e) };
+
+class ElementEntry<Element>
+        (element, next = null)
+        extends Object()
+        satisfies [Element+] {
+    
+    shared Element element;
+    shared ElementEntry<Element>? next;
+    
+    first => element;
+    
+    shared Boolean has(Anything element) {
+        variable ElementEntry<Element>? entry = this;
+        while (exists e = entry) {
+            if (exists element) {
+                if (exists ee = e.element,
+                    element == ee) {
+                    return true;
+                }
+            }
+            else {
+                if (!e.element exists) {
+                    return true;
+                }
+            }
+            entry = e.next;
+        }
+        return false;
+    }
+    
+    shared actual Element? getFromFirst(Integer index) {
+        if (index<0) {
+            return null;
+        }
+        else {
+            variable ElementEntry<Element> entry = this;
+            for (i in 0:index) {
+                if (exists next = entry.next) {
+                    entry = next;
+                }
+                else {
+                    return null;
+                }
+            }
+            return entry.element;
+        }
+    }
+    
+    rest => next else [];
+    
+    shared actual Element last {
+        variable ElementEntry<Element> entry = this;
+        while (exists next = entry.next) {
+            entry = next;
+        }
+        return entry.element;
+    }
+    
+    shared actual Integer size {
+        variable value count = 1;
+        variable ElementEntry<Element> entry = this;
+        while (exists next = entry.next) {
+            entry = next;
+            count++;
+        }
+        return count;
+    }
+    
+    iterator() 
+            => object satisfies Iterator<Element> {
+        variable ElementEntry<Element>? entry = outer;
+        shared actual Element|Finished next() {
+            if (exists e = entry) {
+                entry = e.next;
+                return e.element;
+            }
+            else {
+                return finished;
+            }
+        }
+    };
+    
+}
+
+class GroupEntry<Group,Element>
+        (group, elements, next = null)
+        given Group satisfies Object {
+    
+    shared Group group;
+    shared variable ElementEntry<Element> elements;
+    shared GroupEntry<Group,Element>? next;
+    
+    shared GroupEntry<Group,Element>? get(Object group) {
+        variable GroupEntry<Group,Element>? entry = this;
+        while (exists e = entry) {
+            if (group == e.group) {
+                return e;
+            }
+            entry = e.next;
+        }
+        return null;
+    }
+    
+}

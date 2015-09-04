@@ -1,2 +1,6 @@
+
 "A new [[SerializationContext]]."
-shared native SerializationContext serialization();
+shared SerializationContext serialization() 
+        => SerializationContextImpl();
+
+

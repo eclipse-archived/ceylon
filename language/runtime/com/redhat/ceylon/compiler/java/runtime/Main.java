@@ -34,6 +34,7 @@ import com.redhat.ceylon.cmr.api.DependencyResolver;
 import com.redhat.ceylon.cmr.api.ModuleDependencyInfo;
 import com.redhat.ceylon.cmr.api.ModuleInfo;
 import com.redhat.ceylon.cmr.api.Overrides;
+import com.redhat.ceylon.cmr.api.PathFilterParser;
 import com.redhat.ceylon.cmr.impl.AbstractArtifactResult;
 import com.redhat.ceylon.cmr.impl.Configuration;
 import com.redhat.ceylon.cmr.impl.OSGiDependencyResolver;
@@ -47,6 +48,7 @@ import com.redhat.ceylon.compiler.java.tools.JarEntryManifestFileObject.OsgiMani
 import com.redhat.ceylon.model.cmr.ArtifactResult;
 import com.redhat.ceylon.model.cmr.ArtifactResultType;
 import com.redhat.ceylon.model.cmr.JDKUtils;
+import com.redhat.ceylon.model.cmr.PathFilter;
 import com.redhat.ceylon.model.cmr.RepositoryException;
 import com.redhat.ceylon.model.loader.NamingBase;
 
@@ -303,6 +305,10 @@ public class Main {
             @Override
             protected File artifactInternal() {
                 return jar;
+            }
+
+            public void setFilter(PathFilter filter) {
+                setFilterInternal(filter);
             }
         }
 
@@ -685,6 +691,8 @@ public class Main {
                     for(ModuleDependencyInfo dep : moduleDependencies.getDependencies()){
                         module.addDependency(dep.getName(), dep.getVersion(), dep.isOptional(), dep.isExport());
                     }
+                    if(moduleDependencies.getFilter() != null)
+                        module.setFilter(PathFilterParser.parse(moduleDependencies.getFilter()));
                     return module;
                 }
             }finally{

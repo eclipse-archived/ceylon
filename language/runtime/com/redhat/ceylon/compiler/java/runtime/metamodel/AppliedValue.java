@@ -197,7 +197,9 @@ public class AppliedValue<Get, Set>
 
     private void initSetter(com.redhat.ceylon.model.typechecker.model.Value decl, java.lang.Class<?> javaClass, 
                             java.lang.Class<?> getterReturnType, Object instance, Type valueType) {
-        if(!decl.isVariable())
+        
+        if(!decl.isVariable()
+                && !decl.isLate())
             return;
         if (com.redhat.ceylon.compiler.java.codegen.Decl.isEnumeratedConstructor(decl)) {
             return;
@@ -264,8 +266,10 @@ public class AppliedValue<Get, Set>
 
     @Override
     public Object set(Set value) {
-        if(!declaration.getVariable())
-            throw new MutationException("Value is not mutable");
+        if(!(declaration.getVariable()
+                || declaration.getLate())) {
+            throw new MutationException("Value is neither variable nor late");
+        }
         try {
             setter.invokeExact(value);
             return null;

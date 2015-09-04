@@ -4,6 +4,7 @@ import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.reflect.Field;
 import java.util.Arrays;
+import java.util.HashMap;
 
 import ceylon.language.ArraySequence;
 import ceylon.language.AssertionError;
@@ -62,18 +63,26 @@ public class Util {
         return Metamodel.isReified(o, type);
     }
 
+    private static HashMap<java.lang.Class<?>, Class> classCache
+     = new HashMap<>();
+    
     private static Class getClassAnnotationForIdentifiableOrBasic(
-            java.lang.Class<? extends Object> klass) {
-        while(klass != null && klass != java.lang.Object.class) {
-            Class classAnnotation = klass.getAnnotation(Class.class);
-            if(classAnnotation != null) {
-                return classAnnotation;
-            }
-            // else keep looking up
-            klass = klass.getSuperclass();
+            final java.lang.Class<? extends Object> klass) {
+        if (classCache.containsKey(klass)) {
+            return classCache.get(klass);
         }
-        // no annotation found
-        return null;
+        Class classAnnotation = klass.getAnnotation(Class.class);
+        if(classAnnotation != null) {
+            classCache.put(klass, classAnnotation);
+            return classAnnotation;
+        } else if (klass != null && klass != java.lang.Object.class) {
+            // else keep looking up
+            Class c = getClassAnnotationForIdentifiableOrBasic(klass.getSuperclass());
+            classCache.put(klass, c);
+            return c;
+        } else {
+            return null;
+        }
     }
 
     /**
@@ -84,7 +93,7 @@ public class Util {
             return false;
         return isIdentifiable(o.getClass());
     }
-
+    
     public static boolean isIdentifiable(java.lang.Class<?> klazz) {
         Class classAnnotation = getClassAnnotationForIdentifiableOrBasic(klazz);
         // unless marked as NOT identifiable, every instance is Identifiable

@@ -73,9 +73,9 @@ shared interface List<out Element=Anything>
     
     "Returns the element of this list with the given 
      [[index]] if the index refers to an element of this
-     list, that is, if `0<=index<=list.lastIndex`, or 
-     `null` otherwise. The first element of the list has 
-     index `0`, and the last element has index [[lastIndex]]."
+     list, that is, if `0<=index<=list.lastIndex`, or `null` 
+     otherwise. The first element of the list has index `0`, 
+     and the last element has index [[lastIndex]]."
     see (`function getFromLast`)
     shared actual formal Element? getFromFirst(Integer index);
     
@@ -137,7 +137,8 @@ shared interface List<out Element=Anything>
     
     "A list containing all indexes of this list.
      
-     This is a lazy operation."
+     This is a lazy operation returning a view of this list."
+    see (`function indexes`)
     shared actual default List<Integer> keys => Indexes();
     
     "A list containing the elements of this list in reverse 
@@ -1028,5 +1029,77 @@ shared interface List<out Element=Anything>
             };
         
     }
+    
+    "The permutations of this list, as a stream of nonempty
+     [[sequences|Sequence]]. That is, a stream producing 
+     every sequence that has the same [[size]] as this list
+     and contains every element of this list exactly once.
+     
+     For example, 
+     
+         \"ABC\".permutations.map(String)
+     
+     is the stream of strings
+     `{ \"ABC\", \"ACB\", \"CAB\", \"CBA\", \"BCA\", \"BAC\" }`.
+     
+     If this list is empty, the resulting stream is empty.
+     
+     Note: the permutations are distinct if and only if this 
+     list has no repeated elements."
+    shared {[Element+]*} permutations
+            => object satisfies {[Element+]*} {
+        
+        iterator()
+                => let (list=outer)
+                object satisfies Iterator<[Element+]> {
+            
+            value length = list.size;
+            value permutation = Array(0:length);
+            value indexes = Array(0:length);
+            value swaps = Array(0:length);
+            value directions = Array.ofSize(length, -1);
+            
+            variable value counter = length;
+            
+            shared actual [Element+]|Finished next() {
+                while (counter > 0) {
+                    if (counter == length) {
+                        counter--;
+                        value result 
+                                = permutation.collect((i) { 
+                            assert (exists elem = list[i]);
+                            return elem;
+                        });
+                        assert (nonempty result);
+                        return result;
+                    }
+                    else {
+                        assert (exists swap = swaps[counter],
+                            exists dir = directions[counter]);
+                        if (swap > 0) {
+                            assert (exists index 
+                                = indexes[counter]);
+                            value otherIndex = index + dir;
+                            assert (exists swapIndex 
+                                = permutation[otherIndex]);
+                            permutation.set(index, swapIndex);
+                            permutation.set(otherIndex, counter);
+                            indexes.set(swapIndex, index);
+                            indexes.set(counter, otherIndex);
+                            swaps.set(counter, swap-1);
+                            counter = length;
+                        }
+                        else {
+                            swaps.set(counter, counter);
+                            directions.set(counter, -dir);
+                            counter--;
+                        }
+                    }
+                }
+                return finished;
+            }
+        };
+        
+    };
     
 }

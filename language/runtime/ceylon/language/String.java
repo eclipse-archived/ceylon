@@ -2,9 +2,6 @@ package ceylon.language;
 
 import java.util.Locale;
 
-import ceylon.language.impl.BaseCharacterList;
-import ceylon.language.impl.BaseIterator;
-
 import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.language.AbstractCallable;
 import com.redhat.ceylon.compiler.java.language.StringInclusions;
@@ -25,6 +22,9 @@ import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 import com.redhat.ceylon.compiler.java.metadata.ValueType;
 import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
+
+import ceylon.language.impl.BaseCharacterList;
+import ceylon.language.impl.BaseIterator;
 
 @Ceylon(major = 8)
 @Class(extendsType="ceylon.language::Object", 
@@ -356,6 +356,11 @@ public final class String
             return new Span<Integer>(Integer.$TypeDescriptor$, 
                     Integer.instance(0), Integer.instance(size-1));
         }
+    }
+    
+    @Ignore
+    public static java.lang.Object indexes(java.lang.String value) {
+        return getKeys(value);
     }
 
     @Ignore
@@ -1679,6 +1684,13 @@ public final class String
                 Integer.$TypeDescriptor$, Character.$TypeDescriptor$,
                 Integer.instance(resultIndex), result);
     }
+    
+    @Ignore
+    public static Iterable<? extends Entry<? extends Integer, ? extends Character>, ? extends java.lang.Object> 
+    locations(java.lang.String value,
+            Callable<? extends Boolean> selecting) {
+        return instance(value).locations(selecting);
+    }
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
     @Ignore
@@ -2166,8 +2178,6 @@ public final class String
     }
     
     @Ignore
-    @SuppressWarnings("rawtypes")
-    @TypeInfo("ceylon.language::Iterable<ceylon.language::Character,ceylon.language::Character,ceylon.language::Tuple<ceylon.language::Tuple<ceylon.language::Character,ceylon.language::Character,ceylon.language::Empty>>>")
     public static Iterable getPaired(java.lang.String value) {
         return instance(value).getPaired();
     }
@@ -2255,6 +2265,24 @@ public final class String
                        @Name("destinationPosition") @Defaulted long destinationPosition, 
                        @Name("length") @Defaulted long length){
         copyTo(value, destination, sourcePosition, destinationPosition, length);
+    }
+    
+    @Ignore
+    public static Iterable<? extends Sequence<? extends Character>, ? extends java.lang.Object>
+    getPermutations(java.lang.String value) {
+        return instance(value).getPermutations();
+    }
+    
+    @Ignore
+    public static <Group> Iterable<? extends Entry<? extends Group, ? extends Sequence<? extends Character>>, ? extends java.lang.Object>
+    group(java.lang.String value, TypeDescriptor $reifiedGroup, Callable<? extends Group> fun) {
+        return instance(value).group($reifiedGroup, fun);
+    }
+    
+    @Ignore
+    public static Iterable<? extends Character, ? extends java.lang.Object>
+    getDistinct(java.lang.String value) {
+        return instance(value).getDistinct();
     }
     
 }

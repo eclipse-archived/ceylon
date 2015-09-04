@@ -29,8 +29,11 @@ shared interface Empty of e
     "Returns `false` for any given index."
     shared actual Boolean defines(Integer index) => false;
     
-    "Returns an `Empty`."
+    "Returns `[]`."
     shared actual [] keys => this;
+    
+    "Returns `[]`."
+    shared actual [] indexes() => this;
     
     "Returns `true`."
     shared actual Boolean empty => true;
@@ -38,10 +41,10 @@ shared interface Empty of e
     "Returns 0."
     shared actual Integer size => 0; 
     
-    "Returns an `Empty`."
+    "Returns `[]`."
     shared actual [] reversed => this;
     
-    "Returns an `Empty`."
+    "Returns `[]`."
     shared actual [] sequence() => this;
     
     "Returns a string description of the empty sequence: 
@@ -57,44 +60,44 @@ shared interface Empty of e
     "Returns `null`."
     shared actual Null last => null;
     
-    "Returns an `Empty`."
+    "Returns `[]`."
     shared actual [] rest => this;
     
-    "Returns an `Empty`."
+    "Returns `[]`."
     shared actual [] clone() => this;
     
-    "Returns an `Empty`."
+    "Returns `[]`."
     shared actual [] coalesced => this;
     
-    "Returns an `Empty`."
+    "Returns `[]`."
     shared actual [] indexed => this;
     
-    "Returns an `Empty`."
+    "Returns `[]`."
     shared actual [] repeat(Integer times) => this;
     
-    "Returns an `Empty`."
+    "Returns `[]`."
     shared actual [] cycled => this;
     
-    "Returns an `Empty`."
+    "Returns `[]`."
     shared actual [] paired => this;
     
     "Returns an iterator that is already exhausted."
     shared actual 
     Iterator<Nothing> iterator() => emptyIterator;
     
-    "Returns an `Empty` for any given measure."
+    "Returns `[]` for any given measure."
     shared actual 
     [] measure(Integer from, Integer length) => this;
     
-    "Returns an `Empty` for any given span."
+    "Returns `[]` for any given span."
     shared actual 
     [] span(Integer from, Integer to) => this;
     
-    "Returns an `Empty` for any given span."
+    "Returns `[]` for any given span."
     shared actual 
     [] spanTo(Integer to) => this;
     
-    "Returns an `Empty` for any given span."
+    "Returns `[]` for any given span."
     shared actual 
     [] spanFrom(Integer from) => this;
     

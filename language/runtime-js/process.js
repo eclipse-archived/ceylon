@@ -7,8 +7,8 @@ if (typeof navigator !== "undefined") {
     if (navigator.platform !== undefined) {
         properties["os.name"] = $_String(navigator.platform);
     }
-    if (navigator.userLanguage||navigator.browserLanguage||navigator.language) {
-        properties["user.locale"]=$_String(navigator.userLanguage||navigator.browserLanguage||navigator.language);
+    if (navigator.languages||navigator.userLanguage||navigator.browserLanguage||navigator.language) {
+        properties["user.locale"]=$_String((navigator.languages || [navigator.userLanguage||navigator.browserLanguage||navigator.language])[0]);
     }
 }
 if (typeof process !== "undefined") {

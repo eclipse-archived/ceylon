@@ -109,7 +109,8 @@ public final class Float
     
     @Ignore
     public static double power(double value, double otherValue) {
-        if (otherValue==0.0) {
+        if (otherValue==0.0 && 
+                !Double.isNaN(value)) {
             return 1.0;
         }
         else if (otherValue==1.0) {
@@ -143,6 +144,12 @@ public final class Float
         }
         else if (otherValue==-0.25) {
             return 1.0/Math.sqrt(Math.sqrt(value));
+        }
+        else if (value==1.0) {
+            return 1.0;
+        }
+        else if (value==-1.0 && (otherValue == Double.POSITIVE_INFINITY || otherValue == Double.NEGATIVE_INFINITY)) {
+            return 1.0;
         }
         else {
             //NOTE: this function is _really_ slow!
@@ -528,7 +535,8 @@ public final class Float
     }
     
     public static double powerOfInteger(double value, long integer) {
-        if (integer == 0) {
+        if (integer == 0 && 
+                !Double.isNaN(value)) {
             return 1.0;
         }
         else if (integer == 1) {

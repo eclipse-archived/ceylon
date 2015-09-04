@@ -65,6 +65,7 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
 import com.redhat.ceylon.model.cmr.JDKUtils;
 import com.redhat.ceylon.model.loader.ModelLoader.DeclarationType;
+import com.redhat.ceylon.model.loader.JvmBackendUtil;
 import com.redhat.ceylon.model.loader.NamingBase;
 import com.redhat.ceylon.model.loader.impl.reflect.mirror.ReflectionClass;
 import com.redhat.ceylon.model.loader.impl.reflect.mirror.ReflectionMethod;
@@ -101,6 +102,9 @@ public class Metamodel {
     private static RuntimeModuleManager moduleManager;
     
     // FIXME: this will need better thinking in terms of memory usage
+    private static Map<java.lang.Class, ceylon.language.meta.declaration.NestableDeclaration> classToDeclaration
+    = new HashMap<java.lang.Class, ceylon.language.meta.declaration.NestableDeclaration>();
+    
     private static Map<com.redhat.ceylon.model.typechecker.model.Declaration, Object> typeCheckModelToRuntimeModel
         = new HashMap<com.redhat.ceylon.model.typechecker.model.Declaration, Object>();
 
@@ -130,6 +134,7 @@ public class Metamodel {
         moduleManager = new RuntimeModuleManager();
         moduleManager.initCoreModules(new Modules());
         moduleManager.prepareForTypeChecking();
+        classToDeclaration.clear();
         typeCheckModelToRuntimeModel.clear();
         typeCheckModulesToRuntimeModel.clear();
         typeCheckPackagesToRuntimeModel.clear();
@@ -1173,11 +1178,7 @@ public class Metamodel {
     }
     
     public static boolean isCeylon(com.redhat.ceylon.model.typechecker.model.ClassOrInterface declaration){
-        if(declaration instanceof LazyClass)
-            return ((LazyClass) declaration).isCeylon();
-        if(declaration instanceof LazyInterface)
-            return ((LazyInterface) declaration).isCeylon();
-        throw Metamodel.newModelError("Declaration type not supported: "+declaration);
+        return JvmBackendUtil.isCeylon(declaration);
     }
 
     public static TypeDescriptor getTypeDescriptorForArguments(com.redhat.ceylon.model.typechecker.model.Unit unit, 
@@ -1210,13 +1211,20 @@ public class Metamodel {
      * In theory this can only be used for ClassOrInterface or TypeAlias.
      */
     public static ceylon.language.meta.declaration.NestableDeclaration getOrCreateMetamodel(java.lang.Class<?> klass){
-        // FIXME: is this really enough?
-        String typeName = klass.getName();
-        com.redhat.ceylon.model.typechecker.model.Module module = moduleManager.findModuleForClass(klass);
-        com.redhat.ceylon.model.typechecker.model.TypeDeclaration decl = 
-                (com.redhat.ceylon.model.typechecker.model.TypeDeclaration) 
-                    moduleManager.getModelLoader().getDeclaration(module, typeName, DeclarationType.TYPE);
-        return (ceylon.language.meta.declaration.NestableDeclaration) getOrCreateMetamodel(decl);
+        synchronized(getLock()){
+            ceylon.language.meta.declaration.NestableDeclaration result = classToDeclaration.get(klass);
+            if (result == null) {
+                // FIXME: is this really enough?
+                String typeName = klass.getName();
+                com.redhat.ceylon.model.typechecker.model.Module module = moduleManager.findModuleForClass(klass);
+                com.redhat.ceylon.model.typechecker.model.TypeDeclaration decl = 
+                        (com.redhat.ceylon.model.typechecker.model.TypeDeclaration) 
+                            moduleManager.getModelLoader().getDeclaration(module, typeName, DeclarationType.TYPE);
+                result = (ceylon.language.meta.declaration.NestableDeclaration) getOrCreateMetamodel(decl);
+                classToDeclaration.put(klass, result);
+            }
+            return result;
+        }
     }
 
     public static TypeDescriptor getTypeDescriptorForFunction(Reference appliedFunction) {

@@ -9,7 +9,7 @@ import java.lang.annotation.Target;
  * Annotation applied to Java elements which have a different name in Ceylon
  */
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.PARAMETER, ElementType.TYPE, ElementType.FIELD, ElementType.CONSTRUCTOR})
+@Target({ElementType.PARAMETER, ElementType.TYPE, ElementType.FIELD, ElementType.CONSTRUCTOR, ElementType.METHOD})
 public @interface Name {
     /** The Ceylon name of the annotated element. */
     String value() default "";

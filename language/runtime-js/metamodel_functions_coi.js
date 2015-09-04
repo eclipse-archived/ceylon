@@ -134,7 +134,18 @@ function coiatr$(coi,name,m,noInherit){
   if (!at) {
     nom = '$prop$get$_' + name;
     at = _tipo.$$.prototype[nom];
-    if (!at)return null;
+    if (!at) {
+      //Last resort: check every private attribute
+      for (nom in _tipo.$$.prototype) {
+        if (nom.startsWith("$prop$get$")) {
+          var mm=getrtmm$$(_tipo.$$.prototype[nom]);
+          if (mm && mm.d && mm.d[mm.d.length-1].startsWith(name+"$")) {
+            at=_tipo.$$.prototype[nom];break;
+          }
+        }
+      }
+      if (!at)return null;
+    }
   }
   var mm=getrtmm$$(at);
   var _t=m.Get$getAttribute;
@@ -327,7 +338,7 @@ function coistr$(coi) {
     } else if (t.t==='T') {
       s+= '[';
       for (var tttt=0; tttt<t.l.length;tttt++) {
-        if (tttt>0)tttt+=',';
+        if (tttt>0)s+=',';
         s+=qname$(t.l[tttt]);
       }
       s+=']';
@@ -542,9 +553,16 @@ function coirestarg$(root,type) {
   if (type.a) {
     var t2 = {t:type.t, a:{}};
     for (var targ in type.a) {
-      t2.a[targ]=typeof(type.a[targ])==='string' ?
-        t2.a[targ]=root.$$targs$$.Type$ClassOrInterface.a[type.a[targ]]
-        : t2.a[targ]=type.a[targ];
+      if (typeof(type.a[targ])==='string') {
+        var ttt=root.$$targs$$.Type$ClassOrInterface;
+        if (ttt.t==='T') {
+          t2.a[targ]=ttt;
+        } else {
+          t2.a[targ]=ttt.a[type.a[targ]]
+        }
+      } else {
+        t2.a[targ]=type.a[targ];
+      }
       if (t2.a[targ] && t2.a[targ].a) {
         t2.a[targ]=coirestarg$(root,t2.a[targ]);
       }
