@@ -1636,6 +1636,8 @@ shared void checkObjectMemberReferences(){
 shared void checkConstructors2() {
     value inst = Constructors<String>();
     inst.test();
+    
+    ValueConstructors.sharedCtor.test();
     object ifaceInst satisfies InterfaceConstructors<String> {
     }
     ifaceInst.test();

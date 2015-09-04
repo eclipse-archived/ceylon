@@ -53,7 +53,7 @@ public class FreeCallableConstructor
     
     public FreeCallableConstructor(com.redhat.ceylon.model.typechecker.model.Functional function, Constructor constructor) {
         super((com.redhat.ceylon.model.typechecker.model.Declaration)function);
-        List<com.redhat.ceylon.model.typechecker.model.TypeParameter> typeParameters = ((Generic) declaration).getTypeParameters();
+        List<com.redhat.ceylon.model.typechecker.model.TypeParameter> typeParameters = ((Generic) constructor.getContainer()).getTypeParameters();
         ceylon.language.meta.declaration.TypeParameter[] typeParametersArray = new ceylon.language.meta.declaration.TypeParameter[typeParameters.size()];
         int i=0;
         for(com.redhat.ceylon.model.typechecker.model.TypeParameter tp : typeParameters){
@@ -192,12 +192,7 @@ public class FreeCallableConstructor
     @Override
     public Object invoke(Sequential<? extends Type<? extends Object>> typeArguments,
             Sequential<? extends Object> arguments) {
-        if (!typeArguments.getEmpty()) {
-            throw new TypeApplicationException("Constructors do not accept type arguments");
-        }
-        // TODO Auto-generated method stub
-        apply(Anything.$TypeDescriptor$, TypeDescriptor.NothingType, typeArguments).apply(arguments);
-        return null;
+        return apply(Anything.$TypeDescriptor$, TypeDescriptor.NothingType, typeArguments).apply(arguments);
     }
     
 
