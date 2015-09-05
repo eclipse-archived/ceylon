@@ -760,7 +760,9 @@ public class TypeUtils {
                     } else if (p instanceof com.redhat.ceylon.model.typechecker.model.Interface) {
                         sb.add(i, MetamodelGenerator.KEY_INTERFACES);
                     } else if (p instanceof Function) {
-                        sb.add(i, MetamodelGenerator.KEY_METHODS);
+                        if (!p.isAnonymous()) {
+                            sb.add(i, MetamodelGenerator.KEY_METHODS);
+                        }
                     } else if (p instanceof TypeAlias || p instanceof Setter) {
                         sb.add(i, MetamodelGenerator.KEY_ATTRIBUTES);
                     } else if (p instanceof Constructor) {
@@ -772,6 +774,10 @@ public class TypeUtils {
                     }
                 }
                 p = ModelUtil.getContainingDeclaration(p);
+                while (p != null  && p instanceof ClassOrInterface == false &&
+                        !(p.isToplevel() || p.isAnonymous() || p.isClassOrInterfaceMember() || p.isCaptured())) {
+                    p = ModelUtil.getContainingDeclaration(p);
+                }
             }
         }
         return sb;
@@ -835,6 +841,18 @@ public class TypeUtils {
         if (!d.isToplevel()) {
             //Find the first container that is a Declaration
             Declaration _cont = ModelUtil.getContainingDeclaration(d);
+            //Skip over anonymous types/funs as well as local non-captured fields
+            while (_cont.isAnonymous() || !(_cont.isToplevel() || _cont.isClassOrInterfaceMember()
+                    || _cont instanceof Value == false)) {
+                //Captured values will have a metamodel so we don't skip those
+                //Neither do we skip classes, even if they're anonymous
+                if ((_cont instanceof Value && (((Value)_cont).isCaptured())) || _cont instanceof Class) {
+                    break;
+                }
+                Declaration __d = ModelUtil.getContainingDeclaration(_cont);
+                if (__d==null)break;
+                _cont=__d;
+            }
             gen.out(",$cont:");
             boolean generateName = true;
             if (_cont.getName() != null && _cont.getName().startsWith("anonymous#")) {

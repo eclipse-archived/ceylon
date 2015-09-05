@@ -23,7 +23,17 @@ import com.redhat.ceylon.model.typechecker.model.TypeParameter;
 import com.redhat.ceylon.model.typechecker.model.Value;
 
 public class Singletons {
-    
+    /** Generate an object definition, that is, define an anonymous class and then a function
+     * to return a single instance of it.
+     * @param that The node with the definition (can be ObjectDefinition, ObjectExpression, ObjectArgument)
+     * @param d The Value declaration for the object
+     * @param sats The list of satisfied types of the anonymous class
+     * @param superType The supertype of the anonymous class
+     * @param superCall The invocation of the supertype (object bla extends Foo(x))
+     * @param body The object definition's body
+     * @param annots The annotations (in case of ObjectDefinition)
+     * @param gen The main visitor/generator.
+     */
     static void defineObject(final Node that, final Value d, final List<Type> sats,
             final Tree.SimpleType superType, final Tree.InvocationExpression superCall,
             final Tree.Body body, final Tree.AnnotationList annots, final GenerateJsVisitor gen, InitDeferrer initDeferrer) {
