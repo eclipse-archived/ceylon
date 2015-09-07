@@ -2051,8 +2051,8 @@ if (is Usable tx) { ... }</programlisting>
                     by the compiler as having type <literal>T&amp;Object</literal> inside the block 
                     or expression that immediately follows the condition, where the conditional 
                     expression is of type <literal>T</literal>, and, if this is the only condition 
-                    in the condition list, as having the type <literal>Null</literal> inside the 
-                    following <literal>else</literal> block or expression if any.</para>
+                    in the condition list, as having the type <literal>T&amp;Null</literal> inside 
+                    the following <literal>else</literal> block or expression if any.</para>
                 </listitem>
             </itemizedlist>
             
@@ -2060,18 +2060,18 @@ if (is Usable tx) { ... }</programlisting>
             
             <itemizedlist>
                 <listitem>
-                    <para>if the condition has a pattern, it must be a pattern variable, the
-                    patterned type is <literal>Null</literal>, and the declared type of the 
-                    variable, if any, must be <literal>Null</literal>, or</para>
+                    <para>if the condition has a pattern, it must be a pattern variable, and the
+                    patterned type is <literal>T&amp;Null</literal>, where the specifier expression 
+                    is of type <literal>T</literal>, and the declared type of the variable, if any, 
+                    must be <literal>Null</literal>, or</para>
                 </listitem>
                 <listitem>
                     <para>if the condition contains a value reference, the value will be treated 
-                    by the compiler as having type <literal>Null</literal> inside the block or 
-                    expression that immediately follows the condition, and, if this is the only 
-                    condition in the condition list, as having the type 
-                    <literal>T&amp;Object</literal> inside the following <literal>else</literal> 
-                    block or expression if any, where the conditional expression is of type 
-                    <literal>T</literal>.</para>
+                    by the compiler as having type <literal>T&amp;Null</literal> inside the block 
+                    or expression that immediately follows the condition, where the conditional 
+                    expression is of type <literal>T</literal>, and, if this is the only condition 
+                    in the condition list, as having the type <literal>T&amp;Object</literal> 
+                    inside the following <literal>else</literal> block or expression if any.</para>
                 </listitem>
             </itemizedlist>
             
@@ -2092,7 +2092,7 @@ if (is Usable tx) { ... }</programlisting>
                     or expression that immediately follows the condition, where the conditional 
                     expression is of type <literal>T</literal> and <literal>T</literal> has the 
                     principal instantiation <literal>E[]?</literal>, and, if this is the only 
-                    condition in the condition list, as having the type <literal>[]</literal> 
+                    condition in the condition list, as having the type <literal>T&amp;[]</literal> 
                     inside the following <literal>else</literal> block or expression if any.</para>
                 </listitem>
             </itemizedlist>
@@ -2101,18 +2101,20 @@ if (is Usable tx) { ... }</programlisting>
             
             <itemizedlist>
                 <listitem>
-                    <para>if the condition has a pattern, it must be a pattern variable, the
-                    patterned type is <literal>[]</literal>, and the declared type of the variable,
+                    <para>if the condition has a pattern, it must be a pattern variable, and the
+                    patterned type is <literal>T&amp;[]</literal>, where the specifier expression is 
+                    of type <literal>T</literal> and <literal>T</literal> has the principal 
+                    instantiation <literal>E[]?</literal>, and the declared type of the variable,
                     if any, must be <literal>[]</literal>, or</para>
                 </listitem>
                 <listitem>
                     <para>if the condition contains a value reference, the value will be treated 
-                    by the compiler as having type <literal>[]</literal> inside the block or 
-                    expression that immediately follows the condition, and, if this is the only 
+                    by the compiler as having type <literal>T&amp;[]</literal> inside the block or 
+                    expression that immediately follows the condition, where the conditional 
+                    expression is of type <literal>T</literal> and <literal>T</literal> has the 
+                    principal instantiation <literal>E[]?</literal>, and, if this is the only 
                     condition in the condition list, as having the type <literal>T&amp;[E+]</literal> 
-                    inside the following <literal>else</literal> block or expression if any, where 
-                    the conditional expression is of type <literal>T</literal> and <literal>T</literal> 
-                    has the principal instantiation <literal>E[]?</literal>.</para>
+                    inside the following <literal>else</literal> block or expression if any.</para>
                 </listitem>
             </itemizedlist>
             
