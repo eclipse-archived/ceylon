@@ -168,6 +168,7 @@ class Constructor implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Enumerated
+    @.com.redhat.ceylon.compiler.java.metadata.Name("val")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.annotations::Constructor.val")
     public static final .com.redhat.ceylon.compiler.java.test.annotations.Constructor getConstructor$val() {
         return val;

@@ -18,6 +18,7 @@ class Bug2176C implements .com.redhat.ceylon.compiler.java.runtime.model.Reified
     private Inner $instance$Inner$instance = null;
     
     @.com.redhat.ceylon.compiler.java.metadata.Enumerated
+    @.com.redhat.ceylon.compiler.java.metadata.Name("instance")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.structure.constructor::Bug2176C.Inner.instance")
     .com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2176C.Inner getInner$instance() {
         if ($instance$Inner$instance == null) $instance$Inner$instance = new Inner((.com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2176C.Inner$instance)null);
