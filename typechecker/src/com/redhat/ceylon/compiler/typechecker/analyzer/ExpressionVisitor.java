@@ -2269,10 +2269,10 @@ public class ExpressionVisitor extends Visitor {
             Tree.LocalModifier local = 
                     (Tree.LocalModifier) type;
             if (not) {
-                Type nullType = 
-                        unit.getNullType();
+                Type nullType = unit.getNullType();
                 local.setTypeModel(nullType);
-                that.getDeclarationModel().setType(nullType);
+                that.getDeclarationModel()
+                    .setType(nullType);
             }
             else if (se!=null) {
                 setTypeFromOptionalType(local, se, that);
@@ -2287,10 +2287,10 @@ public class ExpressionVisitor extends Visitor {
             Tree.LocalModifier local = 
                     (Tree.LocalModifier) type;
             if (not) {
-                Type emptyType= 
-                        unit.getEmptyType();
+                Type emptyType = unit.getEmptyType();
                 local.setTypeModel(emptyType);
-                that.getDeclarationModel().setType(emptyType);
+                that.getDeclarationModel()
+                    .setType(emptyType);
             }
             else if (se!=null) {
                 setTypeFromEmptyType(local, se, that);
@@ -2344,55 +2344,58 @@ public class ExpressionVisitor extends Visitor {
         }
     }
     
-    private void setTypeFromOptionalType(Tree.LocalModifier local, 
+    private void setTypeFromOptionalType(
+            Tree.LocalModifier local, 
             Tree.SpecifierExpression se, Tree.Variable that) {
         Tree.Expression e = se.getExpression();
         if (e!=null) {
             Type expressionType = e.getTypeModel();
             if (!isTypeUnknown(expressionType)) {
-                Type t;
                 if (unit.isOptionalType(expressionType)) {
-                    t = unit.getDefiniteType(expressionType);
+                    expressionType = 
+                            unit.getDefiniteType(
+                                    expressionType);
                 }
-                else {
-                    t=expressionType;
-                }
-                local.setTypeModel(t);
-                that.getDeclarationModel().setType(t);
+                local.setTypeModel(expressionType);
+                that.getDeclarationModel()
+                    .setType(expressionType);
             }
         }
     }
     
-    private void setTypeFromEmptyType(Tree.LocalModifier local, 
+    private void setTypeFromEmptyType(
+            Tree.LocalModifier local, 
             Tree.SpecifierExpression se, Tree.Variable that) {
         Tree.Expression e = se.getExpression();
         if (e!=null) {
             Type expressionType = e.getTypeModel();
             if (!isTypeUnknown(expressionType)) {
-                Type t;
                 if (unit.isPossiblyEmptyType(expressionType)) {
-                    t = unit.getNonemptyDefiniteType(expressionType);
+                    expressionType = 
+                            unit.getNonemptyDefiniteType(
+                                    expressionType);
                 }
-                else {
-                    t = expressionType;
-                }
-                local.setTypeModel(t);
-                that.getDeclarationModel().setType(t);
+                local.setTypeModel(expressionType);
+                that.getDeclarationModel()
+                    .setType(expressionType);
             }
         }
     }
     
-    private void setTypeFromIterableType(Tree.LocalModifier local, 
+    private void setTypeFromIterableType(
+            Tree.LocalModifier local, 
             Tree.SpecifierExpression se, Tree.Variable that) {
-        if (se.getExpression()!=null) {
+        Tree.Expression e = se.getExpression();
+        if (e!=null) {
             Type expressionType = 
-                    se.getExpression().getTypeModel();
+                    e.getTypeModel();
             if (expressionType!=null) {
-                Type t = 
+                expressionType = 
                         unit.getIteratedType(expressionType);
-                if (t!=null) {
-                    local.setTypeModel(t);
-                    that.getDeclarationModel().setType(t);
+                if (expressionType!=null) {
+                    local.setTypeModel(expressionType);
+                    that.getDeclarationModel()
+                        .setType(expressionType);
                 }
             }
         }
@@ -2446,9 +2449,7 @@ public class ExpressionVisitor extends Visitor {
         if (e!=null) {
             Type type = e.getTypeModel();
             if (type!=null) {
-                Type t = 
-                        unit.denotableType(type)
-                            .withoutUnderlyingType();
+                Type t = inferrableType(type);
                 local.setTypeModel(t);
                 that.getDeclarationModel().setType(t);
             }
@@ -2462,49 +2463,45 @@ public class ExpressionVisitor extends Visitor {
         if (e!=null) {
             Type type = e.getTypeModel();
             if (type!=null) {
-                Type t = 
-                        unit.denotableType(type)
-                            .withoutUnderlyingType();
+                Type t = inferrableType(type);
                 local.setTypeModel(t);
                 that.getDeclarationModel().setType(t);
             }
         }
     }
         
-    private void setSequencedValueType(Tree.SequencedType spread, 
+    private void setSequencedValueType(
+            Tree.SequencedType spread, 
             Type et, Tree.TypedDeclaration that) {
-        Type t = 
-                unit.denotableType(et)
-                    .withoutUnderlyingType();
+        Type t = inferrableType(et);
         spread.setTypeModel(t);
         that.getDeclarationModel().setType(t);
     }
         
     private void setValueType(Tree.ValueModifier local, 
             Type et, Tree.TypedDeclaration that) {
-        Type t = 
-                unit.denotableType(et)
-                    .withoutUnderlyingType();
+        Type t = inferrableType(et);
         local.setTypeModel(t);
         that.getDeclarationModel().setType(t);
     }
         
     private void setFunctionType(Tree.FunctionModifier local, 
             Type et, Tree.TypedDeclaration that) {
-        Type t = 
-                unit.denotableType(et)
-                    .withoutUnderlyingType();
+        Type t = inferrableType(et);
         local.setTypeModel(t);
         that.getDeclarationModel().setType(t);
     }
         
     private void setFunctionType(Tree.FunctionModifier local, 
             Type et, Tree.MethodArgument that) {
-        Type t = 
-                unit.denotableType(et)
-                    .withoutUnderlyingType();
+        Type t = inferrableType(et);
         local.setTypeModel(t);
         that.getDeclarationModel().setType(t);
+    }
+
+    private Type inferrableType(Type et) {
+        return unit.denotableType(et)
+            .withoutUnderlyingType();
     }
         
     @Override public void visit(Tree.Throw that) {
