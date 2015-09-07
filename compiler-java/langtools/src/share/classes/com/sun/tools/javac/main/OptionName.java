@@ -84,6 +84,7 @@ public enum OptionName {
     CEYLONOFFLINE("-offline"),
     CEYLONTIMEOUT("-timeout"),
     CEYLONCONTINUE("-continue"),
+    CEYLONPROGRESS("-progress"),
     // Backwards-compat
     CEYLONMAVENOVERRIDES("-maven-overrides"),
     CEYLONOVERRIDES("-overrides"),

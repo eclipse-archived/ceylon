@@ -166,6 +166,7 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
     private List<File> resources = DefaultToolOptions.getCompilerResourceDirs();
     private List<String> modulesOrFiles = Arrays.asList("*");
     private boolean continueOnErrors;
+    private boolean progress;
     private List<String> javac = Collections.emptyList();
     private String encoding;
     private String resourceRoot = DefaultToolOptions.getCompilerResourceRootName();
@@ -251,6 +252,12 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
     @Description("Set to continue compiling even when errors are found.")
     public void setContinueOnErrors(boolean continueOnErrors) {
         this.continueOnErrors = continueOnErrors;
+    }
+
+    @Option(longName="progress")
+    @Description("Print progress information.")
+    public void setProgress(boolean progress) {
+        this.progress = progress;
     }
 
     @OptionArgument(shortName='E', argumentName="encoding")
@@ -359,7 +366,11 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
         if (continueOnErrors) {
             arguments.add("-continue");
         }
-        
+
+        if (progress) {
+            arguments.add("-progress");
+        }
+
         if (offline) {
             arguments.add("-offline");
         }

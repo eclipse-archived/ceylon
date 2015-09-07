@@ -61,6 +61,7 @@ import org.antlr.runtime.CommonTokenStream;
 import com.redhat.ceylon.cmr.util.JarUtils;
 import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.common.FileUtil;
+import com.redhat.ceylon.common.StatusPrinter;
 import com.redhat.ceylon.compiler.java.codegen.CeylonClassWriter;
 import com.redhat.ceylon.compiler.java.codegen.CeylonCompilationUnit;
 import com.redhat.ceylon.compiler.java.codegen.CeylonFileObject;
@@ -124,6 +125,9 @@ public class LanguageCompiler extends JavaCompiler {
 
     /** The context key for the ceylon context. */
     public static final Context.Key<com.redhat.ceylon.compiler.typechecker.context.Context> ceylonContextKey = new Context.Key<com.redhat.ceylon.compiler.typechecker.context.Context>();
+
+    /** The context key for the StatusPrinter. */
+    public static final Context.Key<StatusPrinter> statusPrinterKey = new Context.Key<StatusPrinter>();
 
     private final CeylonTransformer gen;
     private final PhasedUnits phasedUnits;
@@ -190,6 +194,16 @@ public class LanguageCompiler extends JavaCompiler {
         return ceylonContext;
     }
 
+    /** Get the StatusPrinter instance for this context. */
+    public static StatusPrinter getStatusPrinterInstance(Context context) {
+        StatusPrinter statusPrinter = context.get(statusPrinterKey);
+        if (statusPrinter == null) {
+            statusPrinter = new StatusPrinter();
+            context.put(statusPrinterKey, statusPrinter);
+        }
+        return statusPrinter;
+    }
+
     /** Get the JavaCompiler instance for this context. */
     public static JavaCompiler instance(Context context) {
         Options options = Options.instance(context);
@@ -221,6 +235,10 @@ public class LanguageCompiler extends JavaCompiler {
         isBootstrap = options.get(OptionName.BOOTSTRAPCEYLON) != null;
         timer = Timer.instance(context);
         sourceLanguage = SourceLanguage.instance(context);
+        boolean isProgressPrinted = options.get(OptionName.CEYLONPROGRESS) != null && StatusPrinter.canPrint();
+        if(isProgressPrinted && taskListener == null){
+            taskListener = new StatusPrinterTaskListener(getStatusPrinterInstance(context));
+        }
     }
 
     @Override

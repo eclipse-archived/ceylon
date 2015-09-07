@@ -36,6 +36,7 @@ import org.antlr.runtime.Token;
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.impl.InvalidArchiveException;
+import com.redhat.ceylon.common.StatusPrinter;
 import com.redhat.ceylon.compiler.java.codegen.AnnotationModelVisitor;
 import com.redhat.ceylon.compiler.java.codegen.BoxingDeclarationVisitor;
 import com.redhat.ceylon.compiler.java.codegen.BoxingVisitor;
@@ -53,6 +54,7 @@ import com.redhat.ceylon.compiler.java.tools.CeylonLog;
 import com.redhat.ceylon.compiler.java.tools.CeylonPhasedUnit;
 import com.redhat.ceylon.compiler.java.tools.CeyloncFileManager;
 import com.redhat.ceylon.compiler.java.tools.LanguageCompiler;
+import com.redhat.ceylon.compiler.java.tools.StatusPrinterTaskListener;
 import com.redhat.ceylon.compiler.java.tools.LanguageCompiler.CompilerDelegate;
 import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.compiler.typechecker.analyzer.AnalysisError;
@@ -141,6 +143,7 @@ public class CeylonEnter extends Enter {
     private Set<Module> modulesAddedToClassPath = new HashSet<Module>();
     private TaskListener taskListener;
     private SourceLanguage sourceLanguage;
+    private StatusPrinter sp;
 
     
     protected CeylonEnter(Context context) {
@@ -173,6 +176,13 @@ public class CeylonEnter extends Enter {
 
         // now superclass init
         init(context);
+        
+        boolean isProgressPrinted = options.get(OptionName.CEYLONPROGRESS) != null && StatusPrinter.canPrint();
+        if(isProgressPrinted && taskListener == null){
+            sp = LanguageCompiler.getStatusPrinterInstance(context);
+        }else{
+            sp = null;
+        }
     }
 
     @Override
@@ -353,11 +363,24 @@ public class CeylonEnter extends Enter {
          * Here we convert the ceylon tree to its javac AST, after the typechecker has run
          */
         Timer nested = timer.nestedTimer();
+        if(sp != null){
+            sp.clearLine();
+            sp.log("Generating AST");
+        }
+        int i=1;
+        int size = trees.size();
         for (JCCompilationUnit tree : trees) {
             if (tree instanceof CeylonCompilationUnit) {
                 CeylonCompilationUnit ceylonTree = (CeylonCompilationUnit) tree;
                 gen.setMap(ceylonTree.lineMap);
                 CeylonPhasedUnit phasedUnit = (CeylonPhasedUnit)ceylonTree.phasedUnit;
+
+                if(sp != null){
+                    sp.clearLine();
+                    sp.log("Generating ["+(i++)+"/"+size+"] ");
+                    sp.log(phasedUnit.getPathRelativeToSrcDir());
+                }
+
                 gen.setFileObject(phasedUnit.getFileObject());
                 nested.startTask("Ceylon code generation for " + phasedUnit.getUnitFile().getName());
                 TaskEvent event = new TaskEvent(TaskEvent.Kind.PARSE, tree);
@@ -454,13 +477,22 @@ public class CeylonEnter extends Enter {
 
     private void typeCheck() {
         final java.util.List<PhasedUnit> listOfUnits = phasedUnits.getPhasedUnits();
-
         // Delegate to an external typechecker (e.g. the IDE build)
         compilerDelegate.typeCheck(listOfUnits);
 
+        if(sp != null){
+            sp.clearLine();
+            sp.log("Preparation phase");
+        }
+
+        int size = listOfUnits.size();
+        
+        int i=1;
         // This phase is proper to the Java backend 
         ForcedCaptureVisitor fcv = new ForcedCaptureVisitor();
         for (PhasedUnit pu : listOfUnits) {
+            if(sp != null)
+                progressPreparation(1, i++, size, pu);
             Unit unit = pu.getUnit();
             final CompilationUnit compilationUnit = pu.getCompilationUnit();
             compilationUnit.visit(fcv);
@@ -485,14 +517,23 @@ public class CeylonEnter extends Enter {
         // Extra phases for the compiler
         
         // boxing visitor depends on boxing decl
+        i=1;
         for (PhasedUnit pu : listOfUnits) {
+            if(sp != null)
+                progressPreparation(2, i++, size, pu);
             pu.getCompilationUnit().visit(uv);
         }
+        i=1;
         for (PhasedUnit pu : listOfUnits) {
+            if(sp != null)
+                progressPreparation(3, i++, size, pu);
             pu.getCompilationUnit().visit(boxingDeclarationVisitor);
         }
+        i=1;
         // the others can run at the same time
         for (PhasedUnit pu : listOfUnits) {
+            if(sp != null)
+                progressPreparation(4, i++, size, pu);
             CompilationUnit compilationUnit = pu.getCompilationUnit();
             compilationUnit.visit(boxingVisitor);
             compilationUnit.visit(deferredVisitor);
@@ -502,12 +543,21 @@ public class CeylonEnter extends Enter {
             compilationUnit.visit(localInterfaceVisitor);
         }
         
+        i=1;
         for (PhasedUnit pu : listOfUnits) {
+            if(sp != null)
+                progressPreparation(5, i++, size, pu);
             CompilationUnit compilationUnit = pu.getCompilationUnit();
             compilationUnit.visit(new WarningSuppressionVisitor<Warning>(Warning.class, pu.getSuppressedWarnings()));
         }
         
         collectTreeErrors(true, true);
+    }
+
+    private void progressPreparation(int phase, int i, int size, PhasedUnit pu) {
+        sp.clearLine();
+        sp.log("Preparing "+phase+"/5 ["+(i++)+"/"+size+"] ");
+        sp.log(pu.getPathRelativeToSrcDir());
     }
 
     private void collectTreeErrors(boolean runAssertions, final boolean reportWarnings) {
