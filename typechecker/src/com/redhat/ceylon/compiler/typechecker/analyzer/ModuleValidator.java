@@ -44,6 +44,9 @@ public class ModuleValidator {
 
     public static interface ProgressListener {
         void retrievingModuleArtifact(Module module, ArtifactContext artifactContext);
+        void retrievingModuleArtifactFailed(Module module, ArtifactContext artifactContext);
+        void retrievingModuleArtifactSuccess(Module module, ArtifactResult artifact);
+
         void resolvingModuleArtifact(Module module, ArtifactResult artifactResult);
     }
     private ProgressListener listener = new ProgressListener() {
@@ -55,6 +58,14 @@ public class ModuleValidator {
         @Override
         public void retrievingModuleArtifact(Module module,
                 ArtifactContext artifactContext) {
+        }
+
+        @Override
+        public void retrievingModuleArtifactFailed(Module module, ArtifactContext artifactContext) {
+        }
+
+        @Override
+        public void retrievingModuleArtifactSuccess(Module module, ArtifactResult artifact) {
         }
     };
     
@@ -223,6 +234,9 @@ public class ModuleValidator {
                     if (artifact == null) {
                         //not there => error
                         ModuleHelper.buildErrorOnMissingArtifact(artifactContext, module, moduleImport, dependencyTree, exceptionOnGetArtifact, moduleManagerUtil);
+                        listener.retrievingModuleArtifactFailed(module, artifactContext);
+                    }else{
+                        listener.retrievingModuleArtifactSuccess(module, artifact);
                     }
                     alreadySearchedArtifacts.put(module, artifact);
                 }
