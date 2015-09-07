@@ -181,7 +181,7 @@ public abstract class ModuleWildcardsHelper {
             if (includeModule(modName, root, prefix, forBackend)) {
                 modules.add(modName);
             }
-        } else if (first || prefix == null) {
+        } else if (first || prefix == null || prefix.isEmpty()) {
             File[] files = dir.listFiles();
             for (File f : files) {
                 if (f.isDirectory() && f.canRead() && isModuleName(f.getName())) {
