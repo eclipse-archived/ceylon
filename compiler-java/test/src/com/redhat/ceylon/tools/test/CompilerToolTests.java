@@ -155,7 +155,23 @@ public class CompilerToolTests extends AbstractToolTests {
         tool.run();
         assertTrue(carFile1.exists() && carFile2.exists());
     }
-    
+
+    @Test
+    public void testCompileMultipleAutodetect()  throws Exception {
+        File carFile1 = getModuleArchive("com.first", "1");
+        carFile1.delete();
+        File carFile2 = getModuleArchive("com.second", "1");
+        carFile2.delete();
+        File carFile3 = getModuleArchive("single", "1");
+        carFile3.delete();
+        ToolModel<CeylonCompileTool> model = pluginLoader.loadToolModel("compile");
+        Assert.assertNotNull(model);
+        CeylonCompileTool tool = pluginFactory.bindArguments(model, getMainTool(),
+                options("--src=test/src/com/redhat/ceylon/tools/test/bugCC59"));
+        tool.run();
+        assertTrue(carFile1.exists() && carFile2.exists() && carFile3.exists());
+    }
+
     @Test
     public void testCompileNoSuchModule()  throws Exception {
         ToolModel<CeylonCompileTool> model = pluginLoader.loadToolModel("compile");
