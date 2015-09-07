@@ -218,8 +218,10 @@ public class ModuleValidator {
             boolean forCompiledModule = newImportDepth.isVisibleToCompiledModules();
             if ( ! module.isAvailable()) {
                 ArtifactResult artifact = null;
+                boolean firstTime;
                 if (alreadySearchedArtifacts.containsKey(module)) {
                     artifact = alreadySearchedArtifacts.get(module);
+                    firstTime = false;
                 } else {
                     //try and load the module from the repository
                     RepositoryManager repositoryManager = context.getRepositoryManager();
@@ -239,9 +241,15 @@ public class ModuleValidator {
                         listener.retrievingModuleArtifactSuccess(module, artifact);
                     }
                     alreadySearchedArtifacts.put(module, artifact);
+                    firstTime = true;
                 }
                 
-                if (artifact != null) {
+                // Only resolve it if it's the first time, or if it's the second time but really important because
+                // it's for a compiled module. The compiler backend does not load modules that are not directly
+                // visible to the compiled modules, so it will not make them available, not the first time, nor any
+                // subsequent time, no need to keep trying. If it's the second time we see it but the first time for
+                // a compiled module, then it MUST resolve it and make it available, so do try in this case.
+                if (artifact != null && (firstTime || forCompiledModule)) {
                     //parse module units and build module dependency and carry on
                     listener.resolvingModuleArtifact(module, artifact);
                     Module moduleOverride = moduleManager.overridesModule(artifact, module, moduleImport);
