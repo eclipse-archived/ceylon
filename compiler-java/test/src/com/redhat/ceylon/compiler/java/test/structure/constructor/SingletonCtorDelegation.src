@@ -41,7 +41,7 @@ class SingletonCtorDelegation implements .com.redhat.ceylon.compiler.java.runtim
         }
     }
     
-    public SingletonCtorDelegation(.com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtorDelegation.origin_ $name$) {
+    private SingletonCtorDelegation(.com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtorDelegation.origin_ $name$) {
         this(.com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtorDelegation.cartesian$delegation$_, 0.0, 0.0);
     }
     private static final .com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtorDelegation origin;
@@ -59,7 +59,7 @@ class SingletonCtorDelegation implements .com.redhat.ceylon.compiler.java.runtim
         }
     }
     
-    public SingletonCtorDelegation(.com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtorDelegation.oneone_ $name$) {
+    private SingletonCtorDelegation(.com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtorDelegation.oneone_ $name$) {
         this(.com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtorDelegation.cartesian$delegation$_, 1.0, 1.0);
     }
     private static final .com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtorDelegation oneone;
@@ -107,7 +107,7 @@ class SingletonCtorAbstractDelegation implements .com.redhat.ceylon.compiler.jav
         }
     }
     
-    public SingletonCtorAbstractDelegation(.com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtorAbstractDelegation.origin_ $name$) {
+    private SingletonCtorAbstractDelegation(.com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtorAbstractDelegation.origin_ $name$) {
         this(.com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtorAbstractDelegation.point_, 0.0, 0.0);
     }
     private static final .com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtorAbstractDelegation origin;
@@ -125,7 +125,7 @@ class SingletonCtorAbstractDelegation implements .com.redhat.ceylon.compiler.jav
         }
     }
     
-    public SingletonCtorAbstractDelegation(.com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtorAbstractDelegation.oneone_ $name$) {
+    private SingletonCtorAbstractDelegation(.com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtorAbstractDelegation.oneone_ $name$) {
         this(.com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtorAbstractDelegation.point_, 1.0, 1.0);
     }
     private static final .com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtorAbstractDelegation oneone;

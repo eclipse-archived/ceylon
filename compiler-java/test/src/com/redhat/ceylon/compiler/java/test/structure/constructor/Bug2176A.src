@@ -8,7 +8,7 @@ class Bug2176A implements .com.redhat.ceylon.compiler.java.runtime.model.Reified
         }
     }
     
-    public Bug2176A(.com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2176A.true_ $name$) {
+    private Bug2176A(.com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2176A.true_ $name$) {
     }
     private static final .com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2176A $true;
     static {
@@ -25,7 +25,7 @@ class Bug2176A implements .com.redhat.ceylon.compiler.java.runtime.model.Reified
         }
     }
     
-    public Bug2176A(.com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2176A.false_ $name$) {
+    private Bug2176A(.com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2176A.false_ $name$) {
     }
     private static final .com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2176A $false;
     static {

@@ -8,7 +8,7 @@ class Bug2234Sample implements .com.redhat.ceylon.compiler.java.runtime.model.Re
         }
     }
     
-    public Bug2234Sample(.com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2234Sample.foo_ $name$) {
+    private Bug2234Sample(.com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2234Sample.foo_ $name$) {
     }
     private static final .com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2234Sample foo;
     static {
@@ -54,7 +54,7 @@ class Bug2234 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
             return name;
         }
         
-        public Inner(.com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2234.Inner$foo $name$) {
+        private Inner(.com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2234.Inner$foo $name$) {
             name = "foo";
         }
         

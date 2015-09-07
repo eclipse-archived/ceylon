@@ -8,7 +8,7 @@ class Bug2262 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
         }
     }
     
-    public Bug2262(.com.redhat.ceylon.compiler.java.test.issues.bug22xx.Bug2262.bar_ $name$) {
+    private Bug2262(.com.redhat.ceylon.compiler.java.test.issues.bug22xx.Bug2262.bar_ $name$) {
     }
     private static final .com.redhat.ceylon.compiler.java.test.issues.bug22xx.Bug2262 bar;
     static {

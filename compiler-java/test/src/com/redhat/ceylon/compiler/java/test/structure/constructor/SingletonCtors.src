@@ -42,7 +42,7 @@ class SingletonCtors implements .com.redhat.ceylon.compiler.java.runtime.model.R
         }
     }
     
-    public SingletonCtors(.com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtors.one_ $name$) {
+    private SingletonCtors(.com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtors.one_ $name$) {
         string = "one";
     }
     private static final .com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtors one;
@@ -60,7 +60,7 @@ class SingletonCtors implements .com.redhat.ceylon.compiler.java.runtime.model.R
         }
     }
     
-    public SingletonCtors(.com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtors.two_ $name$) {
+    private SingletonCtors(.com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtors.two_ $name$) {
         string = "two";
     }
     private static final .com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtors two;
@@ -115,7 +115,7 @@ class ClassMemberSingletonCtors implements .com.redhat.ceylon.compiler.java.runt
             return string;
         }
         
-        public MemberClass(.com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberSingletonCtors.MemberClass$one $name$) {
+        private MemberClass(.com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberSingletonCtors.MemberClass$one $name$) {
             string = "one";
         }
         

@@ -33,7 +33,7 @@ class Bug2176C implements .com.redhat.ceylon.compiler.java.runtime.model.Reified
         @.ceylon.language.SharedAnnotation$annotation$
         @.com.redhat.ceylon.compiler.java.metadata.Name("instance")
         @.com.redhat.ceylon.compiler.java.metadata.Enumerated
-        public Inner(@.com.redhat.ceylon.compiler.java.metadata.Ignore
+        private Inner(@.com.redhat.ceylon.compiler.java.metadata.Ignore
         .com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2176C.Inner$instance $name$) {
         }
         

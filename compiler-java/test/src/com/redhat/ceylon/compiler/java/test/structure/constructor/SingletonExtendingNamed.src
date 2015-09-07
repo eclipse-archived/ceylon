@@ -26,7 +26,7 @@ class SingletonExtendingNamed_Bar extends .com.redhat.ceylon.compiler.java.test.
         }
     }
     
-    public SingletonExtendingNamed_Bar(.com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonExtendingNamed_Bar.bar_ $name$) {
+    private SingletonExtendingNamed_Bar(.com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonExtendingNamed_Bar.bar_ $name$) {
         super(.com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonExtendingNamed.foo_);
     }
     private static final .com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonExtendingNamed_Bar bar;

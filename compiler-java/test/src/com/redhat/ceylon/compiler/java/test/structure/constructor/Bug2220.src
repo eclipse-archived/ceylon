@@ -38,7 +38,7 @@ public class Bug2220 implements .com.redhat.ceylon.compiler.java.runtime.model.R
         
         public class Baz implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
             
-            public Baz(.com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2220.Bar.Baz$baz $name$) {
+            private Baz(.com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2220.Bar.Baz$baz $name$) {
             }
             
             Baz getBaz$baz() {

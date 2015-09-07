@@ -9,7 +9,7 @@ public final class run_ {
         final .ceylon.language.Callable<? extends .ceylon.language.String> getName = (.ceylon.language.Callable<? extends .ceylon.language.String>)(
             let
             {
-                final .ceylon.language.meta.model.Value $instance$ = nameValue;
+                final .ceylon.language.meta.model.Gettable $instance$ = nameValue;
             }
             returning new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "String()", (short)-1){
                 
