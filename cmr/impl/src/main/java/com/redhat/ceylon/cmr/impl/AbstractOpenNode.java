@@ -34,6 +34,7 @@ import com.redhat.ceylon.cmr.spi.ContentTransformer;
 import com.redhat.ceylon.cmr.spi.MergeStrategy;
 import com.redhat.ceylon.cmr.spi.Node;
 import com.redhat.ceylon.cmr.spi.OpenNode;
+import com.redhat.ceylon.cmr.spi.SizedInputStream;
 import com.redhat.ceylon.cmr.spi.StructureBuilder;
 
 /**
@@ -53,6 +54,10 @@ public abstract class AbstractOpenNode implements OpenNode, Serializable {
         }
 
         public InputStream getBinariesAsStream() throws IOException {
+            return null;
+        }
+
+        public SizedInputStream getBinariesAsSizedStream() throws IOException {
             return null;
         }
 

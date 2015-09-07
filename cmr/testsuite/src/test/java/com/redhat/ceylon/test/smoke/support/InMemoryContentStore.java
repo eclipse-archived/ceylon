@@ -35,6 +35,7 @@ import com.redhat.ceylon.cmr.spi.ContentOptions;
 import com.redhat.ceylon.cmr.spi.ContentStore;
 import com.redhat.ceylon.cmr.spi.Node;
 import com.redhat.ceylon.cmr.spi.OpenNode;
+import com.redhat.ceylon.cmr.spi.SizedInputStream;
 import com.redhat.ceylon.cmr.spi.StructureBuilder;
 
 /**
@@ -118,6 +119,11 @@ public class InMemoryContentStore implements ContentStore, StructureBuilder {
         @Override
         public InputStream getBinariesAsStream() throws IOException {
             return new ByteArrayInputStream(bytes);
+        }
+
+        @Override
+        public SizedInputStream getBinariesAsSizedStream() throws IOException {
+            return new SizedInputStream(getBinariesAsStream(), bytes.length);
         }
 
         @Override

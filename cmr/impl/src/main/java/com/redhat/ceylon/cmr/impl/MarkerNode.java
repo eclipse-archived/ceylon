@@ -24,6 +24,7 @@ import java.io.Serializable;
 import com.redhat.ceylon.cmr.spi.ContentOptions;
 import com.redhat.ceylon.cmr.spi.Node;
 import com.redhat.ceylon.cmr.spi.OpenNode;
+import com.redhat.ceylon.cmr.spi.SizedInputStream;
 
 /**
  * Marker node.
@@ -79,6 +80,11 @@ public class MarkerNode extends AbstractOpenNode {
 
     @Override
     public InputStream getInputStream() throws IOException {
+        return null;
+    }
+
+    @Override
+    public SizedInputStream getSizedInputStream() throws IOException {
         return null;
     }
 

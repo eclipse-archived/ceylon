@@ -27,6 +27,7 @@ import com.redhat.ceylon.cmr.spi.ContentOptions;
 import com.redhat.ceylon.cmr.spi.ContentStore;
 import com.redhat.ceylon.cmr.spi.Node;
 import com.redhat.ceylon.cmr.spi.OpenNode;
+import com.redhat.ceylon.cmr.spi.SizedInputStream;
 
 /**
  * Default node impl.
@@ -190,9 +191,15 @@ public class DefaultNode extends AbstractOpenNode {
 
     @Override
     public InputStream getInputStream() throws IOException {
+        SizedInputStream sizedInputStream = getSizedInputStream();
+        return sizedInputStream != null ? sizedInputStream.inputStream : null;
+    }
+    
+    @Override
+    public SizedInputStream getSizedInputStream() throws IOException {
         synchronized (this) {
             if (handle != null)
-                return handle.getBinariesAsStream();
+                return handle.getBinariesAsSizedStream();
         }
 
         final ContentStore cs = findService(ContentStore.class);
@@ -205,7 +212,7 @@ public class DefaultNode extends AbstractOpenNode {
             handle = ch;
         }
 
-        return ch.getBinariesAsStream();
+        return ch.getBinariesAsSizedStream();
     }
 
     @Override

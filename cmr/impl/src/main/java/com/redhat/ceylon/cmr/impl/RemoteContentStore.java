@@ -32,6 +32,7 @@ import com.redhat.ceylon.cmr.spi.ContentHandle;
 import com.redhat.ceylon.cmr.spi.ContentOptions;
 import com.redhat.ceylon.cmr.spi.Node;
 import com.redhat.ceylon.cmr.spi.OpenNode;
+import com.redhat.ceylon.cmr.spi.SizedInputStream;
 import com.redhat.ceylon.common.Constants;
 import com.redhat.ceylon.common.log.Logger;
 
@@ -46,7 +47,7 @@ public class RemoteContentStore extends URLContentStore {
         super(root, log, offline, timeout, proxy);
     }
 
-    protected InputStream openStream(final URL url) throws IOException {
+    protected SizedInputStream openSizedStream(final URL url) throws IOException {
         if (connectionAllowed()) {
             final URLConnection conn;
             if (proxy != null) {
@@ -67,7 +68,8 @@ public class RemoteContentStore extends URLContentStore {
                         return null;
                     }
                     log.debug("Got " + code + " for url: " + url);
-                    return stream;
+                    long contentLength = huc.getContentLengthLong();
+                    return new SizedInputStream(stream, contentLength);
                 }catch(SocketTimeoutException timeoutException){
                     SocketTimeoutException newException = new SocketTimeoutException("Timed out during connection to "+url);
                     newException.initCause(timeoutException);
@@ -138,9 +140,14 @@ public class RemoteContentStore extends URLContentStore {
         }
 
         public InputStream getBinariesAsStream() throws IOException {
+            SizedInputStream ret = getBinariesAsSizedStream();
+            return ret != null ? ret.inputStream : null;
+        }
+
+        public SizedInputStream getBinariesAsSizedStream() throws IOException {
             final URL url = getURL(compatiblePath(NodeUtils.getFullPath(node, SEPARATOR)));
             log.debug("Fetching resource: " + url);
-            return openStream(url);
+            return openSizedStream(url);
         }
 
         public File getContentAsFile() throws IOException {

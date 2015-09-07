@@ -39,6 +39,7 @@ import com.github.sardine.DavResource;
 import com.github.sardine.Sardine;
 import com.github.sardine.impl.SardineException;
 import com.github.sardine.impl.SardineImpl;
+import com.github.sardine.impl.io.ContentLengthInputStream;
 import com.redhat.ceylon.cmr.impl.CMRException;
 import com.redhat.ceylon.cmr.impl.NodeUtils;
 import com.redhat.ceylon.cmr.impl.URLContentStore;
@@ -46,6 +47,7 @@ import com.redhat.ceylon.cmr.spi.ContentHandle;
 import com.redhat.ceylon.cmr.spi.ContentOptions;
 import com.redhat.ceylon.cmr.spi.Node;
 import com.redhat.ceylon.cmr.spi.OpenNode;
+import com.redhat.ceylon.cmr.spi.SizedInputStream;
 import com.redhat.ceylon.common.log.Logger;
 
 /**
@@ -56,7 +58,7 @@ import com.redhat.ceylon.common.log.Logger;
  */
 public class WebDAVContentStore extends URLContentStore {
 
-    private volatile Sardine sardine;
+    private volatile SardineImpl sardine;
     private boolean forcedAuthenticationForPutOnHerd = false;
 
     /**
@@ -70,7 +72,7 @@ public class WebDAVContentStore extends URLContentStore {
         super(root, log, offline, timeout, proxy);
     }
 
-    protected Sardine getSardine() {
+    protected SardineImpl getSardine() {
         if (sardine == null) {
             synchronized (this) {
                 if (sardine == null) {
@@ -272,10 +274,17 @@ public class WebDAVContentStore extends URLContentStore {
         }
 
         public InputStream getBinariesAsStream() throws IOException {
+            SizedInputStream ret = getBinariesAsSizedStream();
+            return ret != null ? ret.inputStream : null;
+        }
+        
+        public SizedInputStream getBinariesAsSizedStream() throws IOException {
             if (!connectionAllowed()) {
                 return null;
             }
-            return getSardine().get(url);
+            ContentLengthInputStream inputStream = getSardine().get(url);
+            Long length = inputStream.getLength();
+            return new SizedInputStream(inputStream, length != null ? length.longValue() : -1);
         }
 
         public File getContentAsFile() throws IOException {

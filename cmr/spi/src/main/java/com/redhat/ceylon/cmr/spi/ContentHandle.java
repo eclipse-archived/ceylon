@@ -41,8 +41,18 @@ public interface ContentHandle {
      *
      * @return the node's stream
      * @throws IOException for any I/O error
+     * @deprecated see getBinariesAsSizedStream
      */
     InputStream getBinariesAsStream() throws IOException;
+
+    /**
+     * Get node content as sized stream.
+     * Return null if there is no binaries.
+     *
+     * @return the node's sized stream
+     * @throws IOException for any I/O error
+     */
+    SizedInputStream getBinariesAsSizedStream() throws IOException;
 
     /**
      * Get node content as file.

@@ -31,6 +31,7 @@ import com.redhat.ceylon.cmr.spi.ContentHandle;
 import com.redhat.ceylon.cmr.spi.ContentOptions;
 import com.redhat.ceylon.cmr.spi.Node;
 import com.redhat.ceylon.cmr.spi.OpenNode;
+import com.redhat.ceylon.cmr.spi.SizedInputStream;
 
 /**
  * Sonatype Aether content store.
@@ -105,6 +106,10 @@ public class AetherContentStore extends AbstractContentStore {
             return new FileInputStream(file);
         }
 
+        public SizedInputStream getBinariesAsSizedStream() throws IOException {
+            return new SizedInputStream(getBinariesAsStream(), file.length());
+        }
+
         public File getContentAsFile() throws IOException {
             return file;
         }
@@ -134,6 +139,11 @@ public class AetherContentStore extends AbstractContentStore {
 
         public InputStream getBinariesAsStream() throws IOException {
             return new FileInputStream(getContentAsFile());
+        }
+
+        public SizedInputStream getBinariesAsSizedStream() throws IOException {
+            File file = getContentAsFile();
+            return new SizedInputStream(new FileInputStream(file), file.length());
         }
 
         public File getContentAsFile() throws IOException {

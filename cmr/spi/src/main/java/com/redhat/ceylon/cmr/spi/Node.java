@@ -36,7 +36,12 @@ public interface Node {
 
     boolean hasBinaries();
 
+    /**
+     * @deprecated see getSizedInputStream
+     */
     InputStream getInputStream() throws IOException;
+
+    SizedInputStream getSizedInputStream() throws IOException;
 
     <T> T getContent(Class<T> contentType) throws IOException;
 

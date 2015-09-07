@@ -33,6 +33,7 @@ import com.redhat.ceylon.cmr.api.Overrides;
 import com.redhat.ceylon.cmr.spi.ContentStore;
 import com.redhat.ceylon.cmr.spi.Node;
 import com.redhat.ceylon.cmr.spi.OpenNode;
+import com.redhat.ceylon.cmr.spi.SizedInputStream;
 import com.redhat.ceylon.common.config.Repositories;
 import com.redhat.ceylon.common.log.Logger;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
@@ -79,15 +80,15 @@ public class RootRepositoryManager extends AbstractNodeRepositoryManager {
             try {
                 context.setForceOperation(true); // just force the ops
                 log.debug("Looking up artifact " + context + " from " + node + " to cache it");
-                InputStream inputStream = node.getInputStream();
+                SizedInputStream sizedInputStream = node.getSizedInputStream();
                 // temp fix for https://github.com/ceylon/ceylon-module-resolver/issues/60
                 // in theory we should not have nodes with null streams, but at least provide a helpful exception
-                if (inputStream == null) {
+                if (sizedInputStream == null) {
                     throw new RepositoryException("Node " + node + " for repository " + this + " returned a null stream");
                 }
                 try {
                     log.debug(" -> Found it, now caching it");
-                    final File file = putContent(context, node, inputStream);
+                    final File file = putContent(context, node, sizedInputStream.inputStream, sizedInputStream.size);
                     log.debug("    Caching done: " + file);
                     String repositoryDisplayString = NodeUtils.getRepositoryDisplayString(node);
                     File originalRepoFile = new File(file.getParentFile(), file.getName().concat(ORIGIN));                        
@@ -101,7 +102,7 @@ public class RootRepositoryManager extends AbstractNodeRepositoryManager {
                     // we expect the remote nodes to support Ceylon module info
                     return new FileArtifactResult(NodeUtils.getRepository(node), this, context.getName(), context.getVersion(), file, repositoryDisplayString);
                 } finally {
-                    IOUtils.safeClose(inputStream);
+                    IOUtils.safeClose(sizedInputStream.inputStream);
                 }
             } catch (IOException e) {
                 throw new RepositoryException(e);
@@ -165,7 +166,7 @@ public class RootRepositoryManager extends AbstractNodeRepositoryManager {
         return cs != null && cs.isOffline();
     }
 
-    private File putContent(ArtifactContext context, Node node, InputStream stream) throws IOException {
+    private File putContent(ArtifactContext context, Node node, InputStream stream, long length) throws IOException {
         log.debug("Creating local copy of external node: " + node + " at repo: " + 
                 (fileContentStore != null ? fileContentStore.getDisplayString() : null));
         if(fileContentStore == null)
@@ -178,7 +179,7 @@ public class RootRepositoryManager extends AbstractNodeRepositoryManager {
         final File file;
         try {
             if (callback != null) {
-                callback.start(NodeUtils.getFullPath(node), node.getSize(), node.getStoreDisplayString());
+                callback.start(NodeUtils.getFullPath(node), length != -1 ? length : node.getSize(), node.getStoreDisplayString());
                 stream = new ArtifactCallbackStream(callback, stream);
             }
             fileContentStore.putContent(node, stream, context); // stream should be closed closer to API call
@@ -270,7 +271,7 @@ public class RootRepositoryManager extends AbstractNodeRepositoryManager {
             child = parent.getChild(label);
         }
         if (child != null) {
-            putContent(context, child, content);
+            putContent(context, child, content, -1);
         } else {
             throw new IOException("Cannot add child [" + label + "] content [" + content + "] on parent node: " + parent);
         }
