@@ -3232,7 +3232,8 @@ public class ClassTransformer extends AbstractTransformer {
     int transformConstructorDeclFlags(Constructor ctor) {
         return Decl.isShared(ctor) 
                 && !Decl.isAncestorLocal(ctor) 
-                && !ctor.isAbstract() ? PUBLIC : PRIVATE;
+                && !ctor.isAbstract() 
+                && !Decl.isEnumeratedConstructor(ctor)? PUBLIC : PRIVATE;
     }
 
     private int transformTypeAliasDeclFlags(TypeAlias decl) {
