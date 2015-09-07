@@ -307,16 +307,6 @@ public class CeylonVisitor extends Visitor {
             adb.getterBlock(gen.make().Block(0, l));
             classBuilder.getContainingClassBuilder().defs(gen.makeVar(PRIVATE, field, gen.naming.makeTypeDeclarationExpression(null, Decl.getConstructedClass(ctor.getEnumerated())), gen.makeNull()));
             classBuilder.getContainingClassBuilder().defs(adb.build());
-            
-            // make a delegating method from the inner class to the outer constant, so we can get hold of the value from the inner
-            // type
-            String getterName = Naming.getGetterName(singletonModel);
-            MethodDefinitionBuilder delegateMethod = MethodDefinitionBuilder.systemMethod(gen, getterName);
-            delegateMethod.resultType(null, gen.naming.makeTypeDeclarationExpression(null, Decl.getConstructedClass(ctor.getEnumerated())));
-            delegateMethod.modifiers(singletonModel.isShared() ? 0 : PRIVATE);
-            JCExpression qualExpr = gen.naming.makeQualifiedThis(gen.makeJavaType(((TypeDeclaration)clz.getContainer()).getType()));
-            delegateMethod.body(gen.make().Return(gen.make().Apply(null, gen.naming.makeQualIdent(qualExpr, getterName), List.<JCExpression>nil())));
-            classBuilder.defs(delegateMethod.build());
         } else {
             // LOCAL
             
