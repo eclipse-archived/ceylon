@@ -147,7 +147,14 @@ shared native final class Float(Float float)
      
      If this is a [[negative]] number, and the given 
      [[power|other]] has a nonzero [[fractionalPart]], the 
-     result is [[undefined]]."
+     result is [[undefined]].
+     
+     For any negative power `y<0.0`:
+     
+     - `0.0^y` evaluates to `infinity`,
+     - `(-0.0)^y` evaluates to `-infinity`, and
+     - for any nonzero floating point number `x`, `x^y` 
+       evaluates to `1.0/x^(-y)`."
     shared actual native Float power(Float other);
     
     shared actual native Float wholePart;
@@ -173,7 +180,14 @@ shared native final class Float(Float float)
      to `1.0`:
      
      - `0.0^0`,
-     - `infinity^0` and `(-infinity)^0`."
+     - `infinity^0` and `(-infinity)^0`.
+     
+     For any negative integer power `n<0`:
+     
+     - `0.0^n` evaluates to `infinity`,
+     - `(-0.0)^n` evaluates to `-infinity`, and
+     - for any nonzero floating point number `x`, `x^n` 
+       evaluates to `1.0/x^(-n)`."
     shared actual native Float powerOfInteger(Integer integer);
     
     "A string representing this floating point number.
