@@ -444,6 +444,8 @@ shared class ValueConstructors {
     shared void test() {
         testModels();
         testDeclarations();
+        Member.sharedCtor.testModels();
+        Member.sharedCtor.testDeclarations();
     }
     shared void testModels() {
         value sc = `ValueConstructors.sharedCtor`;
@@ -489,7 +491,60 @@ shared class ValueConstructors {
         assert(`ValueConstructors.nonSharedCtor` == nsc.apply<ValueConstructors>());
     }
     
-    // TODO member class value constructors
+    
+    class Member {
+        shared String ctor;
+        shared new sharedCtor {
+            this.ctor = "sharedCtor";
+        }
+        new nonSharedCtor() {
+            this.ctor = "nonSharedCtor";
+        }
+        shared void testModels() {
+            value sc = `sharedCtor`;
+            value nsc = `nonSharedCtor`;
+            
+            // declaration
+            assert(sc.declaration == `new ValueConstructors.Member.sharedCtor`);
+            assert(nsc.declaration == `new ValueConstructors.Member.nonSharedCtor`);
+            
+            // container
+            print("££££££££££££££££££££££££ ``sc.container``");
+            assert(sc.container== `ValueConstructors`);
+            assert(nsc.container == `ValueConstructors`);
+            
+            // get
+            //assert(sc.memberGet() == Member.sharedCtor);
+            //assert(nsc.memberGet() == Member.nonSharedCtor);
+            
+            // type
+            assert(sc.type == `ValueConstructors.Member`);
+            assert(nsc.type == `ValueConstructors.Member`);
+            
+        }
+        shared void testDeclarations() {
+            value sc = `new sharedCtor`;
+            value nsc = `new nonSharedCtor`;
+            
+            assert("sharedCtor" == sc.name);
+            assert("nonSharedCtor" == nsc.name);
+            
+            print(sc.qualifiedName);
+            assert("metamodel::ValueConstructors.Member.sharedCtor" == sc.qualifiedName);
+            assert("metamodel::ValueConstructors.Member.nonSharedCtor" == nsc.qualifiedName);
+            
+            assert(sc.container == `class Member`);
+            assert(nsc.container == `class Member`);
+            
+            assert(sc.openType == `class Member`.openType);
+            assert(nsc.openType == `class Member`.openType);
+            
+            // TODO assert(`Member.sharedCtor` == sc.apply<Member>());
+            // TODO assert(`Member.nonSharedCtor` == nsc.apply<Member>());
+        }
+        
+    }
+    
 }
 
 shared class Constructors<T> {
