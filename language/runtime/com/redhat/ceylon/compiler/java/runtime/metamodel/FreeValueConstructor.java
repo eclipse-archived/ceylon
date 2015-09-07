@@ -5,6 +5,7 @@ import java.util.Collections;
 
 import ceylon.language.Anything;
 import ceylon.language.Sequential;
+import ceylon.language.empty_;
 import ceylon.language.meta.declaration.ClassDeclaration;
 import ceylon.language.meta.declaration.Module;
 import ceylon.language.meta.declaration.OpenType;
@@ -23,8 +24,10 @@ import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 import com.redhat.ceylon.compiler.java.metadata.Variance;
 import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
+import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.Nothing;
 import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.Constructor;
+import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.model.typechecker.model.Value;
@@ -174,9 +177,13 @@ public class FreeValueConstructor
                 Variance.OUT, getType, $reifiedGet,
                 Variance.IN, setType, $reifiedSet);
         // XXX This is a lie, and we only get away with it due to erasure
+        ClassDeclaration clsDecl = getContainer();
+        ceylon.language.meta.model.Class<? extends Get, ?> cls 
+        = clsDecl.<Get, Sequential<? extends java.lang.Object>>classApply(
+                $reifiedGet, Nothing.NothingType, (Sequential)empty_.get_());
         return (ceylon.language.meta.model.ValueConstructor<Get,Set>)
                 new AppliedValueConstructor<Get,Set>(
-                        reifiedGet, TypeDescriptor.NothingType, this, typedReference, null, null);
+                        reifiedGet, TypeDescriptor.NothingType, this, typedReference, (AppliedClass)cls, null);
     }
 
     @TypeInfo("ceylon.language.meta.model::Attribute<Container,Get,Set>")
@@ -195,15 +202,15 @@ public class FreeValueConstructor
         if(getToplevel())
             throw new ceylon.language.meta.model.TypeApplicationException("Cannot apply a toplevel declaration to a container type: use apply");
         Type qualifyingType = Metamodel.getModel(containerType);
-        Metamodel.checkQualifyingType(qualifyingType, declaration);
+        Metamodel.checkQualifyingType(qualifyingType, (Declaration)declaration.getContainer());
         com.redhat.ceylon.model.typechecker.model.Value modelDecl = (com.redhat.ceylon.model.typechecker.model.Value)declaration;
         // find the proper qualifying type
-        Type memberQualifyingType = qualifyingType.getSupertype((TypeDeclaration) modelDecl.getContainer());
+        Type memberQualifyingType = qualifyingType.getSupertype((TypeDeclaration) modelDecl.getContainer().getContainer());
         com.redhat.ceylon.model.typechecker.model.TypedReference typedReference = modelDecl.appliedTypedReference(memberQualifyingType, Collections.<Type>emptyList());
         TypeDescriptor reifiedContainer = Metamodel.getTypeDescriptorForProducedType(qualifyingType);
         
         com.redhat.ceylon.model.typechecker.model.Type getType = typedReference.getType();
-        TypeDescriptor reifiedGet = Metamodel.getTypeDescriptorForProducedType(getType);
+        TypeDescriptor reifiedGet = Metamodel.getTypeDescriptorForProducedType(getType.getQualifyingType());
         // immutable values have Set=Nothing
         com.redhat.ceylon.model.typechecker.model.Type setType = getVariable() ? 
                 getType : modelDecl.getUnit().getNothingType();
@@ -213,8 +220,13 @@ public class FreeValueConstructor
                 Variance.IN, memberQualifyingType, $reifiedContainer,
                 Variance.OUT, getType, $reifiedGet,
                 Variance.IN, setType, $reifiedSet);
+        
+        ClassDeclaration clsDecl = getContainer();
+        ceylon.language.meta.model.MemberClass cls 
+        = clsDecl.memberClassApply(
+                $reifiedContainer, $reifiedGet, $reifiedSet, containerType);
         return (ceylon.language.meta.model.MemberClassValueConstructor)new AppliedValueMemberConstructor<Container,Get,Set>(
-                reifiedContainer, reifiedGet, TypeDescriptor.NothingType, this, typedReference, null);
+                reifiedContainer, reifiedGet, TypeDescriptor.NothingType, this, typedReference, (AppliedMemberClass)cls);
     }
     
     

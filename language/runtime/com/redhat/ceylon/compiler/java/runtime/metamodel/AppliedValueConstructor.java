@@ -198,11 +198,15 @@ public class AppliedValueConstructor<Get,Set>
             }
         } else if (com.redhat.ceylon.compiler.java.codegen.Decl.isEnumeratedConstructor(decl)) {
             java.lang.Class<?> javaClass = Metamodel.getJavaClass((com.redhat.ceylon.model.typechecker.model.ClassOrInterface)decl.getContainer());
+            if (com.redhat.ceylon.compiler.java.codegen.Decl.getConstructedClass(decl).isMember()) {
+                // the getter for member classes is on the enclosing class.
+                javaClass = javaClass.getEnclosingClass();
+            }
             String getterName = NamingBase.getGetterName(decl);
             try {
                 Class<?>[] params = NO_PARAMS;
                 // if it is shared we may want to get an inherited getter, but if it's private we need the declared method to return it
-                Method m = decl.isShared() ? javaClass.getMethod(getterName, params) : javaClass.getDeclaredMethod(getterName, params);
+                Method m = javaClass.getDeclaredMethod(getterName, params);
                 m.setAccessible(true);
                 getter = MethodHandles.lookup().unreflect(m);
                 java.lang.Class<?> getterType = m.getReturnType();
@@ -212,8 +216,10 @@ public class AppliedValueConstructor<Get,Set>
                         && (!Modifier.isStatic(m.getModifiers()))) {
                     getter = getter.bindTo(instance);
                 }
+                if(!com.redhat.ceylon.compiler.java.codegen.Decl.getConstructedClass(decl).isMember()) {
                 // we need to cast to Object because this is what comes out when calling it in $call
                 getter = getter.asType(MethodType.methodType(Object.class));
+                }
 
                 initSetter(decl, javaClass, getterType, instance, valueType);
             } catch (NoSuchMethodException | SecurityException | IllegalAccessException e) {

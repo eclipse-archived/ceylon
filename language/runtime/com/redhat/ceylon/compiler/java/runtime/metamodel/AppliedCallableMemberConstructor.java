@@ -203,9 +203,9 @@ public class AppliedCallableMemberConstructor<Container, Type, Arguments extends
             return false;
         if(obj == this)
             return true;
-        if(obj instanceof ceylon.language.meta.model.Method == false)
+        if(obj instanceof ceylon.language.meta.model.MemberClassCallableConstructor == false)
             return false;
-        ceylon.language.meta.model.Method<?, ?, ?> other = (ceylon.language.meta.model.Method<?, ?, ?>) obj;
+        AppliedCallableMemberConstructor<?, ?, ?> other = (AppliedCallableMemberConstructor<?, ?, ?>) obj;
         return getDeclaration().equals(other.getDeclaration())
                 && getDeclaringType().equals(other.getDeclaringType())
                 && getTypeArguments().equals(other.getTypeArguments());

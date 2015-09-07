@@ -509,7 +509,6 @@ shared class ValueConstructors {
             assert(nsc.declaration == `new ValueConstructors.Member.nonSharedCtor`);
             
             // container
-            print("££££££££££££££££££££££££ ``sc.container``");
             assert(sc.container== `ValueConstructors`);
             assert(nsc.container == `ValueConstructors`);
             
@@ -529,7 +528,6 @@ shared class ValueConstructors {
             assert("sharedCtor" == sc.name);
             assert("nonSharedCtor" == nsc.name);
             
-            print(sc.qualifiedName);
             assert("metamodel::ValueConstructors.Member.sharedCtor" == sc.qualifiedName);
             assert("metamodel::ValueConstructors.Member.nonSharedCtor" == nsc.qualifiedName);
             
@@ -539,8 +537,8 @@ shared class ValueConstructors {
             assert(sc.openType == `class Member`.openType);
             assert(nsc.openType == `class Member`.openType);
             
-            // TODO assert(`Member.sharedCtor` == sc.apply<Member>());
-            // TODO assert(`Member.nonSharedCtor` == nsc.apply<Member>());
+            assert(`Member.sharedCtor` == sc.memberApply<ValueConstructors, Member, Nothing>(`ValueConstructors`));
+            assert(`Member.nonSharedCtor` == nsc.memberApply<ValueConstructors, Member, Nothing>(`ValueConstructors`));
         }
         
     }
@@ -641,7 +639,6 @@ shared class Constructors<T> {
         // TODO memberInvoke
         // TODO MemberClass.defaultConstructor
         
-        // TODO valueConstructorDeclaration.memberApply
     }
     shared void testModels() {
         assert(is CallableConstructor<Constructors<T>,[T?]|[]> def = `Constructors<T>`.getConstructor<[T?]|[]>(""));
