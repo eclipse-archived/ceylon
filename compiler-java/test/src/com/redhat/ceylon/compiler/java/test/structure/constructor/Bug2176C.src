@@ -37,11 +37,6 @@ class Bug2176C implements .com.redhat.ceylon.compiler.java.runtime.model.Reified
         .com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2176C.Inner$instance $name$) {
         }
         
-        @.com.redhat.ceylon.compiler.java.metadata.Ignore
-        Inner getInner$instance() {
-            return .com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2176C.this.getInner$instance();
-        }
-        
         @.java.lang.Override
         @.com.redhat.ceylon.compiler.java.metadata.Ignore
         public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {

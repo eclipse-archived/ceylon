@@ -58,10 +58,6 @@ class Bug2234 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
             name = "foo";
         }
         
-        Inner getInner$foo() {
-            return .com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2234.this.getInner$foo();
-        }
-        
         public Inner() {
             name = "Inner";
         }

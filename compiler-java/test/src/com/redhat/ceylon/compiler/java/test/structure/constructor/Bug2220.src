@@ -41,10 +41,6 @@ public class Bug2220 implements .com.redhat.ceylon.compiler.java.runtime.model.R
             private Baz(.com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2220.Bar.Baz$baz $name$) {
             }
             
-            Baz getBaz$baz() {
-                return .com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2220.Bar.this.getBaz$baz();
-            }
-            
             public Baz(.com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2220.Bar.Baz$gee $name$) {
             }
             

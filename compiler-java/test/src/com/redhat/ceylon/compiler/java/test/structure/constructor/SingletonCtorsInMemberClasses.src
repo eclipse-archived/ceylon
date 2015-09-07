@@ -22,10 +22,6 @@ class SingletonCtorsInMemberClasses implements .com.redhat.ceylon.compiler.java.
         private Bar(.com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtorsInMemberClasses.Bar$bar $name$) {
         }
         
-        Bar getBar$bar() {
-            return .com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtorsInMemberClasses.this.getBar$bar();
-        }
-        
         @.java.lang.Override
         public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
             return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtorsInMemberClasses.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtorsInMemberClasses.Bar.class));
@@ -66,10 +62,6 @@ public final class singletonCtorsInMemberClasses_ {
             class Bar implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
                 
                 private Bar(Foo.Bar$bar $name$) {
-                }
-                
-                Bar getBar$bar() {
-                    return Foo.this.getBar$bar();
                 }
                 
                 @.java.lang.Override

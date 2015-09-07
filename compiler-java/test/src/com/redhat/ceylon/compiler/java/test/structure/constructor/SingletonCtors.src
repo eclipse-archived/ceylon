@@ -119,16 +119,8 @@ class ClassMemberSingletonCtors implements .com.redhat.ceylon.compiler.java.runt
             string = "one";
         }
         
-        MemberClass getMemberClass$one() {
-            return .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberSingletonCtors.this.getMemberClass$one();
-        }
-        
         private MemberClass(.com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberSingletonCtors.MemberClass$nonShared $name$) {
             string = "nonShared";
-        }
-        
-        private MemberClass getMemberClass$nonShared() {
-            return .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberSingletonCtors.this.getMemberClass$nonShared();
         }
         
         @.java.lang.Override

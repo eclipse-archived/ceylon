@@ -23,10 +23,6 @@ public class Bug2223 implements .com.redhat.ceylon.compiler.java.runtime.model.R
         private Foo(.com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2223.Foo$foo $name$) {
         }
         
-        Foo getFoo$foo() {
-            return .com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2223.this.getFoo$foo();
-        }
-        
         @.java.lang.Override
         public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
             return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2223.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2223.Foo.class));
@@ -48,10 +44,6 @@ public class Bug2223 implements .com.redhat.ceylon.compiler.java.runtime.model.R
     class Bar implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
         
         private Bar(.com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2223.Bar$foo $name$) {
-        }
-        
-        Bar getBar$foo() {
-            return .com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2223.this.getBar$foo();
         }
         
         @.java.lang.Override
