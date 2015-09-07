@@ -2269,13 +2269,10 @@ public class ExpressionVisitor extends Visitor {
             Tree.LocalModifier local = 
                     (Tree.LocalModifier) type;
             if (not) {
-                Type nullType = unit.getNullType();
-                local.setTypeModel(nullType);
-                that.getDeclarationModel()
-                    .setType(nullType);
+                setNullTypeFromOptionalType(that, local, se);
             }
             else if (se!=null) {
-                setTypeFromOptionalType(local, se, that);
+                setDefiniteTypeFromOptionalType(that, local, se);
             }
         }
     }
@@ -2287,13 +2284,10 @@ public class ExpressionVisitor extends Visitor {
             Tree.LocalModifier local = 
                     (Tree.LocalModifier) type;
             if (not) {
-                Type emptyType = unit.getEmptyType();
-                local.setTypeModel(emptyType);
-                that.getDeclarationModel()
-                    .setType(emptyType);
+                setEmptyTypeFromSequenceType(that, local, se);
             }
             else if (se!=null) {
-                setTypeFromEmptyType(local, se, that);
+                setNonemptyTypeFromSequenceType(that, local, se);
             }
         }
     }
@@ -2344,9 +2338,9 @@ public class ExpressionVisitor extends Visitor {
         }
     }
     
-    private void setTypeFromOptionalType(
-            Tree.LocalModifier local, 
-            Tree.SpecifierExpression se, Tree.Variable that) {
+    private void setDefiniteTypeFromOptionalType(
+            Tree.Variable that, Tree.LocalModifier local, 
+            Tree.SpecifierExpression se) {
         Tree.Expression e = se.getExpression();
         if (e!=null) {
             Type expressionType = e.getTypeModel();
@@ -2363,9 +2357,26 @@ public class ExpressionVisitor extends Visitor {
         }
     }
     
-    private void setTypeFromEmptyType(
-            Tree.LocalModifier local, 
-            Tree.SpecifierExpression se, Tree.Variable that) {
+    private void setNullTypeFromOptionalType(
+            Tree.Variable that, Tree.LocalModifier local,
+            Tree.SpecifierExpression se) {
+        Type nullType = unit.getNullType();
+        Tree.Expression e = se.getExpression();
+        if (e!=null) {
+            Type et = e.getTypeModel();
+            if (!isTypeUnknown(et)) {
+                nullType = 
+                        intersectionType(et, nullType, unit);
+            }
+        }
+        local.setTypeModel(nullType);
+        that.getDeclarationModel()
+            .setType(nullType);
+    }
+
+    private void setNonemptyTypeFromSequenceType(
+            Tree.Variable that, Tree.LocalModifier local, 
+            Tree.SpecifierExpression se) {
         Tree.Expression e = se.getExpression();
         if (e!=null) {
             Type expressionType = e.getTypeModel();
@@ -2382,6 +2393,23 @@ public class ExpressionVisitor extends Visitor {
         }
     }
     
+    private void setEmptyTypeFromSequenceType(
+            Tree.Variable that, Tree.LocalModifier local,
+            Tree.SpecifierExpression se) {
+        Type emptyType = unit.getEmptyType();
+        Tree.Expression e = se.getExpression();
+        if (e!=null) {
+            Type et = e.getTypeModel();
+            if (!isTypeUnknown(et)) {
+                emptyType = 
+                        intersectionType(et, emptyType, unit);
+            }
+        }
+        local.setTypeModel(emptyType);
+        that.getDeclarationModel()
+            .setType(emptyType);
+    }
+
     private void setTypeFromIterableType(
             Tree.LocalModifier local, 
             Tree.SpecifierExpression se, Tree.Variable that) {

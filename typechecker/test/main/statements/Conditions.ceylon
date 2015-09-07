@@ -156,3 +156,31 @@ void negatedConditions(Integer? maybe, Integer[] maybeEmpty) {
     }
     if (nonempty @error Integer[] m = maybeEmpty) {}
 }
+
+
+void elseWithTypeParameter<T>(T t, T[] ts) {
+    if (exists t) {
+        T&Object s = t;
+    }
+    else {
+        T&Null s = t;
+    }
+    if (nonempty ts) {
+        [T+] ss = ts;
+    }
+    else {
+        [] ss = ts;
+    }
+    if (!exists t) {
+        T&Null s = t;
+    }
+    else {
+        T&Object s = t;
+    }
+    if (!nonempty ts) {
+        [] ss = ts;
+    }
+    else {
+        [T+] ss = ts;
+    }
+}
