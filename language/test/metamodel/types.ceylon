@@ -467,6 +467,8 @@ shared class ValueConstructors {
         assert(sc.type == `ValueConstructors`);
         assert(nsc.type == `ValueConstructors`);
         
+        assert(`ValueConstructors` ==type(ValueConstructors.sharedCtor));
+        
     }
     shared void testDeclarations() {
         value sc = `new ValueConstructors.sharedCtor`;
@@ -520,6 +522,7 @@ shared class ValueConstructors {
             assert(sc.type == `ValueConstructors.Member`);
             assert(nsc.type == `ValueConstructors.Member`);
             
+            assert(`Member` ==type(Member.sharedCtor));
         }
         shared void testDeclarations() {
             value sc = `new sharedCtor`;
