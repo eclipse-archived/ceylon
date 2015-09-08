@@ -615,3 +615,16 @@ function coi$is$anns(anns,ats) {
   }
   return true;
 }
+//Compare type argument use-site variance
+function cmp$targ$uv$(a,ta) {
+  if (a===undefined&&ta===undefined) {
+    return true;
+  }
+  if (a&&ta) {
+    for (var _t in a) {
+      if (!ta[_t] || a[_t].uv!==ta[_t].uv)return false;
+    }
+    return true;
+  }
+  return false;
+}
