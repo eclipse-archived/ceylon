@@ -558,9 +558,10 @@ shared class Constructors<T> {
     }
     
     shared class Member {
-        shared new (T? t=null) {}
-        shared new otherCtor(Integer i) {}
-        new nonSharedCtor(Boolean b) {}
+        shared Anything arg;
+        shared new (T? t=null) {arg = t;}
+        shared new otherCtor(Integer i) {arg = i;}
+        new nonSharedCtor(Boolean b) {arg = b;}
         shared MemberClassCallableConstructor<Constructors<T>, Member, [Boolean]> nonShared {
             assert(is MemberClassCallableConstructor<Constructors<T>, Member, [Boolean]> r = `Member`.getConstructor<[Boolean]>("nonSharedCtor"));
             return r;
@@ -568,9 +569,10 @@ shared class Constructors<T> {
         shared CallableConstructorDeclaration nonSharedDecl => `new nonSharedCtor`;
     }
     class NonSharedMember {
-        shared new (T? t=null) {}
-        shared new otherCtor(Integer i) {}
-        new nonSharedCtor(Boolean b) {}
+        shared Anything arg;
+        shared new (T? t=null) {arg = t;}
+        shared new otherCtor(Integer i) {arg = i;}
+        new nonSharedCtor(Boolean b) {arg = b;}
         shared MemberClassCallableConstructor<Constructors<T>, NonSharedMember, [Boolean]> nonShared {
             assert(is MemberClassCallableConstructor<Constructors<T>, NonSharedMember, [Boolean]> r = `NonSharedMember`.getConstructor<[Boolean]>("nonSharedCtor"));
             return r;
@@ -670,7 +672,27 @@ shared class Constructors<T> {
         assert(exists nonSharednonSharedModel = `Constructors<String>.NonSharedMember`.getConstructor<[Boolean]>("nonSharedCtor"),
             nonSharednonSharedModel == nonSharedappliedNonShared);
         
-        // TODO memberInvoke
+        // memberInvoke
+        value container = Constructors<String>();
+        assert(is Member instDefault = memberDefault.memberInvoke(container, [], "hello"));
+        assert(is Object argDefault = instDefault.arg,
+            argDefault == "hello");
+        assert(is Member instOther = memberOther.memberInvoke(container, [], 1));
+        assert(is Object argOther = instOther.arg,
+            argOther== 1);
+        assert(is Member instNonShared = memberNonShared.memberInvoke(container, [], true));
+        assert(is Object argNonShared = instNonShared.arg,
+            argNonShared == true);
+        
+        assert(is NonSharedMember instnonSharedDefault = nonSharedDefault.memberInvoke(container, [], "hello"));
+        assert(is Object argnonSharedDefault = instnonSharedDefault.arg,
+            argnonSharedDefault == "hello");
+        assert(is NonSharedMember instnonSharedOther = nonSharedOther.memberInvoke(container, [], 1));
+        assert(is Object argnonSharedOther = instnonSharedOther.arg,
+            argnonSharedOther== 1);
+        assert(is NonSharedMember instnonSharedNonShared = nonSharedNonShared.memberInvoke(container, [], true));
+        assert(is Object argnonSharedNonShared = instnonSharedNonShared.arg,
+            argnonSharedNonShared == true);
     }
     
     shared void testModels() {

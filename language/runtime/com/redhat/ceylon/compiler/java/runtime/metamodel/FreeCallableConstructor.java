@@ -33,6 +33,7 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.Nothing;
 import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.Constructor;
 import com.redhat.ceylon.model.typechecker.model.Generic;
+import com.redhat.ceylon.model.typechecker.model.NothingType;
 
 @Ceylon(major = 8)
 @com.redhat.ceylon.compiler.java.metadata.Class
@@ -206,11 +207,9 @@ public class FreeCallableConstructor
     public Object memberInvoke(Object containerInstance,
             Sequential<? extends Type<? extends Object>> typeArguments,
             Sequential<? extends Object> arguments) {
-        if (!typeArguments.getEmpty()) {
-            throw new TypeApplicationException("Constructors do not accept type arguments");
-        }
-        // TODO Auto-generated method stub
-        return null;
+        ceylon.language.meta.model.Type<?> containerType = Metamodel.getAppliedMetamodel(Metamodel.getTypeDescriptor(containerInstance));
+        return memberApply(Nothing.NothingType, ceylon.language.Object.$TypeDescriptor$, Nothing.NothingType, 
+                containerType, typeArguments).bind(containerInstance).apply(arguments);
     }
 
     @Override
