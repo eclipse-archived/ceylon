@@ -343,6 +343,9 @@ function coistr$(coi) {
       }
       s+=']';
     } else {
+      if (t.uv) {
+        s+=t.uv+' ';
+      }
       s+=qname$(getrtmm$$(t.t));
       if (t.a)s+=addtargs(t);
     }
