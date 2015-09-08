@@ -635,9 +635,10 @@ shared class Constructors<T> {
         nonSharedMemberOther.bind(this)(1);
         nonSharedMemberNonShared.bind(this)(true);
         
+        assert(exists dc = `Member`.defaultConstructor, dc == memberMember);
+        
         // TODO memberApply
         // TODO memberInvoke
-        // TODO MemberClass.defaultConstructor
         
     }
     shared void testModels() {
@@ -724,6 +725,7 @@ shared class Constructors<T> {
         assert(exists nonSharedAppliedArg = nonShared.namedApply{"b" -> true}.arg,
             nonSharedAppliedArg == true);
         
+        assert(exists dc = `Constructors<String>`.defaultConstructor, dc == def);
     }
     
     shared void testDeclarations() {
