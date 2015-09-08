@@ -534,3 +534,13 @@ class OuterEnum() {
     EnumToo z = nothing;
     EnumToo w = nothing;
 }
+
+@error interface BrokeEnum<T> of BrokeCase<T, T> {}
+class BrokeCase<T,U>() satisfies BrokeEnum<T> {}
+
+shared void caseTypes() {
+    BrokeEnum<String> x = BrokeCase<String, Integer>();
+    switch (x)
+    case (is BrokeCase<String,String>) {}
+}
+

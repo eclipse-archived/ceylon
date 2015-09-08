@@ -626,6 +626,8 @@ public class InheritanceVisitor extends Visitor {
                         tal.getTypes();
                 List<TypeParameter> typeParameters = 
                         caseTypeDec.getTypeParameters();
+                Set<TypeParameter> used = 
+                        new HashSet<TypeParameter>();
                 for (int i=0; 
                         i<args.size() && 
                         i<typeParameters.size(); 
@@ -645,9 +647,13 @@ public class InheritanceVisitor extends Visitor {
                             if (!tp.getDeclaration()
                                     .equals(type)) {
                                 arg.addError("type argument is not a type parameter of the enumerated type: '" +
-                                        argTypeDec.getName() + 
+                                        tp.getName() + 
                                         "' is not a type parameter of '" + 
                                         type.getName());
+                            }
+                            else if (!used.add(tp)) {
+                                arg.addError("type parameter of the enumerated type is used twice as a type argument: '" +
+                                        argTypeDec.getName());
                             }
                         }
                         else if (typeParameter.isCovariant()) {
