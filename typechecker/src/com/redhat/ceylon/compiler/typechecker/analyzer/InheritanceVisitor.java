@@ -52,7 +52,8 @@ import com.redhat.ceylon.model.typechecker.model.Value;
 public class InheritanceVisitor extends Visitor {
     
     @Override public void visit(Tree.TypeDeclaration that) {
-        validateSupertypes(that, that.getDeclarationModel());
+        validateSupertypes(that, 
+                that.getDeclarationModel());
         super.visit(that);
     }
 
@@ -357,8 +358,7 @@ public class InheritanceVisitor extends Visitor {
                     checkSelfTypes(et, td, type);
                     checkExtensionOfMemberType(et, td, type);
                     //checkCaseOfSupertype(et, td, type);
-                    Type ext = 
-                            td.getExtendedType();
+                    Type ext = td.getExtendedType();
                     TypeDeclaration etd = 
                             ext==null ? null :
                                 ext.getDeclaration();
@@ -634,8 +634,7 @@ public class InheritanceVisitor extends Visitor {
                     TypeParameter typeParameter = 
                             caseTypeDec.getTypeParameters()
                                 .get(i);
-                    Type argType = 
-                            arg.getTypeModel();
+                    Type argType = arg.getTypeModel();
                     if (argType!=null) {
                         TypeDeclaration argTypeDec = 
                                 argType.getDeclaration();
@@ -685,8 +684,7 @@ public class InheritanceVisitor extends Visitor {
                 constructor instanceof Constructor &&
                 container instanceof Class) {
             Class containingClass = (Class) container;
-            Type et = 
-                    containingClass.getExtendedType();
+            Type et = containingClass.getExtendedType();
             if (et!=null) {
                 Unit unit = that.getUnit();
                 Type extendedType = 
@@ -708,8 +706,7 @@ public class InheritanceVisitor extends Visitor {
                         type.addError("constructor delegates to itself: '" +
                                 c.getName() + "'");
                     }
-                    Type delegatedType = 
-                            c.getExtendedType();
+                    Type delegatedType = c.getExtendedType();
                     TypeDeclaration delegated =
                             delegatedType == null ? null :
                                 delegatedType.getDeclaration();
@@ -840,10 +837,10 @@ public class InheritanceVisitor extends Visitor {
             Unit unit = that.getUnit();
             for (int i=0; i<params.size(); i++) {
                 TypeParameter param = params.get(i);
-                if ( param.isSelfType() && args.size()>i ) {
+                if (param.isSelfType() && !args.isEmpty()) {
                     Type arg = args.get(i);
                     if (arg==null) {
-                        arg = new UnknownType(unit).getType(); 
+                        arg = unit.getUnknownType(); 
                     }
                     TypeDeclaration std = 
                             param.getSelfTypedDeclaration();
