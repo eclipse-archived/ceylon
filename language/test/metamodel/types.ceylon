@@ -580,6 +580,7 @@ shared class Constructors<T> {
     shared void test() {
         testDeclarations();
         testModels();
+        testMemberDeclarations();
         testMemberModels();
     }
     
@@ -637,10 +638,41 @@ shared class Constructors<T> {
         
         assert(exists dc = `Member`.defaultConstructor, dc == memberMember);
         
-        // TODO memberApply
-        // TODO memberInvoke
+        
         
     }
+    void testMemberDeclarations() {
+        value memberDefault = `new Member`;
+        value memberOther = `new Member.otherCtor`;
+        value memberNonShared = Member().nonSharedDecl;
+        
+        value nonSharedDefault = `new NonSharedMember`;
+        value nonSharedOther = `new NonSharedMember.otherCtor`;
+        value nonSharedNonShared = NonSharedMember().nonSharedDecl;
+        
+        value appliedDefault = memberDefault.memberApply<Constructors<String>, Member, []|[String?]>(`Constructors<String>`);
+        assert(exists defaultModel = `Constructors<String>.Member`.getConstructor(""),
+            defaultModel == appliedDefault);
+        value appliedOther = memberOther.memberApply<Constructors<String>, Member, [Integer]>(`Constructors<String>`);
+        assert(exists otherModel = `Constructors<String>.Member`.getConstructor<[Integer]>("otherCtor"),
+            otherModel == appliedOther);
+        value appliedNonShared = memberNonShared.memberApply<Constructors<String>, Member, [Boolean]>(`Constructors<String>`);
+        assert(exists nonSharedModel = `Constructors<String>.Member`.getConstructor<[Boolean]>("nonSharedCtor"),
+            nonSharedModel == appliedNonShared);
+        
+        value appliednonSharedDefault = nonSharedDefault.memberApply<Constructors<String>, NonSharedMember, []|[String?]>(`Constructors<String>`);
+        assert(exists nonShareddefaultModel = `Constructors<String>.NonSharedMember`.getConstructor(""),
+            nonShareddefaultModel == appliednonSharedDefault);
+        value appliednonSharedOther = nonSharedOther.memberApply<Constructors<String>, NonSharedMember, [Integer]>(`Constructors<String>`);
+        assert(exists nonSharedotherModel = `Constructors<String>.NonSharedMember`.getConstructor<[Integer]>("otherCtor"),
+            nonSharedotherModel == appliednonSharedOther);
+        value nonSharedappliedNonShared = nonSharedNonShared.memberApply<Constructors<String>, NonSharedMember, [Boolean]>(`Constructors<String>`);
+        assert(exists nonSharednonSharedModel = `Constructors<String>.NonSharedMember`.getConstructor<[Boolean]>("nonSharedCtor"),
+            nonSharednonSharedModel == nonSharedappliedNonShared);
+        
+        // TODO memberInvoke
+    }
+    
     shared void testModels() {
         assert(is CallableConstructor<Constructors<T>,[T?]|[]> def = `Constructors<T>`.getConstructor<[T?]|[]>(""));
         value other = `otherCtor`;
