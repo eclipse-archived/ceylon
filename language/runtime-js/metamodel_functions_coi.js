@@ -274,7 +274,7 @@ function coiexttype$(coi){
   var _t=coirestarg$(coi,sc);
   var ac;
   if (scmm.$cont) {
-    ac=AppliedMemberClass$jsint(sc.t, {Type$AppliedMemberClass:_t,Arguments$AppliedMemberClass:{t:Sequential,a:{Element$Iterable:{t:Anything}}},Container$AppliedMemberClass:scmm.$cont});
+    ac=AppliedMemberClass$jsint(sc.t, {Type$AppliedMemberClass:_t,Arguments$AppliedMemberClass:{t:Sequential,a:{Element$Iterable:{t:Anything}}},Container$AppliedMemberClass:{t:scmm.$cont}});
   } else {
     ac=AppliedClass$jsint(sc.t, {Type$AppliedClass:_t,Arguments$AppliedClass:{t:Sequential,a:{Element$Iterable:{t:Anything}}}});
   }
@@ -343,6 +343,9 @@ function coistr$(coi) {
       }
       s+=']';
     } else {
+      if (t.uv) {
+        s+=t.uv+' ';
+      }
       s+=qname$(getrtmm$$(t.t));
       if (t.a)s+=addtargs(t);
     }
@@ -461,6 +464,8 @@ function coicont$(coi) {
   if (!cont)return null;
   var _t={t:cont};
   var rv;
+  var ttargs=coi.$$targs$$ && coi.$$targs$$.Container$Member && coi.$$targs$$.Container$Member.a;
+  if (ttargs)_t.a=ttargs;
   if (coi.src$ && coi.src$.outer$) {
     var _out=coi.src$.outer$;
     if (_out.$$targs$$) {
@@ -470,11 +475,14 @@ function coicont$(coi) {
     rv=AppliedClass$jsint(cont,{Type$AppliedClass:_t,Arguments$AppliedClass:{t:Sequential,a:{Element$Iterable:{t:Anything}}}});
     rv.src$=_out;
   } else {
-    if (get_model(cmm).mt === 'i')
+    if (get_model(cmm).mt === 'i') {
       rv=AppliedInterface$jsint(cont,{Type$Interface:_t});
-    //TODO tipos de parametros
-    rv=AppliedClass$jsint(cont,{Type$AppliedClass:_t,Arguments$AppliedClass:{t:Sequential,a:{Element$Iterable:{t:Anything}}}});
+    } else {
+      //TODO tipos de parametros
+      rv=AppliedClass$jsint(cont,{Type$AppliedClass:_t,Arguments$AppliedClass:{t:Sequential,a:{Element$Iterable:{t:Anything}}}});
+    }
   }
+  coi.$parent=rv;
   return rv;
 }
 //ClassOrInterface.typeArguments
@@ -611,4 +619,17 @@ function coi$is$anns(anns,ats) {
     if (!f)return false;
   }
   return true;
+}
+//Compare type argument use-site variance
+function cmp$targ$uv$(a,ta) {
+  if (a===undefined&&ta===undefined) {
+    return true;
+  }
+  if (a&&ta) {
+    for (var _t in a) {
+      if (!ta[_t] || a[_t].uv!==ta[_t].uv)return false;
+    }
+    return true;
+  }
+  return false;
 }
