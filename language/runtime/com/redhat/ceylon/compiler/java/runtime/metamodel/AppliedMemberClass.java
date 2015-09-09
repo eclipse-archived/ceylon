@@ -1,14 +1,20 @@
 package com.redhat.ceylon.compiler.java.runtime.metamodel;
 
+import java.util.ArrayList;
+
 import ceylon.language.AssertionError;
 import ceylon.language.Sequential;
 import ceylon.language.empty_;
 import ceylon.language.meta.declaration.CallableConstructorDeclaration;
 import ceylon.language.meta.declaration.ClassDeclaration;
+import ceylon.language.meta.declaration.NestableDeclaration;
 import ceylon.language.meta.declaration.ValueConstructorDeclaration;
 import ceylon.language.meta.model.Class;
+import ceylon.language.meta.model.FunctionModel;
 import ceylon.language.meta.model.MemberClassCallableConstructor;
+import ceylon.language.meta.model.ValueModel;
 
+import com.redhat.ceylon.compiler.java.language.ObjectArrayIterable;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Name;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
@@ -299,4 +305,30 @@ public class AppliedMemberClass<Container, Type, Arguments extends Sequential<? 
         return new AppliedMemberClassConstructor($reifiedContainer, this.$reifiedType, reified$Arguments, this, ctor.constructor.appliedType(this.producedType, Collections.<com.redhat.ceylon.model.typechecker.model.Type>emptyList()), ctor);*/
     }
     
+    private Sequential<?> getConstructors(boolean justShared) {
+        ArrayList<Object> ctors = new ArrayList<>();
+        for (ceylon.language.meta.declaration.Declaration d : ((FreeClass)declaration).constructors()) {
+            if (!justShared || (d instanceof NestableDeclaration
+                    && ((NestableDeclaration)d).getShared())) {
+                ctors.add(getConstructor(TypeDescriptor.NothingType, d.getName()));
+            }
+        }
+        Object[] array = ctors.toArray(new Object[ctors.size()]);
+        ObjectArrayIterable<ceylon.language.meta.declaration.Declaration> iterable = 
+                new ObjectArrayIterable<ceylon.language.meta.declaration.Declaration>(
+                        TypeDescriptor.union(
+                                TypeDescriptor.klass(FunctionModel.class, this.$reifiedType, TypeDescriptor.NothingType),
+                                TypeDescriptor.klass(ValueModel.class, this.$reifiedType, TypeDescriptor.NothingType)),
+                        (Object[]) array);
+        return (ceylon.language.Sequential) iterable.sequence();
+    }
+    @Override
+    public Sequential<?> getConstructors() {
+        return getConstructors(true);
+    }
+    @Override
+    public Sequential<?> getDeclaredConstructors() {
+        return getConstructors(false);
+    }
+
 }

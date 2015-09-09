@@ -24,24 +24,9 @@ shared sealed interface ClassModel<out Type=Anything, in Arguments=Nothing>
     shared formal FunctionModel<Type, Arguments>|ValueModel<Type>? getConstructor<Arguments>(String name)
         given Arguments satisfies Anything[];
     
-    // TODO getDeclaredConstructor (include non-shared)
-    // getConstructors
-    // getDeclaredConstructors
+    "The `shared` constructors of this class."
+    shared formal Sequential<FunctionModel<Type, Nothing>|ValueModel<Type>> constructors;
+    "The constructors of this class, including non-`shared`."
+    shared formal Sequential<FunctionModel<Type, Nothing>|ValueModel<Type>> declaredConstructors;
     
-    // getCallableConstructor
-    // getDeclaredCallableConstructor
-    // getCallableConstructors
-    // getDeclaredCallableConstructors
-    
-    // getValueConstructor
-    // getDeclaredValueConstructor
-    // getValueConstructors
-    // getDeclaredValueConstructors
-    
-    // TODO plus refine those on Class to return CallableConstructor, not FunctionModel
-    // and ValueConstructor not ValueModel
-    // TODO plus refind them on MemberClass to return MemberClassCallableconstructor
-    // and MemberClassValueConstructor not value model
-    
-    // TODO add getDefaultConstructor() ???
 }

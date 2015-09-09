@@ -352,6 +352,11 @@ public class FreeClass
         return null;
     }
     
+    List<ceylon.language.meta.declaration.Declaration> constructors() {
+        checkInit();
+        return constructors;
+    }
+    
     @Ignore
     private Sequential<? extends ceylon.language.meta.declaration.ConstructorDeclaration> filterConstructors(Predicate predicate) {
         if (predicate == Predicates.false_()) {
