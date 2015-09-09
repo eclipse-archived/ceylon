@@ -2,6 +2,7 @@ import ceylon.language.meta.model {
   ClosedType=Type, Constructor, Functional, Applicable,
   Member, Class, ClassOrInterface, Attribute, Method,
   ClassModel,InterfaceModel,MemberInterface,MemberClass,
+  FunctionModel, ValueModel,
   CallableConstructor, ValueConstructor
 }
 import ceylon.language.meta.declaration {
@@ -15,6 +16,8 @@ shared native class AppliedClass<out Type=Anything, in Arguments=Nothing>() sati
   shared actual native <CallableConstructor<Type, Arguments>|Class<Type, Arguments>>? defaultConstructor;
   shared actual native CallableConstructor<Type, Arguments>|ValueConstructor<Type>? getConstructor<Arguments>(String name)
         given Arguments satisfies Anything[];
+  shared actual native Sequential<FunctionModel<Type, Nothing>|ValueModel<Type>> constructors;
+  shared actual native Sequential<FunctionModel<Type, Nothing>|ValueModel<Type>> declaredConstructors;
 
   //shared actual native ClosedType<Anything>[] parameterTypes;
   shared actual native Type apply(Anything* arguments);

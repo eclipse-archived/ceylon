@@ -1,5 +1,6 @@
 import ceylon.language.meta.model {
   ClosedType=Type, ClassModel, InterfaceModel,
+  FunctionModel, ValueModel,
   Member, Class, ClassOrInterface, Attribute, Method,
   MemberInterface,MemberClass,MemberClassConstructor
 }
@@ -15,6 +16,9 @@ shared native class AppliedMemberClass<in Container, out Type=Anything, in Argum
   shared actual native <MemberClassCallableConstructor<Container, Type, Arguments>|MemberClass<Container, Type, Arguments>>? defaultConstructor;
   shared actual native MemberClassCallableConstructor<Container,Type,Arguments>|MemberClassValueConstructor<Container,Type>? getConstructor<Arguments>(String name)
         given Arguments satisfies Anything[];
+  shared actual native Sequential<FunctionModel<Type, Nothing>|ValueModel<Type>> constructors;
+  shared actual native Sequential<FunctionModel<Type, Nothing>|ValueModel<Type>> declaredConstructors;
+
   shared actual native ClosedType<Anything> declaringType;
 
   //shared actual native ClosedType<Anything>[] parameterTypes;
