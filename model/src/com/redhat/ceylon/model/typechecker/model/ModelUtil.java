@@ -2949,29 +2949,46 @@ public class ModelUtil {
     }
 
     public static boolean isConstructor(Declaration member) {
-        return member instanceof Constructor ||
-                member instanceof FunctionOrValue && 
-                    ((FunctionOrValue) member)
-                        .getTypeDeclaration() 
-                            instanceof Constructor;
+        if (member instanceof Constructor) {
+            return true;
+        }
+        else if (member instanceof FunctionOrValue) {
+            FunctionOrValue fov = (FunctionOrValue) member;
+            return fov.getTypeDeclaration() 
+                    instanceof Constructor;
+        }
+        else {
+            return false;
+        }
     }
     
     public static Constructor getConstructor(Declaration member) {
         if (member instanceof Constructor) {
-            return (Constructor)member;
-        } else if (member instanceof FunctionOrValue
-                && ((FunctionOrValue)member).getTypeDeclaration() instanceof Constructor) {
-            return (Constructor)((FunctionOrValue)member).getTypeDeclaration();
-        } else {
+            return (Constructor) member;
+        }
+        else if (member instanceof FunctionOrValue) {
+            FunctionOrValue fov = (FunctionOrValue) member;
+            TypeDeclaration td = fov.getTypeDeclaration();
+            if (td instanceof Constructor) {
+                return (Constructor) td;                
+            }
+            else {
+                return null;
+            }
+        }
+        else {
             return null;
         }
     }
     
-    public static boolean isCeylonDeclaration(Declaration declaration){
-        if(declaration instanceof LazyElement){
-            return ((LazyElement)declaration).isCeylon();
+    public static boolean isCeylonDeclaration(Declaration declaration) {
+        if (declaration instanceof LazyElement) {
+            LazyElement lazy = (LazyElement) declaration;
+            return lazy.isCeylon();
         }
-        // if it's not one of those it must be from source (Ceylon)
-        return true;
+        else {
+            // if it's not one of those it must be from source (Ceylon)
+            return true;
+        }
     }
 }
