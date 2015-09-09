@@ -2099,7 +2099,6 @@ public class GenerateJsVisitor extends Visitor {
         new ComprehensionGenerator(this, names, directAccess).generateComprehension(that);
     }
 
-
     @Override
     public void visit(final Tree.SpecifierStatement that) {
         // A lazy specifier expression in a class/interface should go into the

@@ -1444,6 +1444,10 @@ public class TypeUtils {
         if (d instanceof FunctionOrValue && ((FunctionOrValue)d).getTypeDeclaration() instanceof Constructor) {
             return (Constructor)((FunctionOrValue)d).getTypeDeclaration();
         }
+        if (d instanceof Class) {
+            //Look for the default constructor
+            return ((Class)d).getDefaultConstructor();
+        }
         return null;
     }
 

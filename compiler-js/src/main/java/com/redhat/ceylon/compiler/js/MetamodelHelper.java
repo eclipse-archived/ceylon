@@ -38,7 +38,11 @@ public class MetamodelHelper {
         if (d instanceof com.redhat.ceylon.model.typechecker.model.Interface) {
             gen.out("OpenInterface$jsint");
         } else if (isConstructor) {
-            gen.out("OpenConstructor$jsint");
+            if (TypeUtils.getConstructor(d).isValueConstructor()) {
+                gen.out("OpenValueConstructor$jsint");
+            } else {
+                gen.out("OpenCallableConstructor$jsint");
+            }
         } else if (d instanceof Class) {
             gen.out("openClass$jsint");
         } else if (d instanceof Function) {
@@ -193,9 +197,13 @@ public class MetamodelHelper {
             final Tree.MetaLiteral meta, final GenerateJsVisitor gen) {
         Class _pc = (Class)cd.getContainer();
         if (_pc.isToplevel()) {
-            gen.out(gen.getClAlias(), "$init$AppliedConstructor$jsint()(");
+            gen.out(gen.getClAlias(), "$init$Applied",
+                    cd.isValueConstructor() ? "Value" : "Callable",
+                    "Constructor$jsint()(");
         } else {
-            gen.out(gen.getClAlias(), "$init$AppliedMemberConstructor$jsint()(");
+            gen.out(gen.getClAlias(), "$init$AppliedMemberClass",
+                    cd.isValueConstructor() ? "Value" : "Callable",
+                    "Constructor$jsint()(");
         }
         TypeUtils.outputQualifiedTypename(null, gen.isImported(gen.getCurrentPackage(), _pc), _pc.getType(), gen, false);
         gen.out("_", gen.getNames().name(cd), ",");
@@ -273,6 +281,10 @@ public class MetamodelHelper {
             }
             gen.out(")");
         } else if (that instanceof ValueLiteral || d instanceof Value) {
+            if (TypeUtils.isConstructor(d)) {
+                constructorLiteral(ref.getType(), TypeUtils.getConstructor(d), that, gen);
+                return;
+            }
             Value vd = (Value)d;
             if (vd.isMember()) {
                 gen.out(gen.getClAlias(), "$init$AppliedAttribute$meta$model()('");
