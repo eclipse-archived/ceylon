@@ -750,7 +750,7 @@ typedMethodOrAttributeDeclaration returns [TypedDeclaration declaration]
         { expecting=SEMICOLON; }
         s2=SEMICOLON
         { $declaration.setEndToken($s2); 
-        expecting=-1; }
+          expecting=-1; }
       | 
         { $declaration = adef; }
         b2=block
@@ -2147,7 +2147,8 @@ namedSpecifiedArgument returns [SpecifiedArgument specifiedArgument]
       )?
       { expecting=SEMICOLON; }
       SEMICOLON
-      { $specifiedArgument.setEndToken($SEMICOLON); }
+      { $specifiedArgument.setEndToken($SEMICOLON);
+        expecting=-1; }
     ;
 
 anonymousArgument returns [SpecifiedArgument namedArgument]
@@ -2158,7 +2159,8 @@ anonymousArgument returns [SpecifiedArgument namedArgument]
        $namedArgument.setSpecifierExpression(se); }   
       { expecting=SEMICOLON; }
       SEMICOLON
-      { $namedArgument.setEndToken($SEMICOLON); }
+      { $namedArgument.setEndToken($SEMICOLON); 
+        expecting=-1; }
     ;
 
 objectArgument returns [ObjectArgument declaration]
@@ -2218,8 +2220,8 @@ voidOrInferredMethodArgument returns [MethodArgument declaration]
         )?
         { expecting=SEMICOLON; }
         SEMICOLON
-        { expecting=-1; }
-        { $declaration.setEndToken($SEMICOLON); }
+        { expecting=-1;
+          $declaration.setEndToken($SEMICOLON); }
       )
     ;
 
@@ -2244,8 +2246,8 @@ inferredGetterArgument returns [AttributeArgument declaration]
         )?
         { expecting=SEMICOLON; }
         SEMICOLON
-        { expecting=-1; }
-        { $declaration.setEndToken($SEMICOLON); }
+        { expecting=-1;
+          $declaration.setEndToken($SEMICOLON); }
       )
     ;
 
@@ -2286,8 +2288,8 @@ typedMethodOrGetterArgument returns [TypedArgument declaration]
           )?
           { expecting=SEMICOLON; }
           s1=SEMICOLON
-          { expecting=-1; }
-          { $declaration.setEndToken($s1); }
+          { expecting=-1;
+            $declaration.setEndToken($s1); }
         )
       |
         (
@@ -2303,8 +2305,8 @@ typedMethodOrGetterArgument returns [TypedArgument declaration]
           )?
           { expecting=SEMICOLON; }
           s2=SEMICOLON
-          { expecting=-1; }
-          { $declaration.setEndToken($s2); }
+          { expecting=-1;
+            $declaration.setEndToken($s2); }
         )
       )
     ;
@@ -2339,8 +2341,8 @@ untypedMethodOrGetterArgument returns [TypedArgument declaration]
       )
       { expecting=SEMICOLON; }
       SEMICOLON
-      { expecting=-1; }
-      { $declaration.setEndToken($SEMICOLON); }
+      { expecting=-1;
+        $declaration.setEndToken($SEMICOLON); }
     ;
 
 namedArgumentDeclaration returns [NamedArgument declaration]
