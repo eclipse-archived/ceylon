@@ -469,6 +469,16 @@ shared class ValueConstructors {
         
         assert(`ValueConstructors` ==type(ValueConstructors.sharedCtor));
         
+        // Class.constructors
+        value ctors = `ValueConstructors`.constructors;
+        assert(sc in ctors);
+        assert(ctors.size == 1);
+        
+        // Class.declaredConstructors
+        value declaredCtors = `ValueConstructors`.declaredConstructors;
+        assert(sc in declaredCtors);
+        assert(nsc in declaredCtors);
+        assert(declaredCtors.size == 2);
     }
     shared void testDeclarations() {
         value sc = `new ValueConstructors.sharedCtor`;
@@ -523,6 +533,17 @@ shared class ValueConstructors {
             assert(nsc.type == `ValueConstructors.Member`);
             
             assert(`Member` ==type(Member.sharedCtor));
+            
+            // Class.constructors
+            value ctors = `Member`.constructors;
+            assert(sc in ctors);
+            assert(ctors.size == 1);
+            
+            // Class.declaredConstructors
+            value declaredCtors = `Member`.declaredConstructors;
+            assert(sc in declaredCtors);
+            assert(nsc in declaredCtors);
+            assert(declaredCtors.size == 2);
         }
         shared void testDeclarations() {
             value sc = `new sharedCtor`;
@@ -643,7 +664,18 @@ shared class Constructors<T> {
         
         assert(exists dc = `Member`.defaultConstructor, dc == memberMember);
         
+        // Class.constructors
+        value ctors = `Member`.constructors;
+        assert(memberMember in ctors);
+        assert(memberOther in ctors);
+        assert(ctors.size == 2);
         
+        // Class.declaredConstructors
+        value declaredCtors = `Member`.declaredConstructors;
+        assert(memberMember in declaredCtors);
+        assert(memberOther in declaredCtors);
+        assert(memberNonShared in declaredCtors);
+        assert(declaredCtors.size == 3);
         
     }
     void testMemberDeclarations() {
@@ -783,6 +815,18 @@ shared class Constructors<T> {
             nonSharedAppliedArg == true);
         
         assert(exists dc = `Constructors<String>`.defaultConstructor, dc == def);
+        
+        // Class.constructors
+        value ctors = `Constructors<String>`.constructors;
+        assert(def in ctors);
+        assert(other in ctors);
+        assert(ctors.size == 2);
+        
+        // Class.declaredConstructors
+        value declaredCtors = `Constructors<String>`.declaredConstructors;
+        assert(def in declaredCtors);
+        assert(other in declaredCtors);
+        assert(nonShared in declaredCtors);
     }
     
     shared void testDeclarations() {
