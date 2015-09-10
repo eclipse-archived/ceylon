@@ -855,7 +855,7 @@ public class Unit {
         }
     }
 
-    public Type getFirstType(Type type) {
+    public Type getAbsentType(Type type) {
         Interface id = getIterableDeclaration();
         Type st = type.getSupertype(id);
         if (st!=null && 
@@ -868,7 +868,7 @@ public class Unit {
     }
     
     public boolean isNonemptyIterableType(Type type) {
-    	Type ft = getFirstType(type);
+    	Type ft = getAbsentType(type);
     	return ft!=null && ft.isExactlyNothing();
     }
 
