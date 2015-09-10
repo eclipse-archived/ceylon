@@ -54,6 +54,7 @@ public class AppliedCallableMemberConstructor<Container, Type, Arguments extends
         return TypeDescriptor.klass(AppliedCallableMemberConstructor.class, super.$reifiedContainer, $reifiedType, $reifiedArguments);
     }
     
+    @Ignore
     public AppliedCallableMemberConstructor(TypeDescriptor $reifiedContainer,
             TypeDescriptor $reifiedType, TypeDescriptor $reifiedArguments,
             Reference appliedFunction, FreeCallableConstructor declaration,

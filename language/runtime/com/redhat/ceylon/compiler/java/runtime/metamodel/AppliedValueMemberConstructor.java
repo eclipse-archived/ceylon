@@ -42,6 +42,7 @@ public class AppliedValueMemberConstructor<Container, Get, Set>
     @Ignore
     protected final TypeDescriptor $reifiedSet;
     
+    @Ignore
     public AppliedValueMemberConstructor(TypeDescriptor $reifiedContainer,
             TypeDescriptor $reifiedGet,
             TypeDescriptor $reifiedSet,

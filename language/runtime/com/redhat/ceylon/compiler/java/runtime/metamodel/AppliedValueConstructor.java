@@ -62,8 +62,7 @@ public class AppliedValueConstructor<Get,Set>
 
     final AppliedClass<Get,?> clazz;
     
-
-    
+    @Ignore
     public AppliedValueConstructor(TypeDescriptor $reifiedGet,
             TypeDescriptor $reifiedSet,
             FreeValueConstructor value,

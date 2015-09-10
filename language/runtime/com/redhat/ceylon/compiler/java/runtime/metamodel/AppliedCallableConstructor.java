@@ -44,7 +44,7 @@ public class AppliedCallableConstructor<Type, Arguments extends Sequential<? ext
     
     private ConstructorDispatch<Type, Arguments> dispatch;
     
-    
+    @Ignore
     public AppliedCallableConstructor(TypeDescriptor $reified$Type,
             TypeDescriptor $reified$Arguments, Reference appliedFunction,
             FreeCallableConstructor freeConstructor,
