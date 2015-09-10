@@ -471,14 +471,14 @@ shared class ValueConstructors {
         
         // Class.constructors
         value ctors = `ValueConstructors`.constructors;
-        // TODO assert(sc in ctors);
-        // TODO assert(ctors.size == 1);
+        assert(sc in ctors);
+        assert(ctors.size == 1);
         
         // Class.declaredConstructors
         value declaredCtors = `ValueConstructors`.declaredConstructors;
-        // TODO assert(sc in declaredCtors);
-        // TODO assert(nsc in declaredCtors);
-        // TODO assert(declaredCtors.size == 2);
+        assert(sc in declaredCtors);
+        assert(nsc in declaredCtors);
+        assert(declaredCtors.size == 2);
     }
     shared void testDeclarations() {
         value sc = `new ValueConstructors.sharedCtor`;
@@ -536,14 +536,14 @@ shared class ValueConstructors {
             
             // Class.constructors
             value ctors = `Member`.constructors;
-            // TODO assert(sc in ctors);
-            // TODO assert(ctors.size == 1);
+            assert(sc in ctors);
+            assert(ctors.size == 1);
             
             // Class.declaredConstructors
             value declaredCtors = `Member`.declaredConstructors;
-            // TODO assert(sc in declaredCtors);
-            // TODO assert(nsc in declaredCtors);
-            // TODO assert(declaredCtors.size == 2);
+            assert(sc in declaredCtors);
+            assert(nsc in declaredCtors);
+            assert(declaredCtors.size == 2);
         }
         shared void testDeclarations() {
             value sc = `new sharedCtor`;
@@ -666,16 +666,16 @@ shared class Constructors<T> {
         
         // Class.constructors
         value ctors = `Member`.constructors;
-        // TODO assert(memberMember in ctors);
-        // TODO assert(memberOther in ctors);
-        // TODO assert(ctors.size == 2);
+        assert(memberMember in ctors);
+        assert(memberOther in ctors);
+        assert(ctors.size == 2);
         
         // Class.declaredConstructors
         value declaredCtors = `Member`.declaredConstructors;
-        // TODO assert(memberMember in declaredCtors);
-        // TODO assert(memberOther in declaredCtors);
-        // TODO assert(memberNonShared in declaredCtors);
-        // TODO assert(declaredCtors.size == 3);
+        assert(memberMember in declaredCtors);
+        assert(memberOther in declaredCtors);
+        assert(memberNonShared in declaredCtors);
+        assert(declaredCtors.size == 3);
         
     }
     void testMemberDeclarations() {
@@ -818,15 +818,15 @@ shared class Constructors<T> {
         
         // Class.constructors
         value ctors = `Constructors<String>`.constructors;
-        // TODO assert(def in ctors);
-        // TODO assert(other in ctors);
-        // TODO assert(ctors.size == 2);
+        assert(def in ctors);
+        assert(other in ctors);
+        assert(ctors.size == 2);
         
         // Class.declaredConstructors
         value declaredCtors = `Constructors<String>`.declaredConstructors;
-        // TODO assert(def in declaredCtors);
-        // TODO assert(other in declaredCtors);
-        // TODO assert(nonShared in declaredCtors);
+        assert(def in declaredCtors);
+        assert(other in declaredCtors);
+        assert(nonShared in declaredCtors);
     }
     
     shared void testDeclarations() {
