@@ -21,4 +21,5 @@ shared native class AppliedCallableConstructor<out Type=Anything, in Arguments=N
   //Generic
   shared native actual Map<TypeParameter, ClosedType> typeArguments;
   shared native actual ClosedType<Anything>[] typeArgumentList;
+  shared native actual Boolean equals(Object other);
 }
