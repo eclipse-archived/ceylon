@@ -201,6 +201,7 @@
         <!-- Create a PDF from the XSL/FO. -->
         <java classname="org.apache.fop.apps.Fop" fork="true" dir="${basedir}" maxmemory="192m">
             <classpath refid="lib.classpath"/>
+            <jvmarg value="-Djava.awt.headless=true"/>
             <arg value="${build.dir}/${lang}/pdf/docbook_fop.tmp"/>
             <arg value="${build.dir}/${lang}/pdf/${docname}.pdf"/>
         </java>
