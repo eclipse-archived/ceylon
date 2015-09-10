@@ -27,6 +27,15 @@ function AppliedCallableConstructor$jsint(tipo,$$targs$$,that,myTargs) {
       atr$(that,'container',function(){
           return AppliedCallableConstructor$jsint.$$.prototype.$prop$getContainer.get.call(this);
       },undefined,AppliedCallableConstructor$jsint.$$.prototype.$prop$getContainer.$crtmm$);
+      atr$(that,'type',function(){
+          return AppliedCallableConstructor$jsint.$$.prototype.$prop$getType.get.call(this);
+      },undefined,AppliedCallableConstructor$jsint.$$.prototype.$prop$getType.$crtmm$);
+      atr$(that,'typeArguments',function(){
+          return AppliedCallableConstructor$jsint.$$.prototype.$prop$getTypeArguments.get.call(this);
+      },undefined,AppliedCallableConstructor$jsint.$$.prototype.$prop$getTypeArguments.$crtmm$);
+      atr$(that,'typeArgumentList',function(){
+          return AppliedCallableConstructor$jsint.$$.prototype.$prop$getTypeArgumentList.get.call(this);
+      },undefined,AppliedCallableConstructor$jsint.$$.prototype.$prop$getTypeArgumentList.$crtmm$);
       atr$(that,'parameterTypes',function(){
           return AppliedCallableConstructor$jsint.$$.prototype.$prop$getParameterTypes.get.call(this);
       },undefined,AppliedCallableConstructor$jsint.$$.prototype.$prop$getParameterTypes.$crtmm$);
