@@ -399,19 +399,17 @@ public class ExpressionVisitor extends Visitor {
                     if (e!=null) {
                         Type it = e.getTypeModel();
                         if (it!=null) {
-                            Type et = 
-                                    unit.getIteratedType(it);
+                            Type et = unit.getIteratedType(it);
                             boolean nonemptyIterable = 
-                                    et!=null &&
-                                    it.isSubtypeOf(unit.getNonemptyIterableType(et));
+                                    unit.isNonemptyIterableType(et);
                             that.setPossiblyEmpty(
                                     !nonemptyIterable || 
                                     cc.getPossiblyEmpty());
                             Type firstType = 
                                     unionType(
-                                            unit.getFirstType(it), 
-                                            cc.getFirstTypeModel(), 
-                                            unit);
+                                        unit.getAbsentType(it), 
+                                        cc.getFirstTypeModel(), 
+                                        unit);
                             that.setFirstTypeModel(firstType);
                         }
                     }
