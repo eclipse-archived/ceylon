@@ -1068,7 +1068,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                     decl = makeTypeAlias(classMirror);
                     setDeclarationVisibilityAndDeprecation(decl, classMirror, classMirror, classMirror, true);
                 }else{
-                    final List<MethodMirror> constructors = getClassConstructors(classMirror);
+                    final List<MethodMirror> constructors = getClassConstructors(classMirror, constructorOnly);
                     if (!constructors.isEmpty()) {
                         Boolean hasConstructors = hasConstructors(classMirror);
                         if (constructors.size() > 1) {
@@ -1283,15 +1283,40 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         }
     }
 
-    private List<MethodMirror> getClassConstructors(ClassMirror classMirror) {
+    interface MethodMirrorFilter {
+        boolean accept(MethodMirror methodMirror);
+    }
+    
+    MethodMirrorFilter constructorOnly = new MethodMirrorFilter() {
+        @Override
+        public boolean accept(MethodMirror methodMirror) {
+            return methodMirror.isConstructor();
+        }
+    };
+    
+    class ConstructorOrGetter implements MethodMirrorFilter{
+        private ClassMirror classMirror;
+
+        ConstructorOrGetter(ClassMirror classMirror) {
+            this.classMirror = classMirror;
+        }
+        @Override
+        public boolean accept(MethodMirror methodMirror) {
+            return methodMirror.isConstructor()
+                    || (!methodMirror.isConstructor() 
+                            && methodMirror.getAnnotation(CEYLON_ENUMERATED_ANNOTATION) != null
+                            && methodMirror.getReturnType().getDeclaredClass().toString().equals(classMirror.toString()));
+        }
+    };
+    
+    private List<MethodMirror> getClassConstructors(ClassMirror classMirror, MethodMirrorFilter p) {
         LinkedList<MethodMirror> constructors = new LinkedList<MethodMirror>();
         boolean isFromJDK = isFromJDK(classMirror);
         for(MethodMirror methodMirror : classMirror.getDirectMethods()){
             // We skip members marked with @Ignore
             if(methodMirror.getAnnotation(CEYLON_IGNORE_ANNOTATION) != null)
                 continue;
-            if(!methodMirror.isConstructor()
-                    && methodMirror.getAnnotation(CEYLON_ENUMERATED_ANNOTATION) == null)
+            if (!p.accept(methodMirror))
                 continue;
             // FIXME: tmp hack to skip constructors that have type params as we don't handle them yet
             if(!methodMirror.getTypeParameters().isEmpty())
@@ -2038,8 +2063,23 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         // because the type of the getter is the constructor's type
         Boolean hasConstructors = hasConstructors(classMirror);
         if (hasConstructors != null && hasConstructors) {
-            for (MethodMirror ctor : getClassConstructors(classMirror)) {
-                addConstructor((Class)klass, classMirror, ctor);
+            HashMap<String, Constructor> m = new HashMap<>();
+            // First all Constructors to the class for each constructor
+            for (MethodMirror ctor : getClassConstructors(classMirror, constructorOnly)) {
+                Constructor c;
+                c = addConstructor((Class)klass, classMirror, ctor);
+                m.put(c.getName(), c);
+            }
+            // Then add the Function or Value
+            for (MethodMirror ctor : getClassConstructors(classMirror, new ConstructorOrGetter(classMirror))) {
+                Object name = getAnnotationValue(ctor, CEYLON_NAME_ANNOTATION);
+                Constructor c = m.get(name);
+                if (c == null) {
+                    // Only add a Constructor if we've not already added one
+                    // for a corresponding java constructor
+                    c = addConstructor((Class)klass, classMirror, ctor);
+                }
+                addConstructorMethorOrValue((Class)klass, classMirror, ctor, c);
             }
         }
         
@@ -2424,7 +2464,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         list.add(value);
     }
     
-    private void addConstructor(Class klass, ClassMirror classMirror, MethodMirror ctor) {
+    private Constructor addConstructor(Class klass, ClassMirror classMirror, MethodMirror ctor) {
         boolean isCeylon = classMirror.getAnnotation(CEYLON_CEYLON_ANNOTATION) != null;
         Constructor constructor = new Constructor();
         constructor.setName(getCtorName(ctor));
@@ -2436,6 +2476,9 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         setDeclarationVisibilityAndDeprecation(constructor, ctor, ctor, classMirror, isCeylon);
         setAnnotations(constructor, ctor);
         klass.addMember(constructor);
+        return constructor;
+    }
+    protected void addConstructorMethorOrValue(Class klass, ClassMirror classMirror, MethodMirror ctor, Constructor constructor) {
         if (ctor.getAnnotation(CEYLON_ENUMERATED_ANNOTATION) != null) {
             klass.setEnumerated(true);
             Value v = new Value();
