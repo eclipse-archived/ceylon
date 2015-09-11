@@ -110,6 +110,9 @@ public abstract class Node {
     	}
     }
     
+    /**
+     * The index of the first character belonging to this node.
+     */
     public Integer getStartIndex() {
     	Token token = getToken();
     	if (token==null) {
@@ -121,6 +124,11 @@ public abstract class Node {
     	}
     }
     
+    /**
+     * The index of the last character belonging to this node.
+     * @see #getEndIndex()
+     * @deprecated
+     */
     @Deprecated
     public Integer getStopIndex() {
     	Token token = getEndToken();
@@ -136,6 +144,9 @@ public abstract class Node {
     	}
     }
     
+    /**
+     * The index of the first character after this node.
+     */
     public Integer getEndIndex() {
         Token token = getEndToken();
         if (token==null) {
@@ -149,7 +160,11 @@ public abstract class Node {
             return ct.getStopIndex()+1;
         }
     }
-
+    
+    /**
+     * The distance between {@link #getStartIndex()} and {@link #getEndIndex()},
+     * that is, loosely speaking, the length of this node.
+     */
     public Integer getDistance() {
         Integer start = getStartIndex();
         Integer end = getEndIndex();
