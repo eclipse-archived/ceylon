@@ -8774,22 +8774,25 @@ public class ExpressionVisitor extends Visitor {
             }
             else if (that instanceof Tree.NewLiteral) {
                 if (d instanceof Class) {
+                    Class c = (Class) d;
                     Constructor defaultConstructor = 
-                            ((Class) d).getDefaultConstructor();
+                            c.getDefaultConstructor();
                     if (defaultConstructor!=null) {
                         d = defaultConstructor;
                     }
                 }
-                if (!(d instanceof Constructor)) {
-                    if (d != null) {
-                        errorNode.addError("referenced declaration is not a constructor" +
-                                getDeclarationReferenceSuggestion(d));
+                if (d instanceof Constructor) {
+                    Constructor c = (Constructor) d;
+                    if (c.getParameterList()==null) {
+                        that.setTypeModel(unit.getValueConstructorDeclarationType());
+                    }
+                    else {
+                        that.setTypeModel(unit.getCallableConstructorDeclarationType());
                     }
                 }
-                if (((Constructor)d).getContainer().getMember(d.getName(), null, false) instanceof Value) {
-                    that.setTypeModel(unit.getValueConstructorDeclarationType());
-                } else {
-                    that.setTypeModel(unit.getCallableConstructorDeclarationType());
+                else if (d!=null) {
+                    errorNode.addError("referenced declaration is not a constructor" +
+                            getDeclarationReferenceSuggestion(d));
                 }
             }
             else if (that instanceof Tree.InterfaceLiteral) {
