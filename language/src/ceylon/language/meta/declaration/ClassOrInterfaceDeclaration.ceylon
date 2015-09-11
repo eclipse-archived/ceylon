@@ -103,14 +103,16 @@ shared sealed interface ClassOrInterfaceDeclaration
         given Kind satisfies NestableDeclaration
         given Annotation satisfies AnnotationType;
     
-    "Looks up a shared member declaration by name, provided it satisfies the given `Kind` type
-     argument. Returns `null` if no such member matches. This includes inherited
-     declarations but not unshared declarations"
+    "Looks up a shared member declaration by name, 
+     provided it satisfies the given `Kind` type argument. 
+     Returns `null` if no such member matches. 
+     This includes inherited declarations but not unshared declarations"
     shared formal Kind? getMemberDeclaration<Kind>(String name) 
         given Kind satisfies NestableDeclaration;
 
     "Looks up a member declaration directly declared on this class or interface, by name, 
-     provided it satisfies the given `Kind` type argument. Returns `null` if no such member matches. 
+     provided it satisfies the given `Kind` type argument. 
+     Returns `null` if no such member matches. 
      This includes unshared declarations but not inherited declarations."
     shared formal Kind? getDeclaredMemberDeclaration<Kind>(String name) 
         given Kind satisfies NestableDeclaration;
