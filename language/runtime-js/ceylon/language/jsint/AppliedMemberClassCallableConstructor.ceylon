@@ -20,4 +20,7 @@ shared native class AppliedMemberClassCallableConstructor<in Container=Nothing, 
   shared native actual ClosedType<Anything>[] typeArgumentList;
   //Functional
   shared native actual ClosedType<Anything>[] parameterTypes;
+
+  shared native actual String string;
+  shared native actual Boolean equals(Object other);
 }

@@ -7,8 +7,10 @@ function(nm,$mpt){
     if (mm.d[mm.d.length-2]==='$cn') {
       validate$params(mm.ps,$mpt.Arguments$getConstructor,"Wrong number of Arguments for getConstructor");
       var args=mm.ps?tupleize$params(mm.ps,this.$targs):empty();
-      return AppliedCallableConstructor$jsint(cn,{Type$AppliedCallableConstructor:this.$$targs$$.Type$AppliedClass,
-                                Arguments$AppliedCallableConstructor:args},undefined,this.$targs);
+      var r=AppliedCallableConstructor$jsint(cn,{Type$AppliedCallableConstructor:this.$$targs$$.Type$AppliedClass,
+            Arguments$AppliedCallableConstructor:args},undefined,this.$targs);
+      r.cont$=this;
+      return r;
     }
   }
   return null;

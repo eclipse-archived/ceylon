@@ -51,6 +51,9 @@ function AppliedClass$jsint(tipo,$$targs$$,that,classTargs){
   },undefined,_proto.$prop$getDeclaration.$crtmm$);
   atr$(that,'caseValues',function(){return coicase$(that);
   },undefined,_proto.$prop$getCaseValues.$crtmm$);
+  atr$(that,'defaultConstructor',function(){
+    return _proto.$prop$getDefaultConstructor.get.call(that);
+  },undefined,_proto.$prop$getDefaultConstructor.$crtmm$);
   that.getMethod=_proto.getMethod;
   that.getDeclaredMethod=_proto.getDeclaredMethod;
   that.getMethods=_proto.getMethods;

@@ -53,6 +53,9 @@ function AppliedMemberClass$jsint(tipo,$$targs$$,that,myTargs){
   atr$(that,'typeArgumentList',function(){
     return coitargl$(that);
   },undefined,_proto.$prop$getTypeArgumentList.$crtmm$);
+  atr$(that,'defaultConstructor',function(){
+    return _proto.$prop$getDefaultConstructor.get.call(that);
+  },undefined,_proto.$prop$getDefaultConstructor.$crtmm$);
   that.$_bind=_proto.$_bind;
   that.equals=_proto.equals;
   that.getAttribute=_proto.getAttribute;

@@ -1,3 +1,10 @@
-function memberInvoke(targs,args) {
-  throw new TypeError("IMPL OpenCallableConstructor.memberInvoke");
+function memberInvoke(o,targs,args) {
+  var a$=[];
+  for (var i=0;i<args.size;i++) {
+    a$.push(args.$_get(i));
+  }
+  if (targs.size) {
+    a$.push(tparms2targs$(getrtmm$$(this.tipo).$cont,targs));
+  }
+  return this.tipo.apply(o,a$);
 }

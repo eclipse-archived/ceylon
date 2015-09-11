@@ -1,4 +1,16 @@
 if (this.$defcons$===undefined) {
-  this.$defcons$=this.getConstructor("");
+  var mm=getrtmm$$(this.tipo);
+  var fn=mm.d[mm.d.length-1]+'_$c$';
+  var cn=this.tipo[fn];
+  if (cn) {
+    mm=getrtmm$$(cn).ps;
+    var args=tupleize$params(getrtmm$$(cn).ps,this.$$targs$$.Target$Type.a);
+    var r=AppliedCallableConstructor$jsint(cn,{Type$AppliedCallableConstructor:this.$$targs$$.Type$AppliedClass,
+          Arguments$AppliedCallableConstructor:args},undefined,this.$targs);
+    r.cont$=this;
+    this.$defcons$=r;
+    return r;
+  }
+  this.$defcons$=null;
 }
 return this.$defcons$;

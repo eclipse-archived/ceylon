@@ -19,7 +19,7 @@ function restype$(root,t) {
     function ft$(rt) {
       if (rt.a && rt.a[t]) {
         t=rt.a[t];
-        return (typeof(t)==='string')?restype(root,t):t;
+        return (typeof(t)==='string')?restype$(root,t):t;
       }
       var mm=getrtmm$$(rt.t?rt.t:rt);
       if (mm && mm.sts) {

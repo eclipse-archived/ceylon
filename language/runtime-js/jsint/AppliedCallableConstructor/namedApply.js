@@ -13,8 +13,7 @@ function(args){
     if (v===undefined && p.def===undefined) {
       throw InvocationException$meta$model("Required argument " + p.nm + " missing in named-argument invocation");
     } else if (v!==undefined) {
-        var t=p.$t;
-        if(typeof(t)==='string'&&this.$targs)t=this.$targs[t];
+        var t=restype2$(p.$t,this.$targs);
         if (t&&!is$(v,t))throw IncompatibleTypeException$meta$model("Argument " + p.nm + "="+v+" is not of the expected type.");
     }
     delete mapped[p.nm];

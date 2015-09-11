@@ -1,2 +1,1 @@
-console.log("IMPL OpenCallableConstructor.typeParameterDeclarations");
-return empty();
+return this.container.typeParameterDeclarations;

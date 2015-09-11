@@ -1,7 +1,7 @@
 function AppliedMemberClassCallableConstructor$jsint(tipo,$$targs$$,that,myTargs) {
-  if ($$targs$$.Type$AppliedMemberClassCallableConstructor===undefined)$$targs$$.Type$AppliedMemberClassCallableConstructor=$$targs$$.Type$MemberClassConstructor;
-  if ($$targs$$.Container$AppliedMemberClassCallableConstructor===undefined)$$targs$$.Container$AppliedMemberClassCallableConstructor=$$targs$$.Type$MemberClassConstructor;
-  if ($$targs$$.Arguments$AppliedMemberClassCallableConstructor===undefined)$$targs$$.Arguments$AppliedMemberClassCallableConstructor=$$targs$$.Type$MemberClassConstructor;
+  if ($$targs$$.Type$AppliedMemberClassCallableConstructor===undefined)$$targs$$.Type$AppliedMemberClassCallableConstructor=$$targs$$.Type$MemberClassCallableConstructor;
+  if ($$targs$$.Container$AppliedMemberClassCallableConstructor===undefined)$$targs$$.Container$AppliedMemberClassCallableConstructor=$$targs$$.Type$MemberClassCallableConstructor;
+  if ($$targs$$.Arguments$AppliedMemberClassCallableConstructor===undefined)$$targs$$.Arguments$AppliedMemberClassCallableConstructor=$$targs$$.Type$MemberClassCallableConstructor;
   $init$AppliedMemberClassCallableConstructor$jsint();
   if (that===undefined){
     var mm = getrtmm$$(tipo);
@@ -29,16 +29,25 @@ function AppliedMemberClassCallableConstructor$jsint(tipo,$$targs$$,that,myTargs
     that.equals=AppliedMemberClassCallableConstructor$jsint.$$.prototype.equals;
     that.$_bind=AppliedMemberClassCallableConstructor$jsint.$$.prototype.$_bind;
     atr$(that,'declaration',function(){
-        return AppliedMemberClassCallableConstructor$jsint.$$.prototype.$prop$getDeclaration.get.call(this);
+        return AppliedMemberClassCallableConstructor$jsint.$$.prototype.$prop$getDeclaration.get.call(that);
     },undefined,AppliedMemberClassCallableConstructor$jsint.$$.prototype.$prop$getDeclaration.$crtmm$);
     atr$(that,'container',function(){
-        return AppliedMemberClassCallableConstructor$jsint.$$.prototype.$prop$getContainer.get.call(this);
+        return AppliedMemberClassCallableConstructor$jsint.$$.prototype.$prop$getContainer.get.call(that);
     },undefined,AppliedMemberClassCallableConstructor$jsint.$$.prototype.$prop$getContainer.$crtmm$);
+    atr$(that,'type',function(){
+        return AppliedMemberClassCallableConstructor$jsint.$$.prototype.$prop$getType.get.call(that);
+    },undefined,AppliedMemberClassCallableConstructor$jsint.$$.prototype.$prop$getType.$crtmm$);
+    atr$(that,'typeArguments',function(){
+        return AppliedMemberClassCallableConstructor$jsint.$$.prototype.$prop$getTypeArguments.get.call(that);
+    },undefined,AppliedMemberClassCallableConstructor$jsint.$$.prototype.$prop$getTypeArguments.$crtmm$);
+    atr$(that,'typeArgumentList',function(){
+        return AppliedMemberClassCallableConstructor$jsint.$$.prototype.$prop$getTypeArgumentList.get.call(that);
+    },undefined,AppliedMemberClassCallableConstructor$jsint.$$.prototype.$prop$getTypeArgumentList.$crtmm$);
     atr$(that,'parameterTypes',function(){
-        return AppliedMemberClassCallableConstructor$jsint.$$.prototype.$prop$getParameterTypes.get.call(this);
+        return AppliedMemberClassCallableConstructor$jsint.$$.prototype.$prop$getParameterTypes.get.call(that);
     },undefined,AppliedMemberClassCallableConstructor$jsint.$$.prototype.$prop$getParameterTypes.$crtmm$);
     atr$(that,'string',function(){
-        return AppliedMemberClassCallableConstructor$jsint.$$.prototype.$prop$getString.get.call(this);
+        return AppliedMemberClassCallableConstructor$jsint.$$.prototype.$prop$getString.get.call(that);
     },undefined,AppliedMemberClassCallableConstructor$jsint.$$.prototype.$prop$getString.$crtmm$);
   }
   MemberClassConstructor$meta$model({Type$MemberClassConstructor:$$targs$$.Type$AppliedMemberClassCallableConstructor,

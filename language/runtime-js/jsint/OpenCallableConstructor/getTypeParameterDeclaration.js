@@ -1,4 +1,3 @@
 function getTypeParameterDeclaration(nm) {
-  console.log("IMPL OpenCallableConstructor.getTypeParameterDeclaration");
-  return null;
+  return this.container.getTypeParameterDeclaration(nm);
 }

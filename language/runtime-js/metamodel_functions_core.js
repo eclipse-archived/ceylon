@@ -139,3 +139,17 @@ function qname$(mm) {
   }
   return qn;
 }
+//Read the type parameter list of a type and generate type arguments for it
+function tparms2targs$(c,t){
+  var mm=getrtmm$$(c).tp;
+  if (mm) {
+    if (Object.keys(mm).length == t.size) {
+      var r={},i=0;
+      for (var k in mm) {
+        r[k]=t.$_get(i++).$$targs$$.Target$Type;
+      }
+      return r;
+    }
+  }
+  return undefined;
+}

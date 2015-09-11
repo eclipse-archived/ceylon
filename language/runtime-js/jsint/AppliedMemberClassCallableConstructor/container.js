@@ -1,9 +1,7 @@
 if (this.cont$===undefined) {
   var cc=getrtmm$$(this.tipo).$cont;
-  var mm=getrtmm$$(cc);
-  var _t={t:cc};
-  if (this.$targs)_t.a=this.$targs;
-  this.cont$=AppliedMemberClass$jsint(cc,{Type$AppliedMemberClass:_t,Arguments$AppliedMemberClass:{t:Nothing},
-    Container$AppliedMemberClass:this.$$targs$$.Container$AppliedMemberConstructor},undefined,this.$targs);
+  this.cont$=AppliedMemberClass$jsint(cc,{Type$AppliedMemberClass:this.$$targs$$.Type$AppliedMemberClassCallableConstructor,
+    Container$AppliedMemberClass:this.$$targs$$.Container$AppliedMemberClassCallableConstructor,
+    Arguments$AppliedMemberClass:{t:Nothing}},undefined,this.$targs);
 }
 return this.cont$;
