@@ -167,7 +167,9 @@ public class AttributeDefinitionBuilder {
     public static AttributeDefinitionBuilder singleton(AbstractTransformer owner, 
             String javaClassName, ClassDefinitionBuilder classBuilder, String attrName, TypedDeclaration attrType, 
             boolean toplevel) {
-        return new AttributeDefinitionBuilder(owner, attrType, javaClassName, classBuilder, attrName, attrName, toplevel, false);
+        AttributeDefinitionBuilder adb = new AttributeDefinitionBuilder(owner, attrType, javaClassName, classBuilder, attrName, attrName, toplevel, false);
+        adb.getterBuilder.realName(attrType.getName());
+        return adb;
     }
     
     public static AttributeDefinitionBuilder indirect(AbstractTransformer owner, 

@@ -275,7 +275,6 @@ public class CeylonVisitor extends Visitor {
                 null, 
                 singletonModel.getName(), singletonModel, false);
         adb.modelAnnotations(gen.makeAtEnumerated());
-        adb.modelAnnotations(gen.makeAtName(singletonModel.getName()));
         
         adb.userAnnotations(gen.expressionGen().transformAnnotations(false, OutputElement.GETTER, ctor));
         adb.fieldAnnotations(gen.expressionGen().transformAnnotations(false, OutputElement.FIELD, ctor));

@@ -66,7 +66,7 @@ public class MethodDefinitionBuilder
     private final AbstractTransformer gen;
     
     private final String name;
-    private final String realName;
+    private String realName;
     
     private long modifiers;
 
@@ -105,13 +105,19 @@ public class MethodDefinitionBuilder
     }
     
     public static MethodDefinitionBuilder getter(AbstractTransformer gen, TypedDeclaration attr, boolean indirect) {
-        return new MethodDefinitionBuilder(gen, false, Naming.getGetterName(attr, indirect), 
-                Naming.isAmbiguousGetterName(attr) ? attr.getName() : null);
+        MethodDefinitionBuilder mdb = new MethodDefinitionBuilder(gen, false, Naming.getGetterName(attr, indirect));
+        if (Naming.isAmbiguousGetterName(attr)) {
+            mdb.realName(attr.getName());
+        }
+        return mdb;
     }
     
     public static MethodDefinitionBuilder setter(AbstractTransformer gen, TypedDeclaration attr) {
-        return new MethodDefinitionBuilder(gen, false, Naming.getSetterName(attr),
-                Naming.isAmbiguousGetterName(attr) ? attr.getName() : null);
+        MethodDefinitionBuilder mdb = new MethodDefinitionBuilder(gen, false, Naming.getSetterName(attr));
+        if (Naming.isAmbiguousGetterName(attr)) {
+            mdb.realName(attr.getName());
+        }
+        return mdb;
     }
     
     public static MethodDefinitionBuilder callable(AbstractTransformer gen) {
@@ -136,17 +142,17 @@ public class MethodDefinitionBuilder
     }
     
     private MethodDefinitionBuilder(AbstractTransformer gen, boolean ignoreAnnotations, String name) {
-        this(gen, ignoreAnnotations, name, null);
-    }
-    
-    private MethodDefinitionBuilder(AbstractTransformer gen, boolean ignoreAnnotations, String name, String realName) {
         this.gen = gen;
         this.name = name;
-        this.realName = realName;
         if (ignoreAnnotations) {
             this.annotationFlags = Annotations.ignore(this.annotationFlags);
         }
         resultTypeExpr = makeVoidType();
+    }
+    
+    public MethodDefinitionBuilder realName(String realName) {
+        this.realName = realName;
+        return this;
     }
     
     private ListBuffer<JCAnnotation> getAnnotations() {
