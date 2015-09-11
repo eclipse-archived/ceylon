@@ -41,8 +41,8 @@ shared sealed interface ClassOrInterface<out Type=Anything>
         "If the specified `Container` or `Kind` type arguments are 
          not compatible with the actual result.")
     throws(`class TypeApplicationException`, 
-            "If the specified closed type argument values are not compatible 
-             with the actual result's type parameters.")
+        "If the specified closed type argument values are not compatible 
+         with the actual result's type parameters.")
     shared formal Member<Container, Kind>? getClassOrInterface
             <Container=Nothing, Kind=ClassOrInterface<>>
             (String name, ClosedType<Anything>* types)
@@ -55,8 +55,8 @@ shared sealed interface ClassOrInterface<out Type=Anything>
         "If the specified `Container` or `Kind` type arguments are not 
          compatible with the actual result.")
     throws(`class TypeApplicationException`, 
-            "If the specified closed type argument values are not compatible 
-             with the actual result's type parameters.")
+        "If the specified closed type argument values are not compatible 
+         with the actual result's type parameters.")
     shared formal Member<Container, Kind>? getDeclaredClassOrInterface
             <Container=Nothing, Kind=ClassOrInterface<>>
             (String name, ClosedType<Anything>* types)
@@ -71,8 +71,8 @@ shared sealed interface ClassOrInterface<out Type=Anything>
          are not compatible with the actual result, 
          or if the corresponding member is not a `MemberClass`.")
     throws(`class TypeApplicationException`, 
-            "If the specified closed type argument values are not compatible 
-             with the actual result's type parameters.")
+        "If the specified closed type argument values are not compatible 
+         with the actual result's type parameters.")
     shared formal MemberClass<Container, Type, Arguments>? getClass
             <Container=Nothing, Type=Anything, Arguments=Nothing>
             (String name, ClosedType<Anything>* types)
@@ -84,7 +84,7 @@ shared sealed interface ClassOrInterface<out Type=Anything>
     throws(`class IncompatibleTypeException`, 
         "If the specified `Container`, `Type` or `Arguments` type arguments 
          are not compatible with the actual result, 
-        or if the corresponding member is not a `MemberClass`.")
+         or if the corresponding member is not a `MemberClass`.")
     throws(`class TypeApplicationException`, 
         "If the specified closed type argument values are not compatible 
          with the actual result's type parameters.")
@@ -102,8 +102,8 @@ shared sealed interface ClassOrInterface<out Type=Anything>
          compatible with the actual result, 
          or if the corresponding member is not a `MemberInterface`.")
     throws(`class TypeApplicationException`, 
-            "If the specified closed type argument values are not compatible 
-             with the actual result's type parameters.")
+        "If the specified closed type argument values are not compatible 
+         with the actual result's type parameters.")
     shared formal MemberInterface<Container, Type>? getInterface
             <Container=Nothing, Type=Anything>
             (String name, ClosedType<Anything>* types);
@@ -130,8 +130,8 @@ shared sealed interface ClassOrInterface<out Type=Anything>
         "If the specified `Container`, `Type` or `Arguments` type arguments 
          are not compatible with the actual result.")
     throws(`class TypeApplicationException`, 
-            "If the specified closed type argument values are not compatible
-             with the actual result's type parameters.")
+        "If the specified closed type argument values are not compatible
+         with the actual result's type parameters.")
     shared formal Method<Container, Type, Arguments>? getMethod
             <Container=Nothing, Type=Anything, Arguments=Nothing>
             (String name, ClosedType<Anything>* types)
@@ -144,8 +144,8 @@ shared sealed interface ClassOrInterface<out Type=Anything>
         "If the specified `Container`, `Type` or `Arguments` type arguments 
          are not compatible with the actual result.")
     throws(`class TypeApplicationException`, 
-            "If the specified closed type argument values are not compatible 
-             with the actual result's type parameters.")
+        "If the specified closed type argument values are not compatible 
+         with the actual result's type parameters.")
     shared formal Method<Container, Type, Arguments>? getDeclaredMethod
             <Container=Nothing, Type=Anything, Arguments=Nothing>
             (String name, ClosedType<Anything>* types)
