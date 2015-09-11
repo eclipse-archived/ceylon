@@ -464,7 +464,12 @@ function coicont$(coi) {
   if (!cont)return null;
   var _t={t:cont};
   var rv;
-  var ttargs=coi.$$targs$$ && coi.$$targs$$.Container$Member && coi.$$targs$$.Container$Member.a;
+  var ttargs=coi.$$targs$$ && (coi.$$targs$$.Container$Member||coi.$$targs$$.Container$AppliedMemberClass||coi.$$targs$$.Container$AppliedMemberInterface);
+  if (ttargs) {
+    ttargs=ttargs.a;
+  } else {
+    ttargs=coi.$targs;
+  }
   if (ttargs)_t.a=ttargs;
   if (coi.src$ && coi.src$.outer$) {
     var _out=coi.src$.outer$;
