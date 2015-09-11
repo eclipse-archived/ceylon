@@ -1,7 +1,7 @@
 function AppliedMemberClassCallableConstructor$jsint(tipo,$$targs$$,that,myTargs) {
   if ($$targs$$.Type$AppliedMemberClassCallableConstructor===undefined)$$targs$$.Type$AppliedMemberClassCallableConstructor=$$targs$$.Type$MemberClassCallableConstructor;
-  if ($$targs$$.Container$AppliedMemberClassCallableConstructor===undefined)$$targs$$.Container$AppliedMemberClassCallableConstructor=$$targs$$.Type$MemberClassCallableConstructor;
-  if ($$targs$$.Arguments$AppliedMemberClassCallableConstructor===undefined)$$targs$$.Arguments$AppliedMemberClassCallableConstructor=$$targs$$.Type$MemberClassCallableConstructor;
+  if ($$targs$$.Container$AppliedMemberClassCallableConstructor===undefined)$$targs$$.Container$AppliedMemberClassCallableConstructor=$$targs$$.Container$MemberClassCallableConstructor;
+  if ($$targs$$.Arguments$AppliedMemberClassCallableConstructor===undefined)$$targs$$.Arguments$AppliedMemberClassCallableConstructor=$$targs$$.Arguments$MemberClassCallableConstructor;
   $init$AppliedMemberClassCallableConstructor$jsint();
   if (that===undefined){
     var mm = getrtmm$$(tipo);
