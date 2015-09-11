@@ -61,8 +61,9 @@ shared sealed interface ClassOrInterfaceDeclaration
         of ClassDeclaration | InterfaceDeclaration 
         satisfies NestableDeclaration & GenericDeclaration {
     
-    "This type's extended type, unless this is the class for [[Anything|ceylon.language::Anything]], which
-     is the root of the type hierarchy and thus does not have any extended type."
+    "This type's extended type, unless this is the class for 
+     [[Anything|ceylon.language::Anything]], whichis the root 
+     of the type hierarchy and thus does not have any extended type."
     shared formal OpenClassType? extendedType;
     
     "The list of types satisfied by this type."
@@ -76,13 +77,15 @@ shared sealed interface ClassOrInterfaceDeclaration
     shared formal Boolean isAlias;
     
     // FIXME: should Kind default to NestableDeclaration?
-    "Returns the list of shared member declarations that satisfy the given `Kind` type argument. This includes inherited
-     declarations but not unshared declarations."
+    "Returns the list of shared member declarations that satisfy the 
+     given `Kind` type argument. 
+     This includes inherited declarations but not unshared declarations."
     shared formal Kind[] memberDeclarations<Kind>() 
         given Kind satisfies NestableDeclaration;
 
-    "Returns the list of member declarations directly declared on this class or interface, which satisfy the given 
-     `Kind` type argument. This includes unshared declarations but not inherited declarations."
+    "Returns the list of member declarations directly declared on this class or interface, 
+     which satisfy the given `Kind` type argument. 
+     This includes unshared declarations but not inherited declarations."
     shared formal Kind[] declaredMemberDeclarations<Kind>() 
         given Kind satisfies NestableDeclaration;
 
@@ -114,15 +117,24 @@ shared sealed interface ClassOrInterfaceDeclaration
     
     "Applies the given closed type arguments to this toplevel class or interface declaration in order to obtain a class or interface model. 
      See [this code sample](#toplevel-sample) for an example on how to use this."
-    throws(`class IncompatibleTypeException`, "If the specified `Type` type argument is not compatible with the actual result.")
-    throws(`class TypeApplicationException`, "If the specified closed type argument values are not compatible with the actual result's type parameters.")
+    throws(`class IncompatibleTypeException`, 
+        "If the specified `Type` type argument is not compatible with the actual result.")
+    throws(`class TypeApplicationException`, 
+            "If the specified closed type argument values are not compatible 
+             with the actual result's type parameters.")
     shared formal ClassOrInterface<Type> apply<Type=Anything>(AppliedType<>* typeArguments);
     
     "Applies the given closed container type and type arguments to this member class or interface declaration in order to obtain a 
      member class or interface model. See [this code sample](#member-sample) for an example on how to use this."
-    throws(`class IncompatibleTypeException`, "If the specified `Container` or `Type` type arguments are not compatible with the actual result.")
-    throws(`class TypeApplicationException`, "If the specified closed container type or type argument values are not compatible with the actual result's container type or type parameters.")
-    shared formal Member<Container, ClassOrInterface<Type>> & ClassOrInterface<Type> 
-        memberApply<Container=Nothing, Type=Anything>(AppliedType<Object> containerType, AppliedType<>* typeArguments);
+    throws(`class IncompatibleTypeException`, 
+        "If the specified `Container` or `Type` type arguments are not 
+         compatible with the actual result.")
+    throws(`class TypeApplicationException`, 
+            "If the specified closed container type or type argument values 
+             are not compatible with the actual result's container type or 
+             type parameters.")
+    shared formal Member<Container, ClassOrInterface<Type>> & ClassOrInterface<Type> memberApply
+            <Container=Nothing, Type=Anything>
+            (AppliedType<Object> containerType, AppliedType<>* typeArguments);
 
 }

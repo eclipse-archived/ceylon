@@ -80,27 +80,45 @@ shared sealed interface ClassDeclaration
 
     "Applies the given closed type arguments to this toplevel class declaration in order to obtain a class model. 
      See [this code sample](#toplevel-sample) for an example on how to use this."
-    throws(`class IncompatibleTypeException`, "If the specified `Type` or `Arguments` type arguments are not compatible with the actual result.")
-    throws(`class TypeApplicationException`, "If the specified closed type argument values are not compatible with the actual result's type parameters.")
-    shared formal Class<Type, Arguments> classApply<Type=Anything, Arguments=Nothing>(AppliedType<>* typeArguments)
-        given Arguments satisfies Anything[];
+    throws(`class IncompatibleTypeException`, 
+        "If the specified `Type` or `Arguments` type arguments are not 
+         compatible with the actual result.")
+    throws(`class TypeApplicationException`, 
+            "If the specified closed type argument values are not compatible 
+             with the actual result's type parameters.")
+    shared formal Class<Type, Arguments> classApply
+            <Type=Anything, Arguments=Nothing>
+            (AppliedType<>* typeArguments)
+                given Arguments satisfies Anything[];
 
     "Applies the given closed container type and type arguments to this member class declaration in order to obtain a member class model. 
      See [this code sample](#member-sample) for an example on how to use this."
-    throws(`class IncompatibleTypeException`, "If the specified `Container`, `Type` or `Arguments` type arguments are not compatible with the actual result.")
-    throws(`class TypeApplicationException`, "If the specified closed container type or type argument values are not compatible with the actual result's container type or type parameters.")
-    shared formal MemberClass<Container, Type, Arguments> memberClassApply<Container=Nothing, Type=Anything, Arguments=Nothing>(AppliedType<Object> containerType, AppliedType<>* typeArguments)
-        given Arguments satisfies Anything[];
+    throws(`class IncompatibleTypeException`, 
+        "If the specified `Container`, `Type` or `Arguments` type arguments 
+         are not compatible with the actual result.")
+    throws(`class TypeApplicationException`, 
+            "If the specified closed container type or type argument values 
+             are not compatible with the actual result's container type or 
+             type parameters.")
+    shared formal MemberClass<Container, Type, Arguments> memberClassApply
+            <Container=Nothing, Type=Anything, Arguments=Nothing>
+            (AppliedType<Object> containerType, AppliedType<>* typeArguments)
+                given Arguments satisfies Anything[];
 
     "Creates a new instance of this toplevel class, by applying the specified type arguments and value arguments."
-    throws(`class IncompatibleTypeException`, "If the specified type or value arguments are not compatible with this toplevel class.")
+    throws(`class IncompatibleTypeException`, 
+        "If the specified type or value arguments are not compatible with 
+         this toplevel class.")
     shared default Object instantiate(AppliedType<>[] typeArguments = [], Anything* arguments)
         => classApply<Object, Nothing>(*typeArguments).apply(*arguments);
     
     "Creates a new instance of this member class, by applying the specified type arguments and value arguments."
-    throws(`class IncompatibleTypeException`, "If the specified container, type or value arguments are not compatible with this method.")
-    shared default Object memberInstantiate(Object container, AppliedType<>[] typeArguments = [], Anything* arguments)
-        => memberClassApply<Nothing, Object, Nothing>(`Nothing`, *typeArguments).bind(container).apply(*arguments);
+    throws(`class IncompatibleTypeException`, 
+        "If the specified container, type or value arguments are not 
+         compatible with this method.")
+    shared default Object memberInstantiate
+            (Object container, AppliedType<>[] typeArguments = [], Anything* arguments)
+                => memberClassApply<Nothing, Object, Nothing>(`Nothing`, *typeArguments).bind(container).apply(*arguments);
     
     "Looks up a constructor declaration directly declared on this class, by name. 
      Returns `null` if no such constructor matches. 
@@ -120,7 +138,9 @@ shared sealed interface ClassDeclaration
 shared sealed interface ClassWithInitializerDeclaration 
         satisfies ClassDeclaration {
     shared actual default [] constructorDeclarations() => [];
+    
     shared actual default Null getConstructorDeclaration(String name) => null;
+    
     shared actual default [] annotatedConstructorDeclarations<Annotation>()
             given Annotation satisfies AnnotationType => [];
 }
@@ -130,6 +150,7 @@ shared sealed interface ClassWithConstructorsDeclaration
     shared actual default Nothing instantiate(AppliedType<>[] typeArguments, Anything* arguments) {
         throw IncompatibleTypeException("class has constructors");
     }
+    
     shared actual default Nothing memberInstantiate(Object container, AppliedType<>[] typeArguments, Anything* arguments) {
         throw IncompatibleTypeException("class has constructors");
     }

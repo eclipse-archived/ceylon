@@ -29,6 +29,8 @@ shared sealed interface Class<out Type=Anything, in Arguments=Nothing>
     
     "The constructor with the given name, or null if this class lacks 
      a constructor of the given name."
-    shared actual formal CallableConstructor<Type, Arguments>|ValueConstructor<Type>? getConstructor<Arguments>(String name)
-        given Arguments satisfies Anything[];
+    shared actual formal CallableConstructor<Type, Arguments>|ValueConstructor<Type>? getConstructor
+            <Arguments>
+            (String name)
+                given Arguments satisfies Anything[];
 }

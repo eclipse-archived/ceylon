@@ -21,11 +21,14 @@ shared sealed interface ClassModel<out Type=Anything, in Arguments=Nothing>
     
     "The constructor with the given name, or null if this class lacks 
      a constructor of the given name"
-    shared formal FunctionModel<Type, Arguments>|ValueModel<Type>? getConstructor<Arguments>(String name)
-        given Arguments satisfies Anything[];
+    shared formal FunctionModel<Type, Arguments>|ValueModel<Type>? getConstructor
+            <Arguments>
+            (String name)
+                given Arguments satisfies Anything[];
     
     "The `shared` constructors of this class."
     shared formal Sequential<FunctionModel<Type, Nothing>|ValueModel<Type>> constructors;
+    
     "The constructors of this class, including non-`shared`."
     shared formal Sequential<FunctionModel<Type, Nothing>|ValueModel<Type>> declaredConstructors;
     
