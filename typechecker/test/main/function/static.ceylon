@@ -156,12 +156,16 @@ void testOuterInner() {
     value n = OuterClass.InnerClass.name;
     @type:"Anything()(OuterClass.InnerClass)" 
     value r = OuterClass.InnerClass.reset;
-    @type:"Attribute<OuterClass,OuterClass.InnerClass,Nothing>"
+    @type:"MemberClassValueConstructor<OuterClass,OuterClass.InnerClass,Nothing>"
     value meta1 = `OuterClass.InnerClass.instance`;
-    @type:"MemberClassConstructor<OuterClass,OuterClass.InnerClass,Empty>"
+    @type:"MemberClassCallableConstructor<OuterClass,OuterClass.InnerClass,Empty>"
     value meta2 = `OuterClass.InnerClass.create`;
     @type:"ValueDeclaration"
     value meta3 = `value OuterClass.InnerClass.instance`;
-    @type:"ConstructorDeclaration"
-    value meta4 = `new OuterClass.InnerClass.create`;
+    @type:"ValueConstructorDeclaration"
+    value meta4 = `new OuterClass.InnerClass.instance`;
+    @type:"FunctionDeclaration"
+    value meta5 = `function OuterClass.InnerClass.create`;
+    @type:"CallableConstructorDeclaration"
+    value meta6 = `new OuterClass.InnerClass.create`;
 }

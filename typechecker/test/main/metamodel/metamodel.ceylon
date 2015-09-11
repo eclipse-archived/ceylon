@@ -235,8 +235,8 @@ void test<T>() {
         shared String fun() => "hello"; 
     }
     @type:"Class<OtherLocalClass,Nothing>" value otherLocalClass = `OtherLocalClass`;
-    @type:"Constructor<OtherLocalClass,Nothing>" value otherLocalClassCtor = `OtherLocalClass.create`;
-    @type:"Value<OtherLocalClass,Nothing>" value otherLocalClassSingCtor = `OtherLocalClass.instance`;
+    @type:"CallableConstructor<OtherLocalClass,Nothing>" value otherLocalClassCtor = `OtherLocalClass.create`;
+    @type:"ValueConstructor<OtherLocalClass,Nothing>" value otherLocalClassSingCtor = `OtherLocalClass.instance`;
     @type:"Method<OtherLocalClass,String,[]>" value otherLocalClassFun = `OtherLocalClass.fun`;
     
 }
@@ -381,19 +381,21 @@ void meta() {
     
     @type:"Class<Bar,Empty>" value cd15 = `Bar`;
     @type:"Class<Baz,Nothing>" value cd16 = `Baz`;
-    @type:"ConstructorDeclaration" value cd9 = `new Bar`;
+    @type:"CallableConstructorDeclaration" value cd9 = `new Bar`;
     //@type:"ConstructorDeclaration" value cd10a = `new Bar.Bar`;
-    @type:"ConstructorDeclaration" value cd10b = `new Bar.baz`;
-    @type:"ValueDeclaration" value cd10c = `value Bar.instance`;
-    @type:"ConstructorDeclaration" value cd10d = `new Baz.baz`;
-    @type:"ValueDeclaration" value cd10e = `value Baz.instance`;
+    @type:"CallableConstructorDeclaration" value cd10b = `new Bar.baz`;
+    @type:"ValueConstructorDeclaration" value cd10c = `new Bar.instance`;
+    @type:"CallableConstructorDeclaration" value cd10d = `new Baz.baz`;
+    @type:"ValueConstructorDeclaration" value cd10e = `new Baz.instance`;
+    @type:"FunctionDeclaration" value cd10f = `function Baz.baz`;
+    @type:"ValueDeclaration" value cd10g = `value Baz.instance`;
     @error value cd11 = `class Bar.baz`;
     @error value cd12 = `interface Bar.baz`;
     @error value cd15 =  `new Bar.instance`;
-    @type:"Constructor<Bar,Tuple<String,String,Empty>>" value cd13 = `Bar.baz`;
-    @type:"Value<Bar,Nothing>" value cd17 = `Bar.instance`;
-    @type:"Constructor<Baz,Tuple<String,String,Empty>>" value cd18 = `Baz.baz`;
-    @type:"Value<Baz,Nothing>" value cd19 = `Baz.instance`;
+    @type:"CallableConstructor<Bar,[String]>" value cd13 = `Bar.baz`;
+    @type:"ValueConstructor<Bar,Nothing>" value cd17 = `Bar.instance`;
+    @type:"CallableConstructor<Baz,[String]>" value cd18 = `Baz.baz`;
+    @type:"ValueConstructor<Baz,Nothing>" value cd19 = `Baz.instance`;
     @error value cd14 = `new Foo`;
     
     @error value broke = `Map<Anything,Anything>`;

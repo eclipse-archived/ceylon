@@ -1,4 +1,4 @@
-import ceylon.language.meta.model { MemberClassConstructor }
+import ceylon.language.meta.model { MemberClassCallableConstructor }
 
 class ClassContainer() {
     
@@ -10,10 +10,10 @@ class ClassContainer() {
     }
     
     shared void test(ClassContainer other){
-        MemberClassConstructor<\ImemberObject,\ImemberObject.Ctor,[]> ctorCtor 
+        MemberClassCallableConstructor<\ImemberObject,\ImemberObject.Ctor,[]> ctorCtor 
                 = `\ImemberObject.Ctor.\Ictor`;
         print(ctorCtor(other.memberObject)());
-        MemberClassConstructor<\ImemberObject,\ImemberObject.Ctor,[]> ctorOther
+        MemberClassCallableConstructor<\ImemberObject,\ImemberObject.Ctor,[]> ctorOther
                 = `\ImemberObject.Ctor.\Iother`;
         print(ctorOther(other.memberObject)());
         @error:"constructor is not a type" 
