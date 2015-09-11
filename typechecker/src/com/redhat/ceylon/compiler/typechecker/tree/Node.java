@@ -120,7 +120,8 @@ public abstract class Node {
             return ct.getStartIndex();
     	}
     }
-
+    
+    @Deprecated
     public Integer getStopIndex() {
     	Token token = getEndToken();
     	if (token==null) {
@@ -133,6 +134,31 @@ public abstract class Node {
     		CommonToken ct = (CommonToken) token;
             return ct.getStopIndex();
     	}
+    }
+    
+    public Integer getEndIndex() {
+        Token token = getEndToken();
+        if (token==null) {
+            token = getToken();
+        }
+        if (token==null) {
+            return null;
+        }
+        else {
+            CommonToken ct = (CommonToken) token;
+            return ct.getStopIndex()+1;
+        }
+    }
+
+    public Integer getDistance() {
+        Integer start = getStartIndex();
+        Integer end = getEndIndex();
+        if (start!=null && end!=null) {
+            return end - start;
+        }
+        else {
+            return null;
+        }
     }
 
 	private static String toLocation(Token token) {
