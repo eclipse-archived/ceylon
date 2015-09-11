@@ -8,7 +8,7 @@ function $_apply(targs,mt) {
        Container$AppliedMemberClassCallableConstructor:{t:cc.container.tipo},
        Arguments$AppliedMemberClassCallableConstructor:mt.Arguments$apply});*/
   } else {
-    console.log("TODO validar " + targs.string);
+    var _t=tparms2targs$(getrtmm$$(this.tipo).$cont,targs);
     return AppliedCallableConstructor$jsint(this.tipo,
       {Type$AppliedCallableConstructor:mt.Result$apply,
        Arguments$AppliedCallableConstructor:mt.Arguments$apply});

@@ -13,10 +13,10 @@ if (this.$defcons$===undefined) {
   var cn=this.tipo[fn];
   if (cn) {
     mm=getrtmm$$(cn).ps;
-    var args=tupleize$params(getrtmm$$(cn).ps,this.$$targs$$.Target$Type.a);
+    var args=tupleize$params(getrtmm$$(cn).ps,this.$$targs$$.Type$AppliedMemberClass.a);
     var r=AppliedMemberClassCallableConstructor$jsint(cn,
-          {Type$AppliedMemberClassCallableConstructor:this.$$targs$$.Type$AppliedClass,
-           Container$AppliedMemberClassCallableConstructor:this.$$targs$$.Container$AppliedClass,
+          {Type$AppliedMemberClassCallableConstructor:this.$$targs$$.Type$AppliedMemberClass,
+           Container$AppliedMemberClassCallableConstructor:this.$$targs$$.Container$AppliedMemberClass,
            Arguments$AppliedMemberClassCallableConstructor:args},undefined,this.$targs);
     r.cont$=this;
     this.$defcons$=r;
