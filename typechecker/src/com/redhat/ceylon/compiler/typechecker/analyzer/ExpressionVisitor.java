@@ -1668,8 +1668,13 @@ public class ExpressionVisitor extends Visitor {
                         .getDirectMember(p.getName(), 
                                 null, false);
             if (a==null) {
-                that.addError("parameter declaration does not exist: '" + 
-                        p.getName() + "'");
+                Declaration fun = p.getDeclaration();
+                that.addError(
+                        (fun!=null && fun.isAnonymous() ?
+                            "parameter is not declared explicitly, and its type cannot be inferred" :
+                            "parameter is not declared")
+                        +": '" + p.getName() + 
+                        "' (specify the parameter type explicitly)");
             }
         }
     }
@@ -5965,11 +5970,13 @@ public class ExpressionVisitor extends Visitor {
     
     @Override public void visit(Tree.BaseMemberExpression that) {
         super.visit(that);
+        boolean notIndirectlyInvoked = 
+                !that.getIndirectlyInvoked();
         boolean notDirectlyInvoked = 
                 !that.getDirectlyInvoked();
         TypedDeclaration member = 
                 resolveBaseMemberExpression(that, 
-                        notDirectlyInvoked);
+                        notIndirectlyInvoked);
         checkExtendsClauseReference(that, member);
         if (member!=null && notDirectlyInvoked) {
             Tree.TypeArguments tal = that.getTypeArguments();
@@ -6071,11 +6078,13 @@ public class ExpressionVisitor extends Visitor {
     @Override public void visit(
             Tree.QualifiedMemberExpression that) {
         super.visit(that);
+        boolean notIndirectlyInvoked = 
+                !that.getIndirectlyInvoked();
         boolean notDirectlyInvoked = 
                 !that.getDirectlyInvoked();
         TypedDeclaration member = 
                 resolveQualifiedMemberExpression(that, 
-                        notDirectlyInvoked);
+                        notIndirectlyInvoked);
         if (member!=null && notDirectlyInvoked) {
             Tree.Primary primary = that.getPrimary();
             Tree.TypeArguments tal = that.getTypeArguments();
@@ -6584,11 +6593,13 @@ public class ExpressionVisitor extends Visitor {
     
     @Override public void visit(Tree.BaseTypeExpression that) {
         super.visit(that);
+        boolean notIndirectlyInvoked = 
+                !that.getIndirectlyInvoked();
         boolean notDirectlyInvoked = 
                 !that.getDirectlyInvoked();
         TypeDeclaration type = 
                 resolveBaseTypeExpression(that, 
-                        notDirectlyInvoked);
+                        notIndirectlyInvoked);
         checkExtendsClauseReference(that, type);
         if (type!=null && notDirectlyInvoked) {
             Tree.TypeArguments tal = that.getTypeArguments();
@@ -6873,11 +6884,13 @@ public class ExpressionVisitor extends Visitor {
     @Override public void visit(
             Tree.QualifiedTypeExpression that) {
         super.visit(that);
+        boolean notIndirectlyInvoked = 
+                !that.getIndirectlyInvoked();
         boolean notDirectlyInvoked = 
                 !that.getDirectlyInvoked();
         TypeDeclaration type = 
                 resolveQualifiedTypeExpression(that, 
-                        notDirectlyInvoked);
+                        notIndirectlyInvoked);
         if (type!=null && notDirectlyInvoked) {
             Tree.Primary primary = that.getPrimary();
             Tree.TypeArguments tal = that.getTypeArguments();

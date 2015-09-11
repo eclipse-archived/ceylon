@@ -697,6 +697,7 @@
     List<Type> signature;
     boolean ellipsis;
     boolean directlyInvoked;
+    boolean indirectlyInvoked;
     boolean assigned;
     boolean staticMethodReference;
     boolean staticMethodReferencePrimary;)

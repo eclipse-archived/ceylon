@@ -1529,9 +1529,13 @@ public class TypeVisitor extends Visitor {
                     mte.setDirectlyInvoked(true);
                 }
             }
+            if (that.getIndirectlyInvoked()) {
+                mte.setIndirectlyInvoked(true);
+            }
         }
         if (primary instanceof Tree.Package) {
-            ((Tree.Package) primary).setQualifier(true);
+            Tree.Package pack = (Tree.Package) primary;
+            pack.setQualifier(true);
         }
         super.visit(that);
     }
@@ -1544,6 +1548,7 @@ public class TypeVisitor extends Visitor {
             Tree.MemberOrTypeExpression mte = 
                     (Tree.MemberOrTypeExpression) primary;
             mte.setDirectlyInvoked(true);
+            mte.setIndirectlyInvoked(true);
         }
         super.visit(that);
     }
