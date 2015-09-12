@@ -13,5 +13,8 @@ shared native class AppliedValueConstructor<out Type=Object,in Set=Nothing>()
   shared native actual ValueConstructorDeclaration declaration;
   shared native actual Class<Type> type;
   shared native actual Class<Type>? container;
+
+  shared native actual Boolean equals(Object other);
+  shared native actual String string;
 }
 

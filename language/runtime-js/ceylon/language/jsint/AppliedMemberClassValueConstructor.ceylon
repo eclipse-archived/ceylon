@@ -15,4 +15,7 @@ shared native class AppliedMemberClassValueConstructor<in Container=Nothing, out
   //throws(`class StorageException`,
   //    "If this attribute is not stored at runtime, for example if it is neither shared nor captured.")
   shared native actual ValueConstructor<Type, Set> bind(Object container);
+
+  shared native actual String string;
+  shared native actual Boolean equals(Object other);
 }
