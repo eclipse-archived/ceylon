@@ -1,1 +1,1 @@
-return (getrtmm$$(this.tipo).pa&8) > 0;
+return (getrtmm$$(this.meta).pa&8) > 0;
