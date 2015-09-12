@@ -51,6 +51,12 @@
    
        {Integer+} lengths = { for (w in words) w.size };
    
+   The `*.` operator may be used to evaluate an attribute
+   or invoke a method of the elements of the stream,
+   producing a new stream:
+   
+       {Integer+} lengths = words*.size;
+   
    `Iterable` and its subtypes define various operations
    that return other iterable objects. Such operations come 
    in two flavors:
