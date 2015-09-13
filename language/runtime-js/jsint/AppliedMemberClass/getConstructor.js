@@ -5,7 +5,7 @@ function(nm,$mpt){
   if (mtn.indexOf('$')>0)mtn=mtn.substring(0,mtn.indexOf('$'));
   if (nm==='')nm='$c$';
   var startingType=this.container;
-  while (is$(startingType,{t:Class$meta$model})) {
+  while (is$(startingType,{t:ClassOrInterface$meta$model})) {
     var pn=startingType.declaration.name;
     mtn+='$'+startingType.declaration.name;
     startingType=startingType.container;
