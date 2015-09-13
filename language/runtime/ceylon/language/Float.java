@@ -122,6 +122,18 @@ public final class Float
         else if (otherValue==3.0) {
             return value*value*value;
         }
+        else if (otherValue==4.0) {
+            double sqr = value*value;
+            return sqr*sqr;
+        }
+        else if (otherValue==5.0) {
+            double sqr = value*value;
+            return sqr*sqr*value;
+        }
+        else if (otherValue==6.0) {
+            double sqr = value*value;
+            return sqr*sqr*sqr;
+        }
         //TODO: other positive integer powers for which
         //      multiplying is faster than pow()
         else if (otherValue==0.5) {
@@ -138,6 +150,18 @@ public final class Float
         }
         else if (otherValue==-3.0) {
             return 1.0/value/value/value;
+        }
+        else if (otherValue==-4.0) {
+            double sqr = value*value;
+            return 1/sqr/sqr;
+        }
+        else if (otherValue==-5.0) {
+            double sqr = value*value;
+            return 1/sqr/sqr/value;
+        }
+        else if (otherValue==-6.0) {
+            double sqr = value*value;
+            return 1/sqr/sqr/sqr;
         }
         else if (otherValue==-0.5) {
             return 1.0/Math.sqrt(value);
@@ -548,6 +572,18 @@ public final class Float
         else if (integer == 3) {
             return value*value*value;
         }
+        else if (integer == 4) {
+            double sqr = value*value;
+            return sqr*sqr;
+        }
+        else if (integer == 5) {
+            double sqr = value*value;
+            return sqr*sqr*value;
+        }
+        else if (integer == 6) {
+            double sqr = value*value;
+            return sqr*sqr*sqr;
+        }
         //TODO: other positive integer powers for which
         //      multiplication is more efficient than pow()
         else if (integer == -1) {
@@ -558,6 +594,18 @@ public final class Float
         }
         else if (integer == -3) {
             return 1/value/value/value;
+        }
+        else if (integer == -4) {
+            double sqr = value*value;
+            return 1/sqr/sqr;
+        }
+        else if (integer == -5) {
+            double sqr = value*value;
+            return 1/sqr/sqr/value;
+        }
+        else if (integer == -6) {
+            double sqr = value*value;
+            return 1/sqr/sqr/sqr;
         }
         else {
             //NOTE: this function is _really_ slow!
