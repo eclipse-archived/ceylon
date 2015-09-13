@@ -198,6 +198,7 @@ shared native final class Float(Float float)
      - a Ceylon floating point literal that evaluates to 
        this floating point number, for example, `\"1.0\"`, 
        `\"-0.0\"`, or `\"1.5E10\"`."
+    see (`function formatFloat`)
     shared actual native String string;
     
     shared actual native Boolean largerThan(Float other); 
