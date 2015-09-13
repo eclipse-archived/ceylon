@@ -23,6 +23,8 @@
  - `formatFloat(1234.0,0)` is `\"1234\"`
  - `formatFloat(1234.1234,6)` is `\"1234.123400\"`
  - `formatFloat(1234.1234,0,2)` is `\"1234.12\"`
+ - `formatFloat(0.0001,2,2)` is `\"0.00\"`
+ - `formatFloat(0.0001,0,2)` is `\"0\"`
  
  Finally:
  
