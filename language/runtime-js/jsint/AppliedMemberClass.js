@@ -56,6 +56,9 @@ function AppliedMemberClass$jsint(tipo,$$targs$$,that,myTargs){
   atr$(that,'defaultConstructor',function(){
     return _proto.$prop$getDefaultConstructor.get.call(that);
   },undefined,_proto.$prop$getDefaultConstructor.$crtmm$);
+  atr$(that,'constructor',function(){
+    return _proto.$prop$getConstructors.get.call(that);
+  },undefined,_proto.$prop$getConstructors.$crtmm$);
   that.$_bind=_proto.$_bind;
   that.equals=_proto.equals;
   that.getAttribute=_proto.getAttribute;
