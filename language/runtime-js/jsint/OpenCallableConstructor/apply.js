@@ -13,5 +13,5 @@ function $_apply(targs,mt) {
       {Type$AppliedCallableConstructor:mt.Result$apply,
        Arguments$AppliedCallableConstructor:mt.Arguments$apply});
   }
-  throw new TypeError("IMPL OpenCallableConstructor.apply");
+  throw new TypeError("WTF OpenCallableConstructor.apply");
 }
