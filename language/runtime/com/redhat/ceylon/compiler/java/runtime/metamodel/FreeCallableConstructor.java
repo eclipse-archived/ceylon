@@ -228,7 +228,7 @@ public class FreeCallableConstructor
                 = clsDecl.<Result, Sequential<? extends java.lang.Object>>classApply(
                         $reified$Result, Nothing.NothingType, typeArguments);
         // then get the constructor from that
-        return (CallableConstructor)cls.<Arguments>getConstructor($reified$Arguments, getName());
+        return (CallableConstructor)cls.<Arguments>getDeclaredConstructor($reified$Arguments, getName());
     }
     
     @Override
@@ -249,7 +249,7 @@ public class FreeCallableConstructor
                 = getContainer().<Container, Result, Sequential<? extends Object>>memberClassApply(
                         $reified$Container, $reified$Result, Nothing.NothingType, containerType, typeArguments);
         // then get the constructor from that
-        return (MemberClassCallableConstructor)cls.<Arguments>getConstructor($reified$Arguments, getName());
+        return (MemberClassCallableConstructor)cls.<Arguments>getDeclaredConstructor($reified$Arguments, getName());
     }
     
     @Override

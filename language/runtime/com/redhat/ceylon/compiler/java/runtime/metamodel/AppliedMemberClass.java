@@ -1,15 +1,19 @@
 package com.redhat.ceylon.compiler.java.runtime.metamodel;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import ceylon.language.AssertionError;
 import ceylon.language.Sequential;
 import ceylon.language.empty_;
+import ceylon.language.meta.declaration.AnnotatedDeclaration;
 import ceylon.language.meta.declaration.CallableConstructorDeclaration;
 import ceylon.language.meta.declaration.ClassDeclaration;
+import ceylon.language.meta.declaration.ConstructorDeclaration;
 import ceylon.language.meta.declaration.NestableDeclaration;
 import ceylon.language.meta.declaration.ValueConstructorDeclaration;
 import ceylon.language.meta.model.Class;
+import ceylon.language.meta.model.ConstructorModel;
 import ceylon.language.meta.model.FunctionModel;
 import ceylon.language.meta.model.MemberClassCallableConstructor;
 import ceylon.language.meta.model.ValueModel;
@@ -17,11 +21,15 @@ import ceylon.language.meta.model.ValueModel;
 import com.redhat.ceylon.compiler.java.language.ObjectArrayIterable;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Name;
+import com.redhat.ceylon.compiler.java.metadata.Sequenced;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
+import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Function;
+import com.redhat.ceylon.model.typechecker.model.Functional;
+import com.redhat.ceylon.model.typechecker.model.Reference;
 import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
 
 public class AppliedMemberClass<Container, Type, Arguments extends Sequential<? extends Object>> 
@@ -242,11 +250,41 @@ public class AppliedMemberClass<Container, Type, Arguments extends Sequential<? 
         return getDeclaringType();
     }
     
+    @Override
     @TypeParameters({@TypeParameter(
             value="Arguments",
             satisfies="ceylon.language::Anything[]")})
     @TypeInfo("ceylon.language.meta.model::MemberClassCallableConstructor<Container,Type,Arguments>|ceylon.language.meta.model::MemberClassValueConstructor<Container,Type>|ceylon.language::Null")
     public <Arguments extends Sequential<? extends Object>>java.lang.Object getConstructor(
+            @Ignore
+            TypeDescriptor $reified$Arguments,
+            @Name("name")
+            String name) {
+        checkInit();
+        final ceylon.language.meta.declaration.Declaration ctor = ((FreeClass)declaration).getConstructorDeclaration(name);
+        if (ctor instanceof CallableConstructorDeclaration) {
+            if (((FreeCallableConstructor)ctor).declaration.isShared()) {
+                return getDeclaredConstructor($reified$Arguments, name); 
+            } else {
+                return null;
+            }
+        }
+        else if (ctor instanceof ValueConstructorDeclaration) {
+            if (((FreeValueConstructor)ctor).declaration.isShared()) {
+                return getDeclaredConstructor($reified$Arguments, name);
+            } else {
+                return null;
+            }
+        }
+        return null;
+    }
+    
+    @Override
+    @TypeParameters({@TypeParameter(
+            value="Arguments",
+            satisfies="ceylon.language::Anything[]")})
+    @TypeInfo("ceylon.language.meta.model::MemberClassCallableConstructor<Container,Type,Arguments>|ceylon.language.meta.model::MemberClassValueConstructor<Container,Type>|ceylon.language::Null")
+    public <Arguments extends Sequential<? extends Object>>java.lang.Object getDeclaredConstructor(
             @Ignore
             TypeDescriptor $reified$Arguments,
             @Name("name")
@@ -305,14 +343,38 @@ public class AppliedMemberClass<Container, Type, Arguments extends Sequential<? 
         return new AppliedMemberClassConstructor($reifiedContainer, this.$reifiedType, reified$Arguments, this, ctor.constructor.appliedType(this.producedType, Collections.<com.redhat.ceylon.model.typechecker.model.Type>emptyList()), ctor);*/
     }
     
-    private Sequential<?> getConstructors(boolean justShared) {
+    private Sequential getConstructors(boolean justShared,
+            TypeDescriptor $reified$Arguments,
+            ceylon.language.Sequential<? extends ceylon.language.meta.model.Type<? extends java.lang.annotation.Annotation>> annotations) {
         ArrayList<Object> ctors = new ArrayList<>();
+        com.redhat.ceylon.model.typechecker.model.Type reifiedArguments = $reified$Arguments == null ? null : Metamodel.getProducedType($reified$Arguments);
+        TypeDescriptor[] annotationTypeDescriptors = Metamodel.getTypeDescriptors(annotations);
         for (ceylon.language.meta.declaration.Declaration d : ((FreeClass)declaration).constructors()) {
+            Declaration dd = null;
+            if (d instanceof FreeCallableConstructor) {
+                dd = ((FreeCallableConstructor)d).declaration;
+            } else if (d instanceof FreeValueConstructor) {
+                dd = ((FreeValueConstructor)d).declaration;
+            }
+            // ATM this is an AND WRT annotation types: all must be present
+            if(!hasAllAnnotations((AnnotatedDeclaration)d, annotationTypeDescriptors))
+                continue;
+            if (reifiedArguments != null) {
+                // CallableConstructor need a check on the <Arguments>
+                Reference producedReference = dd.appliedReference(producedType, Collections.<com.redhat.ceylon.model.typechecker.model.Type>emptyList());
+                com.redhat.ceylon.model.typechecker.model.Type argumentsType = Metamodel.getProducedTypeForArguments(
+                        dd.getUnit(), 
+                        (Functional) dd, 
+                        producedReference);
+                if(!reifiedArguments.isSubtypeOf(argumentsType))
+                    continue;
+            }
             if (!justShared || (d instanceof NestableDeclaration
                     && ((NestableDeclaration)d).getShared())) {
-                ctors.add(getConstructor(TypeDescriptor.NothingType, d.getName()));
+                ctors.add(getDeclaredConstructor(TypeDescriptor.NothingType, d.getName()));
             }
         }
+        
         Object[] array = ctors.toArray(new Object[ctors.size()]);
         ObjectArrayIterable<ceylon.language.meta.declaration.Declaration> iterable = 
                 new ObjectArrayIterable<ceylon.language.meta.declaration.Declaration>(
@@ -322,13 +384,77 @@ public class AppliedMemberClass<Container, Type, Arguments extends Sequential<? 
                         (Object[]) array);
         return (ceylon.language.Sequential) iterable.sequence();
     }
-    @Override
-    public Sequential<?> getConstructors() {
-        return getConstructors(true);
-    }
-    @Override
-    public Sequential<?> getDeclaredConstructors() {
-        return getConstructors(false);
+
+    @SuppressWarnings({ "hiding" })
+    private <Container,Type,Arguments extends Sequential<? extends Object>> void addConstructorIfCompatible(@Ignore TypeDescriptor $reifiedContainer,
+            @Ignore TypeDescriptor $reifiedType,
+            @Ignore TypeDescriptor $reifiedArguments,
+            ArrayList<ceylon.language.meta.model.Method<? super Container,? extends Type,? super Arguments>> members,
+            FreeFunction decl, com.redhat.ceylon.model.typechecker.model.Type qualifyingType, 
+            AppliedClassOrInterface<Container> containerMetamodel,
+            com.redhat.ceylon.model.typechecker.model.Type reifiedType, 
+            com.redhat.ceylon.model.typechecker.model.Type reifiedArguments){
+        // now the types
+        Reference producedReference = decl.declaration.appliedReference(qualifyingType, Collections.<com.redhat.ceylon.model.typechecker.model.Type>emptyList());
+        com.redhat.ceylon.model.typechecker.model.Type type = producedReference.getType();
+        if(!type.isSubtypeOf(reifiedType))
+            return;
+        com.redhat.ceylon.model.typechecker.model.Type argumentsType = Metamodel.getProducedTypeForArguments(decl.declaration.getUnit(), (Functional) decl.declaration, producedReference);
+        if(!reifiedArguments.isSubtypeOf(argumentsType))
+            return;
+        // it's compatible!
+        members.add(decl.<Container,Type,Arguments>memberApply($reifiedContainer, $reifiedType, $reifiedArguments, containerMetamodel));
     }
 
+    @Override
+    public <Arguments extends Sequential<? extends Object>> Sequential<? extends FunctionModel<Type, Arguments>> getCallableConstructors(
+            TypeDescriptor reified$Arguments) {
+        return getCallableConstructors(reified$Arguments, (Sequential)empty_.get_());
+    }
+    
+    @Override
+    public <Arguments extends Sequential<? extends Object>> Sequential<? extends FunctionModel<Type, Arguments>> getCallableConstructors(
+            TypeDescriptor reified$Arguments,
+            @Sequenced
+            ceylon.language.Sequential<? extends ceylon.language.meta.model.Type<? extends java.lang.annotation.Annotation>> annotations) {
+        return getConstructors(true, reified$Arguments, annotations);
+    }
+    
+    @Override
+    public <Arguments extends Sequential<? extends Object>> Sequential<? extends FunctionModel<Type, Arguments>> getDeclaredCallableConstructors(
+            TypeDescriptor reified$Arguments) {
+        return getDeclaredCallableConstructors(reified$Arguments, (Sequential)empty_.get_());
+    }
+    
+    @Override
+    public <Arguments extends Sequential<? extends Object>> Sequential<? extends FunctionModel<Type, Arguments>> getDeclaredCallableConstructors(
+            TypeDescriptor reified$Arguments,
+            @Sequenced
+            ceylon.language.Sequential<? extends ceylon.language.meta.model.Type<? extends java.lang.annotation.Annotation>> annotations) {
+        return getConstructors(false, reified$Arguments, annotations);
+    }
+    
+    @Override
+    public Sequential<? extends ValueModel<Type, java.lang.Object>> getValueConstructors() {
+        return getValueConstructors((Sequential)empty_.get_());
+    }
+    
+    @Override
+    public Sequential<? extends ValueModel<Type, java.lang.Object>> getValueConstructors(
+            @Sequenced
+            ceylon.language.Sequential<? extends ceylon.language.meta.model.Type<? extends java.lang.annotation.Annotation>> annotations) {
+        return getConstructors(true, null, annotations);
+    }
+    
+    @Override
+    public Sequential<? extends ValueModel<Type, java.lang.Object>> getDeclaredValueConstructors() {
+        return getDeclaredValueConstructors((Sequential)empty_.get_());
+    }
+    
+    @Override
+    public Sequential<? extends ValueModel<Type, java.lang.Object>> getDeclaredValueConstructors(
+            @Sequenced
+            ceylon.language.Sequential<? extends ceylon.language.meta.model.Type<? extends java.lang.annotation.Annotation>> annotations) {
+        return getConstructors(false, null, annotations);
+    }
 }

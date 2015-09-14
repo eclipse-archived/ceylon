@@ -438,6 +438,7 @@ shared class ValueConstructors {
     shared new sharedCtor {
         ctor = "sharedCtor";
     }
+    "doc"
     new nonSharedCtor {
         ctor = "otherCtor";
     }
@@ -470,15 +471,19 @@ shared class ValueConstructors {
         assert(`ValueConstructors` ==type(ValueConstructors.sharedCtor));
         
         // Class.constructors
-        value ctors = `ValueConstructors`.constructors;
+        value ctors = `ValueConstructors`.getValueConstructors();
         assert(sc in ctors);
         assert(ctors.size == 1);
         
         // Class.declaredConstructors
-        value declaredCtors = `ValueConstructors`.declaredConstructors;
+        value declaredCtors = `ValueConstructors`.getDeclaredValueConstructors();
         assert(sc in declaredCtors);
         assert(nsc in declaredCtors);
         assert(declaredCtors.size == 2);
+        
+        value declaredCtors2 = `ValueConstructors`.getDeclaredValueConstructors(`DocAnnotation`);
+        assert(nsc in declaredCtors2);
+        assert(declaredCtors2.size == 1);
     }
     shared void testDeclarations() {
         value sc = `new ValueConstructors.sharedCtor`;
@@ -509,6 +514,7 @@ shared class ValueConstructors {
         shared new sharedCtor {
             this.ctor = "sharedCtor";
         }
+        "doc"
         new nonSharedCtor() {
             this.ctor = "nonSharedCtor";
         }
@@ -535,15 +541,19 @@ shared class ValueConstructors {
             assert(`Member` ==type(Member.sharedCtor));
             
             // Class.constructors
-            value ctors = `Member`.constructors;
+            value ctors = `Member`.getValueConstructors();
             assert(sc in ctors);
             assert(ctors.size == 1);
             
             // Class.declaredConstructors
-            value declaredCtors = `Member`.declaredConstructors;
+            value declaredCtors = `Member`.getDeclaredValueConstructors();
             assert(sc in declaredCtors);
             assert(nsc in declaredCtors);
             assert(declaredCtors.size == 2);
+            
+            value declaredCtors2 = `Member`.getDeclaredValueConstructors(`DocAnnotation`);
+            assert(nsc in declaredCtors2);
+            assert(declaredCtors2.size == 1);
         }
         shared void testDeclarations() {
             value sc = `new sharedCtor`;
@@ -574,6 +584,7 @@ shared class Constructors<T> {
     shared new (T? t=null){
         arg = t;
     }
+    "doc"
     shared new otherCtor(Integer i){
         arg = i;
     }
@@ -584,10 +595,11 @@ shared class Constructors<T> {
     shared class Member {
         shared Anything arg;
         shared new (T? t=null) {arg = t;}
+        "doc"
         shared new otherCtor(Integer i) {arg = i;}
         new nonSharedCtor(Boolean b) {arg = b;}
         shared MemberClassCallableConstructor<Constructors<T>, Member, [Boolean]> nonShared {
-            assert(is MemberClassCallableConstructor<Constructors<T>, Member, [Boolean]> r = `Member`.getConstructor<[Boolean]>("nonSharedCtor"));
+            assert(is MemberClassCallableConstructor<Constructors<T>, Member, [Boolean]> r = `Member`.getDeclaredConstructor<[Boolean]>("nonSharedCtor"));
             return r;
         }
         shared CallableConstructorDeclaration nonSharedDecl => `new nonSharedCtor`;
@@ -595,10 +607,11 @@ shared class Constructors<T> {
     class NonSharedMember {
         shared Anything arg;
         shared new (T? t=null) {arg = t;}
+        "doc"
         shared new otherCtor(Integer i) {arg = i;}
         new nonSharedCtor(Boolean b) {arg = b;}
         shared MemberClassCallableConstructor<Constructors<T>, NonSharedMember, [Boolean]> nonShared {
-            assert(is MemberClassCallableConstructor<Constructors<T>, NonSharedMember, [Boolean]> r = `NonSharedMember`.getConstructor<[Boolean]>("nonSharedCtor"));
+            assert(is MemberClassCallableConstructor<Constructors<T>, NonSharedMember, [Boolean]> r = `NonSharedMember`.getDeclaredConstructor<[Boolean]>("nonSharedCtor"));
             return r;
         }
         shared CallableConstructorDeclaration nonSharedDecl => `new nonSharedCtor`;
@@ -665,13 +678,13 @@ shared class Constructors<T> {
         assert(exists dc = `Member`.defaultConstructor, dc == memberMember);
         
         // Class.constructors
-        value ctors = `Member`.constructors;
+        value ctors = `Member`.getCallableConstructors<Nothing>();
         assert(memberMember in ctors);
         assert(memberOther in ctors);
         assert(ctors.size == 2);
         
         // Class.declaredConstructors
-        value declaredCtors = `Member`.declaredConstructors;
+        value declaredCtors = `Member`.getDeclaredCallableConstructors<Nothing>();
         assert(memberMember in declaredCtors);
         assert(memberOther in declaredCtors);
         assert(memberNonShared in declaredCtors);
@@ -694,7 +707,7 @@ shared class Constructors<T> {
         assert(exists otherModel = `Constructors<String>.Member`.getConstructor<[Integer]>("otherCtor"),
             otherModel == appliedOther);
         value appliedNonShared = memberNonShared.memberApply<Constructors<String>, Member, [Boolean]>(`Constructors<String>`);
-        assert(exists nonSharedModel = `Constructors<String>.Member`.getConstructor<[Boolean]>("nonSharedCtor"),
+        assert(exists nonSharedModel = `Constructors<String>.Member`.getDeclaredConstructor<[Boolean]>("nonSharedCtor"),
             nonSharedModel == appliedNonShared);
         
         value appliednonSharedDefault = nonSharedDefault.memberApply<Constructors<String>, NonSharedMember, []|[String?]>(`Constructors<String>`);
@@ -704,7 +717,7 @@ shared class Constructors<T> {
         assert(exists nonSharedotherModel = `Constructors<String>.NonSharedMember`.getConstructor<[Integer]>("otherCtor"),
             nonSharedotherModel == appliednonSharedOther);
         value nonSharedappliedNonShared = nonSharedNonShared.memberApply<Constructors<String>, NonSharedMember, [Boolean]>(`Constructors<String>`);
-        assert(exists nonSharednonSharedModel = `Constructors<String>.NonSharedMember`.getConstructor<[Boolean]>("nonSharedCtor"),
+        assert(exists nonSharednonSharedModel = `Constructors<String>.NonSharedMember`.getDeclaredConstructor<[Boolean]>("nonSharedCtor"),
             nonSharednonSharedModel == nonSharedappliedNonShared);
         
         // memberInvoke
@@ -733,7 +746,7 @@ shared class Constructors<T> {
     shared void testModels() {
         assert(is CallableConstructor<Constructors<T>,[T?]|[]> def = `Constructors<T>`.getConstructor<[T?]|[]>(""));
         value other = `otherCtor`;
-        assert(is CallableConstructor<Constructors<T>,[Boolean]> nonShared = `Constructors<T>`.getConstructor<[Boolean]>("nonSharedCtor"));
+        assert(is CallableConstructor<Constructors<T>,[Boolean]> nonShared = `Constructors<T>`.getDeclaredConstructor<[Boolean]>("nonSharedCtor"));
         
         // declaration
         assert(`new Constructors` == def.declaration);
@@ -817,16 +830,25 @@ shared class Constructors<T> {
         assert(exists dc = `Constructors<String>`.defaultConstructor, dc == def);
         
         // Class.constructors
-        value ctors = `Constructors<String>`.constructors;
+        variable value ctors = `Constructors<String>`.getCallableConstructors<Nothing>();
         assert(def in ctors);
         assert(other in ctors);
         assert(ctors.size == 2);
         
+        ctors = `Constructors<String>`.getCallableConstructors<Nothing>(`DocAnnotation`);
+        assert(other in ctors);
+        assert(ctors.size == 1);
+        
         // Class.declaredConstructors
-        value declaredCtors = `Constructors<String>`.declaredConstructors;
+        variable value declaredCtors = `Constructors<String>`.getDeclaredCallableConstructors<Nothing>();
         assert(def in declaredCtors);
         assert(other in declaredCtors);
         assert(nonShared in declaredCtors);
+        assert(declaredCtors.size == 3);
+        
+        value declaredCtors2 = `Constructors<String>`.getDeclaredCallableConstructors<[Boolean]>();
+        assert(nonShared in declaredCtors2);
+        assert(declaredCtors2.size == 1);
     }
     
     shared void testDeclarations() {
@@ -945,7 +967,7 @@ shared interface InterfaceConstructors<T> {
             
         }
         shared MemberClassCallableConstructor<InterfaceConstructors<T>, Member, []|[T?]> nonShared {
-            assert(is MemberClassCallableConstructor<InterfaceConstructors<T>, Member, []|[T?]> r = `Member`.getConstructor("nonSharedCtor"));
+            assert(is MemberClassCallableConstructor<InterfaceConstructors<T>, Member, []|[T?]> r = `Member`.getDeclaredConstructor("nonSharedCtor"));
             return r;
         }
         shared CallableConstructorDeclaration nonSharedDecl => `new nonSharedCtor`;
@@ -958,7 +980,7 @@ shared interface InterfaceConstructors<T> {
             
         }
         shared MemberClassCallableConstructor<InterfaceConstructors<T>, NonSharedMember, []|[T?]> nonShared {
-            assert(is MemberClassCallableConstructor<InterfaceConstructors<T>, NonSharedMember, []|[T?]> r = `NonSharedMember`.getConstructor("nonSharedCtor"));
+            assert(is MemberClassCallableConstructor<InterfaceConstructors<T>, NonSharedMember, []|[T?]> r = `NonSharedMember`.getDeclaredConstructor("nonSharedCtor"));
             return r;
         }
         shared CallableConstructorDeclaration nonSharedDecl => `new nonSharedCtor`;

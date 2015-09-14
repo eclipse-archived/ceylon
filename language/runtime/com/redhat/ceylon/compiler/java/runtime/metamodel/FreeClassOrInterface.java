@@ -491,7 +491,7 @@ public abstract class FreeClassOrInterface
                 continue;
             // in theory we can't have several members with the same name so no need to check the type
             // FIXME: interop and overloading
-            if(decl.getName().equals(name))
+            if(name.equals(decl.getName()))
                 return (T) decl;
         }
         return null;

@@ -1155,7 +1155,8 @@ public abstract class AppliedClassOrInterface<Type>
         members.add(decl.<Container,Type>memberInterfaceApply($reifiedContainer, $reifiedType, containerMetamodel));
     }
 
-    private boolean hasAllAnnotations(AnnotatedDeclaration decl, TypeDescriptor[] annotationTypeDescriptors) {
+    @Ignore
+    protected boolean hasAllAnnotations(AnnotatedDeclaration decl, TypeDescriptor[] annotationTypeDescriptors) {
         for(TypeDescriptor annotationTypeDescriptor : annotationTypeDescriptors){
             if(decl.annotations(annotationTypeDescriptor).getEmpty()){
                 // skip this declaration
