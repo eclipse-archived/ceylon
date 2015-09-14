@@ -352,6 +352,9 @@ public class CeylonCompileJsTool extends OutputRepoUsingTool {
             String msg = (count > 1) ? "There were %d errors." : "There was %d error.";
             flush();
             throw new CompilerErrorException(String.format(msg, count));
+        } else {
+            // We still call this here for any warning there might be
+            jsc.printErrorsAndCount(writer);
         }
         t4=System.nanoTime();
         if (opts.isProfile() || opts.hasVerboseFlag("benchmark")) {
