@@ -17,4 +17,3 @@ shared native class AppliedValueConstructor<out Type=Object,in Set=Nothing>()
   shared native actual Boolean equals(Object other);
   shared native actual String string;
 }
-
