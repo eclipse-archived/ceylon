@@ -13,9 +13,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -67,8 +66,9 @@ public class JsCompiler {
     private boolean stopOnErrors = true;
     private int errCount = 0;
 
-    protected Set<Message> errors = new HashSet<Message>();
-    protected Set<Message> unitErrors = new HashSet<Message>();
+    private List<PositionedMessage> analErrors = new ArrayList<PositionedMessage>();
+    private List<PositionedMessage> recogErrors = new ArrayList<PositionedMessage>();
+    
     protected List<File> srcFiles;
     protected List<File> resFiles;
     private final Map<Module, JsOutput> output = new HashMap<Module, JsOutput>();
@@ -82,11 +82,30 @@ public class JsCompiler {
         return exitCode;
     }
 
+    public static class PositionedMessage {
+        public Node node;
+        public Message message;
+        
+        PositionedMessage(Node that, RecognitionError err) {
+            node = that;
+            message = err;
+        }
+        
+        PositionedMessage(AnalysisMessage msg) {
+            node = msg.getTreeNode();
+            message = msg;
+        }
+    }
+    
     private final Visitor unitVisitor = new Visitor() {
         private boolean hasErrors(Node that) {
             boolean r=false;
             for (Message m: that.getErrors()) {
-                unitErrors.add(m);
+                if (m instanceof AnalysisMessage) {
+                    analErrors.add(new PositionedMessage((AnalysisMessage)m));
+                } else {
+                    recogErrors.add(new PositionedMessage(that, (RecognitionError)m));
+                }
                 r |= m instanceof AnalysisError;
             }
             return r;
@@ -273,15 +292,12 @@ public class JsCompiler {
         this.resFiles = files;
     }
 
-    /** Compile one phased unit.
-     * @return The errors found for the unit. */
-    public void compileUnit(PhasedUnit pu, JsIdentifierNames names) throws IOException {
-        unitErrors.clear();
-        pu.getCompilationUnit().visit(unitVisitor);
-        if (exitCode != 0) {
-            errors.addAll(unitErrors);
-            return;
-        }
+    /** Compile one phased unit. */
+    private void compileUnit(PhasedUnit pu, JsIdentifierNames names) throws IOException {
+//        pu.getCompilationUnit().visit(unitVisitor);
+//        if (exitCode != 0) {
+//            return;
+//        }
         if (errCount == 0 || !stopOnErrors) {
             if (opts.isVerbose()) {
                 logger.debug("Compiling "+pu.getUnitFile().getPath()+" to JS");
@@ -305,12 +321,11 @@ public class JsCompiler {
     /** Indicates if compilation should stop, based on whether there were errors
      * in the last compilation unit and the stopOnErrors flag is set. */
     protected boolean stopOnError() {
-        for (Message err : unitErrors) {
-            if (err instanceof AnalysisError ||
-                err instanceof UnexpectedError) {
+        for (PositionedMessage pm : analErrors) {
+            if (pm.message instanceof AnalysisError ||
+                pm.message instanceof UnexpectedError) {
                 errCount++;
             }
-            errors.add(err);
         }
         return stopOnErrors && errCount > 0;
     }
@@ -318,7 +333,8 @@ public class JsCompiler {
     /** Compile all the phased units in the typechecker.
      * @return true is compilation was successful (0 errors/warnings), false otherwise. */
     public boolean generate() throws IOException {
-        errors.clear();
+        recogErrors.clear();
+        analErrors.clear();
         errCount = 0;
         output.clear();
         try {
@@ -635,7 +651,9 @@ public class JsCompiler {
     public int printErrors(Writer out) throws IOException {
         int count = 0;
         DiagnosticListener diagnosticListener = opts.getDiagnosticListener();
-        for (Message err: errors) {
+        List<PositionedMessage> errors = (!recogErrors.isEmpty()) ? recogErrors : analErrors;
+        for (PositionedMessage pm : errors) {
+            Message err = pm.message;
             final boolean suppress = err instanceof UsageWarning && ((UsageWarning)err).isSuppressed();
             if (suppress) {
                 continue;
@@ -646,40 +664,37 @@ public class JsCompiler {
                 out.write("error");
             }
             out.write(String.format(" encountered [%s]", err.getMessage()));
+            Node node = TreeUtil.getIdentifyingNode(pm.node);
+            String fileName = (node.getUnit() != null) ? node.getUnit().getRelativePath() : null;
             if (err instanceof AnalysisMessage) {
-                Node n = ((AnalysisMessage)err).getTreeNode();
-                if(n != null)
-                    n = TreeUtil.getIdentifyingNode(n);
-                out.write(String.format(" at %s of %s", n.getLocation(), n.getUnit().getFilename()));
+                out.write(String.format(" at %d of %s", err.getLine(), fileName));
             } else if (err instanceof RecognitionError) {
-                RecognitionError rer = (RecognitionError)err;
-                out.write(String.format(" at %d:%d", rer.getLine(), rer.getCharacterInLine()));
+                out.write(String.format(" at %d of %s", err.getLine() - 1, fileName));
             }
             out.write(System.lineSeparator());
             count++;
             
             if(diagnosticListener != null){
                 boolean warning = err instanceof UsageWarning;
+                int line = -1;
                 int position = -1;
                 File file = null;
                 if(err instanceof AnalysisMessage){
-                    Node node = ((AnalysisMessage) err).getTreeNode();
-                    if(node != null)
-                        node = TreeUtil.getIdentifyingNode(node);
+                    line = err.getLine();
                     if(node != null && node.getToken() != null)
                         position = node.getToken().getCharPositionInLine();
-                    if(node.getUnit() != null && node.getUnit().getFullPath() != null)
-                        file = new File(node.getUnit().getFullPath()).getAbsoluteFile();
                 }else if(err instanceof RecognitionError){
-                    // FIXME: file??
+                    line = err.getLine() - 1;
                     position = ((RecognitionError) err).getCharacterInLine();
                 }
+                if(node.getUnit() != null && node.getUnit().getFullPath() != null)
+                    file = new File(node.getUnit().getFullPath()).getAbsoluteFile();
                 if(position != -1)
                     position++; // make it 1-based
                 if(warning)
-                    diagnosticListener.warning(file, err.getLine(), position, err.getMessage());
+                    diagnosticListener.warning(file, line, position, err.getMessage());
                 else
-                    diagnosticListener.error(file, err.getLine(), position, err.getMessage());
+                    diagnosticListener.error(file, line, position, err.getMessage());
             }
         }
         out.flush();
@@ -688,7 +703,17 @@ public class JsCompiler {
 
     /** Returns the list of errors found during compilation. */
     public Set<Message> getErrors() {
-        return Collections.unmodifiableSet(errors);
+        Set<Message> result = new LinkedHashSet<Message>();
+        if (!recogErrors.isEmpty()) {
+            for (PositionedMessage pm : recogErrors) {
+                result.add(pm.message);
+            }
+        } else {
+            for (PositionedMessage pm : analErrors) {
+                result.add(pm.message);
+            }
+        }
+        return result;
     }
 
     public void printErrorsAndCount(Writer out) throws IOException {
