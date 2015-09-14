@@ -57,6 +57,9 @@ function AppliedClass$jsint(tipo,$$targs$$,that,classTargs){
   atr$(that,'constructors',function(){
     return _proto.$prop$getConstructors.get.call(that);
   },undefined,_proto.$prop$getConstructors.$crtmm$);
+  atr$(that,'declaredConstructors',function(){
+    return _proto.$prop$getDeclaredConstructors.get.call(that);
+  },undefined,_proto.$prop$getDeclaredConstructors.$crtmm$);
   that.getMethod=_proto.getMethod;
   that.getDeclaredMethod=_proto.getDeclaredMethod;
   that.getMethods=_proto.getMethods;
