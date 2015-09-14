@@ -708,8 +708,10 @@ public class JsCompiler {
             }
         }
         if (printCount) {
-            out.write(String.format("%d %s%n", count, count==1?"error":"errors"));
-            out.write(String.format("%d %s%n", warnings, warnings==1?"warning":"warnings"));
+            if (count > 0)
+                out.write(String.format("%d %s%n", count, count==1?"error":"errors"));
+            if (warnings > 0)
+                out.write(String.format("%d %s%n", warnings, warnings==1?"warning":"warnings"));
         }
         out.flush();
         return count;
