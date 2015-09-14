@@ -350,6 +350,7 @@ public class CeylonCompileJsTool extends OutputRepoUsingTool {
             }
             int count = jsc.printErrorsAndCount(writer);
             String msg = (count > 1) ? "There were %d errors." : "There was %d error.";
+            flush();
             throw new CompilerErrorException(String.format(msg, count));
         }
         t4=System.nanoTime();
