@@ -646,9 +646,18 @@ public class JsCompiler {
         return result;
     }
 
+    public int printErrorsAndCount(Writer out) throws IOException {
+        return printErrors(out, true);
+    }
+
     /** Print all the errors found during compilation to the specified stream. 
      * @throws IOException */
     public int printErrors(Writer out) throws IOException {
+        return printErrors(out, false);
+    }
+    
+    private int printErrors(Writer out, boolean printCount) throws IOException {
+        int warnings = 0;
         int count = 0;
         DiagnosticListener diagnosticListener = opts.getDiagnosticListener();
         List<PositionedMessage> errors = (!recogErrors.isEmpty()) ? recogErrors : analErrors;
@@ -658,35 +667,36 @@ public class JsCompiler {
             if (suppress) {
                 continue;
             }
+            Node node = TreeUtil.getIdentifyingNode(pm.node);
+            int line = -1;
+            int position = -1;
+            if(err instanceof AnalysisMessage){
+                line = err.getLine();
+                if(node != null && node.getToken() != null)
+                    position = node.getToken().getCharPositionInLine();
+            }else if(err instanceof RecognitionError){
+                line = err.getLine() - 1;
+                position = ((RecognitionError) err).getCharacterInLine();
+            }
+            String fileName = (node.getUnit() != null) ? node.getUnit().getRelativePath() : "unknown";
+            out.write(fileName);
+            out.write(":");
+            out.write(String.format("%d", line));
+            out.write(": ");
             if (err instanceof UsageWarning) {
                 out.write("warning");
+                warnings++;
             } else {
                 out.write("error");
+                count++;
             }
-            out.write(String.format(" encountered [%s]", err.getMessage()));
-            Node node = TreeUtil.getIdentifyingNode(pm.node);
-            String fileName = (node.getUnit() != null) ? node.getUnit().getRelativePath() : null;
-            if (err instanceof AnalysisMessage) {
-                out.write(String.format(" at %d of %s", err.getLine(), fileName));
-            } else if (err instanceof RecognitionError) {
-                out.write(String.format(" at %d of %s", err.getLine() - 1, fileName));
-            }
+            out.write(": ");
+            out.write(err.getMessage());
             out.write(System.lineSeparator());
-            count++;
             
             if(diagnosticListener != null){
-                boolean warning = err instanceof UsageWarning;
-                int line = -1;
-                int position = -1;
                 File file = null;
-                if(err instanceof AnalysisMessage){
-                    line = err.getLine();
-                    if(node != null && node.getToken() != null)
-                        position = node.getToken().getCharPositionInLine();
-                }else if(err instanceof RecognitionError){
-                    line = err.getLine() - 1;
-                    position = ((RecognitionError) err).getCharacterInLine();
-                }
+                boolean warning = err instanceof UsageWarning;
                 if(node.getUnit() != null && node.getUnit().getFullPath() != null)
                     file = new File(node.getUnit().getFullPath()).getAbsoluteFile();
                 if(position != -1)
@@ -696,6 +706,10 @@ public class JsCompiler {
                 else
                     diagnosticListener.error(file, line, position, err.getMessage());
             }
+        }
+        if (printCount) {
+            out.write(String.format("%d %s%n", count, count==1?"error":"errors"));
+            out.write(String.format("%d %s%n", warnings, warnings==1?"warning":"warnings"));
         }
         out.flush();
         return count;
@@ -714,11 +728,6 @@ public class JsCompiler {
             }
         }
         return result;
-    }
-
-    public void printErrorsAndCount(Writer out) throws IOException {
-        int count = printErrors(out);
-        out.write(String.format("%d %s.%n", count, count==1?"error":"errors"));
     }
 
     /** Writes the beginning of the wrapper function for a JS module. */

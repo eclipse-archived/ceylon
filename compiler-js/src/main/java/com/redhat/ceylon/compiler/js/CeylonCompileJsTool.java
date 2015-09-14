@@ -348,8 +348,9 @@ public class CeylonCompileJsTool extends OutputRepoUsingTool {
                     System.exit(jsc.getExitCode());
                 }
             }
-            int count = jsc.printErrors(writer);
-            throw new CompilerErrorException(String.format("%d errors.", count));
+            int count = jsc.printErrorsAndCount(writer);
+            String msg = (count > 1) ? "There were %d errors." : "There was %d error.";
+            throw new CompilerErrorException(String.format(msg, count));
         }
         t4=System.nanoTime();
         if (opts.isProfile() || opts.hasVerboseFlag("benchmark")) {
