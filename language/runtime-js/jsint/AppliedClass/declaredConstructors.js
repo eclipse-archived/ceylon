@@ -9,10 +9,11 @@ if (this.$constrs$===undefined) {
         var args=mm.ps?tupleize$params(mm.ps,this.$targs):empty();
         var r=AppliedCallableConstructor$jsint(this.tipo[k],{Type$AppliedCallableConstructor:this.$$targs$$.Type$AppliedClass,
             Arguments$AppliedCallableConstructor:args},undefined,this.$targs);
-        ccc.push(r);
       } else {
-        console.log("TODO VAL  CONSTR " + k);
+        var r=AppliedValueConstructor$jsint(this.tipo[k],{Set$AppliedValueConstructor:{t:Nothing},
+              Type$AppliedValueConstructor:this.$$targs$$.Type$AppliedClass});
       }
+      ccc.push(r);
     }
   }
   this.$constrs$=ccc.length===0?empty():ArraySequence(ccc,{Element$ArraySequence:{t:'u',l:[

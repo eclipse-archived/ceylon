@@ -1,1 +1,1 @@
-return qname$(this.meta);
+return qname$(this.tipo);
