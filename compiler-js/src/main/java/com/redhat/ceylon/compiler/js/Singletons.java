@@ -271,6 +271,8 @@ public class Singletons {
         } else if (td.isShared()) {
             gen.out("ex$.", typevar, "_", singvar, "=", typevar, "_", singvar, ";");
         }
+        gen.out(gen.getNames().name(td), ".", typevar, "_", singvar, "=", typevar, "_", singvar);
+        gen.endLine(true);
     }
 
 }

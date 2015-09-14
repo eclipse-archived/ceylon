@@ -105,6 +105,9 @@ public class TypeUtils {
             }
             gen.out(gen.getClAlias(), "Anything");
         } else {
+            if (t.isValueConstructor()) {
+                t = (TypeDeclaration)t.getContainer();
+            }
             gen.out(qualifiedTypeContainer(node, imported, t, gen));
             boolean _init = (!imported && pt.getDeclaration().isDynamic()) || t.isAnonymous();
             if (_init && !pt.getDeclaration().isToplevel()) {

@@ -101,7 +101,11 @@ public class MetamodelHelper {
                     constrName = "$c$";
                 } else {
                     actualClass = (Class)d.getContainer();
-                    constrName = gen.getNames().name(d);
+                    if (d instanceof Constructor && ((Constructor)d).isValueConstructor()) {
+                        constrName = gen.getNames().name(actualClass.getDirectMember(d.getName(), null, false));
+                    } else {
+                        constrName = gen.getNames().name(d);
+                    }
                 }
                 if (actualClass.isMember()) {
                     outputPathToDeclaration(that, actualClass, gen);
@@ -206,7 +210,11 @@ public class MetamodelHelper {
                     "Constructor$jsint()(");
         }
         TypeUtils.outputQualifiedTypename(null, gen.isImported(gen.getCurrentPackage(), _pc), _pc.getType(), gen, false);
-        gen.out("_", gen.getNames().name(cd), ",");
+        if (cd.isValueConstructor()) {
+            gen.out("_", gen.getNames().name(meta.getDeclaration()), ",");
+        } else {
+            gen.out("_", gen.getNames().name(cd), ",");
+        }
         TypeUtils.printTypeArguments(meta, meta.getTypeModel().getTypeArguments(), gen, false,
                 meta.getTypeModel().getVarianceOverrides());
         if (ltype != null && ltype.getTypeArguments() != null && !ltype.getTypeArguments().isEmpty()) {
