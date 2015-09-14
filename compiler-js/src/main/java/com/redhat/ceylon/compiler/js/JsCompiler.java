@@ -273,10 +273,6 @@ public class JsCompiler {
         this.resFiles = files;
     }
 
-    public Set<Message> listErrors() {
-        return getErrors();
-    }
-
     /** Compile one phased unit.
      * @return The errors found for the unit. */
     public void compileUnit(PhasedUnit pu, JsIdentifierNames names) throws IOException {
