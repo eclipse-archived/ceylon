@@ -98,14 +98,18 @@ public class JsCompiler {
     }
     
     private final Visitor unitVisitor = new Visitor() {
-        private boolean hasErrors(Node that) {
-            boolean r=false;
+        private void addErrors(Node that) {
             for (Message m: that.getErrors()) {
                 if (m instanceof AnalysisMessage) {
                     analErrors.add(new PositionedMessage((AnalysisMessage)m));
                 } else {
                     recogErrors.add(new PositionedMessage(that, (RecognitionError)m));
                 }
+            }
+        }
+        private boolean hasErrors(Node that) {
+            boolean r=false;
+            for (Message m: that.getErrors()) {
                 r |= m instanceof AnalysisError;
             }
             return r;
@@ -113,7 +117,7 @@ public class JsCompiler {
         @Override
         public void visitAny(Node that) {
             super.visitAny(that);
-            hasErrors(that);
+            addErrors(that);
         }
         @Override
         public void visit(Tree.Declaration that) {
