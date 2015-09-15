@@ -2850,7 +2850,13 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         method.setDefaultedAnnotation(methodMirror.isDefault());
 
         // type params first
-        setTypeParameters(method, methodMirror, isCeylon);
+        try{
+            setTypeParameters(method, methodMirror, isCeylon);
+        }catch(ModelResolutionException x){
+            if(type == null){
+                type = logModelResolutionException(x, klass, "method '"+methodMirror.getName()+"' (loading type parameters)");
+            }
+        }
 
         // and its return type
         // do not log an additional error if we had one from checking if it was overriding
