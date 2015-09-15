@@ -20,9 +20,6 @@
 
 package com.redhat.ceylon.compiler.java.tools;
 
-import java.io.File;
-
-import com.redhat.ceylon.cmr.api.ArtifactCallback;
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.common.StatusPrinter;
 import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleValidator;
@@ -37,7 +34,7 @@ import com.redhat.ceylon.model.typechecker.model.Module;
 public class StatusPrinterProgressListener implements ProgressListener {
 
     private ModuleValidator validator;
-    private StatusPrinter sp;
+    StatusPrinter sp;
 
     public StatusPrinterProgressListener(ModuleValidator validator, StatusPrinter sp) {
         this.validator = validator;
@@ -57,46 +54,7 @@ public class StatusPrinterProgressListener implements ProgressListener {
         sp.log("/");
         sp.log(module.getVersion(), versionSize);
         sp.captureLine();
-        artifactContext.setCallback(new ArtifactCallback(){
-            long size;
-            long read;
-            private int previousPercentage;
-            @Override
-            public void start(String nodeFullPath, long size, String contentStore) {
-                this.size = size;
-                read = 0;
-                previousPercentage = 0;
-                sp.logCapturedLine();
-                // leave 6 for size
-                int fitOn = Math.max(0, sp.getRemaining() - 6);
-                sp.log(" from "+contentStore+" ("+(size/1024)+"kb)", fitOn);
-                sp.captureLine();
-            }
-
-            @Override
-            public void read(byte[] bytes, int length) {
-                read += length;
-                if(size != -1){
-                    int percentage = (int) Math.floor((((double)read)/size) * 100);
-                    if(previousPercentage != percentage){
-                        sp.logCapturedLine();
-                        sp.logRight(" "+percentage+"% ");
-                        previousPercentage = percentage;
-                    }
-                }else{
-                    sp.logRight(" "+(read/1024)+"kb ");
-                }
-            }
-
-            @Override
-            public void done(File localFile) {
-            }
-
-            @Override
-            public void error(File localFile, Throwable err) {
-            }
-            
-        });
+        artifactContext.setCallback(new StatusPrinterArtifactCallback(sp));
     }
 
     @Override
