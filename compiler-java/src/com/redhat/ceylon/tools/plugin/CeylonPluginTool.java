@@ -377,8 +377,10 @@ public class CeylonPluginTool extends OutputRepoUsingTool {
         String version;
         if (!module.getName().equals(Module.DEFAULT_MODULE_NAME)){
             ModuleVersionDetails mvd = getVersionFromSource(module.getName());
-            if(mvd == null)
+            if (mvd == null) {
+                errorMsg("error.no.script.version", module.getName());
                 return false;
+            }
             version = mvd.getVersion();
         } else {
             version = null;
@@ -458,7 +460,7 @@ public class CeylonPluginTool extends OutputRepoUsingTool {
         if (mode == Mode.pack) {
             for(ModuleSpec module : modules){
                 if (module.isVersioned()) {
-                    throw new IllegalArgumentException(Messages.msg(bundle, "invalid.module.or.file"));
+                    throw new IllegalArgumentException(Messages.msg(bundle, "invalid.module.or.file", module.getName()));
                 }
             }
         }
