@@ -175,18 +175,8 @@ public class LinkRenderer {
         return this;
     }
     
-    public LinkRenderer useScope(Module module) {
-        scope = module;
-        return this;
-    }
-
-    public LinkRenderer useScope(Package pkg) {
-        scope = pkg;
-        return this;
-    }
-
-    public LinkRenderer useScope(Declaration decl) {
-        scope = decl;
+    public LinkRenderer useScope(Referenceable scope) {
+        this.scope = scope;
         return this;
     }
     
@@ -588,7 +578,13 @@ public class LinkRenderer {
             return customText;
         }
         else {
-            String name = decl.getName();
+            String name;
+            if( scope != null && scope.getUnit() != null ) {
+                name = scope.getUnit().getAliasedName(decl);
+            } else {
+                name = decl.getName();
+            }
+
             String result;
             if (decl instanceof TypeDeclaration) {
                 result = "<span class='type-identifier'>" + name + "</span>";

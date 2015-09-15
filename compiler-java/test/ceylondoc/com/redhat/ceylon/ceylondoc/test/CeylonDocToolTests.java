@@ -269,6 +269,7 @@ public class CeylonDocToolTests {
         assertBug968(destDir);
         assertBug1619BrokenLinkFromInheritedDoc(destDir);
         assertBug1619BrokenLinkWithNewLine(destDir);
+        assertBug2307AliasedName(destDir);
     }
 
     @Test
@@ -882,7 +883,7 @@ public class CeylonDocToolTests {
 
         // FIXME: enable back when we can have metamodel refs to object members
         assertMatchInFile(destDir, "StubClass.type.html", Pattern.compile("<div class='see section'><span class='title'>See also </span><span class='value'><a class='link' href='StubClass.type.html#methodWithSee' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::StubClass.methodWithSee'><code><span class='identifier'>methodWithSee\\(\\)</span></code></a>"/*, <a class='link' href='stubObject.object.html#foo' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::stubObject.foo'>stubObject.foo</a>"*/));
-        assertMatchInFile(destDir, "StubClass.type.html", Pattern.compile("<div class='see section'><span class='title'>See also </span><span class='value'><a class='link' href='StubClass.type.html#attributeWithSee' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::StubClass.attributeWithSee'><code><span class='identifier'>attributeWithSee</span></code></a>, <code><a class='link' href='StubException.type.html' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::StubException'><span class='type-identifier'>StubException</span></a></code>, <code><a class='link' href='a/A1.type.html' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single.a::A1'><span class='type-identifier'>A1</span></a></code>, <code><a class='link' href='a/A2.type.html' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single.a::A2'><span class='type-identifier'>A2</span></a>"));
+        assertMatchInFile(destDir, "StubClass.type.html", Pattern.compile("<div class='see section'><span class='title'>See also </span><span class='value'><a class='link' href='StubClass.type.html#attributeWithSee' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::StubClass.attributeWithSee'><code><span class='identifier'>attributeWithSee</span></code></a>, <code><a class='link' href='StubException.type.html' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::StubException'><span class='type-identifier'>StubException</span></a></code>, <code><a class='link' href='a/A1.type.html' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single.a::A1'><span class='type-identifier'>A1</span></a></code>, <code><a class='link' href='a/A2.type.html' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single.a::A2'><span class='type-identifier'>AliasA2</span></a>"));
     }
     
     private void assertIcons(File destDir) throws Exception {
@@ -1080,7 +1081,7 @@ public class CeylonDocToolTests {
         assertMatchInFile(destDir, "StubClass.type.html", 
                 Pattern.compile("imported A1 = <code><a class='link' href='a/A1.type.html' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single.a::A1'><span class='type-identifier'>A1</span></a></code>"));
         assertMatchInFile(destDir, "StubClass.type.html", 
-                Pattern.compile("imported AliasA2 = <code><a class='link' href='a/A2.type.html' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single.a::A2'><span class='type-identifier'>A2</span></a></code>"));
+                Pattern.compile("imported AliasA2 = <code><a class='link' href='a/A2.type.html' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single.a::A2'><span class='type-identifier'>AliasA2</span></a></code>"));
         
         assertMatchInFile(destDir, "StubClass.type.html", 
                 Pattern.compile("StubClassWithGenericTypeParams = <code><a class='link' href='StubClassWithGenericTypeParams.type.html' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::StubClassWithGenericTypeParams'><span class='type-identifier'>StubClassWithGenericTypeParams</span></a></code>"));
@@ -1377,6 +1378,11 @@ public class CeylonDocToolTests {
     private void assertBug1619BrokenLinkWithNewLine(File destDir) throws Exception {
         assertMatchInFile(destDir, "StubClass.type.html", 
                 Pattern.compile("<span class='identifier'>bug1619BrokenLinkWithNewLine</span>\\(\\)</code><div class='description'><div class='doc section'><p><a class='link-custom-text' href='StubClass.type.html' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::StubClass'>foo\nbar"));
+    }
+    
+    private void assertBug2307AliasedName(File destDir) throws Exception {
+        assertMatchInFile(destDir, "StubClass.type.html", 
+                Pattern.compile("<span class='identifier'>bug2307AliasedName</span>\\(<a class='link' href='a/A2.type.html' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single.a::A2'><span class='type-identifier'>AliasA2</span></a>"));
     }
     
     private File getOutputDir(CeylonDocTool tool, Module module) {

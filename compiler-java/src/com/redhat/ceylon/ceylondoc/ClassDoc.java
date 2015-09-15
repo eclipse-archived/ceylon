@@ -340,17 +340,17 @@ public class ClassDoc extends ClassOrPackageDoc {
         open("span class='type-identifier'");
         write(klass.getName());
         close("span");
-        writeTypeParameters(klass.getTypeParameters());
+        writeTypeParameters(klass.getTypeParameters(), klass);
         close("span");
         writeInheritance(klass);
-        writeTypeParametersConstraints(klass.getTypeParameters());
+        writeTypeParametersConstraints(klass.getTypeParameters(), klass);
     }
 
     private void writeQualifyingType(TypeDeclaration klass) throws IOException {
         if (klass.isClassOrInterfaceMember()) {
             TypeDeclaration container = (TypeDeclaration) klass.getContainer();
             writeQualifyingType(container);
-            linkRenderer().to(container).write();
+            linkRenderer().to(container).useScope(klass).write();
             write(".");
         }
     }    
@@ -500,7 +500,7 @@ public class ClassDoc extends ClassOrPackageDoc {
             write("<span class='hierarchy-arrow-none'></span>");
         }
         writeIcon(type);
-        linkRenderer().to(type).withinText(true).printTypeParameters(false).printAbbreviated(false).write();
+        linkRenderer().to(type).useScope(klass).withinText(true).printTypeParameters(false).printAbbreviated(false).write();
     }
     
     private List<TypeDeclaration> collectSupertypes(TypeDeclaration type) {
@@ -545,13 +545,13 @@ public class ClassDoc extends ClassOrPackageDoc {
                 
                 if( type instanceof TypedDeclaration ) {
                     TypedDeclaration decl = (TypedDeclaration) type;
-                    linkRenderer().to(decl).write();
+                    linkRenderer().to(decl).useScope(klass).write();
                 } else if( type instanceof ClassOrInterface ) {
-                    ClassOrInterface klass = (ClassOrInterface) type;
-                    linkRenderer().to(klass).printAbbreviated(!isAbbreviatedType(klass)).write();
+                    ClassOrInterface coi = (ClassOrInterface) type;
+                    linkRenderer().to(coi).useScope(klass).printAbbreviated(!isAbbreviatedType(coi)).write();
                 } else {
                     Type pt = (Type) type;
-                    linkRenderer().to(pt).printAbbreviated(!isAbbreviatedType(pt.getDeclaration())).write(); 
+                    linkRenderer().to(pt).useScope(klass).printAbbreviated(!isAbbreviatedType(pt.getDeclaration())).write(); 
                 }
             }
             close("div");
@@ -624,7 +624,7 @@ public class ClassDoc extends ClassOrPackageDoc {
         open("tr", "td");
         write(title);
         writeIcon(superType);
-        linkRenderer().to(superType).withinText(true).write();
+        linkRenderer().to(superType).useScope(klass).withinText(true).write();
         open("div class='inherited-members'");
         
         boolean first = true;
@@ -668,7 +668,7 @@ public class ClassDoc extends ClassOrPackageDoc {
         
         open("code class='decl-label'");
         write(klass.getName());
-        writeParameterList(klass);
+        writeParameterList(klass, klass);
         close("code");
         
         open("div class='description'");

@@ -252,6 +252,8 @@ shared class StubClass(
     shared Iterable<Integer> bug968_1() { throw; }
     shared Iterable<Integer, Nothing> bug968_2() { throw; }
     
+    shared void bug2307AliasedName(AliasA2 a) {}
+    
     "This is `StubInnerInterface`"
     tagged("stubInnerTag1")
     shared interface StubInnerInterface {

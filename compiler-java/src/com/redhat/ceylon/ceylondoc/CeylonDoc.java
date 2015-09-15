@@ -523,16 +523,21 @@ public abstract class CeylonDoc extends Markup {
         }
 
         if (annotationList != null) {
-            annotationList.visit(new WriteAnnotationsVisitor());
+            annotationList.visit(new WriteAnnotationsVisitor(referenceable));
         }
     }
 
     private class WriteAnnotationsVisitor extends Visitor {
     
+        private final Referenceable referenceable;
         private Tree.Annotation annotation;
         private Tree.InvocationExpression invocationExpression;
         private Tree.PositionalArgument positionalArgument;
     
+        public WriteAnnotationsVisitor(Referenceable referenceable) {
+            this.referenceable = referenceable;
+        }
+
         @Override
         public void visit(Tree.AnnotationList that) {
             try {
@@ -582,7 +587,7 @@ public abstract class CeylonDoc extends Markup {
         @Override
         public void visit(Tree.MemberOrTypeExpression that) {
             try {
-                linkRenderer().to(that.getDeclaration()).printParenthesisAfterMethodName(false).write();
+                linkRenderer().to(that.getDeclaration()).useScope(referenceable).printParenthesisAfterMethodName(false).write();
                 super.visit(that);
             } catch (IOException e) {
                 throw new RuntimeException(e);
@@ -706,7 +711,7 @@ public abstract class CeylonDoc extends Markup {
                     write("`");
                     around("span class='keyword'", "function ");
                 }
-                linkRenderer().to(that.getDeclaration()).write();
+                linkRenderer().to(that.getDeclaration()).useScope(referenceable).write();
                 write("`");
                 super.visit(that);
             } catch (IOException e) {
@@ -730,7 +735,7 @@ public abstract class CeylonDoc extends Markup {
                     write("`");
                     around("span class='keyword'", "given ");
                 }
-                linkRenderer().to(that.getDeclaration()).write();
+                linkRenderer().to(that.getDeclaration()).useScope(referenceable).write();
                 write("`");
                 super.visit(that);
             } catch (IOException e) {
@@ -743,7 +748,7 @@ public abstract class CeylonDoc extends Markup {
             try {
                 write("`");
                 around("span class='keyword'", "module ");
-                linkRenderer().to(that.getImportPath().getModel()).write();
+                linkRenderer().to(that.getImportPath().getModel()).useScope(referenceable).write();
                 write("`");
                 super.visit(that);
             } catch (IOException e) {
@@ -757,7 +762,7 @@ public abstract class CeylonDoc extends Markup {
                 write("`");
                 around("span class='keyword'", "package");
                 write(" ");
-                linkRenderer().to(that.getImportPath().getModel()).write();
+                linkRenderer().to(that.getImportPath().getModel()).useScope(referenceable).write();
                 write("`");
                 super.visit(that);
             } catch (IOException e) {
