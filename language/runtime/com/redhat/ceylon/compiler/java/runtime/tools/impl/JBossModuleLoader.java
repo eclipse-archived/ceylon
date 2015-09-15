@@ -1,8 +1,6 @@
 package com.redhat.ceylon.compiler.java.runtime.tools.impl;
 
 import java.io.IOException;
-import java.util.HashSet;
-import java.util.Set;
 
 import org.jboss.modules.Module;
 import org.jboss.modules.ModuleIdentifier;
@@ -41,7 +39,7 @@ public class JBossModuleLoader extends BaseModuleLoaderImpl {
         
         private void preloadModules() {
             try {
-                loadModule(module, modver, false, false);
+                loadModule(module, modver, false, false, null);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -60,11 +58,6 @@ public class JBossModuleLoader extends BaseModuleLoaderImpl {
             } catch (ModuleLoadException e) {
                 throw new RuntimeException("Could not load module " + modid, e);
             }
-        }
-
-        private void initialiseMetamodel() {
-            Set<String> registered = new HashSet<String>();
-            registerInMetamodel(module, registered);
         }
     }
 

@@ -4,12 +4,11 @@ import java.io.IOException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
+import com.redhat.ceylon.cmr.api.MavenVersionComparator;
 import com.redhat.ceylon.cmr.api.Overrides;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.ceylon.CeylonUtils;
@@ -17,6 +16,7 @@ import com.redhat.ceylon.cmr.impl.FlatRepository;
 import com.redhat.ceylon.common.ModuleUtil;
 import com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel;
 import com.redhat.ceylon.compiler.java.runtime.tools.ModuleLoader;
+import com.redhat.ceylon.compiler.java.runtime.tools.impl.ModuleGraph.Module;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
 import com.redhat.ceylon.model.cmr.ImportType;
 import com.redhat.ceylon.model.cmr.JDKUtils;
@@ -32,9 +32,7 @@ public abstract class BaseModuleLoaderImpl implements ModuleLoader {
         final String module;
         final String modver;
         
-        final Map<String, ArtifactResult> loadedModules = new HashMap<String, ArtifactResult>();
-        final Map<String, String> loadedModuleVersions = new HashMap<String, String>();
-        final Set<String> loadedModulesInCurrentClassLoader = new HashSet<String>();
+        final ModuleGraph moduleGraph = new ModuleGraph();
         
         ClassLoader moduleClassLoader;
         
@@ -46,7 +44,7 @@ public abstract class BaseModuleLoaderImpl implements ModuleLoader {
 
         abstract void initialise();
         
-        void loadModule(String name, String version, boolean optional, boolean inCurrentClassLoader) throws IOException {
+        void loadModule(String name, String version, boolean optional, boolean inCurrentClassLoader, ModuleGraph.Module dependent) throws IOException {
             ArtifactContext artifactContext = new ArtifactContext(name, version, ArtifactContext.CAR, ArtifactContext.JAR);
             Overrides overrides = repositoryManager.getOverrides();
             if(overrides != null){
@@ -64,70 +62,104 @@ public abstract class BaseModuleLoaderImpl implements ModuleLoader {
             // skip JDK modules
             if(JDKUtils.isJDKModule(name) || JDKUtils.isOracleJDKModule(name))
                 return;
-            if(loadedModules.containsKey(name)){
-                ArtifactResult loadedModule = loadedModules.get(name);
-                String resolvedVersion = loadedModuleVersions.get(name);
+            ModuleGraph.Module loadedModule = moduleGraph.findModule(name);
+            if(loadedModule != null){
+                String loadedVersion = loadedModule.version;
                 // we loaded the module already, but did we load it with the same version?
-                if(!Objects.equals(version, resolvedVersion)){
-                    // version conflict, even if one was a missing optional
-                    throw new RuntimeException("Requiring two modules with the same name ("+name+") but conflicting versions: "+version+" and "+resolvedVersion);
-                }
-                // now we're sure the version was the same
-                if(loadedModule == null){
+                if(!Objects.equals(version, loadedVersion)){
+                    if(MavenVersionComparator.compareVersions(version, loadedModule.version) > 0){
+                        // we want a newer version, keep going
+                        if(verbose)
+                            log("Replacing "+loadedModule+" with newer version "+version);
+                    }else{
+                        // we want an older version, just keep the one we have and ignore that
+                        addDependency(dependent, loadedModule);
+                        // already resolved and same version, we're good
+                        return;
+                    }
+                }else if(loadedModule.artifact == null){
+                    // now we're sure the version was the same
                     // it was resolved to null so it was optional, but perhaps it's required now?
                     if(!optional){
                         throw new RuntimeException("Missing module: "+ModuleUtil.makeModuleName(name, version));
                     }
+                    addDependency(dependent, loadedModule);
+                    // already resolved and same version, we're good
+                    return;
+                }else{
+                    addDependency(dependent, loadedModule);
+                    // already resolved and same version, we're good
+                    return;
                 }
-                // already resolved and same version, we're good
-                return;
             }
+            if(verbose)
+                log("Resolving "+name+"/"+version);
             ArtifactResult result = repositoryManager.getArtifactResult(artifactContext);
             if(!optional
                     && (result == null || result.artifact() == null || !result.artifact().exists())){
                 throw new RuntimeException("Missing module: "+ModuleUtil.makeModuleName(name, version));
             }
             // save even missing optional modules as nulls to not re-resolve them
-            loadedModules.put(name, result);
-            loadedModuleVersions.put(name, version);
+            ModuleGraph.Module mod;
+            if(dependent == null)
+                mod = moduleGraph.addRoot(name, version);
+            else
+                mod = dependent.addDependency(name, version);
+            if(loadedModule != null)
+                loadedModule.replace(mod);
+            mod.artifact = result;
             if(result != null){
                 // everything we know should be in the current class loader
                 // plus everything from flat repositories
                 if(inCurrentClassLoader || result.repository() instanceof FlatRepository){
-                    loadedModulesInCurrentClassLoader.add(name);
+                    mod.inCurrentClassLoader = true;
                 }
                 for(ArtifactResult dep : result.dependencies()){
-                    loadModule(dep.name(), dep.version(), dep.importType() == ImportType.OPTIONAL, inCurrentClassLoader);
+                    // stop if we get removed at any point
+                    if(mod.replaced)
+                        break;
+                    loadModule(dep.name(), dep.version(), dep.importType() == ImportType.OPTIONAL, inCurrentClassLoader, mod);
                 }
             }
         }
 
-        // we only need the module name since we already dealt with conflicting versions
-        void registerInMetamodel(String module, Set<String> registered) {
-            if(!registered.add(module))
-                return;
+        private void addDependency(Module from, Module to) {
+            if(from != null)
+                from.addDependency(to);
+            else
+                moduleGraph.addRoot(to);
+        }
+
+        protected void initialiseMetamodel() {
+            moduleGraph.visit(new ModuleGraph.Visitor(){
+                @Override
+                public void visit(Module module) {
+                    registerInMetamodel(module);
+                }
+            });
+        }
+
+        private void registerInMetamodel(ModuleGraph.Module module) {
             // skip JDK modules
-            if(JDKUtils.isJDKModule(module) || JDKUtils.isOracleJDKModule(module))
+            if(JDKUtils.isJDKModule(module.name) || JDKUtils.isOracleJDKModule(module.name))
                 return;
             // use the one we got from the CMR rather than the one for dependencies mapping
-            ArtifactResult dependencyArtifact = loadedModules.get(module);
+            ArtifactResult dependencyArtifact = module.artifact;
             // it may be optional, we already dealt with those checks earlier
             if(dependencyArtifact != null){
                 ClassLoader dependencyClassLoader;
-                if(loadedModulesInCurrentClassLoader.contains(module))
+                if(module.inCurrentClassLoader)
                     dependencyClassLoader = delegateClassLoader;
                 else
                     dependencyClassLoader = moduleClassLoader;
-                registerInMetamodel(dependencyArtifact, dependencyClassLoader, registered);
+                registerInMetamodel(dependencyArtifact, dependencyClassLoader);
             }
         }
         
-        private void registerInMetamodel(ArtifactResult artifact, ClassLoader classLoader, Set<String> registered) {
+        private void registerInMetamodel(ArtifactResult artifact, ClassLoader classLoader) {
+            if(verbose)
+                log("Registering "+artifact.name()+"/"+artifact.version()+" in metamodel");
             Metamodel.loadModule(artifact.name(), artifact.version(), artifact, classLoader);
-            // also register its dependencies
-            for(ArtifactResult dep : artifact.dependencies()){
-                registerInMetamodel(dep.name(), registered);
-            }
         }
         
         public void cleanup() {
@@ -139,9 +171,7 @@ public abstract class BaseModuleLoaderImpl implements ModuleLoader {
                     e.printStackTrace();
                 }
             }
-            loadedModules.clear();
-            loadedModuleVersions.clear();
-            loadedModulesInCurrentClassLoader.clear();
+            moduleGraph.clear();
             moduleClassLoader = null;
         }
         
