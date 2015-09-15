@@ -67,4 +67,94 @@ shared interface Collection<out Element=Anything>
     shared actual default String string
             => empty then "{}" else "{ ``commaList(this)`` }";
     
+    "The permutations of this collection, as a stream of
+     nonempty [[sequences|Sequence]]. That is, a stream
+     producing every distinct ordering of the elements of
+     this collection.
+     
+     For example,
+     
+         \"ABC\".permutations.map(String)
+     
+     is the stream of strings
+     `{ \"ABC\", \"ACB\", \"BAC\", \"BCA\", \"CAB\", \"CBA\" }`.
+     
+     If this collection is empty, the resulting stream is
+     empty.
+     
+     The permutations are enumerated lexicographically
+     according to the order in which each
+     [[distinct|Object.equals]] element of this collection
+     is first produced by the iterator. No permutation is
+     repeated. [[Null]] elements are treated as equal to
+     each other and distinct from any [[Object]]."
+    shared {[Element+]*} permutations => object satisfies {[Element+]*} {
+        value multiset =
+            outer
+            .indexed
+            .group(forItem((Element element) => element else nullElement))
+            .items
+            .sort(
+                byIncreasing(
+                    compose(
+                        Entry<Integer, Element>.key,
+                        Sequence<Integer->Element>.first
+                    )
+                )
+            )
+            .indexed
+            .flatMap(
+                (entry) => let (index->entries = entry)
+                    entries.map((entry) => index->entry.item)
+            );
+        
+        empty => multiset.empty;
+        
+        iterator() => object satisfies Iterator<[Element+]> {
+            value elements = Array(multiset);
+            value reversed
+                = zipPairs(elements.keys.reversed, elements.reversed);
+            value paired = reversed.paired;
+            function greaterThan(Integer key)([Integer, Integer->Element] pair)
+                => pair[1].key > key;
+            function adjacentDecreasing([Integer, Integer->Element][2] pairs)
+                => greaterThan(pairs[1][1].key)(pairs[0]);
+            variable value initial = true;
+            
+            shared actual [Element+]|Finished next() {
+                if (initial) {
+                    initial = false;
+                }
+                else if (exists pairs = paired.find(adjacentDecreasing)) {
+                    value [k, entry] = pairs[1];
+                    value key = entry.key;
+                    assert (exists pair = reversed.find(greaterThan(key)));
+                    elements.set(k, pair[1]);
+                    elements.set(pair[0], entry);
+                    value from = k + 1;
+                    value to = k + (elements.size - from) / 2;
+                    value rest
+                        = zipPairs(from..to, elements.sublist(from, to));
+                    for ([i, j] in zipPairs(rest, reversed)) {
+                        elements.set(i[0], j[1]);
+                        elements.set(j[0], i[1]);
+                    }
+                }
+                else {
+                    return finished;
+                }
+                
+                if (nonempty permutation = elements*.item) {
+                    return permutation;
+                }
+                else {
+                    return finished;
+                }
+            }
+        };
+    };
+    
 }
+
+"Used by [[Collection.permutations]] to group nulls together."
+object nullElement {}
