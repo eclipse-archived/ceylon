@@ -2840,7 +2840,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             setMethodOrValueFlags(klass, methodMirror, method, isCeylon);
         }catch(ModelResolutionException x){
             // collect an error in its type
-            type = logModelResolutionException(x, klass, "method '"+methodMirror.getName()+"' (checking if it is an overriding method");
+            type = logModelResolutionException(x, klass, "method '"+methodMirror.getName()+"' (checking if it is an overriding method)");
         }
         if(methodName.equals("hash")
                 || methodName.equals("string"))
