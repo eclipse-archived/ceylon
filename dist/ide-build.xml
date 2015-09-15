@@ -135,24 +135,6 @@ Used with another target such as 'package'">
         <property name="github-url" value="https://github.com/"/>
     </target>
 
-    <target name="clean-projects" 
-            description="Cleans all sub projects">
-        <fail unless="projects.base.dir" message="${msg.needlocalorsiblings}" />
-        <foreach list="${gitprojects}"
-                 target="clean-projects-item"
-                 param="project.item.name"
-                 inheritall="true" />
-    </target>
-    <target name="clean-projects-item">
-        <fail unless="projects.base.dir" />
-        <fail unless="project.item.name" />
-        <echo>Cleaning ${project.item.name}</echo>
-        <ant antfile="${projects.base.dir}/${project.item.name}/build.xml"
-             target="clean"
-             dir="${projects.base.dir}/${project.item.name}"
-             inheritall="false"/>
-    </target>
-
     <target name="install-all" 
             depends="setup-repo, install-ide-eclipse, install-ide-intellij"
             description="Generates all binaries and copies them to the distribution folder">
@@ -381,6 +363,24 @@ Used with another target such as 'package'">
 
     <target name="clean"
             description="Cleans the distribution package">
+    </target>
+
+    <target name="clean-projects" 
+            description="Cleans all sub projects">
+        <fail unless="projects.base.dir" message="${msg.needlocalorsiblings}" />
+        <foreach list="${gitprojects}"
+                 target="clean-projects-item"
+                 param="project.item.name"
+                 inheritall="true" />
+    </target>
+    <target name="clean-projects-item">
+        <fail unless="projects.base.dir" />
+        <fail unless="project.item.name" />
+        <echo>Cleaning ${project.item.name}</echo>
+        <ant antfile="${projects.base.dir}/${project.item.name}/build.xml"
+             target="clean"
+             dir="${projects.base.dir}/${project.item.name}"
+             inheritall="false"/>
     </target>
 
 </project>

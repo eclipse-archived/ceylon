@@ -227,24 +227,6 @@ Used with another target such as 'package'">
             description="Generates a distributable zip file">
     </target>
 
-    <target name="clean-projects" 
-            description="Cleans all sub projects">
-        <fail unless="projects.base.dir" message="${msg.needlocalorsiblings}" />
-        <foreach list="${modules}"
-                 target="clean-projects-item"
-                 param="project.item.name"
-                 inheritall="true" />
-    </target>
-    <target name="clean-projects-item">
-        <fail unless="projects.base.dir" />
-        <fail unless="project.item.name" />
-        <echo>Cleaning ${project.item.name}</echo>
-        <ant antfile="${projects.base.dir}/${project.item.name}/build.xml"
-             target="clean"
-             dir="${projects.base.dir}/${project.item.name}"
-             inheritall="false"/>
-    </target>
-
     <target name="install-all" 
             depends="setup-repo, install-compiler, install-js, copy-compiler-binaries, 
                      copy-samples, copy-templates, copy-contrib, copy-jvm-compiler-libraries,
@@ -930,4 +912,23 @@ You can now build the package by executing:
             description="Cleans the distribution package and deletes all local projects">
         <delete dir="${projects.dir}"/>
     </target>
+    
+    <target name="clean-projects" 
+            description="Cleans all sub projects">
+        <fail unless="projects.base.dir" message="${msg.needlocalorsiblings}" />
+        <foreach list="${modules}"
+                 target="clean-projects-item"
+                 param="project.item.name"
+                 inheritall="true" />
+    </target>
+    <target name="clean-projects-item">
+        <fail unless="projects.base.dir" />
+        <fail unless="project.item.name" />
+        <echo>Cleaning ${project.item.name}</echo>
+        <ant antfile="${projects.base.dir}/${project.item.name}/build.xml"
+             target="clean"
+             dir="${projects.base.dir}/${project.item.name}"
+             inheritall="false"/>
+    </target>
+    
 </project>
