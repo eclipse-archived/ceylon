@@ -24,9 +24,15 @@
     <target name="help">
         <echo>Options for building the Ceylon IE plugins:
     ant setup              - Sets up a new clean environment for development
-    ant build              - Cleans and builds all sibling projects
+    ant publish            - Cleans and builds all sibling projects
+    ant ide                - Builds the IDE components for all sibling projects
+    ant clean              - Cleans the build environment
 
-    ant clean              - Cleans the distribution package
+    To build the Eclipse plugin:
+        mvn clean install -DskipTests
+
+    To build the IntelliJ plugin:
+        See the README of the ceylon-ide-intellij project for instructions
         </echo>
     </target>
 
@@ -167,7 +173,7 @@ Used with another target such as 'package'">
 
     <target name="install-ide-intellij" depends="install-ide-common,install-ide-intellij-nodeps" />
     <target name="install-ide-intellij-nodeps">
-        <echo>Not implemented yet, see the README of the ceylon-ide-iintellij project for instructions</echo>
+        <echo>Not implemented yet, see the README of the ceylon-ide-intellij project for instructions</echo>
     </target>
 
     <!-- Helper target, used to create a sha1 checksum file  -->
