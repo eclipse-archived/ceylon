@@ -306,12 +306,6 @@ public class JsCompiler {
             if (opts.isVerbose()) {
                 logger.debug("Compiling "+pu.getUnitFile().getPath()+" to JS");
             }
-            //Perform capture analysis
-            for (com.redhat.ceylon.model.typechecker.model.Declaration d : pu.getDeclarations()) {
-                if (d instanceof TypedDeclaration && d instanceof com.redhat.ceylon.model.typechecker.model.Setter == false) {
-                    pu.getCompilationUnit().visit(new ValueVisitor((TypedDeclaration)d));
-                }
-            }
             JsOutput jsout = getOutput(pu);
             GenerateJsVisitor jsv = new GenerateJsVisitor(jsout, opts, names, pu.getTokens());
             pu.getCompilationUnit().visit(jsv);
@@ -376,6 +370,12 @@ public class JsCompiler {
                 if (opts.getSuppressWarnings() != null) {
                     pu.getCompilationUnit().visit(
                             new WarningSuppressionVisitor<Warning>(Warning.class, opts.getSuppressWarnings()));
+                }
+                //Perform capture analysis
+                for (com.redhat.ceylon.model.typechecker.model.Declaration d : pu.getDeclarations()) {
+                    if (d instanceof TypedDeclaration && d instanceof com.redhat.ceylon.model.typechecker.model.Setter == false) {
+                        pu.getCompilationUnit().visit(new ValueVisitor((TypedDeclaration)d));
+                    }
                 }
                 pu.getCompilationUnit().visit(getOutput(pu).mmg);
                 if (opts.hasVerboseFlag("ast")) {
