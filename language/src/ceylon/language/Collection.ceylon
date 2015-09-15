@@ -111,16 +111,19 @@ shared interface Collection<out Element=Anything>
         iterator() 
                 => object satisfies Iterator<[Element+]> {
             value elements = Array(multiset);
+            
             value reversed
-                = zipPairs(elements.keys.reversed, 
+                = zipPairs(elements.indexes().reversed, 
                            elements.reversed);
             value paired = reversed.paired;
+            
             function greaterThan(Integer key)
                     ([Integer, Integer->Element] pair)
                     => pair[1].key > key;
             function adjacentDecreasing
                     ([Integer, Integer->Element][2] pairs)
                     => greaterThan(pairs[1][1].key)(pairs[0]);
+            
             variable value initial = true;
             
             shared actual [Element+]|Finished next() {
