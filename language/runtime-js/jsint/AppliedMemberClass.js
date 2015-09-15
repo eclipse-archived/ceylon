@@ -62,12 +62,6 @@ function AppliedMemberClass$jsint(tipo,$$targs$$,that,myTargs){
   atr$(that,'defaultConstructor',function(){
     return _proto.$prop$getDefaultConstructor.get.call(that);
   },undefined,_proto.$prop$getDefaultConstructor.$crtmm$);
-  atr$(that,'constructors',function(){
-    return _proto.$prop$getConstructors.get.call(that);
-  },undefined,_proto.$prop$getConstructors.$crtmm$);
-  atr$(that,'declaredConstructors',function(){
-    return _proto.$prop$getDeclaredConstructors.get.call(that);
-  },undefined,_proto.$prop$getDeclaredConstructors.$crtmm$);
   that.$_bind=_proto.$_bind;
   that.equals=_proto.equals;
   that.getAttribute=_proto.getAttribute;
@@ -87,6 +81,11 @@ function AppliedMemberClass$jsint(tipo,$$targs$$,that,myTargs){
   that.getInterface=_proto.getInterface;
   that.getInterfaces=_proto.getInterfaces;
   that.getConstructor=_proto.getConstructor;
+  that.getCallableConstructors=_proto.getCallableConstructors;
+  that.getDeclaredCallableConstructors=_proto.getDeclaredCallableConstructors;
+  that.getDeclaredConstructor=_proto.getDeclaredConstructor;
+  that.getDeclaredValueConstructors=_proto.getDeclaredValueConstructors;
+  that.getValueConstructors=_proto.getValueConstructors;
   that.getMethod=_proto.getMethod;
   that.getMethods=_proto.getMethods;
   that.typeOf=_proto.typeOf;
