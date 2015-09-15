@@ -1197,7 +1197,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                     reifiedArguments = makeReifiedTypeArgument(typeFact().getCallableTuple(callableType));
                 }
                 List<JCExpression> arguments = List.of(reifiedArguments, ceylonLiteral(declaration.getName()));
-                JCExpression classModel = makeSelect(typeCall, "getConstructor");
+                JCExpression classModel = makeSelect(typeCall, "getDeclaredConstructor");
                 memberCall = make().Apply(null, classModel, arguments);
             } else if(declaration instanceof Function){
                 // we need to get types for each type argument
