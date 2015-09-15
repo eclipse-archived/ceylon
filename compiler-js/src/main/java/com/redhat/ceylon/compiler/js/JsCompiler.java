@@ -672,17 +672,15 @@ public class JsCompiler {
                 continue;
             }
             Node node = TreeUtil.getIdentifyingNode(pm.node);
-            int line = -1;
+            int line = err.getLine();
             int position = -1;
             if(err instanceof AnalysisMessage){
-                line = err.getLine();
                 if(node != null && node.getToken() != null)
                     position = node.getToken().getCharPositionInLine();
             }else if(err instanceof RecognitionError){
-                line = err.getLine() - 1;
                 position = ((RecognitionError) err).getCharacterInLine();
             }
-            String fileName = (node.getUnit() != null) ? node.getUnit().getRelativePath() : "unknown";
+            String fileName = (node.getUnit() != null) ? node.getUnit().getFullPath() : "unknown";
             out.write(fileName);
             out.write(":");
             out.write(String.format("%d", line));
