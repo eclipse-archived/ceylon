@@ -204,6 +204,11 @@ public class CeylonCompileJsTool extends OutputRepoUsingTool {
     }
 
     @Override
+    protected List<File> getSourceDirs() {
+        return roots;
+    }
+
+    @Override
     public void initialize(CeylonTool mainTool) throws IOException {
     }
 
