@@ -13,6 +13,7 @@ import java.util.List;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.ModuleQuery;
+import com.redhat.ceylon.cmr.api.ModuleVersionDetails;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.ceylon.OutputRepoUsingTool;
 import com.redhat.ceylon.cmr.impl.IOUtils;
@@ -372,11 +373,14 @@ public class CeylonPluginTool extends OutputRepoUsingTool {
     }
 
     private boolean addScripts(RepositoryManager outputRepositoryManager, ModuleSpec module, boolean errorIfMissing) throws IOException {
-        String version = module.getVersion();
-        if((version == null || version.isEmpty()) && !module.getName().equals(Module.DEFAULT_MODULE_NAME)){
-            version = checkModuleVersionsOrShowSuggestions(getRepositoryManager(), module.getName(), null, ModuleQuery.Type.ALL, null, null);
-            if(version == null)
+        String version;
+        if (!module.getName().equals(Module.DEFAULT_MODULE_NAME)){
+            ModuleVersionDetails mvd = getVersionFromSource(module.getName());
+            if(mvd == null)
                 return false;
+            version = mvd.getVersion();
+        } else {
+            version = null;
         }
         ArtifactContext artifactScriptsZip = new ArtifactContext(module.getName(), version, ArtifactContext.SCRIPTS_ZIPPED);
         
