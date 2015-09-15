@@ -249,7 +249,8 @@ public class CeylonModelLoader extends AbstractModelLoader {
                         continue;
                     ClassSymbol enclosingClass = getEnclosing((ClassSymbol) m);
 
-                    if(!Util.isLoadedFromSource(enclosingClass)){
+                    if(enclosingClass == m
+                            && !Util.isLoadedFromSource(enclosingClass)){
                         m.complete();
                         // avoid anonymous and local classes
                         if(isAnonymousOrLocal((ClassSymbol) m))
