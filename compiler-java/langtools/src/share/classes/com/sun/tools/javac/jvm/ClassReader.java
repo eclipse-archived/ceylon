@@ -1965,9 +1965,14 @@ public class ClassReader implements Completer {
             if (name == null) name = names.empty;
             long flags = adjustClassFlags(nextChar());
             if (outer != null) { // we have a member class
-                if (name == names.empty)
-                    name = names.one;
-                ClassSymbol member = enterClass(name, outer);
+                ClassSymbol member;
+                if (name == names.empty){
+                    // Ceylon: if it has no name, just skip it, I can't believe it would be named
+                    // "$1" anyways, that's just wrong. See https://github.com/ceylon/ceylon-compiler/issues/2298
+                    continue;
+                }else{
+                    member = enterClass(name, outer);
+                }
                 if ((flags & STATIC) == 0) {
                     ((ClassType)member.type).setEnclosingType(outer.type);
                     if (member.erasure_field != null)
