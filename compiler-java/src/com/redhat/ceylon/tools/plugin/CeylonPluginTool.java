@@ -20,6 +20,7 @@ import com.redhat.ceylon.cmr.impl.IOUtils;
 import com.redhat.ceylon.cmr.impl.ShaSigner;
 import com.redhat.ceylon.common.Constants;
 import com.redhat.ceylon.common.FileUtil;
+import com.redhat.ceylon.common.Messages;
 import com.redhat.ceylon.common.OSUtil;
 import com.redhat.ceylon.common.config.DefaultToolOptions;
 import com.redhat.ceylon.common.tool.Argument;
@@ -453,6 +454,13 @@ public class CeylonPluginTool extends OutputRepoUsingTool {
     public void initialize(CeylonTool mainTool) throws Exception {
         if (system && local) {
             throw new IllegalArgumentException("Can't specify both --system and --local");
+        }
+        if (mode == Mode.pack) {
+            for(ModuleSpec module : modules){
+                if (module.isVersioned()) {
+                    throw new IllegalArgumentException(Messages.msg(bundle, "invalid.module.or.file"));
+                }
+            }
         }
     }
 }
