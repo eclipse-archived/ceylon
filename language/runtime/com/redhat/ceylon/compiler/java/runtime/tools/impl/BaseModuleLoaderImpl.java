@@ -48,6 +48,8 @@ public abstract class BaseModuleLoaderImpl implements ModuleLoader {
             ArtifactContext artifactContext = new ArtifactContext(name, version, ArtifactContext.CAR, ArtifactContext.JAR);
             Overrides overrides = repositoryManager.getOverrides();
             if(overrides != null){
+                if(overrides.isRemoved(artifactContext))
+                    return;
                 ArtifactContext replacement = overrides.replace(artifactContext);
                 if(replacement != null){
                     artifactContext = replacement;
