@@ -209,11 +209,6 @@ public abstract class Bug844_Tuple<Element, First extends Element, Rest> extends
     }
     
     @.java.lang.Override
-    public final .ceylon.language.Iterable<? extends .ceylon.language.Sequence<? extends Element>, ? extends .java.lang.Object> getPermutations() {
-        return $ceylon$language$List$this$.getPermutations();
-    }
-    
-    @.java.lang.Override
     public final Element get(final .ceylon.language.Integer index) {
         return $ceylon$language$List$this$.get(index);
     }
@@ -369,6 +364,11 @@ public abstract class Bug844_Tuple<Element, First extends Element, Rest> extends
     @.java.lang.Override
     public .ceylon.language.Collection$impl<? extends Element> $ceylon$language$Collection$impl() {
         return $ceylon$language$Collection$this$;
+    }
+    
+    @.java.lang.Override
+    public final .ceylon.language.Iterable<? extends .ceylon.language.Sequence<? extends Element>, ? extends .java.lang.Object> getPermutations() {
+        return $ceylon$language$Collection$this$.getPermutations();
     }
     protected final .ceylon.language.Iterable$impl<Element, .java.lang.Object> $ceylon$language$Iterable$this$;
     

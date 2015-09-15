@@ -31,11 +31,6 @@ abstract class Bug446<T> implements .com.redhat.ceylon.compiler.java.runtime.mod
     }
     
     @.java.lang.Override
-    public final .ceylon.language.Iterable<? extends .ceylon.language.Sequence<? extends T>, ? extends .java.lang.Object> getPermutations() {
-        return $ceylon$language$List$this$.getPermutations();
-    }
-    
-    @.java.lang.Override
     public .ceylon.language.List<? extends T> getReversed() {
         return $ceylon$language$List$this$.getReversed();
     }
@@ -301,6 +296,11 @@ abstract class Bug446<T> implements .com.redhat.ceylon.compiler.java.runtime.mod
     @.java.lang.Override
     public .ceylon.language.Collection$impl<? extends T> $ceylon$language$Collection$impl() {
         return $ceylon$language$Collection$this$;
+    }
+    
+    @.java.lang.Override
+    public final .ceylon.language.Iterable<? extends .ceylon.language.Sequence<? extends T>, ? extends .java.lang.Object> getPermutations() {
+        return $ceylon$language$Collection$this$.getPermutations();
     }
     
     @.java.lang.Override

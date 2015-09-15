@@ -141,11 +141,6 @@ class Bug1430 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     }
     
     @.java.lang.Override
-    public final .ceylon.language.Iterable<? extends .ceylon.language.Sequence<? extends .ceylon.language.Integer>, ? extends .java.lang.Object> getPermutations() {
-        return $ceylon$language$List$this$.getPermutations();
-    }
-    
-    @.java.lang.Override
     public final .ceylon.language.Integer get(final .ceylon.language.Integer index) {
         return $ceylon$language$List$this$.get(index);
     }
@@ -296,6 +291,11 @@ class Bug1430 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     @.java.lang.Override
     public .ceylon.language.Collection$impl<? extends .ceylon.language.Integer> $ceylon$language$Collection$impl() {
         return $ceylon$language$Collection$this$;
+    }
+    
+    @.java.lang.Override
+    public final .ceylon.language.Iterable<? extends .ceylon.language.Sequence<? extends .ceylon.language.Integer>, ? extends .java.lang.Object> getPermutations() {
+        return $ceylon$language$Collection$this$.getPermutations();
     }
     protected final .ceylon.language.Iterable$impl<.ceylon.language.Integer, .java.lang.Object> $ceylon$language$Iterable$this$;
     
