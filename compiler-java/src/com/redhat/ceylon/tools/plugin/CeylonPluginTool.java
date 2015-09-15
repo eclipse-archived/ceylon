@@ -453,7 +453,7 @@ public class CeylonPluginTool extends OutputRepoUsingTool {
     @Override
     public void initialize(CeylonTool mainTool) throws Exception {
         if (system && local) {
-            throw new IllegalArgumentException("Can't specify both --system and --local");
+            throw new IllegalArgumentException(Messages.msg(bundle, "conflicting.destinations"));
         }
         if (mode == Mode.pack) {
             for(ModuleSpec module : modules){
