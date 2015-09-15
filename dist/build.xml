@@ -930,5 +930,63 @@ You can now build the package by executing:
              dir="${projects.base.dir}/${project.item.name}"
              inheritall="false"/>
     </target>
+
+    <!-- The following tasks all edirect to "ide-build.xml" -->
+    
+    <target name="setup-ide">
+        <ant antfile="${basedir}/ide-build.xml"
+             target="setup"
+            inheritall="false">
+        </ant>
+    </target>
+    
+    <target name="setup-admins-ide">
+        <ant antfile="${basedir}/ide-build.xml"
+             target="setup-admins"
+            inheritall="false">
+        </ant>
+    </target>
+    
+    <target name="status-ide">
+        <ant antfile="${basedir}/ide-build.xml"
+             target="status"
+            inheritall="false">
+        </ant>
+    </target>
+    
+    <target name="update-ide">
+        <ant antfile="${basedir}/ide-build.xml"
+             target="update"
+            inheritall="false">
+        </ant>
+    </target>
+    
+    <target name="clean-ide">
+        <ant antfile="${basedir}/ide-build.xml"
+             target="clean"
+            inheritall="false">
+        </ant>
+    </target>
+    
+    <target name="clean-projects-ide">
+        <ant antfile="${basedir}/ide-build.xml"
+             target="clean-projects"
+            inheritall="false">
+        </ant>
+    </target>
+    
+    <target name="eclipse">
+        <ant antfile="${basedir}/ide-build.xml"
+             target="eclipse"
+            inheritall="false">
+        </ant>
+    </target>
+    
+    <target name="intellij">
+        <ant antfile="${basedir}/ide-build.xml"
+             target="intellij"
+            inheritall="false">
+        </ant>
+    </target>
     
 </project>
