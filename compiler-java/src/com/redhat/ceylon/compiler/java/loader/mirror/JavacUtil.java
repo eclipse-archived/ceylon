@@ -25,6 +25,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.redhat.ceylon.model.loader.ModelResolutionException;
 import com.redhat.ceylon.model.loader.mirror.AnnotationMirror;
 import com.redhat.ceylon.model.loader.mirror.TypeParameterMirror;
 import com.sun.tools.javac.code.Attribute.Compound;
@@ -54,11 +55,15 @@ public class JavacUtil {
     }
 
     public static List<TypeParameterMirror> getTypeParameters(Symbol symbol) {
-        com.sun.tools.javac.util.List<TypeSymbol> typeParameters = symbol.getTypeParameters();
-        List<TypeParameterMirror> ret = new ArrayList<TypeParameterMirror>(typeParameters.size());
-        for(TypeSymbol typeParameter : typeParameters)
-            ret.add(new JavacTypeParameter(typeParameter));
-        return ret;
+        try{
+            com.sun.tools.javac.util.List<TypeSymbol> typeParameters = symbol.getTypeParameters();
+            List<TypeParameterMirror> ret = new ArrayList<TypeParameterMirror>(typeParameters.size());
+            for(TypeSymbol typeParameter : typeParameters)
+                ret.add(new JavacTypeParameter(typeParameter));
+            return ret;
+        }catch(CompletionFailure x){
+            throw new ModelResolutionException("Failed to load type parameters", x);
+        }
     }
 
 }
