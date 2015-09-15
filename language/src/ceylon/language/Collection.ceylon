@@ -94,26 +94,17 @@ shared interface Collection<out Element=Anything>
      - one element is an `Object` and the other is `null`."
     shared {[Element+]*} permutations 
             => object satisfies {[Element+]*} {
-        function replaceNull(Element element) 
-                => element else nullElement;
         value multiset =
             outer
             .indexed
-            .group(forItem(replaceNull))
+            .group((entry) => entry.item else nullElement)
             .items
-            .sort(
-                byIncreasing(
-                    compose(
-                        Entry<Integer, Element>.key,
-                        Sequence<Integer->Element>.first
-                    )
-                )
-            )
+            .sort((x,y) => x.first.key<=>y.first.key)
             .indexed
             .flatMap(
-                (entry) => let (index->entries = entry)
-                    entries.map((entry) => index->entry.item)
-            );
+                (entry) 
+                    => let (index->entries = entry)
+                    entries.map((entry) => index->entry.item));
         
         empty => multiset.empty;
         
