@@ -2,7 +2,8 @@ import ceylon.language.meta.model {
   ClosedType=Type, ClassModel, InterfaceModel,
   FunctionModel, ValueModel,
   Member, Class, ClassOrInterface, Attribute, Method,
-  MemberInterface,MemberClass,MemberClassConstructor, TypeArgument
+  MemberInterface,MemberClass,MemberClassConstructor, TypeArgument,
+  MemberClassValueConstructor,MemberClassCallableConstructor
 }
 import ceylon.language.meta.declaration {
   ClassDeclaration,
