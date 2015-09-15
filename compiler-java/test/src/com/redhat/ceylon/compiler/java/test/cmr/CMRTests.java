@@ -67,6 +67,7 @@ import javax.tools.ToolProvider;
 import org.hamcrest.CoreMatchers;
 import org.junit.Assert;
 import org.junit.Assume;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.redhat.ceylon.common.FileUtil;
@@ -788,7 +789,21 @@ public class CMRTests extends CompilerTests {
                 new CompilerError(Diagnostic.Kind.WARNING, null, 21, "module (transitively) imports conflicting versions of similar dependencies 'org.apache.httpcomponents.httpclient/4.3.2' and 'org.apache.httpcomponents:httpclient/4.3.3'")
         );
     }
-    
+
+    @Ignore("It takes ages to download about 200 jars")
+    @Test
+    public void testMdlApacheSpark() throws Throwable{
+        // initially run both without offline, then it's much faster
+        
+        CeyloncTaskImpl ceylonTask = getCompilerTask(Arrays.asList("-out", destDir, "-offline"/*, "-verbose:cmr"*/), 
+                "modules/apachespark/module.ceylon", "modules/apachespark/test.ceylon");
+        assertEquals("Compilation failed", Boolean.TRUE, ceylonTask.call());
+        
+        runInJBossModules("run", "com.redhat.ceylon.compiler.java.test.cmr.modules.apachespark/1", 
+                Arrays.<String>asList("--flat-classpath", "--offline", 
+                        "--maven-overrides", getPackagePath()+"/modules/apachespark/overrides.xml"));
+    }
+
     @Test(expected = AssertionError.class)
     public void testMdlDependenciesFromMavenFail() throws Throwable{
         Assume.assumeTrue("Runs on JDK8", JDKUtils.jdk == JDKUtils.JDK.JDK8);

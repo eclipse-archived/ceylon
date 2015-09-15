@@ -1,0 +1,12 @@
+<overrides>
+ <define name="weld" value="1.1.4.Final"/>
+
+ <set groupId="org.jboss.weld" artifactId="weld-osgi-bundle" version="${weld}"/>
+
+ <set groupId="xerces" artifactId="xercesImpl" version="2.11.0"/>
+
+ <replace groupId="org.jboss.netty" artifactId="netty">
+    <with groupId="io.netty" artifactId="netty" version="3.5.13.Final"/>
+ </replace> 
+
+</overrides>
