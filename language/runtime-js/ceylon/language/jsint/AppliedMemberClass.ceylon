@@ -16,8 +16,14 @@ shared native class AppliedMemberClass<in Container, out Type=Anything, in Argum
   shared actual native <MemberClassCallableConstructor<Container, Type, Arguments>|MemberClass<Container, Type, Arguments>>? defaultConstructor;
   shared actual native MemberClassCallableConstructor<Container,Type,Arguments>|MemberClassValueConstructor<Container,Type>? getConstructor<Arguments>(String name)
         given Arguments satisfies Anything[];
-  shared actual native Sequential<FunctionModel<Type, Nothing>|ValueModel<Type>> constructors;
-  shared actual native Sequential<FunctionModel<Type, Nothing>|ValueModel<Type>> declaredConstructors;
+  shared actual native MemberClassCallableConstructor<Container,Type, Arguments>|MemberClassValueConstructor<Container,Type>? getDeclaredConstructor<Arguments>(String name)
+        given Arguments satisfies Anything[];
+  shared actual native MemberClassCallableConstructor<Container,Type, Arguments>[] getDeclaredCallableConstructors<Arguments=Nothing>(ClosedType<Annotation>* annotationTypes)
+        given Arguments satisfies Anything[];
+  shared actual native MemberClassCallableConstructor<Container,Type, Arguments>[] getCallableConstructors<Arguments=Nothing>(ClosedType<Annotation>* annotationTypes)
+        given Arguments satisfies Anything[];
+  shared actual native MemberClassValueConstructor<Container,Type>[] getDeclaredValueConstructors(ClosedType<Annotation>* annotationTypes);
+  shared actual native MemberClassValueConstructor<Container,Type>[] getValueConstructors(ClosedType<Annotation>* annotationTypes);
 
   shared actual native ClosedType<Anything> declaringType;
 

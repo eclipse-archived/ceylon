@@ -16,8 +16,14 @@ shared native class AppliedClass<out Type=Anything, in Arguments=Nothing>() sati
   shared actual native <CallableConstructor<Type, Arguments>|Class<Type, Arguments>>? defaultConstructor;
   shared actual native CallableConstructor<Type, Arguments>|ValueConstructor<Type>? getConstructor<Arguments>(String name)
         given Arguments satisfies Anything[];
-  shared actual native Sequential<FunctionModel<Type, Nothing>|ValueModel<Type>> constructors;
-  shared actual native Sequential<FunctionModel<Type, Nothing>|ValueModel<Type>> declaredConstructors;
+  shared actual native CallableConstructor<Type, Arguments>|ValueConstructor<Type>? getDeclaredConstructor<Arguments>(String name)
+        given Arguments satisfies Anything[];
+  shared actual native CallableConstructor<Type, Arguments>[] getDeclaredCallableConstructors<Arguments=Nothing>(ClosedType<Annotation>* annotationTypes)
+        given Arguments satisfies Anything[];
+  shared actual native CallableConstructor<Type, Arguments>[] getCallableConstructors<Arguments=Nothing>(ClosedType<Annotation>* annotationTypes)
+        given Arguments satisfies Anything[];
+  shared actual native ValueConstructor<Type>[] getDeclaredValueConstructors(ClosedType<Annotation>* annotationTypes);
+  shared actual native ValueConstructor<Type>[] getValueConstructors(ClosedType<Annotation>* annotationTypes);
 
   //shared actual native ClosedType<Anything>[] parameterTypes;
   shared actual native Type apply(Anything* arguments);
