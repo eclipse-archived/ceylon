@@ -234,4 +234,21 @@ shared void testArrays() {
     } catch (Throwable t) {
         check(t is AssertionError, "Array.ofSize 4");
     }
+    value testSwap=Array{0,1,2,3,4,5,6,7,8,9};
+    testSwap.swap(5,6);
+    check(testSwap==Array{0,1,2,3,4,6,5,7,8,9}, "Array.swap 1 expected 0,1,2,3,4,6,5,7,8,9 got ``testSwap``");
+    testSwap.swap(5,6);
+    check(testSwap==Array{0,1,2,3,4,5,6,7,8,9}, "Array.swap 2 expected 0,1,2,3,4,5,6,7,8,9 got ``testSwap``");
+    testSwap.move(5,8);
+    check(testSwap==Array{0,1,2,3,4,6,7,8,5,9}, "Array.move 1 expected 0,1,2,3,4,6,7,8,5,9 got ``testSwap``");
+    testSwap.move(8,5);
+    check(testSwap==Array{0,1,2,3,4,5,6,7,8,9}, "Array.move 2 expected 0,1,2,3,4,5,6,7,8,9 got ``testSwap``");
+    testSwap.move(0,4);
+    check(testSwap==Array{1,2,3,4,0,5,6,7,8,9}, "Array.move 3 expected 1,2,3,4,0,5,6,7,8,9 got ``testSwap``");
+    testSwap.move(4,0);
+    check(testSwap==Array{0,1,2,3,4,5,6,7,8,9}, "Array.move 4 expected 0,1,2,3,4,5,6,7,8,9 got ``testSwap``");
+    testSwap.move(6,9);
+    check(testSwap==Array{0,1,2,3,4,5,7,8,9,6}, "Array.move 5 expected 0,1,2,3,4,5,9,6,7,8 got ``testSwap``");
+    testSwap.move(9,6);
+    check(testSwap==Array{0,1,2,3,4,5,6,7,8,9}, "Array.move 6 expected 0,1,2,3,4,5,6,7,8,9 got ``testSwap``");
 }
