@@ -144,6 +144,11 @@ public class CeylonPluginTool extends OutputRepoUsingTool {
     }
 
     @Override
+    protected List<File> getSourceDirs() {
+        return sourceFolders;
+    }
+
+    @Override
     public void run() throws Exception {
         setSystemProperties();
         

@@ -308,6 +308,11 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
     
     private Main compiler;
     
+    @Override
+    protected List<File> getSourceDirs() {
+        return sources;
+    }
+
     private static void validateWithJavac(Options options, JavacOption encodingOpt, String option, String argument, String key) {
         if (!encodingOpt.matches(option)) {
             throw new IllegalArgumentException(CeylonCompileMessages.msg(key, option));
