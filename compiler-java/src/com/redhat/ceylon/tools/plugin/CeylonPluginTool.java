@@ -374,6 +374,13 @@ public class CeylonPluginTool extends OutputRepoUsingTool {
     }
 
     private boolean addScripts(RepositoryManager outputRepositoryManager, ModuleSpec module, boolean errorIfMissing) throws IOException {
+        // find all doc folders to zip
+        List<File> existingScriptFolders = findExistingScriptFolders(module.getName(), errorIfMissing);
+        
+        if(existingScriptFolders.isEmpty()){
+            return false;
+        }
+
         String version;
         if (!module.getName().equals(Module.DEFAULT_MODULE_NAME)){
             ModuleVersionDetails mvd = getVersionFromSource(module.getName());
@@ -387,13 +394,6 @@ public class CeylonPluginTool extends OutputRepoUsingTool {
         }
         ArtifactContext artifactScriptsZip = new ArtifactContext(module.getName(), version, ArtifactContext.SCRIPTS_ZIPPED);
         
-        // find all doc folders to zip
-        List<File> existingScriptFolders = findExistingScriptFolders(module.getName(), errorIfMissing);
-        
-        if(existingScriptFolders.isEmpty()){
-            return false;
-        }
-
         // make the doc zip roots
         IOUtils.ZipRoot[] roots = new IOUtils.ZipRoot[existingScriptFolders.size()];
         int d=0;
