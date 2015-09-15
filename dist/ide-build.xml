@@ -46,6 +46,26 @@
         <antcall target="setup" />
     </target>
 
+    <target name="eclipse" depends="eclipse-quick,publish,ide-quick">
+    </target>
+    <target name="eclipse-quick">
+        <ant antfile="${projects.base.dir}/ceylon-ide-eclipse/build.xml"
+             target="build"
+             dir="${projects.base.dir}/ceylon-ide-eclipse"
+            inheritall="false">
+        </ant>
+    </target>
+
+    <target name="intellij" depends="intellij-quick,publish,ide-quick">
+    </target>
+    <target name="intellij-quick">
+        <ant antfile="${projects.base.dir}/ceylon-ide-intellij/build.xml"
+             target="build"
+             dir="${projects.base.dir}/ceylon-ide-intellij"
+            inheritall="false">
+        </ant>
+    </target>
+
     <target name="publish" depends="publish-all">
     </target>
 
