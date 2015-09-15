@@ -53,7 +53,7 @@ public class PluginToolTests extends AbstractToolTests {
                         "--out", getOutPath(),
                         "--source", getPackagePath()+"/plugin/foo1/source", 
                         "--script", getPackagePath()+"/plugin/foo1/script",
-                        "pack", "foo/1"));
+                        "pack", "foo"));
         tool.run();
         File f = getOutputScriptFileName("foo", "1");
         System.err.println(f);
@@ -64,7 +64,7 @@ public class PluginToolTests extends AbstractToolTests {
                         "--out", getOutPath(),
                         "--source", getPackagePath()+"/plugin/foo2/source", 
                         "--script", getPackagePath()+"/plugin/foo2/script",
-                        "pack", "foo/2"));
+                        "pack", "foo"));
         tool2.run();
         File f2 = getOutputScriptFileName("foo", "2");
         Assert.assertTrue(f2.exists());
