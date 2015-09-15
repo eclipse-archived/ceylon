@@ -1,0 +1,1 @@
+module single "1"{}
