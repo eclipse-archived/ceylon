@@ -34,7 +34,7 @@ public class JavaRunnerImpl implements JavaRunner {
             delegateClassLoader = ((JavaRunnerOptions) options).getDelegateClassLoader();
         }
         
-        moduleLoader = new FlatpathModuleLoader(repositoryManager, delegateClassLoader, options.getExtraModules());
+        moduleLoader = new FlatpathModuleLoader(repositoryManager, delegateClassLoader, options.getExtraModules(), options.isVerbose("cmr"));
         moduleClassLoader = moduleLoader.loadModule(module, version);
         
         if(options.getRun() != null)

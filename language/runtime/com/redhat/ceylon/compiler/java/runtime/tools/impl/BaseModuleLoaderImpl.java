@@ -26,6 +26,7 @@ public abstract class BaseModuleLoaderImpl implements ModuleLoader {
     final ClassLoader delegateClassLoader;
     
     private Map<String, ModuleLoaderContext> contexts = new HashMap<String, ModuleLoaderContext>();
+    protected boolean verbose;
 
     abstract class ModuleLoaderContext {
         final String module;
@@ -154,14 +155,18 @@ public abstract class BaseModuleLoaderImpl implements ModuleLoader {
     }
     
     public BaseModuleLoaderImpl() {
-        this(null, null);
+        this(null);
     }
     
+    public void log(String string) {
+        System.err.println("[CMR:DEBUG] "+string);
+    }
+
     public BaseModuleLoaderImpl(ClassLoader delegateClassLoader) {
-        this(CeylonUtils.repoManager().buildManager(), delegateClassLoader);
+        this(CeylonUtils.repoManager().buildManager(), delegateClassLoader, false);
     }
     
-    public BaseModuleLoaderImpl(RepositoryManager repositoryManager, ClassLoader delegateClassLoader) {
+    public BaseModuleLoaderImpl(RepositoryManager repositoryManager, ClassLoader delegateClassLoader, boolean verbose) {
         if (repositoryManager == null) {
             this.repositoryManager = CeylonUtils.repoManager().buildManager();
         } else {
@@ -172,6 +177,7 @@ public abstract class BaseModuleLoaderImpl implements ModuleLoader {
         } else {
             this.delegateClassLoader= delegateClassLoader;
         }
+        this.verbose = verbose;
     }
     
     @Override

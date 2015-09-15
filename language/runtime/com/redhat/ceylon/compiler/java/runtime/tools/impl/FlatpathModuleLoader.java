@@ -19,16 +19,16 @@ public class FlatpathModuleLoader extends BaseModuleLoaderImpl {
     final Map<String, String> extraModules;
 
     public FlatpathModuleLoader() {
-        this(null, null, null);
+        this(null);
     }
 
     public FlatpathModuleLoader(ClassLoader delegateClassLoader) {
-        this(null, delegateClassLoader, null);
+        this(null, delegateClassLoader, null, false);
     }
 
     public FlatpathModuleLoader(RepositoryManager repositoryManager,
-            ClassLoader delegateClassLoader, Map<String, String> extraModules) {
-        super(repositoryManager, delegateClassLoader);
+            ClassLoader delegateClassLoader, Map<String, String> extraModules, boolean verbose) {
+        super(repositoryManager, delegateClassLoader, verbose);
         this.extraModules = extraModules;
     }
 
