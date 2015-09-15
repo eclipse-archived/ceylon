@@ -64,6 +64,19 @@ public class Options {
         this.verboseCategory = verboseCategory;
     }
     
+    public boolean isVerbose(String category){
+        String categories = getVerboseCategory();
+        if(categories == null)
+            return false;
+        for(String cat : categories.split(",")){
+            if(cat.equals(category))
+                return true;
+            if(cat.equals("all"))
+                return true;
+        }
+        return false;
+    }
+    
     public boolean isNoDefaultRepositories() {
         return noDefaultRepositories;
     }

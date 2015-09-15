@@ -26,6 +26,7 @@ public class JavaRunnerImpl implements JavaRunner {
                 .offline(options.isOffline())
                 .noDefaultRepos(options.isNoDefaultRepositories())
                 .overrides(options.getOverrides())
+                .logger(new CmrLogger(options.isVerbose("cmr")))
                 .buildManager();
         
         ClassLoader delegateClassLoader = null;
