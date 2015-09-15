@@ -1528,6 +1528,9 @@ shared interface Iterable<out Element=Anything,
      produced the key when passed as arguments to the 
      grouping function.
      
+     Within each group, the sequence elements occur in the
+     same order they occurred in this stream.
+     
      For example:
      
          (0..10).group((i) => i.even then \"even\" else \"odd\")
@@ -1607,9 +1610,10 @@ shared interface Iterable<out Element=Anything,
             variable value index = 0;
             variable GroupEntry<Group,Element>? entry = null;
             shared actual <Group->[Element+]>|Finished next() {
+                GroupEntry<Group,Element> result;
                 if (exists e = entry) {
                     entry = e.next;
-                    return e.group -> e.elements;
+                    result = e;
                 }
                 else {
                     while (true) {
@@ -1620,11 +1624,14 @@ shared interface Iterable<out Element=Anything,
                             entry = store[index++];
                             if (exists e = entry) {
                                 entry = e.next;
-                                return e.group -> e.elements;
+                                result = e;
+                                break;
                             }
                         }
                     }
                 }
+                return result.group 
+                        -> result.elements.reversed;
             }
         };        
         

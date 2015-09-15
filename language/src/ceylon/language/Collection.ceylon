@@ -99,7 +99,7 @@ shared interface Collection<out Element=Anything>
             .indexed
             .group((entry) => entry.item else nullElement)
             .items
-            .sort((x,y) => min(x*.key)<=>min(y*.key))
+            .sort((x,y) => x.first.key<=>y.first.key)
             .indexed
             .flatMap(
                 (entry) 
