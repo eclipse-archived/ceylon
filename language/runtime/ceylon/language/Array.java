@@ -1325,8 +1325,159 @@ public final class Array<Element>
                 setJavaItem(element, idx);
         }
     }
+    
+    public void swap(
+            @Name("i") @TypeInfo("ceylon.language::Integer") long p,
+            @Name("j") @TypeInfo("ceylon.language::Integer") long q) {
+        if (p<0 || q<0) {
+            throw new AssertionError("array index may not be negative");
+        }
+        else if (p>=size || q>=size) {
+            throw new AssertionError("array index must be less than size of array " + size);
+        }
+        int i = (int) p;
+        int j = (int) q;
+        if (i==j) return;
+        if (array instanceof java.lang.Object[]) {
+            java.lang.Object[] objectArray = (java.lang.Object[]) array;
+            java.lang.Object x = objectArray[i];
+            java.lang.Object y = objectArray[j];
+            objectArray[j] = x;
+            objectArray[i] = y;
+        }
+        else if (array instanceof long[]) {
+            long[] longArray = (long[]) array;
+            long x = longArray[i];
+            long y = longArray[j];
+            longArray[j] = x;
+            longArray[i] = y;
+        }
+        else if (array instanceof int[]) {
+            int[] intArray = (int[]) array;
+            int x = intArray[i];
+            int y = intArray[j];
+            intArray[j] = x;
+            intArray[i] = y;
+        }
+        else if (array instanceof short[]) {
+            short[] shortArray = (short[]) array;
+            short x = shortArray[i];
+            short y = shortArray[j];
+            shortArray[j] = x;
+            shortArray[i] = y;
+        }
+        else if (array instanceof byte[]) {
+            byte[] byteArray = (byte[]) array;
+            byte x = byteArray[i];
+            byte y = byteArray[j];
+            byteArray[j] = x;
+            byteArray[i] = y;
+        }
+        else if (array instanceof boolean[]) {
+            boolean[] booleanArray = (boolean[]) array;
+            boolean x = booleanArray[i];
+            boolean y = booleanArray[j];
+            booleanArray[j] = x;
+            booleanArray[i] = y;
+        }
+        else if (array instanceof double[]) {
+            double[] doubleArray = (double[]) array;
+            double x = doubleArray[i];
+            double y = doubleArray[j];
+            doubleArray[j] = x;
+            doubleArray[i] = y;
+        }
+        else if (array instanceof float[]) {
+            float[] floatArray = (float[]) array;
+            float x = floatArray[i];
+            float y = floatArray[j];
+            floatArray[j] = x;
+            floatArray[i] = y;
+        }
+        else {
+            throw new AssertionError("impossible array type");
+        }
+    }
 
-    private void setJavaItem(Element element, int idx) throws AssertionError {
+    public void move(
+            @Name("from") @TypeInfo("ceylon.language::Integer") long f,
+            @Name("to") @TypeInfo("ceylon.language::Integer") long t) {
+        if (f<0 || t<0) {
+            throw new AssertionError("array index may not be negative");
+        }
+        else if (f>=size || t>=size) {
+            throw new AssertionError("array index must be less than size of array " + size);
+        }
+        int from = (int) f;
+        int to = (int) t;
+        if (from==to) return;
+        int len;
+        int srcPos;
+        int destPos;
+        if (from>to) {
+            len = from-to;
+            srcPos = to;
+            destPos = to+1;
+        }
+        else {
+            len = to-from;
+            srcPos = from+1;
+            destPos = from;
+        }
+        if (array instanceof java.lang.Object[]) {
+            java.lang.Object[] objectArray = (java.lang.Object[]) array;
+            java.lang.Object x = objectArray[from];
+            System.arraycopy(objectArray, srcPos, objectArray, destPos, len);
+            objectArray[to] = x;
+        }
+        else if (array instanceof long[]) {
+            long[] longArray = (long[]) array;
+            long x = longArray[from];
+            System.arraycopy(longArray, srcPos, longArray, destPos, len);
+            longArray[to] = x;
+        }
+        else if (array instanceof int[]) {
+            int[] intArray = (int[]) array;
+            int x = intArray[from];
+            System.arraycopy(intArray, srcPos, intArray, destPos, len);
+            intArray[to] = x;
+        }
+        else if (array instanceof short[]) {
+            short[] shortArray = (short[]) array;
+            short x = shortArray[from];
+            System.arraycopy(shortArray, srcPos, shortArray, destPos, len);
+            shortArray[to] = x;
+        }
+        else if (array instanceof byte[]) {
+            byte[] byteArray = (byte[]) array;
+            byte x = byteArray[from];
+            System.arraycopy(byteArray, srcPos, byteArray, destPos, len);
+            byteArray[to] = x;
+        }
+        else if (array instanceof boolean[]) {
+            boolean[] booleanArray = (boolean[]) array;
+            boolean x = booleanArray[from];
+            System.arraycopy(booleanArray, srcPos, booleanArray, destPos, len);
+            booleanArray[to] = x;
+        }
+        else if (array instanceof double[]) {
+            double[] doubleArray = (double[]) array;
+            double x = doubleArray[from];
+            System.arraycopy(doubleArray, srcPos, doubleArray, destPos, len);
+            doubleArray[to] = x;
+        }
+        else if (array instanceof float[]) {
+            float[] floatArray = (float[]) array;
+            float x = floatArray[from];
+            System.arraycopy(floatArray, srcPos, floatArray, destPos, len);
+            floatArray[to] = x;
+        }
+        else {
+            throw new AssertionError("impossible array type");
+        }
+    }
+
+    private void setJavaItem(Element element, int idx) {
         switch (elementType) {
         case JavaLong:
             ((long[]) array)[idx] = (java.lang.Long) element;

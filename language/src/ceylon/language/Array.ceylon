@@ -143,6 +143,12 @@ shared final serializable native class Array<Element>
     shared actual native
     Boolean occurs(Anything element);
     
+    shared native
+    void swap(Integer i, Integer j);
+    
+    shared native
+    void move(Integer from, Integer to);
+    
     "Reverses the order of the current elements in this 
      array. This operation works by side-effect, modifying 
      the array."
