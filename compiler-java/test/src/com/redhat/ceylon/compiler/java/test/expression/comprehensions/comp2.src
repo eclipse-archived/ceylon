@@ -39,6 +39,7 @@ final class comp2_ {
                                     if (i$exhausted$) return false;
                                     if ($iterator$1 != null) return true;
                                     if (!this.i()) return false;
+                                    final .ceylon.language.Integer i = this.i;
                                     $iterator$1 = ints.iterator();
                                     return true;
                                 }
@@ -62,8 +63,8 @@ final class comp2_ {
                                 
                                 public final .java.lang.Object next() {
                                     if (this.j()) {
-                                        final .ceylon.language.Integer i = this.i;
                                         final .ceylon.language.Integer j = this.j;
+                                        final .ceylon.language.Integer i = this.i;
                                         return .ceylon.language.Integer.instance(i.longValue() * 2L + 3L / j.longValue());
                                     } else return .ceylon.language.finished_.get_();
                                 }

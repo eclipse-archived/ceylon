@@ -33,6 +33,7 @@ class ForIfConditionListExistsIsBool implements .com.redhat.ceylon.compiler.java
                     private final boolean $next$1() {
                         ifcomp_1: while (true) {
                             if (!this.x()) break ifcomp_1;
+                            final .ceylon.language.Sequential<? extends .java.lang.Object> x = this.x;
                             .java.lang.Object y$3 = null;
                             .java.lang.Object z$1 = null;
                             if ((z$1 = x.getFromFirst(0L)) != null) {
@@ -50,9 +51,9 @@ class ForIfConditionListExistsIsBool implements .com.redhat.ceylon.compiler.java
                     
                     public final .java.lang.Object next() {
                         if (this.$next$1()) {
-                            final .ceylon.language.Sequential<? extends .java.lang.Object> x = this.x;
-                            final long y$4 = this.y$4;
                             final .java.lang.Object z$2 = this.z$2;
+                            final long y$4 = this.y$4;
+                            final .ceylon.language.Sequential<? extends .java.lang.Object> x = this.x;
                             return .ceylon.language.Boolean.instance(y$4 == 1L);
                         } else return .ceylon.language.finished_.get_();
                     }

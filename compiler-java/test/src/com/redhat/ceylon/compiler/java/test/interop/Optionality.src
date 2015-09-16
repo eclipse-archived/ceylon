@@ -70,6 +70,7 @@ class OptionalInterface implements .com.redhat.ceylon.compiler.java.runtime.mode
                         private final boolean $next$1() {
                             ifcomp_1: while (true) {
                                 if (!this.obj()) break ifcomp_1;
+                                final .com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface obj = this.obj;
                                 .com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface z$7 = null;
                                 if ((z$7 = obj.getProp1()) != null) {
                                     z$8 = z$7;
@@ -81,8 +82,8 @@ class OptionalInterface implements .com.redhat.ceylon.compiler.java.runtime.mode
                         
                         public final .java.lang.Object next() {
                             if (this.$next$1()) {
-                                final .com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface obj = this.obj;
                                 final .com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface z$8 = this.z$8;
+                                final .com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface obj = this.obj;
                                 return z$8;
                             } else return .ceylon.language.finished_.get_();
                         }
@@ -133,6 +134,7 @@ class OptionalInterface implements .com.redhat.ceylon.compiler.java.runtime.mode
                         private final boolean $next$1() {
                             ifcomp_1: while (true) {
                                 if (!this.obj()) break ifcomp_1;
+                                final .com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface obj = this.obj;
                                 .com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface z$13 = null;
                                 if ((z$13 = obj.method(x$2)) != null) {
                                     z$14 = z$13;
@@ -144,8 +146,8 @@ class OptionalInterface implements .com.redhat.ceylon.compiler.java.runtime.mode
                         
                         public final .java.lang.Object next() {
                             if (this.$next$1()) {
-                                final .com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface obj = this.obj;
                                 final .com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface z$14 = this.z$14;
+                                final .com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface obj = this.obj;
                                 return z$14;
                             } else return .ceylon.language.finished_.get_();
                         }

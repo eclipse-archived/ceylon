@@ -36,6 +36,7 @@ final class forForIf_ {
                             if (y$exhausted$) return false;
                             if ($iterator$1 != null) return true;
                             if (!this.y()) return false;
+                            final .ceylon.language.Integer y = this.y;
                             $iterator$1 = .ceylon.language.span_.<.ceylon.language.Integer>span(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(5L)).iterator();
                             return true;
                         }
@@ -60,6 +61,8 @@ final class forForIf_ {
                         private final boolean $next$2() {
                             ifcomp_2: while (true) {
                                 if (!this.x()) break ifcomp_2;
+                                final .ceylon.language.Integer x = this.x;
+                                final .ceylon.language.Integer y = this.y;
                                 if (.ceylon.language.Integer.compare(x.longValue(), y.longValue()) == .ceylon.language.larger_.get_()) {
                                     break ifcomp_2;
                                 }
@@ -69,8 +72,8 @@ final class forForIf_ {
                         
                         public final .java.lang.Object next() {
                             if (this.$next$2()) {
-                                final .ceylon.language.Integer y = this.y;
                                 final .ceylon.language.Integer x = this.x;
+                                final .ceylon.language.Integer y = this.y;
                                 return x.times(y);
                             } else return .ceylon.language.finished_.get_();
                         }

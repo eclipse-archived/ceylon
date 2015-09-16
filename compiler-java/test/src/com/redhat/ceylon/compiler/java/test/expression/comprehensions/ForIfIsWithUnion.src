@@ -37,6 +37,7 @@ class ForIfIsUnion implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
                                 private final boolean $next$1() {
                                     ifcomp_1: while (true) {
                                         if (!this.x()) break ifcomp_1;
+                                        final .java.lang.Object x = this.x;
                                         if (x instanceof .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo || x instanceof .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Bar) {
                                             break ifcomp_1;
                                         }
@@ -95,6 +96,7 @@ class ForIfIsUnion implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
                                 private final boolean $next$1() {
                                     ifcomp_1: while (true) {
                                         if (!this.y()) break ifcomp_1;
+                                        final .java.lang.Object y = this.y;
                                         .java.lang.Object x$3 = null;
                                         if ((x$3 = y) instanceof .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo || x$3 instanceof .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Bar) {
                                             x$4 = x$3;
@@ -106,8 +108,8 @@ class ForIfIsUnion implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
                                 
                                 public final .java.lang.Object next() {
                                     if (this.$next$1()) {
-                                        final .java.lang.Object y = this.y;
                                         final .java.lang.Object x$4 = this.x$4;
+                                        final .java.lang.Object y = this.y;
                                         return ((.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common)x$4).common();
                                     } else return .ceylon.language.finished_.get_();
                                 }

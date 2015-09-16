@@ -46,6 +46,7 @@ class ForIfIsWithMethod implements .com.redhat.ceylon.compiler.java.runtime.mode
                                 private final boolean $next$1() {
                                     ifcomp_1: while (true) {
                                         if (!this.x()) break ifcomp_1;
+                                        final .com.redhat.ceylon.compiler.java.test.expression.comprehensions.ForIfIsWithMethod x = this.x;
                                         .java.lang.Object y$1 = null;
                                         if ((y$1 = x.give$priv$()) instanceof .com.redhat.ceylon.compiler.java.test.expression.comprehensions.FooSub) {
                                             y$2 = (.com.redhat.ceylon.compiler.java.test.expression.comprehensions.FooSub)y$1;
@@ -57,8 +58,8 @@ class ForIfIsWithMethod implements .com.redhat.ceylon.compiler.java.runtime.mode
                                 
                                 public final .java.lang.Object next() {
                                     if (this.$next$1()) {
-                                        final .com.redhat.ceylon.compiler.java.test.expression.comprehensions.ForIfIsWithMethod x = this.x;
                                         final .com.redhat.ceylon.compiler.java.test.expression.comprehensions.FooSub y$2 = this.y$2;
+                                        final .com.redhat.ceylon.compiler.java.test.expression.comprehensions.ForIfIsWithMethod x = this.x;
                                         return y$2.foo();
                                     } else return .ceylon.language.finished_.get_();
                                 }
@@ -104,6 +105,7 @@ class ForIfIsWithMethod implements .com.redhat.ceylon.compiler.java.runtime.mode
                                 private final boolean $next$1() {
                                     ifcomp_1: while (true) {
                                         if (!this.x()) break ifcomp_1;
+                                        final .com.redhat.ceylon.compiler.java.test.expression.comprehensions.ForIfIsWithMethod x = this.x;
                                         .java.lang.Object y$4 = null;
                                         if ((y$4 = x.give$priv$()) == null) {
                                             y$5 = y$4;
@@ -115,8 +117,8 @@ class ForIfIsWithMethod implements .com.redhat.ceylon.compiler.java.runtime.mode
                                 
                                 public final .java.lang.Object next() {
                                     if (this.$next$1()) {
-                                        final .com.redhat.ceylon.compiler.java.test.expression.comprehensions.ForIfIsWithMethod x = this.x;
                                         final .java.lang.Object y$5 = this.y$5;
+                                        final .com.redhat.ceylon.compiler.java.test.expression.comprehensions.ForIfIsWithMethod x = this.x;
                                         return .com.redhat.ceylon.compiler.java.test.expression.comprehensions.ForIfIsWithMethod.this.nowt$priv$(y$5);
                                     } else return .ceylon.language.finished_.get_();
                                 }

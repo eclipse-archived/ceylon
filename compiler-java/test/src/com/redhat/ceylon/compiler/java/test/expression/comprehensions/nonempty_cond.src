@@ -44,6 +44,7 @@ final class nonemptyCond_ {
                                 private final boolean $next$1() {
                                     ifcomp_1: while (true) {
                                         if (!this.x()) break ifcomp_1;
+                                        final .ceylon.language.Integer x = this.x;
                                         .ceylon.language.Sequential<? extends .ceylon.language.Integer> ints$1 = null;
                                         if ((ints$1 = ints) instanceof .ceylon.language.Sequence) {
                                             ints$2 = (.ceylon.language.Sequence<? extends .ceylon.language.Integer>)(.ceylon.language.Sequence)ints$1;
@@ -55,8 +56,8 @@ final class nonemptyCond_ {
                                 
                                 public final .java.lang.Object next() {
                                     if (this.$next$1()) {
-                                        final .ceylon.language.Integer x = this.x;
                                         final .ceylon.language.Sequence<? extends .ceylon.language.Integer> ints$2 = this.ints$2;
+                                        final .ceylon.language.Integer x = this.x;
                                         return (.ceylon.language.Integer)(.java.lang.Object)ints$2.getFirst();
                                     } else return .ceylon.language.finished_.get_();
                                 }

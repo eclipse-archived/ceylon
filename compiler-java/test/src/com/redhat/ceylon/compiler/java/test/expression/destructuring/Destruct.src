@@ -391,10 +391,10 @@ final class destructureInForComprehensions_ {
                                 
                                 public final .java.lang.Object next() {
                                     if (this.$pattern$tuple$45()) {
-                                        final .ceylon.language.String x = this.x;
-                                        final .ceylon.language.Sequential<? extends .ceylon.language.Float> y = this.y;
-                                        final .ceylon.language.String s1 = this.s1;
                                         final .ceylon.language.String s2 = this.s2;
+                                        final .ceylon.language.String s1 = this.s1;
+                                        final .ceylon.language.Sequential<? extends .ceylon.language.Float> y = this.y;
+                                        final .ceylon.language.String x = this.x;
                                         return (.ceylon.language.Sequence<? extends .java.lang.Object>).ceylon.language.Tuple.instance(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Entry.class, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequential.class, .ceylon.language.Float.$TypeDescriptor$), .ceylon.language.String.$TypeDescriptor$), new .java.lang.Object[]{
                                                 new .ceylon.language.Entry<.ceylon.language.String, .ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, s1, s2),
                                                 y,
@@ -447,10 +447,10 @@ final class destructureInForComprehensions_ {
                                 
                                 public final .java.lang.Object next() {
                                     if (this.$pattern$tuple$47()) {
-                                        final .ceylon.language.String x = this.x;
-                                        final .ceylon.language.Sequential<? extends .ceylon.language.Float> y = this.y;
-                                        final .ceylon.language.String s1 = this.s1;
                                         final .ceylon.language.String s2 = this.s2;
+                                        final .ceylon.language.String s1 = this.s1;
+                                        final .ceylon.language.Sequential<? extends .ceylon.language.Float> y = this.y;
+                                        final .ceylon.language.String x = this.x;
                                         return (.ceylon.language.Sequence<? extends .java.lang.Object>).ceylon.language.Tuple.instance(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Entry.class, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequential.class, .ceylon.language.Float.$TypeDescriptor$), .ceylon.language.String.$TypeDescriptor$), new .java.lang.Object[]{
                                                 new .ceylon.language.Entry<.ceylon.language.String, .ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, s1, s2),
                                                 y,
@@ -506,6 +506,10 @@ final class destructureInForComprehensions_ {
                                     if ($pattern$tuple$49$exhausted$) return false;
                                     if ($iterator$1 != null) return true;
                                     if (!this.$pattern$tuple$49()) return false;
+                                    final .ceylon.language.String sv1 = this.sv1;
+                                    final .ceylon.language.String sk1 = this.sk1;
+                                    final .ceylon.language.Sequential<? extends .ceylon.language.Float> y1 = this.y1;
+                                    final .ceylon.language.String x1 = this.x1;
                                     $iterator$1 = ((.ceylon.language.Iterable<? extends .ceylon.language.Sequence<? extends .java.lang.Object>, ? extends .java.lang.Object>)(.ceylon.language.Iterable)iter).iterator();
                                     return true;
                                 }
@@ -535,14 +539,14 @@ final class destructureInForComprehensions_ {
                                 
                                 public final .java.lang.Object next() {
                                     if (this.$pattern$tuple$51()) {
-                                        final .ceylon.language.String x1 = this.x1;
-                                        final .ceylon.language.Sequential<? extends .ceylon.language.Float> y1 = this.y1;
-                                        final .ceylon.language.String sk1 = this.sk1;
-                                        final .ceylon.language.String sv1 = this.sv1;
-                                        final .ceylon.language.String x2 = this.x2;
-                                        final .ceylon.language.Sequential<? extends .ceylon.language.Float> y2 = this.y2;
-                                        final .ceylon.language.String sk2 = this.sk2;
                                         final .ceylon.language.String sv2 = this.sv2;
+                                        final .ceylon.language.String sk2 = this.sk2;
+                                        final .ceylon.language.Sequential<? extends .ceylon.language.Float> y2 = this.y2;
+                                        final .ceylon.language.String x2 = this.x2;
+                                        final .ceylon.language.String sv1 = this.sv1;
+                                        final .ceylon.language.String sk1 = this.sk1;
+                                        final .ceylon.language.Sequential<? extends .ceylon.language.Float> y1 = this.y1;
+                                        final .ceylon.language.String x1 = this.x1;
                                         return (.ceylon.language.Sequence<? extends .java.lang.Object>).ceylon.language.Tuple.instance(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequential.class, .ceylon.language.Float.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Entry.class, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$)), new .java.lang.Object[]{
                                                 x1,
                                                 y2,
@@ -594,6 +598,7 @@ final class destructureInForComprehensions_ {
                                 private final boolean $next$1() {
                                     ifcomp_1: while (true) {
                                         if (!this.tup()) break ifcomp_1;
+                                        final .ceylon.language.Sequence tup = this.tup;
                                         .ceylon.language.Sequence $pattern$tuple$53$54 = null;
                                         if (($pattern$tuple$53$54 = (.ceylon.language.Sequence<? extends .java.lang.Object>)(.ceylon.language.Sequence)tup) != null) {
                                             s2$58 = ((.ceylon.language.String)((.ceylon.language.Entry)((.ceylon.language.Sequence)$pattern$tuple$53$54).getFromFirst(2)).getItem()).toString();
@@ -608,11 +613,11 @@ final class destructureInForComprehensions_ {
                                 
                                 public final .java.lang.Object next() {
                                     if (this.$next$1()) {
-                                        final .ceylon.language.Sequence tup = this.tup;
-                                        final .java.lang.String x$55 = this.x$55;
-                                        final .ceylon.language.Sequential<? extends .ceylon.language.Float> y$56 = this.y$56;
-                                        final .java.lang.String s1$57 = this.s1$57;
                                         final .java.lang.String s2$58 = this.s2$58;
+                                        final .java.lang.String s1$57 = this.s1$57;
+                                        final .ceylon.language.Sequential<? extends .ceylon.language.Float> y$56 = this.y$56;
+                                        final .java.lang.String x$55 = this.x$55;
+                                        final .ceylon.language.Sequence tup = this.tup;
                                         return (.ceylon.language.Sequence<? extends .java.lang.Object>).ceylon.language.Tuple.instance(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Entry.class, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequential.class, .ceylon.language.Float.$TypeDescriptor$), .ceylon.language.String.$TypeDescriptor$), new .java.lang.Object[]{
                                                 new .ceylon.language.Entry<.ceylon.language.String, .ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.instance(s1$57), .ceylon.language.String.instance(s2$58)),
                                                 y$56,
@@ -668,6 +673,10 @@ final class destructureInForComprehensions_ {
                                 private final boolean $next$1() {
                                     ifcomp_1: while (true) {
                                         if (!this.$pattern$tuple$60()) break ifcomp_1;
+                                        final .ceylon.language.String s2 = this.s2;
+                                        final .ceylon.language.String s1 = this.s1;
+                                        final .ceylon.language.Sequential<? extends .ceylon.language.Float> y = this.y;
+                                        final .ceylon.language.String x = this.x;
                                         .ceylon.language.Sequential<? extends .ceylon.language.Float> $pattern$tuple$61$62 = null;
                                         if (($pattern$tuple$61$62 = y) instanceof .ceylon.language.Sequence) {
                                             restys$64 = (.ceylon.language.Sequential<? extends .ceylon.language.Float>)(.ceylon.language.Sequential)((.ceylon.language.Sequence)$pattern$tuple$61$62).skip(1).sequence();
@@ -680,12 +689,12 @@ final class destructureInForComprehensions_ {
                                 
                                 public final .java.lang.Object next() {
                                     if (this.$next$1()) {
-                                        final .ceylon.language.String x = this.x;
-                                        final .ceylon.language.Sequential<? extends .ceylon.language.Float> y = this.y;
-                                        final .ceylon.language.String s1 = this.s1;
-                                        final .ceylon.language.String s2 = this.s2;
-                                        final double y1$63 = this.y1$63;
                                         final .ceylon.language.Sequential<? extends .ceylon.language.Float> restys$64 = this.restys$64;
+                                        final double y1$63 = this.y1$63;
+                                        final .ceylon.language.String s2 = this.s2;
+                                        final .ceylon.language.String s1 = this.s1;
+                                        final .ceylon.language.Sequential<? extends .ceylon.language.Float> y = this.y;
+                                        final .ceylon.language.String x = this.x;
                                         return (.ceylon.language.Sequence<? extends .java.lang.Object>).ceylon.language.Tuple.instance(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Entry.class, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$), .ceylon.language.Float.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$), new .java.lang.Object[]{
                                                 new .ceylon.language.Entry<.ceylon.language.String, .ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, s1, s2),
                                                 .ceylon.language.Float.instance(y1$63),
@@ -739,6 +748,7 @@ final class destructureInForComprehensions_ {
                                 private final boolean $next$1() {
                                     ifcomp_1: while (true) {
                                         if (!this.tup()) break ifcomp_1;
+                                        final .ceylon.language.Sequence tup = this.tup;
                                         .ceylon.language.Sequential<? extends .ceylon.language.Float> $pattern$tuple$72$73 = null;
                                         .ceylon.language.Sequence $pattern$tuple$66$67 = null;
                                         if (($pattern$tuple$66$67 = (.ceylon.language.Sequence<? extends .java.lang.Object>)(.ceylon.language.Sequence)tup) != null) {
@@ -758,13 +768,13 @@ final class destructureInForComprehensions_ {
                                 
                                 public final .java.lang.Object next() {
                                     if (this.$next$1()) {
-                                        final .ceylon.language.Sequence tup = this.tup;
-                                        final double y1$74 = this.y1$74;
-                                        final .ceylon.language.Sequential<? extends .ceylon.language.Float> restys$75 = this.restys$75;
-                                        final .java.lang.String x$68 = this.x$68;
-                                        final .ceylon.language.Sequential<? extends .ceylon.language.Float> y$69 = this.y$69;
-                                        final .java.lang.String s1$70 = this.s1$70;
                                         final .java.lang.String s2$71 = this.s2$71;
+                                        final .java.lang.String s1$70 = this.s1$70;
+                                        final .ceylon.language.Sequential<? extends .ceylon.language.Float> y$69 = this.y$69;
+                                        final .java.lang.String x$68 = this.x$68;
+                                        final .ceylon.language.Sequential<? extends .ceylon.language.Float> restys$75 = this.restys$75;
+                                        final double y1$74 = this.y1$74;
+                                        final .ceylon.language.Sequence tup = this.tup;
                                         return (.ceylon.language.Sequence<? extends .java.lang.Object>).ceylon.language.Tuple.instance(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Entry.class, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$), .ceylon.language.Float.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$), new .java.lang.Object[]{
                                                 new .ceylon.language.Entry<.ceylon.language.String, .ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.instance(s1$70), .ceylon.language.String.instance(s2$71)),
                                                 .ceylon.language.Float.instance(y1$74),

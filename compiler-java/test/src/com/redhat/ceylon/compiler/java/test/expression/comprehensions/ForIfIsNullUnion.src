@@ -38,6 +38,7 @@ class ForIfIsNullUnion implements .com.redhat.ceylon.compiler.java.runtime.model
                                 private final boolean $next$1() {
                                     ifcomp_1: while (true) {
                                         if (!this.x()) break ifcomp_1;
+                                        final .java.lang.Object x = this.x;
                                         .java.lang.Object x$1 = null;
                                         if ((x$1 = x) == null || x$1 instanceof .ceylon.language.Character) {
                                             x$2 = (.ceylon.language.Character)x$1;
@@ -49,8 +50,8 @@ class ForIfIsNullUnion implements .com.redhat.ceylon.compiler.java.runtime.model
                                 
                                 public final .java.lang.Object next() {
                                     if (this.$next$1()) {
-                                        final .java.lang.Object x = this.x;
                                         final .ceylon.language.Character x$2 = this.x$2;
+                                        final .java.lang.Object x = this.x;
                                         return x$2;
                                     } else return .ceylon.language.finished_.get_();
                                 }

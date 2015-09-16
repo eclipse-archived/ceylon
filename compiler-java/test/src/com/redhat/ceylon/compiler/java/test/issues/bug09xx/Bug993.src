@@ -102,6 +102,7 @@ class Bug993BottomFromInterface implements .com.redhat.ceylon.compiler.java.runt
                                     if (i$exhausted$) return false;
                                     if ($iterator$1 != null) return true;
                                     if (!this.i()) return false;
+                                    final .ceylon.language.Character i = this.i;
                                     $iterator$1 = ((.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993Top<? extends .ceylon.language.Sequence<? extends .ceylon.language.Character>>)(.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993Top).com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993BottomFromInterface.this).e().iterator();
                                     return true;
                                 }
@@ -125,8 +126,8 @@ class Bug993BottomFromInterface implements .com.redhat.ceylon.compiler.java.runt
                                 
                                 public final .java.lang.Object next() {
                                     if (this.ii()) {
-                                        final .ceylon.language.Character i = this.i;
                                         final .ceylon.language.Character ii = this.ii;
+                                        final .ceylon.language.Character i = this.i;
                                         return ((.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993Top<? extends .ceylon.language.Sequence<? extends .ceylon.language.Character>>)(.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993Top).com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993BottomFromInterface.this).e().getLastIndex();
                                     } else return .ceylon.language.finished_.get_();
                                 }
@@ -208,6 +209,7 @@ class Bug993BottomFromClass extends .com.redhat.ceylon.compiler.java.test.issues
                                     if (i$exhausted$) return false;
                                     if ($iterator$1 != null) return true;
                                     if (!this.i()) return false;
+                                    final .ceylon.language.Character i = this.i;
                                     $iterator$1 = ((.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993Top<? extends .ceylon.language.Sequence<? extends .ceylon.language.Character>>)(.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993Top).com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993BottomFromClass.this).e().iterator();
                                     return true;
                                 }
@@ -231,8 +233,8 @@ class Bug993BottomFromClass extends .com.redhat.ceylon.compiler.java.test.issues
                                 
                                 public final .java.lang.Object next() {
                                     if (this.ii()) {
-                                        final .ceylon.language.Character i = this.i;
                                         final .ceylon.language.Character ii = this.ii;
+                                        final .ceylon.language.Character i = this.i;
                                         return ((.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993Top<? extends .ceylon.language.Sequence<? extends .ceylon.language.Character>>)(.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993Top).com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993BottomFromClass.this).e().getLastIndex();
                                     } else return .ceylon.language.finished_.get_();
                                 }
@@ -326,6 +328,7 @@ final class Bug993BottomInterface$impl {
                                     if (i$exhausted$) return false;
                                     if ($iterator$1 != null) return true;
                                     if (!this.i()) return false;
+                                    final .ceylon.language.Character i = this.i;
                                     $iterator$1 = ((.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993Top<? extends .ceylon.language.Sequence<? extends .ceylon.language.Character>>)(.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993Top).com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993BottomInterface$impl.this.$this).e().iterator();
                                     return true;
                                 }
@@ -349,8 +352,8 @@ final class Bug993BottomInterface$impl {
                                 
                                 public final .java.lang.Object next() {
                                     if (this.ii()) {
-                                        final .ceylon.language.Character i = this.i;
                                         final .ceylon.language.Character ii = this.ii;
+                                        final .ceylon.language.Character i = this.i;
                                         return ((.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993Top<? extends .ceylon.language.Sequence<? extends .ceylon.language.Character>>)(.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993Top).com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993BottomInterface$impl.this.$this).e().getLastIndex();
                                     } else return .ceylon.language.finished_.get_();
                                 }

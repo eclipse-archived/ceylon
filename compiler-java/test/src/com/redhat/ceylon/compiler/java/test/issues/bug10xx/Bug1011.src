@@ -141,8 +141,8 @@ final class foo_ {
                                         
                                         public final .java.lang.Object next() {
                                             if (this.$pattern$entry$4()) {
-                                                final Key key = this.key;
                                                 final Item item = this.item;
+                                                final Key key = this.key;
                                                 return new .ceylon.language.Entry<Item, .com.redhat.ceylon.compiler.java.test.issues.bug10xx.LazySet<? extends Key>>($reified$Item, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug10xx.LazySet.class, $reified$Key), item, new .com.redhat.ceylon.compiler.java.test.issues.bug10xx.LazySet<Key>($reified$Key, (.ceylon.language.Iterable)new .com.redhat.ceylon.compiler.java.language.AbstractIterable<Key, .java.lang.Object>($reified$Key, .ceylon.language.Null.$TypeDescriptor$){
                                                     
                                                     public final .ceylon.language.Iterator<Key> iterator() {
@@ -170,6 +170,8 @@ final class foo_ {
                                                             private final boolean $next$1() {
                                                                 ifcomp_1: while (true) {
                                                                     if (!this.$pattern$entry$6()) break ifcomp_1;
+                                                                    final Item i = this.i;
+                                                                    final Key k = this.k;
                                                                     if (i.equals(item)) {
                                                                         break ifcomp_1;
                                                                     }
@@ -179,8 +181,8 @@ final class foo_ {
                                                             
                                                             public final .java.lang.Object next() {
                                                                 if (this.$next$1()) {
-                                                                    final Key k = this.k;
                                                                     final Item i = this.i;
+                                                                    final Key k = this.k;
                                                                     return k;
                                                                 } else return .ceylon.language.finished_.get_();
                                                             }
@@ -234,8 +236,8 @@ final class foo_ {
                                 
                                 public final .java.lang.Object next() {
                                     if (this.$pattern$entry$8()) {
-                                        final Key key = this.key;
                                         final Item item = this.item;
+                                        final Key key = this.key;
                                         return new .ceylon.language.Entry<Item, .com.redhat.ceylon.compiler.java.test.issues.bug10xx.LazySet<? extends Key>>($reified$Item, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug10xx.LazySet.class, $reified$Key), item, new .com.redhat.ceylon.compiler.java.test.issues.bug10xx.LazySet<Key>($reified$Key, (.ceylon.language.Iterable)new .com.redhat.ceylon.compiler.java.language.AbstractIterable<Key, .java.lang.Object>($reified$Key, .ceylon.language.Null.$TypeDescriptor$){
                                             
                                             public final .ceylon.language.Iterator<Key> iterator() {
@@ -263,6 +265,8 @@ final class foo_ {
                                                     private final boolean $next$1() {
                                                         ifcomp_1: while (true) {
                                                             if (!this.$pattern$entry$10()) break ifcomp_1;
+                                                            final Item i = this.i;
+                                                            final Key k = this.k;
                                                             if (i.equals(item)) {
                                                                 break ifcomp_1;
                                                             }
@@ -272,8 +276,8 @@ final class foo_ {
                                                     
                                                     public final .java.lang.Object next() {
                                                         if (this.$next$1()) {
-                                                            final Key k = this.k;
                                                             final Item i = this.i;
+                                                            final Key k = this.k;
                                                             return k;
                                                         } else return .ceylon.language.finished_.get_();
                                                     }
@@ -332,8 +336,8 @@ final class foo_ {
                                         
                                         public final .java.lang.Object next() {
                                             if (this.$pattern$entry$13()) {
-                                                final Key key = this.key;
                                                 final Item item = this.item;
+                                                final Key key = this.key;
                                                 return new .ceylon.language.Entry<Item, .com.redhat.ceylon.compiler.java.test.issues.bug10xx.LazySet<? extends Key>>($reified$Item, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug10xx.LazySet.class, $reified$Key), item, new .com.redhat.ceylon.compiler.java.test.issues.bug10xx.LazySet<Key>($reified$Key, (.ceylon.language.Iterable)new .com.redhat.ceylon.compiler.java.language.AbstractIterable<Key, .java.lang.Object>($reified$Key, .ceylon.language.Null.$TypeDescriptor$){
                                                     
                                                     public final .ceylon.language.Iterator<Key> iterator() {
@@ -361,6 +365,8 @@ final class foo_ {
                                                             private final boolean $next$1() {
                                                                 ifcomp_1: while (true) {
                                                                     if (!this.$pattern$entry$15()) break ifcomp_1;
+                                                                    final Item i = this.i;
+                                                                    final Key k = this.k;
                                                                     if (i.equals(item)) {
                                                                         break ifcomp_1;
                                                                     }
@@ -370,8 +376,8 @@ final class foo_ {
                                                             
                                                             public final .java.lang.Object next() {
                                                                 if (this.$next$1()) {
-                                                                    final Key k = this.k;
                                                                     final Item i = this.i;
+                                                                    final Key k = this.k;
                                                                     return k;
                                                                 } else return .ceylon.language.finished_.get_();
                                                             }
@@ -428,8 +434,8 @@ final class foo_ {
                                 
                                 public final .java.lang.Object next() {
                                     if (this.$pattern$entry$17()) {
-                                        final Key key = this.key;
                                         final Item item = this.item;
+                                        final Key key = this.key;
                                         return new .ceylon.language.Entry<Item, .com.redhat.ceylon.compiler.java.test.issues.bug10xx.LazySet<? extends Key>>($reified$Item, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug10xx.LazySet.class, $reified$Key), item, new .com.redhat.ceylon.compiler.java.test.issues.bug10xx.LazySet<Key>($reified$Key, (.ceylon.language.Iterable)new .com.redhat.ceylon.compiler.java.language.AbstractIterable<Key, .java.lang.Object>($reified$Key, .ceylon.language.Null.$TypeDescriptor$){
                                             
                                             public final .ceylon.language.Iterator<Key> iterator() {
@@ -457,6 +463,8 @@ final class foo_ {
                                                     private final boolean $next$1() {
                                                         ifcomp_1: while (true) {
                                                             if (!this.$pattern$entry$19()) break ifcomp_1;
+                                                            final Item i = this.i;
+                                                            final Key k = this.k;
                                                             if (i.equals(item)) {
                                                                 break ifcomp_1;
                                                             }
@@ -466,8 +474,8 @@ final class foo_ {
                                                     
                                                     public final .java.lang.Object next() {
                                                         if (this.$next$1()) {
-                                                            final Key k = this.k;
                                                             final Item i = this.i;
+                                                            final Key k = this.k;
                                                             return k;
                                                         } else return .ceylon.language.finished_.get_();
                                                     }
@@ -518,8 +526,8 @@ final class foo_ {
                                 
                                 public final .java.lang.Object next() {
                                     if (this.$pattern$entry$21()) {
-                                        final Key key = this.key;
                                         final Item item = this.item;
+                                        final Key key = this.key;
                                         return new .ceylon.language.Entry<Item, .com.redhat.ceylon.compiler.java.test.issues.bug10xx.LazySet<? extends Key>>($reified$Item, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug10xx.LazySet.class, $reified$Key), item, new .com.redhat.ceylon.compiler.java.test.issues.bug10xx.LazySet<Key>($reified$Key, (.ceylon.language.Iterable)new .com.redhat.ceylon.compiler.java.language.AbstractIterable<Key, .java.lang.Object>($reified$Key, .ceylon.language.Null.$TypeDescriptor$){
                                             
                                             public final .ceylon.language.Iterator<Key> iterator() {
@@ -547,6 +555,8 @@ final class foo_ {
                                                     private final boolean $next$1() {
                                                         ifcomp_1: while (true) {
                                                             if (!this.$pattern$entry$23()) break ifcomp_1;
+                                                            final Item i = this.i;
+                                                            final Key k = this.k;
                                                             if (i.equals(item)) {
                                                                 break ifcomp_1;
                                                             }
@@ -556,8 +566,8 @@ final class foo_ {
                                                     
                                                     public final .java.lang.Object next() {
                                                         if (this.$next$1()) {
-                                                            final Key k = this.k;
                                                             final Item i = this.i;
+                                                            final Key k = this.k;
                                                             return k;
                                                         } else return .ceylon.language.finished_.get_();
                                                     }
@@ -611,8 +621,8 @@ final class foo_ {
                                 
                                 public final .java.lang.Object next() {
                                     if (this.$pattern$entry$25()) {
-                                        final Key key = this.key;
                                         final Item item = this.item;
+                                        final Key key = this.key;
                                         return new .ceylon.language.Entry<Item, .com.redhat.ceylon.compiler.java.test.issues.bug10xx.LazySet<? extends Key>>($reified$Item, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug10xx.LazySet.class, $reified$Key), item, new .com.redhat.ceylon.compiler.java.test.issues.bug10xx.LazySet<Key>($reified$Key, (.ceylon.language.Iterable)new .com.redhat.ceylon.compiler.java.language.AbstractIterable<Key, .java.lang.Object>($reified$Key, .ceylon.language.Null.$TypeDescriptor$){
                                             
                                             public final .ceylon.language.Iterator<Key> iterator() {
@@ -640,6 +650,8 @@ final class foo_ {
                                                     private final boolean $next$1() {
                                                         ifcomp_1: while (true) {
                                                             if (!this.$pattern$entry$27()) break ifcomp_1;
+                                                            final Item i = this.i;
+                                                            final Key k = this.k;
                                                             if (i.equals(item)) {
                                                                 break ifcomp_1;
                                                             }
@@ -649,8 +661,8 @@ final class foo_ {
                                                     
                                                     public final .java.lang.Object next() {
                                                         if (this.$next$1()) {
-                                                            final Key k = this.k;
                                                             final Item i = this.i;
+                                                            final Key k = this.k;
                                                             return k;
                                                         } else return .ceylon.language.finished_.get_();
                                                     }

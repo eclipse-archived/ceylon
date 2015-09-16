@@ -44,6 +44,7 @@ final class existsCond_ {
                                 private final boolean $next$1() {
                                     ifcomp_1: while (true) {
                                         if (!this.x()) break ifcomp_1;
+                                        final .ceylon.language.String x = this.x;
                                         .ceylon.language.String x$1 = null;
                                         if ((x$1 = x) != null) {
                                             x$2 = x$1.toString();
@@ -57,6 +58,8 @@ final class existsCond_ {
                                 private final boolean $next$2() {
                                     ifcomp_2: while (true) {
                                         if (!this.$next$1()) break ifcomp_2;
+                                        final .java.lang.String x$2 = this.x$2;
+                                        final .ceylon.language.String x = this.x;
                                         .ceylon.language.Character c$3 = null;
                                         if ((c$3 = .ceylon.language.String.instance(.ceylon.language.String.initial(x$2, 1L)).getFromFirst(0L)) != null) {
                                             c$4 = c$3.intValue();
@@ -68,9 +71,9 @@ final class existsCond_ {
                                 
                                 public final .java.lang.Object next() {
                                     if (this.$next$2()) {
-                                        final .ceylon.language.String x = this.x;
-                                        final .java.lang.String x$2 = this.x$2;
                                         final int c$4 = this.c$4;
+                                        final .java.lang.String x$2 = this.x$2;
+                                        final .ceylon.language.String x = this.x;
                                         return .ceylon.language.Character.instance(.ceylon.language.Character.getUppercased(c$4));
                                     } else return .ceylon.language.finished_.get_();
                                 }

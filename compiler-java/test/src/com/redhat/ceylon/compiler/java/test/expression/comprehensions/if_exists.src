@@ -87,8 +87,8 @@ final class ifFor_ {
                                 
                                 public final .java.lang.Object next() {
                                     if (this.$next$1()) {
-                                        final .java.lang.Object x2$3 = this.x2$3;
                                         final .java.lang.String x2$5 = this.x2$5;
+                                        final .java.lang.Object x2$3 = this.x2$3;
                                         return .ceylon.language.String.instance(x2$5);
                                     } else return .ceylon.language.finished_.get_();
                                 }

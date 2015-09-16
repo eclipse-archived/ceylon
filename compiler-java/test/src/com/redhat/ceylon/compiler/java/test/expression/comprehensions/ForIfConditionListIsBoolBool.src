@@ -33,6 +33,7 @@ class ForIfConditionListIsBoolBool implements .com.redhat.ceylon.compiler.java.r
                         if (x$exhausted$) return false;
                         if ($iterator$1 != null) return true;
                         if (!this.x()) return false;
+                        final .java.lang.Object x = this.x;
                         $iterator$1 = zs.iterator();
                         return true;
                     }
@@ -58,6 +59,8 @@ class ForIfConditionListIsBoolBool implements .com.redhat.ceylon.compiler.java.r
                     private final boolean $next$2() {
                         ifcomp_2: while (true) {
                             if (!this.z()) break ifcomp_2;
+                            final .ceylon.language.Integer z = this.z;
+                            final .java.lang.Object x = this.x;
                             .java.lang.Object x$2 = null;
                             if ((x$2 = x) instanceof .ceylon.language.Integer) {
                                 x$3 = ((.ceylon.language.Integer)x$2).longValue();
@@ -73,9 +76,9 @@ class ForIfConditionListIsBoolBool implements .com.redhat.ceylon.compiler.java.r
                     
                     public final .java.lang.Object next() {
                         if (this.$next$2()) {
-                            final .java.lang.Object x = this.x;
-                            final .ceylon.language.Integer z = this.z;
                             final long x$3 = this.x$3;
+                            final .ceylon.language.Integer z = this.z;
+                            final .java.lang.Object x = this.x;
                             return .ceylon.language.Boolean.instance(z.equals(.ceylon.language.Integer.instance(1L)));
                         } else return .ceylon.language.finished_.get_();
                     }
@@ -112,6 +115,7 @@ class ForIfConditionListIsBoolBool implements .com.redhat.ceylon.compiler.java.r
                         if (x$exhausted$) return false;
                         if ($iterator$1 != null) return true;
                         if (!this.x()) return false;
+                        final .java.lang.Object x = this.x;
                         $iterator$1 = zs.iterator();
                         return true;
                     }
@@ -137,6 +141,8 @@ class ForIfConditionListIsBoolBool implements .com.redhat.ceylon.compiler.java.r
                     private final boolean $next$2() {
                         ifcomp_2: while (true) {
                             if (!this.z()) break ifcomp_2;
+                            final .ceylon.language.Integer z = this.z;
+                            final .java.lang.Object x = this.x;
                             .java.lang.Object y$6 = null;
                             if ((y$6 = x) instanceof .ceylon.language.Integer) {
                                 y$7 = ((.ceylon.language.Integer)y$6).longValue();
@@ -152,9 +158,9 @@ class ForIfConditionListIsBoolBool implements .com.redhat.ceylon.compiler.java.r
                     
                     public final .java.lang.Object next() {
                         if (this.$next$2()) {
-                            final .java.lang.Object x = this.x;
-                            final .ceylon.language.Integer z = this.z;
                             final long y$7 = this.y$7;
+                            final .ceylon.language.Integer z = this.z;
+                            final .java.lang.Object x = this.x;
                             return .ceylon.language.Boolean.instance(z.equals(.ceylon.language.Integer.instance(1L)));
                         } else return .ceylon.language.finished_.get_();
                     }

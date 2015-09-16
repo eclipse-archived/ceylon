@@ -105,6 +105,7 @@ final class isCond_ {
                     private final boolean $next$1() {
                         ifcomp_1: while (true) {
                             if (!this.x()) break ifcomp_1;
+                            final .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common x = this.x;
                             .java.lang.Object x$1 = null;
                             if ((x$1 = x) instanceof .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo) {
                                 x$2 = (.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo)x$1;
@@ -116,8 +117,8 @@ final class isCond_ {
                     
                     public final .java.lang.Object next() {
                         if (this.$next$1()) {
-                            final .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common x = this.x;
                             final .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo x$2 = this.x$2;
+                            final .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common x = this.x;
                             return x$2.foo();
                         } else return .ceylon.language.finished_.get_();
                     }
@@ -150,6 +151,7 @@ final class isCond_ {
                     private final boolean $next$1() {
                         ifcomp_1: while (true) {
                             if (!this.x()) break ifcomp_1;
+                            final .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common x = this.x;
                             .java.lang.Object x$4 = null;
                             if ((x$4 = x) instanceof .com.redhat.ceylon.compiler.java.test.expression.comprehensions.FooSub) {
                                 x$5 = (.com.redhat.ceylon.compiler.java.test.expression.comprehensions.FooSub)x$4;
@@ -161,8 +163,8 @@ final class isCond_ {
                     
                     public final .java.lang.Object next() {
                         if (this.$next$1()) {
-                            final .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common x = this.x;
                             final .com.redhat.ceylon.compiler.java.test.expression.comprehensions.FooSub x$5 = this.x$5;
+                            final .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common x = this.x;
                             return x$5.foo();
                         } else return .ceylon.language.finished_.get_();
                     }
@@ -194,6 +196,7 @@ final class isCond_ {
                     private final boolean $next$1() {
                         ifcomp_1: while (true) {
                             if (!this.x()) break ifcomp_1;
+                            final .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common x = this.x;
                             if (x instanceof .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo || x instanceof .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Bar) {
                                 break ifcomp_1;
                             }
@@ -235,6 +238,7 @@ final class isCond_ {
                     private final boolean $next$1() {
                         ifcomp_1: while (true) {
                             if (!this.x()) break ifcomp_1;
+                            final .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common x = this.x;
                             if (x instanceof .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo && x instanceof .com.redhat.ceylon.compiler.java.test.expression.comprehensions.BarInterface) {
                                 break ifcomp_1;
                             }
@@ -276,6 +280,7 @@ final class isCond_ {
                     private final boolean $next$1() {
                         ifcomp_1: while (true) {
                             if (!this.x()) break ifcomp_1;
+                            final .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common x = this.x;
                             if (x instanceof .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo && x instanceof .com.redhat.ceylon.compiler.java.test.expression.comprehensions.BarInterface) {
                                 break ifcomp_1;
                             }
@@ -317,6 +322,7 @@ final class isCond_ {
                     private final boolean $next$1() {
                         ifcomp_1: while (true) {
                             if (!this.x()) break ifcomp_1;
+                            final .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common x = this.x;
                             if (x == null) {
                                 break ifcomp_1;
                             }

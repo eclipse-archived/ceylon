@@ -37,6 +37,7 @@ class ForIfIsIntersection implements .com.redhat.ceylon.compiler.java.runtime.mo
                                 private final boolean $next$1() {
                                     ifcomp_1: while (true) {
                                         if (!this.x()) break ifcomp_1;
+                                        final .java.lang.Object x = this.x;
                                         if (x instanceof .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo && x instanceof .com.redhat.ceylon.compiler.java.test.expression.comprehensions.BarInterface) {
                                             break ifcomp_1;
                                         }
@@ -91,6 +92,7 @@ class ForIfIsIntersection implements .com.redhat.ceylon.compiler.java.runtime.mo
                                 private final boolean $next$1() {
                                     ifcomp_1: while (true) {
                                         if (!this.x()) break ifcomp_1;
+                                        final .java.lang.Object x = this.x;
                                         if (x instanceof .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo && x instanceof .com.redhat.ceylon.compiler.java.test.expression.comprehensions.BarInterface) {
                                             break ifcomp_1;
                                         }
@@ -145,6 +147,7 @@ class ForIfIsIntersection implements .com.redhat.ceylon.compiler.java.runtime.mo
                                 private final boolean $next$1() {
                                     ifcomp_1: while (true) {
                                         if (!this.x()) break ifcomp_1;
+                                        final .java.lang.Object x = this.x;
                                         if (x instanceof .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo && x instanceof .com.redhat.ceylon.compiler.java.test.expression.comprehensions.BarInterface) {
                                             break ifcomp_1;
                                         }
@@ -203,6 +206,7 @@ class ForIfIsIntersection implements .com.redhat.ceylon.compiler.java.runtime.mo
                                 private final boolean $next$1() {
                                     ifcomp_1: while (true) {
                                         if (!this.y()) break ifcomp_1;
+                                        final .java.lang.Object y = this.y;
                                         .java.lang.Object x$7 = null;
                                         if ((x$7 = y) instanceof .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo && x$7 instanceof .com.redhat.ceylon.compiler.java.test.expression.comprehensions.BarInterface) {
                                             x$8 = x$7;
@@ -214,8 +218,8 @@ class ForIfIsIntersection implements .com.redhat.ceylon.compiler.java.runtime.mo
                                 
                                 public final .java.lang.Object next() {
                                     if (this.$next$1()) {
-                                        final .java.lang.Object y = this.y;
                                         final .java.lang.Object x$8 = this.x$8;
+                                        final .java.lang.Object y = this.y;
                                         return .ceylon.language.String.instance(((.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo)x$8).common().toString());
                                     } else return .ceylon.language.finished_.get_();
                                 }
@@ -261,6 +265,7 @@ class ForIfIsIntersection implements .com.redhat.ceylon.compiler.java.runtime.mo
                                 private final boolean $next$1() {
                                     ifcomp_1: while (true) {
                                         if (!this.y()) break ifcomp_1;
+                                        final .java.lang.Object y = this.y;
                                         .java.lang.Object x$10 = null;
                                         if ((x$10 = y) instanceof .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo && x$10 instanceof .com.redhat.ceylon.compiler.java.test.expression.comprehensions.BarInterface) {
                                             x$11 = x$10;
@@ -272,8 +277,8 @@ class ForIfIsIntersection implements .com.redhat.ceylon.compiler.java.runtime.mo
                                 
                                 public final .java.lang.Object next() {
                                     if (this.$next$1()) {
-                                        final .java.lang.Object y = this.y;
                                         final .java.lang.Object x$11 = this.x$11;
+                                        final .java.lang.Object y = this.y;
                                         return .ceylon.language.String.instance(((.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo)x$11).foo().toString());
                                     } else return .ceylon.language.finished_.get_();
                                 }
@@ -319,6 +324,7 @@ class ForIfIsIntersection implements .com.redhat.ceylon.compiler.java.runtime.mo
                                 private final boolean $next$1() {
                                     ifcomp_1: while (true) {
                                         if (!this.y()) break ifcomp_1;
+                                        final .java.lang.Object y = this.y;
                                         .java.lang.Object x$13 = null;
                                         if ((x$13 = y) instanceof .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo && x$13 instanceof .com.redhat.ceylon.compiler.java.test.expression.comprehensions.BarInterface) {
                                             x$14 = x$13;
@@ -330,8 +336,8 @@ class ForIfIsIntersection implements .com.redhat.ceylon.compiler.java.runtime.mo
                                 
                                 public final .java.lang.Object next() {
                                     if (this.$next$1()) {
-                                        final .java.lang.Object y = this.y;
                                         final .java.lang.Object x$14 = this.x$14;
+                                        final .java.lang.Object y = this.y;
                                         return .ceylon.language.String.instance(((.com.redhat.ceylon.compiler.java.test.expression.comprehensions.BarInterface)x$14).bar().toString());
                                     } else return .ceylon.language.finished_.get_();
                                 }

@@ -87,6 +87,7 @@ public final class bug2135_ {
                                         private final boolean $next$2() {
                                             ifcomp_2: while (true) {
                                                 if (!this.fd()) break ifcomp_2;
+                                                final .ceylon.language.Integer fd = this.fd;
                                                 if (1L == 1L) {
                                                     break ifcomp_2;
                                                 }
@@ -173,6 +174,7 @@ public final class bug2135_ {
                                 private final boolean $next$2() {
                                     ifcomp_2: while (true) {
                                         if (!this.elem()) break ifcomp_2;
+                                        final .java.lang.Object elem = this.elem;
                                         if (.com.redhat.ceylon.compiler.java.test.issues.bug21xx.notCalled_.<.ceylon.language.Boolean>notCalled(.ceylon.language.Boolean.$TypeDescriptor$, .ceylon.language.Boolean.instance(t2)).booleanValue()) {
                                             break ifcomp_2;
                                         }
@@ -373,6 +375,7 @@ public final class bug2135_ {
                                 private final boolean $next$1() {
                                     ifcomp_1: while (true) {
                                         if (!this.elem()) break ifcomp_1;
+                                        final .java.lang.Object elem = this.elem;
                                         if (t2) {
                                             break ifcomp_1;
                                         }
@@ -385,6 +388,7 @@ public final class bug2135_ {
                                     if (elem$exhausted$) return false;
                                     if ($iterator$2 != null) return true;
                                     if (!this.$next$1()) return false;
+                                    final .java.lang.Object elem = this.elem;
                                     $iterator$2 = seq.iterator();
                                     return true;
                                 }
@@ -408,8 +412,8 @@ public final class bug2135_ {
                                 
                                 public final .java.lang.Object next() {
                                     if (this.elem2()) {
-                                        final .java.lang.Object elem = this.elem;
                                         final .java.lang.Object elem2 = this.elem2;
+                                        final .java.lang.Object elem = this.elem;
                                         return .ceylon.language.String.instance(elem2.toString());
                                     } else return .ceylon.language.finished_.get_();
                                 }
@@ -460,6 +464,7 @@ public final class bug2135_ {
                                 private final boolean $next$1() {
                                     ifcomp_1: while (true) {
                                         if (!this.elem()) break ifcomp_1;
+                                        final .java.lang.Object elem = this.elem;
                                         if (t1) {
                                             break ifcomp_1;
                                         }
@@ -520,6 +525,7 @@ public final class bug2135_ {
                                 private final boolean $next$1() {
                                     ifcomp_1: while (true) {
                                         if (!this.elem()) break ifcomp_1;
+                                        final .java.lang.Object elem = this.elem;
                                         if (t2) {
                                             break ifcomp_1;
                                         }

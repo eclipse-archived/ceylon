@@ -32,6 +32,7 @@ final class forIfIsBooleanConditions_ {
                     private final boolean $next$1() {
                         ifcomp_1: while (true) {
                             if (!this.x()) break ifcomp_1;
+                            final .java.lang.Object x = this.x;
                             .java.lang.Object y$1 = null;
                             if ((y$1 = x) instanceof .ceylon.language.Integer) {
                                 y$2 = ((.ceylon.language.Integer)y$1).longValue();
@@ -45,8 +46,8 @@ final class forIfIsBooleanConditions_ {
                     
                     public final .java.lang.Object next() {
                         if (this.$next$1()) {
-                            final .java.lang.Object x = this.x;
                             final long y$2 = this.y$2;
+                            final .java.lang.Object x = this.x;
                             return .ceylon.language.Integer.instance(y$2 + 1L);
                         } else return .ceylon.language.finished_.get_();
                     }

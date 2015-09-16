@@ -32,6 +32,7 @@ class ForIfExists implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
                     private final boolean $next$1() {
                         ifcomp_1: while (true) {
                             if (!this.x()) break ifcomp_1;
+                            final .ceylon.language.Integer x = this.x;
                             .ceylon.language.Integer x$1 = null;
                             if ((x$1 = x) != null) {
                                 x$2 = x$1.longValue();
@@ -43,8 +44,8 @@ class ForIfExists implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
                     
                     public final .java.lang.Object next() {
                         if (this.$next$1()) {
-                            final .ceylon.language.Integer x = this.x;
                             final long x$2 = this.x$2;
+                            final .ceylon.language.Integer x = this.x;
                             return .ceylon.language.Integer.instance(x$2);
                         } else return .ceylon.language.finished_.get_();
                     }
@@ -80,6 +81,7 @@ class ForIfExists implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
                     private final boolean $next$1() {
                         ifcomp_1: while (true) {
                             if (!this.x()) break ifcomp_1;
+                            final .ceylon.language.Integer x = this.x;
                             .ceylon.language.Integer y$4 = null;
                             if ((y$4 = x) != null) {
                                 y$5 = y$4.longValue();
@@ -91,8 +93,8 @@ class ForIfExists implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
                     
                     public final .java.lang.Object next() {
                         if (this.$next$1()) {
-                            final .ceylon.language.Integer x = this.x;
                             final long y$5 = this.y$5;
+                            final .ceylon.language.Integer x = this.x;
                             return .ceylon.language.Integer.instance(y$5);
                         } else return .ceylon.language.finished_.get_();
                     }

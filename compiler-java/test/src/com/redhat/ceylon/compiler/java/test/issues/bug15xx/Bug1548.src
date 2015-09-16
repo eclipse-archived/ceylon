@@ -64,6 +64,7 @@ final class bug1548_ {
                                 private final boolean $next$1() {
                                     ifcomp_1: while (true) {
                                         if (!this.v()) break ifcomp_1;
+                                        final .java.lang.Object v = this.v;
                                         .java.lang.Object v2$1 = null;
                                         if ((v2$1 = v) != null) {
                                             v2$2 = v2$1;
@@ -77,6 +78,8 @@ final class bug1548_ {
                                 private final boolean $next$2() {
                                     ifcomp_2: while (true) {
                                         if (!this.$next$1()) break ifcomp_2;
+                                        final .java.lang.Object v2$2 = this.v2$2;
+                                        final .java.lang.Object v = this.v;
                                         .java.lang.Object v3$3 = null;
                                         if ((v3$3 = v2$2) instanceof .ceylon.language.Integer) {
                                             v3$4 = ((.ceylon.language.Integer)v3$3).longValue();
@@ -88,9 +91,9 @@ final class bug1548_ {
                                 
                                 public final .java.lang.Object next() {
                                     if (this.$next$2()) {
-                                        final .java.lang.Object v = this.v;
-                                        final .java.lang.Object v2$2 = this.v2$2;
                                         final long v3$4 = this.v3$4;
+                                        final .java.lang.Object v2$2 = this.v2$2;
+                                        final .java.lang.Object v = this.v;
                                         return new .com.redhat.ceylon.compiler.java.language.AbstractCallable(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$), .ceylon.language.Empty.$TypeDescriptor$, "<Integer|String>()", (short)-1){
                                             
                                             @.java.lang.Override
