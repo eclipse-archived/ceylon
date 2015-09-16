@@ -13,7 +13,7 @@ final class consumesTc_ {
             value = "<Any> => Any()",
             erased = true)
     final .com.redhat.ceylon.compiler.java.language.AbstractTypeConstructor tc) {
-        final .java.lang.Object a = ((.ceylon.language.Callable<? extends .java.lang.Object>)(.ceylon.language.Callable)tc.apply(new .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor[]{.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType})).$call$();
+        final .java.lang.Object a = ((.ceylon.language.Callable<? extends .java.lang.Object>)(.ceylon.language.Callable)(.ceylon.language.Callable<? extends .java.lang.Object>)(.ceylon.language.Callable)tc.apply(new .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor[]{.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType})).$call$();
     }
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
@@ -38,7 +38,7 @@ class ConsumesTc implements .com.redhat.ceylon.compiler.java.runtime.model.Reifi
             value = "<Any> => Any()",
             erased = true)
     final .com.redhat.ceylon.compiler.java.language.AbstractTypeConstructor tc) {
-        final .java.lang.Object a = ((.ceylon.language.Callable<? extends .java.lang.Object>)(.ceylon.language.Callable)tc.apply(new .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor[]{.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType})).$call$();
+        final .java.lang.Object a = ((.ceylon.language.Callable<? extends .java.lang.Object>)(.ceylon.language.Callable)(.ceylon.language.Callable<? extends .java.lang.Object>)(.ceylon.language.Callable)tc.apply(new .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor[]{.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType})).$call$();
     }
     
     @.ceylon.language.SharedAnnotation$annotation$
@@ -57,7 +57,7 @@ class ConsumesTc implements .com.redhat.ceylon.compiler.java.runtime.model.Reifi
             value = "<Any> => Any(Any)",
             erased = true)
     final .com.redhat.ceylon.compiler.java.language.AbstractTypeConstructor tc) {
-        final .java.lang.Object a = ((.ceylon.language.Callable<? extends .ceylon.language.String>)(.ceylon.language.Callable)tc.apply(new .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor[]{.ceylon.language.String.$TypeDescriptor$})).$call$((.java.lang.Object).ceylon.language.String.instance(""));
+        final .java.lang.Object a = ((.ceylon.language.Callable<? extends .ceylon.language.String>)(.ceylon.language.Callable)(.ceylon.language.Callable<? extends .ceylon.language.String>)(.ceylon.language.Callable)tc.apply(new .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor[]{.ceylon.language.String.$TypeDescriptor$})).$call$((.java.lang.Object).ceylon.language.String.instance(""));
     }
     
     @.ceylon.language.SharedAnnotation$annotation$

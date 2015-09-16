@@ -7,7 +7,7 @@ final class bug1973_ {
     
     static void bug1973(final .ceylon.language.Callable<? extends .ceylon.language.Sequence<? extends .java.lang.Object>> g, final .ceylon.language.Callable<? extends .ceylon.language.Sequence<? extends .java.lang.Object>> h) {
         final .ceylon.language.Sequence v = g.$call$();
-        final .ceylon.language.Sequence w = h.$call$();
+        final .ceylon.language.Sequence w = ((.ceylon.language.Callable<? extends .ceylon.language.Sequence<? extends .java.lang.Object>>)(.ceylon.language.Callable)h).$call$();
     }
 }
 class Bug1973<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
@@ -19,7 +19,7 @@ class Bug1973<T> implements .com.redhat.ceylon.compiler.java.runtime.model.Reifi
     
     public .java.lang.Object refined(final .ceylon.language.Callable<? extends .ceylon.language.Sequence<? extends .java.lang.Object>> g, final .ceylon.language.Callable<? extends .ceylon.language.Sequence<? extends .java.lang.Object>> h) {
         final .ceylon.language.Sequence v = g.$call$();
-        final .ceylon.language.Sequence w = h.$call$();
+        final .ceylon.language.Sequence w = ((.ceylon.language.Callable<? extends .ceylon.language.Sequence<? extends .java.lang.Object>>)(.ceylon.language.Callable)h).$call$();
         return null;
     }
     
@@ -37,7 +37,7 @@ class Bug1973Sub extends .com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bu
     @.java.lang.Override
     public .java.lang.Object refined(final .ceylon.language.Callable<? extends .ceylon.language.Sequence<? extends .java.lang.Object>> g, final .ceylon.language.Callable<? extends .ceylon.language.Sequence<? extends .java.lang.Object>> h) {
         final .ceylon.language.Sequence v = g.$call$();
-        final .ceylon.language.Sequence w = h.$call$();
+        final .ceylon.language.Sequence w = ((.ceylon.language.Callable<? extends .ceylon.language.Sequence<? extends .java.lang.Object>>)(.ceylon.language.Callable)h).$call$();
         return null;
     }
     

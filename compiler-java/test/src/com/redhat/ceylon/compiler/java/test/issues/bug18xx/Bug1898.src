@@ -16,10 +16,10 @@ final class bug1898Foo_ {
     
     static <T extends .ceylon.language.String>void bug1898Foo(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final .ceylon.language.Callable<? extends T> createT) {
         final .java.lang.String c1;
-        c1 = createT.$call$().toString();
-        final .java.lang.String c2 = createT.$call$().toString();
-        .com.redhat.ceylon.compiler.java.test.issues.bug18xx.bug1898_.bug1898(createT.$call$().toString());
-        final T t = createT.$call$();
+        c1 = ((.ceylon.language.Callable<? extends T>)(.ceylon.language.Callable)createT).$call$().toString();
+        final .java.lang.String c2 = ((.ceylon.language.Callable<? extends T>)(.ceylon.language.Callable)createT).$call$().toString();
+        .com.redhat.ceylon.compiler.java.test.issues.bug18xx.bug1898_.bug1898(((.ceylon.language.Callable<? extends T>)(.ceylon.language.Callable)createT).$call$().toString());
+        final T t = ((.ceylon.language.Callable<? extends T>)(.ceylon.language.Callable)createT).$call$();
         final .java.lang.String c3 = ((.ceylon.language.String)t).toString();
         .com.redhat.ceylon.compiler.java.test.issues.bug18xx.bug1898_.bug1898(((.ceylon.language.String)t).toString());
     }

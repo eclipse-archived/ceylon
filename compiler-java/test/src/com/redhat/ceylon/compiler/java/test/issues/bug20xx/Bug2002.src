@@ -51,7 +51,7 @@ final class bug2002Builder2_ {
             @.java.lang.Override
             @.com.redhat.ceylon.compiler.java.metadata.Ignore
             public .ceylon.language.Sequential $call$() {
-                return tail.$call$().<Head>withLeading($reified$Head, head);
+                return ((.ceylon.language.Callable<? extends .ceylon.language.Sequential<? extends Tail>>)(.ceylon.language.Callable)tail).$call$().<Head>withLeading($reified$Head, head);
             }
         };
     }

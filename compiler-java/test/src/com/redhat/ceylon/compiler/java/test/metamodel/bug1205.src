@@ -17,7 +17,7 @@ final class bug1205_ {
     }
     
     static void bug1205() {
-        ((.ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.metamodel.Bug1205>)(.ceylon.language.meta.model.Class<? extends .com.redhat.ceylon.compiler.java.test.metamodel.Bug1205, ? super .ceylon.language.Empty>)(.ceylon.language.meta.model.Class<? extends .com.redhat.ceylon.compiler.java.test.metamodel.Bug1205, ? super .ceylon.language.Empty>).ceylon.language.meta.typeLiteral_.typeLiteral(.com.redhat.ceylon.compiler.java.test.metamodel.Bug1205.$TypeDescriptor$)).$call$();
+        ((.ceylon.language.meta.model.Class<? extends .com.redhat.ceylon.compiler.java.test.metamodel.Bug1205, ? super .ceylon.language.Empty>)(.ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.metamodel.Bug1205>)(.ceylon.language.meta.model.Class<? extends .com.redhat.ceylon.compiler.java.test.metamodel.Bug1205, ? super .ceylon.language.Empty>)(.ceylon.language.meta.model.Class<? extends .com.redhat.ceylon.compiler.java.test.metamodel.Bug1205, ? super .ceylon.language.Empty>).ceylon.language.meta.typeLiteral_.typeLiteral(.com.redhat.ceylon.compiler.java.test.metamodel.Bug1205.$TypeDescriptor$)).$call$();
         ((.ceylon.language.meta.model.Function<? extends .java.lang.Object, ? super .ceylon.language.Empty>)(.ceylon.language.meta.model.Function).com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.checkModule(.ceylon.language.meta.modules_.get_().find("com.redhat.ceylon.compiler.java.test.metamodel", "123"), "com.redhat.ceylon.compiler.java.test.metamodel", "123").findPackage("com.redhat.ceylon.compiler.java.test.metamodel").getFunction("bug1205").apply(.ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$)).$call$();
     }
 }

@@ -50,7 +50,7 @@ final class genericFunctionReference_ {
         } else {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"\" == stringPipeRef(\"\")"));
         }
-        if (.ceylon.language.String.instance("hello").equals(((.ceylon.language.Callable<? extends .ceylon.language.String>)(.ceylon.language.Callable)pipeRef.apply(new .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor[]{.ceylon.language.String.$TypeDescriptor$})).$call$((.java.lang.Object).ceylon.language.String.instance("hello")))) {
+        if (.ceylon.language.String.instance("hello").equals(((.ceylon.language.Callable<? extends .ceylon.language.String>)(.ceylon.language.Callable)(.ceylon.language.Callable<? extends .ceylon.language.String>)(.ceylon.language.Callable)pipeRef.apply(new .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor[]{.ceylon.language.String.$TypeDescriptor$})).$call$((.java.lang.Object).ceylon.language.String.instance("hello")))) {
         } else {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"hello\" == pipeRef(\"hello\")"));
         }
@@ -114,7 +114,7 @@ final class genericLocalFunctionReference_ {
         } else {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"hello world\" == stringAddRef(\"hello\", \" world\")"));
         }
-        if (.ceylon.language.String.instance("hello, world").equals(((.ceylon.language.Callable<? extends .ceylon.language.String>)(.ceylon.language.Callable)addRef.apply(new .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor[]{.ceylon.language.String.$TypeDescriptor$})).$call$((.java.lang.Object).ceylon.language.String.instance("hello,"), .ceylon.language.String.instance(" world")))) {
+        if (.ceylon.language.String.instance("hello, world").equals(((.ceylon.language.Callable<? extends .ceylon.language.String>)(.ceylon.language.Callable)(.ceylon.language.Callable<? extends .ceylon.language.String>)(.ceylon.language.Callable)addRef.apply(new .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor[]{.ceylon.language.String.$TypeDescriptor$})).$call$((.java.lang.Object).ceylon.language.String.instance("hello,"), .ceylon.language.String.instance(" world")))) {
         } else {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"hello, world\" == addRef(\"hello,\", \" world\")"));
         }
@@ -166,7 +166,7 @@ final class genericClassReference_ {
         } else {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"hello->world\" == stringPair(\"hello\", \"world\").string"));
         }
-        if ("hello->world".equals(((.ceylon.language.Callable<? extends .ceylon.language.Entry<? extends .ceylon.language.String, ? extends .ceylon.language.String>>)(.ceylon.language.Callable)pairRef.apply(new .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor[]{
+        if ("hello->world".equals(((.ceylon.language.Callable<? extends .ceylon.language.Entry<? extends .ceylon.language.String, ? extends .ceylon.language.String>>)(.ceylon.language.Callable)(.ceylon.language.Callable<? extends .ceylon.language.Entry<? extends .ceylon.language.String, ? extends .ceylon.language.String>>)(.ceylon.language.Callable)pairRef.apply(new .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor[]{
                 .ceylon.language.String.$TypeDescriptor$,
                 .ceylon.language.String.$TypeDescriptor$})).$call$((.java.lang.Object).ceylon.language.String.instance("hello"), .ceylon.language.String.instance("world")).toString())) {
         } else {

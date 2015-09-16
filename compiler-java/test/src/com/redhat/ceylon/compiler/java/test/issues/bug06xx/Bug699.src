@@ -10,7 +10,7 @@ class Bug699 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
                 return .ceylon.language.String.instance("hello");
             }
         });
-        .ceylon.language.print_.print(singleton.getFirst().$call$());
+        .ceylon.language.print_.print(((.ceylon.language.Callable<? extends .ceylon.language.String>)(.ceylon.language.Callable)singleton.getFirst()).$call$());
     }
     
     @.java.lang.Override
