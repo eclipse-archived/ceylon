@@ -442,6 +442,8 @@ function coihash$(coi) {
           _targ={t:Anything};
         }
         targ=typeLiteral$meta({Type$typeLiteral:_targ});
+        if (_targ.uv==='out')h+=1;
+        else if (_targ.uv==='in')h+=2;
       } else {
         targ=typeLiteral$meta({Type$typeLiteral:{t:Anything}});
       }
