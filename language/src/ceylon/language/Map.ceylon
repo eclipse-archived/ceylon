@@ -1,6 +1,10 @@
 """A collection which maps _keys_ to _items_, where a key 
    can map to at most one item. Each such mapping may be 
-   represented by an [[Entry]].
+   represented by an [[Entry]]. Thus, each distinct key 
+   occurs in at most one entry. Two 
+   non-[[identical|Identifiable]] keys are considered 
+   distinct only if they are unequal, according to their own 
+   definition of [[value equality|Object.equals]].
    
    A `Map` is a [[Collection]] of its `Entry`s, and a 
    [[Correspondence]] from keys to items.
@@ -19,9 +23,8 @@
    
        String lang = settings["lang"] else "en_US";
    
-   Keys are compared for equality using [[Object.equals]] or
-   [[Comparable.compare]]. There may be at most one entry 
-   per key."""
+   An implementation of `Map` may compare keys for equality 
+   using [[Object.equals]] or [[Comparable.compare]]."""
 see (`class Entry`, 
      `function forKey`, `function forItem`, 
      `function byItem`, `function byKey`)
