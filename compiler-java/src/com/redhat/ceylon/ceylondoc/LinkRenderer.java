@@ -87,6 +87,7 @@ public class LinkRenderer {
     private boolean printWikiStyleLinks = false;
     private boolean printLinkDropdownMenu = true;
     private boolean printParenthesisAfterMethodName = true;
+    private boolean printMemberContainerName = true;
     
     private final TypePrinter producedTypeNamePrinter = new TypePrinter() {
         
@@ -212,6 +213,11 @@ public class LinkRenderer {
     
     public LinkRenderer printParenthesisAfterMethodName(boolean printParenthesisAfterMethodName) {
         this.printParenthesisAfterMethodName = printParenthesisAfterMethodName;
+        return this;
+    }
+    
+    public LinkRenderer printMemberContainerName(boolean printMemberContainerName) {
+        this.printMemberContainerName = printMemberContainerName;
         return this;
     }
 
@@ -595,10 +601,8 @@ public class LinkRenderer {
                 }
                 result = "<span class='identifier'>" + name + "</span>";
             }
-            if (decl.isMember() &&
-                    decl.getContainer()!=from) {
-                result = getLinkText((Declaration) decl.getContainer())
-                        + '.' + result;
+            if (printMemberContainerName && decl.isMember() && decl.getContainer() != from) {
+                result = getLinkText((Declaration) decl.getContainer()) + '.' + result;
             }
             return result;
         }

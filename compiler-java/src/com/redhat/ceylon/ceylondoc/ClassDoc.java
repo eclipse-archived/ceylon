@@ -36,15 +36,13 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import com.redhat.ceylon.ceylondoc.Util.TypeComparatorByName;
 import com.redhat.ceylon.ceylondoc.Util.ReferenceableComparatorByName;
 import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.model.typechecker.model.Constructor;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
-import com.redhat.ceylon.model.typechecker.model.Interface;
 import com.redhat.ceylon.model.typechecker.model.Function;
-import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
+import com.redhat.ceylon.model.typechecker.model.Interface;
 import com.redhat.ceylon.model.typechecker.model.Package;
 import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.TypeAlias;
@@ -62,7 +60,7 @@ public class ClassDoc extends ClassOrPackageDoc {
     private List<Class> innerClasses;
     private List<Class> innerExceptions;
     private List<TypeAlias> innerAliases;
-    private List<Type> superInterfaces;
+    private List<TypeDeclaration> superInterfaces;
     private List<TypeDeclaration> superClasses;
     private Map<MemberSpecification, Map<TypeDeclaration, List<Declaration>>> superclassInheritedMembers = new HashMap<ClassDoc.MemberSpecification, Map<TypeDeclaration,List<Declaration>>>(2);
     private Map<MemberSpecification, Map<TypeDeclaration, List<Declaration>>> interfaceInheritedMembers = new HashMap<ClassDoc.MemberSpecification, Map<TypeDeclaration,List<Declaration>>>(2);
@@ -128,72 +126,34 @@ public class ClassDoc extends ClassOrPackageDoc {
         Collections.sort(constructors, ReferenceableComparatorByName.INSTANCE);
         Collections.sort(methods, ReferenceableComparatorByName.INSTANCE);
         Collections.sort(attributes, ReferenceableComparatorByName.INSTANCE);
-        Collections.sort(superInterfaces, TypeComparatorByName.INSTANCE);
+        Collections.sort(superInterfaces, ReferenceableComparatorByName.INSTANCE);
         Collections.sort(innerInterfaces, ReferenceableComparatorByName.INSTANCE);
         Collections.sort(innerClasses, ReferenceableComparatorByName.INSTANCE);
         Collections.sort(innerExceptions, ReferenceableComparatorByName.INSTANCE);
         Collections.sort(innerAliases, ReferenceableComparatorByName.INSTANCE);
         
-        loadSuperclassInheritedMembers(attributeSpecification);
-        loadSuperclassInheritedMembers(methodSpecification);
-        loadInterfaceInheritedMembers(attributeSpecification);
-        loadInterfaceInheritedMembers(methodSpecification);
+        loadInheritedMembers(attributeSpecification, superClasses, superclassInheritedMembers);
+        loadInheritedMembers(methodSpecification, superClasses, superclassInheritedMembers);
+        loadInheritedMembers(attributeSpecification, superInterfaces, interfaceInheritedMembers);
+        loadInheritedMembers(methodSpecification, superInterfaces, interfaceInheritedMembers);
     }
 
-    private void loadSuperclassInheritedMembers(MemberSpecification specification) {
-        LinkedHashMap<TypeDeclaration, List<Declaration>> inheritedMembers = new LinkedHashMap<TypeDeclaration, List<Declaration>>();
-        TypeDeclaration subclass = klass;
-        for (TypeDeclaration superClass : superClasses) {
-            List<Declaration> methods = getInheritedMembers(superClass, specification);
-            if (methods.isEmpty())
-                continue;
-            List<Declaration> notRefined = new ArrayList<Declaration>();
-            // clean already listed methods (refined in subclasses)
-            // done in 2 phases to avoid empty tables
-            for (Declaration method : methods) {
-                if (subclass.getDirectMember(method.getName(), null, false) == null) {
-                    notRefined.add(method);
+    private void loadInheritedMembers(MemberSpecification specification, List<TypeDeclaration> superClassOrInterfaceList, Map<MemberSpecification, Map<TypeDeclaration, List<Declaration>>> superClassOrInterfaceInheritedMemebers) {
+        LinkedHashMap<TypeDeclaration, List<Declaration>> inheritedMembersMap = new LinkedHashMap<TypeDeclaration, List<Declaration>>();
+        for (TypeDeclaration superClassOrInterface : superClassOrInterfaceList) {
+            List<Declaration> inheritedMembers = new ArrayList<Declaration>();
+            for (Declaration member : superClassOrInterface.getMembers()) {
+                if (specification.isSatisfiedBy(member) && tool.shouldInclude(member) ) {
+                    inheritedMembers.add(member);
                 }
             }
-            if (notRefined.isEmpty())
-                continue;
-            inheritedMembers.put(superClass, notRefined);
-        }
-        superclassInheritedMembers.put(specification, inheritedMembers);
-    }
-
-    private void loadInterfaceInheritedMembers(MemberSpecification memberSpecification) {
-        LinkedHashMap<TypeDeclaration, List<Declaration>> result = new LinkedHashMap<TypeDeclaration, List<Declaration>>();
-        for (Type superInterface : superInterfaces) {
-            TypeDeclaration decl = superInterface.getDeclaration();
-            List<Declaration> members = getInheritedMembers(decl, memberSpecification);
-            for (Declaration member : members) {
-                
-                Declaration refined = member.getRefinedDeclaration();
-                if (refined == null
-                        || refined == member
-                        || (refined.getContainer() instanceof Class && refined.getContainer() != klass)) {
-                    List<Declaration> r = result.get(member.getContainer());
-                    if (r == null) {
-                        r = new ArrayList<Declaration>();
-                        result.put((TypeDeclaration)member.getContainer(), r);
-                    }
-                    r.add(member);
-                }
+            if( !inheritedMembers.isEmpty() ) {
+                inheritedMembersMap.put(superClassOrInterface, inheritedMembers);
             }
         }
-        interfaceInheritedMembers.put(memberSpecification, result);
+        superClassOrInterfaceInheritedMemebers.put(specification, inheritedMembersMap);
     }
 
-    private List<Declaration> getInheritedMembers(TypeDeclaration decl, MemberSpecification specification) {
-        List<Declaration> members = new ArrayList<Declaration>();
-        for (Declaration m : decl.getMembers())
-            if (tool.shouldInclude(m) && specification.isSatisfiedBy(m)) {
-                members.add((FunctionOrValue) m);
-            }
-        return members;
-    }
-    
     private boolean isObject() {
         return klass instanceof Class && klass.isAnonymous();
     }
@@ -633,8 +593,8 @@ public class ClassDoc extends ClassOrPackageDoc {
                 write(", ");
             } else {
                 first = false;
-            }
-            linkRenderer().withinText(true).to(member).write();
+            }            
+            linkRenderer().withinText(true).to(member).useScope(klass).printMemberContainerName(false).write();
         }
         
         close("div");

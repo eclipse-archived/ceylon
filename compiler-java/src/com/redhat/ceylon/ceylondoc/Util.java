@@ -289,27 +289,26 @@ public class Util {
         return ancestors;
     }
 
-    public static List<Type> getSuperInterfaces(TypeDeclaration decl) {
-        Set<Type> superInterfaces = new HashSet<Type>();
-        List<Type> satisfiedTypes = decl.getSatisfiedTypes();
-        for (Type satisfiedType : satisfiedTypes) {
-            superInterfaces.add(satisfiedType);
+    public static List<TypeDeclaration> getSuperInterfaces(TypeDeclaration decl) {
+        Set<TypeDeclaration> superInterfaces = new HashSet<TypeDeclaration>();
+        for (Type satisfiedType : decl.getSatisfiedTypes()) {
+            superInterfaces.add(satisfiedType.getDeclaration());
             superInterfaces.addAll(getSuperInterfaces(satisfiedType.getDeclaration()));
         }
-        ArrayList<Type> list = new ArrayList<Type>();
+        List<TypeDeclaration> list = new ArrayList<TypeDeclaration>();
         list.addAll(superInterfaces);
         removeDuplicates(list);
         return list;
     }
 
-    private static void removeDuplicates(List<Type> superInterfaces) {
+    private static void removeDuplicates(List<TypeDeclaration> superInterfaces) {
         OUTER: for (int i = 0; i < superInterfaces.size(); i++) {
-            Type pt1 = superInterfaces.get(i);
+            TypeDeclaration decl1 = superInterfaces.get(i);
             // compare it with each type after it
             for (int j = i + 1; j < superInterfaces.size(); j++) {
-                Type pt2 = superInterfaces.get(j);
-                if (pt1.getDeclaration().equals(pt2.getDeclaration())) {
-                    if (pt1.isSubtypeOf(pt2)) {
+                TypeDeclaration decl2 = superInterfaces.get(j);
+                if (decl1.equals(decl2)) {
+                    if (decl1.getType().isSubtypeOf(decl2.getType())) {
                         // we keep the first one because it is more specific
                         superInterfaces.remove(j);
                     } else {
