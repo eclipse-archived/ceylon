@@ -87,10 +87,11 @@ shared final serializable native class Array<Element>
     "Efficiently copy the elements in the segment
      `sourcePosition:length` of this array to the segment 
      `destinationPosition:length` of the given 
-     [[array|destination]]."
+     [[array|destination]], which may be this array."
     shared native 
     void copyTo(
-        "The array into which to copy the elements."
+        "The array into which to copy the elements, which 
+         may be this array."
         Array<Element> destination,
         "The index of the first element in this array to 
          copy."
@@ -143,11 +144,41 @@ shared final serializable native class Array<Element>
     shared actual native
     Boolean occurs(Anything element);
     
+    "Given two indices within this array, efficiently swap 
+     the positions of the elements at these indices. If the 
+     two given indices are identical, no change is made to 
+     the array. The array always contains the same elements
+     before and after this operation."
+    throws (`class AssertionError`,
+        "if either of the given indices is out of bounds") 
     shared native
-    void swap(Integer i, Integer j);
+    void swap(
+            "The index of the first element."
+            Integer i,
+            "The index of the second element." 
+            Integer j);
     
+    "Efficiently move the element of this array at the given 
+     [[source index|from]] to the given [[destination index]],
+     shifting every element falling between the two given 
+     indices by one position to accommodate the change of
+     position. If the source index is larger than the 
+     destination index, elements are shifted toward the end
+     of the array. If the source index is smaller than the
+     destination index, elements are shifted toward the 
+     start of the array. If the given indices are identical,
+     no change is made to the array. The array always 
+     contains the same elements before and after this 
+     operation."
+    throws (`class AssertionError`,
+        "if either of the given indices is out of bounds") 
     shared native
-    void move(Integer from, Integer to);
+    void move(
+            "The source index of the element to move."
+            Integer from, 
+            "The destination index to which the element is
+             moved."
+            Integer to);
     
     "Reverses the order of the current elements in this 
      array. This operation works by side-effect, modifying 
