@@ -43,6 +43,12 @@ function AppliedMemberClassCallableConstructor$jsint(tipo,$$targs$$,that,myTargs
     atr$(that,'typeArgumentList',function(){
         return AppliedMemberClassCallableConstructor$jsint.$$.prototype.$prop$getTypeArgumentList.get.call(that);
     },undefined,AppliedMemberClassCallableConstructor$jsint.$$.prototype.$prop$getTypeArgumentList.$crtmm$);
+    atr$(that,'typeArgumentWithVariances',function(){
+        return AppliedMemberClassCallableConstructor$jsint.$$.prototype.$prop$getTypeArgumentWithVariances.get.call(that);
+    },undefined,AppliedMemberClassCallableConstructor$jsint.$$.prototype.$prop$getTypeArgumentWithVariances.$crtmm$);
+    atr$(that,'typeArgumentWithVarianceList',function(){
+        return AppliedMemberClassCallableConstructor$jsint.$$.prototype.$prop$getTypeArgumentWithVarianceList.get.call(that);
+    },undefined,AppliedMemberClassCallableConstructor$jsint.$$.prototype.$prop$getTypeArgumentWithVarianceList.$crtmm$);
     atr$(that,'parameterTypes',function(){
         return AppliedMemberClassCallableConstructor$jsint.$$.prototype.$prop$getParameterTypes.get.call(that);
     },undefined,AppliedMemberClassCallableConstructor$jsint.$$.prototype.$prop$getParameterTypes.$crtmm$);

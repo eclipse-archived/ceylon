@@ -36,6 +36,12 @@ function AppliedCallableConstructor$jsint(tipo,$$targs$$,that,myTargs) {
       atr$(that,'typeArgumentList',function(){
           return AppliedCallableConstructor$jsint.$$.prototype.$prop$getTypeArgumentList.get.call(this);
       },undefined,AppliedCallableConstructor$jsint.$$.prototype.$prop$getTypeArgumentList.$crtmm$);
+      atr$(that,'typeArgumentWithVariances',function(){
+          return AppliedCallableConstructor$jsint.$$.prototype.$prop$getTypeArgumentWithVariances.get.call(this);
+      },undefined,AppliedCallableConstructor$jsint.$$.prototype.$prop$getTypeArgumentWithVariances.$crtmm$);
+      atr$(that,'typeArgumentWithVarianceList',function(){
+          return AppliedCallableConstructor$jsint.$$.prototype.$prop$getTypeArgumentWithVarianceList.get.call(this);
+      },undefined,AppliedCallableConstructor$jsint.$$.prototype.$prop$getTypeArgumentWithVarianceList.$crtmm$);
       atr$(that,'parameterTypes',function(){
           return AppliedCallableConstructor$jsint.$$.prototype.$prop$getParameterTypes.get.call(this);
       },undefined,AppliedCallableConstructor$jsint.$$.prototype.$prop$getParameterTypes.$crtmm$);

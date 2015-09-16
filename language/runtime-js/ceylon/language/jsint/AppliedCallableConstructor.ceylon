@@ -3,7 +3,7 @@ import ceylon.language.meta.declaration {
 }
 import ceylon.language.meta.model {
   CallableConstructor, ClassModel,
-  ClosedType=Type//, Function
+  ClosedType=Type, TypeArgument//, Function
 }
 
 shared native class AppliedCallableConstructor<out Type=Anything, in Arguments=Nothing>(Anything _tipo)
@@ -21,5 +21,7 @@ shared native class AppliedCallableConstructor<out Type=Anything, in Arguments=N
   //Generic
   shared native actual Map<TypeParameter, ClosedType> typeArguments;
   shared native actual ClosedType<Anything>[] typeArgumentList;
+  shared actual native Map<TypeParameter, TypeArgument> typeArgumentWithVariances;
+  shared actual native TypeArgument[] typeArgumentWithVarianceList;
   shared native actual Boolean equals(Object other);
 }

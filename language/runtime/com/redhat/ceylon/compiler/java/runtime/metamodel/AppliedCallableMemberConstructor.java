@@ -3,6 +3,7 @@ package com.redhat.ceylon.compiler.java.runtime.metamodel;
 import java.util.List;
 
 import ceylon.language.Map;
+import ceylon.language.Sequence;
 import ceylon.language.Sequential;
 import ceylon.language.empty_;
 import ceylon.language.meta.declaration.CallableConstructorDeclaration;
@@ -45,6 +46,7 @@ public class AppliedCallableMemberConstructor<Container, Type, Arguments extends
     protected TypeDescriptor $reifiedArguments;
     
     private Map<? extends ceylon.language.meta.declaration.TypeParameter, ? extends ceylon.language.meta.model.Type<?>> typeArguments;
+    private Map<? extends ceylon.language.meta.declaration.TypeParameter, ? extends Sequence<? extends Object>> typeArgumentWithVariances;
     private Sequential<? extends ceylon.language.meta.model.Type<? extends Object>> parameterTypes;
     final AppliedMemberClass<Container, Type, ?> clazz;
     
@@ -66,6 +68,7 @@ public class AppliedCallableMemberConstructor<Container, Type, Arguments extends
         this.appliedFunction = appliedFunction;
         this.declaration = declaration;
         this.typeArguments = Metamodel.getTypeArguments(declaration, appliedFunction);
+        this.typeArgumentWithVariances = Metamodel.getTypeArgumentWithVariances(declaration, appliedFunction);
         //this.closedType = Metamodel.getAppliedMetamodel(Metamodel.getFunctionReturnType(appliedFunction));
         // get a list of produced parameter types
         com.redhat.ceylon.model.typechecker.model.Functional method = (com.redhat.ceylon.model.typechecker.model.Functional)appliedFunction.getDeclaration();
@@ -108,6 +111,19 @@ public class AppliedCallableMemberConstructor<Container, Type, Arguments extends
     public ceylon.language.Sequential<? extends ceylon.language.meta.model.Type<?>> getTypeArgumentList() {
         return Metamodel.getTypeArgumentList(this);
     }
+
+    @Override
+    @TypeInfo("ceylon.language::Map<ceylon.language.meta.declaration::TypeParameter,[ceylon.language.meta.model::Type<ceylon.language::Anything>,ceylon.language.meta.declaration::Variance]>")
+    public Map<? extends ceylon.language.meta.declaration.TypeParameter, ? extends ceylon.language.Sequence<? extends Object>> getTypeArgumentWithVariances() {
+        return typeArgumentWithVariances;
+    }
+    
+    @Override
+    @TypeInfo("ceylon.language::Sequential<[ceylon.language.meta.model::Type<ceylon.language::Anything>,ceylon.language.meta.declaration::Variance]>")
+    public ceylon.language.Sequential<? extends ceylon.language.Sequence<? extends Object>> getTypeArgumentWithVarianceList() {
+        return Metamodel.getTypeArgumentWithVarianceList(this);
+    }
+
 
     @Override
     protected CallableConstructor<Type, Arguments> bindTo(Object instance) {
