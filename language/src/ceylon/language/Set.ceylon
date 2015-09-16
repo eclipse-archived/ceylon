@@ -1,15 +1,17 @@
-"A collection of unique elements.
+"A collection in which each distinct element occurs at most 
+ once. Two non-[[identical|Identifiable]] values are 
+ considered distinct only if they are unequal, according to
+ their own definition of [[value equality|Object.equals]].
  
  A `Set` is a [[Collection]] of its elements.
  
  Sets may be the subject of the binary union, intersection, 
  and complement operators `|`, `&`, and `~`.
  
-     value kids = girls|boys; 
+     value kids = girls|boys;
  
- Elements are compared for equality using [[Object.equals]] 
- or [[Comparable.compare]]. An element may occur at most 
- once in a set."
+ An implementation of `Set` may compare elements for 
+ equality using [[Object.equals]] or [[Comparable.compare]]."
 shared interface Set<out Element=Object>
         satisfies Collection<Element>
         given Element satisfies Object {

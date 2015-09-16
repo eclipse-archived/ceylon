@@ -1,7 +1,7 @@
-"""Represents a collection in which every element has a 
-   unique non-negative integer index. The elements of a
-   nonempty list are indexed starting with `0` at the 
-   [[first]] element of the list, and ending with the index
+"""A collection in which every element has a unique 
+   non-negative integer index. The elements of a nonempty 
+   list are indexed starting with `0` at the [[first]] 
+   element of the list, and ending with the index 
    [[lastIndex]] at the [[last]] element of the list.
    
    - For any nonempty list, `lastIndex==size-1`. 

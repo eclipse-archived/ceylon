@@ -1,10 +1,10 @@
-"Represents an iterable collection of elements of finite 
- size, with a well-defined notion of value equality. 
- `Collection` is the abstract supertype of [[List]], 
- [[Map]], and [[Set]].
+"An iterable collection of elements of finite [[size]], with 
+ a well-defined notion of [[value equality|equals]]. 
+ `Collection` is the abstract supertype of [[List]], [[Map]], 
+ and [[Set]].
  
- A `Collection` forms a [[Category]] of its elements, and 
- is [[Iterable]]. The elements of a collection are not
+ A `Collection` forms a [[Category]] of its elements, and is 
+ [[Iterable]]. The elements of a collection are not
  necessarily distinct when compared using [[Object.equals]].
  
  A `Collection` may be [[cloned|clone]]. If a collection is
@@ -38,14 +38,14 @@ shared interface Collection<out Element=Anything>
      has no elements."
     shared actual default Boolean empty => size==0;
     
-    "Return `true` if the given object is an element of
-     this collection. In this default implementation, and in 
-     most refining implementations, return `false` 
-     otherwise. An acceptable refining implementation may 
-     return `true` for objects which are not elements of the 
-     collection, but this is not recommended. (For example, 
-     the `contains()` method of `String` returns `true` for 
-     any substring of the string.)"
+    "Return `true` if the given object is an element of this 
+     collection. In this default implementation, and in most 
+     refining implementations, return `false` otherwise. An 
+     acceptable refining implementation may return `true` 
+     for objects which are not elements of the collection, 
+     but this is not recommended. (For example, the 
+     `contains()` method of `String` returns `true` for any 
+     substring of the string.)"
     shared actual default Boolean contains(Object element) {
         for (elem in this) {
             if (exists elem, elem==element) {
