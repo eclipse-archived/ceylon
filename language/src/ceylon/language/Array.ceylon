@@ -13,6 +13,11 @@
      value array = Array { \"hello\", \"world\" };
      array.set(0, \"goodbye\");
  
+ Arrays are lists and support all operations inherited from 
+ [[List]], along with certain additional operations for 
+ efficient mutation of the array: [[set]], [[swap]],[[move]], 
+ [[sortInPlace]], [[reverseInPlace]], and [[copyTo]].
+ 
  This class is provided primarily to support interoperation 
  with Java, and for some performance-critical low-level 
  programming tasks."
@@ -34,9 +39,9 @@ shared final serializable native class Array<Element>
             "The size of the resulting array. If the size is 
              non-positive, an empty array will be created."
             Integer size, 
-            "The element value with which to populate the array.
-             All elements of the resulting array will have the 
-             same value."
+            "The element value with which to populate the 
+             array. All elements of the resulting array will 
+             have the same value."
             Element element) {
         assert (size<runtime.maxArraySize);
     }
@@ -72,8 +77,8 @@ shared final serializable native class Array<Element>
     "A new array with the same elements as this array."
     shared actual native Array<Element> clone();
     
-    "Replace the existing element at the specified index 
-     with the given element."
+    "Replace the existing element at the specified [[index]] 
+     with the given [[element]]."
     throws (`class AssertionError`,
         "if the given index is out of bounds, that is, if 
          `index<0` or if `index>lastIndex`")
@@ -182,14 +187,17 @@ shared final serializable native class Array<Element>
     
     "Reverses the order of the current elements in this 
      array. This operation works by side-effect, modifying 
-     the array."
+     the array. The array always contains the same elements 
+     before and after this operation."
     shared native 
     void reverseInPlace();
     
     "Sorts the elements in this array according to the 
      order induced by the given 
-     [[comparison function|comparing]]. This operation 
-     works by side-effect, modifying the array."
+     [[comparison function|comparing]]. This operation works 
+     by side-effect, modifying the array.  The array always 
+     contains the same elements before and after this 
+     operation."
     shared native 
     void sortInPlace(
         "A comparison function that compares pairs of
