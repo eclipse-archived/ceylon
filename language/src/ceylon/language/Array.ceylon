@@ -15,7 +15,7 @@
  
  Arrays are lists and support all operations inherited from 
  [[List]], along with certain additional operations for 
- efficient mutation of the array: [[set]], [[swap]],[[move]], 
+ efficient mutation of the array: [[set]], [[swap]], [[move]], 
  [[sortInPlace]], [[reverseInPlace]], and [[copyTo]].
  
  This class is provided primarily to support interoperation 
