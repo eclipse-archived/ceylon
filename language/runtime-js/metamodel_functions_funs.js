@@ -28,6 +28,7 @@ function funmodstr$(fun) {
       for (var tp in mm.$cont.$crtmm$.tp) {
         if (first)first=false;else qn+=",";
         var _ta=cnt&&cnt[tp];
+        if (_ta && _ta.dv)qn+=_ta.dv+' ';
         qn+=qname$(_ta||Anything);
       }
       qn+=">";
@@ -54,7 +55,7 @@ function funmodstr$(fun) {
   return qn;
 }
 //Function.typeArguments
-function funtypearg$(fun) {
+function _funtypearg_$(fun,makeItem,maptarg){
   var mm = fun.tipo.$crtmm$;
   if (mm) {
     if (mm.tp) {
@@ -69,42 +70,66 @@ function funtypearg$(fun) {
         } else {
           targ=typeLiteral$meta({Type$typeLiteral:{t:Anything}});
         }
-        targs[param.qualifiedName]=[param,targ];
+        targs[param.qualifiedName]=[param,makeItem(fun,tp,targ)];
         ord.push(param.qualifiedName);
       }
-      return TpMap$jsint(targs,ord,{V$TpMap:{t:Type$meta$model,a:{Type$Type:{t:Anything}}}});
+      return TpMap$jsint(targs,ord,{V$TpMap:maptarg});
     }
     return empty();
   }
   throw Exception("FunctionModel.typeArguments-we don't have a metamodel!");
 }
+function funtypearg$(fun) {
+  return _funtypearg_$(fun,function(c,t,a){return a;},
+    {t:Type$meta$model,a:{Type$Type:{t:Anything}}});
+}
 //Function.typeArgumentWithVariance
 function funtypeargv$(fun) {
-  throw Exception("FunctionModel.typeArgumentWithVariances not implemented");
+  return _funtypearg_$(fun,function(c,t,a){
+    var iance,usv=fun.tipo.$crtmm$.tp[t].uv;
+    if (usv==='out'){
+      iance=covariant$meta$declaration();
+    } else if (usv==='in'){
+      iance=contravariant$meta$declaration();
+    } else {
+      iance=invariant$meta$declaration();
+    }
+    return tpl$([a,iance]);
+  },{t:'T',l:[{t:Type$meta$model,a:{Type$Type:{t:Anything}}},{t:Variance$meta$declaration}]});
 }
 //Function.typeArgumentList
-function funtypeargl$(fun) {
+function _funtypeargl_$(fun,makeItem,listarg){
   var mm = fun.tipo.$crtmm$;
   if (mm) {
     if (mm.tp) {
       if (fun.$targs===undefined)throw TypeApplicationException$meta$model("Missing type arguments for "+fun.string);
       var ord=[];
       for (var tp in mm.tp) {
-        var targ = fun.$targs[tp];
-        if (targ) {
-          targ=typeLiteral$meta({Type$typeLiteral:targ});
+        var targ,_targ = fun.$targs[tp];
+        if (_targ) {
+          targ=typeLiteral$meta({Type$typeLiteral:_targ});
         } else {
           targ=typeLiteral$meta({Type$typeLiteral:{t:Anything}});
         }
-        ord.push(targ);
+        ord.push(makeItem(fun,_targ||0,targ));
       }
-      return ArraySequence(ord,{Element$ArraySequence:{t:Type$meta$model,a:{Target$Type:Anything}}});
+      return ArraySequence(ord,{Element$ArraySequence:listarg});
     }
     return empty();
   }
   throw Exception("FunctionModel.typeArguments-we don't have a metamodel!");
 }
+function funtypeargl$(fun) {
+  return _funtypeargl_$(fun,function(c,t,a){return a;},
+    {t:Type$meta$model,a:{Target$Type:Anything}});
+}
 //Function.typeArgumentWithVarianceList
 function funtypeargvl$(fun) {
-  throw Exception("FunctionModel.typeArgumentWithVarianceList not implemented");
+  return _funtypeargl_$(fun,function(c,t,a){
+    var iance;
+    if (t.uv==='out')iance=covariant$meta$declaration();
+    else if (t.uv==='in')iance=contravariant$meta$declaration();
+    else iance=invariant$meta$declaration();
+    return tpl$([a,iance]);
+  },{t:'T',l:[{t:Type$meta$model,a:{Target$Type:Anything}},{t:Variance$meta$declaration}]});
 }
