@@ -45,13 +45,13 @@ class Measure<Element>(first, size)
         variable value count = 0;
         variable value current = first;
         shared actual Element|Finished next() {
-             //++count > size
-             //       then finished else current++;
-             if (count >= size) {
-                 return finished;
-             } else if (count++ == 0) {
+            if (count >= size) {
+                return finished;
+            }
+            else if (count++ == 0) {
                 return current;
-            } else {
+            }
+            else {
                 return ++current;
             }
         }
@@ -81,13 +81,13 @@ class Measure<Element>(first, size)
             shared actual Element|Finished next() {
                 if (count >= size) {
                     return finished;
-                } else {
-                    if (count++ == 0) {
-                        return current;
-                    } else {
-                        current = current.neighbour(step);
-                        return current;
-                    }
+                }
+                else if (count++ == 0) {
+                    return current;
+                }
+                else {
+                    current = current.neighbour(step);
+                    return current;
                 }
             }
             string => "``outer``.iterator()";

@@ -22,6 +22,7 @@ shared native class OpenClassWithConstructors(pkg, meta) satisfies ClassWithCons
     shared native actual Boolean abstract;
     shared native actual Boolean final;
     shared native actual Boolean annotation;
+    shared native actual Boolean serializable;
     shared native actual OpenType openType;
     shared native actual FunctionOrValueDeclaration? getParameterDeclaration(String name);
     shared native actual OpenClassType? extendedType;
@@ -68,8 +69,8 @@ shared native class OpenClassWithConstructors(pkg, meta) satisfies ClassWithCons
     shared actual String string=>"class ``qualifiedName``";
     shared actual Integer hash =>string.hash;
 
-    shared native actual ConstructorDeclaration? getConstructorDeclaration(String name);
-    shared native actual ConstructorDeclaration? defaultConstructorDeclaration;
+    shared native actual <CallableConstructorDeclaration|ValueConstructorDeclaration>? getConstructorDeclaration(String name);
+    //shared native actual ConstructorDeclaration? defaultConstructorDeclaration;
     shared native actual ConstructorDeclaration[] constructorDeclarations();
     shared native actual ConstructorDeclaration[] annotatedConstructorDeclarations<Annotation>()
             given Annotation satisfies AnnotationType;

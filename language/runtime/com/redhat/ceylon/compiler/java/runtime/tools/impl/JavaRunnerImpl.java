@@ -26,6 +26,7 @@ public class JavaRunnerImpl implements JavaRunner {
                 .offline(options.isOffline())
                 .noDefaultRepos(options.isNoDefaultRepositories())
                 .overrides(options.getOverrides())
+                .logger(new CmrLogger(options.isVerbose("cmr")))
                 .buildManager();
         
         ClassLoader delegateClassLoader = null;
@@ -33,7 +34,7 @@ public class JavaRunnerImpl implements JavaRunner {
             delegateClassLoader = ((JavaRunnerOptions) options).getDelegateClassLoader();
         }
         
-        moduleLoader = new FlatpathModuleLoader(repositoryManager, delegateClassLoader, options.getExtraModules());
+        moduleLoader = new FlatpathModuleLoader(repositoryManager, delegateClassLoader, options.getExtraModules(), options.isVerbose("cmr"));
         moduleClassLoader = moduleLoader.loadModule(module, version);
         
         if(options.getRun() != null)

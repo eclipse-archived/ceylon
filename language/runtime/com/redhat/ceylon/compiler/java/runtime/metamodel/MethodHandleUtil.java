@@ -48,7 +48,7 @@ public class MethodHandleUtil {
     public static MethodHandle unboxArguments(MethodHandle method, int skippedParameters, int filterIndex, 
             java.lang.Class<?>[] parameterTypes,
             List<Type> producedTypes,
-            boolean variadic, boolean bindVariadicParameterToEmptyArray) {
+            boolean jvmVarargs, boolean bindVariadicParameterToEmptyArray) {
         if(bindVariadicParameterToEmptyArray){
             // filter all but the last parameter
             MethodHandle ret = unboxArguments(method, skippedParameters, filterIndex, parameterTypes, parameterTypes.length-1,
@@ -79,20 +79,20 @@ public class MethodHandleUtil {
             return MethodHandles.insertArguments(ret, parameterTypes.length-1-skippedParameters, val);
         }else{
             return unboxArguments(method, skippedParameters, filterIndex, parameterTypes, parameterTypes.length,
-                                  producedTypes, variadic);
+                                  producedTypes, jvmVarargs);
         }
     }
 
     public static MethodHandle unboxArguments(MethodHandle method, int skippedParameters, int filterIndex, 
                                               java.lang.Class<?>[] parameterTypes, int parameterCount, 
                                               List<Type> producedTypes,
-                                              boolean variadic) {
+                                              boolean jvmVarargs) {
         MethodHandle[] filters = new MethodHandle[parameterCount - skippedParameters];
         try {
             for(int i=0;i<filters.length;i++){
                 java.lang.Class<?> paramType = parameterTypes[i + skippedParameters];
                 Type producedType = producedTypes.get(i);
-                if(variadic && i == filters.length - 1){
+                if(jvmVarargs && i == filters.length - 1){
                     // we need to convert our ArraySequence instance to a T[] or primitive array
                     String methodName = null;
                     Object empty = null;
@@ -327,7 +327,7 @@ public class MethodHandleUtil {
         return false;
     }
 
-    public static boolean isVariadicMethodOrConstructor(Object found) {
+    public static boolean isJvmVarargsMethodOrConstructor(Object found) {
         if(found instanceof java.lang.reflect.Constructor){
             return ((java.lang.reflect.Constructor<?>)found).isVarArgs();
         }else{

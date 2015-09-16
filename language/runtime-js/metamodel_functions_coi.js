@@ -134,7 +134,18 @@ function coiatr$(coi,name,m,noInherit){
   if (!at) {
     nom = '$prop$get$_' + name;
     at = _tipo.$$.prototype[nom];
-    if (!at)return null;
+    if (!at) {
+      //Last resort: check every private attribute
+      for (nom in _tipo.$$.prototype) {
+        if (nom.startsWith("$prop$get$")) {
+          var mm=getrtmm$$(_tipo.$$.prototype[nom]);
+          if (mm && mm.d && mm.d[mm.d.length-1].startsWith(name+"$")) {
+            at=_tipo.$$.prototype[nom];break;
+          }
+        }
+      }
+      if (!at)return null;
+    }
   }
   var mm=getrtmm$$(at);
   var _t=m.Get$getAttribute;
@@ -263,7 +274,7 @@ function coiexttype$(coi){
   var _t=coirestarg$(coi,sc);
   var ac;
   if (scmm.$cont) {
-    ac=AppliedMemberClass$jsint(sc.t, {Type$AppliedMemberClass:_t,Arguments$AppliedMemberClass:{t:Sequential,a:{Element$Iterable:{t:Anything}}},Container$AppliedMemberClass:scmm.$cont});
+    ac=AppliedMemberClass$jsint(sc.t, {Type$AppliedMemberClass:_t,Arguments$AppliedMemberClass:{t:Sequential,a:{Element$Iterable:{t:Anything}}},Container$AppliedMemberClass:{t:scmm.$cont}});
   } else {
     ac=AppliedClass$jsint(sc.t, {Type$AppliedClass:_t,Arguments$AppliedClass:{t:Sequential,a:{Element$Iterable:{t:Anything}}}});
   }
@@ -327,11 +338,14 @@ function coistr$(coi) {
     } else if (t.t==='T') {
       s+= '[';
       for (var tttt=0; tttt<t.l.length;tttt++) {
-        if (tttt>0)tttt+=',';
+        if (tttt>0)s+=',';
         s+=qname$(t.l[tttt]);
       }
       s+=']';
     } else {
+      if (t.uv) {
+        s+=t.uv+' ';
+      }
       s+=qname$(getrtmm$$(t.t));
       if (t.a)s+=addtargs(t);
     }
@@ -450,6 +464,13 @@ function coicont$(coi) {
   if (!cont)return null;
   var _t={t:cont};
   var rv;
+  var ttargs=coi.$$targs$$ && (coi.$$targs$$.Container$Member||coi.$$targs$$.Container$AppliedMemberClass||coi.$$targs$$.Container$AppliedMemberInterface);
+  if (ttargs) {
+    ttargs=ttargs.a;
+  } else {
+    ttargs=coi.$targs;
+  }
+  if (ttargs)_t.a=ttargs;
   if (coi.src$ && coi.src$.outer$) {
     var _out=coi.src$.outer$;
     if (_out.$$targs$$) {
@@ -459,11 +480,14 @@ function coicont$(coi) {
     rv=AppliedClass$jsint(cont,{Type$AppliedClass:_t,Arguments$AppliedClass:{t:Sequential,a:{Element$Iterable:{t:Anything}}}});
     rv.src$=_out;
   } else {
-    if (get_model(cmm).mt === 'i')
+    if (get_model(cmm).mt === 'i') {
       rv=AppliedInterface$jsint(cont,{Type$Interface:_t});
-    //TODO tipos de parametros
-    rv=AppliedClass$jsint(cont,{Type$AppliedClass:_t,Arguments$AppliedClass:{t:Sequential,a:{Element$Iterable:{t:Anything}}}});
+    } else {
+      //TODO tipos de parametros
+      rv=AppliedClass$jsint(cont,{Type$AppliedClass:_t,Arguments$AppliedClass:{t:Sequential,a:{Element$Iterable:{t:Anything}}}});
+    }
   }
+  coi.$parent=rv;
   return rv;
 }
 //ClassOrInterface.typeArguments
@@ -550,9 +574,16 @@ function coirestarg$(root,type) {
   if (type.a) {
     var t2 = {t:type.t, a:{}};
     for (var targ in type.a) {
-      t2.a[targ]=typeof(type.a[targ])==='string' ?
-        t2.a[targ]=root.$$targs$$.Type$ClassOrInterface.a[type.a[targ]]
-        : t2.a[targ]=type.a[targ];
+      if (typeof(type.a[targ])==='string') {
+        var ttt=root.$$targs$$.Type$ClassOrInterface;
+        if (ttt.t==='T') {
+          t2.a[targ]=ttt;
+        } else {
+          t2.a[targ]=ttt.a[type.a[targ]]
+        }
+      } else {
+        t2.a[targ]=type.a[targ];
+      }
       if (t2.a[targ] && t2.a[targ].a) {
         t2.a[targ]=coirestarg$(root,t2.a[targ]);
       }
@@ -601,4 +632,17 @@ function coi$is$anns(anns,ats) {
     if (!f)return false;
   }
   return true;
+}
+//Compare type argument use-site variance
+function cmp$targ$uv$(a,ta) {
+  if (a===undefined&&ta===undefined) {
+    return true;
+  }
+  if (a&&ta) {
+    for (var _t in a) {
+      if (!ta[_t] || a[_t].uv!==ta[_t].uv)return false;
+    }
+    return true;
+  }
+  return false;
 }

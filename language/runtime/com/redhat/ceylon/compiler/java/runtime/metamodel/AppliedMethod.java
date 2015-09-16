@@ -9,6 +9,7 @@ import ceylon.language.empty_;
 import ceylon.language.meta.declaration.FunctionDeclaration;
 import ceylon.language.meta.model.Function;
 
+import com.redhat.ceylon.compiler.java.codegen.Decl;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Name;
@@ -17,11 +18,13 @@ import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 import com.redhat.ceylon.compiler.java.metadata.Variance;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
+import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
+import com.redhat.ceylon.model.typechecker.model.Reference;
 import com.redhat.ceylon.model.typechecker.model.TypedReference;
 
 @Ceylon(major = 8)
-@com.redhat.ceylon.compiler.java.metadata.Class
+@com.redhat.ceylon.compiler.java.metadata.Class(extendsType="ceylon.language::Basic")
 @TypeParameters({
     @TypeParameter(value = "Container", variance = Variance.IN),
     @TypeParameter(value = "Type", variance = Variance.OUT),
@@ -31,13 +34,13 @@ public class AppliedMethod<Container, Type, Arguments extends Sequential<? exten
     extends AppliedMember<Container, ceylon.language.meta.model.Function<? extends Type, ? super Arguments>> 
     implements ceylon.language.meta.model.Method<Container, Type, Arguments> {
 
-    private final FreeFunction declaration;
-    private TypedReference appliedFunction;
+    protected final FreeFunction declaration;
+    private Reference appliedFunction;
     private ceylon.language.meta.model.Type<Type> closedType;
     @Ignore
-    private TypeDescriptor $reifiedType;
+    protected TypeDescriptor $reifiedType;
     @Ignore
-    private TypeDescriptor $reifiedArguments;
+    protected TypeDescriptor $reifiedArguments;
     
     private Map<? extends ceylon.language.meta.declaration.TypeParameter, ? extends ceylon.language.meta.model.Type<?>> typeArguments;
     private Map<? extends ceylon.language.meta.declaration.TypeParameter, ? extends Sequence<? extends Object>> typeArgumentWithVariances;
@@ -46,7 +49,7 @@ public class AppliedMethod<Container, Type, Arguments extends Sequential<? exten
     public AppliedMethod(@Ignore TypeDescriptor $reifiedContainer, 
                          @Ignore TypeDescriptor $reifiedType, 
                          @Ignore TypeDescriptor $reifiedArguments, 
-                         TypedReference appliedFunction, 
+                         Reference appliedFunction, 
                          FreeFunction declaration,
                          ceylon.language.meta.model.Type<? extends Object> container) {
         super($reifiedContainer, TypeDescriptor.klass(ceylon.language.meta.model.Function.class, $reifiedType, $reifiedArguments), container);
@@ -58,10 +61,10 @@ public class AppliedMethod<Container, Type, Arguments extends Sequential<? exten
         this.typeArgumentWithVariances = Metamodel.getTypeArgumentWithVariances(declaration, appliedFunction);
         this.closedType = Metamodel.getAppliedMetamodel(Metamodel.getFunctionReturnType(appliedFunction));
         // get a list of produced parameter types
-        com.redhat.ceylon.model.typechecker.model.Function method = (com.redhat.ceylon.model.typechecker.model.Function)appliedFunction.getDeclaration();
+        com.redhat.ceylon.model.typechecker.model.Functional method = (com.redhat.ceylon.model.typechecker.model.Functional)appliedFunction.getDeclaration();
         List<Parameter> parameters = method.getFirstParameterList().getParameters();
         List<com.redhat.ceylon.model.typechecker.model.Type> parameterProducedTypes = Metamodel.getParameterProducedTypes(parameters, appliedFunction);
-        this.parameterTypes = Metamodel.getAppliedMetamodelSequential(parameterProducedTypes);
+        this.parameterTypes = Decl.isConstructor(declaration.declaration)  ? null : Metamodel.getAppliedMetamodelSequential(parameterProducedTypes);
     }
 
     @Override

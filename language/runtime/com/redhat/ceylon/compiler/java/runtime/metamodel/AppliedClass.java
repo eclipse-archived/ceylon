@@ -1,32 +1,39 @@
 package com.redhat.ceylon.compiler.java.runtime.metamodel;
 
-import java.lang.invoke.MethodHandle;
-import java.lang.invoke.MethodHandles;
-import java.lang.invoke.MethodType;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
+import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 
 import ceylon.language.Array;
+import ceylon.language.AssertionError;
+import ceylon.language.Entry;
+import ceylon.language.Iterable;
 import ceylon.language.Sequential;
 import ceylon.language.empty_;
+import ceylon.language.meta.declaration.CallableConstructorDeclaration;
+import ceylon.language.meta.declaration.NestableDeclaration;
+import ceylon.language.meta.declaration.ValueConstructorDeclaration;
+import ceylon.language.meta.model.Applicable;
+import ceylon.language.meta.model.CallableConstructor;
+import ceylon.language.meta.model.FunctionModel;
 import ceylon.language.meta.model.InvocationException;
+import ceylon.language.meta.model.ValueModel;
 
 import com.redhat.ceylon.compiler.java.Util;
+import com.redhat.ceylon.compiler.java.language.ObjectArrayIterable;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Name;
-import com.redhat.ceylon.compiler.java.metadata.Sequenced;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 import com.redhat.ceylon.compiler.java.metadata.Variance;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
-import com.redhat.ceylon.model.typechecker.model.Declaration;
+import com.redhat.ceylon.model.typechecker.model.Class;
+import com.redhat.ceylon.model.typechecker.model.Function;
 import com.redhat.ceylon.model.typechecker.model.Functional;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
+import com.redhat.ceylon.model.typechecker.model.Reference;
+import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
 
 @Ceylon(major = 8)
 @com.redhat.ceylon.compiler.java.metadata.Class
@@ -40,14 +47,10 @@ public class AppliedClass<Type, Arguments extends Sequential<? extends Object>>
 
     @Ignore
     final TypeDescriptor $reifiedArguments;
-    private MethodHandle constructor;
     private Object instance;
-    private int firstDefaulted = -1;
-    private int variadicIndex = -1;
-    private MethodHandle[] dispatch;
     private final ceylon.language.meta.model.Type<?> container;
-    private List<com.redhat.ceylon.model.typechecker.model.Type> parameterProducedTypes;
-    private Sequential<? extends ceylon.language.meta.model.Type<? extends Object>> parameterTypes;
+    private volatile boolean initialized = false;
+    private ConstructorDispatch<Type,Arguments> dispatch = null;
     
     // FIXME: get rid of duplicate instantiations of AppliedClassType when the type in question has no type parameters
     public AppliedClass(@Ignore TypeDescriptor $reifiedType, 
@@ -71,316 +74,93 @@ public class AppliedClass<Type, Arguments extends Sequential<? extends Object>>
         return decl.hasConstructors();
     }
     
-    @SuppressWarnings({ "unchecked", "rawtypes" })
-    @Override
-    protected void init() {
-        super.init();
+    protected boolean hasEnumerated() {
         com.redhat.ceylon.model.typechecker.model.Class decl = (com.redhat.ceylon.model.typechecker.model.Class) producedType.getDeclaration();
-
-        // anonymous classes don't have constructors
-        // local classes have constructors but if they capture anything it will get extra parameters that nobody knows about
-        // FIXME: so we really want to disallow that in the metamodel?
-        if(!decl.isAnonymous() 
-                && !Metamodel.isLocalType(decl)
-                && !hasConstructors()
-                && !decl.getParameterLists().isEmpty()) {
-            initConstructor(decl);
-        }else{
-            this.parameterTypes = (Sequential) empty_.get_();
-        }
+        return decl.hasEnumerated();
     }
-
-    private void initConstructor(com.redhat.ceylon.model.typechecker.model.Class decl) {
-        List<Parameter> parameters = decl.getFirstParameterList().getParameters();
-        this.firstDefaulted = Metamodel.getFirstDefaultedParameter(parameters);
-        this.variadicIndex = Metamodel.getVariadicParameter(parameters);
-
-        boolean invokeOnCompanionInstance = this.instance != null 
-                && decl.getContainer() instanceof com.redhat.ceylon.model.typechecker.model.Interface
-                && !decl.isShared();
-        if (invokeOnCompanionInstance) {
-            this.instance = Metamodel.getCompanionInstance(this.instance, (com.redhat.ceylon.model.typechecker.model.Interface)declaration.declaration.getContainer());
-        }
-        
-        Object[] defaultedMethods = null;
-        if(firstDefaulted != -1){
-            // if we have 2 params and first is defaulted we need 2 + 1 - 0 = 3 methods:
-            // f(), f(a) and f(a, b)
-            this.dispatch = new MethodHandle[parameters.size() + 1 - firstDefaulted];
-            defaultedMethods = new Object[dispatch.length];
-        }
-
-        // get a list of produced parameter types
-        this.parameterProducedTypes = Metamodel.getParameterProducedTypes(parameters, producedType);
-        this.parameterTypes = Metamodel.getAppliedMetamodelSequential(this.parameterProducedTypes);
-
-        // FIXME: delay constructor setup for when we actually use it?
-        // FIXME: finding the right MethodHandle for the constructor could actually be done in the Class declaration
-        java.lang.Class<?> javaClass = Metamodel.getJavaClass(declaration.declaration);
-        // FIXME: faster lookup with types? but then we have to deal with erasure and stuff
-        Object found = null;
-        if(MethodHandleUtil.isJavaArray(javaClass)){
-            found = MethodHandleUtil.setupArrayConstructor(javaClass, defaultedMethods);
-        }else if(!javaClass.isMemberClass() 
-                || !Metamodel.isCeylon(decl)
-                // private ceylon member classes don't have any outer constructor method so treat them like java members
-                || !decl.isShared()){
-            for(Constructor<?> constr : javaClass.getDeclaredConstructors()){
-                if(constr.isAnnotationPresent(Ignore.class)){
-                    // it's likely an overloaded constructor
-                    // FIXME: proper checks
-                    if(firstDefaulted != -1){
-                        Class<?>[] ptypes = constr.getParameterTypes();
-                        if (ptypes.length > 0 && ptypes[0].equals(com.redhat.ceylon.compiler.java.runtime.serialization.$Serialization$.class)) {
-                            // it was a serialization constructor, we're not interested in those.
-                            continue;
-                        }
-                        int implicitParameterCount = 0;
-                        if (MethodHandleUtil.isReifiedTypeSupported(constr, javaClass.isMemberClass())) { 
-                            implicitParameterCount += decl.getTypeParameters().size();
-                        }
-                        if (decl.isClassMember() && javaClass.isMemberClass() 
-                                || decl.isInterfaceMember() && invokeOnCompanionInstance/*!declaration.constructor.isShared()*/) { 
-                            // non-shared member classes don't get instantiators, so there's the 
-                            // synthetic outerthis parameter to account for.
-                            implicitParameterCount++;
-                        }
-                        // this doesn't need to count synthetic parameters because we only use the constructor for Java types
-                        // which can't have defaulted parameters
-                        int params = constr.getParameterTypes().length - implicitParameterCount;
-                        defaultedMethods[params - firstDefaulted] = constr;
+    
+    void checkConstructor() {
+        if(((FreeClass)declaration).getAbstract())
+        throw new InvocationException("Abstract class cannot be instantiated");
+        if(((FreeClass)declaration).getAnonymous())
+        throw new InvocationException("Object class cannot be instantiated");
+    }
+    
+    ConstructorDispatch<Type, Arguments> getDispatch() {
+        if (!initialized) {
+            synchronized(this) {
+                if (!initialized) {
+                    checkConstructor();
+                    Reference reference;
+                    if (!hasConstructors() && !hasEnumerated()) {
+                        reference = producedType;
+                    } else {
+                        reference = ((com.redhat.ceylon.model.typechecker.model.Class)declaration.declaration).getDefaultConstructor().appliedReference(producedType, null);
                     }
-                    continue;
+                    this.dispatch = new ConstructorDispatch<Type,Arguments>(
+                            reference,
+                            this, null,
+                            ((Class)producedType.getDeclaration()).getFirstParameterList().getParameters(), 
+                            instance);
+                    this.initialized = true;
                 }
-                // FIXME: deal with private stuff?
-                if(found != null){
-                    throw Metamodel.newModelError("More than one constructor found for: "+javaClass+", 1st: "+found+", 2nd: "+constr);
-                }
-                found = constr;
-            }
-        }else{
-            String builderName = declaration.getName() + "$new$";
-            // FIXME: this probably doesn't work for local classes
-            // FIXME: perhaps store and access the container class literal from an extra param of @Container?
-            java.lang.Class<?> outerJavaClass = Metamodel.getJavaClass((Declaration) declaration.declaration.getContainer());
-            for(Method meth : outerJavaClass.getDeclaredMethods()){
-                // FIXME: we need a better way to look things up: they're all @Ignore...
-//                if(meth.isAnnotationPresent(Ignore.class))
-//                    continue;
-                if(!meth.getName().equals(builderName))
-                    continue;
-                // FIXME: proper checks
-                if(firstDefaulted != -1){
-                    int reifiedTypeParameterCount = MethodHandleUtil.isReifiedTypeSupported(meth, true) 
-                            ? decl.getTypeParameters().size() : 0;
-                    int params = meth.getParameterTypes().length - reifiedTypeParameterCount;
-                    if(params != parameters.size()){
-                        defaultedMethods[params - firstDefaulted] = meth;
-                        continue;
-                    }
-                }
-
-                // FIXME: deal with private stuff?
-                if(found != null){
-                    throw Metamodel.newModelError("More than one constructor method found for: "+javaClass+", 1st: "+found+", 2nd: "+meth);
-                }
-                found = meth;
             }
         }
-        if(found != null){
-            boolean variadic = MethodHandleUtil.isVariadicMethodOrConstructor(found);
-            constructor = reflectionToMethodHandle(found, javaClass, producedType, parameterProducedTypes, variadic, false);
-            if(defaultedMethods != null && !variadic){
-                // this won't find the last one, but it's method
-                int i=0;
-                for(;i<defaultedMethods.length-1;i++){
-                    if(defaultedMethods[i] == null)
-                        throw Metamodel.newModelError("Missing defaulted constructor for "+ declaration.getName()
-                                +" with "+(i+firstDefaulted)+" parameters in "+javaClass);
-                    dispatch[i] = reflectionToMethodHandle(defaultedMethods[i], javaClass, producedType, parameterProducedTypes, variadic, false);
-                }
-                dispatch[i] = constructor;
-            }else if(variadic){
-                // variadic methods don't have defaulted parameters, but we will simulate one because our calling convention is that
-                // we treat variadic methods as if the last parameter is optional
-                // firstDefaulted and dispatch already set up because getFirstDefaultedParameter treats java variadics like ceylon variadics
-                dispatch[0] = reflectionToMethodHandle(found, javaClass, producedType, parameterProducedTypes, variadic, true);
-                dispatch[1] = constructor;
-            }
-        }
+        return dispatch;
     }
-
-    private MethodHandle reflectionToMethodHandle(Object found, Class<?> javaClass,  
-                                                  com.redhat.ceylon.model.typechecker.model.Type producedType,
-                                                  List<com.redhat.ceylon.model.typechecker.model.Type> parameterProducedTypes,
-                                                  boolean variadic, boolean bindVariadicParameterToEmptyArray) {
-        MethodHandle constructor = null;
-        java.lang.Class<?>[] parameterTypes;
-        java.lang.Class<?> returnType;
-        boolean isJavaArray = MethodHandleUtil.isJavaArray(javaClass);
-        boolean isStatic = Modifier.isStatic(javaClass.getModifiers());
-        try {
-            if(found instanceof java.lang.reflect.Constructor){
-                ((java.lang.reflect.Constructor<?>) found).setAccessible(true);
-                constructor = MethodHandles.lookup().unreflectConstructor((java.lang.reflect.Constructor<?>)found);
-                parameterTypes = ((java.lang.reflect.Constructor<?>)found).getParameterTypes();
-                returnType = javaClass;
-            }else{
-                ((Method)found).setAccessible(true);
-                constructor = MethodHandles.lookup().unreflect((Method) found);
-                parameterTypes = ((java.lang.reflect.Method)found).getParameterTypes();
-                returnType = ((java.lang.reflect.Method)found).getReturnType();
-            }
-        } catch (IllegalAccessException e) {
-            throw Metamodel.newModelError("Problem getting a MH for constructor for: "+javaClass, e);
-        }
-        boolean isJavaMember = found instanceof java.lang.reflect.Constructor && instance != null && !isStatic;
-
-        // box the return type, which is only necessary for default parameter methods, and not constructors
-        constructor = MethodHandleUtil.boxReturnValue(constructor, returnType, producedType);
-
-        // we need to cast to Object because this is what comes out when calling it in $call
-        
-        // if it's a java member we will be using the member constructor which has an extra synthetic parameter so we can't bind it
-        // until we have casted it first
-        if(isJavaMember)
-            constructor = constructor.asType(MethodType.methodType(Object.class, parameterTypes));
-        // now bind it to the object
-        if(instance != null
-                && (isJavaArray || !isStatic))
-            constructor = constructor.bindTo(instance);
-        // if it was not a java member we have no extra synthetic instance parameter and we need to get rid of it before casting
-        if(!isJavaMember)
-            constructor = constructor.asType(MethodType.methodType(Object.class, parameterTypes));
-        
-        int typeParametersCount = Util.toInt(this.declaration.getTypeParameterDeclarations().getSize());
-        int skipParameters = 0;
-        if(isJavaMember)
-            skipParameters++; // skip the first parameter for boxing
-        // insert any required type descriptors
-        if(typeParametersCount != 0 && MethodHandleUtil.isReifiedTypeSupported(found, isJavaMember)){
-            List<com.redhat.ceylon.model.typechecker.model.Type> typeArguments = producedType.getTypeArgumentList();
-            constructor = MethodHandleUtil.insertReifiedTypeArguments(constructor, 0, typeArguments);
-            skipParameters += typeParametersCount;
-        }
-        // now convert all arguments (we may need to unbox)
-        constructor = MethodHandleUtil.unboxArguments(constructor, skipParameters, 0, parameterTypes,
-                                                      parameterProducedTypes, variadic, bindVariadicParameterToEmptyArray);
-        
-        return constructor;
-    }
-
+    
     @Ignore
     @Override
     public Type $call$() {
-        checkInit();
-        ceylon.language.meta.model.Constructor<Type, Sequential<? extends Object>> ctor = checkConstructor();
-        if (ctor != null) {
-            return ctor.$call$();
+        ConstructorDispatch<Type, Arguments> dc = getDispatch();
+        if (dc != null) {
+            return dc.$call$();
         } else {
-            try {
-                if(firstDefaulted == -1)
-                    return (Type)constructor.invokeExact();
-                // FIXME: proper checks
-                return (Type)dispatch[0].invokeExact();
-            } catch (Throwable e) {
-                Util.rethrow(e);
-                return null;
-            }
+            throw new AssertionError("class lacks a default constructor");
         }
-    }
-
-    private ceylon.language.meta.model.Constructor<Type, Sequential<? extends Object>> checkConstructor() {
-        if(((FreeClass)declaration).getAbstract())
-            throw new InvocationException("Abstract class cannot be instantiated");
-        if(((FreeClass)declaration).getAnonymous())
-            throw new InvocationException("Object class cannot be instantiated");
-        if (hasConstructors()) {
-            return getConstructor(this.$reifiedArguments, "");
-        } else if(constructor == null)
-            throw Metamodel.newModelError("No constructor found for: "+declaration.getName());
-        return null;
     }
 
     @Ignore
     @Override
     public Type $call$(Object arg0) {
-        checkInit();
-        ceylon.language.meta.model.Constructor<Type, Sequential<? extends Object>> ctor = checkConstructor();
-        if (ctor != null) {
-            return ctor.$call$(arg0);
+        ConstructorDispatch<Type, Arguments> dc = getDispatch();
+        if (dc != null) {
+            return dc.$call$(arg0);
         } else {
-            try {
-                if(firstDefaulted == -1)
-                    return (Type)constructor.invokeExact(arg0);
-                // FIXME: proper checks
-                return (Type)dispatch[1-firstDefaulted].invokeExact(arg0);
-            } catch (Throwable e) {
-                Util.rethrow(e);
-                return null;
-            }
+            throw new AssertionError("class lacks a default constructor");
         }
     }
 
     @Ignore
     @Override
     public Type $call$(Object arg0, Object arg1) {
-        checkInit();
-        ceylon.language.meta.model.Constructor<Type, Sequential<? extends Object>> ctor = checkConstructor();
-        if (ctor != null) {
-            return ctor.$call$(arg0, arg1);
+        ConstructorDispatch<Type, Arguments> dc = getDispatch();
+        if (dc != null) {
+            return dc.$call$(arg0, arg1);
         } else {
-            try {
-                if(firstDefaulted == -1)
-                    return (Type)constructor.invokeExact(arg0, arg1);
-                // FIXME: proper checks
-                return (Type)dispatch[2-firstDefaulted].invokeExact(arg0, arg1);
-            } catch (Throwable e) {
-                Util.rethrow(e);
-                return null;
-            }
+            throw new AssertionError("class lacks a default constructor");
         }
     }
 
     @Ignore
     @Override
     public Type $call$(Object arg0, Object arg1, Object arg2) {
-        checkInit();
-        ceylon.language.meta.model.Constructor<Type, Sequential<? extends Object>> ctor = checkConstructor();
-        if (ctor != null) {
-            return ctor.$call$(arg0, arg1, arg2);
+        ConstructorDispatch<Type, Arguments> dc = getDispatch();
+        if (dc != null) {
+            return dc.$call$(arg0, arg1, arg2);
         } else {
-            try {
-                if(firstDefaulted == -1)
-                    return (Type)constructor.invokeExact(arg0, arg1, arg2);
-                // FIXME: proper checks
-                return (Type)dispatch[3-firstDefaulted].invokeExact(arg0, arg1, arg2);
-            } catch (Throwable e) {
-                Util.rethrow(e);
-                return null;
-            }
+            throw new AssertionError("class lacks a default constructor");
         }
     }
 
-    @SuppressWarnings("unchecked")
     @Ignore
     @Override
     public Type $call$(Object... args) {
-        checkInit();
-        ceylon.language.meta.model.Constructor<Type, Sequential<? extends Object>> ctor = checkConstructor();
-        if (ctor != null) {
-            return ctor.$call$(args);
+        ConstructorDispatch<Type, Arguments> dc = getDispatch();
+        if (dc != null) {
+            return dc.$call$((Object[])args);
         } else {
-            try {
-                if(firstDefaulted == -1)
-                    // FIXME: this does not do invokeExact and does boxing/widening
-                    return (Type)constructor.invokeWithArguments(args);
-                // FIXME: proper checks
-                return (Type)dispatch[args.length-firstDefaulted].invokeWithArguments(args);
-            } catch (Throwable e) {
-                Util.rethrow(e);
-                return null;
-            }
+            throw new AssertionError("class lacks a default constructor");
         }
     }
     
@@ -444,8 +224,12 @@ public class AppliedClass<Type, Arguments extends Sequential<? extends Object>>
     @Ignore
     @Override
     public short $getVariadicParameterIndex$() {
-        checkInit();
-        return (short)variadicIndex;
+        ConstructorDispatch<Type, Arguments> dc = getDispatch();
+        if (dc != null) {
+            return dc.$getVariadicParameterIndex$();
+        } else {
+            throw new AssertionError("class lacks a default constructor");
+        }
     }
 
     @Ignore
@@ -454,86 +238,6 @@ public class AppliedClass<Type, Arguments extends Sequential<? extends Object>>
         return apply(empty_.get_());
     }
 
-    @Override
-    public Type apply(@Name("arguments")
-        @Sequenced
-        @TypeInfo("ceylon.language::Sequential<ceylon.language::Anything>")
-        Sequential<?> arguments){
-        checkInit();
-        ceylon.language.meta.model.Constructor<Type, Sequential<? extends Object>> ctor = checkConstructor();
-        if (ctor != null) {
-            return ctor.apply(arguments);
-        } else {
-            return Metamodel.apply(this, arguments, parameterProducedTypes, firstDefaulted, variadicIndex);
-        }
-    }
-
-    @Override
-    public Type namedApply(@Name("arguments")
-        @TypeInfo("ceylon.language::Iterable<ceylon.language::Entry<ceylon.language::String,ceylon.language::Anything>,ceylon.language::Null>")
-        ceylon.language.Iterable<? extends ceylon.language.Entry<? extends ceylon.language.String,? extends java.lang.Object>,? extends java.lang.Object> arguments){
-        checkInit();
-        ceylon.language.meta.model.Constructor<Type, Sequential<? extends Object>> ctor = checkConstructor();
-        if (ctor != null) {
-            return ctor.namedApply(arguments);
-        } else {
-            return Metamodel.namedApply(this, this, 
-                    (com.redhat.ceylon.model.typechecker.model.Functional)declaration.declaration, 
-                    arguments, parameterProducedTypes);
-        }
-    }
-    
-    @Override
-    public Object getDefaultParameterValue(Parameter parameter, Array<Object> values, int collectedValueCount) {
-        com.redhat.ceylon.model.typechecker.model.Class decl = 
-                (com.redhat.ceylon.model.typechecker.model.Class)declaration.declaration;
-        java.lang.Class<?> javaClass = Metamodel.getJavaClass(decl);
-
-        Method found = null;
-        String name;
-        java.lang.Class<?> lookupClass;
-        if(!javaClass.isMemberClass()){
-            name = "$default$"+parameter.getName();
-            lookupClass = javaClass;
-        }else{
-            name = "$default$" + declaration.getName() + "$" + parameter.getName();
-            // FIXME: perhaps store and access the container class literal from an extra param of @Container?
-            lookupClass = Metamodel.getJavaClass((Declaration) declaration.declaration.getContainer());
-        }
-        // iterate to find it, rather than figure out its parameter types
-        for(Method m : lookupClass.getDeclaredMethods()){
-            if(m.getName().equals(name)){
-                found = m;
-                break;
-            }
-        }
-        if(found == null)
-            throw Metamodel.newModelError("Default argument method for "+parameter.getName()+" not found");
-        int parameterCount = found.getParameterTypes().length;
-        if(MethodHandleUtil.isReifiedTypeSupported(found, false))
-            parameterCount -= found.getTypeParameters().length;
-        if(parameterCount != collectedValueCount)
-            throw Metamodel.newModelError("Default argument method for "+parameter.getName()+" requires wrong number of parameters: "+parameterCount+" should be "+collectedValueCount);
-
-        // AFAIK default value methods cannot be Java-variadic 
-        MethodHandle methodHandle = reflectionToMethodHandle(found, javaClass, producedType, parameterProducedTypes, false, false);
-        // sucks that we have to copy the array, but that's the MH API
-        java.lang.Object[] arguments = new java.lang.Object[collectedValueCount];
-        System.arraycopy(values.toArray(), 0, arguments, 0, collectedValueCount);
-        try {
-            return methodHandle.invokeWithArguments(arguments);
-        } catch (Throwable e) {
-            Util.rethrow(e);
-            return null;
-        }
-    }
-    
-    @TypeInfo("ceylon.language::Sequential<ceylon.language.meta.model::Type<ceylon.language::Anything>>")
-    @Override
-    public ceylon.language.Sequential<? extends ceylon.language.meta.model.Type<? extends Object>> getParameterTypes(){
-        checkInit();
-        return parameterTypes;
-    }
     
     @Override
     public int hashCode() {
@@ -574,24 +278,124 @@ public class AppliedClass<Type, Arguments extends Sequential<? extends Object>>
         return TypeDescriptor.klass(AppliedClass.class, $reifiedType, $reifiedArguments);
     }
     
-    @TypeParameters(@TypeParameter(value="Arguments", satisfies="ceylon.language::Sequential<ceylon.language::Anything>"))
-    @TypeInfo("ceylon.language.meta.model::Constructor<Type,Arguments>|ceylon.language::Null")
-    public <Arguments extends Sequential<?extends Object>> ceylon.language.meta.model.Constructor<Type,Arguments> getConstructor(@Ignore TypeDescriptor $reifiedArguments, String name) {
+    @Override
+    @TypeInfo("ceylon.language.meta.model::CallableConstructor<Type,Arguments>|ceylon.language.meta.model::Class<Type,Arguments>|ceylon.language::Null")
+    public Applicable<Type, Arguments> getDefaultConstructor() {
+        if (hasConstructors() || hasEnumerated()) {
+            Object ctor = getConstructor($reifiedArguments, "");
+            if (ctor instanceof CallableConstructor) {
+                return ((CallableConstructor<Type, Arguments>)ctor);
+            } else {
+                return null;
+            }
+        } else {
+            return this;
+        }
+    }
+    
+    @Override
+    @TypeParameters(@TypeParameter(value="Arguments", satisfies="ceylon.language::Sequential<ceylon.language::Anyything>"))
+    @TypeInfo("ceylon.language.meta.model::CallableConstructor<Type,Arguments>|ceylon.language.meta.model::ValueConstructor<Type>|ceylon.language::Null")
+    public <Arguments extends Sequential<? extends Object>> java.lang.Object getConstructor(
+            @Ignore
+            TypeDescriptor $reified$Arguments,
+            @Name("name")
+            String name) {
         checkInit();
-        final FreeConstructor ctor = (FreeConstructor)((FreeClass)declaration).getConstructorDeclaration(name);
+        final ceylon.language.meta.declaration.Declaration ctor = ((FreeClass)declaration).getConstructorDeclaration(name);
         if(ctor == null)
             return null;
-        com.redhat.ceylon.model.typechecker.model.Type constructorType = ctor.constructor.appliedType(this.producedType, Collections.<com.redhat.ceylon.model.typechecker.model.Type>emptyList());
-        // anonymous classes don't have parameter lists
-        TypeDescriptor actualReifiedArguments = Metamodel.getTypeDescriptorForArguments(declaration.declaration.getUnit(), (Functional)ctor.constructor, this.producedType);
+        if (ctor instanceof CallableConstructorDeclaration) {
+            FreeCallableConstructor callableCtor = (FreeCallableConstructor)ctor;
+            com.redhat.ceylon.model.typechecker.model.Type constructorType = callableCtor.constructor.appliedType(this.producedType, Collections.<com.redhat.ceylon.model.typechecker.model.Type>emptyList());
+            // anonymous classes don't have parameter lists
+            //TypeDescriptor actualReifiedArguments = Metamodel.getTypeDescriptorForArguments(declaration.declaration.getUnit(), (Functional)callableCtor.constructor, this.producedType);
+    
+            // This is all very ugly but we're trying to make it cheaper and friendlier than just checking the full type and showing
+            // implementation types to the user, such as AppliedMemberClass
+            //Metamodel.checkReifiedTypeArgument("getConstructor", "Constructor<$1,$2>",
+            //        // this line is bullshit since it's always true, but otherwise we can't substitute the error message above :(
+            //        Variance.OUT, this.producedType, $reifiedType,
+            //        Variance.IN, Metamodel.getProducedType(actualReifiedArguments), $reifiedArguments);
+            //return new AppliedConstructor<Type,Args>(this.$reifiedType, actualReifiedArguments, this, constructorType, ctor, this.instance);
+            //Reference reference = ((Function)callableCtor.declaration).getReference();
+            Reference reference;
+            if (callableCtor.declaration instanceof Function) {
+                reference = ((Function)callableCtor.declaration).appliedTypedReference(producedType, null);
+            } else if (callableCtor.declaration instanceof com.redhat.ceylon.model.typechecker.model.Class) {
+                reference = ((com.redhat.ceylon.model.typechecker.model.Class)callableCtor.declaration).appliedReference(producedType, null);
+            } else if (callableCtor.declaration instanceof com.redhat.ceylon.model.typechecker.model.Constructor) {
+                reference = ((com.redhat.ceylon.model.typechecker.model.Constructor)callableCtor.declaration).appliedReference(producedType, null);
+            } else {
+                throw Metamodel.newModelError("Unexpect declaration " +callableCtor.declaration);
+            }
+            AppliedCallableConstructor<Type, Sequential<? extends Object>> appliedConstructor = new AppliedCallableConstructor<Type,Sequential<? extends java.lang.Object>>(
+                    this.$reifiedType, 
+                    $reified$Arguments,
+                    reference, 
+                    callableCtor, 
+                    this, null);
+            Metamodel.checkReifiedTypeArgument("apply", "CallableConstructor<$1,$2>", 
+                    Variance.OUT, producedType, $reifiedType, 
+                    Variance.IN, Metamodel.getProducedTypeForArguments(
+                            declaration.declaration.getUnit(), 
+                            (Functional)callableCtor.declaration, reference), $reified$Arguments);
+            return appliedConstructor;
+        } else if (ctor instanceof ValueConstructorDeclaration){
+            FreeValueConstructor callableCtor = (FreeValueConstructor)ctor;
+            com.redhat.ceylon.model.typechecker.model.Type constructorType = callableCtor.constructor.appliedType(this.producedType, Collections.<com.redhat.ceylon.model.typechecker.model.Type>emptyList());
+            TypedDeclaration val = (TypedDeclaration)callableCtor.constructor.getContainer().getDirectMember(callableCtor.constructor.getName(), null, false);
+            return new AppliedValueConstructor<Type,java.lang.Object>(
+                    this.$reifiedType,
+                    TypeDescriptor.NothingType,
+                    callableCtor, val.getTypedReference(),
+                    this, null);
+        } else {
+            throw new AssertionError("Constructor neither CallableConstructorDeclaration nor ValueConstructorDeclaration");
+        }
+    }
 
-        // This is all very ugly but we're trying to make it cheaper and friendlier than just checking the full type and showing
-        // implementation types to the user, such as AppliedMemberClass
-        Metamodel.checkReifiedTypeArgument("getConstructor", "Constructor<$1,$2>",
-                // this line is bullshit since it's always true, but otherwise we can't substitute the error message above :(
-                Variance.OUT, this.producedType, $reifiedType,
-                Variance.IN, Metamodel.getProducedType(actualReifiedArguments), $reifiedArguments);
-        return new AppliedConstructor<Type,Arguments>(this.$reifiedType, actualReifiedArguments, this, constructorType, ctor, this.instance);
+    @Override
+    public Type apply(Sequential<? extends Object> arguments) {
+        return getDispatch().apply(arguments);
+    }
+
+    @Override
+    public Type namedApply(
+            Iterable<? extends Entry<? extends ceylon.language.String, ? extends Object>, ? extends Object> arguments) {
+        return getDispatch().namedApply(arguments);
+    }
+
+    @Override
+    public Object getDefaultParameterValue(Parameter parameter,
+            Array<Object> values, int collectedValueCount) {
+        return getDispatch().getDefaultParameterValue(parameter, values, collectedValueCount);
+    }
+    
+    private Sequential<?> getConstructors(boolean justShared) {
+        ArrayList<Object> ctors = new ArrayList<>();
+        for (ceylon.language.meta.declaration.Declaration d : ((FreeClass)declaration).constructors()) {
+            if (!justShared || (d instanceof NestableDeclaration
+                    && ((NestableDeclaration)d).getShared())) {
+                ctors.add(getConstructor(TypeDescriptor.NothingType, d.getName()));
+            }
+        }
+        Object[] array = ctors.toArray(new Object[ctors.size()]);
+        ObjectArrayIterable<ceylon.language.meta.declaration.Declaration> iterable = 
+                new ObjectArrayIterable<ceylon.language.meta.declaration.Declaration>(
+                        TypeDescriptor.union(
+                                TypeDescriptor.klass(FunctionModel.class, this.$reifiedType, TypeDescriptor.NothingType),
+                                TypeDescriptor.klass(ValueModel.class, this.$reifiedType, TypeDescriptor.NothingType)),
+                        (Object[]) array);
+        return (ceylon.language.Sequential) iterable.sequence();
+    }
+    @Override
+    public Sequential<?> getConstructors() {
+        return getConstructors(true);
+    }
+    @Override
+    public Sequential<?> getDeclaredConstructors() {
+        return getConstructors(false);
     }
     
 }

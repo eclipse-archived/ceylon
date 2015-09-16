@@ -410,10 +410,10 @@ class DeclarationParser {
         return result;
     }
     
-    protected ConstructorDeclaration makeConstructor(Declaration packageOrType, String val) {
-        final ConstructorDeclaration result;
+    protected Declaration makeConstructor(Declaration packageOrType, String val) {
+        final Declaration result;
         if (packageOrType instanceof ClassDeclaration) {
-            result = ((ClassDeclaration)packageOrType).getConstructorDeclaration(val);
+            result = (Declaration)((ClassDeclaration)packageOrType).getConstructorDeclaration(val);
         } else {
             throw metamodelError("Unexpected container " + packageOrType.getClass() + " for value " + val);
         }

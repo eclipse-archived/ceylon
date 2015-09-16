@@ -33,7 +33,7 @@ function flatten(tf, $$$mptypes) {
           seqarg=ArraySequence(seqarg,{Element$ArraySequence:seqarg._elemTarg()});
         }
         if (argx===1&&t.length==0)return tf(seqarg);
-        return tf(tpl$(t,undefined,seqarg));
+        return tf(tpl$(t,seqarg));
       }
     } else {
       rf=function fft1(){
@@ -48,6 +48,10 @@ function flatten(tf, $$$mptypes) {
           for (var i=0;i<argx;i++) {
             t.push(arguments[i]);
           }
+        }
+        if (t.length===1 && t0.l && t0.l.length===1 && is$(t[0],{t:Sequential}) && (t0.l[0].t===Sequence||t0.l[0].t===Sequential||t0.l[0].t===Tuple||t0.l[0].t==='T')) {
+          //special case: 1-arg with tuple against 1-param 1x tuple with 1 Sequential element
+          return tf(t[0]);
         }
         return tf(tpl$(t));
       }

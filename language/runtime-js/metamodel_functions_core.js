@@ -11,7 +11,8 @@ function get_model(mm) {
   for (var i=0; i < path.length; i++) {
     var _p=path[i];
     if (i===0 && _p==='$')_p='ceylon.language';
-    else if (i==path.length-1&&_p==='$set' && map.nm && map.$set)return map;
+    else if (i===path.length-1&&_p==='$set' && map.nm && map.$set)return map;
+    if (map===undefined)console.log("WRONG MODEL PATH " + path + " index " + i);
     map = map[_p];
   }
   return map;
@@ -113,6 +114,16 @@ function _findTypeFromModel(pkg,mdl,cont) {
 }
 //Generate the qualified name of a type
 function qname$(mm) {
+  if (mm.t==='u' || mm.t==='i') {
+    var qn='';
+    for (var i=0; i < mm.l.length; i++) {
+      if (i>0) {
+        qn+= mm.t==='u' ? '|' : '&';
+      }
+      qn+=qname$(mm.l[i]);
+    }
+    return qn;
+  }
   if (mm.t) {
     mm=mm.t;
   }
@@ -127,4 +138,18 @@ function qname$(mm) {
     if(p!==0)qn+=(i==1?"::":".")+(p>0?n.substring(0,p):n);
   }
   return qn;
+}
+//Read the type parameter list of a type and generate type arguments for it
+function tparms2targs$(c,t){
+  var mm=getrtmm$$(c).tp;
+  if (mm) {
+    if (Object.keys(mm).length == t.size) {
+      var r={},i=0;
+      for (var k in mm) {
+        r[k]=t.$_get(i++).$$targs$$.Target$Type;
+      }
+      return r;
+    }
+  }
+  return undefined;
 }

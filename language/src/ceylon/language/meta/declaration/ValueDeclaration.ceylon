@@ -1,4 +1,10 @@
-import ceylon.language.meta.model { Value, Attribute, AppliedType = Type, IncompatibleTypeException, StorageException }
+import ceylon.language.meta.model { 
+    Value, 
+    Attribute, 
+    AppliedType = Type, 
+    IncompatibleTypeException, 
+    StorageException 
+}
 
 """A value declaration.
    
@@ -39,7 +45,10 @@ import ceylon.language.meta.model { Value, Attribute, AppliedType = Type, Incomp
        }
    """
 shared sealed interface ValueDeclaration
-        satisfies FunctionOrValueDeclaration {
+        satisfies FunctionOrValueDeclaration & NestableDeclaration & ValueableDeclaration {
+    
+    "True if this declaration is annotated with [[late|ceylon.language::late]]."
+    shared formal Boolean late;
     
     "True if this declaration is annotated with [[variable|ceylon.language::variable]]."
     shared formal Boolean variable;
@@ -53,22 +62,22 @@ shared sealed interface ValueDeclaration
     "Applies this value declaration in order to obtain a value model. 
      See [this code sample](#toplevel-sample) for an example on how to use this."
     throws(`class IncompatibleTypeException`, "If the specified `Get` or `Set` type arguments are not compatible with the actual result.")
-    shared formal Value<Get, Set> apply<Get=Anything, Set=Nothing>();
+    shared actual formal Value<Get, Set> apply<Get=Anything, Set=Nothing>();
 
     "Applies the given closed container type to this attribute declaration in order to obtain an attribute model. 
      See [this code sample](#member-sample) for an example on how to use this."
     throws(`class IncompatibleTypeException`, "If the specified `Container`, `Get` or `Set` type arguments are not compatible with the actual result.")
-    shared formal Attribute<Container, Get, Set> memberApply<Container=Nothing, Get=Anything, Set=Nothing>(AppliedType<Object> containerType);
+    shared actual formal Attribute<Container, Get, Set> memberApply<Container=Nothing, Get=Anything, Set=Nothing>(AppliedType<Object> containerType);
     
     "Reads the current value of this toplevel value."
-    shared default Anything get()
+    shared actual default Anything get()
             => apply<Anything, Nothing>().get();
     
     "Reads the current value of this attribute on the given container instance."
     throws(`class IncompatibleTypeException`, "If the specified container is not compatible with this attribute.")
     throws(`class StorageException`,
            "If this attribute is not stored at runtime, for example if it is neither shared nor captured.")
-    shared default Anything memberGet(Object container)
+    shared actual default Anything memberGet(Object container)
             => memberApply<Nothing, Anything, Nothing>(`Nothing`).bind(container).get();
 
     "Sets the current value of this toplevel value."
@@ -82,11 +91,7 @@ shared sealed interface ValueDeclaration
     shared formal void memberSet(Object container, Anything newValue);
     //=> memberApply<Nothing, Anything, Nothing>(`Nothing`).bind(container).setIfAssignable(newValue);
 
-    "Returns the setter declaration for this variable.
-     
-     For modelling purposes `variable` reference 
-     values have a SetterDeclaration even though there is no 
-     such setter explicit in the source code."
+    "Returns the setter declaration for this variable if there is one, `null` otherwise."
     shared formal SetterDeclaration? setter;
 
 }

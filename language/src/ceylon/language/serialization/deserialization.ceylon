@@ -1,2 +1,4 @@
+
 "A new [[DeserializationContext]]."
-shared native DeserializationContext deserialization();
+shared DeserializationContext<Id> deserialization<Id>() given Id satisfies Object 
+        => DeserializationContextImpl<Id>();

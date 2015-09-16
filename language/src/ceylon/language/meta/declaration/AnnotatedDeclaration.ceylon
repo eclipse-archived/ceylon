@@ -10,7 +10,6 @@ import ceylon.language{AnnotationType = Annotation}
  
  "
 shared sealed interface AnnotatedDeclaration of NestableDeclaration
-                                       | ConstructorDeclaration
                                        | Module
                                        | Package
     satisfies Declaration & Annotated {

@@ -19,6 +19,8 @@ function validate$params(ps,t,msg,nothrow) {
     if (!ps || ps.length===0)return true;
   } else if (t.t==='u' && ps.length===1) {
     if (extendsType(ps[0].$t,t))return true;
+  } else if (t.t===Sequential || t.t===Sequence) {
+    if (extendsType(ps[0].$t,t.a.Element$Sequential||t.a.Element$Sequence))return true;
   } else { //it's already a tuple, navigate it
     console.trace("TODO!!!! validate$params with Tuple type");
   }
@@ -75,7 +77,7 @@ function resolve$typearg(ta,mm,$$targs$$) {
   var r;
   if ($$targs$$ && $$targs$$[ta]) {
     r=$$targs$$[ta];
-    if (typeof(t)!=='string')return r;
+    if (typeof(r)!=='string')return r;
   }
   r=mm.tp?mm.tp[ta]:undefined;
   while (!r && mm.$cont) {
@@ -98,10 +100,19 @@ function convert$params(mm,a,$$targs$$) {
       throw InvocationException$meta$model("Passing parameters to no-args callable");
     return [];
   }
+  //Convert to a native array
   if (a===undefined)a=[];
   else if (a.nativeArray)a=a.nativeArray();
-  var fa=[];
-  var sarg;
+  else if (is$(a,{t:ArraySequence})) {
+    var _a=[];
+    for (var i=0;i<a.size;i++)_a.push(a.$_get(i));
+    a=_a;
+  }
+  if (a.length===1 && Array.isArray(a[0]) && (ps.length!=1 || !extendsType(restype2$(ps[0].$t,$$targs$$),{t:$_Array}))) {
+    //We sometimes get an array with a single array (double wrapping)
+    a=a[0];
+  }
+  var fa=[],sarg;
   for (var i=0; i<ps.length;i++) { //check def/seq params
     var p=ps[i];
     var val_t=restype2$(sarg?sarg.$$targs$$.a.Element$Iterable:p.$t,$$targs$$);
@@ -123,11 +134,12 @@ function convert$params(mm,a,$$targs$$) {
         fa.push(a[i]);
         val_t={t:Iterable,a:{Element$Iterable:val_t}};
       } else {
-        sarg=[].rt$(val_t); fa.push(sarg);
+        sarg=[].rt$(val_t);
         for (var j=i; j<a.size;j++){
           if (!is$(a[j],val_t))throw IncompatibleTypeException$meta$model("Wrong type for argument " + j + ", expected " + typeLiteral$meta({Type$typeLiteral:val_t},$$targs$$).string + " got " + className(a[j]));
           sarg.push(a[j]);
         }
+        fa.push(sarg.size==0?empty():ArraySequence(sarg,{Element$ArraySequence:val_t}));
         i=j;
       }
     } else {

@@ -72,6 +72,8 @@ shared void numbers() {
     check((-1).wholePart==-1, "integer fractional");
     check(1.5.wholePart==1.0, "float fractional");
     
+    checkWholePart();
+    
     check((+2).sign==+1, "integer sign");
     check((-3).sign==-1, "integer sign");
     check(2.0.sign==+1, "integer sign");
@@ -181,6 +183,67 @@ shared void numbers() {
     check((-3).float==-3.0, "negative integer float");
     
     check(1.plus { other=2; }.equals { that=3; }, "natural named args");
+
+    Boolean positiveZero(Float num){
+        return num == 0.0 && (1 / num) > 0.0;
+    }
+    Boolean negativeZero(Float num){
+        return num == 0.0 && (1 / num) < 0.0;
+    }
+
+    check(0.0.powerOfInteger(-1) == infinity, "0 pow/int -1 = infinity");
+    check(0.0.powerOfInteger(-2) == infinity, "0 pow/int -2 = infinity");
+    check(positiveZero(0.0.powerOfInteger(1)), "0 pow/int 1 = 0");
+    check(positiveZero(0.0.powerOfInteger(2)), "0 pow/int 2 = 0");
+    check((-0.0).powerOfInteger(-1) == -infinity, "-0 pow/int -1 = -infinity");
+    check((-0.0).powerOfInteger(-2) == infinity, "-0 pow/int -2 = infinity");
+    check(negativeZero((-0.0).powerOfInteger(1)), "-0 pow/int 1 = -0");
+    check(positiveZero((-0.0).powerOfInteger(2)), "-0 pow/int 2 = 0");
+    
+    check(0.0.power(-1.0) == infinity, "0 pow -1 = infinity");
+    check(0.0.power(-2.0) == infinity, "0 pow -2 = infinity");
+    check(positiveZero(0.0.power(1.0)), "0 pow 1 = 0");
+    check(positiveZero(0.0.power(2.0)), "0 pow 2 = 0");
+    check((-0.0).power(-1.0) == -infinity, "-0 pow -1 = -infinity");
+    check((-0.0).power(-2.0) == infinity, "-0 pow -2 = infinity");
+    check(negativeZero((-0.0).power(1.0)), "-0 pow 1 = -0");
+    check(positiveZero((-0.0).power(2.0)), "-0 pow 2 = 0");
+
+    check(0.0.power(-1.1) == infinity, "0 pow -1.1 = infinity");
+    check(0.0.power(-2.1) == infinity, "0 pow -2.1 = infinity");
+    check(positiveZero(0.0.power(1.1)), "0 pow 1.1 = 0");
+    check(positiveZero(0.0.power(2.1)), "0 pow 2.1 = 0");
+    check((-0.0).power(-1.1) == infinity, "-0 pow -1.1 = infinity");
+    check((-0.0).power(-2.1) == infinity, "-0 pow -2.1 = infinity");
+    check(positiveZero((-0.0).power(1.1)), "-0 pow 1.1 = 0");
+    check(positiveZero((-0.0).power(2.1)), "-0 pow 2.1 = 0");
+    
+    check(0.0.power(-infinity) == infinity, "0 pow -infinity");
+    check((-0.0).power(-infinity) == infinity, "-0 pow -infinity");
+    check(0.0.power(infinity) == 0.0, "0 pow infinity");
+    check((-0.0).power(infinity) == 0.0, "-0 pow infinity");
+    
+    check(0.0.power(0.0) == 1.0, "0 pow 0");
+    check(infinity.power(0.0) == 1.0, "infinity pow 0");
+    check((-infinity).power(0.0) == 1.0, "-infinity pow 0");
+    check((0.0/0.0).power(0.0) == 1.0, "undefined pow 0");
+
+    check(infinity.powerOfInteger(0) == 1.0, "infinity pow/int 0");
+    check((-infinity).powerOfInteger(0) == 1.0, "-infinity/int pow 0");
+
+    check(0.0.power(-0.0) == 1.0, "0 pow -0");
+    check(infinity.power(-0.0) == 1.0, "infinity pow -0");
+    check((-infinity).power(-0.0) == 1.0, "-infinity pow -0");
+    check((0.0/0.0).power(-0.0) == 1.0, "undefined pow -0");
+    
+    check(1.0.power(infinity) == 1.0, "1 pow infinity");
+    check(1.0.power(-infinity) == 1.0, "1 pow infinity");
+    check(1.0.power(0.0/0.0) == 1.0, "1 pow undefined");
+
+    check((-1.0).power(infinity) == 1.0, "-1 pow infinity");
+    check((-1.0).power(-infinity) == 1.0, "-1 pow infinity");
+    
+    check(1.5.power(infinity) == infinity, "1.5 pow infinity");
                 
     variable value i=0;
     for (x in 1..10) {
@@ -281,6 +344,10 @@ shared void numbers() {
     check(1.0!=infinity, "1 != infinity");
     check(-1.0/0.0==-infinity, "-infinity == -infinity");
     check(1.0!=-infinity, "1 != -infinity");
+
+    check((0.0/0.0).string == "NaN", "NaN undefined string");
+    check(infinity.string == "Infinity", "Infinity string");
+    check((-infinity).string == "-Infinity", "-Infinity string");
     
     check((0.0/0.0).undefined, "NaN undefined");
     check(!(1.0).undefined, "1 not undefined");
@@ -797,4 +864,56 @@ void checkParseFloat() {
     check((-(-0.5).wholePart.magnitude).string=="-0.0", "#701.1");
     check(((-0.5).wholePart.magnitude of Anything) is Float, "#701.2");
     check(!((-0.5).wholePart.magnitude of Anything) is Integer, "#702.3");
+    //#715
+    for (i in 0:runtime.integerAddressableSize) {
+        check(0.set(i, true)==(2 ^ i).or(0), "#724.1"); // expected <2> but was <1>
+    }
+
+    for (i in 0:runtime.integerAddressableSize) {
+        check(0.flip(i)==(2 ^ i).or(0), "#724.2"); // ok
+    }
+
+    for (i in 0:runtime.integerAddressableSize) {
+        check(0.flip(i).clear(i)==0, "#724.3"); // expected <0> but was <2>
+    }
+
+    for (i in 0:runtime.integerAddressableSize) {
+        check(0.flip(i).set(i, false)==0, "#724.4"); // expected <0> but was <2>
+    }
+}
+
+void checkWholePart(){
+    // Adapted from FloatTest.java
+    check(0.0 == -0.0.wholePart);
+    check(0.0 == +0.0.wholePart);
+    check(0.0 == +0.4.wholePart);
+    check(0.0 == -0.4.wholePart);
+    check(0.0 == +0.6.wholePart);
+    check(0.0 == -0.6.wholePart);
+    check(-1.0 == -1.0.wholePart);
+    check(+1.0 == +1.0.wholePart);
+    check(+1.0 == +1.4.wholePart);
+    check(-1.0 == -1.4.wholePart);
+    check(+1.0 == +1.6.wholePart);
+    check(-1.0 == -1.6.wholePart);
+    
+    check(+2097153 == +2097153.5.wholePart);
+    check(-2097153 == -2097153.5.wholePart);
+    
+    check(1/0.0 == infinity);
+    check(1/(-0.0) == -infinity);
+    
+    check(1 / -0.0 < 0.0, "preserve negative 0.aa");
+    check(1 / (-0.0).wholePart < 0.0, "preserve negative 0.a");
+    check(1 / +0.0.wholePart > 0.0, "preserve positive 0.b");
+    check(1 / (-0.4).wholePart < 0.0, "preserve negative 0.c");
+    check(1 / +0.4.wholePart > 0.0, "preserve positive 0.d");
+    check(1 / (-0.6).wholePart < 0.0, "preserve negative 0.e");
+    check(1 / +0.6.wholePart > 0.0, "preserve positive 0.f");
+    
+    check((-infinity).wholePart == -infinity);
+    check(infinity.wholePart == infinity);
+    value nan = 0.0/0.0;
+    check(nan.wholePart.undefined);
+
 }

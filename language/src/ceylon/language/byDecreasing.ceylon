@@ -30,3 +30,25 @@ see (`function increasing`,
 shared Comparison decreasing<Element>(Element x, Element y)
         given Element satisfies Comparable<Element> 
         => y<=>x;
+
+"A comparator function which orders [[entries|Entry]] by 
+ decreasing [[natural order|Comparable]] of their 
+ [[keys|Entry.key]].
+        
+ This function is intended for use with [[Iterable.sort]]
+ and [[Iterable.max]]."
+shared Comparison decreasingKey<Key>
+        (Key->Anything x, Key->Anything y)
+        given Key satisfies Comparable<Key>
+        => y.key <=> x.key;
+
+"A comparator function which orders [[entries|Entry]] by 
+ decreasing [[natural order|Comparable]] of their 
+ [[items|Entry.item]].
+        
+ This function is intended for use with [[Iterable.sort]]
+ and [[Iterable.max]]."
+shared Comparison decreasingItem<Item>
+        (Object->Item x, Object->Item y)
+        given Item satisfies Comparable<Item>
+        => y.item <=> x.item;

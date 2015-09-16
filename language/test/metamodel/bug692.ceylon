@@ -9,7 +9,7 @@ class Bug692 {
 
 @test
 shared void bug692() {
-    Constructor<Bug692,[String]> constructor = `Bug692.oneArg`;
+    CallableConstructor<Bug692,[String]> constructor = `Bug692.oneArg`;
     
     print(type(constructor));
     // and

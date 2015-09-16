@@ -15,6 +15,7 @@ function JSNumber(value) {
 initExistingType(JSNumber, Number, 'ceylon.language::JSNumber');
 JSNumber.$crtmm$=function(){return{nm:'JSNumber',mt:'c',pa:1,
   mod:$CCMM$,d:['$','Number']};}
+ex$.JSNumber=JSNumber;
 
 var origNumToString = Number.prototype.toString;
 inheritProto(JSNumber, $_Object, $_Number, $init$Integral(), $init$Exponentiable());
@@ -27,7 +28,7 @@ function Integer(value) {
     that.float$=false;
     return that;
 }
-initTypeProto(Integer, 'ceylon.language::Integer', $_Object,$_Number,
+initTypeProto(Integer, 'ceylon.language::Integer', $_Object,$_Number, JSNumber,
         $init$Integral(), $init$Exponentiable(), $init$Binary());
 Integer.$crtmm$=function(){return{an:function(){return[shared(),$_native(),$_final()];},mod:$CCMM$,d:['$','Integer']};}
 
@@ -39,7 +40,7 @@ function Float(value) {
     that.float$ = true;
     return that;
 }
-initTypeProto(Float, 'ceylon.language::Float', $_Object,$_Number,$init$Exponentiable());
+initTypeProto(Float, 'ceylon.language::Float', $_Object,$_Number,$init$Exponentiable(), JSNumber);
 Float.$crtmm$=function(){return{an:function(){return[shared(),$_native(),$_final()];},mod:$CCMM$,d:['$','Float']};}
 
 var JSNum$proto = Number.prototype;
@@ -60,9 +61,14 @@ JSNum$proto.toString = origNumToString;
 atr$(JSNum$proto, 'string', function(){
   if (this.fmz$)return "-0.0";
   var s=this.toString();
-  if (s.indexOf('.')<0 && nflt$(this))s+='.0';
+  if (s.indexOf('.')<0 && nflt$(this)
+      && this != Infinity 
+      && this != -Infinity 
+      && !isNaN(this))
+      s+='.0';
   return s;
 },undefined,function(){return{an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:$_Object,d:['$','Object','$at','string']};});
+//Add a function to the specified prototype
 function $addnm$(nm,s) {
   var t={t:JSNumber};
   if (s===undefined)s=$_Number.$$.prototype[nm];
@@ -104,7 +110,12 @@ JSNum$proto.timesInteger = function(other) {
 $addnm$('timesInteger');
 JSNum$proto.divided = function(other) {
   if (this.fmz$)return this;
-    if (nflt$(this)||nflt$(other)) { return Float(this/other); }
+    if (nflt$(this)||nflt$(other)) { 
+        var ret = Float(this/other);
+        // make sure that if we expect a negative result, we get one, like 1/-0 -> -Infinity
+        if(!this.negative && other.fmz$ && !ret.negative){ ret = ret.negated; }
+        return ret;
+    }
     if (other == 0) {
         throw Exception("Division by Zero");
     }
@@ -122,13 +133,37 @@ JSNum$proto.remainder.$crtmm$=function(){return{mod:$CCMM$,$t:{t:Integer},ps:[{$
 JSNum$proto.divides=function(o){return o%this===0;}
 JSNum$proto.divides.$crtmm$=function(){return{mod:$CCMM$,$t:{t:$_Boolean},ps:[{$t:{t:Integer},nm:'other'}],d:['$','Integer','$m','divides']};};
 JSNum$proto.power = function(exp) {
-    if (nflt$(this)||nflt$(exp)) { return Float(Math.pow(this, exp)); }
+    if (nflt$(this)||nflt$(exp)) {
+        if(this == 1.0)
+            return this;
+        if(this == -1.0 && (exp == Infinity || exp == -Infinity))
+            return Float(1.0);
+        var ret = Float(Math.pow(this, exp));
+        if(this == 0.0 && this.fmz$ && exp.fractionalPart == 0 && !exp.wholePart.even)
+            ret = ret.negated;
+        return ret;
+    }
     if (exp<0 && this!=1 && this!=-1) {
         throw AssertionError("Negative exponent");
     }
     return toInt(Math.pow(this, exp));
 }
 $addnm$('power',Exponentiable.$$.prototype.power);
+JSNum$proto.powerOfInteger = function(exp) {
+    if (nflt$(this)) {
+        if(this == 1.0)
+            return this;
+        var ret = Float(Math.pow(this, exp));
+        if(this == 0.0 && this.fmz$ && exp.fractionalPart == 0 && !exp.wholePart.even)
+            ret = ret.negated;
+        return ret;
+    }
+    if (exp<0 && this!=1 && this!=-1) {
+        throw AssertionError("Negative exponent");
+    }
+    return toInt(Math.pow(this, exp));
+}
+$addnm$('powerOfInteger');
 atr$(JSNum$proto, 'negated', function() {
   if (this.valueOf()==0 && this.float$) {
     var f=Float(0.0);
@@ -197,7 +232,10 @@ atr$(JSNum$proto, 'fractionalPart', function() {
 },undefined,function(){return{an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:$_Number,d:['$','Number','$at','fractionalPart']};});
 atr$(JSNum$proto, 'wholePart', function() {
     if (!nflt$(this)) { return this.valueOf(); }
-    return Float(this>=0 ? Math.floor(this) : Math.ceil(this));
+    var ret = this >= 0 ? Math.floor(this) : Math.ceil(this);
+    var wret = Float(ret);
+    if(ret == 0 && (this < 0 || this.fmz$)){ wret.fmz$ = true; }
+    return wret;
 },undefined,function(){return{an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:$_Number,d:['$','Number','$at','wholePart']};});
 atr$(JSNum$proto, 'sign', function(){ return this > 0 ? 1 : this < 0 ? -1 : 0; },
   undefined,function(){return{an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:$_Number,d:['$','Number','$at','sign']};});
@@ -230,13 +268,13 @@ JSNum$proto.$_get = function(idx) {
     return (this & mask) != 0 ? true : false;
 }
 $addnm$('$_get',Binary.$$.prototype.$_get);
-JSNum$proto.set = function(idx,bit) {
-    if (idx < 0 || idx >31) {
-        return this;
-    } 
-    if (bit === undefined) { bit = true; }
-        var mask = idx > 1 ? 1 << idx : 1;
-    return (bit === true) ? this | mask : this & ~mask;
+JSNum$proto.set=function(idx,bit) {
+  if (idx<0 || idx>31) {
+    return this;
+  } 
+  if (bit === undefined) { bit = true; }
+  var mask = 1 << idx;
+  return (bit === true) ? this|mask : this & ~mask;
 }
 $addnm$('set',Binary.$$.prototype.set);
 JSNum$proto.flip = function(idx) {
@@ -289,10 +327,5 @@ atr$(JSNum$proto, 'strictlyPositive', function(){ return this>0 || (this==0 && !
 atr$(JSNum$proto, 'strictlyNegative', function() { return this<0 || this.fmz$ || (this==0 && (1/this==-Infinity)); },
   undefined,function(){return{an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:Float,d:['$','Float','$at','strictlyNegative']};});
 
-var $infinity = Float(Infinity);
-function infinity() { return $infinity; }
-ex$.$prop$getInfinity={get:infinity,$crtmm$:function(){return{mod:$CCMM$,$t:{t:Float},d:['$','infinity']};}};
-
 ex$.Integer=Integer;
 ex$.Float=Float;
-ex$.infinity=infinity;

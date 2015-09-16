@@ -41,7 +41,7 @@ public final class unflatten_ {
             @Override
             public Return $call$(java.lang.Object arg0) {
                 Sequential<?> seq = (Sequential<?>) arg0;
-                return Util.<Return>apply(flatFunction, seq);
+                return Util.<Return>apply(flatFunction, seq, null);
             }
 
             @Override

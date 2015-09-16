@@ -73,9 +73,9 @@ shared interface List<out Element=Anything>
     
     "Returns the element of this list with the given 
      [[index]] if the index refers to an element of this
-     list, that is, if `0<=index<=list.lastIndex`, or 
-     `null` otherwise. The first element of the list has 
-     index `0`, and the last element has index [[lastIndex]]."
+     list, that is, if `0<=index<=list.lastIndex`, or `null` 
+     otherwise. The first element of the list has index `0`, 
+     and the last element has index [[lastIndex]]."
     see (`function getFromLast`)
     shared actual formal Element? getFromFirst(Integer index);
     
@@ -137,7 +137,8 @@ shared interface List<out Element=Anything>
     
     "A list containing all indexes of this list.
      
-     This is a lazy operation."
+     This is a lazy operation returning a view of this list."
+    see (`function indexes`)
     shared actual default List<Integer> keys => Indexes();
     
     "A list containing the elements of this list in reverse 

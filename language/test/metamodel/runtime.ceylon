@@ -45,9 +45,6 @@ shared void checkInitializers(){
     Anything fixedParams3 = fixedParamsType.declaration.instantiate([], "a", 1, 1.2, 'a', true, noParams);
     assert(is FixedParams fixedParams3);
 
-    // check its parameter types
-    assert(fixedParamsType.parameterTypes == [`String`, `Integer`, `Float`, `Character`, `Boolean`, `Object`]);
-
     // typed parameters
     value typeParamsType = type(TypeParams("a", 1));
     assert(is Class<TypeParams<String>, [String, Integer]> typeParamsType);
@@ -62,9 +59,6 @@ shared void checkInitializers(){
     Anything typeParams3 = typeParamsClass.instantiate([`String`], "a", 1);
     // this checks that we did pass the reified type arguments correctly
     assert(is TypeParams<String> typeParams3);
-
-    // check its parameter types
-    assert(typeParamsType.parameterTypes == [`String`, `Integer`]);
 
     // defaulted parameters
     value defaultedParamsType = typeLiteral<DefaultedParams>();
@@ -433,9 +427,7 @@ shared void checkMemberTypes(){
     assert(is Class<ContainerClass, []> containerClassType);
 
     assert(exists innerClassType = containerClassType.getClass<ContainerClass, ContainerClass.InnerClass, []>("InnerClass"));
-    // check its parameter types
-    assert(innerClassType.parameterTypes == []);
-
+    
     Anything o1 = innerClassType(containerClassInstance)();
     assert(is ContainerClass.InnerClass o1);
     Anything o1b = innerClassType.bind(containerClassInstance).apply();
@@ -448,9 +440,7 @@ shared void checkMemberTypes(){
     assert(`class ContainerClass.InnerClass`.qualifiedName == "metamodel::ContainerClass.InnerClass");
 
     assert(exists innerDefaultedClassType = containerClassType.getClass<ContainerClass, ContainerClass.DefaultedParams, [Integer, Integer=]>("DefaultedParams"));
-    // check its parameter types
-    assert(innerDefaultedClassType.parameterTypes == [`Integer`, `Integer`]);
-
+    
     Anything o1_2 = innerDefaultedClassType(containerClassInstance)(0);
     assert(is ContainerClass.DefaultedParams o1_2);
     Anything o1_2b = innerDefaultedClassType.bind(containerClassInstance).apply(0);
@@ -909,8 +899,6 @@ shared void checkObjectDeclaration(){
     // FIXME: this may actually be wrong and we may want to be able to instantiate them
     assert(!is Class<Anything, []> topLevelObjectClass);
     assert(is Class<Anything, Nothing> topLevelObjectClass);
-    
-    assert(topLevelObjectClass.parameterTypes == []);
     
     // make sure we get a proper exception when trying to instantiate it
     try{
@@ -1651,6 +1639,8 @@ shared void checkObjectMemberReferences(){
 shared void checkConstructors2() {
     value inst = Constructors<String>();
     inst.test();
+    
+    ValueConstructors.sharedCtor.test();
     object ifaceInst satisfies InterfaceConstructors<String> {
     }
     ifaceInst.test();
@@ -1662,11 +1652,11 @@ shared void checkConstructors2() {
     `ClassWithDefaultConstructor`("");
     `ClassWithDefaultConstructor`.apply("");
     `ClassWithDefaultConstructor`.namedApply{"s"-> ""};
-    assert(exists cwndc = `ClassWithNonDefaultConstructor`.getConstructor<[String]>("nnew"));
+    assert(is CallableConstructor<ClassWithNonDefaultConstructor,[String]> cwndc = `ClassWithNonDefaultConstructor`.getConstructor<[String]>("nnew"));
     cwndc("");
     cwndc.apply("");
     cwndc.namedApply{"s"-> ""};
-    assert(exists uc = `UninstantiableClass`.getConstructor<[String]>("nnew"));
+    assert(is CallableConstructor<UninstantiableClass,[String]> uc = `UninstantiableClass`.getConstructor<[String]>("nnew"));
     uc("");
     uc.apply("");
     uc.namedApply{"s"-> ""};
@@ -2152,21 +2142,27 @@ shared void run() {
     sandbox(bug536);
     sandbox(bug537);
     sandbox(bug538);
+    sandbox(bug539);
     sandbox(bug548);
     sandbox(bug599);
     sandbox(bug607);
     sandbox(bug610);
     sandbox(bug642);
     sandbox(bug647);
+    sandbox(bug661);
     sandbox(bug670);
+    sandbox(bug675);
     sandbox(bug676);
+    sandbox(bug689);
     sandbox(bug692);
     sandbox(bug693);
     sandbox(bug694);
     sandbox(bug706);
     sandbox(bug708);
+    sandbox(bug711);
     sandbox(bug713);
     sandbox(bug719);
+    sandbox(bug714);
     // those were filed for the JVM compiler initially
     sandbox(bugC1196test);
     sandbox(bugC1197);
@@ -2177,9 +2173,8 @@ shared void run() {
     sandbox(bugC1244);
     sandbox(bugC1523);
     sandbox(bugC1998);
-    sandbox(langbug539);
+    // those were filed for the JS compiler initially
     sandbox(bugJ505);
-    sandbox(bug661);
     // ATTENTION!
     // When you add new test methods here make sure they are "shared" and marked "@test"!
     print(pass==total then "Metamodel tests OK (``total`` total)" else "Metamodel tests ``pass``/``total``");

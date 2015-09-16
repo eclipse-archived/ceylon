@@ -53,10 +53,17 @@ function AppliedClass$jsint(tipo,$$targs$$,that,classTargs){
   },undefined,_proto.$prop$getExtendedType.$crtmm$);
   atr$(that,'declaration',function(){return coimoddcl$(that);
   },undefined,_proto.$prop$getDeclaration.$crtmm$);
-  atr$(that,'parameterTypes',function(){return clsparamtypes(that);
-  },undefined,_proto.$prop$getParameterTypes.$crtmm$);
   atr$(that,'caseValues',function(){return coicase$(that);
   },undefined,_proto.$prop$getCaseValues.$crtmm$);
+  atr$(that,'defaultConstructor',function(){
+    return _proto.$prop$getDefaultConstructor.get.call(that);
+  },undefined,_proto.$prop$getDefaultConstructor.$crtmm$);
+  atr$(that,'constructors',function(){
+    return _proto.$prop$getConstructors.get.call(that);
+  },undefined,_proto.$prop$getConstructors.$crtmm$);
+  atr$(that,'declaredConstructors',function(){
+    return _proto.$prop$getDeclaredConstructors.get.call(that);
+  },undefined,_proto.$prop$getDeclaredConstructors.$crtmm$);
   that.getMethod=_proto.getMethod;
   that.getDeclaredMethod=_proto.getDeclaredMethod;
   that.getMethods=_proto.getMethods;
@@ -75,6 +82,7 @@ function AppliedClass$jsint(tipo,$$targs$$,that,classTargs){
   that.getDeclaredInterface=_proto.getDeclaredInterface;
   that.getInterfaces=_proto.getInterfaces;
   that.getDeclaredInterfaces=_proto.getDeclaredInterfaces;
+  that.getConstructor=_proto.getConstructor;
   that.equals=_proto.equals;
   that.typeOf=_proto.typeOf;
   that.supertypeOf=_proto.supertypeOf;
@@ -82,11 +90,12 @@ function AppliedClass$jsint(tipo,$$targs$$,that,classTargs){
   that.exactly=_proto.exactly;
   that.union=_proto.union;
   that.intersection=_proto.intersection;
-  that.getConstructor=_proto.getConstructor;
   that.$targs=classTargs;
   set_type_args(that,$$targs$$,AppliedClass$jsint);
   Class$meta$model({Arguments$Class:that.$$targs$$.Arguments$AppliedClass,
                    Type$Class:that.$$targs$$.Type$AppliedClass},that);
+  //This is for serialization
+  if (tipo===Tuple && classTargs)that.$$targs$$.Type$Class={t:Tuple,a:classTargs};
   that.tipo=tipo;
   return that;
 }

@@ -9,6 +9,7 @@ import ceylon.language.Anything;
 import ceylon.language.meta.declaration.OpenType;
 import ceylon.language.meta.declaration.SetterDeclaration;
 import ceylon.language.meta.declaration.ValueDeclaration$impl;
+import ceylon.language.meta.declaration.ValueableDeclaration$impl;
 
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
@@ -48,7 +49,18 @@ public class FreeValue
     public ValueDeclaration$impl $ceylon$language$meta$declaration$ValueDeclaration$impl() {
         return null;
     }
+    
+    @Override
+    @Ignore
+    public ValueableDeclaration$impl $ceylon$language$meta$declaration$ValueableDeclaration$impl() {
+        return null;
+    }
 
+    @Override
+    public boolean getLate(){
+        return ((com.redhat.ceylon.model.typechecker.model.TypedDeclaration) declaration).isLate();
+    }
+    
     @Override
     public boolean getVariable(){
         return ((com.redhat.ceylon.model.typechecker.model.TypedDeclaration) declaration).isVariable();
@@ -73,10 +85,10 @@ public class FreeValue
     }
 
     @Override
-    @TypeInfo("ceylon.language.meta.model::Value<Get,Set>")
+    @TypeInfo(value="ceylon.language.meta.model::Value<Get,Set>", erased=true)
     @TypeParameters({
         @TypeParameter("Get"),
-        @TypeParameter("Set"),
+        @TypeParameter(value="Set", defaultValue="ceylon.language::Nothing"),
     })
     public <Get, Set> ceylon.language.meta.model.Value<Get,Set> apply(@Ignore TypeDescriptor $reifiedGet,
                                                                       @Ignore TypeDescriptor $reifiedSet){
@@ -102,7 +114,7 @@ public class FreeValue
     @TypeParameters({
         @TypeParameter("Container"),
         @TypeParameter("Get"),
-        @TypeParameter("Set"),
+        @TypeParameter(value="Set", defaultValue="ceylon.language::Nothing"),
     })
     @Override
     public <Container, Get, Set>
@@ -214,6 +226,15 @@ public class FreeValue
     @Override
     @Ignore
     public java.lang.annotation.Annotation[] $getJavaAnnotations$() {
+        Class<?> javaClass = Metamodel.getJavaClass(declaration);
+        if(javaClass != null){
+            // FIXME: pretty sure this doesn't work with interop and fields
+            Method declaredGetter = Reflection.getDeclaredGetter(javaClass, NamingBase.getGetterName(declaration));
+            if (declaredGetter != null) {
+                return declaredGetter.getAnnotations();
+            }
+        }
+        // one last chance
         if(parameter != null
                 && !parameter.getModel().isShared()){
             // get the annotations from the parameter itself
@@ -242,21 +263,22 @@ public class FreeValue
             if(index >= parameterAnnotations.length)
                 throw Metamodel.newModelError("Parameter "+parameter+" index is greater than JVM parameters for "+parameter.getModel().getContainer());
             return parameterAnnotations[index];
-        }else{
-            Class<?> javaClass = Metamodel.getJavaClass(declaration);
-            // FIXME: pretty sure this doesn't work with interop and fields
-            Method declaredGetter = Reflection.getDeclaredGetter(javaClass, NamingBase.getGetterName(declaration));
-            if (declaredGetter != null) {
-                return declaredGetter.getAnnotations();
-            } else {
-                return new Annotation[0];
-            }
         }
+        // nope
+        return new Annotation[0];
     }
     
     @Override
     @Ignore
     public boolean $isAnnotated$(java.lang.Class<? extends java.lang.annotation.Annotation> annotationType) {
+        Class<?> javaClass = Metamodel.getJavaClass(declaration);
+        if(javaClass != null){
+            // FIXME: pretty sure this doesn't work with interop and fields
+            Method declaredGetter = Reflection.getDeclaredGetter(javaClass, NamingBase.getGetterName(declaration));
+            if(declaredGetter != null) 
+                return declaredGetter.isAnnotationPresent(annotationType);
+        }
+        // one last chance
         if(parameter != null
                 && !parameter.getModel().isShared()){
             for (java.lang.annotation.Annotation a : $getJavaAnnotations$()) {
@@ -265,12 +287,9 @@ public class FreeValue
                 }
             }
             return false;
-        }else{
-            Class<?> javaClass = Metamodel.getJavaClass(declaration);
-            // FIXME: pretty sure this doesn't work with interop and fields
-            Method declaredGetter = Reflection.getDeclaredGetter(javaClass, NamingBase.getGetterName(declaration));
-            return declaredGetter != null ? declaredGetter.isAnnotationPresent(annotationType) : false;
         }
+        // nope
+        return false;
     }
     
     @Override

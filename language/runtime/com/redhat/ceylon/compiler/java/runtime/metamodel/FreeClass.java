@@ -8,9 +8,11 @@ import java.util.List;
 import ceylon.language.Anything;
 import ceylon.language.Sequential;
 import ceylon.language.empty_;
+import ceylon.language.meta.declaration.CallableConstructorDeclaration;
 import ceylon.language.meta.declaration.ClassDeclaration$impl;
 import ceylon.language.meta.declaration.ConstructorDeclaration;
 import ceylon.language.meta.declaration.FunctionOrValueDeclaration;
+import ceylon.language.meta.declaration.ValueConstructorDeclaration;
 import ceylon.language.meta.declaration.ValueDeclaration;
 
 import com.redhat.ceylon.compiler.java.language.ObjectArrayIterable;
@@ -39,7 +41,7 @@ public class FreeClass
     @Ignore
     public static final TypeDescriptor $TypeDescriptor$ = TypeDescriptor.klass(FreeClass.class);
     private Sequential<? extends ceylon.language.meta.declaration.FunctionOrValueDeclaration> parameters;
-    private List<ConstructorDeclaration> constructors;
+    private List<ceylon.language.meta.declaration.Declaration> constructors;
     
     public FreeClass(com.redhat.ceylon.model.typechecker.model.Class declaration) {
         super(declaration);
@@ -69,11 +71,12 @@ public class FreeClass
         }else{
             this.parameters = (Sequential<? extends FunctionOrValueDeclaration>) (Sequential)empty_.get_();
         }
-        if (((Class)declaration).hasConstructors()) {
-            this.constructors = new LinkedList<ConstructorDeclaration>();
+        if (((Class)declaration).hasConstructors()
+                ||((Class)declaration).hasEnumerated()) {
+            this.constructors = new LinkedList<ceylon.language.meta.declaration.Declaration>();
             for (Declaration d : declaration.getMembers()) {
                 if (d instanceof Constructor) {
-                    this.constructors.add(Metamodel.<ConstructorDeclaration>getOrCreateMetamodel(d));
+                    this.constructors.add(Metamodel.<ceylon.language.meta.declaration.Declaration>getOrCreateMetamodel(d));
                 }
             }
         } else {
@@ -116,6 +119,11 @@ public class FreeClass
     @Override
     public boolean getAbstract() {
         return ((com.redhat.ceylon.model.typechecker.model.Class)declaration).isAbstract();
+    }
+    
+    @Override
+    public boolean getSerializable() {
+        return ((com.redhat.ceylon.model.typechecker.model.Class)declaration).isSerializable();
     }
 
     @Override
@@ -160,7 +168,23 @@ public class FreeClass
         List<com.redhat.ceylon.model.typechecker.model.Type> producedTypes = Metamodel.getProducedTypes(typeArguments);
         Metamodel.checkTypeArguments(null, declaration, producedTypes);
         com.redhat.ceylon.model.typechecker.model.Reference appliedType = declaration.appliedReference(null, producedTypes);
-        AppliedClass<Type, Arguments> ret = (AppliedClass<Type, Arguments>) Metamodel.getAppliedMetamodel(appliedType.getType());;
+        AppliedClass<Type, Arguments> ret = (AppliedClass<Type, Arguments>) Metamodel.getAppliedMetamodel(appliedType.getType());
+        Metamodel.checkReifiedTypeArgument("classApply", "Class<$1,$2>", Variance.OUT, appliedType.getType(), $reifiedType, 
+                Variance.IN, Metamodel.getProducedType(ret.$reifiedArguments), $reifiedArguments);
+        return ret;
+    }
+    
+    @Ignore
+    <Type, Arguments extends Sequential<? extends Object>> ceylon.language.meta.model.Class<Type, Arguments> classApplyInternal(@Ignore TypeDescriptor $reifiedType,
+            TypeDescriptor $reifiedArguments,
+            Sequential<? extends ceylon.language.meta.model.Type<?>> typeArguments,
+            com.redhat.ceylon.model.typechecker.model.Reference appliedType){
+        if(!getToplevel())
+            throw new ceylon.language.meta.model.TypeApplicationException("Cannot apply a member declaration with no container type: use memberApply");
+        List<com.redhat.ceylon.model.typechecker.model.Type> producedTypes = Metamodel.getProducedTypes(typeArguments);
+        Metamodel.checkTypeArguments(null, declaration, producedTypes);
+        //com.redhat.ceylon.model.typechecker.model.Reference appliedType = declaration.appliedReference(null, producedTypes);
+        AppliedClass<Type, Arguments> ret = (AppliedClass<Type, Arguments>) Metamodel.getAppliedMetamodel(appliedType.getType());
         Metamodel.checkReifiedTypeArgument("classApply", "Class<$1,$2>", Variance.OUT, appliedType.getType(), $reifiedType, 
                 Variance.IN, Metamodel.getProducedType(ret.$reifiedArguments), $reifiedArguments);
         return ret;
@@ -315,11 +339,12 @@ public class FreeClass
     }
     
     @TypeInfo("ceylon.language.meta.declaration::ConstructorDeclaration|ceylon.language::Null")
-    public ConstructorDeclaration getConstructorDeclaration(
+    @Override
+    public ceylon.language.meta.declaration.Declaration getConstructorDeclaration(
             @Name("name")
             String name) {
         checkInit();
-        for (ConstructorDeclaration ctor : this.constructors) {
+        for (ceylon.language.meta.declaration.Declaration ctor : this.constructors) {
             if (ctor.getName().equals(name)) {
                 return ctor;
             }
@@ -327,36 +352,45 @@ public class FreeClass
         return null;
     }
     
-    @TypeInfo("ceylon.language.meta.declaration::ConstructorDeclaration|ceylon.language::Null")
-    public ConstructorDeclaration getDefaultConstructorDeclaration() {
-        return getConstructorDeclaration("");
+    List<ceylon.language.meta.declaration.Declaration> constructors() {
+        checkInit();
+        return constructors;
     }
     
     @Ignore
-    private Sequential<? extends ConstructorDeclaration> filterConstructors(Predicate predicate) {
+    private Sequential<? extends ceylon.language.meta.declaration.ConstructorDeclaration> filterConstructors(Predicate predicate) {
         if (predicate == Predicates.false_()) {
             return (Sequential)empty_.get_();
         }
         checkInit();
-        ArrayList<ConstructorDeclaration> ctors = new ArrayList<ConstructorDeclaration>(constructors.size());
-        for(ConstructorDeclaration decl : constructors){
-            if (predicate.accept(((FreeConstructor)decl).constructor)) {
+        ArrayList<ceylon.language.meta.declaration.Declaration> ctors = new ArrayList<ceylon.language.meta.declaration.Declaration>(constructors.size());
+        for(ceylon.language.meta.declaration.Declaration decl : constructors){
+            if ((decl instanceof FreeCallableConstructor
+                    && predicate.accept(((FreeCallableConstructor)decl).constructor))
+                || (decl instanceof FreeValueConstructor
+                    && predicate.accept(((FreeValueConstructor)decl).constructor))) {
                 ctors.add(decl);
             }
         }
-        java.lang.Object[] array = ctors.toArray(new ConstructorDeclaration[ctors.size()]);
-        ObjectArrayIterable<ConstructorDeclaration> iterable = 
-                new ObjectArrayIterable<ConstructorDeclaration>(ConstructorDeclaration.$TypeDescriptor$, (ConstructorDeclaration[]) array);
+        ceylon.language.meta.declaration.Declaration[] array = ctors.toArray(new ceylon.language.meta.declaration.Declaration[ctors.size()]);
+        ObjectArrayIterable<ceylon.language.meta.declaration.Declaration> iterable = 
+                new ObjectArrayIterable<ceylon.language.meta.declaration.Declaration>(
+                        TypeDescriptor.union(
+                                CallableConstructorDeclaration.$TypeDescriptor$,
+                                ValueConstructorDeclaration.$TypeDescriptor$),
+                        (ceylon.language.meta.declaration.Declaration[]) array);
         return (ceylon.language.Sequential) iterable.sequence();
     }
     
     @TypeInfo("ceylon.language::Sequential<ceylon.language.meta.declaration::ConstructorDeclaration>")
-    public Sequential<? extends ConstructorDeclaration> constructorDeclarations() {
+    @Override
+    public Sequential<? extends ceylon.language.meta.declaration.ConstructorDeclaration> constructorDeclarations() {
         return filterConstructors(Predicates.TRUE);
     }
     
     @TypeInfo("ceylon.language::Sequential<ceylon.language.meta.declaration::ConstructorDeclaration>")
-    public <A extends java.lang.annotation.Annotation> Sequential<? extends ConstructorDeclaration> annotatedConstructorDeclarations(TypeDescriptor reified$Annotation) {
+    @Override
+    public <A extends java.lang.annotation.Annotation> Sequential<? extends ceylon.language.meta.declaration.ConstructorDeclaration> annotatedConstructorDeclarations(TypeDescriptor reified$Annotation) {
         return filterConstructors(Predicates.isDeclarationAnnotatedWith(reified$Annotation));
     }
 }

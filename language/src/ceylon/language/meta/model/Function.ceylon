@@ -1,3 +1,5 @@
+import ceylon.language.meta.declaration{FunctionDeclaration}
+
 """A function model represents the model of a Ceylon function that you can invoke and inspect.
    
    A function is a toplevel binding, declared on a package.
@@ -15,4 +17,6 @@
 shared sealed interface Function<out Type=Anything, in Arguments=Nothing>
         satisfies FunctionModel<Type, Arguments> & Applicable<Type, Arguments>
         given Arguments satisfies Anything[] {
+    "This function's declaration."
+    shared formal actual FunctionDeclaration declaration;
 }
