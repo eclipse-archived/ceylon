@@ -5397,11 +5397,12 @@ public class ExpressionTransformer extends AbstractTransformer {
         final ListBuffer<Substitution> fieldSubst = new ListBuffer<Substitution>();
         private JCExpression error;
         private JCStatement initIterator;
-        // A list of variable declarations local to the next() method so that
+        // A list of variable declarations local to next(), $next$N() 
+        // and $iterator$N() methods so that
         // the variable captured by whatever gets transformed there holds the value
         // at *that point* on the iteration, and not the (variable) value of 
-        // the iterator. See #986
-        private final ListBuffer<JCStatement> valueCaptures = ListBuffer.<JCStatement>lb();
+        // the iterator. See #986, #2304
+        private ListBuffer<VarDefBuilder> valueCaptures = ListBuffer.<VarDefBuilder>lb();
         public ComprehensionTransformation(final Tree.Comprehension comp, Type elementType) {
             this.comp = comp;
             targetIterType = typeFact().getIterableType(elementType);
@@ -5460,11 +5461,21 @@ public class ExpressionTransformer extends AbstractTransformer {
             }
         }
         
+        List<JCStatement> capture() {
+            List<JCStatement> result = List.<JCStatement>nil();
+            for (VarDefBuilder var : valueCaptures) {
+                // reverse order, but who cares?
+                result = result.prepend(var.buildFromField());
+            }
+            return result;
+        }
+        
         /**
          * Builds the {@code next()} method of the {@code AbstractIterator}
          */
         private JCMethodDecl makeNextMethod(Type iteratedType) {
-            List<JCStatement> of = valueCaptures.append(make().Return(transformExpression(excc.getExpression(), BoxingStrategy.BOXED, iteratedType))).toList();
+            List<JCStatement> of = List.<JCStatement>of(make().Return(transformExpression(excc.getExpression(), BoxingStrategy.BOXED, iteratedType)));
+            of = of.prependList(capture());
             JCStatement stmt = make().If(
                     make().Apply(null,
                         ctxtName.makeIdentWithThis(), List.<JCExpression>nil()),
@@ -5544,10 +5555,13 @@ public class ExpressionTransformer extends AbstractTransformer {
              * Intended to be placed in a {@code while (true) } loop, to keep checking the conditions until they apply
              * or {@code condExpr} doesn't.
              */
-            public IfComprehensionCondList(java.util.List<Tree.Condition> conditions, JCExpression condExpr, Name breakLabel) {
+            public IfComprehensionCondList(
+                    java.util.List<Tree.Condition> conditions, 
+                    JCExpression condExpr, 
+                    Name breakLabel) {
                 this(conditions,
                     // check condExpr before the conditions
-                    List.<JCStatement>of(make().If(make().Unary(JCTree.NOT, condExpr), make().Break(breakLabel), null)),
+                        capture().prepend(make().If(make().Unary(JCTree.NOT, condExpr), make().Break(breakLabel), null)),
                     // break if a condition matches
                     List.<JCStatement>of(make().Break(breakLabel)),
                     null);
@@ -5612,7 +5626,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 if (vars != null) {
                     for (VarDefBuilder v : vars) {
                         fields.add(v.buildField());
-                        valueCaptures.add(v.buildFromField());
+                        valueCaptures.add(v);
                         stmts = stmts.prepend(make().Exec(v.buildAssign()));
                     }
                 }
@@ -5729,7 +5743,9 @@ public class ExpressionTransformer extends AbstractTransformer {
                                 null),
                         make().If(make().Unary(JCTree.NOT, make().Apply(null, ctxtName.makeIdentWithThis(), List.<JCExpression>nil())),
                                 make().Return(makeBoolean(false)),
-                                null),
+                                null)));
+                block = block.appendList(capture());
+                block = block.appendList(List.<JCStatement>of(
                         make().Exec(make().Assign(iterVar.makeIdent(), 
                                                   make().Apply(null,
                                                                makeSelect(iterableExpr, "iterator"), 
@@ -5760,7 +5776,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 return null;
             }
             for (VarDefBuilder vdb : vdbs) {
-                valueCaptures.append(vdb.buildFromField());
+                valueCaptures.append(vdb);
                 fields.add(vdb.buildField());
                 elseBody.add(make().Exec(vdb.buildAssign()));
             }
