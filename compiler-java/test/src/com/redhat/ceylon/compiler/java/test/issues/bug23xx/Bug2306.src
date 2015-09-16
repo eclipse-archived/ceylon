@@ -1,0 +1,56 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug23xx;
+
+class Box2306<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    Box2306(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final .java.lang.Object t) {
+        this.$reified$T = $reified$T;
+        this.t = t;
+    }
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
+    private final .java.lang.Object t;
+    
+    public final .java.lang.Object getT() {
+        return t;
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug23xx.Box2306.class, $reified$T);
+    }
+}
+final class bug2306_ {
+    
+    private bug2306_() {
+    }
+    
+    static void bug2306() {
+        final .ceylon.language.Iterable<? extends .ceylon.language.Callable<? extends .ceylon.language.Integer>, ? extends .java.lang.Object> fns = new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.Callable<? extends .ceylon.language.Integer>, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 1, false){
+            
+            @.java.lang.Override
+            protected final .java.lang.Object $evaluate$(int $index$) {
+                switch ($index$) {
+                case 0: 
+                    return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Integer()", (short)-1){
+                        
+                        @.java.lang.Override
+                        public .ceylon.language.Integer $call$() {
+                            return .ceylon.language.Integer.instance(1L);
+                        }
+                    };
+                
+                default: 
+                    return null;
+                
+                }
+            }
+        };
+        ((.ceylon.language.Callable<? extends .ceylon.language.Integer>)(.ceylon.language.Callable)fns.getFirst()).$call$();
+        ((.ceylon.language.Callable<? extends .ceylon.language.Integer>)(.ceylon.language.Callable)new .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Box2306<.ceylon.language.Callable<? extends .ceylon.language.Integer>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Integer()", (short)-1){
+            
+            @.java.lang.Override
+            public .ceylon.language.Integer $call$() {
+                return .ceylon.language.Integer.instance(1L);
+            }
+        }).getT()).$call$();
+    }
+}

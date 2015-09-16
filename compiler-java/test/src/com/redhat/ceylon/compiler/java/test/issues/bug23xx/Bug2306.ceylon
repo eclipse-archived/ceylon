@@ -18,8 +18,12 @@
  * MA  02110-1301, USA.
  */
 @noanno
+class Box2306<T>(shared T&Anything() t) {}
+@noanno
 void bug2306() {
     value fns = {()=>1};
     fns.first(); // error
-    (fns.first of Integer())(); // ok
+    
+    Box2306(()=>1).t(); // error
 }
+
