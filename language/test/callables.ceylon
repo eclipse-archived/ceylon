@@ -71,6 +71,21 @@ shared void callables() {
   }
   if (exists g=f) { resolve(g); }
   else { fail("WTF g doesn\'t exist"); }
+  
+  // https://github.com/ceylon/ceylon.language/issues/716
+  check(identity<String> != identity<Integer>, "#716.1");
+  // false on jvm, true on js
+  
+  value single = Singleton("");
+  check(single.each != single.each, "#716.2");
+  // false on jvm, true on js
+  
+  check(String.clone != String.clone, "#716.3");
+  // false on jvm, false on js
+  value feq = () => null;
+  value geq = () => null;
+  check(feq != feq, "#716.4"); // true
+  check(feq != geq, "#716.5"); // false
 }
 
 @test

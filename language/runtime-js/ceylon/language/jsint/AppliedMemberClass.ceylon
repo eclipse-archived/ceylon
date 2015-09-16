@@ -1,7 +1,8 @@
 import ceylon.language.meta.model {
   ClosedType=Type, ClassModel, InterfaceModel,
+  FunctionModel, ValueModel,
   Member, Class, ClassOrInterface, Attribute, Method,
-  MemberInterface,MemberClass,MemberClassConstructor
+  MemberInterface,MemberClass,MemberClassConstructor, TypeArgument
 }
 import ceylon.language.meta.declaration {
   ClassDeclaration,
@@ -12,15 +13,20 @@ shared native class AppliedMemberClass<in Container, out Type=Anything, in Argum
         satisfies MemberClass<Container,Type,Arguments>
         given Arguments satisfies Anything[] {
   shared actual native Class<Type,Arguments> bind(Object container);
-  shared actual native MemberClassConstructor<Anything,Type, Arguments>? getConstructor<Arguments=Nothing>(String name)
-          given Arguments satisfies Anything[];
+  shared actual native <MemberClassCallableConstructor<Container, Type, Arguments>|MemberClass<Container, Type, Arguments>>? defaultConstructor;
+  shared actual native MemberClassCallableConstructor<Container,Type,Arguments>|MemberClassValueConstructor<Container,Type>? getConstructor<Arguments>(String name)
+        given Arguments satisfies Anything[];
+  shared actual native Sequential<FunctionModel<Type, Nothing>|ValueModel<Type>> constructors;
+  shared actual native Sequential<FunctionModel<Type, Nothing>|ValueModel<Type>> declaredConstructors;
+
   shared actual native ClosedType<Anything> declaringType;
 
-  shared actual native ClosedType<Anything>[] parameterTypes;
-
+  //shared actual native ClosedType<Anything>[] parameterTypes;
   shared actual native ClassDeclaration declaration;
   shared actual native Map<TypeParameter, ClosedType> typeArguments;
   shared actual native ClosedType<Anything>[] typeArgumentList;
+  shared actual native Map<TypeParameter, TypeArgument> typeArgumentWithVariances;
+  shared actual native TypeArgument[] typeArgumentWithVarianceList;
     
   shared actual native ClassModel<Anything, Nothing>? extendedType;
   shared actual native InterfaceModel<Anything>[] satisfiedTypes;

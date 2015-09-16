@@ -31,6 +31,7 @@ import ceylon.language.sequence_;
 import ceylon.language.meta.declaration.AnnotatedDeclaration;
 import ceylon.language.meta.declaration.Module;
 import ceylon.language.meta.declaration.NestableDeclaration;
+import ceylon.language.meta.declaration.OpenClassOrInterfaceType;
 import ceylon.language.meta.declaration.OpenType;
 import ceylon.language.meta.declaration.Package;
 import ceylon.language.meta.model.ClassOrInterface;
@@ -41,6 +42,7 @@ import ceylon.language.meta.model.TypeApplicationException;
 
 import com.redhat.ceylon.common.runtime.CeylonModuleClassLoader;
 import com.redhat.ceylon.compiler.java.Util;
+import com.redhat.ceylon.compiler.java.codegen.Decl;
 import com.redhat.ceylon.compiler.java.language.BooleanArray;
 import com.redhat.ceylon.compiler.java.language.ByteArray;
 import com.redhat.ceylon.compiler.java.language.CharArray;
@@ -64,6 +66,7 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
 import com.redhat.ceylon.model.cmr.JDKUtils;
 import com.redhat.ceylon.model.loader.ModelLoader.DeclarationType;
+import com.redhat.ceylon.model.loader.JvmBackendUtil;
 import com.redhat.ceylon.model.loader.NamingBase;
 import com.redhat.ceylon.model.loader.impl.reflect.mirror.ReflectionClass;
 import com.redhat.ceylon.model.loader.impl.reflect.mirror.ReflectionMethod;
@@ -87,6 +90,7 @@ import com.redhat.ceylon.model.typechecker.model.Modules;
 import com.redhat.ceylon.model.typechecker.model.NothingType;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.Reference;
+import com.redhat.ceylon.model.typechecker.model.SiteVariance;
 import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.Scope;
 import com.redhat.ceylon.model.typechecker.model.Setter;
@@ -100,6 +104,9 @@ public class Metamodel {
     private static RuntimeModuleManager moduleManager;
     
     // FIXME: this will need better thinking in terms of memory usage
+    private static Map<java.lang.Class, ceylon.language.meta.declaration.NestableDeclaration> classToDeclaration
+    = new HashMap<java.lang.Class, ceylon.language.meta.declaration.NestableDeclaration>();
+    
     private static Map<com.redhat.ceylon.model.typechecker.model.Declaration, Object> typeCheckModelToRuntimeModel
         = new HashMap<com.redhat.ceylon.model.typechecker.model.Declaration, Object>();
 
@@ -111,6 +118,17 @@ public class Metamodel {
 
     private static Map<TypeDescriptor,Type> typeDescriptorToProducedType = new WeakHashMap<TypeDescriptor,Type>();
 
+    private static final TypeDescriptor TD_ClosedTypeOfAnything
+        = TypeDescriptor.klass(ceylon.language.meta.model.Type.class, ceylon.language.Anything.$TypeDescriptor$);
+    private static final TypeDescriptor TD_ClosedTypeArgumentElement
+        = TypeDescriptor.union(TD_ClosedTypeOfAnything, ceylon.language.meta.declaration.Variance.$TypeDescriptor$);
+    private static final TypeDescriptor TD_ClosedTypeArgument
+        = TypeDescriptor.tuple(false, false, -1, TD_ClosedTypeOfAnything, ceylon.language.meta.declaration.Variance.$TypeDescriptor$);
+    public static final TypeDescriptor TD_OpenTypeArgumentElement
+        = TypeDescriptor.union(ceylon.language.meta.declaration.OpenType.$TypeDescriptor$, ceylon.language.meta.declaration.Variance.$TypeDescriptor$);
+    public static final TypeDescriptor TD_OpenTypeArgument
+        = TypeDescriptor.tuple(false, false, -1, ceylon.language.meta.declaration.OpenType.$TypeDescriptor$, ceylon.language.meta.declaration.Variance.$TypeDescriptor$);
+    
     static{
         resetModuleManager();
     }
@@ -129,6 +147,7 @@ public class Metamodel {
         moduleManager = new RuntimeModuleManager();
         moduleManager.initCoreModules(new Modules());
         moduleManager.prepareForTypeChecking();
+        classToDeclaration.clear();
         typeCheckModelToRuntimeModel.clear();
         typeCheckModulesToRuntimeModel.clear();
         typeCheckPackagesToRuntimeModel.clear();
@@ -327,7 +346,7 @@ public class Metamodel {
                 getOrCreateMetamodel(mod);
                 if(declaration instanceof com.redhat.ceylon.model.typechecker.model.Class){
                     com.redhat.ceylon.model.typechecker.model.Class klass = (com.redhat.ceylon.model.typechecker.model.Class) declaration;
-                    ret = klass.hasConstructors() ?
+                    ret = klass.hasConstructors() || klass.hasEnumerated()?
                             new com.redhat.ceylon.compiler.java.runtime.metamodel.FreeClassWithConstructors(klass) :
                             new com.redhat.ceylon.compiler.java.runtime.metamodel.FreeClassWithInitializer(klass);
                 }else if(declaration instanceof com.redhat.ceylon.model.typechecker.model.Interface){
@@ -337,7 +356,7 @@ public class Metamodel {
                     com.redhat.ceylon.model.typechecker.model.TypeAlias alias = (com.redhat.ceylon.model.typechecker.model.TypeAlias)declaration;
                     ret = new com.redhat.ceylon.compiler.java.runtime.metamodel.FreeAliasDeclaration(alias);
                 }else if(declaration instanceof com.redhat.ceylon.model.typechecker.model.Function){
-                    com.redhat.ceylon.model.typechecker.model.TypedDeclaration method = (com.redhat.ceylon.model.typechecker.model.TypedDeclaration)declaration;
+                    com.redhat.ceylon.model.typechecker.model.Functional method = (com.redhat.ceylon.model.typechecker.model.Functional)declaration;
                     ret = new com.redhat.ceylon.compiler.java.runtime.metamodel.FreeFunction(method);
                 }else if(declaration instanceof com.redhat.ceylon.model.typechecker.model.Value){
                     com.redhat.ceylon.model.typechecker.model.Value value = (com.redhat.ceylon.model.typechecker.model.Value)declaration;
@@ -347,7 +366,16 @@ public class Metamodel {
                     ret = new FreeSetter(value);
                 }else if(declaration instanceof com.redhat.ceylon.model.typechecker.model.Constructor){
                     com.redhat.ceylon.model.typechecker.model.Constructor value = (com.redhat.ceylon.model.typechecker.model.Constructor)declaration;
-                    ret = new FreeConstructor(value);
+                    Declaration functionOrValue = value.getContainer().getDirectMember(value.getName(), null, false);
+                    if (functionOrValue instanceof com.redhat.ceylon.model.typechecker.model.Function) {
+                        ret = new FreeCallableConstructor((com.redhat.ceylon.model.typechecker.model.Function)functionOrValue, value);
+                    } else if (functionOrValue instanceof com.redhat.ceylon.model.typechecker.model.Value) {
+                        ret = new FreeValueConstructor((com.redhat.ceylon.model.typechecker.model.Value)functionOrValue, value);
+                    } else if (functionOrValue == null) {
+                        ret = new FreeCallableConstructor(value, value);
+                    }else {
+                        throw Metamodel.newModelError("Declaration type not supported yet: "+declaration);
+                    }
                 }else{
                     throw Metamodel.newModelError("Declaration type not supported yet: "+declaration);
                 }
@@ -538,13 +566,29 @@ public class Metamodel {
     public static <T> ceylon.language.meta.model.Type<T> getAppliedMetamodel(Type pt) {
         TypeDeclaration declaration = pt.getDeclaration();
         if(declaration instanceof com.redhat.ceylon.model.typechecker.model.Constructor){
+            com.redhat.ceylon.model.typechecker.model.Constructor ctorDeclaration = (com.redhat.ceylon.model.typechecker.model.Constructor)declaration;
+            Type ctorType = pt;
             pt = pt.getExtendedType();
             declaration = pt.getDeclaration();
+            TypeDescriptor reifiedArguments;
+            if(!Decl.isEnumeratedConstructor(ctorDeclaration) && !declaration.isAnonymous() 
+                    && !isLocalType(declaration))
+                reifiedArguments = Metamodel.getTypeDescriptorForArguments(declaration.getUnit(), (Functional)ctorDeclaration, ctorType);
+            else
+                reifiedArguments = TypeDescriptor.NothingType;
+            TypeDescriptor reifiedType = getTypeDescriptorForProducedType(pt);
+
+            if(declaration.isToplevel() || isLocalType(declaration))
+                return new com.redhat.ceylon.compiler.java.runtime.metamodel.AppliedClass(reifiedType, reifiedArguments, pt, null, null);
+            
+            TypeDescriptor reifiedContainer = getTypeDescriptorForProducedType(pt.getQualifyingType());
+            return new com.redhat.ceylon.compiler.java.runtime.metamodel.AppliedMemberClass(reifiedContainer, reifiedType, reifiedArguments, pt);
         }
         if(declaration instanceof com.redhat.ceylon.model.typechecker.model.Class){
             // anonymous classes don't have parameter lists
             TypeDescriptor reifiedArguments;
-            if(!declaration.isAnonymous() && !isLocalType(declaration))
+            if(!declaration.isAnonymous() 
+                    && !isLocalType(declaration))
                 reifiedArguments = Metamodel.getTypeDescriptorForArguments(declaration.getUnit(), (Functional)declaration, pt);
             else
                 reifiedArguments = TypeDescriptor.NothingType;
@@ -818,7 +862,7 @@ public class Metamodel {
         if(declaration instanceof UnknownType){
             ((UnknownType) declaration).reportErrors();
         }
-        throw Metamodel.newModelError("Unsupported declaration type: " + declaration);
+        throw Metamodel.newModelError("Unsupported declaration type: " + (declaration == null ? "null" : declaration.getClass()));
     }
 
     public static TypeDescriptor[] getTypeDescriptors(Sequential<? extends ceylon.language.meta.model.Type<?>> types) {
@@ -1067,7 +1111,7 @@ public class Metamodel {
 		return new ObjectArrayIterable<A>($reifiedValues, (A[]) array).sequence();
     }
 
-    public static String getJavaMethodName(Function method) {
+    public static String getJavaMethodName(Functional method) {
         // FIXME: introduce a damn interface for getRealName()
         if(method instanceof JavaMethod)
             return ((JavaMethod)method).getRealName();
@@ -1147,11 +1191,7 @@ public class Metamodel {
     }
     
     public static boolean isCeylon(com.redhat.ceylon.model.typechecker.model.ClassOrInterface declaration){
-        if(declaration instanceof LazyClass)
-            return ((LazyClass) declaration).isCeylon();
-        if(declaration instanceof LazyInterface)
-            return ((LazyInterface) declaration).isCeylon();
-        throw Metamodel.newModelError("Declaration type not supported: "+declaration);
+        return JvmBackendUtil.isCeylon(declaration);
     }
 
     public static TypeDescriptor getTypeDescriptorForArguments(com.redhat.ceylon.model.typechecker.model.Unit unit, 
@@ -1184,13 +1224,20 @@ public class Metamodel {
      * In theory this can only be used for ClassOrInterface or TypeAlias.
      */
     public static ceylon.language.meta.declaration.NestableDeclaration getOrCreateMetamodel(java.lang.Class<?> klass){
-        // FIXME: is this really enough?
-        String typeName = klass.getName();
-        com.redhat.ceylon.model.typechecker.model.Module module = moduleManager.findModuleForClass(klass);
-        com.redhat.ceylon.model.typechecker.model.TypeDeclaration decl = 
-                (com.redhat.ceylon.model.typechecker.model.TypeDeclaration) 
-                    moduleManager.getModelLoader().getDeclaration(module, typeName, DeclarationType.TYPE);
-        return (ceylon.language.meta.declaration.NestableDeclaration) getOrCreateMetamodel(decl);
+        synchronized(getLock()){
+            ceylon.language.meta.declaration.NestableDeclaration result = classToDeclaration.get(klass);
+            if (result == null) {
+                // FIXME: is this really enough?
+                String typeName = klass.getName();
+                com.redhat.ceylon.model.typechecker.model.Module module = moduleManager.findModuleForClass(klass);
+                com.redhat.ceylon.model.typechecker.model.TypeDeclaration decl = 
+                        (com.redhat.ceylon.model.typechecker.model.TypeDeclaration) 
+                            moduleManager.getModelLoader().getDeclaration(module, typeName, DeclarationType.TYPE);
+                result = (ceylon.language.meta.declaration.NestableDeclaration) getOrCreateMetamodel(decl);
+                classToDeclaration.put(klass, result);
+            }
+            return result;
+        }
     }
 
     public static TypeDescriptor getTypeDescriptorForFunction(Reference appliedFunction) {
@@ -1315,12 +1362,55 @@ public class Metamodel {
         }
         return new InternalMap<ceylon.language.meta.declaration.TypeParameter, 
                                ceylon.language.meta.model.Type<?>>(ceylon.language.meta.declaration.TypeParameter.$TypeDescriptor$, 
-                                                              TypeDescriptor.klass(ceylon.language.meta.model.Type.class, ceylon.language.Anything.$TypeDescriptor$), 
-                                                              typeArguments);
+                                                                   TD_ClosedTypeOfAnything, 
+                                                                   typeArguments);
     }
+
+    public static ceylon.language.Map<? extends ceylon.language.meta.declaration.TypeParameter, ? extends ceylon.language.Sequence<? extends Object>> 
+        getTypeArgumentWithVariances(ceylon.language.meta.declaration.GenericDeclaration declaration, Reference appliedFunction) {
     
+        java.util.Map<ceylon.language.meta.declaration.TypeParameter, ceylon.language.Sequence<? extends Object>> typeArguments 
+            = new LinkedHashMap<ceylon.language.meta.declaration.TypeParameter, ceylon.language.Sequence<? extends Object>>();
+        Iterator<? extends ceylon.language.meta.declaration.TypeParameter> typeParameters = declaration.getTypeParameterDeclarations().iterator();
+        Object it;
+        java.util.Map<com.redhat.ceylon.model.typechecker.model.TypeParameter, com.redhat.ceylon.model.typechecker.model.Type> ptArguments 
+            = appliedFunction.getTypeArguments();
+        Map<TypeParameter, SiteVariance> varianceOverrides = appliedFunction instanceof com.redhat.ceylon.model.typechecker.model.Type
+                ? ((com.redhat.ceylon.model.typechecker.model.Type)appliedFunction).getVarianceOverrides() : null;
+        while((it = typeParameters.next()) != finished_.get_()){
+            com.redhat.ceylon.compiler.java.runtime.metamodel.FreeTypeParameter tp = (com.redhat.ceylon.compiler.java.runtime.metamodel.FreeTypeParameter) it;
+            com.redhat.ceylon.model.typechecker.model.TypeParameter tpDecl = (com.redhat.ceylon.model.typechecker.model.TypeParameter) tp.declaration;
+            com.redhat.ceylon.model.typechecker.model.Type ptArg = ptArguments.get(tpDecl);
+            ceylon.language.meta.model.Type<?> ptArgWrapped = Metamodel.getAppliedMetamodel(ptArg);
+            ceylon.language.meta.declaration.Variance variance = modelVarianceToMetaModel(varianceOverrides, tpDecl);
+            ceylon.language.Sequence<? extends Object> tuple = ceylon.language.Tuple.instance(TD_ClosedTypeArgumentElement, new Object[]{ptArgWrapped, variance});
+            typeArguments.put(tp, tuple);
+        }
+        return new InternalMap<ceylon.language.meta.declaration.TypeParameter, 
+                               ceylon.language.Sequence<?>>(ceylon.language.meta.declaration.TypeParameter.$TypeDescriptor$, 
+                                                            TD_ClosedTypeArgument, 
+                                                            typeArguments);
+    }
+
+    public static ceylon.language.meta.declaration.Variance modelVarianceToMetaModel(Map<TypeParameter, SiteVariance> varianceOverrides, TypeParameter tpDecl) {
+        if(varianceOverrides == null)
+            return getModelVariance(tpDecl);
+        SiteVariance useSiteVariance = varianceOverrides.get(tpDecl);
+        if(useSiteVariance == null)
+            return ceylon.language.meta.declaration.invariant_.get_();
+        switch(useSiteVariance){
+        case IN:
+            return ceylon.language.meta.declaration.contravariant_.get_(); 
+        case OUT:
+            return ceylon.language.meta.declaration.covariant_.get_(); 
+        }
+        // should not happen
+        return ceylon.language.meta.declaration.invariant_.get_();
+    }
+
     public static String toTypeString(ceylon.language.meta.declaration.NestableDeclaration declaration, 
-            ceylon.language.Map<? extends ceylon.language.meta.declaration.TypeParameter, ?> typeArguments){
+            ceylon.language.Map<? extends ceylon.language.meta.declaration.TypeParameter, 
+                                ? extends ceylon.language.Sequence<? extends Object>> typeArguments){
         StringBuffer string = new StringBuffer();
         string.append(declaration.getName());
         if(declaration instanceof ceylon.language.meta.declaration.GenericDeclaration)
@@ -1343,8 +1433,8 @@ public class Metamodel {
      * @param <TypeOrOpenType> Either a Type (appending for a Model) or an 
      * OpenType (appending for a Declaration)
      */
-    private static <TypeOrOpenType> void addTypeArguments(StringBuffer string, ceylon.language.meta.declaration.GenericDeclaration declaration,
-            ceylon.language.Map<? extends ceylon.language.meta.declaration.TypeParameter, TypeOrOpenType> typeArguments) {
+    private static void addTypeArguments(StringBuffer string, ceylon.language.meta.declaration.GenericDeclaration declaration,
+            ceylon.language.Map<? extends ceylon.language.meta.declaration.TypeParameter, ? extends ceylon.language.Sequence<? extends Object>> typeArguments) {
         if(!declaration.getTypeParameterDeclarations().getEmpty()){
             string.append("<");
             Iterator<?> iterator = declaration.getTypeParameterDeclarations().iterator();
@@ -1356,7 +1446,14 @@ public class Metamodel {
                 else
                     string.append(",");
                 ceylon.language.meta.declaration.TypeParameter tpDecl = (ceylon.language.meta.declaration.TypeParameter) it;
-                Object val = typeArguments != null ? typeArguments.get(tpDecl) : null;
+                ceylon.language.Sequence<?> tuple = typeArguments != null ? typeArguments.get(tpDecl) : null;
+                Object val = tuple.getFromFirst(0);
+                ceylon.language.meta.declaration.Variance variance = (ceylon.language.meta.declaration.Variance)tuple.getFromFirst(1);
+                if(variance == ceylon.language.meta.declaration.contravariant_.get_())
+                    string.append("in ");
+                else if(variance == ceylon.language.meta.declaration.covariant_.get_())
+                    string.append("out ");
+                
                 if (val instanceof ceylon.language.meta.model.Type) {
                     string.append(val);
                 } else if (val instanceof ceylon.language.meta.declaration.OpenTypeVariable) {
@@ -1376,16 +1473,26 @@ public class Metamodel {
     public static String toTypeString(ceylon.language.meta.model.Model model){
         StringBuffer string = new StringBuffer();
         ceylon.language.meta.model.Type<?> container = model.getContainer();
-        if(container == null){
+        if (model instanceof AppliedCallableConstructor) {
+            string.append(((AppliedCallableConstructor<?,?>)model).appliedClass.toString()).append(".");
+        } else if (model instanceof AppliedValueConstructor) {
+            string.append(((AppliedValueConstructor<?,?>)model).clazz.toString()).append(".");
+        } else if (model instanceof AppliedCallableMemberConstructor) {
+            string.append(((AppliedCallableMemberConstructor<?,?,?>)model).clazz.toString()).append(".");
+        } else if (model instanceof AppliedValueMemberConstructor) {
+            string.append(((AppliedValueMemberConstructor<?,?,?>)model).clazz.toString()).append(".");
+        } else if(container == null){
             string.append(model.getDeclaration().getContainingPackage().getName()).append("::");
-        }else if(container instanceof ceylon.language.meta.model.ClassOrInterface<?>){
+        } else if(container instanceof ceylon.language.meta.model.ClassOrInterface<?>){
             string.append(container.toString()).append(".");
-        }else{
+        } else {
             string.append("<").append(container.toString()).append(">.");
         }
+        
         string.append(model.getDeclaration().getName());
         if(model instanceof ceylon.language.meta.model.Generic)
-            addTypeArguments(string, (ceylon.language.meta.declaration.GenericDeclaration) model.getDeclaration(), ((ceylon.language.meta.model.Generic)model).getTypeArguments());
+            addTypeArguments(string, (ceylon.language.meta.declaration.GenericDeclaration) model.getDeclaration(), 
+                    ((ceylon.language.meta.model.Generic)model).getTypeArgumentWithVariances());
         return string.toString();
     }
 
@@ -1586,7 +1693,8 @@ public class Metamodel {
         
         // now do a regular invocation
         Sequential<? extends Object> argumentSequence = values.sequence();
-        return Util.apply(function, argumentSequence);
+        // we can trust any variadic or pseudo-variadic since we checked parameter by parameter (no spreading possible)
+        return Util.apply(function, argumentSequence, null);
     }
     
     private static Map<String, Object> collectArguments(ceylon.language.Iterable<? extends ceylon.language.Entry<? extends ceylon.language.String,? extends Object>,? extends Object> arguments) {
@@ -1643,7 +1751,8 @@ public class Metamodel {
             i++;
         }
         // they are all good, let's call it
-        return Util.apply(function, arguments);
+        TypeDescriptor variadicElementType = variadicElement != null ? Metamodel.getTypeDescriptorForProducedType(variadicElement) : null;
+        return Util.apply(function, arguments, variadicElementType);
     }
     
     public static <K,C>K bind(ceylon.language.meta.model.Qualified<K,C> member, Type containerType, Object container){
@@ -1720,8 +1829,39 @@ public class Metamodel {
         return (Sequential)(sequence != null ? sequence : empty_.get_());
     }
 
+    public static ceylon.language.Sequential<? extends ceylon.language.meta.declaration.OpenType> getTypeArgumentList(OpenClassOrInterfaceType generic) {
+        Object sequence = sequence_.sequence(
+                OpenType.$TypeDescriptor$, Null.$TypeDescriptor$, 
+                generic.getTypeArguments().getItems());
+        return (Sequential)(sequence != null ? sequence : empty_.get_());
+    }
+
+    public static ceylon.language.Sequential<? extends ceylon.language.Sequence<? extends Object>> getTypeArgumentWithVarianceList(Generic generic) {
+        Object sequence = sequence_.sequence(
+                TD_ClosedTypeArgument, Null.$TypeDescriptor$, 
+                generic.getTypeArgumentWithVariances().getItems());
+        return (Sequential)(sequence != null ? sequence : empty_.get_());
+    }
+
+    public static ceylon.language.Sequential<? extends ceylon.language.Sequence<? extends Object>> getTypeArgumentWithVarianceList(OpenClassOrInterfaceType generic) {
+        Object sequence = sequence_.sequence(
+                TD_OpenTypeArgument, Null.$TypeDescriptor$, 
+                generic.getTypeArgumentWithVariances().getItems());
+        return (Sequential)(sequence != null ? sequence : empty_.get_());
+    }
+
     public static boolean isAnnotated(TypeDescriptor reifed$AnnotationType,
             AnnotationBearing annotated) {
         return annotated.$isAnnotated$(getJavaAnnotationClass((Class)((TypeDescriptor.Class)reifed$AnnotationType).getKlass()));
+    }
+
+    public static ceylon.language.meta.declaration.Variance getModelVariance(TypeParameter declaration) {
+        if(declaration.isInvariant())
+            return ceylon.language.meta.declaration.invariant_.get_();
+        if(declaration.isCovariant())
+            return ceylon.language.meta.declaration.covariant_.get_();
+        if(declaration.isContravariant())
+            return ceylon.language.meta.declaration.contravariant_.get_();
+        throw Metamodel.newModelError("Underlying declaration is neither invariant, covariant nor contravariant");
     }
 }

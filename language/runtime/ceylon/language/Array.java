@@ -5,20 +5,13 @@ import static com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.inter
 import static java.lang.System.arraycopy;
 import static java.util.Arrays.copyOfRange;
 
+import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
+import java.lang.invoke.MethodHandles.Lookup;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
-
-import ceylon.language.impl.BaseIterable;
-import ceylon.language.impl.BaseIterator;
-import ceylon.language.impl.BaseList;
-import ceylon.language.impl.rethrow_;
-import ceylon.language.meta.declaration.ClassDeclaration;
-import ceylon.language.meta.declaration.ValueDeclaration;
-import ceylon.language.serialization.Deconstructed;
-import ceylon.language.serialization.Deconstructor;
 
 import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.language.AbstractArrayIterable;
@@ -26,6 +19,7 @@ import com.redhat.ceylon.compiler.java.metadata.Annotation;
 import com.redhat.ceylon.compiler.java.metadata.Annotations;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Class;
+import com.redhat.ceylon.compiler.java.metadata.ConstructorName;
 import com.redhat.ceylon.compiler.java.metadata.Defaulted;
 import com.redhat.ceylon.compiler.java.metadata.FunctionalParameter;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
@@ -39,6 +33,16 @@ import com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 import com.redhat.ceylon.compiler.java.runtime.serialization.$Serialization$;
 import com.redhat.ceylon.compiler.java.runtime.serialization.Serializable;
+
+import ceylon.language.impl.BaseIterable;
+import ceylon.language.impl.BaseIterator;
+import ceylon.language.impl.BaseList;
+import ceylon.language.impl.MemberImpl;
+import ceylon.language.impl.rethrow_;
+import ceylon.language.meta.declaration.ClassDeclaration;
+import ceylon.language.meta.declaration.ValueDeclaration;
+import ceylon.language.serialization.Member;
+import ceylon.language.serialization.ReachableReference;
 
 @Ceylon(major = 8)
 @Class(constructors=true, extendsType="ceylon.language::Basic")
@@ -105,6 +109,7 @@ public final class Array<Element>
     
     @Ceylon(major = 8)
     @Ignore
+    @ConstructorName("ofSize")
     public static final class ofSize_ {
         private ofSize_() {}
     }
@@ -1320,8 +1325,159 @@ public final class Array<Element>
                 setJavaItem(element, idx);
         }
     }
+    
+    public void swap(
+            @Name("i") @TypeInfo("ceylon.language::Integer") long p,
+            @Name("j") @TypeInfo("ceylon.language::Integer") long q) {
+        if (p<0 || q<0) {
+            throw new AssertionError("array index may not be negative");
+        }
+        else if (p>=size || q>=size) {
+            throw new AssertionError("array index must be less than size of array " + size);
+        }
+        int i = (int) p;
+        int j = (int) q;
+        if (i==j) return;
+        if (array instanceof java.lang.Object[]) {
+            java.lang.Object[] objectArray = (java.lang.Object[]) array;
+            java.lang.Object x = objectArray[i];
+            java.lang.Object y = objectArray[j];
+            objectArray[j] = x;
+            objectArray[i] = y;
+        }
+        else if (array instanceof long[]) {
+            long[] longArray = (long[]) array;
+            long x = longArray[i];
+            long y = longArray[j];
+            longArray[j] = x;
+            longArray[i] = y;
+        }
+        else if (array instanceof int[]) {
+            int[] intArray = (int[]) array;
+            int x = intArray[i];
+            int y = intArray[j];
+            intArray[j] = x;
+            intArray[i] = y;
+        }
+        else if (array instanceof short[]) {
+            short[] shortArray = (short[]) array;
+            short x = shortArray[i];
+            short y = shortArray[j];
+            shortArray[j] = x;
+            shortArray[i] = y;
+        }
+        else if (array instanceof byte[]) {
+            byte[] byteArray = (byte[]) array;
+            byte x = byteArray[i];
+            byte y = byteArray[j];
+            byteArray[j] = x;
+            byteArray[i] = y;
+        }
+        else if (array instanceof boolean[]) {
+            boolean[] booleanArray = (boolean[]) array;
+            boolean x = booleanArray[i];
+            boolean y = booleanArray[j];
+            booleanArray[j] = x;
+            booleanArray[i] = y;
+        }
+        else if (array instanceof double[]) {
+            double[] doubleArray = (double[]) array;
+            double x = doubleArray[i];
+            double y = doubleArray[j];
+            doubleArray[j] = x;
+            doubleArray[i] = y;
+        }
+        else if (array instanceof float[]) {
+            float[] floatArray = (float[]) array;
+            float x = floatArray[i];
+            float y = floatArray[j];
+            floatArray[j] = x;
+            floatArray[i] = y;
+        }
+        else {
+            throw new AssertionError("impossible array type");
+        }
+    }
 
-    private void setJavaItem(Element element, int idx) throws AssertionError {
+    public void move(
+            @Name("from") @TypeInfo("ceylon.language::Integer") long f,
+            @Name("to") @TypeInfo("ceylon.language::Integer") long t) {
+        if (f<0 || t<0) {
+            throw new AssertionError("array index may not be negative");
+        }
+        else if (f>=size || t>=size) {
+            throw new AssertionError("array index must be less than size of array " + size);
+        }
+        int from = (int) f;
+        int to = (int) t;
+        if (from==to) return;
+        int len;
+        int srcPos;
+        int destPos;
+        if (from>to) {
+            len = from-to;
+            srcPos = to;
+            destPos = to+1;
+        }
+        else {
+            len = to-from;
+            srcPos = from+1;
+            destPos = from;
+        }
+        if (array instanceof java.lang.Object[]) {
+            java.lang.Object[] objectArray = (java.lang.Object[]) array;
+            java.lang.Object x = objectArray[from];
+            System.arraycopy(objectArray, srcPos, objectArray, destPos, len);
+            objectArray[to] = x;
+        }
+        else if (array instanceof long[]) {
+            long[] longArray = (long[]) array;
+            long x = longArray[from];
+            System.arraycopy(longArray, srcPos, longArray, destPos, len);
+            longArray[to] = x;
+        }
+        else if (array instanceof int[]) {
+            int[] intArray = (int[]) array;
+            int x = intArray[from];
+            System.arraycopy(intArray, srcPos, intArray, destPos, len);
+            intArray[to] = x;
+        }
+        else if (array instanceof short[]) {
+            short[] shortArray = (short[]) array;
+            short x = shortArray[from];
+            System.arraycopy(shortArray, srcPos, shortArray, destPos, len);
+            shortArray[to] = x;
+        }
+        else if (array instanceof byte[]) {
+            byte[] byteArray = (byte[]) array;
+            byte x = byteArray[from];
+            System.arraycopy(byteArray, srcPos, byteArray, destPos, len);
+            byteArray[to] = x;
+        }
+        else if (array instanceof boolean[]) {
+            boolean[] booleanArray = (boolean[]) array;
+            boolean x = booleanArray[from];
+            System.arraycopy(booleanArray, srcPos, booleanArray, destPos, len);
+            booleanArray[to] = x;
+        }
+        else if (array instanceof double[]) {
+            double[] doubleArray = (double[]) array;
+            double x = doubleArray[from];
+            System.arraycopy(doubleArray, srcPos, doubleArray, destPos, len);
+            doubleArray[to] = x;
+        }
+        else if (array instanceof float[]) {
+            float[] floatArray = (float[]) array;
+            float x = floatArray[from];
+            System.arraycopy(floatArray, srcPos, floatArray, destPos, len);
+            floatArray[to] = x;
+        }
+        else {
+            throw new AssertionError("impossible array type");
+        }
+    }
+
+    private void setJavaItem(Element element, int idx) {
         switch (elementType) {
         case JavaLong:
             ((long[]) array)[idx] = (java.lang.Long) element;
@@ -1946,22 +2102,32 @@ public final class Array<Element>
     }
     
     private enum ArrayType {
-        CeylonInteger,   // 0
-        JavaLong,        // 1 
-        CeylonFloat,     // 2
-        JavaDouble,      // 3
-        CeylonCharacter, // 4
-        JavaInteger,     // 5
-        CeylonByte,      // 6
-        JavaByte,        // 7
-        CeylonBoolean,   // 8
-        JavaBoolean,     // 9
-        JavaCharacter,   // 10
-        JavaShort,       // 11
-        JavaFloat,       // 12
-        CeylonString,    // 13
-        JavaString,      // 14
-        Other            // 15
+        CeylonInteger("longArray"),   // 0
+        JavaLong,                     // 1 
+        CeylonFloat("doubleArray"),   // 2
+        JavaDouble,                   // 3
+        CeylonCharacter("intArray"),  // 4
+        JavaInteger,                  // 5
+        CeylonByte("byteArray"),      // 6
+        JavaByte,                     // 7
+        CeylonBoolean("booleanArray"),// 8
+        JavaBoolean,                  // 9
+        JavaCharacter,                // 10
+        JavaShort,                    // 11
+        JavaFloat,                    // 12
+        CeylonString("stringArray"),  // 13
+        JavaString,                   // 14
+        Other("objectArray");         // 15
+        
+        /** The name of the field, apart from "array" which should be set for this element type */
+        final java.lang.String fieldName;
+        
+        ArrayType(java.lang.String fieldName) {
+            this.fieldName = fieldName;
+        }
+        ArrayType() {
+            this.fieldName = null;
+        }
     }
     
     private static ArrayType elementType(TypeDescriptor $reifiedElement) {
@@ -2087,71 +2253,84 @@ public final class Array<Element>
     
     @Ignore
     @Override
-    public void $serialize$(Deconstructor dtor) {
-        
-        ValueDeclaration sizeAttribute = (ValueDeclaration)((ClassDeclaration)Metamodel.getOrCreateMetamodel(Array.class)).getMemberDeclaration(ceylon.language.meta.declaration.ValueDeclaration.$TypeDescriptor$, "size");
-        
-        dtor.putValue(Integer.$TypeDescriptor$, 
-                sizeAttribute, 
-                Integer.instance(getSize()));
-        
-        for (int ii = 0; ii < getSize(); ii++) {
-            dtor.<Element>putElement(this.$reifiedElement, ii, unsafeItem(ii));
-        }
+    public java.util.Collection<ReachableReference> $references$() {
+        /*if (attr == null) {
+            java.lang.String qualAttrName = (java.lang.String)ref;
+            String className = qualAttrName.substring(0, qualAttrName.lastIndexOf('.'));
+            String attrName = qualAttrName.substring(qualAttrName.lastIndexOf('.')+1);
+            ClassDeclaration classDeclaration = klass;
+            while (!classDeclaration.getQualifiedName().equals(className)) {
+                classDeclaration = classDeclaration.getExtendedType().getDeclaration();
+            }
+            attr = classDeclaration.getDeclaredMemberDeclaration(ValueDeclaration.$TypeDescriptor$, attrName);
+        }*/
+        return Collections.<ReachableReference>singletonList(
+                new MemberImpl(getArraySize()));
     }
-
+    @Ignore
+    protected ValueDeclaration getArraySize() {
+        return (ValueDeclaration)((ClassDeclaration)Metamodel.getOrCreateMetamodel(Array.class)).getMemberDeclaration(ValueDeclaration.$TypeDescriptor$, "size");
+    }
+    
     @Ignore
     @Override
-    public void $deserialize$(Deconstructed dted) {
-        try {
-            //ceylon.language.meta.declaration.TypeParameter elementTypeParameter = ((GenericDeclaration)Metamodel.getOrCreateMetamodel(Array.class)).getTypeParameterDeclaration("Element");
-            //TypeDescriptor reifiedElement = Metamodel.getTypeDescriptor(dted.getTypeArgument(elementTypeParameter));
-            //Util.setter(MethodHandles.lookup(), "$reifiedElement").invokeExact(this, reifiedElement);
-            
-            ValueDeclaration sizeAttribute = (ValueDeclaration)((ClassDeclaration)Metamodel.getOrCreateMetamodel(Array.class)).getMemberDeclaration(ceylon.language.meta.declaration.ValueDeclaration.$TypeDescriptor$, "size");
-            Integer size = (Integer)dted.getValue(Integer.$TypeDescriptor$, sizeAttribute);
-            Util.setter(MethodHandles.lookup(), "size").invokeExact(this, Util.toInt(size.value));
-            java.lang.Object a = createArrayWithElement(this.$reifiedElement, Util.toInt(size.value), (Element)null);
-            
-            Util.setter(MethodHandles.lookup(), "array").invokeExact(this, a);
-            switch (this.elementType) {
-            case Other:
-                Util.setter(MethodHandles.lookup(), "objectArray").invoke(this, a);
-                break;
-            case CeylonInteger:
-                Util.setter(MethodHandles.lookup(), "longArray").invoke(this, a);
-                break;
-            case CeylonFloat:
-                Util.setter(MethodHandles.lookup(), "doubleArray").invoke(this, a);
-                break;
-            case CeylonByte:
-                Util.setter(MethodHandles.lookup(), "byteArray").invoke(this, a);
-                break;
-            case CeylonCharacter:
-                Util.setter(MethodHandles.lookup(), "intArray").invoke(this, a);
-                break;
-            case CeylonBoolean:
-                Util.setter(MethodHandles.lookup(), "booleanArray").invoke(this, a);
-                break;
-            case CeylonString:
-                Util.setter(MethodHandles.lookup(), "stringArray").invoke(this, a);
-                break;
-            default:
-                // nothing to do
-            }
-            
-            for (int ii = 0; ii < size.value; ii++) {
-                java.lang.Object elementValOrRef = dted.<Element>getElement(this.$reifiedElement, ii);
-                Element element;
-                if (elementValOrRef instanceof ceylon.language.serialization.Reference) {
-                    element = (Element)((com.redhat.ceylon.compiler.java.runtime.serialization.$InstanceLeaker$)elementValOrRef).$leakInstance$();
-                } else {
-                    element = (Element)elementValOrRef;
+    public java.lang.Object $get$(ReachableReference indexOrAttr) {
+        if (indexOrAttr instanceof Member
+                && getArraySize().equals(((Member)indexOrAttr).getAttribute())) {
+            return ceylon.language.Integer.instance(size);
+        } else if (indexOrAttr instanceof ceylon.language.serialization.Element){
+            return getFromFirst(((ceylon.language.serialization.Element)indexOrAttr).getIndex());
+        }
+        throw new AssertionError("unknown reference " + indexOrAttr);
+    }
+    
+    @Ignore
+    @Override
+    public void $set$(ReachableReference reference, java.lang.Object instance) {
+        if (reference instanceof Member
+                && getArraySize().equals(((Member) reference).getAttribute())) {
+            int size = toSize(((ceylon.language.Integer)instance).value);
+            try {
+                Lookup lookup = MethodHandles.lookup();
+                Util.setter(lookup, "size").invokeExact(this, size);
+                java.lang.Object array = createArrayWithElement($reifiedElement, size, null);
+                Util.setter(lookup, "array")
+                    .invokeExact(this, array);
+                if (elementType.fieldName != null) {
+                    MethodHandle fieldSetter = Util.setter(lookup, elementType.fieldName);
+                    switch (elementType) {
+                    case CeylonInteger:
+                        fieldSetter.invokeExact(this, (long[])array);
+                        break;
+                    case CeylonFloat:
+                        fieldSetter.invokeExact(this, (double[])array);
+                        break;
+                    case CeylonCharacter:
+                        fieldSetter.invokeExact(this, (int[])array);
+                        break;
+                    case CeylonByte:
+                        fieldSetter.invokeExact(this, (byte[])array);
+                        break;
+                    case CeylonBoolean:
+                        fieldSetter.invokeExact(this, (boolean[])array);
+                        break;
+                    case CeylonString:
+                        fieldSetter.invokeExact(this, (java.lang.String[])array);
+                        break;
+                    case Other:
+                        fieldSetter.invokeExact(this, (java.lang.Object[])array);
+                        break;
+                    default:
+                        fieldSetter.invoke(this, array);
+                        break;
+                    }
                 }
-                set(ii, element);
+            } catch (java.lang.Throwable t) {
+                rethrow_.rethrow(t);
             }
-        } catch (java.lang.Throwable e) {
-            rethrow_.rethrow(e);
+        } else {
+            ceylon.language.serialization.Element index  = (ceylon.language.serialization.Element)reference;
+            set(index.getIndex(), (Element)instance);
         }
     }
 }

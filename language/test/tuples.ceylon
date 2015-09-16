@@ -135,4 +135,13 @@ shared void tuples() {
     check(["x", "y"].initial(3)==["x","y"], "Tuple.initial");
     check(["x", "y"].terminal(1)==["y"], "Tuple.terminal");
     check(["x", "y"].terminal(3)==["x", "y"], "Tuple.terminal");
+
+    // Test Tuple.each
+    variable value eachTestCounter = 0;
+    [1, 2, *{3, 4}].each((i) => eachTestCounter += i);
+    check(eachTestCounter == 10, "Tuple.each with rest");
+
+    eachTestCounter = 0;
+    [1, 2, 3, 4].each((i) => eachTestCounter += i);
+    check(eachTestCounter == 10, "Tuple.each without rest");
 }

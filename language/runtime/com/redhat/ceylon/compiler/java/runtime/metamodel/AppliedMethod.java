@@ -3,11 +3,13 @@ package com.redhat.ceylon.compiler.java.runtime.metamodel;
 import java.util.List;
 
 import ceylon.language.Map;
+import ceylon.language.Sequence;
 import ceylon.language.Sequential;
 import ceylon.language.empty_;
 import ceylon.language.meta.declaration.FunctionDeclaration;
 import ceylon.language.meta.model.Function;
 
+import com.redhat.ceylon.compiler.java.codegen.Decl;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Name;
@@ -16,11 +18,13 @@ import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 import com.redhat.ceylon.compiler.java.metadata.Variance;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
+import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
+import com.redhat.ceylon.model.typechecker.model.Reference;
 import com.redhat.ceylon.model.typechecker.model.TypedReference;
 
 @Ceylon(major = 8)
-@com.redhat.ceylon.compiler.java.metadata.Class
+@com.redhat.ceylon.compiler.java.metadata.Class(extendsType="ceylon.language::Basic")
 @TypeParameters({
     @TypeParameter(value = "Container", variance = Variance.IN),
     @TypeParameter(value = "Type", variance = Variance.OUT),
@@ -30,21 +34,22 @@ public class AppliedMethod<Container, Type, Arguments extends Sequential<? exten
     extends AppliedMember<Container, ceylon.language.meta.model.Function<? extends Type, ? super Arguments>> 
     implements ceylon.language.meta.model.Method<Container, Type, Arguments> {
 
-    private final FreeFunction declaration;
-    private TypedReference appliedFunction;
+    protected final FreeFunction declaration;
+    private Reference appliedFunction;
     private ceylon.language.meta.model.Type<Type> closedType;
     @Ignore
-    private TypeDescriptor $reifiedType;
+    protected TypeDescriptor $reifiedType;
     @Ignore
-    private TypeDescriptor $reifiedArguments;
+    protected TypeDescriptor $reifiedArguments;
     
     private Map<? extends ceylon.language.meta.declaration.TypeParameter, ? extends ceylon.language.meta.model.Type<?>> typeArguments;
+    private Map<? extends ceylon.language.meta.declaration.TypeParameter, ? extends Sequence<? extends Object>> typeArgumentWithVariances;
     private Sequential<? extends ceylon.language.meta.model.Type<? extends Object>> parameterTypes;
 
     public AppliedMethod(@Ignore TypeDescriptor $reifiedContainer, 
                          @Ignore TypeDescriptor $reifiedType, 
                          @Ignore TypeDescriptor $reifiedArguments, 
-                         TypedReference appliedFunction, 
+                         Reference appliedFunction, 
                          FreeFunction declaration,
                          ceylon.language.meta.model.Type<? extends Object> container) {
         super($reifiedContainer, TypeDescriptor.klass(ceylon.language.meta.model.Function.class, $reifiedType, $reifiedArguments), container);
@@ -53,12 +58,13 @@ public class AppliedMethod<Container, Type, Arguments extends Sequential<? exten
         this.appliedFunction = appliedFunction;
         this.declaration = declaration;
         this.typeArguments = Metamodel.getTypeArguments(declaration, appliedFunction);
+        this.typeArgumentWithVariances = Metamodel.getTypeArgumentWithVariances(declaration, appliedFunction);
         this.closedType = Metamodel.getAppliedMetamodel(Metamodel.getFunctionReturnType(appliedFunction));
         // get a list of produced parameter types
-        com.redhat.ceylon.model.typechecker.model.Function method = (com.redhat.ceylon.model.typechecker.model.Function)appliedFunction.getDeclaration();
+        com.redhat.ceylon.model.typechecker.model.Functional method = (com.redhat.ceylon.model.typechecker.model.Functional)appliedFunction.getDeclaration();
         List<Parameter> parameters = method.getFirstParameterList().getParameters();
         List<com.redhat.ceylon.model.typechecker.model.Type> parameterProducedTypes = Metamodel.getParameterProducedTypes(parameters, appliedFunction);
-        this.parameterTypes = Metamodel.getAppliedMetamodelSequential(parameterProducedTypes);
+        this.parameterTypes = Decl.isConstructor(declaration.declaration)  ? null : Metamodel.getAppliedMetamodelSequential(parameterProducedTypes);
     }
 
     @Override
@@ -70,6 +76,18 @@ public class AppliedMethod<Container, Type, Arguments extends Sequential<? exten
     @Override
     public ceylon.language.Sequential<? extends ceylon.language.meta.model.Type<?>> getTypeArgumentList() {
         return Metamodel.getTypeArgumentList(this);
+    }
+
+    @Override
+    @TypeInfo("ceylon.language::Map<ceylon.language.meta.declaration::TypeParameter,[ceylon.language.meta.model::Type<ceylon.language::Anything>,ceylon.language.meta.declaration::Variance]>")
+    public ceylon.language.Map<? extends ceylon.language.meta.declaration.TypeParameter, ? extends ceylon.language.Sequence<? extends Object>> getTypeArgumentWithVariances() {
+        return typeArgumentWithVariances;
+    }
+    
+    @Override
+    @TypeInfo("ceylon.language::Sequential<[ceylon.language.meta.model::Type<ceylon.language::Anything>,ceylon.language.meta.declaration::Variance]>")
+    public ceylon.language.Sequential<? extends ceylon.language.Sequence<? extends Object>> getTypeArgumentWithVarianceList() {
+        return Metamodel.getTypeArgumentWithVarianceList(this);
     }
 
     @Override
@@ -173,6 +191,7 @@ public class AppliedMethod<Container, Type, Arguments extends Sequential<? exten
         int result = 1;
         result = 37 * result + getDeclaringType().hashCode();
         result = 37 * result + getDeclaration().hashCode();
+        // so far, functions can't have use-site variance
         result = 37 * result + getTypeArguments().hashCode();
         return result;
     }
@@ -188,6 +207,7 @@ public class AppliedMethod<Container, Type, Arguments extends Sequential<? exten
         ceylon.language.meta.model.Method<?, ?, ?> other = (ceylon.language.meta.model.Method<?, ?, ?>) obj;
         return getDeclaration().equals(other.getDeclaration())
                 && getDeclaringType().equals(other.getDeclaringType())
+                // so far, functions can't have use-site variance
                 && getTypeArguments().equals(other.getTypeArguments());
     }
 

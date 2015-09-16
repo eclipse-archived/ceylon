@@ -21,7 +21,7 @@ shared void printAll({Anything*} values,
         "A character sequence to use to separate the values"
         String separator=", ") {
     variable value first = true;
-    values.each(void (element) {
+    values.each((element) {
         if (first) {
             first = false;
         }

@@ -44,6 +44,7 @@ native shared object baseNativeObject extends NativeBase(2) {
   shared String base2() => "Method in base object: ``natm()`` and ``natv``";
   native Integer natm();
   native Integer natv;
+  shared Integer val => natm() + natv;
 }
 
 shared native("jvm") object baseNativeObject extends NativeBase(3) {
@@ -78,10 +79,12 @@ shared void testNativeClassesAndObjects() {
     try {
         if (runtime.name=="jvm") {
             check(baseNativeObject.base()=="Base 3", "Native object 1");
-            check(baseNativeObject.base2()=="Method in base object: 2 and 4");
+            check(baseNativeObject.base2()=="Method in base object: 2 and 4", "Native object 2");
+            check(baseNativeObject.val==6, "baseNativeObject.val expected 6 got ``baseNativeObject.val``");
         } else {
             check(baseNativeObject.base()=="Base 4", "Native object 1");
-            check(baseNativeObject.base2()=="Method in base object: 3 and 6");
+            check(baseNativeObject.base2()=="Method in base object: 3 and 6", "Native object 2");
+            check(baseNativeObject.val==9, "baseNativeObject.val expected 9 got ``baseNativeObject.val``");
         }
     } catch (Throwable ex) {
         fail("Something is wrong with native header/implementation (objects)");

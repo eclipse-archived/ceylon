@@ -19,16 +19,16 @@ public class FlatpathModuleLoader extends BaseModuleLoaderImpl {
     final Map<String, String> extraModules;
 
     public FlatpathModuleLoader() {
-        this(null, null, null);
+        this(null);
     }
 
     public FlatpathModuleLoader(ClassLoader delegateClassLoader) {
-        this(null, delegateClassLoader, null);
+        this(null, delegateClassLoader, null, false);
     }
 
     public FlatpathModuleLoader(RepositoryManager repositoryManager,
-            ClassLoader delegateClassLoader, Map<String, String> extraModules) {
-        super(repositoryManager, delegateClassLoader);
+            ClassLoader delegateClassLoader, Map<String, String> extraModules, boolean verbose) {
+        super(repositoryManager, delegateClassLoader, verbose);
         this.extraModules = extraModules;
     }
 
@@ -48,17 +48,17 @@ public class FlatpathModuleLoader extends BaseModuleLoaderImpl {
         private void preloadModules() {
             try {
                 // those come from the delegate class loader
-                loadModule(Module.LANGUAGE_MODULE_NAME, Versions.CEYLON_VERSION_NUMBER, false, true);
-                loadModule("com.redhat.ceylon.compiler.java", Versions.CEYLON_VERSION_NUMBER, false, true);
-                loadModule("com.redhat.ceylon.common", Versions.CEYLON_VERSION_NUMBER, false, true);
-                loadModule("com.redhat.ceylon.model", Versions.CEYLON_VERSION_NUMBER, false, true);
-                loadModule("com.redhat.ceylon.module-resolver", Versions.CEYLON_VERSION_NUMBER, false, true);
-                loadModule("com.redhat.ceylon.typechecker", Versions.CEYLON_VERSION_NUMBER, false, true);
+                loadModule(Module.LANGUAGE_MODULE_NAME, Versions.CEYLON_VERSION_NUMBER, false, true, null);
+                loadModule("com.redhat.ceylon.compiler.java", Versions.CEYLON_VERSION_NUMBER, false, true, null);
+                loadModule("com.redhat.ceylon.common", Versions.CEYLON_VERSION_NUMBER, false, true, null);
+                loadModule("com.redhat.ceylon.model", Versions.CEYLON_VERSION_NUMBER, false, true, null);
+                loadModule("com.redhat.ceylon.module-resolver", Versions.CEYLON_VERSION_NUMBER, false, true, null);
+                loadModule("com.redhat.ceylon.typechecker", Versions.CEYLON_VERSION_NUMBER, false, true, null);
                 // these ones not necessarily
-                loadModule(module, modver, false, false);
+                loadModule(module, modver, false, false, null);
                 if(extraModules != null){
                     for(Entry<String,String> entry : extraModules.entrySet()){
-                        loadModule(entry.getKey(), entry.getValue(), false, false);
+                        loadModule(entry.getKey(), entry.getValue(), false, false, null);
                     }
                 }
             } catch (IOException e) {
@@ -66,45 +66,36 @@ public class FlatpathModuleLoader extends BaseModuleLoaderImpl {
             }
         }
 
-        private void initialiseMetamodel() {
-            Set<String> registered = new HashSet<String>();
-            registerInMetamodel("ceylon.language", registered);
-            registerInMetamodel("com.redhat.ceylon.typechecker", registered);
-            registerInMetamodel("com.redhat.ceylon.common", registered);
-            registerInMetamodel("com.redhat.ceylon.model", registered);
-            registerInMetamodel("com.redhat.ceylon.module-resolver", registered);
-            registerInMetamodel("com.redhat.ceylon.compiler.java", registered);
-            registerInMetamodel(module, registered);
-            if(extraModules != null){
-                for(String extraModule : extraModules.keySet()){
-                    registerInMetamodel(extraModule, registered);
-                }
-            }
-        }
-        
         private ClassLoader setupClassLoader() {
             // make a Class loader for this module if required
-            if(loadedModulesInCurrentClassLoader.contains(module))
+            ModuleGraph.Module loadedModule = moduleGraph.findModule(module);
+            if(loadedModule.inCurrentClassLoader)
                 return delegateClassLoader;
             else
                 return makeModuleClassLoader();
         }
         
         private ClassLoader makeModuleClassLoader() {
+            final Set<ModuleGraph.Module> modulesNotInCurrentClassLoader = new HashSet<ModuleGraph.Module>();
             // we need to make a class loader for all the modules it requires which are not provided by the current class loader
-            Set<String> modulesNotInCurrentClassLoader = new HashSet<String>();
-            for(Entry<String, ArtifactResult> entry : loadedModules.entrySet()){
-                if(entry.getValue() != null)
-                    modulesNotInCurrentClassLoader.add(entry.getKey());
-            }
-            modulesNotInCurrentClassLoader.removeAll(loadedModulesInCurrentClassLoader);
+            moduleGraph.visit(new ModuleGraph.Visitor(){
+                @Override
+                public void visit(ModuleGraph.Module module) {
+                    if(!module.inCurrentClassLoader && module.artifact != null)
+                        modulesNotInCurrentClassLoader.add(module);
+                }
+            });
             URL[] urls = new URL[modulesNotInCurrentClassLoader.size()];
+            if(verbose)
+                log("Making classpath with "+urls.length+" jars");
             int i=0;
-            for(String module : modulesNotInCurrentClassLoader){
-                ArtifactResult artifact = loadedModules.get(module);
+            for(ModuleGraph.Module module : modulesNotInCurrentClassLoader){
+                ArtifactResult artifact = module.artifact;
                 try {
                     @SuppressWarnings("deprecation")
                     URL url = artifact.artifact().toURL();
+                    if(verbose)
+                        log(" cp["+i+"] = "+url);
                     urls[i++] = url;
                 } catch (MalformedURLException | RepositoryException e) {
                     throw new RuntimeException("Failed to get a URL for module file for "+module, e);

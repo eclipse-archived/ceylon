@@ -8,7 +8,7 @@ import ceylon.language.Iterator;
 import ceylon.language.Sequential;
 import ceylon.language.empty_;
 import ceylon.language.finished_;
-import ceylon.language.meta.declaration.FunctionDeclaration$impl;
+import ceylon.language.meta.declaration.FunctionalDeclaration$impl;
 import ceylon.language.meta.declaration.OpenType;
 
 import com.redhat.ceylon.compiler.java.Util;
@@ -43,8 +43,8 @@ public class FreeFunction
 
     private Sequential<? extends ceylon.language.meta.declaration.FunctionOrValueDeclaration> parameterList;
 
-    public FreeFunction(com.redhat.ceylon.model.typechecker.model.TypedDeclaration declaration) {
-        super(declaration);
+    public FreeFunction(com.redhat.ceylon.model.typechecker.model.Functional declaration) {
+        super((com.redhat.ceylon.model.typechecker.model.Declaration)declaration);
 
         // FIXME: make lazy
         // FIXME: share with ClassOrInterface
@@ -62,7 +62,7 @@ public class FreeFunction
 
     @Override
     @Ignore
-    public FunctionDeclaration$impl $ceylon$language$meta$declaration$FunctionDeclaration$impl() {
+    public FunctionalDeclaration$impl $ceylon$language$meta$declaration$FunctionalDeclaration$impl() {
         return null;
     }
 
@@ -316,4 +316,5 @@ public class FreeFunction
     public <AnnotationType extends java.lang.annotation.Annotation> boolean annotated(TypeDescriptor reifed$AnnotationType) {
         return Metamodel.isAnnotated(reifed$AnnotationType, this);
     }
+    
 }

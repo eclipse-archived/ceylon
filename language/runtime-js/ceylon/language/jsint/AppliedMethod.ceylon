@@ -1,6 +1,6 @@
 import ceylon.language.meta.model {
   ClosedType=Type,
-  ClassOrInterface, Method, Function
+  ClassOrInterface, Method, Function, TypeArgument
 }
 import ceylon.language.meta.declaration {
   FunctionDeclaration,
@@ -22,6 +22,8 @@ shared native class AppliedMethod<in Container, out Type=Anything, in Arguments=
 
   shared actual native Map<TypeParameter, ClosedType<Anything>> typeArguments;
   shared actual native ClosedType<Anything>[] typeArgumentList;
+  shared actual native Map<TypeParameter, TypeArgument> typeArgumentWithVariances;
+  shared actual native TypeArgument[] typeArgumentWithVarianceList;
 
   shared actual native String string;
   shared actual native Integer hash;

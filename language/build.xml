@@ -405,6 +405,9 @@
     <!-- Rule to build runtime classes from their Java and Ceylon sources -->
     <target name="ceylon.language.java"
             depends="generate.sources.java">
+        <!-- first removing any previous compiled artifact from
+             the output repo because otherwise the build will fail -->
+        <delete file="${build.dist.repo}/${ceylon.language.car}" failonerror="false" />
         <!-- toplevel types -->
         <ceylon-compile
             executable="${ceylon.compiler.loc}"
@@ -452,28 +455,18 @@
                 <include name="ceylon/language/suppressedExceptions_.java"/>
                 <exclude name="ceylon/language/Float.ceylon"/>
                 <include name="ceylon/language/Float.java"/>
-                <exclude name="ceylon/language/infinity.ceylon"/>
-                <include name="ceylon/language/infinity_.java"/>
                 <exclude name="ceylon/language/identityHash.ceylon"/>
                 <include name="ceylon/language/identityHash_.java"/>
                 <exclude name="ceylon/language/Integer.ceylon"/>
                 <include name="ceylon/language/Integer.java"/>
-                <exclude name="ceylon/language/language.ceylon"/>
-                <include name="ceylon/language/language_.java"/>
                 <exclude name="ceylon/language/runtime.ceylon"/>
                 <include name="ceylon/language/runtime_.java"/>
-                <exclude name="ceylon/language/operatingSystem.ceylon"/>
-                <include name="ceylon/language/operatingSystem_.java"/>
                 <exclude name="ceylon/language/process.ceylon"/>
                 <include name="ceylon/language/process_.java"/>
-                <exclude name="ceylon/language/system.ceylon"/>
-                <include name="ceylon/language/system_.java"/>
                 <exclude name="ceylon/language/printStackTrace.ceylon"/>
                 <include name="ceylon/language/printStackTrace_.java"/>
                 <exclude name="ceylon/language/String.ceylon"/>
                 <include name="ceylon/language/String.java"/>
-                <exclude name="ceylon/language/StringBuilder.ceylon"/>
-                <include name="ceylon/language/StringBuilder.java"/>
                 <include name="ceylon/language/string_.java"/>
                 <exclude name="ceylon/language/Tuple.ceylon"/>
                 <include name="ceylon/language/Tuple.java"/>
@@ -481,18 +474,22 @@
                 <include name="ceylon/language/flatten_.java"/>
                 <exclude name="ceylon/language/unflatten.ceylon"/>
                 <include name="ceylon/language/unflatten_.java"/>
+                
+                <exclude name="ceylon/language/meta/annotations.ceylon"/>
+                <include name="ceylon/language/meta/annotations_.java"/>
+                <exclude name="ceylon/language/meta/classDeclaration.ceylon"/>
+                <include name="ceylon/language/meta/classDeclaration_.java"/>
+                <exclude name="ceylon/language/meta/modules.ceylon"/>
+                <include name="ceylon/language/meta/modules_.java"/>
                 <exclude name="ceylon/language/meta/type.ceylon"/>
                 <include name="ceylon/language/meta/type_.java"/>
                 <exclude name="ceylon/language/meta/typeLiteral.ceylon"/>
                 <include name="ceylon/language/meta/typeLiteral_.java"/>
-                <exclude name="ceylon/language/meta/annotations.ceylon"/>
-                <include name="ceylon/language/meta/annotations_.java"/>
-                <exclude name="ceylon/language/meta/modules.ceylon"/>
-                <include name="ceylon/language/meta/modules_.java"/>
-                <exclude name="ceylon/language/serialization/serialization.ceylon"/>
-                <include name="ceylon/language/serialization/serialization_.java"/>
-                <exclude name="ceylon/language/serialization/deserialization.ceylon"/>
-                <include name="ceylon/language/serialization/deserialization_.java"/>
+                
+                <exclude name="ceylon/language/serialization/PartialImpl.ceylon"/>
+                <include name="ceylon/language/serialization/PartialImpl.java"/>
+                <exclude name="ceylon/language/impl/reach.ceylon"/>
+                <include name="ceylon/language/impl/reach_.java"/>
             </files>
         </ceylon-compile>
     </target>
@@ -506,13 +503,17 @@
         </java>
     </target>
 
+    <target name="doc" depends="ceylon.language.doc">
+    </target>
+
     <!-- Rule to generate the documentation from the Ceylon sources -->
     <target name="ceylon.language.doc">
         <ceylon-doc
             executable="${ceylon.compiler.loc}"
             src="${module.language.src}"
             encoding="UTF-8"
-            out="${build.dist.repo}">
+            out="${build.dist.repo}"
+            bootstrapceylon="true">
             <module name="ceylon.language"/>
         </ceylon-doc>
     </target>
@@ -717,6 +718,8 @@
                 <exclude name="jvm/**"/>
             </files>
         </ceylon-compile-js>
+        <!-- Remove the modules.optional module to check for its unavailability at runtime -->
+        <delete dir="${build.test}/modules/optional"/>
     </target>
 
     <target name="test.js" depends="compile.tests.js,test.js.quick">

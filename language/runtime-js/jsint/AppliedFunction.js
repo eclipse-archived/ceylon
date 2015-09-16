@@ -46,6 +46,12 @@ function AppliedFunction$jsint(m,$$targs$$,o,mptypes) {
   atr$(f,'typeArgumentList',function(){
     return funtypeargl$(f);
   },undefined,_proto.$prop$getTypeArgumentList.$crtmm$);
+  atr$(f,'typeArgumentWithVariances',function(){
+    return funtypeargv$(f);
+  },undefined,_proto.$prop$getTypeArgumentWithVariances.$crtmm$);
+  atr$(f,'typeArgumentWithVarianceList',function(){
+    return funtypeargvl$(f);
+  },undefined,_proto.$prop$getTypeArgumentWithVarianceList.$crtmm$);
   f.equals=_proto.equals;
   atr$(f,'string',function(){
     return _proto.$prop$getString.get.call(f);

@@ -1,7 +1,7 @@
 import ceylon.language.meta.model { ClassOrInterface }
 
 @test
-shared void langbug539() {
+shared void bug539() {
   value comparisons = `Comparison`.caseValues;
   assert(comparisons.size == 3 && larger in comparisons
          && smaller in comparisons && equal in comparisons);

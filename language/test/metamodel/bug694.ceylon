@@ -10,7 +10,6 @@ class Bug694 {
 shared void bug694() {
     try{
         `Bug694`.getConstructor<[Float]>("oneArg");
-        assert(false);
     }catch(Exception x){
         assert(is IncompatibleTypeException x);
     }

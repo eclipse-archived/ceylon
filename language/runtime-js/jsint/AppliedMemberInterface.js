@@ -65,6 +65,12 @@ function AppliedMemberInterface$jsint(tipo,$$targs$$,that,myTargs){
   atr$(that,'typeArgumentList',function(){
     return coitargl$(that);
   },undefined,_proto.$prop$getTypeArgumentList.$crtmm$);
+  atr$(that,'typeArgumentWithVariances',function(){
+    return coitargv$(that);
+  },undefined,_proto.$prop$getTypeArgumentWithVariances.$crtmm$);
+  atr$(that,'typeArgumentWithVarianceList',function(){
+    return coitargvl$(that);
+  },undefined,_proto.$prop$getTypeArgumentWithVarianceList.$crtmm$);
   atr$(that,'container',function(){
     return coicont$(that);
   },undefined,_proto.$prop$getContainer.$crtmm$);

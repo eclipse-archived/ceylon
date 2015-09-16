@@ -260,6 +260,10 @@ shared void types() {
     reifiedIs<Anything>("abc");
     reifiedIs<Null>(null);
     reifiedIs<Anything>(null);
+    
+    // https://github.com/ceylon/ceylon.language/issues/723
+    Object x = 1;
+    check(!x is Comparable<Anything>, "Integer is Comparable<Anything>");
 }
 
 void reifiedIs<T>(T|Integer obj) {

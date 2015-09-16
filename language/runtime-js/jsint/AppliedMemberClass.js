@@ -35,9 +35,6 @@ function AppliedMemberClass$jsint(tipo,$$targs$$,that,myTargs){
   var _proto=AppliedMemberClass$jsint.$$.prototype;
 
   that.$targs=myTargs;
-  atr$(that,'parameterTypes',function(){
-    return clsparamtypes(that);
-  },undefined,_proto.$prop$getParameterTypes.$crtmm$);
   atr$(that,'extendedType',function(){
     return coiexttype$(that);
   },undefined,_proto.$prop$getExtendedType.$crtmm$);
@@ -56,6 +53,21 @@ function AppliedMemberClass$jsint(tipo,$$targs$$,that,myTargs){
   atr$(that,'typeArgumentList',function(){
     return coitargl$(that);
   },undefined,_proto.$prop$getTypeArgumentList.$crtmm$);
+  atr$(that,'typeArgumentWithVariances',function(){
+    return coitargv$(that);
+  },undefined,_proto.$prop$getTypeArgumentWithVariances.$crtmm$);
+  atr$(that,'typeArgumentWithVarianceList',function(){
+    return coitargvl$(that);
+  },undefined,_proto.$prop$getTypeArgumentWithVarianceList.$crtmm$);
+  atr$(that,'defaultConstructor',function(){
+    return _proto.$prop$getDefaultConstructor.get.call(that);
+  },undefined,_proto.$prop$getDefaultConstructor.$crtmm$);
+  atr$(that,'constructors',function(){
+    return _proto.$prop$getConstructors.get.call(that);
+  },undefined,_proto.$prop$getConstructors.$crtmm$);
+  atr$(that,'declaredConstructors',function(){
+    return _proto.$prop$getDeclaredConstructors.get.call(that);
+  },undefined,_proto.$prop$getDeclaredConstructors.$crtmm$);
   that.$_bind=_proto.$_bind;
   that.equals=_proto.equals;
   that.getAttribute=_proto.getAttribute;
@@ -63,7 +75,6 @@ function AppliedMemberClass$jsint(tipo,$$targs$$,that,myTargs){
   that.getClass=_proto.getClass;
   that.getClassOrInterface=_proto.getClassOrInterface;
   that.getClasses=_proto.getClasses;
-  that.getConstructor=_proto.getConstructor;
   that.getDeclaredAttribute=_proto.getDeclaredAttribute;
   that.getDeclaredAttributes=_proto.getDeclaredAttributes;
   that.getDeclaredClass=_proto.getDeclaredClass;
@@ -75,6 +86,7 @@ function AppliedMemberClass$jsint(tipo,$$targs$$,that,myTargs){
   that.getDeclaredMethods=_proto.getDeclaredMethods;
   that.getInterface=_proto.getInterface;
   that.getInterfaces=_proto.getInterfaces;
+  that.getConstructor=_proto.getConstructor;
   that.getMethod=_proto.getMethod;
   that.getMethods=_proto.getMethods;
   that.typeOf=_proto.typeOf;

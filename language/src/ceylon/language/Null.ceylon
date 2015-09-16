@@ -19,10 +19,20 @@
        String name = process.arguments.first else "world";
    
    The `then` operator evaluates its second operand when
-   its first operand evaluates to `true`, and to `null` 
+   its first operand evaluates to `true`, and produces `null` 
    otherwise:
    
        Float? diff = x>=y then x-y;
+   
+   The `?.` operator may be used to evaluate an attribute
+   or invoke a method of an optional type, evaluating to
+   `null` when the receiver is missing:
+   
+       value [firstName, lastName] =
+               let (fullName = process.arguments.first?.trimmed,
+                    bits = fullName?.split()?.sequence() else []) 
+                       [bits[0], bits[1]];
+       assert (exists firstName, exists lastName);
    
    No equivalence relation is defined for `Null`. In 
    particular, neither `null==null` nor `null===null` are

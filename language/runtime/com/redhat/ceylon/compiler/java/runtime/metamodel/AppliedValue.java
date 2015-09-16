@@ -168,14 +168,42 @@ public class AppliedValue<Get, Set>
                     throw Metamodel.newModelError("Failed to find field "+fieldName+" for: "+decl, e);
                 }
             }
+        } else if (com.redhat.ceylon.compiler.java.codegen.Decl.isEnumeratedConstructor(decl)) {
+            java.lang.Class<?> javaClass = Metamodel.getJavaClass((com.redhat.ceylon.model.typechecker.model.ClassOrInterface)decl.getContainer());
+            String getterName = NamingBase.getGetterName(decl);
+            try {
+                Class<?>[] params = NO_PARAMS;
+                // if it is shared we may want to get an inherited getter, but if it's private we need the declared method to return it
+                Method m = decl.isShared() ? javaClass.getMethod(getterName, params) : javaClass.getDeclaredMethod(getterName, params);
+                m.setAccessible(true);
+                getter = MethodHandles.lookup().unreflect(m);
+                java.lang.Class<?> getterType = m.getReturnType();
+                getter = MethodHandleUtil.boxReturnValue(getter, getterType, valueType);
+                if(instance != null 
+                        // XXXArray.getArray is static but requires an instance as first param
+                        && (!Modifier.isStatic(m.getModifiers()))) {
+                    getter = getter.bindTo(instance);
+                }
+                // we need to cast to Object because this is what comes out when calling it in $call
+                getter = getter.asType(MethodType.methodType(Object.class));
+
+                initSetter(decl, javaClass, getterType, instance, valueType);
+            } catch (NoSuchMethodException | SecurityException | IllegalAccessException e) {
+                throw Metamodel.newModelError("Failed to find getter method "+getterName+" for: "+decl, e);
+            }
         }else
             throw new StorageException("Attribute "+decl.getName()+" is neither captured nor shared so it has no physical storage allocated and cannot be read by the metamodel");
     }
 
     private void initSetter(com.redhat.ceylon.model.typechecker.model.Value decl, java.lang.Class<?> javaClass, 
                             java.lang.Class<?> getterReturnType, Object instance, Type valueType) {
-        if(!decl.isVariable())
+        
+        if(!decl.isVariable()
+                && !decl.isLate())
             return;
+        if (com.redhat.ceylon.compiler.java.codegen.Decl.isEnumeratedConstructor(decl)) {
+            return;
+        }
         if(decl instanceof JavaBeanValue){
             String setterName = ((JavaBeanValue) decl).getSetterName();
             try {
@@ -238,8 +266,10 @@ public class AppliedValue<Get, Set>
 
     @Override
     public Object set(Set value) {
-        if(!declaration.getVariable())
-            throw new MutationException("Value is not mutable");
+        if(!(declaration.getVariable()
+                || declaration.getLate())) {
+            throw new MutationException("Value is neither variable nor late");
+        }
         try {
             setter.invokeExact(value);
             return null;

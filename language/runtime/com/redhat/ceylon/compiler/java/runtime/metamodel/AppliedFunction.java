@@ -10,10 +10,13 @@ import java.util.List;
 import java.util.Map;
 
 import ceylon.language.Array;
+import ceylon.language.Sequence;
 import ceylon.language.Sequential;
 import ceylon.language.empty_;
+import ceylon.language.meta.declaration.FunctionDeclaration;
 
 import com.redhat.ceylon.compiler.java.Util;
+import com.redhat.ceylon.compiler.java.codegen.Decl;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Name;
@@ -24,6 +27,8 @@ import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 import com.redhat.ceylon.compiler.java.metadata.Variance;
 import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
+import com.redhat.ceylon.model.typechecker.model.Constructor;
+import com.redhat.ceylon.model.typechecker.model.Function;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.Reference;
 
@@ -48,6 +53,7 @@ public class AppliedFunction<Type, Arguments extends Sequential<? extends Object
     private int firstDefaulted = -1;
     private int variadicIndex = -1;
     private ceylon.language.Map<? extends ceylon.language.meta.declaration.TypeParameter, ? extends ceylon.language.meta.model.Type<?>> typeArguments;
+    private ceylon.language.Map<? extends ceylon.language.meta.declaration.TypeParameter, ? extends Sequence<? extends Object>> typeArgumentWithVariances;
     private Object instance;
     private ceylon.language.meta.model.Type<?> container;
     private List<com.redhat.ceylon.model.typechecker.model.Type> parameterProducedTypes;
@@ -65,7 +71,7 @@ public class AppliedFunction<Type, Arguments extends Sequential<? extends Object
         this.instance = instance;
         this.appliedFunction = appliedFunction;
         
-        com.redhat.ceylon.model.typechecker.model.Function decl = (com.redhat.ceylon.model.typechecker.model.Function) function.declaration;
+        com.redhat.ceylon.model.typechecker.model.Functional decl = (com.redhat.ceylon.model.typechecker.model.Functional) function.declaration;
         List<Parameter> parameters = decl.getFirstParameterList().getParameters();
 
         this.firstDefaulted = Metamodel.getFirstDefaultedParameter(parameters);
@@ -84,15 +90,18 @@ public class AppliedFunction<Type, Arguments extends Sequential<? extends Object
         this.declaration = function;
         
         this.typeArguments = Metamodel.getTypeArguments(declaration, appliedFunction);
+        this.typeArgumentWithVariances = Metamodel.getTypeArgumentWithVariances(declaration, appliedFunction);
 
         // get a list of produced parameter types
         this.parameterProducedTypes = Metamodel.getParameterProducedTypes(parameters, appliedFunction);
         this.parameterTypes = Metamodel.getAppliedMetamodelSequential(this.parameterProducedTypes);
 
-        // FIXME: delay method setup for when we actually use it?
+        
         java.lang.Class<?> javaClass = Metamodel.getJavaClass(function.declaration);
-        Method found = null;
-        String name = Metamodel.getJavaMethodName((com.redhat.ceylon.model.typechecker.model.Function) function.declaration);
+        java.lang.reflect.Method found = null;
+        
+        // FIXME: delay method setup for when we actually use it?
+        String name = Metamodel.getJavaMethodName((com.redhat.ceylon.model.typechecker.model.Functional) function.declaration);
         
         // special cases for some erased types
         if(javaClass == ceylon.language.Object.class
@@ -149,6 +158,7 @@ public class AppliedFunction<Type, Arguments extends Sequential<? extends Object
             }
         }
         if(found != null){
+            
             boolean variadic = found.isVarArgs();
             method = reflectionToMethodHandle(found, javaClass, instance, appliedFunction, parameterProducedTypes, variadic, false);
             if(defaultedMethods != null && !variadic){
@@ -176,44 +186,60 @@ public class AppliedFunction<Type, Arguments extends Sequential<? extends Object
                                                   List<com.redhat.ceylon.model.typechecker.model.Type> parameterProducedTypes,
                                                   boolean variadic, boolean bindVariadicParameterToEmptyArray) {
         // save the parameter types before we mess with "found"
-        java.lang.Class<?>[] parameterTypes = found.getParameterTypes();
+        java.lang.Class<?>[] parameterTypes;
+        java.lang.Class<?> returnType;
         MethodHandle method = null;
-        boolean isJavaArray = MethodHandleUtil.isJavaArray(javaClass);
-        try {
-            if(isJavaArray){
-                if(found.getName().equals("get"))
-                    method = MethodHandleUtil.getJavaArrayGetterMethodHandle(javaClass);
-                else if(found.getName().equals("set"))
-                    method = MethodHandleUtil.getJavaArraySetterMethodHandle(javaClass);
-                else if(found.getName().equals("copyTo")){
-                    found = MethodHandleUtil.getJavaArrayCopyToMethod(javaClass, found);
+        boolean isJavaArray;
+        int mods;
+        int typeParametersCount;
+        int skipParameters = 0;
+        List<com.redhat.ceylon.model.typechecker.model.TypeParameter> reifiedTypeParameters;
+        if (found instanceof java.lang.reflect.Method) {
+            com.redhat.ceylon.model.typechecker.model.Function functionModel = (com.redhat.ceylon.model.typechecker.model.Function)appliedFunction.getDeclaration();
+            java.lang.reflect.Method foundMethod = (java.lang.reflect.Method)found;
+            parameterTypes = foundMethod.getParameterTypes();
+            returnType = foundMethod.getReturnType();
+            mods = foundMethod.getModifiers();
+            isJavaArray = MethodHandleUtil.isJavaArray(javaClass);
+            typeParametersCount = foundMethod.getTypeParameters().length;
+            try {
+                if(isJavaArray){
+                    if(foundMethod.getName().equals("get"))
+                        method = MethodHandleUtil.getJavaArrayGetterMethodHandle(javaClass);
+                    else if(foundMethod.getName().equals("set"))
+                        method = MethodHandleUtil.getJavaArraySetterMethodHandle(javaClass);
+                    else if(foundMethod.getName().equals("copyTo")){
+                        foundMethod = MethodHandleUtil.getJavaArrayCopyToMethod(javaClass, foundMethod);
+                    }
                 }
+                if(method == null){
+                    foundMethod.setAccessible(true);
+                    method = MethodHandles.lookup().unreflect(foundMethod);
+                }
+            } catch (IllegalAccessException e) {
+                throw Metamodel.newModelError("Problem getting a MH for constructor for: "+javaClass, e);
             }
-            if(method == null){
-                found.setAccessible(true);
-                method = MethodHandles.lookup().unreflect(found);
-            }
-        } catch (IllegalAccessException e) {
-            throw Metamodel.newModelError("Problem getting a MH for constructor for: "+javaClass, e);
+            reifiedTypeParameters = functionModel.getTypeParameters();
+        } else {
+            throw new RuntimeException();
         }
+        
         // box the return type
-        method = MethodHandleUtil.boxReturnValue(method, found.getReturnType(), appliedFunction.getType());
+        method = MethodHandleUtil.boxReturnValue(method, returnType, appliedFunction.getType());
         // we need to cast to Object because this is what comes out when calling it in $call
         if(instance != null 
-                && (isJavaArray || !Modifier.isStatic(found.getModifiers())))
+                && (isJavaArray || !Modifier.isStatic(mods)))
             method = method.bindTo(instance);
         method = method.asType(MethodType.methodType(Object.class, parameterTypes));
-        int typeParametersCount = found.getTypeParameters().length;
-        int skipParameters = 0;
         // insert any required type descriptors
         if(typeParametersCount != 0 && MethodHandleUtil.isReifiedTypeSupported(found, false)){
             List<com.redhat.ceylon.model.typechecker.model.Type> typeArguments = new ArrayList<com.redhat.ceylon.model.typechecker.model.Type>();
             Map<com.redhat.ceylon.model.typechecker.model.TypeParameter, com.redhat.ceylon.model.typechecker.model.Type> typeArgumentMap = appliedFunction.getTypeArguments();
-            for (com.redhat.ceylon.model.typechecker.model.TypeParameter tp : ((com.redhat.ceylon.model.typechecker.model.Function)appliedFunction.getDeclaration()).getTypeParameters()) {
+            for (com.redhat.ceylon.model.typechecker.model.TypeParameter tp : reifiedTypeParameters) {
                 typeArguments.add(typeArgumentMap.get(tp));
             }
             method = MethodHandleUtil.insertReifiedTypeArguments(method, 0, typeArguments);
-            skipParameters = typeParametersCount;
+            skipParameters += typeParametersCount;
         }
         // now convert all arguments (we may need to unbox)
         method = MethodHandleUtil.unboxArguments(method, skipParameters, 0, parameterTypes,
@@ -222,7 +248,7 @@ public class AppliedFunction<Type, Arguments extends Sequential<? extends Object
     }
 
     @Override
-    public FreeFunction getDeclaration(){
+    public FunctionDeclaration getDeclaration(){
         return declaration;
     }
     
@@ -235,6 +261,18 @@ public class AppliedFunction<Type, Arguments extends Sequential<? extends Object
     @Override
     public ceylon.language.Sequential<? extends ceylon.language.meta.model.Type<?>> getTypeArgumentList() {
         return Metamodel.getTypeArgumentList(this);
+    }
+
+    @Override
+    @TypeInfo("ceylon.language::Map<ceylon.language.meta.declaration::TypeParameter,[ceylon.language.meta.model::Type<ceylon.language::Anything>,ceylon.language.meta.declaration::Variance]>")
+    public ceylon.language.Map<? extends ceylon.language.meta.declaration.TypeParameter, ? extends ceylon.language.Sequence<? extends Object>> getTypeArgumentWithVariances() {
+        return typeArgumentWithVariances;
+    }
+    
+    @Override
+    @TypeInfo("ceylon.language::Sequential<[ceylon.language.meta.model::Type<ceylon.language::Anything>,ceylon.language.meta.declaration::Variance]>")
+    public ceylon.language.Sequential<? extends ceylon.language.Sequence<? extends Object>> getTypeArgumentWithVarianceList() {
+        return Metamodel.getTypeArgumentWithVarianceList(this);
     }
 
     private void checkMethod(){
@@ -461,6 +499,7 @@ public class AppliedFunction<Type, Arguments extends Sequential<? extends Object
         // and if we don't have an instance we're a toplevel and have no containing type
         result = 37 * result + (instance == null ? 0 : instance.hashCode());
         result = 37 * result + getDeclaration().hashCode();
+        // so far, functions can't have use-site variance
         result = 37 * result + getTypeArguments().hashCode();
         return result;
     }
@@ -478,6 +517,7 @@ public class AppliedFunction<Type, Arguments extends Sequential<? extends Object
         // and if we don't have an instance we're a toplevel and have no containing type
         return getDeclaration().equals(other.getDeclaration())
                 && Util.eq(instance, other.instance)
+                // so far, functions can't have use-site variance
                 && getTypeArguments().equals(other.getTypeArguments());
     }
 

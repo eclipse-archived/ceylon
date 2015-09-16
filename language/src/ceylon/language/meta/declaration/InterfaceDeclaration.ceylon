@@ -51,15 +51,26 @@ import ceylon.language.meta.model {
 shared sealed interface InterfaceDeclaration
         satisfies ClassOrInterfaceDeclaration {
     
-    "Applies the given closed type arguments to this toplevel interface declaration in order to obtain an interface model. 
+    "Applies the given closed type arguments to this toplevel interface 
+     declaration in order to obtain an interface model. 
      See [this code sample](#toplevel-sample) for an example on how to use this."
-    throws(`class IncompatibleTypeException`, "If the specified `Type` type argument is not compatible with the actual result.")
-    throws(`class TypeApplicationException`, "If the specified closed type argument values are not compatible with the actual result's type parameters.")
+    throws(`class IncompatibleTypeException`, 
+        "If the specified `Type` type argument is not compatible with the 
+         actual result.")
+    throws(`class TypeApplicationException`, 
+            "If the specified closed type argument values are not compatible 
+             with the actual result's type parameters.")
     shared formal Interface<Type> interfaceApply<Type=Anything>(AppliedType<>* typeArguments);
 
-    "Applies the given closed container type and type arguments to this member interface declaration in order to obtain a member interface model. 
+    "Applies the given closed container type and type arguments to this member 
+     interface declaration in order to obtain a member interface model. 
      See [this code sample](#member-sample) for an example on how to use this."
-    throws(`class IncompatibleTypeException`, "If the specified `Container` or `Type` type arguments are not compatible with the actual result.")
-    throws(`class TypeApplicationException`, "If the specified closed container type or type argument values are not compatible with the actual result's container type or type parameters.")
+    throws(`class IncompatibleTypeException`, 
+        "If the specified `Container` or `Type` type arguments are not 
+         compatible with the actual result.")
+    throws(`class TypeApplicationException`, 
+            "If the specified closed container type or type argument values 
+             are not compatible with the actual result's container type or 
+             type parameters.")
     shared formal MemberInterface<Container, Type> memberInterfaceApply<Container=Nothing, Type=Anything>(AppliedType<Object> containerType, AppliedType<>* typeArguments);
 }

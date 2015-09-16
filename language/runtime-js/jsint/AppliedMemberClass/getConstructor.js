@@ -5,7 +5,7 @@ function(nm,$mpt){
   if (mtn.indexOf('$')>0)mtn=mtn.substring(0,mtn.indexOf('$'));
   if (nm==='')nm='$c$';
   var startingType=this.container;
-  while (is$(startingType,{t:Class$meta$model})) {
+  while (is$(startingType,{t:ClassOrInterface$meta$model})) {
     var pn=startingType.declaration.name;
     mtn+='$'+startingType.declaration.name;
     startingType=startingType.container;
@@ -16,10 +16,10 @@ function(nm,$mpt){
     mm=getrtmm$$(cn);
     if (mm.d[mm.d.length-2]==='$cn') {
       var args=mm.ps?tupleize$params(mm.ps,this.$targs):empty();
-      return AppliedMemberConstructor$jsint(cn,
-             {Type$AppliedMemberConstructor:this.$$targs$$.Type$AppliedMemberClass,
-              Container$AppliedMemberConstructor:this.$$targs$$.Container$AppliedMemberClass,
-              Arguments$AppliedMemberConstructor:args},undefined,this.$targs);
+      return AppliedMemberClassCallableConstructor$jsint(cn,
+             {Type$AppliedMemberClassCallableConstructor:this.$$targs$$.Type$AppliedMemberClass,
+              Container$AppliedMemberClassCallableConstructor:this.$$targs$$.Container$AppliedMemberClass,
+              Arguments$AppliedMemberClassCallableConstructor:args},undefined,this.$targs);
     }
   }
   return null;

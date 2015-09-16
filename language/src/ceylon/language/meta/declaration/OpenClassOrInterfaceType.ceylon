@@ -15,8 +15,17 @@ shared sealed interface OpenClassOrInterfaceType
     "The satisfied types of this open type."
     shared formal OpenInterfaceType[] satisfiedTypes;
 
-    "The set of open type arguments."
+    "The map of open type arguments."
     shared formal Map<TypeParameter, OpenType> typeArguments;
+
+    "The list of open type arguments."
+    shared formal OpenType[] typeArgumentList;
+
+    "The map of type parameter declaration to open type arguments and use-site variance."
+    shared formal Map<TypeParameter, OpenTypeArgument> typeArgumentWithVariances;
+
+    "The list of open type arguments with use-site variance."
+    shared formal OpenTypeArgument[] typeArgumentWithVarianceList;
 
     // FIXME: pretty sure we're missing an optional container type here
 }

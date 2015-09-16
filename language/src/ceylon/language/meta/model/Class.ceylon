@@ -18,8 +18,19 @@ shared sealed interface Class<out Type=Anything, in Arguments=Nothing>
     satisfies ClassModel<Type, Arguments> & Applicable<Type, Arguments>
     given Arguments satisfies Anything[] {
     
+    /*"The constructor with the given name, or null if this class lacks 
+     a constructor of the given name."
+    shared actual formal Function<Type, Arguments>? getCallableConstructor<Arguments=Nothing>(String name)
+            given Arguments satisfies Anything[];
+    
+    shared actual formal Value<Type>? getValueConstructor(String name);*/
+    
+    shared actual formal <CallableConstructor<Type, Arguments>|Class<Type, Arguments>>? defaultConstructor;
+    
     "The constructor with the given name, or null if this class lacks 
      a constructor of the given name."
-    shared actual formal Constructor<Type, Arguments>? getConstructor<Arguments=Nothing>(String name)
-            given Arguments satisfies Anything[];
+    shared actual formal CallableConstructor<Type, Arguments>|ValueConstructor<Type>? getConstructor
+            <Arguments>
+            (String name)
+                given Arguments satisfies Anything[];
 }

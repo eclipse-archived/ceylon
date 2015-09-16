@@ -1,7 +1,7 @@
 import ceylon.language.meta.model {
   ClosedType=Type, InterfaceModel, ClassModel,
   Member, Interface, ClassOrInterface, Attribute, Method,
-  MemberInterface,MemberClass
+  MemberInterface,MemberClass, TypeArgument
 }
 import ceylon.language.meta.declaration {
   InterfaceDeclaration, TypeParameter
@@ -14,6 +14,8 @@ shared native class AppliedMemberInterface<in Container, out Type=Anything>()
   shared actual native InterfaceDeclaration declaration;
   shared actual native Map<TypeParameter, ClosedType> typeArguments;
   shared actual native ClosedType<Anything>[] typeArgumentList;
+  shared actual native Map<TypeParameter, TypeArgument> typeArgumentWithVariances;
+  shared actual native TypeArgument[] typeArgumentWithVarianceList;
   shared actual native ClassModel<Anything, Nothing>? extendedType;
   shared actual native InterfaceModel<Anything>[] satisfiedTypes;
   shared actual native Boolean typeOf(Anything instance);

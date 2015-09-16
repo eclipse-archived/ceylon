@@ -18,6 +18,7 @@ shared native class OpenValue(pkg,meta) satisfies ValueDeclaration {
   shared native actual default Attribute<Container, Get, Set> memberApply<Container=Nothing, Get=Anything, Set=Nothing>(AppliedType<Object> containerType);
   shared native actual default void memberSet(Object container, Anything newValue);
   shared native actual default Boolean variable;
+  shared native actual default Boolean late;
   shared native actual Boolean objectValue;
   shared native actual ClassDeclaration? objectClass;
   shared native actual default Boolean defaulted;

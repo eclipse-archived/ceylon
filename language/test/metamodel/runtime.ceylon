@@ -45,9 +45,6 @@ shared void checkInitializers(){
     Anything fixedParams3 = fixedParamsType.declaration.instantiate([], "a", 1, 1.2, 'a', true, noParams);
     assert(is FixedParams fixedParams3);
 
-    // check its parameter types
-    assert(fixedParamsType.parameterTypes == [`String`, `Integer`, `Float`, `Character`, `Boolean`, `Object`]);
-
     // typed parameters
     value typeParamsType = type(TypeParams("a", 1));
     assert(is Class<TypeParams<String>, [String, Integer]> typeParamsType);
@@ -62,9 +59,6 @@ shared void checkInitializers(){
     Anything typeParams3 = typeParamsClass.instantiate([`String`], "a", 1);
     // this checks that we did pass the reified type arguments correctly
     assert(is TypeParams<String> typeParams3);
-
-    // check its parameter types
-    assert(typeParamsType.parameterTypes == [`String`, `Integer`]);
 
     // defaulted parameters
     value defaultedParamsType = typeLiteral<DefaultedParams>();
@@ -433,9 +427,7 @@ shared void checkMemberTypes(){
     assert(is Class<ContainerClass, []> containerClassType);
 
     assert(exists innerClassType = containerClassType.getClass<ContainerClass, ContainerClass.InnerClass, []>("InnerClass"));
-    // check its parameter types
-    assert(innerClassType.parameterTypes == []);
-
+    
     Anything o1 = innerClassType(containerClassInstance)();
     assert(is ContainerClass.InnerClass o1);
     Anything o1b = innerClassType.bind(containerClassInstance).apply();
@@ -448,9 +440,7 @@ shared void checkMemberTypes(){
     assert(`class ContainerClass.InnerClass`.qualifiedName == "metamodel::ContainerClass.InnerClass");
 
     assert(exists innerDefaultedClassType = containerClassType.getClass<ContainerClass, ContainerClass.DefaultedParams, [Integer, Integer=]>("DefaultedParams"));
-    // check its parameter types
-    assert(innerDefaultedClassType.parameterTypes == [`Integer`, `Integer`]);
-
+    
     Anything o1_2 = innerDefaultedClassType(containerClassInstance)(0);
     assert(is ContainerClass.DefaultedParams o1_2);
     Anything o1_2b = innerDefaultedClassType.bind(containerClassInstance).apply(0);
@@ -910,8 +900,6 @@ shared void checkObjectDeclaration(){
     assert(!is Class<Anything, []> topLevelObjectClass);
     assert(is Class<Anything, Nothing> topLevelObjectClass);
     
-    assert(topLevelObjectClass.parameterTypes == []);
-    
     // make sure we get a proper exception when trying to instantiate it
     try{
         topLevelObjectClass.apply();
@@ -933,6 +921,7 @@ shared void checkAliases(){
     assert(is OpenClassOrInterfaceType aliasedType = aliasDeclaration.openType);
     assert(aliasedType.declaration.name == "NoParams");
     assert(aliasedType.typeArguments.size == 0);
+    assert(aliasedType.typeArgumentList.size == 0);
     // check that getMember also works
     assert(exists aliasDeclaration2 = pkg.getMember<AliasDeclaration>("TypeAliasToClass"));
     assert(aliasDeclaration2.name == "TypeAliasToClass");
@@ -949,8 +938,10 @@ shared void checkAliases(){
     assert(is OpenClassOrInterfaceType aliasedTypeTP = aliasDeclarationTP.openType);
     assert(aliasedTypeTP.declaration.name == "TypeParams");
     assert(aliasedTypeTP.typeArguments.size == 1);
+    assert(aliasedTypeTP.typeArgumentList.size == 1);
     assert(exists aliasedDeclarationTPTypeParam = aliasedTypeTP.declaration.getTypeParameterDeclaration("T"));
     assert(is OpenTypeVariable aliasedTypeTPArg = aliasedTypeTP.typeArguments[aliasedDeclarationTPTypeParam]);
+    assert(exists aliasedTypeTPArg2 = aliasedTypeTP.typeArgumentList[0], aliasedTypeTPArg == aliasedTypeTPArg2);
     assert(aliasedTypeTPArg.declaration.name == "J");
 
     // get one pointing to a union
@@ -1648,6 +1639,8 @@ shared void checkObjectMemberReferences(){
 shared void checkConstructors2() {
     value inst = Constructors<String>();
     inst.test();
+    
+    ValueConstructors.sharedCtor.test();
     object ifaceInst satisfies InterfaceConstructors<String> {
     }
     ifaceInst.test();
@@ -1659,11 +1652,11 @@ shared void checkConstructors2() {
     `ClassWithDefaultConstructor`("");
     `ClassWithDefaultConstructor`.apply("");
     `ClassWithDefaultConstructor`.namedApply{"s"-> ""};
-    assert(exists cwndc = `ClassWithNonDefaultConstructor`.getConstructor<[String]>("nnew"));
+    assert(is CallableConstructor<ClassWithNonDefaultConstructor,[String]> cwndc = `ClassWithNonDefaultConstructor`.getConstructor<[String]>("nnew"));
     cwndc("");
     cwndc.apply("");
     cwndc.namedApply{"s"-> ""};
-    assert(exists uc = `UninstantiableClass`.getConstructor<[String]>("nnew"));
+    assert(is CallableConstructor<UninstantiableClass,[String]> uc = `UninstantiableClass`.getConstructor<[String]>("nnew"));
     uc("");
     uc.apply("");
     uc.namedApply{"s"-> ""};
@@ -1828,6 +1821,93 @@ shared void checkTypeArguments() {
     assert(exists functionModelTa2 = functionModel.typeArgumentList[0]);
     assert(functionModelTa == functionModelTa2);
     assert(`Integer` == functionModelTa);
+}
+
+// grrr, no open type literals
+TypeParams<String> d1() => nothing;
+TypeParams<String> d1b() => nothing;
+TypeParams<in String> d2() => nothing;
+TypeParams<out String> d3() => nothing;
+
+@test
+shared void checkUseSiteVariance(){
+    value argModel = `String`;
+    assert(exists tpDecl1 = `class TypeParams`.typeParameterDeclarations.first);
+
+    // this one is invarant
+    value classModel1 = `TypeParams<String>`;
+    assert(classModel1.typeArgumentWithVarianceList == [[argModel, invariant]]);
+    assert(classModel1.typeArgumentWithVariances.size == 1);
+    assert(eq(classModel1.typeArgumentWithVariances[tpDecl1], [argModel, invariant]));
+    assert(classModel1.string == "metamodel::TypeParams<ceylon.language::String>");
+
+    value classModel2 = `TypeParams<in String>`;
+    assert(classModel2.typeArgumentWithVarianceList == [[argModel, contravariant]]);
+    assert(classModel2.typeArgumentWithVariances.size == 1);
+    assert(eq(classModel2.typeArgumentWithVariances[tpDecl1], [argModel, contravariant]));
+    assert(classModel2.string == "metamodel::TypeParams<in ceylon.language::String>");
+
+    value classModel3 = `TypeParams<out String>`;
+    assert(classModel3.typeArgumentWithVarianceList == [[argModel, covariant]]);
+    assert(classModel3.typeArgumentWithVariances.size == 1);
+    assert(eq(classModel3.typeArgumentWithVariances[tpDecl1], [argModel, covariant]));
+    assert(classModel3.string == "metamodel::TypeParams<out ceylon.language::String>");
+
+    assert(classModel1 == `TypeParams<String>`);
+    assert(classModel2 != classModel1);
+    assert(classModel2 != classModel3);
+
+    assert(classModel1.hash == `TypeParams<String>`.hash);
+    assert(classModel2.hash != classModel1.hash);
+    assert(classModel2.hash != classModel3.hash);
+
+    // this one is covariant
+    assert(exists tpDecl2 = `interface Top`.typeParameterDeclarations.first);
+    value classModel1b = `Top<String>`;
+    assert(classModel1b.typeArgumentWithVarianceList == [[argModel, invariant]]);
+    assert(classModel1b.typeArgumentWithVariances.size == 1);
+    assert(eq(classModel1b.typeArgumentWithVariances[tpDecl2], [argModel, invariant]));
+    assert(classModel1b.string == "metamodel::Top<ceylon.language::String>");
+    // we can't use use-site variance with variant type parameters
+
+    // function
+    assert(exists tpDecl3 = `function typeParams`.typeParameterDeclarations.first);
+    value functionModel = `typeParams<String>`;
+    assert(functionModel.typeArgumentWithVarianceList == [[argModel, invariant]]);
+    assert(functionModel.typeArgumentWithVariances.size == 1);
+    assert(eq(functionModel.typeArgumentWithVariances[tpDecl3], [argModel, invariant]));
+    assert(functionModel.string == "metamodel::typeParams<ceylon.language::String>");
+    
+    // declarations
+    value argDecl = `class String`.openType;
+    
+    // this one is invarant
+    assert(is OpenClassOrInterfaceType classDecl1 = `function d1`.openType);
+    assert(classDecl1.typeArgumentWithVarianceList == [[argDecl, invariant]]);
+    assert(classDecl1.typeArgumentWithVariances.size == 1);
+    assert(eq(classDecl1.typeArgumentWithVariances[tpDecl1], [argDecl, invariant]));
+    assert(classDecl1.string == "metamodel::TypeParams<ceylon.language::String>");
+    
+    assert(is OpenClassOrInterfaceType classDecl2 = `function d2`.openType);
+    assert(classDecl2.typeArgumentWithVarianceList == [[argDecl, contravariant]]);
+    assert(classDecl2.typeArgumentWithVariances.size == 1);
+    assert(eq(classDecl2.typeArgumentWithVariances[tpDecl1], [argDecl, contravariant]));
+    assert(classDecl2.string == "metamodel::TypeParams<in ceylon.language::String>");
+    
+    assert(is OpenClassOrInterfaceType classDecl3 = `function d3`.openType);
+    assert(classDecl3.typeArgumentWithVarianceList == [[argDecl, covariant]]);
+    assert(classDecl3.typeArgumentWithVariances.size == 1);
+    assert(eq(classDecl3.typeArgumentWithVariances[tpDecl1], [argDecl, covariant]));
+    assert(classDecl3.string == "metamodel::TypeParams<out ceylon.language::String>");
+    
+    assert(is OpenClassOrInterfaceType classDecl1b = `function d1b`.openType);
+    assert(classDecl1 == classDecl1b);
+    assert(classDecl2 != classDecl1);
+    assert(classDecl2 != classDecl3);
+
+    assert(classDecl1.hash == classDecl1b.hash);
+    assert(classDecl2.hash != classDecl1.hash);
+    assert(classDecl2.hash != classDecl3.hash);
 }
 
 Boolean eq(Anything a, Anything b){
@@ -2003,6 +2083,11 @@ shared void run() {
         checkTypeArguments();
         pass++;
     } catch (Exception|AssertionError e) { print("Failed apply type constraints"); e.printStackTrace(); }
+    try {
+        total++;
+        checkUseSiteVariance();
+        pass++;
+    } catch (Exception|AssertionError e) { print("Failed use-site variance"); e.printStackTrace(); }
     // ATTENTION!
     // When you add new test methods here make sure they are "shared" and marked "@test"!
 
@@ -2057,14 +2142,18 @@ shared void run() {
     sandbox(bug536);
     sandbox(bug537);
     sandbox(bug538);
+    sandbox(bug539);
     sandbox(bug548);
     sandbox(bug599);
     sandbox(bug607);
     sandbox(bug610);
     sandbox(bug642);
     sandbox(bug647);
+    sandbox(bug661);
     sandbox(bug670);
+    sandbox(bug675);
     sandbox(bug676);
+    sandbox(bug689);
     sandbox(bug692);
     sandbox(bug693);
     sandbox(bug694);
@@ -2074,6 +2163,7 @@ shared void run() {
     sandbox(bug711);
     sandbox(bug713);
     sandbox(bug719);
+    sandbox(bug714);
     // those were filed for the JVM compiler initially
     sandbox(bugC1196test);
     sandbox(bugC1197);
@@ -2084,9 +2174,8 @@ shared void run() {
     sandbox(bugC1244);
     sandbox(bugC1523);
     sandbox(bugC1998);
-    sandbox(langbug539);
+    // those were filed for the JS compiler initially
     sandbox(bugJ505);
-    sandbox(bug661);
     // ATTENTION!
     // When you add new test methods here make sure they are "shared" and marked "@test"!
     print(pass==total then "Metamodel tests OK (``total`` total)" else "Metamodel tests ``pass``/``total``");

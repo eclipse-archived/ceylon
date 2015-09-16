@@ -83,6 +83,10 @@ public class ToolsTest {
         String override = "foo.user-1-module.xml";
         FileUtil.copyAll(new File(MainTest.getCurrentPackagePath(), override), overridesRepo);
         
+        // add the Dependency override
+        String dependencyOverrides = "overrides.xml";
+        FileUtil.copyAll(new File(MainTest.getCurrentPackagePath(), dependencyOverrides), overridesRepo);
+
         // now make the flat repo with Vertx lib (mockup)
         File flatRepo2 = new File(FlatRepoLib);
         FileUtil.delete(flatRepo2);
@@ -156,6 +160,17 @@ public class ToolsTest {
     private void testJavaCompiler_() throws IOException { 
         Compiler javaCompiler = CeylonToolProvider.getCompiler(Backend.Java);
         testCompiler(javaCompiler, "modules.usesProvided", "1");
+    }
+
+    @Test
+    public void testJavaCompilerWithDependencyOverrides() throws Exception {
+        runInNewJVM();
+    }
+    
+    @SuppressWarnings("unused")
+    private void testJavaCompilerWithDependencyOverrides_() throws IOException { 
+        Compiler javaCompiler = CeylonToolProvider.getCompiler(Backend.Java);
+        testCompiler(javaCompiler, "modules.usesProvided", "1", true);
     }
 
     @Test
@@ -239,6 +254,10 @@ public class ToolsTest {
     }
 
     private void testCompiler(Compiler compiler, String module, String expectedVersion) throws IOException {
+        testCompiler(compiler, module, expectedVersion, false);
+    }
+    
+    private void testCompiler(Compiler compiler, String module, String expectedVersion, boolean useDependenciesOverrides) throws IOException {
         File moduleStart = new File("test-jvm/"+module.replace('.', '/'));
         final List<File> ceylonFiles = new LinkedList<File>();
         Files.walkFileTree(moduleStart.toPath(), new SimpleFileVisitor<Path>(){
@@ -277,7 +296,11 @@ public class ToolsTest {
         options.addSourcePath(new File("test-jvm"));
         options.setSystemRepository(SystemRepo);
         options.addUserRepository("flat:"+FlatRepoLib);
-        options.addUserRepository("flat:"+FlatRepoOverrides);
+        if (useDependenciesOverrides) {
+            options.setOverrides(new File(FlatRepoOverrides, "overrides.xml").getAbsolutePath());
+        } else {
+            options.addUserRepository("flat:"+FlatRepoOverrides);
+        }
         options.setOutputRepository(OutputRepository);
         options.setFiles(ceylonFiles);
         boolean ret = compiler.compile(options, listener);

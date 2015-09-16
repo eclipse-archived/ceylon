@@ -5,6 +5,7 @@ import java.util.List;
 import ceylon.language.Iterator;
 import ceylon.language.Sequential;
 import ceylon.language.finished_;
+import ceylon.language.meta.declaration.Declaration;
 import ceylon.language.meta.declaration.FunctionOrValueDeclaration;
 
 import com.redhat.ceylon.compiler.java.Util;
@@ -30,7 +31,7 @@ public class FunctionalUtil {
         Object o;
         while((o = iterator.next()) != finished_.get_()){
             ceylon.language.meta.declaration.FunctionOrValueDeclaration pd = (ceylon.language.meta.declaration.FunctionOrValueDeclaration) o;
-            if(pd.getName().equals(name))
+            if(((Declaration)pd).getName().equals(name))
                 return pd;
         }
         return null;

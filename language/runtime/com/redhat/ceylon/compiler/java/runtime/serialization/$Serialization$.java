@@ -8,8 +8,6 @@ package com.redhat.ceylon.compiler.java.runtime.serialization;
  * (where ... means some number of {code TypeDescriptor}s)</p>
  *  
  * <p>These constructors are always invoked with a null first argument.</p>
- * 
- * @see DeserializableReferenceImpl#DeserializableReferenceImpl(com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor, DeserializationContextImpl, Object, ceylon.language.meta.model.ClassModel)
  */
 public final class $Serialization$ {
     private $Serialization$() {}

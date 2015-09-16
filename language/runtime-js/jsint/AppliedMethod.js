@@ -58,6 +58,12 @@ function AppliedMethod$jsint(tipo,typeArgs,$$targs$$,$$appliedMethod){
   atr$($$appliedMethod,'typeArgumentList',function(){
     return funtypeargl$($$appliedMethod);
   },undefined,_proto.$prop$getTypeArgumentList.$crtmm$);
+  atr$($$appliedMethod,'typeArgumentWithVariances',function(){
+    return funtypeargv$($$appliedMethod);
+  },undefined,_proto.$prop$getTypeArgumentWithVariances.$crtmm$);
+  atr$($$appliedMethod,'typeArgumentWithVarianceList',function(){
+    return funtypeargvl$($$appliedMethod);
+  },undefined,_proto.$prop$getTypeArgumentWithVarianceList.$crtmm$);
   atr$($$appliedMethod,'parameterTypes',function(){
     return funparamtypes($$appliedMethod);
   },undefined,_proto.$prop$getParameterTypes.$crtmm$);
