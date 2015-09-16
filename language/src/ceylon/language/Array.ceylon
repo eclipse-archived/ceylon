@@ -164,17 +164,17 @@ shared final serializable native class Array<Element>
             Integer j);
     
     "Efficiently move the element of this array at the given 
-     [[source index|from]] to the given [[destination index]],
-     shifting every element falling between the two given 
-     indices by one position to accommodate the change of
-     position. If the source index is larger than the 
-     destination index, elements are shifted toward the end
-     of the array. If the source index is smaller than the
-     destination index, elements are shifted toward the 
-     start of the array. If the given indices are identical,
-     no change is made to the array. The array always 
-     contains the same elements before and after this 
-     operation."
+     [[source index|from]] to the given 
+     [[destination index|to]], shifting every element 
+     falling between the two given indices by one position 
+     to accommodate the change of position. If the source 
+     index is larger than the destination index, elements 
+     are shifted toward the end of the array. If the source 
+     index is smaller than the destination index, elements 
+     are shifted toward the start of the array. If the given 
+     indices are identical, no change is made to the array. 
+     The array always contains the same elements before and 
+     after this operation."
     throws (`class AssertionError`,
         "if either of the given indices is out of bounds") 
     shared native
