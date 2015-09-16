@@ -569,4 +569,13 @@ public class IssuesTests_2000_2499 extends CompilerTests {
     public void testBug2293() {
         compareWithJavaSource("bug22xx/Bug2293"); 
     }
+    
+    @Test
+    public void testBug2304() throws Exception {
+        //run("com.redhat.ceylon.compiler.java.test.issues.bug23xx.bug2304");
+        //Method method = Class.forName("com.redhat.ceylon.compiler.java.test.issues.bug23xx.bug2304If_").getMethod("bug2304If");
+        //method.setAccessible(true);method.invoke(null);
+        compileAndRun("com.redhat.ceylon.compiler.java.test.issues.bug23xx.bug2304",
+                "bug23xx/Bug2304.ceylon"); 
+    }
 }
