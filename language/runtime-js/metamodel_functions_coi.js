@@ -1,7 +1,11 @@
 //ClassOrInterface.getClassOrInterface
 function coigetcoi$(coi,name$2,types$3,$$$mptypes,noInherit){
-  if (noInherit && !extendsType($$$mptypes.Container$getClassOrInterface,{t:coi.tipo}))throw IncompatibleTypeException$meta$model("Incompatible container");
-  if (!extendsType($$$mptypes.Kind$getClassOrInterface, {t:ClassOrInterface$meta$model}))throw IncompatibleTypeException$meta$model("Kind must be ClassOrInterface");
+  if (noInherit && !extendsType($$$mptypes.Container$getClassOrInterface,{t:coi.tipo})) {
+    throw IncompatibleTypeException$meta$model("Incompatible container");
+  }
+  if (!extendsType($$$mptypes.Kind$getClassOrInterface, {t:ClassOrInterface$meta$model})) {
+    throw IncompatibleTypeException$meta$model("Kind must be ClassOrInterface");
+  }
   var _tipo=mmfca$(coi.tipo,$$$mptypes.Container$getClassOrInterface);
   if(types$3===undefined){types$3=empty();}
   var mm = getrtmm$$(_tipo);
@@ -492,7 +496,7 @@ function coicont$(coi) {
   return rv;
 }
 //ClassOrInterface.typeArguments
-function coitarg$(coi){
+function _coitarg_$(coi,makeItem,maptarg){
   var mm = getrtmm$$(coi.tipo);
   if (mm) {
     if (mm.tp) {
@@ -508,8 +512,7 @@ function coitarg$(coi){
       var ord=[];
       for (var tp in mm.tp) {
         var param = OpenTypeParam$jsint(coi.tipo,tp);
-        var targ;
-        var _targ=typeTargs && typeTargs[tp];
+        var targ,_targ=typeTargs && typeTargs[tp];
         if (_targ) {
           if (typeof(_targ)==='string') {
             console.log("TODO buscar " + tp + "->" + _targ + " para " + coi.declaration.qualifiedName);
@@ -519,21 +522,37 @@ function coitarg$(coi){
         } else {
           targ=typeLiteral$meta({Type$typeLiteral:{t:Anything}});
         }
-        targs[param.qualifiedName]=[param,targ];
+        targs[param.qualifiedName]=[param,makeItem(coi,_targ||0,targ)];
         ord.push(param.qualifiedName);
       }
-      return TpMap$jsint(targs,ord,{V$TpMap:{t:Type$meta$model,a:{Type$Type:{t:Anything}}}});
+      return TpMap$jsint(targs,ord,{V$TpMap:maptarg});
     }
     return empty();
   }
   throw new Error("ClassOrInterface.typeArguments: missing metamodel!");
 }
-//ClassOrInterface.typeArguments
-function coitargv$(coi){
-  throw new Error("ClassOrInterface.typeArgumentWithVariances: not implemented");
+
+function coitarg$(coi){
+  return _coitarg_$(coi,function(c,t,a){return a;},
+    {t:Type$meta$model,a:{Type$Type:{t:Anything}}});
 }
+//ClassOrInterface.typeArgumentWithVariances
+function coitargv$(coi){
+  return _coitarg_$(coi,function(c,t,a){
+    var iance;
+    if (t.uv==='out'){
+      iance=covariant$meta$declaration();
+    } else if (t.uv==='in'){
+      iance=contravariant$meta$declaration();
+    } else {
+      iance=invariant$meta$declaration();
+    }
+    return tpl$([a,iance],[{t:Type$meta$model,a:{t:Anything}},{t:Variance$meta$declaration}]);
+  }, {t:'T', l:[{t:Type$meta$model,a:{t:Anything}},{t:Variance$meta$declaration}]});
+}
+
 //ClassOrInterface.typeArgumentList
-function coitargl$(coi){
+function _coitargl_$(coi,makeItem,listarg){
   var mm = getrtmm$$(coi.tipo);
   if (mm) {
     if (mm.tp) {
@@ -558,18 +577,33 @@ function coitargl$(coi){
         } else {
           targ=typeLiteral$meta({Type$typeLiteral:{t:Anything}});
         }
-        ord.push(targ);
+        ord.push(makeItem(coi,_targ||0,targ));
       }
-      return ArraySequence(ord,{Element$ArraySequence:{t:Type$meta$model,a:{Target$Type:Anything}}});
+      return ArraySequence(ord,{Element$ArraySequence:listarg});
     }
     return empty();
   }
   throw new Error("ClassOrInterface.typeArgumentList: missing metamodel!");
 }
-//ClassOrInterface.typeArgumentList
-function coitargvl$(coi){
-  throw new Error("ClassOrInterface.typeArgumentWithVarianceList: not implemented");
+function coitargl$(coi) {
+  return _coitargl_$(coi,function(c,t,a){return a;},
+    {t:Type$meta$model,a:{Target$Type:Anything}});
 }
+//ClassOrInterface.typeArgumentWithVarianceList
+function coitargvl$(coi){
+  return _coitargl_$(coi,function(c,t,a){
+    var iance;
+    if (t.uv==='out'){
+      iance=covariant$meta$declaration();
+    } else if (t.uv==='in'){
+      iance=contravariant$meta$declaration();
+    } else {
+      iance=invariant$meta$declaration();
+    }
+    return tpl$([a,iance],[{t:Type$meta$model,a:{t:Anything}},{t:Variance$meta$declaration}]);
+  },{t:'T', l:[{t:Type$meta$model,a:{t:Anything}},{t:Variance$meta$declaration}]});
+}
+
 //Resolve Type Argument
 function coirestarg$(root,type) {
   if (type.a) {
