@@ -111,18 +111,7 @@ shared interface Collection<out Element=Anything>
         iterator() 
                 => object satisfies Iterator<[Element+]> {
             value elements = Array(multiset);
-            
-            value reversed
-                = zipPairs(elements.indexes().reversed, 
-                           elements.reversed);
-            value paired = reversed.paired;
-            
-            function greaterThan(Integer key)
-                    ([Integer, Integer->Element] pair)
-                    => pair[1].key > key;
-            function adjacentDecreasing
-                    ([Integer, Integer->Element][2] pairs)
-                    => greaterThan(pairs[1][1].key)(pairs[0]);
+            value size = elements.size;
             
             variable value initial = true;
             
@@ -130,31 +119,25 @@ shared interface Collection<out Element=Anything>
                 if (initial) {
                     initial = false;
                 }
-                else if (exists pairs 
-                        = paired.find(adjacentDecreasing)) {
-                    value [k, entry] = pairs[1];
-                    value key = entry.key;
-                    assert (exists pair 
-                        = reversed.find(greaterThan(key)));
-                    elements.set(k, pair[1]);
-                    elements.set(pair[0], entry);
-                    value from = k + 1;
-                    value to = k + (elements.size - from) / 2;
-                    value rest
-                        = zipPairs(from..to, 
-                            elements.sublist(from, to));
-                    for ([i, j] in zipPairs(rest, reversed)) {
-                        elements.set(i[0], j[1]);
-                        elements.set(j[0], i[1]);
+                else if (exists i -> [key->_, __]
+                        = elements.paired.locateLast((pair)
+                            => pair[0].key < pair[1].key)) {
+                    assert (exists j
+                            = elements.lastIndexWhere((elem) 
+                                => elem.key > key));
+                    elements.swap(i,j);
+                    for (k in 0 : (size-i-1)/2) {
+                        elements.swap(i+1+k, size-1-k);
                     }
                 }
                 else {
                     return finished;
                 }
-                
-                return 
-                    if (nonempty permutation = elements*.item) 
-                    then permutation else finished;
+                return
+                    if (nonempty permutation 
+                        = elements*.item) 
+                    then permutation 
+                    else finished;
             }
         };
     };
