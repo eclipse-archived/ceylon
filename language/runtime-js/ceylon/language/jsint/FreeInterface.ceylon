@@ -13,4 +13,5 @@ shared native class FreeInterface(declaration)
     shared native actual OpenTypeArgument[] typeArgumentWithVarianceList;
     shared native actual Boolean equals(Object other);
     shared native actual String string;
+    shared actual Integer hash => string.hash;
 }
