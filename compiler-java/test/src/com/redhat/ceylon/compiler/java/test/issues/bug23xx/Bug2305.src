@@ -1,0 +1,64 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug23xx;
+
+public interface Bug2305Interf {
+    
+    public .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2305Interf$impl $com$redhat$ceylon$compiler$java$test$issues$bug23xx$Bug2305Interf$impl();
+    
+    public void initMultiEditChange();
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2305Interf.class);
+}
+public final class Bug2305Interf$impl {
+    
+    public Bug2305Interf$impl(.com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2305Interf $this) {
+        this.$this = $this;
+    }
+    private final .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2305Interf $this;
+    
+    public void initMultiEditChange() {
+    }
+}
+public interface Bug2305InvocationCompletion {
+    
+    public .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2305InvocationCompletion$impl $com$redhat$ceylon$compiler$java$test$issues$bug23xx$Bug2305InvocationCompletion$impl();
+    
+    public .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2305InvocationCompletion$impl.Proposal Proposal$new$();
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2305InvocationCompletion.class);
+}
+public final class Bug2305InvocationCompletion$impl {
+    
+    public Bug2305InvocationCompletion$impl(.com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2305InvocationCompletion $this) {
+        this.$this = $this;
+    }
+    private final .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2305InvocationCompletion $this;
+    
+    public .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2305InvocationCompletion$impl.Proposal Proposal$new$() {
+        return new Proposal();
+    }
+    
+    public class Proposal implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2305Interf {
+        
+        protected Proposal() {
+            this.$com$redhat$ceylon$compiler$java$test$issues$bug23xx$Bug2305Interf$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2305Interf$impl(this);
+        }
+        protected final .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2305Interf$impl $com$redhat$ceylon$compiler$java$test$issues$bug23xx$Bug2305Interf$this$;
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2305Interf$impl $com$redhat$ceylon$compiler$java$test$issues$bug23xx$Bug2305Interf$impl() {
+            return $com$redhat$ceylon$compiler$java$test$issues$bug23xx$Bug2305Interf$this$;
+        }
+        
+        @.java.lang.Override
+        public final void initMultiEditChange() {
+            $com$redhat$ceylon$compiler$java$test$issues$bug23xx$Bug2305Interf$this$.initMultiEditChange();
+        }
+        
+        public final void createChange() {
+            initMultiEditChange();
+        }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2305InvocationCompletion.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2305InvocationCompletion$impl.Proposal.class));
+        }
+    }
+}
