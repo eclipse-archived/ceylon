@@ -1,6 +1,6 @@
-"""Represents a collection which maps _keys_ to _items_,
-   where a key can map to at most one item. Each such 
-   mapping may be represented by an [[Entry]].
+"""A collection which maps _keys_ to _items_, where a key 
+   can map to at most one item. Each such mapping may be 
+   represented by an [[Entry]].
    
    A `Map` is a [[Collection]] of its `Entry`s, and a 
    [[Correspondence]] from keys to items.
