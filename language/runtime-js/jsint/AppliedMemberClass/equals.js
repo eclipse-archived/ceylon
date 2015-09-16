@@ -5,5 +5,5 @@ function(o){
   } else {
     eq=eq && o.$bound===undefined;
   }
-  return eq && this.typeArguments.equals(o.typeArguments);
+  return eq && this.typeArgumentWithVariances.equals(o.typeArgumentWithVariances);
 }
