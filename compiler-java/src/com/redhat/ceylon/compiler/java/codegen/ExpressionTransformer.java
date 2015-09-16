@@ -5011,12 +5011,12 @@ public class ExpressionTransformer extends AbstractTransformer {
             
             // Find the method/getter/setter where the expr is being used
             Scope scope = expr.getScope();
-            while (scope != null && scope instanceof Interface == false) {
+            while (scope != null){
+                // Is it being used in an interface (=> impl)
+                if(scope instanceof Interface && ((Interface) scope).getType().isSubtypeOf(scope.getDeclaringType(decl))) {
+                    return decl.isShared();
+                }
                 scope = scope.getContainer();
-            }
-            // Is it being used in an interface (=> impl)
-            if (scope instanceof Interface) {
-                return decl.isShared();
             }
         }
         return false;
