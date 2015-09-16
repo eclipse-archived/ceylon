@@ -547,7 +547,7 @@ function coitargv$(coi){
     } else {
       iance=invariant$meta$declaration();
     }
-    return tpl$([a,iance],[{t:Type$meta$model,a:{t:Anything}},{t:Variance$meta$declaration}]);
+    return tpl$([a,iance]);
   }, {t:'T', l:[{t:Type$meta$model,a:{t:Anything}},{t:Variance$meta$declaration}]});
 }
 
@@ -600,7 +600,7 @@ function coitargvl$(coi){
     } else {
       iance=invariant$meta$declaration();
     }
-    return tpl$([a,iance],[{t:Type$meta$model,a:{t:Anything}},{t:Variance$meta$declaration}]);
+    return tpl$([a,iance]);
   },{t:'T', l:[{t:Type$meta$model,a:{t:Anything}},{t:Variance$meta$declaration}]});
 }
 

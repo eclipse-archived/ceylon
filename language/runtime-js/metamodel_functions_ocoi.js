@@ -49,7 +49,7 @@ function ocoitargv$(coi) {
     } else {
       iance=invariant$meta$declaration();
     }
-    return tpl$([a,iance],[{t:OpenType$meta$declaration},{t:Variance$meta$declaration}]);
+    return tpl$([a,iance]);
   },{t:'T',l:[{t:OpenType$meta$declaration},{t:Variance$meta$declaration}]});
 }
 //OpenClassOrInterface.typeArgumentList
@@ -101,7 +101,7 @@ function ocoitargvl$(coi) {
     } else {
       iance=invariant$meta$declaration();
     }
-    return tpl$([a,iance],[{t:OpenType$meta$declaration},{t:Variance$meta$declaration}]);
+    return tpl$([a,iance]);
   },{t:'T',l:[{t:OpenType$meta$declaration},{t:Variance$meta$declaration}]});
 }
 //OpenClassOrInterface.string
