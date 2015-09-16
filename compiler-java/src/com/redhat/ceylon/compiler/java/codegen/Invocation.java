@@ -317,6 +317,14 @@ abstract class Invocation {
                     selector = Naming.getCallableMethodName();
                     this.callable = true;
                 }
+                // If it's indirect the primary might be erased
+                actualPrimExpr = gen.expressionGen().applyErasureAndBoxing(actualPrimExpr, 
+                        getPrimary().getTypeModel(),
+                        getPrimary().getTypeErased(),
+                        true, // boxed
+                        BoxingStrategy.BOXED, 
+                        getPrimary().getTypeModel(), 
+                        0);
             } else if ((getPrimaryDeclaration() instanceof Function
                             && ((Function)getPrimaryDeclaration()).isParameter()// i.e. functional parameter
                             && (!JvmBackendUtil.createMethod((Function)getPrimaryDeclaration())) // not class member, or not shared/captured
