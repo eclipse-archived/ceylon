@@ -10,27 +10,14 @@ function(anntypes,$m) {
     startingType=startingType.container;
   }
   var pref=mtn+"_";
-  var ats=coi$get$anns(anntypes);
-  var cs=[]
-  for (var cn in this.tipo) {
-    if (cn.startsWith(pref)) {
-      mm=getrtmm$$(this.tipo[cn]);
-      if (mm.d[mm.d.length-2]==='$cn' && coi$is$anns(allann$(mm),ats)) {
-        var parms=mm.ps;
-        if (parms && $m.Arguments$getDeclaredCallableConstructors.t!==Nothing && this.$$targs$$.Type$AppliedClass.a) {
-          for (var i=0;i<parms.length;i++) {
-            parms[i] = {$t:restype$(this.$$targs$$.Type$AppliedClass,parms[i].$t)};
-          }
-        }
-        if (validate$params(parms,$m.Arguments$getDeclaredCallableConstructors,"",1)) {
-          var args=mm.ps?tupleize$params(parms,this.$targs):empty();
-          cs.push(AppliedMemberClassCallableConstructor$jsint(this.tipo[cn],
+  var cs=coiclsannconstrs$(this,anntypes,pref,'$cn',$m.Arguments$getDeclaredCallableConstructors,this.$$targs$$.Type$AppliedMemberClass);
+  for (var i=0;i<cs.length;i++) {
+    var r=AppliedMemberClassCallableConstructor$jsint(cs[i].tipo,
                {Type$AppliedMemberClassCallableConstructor:this.$$targs$$.Type$AppliedMemberClass,
                 Container$AppliedMemberClassCallableConstructor:this.$$targs$$.Container$AppliedMemberClass,
-                Arguments$AppliedMemberClassCallableConstructor:args},undefined,this.$targs));
-        }
-      }
-    }
+                Arguments$AppliedMemberClassCallableConstructor:cs[i].args},undefined,this.$targs);
+    r.$cont=this;
+    cs[i]=r;
   }
   return cs.length===0?empty():ArraySequence(cs,{Element$ArraySequence:{t:MemberClassCallableConstructor$meta$model,
     a:{Type$MemberClassCallableConstructor:this.$$targs$$.Type$AppliedClass,Arguments$MemberClassCallableConstructor:{t:Nothing},

@@ -683,3 +683,28 @@ function cmp$targ$uv$(a,ta) {
   }
   return false;
 }
+//Return a list of the constructors with the specified
+//annotations and the specified prefix in its name
+//and the specified metatype
+function coiclsannconstrs$(coi,anntypes,prefix,mt,arg$,tipo) {
+  var ats=coi$get$anns(anntypes);
+  var cs=[];
+  for (var cn in coi.tipo) {
+    if (cn.startsWith(prefix)) {
+      mm=getrtmm$$(coi.tipo[cn]);
+      if (mm.d[mm.d.length-2]===mt && coi$is$anns(allann$(mm),ats)) {
+        var parms=mm.ps;
+        if (parms && arg$.t!==Nothing && tipo.a) {
+          for (var i=0;i<parms.length;i++) {
+            parms[i] = {$t:restype$(tipo,parms[i].$t)};
+          }
+        }
+        if (validate$params(parms,arg$,"",1)) {
+          var args=parms?tupleize$params(parms,coi.$targs):empty();
+          cs.push({tipo:coi.tipo[cn],args:args});
+        }
+      }
+    }
+  }
+  return cs;
+}
