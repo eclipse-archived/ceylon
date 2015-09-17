@@ -179,6 +179,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     static final String CEYLON_LANGUAGE_SUPPRESS_WARNINGS_ANNOTATION = "ceylon.language.SuppressWarningsAnnotation$annotation$";
     static final String CEYLON_LANGUAGE_LICENSE_ANNOTATION = "ceylon.language.LicenseAnnotation$annotation$";
     static final String CEYLON_LANGUAGE_TAGS_ANNOTATION = "ceylon.language.TagsAnnotation$annotation$";
+    static final String CEYLON_LANGUAGE_ALIASES_ANNOTATION = "ceylon.language.AliasesAnnotation$annotation$";
 
     // important that these are with ::
     private static final String CEYLON_LANGUAGE_CALLABLE_TYPE_NAME = "ceylon.language::Callable";
@@ -1036,11 +1037,11 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             switch(type){
             case ATTRIBUTE:
                 decl = makeToplevelAttribute(classMirror);
-                setDeclarationVisibilityAndDeprecation(decl, classMirror, classMirror, classMirror, true);
+                setNonLazyDeclarationProperties(decl, classMirror, classMirror, classMirror, true);
                 break;
             case METHOD:
                 decl = makeToplevelMethod(classMirror);
-                setDeclarationVisibilityAndDeprecation(decl, classMirror, classMirror, classMirror, true);
+                setNonLazyDeclarationProperties(decl, classMirror, classMirror, classMirror, true);
                 break;
             case OBJECT:
                 // we first make a class
@@ -1054,19 +1055,19 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                     decls.add(objectDecl);
                     // which one did we want?
                     decl = declarationType == DeclarationType.TYPE ? objectClassDecl : objectDecl;
-                    setDeclarationVisibilityAndDeprecation(objectDecl, classMirror, classMirror, classMirror, true);
+                    setNonLazyDeclarationProperties(objectDecl, classMirror, classMirror, classMirror, true);
                 }else{
                     decl = objectClassDecl;
                 }
-                setDeclarationVisibilityAndDeprecation(objectClassDecl, classMirror, classMirror, classMirror, true);
+                setNonLazyDeclarationProperties(objectClassDecl, classMirror, classMirror, classMirror, true);
                 break;
             case CLASS:
                 if(classMirror.getAnnotation(CEYLON_ALIAS_ANNOTATION) != null){
                     decl = makeClassAlias(classMirror);
-                    setDeclarationVisibilityAndDeprecation(decl, classMirror, classMirror, classMirror, true);
+                    setNonLazyDeclarationProperties(decl, classMirror, classMirror, classMirror, true);
                 }else if(classMirror.getAnnotation(CEYLON_TYPE_ALIAS_ANNOTATION) != null){
                     decl = makeTypeAlias(classMirror);
-                    setDeclarationVisibilityAndDeprecation(decl, classMirror, classMirror, classMirror, true);
+                    setNonLazyDeclarationProperties(decl, classMirror, classMirror, classMirror, true);
                 }else{
                     final List<MethodMirror> constructors = getClassConstructors(classMirror, constructorOnly);
                     if (!constructors.isEmpty()) {
@@ -1076,7 +1077,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                                 decl = makeOverloadedConstructor(constructors, classMirror, decls, isCeylon);
                             } else {
                                 decl = makeLazyClass(classMirror, null, null);
-                                setDeclarationVisibilityAndDeprecation(decl, classMirror, classMirror, classMirror, isCeylon);
+                                setNonLazyDeclarationProperties(decl, classMirror, classMirror, classMirror, isCeylon);
                             }
                         } else {
                             if (hasConstructors == null || !hasConstructors) {
@@ -1088,19 +1089,19 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                                 // visibility is to be used
                                 if(isCeylon || getJavaVisibility(classMirror) == getJavaVisibility(constructor)){
                                     decl = makeLazyClass(classMirror, null, constructor);
-                                    setDeclarationVisibilityAndDeprecation(decl, classMirror, classMirror, classMirror, isCeylon);
+                                    setNonLazyDeclarationProperties(decl, classMirror, classMirror, classMirror, isCeylon);
                                 }else{
                                     decl = makeOverloadedConstructor(constructors, classMirror, decls, isCeylon);
                                 }
                             } else {
                                 decl = makeLazyClass(classMirror, null, null);
-                                setDeclarationVisibilityAndDeprecation(decl, classMirror, classMirror, classMirror, isCeylon);
+                                setNonLazyDeclarationProperties(decl, classMirror, classMirror, classMirror, isCeylon);
                             }
                         }
                     } else if(isCeylon && classMirror.getAnnotation(CEYLON_OBJECT_ANNOTATION) != null) {
                         // objects don't need overloading stuff
                         decl = makeLazyClass(classMirror, null, null);
-                        setDeclarationVisibilityAndDeprecation(decl, classMirror, classMirror, classMirror, isCeylon);
+                        setNonLazyDeclarationProperties(decl, classMirror, classMirror, classMirror, isCeylon);
                     } else if(getJavaVisibility(classMirror) != JavaVisibility.PRIVATE){
                         Class klass = (Class)makeOverloadedConstructor(constructors, classMirror, decls, isCeylon);
                         decl = klass;
@@ -1124,7 +1125,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 }else{
                     decl = makeLazyInterface(classMirror);
                 }
-                setDeclarationVisibilityAndDeprecation(decl, classMirror, classMirror, classMirror, isCeylon);
+                setNonLazyDeclarationProperties(decl, classMirror, classMirror, classMirror, isCeylon);
                 break;
             }
         }catch(ModelResolutionException x){
@@ -1205,14 +1206,14 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         // a subclass of the original
         Class supercls = makeLazyClass(classMirror, null, null);
         // the abstraction class gets the class modifiers
-        setDeclarationVisibilityAndDeprecation(supercls, classMirror, classMirror, classMirror, isCeylon);
+        setNonLazyDeclarationProperties(supercls, classMirror, classMirror, classMirror, isCeylon);
         supercls.setAbstraction(true);
         List<Declaration> overloads = new ArrayList<Declaration>(constructors.size());
         // all filtering is done in getClassConstructors
         for (MethodMirror constructor : constructors) {
             LazyClass subdecl = makeLazyClass(classMirror, supercls, constructor);
             // the subclasses class get the constructor modifiers
-            setDeclarationVisibilityAndDeprecation(subdecl, constructor, constructor, classMirror, isCeylon);
+            setNonLazyDeclarationProperties(subdecl, constructor, constructor, classMirror, isCeylon);
             subdecl.setOverloaded(true);
             overloads.add(subdecl);
             decls.add(subdecl);
@@ -1221,11 +1222,12 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         return supercls;
     }
 
-    private void setDeclarationVisibilityAndDeprecation(Declaration decl, AccessibleMirror mirror, AnnotatedMirror annotatedMirror, ClassMirror classMirror, boolean isCeylon) {
+    private void setNonLazyDeclarationProperties(Declaration decl, AccessibleMirror mirror, AnnotatedMirror annotatedMirror, ClassMirror classMirror, boolean isCeylon) {
         if(isCeylon){
             // when we're in a local type somewhere we must turn public declarations into package or protected ones, so
             // we have to check the shared annotation
             decl.setShared(mirror.isPublic() || annotatedMirror.getAnnotation(CEYLON_LANGUAGE_SHARED_ANNOTATION) != null);
+            setDeclarationAliases(decl, annotatedMirror);
         }else{
             decl.setShared(mirror.isPublic() || (mirror.isDefaultAccess() && classMirror.isInnerClass()) || mirror.isProtected());
             decl.setPackageVisibility(mirror.isDefaultAccess());
@@ -2473,7 +2475,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         constructor.setUnit(klass.getUnit());
         constructor.setAbstract(ctor.getAnnotation(CEYLON_LANGUAGE_ABSTRACT_ANNOTATION) != null);
         constructor.setExtendedType(klass.getType());
-        setDeclarationVisibilityAndDeprecation(constructor, ctor, ctor, classMirror, isCeylon);
+        setNonLazyDeclarationProperties(constructor, ctor, ctor, classMirror, isCeylon);
         setAnnotations(constructor, ctor);
         klass.addMember(constructor);
         return constructor;
@@ -3065,6 +3067,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         value.setProtectedVisibility(fieldMirror.isProtected());
         value.setPackageVisibility(fieldMirror.isDefaultAccess());
         value.setStaticallyImportable(fieldMirror.isStatic());
+        setDeclarationAliases(value, fieldMirror);
         // field can't be abstract or interface, so not formal
         // can we override fields? good question. Not really, but from an external point of view?
         // FIXME: figure this out: (default)
@@ -3232,6 +3235,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         decl.setShared(methodMirror.isPublic() || methodMirror.isProtected() || methodMirror.isDefaultAccess());
         decl.setProtectedVisibility(methodMirror.isProtected());
         decl.setPackageVisibility(methodMirror.isDefaultAccess());
+        setDeclarationAliases(decl, methodMirror);
         if(decl instanceof Value){
             setValueTransientLateFlags((Value)decl, methodMirror, isCeylon);
         }
@@ -5175,5 +5179,15 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
      */
     protected boolean isFlatClasspath(){
         return false;
+    }
+
+    private static void setDeclarationAliases(Declaration decl, AnnotatedMirror mirror){
+        AnnotationMirror annot = mirror.getAnnotation(AbstractModelLoader.CEYLON_LANGUAGE_ALIASES_ANNOTATION);
+        if (annot != null) {
+            @SuppressWarnings("unchecked")
+            List<String> value = (List<String>) annot.getValue("aliases");
+            if(value != null && !value.isEmpty())
+                decl.setAliases(value);
+        }
     }
 }

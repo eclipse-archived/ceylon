@@ -25,7 +25,7 @@ public enum LanguageAnnotation {
     NATIVE("native", 1L<<10, AbstractModelLoader.CEYLON_LANGUAGE_NATIVE_ANNOTATION),
     OPTIONAL("optional", 1L<<11, AbstractModelLoader.CEYLON_LANGUAGE_OPTIONAL_ANNOTATION),
     SERIALIZABLE("serializable", 1L<<12, AbstractModelLoader.CEYLON_LANGUAGE_SERIALIZABLE_ANNOTATION),
-    
+
     /* documentation annotations */
     DOC("doc", 0, AbstractModelLoader.CEYLON_LANGUAGE_DOC_ANNOTATION) {
         public List<Annotation> makeFromCeylonAnnotation(AnnotationMirror mirror) {
@@ -111,6 +111,18 @@ public enum LanguageAnnotation {
             List<String> warnings = (List<String>)mirror.getValue("warnings");
             for (String tag : warnings) {
                 anno.addPositionalArgment(tag);
+            }
+            return Collections.singletonList(anno);
+        }
+    },
+    // the name of the function is "aliased" but its type is "AliasesAnnotation"
+    ALIASES("aliased", 0, AbstractModelLoader.CEYLON_LANGUAGE_ALIASES_ANNOTATION){
+        public List<Annotation> makeFromCeylonAnnotation(AnnotationMirror mirror) {
+            Annotation anno = new Annotation(name);
+            @SuppressWarnings("unchecked")
+            List<String> aliases = (List<String>)mirror.getValue("aliases");
+            for (String alias : aliases) {
+                anno.addPositionalArgment(alias);
             }
             return Collections.singletonList(anno);
         }

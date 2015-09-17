@@ -43,6 +43,7 @@ public abstract class Declaration
 	private String nativeBackend;
 	private boolean otherInstanceAccess;
     private DeclarationCompleter actualCompleter;
+    private List<String> aliases;
 
     public Scope getVisibleScope() {
         return visibleScope;
@@ -681,5 +682,12 @@ public abstract class Declaration
             return EMPTY_TYPE_ARG_MAP;
         }
     }
+
+    public List<String> getAliases(){
+        return aliases != null ? aliases : Collections.<String>emptyList();
+    }
     
+    public void setAliases(List<String> aliases){
+        this.aliases = aliases;
+    }
 }
