@@ -235,6 +235,19 @@ shared annotation TagsAnnotation tagged(
     String* tags)
         => TagsAnnotation(*tags);
 
+"The annotation class for the [[aliased]] annotation."
+shared final sealed annotation class AliasesAnnotation(
+    "The aliases, in plain text."
+    shared String* aliases)
+        satisfies OptionalAnnotation<AliasesAnnotation,Annotated> {}
+
+"Annotation to specify a list of aliases that tools such as auto-completion and
+ quick-fixes should consider, to help users find a declaration using its aliases."
+shared annotation AliasesAnnotation aliased(
+    "The aliases, in plain text."
+    String* aliases)
+        => AliasesAnnotation(*aliases);
+
 "The annotation class for the [[license]] annotation."
 shared final sealed annotation class LicenseAnnotation(
     "The name, text, or URL of the license."
@@ -303,4 +316,3 @@ shared final annotation class SerializableAnnotation()
  instances of non-serializable classes."
 shared annotation SerializableAnnotation serializable() 
         => SerializableAnnotation();
-
