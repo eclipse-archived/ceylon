@@ -1361,19 +1361,21 @@ public class Type extends Reference {
      * whole type hierarchy. Avoid using this!
      */
     public List<Type> getSupertypes() {
+        if (isUnion() || isNothing()) {
+            throw new UnsupportedOperationException(
+                    "getSupertypes() not defined for union types or Nothing");
+        }
         return getSupertypes(new ArrayList<Type>(5));
     }
     
     private List<Type> getSupertypes(
             List<Type> list) {
-        if (isUnion() || isNothing()) {
-            throw new RuntimeException("getSupertypes() not defined for union types or Nothing");
-        }
         if (isWellDefined() && 
                 addToSupertypes(this, list)) {
             Type extendedType = getExtendedType();
             if (extendedType!=null && 
-                    !extendedType.isNothing()) {
+                    !extendedType.isNothing() &&
+                    !extendedType.isUnion()) {
                 extendedType.getSupertypes(list);
             }
             List<Type> satisfiedTypes = getSatisfiedTypes();
@@ -1381,7 +1383,8 @@ public class Type extends Reference {
                     i<l; i++) {
                 Type satisfiedType = satisfiedTypes.get(i);
                 if (satisfiedType!=null &&
-                        !satisfiedType.isNothing()) {
+                        !satisfiedType.isNothing() &&
+                        !satisfiedType.isUnion()) {
                     satisfiedType.getSupertypes(list);
                 }
             }
