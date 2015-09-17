@@ -32,6 +32,7 @@ import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 import com.redhat.ceylon.compiler.java.metadata.Variance;
 import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
+import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Functional;
 import com.redhat.ceylon.model.typechecker.model.Reference;
@@ -1194,6 +1195,10 @@ public abstract class AppliedClassOrInterface<Type>
     @Override
     @TypeInfo("ceylon.language::Sequential<Type>")
     public ceylon.language.Sequential<? extends Type> getCaseValues(){
+        if (!((ClassOrInterface)declaration.declaration).isAbstract()) {
+            // optimization: a concrete class cannot have cases
+            return (Sequential)empty_.get_();
+        }
         Sequential<? extends ceylon.language.meta.declaration.OpenType> caseTypeDeclarations = getDeclaration().getCaseTypes();
         Iterator<? extends ceylon.language.meta.declaration.OpenType> iterator = caseTypeDeclarations.iterator();
         Object it;
