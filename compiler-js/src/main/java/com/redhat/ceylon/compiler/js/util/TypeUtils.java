@@ -755,25 +755,28 @@ public class TypeUtils {
                 if (p instanceof Setter) {
                     sb.add(i, "$set");
                 }
-                sb.add(i, TypeUtils.modelName(p));
-                //Build the path in reverse
-                if (!p.isToplevel()) {
-                    if (p instanceof Class) {
-                        sb.add(i, p.isAnonymous() ? MetamodelGenerator.KEY_OBJECTS : MetamodelGenerator.KEY_CLASSES);
-                    } else if (p instanceof com.redhat.ceylon.model.typechecker.model.Interface) {
-                        sb.add(i, MetamodelGenerator.KEY_INTERFACES);
-                    } else if (p instanceof Function) {
-                        if (!p.isAnonymous()) {
-                            sb.add(i, MetamodelGenerator.KEY_METHODS);
+                final String mname = TypeUtils.modelName(p);
+                if (!(mname.startsWith("anon$") || mname.startsWith("anonymous#"))) {
+                    sb.add(i, mname);
+                    //Build the path in reverse
+                    if (!p.isToplevel()) {
+                        if (p instanceof Class) {
+                            sb.add(i, p.isAnonymous() ? MetamodelGenerator.KEY_OBJECTS : MetamodelGenerator.KEY_CLASSES);
+                        } else if (p instanceof com.redhat.ceylon.model.typechecker.model.Interface) {
+                            sb.add(i, MetamodelGenerator.KEY_INTERFACES);
+                        } else if (p instanceof Function) {
+                            if (!p.isAnonymous()) {
+                                sb.add(i, MetamodelGenerator.KEY_METHODS);
+                            }
+                        } else if (p instanceof TypeAlias || p instanceof Setter) {
+                            sb.add(i, MetamodelGenerator.KEY_ATTRIBUTES);
+                        } else if (p instanceof Constructor) {
+                            sb.add(i, MetamodelGenerator.KEY_CONSTRUCTORS);
+                        } else { //It's a value
+                            TypeDeclaration td=((TypedDeclaration)p).getTypeDeclaration();
+                            sb.add(i, (td!=null&&td.isAnonymous())? MetamodelGenerator.KEY_OBJECTS
+                                    : MetamodelGenerator.KEY_ATTRIBUTES);
                         }
-                    } else if (p instanceof TypeAlias || p instanceof Setter) {
-                        sb.add(i, MetamodelGenerator.KEY_ATTRIBUTES);
-                    } else if (p instanceof Constructor) {
-                        sb.add(i, MetamodelGenerator.KEY_CONSTRUCTORS);
-                    } else { //It's a value
-                        TypeDeclaration td=((TypedDeclaration)p).getTypeDeclaration();
-                        sb.add(i, (td!=null&&td.isAnonymous())? MetamodelGenerator.KEY_OBJECTS
-                                : MetamodelGenerator.KEY_ATTRIBUTES);
                     }
                 }
                 p = ModelUtil.getContainingDeclaration(p);
@@ -924,7 +927,9 @@ public class TypeUtils {
             for (Type st : caseTypes) {
                 if (!first)gen.out(",");
                 first=false;
-                if (st.getDeclaration().isAnonymous()) {
+                if (isConstructor(st.getDeclaration())) {
+                    gen.out("{t:", gen.getNames().name(d), ".", gen.getNames().name(d), "_", st.getDeclaration().getName(), "}");
+                } else if (st.getDeclaration().isAnonymous()) {
                     gen.out(gen.getNames().getter(st.getDeclaration(), true));
                 } else {
                     metamodelTypeNameOrList(false, that, d.getUnit().getPackage(), st, null, gen);
