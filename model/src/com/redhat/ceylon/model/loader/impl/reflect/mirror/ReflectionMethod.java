@@ -173,7 +173,11 @@ public class ReflectionMethod implements MethodMirror {
     public TypeMirror getReturnType() {
         if(returnType != null)
             return returnType;
-        returnType = new ReflectionType(((Method)method).getGenericReturnType());
+        if (method instanceof Method) {
+            returnType = new ReflectionType(((Method)method).getGenericReturnType());
+        } else {
+            returnType = new ReflectionType(((Constructor<?>)method).getDeclaringClass());
+        }
         return returnType;
     }
     
