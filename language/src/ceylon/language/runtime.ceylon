@@ -1,3 +1,5 @@
+import java.lang { System, Long, Int=Integer, Math }
+
 "Represents the machine and virtual machine on which the 
  current process is executing.
  
@@ -53,5 +55,52 @@ shared native object runtime  {
     see (`class Array`)
     shared native Integer maxArraySize;
     
+    shared native Float epsilon; 
+    
     string => "runtime [``name`` / ``version``]";
+}
+
+shared native("jvm") object runtime  {
+    shared native("jvm") String name => "jvm";
+    shared native("jvm") String version => 
+            System.getProperty("java.specification.version");
+    shared native("jvm") Integer integerSize => 64;
+    shared native("jvm") Integer integerAddressableSize => 64;
+    shared native("jvm") Integer minIntegerValue => Long.\iMIN_VALUE;
+    shared native("jvm") Integer maxIntegerValue => Long.\iMAX_VALUE;
+    shared native("jvm") Integer maxArraySize = Int.\iMAX_VALUE - 8;
+    shared native("jvm") Float epsilon = Math.ulp(1.0);
+}
+
+shared native("js") object runtime  {
+    shared native("js") String name {
+        dynamic {
+            if (is String path = jsprocess_.execPath,
+                    path.startsWith("node")) {
+                return "node.js";
+            }
+            else if (exists window) {
+                return "Browser";
+            }
+            else {
+                return "Unknown JavaScript environment";
+            }
+        }
+    }
+    shared native("js") String version {
+        dynamic { 
+            if (is String version = jsprocess_.version) {
+                return version;
+            }
+            else {
+                return "Unknown";
+            }
+        }
+    }
+    shared native("js") Integer integerSize => 53;
+    shared native("js") Integer integerAddressableSize => 32;
+    shared native("js") Integer minIntegerValue = -(2^53-1);
+    shared native("js") Integer maxIntegerValue = 2^53-1;
+    shared native("js") Integer maxArraySize = 2^32-1;
+    shared native("js") Float epsilon = 2.0^(-52);
 }

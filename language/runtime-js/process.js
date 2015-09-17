@@ -65,3 +65,5 @@ function _process_pick_writeErrorLine() {
   }
   return function(x){this.writeLine(x);}
 }
+
+jsprocess_ = process;

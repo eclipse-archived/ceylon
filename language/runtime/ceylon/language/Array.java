@@ -126,7 +126,7 @@ public final class Array<Element>
         this($reifiedElement, toSize(size), element);
     }
     
-    private static long maxArraySize = runtime_.get_().getMaxArraySize().value;
+    private static long maxArraySize = runtime_.get_().getMaxArraySize();
     
     private static int toSize(long size) {
         if (size>maxArraySize) {
