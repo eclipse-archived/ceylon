@@ -289,7 +289,8 @@
             nor to the local repository cache under <filename>~/.ceylon/repo</filename>.</para>
             
             <para>A module <emphasis>version identifier</emphasis> is a character 
-            string containing digits, periods, and lowercase letters, for example:</para>
+            string containing <!--digits, periods, and lowercase letters --> no whitespace,
+            for example:</para>
             
             <screen>1.0.1</screen>
             <screen>3.0.0.beta</screen>
