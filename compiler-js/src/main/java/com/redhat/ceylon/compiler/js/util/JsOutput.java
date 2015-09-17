@@ -168,9 +168,7 @@ public class JsOutput {
                     if (d.getName() == null) continue;
                     //TODO only use quotes when absolutely necessary
                     if (d.isAnonymous()) {
-                        if (first)first=false;else out(",");
-                        out("'", names.getter(d, true),
-                                "':", names.name(d));
+                        //Don't generate anything for anonymous types
                     } else if (d instanceof Setter) {
                         //ignore
                         if (((Setter) d).getGetter() == null) {
