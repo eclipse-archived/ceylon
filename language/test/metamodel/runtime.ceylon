@@ -1793,6 +1793,11 @@ shared void checkConstructors2() {
     //`ClassConstructorsOfEveryArity.plus5`.namedApply{"s1"->"1", "s2"->"2", "s3"-> "3", "s4"->"4", "s5"->{}};
     `ClassConstructorsOfEveryArity.plus5`.namedApply{"s1"->"1", "s2"->"2", "s3"-> "3", "s4"->"4", "s5"->["1"]};
     `ClassConstructorsOfEveryArity.plus5`.namedApply{"s1"->"1", "s2"->"2", "s3"-> "3", "s4"->"4", "s5"->["1", "2"]};
+    
+    assert(`ClosedEnumValueConstructors`.caseValues.size == 2);
+    assert(ClosedEnumValueConstructors.alpha in `ClosedEnumValueConstructors`.caseValues);
+    assert(ClosedEnumValueConstructors.alpha.leakBeta() in `ClosedEnumValueConstructors`.caseValues);
+    assert(`OpenEnumValueConstructors`.caseValues.empty);
 }
 
 @test

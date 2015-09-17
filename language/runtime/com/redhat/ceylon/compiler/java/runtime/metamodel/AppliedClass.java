@@ -17,6 +17,7 @@ import ceylon.language.meta.model.Applicable;
 import ceylon.language.meta.model.CallableConstructor;
 import ceylon.language.meta.model.FunctionModel;
 import ceylon.language.meta.model.InvocationException;
+import ceylon.language.meta.model.ValueConstructor;
 import ceylon.language.meta.model.ValueModel;
 
 import com.redhat.ceylon.compiler.java.Util;
@@ -517,5 +518,40 @@ public class AppliedClass<Type, Arguments extends Sequential<? extends Object>>
             @Sequenced
             ceylon.language.Sequential<? extends ceylon.language.meta.model.Type<? extends java.lang.annotation.Annotation>> annotations) {
         return getConstructors(false, null, annotations);
+    }
+    
+    @Override
+    @TypeInfo("ceylon.language::Sequential<Type>")
+    public ceylon.language.Sequential<? extends Type> getCaseValues(){
+        Class classDecl = (Class)declaration.declaration;
+        if (classDecl.hasEnumerated()) {
+            // if enumerated => not abstract => can't have type cases,
+            // can only possibly have value constructor cases
+            if (classDecl.getCaseTypes() == null 
+                    || classDecl.getCaseTypes().isEmpty()) {
+                // it's not a closed enum of value constructors
+                return (Sequential)empty_.get_();
+            }
+            ArrayList<Type> ctors = new ArrayList<>();
+            for (ceylon.language.meta.declaration.Declaration d : ((FreeClass)declaration).constructors()) {
+                Declaration dd = null;
+                if (d instanceof FreeCallableConstructor) {
+                    continue;
+                } else if (d instanceof FreeValueConstructor) {
+                    dd = ((FreeValueConstructor)d).declaration;
+                }
+                // ATM this is an AND WRT annotation types: all must be present
+                ctors.add(((ValueConstructor<Type, ?>)getDeclaredConstructor(TypeDescriptor.NothingType, d.getName())).get());
+            }
+            
+            Object[] array = ctors.toArray(new Object[ctors.size()]);
+            ObjectArrayIterable<ceylon.language.meta.declaration.Declaration> iterable = 
+                    new ObjectArrayIterable<ceylon.language.meta.declaration.Declaration>(
+                            this.$reifiedType,
+                            (Object[]) array);
+            return (ceylon.language.Sequential) iterable.sequence();
+        } else {
+            return super.getCaseValues();
+        }
     }
 }

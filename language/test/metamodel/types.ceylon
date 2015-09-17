@@ -1044,3 +1044,15 @@ class ClassConstructorsOfEveryArity {
     shared new plus4(String s1, String s2, String s3, String+ s4) {}
     shared new plus5(String s1, String s2, String s3, String s4, String+ s5) {}
 }
+
+class ClosedEnumValueConstructors
+    of alpha | beta {
+    shared new alpha {}
+    new beta {}
+    shared ClosedEnumValueConstructors leakBeta() => beta;
+}
+
+class OpenEnumValueConstructors {
+    shared new alpha {}
+    new beta {}
+}
