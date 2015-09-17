@@ -80,7 +80,7 @@ shared native("js") object runtime  {
     shared native("js") String name {
         dynamic {
             if (is String path = jsprocess_.execPath,
-                    path.startsWith("node")) {
+                    path.contains("node")) {
                 return "node.js";
             }
             else if (exists window) {
