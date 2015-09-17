@@ -79,8 +79,7 @@ shared native("jvm") object runtime  {
 shared native("js") object runtime  {
     shared native("js") String name {
         dynamic {
-            if (is String path = jsprocess_.execPath,
-                    path.contains("node")) {
+            if (is String version = process.propertyValue("node.version")) {
                 return "node.js";
             }
             else if (exists window) {
@@ -93,7 +92,10 @@ shared native("js") object runtime  {
     }
     shared native("js") String version {
         dynamic { 
-            if (is String version = jsprocess_.version) {
+            if (is String version = process.propertyValue("node.version")) {
+                return version;
+            }
+            else if (is String version = process.propertyValue("browser.version")) {
                 return version;
             }
             else {

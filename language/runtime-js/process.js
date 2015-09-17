@@ -10,6 +10,9 @@ if (typeof navigator !== "undefined") {
     if (navigator.languages||navigator.userLanguage||navigator.browserLanguage||navigator.language) {
         properties["user.locale"]=$_String((navigator.languages || [navigator.userLanguage||navigator.browserLanguage||navigator.language])[0]);
     }
+    if (navigator.appVersion !== undefined) {
+        properties["browser.version"] = $_String(navigator.platform);
+    }
 }
 if (typeof process !== "undefined") {
     if (process.platform !== undefined) {
@@ -17,6 +20,9 @@ if (typeof process !== "undefined") {
     }
     if (process.arch !== undefined) {
         properties["os.arch"] = $_String(process.arch);
+    }
+    if (process.versions !== undefined && process.versions.node != undefined) {
+        properties["node.version"] = $_String(process.versions.node);
     }
 }
 if (typeof document !== "undefined") {
@@ -29,7 +35,7 @@ var linesep = '\n';
 var filesep = '/';
 var pathsep = ':';
 var osname = properties["os.name"];
-if ((osname !== undefined) && (osname.search(/windows/i) >= 0)) {
+if ((osname !== undefined) && (osname.search(/win/i) >= 0)) {
     linesep = "\r\n";
     filesep = '\\';
     pathsep = ';';
@@ -66,4 +72,3 @@ function _process_pick_writeErrorLine() {
   return function(x){this.writeLine(x);}
 }
 
-jsprocess_ = process;
