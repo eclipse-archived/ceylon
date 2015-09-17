@@ -26,6 +26,7 @@
    [Unicode]: http://www.unicode.org/"""
 see (`class String`)
 by ("Gavin")
+tagged("Basic types")
 shared final native class Character(Character character)
         extends Object()
         satisfies Comparable<Character> & 

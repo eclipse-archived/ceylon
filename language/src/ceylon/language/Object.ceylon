@@ -28,6 +28,7 @@
    unequal."""
 see (`class Basic`, `class Null`)
 by ("Gavin")
+tagged("Basic types")
 shared abstract class Object() 
         extends Anything() {
     

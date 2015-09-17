@@ -7,6 +7,7 @@
  
      tuples[i] == [unzip(tuples)[0][i], 
                   *unzip(tuples)[1][i]]"
+tagged("Streams")
 shared [Iterable<Head,Absent>, Iterable<Tail,Absent>] 
 unzip<Element,Head,Tail,Absent>
         (Iterable<Tuple<Element|Head,Head,Tail>,Absent> tuples)
@@ -26,6 +27,7 @@ unzip<Element,Head,Tail,Absent>
  
      pairs[i] == [unzipPairs(pairs)[0][i], 
                   unzipPairs(pairs)[1][i]]"
+tagged("Streams")
 shared [Iterable<First,Absent>, Iterable<Second,Absent>] 
 unzipPairs<First,Second,Absent>
         (Iterable<[First,Second],Absent> pairs)
@@ -42,6 +44,7 @@ unzipPairs<First,Second,Absent>
  
      entries[i] == unzipEntries(entries)[0][i] 
                 -> unzipEntries(entries)[1][i]"
+tagged("Streams")
 shared [Iterable<Key,Absent>, Iterable<Item,Absent>] 
 unzipEntries<Key,Item,Absent>
         (Iterable<<Key->Item>,Absent> entries)

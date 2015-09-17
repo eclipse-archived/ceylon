@@ -8,6 +8,7 @@
  identity. Of course, subtypes are encouraged to refine this 
  implementation."
 by ("Gavin")
+tagged("Basic types")
 shared interface Identifiable {
     
     "Identity equality comparing the identity of the two 

@@ -6,6 +6,7 @@
  according to a given comparator function."
 see (`interface Comparable`,
      `function Iterable.sort`)
+tagged("Streams")
 shared Element[] sort<Element>({Element*} elements) 
         given Element satisfies Comparable<Element> {
     value array = Array(elements);

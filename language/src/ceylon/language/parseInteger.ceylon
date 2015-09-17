@@ -26,6 +26,7 @@ throws (`class AssertionError`,
          [[maxRadix]]")
 see (`function formatInteger`,
      `function parseFloat`)
+tagged("Numbers")
 shared Integer? parseInteger(
             "The string representation to parse."
             String string,

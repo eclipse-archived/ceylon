@@ -33,6 +33,7 @@
        }"""
 see (`class Integer`)
 by ("Gavin")
+tagged("Numbers")
 shared interface Integral<Other> of Other
         satisfies Number<Other> & 
                   Enumerable<Other>

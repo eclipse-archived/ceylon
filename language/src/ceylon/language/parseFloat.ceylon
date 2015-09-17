@@ -9,6 +9,7 @@
  character (`+` or `-`) and may not contain grouping 
  underscore characters."
 see (`function parseInteger`)
+tagged("Numbers")
 shared Float? parseFloat(String string) {
     
     // parse the sign first

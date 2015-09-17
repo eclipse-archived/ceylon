@@ -6,6 +6,7 @@
  `formal` members.)"
 throws (`class AssertionError`, 
         "when evaluated")
+tagged("Basic types")
 shared Nothing nothing {
     "nothing may not be evaluated"
     assert (false);

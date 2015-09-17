@@ -20,6 +20,7 @@
    `P1`, `P2`, ..., `Pn`, `S+`, the returned function 
    accepts `[P1, P2, ..., Pn, S+]`."
 see(`function flatten`)
+tagged("Functions")
 shared native Return unflatten<Return,Args>
         (Return(*Args) flatFunction)(Args args)
         given Args satisfies Anything[];

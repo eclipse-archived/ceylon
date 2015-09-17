@@ -2,6 +2,7 @@
  [[false]] of Boolean logic."
 see (`function parseBoolean`)
 by ("Gavin")
+tagged("Basic types")
 shared native abstract class Boolean()
         of true | false {}
 

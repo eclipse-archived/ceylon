@@ -134,6 +134,7 @@
        Boolean same = corresponding(xs, ys);"""
 see (`interface Collection`, `function corresponding`)
 by ("Gavin")
+tagged("Streams")
 shared interface Iterable<out Element=Anything, 
                           out Absent=Null>
         satisfies Category<>

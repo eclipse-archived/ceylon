@@ -51,5 +51,6 @@
  
  This interface may not be implemented by user code."
 see (`class Tuple`)
+tagged("Functions")
 shared native interface Callable<out Return, in Arguments> 
         given Arguments satisfies Anything[] {}

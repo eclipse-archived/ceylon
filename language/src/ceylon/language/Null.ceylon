@@ -41,10 +41,12 @@
    [[value equality|Object.equals]]."""
 see (`value null`)
 by ("Gavin") 
+tagged("Basic types")
 shared abstract class Null() 
         of null
         extends Anything() {}
 
 "The null value."
 by ("Gavin")
+tagged("Basic types")
 shared object null extends Null() {}

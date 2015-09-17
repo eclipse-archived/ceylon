@@ -40,6 +40,7 @@
 see (`value runtime.integerSize`,
      `function parseInteger`,
      `function formatInteger`)
+tagged("Basic types", "Numbers")
 shared native final class Integer(Integer integer)
         extends Object()
         satisfies Integral<Integer> &

@@ -31,6 +31,7 @@
  type, but is not required to be [[Number]], since a complex
  number scaling type should be allowed."
 by ("Gavin")
+tagged("Numbers")
 shared interface Scalable<in Scale, out Value> of Value 
         given Value satisfies Scalable<Scale,Value> 
         given Scale satisfies Numeric<Scale> {

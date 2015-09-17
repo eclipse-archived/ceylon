@@ -14,6 +14,7 @@
  value [[finished]]."
 see (`interface Iterable`)
 by ("Gavin")
+tagged("Streams")
 shared interface Iterator<out Element> {
     "The next element, or [[finished]] if there are no more 
      elements to be iterated.
