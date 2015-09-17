@@ -55,6 +55,10 @@ shared native object runtime  {
     see (`class Array`)
     shared native Integer maxArraySize;
     
+    "The _machine epsilon_ for [[floating point|Float]]
+     values. That is, the smallest value `e` such that:
+     
+         1.0 + e > 1.0"
     shared native Float epsilon; 
     
     string => "runtime [``name`` / ``version``]";
