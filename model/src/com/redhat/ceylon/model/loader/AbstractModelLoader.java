@@ -3501,6 +3501,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                     type = optionalType;
                 }
             }
+            type.setRaw(isRaw(ModelUtil.getModuleContainer(container), typeMirror));
             
             FunctionOrValue value = null;
             boolean lookedup = false;
