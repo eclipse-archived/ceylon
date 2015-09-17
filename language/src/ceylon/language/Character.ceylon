@@ -116,7 +116,7 @@ shared final native class Character(Character character)
      - *FORM FEED*, `\\f` or `\\{#000C}`,
      - *CARRIAGE RETURN*, `\\r` or `\\{#000D}`,
      - *HORIZONTAL TABULATION*, `\\t` or `\\{#0009}`,
-     - *VERTICAL TABULATION*, `\\{#000B}`,
+     - *LINE TABULATION*, `\\{#000B}`,
      - *FILE SEPARATOR*, `\\{#001C}`,
      - *GROUP SEPARATOR*, `\\{#001D}`,
      - *RECORD SEPARATOR*, `\\{#001E}`,
