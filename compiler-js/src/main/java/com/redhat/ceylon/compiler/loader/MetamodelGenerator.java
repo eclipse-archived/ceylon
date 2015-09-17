@@ -132,9 +132,11 @@ public class MetamodelGenerator {
         }
         List<String> names = TypeUtils.generateModelPath(ModelUtil.getContainingDeclaration(d));
         names.remove(0); //we don't need the package key
+        if (names.isEmpty()) {
+            return pkgmap;
+        }
         Map<String, Object> last = pkgmap;
         for (String name : names) {
-            if (name.startsWith("anon$") || name.startsWith("anonymous#"))continue;
             if (last == null) {
                 break;
             }
@@ -404,7 +406,7 @@ public class MetamodelGenerator {
         encodeAnnotations(d.getAnnotations(), d, m);
         Map<String, Object> parent= findParent(d);
         if (parent != null) {
-            if (!d.isToplevel()) {
+            if (parent != getPackageMap(d.getUnit().getPackage())) {
                 if (!parent.containsKey(KEY_METHODS)) {
                     parent.put(KEY_METHODS, new HashMap<>());
                 }
@@ -458,7 +460,7 @@ public class MetamodelGenerator {
         }
         Map<String, Object> parent = findParent(d);
         if (parent != null) {
-            if (!d.isToplevel() || d.isMember()) {
+            if (parent != getPackageMap(d.getUnit().getPackage())) {
                 if (!parent.containsKey(KEY_CLASSES)) {
                     parent.put(KEY_CLASSES, new HashMap<>());
                 }
@@ -568,7 +570,7 @@ public class MetamodelGenerator {
             if (parent == null) {
                 return null;
             }
-            if (!d.isToplevel()) {
+            if (parent != getPackageMap(d.getUnit().getPackage())) {
                 final String _k = KEY_ATTRIBUTES;
                 if (!parent.containsKey(_k)) {
                     parent.put(_k, new HashMap<>());
