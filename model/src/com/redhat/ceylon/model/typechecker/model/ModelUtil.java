@@ -865,7 +865,13 @@ public class ModelUtil {
      */
     public static boolean isNameMatching(
             String startingWith, Declaration d) {
-        return isNameMatching(startingWith, d.getName());
+        if(isNameMatching(startingWith, d.getName()))
+            return true;
+        for(String alias : d.getAliases()){
+            if(isNameMatching(startingWith, alias))
+                return true;
+        }
+        return false;
     }
     
     public static boolean isNameMatching(
