@@ -1,4 +1,3 @@
-function(){
-  console.log("IMPL AppliedClass.getCallableConstructors");
-  return empty();
+function(anntypes,$m){
+  return this.getDeclaredCallableConstructors(anntypes,{Arguments$getDeclaredCallableConstructors:$m.Arguments$getCallableConstructors});
 }
