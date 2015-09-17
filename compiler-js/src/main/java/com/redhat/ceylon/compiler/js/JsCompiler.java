@@ -97,7 +97,7 @@ public class JsCompiler {
         }
     }
     
-    private final Visitor unitVisitor = new Visitor() {
+    private final Visitor errorVisitor = new Visitor() {
         private void addErrors(Node that) {
             for (Message m: that.getErrors()) {
                 if (m instanceof AnalysisMessage) {
@@ -107,6 +107,14 @@ public class JsCompiler {
                 }
             }
         }
+        @Override
+        public void visitAny(Node that) {
+            super.visitAny(that);
+            addErrors(that);
+        }
+    };
+    
+    private final Visitor unitVisitor = new Visitor() {
         private boolean hasErrors(Node that) {
             boolean r=false;
             for (Message m: that.getErrors()) {
@@ -117,7 +125,6 @@ public class JsCompiler {
         @Override
         public void visitAny(Node that) {
             super.visitAny(that);
-            addErrors(that);
         }
         @Override
         public void visit(Tree.Declaration that) {
@@ -298,10 +305,10 @@ public class JsCompiler {
 
     /** Compile one phased unit. */
     private void compileUnit(PhasedUnit pu, JsIdentifierNames names) throws IOException {
-//        pu.getCompilationUnit().visit(unitVisitor);
-//        if (exitCode != 0) {
-//            return;
-//        }
+        pu.getCompilationUnit().visit(unitVisitor);
+        if (exitCode != 0) {
+            return;
+        }
         if (errCount == 0 || !stopOnErrors) {
             if (opts.isVerbose()) {
                 logger.debug("Compiling "+pu.getUnitFile().getPath()+" to JS");
@@ -310,6 +317,7 @@ public class JsCompiler {
             GenerateJsVisitor jsv = new GenerateJsVisitor(jsout, opts, names, pu.getTokens());
             pu.getCompilationUnit().visit(jsv);
             pu.getCompilationUnit().visit(unitVisitor);
+            pu.getCompilationUnit().visit(errorVisitor);
             if (jsv.getExitCode() != 0) {
                 exitCode = jsv.getExitCode();
             }
