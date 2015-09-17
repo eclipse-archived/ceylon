@@ -1887,7 +1887,7 @@ public class GenerateJsVisitor extends Visitor {
         else if (TypeUtils.isNativeJs(decl)) {
             if (decl==null) {
                 expr.addUnexpectedError("Expression with no declaration outside of dynamic block");
-                return "<NULL>";
+                return "(throw new TypeError('<NULL>'))";
             }
             // direct access to a native element
             plainName = decl.getName();
