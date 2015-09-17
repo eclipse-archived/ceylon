@@ -17,5 +17,11 @@ function memberInvoke(cont,targs,args) {
     }
     a.push(ta);
   }
+  if (this.tipo.apply===undefined) {
+    //Formal method?
+    var n=this.name;
+    n=cont[n] || (cont.$$ && cont.$$.prototype && cont.$$.prototype[n]) || (cont.prototype && cont.prototype[n]);
+    if (typeof(n)==='function')return n.apply(cont,a);
+  }
   return this.tipo.apply(cont,a);
 }
