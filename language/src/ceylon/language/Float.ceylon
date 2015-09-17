@@ -8,7 +8,8 @@
    approximately 5\{#00D7}10<sup>-324</sup>.
  
  Zero is represented by distinct instances `+0.0`, `-0.0`, 
- but these instances are equal.
+ but these instances are equal. If you need to distinguish
+ `-0.0` from `+0.0` you can use `f == 0.0 && f.strictlyNegative`.
  
  In addition, the following special values exist:
  
