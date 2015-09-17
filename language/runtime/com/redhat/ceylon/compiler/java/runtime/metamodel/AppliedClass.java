@@ -420,7 +420,8 @@ public class AppliedClass<Type, Arguments extends Sequential<? extends Object>>
             // ATM this is an AND WRT annotation types: all must be present
             if(!hasAllAnnotations((AnnotatedDeclaration)d, annotationTypeDescriptors))
                 continue;
-            if (reifiedArguments != null) {
+            if (dd instanceof Functional 
+                    && reifiedArguments != null) {
                 // CallableConstructor need a check on the <Arguments>
                 Reference producedReference = dd.appliedReference(producedType, Collections.<com.redhat.ceylon.model.typechecker.model.Type>emptyList());
                 com.redhat.ceylon.model.typechecker.model.Type argumentsType = Metamodel.getProducedTypeForArguments(
