@@ -663,11 +663,16 @@ public class SpecificationVisitor extends Visitor {
 //                    name(bme.getIdentifier()), null, false, bme.getUnit());
 	        Declaration member = bme.getDeclaration();
 	        if (member==declaration) {
-	        	if (declaration.isFormal() && 
-	        	        !isForwardReferenceable()) {
-	        	    bme.addError("member is formal and may not be specified: '" +
-	        				member.getName() + "' is declared formal");
-	        	}
+	        	if (!isForwardReferenceable()) {
+                    if (declaration.isFormal()) {
+                        bme.addError("member is formal and may not be specified: '" +
+                    			member.getName() + "' is declared formal");
+                    }
+                    else if (declaration.isDefault()) {
+                        bme.addError("member is default and may not be specified except in its declaration: '" +
+                                member.getName() + "' is declared default");
+                    }
+                }
 	        	if (that.getRefinement()) {
 	        	    declare();
 	        	}

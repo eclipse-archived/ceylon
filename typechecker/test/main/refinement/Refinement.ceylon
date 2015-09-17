@@ -240,17 +240,17 @@ class CX() {
 }
 class CY() {
     shared default String name;
-    name = "Gavin";
+    @error name = "Gavin";
     shared actual String string => name;
 }
 
 class CZ() {
     shared default String name;
     if (1==1) {
-        name = "Gavin";
+        @error name = "Gavin";
     }
     else {
-        name = "Trompon";
+        @error name = "Trompon";
     }
     shared actual String string => name;
 }
@@ -258,14 +258,14 @@ class CZ() {
 class CW() {
     @error shared default String name;
     if (1==1) {
-        name = "Gavin";
+        @error name = "Gavin";
     }
 }
 
 
 class Elephant() {
     default shared String name;
-    name = "Trompon"; //this is controversial. Should it really be an error?
+    @error name = "Trompon"; //this is controversial. Should it really be an error?
     default shared Float size=1000.0;
     @error default shared Integer count;
     @error count++;

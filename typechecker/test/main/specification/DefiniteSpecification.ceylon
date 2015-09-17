@@ -713,3 +713,20 @@ class Trompon() {
     shared String getName();
     this.getName() => name.uppercased;
 }
+
+
+abstract class AssignToFormalDefault() {
+    shared formal variable String name0;
+    shared default variable String name1 = "";
+    shared default String name2 => "";
+    assign name2 {}
+    @error name0 = "foo";
+    @error name1 = "foo";
+    @error name2 = "foo";
+}
+
+class C2() {
+    shared default String name => "";
+    assign name {}
+    @error name = "foo";
+}
