@@ -167,21 +167,18 @@ public class ConditionGenerator {
         gen.out(")");
     }
 
-    void specialConditionCheck(Condition condition, Tree.Term variableRHS, String varName) {
+    private void specialConditionCheck(Condition condition, Tree.Term variableRHS, String varName) {
         if (condition instanceof ExistsOrNonemptyCondition) {
             if (((ExistsOrNonemptyCondition) condition).getNot()) {
                 gen.out("!");
             }
             if (condition instanceof Tree.NonemptyCondition) {
                 gen.out(gen.getClAlias(), "ne$(");
-                specialConditionRHS(variableRHS, varName);
-                gen.out(")");
             } else { //exists
                 gen.out(gen.getClAlias(), "nn$(");
-                specialConditionRHS(variableRHS, varName);
-                gen.out(")");
             }
-
+            specialConditionRHS(variableRHS, varName);
+            gen.out(")");
         } else {
             Tree.Type type = ((IsCondition) condition).getType();
             gen.generateIsOfType(variableRHS, null, type.getTypeModel(),
