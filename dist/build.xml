@@ -37,6 +37,7 @@
 
     ant status             - Shows the Git status of the sibling projects
     ant update             - Updates the Git repository of the sibling projects
+    ant clean              - Cleans the distribution project
 
 Some super-charged ant tasks:
 
@@ -87,7 +88,6 @@ Some more basic ant tasks:
                              will generate documentation and the final distribution
                              package
 
-    ant clean              - Cleans the distribution package
     ant clean-release      - Cleans the distribution package
                              and deletes all local projects</echo>
     </target>
