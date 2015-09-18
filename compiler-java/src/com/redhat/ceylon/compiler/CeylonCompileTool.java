@@ -470,7 +470,7 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
         
         if (suppressWarnings != null) {
             arguments.add("-suppress-warnings");
-            arguments.add(EnumUtil.enumsToString(Warning.class, suppressWarnings));
+            arguments.add(EnumUtil.enumsToString(suppressWarnings));
         }
         
         addJavacArguments(arguments);
