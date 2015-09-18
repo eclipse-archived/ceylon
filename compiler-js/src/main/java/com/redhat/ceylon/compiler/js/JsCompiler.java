@@ -112,6 +112,12 @@ public class JsCompiler {
             super.visitAny(that);
             addErrors(that);
         }
+        @Override
+        public void visit(Tree.Declaration that) {
+            if (isForBackend(that.getAnnotationList(), Backend.JavaScript, that.getUnit())) {
+                super.visit(that);
+            }
+        }
     };
     
     private final Visitor unitVisitor = new Visitor() {
