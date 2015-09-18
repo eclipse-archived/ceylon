@@ -491,9 +491,13 @@ public class FunctionHelper {
                 final boolean hasTargs = BmeGenerator.hasTypeParameters(
                         (Tree.BaseTypeExpression)that.getPrimary());
                 if (hasTargs) {
-                    BmeGenerator.printGenericMethodReference(gen,
-                            (Tree.BaseTypeExpression)that.getPrimary(), "0",
-                            gen.qualifiedPath(that, cd) + "_" + gen.getNames().name(cd));
+                    if (that.getDirectlyInvoked()) {
+                        gen.out(gen.qualifiedPath(that, cd), "_", gen.getNames().name(cd));
+                    } else {
+                        BmeGenerator.printGenericMethodReference(gen,
+                                (Tree.BaseTypeExpression)that.getPrimary(), "0",
+                                gen.qualifiedPath(that, cd) + "_" + gen.getNames().name(cd));
+                    }
                 } else {
                     gen.qualify(that, cd);
                     gen.out(gen.getNames().name(cd));
