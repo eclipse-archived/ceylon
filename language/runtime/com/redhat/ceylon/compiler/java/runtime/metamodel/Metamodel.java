@@ -4,6 +4,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
@@ -35,10 +36,12 @@ import ceylon.language.meta.declaration.OpenClassOrInterfaceType;
 import ceylon.language.meta.declaration.OpenType;
 import ceylon.language.meta.declaration.Package;
 import ceylon.language.meta.model.ClassOrInterface;
+import ceylon.language.meta.model.FunctionModel;
 import ceylon.language.meta.model.Generic;
 import ceylon.language.meta.model.IncompatibleTypeException;
 import ceylon.language.meta.model.InvocationException;
 import ceylon.language.meta.model.TypeApplicationException;
+import ceylon.language.meta.model.ValueModel;
 
 import com.redhat.ceylon.common.runtime.CeylonModuleClassLoader;
 import com.redhat.ceylon.compiler.java.Util;
@@ -1863,5 +1866,62 @@ public class Metamodel {
         if(declaration.isContravariant())
             return ceylon.language.meta.declaration.contravariant_.get_();
         throw Metamodel.newModelError("Underlying declaration is neither invariant, covariant nor contravariant");
+    }
+    
+    
+    static <Type> Sequential getConstructors(
+            AppliedClassOrInterface<Type> cls,
+            boolean justShared,
+            boolean callableConstructors,
+            TypeDescriptor $reified$Arguments,
+            ceylon.language.Sequential<? extends ceylon.language.meta.model.Type<? extends java.lang.annotation.Annotation>> annotations) {
+        ArrayList<Object> ctors = new ArrayList<>();
+        com.redhat.ceylon.model.typechecker.model.Type reifiedArguments = $reified$Arguments == null ? null : Metamodel.getProducedType($reified$Arguments);
+        TypeDescriptor[] annotationTypeDescriptors = Metamodel.getTypeDescriptors(annotations);
+        for (ceylon.language.meta.declaration.Declaration d : ((FreeClass)cls.declaration).constructors()) {
+            Declaration dd = null;
+            if (d instanceof FreeCallableConstructor
+                    && callableConstructors) {
+                dd = ((FreeCallableConstructor)d).declaration;
+            } else if (d instanceof FreeValueConstructor
+                    && !callableConstructors) {
+                dd = ((FreeValueConstructor)d).declaration;
+            } else {
+                continue;
+            }
+            // ATM this is an AND WRT annotation types: all must be present
+            if(!cls.hasAllAnnotations((AnnotatedDeclaration)d, annotationTypeDescriptors))
+                continue;
+            if (dd instanceof Functional 
+                    && reifiedArguments != null) {
+                // CallableConstructor need a check on the <Arguments>
+                Reference producedReference = dd.appliedReference(cls.producedType, Collections.<com.redhat.ceylon.model.typechecker.model.Type>emptyList());
+                com.redhat.ceylon.model.typechecker.model.Type argumentsType = Metamodel.getProducedTypeForArguments(
+                        dd.getUnit(), 
+                        (Functional) dd, 
+                        producedReference);
+                if(!reifiedArguments.isSubtypeOf(argumentsType))
+                    continue;
+            }
+            if (!justShared || (d instanceof NestableDeclaration
+                    && ((NestableDeclaration)d).getShared())) {
+                Object ctor;
+                if (cls instanceof AppliedClass<?,?>) {
+                    ctor = ((AppliedClass<?,?>)cls).getDeclaredConstructor(TypeDescriptor.NothingType, d.getName());
+                } else {//if (cls instanceof AppliedMemberClass<?,?,?>) {
+                    ctor = ((AppliedMemberClass<?,?,?>)cls).getDeclaredConstructor(TypeDescriptor.NothingType, d.getName());
+                }
+                ctors.add(ctor);
+            }
+        }
+        
+        Object[] array = ctors.toArray(new Object[ctors.size()]);
+        ObjectArrayIterable<ceylon.language.meta.declaration.Declaration> iterable = 
+                new ObjectArrayIterable<ceylon.language.meta.declaration.Declaration>(
+                        TypeDescriptor.union(
+                                TypeDescriptor.klass(FunctionModel.class, cls.$reifiedType, TypeDescriptor.NothingType),
+                                TypeDescriptor.klass(ValueModel.class, cls.$reifiedType, TypeDescriptor.NothingType)),
+                        (Object[]) array);
+        return (ceylon.language.Sequential) iterable.sequence();
     }
 }
