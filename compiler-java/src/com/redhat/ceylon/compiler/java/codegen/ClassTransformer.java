@@ -803,6 +803,8 @@ public class ClassTransformer extends AbstractTransformer {
             Type programElement = constrainedType.getTypeArgumentList().get(2);
             if (programElement.covers(((TypeDeclaration)typeFact().getLanguageModuleDeclarationDeclaration("InterfaceDeclaration")).getType())
                     || programElement.covers(((TypeDeclaration)typeFact().getLanguageModuleDeclarationDeclaration("ClassDeclaration")).getType())
+                    || programElement.covers(((TypeDeclaration)typeFact().getLanguageModuleDeclarationDeclaration("ClassWithInitializerDeclaration")).getType())
+                    || programElement.covers(((TypeDeclaration)typeFact().getLanguageModuleDeclarationDeclaration("ClassWithConstructorsDeclaration")).getType())
                     || programElement.covers(((TypeDeclaration)typeFact().getLanguageModuleDeclarationDeclaration("Package")).getType())
                     || programElement.covers(((TypeDeclaration)typeFact().getLanguageModuleDeclarationDeclaration("Module")).getType())) {
                 types.add(AnnotationTarget.TYPE);
