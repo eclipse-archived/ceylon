@@ -405,6 +405,7 @@ public class AppliedClass<Type, Arguments extends Sequential<? extends Object>>
     }
     
     private Sequential getConstructors(boolean justShared,
+            boolean callableConstructors,
             TypeDescriptor $reified$Arguments,
             ceylon.language.Sequential<? extends ceylon.language.meta.model.Type<? extends java.lang.annotation.Annotation>> annotations) {
         ArrayList<Object> ctors = new ArrayList<>();
@@ -412,10 +413,14 @@ public class AppliedClass<Type, Arguments extends Sequential<? extends Object>>
         TypeDescriptor[] annotationTypeDescriptors = Metamodel.getTypeDescriptors(annotations);
         for (ceylon.language.meta.declaration.Declaration d : ((FreeClass)declaration).constructors()) {
             Declaration dd = null;
-            if (d instanceof FreeCallableConstructor) {
+            if (d instanceof FreeCallableConstructor
+                    && callableConstructors) {
                 dd = ((FreeCallableConstructor)d).declaration;
-            } else if (d instanceof FreeValueConstructor) {
+            } else if (d instanceof FreeValueConstructor
+                    && !callableConstructors) {
                 dd = ((FreeValueConstructor)d).declaration;
+            } else {
+                continue;
             }
             // ATM this is an AND WRT annotation types: all must be present
             if(!hasAllAnnotations((AnnotatedDeclaration)d, annotationTypeDescriptors))
@@ -479,7 +484,7 @@ public class AppliedClass<Type, Arguments extends Sequential<? extends Object>>
             TypeDescriptor reified$Arguments,
             @Sequenced
             ceylon.language.Sequential<? extends ceylon.language.meta.model.Type<? extends java.lang.annotation.Annotation>> annotations) {
-        return getConstructors(true, reified$Arguments, annotations);
+        return getConstructors(true, true, reified$Arguments, annotations);
     }
     
     @Override
@@ -493,7 +498,7 @@ public class AppliedClass<Type, Arguments extends Sequential<? extends Object>>
             TypeDescriptor reified$Arguments,
             @Sequenced
             ceylon.language.Sequential<? extends ceylon.language.meta.model.Type<? extends java.lang.annotation.Annotation>> annotations) {
-        return getConstructors(false, reified$Arguments, annotations);
+        return getConstructors(false, true, reified$Arguments, annotations);
     }
     
     
@@ -506,7 +511,7 @@ public class AppliedClass<Type, Arguments extends Sequential<? extends Object>>
     public Sequential<? extends ValueModel<Type, java.lang.Object>> getValueConstructors(
             @Sequenced
             ceylon.language.Sequential<? extends ceylon.language.meta.model.Type<? extends java.lang.annotation.Annotation>> annotations) {
-        return getConstructors(true, null, annotations);
+        return getConstructors(true, false, null, annotations);
     }
     
     @Override
@@ -518,7 +523,7 @@ public class AppliedClass<Type, Arguments extends Sequential<? extends Object>>
     public Sequential<? extends ValueModel<Type, java.lang.Object>> getDeclaredValueConstructors(
             @Sequenced
             ceylon.language.Sequential<? extends ceylon.language.meta.model.Type<? extends java.lang.annotation.Annotation>> annotations) {
-        return getConstructors(false, null, annotations);
+        return getConstructors(false, false, null, annotations);
     }
     
     @Override
