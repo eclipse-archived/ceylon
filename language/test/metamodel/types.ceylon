@@ -515,8 +515,12 @@ shared class ValueConstructors {
             this.ctor = "sharedCtor";
         }
         "doc"
-        new nonSharedCtor() {
+        new nonSharedCtor {
             this.ctor = "nonSharedCtor";
+        }
+        "doc"
+        new callable() {
+            this.ctor = "callable";
         }
         shared void testModels() {
             value sc = `sharedCtor`;
@@ -548,12 +552,12 @@ shared class ValueConstructors {
             // Class.declaredConstructors
             value declaredCtors = `Member`.getDeclaredValueConstructors();
             assert(sc in declaredCtors);
-            assert(!nsc in declaredCtors);
-            assert(declaredCtors.size == 1);
+            assert(nsc in declaredCtors);
+            assert(declaredCtors.size == 2);
             
             value declaredCtors2 = `Member`.getDeclaredValueConstructors(`DocAnnotation`);
-            assert(!nsc in declaredCtors2);
-            assert(declaredCtors2.size == 0);
+            assert(nsc in declaredCtors2);
+            assert(declaredCtors2.size == 1);
         }
         shared void testDeclarations() {
             value sc = `new sharedCtor`;
