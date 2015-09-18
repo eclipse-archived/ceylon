@@ -50,7 +50,7 @@
 
     <target name="eclipse" depends="siblings,publish,ide-quick,eclipse-quick">
     </target>
-    <target name="eclipse-quick">
+    <target name="eclipse-quick" depends="siblings">
         <ant antfile="${projects.base.dir}/ceylon-ide-eclipse/build.xml"
              target="build"
              dir="${projects.base.dir}/ceylon-ide-eclipse"
@@ -61,7 +61,7 @@
 
     <target name="intellij" depends="siblings,publish,ide-quick,intellij-quick">
     </target>
-    <target name="intellij-quick">
+    <target name="intellij-quick" depends="siblings">
         <ant antfile="${projects.base.dir}/ceylon-ide-intellij/build.xml"
              target="build"
              dir="${projects.base.dir}/ceylon-ide-intellij"
