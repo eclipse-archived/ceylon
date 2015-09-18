@@ -42,6 +42,7 @@ shared interface Integral<Other> of Other
     "The remainder, after dividing this number by the given 
      number."
     see (`function Numeric.divided`)
+    aliased ("modulo")
     shared formal Other remainder(Other other);
     
     "Determine if the number is the additive identity."

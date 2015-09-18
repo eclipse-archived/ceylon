@@ -235,6 +235,7 @@ public final class Integer
         return Math.pow(value, otherValue); // FIXME: ugly
     }
 
+    @AliasesAnnotation$annotation$(aliases = "absolute")
     @Override
     public Integer getMagnitude() {
         return instance(Math.abs(value));
@@ -303,6 +304,7 @@ public final class Integer
         return 0;
     }
 
+    @AliasesAnnotation$annotation$(aliases = "modulo")
     @Override
     public Integer remainder(@Name("other") Integer other) {
         return instance(value % other.value);

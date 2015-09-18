@@ -1,5 +1,7 @@
 package ceylon.language;
 
+import ceylon.language.AliasesAnnotation$annotation$;
+
 import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Class;
@@ -230,7 +232,8 @@ public final class Float
     public static double power(double value, long otherValue) {
         return powerOfInteger(value, otherValue);
     }
-    
+
+    @AliasesAnnotation$annotation$(aliases = "absolute")
     @Override
     public Float getMagnitude() {
         return instance(Math.abs(value));
@@ -413,6 +416,7 @@ public final class Float
         }
     }
     
+    @AliasesAnnotation$annotation$(aliases = "notANumber")
     @Transient
     public boolean getUndefined() {
         return Double.isNaN(this.value);

@@ -62,6 +62,7 @@ shared native final class Float(Float float)
      in most collections.
      
      [NaN]: http://en.wikipedia.org/wiki/NaN"
+    aliased("notANumber")
     shared Boolean undefined => this!=this;
     
     "Determines whether this value is infinite in magnitude. 
@@ -162,6 +163,7 @@ shared native final class Float(Float float)
     shared actual native Float wholePart;
     shared actual native Float fractionalPart;
     
+    aliased("absolute")
     shared actual native Float magnitude;
     
     shared actual native Float negated;

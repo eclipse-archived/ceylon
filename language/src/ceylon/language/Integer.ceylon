@@ -59,6 +59,7 @@ shared native final class Integer(Integer integer)
     shared actual native Integer minus(Integer other);
     shared actual native Integer times(Integer other);
     shared actual native Integer divided(Integer other);
+    aliased ("modulo")
     shared actual native Integer remainder(Integer other);
     
     "The result of raising this number to the given 
@@ -165,6 +166,7 @@ shared native final class Integer(Integer integer)
      Thus, `i` is even if and only if `i%2 == 0`."
     shared native Boolean even => 2.divides(this);
     
+    aliased("absolute")
     shared actual native Integer magnitude;    
     shared actual native Integer sign;
     shared actual native Boolean negative;
