@@ -150,7 +150,8 @@ shared deprecated</programlisting>
                     annotation constructor parameter type,</para>
                 </listitem>
                 <listitem>
-                    <para><literal>{T*}</literal> or <literal>[T*]</literal> where 
+                    <para><literal>{T*}</literal>, <literal>{T+}</literal>,
+                    <literal>[T*]</literal>, or <literal>[T+]</literal> where 
                     <literal>T</literal> is a legal annotation constructor parameter 
                     type, or</para>
                 </listitem>
@@ -227,7 +228,8 @@ shared deprecated</programlisting>
                     annotation parameter type,</para>
                 </listitem>
                 <listitem>
-                    <para><literal>{T*}</literal> or <literal>[T*]</literal> where 
+                    <para><literal>{T*}</literal>, <literal>{T+}</literal>,
+                    <literal>[T*]</literal>, or <literal>[T+]</literal> where 
                     <literal>T</literal> is a legal annotation parameter type, or</para>
                 </listitem>
                 <listitem>
