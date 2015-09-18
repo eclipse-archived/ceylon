@@ -1420,6 +1420,10 @@ public class TypeUtils {
                     && NativeUtil.isImplemented(decl));
     }
 
+    public static boolean isCallable(Type t) {
+        return t != null && !t.isUnknown() && t.asQualifiedString().startsWith("ceylon.language::Callable<");
+    }
+
     /**
      * Checks that the given declaration is defined in an external JavaScript file.
      * It does this by assuming that an external implementation will have a declaration
