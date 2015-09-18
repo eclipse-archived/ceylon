@@ -24,6 +24,8 @@
     <target name="help">
         <echo>Options for building the Ceylon IE plugins:
     ant setup              - Sets up a new clean environment for development
+    ant status             - Shows the Git status of the sibling projects
+    ant update             - Updates the Git repository of the sibling projects
     ant publish            - Cleans and builds all sibling projects
     ant ide                - Builds the IDE components for all sibling projects
     ant clean              - Cleans the build environment
@@ -52,7 +54,8 @@
         <ant antfile="${projects.base.dir}/ceylon-ide-eclipse/build.xml"
              target="build"
              dir="${projects.base.dir}/ceylon-ide-eclipse"
-            inheritall="false">
+             inheritall="false"
+             useNativeBasedir="true">
         </ant>
     </target>
 
@@ -62,7 +65,8 @@
         <ant antfile="${projects.base.dir}/ceylon-ide-intellij/build.xml"
              target="build"
              dir="${projects.base.dir}/ceylon-ide-intellij"
-            inheritall="false">
+             inheritall="false"
+             useNativeBasedir="true">
         </ant>
     </target>
 
@@ -89,7 +93,8 @@
         <ant antfile="${projects.base.dir}/${project.item.name}/build.xml"
              target="ide-quick"
              dir="${projects.base.dir}/${project.item.name}"
-            inheritall="false">
+             inheritall="false"
+             useNativeBasedir="true">
             <!--property name="ceylon.repo.dir" value="${ceylon.repo.dir}"/>
             <property name="ceylon.dist.dir" value="${ceylon.dist.dir}"/-->
         </ant>
@@ -145,7 +150,7 @@ Used with another target such as 'package'">
 
     <target name="install-formatter" depends="install-formatter-nodeps" />
     <target name="install-formatter-nodeps">
-        <ant antfile="${ceylon-formatter.dir}/build.xml" target="publish" dir="${ceylon-formatter.dir}" inheritall="false">
+        <ant antfile="${ceylon-formatter.dir}/build.xml" target="publish" dir="${ceylon-formatter.dir}" inheritall="false" useNativeBasedir="true">
             <!--property name="ceylon.repo.dir" value="${ceylon.repo.dir}"/>
             <property name="ceylon.dist.dir" value="${ceylon.dist.dir}"/-->
         </ant>
@@ -153,7 +158,7 @@ Used with another target such as 'package'">
 
     <target name="install-converter" depends="install-converter-nodeps" />
     <target name="install-converter-nodeps">
-        <ant antfile="${ceylon-converter.dir}/build.xml" target="publish" dir="${ceylon-converter.dir}" inheritall="false">
+        <ant antfile="${ceylon-converter.dir}/build.xml" target="publish" dir="${ceylon-converter.dir}" inheritall="false" useNativeBasedir="true">
             <!--property name="ceylon.repo.dir" value="${ceylon.repo.dir}"/>
             <property name="ceylon.dist.dir" value="${ceylon.dist.dir}"/-->
         </ant>
@@ -161,7 +166,7 @@ Used with another target such as 'package'">
 
     <target name="install-ide-common" depends="install-formatter,install-converter,install-ide-common-nodeps" />
     <target name="install-ide-common-nodeps">
-        <ant antfile="${ceylon-ide-common.dir}/build.xml" target="publish" dir="${ceylon-ide-common.dir}" inheritall="false">
+        <ant antfile="${ceylon-ide-common.dir}/build.xml" target="publish" dir="${ceylon-ide-common.dir}" inheritall="false" useNativeBasedir="true">
             <!--property name="ceylon.repo.dir" value="${ceylon.repo.dir}"/>
             <property name="ceylon.dist.dir" value="${ceylon.dist.dir}"/-->
         </ant>
@@ -380,7 +385,8 @@ Used with another target such as 'package'">
         <ant antfile="${projects.base.dir}/${project.item.name}/build.xml"
              target="clean"
              dir="${projects.base.dir}/${project.item.name}"
-             inheritall="false"/>
+             inheritall="false"
+             useNativeBasedir="true"/>
     </target>
     
 </project>
