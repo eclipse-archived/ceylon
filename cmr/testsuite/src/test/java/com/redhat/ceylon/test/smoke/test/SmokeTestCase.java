@@ -992,6 +992,7 @@ public class SmokeTestCase extends AbstractTest {
         assertEquals(-1, MavenVersionComparator.compareVersions("1.0.2", "2.2.4"));
 
         assertEquals(-1, MavenVersionComparator.compareVersions("1.0", "1.0.2"));
+        assertEquals(-1, MavenVersionComparator.compareVersions("1.0", "1.0-2"));
 
         assertEquals(-1, MavenVersionComparator.compareVersions("0.3", "0.3.1"));
         assertEquals(1, MavenVersionComparator.compareVersions("0.3.1", "0.3"));
