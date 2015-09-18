@@ -130,7 +130,7 @@ public class BmeGenerator {
             final Tree.StaticMemberOrTypeExpression expr, final String who, final String member) {
         //Function refs with type arguments must be passed as a special function
         gen.out(gen.getClAlias(), "JsCallable(", who, ",", member, ",");
-        TypeUtils.printTypeArguments(expr, createTypeArguments(expr), gen, true,
+        TypeUtils.printTypeArguments(expr, createTypeArguments(expr), gen, false,
                 expr.getTypeModel().getVarianceOverrides());
         gen.out(")");
     }
