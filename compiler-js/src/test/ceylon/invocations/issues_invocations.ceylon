@@ -110,4 +110,6 @@ void testIssues() {
   testIssue376();
   test427();
   test568();
+  value test624 = [[1,"one"], [1, "two"]];
+  check(1 in test624.group(Tuple.first).keys, "#624");
 }
