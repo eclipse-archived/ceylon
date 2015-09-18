@@ -48,7 +48,7 @@
         <antcall target="setup" />
     </target>
 
-    <target name="eclipse" depends="siblings,eclipse-quick,publish,ide-quick">
+    <target name="eclipse" depends="siblings,publish,ide-quick,eclipse-quick">
     </target>
     <target name="eclipse-quick">
         <ant antfile="${projects.base.dir}/ceylon-ide-eclipse/build.xml"
@@ -59,7 +59,7 @@
         </ant>
     </target>
 
-    <target name="intellij" depends="siblings,intellij-quick,publish,ide-quick">
+    <target name="intellij" depends="siblings,publish,ide-quick,intellij-quick">
     </target>
     <target name="intellij-quick">
         <ant antfile="${projects.base.dir}/ceylon-ide-intellij/build.xml"
@@ -70,13 +70,28 @@
         </ant>
     </target>
 
-    <target name="publish" depends="publish-all">
+    <target name="publish" depends="siblings,publish-quick"
+            description="Publishes all sibling projects" />
+    <target name="publish-quick" depends="siblings">
+        <foreach list="${ceylonmodules}"
+                 target="publish-item"
+                 param="project.item.name"
+                 inheritall="true" />
+    </target>
+    <target name="publish-item">
+        <fail unless="projects.base.dir" />
+        <fail unless="project.item.name" />
+        <ant antfile="${projects.base.dir}/${project.item.name}/build.xml"
+             target="publish"
+             dir="${projects.base.dir}/${project.item.name}"
+             inheritall="false"
+             useNativeBasedir="true">
+            <!--property name="ceylon.repo.dir" value="${ceylon.repo.dir}"/>
+            <property name="ceylon.dist.dir" value="${ceylon.dist.dir}"/-->
+        </ant>
     </target>
 
-    <target name="publish-all" depends="siblings,clean-projects,install-all"
-            description="Publishes all sibling projects" />
-
-    <target name="ide" depends="siblings, install-all">
+    <target name="ide" depends="siblings">
         <property name="buildtarget" value="ide-internal" />
         <antcall target="ide-quick"/>
     </target>
@@ -89,7 +104,6 @@
     <target name="ide-item">
         <fail unless="projects.base.dir" />
         <fail unless="project.item.name" />
-        <echo>Publishing ${project.item.name} to IDE</echo>
         <ant antfile="${projects.base.dir}/${project.item.name}/build.xml"
              target="ide-quick"
              dir="${projects.base.dir}/${project.item.name}"
@@ -100,17 +114,11 @@
         </ant>
     </target>
 
-    <target name="update" depends="update-all">
-    </target>
-
-    <target name="update-all" depends="siblings,git-update"
+    <target name="update" depends="siblings,git-update"
             description="Updates sibling projects with latest code from git">
     </target>
 
-    <target name="status" depends="status-all">
-    </target>
-
-    <target name="status-all" depends="siblings,git-status"
+    <target name="status" depends="siblings,git-status"
             description="Shows git status of all sibling projects">
     </target>
 
@@ -138,49 +146,6 @@ Used with another target such as 'package'">
         <property name="ceylon-ide-intellij.dir" value="${projects.base.dir}/ceylon-ide-intellij"/>
         <property name="dist.name" value="ceylon-${ceylon.version}-custom-${NOW}"/>
         <property name="github-url" value="https://github.com/"/>
-    </target>
-
-    <target name="install-all" 
-            depends="setup-repo, install-ide-eclipse, install-ide-intellij"
-            description="Generates all binaries and copies them to the distribution folder">
-    </target>
-
-    <target name="setup-repo">
-    </target>
-
-    <target name="install-formatter" depends="install-formatter-nodeps" />
-    <target name="install-formatter-nodeps">
-        <ant antfile="${ceylon-formatter.dir}/build.xml" target="publish" dir="${ceylon-formatter.dir}" inheritall="false" useNativeBasedir="true">
-            <!--property name="ceylon.repo.dir" value="${ceylon.repo.dir}"/>
-            <property name="ceylon.dist.dir" value="${ceylon.dist.dir}"/-->
-        </ant>
-    </target>
-
-    <target name="install-converter" depends="install-converter-nodeps" />
-    <target name="install-converter-nodeps">
-        <ant antfile="${ceylon-converter.dir}/build.xml" target="publish" dir="${ceylon-converter.dir}" inheritall="false" useNativeBasedir="true">
-            <!--property name="ceylon.repo.dir" value="${ceylon.repo.dir}"/>
-            <property name="ceylon.dist.dir" value="${ceylon.dist.dir}"/-->
-        </ant>
-    </target>
-
-    <target name="install-ide-common" depends="install-formatter,install-converter,install-ide-common-nodeps" />
-    <target name="install-ide-common-nodeps">
-        <ant antfile="${ceylon-ide-common.dir}/build.xml" target="publish" dir="${ceylon-ide-common.dir}" inheritall="false" useNativeBasedir="true">
-            <!--property name="ceylon.repo.dir" value="${ceylon.repo.dir}"/>
-            <property name="ceylon.dist.dir" value="${ceylon.dist.dir}"/-->
-        </ant>
-    </target>
-
-    <target name="install-ide-eclipse" depends="install-ide-common,install-ide-eclipse-nodeps" />
-    <target name="install-ide-eclipse-nodeps">
-        <echo>Not implemented yet, type:</echo>
-        <echo>    mvn clean install -DskipTests</echo>
-    </target>
-
-    <target name="install-ide-intellij" depends="install-ide-common,install-ide-intellij-nodeps" />
-    <target name="install-ide-intellij-nodeps">
-        <echo>Not implemented yet, see the README of the ceylon-ide-intellij project for instructions</echo>
     </target>
 
     <!-- Helper target, used to create a sha1 checksum file  -->
@@ -366,19 +331,15 @@ Used with another target such as 'package'">
         </if>
     </target>
 
-    <target name="clean"
-            description="Cleans the distribution package">
-    </target>
-
-    <target name="clean-projects" 
+    <target name="clean" depends="siblings"
             description="Cleans all sub projects">
         <fail unless="projects.base.dir" message="${msg.needlocalorsiblings}" />
         <foreach list="${gitprojects}"
-                 target="clean-projects-item"
+                 target="clean-item"
                  param="project.item.name"
                  inheritall="true" />
     </target>
-    <target name="clean-projects-item">
+    <target name="clean-item">
         <fail unless="projects.base.dir" />
         <fail unless="project.item.name" />
         <echo>Cleaning ${project.item.name}</echo>
