@@ -412,7 +412,7 @@ public final class Float
             return (long)value;
         }
         else {
-        	throw new OverflowException();
+            throw new OverflowException("Numeric overflow converting Float " + value + " to Integer.");
         }
     }
     
