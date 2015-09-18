@@ -548,12 +548,12 @@ shared class ValueConstructors {
             // Class.declaredConstructors
             value declaredCtors = `Member`.getDeclaredValueConstructors();
             assert(sc in declaredCtors);
-            assert(nsc in declaredCtors);
-            assert(declaredCtors.size == 2);
+            assert(!nsc in declaredCtors);
+            assert(declaredCtors.size == 1);
             
             value declaredCtors2 = `Member`.getDeclaredValueConstructors(`DocAnnotation`);
-            assert(nsc in declaredCtors2);
-            assert(declaredCtors2.size == 1);
+            assert(!nsc in declaredCtors2);
+            assert(declaredCtors2.size == 0);
         }
         shared void testDeclarations() {
             value sc = `new sharedCtor`;
