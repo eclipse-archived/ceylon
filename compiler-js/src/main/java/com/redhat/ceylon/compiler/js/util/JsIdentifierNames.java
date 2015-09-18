@@ -394,4 +394,8 @@ public class JsIdentifierNames {
         return name;
     }
 
+    public String valueConstructorName(TypeDeclaration d) {
+        TypeDeclaration c = (TypeDeclaration)d.getContainer();
+        return name(c) + "_" + name(c.getDirectMember(d.getName(), null, false));
+    }
 }

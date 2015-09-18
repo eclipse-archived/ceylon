@@ -40,10 +40,15 @@ public class BmeGenerator {
             }
             if (TypeUtils.isConstructor(decl)) {
                 Constructor cd = TypeUtils.getConstructor(decl);
+                Declaration cdc = (Declaration)cd.getContainer();
                 if (!gen.qualify(bme, cd)) {
-                    gen.out(gen.getNames().name((Declaration)cd.getContainer()), "_");
+                    gen.out(gen.getNames().name(cdc), "_");
                 }
-                gen.out(gen.getNames().name(cd));
+                if (decl instanceof Value) {
+                    gen.out(gen.getNames().name(decl));
+                } else {
+                    gen.out(gen.getNames().name(cd));
+                }
                 if (!forInvoke && decl instanceof Value) {
                     gen.out("()");
                 }

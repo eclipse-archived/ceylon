@@ -925,12 +925,18 @@ public class TypeUtils {
             gen.out(",of:[");
             boolean first = true;
             for (Type st : caseTypes) {
+                final TypeDeclaration std = st.getDeclaration(); //teeheehee
                 if (!first)gen.out(",");
                 first=false;
-                if (isConstructor(st.getDeclaration())) {
-                    gen.out("{t:", gen.getNames().name(d), ".", gen.getNames().name(d), "_", st.getDeclaration().getName(), "}");
-                } else if (st.getDeclaration().isAnonymous()) {
-                    gen.out(gen.getNames().getter(st.getDeclaration(), true));
+                if (isConstructor(std)) {
+                    if (std.isAnonymous()) {
+                        //Value constructor
+                        gen.out(gen.getNames().name(d), ".", gen.getNames().valueConstructorName(std));
+                    } else {
+                        gen.out("/*TODO callable constructor*/");
+                    }
+                } else if (std.isAnonymous()) {
+                    gen.out(gen.getNames().getter(std, true));
                 } else {
                     metamodelTypeNameOrList(false, that, d.getUnit().getPackage(), st, null, gen);
                 }
