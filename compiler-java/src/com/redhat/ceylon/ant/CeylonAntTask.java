@@ -294,6 +294,8 @@ public abstract class CeylonAntTask extends Task {
     protected void completeCommandline(Commandline cmd) {
         if (getCwd() != null) {
             appendOptionArgument(cmd, "--cwd", getCwd());
+        } else {
+            appendOptionArgument(cmd, "--cwd", getProject().getBaseDir().getPath());
         }
         
         if (getConfig() != null) {
