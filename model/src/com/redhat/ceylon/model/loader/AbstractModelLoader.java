@@ -198,7 +198,11 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     private static final TypeMirror CEYLON_VALUE_DECLARATION_TYPE = simpleCeylonObjectType("ceylon.language.meta.declaration.ValueDeclaration");
     private static final TypeMirror CEYLON_ALIAS_DECLARATION_TYPE = simpleCeylonObjectType("ceylon.language.meta.declaration.AliasDeclaration");
     private static final TypeMirror CEYLON_CLASS_OR_INTERFACE_DECLARATION_TYPE = simpleCeylonObjectType("ceylon.language.meta.declaration.ClassOrInterfaceDeclaration");
+    private static final TypeMirror CEYLON_CLASS_WITH_INIT_DECLARATION_TYPE = simpleCeylonObjectType("ceylon.language.meta.declaration.ClassWithInitializerDeclaration");
+    private static final TypeMirror CEYLON_CLASS_WITH_CTORS_DECLARATION_TYPE = simpleCeylonObjectType("ceylon.language.meta.declaration.ClassWithConstructorsDeclaration");
     private static final TypeMirror CEYLON_CONSTRUCTOR_DECLARATION_TYPE = simpleCeylonObjectType("ceylon.language.meta.declaration.ConstructorDeclaration");
+    private static final TypeMirror CEYLON_CALLABLE_CONSTRUCTOR_DECLARATION_TYPE = simpleCeylonObjectType("ceylon.language.meta.declaration.CallableConstructorDeclaration");
+    private static final TypeMirror CEYLON_VALUE_CONSTRUCTOR_DECLARATION_TYPE = simpleCeylonObjectType("ceylon.language.meta.declaration.ValueConstructorDeclaration");
     private static final TypeMirror CEYLON_ANNOTATED_TYPE = simpleCeylonObjectType("ceylon.language.Annotated");
     private static final TypeMirror CEYLON_BASIC_TYPE = simpleCeylonObjectType("ceylon.language.Basic");
     private static final TypeMirror CEYLON_REIFIED_TYPE_TYPE = simpleCeylonObjectType("com.redhat.ceylon.compiler.java.runtime.model.ReifiedType");
@@ -3411,6 +3415,10 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 case "CONSTRUCTOR":
                     decl = (TypeDeclaration) convertNonPrimitiveTypeToDeclaration(getLanguageModule(), CEYLON_CONSTRUCTOR_DECLARATION_TYPE, klass, DeclarationType.TYPE);
                     types.add(decl.getType());
+                    if (!values.contains("TYPE")) {
+                        decl = (TypeDeclaration) convertNonPrimitiveTypeToDeclaration(getLanguageModule(), CEYLON_CLASS_WITH_INIT_DECLARATION_TYPE, klass, DeclarationType.TYPE);
+                        types.add(decl.getType());
+                    }
                     break;
                 case "METHOD":
                     // method annotations may be applied to shared members which are turned into getter methods
