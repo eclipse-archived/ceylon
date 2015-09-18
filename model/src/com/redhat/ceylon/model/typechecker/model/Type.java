@@ -4062,6 +4062,10 @@ public class Type extends Reference {
         return getDeclaration().isByte();
     }
     
+    public boolean isIterable() {
+        return getDeclaration().isIterable();
+    }
+    
     public boolean isSequence() {
         return getDeclaration().isSequence();
     }
@@ -4399,5 +4403,5 @@ public class Type extends Reference {
             return super.getFullType(wrappedType);
 //        }
     }
-    
+
 }
