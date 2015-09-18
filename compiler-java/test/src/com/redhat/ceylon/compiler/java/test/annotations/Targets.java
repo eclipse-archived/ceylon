@@ -69,3 +69,7 @@ import java.lang.annotation.Target;
 @Target({ElementType.TYPE, ElementType.ANNOTATION_TYPE}) 
 @Retention(RetentionPolicy.RUNTIME)
 @interface TypeOrAnnotationTypeTarget {}
+
+@Target({ElementType.METHOD, ElementType.CONSTRUCTOR, ElementType.FIELD}) 
+@Retention(RetentionPolicy.RUNTIME)
+@interface Bug2160 {}

@@ -456,6 +456,12 @@ public class InteropTests extends CompilerTests {
     }
     
     @Test
+    public void testAnnotationsConstrainedClassCtor() {
+        compile("JavaAnnotation.java");
+        compareWithJavaSource("AnnotationsConstrainedClassCtor");
+    }
+    
+    @Test
     public void testAnnotationInteropQualifiedEnum(){
         compareWithJavaSource("AnnotationInteropQualifiedEnum");
     }

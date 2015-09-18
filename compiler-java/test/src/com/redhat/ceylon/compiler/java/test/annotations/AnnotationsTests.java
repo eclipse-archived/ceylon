@@ -311,4 +311,10 @@ public class AnnotationsTests extends CompilerTests {
         compile("Targets.java");
         compareWithJavaSource("SingletonConstructorTargets");
     }
+    
+    @Test
+    public void testBug2160(){
+        compile("Targets.java");
+        compareWithJavaSource("Bug2160");
+    }
  }

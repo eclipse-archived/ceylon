@@ -63,6 +63,13 @@ import java.lang.annotation.ElementType;
 })
 @interface JavaAnnotationOnEveryTarget {}
 
+@Target({ElementType.TYPE})
+@interface JavaAnnotationTypeTarget {}
+@Target({ElementType.CONSTRUCTOR})
+@interface JavaAnnotationCtorTarget {}
+@Target({ElementType.TYPE, ElementType.CONSTRUCTOR})
+@interface JavaAnnotationTypeCtorTarget {}
+
 @interface JavaAnnotationClass2 {
     java.lang.Class<?> clas();
 }

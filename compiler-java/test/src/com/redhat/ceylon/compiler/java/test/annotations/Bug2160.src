@@ -1,0 +1,15 @@
+package com.redhat.ceylon.compiler.java.test.annotations;
+
+@.ceylon.language.SharedAnnotation$annotation$
+public class Bug2160Use implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    @.com.redhat.ceylon.compiler.java.test.annotations.Bug2160
+    public Bug2160Use(final .java.lang.String constructorInjected) {
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.annotations.Bug2160Use.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.Bug2160Use.class);
+}
