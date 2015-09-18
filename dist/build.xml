@@ -31,10 +31,31 @@
     </taskdef>
 
     <target name="help">
-        <echo>Options for building a Ceylon distribution package:
+        <echo>Options for building a Ceylon distribution for local use:
     ant setup              - Sets up a new clean environment for development
     ant publish            - Performs "ant clean publish" on all sibling projects
 
+    ant status             - Shows the Git status of the sibling projects
+    ant update             - Updates the Git repository of the sibling projects
+
+Some super-charged ant tasks:
+
+    ant status-all         - Shows the Git status of all projects related to the
+                             distribution, SDK and IDE
+    ant update-all         - Updates the Git repositories of the above projects
+    ant clean-all          - Cleans all of the above mentioned projects
+
+    ant dist               - Same as "ant publish ide-quick"
+    ant sdk                - Same as "ant publish ide-quick" in the SDK project
+    ant eclipse            - Builds all IDE related projects + the Eclipse plugin
+    ant intellij           - Builds all IDE related projects + the IntelliJ plugin
+
+    ant help-release       - Shows help on the commands for building a release</echo>
+
+    </target>
+
+    <target name="help-release">
+        <echo>Options for building a Ceylon distribution package:
     ant release            - Does a clean, get-code, local, package
                              using the sources tagged with the name as
                              defined by ceylon.version.tag in build.properties
@@ -43,7 +64,6 @@
     ant nightly            - Does a clean, get-code, local, package
                              using the sources from master.
                              Use this when NOT doing a release!
-
 Some more basic ant tasks:
     ant get-code           - Downloads latest code for all projects
     ant get-code -Dtag=0.5 - Downloads latest code and checks out the tag
