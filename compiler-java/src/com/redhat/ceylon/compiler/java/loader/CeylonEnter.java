@@ -293,6 +293,7 @@ public class CeylonEnter extends Enter {
         // reset its members and completer
         classSymbol.members_field = null;
         classSymbol.completer = null;
+        classSymbol.attributes_field = List.nil();
     }
 
     @Override

@@ -36,6 +36,8 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.CompilationUnit;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Declaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ModuleDescriptor;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PackageDescriptor;
+import com.redhat.ceylon.compiler.typechecker.tree.TreeUtil;
+import com.redhat.ceylon.model.loader.NamingBase.Suffix;
 import com.redhat.ceylon.model.loader.model.OutputElement;
 import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
@@ -43,15 +45,19 @@ import com.redhat.ceylon.model.typechecker.model.Setter;
 import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.model.typechecker.model.Value;
 import com.sun.tools.javac.code.Flags;
+import com.sun.tools.javac.main.OptionName;
 import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.JCAnnotation;
 import com.sun.tools.javac.tree.JCTree.JCBlock;
 import com.sun.tools.javac.tree.JCTree.JCCompilationUnit;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
 import com.sun.tools.javac.tree.JCTree.JCImport;
+import com.sun.tools.javac.tree.JCTree.JCMethodDecl;
 import com.sun.tools.javac.tree.JCTree.JCModifiers;
 import com.sun.tools.javac.tree.JCTree.JCNewClass;
 import com.sun.tools.javac.tree.JCTree.JCStatement;
+import com.sun.tools.javac.tree.JCTree.JCTypeParameter;
+import com.sun.tools.javac.tree.JCTree.JCVariableDecl;
 import com.sun.tools.javac.util.Context;
 import com.sun.tools.javac.util.List;
 import com.sun.tools.javac.util.ListBuffer;
@@ -145,6 +151,13 @@ public class CeylonTransformer extends AbstractTransformer {
                     String implName = Naming.getImplClassName(name);
                     defs.add(makeClassDef(decl, 0, implName));
                 }
+                // only do it for Bootstrap where we control the annotations, because it's so dodgy ATM
+                if(options.get(OptionName.BOOTSTRAPCEYLON) != null
+                        && decl instanceof Tree.AnyClass
+                        && TreeUtil.hasAnnotation(decl.getAnnotationList(), "annotation", decl.getUnit())){
+                    String annotationName = Naming.suffixName(Suffix.$annotation$, name);
+                    defs.add(makeClassDef(decl, Flags.ANNOTATION, annotationName));
+                }
             }
 
             private JCTree makeClassDef(Declaration decl, long flags, String name) {
@@ -160,7 +173,76 @@ public class CeylonTransformer extends AbstractTransformer {
                     }
                 }
 
-                return make().ClassDef(make().Modifiers(flags | Flags.PUBLIC), names().fromString(name), typarams.toList(), null, List.<JCExpression>nil(), List.<JCTree>nil());
+                return make().ClassDef(make().Modifiers(flags | Flags.PUBLIC), names().fromString(name), 
+                        typarams.toList(), null, List.<JCExpression>nil(), makeClassBody(decl));
+            }
+
+            private List<JCTree> makeClassBody(Declaration decl) {
+                if(decl instanceof Tree.ClassDefinition
+                        && TreeUtil.hasAnnotation(decl.getAnnotationList(), "annotation", decl.getUnit())){
+                    ListBuffer<JCTree> body = new ListBuffer<JCTree>();
+                    for(Tree.Parameter param : ((Tree.ClassDefinition)decl).getParameterList().getParameters()){
+                        String name;
+                        
+                        JCExpression type = make().TypeArray(make().Type(syms().stringType));
+                        if(param instanceof Tree.InitializerParameter)
+                            name = ((Tree.InitializerParameter)param).getIdentifier().getText();
+                        else if(param instanceof Tree.ParameterDeclaration){
+                            Tree.TypedDeclaration typedDeclaration = ((Tree.ParameterDeclaration)param).getTypedDeclaration();
+                            name = typedDeclaration.getIdentifier().getText();
+                            type = getAnnotationTypeFor(typedDeclaration.getType());
+                        }else
+                            name = "ERROR";
+                        JCMethodDecl method
+                            = make().MethodDef(make().Modifiers(Flags.PUBLIC), names().fromString(name), 
+                                type,
+                                List.<JCTypeParameter>nil(), 
+                                List.<JCVariableDecl>nil(),
+                                List.<JCExpression>nil(), 
+                                null, 
+                                null);
+                        body.append(method);
+                    }
+                    return body.toList();
+                }
+                return List.<JCTree>nil();
+            }
+
+            private JCExpression getAnnotationTypeFor(Tree.Type type) {
+                if(type instanceof Tree.BaseType){
+                    String name = ((Tree.BaseType) type).getIdentifier().getText();
+                    if(name.equals("String") || name.equals("Declaration"))
+                        return make().Type(syms().stringType);
+                    if(name.equals("Boolean"))
+                        return make().Type(syms().booleanType);
+                    if(name.equals("Integer"))
+                        return make().Type(syms().longType);
+                    if(name.equals("Float"))
+                        return make().Type(syms().doubleType);
+                    if(name.equals("Byte"))
+                        return make().Type(syms().byteType);
+                    if(name.equals("Character"))
+                        return make().Type(syms().charType);
+                    if(name.equals("Declaration")
+                            || name.equals("ClassOrInterfaceDeclaration"))
+                        return make().Type(syms().stringType);
+                }
+                if(type instanceof Tree.SequencedType){
+                    return make().TypeArray(getAnnotationTypeFor(((Tree.SequencedType) type).getType()));
+                }
+                if(type instanceof Tree.SequenceType){
+                    return make().TypeArray(getAnnotationTypeFor(((Tree.SequenceType) type).getElementType()));
+                }
+                if(type instanceof Tree.IterableType){
+                    return make().TypeArray(getAnnotationTypeFor(((Tree.IterableType) type).getElementType()));
+                }
+                if(type instanceof Tree.TupleType){
+                    // can only be one, must be a SequencedType
+                    Tree.Type sequencedType = ((Tree.TupleType) type).getElementTypes().get(0);
+                    return getAnnotationTypeFor(sequencedType);
+                }
+                System.err.println("Unknown Annotation type: "+type);
+                return make().TypeArray(make().Type(syms().stringType));
             }
 
             @Override
