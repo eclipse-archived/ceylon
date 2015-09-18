@@ -33,7 +33,7 @@
     <target name="help">
         <echo>Options for building a Ceylon distribution package:
     ant setup              - Sets up a new clean environment for development
-    ant publish-all        - Performs "ant clean publish" on all sibling projects
+    ant publish            - Performs "ant clean publish" on all sibling projects
 
     ant release            - Does a clean, get-code, local, package
                              using the sources tagged with the name as
@@ -68,7 +68,7 @@ Some more basic ant tasks:
                              package
 
     ant clean              - Cleans the distribution package
-    ant clean-all          - Cleans the distribution package
+    ant clean-release      - Cleans the distribution package
                              and deletes all local projects</echo>
     </target>
 
@@ -82,12 +82,11 @@ Some more basic ant tasks:
         <antcall target="setup" />
     </target>
 
-    <target name="publish" depends="publish-all">
-    </target>
+    <target name="dist" depends="publish,ide-quick" />
 
-    <target name="publish-all" depends="siblings,clean-projects,install-all,publish-all-quick"
+    <target name="publish" depends="siblings,clean-projects,install-all,publish-quick"
             description="Publishes all sibling projects" />
-    <target name="publish-all-quick" depends="siblings">
+    <target name="publish-quick" depends="siblings">
         <foreach list="${modules}"
                  target="publish-item"
                  param="project.item.name"
@@ -157,17 +156,11 @@ Some more basic ant tasks:
         </ant>
     </target>
 
-    <target name="update" depends="update-all">
-    </target>
-
-    <target name="update-all" depends="git-update-dist,siblings,git-update"
+    <target name="update" depends="git-update-dist,siblings,git-update"
             description="Updates sibling projects with latest code from git">
     </target>
 
-    <target name="status" depends="status-all">
-    </target>
-
-    <target name="status-all" depends="git-status-dist,siblings,git-status"
+    <target name="status" depends="git-status-dist,siblings,git-status"
             description="Shows git status of all sibling projects">
     </target>
 
@@ -908,7 +901,7 @@ You can now build the package by executing:
         <delete file="${ceylon-dist-osgi.dir}/lib/ceylon-bootstrap.jar"/>
     </target>
 
-    <target name="clean-all" depends="clean"
+    <target name="clean-release" depends="clean"
             description="Cleans the distribution package and deletes all local projects">
         <delete dir="${projects.dir}"/>
     </target>
@@ -1047,4 +1040,11 @@ You can now build the package by executing:
         </ant>
     </target>
     
+    <!-- The following tasks do work on the Distribution, the SDK and the IDE -->
+    
+    <target name="status-all" depends="status,status-sdk,status-ide" />
+    <target name="update-all" depends="update,update-sdk,update-ide" />
+    <target name="clean-all" depends="siblings,clean,clean-projects,clean-sdk,clean-ide" />
+    <target name="do-all" depends="dist,sdk,eclipse" />
+
 </project>
