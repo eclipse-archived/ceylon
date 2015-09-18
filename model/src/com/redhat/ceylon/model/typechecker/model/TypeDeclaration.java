@@ -854,11 +854,19 @@ public abstract class TypeDeclaration extends Declaration
         //Local declarations always hide inherited declarations, even if non-shared
         for (Declaration dec: getMembers()) {
             if (isResolvable(dec) && 
-                    !isOverloadedVersion(dec) &&
-            		isNameMatching(startingWith, dec)) {
-                result.put(dec.getName(unit), 
-                		new DeclarationWithProximity(dec, 
-                		        proximity));
+                    !isOverloadedVersion(dec) ) {
+                if (isNameMatching(startingWith, dec)) {
+                    result.put(dec.getName(unit), 
+                            new DeclarationWithProximity(dec, 
+                                    proximity));
+                }
+                for(String alias : dec.getAliases()){
+                    if(isNameMatching(startingWith, alias)){
+                        result.put(alias, 
+                                new DeclarationWithProximity(
+                                        alias, dec, proximity));
+                    }
+                }
             }
         }
         return result;
@@ -888,12 +896,19 @@ public abstract class TypeDeclaration extends Declaration
         for (Declaration member: getMembers()) {
             if (isResolvable(member) && 
                     !isOverloadedVersion(member) &&
-                    isNameMatching(startingWith, member)) {
-                if( member.isShared() || 
-                        ModelUtil.contains(member.getScope(), scope) ) {
+                ( member.isShared() || 
+                        ModelUtil.contains(member.getScope(), scope) ) ) {
+                if(isNameMatching(startingWith, member)){
                     result.put(member.getName(unit), 
                             new DeclarationWithProximity(
                                     member, proximity));
+                }
+                for(String alias : member.getAliases()){
+                    if(isNameMatching(startingWith, alias)){
+                        result.put(alias, 
+                                new DeclarationWithProximity(
+                                        alias, member, proximity));
+                    }
                 }
             }
         }

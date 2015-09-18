@@ -6,6 +6,7 @@ public class DeclarationWithProximity {
     private String name;
     private NamedArgumentList namedArgumentList; 
     private boolean unimported;
+    private boolean alias;
     
     public NamedArgumentList getNamedArgumentList() {
         return namedArgumentList;
@@ -44,6 +45,13 @@ public class DeclarationWithProximity {
         this.name = imp.getAlias();
     }
     
+    public DeclarationWithProximity(String alias, Declaration member, int proximity) {
+        this.name = alias;
+        this.alias = true;
+        this.declaration = member;
+        this.proximity = proximity;
+    }
+
     public Declaration getDeclaration() {
         return declaration;
     }
@@ -59,10 +67,14 @@ public class DeclarationWithProximity {
     public boolean isUnimported() {
 		return unimported;
 	}
+
+    public boolean isAlias(){
+        return alias;
+    }
     
     @Override
     public String toString() {
-        return name + ":" + declaration.toString() + "@" + proximity;
+        return name + ":" + declaration.toString() + "@" + proximity + "(alias: "+alias+")";
     }
     
 }
