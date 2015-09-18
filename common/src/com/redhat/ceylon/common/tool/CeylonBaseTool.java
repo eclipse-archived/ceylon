@@ -8,7 +8,6 @@ import com.redhat.ceylon.common.tools.CeylonTool;
 
 public abstract class CeylonBaseTool implements Tool {
     protected File cwd;
-    protected File config;
     public String verbose;
     protected List<String> defines;
 
@@ -21,17 +20,6 @@ public abstract class CeylonBaseTool implements Tool {
             "(default: the directory where the tool is run from)")
     public void setCwd(File cwd) {
         this.cwd = cwd;
-    }
-    
-    public File getConfig() {
-        return config;
-    }
-    
-    @OptionArgument(longName="config", argumentName="file")
-    @Description("Specifies the configuration file to use for this tool. " +
-            "(default: `./.ceylon/config`)")
-    public void setConfig(File config) {
-        this.config = config;
     }
     
     public String getVerbose() {

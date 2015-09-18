@@ -47,6 +47,7 @@ import com.redhat.ceylon.common.tool.FatalToolError;
 import com.redhat.ceylon.common.tool.ModelException;
 import com.redhat.ceylon.common.tool.NoSuchToolException;
 import com.redhat.ceylon.common.tool.Option;
+import com.redhat.ceylon.common.tool.OptionArgument;
 import com.redhat.ceylon.common.tool.OptionArgumentException;
 import com.redhat.ceylon.common.tool.RemainingSections;
 import com.redhat.ceylon.common.tool.ScriptToolModel;
@@ -132,6 +133,9 @@ public class CeylonTool implements Tool {
     private boolean version;
     private Tool toolCache;
     private Boolean paginate;
+    private File cwd;
+    private File config;
+    CeylonConfig oldConfig = null;
     
     public CeylonTool() {
     }
@@ -173,6 +177,28 @@ public class CeylonTool implements Tool {
         return paginate != null && !paginate;
     }
 
+    public File getCwd() {
+        return cwd;
+    }
+    
+    @OptionArgument(longName="cwd", argumentName="dir")
+    @Description("Specifies the current working directory for this tool. " +
+            "(default: the directory where the tool is run from)")
+    public void setCwd(File cwd) {
+        this.cwd = cwd;
+    }
+    
+    public File getConfig() {
+        return config;
+    }
+    
+    @OptionArgument(longName="config", argumentName="file")
+    @Description("Specifies the configuration file to use for this tool. " +
+            "(default: `./.ceylon/config`)")
+    public void setConfig(File config) {
+        this.config = config;
+    }
+    
     //@Argument(argumentName="command", multiplicity="?", order=1)
     public void setCommand(String command) {
         this.toolName = command;
@@ -307,6 +333,7 @@ public class CeylonTool implements Tool {
             ToolModel<CeylonTool> model = getToolModel("");
             List<String> myArgs = rearrangeArgs(CommandLine.parse(args));
             getPluginFactory().bindArguments(model, this, this, myArgs);
+            oldConfig = setupConfig();
             result = SC_OK;
         } catch (Exception e) {
             result = handleException(this, e);
@@ -318,22 +345,32 @@ public class CeylonTool implements Tool {
     // Warning: this method called by reflection in Launcher
     public int execute() throws Exception {
         int result = SC_OK;
-        CeylonConfig oldConfig = null;
         try {
             String[] names = (toolName != null) ? getToolNames() : new String[] { null };
             for (String singleToolName : names) {
                 ToolModel<Tool> model = getToolModel(singleToolName);
                 Tool tool = getTool(model);
-                oldConfig = setupConfig(tool);
+                CeylonConfig oldConfig2 = null;
+                if (oldConfig == null) {
+                    oldConfig2 = setupConfig(tool);
+                }
+                syncCwd(tool);
                 try {
                     run(model, tool);
                     result = SC_OK;
                 } finally {
-                    CeylonConfig.set(oldConfig);
+                    if (oldConfig2 != null) {
+                        CeylonConfig.set(oldConfig2);
+                    }
                 }
             }
         } catch (Exception e) {
             result = handleException(this, e);
+        } finally {
+            if (oldConfig != null) {
+                CeylonConfig.set(oldConfig);
+                oldConfig = null;
+            }
         }
         System.out.flush();
         return result;
@@ -358,22 +395,56 @@ public class CeylonTool implements Tool {
         return result;
     }
 
+    // Here we set up the global configuration for this thread
+    // if (and only if) the setup deviates from the default
+    // (meaning either `cwd` or `config` was set for the main tool)
+    private CeylonConfig setupConfig() throws IOException {
+        File cwd = getCwd();
+        File cfgFile = getConfig();
+        if (cfgFile != null) {
+            File absCfgFile = FileUtil.applyCwd(cwd, cfgFile);
+            CeylonConfig config = CeylonConfigFinder.DEFAULT.loadConfigFromFile(absCfgFile);
+            return CeylonConfig.set(config);
+        }
+        if (cwd != null && cwd.isDirectory()) {
+            CeylonConfig config = CeylonConfigFinder.loadDefaultConfig(cwd);
+            return CeylonConfig.set(config);
+        }
+        return null;
+    }
+
+    // Here we set up the global configuration for this thread
+    // if (and only if) the setup deviates from the default
+    // (meaning `cwd` was set for the given tool)
     private CeylonConfig setupConfig(Tool tool) throws IOException {
         if (tool instanceof CeylonBaseTool) {
             CeylonBaseTool cbt = (CeylonBaseTool)tool;
             File cwd = cbt.getCwd();
-            File cfgFile = cbt.getConfig();
-            if (cfgFile != null) {
-                File absCfgFile = FileUtil.applyCwd(cwd, cfgFile);
-                CeylonConfig config = CeylonConfigFinder.DEFAULT.loadConfigFromFile(absCfgFile);
-                return CeylonConfig.set(config);
-            }
             if (cwd != null && cwd.isDirectory()) {
                 CeylonConfig config = CeylonConfigFinder.loadDefaultConfig(cwd);
                 return CeylonConfig.set(config);
             }
+            if (getCwd() != null) {
+                // If the main tool's `cwd` options is set it
+                // always overrides the one in the given tool
+                cbt.setCwd(getCwd());
+            }
         }
         return null;
+    }
+
+    // Here we set up the global configuration for this thread
+    // if (and only if) the setup deviates from the default
+    // (meaning `cwd` was set for the given tool)
+    private void syncCwd(Tool tool) throws IOException {
+        if (tool instanceof CeylonBaseTool) {
+            CeylonBaseTool cbt = (CeylonBaseTool)tool;
+            if (getCwd() != null) {
+                // If the main tool's `cwd` options is set it
+                // always overrides the one in the given tool
+                cbt.setCwd(getCwd());
+            }
+        }
     }
 
     @Override
