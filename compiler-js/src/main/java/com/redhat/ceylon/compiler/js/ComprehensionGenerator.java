@@ -11,6 +11,7 @@ import com.redhat.ceylon.compiler.js.util.RetainedVars;
 import com.redhat.ceylon.compiler.js.util.TypeUtils;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
+import com.redhat.ceylon.model.typechecker.model.Value;
 
 /** This component is used by the main JS visitor to generate code for comprehensions.
  * 
@@ -32,7 +33,67 @@ class ComprehensionGenerator {
         directAccess = directDeclarations;
     }
 
-    void generateComprehension(Tree.Comprehension that) {
+    private void expressionClause(final Tree.ExpressionComprehensionClause startClause,
+            final int initialIfClauses, final String tail, final Tree.Comprehension that) {
+        // record exhaustion state: return a function that
+        // * on first call, returns the expression,
+        // * on subsequent calls, returns finished.
+        String exhaustionVarName = names.createTempVariable();
+        gen.out("var ", exhaustionVarName, "=false");
+        gen.endLine(true);
+        gen.out("return function()");
+        gen.beginBlock();
+        gen.out("if(", exhaustionVarName, ") return ", finished);
+        gen.endLine(true);
+        gen.out(exhaustionVarName, "=true");
+        gen.endLine(true);
+        gen.out("return ");
+        final Tree.Expression _expr = startClause.getExpression();
+        if (!gen.isNaturalLiteral(_expr.getTerm())) {
+            _expr.visit(gen);
+        }
+        gen.endBlockNewLine(true);
+        for (int i = 0; i < initialIfClauses; i++) {
+            gen.endBlock();
+        }
+        gen.endLine();
+        gen.out(tail);
+        gen.endBlock(); // end one more block - this one is for the function
+        gen.out(",");
+        TypeUtils.printTypeArguments(that,
+                TypeUtils.wrapAsIterableArguments(that.getTypeModel()), gen, false, null);
+        gen.out(")");
+    }
+
+    private Tree.Expression gatherLoopsAndVariables(Tree.ForComprehensionClause forClause,
+            final Tree.Comprehension that, final List<ComprehensionLoopInfo> loops) {
+        Tree.Expression expression = null;
+        while (forClause != null) {
+            final ComprehensionLoopInfo loop = new ComprehensionLoopInfo(that, forClause.getForIterator());
+            Tree.ComprehensionClause clause = forClause.getComprehensionClause();
+            while ((clause != null) && !(clause instanceof Tree.ForComprehensionClause)) {
+                if (clause instanceof Tree.IfComprehensionClause) {
+                    Tree.IfComprehensionClause ifClause = (Tree.IfComprehensionClause) clause;
+                    loop.conditions.add(ifClause.getConditionList());
+                    loop.conditionVars.add(gen.conds.gatherVariables(ifClause.getConditionList(), true));
+                    clause = ifClause.getComprehensionClause();
+
+                } else if (clause instanceof Tree.ExpressionComprehensionClause) {
+                    expression = ((Tree.ExpressionComprehensionClause) clause).getExpression();
+                    clause = null;
+                } else {
+                    that.addError("No support for comprehension clause of type "
+                                  + clause.getClass().getName(), Backend.JavaScript);
+                    return expression;
+                }
+            }
+            loops.add(loop);
+            forClause = (Tree.ForComprehensionClause) clause;
+        }
+        return expression;
+    }
+
+    void generateComprehension(final Tree.Comprehension that) {
         gen.out(gen.getClAlias(), "for$(function()");
         gen.beginBlock();
         if (gen.opts.isComment()) {
@@ -65,34 +126,7 @@ class ComprehensionGenerator {
                     tail = "return function(){return " + finished + ";}";
                 }
             } else if (startClause instanceof Tree.ExpressionComprehensionClause) {
-            	// record exhaustion state: return a function that
-            	// * on first call, returns the expression,
-            	// * on subsequent calls, returns finished.
-            	String exhaustionVarName = names.createTempVariable(); 
-            	gen.out("var ", exhaustionVarName, "=false");
-            	gen.endLine(true);
-                gen.out("return function()");
-                gen.beginBlock();
-                gen.out("if(", exhaustionVarName, ") return ", finished);
-                gen.endLine(true);
-                gen.out(exhaustionVarName, "=true");
-                gen.endLine(true);
-                gen.out("return ");
-                final Tree.Expression _expr = ((Tree.ExpressionComprehensionClause)startClause).getExpression();
-                if (!gen.isNaturalLiteral(_expr.getTerm())) {
-                    _expr.visit(gen);
-                }
-                gen.endBlockNewLine(true);
-                for (int i = 0; i < initialIfClauses; i++) {
-                    gen.endBlock();
-                }
-                gen.endLine();
-                gen.out(tail);
-                gen.endBlock(); // end one more block - this one is for the function
-                gen.out(",");
-                TypeUtils.printTypeArguments(that,
-                        TypeUtils.wrapAsIterableArguments(that.getTypeModel()), gen, false, null);
-                gen.out(")");
+                expressionClause((Tree.ExpressionComprehensionClause)startClause, initialIfClauses, tail, that);
                 return;
             } else {
                 that.addError("No support for comprehension clause of type "
@@ -100,29 +134,7 @@ class ComprehensionGenerator {
                 return;
             }
         }
-        Tree.ForComprehensionClause forClause = (Tree.ForComprehensionClause)startClause;
-        while (forClause != null) {
-            ComprehensionLoopInfo loop = new ComprehensionLoopInfo(that, forClause.getForIterator());
-            Tree.ComprehensionClause clause = forClause.getComprehensionClause();
-            while ((clause != null) && !(clause instanceof Tree.ForComprehensionClause)) {
-                if (clause instanceof Tree.IfComprehensionClause) {
-                    Tree.IfComprehensionClause ifClause = (Tree.IfComprehensionClause) clause;
-                    loop.conditions.add(ifClause.getConditionList());
-                    loop.conditionVars.add(gen.conds.gatherVariables(ifClause.getConditionList(), true));
-                    clause = ifClause.getComprehensionClause();
-
-                } else if (clause instanceof Tree.ExpressionComprehensionClause) {
-                    expression = ((Tree.ExpressionComprehensionClause) clause).getExpression();
-                    clause = null;
-                } else {
-                    that.addError("No support for comprehension clause of type "
-                                  + clause.getClass().getName(), Backend.JavaScript);
-                    return;
-                }
-            }
-            loops.add(loop);
-            forClause = (Tree.ForComprehensionClause) clause;
-        }
+        expression = gatherLoopsAndVariables((Tree.ForComprehensionClause)startClause, that, loops);
 
         // generate variables and "next" function for each for loop
         for (int loopIndex=0; loopIndex<loops.size(); loopIndex++) {
@@ -138,7 +150,7 @@ class ComprehensionGenerator {
             }
 
             // value or key/value variables
-            gen.out(",", loop.valueVarName, "=", finished);
+            gen.out(",", loop.valueVarName, "=", finished, "/*CAP?" + loop.valDecl.isCaptured(), "*/");
             if (loop.pattern != null) {
                 HashSet<Declaration> decs = new HashSet<>();
                 new Destructurer(loop.pattern, null, decs, "", true);
@@ -217,16 +229,44 @@ class ComprehensionGenerator {
         }
 
         // Check if another element is available on the innermost loop.
-        // If yes, evaluate the expression, advance the iterator and return the result.
+        // If so, evaluate the expression, advance the iterator and return the result.
         ComprehensionLoopInfo lastLoop = loops.get(loops.size()-1);
         gen.out("if(n", lastLoop.valueVarName, "()!==", (lastLoop.pattern==null)
                 ? finished : "undefined", ")");
         gen.beginBlock();
         String tv = names.createTempVariable();
-        String tempVarName = names.createTempVariable();
+        final String tempVarName = names.createTempVariable();
         names.forceName(lastLoop.valDecl, tv);
-        gen.out("var ", tv, "=", lastLoop.valueVarName, ",", tempVarName, "=");
+        gen.out("var ", tv, "=", lastLoop.valueVarName, ",");
+        List<ConditionGenerator.VarHolder> captureds = null;
+        if (expression.getTypeModel() != null && TypeUtils.isCallable(expression.getTypeModel())) {
+            captureds = new ArrayList<>(loops.size()*2);
+            for (ComprehensionLoopInfo cli : loops) {
+                captureds.addAll(cli.containedVars(expression));
+            }
+        }
+        gen.out(tempVarName, "=");
+        if (captureds != null && !captureds.isEmpty()) {
+            gen.out("function(");
+            boolean first=true;
+            for (ConditionGenerator.VarHolder vh : captureds) {
+                if (!first)gen.out(",");
+                gen.out(vh.name);
+                first=false;
+            }
+            gen.out("){return ");
+        }
         expression.visit(gen);
+        if (captureds != null && !captureds.isEmpty()) {
+            gen.out(";}(");
+            boolean first=true;
+            for (ConditionGenerator.VarHolder vh : captureds) {
+                if (!first)gen.out(",");
+                gen.out(vh.name);
+                first=false;
+            }
+            gen.out(")");
+        }
         gen.endLine(true);
         retainedVars.emitRetainedVars(gen);
         gen.out("return ", tempVarName, ";");
@@ -267,6 +307,7 @@ class ComprehensionGenerator {
         public final String valueVarName;
         public final Declaration valDecl;
         public final Tree.Pattern pattern;
+        private Set<ConditionGenerator.VarHolder> treeVars;
 
         public ComprehensionLoopInfo(Tree.Comprehension that, Tree.ForIterator forIterator) {
             this.forIterator = forIterator;
@@ -291,6 +332,26 @@ class ComprehensionGenerator {
                 pattern = null;
                 return;
             }
+        }
+
+        public Set<ConditionGenerator.VarHolder> containedVars(Tree.Expression that) {
+            final Set<Declaration> expdecs = ClosureHelper.declarationsInExpression(that);
+            treeVars = new HashSet<>(expdecs.size());
+            for (List<ConditionGenerator.VarHolder> lvh : conditionVars) {
+                for (ConditionGenerator.VarHolder vh : lvh) {
+                    if (vh.var != null && expdecs.contains(vh.var)) {
+                        treeVars.add(vh);
+                    }
+                    if (vh.captured != null) {
+                        for (Value cap : vh.captured) {
+                            if (expdecs.contains(cap)) {
+                                treeVars.add(vh);
+                            }
+                        }
+                    }
+                }
+            }
+            return treeVars;
         }
     }
 }
