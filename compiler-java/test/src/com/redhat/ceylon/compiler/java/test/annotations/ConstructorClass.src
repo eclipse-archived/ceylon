@@ -1,0 +1,105 @@
+package com.redhat.ceylon.compiler.java.test.annotations;
+
+@.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@.java.lang.annotation.Target({.java.lang.annotation.ElementType.TYPE})
+@interface ClassWithInitializerAnnotation$annotation$ {
+}
+@.ceylon.language.FinalAnnotation$annotation$
+@.ceylon.language.AnnotationAnnotation$annotation$
+final class ClassWithInitializerAnnotation implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.OptionalAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.ClassWithInitializerAnnotation, .ceylon.language.meta.declaration.ClassWithInitializerDeclaration, .java.lang.Object> {
+    
+    ClassWithInitializerAnnotation(.com.redhat.ceylon.compiler.java.test.annotations.ClassWithInitializerAnnotation$annotation$ anno) {
+        this();
+    }
+    
+    ClassWithInitializerAnnotation() {
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.annotations.ClassWithInitializerAnnotation.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.ClassWithInitializerAnnotation.class);
+    
+    @.java.lang.Override
+    public .java.lang.Class<? extends .java.lang.annotation.Annotation> annotationType() {
+        return .com.redhat.ceylon.compiler.java.test.annotations.ClassWithInitializerAnnotation$annotation$.class;
+    }
+}
+@.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
+        arguments = {},
+        primary = .com.redhat.ceylon.compiler.java.test.annotations.ClassWithInitializerAnnotation.class)
+final class classWithInitializerAnnotation_ {
+    
+    private classWithInitializerAnnotation_() {
+    }
+    
+    @.ceylon.language.AnnotationAnnotation$annotation$
+    static .com.redhat.ceylon.compiler.java.test.annotations.ClassWithInitializerAnnotation classWithInitializerAnnotation() {
+        return new .com.redhat.ceylon.compiler.java.test.annotations.ClassWithInitializerAnnotation();
+    }
+}
+@.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@.java.lang.annotation.Target({.java.lang.annotation.ElementType.TYPE})
+@interface ClassWithConstructorsAnnotation$annotation$ {
+}
+@.ceylon.language.FinalAnnotation$annotation$
+@.ceylon.language.AnnotationAnnotation$annotation$
+final class ClassWithConstructorsAnnotation implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.OptionalAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.ClassWithConstructorsAnnotation, .ceylon.language.meta.declaration.ClassWithConstructorsDeclaration, .java.lang.Object> {
+    
+    ClassWithConstructorsAnnotation(.com.redhat.ceylon.compiler.java.test.annotations.ClassWithConstructorsAnnotation$annotation$ anno) {
+        this();
+    }
+    
+    ClassWithConstructorsAnnotation() {
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.annotations.ClassWithConstructorsAnnotation.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.ClassWithConstructorsAnnotation.class);
+    
+    @.java.lang.Override
+    public .java.lang.Class<? extends .java.lang.annotation.Annotation> annotationType() {
+        return .com.redhat.ceylon.compiler.java.test.annotations.ClassWithConstructorsAnnotation$annotation$.class;
+    }
+}
+@.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
+        arguments = {},
+        primary = .com.redhat.ceylon.compiler.java.test.annotations.ClassWithConstructorsAnnotation.class)
+final class classWithConstructorsAnnotation_ {
+    
+    private classWithConstructorsAnnotation_() {
+    }
+    
+    @.ceylon.language.AnnotationAnnotation$annotation$
+    static .com.redhat.ceylon.compiler.java.test.annotations.ClassWithConstructorsAnnotation classWithConstructorsAnnotation() {
+        return new .com.redhat.ceylon.compiler.java.test.annotations.ClassWithConstructorsAnnotation();
+    }
+}
+@.com.redhat.ceylon.compiler.java.test.annotations.ClassWithInitializerAnnotation$annotation$
+class ClassWithInitializer implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    ClassWithInitializer() {
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.annotations.ClassWithInitializer.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.ClassWithInitializer.class);
+}
+@.com.redhat.ceylon.compiler.java.test.annotations.ClassWithConstructorsAnnotation$annotation$
+class ClassWithConstructors implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    public ClassWithConstructors() {
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.annotations.ClassWithConstructors.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.ClassWithConstructors.class);
+}

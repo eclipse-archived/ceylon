@@ -27,7 +27,6 @@ final annotation class ValueConstructorAnnotation()
 @noanno
 annotation ValueConstructorAnnotation valueConstructorAnnotation() => ValueConstructorAnnotation();
 
-
 class Constructor {
     "docannotation"
     constructorAnnotation
