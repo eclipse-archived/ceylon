@@ -966,8 +966,8 @@ final class bug2130Span_ {
         (
             let
             {
-                long arg$231$0 = .ceylon.language.runtime_.get_().getMaxIntegerValue().longValue();
-                long arg$231$1 = .ceylon.language.runtime_.get_().getMaxIntegerValue().longValue();
+                long arg$231$0 = .ceylon.language.runtime_.get_().getMaxIntegerValue();
+                long arg$231$1 = .ceylon.language.runtime_.get_().getMaxIntegerValue();
                 .ceylon.language.Sequential arg$231$2 = .com.redhat.ceylon.compiler.java.test.statement.loop.optim.compareSpanInteger2130_.compareSpanInteger2130$expect(arg$231$0, arg$231$1);
                 .ceylon.language.Integer arg$231$3 = .com.redhat.ceylon.compiler.java.test.statement.loop.optim.compareSpanInteger2130_.compareSpanInteger2130$breakAfter(arg$231$0, arg$231$1, arg$231$2);
                 .com.redhat.ceylon.compiler.java.test.statement.loop.optim.compareSpanInteger2130_.compareSpanInteger2130(arg$231$0, arg$231$1, arg$231$2, arg$231$3);
@@ -977,8 +977,8 @@ final class bug2130Span_ {
         (
             let
             {
-                long arg$232$0 = .ceylon.language.runtime_.get_().getMinIntegerValue().longValue();
-                long arg$232$1 = .ceylon.language.runtime_.get_().getMinIntegerValue().longValue();
+                long arg$232$0 = .ceylon.language.runtime_.get_().getMinIntegerValue();
+                long arg$232$1 = .ceylon.language.runtime_.get_().getMinIntegerValue();
                 .ceylon.language.Sequential arg$232$2 = .com.redhat.ceylon.compiler.java.test.statement.loop.optim.compareSpanInteger2130_.compareSpanInteger2130$expect(arg$232$0, arg$232$1);
                 .ceylon.language.Integer arg$232$3 = .com.redhat.ceylon.compiler.java.test.statement.loop.optim.compareSpanInteger2130_.compareSpanInteger2130$breakAfter(arg$232$0, arg$232$1, arg$232$2);
                 .com.redhat.ceylon.compiler.java.test.statement.loop.optim.compareSpanInteger2130_.compareSpanInteger2130(arg$232$0, arg$232$1, arg$232$2, arg$232$3);
@@ -989,7 +989,7 @@ final class bug2130Span_ {
             let
             {
                 long arg$233$0 = -2L;
-                long arg$233$1 = .ceylon.language.runtime_.get_().getMaxIntegerValue().longValue();
+                long arg$233$1 = .ceylon.language.runtime_.get_().getMaxIntegerValue();
                 .ceylon.language.Sequential arg$233$2 = .com.redhat.ceylon.compiler.java.test.statement.loop.optim.compareSpanInteger2130_.compareSpanInteger2130$expect(arg$233$0, arg$233$1);
                 .ceylon.language.Integer arg$233$3 = .com.redhat.ceylon.compiler.java.test.statement.loop.optim.compareSpanInteger2130_.compareSpanInteger2130$breakAfter(arg$233$0, arg$233$1, arg$233$2);
                 .com.redhat.ceylon.compiler.java.test.statement.loop.optim.compareSpanInteger2130_.compareSpanInteger2130(arg$233$0, arg$233$1, arg$233$2, arg$233$3);
@@ -999,7 +999,7 @@ final class bug2130Span_ {
         (
             let
             {
-                long arg$234$0 = .ceylon.language.runtime_.get_().getMaxIntegerValue().longValue();
+                long arg$234$0 = .ceylon.language.runtime_.get_().getMaxIntegerValue();
                 long arg$234$1 = -2L;
                 .ceylon.language.Sequential arg$234$2 = .com.redhat.ceylon.compiler.java.test.statement.loop.optim.compareSpanInteger2130_.compareSpanInteger2130$expect(arg$234$0, arg$234$1);
                 .ceylon.language.Integer arg$234$3 = .com.redhat.ceylon.compiler.java.test.statement.loop.optim.compareSpanInteger2130_.compareSpanInteger2130$breakAfter(arg$234$0, arg$234$1, arg$234$2);
@@ -1013,7 +1013,7 @@ final class bug2130Span_ {
                 .ceylon.language.Integer.instance(0L),
                 .ceylon.language.Integer.instance(1L),
                 .ceylon.language.Integer.instance(2L),
-                .ceylon.language.runtime_.get_().getMaxIntegerValue()})).iterator();
+                .ceylon.language.Integer.instance(.ceylon.language.runtime_.get_().getMaxIntegerValue())})).iterator();
         loop_8: while (!((elem$235 = step$iterator$$236.next()) instanceof .ceylon.language.Finished)) {
             final long step = ((.ceylon.language.Integer)elem$235).longValue();
             (
@@ -1110,8 +1110,8 @@ final class bug2130Span_ {
             (
                 let
                 {
-                    long arg$244$0 = .ceylon.language.runtime_.get_().getMaxIntegerValue().longValue();
-                    long arg$244$1 = .ceylon.language.runtime_.get_().getMaxIntegerValue().longValue();
+                    long arg$244$0 = .ceylon.language.runtime_.get_().getMaxIntegerValue();
+                    long arg$244$1 = .ceylon.language.runtime_.get_().getMaxIntegerValue();
                     long arg$244$2 = step;
                     .ceylon.language.Sequential arg$244$3 = .com.redhat.ceylon.compiler.java.test.statement.loop.optim.compareSpanIntegerBy2130_.compareSpanIntegerBy2130$expect(arg$244$0, arg$244$1, arg$244$2);
                     .ceylon.language.Integer arg$244$4 = .com.redhat.ceylon.compiler.java.test.statement.loop.optim.compareSpanIntegerBy2130_.compareSpanIntegerBy2130$breakAfter(arg$244$0, arg$244$1, arg$244$2, arg$244$3);
@@ -1123,8 +1123,8 @@ final class bug2130Span_ {
             (
                 let
                 {
-                    long arg$245$0 = .ceylon.language.runtime_.get_().getMinIntegerValue().longValue();
-                    long arg$245$1 = .ceylon.language.runtime_.get_().getMinIntegerValue().longValue();
+                    long arg$245$0 = .ceylon.language.runtime_.get_().getMinIntegerValue();
+                    long arg$245$1 = .ceylon.language.runtime_.get_().getMinIntegerValue();
                     long arg$245$2 = step;
                     .ceylon.language.Sequential arg$245$3 = .com.redhat.ceylon.compiler.java.test.statement.loop.optim.compareSpanIntegerBy2130_.compareSpanIntegerBy2130$expect(arg$245$0, arg$245$1, arg$245$2);
                     .ceylon.language.Integer arg$245$4 = .com.redhat.ceylon.compiler.java.test.statement.loop.optim.compareSpanIntegerBy2130_.compareSpanIntegerBy2130$breakAfter(arg$245$0, arg$245$1, arg$245$2, arg$245$3);
@@ -1137,7 +1137,7 @@ final class bug2130Span_ {
                 let
                 {
                     long arg$246$0 = -2L;
-                    long arg$246$1 = .ceylon.language.runtime_.get_().getMaxIntegerValue().longValue();
+                    long arg$246$1 = .ceylon.language.runtime_.get_().getMaxIntegerValue();
                     long arg$246$2 = step;
                     .ceylon.language.Integer arg$246$4 = (
                         let
@@ -1160,7 +1160,7 @@ final class bug2130Span_ {
             (
                 let
                 {
-                    long arg$249$0 = .ceylon.language.runtime_.get_().getMaxIntegerValue().longValue();
+                    long arg$249$0 = .ceylon.language.runtime_.get_().getMaxIntegerValue();
                     long arg$249$1 = -2L;
                     long arg$249$2 = step;
                     .ceylon.language.Integer arg$249$4 = (
@@ -1261,7 +1261,7 @@ final class bug2130Span_ {
                 .ceylon.language.Integer.instance(0L),
                 .ceylon.language.Integer.instance(1L),
                 .ceylon.language.Integer.instance(2L),
-                .ceylon.language.runtime_.get_().getMaxIntegerValue()})).iterator();
+                .ceylon.language.Integer.instance(.ceylon.language.runtime_.get_().getMaxIntegerValue())})).iterator();
         loop_9: while (!((elem$259 = step$iterator$$260.next()) instanceof .ceylon.language.Finished)) {
             final long step = ((.ceylon.language.Integer)elem$259).longValue();
             (
