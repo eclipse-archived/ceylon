@@ -49,10 +49,10 @@ public abstract class EnumUtil {
         }
     }
     
-    public static <ENUM extends Enum<ENUM>> String enumsToString(Class<ENUM> enumClass, EnumSet<ENUM> elems) {
+    public static <ENUM extends Enum<ENUM>> String enumsToString(EnumSet<ENUM> elems) {
         if (elems != null) {
             StringBuilder buf = new StringBuilder();
-            for (ENUM e : EnumSet.allOf(enumClass)) {
+            for (ENUM e : elems) {
                 if (buf.length() > 0) {
                     buf.append(",");
                 }
