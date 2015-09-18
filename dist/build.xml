@@ -931,61 +931,119 @@ You can now build the package by executing:
              inheritall="false"/>
     </target>
 
-    <!-- The following tasks all edirect to "ide-build.xml" -->
+    <!-- The following tasks all redirect to "sdk-build.xml" -->
+    
+    <target name="setup-sdk">
+        <ant antfile="${basedir}/sdk-build.xml"
+             target="setup"
+             inheritall="false"
+             useNativeBasedir="true">
+        </ant>
+    </target>
+    
+    <target name="setup-admins-sdk">
+        <ant antfile="${basedir}/sdk-build.xml"
+             target="setup-admins"
+             inheritall="false"
+             useNativeBasedir="true">
+        </ant>
+    </target>
+    
+    <target name="status-sdk">
+        <ant antfile="${basedir}/sdk-build.xml"
+             target="status"
+             inheritall="false"
+             useNativeBasedir="true">
+        </ant>
+    </target>
+    
+    <target name="update-sdk">
+        <ant antfile="${basedir}/sdk-build.xml"
+             target="update"
+             inheritall="false"
+             useNativeBasedir="true">
+        </ant>
+    </target>
+    
+    <target name="clean-sdk">
+        <ant antfile="${basedir}/sdk-build.xml"
+             target="clean"
+             inheritall="false"
+             useNativeBasedir="true">
+        </ant>
+    </target>
+
+    <target name="sdk">
+        <ant antfile="${basedir}/sdk-build.xml"
+             target="sdk"
+             inheritall="false"
+             useNativeBasedir="true">
+        </ant>
+    </target>
+    
+    <!-- The following tasks all redirect to "ide-build.xml" -->
     
     <target name="setup-ide">
         <ant antfile="${basedir}/ide-build.xml"
              target="setup"
-            inheritall="false">
+             inheritall="false"
+             useNativeBasedir="true">
         </ant>
     </target>
     
     <target name="setup-admins-ide">
         <ant antfile="${basedir}/ide-build.xml"
              target="setup-admins"
-            inheritall="false">
+             inheritall="false"
+             useNativeBasedir="true">
         </ant>
     </target>
     
     <target name="status-ide">
         <ant antfile="${basedir}/ide-build.xml"
              target="status"
-            inheritall="false">
+             inheritall="false"
+             useNativeBasedir="true">
         </ant>
     </target>
     
     <target name="update-ide">
         <ant antfile="${basedir}/ide-build.xml"
              target="update"
-            inheritall="false">
+             inheritall="false"
+             useNativeBasedir="true">
         </ant>
     </target>
     
     <target name="clean-ide">
         <ant antfile="${basedir}/ide-build.xml"
              target="clean"
-            inheritall="false">
+             inheritall="false"
+             useNativeBasedir="true">
         </ant>
     </target>
     
     <target name="clean-projects-ide">
         <ant antfile="${basedir}/ide-build.xml"
              target="clean-projects"
-            inheritall="false">
+             inheritall="false"
+             useNativeBasedir="true">
         </ant>
     </target>
     
     <target name="eclipse">
         <ant antfile="${basedir}/ide-build.xml"
              target="eclipse"
-            inheritall="false">
+             inheritall="false"
+             useNativeBasedir="true">
         </ant>
     </target>
     
     <target name="intellij">
         <ant antfile="${basedir}/ide-build.xml"
              target="intellij"
-            inheritall="false">
+             inheritall="false"
+             useNativeBasedir="true">
         </ant>
     </target>
     
