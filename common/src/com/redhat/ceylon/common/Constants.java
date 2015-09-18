@@ -46,6 +46,6 @@ public abstract class Constants {
 
     // The default timeout for establishing connections is set to 20 seconds
     // The multiplier is applied on top of that for read timeouts
-    public static final long DEFAULT_TIMEOUT = 20000L;
+    public static final int DEFAULT_TIMEOUT = 20000;
     public static final int READ_TIMEOUT_MULTIPLIER = 10;
 }

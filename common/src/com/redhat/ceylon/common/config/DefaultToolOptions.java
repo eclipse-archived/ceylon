@@ -57,7 +57,20 @@ public class DefaultToolOptions {
     }
     
     public static long getDefaultTimeout(CeylonConfig config) {
-        return config.getNumberOption(DEFAULTS_TIMEOUT, Constants.DEFAULT_TIMEOUT);
+        return timeoutFromString(config.getOption(DEFAULTS_TIMEOUT), Constants.DEFAULT_TIMEOUT);
+    }
+    
+    public static int timeoutFromString(String num, int defaultTimeout) {
+        if (num != null) {
+            int fact = 1000;
+            if (num.endsWith("ms")) {
+                num = num.substring(0, num.length() - 2);
+                fact = 1;
+            }
+            return Integer.parseInt(num) * fact;
+        } else {
+            return defaultTimeout;
+        }
     }
     
     public static Proxy getDefaultProxy() {
