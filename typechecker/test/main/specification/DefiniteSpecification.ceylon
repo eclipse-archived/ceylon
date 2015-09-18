@@ -730,3 +730,14 @@ class C2() {
     assign name {}
     @error name = "foo";
 }
+
+void initInLoop() {
+    variable String[] data1 = [];
+    for (i in 0..10) {
+        data1 = data1.append([]);
+    }
+    variable String[] data2;
+    for (i in 0..10) {
+        @error data2 = data2.append([]);
+    }
+}
