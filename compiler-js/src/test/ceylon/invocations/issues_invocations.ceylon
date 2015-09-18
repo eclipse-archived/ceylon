@@ -1,4 +1,4 @@
-import check { check }
+import check { check, fail }
 
 class Issue306(String() callback) {
     shared void call() {
@@ -100,6 +100,21 @@ void test568() {
     check(obj568.double([1,2,3]) == [2,4,6], "#568.3");   // error #2
 }
 
+interface Monad627<Box> {
+    shared void join(Box source) {
+        value x = identity<Box>;
+        if (exists y=x(source)) {
+            check(y==[[1]], "#627");
+        } else {
+            fail("#627.2");
+        }
+    }
+}
+object singleton627 satisfies Monad627<Singleton<Anything>> {}
+void test627() {
+    singleton627.join(Singleton(Singleton(1)));
+}
+
 void testIssues() {
   objectIssue306.foo().call();
   ClassBug314<Object>();
@@ -112,4 +127,5 @@ void testIssues() {
   test568();
   value test624 = [[1,"one"], [1, "two"]];
   check(1 in test624.group(Tuple.first).keys, "#624");
+  test627();
 }
