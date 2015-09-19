@@ -382,7 +382,7 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
 
         if (timeout != -1) {
             arguments.add("-timeout");
-            arguments.add(String.valueOf(timeout*1000)); // we take in seconds, but compiler supports milliseconds
+            arguments.add(String.valueOf(timeout));
         }
 
         if (flatClasspath) {
