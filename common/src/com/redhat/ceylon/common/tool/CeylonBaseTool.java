@@ -9,7 +9,6 @@ import com.redhat.ceylon.common.tools.CeylonTool;
 public abstract class CeylonBaseTool implements Tool {
     protected File cwd;
     public String verbose;
-    protected List<String> defines;
 
     public File getCwd() {
         return cwd;
@@ -36,25 +35,6 @@ public abstract class CeylonBaseTool implements Tool {
         this.verbose = verbose;
     }
     
-    @OptionArgument(shortName='D', argumentName = "key>=<value")
-    @Description("Set a system property")
-    public void setDefine(List<String> defines) {
-        this.defines = defines;
-    }
-    
-    protected void setSystemProperties() {
-        if (defines != null) {
-            for (String prop : defines) {
-                int p = prop.indexOf('=');
-                if (p > 0) {
-                    String key = prop.substring(0, p);
-                    String val = prop.substring(p + 1);
-                    System.setProperty(key, val);
-                }
-            }
-        }
-    }
-
     protected File validCwd() {
         return (cwd != null) ? cwd : new File(".");
     }

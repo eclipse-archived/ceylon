@@ -135,7 +135,8 @@ public class CeylonTool implements Tool {
     private Boolean paginate;
     private File cwd;
     private File config;
-    CeylonConfig oldConfig = null;
+    private CeylonConfig oldConfig = null;
+    private List<String> defines;
     
     public CeylonTool() {
     }
@@ -199,6 +200,25 @@ public class CeylonTool implements Tool {
         this.config = config;
     }
     
+    @OptionArgument(shortName='D', argumentName = "key>=<value")
+    @Description("Set a system property")
+    public void setDefine(List<String> defines) {
+        this.defines = defines;
+    }
+    
+    private void setSystemProperties() {
+        if (defines != null) {
+            for (String prop : defines) {
+                int p = prop.indexOf('=');
+                if (p > 0) {
+                    String key = prop.substring(0, p);
+                    String val = prop.substring(p + 1);
+                    System.setProperty(key, val);
+                }
+            }
+        }
+    }
+
     //@Argument(argumentName="command", multiplicity="?", order=1)
     public void setCommand(String command) {
         this.toolName = command;
@@ -333,6 +353,7 @@ public class CeylonTool implements Tool {
             ToolModel<CeylonTool> model = getToolModel("");
             List<String> myArgs = rearrangeArgs(CommandLine.parse(args));
             getPluginFactory().bindArguments(model, this, this, myArgs);
+            setSystemProperties();
             oldConfig = setupConfig();
             result = SC_OK;
         } catch (Exception e) {
