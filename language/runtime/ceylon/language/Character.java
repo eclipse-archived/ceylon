@@ -321,7 +321,7 @@ public final class Character
 
     public static int codepoint(long value) {
         if (value>0x10FFFF || value<0) {
-            throw new OverflowException(value + " is not a 32-bit integer");
+            throw new OverflowException(value + " is not a possible Unicode code point");
         }
         return Util.toInt(value);
     }
