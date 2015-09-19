@@ -421,7 +421,7 @@ public final class Integer
     public static double getFloat(long value) {
         if (value >= 9007199254740992L
                 || value <= -9007199254740992L) {
-            throw new OverflowException();
+            throw new OverflowException(value + " cannot be coerced into a 64 bit floating point value");
         }
         else {
         	return (double) value;
