@@ -42,10 +42,12 @@ import com.redhat.ceylon.common.ModuleDescriptorReader;
 import com.redhat.ceylon.common.ModuleUtil;
 import com.redhat.ceylon.common.config.DefaultToolOptions;
 import com.redhat.ceylon.common.log.Logger;
+import com.redhat.ceylon.common.tool.ArgumentParser;
 import com.redhat.ceylon.common.tool.CeylonBaseTool;
 import com.redhat.ceylon.common.tool.Description;
 import com.redhat.ceylon.common.tool.Option;
 import com.redhat.ceylon.common.tool.OptionArgument;
+import com.redhat.ceylon.common.tool.ParsedBy;
 import com.redhat.ceylon.common.tool.StandardArgumentParsers;
 import com.redhat.ceylon.common.tool.Tool;
 import com.redhat.ceylon.common.tool.ToolFactory;
@@ -77,6 +79,18 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
     private static final List<String> EMPTY_STRINGS = new ArrayList<String>(0);
     private static final List<URI> EMPTY_URIS = new ArrayList<URI>(0);
     
+    public static class TimeoutParser implements ArgumentParser<Integer> {
+        @Override
+        public Integer parse(String argument, Tool tool) {
+            int fact = 1000;
+            if (argument.endsWith("ms")) {
+                argument = argument.substring(0, argument.length() - 2);
+                fact = 1;
+            }
+            return Integer.valueOf(argument) * fact;
+        }
+    }
+
     public RepoUsingTool(ResourceBundle bundle) {
         this.bundle = bundle;
         this.log = createLogger();
@@ -157,6 +171,7 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
         this.offline = offline;
     }
 
+    @ParsedBy(TimeoutParser.class)
     @OptionArgument(shortName='T', longName="timeout", argumentName="seconds")
     @Description("Sets the timeout for connections to remote repositories, use 0 for no timeout (default: 20).")
     public void setTimeout(int timeout) {
@@ -190,7 +205,7 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
                 .noDefaultRepos(noDefRepos)
                 .userRepos(getRepositoryAsStrings())
                 .offline(offline)
-                .timeout((timeout >= 0) ? timeout * 1000 : -1)
+                .timeout(timeout)
                 .isJDKIncluded(includeJDK())
                 .logger(log);
         return rmb;
@@ -758,3 +773,4 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
         return out;
     }
 }
+
