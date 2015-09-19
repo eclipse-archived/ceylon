@@ -720,7 +720,7 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
             Iterator<String> tagIterator = tags.iterator();
             while (tagIterator.hasNext()) {
                 String tag = tagIterator.next();
-                write("<a class='tag label' name='" + tag + "' href='search.html?q=" + tag + "'>" + tag + "</a>");
+                write("<a class='tag label' name='" + tag + "' href='javascript:;' title='Enable/disable tag filter'>" + tag + "</a>");
             }
             close("div");
         }

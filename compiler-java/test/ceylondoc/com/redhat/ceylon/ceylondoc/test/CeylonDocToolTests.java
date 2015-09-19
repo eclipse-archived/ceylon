@@ -951,16 +951,16 @@ public class CeylonDocToolTests {
                 Pattern.compile("\\{'name': 'StubClass.methodWithTagged', 'type': 'function', 'url': 'StubClass.type.html#methodWithTagged', 'doc': '<p>The stub method with <code>tagged</code> .*?</p>\\\\n', 'tags': \\['stubTag2'\\]"));
         
         assertMatchInFile(destDir, "StubClass.type.html", 
-                Pattern.compile("<div class='tags section'><a class='tag label' name='stubTag1' href='search.html\\?q=stubTag1'>stubTag1</a><a class='tag label' name='stubTag2' href='search.html\\?q=stubTag2'>stubTag2</a>"));
+                Pattern.compile("<div class='tags section'><a class='tag label' name='stubTag1' href='javascript:;' title='Enable/disable tag filter'>stubTag1</a><a class='tag label' name='stubTag2' href='javascript:;' title='Enable/disable tag filter'>stubTag2</a>"));
         assertMatchInFile(destDir, "StubClass.type.html", 
-                Pattern.compile("<div class='tags section'><a class='tag label' name='stubTag1' href='search.html\\?q=stubTag1'>stubTag1</a>"));
+                Pattern.compile("<div class='tags section'><a class='tag label' name='stubTag1' href='javascript:;' title='Enable/disable tag filter'>stubTag1</a>"));
         assertMatchInFile(destDir, "StubClass.type.html", 
-                Pattern.compile("<div class='tags section'><a class='tag label' name='stubTag2' href='search.html\\?q=stubTag2'>stubTag2</a>"));
+                Pattern.compile("<div class='tags section'><a class='tag label' name='stubTag2' href='javascript:;' title='Enable/disable tag filter'>stubTag2</a>"));
         
         assertMatchInFile(destDir, "index.html", 
-                Pattern.compile("<div class='tags section'><a class='tag label' name='stubTag1a' href='search.html\\?q=stubTag1a'>stubTag1a</a><a class='tag label' name='stubTag1b' href='search.html\\?q=stubTag1b'>stubTag1b</a><a class='tag label' name='stubTagWithVeryLongName ... !!!' href='search.html\\?q=stubTagWithVeryLongName ... !!!'>stubTagWithVeryLongName ... !!!</a>"));
+                Pattern.compile("<div class='tags section'><a class='tag label' name='stubTag1a' href='javascript:;' title='Enable/disable tag filter'>stubTag1a</a><a class='tag label' name='stubTag1b' href='javascript:;' title='Enable/disable tag filter'>stubTag1b</a><a class='tag label' name='stubTagWithVeryLongName ... !!!' href='javascript:;' title='Enable/disable tag filter'>stubTagWithVeryLongName ... !!!</a>"));
         assertMatchInFile(destDir, "index.html", 
-                Pattern.compile("<div class='tags section'><a class='tag label' name='stubTag1' href='search.html\\?q=stubTag1'>stubTag1</a><a class='tag label' name='stubTag2' href='search.html\\?q=stubTag2'>stubTag2</a>"));
+                Pattern.compile("<div class='tags section'><a class='tag label' name='stubTag1' href='javascript:;' title='Enable/disable tag filter'>stubTag1</a><a class='tag label' name='stubTag2' href='javascript:;' title='Enable/disable tag filter'>stubTag2</a>"));
     }
     
     private void assertDocumentationOfRefinedMember(File destDir) throws Exception {
