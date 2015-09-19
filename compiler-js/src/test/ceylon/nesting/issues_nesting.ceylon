@@ -40,7 +40,7 @@ void test628() {
   check(a.b.identA1()=="A", "#628.2");
   check(a.b.identA2()=="A", "#628.3");
   check(a.b.identB()=="B",  "#628.4");
-  check(a.b.outerIdentS()=="Bs", "#628.5");
+  check(a.b.outerIdentS()=="As", "#628.5");
   check(a.b.identA1S()=="As", "#628.6");
   check(a.b.identA2S()=="As", "#628.7");
   check(a.b.identBS()=="Bs",  "#628.8");
