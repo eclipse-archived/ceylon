@@ -1708,7 +1708,7 @@ public class Util {
     public static int toInt(long value) {
         int result = (int) value;
         if (result != value) {
-            throw new OverflowException();
+            throw new OverflowException(value + " cannot be safely converted into a 32-bit integer");
         }
         return result;
     }
@@ -1727,7 +1727,7 @@ public class Util {
     public static short toShort(long value) {
         short result = (short) value;
         if (result != value) {
-            throw new OverflowException();
+            throw new OverflowException(value + " cannot be safely converted into a 16 bit integer");
         }
         return result;
     }
@@ -1747,7 +1747,7 @@ public class Util {
     public static byte toByte(long value) {
         byte result = (byte) value;
         if (result != value) {
-            throw new OverflowException();
+            throw new OverflowException(value + " cannot be safely converted into a 8-bit integer");
         }
         return result;
     }
