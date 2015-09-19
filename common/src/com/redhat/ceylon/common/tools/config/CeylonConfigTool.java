@@ -415,7 +415,6 @@ public class CeylonConfigTool extends CeylonBaseTool {
     
     @Override
     public void run() throws Exception {
-        setSystemProperties();
         action.run();
     }
 
