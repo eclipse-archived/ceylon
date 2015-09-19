@@ -96,7 +96,6 @@ public class CeylonWarTool extends ModuleLoadingTool {
     
 	@Override
 	public void run() throws Exception {
-		setSystemProperties();
 		final String moduleName = ModuleUtil.moduleName(this.moduleNameOptVersion);
 		final String moduleVersion = moduleVersion(this.moduleNameOptVersion);
 		final Properties properties = new Properties();

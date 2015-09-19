@@ -123,7 +123,6 @@ public class CeylonCopyTool extends OutputRepoUsingTool {
     
     @Override
     public void run() throws Exception {
-        setSystemProperties();
         Set<String> artifacts = new LinkedHashSet<String>();
         boolean defaults = js == null 
                 && jvm == null

@@ -112,8 +112,6 @@ public class CeylonP2Tool extends OutputRepoUsingTool {
     
     @Override
     public void run() throws Exception {
-        setSystemProperties();
-        
         RepositoryManager repoManager = getRepositoryManager();
         Map<String, ModuleInfo> allModules = new HashMap<>();
         for (ModuleSpec module : modules) {

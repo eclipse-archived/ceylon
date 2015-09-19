@@ -150,8 +150,6 @@ public class CeylonPluginTool extends OutputRepoUsingTool {
 
     @Override
     public void run() throws Exception {
-        setSystemProperties();
-        
         // make sure we have a list of modules to work on if required
         if(modules == null)
             modules = new ArrayList<ModuleSpec>();

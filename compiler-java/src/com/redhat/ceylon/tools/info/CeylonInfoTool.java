@@ -242,7 +242,6 @@ public class CeylonInfoTool extends RepoUsingTool {
     
     @Override
     public void run() throws Exception {
-        setSystemProperties();
         if (!showIncompatible) {
             binaryMajor = Versions.JVM_BINARY_MAJOR_VERSION;
             binaryMinor = Versions.JVM_BINARY_MINOR_VERSION;

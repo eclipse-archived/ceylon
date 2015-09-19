@@ -333,7 +333,6 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
     
     @Override
     public void initialize(CeylonTool mainTool) throws IOException {
-        setSystemProperties();
         compiler = new Main("ceylon compile");
         Options options = Options.instance(new Context());
         

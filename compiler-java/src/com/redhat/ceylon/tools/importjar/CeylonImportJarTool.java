@@ -141,7 +141,6 @@ public class CeylonImportJarTool extends OutputRepoUsingTool {
 
     @Override
     public void initialize(CeylonTool mainTool) {
-        setSystemProperties();
         File f = applyCwd(jarFile);
         checkReadableFile(f, "error.jarFile", true);
         if(!f.getName().toLowerCase().endsWith(".jar"))

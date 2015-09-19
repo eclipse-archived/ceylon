@@ -181,7 +181,6 @@ public class CeylonVersionTool extends CeylonBaseTool {
     
     @Override
     public void run() throws IOException, RecognitionException {
-        setSystemProperties();
         // TODO if version is empty? Prompt? Or should --set have an optional argument? 
         TypeCheckerBuilder tcb = new TypeCheckerBuilder();
         for (File path: this.sourceFolders) {

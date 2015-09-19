@@ -381,7 +381,6 @@ public class CeylonDocTool extends OutputRepoUsingTool {
 
     @Override
     public void initialize(CeylonTool mainTool) {
-        setSystemProperties();
         TypeCheckerBuilder builder = new TypeCheckerBuilder();
         for(File src : sourceFolders){
             builder.addSrcDirectory(src);

@@ -98,7 +98,6 @@ public class CeylonNewTool extends CeylonBaseTool {
     
     @Override
     public void run() throws Exception {
-        setSystemProperties();
         File fromDir = getFromDir();
         if (!fromDir.exists() || !fromDir.isDirectory()) {
             throw new IllegalArgumentException(Messages.msg("from.nonexistent.or.nondir", fromDir));

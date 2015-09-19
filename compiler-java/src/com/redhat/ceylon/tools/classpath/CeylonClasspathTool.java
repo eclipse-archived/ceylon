@@ -35,8 +35,6 @@ public class CeylonClasspathTool extends ModuleLoadingTool {
 
     @Override
     public void run() throws Exception {
-        setSystemProperties();
-
         String module = ModuleUtil.moduleName(moduleNameOptVersion);
         String version = checkModuleVersionsOrShowSuggestions(
                 getRepositoryManager(),
