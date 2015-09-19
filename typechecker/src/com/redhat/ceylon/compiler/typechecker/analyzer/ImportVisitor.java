@@ -87,7 +87,7 @@ public class ImportVisitor extends Visitor {
                     importAllMembers(importedPackage, names, il);
                 } 
                 else if (imtl.getImportMemberOrTypes().isEmpty()) {
-                    imtl.addError("empty import list");
+                    imtl.addError("empty import list", 1020);
                 }
             }
         }
@@ -239,7 +239,7 @@ public class ImportVisitor extends Visitor {
                     importAllMembers(td, names, til);
                 }
                 else if (imts.isEmpty()) {
-                    imtl.addError("empty import list");
+                    imtl.addError("empty import list", 1020);
                 }
             }
             else {
