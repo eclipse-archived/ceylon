@@ -150,7 +150,7 @@ class ComprehensionGenerator {
             }
 
             // value or key/value variables
-            gen.out(",", loop.valueVarName, "=", finished, "/*CAP?" + loop.valDecl.isCaptured(), "*/");
+            gen.out(",", loop.valueVarName, "=", finished);
             if (loop.pattern != null) {
                 HashSet<Declaration> decs = new HashSet<>();
                 new Destructurer(loop.pattern, null, decs, "", true);
@@ -189,6 +189,14 @@ class ComprehensionGenerator {
                     new Destructurer(loop.pattern, gen, directAccess, elemVarName, true);
                     gen.endLine(true);
                 }
+                final String capname;
+                if (loop.valDecl != null && loop.valDecl.isCaptured()) {
+                    capname = names.createTempVariable();
+                    gen.out("var ", capname, "=", loop.valueVarName, ";");
+                    names.forceName(loop.valDecl, capname);
+                } else {
+                    capname = null;
+                }
 
                 // generate conditions as nested ifs
                 for (int i=0; i<loop.conditions.size(); i++) {
@@ -213,6 +221,9 @@ class ComprehensionGenerator {
                     gen.out("return undefined;");
                 } else {
                     gen.out("return ", finished, ";");
+                }
+                if (capname != null) {
+                    names.forceName(loop.valDecl, null);
                 }
 
                 gen.endBlockNewLine();
