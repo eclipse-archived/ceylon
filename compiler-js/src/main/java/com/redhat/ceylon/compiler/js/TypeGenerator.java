@@ -410,8 +410,21 @@ public class TypeGenerator {
                     callSuperclass(supertype, invoke, (Class)d, plist, that, false, superDecs, gen);
                 } else {
                     TypeDeclaration typeDecl = st.getDeclaration();
-                    gen.qualify(that, typeDecl);
-                    gen.out(gen.getNames().name((ClassOrInterface)typeDecl), "(");
+                    final TypeDeclaration _anoncont;
+                    if (d.isAnonymous() && ModelUtil.contains(
+                            ModelUtil.getContainingClassOrInterface(d.getContainer()), typeDecl)) {
+                        _anoncont = ModelUtil.getContainingClassOrInterface(d.getContainer());
+                    } else {
+                        _anoncont = null;
+                    }
+                    if (_anoncont == null) {
+                        gen.qualify(that, typeDecl);
+                        gen.out(gen.getNames().name(typeDecl), "(");
+                    } else {
+                        gen.qualify(that, _anoncont);
+                        gen.out(gen.getNames().name(typeDecl), ".call(",
+                                gen.getNames().self(_anoncont), ",");
+                    }
                     if (typeDecl.getTypeParameters() != null && !typeDecl.getTypeParameters().isEmpty()) {
                         TypeUtils.printTypeArguments(that, st.getTypeArguments(), gen, d.isToplevel(), null);
                         gen.out(",");
