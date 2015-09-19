@@ -142,8 +142,6 @@ public class CeylonRunTool extends RepoUsingTool {
 
     @Override
     public void run() throws IOException {
-        setSystemProperties();
-
         if (compileFlags == null) {
             compileFlags = DefaultToolOptions.getRunToolCompileFlags();
             if (compileFlags.isEmpty()) {

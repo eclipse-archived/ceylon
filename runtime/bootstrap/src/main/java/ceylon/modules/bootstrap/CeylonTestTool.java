@@ -167,7 +167,6 @@ public class CeylonTestTool extends RepoUsingTool {
         ceylonRunTool.setNoDefRepos(noDefRepos);
         ceylonRunTool.setOffline(offline);
         ceylonRunTool.setVerbose(verbose);
-        ceylonRunTool.setDefine(defines);
         ceylonRunTool.setCompile(compileFlags);
         ceylonRunTool.setCwd(cwd);
         ceylonRunTool.run();
