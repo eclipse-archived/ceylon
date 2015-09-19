@@ -103,4 +103,31 @@ shared void comprehensions() {
   value boom = {1, nothing};
   check({ for (elem in boom) elem }.take(1).sequence()==[1],"js#532.1 comprehension not lazy enough");
   check({ for (elem in boom) for (sub in boom) sub }.take(1).sequence()==[1],"js#532.2 comprehension not lazy enough");
+
+  //Capture: had problems on both backends
+  value capvalues = [ 100, 110, 120 ];
+  value capvaluesNull = [ 100, 110, 120, null ];
+  value capfuncs0 = {
+      for (v in capvalues)
+      ()=>v
+  };
+  check([ for (capfun in capfuncs0.sequence()) capfun() ]==capvalues, "Comprehension capture 1");
+  value capfuncs1 = {
+      for (v in capvaluesNull)
+      if (exists w=v)
+      ()=>w
+  };
+  check([ for (capfun in capfuncs1.sequence()) capfun() ]==capvalues, "Comprehension capture 2");
+  value capfuncs2 = {
+      for (v in capvalues)
+      if (exists w = true then (()=>v))
+      w
+  };
+  check([ for (capfun in capfuncs2.sequence()) capfun() ]==capvalues, "Comprehension capture #3");
+  value capfuncs3 = {
+      for (v in capvalues)
+      for (w in { ()=>v })
+      w
+  };
+  check([ for (capfun in capfuncs3.sequence()) capfun() ]==capvalues, "Comprehension capture #4");
 }
