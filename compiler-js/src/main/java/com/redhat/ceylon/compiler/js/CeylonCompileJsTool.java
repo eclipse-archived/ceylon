@@ -214,7 +214,6 @@ public class CeylonCompileJsTool extends OutputRepoUsingTool {
 
     @Override
     public void run() throws Exception {
-        setSystemProperties();
         AppendableWriter writer = new AppendableWriter(getOutAppendable());
         final Options opts = new Options()
                 .cwd(cwd)

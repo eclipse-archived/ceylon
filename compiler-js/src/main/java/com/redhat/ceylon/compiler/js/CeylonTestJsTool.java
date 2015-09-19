@@ -212,7 +212,6 @@ public class CeylonTestJsTool extends RepoUsingTool {
         ceylonRunJsTool.setVerbose(verbose);
         ceylonRunJsTool.setNodeExe(nodeExe);
         ceylonRunJsTool.setDebug(debug);
-        ceylonRunJsTool.setDefine(defines);
         ceylonRunJsTool.setCompile(compileFlags);
         ceylonRunJsTool.setCwd(cwd);
         ceylonRunJsTool.run();
