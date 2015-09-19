@@ -200,20 +200,27 @@ public class TypeGenerator {
             Type extendedType = d.getExtendedType();
             d = extendedType==null ? null : extendedType.getDeclaration();
         }
+        Declaration cont = ModelUtil.getContainingDeclaration(d);
         final boolean inProto = gen.opts.isOptimize()
-                && (type.getScope().getContainer() instanceof TypeDeclaration);
+                && cont instanceof TypeDeclaration;
         final boolean imported = gen.isImported(type.getUnit().getPackage(), d);
         final String initName = "$init$" + gen.getNames().name(d) + "()";
         if (!imported && !d.isClassOrInterfaceMember()) {
             return initName;
         }
-        if (inProto && coi.isMember() && !d.isAlias() && (coi.getContainer() == ModelUtil.getContainingDeclaration(d)
+        if (inProto && coi.isMember() && !d.isAlias() && (coi.getContainer() == cont
                 || ModelUtil.contains(d, coi))) {
             //A member class that extends or satisfies another member of its same container,
             //use its $init$ function
             return initName;
         }
-        String tfn = gen.memberAccessBase(type, d, false, gen.qualifiedPath(type, d, inProto));
+        String tfn;
+        //#628 If coi is anonymous and inside cont, qualify the path from cont instead
+        if (coi != null && coi.isAnonymous() && cont instanceof Scope && ModelUtil.contains((Scope)cont, coi)) {
+            tfn = gen.memberAccessBase(type, d, false, gen.qualifiedPath(type, cont, inProto));
+        } else {
+            tfn = gen.memberAccessBase(type, d, false, gen.qualifiedPath(type, d, inProto));
+        }
         if (removeAlias && !imported) {
             int idx = tfn.lastIndexOf('.');
             if (idx > 0) {
