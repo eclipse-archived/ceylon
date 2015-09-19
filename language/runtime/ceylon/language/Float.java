@@ -412,7 +412,7 @@ public final class Float
             return (long)value;
         }
         else {
-            throw new OverflowException("Numeric overflow converting Float " + value + " to Integer.");
+            throw new OverflowException(value + " cannot be coerced to a 64 bit integer");
         }
     }
     
