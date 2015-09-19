@@ -368,7 +368,7 @@ public final class Integer
         long neighbour = value+offset;
         //Overflow iff both arguments have the opposite sign of the result
         if (((value^neighbour) & (offset^neighbour)) < 0) {
-            throw new OverflowException("neighbour overflow");
+            throw new OverflowException(value + " has no neighbour with offset " + offset);
         }
         return neighbour;
     }
@@ -384,7 +384,8 @@ public final class Integer
         //Overflow iff the arguments have different signs and
         //the sign of the result is different than the sign of x
         if (((value^other) & (value^offset)) < 0) {
-            throw new OverflowException("offset overflow");
+            throw new OverflowException(
+                    "offset from " + value + " to " + other + " cannot be represented as a 64 bit integer.");
         }
         return offset;
     }
