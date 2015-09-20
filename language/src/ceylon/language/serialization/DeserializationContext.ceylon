@@ -75,7 +75,7 @@ shared sealed interface DeserializationContext<Id> {
         "the given instance was specified by [[instanceValue]] or has already been reconstructed.")
     shared formal void memberInstance(Id containerId, Id instanceId);
     
-    """The value of the given [[attributee]] of the instance with 
+    """The value of the given [[attribute]] of the instance with 
        the given [[instanceId]] has given [[attributeValueId]]."""
     throws(`class DeserializationException`, 
         "the given instance was specified by [[instanceValue]] or has already been reconstructed.")
