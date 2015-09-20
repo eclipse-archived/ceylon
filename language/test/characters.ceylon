@@ -52,14 +52,29 @@ shared void characters() {
     check('B'.notSmallerThan('A'), "Character.notSmallerThan");
     check('A'.neighbour(2)=='C', "Character.neighbour 1");
     check('Z'.neighbour(-2)=='X', "Character.neighbour 2");
+    // check that those don't throw OverflowExceptions:
+    value zero = (0).character;
+    check(zero == '\{#0000}', "zero character");
+    value max = (#10ffff).character;
+    check (max == '\{#10ffff}');
     try {
         fail("Character out of range: ``(2147483650).character`` ");
     } catch (OverflowException ex) {
-        check(ex.message == "2147483650 is not a 32-bit integer", "Character ouf of range message #1");
+        check(ex.message == "2147483650 is not a possible Unicode code point", "Character ouf of range message #1");
     }
     try {
         fail("Character out of range: ``(-2147483650).character``");
     } catch (OverflowException ex) {
-        check(ex.message == "-2147483650 is not a 32-bit integer", "Character ouf of range message #2");
+        check(ex.message == "-2147483650 is not a possible Unicode code point", "Character ouf of range message #2");
+    }
+    try {
+        fail("Character out of range: ``(-1).character`` ");
+    } catch (OverflowException ex) {
+        check(ex.message == "-1 is not a possible Unicode code point", "Character ouf of range message #3");
+    }
+    try {
+        fail("Character out of range: ``(#110000).character``");
+    } catch (OverflowException ex) {
+        check(ex.message == "1114112 is not a possible Unicode code point", "Character ouf of range message #4");
     }
 }
