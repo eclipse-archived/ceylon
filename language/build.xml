@@ -455,8 +455,6 @@
                 <include name="ceylon/language/suppressedExceptions_.java"/>
                 <exclude name="ceylon/language/Float.ceylon"/>
                 <include name="ceylon/language/Float.java"/>
-                <exclude name="ceylon/language/identityHash.ceylon"/>
-                <include name="ceylon/language/identityHash_.java"/>
                 <exclude name="ceylon/language/Integer.ceylon"/>
                 <include name="ceylon/language/Integer.java"/>
                 <exclude name="ceylon/language/process.ceylon"/>
