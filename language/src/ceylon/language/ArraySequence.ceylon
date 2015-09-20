@@ -144,4 +144,7 @@ class ArraySequence<out Element>(array)
     occurs(Anything element, Integer from) 
             => array.occurs(element, from);
     
+    countOccurrences(Anything element, Integer from)
+            => array.countOccurrences(element, from);
+    
 }
