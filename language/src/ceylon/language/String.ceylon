@@ -539,9 +539,9 @@ shared native final class String(characters)
                 = smallest(size - sourcePosition,
                     destination.size - destinationPosition));
     
-    shared actual native Boolean occurs(Anything element);
+    shared actual native Boolean occurs(Anything element, Integer from);
     shared actual native Boolean occursAt(Integer index, Anything element);
-    shared actual native Boolean includes(List<Anything> sublist);
+    shared actual native Boolean includes(List<Anything> sublist, Integer from);
     shared actual native Boolean includesAt(Integer index, List<Anything> sublist);
         
     shared actual native Integer? firstOccurrence(Anything element, Integer from);

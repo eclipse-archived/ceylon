@@ -1049,13 +1049,30 @@ public final class Tuple<Element, First extends Element,
     }*/
 
     @Override @Ignore
+    public long includes$from(List<? extends java.lang.Object> list) {
+        return 0;
+    }
+    
+    @Override @Ignore
     public boolean includes(List<? extends java.lang.Object> list) {
+        return includes(list, 0);
+    }
+
+    @Override @Ignore
+    public boolean includes(List<? extends java.lang.Object> list,
+            long from) {
+        if (from>=array.length) {
+            return list.getEmpty();
+        }
+        if (from<0) {
+            from = 0;
+        }
         long size = list.getSize();
         if (size>array.length) return false;
         if (size<=0) return true;
         int offset = array.length - (int) size;
         if (offset<0) return false;
-        loop: for (int start=0; start<=offset; start++) {
+        loop: for (int start=(int)from; start<=offset; start++) {
             for (int i=0; i<size; i++) {
                 java.lang.Object x = array[i+start];
                 java.lang.Object y = list.getFromFirst(i);
@@ -1121,8 +1138,24 @@ public final class Tuple<Element, First extends Element,
     }
 
     @Override @Ignore
+    public long occurs$from(java.lang.Object o) {
+        return 0;
+    }
+    
+    @Override @Ignore
     public boolean occurs(java.lang.Object o) {
-        for (int i=0; i<array.length; i++) {
+        return occurs(o, 0);
+    }
+
+    @Override @Ignore
+    public boolean occurs(java.lang.Object o, long from) {
+        if (from>=array.length) {
+            return false;
+        }
+        if (from<0) {
+            from = 0;
+        }
+        for (int i=(int)from; i<array.length; i++) {
             java.lang.Object x = array[i];
             if (x==o || (x!=null && o!=null && x.equals(o))) {
                 return true;

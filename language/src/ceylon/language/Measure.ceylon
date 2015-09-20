@@ -103,10 +103,10 @@ class Measure<Element>(first, size)
             => 0 <= x.offset(first) < size;
     
     shared actual 
-    Boolean includes(List<> sublist) {
+    Boolean includes(List<> sublist, Integer from) {
         if (sublist.empty) {
             return true;
-        } else if (is Range<Element> sublist) {
+        } else if (is Range<Element> sublist, from<=0) {
             return includesRange(sublist);
         } else {
             return super.includes(sublist);

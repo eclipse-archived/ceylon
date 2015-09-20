@@ -147,7 +147,7 @@ shared final serializable native class Array<Element>
     shared actual native
     Integer? lastOccurrence(Anything element);
     shared actual native
-    Boolean occurs(Anything element);
+    Boolean occurs(Anything element, Integer from);
     shared actual native
     Integer countOccurrences(Anything element);
     

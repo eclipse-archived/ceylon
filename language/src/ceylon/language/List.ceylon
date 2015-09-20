@@ -394,13 +394,17 @@ shared interface List<out Element=Anything>
     }
     
     "Determine if the given [[list|sublist]] occurs as a 
-     sublist at some index in this list."
+     sublist at some index in this list, at any index that 
+     is greater than or equal to the optional 
+     [[starting index|from]]."
     shared default 
-    Boolean includes(List<> sublist) {
+    Boolean includes(List<> sublist,
+            "The smallest index to consider."
+            Integer from = 0) {
         if (sublist.empty) {
             return true;
         }
-        for (index in 0:size-sublist.size+1) {
+        for (index in from:size-sublist.size+1-from) {
             if (includesAt(index,sublist)) {
                 return true;
             }
@@ -432,7 +436,9 @@ shared interface List<out Element=Anything>
      [[list|sublist]] occurs as a sublist, that is greater 
      than or equal to the optional [[starting index|from]]."
     shared default 
-    Integer? firstInclusion(List<> sublist, Integer from=0) {
+    Integer? firstInclusion(List<> sublist,
+            "The smallest index to consider." 
+            Integer from=0) {
         for (index in from:size-sublist.size+1-from) {
             if (includesAt(index,sublist)) {
                 return index;
@@ -478,13 +484,16 @@ shared interface List<out Element=Anything>
     }
     
     "Determines if the given [[value|element]] occurs as an 
-     element of this list."
+     element of this list, at any index that is greater than 
+     or equal to the optional [[starting index|from]]."
     shared default 
     Boolean occurs(
         "The value. If null, it is considered to occur
          at any index in this list with a null element."
-        Anything element) {
-        for (index in 0:size) {
+        Anything element,
+        "The smallest index to consider."
+        Integer from = 0) {
+        for (index in from:size-from) {
             if (occursAt(index,element)) {
                 return true;
             }

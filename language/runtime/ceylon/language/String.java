@@ -401,11 +401,24 @@ public final class String
     }
     
     @Ignore
-    public static boolean occurs(java.lang.String value, 
+    public static Integer occurs(java.lang.String value,
             java.lang.Object element) {
+        return firstOccurrence(value, element, 0);
+    }
+    
+    @Ignore
+    public static boolean occurs(java.lang.String value, 
+            java.lang.Object element, long from) {
+        if (from>=value.length()) {
+            return false;
+        }
+        if (from<0) {
+            from = 0;
+        }
         if (element instanceof Character) {
+            int offset = value.offsetByCodePoints(0, (int)from);
             Character character = (Character) element;
-            int index = value.indexOf(character.codePoint);
+            int index = value.indexOf(character.codePoint, offset);
             return index>=0;
         }
         else {
@@ -416,8 +429,9 @@ public final class String
     @Override
     public boolean occurs(@Name("element") 
             @TypeInfo("ceylon.language::Anything")
-            java.lang.Object element) {
-        return occurs(value, element);
+            java.lang.Object element,
+            @Defaulted @Name("from") long from) {
+        return occurs(value, element, from);
     }
     
     @Ignore
@@ -486,11 +500,24 @@ public final class String
     }
 
     @Ignore
-    public static boolean includes(java.lang.String value, 
+    public static Integer includes(java.lang.String value, 
             List<?> sublist) {
+        return firstInclusion(value, sublist, 0);
+    }
+
+    @Ignore
+    public static boolean includes(java.lang.String value, 
+            List<?> sublist, long from) {
+        if (from>=value.length()) {
+            return value.isEmpty();
+        }
+        if (from<0) {
+            from = 0;
+        }
         if (sublist instanceof String) {
             String string = (String) sublist;
-            int index = value.indexOf(string.value);
+            int offset = value.offsetByCodePoints(0, (int)from);
+            int index = value.indexOf(string.value, offset);
             return index >= 0;
         }
         else {
@@ -501,12 +528,13 @@ public final class String
     @Override
     public boolean includes(
             @TypeInfo("ceylon.language::List<ceylon.language::Anything>") 
-            @Name("sublist") List<?> sublist) {
+            @Name("sublist") List<?> sublist,
+            @Defaulted @Name("from") long from) {
         if (sublist instanceof String) {
-            return includes(value, sublist);
+            return includes(value, sublist, from);
         }
         else {
-            return super.includes(sublist);
+            return super.includes(sublist, from);
         }
     }
     
