@@ -467,6 +467,7 @@ public final class String
                     return count;
                 }
                 else {
+                    count++;
                     i++;
                 }
             }
@@ -582,6 +583,7 @@ public final class String
                 }
                 else {
                     i++;
+                    count++;
                 }
             }
         }
