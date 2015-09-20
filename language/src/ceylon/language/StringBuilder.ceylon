@@ -130,7 +130,7 @@ shared native final class StringBuilder()
 shared native("jvm") final class StringBuilder() 
         satisfies List<Character> {
     
-    JStringBuilder builder = JStringBuilder();
+    value builder = JStringBuilder();
     
     shared actual native("jvm") Integer size 
             => builder.codePointCount(0, builder.length());
