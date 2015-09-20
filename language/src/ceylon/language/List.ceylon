@@ -415,6 +415,19 @@ shared interface List<out Element=Anything>
             => { for (index in 0:size-sublist.size+1) 
                     if (includesAt(index,sublist)) index };
     
+    "Count the indexes in this list at which the given 
+     [[list|sublist]] occurs as a sublist."
+    shared default
+    Integer countInclusions(List<> sublist) {
+        variable value count = 0;
+        for (index in 0:size-sublist.size+1) {
+            if (includesAt(index,sublist)) {
+                count++;
+            }
+        }
+        return count;
+    }
+    
     "The first index in this list at which the given 
      [[list|sublist]] occurs as a sublist."
     shared default 
@@ -489,6 +502,22 @@ shared interface List<out Element=Anything>
         Anything element)
             => { for (index in 0:size) 
                     if (occursAt(index,element)) index };
+    
+    "Count the indexes in this list at which the given 
+     [[value|element]] occurs."
+    shared default
+    Integer countOccurrences(
+        "The value. If null, it is considered to occur
+         at any index in this list with a null element."
+        Anything element) {
+        variable value count = 0;
+        for (index in 0:size) {
+            if (occursAt(index,element)) {
+                count++;
+            }
+        }
+        return count;
+    }
     
     "The first index in this list at which the given 
      [[value|element]] occurs."

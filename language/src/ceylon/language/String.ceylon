@@ -543,13 +543,16 @@ shared native final class String(characters)
     shared actual native Boolean occursAt(Integer index, Anything element);
     shared actual native Boolean includes(List<Anything> sublist);
     shared actual native Boolean includesAt(Integer index, List<Anything> sublist);
-    
+        
     shared actual native Integer? firstOccurrence(Anything element);
     shared actual native Integer? lastOccurrence(Anything element);
     shared actual native Integer? firstInclusion(List<Anything> sublist);
     shared actual native Integer? lastInclusion(List<Anything> sublist);
     
     shared actual native {Integer*} inclusions(List<Anything> sublist);
+    
+    shared actual native Integer countOccurrences(Anything sublist);
+    shared actual native Integer countInclusions(List<Anything> sublist);
         
     shared actual native Boolean largerThan(String other); 
     shared actual native Boolean smallerThan(String other); 

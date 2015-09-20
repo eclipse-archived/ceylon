@@ -1058,14 +1058,20 @@ public final class Tuple<Element, First extends Element,
     }
 
     @Override @Ignore
-    public Iterable<? extends Integer, ? extends java.lang.Object> inclusions(
-            List<? extends java.lang.Object> list) {
+    public Iterable<? extends Integer, ? extends java.lang.Object> 
+    inclusions(List<? extends java.lang.Object> list) {
         return $ceylon$language$List$impl().inclusions(list);
     }
 
     @Override @Ignore
-    public Iterable<? extends Integer, ? extends java.lang.Object> indexesWhere(
-            Callable<? extends Boolean> f) {
+    public long 
+    countInclusions(List<? extends java.lang.Object> list) {
+        return $ceylon$language$List$impl().countInclusions(list);
+    }
+
+    @Override @Ignore
+    public Iterable<? extends Integer, ? extends java.lang.Object> 
+    indexesWhere(Callable<? extends Boolean> f) {
         return $ceylon$language$List$impl().indexesWhere(f);
     }
 
@@ -1073,6 +1079,12 @@ public final class Tuple<Element, First extends Element,
     public Iterable<? extends Integer, ? extends java.lang.Object> 
     occurrences(java.lang.Object o) {
         return $ceylon$language$List$impl().occurrences(o);
+    }
+    
+    @Override @Ignore
+    public long 
+    countOccurrences(java.lang.Object o) {
+        return $ceylon$language$List$impl().countOccurrences(o);
     }
 
     @Override @Ignore

@@ -404,7 +404,8 @@ public final class String
     public static boolean occurs(java.lang.String value, 
             java.lang.Object element) {
         if (element instanceof Character) {
-            int index = value.indexOf(((Character) element).codePoint);
+            Character character = (Character) element;
+            int index = value.indexOf(character.codePoint);
             return index>=0;
         }
         else {
@@ -416,22 +417,22 @@ public final class String
     public boolean occurs(@Name("element") 
             @TypeInfo("ceylon.language::Anything")
             java.lang.Object element) {
-        if (element instanceof Character) {
-            int index = value.indexOf(((Character) element).codePoint);
-            return index>=0;
-        }
-        else {
-            return false;
-        }
+        return occurs(value, element);
     }
     
     @Ignore
     public static boolean occursAt(java.lang.String value, 
             long index, java.lang.Object element) {
         if (element instanceof Character) {
-            int cp = ((Character) element).codePoint;
-            Character ch = getFromFirst(value,index);
-            return ch!=null && ch.codePoint==cp;
+            Character character = (Character) element;
+            int cp = character.codePoint;
+            try {
+                int offset = value.offsetByCodePoints(0, Util.toInt(index));
+                return cp == value.codePointAt(offset);
+            }
+            catch (IndexOutOfBoundsException e) {
+                return false;
+            }
         }
         else {
             return false;
@@ -443,13 +444,68 @@ public final class String
             @Name("element") 
             @TypeInfo("ceylon.language::Anything")
             java.lang.Object element) {
+        return occursAt(value, index, element);
+    }
+    
+    @Ignore
+    public static Iterable<? extends Integer, ?> 
+    occurrences(java.lang.String value, java.lang.Object element) {
+        return instance(value).occurrences(element);
+    }
+
+    @Ignore
+    public static long 
+    countOccurrences(java.lang.String value, java.lang.Object element) {
         if (element instanceof Character) {
-            int cp = ((Character) element).codePoint;
-            Character ch = getFromFirst(value,index);
-            return ch!=null && ch.codePoint==cp;
+            Character character = (Character) element;
+            int cp = character.codePoint;
+            int i = 0;
+            int count = 0;
+            while (true) {
+                i = value.indexOf(cp, i);
+                if (i<0) {
+                    return count;
+                }
+                else {
+                    i++;
+                }
+            }
         }
         else {
-            return false;
+            return 0;
+        }
+    }
+    
+    @Override
+    public long countOccurrences(
+            @Name("element")
+            @TypeInfo("ceylon.language::Anything")
+            java.lang.Object element) {
+        return countOccurrences(value, element);
+    }
+
+    @Ignore
+    public static boolean includes(java.lang.String value, 
+            List<?> sublist) {
+        if (sublist instanceof String) {
+            String string = (String) sublist;
+            int index = value.indexOf(string.value);
+            return index >= 0;
+        }
+        else {
+            return instance(value).includes(sublist);
+        }
+    }
+
+    @Override
+    public boolean includes(
+            @TypeInfo("ceylon.language::List<ceylon.language::Anything>") 
+            @Name("sublist") List<?> sublist) {
+        if (sublist instanceof String) {
+            return includes(value, sublist);
+        }
+        else {
+            return super.includes(sublist);
         }
     }
     
@@ -457,9 +513,15 @@ public final class String
     public static boolean includesAt(java.lang.String value, 
             long index, List<?> sublist) {
         if (sublist instanceof String) {
-            java.lang.String str = ((String) sublist).value;
-            int offset = value.offsetByCodePoints(0, Util.toInt(index));
-            return value.regionMatches(offset, str, 0, str.length());
+            String string = (String) sublist;
+            java.lang.String str = string.value;
+            try {
+                int offset = value.offsetByCodePoints(0, Util.toInt(index));
+                return value.regionMatches(offset, str, 0, str.length());
+            }
+            catch (IndexOutOfBoundsException e) {
+                return false;
+            }
         }
         else {
             return instance(value).includesAt(index, sublist);
@@ -471,9 +533,7 @@ public final class String
             @TypeInfo("ceylon.language::List<ceylon.language::Anything>") 
             @Name("sublist") List<?> sublist) {
         if (sublist instanceof String) {
-            java.lang.String str = ((String) sublist).value;
-            int offset = value.offsetByCodePoints(0, Util.toInt(index));
-            return value.regionMatches(offset, str, 0, str.length());
+            return includesAt(value, index, sublist);
         }
         else {
             return super.includesAt(index, sublist);
@@ -484,7 +544,8 @@ public final class String
     public static Iterable<? extends Integer, ?> 
     inclusions(java.lang.String value, List<?> substring) {
         if (substring instanceof String) {
-            return new StringInclusions(value, ((String) substring).value);
+            String string = (String) substring;
+            return new StringInclusions(value, string.value);
         }
         else {
             return instance(value).occurrences(substring);
@@ -498,7 +559,8 @@ public final class String
             @TypeInfo("ceylon.language::List<ceylon.language::Anything>") 
             @Name("sublist") List<?> sublist) {
         if (sublist instanceof String) {
-            return new StringInclusions(value, ((String) sublist).value);
+            String string = (String) sublist;
+            return new StringInclusions(value, string.value);
         }
         else {
             return super.inclusions(sublist);
@@ -506,35 +568,46 @@ public final class String
     }
 
     @Ignore
-    public static boolean includes(java.lang.String value, 
-            List<?> sublist) {
+    public static long 
+    countInclusions(java.lang.String value, List<?> sublist) {
         if (sublist instanceof String) {
-            int index = value.indexOf(((String) sublist).value);
-            return index >= 0;
+            String string = (String) sublist;
+            java.lang.String str = string.value;
+            int i = 0;
+            int count = 0;
+            while (true) {
+                i = value.indexOf(str, i);
+                if (i<0) {
+                    return count;
+                }
+                else {
+                    i++;
+                }
+            }
         }
         else {
-            return instance(value).includes(sublist);
-        }
-    }
-
-    @Override
-    public boolean includes(
-            @TypeInfo("ceylon.language::List<ceylon.language::Anything>") 
-            @Name("sublist") List<?> sublist) {
-        if (sublist instanceof String) {
-            int index = value.indexOf(((String) sublist).value);
-            return index >= 0;
-        }
-        else {
-            return super.includes(sublist);
+            return instance(value).countInclusions(sublist);
         }
     }
     
+    @Override
+    public long countInclusions(
+            @TypeInfo("ceylon.language::List<ceylon.language::Anything>") 
+            @Name("sublist") List<?> sublist) {
+        if (sublist instanceof String) {
+            return countInclusions(value, sublist);
+        }
+        else {
+            return super.countInclusions(sublist);
+        }
+    }
+
     @Ignore
     public static Integer firstInclusion(java.lang.String value, 
             List<?> sublist) {
         if (sublist instanceof String) {
-            int index = value.indexOf(((String) sublist).value);
+            String string = (String) sublist;
+            int index = value.indexOf(string.value);
             return index >= 0 ? 
                     Integer.instance(value.codePointCount(0, index)) : 
                         null;
@@ -548,10 +621,7 @@ public final class String
     @TypeInfo("ceylon.language::Null|ceylon.language::Integer")
     public Integer firstInclusion(@Name("sublist") List<?> sublist) {
         if (sublist instanceof String) {
-            int index = value.indexOf(((String) sublist).value);
-            return index >= 0 ? 
-                    Integer.instance(value.codePointCount(0, index)) : 
-                        null;
+            return firstInclusion(value, sublist);
         }
         else {
             return super.firstInclusion(sublist);
@@ -561,7 +631,8 @@ public final class String
     public static Integer lastInclusion(java.lang.String value, 
     		List<?> sublist) {
         if (sublist instanceof String) {
-            int index = value.lastIndexOf(((String) sublist).value);
+            String string = (String) sublist;
+            int index = value.lastIndexOf(string.value);
             return index >= 0 ? 
                     Integer.instance(value.codePointCount(0, index)) : 
                         null;
@@ -575,10 +646,7 @@ public final class String
     @TypeInfo("ceylon.language::Null|ceylon.language::Integer")
     public Integer lastInclusion(@Name("sublist") List<?> sublist) {
         if (sublist instanceof String) {
-            int index = value.lastIndexOf(((String) sublist).value);
-            return index >= 0 ? 
-                    Integer.instance(value.codePointCount(0, index)) : 
-                        null;
+            return lastInclusion(value, sublist);
         }
         else {
             return super.lastInclusion(sublist);
@@ -589,7 +657,8 @@ public final class String
     public static Integer firstOccurrence(java.lang.String value, 
             java.lang.Object element) {
         if (element instanceof Character) {
-            int index = value.indexOf(((Character) element).codePoint);
+            Character character = (Character) element;
+            int index = value.indexOf(character.codePoint);
             return index >= 0 ? 
                     Integer.instance(value.codePointCount(0, index)) : 
                         null;
@@ -606,10 +675,7 @@ public final class String
             @TypeInfo("ceylon.language::Anything")
             java.lang.Object element) {
         if (element instanceof Character) {
-            int index = value.indexOf(((Character) element).codePoint);
-            return index >= 0 ? 
-                    Integer.instance(value.codePointCount(0, index)) : 
-                        null;
+            return firstOccurrence(value, element);
         }
         else {
             return null;
@@ -620,7 +686,8 @@ public final class String
     public static Integer lastOccurrence(java.lang.String value, 
             java.lang.Object element) {
         if (element instanceof Character) {
-            int index = value.lastIndexOf(((Character) element).codePoint);
+            Character character = (Character) element;
+            int index = value.lastIndexOf(character.codePoint);
             return index >= 0 ? 
                     Integer.instance(value.codePointCount(0, index)) : 
                         null;
@@ -637,10 +704,7 @@ public final class String
             @TypeInfo("ceylon.language::Anything")
             java.lang.Object element) {
         if (element instanceof Character) {
-            int index = value.lastIndexOf(((Character) element).codePoint);
-            return index >= 0 ? 
-                    Integer.instance(value.codePointCount(0, index)) : 
-                        null;
+            return lastOccurrence(value, element);
         }
         else {
             return null;
@@ -1448,12 +1512,6 @@ public final class String
     getLinesWithBreaks(java.lang.String value) {
         return split(value, NEWLINES, false, false).partition(2)
                 .map($TypeDescriptor$, CONCAT_LINES_WITH_BREAKS);
-    }
-
-    @Ignore
-    public static Iterable<? extends Integer, ?> 
-    occurrences(java.lang.String value, java.lang.Object element) {
-        return instance(value).occurrences(element);
     }
 
     @Override
