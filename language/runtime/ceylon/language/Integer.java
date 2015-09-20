@@ -29,6 +29,8 @@ public final class Integer
                Exponentiable<Integer,Integer>, 
                ReifiedType {
 
+    static final long TWO_FIFTY_THREE = 1L << 53;
+
     @Ignore
     public final static TypeDescriptor $TypeDescriptor$ = TypeDescriptor.klass(Integer.class);
 
@@ -433,8 +435,7 @@ public final class Integer
 
     @Ignore
     public static double getFloat(long value) {
-        if (value >= 9007199254740992L
-                || value <= -9007199254740992L) {
+        if (value <= -TWO_FIFTY_THREE || TWO_FIFTY_THREE <= value) {
             throw new OverflowException(value + " cannot be coerced into a 64 bit floating point value");
         }
         else {
@@ -527,7 +528,7 @@ public final class Integer
             return value == ((Integer)that).value;
         }
         else if (that instanceof Float) {
-            return value == ((Float)that).value;
+            return value == ((Float) that).value && -TWO_FIFTY_THREE < value && value < TWO_FIFTY_THREE;
         }
         else {
             return false;
@@ -540,7 +541,7 @@ public final class Integer
             return value == ((Integer)that).value;
         }
         else if (that instanceof Float) {
-            return value == ((Float)that).value;
+            return value == ((Float) that).value && -TWO_FIFTY_THREE < value && value < TWO_FIFTY_THREE;
         }
         else {
             return false;

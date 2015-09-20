@@ -455,7 +455,8 @@ public final class Float
     @Ignore
     public static boolean equals(double value, java.lang.Object that) {
         if (that instanceof Integer) {
-            return value == ((Integer)that).value;
+            long intValue = ((Integer) that).value;
+            return value == intValue && -Integer.TWO_FIFTY_THREE < intValue && intValue < Integer.TWO_FIFTY_THREE;
         } 
         else if (that instanceof Float) {
             return value == ((Float)that).value;
