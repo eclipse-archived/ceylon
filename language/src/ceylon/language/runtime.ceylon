@@ -69,6 +69,13 @@ shared native object runtime  {
          1.0 + e > 1.0"
     shared native Float epsilon; 
     
+    "The largest [[Integer]] that can be exactly represented
+     as a [[Float]] without loss of precision. The negative
+     of this value is the smallest `Integer` that can be
+     exactly represented as a `Float`."
+    see (`value Integer.float`)
+    shared native Integer maxExactIntegralFloat;
+    
     string => "runtime [``name`` / ``version``]";
 }
 
@@ -94,6 +101,8 @@ shared native("jvm") object runtime  {
             => Double.\iMIN_VALUE;    
     shared native("jvm") Float epsilon 
             = Math.ulp(1.0);
+    shared native("jvm") Integer maxExactIntegralFloat 
+            = 2^53-1;
 }
 
 shared native("js") object runtime  {
@@ -132,6 +141,8 @@ shared native("js") object runtime  {
     shared native("js") Integer maxIntegerValue = 2^53-1;
     shared native("js") Integer maxArraySize = 2^32-1;
     shared native("js") Float epsilon = 2.0^(-52);
+    shared native("js") Integer maxExactIntegralFloat 
+            => maxIntegerValue;
     shared native("js") Float maxFloatValue {
         dynamic {
             return \iNumber.\iMAX_VALUE;
