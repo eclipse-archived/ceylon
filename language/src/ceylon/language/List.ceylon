@@ -429,10 +429,11 @@ shared interface List<out Element=Anything>
     }
     
     "The first index in this list at which the given 
-     [[list|sublist]] occurs as a sublist."
+     [[list|sublist]] occurs as a sublist, that is greater 
+     than or equal to the optional [[starting index|from]]."
     shared default 
-    Integer? firstInclusion(List<> sublist) {
-        for (index in 0:size-sublist.size+1) {
+    Integer? firstInclusion(List<> sublist, Integer from=0) {
+        for (index in from:size-sublist.size+1-from) {
             if (includesAt(index,sublist)) {
                 return index;
             }
@@ -520,13 +521,16 @@ shared interface List<out Element=Anything>
     }
     
     "The first index in this list at which the given 
-     [[value|element]] occurs."
+     [[value|element]] occurs, that is greater than or 
+     equal to the optional [[starting index|from]]."
     shared default 
     Integer? firstOccurrence(
         "The value. If null, it is considered to occur
          at any index in this list with a null element."
-        Anything element) {
-        for (index in 0:size) {
+        Anything element,
+        "The smallest index to consider."
+        Integer from = 0) {
+        for (index in from:size-from) {
             if (occursAt(index,element)) {
                 return index;
             }

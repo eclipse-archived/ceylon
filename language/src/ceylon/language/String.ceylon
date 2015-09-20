@@ -544,9 +544,9 @@ shared native final class String(characters)
     shared actual native Boolean includes(List<Anything> sublist);
     shared actual native Boolean includesAt(Integer index, List<Anything> sublist);
         
-    shared actual native Integer? firstOccurrence(Anything element);
+    shared actual native Integer? firstOccurrence(Anything element, Integer from);
     shared actual native Integer? lastOccurrence(Anything element);
-    shared actual native Integer? firstInclusion(List<Anything> sublist);
+    shared actual native Integer? firstInclusion(List<Anything> sublist, Integer from);
     shared actual native Integer? lastInclusion(List<Anything> sublist);
     
     shared actual native {Integer*} inclusions(List<Anything> sublist);

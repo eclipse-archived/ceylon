@@ -143,7 +143,7 @@ shared final serializable native class Array<Element>
             (Result accumulating(Result|Element partial, Element element));
     
     shared actual native
-    Integer? firstOccurrence(Anything element);
+    Integer? firstOccurrence(Anything element, Integer from);
     shared actual native
     Integer? lastOccurrence(Anything element);
     shared actual native

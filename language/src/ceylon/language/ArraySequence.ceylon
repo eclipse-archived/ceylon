@@ -135,8 +135,8 @@ class ArraySequence<out Element>(array)
             then []
             else ArraySequence(array[...to]);
     
-    firstOccurrence(Anything element) 
-            => array.firstOccurrence(element);
+    firstOccurrence(Anything element, Integer from) 
+            => array.firstOccurrence(element, from);
     
     lastOccurrence(Anything element) 
             => array.lastOccurrence(element);

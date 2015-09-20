@@ -913,12 +913,29 @@ public final class Tuple<Element, First extends Element,
     }
 
     @Override @Ignore
+    public long firstInclusion$from(List<? extends java.lang.Object> list) {
+        return 0;
+    }
+    
+    @Override @Ignore
     public Integer firstInclusion(List<? extends java.lang.Object> list) {
+        return firstInclusion(list, 0);
+    }
+
+    @Override @Ignore
+    public Integer firstInclusion(List<? extends java.lang.Object> list,
+            long from) {
+        if (from>=array.length) {
+            return null;
+        }
+        if (from<0) {
+            from = 0;
+        }
         long size = list.getSize();
         if (size>array.length) return null;
         if (size<=0) return Integer.instance(0);
         int offset = array.length - (int) size;
-        loop: for (int start=0; start<=offset; start++) {
+        loop: for (int start=(int)from; start<=offset; start++) {
             for (int i=0; i<size; i++) {
                 java.lang.Object x = array[i+start];
                 java.lang.Object y = list.getFromFirst(i);
@@ -974,10 +991,26 @@ public final class Tuple<Element, First extends Element,
         }
         return null;
     }
-
+    
+    @Override @Ignore
+    public long firstOccurrence$from(java.lang.Object o) {
+        return 0;
+    }
+    
     @Override @Ignore
     public Integer firstOccurrence(java.lang.Object o) {
-        for (int i=0; i<array.length; i++) {
+        return firstOccurrence(o, 0);
+    }
+
+    @Override @Ignore
+    public Integer firstOccurrence(java.lang.Object o, long from) {
+        if (from>=array.length) {
+            return null;
+        }
+        if (from<0) {
+            from = 0;
+        }
+        for (int i=(int)from; i<array.length; i++) {
             java.lang.Object x = array[i];
             if (x==o || (x!=null && o!=null && x.equals(o))) {
                 return Integer.instance(i);

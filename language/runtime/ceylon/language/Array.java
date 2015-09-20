@@ -1898,16 +1898,23 @@ public final class Array<Element>
     @TypeInfo("ceylon.language::Null|ceylon.language::Integer")
     public Integer firstOccurrence(
             @TypeInfo("ceylon.language::Anything") 
-            @Name("element") java.lang.Object element) {
+            @Name("element") java.lang.Object element,
+            @Defaulted @Name("from") long from) {
+        if (from>=size) {
+            return null;
+        }
+        if (from<0) {
+            from = 0;
+        }
         if (element==null) {
-            for (int i=0; i<size; i++) {
+            for (int i=(int)from; i<size; i++) {
                 if (unsafeItem(i)==null) {
                     return Integer.instance(i);
                 }
             }
         }
         else {
-            for (int i=0; i<size; i++) {
+            for (int i=(int)from; i<size; i++) {
                 Element item = unsafeItem(i);
                 if (item!=null && item.equals(element)) {
                     return Integer.instance(i);

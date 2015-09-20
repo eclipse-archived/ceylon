@@ -603,30 +603,46 @@ public final class String
             return super.countInclusions(sublist);
         }
     }
-
+    
     @Ignore
     public static Integer firstInclusion(java.lang.String value, 
             List<?> sublist) {
+        return firstInclusion(value, sublist, 0);
+    }
+
+    @Ignore
+    public static Integer firstInclusion(java.lang.String value, 
+            List<?> sublist,
+            long from) {
+        if (from>=value.length()) {
+            return null;
+        }
+        if (from<0) {
+            from = 0;
+        }
         if (sublist instanceof String) {
             String string = (String) sublist;
-            int index = value.indexOf(string.value);
+            int start = value.offsetByCodePoints(0, (int)from);
+            int index = value.indexOf(string.value, start);
             return index >= 0 ? 
                     Integer.instance(value.codePointCount(0, index)) : 
                         null;
         }
         else {
-            return instance(value).firstInclusion(sublist);
+            return instance(value).firstInclusion(sublist, from);
         }
     }
 
     @Override
     @TypeInfo("ceylon.language::Null|ceylon.language::Integer")
-    public Integer firstInclusion(@Name("sublist") List<?> sublist) {
+    public Integer firstInclusion(
+            @Name("sublist") List<?> sublist,
+            @Defaulted @Name("from") long from) {
         if (sublist instanceof String) {
-            return firstInclusion(value, sublist);
+            return firstInclusion(value, sublist, from);
         }
         else {
-            return super.firstInclusion(sublist);
+            return super.firstInclusion(sublist, from);
         }
     }
     
@@ -656,11 +672,25 @@ public final class String
     }
     
     @Ignore
-    public static Integer firstOccurrence(java.lang.String value, 
+    public static Integer firstOccurrence(java.lang.String value,
             java.lang.Object element) {
+        return firstOccurrence(value, element, 0);
+    }
+    
+    @Ignore
+    public static Integer firstOccurrence(java.lang.String value, 
+            java.lang.Object element,
+            long from) {
+        if (from>=value.length()) {
+            return null;
+        }
+        if (from<0) {
+            from = 0;
+        }
         if (element instanceof Character) {
             Character character = (Character) element;
-            int index = value.indexOf(character.codePoint);
+            int start = value.offsetByCodePoints(0, (int)from);
+            int index = value.indexOf(character.codePoint, start);
             return index >= 0 ? 
                     Integer.instance(value.codePointCount(0, index)) : 
                         null;
@@ -675,9 +705,10 @@ public final class String
     public Integer firstOccurrence(
             @Name("element") 
             @TypeInfo("ceylon.language::Anything")
-            java.lang.Object element) {
+            java.lang.Object element,
+            @Defaulted @Name("from") long from) {
         if (element instanceof Character) {
-            return firstOccurrence(value, element);
+            return firstOccurrence(value, element, from);
         }
         else {
             return null;
