@@ -487,16 +487,19 @@ shared interface List<out Element=Anything>
     }
     
     "Determines if the given [[value|element]] occurs as an 
-     element of this list, at any index that is greater than 
-     or equal to the optional [[starting index|from]]."
+     element of this list, at any index that falls within
+     the segment `from:length` defined by the optional 
+     [[starting index|from]] and [[length]]."
     shared default 
     Boolean occurs(
-        "The value. If null, it is considered to occur
-         at any index in this list with a null element."
-        Anything element,
-        "The smallest index to consider."
-        Integer from = 0) {
-        for (index in from:size-from) {
+            "The value. If null, it is considered to occur
+             at any index in this list with a null element."
+            Anything element,
+            "The smallest index to consider."
+            Integer from = 0,
+            "The number of indexes to consider."
+            Integer length = runtime.maxIntegerValue) {
+        for (index in from:length) {
             if (occursAt(index,element)) {
                 return true;
             }
@@ -510,24 +513,27 @@ shared interface List<out Element=Anything>
      [[value|element]] occurs."
     shared default 
     {Integer*} occurrences(
-        "The value. If null, it is considered to occur
-         at any index in this list with a null element."
-        Anything element)
+            "The value. If null, it is considered to occur
+             at any index in this list with a null element."
+            Anything element)
             => { for (index in 0:size) 
                     if (occursAt(index,element)) index };
     
     "Count the indexes in this list at which the given 
-     [[value|element]] occurs, that are greater than or 
-     equal to the optional [[starting index|from]]."
+     [[value|element]] occurs, that fall within the segment 
+     `from:length` defined by the optional 
+     [[starting index|from]] and [[length]]."
     shared default
     Integer countOccurrences(
-        "The value. If null, it is considered to occur
-         at any index in this list with a null element."
-        Anything element,
-        "The smallest index to consider."
-        Integer from = 0) {
+            "The value. If null, it is considered to occur
+             at any index in this list with a null element."
+            Anything element,
+            "The smallest index to consider."
+            Integer from = 0,
+            "The number of indexes to consider."
+            Integer length = runtime.maxIntegerValue) {
         variable value count = 0;
-        for (index in from:size-from) {
+        for (index in from:length) {
             if (occursAt(index,element)) {
                 count++;
             }
@@ -536,16 +542,19 @@ shared interface List<out Element=Anything>
     }
     
     "The first index in this list at which the given 
-     [[value|element]] occurs, that is greater than or 
-     equal to the optional [[starting index|from]]."
+     [[value|element]] occurs, that falls within the segment 
+     `from:length` defined by the optional 
+     [[starting index|from]] and [[length]]."
     shared default 
     Integer? firstOccurrence(
-        "The value. If null, it is considered to occur
-         at any index in this list with a null element."
-        Anything element,
-        "The smallest index to consider."
-        Integer from = 0) {
-        for (index in from:size-from) {
+            "The value. If null, it is considered to occur
+             at any index in this list with a null element."
+            Anything element,
+            "The smallest index to consider."
+            Integer from = 0,
+            "The number of indexes to consider."
+            Integer length = runtime.maxIntegerValue) {
+        for (index in from:length) {
             if (occursAt(index,element)) {
                 return index;
             }
@@ -559,9 +568,9 @@ shared interface List<out Element=Anything>
      [[value|element]] occurs."
     shared default 
     Integer? lastOccurrence(
-        "The value. If null, it is considered to occur
-         at any index in this list with a null element."
-        Anything element) {
+            "The value. If null, it is considered to occur
+             at any index in this list with a null element."
+            Anything element) {
         for (index in (0:size).reversed) {
             if (occursAt(index,element)) {
                 return index;

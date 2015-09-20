@@ -1899,22 +1899,28 @@ public final class Array<Element>
     public Integer firstOccurrence(
             @TypeInfo("ceylon.language::Anything") 
             @Name("element") java.lang.Object element,
-            @Defaulted @Name("from") long from) {
-        if (from>=size) {
+            @Defaulted @Name("from") long from,
+            @Defaulted @Name("length") long length) {
+        if (from>=size || length<=0) {
             return null;
         }
         if (from<0) {
+            length+=from;
             from = 0;
         }
         if (element==null) {
-            for (int i=(int)from; i<size; i++) {
+            for (int i=(int)from; 
+                    i<size && i<from+length; 
+                    i++) {
                 if (unsafeItem(i)==null) {
                     return Integer.instance(i);
                 }
             }
         }
         else {
-            for (int i=(int)from; i<size; i++) {
+            for (int i=(int)from; 
+                    i<size && i<from+length; 
+                    i++) {
                 Element item = unsafeItem(i);
                 if (item!=null && item.equals(element)) {
                     return Integer.instance(i);
@@ -1951,22 +1957,28 @@ public final class Array<Element>
     public boolean occurs(
             @TypeInfo("ceylon.language::Anything") 
             @Name("element") java.lang.Object element,
-            @Defaulted @Name("from") long from) {
-        if (from>=size) {
+            @Defaulted @Name("from") long from,
+            @Defaulted @Name("length") long length) {
+        if (from>=size || length<=0) {
             return false;
         }
         if (from<0) {
+            length+=from;
             from = 0;
         }
         if (element==null) {
-            for (int i=(int)from; i<size; i++) {
+            for (int i=(int)from; 
+                    i<size && i<from+length; 
+                    i++) {
                 if (unsafeItem(i)==null) {
                     return true;
                 }
             }
         }
         else {
-            for (int i=(int)from; i<size; i++) {
+            for (int i=(int)from; 
+                    i<size && i<from+length; 
+                    i++) {
                 Element item = unsafeItem(i);
                 if (item!=null && item.equals(element)) {
                     return true;
@@ -1980,23 +1992,29 @@ public final class Array<Element>
     public long countOccurrences(
             @TypeInfo("ceylon.language::Anything") 
             @Name("element") java.lang.Object element,
-            @Defaulted @Name("from") long from) {
-        if (from>=size) {
+            @Defaulted @Name("from") long from,
+            @Defaulted @Name("length") long length) {
+        if (from>=size || length<=0) {
             return 0;
         }
         if (from<0) {
+            length+=from;
             from = 0;
         }
         int count = 0;
         if (element==null) {
-            for (int i=(int)from; i<size; i++) {
+            for (int i=(int)from; 
+                    i<size && i<from+length; 
+                    i++) {
                 if (unsafeItem(i)==null) {
                     count++;
                 }
             }
         }
         else {
-            for (int i=(int)from; i<size; i++) {
+            for (int i=(int)from; 
+                    i<size && i<from+length; 
+                    i++) {
                 Element item = unsafeItem(i);
                 if (item!=null && item.equals(element)) {
                     count++;

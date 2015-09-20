@@ -401,25 +401,39 @@ public final class String
     }
     
     @Ignore
-    public static Integer occurs(java.lang.String value,
+    public static boolean occurs(java.lang.String value,
             java.lang.Object element) {
-        return firstOccurrence(value, element, 0);
+        return occurs(value, element, 0);
+    }
+    
+    @Ignore
+    public static boolean occurs(java.lang.String value,
+            java.lang.Object element, long from) {
+        return occurs(value, element, from, 
+                java.lang.Integer.MAX_VALUE);
     }
     
     @Ignore
     public static boolean occurs(java.lang.String value, 
-            java.lang.Object element, long from) {
-        if (from>=value.length()) {
+            java.lang.Object element, long from, long length) {
+        if (from>=value.length() || length<=0) {
             return false;
         }
         if (from<0) {
+            length+=from;
             from = 0;
         }
         if (element instanceof Character) {
-            int offset = value.offsetByCodePoints(0, (int)from);
+            int start;
+            try {
+                start = value.offsetByCodePoints(0, (int)from);
+            }
+            catch (IndexOutOfBoundsException e) {
+                return false;
+            }
             Character character = (Character) element;
-            int index = value.indexOf(character.codePoint, offset);
-            return index>=0;
+            int index = value.indexOf(character.codePoint, start);
+            return index>=0 && index<length+from;
         }
         else {
             return false;
@@ -430,18 +444,28 @@ public final class String
     public boolean occurs(@Name("element") 
             @TypeInfo("ceylon.language::Anything")
             java.lang.Object element,
-            @Defaulted @Name("from") long from) {
-        return occurs(value, element, from);
+            @Defaulted @Name("from") long from,
+            @Defaulted @Name("length") long length) {
+        return occurs(value, element, from, length);
     }
     
     @Ignore
     public static boolean occursAt(java.lang.String value, 
             long index, java.lang.Object element) {
+        if (index<0 || index>=value.length()) {
+            return false;
+        }
         if (element instanceof Character) {
             Character character = (Character) element;
             int cp = character.codePoint;
             try {
-                int offset = value.offsetByCodePoints(0, Util.toInt(index));
+                int offset;
+                try {
+                    offset = value.offsetByCodePoints(0, (int)index);
+                }
+                catch (IndexOutOfBoundsException e) {
+                    return false;
+                }
                 return cp == value.codePointAt(offset);
             }
             catch (IndexOutOfBoundsException e) {
@@ -469,15 +493,46 @@ public final class String
 
     @Ignore
     public static long 
-    countOccurrences(java.lang.String value, java.lang.Object element) {
+    countOccurrences(java.lang.String value, 
+            java.lang.Object element) {
+        return countOccurrences(value, element, 0);
+    }
+    
+    @Ignore
+    public static long 
+    countOccurrences(java.lang.String value, 
+            java.lang.Object element, 
+            long from) {
+        return countOccurrences(value, element, from, 
+                java.lang.Integer.MAX_VALUE);
+    }
+    
+    @Ignore
+    public static long 
+    countOccurrences(java.lang.String value, 
+            java.lang.Object element, 
+            long from, long length) {
+        if (from>=value.length() || from<=0) {
+            return 0;
+        }
+        if (from<0) {
+            length+=from;
+            from = 0;
+        }
         if (element instanceof Character) {
             Character character = (Character) element;
             int cp = character.codePoint;
-            int i = 0;
+            int i;
+            try {
+                i = value.offsetByCodePoints(0, (int)from);
+            }
+            catch (IndexOutOfBoundsException e) {
+                return 0;
+            }
             int count = 0;
             while (true) {
                 i = value.indexOf(cp, i);
-                if (i<0) {
+                if (i<0 || i>=from+length) {
                     return count;
                 }
                 else {
@@ -495,8 +550,10 @@ public final class String
     public long countOccurrences(
             @Name("element")
             @TypeInfo("ceylon.language::Anything")
-            java.lang.Object element) {
-        return countOccurrences(value, element);
+            java.lang.Object element,
+            @Defaulted @Name("from") long from,
+            @Defaulted @Name("length") long length) {
+        return countOccurrences(value, element, from, length);
     }
 
     @Ignore
@@ -516,7 +573,13 @@ public final class String
         }
         if (sublist instanceof String) {
             String string = (String) sublist;
-            int offset = value.offsetByCodePoints(0, (int)from);
+            int offset;
+            try {
+                offset = value.offsetByCodePoints(0, (int)from);
+            }
+            catch (IndexOutOfBoundsException e) {
+                return value.isEmpty();
+            }
             int index = value.indexOf(string.value, offset);
             return index >= 0;
         }
@@ -541,11 +604,20 @@ public final class String
     @Ignore
     public static boolean includesAt(java.lang.String value, 
             long index, List<?> sublist) {
+        if (index<0 || index>=value.length()) {
+            return sublist.getEmpty();
+        }
         if (sublist instanceof String) {
             String string = (String) sublist;
             java.lang.String str = string.value;
             try {
-                int offset = value.offsetByCodePoints(0, Util.toInt(index));
+                int offset;
+                try {
+                    offset = value.offsetByCodePoints(0, (int)index);
+                }
+                catch (IndexOutOfBoundsException e) {
+                    return sublist.getEmpty();
+                }
                 return value.regionMatches(offset, str, 0, str.length());
             }
             catch (IndexOutOfBoundsException e) {
@@ -599,10 +671,29 @@ public final class String
     @Ignore
     public static long 
     countInclusions(java.lang.String value, List<?> sublist) {
+        return countInclusions(value, sublist, 0);
+    }
+    
+    @Ignore
+    public static long 
+    countInclusions(java.lang.String value, List<?> sublist,
+            long from) {
+        if (from>=value.length()) {
+            return 0;
+        }
+        if (from<0) {
+            from = 0;
+        }
         if (sublist instanceof String) {
             String string = (String) sublist;
             java.lang.String str = string.value;
-            int i = 0;
+            int i;
+            try {
+                i = value.offsetByCodePoints(0, (int)from);
+            }
+            catch (IndexOutOfBoundsException e) {
+                return 0;
+            }
             int count = 0;
             while (true) {
                 i = value.indexOf(str, i);
@@ -623,12 +714,13 @@ public final class String
     @Override
     public long countInclusions(
             @TypeInfo("ceylon.language::List<ceylon.language::Anything>") 
-            @Name("sublist") List<?> sublist) {
+            @Name("sublist") List<?> sublist,
+            @Defaulted @Name("from") long from) {
         if (sublist instanceof String) {
-            return countInclusions(value, sublist);
+            return countInclusions(value, sublist, from);
         }
         else {
-            return super.countInclusions(sublist);
+            return super.countInclusions(sublist, from);
         }
     }
     
@@ -652,9 +744,11 @@ public final class String
             String string = (String) sublist;
             int start = value.offsetByCodePoints(0, (int)from);
             int index = value.indexOf(string.value, start);
-            return index >= 0 ? 
-                    Integer.instance(value.codePointCount(0, index)) : 
-                        null;
+            if (index >= 0) {
+                return Integer.instance(value.codePointCount(0, index));
+            } else {
+                return null;
+            }
         }
         else {
             return instance(value).firstInclusion(sublist, from);
@@ -679,9 +773,11 @@ public final class String
         if (sublist instanceof String) {
             String string = (String) sublist;
             int index = value.lastIndexOf(string.value);
-            return index >= 0 ? 
-                    Integer.instance(value.codePointCount(0, index)) : 
-                        null;
+            if (index >= 0) {
+                return Integer.instance(value.codePointCount(0, index));
+            } else {
+                return null;
+            }
         }
         else {
             return instance(value).lastInclusion(sublist);
@@ -706,22 +802,42 @@ public final class String
     }
     
     @Ignore
+    public static Integer firstOccurrence(java.lang.String value,
+            java.lang.Object element, long from) {
+        return firstOccurrence(value, element, from, 
+                java.lang.Integer.MAX_VALUE);
+    }
+    
+    @Ignore
     public static Integer firstOccurrence(java.lang.String value, 
             java.lang.Object element,
-            long from) {
-        if (from>=value.length()) {
+            long from, long length) {
+        if (from>=value.length() || length<=0) {
             return null;
         }
         if (from<0) {
+            length+=from;
             from = 0;
         }
         if (element instanceof Character) {
             Character character = (Character) element;
-            int start = value.offsetByCodePoints(0, (int)from);
+            int start;
+            try {
+                start = value.offsetByCodePoints(0, (int)from);
+            }
+            catch (java.lang.IndexOutOfBoundsException e) {
+                return null;
+            }
             int index = value.indexOf(character.codePoint, start);
-            return index >= 0 ? 
-                    Integer.instance(value.codePointCount(0, index)) : 
-                        null;
+            if (index >= 0) {
+                int result = value.codePointCount(0, index);
+                if (result>=from+length) {
+                    return null;
+                }
+                return Integer.instance(result);
+            } else {
+                return null;
+            }
         }
         else {
             return null;
@@ -734,9 +850,10 @@ public final class String
             @Name("element") 
             @TypeInfo("ceylon.language::Anything")
             java.lang.Object element,
-            @Defaulted @Name("from") long from) {
+            @Defaulted @Name("from") long from,
+            @Defaulted @Name("length") long length) {
         if (element instanceof Character) {
-            return firstOccurrence(value, element, from);
+            return firstOccurrence(value, element, from, length);
         }
         else {
             return null;
@@ -749,9 +866,11 @@ public final class String
         if (element instanceof Character) {
             Character character = (Character) element;
             int index = value.lastIndexOf(character.codePoint);
-            return index >= 0 ? 
-                    Integer.instance(value.codePointCount(0, index)) : 
-                        null;
+            if (index >= 0) {
+                return Integer.instance(value.codePointCount(0, index));
+            } else {
+                return null;
+            }
         }
         else {
             return null;

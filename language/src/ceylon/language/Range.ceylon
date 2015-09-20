@@ -50,9 +50,9 @@ class Range<Element>()
             then containsElement(element)
             else false;
     
-    occurs(Anything element, Integer from)
-            => if (from>0) 
-                then super.occurs(element, from)
+    occurs(Anything element, Integer from, Integer length)
+            => if (from>0 || length-from<size)
+                then super.occurs(element, from, length)
             else if (is Element element) 
                 then containsElement(element)
             else false;

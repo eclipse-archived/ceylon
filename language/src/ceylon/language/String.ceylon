@@ -539,19 +539,19 @@ shared native final class String(characters)
                 = smallest(size - sourcePosition,
                     destination.size - destinationPosition));
     
-    shared actual native Boolean occurs(Anything element, Integer from);
+    shared actual native Boolean occurs(Anything element, Integer from, Integer length);
     shared actual native Boolean occursAt(Integer index, Anything element);
     shared actual native Boolean includes(List<Anything> sublist, Integer from);
     shared actual native Boolean includesAt(Integer index, List<Anything> sublist);
         
-    shared actual native Integer? firstOccurrence(Anything element, Integer from);
+    shared actual native Integer? firstOccurrence(Anything element, Integer from, Integer length);
     shared actual native Integer? lastOccurrence(Anything element);
     shared actual native Integer? firstInclusion(List<Anything> sublist, Integer from);
     shared actual native Integer? lastInclusion(List<Anything> sublist);
     
     shared actual native {Integer*} inclusions(List<Anything> sublist);
     
-    shared actual native Integer countOccurrences(Anything sublist, Integer from);
+    shared actual native Integer countOccurrences(Anything sublist, Integer from, Integer length);
     shared actual native Integer countInclusions(List<Anything> sublist, Integer from);
         
     shared actual native Boolean largerThan(String other); 

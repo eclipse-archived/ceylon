@@ -238,7 +238,7 @@ shared interface Empty of e
             => sublist.empty;
     
     shared actual
-    Boolean occurs(Anything element, Integer from)
+    Boolean occurs(Anything element, Integer from, Integer length)
             => false;
     
     shared actual 

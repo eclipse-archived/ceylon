@@ -998,19 +998,35 @@ public final class Tuple<Element, First extends Element,
     }
     
     @Override @Ignore
+    public long 
+    firstOccurrence$length(java.lang.Object o, long from) {
+        return java.lang.Integer.MAX_VALUE;
+    }
+    
+    @Override @Ignore
     public Integer firstOccurrence(java.lang.Object o) {
         return firstOccurrence(o, 0);
     }
 
     @Override @Ignore
     public Integer firstOccurrence(java.lang.Object o, long from) {
-        if (from>=array.length) {
+        return firstOccurrence(o, from, java.lang.Integer.MAX_VALUE);
+    }
+
+    @Override @Ignore
+    public Integer firstOccurrence(java.lang.Object o, 
+            long from, long length) {
+        if (from>=array.length || length<=0) {
             return null;
         }
         if (from<0) {
+            length+=from;
             from = 0;
         }
-        for (int i=(int)from; i<array.length; i++) {
+        for (int i=(int)from; 
+                i<array.length &&
+                i<from+length; 
+                i++) {
             java.lang.Object x = array[i];
             if (x==o || (x!=null && o!=null && x.equals(o))) {
                 return Integer.instance(i);
@@ -1151,6 +1167,12 @@ public final class Tuple<Element, First extends Element,
     
     @Override @Ignore
     public long 
+    countOccurrences$length(java.lang.Object o, long from) {
+        return java.lang.Integer.MAX_VALUE;
+    }
+    
+    @Override @Ignore
+    public long 
     countOccurrences(java.lang.Object o) {
         return countOccurrences(o,0);
     }
@@ -1158,12 +1180,25 @@ public final class Tuple<Element, First extends Element,
     @Override @Ignore
     public long 
     countOccurrences(java.lang.Object o, long from) {
-        return $ceylon$language$List$impl().countOccurrences(o, from);
+        return countOccurrences(o,from,java.lang.Integer.MAX_VALUE);
+    }
+
+    @Override @Ignore
+    public long 
+    countOccurrences(java.lang.Object o, long from, long length) {
+        return $ceylon$language$List$impl()
+                .countOccurrences(o, from, length);
     }
 
     @Override @Ignore
     public long occurs$from(java.lang.Object o) {
         return 0;
+    }
+    
+    @Override @Ignore
+    public long 
+    occurs$length(java.lang.Object o, long from) {
+        return java.lang.Integer.MAX_VALUE;
     }
     
     @Override @Ignore
@@ -1173,13 +1208,22 @@ public final class Tuple<Element, First extends Element,
 
     @Override @Ignore
     public boolean occurs(java.lang.Object o, long from) {
-        if (from>=array.length) {
+        return occurs(o, from, java.lang.Integer.MAX_VALUE);
+    }
+
+    @Override @Ignore
+    public boolean occurs(java.lang.Object o, 
+            long from, long length) {
+        if (from>=array.length || length<=0) {
             return false;
         }
         if (from<0) {
+            length+=from;
             from = 0;
         }
-        for (int i=(int)from; i<array.length; i++) {
+        for (int i=(int)from; 
+                i<array.length && i<length+from; 
+                i++) {
             java.lang.Object x = array[i];
             if (x==o || (x!=null && o!=null && x.equals(o))) {
                 return true;

@@ -143,13 +143,13 @@ shared final serializable native class Array<Element>
             (Result accumulating(Result|Element partial, Element element));
     
     shared actual native
-    Integer? firstOccurrence(Anything element, Integer from);
+    Integer? firstOccurrence(Anything element, Integer from, Integer length);
     shared actual native
     Integer? lastOccurrence(Anything element);
     shared actual native
-    Boolean occurs(Anything element, Integer from);
+    Boolean occurs(Anything element, Integer from, Integer length);
     shared actual native
-    Integer countOccurrences(Anything element, Integer from);
+    Integer countOccurrences(Anything element, Integer from, Integer length);
     
     "Given two indices within this array, efficiently swap 
      the positions of the elements at these indices. If the 
