@@ -143,7 +143,8 @@ shared native("jvm") final class StringBuilder()
     shared actual native("jvm") String string 
             => builder.string;
     
-    shared actual native("jvm") Iterator<Character> iterator() {
+    shared actual native("jvm") 
+    Iterator<Character> iterator() {
         object stringBuilderIterator
                 satisfies Iterator<Character> {
             variable Integer offset = 0;
@@ -327,7 +328,8 @@ shared native("js") final class StringBuilder()
     
     shared actual native("js") String string => str;
     
-    shared actual native("js") Iterator<Character> iterator() 
+    shared actual native("js") 
+    Iterator<Character> iterator() 
             => str.iterator();
     
     shared native("js") 
@@ -388,11 +390,13 @@ shared native("js") final class StringBuilder()
     }
     
     shared native("js") 
-    StringBuilder insertCharacter(Integer index, Character character) 
+    StringBuilder insertCharacter
+            (Integer index, Character character) 
             => insert(index, character.string);
     
     shared native("js") 
-    StringBuilder replace(Integer index, Integer length, String string) {
+    StringBuilder replace
+            (Integer index, Integer length, String string) {
         "index must not be negative"
         assert (index>=0);
         "index must not be greater than size"
