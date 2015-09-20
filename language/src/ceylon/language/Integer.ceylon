@@ -78,7 +78,8 @@ shared native final class Integer(Integer integer)
      Or if:
      
      - the given object is a [[Float]],
-     - its value is neither [[Float.undefined]], nor [[infinity]],
+     - its value is neither [[Float.undefined]], nor 
+       [[infinity]],
      - the [[fractional part|Float.fractionalPart]] of its 
        value equals `0.0`, and
      - the [[integer part|Float.integer]] part of its value 
@@ -144,7 +145,10 @@ shared native final class Integer(Integer integer)
      representation is possible."
     throws (`class OverflowException`,
         "if the number cannot be represented as a `Float`
-         without loss of precision")
+         without loss of precision, that is, if 
+         
+             this.magnitude>runtime.maxExactIntegralFloat")
+    see (`value runtime.maxExactIntegralFloat`)
     shared native Float float;
     
     shared actual native Integer predecessor;
