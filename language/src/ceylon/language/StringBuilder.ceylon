@@ -1,4 +1,10 @@
-import java.lang { JStringBuilder=StringBuilder, JCharacter=Character { toChars, charCount } }
+import java.lang {
+    JStringBuilder=StringBuilder,
+    JCharacter=Character {
+        toChars,
+        charCount
+    }
+}
 
 """Builder utility for constructing [[strings|String]] by 
    incrementally appending strings or characters.
@@ -126,16 +132,16 @@ shared native("jvm") final class StringBuilder()
     
     JStringBuilder builder = JStringBuilder();
     
-    shared actual native("jvm") Integer size =>
-            builder.codePointCount(0, builder.length());
+    shared actual native("jvm") Integer size 
+            => builder.codePointCount(0, builder.length());
     
-    shared actual native("jvm") Integer? lastIndex =>
-            if (builder.length() == 0)
-    then null
-    else builder.length() - 1;
+    shared actual native("jvm") Integer? lastIndex 
+            => if (builder.length() == 0)
+            then null
+            else builder.length() - 1;
     
-    shared actual native("jvm") String string =>
-            builder.string;
+    shared actual native("jvm") String string 
+            => builder.string;
     
     shared actual native("jvm") Iterator<Character> iterator() {
         object stringBuilderIterator
@@ -143,7 +149,8 @@ shared native("jvm") final class StringBuilder()
             variable Integer offset = 0;
             shared actual Character|Finished next() {
                 if (offset < builder.length()) {
-                    Integer codePoint = builder.codePointAt(offset);
+                    Integer codePoint = 
+                            builder.codePointAt(offset);
                     offset += charCount(codePoint);
                     return codePoint.character;
                 }
@@ -157,16 +164,13 @@ shared native("jvm") final class StringBuilder()
     
     shared native("jvm") 
     String substring(Integer index, Integer length) {
-        if (index<0) {
-            throw AssertionError("index must not be negative");
-        }
-        else if (index>size) {
-            throw AssertionError("index must not be greater than size");
-        }
-        else if (index+length>size) {
-            throw AssertionError("index+length must not be greater than size");
-        }
-        else if (length>0) {
+        "index must not be negative"
+        assert (index>=0);
+        "index must not be greater than size"
+        assert(index<=size);
+        "index+length must not be greater than size"
+        assert (index+length<=size);
+        if (length>0) {
             Integer start = startIndex(index);
             Integer end = endIndex(start, length);
             return builder.substring(start, end);
@@ -177,10 +181,10 @@ shared native("jvm") final class StringBuilder()
     }
     
     shared actual native("jvm")
-    Character? getFromFirst(Integer index) =>
-            if (index<0 || index>size)
-    then null
-    else builder.codePointAt(startIndex(index)).character;
+    Character? getFromFirst(Integer index) 
+            => if (index<0 || index>size)
+            then null
+            else builder.codePointAt(startIndex(index)).character;
     
     shared native("jvm") 
     StringBuilder append(String string) {
@@ -214,47 +218,36 @@ shared native("jvm") final class StringBuilder()
     
     shared native("jvm") 
     StringBuilder insert(Integer index, String string) {
-        if (index<0) {
-            throw AssertionError("index must not be negative");
-        }
-        else if (index>size) {
-            throw AssertionError("index must not be greater than size");
-        }
-        else {
-            builder.insert(startIndex(index), string);
-        }
+        "index must not be negative"
+        assert (index>=0);
+        "index must not be greater than size"
+        assert(index<=size);
+        builder.insert(startIndex(index), string);
         return this;
     }
     
     shared native("jvm") 
     StringBuilder insertCharacter
-    (Integer index, Character character) {
-        if (index<0) {
-            throw AssertionError("index must not be negative");
-        }
-        else if (index>size) {
-            throw AssertionError("index must not be greater than size");
-        }
-        else {
-            builder.insert(startIndex(index),
-                toChars(character.integer));
-        }
+            (Integer index, Character character) {
+        "index must not be negative"
+        assert (index>=0);
+        "index must not be greater than size"
+        assert(index<=size);
+        builder.insert(startIndex(index),
+            toChars(character.integer));
         return this;
     }
     
     shared native("jvm") 
     StringBuilder replace
-    (Integer index, Integer length, String string) {
-        if (index<0) {
-            throw AssertionError("index must not be negative");
-        }
-        else if (index>size) {
-            throw AssertionError("index must not be greater than size");
-        }
-        else if (index+length>size) {
-            throw AssertionError("index+length must not be greater than size");
-        }
-        else if (!string.empty) {
+            (Integer index, Integer length, String string) {
+        "index must not be negative"
+        assert (index>=0);
+        "index must not be greater than size"
+        assert(index<=size);
+        "index+length must not be greater than size"
+        assert (index+length<=size);
+        if (!string.empty) {
             Integer len = (length<0) then 0 else length;
             Integer start = startIndex(index);
             Integer end = endIndex(start, len);
@@ -265,16 +258,13 @@ shared native("jvm") final class StringBuilder()
     
     shared native("jvm") 
     StringBuilder delete(Integer index, Integer length) {
-        if (index<0) {
-            throw AssertionError("index must not be negative");
-        }
-        else if (index>size) {
-            throw AssertionError("index must not be greater than size");
-        }
-        else if (index+length>size) {
-            throw AssertionError("index+length must not be greater than size");
-        }
-        else if (length>0) {
+        "index must not be negative"
+        assert (index>=0);
+        "index must not be greater than size"
+        assert(index<=size);
+        "index+length must not be greater than size"
+        assert (index+length<=size);
+        if (length>0) {
             Integer start = startIndex(index);
             Integer end = endIndex(start, length);
             builder.delete(start, end);
@@ -284,10 +274,9 @@ shared native("jvm") final class StringBuilder()
     
     shared native("jvm") 
     StringBuilder deleteInitial(Integer length) {
-        if (length>size) {
-            throw AssertionError("length must not be greater than size");
-        }
-        else if (length>0) {
+        "length must not be greater than size"
+        assert (length<=size);
+        if (length>0) {
             builder.delete(0, startIndex(length));
         }
         return this;
@@ -295,10 +284,9 @@ shared native("jvm") final class StringBuilder()
     
     shared native("jvm") 
     StringBuilder deleteTerminal(Integer length) {
-        if (length>size) {
-            throw AssertionError("length must not be greater than size");
-        }
-        else if (length>0) {
+        "length must not be greater than size"
+        assert (length<=size);
+        if (length>0) {
             Integer start = startIndex(size - length);
             builder.delete(start, builder.length());
         }
@@ -311,21 +299,17 @@ shared native("jvm") final class StringBuilder()
         return this;
     }
     
-    shared actual native("jvm") Boolean equals(Object that) {
-        return builder.equals(that);
-    }
+    shared actual native("jvm") Boolean equals(Object that) 
+            => builder.equals(that);
     
-    shared actual native("jvm") Integer hash {
-        return builder.hash;
-    }
+    shared actual native("jvm") Integer hash 
+            => builder.hash;
     
-    Integer startIndex(Integer index) {
-        return builder.offsetByCodePoints(0, index);
-    }
+    Integer startIndex(Integer index) 
+            => builder.offsetByCodePoints(0, index);
     
-    Integer endIndex(Integer start, Integer length) {
-        return builder.offsetByCodePoints(start, length);
-    }
+    Integer endIndex(Integer start, Integer length) 
+            => builder.offsetByCodePoints(start, length);
     
 }
 
@@ -334,47 +318,34 @@ shared native("js") final class StringBuilder()
     
     variable String str = "";
     
-    shared actual native("js") Integer size =>
-            str.size;
+    shared actual native("js") Integer size => str.size;
     
-    shared actual native("js") Integer? lastIndex =>
-            if (str.size == 0)
-    then null
-    else str.size - 1;
+    shared actual native("js") Integer? lastIndex 
+            => if (str.size == 0)
+            then null
+            else str.size - 1;
     
     shared actual native("js") String string => str;
     
-    shared actual native("js") Iterator<Character> iterator() =>
-            str.iterator();
+    shared actual native("js") Iterator<Character> iterator() 
+            => str.iterator();
     
     shared native("js") 
     String substring(Integer index, Integer length) {
-        if (index<0) {
-            throw AssertionError("index must not be negative");
-        }
-        else if (index>size) {
-            throw AssertionError("index must not be greater than size");
-        }
-        else if (index+length>size) {
-            throw AssertionError("index+length must not be greater than size");
-        }
-        else if (length>0) {
-            return str[index..length];
-        }
-        else {
-            return "";
-        }
+        "index must not be negative"
+        assert (index>=0);
+        "index must not be greater than size"
+        assert(index<=size);
+        "index+length must not be greater than size"
+        assert (index+length<=size);
+        return if (length>0) then str[index..length] else "";
     }
     
     shared actual native("js")
-    Character? getFromFirst(Integer index) {
-        if (index<0 || index>size) {
-            return null;
-        }
-        else {
-            return str.getFromFirst(index);
-        }
-    }
+    Character? getFromFirst(Integer index) 
+            => if (index<0 || index>size) 
+            then null 
+            else str.getFromFirst(index);
     
     shared native("js") 
     StringBuilder append(String string) {
@@ -408,35 +379,27 @@ shared native("js") final class StringBuilder()
     
     shared native("js") 
     StringBuilder insert(Integer index, String string) {
-        if (index<0) {
-            throw AssertionError("index must not be negative");
-        }
-        else if (index>size) {
-            throw AssertionError("index must not be greater than size");
-        }
-        else {
-            str = str[0:index] + string + str[index...];
-        }
+        "index must not be negative"
+        assert (index>=0);
+        "index must not be greater than size"
+        assert(index<=size);
+        str = str[0:index] + string + str[index...];
         return this;
     }
     
     shared native("js") 
-    StringBuilder insertCharacter(Integer index, Character character) {
-        return insert(index, character.string);
-    }
+    StringBuilder insertCharacter(Integer index, Character character) 
+            => insert(index, character.string);
     
     shared native("js") 
     StringBuilder replace(Integer index, Integer length, String string) {
-        if (index<0) {
-            throw AssertionError("index must not be negative");
-        }
-        else if (index>size) {
-            throw AssertionError("index must not be greater than size");
-        }
-        else if (index+length>size) {
-            throw AssertionError("index+length must not be greater than size");
-        }
-        else if (!string.empty) {
+        "index must not be negative"
+        assert (index>=0);
+        "index must not be greater than size"
+        assert(index<=size);
+        "index+length must not be greater than size"
+        assert (index+length<=size);
+        if (!string.empty) {
             str = str[0:index] + string + str[index+length...];
         }
         return this;
@@ -444,16 +407,13 @@ shared native("js") final class StringBuilder()
     
     shared native("js") 
     StringBuilder delete(Integer index, Integer length) {
-        if (index<0) {
-            throw AssertionError("index must not be negative");
-        }
-        else if (index>size) {
-            throw AssertionError("index must not be greater than size");
-        }
-        else if (index+length>size) {
-            throw AssertionError("index+length must not be greater than size");
-        }
-        else if (length>0) {
+        "index must not be negative"
+        assert (index>=0);
+        "index must not be greater than size"
+        assert(index<=size);
+        "index+length must not be greater than size"
+        assert (index+length<=size);
+        if (length>0) {
             str = str[0:index] + str[index+length...];
         }
         return this;
@@ -461,10 +421,9 @@ shared native("js") final class StringBuilder()
     
     shared native("js") 
     StringBuilder deleteInitial(Integer length) {
-        if (length>size) {
-            throw AssertionError("length must not be greater than size");
-        }
-        else if (length>0) {
+        "length must not be greater than size"
+        assert (length<=size);
+        if (length>0) {
             str = str[length...];
         }
         return this;
@@ -472,10 +431,9 @@ shared native("js") final class StringBuilder()
     
     shared native("js") 
     StringBuilder deleteTerminal(Integer length) {
-        if (length>size) {
-            throw AssertionError("length must not be greater than size");
-        }
-        else if (length>0) {
+        "length must not be greater than size"
+        assert (length<=size);
+        if (length>0) {
             str = str[0:size-length];
         }
         return this;
@@ -487,11 +445,8 @@ shared native("js") final class StringBuilder()
         return this;
     }
     
-    shared actual native("js") Boolean equals(Object that) {
-        return str.equals(that);
-    }
+    shared actual native("js") Boolean equals(Object that) 
+            => str.equals(that);
     
-    shared actual native("js") Integer hash {
-        return str.hash;
-    }
+    shared actual native("js") Integer hash => str.hash;
 }
