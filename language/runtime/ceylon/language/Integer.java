@@ -428,6 +428,15 @@ public final class Integer
         }
     }
 
+    public double getNearestFloat() {
+        return (double) value;
+    }
+
+    @Ignore
+    public static double getNearestFloat(long value) {
+        return (double) value;
+    }
+
     public byte getByte() {
         return getByte(value);
     }

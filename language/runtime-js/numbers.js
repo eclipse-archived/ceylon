@@ -216,6 +216,8 @@ atr$(JSNum$proto, 'character', function(){
   }
   return Character(this.valueOf());
 },undefined,function(){return{an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:Integer,d:['$','Integer','$at','character']};});
+atr$(JSNum$proto, 'nearestFloat', function(){ return Float(this.valueOf()); },
+  undefined,function(){return{an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:Integer,d:['$','Integer','$at','nearestFloat']};});
 atr$(JSNum$proto, 'successor', function(){ return this+1; },
   undefined,function(){return{an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:Ordinal,d:['$','Ordinal','$at','successor']};});
 atr$(JSNum$proto, 'predecessor', function(){ return this-1; },
