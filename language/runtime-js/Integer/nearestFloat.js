@@ -1,0 +1,1 @@
+return Float(this.valueOf());
