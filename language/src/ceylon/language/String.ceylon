@@ -551,8 +551,8 @@ shared native final class String(characters)
     
     shared actual native {Integer*} inclusions(List<Anything> sublist);
     
-    shared actual native Integer countOccurrences(Anything sublist);
-    shared actual native Integer countInclusions(List<Anything> sublist);
+    shared actual native Integer countOccurrences(Anything sublist, Integer from);
+    shared actual native Integer countInclusions(List<Anything> sublist, Integer from);
         
     shared actual native Boolean largerThan(String other); 
     shared actual native Boolean smallerThan(String other); 

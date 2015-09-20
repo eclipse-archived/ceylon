@@ -1115,8 +1115,20 @@ public final class Tuple<Element, First extends Element,
 
     @Override @Ignore
     public long 
+    countInclusions$from(List<? extends java.lang.Object> list) {
+        return 0;
+    }
+    
+    @Override @Ignore
+    public long 
     countInclusions(List<? extends java.lang.Object> list) {
-        return $ceylon$language$List$impl().countInclusions(list);
+        return countInclusions(list,0);
+    }
+
+    @Override @Ignore
+    public long 
+    countInclusions(List<? extends java.lang.Object> list, long from) {
+        return $ceylon$language$List$impl().countInclusions(list, from);
     }
 
     @Override @Ignore
@@ -1133,8 +1145,20 @@ public final class Tuple<Element, First extends Element,
     
     @Override @Ignore
     public long 
+    countOccurrences$from(java.lang.Object o) {
+        return 0;
+    }
+    
+    @Override @Ignore
+    public long 
     countOccurrences(java.lang.Object o) {
-        return $ceylon$language$List$impl().countOccurrences(o);
+        return countOccurrences(o,0);
+    }
+
+    @Override @Ignore
+    public long 
+    countOccurrences(java.lang.Object o, long from) {
+        return $ceylon$language$List$impl().countOccurrences(o, from);
     }
 
     @Override @Ignore

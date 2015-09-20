@@ -149,7 +149,7 @@ shared final serializable native class Array<Element>
     shared actual native
     Boolean occurs(Anything element, Integer from);
     shared actual native
-    Integer countOccurrences(Anything element);
+    Integer countOccurrences(Anything element, Integer from);
     
     "Given two indices within this array, efficiently swap 
      the positions of the elements at these indices. If the 

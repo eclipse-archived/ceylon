@@ -420,11 +420,14 @@ shared interface List<out Element=Anything>
                     if (includesAt(index,sublist)) index };
     
     "Count the indexes in this list at which the given 
-     [[list|sublist]] occurs as a sublist."
+     [[list|sublist]] occurs as a sublist, that are greater 
+     than or equal to the optional [[starting index|from]]."
     shared default
-    Integer countInclusions(List<> sublist) {
+    Integer countInclusions(List<> sublist,
+            "The smallest index to consider." 
+            Integer from=0) {
         variable value count = 0;
-        for (index in 0:size-sublist.size+1) {
+        for (index in from:size-sublist.size+1-from) {
             if (includesAt(index,sublist)) {
                 count++;
             }
@@ -514,14 +517,17 @@ shared interface List<out Element=Anything>
                     if (occursAt(index,element)) index };
     
     "Count the indexes in this list at which the given 
-     [[value|element]] occurs."
+     [[value|element]] occurs, that are greater than or 
+     equal to the optional [[starting index|from]]."
     shared default
     Integer countOccurrences(
         "The value. If null, it is considered to occur
          at any index in this list with a null element."
-        Anything element) {
+        Anything element,
+        "The smallest index to consider."
+        Integer from = 0) {
         variable value count = 0;
-        for (index in 0:size) {
+        for (index in from:size-from) {
             if (occursAt(index,element)) {
                 count++;
             }
