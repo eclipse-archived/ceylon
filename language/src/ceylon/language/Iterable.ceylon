@@ -1262,7 +1262,8 @@ shared interface Iterable<out Element=Anything,
                 object satisfies Iterator<[Element+]> {
                     shared actual [Element+]|Finished next() {
                         if (!is Finished next = iter.next()) {
-                            value array = arrayOfSize(length, next);
+                            value array = 
+                                    Array.ofSize(length, next);
                             variable value index = 0;
                             while (++index<length) {
                                 if (!is Finished current = iter.next()) {
