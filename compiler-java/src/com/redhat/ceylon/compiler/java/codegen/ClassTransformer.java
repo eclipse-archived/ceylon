@@ -631,6 +631,7 @@ public class ClassTransformer extends AbstractTransformer {
                     && !isCeylonString(parameterType)) {
                 // Convert from array to Sequential
                 Type iteratedType = typeFact().getIteratedType(parameterType);
+                boolean nonEmpty = typeFact().isNonemptyIterableType(parameterType);
                 if (isCeylonBasicType(iteratedType)) {
                     argExpr = utilInvocation().sequentialWrapperBoxed(annoAttr);
                 } else if (Decl.isAnnotationClass(iteratedType.getDeclaration())) {
@@ -683,6 +684,9 @@ public class ClassTransformer extends AbstractTransformer {
                 } else {
                     argExpr = makeErroneous(parameter, "compiler bug");
                 }
+                if (nonEmpty) {
+                    argExpr = make().TypeCast(makeJavaType(parameterType), argExpr);
+                }
             } else if (Decl.isAnnotationClass(parameterType.getDeclaration())) {
                 argExpr = instantiateAnnotationClass(parameterType, annoAttr);
             } else if (isCeylonMetamodelDeclaration(parameterType)) {
@@ -697,6 +701,7 @@ public class ClassTransformer extends AbstractTransformer {
                 argExpr = annoAttr;
                 argExpr = expressionGen().applyErasureAndBoxing(annoAttr, parameterType.withoutUnderlyingType(), false, BoxingStrategy.UNBOXED, parameterType);
             }
+            
             args.add(argExpr);
         }
         annoCtor.body(at(def).Exec(
