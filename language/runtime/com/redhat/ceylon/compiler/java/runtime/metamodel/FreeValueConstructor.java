@@ -13,7 +13,7 @@ import ceylon.language.meta.declaration.Package;
 import ceylon.language.meta.declaration.SetterDeclaration;
 import ceylon.language.meta.declaration.ValueConstructorDeclaration;
 import ceylon.language.meta.declaration.ValueConstructorDeclaration$impl;
-import ceylon.language.meta.declaration.ValueableDeclaration$impl;
+import ceylon.language.meta.declaration.GettableDeclaration$impl;
 
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
@@ -237,7 +237,7 @@ public class FreeValueConstructor
     
     @Override
     @Ignore
-    public ValueableDeclaration$impl $ceylon$language$meta$declaration$ValueableDeclaration$impl() {
+    public GettableDeclaration$impl $ceylon$language$meta$declaration$GettableDeclaration$impl() {
         return null;
     }
 

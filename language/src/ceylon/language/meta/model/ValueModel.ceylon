@@ -1,6 +1,6 @@
 import ceylon.language.meta.declaration {
     ValueDeclaration,
-    ValueableDeclaration,
+    GettableDeclaration,
     NestableDeclaration
 }
 import ceylon.language.meta.model {
@@ -15,7 +15,7 @@ shared sealed interface ValueModel<out Get=Anything, in Set=Nothing>
         satisfies Model {
 
     "This value's declaration."
-    shared formal actual NestableDeclaration&ValueableDeclaration declaration;
+    shared formal actual NestableDeclaration&GettableDeclaration declaration;
     
     "This value's closed type."
     shared formal ClosedType<Get> type;

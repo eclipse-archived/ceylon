@@ -13,7 +13,7 @@ import ceylon.language.meta.model {
    * [[ValueDeclaration]]s which abstracts over values and attributes 
    * [[ValueConstructorDeclaration]]s which represents value constructors
 """
-shared sealed interface ValueableDeclaration {
+shared sealed interface GettableDeclaration {
     "Applies this value declaration in order to obtain a value model. 
      See [this code sample](#toplevel-sample) for an example on how to use this."
     throws(`class IncompatibleTypeException`, "If the specified `Get` or `Set` type arguments are not compatible with the actual result.")

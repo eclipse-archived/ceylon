@@ -27,7 +27,7 @@ import ceylon.language.meta.declaration {
    """
 see (`interface CallableConstructorDeclaration`)
 shared sealed interface ValueConstructorDeclaration 
-        satisfies ValueableDeclaration & ConstructorDeclaration {
+        satisfies GettableDeclaration & ConstructorDeclaration {
     
     "The class this constructor constructs"
     shared actual formal ClassDeclaration container; 

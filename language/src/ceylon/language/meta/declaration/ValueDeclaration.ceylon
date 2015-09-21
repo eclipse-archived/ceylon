@@ -45,7 +45,7 @@ import ceylon.language.meta.model {
        }
    """
 shared sealed interface ValueDeclaration
-        satisfies FunctionOrValueDeclaration & NestableDeclaration & ValueableDeclaration {
+        satisfies FunctionOrValueDeclaration & NestableDeclaration & GettableDeclaration {
     
     "True if this declaration is annotated with [[late|ceylon.language::late]]."
     shared formal Boolean late;
