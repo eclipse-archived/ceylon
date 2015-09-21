@@ -178,7 +178,9 @@ public class CeylonTransformer extends AbstractTransformer {
             }
 
             private List<JCTree> makeClassBody(Declaration decl) {
-                if(decl instanceof Tree.ClassDefinition
+                // only do it for Bootstrap where we control the annotations, because it's so dodgy ATM
+                if(options.get(OptionName.BOOTSTRAPCEYLON) != null
+                        && decl instanceof Tree.ClassDefinition
                         && TreeUtil.hasAnnotation(decl.getAnnotationList(), "annotation", decl.getUnit())){
                     ListBuffer<JCTree> body = new ListBuffer<JCTree>();
                     for(Tree.Parameter param : ((Tree.ClassDefinition)decl).getParameterList().getParameters()){
@@ -224,6 +226,8 @@ public class CeylonTransformer extends AbstractTransformer {
                     if(name.equals("Character"))
                         return make().Type(syms().charType);
                     if(name.equals("Declaration")
+                            || name.equals("ClassDeclaration")
+                            || name.equals("InterfaceDeclaration")
                             || name.equals("ClassOrInterfaceDeclaration"))
                         return make().Type(syms().stringType);
                 }
