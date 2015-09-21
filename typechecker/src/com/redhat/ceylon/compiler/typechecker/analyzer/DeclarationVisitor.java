@@ -1911,7 +1911,7 @@ public abstract class DeclarationVisitor extends Visitor {
         }
         if (hasAnnotation(al, "aliased", unit)) {
             Annotation aliased = getAnnotation(al, "aliased", unit);
-            List<String> aliases = TreeUtil.getAnnotationSequenceParameter(aliased);
+            List<String> aliases = TreeUtil.getAnnotationSequenceArgument(aliased);
             model.setAliases(aliases);
         }
         buildAnnotations(al, model.getAnnotations());        

@@ -428,7 +428,7 @@ public class TreeUtil {
         }
     }
 
-    public static List<String> getAnnotationSequenceParameter(Tree.Annotation a) {
+    public static List<String> getAnnotationSequenceArgument(Tree.Annotation a) {
         Tree.NamedArgumentList nal = 
                 a.getNamedArgumentList();
         if (nal!=null) {
