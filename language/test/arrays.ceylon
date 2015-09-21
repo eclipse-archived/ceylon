@@ -286,4 +286,11 @@ shared void testArrays() {
     check((helloWorld.lastInclusion("wor",7) else -1)==6, "array lastInclusion");
     check((helloWorld.lastInclusion("wor",6) else -1)==6, "array lastInclusion");
     check(!helloWorld.lastInclusion("wor",5) exists, "array lastInclusion");
+    
+    check((helloWorld.lastInclusion([]) else -1)==11, "array empty lastInclusion");
+    check((helloWorld.firstInclusion([]) else -1)==0, "array empty firstInclusion");
+    check((helloWorld.firstInclusion([],11) else -1)==11, "array empty firstInclusion");
+    check(!helloWorld.firstInclusion([],12) exists, "array empty firstInclusion");
+    check((helloWorld.firstOccurrence('d',0,11) else -1)==10, "array firstOccurrence");
+    check(!helloWorld.firstOccurrence('d',0,10) exists, "array firstOccurrence");
 }

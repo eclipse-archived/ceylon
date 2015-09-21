@@ -585,4 +585,11 @@ shared void sequences() {
     check((helloWorld.lastInclusion("wor",7) else -1)==6, "sequence lastInclusion");
     check((helloWorld.lastInclusion("wor",6) else -1)==6, "sequence lastInclusion");
     check(!helloWorld.lastInclusion("wor",5) exists, "sequence lastInclusion");
+
+    check((helloWorld.lastInclusion([]) else -1)==11, "sequence empty lastInclusion");
+    check((helloWorld.firstInclusion([]) else -1)==0, "sequence empty firstInclusion");
+    check((helloWorld.firstInclusion([],11) else -1)==11, "sequence empty firstInclusion");
+    check(!helloWorld.firstInclusion([],12) exists, "sequence empty firstInclusion");
+    check((helloWorld.firstOccurrence('d',0,11) else -1)==10, "sequence firstOccurrence");
+    check(!helloWorld.firstOccurrence('d',0,10) exists, "sequence firstOccurrence");
 }

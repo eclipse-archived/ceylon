@@ -606,4 +606,11 @@ shared void strings() {
     check(("hello world".lastInclusion("wor",7) else -1)==6, "string lastInclusion");
     check(("hello world".lastInclusion("wor",6) else -1)==6, "string lastInclusion");
     check(!"hello world".lastInclusion("wor",5) exists, "string lastInclusion");
+
+    check(("hello world".lastInclusion([]) else -1)==11, "string empty lastInclusion");
+    check(("hello world".firstInclusion([]) else -1)==0, "string empty firstInclusion");
+    check(("hello world".firstInclusion([],11) else -1)==11, "string empty firstInclusion");
+    check(!"hello world".firstInclusion([],12) exists, "string empty firstInclusion");
+    check(("hello world".firstOccurrence('d',0,11) else -1)==10, "string firstOccurrence");
+    check(!"hello world".firstOccurrence('d',0,10) exists, "string firstOccurrence");
 }
