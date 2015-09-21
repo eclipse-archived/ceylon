@@ -8,6 +8,8 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.Writer;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -36,6 +38,8 @@ import com.redhat.ceylon.compiler.typechecker.analyzer.AnalysisError;
 import com.redhat.ceylon.compiler.typechecker.analyzer.UsageWarning;
 import com.redhat.ceylon.compiler.typechecker.analyzer.Warning;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
+import com.redhat.ceylon.compiler.typechecker.io.VirtualFile;
+import com.redhat.ceylon.compiler.typechecker.parser.ParseError;
 import com.redhat.ceylon.compiler.typechecker.parser.RecognitionError;
 import com.redhat.ceylon.compiler.typechecker.tree.AnalysisMessage;
 import com.redhat.ceylon.compiler.typechecker.tree.Message;
@@ -709,6 +713,13 @@ public class JsCompiler {
             out.write(": ");
             out.write(err.getMessage());
             out.write(System.lineSeparator());
+            String ln = getErrorSourceLine(pm);
+            if (ln != null) {
+                out.write(ln);
+                out.write(System.lineSeparator());
+                out.write(getErrorMarkerLine(position));
+                out.write(System.lineSeparator());
+            }
             
             if(diagnosticListener != null){
                 File file = null;
@@ -731,6 +742,34 @@ public class JsCompiler {
         }
         out.flush();
         return count;
+    }
+
+    private String getErrorSourceLine(PositionedMessage pm) {
+        if (pm.node.getUnit() != null) {
+            int lineNr = pm.message.getLine();
+            File file = new File(pm.node.getUnit().getFullPath());
+            VirtualFile vfile = tc.getContext().getVfs().getFromFile(file);
+            try (BufferedReader br = new BufferedReader(new InputStreamReader(vfile.getInputStream()))) {
+                String line;
+                while ((line = br.readLine()) != null) {
+                    if (--lineNr <= 0) {
+                        return line;
+                    }
+                }
+            } catch (IOException e) {
+                // Ignore
+            }
+        }
+        return null;
+    }
+
+    private String getErrorMarkerLine(int position) {
+        StringBuilder str = new StringBuilder();
+        for (int i = 0; i < position; i++) {
+            str.append(" ");
+        }
+        str.append("^");
+        return str.toString();
     }
 
     /** Returns the list of errors found during compilation. */
