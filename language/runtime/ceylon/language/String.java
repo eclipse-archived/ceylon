@@ -571,7 +571,7 @@ public final class String
     @Ignore
     public static boolean includes(java.lang.String value, 
             List<?> sublist, long from) {
-        if (from>=value.length()) {
+        if (from>value.length()) {
             return false;
         }
         if (from<0) {
@@ -590,7 +590,7 @@ public final class String
             return index >= 0;
         }
         else {
-            return instance(value).includes(sublist);
+            return instance(value).includes(sublist, from);
         }
     }
 
@@ -610,8 +610,8 @@ public final class String
     @Ignore
     public static boolean includesAt(java.lang.String value, 
             long index, List<?> sublist) {
-        if (index<0 || index>=value.length()) {
-            return sublist.getEmpty();
+        if (index<0 || index>value.length()) {
+            return false;
         }
         if (sublist instanceof String) {
             String string = (String) sublist;
@@ -670,7 +670,7 @@ public final class String
     public static long 
     countInclusions(java.lang.String value, List<?> sublist,
             long from) {
-        if (from>=value.length()) {
+        if (from>value.length()) {
             return 0;
         }
         if (from<0) {
@@ -699,7 +699,7 @@ public final class String
             }
         }
         else {
-            return instance(value).countInclusions(sublist);
+            return instance(value).countInclusions(sublist, from);
         }
     }
     
@@ -726,7 +726,7 @@ public final class String
     public static Integer firstInclusion(java.lang.String value, 
             List<?> sublist,
             long from) {
-        if (from>=value.length()) {
+        if (from>value.length()) {
             return null;
         }
         if (from<0) {
@@ -784,7 +784,7 @@ public final class String
             }
         }
         else {
-            return instance(value).lastInclusion(sublist);
+            return instance(value).lastInclusion(sublist, to);
         }
     }
     

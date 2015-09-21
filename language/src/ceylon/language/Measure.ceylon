@@ -109,7 +109,7 @@ class Measure<Element>(first, size)
         } else if (is Range<Element> sublist, from<=0) {
             return includesRange(sublist);
         } else {
-            return super.includes(sublist);
+            return super.includes(sublist, from);
         }
     }
     

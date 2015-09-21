@@ -368,10 +368,14 @@ shared interface List<out Element=Anything>
             "The index at which the [[sublist]] might occur."
             Integer index, 
             List<> sublist) {
-        if (sublist.size>size-index) {
+        value subsize = sublist.size;
+        if (subsize>size-index) {
             return false;
         }
-        for (i in 0:sublist.size) {
+        if (subsize==0 && index==size) {
+            return true;
+        }
+        for (i in 0:subsize) {
             value x = getFromFirst(index+i);
             value y = sublist.getFromFirst(i);
             if (exists x) {
@@ -401,7 +405,7 @@ shared interface List<out Element=Anything>
     Boolean includes(List<> sublist,
             "The smallest index to consider."
             Integer from = 0) {
-        for (index in from:size-sublist.size+1-from) {
+        for (index in from:size-sublist.size-from+1) {
             if (includesAt(index,sublist)) {
                 return true;
             }
@@ -447,7 +451,7 @@ shared interface List<out Element=Anything>
             "The smallest index to consider." 
             Integer from = 0) {
         variable value count = 0;
-        for (index in from:size-sublist.size+1-from) {
+        for (index in from:size-sublist.size-from+1) {
             if (includesAt(index,sublist)) {
                 count++;
             }
@@ -462,7 +466,7 @@ shared interface List<out Element=Anything>
     Integer? firstInclusion(List<> sublist,
             "The smallest index to consider." 
             Integer from = 0) {
-        for (index in from:size-sublist.size+1-from) {
+        for (index in from:size-sublist.size-from+1) {
             if (includesAt(index,sublist)) {
                 return index;
             }
@@ -479,9 +483,9 @@ shared interface List<out Element=Anything>
     Integer? lastInclusion(List<> sublist,
             "The largest index to consider."
             Integer to = size) {
-        value max = size-sublist.size+1;
+        value max = size-sublist.size;
         value end = to<max then to else max;
-        for (index in (0:end).reversed) {
+        for (index in (0:end+1).reversed) {
             if (includesAt(index,sublist)) {
                 return index;
             }

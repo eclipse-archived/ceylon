@@ -189,7 +189,7 @@ class Span<Element>(first, last)
         } else if (is Range<Element> sublist, from<=0) {
             return includesRange(sublist);
         } else {
-            return super.includes(sublist);
+            return super.includes(sublist, from);
             /*if (is Element start = sublist.first) {
                 if (decreasing
                         then start>first || start<last
