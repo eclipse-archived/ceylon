@@ -524,15 +524,7 @@ public final class Integer
 
     @Override
     public boolean equals(@Name("that") java.lang.Object that) {
-        if (that instanceof Integer) {
-            return value == ((Integer)that).value;
-        }
-        else if (that instanceof Float) {
-            return value == ((Float) that).value && -TWO_FIFTY_THREE < value && value < TWO_FIFTY_THREE;
-        }
-        else {
-            return false;
-        }
+        return equals(value, that);
     }
 
     @Ignore
