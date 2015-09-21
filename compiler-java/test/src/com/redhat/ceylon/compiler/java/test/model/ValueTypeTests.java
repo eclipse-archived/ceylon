@@ -66,7 +66,7 @@ public class ValueTypeTests {
             // And finally we skip all methods defined on Object
             return;
         }
-        validateVTMethodUnchecked(clazz, classMethod);
+        validateVTMethodUnchecked(clazz, classMethod, classMethod);
         
         // See if it has any overloads that need checking
         Method[] overloads = findVTMethodOverloads(clazz, classMethod);
@@ -78,18 +78,19 @@ public class ValueTypeTests {
                 // and those NOT marked with @Ignore
                 continue;
             }
-            validateVTMethodUnchecked(clazz, m);
+            validateVTMethodUnchecked(clazz, m, classMethod);
         }
     }
     
     // Check if the given method should have a static companion method
     // and if so check that it exists and adheres to all the rules
-    private void validateVTMethodUnchecked(Class<?> clazz, Method classMethod) {
+    private void validateVTMethodUnchecked(Class<?> clazz, Method classMethod, Method typedMethod) {
         String mthName = clazz.getName() + "::" + classMethod.getName() + "()";
         System.err.println(mthName);
-        Method staticMethod = findStaticCompanionMethod(clazz, classMethod);
+        Assert.assertTrue("Overloaded method " + mthName + " can't have more parameters than the method it overloads", classMethod.getParameterTypes().length <= typedMethod.getParameterTypes().length);
+        Method staticMethod = findStaticCompanionMethod(clazz, classMethod, typedMethod);
         Assert.assertNotNull("Static companion for " + mthName + " not found", staticMethod);
-        TypeInfo returnTypeInfo = classMethod.getAnnotation(TypeInfo.class);
+        TypeInfo returnTypeInfo = typedMethod.getAnnotation(TypeInfo.class);
         Assert.assertEquals("Returns types for static and class methods " + mthName + " do not coincide", getUnboxedType(classMethod.getReturnType(), returnTypeInfo), staticMethod.getReturnType());
     }
 
@@ -98,10 +99,10 @@ public class ValueTypeTests {
     // an extra first parameter. Also the static version will always
     // have the "unboxed" version of any Value Type that appears as
     // either parameter or return type
-    private Method findStaticCompanionMethod(Class<?> clazz, Method classMethod) {
+    private Method findStaticCompanionMethod(Class<?> clazz, Method classMethod, Method typedMethod) {
         Class<?>[] instancePTs = classMethod.getParameterTypes();
-        Annotation[][] instanceAnnos = classMethod.getParameterAnnotations();
-        TypeParameters tps = classMethod.getAnnotation(TypeParameters.class);
+        Annotation[][] instanceAnnos = typedMethod.getParameterAnnotations();
+        TypeParameters tps = typedMethod.getAnnotation(TypeParameters.class);
         int tpsCount = (tps != null) ? tps.value().length : 0;
         Class<?>[] staticPTs = new Class<?>[instancePTs.length + 1];
         staticPTs[tpsCount] = getUnboxedType(clazz, clazz.getAnnotation(TypeInfo.class));
