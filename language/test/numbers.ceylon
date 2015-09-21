@@ -181,6 +181,20 @@ shared void numbers() {
     check((-1.1).integer==-1, "(-1.1).integer is `` (-1.1).integer `` instead of -1");
     check(2.float==2.0, "integer float");
     check((-3).float==-3.0, "negative integer float");
+    check(2.nearestFloat==2.0, "small integer nearestFloat");
+    check((-3).nearestFloat==-3.0, "small negative integer nearestFloat");
+    
+    
+    
+    try {
+       fail("Should have thrown Overflow Exception: ``922337203685477632.float``");
+    } catch(OverflowException ex) {
+        check(ex.message == "922337203685477632 cannot be coerced into a 64 bit floating point value");
+    }
+    
+    check(922337203685477632.nearestFloat == 9.2233720368547763E17, "large nearest float 1");
+    check((-922337203685477632).nearestFloat == -9.2233720368547763E17, "large negative nearest float");
+    check(922337203685477635.nearestFloat == 9.2233720368547763E17, "large nearest float 2");
     
     check(1.plus { other=2; }.equals { that=3; }, "natural named args");
 

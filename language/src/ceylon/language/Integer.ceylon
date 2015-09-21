@@ -150,7 +150,17 @@ shared native final class Integer(Integer integer)
              this.magnitude>runtime.maxExactIntegralFloat")
     see (`value runtime.maxExactIntegralFloat`)
     shared native Float float;
-    
+
+    "The nearest [[Float]] to this number. For
+     Integers in magnitude less than 2^53, this is always
+     a Float with the exact same mathematical value (and the
+     same value as [[float]]), for larger ones on the JVM the
+     Floats are less dense than the Integers so there can be some
+     loss of precision.
+
+     This method never throws an OverflowException."
+    shared native Float nearestFloat;
+
     shared actual native Integer predecessor;
     shared actual native Integer successor;
     shared actual native Integer neighbour(Integer offset);
