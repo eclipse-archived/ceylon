@@ -1727,7 +1727,7 @@ public class Util {
     public static short toShort(long value) {
         short result = (short) value;
         if (result != value) {
-            throw new OverflowException(value + " cannot be safely converted into a 16 bit integer");
+            throw new OverflowException(value + " cannot be safely converted into a 16-bit integer");
         }
         return result;
     }
