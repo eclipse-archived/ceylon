@@ -413,8 +413,26 @@ shared interface List<out Element=Anything>
      [[list|sublist]] occurs as a sublist."
     shared default 
     {Integer*} inclusions(List<> sublist) 
-            => { for (index in 0:size-sublist.size+1) 
-                    if (includesAt(index,sublist)) index };
+            => object satisfies {Integer*} {
+        size => countInclusions(sublist);
+        empty => includes(sublist);
+        first => firstInclusion(sublist);
+        last => lastInclusion(sublist);
+        iterator() => let (list = outer)
+        object satisfies Iterator<Integer> {
+            variable value index = 0;
+            shared actual Integer|Finished next() {
+                if (exists next 
+                    = list.firstInclusion(sublist, index)) {
+                    index = next+1;
+                    return next;
+                }
+                else {
+                    return finished;
+                }
+            }
+        };
+    };
     
     "Count the indexes in this list at which the given 
      [[list|sublist]] occurs as a sublist, that are greater 
@@ -518,8 +536,26 @@ shared interface List<out Element=Anything>
             "The value. If null, it is considered to occur
              at any index in this list with a null element."
             Anything element)
-            => { for (index in 0:size) 
-                    if (occursAt(index,element)) index };
+            => object satisfies {Integer*} {
+        size => countOccurrences(element);
+        empty => occurs(element);
+        first => firstOccurrence(element);
+        last => lastOccurrence(element);
+        iterator() => let (list = outer)
+        object satisfies Iterator<Integer> {
+            variable value index = 0;
+            shared actual Integer|Finished next() {
+                if (exists next 
+                    = list.firstOccurrence(element, index)) {
+                    index = next+1;
+                    return next;
+                }
+                else {
+                    return finished;
+                }
+            }
+        };
+    };
     
     "Count the indexes in this list at which the given 
      [[value|element]] occurs, that fall within the segment 

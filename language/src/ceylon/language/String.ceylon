@@ -549,8 +549,6 @@ shared native final class String(characters)
     shared actual native Integer? firstInclusion(List<Anything> sublist, Integer from);
     shared actual native Integer? lastInclusion(List<Anything> sublist, Integer to);
     
-    shared actual native {Integer*} inclusions(List<Anything> sublist);
-    
     shared actual native Integer countOccurrences(Anything sublist, Integer from, Integer length);
     shared actual native Integer countInclusions(List<Anything> sublist, Integer from);
         

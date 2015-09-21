@@ -4,7 +4,6 @@ import java.util.Locale;
 
 import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.language.AbstractCallable;
-import com.redhat.ceylon.compiler.java.language.StringInclusions;
 import com.redhat.ceylon.compiler.java.language.StringTokens;
 import com.redhat.ceylon.compiler.java.metadata.Annotation;
 import com.redhat.ceylon.compiler.java.metadata.Annotations;
@@ -644,30 +643,9 @@ public final class String
     @Ignore
     public static Iterable<? extends Integer, ?> 
     inclusions(java.lang.String value, List<?> substring) {
-        if (substring instanceof String) {
-            String string = (String) substring;
-            return new StringInclusions(value, string.value);
-        }
-        else {
-            return instance(value).inclusions(substring);
-        }
+        return instance(value).inclusions(substring);
     }
-
-    @Override
-    @TypeInfo("ceylon.language::Iterable<ceylon.language::Integer>")
-    public Iterable<? extends Integer, ?> 
-    inclusions(
-            @TypeInfo("ceylon.language::List<ceylon.language::Anything>") 
-            @Name("sublist") List<?> sublist) {
-        if (sublist instanceof String) {
-            String string = (String) sublist;
-            return new StringInclusions(value, string.value);
-        }
-        else {
-            return super.inclusions(sublist);
-        }
-    }
-
+    
     @Ignore
     public static long 
     countInclusions(java.lang.String value, List<?> sublist) {
