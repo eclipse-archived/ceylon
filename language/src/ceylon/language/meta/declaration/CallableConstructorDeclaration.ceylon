@@ -10,7 +10,22 @@ import ceylon.language.meta.model{
     MemberClassCallableConstructor,
     MemberClassValueConstructor
 }
+import ceylon.language.meta.declaration {
+    CallableConstructorDeclaration
+}
 
+"""Declaration model for callable constructors, for example
+ 
+       class WithConstructors {
+           shared new () {}
+           shared new clone(WithConstructors other) {}
+       
+       // ...
+       
+       CallableConstructorDeclaration default = `new WithConstructors`;
+       CallableConstructorDeclaration clone = `new WithConstructors.clone`;
+"""
+see (`interface ValueConstructorDeclaration`)
 shared sealed interface CallableConstructorDeclaration 
         satisfies FunctionalDeclaration & ConstructorDeclaration {
     

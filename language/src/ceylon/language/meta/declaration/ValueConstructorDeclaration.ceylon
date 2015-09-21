@@ -11,8 +11,21 @@ import ceylon.language.meta.model{
     MemberClassCallableConstructor,
     MemberClassValueConstructor
 }
+import ceylon.language.meta.declaration {
+    CallableConstructorDeclaration
+}
 
-
+"""Declaration model for value constructors, for example
+   
+       class Currency {
+           "The US Dollar"
+           shared new usd {}
+           // ...
+       }
+       
+       ValueConstructorDeclaration dollars = `new Currency.usd`;
+   """
+see (`interface CallableConstructorDeclaration`)
 shared sealed interface ValueConstructorDeclaration 
         satisfies ValueableDeclaration & ConstructorDeclaration {
     
