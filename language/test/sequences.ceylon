@@ -562,8 +562,9 @@ shared void sequences() {
     check((helloWorld.firstOccurrence('l') else -1)==2, "sequence firstOccurrence");
     check((helloWorld.firstOccurrence('l',3) else -1)==3, "sequence firstOccurrence");
     check((helloWorld.lastOccurrence('l') else -1)==9, "sequence lastOccurrence 1");
-    check((helloWorld.lastOccurrence('l',9) else -1)==9, "sequence lastOccurrence 2");
-    check((helloWorld.lastOccurrence('l',8) else -1)==3, "sequence lastOccurrence 3");
+    check((helloWorld.lastOccurrence('l',0) else -1)==9, "sequence lastOccurrence 2");
+    check((helloWorld.lastOccurrence('l',1) else -1)==9, "sequence lastOccurrence 3");
+    check((helloWorld.lastOccurrence('l',2) else -1)==3, "sequence lastOccurrence 4");
     
     check(helloWorld.inclusions("wor").sequence()==[6], "sequence inclusions");
     check(helloWorld.inclusions("wor",5).sequence()==[6], "sequence inclusions");

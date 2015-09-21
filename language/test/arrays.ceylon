@@ -260,11 +260,12 @@ shared void testArrays() {
     check(helloWorld.occurs('l',3), "array occurs");
     check(helloWorld.countOccurrences('l')==3, "array countOccurrences");
     check(helloWorld.countOccurrences('l',3)==2, "array countOccurrences");
-    check((helloWorld.firstOccurrence('l') else -1)==2, "array firstOccurrence 1");
-    check((helloWorld.firstOccurrence('l',3) else -1)==3, "array firstOccurrence 2");
-    check((helloWorld.lastOccurrence('l') else -1)==9, "array lastOccurrence 1");
-    check((helloWorld.lastOccurrence('l',9) else -1)==9, "array lastOccurrence 2");
-    check((helloWorld.lastOccurrence('l',8) else -1)==3, "array lastOccurrence 3");
+    check((helloWorld.firstOccurrence('l') else -1)==2, "array firstOccurrence");
+    check((helloWorld.firstOccurrence('l',3) else -1)==3, "array firstOccurrence");
+    check((helloWorld.lastOccurrence('l') else -1)==9, "array lastOccurrence");
+    check((helloWorld.lastOccurrence('l',0) else -1)==9, "array lastOccurrence");
+    check((helloWorld.lastOccurrence('l',1) else -1)==9, "array lastOccurrence");
+    check((helloWorld.lastOccurrence('l',2) else -1)==3, "array lastOccurrence");
     
     check(helloWorld.inclusions("wor").sequence()==[6], "array inclusions 1");
     check(helloWorld.inclusions("wor",5).sequence()==[6], "array inclusions 2");
