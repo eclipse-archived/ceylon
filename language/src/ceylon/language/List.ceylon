@@ -284,7 +284,7 @@ shared interface List<out Element=Anything>
     see (`function skip`)
     shared default 
     List<Element> sublistFrom(Integer from) 
-            => from<0 then this else Rest(from); 
+            => from<=0 then this else Rest(from); 
     
     "A sublist of this list, ending at the element with the 
      given [[index|to]].
@@ -940,6 +940,11 @@ shared interface List<out Element=Anything>
         
         assert (from>=0);
         
+        sublistFrom(Integer from)
+                => if (from>0) 
+                then outer.Rest(from+this.from) 
+                else this;
+        
         getFromFirst(Integer index) 
                 => if (index<0)
                 then null 
@@ -1020,6 +1025,11 @@ shared interface List<out Element=Anything>
             satisfies List<Element> {
         
         assert (to>=0);
+        
+        sublistTo(Integer to) 
+                => if (to<0) then [] 
+                else if (to<this.to) then outer.Sublist(to) 
+                else this;
         
         getFromFirst(Integer index)
                 => if (index>=0 && index<=to) 
