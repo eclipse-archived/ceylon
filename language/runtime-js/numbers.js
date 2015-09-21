@@ -326,6 +326,8 @@ atr$(JSNum$proto, 'strictlyPositive', function(){ return this>0 || (this==0 && !
   undefined,function(){return{an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:Float,d:['$','Float','$at','strictlyPositive']};});
 atr$(JSNum$proto, 'strictlyNegative', function() { return this<0 || this.fmz$ || (this==0 && (1/this==-Infinity)); },
   undefined,function(){return{an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:Float,d:['$','Float','$at','strictlyNegative']};});
+atr$(JSNum$proto, 'nearestFloat', function(){ return Float(this.valueOf()); },
+  undefined,function(){return{an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:Integer,d:['$','Integer','$at','nearestFloat']};});
 
 ex$.Integer=Integer;
 ex$.Float=Float;
