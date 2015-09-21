@@ -1934,16 +1934,19 @@ public final class Array<Element>
     @TypeInfo("ceylon.language::Null|ceylon.language::Integer")
     public Integer lastOccurrence(
             @TypeInfo("ceylon.language::Anything") 
-            @Name("element") java.lang.Object element) {
+            @Name("element") java.lang.Object element,
+            @Defaulted @Name("to") long to) {
+        if (to<0) return null;
+        if (to>=size) to = size-1;
         if (element==null) {
-            for (int i=size-1; i>=0; i--) {
+            for (int i=(int)to; i>=0; i--) {
                 if (unsafeItem(i)==null) {
                     return Integer.instance(i);
                 }
             }
         }
         else {
-            for (int i=size-1; i>=0; i--) {
+            for (int i=(int)to; i>=0; i--) {
                 Element item = unsafeItem(i);
                 if (item!=null && item.equals(element)) {
                     return Integer.instance(i);

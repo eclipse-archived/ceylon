@@ -932,8 +932,12 @@ public final class Tuple<Element, First extends Element,
             from = 0;
         }
         long size = list.getSize();
-        if (size>array.length) return null;
-        if (size<=0) return Integer.instance(0);
+        if (size>array.length) {
+            return null;
+        }
+        if (size<=0) {
+            return Integer.instance(from);
+        }
         int offset = array.length - (int) size;
         loop: for (int start=(int)from; start<=offset; start++) {
             for (int i=0; i<size; i++) {
@@ -951,11 +955,31 @@ public final class Tuple<Element, First extends Element,
     }
 
     @Override @Ignore
+    public long lastInclusion$to(List<? extends java.lang.Object> list) {
+        return array.length;
+    }
+    
+    @Override @Ignore
     public Integer lastInclusion(List<? extends java.lang.Object> list) {
+        return lastInclusion(list, array.length);
+    }
+
+    @Override @Ignore
+    public Integer lastInclusion(List<? extends java.lang.Object> list, long to) {
+        if (to<0) {
+            return null;
+        }
+        if (to>=array.length) {
+            to = array.length-1;
+        }
         long size = list.getSize();
-        if (size>array.length) return null;
-        if (size<=0) return Integer.instance(0);
-        int offset = array.length - (int) size;
+        if (size<=0) {
+            return Integer.instance(to);
+        }
+        if (size>array.length) {
+            return null;
+        }
+        int offset = (int) to - (int) size + 1;
         if (offset<0) return null;
         loop: for (int start=offset; start>=0; start--) {
             for (int i=0; i<size; i++) {
@@ -1000,7 +1024,7 @@ public final class Tuple<Element, First extends Element,
     @Override @Ignore
     public long 
     firstOccurrence$length(java.lang.Object o, long from) {
-        return java.lang.Integer.MAX_VALUE;
+        return array.length;
     }
     
     @Override @Ignore
@@ -1010,7 +1034,7 @@ public final class Tuple<Element, First extends Element,
 
     @Override @Ignore
     public Integer firstOccurrence(java.lang.Object o, long from) {
-        return firstOccurrence(o, from, java.lang.Integer.MAX_VALUE);
+        return firstOccurrence(o, from, array.length);
     }
 
     @Override @Ignore
@@ -1036,8 +1060,24 @@ public final class Tuple<Element, First extends Element,
     }
 
     @Override @Ignore
+    public long lastOccurrence$to(java.lang.Object o) {
+        return array.length;
+    }
+    
+    @Override @Ignore
     public Integer lastOccurrence(java.lang.Object o) {
-        for (int i=array.length-1; i>=0; i--) {
+        return lastOccurrence(o, array.length);
+    }
+
+    @Override @Ignore
+    public Integer lastOccurrence(java.lang.Object o, long to) {
+        if (to<0) {
+            return null;
+        }
+        if (to>=array.length) {
+            to = array.length-1;
+        }
+        for (int i=(int) to; i>=0; i--) {
             java.lang.Object x = array[i];
             if (x==o || (x!=null && o!=null && x.equals(o))) {
                 return Integer.instance(i);
@@ -1078,14 +1118,18 @@ public final class Tuple<Element, First extends Element,
     public boolean includes(List<? extends java.lang.Object> list,
             long from) {
         if (from>=array.length) {
-            return list.getEmpty();
+            return false;
         }
         if (from<0) {
             from = 0;
         }
         long size = list.getSize();
-        if (size>array.length) return false;
-        if (size<=0) return true;
+        if (size>array.length) {
+            return false;
+        }
+        if (size<=0) {
+            return true;
+        }
         int offset = array.length - (int) size;
         if (offset<0) return false;
         loop: for (int start=(int)from; start<=offset; start++) {
@@ -1168,7 +1212,7 @@ public final class Tuple<Element, First extends Element,
     @Override @Ignore
     public long 
     countOccurrences$length(java.lang.Object o, long from) {
-        return java.lang.Integer.MAX_VALUE;
+        return array.length;
     }
     
     @Override @Ignore
@@ -1180,7 +1224,7 @@ public final class Tuple<Element, First extends Element,
     @Override @Ignore
     public long 
     countOccurrences(java.lang.Object o, long from) {
-        return countOccurrences(o,from,java.lang.Integer.MAX_VALUE);
+        return countOccurrences(o,from,array.length);
     }
 
     @Override @Ignore
@@ -1198,7 +1242,7 @@ public final class Tuple<Element, First extends Element,
     @Override @Ignore
     public long 
     occurs$length(java.lang.Object o, long from) {
-        return java.lang.Integer.MAX_VALUE;
+        return array.length;
     }
     
     @Override @Ignore
@@ -1208,7 +1252,7 @@ public final class Tuple<Element, First extends Element,
 
     @Override @Ignore
     public boolean occurs(java.lang.Object o, long from) {
-        return occurs(o, from, java.lang.Integer.MAX_VALUE);
+        return occurs(o, from, array.length);
     }
 
     @Override @Ignore

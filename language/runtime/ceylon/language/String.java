@@ -566,7 +566,7 @@ public final class String
     public static boolean includes(java.lang.String value, 
             List<?> sublist, long from) {
         if (from>=value.length()) {
-            return value.isEmpty();
+            return false;
         }
         if (from<0) {
             from = 0;
@@ -770,9 +770,21 @@ public final class String
     
     public static Integer lastInclusion(java.lang.String value, 
     		List<?> sublist) {
+        return lastInclusion(value, sublist, 
+                java.lang.Integer.MAX_VALUE);
+    }
+    
+    public static Integer lastInclusion(java.lang.String value, 
+            List<?> sublist, long to) {
+        if (to<0) {
+            return null;
+        }
+        if (to>value.length()) {
+            to = value.length();
+        }
         if (sublist instanceof String) {
             String string = (String) sublist;
-            int index = value.lastIndexOf(string.value);
+            int index = value.lastIndexOf(string.value, (int)to);
             if (index >= 0) {
                 return Integer.instance(value.codePointCount(0, index));
             } else {
@@ -786,12 +798,14 @@ public final class String
     
     @Override
     @TypeInfo("ceylon.language::Null|ceylon.language::Integer")
-    public Integer lastInclusion(@Name("sublist") List<?> sublist) {
+    public Integer lastInclusion(
+            @Name("sublist") List<?> sublist,
+            @Defaulted @Name("to") long to) {
         if (sublist instanceof String) {
-            return lastInclusion(value, sublist);
+            return lastInclusion(value, sublist, to);
         }
         else {
-            return super.lastInclusion(sublist);
+            return super.lastInclusion(sublist, to);
         }
     }
     
@@ -863,9 +877,22 @@ public final class String
     @Ignore
     public static Integer lastOccurrence(java.lang.String value, 
             java.lang.Object element) {
+        return lastOccurrence(value, element, 
+                java.lang.Integer.MAX_VALUE);
+    }
+    
+    @Ignore
+    public static Integer lastOccurrence(java.lang.String value, 
+            java.lang.Object element, long to) {
+        if (to<0) {
+            return null;
+        }
+        if (to>value.length()) {
+            to = value.length();
+        }
         if (element instanceof Character) {
             Character character = (Character) element;
-            int index = value.lastIndexOf(character.codePoint);
+            int index = value.lastIndexOf(character.codePoint, (int)to);
             if (index >= 0) {
                 return Integer.instance(value.codePointCount(0, index));
             } else {
@@ -882,9 +909,10 @@ public final class String
     public Integer lastOccurrence(
             @Name("element") 
             @TypeInfo("ceylon.language::Anything")
-            java.lang.Object element) {
+            java.lang.Object element,
+            @Defaulted @Name("to") long to) {
         if (element instanceof Character) {
-            return lastOccurrence(value, element);
+            return lastOccurrence(value, element, to);
         }
         else {
             return null;

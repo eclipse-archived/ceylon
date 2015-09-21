@@ -401,9 +401,6 @@ shared interface List<out Element=Anything>
     Boolean includes(List<> sublist,
             "The smallest index to consider."
             Integer from = 0) {
-        if (sublist.empty) {
-            return true;
-        }
         for (index in from:size-sublist.size+1-from) {
             if (includesAt(index,sublist)) {
                 return true;
@@ -453,10 +450,15 @@ shared interface List<out Element=Anything>
     }
     
     "The last index in this list at which the given 
-     [[list|sublist]] occurs as a sublist."
+     [[list|sublist]] occurs as a sublist, that is smaller 
+     than the optional [[end index|to]]."
     shared default 
-    Integer? lastInclusion(List<> sublist) {
-        for (index in (0:size-sublist.size+1).reversed) {
+    Integer? lastInclusion(List<> sublist,
+            "The largest index to consider."
+            Integer to = size) {
+        value max = size-sublist.size+1;
+        value end = to<max then to else max;
+        for (index in (0:end).reversed) {
             if (includesAt(index,sublist)) {
                 return index;
             }
@@ -498,7 +500,7 @@ shared interface List<out Element=Anything>
             "The smallest index to consider."
             Integer from = 0,
             "The number of indexes to consider."
-            Integer length = runtime.maxIntegerValue) {
+            Integer length = size) {
         for (index in from:length) {
             if (occursAt(index,element)) {
                 return true;
@@ -531,7 +533,7 @@ shared interface List<out Element=Anything>
             "The smallest index to consider."
             Integer from = 0,
             "The number of indexes to consider."
-            Integer length = runtime.maxIntegerValue) {
+            Integer length = size) {
         variable value count = 0;
         for (index in from:length) {
             if (occursAt(index,element)) {
@@ -553,7 +555,7 @@ shared interface List<out Element=Anything>
             "The smallest index to consider."
             Integer from = 0,
             "The number of indexes to consider."
-            Integer length = runtime.maxIntegerValue) {
+            Integer length = size) {
         for (index in from:length) {
             if (occursAt(index,element)) {
                 return index;
@@ -565,13 +567,17 @@ shared interface List<out Element=Anything>
     }
     
     "The last index in this list at which the given 
-     [[value|element]] occurs."
+     [[value|element]] occurs, that is smaller than the
+     optional [[end index|to]]."
     shared default 
     Integer? lastOccurrence(
             "The value. If null, it is considered to occur
              at any index in this list with a null element."
-            Anything element) {
-        for (index in (0:size).reversed) {
+            Anything element,
+            "The largest index to consider."
+            Integer to = size) {
+        value end = to<size then to else size;
+        for (index in (0:end).reversed) {
             if (occursAt(index,element)) {
                 return index;
             }
