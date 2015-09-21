@@ -527,7 +527,7 @@ shared interface List<out Element=Anything>
             "The smallest index to consider."
             Integer from = 0,
             "The number of indexes to consider."
-            Integer length = size) {
+            Integer length = size-from) {
         for (index in from:length) {
             if (occursAt(index,element)) {
                 return true;
@@ -582,7 +582,7 @@ shared interface List<out Element=Anything>
             "The smallest index to consider."
             Integer from = 0,
             "The number of indexes to consider."
-            Integer length = size) {
+            Integer length = size-from) {
         variable value count = 0;
         for (index in from:length) {
             if (occursAt(index,element)) {
@@ -604,7 +604,7 @@ shared interface List<out Element=Anything>
             "The smallest index to consider."
             Integer from = 0,
             "The number of indexes to consider."
-            Integer length = size) {
+            Integer length = size-from) {
         for (index in from:length) {
             if (occursAt(index,element)) {
                 return index;

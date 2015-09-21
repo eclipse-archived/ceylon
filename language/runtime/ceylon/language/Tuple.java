@@ -1024,7 +1024,7 @@ public final class Tuple<Element, First extends Element,
     @Override @Ignore
     public long 
     firstOccurrence$length(java.lang.Object o, long from) {
-        return array.length;
+        return array.length-from;
     }
     
     @Override @Ignore
@@ -1234,7 +1234,7 @@ public final class Tuple<Element, First extends Element,
     @Override @Ignore
     public long 
     countOccurrences$length(java.lang.Object o, long from) {
-        return array.length;
+        return array.length-from;
     }
     
     @Override @Ignore
@@ -1264,7 +1264,7 @@ public final class Tuple<Element, First extends Element,
     @Override @Ignore
     public long 
     occurs$length(java.lang.Object o, long from) {
-        return array.length;
+        return array.length-from;
     }
     
     @Override @Ignore
