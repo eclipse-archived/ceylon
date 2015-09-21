@@ -546,20 +546,28 @@ shared interface List<out Element=Anything>
              at any index in this list with a null element."
             Anything element,
             "The smallest index to consider."
-            Integer from = 0)
+            Integer from = 0,
+            "The number of indexes to consider."
+            Integer length = size-from)
             => object satisfies {Integer*} {
-        size => countOccurrences(element, from);
-        empty => occurs(element, from);
-        first => firstOccurrence(element, from);
-        last => if (exists index = lastOccurrence(sublist)) 
-                then (index>=from then index) 
+        size => countOccurrences(element, from, length);
+        empty => occurs(element, from, length);
+        first => firstOccurrence(element, from, length);
+        last => if (length>0,
+                    exists index
+                    = lastOccurrence(element, from+length-1)) 
+                then (index>=from then index)
                 else null;
         iterator() => let (list = outer)
         object satisfies Iterator<Integer> {
             variable value index = from;
             shared actual Integer|Finished next() {
                 if (exists next 
-                    = list.firstOccurrence(element, index)) {
+                    = list.firstOccurrence {
+                        element = element;
+                        from = index;
+                        length = length;
+                    }) {
                     index = next+1;
                     return next;
                 }
@@ -982,8 +990,8 @@ shared interface List<out Element=Anything>
         countOccurrences(Anything element, Integer from, Integer length)
                 => outer.countOccurrences(element, from+this.from, length);
         
-        occurrences(Anything element, Integer from)
-                => outer.occurrences(element, from+this.from)
+        occurrences(Anything element, Integer from, Integer length)
+                => outer.occurrences(element, from+this.from, length)
                     .map((i) => i-this.from);
         
         firstInclusion(List<> sublist, Integer from)

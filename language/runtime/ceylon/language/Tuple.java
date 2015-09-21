@@ -1214,6 +1214,11 @@ public final class Tuple<Element, First extends Element,
     }
 
     @Override @Ignore
+    public long occurrences$length(java.lang.Object o, long from) {
+        return array.length-from;
+    }
+
+    @Override @Ignore
     public Iterable<? extends Integer, ? extends java.lang.Object> 
     occurrences(java.lang.Object o) {
         return $ceylon$language$List$impl().occurrences(o);
@@ -1223,6 +1228,12 @@ public final class Tuple<Element, First extends Element,
     public Iterable<? extends Integer, ? extends java.lang.Object> 
     occurrences(java.lang.Object o, long from) {
         return $ceylon$language$List$impl().occurrences(o, from);
+    }
+    
+    @Override @Ignore
+    public Iterable<? extends Integer, ? extends java.lang.Object> 
+    occurrences(java.lang.Object o, long from, long length) {
+        return $ceylon$language$List$impl().occurrences(o, from, length);
     }
     
     @Override @Ignore
