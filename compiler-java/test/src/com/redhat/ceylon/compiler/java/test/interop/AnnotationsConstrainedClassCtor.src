@@ -1,0 +1,31 @@
+package com.redhat.ceylon.compiler.java.test.interop;
+
+@.com.redhat.ceylon.compiler.java.test.interop.JavaAnnotationTypeTarget
+class ConstraintedClassCtorWithInit implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    @.com.redhat.ceylon.compiler.java.test.interop.JavaAnnotationCtorTarget
+    ConstraintedClassCtorWithInit() {
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.interop.ConstraintedClassCtorWithInit.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.interop.ConstraintedClassCtorWithInit.class);
+}
+@.com.redhat.ceylon.compiler.java.test.interop.JavaAnnotationTypeTarget
+@.com.redhat.ceylon.compiler.java.test.interop.JavaAnnotationTypeCtorTarget
+class ConstraintedClassCtorWithCtor implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    @.com.redhat.ceylon.compiler.java.test.interop.JavaAnnotationCtorTarget
+    @.com.redhat.ceylon.compiler.java.test.interop.JavaAnnotationTypeCtorTarget
+    @.ceylon.language.SharedAnnotation$annotation$
+    public ConstraintedClassCtorWithCtor() {
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.interop.ConstraintedClassCtorWithCtor.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.interop.ConstraintedClassCtorWithCtor.class);
+}
