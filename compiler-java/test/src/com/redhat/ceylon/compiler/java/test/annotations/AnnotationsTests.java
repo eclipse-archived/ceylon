@@ -317,4 +317,9 @@ public class AnnotationsTests extends CompilerTests {
         compile("Targets.java");
         compareWithJavaSource("Bug2160");
     }
+    
+    @Test
+    public void testBug2315(){
+        compareWithJavaSource("Bug2315");
+    }
  }

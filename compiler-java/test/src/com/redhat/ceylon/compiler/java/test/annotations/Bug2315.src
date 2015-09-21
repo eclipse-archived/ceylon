@@ -1,0 +1,211 @@
+package com.redhat.ceylon.compiler.java.test.annotations;
+
+@.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@.java.lang.annotation.Target({.java.lang.annotation.ElementType.TYPE})
+@interface Bug2315$annotation$ {
+    
+    public abstract .java.lang.String[] strings();
+}
+@.ceylon.language.FinalAnnotation$annotation$
+@.ceylon.language.AnnotationAnnotation$annotation$
+final class Bug2315 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.OptionalAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.Bug2315, .ceylon.language.meta.declaration.ClassDeclaration, .java.lang.Object> {
+    
+    Bug2315(.com.redhat.ceylon.compiler.java.test.annotations.Bug2315$annotation$ anno) {
+        this((.ceylon.language.Sequence<? extends .ceylon.language.String>).com.redhat.ceylon.compiler.java.Util.sequentialWrapperBoxed(anno.strings()));
+    }
+    
+    Bug2315(final .ceylon.language.Sequence<? extends .ceylon.language.String> strings) {
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.annotations.Bug2315.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.Bug2315.class);
+    
+    @.java.lang.Override
+    public .java.lang.Class<? extends .java.lang.annotation.Annotation> annotationType() {
+        return .com.redhat.ceylon.compiler.java.test.annotations.Bug2315$annotation$.class;
+    }
+}
+@.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
+        arguments = {0},
+        primary = .com.redhat.ceylon.compiler.java.test.annotations.Bug2315.class)
+final class bug2315_ {
+    
+    private bug2315_() {
+    }
+    
+    @.ceylon.language.AnnotationAnnotation$annotation$
+    static .com.redhat.ceylon.compiler.java.test.annotations.Bug2315 bug2315(final .ceylon.language.Sequence<? extends .ceylon.language.String> strings) {
+        return new .com.redhat.ceylon.compiler.java.test.annotations.Bug2315(strings);
+    }
+}
+@.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@.java.lang.annotation.Target({.java.lang.annotation.ElementType.TYPE})
+@interface Bug2315Integer$annotation$ {
+    
+    public abstract long[] ints();
+}
+@.ceylon.language.FinalAnnotation$annotation$
+@.ceylon.language.AnnotationAnnotation$annotation$
+final class Bug2315Integer implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.OptionalAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.Bug2315Integer, .ceylon.language.meta.declaration.ClassDeclaration, .java.lang.Object> {
+    
+    Bug2315Integer(.com.redhat.ceylon.compiler.java.test.annotations.Bug2315Integer$annotation$ anno) {
+        this((.ceylon.language.Sequence<? extends .ceylon.language.Integer>).com.redhat.ceylon.compiler.java.Util.sequentialWrapperBoxed(anno.ints()));
+    }
+    
+    Bug2315Integer(final .ceylon.language.Sequence<? extends .ceylon.language.Integer> ints) {
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.annotations.Bug2315Integer.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.Bug2315Integer.class);
+    
+    @.java.lang.Override
+    public .java.lang.Class<? extends .java.lang.annotation.Annotation> annotationType() {
+        return .com.redhat.ceylon.compiler.java.test.annotations.Bug2315Integer$annotation$.class;
+    }
+}
+@.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
+        arguments = {0},
+        primary = .com.redhat.ceylon.compiler.java.test.annotations.Bug2315Integer.class)
+final class bug2315Integer_ {
+    
+    private bug2315Integer_() {
+    }
+    
+    @.ceylon.language.AnnotationAnnotation$annotation$
+    static .com.redhat.ceylon.compiler.java.test.annotations.Bug2315Integer bug2315Integer(final .ceylon.language.Sequence<? extends .ceylon.language.Integer> ints) {
+        return new .com.redhat.ceylon.compiler.java.test.annotations.Bug2315Integer(ints);
+    }
+}
+@.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@.java.lang.annotation.Target({.java.lang.annotation.ElementType.TYPE})
+@interface Bug2315Class$annotation$ {
+    
+    @.com.redhat.ceylon.compiler.java.metadata.DeclarationReference
+    public abstract .java.lang.String[] classes();
+}
+@.ceylon.language.FinalAnnotation$annotation$
+@.ceylon.language.AnnotationAnnotation$annotation$
+final class Bug2315Class implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.OptionalAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.Bug2315Class, .ceylon.language.meta.declaration.ClassDeclaration, .java.lang.Object> {
+    
+    Bug2315Class(.com.redhat.ceylon.compiler.java.test.annotations.Bug2315Class$annotation$ anno) {
+        this((.ceylon.language.Sequence<? extends .ceylon.language.meta.declaration.ClassDeclaration>).com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.<.ceylon.language.meta.declaration.ClassDeclaration>parseMetamodelReferences(.ceylon.language.meta.declaration.ClassDeclaration.$TypeDescriptor$, anno.classes()));
+    }
+    
+    Bug2315Class(final .ceylon.language.Sequence<? extends .ceylon.language.meta.declaration.ClassDeclaration> classes) {
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.annotations.Bug2315Class.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.Bug2315Class.class);
+    
+    @.java.lang.Override
+    public .java.lang.Class<? extends .java.lang.annotation.Annotation> annotationType() {
+        return .com.redhat.ceylon.compiler.java.test.annotations.Bug2315Class$annotation$.class;
+    }
+}
+@.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
+        arguments = {0},
+        primary = .com.redhat.ceylon.compiler.java.test.annotations.Bug2315Class.class)
+final class bug2315Class_ {
+    
+    private bug2315Class_() {
+    }
+    
+    @.ceylon.language.AnnotationAnnotation$annotation$
+    static .com.redhat.ceylon.compiler.java.test.annotations.Bug2315Class bug2315Class(final .ceylon.language.Sequence<? extends .ceylon.language.meta.declaration.ClassDeclaration> classes) {
+        return new .com.redhat.ceylon.compiler.java.test.annotations.Bug2315Class(classes);
+    }
+}
+@.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@.java.lang.annotation.Target({})
+@interface Bug2315Iterable$annotation$ {
+    
+    public abstract .java.lang.String[] strings();
+}
+@.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@.java.lang.annotation.Target({.java.lang.annotation.ElementType.TYPE})
+@interface Bug2315Iterable$annotations$ {
+    
+    public abstract .com.redhat.ceylon.compiler.java.test.annotations.Bug2315Iterable$annotation$[] value();
+}
+@.com.redhat.ceylon.compiler.java.test.annotations.Bug2315Iterable$annotations$({@.com.redhat.ceylon.compiler.java.test.annotations.Bug2315Iterable$annotation$(strings = {
+        "foo",
+        "bar"})})
+@.ceylon.language.FinalAnnotation$annotation$
+@.ceylon.language.AnnotationAnnotation$annotation$
+final class Bug2315Iterable implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.SequencedAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.Bug2315Iterable, .ceylon.language.meta.declaration.ClassDeclaration, .java.lang.Object> {
+    
+    Bug2315Iterable(.com.redhat.ceylon.compiler.java.test.annotations.Bug2315Iterable$annotation$ anno) {
+        this((.ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object>).com.redhat.ceylon.compiler.java.Util.sequentialWrapperBoxed(anno.strings()));
+    }
+    
+    Bug2315Iterable(final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> strings) {
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.annotations.Bug2315Iterable.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.Bug2315Iterable.class);
+    
+    @.java.lang.Override
+    public .java.lang.Class<? extends .java.lang.annotation.Annotation> annotationType() {
+        return .com.redhat.ceylon.compiler.java.test.annotations.Bug2315Iterable$annotation$.class;
+    }
+}
+@.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
+        arguments = {0},
+        primary = .com.redhat.ceylon.compiler.java.test.annotations.Bug2315Iterable.class)
+final class bug2315Iterable_ {
+    
+    private bug2315Iterable_() {
+    }
+    
+    @.ceylon.language.AnnotationAnnotation$annotation$
+    static .com.redhat.ceylon.compiler.java.test.annotations.Bug2315Iterable bug2315Iterable(final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> strings) {
+        return new .com.redhat.ceylon.compiler.java.test.annotations.Bug2315Iterable(strings);
+    }
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Method
+@.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
+        arguments = {0},
+        primary = .com.redhat.ceylon.compiler.java.test.annotations.Bug2315Iterable.class)
+final class bug2315Iterable2_ {
+    
+    private bug2315Iterable2_() {
+    }
+    
+    @.ceylon.language.AnnotationAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.annotations::Bug2315Iterable")
+    static .com.redhat.ceylon.compiler.java.test.annotations.Bug2315Iterable bug2315Iterable2(@.com.redhat.ceylon.compiler.java.metadata.Name("strings")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("[ceylon.language::String+]")
+    final .ceylon.language.Sequence<? extends .ceylon.language.String> strings) {
+        return new .com.redhat.ceylon.compiler.java.test.annotations.Bug2315Iterable(strings);
+    }
+}
+@.com.redhat.ceylon.compiler.java.test.annotations.Bug2315$annotation$(strings = {"foo"})
+@.com.redhat.ceylon.compiler.java.test.annotations.Bug2315Integer$annotation$(ints = {1L})
+@.com.redhat.ceylon.compiler.java.test.annotations.Bug2315Class$annotation$(classes = {"::1.2.3:com.redhat.ceylon.compiler.java.test.annotations::CBug2315Use"})
+@.com.redhat.ceylon.compiler.java.test.annotations.Bug2315Iterable$annotations$({
+        @.com.redhat.ceylon.compiler.java.test.annotations.Bug2315Iterable$annotation$(strings = {"foo"}),
+        @.com.redhat.ceylon.compiler.java.test.annotations.Bug2315Iterable$annotation$(strings = {"foo"})})
+class Bug2315Use implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    Bug2315Use() {
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.annotations.Bug2315Use.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.Bug2315Use.class);
+}
