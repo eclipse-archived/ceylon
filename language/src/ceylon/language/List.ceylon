@@ -963,7 +963,7 @@ shared interface List<out Element=Anything>
                 else null;
         
         lastOccurrence(Anything element, Integer to)
-                => if (exists index = outer.firstOccurrence(element, to+this.from))
+                => if (exists index = outer.lastOccurrence(element, to+this.from))
                 then (index>=from then index-this.from) 
                 else null;
         
@@ -1050,7 +1050,7 @@ shared interface List<out Element=Anything>
                         length>to-from+1 then to-from+1 else length);
         
         lastOccurrence(Anything element, Integer to)
-                => outer.firstOccurrence(element, to+this.to);
+                => outer.lastOccurrence(element, to+this.to);
         
         
         firstInclusion(List<> sublist, Integer from)
