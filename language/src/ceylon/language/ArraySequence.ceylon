@@ -148,6 +148,6 @@ class ArraySequence<out Element>(array)
             => array.countOccurrences(element, from, length);
     
     occurrences(Anything element, Integer from, Integer length)
-            => array.occurs(element, from, length);
+            => array.occurrences(element, from, length);
     
 }
