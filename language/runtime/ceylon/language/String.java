@@ -491,6 +491,13 @@ public final class String
     }
 
     @Ignore
+    public static Iterable<? extends Integer, ?> 
+    occurrences(java.lang.String value, java.lang.Object element,
+            long from) {
+        return instance(value).occurrences(element, from);
+    }
+
+    @Ignore
     public static long 
     countOccurrences(java.lang.String value, 
             java.lang.Object element) {
@@ -644,6 +651,13 @@ public final class String
     public static Iterable<? extends Integer, ?> 
     inclusions(java.lang.String value, List<?> substring) {
         return instance(value).inclusions(substring);
+    }
+    
+    @Ignore
+    public static Iterable<? extends Integer, ?> 
+    inclusions(java.lang.String value, List<?> substring,
+            long from) {
+        return instance(value).inclusions(substring, from);
     }
     
     @Ignore

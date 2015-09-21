@@ -410,17 +410,22 @@ shared interface List<out Element=Anything>
     }
     
     "The indexes in this list at which the given 
-     [[list|sublist]] occurs as a sublist."
+     [[list|sublist]] occurs as a sublist, that are greater 
+     than or equal to the optional [[starting index|from]]."
     shared default 
-    {Integer*} inclusions(List<> sublist) 
+    {Integer*} inclusions(List<> sublist,
+            "The smallest index to consider." 
+            Integer from = 0) 
             => object satisfies {Integer*} {
-        size => countInclusions(sublist);
-        empty => includes(sublist);
-        first => firstInclusion(sublist);
-        last => lastInclusion(sublist);
+        size => countInclusions(sublist, from);
+        empty => includes(sublist, from);
+        first => firstInclusion(sublist, from);
+        last => if (exists index = lastInclusion(sublist)) 
+                then (index>=from then index) 
+                else null;
         iterator() => let (list = outer)
         object satisfies Iterator<Integer> {
-            variable value index = 0;
+            variable value index = from;
             shared actual Integer|Finished next() {
                 if (exists next 
                     = list.firstInclusion(sublist, index)) {
@@ -440,7 +445,7 @@ shared interface List<out Element=Anything>
     shared default
     Integer countInclusions(List<> sublist,
             "The smallest index to consider." 
-            Integer from=0) {
+            Integer from = 0) {
         variable value count = 0;
         for (index in from:size-sublist.size+1-from) {
             if (includesAt(index,sublist)) {
@@ -456,7 +461,7 @@ shared interface List<out Element=Anything>
     shared default 
     Integer? firstInclusion(List<> sublist,
             "The smallest index to consider." 
-            Integer from=0) {
+            Integer from = 0) {
         for (index in from:size-sublist.size+1-from) {
             if (includesAt(index,sublist)) {
                 return index;
@@ -535,15 +540,19 @@ shared interface List<out Element=Anything>
     {Integer*} occurrences(
             "The value. If null, it is considered to occur
              at any index in this list with a null element."
-            Anything element)
+            Anything element,
+            "The smallest index to consider."
+            Integer from = 0)
             => object satisfies {Integer*} {
-        size => countOccurrences(element);
-        empty => occurs(element);
-        first => firstOccurrence(element);
-        last => lastOccurrence(element);
+        size => countOccurrences(element, from);
+        empty => occurs(element, from);
+        first => firstOccurrence(element, from);
+        last => if (exists index = lastOccurrence(sublist)) 
+                then (index>=from then index) 
+                else null;
         iterator() => let (list = outer)
         object satisfies Iterator<Integer> {
-            variable value index = 0;
+            variable value index = from;
             shared actual Integer|Finished next() {
                 if (exists next 
                     = list.firstOccurrence(element, index)) {
