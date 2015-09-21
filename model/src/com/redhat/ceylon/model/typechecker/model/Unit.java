@@ -119,13 +119,17 @@ public class Unit {
     }
     
     public String getAliasedName(Declaration dec) {
+        return getAliasedName(dec, dec.getName());
+    }
+
+    public String getAliasedName(Declaration dec, String defaultValue) {
         for (Import i: getImports()) {
             if (!i.isAmbiguous() &&
-            		i.getDeclaration().equals(getAbstraction(dec))) {
+                    i.getDeclaration().equals(getAbstraction(dec))) {
                 return i.getAlias();
             }
         }
-		return dec.getName();
+        return defaultValue;
     }
 
     public static Declaration getAbstraction(Declaration dec){
