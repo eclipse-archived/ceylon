@@ -548,7 +548,7 @@ public final class String
     
     @Override
     public long countOccurrences(
-            @Name("element")
+            @Name("sublist")
             @TypeInfo("ceylon.language::Anything")
             java.lang.Object element,
             @Defaulted @Name("from") long from,
