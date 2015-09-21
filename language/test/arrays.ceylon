@@ -254,8 +254,8 @@ shared void testArrays() {
     
     Array<Character> helloWorld = Array("hello world");
     
-    check(helloWorld.occurrences('l').sequence()==[2,3,9], "array occurrences");
-    check(helloWorld.occurrences('l',3).sequence()==[3,9], "array occurrences");
+    check(helloWorld.occurrences('l').sequence()==[2,3,9], "array occurrences 1");
+    check(helloWorld.occurrences('l',3).sequence()==[3,9], "array occurrences 2");
     check(helloWorld.occurs('l'), "array occurs");
     check(helloWorld.occurs('l',3), "array occurs");
     check(helloWorld.countOccurrences('l')==3, "array countOccurrences");
