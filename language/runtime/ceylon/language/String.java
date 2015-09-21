@@ -512,7 +512,7 @@ public final class String
     countOccurrences(java.lang.String value, 
             java.lang.Object element, 
             long from, long length) {
-        if (from>=value.length() || from<=0) {
+        if (from>=value.length() || length<=0) {
             return 0;
         }
         if (from<0) {
