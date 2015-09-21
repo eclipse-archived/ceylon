@@ -957,6 +957,46 @@ shared interface List<out Element=Anything>
         spanTo(Integer to) 
                 => outer[this.from..to+this.from];
         
+        firstOccurrence(Anything element, Integer from, Integer length)
+                => if (exists index = outer.firstOccurrence(element, from+this.from, length))
+                then index-this.from
+                else null;
+        
+        lastOccurrence(Anything element, Integer to)
+                => if (exists index = outer.firstOccurrence(element, to+this.from))
+                then (index>=from then index-this.from) 
+                else null;
+        
+        occurs(Anything element, Integer from, Integer length)
+                => outer.occurs(element, from+this.from, length);
+        
+        countOccurrences(Anything element, Integer from, Integer length)
+                => outer.countOccurrences(element, from+this.from, length);
+        
+        occurrences(Anything element, Integer from)
+                => outer.occurrences(element, from+this.from)
+                    .map((i) => i-this.from);
+        
+        firstInclusion(List<> sublist, Integer from)
+                => if (exists index = outer.firstInclusion(sublist, from+this.from))
+                then index-this.from
+                else null;
+        
+        lastInclusion(List<> sublist, Integer to)
+                => if (exists index = outer.lastInclusion(sublist, to+this.from))
+                then (index>=from then index-this.from) 
+                else null;
+        
+        includes(List<> sublist, Integer from)
+                => outer.occurs(sublist, from+this.from);
+        
+        countInclusions(List<> sublist, Integer from)
+                => outer.countInclusions(sublist, from+this.from);
+        
+        inclusions(List<> sublist, Integer from)
+                => outer.inclusions(sublist, from+this.from)
+                    .map((i) => i-this.from);
+                
         clone() => outer.clone().Rest(from);
         
         iterator() 
@@ -1005,6 +1045,23 @@ shared interface List<out Element=Anything>
                     then outer[...this.to] 
                     else outer[...to];
         
+        firstOccurrence(Anything element, Integer from, Integer length)
+                => outer.firstOccurrence(element, from, 
+                        length>to-from+1 then to-from+1 else length);
+        
+        lastOccurrence(Anything element, Integer to)
+                => outer.firstOccurrence(element, to+this.to);
+        
+        
+        firstInclusion(List<> sublist, Integer from)
+                => if (exists index 
+                    = outer.firstInclusion(sublist, from))
+                then (index<=to then index)
+                else null;
+        
+        lastInclusion(List<> sublist, Integer to)
+                => outer.lastInclusion(sublist, to+this.to);
+                
         clone() => outer.clone().Sublist(to);
         
         iterator() 
