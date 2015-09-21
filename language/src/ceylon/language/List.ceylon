@@ -1050,7 +1050,8 @@ shared interface List<out Element=Anything>
                         length>to-from+1 then to-from+1 else length);
         
         lastOccurrence(Anything element, Integer to)
-                => outer.lastOccurrence(element, to+this.to);
+                => outer.lastOccurrence(element, 
+                        to<this.to then to else this.to);
         
         
         firstInclusion(List<> sublist, Integer from)
@@ -1060,7 +1061,8 @@ shared interface List<out Element=Anything>
                 else null;
         
         lastInclusion(List<> sublist, Integer to)
-                => outer.lastInclusion(sublist, to+this.to);
+                => outer.lastInclusion(sublist, 
+                        to<this.to then to else this.to);
                 
         clone() => outer.clone().Sublist(to);
         
