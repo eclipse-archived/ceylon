@@ -173,4 +173,19 @@ shared void lists() {
     check((0..10).slice(5)==[[0,1,2,3,4],[5,6,7,8,9,10]], "range slice");
     value chars = "foobar" of List<Character>;
     check(chars.slice(3)==["foo","bar"], "string slice");
+    
+    check("hello world".sublistFrom(2)=="llo world".sequence(), "sublistFrom");
+    check("hello world".sublist(3,8)=="lo wor".sequence(), "sublist");
+    check("hello world".sublistFrom(2)[1..3]=="lo ", "sublistFrom segment");
+    check("hello world".sublist(3,8)[2:3]==" wo", "sublist span");
+    check("hello world".sublistFrom(2).occurrences('l').sequence()==[0,1,7], "sublistFrom occurrences");
+    check("hello world".sublist(3,8).occurrences('l').sequence()==[0], "sublist occurrences");
+    check("hello world".sublistFrom(2).occurs('l'), "sublistFrom occurs");
+    check("hello world".sublist(3,8).occurs('l'), "sublist occurs");
+    check("hello world".sublistFrom(2).countOccurrences('l')==3, "sublistFrom countOccurrences");
+    check("hello world".sublist(3,8).countOccurrences('l')==1, "sublist countOccurrences");
+    check(("hello world".sublistFrom(2).firstOccurrence('l') else -1)==0, "sublistFrom firstOccurrence");
+    check(("hello world".sublist(3,8).firstOccurrence('l') else -1)==0, "sublist firstOccurrence");
+    check(("hello world".sublistFrom(2).lastOccurrence('l') else -1)==7, "sublistFrom lastOccurrence");
+    check(("hello world".sublist(3,8).lastOccurrence('l') else -1)==0, "sublist lastOccurrence");
 }

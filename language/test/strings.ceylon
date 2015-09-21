@@ -573,4 +573,37 @@ shared void strings() {
     check("abc".lookup(2).item exists, "String.lookup 2");
     check(!"abc".lookup(10).key, "String.lookup 3");
     check(!"abc".lookup(10).item exists, "String.lookup 4");*/
+
+    check("hello world".occurrences('l').sequence()==[2,3,9], "string occurrences");
+    check("hello world".occurrences('l',3).sequence()==[3,9], "string occurrences");
+    check("hello world".occurs('l'), "string occurs");
+    check("hello world".occurs('l',3), "string occurs");
+    check("hello world".countOccurrences('l')==3, "string countOccurrences");
+    check("hello world".countOccurrences('l',3)==2, "string countOccurrences");
+    check(("hello world".firstOccurrence('l') else -1)==2, "string firstOccurrence");
+    check(("hello world".firstOccurrence('l',3) else -1)==3, "string firstOccurrence");
+    check(("hello world".lastOccurrence('l') else -1)==9, "string lastOccurrence");
+    check(("hello world".lastOccurrence('l',9) else -1)==9, "string lastOccurrence");
+    check(("hello world".lastOccurrence('l',8) else -1)==3, "string lastOccurrence");
+    
+    check("hello world".inclusions("wor").sequence()==[6], "string inclusions");
+    check("hello world".inclusions("wor",5).sequence()==[6], "string inclusions");
+    check("hello world".inclusions("wor",6).sequence()==[6], "string inclusions");
+    check("hello world".inclusions("wor",7).sequence()==[], "string inclusions");
+    check("hello world".includes("wor"), "string inclusions");
+    check("hello world".includes("wor",5), "string inclusions");
+    check("hello world".includes("wor",6), "string inclusions");
+    check(!"hello world".includes("wor",7), "string inclusions");
+    check("hello world".countInclusions("wor")==1, "string inclusions");
+    check("hello world".countInclusions("wor",5)==1, "string inclusions");
+    check("hello world".countInclusions("wor",6)==1, "string inclusions");
+    check("hello world".countInclusions("wor",7)==0, "string inclusions");
+    check(("hello world".firstInclusion("wor") else -1)==6, "string inclusions");
+    check(("hello world".firstInclusion("wor",5) else -1)==6, "string inclusions");
+    check(("hello world".firstInclusion("wor",6) else -1)==6, "string inclusions");
+    check(!"hello world".firstInclusion("wor",7) exists, "string inclusions");
+    check(("hello world".lastInclusion("wor") else -1)==6, "string inclusions");
+    check(("hello world".lastInclusion("wor",7) else -1)==6, "string inclusions");
+    check(("hello world".lastInclusion("wor",6) else -1)==6, "string inclusions");
+    check(!"hello world".lastInclusion("wor",5) exists, "string inclusions");
 }
