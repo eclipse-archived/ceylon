@@ -867,26 +867,46 @@ public final class String
     }
     
     @Ignore
-    public static Integer lastOccurrence(java.lang.String value, 
+    public static Integer lastOccurrence(java.lang.String value,
             java.lang.Object element) {
-        return lastOccurrence(value, element, 
+        return lastOccurrence(value, element, 0);
+    }
+    
+    @Ignore
+    public static Integer lastOccurrence(java.lang.String value,
+            java.lang.Object element, long from) {
+        return lastOccurrence(value, element, from, 
                 java.lang.Integer.MAX_VALUE);
     }
     
     @Ignore
     public static Integer lastOccurrence(java.lang.String value, 
-            java.lang.Object element, long to) {
-        if (to<0) {
+            java.lang.Object element,
+            long from, long length) {
+        if (from>=value.length() || length<=0) {
             return null;
         }
-        if (to>value.length()) {
-            to = value.length();
+        if (from<0) {
+            length+=from;
+            from = 0;
         }
         if (element instanceof Character) {
             Character character = (Character) element;
-            int index = value.lastIndexOf(character.codePoint, (int)to);
+            int start;
+            try {
+                start = value.offsetByCodePoints(value.length(), -(int)from-1);
+            }
+            catch (java.lang.IndexOutOfBoundsException e) {
+                return null;
+            }
+            int index = value.lastIndexOf(character.codePoint, start);
             if (index >= 0) {
-                return Integer.instance(value.codePointCount(0, index));
+                int dist = value.codePointCount(index, value.length());
+                if (dist>=from+length) {
+                    return null;
+                }
+                int result = value.codePointCount(0, index);
+                return Integer.instance(result);
             } else {
                 return null;
             }
@@ -902,9 +922,10 @@ public final class String
             @Name("element") 
             @TypeInfo("ceylon.language::Anything")
             java.lang.Object element,
-            @Defaulted @Name("to") long to) {
+            @Defaulted @Name("from") long from,
+            @Defaulted @Name("length") long length) {
         if (element instanceof Character) {
-            return lastOccurrence(value, element, to);
+            return lastOccurrence(value, element, from, length);
         }
         else {
             return null;

@@ -185,7 +185,9 @@ shared void lists() {
     check("hello world".sublistFrom(2).countOccurrences('l')==3, "sublistFrom countOccurrences");
     check("hello world".sublist(3,8).countOccurrences('l')==1, "sublist countOccurrences");
     check(("hello world".sublistFrom(2).firstOccurrence('l') else -1)==0, "sublistFrom firstOccurrence");
+    check(("hello world".sublistTo(2).firstOccurrence('l') else -1)==2, "sublistTo firstOccurrence");
     check(("hello world".sublist(3,8).firstOccurrence('l') else -1)==0, "sublist firstOccurrence");
     check(("hello world".sublistFrom(2).lastOccurrence('l') else -1)==7, "sublistFrom lastOccurrence");
+    check(("hello world".sublistTo(8).lastOccurrence('l') else -1)==3, "sublistTo lastOccurrence");
     check(("hello world".sublist(3,8).lastOccurrence('l') else -1)==0, "sublist lastOccurrence");
 }

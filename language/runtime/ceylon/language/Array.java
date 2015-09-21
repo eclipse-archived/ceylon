@@ -1935,21 +1935,33 @@ public final class Array<Element>
     public Integer lastOccurrence(
             @TypeInfo("ceylon.language::Anything") 
             @Name("element") java.lang.Object element,
-            @Defaulted @Name("to") long to) {
-        if (to<0) return null;
-        if (to>=size) to = size-1;
+            @Defaulted @Name("from") long from,
+            @Defaulted @Name("length") long length) {
+        if (from>=size || length<=0) {
+            return null;
+        }
+        if (from<0) {
+            length+=from;
+            from = 0;
+        }
         if (element==null) {
-            for (int i=(int)to; i>=0; i--) {
-                if (unsafeItem(i)==null) {
-                    return Integer.instance(i);
+            for (int i=(int)from; 
+                    i<size && i<from+length; 
+                    i++) {
+                int j = size-1-i;
+                if (unsafeItem(j)==null) {
+                    return Integer.instance(j);
                 }
             }
         }
         else {
-            for (int i=(int)to; i>=0; i--) {
-                Element item = unsafeItem(i);
+            for (int i=(int)from; 
+                    i<size && i<from+length; 
+                    i++) {
+                int j = size-1-i;
+                Element item = unsafeItem(j);
                 if (item!=null && item.equals(element)) {
-                    return Integer.instance(i);
+                    return Integer.instance(j);
                 }
             }
         }

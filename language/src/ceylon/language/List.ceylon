@@ -624,17 +624,23 @@ shared interface List<out Element=Anything>
     }
     
     "The last index in this list at which the given 
-     [[value|element]] occurs, that is smaller than the
-     optional [[end index|to]]."
+     [[value|element]] occurs, that falls within the range 
+     `size-length-from:length` defined by the optional 
+     [[starting index|from]], interpreted as a reverse index 
+     counting from the _end_ of the list, and [[length]]."
     shared default 
     Integer? lastOccurrence(
             "The value. If null, it is considered to occur
              at any index in this list with a null element."
             Anything element,
-            "The largest index to consider."
-            Integer to = size) {
-        value end = to<size then to else size;
-        for (index in (0:end).reversed) {
+            "The smallest index to consider, interpreted as
+             a reverse index counting from the _end_ of the 
+             list, where `0` is the last element of the list, 
+             and `size-1` is the first element of the list."
+            Integer from = 0,
+            "The number of indexes to consider."
+            Integer length = size-from) {
+        for (index in (size-length-from:length).reversed) {
             if (occursAt(index,element)) {
                 return index;
             }
@@ -975,13 +981,16 @@ shared interface List<out Element=Anything>
                 => outer[this.from..to+this.from];
         
         firstOccurrence(Anything element, Integer from, Integer length)
-                => if (exists index = outer.firstOccurrence(element, from+this.from, length))
+                => if (exists index 
+                        = outer.firstOccurrence(element, from+this.from, length))
                 then index-this.from
                 else null;
         
-        lastOccurrence(Anything element, Integer to)
-                => if (exists index = outer.lastOccurrence(element, to+this.from))
-                then (index>=from then index-this.from) 
+        lastOccurrence(Anything element, Integer from, Integer length)
+                => if (exists index 
+                        = outer.lastOccurrence(element, from, 
+                            length>size-from then size-from else length))
+                then index-this.from
                 else null;
         
         occurs(Anything element, Integer from, Integer length)
@@ -1071,9 +1080,8 @@ shared interface List<out Element=Anything>
                 => outer.firstOccurrence(element, from, 
                         length>to-from+1 then to-from+1 else length);
         
-        lastOccurrence(Anything element, Integer to)
-                => outer.lastOccurrence(element, 
-                        to<this.to then to else this.to);
+        lastOccurrence(Anything element, Integer from, Integer length)
+                => outer.lastOccurrence(element, size-1-to+from, length);
         
         
         firstInclusion(List<> sublist, Integer from)

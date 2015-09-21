@@ -1060,25 +1060,41 @@ public final class Tuple<Element, First extends Element,
     }
 
     @Override @Ignore
-    public long lastOccurrence$to(java.lang.Object o) {
-        return array.length;
+    public long lastOccurrence$from(java.lang.Object o) {
+        return 0;
+    }
+    
+    @Override @Ignore
+    public long lastOccurrence$length(java.lang.Object o, long from) {
+        return array.length-from;
     }
     
     @Override @Ignore
     public Integer lastOccurrence(java.lang.Object o) {
-        return lastOccurrence(o, array.length);
+        return lastOccurrence(o, 0);
     }
 
     @Override @Ignore
-    public Integer lastOccurrence(java.lang.Object o, long to) {
-        if (to<0) {
+    public Integer lastOccurrence(java.lang.Object o, long from) {
+        return lastOccurrence(o, from, array.length-from);
+    }
+
+    @Override @Ignore
+    public Integer lastOccurrence(java.lang.Object o, 
+            long from, long length) {
+        if (from>=array.length || length<=0) {
             return null;
         }
-        if (to>=array.length) {
-            to = array.length-1;
+        if (from<0) {
+            length+=from;
+            from = 0;
         }
-        for (int i=(int) to; i>=0; i--) {
-            java.lang.Object x = array[i];
+        for (int i=(int)from; 
+                i<array.length &&
+                i<from+length; 
+                i++) {
+            int j = array.length-1-i;
+            java.lang.Object x = array[j];
             if (x==o || (x!=null && o!=null && x.equals(o))) {
                 return Integer.instance(i);
             }

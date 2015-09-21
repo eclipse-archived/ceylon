@@ -138,8 +138,8 @@ class ArraySequence<out Element>(array)
     firstOccurrence(Anything element, Integer from, Integer length) 
             => array.firstOccurrence(element, from, length);
     
-    lastOccurrence(Anything element, Integer to) 
-            => array.lastOccurrence(element, to);
+    lastOccurrence(Anything element, Integer from, Integer length) 
+            => array.lastOccurrence(element, from, length);
     
     occurs(Anything element, Integer from, Integer length) 
             => array.occurs(element, from, length);
