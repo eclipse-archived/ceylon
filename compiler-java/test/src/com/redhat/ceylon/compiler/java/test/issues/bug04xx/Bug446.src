@@ -178,8 +178,28 @@ abstract class Bug446<T> implements .com.redhat.ceylon.compiler.java.runtime.mod
     }
     
     @.java.lang.Override
+    public final long includes$from(final .ceylon.language.List<? extends .java.lang.Object> sublist) {
+        return $ceylon$language$List$this$.includes$from(sublist);
+    }
+    
+    @.java.lang.Override
     public boolean includes(final .ceylon.language.List<? extends .java.lang.Object> sublist) {
-        return $ceylon$language$List$this$.includes(sublist);
+        return (
+            let
+            {
+                long $ceylontmp$from$3 = includes$from(sublist);
+            }
+            returning includes$canonical$(sublist, $ceylontmp$from$3);
+        );
+    }
+    
+    @.java.lang.Override
+    public boolean includes(final .ceylon.language.List<? extends .java.lang.Object> sublist, final long from) {
+        return $ceylon$language$List$this$.includes(sublist, from);
+    }
+    
+    private boolean includes$canonical$(final .ceylon.language.List<? extends .java.lang.Object> sublist, final long from) {
+        return $ceylon$language$List$this$.includes(sublist, from);
     }
     
     @.java.lang.Override
@@ -188,13 +208,78 @@ abstract class Bug446<T> implements .com.redhat.ceylon.compiler.java.runtime.mod
     }
     
     @.java.lang.Override
+    public final long countInclusions$from(final .ceylon.language.List<? extends .java.lang.Object> sublist) {
+        return $ceylon$language$List$this$.countInclusions$from(sublist);
+    }
+    
+    @.java.lang.Override
+    public long countInclusions(final .ceylon.language.List<? extends .java.lang.Object> sublist) {
+        return (
+            let
+            {
+                long $ceylontmp$from$4 = countInclusions$from(sublist);
+            }
+            returning countInclusions$canonical$(sublist, $ceylontmp$from$4);
+        );
+    }
+    
+    @.java.lang.Override
+    public long countInclusions(final .ceylon.language.List<? extends .java.lang.Object> sublist, final long from) {
+        return $ceylon$language$List$this$.countInclusions(sublist, from);
+    }
+    
+    private long countInclusions$canonical$(final .ceylon.language.List<? extends .java.lang.Object> sublist, final long from) {
+        return $ceylon$language$List$this$.countInclusions(sublist, from);
+    }
+    
+    @.java.lang.Override
+    public final long firstInclusion$from(final .ceylon.language.List<? extends .java.lang.Object> sublist) {
+        return $ceylon$language$List$this$.firstInclusion$from(sublist);
+    }
+    
+    @.java.lang.Override
     public .ceylon.language.Integer firstInclusion(final .ceylon.language.List<? extends .java.lang.Object> sublist) {
-        return $ceylon$language$List$this$.firstInclusion(sublist);
+        return (
+            let
+            {
+                long $ceylontmp$from$5 = firstInclusion$from(sublist);
+            }
+            returning firstInclusion$canonical$(sublist, $ceylontmp$from$5);
+        );
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.Integer firstInclusion(final .ceylon.language.List<? extends .java.lang.Object> sublist, final long from) {
+        return $ceylon$language$List$this$.firstInclusion(sublist, from);
+    }
+    
+    private .ceylon.language.Integer firstInclusion$canonical$(final .ceylon.language.List<? extends .java.lang.Object> sublist, final long from) {
+        return $ceylon$language$List$this$.firstInclusion(sublist, from);
+    }
+    
+    @.java.lang.Override
+    public final long lastInclusion$to(final .ceylon.language.List<? extends .java.lang.Object> sublist) {
+        return $ceylon$language$List$this$.lastInclusion$to(sublist);
     }
     
     @.java.lang.Override
     public .ceylon.language.Integer lastInclusion(final .ceylon.language.List<? extends .java.lang.Object> sublist) {
-        return $ceylon$language$List$this$.lastInclusion(sublist);
+        return (
+            let
+            {
+                long $ceylontmp$to$6 = lastInclusion$to(sublist);
+            }
+            returning lastInclusion$canonical$(sublist, $ceylontmp$to$6);
+        );
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.Integer lastInclusion(final .ceylon.language.List<? extends .java.lang.Object> sublist, final long to) {
+        return $ceylon$language$List$this$.lastInclusion(sublist, to);
+    }
+    
+    private .ceylon.language.Integer lastInclusion$canonical$(final .ceylon.language.List<? extends .java.lang.Object> sublist, final long to) {
+        return $ceylon$language$List$this$.lastInclusion(sublist, to);
     }
     
     @.java.lang.Override
@@ -203,8 +288,45 @@ abstract class Bug446<T> implements .com.redhat.ceylon.compiler.java.runtime.mod
     }
     
     @.java.lang.Override
+    public final long occurs$from(final .java.lang.Object element) {
+        return $ceylon$language$List$this$.occurs$from(element);
+    }
+    
+    @.java.lang.Override
     public boolean occurs(final .java.lang.Object element) {
-        return $ceylon$language$List$this$.occurs(element);
+        return (
+            let
+            {
+                long $ceylontmp$from$7 = occurs$from(element);
+                long $ceylontmp$length$8 = occurs$length(element, $ceylontmp$from$7);
+            }
+            returning occurs$canonical$(element, $ceylontmp$from$7, $ceylontmp$length$8);
+        );
+    }
+    
+    @.java.lang.Override
+    public final long occurs$length(final .java.lang.Object element, final long from) {
+        return $ceylon$language$List$this$.occurs$length(element, from);
+    }
+    
+    @.java.lang.Override
+    public boolean occurs(final .java.lang.Object element, final long from) {
+        return (
+            let
+            {
+                long $ceylontmp$length$9 = occurs$length(element, from);
+            }
+            returning occurs$canonical$(element, from, $ceylontmp$length$9);
+        );
+    }
+    
+    @.java.lang.Override
+    public boolean occurs(final .java.lang.Object element, final long from, final long length) {
+        return $ceylon$language$List$this$.occurs(element, from, length);
+    }
+    
+    private boolean occurs$canonical$(final .java.lang.Object element, final long from, final long length) {
+        return $ceylon$language$List$this$.occurs(element, from, length);
     }
     
     @.java.lang.Override
@@ -213,13 +335,112 @@ abstract class Bug446<T> implements .com.redhat.ceylon.compiler.java.runtime.mod
     }
     
     @.java.lang.Override
+    public final long countOccurrences$from(final .java.lang.Object element) {
+        return $ceylon$language$List$this$.countOccurrences$from(element);
+    }
+    
+    @.java.lang.Override
+    public long countOccurrences(final .java.lang.Object element) {
+        return (
+            let
+            {
+                long $ceylontmp$from$10 = countOccurrences$from(element);
+                long $ceylontmp$length$11 = countOccurrences$length(element, $ceylontmp$from$10);
+            }
+            returning countOccurrences$canonical$(element, $ceylontmp$from$10, $ceylontmp$length$11);
+        );
+    }
+    
+    @.java.lang.Override
+    public final long countOccurrences$length(final .java.lang.Object element, final long from) {
+        return $ceylon$language$List$this$.countOccurrences$length(element, from);
+    }
+    
+    @.java.lang.Override
+    public long countOccurrences(final .java.lang.Object element, final long from) {
+        return (
+            let
+            {
+                long $ceylontmp$length$12 = countOccurrences$length(element, from);
+            }
+            returning countOccurrences$canonical$(element, from, $ceylontmp$length$12);
+        );
+    }
+    
+    @.java.lang.Override
+    public long countOccurrences(final .java.lang.Object element, final long from, final long length) {
+        return $ceylon$language$List$this$.countOccurrences(element, from, length);
+    }
+    
+    private long countOccurrences$canonical$(final .java.lang.Object element, final long from, final long length) {
+        return $ceylon$language$List$this$.countOccurrences(element, from, length);
+    }
+    
+    @.java.lang.Override
+    public final long firstOccurrence$from(final .java.lang.Object element) {
+        return $ceylon$language$List$this$.firstOccurrence$from(element);
+    }
+    
+    @.java.lang.Override
     public .ceylon.language.Integer firstOccurrence(final .java.lang.Object element) {
-        return $ceylon$language$List$this$.firstOccurrence(element);
+        return (
+            let
+            {
+                long $ceylontmp$from$13 = firstOccurrence$from(element);
+                long $ceylontmp$length$14 = firstOccurrence$length(element, $ceylontmp$from$13);
+            }
+            returning firstOccurrence$canonical$(element, $ceylontmp$from$13, $ceylontmp$length$14);
+        );
+    }
+    
+    @.java.lang.Override
+    public final long firstOccurrence$length(final .java.lang.Object element, final long from) {
+        return $ceylon$language$List$this$.firstOccurrence$length(element, from);
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.Integer firstOccurrence(final .java.lang.Object element, final long from) {
+        return (
+            let
+            {
+                long $ceylontmp$length$15 = firstOccurrence$length(element, from);
+            }
+            returning firstOccurrence$canonical$(element, from, $ceylontmp$length$15);
+        );
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.Integer firstOccurrence(final .java.lang.Object element, final long from, final long length) {
+        return $ceylon$language$List$this$.firstOccurrence(element, from, length);
+    }
+    
+    private .ceylon.language.Integer firstOccurrence$canonical$(final .java.lang.Object element, final long from, final long length) {
+        return $ceylon$language$List$this$.firstOccurrence(element, from, length);
+    }
+    
+    @.java.lang.Override
+    public final long lastOccurrence$to(final .java.lang.Object element) {
+        return $ceylon$language$List$this$.lastOccurrence$to(element);
     }
     
     @.java.lang.Override
     public .ceylon.language.Integer lastOccurrence(final .java.lang.Object element) {
-        return $ceylon$language$List$this$.lastOccurrence(element);
+        return (
+            let
+            {
+                long $ceylontmp$to$16 = lastOccurrence$to(element);
+            }
+            returning lastOccurrence$canonical$(element, $ceylontmp$to$16);
+        );
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.Integer lastOccurrence(final .java.lang.Object element, final long to) {
+        return $ceylon$language$List$this$.lastOccurrence(element, to);
+    }
+    
+    private .ceylon.language.Integer lastOccurrence$canonical$(final .java.lang.Object element, final long to) {
+        return $ceylon$language$List$this$.lastOccurrence(element, to);
     }
     
     @.java.lang.Override
@@ -504,9 +725,9 @@ abstract class Bug446<T> implements .com.redhat.ceylon.compiler.java.runtime.mod
         return (
             let
             {
-                long $ceylontmp$step$3 = interpose$step($reified$Other, element);
+                long $ceylontmp$step$17 = interpose$step($reified$Other, element);
             }
-            returning interpose$canonical$($reified$Other, element, $ceylontmp$step$3);
+            returning interpose$canonical$($reified$Other, element, $ceylontmp$step$17);
         );
     }
     
@@ -573,9 +794,9 @@ abstract class Bug446<T> implements .com.redhat.ceylon.compiler.java.runtime.mod
         return (int)(
             let
             {
-                long $ceylontmp$hash$4 = hash;
+                long $ceylontmp$hash$18 = hash;
             }
-            returning $ceylontmp$hash$4 ^ $ceylontmp$hash$4 >>> 32;
+            returning $ceylontmp$hash$18 ^ $ceylontmp$hash$18 >>> 32;
         );
     }
     
