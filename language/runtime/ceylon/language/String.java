@@ -557,9 +557,9 @@ public final class String
     }
 
     @Ignore
-    public static Integer includes(java.lang.String value, 
+    public static boolean includes(java.lang.String value, 
             List<?> sublist) {
-        return firstInclusion(value, sublist, 0);
+        return includes(value, sublist, 0);
     }
 
     @Ignore
