@@ -8,7 +8,6 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Writer;
 import java.net.MalformedURLException;
@@ -39,7 +38,6 @@ import com.redhat.ceylon.compiler.typechecker.analyzer.UsageWarning;
 import com.redhat.ceylon.compiler.typechecker.analyzer.Warning;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
 import com.redhat.ceylon.compiler.typechecker.io.VirtualFile;
-import com.redhat.ceylon.compiler.typechecker.parser.ParseError;
 import com.redhat.ceylon.compiler.typechecker.parser.RecognitionError;
 import com.redhat.ceylon.compiler.typechecker.tree.AnalysisMessage;
 import com.redhat.ceylon.compiler.typechecker.tree.Message;
@@ -241,6 +239,22 @@ public class JsCompiler {
             if (hasErrors(that)) return;
             Declaration declaration = nativeImplToJavascript(that.getDeclaration());
 
+            Unit declarationUnit = null;
+            if (declaration != null) {
+                declarationUnit = declaration.getUnit();
+            }
+            
+            if (declarationUnit != null && nonCeylonUnit(declarationUnit)) {
+                if (!providedByAJavaNativeModuleImport(that.getUnit(), declarationUnit)) {
+                    that.addUnexpectedError("cannot call Java declarations in Javascript", Backend.JavaScript);
+                }
+            }
+            super.visit(that);
+        }
+
+        public void visit(Tree.BaseType that) {
+            if (hasErrors(that)) return;
+            Declaration declaration = nativeImplToJavascript(that.getDeclarationModel());
             Unit declarationUnit = null;
             if (declaration != null) {
                 declarationUnit = declaration.getUnit();
