@@ -3,7 +3,8 @@ import ceylon.language.meta.model {
     ClosedType = Type
 }
 
-
+"A model for a callable constructor of a member class."
+see(`interface MemberClassValueConstructor`)
 shared sealed interface MemberClassCallableConstructor<in Container=Nothing, out Type=Object, in Arguments=Nothing>
         satisfies FunctionModel<Type, Arguments> & Qualified<CallableConstructor<Type, Arguments>, Container>
         given Arguments satisfies Anything[] {
