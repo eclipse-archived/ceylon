@@ -96,7 +96,7 @@ public class MiscTests extends CompilerTests {
                 for (String s : new String[]{
                         "Boolean", "Integer", "Float", "Character", "String", "Byte",
                         "Array", "Tuple", "Exception", "AssertionError", "Callable",
-                        "flatten", "className", "identityHash", "integerRangeByIterable",
+                        "flatten", "className", "integerRangeByIterable",
                         "modules", "printStackTrace", "process",
                         "Throwable", "type", "typeLiteral", "classDeclaration", "reach",
                         "unflatten", "serialization", "PartialImpl"}) {
