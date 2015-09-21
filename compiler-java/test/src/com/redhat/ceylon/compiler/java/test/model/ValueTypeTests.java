@@ -90,7 +90,7 @@ public class ValueTypeTests {
         Method staticMethod = findStaticCompanionMethod(clazz, classMethod);
         Assert.assertNotNull("Static companion for " + mthName + " not found", staticMethod);
         TypeInfo returnTypeInfo = classMethod.getAnnotation(TypeInfo.class);
-        Assert.assertEquals("Returns types for static and class methods " + mthName + " do not coincide", staticMethod.getReturnType(), getUnboxedType(classMethod.getReturnType(), returnTypeInfo));
+        Assert.assertEquals("Returns types for static and class methods " + mthName + " do not coincide", getUnboxedType(classMethod.getReturnType(), returnTypeInfo), staticMethod.getReturnType());
     }
 
     // Tries to find the companion method for the given class method
