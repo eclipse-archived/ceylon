@@ -19,9 +19,11 @@
  */
 shared class StubClassWithConstructors {
 	
+	aliased("defaultConstructorAlias")
 	shared new () {}
 	
 	"Lorem ipsum dolor sit amet, consectetur..."
+	aliased("ctor1Alias")
 	shared new ctor1() {}
 	
 	shared new ctor2(String s) {}

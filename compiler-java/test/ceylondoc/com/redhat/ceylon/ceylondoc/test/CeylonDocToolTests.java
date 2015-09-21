@@ -262,6 +262,7 @@ public class CeylonDocToolTests {
         assertFinalClassModifier(destDir);
         assertHeaderAndFooter(destDir);
         assertExceptions(destDir);
+        assertNameAliases(destDir);
         assertBug659ShowInheritedMembers(destDir);
         assertBug691AbbreviatedOptionalType(destDir);
         assertBug839(destDir);
@@ -1215,7 +1216,28 @@ public class CeylonDocToolTests {
         assertMatchInFile(destDir, "StubClass.type.html", 
                 Pattern.compile(Pattern.quote("<code class='signature'><span class='modifiers'>shared</span> <span class='void'>void</span> <span class='identifier'>printHello</span>(<span title='ceylon.language::String'><span class='type-identifier'>String</span></span> <span class='parameter'>name</span>)</code>")));
     }
-    
+
+    private void assertNameAliases(File destDir) throws Exception {
+        assertMatchInFile(destDir, "index.html",
+                Pattern.compile(Pattern.quote("See <code class='signature'><span class='type-identifier'><a class='link' href='StubClass.type.html' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::StubClass'><span class='type-identifier'>StubClass</span></a></span></code>")));
+        assertMatchInFile(destDir, "index.html",
+                Pattern.compile(Pattern.quote("<div class='aliased section'><span class='title'>Aliases: </span><span class='value'><code class='signature'><span class='type-identifier'>StubClassAlias</span></code></span></div>")));
+        
+        assertMatchInFile(destDir, "StubClass.type.html",
+                Pattern.compile(Pattern.quote("<td><a class='link-one-self' title='Link to this declaration' href='StubClass.type.html#aliasedAttribute'><i class='icon-link'></i></a>See <code class='signature'><span class='identifier'><a class='link' href='StubClass.type.html#aliasedAttribute' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::StubClass.aliasedAttribute'><span class='identifier'>aliasedAttribute</span></a></span></code></td>")));
+        assertMatchInFile(destDir, "StubClass.type.html",
+                Pattern.compile(Pattern.quote("<td><a class='link-one-self' title='Link to this declaration' href='StubClass.type.html#aliasedMethod'><i class='icon-link'></i></a>See <code class='signature'><span class='identifier'><a class='link' href='StubClass.type.html#aliasedMethod' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::StubClass.aliasedMethod'><span class='identifier'>aliasedMethod()</span></a></span></code></td>")));
+        assertMatchInFile(destDir, "StubClass.type.html",
+                Pattern.compile(Pattern.quote("<td><a class='link-one-self' title='Link to this declaration' href='StubClass.type.html#StubInnerTypeAlias'><i class='icon-link'></i></a><div class='tags section'><a class='tag label' name='stubTag1' href='search.html?q=stubTag1'>stubTag1</a></div>See <code class='signature'><span class='type-identifier'><a class='link' href='StubClass.type.html#StubInnerTypeAlias' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::StubClass.StubInnerTypeAlias'>StubInnerTypeAlias</a></span></code></td>")));
+        assertMatchInFile(destDir, "StubClass.type.html",
+                Pattern.compile(Pattern.quote("<td><a class='link-one-self' title='Link to this declaration' href='StubClass.type.html#StubInnerTypeAlias'><i class='icon-link'></i></a><div class='tags section'><a class='tag label' name='stubTag1' href='search.html?q=stubTag1'>stubTag1</a></div>See <code class='signature'><span class='type-identifier'><a class='link' href='StubClass.type.html#StubInnerTypeAlias' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::StubClass.StubInnerTypeAlias'>StubInnerTypeAlias</a></span></code></td>")));
+        assertMatchInFile(destDir, "StubClass.type.html",
+                Pattern.compile(Pattern.quote("<div class='aliased section'><span class='title'>Aliases: </span><span class='value'><code class='signature'><span class='type-identifier'>StubInnerAlias</span></code></span></div>")));
+
+        assertMatchInFile(destDir, "a/StubClassExtended.type.html",
+                Pattern.compile(Pattern.quote(", <a class='link-custom-text' href='../StubClass.type.html#aliasedAttribute' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::StubClass.aliasedAttribute'><code><span class='identifier'>firstAlias</span></code></a>, ")));
+    }
+
     private void assertAliases(File destDir) throws Exception {
         assertMatchInFile(destDir, "index.html",
                 Pattern.compile(Pattern.quote("Aliases")));        
