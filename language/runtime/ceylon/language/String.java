@@ -649,7 +649,7 @@ public final class String
             return new StringInclusions(value, string.value);
         }
         else {
-            return instance(value).occurrences(substring);
+            return instance(value).inclusions(substring);
         }
     }
 
