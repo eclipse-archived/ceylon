@@ -150,6 +150,12 @@ public class ModuleDoc extends CeylonDoc {
         close("span");
         open("code class='decl-label'");
         linkRenderer().to(moduleImport.getModule()).write();
+        String backend = moduleImport.getNativeBackend();
+        if(backend != null){
+            write(" (");
+            write(backend);
+            write(")");
+        }
         close("code");
         close("td");
         
