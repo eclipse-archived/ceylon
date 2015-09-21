@@ -251,4 +251,39 @@ shared void testArrays() {
     check(testSwap==Array{0,1,2,3,4,5,7,8,9,6}, "Array.move 5 expected 0,1,2,3,4,5,9,6,7,8 got ``testSwap``");
     testSwap.move(9,6);
     check(testSwap==Array{0,1,2,3,4,5,6,7,8,9}, "Array.move 6 expected 0,1,2,3,4,5,6,7,8,9 got ``testSwap``");
+    
+    Array<Character> helloWorld = Array("hello world");
+    
+    check(helloWorld.occurrences('l').sequence()==[2,3,9], "array occurrences");
+    check(helloWorld.occurrences('l',3).sequence()==[3,9], "array occurrences");
+    check(helloWorld.occurs('l'), "array occurs");
+    check(helloWorld.occurs('l',3), "array occurs");
+    check(helloWorld.countOccurrences('l')==3, "array countOccurrences");
+    check(helloWorld.countOccurrences('l',3)==2, "array countOccurrences");
+    check((helloWorld.firstOccurrence('l') else -1)==2, "array firstOccurrence");
+    check((helloWorld.firstOccurrence('l',3) else -1)==3, "array firstOccurrence");
+    check((helloWorld.lastOccurrence('l') else -1)==9, "array lastOccurrence");
+    check((helloWorld.lastOccurrence('l',9) else -1)==9, "array lastOccurrence");
+    check((helloWorld.lastOccurrence('l',8) else -1)==3, "array lastOccurrence");
+    
+    check(helloWorld.inclusions("wor").sequence()==[6], "array inclusions");
+    check(helloWorld.inclusions("wor",5).sequence()==[6], "array inclusions");
+    check(helloWorld.inclusions("wor",6).sequence()==[6], "array inclusions");
+    check(helloWorld.inclusions("wor",7).sequence()==[], "array inclusions");
+    check(helloWorld.includes("wor"), "array includes");
+    check(helloWorld.includes("wor",5), "array includes");
+    check(helloWorld.includes("wor",6), "array includes");
+    check(!helloWorld.includes("wor",7), "array includes");
+    check(helloWorld.countInclusions("wor")==1, "array countInclusions");
+    check(helloWorld.countInclusions("wor",5)==1, "array countInclusions");
+    check(helloWorld.countInclusions("wor",6)==1, "array countInclusions");
+    check(helloWorld.countInclusions("wor",7)==0, "array countInclusions");
+    check((helloWorld.firstInclusion("wor") else -1)==6, "array firstInclusion");
+    check((helloWorld.firstInclusion("wor",5) else -1)==6, "array firstInclusion");
+    check((helloWorld.firstInclusion("wor",6) else -1)==6, "array firstInclusion");
+    check(!helloWorld.firstInclusion("wor",7) exists, "array firstInclusion");
+    check((helloWorld.lastInclusion("wor") else -1)==6, "array lastInclusion");
+    check((helloWorld.lastInclusion("wor",7) else -1)==6, "array lastInclusion");
+    check((helloWorld.lastInclusion("wor",6) else -1)==6, "array lastInclusion");
+    check(!helloWorld.lastInclusion("wor",5) exists, "array lastInclusion");
 }
