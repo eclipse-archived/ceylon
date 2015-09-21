@@ -46,16 +46,21 @@
  * obtains a [[DeserializationContext]] by 
    calling [[deserialization]]
  * progressively provides information about instances:
-     * associates an instance with its [[DeserializableReference.instance|class]]
-     * associates a member instance with its [[DeserializableReference.memberInstance|containing instance]]
-     * associates a referred instance with its [[DeserializableReference.attribute|referring instance and attribute]]
-     * associates a referred instance with its [[DeserializableReference.element|referring array index]]
-     * associates an instance with a [[DeserializableReference.instanceValue|given other instance]]. 
+ 
+     * associates an instance with its 
+       [[class|DeserializationContext.instance]],
+     * associates a member instance with its [[containing instance|DeserializationContext.memberInstance]],
+     * associates a referred instance with its [[referring instance and attribute|DeserializationContext.attribute]],
+     * associates a referred instance with its [[referring array index|DeserializationContext.element]],
+     * associates an instance with a [[given other instance|DeserializationContext.instanceValue]]. 
        This is useful for instances which refer to singletons 
        (on deserialization the singleton value has to be provided, since it 
-       cannot be instantiated by the serialization API).   
- * once the context has complete information about the instance and every instance reachable from it
-   the instance can be [[DeserializableReference.reconstruct|reconstructed]].
+       cannot be instantiated by the serialization API).
+          
+ * once the context has complete information about the instance 
+   and every instance reachable from it
+   the instance can be 
+   [[reconstructed|DeserializationContext.reconstruct]].
   
  ## Serializability
  

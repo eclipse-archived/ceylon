@@ -46,9 +46,9 @@ import ceylon.language.meta.declaration {
        dc.attribute("wi", `value Company.name`, "win");
        dc.attribute("wi", `value Company.owner`, "ww");
        
-       dc.attributeValue("win", "Wonka Inc.");
-       dc.attributeValue("wwn", "Willy Wonka");
-       dc.attributeValue("uln", "Umpa lumpa");
+       dc.instanceValue("win", "Wonka Inc.");
+       dc.instanceValue("wwn", "Willy Wonka");
+       dc.instanceValue("uln", "Umpa lumpa");
        
        dc.instance("wi", `Company`);
        dc.instance("ww", `Person`);
@@ -58,7 +58,7 @@ import ceylon.language.meta.declaration {
        value willy2 = dc.instance("ww");
        value umpaLumpa2 = dc.instance("ul");
        
-   The calls to [[attribute]], [[attributeValue]] and [[instance]] could be 
+   The calls to [[attribute]], [[instanceValue]] and [[instance]] could be 
    in any order.
 """
 shared sealed interface DeserializationContext<Id> {
@@ -66,7 +66,7 @@ shared sealed interface DeserializationContext<Id> {
     """The given [[instanceId]] refers to an instance of the given class."""
     throws(`class DeserializationException`, 
         "the given instance was specified by [[instanceValue]] or has already been reconstructed.")
-    shared formal void instance(Id instanceId, ClassModel clazz);
+    shared formal void instance(Id instanceId, ClassModel<> clazz);
     
     """The given [[instanceId]] is a member of the instance with the given [[containerId]].
        
