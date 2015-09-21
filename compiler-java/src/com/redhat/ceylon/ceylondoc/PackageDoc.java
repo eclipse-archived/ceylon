@@ -28,6 +28,9 @@ import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map.Entry;
+import java.util.SortedMap;
+import java.util.TreeMap;
 
 import com.redhat.ceylon.ceylondoc.Util.ReferenceableComparatorByName;
 import com.redhat.ceylon.model.typechecker.model.Class;
@@ -43,14 +46,14 @@ public class PackageDoc extends ClassOrPackageDoc {
 
     private final Package pkg;
     private final boolean sharingPageWithModule;
-    private final List<Class> classes = new ArrayList<Class>();
-    private final List<Interface> interfaces = new ArrayList<Interface>();
-    private final List<FunctionOrValue> attributes = new ArrayList<FunctionOrValue>();
-    private final List<Function> methods = new ArrayList<Function>();
-    private final List<Class> exceptions = new ArrayList<Class>();
-    private final List<TypeAlias> aliases = new ArrayList<TypeAlias>();
-    private final List<Class> annotationTypes = new ArrayList<Class>();
-    private final List<Function> annotationConstructors = new ArrayList<Function>();
+    private final SortedMap<String,Class> classes = new TreeMap<String,Class>();
+    private final SortedMap<String,Interface> interfaces = new TreeMap<String,Interface>();
+    private final SortedMap<String,FunctionOrValue> attributes = new TreeMap<String,FunctionOrValue>();
+    private final SortedMap<String,Function> methods = new TreeMap<String,Function>();
+    private final SortedMap<String,Class> exceptions = new TreeMap<String,Class>();
+    private final SortedMap<String,TypeAlias> aliases = new TreeMap<String,TypeAlias>();
+    private final SortedMap<String,Class> annotationTypes = new TreeMap<String,Class>();
+    private final SortedMap<String,Function> annotationConstructors = new TreeMap<String,Function>();
 
 	public PackageDoc(CeylonDocTool tool, Writer writer, Package pkg) throws IOException {
 		super(pkg.getModule(), tool, writer);
@@ -65,38 +68,35 @@ public class PackageDoc extends ClassOrPackageDoc {
                 continue;
             }
             if (m instanceof Interface) {
-                interfaces.add((Interface) m);
+                addTo(interfaces, (Interface) m);
             } else if (m instanceof Class) {
                 Class c = (Class) m;
                 if( c.isAnnotation() ) {
-                    annotationTypes.add(c);
+                    addTo(annotationTypes, c);
                 } else  if (Util.isThrowable(c)) {
-                    exceptions.add(c);
+                    addTo(exceptions, c);
                 } else {
-                    classes.add(c);
+                    addTo(classes, c);
                 }
             } else if (m instanceof Value) {
-                attributes.add((FunctionOrValue) m);
+                addTo(attributes, (Value) m);
             } else if (m instanceof Function) {
                 Function method = (Function) m;
                 if( m.isAnnotation() ) {
-                    annotationConstructors.add(method);
+                    addTo(annotationConstructors, method);
                 } else {
-                    methods.add(method);
+                    addTo(methods, method);
                 }
             } else if (m instanceof TypeAlias) {
-                aliases.add((TypeAlias) m);                
+                addTo(aliases, (TypeAlias) m);
             }
         }
-        
-        Collections.sort(classes, ReferenceableComparatorByName.INSTANCE);
-        Collections.sort(interfaces, ReferenceableComparatorByName.INSTANCE);
-        Collections.sort(attributes, ReferenceableComparatorByName.INSTANCE);
-        Collections.sort(methods, ReferenceableComparatorByName.INSTANCE);
-        Collections.sort(exceptions, ReferenceableComparatorByName.INSTANCE);
-        Collections.sort(aliases, ReferenceableComparatorByName.INSTANCE);
-        Collections.sort(annotationTypes, ReferenceableComparatorByName.INSTANCE);
-        Collections.sort(annotationConstructors, ReferenceableComparatorByName.INSTANCE);
+    }
+
+    private <T extends Declaration> void addTo(SortedMap<String, T> map, T decl) {
+        map.put(Util.getDeclarationName(decl), decl);
+        for(String alias : decl.getAliases())
+            map.put(alias, decl);
     }
 
     public void generate() throws IOException {
@@ -207,8 +207,8 @@ public class PackageDoc extends ClassOrPackageDoc {
             return;
         }
         openTable("section-aliases", "Aliases", 2, true);
-        for (TypeAlias a : aliases) {
-            doc(a);
+        for (Entry<String, TypeAlias> a : aliases.entrySet()) {
+            doc(a.getKey(), a.getValue());
         }
         closeTable();
     }
@@ -218,11 +218,11 @@ public class PackageDoc extends ClassOrPackageDoc {
             return;
         }
         openTable("section-annotations", "Annotations", 2, true);
-        for (Function annotationConstructor : annotationConstructors) {
-            doc(annotationConstructor);
+        for (Entry<String, Function> annotationConstructor : annotationConstructors.entrySet()) {
+            doc(annotationConstructor.getKey(), annotationConstructor.getValue());
         }
-        for (Class annotationType : annotationTypes) {
-            doc(annotationType);
+        for (Entry<String, Class> annotationType : annotationTypes.entrySet()) {
+            doc(annotationType.getKey(), annotationType.getValue());
         }
         closeTable();
     }
@@ -232,8 +232,8 @@ public class PackageDoc extends ClassOrPackageDoc {
             return;
         }
         openTable("section-attributes", "Values", 2, true);
-        for (FunctionOrValue v : attributes) {
-            doc(v);
+        for (Entry<String, FunctionOrValue> v : attributes.entrySet()) {
+            doc(v.getKey(), v.getValue());
         }
         closeTable();
     }
@@ -243,8 +243,8 @@ public class PackageDoc extends ClassOrPackageDoc {
             return;
         }
         openTable("section-methods", "Functions", 2, true);
-        for (Function m : methods) {
-            doc(m);
+        for (Entry<String, Function> m : methods.entrySet()) {
+            doc(m.getKey(), m.getValue());
         }
         closeTable();
     }
@@ -254,8 +254,8 @@ public class PackageDoc extends ClassOrPackageDoc {
             return;
         }
         openTable("section-interfaces", "Interfaces", 2, true);
-        for (Interface i : interfaces) {
-            doc(i);
+        for (Entry<String, Interface> i : interfaces.entrySet()) {
+            doc(i.getKey(), i.getValue());
         }
         closeTable();
     }
@@ -265,8 +265,8 @@ public class PackageDoc extends ClassOrPackageDoc {
             return;
         }
         openTable("section-classes", "Classes", 2, true);
-        for (Class c : classes) {
-            doc(c);
+        for (Entry<String, Class> c : classes.entrySet()) {
+            doc(c.getKey(), c.getValue());
         }
         closeTable();
     }
@@ -276,8 +276,8 @@ public class PackageDoc extends ClassOrPackageDoc {
             return;
         }
         openTable("section-exceptions", "Exceptions", 2, true);
-        for (Class e : exceptions) {
-            doc(e);
+        for (Entry<String, Class> e : exceptions.entrySet()) {
+            doc(e.getKey(), e.getValue());
         }
         closeTable();
     }

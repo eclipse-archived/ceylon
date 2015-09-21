@@ -40,8 +40,10 @@ import com.redhat.ceylon.compiler.java.codegen.Decl;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
 import com.redhat.ceylon.model.typechecker.model.Annotation;
 import com.redhat.ceylon.model.typechecker.model.Class;
+import com.redhat.ceylon.model.typechecker.model.Constructor;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Import;
+import com.redhat.ceylon.model.typechecker.model.ModelUtil;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.ModuleImport;
 import com.redhat.ceylon.model.typechecker.model.Package;
@@ -500,7 +502,7 @@ public class Util {
         }
     }
   
-    private static int nullSafeCompare(final String s1, final String s2) {
+    static int nullSafeCompare(final String s1, final String s2) {
         if (s1 == s2) {
             return 0;
         } else if (s1 == null) {
@@ -513,6 +515,14 @@ public class Util {
 
     public static boolean isEnumerated(TypeDeclaration klass) {
         return klass.getCaseTypes() != null && !klass.getCaseTypes().isEmpty();
+    }
+
+    public static String getDeclarationName(Declaration decl) {
+        String name = decl.getName();
+        if( ModelUtil.isConstructor(decl) && name == null ) {
+            name = ((TypeDeclaration)decl.getContainer()).getName();
+        }
+        return name;
     }
    
 }

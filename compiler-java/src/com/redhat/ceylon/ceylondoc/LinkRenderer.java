@@ -302,7 +302,7 @@ public class LinkRenderer {
     }
     
     private String processTypedDeclaration(TypedDeclaration decl) {
-        String declName = decl.getName();
+        String declName = Util.getDeclarationName(decl);
         Scope declContainer = decl.getContainer();
         
         if( isLinkable(decl) ) {
@@ -584,11 +584,9 @@ public class LinkRenderer {
             return customText;
         }
         else {
-            String name;
+            String name = Util.getDeclarationName(decl);
             if( scope != null && scope.getUnit() != null ) {
-                name = scope.getUnit().getAliasedName(decl);
-            } else {
-                name = decl.getName();
+                name = scope.getUnit().getAliasedName(decl, name);
             }
 
             String result;
