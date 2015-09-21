@@ -282,6 +282,15 @@ public abstract class CeylonAntTask extends Task {
         if (stacktraces) {
             appendOption(cmd, "--stacktraces");
         }
+        if (getCwd() != null) {
+            appendOption(cmd, "--cwd=" + getCwd());
+        } else {
+            appendOption(cmd, "--cwd=" + getProject().getBaseDir().getPath());
+        }
+        
+        if (getConfig() != null) {
+            appendOption(cmd, "--config=" + getConfig());
+        }
         cmd.createArgument().setValue(toolName);
         completeCommandline(cmd);
         return cmd;
@@ -292,16 +301,6 @@ public abstract class CeylonAntTask extends Task {
      * @param cmd
      */
     protected void completeCommandline(Commandline cmd) {
-        if (getCwd() != null) {
-            appendOptionArgument(cmd, "--cwd", getCwd());
-        } else {
-            appendOptionArgument(cmd, "--cwd", getProject().getBaseDir().getPath());
-        }
-        
-        if (getConfig() != null) {
-            appendOptionArgument(cmd, "--config", getConfig());
-        }
-        
         appendVerboseOption(cmd, verbose);
         
         for (Define d : defines) {
