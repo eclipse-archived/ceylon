@@ -122,9 +122,9 @@ shared annotation LateAnnotation late()
 "The annotation class for the [[native]] annotation."
 shared final sealed annotation class NativeAnnotation(backend)
         satisfies OptionalAnnotation<NativeAnnotation,Annotated> {
-    "The compiler backend that this native annoytation applies to,
-     or the empty string to declare the annotated element
-     across all backends."
+    "The compiler backend that this native annotation applies to,
+     or the empty string to declare the annotated element is a
+     native header."
     shared String backend;
 }
 
