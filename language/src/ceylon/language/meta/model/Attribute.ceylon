@@ -23,6 +23,8 @@ import ceylon.language.meta.declaration{
 shared sealed interface Attribute<in Container=Nothing, out Get=Anything, in Set=Nothing>
         satisfies ValueModel<Get,Set> & Member<Container, Value<Get,Set>> {
     
+    "The declaration model of this attribute, 
+     which is necessarily a [[ValueDeclaration]]."
     shared actual formal ValueDeclaration declaration;
     
     "Binds this attribute to the given container instance. The instance type is checked at runtime."

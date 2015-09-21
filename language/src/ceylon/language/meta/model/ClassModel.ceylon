@@ -13,6 +13,8 @@ shared sealed interface ClassModel<out Type=Anything, in Arguments=Nothing>
     satisfies ClassOrInterface<Type> 
     given Arguments satisfies Anything[] {
     
+    "The declaration model of this class, 
+     which is necessarily a [[ClassDeclaration]]."
     shared formal actual ClassDeclaration declaration;
     
     "A function model for this class's initializer or default constructor,

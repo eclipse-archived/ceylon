@@ -9,5 +9,7 @@ import ceylon.language.meta.declaration {
 shared sealed interface InterfaceModel<out Type=Anything>
     satisfies ClassOrInterface<Type> {
     
+    "The declaration model of this class, 
+     which is necessarily an [[InterfaceDeclaration]]."
     shared formal actual InterfaceDeclaration declaration;
 }
