@@ -1,4 +1,4 @@
-function (e,from) {
-  var fo=this.firstOccurrence(e,from);
+function (e,from,len) {
+  var fo=this.firstOccurrence(e,from,len);
   return fo!==null && fo>=0;
 }
