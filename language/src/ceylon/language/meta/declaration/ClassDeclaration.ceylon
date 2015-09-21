@@ -135,6 +135,13 @@ shared sealed interface ClassDeclaration
             given Annotation satisfies AnnotationType;
 }
 
+"""The declaration model of a class that has a parameter list. For example:
+   
+       class WithParameterList() {
+       }
+   
+   """
+see(`interface ClassWithConstructorsDeclaration`)
 shared sealed interface ClassWithInitializerDeclaration 
         satisfies ClassDeclaration {
     shared actual default [] constructorDeclarations() => [];
@@ -145,12 +152,35 @@ shared sealed interface ClassWithInitializerDeclaration
             given Annotation satisfies AnnotationType => [];
 }
 
+"""The declaration model of a class that has constructors. For example:
+   
+       class WithConstructors {
+           shared new() {
+               // ...
+           }
+           shared clone(WithConstructors other) {
+               // ...
+           }
+       }
+"""
+see(`interface ClassWithInitializerDeclaration`)
 shared sealed interface ClassWithConstructorsDeclaration 
         satisfies ClassDeclaration {
+    
+    "Instantiates this class if it has a default constructor, 
+     using the given type and value arguments. 
+     Otherwise throws [[IncompatibleTypeException]]"
+    throws (`class IncompatibleTypeException`, 
+        "If the class lacks a default constructor, or is a member class")
     shared actual default Nothing instantiate(AppliedType<>[] typeArguments, Anything* arguments) {
         throw IncompatibleTypeException("class has constructors");
     }
     
+    "Instantiates this member class if it has a default constructor, 
+     using the given container instances, type and value arguments. 
+     Otherwise throws [[IncompatibleTypeException]]"
+    throws (`class IncompatibleTypeException`, 
+        "If the class lacks a default constructor, or is not a member class")
     shared actual default Nothing memberInstantiate(Object container, AppliedType<>[] typeArguments, Anything* arguments) {
         throw IncompatibleTypeException("class has constructors");
     }
