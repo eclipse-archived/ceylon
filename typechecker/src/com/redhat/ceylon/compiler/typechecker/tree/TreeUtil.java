@@ -1,5 +1,8 @@
 package com.redhat.ceylon.compiler.typechecker.tree;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -44,6 +47,8 @@ public class TreeUtil {
                     String an = name(p.getIdentifier());
                     String alias = unit==null ? name : //WTF?!
                         unit.getModifiers().get(name); 
+                    if(alias == null)
+                        alias = name;
                     if (an.equals(alias)) {
                         return a;
                     }
@@ -422,7 +427,53 @@ public class TreeUtil {
             }
         }
     }
-    
+
+    public static List<String> getAnnotationSequenceParameter(Tree.Annotation a) {
+        Tree.NamedArgumentList nal = 
+                a.getNamedArgumentList();
+        if (nal!=null) {
+            for (Tree.NamedArgument na: 
+                nal.getNamedArguments()) {
+                if (na instanceof Tree.SpecifiedArgument) {
+                    Tree.SpecifiedArgument sa = 
+                            (Tree.SpecifiedArgument) na;
+                    Tree.SpecifierExpression sie = 
+                            sa.getSpecifierExpression();
+                    Tree.Expression e = sie.getExpression();
+                    if (e!=null) {
+                        Tree.Term t = e.getTerm();
+                        Parameter p = sa.getParameter();
+                        if (p!=null) {
+                            String text = toString(t);
+                            if (text!=null) {
+                                return Arrays.asList(text);
+                            }
+                        }
+                    }
+                }                    
+            }
+        }
+        Tree.PositionalArgumentList pal = 
+                a.getPositionalArgumentList();
+        if (pal!=null) {
+            List<String> ret = new ArrayList<String>(pal.getPositionalArguments().size());
+            for (Tree.PositionalArgument pa: 
+                pal.getPositionalArguments()) {
+                if (pa instanceof Tree.ListedArgument) {
+                    Tree.ListedArgument la = 
+                            (Tree.ListedArgument) pa;
+                    Tree.Term t = la.getExpression().getTerm();
+                    String text = toString(t);
+                    if (text!=null) {
+                        ret.add(text);
+                    }
+                }
+            }
+            return ret;
+        }
+        return Collections.emptyList();
+    }
+
     private static String toString(Tree.Term t) {
         if (t instanceof Tree.Literal) {
             return ((Tree.Literal) t).getText();

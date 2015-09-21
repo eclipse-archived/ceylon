@@ -34,7 +34,9 @@ import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.compiler.typechecker.context.TypecheckerUnit;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.Annotation;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ObjectDefinition;
+import com.redhat.ceylon.compiler.typechecker.tree.TreeUtil;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.ClassAlias;
@@ -1906,6 +1908,11 @@ public abstract class DeclarationVisitor extends Visitor {
                 that.addError("declaration is not a class, and may not be annotated serializable", 
                         1600);
             }
+        }
+        if (hasAnnotation(al, "aliased", unit)) {
+            Annotation aliased = getAnnotation(al, "aliased", unit);
+            List<String> aliases = TreeUtil.getAnnotationSequenceParameter(aliased);
+            model.setAliases(aliases);
         }
         buildAnnotations(al, model.getAnnotations());        
     }
