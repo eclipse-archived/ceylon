@@ -35,7 +35,7 @@ var linesep = '\n';
 var filesep = '/';
 var pathsep = ':';
 var osname = properties["os.name"];
-if ((osname !== undefined) && (osname.search(/win/i) >= 0)) {
+if ((osname !== undefined) && (osname.search(/win/i) >= 0 && osname.search(/darwin/i)<0)) {
     linesep = "\r\n";
     filesep = '\\';
     pathsep = ';';
