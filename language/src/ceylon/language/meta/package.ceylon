@@ -114,6 +114,6 @@
    not by the annotation constructor which was used to annotate 
    the program element.
    """
-by ("Gavin King", "Stephane Epardaud")
+by ("Gavin King", "Stephane Epardaud", "Tom Bentley")
 tagged("Metamodel")
 shared package ceylon.language.meta;

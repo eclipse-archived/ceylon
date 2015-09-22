@@ -35,6 +35,6 @@
            }
        }
    """
-by ("Gavin King", "Stephane Epardaud")
+by ("Gavin King", "Stephane Epardaud", "Tom Bentley")
 tagged("Metamodel")
 shared package ceylon.language.meta.model;
