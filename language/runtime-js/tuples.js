@@ -55,8 +55,7 @@ function tpl$(elems,spread){
     if (spread && i>=elems.length) {
       return spread.getFromFirst(i-elems.length);
     }
-    var e=elems[i];
-    return e===undefined?null:e;
+    return elems[i];
   };
   that.getFromFirst.$crtmm$=Tuple.$$.prototype.getFromFirst.$crtmm$;
   that.iterator=function(){
