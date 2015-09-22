@@ -35,7 +35,6 @@ import java.io.Writer;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -766,19 +765,6 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
         close("span");
         
         close("div");
-    }
-
-    protected final void writeTagged(Declaration decl) throws IOException {
-        List<String> tags = Util.getTags(decl);
-        if (!tags.isEmpty()) {
-            open("div class='tags section'");
-            Iterator<String> tagIterator = tags.iterator();
-            while (tagIterator.hasNext()) {
-                String tag = tagIterator.next();
-                write("<a class='tag label' name='" + tag + "' href='javascript:;' title='Enable/disable tag filter'>" + tag + "</a>");
-            }
-            close("div");
-        }
     }
 
     private String getSourceCode(PhasedUnit pu, Node node) throws IOException {

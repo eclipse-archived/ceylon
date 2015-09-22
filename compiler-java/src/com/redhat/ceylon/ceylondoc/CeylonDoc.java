@@ -24,6 +24,7 @@ import java.io.IOException;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -31,6 +32,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.model.loader.AbstractModelLoader;
+import com.redhat.ceylon.model.typechecker.model.Annotated;
 import com.redhat.ceylon.model.typechecker.model.Annotation;
 import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
@@ -502,6 +504,7 @@ public abstract class CeylonDoc extends Markup {
         close("td");
 
         open("td");
+        writeTagged(pkg);
         write(Util.getDocFirstLine(pkg, linkRenderer()));
         close("td");
 
@@ -781,6 +784,19 @@ public abstract class CeylonDoc extends Markup {
         }
     
     }    
+
+    protected final <T extends Referenceable & Annotated> void writeTagged(T decl) throws IOException {
+        List<String> tags = Util.getTags(decl);
+        if (!tags.isEmpty()) {
+            open("div class='tags section'");
+            Iterator<String> tagIterator = tags.iterator();
+            while (tagIterator.hasNext()) {
+                String tag = tagIterator.next();
+                write("<a class='tag label' name='" + tag + "' href='javascript:;' title='Enable/disable tag filter'>" + tag + "</a>");
+            }
+            close("div");
+        }
+    }
 
     protected abstract Object getFromObject();    
     

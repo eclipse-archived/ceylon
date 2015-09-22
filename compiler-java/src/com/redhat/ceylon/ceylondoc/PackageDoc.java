@@ -177,6 +177,7 @@ public class PackageDoc extends ClassOrPackageDoc {
     
     private void writeDescription() throws IOException {
         open("div class='package-description'");
+        writeTagged(pkg);
         String doc = getDoc(pkg, linkRenderer());
         if (isEmpty(doc)) {
             tool.warningMissingDoc(pkg.getQualifiedNameString(), pkg);

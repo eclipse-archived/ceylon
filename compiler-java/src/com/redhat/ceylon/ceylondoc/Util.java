@@ -38,17 +38,17 @@ import com.github.rjeschke.txtmark.Processor;
 import com.github.rjeschke.txtmark.SpanEmitter;
 import com.redhat.ceylon.compiler.java.codegen.Decl;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
+import com.redhat.ceylon.model.typechecker.model.Annotated;
 import com.redhat.ceylon.model.typechecker.model.Annotation;
 import com.redhat.ceylon.model.typechecker.model.Class;
-import com.redhat.ceylon.model.typechecker.model.Constructor;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Import;
 import com.redhat.ceylon.model.typechecker.model.ModelUtil;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.ModuleImport;
 import com.redhat.ceylon.model.typechecker.model.Package;
-import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.Referenceable;
+import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.model.typechecker.model.Unit;
@@ -119,7 +119,7 @@ public class Util {
         return wikiToHTML(getFirstLine(getRawDoc(module.getUnit(), module.getAnnotations())), linkRenderer.useScope(module));
     }
     
-    public static List<String> getTags(Declaration decl) {
+    public static <T extends Referenceable & Annotated> List<String> getTags(T decl) {
         List<String> tags = new ArrayList<String>();
         Annotation tagged = Util.getAnnotation(decl.getUnit(), decl.getAnnotations(), "tagged");
         if (tagged != null) {
