@@ -802,12 +802,12 @@ public final class String
     @TypeInfo("ceylon.language::Null|ceylon.language::Integer")
     public Integer lastInclusion(
             @Name("sublist") List<?> sublist,
-            @Defaulted @Name("to") long to) {
+            @Defaulted @Name("from") long from) {
         if (sublist instanceof String) {
-            return lastInclusion(value, sublist, to);
+            return lastInclusion(value, sublist, from);
         }
         else {
-            return super.lastInclusion(sublist, to);
+            return super.lastInclusion(sublist, from);
         }
     }
     
