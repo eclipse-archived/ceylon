@@ -7,6 +7,6 @@ function (e,from) {
     return fi!==null && fi>=0;
   }
   else {
-    return List.$$.prototype.includes.call(this,e,from);
+    return SearchableList.$$.prototype.includes.call(this,e,from);
   }
 }

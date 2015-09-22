@@ -5,6 +5,6 @@ function (i,e) {
     return cmpSubString(this,e,i);
   }
   else {
-    return List.$$.prototype.includesAt.call(this,i,e);
+    return SearchableList.$$.prototype.includesAt.call(this,i,e);
   }
 }

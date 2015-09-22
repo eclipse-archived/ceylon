@@ -9,6 +9,6 @@ function (e,from) {
     return null;
   }
   else {
-    return List.$$.prototype.firstInclusion.call(this,e,from);
+    return SearchableList.$$.prototype.firstInclusion.call(this,e,from);
   }
 }

@@ -10,6 +10,6 @@ function (e,from) {
     return indexes.rt$({t:Integer});
   }
   else {
-    return List.$$.prototype.inclusions.call(this,e,from);
+    return SearchableList.$$.prototype.inclusions.call(this,e,from);
   }
 }
