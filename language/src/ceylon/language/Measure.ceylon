@@ -103,17 +103,6 @@ class Measure<Element>(first, size)
             => 0 <= x.offset(first) < size;
     
     shared actual 
-    Boolean includes(List<> sublist, Integer from) {
-        if (sublist.empty) {
-            return true;
-        } else if (is Range<Element> sublist, from<=0) {
-            return includesRange(sublist);
-        } else {
-            return super.includes(sublist, from);
-        }
-    }
-    
-    shared actual 
     Boolean includesRange(Range<Element> range) {
         switch (range)
         case (is Measure<Element>) {

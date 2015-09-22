@@ -51,13 +51,6 @@ class Range<Element>()
             then containsElement(element)
             else false;
     
-    occurs(Anything element, Integer from, Integer length)
-            => if (from>0 || length-from<size)
-                then super.occurs(element, from, length)
-            else if (is Element element) 
-                then containsElement(element)
-            else false;
-    
     "Returns a range of the same length and type as this
         range, with its endpoints shifted by the given number 
         of elements, where:

@@ -48,7 +48,7 @@ import ceylon.language.serialization.ReachableReference;
 @Class(constructors=true, extendsType="ceylon.language::Basic")
 @TypeParameters(@TypeParameter(value = "Element"))
 @SatisfiedTypes({
-    "ceylon.language::List<Element>",
+    "ceylon.language::SearchableList<Element>",
     "ceylon.language::Ranged<ceylon.language::Integer,Element,ceylon.language::Array<Element>>"
 })
 public final class Array<Element>
@@ -1897,8 +1897,7 @@ public final class Array<Element>
     @Override
     @TypeInfo("ceylon.language::Null|ceylon.language::Integer")
     public Integer firstOccurrence(
-            @TypeInfo("ceylon.language::Anything") 
-            @Name("element") java.lang.Object element,
+            @Name("element") Element element,
             @Defaulted @Name("from") long from,
             @Defaulted @Name("length") long length) {
         if (from>=size || length<=0) {
@@ -1933,8 +1932,7 @@ public final class Array<Element>
     @Override
     @TypeInfo("ceylon.language::Null|ceylon.language::Integer")
     public Integer lastOccurrence(
-            @TypeInfo("ceylon.language::Anything") 
-            @Name("element") java.lang.Object element,
+            @Name("element") Element element,
             @Defaulted @Name("from") long from,
             @Defaulted @Name("length") long length) {
         if (from>=size || length<=0) {
@@ -1970,8 +1968,7 @@ public final class Array<Element>
     
     @Override
     public boolean occurs(
-            @TypeInfo("ceylon.language::Anything") 
-            @Name("element") java.lang.Object element,
+            @Name("element") Element element,
             @Defaulted @Name("from") long from,
             @Defaulted @Name("length") long length) {
         if (from>=size || length<=0) {
@@ -2005,8 +2002,7 @@ public final class Array<Element>
     
     @Override
     public long countOccurrences(
-            @TypeInfo("ceylon.language::Anything") 
-            @Name("element") java.lang.Object element,
+            @Name("element") Element element,
             @Defaulted @Name("from") long from,
             @Defaulted @Name("length") long length) {
         if (from>=size || length<=0) {

@@ -23,7 +23,7 @@
  programming tasks."
 tagged("Collections")
 shared final serializable native class Array<Element>
-        satisfies List<Element> &
+        satisfies SearchableList<Element> &
                   Ranged<Integer,Element,Array<Element>> {
     
     "Create an array with the given [[elements]]."
@@ -144,13 +144,13 @@ shared final serializable native class Array<Element>
             (Result accumulating(Result|Element partial, Element element));
     
     shared actual native
-    Integer? firstOccurrence(Anything element, Integer from, Integer length);
+    Integer? firstOccurrence(Element element, Integer from, Integer length);
     shared actual native
-    Integer? lastOccurrence(Anything element, Integer from, Integer length);
+    Integer? lastOccurrence(Element element, Integer from, Integer length);
     shared actual native
-    Boolean occurs(Anything element, Integer from, Integer length);
+    Boolean occurs(Element element, Integer from, Integer length);
     shared actual native
-    Integer countOccurrences(Anything element, Integer from, Integer length);
+    Integer countOccurrences(Element element, Integer from, Integer length);
     
     "Given two indices within this array, efficiently swap 
      the positions of the elements at these indices. If the 

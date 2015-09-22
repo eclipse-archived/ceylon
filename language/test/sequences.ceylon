@@ -551,49 +551,4 @@ shared void sequences() {
     check(["", ""].string=="[, ]", "sequence string");
     check(["", "", ""].string=="[, , ]", "sequence string");
     
-    Character[] helloWorld = [*"hello world"];
-    
-    check(helloWorld.occurrences('l').sequence()==[2,3,9], "sequence occurrences");
-    check(helloWorld.occurrences('l',3).sequence()==[3,9], "sequence occurrences");
-    check(helloWorld.occurs('l'), "sequence occurs");
-    check(helloWorld.occurs('l',3), "sequence occurs");
-    check(helloWorld.countOccurrences('l')==3, "sequence countOccurrences");
-    check(helloWorld.countOccurrences('l',3)==2, "sequence countOccurrences");
-    check((helloWorld.firstOccurrence('l') else -1)==2, "sequence firstOccurrence");
-    check((helloWorld.firstOccurrence('l',3) else -1)==3, "sequence firstOccurrence");
-    check((helloWorld.lastOccurrence('l') else -1)==9, "sequence lastOccurrence 1");
-    check((helloWorld.lastOccurrence('l',0) else -1)==9, "sequence lastOccurrence 2");
-    check((helloWorld.lastOccurrence('l',1) else -1)==9, "sequence lastOccurrence 3");
-    check((helloWorld.lastOccurrence('l',2) else -1)==3, "sequence lastOccurrence 4");
-    check((helloWorld.lastOccurrence('h') else -1)==0, "sequence lastOccurrence 5");
-    check((helloWorld.lastOccurrence('e',4,6) else -1)==1, "sequence lastOccurrence 6");
-    
-    check(helloWorld.inclusions("wor").sequence()==[6], "sequence inclusions");
-    check(helloWorld.inclusions("wor",5).sequence()==[6], "sequence inclusions");
-    check(helloWorld.inclusions("wor",6).sequence()==[6], "sequence inclusions");
-    check(helloWorld.inclusions("wor",7).sequence()==[], "sequence inclusions");
-    check(helloWorld.includes("wor"), "sequence includes");
-    check(helloWorld.includes("wor",5), "sequence includes");
-    check(helloWorld.includes("wor",6), "sequence includes");
-    check(!helloWorld.includes("wor",7), "sequence includes");
-    check(helloWorld.countInclusions("wor")==1, "sequence countInclusions");
-    check(helloWorld.countInclusions("wor",5)==1, "sequence countInclusions");
-    check(helloWorld.countInclusions("wor",6)==1, "sequence countInclusions");
-    check(helloWorld.countInclusions("wor",7)==0, "sequence countInclusions");
-    check((helloWorld.firstInclusion("wor") else -1)==6, "sequence firstInclusion");
-    check((helloWorld.firstInclusion("wor",5) else -1)==6, "sequence firstInclusion");
-    check((helloWorld.firstInclusion("wor",6) else -1)==6, "sequence firstInclusion");
-    check(!helloWorld.firstInclusion("wor",7) exists, "sequence firstInclusion");
-    check((helloWorld.lastInclusion("wor") else -1)==6, "sequence lastInclusion 1");
-    check((helloWorld.lastInclusion("wor",1) else -1)==6, "sequence lastInclusion 2");
-    check((helloWorld.lastInclusion("wor",2) else -1)==6, "sequence lastInclusion 3");
-    check(!helloWorld.lastInclusion("wor",3) exists, "sequence lastInclusion 4");
-
-    check((helloWorld.lastInclusion([]) else -1)==11, "sequence empty lastInclusion");
-    check((helloWorld.firstInclusion([]) else -1)==0, "sequence empty firstInclusion");
-    check((helloWorld.firstInclusion([],11) else -1)==11, "sequence empty firstInclusion");
-    check(!helloWorld.firstInclusion([],12) exists, "sequence empty firstInclusion");
-    check((helloWorld.firstOccurrence('d',0,11) else -1)==10, "sequence firstOccurrence");
-    check(!helloWorld.firstOccurrence('d',0,10) exists, "sequence firstOccurrence");
-    
 }

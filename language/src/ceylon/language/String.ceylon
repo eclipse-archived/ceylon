@@ -56,7 +56,7 @@ by ("Gavin")
 tagged("Basic types", "Strings")
 shared native final class String(characters)
         extends Object()
-        satisfies List<Character> & 
+        satisfies SearchableList<Character> &
                   Comparable<String> &
                   Summable<String> & 
                   Ranged<Integer,Character,String> {
@@ -539,18 +539,18 @@ shared native final class String(characters)
                 = smallest(size - sourcePosition,
                     destination.size - destinationPosition));
     
-    shared actual native Boolean occurs(Anything element, Integer from, Integer length);
-    shared actual native Boolean occursAt(Integer index, Anything element);
-    shared actual native Boolean includes(List<Anything> sublist, Integer from);
-    shared actual native Boolean includesAt(Integer index, List<Anything> sublist);
+    shared actual native Boolean occurs(Character element, Integer from, Integer length);
+    shared actual native Boolean occursAt(Integer index, Character element);
+    shared actual native Boolean includes(List<Character> sublist, Integer from);
+    shared actual native Boolean includesAt(Integer index, List<Character> sublist);
         
-    shared actual native Integer? firstOccurrence(Anything element, Integer from, Integer length);
-    shared actual native Integer? lastOccurrence(Anything element, Integer from, Integer length);
-    shared actual native Integer? firstInclusion(List<Anything> sublist, Integer from);
-    shared actual native Integer? lastInclusion(List<Anything> sublist, Integer from);
+    shared actual native Integer? firstOccurrence(Character element, Integer from, Integer length);
+    shared actual native Integer? lastOccurrence(Character element, Integer from, Integer length);
+    shared actual native Integer? firstInclusion(List<Character> sublist, Integer from);
+    shared actual native Integer? lastInclusion(List<Character> sublist, Integer from);
     
-    shared actual native Integer countOccurrences(Anything sublist, Integer from, Integer length);
-    shared actual native Integer countInclusions(List<Anything> sublist, Integer from);
+    shared actual native Integer countOccurrences(Character sublist, Integer from, Integer length);
+    shared actual native Integer countInclusions(List<Character> sublist, Integer from);
         
     shared actual native Boolean largerThan(String other); 
     shared actual native Boolean smallerThan(String other); 
