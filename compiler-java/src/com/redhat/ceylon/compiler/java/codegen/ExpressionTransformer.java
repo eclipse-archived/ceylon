@@ -4471,6 +4471,11 @@ public class ExpressionTransformer extends AbstractTransformer {
                     result = naming.makeCompanionFieldName(iface);
                 }
             }
+            
+            if (Decl.isAncestorLocal(iface)) {
+                result = make().TypeCast(makeJavaType(iface.getType(), JT_COMPANION), result);
+            }
+            
         } else {
             result = makeErroneous(superOfQualifiedExpr, "compiler bug: " + (inheritedFrom == null ? "null" : inheritedFrom.getClass().getName()) + " is an unhandled case in widen()");
         }
@@ -4950,7 +4955,9 @@ public class ExpressionTransformer extends AbstractTransformer {
                 // this is only for interface containers
                 && declContainer instanceof Interface
                 // we only ever need the $impl if the declaration is not shared
-                && !decl.isShared()){
+                && !decl.isShared()
+                && (!(expr instanceof Tree.QualifiedMemberExpression)
+                || !isSuperOrSuperOf(((Tree.QualifiedMemberExpression)expr).getPrimary()))){
             Interface declaration = (Interface) declContainer;
             // access the interface $impl instance
             qualExpr = naming.makeCompanionAccessorCall(qualExpr, declaration);
