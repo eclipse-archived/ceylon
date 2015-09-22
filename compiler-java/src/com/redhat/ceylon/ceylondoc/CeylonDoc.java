@@ -452,6 +452,10 @@ public abstract class CeylonDoc extends Markup {
             }
         }
 
+        if (obj instanceof Module) {
+            icons.add("icon-module");
+        }
+
         return icons;
     }
     
