@@ -281,12 +281,21 @@ public final class String
     @Override
     @TypeInfo("ceylon.language::Null|ceylon.language::Character")
     public Character getFromLast(@Name("index") long key) {
-        return getFromFirst(value, value.length()-1-key);
+        return getFromLast(value, key);
     }
 
     @Ignore
     public static Character getFromLast(java.lang.String value, long key) {
-        return getFromFirst(value, value.length()-1-key);
+        int index = Util.toInt(key);
+        int codePoint;
+        try {
+            int offset = value.offsetByCodePoints(value.length(), -index-1);
+            codePoint = value.codePointAt(offset);
+        }
+        catch (IndexOutOfBoundsException e) {
+            return null;
+        }
+        return Character.instance(codePoint);
     }
 
     @Override
