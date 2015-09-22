@@ -376,7 +376,7 @@ shared interface List<out Element=Anything>
                 => if (exists first, exists second)
                     then first==second
                     else first exists == second exists, 
-                skipping(size-sublist.size), sublist);
+                skip(size-sublist.size), sublist);
     }
     
     "The indexes in this list for which the element is not
