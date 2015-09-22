@@ -1,18 +1,28 @@
 import ceylon.language.meta.declaration{ValueConstructorDeclaration}
 
-"""A value model represents the model of a Ceylon value that you can read and inspect.
+"""A callable constructor model represents the model of a Ceylon class 
+   value constructor that you can get and inspect
    
-   A value is a toplevel binding, declared on a package.
+   ## Gettablity
    
-   This is a [[ValueModel]] that you can query for a value declaration's current value:
+   As with [[Value]] you can also get the value of a `ValueConstructor`, 
+   doing so obtains instance:
    
-       shared String foo = "Hello";
-       
-       void test(){
-           Value<String> val = `foo`;
-           // This will print: Hello
-           print(val.get());
-       }
+        shared class Color {
+            shared String hex;
+            shared new black {
+                this.hex="#000000";
+            }
+            shared new white {
+                this.hex="#ffffff";
+            }
+        }
+        
+        void test() {
+        ValueConstructor<Color> ctor = `Color.black`;
+        // This will print: #000000
+        print(ctor.get());
+        
    """
 shared sealed interface ValueConstructor<out Type=Object,in Set=Nothing>
         satisfies ValueModel<Type, Set> & Gettable<Type, Set> {
