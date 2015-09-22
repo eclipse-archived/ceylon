@@ -426,4 +426,10 @@ public class StructureTests2 extends CompilerTests {
     public void testCncRefinedMethodWithDefaultTypeParameter(){
         compareWithJavaSource("concrete/RefinedMethodWithDefaultTypeParameter");
     }
+    
+    @Test
+    public void testCncBug2316(){
+        compareWithJavaSource("concrete/Bug2316");
+        run("com.redhat.ceylon.compiler.java.test.structure.concrete.bug2316");
+    }
 }

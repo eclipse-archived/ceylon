@@ -1,0 +1,333 @@
+package com.redhat.ceylon.compiler.java.test.structure.concrete;
+
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Name("B")
+@.ceylon.language.SharedAnnotation$annotation$
+@.com.redhat.ceylon.compiler.java.metadata.LocalContainer(
+        path = {
+                "bug2316",
+                "1A"},
+        companionClassName = "")
+@.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration
+@.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"com.redhat.ceylon.compiler.java.test.structure.concrete::bug2316.1A"})
+interface bug2316$A$B_ extends .com.redhat.ceylon.compiler.java.test.structure.concrete.bug2316$A_ {
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .java.lang.Object A$impl$B$impl();
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.ActualAnnotation$annotation$
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
+    public .java.lang.String identS();
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
+    public .java.lang.String outerIdent();
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
+    public .java.lang.String identA1();
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
+    public .java.lang.String identA2();
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
+    public .java.lang.String identB();
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
+    public .java.lang.String outerIdentS();
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
+    public .java.lang.String identA1S();
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
+    public .java.lang.String identA2S();
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
+    public .java.lang.String identBS();
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Name("A")
+@.com.redhat.ceylon.compiler.java.metadata.Members({@.com.redhat.ceylon.compiler.java.metadata.Member(javaClassName = "B")})
+@.com.redhat.ceylon.compiler.java.metadata.LocalDeclarations({"1anonymous_0_"})
+@.com.redhat.ceylon.compiler.java.metadata.LocalContainer(
+        path = {"bug2316"},
+        companionClassName = "1A$impl")
+@.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
+interface bug2316$A_ {
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .java.lang.Object A$impl();
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.DefaultAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
+    public .java.lang.String identS();
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.structure.concrete::bug2316.1A.B")
+    @.com.redhat.ceylon.compiler.java.metadata.Transient
+    public .com.redhat.ceylon.compiler.java.test.structure.concrete.bug2316$A$B_ getB();
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Method
+@.com.redhat.ceylon.compiler.java.metadata.LocalDeclarations({
+        "1a_",
+        "::bug2316$A_"})
+public final class bug2316_ {
+    
+    private bug2316_() {
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
+    public static void bug2316() {
+        
+        @.com.redhat.ceylon.compiler.java.metadata.Ignore
+        final class A$impl {
+            
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            A$impl(.com.redhat.ceylon.compiler.java.test.structure.concrete.bug2316$A_ $this) {
+                this.$this = $this;
+            }
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            private final .com.redhat.ceylon.compiler.java.test.structure.concrete.bug2316$A_ $this;
+            
+            @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
+            private .java.lang.String ident$priv$() {
+                return "A";
+            }
+            
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            public .java.lang.String identS() {
+                return "As";
+            }
+            
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            final class B$impl {
+                
+                @.com.redhat.ceylon.compiler.java.metadata.Ignore
+                public B$impl(.com.redhat.ceylon.compiler.java.test.structure.concrete.bug2316$A$B_ $this) {
+                    this.$this = $this;
+                }
+                @.com.redhat.ceylon.compiler.java.metadata.Ignore
+                private final .com.redhat.ceylon.compiler.java.test.structure.concrete.bug2316$A$B_ $this;
+                
+                @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
+                private .java.lang.String ident$priv$() {
+                    return "B";
+                }
+                
+                @.com.redhat.ceylon.compiler.java.metadata.Ignore
+                public .java.lang.String identS() {
+                    return "Bs";
+                }
+                
+                @.com.redhat.ceylon.compiler.java.metadata.Ignore
+                public .java.lang.String outerIdent() {
+                    return ((A$impl)A$impl.this.$this.A$impl()).ident$priv$();
+                }
+                
+                @.com.redhat.ceylon.compiler.java.metadata.Ignore
+                public .java.lang.String identA1() {
+                    return ((A$impl)$this.A$impl()).ident$priv$();
+                }
+                
+                @.com.redhat.ceylon.compiler.java.metadata.Ignore
+                public .java.lang.String identA2() {
+                    return ((A$impl)$this.A$impl()).ident$priv$();
+                }
+                
+                @.com.redhat.ceylon.compiler.java.metadata.Ignore
+                public .java.lang.String identB() {
+                    return ident$priv$();
+                }
+                
+                @.com.redhat.ceylon.compiler.java.metadata.Ignore
+                public .java.lang.String outerIdentS() {
+                    return A$impl.this.$this.identS();
+                }
+                
+                @.com.redhat.ceylon.compiler.java.metadata.Ignore
+                public .java.lang.String identA1S() {
+                    return ((A$impl)$this.A$impl()).identS();
+                }
+                
+                @.com.redhat.ceylon.compiler.java.metadata.Ignore
+                public .java.lang.String identA2S() {
+                    return ((A$impl)$this.A$impl()).identS();
+                }
+                
+                @.com.redhat.ceylon.compiler.java.metadata.Ignore
+                public .java.lang.String identBS() {
+                    return $this.identS();
+                }
+            }
+            
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            public final .com.redhat.ceylon.compiler.java.test.structure.concrete.bug2316$A$B_ getB() {
+                return (
+                    let
+                    {
+                        
+                        @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+                        @.com.redhat.ceylon.compiler.java.metadata.Name("anonymous#0")
+                        @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
+                        @.com.redhat.ceylon.compiler.java.metadata.Object
+                        @.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"com.redhat.ceylon.compiler.java.test.structure.concrete::bug2316.1A.B"})
+                        class anonymous_0_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.concrete.bug2316$A$B_ {
+                            
+                            private anonymous_0_() {
+                                this.$com$redhat$ceylon$compiler$java$test$structure$concrete$bug2316$A$B$this$ = A$impl.this.new B$impl(this);
+                                this.$com$redhat$ceylon$compiler$java$test$structure$concrete$bug2316$A$this$ = new A$impl(this);
+                            }
+                            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+                            protected final A$impl.B$impl $com$redhat$ceylon$compiler$java$test$structure$concrete$bug2316$A$B$this$;
+                            
+                            @.java.lang.Override
+                            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+                            public A$impl.B$impl A$impl$B$impl() {
+                                return $com$redhat$ceylon$compiler$java$test$structure$concrete$bug2316$A$B$this$;
+                            }
+                            
+                            @.java.lang.Override
+                            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+                            public final .java.lang.String identS() {
+                                return $com$redhat$ceylon$compiler$java$test$structure$concrete$bug2316$A$B$this$.identS();
+                            }
+                            
+                            @.java.lang.Override
+                            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+                            public final .java.lang.String outerIdent() {
+                                return $com$redhat$ceylon$compiler$java$test$structure$concrete$bug2316$A$B$this$.outerIdent();
+                            }
+                            
+                            @.java.lang.Override
+                            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+                            public final .java.lang.String identA1() {
+                                return $com$redhat$ceylon$compiler$java$test$structure$concrete$bug2316$A$B$this$.identA1();
+                            }
+                            
+                            @.java.lang.Override
+                            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+                            public final .java.lang.String identA2() {
+                                return $com$redhat$ceylon$compiler$java$test$structure$concrete$bug2316$A$B$this$.identA2();
+                            }
+                            
+                            @.java.lang.Override
+                            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+                            public final .java.lang.String identB() {
+                                return $com$redhat$ceylon$compiler$java$test$structure$concrete$bug2316$A$B$this$.identB();
+                            }
+                            
+                            @.java.lang.Override
+                            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+                            public final .java.lang.String outerIdentS() {
+                                return $com$redhat$ceylon$compiler$java$test$structure$concrete$bug2316$A$B$this$.outerIdentS();
+                            }
+                            
+                            @.java.lang.Override
+                            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+                            public final .java.lang.String identA1S() {
+                                return $com$redhat$ceylon$compiler$java$test$structure$concrete$bug2316$A$B$this$.identA1S();
+                            }
+                            
+                            @.java.lang.Override
+                            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+                            public final .java.lang.String identA2S() {
+                                return $com$redhat$ceylon$compiler$java$test$structure$concrete$bug2316$A$B$this$.identA2S();
+                            }
+                            
+                            @.java.lang.Override
+                            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+                            public final .java.lang.String identBS() {
+                                return $com$redhat$ceylon$compiler$java$test$structure$concrete$bug2316$A$B$this$.identBS();
+                            }
+                            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+                            protected final A$impl $com$redhat$ceylon$compiler$java$test$structure$concrete$bug2316$A$this$;
+                            
+                            @.java.lang.Override
+                            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+                            public A$impl A$impl() {
+                                return $com$redhat$ceylon$compiler$java$test$structure$concrete$bug2316$A$this$;
+                            }
+                            
+                            @.java.lang.Override
+                            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+                            public final .com.redhat.ceylon.compiler.java.test.structure.concrete.bug2316$A$B_ getB() {
+                                return $com$redhat$ceylon$compiler$java$test$structure$concrete$bug2316$A$this$.getB();
+                            }
+                            
+                            @.java.lang.Override
+                            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+                            public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue(.com.redhat.ceylon.compiler.java.test.structure.concrete.bug2316_.class), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.concrete.bug2316$A_.class)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue("b")), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(anonymous_0_.class));
+                            }
+                        }
+                    }
+                    returning new anonymous_0_();
+                );
+            }
+        }
+        
+        @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+        @.com.redhat.ceylon.compiler.java.metadata.Name("a")
+        @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
+        @.com.redhat.ceylon.compiler.java.metadata.Object
+        @.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"com.redhat.ceylon.compiler.java.test.structure.concrete::bug2316.1A"})
+        final class a_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.concrete.bug2316$A_ {
+            
+            private a_() {
+                this.$com$redhat$ceylon$compiler$java$test$structure$concrete$bug2316$A$this$ = new A$impl(this);
+            }
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            protected final A$impl $com$redhat$ceylon$compiler$java$test$structure$concrete$bug2316$A$this$;
+            
+            @.java.lang.Override
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            public A$impl A$impl() {
+                return $com$redhat$ceylon$compiler$java$test$structure$concrete$bug2316$A$this$;
+            }
+            
+            @.java.lang.Override
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            public .java.lang.String identS() {
+                return $com$redhat$ceylon$compiler$java$test$structure$concrete$bug2316$A$this$.identS();
+            }
+            
+            @.java.lang.Override
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            public final .com.redhat.ceylon.compiler.java.test.structure.concrete.bug2316$A$B_ getB() {
+                return $com$redhat$ceylon$compiler$java$test$structure$concrete$bug2316$A$this$.getB();
+            }
+            
+            @.java.lang.Override
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue(.com.redhat.ceylon.compiler.java.test.structure.concrete.bug2316_.class), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(a_.class));
+            }
+        }
+        final a_ a = new a_();
+        .ceylon.language.print_.print(.ceylon.language.String.instance(a.getB().outerIdent()));
+        .ceylon.language.print_.print(.ceylon.language.String.instance(a.getB().identA1()));
+        .ceylon.language.print_.print(.ceylon.language.String.instance(a.getB().identA2()));
+        .ceylon.language.print_.print(.ceylon.language.String.instance(a.getB().identB()));
+        .ceylon.language.print_.print(.ceylon.language.String.instance(a.getB().outerIdentS()));
+        .ceylon.language.print_.print(.ceylon.language.String.instance(a.getB().identA1S()));
+        .ceylon.language.print_.print(.ceylon.language.String.instance(a.getB().identA2S()));
+        .ceylon.language.print_.print(.ceylon.language.String.instance(a.getB().identBS()));
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.structure.concrete.bug2316_.bug2316();
+    }
+}
