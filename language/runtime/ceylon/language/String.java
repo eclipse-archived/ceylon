@@ -1452,13 +1452,14 @@ public final class String
     public static java.lang.String replace(java.lang.String value, 
             java.lang.String substring, java.lang.String replacement) {
         int index = value.indexOf(substring);
+        if (index<0) return value;
+        java.lang.StringBuilder builder = 
+                new java.lang.StringBuilder(value);
         while (index>=0) {
-            value = value.substring(0,index) + replacement + 
-                    value.substring(index+substring.length());
-            index = value.indexOf(substring, 
-                    index+replacement.length());
+            builder.replace(index, index+substring.length(), replacement);
+            index = builder.indexOf(substring, index+replacement.length());
         }
-        return value;
+        return builder.toString();
     }
     
     public java.lang.String replaceFirst(
