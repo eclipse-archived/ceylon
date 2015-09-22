@@ -85,7 +85,9 @@ public class IndexDoc extends CeylonDoc {
                 getType(module), 
                 linkRenderer().to(module).getUrl(), 
                 Util.getDocFirstLine(module, linkRenderer()), 
-                null, null, null);
+                Util.getTags(module), 
+                getIcons(module), 
+                null);
     }
 
     private void indexPackage(Package pkg) throws IOException {
@@ -94,7 +96,7 @@ public class IndexDoc extends CeylonDoc {
                 getType(pkg), 
                 linkRenderer().to(pkg).getUrl(), 
                 Util.getDocFirstLine(pkg, linkRenderer()), 
-                null, 
+                Util.getTags(pkg), 
                 getIcons(pkg),
                 null);
         write(",\n");
