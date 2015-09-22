@@ -7,6 +7,7 @@
  
  This function is often used in conjunction with `curry()`."
 see (`function curry`)
+tagged("Functions")
 shared Result(*FirstArgs)(*SecondArgs)
 shuffle<Result,FirstArgs,SecondArgs>(
             Result(*SecondArgs)(*FirstArgs) f)

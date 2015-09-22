@@ -11,6 +11,7 @@ see (`function seq`)
 tagged("Sequences")
 shared sealed final
 serializable
+tagged("Collections", "Sequences")
 class ArraySequence<out Element>(array)
         extends Object()
         satisfies [Element+] {

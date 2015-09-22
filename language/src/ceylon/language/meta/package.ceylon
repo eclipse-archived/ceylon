@@ -115,4 +115,5 @@
    the program element.
    """
 by ("Gavin King", "Stephane Epardaud")
+tagged("Metamodel")
 shared package ceylon.language.meta;

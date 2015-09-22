@@ -25,6 +25,7 @@
  `Exponentiable<Rational,Integer>`, thus accepting only
  whole-number exponents."
 see (`class Integer`, `class Float`)
+tagged("Numbers")
 shared interface Exponentiable<This,Other> of This
         satisfies Numeric<This>
         given This satisfies Exponentiable<This,Other> 

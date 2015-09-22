@@ -112,6 +112,7 @@ shared interface Set<out Element=Object>
 }
 
 "An immutable [[Set]] with no elements."
+tagged("Collections")
 shared object emptySet 
         extends Object() 
         satisfies Set<Nothing> {

@@ -40,6 +40,7 @@ import ceylon.language.meta.declaration {
        print(resource.textContent());"""
 by("Enrique Zamudio")
 see (`function Module.resourceByPath`)
+tagged("Environment")
 shared interface Resource {
     
     "The name of the resource; usually the filename."

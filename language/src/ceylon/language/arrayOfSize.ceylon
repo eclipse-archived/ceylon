@@ -6,6 +6,7 @@ throws (`class AssertionError`,
         "if `size>runtime.maxArraySize`")
 see (`value runtime.maxArraySize`)
 deprecated ("Use [[Array.ofSize]]")
+tagged("Collections")
 shared Array<Element> arrayOfSize<Element>(
         "The size of the resulting array. If the size is 
          non-positive, an empty array will be created."

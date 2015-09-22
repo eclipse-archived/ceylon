@@ -6,6 +6,7 @@
  This function is intended for use with [[Iterable.sort]]
  and [[Iterable.max]]."
 see (`function byKey`)
+tagged("Comparisons")
 shared Comparison byItem<Item>(Comparison comparing(Item x, Item y))
             (Object->Item x, Object->Item y) 
         given Item satisfies Object => 

@@ -53,7 +53,7 @@
    `span()`, and `measure()` require iteration from the 
    beginning of the string to the given index."""
 by ("Gavin")
-tagged("Basic types", "Collections", "Strings")
+tagged("Basic types", "Strings")
 shared native final class String(characters)
         extends Object()
         satisfies List<Character> & 

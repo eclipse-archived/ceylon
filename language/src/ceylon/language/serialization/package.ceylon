@@ -90,4 +90,5 @@
    and its super classes, for each instance in the object graph. 
 "
 by ("Gavin", "Tom")
+tagged("Serialization")
 shared package ceylon.language.serialization;

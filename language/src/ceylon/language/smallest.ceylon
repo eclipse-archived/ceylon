@@ -2,6 +2,7 @@
 see (`interface Comparable`, 
      `function largest`, 
      `function min`)
+tagged("Comparisons")
 shared Element smallest<Element>(Element x, Element y) 
         given Element satisfies Comparable<Element> 
         => x<y then x else y;

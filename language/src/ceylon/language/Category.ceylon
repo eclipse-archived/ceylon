@@ -43,6 +43,7 @@
    and `x in string` evaluates to `false` for every `x` that
    is not a `String` or `Character`."""
 by ("Gavin")
+tagged("Collections")
 shared interface Category<in Element=Object>
         given Element satisfies Object {
     

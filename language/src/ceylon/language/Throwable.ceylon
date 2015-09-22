@@ -41,6 +41,7 @@ import ceylon.language { printTrace=printStackTrace }
  nonexistence. On the other hand, failure to read from an
  already open file could result in an `Exception`."
 by ("Gavin", "Tom")
+tagged("Basic types")
 shared abstract sealed native 
 class Throwable(description=null, cause=null) {
     

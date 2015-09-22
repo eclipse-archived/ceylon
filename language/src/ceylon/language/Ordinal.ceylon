@@ -39,6 +39,7 @@ see (`class Character`,
      `interface Comparable`,
      `interface Enumerable`)
 by ("Gavin")
+tagged("Numbers")
 shared interface Ordinal<out Other> of Other
         given Other satisfies Ordinal<Other> {
     

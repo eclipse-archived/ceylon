@@ -3,6 +3,7 @@
  boolean value.
  
  Recognized values are \"true\", \"false\"."
+tagged("Basic types")
 shared Boolean? parseBoolean(String string) {
     switch (string)
     case ("true") { return true; }

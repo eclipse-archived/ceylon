@@ -2,6 +2,7 @@
 see (`interface Comparable`, 
      `function smallest`, 
      `function max`)
+tagged("Comparisons")
 shared Element largest<Element>(Element x, Element y) 
         given Element satisfies Comparable<Element> 
         => x>y then x else y;

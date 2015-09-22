@@ -20,6 +20,7 @@ see (`interface Map`,
      `interface List`, 
      `interface Category`)
 by ("Gavin")
+tagged("Collections")
 shared interface Correspondence<in Key, out Item=Anything>
         given Key satisfies Object {
     

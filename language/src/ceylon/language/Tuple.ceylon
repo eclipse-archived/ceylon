@@ -44,6 +44,7 @@
        String[] allLabels = point[2...];"""
 tagged("Sequences")
 by ("Gavin")
+tagged("Collections")
 shared final serializable
 native class Tuple<out Element, out First, out Rest = []>
         (first, rest)

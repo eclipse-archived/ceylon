@@ -8,6 +8,7 @@
 see (`interface Comparable`, 
      `function max`,
      `function smallest`)
+tagged("Comparisons", "Streams")
 shared Absent|Value min<Value,Absent>
         (Iterable<Value,Absent> values) 
         given Value satisfies Comparable<Value>

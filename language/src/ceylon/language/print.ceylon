@@ -10,6 +10,7 @@
 see (`function process.writeLine`)
 tagged("Environment")
 by ("Gavin")
+tagged("Environment")
 shared void print(Anything val) 
         => process.writeLine(stringify(val));
 
@@ -19,6 +20,7 @@ shared void print(Anything val)
 by ("Gavin")
 tagged("Environment")
 see (`function process.write`)
+tagged("Environment")
 shared void printAll({Anything*} values,
         "A character sequence to use to separate the values"
         String separator=", ") {

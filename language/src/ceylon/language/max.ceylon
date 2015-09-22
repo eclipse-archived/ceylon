@@ -12,6 +12,7 @@ see (`interface Comparable`,
      `function min`, 
      `function largest`,
      `function Iterable.max`)
+tagged("Comparisons", "Streams")
 shared Absent|Value max<Value,Absent>
         (Iterable<Value,Absent> values) 
         given Value satisfies Comparable<Value>

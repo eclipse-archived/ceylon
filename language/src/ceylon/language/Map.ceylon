@@ -282,6 +282,7 @@ shared interface Map<out Key=Object, out Item=Anything>
 }
 
 "An immutable [[Map]] with no entries."
+tagged("Collections")
 shared object emptyMap 
         extends Object() 
         satisfies Map<Nothing, Nothing> {

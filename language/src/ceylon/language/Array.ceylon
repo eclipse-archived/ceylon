@@ -21,6 +21,7 @@
  This class is provided primarily to support interoperation 
  with Java, and for some performance-critical low-level 
  programming tasks."
+tagged("Collections")
 shared final serializable native class Array<Element>
         satisfies List<Element> &
                   Ranged<Integer,Element,Array<Element>> {

@@ -23,6 +23,7 @@
  methods should produce an [[AssertionError]] when any such 
  constraint is violated."
 see (`interface Destroyable`)
+tagged("Basic types")
 shared interface Obtainable satisfies Usable {
     
     "Obtain this resource. Called before the body of a `try` 

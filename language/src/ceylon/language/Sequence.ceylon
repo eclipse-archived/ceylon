@@ -33,6 +33,7 @@ see (`interface Empty`,
 	 `class Singleton`)
 tagged("Sequences")
 by ("Gavin")
+tagged("Sequences")
 shared sealed interface Sequence<out Element=Anything>
         satisfies Element[] & 
                   {Element+} {

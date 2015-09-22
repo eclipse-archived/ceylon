@@ -15,6 +15,7 @@
    `try` statement ends, even if an exception propagates out 
    of the body of the `try`."
 see (`interface Obtainable`)
+tagged("Basic types")
 shared interface Destroyable satisfies Usable {
     
     "Destroy this resource. Called when execution of the 

@@ -263,11 +263,13 @@ shared interface Empty of e
  instance of the type `[]`."
 tagged("Sequences")
 by ("Tako Schotanus")
+tagged("Sequences")
 shared object empty 
 		extends Object() 
 		satisfies [] {}
 
 "An iterator that returns no elements."
+tagged("Streams")
 shared object emptyIterator 
 		satisfies Iterator<Nothing> {
     next() => finished;

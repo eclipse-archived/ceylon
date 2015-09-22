@@ -10,7 +10,7 @@ see (`function byIncreasing`,
      `function decreasing`,
      `function Iterable.max`,
      `function Iterable.sort`)
-tagged("Functions")
+tagged("Functions", "Comparisons")
 shared Comparison byDecreasing<Element,Value>
             (Value comparable(Element e))
             (Element x, Element y)
@@ -28,7 +28,7 @@ see (`function increasing`,
      `function byDecreasing`,
      `function Iterable.max`,
      `function Iterable.sort`)
-tagged("Functions")
+tagged("Comparisons")
 shared Comparison decreasing<Element>(Element x, Element y)
         given Element satisfies Comparable<Element> 
         => y<=>x;
@@ -39,6 +39,7 @@ shared Comparison decreasing<Element>(Element x, Element y)
         
  This function is intended for use with [[Iterable.sort]]
  and [[Iterable.max]]."
+tagged("Comparisons")
 shared Comparison decreasingKey<Key>
         (Key->Anything x, Key->Anything y)
         given Key satisfies Comparable<Key>
@@ -50,6 +51,7 @@ shared Comparison decreasingKey<Key>
         
  This function is intended for use with [[Iterable.sort]]
  and [[Iterable.max]]."
+tagged("Comparisons")
 shared Comparison decreasingItem<Item>
         (Object->Item x, Object->Item y)
         given Item satisfies Comparable<Item>
