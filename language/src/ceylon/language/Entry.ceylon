@@ -5,7 +5,6 @@
  using the `->` operator:
  
      String->Person entry = person.name->person;"
-tagged("Collections")
 by ("Gavin")
 tagged("Collections")
 shared final serializable

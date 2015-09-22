@@ -261,7 +261,6 @@ shared interface Empty of e
 
 "A sequence with no elements, abbreviated `[]`. The unique 
  instance of the type `[]`."
-tagged("Sequences")
 by ("Tako Schotanus")
 tagged("Sequences")
 shared object empty 

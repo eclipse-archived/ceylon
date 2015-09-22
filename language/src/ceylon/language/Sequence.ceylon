@@ -31,7 +31,6 @@ see (`interface Empty`,
 	 `class Range`, 
 	 `class Tuple`, 
 	 `class Singleton`)
-tagged("Sequences")
 by ("Gavin")
 tagged("Sequences")
 shared sealed interface Sequence<out Element=Anything>

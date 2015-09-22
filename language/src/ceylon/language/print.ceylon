@@ -8,7 +8,6 @@
  
  and is intended mainly for debugging purposes."
 see (`function process.writeLine`)
-tagged("Environment")
 by ("Gavin")
 tagged("Environment")
 shared void print(Anything val) 
@@ -18,7 +17,6 @@ shared void print(Anything val)
  machine process as a single line of text, separated by a
  given character sequence."
 by ("Gavin")
-tagged("Environment")
 see (`function process.write`)
 tagged("Environment")
 shared void printAll({Anything*} values,

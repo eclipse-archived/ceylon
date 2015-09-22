@@ -42,9 +42,8 @@
        Float y = point[1];
        String? firstLabel = point[2];
        String[] allLabels = point[2...];"""
-tagged("Sequences")
 by ("Gavin")
-tagged("Collections")
+tagged("Sequences", "Basic types", "Collections")
 shared final serializable
 native class Tuple<out Element, out First, out Rest = []>
         (first, rest)
