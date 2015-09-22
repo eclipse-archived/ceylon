@@ -408,7 +408,14 @@ public class CeylonVisitor extends Visitor {
         } else {// super delegation
             stmts.addAll(classBuilder.getInitBuilder().copyStatementsBetween(null, ctorModel));
             addBody = true;
-            
+        }
+        if (ctorModel.isAbstract() && !delegatedTo) {
+            stmts.add(
+                    gen.make().Throw(gen.make().NewClass(null,
+                            List.<JCExpression>nil(),
+                            gen.make().QualIdent(gen.syms().ceylonUninvokableErrorType.tsym),
+                            List.<JCExpression>nil(),
+                            null)));
         }
         List<JCStatement> following = ctorModel.isAbstract() ? List.<JCStatement>nil() : classBuilder.getInitBuilder().copyStatementsBetween(ctorModel, null);
         if (addBody) {

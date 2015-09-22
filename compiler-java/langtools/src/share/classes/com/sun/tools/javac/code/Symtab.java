@@ -197,6 +197,7 @@ public class Symtab {
     public  Type ceylonAssertionErrorType;
     public  Type ceylonInitializationErrorType;
     public  Type ceylonEnumeratedTypeErrorType;
+    public  Type ceylonUninvokableErrorType;
     public  Type ceylonUninitializedMethodErrorType;
     public  Type ceylonUnresolvedCompilationErrorType;
     public  Type ceylonAbstractCallableType;
@@ -942,6 +943,7 @@ public class Symtab {
         ceylonAssertionErrorType = enterClass("ceylon.language.AssertionError");
         ceylonInitializationErrorType = enterClass("ceylon.language.InitializationError");
         ceylonEnumeratedTypeErrorType = enterClass("com.redhat.ceylon.compiler.java.language.EnumeratedTypeError");
+        ceylonUninvokableErrorType = enterClass("com.redhat.ceylon.compiler.java.language.UninvokableError");
         ceylonUninitializedMethodErrorType = enterClass("com.redhat.ceylon.compiler.java.language.UninitializedMethodError");
         ceylonUnresolvedCompilationErrorType = enterClass("com.redhat.ceylon.compiler.java.language.UnresolvedCompilationError");
         ceylonAbstractCallableType = enterClass("com.redhat.ceylon.compiler.java.language.AbstractCallable");
