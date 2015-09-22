@@ -465,18 +465,35 @@ public abstract class Bug966<Element extends .ceylon.language.Enumerable<Element
             let
             {
                 long $ceylontmp$from$11 = occurrences$from(element);
+                long $ceylontmp$length$12 = occurrences$length(element, $ceylontmp$from$11);
             }
-            returning occurrences$canonical$(element, $ceylontmp$from$11);
+            returning occurrences$canonical$(element, $ceylontmp$from$11, $ceylontmp$length$12);
         );
     }
     
     @.java.lang.Override
-    public .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> occurrences(final .java.lang.Object element, final long from) {
-        return $ceylon$language$List$this$.occurrences(element, from);
+    public final long occurrences$length(final .java.lang.Object element, final long from) {
+        return $ceylon$language$List$this$.occurrences$length(element, from);
     }
     
-    private .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> occurrences$canonical$(final .java.lang.Object element, final long from) {
-        return $ceylon$language$List$this$.occurrences(element, from);
+    @.java.lang.Override
+    public .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> occurrences(final .java.lang.Object element, final long from) {
+        return (
+            let
+            {
+                long $ceylontmp$length$13 = occurrences$length(element, from);
+            }
+            returning occurrences$canonical$(element, from, $ceylontmp$length$13);
+        );
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> occurrences(final .java.lang.Object element, final long from, final long length) {
+        return $ceylon$language$List$this$.occurrences(element, from, length);
+    }
+    
+    private .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> occurrences$canonical$(final .java.lang.Object element, final long from, final long length) {
+        return $ceylon$language$List$this$.occurrences(element, from, length);
     }
     
     @.java.lang.Override
@@ -489,10 +506,10 @@ public abstract class Bug966<Element extends .ceylon.language.Enumerable<Element
         return (
             let
             {
-                long $ceylontmp$from$12 = countOccurrences$from(element);
-                long $ceylontmp$length$13 = countOccurrences$length(element, $ceylontmp$from$12);
+                long $ceylontmp$from$14 = countOccurrences$from(element);
+                long $ceylontmp$length$15 = countOccurrences$length(element, $ceylontmp$from$14);
             }
-            returning countOccurrences$canonical$(element, $ceylontmp$from$12, $ceylontmp$length$13);
+            returning countOccurrences$canonical$(element, $ceylontmp$from$14, $ceylontmp$length$15);
         );
     }
     
@@ -506,9 +523,9 @@ public abstract class Bug966<Element extends .ceylon.language.Enumerable<Element
         return (
             let
             {
-                long $ceylontmp$length$14 = countOccurrences$length(element, from);
+                long $ceylontmp$length$16 = countOccurrences$length(element, from);
             }
-            returning countOccurrences$canonical$(element, from, $ceylontmp$length$14);
+            returning countOccurrences$canonical$(element, from, $ceylontmp$length$16);
         );
     }
     
@@ -531,10 +548,10 @@ public abstract class Bug966<Element extends .ceylon.language.Enumerable<Element
         return (
             let
             {
-                long $ceylontmp$from$15 = firstOccurrence$from(element);
-                long $ceylontmp$length$16 = firstOccurrence$length(element, $ceylontmp$from$15);
+                long $ceylontmp$from$17 = firstOccurrence$from(element);
+                long $ceylontmp$length$18 = firstOccurrence$length(element, $ceylontmp$from$17);
             }
-            returning firstOccurrence$canonical$(element, $ceylontmp$from$15, $ceylontmp$length$16);
+            returning firstOccurrence$canonical$(element, $ceylontmp$from$17, $ceylontmp$length$18);
         );
     }
     
@@ -548,9 +565,9 @@ public abstract class Bug966<Element extends .ceylon.language.Enumerable<Element
         return (
             let
             {
-                long $ceylontmp$length$17 = firstOccurrence$length(element, from);
+                long $ceylontmp$length$19 = firstOccurrence$length(element, from);
             }
-            returning firstOccurrence$canonical$(element, from, $ceylontmp$length$17);
+            returning firstOccurrence$canonical$(element, from, $ceylontmp$length$19);
         );
     }
     
@@ -564,8 +581,8 @@ public abstract class Bug966<Element extends .ceylon.language.Enumerable<Element
     }
     
     @.java.lang.Override
-    public final long lastOccurrence$to(final .java.lang.Object element) {
-        return $ceylon$language$List$this$.lastOccurrence$to(element);
+    public final long lastOccurrence$from(final .java.lang.Object element) {
+        return $ceylon$language$List$this$.lastOccurrence$from(element);
     }
     
     @.java.lang.Override
@@ -573,19 +590,36 @@ public abstract class Bug966<Element extends .ceylon.language.Enumerable<Element
         return (
             let
             {
-                long $ceylontmp$to$18 = lastOccurrence$to(element);
+                long $ceylontmp$from$20 = lastOccurrence$from(element);
+                long $ceylontmp$length$21 = lastOccurrence$length(element, $ceylontmp$from$20);
             }
-            returning lastOccurrence$canonical$(element, $ceylontmp$to$18);
+            returning lastOccurrence$canonical$(element, $ceylontmp$from$20, $ceylontmp$length$21);
         );
     }
     
     @.java.lang.Override
-    public .ceylon.language.Integer lastOccurrence(final .java.lang.Object element, final long to) {
-        return $ceylon$language$List$this$.lastOccurrence(element, to);
+    public final long lastOccurrence$length(final .java.lang.Object element, final long from) {
+        return $ceylon$language$List$this$.lastOccurrence$length(element, from);
     }
     
-    private .ceylon.language.Integer lastOccurrence$canonical$(final .java.lang.Object element, final long to) {
-        return $ceylon$language$List$this$.lastOccurrence(element, to);
+    @.java.lang.Override
+    public .ceylon.language.Integer lastOccurrence(final .java.lang.Object element, final long from) {
+        return (
+            let
+            {
+                long $ceylontmp$length$22 = lastOccurrence$length(element, from);
+            }
+            returning lastOccurrence$canonical$(element, from, $ceylontmp$length$22);
+        );
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.Integer lastOccurrence(final .java.lang.Object element, final long from, final long length) {
+        return $ceylon$language$List$this$.lastOccurrence(element, from, length);
+    }
+    
+    private .ceylon.language.Integer lastOccurrence$canonical$(final .java.lang.Object element, final long from, final long length) {
+        return $ceylon$language$List$this$.lastOccurrence(element, from, length);
     }
     
     @.java.lang.Override
@@ -800,9 +834,9 @@ public abstract class Bug966<Element extends .ceylon.language.Enumerable<Element
         return (
             let
             {
-                long $ceylontmp$step$19 = interpose$step($reified$Other, element);
+                long $ceylontmp$step$23 = interpose$step($reified$Other, element);
             }
-            returning interpose$canonical$($reified$Other, element, $ceylontmp$step$19);
+            returning interpose$canonical$($reified$Other, element, $ceylontmp$step$23);
         );
     }
     

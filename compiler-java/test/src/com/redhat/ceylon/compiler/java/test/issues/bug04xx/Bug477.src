@@ -355,18 +355,35 @@ abstract class Bug477_1<T> implements .com.redhat.ceylon.compiler.java.runtime.m
             let
             {
                 long $ceylontmp$from$11 = occurrences$from(element);
+                long $ceylontmp$length$12 = occurrences$length(element, $ceylontmp$from$11);
             }
-            returning occurrences$canonical$(element, $ceylontmp$from$11);
+            returning occurrences$canonical$(element, $ceylontmp$from$11, $ceylontmp$length$12);
         );
     }
     
     @.java.lang.Override
-    public .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> occurrences(final .java.lang.Object element, final long from) {
-        return $ceylon$language$List$this$.occurrences(element, from);
+    public final long occurrences$length(final .java.lang.Object element, final long from) {
+        return $ceylon$language$List$this$.occurrences$length(element, from);
     }
     
-    private .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> occurrences$canonical$(final .java.lang.Object element, final long from) {
-        return $ceylon$language$List$this$.occurrences(element, from);
+    @.java.lang.Override
+    public .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> occurrences(final .java.lang.Object element, final long from) {
+        return (
+            let
+            {
+                long $ceylontmp$length$13 = occurrences$length(element, from);
+            }
+            returning occurrences$canonical$(element, from, $ceylontmp$length$13);
+        );
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> occurrences(final .java.lang.Object element, final long from, final long length) {
+        return $ceylon$language$List$this$.occurrences(element, from, length);
+    }
+    
+    private .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> occurrences$canonical$(final .java.lang.Object element, final long from, final long length) {
+        return $ceylon$language$List$this$.occurrences(element, from, length);
     }
     
     @.java.lang.Override
@@ -379,10 +396,10 @@ abstract class Bug477_1<T> implements .com.redhat.ceylon.compiler.java.runtime.m
         return (
             let
             {
-                long $ceylontmp$from$12 = countOccurrences$from(element);
-                long $ceylontmp$length$13 = countOccurrences$length(element, $ceylontmp$from$12);
+                long $ceylontmp$from$14 = countOccurrences$from(element);
+                long $ceylontmp$length$15 = countOccurrences$length(element, $ceylontmp$from$14);
             }
-            returning countOccurrences$canonical$(element, $ceylontmp$from$12, $ceylontmp$length$13);
+            returning countOccurrences$canonical$(element, $ceylontmp$from$14, $ceylontmp$length$15);
         );
     }
     
@@ -396,9 +413,9 @@ abstract class Bug477_1<T> implements .com.redhat.ceylon.compiler.java.runtime.m
         return (
             let
             {
-                long $ceylontmp$length$14 = countOccurrences$length(element, from);
+                long $ceylontmp$length$16 = countOccurrences$length(element, from);
             }
-            returning countOccurrences$canonical$(element, from, $ceylontmp$length$14);
+            returning countOccurrences$canonical$(element, from, $ceylontmp$length$16);
         );
     }
     
@@ -421,10 +438,10 @@ abstract class Bug477_1<T> implements .com.redhat.ceylon.compiler.java.runtime.m
         return (
             let
             {
-                long $ceylontmp$from$15 = firstOccurrence$from(element);
-                long $ceylontmp$length$16 = firstOccurrence$length(element, $ceylontmp$from$15);
+                long $ceylontmp$from$17 = firstOccurrence$from(element);
+                long $ceylontmp$length$18 = firstOccurrence$length(element, $ceylontmp$from$17);
             }
-            returning firstOccurrence$canonical$(element, $ceylontmp$from$15, $ceylontmp$length$16);
+            returning firstOccurrence$canonical$(element, $ceylontmp$from$17, $ceylontmp$length$18);
         );
     }
     
@@ -438,9 +455,9 @@ abstract class Bug477_1<T> implements .com.redhat.ceylon.compiler.java.runtime.m
         return (
             let
             {
-                long $ceylontmp$length$17 = firstOccurrence$length(element, from);
+                long $ceylontmp$length$19 = firstOccurrence$length(element, from);
             }
-            returning firstOccurrence$canonical$(element, from, $ceylontmp$length$17);
+            returning firstOccurrence$canonical$(element, from, $ceylontmp$length$19);
         );
     }
     
@@ -454,8 +471,8 @@ abstract class Bug477_1<T> implements .com.redhat.ceylon.compiler.java.runtime.m
     }
     
     @.java.lang.Override
-    public final long lastOccurrence$to(final .java.lang.Object element) {
-        return $ceylon$language$List$this$.lastOccurrence$to(element);
+    public final long lastOccurrence$from(final .java.lang.Object element) {
+        return $ceylon$language$List$this$.lastOccurrence$from(element);
     }
     
     @.java.lang.Override
@@ -463,19 +480,36 @@ abstract class Bug477_1<T> implements .com.redhat.ceylon.compiler.java.runtime.m
         return (
             let
             {
-                long $ceylontmp$to$18 = lastOccurrence$to(element);
+                long $ceylontmp$from$20 = lastOccurrence$from(element);
+                long $ceylontmp$length$21 = lastOccurrence$length(element, $ceylontmp$from$20);
             }
-            returning lastOccurrence$canonical$(element, $ceylontmp$to$18);
+            returning lastOccurrence$canonical$(element, $ceylontmp$from$20, $ceylontmp$length$21);
         );
     }
     
     @.java.lang.Override
-    public .ceylon.language.Integer lastOccurrence(final .java.lang.Object element, final long to) {
-        return $ceylon$language$List$this$.lastOccurrence(element, to);
+    public final long lastOccurrence$length(final .java.lang.Object element, final long from) {
+        return $ceylon$language$List$this$.lastOccurrence$length(element, from);
     }
     
-    private .ceylon.language.Integer lastOccurrence$canonical$(final .java.lang.Object element, final long to) {
-        return $ceylon$language$List$this$.lastOccurrence(element, to);
+    @.java.lang.Override
+    public .ceylon.language.Integer lastOccurrence(final .java.lang.Object element, final long from) {
+        return (
+            let
+            {
+                long $ceylontmp$length$22 = lastOccurrence$length(element, from);
+            }
+            returning lastOccurrence$canonical$(element, from, $ceylontmp$length$22);
+        );
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.Integer lastOccurrence(final .java.lang.Object element, final long from, final long length) {
+        return $ceylon$language$List$this$.lastOccurrence(element, from, length);
+    }
+    
+    private .ceylon.language.Integer lastOccurrence$canonical$(final .java.lang.Object element, final long from, final long length) {
+        return $ceylon$language$List$this$.lastOccurrence(element, from, length);
     }
     
     @.java.lang.Override
@@ -760,9 +794,9 @@ abstract class Bug477_1<T> implements .com.redhat.ceylon.compiler.java.runtime.m
         return (
             let
             {
-                long $ceylontmp$step$19 = interpose$step($reified$Other, element);
+                long $ceylontmp$step$23 = interpose$step($reified$Other, element);
             }
-            returning interpose$canonical$($reified$Other, element, $ceylontmp$step$19);
+            returning interpose$canonical$($reified$Other, element, $ceylontmp$step$23);
         );
     }
     
@@ -834,9 +868,9 @@ abstract class Bug477_1<T> implements .com.redhat.ceylon.compiler.java.runtime.m
         return (int)(
             let
             {
-                long $ceylontmp$hash$20 = hash;
+                long $ceylontmp$hash$24 = hash;
             }
-            returning $ceylontmp$hash$20 ^ $ceylontmp$hash$20 >>> 32;
+            returning $ceylontmp$hash$24 ^ $ceylontmp$hash$24 >>> 32;
         );
     }
     
@@ -975,10 +1009,10 @@ abstract class Bug477_2<T> implements .com.redhat.ceylon.compiler.java.runtime.m
         return (
             let
             {
-                long $ceylontmp$from$21 = patch$from($reified$Other, list);
-                long $ceylontmp$length$22 = patch$length($reified$Other, list, $ceylontmp$from$21);
+                long $ceylontmp$from$25 = patch$from($reified$Other, list);
+                long $ceylontmp$length$26 = patch$length($reified$Other, list, $ceylontmp$from$25);
             }
-            returning patch$canonical$($reified$Other, list, $ceylontmp$from$21, $ceylontmp$length$22);
+            returning patch$canonical$($reified$Other, list, $ceylontmp$from$25, $ceylontmp$length$26);
         );
     }
     
@@ -992,9 +1026,9 @@ abstract class Bug477_2<T> implements .com.redhat.ceylon.compiler.java.runtime.m
         return (
             let
             {
-                long $ceylontmp$length$23 = patch$length($reified$Other, list, from);
+                long $ceylontmp$length$27 = patch$length($reified$Other, list, from);
             }
-            returning patch$canonical$($reified$Other, list, from, $ceylontmp$length$23);
+            returning patch$canonical$($reified$Other, list, from, $ceylontmp$length$27);
         );
     }
     
@@ -1032,9 +1066,9 @@ abstract class Bug477_2<T> implements .com.redhat.ceylon.compiler.java.runtime.m
         return (
             let
             {
-                long $ceylontmp$from$24 = includes$from(sublist);
+                long $ceylontmp$from$28 = includes$from(sublist);
             }
-            returning includes$canonical$(sublist, $ceylontmp$from$24);
+            returning includes$canonical$(sublist, $ceylontmp$from$28);
         );
     }
     
@@ -1057,9 +1091,9 @@ abstract class Bug477_2<T> implements .com.redhat.ceylon.compiler.java.runtime.m
         return (
             let
             {
-                long $ceylontmp$from$25 = inclusions$from(sublist);
+                long $ceylontmp$from$29 = inclusions$from(sublist);
             }
-            returning inclusions$canonical$(sublist, $ceylontmp$from$25);
+            returning inclusions$canonical$(sublist, $ceylontmp$from$29);
         );
     }
     
@@ -1082,9 +1116,9 @@ abstract class Bug477_2<T> implements .com.redhat.ceylon.compiler.java.runtime.m
         return (
             let
             {
-                long $ceylontmp$from$26 = countInclusions$from(sublist);
+                long $ceylontmp$from$30 = countInclusions$from(sublist);
             }
-            returning countInclusions$canonical$(sublist, $ceylontmp$from$26);
+            returning countInclusions$canonical$(sublist, $ceylontmp$from$30);
         );
     }
     
@@ -1107,9 +1141,9 @@ abstract class Bug477_2<T> implements .com.redhat.ceylon.compiler.java.runtime.m
         return (
             let
             {
-                long $ceylontmp$from$27 = firstInclusion$from(sublist);
+                long $ceylontmp$from$31 = firstInclusion$from(sublist);
             }
-            returning firstInclusion$canonical$(sublist, $ceylontmp$from$27);
+            returning firstInclusion$canonical$(sublist, $ceylontmp$from$31);
         );
     }
     
@@ -1132,9 +1166,9 @@ abstract class Bug477_2<T> implements .com.redhat.ceylon.compiler.java.runtime.m
         return (
             let
             {
-                long $ceylontmp$to$28 = lastInclusion$to(sublist);
+                long $ceylontmp$to$32 = lastInclusion$to(sublist);
             }
-            returning lastInclusion$canonical$(sublist, $ceylontmp$to$28);
+            returning lastInclusion$canonical$(sublist, $ceylontmp$to$32);
         );
     }
     
@@ -1162,10 +1196,10 @@ abstract class Bug477_2<T> implements .com.redhat.ceylon.compiler.java.runtime.m
         return (
             let
             {
-                long $ceylontmp$from$29 = occurs$from(element);
-                long $ceylontmp$length$30 = occurs$length(element, $ceylontmp$from$29);
+                long $ceylontmp$from$33 = occurs$from(element);
+                long $ceylontmp$length$34 = occurs$length(element, $ceylontmp$from$33);
             }
-            returning occurs$canonical$(element, $ceylontmp$from$29, $ceylontmp$length$30);
+            returning occurs$canonical$(element, $ceylontmp$from$33, $ceylontmp$length$34);
         );
     }
     
@@ -1179,9 +1213,9 @@ abstract class Bug477_2<T> implements .com.redhat.ceylon.compiler.java.runtime.m
         return (
             let
             {
-                long $ceylontmp$length$31 = occurs$length(element, from);
+                long $ceylontmp$length$35 = occurs$length(element, from);
             }
-            returning occurs$canonical$(element, from, $ceylontmp$length$31);
+            returning occurs$canonical$(element, from, $ceylontmp$length$35);
         );
     }
     
@@ -1204,19 +1238,36 @@ abstract class Bug477_2<T> implements .com.redhat.ceylon.compiler.java.runtime.m
         return (
             let
             {
-                long $ceylontmp$from$32 = occurrences$from(element);
+                long $ceylontmp$from$36 = occurrences$from(element);
+                long $ceylontmp$length$37 = occurrences$length(element, $ceylontmp$from$36);
             }
-            returning occurrences$canonical$(element, $ceylontmp$from$32);
+            returning occurrences$canonical$(element, $ceylontmp$from$36, $ceylontmp$length$37);
         );
     }
     
     @.java.lang.Override
-    public .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> occurrences(final .java.lang.Object element, final long from) {
-        return $ceylon$language$List$this$.occurrences(element, from);
+    public final long occurrences$length(final .java.lang.Object element, final long from) {
+        return $ceylon$language$List$this$.occurrences$length(element, from);
     }
     
-    private .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> occurrences$canonical$(final .java.lang.Object element, final long from) {
-        return $ceylon$language$List$this$.occurrences(element, from);
+    @.java.lang.Override
+    public .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> occurrences(final .java.lang.Object element, final long from) {
+        return (
+            let
+            {
+                long $ceylontmp$length$38 = occurrences$length(element, from);
+            }
+            returning occurrences$canonical$(element, from, $ceylontmp$length$38);
+        );
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> occurrences(final .java.lang.Object element, final long from, final long length) {
+        return $ceylon$language$List$this$.occurrences(element, from, length);
+    }
+    
+    private .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> occurrences$canonical$(final .java.lang.Object element, final long from, final long length) {
+        return $ceylon$language$List$this$.occurrences(element, from, length);
     }
     
     @.java.lang.Override
@@ -1229,10 +1280,10 @@ abstract class Bug477_2<T> implements .com.redhat.ceylon.compiler.java.runtime.m
         return (
             let
             {
-                long $ceylontmp$from$33 = countOccurrences$from(element);
-                long $ceylontmp$length$34 = countOccurrences$length(element, $ceylontmp$from$33);
+                long $ceylontmp$from$39 = countOccurrences$from(element);
+                long $ceylontmp$length$40 = countOccurrences$length(element, $ceylontmp$from$39);
             }
-            returning countOccurrences$canonical$(element, $ceylontmp$from$33, $ceylontmp$length$34);
+            returning countOccurrences$canonical$(element, $ceylontmp$from$39, $ceylontmp$length$40);
         );
     }
     
@@ -1246,9 +1297,9 @@ abstract class Bug477_2<T> implements .com.redhat.ceylon.compiler.java.runtime.m
         return (
             let
             {
-                long $ceylontmp$length$35 = countOccurrences$length(element, from);
+                long $ceylontmp$length$41 = countOccurrences$length(element, from);
             }
-            returning countOccurrences$canonical$(element, from, $ceylontmp$length$35);
+            returning countOccurrences$canonical$(element, from, $ceylontmp$length$41);
         );
     }
     
@@ -1271,10 +1322,10 @@ abstract class Bug477_2<T> implements .com.redhat.ceylon.compiler.java.runtime.m
         return (
             let
             {
-                long $ceylontmp$from$36 = firstOccurrence$from(element);
-                long $ceylontmp$length$37 = firstOccurrence$length(element, $ceylontmp$from$36);
+                long $ceylontmp$from$42 = firstOccurrence$from(element);
+                long $ceylontmp$length$43 = firstOccurrence$length(element, $ceylontmp$from$42);
             }
-            returning firstOccurrence$canonical$(element, $ceylontmp$from$36, $ceylontmp$length$37);
+            returning firstOccurrence$canonical$(element, $ceylontmp$from$42, $ceylontmp$length$43);
         );
     }
     
@@ -1288,9 +1339,9 @@ abstract class Bug477_2<T> implements .com.redhat.ceylon.compiler.java.runtime.m
         return (
             let
             {
-                long $ceylontmp$length$38 = firstOccurrence$length(element, from);
+                long $ceylontmp$length$44 = firstOccurrence$length(element, from);
             }
-            returning firstOccurrence$canonical$(element, from, $ceylontmp$length$38);
+            returning firstOccurrence$canonical$(element, from, $ceylontmp$length$44);
         );
     }
     
@@ -1304,8 +1355,8 @@ abstract class Bug477_2<T> implements .com.redhat.ceylon.compiler.java.runtime.m
     }
     
     @.java.lang.Override
-    public final long lastOccurrence$to(final .java.lang.Object element) {
-        return $ceylon$language$List$this$.lastOccurrence$to(element);
+    public final long lastOccurrence$from(final .java.lang.Object element) {
+        return $ceylon$language$List$this$.lastOccurrence$from(element);
     }
     
     @.java.lang.Override
@@ -1313,19 +1364,36 @@ abstract class Bug477_2<T> implements .com.redhat.ceylon.compiler.java.runtime.m
         return (
             let
             {
-                long $ceylontmp$to$39 = lastOccurrence$to(element);
+                long $ceylontmp$from$45 = lastOccurrence$from(element);
+                long $ceylontmp$length$46 = lastOccurrence$length(element, $ceylontmp$from$45);
             }
-            returning lastOccurrence$canonical$(element, $ceylontmp$to$39);
+            returning lastOccurrence$canonical$(element, $ceylontmp$from$45, $ceylontmp$length$46);
         );
     }
     
     @.java.lang.Override
-    public .ceylon.language.Integer lastOccurrence(final .java.lang.Object element, final long to) {
-        return $ceylon$language$List$this$.lastOccurrence(element, to);
+    public final long lastOccurrence$length(final .java.lang.Object element, final long from) {
+        return $ceylon$language$List$this$.lastOccurrence$length(element, from);
     }
     
-    private .ceylon.language.Integer lastOccurrence$canonical$(final .java.lang.Object element, final long to) {
-        return $ceylon$language$List$this$.lastOccurrence(element, to);
+    @.java.lang.Override
+    public .ceylon.language.Integer lastOccurrence(final .java.lang.Object element, final long from) {
+        return (
+            let
+            {
+                long $ceylontmp$length$47 = lastOccurrence$length(element, from);
+            }
+            returning lastOccurrence$canonical$(element, from, $ceylontmp$length$47);
+        );
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.Integer lastOccurrence(final .java.lang.Object element, final long from, final long length) {
+        return $ceylon$language$List$this$.lastOccurrence(element, from, length);
+    }
+    
+    private .ceylon.language.Integer lastOccurrence$canonical$(final .java.lang.Object element, final long from, final long length) {
+        return $ceylon$language$List$this$.lastOccurrence(element, from, length);
     }
     
     @.java.lang.Override
@@ -1610,9 +1678,9 @@ abstract class Bug477_2<T> implements .com.redhat.ceylon.compiler.java.runtime.m
         return (
             let
             {
-                long $ceylontmp$step$40 = interpose$step($reified$Other, element);
+                long $ceylontmp$step$48 = interpose$step($reified$Other, element);
             }
-            returning interpose$canonical$($reified$Other, element, $ceylontmp$step$40);
+            returning interpose$canonical$($reified$Other, element, $ceylontmp$step$48);
         );
     }
     
@@ -1684,9 +1752,9 @@ abstract class Bug477_2<T> implements .com.redhat.ceylon.compiler.java.runtime.m
         return (int)(
             let
             {
-                long $ceylontmp$hash$41 = hash;
+                long $ceylontmp$hash$49 = hash;
             }
-            returning $ceylontmp$hash$41 ^ $ceylontmp$hash$41 >>> 32;
+            returning $ceylontmp$hash$49 ^ $ceylontmp$hash$49 >>> 32;
         );
     }
     
