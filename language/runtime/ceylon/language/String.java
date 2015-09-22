@@ -915,7 +915,7 @@ public final class String
                     value.lastIndexOf(character.codePoint, start);
             if (index >= 0) {
                 int dist = value.codePointCount(index, value.length());
-                if (dist>=from+length) {
+                if (dist>from+length) {
                     return null;
                 }
                 int result = value.codePointCount(0, index);

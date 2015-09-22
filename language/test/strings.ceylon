@@ -586,6 +586,8 @@ shared void strings() {
     check(("hello world".lastOccurrence('l',0) else -1)==9, "string lastOccurrence 2");
     check(("hello world".lastOccurrence('l',1) else -1)==9, "string lastOccurrence 3");
     check(("hello world".lastOccurrence('l',2) else -1)==3, "string lastOccurrence 4");
+    check(("hello world".lastOccurrence('h') else -1)==0, "string lastOccurrence 5");
+    check(("hello world".lastOccurrence('e',4,6) else -1)==1, "string lastOccurrence 6");
     
     check("hello world".inclusions("wor").sequence()==[6], "string inclusions");
     check("hello world".inclusions("wor",5).sequence()==[6], "string inclusions");
