@@ -42,14 +42,14 @@ shared void testRange() {
     check(!(1..3).shorterThan(3), "range not shorterThan");
     check((1..3).shorterThan(4), "range shorterThan");
     
-    check((0..3).includes(1..2), "range includes 1");
-    check((0..3).includes(0..3), "range includes 2");
-    check(!(1..3).includes(0..2), "not range includes 1");
+    check((0..3).includesRange(1..2), "range includes 1");
+    check((0..3).includesRange(0..3), "range includes 2");
+    check(!(1..3).includesRange(0..2), "not range includes 1");
 
-    check((0..3).includes([1,2]), "range includes 3");
-    check((0..3).includes([0,1,2,3]), "range includes 4");
-    check(!(1..3).includes([0,1,2]), "not range includes 2");
-    check(!(1..3).includes([1,3]), "not range includes 3");
+    //check((0..3).includes([1,2]), "range includes 3");
+    //check((0..3).includes([0,1,2,3]), "range includes 4");
+    //check(!(1..3).includes([0,1,2]), "not range includes 2");
+    //check(!(1..3).includes([1,3]), "not range includes 3");
     
     check((1..3)[0..2]==1..3, "range span");
     check((1..3)[...2]==1..3, "range span to");

@@ -183,45 +183,6 @@ class Span<Element>(first, last)
     }
     
     shared actual 
-    Boolean includes(List<> sublist, Integer from) {
-        if (sublist.empty) {
-            return true;
-        } else if (is Range<Element> sublist, from<=0) {
-            return includesRange(sublist);
-        } else {
-            return super.includes(sublist, from);
-            /*if (is Element start = sublist.first) {
-                if (decreasing
-                        then start>first || start<last
-                        else start<first || start>last) {
-                    return false;
-                }
-                variable value current=start;
-                for (element in sublist) {
-                    if (exists element) {
-                        if (element!=current ||
-                            decreasing
-                                then current<last
-                                else current>last) {
-                            return false;
-                        }
-                        current = next(current);
-                    }
-                    else {
-                        return false;
-                    }
-                }
-                else {
-                    return true;
-                }
-             }
-             else {
-                return false;
-             }*/
-        }
-    }
-    
-    shared actual 
     Boolean includesRange(Range<Element> range) {
         switch (range)
         case (is Span<Element>) {

@@ -16,11 +16,11 @@ shared abstract class BaseMap<Key,Item>()
 shared abstract serializable
 class BaseList<Element>()
         extends Object()
-        satisfies List<Element> {}
+        satisfies SearchableList<Element> {}
 
 shared abstract class BaseCharacterList()
         extends Object()
-        satisfies List<Character> {}
+        satisfies SearchableList<Character> {}
 
 shared abstract serializable
 class BaseSequence<Element>()

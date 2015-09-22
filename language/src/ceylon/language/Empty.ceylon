@@ -235,14 +235,6 @@ shared interface Empty of e
             => null;
     
     shared actual 
-    Boolean includes(List<Anything> sublist, Integer from) 
-            => sublist.empty;
-    
-    shared actual
-    Boolean occurs(Anything element, Integer from, Integer length)
-            => false;
-    
-    shared actual 
     [] trim(Boolean trimming(Nothing elem)) => this;
     
     shared actual 

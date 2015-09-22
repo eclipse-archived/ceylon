@@ -111,10 +111,10 @@ shared void lists() {
     check(![1,2,3,4,5,6,7].startsWith(b), "List.occursAtStart [2]");
     check([1,2,3,4,5,6,7,8,100,200,300].startsWith(b), "List.occursAtStart [3]");
     check([1,2,3,4,5,6,7,8].startsWith(b), "List.occursAtStart [4]");
-    check(["bla", "ble", 1,2,3,4,5,6,7,8, "bli", "blo"].includes(b), "List.occursIn [1]");
-    check([0,0,0,0,0,0,0,1,2,3,4,5,6,7,8].includes(b), "List.occursIn [2]");
-    check(![0,0,0,0,1,2,3,4,5,6,7,0,8].includes(b), "List.occursIn [3]");
-    check(![1,2,3,4,5,6,7].includes(b), "List.occursIn [4]");
+    //check(["bla", "ble", 1,2,3,4,5,6,7,8, "bli", "blo"].includes(b), "List.occursIn [1]");
+    //check([0,0,0,0,0,0,0,1,2,3,4,5,6,7,8].includes(b), "List.occursIn [2]");
+    //check(![0,0,0,0,1,2,3,4,5,6,7,0,8].includes(b), "List.occursIn [3]");
+    //check(![1,2,3,4,5,6,7].includes(b), "List.occursIn [4]");
 
     //#451
     check(b.indexesWhere((Integer i)=>i%2==0).sequence() == [1,3,5,7], "List.indexesWhere");
@@ -174,20 +174,4 @@ shared void lists() {
     value chars = "foobar" of List<Character>;
     check(chars.slice(3)==["foo","bar"], "string slice");
     
-    check("hello world".sublistFrom(2)=="llo world".sequence(), "sublistFrom");
-    check("hello world".sublist(3,8)=="lo wor".sequence(), "sublist");
-    check("hello world".sublistFrom(2)[1..3]=="lo ", "sublistFrom segment");
-    check("hello world".sublist(3,8)[2:3]==" wo", "sublist span");
-    check("hello world".sublistFrom(2).occurrences('l').sequence()==[0,1,7], "sublistFrom occurrences");
-    check("hello world".sublist(3,8).occurrences('l').sequence()==[0], "sublist occurrences");
-    check("hello world".sublistFrom(2).occurs('l'), "sublistFrom occurs");
-    check("hello world".sublist(3,8).occurs('l'), "sublist occurs");
-    check("hello world".sublistFrom(2).countOccurrences('l')==3, "sublistFrom countOccurrences");
-    check("hello world".sublist(3,8).countOccurrences('l')==1, "sublist countOccurrences");
-    check(("hello world".sublistFrom(2).firstOccurrence('l') else -1)==0, "sublistFrom firstOccurrence");
-    check(("hello world".sublistTo(2).firstOccurrence('l') else -1)==2, "sublistTo firstOccurrence");
-    check(("hello world".sublist(3,8).firstOccurrence('l') else -1)==0, "sublist firstOccurrence");
-    check(("hello world".sublistFrom(2).lastOccurrence('l') else -1)==7, "sublistFrom lastOccurrence");
-    check(("hello world".sublistTo(8).lastOccurrence('l') else -1)==3, "sublistTo lastOccurrence");
-    check(("hello world".sublist(3,8).lastOccurrence('l') else -1)==0, "sublist lastOccurrence");
 }
