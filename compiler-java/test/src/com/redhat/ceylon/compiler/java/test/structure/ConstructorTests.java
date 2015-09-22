@@ -339,5 +339,10 @@ public class ConstructorTests extends CompilerTests {
     public void testCtorBug2299() {
         compareWithJavaSource("constructor/Bug2299");
     }
+    
+    @Test
+    public void testCtorUnusedPartial() {
+        compareWithJavaSource("constructor/UnusedPartial");
+    }
 
 }

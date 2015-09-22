@@ -1,0 +1,40 @@
+package com.redhat.ceylon.compiler.java.test.structure.constructor;
+
+class UnusedPartial implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    private final .java.lang.String name;
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    public final .java.lang.String getName() {
+        return name;
+    }
+    private static final .com.redhat.ceylon.compiler.java.test.structure.constructor.UnusedPartial.partial_ partial_ = null;
+    
+    private static final class partial_ {
+        
+        private partial_() {
+        }
+    }
+    
+    @.ceylon.language.AbstractAnnotation$annotation$
+    private UnusedPartial(.com.redhat.ceylon.compiler.java.test.structure.constructor.UnusedPartial.partial_ $name$) {
+        throw new .com.redhat.ceylon.compiler.java.language.UninvokableError();
+    }
+    public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.UnusedPartial.forName_ forName_ = null;
+    
+    public static final class forName_ {
+        
+        private forName_() {
+        }
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    public UnusedPartial(.com.redhat.ceylon.compiler.java.test.structure.constructor.UnusedPartial.forName_ $name$, final .java.lang.String name$param$) {
+        this.name = name$param$;
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.constructor.UnusedPartial.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.UnusedPartial.class);
+}
