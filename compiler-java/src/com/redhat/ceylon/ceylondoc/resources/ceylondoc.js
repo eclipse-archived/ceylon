@@ -428,7 +428,11 @@ function search(q){
         }
         tagsDiv.appendTo(td);
 		
-        var elemLink = jQuery("<a/>").addClass("link").attr("href", elem.url).append(highlightMatch(elem.name, q));
+		var text = highlightMatch(elem.name, q);
+		if(elem.aliasFor){
+		  text = text.append(" → "+elem.aliasFor);
+		}
+        var elemLink = jQuery("<a/>").addClass("link").attr("href", elem.url).append(text);
         elemLink.appendTo(td);
 
 		var elemDesc = jQuery("<div/>").addClass("description").html(elem.doc);

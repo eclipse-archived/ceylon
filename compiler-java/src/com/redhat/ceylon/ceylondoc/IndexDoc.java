@@ -85,7 +85,7 @@ public class IndexDoc extends CeylonDoc {
                 getType(module), 
                 linkRenderer().to(module).getUrl(), 
                 Util.getDocFirstLine(module, linkRenderer()), 
-                null, null);
+                null, null, null);
     }
 
     private void indexPackage(Package pkg) throws IOException {
@@ -95,7 +95,8 @@ public class IndexDoc extends CeylonDoc {
                 linkRenderer().to(pkg).getUrl(), 
                 Util.getDocFirstLine(pkg, linkRenderer()), 
                 null, 
-                getIcons(pkg));
+                getIcons(pkg),
+                null);
         write(",\n");
         indexMembers(pkg, pkg.getMembers());
     }
@@ -117,7 +118,8 @@ public class IndexDoc extends CeylonDoc {
 
     private boolean indexDecl(Scope container, Declaration decl) throws IOException {
         String url;
-        String name = decl.getName();
+        String name = Util.getDeclarationName(decl);
+        String qualifier = "";
         
         if (decl instanceof ClassOrInterface) {
             url = linkRenderer().to(decl).getUrl();
@@ -128,7 +130,8 @@ public class IndexDoc extends CeylonDoc {
                 || decl instanceof Constructor) {
             url = tool.getObjectUrl(module, container, false) + "#" + name;
             if (decl.isMember()) {
-                name = ((ClassOrInterface) container).getName() + "." + name;
+                qualifier = ((ClassOrInterface) container).getName() + ".";
+                name = qualifier + name;
             }
         } else if (decl instanceof Setter
                 || (decl instanceof FunctionOrValue && ((FunctionOrValue)decl).isParameter())
@@ -143,12 +146,16 @@ public class IndexDoc extends CeylonDoc {
         List<String> tags = Util.getTags(decl);
         tagIndex.addAll(tags);
         
-        writeIndexElement(name, type, url, doc, tags, getIcons(decl));
+        writeIndexElement(name, type, url, doc, tags, getIcons(decl), null);
+        for(String alias : decl.getAliases()){
+            write(",\n");
+            writeIndexElement(qualifier+alias, type, url, doc, tags, getIcons(decl), name);
+        }
         
         return true;
     }
 
-    private void writeIndexElement(String name, String type, String url, String doc, List<String> tags, List<String> icons) throws IOException {
+    private void writeIndexElement(String name, String type, String url, String doc, List<String> tags, List<String> icons, String aliasFor) throws IOException {
         write("{'name': '");
         write(name);
         write("', 'type': '");
@@ -182,7 +189,13 @@ public class IndexDoc extends CeylonDoc {
                 }
             }        
         }
-        write("]}");
+        write("]");
+        if(aliasFor != null){
+            write(", 'aliasFor': '");
+            write(aliasFor);
+            write("'");
+        }
+        write("}");
     }
 
     private String escapeJSONString(String doc) {
