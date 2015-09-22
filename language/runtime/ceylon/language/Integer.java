@@ -304,7 +304,6 @@ public final class Integer
         return 0;
     }
 
-    @AliasesAnnotation$annotation$(aliases = "modulo")
     @Override
     public Integer remainder(@Name("other") Integer other) {
         return instance(value % other.value);
@@ -313,6 +312,21 @@ public final class Integer
     @Ignore
     public static long remainder(long value, long otherValue) {
         return value % otherValue;
+    }
+
+    @Override
+    public Integer modulo(@Name("modulus") Integer modulus) {
+        return instance(value % modulus.value);
+    }
+
+    @Ignore
+    public static long modulo(long value, long modulus) {
+        if(modulus < 0)
+            throw new AssertionError("modulus must be positive: "+modulus);
+        long ret = value % modulus;
+        if(ret < 0)
+            return ret + modulus;
+        return ret;
     }
 
     @Override

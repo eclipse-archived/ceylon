@@ -59,7 +59,6 @@ shared native final class Integer(Integer integer)
     shared actual native Integer minus(Integer other);
     shared actual native Integer times(Integer other);
     shared actual native Integer divided(Integer other);
-    aliased ("modulo")
     shared actual native Integer remainder(Integer other);
     
     "The result of raising this number to the given 

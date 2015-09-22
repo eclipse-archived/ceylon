@@ -130,6 +130,18 @@ JSNum$proto.remainder = function(other) {
 }
 $addnm$('remainder',Integral.$$.prototype.remainder);
 JSNum$proto.remainder.$crtmm$=function(){return{mod:$CCMM$,$t:{t:Integer},ps:[{$t:{t:Integer},nm:'other'}],d:['$','Integer','$m','remainder']};};
+JSNum$proto.modulo = function(modulus) {
+    if (modulus < 0) {
+        throw AssertionError("modulus must be positive: "+modulus);
+    }
+    var ret = this.remainder(modulus);
+    if(ret < 0){
+        return ret + modulus;
+    }
+    return ret;
+}
+$addnm$('modulo',Integral.$$.prototype.modulo);
+JSNum$proto.modulo.$crtmm$=function(){return{mod:$CCMM$,$t:{t:Integer},ps:[{$t:{t:Integer},nm:'modulus'}],d:['$','Integer','$m','modulo']};};
 JSNum$proto.divides=function(o){return o%this===0;}
 JSNum$proto.divides.$crtmm$=function(){return{mod:$CCMM$,$t:{t:$_Boolean},ps:[{$t:{t:Integer},nm:'other'}],d:['$','Integer','$m','divides']};};
 JSNum$proto.power = function(exp) {

@@ -71,6 +71,17 @@ shared void numbers() {
     check(2.wholePart==2, "natural fractional");
     check((-1).wholePart==-1, "integer fractional");
     check(1.5.wholePart==1.0, "float fractional");
+
+    check(7.remainder(3)==1, "7 remainder 3");
+    check((-7).remainder(3)==-1, "-7 remainder 3");
+    check(7.modulo(3)==1, "7 modulo 3");
+    check((-7).modulo(3)==2, "-7 modulo 3");
+    try{
+        7.modulo(-3);
+        check(false, "modulo assertion");
+    }catch(AssertionError x){
+        check(true, "modulo assertion");
+    }
     
     checkWholePart();
     
