@@ -2,6 +2,7 @@
  
      Integer negatives = count { for (x in xs) x<0.0 };"
 see (`function Iterable.count`)
+tagged("Streams")
 shared Integer count({Boolean*} values) {
     variable value count=0;
     for (val in values) {

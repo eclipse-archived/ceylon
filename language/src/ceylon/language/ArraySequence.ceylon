@@ -8,6 +8,7 @@ import ceylon.language {
  modified after the `ArraySequence` has been initialized."
 by ("Tom")
 see (`function seq`)
+tagged("Sequences")
 shared sealed final
 serializable
 class ArraySequence<out Element>(array)

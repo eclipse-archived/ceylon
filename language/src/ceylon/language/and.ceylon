@@ -1,5 +1,6 @@
 "Returns a function which is the logical conjunction of the 
  given predicate functions."
+tagged("Functions")
 shared Boolean and<in Value>(
     "The first predicate function"
     Boolean(Value) p,

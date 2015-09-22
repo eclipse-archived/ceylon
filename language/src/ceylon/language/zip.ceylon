@@ -12,6 +12,7 @@
      zipEntries(keys, items)[i] == keys[i] -> items[i]
  
  for every `0<=i<smallest(keys.size,items.size)`."
+tagged("Streams")
 shared Iterable<<Key->Item>,KeyAbsent|ItemAbsent> 
 zipEntries<Key,Item,KeyAbsent,ItemAbsent>
         (Iterable<Key,KeyAbsent> keys, 
@@ -35,6 +36,7 @@ zipEntries<Key,Item,KeyAbsent,ItemAbsent>
      zipPairs(xs, ys)[i] == [xs[i], ys[i]]
  
  for every `0<=i<smallest(xs.size,ys.size)`."
+tagged("Streams")
 shared Iterable<[First,Second],FirstAbsent|SecondAbsent> 
 zipPairs<First,Second,FirstAbsent,SecondAbsent>
         (Iterable<First,FirstAbsent> firstElements, 
@@ -55,6 +57,7 @@ zipPairs<First,Second,FirstAbsent,SecondAbsent>
      zip(heads, tails)[i] == [heads[i], *tails[i]]
  
  for every `0<=i<smallest(heads.size,tails.size)`."
+tagged("Streams")
 shared Iterable<Tuple<Element|Head,Head,Tail>,HeadAbsent|TailAbsent> 
 zip<Element,Head,Tail,HeadAbsent,TailAbsent>
         (Iterable<Head,HeadAbsent> heads, 

@@ -35,6 +35,7 @@
  
  This function never produces a representation involving 
  scientific notation."
+tagged("Numbers")
 shared String formatFloat(
         "The floating point value to format."
         Float float,

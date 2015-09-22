@@ -15,6 +15,7 @@
 see (`function expand`, 
      `function Iterable.chain`,
      `function Sequential.append`)
+tagged("Streams")
 shared Element[] concatenate<Element>(
         "The streams to concatenate."
         {Element*}* iterables) 

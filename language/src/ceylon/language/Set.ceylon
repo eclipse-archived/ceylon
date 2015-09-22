@@ -12,6 +12,7 @@
  
  An implementation of `Set` may compare elements for 
  equality using [[Object.equals]] or [[Comparable.compare]]."
+tagged("Collections")
 shared interface Set<out Element=Object>
         satisfies Collection<Element>
         given Element satisfies Object {

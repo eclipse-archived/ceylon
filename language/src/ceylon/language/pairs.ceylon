@@ -18,6 +18,7 @@
              {1.0, 2.0, 1.0}, {1.0, 1.0, 2.0})
      
  evaluates to the stream `{ 1.0, 3.0, 3.0 }`."
+tagged("Streams")
 shared Iterable<Result,FirstAbsent|SecondAbsent> 
 mapPairs<Result,First,Second,FirstAbsent,SecondAbsent>(
     "The mapping function to apply to the pair of elements."
@@ -62,6 +63,7 @@ mapPairs<Result,First,Second,FirstAbsent,SecondAbsent>(
  [[Iterable.find]], [[zipPairs]], and [[unflatten]]:
  
      findPair(p, xs, ys) == zipPairs(xs, ys).find(unflatten(p))"
+tagged("Streams")
 shared [First,Second]? findPair<First,Second>(
     "The binary predicate function to apply to each pair of 
      elements."
@@ -92,6 +94,7 @@ shared [First,Second]? findPair<First,Second>(
      everyPair(p, xs, ys) == zipPairs(xs, ys).every(unflatten(p))"
 see (`function corresponding`,
      `function anyPair`)
+tagged("Streams")
 shared Boolean everyPair<First,Second>(
     "The binary predicate function to apply to each pair of 
      elements."
@@ -121,6 +124,7 @@ shared Boolean everyPair<First,Second>(
  
      anyPair(p, xs, ys) == zipPairs(xs, ys).any(unflatten(p))"
 see (`function everyPair`)
+tagged("Streams")
 shared Boolean anyPair<First,Second>(
     "The binary predicate function to apply to each pair of 
      elements."
@@ -149,6 +153,7 @@ shared Boolean anyPair<First,Second>(
  terms of [[Iterable.fold]], [[zipPairs]], and [[unflatten]]:
  
      foldPairs(z, f, xs, ys) == zipPairs(xs, ys).fold(z)(unflatten(f))"
+tagged("Streams")
 shared Result foldPairs<Result,First,Second>(
     Result initial,
     "The accumulating function to apply to each pair of 

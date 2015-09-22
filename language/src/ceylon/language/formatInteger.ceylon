@@ -16,6 +16,7 @@ throws (`class AssertionError`,
         "if [[radix]] is not between [[minRadix]] and 
          [[maxRadix]]")
 see (`function parseInteger`)
+tagged("Numbers")
 shared String formatInteger(
         "The integer value to format."
         Integer integer,

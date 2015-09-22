@@ -31,6 +31,7 @@ see (`interface Empty`,
 	 `class Range`, 
 	 `class Tuple`, 
 	 `class Singleton`)
+tagged("Sequences")
 by ("Gavin")
 shared sealed interface Sequence<out Element=Anything>
         satisfies Element[] & 
@@ -288,6 +289,7 @@ shared sealed interface Sequence<out Element=Anything>
      [Element*] sequenceOfElements = sequence(elements) else [];"
 by ("Gavin")
 see (`function Iterable.sequence`)
+tagged("Sequences")
 shared [Element+]|Absent sequence<Element,Absent=Null>
         (Iterable<Element, Absent> elements)
         given Absent satisfies Null {

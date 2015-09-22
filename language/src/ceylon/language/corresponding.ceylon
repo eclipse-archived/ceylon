@@ -22,6 +22,7 @@
  
  both evaluate to `true`."
 see (`function everyPair`)
+tagged("Streams")
 shared Boolean corresponding<First,Second>(
     {First*} firstIterable, {Second*} secondIterable,
     "The predicate function that compares an element of the

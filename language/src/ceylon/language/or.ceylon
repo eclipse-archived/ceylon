@@ -1,5 +1,6 @@
 "Returns a function which is the logical disjunction of the 
  given predicate functions."
+tagged("Functions")
 shared Boolean or<in Value>(
     "The first predicate function"
     Boolean(Value) p,

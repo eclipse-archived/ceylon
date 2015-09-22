@@ -11,6 +11,7 @@
      {Float*} values = ... ;
      Float total = sum { 0.0, *values };"
 see (`function product`)
+tagged("Streams", "Numbers")
 shared Value sum<Value>({Value+} values) 
         given Value satisfies Summable<Value> {
     value it = values.iterator();

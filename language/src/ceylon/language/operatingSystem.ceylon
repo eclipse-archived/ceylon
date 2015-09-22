@@ -4,6 +4,7 @@ import java.lang { System { lineSeparator } }
  process is running."
 see (`value process`, `value runtime`, `value language`,
     `value system`)
+tagged("Environment")
 shared native object operatingSystem {
     
     "Returns the name of the operating system this process is

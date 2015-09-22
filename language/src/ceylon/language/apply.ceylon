@@ -24,6 +24,7 @@
  
      string.split(Character.whitespace, true, false)"
 see (`function unflatten`)
+tagged("Functions")
 shared Return apply<Return,Args>
             (Callable<Return,Args> f, Args args)
         given Args satisfies Anything[]

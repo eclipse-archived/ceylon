@@ -8,6 +8,7 @@
  
  and is intended mainly for debugging purposes."
 see (`function process.writeLine`)
+tagged("Environment")
 by ("Gavin")
 shared void print(Anything val) 
         => process.writeLine(stringify(val));
@@ -16,6 +17,7 @@ shared void print(Anything val)
  machine process as a single line of text, separated by a
  given character sequence."
 by ("Gavin")
+tagged("Environment")
 see (`function process.write`)
 shared void printAll({Anything*} values,
         "A character sequence to use to separate the values"

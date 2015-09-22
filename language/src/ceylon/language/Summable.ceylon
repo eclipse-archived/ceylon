@@ -24,6 +24,7 @@
    
    - `x + 0 == x`"""
 see (`class String`, `interface Numeric`)
+tagged("Numbers")
 by ("Gavin")
 shared interface Summable<Other> of Other
         given Other satisfies Summable<Other> {

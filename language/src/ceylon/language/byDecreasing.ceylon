@@ -10,6 +10,7 @@ see (`function byIncreasing`,
      `function decreasing`,
      `function Iterable.max`,
      `function Iterable.sort`)
+tagged("Functions")
 shared Comparison byDecreasing<Element,Value>
             (Value comparable(Element e))
             (Element x, Element y)
@@ -27,6 +28,7 @@ see (`function increasing`,
      `function byDecreasing`,
      `function Iterable.max`,
      `function Iterable.sort`)
+tagged("Functions")
 shared Comparison decreasing<Element>(Element x, Element y)
         given Element satisfies Comparable<Element> 
         => y<=>x;

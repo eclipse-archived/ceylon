@@ -10,6 +10,7 @@
    represents a non-empty sequence, and has the very 
    important subclass [[Tuple]]."
 see (`class Tuple`)
+tagged("Sequences")
 shared interface Sequential<out Element=Anything>
         of []|[Element+]
         satisfies List<Element> & 

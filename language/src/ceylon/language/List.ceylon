@@ -52,6 +52,7 @@
 see (`interface Sequence`, 
      `interface Empty`, 
      `class Array`)
+tagged("Collections")
 shared interface List<out Element=Anything>
         satisfies Collection<Element> &
                   Correspondence<Integer,Element> &

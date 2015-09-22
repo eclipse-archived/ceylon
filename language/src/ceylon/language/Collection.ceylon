@@ -23,6 +23,7 @@
  different kinds of collection are never equal&mdash;for
  example, a `Map` is never equal to a `List`."
 see (`interface List`, `interface Map`, `interface Set`)
+tagged("Collections")
 shared interface Collection<out Element=Anything>
         satisfies {Element*} {
     

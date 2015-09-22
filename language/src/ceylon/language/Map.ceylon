@@ -28,6 +28,7 @@
 see (`class Entry`, 
      `function forKey`, `function forItem`, 
      `function byItem`, `function byKey`)
+tagged("Collections")
 shared interface Map<out Key=Object, out Item=Anything>
         satisfies Collection<Key->Item> &
                   Correspondence<Object,Item>

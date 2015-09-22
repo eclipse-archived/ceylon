@@ -5,6 +5,7 @@
  using the `->` operator:
  
      String->Person entry = person.name->person;"
+tagged("Collections")
 by ("Gavin")
 shared final serializable
 class Entry<out Key,out Item>(key, item)

@@ -6,6 +6,7 @@
  If there are no boolean values, return `false`."
 see (`function every`, 
      `function Iterable.any`)
+tagged("Streams")
 shared Boolean any({Boolean*} values) {
     for (val in values) {
         if (val) {

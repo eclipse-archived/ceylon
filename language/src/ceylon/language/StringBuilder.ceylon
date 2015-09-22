@@ -14,6 +14,7 @@ import java.lang {
        builder.appendCharacter(' ');
        builder.append("world");
        String hello = builder.string; //hello world"""
+tagged("Strings")
 shared native final class StringBuilder() 
         satisfies List<Character> {
     

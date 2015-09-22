@@ -8,6 +8,7 @@ import java.lang { System, Long, Double, Int=Integer, Math }
  be represented by the runtime."
 see (`value process`, `value language`, `value system`,
      `value operatingSystem`)
+tagged("Environment")
 shared native object runtime  {
     
     "The name of the runtime / virtual machine this process 
