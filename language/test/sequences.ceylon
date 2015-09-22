@@ -582,10 +582,10 @@ shared void sequences() {
     check((helloWorld.firstInclusion("wor",5) else -1)==6, "sequence firstInclusion");
     check((helloWorld.firstInclusion("wor",6) else -1)==6, "sequence firstInclusion");
     check(!helloWorld.firstInclusion("wor",7) exists, "sequence firstInclusion");
-    check((helloWorld.lastInclusion("wor") else -1)==6, "sequence lastInclusion");
-    check((helloWorld.lastInclusion("wor",7) else -1)==6, "sequence lastInclusion");
-    check((helloWorld.lastInclusion("wor",6) else -1)==6, "sequence lastInclusion");
-    check(!helloWorld.lastInclusion("wor",5) exists, "sequence lastInclusion");
+    check((helloWorld.lastInclusion("wor") else -1)==6, "sequence lastInclusion 1");
+    check((helloWorld.lastInclusion("wor",1) else -1)==6, "sequence lastInclusion 2");
+    check((helloWorld.lastInclusion("wor",2) else -1)==6, "sequence lastInclusion 3");
+    check(!helloWorld.lastInclusion("wor",3) exists, "sequence lastInclusion 4");
 
     check((helloWorld.lastInclusion([]) else -1)==11, "sequence empty lastInclusion");
     check((helloWorld.firstInclusion([]) else -1)==0, "sequence empty firstInclusion");
@@ -593,4 +593,5 @@ shared void sequences() {
     check(!helloWorld.firstInclusion([],12) exists, "sequence empty firstInclusion");
     check((helloWorld.firstOccurrence('d',0,11) else -1)==10, "sequence firstOccurrence");
     check(!helloWorld.firstOccurrence('d',0,10) exists, "sequence firstOccurrence");
+    
 }

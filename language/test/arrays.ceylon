@@ -284,9 +284,9 @@ shared void testArrays() {
     check((helloWorld.firstInclusion("wor",6) else -1)==6, "array firstInclusion 3");
     check(!helloWorld.firstInclusion("wor",7) exists, "array firstInclusion 4");
     check((helloWorld.lastInclusion("wor") else -1)==6, "array lastInclusion 1");
-    check((helloWorld.lastInclusion("wor",7) else -1)==6, "array lastInclusion 2");
-    check((helloWorld.lastInclusion("wor",6) else -1)==6, "array lastInclusion 3");
-    check(!helloWorld.lastInclusion("wor",5) exists, "array lastInclusion 4");
+    check((helloWorld.lastInclusion("wor",1) else -1)==6, "array lastInclusion 2");
+    check((helloWorld.lastInclusion("wor",2) else -1)==6, "array lastInclusion 3");
+    check(!helloWorld.lastInclusion("wor",3) exists, "array lastInclusion 4");
     
     check((helloWorld.lastInclusion([]) else -1)==11, "array empty lastInclusion");
     check((helloWorld.firstInclusion([]) else -1)==0, "array empty firstInclusion 1");

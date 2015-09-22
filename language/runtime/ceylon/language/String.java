@@ -762,29 +762,39 @@ public final class String
     
     public static Integer lastInclusion(java.lang.String value, 
     		List<?> sublist) {
-        return lastInclusion(value, sublist, 
-                java.lang.Integer.MAX_VALUE);
+        return lastInclusion(value, sublist, 0);
     }
     
     public static Integer lastInclusion(java.lang.String value, 
-            List<?> sublist, long to) {
-        if (to<0) {
+            List<?> sublist, long from) {
+        if (from>value.length()) {
             return null;
         }
-        if (to>value.length()) {
-            to = value.length();
+        if (from<0) {
+            from = 0;
         }
         if (sublist instanceof String) {
             String string = (String) sublist;
-            int index = value.lastIndexOf(string.value, (int)to);
+            int start;
+            try {
+                start = 
+                        value.offsetByCodePoints(value.length(), 
+                                -(int)from 
+                                - Util.toInt(sublist.getSize()));
+            }
+            catch (java.lang.IndexOutOfBoundsException e) {
+                return null;
+            }
+            int index = value.lastIndexOf(string.value, start);
             if (index >= 0) {
-                return Integer.instance(value.codePointCount(0, index));
+                int result = value.codePointCount(0, index);
+                return Integer.instance(result);
             } else {
                 return null;
             }
         }
         else {
-            return instance(value).lastInclusion(sublist, to);
+            return instance(value).lastInclusion(sublist, from);
         }
     }
     
@@ -894,12 +904,15 @@ public final class String
             Character character = (Character) element;
             int start;
             try {
-                start = value.offsetByCodePoints(value.length(), -(int)from-1);
+                start = 
+                        value.offsetByCodePoints(value.length(), 
+                                -(int)from - 1);
             }
             catch (java.lang.IndexOutOfBoundsException e) {
                 return null;
             }
-            int index = value.lastIndexOf(character.codePoint, start);
+            int index = 
+                    value.lastIndexOf(character.codePoint, start);
             if (index >= 0) {
                 int dist = value.codePointCount(index, value.length());
                 if (dist>=from+length) {

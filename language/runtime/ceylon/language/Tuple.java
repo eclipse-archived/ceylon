@@ -939,7 +939,9 @@ public final class Tuple<Element, First extends Element,
             return Integer.instance(from);
         }
         int offset = array.length - (int) size;
-        loop: for (int start=(int)from; start<=offset; start++) {
+        loop: for (int start=(int)from; 
+                    start<=offset; 
+                    start++) {
             for (int i=0; i<size; i++) {
                 java.lang.Object x = array[i+start];
                 java.lang.Object y = list.getFromFirst(i);
@@ -955,35 +957,36 @@ public final class Tuple<Element, First extends Element,
     }
 
     @Override @Ignore
-    public long lastInclusion$to(List<? extends java.lang.Object> list) {
-        return array.length;
+    public long lastInclusion$from(List<? extends java.lang.Object> list) {
+        return 0;
     }
     
     @Override @Ignore
     public Integer lastInclusion(List<? extends java.lang.Object> list) {
-        return lastInclusion(list, array.length);
+        return lastInclusion(list, 0);
     }
 
     @Override @Ignore
-    public Integer lastInclusion(List<? extends java.lang.Object> list, long to) {
-        if (to<0) {
+    public Integer lastInclusion(List<? extends java.lang.Object> list, long from) {
+        if (from>=array.length) {
             return null;
         }
-        if (to>=array.length) {
-            to = array.length-1;
+        if (from<0) {
+            from = 0;
         }
         long size = list.getSize();
-        if (size<=0) {
-            return Integer.instance(to);
-        }
         if (size>array.length) {
             return null;
         }
-        int offset = (int) to - (int) size + 1;
-        if (offset<0) return null;
-        loop: for (int start=offset; start>=0; start--) {
+        if (size<=0) {
+            return Integer.instance(array.length-from);
+        }
+        int offset = array.length - (int) size;
+        loop: for (int start=(int)from; 
+                    start<=offset; 
+                    start++) {
             for (int i=0; i<size; i++) {
-                java.lang.Object x = array[i+start];
+                java.lang.Object x = array[offset-start+i];
                 java.lang.Object y = list.getFromFirst(i);
                 if (x!=y) {
                     if (x==null || y==null || !x.equals(y)) {
@@ -991,7 +994,7 @@ public final class Tuple<Element, First extends Element,
                     }
                 }
             }
-            return Integer.instance(start);
+            return Integer.instance(offset-start);
         }
         return null;
     }
@@ -1089,14 +1092,14 @@ public final class Tuple<Element, First extends Element,
             length+=from;
             from = 0;
         }
-        for (int i=(int)from; 
+        for (int i=(int)from;
                 i<array.length &&
                 i<from+length; 
                 i++) {
             int j = array.length-1-i;
             java.lang.Object x = array[j];
             if (x==o || (x!=null && o!=null && x.equals(o))) {
-                return Integer.instance(i);
+                return Integer.instance(j);
             }
         }
         return null;

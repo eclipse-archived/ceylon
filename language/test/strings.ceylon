@@ -603,10 +603,10 @@ shared void strings() {
     check(("hello world".firstInclusion("wor",5) else -1)==6, "string firstInclusion");
     check(("hello world".firstInclusion("wor",6) else -1)==6, "string firstInclusion");
     check(!"hello world".firstInclusion("wor",7) exists, "string firstInclusion");
-    check(("hello world".lastInclusion("wor") else -1)==6, "string lastInclusion");
-    check(("hello world".lastInclusion("wor",7) else -1)==6, "string lastInclusion");
-    check(("hello world".lastInclusion("wor",6) else -1)==6, "string lastInclusion");
-    check(!"hello world".lastInclusion("wor",5) exists, "string lastInclusion");
+    check(("hello world".lastInclusion("wor") else -1)==6, "string lastInclusion 1");
+    check(("hello world".lastInclusion("wor",1) else -1)==6, "string lastInclusion 2");
+    check(("hello world".lastInclusion("wor",2) else -1)==6, "string lastInclusion 3");
+    check(!"hello world".lastInclusion("wor",3) exists, "string lastInclusion 4");
 
     check(("hello world".lastInclusion([]) else -1)==11, "string empty lastInclusion");
     check(("hello world".firstInclusion([]) else -1)==0, "string empty firstInclusion 1");

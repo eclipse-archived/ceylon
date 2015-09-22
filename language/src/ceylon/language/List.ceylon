@@ -406,7 +406,7 @@ shared interface List<out Element=Anything>
     Boolean includes(List<> sublist,
             "The smallest index to consider."
             Integer from = 0) {
-        for (index in from:size-sublist.size-from+1) {
+        for (index in from:size-from+1-sublist.size) {
             if (includesAt(index,sublist)) {
                 return true;
             }
@@ -452,7 +452,7 @@ shared interface List<out Element=Anything>
             "The smallest index to consider." 
             Integer from = 0) {
         variable value count = 0;
-        for (index in from:size-sublist.size-from+1) {
+        for (index in from:size-from+1-sublist.size) {
             if (includesAt(index,sublist)) {
                 count++;
             }
@@ -467,7 +467,7 @@ shared interface List<out Element=Anything>
     Integer? firstInclusion(List<> sublist,
             "The smallest index to consider." 
             Integer from = 0) {
-        for (index in from:size-sublist.size-from+1) {
+        for (index in from:size-from+1-sublist.size) {
             if (includesAt(index,sublist)) {
                 return index;
             }
@@ -478,15 +478,18 @@ shared interface List<out Element=Anything>
     }
     
     "The last index in this list at which the given 
-     [[list|sublist]] occurs as a sublist, that is smaller 
-     than the optional [[end index|to]]."
+     [[list|sublist]] occurs as a sublist, that falls within 
+     the range `0:size-from+1-sublist.size` defined by the 
+     optional [[starting index|from]], interpreted as a 
+     reverse index counting from the _end_ of the list."
     shared default 
     Integer? lastInclusion(List<> sublist,
-            "The largest index to consider."
-            Integer to = size) {
-        value max = size-sublist.size;
-        value end = to<max then to else max;
-        for (index in (0:end+1).reversed) {
+            "The smallest index to consider, interpreted as
+             a reverse index counting from the _end_ of the 
+             list, where `0` is the last element of the list, 
+             and `size-1` is the first element of the list."
+            Integer from = 0) {
+        for (index in (0:size-from+1-sublist.size).reversed) {
             if (includesAt(index,sublist)) {
                 return index;
             }
@@ -1009,9 +1012,9 @@ shared interface List<out Element=Anything>
                 then index-this.from
                 else null;
         
-        lastInclusion(List<> sublist, Integer to)
-                => if (exists index = outer.lastInclusion(sublist, to+this.from))
-                then (index>=from then index-this.from) 
+        lastInclusion(List<> sublist, Integer from)
+                => if (exists index = outer.lastInclusion(sublist, from))
+                then (index>=from then index-this.from)
                 else null;
         
         includes(List<> sublist, Integer from)
@@ -1091,9 +1094,8 @@ shared interface List<out Element=Anything>
                 then (index<=to then index)
                 else null;
         
-        lastInclusion(List<> sublist, Integer to)
-                => outer.lastInclusion(sublist, 
-                        to<this.to then to else this.to);
+        lastInclusion(List<> sublist, Integer from)
+                => outer.lastInclusion(sublist, from+this.to);
                 
         clone() => outer.clone().Sublist(to);
         

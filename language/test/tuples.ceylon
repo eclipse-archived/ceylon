@@ -144,4 +144,19 @@ shared void tuples() {
     eachTestCounter = 0;
     [1, 2, 3, 4].each((i) => eachTestCounter += i);
     check(eachTestCounter == 10, "Tuple.each without rest");
+
+    check(([1,2,3,4].lastOccurrence(2) else -1)==1, "tuple lastOccurrence 1");
+    check(([1,2,3,4].lastOccurrence(2, 1) else -1)==1, "tuple lastOccurrence 2");
+    check(([1,2,3,4].lastOccurrence(2, 2) else -1)==1, "tuple lastOccurrence 3");
+    check(([1,2,3,4].lastOccurrence(2, 3) else -1)==-1, "tuple lastOccurrence 4");
+    check(([1,2,3,4].firstOccurrence(2) else -1)==1, "tuple firstOccurrence 1");
+    check(([1,2,3,4].firstOccurrence(2, 1) else -1)==1, "tuple firstOccurrence 2");
+    check(([1,2,3,4].firstOccurrence(2, 2) else -1)==-1, "tuple firstOccurrence 3");
+
+    check(([1,2,3,4].lastInclusion([2,3]) else -1)==1, "tuple lastInclusion");
+    check(([1,2,3,4].lastInclusion([2,3], 1) else -1)==1, "tuple lastInclusion");
+    check(([1,2,3,4].lastInclusion([2,3], 2) else -1)==-1, "tuple lastInclusion");
+    check(([1,2,3,4].firstInclusion([2,3]) else -1)==1, "tuple firstInclusion");
+    check(([1,2,3,4].firstInclusion([2,3], 1) else -1)==1, "tuple firstInclusion");
+    check(([1,2,3,4].firstInclusion([2,3], 2) else -1)==-1, "tuple firstInclusion");
 }
