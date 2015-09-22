@@ -1178,7 +1178,8 @@ public final class String
 
     @Ignore
     public static java.lang.String getNormalized(java.lang.String value) {
-        java.lang.StringBuilder result = new java.lang.StringBuilder();
+        java.lang.StringBuilder result = 
+                new java.lang.StringBuilder(value.length());
         boolean previousWasWhitespace=false;
         for (int i=0;i<value.length();) {
             int c = java.lang.Character.codePointAt(value, i);
@@ -1408,7 +1409,8 @@ public final class String
             return value;
         }
         // FIXME: this would be better to directly build the Sequence<Character>
-        java.lang.StringBuilder builder = new java.lang.StringBuilder();
+        java.lang.StringBuilder builder 
+            = new java.lang.StringBuilder(value.length());
         int offset = value.length();
         while (offset > 0) {
             int c = value.codePointBefore(offset);
