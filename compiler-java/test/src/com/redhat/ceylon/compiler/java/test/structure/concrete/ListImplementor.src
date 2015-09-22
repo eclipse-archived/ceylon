@@ -256,8 +256,8 @@ class ListImplementor<X> implements .com.redhat.ceylon.compiler.java.runtime.mod
     }
     
     @.java.lang.Override
-    public final long lastInclusion$to(final .ceylon.language.List<? extends .java.lang.Object> sublist) {
-        return $ceylon$language$List$this$.lastInclusion$to(sublist);
+    public final long lastInclusion$from(final .ceylon.language.List<? extends .java.lang.Object> sublist) {
+        return $ceylon$language$List$this$.lastInclusion$from(sublist);
     }
     
     @.java.lang.Override
@@ -265,19 +265,19 @@ class ListImplementor<X> implements .com.redhat.ceylon.compiler.java.runtime.mod
         return (
             let
             {
-                long $ceylontmp$to$7 = lastInclusion$to(sublist);
+                long $ceylontmp$from$7 = lastInclusion$from(sublist);
             }
-            returning lastInclusion$canonical$(sublist, $ceylontmp$to$7);
+            returning lastInclusion$canonical$(sublist, $ceylontmp$from$7);
         );
     }
     
     @.java.lang.Override
-    public .ceylon.language.Integer lastInclusion(final .ceylon.language.List<? extends .java.lang.Object> sublist, final long to) {
-        return $ceylon$language$List$this$.lastInclusion(sublist, to);
+    public .ceylon.language.Integer lastInclusion(final .ceylon.language.List<? extends .java.lang.Object> sublist, final long from) {
+        return $ceylon$language$List$this$.lastInclusion(sublist, from);
     }
     
-    private .ceylon.language.Integer lastInclusion$canonical$(final .ceylon.language.List<? extends .java.lang.Object> sublist, final long to) {
-        return $ceylon$language$List$this$.lastInclusion(sublist, to);
+    private .ceylon.language.Integer lastInclusion$canonical$(final .ceylon.language.List<? extends .java.lang.Object> sublist, final long from) {
+        return $ceylon$language$List$this$.lastInclusion(sublist, from);
     }
     
     @.java.lang.Override
