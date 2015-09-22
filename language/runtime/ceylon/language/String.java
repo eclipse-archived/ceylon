@@ -1284,13 +1284,16 @@ public final class String
     public static java.lang.String measure(java.lang.String value, 
             final long from, final long length) {
         long fromIndex = from;
-        long resultLength = length;
         long len = getSize(value);
-        if (fromIndex >= len || resultLength <= 0) {
+        if (fromIndex >= len || length <= 0) {
             return "";
         }
-        if ((fromIndex + resultLength) > len) {
+        long resultLength;
+        if (fromIndex + length > len) {
             resultLength = len - fromIndex;
+        }
+        else {
+            resultLength = length;
         }
         int start = value.offsetByCodePoints(0, Util.toInt(fromIndex));
         int end = value.offsetByCodePoints(start, Util.toInt(resultLength));
@@ -1370,29 +1373,29 @@ public final class String
 
     @Ignore
     public static java.lang.String span(java.lang.String value, 
-            long from, long toIndex) {
+            long from, long to) {
         long len = getSize(value);
         if (len == 0) {
             return "";
         }
-        boolean reverse = toIndex < from;
+        boolean reverse = to < from;
         if (reverse) {
-            long _tmp = toIndex;
-            toIndex = from;
+            long _tmp = to;
+            to = from;
             from = _tmp;
         }
-        if (toIndex < 0 || from >= len) {
+        if (to < 0 || from >= len) {
             return "";
         }
-        if (toIndex >= len) {
-            toIndex = len - 1;
+        if (to >= len) {
+            to = len - 1;
         }
         if (from < 0) {
             from = 0;
         }
         int start = value.offsetByCodePoints(0, Util.toInt(from));
         int end = value.offsetByCodePoints(start, 
-                Util.toInt(toIndex - from + 1));
+                Util.toInt(to - from + 1));
         java.lang.String result = value.substring(start, end);
         return reverse ? getReversed(result) : result;
     }
@@ -1608,7 +1611,9 @@ public final class String
             second = "";
         }
         else {
-            int intIndex = Util.toInt(index);
+            int intIndex =
+                    value.offsetByCodePoints(0, 
+                            Util.toInt(index));
             first = value.substring(0,intIndex);
             second = value.substring(intIndex);
         }
