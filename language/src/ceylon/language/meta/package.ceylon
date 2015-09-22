@@ -47,13 +47,18 @@
    literals:
    
    - <code>\`module ceylon.file\`</code> returns the [[Module|ceylon.language.meta.declaration::Module]] 
-     declaration which corresponds to the `ceylon.file` module you imported in your module descriptor.
+     declaration which corresponds to the `ceylon.file` module you imported in your module descriptor, or
+     to the current module if it is `ceylon.file`. You can also obtain a reference to the current module
+     with <code>\`module\`</code>.
    - <code>\`package ceylon.language.meta\`</code> returns the [[Package|ceylon.language.meta.declaration::Package]]
-     declaration from your current module imports.
+     declaration from your current module or its imports. You can also obtain a reference to the current package
+     with <code>\`package\`</code>.
    - <code>\`interface List\`</code> returns the [[InterfaceDeclaration|ceylon.language.meta.declaration::InterfaceDeclaration]] 
-     for the [[List|ceylon.language::List]] type.
+     for the [[List|ceylon.language::List]] type. You can also obtain a reference to the current interface
+     with <code>\`interface\`</code>.
    - <code>\`class Integer\`</code> returns the [[ClassDeclaration|ceylon.language.meta.declaration::ClassDeclaration]] 
-     for the [[Integer|ceylon.language::Integer]] type.
+     for the [[Integer|ceylon.language::Integer]] type. You can also obtain a reference to the current class
+     with <code>\`class\`</code>.
    - <code>\`function type\`</code> returns the [[FunctionDeclaration|ceylon.language.meta.declaration::FunctionDeclaration]] 
      for the [[type]] function. Similarly <code>\`function List.shorterThan\`</code> for methods.
    - <code>\`value modules\`</code> returns the [[ValueDeclaration|ceylon.language.meta.declaration::ValueDeclaration]] 
