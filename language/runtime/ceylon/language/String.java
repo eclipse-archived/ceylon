@@ -2776,7 +2776,7 @@ public final class String
     @Override @Ignore
     public Character get(Integer index) {
         //NOTE THIS IMPORTANT PERFORMANCE OPTIMIZATION
-        return getFromFirst(index.value);
+        return getFromFirst(value, index.value);
     }
 
     @Override @Ignore
