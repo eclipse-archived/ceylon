@@ -149,9 +149,9 @@ function coiatr$(coi,name,m,noInherit){
           }
         }
       }
-      if (!at)return null;
     }
   }
+  if (!at)return null;
   var mm=getrtmm$$(at);
   var _t=m.Get$getAttribute;
   if (mm && mm.$t) {
@@ -159,10 +159,8 @@ function coiatr$(coi,name,m,noInherit){
     if (!extendsType(m.Set$getAttribute,at.set?mm.$t:{t:Nothing}))throw IncompatibleTypeException$meta$model("Incompatible Set type argument");
     _t=mm.$t;
   }
-  if (noInherit && at) {
-    var mm=getrtmm$$(at);
-    if (mm&&mm.$cont!==coi.tipo)return null;
-  }
+  if(rejectInheritedOrPrivate$(mm, coi.tipo, noInherit))
+    return null;
   var rv=AppliedAttribute(name, at, {Get$Attribute:_t,Set$Attribute:at.set?_t:{t:Nothing}, Container$Attribute:{t:_tipo}});
   if (coi.$targs)rv.$$targs$$.Container$Attribute.a=coi.$targs;
   rv.$parent=coi;
@@ -177,7 +175,8 @@ function coigetatr$(coi,anntypes,$$$mptypes,noInherit){
     if (m.substring(0,6)==='$prop$') {
       var mm=getrtmm$$(_tipo.$$.prototype[m]);
       if (mm) {
-        if (noInherit && mm.$cont!==coi.tipo)continue;
+        if(rejectInheritedOrPrivate$(mm, coi.tipo, noInherit))
+          continue;
         if (!extendsType(mm.$t,$$$mptypes.Get$getAttributes))continue;
         var setter=_tipo.$$.prototype[m].set && extendsType($$$mptypes.Set$getAttributes,mm.$t);
         if ($$$mptypes.Set$getAttributes.t!==Nothing && !setter)continue;
@@ -198,8 +197,9 @@ function coimtd$(coi,name,types,$$$mptypes,noInherit){
   }
   if (types===undefined)types=empty();
   var _tipo=mmfca$(coi.tipo,$$$mptypes.Container$getMethod);
-  var fun = _tipo.$$.prototype[name];
-  if (!fun) return null;
+  var fun = findMethodByNameFromPrototype$(_tipo.$$.prototype, name);
+  if(!fun)
+    return null;
   var mm=getrtmm$$(fun);
   var _t=$$$mptypes.Type$getMethod;
   var _a=$$$mptypes.Arguments$getMethod;
@@ -220,10 +220,8 @@ function coimtd$(coi,name,types,$$$mptypes,noInherit){
     validate$params(mm.ps,_a,"Wrong number of Arguments for getMethod");
     _a=tupleize$params(mm.ps);
   }
-  if (fun && noInherit) {
-    var mm=getrtmm$$(fun);
-    if (mm && mm.$cont!==coi.tipo)return null;
-  }
+  if(rejectInheritedOrPrivate$(mm, coi.tipo, noInherit))
+    return null;
   return AppliedMethod$jsint(fun, types, {Container$AppliedMethod:{t:_tipo},Type$AppliedMethod:_t,Arguments$AppliedMethod:_a});
 }
 function coigetmtd$(coi,anntypes,$$$mptypes,noInherit){
@@ -236,7 +234,8 @@ function coigetmtd$(coi,anntypes,$$$mptypes,noInherit){
     if (mem && mem.$$===undefined) {
       var mm=getrtmm$$(mem);
       if (mm && mm.d && mm.d[mm.d.length-2]=='$m') {
-        if (noInherit && mm.$cont!==coi.tipo)continue;
+        if(rejectInheritedOrPrivate$(mm, coi.tipo, noInherit))
+          continue;
         if (!extendsType(mm.$t,$$$mptypes.Type$getMethods))continue;
         var anns=allann$(mm);
         if (!mm.tp && anns && coi$is$anns(anns,ats) && validate$params(mm.ps,$$$mptypes.Arguments$getMethods,'',1)) {

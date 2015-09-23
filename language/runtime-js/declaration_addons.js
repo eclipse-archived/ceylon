@@ -34,14 +34,7 @@ ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.getMemberDeclaration=f
   if (extendsType($$$mptypes.Kind$getMemberDeclaration, {t:ValueDeclaration$meta$declaration})) {
     var propname='$prop$get'+name$20[0].toUpperCase()+name$20.substring(1);
     var _d = raiz[propname];
-    if (_d){
-      if (noInherit) {
-        var mm=getrtmm$$(_d);
-        //If we found the attribute but it's inherited, forget about it
-        if (mm.$cont!==this.tipo)_d=undefined;
-      }
-    }
-    if (_d===undefined) {
+    if (_d===undefined && noInherit) {
       //Browse all non-shared attributes looking for original name
       for (nsats in raiz) if (nsats.substring(0,10)==='$prop$get$') {
         var atmm=getrtmm$$(raiz[nsats]);
@@ -52,36 +45,22 @@ ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.getMemberDeclaration=f
         }
       }
     }
+    if(_d){
+      var mm=getrtmm$$(_d);
+      if(rejectInheritedOrPrivate$(mm, this.tipo, noInherit))
+        _d = undefined;
+    }
     if(_d)_m=OpenValue$jsint(this.containingPackage, _d);
   }
   if (!_m && extendsType($$$mptypes.Kind$getMemberDeclaration, {t:FunctionDeclaration$meta$declaration})) {
-    var nom=name$20;
-    if (['hasOwnProperty', 'isPrototypeOf', 'propertyIsEnumerable', 'call', 'arguments', 'caller', 'apply', 'bind', 'toFixed', 'valueOf', 'toPrecision', 'toExponential', "charAt", "strike", "fixed", "sub", "charCodeAt", "trimLeft", "toLocaleUpperCase", "toUpperCase", "fontsize", "search", "toLocaleLowerCase", "small", "big", "fontcolor", "blink", "trim", "bold", "match", "substr", "trimRight", "replace", "split", "sup", "link", "localeCompare", "valueOf", "substring", "toLowerCase", "italics", "anchor", "toLocaleString", "splice", "map", "forEach", "reverse", "join", "push", "shift", "pop", "sort", "unshift", "reduceRight", "reduce", "every", "filter", "length", "toString", "constructor", "prototype", "concat", "indexOf", "lastIndexOf", "slice", "get"].indexOf(nom)>=0)nom='$_'+nom;
-    var _d = raiz[nom];
-    if (_d===undefined) {
-      //Let's just look for this thing everywhere
-      for (var $k in raiz) {
-        var propname='$prop$get'+$k[0].toUpperCase()+$k.substring(1);
-        if (!$k.startsWith("$prop$get") && raiz[propname]===undefined && typeof(raiz[$k])==='function') {
-          var lafun=raiz[$k];
-          var mm=getrtmm$$(lafun);
-          var mod=mm&&get_model(mm);
-          if (mod && mod.nm===nom) {
-            _d=lafun; break;
-          }
-        }
-        var m$ = raiz[propname] ? undefined: raiz[$k];
-        _d = typeof(m$)==='function' && m$.$$===undefined ? getrtmm$$(m$) : undefined;
-        if (_d && _d.d && _d.d[_d.d.length-1]===nom){
-          _d = raiz[$k];
-          break;
-        }else _d=undefined;
-      }
-    }
+    var _d = findMethodByNameFromPrototype$(raiz, name$20);
     if(_d){
+      var mm=getrtmm$$(_d);
       if (noInherit) {
-        var mm=getrtmm$$(_d);
         if (mm.$cont!==this.tipo)return null;
+      }else{
+        //If we found a non-shared attribute and want inherited members, we ignore it
+        if ((mm.pa & 1) == 0)return null;
       }
       _m=OpenFunction$jsint(this.containingPackage, _d);
     }

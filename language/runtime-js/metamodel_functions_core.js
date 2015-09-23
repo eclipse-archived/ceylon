@@ -153,3 +153,48 @@ function tparms2targs$(c,t){
   }
   return undefined;
 }
+
+// Find a method by name from the prototype
+function findMethodByNameFromPrototype$(proto, name){
+    if (['hasOwnProperty', 'isPrototypeOf', 'propertyIsEnumerable', 'call', 'arguments', 
+        'caller', 'apply', 'bind', 'toFixed', 'valueOf', 'toPrecision', 'toExponential', 
+        "charAt", "strike", "fixed", "sub", "charCodeAt", "trimLeft", "toLocaleUpperCase", 
+        "toUpperCase", "fontsize", "search", "toLocaleLowerCase", "small", "big", "fontcolor", 
+        "blink", "trim", "bold", "match", "substr", "trimRight", "replace", "split", "sup", 
+        "link", "localeCompare", "valueOf", "substring", "toLowerCase", "italics", "anchor", 
+        "toLocaleString", "splice", "map", "forEach", "reverse", "join", "push", "shift", "pop", 
+        "sort", "unshift", "reduceRight", "reduce", "every", "filter", "length", "toString", "constructor", 
+        "prototype", "concat", "indexOf", "lastIndexOf", "slice", "get"].indexOf(name)>=0)
+      name='$_'+name;
+    var decl = proto[name];
+    if (decl===undefined) {
+      //Let's just look for this thing everywhere
+      for (var key in proto) {
+        var propname='$prop$get'+key[0].toUpperCase()+key.substring(1);
+        if (!key.startsWith("$prop$get") && proto[propname]===undefined && typeof(proto[key])==='function') {
+          var mm = getrtmm$$(proto[key]);
+          var mod = mm && get_model(mm);
+          if (mod && mod.nm === name) {
+            return proto[key];
+          }
+        }
+        var m$ = proto[propname] ? undefined : proto[key];
+        decl = typeof(m$)==='function' && m$.$$===undefined ? getrtmm$$(m$) : undefined;
+        if (decl && decl.d && decl.d[decl.d.length-1]===name){
+          return proto[key];
+        }else{ 
+          decl = undefined;
+        }
+      }
+    }
+    return decl;
+}
+
+function rejectInheritedOrPrivate$(mm, tipo, noInherit){
+  if (noInherit) {
+    return (mm&&mm.$cont!==tipo);
+  }else{
+    //If we found a non-shared attribute and want inherited members, we ignore it
+    return ((mm.pa & 1) == 0);
+  }
+}
