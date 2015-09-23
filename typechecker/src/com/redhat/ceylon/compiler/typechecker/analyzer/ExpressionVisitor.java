@@ -1104,9 +1104,11 @@ public class ExpressionVisitor extends Visitor {
         if (type!=null) {
             Type t = type.getTypeModel();
             if (type instanceof Tree.LocalModifier &&
-                    !isNativeForWrongBackend(dec.getScopedBackends())) {
+                    !isNativeForWrongBackend(
+                            dec.getScopedBackends())) {
         		if (dec.isParameter()) {
-        			type.addError("parameter may not have inferred type: '" + 
+        			type.addError(
+        			        "parameter may not have inferred type: '" + 
         					dec.getName() + 
         					"' must declare an explicit type");
         		}
@@ -6047,17 +6049,21 @@ public class ExpressionVisitor extends Visitor {
             boolean error) {
         Tree.Identifier id = that.getIdentifier();
         String name = name(id);
+        Scope scope = that.getScope();
         TypedDeclaration member = 
-                getTypedDeclaration(that.getScope(), name, 
+                getTypedDeclaration(scope, name, 
                         that.getSignature(), 
                         that.getEllipsis(),
                         that.getUnit());
         if (member==null) {
             if (!dynamic &&
-                    !isNativeForWrongBackend(that.getScope().getScopedBackends()) &&
+                    !isNativeForWrongBackend(
+                            scope.getScopedBackends()) &&
                     error) {
-                that.addError("function or value does not exist: '" +
-                        name + "'", 100);
+                that.addError(
+                        "function or value does not exist: '" +
+                        name + "'", 
+                        100);
                 unit.getUnresolvedReferences()
                     .add(id);
             }
@@ -6380,8 +6386,10 @@ public class ExpressionVisitor extends Visitor {
                             tal, receivingType, typeArgs, 
                             ptr.getFullType(wrap(ptr.getType(), 
                                     receivingType, that)));
+            Scope scope = that.getScope();
             if (!dynamic && 
-                    !isNativeForWrongBackend(that.getScope().getScopedBackends()) &&
+                    !isNativeForWrongBackend(
+                            scope.getScopedBackends()) &&
                     !isAbstraction(member) && 
                     isTypeUnknown(fullType)) {
                 //this occurs with an ambiguous reference
@@ -6389,7 +6397,8 @@ public class ExpressionVisitor extends Visitor {
                 String rtname = 
                         receiverType.getDeclaration()
                             .getName(unit);
-                that.addError("could not determine type of method or attribute reference: '" +
+                that.addError(
+                        "could not determine type of method or attribute reference: '" +
                         member.getName(unit) + 
                         "' of '" + rtname + "'" + 
                         getTypeUnknownError(fullType));
@@ -6558,9 +6567,9 @@ public class ExpressionVisitor extends Visitor {
             Type receivingType) {
         if (acceptsTypeArguments(member, null, typeArgs, 
                 tal, that)) {
+            Scope scope = that.getScope();
             Type outerType = 
-                    that.getScope()
-                        .getDeclaringType(member);
+                    scope.getDeclaringType(member);
             if (outerType==null) {
                 outerType = receivingType;
             }
@@ -6574,10 +6583,12 @@ public class ExpressionVisitor extends Visitor {
                             tal, outerType, typeArgs, 
                             pr.getFullType());
             if (!dynamic && 
-                    !isNativeForWrongBackend(that.getScope().getScopedBackends()) &&
+                    !isNativeForWrongBackend(
+                            scope.getScopedBackends()) &&
                     !isAbstraction(member) && 
                     isTypeUnknown(fullType)) {
-                that.addError("could not determine type of function or value reference: '" +
+                that.addError(
+                        "could not determine type of function or value reference: '" +
                         member.getName(unit) + "'" + 
                         getTypeUnknownError(fullType));
             }
@@ -6661,8 +6672,8 @@ public class ExpressionVisitor extends Visitor {
                     !dynamic &&
                     !isNativeForWrongBackend(
                             scope.getScopedBackends())) {
-                that.addError("type does not exist: '" + 
-                        name + "'", 
+                that.addError(
+                        "type does not exist: '" + name + "'", 
                         102);
                 unit.getUnresolvedReferences()
                     .add(id);
