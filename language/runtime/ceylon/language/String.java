@@ -22,7 +22,6 @@ import com.redhat.ceylon.compiler.java.metadata.ValueType;
 import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 
-import ceylon.language.impl.BaseCharacterList;
 import ceylon.language.impl.BaseIterator;
 
 @Ceylon(major = 8)
@@ -43,9 +42,8 @@ import ceylon.language.impl.BaseIterator;
     @Annotation("shared"),
     @Annotation("final")})
 public final class String
-    extends BaseCharacterList
-    implements Comparable<String>, List<Character>,
-               Summable<String> {
+    implements Comparable<String>, SearchableList<Character>,
+               Summable<String>, ReifiedType {
     
     @Ignore
     public final static TypeDescriptor $TypeDescriptor$ = 
@@ -54,13 +52,9 @@ public final class String
     @Ignore
     public final java.lang.String value;
     
-    @Ignore
-    private final Comparable$impl<String> $ceylon$language$Comparable$impl = 
-            new Comparable$impl<String>($TypeDescriptor$,this);
-    
     @Ignore @Override
     public Comparable$impl<String> $ceylon$language$Comparable$impl() {
-        return $ceylon$language$Comparable$impl;
+        return new Comparable$impl<String>(String.$TypeDescriptor$, this);
     }
 
     @SuppressWarnings("rawtypes")
@@ -587,7 +581,7 @@ public final class String
             return includes(value, sublist, from);
         }
         else {
-            return super.includes(sublist, from);
+            return $ceylon$language$SearchableList$impl().includes(sublist, from);
         }
     }
     
@@ -626,7 +620,7 @@ public final class String
             return includesAt(value, index, sublist);
         }
         else {
-            return super.includesAt(index, sublist);
+            return $ceylon$language$SearchableList$impl().includesAt(index, sublist);
         }
     }
     
@@ -698,7 +692,7 @@ public final class String
             return countInclusions(value, sublist, from);
         }
         else {
-            return super.countInclusions(sublist, from);
+            return $ceylon$language$SearchableList$impl().countInclusions(sublist, from);
         }
     }
     
@@ -742,7 +736,7 @@ public final class String
             return firstInclusion(value, sublist, from);
         }
         else {
-            return super.firstInclusion(sublist, from);
+            return $ceylon$language$SearchableList$impl().firstInclusion(sublist, from);
         }
     }
     
@@ -793,7 +787,7 @@ public final class String
             return lastInclusion(value, sublist, from);
         }
         else {
-            return super.lastInclusion(sublist, from);
+            return $ceylon$language$SearchableList$impl().lastInclusion(sublist, from);
         }
     }
     
@@ -986,7 +980,7 @@ public final class String
             return value.startsWith(((String)substring).value);
         }
         else {
-            return super.startsWith(substring);
+            return $ceylon$language$List$impl().startsWith(substring);
         }
     }
 
@@ -1007,7 +1001,7 @@ public final class String
             return value.endsWith(((String)substring).value);
         }
         else {
-            return super.endsWith(substring);
+            return $ceylon$language$List$impl().endsWith(substring);
         }
     }
 
@@ -1964,7 +1958,7 @@ public final class String
     }
     
     @Ignore
-    public static Character max(java.lang.String value, 
+    public static java.lang.Object max(java.lang.String value, 
             Callable<? extends Comparison> comparing) {
         return instance(value).max(comparing);
     }
@@ -2527,6 +2521,7 @@ public final class String
         copyTo(value, destination, sourcePosition, destinationPosition, length);
     }
     
+    
     @Ignore
     public static Iterable<? extends Sequence<? extends Character>, ? extends java.lang.Object>
     getPermutations(java.lang.String value) {
@@ -2544,5 +2539,469 @@ public final class String
     getDistinct(java.lang.String value) {
         return instance(value).getDistinct();
     }
+
+    //WARNING: pure boilerplate from here on!
     
+    @Override @Ignore
+    public Collection$impl<? extends Character> $ceylon$language$Collection$impl() {
+        return new Collection$impl<Character>
+                (Character.$TypeDescriptor$, this);
+    }
+
+    @Override @Ignore
+    public Iterable<? extends Sequence<? extends Character>, ? extends java.lang.Object> getPermutations() {
+        return $ceylon$language$Collection$impl().getPermutations();
+    }
+
+    @Override @Ignore
+    public Iterable$impl<? extends Character, ? extends java.lang.Object> $ceylon$language$Iterable$impl() {
+        return new Iterable$impl<Character, java.lang.Object>
+                (Character.$TypeDescriptor$, Null.$TypeDescriptor$, this);
+    }
+
+    @Override @Ignore
+    public Iterable<? extends Character, ? extends java.lang.Object> by(long step) {
+        return $ceylon$language$Iterable$impl().by(step);
+    }
+
+    @Override @Ignore
+    public <Other, OtherAbsent> Iterable chain(TypeDescriptor arg0, TypeDescriptor arg1,
+            Iterable<? extends Other, ? extends OtherAbsent> arg2) {
+        return $ceylon$language$Iterable$impl().chain(arg0, arg1, arg2);
+    }
+
+    @Override @Ignore
+    public Iterable<? extends Character, ? extends java.lang.Object> filter(Callable<? extends Boolean> arg0) {
+        return $ceylon$language$Iterable$impl().filter(arg0);
+    }
+
+    @Override @Ignore
+    public <Result, OtherAbsent> Iterable flatMap(TypeDescriptor arg0, TypeDescriptor arg1,
+            Callable<? extends Iterable<? extends Result, ? extends OtherAbsent>> arg2) {
+        return $ceylon$language$Iterable$impl().flatMap(arg0, arg1, arg2);
+    }
+
+    @Override @Ignore
+    public <Result> Callable<? extends Result> fold(TypeDescriptor arg0, Result arg1) {
+        return $ceylon$language$Iterable$impl().fold(arg0, arg1);
+    }
+
+    @Override @Ignore
+    public <Other> Iterable follow(TypeDescriptor arg0, Other arg1) {
+        return $ceylon$language$Iterable$impl().follow(arg0, arg1);
+    }
+
+    @Override @Ignore
+    public Iterable<? extends Character, ? extends java.lang.Object> getCycled() {
+        return $ceylon$language$Iterable$impl().getCycled();
+    }
+
+    @Override @Ignore
+    public Iterable<? extends Character, ? extends java.lang.Object> getDistinct() {
+        return $ceylon$language$Iterable$impl().getDistinct();
+    }
+
+    @Override @Ignore
+    public Iterable<? extends Character, ? extends java.lang.Object> getExceptLast() {
+        return $ceylon$language$Iterable$impl().getExceptLast();
+    }
+
+    @Override @Ignore
+    public Iterable<? extends Entry<? extends Integer, ? extends Character>, ? extends java.lang.Object> getIndexed() {
+        return $ceylon$language$Iterable$impl().getIndexed();
+    }
+
+    @Override @Ignore
+    public Iterable<? extends Sequence<? extends Character>, ? extends java.lang.Object> getPaired() {
+        return $ceylon$language$Iterable$impl().getPaired();
+    }
+
+    @Override @Ignore
+    public <Group> Map<? extends Group, ? extends Sequence<? extends Character>> group(TypeDescriptor arg0,
+            Callable<? extends Group> arg1) {
+        return $ceylon$language$Iterable$impl().group(arg0, arg1);
+    }
+
+    @Override @Ignore
+    public java.lang.Object indexes() {
+        return $ceylon$language$Iterable$impl().indexes();
+    }
+
+    @Override @Ignore
+    public <Other> Iterable interpose(TypeDescriptor arg0, Other arg1) {
+        return $ceylon$language$Iterable$impl().interpose(arg0, arg1);
+    }
+
+    @Override @Ignore
+    public <Other> Iterable interpose(TypeDescriptor arg0, Other arg1, long arg2) {
+        return $ceylon$language$Iterable$impl().interpose(arg0, arg1, arg2);
+    }
+
+    @Override @Ignore
+    public <Other> long interpose$step(TypeDescriptor arg0, Other arg1) {
+        return $ceylon$language$Iterable$impl().interpose$step(arg0, arg1);
+    }
+
+    @Override @Ignore
+    public Iterable<? extends Entry<? extends Integer, ? extends Character>, ? extends java.lang.Object> locations(
+            Callable<? extends Boolean> arg0) {
+        return $ceylon$language$Iterable$impl().locations(arg0);
+    }
+
+    @Override @Ignore
+    public <Result> Iterable<? extends Result, ? extends java.lang.Object> map(TypeDescriptor arg0,
+            Callable<? extends Result> arg1) {
+        return $ceylon$language$Iterable$impl().map(arg0, arg1);
+    }
+
+    @Override @Ignore
+    public java.lang.Object max(Callable<? extends Comparison> arg0) {
+        return $ceylon$language$Iterable$impl().max(arg0);
+    }
+
+    @Override @Ignore
+    public <Type> Iterable narrow(TypeDescriptor arg0) {
+        return $ceylon$language$Iterable$impl().narrow(arg0);
+    }
+
+    @Override @Ignore
+    public Iterable<? extends Sequence<? extends Character>, ? extends java.lang.Object> partition(long arg0) {
+        return $ceylon$language$Iterable$impl().partition(arg0);
+    }
+
+    @Override @Ignore
+    public <Other, OtherAbsent> Iterable product(TypeDescriptor arg0, TypeDescriptor arg1,
+            Iterable<? extends Other, ? extends OtherAbsent> arg2) {
+        return $ceylon$language$Iterable$impl().product(arg0, arg1, arg2);
+    }
+
+    @Override @Ignore
+    public <Result> Callable<? extends Iterable<? extends Result, ? extends java.lang.Object>> scan(TypeDescriptor arg0,
+            Result arg1) {
+        return $ceylon$language$Iterable$impl().scan(arg0, arg1);
+    }
+
+    @Override @Ignore
+    public Sequential<? extends Character> select(Callable<? extends Boolean> arg0) {
+        return $ceylon$language$Iterable$impl().select(arg0);
+    }
+
+    @Override @Ignore
+    public Sequential<? extends Character> sequence() {
+        return $ceylon$language$Iterable$impl().sequence();
+    }
+
+    @Override @Ignore
+    public Iterable<? extends Character, ? extends java.lang.Object> skip(long arg0) {
+        return $ceylon$language$Iterable$impl().skip(arg0);
+    }
+
+    @Override @Ignore
+    public Iterable<? extends Character, ? extends java.lang.Object> skipWhile(Callable<? extends Boolean> arg0) {
+        return $ceylon$language$Iterable$impl().skipWhile(arg0);
+    }
+
+    @Override @Ignore
+    public Sequential<? extends Character> sort(Callable<? extends Comparison> arg0) {
+        return $ceylon$language$Iterable$impl().sort(arg0);
+    }
+
+    @Override @Ignore
+    public <Result, Args extends Sequential<? extends java.lang.Object>> Callable<? extends Iterable<? extends Result, ? extends java.lang.Object>> spread(
+            TypeDescriptor arg0, TypeDescriptor arg1, Callable<? extends Callable<? extends Result>> arg2) {
+        return $ceylon$language$Iterable$impl().spread(arg0, arg1, arg2);
+    }
+
+    @Override @Ignore
+    public Iterable<? extends Character, ? extends java.lang.Object> take(long arg0) {
+        return $ceylon$language$Iterable$impl().take(arg0);
+    }
+
+    @Override @Ignore
+    public Iterable<? extends Character, ? extends java.lang.Object> takeWhile(Callable<? extends Boolean> arg0) {
+        return $ceylon$language$Iterable$impl().takeWhile(arg0);
+    }
+
+    @Override @Ignore
+    public Category$impl<? super java.lang.Object> $ceylon$language$Category$impl() {
+        return new Category$impl<java.lang.Object>(Object.$TypeDescriptor$, this);
+    }
+
+    @Override @Ignore
+    public boolean containsAny(Iterable<? extends java.lang.Object, ? extends java.lang.Object> arg0) {
+        return $ceylon$language$Category$impl().containsAny(arg0);
+    }
+
+    @Override @Ignore
+    public boolean containsEvery(Iterable<? extends java.lang.Object, ? extends java.lang.Object> arg0) {
+        return $ceylon$language$Category$impl().containsEvery(arg0);
+    }
+
+    @Override @Ignore
+    public Correspondence$impl<? super Integer, ? extends Character> $ceylon$language$Correspondence$impl() {
+        return new Correspondence$impl<Integer,Character>(Integer.$TypeDescriptor$, Character.$TypeDescriptor$, this);
+    }
+
+    @Override @Ignore
+    public boolean definesAny(Iterable<? extends Integer, ? extends java.lang.Object> arg0) {
+        return $ceylon$language$Correspondence$impl().definesAny(arg0);
+    }
+
+    @Override @Ignore
+    public boolean definesEvery(Iterable<? extends Integer, ? extends java.lang.Object> arg0) {
+        return $ceylon$language$Correspondence$impl().definesEvery(arg0);
+    }
+
+    @Override @Ignore
+    public <Absent> Iterable<? extends Character, ? extends Absent> getAll(TypeDescriptor arg0,
+            Iterable<? extends Integer, ? extends Absent> arg1) {
+        return $ceylon$language$Correspondence$impl().getAll(arg0, arg1);
+    }
+
+    @Override @Ignore
+    public List$impl<? extends Character> $ceylon$language$List$impl() {
+        return new List$impl<Character>(Character.$TypeDescriptor$, this);
+    }
+
+    @Override @Ignore
+    public <Result> Sequential<? extends Result> collect(TypeDescriptor arg0, Callable<? extends Result> arg1) {
+        return $ceylon$language$List$impl().collect(arg0, arg1);
+    }
+
+    @Override @Ignore
+    public Integer firstIndexWhere(Callable<? extends Boolean> arg0) {
+        return $ceylon$language$List$impl().firstIndexWhere(arg0);
+    }
+
+    @Override @Ignore
+    public Character get(Integer index) {
+        //NOTE THIS IMPORTANT PERFORMANCE OPTIMIZATION
+        return getFromFirst(index.value);
+    }
+
+    @Override @Ignore
+    public Iterable<? extends Integer, ? extends java.lang.Object> indexesWhere(Callable<? extends Boolean> arg0) {
+        return $ceylon$language$List$impl().indexesWhere(arg0);
+    }
+
+    @Override @Ignore
+    public Integer lastIndexWhere(Callable<? extends Boolean> arg0) {
+        return $ceylon$language$List$impl().lastIndexWhere(arg0);
+    }
+
+    @Override @Ignore
+    public <Other> List patch(TypeDescriptor arg0, List<? extends Other> arg1) {
+        return $ceylon$language$List$impl().patch(arg0, arg1);
+    }
+
+    @Override @Ignore
+    public <Other> List patch(TypeDescriptor arg0, List<? extends Other> arg1, long arg2) {
+        return $ceylon$language$List$impl().patch(arg0, arg1, arg2);
+    }
+
+    @Override @Ignore
+    public <Other> List patch(TypeDescriptor arg0, List<? extends Other> arg1, long arg2, long arg3) {
+        return $ceylon$language$List$impl().patch(arg0, arg1, arg2, arg3);
+    }
+
+    @Override @Ignore
+    public <Other> long patch$from(TypeDescriptor arg0, List<? extends Other> arg1) {
+        return $ceylon$language$List$impl().patch$from(arg0, arg1);
+    }
+
+    @Override @Ignore
+    public <Other> long patch$length(TypeDescriptor arg0, List<? extends Other> arg1, long arg2) {
+        return $ceylon$language$List$impl().patch$length(arg0, arg1, arg2);
+    }
+    
+    @Override @Ignore
+    public List<? extends Character> sublist(long arg0, long arg1) {
+        return $ceylon$language$List$impl().sublist(arg0, arg1);
+    }
+
+    @Override @Ignore
+    public List<? extends Character> sublistFrom(long arg0) {
+        return $ceylon$language$List$impl().sublistFrom(arg0);
+    }
+
+    @Override @Ignore
+    public List<? extends Character> sublistTo(long arg0) {
+        return $ceylon$language$List$impl().sublistTo(arg0);
+    }
+    
+    @Override @Ignore
+    public SearchableList$impl<Character> $ceylon$language$SearchableList$impl() {
+        return new SearchableList$impl<Character>(Character.$TypeDescriptor$, this);
+    }
+
+//    @Override
+//    public boolean startsWith(List<? extends java.lang.Object> sublist) {
+//        return $ceylon$language$SearchableList$impl().startsWith(sublist);
+//    }
+//
+//    @Override
+//    public boolean endsWith(List<? extends java.lang.Object> sublist) {
+//        return $ceylon$language$SearchableList$impl().endsWith(sublist);
+//    }
+    
+    @Override @Ignore
+    public long countInclusions(List<? extends Character> arg0) {
+        return $ceylon$language$SearchableList$impl().countInclusions(arg0);
+    }
+
+    @Override @Ignore
+    public long countInclusions$from(List<? extends Character> arg0) {
+        return $ceylon$language$SearchableList$impl().countInclusions$from(arg0);
+    }
+
+    @Override @Ignore
+    public long countOccurrences(Character arg0) {
+        return $ceylon$language$SearchableList$impl().countOccurrences(arg0);
+    }
+
+    @Override @Ignore
+    public long countOccurrences(Character arg0, long arg1) {
+        return $ceylon$language$SearchableList$impl().countOccurrences(arg0, arg1);
+    }
+
+    @Override @Ignore
+    public long countOccurrences$from(Character arg0) {
+        return $ceylon$language$SearchableList$impl().countOccurrences$from(arg0);
+    }
+
+    @Override @Ignore
+    public long countOccurrences$length(Character arg0, long arg1) {
+        return $ceylon$language$SearchableList$impl().countOccurrences$length(arg0, arg1);
+    }
+
+    @Override @Ignore
+    public Integer firstInclusion(List<? extends Character> arg0) {
+        return $ceylon$language$SearchableList$impl().firstInclusion(arg0);
+    }
+
+    @Override @Ignore
+    public long firstInclusion$from(List<? extends Character> arg0) {
+        return $ceylon$language$SearchableList$impl().firstInclusion$from(arg0);
+    }
+
+    @Override @Ignore
+    public Integer firstOccurrence(Character arg0) {
+        return $ceylon$language$SearchableList$impl().firstOccurrence(arg0);
+    }
+
+    @Override @Ignore
+    public Integer firstOccurrence(Character arg0, long arg1) {
+        return $ceylon$language$SearchableList$impl().firstOccurrence(arg0, arg1);
+    }
+
+    @Override @Ignore
+    public long firstOccurrence$from(Character arg0) {
+        return $ceylon$language$SearchableList$impl().firstOccurrence$from(arg0);
+    }
+
+    @Override @Ignore
+    public long firstOccurrence$length(Character arg0, long arg1) {
+        return $ceylon$language$SearchableList$impl().firstOccurrence$length(arg0,arg1);
+    }
+
+    @Override @Ignore
+    public boolean includes(List<? extends Character> arg0) {
+        return $ceylon$language$SearchableList$impl().includes(arg0);
+    }
+
+    @Override @Ignore
+    public long includes$from(List<? extends Character> arg0) {
+        return $ceylon$language$SearchableList$impl().includes$from(arg0);
+    }
+
+    @Override @Ignore
+    public Iterable<? extends Integer, ? extends java.lang.Object> inclusions(List<? extends Character> arg0) {
+        return $ceylon$language$SearchableList$impl().inclusions(arg0);
+    }
+
+    @Override @Ignore
+    public Iterable<? extends Integer, ? extends java.lang.Object> inclusions(List<? extends Character> arg0,
+            long arg1) {
+        return $ceylon$language$SearchableList$impl().inclusions(arg0, arg1);
+    }
+
+    @Override @Ignore
+    public long inclusions$from(List<? extends Character> arg0) {
+        return $ceylon$language$SearchableList$impl().inclusions$from(arg0);
+    }
+
+    @Override @Ignore
+    public Integer lastInclusion(List<? extends Character> arg0) {
+        return $ceylon$language$SearchableList$impl().lastInclusion(arg0);
+    }
+
+    @Override @Ignore
+    public long lastInclusion$from(List<? extends Character> arg0) {
+        return $ceylon$language$SearchableList$impl().lastInclusion$from(arg0);
+    }
+
+    @Override @Ignore
+    public Integer lastOccurrence(Character arg0) {
+        return $ceylon$language$SearchableList$impl().lastOccurrence(arg0);
+    }
+
+    @Override @Ignore
+    public Integer lastOccurrence(Character arg0, long arg1) {
+        return $ceylon$language$SearchableList$impl().lastOccurrence(arg0, arg1);
+    }
+
+    @Override @Ignore
+    public long lastOccurrence$from(Character arg0) {
+        return $ceylon$language$SearchableList$impl().lastOccurrence$from(arg0);
+    }
+
+    @Override @Ignore
+    public long lastOccurrence$length(Character arg0, long arg1) {
+        return $ceylon$language$SearchableList$impl().lastOccurrence$length(arg0, arg1);
+    }
+
+    @Override @Ignore
+    public Iterable<? extends Integer, ? extends java.lang.Object> occurrences(Character arg0) {
+        return $ceylon$language$SearchableList$impl().occurrences(arg0);
+    }
+
+    @Override @Ignore
+    public Iterable<? extends Integer, ? extends java.lang.Object> occurrences(Character arg0, long arg1) {
+        return $ceylon$language$SearchableList$impl().occurrences(arg0,arg1);
+    }
+
+    @Override @Ignore
+    public Iterable<? extends Integer, ? extends java.lang.Object> occurrences(Character arg0, long arg1, long arg2) {
+        return $ceylon$language$SearchableList$impl().occurrences(arg0,arg1,arg2);
+    }
+
+    @Override @Ignore
+    public long occurrences$from(Character arg0) {
+        return $ceylon$language$SearchableList$impl().occurrences$from(arg0);
+    }
+
+    @Override @Ignore
+    public long occurrences$length(Character arg0, long arg1) {
+        return $ceylon$language$SearchableList$impl().occurrences$length(arg0,arg1);
+    }
+
+    @Override @Ignore
+    public boolean occurs(Character arg0) {
+        return $ceylon$language$SearchableList$impl().occurs(arg0);
+    }
+
+    @Override @Ignore
+    public boolean occurs(Character arg0, long arg1) {
+        return $ceylon$language$SearchableList$impl().occurs(arg0,arg1);
+    }
+
+    @Override @Ignore
+    public long occurs$from(Character arg0) {
+        return $ceylon$language$SearchableList$impl().occurs$from(arg0);
+    }
+
+    @Override @Ignore
+    public long occurs$length(Character arg0, long arg1) {
+        return $ceylon$language$SearchableList$impl().occurs$length(arg0,arg1);
+    }
 }
