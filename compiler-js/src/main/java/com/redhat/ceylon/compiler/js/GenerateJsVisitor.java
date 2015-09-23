@@ -36,20 +36,16 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeGetterDefinition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeSetterDefinition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.BaseMemberExpression;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.BaseTypeExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ClassDefinition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ExtendedType;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.InitializerParameter;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.InterfaceDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.InterfaceDefinition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.LazySpecifierExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.MethodDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.MethodDefinition;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.Outer;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ParameterDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.QualifiedMemberExpression;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.QualifiedMemberOrTypeExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierOrInitializerExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierStatement;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Statement;
@@ -108,7 +104,7 @@ public class GenerateJsVisitor extends Visitor {
         }
 
         @Override
-        public void visit(QualifiedMemberOrTypeExpression qe) {
+        public void visit(Tree.QualifiedMemberOrTypeExpression qe) {
             Term primary = eliminateParensAndWidening(qe.getPrimary());
             if (primary instanceof Tree.Super) {
                 decs.add(qe.getDeclaration());
@@ -142,8 +138,8 @@ public class GenerateJsVisitor extends Visitor {
         }
 
         @Override
-        public void visit(QualifiedMemberOrTypeExpression qe) {
-            if (qe.getPrimary() instanceof Outer ||
+        public void visit(Tree.QualifiedMemberOrTypeExpression qe) {
+            if (qe.getPrimary() instanceof Tree.Outer ||
                     qe.getPrimary() instanceof Tree.This) {
                 if ( qe.getDeclaration().equals(dec) ) {
                     found = true;
@@ -1192,7 +1188,7 @@ public class GenerateJsVisitor extends Visitor {
     /** Get the specifier expression for a Parameter, if one is available. */
     private SpecifierOrInitializerExpression getDefaultExpression(final Tree.Parameter param) {
         final SpecifierOrInitializerExpression expr;
-        if (param instanceof ParameterDeclaration || param instanceof InitializerParameter) {
+        if (param instanceof ParameterDeclaration || param instanceof Tree.InitializerParameter) {
             MethodDeclaration md = null;
             if (param instanceof ParameterDeclaration) {
                 Tree.TypedDeclaration td = ((ParameterDeclaration) param).getTypedDeclaration();
@@ -1206,7 +1202,7 @@ public class GenerateJsVisitor extends Visitor {
                     expr = null;
                 }
             } else {
-                expr = ((InitializerParameter) param).getSpecifierExpression();
+                expr = ((Tree.InitializerParameter) param).getSpecifierExpression();
             }
         } else {
             param.addUnexpectedError("Don't know what to do with defaulted/sequenced param " + param, Backend.JavaScript);
@@ -1795,9 +1791,9 @@ public class GenerateJsVisitor extends Visitor {
      */
     Scope getSuperMemberScope(Node node) {
         Scope scope = null;
-        if (node instanceof QualifiedMemberOrTypeExpression) {
+        if (node instanceof Tree.QualifiedMemberOrTypeExpression) {
             // Check for "super.member"
-            QualifiedMemberOrTypeExpression qmte = (QualifiedMemberOrTypeExpression) node;
+            Tree.QualifiedMemberOrTypeExpression qmte = (Tree.QualifiedMemberOrTypeExpression) node;
             final Term primary = eliminateParensAndWidening(qmte.getPrimary());
             if (primary instanceof Tree.Super) {
                 scope = qmte.getDeclaration().getContainer();
@@ -2432,7 +2428,7 @@ public class GenerateJsVisitor extends Visitor {
                 while (scope != null) {
                     if (scope instanceof Constructor
                             && scope == innermostDeclaration) {
-                        if (that instanceof BaseTypeExpression) {
+                        if (that instanceof Tree.BaseTypeExpression) {
                             path.append(names.name((TypeDeclaration)scope.getContainer()));
                         } else {
                             path.append(names.self((TypeDeclaration)scope.getContainer()));
@@ -3352,5 +3348,9 @@ public class GenerateJsVisitor extends Visitor {
     }
     public Tree.Declaration getNativeHeader(Declaration that) {
         return headers.get(that.getQualifiedNameString());
+    }
+
+    public void visit(Tree.SequenceType that) {
+        //This is just to avoid the NaturalLiteral from being visited
     }
 }
