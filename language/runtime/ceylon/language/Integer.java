@@ -316,7 +316,7 @@ public final class Integer
 
     @Override
     public Integer modulo(@Name("modulus") Integer modulus) {
-        return instance(value % modulus.value);
+        return instance(modulo(value, modulus.value));
     }
 
     @Ignore
