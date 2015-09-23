@@ -287,8 +287,15 @@ shared interface InterfaceWithSelfType<T> of T given T satisfies InterfaceWithSe
 shared abstract class Modifiers(){
     class NonShared(){}
     shared formal Boolean method();
+    void privateMethod(){}
     shared actual default String string = "yup";
+    annot
+    String privateAttribute = "";
     shared class Private2() {}
+    shared void capturingMethod(){
+        value pa = privateAttribute;
+        privateMethod();
+    }
 }
 shared abstract class SubModifiers() extends Modifiers() {
     class SubPrivate(){}
@@ -382,6 +389,8 @@ shared interface Middle<out A> satisfies Top<A>{
 shared abstract class MiddleClass<out A>() satisfies Middle<A>{}
 
 shared abstract class BottomClass() extends MiddleClass<Object>() satisfies Middle<String>{
+    String privateAttribute = "";
+    void privateMethod(){}
     shared formal String declaredMethod(String s);
     shared formal String declaredAttribute;
     shared class DeclaredClass(){}

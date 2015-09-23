@@ -1036,6 +1036,53 @@ shared void checkModifiers(){
 }
 
 @test
+shared void checkPrivateMembers(){
+    value mods = `class Modifiers`;
+    assert(exists privateMethod1 = mods.getDeclaredMemberDeclaration<FunctionDeclaration>("privateMethod"));
+    assert(mods.declaredMemberDeclarations<FunctionDeclaration>().filter((decl) => decl.name == "privateMethod").size == 1);
+    assert(!mods.getMemberDeclaration<FunctionDeclaration>("privateMethod") exists);
+    assert(mods.memberDeclarations<FunctionDeclaration>().filter((decl) => decl.name == "privateMethod").size == 0);
+    
+    assert(exists privateAttribute1 = mods.getDeclaredMemberDeclaration<ValueDeclaration>("privateAttribute"));
+    assert(mods.declaredMemberDeclarations<ValueDeclaration>().filter((decl) => decl.name == "privateAttribute").size == 1);
+    assert(!mods.getMemberDeclaration<ValueDeclaration>("privateAttribute") exists);
+    assert(mods.memberDeclarations<ValueDeclaration>().filter((decl) => decl.name == "privateAttribute").size == 0);
+
+    value modsType = `Modifiers`;
+    assert(exists privateMethod2 = modsType.getDeclaredMethod<>("privateMethod"));
+    assert(modsType.getDeclaredMethods<>().filter((decl) => decl.declaration.name == "privateMethod").size == 1);
+    assert(!modsType.getMethod<>("privateMethod") exists);
+    assert(modsType.getMethods<>().filter((decl) => decl.declaration.name == "privateMethod").size == 0);
+
+    assert(exists privateAttribute2 = modsType.getDeclaredAttribute<>("privateAttribute"));
+    assert(modsType.getDeclaredAttributes<>().filter((decl) => decl.declaration.name == "privateAttribute").size == 1);
+    assert(!modsType.getAttribute<>("privateAttribute") exists);
+    assert(modsType.getAttributes<>().filter((decl) => decl.declaration.name == "privateAttribute").size == 0);
+    
+    value submods = `class SubModifiers`;
+    assert(!submods.getMemberDeclaration<FunctionDeclaration>("privateMethod") exists);
+    assert(submods.memberDeclarations<FunctionDeclaration>().filter((decl) => decl.name == "privateMethod").size == 0);
+    assert(!submods.getDeclaredMemberDeclaration<FunctionDeclaration>("privateMethod") exists);
+    assert(submods.declaredMemberDeclarations<FunctionDeclaration>().filter((decl) => decl.name == "privateMethod").size == 0);
+    
+    assert(!submods.getMemberDeclaration<ValueDeclaration>("privateAttribute") exists);
+    assert(submods.memberDeclarations<ValueDeclaration>().filter((decl) => decl.name == "privateAttribute").size == 0);
+    assert(!submods.getDeclaredMemberDeclaration<ValueDeclaration>("privateAttribute") exists);
+    assert(submods.declaredMemberDeclarations<ValueDeclaration>().filter((decl) => decl.name == "privateAttribute").size == 0);
+
+    value submodsType = `SubModifiers`;
+    assert(!submodsType.getMethod<>("privateMethod") exists);
+    assert(submodsType.getMethods<>().filter((decl) => decl.declaration.name == "privateMethod").size == 0);
+    assert(!submodsType.getDeclaredMethod<>("privateMethod") exists);
+    assert(submodsType.getDeclaredMethods<>().filter((decl) => decl.declaration.name == "privateMethod").size == 0);
+
+    assert(!submodsType.getAttribute<>("privateAttribute") exists);
+    assert(submodsType.getAttributes<>().filter((decl) => decl.declaration.name == "privateAttribute").size == 0);
+    assert(!submodsType.getDeclaredAttribute<>("privateAttribute") exists);
+    assert(submodsType.getDeclaredAttributes<>().filter((decl) => decl.declaration.name == "privateAttribute").size == 0);
+}
+
+@test
 shared void checkContainers(){
     assert(`class ContainerClass.InnerClass`.container.name == "ContainerClass");
     assert(`class ContainerClass`.container.name == "metamodel");
@@ -2009,6 +2056,11 @@ shared void run() {
         checkModifiers();
         pass++;
     } catch (Exception|AssertionError e) { print("Failed modifiers"); e.printStackTrace(); }
+    try {
+        total++;
+        checkPrivateMembers();
+        pass++;
+    } catch (Exception|AssertionError e) { print("Failed private members"); e.printStackTrace(); }
     try {
         total++;
         checkContainers();
