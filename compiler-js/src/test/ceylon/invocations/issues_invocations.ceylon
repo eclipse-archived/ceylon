@@ -119,8 +119,8 @@ void testIssues() {
   objectIssue306.foo().call();
   ClassBug314<Object>();
   methodBug314<Object>();
-  value t=[1,"2"];
-  methodBug314<Object>(*t);
+  value t314=[1,"2"];
+  methodBug314<Object>(*t314);
   testIssue326();
   testIssue376();
   test427();
@@ -128,4 +128,7 @@ void testIssues() {
   value test624 = [[1,"one"], [1, "two"]];
   check(1 in test624.group(Tuple.first).keys, "#624");
   test627();
+  value t631=[[1,1]];
+  check((t631.map<Integer[2]>((x)=>x).first of Object) is Integer[2], "#631.1");
+  check((t631.map<Integer->Integer>((x)=>x[0]->x[1]).first of Object) is Integer->Integer, "#631.2");
 }
