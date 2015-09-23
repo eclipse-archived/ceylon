@@ -1319,8 +1319,9 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         LinkedList<MethodMirror> constructors = new LinkedList<MethodMirror>();
         boolean isFromJDK = isFromJDK(classMirror);
         for(MethodMirror methodMirror : classMirror.getDirectMethods()){
-            // We skip members marked with @Ignore
-            if(methodMirror.getAnnotation(CEYLON_IGNORE_ANNOTATION) != null)
+            // We skip members marked with @Ignore, unless they value constructor getters
+            if(methodMirror.getAnnotation(CEYLON_IGNORE_ANNOTATION) != null
+                    &&methodMirror.getAnnotation(CEYLON_ENUMERATED_ANNOTATION) == null)
                 continue;
             if (!p.accept(methodMirror))
                 continue;
