@@ -9092,13 +9092,23 @@ public class ExpressionVisitor extends Visitor {
         }
     }*/
     
-    private Declaration handleAbstractionOrHeader(Declaration dec, 
-            Tree.MemberOrTypeExpression that, boolean error) {
+    private Declaration handleAbstractionOrHeader(
+            Declaration dec, 
+            Tree.MemberOrTypeExpression that, 
+            boolean error) {
         Declaration impl = dec;
         Declaration hdr = null;
-        Module ctxModule = that.getUnit().getPackage().getModule();
-        Module decModule = dec.getUnit().getPackage().getModule();
-        Set<String> inBackends = that.getScope().getScopedBackends();
+        Module ctxModule = 
+                that.getUnit()
+                    .getPackage()
+                    .getModule();
+        Module decModule = 
+                dec.getUnit()
+                    .getPackage()
+                    .getModule();
+        Set<String> inBackends = 
+                that.getScope()
+                    .getScopedBackends();
         if (dec.isNative()) {
             Set<String> backends = 
                     inBackends == null ?
@@ -9112,9 +9122,12 @@ public class ExpressionVisitor extends Visitor {
                 Declaration tmp = getNativeHeader(dec);
                 if (tmp != dec) {
                     hdr = tmp;
-                    if (hdr != null && (backends.isEmpty()
-                            || !backends.contains(dec.getNativeBackend()))) {
-                        impl = getNativeDeclaration(hdr, backends);
+                    if (hdr != null) {
+                        if (backends.isEmpty()
+                                || !backends.contains(
+                                        dec.getNativeBackend())) {
+                            impl = getNativeDeclaration(hdr, backends);
+                        }
                     }
                 }
             }
@@ -9131,18 +9144,23 @@ public class ExpressionVisitor extends Visitor {
                         && hdr == null)
                 && (inBackends == null
                     || impl.isNative()
-                        && !isForBackend(impl.getNativeBackend(), inBackends)
+                        && !isForBackend(
+                                impl.getNativeBackend(), 
+                                inBackends)
                     || decModule.isNative()
-                        && !isForBackend(decModule.getNativeBackend(), inBackends))) {
+                        && !isForBackend(
+                                decModule.getNativeBackend(), 
+                                inBackends))) {
+            Declaration d = (Declaration) that.getScope();
             if (inBackends != null) {
                 that.addError("native declaration: '" +
-                        ((Declaration)that.getScope()).getName(unit) +
+                        d.getName(unit) +
                         "' accesses native code for different backend: '" +
                         dec.getName(unit) +
                         "'");
             } else {
                 that.addError("non-native declaration: '" +
-                        ((Declaration)that.getScope()).getName(unit) +
+                        d.getName(unit) +
                         "' accesses native code: '" +
                         dec.getName(unit) +
                         "', mark it or the module native");
@@ -9150,11 +9168,15 @@ public class ExpressionVisitor extends Visitor {
         }
         if (dec.isNative()) {
             if (error && impl == null && hdr != null) {
-                if (!isImplemented(hdr) && !decModule.equals(decModule.getLanguageModule())) {
-                    that.addError("no native implementation for backend: native '"
+                if (!isImplemented(hdr) 
+                        && !decModule.equals(
+                                decModule.getLanguageModule())) {
+                    that.addError(
+                            "no native implementation for backend: native '"
                             + dec.getName(unit) +
                             "' is not implemented for one or more backends");
-                    unit.getMissingNativeImplementations().add(hdr);
+                    unit.getMissingNativeImplementations()
+                        .add(hdr);
                 }
             }
             return inBackends == null || impl==null ? 
