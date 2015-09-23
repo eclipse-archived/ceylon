@@ -190,7 +190,14 @@ atr$(JSNum$proto, 'negative', function(){
 atr$(JSNum$proto, 'positive', function(){
   return nflt$(this) ? this > 0.0 : this.valueOf() > 0;
 },undefined,function(){return{$t:{t:$_Boolean},an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:$_Number,d:['$','Number','$at','positive']};});
-JSNum$proto.equals = function(other) { return (typeof(other)==='number' || other.constructor===Number) && other==this.valueOf(); }
+$TWO$FIFTY$THREE = 0x20000000000000; 
+JSNum$proto.equals = function(other) {
+	return (typeof(other)==='number' || other.constructor===Number) &&
+	other==this.valueOf() &&
+	((nflt$(this) == nflt$(other)) // both are floats or both are integers
+			 || (-$TWO$FIFTY$THREE < this.valueOf() &&
+					 this.valueOf() < $TWO$FIFTY$THREE)); // small floats and small integers are also allowed to be same 
+}
 $addnm$('equals',$_Object.$$.prototype.equals);
 JSNum$proto.compare = function(other) {
     var value = this.valueOf();
