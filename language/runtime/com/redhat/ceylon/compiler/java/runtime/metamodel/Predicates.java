@@ -2,19 +2,19 @@ package com.redhat.ceylon.compiler.java.runtime.metamodel;
 
 import java.util.Arrays;
 
+import ceylon.language.Annotated;
 import ceylon.language.Iterator;
 import ceylon.language.Sequential;
-import ceylon.language.Annotated;
 import ceylon.language.meta.declaration.AnnotatedDeclaration;
-import ceylon.language.meta.model.Type;
 import ceylon.language.meta.model.ClassOrInterface;
-import ceylon.language.ConstrainedAnnotation;
+import ceylon.language.meta.model.Type;
 import ceylon.language.meta.model.nothingType_;
 
 import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.language.EnumeratedTypeError;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
+import com.redhat.ceylon.model.typechecker.model.Constructor;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 
 /**
@@ -206,7 +206,8 @@ class Predicates {
     private static final Predicate<Declaration> DECLARATION_IS_VALUE = new Predicate<Declaration>() {  
         @Override
         public boolean accept(Declaration declaration) {
-            return declaration instanceof com.redhat.ceylon.model.typechecker.model.Value;
+            return declaration instanceof com.redhat.ceylon.model.typechecker.model.Value
+                    && !(((com.redhat.ceylon.model.typechecker.model.Value)declaration).getTypeDeclaration() instanceof Constructor);
         }
         @Override
         public String toString() {
@@ -218,7 +219,8 @@ class Predicates {
     private static final Predicate<Declaration> DECLARATION_IS_FUNCTION = new Predicate<Declaration>() {  
         @Override
         public boolean accept(Declaration declaration) {
-            return declaration instanceof com.redhat.ceylon.model.typechecker.model.Function;
+            return declaration instanceof com.redhat.ceylon.model.typechecker.model.Function
+                    && !(((com.redhat.ceylon.model.typechecker.model.Function)declaration).getTypeDeclaration() instanceof Constructor);
         }
         @Override
         public String toString() {
@@ -230,8 +232,9 @@ class Predicates {
     private static final Predicate<Declaration> DECLARATION_IS_FUNCTION_OR_VALUE = new Predicate<Declaration>() {
         @Override
         public boolean accept(Declaration declaration) {
-            return declaration instanceof com.redhat.ceylon.model.typechecker.model.Value
-                || declaration instanceof com.redhat.ceylon.model.typechecker.model.Function
+            return (declaration instanceof com.redhat.ceylon.model.typechecker.model.Value
+                || declaration instanceof com.redhat.ceylon.model.typechecker.model.Function)
+                && !(((com.redhat.ceylon.model.typechecker.model.FunctionOrValue)declaration).getTypeDeclaration() instanceof Constructor)
             ;
         }
         @Override
@@ -249,6 +252,43 @@ class Predicates {
         @Override
         public String toString() {
             return "(kind = Class)";
+        }
+    };
+    
+    /** Predicate on Declarations that accepts Constructor */
+    private static final Predicate<Declaration> DECLARATION_IS_CONSTRUCTOR = new Predicate<Declaration>() {  
+        @Override
+        public boolean accept(Declaration declaration) {
+            return declaration instanceof com.redhat.ceylon.model.typechecker.model.FunctionOrValue
+                    && ((com.redhat.ceylon.model.typechecker.model.FunctionOrValue)declaration).getTypeDeclaration() instanceof Constructor;
+        }
+        @Override
+        public String toString() {
+            return "(kind = Constructor)";
+        }
+    };
+    
+    private static final Predicate<Declaration> DECLARATION_IS_CALLABLE_CONSTRUCTOR = new Predicate<Declaration>() {  
+        @Override
+        public boolean accept(Declaration declaration) {
+            return declaration instanceof com.redhat.ceylon.model.typechecker.model.Function
+                    && ((com.redhat.ceylon.model.typechecker.model.Function)declaration).getTypeDeclaration() instanceof Constructor;
+        }
+        @Override
+        public String toString() {
+            return "(kind = CallableConstructor)";
+        }
+    };
+    
+    private static final Predicate<Declaration> DECLARATION_IS_VALUE_CONSTRUCTOR = new Predicate<Declaration>() {  
+        @Override
+        public boolean accept(Declaration declaration) {
+            return declaration instanceof com.redhat.ceylon.model.typechecker.model.Value
+                    && ((com.redhat.ceylon.model.typechecker.model.Value)declaration).getTypeDeclaration() instanceof Constructor;
+        }
+        @Override
+        public String toString() {
+            return "(kind = ValueConstructor)";
         }
     };
 
@@ -312,6 +352,12 @@ class Predicates {
                 return DECLARATION_IS_CLASS_OR_INTERFACE;
             } else if (declarationClass == ceylon.language.meta.declaration.AliasDeclaration.class) {
                 return DECLARATION_IS_ALIAS;
+            } else if (declarationClass == ceylon.language.meta.declaration.ConstructorDeclaration.class) {
+                return DECLARATION_IS_CONSTRUCTOR;
+            } else if (declarationClass == ceylon.language.meta.declaration.CallableConstructorDeclaration.class) {
+                return DECLARATION_IS_CALLABLE_CONSTRUCTOR;
+            } else if (declarationClass == ceylon.language.meta.declaration.ValueConstructorDeclaration.class) {
+                return DECLARATION_IS_VALUE_CONSTRUCTOR;
             } else if (declarationClass == ceylon.language.meta.declaration.NestableDeclaration.class) {
                 return true_();
             }
