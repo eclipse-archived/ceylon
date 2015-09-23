@@ -24,6 +24,11 @@ public abstract class EqualityAndComparisonInteger extends .java.lang.Object imp
     }
     
     @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger modulo(final .com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger modulus) {
+        return (.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger)$ceylon$language$Integral$this$.modulo(modulus);
+    }
+    
+    @.java.lang.Override
     public boolean divides(final .com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger other) {
         return $ceylon$language$Integral$this$.divides(other);
     }

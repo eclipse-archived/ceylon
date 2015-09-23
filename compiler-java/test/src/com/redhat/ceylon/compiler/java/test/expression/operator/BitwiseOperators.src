@@ -35,6 +35,11 @@ abstract class BWMyInteger extends .java.lang.Object implements .com.redhat.ceyl
     }
     
     @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger modulo(final .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger modulus) {
+        return (.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger)$ceylon$language$Integral$this$.modulo(modulus);
+    }
+    
+    @.java.lang.Override
     public boolean divides(final .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger other) {
         return $ceylon$language$Integral$this$.divides(other);
     }
