@@ -359,11 +359,22 @@ public class Metamodel {
                     com.redhat.ceylon.model.typechecker.model.TypeAlias alias = (com.redhat.ceylon.model.typechecker.model.TypeAlias)declaration;
                     ret = new com.redhat.ceylon.compiler.java.runtime.metamodel.FreeAliasDeclaration(alias);
                 }else if(declaration instanceof com.redhat.ceylon.model.typechecker.model.Function){
-                    com.redhat.ceylon.model.typechecker.model.Functional method = (com.redhat.ceylon.model.typechecker.model.Functional)declaration;
-                    ret = new com.redhat.ceylon.compiler.java.runtime.metamodel.FreeFunction(method);
+                    com.redhat.ceylon.model.typechecker.model.Function method = (com.redhat.ceylon.model.typechecker.model.Function)declaration;
+                    if (method.getTypeDeclaration() instanceof com.redhat.ceylon.model.typechecker.model.Constructor) {
+                        ret = new FreeCallableConstructor(method, 
+                                (com.redhat.ceylon.model.typechecker.model.Constructor)method.getTypeDeclaration());
+                    } else {
+                        ret = new com.redhat.ceylon.compiler.java.runtime.metamodel.FreeFunction(method);
+                    }
                 }else if(declaration instanceof com.redhat.ceylon.model.typechecker.model.Value){
                     com.redhat.ceylon.model.typechecker.model.Value value = (com.redhat.ceylon.model.typechecker.model.Value)declaration;
-                    ret = value.isTransient() ? new FreeValue(value) : new FreeReference(value);
+                    if (value.getTypeDeclaration() instanceof com.redhat.ceylon.model.typechecker.model.Constructor) {
+                        ret = new FreeValueConstructor(value, 
+                                (com.redhat.ceylon.model.typechecker.model.Constructor)value.getTypeDeclaration());
+                    } else {
+                        
+                        ret = value.isTransient() ? new FreeValue(value) : new FreeReference(value);
+                    }
                 }else if(declaration instanceof com.redhat.ceylon.model.typechecker.model.Setter){
                     com.redhat.ceylon.model.typechecker.model.Setter value = (com.redhat.ceylon.model.typechecker.model.Setter)declaration;
                     ret = new FreeSetter(value);
