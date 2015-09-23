@@ -138,6 +138,7 @@ shared final native class Character(Character character)
     
     "The Unicode code point of the character, an [[Integer]]
      in the range `0..#10FFFF`."
+    aliased("codePoint")
     shared native Integer integer;
     
     "Compare this character with the given string character, 
