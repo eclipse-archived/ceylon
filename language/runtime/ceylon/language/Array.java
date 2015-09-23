@@ -30,13 +30,13 @@ import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 import com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel;
+import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 import com.redhat.ceylon.compiler.java.runtime.serialization.$Serialization$;
 import com.redhat.ceylon.compiler.java.runtime.serialization.Serializable;
 
 import ceylon.language.impl.BaseIterable;
 import ceylon.language.impl.BaseIterator;
-import ceylon.language.impl.BaseList;
 import ceylon.language.impl.MemberImpl;
 import ceylon.language.impl.rethrow_;
 import ceylon.language.meta.declaration.ClassDeclaration;
@@ -52,8 +52,8 @@ import ceylon.language.serialization.ReachableReference;
     "ceylon.language::Ranged<ceylon.language::Integer,Element,ceylon.language::Array<Element>>"
 })
 public final class Array<Element>
-        extends BaseList<Element>
-        implements Serializable {
+        implements Serializable, SearchableList<Element>,
+                    ReifiedType {
     
     private static final Finished FIN = finished_.get_();
     
@@ -594,7 +594,6 @@ public final class Array<Element>
         
     @Ignore
     private Array(@Ignore TypeDescriptor $reifiedElement, java.lang.Object array) {
-        super($reifiedElement);
         this.$reifiedElement = $reifiedElement;
         assert(array.getClass().isArray());
         elementType = elementType($reifiedElement);
@@ -2296,20 +2295,23 @@ public final class Array<Element>
                 return Arrays.equals((Object[]) x, (Object[]) y);
             }
         }
-        return super.equals(that);
+        return $ceylon$language$List$impl().equals(that);
     }
     
     @Override
     @Transient
     public int hashCode() {
-        // overridden so the native model is identical to the ceylon model
         //TODO: optimize hash computation to avoid boxing!!
-        return super.hashCode();
+        return $ceylon$language$List$impl().hashCode();
+    }
+    
+    @Override
+    public java.lang.String toString() {
+        return $ceylon$language$Collection$impl().toString();
     }
     
     @Ignore
     public Array($Serialization$ ignored, TypeDescriptor $reifiedElement) {
-        super(ignored, $reifiedElement);
         this.$reifiedElement = $reifiedElement;
         this.elementType = elementType($reifiedElement);
         array = null;
@@ -2405,5 +2407,570 @@ public final class Array<Element>
             ceylon.language.serialization.Element index  = (ceylon.language.serialization.Element)reference;
             set(index.getIndex(), (Element)instance);
         }
+    }
+
+    @Override @Ignore
+    public List$impl<? extends Element> $ceylon$language$List$impl() {
+        // TODO Auto-generated method stub
+        return new List$impl<Element>($reifiedElement, this);
+    }
+
+    @Override @Ignore
+    public <Result> Sequential<? extends Result> collect(TypeDescriptor arg0, Callable<? extends Result> arg1) {
+        return $ceylon$language$List$impl().collect(arg0, arg1);
+    }
+
+    @Override @Ignore
+    public boolean endsWith(List<? extends java.lang.Object> sublist) {
+        return $ceylon$language$List$impl().endsWith(sublist);
+    }
+
+    @Override @Ignore
+    public Integer firstIndexWhere(Callable<? extends Boolean> arg0) {
+        return $ceylon$language$List$impl().firstIndexWhere(arg0);
+    }
+
+    @Override @Ignore
+    public Element get(Integer index) {
+        //NOTE IMPORTANT OPTIMIZATION HERE
+        return getFromFirst(index.value);
+    }
+
+    @Override @Ignore
+    public List<? extends Integer> getKeys() {
+        return $ceylon$language$List$impl().getKeys();
+    }
+
+    @Override @Ignore
+    public List<? extends Element> getRest() {
+        return $ceylon$language$List$impl().getRest();
+    }
+
+    @Override @Ignore
+    public List<? extends Element> getReversed() {
+        return $ceylon$language$List$impl().getReversed();
+    }
+
+    @Override @Ignore
+    public Iterable<? extends Integer, ? extends java.lang.Object> indexesWhere(Callable<? extends Boolean> arg0) {
+        return $ceylon$language$List$impl().indexesWhere(arg0);
+    }
+
+    @Override @Ignore
+    public List<? extends Element> initial(long arg0) {
+        return $ceylon$language$List$impl().initial(arg0);
+    }
+
+    @Override @Ignore
+    public Integer lastIndexWhere(Callable<? extends Boolean> arg0) {
+        return $ceylon$language$List$impl().lastIndexWhere(arg0);
+    }
+
+    @Override @Ignore
+    public boolean longerThan(long arg0) {
+        return $ceylon$language$List$impl().longerThan(arg0);
+    }
+
+    @Override @Ignore
+    public <Other> List patch(TypeDescriptor arg0, List<? extends Other> arg1) {
+        return $ceylon$language$List$impl().patch(arg0, arg1);
+    }
+
+    @Override @Ignore
+    public <Other> List patch(TypeDescriptor arg0, List<? extends Other> arg1, long arg2) {
+        return $ceylon$language$List$impl().patch(arg0, arg1, arg2);
+    }
+
+    @Override @Ignore
+    public <Other> List patch(TypeDescriptor arg0, List<? extends Other> arg1, long arg2, long arg3) {
+        return $ceylon$language$List$impl().patch(arg0, arg1, arg3);
+    }
+
+    @Override @Ignore
+    public <Other> long patch$from(TypeDescriptor arg0, List<? extends Other> arg1) {
+        return $ceylon$language$List$impl().patch$from(arg0, arg1);
+    }
+
+    @Override @Ignore
+    public <Other> long patch$length(TypeDescriptor arg0, List<? extends Other> arg1, long arg2) {
+        return $ceylon$language$List$impl().patch$length(arg0, arg1, arg2);
+    }
+
+    @Override @Ignore
+    public List<? extends Element> repeat(long arg0) {
+        return $ceylon$language$List$impl().repeat(arg0);
+    }
+
+    @Override @Ignore
+    public boolean shorterThan(long arg0) {
+        return $ceylon$language$List$impl().shorterThan(arg0);
+    }
+
+    @Override @Ignore
+    public Sequence<? extends List<? extends Element>> slice(long arg0) {
+        return $ceylon$language$List$impl().slice(arg0);
+    }
+
+    @Override @Ignore
+    public boolean startsWith(List<? extends java.lang.Object> sublist) {
+        return $ceylon$language$List$impl().startsWith(sublist);
+    }
+
+    @Override @Ignore
+    public List<? extends Element> sublist(long arg0, long arg1) {
+        return $ceylon$language$List$impl().sublist(arg0, arg1);
+    }
+
+    @Override @Ignore
+    public List<? extends Element> sublistFrom(long arg0) {
+        return $ceylon$language$List$impl().sublistFrom(arg0);
+    }
+
+    @Override @Ignore
+    public List<? extends Element> sublistTo(long arg0) {
+        return $ceylon$language$List$impl().sublistTo(arg0);
+    }
+
+    @Override @Ignore
+    public List<? extends Element> terminal(long arg0) {
+        return $ceylon$language$List$impl().terminal(arg0);
+    }
+
+    @Override @Ignore
+    public List<? extends Element> trim(Callable<? extends Boolean> arg0) {
+        return $ceylon$language$List$impl().trim(arg0);
+    }
+
+    @Override @Ignore
+    public List<? extends Element> trimLeading(Callable<? extends Boolean> arg0) {
+        return $ceylon$language$List$impl().trimLeading(arg0);
+    }
+
+    @Override @Ignore
+    public List<? extends Element> trimTrailing(Callable<? extends Boolean> arg0) {
+        return $ceylon$language$List$impl().trimTrailing(arg0);
+    }
+
+    @Override @Ignore
+    public Collection$impl<? extends Element> $ceylon$language$Collection$impl() {
+        return new Collection$impl<Element>($reifiedElement, this);
+    }
+
+    @Override @Ignore
+    public Iterable<? extends Sequence<? extends Element>, ? extends java.lang.Object> getPermutations() {
+        return $ceylon$language$Collection$impl().getPermutations();
+    }
+
+    @Override @Ignore
+    public Iterable$impl<? extends Element, ? extends java.lang.Object> $ceylon$language$Iterable$impl() {
+        return new Iterable$impl<Element,java.lang.Object>($reifiedElement,Null.$TypeDescriptor$, this);
+    }
+
+    @Override @Ignore
+    public <Other, OtherAbsent> Iterable chain(TypeDescriptor arg0, TypeDescriptor arg1,
+            Iterable<? extends Other, ? extends OtherAbsent> arg2) {
+        return $ceylon$language$Iterable$impl().chain(arg0, arg1, arg2);
+    }
+
+    @Override @Ignore
+    public <Default> Iterable defaultNullElements(TypeDescriptor arg0, Default arg1) {
+        return $ceylon$language$Iterable$impl().defaultNullElements(arg0, arg1);
+    }
+
+    @Override @Ignore
+    public Iterable<? extends Element, ? extends java.lang.Object> filter(Callable<? extends Boolean> arg0) {
+        return $ceylon$language$Iterable$impl().filter(arg0);
+    }
+
+    @Override @Ignore
+    public <Result, OtherAbsent> Iterable flatMap(TypeDescriptor arg0, TypeDescriptor arg1,
+            Callable<? extends Iterable<? extends Result, ? extends OtherAbsent>> arg2) {
+        return $ceylon$language$Iterable$impl().flatMap(arg0, arg1, arg2);
+    }
+
+    @Override @Ignore
+    public <Result> Callable<? extends Result> fold(TypeDescriptor arg0, Result arg1) {
+        return $ceylon$language$Iterable$impl().fold(arg0, arg1);
+    }
+
+    @Override @Ignore
+    public <Other> Iterable follow(TypeDescriptor arg0, Other arg1) {
+        return $ceylon$language$Iterable$impl().follow(arg0, arg1);
+    }
+
+    @Override @Ignore
+    public Iterable<? extends Element, ? extends java.lang.Object> getCycled() {
+        // TODO Auto-generated method stub
+        return $ceylon$language$Iterable$impl().getCycled();
+    }
+
+    @Override @Ignore
+    public Iterable<? extends Element, ? extends java.lang.Object> getDistinct() {
+        // TODO Auto-generated method stub
+        return $ceylon$language$Iterable$impl().getDistinct();
+    }
+
+    @Override @Ignore
+    public Iterable<? extends Element, ? extends java.lang.Object> getExceptLast() {
+        // TODO Auto-generated method stub
+        return $ceylon$language$Iterable$impl().getExceptLast();
+    }
+
+    @Override @Ignore
+    public Iterable<? extends Entry<? extends Integer, ? extends Element>, ? extends java.lang.Object> getIndexed() {
+        // TODO Auto-generated method stub
+        return $ceylon$language$Iterable$impl().getIndexed();
+    }
+
+    @Override @Ignore
+    public Iterable<? extends Sequence<? extends Element>, ? extends java.lang.Object> getPaired() {
+        // TODO Auto-generated method stub
+        return $ceylon$language$Iterable$impl().getPaired();
+    }
+
+    @Override @Ignore
+    public <Group> Map<? extends Group, ? extends Sequence<? extends Element>> group(TypeDescriptor arg0,
+            Callable<? extends Group> arg1) {
+        // TODO Auto-generated method stub
+        return $ceylon$language$Iterable$impl().group(arg0, arg1);
+    }
+
+    @Override @Ignore
+    public java.lang.Object indexes() {
+        // TODO Auto-generated method stub
+        return $ceylon$language$Iterable$impl().indexes();
+    }
+
+    @Override @Ignore
+    public <Other> Iterable interpose(TypeDescriptor arg0, Other arg1) {
+        // TODO Auto-generated method stub
+        return $ceylon$language$Iterable$impl().interpose(arg0, arg1);
+    }
+
+    @Override @Ignore
+    public <Other> Iterable interpose(TypeDescriptor arg0, Other arg1, long arg2) {
+        // TODO Auto-generated method stub
+        return $ceylon$language$Iterable$impl().interpose(arg0, arg1, arg2);
+    }
+
+    @Override @Ignore
+    public <Other> long interpose$step(TypeDescriptor arg0, Other arg1) {
+        // TODO Auto-generated method stub
+        return $ceylon$language$Iterable$impl().interpose$step(arg0, arg1);
+    }
+
+    @Override @Ignore
+    public Iterable<? extends Entry<? extends Integer, ? extends Element>, ? extends java.lang.Object> locations(
+            Callable<? extends Boolean> arg0) {
+        // TODO Auto-generated method stub
+        return $ceylon$language$Iterable$impl().locations(arg0);
+    }
+
+    @Override @Ignore
+    public <Result> Iterable<? extends Result, ? extends java.lang.Object> map(TypeDescriptor arg0,
+            Callable<? extends Result> arg1) {
+        // TODO Auto-generated method stub
+        return $ceylon$language$Iterable$impl().map(arg0, arg1);
+    }
+
+    @Override @Ignore
+    public java.lang.Object max(Callable<? extends Comparison> arg0) {
+        // TODO Auto-generated method stub
+        return $ceylon$language$Iterable$impl().max(arg0);
+    }
+
+    @Override @Ignore
+    public <Type> Iterable narrow(TypeDescriptor arg0) {
+        // TODO Auto-generated method stub
+        return $ceylon$language$Iterable$impl().narrow(arg0);
+    }
+
+    @Override @Ignore
+    public Iterable<? extends Sequence<? extends Element>, ? extends java.lang.Object> partition(long arg0) {
+        // TODO Auto-generated method stub
+        return $ceylon$language$Iterable$impl().partition(arg0);
+    }
+
+    @Override @Ignore
+    public <Other, OtherAbsent> Iterable product(TypeDescriptor arg0, TypeDescriptor arg1,
+            Iterable<? extends Other, ? extends OtherAbsent> arg2) {
+        // TODO Auto-generated method stub
+        return $ceylon$language$Iterable$impl().product(arg0, arg1, arg2);
+    }
+
+    @Override @Ignore
+    public <Result> Callable<? extends Iterable<? extends Result, ? extends java.lang.Object>> scan(TypeDescriptor arg0,
+            Result arg1) {
+        // TODO Auto-generated method stub
+        return $ceylon$language$Iterable$impl().scan(arg0, arg1);
+    }
+
+    @Override @Ignore
+    public Sequential<? extends Element> select(Callable<? extends Boolean> arg0) {
+        // TODO Auto-generated method stub
+        return $ceylon$language$Iterable$impl().select(arg0);
+    }
+
+    @Override @Ignore
+    public Iterable<? extends Element, ? extends java.lang.Object> skipWhile(Callable<? extends Boolean> arg0) {
+        // TODO Auto-generated method stub
+        return $ceylon$language$Iterable$impl().skipWhile(arg0);
+    }
+
+    @Override @Ignore
+    public <Result, Args extends Sequential<? extends java.lang.Object>> Callable<? extends Iterable<? extends Result, ? extends java.lang.Object>> spread(
+            TypeDescriptor arg0, TypeDescriptor arg1, Callable<? extends Callable<? extends Result>> arg2) {
+        // TODO Auto-generated method stub
+        return $ceylon$language$Iterable$impl().spread(arg0, arg1, arg2);
+    }
+
+    @Override @Ignore
+    public Iterable<? extends Element, ? extends java.lang.Object> takeWhile(Callable<? extends Boolean> arg0) {
+        // TODO Auto-generated method stub
+        return $ceylon$language$Iterable$impl().takeWhile(arg0);
+    }
+
+    @Override @Ignore
+    public Category$impl<? super java.lang.Object> $ceylon$language$Category$impl() {
+        return new Category$impl<java.lang.Object>(Object.$TypeDescriptor$, this);
+    }
+
+    @Override @Ignore
+    public boolean containsAny(Iterable<? extends java.lang.Object, ? extends java.lang.Object> arg0) {
+        // TODO Auto-generated method stub
+        return $ceylon$language$Category$impl().containsAny(arg0);
+    }
+
+    @Override @Ignore
+    public boolean containsEvery(Iterable<? extends java.lang.Object, ? extends java.lang.Object> arg0) {
+        // TODO Auto-generated method stub
+        return $ceylon$language$Category$impl().containsEvery(arg0);
+    }
+
+    @Override @Ignore
+    public Correspondence$impl<? super Integer, ? extends Element> $ceylon$language$Correspondence$impl() {
+        // TODO Auto-generated method stub
+        return new Correspondence$impl<Integer, Element>(Integer.$TypeDescriptor$, $reifiedElement, this);
+    }
+
+    @Override @Ignore
+    public boolean definesAny(Iterable<? extends Integer, ? extends java.lang.Object> arg0) {
+        // TODO Auto-generated method stub
+        return $ceylon$language$Correspondence$impl().definesAny(arg0);
+    }
+
+    @Override @Ignore
+    public boolean definesEvery(Iterable<? extends Integer, ? extends java.lang.Object> arg0) {
+        // TODO Auto-generated method stub
+        return $ceylon$language$Correspondence$impl().definesEvery(arg0);
+    }
+
+    @Override @Ignore
+    public <Absent> Iterable<? extends Element, ? extends Absent> getAll(TypeDescriptor arg0,
+            Iterable<? extends Integer, ? extends Absent> arg1) {
+        // TODO Auto-generated method stub
+        return $ceylon$language$Correspondence$impl().getAll(arg0, arg1);
+    }
+
+    @Override @Ignore
+    public SearchableList$impl<Element> $ceylon$language$SearchableList$impl() {
+        return new SearchableList$impl<Element>($reifiedElement, this);
+    }
+
+    @Override @Ignore
+    public long countInclusions(List<? extends Element> arg0) {
+        return $ceylon$language$SearchableList$impl().countInclusions(arg0);
+    }
+
+    @Override @Ignore
+    public long countInclusions$from(List<? extends Element> arg0) {
+        return $ceylon$language$SearchableList$impl().countInclusions$from(arg0);
+    }
+
+    @Override @Ignore
+    public long countOccurrences(Element arg0) {
+        return $ceylon$language$SearchableList$impl().countOccurrences(arg0);
+    }
+
+    @Override @Ignore
+    public long countOccurrences(Element arg0, long arg1) {
+        return $ceylon$language$SearchableList$impl().countOccurrences(arg0, arg1);
+    }
+
+    @Override @Ignore
+    public long countOccurrences$from(Element arg0) {
+        return $ceylon$language$SearchableList$impl().countOccurrences$from(arg0);
+    }
+
+    @Override @Ignore
+    public long countOccurrences$length(Element arg0, long arg1) {
+        return $ceylon$language$SearchableList$impl().countOccurrences$length(arg0, arg1);
+    }
+
+    @Override @Ignore
+    public Integer firstInclusion(List<? extends Element> arg0) {
+        return $ceylon$language$SearchableList$impl().firstInclusion(arg0);
+    }
+
+    @Override @Ignore
+    public long firstInclusion$from(List<? extends Element> arg0) {
+        return $ceylon$language$SearchableList$impl().firstInclusion$from(arg0);
+    }
+
+    @Override @Ignore
+    public Integer firstOccurrence(Element arg0) {
+        return $ceylon$language$SearchableList$impl().firstOccurrence(arg0);
+    }
+
+    @Override @Ignore
+    public Integer firstOccurrence(Element arg0, long arg1) {
+        return $ceylon$language$SearchableList$impl().firstOccurrence(arg0, arg1);
+    }
+
+    @Override @Ignore
+    public long firstOccurrence$from(Element arg0) {
+        return $ceylon$language$SearchableList$impl().firstOccurrence$from(arg0);
+    }
+
+    @Override @Ignore
+    public long firstOccurrence$length(Element arg0, long arg1) {
+        return $ceylon$language$SearchableList$impl().firstOccurrence$length(arg0,arg1);
+    }
+
+    @Override @Ignore
+    public boolean includes(List<? extends Element> arg0) {
+        return $ceylon$language$SearchableList$impl().includes(arg0);
+    }
+
+    @Override @Ignore
+    public long includes$from(List<? extends Element> arg0) {
+        return $ceylon$language$SearchableList$impl().includes$from(arg0);
+    }
+
+    @Override @Ignore
+    public Iterable<? extends Integer, ? extends java.lang.Object> inclusions(List<? extends Element> arg0) {
+        return $ceylon$language$SearchableList$impl().inclusions(arg0);
+    }
+
+    @Override @Ignore
+    public Iterable<? extends Integer, ? extends java.lang.Object> inclusions(List<? extends Element> arg0,
+            long arg1) {
+        return $ceylon$language$SearchableList$impl().inclusions(arg0, arg1);
+    }
+
+    @Override @Ignore
+    public long inclusions$from(List<? extends Element> arg0) {
+        return $ceylon$language$SearchableList$impl().inclusions$from(arg0);
+    }
+
+    @Override @Ignore
+    public Integer lastInclusion(List<? extends Element> arg0) {
+        return $ceylon$language$SearchableList$impl().lastInclusion(arg0);
+    }
+
+    @Override @Ignore
+    public long lastInclusion$from(List<? extends Element> arg0) {
+        return $ceylon$language$SearchableList$impl().lastInclusion$from(arg0);
+    }
+
+    @Override @Ignore
+    public Integer lastOccurrence(Element arg0) {
+        return $ceylon$language$SearchableList$impl().lastOccurrence(arg0);
+    }
+
+    @Override @Ignore
+    public Integer lastOccurrence(Element arg0, long arg1) {
+        return $ceylon$language$SearchableList$impl().lastOccurrence(arg0, arg1);
+    }
+
+    @Override @Ignore
+    public long lastOccurrence$from(Element arg0) {
+        return $ceylon$language$SearchableList$impl().lastOccurrence$from(arg0);
+    }
+
+    @Override @Ignore
+    public long lastOccurrence$length(Element arg0, long arg1) {
+        return $ceylon$language$SearchableList$impl().lastOccurrence$length(arg0, arg1);
+    }
+
+    @Override @Ignore
+    public Iterable<? extends Integer, ? extends java.lang.Object> occurrences(Element arg0) {
+        return $ceylon$language$SearchableList$impl().occurrences(arg0);
+    }
+
+    @Override @Ignore
+    public Iterable<? extends Integer, ? extends java.lang.Object> occurrences(Element arg0, long arg1) {
+        return $ceylon$language$SearchableList$impl().occurrences(arg0,arg1);
+    }
+
+    @Override @Ignore
+    public Iterable<? extends Integer, ? extends java.lang.Object> occurrences(Element arg0, long arg1, long arg2) {
+        return $ceylon$language$SearchableList$impl().occurrences(arg0,arg1,arg2);
+    }
+
+    @Override @Ignore
+    public long occurrences$from(Element arg0) {
+        return $ceylon$language$SearchableList$impl().occurrences$from(arg0);
+    }
+
+    @Override @Ignore
+    public long occurrences$length(Element arg0, long arg1) {
+        return $ceylon$language$SearchableList$impl().occurrences$length(arg0,arg1);
+    }
+
+    @Override @Ignore
+    public boolean occurs(Element arg0) {
+        return $ceylon$language$SearchableList$impl().occurs(arg0);
+    }
+
+    @Override @Ignore
+    public boolean occurs(Element arg0, long arg1) {
+        return $ceylon$language$SearchableList$impl().occurs(arg0,arg1);
+    }
+
+    @Override @Ignore
+    public long occurs$from(Element arg0) {
+        return $ceylon$language$SearchableList$impl().occurs$from(arg0);
+    }
+
+    @Override @Ignore
+    public long occurs$length(Element arg0, long arg1) {
+        return $ceylon$language$SearchableList$impl().occurs$length(arg0,arg1);
+    }
+
+    @Override @Ignore
+    public long countInclusions(List<? extends Element> arg0, long arg1) {
+        // TODO Auto-generated method stub
+        return $ceylon$language$SearchableList$impl().countInclusions(arg0, arg1);
+    }
+
+    @Override @Ignore
+    public Integer firstInclusion(List<? extends Element> arg0, long arg1) {
+        // TODO Auto-generated method stub
+        return $ceylon$language$SearchableList$impl().firstInclusion(arg0, arg1);
+    }
+
+    @Override @Ignore
+    public boolean includes(List<? extends Element> arg0, long arg1) {
+        // TODO Auto-generated method stub
+        return $ceylon$language$SearchableList$impl().includes(arg0, arg1);
+    }
+
+    @Override @Ignore
+    public boolean includesAt(long arg0, List<? extends Element> arg1) {
+        // TODO Auto-generated method stub
+        return $ceylon$language$SearchableList$impl().includesAt(arg0, arg1);
+    }
+
+    @Override @Ignore
+    public Integer lastInclusion(List<? extends Element> arg0, long arg1) {
+        // TODO Auto-generated method stub
+        return $ceylon$language$SearchableList$impl().lastInclusion(arg0, arg1);
+    }
+
+    @Override @Ignore
+    public boolean occursAt(long arg0, Element arg1) {
+        // TODO Auto-generated method stub
+        return $ceylon$language$SearchableList$impl().occursAt(arg0, arg1);
     }
 }
