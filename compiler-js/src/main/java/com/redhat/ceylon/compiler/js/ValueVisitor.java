@@ -1,9 +1,11 @@
 package com.redhat.ceylon.compiler.js;
 
+import com.redhat.ceylon.compiler.js.util.TypeUtils;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
+import com.redhat.ceylon.model.typechecker.model.ModelUtil;
 import com.redhat.ceylon.model.typechecker.model.Setter;
 import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.model.typechecker.model.Value;
@@ -42,10 +44,6 @@ public class ValueVisitor extends Visitor {
     
     @Override public void visit(Tree.BaseMemberExpression that) {
         visitReference(that);
-        /*if (that.getIdentifier()!=null) {
-            TypedDeclaration d = (TypedDeclaration) getDeclaration(that.getScope(), that.getUnit(), that.getIdentifier(), context);
-            visitReference(that, d);
-        }*/
     }
 
     private void visitReference(Tree.Primary that) {
@@ -65,12 +63,9 @@ public class ValueVisitor extends Visitor {
                         //list does not capture a parameter
                         ((FunctionOrValue) d).setCaptured(true);
                     }
-                } else if (d instanceof Value) {
+                } else if (d instanceof Value && !TypeUtils.isConstructor(d) && !d.isToplevel()) {
                     ((Value) d).setCaptured(true);
                 }
-                /*if (d.isVariable() && !d.isClassMember() && !d.isToplevel()) {
-                    that.addError("access to variable local from capturing scope: " + declaration.getName());
-                }*/
             }
         }
     }
@@ -100,9 +95,22 @@ public class ValueVisitor extends Visitor {
         super.visit(that);
     }
     
+    private void captureContainer(Declaration d) {
+        if (d == null || d.isAnonymous()) {
+            return;
+        }
+        Declaration cd = ModelUtil.getContainingDeclaration(d);
+        if (cd != null && !cd.isAnonymous() && !cd.isCaptured()) {
+            if (cd instanceof FunctionOrValue) {
+                ((FunctionOrValue) cd).setCaptured(true);
+            }
+        }
+    }
+
     @Override public void visit(Tree.ClassDefinition that) {
         boolean cs = enterCapturingScope();
         super.visit(that.getClassBody());
+        captureContainer(that.getDeclarationModel());
         exitCapturingScope(cs);
     }
     
