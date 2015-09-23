@@ -432,9 +432,10 @@ public final class Tuple<Element, First extends Element,
             // leading elements of rest
             java.lang.Object[] newArray = Arrays.copyOfRange(this.array, 
                     toInt(fromIndex), this.array.length);
-            Sequential<? extends Element> rest = (Sequential)this.rest.span(
-                    Integer.instance(0), 
-                    Integer.instance(toIndex-array.length));
+            Sequential<? extends Element> rest = 
+                    (Sequential)this.rest.span(
+                        Integer.instance(0), 
+                        Integer.instance(toIndex-array.length));
             Tuple<Element, First, Rest> result = 
                     new Tuple<Element, First, Rest>($getReifiedElement$(), 
                             newArray, rest, false);
@@ -787,9 +788,10 @@ public final class Tuple<Element, First extends Element,
 
     @Override @Ignore
     public Sequential$impl<? extends Element> $ceylon$language$Sequential$impl() {
-        return new Sequential$impl($reifiedElement,this);
+        return new Sequential$impl<Element>($reifiedElement,this);
     }
 
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override @Ignore
     public Sequential<? extends Element> initial(long length) {
         if (length<=0) return (Sequential<? extends Element>) empty_.get_();
@@ -800,6 +802,7 @@ public final class Tuple<Element, First extends Element,
         return new Tuple($reifiedElement, initialArray);
     }
 
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override @Ignore
     public Sequential<? extends Element> terminal(long length) {
         if (length<=0) return (Sequential<? extends Element>) empty_.get_();
@@ -810,6 +813,7 @@ public final class Tuple<Element, First extends Element,
         return new Tuple($reifiedElement, initialArray);
     }
 
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override @Ignore
     public Sequential<? extends Element> trim(Callable<? extends Boolean> f) {
         int size = array.length;
@@ -833,6 +837,7 @@ public final class Tuple<Element, First extends Element,
         return new Tuple($reifiedElement, trimmedArray);
     }
 
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override @Ignore
     public Sequential<? extends Element> trimLeading(
             Callable<? extends Boolean> f) {
@@ -851,6 +856,7 @@ public final class Tuple<Element, First extends Element,
         return new Tuple($reifiedElement, trimmedArray);
     }
 
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override @Ignore
     public Sequential<? extends Element> trimTrailing(
             Callable<? extends Boolean> f) {
@@ -871,7 +877,8 @@ public final class Tuple<Element, First extends Element,
 
     @Override @Ignore
     public List$impl<? extends Element> $ceylon$language$List$impl() {
-        return new List$impl($reifiedElement, this);
+        return new List$impl<Element>
+                ($reifiedElement, this);
     }
 
     @Override @Ignore
@@ -1002,12 +1009,14 @@ public final class Tuple<Element, First extends Element,
 
     @Override @Ignore
     public Collection$impl<? extends Element> $ceylon$language$Collection$impl() {
-        return new Collection$impl($reifiedElement,this);
+        return new Collection$impl<Element>
+                ($reifiedElement,this);
     }
 
     @Override @Ignore
     public Iterable$impl<? extends Element, ? extends java.lang.Object> $ceylon$language$Iterable$impl() {
-        return new Iterable$impl($reifiedElement,NothingType,this);
+        return new Iterable$impl<Element,java.lang.Object>
+                ($reifiedElement,NothingType,this);
     }
 
     @Override @Ignore
@@ -1210,7 +1219,8 @@ public final class Tuple<Element, First extends Element,
 
     @Override @Ignore
     public Category$impl<? super java.lang.Object> $ceylon$language$Category$impl() {
-        return new Category$impl($reifiedElement,this);
+        return new Category$impl<java.lang.Object>
+                ($reifiedElement,this);
     }
 
     @Override @Ignore
@@ -1226,7 +1236,8 @@ public final class Tuple<Element, First extends Element,
 
     @Override @Ignore
     public Correspondence$impl<? super Integer, ? extends Element> $ceylon$language$Correspondence$impl() {
-        return new Correspondence$impl(Integer.$TypeDescriptor$,$reifiedElement,this);
+        return new Correspondence$impl<Integer, Element>
+                (Integer.$TypeDescriptor$,$reifiedElement,this);
     }
 
     @Override @Ignore
@@ -1249,7 +1260,8 @@ public final class Tuple<Element, First extends Element,
 
     @Override @Ignore
     public Sequence$impl<? extends Element> $ceylon$language$Sequence$impl() {
-        return new Sequence$impl($reifiedElement,this);
+        return new Sequence$impl<Element>
+                ($reifiedElement,this);
     }
 
     @Override @Ignore
