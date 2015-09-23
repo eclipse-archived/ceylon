@@ -1,4 +1,5 @@
 function($mpt) {
-  console.log("IMPL OpenClassWithConstructors.annotatedConstructorDeclarations");
-  return empty();
+  return this.annotatedMemberDeclarations(
+    {Kind$annotatedMemberDeclarations:{t:ConstructorDeclaration$meta$declaration},
+     Annotation$annotatedMemberDeclarations:$mpt.Annotation$annotatedConstructorDeclarations});
 }
