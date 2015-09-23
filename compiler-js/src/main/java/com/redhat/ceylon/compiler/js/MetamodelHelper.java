@@ -343,7 +343,7 @@ public class MetamodelHelper {
     }
 
     static void findModule(final Module m, final GenerateJsVisitor gen) {
-        gen.out(gen.getClAlias(), "modules$meta().find('",
+        gen.out(gen.getClAlias(), "findModuleOrThrow$('",
                 m.getNameAsString(), "','", m.getVersion(), "')");
     }
 
