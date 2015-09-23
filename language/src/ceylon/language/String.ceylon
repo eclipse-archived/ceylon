@@ -316,14 +316,8 @@ shared native final class String(characters)
      UTF-16 encoding. For any nonempty string:
      
          string.lastIndex == string.size-1"
-    shared actual Integer? lastIndex {
-        if (size==0) {
-            return null;
-        }
-        else {
-            return size-1;
-        }
-    }
+    shared actual Integer? lastIndex 
+            => if (size==0) then null else size-1;
     
     "An iterator for the characters of the string."
     shared actual native Iterator<Character> iterator();

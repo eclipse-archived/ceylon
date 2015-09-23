@@ -119,10 +119,9 @@ shared interface List<out Element=Anything>
      Returns `true` for every element of this list."
     shared actual default Boolean contains(Object element) {
         for (index in 0:size) {
-            if (exists elem = getFromFirst(index)) {
-                if (elem==element) {
-                    return true;
-                }
+            if (exists elem = getFromFirst(index), 
+                    elem==element) {
+                return true;
             }
         }
         else {
@@ -268,10 +267,9 @@ shared interface List<out Element=Anything>
             Boolean selecting(Element&Object elem)) {
         variable value index = size-1;
         while (index >= 0) {
-            if (exists elem = getFromFirst(index--)) {
-                if (selecting(elem)) {
-                    return elem;
-                }
+            if (exists elem = getFromFirst(index--), 
+                    selecting(elem)) {
+                return elem;
             }
         }
         return null;
@@ -423,7 +421,7 @@ shared interface List<out Element=Anything>
         while (index>0) {
             index--;
             if (exists element=getFromFirst(index), 
-                selecting(element)) {
+                    selecting(element)) {
                 return index;
             }
         }
@@ -447,7 +445,7 @@ shared interface List<out Element=Anything>
             variable Integer to=-1;
             for (index in 0..end) {
                 if (exists elem=getFromFirst(index),
-                    !trimming(elem)) {
+                        !trimming(elem)) {
                     from = index;
                     break;
                 }
@@ -457,7 +455,7 @@ shared interface List<out Element=Anything>
             }
             for (index in end..0) {
                 if (exists elem=getFromFirst(index),
-                    !trimming(elem)) {
+                        !trimming(elem)) {
                     to = index;
                     break;
                 }
@@ -487,7 +485,7 @@ shared interface List<out Element=Anything>
             value end = size-1;
             for (index in 0..end) {
                 if (exists elem=getFromFirst(index),
-                    !trimming(elem)) {
+                        !trimming(elem)) {
                     return this[index..end];
                 }
             }
@@ -510,7 +508,7 @@ shared interface List<out Element=Anything>
             value end = size-1;
             for (index in end..0) {
                 if (exists elem=getFromFirst(index),
-                    !trimming(elem)) {
+                        !trimming(elem)) {
                     return this[0..index];
                 }
             }
