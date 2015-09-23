@@ -60,6 +60,7 @@ shared native final class Integer(Integer integer)
     shared actual native Integer times(Integer other);
     shared actual native Integer divided(Integer other);
     shared actual native Integer remainder(Integer other);
+    shared actual native Integer modulo(Integer modulus);
     
     "The result of raising this number to the given 
      non-negative integer power, where `0^0` evaluates to 
