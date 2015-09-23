@@ -198,3 +198,11 @@ function rejectInheritedOrPrivate$(mm, tipo, noInherit){
     return ((mm.pa & 1) == 0);
   }
 }
+
+function findModuleOrThrow$(name, version){
+  var mod = modules$meta().find(name, version);
+  if(!mod)
+    throw AssertionError("Module "+name+"/"+version+" is not available");
+  return mod;
+}
+ex$.findModuleOrThrow$=findModuleOrThrow$;
