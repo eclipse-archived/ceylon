@@ -45,8 +45,8 @@ public class OptimizationTests extends CompilerTests {
     
     @Test
     public void testLopOptimBug2130_Measure() {
-        //compareWithJavaSource("loop/optim/Bug2130_Measure");
-        compile("loop/optim/Bug2130_Measure.ceylon");
+        compareWithJavaSource("loop/optim/Bug2130_Measure");
+        //compile("loop/optim/Bug2130_Measure.ceylon");
         run("com.redhat.ceylon.compiler.java.test.statement.loop.optim.bug2130Measure");
     }
     
