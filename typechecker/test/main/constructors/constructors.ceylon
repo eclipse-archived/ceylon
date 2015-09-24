@@ -412,3 +412,11 @@ class WithMemberRefInDelegation {
     new instance {}
     new create() {}
 }
+
+class WithReturnInConstructor {
+    shared new () {
+        return;
+    }
+    shared new baz() {}
+    print("done");
+}
