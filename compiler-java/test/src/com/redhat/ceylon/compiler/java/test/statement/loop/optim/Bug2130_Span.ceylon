@@ -85,7 +85,7 @@ void compareSpanInteger2130(Integer start, Integer end, Integer[]? expect = null
                 problems = ["different exception types: expected ``type(got1)`` but got ``type(got2)``", *problems];
             }
             if (got1.message != got2.message) {
-                problems = ["different exception messages: expected ``got1.message`` but got ``got2.message``", *problems];
+                // XXX #2320 problems = ["different exception messages: expected ``got1.message`` but got ``got2.message``", *problems];
             }
         } else {
             problems = ["unoptimized threw ``got1``, but optimized ran normally", *problems];
