@@ -2612,6 +2612,12 @@ public final class Array<Element>
     }
 
     @Override @Ignore
+    public Set<? extends Element> elements() {
+        // TODO Auto-generated method stub
+        return $ceylon$language$Iterable$impl().elements();
+    }
+
+    @Override @Ignore
     public Iterable<? extends Element, ? extends java.lang.Object> getExceptLast() {
         // TODO Auto-generated method stub
         return $ceylon$language$Iterable$impl().getExceptLast();

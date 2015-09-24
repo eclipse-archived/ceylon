@@ -55,6 +55,8 @@ shared interface Set<out Element=Object>
         }
     }
     
+    elements() => clone();
+    
     "Two `Set`s are considered equal if they have the same 
      size and if every element of the first set is also an 
      element of the second set, as determined by 

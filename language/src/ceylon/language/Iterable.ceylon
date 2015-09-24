@@ -1458,6 +1458,7 @@ shared interface Iterable<out Element=Anything,
      
      This is a lazy operation and the resulting stream 
      reflects changes to this stream."
+    see(`function elements`)
     shared Iterable<Element,Absent> distinct
             => object satisfies Iterable<Element,Absent> {
         iterator() 
@@ -1531,12 +1532,67 @@ shared interface Iterable<out Element=Anything,
         };
     };
     
-    "Classifies the elements of this stream into a [[Map]] 
-     where each key is a value produced by the given 
-     [[grouping function|grouping]] and each corresponding
-     item is [[sequence|Sequence]] of all elements that 
-     produced the key when passed as arguments to the 
-     grouping function.
+    "Create a new immutable [[Set]] containing every element 
+     produced by this stream that is not null.
+     
+     For example:
+     
+         {0, 1, 1, 2, 3, null, 3, 3}.elements()
+     
+     is the set `{0, 1, 2, 3}`.
+     
+     This is an eager operation and the resulting set does
+     not reflect changes to this stream."
+    aliased("set")
+    see(`value distinct`)
+    shared default Set<Element&Object> elements()
+            => object extends Object() 
+                      satisfies Set<Element&Object> {
+        value elements =
+                outer.coalesced
+                    .summarize(identity,
+                        (Boolean? _, e) => true);
+        
+        clone() => this;
+        
+        iterator() => elements.keys.iterator();
+        
+        contains(Object element) => elements.defines(element);
+        
+        shared actual Set<Element&Object> 
+                complement<Other>(Set<Other> set)
+                given Other satisfies Object 
+                => filter((e) => !e in set)
+                .elements();
+        
+        shared actual Set<Element&Object|Other> 
+                exclusiveUnion<Other>(Set<Other> set)
+                given Other satisfies Object 
+                => filter((e) => !e in set)
+                .chain(set.filter((e) => !e in this))
+                .elements();
+        
+        shared actual Set<Element&Other&Object> 
+                intersection<Other>(Set<Other> set)
+                given Other satisfies Object
+                => filter((e) => e in set)
+                .narrow<Other>()
+                .elements();
+        
+        shared actual Set<Element&Object|Other> 
+                union<Other>(Set<Other> set)
+                given Other satisfies Object 
+                => chain(set)
+                .elements();
+        
+    };
+    
+    "Classifies the elements of this stream into a new
+     immutable [[Map]] where each key is a value produced by 
+     the given [[grouping function|grouping]] and each 
+     corresponding item is [[sequence|Sequence]] of all 
+     elements that produced the key when passed as arguments 
+     to the grouping function.
      
      Within each group, the sequence elements occur in the
      same order they occurred in this stream.
@@ -1677,7 +1733,7 @@ shared interface Iterable<out Element=Anything,
                 }
                 return result.group -> result.elements;
             }
-        };        
+        };
         
         clone() => this;
         

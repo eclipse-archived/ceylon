@@ -1395,6 +1395,11 @@ public final class Tuple<Element, First extends Element,
     }
     
     @Override @Ignore
+    public Set<? extends Element> elements() {
+        return $ceylon$language$Iterable$impl().elements();
+    }
+    
+    @Override @Ignore
     public java.lang.String toString() {
         StringBuilder sb = new StringBuilder();
         sb.appendCharacter('[');

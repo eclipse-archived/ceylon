@@ -5,7 +5,7 @@
 
 interface SetTestBase<out Element> satisfies Set<Element>
             given Element satisfies Object {
-    shared formal Element[] elements;
+    shared formal Element[] elems;
 }
 
 class ArrayBuilder<Element>() {
@@ -83,17 +83,17 @@ class ArrayBuilder<Element>() {
 class SetTest<Element>(Element* element) extends Object()
             satisfies SetTestBase<Element>
             given Element satisfies Object {
-    shared actual Element[] elements = element.sequence();
-    shared actual Integer size { return elements.size; }
-    shared actual Boolean empty { return elements.empty; }
+    shared actual Element[] elems = element.sequence();
+    shared actual Integer size { return elems.size; }
+    shared actual Boolean empty { return elems.empty; }
     shared actual SetTest<Element> clone() { return this; }
-    shared actual Iterator<Element> iterator() { return elements.iterator(); }
+    shared actual Iterator<Element> iterator() { return elems.iterator(); }
     shared actual Set<Element|Other> union<Other>(Set<Other> set)
                 given Other satisfies Object {
         value sb = ArrayBuilder<Element|Other>();
-        sb.appendAll(elements);
+        sb.appendAll(elems);
         for (e in set) {
-            for (e2 in elements) {
+            for (e2 in elems) {
                 if (e2 == e) { break; }
             } else {
                 sb.append(e);
@@ -108,7 +108,7 @@ class SetTest<Element>(Element* element) extends Object()
     shared actual Set<Element|Other> exclusiveUnion<Other>(Set<Other> set)
                 given Other satisfies Object {
         value sb = ArrayBuilder<Element|Other>();
-        for (e in elements) {
+        for (e in elems) {
             for (e2 in set) {
                 if (e2 == e) { break; }
             } else {
@@ -116,7 +116,7 @@ class SetTest<Element>(Element* element) extends Object()
             }
         }
         for (e in set) {
-            for (e2 in elements) {
+            for (e2 in elems) {
                 if (e2 == e) { break; }
             } else {
                 sb.append(e);
@@ -127,7 +127,7 @@ class SetTest<Element>(Element* element) extends Object()
     shared actual Set<Element> complement<Other>(Set<Other> set)
                 given Other satisfies Object {
         value sb = ArrayBuilder<Element>();
-        for (e in elements) {
+        for (e in elems) {
             for (e2 in set) {
                 if (e2 == e) { break; }
             } else {

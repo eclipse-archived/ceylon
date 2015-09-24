@@ -2,20 +2,19 @@
  elements. All operations on this `Set` are performed
  on the `Iterable`."
 by ("Enrique Zamudio")
-deprecated
-shared class LazySet<out Element>(elements)
+shared class LazySet<out Element>(elems)
         satisfies Set<Element>
         given Element satisfies Object {
     
     "The elements of the set, which must be distinct."
-    {Element*} elements;
+    {Element*} elems;
     
     clone() => this;
     
-    shared actual default Integer size => elements.size;
+    shared actual default Integer size => elems.size;
     
     shared actual default Boolean contains(Object element) {
-        for (e in elements) {
+        for (e in elems) {
             if (element==e) {
                 return true;
             }
@@ -23,13 +22,13 @@ shared class LazySet<out Element>(elements)
         return false;
     }
     
-    iterator() => elements.iterator();
+    iterator() => elems.iterator();
     
     shared actual Set<Element|Other> union<Other>(Set<Other> set)
             given Other satisfies Object {
-        value elements = { for (e in this) if (!e in set) e }.chain(set);
+        value elems = { for (e in this) if (!e in set) e }.chain(set);
         object union 
-                extends LazySet<Element|Other>(elements) {
+                extends LazySet<Element|Other>(elems) {
             shared actual Boolean contains(Object key) 
                     => key in set || key in this;
         }
@@ -38,9 +37,9 @@ shared class LazySet<out Element>(elements)
     
     shared actual Set<Element&Other> intersection<Other>(Set<Other> set)
             given Other satisfies Object {
-        value elements = { for (e in this) if (is Other e, e in set) e };
+        value elems = { for (e in this) if (is Other e, e in set) e };
         object intersection 
-                extends LazySet<Element&Other>(elements) {
+                extends LazySet<Element&Other>(elems) {
             shared actual Boolean contains(Object key) 
                     => key in set && key in this;
         }
@@ -49,7 +48,7 @@ shared class LazySet<out Element>(elements)
     
     shared actual Set<Element|Other> exclusiveUnion<Other>(Set<Other> set)
             given Other satisfies Object {
-        value hereNotThere = { for (e in elements) if (!e in set) e };
+        value hereNotThere = { for (e in elems) if (!e in set) e };
         value thereNotHere = { for (e in set) if (!e in this) e };
         object exclusiveUnion 
                 extends LazySet<Element|Other>
@@ -64,9 +63,9 @@ shared class LazySet<out Element>(elements)
     
     shared actual Set<Element> complement<Other>(Set<Other> set)
             given Other satisfies Object {
-        value elements = { for (e in this) if (!e in set) e };
+        value elems = { for (e in this) if (!e in set) e };
         object complement 
-                extends LazySet<Element>(elements) {
+                extends LazySet<Element>(elems) {
             shared actual Boolean contains(Object key) 
                     => !key in set && key in this;
         }
