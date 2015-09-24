@@ -1553,25 +1553,36 @@ shared interface Iterable<out Element=Anything,
                .mapItems((_, item) => item.reversed);
     
     "Efficiently [[group]] and [[fold]] the elements of this
-     stream in a single step. For any given 
-     [[grouping function|group]] and 
-     [[combining function|accumulating]], the following
-     expression:
+     stream in a single step.
      
-         stream.summarize(grouping,accumulating)
+     For example, the expression:
      
-     is equivalent to:
+         (1..10)
+            .summarize((i) => i%3, 
+                (Integer[2]? pair, i) 
+                    => if (exists [sum, product] = pair) 
+                       then [sum+i, product*i] else [i,i])
+    
+     produces the map 
+     `{ 0->[18, 162], 1->[22, 280], 2->[15, 80] }`, being 
+     equivalent to, but much more efficient than, the 
+     following expression written using `group()`, 
+     `mapItems()` and `fold()`:
      
-         stream.group(grouping)
-               .fold(null)
-                    ((entry)=>accumulating(entry.item))"
-    see(`function group`)
+         (1..10)
+             .group((i) => i%3)
+             .mapItems((_, item) 
+                => item.fold([0,1])
+                    ((pair, i) 
+                        => let ([sum, product] = pair) 
+                            [sum+i, product*i]))"
+    see(`function group`, `function fold`)
     shared Map<Group,Result> summarize<Group,Result>
             (Group grouping(Element element),
              Result accumulating(Result? partial, Element element))
             given Group satisfies Object
             => object extends Object() 
-            satisfies Map<Group,Result> {
+                      satisfies Map<Group,Result> {
         
         variable value store 
                 = Array.ofSize {
