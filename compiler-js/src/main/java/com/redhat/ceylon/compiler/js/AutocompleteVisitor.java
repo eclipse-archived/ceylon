@@ -1,17 +1,10 @@
 package com.redhat.ceylon.compiler.js;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import com.redhat.ceylon.compiler.typechecker.TypeChecker;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
-import com.redhat.ceylon.model.typechecker.model.DeclarationWithProximity;
-import com.redhat.ceylon.model.typechecker.model.Type;
 
 /** A visitor that can return a list of suggestions given a location on the AST.
  * 
@@ -84,55 +77,6 @@ public class AutocompleteVisitor {
             addCompletions(comps, units, packs, sub);
         }
     }*/
-
-    /** Looks for declarations matching the node's text and returns them as strings. */
-    public List<String> getCompletions() {
-        Map<String, DeclarationWithProximity> comps = new HashMap<String, DeclarationWithProximity>();
-        if (node != null) {
-//            HashSet<PhasedUnit> units = new HashSet<PhasedUnit>();
-//            HashSet<com.redhat.ceylon.model.typechecker.model.Package> packs = new HashSet<>();
-            if (node instanceof Tree.QualifiedMemberOrTypeExpression) {
-                final Tree.QualifiedMemberOrTypeExpression exp = (Tree.QualifiedMemberOrTypeExpression)node;
-                Type type = exp.getPrimary().getTypeModel();
-                Map<String, DeclarationWithProximity> c2 = type.getDeclaration().getMatchingMemberDeclarations(
-                        node.getUnit(), exp.getScope(), text, 0);
-                comps.putAll(c2);
-            } 
-            else if (node instanceof Tree.BaseMemberOrTypeExpression) {
-                final Tree.BaseMemberOrTypeExpression exp = (Tree.BaseMemberOrTypeExpression)node;
-                Map<String, DeclarationWithProximity> c2 = exp.getScope().getMatchingDeclarations(
-                        node.getUnit(), text, 0);
-                comps.putAll(c2);
-            }
-            else if (node instanceof Tree.BaseType) {
-                final Tree.BaseType exp = (Tree.BaseType)node;
-                Map<String, DeclarationWithProximity> c2 = exp.getScope().getMatchingDeclarations(
-                        node.getUnit(), text, 0);
-                comps.putAll(c2);
-            }
-            else if (node instanceof Tree.QualifiedType) {
-                final Tree.QualifiedType exp = (Tree.QualifiedType)node;
-                Type type = exp.getOuterType().getTypeModel();
-                Map<String, DeclarationWithProximity> c2 = type.getDeclaration().getMatchingMemberDeclarations(
-                        node.getUnit(), exp.getScope(), text, 0);
-                comps.putAll(c2);
-            }
-            else if (node instanceof Tree.Variable) {
-                final Tree.Variable exp = (Tree.Variable)node;
-                Map<String, DeclarationWithProximity> c2 = exp.getScope().getMatchingDeclarations(
-                        node.getUnit(), text, 0);
-                comps.putAll(c2);
-            }
-            /*else {
-                for (PhasedUnits pus : checker.getPhasedUnitsOfDependencies()) {
-                    for (PhasedUnit pu : pus.getPhasedUnits()) {
-                        addCompletions(comps, units, packs, pu);
-                    }
-                }
-            }*/
-        }
-        return Arrays.asList(comps.keySet().toArray(new String[0]));
-    }
 
     /** Callbacks can implement this to tell the visitor if a unit should be processed or not. */
     public interface AutocompleteUnitValidator {
