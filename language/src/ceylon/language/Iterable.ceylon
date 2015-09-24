@@ -1488,8 +1488,10 @@ shared interface Iterable<out Element=Anything,
                                 hash(e.element, 
                                     newStore.size);
                         newStore.set(index, 
-                            ElementEntry(e.element, 
-                                newStore[index]));
+                            ElementEntry {
+                                next = newStore[index];
+                                element = e.element;
+                            });
                         entry = e.next;
                     }
                 }
@@ -1510,7 +1512,10 @@ shared interface Iterable<out Element=Anything,
                         }
                         else {
                             store.set(index, 
-                                ElementEntry(element, entry));
+                                ElementEntry {
+                                    next = entry;
+                                    element = element;
+                                });
                             count++;
                             if (count>store.size*2) {
                                 store = rebuild(store);
@@ -1539,35 +1544,61 @@ shared interface Iterable<out Element=Anything,
      
      produces the map 
      `{ even->[0, 2, 4, 6, 8, 10], odd->[1, 3, 5, 7, 9] }`."
+    see(`function summarize`)
     shared Map<Group,[Element+]> group<Group>
             (Group grouping(Element element))
             given Group satisfies Object
+            => summarize<Group,ElementEntry<Element>>
+                    (grouping, ElementEntry)
+               .mapItems((_, item) => item.reversed);
+    
+    "Efficiently [[group]] and [[fold]] the elements of this
+     stream in a single step. For any given 
+     [[grouping function|group]] and 
+     [[combining function|accumulating]], the following
+     expression:
+     
+         stream.summarize(grouping,accumulating)
+     
+     is equivalent to:
+     
+         stream.group(grouping)
+               .fold(null)
+                    ((entry)=>accumulating(entry.item))"
+    see(`function group`)
+    shared Map<Group,Result> summarize<Group,Result>
+            (Group grouping(Element element),
+             Result accumulating(Result? partial, Element element))
+            given Group satisfies Object
             => object extends Object() 
-                      satisfies Map<Group,[Element+]> {
+            satisfies Map<Group,Result> {
         
         variable value store 
                 = Array.ofSize {
             size = 16;
-            element = null of GroupEntry<Group,Element>?;
+            element = null of GroupEntry<Group,Result>?;
         };
         
         function hash(Object group, Integer size) 
                 => group.hash.magnitude % size;
         
-        function rebuild(Array<GroupEntry<Group,Element>?> store) {
+        function rebuild(Array<GroupEntry<Group,Result>?> store) {
             value newStore 
                     = Array.ofSize {
                 size = store.size*2;
-                element = null of GroupEntry<Group,Element>?;
+                element = null of GroupEntry<Group,Result>?;
             };
             for (groups in store) {
                 variable value group = groups;
                 while (exists g = group) {
                     value index = 
                             hash(g.group, newStore.size);
-                    newStore.set(index, 
-                        GroupEntry(g.group, g.elements, 
-                            newStore[index]));
+                    newStore.set(index,
+                        GroupEntry { 
+                            next = newStore[index]; 
+                            group = g.group; 
+                            elements = g.elements; 
+                        });
                     group = g.next;
                 }
             }
@@ -1578,41 +1609,36 @@ shared interface Iterable<out Element=Anything,
         for (element in outer) {
             value group = grouping(element);
             value index = hash(group, store.size);
-            GroupEntry<Group,Element> newEntry;
-            if (exists entries = store[index]) {
-                if (exists entry = entries.get(group)) {
-                    entry.elements 
-                            = ElementEntry(element, 
-                                entry.elements);
-                    continue;
-                }
-                else {
-                    newEntry 
-                            = GroupEntry(group, 
-                                ElementEntry(element), 
-                                    entries);
-                }
+            value entries = store[index];
+            if (exists entries, 
+                exists entry = entries.get(group)) {
+                entry.elements 
+                        = accumulating(entry.elements, 
+                            element);
+                //keep iterating
             }
             else {
-                newEntry 
-                        = GroupEntry(group,
-                            ElementEntry(element));
-            }
-            store.set(index, newEntry);
-            count++;
-            if (count>store.size*2) {
-                store = rebuild(store);
+                store.set(index, 
+                    GroupEntry {
+                        next = entries;
+                        group = group;
+                        elements = accumulating(null, element);
+                    });
+                count++;
+                if (count>store.size*2) {
+                    store = rebuild(store);
+                }
             }
         }
         
         size => count;
         
         iterator() 
-                => object satisfies Iterator<Group->[Element+]> {
+                => object satisfies Iterator<Group->Result> {
             variable value index = 0;
-            variable GroupEntry<Group,Element>? entry = null;
-            shared actual <Group->[Element+]>|Finished next() {
-                GroupEntry<Group,Element> result;
+            variable GroupEntry<Group,Result>? entry = null;
+            shared actual <Group->Result>|Finished next() {
+                GroupEntry<Group,Result> result;
                 if (exists e = entry) {
                     entry = e.next;
                     result = e;
@@ -1632,8 +1658,7 @@ shared interface Iterable<out Element=Anything,
                         }
                     }
                 }
-                return result.group 
-                        -> result.elements.reversed;
+                return result.group -> result.elements;
             }
         };        
         
@@ -1668,8 +1693,7 @@ shared interface Iterable<out Element=Anything,
 String commaList({Anything*} elements)
         => ", ".join { for (e in elements) stringify(e) };
 
-class ElementEntry<Element>
-        (element, next = null)
+class ElementEntry<Element>(next, element)
         extends Object()
         satisfies [Element+] {
     
@@ -1751,16 +1775,15 @@ class ElementEntry<Element>
     
 }
 
-class GroupEntry<Group,Element>
-        (group, elements, next = null)
+class GroupEntry<Group,Result>(next, group, elements)
         given Group satisfies Object {
     
     shared Group group;
-    shared variable ElementEntry<Element> elements;
-    shared GroupEntry<Group,Element>? next;
+    shared variable Result elements;
+    shared GroupEntry<Group,Result>? next;
     
-    shared GroupEntry<Group,Element>? get(Object group) {
-        variable GroupEntry<Group,Element>? entry = this;
+    shared GroupEntry<Group,Result>? get(Object group) {
+        variable GroupEntry<Group,Result>? entry = this;
         while (exists e = entry) {
             if (group == e.group) {
                 return e;

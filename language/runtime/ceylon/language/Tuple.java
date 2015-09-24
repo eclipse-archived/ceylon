@@ -1382,6 +1382,13 @@ public final class Tuple<Element, First extends Element,
     }
     
     @Override @Ignore
+    public <Group,Result> Map<? extends Group, ? extends Sequence<? extends Element>>
+    summarize(TypeDescriptor $reifiedGroup, TypeDescriptor $reifiedResult, 
+            Callable<? extends Group> fun, Callable<? extends Result> fold) {
+        return $ceylon$language$Iterable$impl().summarize($reifiedGroup, $reifiedResult, fun, fold);
+    }
+    
+    @Override @Ignore
     public Iterable<? extends Element, ? extends java.lang.Object>
     getDistinct() {
         return $ceylon$language$Iterable$impl().getDistinct();

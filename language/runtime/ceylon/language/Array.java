@@ -2637,6 +2637,13 @@ public final class Array<Element>
     }
 
     @Override @Ignore
+    public <Group,Result> Map<? extends Group, ? extends Sequence<? extends Element>> summarize(TypeDescriptor arg0,
+            TypeDescriptor arg1, Callable<? extends Group> arg2, Callable<? extends Result> arg3) {
+        // TODO Auto-generated method stub
+        return $ceylon$language$Iterable$impl().summarize(arg0, arg1, arg2, arg3);
+    }
+
+    @Override @Ignore
     public java.lang.Object indexes() {
         // TODO Auto-generated method stub
         return $ceylon$language$Iterable$impl().indexes();

@@ -2535,6 +2535,12 @@ public final class String
     }
     
     @Ignore
+    public static <Group,Result> Iterable<? extends Entry<? extends Group, ? extends Sequence<? extends Character>>, ? extends java.lang.Object>
+    summarize(java.lang.String value, TypeDescriptor $reifiedGroup, TypeDescriptor $reifiedResult, Callable<? extends Group> fun, Callable<? extends Result> fold) {
+        return instance(value).summarize($reifiedGroup, $reifiedResult, fun, fold);
+    }
+    
+    @Ignore
     public static Iterable<? extends Character, ? extends java.lang.Object>
     getDistinct(java.lang.String value) {
         return instance(value).getDistinct();
@@ -2620,6 +2626,12 @@ public final class String
     public <Group> Map<? extends Group, ? extends Sequence<? extends Character>> group(TypeDescriptor arg0,
             Callable<? extends Group> arg1) {
         return $ceylon$language$Iterable$impl().group(arg0, arg1);
+    }
+    
+    @Override @Ignore
+    public <Group,Result> Map<? extends Group, ? extends Sequence<? extends Character>> summarize(TypeDescriptor arg0,
+            TypeDescriptor arg1, Callable<? extends Group> arg2, Callable<? extends Result> arg3) {
+        return $ceylon$language$Iterable$impl().summarize(arg0, arg1, arg2, arg3);
     }
 
     @Override @Ignore
