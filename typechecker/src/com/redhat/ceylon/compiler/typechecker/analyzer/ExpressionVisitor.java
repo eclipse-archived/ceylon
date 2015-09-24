@@ -2536,9 +2536,6 @@ public class ExpressionVisitor extends Visitor {
         
     @Override public void visit(Tree.Throw that) {
         super.visit(that);
-        if (returnDeclaration instanceof Constructor) {
-            that.addUnsupportedError("throw in constructor is not yet supported");
-        }
         Tree.Expression e = that.getExpression();
         if (e!=null) {
             Type et = e.getTypeModel();
@@ -2546,9 +2543,6 @@ public class ExpressionVisitor extends Visitor {
                 Type tt = unit.getThrowableType();
                 checkAssignable(et, tt, e, 
                         "thrown expression must be a throwable");
-//                if (et.getDeclaration().isParameterized()) {
-//                    e.addUnsupportedError("parameterized types in throw not yet supported");
-//                }
             }
         }
     }
