@@ -2306,6 +2306,7 @@ public final class Array<Element>
     }
     
     @Override
+    @Transient
     public java.lang.String toString() {
         return $ceylon$language$Collection$impl().toString();
     }

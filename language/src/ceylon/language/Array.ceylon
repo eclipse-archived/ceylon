@@ -222,4 +222,6 @@ shared final serializable native class Array<Element>
             => (super of List<Element>).equals(that);
     shared actual Integer hash 
             => (super of List<Element>).hash;
+    shared actual String string
+            => (super of Collection<Element>).string;
 }
