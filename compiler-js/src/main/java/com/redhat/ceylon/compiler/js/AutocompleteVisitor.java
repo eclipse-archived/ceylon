@@ -2,14 +2,11 @@ package com.redhat.ceylon.compiler.js;
 
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import com.redhat.ceylon.compiler.typechecker.TypeChecker;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
-import com.redhat.ceylon.compiler.typechecker.context.PhasedUnits;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
@@ -70,7 +67,7 @@ public class AutocompleteVisitor {
     }
 
     /** Looks for matching declarations in the specified phased unit, recursively navigating through its dependent units. */
-    protected void addCompletions(Map<String, DeclarationWithProximity> comps, Set<PhasedUnit> units,
+    /*protected void addCompletions(Map<String, DeclarationWithProximity> comps, Set<PhasedUnit> units,
             Set<com.redhat.ceylon.model.typechecker.model.Package> packs, PhasedUnit pu) {
         if (!packs.contains(pu.getPackage())) {
             Map<String, DeclarationWithProximity> c2 = pu.getPackage().getMatchingDeclarations(node.getUnit(), text, 100);
@@ -82,31 +79,57 @@ public class AutocompleteVisitor {
             comps.putAll(c2);
             units.add(pu);
         }
-        /* COMMENTING OUT until I figure out if I really need to do this and how to get the units by name/path
+         COMMENTING OUT until I figure out if I really need to do this and how to get the units by name/path
          * for (String sub : pu.getUnit().getDependentsOf()) {
             addCompletions(comps, units, packs, sub);
-        }*/
-    }
+        }
+    }*/
 
     /** Looks for declarations matching the node's text and returns them as strings. */
     public List<String> getCompletions() {
         Map<String, DeclarationWithProximity> comps = new HashMap<String, DeclarationWithProximity>();
         if (node != null) {
-            HashSet<PhasedUnit> units = new HashSet<PhasedUnit>();
-            HashSet<com.redhat.ceylon.model.typechecker.model.Package> packs = new HashSet<>();
-            if (node instanceof Tree.QualifiedMemberExpression) {
-                final Tree.QualifiedMemberExpression exp = (Tree.QualifiedMemberExpression)node;
+//            HashSet<PhasedUnit> units = new HashSet<PhasedUnit>();
+//            HashSet<com.redhat.ceylon.model.typechecker.model.Package> packs = new HashSet<>();
+            if (node instanceof Tree.QualifiedMemberOrTypeExpression) {
+                final Tree.QualifiedMemberOrTypeExpression exp = (Tree.QualifiedMemberOrTypeExpression)node;
                 Type type = exp.getPrimary().getTypeModel();
                 Map<String, DeclarationWithProximity> c2 = type.getDeclaration().getMatchingMemberDeclarations(
-                        node.getUnit(), null, text, 0);
+                        node.getUnit(), exp.getScope(), text, 0);
                 comps.putAll(c2);
-            } else {
+            } 
+            else if (node instanceof Tree.BaseMemberOrTypeExpression) {
+                final Tree.BaseMemberOrTypeExpression exp = (Tree.BaseMemberOrTypeExpression)node;
+                Map<String, DeclarationWithProximity> c2 = exp.getScope().getMatchingDeclarations(
+                        node.getUnit(), text, 0);
+                comps.putAll(c2);
+            }
+            else if (node instanceof Tree.BaseType) {
+                final Tree.BaseType exp = (Tree.BaseType)node;
+                Map<String, DeclarationWithProximity> c2 = exp.getScope().getMatchingDeclarations(
+                        node.getUnit(), text, 0);
+                comps.putAll(c2);
+            }
+            else if (node instanceof Tree.QualifiedType) {
+                final Tree.QualifiedType exp = (Tree.QualifiedType)node;
+                Type type = exp.getOuterType().getTypeModel();
+                Map<String, DeclarationWithProximity> c2 = type.getDeclaration().getMatchingMemberDeclarations(
+                        node.getUnit(), exp.getScope(), text, 0);
+                comps.putAll(c2);
+            }
+            else if (node instanceof Tree.Variable) {
+                final Tree.Variable exp = (Tree.Variable)node;
+                Map<String, DeclarationWithProximity> c2 = exp.getScope().getMatchingDeclarations(
+                        node.getUnit(), text, 0);
+                comps.putAll(c2);
+            }
+            /*else {
                 for (PhasedUnits pus : checker.getPhasedUnitsOfDependencies()) {
                     for (PhasedUnit pu : pus.getPhasedUnits()) {
                         addCompletions(comps, units, packs, pu);
                     }
                 }
-            }
+            }*/
         }
         return Arrays.asList(comps.keySet().toArray(new String[0]));
     }
