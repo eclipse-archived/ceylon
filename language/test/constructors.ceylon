@@ -323,6 +323,27 @@ class Js603Params extends ParentConstr2<String> {
     shared Integer i() => 42;
 }
 
+class TestReturns {
+  shared variable Integer count=0;
+  shared new(Boolean flag) {
+    if (flag) {
+      count=1;
+      return;
+    }
+    count=2;
+  }
+  shared class Inner {
+    shared variable Integer count=0;
+    shared new vc {
+      if (outer.count==1) {
+        count=3;
+        return;
+      }
+      count=4;
+    }
+  }
+}
+
 @test
 shared void testConstructors() {
   value o=Outer1129();
@@ -438,4 +459,8 @@ shared void testConstructors() {
   check(Js603.foo.i() == 42, "JS#603 1");
   check(Js603Params.foo.i() == 42, "JS#603 2");
   check((Js603Params.foo of Object) is ParentConstr2<String>, "JS#603 3");
+  check(TestReturns(true).count==1, "Constructor return 1");
+  check(TestReturns(false).count==2, "Constructor return 2");
+  check(TestReturns(true).Inner.vc.count==3, "Constructor return 3");
+  check(TestReturns(false).Inner.vc.count==4, "Constructor return 4");
 }
