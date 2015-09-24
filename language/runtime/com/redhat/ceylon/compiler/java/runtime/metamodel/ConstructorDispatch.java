@@ -592,14 +592,13 @@ class ConstructorDispatch<Type, Arguments extends Sequential<? extends Object>>
         return method;
     }
     
-    ceylon.language.meta.model.Constructor<Type, Sequential<? extends Object>> checkConstructor() {
+    void checkConstructor() {
         if(((FreeClass)freeClass).getAbstract())
             throw new InvocationException("Abstract class cannot be instantiated");
         if(((FreeClass)freeClass).getAnonymous())
             throw new InvocationException("Object class cannot be instantiated");
         if(constructor == null)
             throw Metamodel.newModelError("No constructor found for: "+freeClass.getName());
-        return null;
     }
     
     @Override
@@ -780,24 +779,16 @@ class ConstructorDispatch<Type, Arguments extends Sequential<? extends Object>>
 
     @Override
     public Type apply(Sequential<? extends Object> arguments) {
-        ceylon.language.meta.model.Constructor<Type, Sequential<? extends Object>> ctor = checkConstructor();
-       if (ctor != null) {
-           return ctor.apply(arguments);
-       } else {
-           return Metamodel.apply(this, arguments, parameterProducedTypes, firstDefaulted, variadicIndex);
-       }
+        checkConstructor();
+        return Metamodel.apply(this, arguments, parameterProducedTypes, firstDefaulted, variadicIndex);
     }
 
     @Override
     public Type namedApply(
             Iterable<? extends Entry<? extends ceylon.language.String, ? extends Object>, ? extends Object> arguments) {
-        ceylon.language.meta.model.Constructor<Type, Sequential<? extends Object>> ctor = checkConstructor();
-        if (ctor != null) {
-            return ctor.namedApply(arguments);
-        } else {
-            return Metamodel.namedApply(this, this, 
-                    (com.redhat.ceylon.model.typechecker.model.Functional)(freeConstructor != null ? freeConstructor.declaration : freeClass.declaration), 
-                    arguments, parameterProducedTypes);
-        }
+        checkConstructor();
+        return Metamodel.namedApply(this, this, 
+                (com.redhat.ceylon.model.typechecker.model.Functional)(freeConstructor != null ? freeConstructor.declaration : freeClass.declaration), 
+                arguments, parameterProducedTypes);
     }
 }

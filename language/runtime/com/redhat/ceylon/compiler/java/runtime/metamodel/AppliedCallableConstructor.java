@@ -104,15 +104,11 @@ public class AppliedCallableConstructor<Type, Arguments extends Sequential<? ext
         Sequential<?> arguments){
         checkInit();
         
-        ceylon.language.meta.model.Constructor<Type, Sequential<? extends Object>> ctor = dispatch.checkConstructor();
-        if (ctor != null) {
-            return ctor.apply(arguments);
-        } else {
-            return Metamodel.apply(this, arguments, 
-                    dispatch.parameterProducedTypes, 
-                    dispatch.firstDefaulted, 
-                    dispatch.variadicIndex);
-        }
+        dispatch.checkConstructor();
+        return Metamodel.apply(this, arguments, 
+                dispatch.parameterProducedTypes, 
+                dispatch.firstDefaulted, 
+                dispatch.variadicIndex);
     }
 
     @Override
@@ -120,14 +116,10 @@ public class AppliedCallableConstructor<Type, Arguments extends Sequential<? ext
         @TypeInfo("ceylon.language::Iterable<ceylon.language::Entry<ceylon.language::String,ceylon.language::Anything>,ceylon.language::Null>")
         ceylon.language.Iterable<? extends ceylon.language.Entry<? extends ceylon.language.String,? extends java.lang.Object>,? extends java.lang.Object> arguments){
         checkInit();
-        ceylon.language.meta.model.Constructor<Type, Sequential<? extends Object>> ctor = dispatch.checkConstructor();
-        if (ctor != null) {
-            return ctor.namedApply(arguments);
-        } else {
-            return Metamodel.namedApply(this, this, 
-                    (com.redhat.ceylon.model.typechecker.model.Functional)(freeConstructor != null ? freeConstructor.declaration : freeClass.declaration), 
-                    arguments, dispatch.getProducedParameterTypes());
-        }
+        dispatch.checkConstructor();
+        return Metamodel.namedApply(this, this, 
+                (com.redhat.ceylon.model.typechecker.model.Functional)(freeConstructor != null ? freeConstructor.declaration : freeClass.declaration), 
+                arguments, dispatch.getProducedParameterTypes());
     }
     
     @Override

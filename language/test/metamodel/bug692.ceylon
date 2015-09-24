@@ -13,6 +13,6 @@ shared void bug692() {
     
     print(type(constructor));
     // and
-    print((constructor of Anything)
-        is Constructor<Bug692,[String]>);
+    assert((constructor of Anything)
+        is CallableConstructor<Bug692,[String]>);
 }
