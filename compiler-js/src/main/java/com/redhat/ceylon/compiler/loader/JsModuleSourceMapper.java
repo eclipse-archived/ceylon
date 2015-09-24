@@ -109,10 +109,9 @@ public class JsModuleSourceMapper extends ModuleSourceMapper {
                 final String binVersion = model.get("$mod-bin").toString();
                 final String modname = model.get("$mod-name").toString();
                 final boolean isNewest = binVersion.equals(BIN_VERSION);
-                //TODO remove this shit when we break bincompat again
-                final boolean isRecent = binVersion.equals(V1_1_BIN_VERSION);
-                if ((Module.LANGUAGE_MODULE_NAME.equals(modname) && !isNewest)
-                        || !(isNewest || isRecent)) {
+                //1.1.1 is not compatible with 1.1.0 anyway...
+                if (!isNewest) {
+                    Thread.dumpStack();
                     throw new CompilerErrorException(String.format("The Ceylon-JS module %s has binary version %s is incompatible with the compiler version %s",
                         modname, binVersion, BIN_VERSION));
                 }
