@@ -1454,7 +1454,10 @@ shared interface Iterable<out Element=Anything,
      
          String(\"hello world\".distinct)
      
-     is the string `\"helo wrd\"`."
+     is the string `\"helo wrd\"`.
+     
+     This is a lazy operation and the resulting stream 
+     reflects changes to this stream."
     shared Iterable<Element,Absent> distinct
             => object satisfies Iterable<Element,Absent> {
         iterator() 
@@ -1543,7 +1546,10 @@ shared interface Iterable<out Element=Anything,
          (0..10).group((i) => i.even then \"even\" else \"odd\")
      
      produces the map 
-     `{ even->[0, 2, 4, 6, 8, 10], odd->[1, 3, 5, 7, 9] }`."
+     `{ even->[0, 2, 4, 6, 8, 10], odd->[1, 3, 5, 7, 9] }`.
+     
+     This is an eager operation, and the resulting map does
+     not reflect changes to this stream."
     see(`function summarize`)
     shared Map<Group,[Element+]> group<Group>
             (Group grouping(Element element))
