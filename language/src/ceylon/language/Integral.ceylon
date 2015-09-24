@@ -48,6 +48,7 @@ shared interface Integral<Other> of Other
      number. This differs from [[remainder]] in that the
      result is always positive."
     see (`function Numeric.divided`, `function remainder`)
+    throws (`class AssertionError`, "If the modulus is not strictly positive")
     shared default Other modulo(Other modulus){
         if (!modulus.positive) {
             throw AssertionError("modulus must be positive: ``modulus``");
