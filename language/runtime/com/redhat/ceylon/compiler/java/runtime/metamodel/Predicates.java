@@ -255,6 +255,30 @@ class Predicates {
         }
     };
     
+    private static final Predicate<Declaration> DECLARATION_IS_CLASS_WITH_INIT = new Predicate<Declaration>() {  
+        @Override
+        public boolean accept(Declaration declaration) {
+            return declaration instanceof com.redhat.ceylon.model.typechecker.model.Class
+                    && !((com.redhat.ceylon.model.typechecker.model.Class)declaration).hasConstructors();
+        }
+        @Override
+        public String toString() {
+            return "(kind = ClassWithInitializer)";
+        }
+    };
+    
+    private static final Predicate<Declaration> DECLARATION_IS_CLASS_WITH_CTORS = new Predicate<Declaration>() {  
+        @Override
+        public boolean accept(Declaration declaration) {
+            return declaration instanceof com.redhat.ceylon.model.typechecker.model.Class
+                    && ((com.redhat.ceylon.model.typechecker.model.Class)declaration).hasConstructors();
+        }
+        @Override
+        public String toString() {
+            return "(kind = ClassWithConstructors)";
+        }
+    };
+    
     /** Predicate on Declarations that accepts Constructor */
     private static final Predicate<Declaration> DECLARATION_IS_CONSTRUCTOR = new Predicate<Declaration>() {  
         @Override
@@ -346,6 +370,10 @@ class Predicates {
                 return DECLARATION_IS_FUNCTION_OR_VALUE;
             } else if (declarationClass == ceylon.language.meta.declaration.ClassDeclaration.class) {
                 return DECLARATION_IS_CLASS;
+            } else if (declarationClass == ceylon.language.meta.declaration.ClassWithInitializerDeclaration.class) {
+                return DECLARATION_IS_CLASS_WITH_INIT;
+            } else if (declarationClass == ceylon.language.meta.declaration.ClassWithConstructorsDeclaration.class) {
+                return DECLARATION_IS_CLASS_WITH_CTORS;
             } else if (declarationClass == ceylon.language.meta.declaration.InterfaceDeclaration.class) {
                 return DECLARATION_IS_INTERFACE;
             } else if (declarationClass == ceylon.language.meta.declaration.ClassOrInterfaceDeclaration.class) {
