@@ -6,8 +6,12 @@
  
  This is an eager operation, and the resulting map does
  not reflect changes to the given stream."
-shared Map<Key,Item> tabulate<Key,Item>({Key*} keys)
-        (Item collecting(Key key))
+shared Map<Key,Item> tabulate<Key,Item>(
+        "The stream producing the keys of the resulting map."
+        {Key*} keys,
+        "A function that produces an item for the given
+         [[key]]."
+        Item collecting(Key key))
         given Key satisfies Object
         => keys.summarize(identity, 
             (Item? item, key)
