@@ -522,7 +522,7 @@ public final class String
                             count += value.codePointCount(index, result);
                             long c = count;
                             index = result + len;
-                            if (count>=length) {
+                            if (count-from>=length) {
                                 return finished_.get_();
                             }
                             else {
