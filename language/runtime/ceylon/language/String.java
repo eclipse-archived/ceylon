@@ -2207,23 +2207,18 @@ public final class String
     public static Entry<? extends Integer,? extends Character> 
     locateLast(java.lang.String value, 
             Callable<? extends Boolean> f) {
-        Character result = null;
-        int resultIndex = -1;
-        int index = 0;
-        for (int offset = 0; offset < value.length();) {
-            int codePoint = value.codePointAt(offset);
+        for (int offset = value.length(); offset > 0;) {
+            int codePoint = value.codePointBefore(offset);
             Character ch = Character.instance(codePoint);
             if (f.$call$(ch).booleanValue()) {
-                result = ch;
-                resultIndex = index;
+                int index = value.codePointCount(0, offset);
+                return new Entry<Integer,Character>(
+                        Integer.$TypeDescriptor$, Character.$TypeDescriptor$,
+                        Integer.instance(index), ch);
             }
-            offset += java.lang.Character.charCount(codePoint);
-            index++;
+            offset -= java.lang.Character.charCount(codePoint);
         }
-        return result==null ? null : 
-            new Entry<Integer,Character>(
-                Integer.$TypeDescriptor$, Character.$TypeDescriptor$,
-                Integer.instance(resultIndex), result);
+        return null;
     }
     
     @Ignore
