@@ -1568,7 +1568,7 @@ public final class String
             }
             @Override
             public long getSize() {
-                return value.offsetByCodePoints(start, 
+                return value.codePointCount(start, 
                                 value.length());
             }
             @Override
