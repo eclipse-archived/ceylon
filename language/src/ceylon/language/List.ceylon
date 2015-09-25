@@ -733,7 +733,7 @@ shared interface List<out Element=Anything>
                 else this;
         
         getFromFirst(Integer index)
-                => if (index>=0 && index<=to) 
+                => if (0<=index<=to)
                 then outer.getFromFirst(index)
                 else null;
         

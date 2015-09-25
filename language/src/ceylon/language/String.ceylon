@@ -533,6 +533,9 @@ shared native final class String(characters)
                 = smallest(size - sourcePosition,
                     destination.size - destinationPosition));
     
+    shared actual native List<Character> sublistFrom(Integer from);
+    shared actual native List<Character> sublistTo(Integer to);
+    
     shared actual native {Integer*} indexesWhere(Boolean selecting(Character element));
     shared actual native Integer? firstIndexWhere(Boolean selecting(Character element));
     shared actual native Integer? lastIndexWhere(Boolean selecting(Character element));
