@@ -537,6 +537,9 @@ shared native final class String(characters)
     shared actual native Integer? firstIndexWhere(Boolean selecting(Character element));
     shared actual native Integer? lastIndexWhere(Boolean selecting(Character element));
     
+    shared actual native {Integer*} occurrences(Character element, Integer from, Integer length);
+    shared actual native {Integer*} inclusions(List<Character> sublist, Integer from);
+    
     shared actual native Boolean occurs(Character element, Integer from, Integer length);
     shared actual native Boolean occursAt(Integer index, Character element);
     shared actual native Boolean includes(List<Character> sublist, Integer from);

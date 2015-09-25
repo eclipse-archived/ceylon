@@ -476,14 +476,73 @@ public final class String
     @Ignore
     public static Iterable<? extends Integer, ?> 
     occurrences(java.lang.String value, int element) {
-        return instance(value).occurrences(new Character(element));
+        return occurrences(value, element, 0);
     }
 
     @Ignore
     public static Iterable<? extends Integer, ?> 
     occurrences(java.lang.String value, int element,
-            long from) {
-        return instance(value).occurrences(new Character(element), from);
+            final long from) {
+        return occurrences(value, element, from, 
+                java.lang.Integer.MAX_VALUE);
+    }
+
+    @Ignore
+    public static Iterable<? extends Integer, ?> 
+    occurrences(final java.lang.String value, final int element,
+            final long from, final long length) {
+        return new BaseIterable<Integer, java.lang.Object>
+                (Integer.$TypeDescriptor$, Null.$TypeDescriptor$) {
+            @Override
+            public Iterator<? extends Integer> iterator() {
+                return new BaseIterator<Integer>
+                (Integer.$TypeDescriptor$) {
+                    long count = from;
+                    int len = java.lang.Character.charCount(element);
+                    int index;
+                    {
+                        try {
+                            index = value.offsetByCodePoints(0, 
+                                    Util.toInt(from));
+                        }
+                        catch (IndexOutOfBoundsException e) {
+                            index = value.length();
+                        }
+                    }
+                    @Override
+                    public java.lang.Object next() {
+                        if (index>=value.length()) {
+                            return finished_.get_();
+                        }
+                        while (true) {
+                            int result = value.indexOf(element, index);
+                            if (result<0) {
+                                return finished_.get_();
+                            }
+                            count += value.codePointCount(index, result);
+                            long c = count;
+                            index = result + len;
+                            if (count>=length) {
+                                return finished_.get_();
+                            }
+                            else {
+                                count++;
+                                return Integer.instance(c);
+                            }
+                        }
+                    }
+                };
+            }
+        };
+    }
+
+    @Override
+    @TypeInfo("ceylon.language::Iterable<ceylon.language::Integer>")
+    public Iterable<? extends Integer, ? extends java.lang.Object> 
+    occurrences(@Name("element") Character element, 
+            @Defaulted @Name("from") long from, 
+            @Defaulted @Name("length") long length) {
+        return occurrences(value, element.codePoint, from, length);
     }
 
     @Ignore
@@ -629,17 +688,73 @@ public final class String
     public static Iterable<? extends Integer, ?> 
     inclusions(java.lang.String value, 
             List<? extends Character> substring) {
-        return instance(value).inclusions(substring);
+        return inclusions(value, substring, 0);
     }
     
     @Ignore
     public static Iterable<? extends Integer, ?> 
-    inclusions(java.lang.String value, 
-            List<? extends Character> substring,
-            long from) {
-        return instance(value).inclusions(substring, from);
+    inclusions(final java.lang.String value, 
+            final List<? extends Character> substring,
+            final long from) {
+        if (!(substring instanceof String)) {
+            return instance(value).inclusions(substring);
+        }
+        final String string = (String) substring;
+        return new BaseIterable<Integer, java.lang.Object>
+        (Integer.$TypeDescriptor$, Null.$TypeDescriptor$) {
+            @Override
+            public Iterator<? extends Integer> iterator() {
+                return new BaseIterator<Integer>
+                (Integer.$TypeDescriptor$) {
+                    long count = from;
+                    int len = java.lang.Character.charCount(
+                            string.value.codePointAt(0));
+                    int index;
+                    {
+                        try {
+                            index = value.offsetByCodePoints(0, 
+                                    Util.toInt(from));
+                        }
+                        catch (IndexOutOfBoundsException e) {
+                            index = value.length();
+                        }
+                    }
+                    @Override
+                    public java.lang.Object next() {
+                        if (index>=value.length()) {
+                            return finished_.get_();
+                        }
+                        while (true) {
+                            int result = value.indexOf(string.value, index);
+                            if (result<0) {
+                                return finished_.get_();
+                            }
+                            count += value.codePointCount(index, result);
+                            long c = count;
+                            index = result + len;
+                            count++; 
+                            return Integer.instance(c);
+                        }
+                    }
+                };
+            }
+        };
     }
     
+    @Override
+    @TypeInfo("ceylon.language::Iterable<ceylon.language::Integer>")
+    public Iterable<? extends Integer, ? extends java.lang.Object> 
+    inclusions(
+            @Name("sublist") List<? extends Character> sublist, 
+            @Defaulted @Name("from") long from) {
+        if (sublist instanceof String) {
+            return inclusions(value, sublist, from);
+        }
+        else {
+            return $ceylon$language$SearchableList$impl().inclusions(sublist, from);
+        }
+    }
+
     @Ignore
     public static long 
     countInclusions(java.lang.String value, 
@@ -718,7 +833,8 @@ public final class String
             int start = value.offsetByCodePoints(0, (int)from);
             int index = value.indexOf(string.value, start);
             if (index >= 0) {
-                return Integer.instance(value.codePointCount(0, index));
+                return Integer.instance(from + 
+                        value.codePointCount(start, index));
             } else {
                 return null;
             }
@@ -768,9 +884,10 @@ public final class String
             }
             int index = value.lastIndexOf(string.value, start);
             if (index >= 0) {
-                int result = value.codePointCount(0, index);
-                return Integer.instance(result);
-            } else {
+                return Integer.instance(
+                        value.codePointCount(0, index));
+            }
+            else {
                 return null;
             }
         }
@@ -825,12 +942,13 @@ public final class String
         }
         int index = value.indexOf(element, start);
         if (index >= 0) {
-            int result = value.codePointCount(0, index);
-            if (result>=from+length) {
+            int result = value.codePointCount(start, index);
+            if (result>=length) {
                 return null;
             }
-            return Integer.instance(result);
-        } else {
+            return Integer.instance(from+result);
+        }
+        else {
             return null;
         }
     }
@@ -876,15 +994,16 @@ public final class String
         catch (java.lang.IndexOutOfBoundsException e) {
             return null;
         }
-        int index = 
-                value.lastIndexOf(element, start);
+        int index = value.lastIndexOf(element, start);
         if (index >= 0) {
-            int dist = value.codePointCount(index, value.length());
-            if (dist>from+length) {
+            int dist = 
+                    value.codePointCount(start, 
+                            value.length());
+            if (dist>length) {
                 return null;
             }
-            int result = value.codePointCount(0, index);
-            return Integer.instance(result);
+            return Integer.instance( 
+                    value.codePointCount(0, index));
         }
         else {
             return null;
@@ -2950,162 +3069,151 @@ public final class String
     
     @Override @Ignore
     public long countInclusions(List<? extends Character> arg0) {
-        return $ceylon$language$SearchableList$impl().countInclusions(arg0);
+        return countInclusions(value, arg0);
     }
 
     @Override @Ignore
     public long countInclusions$from(List<? extends Character> arg0) {
-        return $ceylon$language$SearchableList$impl().countInclusions$from(arg0);
+        return 0;
     }
 
     @Override @Ignore
-    public long countOccurrences(Character arg0) {
-        return $ceylon$language$SearchableList$impl().countOccurrences(arg0);
+    public long countOccurrences(Character element) {
+        return countOccurrences(value, element.codePoint);
     }
 
     @Override @Ignore
-    public long countOccurrences(Character arg0, long arg1) {
-        return $ceylon$language$SearchableList$impl().countOccurrences(arg0, arg1);
+    public long countOccurrences(Character element, long from) {
+        return countOccurrences(value, element.codePoint, from);
     }
 
     @Override @Ignore
     public long countOccurrences$from(Character arg0) {
-        return $ceylon$language$SearchableList$impl().countOccurrences$from(arg0);
+        return 0;
     }
 
     @Override @Ignore
     public long countOccurrences$length(Character arg0, long arg1) {
-        return $ceylon$language$SearchableList$impl().countOccurrences$length(arg0, arg1);
+        return java.lang.Integer.MAX_VALUE;
     }
 
     @Override @Ignore
     public Integer firstInclusion(List<? extends Character> arg0) {
-        return $ceylon$language$SearchableList$impl().firstInclusion(arg0);
+        return firstInclusion(value, arg0);
     }
 
     @Override @Ignore
     public long firstInclusion$from(List<? extends Character> arg0) {
-        return $ceylon$language$SearchableList$impl().firstInclusion$from(arg0);
+        return 0;
     }
 
     @Override @Ignore
-    public Integer firstOccurrence(Character arg0) {
-        return $ceylon$language$SearchableList$impl().firstOccurrence(arg0);
+    public Integer firstOccurrence(Character element) {
+        return firstOccurrence(value, element.codePoint);
     }
 
     @Override @Ignore
-    public Integer firstOccurrence(Character arg0, long arg1) {
-        return $ceylon$language$SearchableList$impl().firstOccurrence(arg0, arg1);
+    public Integer firstOccurrence(Character element, long from) {
+        return firstOccurrence(value, element.codePoint, from);
     }
 
     @Override @Ignore
     public long firstOccurrence$from(Character arg0) {
-        return $ceylon$language$SearchableList$impl().firstOccurrence$from(arg0);
+        return 0;
     }
 
     @Override @Ignore
     public long firstOccurrence$length(Character arg0, long arg1) {
-        return $ceylon$language$SearchableList$impl().firstOccurrence$length(arg0,arg1);
+        return java.lang.Integer.MAX_VALUE;
     }
 
     @Override @Ignore
     public boolean includes(List<? extends Character> arg0) {
-        return $ceylon$language$SearchableList$impl().includes(arg0);
+        return includes(value, arg0);
     }
 
     @Override @Ignore
     public long includes$from(List<? extends Character> arg0) {
-        return $ceylon$language$SearchableList$impl().includes$from(arg0);
+        return 0;
     }
 
     @Override @Ignore
     public Iterable<? extends Integer, ? extends java.lang.Object> inclusions(List<? extends Character> arg0) {
-        return $ceylon$language$SearchableList$impl().inclusions(arg0);
-    }
-
-    @Override @Ignore
-    public Iterable<? extends Integer, ? extends java.lang.Object> inclusions(List<? extends Character> arg0,
-            long arg1) {
-        return $ceylon$language$SearchableList$impl().inclusions(arg0, arg1);
+        return inclusions(value, arg0);
     }
 
     @Override @Ignore
     public long inclusions$from(List<? extends Character> arg0) {
-        return $ceylon$language$SearchableList$impl().inclusions$from(arg0);
+        return 0;
     }
 
     @Override @Ignore
     public Integer lastInclusion(List<? extends Character> arg0) {
-        return $ceylon$language$SearchableList$impl().lastInclusion(arg0);
+        return lastInclusion(value, arg0);
     }
 
     @Override @Ignore
     public long lastInclusion$from(List<? extends Character> arg0) {
-        return $ceylon$language$SearchableList$impl().lastInclusion$from(arg0);
+        return 0;
     }
 
     @Override @Ignore
-    public Integer lastOccurrence(Character arg0) {
-        return $ceylon$language$SearchableList$impl().lastOccurrence(arg0);
+    public Integer lastOccurrence(Character element) {
+        return lastOccurrence(value, element.codePoint);
     }
 
     @Override @Ignore
-    public Integer lastOccurrence(Character arg0, long arg1) {
-        return $ceylon$language$SearchableList$impl().lastOccurrence(arg0, arg1);
+    public Integer lastOccurrence(Character element, long from) {
+        return lastOccurrence(value, element.codePoint, from);
     }
 
     @Override @Ignore
     public long lastOccurrence$from(Character arg0) {
-        return $ceylon$language$SearchableList$impl().lastOccurrence$from(arg0);
+        return 0;
     }
 
     @Override @Ignore
     public long lastOccurrence$length(Character arg0, long arg1) {
-        return $ceylon$language$SearchableList$impl().lastOccurrence$length(arg0, arg1);
+        return java.lang.Integer.MAX_VALUE;
     }
 
     @Override @Ignore
-    public Iterable<? extends Integer, ? extends java.lang.Object> occurrences(Character arg0) {
-        return $ceylon$language$SearchableList$impl().occurrences(arg0);
+    public Iterable<? extends Integer, ? extends java.lang.Object> occurrences(Character element) {
+        return occurrences(value, element.codePoint);
     }
 
     @Override @Ignore
-    public Iterable<? extends Integer, ? extends java.lang.Object> occurrences(Character arg0, long arg1) {
-        return $ceylon$language$SearchableList$impl().occurrences(arg0,arg1);
-    }
-
-    @Override @Ignore
-    public Iterable<? extends Integer, ? extends java.lang.Object> occurrences(Character arg0, long arg1, long arg2) {
-        return $ceylon$language$SearchableList$impl().occurrences(arg0,arg1,arg2);
+    public Iterable<? extends Integer, ? extends java.lang.Object> occurrences(Character element, long from) {
+        return occurrences(value, element.codePoint, from);
     }
 
     @Override @Ignore
     public long occurrences$from(Character arg0) {
-        return $ceylon$language$SearchableList$impl().occurrences$from(arg0);
+        return 0;
     }
 
     @Override @Ignore
     public long occurrences$length(Character arg0, long arg1) {
-        return $ceylon$language$SearchableList$impl().occurrences$length(arg0,arg1);
+        return java.lang.Integer.MAX_VALUE;
     }
 
     @Override @Ignore
-    public boolean occurs(Character arg0) {
-        return $ceylon$language$SearchableList$impl().occurs(arg0);
+    public boolean occurs(Character element) {
+        return occurs(value, element.codePoint);
     }
 
     @Override @Ignore
-    public boolean occurs(Character arg0, long arg1) {
-        return $ceylon$language$SearchableList$impl().occurs(arg0,arg1);
+    public boolean occurs(Character element, long arg1) {
+        return occurs(value, element.codePoint, arg1);
     }
 
     @Override @Ignore
     public long occurs$from(Character arg0) {
-        return $ceylon$language$SearchableList$impl().occurs$from(arg0);
+        return 0;
     }
 
     @Override @Ignore
     public long occurs$length(Character arg0, long arg1) {
-        return $ceylon$language$SearchableList$impl().occurs$length(arg0,arg1);
+        return java.lang.Integer.MAX_VALUE;
     }
 }
