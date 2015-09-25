@@ -615,8 +615,8 @@ shared interface List<out Element=Anything>
         then span(from, from + length - 1)
         else [];
 
-    "A nonempty sequence containing the results of applying 
-     the given mapping to the elements of this sequence."
+    "A sequence containing the results of applying the given 
+     mapping to the elements of this list."
     shared default actual 
     Result[] collect<Result>(
         "The transformation applied to the elements."
