@@ -13,15 +13,17 @@ shared void bug725() {
     assert(`Integer`.getDeclaredAttribute<>("hash") exists);
     assert(`Float`.getDeclaredAttribute<>("hash") exists);
 
-    assert(!`class Integer`.getDeclaredMemberDeclaration<ValueDeclaration>("integer") exists);
+    assert(exists intParam = `class Integer`.getDeclaredMemberDeclaration<ValueDeclaration>("integer"),
+           !intParam.shared);
     assert(`class Float`.getDeclaredMemberDeclaration<ValueDeclaration>("integer") exists);
-    assert(!`Integer`.getDeclaredAttribute<>("integer") exists);
+    assert(`Integer`.getDeclaredAttribute<>("integer") exists);
     assert(`Float`.getDeclaredAttribute<>("integer") exists);
 
     assert(`class Integer`.getDeclaredMemberDeclaration<ValueDeclaration>("float") exists);
-    assert(!`class Float`.getDeclaredMemberDeclaration<ValueDeclaration>("float") exists);
+    assert(exists floatParam = `class Float`.getDeclaredMemberDeclaration<ValueDeclaration>("float"),
+           !floatParam.shared);
     assert(`Integer`.getDeclaredAttribute<>("float") exists);
-    assert(!`Float`.getDeclaredAttribute<>("float") exists);
+    assert(`Float`.getDeclaredAttribute<>("float") exists);
 
     assert(!`class Integer`.getDeclaredMemberDeclaration<ValueDeclaration>("finite") exists);
     assert(`class Float`.getDeclaredMemberDeclaration<ValueDeclaration>("finite") exists);

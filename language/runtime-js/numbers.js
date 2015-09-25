@@ -289,10 +289,14 @@ $specialiseForNumber$(Float, 'notLargerThan', function(){return {mod:$CCMM$,$t:{
 atr$(JSNum$proto, '$_float', function(){ return Float(this.valueOf()); },
   undefined,function(){return{pa:65,mod:$CCMM$,$t:{t:Float},$cont:Integer,d:['$','Integer','$at','float']};});
 $specialiseForNumber$(Integer, '$_float', function(){return {mod:$CCMM$,$t:{t:Float},pa:67,$cont:Integer,d:['$','Integer','$at','float']};})
+// its (private) constructor parameter
+$specialiseForNumber$(Float, '$_float', function(){return {mod:$CCMM$,$t:{t:Float},pa:0,$cont:Float,d:['$','Float','$at','float']};})
 
 atr$(JSNum$proto, 'integer', function(){ return toInt(this); },
   undefined,function(){return{pa:65,mod:$CCMM$,$t:{t:Integer},$cont:$_Number,d:['$','Float','$at','integer']};});
 $specialiseForNumber$(Float, 'integer', function(){return {mod:$CCMM$,$t:{t:Integer},pa:67,$cont:Float,d:['$','Float','$at','integer']};})
+// its (private) constructor parameter
+$specialiseForNumber$(Float, 'integer', function(){return {mod:$CCMM$,$t:{t:Integer},pa:0,$cont:Integer,d:['$','Integer','$at','integer']};})
 
 atr$(JSNum$proto, '$_byte', function(){ return Byte(this); },
   undefined,function(){return{pa:65,mod:$CCMM$,$t:{t:Byte},$cont:Integer,d:['$','Integer','$at','byte']};});
