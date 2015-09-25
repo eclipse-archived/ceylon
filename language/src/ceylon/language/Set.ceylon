@@ -101,7 +101,17 @@ shared interface Set<out Element=Object>
             given Other satisfies Object;
     
     "Returns a new `Set` containing only the elements that 
-     are present in both this set and the given `Set`."
+     are present in both this set and the given `Set` and 
+     that are instances of the intersection `Element&Other` 
+     of the element types of the two sets.
+     
+     Note that, according to this definition, and even 
+     though `1==1.0` [[evaluates to true|Integer.equals]], 
+     the expression 
+     
+         set { 1 } & set { 1.0 }
+     
+     produces the empty set `{}`."
     shared formal 
     Set<Element&Other> intersection<Other>(Set<Other> set)
             given Other satisfies Object;
