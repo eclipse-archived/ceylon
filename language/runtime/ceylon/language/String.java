@@ -2001,6 +2001,7 @@ public final class String
     }
     
     @Override
+    @TypeInfo("ceylon.language::Iterable<ceylon.language::Integer>")
     public Iterable<? extends Integer, ? extends java.lang.Object> 
     indexesWhere(
             @Name("selecting")
