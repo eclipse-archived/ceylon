@@ -295,8 +295,18 @@ class Bug979Iterable implements .com.redhat.ceylon.compiler.java.runtime.model.R
     }
     
     @.java.lang.Override
+    public .ceylon.language.Set<? extends .ceylon.language.String> elements() {
+        return $ceylon$language$Iterable$this$.elements();
+    }
+    
+    @.java.lang.Override
     public final <Group>.ceylon.language.Map<? extends Group, ? extends .ceylon.language.Sequence<? extends .ceylon.language.String>> group(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Group, final .ceylon.language.Callable<? extends Group> grouping) {
         return $ceylon$language$Iterable$this$.group($reified$Group, grouping);
+    }
+    
+    @.java.lang.Override
+    public final <Group, Result>.ceylon.language.Map<? extends Group, ? extends Result> summarize(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Group, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Result, final .ceylon.language.Callable<? extends Group> grouping, final .ceylon.language.Callable<? extends Result> accumulating) {
+        return $ceylon$language$Iterable$this$.summarize($reified$Group, $reified$Result, grouping, accumulating);
     }
     protected final .ceylon.language.Category$impl<.java.lang.Object> $ceylon$language$Category$this$;
     
@@ -366,6 +376,11 @@ class Bug979Set extends .java.lang.Object implements .com.redhat.ceylon.compiler
     @.java.lang.Override
     public boolean subset(final .ceylon.language.Set<? extends .java.lang.Object> set) {
         return $ceylon$language$Set$this$.subset(set);
+    }
+    
+    @.java.lang.Override
+    public final .ceylon.language.Set<? extends .ceylon.language.String> elements() {
+        return $ceylon$language$Set$this$.elements();
     }
     
     @.java.lang.Override
@@ -663,6 +678,11 @@ class Bug979Set extends .java.lang.Object implements .com.redhat.ceylon.compiler
     @.java.lang.Override
     public final <Group>.ceylon.language.Map<? extends Group, ? extends .ceylon.language.Sequence<? extends .ceylon.language.String>> group(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Group, final .ceylon.language.Callable<? extends Group> grouping) {
         return $ceylon$language$Iterable$this$.group($reified$Group, grouping);
+    }
+    
+    @.java.lang.Override
+    public final <Group, Result>.ceylon.language.Map<? extends Group, ? extends Result> summarize(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Group, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Result, final .ceylon.language.Callable<? extends Group> grouping, final .ceylon.language.Callable<? extends Result> accumulating) {
+        return $ceylon$language$Iterable$this$.summarize($reified$Group, $reified$Result, grouping, accumulating);
     }
     protected final .ceylon.language.Category$impl<.java.lang.Object> $ceylon$language$Category$this$;
     
