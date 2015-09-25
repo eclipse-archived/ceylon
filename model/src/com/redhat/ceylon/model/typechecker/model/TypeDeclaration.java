@@ -896,15 +896,16 @@ public abstract class TypeDeclaration extends Declaration
         for (Declaration member: getMembers()) {
             if (isResolvable(member) && 
                     !isOverloadedVersion(member) &&
-                ( member.isShared() || 
-                        ModelUtil.contains(member.getScope(), scope) ) ) {
-                if(isNameMatching(startingWith, member)){
+                (member.isShared() || 
+                        ModelUtil.contains(member.getScope(), 
+                                scope))) {
+                if (isNameMatching(startingWith, member)) {
                     result.put(member.getName(unit), 
                             new DeclarationWithProximity(
                                     member, proximity));
                 }
-                for(String alias : member.getAliases()){
-                    if(isNameMatching(startingWith, alias)){
+                for (String alias : member.getAliases()) {
+                    if (isNameMatching(startingWith, alias)) {
                         result.put(alias, 
                                 new DeclarationWithProximity(
                                         alias, member, proximity));
