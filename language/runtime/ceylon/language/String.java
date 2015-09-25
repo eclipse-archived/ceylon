@@ -1966,23 +1966,32 @@ public final class String
 
     @Ignore
     public static Iterable<? extends Integer, ?> 
-    indexesWhere(final java.lang.String value, final Callable<? extends Boolean> fun) {
+    indexesWhere(final java.lang.String value, 
+            final Callable<? extends Boolean> fun) {
         return new BaseIterable<Integer, java.lang.Object>
                 (Integer.$TypeDescriptor$, Null.$TypeDescriptor$) {
             @Override
             public Iterator<? extends Integer> iterator() {
-                return new BaseIterator<Integer>(Integer.$TypeDescriptor$) {
+                return new BaseIterator<Integer>
+                        (Integer.$TypeDescriptor$) {
                     int index = 0;
+                    int count = 0;
                     @Override
                     public java.lang.Object next() {
+                        if (index>=value.length()) {
+                            return finished_.get_();
+                        }
                         while (true) {
+                            int cp = value.codePointAt(index);
+                            index+=java.lang.Character.charCount(cp);
                             if (index>=value.length()) {
                                 return finished_.get_();
                             }
-                            int cp = value.codePointAt(index);
-                            index+=java.lang.Character.charCount(cp);
-                            if (fun.$call$(Character.instance(cp)).booleanValue()) {
-                                return Integer.instance(index);
+                            else {
+                                if (fun.$call$(Character.instance(cp)).booleanValue()) {
+                                    return Integer.instance(count++);
+                                }
+                                count++;
                             }
                         }
                     }
@@ -1991,24 +2000,82 @@ public final class String
         };
     }
     
-    @Override @Ignore
+    @Override
     public Iterable<? extends Integer, ? extends java.lang.Object> 
-    indexesWhere(Callable<? extends Boolean> fun) {
+    indexesWhere(
+            @Name("selecting")
+            @FunctionalParameter("(element)")
+            @TypeInfo("ceylon.language::Callable<ceylon.language::Boolean,ceylon.language::Tuple<ceylon.language::Character,ceylon.language::Character,ceylon.language::Empty>>")
+            Callable<? extends Boolean> fun) {
         return indexesWhere(value, fun);
     }
 
     @Ignore
     public static Integer 
-    firstIndexWhere(java.lang.String value, Callable<? extends Boolean> f) {
-        return instance(value).firstIndexWhere(f);
+    firstIndexWhere(java.lang.String value, Callable<? extends Boolean> fun) {
+        if (value.isEmpty()) {
+            return null;
+        }
+        int index = 0;
+        int count = 0;
+        while (true) {
+            int cp = value.codePointAt(index);
+            index+=java.lang.Character.charCount(cp);
+            if (index>=value.length()) {
+                return null;
+            }
+            else {
+                if (fun.$call$(Character.instance(cp)).booleanValue()) {
+                    return Integer.instance(count);
+                }
+                count++;
+            }
+        }
     }
     
+    @Override 
+    @TypeInfo("ceylon.language::Null|ceylon.language::Integer")
+    public Integer firstIndexWhere(
+            @Name("selecting")
+            @FunctionalParameter("(element)")
+            @TypeInfo("ceylon.language::Callable<ceylon.language::Boolean,ceylon.language::Tuple<ceylon.language::Character,ceylon.language::Character,ceylon.language::Empty>>")
+            Callable<? extends Boolean> fun) {
+        return firstIndexWhere(value, fun);
+    }
+
     @Ignore
     public static Integer 
-    lastIndexWhere(java.lang.String value, Callable<? extends Boolean> f) {
-        return instance(value).lastIndexWhere(f);
+    lastIndexWhere(java.lang.String value, Callable<? extends Boolean> fun) {
+        int index = value.length();
+        if (index==0) {
+            return null;
+        }
+        long count = getSize(value);
+        while (true) {
+            int cp = value.codePointBefore(index);
+            index-=java.lang.Character.charCount(cp);
+            if (index<=0) {
+                return null;
+            }
+            else {
+                count--;
+                if (fun.$call$(Character.instance(cp)).booleanValue()) {
+                    return Integer.instance(count);
+                }
+            }
+        }
     }
     
+    @TypeInfo("ceylon.language::Null|ceylon.language::Integer")
+    @Override
+    public Integer lastIndexWhere(
+            @Name("selecting")
+            @FunctionalParameter("(element)")
+            @TypeInfo("ceylon.language::Callable<ceylon.language::Boolean,ceylon.language::Tuple<ceylon.language::Character,ceylon.language::Character,ceylon.language::Empty>>")
+            Callable<? extends Boolean> fun) {
+        return lastIndexWhere(value, fun);
+    }
+
     @Ignore
     public static Iterable<? extends Character, ?> 
     filter(java.lang.String value, Callable<? extends Boolean> f) {
@@ -2820,19 +2887,9 @@ public final class String
     }
 
     @Override @Ignore
-    public Integer firstIndexWhere(Callable<? extends Boolean> arg0) {
-        return $ceylon$language$List$impl().firstIndexWhere(arg0);
-    }
-
-    @Override @Ignore
     public Character get(Integer index) {
         //NOTE THIS IMPORTANT PERFORMANCE OPTIMIZATION
         return getFromFirst(value, index.value);
-    }
-
-    @Override @Ignore
-    public Integer lastIndexWhere(Callable<? extends Boolean> arg0) {
-        return $ceylon$language$List$impl().lastIndexWhere(arg0);
     }
 
     @Override @Ignore

@@ -534,6 +534,8 @@ shared native final class String(characters)
                     destination.size - destinationPosition));
     
     shared actual native {Integer*} indexesWhere(Boolean selecting(Character element));
+    shared actual Integer? firstIndexWhere(Boolean selecting(Character element));
+    shared actual Integer? lastIndexWhere(Boolean selecting(Character element));
     
     shared actual native Boolean occurs(Character element, Integer from, Integer length);
     shared actual native Boolean occursAt(Integer index, Character element);
