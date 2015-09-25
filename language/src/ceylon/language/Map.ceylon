@@ -80,8 +80,7 @@ shared interface Map<out Key=Object, out Item=Anything>
     
     "A [[Collection]] containing the keys of this map."
     shared actual default Collection<Key> keys
-            => object
-            satisfies Collection<Key> {
+            => object satisfies Collection<Key> {
         contains(Object key) => outer.defines(key);
         iterator() => outer.map(Entry.key).iterator();
         clone() => [*this];
@@ -93,8 +92,7 @@ shared interface Map<out Key=Object, out Item=Anything>
      in the map, and so it can occur more than once in the 
      resulting collection."
     shared default Collection<Item> items
-            => object
-            satisfies Collection<Item> {
+            => object satisfies Collection<Item> {
         shared actual Boolean contains(Object item) {
             for (k->v in outer) {
                 if (exists v, v==item) {
@@ -109,6 +107,35 @@ shared interface Map<out Key=Object, out Item=Anything>
         clone() => [*this];
         size => outer.size;
     };
+    
+    "Invert this map, producing a new immutable map where 
+     the keys of the new map are the non-null items of this
+     map, and each item of the new map is a nonempty 
+     sequence of keys of this map.
+     
+     For example, the expression:
+     
+         { \"fee\", \"fi\", \"fo\", \"fum\", \"foo\" }
+            .tabulate(String.size)
+            .inverse()
+     
+     produces the map 
+     `{ 2->[\"fo\", \"fi\"], 3->[ \"fum\", \"fee\", \"foo\"] }`.
+     
+     The order of keys in the key sequences is not defined
+     and should not be relied upon.
+     
+     This is an eager operation, and the resulting map does
+     not reflect changes to this map."
+    shared default Map<Item&Object, [Key+]> inverse() 
+            => coalescedMap
+                .summarize<Item&Object,ElementEntry<Key>>
+                    (Entry.item, (keys, Key->Item entry) 
+                        => ElementEntry(keys, entry.key));
+                //not very useful, since the entries of a
+                //map don't usually have a very meaningful
+                //order (except for TreeMaps!)
+                //.mapItems((_, item) => item.reversed);
     
     "Two maps are considered equal iff they have the same 
      _entry sets_. The entry set of a `Map` is the set of 
