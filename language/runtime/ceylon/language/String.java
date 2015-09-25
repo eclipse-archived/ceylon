@@ -3383,7 +3383,7 @@ public final class String
 
     @Ignore
     public static <Item> Map<? extends Character, ? extends Item>
-    tabulate(java.lang.String value, TypeDescriptor arg0, Callable<? extends Item> arg1) {
+    tabulate(TypeDescriptor arg0, java.lang.String value, Callable<? extends Item> arg1) {
         return instance(value).tabulate(arg0, arg1);
     }
 
