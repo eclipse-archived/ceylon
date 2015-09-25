@@ -1463,6 +1463,10 @@ public final class String
                 }
             }
             @Override
+            public boolean getEmpty() {
+                return to<0 || value.isEmpty();
+            }
+            @Override
             public Integer getLastIndex() {
                 long size = getSize();
                 return size>0 ? Integer.instance(size-1) : null;
@@ -1560,6 +1564,10 @@ public final class String
                 catch (IndexOutOfBoundsException e) {
                     return null;
                 }
+            }
+            @Override
+            public boolean getEmpty() {
+                return start >= value.length();
             }
             @Override
             public Integer getLastIndex() {
