@@ -31,6 +31,8 @@ function Integer(value) {
 initTypeProto(Integer, 'ceylon.language::Integer', $_Object,$_Number, JSNumber,
         $init$Integral(), $init$Exponentiable(), $init$Binary());
 Integer.$crtmm$=function(){return{an:function(){return[shared(),$_native(),$_final()];},mod:$CCMM$,d:['$','Integer']};}
+atr$(Integer.$$.prototype,'integer',function(){ return this; },undefined,
+     function(){return {mod:$CCMM$,$t:{t:Integer},pa:0,$cont:Integer,d:['$','Integer','$at','integer']};});
 
 function Float(value) {
     if (value!==null && value!==undefined && value.getT$name && value.getT$name() === 'ceylon.language::Float') {
@@ -41,7 +43,9 @@ function Float(value) {
     return that;
 }
 initTypeProto(Float, 'ceylon.language::Float', $_Object,$_Number,$init$Exponentiable(), JSNumber);
-Float.$crtmm$=function(){return{an:function(){return[shared(),$_native(),$_final()];},mod:$CCMM$,d:['$','Float']};}
+Float.$crtmm$=function(){return{pa:97,mod:$CCMM$,d:['$','Float']};}
+atr$(Float.$$.prototype,'integer',function(){ return Integer(Math.floor(this)); },undefined,
+     function(){return {mod:$CCMM$,$t:{t:Integer},pa:65,$cont:Float,d:['$','Float','$at','integer']};});
 
 var JSNum$proto = Number.prototype;
 JSNum$proto.getT$all = function() {
@@ -294,9 +298,6 @@ $specialiseForNumber$(Float, '$_float', function(){return {mod:$CCMM$,$t:{t:Floa
 
 atr$(JSNum$proto, 'integer', function(){ return toInt(this); },
   undefined,function(){return{pa:65,mod:$CCMM$,$t:{t:Integer},$cont:$_Number,d:['$','Float','$at','integer']};});
-$specialiseForNumber$(Float, 'integer', function(){return {mod:$CCMM$,$t:{t:Integer},pa:67,$cont:Float,d:['$','Float','$at','integer']};})
-// its (private) constructor parameter
-$specialiseForNumber$(Float, 'integer', function(){return {mod:$CCMM$,$t:{t:Integer},pa:0,$cont:Integer,d:['$','Integer','$at','integer']};})
 
 atr$(JSNum$proto, '$_byte', function(){ return Byte(this); },
   undefined,function(){return{pa:65,mod:$CCMM$,$t:{t:Byte},$cont:Integer,d:['$','Integer','$at','byte']};});
