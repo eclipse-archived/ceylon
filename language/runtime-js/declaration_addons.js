@@ -32,7 +32,8 @@ ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.getMemberDeclaration=f
     raiz = this.tipo();
   }
   if (extendsType($$$mptypes.Kind$getMemberDeclaration, {t:ValueDeclaration$meta$declaration})) {
-    var propname='$prop$get'+name$20[0].toUpperCase()+name$20.substring(1);
+    var escapedName = escapePropertyName$(name$20);
+    var propname=getValuePropertyName$(escapedName);
     var _d = raiz[propname];
     if (_d===undefined && noInherit) {
       //Browse all non-shared attributes looking for original name
@@ -56,13 +57,10 @@ ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.getMemberDeclaration=f
     var _d = findMethodByNameFromPrototype$(raiz, name$20);
     if(_d){
       var mm=getrtmm$$(_d);
-      if (noInherit) {
-        if (mm.$cont!==this.tipo)return null;
-      }else{
-        //If we found a non-shared attribute and want inherited members, we ignore it
-        if ((mm.pa & 1) == 0)return null;
-      }
-      _m=OpenFunction$jsint(this.containingPackage, _d);
+      if(rejectInheritedOrPrivate$(mm, this.tipo, noInherit))
+        _d = undefined;
+      if(_d)
+        _m=OpenFunction$jsint(this.containingPackage, _d);
     }
   }
   if (!_m && extendsType($$$mptypes.Kind$getMemberDeclaration, {t:ClassOrInterfaceDeclaration$meta$declaration})) {
