@@ -1448,9 +1448,9 @@ shared interface Iterable<out Element=Anything,
     
     "A stream that produces every element produced by this
      stream exactly once. Duplicate elements of this stream
-     are eliminated. Two elements are considered distinct if
-     they are both [[null|Null]], of if they are both 
-     non-null and [[equal|Object.equals]].
+     are eliminated. Two elements are considered distinct
+     unless they are both [[null|Null]], or unless they are 
+     both non-null and [[equal|Object.equals]].
      
      For example:
      
