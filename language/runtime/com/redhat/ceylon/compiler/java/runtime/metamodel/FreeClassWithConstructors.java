@@ -19,11 +19,11 @@ public class FreeClassWithConstructors
         super(declaration);
     }
 
-    @Override
+    //@Override
     @Ignore
     public ceylon.language.meta.declaration.ClassWithConstructorsDeclaration$impl 
     $ceylon$language$meta$declaration$ClassWithConstructorsDeclaration$impl() {
-        return new ceylon.language.meta.declaration.ClassWithConstructorsDeclaration$impl(this);
+        return null;//new ceylon.language.meta.declaration.ClassWithConstructorsDeclaration$impl(this);
     }
     
     @Ignore
