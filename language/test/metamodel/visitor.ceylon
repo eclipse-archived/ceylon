@@ -104,18 +104,20 @@ void visitClass(ClassDeclaration klass){
         output(",".join(klass.typeParameterDeclarations.map(function (TypeParameter tp) => tp.name)));
         output(">");
     }
-    output("(");
-    variable Boolean onceParameter = true;
-    for(param in klass.parameterDeclarations){
-        if(onceParameter){
-            onceParameter = false;
-        }else{
-            output(", ");
+    if (is ClassWithInitializerDeclaration klass) {
+        output("(");
+        variable Boolean onceParameter = true;
+        for(param in klass.parameterDeclarations){
+            if(onceParameter){
+                onceParameter = false;
+            }else{
+                output(", ");
+            }
+            visitOpenType(param.openType);
+            output(" ``param.name``");
         }
-        visitOpenType(param.openType);
-        output(" ``param.name``");
+        output(")");
     }
-    output(")");
     if(exists superType = klass.extendedType){
         output("\n  extends ");
         visitOpenType(superType);

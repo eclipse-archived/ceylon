@@ -30,35 +30,32 @@ import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.Nothing;
 import com.redhat.ceylon.model.typechecker.model.Class;
-import com.redhat.ceylon.model.typechecker.model.Constructor;
-import com.redhat.ceylon.model.typechecker.model.Generic;
 
 @Ceylon(major = 8)
 @com.redhat.ceylon.compiler.java.metadata.Class
-public class FreeCallableConstructor
+public class FreeInitializerConstructor
         extends FreeFunctionOrValue
         implements CallableConstructorDeclaration, 
             ceylon.language.meta.declaration.FunctionalDeclaration, 
             AnnotationBearing {
     
     @Ignore
-    public static final TypeDescriptor $TypeDescriptor$ = TypeDescriptor.klass(FreeCallableConstructor.class);
+    public static final TypeDescriptor $TypeDescriptor$ = TypeDescriptor.klass(FreeInitializerConstructor.class);
     
-    final Constructor constructor;
+    //final Constructor constructor;
     private Sequential<FunctionOrValueDeclaration> parameterList;
     private Sequential<? extends ceylon.language.meta.declaration.TypeParameter> typeParameters;
     
-    public FreeCallableConstructor(com.redhat.ceylon.model.typechecker.model.Functional function, Constructor constructor) {
-        super((com.redhat.ceylon.model.typechecker.model.Declaration)function);
-        List<com.redhat.ceylon.model.typechecker.model.TypeParameter> typeParameters = ((Generic) constructor.getContainer()).getTypeParameters();
+    public FreeInitializerConstructor(Class clazz) {
+        super(clazz);
+        List<com.redhat.ceylon.model.typechecker.model.TypeParameter> typeParameters = clazz.getTypeParameters();
         ceylon.language.meta.declaration.TypeParameter[] typeParametersArray = new ceylon.language.meta.declaration.TypeParameter[typeParameters.size()];
         int i=0;
         for(com.redhat.ceylon.model.typechecker.model.TypeParameter tp : typeParameters){
             typeParametersArray[i++] = new com.redhat.ceylon.compiler.java.runtime.metamodel.FreeTypeParameter(tp);
         }
         this.typeParameters = Util.sequentialWrapper(ceylon.language.meta.declaration.TypeParameter.$TypeDescriptor$, typeParametersArray);
-        this.constructor = constructor;
-        this.parameterList = FunctionalUtil.getParameters(constructor);
+        this.parameterList = FunctionalUtil.getParameters(clazz);
     }
     
     @Override
@@ -68,7 +65,12 @@ public class FreeCallableConstructor
     
     @Override
     public boolean getAbstract() {
-        return constructor.isAbstract();
+        return false;
+    }
+    
+    @Override
+    public boolean getShared() {
+        return true;
     }
 
     @Override
@@ -91,18 +93,17 @@ public class FreeCallableConstructor
 
     @Override
     public String getName() {
-        return constructor.getName() == null ? "" : constructor.getName();
+        return "";
     }
 
     @Override
     public String getQualifiedName() {
-        String name = getName();
-        return ((Class)constructor.getContainer()).getQualifiedNameString() + (name.isEmpty() ? "" : "." + getName());
+        return ((Class)declaration).getQualifiedNameString();
     }
 
     @Override
     public OpenType getOpenType() {
-        return Metamodel.getMetamodel(constructor.getType());
+        return Metamodel.getMetamodel(((Class)declaration).getType());
     }
 
     @Override
@@ -122,19 +123,19 @@ public class FreeCallableConstructor
 
     @Override
     public ClassDeclaration getContainer() {
-        return ((ClassDeclaration)Metamodel.getOrCreateMetamodel(((Class)constructor.getContainer())));
+        return (ClassDeclaration)Metamodel.getOrCreateMetamodel((Class)declaration);
     }
 
     @Override
     @Ignore
     public java.lang.annotation.Annotation[] $getJavaAnnotations$() {
-        return Metamodel.getJavaConstructor(constructor).getAnnotations();
+        return Metamodel.getJavaConstructor((Class)declaration, null).getAnnotations();
     }
     
     @Override
     @Ignore
     public boolean $isAnnotated$(java.lang.Class<? extends java.lang.annotation.Annotation> annotationType) {
-        final AnnotatedElement element = Metamodel.getJavaConstructor(constructor);
+        final AnnotatedElement element = Metamodel.getJavaConstructor((Class)declaration, null);
         return element != null ? element.isAnnotationPresent(annotationType) : false;
     }
     
@@ -158,9 +159,9 @@ public class FreeCallableConstructor
     public boolean equals(Object other) {
         if (this == other) {
             return true;
-        } else if (other instanceof FreeCallableConstructor) {
-            return getContainer().equals(((FreeCallableConstructor)other).getContainer())
-                    && getName().equals(((FreeCallableConstructor)other).getName());
+        } else if (other instanceof FreeInitializerConstructor) {
+            return getContainer().equals(((FreeInitializerConstructor)other).getContainer())
+                    && getName().equals(((FreeInitializerConstructor)other).getName());
         } else {
             return false;
         }

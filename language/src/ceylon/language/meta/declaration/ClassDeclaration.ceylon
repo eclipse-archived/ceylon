@@ -52,15 +52,24 @@ import ceylon.language.meta.model {
 shared sealed interface ClassDeclaration 
         of ClassWithInitializerDeclaration | ClassWithConstructorsDeclaration
         satisfies ClassOrInterfaceDeclaration {
+    
+    "A constructor declaration representing the clas initializer or
+     the default initializer, or null if the class lacks 
+     both a parameter list and a default constructor."
+    shared formal CallableConstructorDeclaration? defaultConstructor;
+    
     "True if the current declaration is an annotation class or function."
     shared formal Boolean annotation;
     
-    // TODO remove this, not all classes have parameters!
-    "The list of parameter declarations for this functional declaration."
-    shared formal FunctionOrValueDeclaration[] parameterDeclarations;
+    "The list of parameter declarations for this class. 
+     Returns `null` of the class lacks both a parameter list and a 
+     default constructor."
+    shared formal FunctionOrValueDeclaration[]? parameterDeclarations;
     
-    // TODO remove this, not all classes have parameters!
-    "Gets a parameter declaration by name. Returns `null` if no such parameter exists."
+    "Gets a parameter declaration by name. 
+     Returns `null` if this class lacks both a parameter list and a 
+     default constructor, 
+     or if no such parameter exists in the parameter list."
     shared formal FunctionOrValueDeclaration? getParameterDeclaration(String name);
     
     "True if the class has an [[abstract|ceylon.language::abstract]] annotation."
@@ -144,6 +153,12 @@ shared sealed interface ClassDeclaration
 see(`interface ClassWithConstructorsDeclaration`)
 shared sealed interface ClassWithInitializerDeclaration 
         satisfies ClassDeclaration {
+    
+    shared actual formal CallableConstructorDeclaration defaultConstructor;
+    
+    "The list of parameter declarations for this class."
+    shared actual formal FunctionOrValueDeclaration[] parameterDeclarations;
+    
     shared actual default [] constructorDeclarations() => [];
     
     shared actual default Null getConstructorDeclaration(String name) => null;

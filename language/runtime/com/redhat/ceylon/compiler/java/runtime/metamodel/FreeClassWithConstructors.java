@@ -1,5 +1,7 @@
 package com.redhat.ceylon.compiler.java.runtime.metamodel;
 
+import ceylon.language.meta.declaration.CallableConstructorDeclaration;
+
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
@@ -28,6 +30,11 @@ public class FreeClassWithConstructors
     @Override
     public TypeDescriptor $getType$() {
         return $TypeDescriptor$;
+    }
+    
+    @Override
+    public CallableConstructorDeclaration getDefaultConstructor() {
+        return (CallableConstructorDeclaration)getConstructorDeclaration("");
     }
     
 }

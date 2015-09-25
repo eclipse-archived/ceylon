@@ -686,19 +686,23 @@ public class Metamodel {
     }
     
     public static java.lang.reflect.Constructor<?> getJavaConstructor(com.redhat.ceylon.model.typechecker.model.Constructor declaration) {
-        Constructor<?>[] ctors = getJavaClass((com.redhat.ceylon.model.typechecker.model.Class)declaration.getContainer()).getDeclaredConstructors();
+        return getJavaConstructor((com.redhat.ceylon.model.typechecker.model.Class)declaration.getContainer(), declaration.getName());
+    }
+    
+    public static java.lang.reflect.Constructor<?> getJavaConstructor(com.redhat.ceylon.model.typechecker.model.Class clazz, String ctorName) {
+        Constructor<?>[] ctors = getJavaClass(clazz).getDeclaredConstructors();
         for (java.lang.reflect.Constructor<?> ctor : ctors) {
             if (ctor.isAnnotationPresent(Ignore.class)) {
                 continue;
             }
             Name name = ctor.getAnnotation(Name.class);
             String n1 = name == null ? "" : name.value();
-            String n2 = declaration.getName() == null ? "" : declaration.getName();
+            String n2 = ctorName == null ? "" : ctorName;
             if (n1.equals(n2)) {
                 return ctor;
             }
         }
-        throw Metamodel.newModelError("Unsupported declaration type: " + declaration);
+        throw Metamodel.newModelError("Unsupported declaration type: " + clazz);
     }
     
     public static java.lang.reflect.Method getJavaInstantiator(com.redhat.ceylon.model.typechecker.model.Constructor declaration, String methodName) {

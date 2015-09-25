@@ -14,6 +14,7 @@ import ceylon.language.meta.declaration {
     FunctionDeclaration,
     FunctionOrValueDeclaration,
     ClassDeclaration,
+    ClassWithInitializerDeclaration,
     ClassOrInterfaceDeclaration,
     InterfaceDeclaration,
     Package
@@ -41,20 +42,21 @@ FunctionDeclaration aToplevelFunctionDecl {
     assert(is FunctionDeclaration result = aPackage.getFunction("aToplevelFunction"));
     return result;
 }
-ClassDeclaration aClassDecl {
-    return type(AClass("")).declaration;
+ClassWithInitializerDeclaration aClassDecl {
+    return `class AClass`;
 }
-ClassDeclaration aAbstractClassDecl {
+ClassWithInitializerDeclaration aAbstractClassDecl {
     assert(exists sup=aClassDecl.extendedType);
-    return sup.declaration;
+    assert(is ClassWithInitializerDeclaration d=sup.declaration);
+    return d;
 }
 InterfaceDeclaration aInterfaceDecl {
     assert(exists sup=aClassDecl.extendedType);
     assert(exists iface0=sup.satisfiedTypes[0]);
     return iface0.declaration;
 }
-ClassDeclaration memberClassDecl(ClassOrInterfaceDeclaration outerClass, String memberName) {
-    for (ClassDeclaration cDecl in outerClass.memberDeclarations<ClassDeclaration>()) {
+ClassWithInitializerDeclaration memberClassDecl(ClassOrInterfaceDeclaration outerClass, String memberName) {
+    for (ClassWithInitializerDeclaration cDecl in outerClass.memberDeclarations<ClassWithInitializerDeclaration>()) {
         if (cDecl.name == memberName) {
             return cDecl;
         }
@@ -373,7 +375,7 @@ shared void checkAAbstractClass() {
     
     // InnerClass
     assert(exists icm=aAbstractClassDecl.apply<AAbstractClass>().getClassOrInterface<AAbstractClass, Class<AAbstractClass.InnerClass, [String]>>("InnerClass"));
-    value ic=icm(AClass("")).declaration;
+    assert(is ClassWithInitializerDeclaration ic=icm(AClass("")).declaration);
     // shared
     check(annotations(sharedAnnotation, ic) exists, "abstract class 12");
     // shared
