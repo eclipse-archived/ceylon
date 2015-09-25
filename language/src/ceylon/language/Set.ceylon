@@ -3,16 +3,24 @@
  considered distinct only if they are unequal, according to
  their own definition of [[value equality|Object.equals]].
  
- A `Set` is a [[Collection]] of its elements.
+ A `Set` is a [[Collection]] of its elements. Sets may not
+ have [[null|Null]] elements.
  
+ A new `Set` may be obtained by calling the function [[set]].
+     
+     value words = set { \"hello\", \"world\" };
+     value greetings = set { \"hello\", \"goodbye\", \"hola\", \"adios\" };
+     
  Sets may be the subject of the binary union, intersection, 
  and complement operators `|`, `&`, and `~`.
  
-     value kids = girls|boys;
+     value greetingsInWords = words & greetings;
+     value allWords = words | greetings;
  
  An implementation of `Set` may compare elements for 
  equality using [[Object.equals]] or [[Comparable.compare]]."
 tagged("Collections")
+see (`function package.set`)
 shared interface Set<out Element=Object>
         satisfies Collection<Element>
         given Element satisfies Object {
@@ -55,7 +63,7 @@ shared interface Set<out Element=Object>
         }
     }
     
-    elements() => clone();
+    //elements() => clone();
     
     "Two `Set`s are considered equal if they have the same 
      size and if every element of the first set is also an 
@@ -112,6 +120,76 @@ shared interface Set<out Element=Object>
             given Other satisfies Object;
     
 }
+
+"Create a new immutable [[Set]] containing every element 
+ produced by the given [[stream]], resolving items with
+ duplicate keys according to the given [[function|choosing]].
+ 
+ For example:
+ 
+     set { 0, 1, 1, 2, 3, 3, 3 }
+ 
+ produces the set `{ 0, 1, 2, 3 }`.
+ 
+ This is an eager operation and the resulting set does
+ not reflect changes to the given [[stream]]."
+see(`value Iterable.distinct`)
+shared Set<Element> set<Element>(
+        "The stream of elements."
+        {Element*} stream,
+        "A function that chooses between duplicate elements. 
+         By default, the element that occurs _earlier_ in 
+         the stream is chosen."
+        Element choosing(Element earlier, Element later) 
+                => earlier)
+        given Element satisfies Object
+        => if (is Set<Element> stream) 
+        then stream
+        else object extends Object() 
+                    satisfies Set<Element&Object> {
+    
+    value elements =
+            stream.summarize(identity,
+                (Element? current, element)
+                        => if (exists current)
+                        then choosing(current, element)
+                        else element);
+    
+    contains(Object element) => elements.defines(element);
+    
+    iterator() => elements.keys.iterator();
+    
+    size => elements.size;
+    
+    empty => elements.empty;
+    
+    clone() => this;    
+    
+    shared actual Set<Element&Object> 
+            complement<Other>(Set<Other> set)
+            given Other satisfies Object 
+            => package.set(filter((e) => !e in set));
+    
+    shared actual Set<Element&Object|Other> 
+            exclusiveUnion<Other>(Set<Other> set)
+            given Other satisfies Object 
+            => package.set(filter((e) => !e in set)
+                .chain(set.filter((e) => !e in this)));
+    
+    shared actual Set<Element&Other&Object> 
+            intersection<Other>(Set<Other> set)
+            given Other satisfies Object
+            => package.set(filter((e) => e in set)
+                .narrow<Other>());
+    
+    shared actual Set<Element&Object|Other> 
+            union<Other>(Set<Other> set)
+            given Other satisfies Object 
+            => package.set(chain(set));
+    
+};
+
+
 
 "An immutable [[Set]] with no elements."
 tagged("Collections")

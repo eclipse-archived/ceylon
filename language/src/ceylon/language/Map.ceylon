@@ -9,6 +9,10 @@
    A `Map` is a [[Collection]] of its `Entry`s, and a 
    [[Correspondence]] from keys to items.
    
+   A new `Map` may be obtained by calling the function [[map]].
+   
+       value settings = map { "lang"->"en_AU", "loc"->"ES" };
+   
    The presence of an entry in a map may be tested using the 
    `in` operator:
    
@@ -25,7 +29,7 @@
    
    An implementation of `Map` may compare keys for equality 
    using [[Object.equals]] or [[Comparable.compare]]."""
-see (`class Entry`, 
+see (`class Entry`, `function package.map`,
      `function forKey`, `function forItem`, 
      `function byItem`, `function byKey`)
 tagged("Collections")
@@ -280,6 +284,33 @@ shared interface Map<out Key=Object, out Item=Anything>
     };
     
 }
+
+"Create a new immutable [[Map]] containing every [[Entry]] 
+ produced by the given [[stream]], resolving items with
+ duplicate keys according to the given [[function|choosing]].
+ 
+ For example:
+ 
+     map { 1->\"hello\", 2->\"goodbye\" }
+ 
+ produces the map `{ 1->\"hello\", 2->\"goodbye\" }`.
+ 
+ This is an eager operation and the resulting map does
+ not reflect changes to the given [[stream]]."
+shared Map<Key,Item> map<Key,Item>(
+            "The stream of entries."
+            {<Key->Item>*} stream,
+            "A function that chooses between items with 
+             duplicate keys. By default, the item that
+             occurs _earlier_ in the stream is chosen."
+            Item choosing(Item earlier, Item later) 
+                    => earlier)
+        given Key satisfies Object
+        => stream.summarize(Entry.key, 
+                (Item? item, entry) 
+                        => if (exists item) 
+                        then choosing(item, entry.item)
+                        else entry.item);
 
 "An immutable [[Map]] with no entries."
 tagged("Collections")

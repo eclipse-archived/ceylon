@@ -1458,7 +1458,7 @@ shared interface Iterable<out Element=Anything,
      
      This is a lazy operation and the resulting stream 
      reflects changes to this stream."
-    see(`function elements`)
+    see(`function set`)
     shared Iterable<Element,Absent> distinct
             => object satisfies Iterable<Element,Absent> {
         iterator() 
@@ -1532,7 +1532,7 @@ shared interface Iterable<out Element=Anything,
         };
     };
     
-    "Create a new immutable [[Set]] containing every element 
+    /*"Create a new immutable [[Set]] containing every element 
      produced by this stream that is not null.
      
      For example:
@@ -1585,7 +1585,7 @@ shared interface Iterable<out Element=Anything,
                 => chain(set)
                 .elements();
         
-    };
+    };*/
     
     "Classifies the elements of this stream into a new
      immutable [[Map]] where each key is a value produced by 
@@ -1607,8 +1607,13 @@ shared interface Iterable<out Element=Anything,
      This is an eager operation, and the resulting map does
      not reflect changes to this stream."
     see(`function summarize`)
-    shared Map<Group,[Element+]> group<Group>
-            (Group grouping(Element element))
+    shared Map<Group,[Element+]> group<Group>(
+            "The grouping function that assigns a key to the
+             given [[element]]. Multiple elements may be 
+             assigned to the same key, indicating that they
+             belong to the same [[Group]] in the resulting
+             map."
+            Group grouping(Element element))
             given Group satisfies Object
             => summarize<Group,ElementEntry<Element>>
                     (grouping, ElementEntry)
@@ -1637,11 +1642,21 @@ shared interface Iterable<out Element=Anything,
                 => item.fold([0,1])
                     ((pair, i) 
                         => let ([sum, product] = pair) 
-                            [sum+i, product*i]))"
+                            [sum+i, product*i]))
+     
+     This is an eager operation, and the resulting map does
+     not reflect changes to this stream."
     see(`function group`, `function fold`)
-    shared Map<Group,Result> summarize<Group,Result>
-            (Group grouping(Element element),
-             Result accumulating(Result? partial, Element element))
+    shared Map<Group,Result> summarize<Group,Result>(
+            "The grouping function that assigns a key to the
+             given [[element]]. Multiple elements may be 
+             assigned to the same key, indicating that they
+             should be aggregated by calling [[accumulating]]."
+            Group grouping(Element element),
+            "The accumulating function that accepts an
+             intermediate result for a key, and the next 
+             element with that key."
+            Result accumulating(Result? partial, Element element))
             given Group satisfies Object
             => object extends Object() 
                       satisfies Map<Group,Result> {

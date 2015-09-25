@@ -2611,11 +2611,11 @@ public final class Array<Element>
         return $ceylon$language$Iterable$impl().getDistinct();
     }
 
-    @Override @Ignore
+    /*@Override @Ignore
     public Set<? extends Element> elements() {
         // TODO Auto-generated method stub
         return $ceylon$language$Iterable$impl().elements();
-    }
+    }*/
 
     @Override @Ignore
     public Iterable<? extends Element, ? extends java.lang.Object> getExceptLast() {

@@ -1394,10 +1394,10 @@ public final class Tuple<Element, First extends Element,
         return $ceylon$language$Iterable$impl().getDistinct();
     }
     
-    @Override @Ignore
+    /*@Override @Ignore
     public Set<? extends Element> elements() {
         return $ceylon$language$Iterable$impl().elements();
-    }
+    }*/
     
     @Override @Ignore
     public java.lang.String toString() {

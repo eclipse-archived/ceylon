@@ -2929,11 +2929,6 @@ public final class String
         return instance(value).getDistinct();
     }
 
-    @Ignore
-    public static Set<? extends Character> elements(java.lang.String value) {
-        return instance(value).elements();
-    }
-
     //WARNING: pure boilerplate from here on!
     
     @Override @Ignore
@@ -2995,10 +2990,15 @@ public final class String
         return $ceylon$language$Iterable$impl().getDistinct();
     }
 
+    /*@Ignore
+    public static Set<? extends Character> elements(java.lang.String value) {
+        return instance(value).elements();
+    }
+
     @Override @Ignore
     public Set<? extends Character> elements() {
         return $ceylon$language$Iterable$impl().elements();
-    }
+    }*/
 
     @Override @Ignore
     public Iterable<? extends Character, ? extends java.lang.Object> getExceptLast() {
