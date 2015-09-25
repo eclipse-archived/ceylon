@@ -1448,7 +1448,9 @@ shared interface Iterable<out Element=Anything,
     
     "A stream that produces every element produced by this
      stream exactly once. Duplicate elements of this stream
-     are eliminated.
+     are eliminated. Two elements are considered distinct if
+     they are both [[null|Null]], of if they are both 
+     non-null and [[equal|Object.equals]].
      
      For example:
      
@@ -1459,7 +1461,7 @@ shared interface Iterable<out Element=Anything,
      This is a lazy operation and the resulting stream 
      reflects changes to this stream."
     see(`function set`)
-    shared Iterable<Element,Absent> distinct
+    shared default Iterable<Element,Absent> distinct
             => object satisfies Iterable<Element,Absent> {
         iterator() 
                 => let (elements=outer)

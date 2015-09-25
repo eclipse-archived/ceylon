@@ -163,7 +163,13 @@ shared Set<Element> set<Element>(
     
     empty => elements.empty;
     
-    clone() => this;    
+    clone() => this;
+    
+    distinct => this;
+    
+    shared actual {Element*} 
+    defaultNullElements<Default>(Default defaultValue)
+            given Default satisfies Object => this;
     
     shared actual Set<Element&Object> 
             complement<Other>(Set<Other> set)

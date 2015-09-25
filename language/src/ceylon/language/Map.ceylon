@@ -67,6 +67,12 @@ shared interface Map<out Key=Object, out Item=Anything>
         }
     }
     
+    distinct => this;
+    
+    shared actual {<Key->Item>*} 
+    defaultNullElements<Default>(Default defaultValue)
+            given Default satisfies Object => this;
+    
     "A shallow copy of this map, that is, a map with the
      same entries as this map, which do not change if the
      entries in this map change."
