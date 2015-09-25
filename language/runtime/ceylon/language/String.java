@@ -1065,6 +1065,11 @@ public final class String
         public TypeDescriptor $getType$() {
             return $TypeDescriptor$;
         }
+        
+        @Override
+        public java.lang.String toString() {
+            return '"' + value + '"' + ".iterator()";
+        }
     }
     
     @Override
