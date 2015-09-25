@@ -1613,12 +1613,12 @@ shared interface Iterable<out Element=Anything,
      
      This is an eager operation, and the resulting map does
      not reflect changes to the given stream."
-    shared Map<Element&Object,Item> tabulate<Item>(
+    shared Map<Element&Object,Result> tabulate<Result>(
             "A function that produces an item for the given
              [[key]], an element of this stream."
-            Item collecting(Element key))
+            Result collecting(Element key))
             => coalesced.summarize(identity, 
-                    (Item? item, key)
+                    (Result? item, key)
                             => if (exists item) 
                             then item else collecting(key));
     
