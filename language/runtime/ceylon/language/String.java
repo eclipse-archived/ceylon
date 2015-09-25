@@ -22,6 +22,7 @@ import com.redhat.ceylon.compiler.java.metadata.ValueType;
 import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 
+import ceylon.language.impl.BaseIterable;
 import ceylon.language.impl.BaseIterator;
 
 @Ceylon(major = 8)
@@ -1965,10 +1966,37 @@ public final class String
 
     @Ignore
     public static Iterable<? extends Integer, ?> 
-    indexesWhere(java.lang.String value, Callable<? extends Boolean> f) {
-        return instance(value).indexesWhere(f);
+    indexesWhere(final java.lang.String value, final Callable<? extends Boolean> fun) {
+        return new BaseIterable<Integer, java.lang.Object>
+                (Integer.$TypeDescriptor$, Null.$TypeDescriptor$) {
+            @Override
+            public Iterator<? extends Integer> iterator() {
+                return new BaseIterator<Integer>(Integer.$TypeDescriptor$) {
+                    int index = 0;
+                    @Override
+                    public java.lang.Object next() {
+                        while (true) {
+                            if (index>=value.length()) {
+                                return finished_.get_();
+                            }
+                            int cp = value.codePointAt(index);
+                            index+=java.lang.Character.charCount(cp);
+                            if (fun.$call$(Character.instance(cp)).booleanValue()) {
+                                return Integer.instance(index);
+                            }
+                        }
+                    }
+                };
+            }
+        };
     }
     
+    @Override @Ignore
+    public Iterable<? extends Integer, ? extends java.lang.Object> 
+    indexesWhere(Callable<? extends Boolean> fun) {
+        return indexesWhere(value, fun);
+    }
+
     @Ignore
     public static Integer 
     firstIndexWhere(java.lang.String value, Callable<? extends Boolean> f) {
@@ -2535,8 +2563,9 @@ public final class String
     }
     
     @Ignore
-    public static <Group,Result> Iterable<? extends Entry<? extends Group, ? extends Sequence<? extends Character>>, ? extends java.lang.Object>
-    summarize(java.lang.String value, TypeDescriptor $reifiedGroup, TypeDescriptor $reifiedResult, Callable<? extends Group> fun, Callable<? extends Result> fold) {
+    public static <Group,Result> Iterable<? extends Entry<? extends Group, ? extends Result>, ? extends java.lang.Object>
+    summarize(java.lang.String value, TypeDescriptor $reifiedGroup, TypeDescriptor $reifiedResult, 
+            Callable<? extends Group> fun, Callable<? extends Result> fold) {
         return instance(value).summarize($reifiedGroup, $reifiedResult, fun, fold);
     }
     
@@ -2639,7 +2668,7 @@ public final class String
     }
     
     @Override @Ignore
-    public <Group,Result> Map<? extends Group, ? extends Sequence<? extends Character>> summarize(TypeDescriptor arg0,
+    public <Group,Result> Map<? extends Group, ? extends Result> summarize(TypeDescriptor arg0,
             TypeDescriptor arg1, Callable<? extends Group> arg2, Callable<? extends Result> arg3) {
         return $ceylon$language$Iterable$impl().summarize(arg0, arg1, arg2, arg3);
     }
@@ -2799,11 +2828,6 @@ public final class String
     public Character get(Integer index) {
         //NOTE THIS IMPORTANT PERFORMANCE OPTIMIZATION
         return getFromFirst(value, index.value);
-    }
-
-    @Override @Ignore
-    public Iterable<? extends Integer, ? extends java.lang.Object> indexesWhere(Callable<? extends Boolean> arg0) {
-        return $ceylon$language$List$impl().indexesWhere(arg0);
     }
 
     @Override @Ignore

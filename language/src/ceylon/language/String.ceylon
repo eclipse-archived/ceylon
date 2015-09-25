@@ -533,6 +533,8 @@ shared native final class String(characters)
                 = smallest(size - sourcePosition,
                     destination.size - destinationPosition));
     
+    shared actual native {Integer*} indexesWhere(Boolean selecting(Character element));
+    
     shared actual native Boolean occurs(Character element, Integer from, Integer length);
     shared actual native Boolean occursAt(Integer index, Character element);
     shared actual native Boolean includes(List<Character> sublist, Integer from);

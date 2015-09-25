@@ -1382,7 +1382,7 @@ public final class Tuple<Element, First extends Element,
     }
     
     @Override @Ignore
-    public <Group,Result> Map<? extends Group, ? extends Sequence<? extends Element>>
+    public <Group,Result> Map<? extends Group, ? extends Result>
     summarize(TypeDescriptor $reifiedGroup, TypeDescriptor $reifiedResult, 
             Callable<? extends Group> fun, Callable<? extends Result> fold) {
         return $ceylon$language$Iterable$impl().summarize($reifiedGroup, $reifiedResult, fun, fold);
