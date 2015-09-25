@@ -1,5 +1,4 @@
 import ceylon.language.meta.declaration {
-    ValueDeclaration,
     GettableDeclaration,
     NestableDeclaration
 }

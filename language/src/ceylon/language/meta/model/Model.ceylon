@@ -1,6 +1,5 @@
 import ceylon.language.meta.declaration {
-    NestableDeclaration,
-    ConstructorDeclaration
+    NestableDeclaration
 }
 
 "The root of all models. There are several types of models:

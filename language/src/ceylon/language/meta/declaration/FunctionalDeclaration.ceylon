@@ -1,10 +1,8 @@
 import ceylon.language.meta.model { 
-    Function,
     Applicable,
     FunctionModel,
     Type,
-    Method,
-    Member,Qualified,
+    Qualified,
     IncompatibleTypeException,
     TypeApplicationException
 }

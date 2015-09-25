@@ -1,6 +1,3 @@
-import ceylon.language.meta.model {
-    AppliedType=Type
-}
 
 "Abstraction for models of elements which must be qualified 
  by an instance to order to be evaluated, including:

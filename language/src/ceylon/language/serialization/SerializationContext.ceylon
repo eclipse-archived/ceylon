@@ -1,9 +1,6 @@
 import ceylon.language.meta {
     classDeclaration, type
 }
-import ceylon.language.meta.declaration {
-    ValueDeclaration
-}
 
 "A context representing serialization of many objects to a 
  single output stream. 

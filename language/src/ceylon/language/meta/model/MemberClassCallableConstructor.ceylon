@@ -1,7 +1,5 @@
-import ceylon.language.meta.declaration{CallableConstructorDeclaration, TypeParameter}
-import ceylon.language.meta.model {
-    ClosedType = Type
-}
+import ceylon.language.meta.declaration{CallableConstructorDeclaration}
+
 
 "A model for a callable constructor of a member class."
 see(`interface MemberClassValueConstructor`)

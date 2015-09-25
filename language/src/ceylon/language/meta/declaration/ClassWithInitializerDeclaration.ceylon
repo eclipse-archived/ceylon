@@ -1,12 +1,4 @@
 import ceylon.language { AnnotationType = Annotation }
-import ceylon.language.meta.model {
-    Class,
-    MemberClass,
-    AppliedType = Type,
-    IncompatibleTypeException,
-    TypeApplicationException
-}
-
 
 
 """The declaration model of a class that has a parameter list rather than

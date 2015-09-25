@@ -1,7 +1,4 @@
-import ceylon.language.meta.declaration{CallableConstructorDeclaration, TypeParameter}
-import ceylon.language.meta.model {
-    ClosedType = Type
-}
+import ceylon.language.meta.declaration{CallableConstructorDeclaration}
 
 """A callable constructor model represents the model of a Ceylon class 
    constructor that you can invoke and inspect

@@ -1,6 +1,5 @@
 import ceylon.language.meta.model {
     Gettable,
-    Member,
     Qualified,
     ValueModel,  
     AppliedType = Type, 

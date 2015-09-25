@@ -6,9 +6,7 @@ import ceylon.language.meta {
     typeLiteral
 }
 import ceylon.language.meta.model {
-    ClassModel,
-    MemberClass,
-    Class
+    ClassModel
 }
 import ceylon.language.serialization {
     DeserializationException

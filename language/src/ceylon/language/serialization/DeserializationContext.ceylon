@@ -1,6 +1,4 @@
 import ceylon.language.meta.model {
-    Class,
-    MemberClass,
     ClassModel
 }
 import ceylon.language.meta.declaration {
