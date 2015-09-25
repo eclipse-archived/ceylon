@@ -28,8 +28,6 @@ public class JsModuleSourceMapper extends ModuleSourceMapper {
     private boolean clLoaded;
     private String encoding;
     private static final String BIN_VERSION = Versions.JS_BINARY_MAJOR_VERSION + "." + Versions.JS_BINARY_MINOR_VERSION;
-    //ugly-ass hack for #490
-    private static final String V1_1_BIN_VERSION = Versions.V1_1_BINARY_MAJOR_VERSION + "." + Versions.V1_1_BINARY_MINOR_VERSION;
 
     public JsModuleSourceMapper(Context context, ModuleManager moduleManager, String encoding) {
         super(context, moduleManager);
@@ -111,7 +109,6 @@ public class JsModuleSourceMapper extends ModuleSourceMapper {
                 final boolean isNewest = binVersion.equals(BIN_VERSION);
                 //1.1.1 is not compatible with 1.1.0 anyway...
                 if (!isNewest) {
-                    Thread.dumpStack();
                     throw new CompilerErrorException(String.format("The Ceylon-JS module %s has binary version %s is incompatible with the compiler version %s",
                         modname, binVersion, BIN_VERSION));
                 }
