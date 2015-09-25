@@ -57,8 +57,10 @@ import com.redhat.ceylon.compiler.java.tools.CeylonLog;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Comprehension;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.ModuleDescriptor;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
+import com.redhat.ceylon.compiler.typechecker.tree.TreeUtil;
 import com.redhat.ceylon.model.loader.AbstractModelLoader;
 import com.redhat.ceylon.model.loader.LanguageAnnotation;
 import com.redhat.ceylon.model.loader.NamingBase.Unfix;
@@ -85,7 +87,6 @@ import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.model.typechecker.model.TypeParameter;
 import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.model.typechecker.model.TypedReference;
-import com.redhat.ceylon.model.typechecker.model.Value;
 import com.redhat.ceylon.model.typechecker.util.TypePrinter;
 import com.sun.tools.javac.code.BoundKind;
 import com.sun.tools.javac.code.Symbol.TypeSymbol;
@@ -2933,8 +2934,32 @@ public abstract class AbstractTransformer implements Transformation {
         return res;
     }
 
-    List<JCAnnotation> makeAtModule(Module module) {
+    private String getImportVersionFromDescriptor(ModuleDescriptor moduleDescriptor, ModuleImport moduleImport, Module importedModule) {
+        if (AbstractModelLoader.isJDKModule(importedModule.getNameAsString())) {
+            for(Tree.ImportModule imported : moduleDescriptor.getImportModuleList().getImportModules()){
+                String name=null;
+                if (imported.getImportPath() != null) {
+                    name = TreeUtil.formatPath(imported.getImportPath().getIdentifiers());
+                } else if (imported.getQuotedLiteral() != null) {
+                    name = imported.getQuotedLiteral().getText();
+                    name = name.substring(1, name.length()-1);
+                }
+                
+                if (name != null 
+                        && imported.getVersion() != null
+                        && name.equals(moduleImport.getModule().getNameAsString())) {
+                    String versionString = imported.getVersion().getText();
+                    return versionString.substring(1, versionString.length()-1);
+                }
+            }
+        }
+        return importedModule.getVersion();
+    }
+    
+    List<JCAnnotation> makeAtModule(ModuleDescriptor moduleDescriptor) {
+        Module module = moduleDescriptor.getUnit().getPackage().getModule();
         ListBuffer<JCExpression> imports = new ListBuffer<JCTree.JCExpression>();
+
         for(ModuleImport dependency : module.getImports()){
             if (!isForBackend(dependency.getNativeBackend(), Backend.Java)) {
                 continue;
@@ -2943,9 +2968,12 @@ public abstract class AbstractTransformer implements Transformation {
             JCExpression dependencyName = make().Assign(naming.makeUnquotedIdent("name"),
                     make().Literal(dependencyModule.getNameAsString()));
             JCExpression dependencyVersion = null;
-            if(dependencyModule.getVersion() != null)
+            
+            String versionInDescriptor = getImportVersionFromDescriptor(
+                    moduleDescriptor, dependency, dependencyModule);
+            if(versionInDescriptor != null)
                 dependencyVersion = make().Assign(naming.makeUnquotedIdent("version"),
-                        make().Literal(dependencyModule.getVersion()));
+                        make().Literal(versionInDescriptor));
             
             List<JCExpression> spec;
             if(dependencyVersion != null)

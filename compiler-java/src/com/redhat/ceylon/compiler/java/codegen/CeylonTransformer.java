@@ -571,7 +571,7 @@ public class CeylonTransformer extends AbstractTransformer {
         ClassDefinitionBuilder builder = ClassDefinitionBuilder
                 .klass(this, Naming.MODULE_DESCRIPTOR_CLASS_NAME, null, false);
         builder.modifiers(Flags.FINAL)
-                .annotations(makeAtModule(module.getUnit().getPackage().getModule()));
+                .annotations(makeAtModule(module));
         builder.getInitBuilder().modifiers(Flags.PRIVATE);
         builder.annotations(expressionGen().transformAnnotations(true, OutputElement.TYPE, module));
         for (Tree.ImportModule imported : module.getImportModuleList().getImportModules()) {
