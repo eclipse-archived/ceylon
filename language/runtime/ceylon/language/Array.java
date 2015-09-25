@@ -2987,4 +2987,17 @@ public final class Array<Element>
         // TODO Auto-generated method stub
         return $ceylon$language$SearchableList$impl().occursAt(arg0, arg1);
     }
+
+    @Override @Ignore
+    public <Item> Map<? extends Element, ? extends Item>
+    tabulate(TypeDescriptor arg0, Callable<? extends Item> arg1) {
+        return $ceylon$language$Iterable$impl().tabulate(arg0, arg1);
+    }
+
+    @Override @Ignore
+    public Map<? extends Element, ? extends Integer>
+    frequencies() {
+        return $ceylon$language$Iterable$impl().frequencies();
+    }
+
 }

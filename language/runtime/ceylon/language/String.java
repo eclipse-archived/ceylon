@@ -3368,4 +3368,28 @@ public final class String
     public long occurs$length(Character arg0, long arg1) {
         return java.lang.Integer.MAX_VALUE;
     }
+    
+    @Override @Ignore
+    public <Item> Map<? extends Character, ? extends Item>
+    tabulate(TypeDescriptor arg0, Callable<? extends Item> arg1) {
+        return $ceylon$language$Iterable$impl().tabulate(arg0, arg1);
+    }
+
+    @Override @Ignore
+    public Map<? extends Character, ? extends Integer>
+    frequencies() {
+        return $ceylon$language$Iterable$impl().frequencies();
+    }
+
+    @Ignore
+    public static <Item> Map<? extends Character, ? extends Item>
+    tabulate(java.lang.String value, TypeDescriptor arg0, Callable<? extends Item> arg1) {
+        return instance(value).tabulate(arg0, arg1);
+    }
+
+    @Ignore
+    public static <Item> Map<? extends Character, ? extends Integer>
+    frequencies(java.lang.String value) {
+        return instance(value).frequencies();
+    }
 }

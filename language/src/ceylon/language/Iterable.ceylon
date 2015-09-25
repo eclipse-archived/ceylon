@@ -1589,6 +1589,39 @@ shared interface Iterable<out Element=Anything,
         
     };*/
     
+    "Produce a [[Map]] mapping elements to frequencies where
+     each [[entry|Entry]] maps a distinct non-null element 
+     of this stream to the number of times the element was 
+     produced by the stream. Elements are considered 
+     distinct if they are not [[equal|Object.equals]]. Null 
+     elements of this stream are simply discarded.
+     
+     This is an eager operation, and the resulting map does
+     not reflect changes to this stream."
+    shared Map<Element&Object,Integer> frequencies()
+            => coalesced.summarize(identity, 
+                    (Integer? count, _) 
+                            => if (exists count) 
+                            then count+1 else 1);
+    
+    "Produces a [[Map]] mapping elements to items where each 
+     [[entry|Entry]] maps a distinct non-null element of 
+     this stream to the item produced by the given 
+     [[function|collecting]]. Elements are considered 
+     distinct if they are not [[equal|Object.equals]]. Null 
+     elements of this stream are simply discarded.
+     
+     This is an eager operation, and the resulting map does
+     not reflect changes to the given stream."
+    shared Map<Element&Object,Item> tabulate<Item>(
+            "A function that produces an item for the given
+             [[key]], an element of this stream."
+            Item collecting(Element key))
+            => coalesced.summarize(identity, 
+                    (Item? item, key)
+                            => if (exists item) 
+                            then item else collecting(key));
+    
     "Classifies the elements of this stream into a new
      immutable [[Map]] where each key is a value produced by 
      the given [[grouping function|grouping]] and each 
@@ -1601,7 +1634,7 @@ shared interface Iterable<out Element=Anything,
      
      For example:
      
-         (0..10).group((i) => i.even then \"even\" else \"odd\")
+     (0..10).group((i) => i.even then \"even\" else \"odd\")
      
      produces the map 
      `{ even->[0, 2, 4, 6, 8, 10], odd->[1, 3, 5, 7, 9] }`.
