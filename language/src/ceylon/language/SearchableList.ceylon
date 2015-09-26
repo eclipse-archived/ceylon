@@ -22,17 +22,11 @@ shared interface SearchableList<Element>
         Integer index, 
         "The value. If null, it is considered to occur
          at any index in this list with a null element."
-        Element element) {
-        value elem = getFromFirst(index);
-        if (exists element) {
-            return if (exists elem) 
-            then elem==element 
-            else false;
-        }
-        else {
-            return !elem exists;
-        }
-    }
+        Element element)
+            => let (elem = getFromFirst(index))
+            if (exists element, exists elem) 
+            then elem == element 
+            else element exists == elem exists;
     
     "The indexes in this list at which the given 
      [[value|element]] occurs."
@@ -50,20 +44,21 @@ shared interface SearchableList<Element>
         empty => occurs(element, from, length);
         first => firstOccurrence(element, from, length);
         last => if (length>0,
-            exists index
-                    = lastOccurrence(element, from+length-1)) 
-        then (index>=from then index)
-        else null;
+                    exists index
+                        = lastOccurrence(element, 
+                                from+length-1)) 
+                then (index>=from then index)
+                else null;
         iterator() => let (list = outer)
         object satisfies Iterator<Integer> {
             variable value index = from;
             shared actual Integer|Finished next() {
                 if (exists next 
-                    = list.firstOccurrence {
-                    element = element;
-                    from = index;
-                    length = length;
-                }) {
+                        = list.firstOccurrence {
+                            element = element;
+                            from = index;
+                            length = length;
+                        }) {
                     index = next+1;
                     return next;
                 }
@@ -217,8 +212,8 @@ shared interface SearchableList<Element>
         empty => includes(sublist, from);
         first => firstInclusion(sublist, from);
         last => if (exists index = lastInclusion(sublist)) 
-        then (index>=from then index) 
-        else null;
+                then (index>=from then index) 
+                else null;
         iterator() => let (list = outer)
         object satisfies Iterator<Integer> {
             variable value index = from;
