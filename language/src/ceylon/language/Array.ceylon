@@ -136,9 +136,9 @@ shared final serializable native class Array<Element>
     shared actual native
     Element? findLast(Boolean selecting(Element&Object element));
     shared actual native
-    <Integer->Element>? locate(Boolean selecting(Element&Object element));
+    <Integer->Element&Object>? locate(Boolean selecting(Element&Object element));
     shared actual native
-    <Integer->Element>? locateLast(Boolean selecting(Element&Object element));
+    <Integer->Element&Object>? locateLast(Boolean selecting(Element&Object element));
     shared actual native
     Result|Element|Null reduce<Result>
             (Result accumulating(Result|Element partial, Element element));
