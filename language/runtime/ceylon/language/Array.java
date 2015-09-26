@@ -1966,7 +1966,39 @@ public final class Array<Element>
         return null;
     }
     
-    /*@Override
+    //This one we don't really need to override:
+    @Override
+    @TypeInfo("ceylon.language::Iterable<ceylon.language::Integer>")
+    public Iterable<? extends Integer, ? extends java.lang.Object> occurrences(
+            @Name("element") final Element element, 
+            @Defaulted @Name("from") final long from, 
+            @Defaulted @Name("length") final long length) {
+        return new BaseIterable<Integer, Object>
+                (Integer.$TypeDescriptor$, Null.$TypeDescriptor$) {
+            @Override
+            public Iterator<? extends Integer> iterator() {
+                final long max = 
+                        from+length > size ? 
+                                size : from+length;
+                return new BaseIterator<Integer>
+                        (Integer.$TypeDescriptor$) {
+                    long index = from;
+                    @Override
+                    public java.lang.Object next() {
+                        while (index<max) {
+                            if (occursAt(index, element)) {
+                                return Integer.instance(index);
+                            }
+                            index++;
+                        }
+                        return finished_.get_();
+                    }
+                };
+            }
+        };
+    }
+
+    @Override
     @TypeInfo("ceylon.language::Null|ceylon.language::Integer")
     public Integer firstOccurrence(
             @Name("element") Element element,
@@ -1979,23 +2011,11 @@ public final class Array<Element>
             length+=from;
             from = 0;
         }
-        if (element==null) {
-            for (int i=(int)from; 
-                    i<size && i<from+length; 
-                    i++) {
-                if (unsafeItem(i)==null) {
-                    return Integer.instance(i);
-                }
-            }
-        }
-        else {
-            for (int i=(int)from; 
-                    i<size && i<from+length; 
-                    i++) {
-                Element item = unsafeItem(i);
-                if (item!=null && item.equals(element)) {
-                    return Integer.instance(i);
-                }
+        for (int i=(int)from; 
+                i<size && i<from+length; 
+                i++) {
+            if (occursAt(i, element)) {
+                return Integer.instance(i);
             }
         }
         return null;
@@ -2014,25 +2034,12 @@ public final class Array<Element>
             length+=from;
             from = 0;
         }
-        if (element==null) {
-            for (int i=(int)from; 
-                    i<size && i<from+length; 
-                    i++) {
-                int j = size-1-i;
-                if (unsafeItem(j)==null) {
-                    return Integer.instance(j);
-                }
-            }
-        }
-        else {
-            for (int i=(int)from; 
-                    i<size && i<from+length; 
-                    i++) {
-                int j = size-1-i;
-                Element item = unsafeItem(j);
-                if (item!=null && item.equals(element)) {
-                    return Integer.instance(j);
-                }
+        for (int i=(int)from; 
+                i<size && i<from+length; 
+                i++) {
+            int j = size-1-i;
+            if (occursAt(j, element)) {
+                return Integer.instance(j);
             }
         }
         return null;
@@ -2050,23 +2057,11 @@ public final class Array<Element>
             length+=from;
             from = 0;
         }
-        if (element==null) {
-            for (int i=(int)from; 
-                    i<size && i<from+length; 
-                    i++) {
-                if (unsafeItem(i)==null) {
-                    return true;
-                }
-            }
-        }
-        else {
-            for (int i=(int)from; 
-                    i<size && i<from+length; 
-                    i++) {
-                Element item = unsafeItem(i);
-                if (item!=null && item.equals(element)) {
-                    return true;
-                }
+        for (int i=(int)from; 
+                i<size && i<from+length; 
+                i++) {
+            if (occursAt(i, element)) {
+                return true;
             }
         }
         return false;
@@ -2085,27 +2080,15 @@ public final class Array<Element>
             from = 0;
         }
         int count = 0;
-        if (element==null) {
-            for (int i=(int)from; 
-                    i<size && i<from+length; 
-                    i++) {
-                if (unsafeItem(i)==null) {
-                    count++;
-                }
-            }
-        }
-        else {
-            for (int i=(int)from; 
-                    i<size && i<from+length; 
-                    i++) {
-                Element item = unsafeItem(i);
-                if (item!=null && item.equals(element)) {
-                    count++;
-                }
+        for (int i=(int)from; 
+                i<size && i<from+length; 
+                i++) {
+            if (occursAt(i, element)) {
+                count++;
             }
         }
         return count;
-    }*/
+    }
     
     public void reverseInPlace() {
         if (array instanceof java.lang.Object[]) {
@@ -2871,27 +2854,27 @@ public final class Array<Element>
 
     @Override @Ignore
     public long countInclusions$from(List<? extends Element> arg0) {
-        return $ceylon$language$SearchableList$impl().countInclusions$from(arg0);
+        return 0;
     }
 
     @Override @Ignore
     public long countOccurrences(Element arg0) {
-        return $ceylon$language$SearchableList$impl().countOccurrences(arg0);
+        return countOccurrences(arg0, 0);
     }
 
     @Override @Ignore
     public long countOccurrences(Element arg0, long arg1) {
-        return $ceylon$language$SearchableList$impl().countOccurrences(arg0, arg1);
+        return countOccurrences(arg0, arg1, size-arg1);
     }
 
     @Override @Ignore
     public long countOccurrences$from(Element arg0) {
-        return $ceylon$language$SearchableList$impl().countOccurrences$from(arg0);
+        return 0;
     }
 
     @Override @Ignore
     public long countOccurrences$length(Element arg0, long arg1) {
-        return $ceylon$language$SearchableList$impl().countOccurrences$length(arg0, arg1);
+        return size - arg1;
     }
 
     @Override @Ignore
@@ -2901,27 +2884,27 @@ public final class Array<Element>
 
     @Override @Ignore
     public long firstInclusion$from(List<? extends Element> arg0) {
-        return $ceylon$language$SearchableList$impl().firstInclusion$from(arg0);
+        return 0;
     }
 
     @Override @Ignore
     public Integer firstOccurrence(Element arg0) {
-        return $ceylon$language$SearchableList$impl().firstOccurrence(arg0);
+        return firstOccurrence(arg0, 0);
     }
 
     @Override @Ignore
     public Integer firstOccurrence(Element arg0, long arg1) {
-        return $ceylon$language$SearchableList$impl().firstOccurrence(arg0, arg1);
+        return firstOccurrence(arg0, arg1, size-arg1);
     }
 
     @Override @Ignore
     public long firstOccurrence$from(Element arg0) {
-        return $ceylon$language$SearchableList$impl().firstOccurrence$from(arg0);
+        return 0;
     }
 
     @Override @Ignore
     public long firstOccurrence$length(Element arg0, long arg1) {
-        return $ceylon$language$SearchableList$impl().firstOccurrence$length(arg0,arg1);
+        return size - arg1;
     }
 
     @Override @Ignore
@@ -2931,7 +2914,7 @@ public final class Array<Element>
 
     @Override @Ignore
     public long includes$from(List<? extends Element> arg0) {
-        return $ceylon$language$SearchableList$impl().includes$from(arg0);
+        return 0;
     }
 
     @Override @Ignore
@@ -2947,7 +2930,7 @@ public final class Array<Element>
 
     @Override @Ignore
     public long inclusions$from(List<? extends Element> arg0) {
-        return $ceylon$language$SearchableList$impl().inclusions$from(arg0);
+        return 0;
     }
 
     @Override @Ignore
@@ -2957,72 +2940,67 @@ public final class Array<Element>
 
     @Override @Ignore
     public long lastInclusion$from(List<? extends Element> arg0) {
-        return $ceylon$language$SearchableList$impl().lastInclusion$from(arg0);
+        return 0;
     }
 
     @Override @Ignore
     public Integer lastOccurrence(Element arg0) {
-        return $ceylon$language$SearchableList$impl().lastOccurrence(arg0);
+        return lastOccurrence(arg0, 0);
     }
 
     @Override @Ignore
     public Integer lastOccurrence(Element arg0, long arg1) {
-        return $ceylon$language$SearchableList$impl().lastOccurrence(arg0, arg1);
+        return lastOccurrence(arg0, arg1, size-arg1);
     }
 
     @Override @Ignore
     public long lastOccurrence$from(Element arg0) {
-        return $ceylon$language$SearchableList$impl().lastOccurrence$from(arg0);
+        return 0;
     }
 
     @Override @Ignore
     public long lastOccurrence$length(Element arg0, long arg1) {
-        return $ceylon$language$SearchableList$impl().lastOccurrence$length(arg0, arg1);
+        return size - arg1;
     }
 
     @Override @Ignore
     public Iterable<? extends Integer, ? extends java.lang.Object> occurrences(Element arg0) {
-        return $ceylon$language$SearchableList$impl().occurrences(arg0);
+        return occurrences(arg0, 0);
     }
 
     @Override @Ignore
     public Iterable<? extends Integer, ? extends java.lang.Object> occurrences(Element arg0, long arg1) {
-        return $ceylon$language$SearchableList$impl().occurrences(arg0,arg1);
-    }
-
-    @Override @Ignore
-    public Iterable<? extends Integer, ? extends java.lang.Object> occurrences(Element arg0, long arg1, long arg2) {
-        return $ceylon$language$SearchableList$impl().occurrences(arg0,arg1,arg2);
+        return occurrences(arg0, arg1, size-arg1);
     }
 
     @Override @Ignore
     public long occurrences$from(Element arg0) {
-        return $ceylon$language$SearchableList$impl().occurrences$from(arg0);
+        return 0;
     }
 
     @Override @Ignore
     public long occurrences$length(Element arg0, long arg1) {
-        return $ceylon$language$SearchableList$impl().occurrences$length(arg0,arg1);
+        return size - arg1;
     }
 
     @Override @Ignore
     public boolean occurs(Element arg0) {
-        return $ceylon$language$SearchableList$impl().occurs(arg0);
+        return occurs(arg0, 0);
     }
 
     @Override @Ignore
     public boolean occurs(Element arg0, long arg1) {
-        return $ceylon$language$SearchableList$impl().occurs(arg0,arg1);
+        return occurs(arg0, arg1, size-arg1);
     }
 
     @Override @Ignore
     public long occurs$from(Element arg0) {
-        return $ceylon$language$SearchableList$impl().occurs$from(arg0);
+        return 0;
     }
 
     @Override @Ignore
     public long occurs$length(Element arg0, long arg1) {
-        return $ceylon$language$SearchableList$impl().occurs$length(arg0,arg1);
+        return size - arg1;
     }
 
     @Override @Ignore
@@ -3065,30 +3043,6 @@ public final class Array<Element>
     public Map<? extends Element, ? extends Integer>
     frequencies() {
         return $ceylon$language$Iterable$impl().frequencies();
-    }
-
-    @Override @Ignore
-    public long countOccurrences(Element arg0, long arg1, long arg2) {
-        // TODO Auto-generated method stub
-        return $ceylon$language$SearchableList$impl().countOccurrences(arg0, arg1, arg2);
-    }
-
-    @Override @Ignore
-    public Integer firstOccurrence(Element arg0, long arg1, long arg2) {
-        // TODO Auto-generated method stub
-        return $ceylon$language$SearchableList$impl().firstOccurrence(arg0, arg1, arg2);
-    }
-
-    @Override @Ignore
-    public Integer lastOccurrence(Element arg0, long arg1, long arg2) {
-        // TODO Auto-generated method stub
-        return $ceylon$language$SearchableList$impl().lastOccurrence(arg0, arg1, arg2);
-    }
-
-    @Override @Ignore
-    public boolean occurs(Element arg0, long arg1, long arg2) {
-        // TODO Auto-generated method stub
-        return $ceylon$language$SearchableList$impl().occurs(arg0, arg1, arg2);
     }
 
 }
