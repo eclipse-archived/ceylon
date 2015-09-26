@@ -1268,7 +1268,7 @@ public final class Array<Element>
     }
     
     @SuppressWarnings("unchecked")
-    private Element getJavaItem(int index) throws AssertionError {
+    private Element getJavaItem(int index) {
         switch (elementType) {
         case JavaLong:
             return (Element) (java.lang.Long) ((long[])array)[index];
@@ -1290,6 +1290,79 @@ public final class Array<Element>
             return (Element) ((java.lang.String[])array)[index];
         default: 
             throw new AssertionError("unknown element type");
+        }
+    }
+
+    @Override
+    public boolean occursAt(
+            @Name("index") long ind, 
+            @Name("element") Element element) {
+        if (ind<0 || ind>=size) {
+            return false;
+        }
+        int index = (int) ind;
+        if (objectArray!=null) {
+            java.lang.Object obj = objectArray[index];
+            return obj==element || 
+                    obj!=null && element!=null
+                    && obj.equals(element);
+        }
+        else if (longArray!=null)
+            return Integer.equals(longArray[index], element);
+        else if (doubleArray!=null)
+            return Float.equals(doubleArray[index], element);
+        else if (byteArray!=null)
+            return Byte.equals(byteArray[index], element);
+        else if (booleanArray!=null)
+            return Boolean.equals(booleanArray[index], element);
+        else if (intArray!=null)
+            return Character.equals(intArray[index], element);
+        else if (stringArray!=null)
+            return String.equals(stringArray[index], element);
+        else
+            return javaItemOccursAt(index, element);
+    }
+    
+    private boolean javaItemOccursAt(int index, Element element) {
+        switch (elementType) {
+        case JavaLong:
+            if (element instanceof java.lang.Long) {
+                return ((long[])array)[index]==((java.lang.Long)element).longValue();
+            }
+        case JavaDouble:
+            if (element instanceof java.lang.Double) {
+                return ((double[])array)[index]==((java.lang.Double)element).doubleValue();
+            }
+        case JavaInteger:
+            if (element instanceof java.lang.Integer) {
+                return ((int[])array)[index]==((java.lang.Integer)element).intValue();
+            }
+        case JavaByte:
+            if (element instanceof java.lang.Byte) {
+                return ((byte[])array)[index]==((java.lang.Byte)element).byteValue();
+            }
+        case JavaBoolean:
+            if (element instanceof java.lang.Boolean) {
+                return ((boolean[])array)[index]==((java.lang.Boolean)element).booleanValue();
+            }
+        case JavaCharacter:
+            if (element instanceof java.lang.Character) {
+                return ((char[])array)[index]==((java.lang.Character)element).charValue();
+            }
+        case JavaShort:
+            if (element instanceof java.lang.Short) {
+                return ((short[])array)[index]==((java.lang.Short)element).shortValue();
+            }
+        case JavaFloat:
+            if (element instanceof java.lang.Float) {
+                return ((float[])array)[index]==((java.lang.Float)element).floatValue();
+            }
+        case JavaString:
+            if (element instanceof java.lang.String) {
+                return ((java.lang.String[])array)[index].equals(element);
+            }
+        default: 
+            return false;
         }
     }
 
@@ -1893,7 +1966,7 @@ public final class Array<Element>
         return null;
     }
     
-    @Override
+    /*@Override
     @TypeInfo("ceylon.language::Null|ceylon.language::Integer")
     public Integer firstOccurrence(
             @Name("element") Element element,
@@ -2032,7 +2105,7 @@ public final class Array<Element>
             }
         }
         return count;
-    }
+    }*/
     
     public void reverseInPlace() {
         if (array instanceof java.lang.Object[]) {
@@ -2983,12 +3056,6 @@ public final class Array<Element>
     }
 
     @Override @Ignore
-    public boolean occursAt(long arg0, Element arg1) {
-        // TODO Auto-generated method stub
-        return $ceylon$language$SearchableList$impl().occursAt(arg0, arg1);
-    }
-
-    @Override @Ignore
     public <Item> Map<? extends Element, ? extends Item>
     tabulate(TypeDescriptor arg0, Callable<? extends Item> arg1) {
         return $ceylon$language$Iterable$impl().tabulate(arg0, arg1);
@@ -2998,6 +3065,30 @@ public final class Array<Element>
     public Map<? extends Element, ? extends Integer>
     frequencies() {
         return $ceylon$language$Iterable$impl().frequencies();
+    }
+
+    @Override @Ignore
+    public long countOccurrences(Element arg0, long arg1, long arg2) {
+        // TODO Auto-generated method stub
+        return $ceylon$language$SearchableList$impl().countOccurrences(arg0, arg1, arg2);
+    }
+
+    @Override @Ignore
+    public Integer firstOccurrence(Element arg0, long arg1, long arg2) {
+        // TODO Auto-generated method stub
+        return $ceylon$language$SearchableList$impl().firstOccurrence(arg0, arg1, arg2);
+    }
+
+    @Override @Ignore
+    public Integer lastOccurrence(Element arg0, long arg1, long arg2) {
+        // TODO Auto-generated method stub
+        return $ceylon$language$SearchableList$impl().lastOccurrence(arg0, arg1, arg2);
+    }
+
+    @Override @Ignore
+    public boolean occurs(Element arg0, long arg1, long arg2) {
+        // TODO Auto-generated method stub
+        return $ceylon$language$SearchableList$impl().occurs(arg0, arg1, arg2);
     }
 
 }
