@@ -123,29 +123,28 @@ shared interface SearchableList<Element>
         "The index at which the [[sublist]] might occur."
         Integer index, 
         List<Element> sublist) {
-        value subsize = sublist.size;
-        if (subsize>size-index) {
-            return false;
-        }
-        if (subsize==0 && index==size) {
-            return true;
-        }
-        for (i in 0:subsize) {
-            value x = getFromFirst(index+i);
-            value y = sublist.getFromFirst(i);
-            if (exists x, exists y) {
-                if (x!=y) {
-                    return false;
+        if (0 <= index <= size-sublist.size) {
+            variable value i = index;
+            for (element in sublist) {
+                if (exists element) {
+                    if (!occursAt(i, element)) {
+                        return false;
+                    }
                 }
+                else {
+                    assert (is Element null);
+                    if (!occursAt(i, null)) {
+                        return false;
+                    }
+                }
+                i++;
             }
             else {
-                if (x exists != y exists) {
-                    return false;
-                }
+                return true;
             }
         }
         else {
-            return true;
+            return false;
         }
     }
     
