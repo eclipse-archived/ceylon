@@ -2210,13 +2210,13 @@ public final class String
         for (int offset = value.length(); offset > 0;) {
             int codePoint = value.codePointBefore(offset);
             Character ch = Character.instance(codePoint);
+            offset -= java.lang.Character.charCount(codePoint);
             if (f.$call$(ch).booleanValue()) {
                 int index = value.codePointCount(0, offset);
                 return new Entry<Integer,Character>(
                         Integer.$TypeDescriptor$, Character.$TypeDescriptor$,
                         Integer.instance(index), ch);
             }
-            offset -= java.lang.Character.charCount(codePoint);
         }
         return null;
     }
@@ -2328,24 +2328,15 @@ public final class String
     @Ignore
     public static Integer 
     lastIndexWhere(java.lang.String value, Callable<? extends Boolean> fun) {
-        int index = value.length();
-        if (index==0) {
-            return null;
-        }
-        long count = getSize(value);
-        while (true) {
+        for (int index = value.length(); index>0;) {
             int cp = value.codePointBefore(index);
             index-=java.lang.Character.charCount(cp);
-            if (index<=0) {
-                return null;
-            }
-            else {
-                count--;
-                if (fun.$call$(Character.instance(cp)).booleanValue()) {
-                    return Integer.instance(count);
-                }
+            if (fun.$call$(Character.instance(cp)).booleanValue()) {
+                int result = value.codePointCount(0, index);
+                return Integer.instance(result);
             }
         }
+        return null;
     }
     
     @TypeInfo("ceylon.language::Null|ceylon.language::Integer")
