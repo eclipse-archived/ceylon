@@ -1977,23 +1977,35 @@ public final class Array<Element>
                 (Integer.$TypeDescriptor$, Null.$TypeDescriptor$) {
             @Override
             public Iterator<? extends Integer> iterator() {
-                final long max = 
-                        from+length > size ? 
-                                size : from+length;
                 return new BaseIterator<Integer>
                         (Integer.$TypeDescriptor$) {
                     long index = from;
                     @Override
                     public java.lang.Object next() {
-                        while (index<max) {
+                        for (;
+                                index<size 
+                                    && index<from+length;
+                                index++) {
                             if (occursAt(index, element)) {
-                                return Integer.instance(index);
+                                return Integer.instance(index++);
                             }
-                            index++;
                         }
                         return finished_.get_();
                     }
                 };
+            }
+            @Override
+            public long getSize() {
+                int size = 0;
+                for (long index = from; 
+                        index<Array.this.size 
+                            && index<from+length; 
+                        index++) {
+                    if (occursAt(index, element)) {
+                        size++;
+                    }
+                }
+                return size;
             }
         };
     }
@@ -2065,29 +2077,6 @@ public final class Array<Element>
             }
         }
         return false;
-    }
-    
-    @Override
-    public long countOccurrences(
-            @Name("element") Element element,
-            @Defaulted @Name("from") long from,
-            @Defaulted @Name("length") long length) {
-        if (from>=size || length<=0) {
-            return 0;
-        }
-        if (from<0) {
-            length+=from;
-            from = 0;
-        }
-        int count = 0;
-        for (int i=(int)from; 
-                i<size && i<from+length; 
-                i++) {
-            if (occursAt(i, element)) {
-                count++;
-            }
-        }
-        return count;
     }
     
     public void reverseInPlace() {
@@ -2846,37 +2835,7 @@ public final class Array<Element>
     public SearchableList$impl<Element> $ceylon$language$SearchableList$impl() {
         return new SearchableList$impl<Element>($reifiedElement, this);
     }
-
-    @Override @Ignore
-    public long countInclusions(List<? extends Element> arg0) {
-        return $ceylon$language$SearchableList$impl().countInclusions(arg0);
-    }
-
-    @Override @Ignore
-    public long countInclusions$from(List<? extends Element> arg0) {
-        return 0;
-    }
-
-    @Override @Ignore
-    public long countOccurrences(Element arg0) {
-        return countOccurrences(arg0, 0);
-    }
-
-    @Override @Ignore
-    public long countOccurrences(Element arg0, long arg1) {
-        return countOccurrences(arg0, arg1, size-arg1);
-    }
-
-    @Override @Ignore
-    public long countOccurrences$from(Element arg0) {
-        return 0;
-    }
-
-    @Override @Ignore
-    public long countOccurrences$length(Element arg0, long arg1) {
-        return size - arg1;
-    }
-
+    
     @Override @Ignore
     public Integer firstInclusion(List<? extends Element> arg0) {
         return $ceylon$language$SearchableList$impl().firstInclusion(arg0);
@@ -3001,12 +2960,6 @@ public final class Array<Element>
     @Override @Ignore
     public long occurs$length(Element arg0, long arg1) {
         return size - arg1;
-    }
-
-    @Override @Ignore
-    public long countInclusions(List<? extends Element> arg0, long arg1) {
-        // TODO Auto-generated method stub
-        return $ceylon$language$SearchableList$impl().countInclusions(arg0, arg1);
     }
 
     @Override @Ignore

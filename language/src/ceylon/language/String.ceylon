@@ -553,9 +553,6 @@ shared native final class String(characters)
     shared actual native Integer? firstInclusion(List<Character> sublist, Integer from);
     shared actual native Integer? lastInclusion(List<Character> sublist, Integer from);
     
-    shared actual native Integer countOccurrences(Character sublist, Integer from, Integer length);
-    shared actual native Integer countInclusions(List<Character> sublist, Integer from);
-        
     shared actual native Boolean largerThan(String other); 
     shared actual native Boolean smallerThan(String other); 
     shared actual native Boolean notSmallerThan(String other); 

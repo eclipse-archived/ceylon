@@ -39,8 +39,43 @@ shared interface SearchableList<Element>
         Integer from = 0,
         "The number of indexes to consider."
         Integer length = size-from)
-            => { for (i in from:length) 
-                 if (occursAt(i, element)) i };
+            //performance of comprehension was 
+            //worse than hand-written iterable
+            //=> { for (i in from:length) 
+            //     if (occursAt(i, element)) i };
+            => object satisfies Iterable<Integer> {
+        value len = outer.size;
+        value max = 
+                from+length>len 
+                    then len else from+length;
+        iterator() 
+                => object satisfies Iterator<Integer> {
+            variable value index = from;
+            shared actual Integer|Finished next() {
+                while (index<max) {
+                    if (occursAt(index, element)) {
+                        return index++;
+                    }
+                    else {
+                        index++;
+                    }
+                }
+                return finished;
+            }
+        };
+        shared actual Integer size {
+            variable value size = 0;
+            for (index in from:max-from) {
+                if (occursAt(index,element)) {
+                    size++;
+                }
+            }
+            return size;
+        }
+        empty => occurs(element, from, length);
+        first => firstOccurrence(element, from, length);
+        last => lastOccurrence(element, from, length);
+    };
     
     "Determines if the given [[value|element]] occurs as an 
      element of this list, at any index that falls within
@@ -55,22 +90,7 @@ shared interface SearchableList<Element>
         Integer from = 0,
         "The number of indexes to consider."
         Integer length = size-from)
-            => !occurrences(element, from, length).empty;
-    
-    "Count the indexes in this list at which the given 
-     [[value|element]] occurs, that fall within the segment 
-     `from:length` defined by the optional 
-     [[starting index|from]] and [[length]]."
-    shared default
-    Integer countOccurrences(
-        "The value. If null, it is considered to occur
-         at any index in this list with a null element."
-        Element element,
-        "The smallest index to consider."
-        Integer from = 0,
-        "The number of indexes to consider."
-        Integer length = size-from)
-            => occurrences(element, from, length).size;
+            => firstOccurrence(element, from, length) exists;
     
     "The first index in this list at which the given 
      [[value|element]] occurs, that falls within the segment 
@@ -84,8 +104,16 @@ shared interface SearchableList<Element>
         "The smallest index to consider."
         Integer from = 0,
         "The number of indexes to consider."
-        Integer length = size-from)
-            => occurrences(element, from, length).first;
+        Integer length = size-from) {
+        for (index in from:length) {
+            if (occursAt(index,element)) {
+                return index;
+            }
+        }
+        else {
+            return null;
+        }
+    }
     
     "The last index in this list at which the given 
      [[value|element]] occurs, that falls within the range 
@@ -155,8 +183,41 @@ shared interface SearchableList<Element>
     {Integer*} inclusions(List<Element> sublist,
         "The smallest index to consider." 
         Integer from = 0) 
-            => { for (i in from:size+1-from-sublist.size) 
-                 if (includesAt(i, sublist)) i };
+            //performance of comprehension was 
+            //worse than hand-written iterable
+            /*=> { for (i in from:size+1-from-sublist.size) 
+                 if (includesAt(i, sublist)) i };*/
+            => object satisfies Iterable<Integer> {
+        value len = outer.size;
+        iterator() 
+                => object satisfies Iterator<Integer> {
+            value max = len+1-sublist.size;
+            variable value index = from;
+            shared actual Integer|Finished next() {
+                while (index<max) {
+                    if (includesAt(index, sublist)) {
+                        return index++;
+                    }
+                    else {
+                        index++;
+                    }
+                }
+                return finished;
+            }
+        };
+        shared actual Integer size {
+            variable value size = 0;
+            for (index in from:len-from+1-sublist.size) {
+                if (includesAt(index,sublist)) {
+                    size++;
+                }
+            }
+            return size;
+        }
+        empty => includes(sublist, from);
+        first => firstInclusion(sublist, from);
+        last => lastInclusion(sublist, from);
+    };
     
     "Determine if the given [[list|sublist]] occurs as a 
      sublist at some index in this list, at any index that 
@@ -166,25 +227,24 @@ shared interface SearchableList<Element>
     Boolean includes(List<Element> sublist,
         "The smallest index to consider."
         Integer from = 0) 
-            => !inclusions(sublist, from).empty;
-    
-    "Count the indexes in this list at which the given 
-     [[list|sublist]] occurs as a sublist, that are greater 
-     than or equal to the optional [[starting index|from]]."
-    shared default
-    Integer countInclusions(List<Element> sublist,
-        "The smallest index to consider." 
-        Integer from = 0) 
-            => inclusions(sublist, from).size;
-    
+            => firstInclusion(sublist, from) exists;
+        
     "The first index in this list at which the given 
      [[list|sublist]] occurs as a sublist, that is greater 
      than or equal to the optional [[starting index|from]]."
     shared default 
     Integer? firstInclusion(List<Element> sublist,
         "The smallest index to consider." 
-        Integer from = 0)
-            => inclusions(sublist, from).first;
+        Integer from = 0) {
+        for (index in from:size-from+1-sublist.size) {
+            if (includesAt(index,sublist)) {
+                return index;
+            }
+        }
+        else {
+            return null;
+        }
+    }
     
     "The last index in this list at which the given 
      [[list|sublist]] occurs as a sublist, that falls within 

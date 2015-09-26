@@ -494,17 +494,18 @@ public final class String
             final long from, final long length) {
         return new BaseIterable<Integer, java.lang.Object>
                 (Integer.$TypeDescriptor$, Null.$TypeDescriptor$) {
+            final long stop = length+from;
+            final int start = from<0 ? 0 : Util.toInt(from);
+            final int len = java.lang.Character.charCount(element);
             @Override
             public Iterator<? extends Integer> iterator() {
                 return new BaseIterator<Integer>
                         (Integer.$TypeDescriptor$) {
-                    long count = from;
-                    int len = java.lang.Character.charCount(element);
+                    int count = start;
                     int index;
                     {
                         try {
-                            index = value.offsetByCodePoints(0, 
-                                    Util.toInt(from));
+                            index = value.offsetByCodePoints(0, start);
                         }
                         catch (IndexOutOfBoundsException e) {
                             index = value.length();
@@ -512,7 +513,7 @@ public final class String
                     }
                     @Override
                     public java.lang.Object next() {
-                        if (index>=value.length()) {
+                        if (index>=value.length() || stop<=0) {
                             return finished_.get_();
                         }
                         while (true) {
@@ -523,7 +524,7 @@ public final class String
                             count += value.codePointCount(index, result);
                             long c = count;
                             index = result + len;
-                            if (count-from>=length) {
+                            if (count>=stop) {
                                 return finished_.get_();
                             }
                             else {
@@ -533,6 +534,36 @@ public final class String
                         }
                     }
                 };
+            }
+            @Override
+            public long getSize() {
+                if (start>=value.length() || stop<=0) {
+                    return 0;
+                }
+                int count = start;
+                int index;
+                try {
+                    index = value.offsetByCodePoints(0, start);
+                }
+                catch (IndexOutOfBoundsException e) {
+                    return 0;
+                }
+                int size = 0;
+                while (true) {
+                    int result = value.indexOf(element, index);
+                    if (result<0) {
+                        return size;
+                    }
+                    count += value.codePointCount(index, result);
+                    index = result + len;
+                    if (count>=stop) {
+                        return size;
+                    }
+                    else {
+                        count++;
+                        size++;
+                    }
+                }
             }
         };
     }
@@ -545,63 +576,7 @@ public final class String
             @Defaulted @Name("length") long length) {
         return occurrences(value, element.codePoint, from, length);
     }
-
-    @Ignore
-    public static long 
-    countOccurrences(java.lang.String value, 
-            int element) {
-        return countOccurrences(value, element, 0);
-    }
     
-    @Ignore
-    public static long 
-    countOccurrences(java.lang.String value, 
-            int element, long from) {
-        return countOccurrences(value, element, from, 
-                java.lang.Integer.MAX_VALUE);
-    }
-    
-    @Ignore
-    public static long 
-    countOccurrences(java.lang.String value, 
-            int element, 
-            long from, long length) {
-        if (from>=value.length() || length<=0) {
-            return 0;
-        }
-        if (from<0) {
-            length+=from;
-            from = 0;
-        }
-        int i;
-        try {
-            i = value.offsetByCodePoints(0, (int)from);
-        }
-        catch (IndexOutOfBoundsException e) {
-            return 0;
-        }
-        int count = 0;
-        while (true) {
-            i = value.indexOf(element, i);
-            if (i<0 || i>=from+length) {
-                return count;
-            }
-            else {
-                count++;
-                i++;
-            }
-        }
-    }
-    
-    @Override
-    public long countOccurrences(
-            @Name("sublist")
-            Character element,
-            @Defaulted @Name("from") long from,
-            @Defaulted @Name("length") long length) {
-        return countOccurrences(value, element.codePoint, from, length);
-    }
-
     @Ignore
     public static boolean includes(java.lang.String value, 
             List<? extends Character> sublist) {
@@ -703,18 +678,20 @@ public final class String
         final String string = (String) substring;
         return new BaseIterable<Integer, java.lang.Object>
                 (Integer.$TypeDescriptor$, Null.$TypeDescriptor$) {
+            final int start = from<0 ? 0 : Util.toInt(from);
+            final java.lang.String str = string.value;
+            final int len = 
+                    java.lang.Character.charCount(
+                            str.codePointAt(0));
             @Override
             public Iterator<? extends Integer> iterator() {
                 return new BaseIterator<Integer>
                         (Integer.$TypeDescriptor$) {
                     long count = from;
-                    int len = java.lang.Character.charCount(
-                            string.value.codePointAt(0));
                     int index;
                     {
                         try {
-                            index = value.offsetByCodePoints(0, 
-                                    Util.toInt(from));
+                            index = value.offsetByCodePoints(0, start);
                         }
                         catch (IndexOutOfBoundsException e) {
                             index = value.length();
@@ -726,7 +703,7 @@ public final class String
                             return finished_.get_();
                         }
                         while (true) {
-                            int result = value.indexOf(string.value, index);
+                            int result = value.indexOf(str, index);
                             if (result<0) {
                                 return finished_.get_();
                             }
@@ -738,6 +715,28 @@ public final class String
                         }
                     }
                 };
+            }
+            @Override
+            public long getSize() {
+                if (start>value.length()) {
+                    return 0;
+                }
+                int i;
+                try {
+                    i = value.offsetByCodePoints(0, start);
+                }
+                catch (IndexOutOfBoundsException e) {
+                    return 0;
+                }
+                int size = 0;
+                while (true) {
+                    int result = value.indexOf(str, i);
+                    if (result<0) {
+                        return size;
+                    }
+                    i = result + len;
+                    size++;
+                }
             }
         };
     }
@@ -753,63 +752,6 @@ public final class String
         }
         else {
             return $ceylon$language$SearchableList$impl().inclusions(sublist, from);
-        }
-    }
-
-    @Ignore
-    public static long 
-    countInclusions(java.lang.String value, 
-            List<? extends Character> sublist) {
-        return countInclusions(value, sublist, 0);
-    }
-    
-    @Ignore
-    public static long 
-    countInclusions(java.lang.String value, 
-            List<? extends Character> sublist,
-            long from) {
-        if (from>value.length()) {
-            return 0;
-        }
-        if (from<0) {
-            from = 0;
-        }
-        if (sublist instanceof String) {
-            String string = (String) sublist;
-            java.lang.String str = string.value;
-            int i;
-            try {
-                i = value.offsetByCodePoints(0, (int)from);
-            }
-            catch (IndexOutOfBoundsException e) {
-                return 0;
-            }
-            int count = 0;
-            while (true) {
-                i = value.indexOf(str, i);
-                if (i<0) {
-                    return count;
-                }
-                else {
-                    i++;
-                    count++;
-                }
-            }
-        }
-        else {
-            return instance(value).countInclusions(sublist, from);
-        }
-    }
-    
-    @Override
-    public long countInclusions(
-            @Name("sublist") List<? extends Character> sublist,
-            @Defaulted @Name("from") long from) {
-        if (sublist instanceof String) {
-            return countInclusions(value, sublist, from);
-        }
-        else {
-            return $ceylon$language$SearchableList$impl().countInclusions(sublist, from);
         }
     }
     
@@ -3210,36 +3152,6 @@ public final class String
 //        return $ceylon$language$SearchableList$impl().endsWith(sublist);
 //    }
     
-    @Override @Ignore
-    public long countInclusions(List<? extends Character> arg0) {
-        return countInclusions(value, arg0);
-    }
-
-    @Override @Ignore
-    public long countInclusions$from(List<? extends Character> arg0) {
-        return 0;
-    }
-
-    @Override @Ignore
-    public long countOccurrences(Character element) {
-        return countOccurrences(value, element.codePoint);
-    }
-
-    @Override @Ignore
-    public long countOccurrences(Character element, long from) {
-        return countOccurrences(value, element.codePoint, from);
-    }
-
-    @Override @Ignore
-    public long countOccurrences$from(Character arg0) {
-        return 0;
-    }
-
-    @Override @Ignore
-    public long countOccurrences$length(Character arg0, long arg1) {
-        return java.lang.Integer.MAX_VALUE;
-    }
-
     @Override @Ignore
     public Integer firstInclusion(List<? extends Character> arg0) {
         return firstInclusion(value, arg0);

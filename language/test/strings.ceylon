@@ -576,8 +576,8 @@ shared void strings() {
     check("hello world".occurrences('l',3).sequence()==[3,9], "string occurrences 2");
     check("hello world".occurs('l'), "string occurs");
     check("hello world".occurs('l',3), "string occurs");
-    check("hello world".countOccurrences('l')==3, "string countOccurrences");
-    check("hello world".countOccurrences('l',3)==2, "string countOccurrences");
+    check("hello world".occurrences('l').size==3, "string countOccurrences");
+    check("hello world".occurrences('l',3).size==2, "string countOccurrences");
     check(("hello world".firstOccurrence('l') else -1)==2, "string firstOccurrence");
     check(("hello world".firstOccurrence('l',3) else -1)==3, "string firstOccurrence");
     check(("hello world".lastOccurrence('l') else -1)==9, "string lastOccurrence 1");
@@ -595,10 +595,10 @@ shared void strings() {
     check("hello world".includes("wor",5), "string includes");
     check("hello world".includes("wor",6), "string includes");
     check(!"hello world".includes("wor",7), "string includes");
-    check("hello world".countInclusions("wor")==1, "string countInclusions");
-    check("hello world".countInclusions("wor",5)==1, "string countInclusions");
-    check("hello world".countInclusions("wor",6)==1, "string countInclusions");
-    check("hello world".countInclusions("wor",7)==0, "string countInclusions");
+    check("hello world".inclusions("wor").size==1, "string countInclusions");
+    check("hello world".inclusions("wor",5).size==1, "string countInclusions");
+    check("hello world".inclusions("wor",6).size==1, "string countInclusions");
+    check("hello world".inclusions("wor",7).size==0, "string countInclusions");
     check(("hello world".firstInclusion("wor") else -1)==6, "string firstInclusion");
     check(("hello world".firstInclusion("wor",5) else -1)==6, "string firstInclusion");
     check(("hello world".firstInclusion("wor",6) else -1)==6, "string firstInclusion");
