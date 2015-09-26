@@ -10,10 +10,10 @@ import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 
 /**
- * Base class for the iterables used for iterable 
- * instantiation and the sequenced argument of are named 
- * argument invocation, where the expressions in the 
- * iterable are evaluated lazily. 
+ * Base class for the iterables used for enumerated stream
+ * instantiation and the sequenced argument of a named 
+ * argument invocation, where the listed expressions in the 
+ * stream are evaluated lazily. 
  */
 public abstract class LazyIterable<Element, Absent> 
 extends BaseIterable<Element, Absent>{
