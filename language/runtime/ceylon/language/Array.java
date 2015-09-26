@@ -271,7 +271,7 @@ public final class Array<Element>
         int size = Util.toInt(elements.getSize());
         
         if (elements instanceof ceylon.language.String
-                && !$reifiedElement.containsNull()) {
+                && $reifiedElement.getArrayElementClass()==Integer.class) {
             int[] array = new int[size];
             java.lang.String string = elements.toString();
             for (int i=0, offset = 0; i<size; i++) {

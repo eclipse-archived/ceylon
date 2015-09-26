@@ -296,4 +296,49 @@ shared void testArrays() {
     check(!helloWorld.firstInclusion([],12) exists, "array empty firstInclusion 3");
     check((helloWorld.firstOccurrence('d',0,11) else -1)==10, "array firstOccurrence 3");
     check(!helloWorld.firstOccurrence('d',0,10) exists, "array firstOccurrence 4");
+
+    Array<Object> helloWorld2 = Array<Object>("hello world");
+    
+    check(helloWorld2.occurrences('l').sequence()==[2,3,9], "array occurrences 1");
+    check(helloWorld2.occurrences('l',3).sequence()==[3,9], "array occurrences 2");
+    check(helloWorld2.occurs('l'), "array occurs");
+    check(helloWorld2.occurs('l',3), "array occurs");
+    check(helloWorld2.countOccurrences('l')==3, "array countOccurrences");
+    check(helloWorld2.countOccurrences('l',3)==2, "array countOccurrences");
+    check((helloWorld2.firstOccurrence('l') else -1)==2, "array firstOccurrence");
+    check((helloWorld2.firstOccurrence('l',3) else -1)==3, "array firstOccurrence");
+    check((helloWorld2.lastOccurrence('l') else -1)==9, "array lastOccurrence 1");
+    check((helloWorld2.lastOccurrence('l',0) else -1)==9, "array lastOccurrence 2");
+    check((helloWorld2.lastOccurrence('l',1) else -1)==9, "array lastOccurrence 3");
+    check((helloWorld2.lastOccurrence('l',2) else -1)==3, "array lastOccurrence 4");
+    check((helloWorld2.lastOccurrence('h') else -1)==0, "array lastOccurrence 5");
+    check((helloWorld2.lastOccurrence('e',4,6) else -1)==1, "array lastOccurrence 6");
+    
+    check(helloWorld2.inclusions("wor").sequence()==[6], "array inclusions 1");
+    check(helloWorld2.inclusions("wor",5).sequence()==[6], "array inclusions 2");
+    check(helloWorld2.inclusions("wor",6).sequence()==[6], "array inclusions 3");
+    check(helloWorld2.inclusions("wor",7).sequence()==[], "array inclusions 4");
+    check(helloWorld2.includes("wor"), "array includes");
+    check(helloWorld2.includes("wor",5), "array includes");
+    check(helloWorld2.includes("wor",6), "array includes");
+    check(!helloWorld2.includes("wor",7), "array includes");
+    check(helloWorld2.countInclusions("wor")==1, "array countInclusions 1");
+    check(helloWorld2.countInclusions("wor",5)==1, "array countInclusions 2");
+    check(helloWorld2.countInclusions("wor",6)==1, "array countInclusions 3");
+    check(helloWorld2.countInclusions("wor",7)==0, "array countInclusions 4");
+    check((helloWorld2.firstInclusion("wor") else -1)==6, "array firstInclusion 1");
+    check((helloWorld2.firstInclusion("wor",5) else -1)==6, "array firstInclusion 2");
+    check((helloWorld2.firstInclusion("wor",6) else -1)==6, "array firstInclusion 3");
+    check(!helloWorld2.firstInclusion("wor",7) exists, "array firstInclusion 4");
+    check((helloWorld2.lastInclusion("wor") else -1)==6, "array lastInclusion 1");
+    check((helloWorld2.lastInclusion("wor",1) else -1)==6, "array lastInclusion 2");
+    check((helloWorld2.lastInclusion("wor",2) else -1)==6, "array lastInclusion 3");
+    check(!helloWorld2.lastInclusion("wor",3) exists, "array lastInclusion 4");
+    
+    check((helloWorld2.lastInclusion([]) else -1)==11, "array empty lastInclusion");
+    check((helloWorld2.firstInclusion([]) else -1)==0, "array empty firstInclusion 1");
+    check((helloWorld2.firstInclusion([],11) else -1)==11, "array empty firstInclusion 2");
+    check(!helloWorld2.firstInclusion([],12) exists, "array empty firstInclusion 3");
+    check((helloWorld2.firstOccurrence('d',0,11) else -1)==10, "array firstOccurrence 3");
+    check(!helloWorld2.firstOccurrence('d',0,10) exists, "array firstOccurrence 4");
 }
