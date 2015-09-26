@@ -10,8 +10,7 @@ shared abstract class BaseIterator<Element>()
 shared abstract class BaseMap<Key,Item>()
         extends Object()
         satisfies Map<Key,Item>
-        given Key satisfies Object
-        given Item satisfies Object {}
+        given Key satisfies Object {}
 
 shared abstract serializable
 class BaseList<Element>()

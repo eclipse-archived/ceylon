@@ -1,11 +1,6 @@
 package com.redhat.ceylon.compiler.java.language;
 
-import static java.util.Collections.unmodifiableMap;
-import ceylon.language.Entry;
-import ceylon.language.Iterator;
-import ceylon.language.finished_;
-import ceylon.language.impl.BaseIterator;
-import ceylon.language.impl.BaseMap;
+import java.util.HashMap;
 
 import com.redhat.ceylon.compiler.java.metadata.Annotation;
 import com.redhat.ceylon.compiler.java.metadata.Annotations;
@@ -14,6 +9,12 @@ import com.redhat.ceylon.compiler.java.metadata.Class;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
+
+import ceylon.language.Entry;
+import ceylon.language.Iterator;
+import ceylon.language.finished_;
+import ceylon.language.impl.BaseIterator;
+import ceylon.language.impl.BaseMap;
 
 /** An immutable map returned by certain methods and functions of the language module.
  * This is only to avoid depending on ceylon.collection.
@@ -106,8 +107,9 @@ extends BaseMap<Key, Item> {
     @Override
     @Annotations(@Annotation("formal"))
     public InternalMap<? extends Key, ? extends Item> $clone() {
-        return new InternalMap<Key,Item>($reifiedKey, $reifiedItem, 
-        		unmodifiableMap(map));
+        return new InternalMap<Key,Item>(
+                $reifiedKey, $reifiedItem, 
+        		new HashMap<Key,Item>(map));
     }
 
     @Override
