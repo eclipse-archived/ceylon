@@ -1,6 +1,15 @@
 "A [[List]] which can be efficiently searched for 
  occurrences of a given element, or for inclusions of a 
- given sublist of elements."
+ given sublist of elements. This interface provides 
+ operations for finding:
+ 
+ - _occurrences_ of a single value in the list, and
+ - _inclusions_ of a given sublist of values in the list.
+ 
+ Occurrences and inclusions are identified by a list index
+ at which the value or sublist of values occurs in the list. 
+ In the case of an inclusion, it is the index of the first 
+ matching value from the sublist."
 see (`class String`, `class Array`)
 shared interface SearchableList<Element> 
         satisfies List<Element> {
