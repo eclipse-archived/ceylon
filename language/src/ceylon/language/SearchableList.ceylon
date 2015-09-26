@@ -39,35 +39,8 @@ shared interface SearchableList<Element>
         Integer from = 0,
         "The number of indexes to consider."
         Integer length = size-from)
-            => object satisfies {Integer*} {
-        size => countOccurrences(element, from, length);
-        empty => occurs(element, from, length);
-        first => firstOccurrence(element, from, length);
-        last => if (length>0,
-                    exists index
-                        = lastOccurrence(element, 
-                                from+length-1)) 
-                then (index>=from then index)
-                else null;
-        iterator() => let (list = outer)
-        object satisfies Iterator<Integer> {
-            variable value index = from;
-            shared actual Integer|Finished next() {
-                if (exists next 
-                        = list.firstOccurrence {
-                            element = element;
-                            from = index;
-                            length = length;
-                        }) {
-                    index = next+1;
-                    return next;
-                }
-                else {
-                    return finished;
-                }
-            }
-        };
-    };
+            => { for (i in from:length) 
+                 if (occursAt(i, element)) i };
     
     "Determines if the given [[value|element]] occurs as an 
      element of this list, at any index that falls within
@@ -81,16 +54,8 @@ shared interface SearchableList<Element>
         "The smallest index to consider."
         Integer from = 0,
         "The number of indexes to consider."
-        Integer length = size-from) {
-        for (index in from:length) {
-            if (occursAt(index,element)) {
-                return true;
-            }
-        }
-        else {
-            return false;
-        }
-    }
+        Integer length = size-from)
+            => !occurrences(element, from, length).empty;
     
     "Count the indexes in this list at which the given 
      [[value|element]] occurs, that fall within the segment 
@@ -104,15 +69,8 @@ shared interface SearchableList<Element>
         "The smallest index to consider."
         Integer from = 0,
         "The number of indexes to consider."
-        Integer length = size-from) {
-        variable value count = 0;
-        for (index in from:length) {
-            if (occursAt(index,element)) {
-                count++;
-            }
-        }
-        return count;
-    }
+        Integer length = size-from)
+            => occurrences(element, from, length).size;
     
     "The first index in this list at which the given 
      [[value|element]] occurs, that falls within the segment 
@@ -126,16 +84,8 @@ shared interface SearchableList<Element>
         "The smallest index to consider."
         Integer from = 0,
         "The number of indexes to consider."
-        Integer length = size-from) {
-        for (index in from:length) {
-            if (occursAt(index,element)) {
-                return index;
-            }
-        }
-        else {
-            return null;
-        }
-    }
+        Integer length = size-from)
+            => occurrences(element, from, length).first;
     
     "The last index in this list at which the given 
      [[value|element]] occurs, that falls within the range 
@@ -154,6 +104,8 @@ shared interface SearchableList<Element>
         Integer from = 0,
         "The number of indexes to consider."
         Integer length = size-from) {
+        //TODO: refine reversed to return a SearchableList
+        // => reversed.firstOccurrence(element, from, length)
         for (index in (size-length-from:length).reversed) {
             if (occursAt(index,element)) {
                 return index;
@@ -181,18 +133,15 @@ shared interface SearchableList<Element>
         for (i in 0:subsize) {
             value x = getFromFirst(index+i);
             value y = sublist.getFromFirst(i);
-            if (exists x) {
-                if (exists y) {
-                    if (x!=y) {
-                        return false;
-                    }
-                }
-                else {
+            if (exists x, exists y) {
+                if (x!=y) {
                     return false;
                 }
             }
-            else if (exists y) {
-                return false;
+            else {
+                if (x exists != y exists) {
+                    return false;
+                }
             }
         }
         else {
@@ -207,28 +156,8 @@ shared interface SearchableList<Element>
     {Integer*} inclusions(List<Element> sublist,
         "The smallest index to consider." 
         Integer from = 0) 
-            => object satisfies {Integer*} {
-        size => countInclusions(sublist, from);
-        empty => includes(sublist, from);
-        first => firstInclusion(sublist, from);
-        last => if (exists index = lastInclusion(sublist)) 
-                then (index>=from then index) 
-                else null;
-        iterator() => let (list = outer)
-        object satisfies Iterator<Integer> {
-            variable value index = from;
-            shared actual Integer|Finished next() {
-                if (exists next 
-                    = list.firstInclusion(sublist, index)) {
-                    index = next+1;
-                    return next;
-                }
-                else {
-                    return finished;
-                }
-            }
-        };
-    };
+            => { for (i in from:size+1-from-sublist.size) 
+                 if (includesAt(i, sublist)) i };
     
     "Determine if the given [[list|sublist]] occurs as a 
      sublist at some index in this list, at any index that 
@@ -237,14 +166,8 @@ shared interface SearchableList<Element>
     shared default 
     Boolean includes(List<Element> sublist,
         "The smallest index to consider."
-        Integer from = 0) {
-        for (index in from:size-from+1-sublist.size) {
-            if (includesAt(index,sublist)) {
-                return true;
-            }
-        }
-        return false;
-    }
+        Integer from = 0) 
+            => !inclusions(sublist, from).empty;
     
     "Count the indexes in this list at which the given 
      [[list|sublist]] occurs as a sublist, that are greater 
@@ -252,15 +175,8 @@ shared interface SearchableList<Element>
     shared default
     Integer countInclusions(List<Element> sublist,
         "The smallest index to consider." 
-        Integer from = 0) {
-        variable value count = 0;
-        for (index in from:size-from+1-sublist.size) {
-            if (includesAt(index,sublist)) {
-                count++;
-            }
-        }
-        return count;
-    }
+        Integer from = 0) 
+            => inclusions(sublist, from).size;
     
     "The first index in this list at which the given 
      [[list|sublist]] occurs as a sublist, that is greater 
@@ -268,16 +184,8 @@ shared interface SearchableList<Element>
     shared default 
     Integer? firstInclusion(List<Element> sublist,
         "The smallest index to consider." 
-        Integer from = 0) {
-        for (index in from:size-from+1-sublist.size) {
-            if (includesAt(index,sublist)) {
-                return index;
-            }
-        }
-        else {
-            return null;
-        }
-    }
+        Integer from = 0)
+            => inclusions(sublist, from).first;
     
     "The last index in this list at which the given 
      [[list|sublist]] occurs as a sublist, that falls within 
@@ -291,6 +199,8 @@ shared interface SearchableList<Element>
          list, where `0` is the last element of the list, 
          and `size-1` is the first element of the list."
         Integer from = 0) {
+        //TODO: refine reversed to return a SearchableList
+        // => reversed.firstInclusion(element, from, length)
         for (index in (0:size-from+1-sublist.size).reversed) {
             if (includesAt(index,sublist)) {
                 return index;
@@ -300,14 +210,5 @@ shared interface SearchableList<Element>
             return null;
         }
     }
-    
-    /*shared actual default 
-     Boolean startsWith(List<> sublist) 
-            => includesAt(0, sublist);
-     
-     shared actual default
-     Boolean endsWith(List<> sublist) 
-            => includesAt(size-sublist.size, sublist);*/
-    
     
 }
