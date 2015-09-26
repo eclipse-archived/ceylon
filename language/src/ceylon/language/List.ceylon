@@ -380,6 +380,7 @@ shared interface List<out Element=Anything>
     "The indexes in this list for which the element is not
      null and satisfies the given 
      [[predicate function|selecting]]."
+    see (`function locations`)
     shared default 
     {Integer*} indexesWhere(
             "The predicate function the indexed elements 
@@ -393,6 +394,7 @@ shared interface List<out Element=Anything>
     "The first index in this list for which the element is
      not null and satisfies the given 
      [[predicate function|selecting]]."
+    see (`function locate`)
     shared default 
     Integer? firstIndexWhere(
             "The predicate function the indexed elements 
@@ -412,6 +414,7 @@ shared interface List<out Element=Anything>
     "The last index in this list for which the element is
      not null and satisfies the given 
      [[predicate function|selecting]]."
+    see (`function locateLast`)
     shared default 
     Integer? lastIndexWhere(
             "The predicate function the indexed elements 

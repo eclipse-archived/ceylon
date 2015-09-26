@@ -595,7 +595,7 @@ shared interface Iterable<out Element=Anything,
          (-10..10).find(Integer.positive)
      
      evaluates to `1`."
-    see (`function findLast`)
+    see (`function findLast`, `function locate`)
     shared default 
     Element? find(
             "The predicate the element must satisfy."
@@ -618,7 +618,7 @@ shared interface Iterable<out Element=Anything,
          (-10..10).findLast(3.divides)
      
      evaluates to `9`."
-    see (`function find`)
+    see (`function find`, `function locateLast`)
     shared default 
     Element? findLast(
             "The predicate the element must satisfy."
@@ -643,9 +643,11 @@ shared interface Iterable<out Element=Anything,
          (-10..10).locate(Integer.positive)
      
      evaluates to `11->1`."
-    see (`function locateLast`, `function locations`)
+    see (`function locateLast`, `function locations`,
+         `function find`, 
+         `function List.firstIndexWhere`)
     shared default 
-    <Integer->Element>? locate(
+    <Integer->Element&Object>? locate(
         "The predicate the element must satisfy."
         Boolean selecting(Element&Object element)) {
         variable value index = 0;
@@ -669,12 +671,14 @@ shared interface Iterable<out Element=Anything,
          (-10..10).locateLast(3.divides)
      
      evaluates to `19->9`."
-    see (`function locate`, `function locations`)
+    see (`function locate`, `function locations`,
+         `function findLast`, 
+         `function List.lastIndexWhere`)
     shared default 
-    <Integer->Element>? locateLast(
+    <Integer->Element&Object>? locateLast(
         "The predicate the element must satisfy."
         Boolean selecting(Element&Object element)) {
-        variable <Integer->Element>? last = null;
+        variable <Integer->Element&Object>? last = null;
         variable value index = 0;
         for (elem in this) {
             if (exists elem, selecting(elem)) {
@@ -698,17 +702,18 @@ shared interface Iterable<out Element=Anything,
      Note that this method is more efficient than the
      alternative of applying [[filter]] to an [[indexed]]
      stream."
-    see (`function locate`, `function locateLast`)
+    see (`function locate`, `function locateLast`, 
+         `function List.indexesWhere`)
     shared default
-    {<Integer->Element>*} locations(
+    {<Integer->Element&Object>*} locations(
         "The predicate the element must satisfy."
         Boolean selecting(Element&Object element)) 
-            => object satisfies {<Integer->Element>*} {
+            => object satisfies {<Integer->Element&Object>*} {
         iterator() 
                 => let (iter = outer.iterator()) 
-            object satisfies Iterator<Integer->Element> {
+            object satisfies Iterator<Integer->Element&Object> {
                 variable value i=0;
-                shared actual <Integer->Element>|Finished next() {
+                shared actual <Integer->Element&Object>|Finished next() {
                     while (!is Finished next = iter.next()) { 
                         if (exists next, selecting(next)) {
                             return i++->next; 
