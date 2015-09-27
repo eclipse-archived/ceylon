@@ -52,9 +52,10 @@ shared interface Map<out Key=Object, out Item=Anything>
      belonging to this map."
     see (`function defines`)
     shared actual default Boolean contains(Object entry) {
-        if (is Key->Anything entry, defines(entry.key)) {
+        if (is Object->Anything entry, defines(entry.key)) {
             if (exists item = get(entry.key)) {
-                return if (exists entryItem = entry.item) 
+                return 
+                    if (exists entryItem = entry.item) 
                     then item==entryItem 
                     else false;
             }
@@ -255,7 +256,7 @@ shared interface Map<out Key=Object, out Item=Anything>
      
      That is, for any `key` in the resulting patched map:
      
-         map.patch(other)[key] == other[key] else map[key]
+         map.patch(other)[key] == (other.defines(key) then other else map)[key]
      
      This is a lazy operation producing a view of this map
      and the given map."
@@ -263,22 +264,29 @@ shared interface Map<out Key=Object, out Item=Anything>
     Map<Key|OtherKey,Item|OtherItem> 
     patch<OtherKey,OtherItem>
             (Map<OtherKey,OtherItem> other) 
-            given OtherKey satisfies Object 
-            given OtherItem satisfies Object 
+            given OtherKey satisfies Object
             => object 
             extends Object()
             satisfies Map<Key|OtherKey,Item|OtherItem> {
         
-        get(Object key) => other[key] else outer[key];
+        Boolean otherItemObject 
+                = other is Map<OtherKey,Object>;
+        
+        get(Object key) => 
+                if (otherItemObject)
+                then (other[key] else outer[key])
+                else (other.defines(key)
+                        then other else outer)
+                            [key];
         
         clone() => outer.clone().patch(other.clone());
         
         defines(Object key) 
                 => other.defines(key) || 
-                outer.defines(key);
+                   outer.defines(key);
         
         contains(Object entry)
-            => if (is Entry<Object,Object> entry)
+            => if (is Object->Anything entry)
             then entry in other ||
                     !other.defines(entry.key)
                     && entry in outer
@@ -289,7 +297,8 @@ shared interface Map<out Key=Object, out Item=Anything>
         size => outer.size +
                 other.keys.count(not(outer.defines));
         
-        iterator() => ChainedIterator(other,
+        iterator()
+                => ChainedIterator(other,
                         outer.filter(not(other.contains)));
         
     };
