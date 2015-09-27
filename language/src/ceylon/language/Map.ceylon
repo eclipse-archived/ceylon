@@ -270,7 +270,7 @@ shared interface Map<out Key=Object, out Item=Anything>
             satisfies Map<Key|OtherKey,Item|OtherItem> {
         
         Boolean otherItemObject 
-                = other is Map<OtherKey,Object>;
+                = other is Map<Object,Object>;
         
         get(Object key) => 
                 if (otherItemObject)
