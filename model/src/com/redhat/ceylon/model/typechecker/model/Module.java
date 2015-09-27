@@ -179,30 +179,28 @@ public class Module
     	                                name.equals("Integer") ||
     	                                name.equals("Float") ||
     	                                name.equals("Character") ||
+                                        name.equals("Boolean") ||
     	                                name.equals("Byte") ||
     	                                name.equals("Object") ||
-    	                                name.equals("Anything") ||
-    	                                name.equals("Boolean");
+    	                                name.equals("Anything");
     	                    int prox;
     	                    if (isSpecialValue) {
     	                        prox = 0;
     	                    }
     	                    else if (isSpecialType) {
-    	                        //just less than explicitly 
-    	                        //imported declarations, 
-    	                        //same as toplevels of the
-    	                        //package
-    	                        prox = proximity+1;
+                                //just less than toplevel
+                                //declarations of the package
+    	                        prox = proximity+2;
     	                    }
     	                    else if (isLanguageModule) {
     	                        //just less than toplevel
     	                        //declarations of the package
-    	                        prox = proximity+2;
+    	                        prox = proximity+3;
     	                    }
     	                    else {
     	                        //unimported declarations
     	                        //that may be imported
-    	                        prox = proximity+3;
+    	                        prox = proximity+4;
     	                    }
     						result.put(d.getQualifiedNameString(), 
     								new DeclarationWithProximity(d, 
@@ -212,6 +210,14 @@ public class Module
     				catch (Exception e) {}
     			}
     		}
+        }
+        if ("Nothing".startsWith(startingWith)) {
+            result.put("Nothing", 
+                    new DeclarationWithProximity(
+                            new NothingType(unit),
+                            //same as other "special" 
+                            //language module declarations
+                            proximity+2));
         }
         return result;
     }

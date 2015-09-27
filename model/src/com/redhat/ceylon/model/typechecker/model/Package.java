@@ -237,14 +237,6 @@ public class Package
                 result.put(name, existing);
     		}
         }
-        if ("Nothing".startsWith(startingWith)) {
-            result.put("Nothing", 
-                    new DeclarationWithProximity(
-                            new NothingType(unit),
-                            //same as other language module
-                            //declarations
-                            proximity+2));
-        }
         return result;
     }
 
