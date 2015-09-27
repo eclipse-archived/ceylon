@@ -3,6 +3,7 @@ package com.redhat.ceylon.model.typechecker.model;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isNameMatching;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isOverloadedVersion;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isResolvable;
+import static java.util.Collections.unmodifiableList;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -24,12 +25,15 @@ public class Module
     private String version;
     private int major;
     private int minor;
-    private List<Package> packages = new ArrayList<Package>();
-    private List<ModuleImport> imports = new ArrayList<ModuleImport>();
+    private List<Package> packages = 
+            new ArrayList<Package>();
+    private List<ModuleImport> imports = 
+            new ArrayList<ModuleImport>();
     private Module languageModule;
     private boolean available;
     private boolean isDefault;
-    private List<Annotation> annotations = new ArrayList<Annotation>();
+    private List<Annotation> annotations = 
+            new ArrayList<Annotation>();
     private Unit unit;
     private String memoisedName;
     private TypeCache cache = new TypeCache();
@@ -100,8 +104,10 @@ public class Module
         return list;
     }
     
-    private void addVisiblePackagesOfTransitiveDependencies(List<Package> list, 
-            Set<String> alreadyScannedModules, boolean firstLevel) {
+    private void addVisiblePackagesOfTransitiveDependencies(
+            List<Package> list, 
+            Set<String> alreadyScannedModules, 
+            boolean firstLevel) {
         for (ModuleImport mi: getImports()) {
             if (firstLevel || mi.isExport()) {
                 Module importedModule = mi.getModule();
@@ -164,7 +170,8 @@ public class Module
 			if (!isDefaultPackage) {
     			for (Declaration d: p.getMembers()) {
     				try {
-    					if (isResolvable(d) && d.isShared() && 
+    					if (isResolvable(d) && 
+    					        d.isShared() && 
     							!isOverloadedVersion(d) &&
     							isNameMatching(startingWith, d)) {
     	                    String name = d.getName();
@@ -259,11 +266,11 @@ public class Module
     }
     
     public String getNameAsString() {
-        if(memoisedName == null){
+        if (memoisedName == null){
             StringBuilder sb = new StringBuilder();
-            for (int i = 0; i < name.size(); i++) {
+            for (int i=0, s=name.size(); i<s; i++) {
                 sb.append(name.get(i));
-                if (i < name.size() - 1) {
+                if (i < name.size()-1) {
                     sb.append('.');
                 }
             }
@@ -385,10 +392,12 @@ public class Module
     }
 
     public List<ModuleImport> getOverridenImports() {
-        return overridenImports != null ? Collections.unmodifiableList(overridenImports) : null;
+        return overridenImports == null ? null :
+            unmodifiableList(overridenImports);
     }
 
-    public boolean overrideImports(List<ModuleImport> newModuleImports) {
+    public boolean overrideImports(
+            List<ModuleImport> newModuleImports) {
         if (overridenImports == null 
                 && newModuleImports != null) {
             overridenImports  = imports;
@@ -405,11 +414,12 @@ public class Module
     
     @Override
     public boolean equals(Object obj) {
-        if (obj == null || 
-                obj instanceof Module == false) {
+        if (obj instanceof Module) {
+            Module b = (Module) obj;
+            return getSignature().equals(b.getSignature());
+        }
+        else {
             return false;
         }
-        Module b = (Module) obj;
-        return getSignature().equals(b.getSignature());
     }
 }

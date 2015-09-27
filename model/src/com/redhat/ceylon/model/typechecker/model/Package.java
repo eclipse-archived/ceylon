@@ -6,9 +6,9 @@ import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isOverloadedVe
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isResolvable;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.lookupMember;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.lookupMemberForBackend;
+import static java.util.Collections.singleton;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -181,8 +181,9 @@ public class Package
         //toplevel members of a package
         //TODO: would it be better to look in the given unit 
         //      first, before checking imports?
-        Declaration d = unit.getImportedDeclaration(name, 
-                signature, ellipsis);
+        Declaration d = 
+                unit.getImportedDeclaration(name, 
+                        signature, ellipsis);
         if (d!=null) {
             return d;
         }
@@ -218,8 +219,8 @@ public class Package
         }
         Map<String,DeclarationWithProximity> importables = 
                 getModule()
-                    .getAvailableDeclarations(startingWith, 
-                            proximity);
+                    .getAvailableDeclarations(
+                            startingWith, proximity);
         for (Map.Entry<String, DeclarationWithProximity> e: 
         	    importables.entrySet()) {
     		boolean already = false;
@@ -227,8 +228,9 @@ public class Package
             String name = e.getKey();
             for (DeclarationWithProximity importable: 
                     result.values()) {
-        		if (importable.getDeclaration()
-        		        .equals(existing.getDeclaration())) {
+        		Declaration id = importable.getDeclaration();
+                Declaration ed = existing.getDeclaration();
+                if (id.equals(ed)) {
         			already = true;
         			break;
         		}
@@ -299,7 +301,8 @@ public class Package
     @Override
     public boolean equals(Object obj) {
         if (obj instanceof Package) {
-            return ((Package) obj).getNameAsString()
+            Package p = (Package) obj;
+            return p.getNameAsString()
                     .equals(getNameAsString());
         }
         else {
@@ -319,8 +322,6 @@ public class Package
     @Override
     public Set<String> getScopedBackends() {
         String backend = getModule().getNativeBackend();
-        return (backend != null) ?
-                Collections.singleton(backend) :
-                null;
+        return backend==null ? null : singleton(backend);
     }
 }
