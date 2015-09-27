@@ -185,7 +185,7 @@ public class Module
     	                                name.equals("Anything");
     	                    int prox;
     	                    if (isSpecialValue) {
-    	                        prox = 0;
+    	                        prox = -1;
     	                    }
     	                    else if (isSpecialType) {
                                 //just less than toplevel
