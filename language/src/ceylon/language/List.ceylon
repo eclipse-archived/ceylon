@@ -100,15 +100,15 @@ shared interface List<out Element=Anything>
     }
     
     "The index of the last element of the list, or `null` if 
-     the list is empty."
+     the list is empty. Always `size>0 then size-1`."
     see (`value List.size`)
     shared formal Integer? lastIndex;
     
     "The number of elements in this list, always
-     `list.lastIndex+1`."
+     `1 + (lastIndex else -1)`."
     see (`value List.lastIndex`)
     shared actual default Integer size 
-            => (lastIndex else -1) + 1;
+            => 1 + (lastIndex else -1);
     
     "Determines if the given index refers to an element of 
      this list, that is, if `0<=index<=list.lastIndex`."
