@@ -105,14 +105,16 @@ public class Module
         for (ModuleImport mi: getImports()) {
             if (firstLevel || mi.isExport()) {
                 Module importedModule = mi.getModule();
-                if (alreadyScannedModules.add(importedModule.getNameAsString())) {
-                    for (Package p: importedModule.getPackages()) {
+                String imn = importedModule.getNameAsString();
+                if (alreadyScannedModules.add(imn)) {
+                    for (Package p: 
+                            importedModule.getPackages()) {
                         if (p.isShared()) {
                             list.add(p);
                         }
                     }
-                    importedModule.addVisiblePackagesOfTransitiveDependencies(list, 
-                            alreadyScannedModules, false);
+                    importedModule.addVisiblePackagesOfTransitiveDependencies(
+                            list, alreadyScannedModules, false);
                 }
             }
         }
@@ -124,32 +126,34 @@ public class Module
      * packages that aren't visible to this module. 
      */
     public List<Package> getAllReachablePackages() {
-        List<Package> list = 
-                new ArrayList<Package>();
+        List<Package> list = new ArrayList<Package>();
         list.addAll(getPackages());
         addAllPackagesOfTransitiveDependencies(list, 
                 new HashSet<String>());
         return list;
     }
 
-    private void addAllPackagesOfTransitiveDependencies(List<Package> list, 
+    private void addAllPackagesOfTransitiveDependencies(
+            List<Package> list, 
             Set<String> alreadyScannedModules) {
         for (ModuleImport mi: getImports()) {
             Module importedModule = mi.getModule();
-            if (alreadyScannedModules.add(importedModule.getNameAsString())) {
+            String imn = importedModule.getNameAsString();
+            if (alreadyScannedModules.add(imn)) {
                 for (Package p: importedModule.getPackages()) {
                     list.add(p);
                 }
-                importedModule.addVisiblePackagesOfTransitiveDependencies(list, 
-                        alreadyScannedModules, false);
+                importedModule.addVisiblePackagesOfTransitiveDependencies(
+                        list, alreadyScannedModules, false);
             }
         }
     }
     
     public Map<String, DeclarationWithProximity> 
-    getAvailableDeclarations(String startingWith) {
+    getAvailableDeclarations(String startingWith, 
+            int proximity) {
     	Map<String, DeclarationWithProximity> result = 
-    	        new TreeMap<String, DeclarationWithProximity>();
+    	        new TreeMap<String,DeclarationWithProximity>();
     	for (Package p: getAllVisiblePackages()) {
     		String packageName = 
     		        p.getNameAsString();
@@ -163,10 +167,43 @@ public class Module
     					if (isResolvable(d) && d.isShared() && 
     							!isOverloadedVersion(d) &&
     							isNameMatching(startingWith, d)) {
+    	                    String name = d.getName();
+    	                    boolean isSpecialValue = 
+    	                            isLanguageModule &&
+    	                                name.equals("true") || 
+    	                                name.equals("false") || 
+    	                                name.equals("null");
+    	                    boolean isSpecialType = 
+                                    isLanguageModule &&
+    	                                name.equals("String") ||
+    	                                name.equals("Integer") ||
+    	                                name.equals("Float") ||
+    	                                name.equals("Byte") ||
+    	                                name.equals("Object") ||
+    	                                name.equals("Anything") ||
+    	                                name.equals("Boolean");
+    	                    int prox;
+    	                    if (isSpecialValue) {
+    	                        prox = 2;
+    	                    }
+    	                    else if (isSpecialType) {
+    	                        //same as explicitly imported
+    	                        //declarations
+    	                        prox = proximity;
+    	                    }
+    	                    else if (isLanguageModule) {
+    	                        //just less than toplevel
+    	                        //declarations of the package
+    	                        prox = proximity+2;
+    	                    }
+    	                    else {
+    	                        //unimported declarations
+    	                        //that may be imported
+    	                        prox = proximity+3;
+    	                    }
     						result.put(d.getQualifiedNameString(), 
     								new DeclarationWithProximity(d, 
-    										isLanguageModule ? 200 : 250, 
-    										!isLanguageModule));
+    										prox, !isLanguageModule));
     					}
     				}
     				catch (Exception e) {}

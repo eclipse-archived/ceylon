@@ -169,14 +169,18 @@ public abstract class Element {
     }
     
     public Map<String, DeclarationWithProximity> 
-    getMatchingDeclarations(Unit unit, String startingWith, int proximity) {
-    	Map<String, DeclarationWithProximity> result = getScope()
-    			.getMatchingDeclarations(unit, startingWith, proximity+1);
+    getMatchingDeclarations(Unit unit, String startingWith, 
+            int proximity) {
+    	Map<String, DeclarationWithProximity> result = 
+    	        getScope()
+    			    .getMatchingDeclarations(unit, 
+    			            startingWith, proximity+1);
         for (Declaration d: getMembers()) {
             if (isResolvable(d) && !isOverloadedVersion(d)){
                 if(isNameMatching(startingWith, d)) {
                     result.put(d.getName(unit), 
-                            new DeclarationWithProximity(d, proximity));
+                            new DeclarationWithProximity(d, 
+                                    proximity));
                 }
                 for(String alias : d.getAliases()){
                     if(isNameMatching(startingWith, alias)){

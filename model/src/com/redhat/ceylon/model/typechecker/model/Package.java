@@ -208,19 +208,25 @@ public class Package
     getMatchingDeclarations(Unit unit, String startingWith, 
             int proximity) {
         Map<String, DeclarationWithProximity> result = 
-                getMatchingDirectDeclarations(startingWith, proximity);
+                getMatchingDirectDeclarations(startingWith, 
+                        //package toplevels - just less than 
+                        //explicitly imported declarations
+                        proximity+1);
         if (unit!=null) {
-            result.putAll(unit.getMatchingImportedDeclarations(startingWith, 
-                    proximity));
+            result.putAll(unit.getMatchingImportedDeclarations(
+                    startingWith, proximity));
         }
-        Map<String,DeclarationWithProximity> importableDeclarations = 
-                getModule().getAvailableDeclarations(startingWith);
+        Map<String,DeclarationWithProximity> importables = 
+                getModule()
+                    .getAvailableDeclarations(startingWith, 
+                            proximity);
         for (Map.Entry<String, DeclarationWithProximity> e: 
-        	    importableDeclarations.entrySet()) {
+        	    importables.entrySet()) {
     		boolean already = false;
         	DeclarationWithProximity existing = e.getValue();
             String name = e.getKey();
-            for (DeclarationWithProximity importable: result.values()) {
+            for (DeclarationWithProximity importable: 
+                    result.values()) {
         		if (importable.getDeclaration()
         		        .equals(existing.getDeclaration())) {
         			already = true;
@@ -233,14 +239,18 @@ public class Package
         }
         if ("Nothing".startsWith(startingWith)) {
             result.put("Nothing", 
-                    new DeclarationWithProximity(new NothingType(unit), 
-                            proximity+100));
+                    new DeclarationWithProximity(
+                            new NothingType(unit),
+                            //same as other language module
+                            //declarations
+                            proximity+2));
         }
         return result;
     }
 
-    public Map<String, DeclarationWithProximity> getMatchingDirectDeclarations(
-            String startingWith, int proximity) {
+    public Map<String, DeclarationWithProximity> 
+    getMatchingDirectDeclarations(String startingWith, 
+            int proximity) {
         Map<String,DeclarationWithProximity> result = 
                 new TreeMap<String,DeclarationWithProximity>();
         for (Declaration d: getMembers()) {
@@ -249,16 +259,17 @@ public class Package
                     isNameMatching(startingWith, d)) {
                 result.put(d.getName(unit), 
                         new DeclarationWithProximity(d, 
-                                proximity+1));
+                                proximity));
             }
         }
         return result;
     }
 
-    public Map<String, DeclarationWithProximity> getImportableDeclarations(Unit unit, 
-    		String startingWith, List<Import> imports, int proximity) {
+    public Map<String, DeclarationWithProximity> 
+    getImportableDeclarations(Unit unit, String startingWith, 
+            List<Import> imports, int proximity) {
         Map<String, DeclarationWithProximity> result = 
-                new TreeMap<String, DeclarationWithProximity>();
+                new TreeMap<String,DeclarationWithProximity>();
         for (Declaration d: getMembers()) {
             if (isResolvable(d) && d.isShared() && 
             		!isOverloadedVersion(d) &&

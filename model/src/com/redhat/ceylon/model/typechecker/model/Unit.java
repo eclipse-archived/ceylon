@@ -205,7 +205,8 @@ public class Unit {
     }
     
     public Map<String, DeclarationWithProximity> 
-    getMatchingImportedDeclarations(String startingWith, int proximity) {
+    getMatchingImportedDeclarations(String startingWith, 
+            int proximity) {
     	Map<String, DeclarationWithProximity> result = 
     	        new TreeMap<String, DeclarationWithProximity>();
         for (Import i: new ArrayList<Import>(getImports())) {
