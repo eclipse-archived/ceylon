@@ -36,22 +36,23 @@ shared Integer? parseInteger(
     
     assert (minRadix <= radix <= maxRadix); 
     
-    variable Integer index = 0;
+    Integer start;
     Integer max = runtime.minIntegerValue / radix;
     
     // Parse the sign
     Boolean negative;
-    if (exists char = string[index]) {
+    if (exists char = string.first) {
         if (char == '-') {
             negative = true;
-            index++;
+            start = 1;
         }
         else if (char == '+') {
             negative = false;
-            index++;
+            start = 1;
         }
         else {
             negative = false;
+            start = 0;
         }
     }
     else {
@@ -65,15 +66,10 @@ shared Integer? parseInteger(
     Integer length = string.size;
     variable Integer result = 0;
     variable Integer digitIndex = 0;
+    variable Integer index = start;
     while (index < length) {
-        Character ch;
-        if (exists char = string[index]) {
-            ch = char;
-        }
-        else {
-            return null;
-        }
-        
+        assert (exists ch = string.getFromFirst(index));
+
         if (index + 1 == length && 
                 radix == 10 && 
                 ch in "kMGTP") {
