@@ -1,5 +1,6 @@
 @test
 shared void numbers() {
+    Object ob(Object x) { return x; }
     check(1==1, "natural equals");
     check(1!=2, "natural not equals");
     check(+1==+1, "integer equals");
@@ -13,6 +14,12 @@ shared void numbers() {
     check(+1==1, "natural equals integer");
     check(1.0==1, "natural equals float");
     check(1.0==+1, "integer equals float");
+    check(9007199254740991 == 9007199254740991.0, "large integer equals float");
+    check(9007199254740993 != 9007199254740993.0, "large integer doesn't equal float");
+    check(922337203685477632 != 9.2233720368547763E17, "even larger integer doesn't equal float");
+    check(9007199254740991.0 == 9007199254740991, "large float equals integer");
+    check(9007199254740993.0 != 9007199254740993, "large float doesn't equal integer");
+    check(9.2233720368547763E17 != 922337203685477632, "even larger float doesn't equal integer");
     check(1<2, "natural comparison");
     check(-1<+2, "integer comparison");
     check(-0.5<0.0, "float comparison");

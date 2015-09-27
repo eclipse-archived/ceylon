@@ -13,8 +13,10 @@
  exception raised).
  
  An integer is considered equal to its [[float]] 
- representation. That is, for every integer `int`, the 
- expression `int.float==int` evaluates to `true`.
+ representation, if that exists. That is, for every
+ integer `int`, either `int.float` throws an
+ OverflowException or the expression `int.float==int`
+ evaluates to `true`.
  
  An integer is represented as a sequence of bits. Not all of 
  the bits in the representation may be addressed by the 
@@ -83,7 +85,8 @@ shared native final class Integer(Integer integer)
      - the [[fractional part|Float.fractionalPart]] of its 
        value equals `0.0`, and
      - the [[integer part|Float.integer]] part of its value 
-       equals this integer."
+       equals this integer, and
+     - this integer is between -2<sup>53</sup> and 2<sup>53</sup> (exclusive)."
     shared actual native Boolean equals(Object that);
     
     shared actual native Integer hash;
