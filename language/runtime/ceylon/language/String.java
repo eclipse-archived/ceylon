@@ -673,14 +673,14 @@ public final class String
             final List<? extends Character> substring,
             final long from) {
         if (!(substring instanceof String)) {
-            return instance(value).inclusions(substring);
+            return instance(value).inclusions(substring, from);
         }
         final String string = (String) substring;
         return new BaseIterable<Integer, java.lang.Object>
                 (Integer.$TypeDescriptor$, Null.$TypeDescriptor$) {
             final int start = from<0 ? 0 : Util.toInt(from);
             final java.lang.String str = string.value;
-            final int len = 
+            final int len = str.isEmpty() ? 1 :
                     java.lang.Character.charCount(
                             str.codePointAt(0));
             @Override
@@ -699,10 +699,7 @@ public final class String
                     }
                     @Override
                     public java.lang.Object next() {
-                        if (index>=value.length()) {
-                            return finished_.get_();
-                        }
-                        while (true) {
+                        while (index<=value.length()) {
                             int result = value.indexOf(str, index);
                             if (result<0) {
                                 return finished_.get_();
@@ -713,6 +710,7 @@ public final class String
                             count++; 
                             return Integer.instance(c);
                         }
+                        return finished_.get_();
                     }
                 };
             }
@@ -729,7 +727,7 @@ public final class String
                     return 0;
                 }
                 int size = 0;
-                while (true) {
+                while (i<=value.length()) {
                     int result = value.indexOf(str, i);
                     if (result<0) {
                         return size;
@@ -737,6 +735,7 @@ public final class String
                     i = result + len;
                     size++;
                 }
+                return size;
             }
         };
     }

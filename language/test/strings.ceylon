@@ -614,4 +614,12 @@ shared void strings() {
     check(!"hello world".firstInclusion([],12) exists, "string empty firstInclusion 3");
     check(("hello world".firstOccurrence('d',0,11) else -1)==10, "string firstOccurrence 3");
     check(!"hello world".firstOccurrence('d',0,10) exists, "string firstOccurrence 4");
+    
+    check("yoyoyoyoyo".inclusions("yoy").size==4, "string overlapping inclusions");
+    check("yoyoyoyoyo".inclusions("yoy").sequence()==[0, 2, 4, 6], "string overlapping inclusions");
+    check("hello".inclusions("").size==6, "string empty inclusions");
+    check("hello".inclusions("").sequence()==[0, 1, 2, 3, 4, 5], "string empty inclusions");
+    check("".inclusions("").size==1, "empty string empty inclusions");
+    check(("".firstInclusion("") else -1) == 0, "empty string empty inclusions");
+    check(("".lastInclusion("") else -1) == 0, "empty string empty inclusions");
 }

@@ -9,7 +9,22 @@
  Occurrences and inclusions are identified by a list index
  at which the value or sublist of values occurs in the list. 
  In the case of an inclusion, it is the index of the first 
- matching value from the sublist."
+ matching value from the sublist.
+ 
+ Inclusions may overlap. For example:
+ 
+     \"yoyoyoyoyo\".inclusions(\"yoy\")
+ 
+ produces the stream `{ 0, 2, 4, 6 }`.
+ 
+ An empty list is considered to be included at every index,
+ including the index [[size]] at the very end of the 
+ list. Thus:
+ 
+     \"hello\".inclusions(\"\")
+ 
+ produces the stream `{ 0, 1, 2, 3, 4, 5 }`, with 6 
+ inclusions in a string of length 5."
 see (`class String`, `class Array`)
 shared interface SearchableList<Element> 
         satisfies List<Element> {

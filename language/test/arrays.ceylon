@@ -341,4 +341,12 @@ shared void testArrays() {
     check(!helloWorld2.firstInclusion([],12) exists, "array empty firstInclusion 3");
     check((helloWorld2.firstOccurrence('d',0,11) else -1)==10, "array firstOccurrence 3");
     check(!helloWorld2.firstOccurrence('d',0,10) exists, "array firstOccurrence 4");
+
+    check(Array("yoyoyoyoyo").inclusions("yoy").size==4, "string overlapping inclusions");
+    check(Array("yoyoyoyoyo").inclusions("yoy").sequence()==[0, 2, 4, 6], "string overlapping inclusions");
+    check(Array("hello").inclusions("").size==6, "string empty inclusions");
+    check(Array("hello").inclusions("").sequence()==[0, 1, 2, 3, 4, 5], "string empty inclusions");
+    check(Array("").inclusions("").size==1, "empty string empty inclusions");
+    check((Array("").firstInclusion("") else -1) == 0, "empty string empty inclusions");
+    check((Array("").lastInclusion("") else -1) == 0, "empty string empty inclusions");
 }
