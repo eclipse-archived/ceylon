@@ -143,6 +143,7 @@
 ^(ENUMERATED:DECLARATION
     DELEGATED_CONSTRUCTOR?
     BLOCK
+    boolean promoted;
     Value declarationModel;
     Constructor enumerated;)
 
@@ -151,6 +152,7 @@
     PARAMETER_LIST?
     DELEGATED_CONSTRUCTOR?
     BLOCK
+    boolean promoted;
     Function declarationModel;
     Constructor constructor;)
 

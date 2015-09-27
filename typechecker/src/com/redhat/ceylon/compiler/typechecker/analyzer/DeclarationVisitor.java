@@ -861,6 +861,9 @@ public abstract class DeclarationVisitor extends Visitor {
         Scope o = enterScope(c);
         super.visit(that);
         exitScope(o);
+        if (that.getPromoted()) {
+            f.setContainer(pkg);
+        }
         f.setImplemented(that.getBlock() != null);
         if (that.getParameterList()==null) {
             that.addError("missing parameter list in constructor declaration: '" + 
@@ -943,6 +946,9 @@ public abstract class DeclarationVisitor extends Visitor {
         Scope o = enterScope(e);
         super.visit(that);
         exitScope(o);
+        if (that.getPromoted()) {
+            v.setContainer(pkg);
+        }
         v.setImplemented(that.getBlock() != null);
     }
 

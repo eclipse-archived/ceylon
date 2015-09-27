@@ -357,6 +357,11 @@ enumeratedObject returns [Enumerated declaration]
     : NEW
       { $declaration = new Enumerated($NEW); }
       (
+          PACKAGE
+          { $declaration.setPromoted(true); }
+          MEMBER_OP
+      )?
+      (
         memberNameDeclaration
         { $declaration.setIdentifier($memberNameDeclaration.identifier); }
       )?
@@ -881,6 +886,11 @@ classDeclaration returns [AnyClass declaration]
 constructor returns [Constructor declaration]
     : NEW
       { $declaration = new Constructor($NEW); }
+      (
+          PACKAGE
+          { $declaration.setPromoted(true); }
+          MEMBER_OP
+      )?
       (
         memberNameDeclaration
         { $declaration.setIdentifier($memberNameDeclaration.identifier); }
@@ -1485,7 +1495,7 @@ declaration returns [Declaration declaration]
       { $declaration=$inferredAttributeDeclaration.declaration; }
     | typedMethodOrAttributeDeclaration
       { $declaration=$typedMethodOrAttributeDeclaration.declaration; }
-    | (NEW (LIDENTIFIER|UIDENTIFIER)? LPAREN) => 
+    | (NEW (PACKAGE MEMBER_OP)? (LIDENTIFIER|UIDENTIFIER)? LPAREN) => 
       constructor
       { $declaration=$constructor.declaration; }
     | enumeratedObject
