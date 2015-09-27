@@ -178,6 +178,7 @@ public class Module
     	                                name.equals("String") ||
     	                                name.equals("Integer") ||
     	                                name.equals("Float") ||
+    	                                name.equals("Character") ||
     	                                name.equals("Byte") ||
     	                                name.equals("Object") ||
     	                                name.equals("Anything") ||
@@ -187,9 +188,11 @@ public class Module
     	                        prox = 0;
     	                    }
     	                    else if (isSpecialType) {
-    	                        //same as explicitly imported
-    	                        //declarations
-    	                        prox = proximity;
+    	                        //just less than explicitly 
+    	                        //imported declarations, 
+    	                        //same as toplevels of the
+    	                        //package
+    	                        prox = proximity+1;
     	                    }
     	                    else if (isLanguageModule) {
     	                        //just less than toplevel
