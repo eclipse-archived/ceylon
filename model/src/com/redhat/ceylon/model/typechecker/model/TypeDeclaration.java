@@ -1048,19 +1048,19 @@ public abstract class TypeDeclaration extends Declaration
 //        supertypeDeclarations = null;
     }
 
-    boolean isAnything() {
+    public boolean isAnything() {
         return false;
     }
     
-    boolean isObject() {
+    public boolean isObject() {
         return false;
     }
     
-    boolean isNull() {
+    public boolean isNull() {
         return false;
     }
     
-    boolean isNullValue() {
+    public boolean isNullValue() {
         return false;
     }
     
