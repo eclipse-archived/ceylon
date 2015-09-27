@@ -184,7 +184,7 @@ public class Module
     	                                name.equals("Boolean");
     	                    int prox;
     	                    if (isSpecialValue) {
-    	                        prox = 2;
+    	                        prox = 0;
     	                    }
     	                    else if (isSpecialType) {
     	                        //same as explicitly imported
