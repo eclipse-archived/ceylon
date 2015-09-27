@@ -24,7 +24,12 @@
      \"hello\".inclusions(\"\")
  
  produces the stream `{ 0, 1, 2, 3, 4, 5 }`, with 6 
- inclusions in a string of length 5."
+ inclusions in a string of length 5. 
+ 
+ In particular:
+ 
+ - `\"\".inclusions(\"x\")` is the empty stream `{}`, but
+ - `\"\".inclusions(\"\")` is the stream `{ 0 }`."
 see (`class String`, `class Array`)
 shared interface SearchableList<Element> 
         satisfies List<Element> {
