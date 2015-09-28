@@ -411,16 +411,23 @@ public class ConditionGenerator {
             item.addError("case(satisfies) not yet supported", Backend.JavaScript);
             gen.out("true");
         } else if (item instanceof MatchCase) {
+            final boolean isNull = switchTerm.getTypeModel().covers(switchTerm.getUnit().getNullType());
             boolean first = true;
             for (Expression exp : ((MatchCase)item).getExpressionList().getExpressions()) {
                 if (!first) gen.out(" || ");
-                if (exp.getTerm() instanceof Tree.StringLiteral || exp.getTerm() instanceof Tree.NaturalLiteral
-                        || ModelUtil.isTypeUnknown(switchTerm.getTypeModel())) {
+                final Tree.Term term = exp.getTerm();
+                if (term instanceof Tree.StringLiteral || term instanceof Tree.NaturalLiteral) {
+                    if (isNull) {
+                        gen.out(gen.getClAlias(), "nn$(", expvar, ")&&");
+                    }
+                    exp.visit(gen);
+                    gen.out(".equals(", expvar, ")");
+                } else if (ModelUtil.isTypeUnknown(switchTerm.getTypeModel())) {
                     gen.out(expvar, "===");
-                    if (!gen.isNaturalLiteral(exp.getTerm())) {
+                    if (!gen.isNaturalLiteral(term)) {
                         exp.visit(gen);
                     }
-                } else if (exp.getTerm() instanceof Tree.Literal) {
+                } else if (term instanceof Tree.Literal) {
                     if (switchTerm.getUnit().isOptionalType(switchTerm.getTypeModel())) {
                         gen.out(expvar,"!==null&&");
                     }

@@ -71,6 +71,7 @@ import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.ParameterList;
 import com.redhat.ceylon.model.typechecker.model.Scope;
 import com.redhat.ceylon.model.typechecker.model.Setter;
+import com.redhat.ceylon.model.typechecker.model.Specification;
 import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.TypeAlias;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
@@ -526,7 +527,16 @@ public class GenerateJsVisitor extends Visitor {
         private boolean outerRefs=false;
         NeedsThisVisitor(Node n) {
             if (prototypeOwner != null) {
-                n.visit(this);
+                Scope scope = ModelUtil.getRealScope(n.getScope());
+                if (scope instanceof Specification) {
+                    scope = ModelUtil.getRealScope(scope.getContainer());
+                }
+                final boolean isMember = scope instanceof ClassOrInterface ||
+                        (scope instanceof Declaration && (((Declaration)scope).isClassOrInterfaceMember()
+                                || ((Declaration)scope).isParameter()));
+                if (isMember) {
+                    n.visit(this);
+                }
             }
         }
         @Override public void visit(Tree.This that) {
