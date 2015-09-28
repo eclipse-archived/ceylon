@@ -487,6 +487,7 @@ public class CeylonDocToolTests {
                 "ceylon.net",
                 "ceylon.process",
                 "ceylon.promise",
+                "ceylon.regex",
                 "ceylon.test",
                 "ceylon.time",
                 "ceylon.transaction",

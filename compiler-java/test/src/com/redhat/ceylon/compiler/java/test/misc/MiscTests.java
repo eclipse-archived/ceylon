@@ -281,6 +281,7 @@ public class MiscTests extends CompilerTests {
                 "net",
                 "process",
                 "promise",
+                "regex",
                 "time",
                 // commented out until we make it compile DAMNIT
 //                "transaction",
