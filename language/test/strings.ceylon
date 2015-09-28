@@ -626,4 +626,8 @@ shared void strings() {
     check(#10000.character.string.padLeading(2, '-').size == 2, "pad leading codepoints");
     check(#10000.character.string.padTrailing(2, '-').size == 2, "pad trailing codepoints");
     check(#10000.character.string.pad(2, '-').size == 2, "pad codepoints");
+    
+    check("protocol:foo/bar/baz".locations(":/".contains).sequence()==[8->':',12->'/',16->'/']);
+    check(("protocol:foo/bar/baz".locate(":/".contains) else 1)==8->':');
+    check(("protocol:foo/bar/baz".locateLast(":/".contains) else 1)==16->'/');
 }
