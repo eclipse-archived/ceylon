@@ -120,12 +120,12 @@ shared native final class String(characters)
              occurring in the string should be discarded. If 
              `false`, they will be included in the resulting 
              iterator."
-            Boolean discardSeparators=true,
+            Boolean discardSeparators = true,
             "Specifies that the separator tokens should be 
              grouped eagerly and not be treated as 
              single-character tokens. If `false` each 
              separator token will be of size `1`."
-            Boolean groupSeparators=true);
+            Boolean groupSeparators = true);
     
     "The first character in the string."
     shared actual native Character? first;
