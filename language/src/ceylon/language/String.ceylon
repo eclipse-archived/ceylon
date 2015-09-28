@@ -568,5 +568,5 @@ shared native final class String(characters)
     shared actual native Character? findLast(Boolean selecting(Character element));
     shared actual native <Integer->Character>? locate(Boolean selecting(Character element));
     shared actual native <Integer->Character>? locateLast(Boolean selecting(Character element));
-    shared actual {<Integer->Character>*} locations(Boolean selecting(Character element));
+    shared actual native {<Integer->Character>*} locations(Boolean selecting(Character element));
 }
