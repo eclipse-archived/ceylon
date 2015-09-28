@@ -1566,6 +1566,10 @@ public class ExpressionTransformer extends AbstractTransformer {
             Type seqElemType = typeFact().getIteratedType(value.getTypeModel());
             seqElemType = wrapInOptionalForInterop(seqElemType, expectedType, containsUncheckedNulls(list));
             Type absentType = typeFact().getIteratedAbsentType(value.getTypeModel());
+            if(list.size() == 1 && list.get(0) instanceof Tree.Comprehension){
+                Type type = typeFact().getIterableType(seqElemType);
+                return expressionGen().transformComprehension((Tree.Comprehension) list.get(0), type);
+            }
             return makeLazyIterable(sequencedArgument, seqElemType, absentType, 0);
         } else {
             return makeEmpty();
