@@ -350,7 +350,7 @@ shared interface Iterable<out Element=Anything,
      
      results in the stream `{ 1, 10, 100, 1000, 10000 }`."
     see (`function collect`)
-    shared default 
+    shared default
     Iterable<Result,Absent> map<Result>(
             "The mapping to apply to the elements."
             Result collecting(Element element)) 
@@ -1144,7 +1144,7 @@ shared interface Iterable<out Element=Anything,
             "A default value that replaces `null` elements."
             Default defaultValue)
             given Default satisfies Object
-            => { for (elem in this) elem else defaultValue };
+            => map((elem) => elem else defaultValue);
     
     "The non-null elements of this stream, in the order in
      which they occur in this stream. For null elements of 
