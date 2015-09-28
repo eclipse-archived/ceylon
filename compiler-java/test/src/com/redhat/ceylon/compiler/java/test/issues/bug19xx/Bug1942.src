@@ -7,84 +7,70 @@ package com.redhat.ceylon.compiler.java.test.issues.bug19xx;
 class Bug1942 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     Bug1942() {
-        final .ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object> first = new .com.redhat.ceylon.compiler.java.language.LazyIterable<.java.lang.Object, .java.lang.Object>(.ceylon.language.Basic.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 1, true){
+        final .ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object> first = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.java.lang.Object, .java.lang.Object>(.ceylon.language.Basic.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
             
-            @.java.lang.Override
-            @.com.redhat.ceylon.compiler.java.metadata.Ignore
-            protected final .java.lang.Object $evaluate$(int $index$) {
-                switch ($index$) {
-                case 0: 
-                    return new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.java.lang.Object, .java.lang.Object>(.ceylon.language.Basic.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
-                        
-                        public final .ceylon.language.Iterator<.java.lang.Object> iterator() {
-                            return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.java.lang.Object>(.ceylon.language.Basic.$TypeDescriptor$){
+            public final .ceylon.language.Iterator<.java.lang.Object> iterator() {
+                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.java.lang.Object>(.ceylon.language.Basic.$TypeDescriptor$){
+                    {
+                        $iterator$0 = new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 1, false){
+                            
+                            @.java.lang.Override
+                            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+                            protected final .java.lang.Object $evaluate$(int $index$) {
+                                switch ($index$) {
+                                case 0: 
+                                    return .ceylon.language.Integer.instance(1L);
+                                
+                                default: 
+                                    return null;
+                                
+                                }
+                            }
+                        }.iterator();
+                    }
+                    private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> $iterator$0;
+                    private .ceylon.language.Integer aa;
+                    private boolean aa$exhausted$;
+                    
+                    private final boolean aa() {
+                        final .java.lang.Object $ceylontmp$item$0 = $iterator$0.next();
+                        aa$exhausted$ = $ceylontmp$item$0 == .ceylon.language.finished_.get_();
+                        if (aa$exhausted$) {
+                            return false;
+                        } else {
+                            aa = (.ceylon.language.Integer)$ceylontmp$item$0;
+                            return true;
+                        }
+                    }
+                    
+                    public final .java.lang.Object next() {
+                        if (this.aa()) {
+                            final .ceylon.language.Integer aa = this.aa;
+                            return (
+                                let
                                 {
-                                    $iterator$0 = new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 1, false){
+                                    
+                                    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+                                    @.com.redhat.ceylon.compiler.java.metadata.Name("anonymous#0")
+                                    @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
+                                    @.com.redhat.ceylon.compiler.java.metadata.Object
+                                    class anonymous_0_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+                                        
+                                        private anonymous_0_() {
+                                        }
                                         
                                         @.java.lang.Override
                                         @.com.redhat.ceylon.compiler.java.metadata.Ignore
-                                        protected final .java.lang.Object $evaluate$(int $index$) {
-                                            switch ($index$) {
-                                            case 0: 
-                                                return .ceylon.language.Integer.instance(1L);
-                                            
-                                            default: 
-                                                return null;
-                                            
-                                            }
+                                        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                                            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bug1942.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(anonymous_0_.class));
                                         }
-                                    }.iterator();
-                                }
-                                private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> $iterator$0;
-                                private .ceylon.language.Integer aa;
-                                private boolean aa$exhausted$;
-                                
-                                private final boolean aa() {
-                                    final .java.lang.Object $ceylontmp$item$0 = $iterator$0.next();
-                                    aa$exhausted$ = $ceylontmp$item$0 == .ceylon.language.finished_.get_();
-                                    if (aa$exhausted$) {
-                                        return false;
-                                    } else {
-                                        aa = (.ceylon.language.Integer)$ceylontmp$item$0;
-                                        return true;
                                     }
                                 }
-                                
-                                public final .java.lang.Object next() {
-                                    if (this.aa()) {
-                                        final .ceylon.language.Integer aa = this.aa;
-                                        return (
-                                            let
-                                            {
-                                                
-                                                @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
-                                                @.com.redhat.ceylon.compiler.java.metadata.Name("anonymous#0")
-                                                @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
-                                                @.com.redhat.ceylon.compiler.java.metadata.Object
-                                                class anonymous_0_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
-                                                    
-                                                    private anonymous_0_() {
-                                                    }
-                                                    
-                                                    @.java.lang.Override
-                                                    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-                                                    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
-                                                        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bug1942.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(anonymous_0_.class));
-                                                    }
-                                                }
-                                            }
-                                            returning new anonymous_0_();
-                                        );
-                                    } else return .ceylon.language.finished_.get_();
-                                }
-                            };
-                        }
-                    };
-                
-                default: 
-                    return null;
-                
-                }
+                                returning new anonymous_0_();
+                            );
+                        } else return .ceylon.language.finished_.get_();
+                    }
+                };
             }
         };
     }

@@ -152,48 +152,35 @@ final class bug601_ {
                     protected final .java.lang.Object $evaluate$(int $index$) {
                         switch ($index$) {
                         case 0: 
-                            return new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 1, true){
+                            return new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
                                 
-                                @.java.lang.Override
-                                protected final .java.lang.Object $evaluate$(int $index$) {
-                                    switch ($index$) {
-                                    case 0: 
-                                        return new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
-                                            
-                                            public final .ceylon.language.Iterator<.ceylon.language.String> iterator() {
-                                                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$){
-                                                    {
-                                                        $iterator$0 = .ceylon.language.String.split("hello world").iterator();
-                                                    }
-                                                    private final .ceylon.language.Iterator<? extends .ceylon.language.String> $iterator$0;
-                                                    private .ceylon.language.String str;
-                                                    private boolean str$exhausted$;
-                                                    
-                                                    private final boolean str() {
-                                                        final .java.lang.Object $ceylontmp$item$3 = $iterator$0.next();
-                                                        str$exhausted$ = $ceylontmp$item$3 == .ceylon.language.finished_.get_();
-                                                        if (str$exhausted$) {
-                                                            return false;
-                                                        } else {
-                                                            str = (.ceylon.language.String)$ceylontmp$item$3;
-                                                            return true;
-                                                        }
-                                                    }
-                                                    
-                                                    public final .java.lang.Object next() {
-                                                        if (this.str()) {
-                                                            final .ceylon.language.String str = this.str;
-                                                            return str;
-                                                        } else return .ceylon.language.finished_.get_();
-                                                    }
-                                                };
+                                public final .ceylon.language.Iterator<.ceylon.language.String> iterator() {
+                                    return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$){
+                                        {
+                                            $iterator$0 = .ceylon.language.String.split("hello world").iterator();
+                                        }
+                                        private final .ceylon.language.Iterator<? extends .ceylon.language.String> $iterator$0;
+                                        private .ceylon.language.String str;
+                                        private boolean str$exhausted$;
+                                        
+                                        private final boolean str() {
+                                            final .java.lang.Object $ceylontmp$item$3 = $iterator$0.next();
+                                            str$exhausted$ = $ceylontmp$item$3 == .ceylon.language.finished_.get_();
+                                            if (str$exhausted$) {
+                                                return false;
+                                            } else {
+                                                str = (.ceylon.language.String)$ceylontmp$item$3;
+                                                return true;
                                             }
-                                        };
-                                    
-                                    default: 
-                                        return null;
-                                    
-                                    }
+                                        }
+                                        
+                                        public final .java.lang.Object next() {
+                                            if (this.str()) {
+                                                final .ceylon.language.String str = this.str;
+                                                return str;
+                                            } else return .ceylon.language.finished_.get_();
+                                        }
+                                    };
                                 }
                             };
                         
