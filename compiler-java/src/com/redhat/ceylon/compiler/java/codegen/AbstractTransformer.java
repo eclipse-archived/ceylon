@@ -4020,7 +4020,12 @@ public abstract class AbstractTransformer implements Transformation {
         Type arrayType = simplifyType(typeFact().getIteratedType(varargsParameter.getType()));
         while (arrayType.getDeclaration() instanceof TypeParameter) {
             TypeParameter tp = (TypeParameter)arrayType.getDeclaration();
-            arrayType = tp.getSatisfiedTypes().get(0);
+            if(tp.getSatisfiedTypes().isEmpty()){
+                arrayType = typeFact().getObjectType();
+                break;
+            }else{
+                arrayType = tp.getSatisfiedTypes().get(0);
+            }
         }
         
         // we could have a <X>variadic(X&Object), so we need to pick a type which satisfies the bound
