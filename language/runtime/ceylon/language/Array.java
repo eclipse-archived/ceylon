@@ -1724,7 +1724,7 @@ public final class Array<Element>
     }
     
     @Override
-    @TypeInfo("ceylon.language::Null|ceylon.language::Entry<ceylon.language::Integer,Element>")
+    @TypeInfo("ceylon.language::Null|ceylon.language::Entry<ceylon.language::Integer,Element&ceylon.language::Object>")
     public Entry<? extends Integer,? extends Element> 
     locate(@Name("selecting")
     @FunctionalParameter("(element)") 
@@ -1743,7 +1743,7 @@ public final class Array<Element>
     }
     
     @Override
-    @TypeInfo("ceylon.language::Null|ceylon.language::Entry<ceylon.language::Integer,Element>")
+    @TypeInfo("ceylon.language::Null|ceylon.language::Entry<ceylon.language::Integer,Element&ceylon.language::Object>")
     public Entry<? extends Integer,? extends Element> 
     locateLast(@Name("selecting")
     @FunctionalParameter("(element)") 
