@@ -91,15 +91,12 @@ shared interface Map<out Key=Object, out Item=Anything>
     see (`function defines`)
     shared actual default Boolean contains(Object entry) {
         if (is Object->Anything entry, defines(entry.key)) {
-            if (exists item = get(entry.key)) {
-                return 
-                    if (exists entryItem = entry.item) 
-                    then item==entryItem 
-                    else false;
-            }
-            else {
-                return !entry.item exists;
-            }
+            value item = get(entry.key);
+            value entryItem = entry.item;
+            return
+                if (exists item, exists entryItem)
+                then item == entryItem 
+                else entryItem exists == item exists;
         }
         else {
             return false;
@@ -234,19 +231,31 @@ shared interface Map<out Key=Object, out Item=Anything>
         
         defines(Object key) => outer.defines(key);
         
-        get(Object key) 
-                => if (is Key key, 
-                    !is Missing item = outer.lookup(key))
-                then mapping(key, item) 
-                else null;
+        shared actual Result? get(Object key) { 
+            if (is Key key) {
+                return
+                    switch (item = outer.lookup(key))
+                    case (Missing.instance) null
+                    else mapping(key, item);
+            }
+            else {
+                return null;
+            } 
+        }
         
         shared actual Result|Default
         getOrDefault<Default>
-                (Object key, Default default) 
-                => if (is Key key, 
-                    !is Missing item = outer.lookup(key))
-                then mapping(key, item) 
-                else default;
+                (Object key, Default default) {
+            if (is Key key) {
+                return
+                    switch (item = outer.lookup(key))
+                    case (Missing.instance) default 
+                    else mapping(key, item);
+            }
+            else {
+                return default;
+            }
+        }
         
         function mapEntry(Key->Item entry) 
                 => entry.key
@@ -325,18 +334,17 @@ shared interface Map<out Key=Object, out Item=Anything>
                    outer.defines(key);
         
         get(Object key) 
-                => if (!is Missing result 
-                        = other.lookup(key))
-                then result 
-                else outer.get(key);
+                => switch (result = other.lookup(key))
+                case (Missing.instance) outer.get(key) 
+                else result;
         
         shared actual OtherItem|Item|Default 
         getOrDefault<Default>
                 (Object key, Default default) 
-                => if (!is Missing result 
-                        = other.lookup(key))
-                then result
-                else outer.getOrDefault(key, default);
+                => switch (result = other.lookup(key))
+                case (Missing.instance)
+                    outer.getOrDefault(key, default)
+                else result;
         
         clone() => outer.clone().patch(other.clone());
         
@@ -467,6 +475,6 @@ shared object emptyMap
     
 }
 
-class Missing {
+class Missing of instance {
     shared new instance {}
 }
