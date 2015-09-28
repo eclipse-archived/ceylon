@@ -273,7 +273,7 @@ shared interface Map<out Key=Object, out Item=Anything>
      after replacing every `null` item in the map with the 
      [[given default value|defaultValue]]. The item `null` 
      does not ocur in the resulting map."
-    see (`function coalescedMap`)
+    see (`value coalescedMap`)
     shared default
     Map<Key,Item&Object|Default>
     defaultNullItems<Default>(
