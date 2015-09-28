@@ -53,6 +53,17 @@ shared interface Map<out Key=Object, out Item=Anything>
      or the given [[default]] if there is no entry with the 
      given `key` in this map.
      
+     For maps with non-null items, the expression:
+     
+         map.getOrDefault(key, def)
+     
+     is equivalent to this common idiom:
+     
+         map[key] else def
+     
+     However, when the map has null items, `getOrDefault()`
+     will preserve them.
+     
      Note that high-quality implementations of `Map` should 
      refine this default implementation."
     see (`function get`)
