@@ -1,5 +1,5 @@
 function (e,from) {
-  if (e.size===0) return measure(0,this.size,{t:Integer});
+  if (e.size===0) return span(0,this.size,{t:Integer});
   if (from===undefined||from<0)from=0;
   else if (from>=this.size)return empty();
   if (is$(e, {t:$_String})) {
