@@ -26,7 +26,8 @@ public final class Float
     private static final double TWO_FIFTY_TWO = (double) (1L << 52);
 
     @Ignore
-    public final static TypeDescriptor $TypeDescriptor$ = TypeDescriptor.klass(Float.class);
+    public final static TypeDescriptor $TypeDescriptor$ = 
+            TypeDescriptor.klass(Float.class);
 
     @Ignore
     final double value;
@@ -174,7 +175,9 @@ public final class Float
         else if (value==1.0) {
             return 1.0;
         }
-        else if (value==-1.0 && (otherValue == Double.POSITIVE_INFINITY || otherValue == Double.NEGATIVE_INFINITY)) {
+        else if (value==-1.0 && 
+                (otherValue == Double.POSITIVE_INFINITY || 
+                 otherValue == Double.NEGATIVE_INFINITY)) {
             return 1.0;
         }
         else {
@@ -286,7 +289,8 @@ public final class Float
 
     @Ignore
     public static double getWholePart(double value) {
-        if (value <= -TWO_FIFTY_TWO || value >= TWO_FIFTY_TWO) {
+        if (value <= -TWO_FIFTY_TWO || 
+            value >= TWO_FIFTY_TWO) {
             return value;
         }
         else if (Double.isNaN(value)) {
@@ -407,12 +411,13 @@ public final class Float
     
     @Ignore
     public static long getInteger(double value) {
-        if (value >= Long.MIN_VALUE
-                && value <= Long.MAX_VALUE) {
-            return (long)value;
+        if (value >= Long.MIN_VALUE && 
+            value <= Long.MAX_VALUE) {
+            return (long) value;
         }
         else {
-            throw new OverflowException(value + " cannot be coerced to a 64 bit integer");
+            throw new OverflowException(value + 
+                    " cannot be coerced to a 64 bit integer");
         }
     }
     
@@ -429,12 +434,14 @@ public final class Float
     
     @Transient
     public boolean getFinite() {
-        return !Double.isInfinite(this.value) && !getUndefined();
+        return !Double.isInfinite(this.value) 
+                && !getUndefined();
     }
     
     @Ignore
     public static boolean getFinite(double value) {
-        return !Double.isInfinite(value) && !getUndefined(value);
+        return !Double.isInfinite(value) 
+                && !getUndefined(value);
     }
     
     @Transient
@@ -456,7 +463,9 @@ public final class Float
     public static boolean equals(double value, java.lang.Object that) {
         if (that instanceof Integer) {
             long intValue = ((Integer) that).value;
-            return value == intValue && -Integer.TWO_FIFTY_THREE < intValue && intValue < Integer.TWO_FIFTY_THREE;
+            return value == intValue 
+                    && intValue > -Integer.TWO_FIFTY_THREE 
+                    && intValue < Integer.TWO_FIFTY_THREE;
         } 
         else if (that instanceof Float) {
             return value == ((Float)that).value;

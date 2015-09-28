@@ -32,7 +32,8 @@ public final class Integer
     static final long TWO_FIFTY_THREE = 1L << 53;
 
     @Ignore
-    public final static TypeDescriptor $TypeDescriptor$ = TypeDescriptor.klass(Integer.class);
+    public final static TypeDescriptor $TypeDescriptor$ = 
+            TypeDescriptor.klass(Integer.class);
 
     @Ignore
     final long value;
@@ -533,7 +534,9 @@ public final class Integer
             return value == ((Integer)that).value;
         }
         else if (that instanceof Float) {
-            return value == ((Float) that).value && -TWO_FIFTY_THREE < value && value < TWO_FIFTY_THREE;
+            return value == ((Float) that).value 
+                    && value > -TWO_FIFTY_THREE 
+                    && value < TWO_FIFTY_THREE;
         }
         else {
             return false;
@@ -566,7 +569,7 @@ public final class Integer
     }
     
     @Ignore
-    public static long leftLogicalShift(long value, long shift){
+    public static long leftLogicalShift(long value, long shift) {
         return value << shift;
     }
 
@@ -576,7 +579,7 @@ public final class Integer
     }
     
     @Ignore
-    public static long rightLogicalShift(long value, long shift){
+    public static long rightLogicalShift(long value, long shift) {
         return value >>> shift;
     }
 
@@ -586,7 +589,7 @@ public final class Integer
     }
     
     @Ignore
-    public static long rightArithmeticShift(long value, long shift){
+    public static long rightArithmeticShift(long value, long shift) {
         return value >> shift;
     }
 
@@ -626,7 +629,7 @@ public final class Integer
     }
 
     @Ignore
-    public static boolean get(long value, long index){
+    public static boolean get(long value, long index) {
         if (index < 0 || index > 63) {
             return false;
         }
@@ -641,7 +644,8 @@ public final class Integer
     }
 
     @Override
-    public Integer set(@Name("index") long index, @Name("bit") @Defaulted boolean bit) {
+    public Integer set(@Name("index") long index, 
+            @Name("bit") @Defaulted boolean bit) {
         return instance(set(value, index, bit));
     }
 
