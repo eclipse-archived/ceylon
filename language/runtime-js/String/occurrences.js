@@ -7,5 +7,4 @@ function(e,from,len){
     if (this.$_get(i).equals(e))r.push(i);
   }
   return r.length>0?r.rt$({t:Integer}):empty();
-  
 }
