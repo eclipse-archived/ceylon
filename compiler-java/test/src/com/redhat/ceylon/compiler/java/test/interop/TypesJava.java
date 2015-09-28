@@ -128,3 +128,7 @@ public class TypesJava {
             java.lang.String str, java.lang.Object o){}
     void takeAllVariadic(boolean b, byte by, char... c){}
 }
+
+class TypesJava2<T>{
+    void variadicT(T... vars){}
+}

@@ -126,6 +126,8 @@ void variadicMethods() {
     java.variadicJavaString(*[]);
     java.variadicJavaString(*["a", box("b"), "c"]);
     java.variadicJavaString("a", box("b"), *["a", box("b"), "c"]);
+    {String*} vals = {"a"};
+    java.variadicJavaString(*vals);
 
     java.variadicCeylonString("a", box("b"), "c");
     java.variadicCeylonString(*[]);
@@ -150,6 +152,9 @@ void variadicMethods() {
     java.variadicT<Integer>(1, box(2), *sequence);
 
     java.variadicT<String>("a", box("b"), "c");
+    java.variadicT<String>(*vals);
+    TypesJava2<String> java2 = TypesJava2<String>();
+    java2.variadicT(*vals);
     
     java.variadicObject(for (i in 1..2) i);
     java.variadicInt(for (i in 1..2) i);
