@@ -1180,9 +1180,9 @@ shared interface Iterable<out Element=Anything,
                 => let (iter = outer.iterator()) 
             object satisfies Iterator<Integer->Element> {
                 variable value i=0;
-                next() => if (!is Finished next = iter.next())
-                            then i++ -> next 
-                            else finished;
+                next() => switch (next = iter.next())
+                          case (finished) finished
+                          else i++ -> next;
                 string => outer.string + ".iterator()";
             };
     };
