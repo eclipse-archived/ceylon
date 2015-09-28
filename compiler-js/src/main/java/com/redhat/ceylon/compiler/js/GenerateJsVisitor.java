@@ -2417,7 +2417,10 @@ public class GenerateJsVisitor extends Visitor {
                         nd = (TypeDeclaration)ModelUtil.getNativeDeclaration(id, Backend.JavaScript);
                     }
                 }
-                Scope scope = that.getScope();
+                Scope scope = ModelUtil.getRealScope(that.getScope());
+                if (scope instanceof Value && !(ModelUtil.getRealScope(scope) instanceof ClassOrInterface)) {
+                    scope = ModelUtil.getRealScope(scope.getContainer());
+                }
                 if ((scope != null) && (that instanceof Tree.ClassDeclaration
                         || that instanceof Tree.InterfaceDeclaration || that instanceof Tree.Constructor)) {
                     // class/interface aliases have no own "this"
