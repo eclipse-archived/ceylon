@@ -24,7 +24,7 @@ shared sealed interface MemberClass<in Container=Nothing, out Type=Anything, in 
     
     shared actual formal Class<Type, Arguments> bind(Object container);
     
-    shared actual formal <MemberClassCallableConstructor<Container, Type, Arguments>|MemberClass<Container, Type, Arguments>>? defaultConstructor;
+    shared actual formal MemberClassCallableConstructor<Container, Type, Arguments>? defaultConstructor;
     
     "The constructor with the given name, or null if this class lacks 
      a constructor of the given name"

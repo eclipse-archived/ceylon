@@ -50,6 +50,8 @@ public class AppliedMemberInitializer<Container, Type, Arguments extends Sequent
     //private Sequential<? extends ceylon.language.meta.model.Type<? extends Object>> parameterTypes;
     final AppliedMemberClass<Container, Type, ?> clazz;
     
+    final Sequential<? extends ceylon.language.meta.model.Type<? extends Object>> parameterTypes;
+    
     @Ignore
     @Override
     public TypeDescriptor $getType$() {
@@ -64,16 +66,16 @@ public class AppliedMemberInitializer<Container, Type, Arguments extends Sequent
         this.clazz = clazz;
         this.$reifiedType = $reifiedType;
         this.$reifiedArguments = $reifiedArguments;
-        //this.appliedFunction = appliedFunction;
+        
         //this.declaration = declaration;
         //this.typeArguments = Metamodel.getTypeArguments(declaration, appliedFunction);
         //this.typeArgumentWithVariances = Metamodel.getTypeArgumentWithVariances(declaration, appliedFunction);
         //this.closedType = Metamodel.getAppliedMetamodel(Metamodel.getFunctionReturnType(appliedFunction));
         // get a list of produced parameter types
-        //com.redhat.ceylon.model.typechecker.model.Functional method = (com.redhat.ceylon.model.typechecker.model.Functional)appliedFunction.getDeclaration();
-        //List<Parameter> parameters = method.getFirstParameterList().getParameters();
-        //List<com.redhat.ceylon.model.typechecker.model.Type> parameterProducedTypes = Metamodel.getParameterProducedTypes(parameters, appliedFunction);
-        //this.parameterTypes = Decl.isConstructor(declaration.declaration)  ? null : Metamodel.getAppliedMetamodelSequential(parameterProducedTypes);
+        List<com.redhat.ceylon.model.typechecker.model.Type>  parameterProducedTypes = Metamodel.getParameterProducedTypes(
+                ((com.redhat.ceylon.model.typechecker.model.Class)clazz.declaration.declaration).getParameterList().getParameters(), clazz.producedType);
+        this.parameterTypes = Metamodel.getAppliedMetamodelSequential(parameterProducedTypes);
+        
     }
     
     @Override
@@ -84,12 +86,12 @@ public class AppliedMemberInitializer<Container, Type, Arguments extends Sequent
     
     @Override
     public ClassModel<Type, ?> getContainer() {
-        return (ClassModel)clazz.getContainer();
+        return clazz;
     }
     
     @Override
     public CallableConstructorDeclaration getDeclaration() {
-        return (CallableConstructorDeclaration)clazz.getDefaultConstructor();
+        return (CallableConstructorDeclaration)((FreeClass)clazz.declaration).getDefaultConstructor();
     }
     
     @Override
@@ -127,7 +129,7 @@ public class AppliedMemberInitializer<Container, Type, Arguments extends Sequent
     @Override
     protected CallableConstructor<Type, Arguments> bindTo(Object instance) {
         return new AppliedInitializer<Type, Arguments>(
-                (ceylon.language.meta.model.Class)clazz.bind(instance));
+                (AppliedClass)clazz.bind(instance));
     }
 
     
@@ -197,8 +199,7 @@ public class AppliedMemberInitializer<Container, Type, Arguments extends Sequent
     @TypeInfo("ceylon.language::Sequential<ceylon.language.meta.model::Type<ceylon.language::Anything>>")
     @Override
     public ceylon.language.Sequential<? extends ceylon.language.meta.model.Type<? extends Object>> getParameterTypes(){
-        // TODO Auto-generated method stub
-        return null;
+        return parameterTypes;
     }
 
     @Override

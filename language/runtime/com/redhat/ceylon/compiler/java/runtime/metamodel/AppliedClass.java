@@ -281,8 +281,8 @@ public class AppliedClass<Type, Arguments extends Sequential<? extends Object>>
     }
     
     @Override
-    @TypeInfo("ceylon.language.meta.model::CallableConstructor<Type,Arguments>|ceylon.language.meta.model::Class<Type,Arguments>|ceylon.language::Null")
-    public Applicable<Type, Arguments> getDefaultConstructor() {
+    @TypeInfo("ceylon.language.meta.model::CallableConstructor<Type,Arguments>|ceylon.language::Null")
+    public CallableConstructor<Type, Arguments> getDefaultConstructor() {
         if (hasConstructors() || hasEnumerated()) {
             Object ctor = getConstructor($reifiedArguments, "");
             if (ctor instanceof CallableConstructor) {
@@ -291,7 +291,7 @@ public class AppliedClass<Type, Arguments extends Sequential<? extends Object>>
                 return null;
             }
         } else {
-            return this;
+            return new AppliedInitializer<>(this);
         }
     }
     

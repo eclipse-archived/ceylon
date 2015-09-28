@@ -19,7 +19,7 @@ shared sealed interface ClassModel<out Type=Anything, in Arguments=Nothing>
     
     "A function model for this class's initializer or default constructor,
      or null if this class has constructors but lacks a default constructor."
-    shared formal <FunctionModel<Type, Arguments>|ClassModel<Type, Arguments>>? defaultConstructor;
+    shared formal FunctionModel<Type, Arguments>? defaultConstructor;
     
     "Looks up a constructor by name, 
      Returns `null` if no such constructor matches. 

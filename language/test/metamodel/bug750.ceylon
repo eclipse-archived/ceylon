@@ -101,6 +101,14 @@ shared void bug750() {
     
     CallableConstructorDeclaration? yyy = bug750Init.getConstructorDeclaration("");
     assert(yyy exists);
+
+    // Models
+    assert(exists zzz = `Bug750Init<String>`.defaultConstructor,
+        appliedCtor == zzz);
+    assert([`String`] == appliedCtor.parameterTypes);
+    assert(init == appliedCtor.declaration);
+    assert(exists aaa = appliedCtor.container,
+        `Bug750Init<String>` == aaa);
     
     Bug750Outer().bug750();
 }
@@ -177,13 +185,13 @@ class Bug750Outer() {
             assert(false);
         } catch (TypeApplicationException e) {}
         
-        init.memberApply<Bug750Outer,Bug750Init<String>,[String]>(`Bug750Outer`, `String`);
+        value appliedCtor = init.memberApply<Bug750Outer,Bug750Init<String>,[String]>(`Bug750Outer`, `String`);
         
         //container
         assert(bug750Init == init.container);
         
         // invoke
-        // TODO assert(is Bug750Init<String> inst= init.memberInvoke(this, [`String`], ""));
+        assert(is Bug750Init<String> inst= init.memberInvoke(this, [`String`], ""));
         try {
             init.invoke([`String`], "");
             assert(false);
@@ -197,5 +205,19 @@ class Bug750Outer() {
         
         // qualifiedName
         assert("metamodel::Bug750Outer.Bug750Init" == init.qualifiedName);
+    
+        Sequence<CallableConstructorDeclaration> xxx = bug750Init.constructorDeclarations();
+        assert(init in xxx);
+        
+        CallableConstructorDeclaration? yyy = bug750Init.getConstructorDeclaration("");
+        assert(yyy exists);
+        
+        assert(exists zzz = `Bug750Init<String>`.defaultConstructor,
+            appliedCtor == zzz);
+        print("££££££££££££££££ `` appliedCtor.parameterTypes``");
+        assert([`String`] == appliedCtor.parameterTypes);
+        assert(init == appliedCtor.declaration);
+        
+        assert(`Bug750Init<String>` == appliedCtor.container);
     }
 }

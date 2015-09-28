@@ -25,7 +25,7 @@ shared sealed interface Class<out Type=Anything, in Arguments=Nothing>
     
     shared actual formal Value<Type>? getValueConstructor(String name);*/
     
-    shared actual formal <CallableConstructor<Type, Arguments>|Class<Type, Arguments>>? defaultConstructor;
+    shared actual formal CallableConstructor<Type, Arguments>? defaultConstructor;
     
     "The constructor with the given name, or null if this class lacks 
      a constructor of the given name."

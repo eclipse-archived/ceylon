@@ -16,6 +16,7 @@ import ceylon.language.empty_;
 import ceylon.language.meta.declaration.CallableConstructorDeclaration;
 import ceylon.language.meta.declaration.ClassDeclaration;
 import ceylon.language.meta.declaration.ValueConstructorDeclaration;
+import ceylon.language.meta.model.CallableConstructor;
 import ceylon.language.meta.model.Class;
 import ceylon.language.meta.model.FunctionModel;
 import ceylon.language.meta.model.MemberClassCallableConstructor;
@@ -73,13 +74,12 @@ public class AppliedMemberClass<Container, Type, Arguments extends Sequential<? 
     }
     
     @TypeInfo("ceylon.language.meta.model::MemberClassCallableConstructor<Container, Type, Arguments>"
-            + "|ceylon.language.meta.model::MemberClass<Container, Type, Arguments>"
             + "|ceylon.language::Null")
-    public Object getDefaultConstructor() {
+    public MemberClassCallableConstructor<Container, Type, Arguments> getDefaultConstructor() {
         if (hasConstructors() || hasEnumerated()) {
             return (MemberClassCallableConstructor<Container, Type, Arguments>)getConstructor($reifiedArguments, "");    
         } else {
-            return this;
+            return new AppliedMemberInitializer($reifiedContainer, $reifiedType, $reifiedArguments, this);
         }
     }
     
