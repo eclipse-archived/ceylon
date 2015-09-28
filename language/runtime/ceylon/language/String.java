@@ -61,7 +61,7 @@ public final class String
 
     @SuppressWarnings("rawtypes")
     public String(@Name("characters")
-    @TypeInfo("ceylon.language::Iterable<ceylon.language::Character,ceylon.language::Null>")
+    @TypeInfo("{ceylon.language::Character*}")
     final Iterable<? extends Character, ?> characters) {
         if (characters instanceof String) {
             value = ((String)characters).value;
@@ -569,7 +569,7 @@ public final class String
     }
 
     @Override
-    @TypeInfo("ceylon.language::Iterable<ceylon.language::Integer>")
+    @TypeInfo("{ceylon.language::Integer*}")
     public Iterable<? extends Integer, ? extends java.lang.Object> 
     occurrences(@Name("element") Character element, 
             @Defaulted @Name("from") long from, 
@@ -741,7 +741,7 @@ public final class String
     }
     
     @Override
-    @TypeInfo("ceylon.language::Iterable<ceylon.language::Integer>")
+    @TypeInfo("{ceylon.language::Integer*}")
     public Iterable<? extends Integer, ? extends java.lang.Object> 
     inclusions(
             @Name("sublist") List<? extends Character> sublist, 
@@ -1149,7 +1149,7 @@ public final class String
     
     @Override
     public String trimLeading(
-            @TypeInfo("ceylon.language::Callable<ceylon.language::Boolean,ceylon.language::Tuple<ceylon.language::Character,ceylon.language::Character,ceylon.language::Empty>>")
+            @TypeInfo("ceylon.language::Boolean(ceylon.language::Character)")
             @Name("trimming")@FunctionalParameter("(element)")
             Callable<? extends Boolean> characters) {
         return instance(trimLeading(value, characters));
@@ -1170,7 +1170,7 @@ public final class String
     
     @Override
     public String trimTrailing(
-            @TypeInfo("ceylon.language::Callable<ceylon.language::Boolean,ceylon.language::Tuple<ceylon.language::Character,ceylon.language::Character,ceylon.language::Empty>>")
+            @TypeInfo("ceylon.language::Boolean(ceylon.language::Character)")
             @Name("trimming")@FunctionalParameter("(element)")
             Callable<? extends Boolean> characters) {
         return instance(trimTrailing(value, characters));
@@ -1191,7 +1191,7 @@ public final class String
     
     @Override
     public String trim(
-            @TypeInfo("ceylon.language::Callable<ceylon.language::Boolean,ceylon.language::Tuple<ceylon.language::Character,ceylon.language::Character,ceylon.language::Empty>>")
+            @TypeInfo("ceylon.language::Boolean(ceylon.language::Character)")
             @Name("trimming")@FunctionalParameter("(element)")
             Callable<? extends Boolean> characters) {
         return instance(trim(value, characters));
@@ -1290,7 +1290,7 @@ public final class String
     }
 
     public java.lang.String join(@Name("objects") 
-    @TypeInfo("ceylon.language::Iterable<ceylon.language::Object,ceylon.language::Null>")
+    @TypeInfo("{ceylon.language::Object*}")
     Iterable<? extends java.lang.Object,?> objects) {
         return join(value, objects);
     }
@@ -1722,9 +1722,9 @@ public final class String
         }
     }
 
-    @TypeInfo("ceylon.language::Iterable<ceylon.language::String,ceylon.language::Nothing>")
+    @TypeInfo("{ceylon.language::String+}")
     public Iterable<? extends String, ?> split(
-            @TypeInfo(value="ceylon.language::Callable<ceylon.language::Boolean,ceylon.language::Tuple<ceylon.language::Character,ceylon.language::Character,ceylon.language::Empty>>")
+            @TypeInfo(value="ceylon.language::Boolean(ceylon.language::Character)")
             @Defaulted
             @Name("splitting") 
             @FunctionalParameter("(ch)") 
@@ -1912,7 +1912,7 @@ public final class String
         }
     };
     
-    @TypeInfo("ceylon.language::Iterable<ceylon.language::String>")
+    @TypeInfo("{ceylon.language::String*}")
     @Transient
     public Iterable<? extends String, ?> getLines() {
         return split(NEWLINES, true, false).map($TypeDescriptor$, TRIM_RETURNS);
@@ -1924,7 +1924,7 @@ public final class String
         return split(value, NEWLINES, true, false).map($TypeDescriptor$, TRIM_RETURNS);
     }
 
-    @TypeInfo("ceylon.language::Iterable<ceylon.language::String>")
+    @TypeInfo("{ceylon.language::String*}")
     @Transient
     public Iterable<? extends String, ?> getLinesWithBreaks() {
         return split(NEWLINES, false, false).partition(2)
@@ -2061,7 +2061,7 @@ public final class String
     public Character find(
             @Name("selecting")
             @FunctionalParameter("(element)")
-            @TypeInfo("ceylon.language::Callable<ceylon.language::Boolean,ceylon.language::Tuple<ceylon.language::Character,ceylon.language::Character,ceylon.language::Empty>>")
+            @TypeInfo("ceylon.language::Boolean(ceylon.language::Character)")
             Callable<? extends Boolean> f) {
         return find(value,f);
     }
@@ -2085,7 +2085,7 @@ public final class String
     public Character findLast(
             @Name("selecting")
             @FunctionalParameter("(element)")
-            @TypeInfo("ceylon.language::Callable<ceylon.language::Boolean,ceylon.language::Tuple<ceylon.language::Character,ceylon.language::Character,ceylon.language::Empty>>")
+            @TypeInfo("ceylon.language::Boolean(ceylon.language::Character)")
             Callable<? extends Boolean> f) {
         return findLast(value,f);
     }
@@ -2110,7 +2110,7 @@ public final class String
     public Entry<? extends Integer,? extends Character> locate(
             @Name("selecting")
             @FunctionalParameter("(element)")
-            @TypeInfo("ceylon.language::Callable<ceylon.language::Boolean,ceylon.language::Tuple<ceylon.language::Character,ceylon.language::Character,ceylon.language::Empty>>")
+            @TypeInfo("ceylon.language::Boolean(ceylon.language::Character)")
             Callable<? extends Boolean> f) {
         return locate(value,f);
     }
@@ -2139,7 +2139,7 @@ public final class String
     public Entry<? extends Integer,? extends Character> locateLast(
             @Name("selecting")
             @FunctionalParameter("(element)")
-            @TypeInfo("ceylon.language::Callable<ceylon.language::Boolean,ceylon.language::Tuple<ceylon.language::Character,ceylon.language::Character,ceylon.language::Empty>>")
+            @TypeInfo("ceylon.language::Boolean(ceylon.language::Character)")
             Callable<? extends Boolean> f) {
         return locateLast(value,f);
     }
@@ -2164,9 +2164,41 @@ public final class String
     
     @Ignore
     public static Iterable<? extends Entry<? extends Integer, ? extends Character>, ? extends java.lang.Object> 
-    locations(java.lang.String value,
-            Callable<? extends Boolean> selecting) {
-        return instance(value).locations(selecting);
+    locations(final java.lang.String value,
+            final Callable<? extends Boolean> selecting) {
+        return new BaseIterable<Entry<? extends Integer, ? extends Character>, java.lang.Object>
+        (Integer.$TypeDescriptor$, Null.$TypeDescriptor$) {
+    @Override
+    public Iterator<? extends Entry<? extends Integer, ? extends Character>> iterator() {
+        return new BaseIterator<Entry<? extends Integer, ? extends Character>>
+                (Integer.$TypeDescriptor$) {
+            int index = 0;
+            int count = 0;
+            @Override
+            public java.lang.Object next() {
+                if (index>=value.length()) {
+                    return finished_.get_();
+                }
+                while (true) {
+                    int cp = value.codePointAt(index);
+                    index+=java.lang.Character.charCount(cp);
+                    if (index>=value.length()) {
+                        return finished_.get_();
+                    }
+                    else {
+                        Character ch = Character.instance(cp);
+                        if (selecting.$call$(ch).booleanValue()) {
+                            return new Entry(Integer.$TypeDescriptor$, 
+                                    Character.$TypeDescriptor$,
+                                    Integer.instance(count++), ch);
+                        }
+                        count++;
+                    }
+                }
+            }
+        };
+    }
+};
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
@@ -2223,12 +2255,12 @@ public final class String
     }
     
     @Override
-    @TypeInfo("ceylon.language::Iterable<ceylon.language::Integer>")
+    @TypeInfo("{ceylon.language::Integer*}")
     public Iterable<? extends Integer, ? extends java.lang.Object> 
     indexesWhere(
             @Name("selecting")
             @FunctionalParameter("(element)")
-            @TypeInfo("ceylon.language::Callable<ceylon.language::Boolean,ceylon.language::Tuple<ceylon.language::Character,ceylon.language::Character,ceylon.language::Empty>>")
+            @TypeInfo("ceylon.language::Boolean(ceylon.language::Character)")
             Callable<? extends Boolean> fun) {
         return indexesWhere(value, fun);
     }
@@ -2261,7 +2293,7 @@ public final class String
     public Integer firstIndexWhere(
             @Name("selecting")
             @FunctionalParameter("(element)")
-            @TypeInfo("ceylon.language::Callable<ceylon.language::Boolean,ceylon.language::Tuple<ceylon.language::Character,ceylon.language::Character,ceylon.language::Empty>>")
+            @TypeInfo("ceylon.language::Boolean(ceylon.language::Character)")
             Callable<? extends Boolean> fun) {
         return firstIndexWhere(value, fun);
     }
@@ -2285,7 +2317,7 @@ public final class String
     public Integer lastIndexWhere(
             @Name("selecting")
             @FunctionalParameter("(element)")
-            @TypeInfo("ceylon.language::Callable<ceylon.language::Boolean,ceylon.language::Tuple<ceylon.language::Character,ceylon.language::Character,ceylon.language::Empty>>")
+            @TypeInfo("ceylon.language::Boolean(ceylon.language::Character)")
             Callable<? extends Boolean> fun) {
         return lastIndexWhere(value, fun);
     }
@@ -2325,7 +2357,7 @@ public final class String
     reduce(@Ignore TypeDescriptor $reifiedResult, 
             @Name("accumulating")
             @FunctionalParameter("(partial,element)")
-            @TypeInfo("ceylon.language::Callable<Result,ceylon.language::Tuple<Result|ceylon.language::Character,Result|ceylon.language::Character,ceylon.language::Tuple<ceylon.language::Character,ceylon.language::Character,ceylon.language::Empty>>>")
+            @TypeInfo("Result(Result|ceylon.language::Character,ceylon.language::Character)")
             Callable<? extends Result> f) {
         return reduce($reifiedResult,value,f);
     }
@@ -2376,7 +2408,7 @@ public final class String
     public boolean any(
             @Name("selecting")
             @FunctionalParameter("(element)")
-            @TypeInfo("ceylon.language::Callable<ceylon.language::Boolean,ceylon.language::Tuple<ceylon.language::Character,ceylon.language::Character,ceylon.language::Empty>>")
+            @TypeInfo("ceylon.language::Boolean(ceylon.language::Character)")
             Callable<? extends Boolean> f) {
         return any(value,f);
     }
@@ -2399,7 +2431,7 @@ public final class String
     public boolean every(
             @Name("selecting")
             @FunctionalParameter("(element)")
-            @TypeInfo("ceylon.language::Callable<ceylon.language::Boolean,ceylon.language::Tuple<ceylon.language::Character,ceylon.language::Character,ceylon.language::Empty>>")
+            @TypeInfo("ceylon.language::Boolean(ceylon.language::Character)")
             Callable<? extends Boolean> f) {
         return every(value,f);
     }
@@ -2452,7 +2484,7 @@ public final class String
     public long count(
             @Name("selecting")
             @FunctionalParameter("(element)")
-            @TypeInfo("ceylon.language::Callable<ceylon.language::Boolean,ceylon.language::Tuple<ceylon.language::Character,ceylon.language::Character,ceylon.language::Empty>>")
+            @TypeInfo("ceylon.language::Boolean(ceylon.language::Character)")
             Callable<? extends Boolean> f) {
         return count(value,f);
     }
@@ -2974,10 +3006,14 @@ public final class String
         return $ceylon$language$Iterable$impl().interpose$step(arg0, arg1);
     }
 
-    @Override @Ignore
-    public Iterable<? extends Entry<? extends Integer, ? extends Character>, ? extends java.lang.Object> locations(
+    @Override
+    @TypeInfo("{ceylon.language::Entry<ceylon.language::Integer,ceylon.language::Character>*}")
+    public Iterable<? extends Entry<? extends Integer, ? extends Character>, ? extends java.lang.Object> 
+    locations(
+            @TypeInfo("ceylon.language::Boolean(ceylon.language::Character)")
+            @Name("selecting")
             Callable<? extends Boolean> arg0) {
-        return $ceylon$language$Iterable$impl().locations(arg0);
+        return locations(value, arg0);
     }
 
     @Override @Ignore

@@ -552,7 +552,7 @@ shared native final class String(characters)
     shared actual native Integer? lastOccurrence(Character element, Integer from, Integer length);
     shared actual native Integer? firstInclusion(List<Character> sublist, Integer from);
     shared actual native Integer? lastInclusion(List<Character> sublist, Integer from);
-    
+        
     shared actual native Boolean largerThan(String other); 
     shared actual native Boolean smallerThan(String other); 
     shared actual native Boolean notSmallerThan(String other); 
@@ -568,4 +568,5 @@ shared native final class String(characters)
     shared actual native Character? findLast(Boolean selecting(Character element));
     shared actual native <Integer->Character>? locate(Boolean selecting(Character element));
     shared actual native <Integer->Character>? locateLast(Boolean selecting(Character element));
+    shared actual {<Integer->Character>*} locations(Boolean selecting(Character element));
 }
