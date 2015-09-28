@@ -131,7 +131,7 @@ abstract class Bug1696MixinA2<T> implements .com.redhat.ceylon.compiler.java.run
     }
     
     @.java.lang.Override
-    public final .ceylon.language.Iterable<? extends T, ? extends .java.lang.Object> getDistinct() {
+    public .ceylon.language.Iterable<? extends T, ? extends .java.lang.Object> getDistinct() {
         return $ceylon$language$Iterable$this$.getDistinct();
     }
     
@@ -356,8 +356,13 @@ abstract class Bug1696MixinA2<T> implements .com.redhat.ceylon.compiler.java.run
     }
     
     @.java.lang.Override
-    public .ceylon.language.Set<? extends T> elements() {
-        return $ceylon$language$Iterable$this$.elements();
+    public final .ceylon.language.Map<? extends T, ? extends .ceylon.language.Integer> frequencies() {
+        return $ceylon$language$Iterable$this$.frequencies();
+    }
+    
+    @.java.lang.Override
+    public final <Result>.ceylon.language.Map<? extends T, ? extends Result> tabulate(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Result, final .ceylon.language.Callable<? extends Result> collecting) {
+        return $ceylon$language$Iterable$this$.tabulate($reified$Result, collecting);
     }
     
     @.java.lang.Override
@@ -483,7 +488,7 @@ abstract class Bug1696MixinB2<T> implements .com.redhat.ceylon.compiler.java.run
     }
     
     @.java.lang.Override
-    public final .ceylon.language.Iterable<? extends T, ? extends .java.lang.Object> getDistinct() {
+    public .ceylon.language.Iterable<? extends T, ? extends .java.lang.Object> getDistinct() {
         return $ceylon$language$Iterable$this$.getDistinct();
     }
     
@@ -708,8 +713,13 @@ abstract class Bug1696MixinB2<T> implements .com.redhat.ceylon.compiler.java.run
     }
     
     @.java.lang.Override
-    public .ceylon.language.Set<? extends T> elements() {
-        return $ceylon$language$Iterable$this$.elements();
+    public final .ceylon.language.Map<? extends T, ? extends .ceylon.language.Integer> frequencies() {
+        return $ceylon$language$Iterable$this$.frequencies();
+    }
+    
+    @.java.lang.Override
+    public final <Result>.ceylon.language.Map<? extends T, ? extends Result> tabulate(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Result, final .ceylon.language.Callable<? extends Result> collecting) {
+        return $ceylon$language$Iterable$this$.tabulate($reified$Result, collecting);
     }
     
     @.java.lang.Override
@@ -807,7 +817,7 @@ abstract class Bug1696MixinC2<T> implements .com.redhat.ceylon.compiler.java.run
     }
     
     @.java.lang.Override
-    public final .ceylon.language.Iterable<? extends T, ? extends .java.lang.Object> getDistinct() {
+    public .ceylon.language.Iterable<? extends T, ? extends .java.lang.Object> getDistinct() {
         return $ceylon$language$Iterable$this$.getDistinct();
     }
     
@@ -1032,8 +1042,13 @@ abstract class Bug1696MixinC2<T> implements .com.redhat.ceylon.compiler.java.run
     }
     
     @.java.lang.Override
-    public .ceylon.language.Set<? extends T> elements() {
-        return $ceylon$language$Iterable$this$.elements();
+    public final .ceylon.language.Map<? extends T, ? extends .ceylon.language.Integer> frequencies() {
+        return $ceylon$language$Iterable$this$.frequencies();
+    }
+    
+    @.java.lang.Override
+    public final <Result>.ceylon.language.Map<? extends T, ? extends Result> tabulate(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Result, final .ceylon.language.Callable<? extends Result> collecting) {
+        return $ceylon$language$Iterable$this$.tabulate($reified$Result, collecting);
     }
     
     @.java.lang.Override
@@ -1159,7 +1174,7 @@ abstract class Bug1696MixinD2<T> implements .com.redhat.ceylon.compiler.java.run
     }
     
     @.java.lang.Override
-    public final .ceylon.language.Iterable<? extends T, ? extends .java.lang.Object> getDistinct() {
+    public .ceylon.language.Iterable<? extends T, ? extends .java.lang.Object> getDistinct() {
         return $ceylon$language$Iterable$this$.getDistinct();
     }
     
@@ -1384,8 +1399,13 @@ abstract class Bug1696MixinD2<T> implements .com.redhat.ceylon.compiler.java.run
     }
     
     @.java.lang.Override
-    public .ceylon.language.Set<? extends T> elements() {
-        return $ceylon$language$Iterable$this$.elements();
+    public final .ceylon.language.Map<? extends T, ? extends .ceylon.language.Integer> frequencies() {
+        return $ceylon$language$Iterable$this$.frequencies();
+    }
+    
+    @.java.lang.Override
+    public final <Result>.ceylon.language.Map<? extends T, ? extends Result> tabulate(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Result, final .ceylon.language.Callable<? extends Result> collecting) {
+        return $ceylon$language$Iterable$this$.tabulate($reified$Result, collecting);
     }
     
     @.java.lang.Override

@@ -70,7 +70,7 @@ class Bug979Iterable implements .com.redhat.ceylon.compiler.java.runtime.model.R
     }
     
     @.java.lang.Override
-    public final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> getDistinct() {
+    public .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> getDistinct() {
         return $ceylon$language$Iterable$this$.getDistinct();
     }
     
@@ -295,8 +295,13 @@ class Bug979Iterable implements .com.redhat.ceylon.compiler.java.runtime.model.R
     }
     
     @.java.lang.Override
-    public .ceylon.language.Set<? extends .ceylon.language.String> elements() {
-        return $ceylon$language$Iterable$this$.elements();
+    public final .ceylon.language.Map<? extends .ceylon.language.String, ? extends .ceylon.language.Integer> frequencies() {
+        return $ceylon$language$Iterable$this$.frequencies();
+    }
+    
+    @.java.lang.Override
+    public final <Result>.ceylon.language.Map<? extends .ceylon.language.String, ? extends Result> tabulate(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Result, final .ceylon.language.Callable<? extends Result> collecting) {
+        return $ceylon$language$Iterable$this$.tabulate($reified$Result, collecting);
     }
     
     @.java.lang.Override
@@ -364,6 +369,11 @@ class Bug979Set extends .java.lang.Object implements .com.redhat.ceylon.compiler
     }
     
     @.java.lang.Override
+    public final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> getDistinct() {
+        return $ceylon$language$Set$this$.getDistinct();
+    }
+    
+    @.java.lang.Override
     public boolean contains(final .java.lang.Object element) {
         return $ceylon$language$Set$this$.contains(element);
     }
@@ -379,8 +389,8 @@ class Bug979Set extends .java.lang.Object implements .com.redhat.ceylon.compiler
     }
     
     @.java.lang.Override
-    public final .ceylon.language.Set<? extends .ceylon.language.String> elements() {
-        return $ceylon$language$Set$this$.elements();
+    public final <Default>.ceylon.language.Iterable defaultNullElements(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Default, final Default defaultValue) {
+        return (.ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object>)(.ceylon.language.Iterable)$ceylon$language$Set$this$.defaultNullElements($reified$Default, defaultValue);
     }
     
     @.java.lang.Override
@@ -453,11 +463,6 @@ class Bug979Set extends .java.lang.Object implements .com.redhat.ceylon.compiler
     @.java.lang.Override
     public .ceylon.language.String getFirst() {
         return (.ceylon.language.String)$ceylon$language$Iterable$this$.getFirst();
-    }
-    
-    @.java.lang.Override
-    public final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> getDistinct() {
-        return $ceylon$language$Iterable$this$.getDistinct();
     }
     
     @.java.lang.Override
@@ -626,11 +631,6 @@ class Bug979Set extends .java.lang.Object implements .com.redhat.ceylon.compiler
     }
     
     @.java.lang.Override
-    public <Default>.ceylon.language.Iterable defaultNullElements(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Default, final Default defaultValue) {
-        return (.ceylon.language.Iterable)$ceylon$language$Iterable$this$.defaultNullElements($reified$Default, defaultValue);
-    }
-    
-    @.java.lang.Override
     public .ceylon.language.Iterable<? extends .ceylon.language.Sequence<? extends .ceylon.language.String>, ? extends .java.lang.Object> partition(final long length) {
         return $ceylon$language$Iterable$this$.partition(length);
     }
@@ -673,6 +673,16 @@ class Bug979Set extends .java.lang.Object implements .com.redhat.ceylon.compiler
     
     private <Other>.ceylon.language.Iterable interpose$canonical$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Other, final Other element, final long step) {
         return (.ceylon.language.Iterable)$ceylon$language$Iterable$this$.interpose($reified$Other, element, step);
+    }
+    
+    @.java.lang.Override
+    public final .ceylon.language.Map<? extends .ceylon.language.String, ? extends .ceylon.language.Integer> frequencies() {
+        return $ceylon$language$Iterable$this$.frequencies();
+    }
+    
+    @.java.lang.Override
+    public final <Result>.ceylon.language.Map<? extends .ceylon.language.String, ? extends Result> tabulate(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Result, final .ceylon.language.Callable<? extends Result> collecting) {
+        return $ceylon$language$Iterable$this$.tabulate($reified$Result, collecting);
     }
     
     @.java.lang.Override

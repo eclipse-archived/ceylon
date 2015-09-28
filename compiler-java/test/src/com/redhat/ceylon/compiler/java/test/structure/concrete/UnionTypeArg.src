@@ -64,7 +64,7 @@ class UnionTypeArg implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
     }
     
     @.java.lang.Override
-    public final .ceylon.language.Iterable getDistinct() {
+    public .ceylon.language.Iterable getDistinct() {
         return (.ceylon.language.Iterable)$ceylon$language$Iterable$this$.getDistinct();
     }
     
@@ -289,8 +289,13 @@ class UnionTypeArg implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
     }
     
     @.java.lang.Override
-    public .ceylon.language.Set elements() {
-        return (.ceylon.language.Set)$ceylon$language$Iterable$this$.elements();
+    public final .ceylon.language.Map frequencies() {
+        return (.ceylon.language.Map)$ceylon$language$Iterable$this$.frequencies();
+    }
+    
+    @.java.lang.Override
+    public final <Result>.ceylon.language.Map tabulate(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Result, final .ceylon.language.Callable<? extends Result> collecting) {
+        return (.ceylon.language.Map)$ceylon$language$Iterable$this$.tabulate($reified$Result, collecting);
     }
     
     @.java.lang.Override
@@ -394,7 +399,7 @@ class UnionTypeArgOverride implements .com.redhat.ceylon.compiler.java.runtime.m
     }
     
     @.java.lang.Override
-    public final .ceylon.language.Iterable getDistinct() {
+    public .ceylon.language.Iterable getDistinct() {
         return (.ceylon.language.Iterable)$ceylon$language$Iterable$this$.getDistinct();
     }
     
@@ -609,8 +614,13 @@ class UnionTypeArgOverride implements .com.redhat.ceylon.compiler.java.runtime.m
     }
     
     @.java.lang.Override
-    public .ceylon.language.Set elements() {
-        return (.ceylon.language.Set)$ceylon$language$Iterable$this$.elements();
+    public final .ceylon.language.Map frequencies() {
+        return (.ceylon.language.Map)$ceylon$language$Iterable$this$.frequencies();
+    }
+    
+    @.java.lang.Override
+    public final <Result>.ceylon.language.Map tabulate(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Result, final .ceylon.language.Callable<? extends Result> collecting) {
+        return (.ceylon.language.Map)$ceylon$language$Iterable$this$.tabulate($reified$Result, collecting);
     }
     
     @.java.lang.Override

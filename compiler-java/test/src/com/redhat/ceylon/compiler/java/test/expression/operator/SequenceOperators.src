@@ -294,7 +294,7 @@ public abstract class SequenceOperators implements .com.redhat.ceylon.compiler.j
     }
     
     @.java.lang.Override
-    public final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> getDistinct() {
+    public .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> getDistinct() {
         return $ceylon$language$Iterable$this$.getDistinct();
     }
     
@@ -474,8 +474,13 @@ public abstract class SequenceOperators implements .com.redhat.ceylon.compiler.j
     }
     
     @.java.lang.Override
-    public .ceylon.language.Set<? extends .ceylon.language.String> elements() {
-        return $ceylon$language$Iterable$this$.elements();
+    public final .ceylon.language.Map<? extends .ceylon.language.String, ? extends .ceylon.language.Integer> frequencies() {
+        return $ceylon$language$Iterable$this$.frequencies();
+    }
+    
+    @.java.lang.Override
+    public final <Result>.ceylon.language.Map<? extends .ceylon.language.String, ? extends Result> tabulate(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Result, final .ceylon.language.Callable<? extends Result> collecting) {
+        return $ceylon$language$Iterable$this$.tabulate($reified$Result, collecting);
     }
     
     @.java.lang.Override
@@ -1281,7 +1286,7 @@ public abstract class SequenceOperators2 implements .com.redhat.ceylon.compiler.
     }
     
     @.java.lang.Override
-    public final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> getDistinct() {
+    public .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> getDistinct() {
         return $ceylon$language$Iterable$this$.getDistinct();
     }
     
@@ -1461,8 +1466,13 @@ public abstract class SequenceOperators2 implements .com.redhat.ceylon.compiler.
     }
     
     @.java.lang.Override
-    public .ceylon.language.Set<? extends .ceylon.language.String> elements() {
-        return $ceylon$language$Iterable$this$.elements();
+    public final .ceylon.language.Map<? extends .ceylon.language.String, ? extends .ceylon.language.Integer> frequencies() {
+        return $ceylon$language$Iterable$this$.frequencies();
+    }
+    
+    @.java.lang.Override
+    public final <Result>.ceylon.language.Map<? extends .ceylon.language.String, ? extends Result> tabulate(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Result, final .ceylon.language.Callable<? extends Result> collecting) {
+        return $ceylon$language$Iterable$this$.tabulate($reified$Result, collecting);
     }
     
     @.java.lang.Override

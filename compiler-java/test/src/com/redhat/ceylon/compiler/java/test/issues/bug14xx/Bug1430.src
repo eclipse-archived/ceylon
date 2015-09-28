@@ -280,7 +280,7 @@ class Bug1430 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     }
     
     @.java.lang.Override
-    public final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> getDistinct() {
+    public .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> getDistinct() {
         return $ceylon$language$Iterable$this$.getDistinct();
     }
     
@@ -445,8 +445,13 @@ class Bug1430 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     }
     
     @.java.lang.Override
-    public .ceylon.language.Set<? extends .ceylon.language.Integer> elements() {
-        return $ceylon$language$Iterable$this$.elements();
+    public final .ceylon.language.Map<? extends .ceylon.language.Integer, ? extends .ceylon.language.Integer> frequencies() {
+        return $ceylon$language$Iterable$this$.frequencies();
+    }
+    
+    @.java.lang.Override
+    public final <Result>.ceylon.language.Map<? extends .ceylon.language.Integer, ? extends Result> tabulate(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Result, final .ceylon.language.Callable<? extends Result> collecting) {
+        return $ceylon$language$Iterable$this$.tabulate($reified$Result, collecting);
     }
     
     @.java.lang.Override

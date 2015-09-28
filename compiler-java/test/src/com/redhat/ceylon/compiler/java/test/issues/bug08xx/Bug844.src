@@ -353,7 +353,7 @@ public abstract class Bug844_Tuple<Element, First extends Element, Rest> extends
     }
     
     @.java.lang.Override
-    public final .ceylon.language.Iterable<? extends Element, ? extends .java.lang.Object> getDistinct() {
+    public .ceylon.language.Iterable<? extends Element, ? extends .java.lang.Object> getDistinct() {
         return $ceylon$language$Iterable$this$.getDistinct();
     }
     
@@ -523,8 +523,13 @@ public abstract class Bug844_Tuple<Element, First extends Element, Rest> extends
     }
     
     @.java.lang.Override
-    public .ceylon.language.Set<? extends Element> elements() {
-        return $ceylon$language$Iterable$this$.elements();
+    public final .ceylon.language.Map<? extends Element, ? extends .ceylon.language.Integer> frequencies() {
+        return $ceylon$language$Iterable$this$.frequencies();
+    }
+    
+    @.java.lang.Override
+    public final <Result>.ceylon.language.Map<? extends Element, ? extends Result> tabulate(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Result, final .ceylon.language.Callable<? extends Result> collecting) {
+        return $ceylon$language$Iterable$this$.tabulate($reified$Result, collecting);
     }
     
     @.java.lang.Override
