@@ -214,11 +214,11 @@ shared interface Map<out Key=Object, out Item=Anything>
         return hashCode;
     }
     
-    "Produces a map with the same [[keys]] as this map. 
-     For every key, the item is the result of applying the 
-     given [[transformation|Map.mapItems.mapping]] function 
-     to its associated item in this map. This is a lazy 
-     operation, returning a view of this map."
+    "Produces a map with the same [[keys]] as this map. For 
+     every key, the item is the result of applying the given 
+     [[transformation|Map.mapItems.mapping]] function to its 
+     associated item in this map. This is a lazy operation, 
+     returning a view of this map."
     shared default 
     Map<Key,Result> mapItems<Result>(
         "The function that transforms a key/item pair of
@@ -268,6 +268,20 @@ shared interface Map<out Key=Object, out Item=Anything>
         clone() => outer.clone().mapItems(mapping);
         
     };
+    
+    "Produces a map containing the elements of this map, 
+     after replacing every `null` item in the map with the 
+     [[given default value|defaultValue]]. The item `null` 
+     does not ocur in the resulting map."
+    see (`function coalescedMap`)
+    shared default
+    Map<Key,Item&Object|Default>
+    defaultNullItems<Default>(
+        "A default value that replaces `null` items."
+        Default defaultValue)
+            given Default satisfies Object
+            => mapItems((key, elem) 
+                => elem else defaultValue);
     
     "Produces a map by applying a [[filtering]] function 
      to the [[keys]] of this map. This is a lazy operation, 
@@ -368,6 +382,7 @@ shared interface Map<out Key=Object, out Item=Anything>
     
     "A map with every entry of this map whose item is
      non-null."
+    see (`function defaultNullItems`)
     shared default
     Map<Key,Item&Object> coalescedMap 
             => object
