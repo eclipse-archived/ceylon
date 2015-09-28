@@ -2161,17 +2161,24 @@ public final class String
         }
         return null;
     }
+
+    private static final
+    TypeDescriptor INT_TO_CHAR_ENTRY_DESCRIPTOR = 
+            TypeDescriptor.klass(Entry.class, 
+                    Integer.$TypeDescriptor$, 
+                    Character.$TypeDescriptor$);
+
     
     @Ignore
     public static Iterable<? extends Entry<? extends Integer, ? extends Character>, ? extends java.lang.Object> 
     locations(final java.lang.String value,
             final Callable<? extends Boolean> selecting) {
         return new BaseIterable<Entry<? extends Integer, ? extends Character>, java.lang.Object>
-        (Integer.$TypeDescriptor$, Null.$TypeDescriptor$) {
+        (INT_TO_CHAR_ENTRY_DESCRIPTOR, Null.$TypeDescriptor$) {
     @Override
     public Iterator<? extends Entry<? extends Integer, ? extends Character>> iterator() {
         return new BaseIterator<Entry<? extends Integer, ? extends Character>>
-                (Integer.$TypeDescriptor$) {
+                (INT_TO_CHAR_ENTRY_DESCRIPTOR) {
             int index = 0;
             int count = 0;
             @Override
