@@ -219,6 +219,12 @@ public class Bug708Map<T> extends .java.lang.Object implements .com.redhat.ceylo
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public <Default>.ceylon.language.Map defaultNullItems(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Default, final Default defaultValue) {
+        return (.ceylon.language.Map)$ceylon$language$Map$this$.defaultNullItems($reified$Default, defaultValue);
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public .ceylon.language.Map filterKeys(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> filtering) {
         return (.ceylon.language.Map)$ceylon$language$Map$this$.filterKeys(filtering);
     }
