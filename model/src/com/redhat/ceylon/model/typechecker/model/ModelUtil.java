@@ -2146,7 +2146,45 @@ public class ModelUtil {
         }
         return signature;
     }
-    
+
+    public static List<Type> getSignature(
+            TypedReference ref) {
+        TypedDeclaration dec = ref.getDeclaration();
+        if (!(dec instanceof Functional)) {
+            return null;
+        }
+        Functional fun = (Functional) dec;
+        List<ParameterList> parameterLists = 
+                fun.getParameterLists();
+        if (parameterLists == null || 
+                parameterLists.isEmpty()) {
+            return null;
+        }
+        ParameterList parameterList = 
+                parameterLists.get(0);
+        if (parameterList == null) {
+            return null;
+        }
+        List<Parameter> parameters = 
+                parameterList.getParameters();
+        if (parameters == null) {
+            return null;
+        }
+        List<Type> signature = 
+                new ArrayList<Type>
+                    (parameters.size());
+        Unit unit = dec.getUnit();
+        for (Parameter param: parameters) {
+            TypedReference typedParameter = ref.getTypedParameter(param);
+            Type t = 
+                    typedParameter==null ? 
+                        unit.getUnknownType() : 
+                        typedParameter.getType();
+            signature.add(t);
+        }
+        return signature;
+    }
+
     public static boolean isCompletelyVisible(
             Declaration member, Type pt) {
         if (pt.isUnion()) {
