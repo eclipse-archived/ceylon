@@ -34,6 +34,7 @@ import com.redhat.ceylon.model.typechecker.model.SiteVariance;
 import com.redhat.ceylon.model.typechecker.model.TypeAlias;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.model.typechecker.model.TypeParameter;
+import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.model.typechecker.model.UnionType;
 import com.redhat.ceylon.model.typechecker.model.Unit;
 import com.redhat.ceylon.model.typechecker.model.UnknownType;
@@ -1050,6 +1051,7 @@ public class JsonPackage extends com.redhat.ceylon.model.typechecker.model.Packa
 
     /** Load a nested type that hasn't been loaded yet */
     private TypeDeclaration loadNestedType(final String fqn, List<TypeParameter> typeParams) {
+        try{
         String[] path = fqn.split("\\.");
         @SuppressWarnings("unchecked")
         Map<String,Object> typeMap = (Map<String,Object>)model.get(path[0]);
@@ -1073,7 +1075,14 @@ public class JsonPackage extends com.redhat.ceylon.model.typechecker.model.Packa
                     type = 2;
                 }
             }
-            TypeDeclaration child = (TypeDeclaration)td.getDirectMember(path[i], null, false);
+            Declaration member = td.getDirectMember(path[i], null, false);
+            TypeDeclaration child;
+            if(member instanceof Value
+                    && ((Value) member).getTypeDeclaration() instanceof Constructor)
+                child = ((Value) member).getTypeDeclaration().getExtendedType().getDeclaration();
+            else
+                child = (TypeDeclaration) member;
+            
             if (child == null) {
                 switch(type) {
                 case 1:child = loadInterface(path[i], childMap, td, typeParams);
@@ -1085,6 +1094,9 @@ public class JsonPackage extends com.redhat.ceylon.model.typechecker.model.Packa
             td = child;
         }
         return td;
+        }catch(RuntimeException x){
+            throw new RuntimeException("Failed to load inner type "+fqn+" in package "+getQualifiedNameString(), x);
+        }
     }
 
     /** Create a new list that contains all the type parameters in the first list,
