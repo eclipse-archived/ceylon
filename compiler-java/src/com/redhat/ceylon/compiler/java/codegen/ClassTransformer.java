@@ -87,6 +87,7 @@ import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
 import com.redhat.ceylon.model.typechecker.model.Functional;
 import com.redhat.ceylon.model.typechecker.model.Generic;
 import com.redhat.ceylon.model.typechecker.model.Interface;
+import com.redhat.ceylon.model.typechecker.model.ModelUtil;
 import com.redhat.ceylon.model.typechecker.model.Package;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.ParameterList;
@@ -2277,7 +2278,7 @@ public class ClassTransformer extends AbstractTransformer {
             if (member instanceof Function) {
                 Function method = (Function)member;
                 final TypedReference typedMember = satisfiedType.getTypedMember(method, Collections.<Type>emptyList());
-                Declaration sub = (Declaration)model.getMember(method.getName(), null, false);
+                Declaration sub = (Declaration)model.getMember(method.getName(), ModelUtil.getSignature(typedMember), false);
                 if (sub instanceof Function) {
                     Function subMethod = (Function)sub;
                     if (subMethod.getParameterLists().isEmpty()) {
@@ -2520,7 +2521,7 @@ public class ClassTransformer extends AbstractTransformer {
 
     private boolean needsCompanionDelegate(final Class model, Declaration member) {
         final boolean mostRefined;
-        Declaration m = model.getMember(member.getName(), null, false);
+        Declaration m = model.getMember(member.getName(), ModelUtil.getSignature(member), false);
         if (member instanceof Setter && Decl.isGetter(m)) {
             mostRefined = member.equals(((Value)m).getSetter());
         } else {
