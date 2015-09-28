@@ -622,4 +622,8 @@ shared void strings() {
     check("".inclusions("").size==1, "empty string empty inclusions");
     check(("".firstInclusion("") else -1) == 0, "empty string empty inclusions");
     check(("".lastInclusion("") else -1) == 0, "empty string empty inclusions");
+    
+    check(#10000.character.string.padLeading(2, '-').size == 2, "pad leading codepoints");
+    check(#10000.character.string.padTrailing(2, '-').size == 2, "pad trailing codepoints");
+    check(#10000.character.string.pad(2, '-').size == 2, "pad codepoints");
 }
