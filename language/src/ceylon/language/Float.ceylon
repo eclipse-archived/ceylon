@@ -123,7 +123,8 @@ shared native final class Float(Float float)
      - the [[fractionalPart]] of this value equals `0.0`, 
      - the [[integer]] part of this value equals the given 
        integer, and
-     - the given integer is between -2<sup>53</sup> and 2<sup>53</sup> (exclusive)."
+     - the given integer is between -2<sup>53</sup> and 
+       2<sup>53</sup> (exclusive)."
     shared actual native Boolean equals(Object that);
     
     shared actual native Integer hash;

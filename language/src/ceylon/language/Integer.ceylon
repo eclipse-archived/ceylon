@@ -13,10 +13,9 @@
  exception raised).
  
  An integer is considered equal to its [[float]] 
- representation, if that exists. That is, for every
- integer `int`, either `int.float` throws an
- OverflowException or the expression `int.float==int`
- evaluates to `true`.
+ representation, if that exists. That is, for every integer 
+ `int`, either `int.float` throws an [[OverflowException]], 
+ or the expression `int.float==int` evaluates to `true`.
  
  An integer is represented as a sequence of bits. Not all of 
  the bits in the representation may be addressed by the 
@@ -86,7 +85,8 @@ shared native final class Integer(Integer integer)
        value equals `0.0`, and
      - the [[integer part|Float.integer]] part of its value 
        equals this integer, and
-     - this integer is between -2<sup>53</sup> and 2<sup>53</sup> (exclusive)."
+     - this integer is between -2<sup>53</sup> and 
+       2<sup>53</sup> (exclusive)."
     shared actual native Boolean equals(Object that);
     
     shared actual native Integer hash;
@@ -145,7 +145,13 @@ shared native final class Integer(Integer integer)
     shared actual native Integer leftLogicalShift(Integer shift);
     
     "The number, represented as a [[Float]], if such a 
-     representation is possible."
+     representation is possible. 
+     
+     - Any integer with [[magnitude]] smaller than 
+       [[runtime.maxExactIntegralFloat]] (2<sup>53</sup>) 
+       has such a representation.
+     - For larger integers on the JVM platform, an 
+       [[OverflowException]] is thrown."
     throws (`class OverflowException`,
         "if the number cannot be represented as a `Float`
          without loss of precision, that is, if 
@@ -154,14 +160,17 @@ shared native final class Integer(Integer integer)
     see (`value runtime.maxExactIntegralFloat`)
     shared native Float float;
 
-    "The nearest [[Float]] to this number. For
-     Integers in magnitude less than 2^53, this is always
-     a Float with the exact same mathematical value (and the
-     same value as [[float]]), for larger ones on the JVM the
-     Floats are less dense than the Integers so there can be some
-     loss of precision.
-
-     This method never throws an OverflowException."
+    "The nearest [[Float]] to this number. 
+     
+     - For any integer with [[magnitude]] smaller than 
+       [[runtime.maxExactIntegralFloat]] (2<sup>53</sup>), 
+       this is a `Float` with the exact same mathematical 
+       value (and the same value as [[float]]). 
+     - For larger integers on the JVM platform, the `Floats` 
+       are less dense than the `Integers` so there may be 
+       loss of precision.
+     
+     This method never throws an [[OverflowException]]."
     shared native Float nearestFloat;
 
     shared actual native Integer predecessor;
