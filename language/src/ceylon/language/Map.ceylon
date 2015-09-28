@@ -41,12 +41,39 @@ shared interface Map<out Key=Object, out Item=Anything>
     "Returns the item of the entry with the given [[key]], 
      or `null` if there is no entry with the given `key` in
      this map."
+    see (`function getOrDefault`)
     shared actual formal Item? get(Object key);
     
     "Determines if there is an entry in this map with the
      given [[key]]."
     see (`function contains`)
     shared actual formal Boolean defines(Object key);
+    
+    "Returns the item of the entry with the given [[key]], 
+     or the given [[default]] if there is no entry with the 
+     given `key` in this map.
+     
+     Note that high-quality implementations of `Map` should 
+     refine this default implementation."
+    see (`function get`)
+    shared default Item|Default getOrDefault<Default>
+            (Object key, Default default) {
+        if (defines(key)) {
+            if (exists item = get(key)) {
+                return item;
+            }
+            else {
+                assert (is Item null);
+                return null;
+            }
+        }
+        else {
+            return default;
+        }
+    }
+    
+    function lookup(Object key)
+            => getOrDefault(key, Missing.instance);
     
     "Determines if the given [[value|entry]] is an [[Entry]]
      belonging to this map."
@@ -196,15 +223,19 @@ shared interface Map<out Key=Object, out Item=Anything>
         
         defines(Object key) => outer.defines(key);
         
-        shared actual Result? get(Object key) {
-            if (is Key key, defines(key)) {
-                assert (is Item item = outer[key]);
-                return mapping(key, item);
-            }
-            else {
-                return null;
-            }
-        }
+        get(Object key) 
+                => if (is Key key, 
+                    !is Missing item = outer.lookup(key))
+                then mapping(key, item) 
+                else null;
+        
+        shared actual Result|Default
+        getOrDefault<Default>
+                (Object key, Default default) 
+                => if (is Key key, 
+                    !is Missing item = outer.lookup(key))
+                then mapping(key, item) 
+                else default;
         
         function mapEntry(Key->Item entry) 
                 => entry.key
@@ -241,7 +272,16 @@ shared interface Map<out Key=Object, out Item=Anything>
                 then outer.defines(key) 
                 else false;
         
-        iterator() => outer.filter(forKey(filtering)).iterator();
+        shared actual Item|Default
+        getOrDefault<Default>
+                (Object key, Default default) 
+                => if (is Key key, filtering(key))
+                then outer.getOrDefault(key, default)
+                else default;
+        
+        iterator() 
+                => outer.filter(forKey(filtering))
+                        .iterator();
         
         clone() => outer.clone().filterKeys(filtering);
         
@@ -256,7 +296,7 @@ shared interface Map<out Key=Object, out Item=Anything>
      
      That is, for any `key` in the resulting patched map:
      
-         map.patch(other)[key] == (other.defines(key) then other else map)[key]
+         map.patch(other)[key] == other.getOrDefault(key, map[key])
      
      This is a lazy operation producing a view of this map
      and the given map."
@@ -269,28 +309,32 @@ shared interface Map<out Key=Object, out Item=Anything>
             extends Object()
             satisfies Map<Key|OtherKey,Item|OtherItem> {
         
-        Boolean otherItemObject 
-                = other is Map<Object,Object>;
-        
-        get(Object key) => 
-                if (otherItemObject)
-                then (other[key] else outer[key])
-                else (other.defines(key)
-                        then other else outer)
-                            [key];
-        
-        clone() => outer.clone().patch(other.clone());
-        
         defines(Object key) 
                 => other.defines(key) || 
                    outer.defines(key);
         
+        get(Object key) 
+                => if (!is Missing result 
+                        = other.lookup(key))
+                then result 
+                else outer.get(key);
+        
+        shared actual OtherItem|Item|Default 
+        getOrDefault<Default>
+                (Object key, Default default) 
+                => if (!is Missing result 
+                        = other.lookup(key))
+                then result
+                else outer.getOrDefault(key, default);
+        
+        clone() => outer.clone().patch(other.clone());
+        
         contains(Object entry)
-            => if (is Object->Anything entry)
-            then entry in other ||
-                    !other.defines(entry.key)
-                    && entry in outer
-            else false;
+                => if (is Object->Anything entry)
+                then entry in other ||
+                        !other.defines(entry.key)
+                            && entry in outer
+                else false;
         
         //efficient when map is much smaller than outer,
         //which is probably the common case 
@@ -314,6 +358,12 @@ shared interface Map<out Key=Object, out Item=Anything>
         defines(Object key) => outer[key] exists;
         
         get(Object key) => outer[key] of <Item&Object>?;
+        
+        shared actual Default|Item&Object 
+        getOrDefault<Default>
+                (Object key, Default default)
+                => outer.getOrDefault(key, default) 
+                    else default;
         
         iterator()
                 => { for (entry in outer) 
@@ -362,6 +412,9 @@ shared object emptyMap
     
     get(Object key) => null;
     
+    shared actual Default getOrDefault<Default>
+            (Object key, Default default) => default;
+    
     keys => emptySet;
     items => emptySet;
     
@@ -401,4 +454,8 @@ shared object emptyMap
     shared actual 
     void each(void step(Nothing->Nothing element)) {}
     
+}
+
+class Missing {
+    shared new instance {}
 }

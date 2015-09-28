@@ -1799,6 +1799,11 @@ shared interface Iterable<out Element=Anything,
         
         get(Object key) => group(key)?.elements;
         
+        shared actual Result|Default getOrDefault<Default>
+                (Object key, Default default)
+                => if (exists group = group(key))
+                then group.elements else default;
+        
     };
     
     "A string of form `\"{ x, y, z }\"` where `x`, `y`, and 
