@@ -162,12 +162,9 @@ public class CeylonTransformer extends AbstractTransformer {
                     String annotationName = Naming.suffixName(Suffix.$annotation$, name);
                     defs.add(makeClassDef(decl, Flags.ANNOTATION, annotationName, WantedDeclaration.Annotation));
                     
-                    System.err.println("annot: "+name);
                     for(Tree.StaticType sat : ((Tree.AnyClass)decl).getSatisfiedTypes().getTypes()){
-                        System.err.println(" sat: "+sat);
                         if(sat instanceof Tree.BaseType 
                                 && ((Tree.BaseType) sat).getIdentifier().getText().equals("SequencedAnnotation")){
-                            System.err.println("GOT ONE: "+decl);
                             String annotationsName = Naming.suffixName(Suffix.$annotations$, name);
                             defs.add(makeClassDef(decl, Flags.ANNOTATION, annotationsName, WantedDeclaration.AnnotationSequence));
                         }
