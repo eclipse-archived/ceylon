@@ -349,4 +349,8 @@ shared void testArrays() {
     check(Array("").inclusions("").size==1, "empty string empty inclusions");
     check((Array("").firstInclusion("") else -1) == 0, "empty string empty inclusions");
     check((Array("").lastInclusion("") else -1) == 0, "empty string empty inclusions");
+
+    check(Array("protocol:foo/bar/baz").locations(":/".contains).sequence()==[8->':',12->'/',16->'/']);
+    check((Array("protocol:foo/bar/baz").locate(":/".contains) else 1)==8->':');
+    check((Array("protocol:foo/bar/baz").locateLast(":/".contains) else 1)==16->'/');
 }
