@@ -249,7 +249,16 @@ atr$(JSNum$proto, 'positive', function(){
 $specialiseForNumber$(Integer, 'positive', function(){return {mod:$CCMM$,$t:{t:$_Boolean},pa:67,$cont:Integer,d:['$','Integer','$at','positive']};})
 $specialiseForNumber$(Float, 'positive', function(){return {mod:$CCMM$,$t:{t:$_Boolean},pa:67,$cont:Float,d:['$','Float','$at','positive']};})
 
-JSNum$proto.equals = function(other) { return (typeof(other)==='number' || other.constructor===Number) && other==this.valueOf(); }
+JSNum$proto.equals=function(other){
+  if(typeof(other)==='number' || other.constructor===Number){
+    if (this>runtime().maxIntegerValue||this<runtime().minIntegerValue
+        ||other>runtime().maxIntegerValue||other<runtime.minIntegerValue) {
+      return other==this.valueOf() && other.float$===this.float$;
+    }
+    return other==this.valueOf();
+  }
+  return false;
+}
 $addnm$('equals',$_Object.$$.prototype.equals);
 $specialiseForNumber$(Integer, 'equals', function(){return {mod:$CCMM$,$t:{t:$_Boolean},pa:67,$cont:Integer,ps:[{$t:{t:$_Object},nm:'that'}],d:['$','Integer','$m','equals']};})
 $specialiseForNumber$(Float, 'equals', function(){return {mod:$CCMM$,$t:{t:$_Boolean},pa:67,$cont:Float,ps:[{$t:{t:$_Object},nm:'that'}],d:['$','Float','$m','equals']};})
