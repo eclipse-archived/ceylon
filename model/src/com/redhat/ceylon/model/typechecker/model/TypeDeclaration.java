@@ -438,7 +438,7 @@ public abstract class TypeDeclaration extends Declaration
                 unit.getImportedDeclaration(this, name, 
                         signature, variadic);
         if (dec==null) {
-            return getMemberInternal(name, signature, variadic)
+            return getMemberInternal(name, signature, variadic, false)
                     .getMember();
         }
         else {
@@ -467,7 +467,7 @@ public abstract class TypeDeclaration extends Declaration
                 unit.getImportedDeclaration(this, name, 
                         signature, variadic);
         if (dec==null) {
-            return getMemberInternal(name, signature, variadic)
+            return getMemberInternal(name, signature, variadic, false)
                     .isAmbiguous();
         }
         else {
@@ -484,19 +484,18 @@ public abstract class TypeDeclaration extends Declaration
     public Declaration getMember(
             String name, 
             List<Type> signature, 
-            boolean variadic) {
-        return getMemberInternal(name, signature, variadic)
+            boolean variadic,
+            boolean onlyExactMatches) {
+        return getMemberInternal(name, signature, variadic, onlyExactMatches)
                 .getMember();
     }
 
     private SupertypeDeclaration getMemberInternal(
             String name,
-            List<Type> signature, boolean variadic) {
+            List<Type> signature, boolean variadic, boolean onlyExactMatches) {
         //first search for the member in the local
         //scope, including non-shared declarations
-        Declaration dec = 
-                getDirectMember(name, 
-                        signature, variadic);
+        Declaration dec = getDirectMember(name, signature, variadic, onlyExactMatches);
         if (dec!=null && dec.isShared()) {
             //if it's shared, it's what we're looking 
             //for, return it
@@ -507,7 +506,7 @@ public abstract class TypeDeclaration extends Declaration
                 //matches the given signature better
                 SupertypeDeclaration sd = 
                         getSupertypeDeclaration(name, 
-                                signature, variadic);
+                                signature, variadic, onlyExactMatches);
                 Declaration sm = sd.getMember();
                 if (sm!=null && !sm.isAbstraction()) {
                     return sd;
@@ -519,7 +518,7 @@ public abstract class TypeDeclaration extends Declaration
             //now look for inherited shared declarations
             SupertypeDeclaration sd = 
                     getSupertypeDeclaration(name, 
-                            signature, variadic);
+                            signature, variadic, onlyExactMatches);
             if (sd.getMember()!=null || sd.isAmbiguous()) {
                 return sd;
             }
@@ -540,13 +539,13 @@ public abstract class TypeDeclaration extends Declaration
     protected Declaration getMemberOrParameter(
             String name, 
             List<Type> signature, 
-            boolean variadic) {
+            boolean variadic, boolean onlyExactMatches) {
         //first search for the member or parameter 
         //in the local scope, including non-shared 
         //declarations
         Declaration dec = 
                 getDirectMember(name, 
-                        signature, variadic);
+                        signature, variadic, onlyExactMatches);
         if (dec!=null) {
             if (signature!=null && 
                     dec.isAbstraction()) {
@@ -554,7 +553,7 @@ public abstract class TypeDeclaration extends Declaration
                 // matches the given signature better
                 Declaration supertype = 
                         getSupertypeDeclaration(name, 
-                                signature, variadic)
+                                signature, variadic, onlyExactMatches)
                                 .getMember();
                 if (supertype!=null && 
                         !supertype.isAbstraction()) {
@@ -570,14 +569,14 @@ public abstract class TypeDeclaration extends Declaration
                 Declaration hdr = getNativeHeader(this);
                 if (hdr != null) {
                     dec = hdr.getDirectMember(name,
-                            signature, variadic);
+                            signature, variadic, onlyExactMatches);
                 }
             }
 
             if (dec == null) {
                 //now look for inherited shared declarations
                 dec = getSupertypeDeclaration(name,
-                        signature, variadic)
+                        signature, variadic, onlyExactMatches)
                         .getMember();
             }
         }
@@ -682,7 +681,8 @@ public abstract class TypeDeclaration extends Declaration
     SupertypeDeclaration getSupertypeDeclaration(
             final String name, 
             final List<Type> signature, 
-            final boolean variadic) {
+            final boolean variadic,
+            final boolean onlyExactMatches) {
         class ExactCriteria implements Type.Criteria {
             @Override
             public boolean satisfies(TypeDeclaration type) {
@@ -692,7 +692,7 @@ public abstract class TypeDeclaration extends Declaration
                 }
                 Declaration dm = 
                         type.getDirectMember(name, 
-                                signature, variadic);
+                                signature, variadic, onlyExactMatches);
                 if (dm!=null && 
                         dm.isShared() && 
                         isResolvable(dm)) {
@@ -719,7 +719,7 @@ public abstract class TypeDeclaration extends Declaration
                 }
                 Declaration dm = 
                         type.getDirectMember(name, 
-                                null, false);
+                                null, false, onlyExactMatches);
                 if (dm!=null && 
                         dm.isShared() && 
                         isResolvable(dm)) {
@@ -744,7 +744,7 @@ public abstract class TypeDeclaration extends Declaration
                 }
                 Declaration dm = 
                         type.getDirectMember(name, 
-                                signature, variadic);
+                                signature, variadic, onlyExactMatches);
                 if (dm!=null && 
                         dm.isShared() &&
                         isResolvable(dm)) {
@@ -793,7 +793,7 @@ public abstract class TypeDeclaration extends Declaration
             Declaration member = 
                     st.getDeclaration()
                         .getDirectMember(name, 
-                                signature, variadic);
+                                signature, variadic, onlyExactMatches);
             return new SupertypeDeclaration(member, false);
         }
     }

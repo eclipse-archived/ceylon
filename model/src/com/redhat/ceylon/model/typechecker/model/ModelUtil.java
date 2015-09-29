@@ -1992,6 +1992,36 @@ public class ModelUtil {
     public static Declaration lookupMember(
             List<Declaration> members, String name,
             List<Type> signature, boolean ellipsis) {
+        return lookupMember(members, name, signature, ellipsis, false);
+    }
+
+    /**
+     * Find the member which best matches the given signature
+     * among the given list of members. In the case that
+     * there are multiple matching declarations, attempt to
+     * return the "best" match, according to some ad-hoc 
+     * rules that roughly follow how Java resolves 
+     * overloaded methods.
+     * 
+     * @param members a list of members to search
+     * @param name the name of the member to find
+     * @param signature the parameter types to match, or
+     *        null if we're not matching on parameter types
+     * @param ellipsis true of we want to find a declaration
+     *        which supports varags, or false otherwise
+     * @param onlyExactMatches only consider exact matches
+     *        if a signature is provided. This means that if
+     *        true, members whose signature does not match
+     *        will not be returned. If the signature is null
+     *        this parameter has no effect as the signature
+     *        will not be checked.
+     *        
+     * @return the best matching declaration
+     */
+    public static Declaration lookupMember(
+            List<Declaration> members, String name,
+            List<Type> signature, boolean ellipsis,
+            boolean onlyExactMatches) {
         List<Declaration> results = null;
         Declaration result = null;
         Declaration inexactMatch = null;
@@ -2047,14 +2077,14 @@ public class ModelUtil {
                 return result;
             }
             // no exact match
-            return inexactMatch;
+            return onlyExactMatches ? null : inexactMatch;
         }
         switch (results.size()) {
         case 0:
             //no exact match, so return the non-overloaded
             //declaration or the "abstraction" of the 
             //overloaded declaration
-            return inexactMatch;
+            return onlyExactMatches ? null : inexactMatch;
         case 1:
             //exactly one exact match, so return it
             return results.get(0);
@@ -2062,7 +2092,7 @@ public class ModelUtil {
             //more than one matching overloaded declaration,
             //so return the "abstraction" of the overloaded
             //declaration
-            return inexactMatch;
+            return onlyExactMatches ? null : inexactMatch;
         }
     }
 
