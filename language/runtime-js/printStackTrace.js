@@ -12,6 +12,11 @@ function printStackTrace(exc, _write) {
       _write(operatingSystem().newline);
       return;
     }
+    if (typeof(f)==='string') {
+      _write(f);
+      _write(operatingSystem().newline);
+      f=null;
+    }
     var mm = getrtmm$$(f);
     if (mm && mm.d) {
       var _src = '';

@@ -2,6 +2,10 @@ function(msg,cause,exc) {
   exc.stack_trace=[];
   exc.toString=function(){return this.string;}
   try {
+    exc.stack_trace=new Error().stack.split('\n').slice(3);
+    return;
+  } catch(e){}
+  try {
     var _caller=arguments.callee.caller.caller;
     var ilc=0;
     var ilf=null;
