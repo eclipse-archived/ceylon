@@ -148,7 +148,7 @@ public class InvocationGenerator {
                         "ceylon.language::print".equals(_bme.getDeclaration().getQualifiedNameString())) {
                     Tree.PositionalArgument printArg =  that.getPositionalArgumentList().getPositionalArguments().get(0);
                     if (ModelUtil.isTypeUnknown(printArg.getTypeModel())) {
-                        gen.out(gen.getClAlias(), "pndo$(/*DYNAMIC arg*/"); //#397
+                        gen.out(gen.getClAlias(), "pndo$("); //#397
                         printArg.visit(gen);
                         gen.out(")");
                         return;

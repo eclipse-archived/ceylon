@@ -136,7 +136,7 @@ public class Operators {
         if (eor instanceof Tree.Element) {
             final Tree.Expression _elemexpr = ((Tree.Element)eor).getExpression();
             final String _end;
-            if (ModelUtil.isTypeUnknown(that.getPrimary().getTypeModel()) && gen.isInDynamicBlock()) {
+            if (gen.isInDynamicBlock() && ModelUtil.isTypeUnknown(that.getPrimary().getTypeModel())) {
                 gen.out("[");
                 _end = "]";
             } else {
@@ -244,15 +244,7 @@ public class Operators {
     static void largeAs(Tree.LargeAsOp that, GenerateJsVisitor gen) {
         if (gen.isInDynamicBlock() && ModelUtil.isTypeUnknown(that.getLeftTerm().getTypeModel())) {
             //Try to use compare() if it exists
-            String ltmp = gen.getNames().createTempVariable();
-            String rtmp = gen.getNames().createTempVariable();
-            gen.out("(", ltmp, "=");
-            gen.box(that.getLeftTerm());
-            gen.out(",", rtmp, "=");
-            gen.box(that.getRightTerm());
-            gen.out(",(", gen.getClAlias(), "nn$(", ltmp,")&&", ltmp, ".compare&&",
-                    ltmp, ".compare(", rtmp, ")!==",
-                    gen.getClAlias(), "smaller())||", ltmp, ">=", rtmp, ")");
+            nativeBinaryOp(that, "compare", ">=", "!==" + gen.getClAlias() + "smaller()", gen);
         } else {
             final boolean usenat = gen.canUseNativeComparator(that.getLeftTerm(), that.getRightTerm());
             if (usenat) {
@@ -268,15 +260,7 @@ public class Operators {
     static void smallAs(Tree.SmallAsOp that, GenerateJsVisitor gen) {
         if (gen.isInDynamicBlock() && ModelUtil.isTypeUnknown(that.getLeftTerm().getTypeModel())) {
             //Try to use compare() if it exists
-            String ltmp = gen.getNames().createTempVariable();
-            String rtmp = gen.getNames().createTempVariable();
-            gen.out("(", ltmp, "=");
-            gen.box(that.getLeftTerm());
-            gen.out(",", rtmp, "=");
-            gen.box(that.getRightTerm());
-            gen.out(",(", gen.getClAlias(), "nn$(", ltmp,")&&", ltmp, ".compare&&",
-                    ltmp, ".compare(", rtmp, ")!==",
-                    gen.getClAlias(), "larger())||", ltmp, "<=", rtmp, ")");
+            nativeBinaryOp(that, "compare", "<=", "!==" + gen.getClAlias() + "larger()", gen);
         } else {
             final boolean usenat = gen.canUseNativeComparator(that.getLeftTerm(), that.getRightTerm());
             if (usenat) {
@@ -293,15 +277,7 @@ public class Operators {
     static void larger(Tree.LargerOp that, GenerateJsVisitor gen) {
         if (gen.isInDynamicBlock() && ModelUtil.isTypeUnknown(that.getLeftTerm().getTypeModel())) {
             //Try to use compare() if it exists
-            String ltmp = gen.getNames().createTempVariable();
-            String rtmp = gen.getNames().createTempVariable();
-            gen.out("(", ltmp, "=");
-            gen.box(that.getLeftTerm());
-            gen.out(",", rtmp, "=");
-            gen.box(that.getRightTerm());
-            gen.out(",(", gen.getClAlias(), "nn$(", ltmp,")&&", ltmp, ".compare&&",
-                    ltmp, ".compare(", rtmp, ").equals(",
-                    gen.getClAlias(), "larger()))||", ltmp, ">", rtmp, ")");
+            nativeBinaryOp(that, "compare", ">", "===" + gen.getClAlias() + "larger()", gen);
         } else {
             final boolean usenat = gen.canUseNativeComparator(that.getLeftTerm(), that.getRightTerm());
             if (usenat) {
@@ -316,15 +292,7 @@ public class Operators {
     static void smaller(Tree.SmallerOp that, GenerateJsVisitor gen) {
         if (gen.isInDynamicBlock() && ModelUtil.isTypeUnknown(that.getLeftTerm().getTypeModel())) {
             //Try to use compare() if it exists
-            String ltmp = gen.getNames().createTempVariable();
-            String rtmp = gen.getNames().createTempVariable();
-            gen.out("(", ltmp, "=");
-            gen.box(that.getLeftTerm());
-            gen.out(",", rtmp, "=");
-            gen.box(that.getRightTerm());
-            gen.out(",(", gen.getClAlias(), "nn$(", ltmp,")&&", ltmp, ".compare&&",
-                    ltmp, ".compare(", rtmp, ").equals(",
-                    gen.getClAlias(), "smaller()))||", ltmp, "<", rtmp, ")");
+            nativeBinaryOp(that, "compare", "<", "===" + gen.getClAlias() + "smaller()", gen);
         } else {
             final boolean usenat = gen.canUseNativeComparator(that.getLeftTerm(), that.getRightTerm());
             if (usenat) {
@@ -356,19 +324,29 @@ public class Operators {
     static void equal(Tree.EqualOp that, GenerateJsVisitor gen) {
         if (gen.isInDynamicBlock() && ModelUtil.isTypeUnknown(that.getLeftTerm().getTypeModel())) {
             //Try to use equals() if it exists
-            String ltmp = gen.getNames().createTempVariable();
-            String rtmp = gen.getNames().createTempVariable();
-            gen.out("(", ltmp, "=");
-            gen.box(that.getLeftTerm());
-            gen.out(",", rtmp, "=");
-            gen.box(that.getRightTerm());
-            gen.out(",(", gen.getClAlias(), "nn$(", ltmp,")&&", ltmp, ".equals&&",
-                    ltmp, ".equals(", rtmp, "))||", ltmp, "===", rtmp, ")");
+            nativeBinaryOp(that, "equals", "===", null, gen);
         } else {
             final boolean usenat = gen.canUseNativeComparator(that.getLeftTerm(), that.getRightTerm());
             simpleBinaryOp(that, usenat?"((":null, usenat?").valueOf()==(":".equals(",
                     usenat?").valueOf())":")", gen);
         }
+    }
+
+    private static void nativeBinaryOp(final Tree.BinaryOperatorExpression that,
+            final String method, final String op, final String post, final GenerateJsVisitor gen) {
+        //Try to use equals() if it exists
+        String ltmp = gen.getNames().createTempVariable();
+        String rtmp = gen.getNames().createTempVariable();
+        gen.out("(", ltmp, "=");
+        gen.box(that.getLeftTerm());
+        gen.out(",", rtmp, "=");
+        gen.box(that.getRightTerm());
+        gen.out(",(", gen.getClAlias(), "nn$(", ltmp,")&&", ltmp, ".", method, "&&",
+                ltmp, ".", method, "(", rtmp, ")");
+        if (post != null) {
+            gen.out(post);
+        }
+        gen.out(")||", ltmp, op, rtmp, ")");
     }
 
     static void neg(Tree.NegativeOp that, GenerateJsVisitor gen) {
@@ -386,7 +364,8 @@ public class Operators {
             return;
         }
         final Type d = term.getTypeModel();
-        final boolean isint = d.isSubtypeOf(that.getUnit().getIntegerType());
+        final boolean isint = d.isSubtypeOf(that.getUnit().getIntegerType())
+                || (gen.isInDynamicBlock() && ModelUtil.isTypeUnknown(that.getTerm().getTypeModel()));
         Operators.unaryOp(that, isint?"(-":null, isint?")":".negated", gen);
     }
 
