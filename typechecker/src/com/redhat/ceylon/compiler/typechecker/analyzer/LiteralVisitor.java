@@ -493,7 +493,7 @@ public class LiteralVisitor extends Visitor {
             emoji = 0x1f638; break;
         default:
             node.addError("illegal unicode escape sequence: " + 
-                    name + " is not a Unicode character");
+                    name + " is not a Unicode character name");
         }
         if (emoji<0) {
             return null;
