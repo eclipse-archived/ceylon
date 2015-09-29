@@ -79,7 +79,6 @@ void typeTests() {
 }
 
 shared void test() {
-    print("Metamodel tests");
     literals<String>();
     typeTests();
     modulesTests();

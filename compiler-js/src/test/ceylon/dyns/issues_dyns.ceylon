@@ -147,10 +147,9 @@ void issue604() {
       check(true);
     }
     try {
-      print(a-b);
-      fail("#604.5 string-int");
+      check(a-b == -17, "string-int should be native JS subtraction");
     } catch (Throwable ex) {
-      check(true);
+      fail("#604.5 string-int");
     }
     try {
       print(b-a);

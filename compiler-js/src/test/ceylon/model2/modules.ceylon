@@ -5,7 +5,6 @@ import ceylon.language.meta.declaration {
 import check { check,fail }
 
 void modulesTests() {
-    print("Testing modules");
     check(modules.default exists, "Default module found");
     check(modules.list nonempty, "Loaded modules");
     check(modules.find("check", "0.1") exists, "Loaded module search");
