@@ -176,5 +176,6 @@ shared void lists() {
     
     check([-1,1,1,1,2,2,0].frequencies()==map {-1->1,1->3, 2->2, 0->1}, "frequencies");
     check(["hello", "hello", null, "bye"].frequencies()==map {"hello"->2, "bye"->1}, "frequencies");
+    check((0..5).tabulate((i) => i^2)==map{0->0, 1->1, 2->4, 3->9, 4->16, 5->25}, "tabulate");
     
 }
