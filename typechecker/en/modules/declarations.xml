@@ -1215,6 +1215,10 @@ TypeConstraints?
             <literal>extend</literal> a member or nested class of an interface or 
             superclass of the class.</para>
             
+            <para>A statement or declaration contained in the initializer of a class may 
+            not evaluate a value constructor of the class or of any subclass of the class.
+            </para>
+            
             <para>Furthermore, a statement or declaration contained in the initializer 
             of a class may not:</para>
             
