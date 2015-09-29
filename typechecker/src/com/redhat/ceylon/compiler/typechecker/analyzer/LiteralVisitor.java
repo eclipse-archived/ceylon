@@ -16,7 +16,6 @@ import java.util.regex.Pattern;
 import org.antlr.runtime.CommonToken;
 import org.antlr.runtime.Token;
 
-import com.redhat.ceylon.compiler.typechecker.tree.MissingToken;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.CharLiteral;
