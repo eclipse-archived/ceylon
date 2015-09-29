@@ -174,4 +174,7 @@ shared void lists() {
     value chars = "foobar" of List<Character>;
     check(chars.slice(3)==["foo","bar"], "string slice");
     
+    check([-1,1,1,1,2,2,0].frequencies()==map {-1->1,1->3, 2->2, 0->1}, "frequencies");
+    check(["hello", "hello", null, "bye"].frequencies()==map {"hello"->2, "bye"->1}, "frequencies");
+    
 }

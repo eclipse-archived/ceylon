@@ -81,4 +81,13 @@ shared void testMaps() {
     check(!emptyMap.containsEvery({1->1, 2->2}), "emptyMap.containsEvery");
     check(0 == emptyMap.count{function selecting(Nothing->Nothing nowt) => true;}, "emptyMap.selecting");
     check(emptyMap.filter{function selecting(Nothing->Nothing nowt) => true;}.empty, "emptyMap.filter");
+    
+    
+    value squares = map { for (i in 0..5) i->i^2 };
+    check(squares==map{0->0, 1->1, 2->4, 3->9, 4->16, 5->25}, "map");
+    check(squares.inverse()==map{0->[0], 1->[1], 4->[2], 9->[3], 16->[4], 25->[5]}, "map inverse 1");
+    check(map{1->"hello", 2->"hello", 3->"goodbye"}.inverse()==map{"goodbye"->[3], "hello"->[2,1]},  "map inverse 2");
+    value posZeroNeg = (-2..2).group(0.compare);
+    check(posZeroNeg==map{smaller->[1, 2], larger->[-2, -1], equal->[0]}, "group");
+    check(map { 1->"one", 0->null, 2->"two" }.coalescedMap==map { 1->"one", 2->"two" }, "coalescedMap");
 }
