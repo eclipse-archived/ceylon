@@ -1,11 +1,15 @@
 package com.redhat.ceylon.compiler.java.runtime.metamodel;
 
 import java.lang.reflect.AnnotatedElement;
+import java.util.ArrayList;
 import java.util.List;
 
 import ceylon.language.Anything;
+import ceylon.language.DeprecationAnnotation$annotation$;
 import ceylon.language.Iterator;
 import ceylon.language.Sequential;
+import ceylon.language.SharedAnnotation$annotation$;
+import ceylon.language.ThrownExceptionAnnotation$annotation$;
 import ceylon.language.empty_;
 import ceylon.language.finished_;
 import ceylon.language.meta.declaration.CallableConstructorDeclaration;
@@ -129,14 +133,29 @@ public class FreeInitializerConstructor
     @Override
     @Ignore
     public java.lang.annotation.Annotation[] $getJavaAnnotations$() {
-        return Metamodel.getJavaConstructor((Class)declaration, null).getAnnotations();
+        ArrayList<java.lang.annotation.Annotation> result = new ArrayList<java.lang.annotation.Annotation>(3);
+        java.lang.annotation.Annotation[] l = Metamodel.getJavaConstructor((Class)declaration, null).getAnnotations();
+        for (java.lang.annotation.Annotation a : l) {
+            if (a instanceof SharedAnnotation$annotation$
+                    || a instanceof DeprecationAnnotation$annotation$
+                    || a instanceof ThrownExceptionAnnotation$annotation$) {
+                result.add(a);
+            }
+        }
+        return result.toArray(new java.lang.annotation.Annotation[3]);
     }
     
     @Override
     @Ignore
     public boolean $isAnnotated$(java.lang.Class<? extends java.lang.annotation.Annotation> annotationType) {
-        final AnnotatedElement element = Metamodel.getJavaConstructor((Class)declaration, null);
-        return element != null ? element.isAnnotationPresent(annotationType) : false;
+        if (annotationType == SharedAnnotation$annotation$.class
+                || annotationType == DeprecationAnnotation$annotation$.class
+                || annotationType == ceylon.language.ThrownExceptionAnnotation$annotations$.class) {
+            final AnnotatedElement element = Metamodel.getJavaClass((Class)declaration);
+            return element != null ? element.isAnnotationPresent(annotationType) : false;
+        } else {
+            return false;
+        }
     }
     
     @Override

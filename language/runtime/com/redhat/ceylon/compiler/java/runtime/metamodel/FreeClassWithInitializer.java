@@ -2,18 +2,23 @@ package com.redhat.ceylon.compiler.java.runtime.metamodel;
 
 import java.util.List;
 
+import ceylon.language.DeprecationAnnotation;
 import ceylon.language.Sequence;
 import ceylon.language.Sequential;
+import ceylon.language.SharedAnnotation;
 import ceylon.language.Singleton;
+import ceylon.language.ThrownExceptionAnnotation;
 import ceylon.language.empty_;
 import ceylon.language.meta.declaration.CallableConstructorDeclaration;
 import ceylon.language.meta.declaration.ConstructorDeclaration;
 import ceylon.language.meta.declaration.FunctionOrValueDeclaration;
+import ceylon.language.meta.model.Type;
 
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Name;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
+import com.redhat.ceylon.compiler.java.runtime.metamodel.Predicates.Predicate;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.ParameterList;
@@ -46,15 +51,24 @@ public class FreeClassWithInitializer
     
     @TypeInfo("ceylon.language::ConstructorDeclaration[]")
     @Override
-    public Sequence<? extends ConstructorDeclaration> constructorDeclarations() {
-        return new Singleton<ConstructorDeclaration>(ConstructorDeclaration.$TypeDescriptor$, getDefaultConstructor());
+    public Sequence<? extends CallableConstructorDeclaration> constructorDeclarations() {
+        return new Singleton<CallableConstructorDeclaration>(CallableConstructorDeclaration.$TypeDescriptor$, getDefaultConstructor());
     }
     
     @TypeInfo("ceylon.language::ConstructorDeclaration[]")
     @Override
     public <A extends java.lang.annotation.Annotation> Sequential<? extends CallableConstructorDeclaration> annotatedConstructorDeclarations(TypeDescriptor reified$Annotation) {
-        // TODO test the single ctor against the preditace and return a singleton or not
-        return (Sequential)empty_.get_();
+        Type<?> at = Metamodel.getAppliedMetamodel(reified$Annotation);
+        if (at.subtypeOf(Metamodel.getAppliedMetamodel(
+                TypeDescriptor.union(SharedAnnotation.$TypeDescriptor$,
+                        DeprecationAnnotation.$TypeDescriptor$,
+                        ThrownExceptionAnnotation.$TypeDescriptor$)))) {
+            Predicate<Declaration> p = Predicates.isDeclarationAnnotatedWith(reified$Annotation, at);
+            p.accept(declaration);
+            return constructorDeclarations();
+        } else {
+            return (Sequential)empty_.get_();
+        }
     }
     
     @Override
@@ -65,7 +79,7 @@ public class FreeClassWithInitializer
     @TypeInfo("ceylon.language.meta.declaration::CallableConstructorDeclaration")
     @Override
     public ceylon.language.meta.declaration.CallableConstructorDeclaration getConstructorDeclaration(String name) {
-        return (ceylon.language.meta.declaration.CallableConstructorDeclaration)super.getConstructorDeclaration(name);
+        return name.isEmpty() ? getDefaultConstructor() : null;
     }
     
     @Override

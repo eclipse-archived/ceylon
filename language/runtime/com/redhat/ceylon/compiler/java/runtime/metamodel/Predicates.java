@@ -452,7 +452,7 @@ class Predicates {
     }
     
     @SuppressWarnings("unchecked")
-    private static <A extends java.lang.annotation.Annotation> Predicate<Declaration> 
+    static <A extends java.lang.annotation.Annotation> Predicate<Declaration> 
     isDeclarationAnnotatedWith(TypeDescriptor annotation, Type<?> at) {
         if (at instanceof nothingType_) {
             return false_();

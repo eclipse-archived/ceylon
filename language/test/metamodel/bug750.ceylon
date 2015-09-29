@@ -68,7 +68,7 @@ shared void bug750() {
     assert(bug750Anno.defaultConstructor.annotated<SharedAnnotation>());
     assert(bug750Anno.defaultConstructor.annotated<DeprecationAnnotation>());
     assert(bug750Anno.defaultConstructor.annotated<ThrownExceptionAnnotation>());
-    assert(bug750Anno.defaultConstructor.annotated<DocAnnotation>());
+    assert(!bug750Anno.defaultConstructor.annotated<DocAnnotation>());
     
     // apply
     CallableConstructor<Bug750Init<String>,[String]> appliedCtor = init.apply<Bug750Init<String>,[String]>(`String`);
