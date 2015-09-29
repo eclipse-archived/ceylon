@@ -10,6 +10,8 @@ Object leakTest(Boolean flag) {
 Iterable<Element&Object> testCoalesce<Element>({Element+} elems) =>
     { for (e in elems) if (exists e) e };
 
+
+
 //Test the dynamic annotation
 shared void test() {
     variable Singleton<Object> testSingleton = Singleton(1);

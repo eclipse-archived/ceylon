@@ -118,6 +118,49 @@ void dynamicNumbers() {
   check(!x is Float, "dynamic int #3");
 }
 
+void issue604() {
+  dynamic {
+    dynamic a="3";
+    dynamic b=20;
+    try {
+      print(b<=>a);
+      fail("604.1");
+    } catch (Throwable ex) {
+      check(true);
+    }
+    try {
+      print(a<=>b);
+      fail("604.2");
+    } catch (Throwable ex) {
+      check(true);
+    }
+    try {
+      print(a+b);
+      fail("604.3 string+int");
+    } catch (Throwable ex) {
+      check(true);
+    }
+    try {
+      print(b+a);
+      fail("604.4 int+string");
+    } catch (Throwable ex) {
+      check(true);
+    }
+    try {
+      print(a-b);
+      fail("#604.5 string-int");
+    } catch (Throwable ex) {
+      check(true);
+    }
+    try {
+      print(b-a);
+      fail("604.6 int-string");
+    } catch (Throwable ex) {
+      check(true);
+    }
+  }
+}
+
 shared void issues() {
     issue350();
     issue366();
@@ -226,4 +269,5 @@ shared void issues() {
     } catch (Exception e) {
         check(e.message == "Undefined or null reference: foo");
     }*/
+    issue604();
 }
