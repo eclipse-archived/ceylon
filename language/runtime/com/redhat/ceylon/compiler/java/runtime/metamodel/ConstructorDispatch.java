@@ -547,7 +547,10 @@ class ConstructorDispatch<Type, Arguments extends Sequential<? extends Object>>
         } else {
             throw new RuntimeException();
         }
-        boolean isJavaMember = found instanceof java.lang.reflect.Constructor && instance != null && !isStatic;
+        boolean isJavaMember = 
+                found instanceof java.lang.reflect.Constructor 
+                && instance != null 
+                && !isStatic;
         // box the return type
         method = MethodHandleUtil.boxReturnValue(method, returnType, constructorReference.getType());
         // we need to cast to Object because this is what comes out when calling it in $call

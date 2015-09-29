@@ -335,6 +335,9 @@ public class AppliedClass<Type, Arguments extends Sequential<? extends Object>>
         if(ctor == null)
             return null;
         if (ctor instanceof CallableConstructorDeclaration) {
+            if (ctor instanceof FreeInitializerConstructor) {
+                return new AppliedInitializer<>(this);
+            }
             FreeCallableConstructor callableCtor = (FreeCallableConstructor)ctor;
             com.redhat.ceylon.model.typechecker.model.Type constructorType = callableCtor.constructor.appliedType(this.producedType, Collections.<com.redhat.ceylon.model.typechecker.model.Type>emptyList());
             // anonymous classes don't have parameter lists

@@ -283,6 +283,11 @@ public class AppliedMemberClass<Container, Type, Arguments extends Sequential<? 
         if(ctor == null)
             return null;
         if (ctor instanceof CallableConstructorDeclaration) {
+            if (ctor instanceof FreeInitializerConstructor) {
+                return new AppliedMemberInitializer<>(
+                        this.$reifiedContainer, this.$reifiedType, $reified$Arguments, 
+                        this);
+            }
             FreeCallableConstructor callableCtor = (FreeCallableConstructor)ctor;
             // anonymous classes don't have parameter lists
             //TypeDescriptor actualReifiedArguments = Metamodel.getTypeDescriptorForArguments(declaration.declaration.getUnit(), (Functional)callableCtor.constructor, this.producedType);
