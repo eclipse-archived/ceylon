@@ -421,7 +421,7 @@
             <para>The following are legal strings:</para>
             
             <programlisting>"Hello!"</programlisting>
-            <programlisting>"\{00E5}ngstr\{00F6}ms"</programlisting>
+            <programlisting>"\{#00E5}ngstr\{#00F6}ms"</programlisting>
             <programlisting>" \t\n\f\r,;:"</programlisting>
             <programlisting>"\{POLICE CAR} \{TROLLEYBUS} \{WOMAN WITH BUNNY EARS}"</programlisting>
             <programlisting>"""This program prints "hello world" to the console."""</programlisting>
