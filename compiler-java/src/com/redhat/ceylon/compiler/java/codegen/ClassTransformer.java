@@ -2244,10 +2244,11 @@ public class ClassTransformer extends AbstractTransformer {
             
             if (member instanceof Class) {
                 Class klass = (Class)member;
+                final Type typedMember = satisfiedType.getTypeMember(klass, Collections.<Type>emptyList());
                 if (Strategy.generateInstantiator(member)
                         && !klass.hasConstructors()
                     && !model.isFormal()
-                    && needsCompanionDelegate(model, member)
+                    && needsCompanionDelegate(model, typedMember)
                     && model.getDirectMember(member.getName(), null, false) == null) {
                     // instantiator method implementation
                     generateInstantiatorDelegate(classBuilder, satisfiedType,
@@ -2278,8 +2279,8 @@ public class ClassTransformer extends AbstractTransformer {
             if (member instanceof Function) {
                 Function method = (Function)member;
                 final TypedReference typedMember = satisfiedType.getTypedMember(method, Collections.<Type>emptyList());
-                Declaration sub = (Declaration)model.getMember(method.getName(), ModelUtil.getSignature(typedMember), false);
-                if (sub instanceof Function) {
+                Declaration sub = (Declaration)model.getMember(method.getName(), getSignatureIfRequired(typedMember), false, true);
+                if (sub instanceof Function/* && !sub.isAbstraction()*/) {
                     Function subMethod = (Function)sub;
                     if (subMethod.getParameterLists().isEmpty()) {
                         continue;
@@ -2331,7 +2332,7 @@ public class ClassTransformer extends AbstractTransformer {
                     // if it has the *most refined* default concrete member, 
                     // then generate a method on the class
                     // delegating to the $impl instance
-                    if (needsCompanionDelegate(model, member)) {
+                    if (needsCompanionDelegate(model, typedMember)) {
 
                         final MethodDefinitionBuilder concreteMemberDelegate = makeDelegateToCompanion(iface,
                                 typedMember,
@@ -2370,7 +2371,7 @@ public class ClassTransformer extends AbstractTransformer {
                     || member instanceof Setter) {
                 TypedDeclaration attr = (TypedDeclaration)member;
                 final TypedReference typedMember = satisfiedType.getTypedMember(attr, null);
-                if (needsCompanionDelegate(model, member)) {
+                if (needsCompanionDelegate(model, typedMember)) {
                     Setter setter = (member instanceof Setter) ? (Setter)member : null;
                     if (member instanceof Value) {
                         if (member instanceof JavaBeanValue) {
@@ -2415,8 +2416,14 @@ public class ClassTransformer extends AbstractTransformer {
                         throw new BugException("assertion failed: " + member.getQualifiedNameString() + " was unexpectedly a variable value");
                     }
                 }
-            } else if (needsCompanionDelegate(model, member)) {
-                throw new BugException("unhandled concrete interface member " + member.getQualifiedNameString() + " " + member.getClass());
+            } else {
+                Reference typedMember = member instanceof TypeDeclaration 
+                        ? satisfiedType.getTypeMember((TypeDeclaration)member, Collections.<Type>emptyList())
+                        : satisfiedType.getTypedMember((TypedDeclaration)member, Collections.<Type>emptyList());
+
+                if (needsCompanionDelegate(model, typedMember)) {
+                    throw new BugException("unhandled concrete interface member " + member.getQualifiedNameString() + " " + member.getClass());
+                }
             }
         }
         
@@ -2519,9 +2526,11 @@ public class ClassTransformer extends AbstractTransformer {
         classBuilder.method(overload);
     }
 
-    private boolean needsCompanionDelegate(final Class model, Declaration member) {
+    private boolean needsCompanionDelegate(final Class model, Reference ref) {
         final boolean mostRefined;
-        Declaration m = model.getMember(member.getName(), ModelUtil.getSignature(member), false);
+        Declaration member = ref.getDeclaration();
+        java.util.List<Type> sig = getSignatureIfRequired(ref);
+        Declaration m = model.getMember(member.getName(), sig, false, true);
         if (member instanceof Setter && Decl.isGetter(m)) {
             mostRefined = member.equals(((Value)m).getSetter());
         } else {
@@ -2529,6 +2538,27 @@ public class ClassTransformer extends AbstractTransformer {
         }
         return mostRefined
                 && (member.isDefault() || !member.isFormal());
+    }
+
+    private java.util.List<Type> getSignatureIfRequired(Reference ref) {
+        if(requiresMemberSignatureMatch(ref.getDeclaration()))
+            return ModelUtil.getSignature(ref);
+        return null;
+    }
+
+    private boolean requiresMemberSignatureMatch(Declaration declaration) {
+        if(declaration instanceof Function){
+            java.util.List<ParameterList> parameterLists = ((Functional)declaration).getParameterLists();
+            if(parameterLists != null && parameterLists.size() == 1){
+                ParameterList parameterList = parameterLists.get(0);
+                for(Parameter param : parameterList.getParameters()){
+                    if(param.getModel().isFunctional())
+                        return false;
+                }
+            }
+            return declaration.isAbstraction() || declaration.isOverloaded();
+        }
+        return false;
     }
 
     /**
