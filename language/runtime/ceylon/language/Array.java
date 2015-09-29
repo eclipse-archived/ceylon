@@ -1653,7 +1653,7 @@ public final class Array<Element>
     @Override
     public long count(@Name("selecting")
     @FunctionalParameter("(element)") 
-    @TypeInfo("ceylon.language::Callable<ceylon.language::Boolean,ceylon.language::Tuple<Element,Element,ceylon.language::Empty>>")
+    @TypeInfo("ceylon.language::Boolean(Elementt)")
     Callable<? extends Boolean> selecting) {
         // FIXME Very inefficient for primitive types due to boxing
         int count=0;
@@ -1668,7 +1668,7 @@ public final class Array<Element>
     @Override
     public boolean any(@Name("selecting")
     @FunctionalParameter("(element)") 
-    @TypeInfo("ceylon.language::Callable<ceylon.language::Boolean,ceylon.language::Tuple<Element,Element,ceylon.language::Empty>>")
+    @TypeInfo("ceylon.language::Boolean(Elementt)")
     Callable<? extends Boolean> selecting) {
         for (int i=0; i<size; i++) {
             if (selecting.$call$(unsafeItem(i)).booleanValue()) {
@@ -1681,7 +1681,7 @@ public final class Array<Element>
     @Override
     public boolean every(@Name("selecting")
     @FunctionalParameter("(element)") 
-    @TypeInfo("ceylon.language::Callable<ceylon.language::Boolean,ceylon.language::Tuple<Element,Element,ceylon.language::Empty>>")
+    @TypeInfo("ceylon.language::Boolean(Elementt)")
     Callable<? extends Boolean> selecting) {
         for (int i=0; i<size; i++) {
             if (!selecting.$call$(unsafeItem(i)).booleanValue()) {
@@ -1693,10 +1693,11 @@ public final class Array<Element>
 
     @Override
     @TypeInfo("ceylon.language::Null|Element")
-    public Element find(@Name("selecting")
-    @FunctionalParameter("(element)") 
-    @TypeInfo("ceylon.language::Callable<ceylon.language::Boolean,ceylon.language::Tuple<Element&ceylon.language::Object,Element&ceylon.language::Object,ceylon.language::Empty>>")
-    Callable<? extends Boolean> selecting) {
+    public Element find(
+            @Name("selecting")
+            @FunctionalParameter("(element)") 
+            @TypeInfo("ceylon.language::Boolean(Element&ceylon.language::Object)")
+            Callable<? extends Boolean> selecting) {
         for (int i=0; i<size; i++) {
             Element elem = unsafeItem(i);
             if (elem!=null &&
@@ -1709,9 +1710,10 @@ public final class Array<Element>
     
     @Override
     @TypeInfo("ceylon.language::Null|Element")
-    public Element findLast(@Name("selecting")
-    @FunctionalParameter("(element)") 
-    @TypeInfo("ceylon.language::Callable<ceylon.language::Boolean,ceylon.language::Tuple<Element&ceylon.language::Object,Element&ceylon.language::Object,ceylon.language::Empty>>")
+    public Element findLast(
+            @Name("selecting")
+            @FunctionalParameter("(element)") 
+            @TypeInfo("ceylon.language::Boolean(Element&ceylon.language::Object)")
     Callable<? extends Boolean> selecting) {
         for (int i=size-1; i>=0; i--) {
             Element elem = unsafeItem(i);
@@ -1723,13 +1725,46 @@ public final class Array<Element>
         return null;
     }
     
+    @Override @TypeInfo("ceylon.language::Integer?")
+    public Integer firstIndexWhere(
+            @Name("selecting")
+            @FunctionalParameter("(element)") 
+            @TypeInfo("ceylon.language::Boolean(Element&ceylon.language::Object)")
+            Callable<? extends Boolean> selecting) {
+        for (int i=0; i<size; i++) {
+            Element elem = unsafeItem(i);
+            if (elem!=null &&
+                    selecting.$call$(elem).booleanValue()) {
+                return Integer.instance(i);
+            }
+        }
+        return null;
+    }
+
+    @Override @TypeInfo("ceylon.language::Integer?")
+    public Integer lastIndexWhere(
+            @Name("selecting")
+            @FunctionalParameter("(element)") 
+            @TypeInfo("ceylon.language::Boolean(Element&ceylon.language::Object)")
+            Callable<? extends Boolean> selecting) {
+        for (int i=size-1; i>=0; i--) {
+            Element elem = unsafeItem(i);
+            if (elem!=null &&
+                    selecting.$call$(elem).booleanValue()) {
+                return Integer.instance(i);
+            }
+        }
+        return null;
+    }
+
     @Override
     @TypeInfo("ceylon.language::Null|ceylon.language::Entry<ceylon.language::Integer,Element&ceylon.language::Object>")
     public Entry<? extends Integer,? extends Element> 
-    locate(@Name("selecting")
-    @FunctionalParameter("(element)") 
-    @TypeInfo("ceylon.language::Callable<ceylon.language::Boolean,ceylon.language::Tuple<Element&ceylon.language::Object,Element&ceylon.language::Object,ceylon.language::Empty>>")
-    Callable<? extends Boolean> selecting) {
+    locate(
+            @Name("selecting")
+            @FunctionalParameter("(element)") 
+            @TypeInfo("ceylon.language::Boolean(Element&ceylon.language::Object)")
+            Callable<? extends Boolean> selecting) {
         for (int i=0; i<size; i++) {
             Element elem = unsafeItem(i);
             if (elem!=null &&
@@ -1745,10 +1780,11 @@ public final class Array<Element>
     @Override
     @TypeInfo("ceylon.language::Null|ceylon.language::Entry<ceylon.language::Integer,Element&ceylon.language::Object>")
     public Entry<? extends Integer,? extends Element> 
-    locateLast(@Name("selecting")
-    @FunctionalParameter("(element)") 
-    @TypeInfo("ceylon.language::Callable<ceylon.language::Boolean,ceylon.language::Tuple<Element&ceylon.language::Object,Element&ceylon.language::Object,ceylon.language::Empty>>")
-    Callable<? extends Boolean> selecting) {
+    locateLast(
+            @Name("selecting")
+            @FunctionalParameter("(element)") 
+            @TypeInfo("ceylon.language::Boolean(Element&ceylon.language::Object)")
+            Callable<? extends Boolean> selecting) {
         for (int i=size-1; i>=0; i--) {
             Element elem = unsafeItem(i);
             if (elem!=null &&
@@ -1802,7 +1838,7 @@ public final class Array<Element>
     @TypeInfo("ceylon.language::Sequential<Element>")
     public Sequential<? extends Element> 
     sort(@Name("comparing") @FunctionalParameter("(x,y)")
-    @TypeInfo("ceylon.language::Callable<ceylon.language::Comparison,ceylon.language::Tuple<Element,Element,ceylon.language::Tuple<Element,Element,ceylon.language::Empty>>>") 
+    @TypeInfo("ceylon.language::Comparison(Element,Element)") 
     Callable<? extends Comparison> comparing) {
         if (getEmpty()) {
             return (Sequential<? extends Element>) empty_.get_();
@@ -1958,7 +1994,7 @@ public final class Array<Element>
     public java.lang.Object each(
             @Name("step")
             @FunctionalParameter("!(element)")
-            @TypeInfo("ceylon.language::Callable<ceylon.language::Anything,ceylon.language::Tuple<Element,Element,ceylon.language::Empty>>")
+            @TypeInfo("ceylon.language::Anything(Element)>")
             Callable<? extends java.lang.Object> step) {
         for (int i=0; i<size; i++) {
             step.$call$(unsafeItem(i));
@@ -1968,7 +2004,7 @@ public final class Array<Element>
     
     //This one we don't really need to override:
     @Override
-    @TypeInfo("ceylon.language::Iterable<ceylon.language::Integer>")
+    @TypeInfo("{ceylon.language::Integer*}")
     public Iterable<? extends Integer, ? extends java.lang.Object> occurrences(
             @Name("element") final Element element, 
             @Defaulted @Name("from") final long from, 
@@ -2472,11 +2508,6 @@ public final class Array<Element>
     }
 
     @Override @Ignore
-    public Integer firstIndexWhere(Callable<? extends Boolean> arg0) {
-        return $ceylon$language$List$impl().firstIndexWhere(arg0);
-    }
-
-    @Override @Ignore
     public Element get(Integer index) {
         //NOTE IMPORTANT OPTIMIZATION HERE
         return getFromFirst(index.value);
@@ -2505,11 +2536,6 @@ public final class Array<Element>
     @Override @Ignore
     public List<? extends Element> initial(long arg0) {
         return $ceylon$language$List$impl().initial(arg0);
-    }
-
-    @Override @Ignore
-    public Integer lastIndexWhere(Callable<? extends Boolean> arg0) {
-        return $ceylon$language$List$impl().lastIndexWhere(arg0);
     }
 
     @Override @Ignore

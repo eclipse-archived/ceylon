@@ -136,6 +136,10 @@ shared final serializable native class Array<Element>
     shared actual native
     Element? findLast(Boolean selecting(Element&Object element));
     shared actual native
+    Integer? firstIndexWhere(Boolean selecting(Element&Object element));
+    shared actual 
+    Integer? lastIndexWhere(Boolean selecting(Element&Object element));
+    shared actual native
     <Integer->Element&Object>? locate(Boolean selecting(Element&Object element));
     shared actual native
     <Integer->Element&Object>? locateLast(Boolean selecting(Element&Object element));
