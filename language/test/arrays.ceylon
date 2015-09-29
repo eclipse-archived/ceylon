@@ -354,7 +354,11 @@ shared void testArrays() {
     check((Array("protocol:foo/bar/baz").locate(":/".contains) else 1)==8->':', "array locate");
     check((Array("protocol:foo/bar/baz").locateLast(":/".contains) else 1)==16->'/', "array locateLast");
     
-    check(Array {-1, 2, 3, -4, 0, 100}.filter(Integer.positive).sequence()==[2,3,100], "array filter");
+    value filterArray=Array {-1, 2, 3, -4, 0, 100};
+    value filteredArray=filterArray.filter(Integer.positive);
+    check(filteredArray.sequence()==[2,3,100], "array filter 1");
+    filterArray.set(3,4);
+    check(filteredArray.sequence()==[2,3,4,100], "array filter 2");
     check(Array {-1, 2, 3, -4, 0, 100}.indexesWhere(Integer.positive).sequence()==[1,2,5], "array indexesWhere");
     check((Array {-1, 2, 3, -4, 0, 100}.firstIndexWhere(Integer.positive) else -1)==1, "array firstIndexWhere");
     check((Array {-1, 2, 3, -4, 0, 100}.lastIndexWhere(Integer.positive) else -1)==5, "array lastIndexWhere");
