@@ -2,7 +2,6 @@ import ceylon.language.meta.declaration{...}
 import ceylon.language.meta.model{CallableConstructor, TypeApplicationException}
 
 
-"doc"
 class Bug750Init<T>(String s) {
     
 }
@@ -14,11 +13,21 @@ class Bug750NoDefault<T> {
     shared new other(String s) {} 
 }
 
+"doc"
+shared
+throws(`class Exception`, "Always")
+deprecated()
+class Bug750Anno() {
+    throw Exception();
+}
+
+
 @test
 shared void bug750() {
     ClassWithInitializerDeclaration bug750Init = `class Bug750Init`;
     ClassWithConstructorsDeclaration bug750Ctors= `class Bug750Ctors`;
     ClassWithConstructorsDeclaration bug750NoDefault= `class Bug750NoDefault`;
+    ClassWithInitializerDeclaration bug750Anno = `class Bug750Anno`;
     CallableConstructorDeclaration ctor = `new Bug750Ctors`;
     CallableConstructorDeclaration init = bug750Init.defaultConstructor;
     
@@ -50,13 +59,16 @@ shared void bug750() {
     assert(!init.formal);
     assert(init.shared);
     assert(!init.toplevel);
-    // XXX What are the semantics fo this? In Ceylon-land a ClassWithInitiaizer
-    // I guess it should return all those annotations which are permitted on a constructor?
-    //assert(!init.annotated<SharedAnnotation>());
-    //assert(init.annotated<DocAnnotation>());
-    //assert(!init.annotated<FormalAnnotation>());
-    //assert(init.annotations<SharedAnnotation>().empty);
-    //assert(!init.annotations<DocAnnotation>().empty);
+    // annotations
+    value annos = bug750Anno.constructorDeclarations();
+    assert(annos == bug750Anno.annotatedConstructorDeclarations<SharedAnnotation>());
+    assert(annos == bug750Anno.annotatedConstructorDeclarations<DeprecationAnnotation>());
+    assert(annos == bug750Anno.annotatedConstructorDeclarations<ThrownExceptionAnnotation>());
+    assert(bug750Anno.annotatedConstructorDeclarations<DocAnnotation>().empty);
+    assert(bug750Anno.defaultConstructor.annotated<SharedAnnotation>());
+    assert(bug750Anno.defaultConstructor.annotated<DeprecationAnnotation>());
+    assert(bug750Anno.defaultConstructor.annotated<ThrownExceptionAnnotation>());
+    assert(bug750Anno.defaultConstructor.annotated<DocAnnotation>());
     
     // apply
     CallableConstructor<Bug750Init<String>,[String]> appliedCtor = init.apply<Bug750Init<String>,[String]>(`String`);
@@ -83,6 +95,12 @@ shared void bug750() {
     
     // qualifiedName
     assert("metamodel::Bug750Init" == init.qualifiedName);
+    
+    Sequence<CallableConstructorDeclaration> xxx = bug750Init.constructorDeclarations();
+    assert(init in xxx);
+    
+    CallableConstructorDeclaration? yyy = bug750Init.getConstructorDeclaration("");
+    assert(yyy exists);
     
     Bug750Outer().bug750();
 }

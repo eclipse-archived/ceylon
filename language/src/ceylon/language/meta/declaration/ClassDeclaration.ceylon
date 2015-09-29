@@ -9,6 +9,16 @@ import ceylon.language.meta.model {
 
 """Class declaration.
    
+   ### Callable classes
+   
+   Since Ceylon 1.2 classes are not always directly invokable
+   (if the class has constructors, but not a default constructor). Thus
+   members of `ClassDeclaration` which depend on the class parameter 
+   list typically have optional type, but are refined on 
+   [[ClassWithInitializerDeclaration]] to be non-optional. The exceptions to 
+   this are [[instantiate]] and [[memberInstantiate]], 
+   which throw exceptions.
+   
    <a name="toplevel-sample"></a>
    ### Usage sample for toplevel classes
    
@@ -53,16 +63,14 @@ shared sealed interface ClassDeclaration
         of ClassWithInitializerDeclaration | ClassWithConstructorsDeclaration
         satisfies ClassOrInterfaceDeclaration {
     
-    "A constructor declaration representing the clas initializer or
-     the default initializer, or null if the class lacks 
+    "A constructor declaration representing the class initializer 
+     (for a class with a parameter list) or
+     the default constructor, or null if the class lacks 
      both a parameter list and a default constructor."
     shared formal CallableConstructorDeclaration? defaultConstructor;
     
-    "True if the current declaration is an annotation class or function."
-    shared formal Boolean annotation;
-    
     "The list of parameter declarations for this class. 
-     Returns `null` of the class lacks both a parameter list and a 
+     Returns `null` if the class lacks both a parameter list and a 
      default constructor."
     shared formal FunctionOrValueDeclaration[]? parameterDeclarations;
     
@@ -71,6 +79,9 @@ shared sealed interface ClassDeclaration
      default constructor, 
      or if no such parameter exists in the parameter list."
     shared formal FunctionOrValueDeclaration? getParameterDeclaration(String name);
+    
+    "True if the current declaration is an annotation class or function."
+    shared formal Boolean annotation;
     
     "True if the class has an [[abstract|ceylon.language::abstract]] annotation."
     shared formal Boolean abstract;
@@ -114,17 +125,21 @@ shared sealed interface ClassDeclaration
             (AppliedType<Object> containerType, AppliedType<>* typeArguments)
                 given Arguments satisfies Anything[];
 
-    "Creates a new instance of this toplevel class, by applying the specified type arguments and value arguments."
+    "Creates a new instance of this toplevel class, 
+     by applying the specified type arguments and value arguments."
     throws(`class IncompatibleTypeException`, 
         "If the specified type or value arguments are not compatible with 
-         this toplevel class.")
+         this toplevel class, or if the class lacks both a parameter list
+         and a default constructor.")
     shared default Object instantiate(AppliedType<>[] typeArguments = [], Anything* arguments)
         => classApply<Object, Nothing>(*typeArguments).apply(*arguments);
     
-    "Creates a new instance of this member class, by applying the specified type arguments and value arguments."
+    "Creates a new instance of this member class, by applying the specified 
+     type arguments and value arguments."
     throws(`class IncompatibleTypeException`, 
         "If the specified container, type or value arguments are not 
-         compatible with this method.")
+         compatible with this method, or if the class lacks both a parameter list
+         and a default constructor.")
     shared default Object memberInstantiate
             (Object container, AppliedType<>[] typeArguments = [], Anything* arguments)
                 => memberClassApply<Nothing, Object, Nothing>(`Nothing`, *typeArguments).bind(container).apply(*arguments);
@@ -144,59 +159,3 @@ shared sealed interface ClassDeclaration
             given Annotation satisfies AnnotationType;
 }
 
-"""The declaration model of a class that has a parameter list. For example:
-   
-       class WithParameterList() {
-       }
-   
-   """
-see(`interface ClassWithConstructorsDeclaration`)
-shared sealed interface ClassWithInitializerDeclaration 
-        satisfies ClassDeclaration {
-    
-    shared actual formal CallableConstructorDeclaration defaultConstructor;
-    
-    "The list of parameter declarations for this class."
-    shared actual formal FunctionOrValueDeclaration[] parameterDeclarations;
-    
-    shared actual default [] constructorDeclarations() => [];
-    
-    shared actual default Null getConstructorDeclaration(String name) => null;
-    
-    shared actual default [] annotatedConstructorDeclarations<Annotation>()
-            given Annotation satisfies AnnotationType => [];
-}
-
-"""The declaration model of a class that has constructors. For example:
-   
-       class WithConstructors {
-           shared new() {
-               // ...
-           }
-           shared clone(WithConstructors other) {
-               // ...
-           }
-       }
-"""
-see(`interface ClassWithInitializerDeclaration`)
-shared sealed interface ClassWithConstructorsDeclaration 
-        satisfies ClassDeclaration {
-    
-    "Instantiates this class if it has a default constructor, 
-     using the given type and value arguments. 
-     Otherwise throws [[IncompatibleTypeException]]"
-    throws (`class IncompatibleTypeException`, 
-        "If the class lacks a default constructor, or is a member class")
-    shared actual default Nothing instantiate(AppliedType<>[] typeArguments, Anything* arguments) {
-        throw IncompatibleTypeException("class has constructors");
-    }
-    
-    "Instantiates this member class if it has a default constructor, 
-     using the given container instances, type and value arguments. 
-     Otherwise throws [[IncompatibleTypeException]]"
-    throws (`class IncompatibleTypeException`, 
-        "If the class lacks a default constructor, or is not a member class")
-    shared actual default Nothing memberInstantiate(Object container, AppliedType<>[] typeArguments, Anything* arguments) {
-        throw IncompatibleTypeException("class has constructors");
-    }
-}

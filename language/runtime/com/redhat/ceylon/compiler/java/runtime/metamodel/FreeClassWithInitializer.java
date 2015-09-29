@@ -2,6 +2,7 @@ package com.redhat.ceylon.compiler.java.runtime.metamodel;
 
 import java.util.List;
 
+import ceylon.language.Sequence;
 import ceylon.language.Sequential;
 import ceylon.language.Singleton;
 import ceylon.language.empty_;
@@ -45,19 +46,26 @@ public class FreeClassWithInitializer
     
     @TypeInfo("ceylon.language::ConstructorDeclaration[]")
     @Override
-    public Sequential<? extends ConstructorDeclaration> constructorDeclarations() {
+    public Sequence<? extends ConstructorDeclaration> constructorDeclarations() {
         return new Singleton<ConstructorDeclaration>(ConstructorDeclaration.$TypeDescriptor$, getDefaultConstructor());
     }
     
     @TypeInfo("ceylon.language::ConstructorDeclaration[]")
     @Override
-    public <A extends java.lang.annotation.Annotation> Sequential<? extends ConstructorDeclaration> annotatedConstructorDeclarations(TypeDescriptor reified$Annotation) {
+    public <A extends java.lang.annotation.Annotation> Sequential<? extends CallableConstructorDeclaration> annotatedConstructorDeclarations(TypeDescriptor reified$Annotation) {
         // TODO test the single ctor against the preditace and return a singleton or not
         return (Sequential)empty_.get_();
     }
     
+    @Override
     public CallableConstructorDeclaration getDefaultConstructor() {
         return new FreeInitializerConstructor((com.redhat.ceylon.model.typechecker.model.Class)declaration);
+    }
+    
+    @TypeInfo("ceylon.language.meta.declaration::CallableConstructorDeclaration")
+    @Override
+    public ceylon.language.meta.declaration.CallableConstructorDeclaration getConstructorDeclaration(String name) {
+        return (ceylon.language.meta.declaration.CallableConstructorDeclaration)super.getConstructorDeclaration(name);
     }
     
     @Override

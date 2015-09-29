@@ -10,6 +10,8 @@ import ceylon.language.Sequential;
 import ceylon.language.empty_;
 import ceylon.language.meta.declaration.CallableConstructorDeclaration;
 import ceylon.language.meta.declaration.ClassDeclaration$impl;
+import ceylon.language.meta.declaration.ConstructorDeclaration;
+import ceylon.language.meta.declaration.FunctionOrValueDeclaration;
 import ceylon.language.meta.declaration.ValueConstructorDeclaration;
 import ceylon.language.meta.declaration.ValueDeclaration;
 
@@ -342,13 +344,13 @@ public abstract class FreeClass
     
     @TypeInfo("ceylon.language.meta.declaration::ConstructorDeclaration|ceylon.language::Null")
     @Override
-    public ceylon.language.meta.declaration.Declaration getConstructorDeclaration(
+    public ceylon.language.meta.declaration.ConstructorDeclaration getConstructorDeclaration(
             @Name("name")
             String name) {
         checkInit();
         for (ceylon.language.meta.declaration.Declaration ctor : this.constructors) {
             if (ctor.getName().equals(name)) {
-                return ctor;
+                return (ConstructorDeclaration)ctor;
             }
         }
         return null;

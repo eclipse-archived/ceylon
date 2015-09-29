@@ -24,6 +24,10 @@ import ceylon.language.meta.declaration {
        
        CallableConstructorDeclaration default = `new WithConstructors`;
        CallableConstructorDeclaration clone = `new WithConstructors.clone`;
+       
+   The initializer of a class with a parameter list can also be 
+   [[represented|ClassWithInitializerDeclaration.defaultConstructor]] 
+   as a `CallableConstructorDeclaration`.
 """
 see (`interface ValueConstructorDeclaration`)
 shared sealed interface CallableConstructorDeclaration 
