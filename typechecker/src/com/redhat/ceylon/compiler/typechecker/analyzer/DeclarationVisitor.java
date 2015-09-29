@@ -10,6 +10,7 @@ import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.buildAnnotati
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.formatPath;
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.getAnnotation;
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.getAnnotationArgument;
+import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.getAnnotationSequenceArgument;
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.getNativeBackend;
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.hasAnnotation;
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.name;
@@ -36,7 +37,6 @@ import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Annotation;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ObjectDefinition;
-import com.redhat.ceylon.compiler.typechecker.tree.TreeUtil;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.ClassAlias;
@@ -213,7 +213,9 @@ public abstract class DeclarationVisitor extends Visitor {
                         unit.getPackage()
                             .getModule()
                             .getNativeBackend();
-                Set<String> backends = model.getScope().getScopedBackends();
+                Set<String> backends = 
+                        model.getScope()
+                            .getScopedBackends();
                 if (!isHeader &&
                         moduleBackend != null &&
                         !backend.equals(moduleBackend)) {
@@ -244,7 +246,12 @@ public abstract class DeclarationVisitor extends Visitor {
                     if (model.isNativeHeader()) {
                         handleNativeHeader(model, name);
                         if (that instanceof Tree.ObjectDefinition) {
-                            handleNativeHeader(((Tree.ObjectDefinition)that).getAnonymousClass(), name);
+                            Tree.ObjectDefinition od = 
+                                    (Tree.ObjectDefinition) 
+                                        that;
+                            handleNativeHeader(
+                                    od.getAnonymousClass(), 
+                                    name);
                         }
                     }
                 }
@@ -252,7 +259,8 @@ public abstract class DeclarationVisitor extends Visitor {
                     if (member.isNative()) {
                         List<Declaration> overloads = 
                                 member.getOverloads();
-                        if (isHeader && member.isNativeHeader()) {
+                        if (isHeader && 
+                                member.isNativeHeader()) {
                             that.addError("duplicate native header: '" + 
                                     name + "'");
                             unit.getDuplicateDeclarations()
@@ -260,8 +268,9 @@ public abstract class DeclarationVisitor extends Visitor {
                         }
                         else {
                             Declaration overload = 
-                                    findOverloadForBackend(backend, 
-                                            model, overloads);
+                                    findOverloadForBackend(
+                                            backend, model, 
+                                            overloads);
                             if (overload != null) {
                                 that.addError("duplicate native implementation: '" + 
                                         name + "'");
@@ -274,9 +283,18 @@ public abstract class DeclarationVisitor extends Visitor {
                                         overloads)) {
                             overloads.add(model);
                             if (that instanceof Tree.ObjectDefinition) {
-                                Declaration objImplCls = ((Tree.ObjectDefinition)that).getAnonymousClass();
-                                Class objHdrCls = (Class)((Value)member).getType().getDeclaration();
-                                objHdrCls.getOverloads().add(objImplCls);
+                                Tree.ObjectDefinition od = 
+                                        (Tree.ObjectDefinition) 
+                                            that;
+                                Declaration objImplCls = 
+                                        od.getAnonymousClass();
+                                Value value = (Value) member;
+                                Class objHdrCls = 
+                                        (Class) 
+                                            value.getType()
+                                                .getDeclaration();
+                                objHdrCls.getOverloads()
+                                    .add(objImplCls);
                             }
                         }
                     }
@@ -1910,8 +1928,10 @@ public abstract class DeclarationVisitor extends Visitor {
             }
         }
         if (hasAnnotation(al, "aliased", unit)) {
-            Annotation aliased = getAnnotation(al, "aliased", unit);
-            List<String> aliases = TreeUtil.getAnnotationSequenceArgument(aliased);
+            Annotation aliased = 
+                    getAnnotation(al, "aliased", unit);
+            List<String> aliases = 
+                    getAnnotationSequenceArgument(aliased);
             model.setAliases(aliases);
         }
         buildAnnotations(al, model.getAnnotations());        
@@ -1921,8 +1941,8 @@ public abstract class DeclarationVisitor extends Visitor {
         ModelUtil.setVisibleScope(model);
     }
 
-    private static void checkFormalMember(Tree.Declaration that, 
-            Declaration d) {
+    private static void checkFormalMember(
+            Tree.Declaration that, Declaration d) {
         
         Scope container = d.getContainer();
         if (d.isFormal()) {
