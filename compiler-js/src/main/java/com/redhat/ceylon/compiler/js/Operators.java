@@ -332,7 +332,7 @@ public class Operators {
         }
     }
 
-    private static void nativeBinaryOp(final Tree.BinaryOperatorExpression that,
+    static void nativeBinaryOp(final Tree.BinaryOperatorExpression that,
             final String method, final String op, final String post, final GenerateJsVisitor gen) {
         //Try to use equals() if it exists
         String ltmp = gen.getNames().createTempVariable();

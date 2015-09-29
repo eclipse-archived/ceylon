@@ -2610,7 +2610,11 @@ public class GenerateJsVisitor extends Visitor {
 
     @Override
     public void visit(final Tree.SumOp that) {
-        Operators.simpleBinaryOp(that, null, ".plus(", ")", this);
+        if (isInDynamicBlock() && ModelUtil.isTypeUnknown(that.getLeftTerm().getTypeModel())) {
+            Operators.nativeBinaryOp(that, "plus", "+", null, this);
+        } else {
+            Operators.simpleBinaryOp(that, null, ".plus(", ")", this);
+        }
     }
 
     @Override
@@ -2621,21 +2625,37 @@ public class GenerateJsVisitor extends Visitor {
 
     @Override
     public void visit(final Tree.DifferenceOp that) {
-        Operators.simpleBinaryOp(that, null, ".minus(", ")", this);
+        if (isInDynamicBlock() && ModelUtil.isTypeUnknown(that.getLeftTerm().getTypeModel())) {
+            Operators.nativeBinaryOp(that, "minus", "-", null, this);
+        } else {
+            Operators.simpleBinaryOp(that, null, ".minus(", ")", this);
+        }
     }
 
     @Override
     public void visit(final Tree.ProductOp that) {
-        Operators.simpleBinaryOp(that, null, ".times(", ")", this);
+        if (isInDynamicBlock() && ModelUtil.isTypeUnknown(that.getLeftTerm().getTypeModel())) {
+            Operators.nativeBinaryOp(that, "times", "*", null, this);
+        } else {
+            Operators.simpleBinaryOp(that, null, ".times(", ")", this);
+        }
     }
 
     @Override
     public void visit(final Tree.QuotientOp that) {
-        Operators.simpleBinaryOp(that, null, ".divided(", ")", this);
+        if (isInDynamicBlock() && ModelUtil.isTypeUnknown(that.getLeftTerm().getTypeModel())) {
+            Operators.nativeBinaryOp(that, "divided", "/", null, this);
+        } else {
+            Operators.simpleBinaryOp(that, null, ".divided(", ")", this);
+        }
     }
 
     @Override public void visit(final Tree.RemainderOp that) {
-        Operators.simpleBinaryOp(that, null, ".remainder(", ")", this);
+        if (isInDynamicBlock() && ModelUtil.isTypeUnknown(that.getLeftTerm().getTypeModel())) {
+            Operators.nativeBinaryOp(that, "remainder", "%", null, this);
+        } else {
+            Operators.simpleBinaryOp(that, null, ".remainder(", ")", this);
+        }
     }
 
     @Override public void visit(final Tree.PowerOp that) {
