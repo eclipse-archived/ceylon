@@ -105,6 +105,7 @@ function $addnm$(nm,s) {
 }
 
 JSNum$proto.plus = function(other) {
+    if (typeof(other)!=='number'&&other.constructor!==Number)throw new TypeError("Number expected");
     return (nflt$(this)||nflt$(other)) ? Float(this+other) : (this+other);
 }
 $addnm$('plus');
@@ -119,6 +120,7 @@ $specialiseForNumber$(Integer, 'plusInteger', function(){return {mod:$CCMM$,$t:{
 $specialiseForNumber$(Float, 'plusInteger', function(){return {mod:$CCMM$,$t:{t:Float},pa:67,$cont:Float,ps:[{$t:{t:Integer},nm:'integer'}],d:['$','Float','$m','plusInteger']};})
 
 JSNum$proto.minus = function(other) {
+    if (typeof(other)!=='number'&&other.constructor!==Number)throw new TypeError("Number expected");
     return (nflt$(this)||nflt$(other)) ? Float(this-other) : (this-other);
 }
 $addnm$('minus');
@@ -126,6 +128,7 @@ $specialiseForNumber$(Integer, 'minus', function(){return {mod:$CCMM$,$t:{t:Inte
 $specialiseForNumber$(Float, 'minus', function(){return {mod:$CCMM$,$t:{t:Float},pa:67,$cont:Float,ps:[{$t:{t:Float},nm:'other'}],d:['$','Float','$m','minus']};})
 
 JSNum$proto.times = function(other) {
+  if (typeof(other)!=='number'&&other.constructor!==Number)throw new TypeError("Number expected");
   if (this.fmz$)return other.negative?Float(0.0):this;
   var fls=nflt$(this)||nflt$(other);
   if (fls && this.valueOf()==0 && other.negative) {
@@ -140,13 +143,14 @@ $specialiseForNumber$(Integer, 'times', function(){return {mod:$CCMM$,$t:{t:Inte
 $specialiseForNumber$(Float, 'times', function(){return {mod:$CCMM$,$t:{t:Float},pa:67,$cont:Float,ps:[{$t:{t:Float},nm:'other'}],d:['$','Float','$m','times']};})
 
 JSNum$proto.timesInteger = function(other) {
-    return nflt$(this) ? Float(this*other) : (this*other);
+  return nflt$(this) ? Float(this*other) : (this*other);
 }
 $addnm$('timesInteger');
 $specialiseForNumber$(Integer, 'timesInteger', function(){return {mod:$CCMM$,$t:{t:Integer},pa:67,$cont:Integer,ps:[{$t:{t:Integer},nm:'integer'}],d:['$','Integer','$m','timesInteger']};})
 $specialiseForNumber$(Float, 'timesInteger', function(){return {mod:$CCMM$,$t:{t:Float},pa:67,$cont:Float,ps:[{$t:{t:Integer},nm:'integer'}],d:['$','Float','$m','timesInteger']};})
 
 JSNum$proto.divided = function(other) {
+  if (typeof(other)!=='number'&&other.constructor!==Number)throw new TypeError("Number expected");
   if (this.fmz$)return this;
     if (nflt$(this)||nflt$(other)) { 
         var ret = Float(this/other);
@@ -167,12 +171,14 @@ JSNum$proto.remainder = function(other) {
   if (other == 0) {
     throw Exception("Division by Zero");
   }
+  if (typeof(other)!=='number'&&other.constructor!==Number)throw new TypeError("Number expected");
   return this%other;
 }
 $addnm$('remainder',Integral.$$.prototype.remainder);
 $specialiseForNumber$(Integer, 'remainder', function(){return {mod:$CCMM$,$t:{t:Integer},pa:67,$cont:Integer,ps:[{$t:{t:Integer},nm:'other'}],d:['$','Integer','$m','remainder']};})
 
 JSNum$proto.modulo = function(modulus) {
+    if (typeof(modulus)!=='number'&&modulus.constructor!==Number)throw new TypeError("Number expected");
     if (modulus < 0) {
         throw AssertionError("modulus must be positive: "+modulus);
     }
@@ -189,6 +195,7 @@ JSNum$proto.divides=function(o){return o%this===0;}
 $specialiseForNumber$(Integer, 'divides', function(){return {mod:$CCMM$,$t:{t:Integer},pa:67,$cont:Integer,ps:[{$t:{t:Integer},nm:'other'}],d:['$','Integer','$m','divides']};})
 
 JSNum$proto.power = function(exp) {
+    if (typeof(exp)!=='number'&&exp.constructor!==Number)throw new TypeError("Number expected");
     if (nflt$(this)||nflt$(exp)) {
         if(this == 1.0)
             return this;
@@ -264,6 +271,7 @@ $specialiseForNumber$(Integer, 'equals', function(){return {mod:$CCMM$,$t:{t:$_B
 $specialiseForNumber$(Float, 'equals', function(){return {mod:$CCMM$,$t:{t:$_Boolean},pa:67,$cont:Float,ps:[{$t:{t:$_Object},nm:'that'}],d:['$','Float','$m','equals']};})
 
 JSNum$proto.compare = function(other) {
+    if (typeof(other)!=='number'&&other.constructor!==Number)throw new TypeError("Number expected");
     var value = this.valueOf();
     return value==other ? equal() : (value<other ? smaller():larger());
 }
@@ -272,6 +280,7 @@ $specialiseForNumber$(Integer, 'compare', function(){return {mod:$CCMM$,$t:{t:Co
 $specialiseForNumber$(Float, 'compare', function(){return {mod:$CCMM$,$t:{t:Comparison},pa:67,$cont:Float,ps:[{$t:{t:Float},nm:'other'}],d:['$','Float','$m','compare']};})
 
 JSNum$proto.smallerThan=function(o) {
+  if (typeof(o)!=='number'&&o.constructor!==Number)throw new TypeError("Number expected");
   return Comparable.$$.prototype.smallerThan.call(this,o);
 }
 $addnm$('smallerThan',Comparable.$$.prototype.smallerThan);
@@ -279,6 +288,7 @@ $specialiseForNumber$(Integer, 'smallerThan', function(){return {mod:$CCMM$,$t:{
 $specialiseForNumber$(Float, 'smallerThan', function(){return {mod:$CCMM$,$t:{t:$_Boolean},pa:67,$cont:Float,ps:[{$t:{t:Float},nm:'other'}],d:['$','Float','$m','smallerThan']};})
 
 JSNum$proto.largerThan=function(o) {
+  if (typeof(o)!=='number'&&o.constructor!==Number)throw new TypeError("Number expected");
   return Comparable.$$.prototype.largerThan.call(this,o);
 }
 $addnm$('largerThan',Comparable.$$.prototype.largerThan);
@@ -286,6 +296,7 @@ $specialiseForNumber$(Integer, 'largerThan', function(){return {mod:$CCMM$,$t:{t
 $specialiseForNumber$(Float, 'largerThan', function(){return {mod:$CCMM$,$t:{t:$_Boolean},pa:67,$cont:Float,ps:[{$t:{t:Float},nm:'other'}],d:['$','Float','$m','largerThan']};})
 
 JSNum$proto.notSmallerThan=function(o) {
+  if (typeof(o)!=='number'&&o.constructor!==Number)throw new TypeError("Number expected");
   return Comparable.$$.prototype.notSmallerThan.call(this,o);
 }
 $addnm$('notSmallerThan',Comparable.$$.prototype.notSmallerThan);
@@ -293,6 +304,7 @@ $specialiseForNumber$(Integer, 'notSmallerThan', function(){return {mod:$CCMM$,$
 $specialiseForNumber$(Float, 'notSmallerThan', function(){return {mod:$CCMM$,$t:{t:$_Boolean},pa:67,$cont:Float,ps:[{$t:{t:Float},nm:'other'}],d:['$','Float','$m','notSmallerThan']};})
 
 JSNum$proto.notLargerThan=function(o) {
+  if (typeof(o)!=='number'&&o.constructor!==Number)throw new TypeError("Number expected");
   return Comparable.$$.prototype.notLargerThan.call(this,o);
 }
 $addnm$('notLargerThan',Comparable.$$.prototype.notLargerThan);
