@@ -132,6 +132,10 @@ shared final serializable native class Array<Element>
     shared actual native
     Boolean every(Boolean selecting(Element element));
     shared actual native
+    {Element*} filter(Boolean selecting(Element element));
+    //shared actual native 
+    //{Result*} map<Result>(Result collecting(Element element));
+    shared actual native
     Element? find(Boolean selecting(Element&Object element));
     shared actual native
     Element? findLast(Boolean selecting(Element&Object element));
@@ -139,10 +143,14 @@ shared final serializable native class Array<Element>
     Integer? firstIndexWhere(Boolean selecting(Element&Object element));
     shared actual 
     Integer? lastIndexWhere(Boolean selecting(Element&Object element));
+    shared actual native 
+    {Integer*} indexesWhere(Boolean selecting(Element&Object element));
     shared actual native
     <Integer->Element&Object>? locate(Boolean selecting(Element&Object element));
     shared actual native
     <Integer->Element&Object>? locateLast(Boolean selecting(Element&Object element));
+    shared actual native
+    {<Integer->Element&Object>*} locations(Boolean selecting(Element&Object element));
     shared actual native
     Result|Element|Null reduce<Result>
             (Result accumulating(Result|Element partial, Element element));

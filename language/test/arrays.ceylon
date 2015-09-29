@@ -350,7 +350,12 @@ shared void testArrays() {
     check((Array("").firstInclusion("") else -1) == 0, "empty string empty inclusions");
     check((Array("").lastInclusion("") else -1) == 0, "empty string empty inclusions");
 
-    check(Array("protocol:foo/bar/baz").locations(":/".contains).sequence()==[8->':',12->'/',16->'/']);
-    check((Array("protocol:foo/bar/baz").locate(":/".contains) else 1)==8->':');
-    check((Array("protocol:foo/bar/baz").locateLast(":/".contains) else 1)==16->'/');
+    check(Array("protocol:foo/bar/baz").locations(":/".contains).sequence()==[8->':',12->'/',16->'/'], "array locations");
+    check((Array("protocol:foo/bar/baz").locate(":/".contains) else 1)==8->':', "array locate");
+    check((Array("protocol:foo/bar/baz").locateLast(":/".contains) else 1)==16->'/', "array locateLast");
+    
+    check(Array {-1, 2, 3, -4, 0, 100}.filter(Integer.positive).sequence()==[2,3,100], "array filter");
+    check(Array {-1, 2, 3, -4, 0, 100}.indexesWhere(Integer.positive).sequence()==[1,2,5], "array indexesWhere");
+    check((Array {-1, 2, 3, -4, 0, 100}.firstIndexWhere(Integer.positive) else -1)==1, "array firstIndexWhere");
+    check((Array {-1, 2, 3, -4, 0, 100}.lastIndexWhere(Integer.positive) else -1)==5, "array lastIndexWhere");
 }

@@ -2002,6 +2002,99 @@ public final class Array<Element>
         return null;
     }
     
+    @Override
+    @TypeInfo("{Element*}")
+    public Iterable<? extends Element, ? extends java.lang.Object> filter(
+            @Name("selecting")
+            @FunctionalParameter("(element)") 
+            @TypeInfo("ceylon.language::Boolean(Element)")
+            final Callable<? extends Boolean> selecting) {
+        return new BaseIterable<Element, java.lang.Object>
+                ($reifiedElement, Null.$TypeDescriptor$) {
+            @Override
+            public Iterator<? extends Element> iterator() {
+                return new BaseIterator<Element>
+                        ($reifiedElement) {
+                    int index = 0;
+                    @Override
+                    public java.lang.Object next() {
+                        while (index<size) {
+                            Element element = unsafeItem(index++);
+                            if (selecting.$call$(element).booleanValue()){
+                                return element;
+                            }
+                        }
+                        return finished_.get_();
+                    }
+                };
+            }
+        };
+    }
+
+    @Override
+    @TypeInfo("{ceylon.language::Integer*}")
+    public Iterable<? extends Integer, ? extends java.lang.Object> indexesWhere(
+            @Name("selecting")
+            @FunctionalParameter("(element)") 
+            @TypeInfo("ceylon.language::Boolean(Element&ceylon.language::Object)")
+            final Callable<? extends Boolean> selecting) {
+        return new BaseIterable<Integer, java.lang.Object>
+                (Integer.$TypeDescriptor$, Null.$TypeDescriptor$) {
+            @Override
+            public Iterator<? extends Integer> iterator() {
+                return new BaseIterator<Integer>
+                        (Integer.$TypeDescriptor$) {
+                    int index = 0;
+                    @Override
+                    public java.lang.Object next() {
+                        while (index<size) {
+                            Element element = unsafeItem(index);
+                            if (selecting.$call$(element).booleanValue()){
+                                return Integer.instance(index++);
+                            }
+                            index++;
+                        }
+                        return finished_.get_();
+                    }
+                };
+            }
+        };
+    }
+
+    @Override
+    @TypeInfo("{ceylon.language::Entry<ceylon.language::Integer,Element>*}")
+    public Iterable<? extends Entry<? extends Integer, ? extends Element>, ? extends java.lang.Object> locations(
+            @Name("selecting")
+            @FunctionalParameter("(element)") 
+            @TypeInfo("ceylon.language::Boolean(Element&ceylon.language::Object)")
+            final Callable<? extends Boolean> selecting) {
+        final TypeDescriptor klass = 
+                TypeDescriptor.klass(Entry.class, 
+                        Integer.$TypeDescriptor$, $reifiedElement);
+        return new BaseIterable<Entry<? extends Integer, ? extends Element>, java.lang.Object>
+                (klass, Null.$TypeDescriptor$) {
+            @Override
+            public Iterator<? extends Entry<? extends Integer, ? extends Element>> iterator() {
+                return new BaseIterator<Entry<? extends Integer, ? extends Element>>(klass) {
+                    int index = 0;
+                    @Override
+                    public java.lang.Object next() {
+                        while (index<size) {
+                            Element element = unsafeItem(index);
+                            if (selecting.$call$(element).booleanValue()){
+                                return new Entry(Integer.$TypeDescriptor$, 
+                                        $reifiedElement,
+                                        Integer.instance(index++), element);
+                            }
+                            index++;
+                        }
+                        return finished_.get_();
+                    }
+                };
+            }
+        };
+    }
+
     //This one we don't really need to override:
     @Override
     @TypeInfo("{ceylon.language::Integer*}")
@@ -2529,11 +2622,6 @@ public final class Array<Element>
     }
 
     @Override @Ignore
-    public Iterable<? extends Integer, ? extends java.lang.Object> indexesWhere(Callable<? extends Boolean> arg0) {
-        return $ceylon$language$List$impl().indexesWhere(arg0);
-    }
-
-    @Override @Ignore
     public List<? extends Element> initial(long arg0) {
         return $ceylon$language$List$impl().initial(arg0);
     }
@@ -2650,11 +2738,6 @@ public final class Array<Element>
     }
 
     @Override @Ignore
-    public Iterable<? extends Element, ? extends java.lang.Object> filter(Callable<? extends Boolean> arg0) {
-        return $ceylon$language$Iterable$impl().filter(arg0);
-    }
-
-    @Override @Ignore
     public <Result, OtherAbsent> Iterable flatMap(TypeDescriptor arg0, TypeDescriptor arg1,
             Callable<? extends Iterable<? extends Result, ? extends OtherAbsent>> arg2) {
         return $ceylon$language$Iterable$impl().flatMap(arg0, arg1, arg2);
@@ -2742,13 +2825,6 @@ public final class Array<Element>
     public <Other> long interpose$step(TypeDescriptor arg0, Other arg1) {
         // TODO Auto-generated method stub
         return $ceylon$language$Iterable$impl().interpose$step(arg0, arg1);
-    }
-
-    @Override @Ignore
-    public Iterable<? extends Entry<? extends Integer, ? extends Element>, ? extends java.lang.Object> locations(
-            Callable<? extends Boolean> arg0) {
-        // TODO Auto-generated method stub
-        return $ceylon$language$Iterable$impl().locations(arg0);
     }
 
     @Override @Ignore
