@@ -1653,7 +1653,7 @@ public final class Array<Element>
     @Override
     public long count(@Name("selecting")
     @FunctionalParameter("(element)") 
-    @TypeInfo("ceylon.language::Boolean(Elementt)")
+    @TypeInfo("ceylon.language::Boolean(Element)")
     Callable<? extends Boolean> selecting) {
         // FIXME Very inefficient for primitive types due to boxing
         int count=0;
@@ -1668,7 +1668,7 @@ public final class Array<Element>
     @Override
     public boolean any(@Name("selecting")
     @FunctionalParameter("(element)") 
-    @TypeInfo("ceylon.language::Boolean(Elementt)")
+    @TypeInfo("ceylon.language::Boolean(Element)")
     Callable<? extends Boolean> selecting) {
         for (int i=0; i<size; i++) {
             if (selecting.$call$(unsafeItem(i)).booleanValue()) {
@@ -1681,7 +1681,7 @@ public final class Array<Element>
     @Override
     public boolean every(@Name("selecting")
     @FunctionalParameter("(element)") 
-    @TypeInfo("ceylon.language::Boolean(Elementt)")
+    @TypeInfo("ceylon.language::Boolean(Element)")
     Callable<? extends Boolean> selecting) {
         for (int i=0; i<size; i++) {
             if (!selecting.$call$(unsafeItem(i)).booleanValue()) {
@@ -1994,7 +1994,7 @@ public final class Array<Element>
     public java.lang.Object each(
             @Name("step")
             @FunctionalParameter("!(element)")
-            @TypeInfo("ceylon.language::Anything(Element)>")
+            @TypeInfo("ceylon.language::Anything(Element)")
             Callable<? extends java.lang.Object> step) {
         for (int i=0; i<size; i++) {
             step.$call$(unsafeItem(i));
