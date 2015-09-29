@@ -2178,8 +2178,8 @@ public class ModelUtil {
     }
 
     public static List<Type> getSignature(
-            TypedReference ref) {
-        TypedDeclaration dec = ref.getDeclaration();
+            Reference ref) {
+        Declaration dec = ref.getDeclaration();
         if (!(dec instanceof Functional)) {
             return null;
         }
