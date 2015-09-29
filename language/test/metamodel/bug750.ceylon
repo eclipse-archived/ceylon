@@ -80,13 +80,13 @@ shared void bug750() {
     //container
     assert(bug750Init == init.container);
     
-    /*// invoke
+    // invoke
     assert(is Bug750Init<String> inst= init.invoke([`String`], ""));
     try {
         init.memberInvoke(init, [], "");
         assert(false);
     } catch (TypeApplicationException e) {}
-    */
+    
     // type parameters
     assert(!init.typeParameterDeclarations.empty);
     
@@ -172,13 +172,13 @@ class Bug750Outer() {
         //container
         assert(bug750Init == init.container);
         
-        /*// invoke
-         assert(is Bug750Init<String> inst= init.invoke([`String`], ""));
-         try {
-         init.memberInvoke(init, [], "");
-         assert(false);
-         } catch (TypeApplicationException e) {}
-         */
+        // invoke
+        assert(is Bug750Init<String> inst= init.memberInvoke(this, [`String`], ""));
+        try {
+            init.invoke([`String`], "");
+            assert(false);
+        } catch (TypeApplicationException e) {}
+        
         // type parameters
         assert(!init.typeParameterDeclarations.empty);
         
@@ -186,7 +186,6 @@ class Bug750Outer() {
         assert("" == init.name);
         
         // qualifiedName
-        print("££££££££££££££££££ ``init.qualifiedName``");
         assert("metamodel::Bug750Outer.Bug750Init" == init.qualifiedName);
     }
 }
