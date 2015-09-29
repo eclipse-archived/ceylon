@@ -573,7 +573,7 @@ class ConstructorDispatch<Type, Arguments extends Sequential<? extends Object>>
             skipParameters++; // skip the first parameter for boxing
         }
         // insert any required type descriptors
-        if(typeParametersCount != 0 && MethodHandleUtil.isReifiedTypeSupported(found, false)){
+        if(typeParametersCount != 0 && MethodHandleUtil.isReifiedTypeSupported(found, isJavaMember)){
             List<com.redhat.ceylon.model.typechecker.model.Type> typeArguments = new ArrayList<com.redhat.ceylon.model.typechecker.model.Type>();
             java.util.Map<com.redhat.ceylon.model.typechecker.model.TypeParameter, com.redhat.ceylon.model.typechecker.model.Type> typeArgumentMap = constructorReference.getTypeArguments();
             for (com.redhat.ceylon.model.typechecker.model.TypeParameter tp : reifiedTypeParameters) {

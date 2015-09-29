@@ -307,7 +307,7 @@ public class MethodHandleUtil {
             return false;
         // BEWARE: if getParameterTypes has same length as getParameterAnnotations then synthetic parameters are included
         // but if they differ, they are not included
-        int annotationOffset = annotations.length - parameterTypes.length;
+        int annotationOffset = parameterTypes.length - annotations.length;
         for(int i = 0 ; i < tpCount ; i++ ){
             if(parameterTypes[i + start] != TypeDescriptor.class)
                 return false;
