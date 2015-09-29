@@ -133,15 +133,13 @@ shared final serializable native class Array<Element>
     Boolean every(Boolean selecting(Element element));
     shared actual native
     {Element*} filter(Boolean selecting(Element element));
-    //shared actual native 
-    //{Result*} map<Result>(Result collecting(Element element));
     shared actual native
     Element? find(Boolean selecting(Element&Object element));
     shared actual native
     Element? findLast(Boolean selecting(Element&Object element));
     shared actual native
     Integer? firstIndexWhere(Boolean selecting(Element&Object element));
-    shared actual 
+    shared actual native
     Integer? lastIndexWhere(Boolean selecting(Element&Object element));
     shared actual native 
     {Integer*} indexesWhere(Boolean selecting(Element&Object element));
