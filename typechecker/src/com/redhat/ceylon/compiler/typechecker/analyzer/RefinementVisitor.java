@@ -1721,7 +1721,7 @@ public class RefinementVisitor extends Visitor {
         if (!sm.isFormal() && !sm.isDefault()
                 && !sm.isShortcutRefinement()) { //this condition is here to squash a dupe message
             that.addError("inherited method is neither formal nor default so may not be refined: " + 
-                    message(sm));
+                    message(sm), 510);
         }
         final Reference rm = getRefinedMember(sm,c);
         Function m = new Function();
