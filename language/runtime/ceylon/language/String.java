@@ -2115,6 +2115,17 @@ public final class String
         return locate(value,f);
     }
     
+    @Override
+    @TypeInfo("{ceylon.language::Entry<ceylon.language::Integer,ceylon.language::Character>*}")
+    public Iterable<? extends Entry<? extends Integer, ? extends Character>, ? extends java.lang.Object> 
+    locations(
+            @Name("selecting")
+            @TypeInfo("ceylon.language::Boolean(ceylon.language::Character)")
+            @FunctionalParameter("(element)")
+            Callable<? extends Boolean> selecting) {
+        return locations(value, selecting);
+    }
+
     @Ignore
     public static Entry<? extends Integer,? extends Character> 
     locate(java.lang.String value, 
@@ -3011,16 +3022,6 @@ public final class String
     @Override @Ignore
     public <Other> long interpose$step(TypeDescriptor arg0, Other arg1) {
         return $ceylon$language$Iterable$impl().interpose$step(arg0, arg1);
-    }
-
-    @Override
-    @TypeInfo("{ceylon.language::Entry<ceylon.language::Integer,ceylon.language::Character>*}")
-    public Iterable<? extends Entry<? extends Integer, ? extends Character>, ? extends java.lang.Object> 
-    locations(
-            @TypeInfo("ceylon.language::Boolean(ceylon.language::Character)")
-            @Name("selecting")
-            Callable<? extends Boolean> arg0) {
-        return locations(value, arg0);
     }
 
     @Override @Ignore
