@@ -401,14 +401,13 @@ public abstract class Declaration
         }
         
         if (object instanceof Declaration) {
-            Declaration dec = (Declaration) object;
-            if (this.getModelClass() != dec.getModelClass()) {
-                return false;
-            }
             Declaration that = (Declaration) object;
             String thisName = getName();
             String thatName = that.getName();
             if (!Objects.equals(getQualifier(), that.getQualifier())) {
+                return false;
+            }
+            if (getModelClass() != that.getModelClass()) {
                 return false;
             }
             Scope thisContainer = 
