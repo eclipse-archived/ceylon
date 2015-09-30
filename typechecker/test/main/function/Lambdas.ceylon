@@ -145,6 +145,10 @@ class Lambdas() {
         return first++;
     };
     
+    @type:"Anything()" value withVoid = void () { throw; };
+    @type:"Nothing()" value withFunction = function () { throw; };
+    @type:"Anything()" value withNone = () { throw; };
+    
 }
 
 class SuperWithFun(String fun()) {}
