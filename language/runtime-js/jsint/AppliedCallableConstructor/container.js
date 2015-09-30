@@ -1,1 +1,1 @@
-return null;
+return this.fakeConstr$?this.type:null;

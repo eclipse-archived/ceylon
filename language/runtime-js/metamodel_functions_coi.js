@@ -690,7 +690,7 @@ function coiclsannconstrs$(coi,anntypes,prefix,mt,arg$,tipo) {
   var cs=[];
   for (var cn in coi.tipo) {
     if (cn.startsWith(prefix)) {
-      mm=getrtmm$$(coi.tipo[cn]);
+      var mm=getrtmm$$(coi.tipo[cn]);
       if (mm.d[mm.d.length-2]===mt && coi$is$anns(allann$(mm),ats)) {
         var parms=mm.ps;
         if (parms && arg$.t!==Nothing && tipo.a) {
@@ -702,6 +702,21 @@ function coiclsannconstrs$(coi,anntypes,prefix,mt,arg$,tipo) {
           var args=parms?tupleize$params(parms,coi.$targs):empty();
           cs.push({tipo:coi.tipo[cn],args:args});
         }
+      }
+    }
+  }
+  if (cs.length===0 && this.defaultConstructor && this.defaultConstructor.fakeConstr$) {
+    mm=getrtmm$$(coi.tipo);
+    if (coi$is$anns(allann$(mm),ats)) {
+      var parms=mm.ps;
+      if (parms && arg$.t!==Nothing && tipo.a) {
+        for (var i=0;i<parms.length;i++) {
+          parms[i] = {$t:restype$(tipo,parms[i].$t)};
+        }
+      }
+      if (validate$params(parms,arg$,"",1)) {
+        var args=parms?tupleize$params(parms,coi.$targs):empty();
+        cs.push({tipo:coi.tipo,args:args});
       }
     }
   }
