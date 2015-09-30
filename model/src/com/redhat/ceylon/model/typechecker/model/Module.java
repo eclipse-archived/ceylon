@@ -158,65 +158,65 @@ public class Module
     public Map<String, DeclarationWithProximity> 
     getAvailableDeclarations(String startingWith, 
             int proximity) {
-    	Map<String, DeclarationWithProximity> result = 
-    	        new TreeMap<String,DeclarationWithProximity>();
-    	for (Package p: getAllVisiblePackages()) {
-    		String packageName = 
-    		        p.getNameAsString();
-			boolean isLanguageModule = 
-			        packageName.equals(LANGUAGE_MODULE_NAME);
-			boolean isDefaultPackage = 
-			        packageName.isEmpty();
-			if (!isDefaultPackage) {
-    			for (Declaration d: p.getMembers()) {
-    				try {
-    					if (isResolvable(d) && 
-    					        d.isShared() && 
-    							!isOverloadedVersion(d) &&
-    							isNameMatching(startingWith, d)) {
-    	                    String name = d.getName();
-    	                    boolean isSpecialValue = 
-    	                            isLanguageModule &&
-    	                                name.equals("true") || 
-    	                                name.equals("false") || 
-    	                                name.equals("null");
-    	                    boolean isSpecialType = 
+        Map<String, DeclarationWithProximity> result = 
+                new TreeMap<String,DeclarationWithProximity>();
+        for (Package p: getAllVisiblePackages()) {
+            String packageName = 
+                    p.getNameAsString();
+            boolean isLanguageModule = 
+                    packageName.equals(LANGUAGE_MODULE_NAME);
+            boolean isDefaultPackage = 
+                    packageName.isEmpty();
+            if (!isDefaultPackage) {
+                for (Declaration d: p.getMembers()) {
+                    try {
+                        if (isResolvable(d) && 
+                                d.isShared() && 
+                                !isOverloadedVersion(d) &&
+                                isNameMatching(startingWith, d)) {
+                            String name = d.getName();
+                            boolean isSpecialValue = 
                                     isLanguageModule &&
-    	                                name.equals("String") ||
-    	                                name.equals("Integer") ||
-    	                                name.equals("Float") ||
-    	                                name.equals("Character") ||
+                                        name.equals("true") || 
+                                        name.equals("false") || 
+                                        name.equals("null");
+                            boolean isSpecialType = 
+                                    isLanguageModule &&
+                                        name.equals("String") ||
+                                        name.equals("Integer") ||
+                                        name.equals("Float") ||
+                                        name.equals("Character") ||
                                         name.equals("Boolean") ||
-    	                                name.equals("Byte") ||
-    	                                name.equals("Object") ||
-    	                                name.equals("Anything");
-    	                    int prox;
-    	                    if (isSpecialValue) {
-    	                        prox = -1;
-    	                    }
-    	                    else if (isSpecialType) {
+                                        name.equals("Byte") ||
+                                        name.equals("Object") ||
+                                        name.equals("Anything");
+                            int prox;
+                            if (isSpecialValue) {
+                                prox = -1;
+                            }
+                            else if (isSpecialType) {
                                 //just less than toplevel
                                 //declarations of the package
-    	                        prox = proximity+2;
-    	                    }
-    	                    else if (isLanguageModule) {
-    	                        //just less than toplevel
-    	                        //declarations of the package
-    	                        prox = proximity+3;
-    	                    }
-    	                    else {
-    	                        //unimported declarations
-    	                        //that may be imported
-    	                        prox = proximity+4;
-    	                    }
-    						result.put(d.getQualifiedNameString(), 
-    								new DeclarationWithProximity(d, 
-    										prox, !isLanguageModule));
-    					}
-    				}
-    				catch (Exception e) {}
-    			}
-    		}
+                                prox = proximity+2;
+                            }
+                            else if (isLanguageModule) {
+                                //just less than toplevel
+                                //declarations of the package
+                                prox = proximity+3;
+                            }
+                            else {
+                                //unimported declarations
+                                //that may be imported
+                                prox = proximity+4;
+                            }
+                            result.put(d.getQualifiedNameString(), 
+                                    new DeclarationWithProximity(d, 
+                                            prox, !isLanguageModule));
+                        }
+                    }
+                    catch (Exception e) {}
+                }
+            }
         }
         if ("Nothing".startsWith(startingWith)) {
             result.put("Nothing", 
@@ -262,7 +262,7 @@ public class Module
     }
     
     public Package getRootPackage() {
-    	return getPackage(getNameAsString());
+        return getPackage(getNameAsString());
     }
     
     public String getNameAsString() {
@@ -320,12 +320,12 @@ public class Module
     
     @Override
     public Unit getUnit() {
-    	return unit;
+        return unit;
     }
     
     public void setUnit(Unit unit) {
-		this.unit = unit;
-	}
+        this.unit = unit;
+    }
 
     public int getMajor() {
         return major;

@@ -222,22 +222,22 @@ public class Package
                     .getAvailableDeclarations(
                             startingWith, proximity);
         for (Map.Entry<String, DeclarationWithProximity> e: 
-        	    importables.entrySet()) {
-    		boolean already = false;
-        	DeclarationWithProximity existing = e.getValue();
+                importables.entrySet()) {
+            boolean already = false;
+            DeclarationWithProximity existing = e.getValue();
             String name = e.getKey();
             for (DeclarationWithProximity importable: 
                     result.values()) {
-        		Declaration id = importable.getDeclaration();
+                Declaration id = importable.getDeclaration();
                 Declaration ed = existing.getDeclaration();
                 if (id.equals(ed)) {
-        			already = true;
-        			break;
-        		}
-        	}
-    		if (!already) {
+                    already = true;
+                    break;
+                }
+            }
+            if (!already) {
                 result.put(name, existing);
-    		}
+            }
         }
         return result;
     }
@@ -266,8 +266,8 @@ public class Package
                 new TreeMap<String,DeclarationWithProximity>();
         for (Declaration d: getMembers()) {
             if (isResolvable(d) && d.isShared() && 
-            		!isOverloadedVersion(d) &&
-            		isNameMatching(startingWith, d)) {
+                    !isOverloadedVersion(d) &&
+                    isNameMatching(startingWith, d)) {
                 boolean already = false;
                 for (Import i: imports) {
                     if (!i.isWildcardImport() && 
@@ -278,8 +278,8 @@ public class Package
                 }
                 if (!already) {
                     result.put(d.getName(), 
-                    		new DeclarationWithProximity(d, 
-                    		        proximity));
+                            new DeclarationWithProximity(d, 
+                                    proximity));
                 }
             }
         }
@@ -312,12 +312,12 @@ public class Package
     
     @Override
     public Unit getUnit() {
-    	return unit;
+        return unit;
     }
     
     public void setUnit(Unit unit) {
-		this.unit = unit;
-	}
+        this.unit = unit;
+    }
     
     @Override
     public Set<String> getScopedBackends() {

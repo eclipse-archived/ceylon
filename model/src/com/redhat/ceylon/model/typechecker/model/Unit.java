@@ -29,12 +29,12 @@ import com.redhat.ceylon.model.typechecker.context.TypeCache;
 
 public class Unit {
 
-	private Package pkg;
-	private List<Import> imports = new ArrayList<Import>();
-	private List<Declaration> declarations = new ArrayList<Declaration>();
-	private String filename;
-	private List<ImportList> importLists = new ArrayList<ImportList>();
-	private Set<Declaration> duplicateDeclarations = new HashSet<Declaration>();
+    private Package pkg;
+    private List<Import> imports = new ArrayList<Import>();
+    private List<Declaration> declarations = new ArrayList<Declaration>();
+    private String filename;
+    private List<ImportList> importLists = new ArrayList<ImportList>();
+    private Set<Declaration> duplicateDeclarations = new HashSet<Declaration>();
     private final Set<String> dependentsOf = new HashSet<String>();
     private String fullPath;
     private String relativePath;
@@ -87,22 +87,22 @@ public class Unit {
     }
 
     public String getFullPath() {
-		return fullPath;
-	}
+        return fullPath;
+    }
 
-	public void setFullPath(String fullPath) {
-		this.fullPath = fullPath;
-	}
+    public void setFullPath(String fullPath) {
+        this.fullPath = fullPath;
+    }
 
-	public String getRelativePath() {
-		return relativePath;
-	}
+    public String getRelativePath() {
+        return relativePath;
+    }
 
-	public void setRelativePath(String relativePath) {
-		this.relativePath = relativePath;
-	}
+    public void setRelativePath(String relativePath) {
+        this.relativePath = relativePath;
+    }
 
-	@Override
+    @Override
     public String toString() {
         return filename;
     }
@@ -110,7 +110,7 @@ public class Unit {
     public Import getImport(String name) {
         for (Import i: getImports()) {
             if (!i.isAmbiguous() &&
-            		i.getTypeDeclaration()==null &&
+                    i.getTypeDeclaration()==null &&
                     i.getAlias().equals(name)) {
                 return i;
             }
@@ -151,7 +151,7 @@ public class Unit {
             List<Type> signature, boolean ellipsis) {
         for (Import i: getImports()) {
             if (!i.isAmbiguous() && 
-            		i.getAlias().equals(name)) {
+                    i.getAlias().equals(name)) {
                 //in case of an overloaded member, this will
                 //be the "abstraction", so search for the 
                 //correct overloaded version
@@ -189,9 +189,9 @@ public class Unit {
             boolean ellipsis) {
         for (Import i: getImports()) {
             TypeDeclaration itd = i.getTypeDeclaration();
-			if (itd!=null && itd.equals(td) && 
-					!i.isAmbiguous() &&
-            		i.getAlias().equals(name)) {
+            if (itd!=null && itd.equals(td) && 
+                    !i.isAmbiguous() &&
+                    i.getAlias().equals(name)) {
                 //in case of an overloaded member, this will
                 //be the "abstraction", so search for the 
                 //correct overloaded version
@@ -207,8 +207,8 @@ public class Unit {
     public Map<String, DeclarationWithProximity> 
     getMatchingImportedDeclarations(String startingWith, 
             int proximity) {
-    	Map<String, DeclarationWithProximity> result = 
-    	        new TreeMap<String, DeclarationWithProximity>();
+        Map<String, DeclarationWithProximity> result = 
+                new TreeMap<String, DeclarationWithProximity>();
         for (Import i: new ArrayList<Import>(getImports())) {
             if (i.getAlias()!=null && 
                     !i.isAmbiguous() &&
@@ -568,17 +568,17 @@ public class Unit {
     }
     
     Type getCallableType(Reference ref, Type rt) {
-    	Type result = rt;
-    	Declaration declaration = ref.getDeclaration();
+        Type result = rt;
+        Declaration declaration = ref.getDeclaration();
         if (declaration instanceof Functional) {
-    	    Functional fd = (Functional) declaration;
+            Functional fd = (Functional) declaration;
             List<ParameterList> pls = fd.getParameterLists();
             for (int i=pls.size()-1; i>=0; i--) {
-        	    boolean hasSequenced = false;
-        	    boolean atLeastOne = false;
-        	    int firstDefaulted = -1;
-    	    	List<Parameter> ps = 
-    	    	        pls.get(i).getParameters();
+                boolean hasSequenced = false;
+                boolean atLeastOne = false;
+                int firstDefaulted = -1;
+                List<Parameter> ps = 
+                        pls.get(i).getParameters();
                 List<Type> args = 
                         new ArrayList<Type>
                             (ps.size());
@@ -614,15 +614,15 @@ public class Unit {
                         }
                     }
                 }
-    	    	Type paramListType = 
-    	    	        getTupleType(args, 
-    	    	                hasSequenced, atLeastOne, 
-    	    	                firstDefaulted);
+                Type paramListType = 
+                        getTupleType(args, 
+                                hasSequenced, atLeastOne, 
+                                firstDefaulted);
                 result = appliedType(getCallableDeclaration(), 
                         result, paramListType);
-    	    }
-    	}
-    	return result;
+            }
+        }
+        return result;
     }
 
     public Type getTupleType(
@@ -644,11 +644,11 @@ public class Unit {
 
     public Type getTupleType(
             List<Type> elemTypes, 
-    		boolean variadic, boolean atLeastOne, 
-    		int firstDefaulted) {
-    	return getTupleType(elemTypes, 
-    	        variadic, atLeastOne, 
-    	        firstDefaulted,
+            boolean variadic, boolean atLeastOne, 
+            int firstDefaulted) {
+        return getTupleType(elemTypes, 
+                variadic, atLeastOne, 
+                firstDefaulted,
                 getEmptyType(), 
                 getNothingType());
     }
@@ -659,24 +659,24 @@ public class Unit {
             int firstDefaulted,
             Type result, Type union) {
         int last = elemTypes.size()-1;
-    	for (int i=last; i>=0; i--) {
-    		Type elemType = elemTypes.get(i);
-    		union = unionType(union, elemType, this);
-    		if (variadic && i==last) {
-    			result = atLeastOne ? 
-    					getSequenceType(elemType) : 
-    					getSequentialType(elemType);
-    		}
-    		else {
-    			result = appliedType(getTupleDeclaration(), 
-    					union, elemType, result);
-    			if (firstDefaulted>=0 && i>=firstDefaulted) {
-    				result = unionType(result, 
-    				        getEmptyType(), this);
-    			}
-    		}
-    	}
-    	return result;
+        for (int i=last; i>=0; i--) {
+            Type elemType = elemTypes.get(i);
+            union = unionType(union, elemType, this);
+            if (variadic && i==last) {
+                result = atLeastOne ? 
+                        getSequenceType(elemType) : 
+                        getSequentialType(elemType);
+            }
+            else {
+                result = appliedType(getTupleDeclaration(), 
+                        union, elemType, result);
+                if (firstDefaulted>=0 && i>=firstDefaulted) {
+                    result = unionType(result, 
+                            getEmptyType(), this);
+                }
+            }
+        }
+        return result;
     }
 
     public Type getEmptyType(Type pt) {
@@ -818,8 +818,8 @@ public class Unit {
      */
     public Type getMeasureType(Type rt) {
         return unionType(appliedType(getRangeDeclaration(), rt), 
-        		getEmptyType(), 
-        		this);
+                getEmptyType(), 
+                this);
     }
 
     public Type getEntryType(Type kt, Type vt) {
@@ -873,8 +873,8 @@ public class Unit {
     }
     
     public boolean isNonemptyIterableType(Type type) {
-    	Type ft = getAbsentType(type);
-    	return ft!=null && ft.isExactlyNothing();
+        Type ft = getAbsentType(type);
+        return ft!=null && ft.isExactlyNothing();
     }
 
     public Type getSetElementType(Type type) {
@@ -983,9 +983,9 @@ public class Unit {
     }
     
     public boolean isCallableType(Type pt) {
-    	return pt!=null && 
-    	        pt.getDeclaration()
-    	            .inherits(getCallableDeclaration());
+        return pt!=null && 
+                pt.getDeclaration()
+                    .inherits(getCallableDeclaration());
     }
     
     public NothingType getNothingDeclaration() {
@@ -993,9 +993,9 @@ public class Unit {
     }
     
     public Type denotableType(Type type) {
-    	if (type!=null) {
-    		if (type.isUnion()) {
-    		    List<Type> cts = type.getCaseTypes();
+        if (type!=null) {
+            if (type.isUnion()) {
+                List<Type> cts = type.getCaseTypes();
                 List<Type> list = 
                         new ArrayList<Type>
                             (cts.size()+1);
@@ -1004,7 +1004,7 @@ public class Unit {
                             denotableType(ct));
                 }
                 return union(list, this);
-    		}
+            }
             if (type.isIntersection()) {
                 List<Type> sts = type.getSatisfiedTypes();
                 List<Type> list = 
@@ -1023,35 +1023,35 @@ public class Unit {
                     et==null ? null : 
                         et.getDeclaration();
             if (dec.isOverloaded()) {
-				type = type.getSupertype(ed);
-			}
-    		if (dec instanceof Constructor) {
-    		    return type.getSupertype(ed);
-    		}
-    		if (dec instanceof Class && dec.isAnonymous()) {
-    			List<Type> sts = dec.getSatisfiedTypes();
-    			List<Type> list = 
-    			        new ArrayList<Type>
-    			            (sts.size()+1);
-    			if (et!=null) {
-    			    TypeDeclaration etd = 
-    			            et.getDeclaration();
-    			    addToIntersection(list, 
-    			            type.getSupertype(etd), 
-    			            this);
-    			}
-    			for (Type st: sts) {
-    			    if (st!=null) {
+                type = type.getSupertype(ed);
+            }
+            if (dec instanceof Constructor) {
+                return type.getSupertype(ed);
+            }
+            if (dec instanceof Class && dec.isAnonymous()) {
+                List<Type> sts = dec.getSatisfiedTypes();
+                List<Type> list = 
+                        new ArrayList<Type>
+                            (sts.size()+1);
+                if (et!=null) {
+                    TypeDeclaration etd = 
+                            et.getDeclaration();
+                    addToIntersection(list, 
+                            type.getSupertype(etd), 
+                            this);
+                }
+                for (Type st: sts) {
+                    if (st!=null) {
                         TypeDeclaration std = 
                                 st.getDeclaration();
-    			        addToIntersection(list, 
-    			                type.getSupertype(std), 
-    			                this);
-    			    }
-    			}
-    			return canonicalIntersection(list, this);
-    		}
-    		else {
+                        addToIntersection(list, 
+                                type.getSupertype(std), 
+                                this);
+                    }
+                }
+                return canonicalIntersection(list, this);
+            }
+            else {
                 List<Type> typeArgList = 
                         type.getTypeArgumentList();
                 if (typeArgList.isEmpty()) {
@@ -1084,11 +1084,11 @@ public class Unit {
                     dt.setRaw(type.isRaw());
                     return dt;
                 }
-    		}
-    	}
-    	else {
-    		return null;
-    	}
+            }
+        }
+        else {
+            return null;
+        }
     }
     
     public Type nonemptyArgs(Type args) {
@@ -1267,7 +1267,7 @@ public class Unit {
             else if (isSequentialType(args)) {
                 //this is pretty weird: return the whole
                 //tail type as the element of the list! 
-        		return singleton(args);
+                return singleton(args);
             }
         }
         return singleton(getUnknownType());
@@ -1722,7 +1722,7 @@ public class Unit {
     }
     
     public boolean isIterableParameterType(Type t) {
-    	return t.getDeclaration().isIterable();
+        return t.getDeclaration().isIterable();
     }
     
     public TypeDeclaration 
@@ -1937,13 +1937,13 @@ public class Unit {
         Type parameterTuple;
         if ((c.isClassOrInterfaceMember() || c.isToplevel()) &&
                 parameterList!=null) {
-        	List<Parameter> params = 
-        	        parameterList.getParameters();
+            List<Parameter> params = 
+                    parameterList.getParameters();
             parameterTuple = 
-        	        getParameterTypesAsTupleType(params, type);
+                    getParameterTypesAsTupleType(params, type);
         }
         else {
-        	parameterTuple = getNothingType();
+            parameterTuple = getNothingType();
         }
         Type qualifyingType = type.getQualifyingType();
         if (qualifyingType!=null) {
