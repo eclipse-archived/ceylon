@@ -129,7 +129,7 @@ public class SequenceGenerator {
             gen.supervisit(that);
             gen.out(".collect(function(e){return ", gen.memberAccess(that, "e"),
                     ";},{Result$collect:");
-            TypeUtils.typeNameOrList(that, that.getTypeModel().getTypeArgumentList().get(0), gen, true);
+            TypeUtils.typeNameOrList(that, that.getTypeModel().getTypeArgumentList().get(0), gen, false);
             gen.out("})");
         }
     }
