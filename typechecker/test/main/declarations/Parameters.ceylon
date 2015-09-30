@@ -86,3 +86,8 @@ class Parameters() {
 
 class ClassAlias(String key, String item="") 
         => Entry<String,String>(key, item);
+
+@error shared Integer counter(first)() {
+    variable Integer first;
+    return first++;
+}

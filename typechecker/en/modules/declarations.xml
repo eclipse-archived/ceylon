@@ -434,7 +434,9 @@ TypeConstraints?
         <para>A parameter list of a function, class, or constructor may have one or more 
         elements without explicit type declarations. Each such element is interpreted as the 
         name of a parameter declaration occurring in the body of the class, function, or 
-        constructor, and there must be a value or function declaration with that name.</para>
+        constructor, and there must be a value or function declaration with that name.
+        For a function, such an element is only allowed in the last parameter list of the
+        function.</para>
         
         <para>As a special exception, if a parameter of an anonymous function has no explicit 
         type declaration, and there is no declaration with the given name occurring in the body 

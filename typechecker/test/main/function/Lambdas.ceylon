@@ -133,7 +133,7 @@ class Lambdas() {
     Float cube(Float x) = (Float y) return y**3;*/
     
     @type:"Integer()(Integer)" 
-    value fun1 
+    @error value fun1
             = (first)() {
         variable Integer first;
         return first++;

@@ -1088,6 +1088,14 @@ public abstract class DeclarationVisitor extends Visitor {
         }
         else {
             paramLists.get(0).getModel().setFirst(true);
+            for (int i=0; i<paramLists.size()-1; i++) {
+                Tree.ParameterList pl = paramLists.get(i);
+                for (Tree.Parameter p: pl.getParameters()) {
+                    if (p instanceof Tree.InitializerParameter) {
+                        p.addError("split parameter declaration only allowed in last parameter list");
+                    }
+                }
+            }
         }
     }
     
