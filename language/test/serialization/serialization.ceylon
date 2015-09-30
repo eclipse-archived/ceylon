@@ -474,6 +474,48 @@ shared void deserNonSerializable() {
     }
 }
 
+serializable class Person(name, employer) {
+    shared String name;
+    shared Company employer;
+}
+serializable class Company(name) {
+    shared String name;
+    shared late Person owner;
+}
+
+@test
+shared void docExample() {
+    value wonkaInc = Company("Wonka Inc.");
+    value willy = Person("Willy Wonka", wonkaInc);
+    value umpaLumpa = Person("Umpa lumpa", wonkaInc);
+    wonkaInc.owner = willy;
+    
+    value dc = deserialization<String>();
+    
+    dc.attribute("ww", `value Person.name`, "wwn");
+    dc.attribute("ww", `value Person.employer`, "wi");
+    dc.attribute("ul", `value Person.name`, "uln");
+    dc.attribute("ul", `value Person.employer`, "wi");
+    dc.attribute("wi", `value Company.name`, "win");
+    dc.attribute("wi", `value Company.owner`, "ww");
+    
+    dc.instanceValue("win", "Wonka Inc.");
+    dc.instanceValue("wwn", "Willy Wonka");
+    dc.instanceValue("uln", "Umpa lumpa");
+    
+    dc.instance("wi", `Company`);
+    dc.instance("ww", `Person`);
+    dc.instance("ul", `Person`);
+    
+    value wonkaInc2 = dc.reconstruct<Company>("wi");
+    value willy2 = dc.reconstruct<Person>("ww");
+    value umpaLumpa2 = dc.reconstruct<Person>("ul");
+    
+    assert(wonkaInc2.owner === willy2);
+    assert(willy2.employer === wonkaInc2);
+    assert(umpaLumpa2.employer === wonkaInc2);
+}
+
 shared void run() {
     testDeserializationOfObject();
     testDeserializationOfObject2();

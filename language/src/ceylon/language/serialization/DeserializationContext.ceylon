@@ -19,12 +19,12 @@ import ceylon.language.meta.declaration {
  
    For example, given
  
-       class Person(name, employer) {
-           String name;
-           Company employer;
+       serializable class Person(name, employer) {
+           shared String name;
+           shared Company employer;
        }
-       class Company(name) {
-           String name;
+       serializable class Company(name) {
+           shared String name;
            shared late Person owner;
        }
      
@@ -40,9 +40,9 @@ import ceylon.language.meta.declaration {
        value dc = deserialization<String>();
        
        dc.attribute("ww", `value Person.name`, "wwn");
-       dc.attribute("ww", `value.Person.employer`, "wi");
+       dc.attribute("ww", `value Person.employer`, "wi");
        dc.attribute("ul", `value Person.name`, "uln");
-       dc.attribute("ul", `value.Person.employer`, "wi");
+       dc.attribute("ul", `value Person.employer`, "wi");
        dc.attribute("wi", `value Company.name`, "win");
        dc.attribute("wi", `value Company.owner`, "ww");
        
@@ -54,9 +54,13 @@ import ceylon.language.meta.declaration {
        dc.instance("ww", `Person`);
        dc.instance("ul", `Person`);
        
-       value wonkaInc2 = dc.instance("wi");
-       value willy2 = dc.instance("ww");
-       value umpaLumpa2 = dc.instance("ul");
+       value wonkaInc2 = dc.reconstruct<Company>("wi");
+       value willy2 = dc.reconstruct<Person>("ww");
+       value umpaLumpa2 = dc.reconstruct<Person>("ul");
+       
+       assert(wonkaInc2.owner === willy2);
+       assert(willy2.employer === wonkaInc2);
+       assert(umpaLumpa2.employer === wonkaInc2);
        
    The calls to [[attribute]], [[instanceValue]] and [[instance]] could be 
    in any order.
