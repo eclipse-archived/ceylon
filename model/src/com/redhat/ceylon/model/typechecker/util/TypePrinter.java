@@ -154,7 +154,8 @@ public class TypePrinter {
                     Type it = u.getIteratedType(pt);
                     String etn = print(it, unit);
                     if (isPrimitiveAbbreviatedType(it) || 
-                            it.isUnion() || it.isIntersection()) {
+                            it.isUnion() || 
+                            it.isIntersection()) {
                         return "[" + etn + "+]";
                     }
                     else {
@@ -170,7 +171,8 @@ public class TypePrinter {
                     String itn = print(it, unit);
                     String many = nt.isNothing() ? "+" : "*";
                     if (isPrimitiveAbbreviatedType(it) || 
-                            it.isUnion() || it.isIntersection()) {
+                            it.isUnion() || 
+                            it.isIntersection()) {
                         return "{" + itn + many + "}";
                     }
                     else {
@@ -185,16 +187,14 @@ public class TypePrinter {
                             + print(vt, unit);
                 }
                 if (abbreviateCallable(pt)) {
-                    List<Type> tal = 
-                            pt.getTypeArgumentList();
+                    List<Type> tal = pt.getTypeArgumentList();
                     Type rt = tal.get(0);
                     Type at = tal.get(1);
                     if (abbreviateCallableArg(at)) {
                         String paramTypes = 
                                 getTupleElementTypeNames(at, unit);
                         if (rt!=null && paramTypes!=null) {
-                            String rtn = 
-                                    print(rt, unit);
+                            String rtn = print(rt, unit);
                             if (!isPrimitiveAbbreviatedType(rt)) {
                                 rtn = lt() + rtn + gt();
                             }
@@ -203,10 +203,8 @@ public class TypePrinter {
                     }
                     else {
                         if (rt!=null && at!=null) {
-                            String rtn = 
-                                    print(rt, unit);
-                            String atn = 
-                                    print(at, unit);
+                            String rtn = print(rt, unit);
+                            String atn = print(at, unit);
                             if (!isPrimitiveAbbreviatedType(at)) {
                                 atn = lt() + atn + gt();
                             }
@@ -321,8 +319,8 @@ public class TypePrinter {
                         TypeParameter tpc = 
                                 pt.getTypeConstructorParameter();
                         List<TypeParameter> params = 
-                                (tpc == null ? declaration : tpc)
-                                .getTypeParameters();
+                                (tpc==null ? declaration : tpc)
+                                    .getTypeParameters();
                         for (TypeParameter tp: params) {
                             if (name.length()>lt().length()) {
                                 name.append(", ");
@@ -334,11 +332,14 @@ public class TypePrinter {
                                 name.append("in ");
                             }
                             printDeclaration(name, tp, 
-                                    printFullyQualified(), unit);
+                                    printFullyQualified(), 
+                                    unit);
                         }
                         name.append(gt());
                         appendConstraintsString(pt, name, unit);
-                        name.append(" =").append(gt()).append(" ");
+                        name.append(" =")
+                            .append(gt())
+                            .append(" ");
                     }
                     Type aliasedType =
                             declaration.getExtendedType()
@@ -368,9 +369,11 @@ public class TypePrinter {
             Type vt = unit.getValueType(pt);
             return kt!=null && vt!=null && 
                     (!kt.isClass() ||
-                            !kt.getDeclaration().equals(ed)) &&
+                            !kt.getDeclaration()
+                                .equals(ed)) &&
                     (!vt.isClass() ||
-                            !vt.getDeclaration().equals(ed)); /*&&
+                            !vt.getDeclaration()
+                                .equals(ed)); /*&&
                     kt.isPrimitiveAbbreviatedType() && 
                     vt.isPrimitiveAbbreviatedType();*/
         }
@@ -388,7 +391,8 @@ public class TypePrinter {
             TypeDeclaration dec = pt.getDeclaration();
             Unit unit = dec.getUnit();
             return pt.getCaseTypes().size()==2 &&
-                    isElementOfUnion(pt, unit.getNullDeclaration()); /*&&
+                    isElementOfUnion(pt, 
+                            unit.getNullDeclaration()); /*&&
                     minus(unit.getNullDeclaration()).isPrimitiveAbbreviatedType();*/
         }
         else {
@@ -447,8 +451,7 @@ public class TypePrinter {
         if (pt.isInterface()) {
             TypeDeclaration ptd = pt.getDeclaration();
             if (ptd.isSequential()) {
-                Type et = 
-                        ptd.getUnit().getIteratedType(pt);
+                Type et = ptd.getUnit().getIteratedType(pt);
                 return et!=null;// && et.isPrimitiveAbbreviatedType();
             }
         }
@@ -459,8 +462,7 @@ public class TypePrinter {
         if (pt.isInterface()) {
             TypeDeclaration ptd = pt.getDeclaration();
             if (ptd.isIterable()) {
-                Type et = 
-                        ptd.getUnit().getIteratedType(pt);
+                Type et = ptd.getUnit().getIteratedType(pt);
                 List<Type> typeArgs = 
                         pt.getTypeArgumentList();
                 if (et!=null && typeArgs.size()==2) {
@@ -492,8 +494,7 @@ public class TypePrinter {
             return false;
         }
         Type t = union(elemtypes, unit);
-        Type typeArg = 
-                args.getTypeArgumentList().get(0);
+        Type typeArg = args.getTypeArgumentList().get(0);
         if (typeArg==null) {
             return false;
         }
@@ -538,11 +539,12 @@ public class TypePrinter {
                                         argtype + "=" : argtype;
                             }
                             String argtypes = 
-                                    getTupleElementTypeNames(rest, unit);
+                                    getTupleElementTypeNames(
+                                            rest, unit);
                             if (argtypes!=null) {
                                 return defaulted ? 
                                         argtype + "=, " + argtypes : 
-                                            argtype + ", " + argtypes;
+                                        argtype + ", " + argtypes;
                             }
                         }
                     }
@@ -554,8 +556,7 @@ public class TypePrinter {
                     Type elementType = 
                             u.getIteratedType(args);
                     if (elementType!=null) {
-                        String elemtype = 
-                                print(elementType, unit);
+                        String elemtype = print(elementType, unit);
                         if (isPrimitiveAbbreviatedType(elementType)) {
                             return elemtype + "*";
                         }
@@ -568,8 +569,7 @@ public class TypePrinter {
                     Type elementType = 
                             u.getIteratedType(args);
                     if (elementType!=null) {
-                        String elemtype = 
-                                print(elementType, unit);
+                        String elemtype = print(elementType, unit);
                         if (isPrimitiveAbbreviatedType(elementType)) {
                             return elemtype + "+";
                         }
@@ -602,7 +602,8 @@ public class TypePrinter {
         boolean fullyQualified = printFullyQualified();
         if (printQualifyingType()) {
             Type qt = pt.getQualifyingType();
-            if (qt != null) {
+            if (qt!=null && 
+                    qt.getDeclaration().isNamed()) {
 				boolean isComplex = 
 				        qt.isIntersection() || 
 				        qt.isUnion();
@@ -628,7 +629,9 @@ public class TypePrinter {
                 !args.isEmpty()) {
             ptn.append(lt());
             boolean first = true;
-            for (int i=0; i<args.size()&&i<params.size(); i++) {
+            for (int i=0; 
+                    i<args.size() && i<params.size(); 
+                    i++) {
                 Type t = args.get(i);
                 TypeParameter p = params.get(i);
                 if (first) {
@@ -671,9 +674,10 @@ public class TypePrinter {
             }
             if (container != null) {
                 if (container instanceof Package) {
-                    String q = container.getQualifiedNameString();
-                    if (!q.isEmpty()) {
-                        ptn.append(q).append("::");
+                    String qname = 
+                            container.getQualifiedNameString();
+                    if (!qname.isEmpty()) {
+                        ptn.append(qname).append("::");
                     }
                 }
                 else {
