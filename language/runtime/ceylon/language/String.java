@@ -501,34 +501,34 @@ public final class String
             public Iterator<? extends Integer> iterator() {
                 return new BaseIterator<Integer>
                         (Integer.$TypeDescriptor$) {
-                    int count = start;
-                    int index;
+                    int index = start;
+                    int offset;
                     {
                         try {
-                            index = value.offsetByCodePoints(0, start);
+                            offset = value.offsetByCodePoints(0, start);
                         }
                         catch (IndexOutOfBoundsException e) {
-                            index = value.length();
+                            offset = value.length();
                         }
                     }
                     @Override
                     public java.lang.Object next() {
-                        if (index>=value.length() || stop<=0) {
+                        if (offset>=value.length() || stop<=0) {
                             return finished_.get_();
                         }
                         while (true) {
-                            int result = value.indexOf(element, index);
+                            int result = value.indexOf(element, offset);
                             if (result<0) {
                                 return finished_.get_();
                             }
-                            count += value.codePointCount(index, result);
-                            long c = count;
-                            index = result + len;
-                            if (count>=stop) {
+                            index += value.codePointCount(offset, result);
+                            long c = index;
+                            offset = result + len;
+                            if (index>=stop) {
                                 return finished_.get_();
                             }
                             else {
-                                count++;
+                                index++;
                                 return Integer.instance(c);
                             }
                         }
@@ -540,27 +540,27 @@ public final class String
                 if (start>=value.length() || stop<=0) {
                     return 0;
                 }
-                int count = start;
-                int index;
+                int index = start;
+                int offset;
                 try {
-                    index = value.offsetByCodePoints(0, start);
+                    offset = value.offsetByCodePoints(0, start);
                 }
                 catch (IndexOutOfBoundsException e) {
                     return 0;
                 }
                 int size = 0;
                 while (true) {
-                    int result = value.indexOf(element, index);
+                    int result = value.indexOf(element, offset);
                     if (result<0) {
                         return size;
                     }
-                    count += value.codePointCount(index, result);
-                    index = result + len;
-                    if (count>=stop) {
+                    index += value.codePointCount(offset, result);
+                    offset = result + len;
+                    if (index>=stop) {
                         return size;
                     }
                     else {
-                        count++;
+                        index++;
                         size++;
                     }
                 }
@@ -687,28 +687,28 @@ public final class String
             public Iterator<? extends Integer> iterator() {
                 return new BaseIterator<Integer>
                         (Integer.$TypeDescriptor$) {
-                    long count = from;
-                    int index;
+                    long index = from;
+                    int offset;
                     {
                         try {
-                            index = value.offsetByCodePoints(0, start);
+                            offset = value.offsetByCodePoints(0, start);
                         }
                         catch (IndexOutOfBoundsException e) {
-                            index = value.length();
+                            offset = value.length();
                         }
                     }
                     @Override
                     public java.lang.Object next() {
-                        while (index<=value.length()) {
-                            int result = value.indexOf(str, index);
+                        while (offset<=value.length()) {
+                            int result = value.indexOf(str, offset);
                             if (result<0) {
                                 return finished_.get_();
                             }
-                            count += value.codePointCount(index, result);
-                            long c = count;
-                            index = result + len;
-                            count++; 
-                            return Integer.instance(c);
+                            index += value.codePointCount(offset, result);
+                            long i = index;
+                            offset = result + len;
+                            index++; 
+                            return Integer.instance(i);
                         }
                         return finished_.get_();
                     }
@@ -719,20 +719,20 @@ public final class String
                 if (start>value.length()) {
                     return 0;
                 }
-                int i;
+                int offset;
                 try {
-                    i = value.offsetByCodePoints(0, start);
+                    offset = value.offsetByCodePoints(0, start);
                 }
                 catch (IndexOutOfBoundsException e) {
                     return 0;
                 }
                 int size = 0;
-                while (i<=value.length()) {
-                    int result = value.indexOf(str, i);
+                while (offset<=value.length()) {
+                    int result = value.indexOf(str, offset);
                     if (result<0) {
                         return size;
                     }
-                    i = result + len;
+                    offset = result + len;
                     size++;
                 }
                 return size;
@@ -2130,8 +2130,7 @@ public final class String
     public static Entry<? extends Integer,? extends Character> 
     locate(java.lang.String value, 
             Callable<? extends Boolean> f) {
-        int index = 0;
-        for (int offset = 0; offset < value.length();) {
+        for (int offset = 0, index = 0; offset < value.length();) {
             int codePoint = value.codePointAt(offset);
             Character ch = Character.instance(codePoint);
             if(f.$call$(ch).booleanValue()) {
@@ -2185,22 +2184,22 @@ public final class String
     locations(final java.lang.String value,
             final Callable<? extends Boolean> selecting) {
         return new BaseIterable<Entry<? extends Integer, ? extends Character>, java.lang.Object>
-        (INT_TO_CHAR_ENTRY_DESCRIPTOR, Null.$TypeDescriptor$) {
+            (INT_TO_CHAR_ENTRY_DESCRIPTOR, Null.$TypeDescriptor$) {
     @Override
     public Iterator<? extends Entry<? extends Integer, ? extends Character>> iterator() {
         return new BaseIterator<Entry<? extends Integer, ? extends Character>>
                 (INT_TO_CHAR_ENTRY_DESCRIPTOR) {
+            int offset = 0;
             int index = 0;
-            int count = 0;
             @Override
             public java.lang.Object next() {
-                if (index>=value.length()) {
+                if (offset>=value.length()) {
                     return finished_.get_();
                 }
                 while (true) {
-                    int cp = value.codePointAt(index);
-                    index+=java.lang.Character.charCount(cp);
-                    if (index>=value.length()) {
+                    int cp = value.codePointAt(offset);
+                    offset+=java.lang.Character.charCount(cp);
+                    if (offset>=value.length()) {
                         return finished_.get_();
                     }
                     else {
@@ -2208,9 +2207,9 @@ public final class String
                         if (selecting.$call$(ch).booleanValue()) {
                             return new Entry(Integer.$TypeDescriptor$, 
                                     Character.$TypeDescriptor$,
-                                    Integer.instance(count++), ch);
+                                    Integer.instance(index++), ch);
                         }
-                        count++;
+                        index++;
                     }
                 }
             }
@@ -2246,24 +2245,24 @@ public final class String
             public Iterator<? extends Integer> iterator() {
                 return new BaseIterator<Integer>
                         (Integer.$TypeDescriptor$) {
+                    int offset = 0;
                     int index = 0;
-                    int count = 0;
                     @Override
                     public java.lang.Object next() {
-                        if (index>=value.length()) {
+                        if (offset>=value.length()) {
                             return finished_.get_();
                         }
                         while (true) {
-                            int cp = value.codePointAt(index);
-                            index+=java.lang.Character.charCount(cp);
-                            if (index>=value.length()) {
+                            int cp = value.codePointAt(offset);
+                            offset+=java.lang.Character.charCount(cp);
+                            if (offset>=value.length()) {
                                 return finished_.get_();
                             }
                             else {
                                 if (fun.$call$(Character.instance(cp)).booleanValue()) {
-                                    return Integer.instance(count++);
+                                    return Integer.instance(index++);
                                 }
-                                count++;
+                                index++;
                             }
                         }
                     }
@@ -2286,15 +2285,13 @@ public final class String
     @Ignore
     public static Integer 
     firstIndexWhere(java.lang.String value, Callable<? extends Boolean> fun) {
-        int index = 0;
-        int count = 0;
-        while (index<value.length()) {
-            int cp = value.codePointAt(index);
-            index+=java.lang.Character.charCount(cp);
+        for (int offset = 0, index = 0; offset<value.length();) {
+            int cp = value.codePointAt(offset);
+            offset+=java.lang.Character.charCount(cp);
             if (fun.$call$(Character.instance(cp)).booleanValue()) {
-                return Integer.instance(count);
+                return Integer.instance(index);
             }
-            count++;
+            index++;
         }
         return null;
     }
@@ -2312,12 +2309,12 @@ public final class String
     @Ignore
     public static Integer 
     lastIndexWhere(java.lang.String value, Callable<? extends Boolean> fun) {
-        for (int index = value.length(); index>0;) {
-            int cp = value.codePointBefore(index);
-            index-=java.lang.Character.charCount(cp);
+        for (int offset = value.length(); offset>0;) {
+            int cp = value.codePointBefore(offset);
+            offset-=java.lang.Character.charCount(cp);
             if (fun.$call$(Character.instance(cp)).booleanValue()) {
-                int result = value.codePointCount(0, index);
-                return Integer.instance(result);
+                int index = value.codePointCount(0, offset);
+                return Integer.instance(index);
             }
         }
         return null;
