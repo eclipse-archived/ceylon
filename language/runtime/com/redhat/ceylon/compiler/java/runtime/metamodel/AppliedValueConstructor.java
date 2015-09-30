@@ -38,21 +38,18 @@ import com.redhat.ceylon.model.typechecker.model.TypedReference;
 
 @Ceylon(major=8)
 @com.redhat.ceylon.compiler.java.metadata.Class
-@SatisfiedTypes("ceylon.language.meta.model::ValueConstructor<Get,Set>")
+@SatisfiedTypes("ceylon.language.meta.model::ValueConstructor<Get>")
 @TypeParameters({
     @TypeParameter(value = "Get", variance = Variance.OUT),
-    @TypeParameter(value = "Set", variance = Variance.IN, defaultValue="ceylon.language::Nothing")
 })
-public class AppliedValueConstructor<Get,Set> 
-        implements ValueConstructor<Get,Set>, ReifiedType {
+public class AppliedValueConstructor<Get> 
+        implements ValueConstructor<Get>, ReifiedType {
 
     private static final Class<?>[] NO_PARAMS = new Class<?>[0];
     
     private final ceylon.language.meta.model.Type<Get> type;
     @Ignore
     protected final TypeDescriptor $reifiedGet;
-    @Ignore
-    protected final TypeDescriptor $reifiedSet;
     protected final FreeValueConstructor declaration;
     private MethodHandle getter;
     private MethodHandle setter;
@@ -64,14 +61,12 @@ public class AppliedValueConstructor<Get,Set>
     
     @Ignore
     public AppliedValueConstructor(TypeDescriptor $reifiedGet,
-            TypeDescriptor $reifiedSet,
             FreeValueConstructor value,
             TypedReference valueTypedReference,
             AppliedClass<Get,?> clazz, Object instance) {
         this.producedType = valueTypedReference.getType();
         this.type = Metamodel.getAppliedMetamodel(producedType);
         this.$reifiedGet = $reifiedGet;
-        this.$reifiedSet = TypeDescriptor.NothingType;
         this.declaration = value;
         this.instance = instance;
         
@@ -290,7 +285,7 @@ public class AppliedValueConstructor<Get,Set>
     }
 
     @Override
-    public Object set(Set value) {
+    public Object set(java.lang.Object value) {
         if(!declaration.getVariable())
             throw new MutationException("Value is not mutable");
         try {
@@ -308,7 +303,7 @@ public class AppliedValueConstructor<Get,Set>
         Type newValueType = Metamodel.getProducedType(newValue);
         if(!newValueType.isSubtypeOf(this.producedType))
             throw new IncompatibleTypeException("Invalid new value type: "+newValueType+", expecting: "+this.producedType);
-        return set((Set) newValue);
+        return set(newValue);
     }
 
     @Override
@@ -329,7 +324,7 @@ public class AppliedValueConstructor<Get,Set>
             return true;
         if(obj instanceof AppliedValueConstructor == false)
             return false;
-        AppliedValueConstructor<?,?> other = (AppliedValueConstructor<?,?>) obj;
+        AppliedValueConstructor<?> other = (AppliedValueConstructor<?>) obj;
         // in theory, if our instance is the same, our containing type should be the same
         // and if we don't have an instance we're a toplevel and have no containing type
         return Util.eq(instance, other.instance)
@@ -345,7 +340,7 @@ public class AppliedValueConstructor<Get,Set>
     @Override
     @Ignore
     public TypeDescriptor $getType$() {
-        return TypeDescriptor.klass(AppliedValueConstructor.class, $reifiedGet, $reifiedSet);
+        return TypeDescriptor.klass(AppliedValueConstructor.class, $reifiedGet);
     }
 
     

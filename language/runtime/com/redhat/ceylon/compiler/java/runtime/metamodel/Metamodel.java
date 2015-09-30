@@ -1490,11 +1490,11 @@ public class Metamodel {
         if (model instanceof AppliedCallableConstructor) {
             string.append(((AppliedCallableConstructor<?,?>)model).appliedClass.toString()).append(".");
         } else if (model instanceof AppliedValueConstructor) {
-            string.append(((AppliedValueConstructor<?,?>)model).clazz.toString()).append(".");
+            string.append(((AppliedValueConstructor<?>)model).clazz.toString()).append(".");
         } else if (model instanceof AppliedCallableMemberConstructor) {
             string.append(((AppliedCallableMemberConstructor<?,?,?>)model).clazz.toString()).append(".");
         } else if (model instanceof AppliedValueMemberConstructor) {
-            string.append(((AppliedValueMemberConstructor<?,?,?>)model).clazz.toString()).append(".");
+            string.append(((AppliedValueMemberConstructor<?,?>)model).clazz.toString()).append(".");
         } else if(container == null){
             string.append(model.getDeclaration().getContainingPackage().getName()).append("::");
         } else if(container instanceof ceylon.language.meta.model.ClassOrInterface<?>){

@@ -32,10 +32,10 @@ shared sealed interface ValueConstructorDeclaration
     "The class this constructor constructs"
     shared actual formal ClassDeclaration container; 
     
-    shared actual formal ValueConstructor<Result,Set> apply<Result=Anything, Set=Nothing>();
+    shared formal ValueConstructor<Result> apply<Result=Anything>();
     
-    shared actual formal MemberClassValueConstructor<Container, Result, Set> memberApply
-            <Container=Nothing, Result=Anything, Set=Nothing>
+    shared formal MemberClassValueConstructor<Container, Result> memberApply
+            <Container=Nothing, Result=Anything>
             (Type<Object> containerType);
     
     "Reads the current value of this toplevel value."

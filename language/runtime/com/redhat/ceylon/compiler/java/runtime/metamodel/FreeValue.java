@@ -50,11 +50,11 @@ public class FreeValue
         return null;
     }
     
-    @Override
-    @Ignore
-    public GettableDeclaration$impl $ceylon$language$meta$declaration$GettableDeclaration$impl() {
-        return null;
-    }
+//    @Override
+//    @Ignore
+//    public GettableDeclaration$impl $ceylon$language$meta$declaration$GettableDeclaration$impl() {
+//        return null;
+//    }
 
     @Override
     public boolean getLate(){

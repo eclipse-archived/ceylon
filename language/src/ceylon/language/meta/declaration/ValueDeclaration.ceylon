@@ -62,12 +62,12 @@ shared sealed interface ValueDeclaration
     "Applies this value declaration in order to obtain a value model. 
      See [this code sample](#toplevel-sample) for an example on how to use this."
     throws(`class IncompatibleTypeException`, "If the specified `Get` or `Set` type arguments are not compatible with the actual result.")
-    shared actual formal Value<Get, Set> apply<Get=Anything, Set=Nothing>();
+    shared formal Value<Get, Set> apply<Get=Anything, Set=Nothing>();
 
     "Applies the given closed container type to this attribute declaration in order to obtain an attribute model. 
      See [this code sample](#member-sample) for an example on how to use this."
     throws(`class IncompatibleTypeException`, "If the specified `Container`, `Get` or `Set` type arguments are not compatible with the actual result.")
-    shared actual formal Attribute<Container, Get, Set> memberApply<Container=Nothing, Get=Anything, Set=Nothing>(AppliedType<Object> containerType);
+    shared formal Attribute<Container, Get, Set> memberApply<Container=Nothing, Get=Anything, Set=Nothing>(AppliedType<Object> containerType);
     
     "Reads the current value of this toplevel value."
     shared actual default Anything get()
