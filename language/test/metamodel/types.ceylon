@@ -584,8 +584,8 @@ shared class ValueConstructors {
             assert(sc.openType == `class Member`.openType);
             assert(nsc.openType == `class Member`.openType);
             
-            assert(`Member.sharedCtor` == sc.memberApply<ValueConstructors, Member, Nothing>(`ValueConstructors`));
-            assert(`Member.nonSharedCtor` == nsc.memberApply<ValueConstructors, Member, Nothing>(`ValueConstructors`));
+            assert(`Member.sharedCtor` == sc.memberApply<ValueConstructors, Member>(`ValueConstructors`));
+            assert(`Member.nonSharedCtor` == nsc.memberApply<ValueConstructors, Member>(`ValueConstructors`));
         }
         
     }
