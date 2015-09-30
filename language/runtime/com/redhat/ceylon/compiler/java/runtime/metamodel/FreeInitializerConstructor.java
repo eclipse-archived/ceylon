@@ -134,15 +134,15 @@ public class FreeInitializerConstructor
     @Ignore
     public java.lang.annotation.Annotation[] $getJavaAnnotations$() {
         ArrayList<java.lang.annotation.Annotation> result = new ArrayList<java.lang.annotation.Annotation>(3);
-        java.lang.annotation.Annotation[] l = Metamodel.getJavaConstructor((Class)declaration, null).getAnnotations();
+        java.lang.annotation.Annotation[] l = Metamodel.getJavaClass((Class)declaration).getAnnotations();
         for (java.lang.annotation.Annotation a : l) {
             if (a instanceof SharedAnnotation$annotation$
                     || a instanceof DeprecationAnnotation$annotation$
-                    || a instanceof ThrownExceptionAnnotation$annotation$) {
+                    || a instanceof ceylon.language.ThrownExceptionAnnotation$annotations$) {
                 result.add(a);
             }
         }
-        return result.toArray(new java.lang.annotation.Annotation[3]);
+        return result.toArray(new java.lang.annotation.Annotation[result.size()]);
     }
     
     @Override

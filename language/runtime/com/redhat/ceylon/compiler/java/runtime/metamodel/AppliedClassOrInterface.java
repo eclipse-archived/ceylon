@@ -609,7 +609,7 @@ public abstract class AppliedClassOrInterface<Type>
             FreeValue decl = (FreeValue) it;
 
             // ATM this is an AND WRT annotation types: all must be present
-            if(!hasAllAnnotations(decl, annotationTypeDescriptors))
+            if(!Metamodel.hasAllAnnotations(decl, annotationTypeDescriptors))
                 continue;
 
             addAttributeIfCompatible($reifiedContainer, $reifiedGet, $reifiedSet, members, decl, this.producedType, 
@@ -692,7 +692,7 @@ public abstract class AppliedClassOrInterface<Type>
                 continue;
 
             // ATM this is an AND WRT annotation types: all must be present
-            if(!hasAllAnnotations(lookup.declaration, annotationTypeDescriptors))
+            if(!Metamodel.hasAllAnnotations(lookup.declaration, annotationTypeDescriptors))
                 continue;
 
             addAttributeIfCompatible($reifiedContainer, $reifiedGet, $reifiedSet, members, lookup.declaration, 
@@ -759,7 +759,7 @@ public abstract class AppliedClassOrInterface<Type>
                 continue;
             
             // ATM this is an AND WRT annotation types: all must be present
-            if(!hasAllAnnotations(decl, annotationTypeDescriptors))
+            if(!Metamodel.hasAllAnnotations(decl, annotationTypeDescriptors))
                 continue;
             
             addMethodIfCompatible($reifiedContainer, $reifiedType, $reifiedArguments, members, decl, producedType, 
@@ -826,7 +826,7 @@ public abstract class AppliedClassOrInterface<Type>
                 continue;
             
             // ATM this is an AND WRT annotation types: all must be present
-            if(!hasAllAnnotations(lookup.declaration, annotationTypeDescriptors))
+            if(!Metamodel.hasAllAnnotations(lookup.declaration, annotationTypeDescriptors))
                 continue;
             
             addMethodIfCompatible($reifiedContainer, $reifiedType, $reifiedArguments, members, lookup.declaration, lookup.qualifyingType, 
@@ -914,7 +914,7 @@ public abstract class AppliedClassOrInterface<Type>
                 continue;
             
             // ATM this is an AND WRT annotation types: all must be present
-            if(!hasAllAnnotations(decl, annotationTypeDescriptors))
+            if(!Metamodel.hasAllAnnotations(decl, annotationTypeDescriptors))
                 continue;
             
             addClassIfCompatible($reifiedContainer, $reifiedType, $reifiedArguments, members, decl, 
@@ -981,7 +981,7 @@ public abstract class AppliedClassOrInterface<Type>
                 continue;
             
             // ATM this is an AND WRT annotation types: all must be present
-            if(!hasAllAnnotations(lookup.declaration, annotationTypeDescriptors))
+            if(!Metamodel.hasAllAnnotations(lookup.declaration, annotationTypeDescriptors))
                 continue;
             
             addClassIfCompatible($reifiedContainer, $reifiedType, $reifiedArguments, members, lookup.declaration, 
@@ -1065,7 +1065,7 @@ public abstract class AppliedClassOrInterface<Type>
                 continue;
             
             // ATM this is an AND WRT annotation types: all must be present
-            if(!hasAllAnnotations(decl, annotationTypeDescriptors))
+            if(!Metamodel.hasAllAnnotations(decl, annotationTypeDescriptors))
                 continue;
             
             addInterfaceIfCompatible($reifiedContainer, $reifiedType, members, decl, producedType, 
@@ -1128,7 +1128,7 @@ public abstract class AppliedClassOrInterface<Type>
                 continue;
             
             // ATM this is an AND WRT annotation types: all must be present
-            if(!hasAllAnnotations(lookup.declaration, annotationTypeDescriptors))
+            if(!Metamodel.hasAllAnnotations(lookup.declaration, annotationTypeDescriptors))
                 continue;
             
             addInterfaceIfCompatible($reifiedContainer, $reifiedType, members, lookup.declaration, lookup.qualifyingType, 
@@ -1154,17 +1154,6 @@ public abstract class AppliedClassOrInterface<Type>
             return;
         // it's compatible!
         members.add(decl.<Container,Type>memberInterfaceApply($reifiedContainer, $reifiedType, containerMetamodel));
-    }
-
-    @Ignore
-    protected static boolean hasAllAnnotations(AnnotatedDeclaration decl, TypeDescriptor[] annotationTypeDescriptors) {
-        for(TypeDescriptor annotationTypeDescriptor : annotationTypeDescriptors){
-            if(decl.annotations(annotationTypeDescriptor).getEmpty()){
-                // skip this declaration
-                return false;
-            }
-        }
-        return true;
     }
 
     @Override

@@ -18,6 +18,32 @@ import org.jboss.modules.ModuleIdentifier;
 import org.jboss.modules.ModuleLoadException;
 import org.jboss.modules.ModuleLoader;
 
+import ceylon.language.Annotated;
+import ceylon.language.Anything;
+import ceylon.language.Array;
+import ceylon.language.Callable;
+import ceylon.language.Iterator;
+import ceylon.language.Null;
+import ceylon.language.Sequential;
+import ceylon.language.empty_;
+import ceylon.language.finished_;
+import ceylon.language.null_;
+import ceylon.language.sequence_;
+import ceylon.language.meta.declaration.AnnotatedDeclaration;
+import ceylon.language.meta.declaration.Module;
+import ceylon.language.meta.declaration.NestableDeclaration;
+import ceylon.language.meta.declaration.OpenClassOrInterfaceType;
+import ceylon.language.meta.declaration.OpenType;
+import ceylon.language.meta.declaration.Package;
+import ceylon.language.meta.model.ClassModel;
+import ceylon.language.meta.model.ClassOrInterface;
+import ceylon.language.meta.model.FunctionModel;
+import ceylon.language.meta.model.Generic;
+import ceylon.language.meta.model.IncompatibleTypeException;
+import ceylon.language.meta.model.InvocationException;
+import ceylon.language.meta.model.TypeApplicationException;
+import ceylon.language.meta.model.ValueModel;
+
 import com.redhat.ceylon.common.runtime.CeylonModuleClassLoader;
 import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.codegen.Decl;
@@ -1885,6 +1911,15 @@ public class Metamodel {
         throw Metamodel.newModelError("Underlying declaration is neither invariant, covariant nor contravariant");
     }
     
+    static boolean hasAllAnnotations(AnnotatedDeclaration decl, TypeDescriptor[] annotationTypeDescriptors) {
+        for(TypeDescriptor annotationTypeDescriptor : annotationTypeDescriptors){
+            if(decl.annotations(annotationTypeDescriptor).getEmpty()){
+                // skip this declaration
+                return false;
+            }
+        }
+        return true;
+    }
     
     static <Type> Sequential getConstructors(
             AppliedClassOrInterface<Type> cls,
@@ -1895,43 +1930,73 @@ public class Metamodel {
         ArrayList<Object> ctors = new ArrayList<>();
         com.redhat.ceylon.model.typechecker.model.Type reifiedArguments = $reified$Arguments == null ? null : Metamodel.getProducedType($reified$Arguments);
         TypeDescriptor[] annotationTypeDescriptors = Metamodel.getTypeDescriptors(annotations);
-        for (ceylon.language.meta.declaration.Declaration d : ((FreeClass)cls.declaration).constructors()) {
-            Declaration dd = null;
-            AnnotatedDeclaration annotated;
-            if (d instanceof FreeCallableConstructor
-                    && callableConstructors) {
-                dd = ((FreeCallableConstructor)d).declaration;
-                annotated = (CallableConstructorDeclaration)d;
-            } else if (d instanceof FreeValueConstructor
-                    && !callableConstructors) {
-                dd = ((FreeValueConstructor)d).declaration;
-                annotated = (ValueConstructorDeclaration)d;
-            } else {
-                continue;
-            }
-            // ATM this is an AND WRT annotation types: all must be present
-            if(!cls.hasAllAnnotations(annotated, annotationTypeDescriptors))
-                continue;
-            if (dd instanceof Functional 
-                    && reifiedArguments != null) {
-                // CallableConstructor need a check on the <Arguments>
-                Reference producedReference = dd.appliedReference(cls.producedType, Collections.<com.redhat.ceylon.model.typechecker.model.Type>emptyList());
-                com.redhat.ceylon.model.typechecker.model.Type argumentsType = Metamodel.getProducedTypeForArguments(
-                        dd.getUnit(), 
-                        (Functional) dd, 
-                        producedReference);
-                if(!reifiedArguments.isSubtypeOf(argumentsType))
-                    continue;
-            }
-            if (!justShared || (d instanceof NestableDeclaration
-                    && ((NestableDeclaration)d).getShared())) {
-                Object ctor;
-                if (cls instanceof AppliedClass<?,?>) {
-                    ctor = ((AppliedClass<?,?>)cls).getDeclaredConstructor(TypeDescriptor.NothingType, d.getName());
-                } else {//if (cls instanceof AppliedMemberClass<?,?,?>) {
-                    ctor = ((AppliedMemberClass<?,?,?>)cls).getDeclaredConstructor(TypeDescriptor.NothingType, d.getName());
+        if (cls.declaration instanceof FreeClassWithInitializer) {
+            
+            Reference producedReference = cls.declaration.declaration.appliedReference(cls.producedType, Collections.<com.redhat.ceylon.model.typechecker.model.Type>emptyList());
+            com.redhat.ceylon.model.typechecker.model.Type argumentsType = Metamodel.getProducedTypeForArguments(
+                    cls.declaration.declaration.getUnit(), 
+                    (Functional) cls.declaration.declaration, 
+                    producedReference);
+            if(reifiedArguments.isSubtypeOf(argumentsType)) {
+                if(hasAllAnnotations(((FreeClassWithInitializer)cls.declaration).getDefaultConstructor(), annotationTypeDescriptors)) {
+                    // TODO test for arguments too
+                    //ctors.add(new AppliedInitializer((AppliedClass)cls));
+                    ctors.add(((ClassModel<?, ?>)cls).getDefaultConstructor());
                 }
-                ctors.add(ctor);
+            }
+        } else {
+            for (ceylon.language.meta.declaration.Declaration d : ((FreeClass)cls.declaration).constructors()) {
+                Declaration dd = null;
+                AnnotatedDeclaration annotated;
+                if (d instanceof FreeCallableConstructor
+                        && callableConstructors) {
+                    dd = ((FreeCallableConstructor)d).declaration;
+                    annotated = (CallableConstructorDeclaration)d;
+                } else if (d instanceof FreeValueConstructor
+                        && !callableConstructors) {
+                    dd = ((FreeValueConstructor)d).declaration;
+                    annotated = (ValueConstructorDeclaration)d;
+                } else {
+                    continue;
+                }
+                // ATM this is an AND WRT annotation types: all must be present
+                if(!hasAllAnnotations(annotated, annotationTypeDescriptors))
+                    continue;
+                if (dd instanceof Functional 
+                        && reifiedArguments != null) {
+                    // CallableConstructor need a check on the <Arguments>
+                    Reference producedReference = dd.appliedReference(cls.producedType, Collections.<com.redhat.ceylon.model.typechecker.model.Type>emptyList());
+                    com.redhat.ceylon.model.typechecker.model.Type argumentsType = Metamodel.getProducedTypeForArguments(
+                            dd.getUnit(), 
+                            (Functional) dd, 
+                            producedReference);
+                    if(!reifiedArguments.isSubtypeOf(argumentsType))
+                        continue;
+                }
+                // ATM this is an AND WRT annotation types: all must be present
+                if(!Metamodel.hasAllAnnotations((AnnotatedDeclaration)d, annotationTypeDescriptors))
+                    continue;
+                if (dd instanceof Functional 
+                        && reifiedArguments != null) {
+                    // CallableConstructor need a check on the <Arguments>
+                    Reference producedReference = dd.appliedReference(cls.producedType, Collections.<com.redhat.ceylon.model.typechecker.model.Type>emptyList());
+                    com.redhat.ceylon.model.typechecker.model.Type argumentsType = Metamodel.getProducedTypeForArguments(
+                            dd.getUnit(), 
+                            (Functional) dd, 
+                            producedReference);
+                    if(!reifiedArguments.isSubtypeOf(argumentsType))
+                        continue;
+                }
+                if (!justShared || (d instanceof NestableDeclaration
+                        && ((NestableDeclaration)d).getShared())) {
+                    Object ctor;
+                    if (cls instanceof AppliedClass<?,?>) {
+                        ctor = ((AppliedClass<?,?>)cls).getDeclaredConstructor(TypeDescriptor.NothingType, d.getName());
+                    } else {//if (cls instanceof AppliedMemberClass<?,?,?>) {
+                        ctor = ((AppliedMemberClass<?,?,?>)cls).getDeclaredConstructor(TypeDescriptor.NothingType, d.getName());
+                    }
+                    ctors.add(ctor);
+                }
             }
         }
         

@@ -1,5 +1,11 @@
 import ceylon.language.meta.declaration{...}
-import ceylon.language.meta.model{CallableConstructor, TypeApplicationException}
+import ceylon.language.meta.model{
+    CallableConstructor, 
+    TypeApplicationException
+}
+import ceylon.language.meta{
+    type
+}
 
 
 class Bug750Init<T>(String s) {
@@ -110,6 +116,19 @@ shared void bug750() {
     assert(exists aaa = appliedCtor.container,
         `Bug750Init<String>` == aaa);
     
+    assert([`Bug750Init<String>`.defaultConstructor] == `Bug750Init<String>`.getCallableConstructors<[String]>());
+    assert([`Bug750Init<String>`.defaultConstructor] == `Bug750Init<String>`.getCallableConstructors<Nothing>());
+    assert(`Bug750Init<String>`.getCallableConstructors<[Integer]>().empty);
+    assert(`Bug750Init<String>`.getCallableConstructors<[String]>(`SharedAnnotation`).empty);
+    assert(`Bug750Init<String>`.getCallableConstructors<[String]>(`DocAnnotation`).empty);
+    assert(`Bug750Init<String>`.getCallableConstructors<[String]>(`DeprecationAnnotation`).empty);
+    assert(!`Bug750Anno`.getCallableConstructors<[]>(`SharedAnnotation`).empty);
+    assert(`Bug750Anno`.getCallableConstructors<[]>(`DocAnnotation`).empty);
+    assert(!`Bug750Anno`.getCallableConstructors<[]>(`DeprecationAnnotation`).empty);
+    assert(!`Bug750Anno`.getCallableConstructors<[]>(`ThrownExceptionAnnotation`).empty);
+    
+    type(`Bug750Init<String>`.defaultConstructor);
+    
     Bug750Outer().bug750();
 }
 
@@ -214,10 +233,22 @@ class Bug750Outer() {
         
         assert(exists zzz = `Bug750Init<String>`.defaultConstructor,
             appliedCtor == zzz);
-        print("££££££££££££££££ `` appliedCtor.parameterTypes``");
         assert([`String`] == appliedCtor.parameterTypes);
         assert(init == appliedCtor.declaration);
         
         assert(`Bug750Init<String>` == appliedCtor.container);
+        
+        assert([`Bug750Init<String>`.defaultConstructor] == `Bug750Init<String>`.getCallableConstructors<[String]>());
+        assert([`Bug750Init<String>`.defaultConstructor] == `Bug750Init<String>`.getCallableConstructors<Nothing>());
+        assert(`Bug750Init<String>`.getCallableConstructors<[Integer]>().empty);
+        assert(`Bug750Init<String>`.getCallableConstructors<[String]>(`SharedAnnotation`).empty);
+        assert(`Bug750Init<String>`.getCallableConstructors<[String]>(`DocAnnotation`).empty);
+        assert(`Bug750Init<String>`.getCallableConstructors<[String]>(`DeprecationAnnotation`).empty);
+        assert(!`Bug750Anno`.getCallableConstructors<[]>(`SharedAnnotation`).empty);
+        assert(`Bug750Anno`.getCallableConstructors<[]>(`DocAnnotation`).empty);
+        assert(!`Bug750Anno`.getCallableConstructors<[]>(`DeprecationAnnotation`).empty);
+        assert(!`Bug750Anno`.getCallableConstructors<[]>(`ThrownExceptionAnnotation`).empty);
+        
+        type(`Bug750Init<String>`.defaultConstructor);
     }
 }

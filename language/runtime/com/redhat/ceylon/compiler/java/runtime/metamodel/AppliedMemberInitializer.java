@@ -21,6 +21,7 @@ import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 import com.redhat.ceylon.compiler.java.metadata.Variance;
+import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.Reference;
@@ -36,7 +37,7 @@ import com.redhat.ceylon.model.typechecker.model.Reference;
 })
 public class AppliedMemberInitializer<Container, Type, Arguments extends Sequential<? extends Object>>
         extends AppliedMember<Container, ceylon.language.meta.model.CallableConstructor<? extends Type, ? super Arguments>> 
-        implements MemberClassCallableConstructor<Container, Type, Arguments>{
+        implements MemberClassCallableConstructor<Container, Type, Arguments>, ReifiedType {
 
     //protected final FreeCallableConstructor declaration;
     //private Reference appliedFunction;

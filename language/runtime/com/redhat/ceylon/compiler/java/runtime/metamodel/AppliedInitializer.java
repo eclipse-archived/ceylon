@@ -13,9 +13,12 @@ import ceylon.language.meta.declaration.TypeParameter;
 import ceylon.language.meta.model.CallableConstructor;
 import ceylon.language.meta.model.ClassModel;
 
+import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
+import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
 
-public class AppliedInitializer<Type, Arguments extends Sequential<? extends Object>> implements CallableConstructor<Type, Arguments>{
+public class AppliedInitializer<Type, Arguments extends Sequential<? extends Object>> 
+        implements CallableConstructor<Type, Arguments>, ReifiedType {
 
     private AppliedClass<Type, Arguments> clazz;
     private List<com.redhat.ceylon.model.typechecker.model.Type> parameterProducedTypes;
@@ -199,5 +202,10 @@ public class AppliedInitializer<Type, Arguments extends Sequential<? extends Obj
 
     public java.lang.String toString() {
         return clazz.toString();
+    }
+
+    @Override
+    public TypeDescriptor $getType$() {
+        return TypeDescriptor.klass(AppliedInitializer.class, clazz.$reifiedType, clazz.$reifiedArguments);
     }
 }
