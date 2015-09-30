@@ -70,12 +70,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.compiler.typechecker.context.TypecheckerUnit;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Pattern;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.TypeParameterList;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.VoidModifier;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.model.typechecker.model.Class;
@@ -277,6 +279,11 @@ public class ExpressionVisitor extends Visitor {
             fullType = reference.getFullType();
         }
         that.setTypeModel(fullType);
+        Tree.TypeParameterList tpl = 
+                that.getTypeParameterList();
+        if (tpl!=null) {
+            checkTypeConstructor(tpl);
+        }
     }
     
     @Override public void visit(Tree.IfExpression that) {
@@ -1663,6 +1670,9 @@ public class ExpressionVisitor extends Visitor {
         		checkType(type, 
         		        that.getSpecifierExpression());
         	}
+            if (isGeneric(model)) {
+                checkTypeConstructor(that);
+            }
         }
         else {
             Declaration a = 
@@ -6035,6 +6045,7 @@ public class ExpressionVisitor extends Visitor {
                     genericFunctionType(generic, scope, 
                             member, target, unit);
             that.setTypeModel(functionType);
+            checkTypeConstructor(that);
         }
     }
 
@@ -6163,6 +6174,7 @@ public class ExpressionVisitor extends Visitor {
                     genericFunctionType(generic, scope, 
                             member, target, unit);
             that.setTypeModel(functionType);
+            checkTypeConstructor(that);
         }
     }
     
@@ -6425,8 +6437,8 @@ public class ExpressionVisitor extends Visitor {
                 if (realType.isTypeConstructor()) {
                     //apply the type arguments to the generic
                     //function reference
-                    //TODO: it's ugly to do this here, better to 
-                    //      suck it into TypedReference
+                    //TODO: it's ugly to do this here, better
+                    //      to suck it into TypedReference
                     return realType.getDeclaration()
                             .appliedType(receivingType, typeArgs);
                 }
@@ -6647,6 +6659,7 @@ public class ExpressionVisitor extends Visitor {
                     genericFunctionType(generic, scope, 
                             type, target, unit);
             that.setTypeModel(functionType);
+            checkTypeConstructor(that);
         }
     }
 
@@ -6964,6 +6977,7 @@ public class ExpressionVisitor extends Visitor {
                     genericFunctionType(generic, scope, 
                             type, target, unit);
             that.setTypeModel(functionType);
+            checkTypeConstructor(that);
         }
     }
 
@@ -7169,6 +7183,9 @@ public class ExpressionVisitor extends Visitor {
                                 params);
                 acceptsTypeArguments(type, null, typeArgs, 
                         tal, that);
+            }
+            if (pt.isTypeConstructor()) {
+                checkTypeConstructor(that);
             }
         }
     }
@@ -8569,7 +8586,8 @@ public class ExpressionVisitor extends Visitor {
     @Override 
     public void visit(Tree.Enumerated that) {
         Constructor e = that.getEnumerated();
-        checkDelegatedConstructor(that.getDelegatedConstructor(), 
+        checkDelegatedConstructor(
+                that.getDelegatedConstructor(), 
                 e, that);
         TypeDeclaration occ = enterConstructorDelegation(e);
         Tree.Type rt = beginReturnScope(fakeVoid(that));
@@ -8583,7 +8601,8 @@ public class ExpressionVisitor extends Visitor {
     @Override 
     public void visit(Tree.Constructor that) {
         Constructor c = that.getConstructor();
-        checkDelegatedConstructor(that.getDelegatedConstructor(), 
+        checkDelegatedConstructor(
+                that.getDelegatedConstructor(), 
                 c, that);
         TypeDeclaration occ = enterConstructorDelegation(c);
         Tree.Type rt = beginReturnScope(fakeVoid(that));
@@ -8607,8 +8626,9 @@ public class ExpressionVisitor extends Visitor {
         return occ;
     }
 
-    protected void checkDelegatedConstructor(Tree.DelegatedConstructor dc,
-            Constructor c, Node node) {
+    protected void checkDelegatedConstructor(
+            Tree.DelegatedConstructor dc, Constructor c, 
+            Node node) {
         if (dc==null) {
             if (c.isClassMember()) {
                 Class clazz = (Class) c.getContainer();
@@ -8644,7 +8664,6 @@ public class ExpressionVisitor extends Visitor {
         inExtendsClause = true;
         super.visit(that);
         inExtendsClause = false;
-        
     }
 
     @Override public void visit(Tree.Term that) {
@@ -8660,7 +8679,46 @@ public class ExpressionVisitor extends Visitor {
             that.setTypeModel(defaultType());
         }
     }
-
+    
+    @Override public void visit(Tree.TypeConstructor that) {
+        super.visit(that);
+        checkTypeConstructor(that);
+    }
+    
+    @Override public void visit(Tree.TypeConstraint that) {
+        super.visit(that);
+        TypeParameterList typeParams = 
+                that.getTypeParameterList();
+        if (typeParams!=null) {
+            checkTypeConstructor(typeParams);
+        }
+    }
+    
+    @Override
+    public void visit(Tree.FunctionalParameterDeclaration that) {
+        super.visit(that);
+        Tree.MethodDeclaration md = 
+                (Tree.MethodDeclaration) 
+                    that.getTypedDeclaration();
+        Tree.TypeParameterList tpl = 
+                md.getTypeParameterList();
+        if (tpl!=null) {
+            checkTypeConstructor(tpl);
+        }
+    }
+    
+    private static void checkTypeConstructor(Node that) {
+        Set<String> scopedBackends = 
+                that.getScope()
+                    .getScopedBackends();
+        if (scopedBackends!=null &&
+                scopedBackends.contains("jvm")) {
+            that.addUnsupportedError(
+                    "type functions are not supported on the JVM", 
+                    Backend.Java);
+        }
+    }
+    
     private Type defaultType() {
         TypeDeclaration ut = new UnknownType(unit);
         Class ad = unit.getAnythingDeclaration();

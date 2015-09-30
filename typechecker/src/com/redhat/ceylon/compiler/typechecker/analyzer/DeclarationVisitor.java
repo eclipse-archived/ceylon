@@ -640,7 +640,7 @@ public abstract class DeclarationVisitor extends Visitor {
         super.visitAny(that);
     }
     
-    public static void checkDynamic(Node that) {
+    private static void checkDynamic(Node that) {
         Set<String> scopedBackends = 
                 that.getScope()
                     .getScopedBackends();
