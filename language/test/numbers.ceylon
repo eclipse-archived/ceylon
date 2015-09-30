@@ -850,6 +850,10 @@ void checkParseFloat() {
     check(parseFloat0("-0.5")==-0.5, "parseFloat(-0.5)");
     check(parseFloat0("-1.75")==-1.75, "parseFloat(-1.75)");
     
+    check(parseFloat0("4k")==4k, "parseFloat(4k)");
+    check(parseFloat0("2m")==0.002, "parseFloat(2m)");
+    check(parseFloat0("0.123456M")==0.123456M, "parseFloat(0.123456M)");
+    
     // check that positive and negative zero are distinguished correctly.
     // we can't check that with '==' (because 0.0 == -0.0), so we use the string instead.
     check(parseFloat0("0").string=="0.0", "parseFloat(0)");
