@@ -2425,7 +2425,7 @@ anonParametersStart
     LPAREN 
     ( 
       RPAREN
-    | LIDENTIFIER (COMMA | RPAREN (COMPUTE|LBRACE|TYPE_CONSTRAINT)) 
+    | LIDENTIFIER (COMMA | RPAREN (COMPUTE|LBRACE|TYPE_CONSTRAINT|anonParametersStart)) 
     | compilerAnnotations annotatedDeclarationStart 
     )
     ;

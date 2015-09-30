@@ -132,6 +132,19 @@ class Lambdas() {
     Float square(Float x) = (Float y) y**2;
     Float cube(Float x) = (Float y) return y**3;*/
     
+    @type:"Integer()(Integer)" 
+    value fun1 
+            = (first)() {
+        variable Integer first;
+        return first++;
+    };
+    @type:"Integer(Integer)()" 
+    value fun2
+            = ()(first) {
+        variable Integer first;
+        return first++;
+    };
+    
 }
 
 class SuperWithFun(String fun()) {}
