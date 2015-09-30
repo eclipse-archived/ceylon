@@ -2,7 +2,7 @@ import ceylon.language { AnnotationType = Annotation }
 import ceylon.language.meta.declaration {
   ClassDeclaration, ValueDeclaration, Package, Module,
   NestableDeclaration, OpenInterfaceType, OpenClassType, OpenType,
-  FunctionOrValueDeclaration, TypeParameter, ConstructorDeclaration,
+  FunctionOrValueDeclaration, TypeParameter, CallableConstructorDeclaration,
   ClassWithInitializerDeclaration
 }
 import ceylon.language.meta.model {
@@ -64,6 +64,9 @@ shared native class OpenClassWithInitializer(pkg, meta) satisfies ClassWithIniti
             given Annotation satisfies AnnotationType;
     shared native actual Kind[] declaredMemberDeclarations<Kind>() 
         given Kind satisfies NestableDeclaration;
+    shared native actual CallableConstructorDeclaration defaultConstructor;
+    shared native actual CallableConstructorDeclaration[] annotatedConstructorDeclarations<Annotation>()
+            given Annotation satisfies AnnotationType;
 
     shared native actual ValueDeclaration? objectValue;
     shared actual String string=>"class ``qualifiedName``";

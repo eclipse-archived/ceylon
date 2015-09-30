@@ -2,7 +2,7 @@ import ceylon.language.meta.model {
   ClosedType=Type, ClassModel, InterfaceModel,
   FunctionModel, ValueModel,
   Member, Class, ClassOrInterface, Attribute, Method,
-  MemberInterface,MemberClass,MemberClassConstructor, TypeArgument,
+  MemberInterface,MemberClass, TypeArgument,
   MemberClassValueConstructor,MemberClassCallableConstructor
 }
 import ceylon.language.meta.declaration {
@@ -14,7 +14,7 @@ shared native class AppliedMemberClass<in Container, out Type=Anything, in Argum
         satisfies MemberClass<Container,Type,Arguments>
         given Arguments satisfies Anything[] {
   shared actual native Class<Type,Arguments> bind(Object container);
-  shared actual native <MemberClassCallableConstructor<Container, Type, Arguments>|MemberClass<Container, Type, Arguments>>? defaultConstructor;
+  shared actual native MemberClassCallableConstructor<Container, Type, Arguments>? defaultConstructor;
   shared actual native MemberClassCallableConstructor<Container,Type,Arguments>|MemberClassValueConstructor<Container,Type>? getConstructor<Arguments>(String name)
         given Arguments satisfies Anything[];
   shared actual native MemberClassCallableConstructor<Container,Type, Arguments>|MemberClassValueConstructor<Container,Type>? getDeclaredConstructor<Arguments>(String name)

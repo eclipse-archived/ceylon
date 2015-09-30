@@ -1,1 +1,2 @@
-return FunctionalDeclaration$meta$declaration.$$.prototype.$prop$getParameterDeclarations.get.call(this);
+var dc=this.defaultConstructor;
+return dc?dc.parameterDeclarations:null;

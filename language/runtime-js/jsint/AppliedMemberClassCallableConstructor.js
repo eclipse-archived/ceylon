@@ -56,9 +56,9 @@ function AppliedMemberClassCallableConstructor$jsint(tipo,$$targs$$,that,myTargs
         return AppliedMemberClassCallableConstructor$jsint.$$.prototype.$prop$getString.get.call(that);
     },undefined,AppliedMemberClassCallableConstructor$jsint.$$.prototype.$prop$getString.$crtmm$);
   }
-  MemberClassConstructor$meta$model({Type$MemberClassConstructor:$$targs$$.Type$AppliedMemberClassCallableConstructor,
-    Arguments$MemberClassConstructor:$$targs$$.Arguments$AppliedMemberClassCallableConstructor,
-    Container$MemberClassConstructor:$$targs$$.Container$AppliedMemberClassCallableConstructor},that);
+  MemberClassCallableConstructor$meta$model({Type$MemberClassCallableConstructor:$$targs$$.Type$AppliedMemberClassCallableConstructor,
+    Arguments$MemberClassCallableConstructor:$$targs$$.Arguments$AppliedMemberClassCallableConstructor,
+    Container$MemberClassCallableConstructor:$$targs$$.Container$AppliedMemberClassCallableConstructor},that);
   set_type_args(that,$$targs$$,AppliedMemberClassCallableConstructor$jsint);
   that.$targs=myTargs;
   that.tipo=tipo;
