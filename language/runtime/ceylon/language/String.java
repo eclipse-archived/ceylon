@@ -2286,24 +2286,17 @@ public final class String
     @Ignore
     public static Integer 
     firstIndexWhere(java.lang.String value, Callable<? extends Boolean> fun) {
-        if (value.isEmpty()) {
-            return null;
-        }
         int index = 0;
         int count = 0;
-        while (true) {
+        while (index<value.length()) {
             int cp = value.codePointAt(index);
             index+=java.lang.Character.charCount(cp);
-            if (index>=value.length()) {
-                return null;
+            if (fun.$call$(Character.instance(cp)).booleanValue()) {
+                return Integer.instance(count);
             }
-            else {
-                if (fun.$call$(Character.instance(cp)).booleanValue()) {
-                    return Integer.instance(count);
-                }
-                count++;
-            }
+            count++;
         }
+        return null;
     }
     
     @Override 
