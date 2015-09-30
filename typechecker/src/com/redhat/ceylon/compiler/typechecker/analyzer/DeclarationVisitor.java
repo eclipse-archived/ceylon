@@ -644,8 +644,12 @@ public abstract class DeclarationVisitor extends Visitor {
         Set<String> scopedBackends = 
                 that.getScope()
                     .getScopedBackends();
-        if (scopedBackends!=null &&
-                scopedBackends.contains("jvm")) {
+        Set<String> backends =
+                scopedBackends == null ?
+                        that.getUnit().getSupportedBackends() :
+                        scopedBackends;
+        if (backends!=null &&
+                backends.contains("jvm")) {
             that.addUnsupportedError(
                     "dynamic is not supported on the JVM", 
                     Backend.Java);
