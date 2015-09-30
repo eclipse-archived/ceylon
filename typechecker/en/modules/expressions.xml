@@ -3276,12 +3276,12 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
                 <listitem>
                     <para>for a callable constructor of a toplevel class of 
                     callable type <literal>R(*P)</literal>, the type is 
-                    <literal>Constructor&lt;R,P&gt;</literal>,</para>
+                    <literal>CallableConstructor&lt;R,P&gt;</literal>,</para>
                 </listitem>
                 <listitem>
                     <para>for a value constructor of a toplevel class of 
                     type <literal>R</literal>, the type is 
-                    <literal>Value&lt;R&gt;</literal>,</para>
+                    <literal>ValueConstructor&lt;R&gt;</literal>,</para>
                 </listitem>
                 <listitem>
                     <para>for a class nested in a block of callable type 
@@ -3318,7 +3318,13 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
                 <listitem>
                     <para>for a callable constructor of a member class of 
                     callable type <literal>R(*P)</literal>, the type is 
-                    <literal>MemberClassConstructor&lt;T,R,P&gt;</literal>, 
+                    <literal>MemberClassCallableConstructor&lt;T,R,P&gt;</literal>, 
+                    and</para>
+                </listitem>
+                <listitem>
+                    <para>for a value constructor of a member class of 
+                    type <literal>R</literal>, the type is 
+                    <literal>MemberClassValueConstructor&lt;T,R&gt;</literal>, 
                     and</para>
                 </listitem>
                 <listitem>
@@ -3429,6 +3435,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             <programlisting>InterfaceDeclaration stringListInterface = `interface List`;</programlisting>
             <programlisting>AliasDeclaration numberAlias = `alias Number`;</programlisting>
             <programlisting>TypeParameter elementTypeParameter = `given Element`;</programlisting>
+            <programlisting>CallableConstructorDeclaration arrayOfSizeConstructor = `new Array.ofSize`;</programlisting>
 
             <para>A <emphasis>value reference expression</emphasis> or
             <emphasis>function reference expression</emphasis> is an optional 
@@ -3531,11 +3538,11 @@ Module languageModule = `module ceylon.language`;</programlisting>
                 </listitem>
                 <listitem>
                     <para>for a callable constructor, the type is 
-                    <literal>ConstructorDeclaration</literal>,</para>
+                    <literal>CallableConstructorDeclaration</literal>,</para>
                 </listitem>
                 <listitem>
                     <para>for a value constructor, the type is 
-                    <literal>ValueDeclaration</literal>,</para>
+                    <literal>ValueConstructorDeclaration</literal>,</para>
                 </listitem>
                 <listitem>
                     <para>for a type parameter, the type is 
