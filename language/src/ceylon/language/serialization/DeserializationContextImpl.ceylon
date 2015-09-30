@@ -142,7 +142,9 @@ class DeserializationContextImpl<Id>() satisfies DeserializationContext<Id>
                     deque.pushFront(container);
                     continue;
                 }
-                r.instantiate();
+                if (!r.instantiated) {
+                    r.instantiate();
+                }
                 // push the referred things on to the stack
                 // but only if they haven't yet been instantiated
                 for (referredId in r.refersTo) {

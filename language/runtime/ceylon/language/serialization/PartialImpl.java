@@ -370,7 +370,7 @@ class PartialImpl extends Partial {
     }
     
     public java.lang.String toString() {
-        return "Partial " + getId() + (getInitialized() ? "initialized" : getInstantiated() ? "instantiated" : "uninstantiated") + getClazz();
+        return "Partial " + getId() + (getInitialized() ? " initialized " : getInstantiated() ? " instantiated " : " uninstantiated ") + getClazz();
     }
     
     

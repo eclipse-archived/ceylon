@@ -62,7 +62,10 @@ abstract class Partial(id) {
     
     "The ids of the instances that this instance refers to"
     shared {Object*} refersTo {
-        assert(exists s=state);
-        return s.items;
+        if (exists s=state) {
+            return s.items;
+        } else {
+            return [];
+        }
     }
 }
