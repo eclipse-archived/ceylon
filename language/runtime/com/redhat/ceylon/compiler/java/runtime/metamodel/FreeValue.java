@@ -9,7 +9,6 @@ import ceylon.language.Anything;
 import ceylon.language.meta.declaration.OpenType;
 import ceylon.language.meta.declaration.SetterDeclaration;
 import ceylon.language.meta.declaration.ValueDeclaration$impl;
-import ceylon.language.meta.declaration.GettableDeclaration$impl;
 
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
