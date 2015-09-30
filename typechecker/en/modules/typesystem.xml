@@ -1548,6 +1548,10 @@ Item item = comp of Item;</programlisting>
                 </listitem>
             </itemizedlist>
             
+            <para>Furthermore, if <literal>C</literal> is an instantiation of a generic
+            type, then <literal>T</literal> may not occur twice in <literal>C</literal>.
+            </para>
+            
             <para>For example, the following covariant enumerated type is legal:</para>
             
             <programlisting><![CDATA[interface List<out Element> 
