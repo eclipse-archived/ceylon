@@ -640,12 +640,37 @@ public abstract class DeclarationVisitor extends Visitor {
         super.visitAny(that);
     }
     
+    public static void checkDynamic(Node that) {
+        Set<String> scopedBackends = 
+                that.getScope()
+                    .getScopedBackends();
+        if (scopedBackends!=null &&
+                scopedBackends.contains("jvm")) {
+            that.addUnsupportedError(
+                    "dynamic is not supported on the JVM", 
+                    Backend.Java);
+        }
+    }
+    
     @Override
     public void visit(Tree.DynamicStatement that) {
         boolean od = dynamic;
         dynamic = true;
         super.visit(that);
         dynamic = od;
+        checkDynamic(that);
+    }
+
+    @Override
+    public void visit(Tree.Dynamic that) {
+        super.visit(that);
+        checkDynamic(that);
+    }
+    
+    @Override
+    public void visit(Tree.DynamicModifier that) {
+        super.visit(that);
+        checkDynamic(that);
     }
     
     @Override
@@ -971,6 +996,9 @@ public abstract class DeclarationVisitor extends Visitor {
         defaultExtendedToObject(i);
         that.setDeclarationModel(i);
         super.visit(that);
+        if (that.getDynamic()) {
+            checkDynamic(that);
+        }
     }
     
     @Override
