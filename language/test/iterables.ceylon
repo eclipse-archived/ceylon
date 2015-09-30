@@ -393,4 +393,12 @@ shared void testIterables() {
     //    check(lazinessProtecting.replace("[]", "{}" /* take(0) returns empty */) == breakingLaziness, "Iterable.string, ``i`` elements");
     //    count = 0;
     //}
+    value permuts=[1,2,3].permutations.sequence();
+    check(permuts.size==6, "Permutations 1");
+    check([1,2,3] in permuts, "Permutations 2");
+    check([3,2,1] in permuts, "Permutations 3");
+    check(permuts.every((c) => 1 in c && 2 in c && 3 in c), "Permutations 4");
+    check(!permuts.any((c) => c.count((e)=>e==1) != 1), "Permutations 5");
+    check(!permuts.any((c) => c.count((e)=>e==2) != 1), "Permutations 6");
+    check(!permuts.any((c) => c.count((e)=>e==3) != 1), "Permutations 7");
 }
