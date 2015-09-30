@@ -4,6 +4,7 @@ import java.util.EnumSet;
 import java.util.List;
 
 import com.redhat.ceylon.common.Backend;
+import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Annotation;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
@@ -12,6 +13,8 @@ import com.redhat.ceylon.model.loader.model.OutputElement;
 
 public class UnsupportedVisitor extends Visitor {
     
+    static final String DYNAMIC_UNSUPPORTED_ERR = "dynamic is not supported on the JVM";
+
     @Override
     public void visit(Tree.Annotation that) {
         String msg = AnnotationInvocationVisitor.checkForBannedJavaAnnotation(that);
@@ -23,13 +26,13 @@ public class UnsupportedVisitor extends Visitor {
     
     @Override
     public void visit(Tree.DynamicStatement that) {
-        that.addUnsupportedError("dynamic is not yet supported on this platform", Backend.Java);
+        addDynamicUnsupportedError(that);
         super.visit(that);
     }
     
     @Override
     public void visit(Tree.Dynamic that) {
-        that.addUnsupportedError("dynamic is not yet supported on this platform", Backend.Java);
+        addDynamicUnsupportedError(that);
         super.visit(that);
     }
 
@@ -42,7 +45,7 @@ public class UnsupportedVisitor extends Visitor {
 
     @Override
     public void visit(Tree.DynamicModifier that) {
-        that.addUnsupportedError("dynamic is not yet supported on this platform", Backend.Java);
+        addDynamicUnsupportedError(that);
         super.visit(that);
     }
 
@@ -148,6 +151,10 @@ public class UnsupportedVisitor extends Visitor {
             AnnotationUtil.interopAnnotationTargeting(outputs, annotation, true);
         }
         AnnotationUtil.duplicateInteropAnnotation(outputs, annotations);
+    }
+    
+    private static void addDynamicUnsupportedError(Node that) {
+        that.addUnsupportedError(DYNAMIC_UNSUPPORTED_ERR, Backend.Java);
     }
 
 }

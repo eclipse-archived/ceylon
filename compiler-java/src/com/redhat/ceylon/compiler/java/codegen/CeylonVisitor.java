@@ -1049,30 +1049,34 @@ public class CeylonVisitor extends Visitor {
         // We should never get here since the error should have been 
         // reported by the UnsupportedVisitor and the containing statement
         // replaced with a throw.
-        append(gen.makeErroneous(that, "dynamic is not yet supported on this platform"));
+        append(makeDynamicUnsupportedError(that));
     }
 
     public void visit(Tree.DynamicModifier that) {
         // We should never get here since the error should have been 
         // reported by the UnsupportedVisitor and the containing statement
         // replaced with a throw.
-        append(gen.makeErroneous(that, "dynamic is not yet supported on this platform"));
+        append(makeDynamicUnsupportedError(that));
     }
 
     public void visit(Tree.DynamicClause that) {
         // We should never get here since the error should have been 
         // reported by the UnsupportedVisitor and the containing statement
         // replaced with a throw.
-        append(gen.at(that).Exec(gen.makeErroneous(that, "dynamic is not yet supported on this platform")));
+        append(gen.at(that).Exec(makeDynamicUnsupportedError(that)));
     }
 
     public void visit(Tree.DynamicStatement that) {
         // We should never get here since the error should have been 
         // reported by the UnsupportedVisitor and the containing statement
         // replaced with a throw.
-        append(gen.at(that).Exec(gen.makeErroneous(that, "dynamic is not yet supported on this platform")));
+        append(gen.at(that).Exec(makeDynamicUnsupportedError(that)));
     }
 
+    private JCExpression makeDynamicUnsupportedError(Node that) {
+        return gen.makeErroneous(that, UnsupportedVisitor.DYNAMIC_UNSUPPORTED_ERR);
+    }
+    
     public void visit(Tree.CompilationUnit cu) {
         // Figure out all the local ids
         gen.naming.assignNames(cu);
