@@ -49,6 +49,7 @@ import com.redhat.ceylon.model.typechecker.model.Function;
 import com.redhat.ceylon.model.typechecker.model.Functional;
 import com.redhat.ceylon.model.typechecker.model.Generic;
 import com.redhat.ceylon.model.typechecker.model.LazyType;
+import com.redhat.ceylon.model.typechecker.model.ModelUtil;
 import com.redhat.ceylon.model.typechecker.model.Package;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.ParameterList;
@@ -984,7 +985,8 @@ public class RefinementVisitor extends Visitor {
             Declaration refinedMemberDec, Declaration refiningMemberDec) {
 	    return refinedMemberDec instanceof TypedDeclaration && 
 				refiningMemberDec instanceof TypedDeclaration && 
-        		((TypedDeclaration) refiningMemberDec).isDynamicallyTyped();
+        		((TypedDeclaration) refiningMemberDec)
+        		    .isDynamicallyTyped();
     }
 
 	private boolean refinedMemberIsDynamicallyTyped(
@@ -992,7 +994,8 @@ public class RefinementVisitor extends Visitor {
             Declaration refiningMemberDec) {
 	    return refinedMemberDec instanceof TypedDeclaration && 
 				refiningMemberDec instanceof TypedDeclaration && 
-        		((TypedDeclaration) refinedMemberDec).isDynamicallyTyped();
+        		((TypedDeclaration) refinedMemberDec)
+        		    .isDynamicallyTyped();
     }
 
 	private void checkRefiningMemberTypeParameters(
@@ -1270,6 +1273,27 @@ public class RefinementVisitor extends Visitor {
                 that.addError("declaration may not be default: '" + 
                         dec.getName() + "'", 
                         1303);
+            }
+        }
+        if (isConstructor(dec) && dec.isShared()) {
+            Scope container = dec.getContainer();
+            if (container instanceof Class) {
+                Class clazz = (Class) container;
+                Declaration member = 
+                        intersectionOfSupertypes(clazz)
+                            .getDeclaration()
+                            .getMember(dec.getName(), null, false);
+                if (member!=null && 
+                        member.isShared() &&
+                        !isConstructor(member)) {
+                    Declaration supertype = 
+                            (Declaration) 
+                                member.getContainer();
+                    that.addError("constructor has same name as an inherited member '" + 
+                            clazz.getName() + "' inherits '" + 
+                            member.getName() + "' from '" + 
+                            supertype.getName(that.getUnit()) + "'");
+                }
             }
         }
     }

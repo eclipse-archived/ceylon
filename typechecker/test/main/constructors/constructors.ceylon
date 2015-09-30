@@ -420,3 +420,15 @@ class WithReturnInConstructor {
     shared new baz() {}
     print("done");
 }
+
+
+class WithConstructorWithInheritedMethodName 
+        satisfies InterfaceWithMethod {
+    shared new () {}
+    @error shared new create() {}
+}
+
+interface InterfaceWithMethod {
+    shared Integer create() => 0;
+}
+
