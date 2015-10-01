@@ -421,8 +421,8 @@ public class IssuesTests_1500_1999 extends CompilerTests {
     @Test
     public void testBug1639() {
         assertErrors("bug16xx/Bug1639",
-                new CompilerError(22, "dynamic is not yet supported on this platform"),
-                new CompilerError(23, "dynamic is not yet supported on this platform"));
+                new CompilerError(22, "dynamic is not supported on the JVM"),
+                new CompilerError(23, "dynamic is not supported on the JVM"));
     }
     
     @Test
@@ -451,7 +451,7 @@ public class IssuesTests_1500_1999 extends CompilerTests {
     @Test
     public void testBug1648() {
         assertErrors("bug16xx/Bug1648",
-                new CompilerError(22, "dynamic is not yet supported on this platform"));
+                new CompilerError(22, "dynamic is not supported on the JVM"));
     }
 
     @Test
@@ -698,7 +698,7 @@ public class IssuesTests_1500_1999 extends CompilerTests {
         Assert.assertEquals(1, exitState.errorCount);
     
         TreeSet<CompilerError> actualErrors = collector.get(Diagnostic.Kind.ERROR);
-        compareErrors(actualErrors, new CompilerError(22, "dynamic is not yet supported on this platform"));
+        compareErrors(actualErrors, new CompilerError(22, "dynamic is not supported on the JVM"));
     }
 
     @Test
