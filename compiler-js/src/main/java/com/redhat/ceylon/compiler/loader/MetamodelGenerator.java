@@ -474,13 +474,14 @@ public class MetamodelGenerator {
     public Map<String,Object> encodeConstructor(final Constructor d) {
         //First of all, find the class this thing belongs to
         Map<String,Object> c = findParent(d);
+        final String mname = TypeUtils.modelName(d);
         if (c == null) {
             System.out.println("WTF no parent for Constructor " + d);
             return null;
         }
         Map<String,Object> m = new HashMap<>();
         if (d.getName() != null) {
-            m.put(KEY_NAME, d.getName());
+            m.put(KEY_NAME, mname);
         }
         final ParameterList plist = d.getFirstParameterList();
         if (plist != null) {
@@ -492,7 +493,7 @@ public class MetamodelGenerator {
         }
         @SuppressWarnings("unchecked")
         Map<String,Object> consmap = (Map<String,Object>)c.get(KEY_CONSTRUCTORS);
-        consmap.put(d.getName() == null ? "$def" : d.getName(), m);
+        consmap.put(d.getName() == null ? "$def" : mname, m);
         return null;
     }
 
