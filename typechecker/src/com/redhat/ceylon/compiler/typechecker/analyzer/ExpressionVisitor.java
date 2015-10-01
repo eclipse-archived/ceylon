@@ -5394,7 +5394,7 @@ public class ExpressionVisitor extends Visitor {
         Type t = type(that);
         if (!isTypeUnknown(t)) {
             Type nt = 
-                    checkSupertype(t, type, 
+                    checkSupertype(t, true, type, 
                             that.getTerm(), 
                             "operand expression must be of correct type");
             if (nt!=null) {

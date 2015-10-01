@@ -481,6 +481,12 @@ public class AnalyzerUtil {
 
     static Type checkSupertype(Type type, 
             TypeDeclaration td, Node node, String message) {
+        return checkSupertype(type, false, td, node, message);
+    }
+    
+    static Type checkSupertype(Type type, boolean unary, 
+            TypeDeclaration td, Node node, String message) {
+
         if (isTypeUnknown(type)) {
             addTypeUnknownError(node, type, message);
             return null;
@@ -492,6 +498,15 @@ public class AnalyzerUtil {
                         message(type, 
                                 " is not a subtype of '" + 
                                         td.getName() + "'", 
+                                node.getUnit()));
+            }
+            else if (!unary &&
+                    !supertype.getVarianceOverrides()
+                        .isEmpty()) {
+                node.addError(message + 
+                        message(type, 
+                                " does not have a principal instantiation for '" + 
+                                        td.getName() + "'",
                                 node.getUnit()));
             }
             return supertype;

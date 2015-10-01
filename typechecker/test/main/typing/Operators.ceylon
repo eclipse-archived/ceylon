@@ -444,3 +444,14 @@ void testSetOperators(variable MySet<String> myset,
     @error [Integer+] ints2 = (1..3)[1...];
     [Integer+] ints3 = (1..3)[-1...];
 }
+
+void testOperatorsOnUnions() {
+    variable Integer|Float iof = 1.0;
+    @error iof += 1;
+    @error iof -= 1;
+    @error iof = iof+iof;
+    @error iof = iof-iof;
+    iof = -iof;
+    iof = +iof;
+
+}
