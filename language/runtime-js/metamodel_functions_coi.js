@@ -692,7 +692,7 @@ function coiclsannconstrs$(coi,anntypes,prefix,mt,arg$,tipo) {
     if (cn.startsWith(prefix)) {
       var mm=getrtmm$$(coi.tipo[cn]);
       if (mm.d[mm.d.length-2]===mt && coi$is$anns(allann$(mm),ats)) {
-        var parms=mm.ps;
+        var parms=mm.ps && mm.ps.slice(0);
         if (parms && arg$.t!==Nothing && tipo.a) {
           for (var i=0;i<parms.length;i++) {
             parms[i] = {$t:restype$(tipo,parms[i].$t)};
@@ -705,10 +705,15 @@ function coiclsannconstrs$(coi,anntypes,prefix,mt,arg$,tipo) {
       }
     }
   }
-  if (cs.length===0 && this.defaultConstructor && this.defaultConstructor.fakeConstr$) {
+  if (cs.length===0 && coi.defaultConstructor && coi.defaultConstructor.fakeConstr$) {
     mm=getrtmm$$(coi.tipo);
+    for (var i=0;i<ats.length;i++) {
+      if (ats[i].t===DocAnnotation) {
+        return cs;
+      }
+    }
     if (coi$is$anns(allann$(mm),ats)) {
-      var parms=mm.ps;
+      var parms=mm.ps && mm.ps.slice(0);
       if (parms && arg$.t!==Nothing && tipo.a) {
         for (var i=0;i<parms.length;i++) {
           parms[i] = {$t:restype$(tipo,parms[i].$t)};
@@ -716,7 +721,7 @@ function coiclsannconstrs$(coi,anntypes,prefix,mt,arg$,tipo) {
       }
       if (validate$params(parms,arg$,"",1)) {
         var args=parms?tupleize$params(parms,coi.$targs):empty();
-        cs.push({tipo:coi.tipo,args:args});
+        cs.push({tipo:coi.tipo,args:args,fakeConstr:true});
       }
     }
   }
