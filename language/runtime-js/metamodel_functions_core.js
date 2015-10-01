@@ -12,7 +12,17 @@ function get_model(mm) {
     var _p=path[i];
     if (i===0 && _p==='$')_p='ceylon.language';
     else if (i===path.length-1&&_p==='$set' && map.nm && map.$set)return map;
-    if (map===undefined)console.log("WRONG MODEL PATH " + path + " index " + i);
+    if (map===undefined)console.trace("WRONG MODEL PATH " + path + " index " + i);
+    if (map[_p]===undefined) {
+      if (_p.indexOf('$') > 0) {
+        //unshared stuff
+        var _p2=_p.substring(0,_p.indexOf('$'));
+        if (map[_p2]===undefined)console.trace("WRONG MODEL PATH with unshared " + path + " key " + _p + " (unshared " + _p2 + ")");
+        _p=_p2;
+      } else {
+        console.trace("WRONG MODEL PATH " + path + " key " + _p);
+      }
+    }
     map = map[_p];
   }
   return map;
