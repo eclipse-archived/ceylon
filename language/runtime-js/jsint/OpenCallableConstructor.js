@@ -15,7 +15,7 @@ function OpenCallableConstructor$jsint(pkg, meta, that){
       that.meta_ = get_model(_mm);
     }
     that.name_=(that.meta&&that.meta.nm)||_mm.d[_mm.d.length-1];
-    if (that.name_==='$def' || that.name_==='$c' || _mm.d.length<3) {
+    if (that.name_==='$def' || _mm.d[_mm.d.length-2]!=='$cn') {
       that.name_='';
     } else if (that.name_.indexOf('$')>0) {
       that.name_=that.name_.substring(0,that.name_.indexOf('$'));

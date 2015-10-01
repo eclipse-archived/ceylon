@@ -2,8 +2,8 @@ function memberApply(ctype,targs,$mpt) {
   var fakeConstructor=false;
   if (this.defaultConstructor) {
     var mm=getrtmm$$(this.tipo);
-    fakeConstructor=mm.d[mm.d.length-1]!=='$def';
-    if (fakeConstructor && mm.d[mm.d.length-1]!=='$c') {
+    fakeConstructor=mm.d[mm.d.length-2]!=='$cn';
+    if (fakeConstructor && mm.d[mm.d.length-2]!=='$c') {
       throw TypeApplicationException$meta$model("Not a member constructor");
     }
   }

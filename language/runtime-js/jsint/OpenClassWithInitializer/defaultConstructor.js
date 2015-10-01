@@ -1,1 +1,4 @@
-return OpenCallableConstructor$jsint(this.pkg_,this.tipo);
+if (this.$defc$===undefined) {
+  this.$defc$=OpenCallableConstructor$jsint(this.pkg_,this.tipo);
+}
+return this.$defc$;

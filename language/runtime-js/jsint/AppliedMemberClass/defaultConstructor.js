@@ -11,6 +11,14 @@ if (this.$defcons$===undefined) {
   }
   var fn=mtn+'_$c$';
   var cn=this.tipo[fn];
+  var fc=false;
+  if (!cn) {
+    var m2=get_model(mm);
+    if (m2 && m2.$cn===undefined) {
+      cn=this.tipo;
+      fc=true;
+    }
+  }
   if (cn) {
     mm=getrtmm$$(cn).ps;
     var args=tupleize$params(getrtmm$$(cn).ps,this.$$targs$$.Type$AppliedMemberClass.a);
@@ -20,6 +28,7 @@ if (this.$defcons$===undefined) {
            Arguments$AppliedMemberClassCallableConstructor:args},undefined,this.$targs);
     r.cont$=this;
     this.$defcons$=r;
+    if(fc)r.fakeConstr$=true;
     return r;
   }
   this.$defcons$=null;

@@ -6,6 +6,7 @@ function(anntypes,$m) {
     var r=AppliedCallableConstructor$jsint(cs[i].tipo,{Type$AppliedCallableConstructor:this.$$targs$$.Type$AppliedClass,
                 Arguments$AppliedCallableConstructor:cs[i].args},undefined,this.$targs);
     r.cont$=this;
+    if (cs[i].fakeConstr)r.fakeConstr$=true;
     cs[i]=r;
   }
   return cs.length===0?empty():ArraySequence(cs,{Element$ArraySequence:{t:CallableConstructor$meta$model,

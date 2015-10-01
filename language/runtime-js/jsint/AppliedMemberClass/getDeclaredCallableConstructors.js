@@ -17,6 +17,7 @@ function(anntypes,$m) {
                 Container$AppliedMemberClassCallableConstructor:this.$$targs$$.Container$AppliedMemberClass,
                 Arguments$AppliedMemberClassCallableConstructor:cs[i].args},undefined,this.$targs);
     r.$cont=this;
+    if (cs[i].fakeConstr)r.fakeConstr$=true;
     cs[i]=r;
   }
   return cs.length===0?empty():ArraySequence(cs,{Element$ArraySequence:{t:MemberClassCallableConstructor$meta$model,
