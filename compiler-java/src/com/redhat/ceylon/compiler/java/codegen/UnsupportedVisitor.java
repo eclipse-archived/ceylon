@@ -23,31 +23,6 @@ public class UnsupportedVisitor extends Visitor {
         }
         super.visit(that);
     }
-    
-    @Override
-    public void visit(Tree.DynamicStatement that) {
-        addDynamicUnsupportedError(that);
-        super.visit(that);
-    }
-    
-    @Override
-    public void visit(Tree.Dynamic that) {
-        addDynamicUnsupportedError(that);
-        super.visit(that);
-    }
-
-    @Override
-    public void visit(Tree.DynamicClause that) {
-        // do not report an error for a dynamic clause as that can only occur inside a dynamic statement and
-        // we already reported an error for that one
-        super.visit(that);
-    }
-
-    @Override
-    public void visit(Tree.DynamicModifier that) {
-        addDynamicUnsupportedError(that);
-        super.visit(that);
-    }
 
     @Override
     public void visit(Tree.FloatLiteral that) {
@@ -153,8 +128,5 @@ public class UnsupportedVisitor extends Visitor {
         AnnotationUtil.duplicateInteropAnnotation(outputs, annotations);
     }
     
-    private static void addDynamicUnsupportedError(Node that) {
-        that.addUnsupportedError(DYNAMIC_UNSUPPORTED_ERR, Backend.Java);
-    }
 
 }
