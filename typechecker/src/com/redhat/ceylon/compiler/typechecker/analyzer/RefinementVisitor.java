@@ -296,6 +296,7 @@ public class RefinementVisitor extends Visitor {
             that.addError(
                     "member implementing a native header member must be marked native: " +
                             message(dec));
+            return;
         }
         if (dec instanceof Function && 
                 (header == null ||
