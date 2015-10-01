@@ -289,6 +289,14 @@ public class RefinementVisitor extends Visitor {
             }
             return;
         }
+        if (header != null
+                && dec.isMember()
+                && !dec.isParameter()
+                && !dec.isNative()) {
+            that.addError(
+                    "member implementing a native header member must be marked native: " +
+                            message(dec));
+        }
         if (dec instanceof Function && 
                 (header == null ||
                 header instanceof Function)) {
