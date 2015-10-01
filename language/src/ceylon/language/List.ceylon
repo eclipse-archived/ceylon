@@ -571,12 +571,14 @@ shared interface List<out Element=Anything>
         if (size>0) {
             value end = size-1;
             if (from <= to) {
-                return to >= 0 && from <= end 
+                return 
+                    if (to >= 0 && from <= end) 
                     then ArraySequence(Array(sublist(from,to)))
                     else [];
             }
             else {
-                return from >= 0 && to <= end 
+                return 
+                    if (from >= 0 && to <= end) 
                     then ArraySequence(Array(sublist(to,from).reversed))
                     else [];
             }
