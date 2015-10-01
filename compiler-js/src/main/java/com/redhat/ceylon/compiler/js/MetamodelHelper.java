@@ -13,6 +13,7 @@ import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.Constructor;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Function;
+import com.redhat.ceylon.model.typechecker.model.Getter;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.Scope;
@@ -48,7 +49,11 @@ public class MetamodelHelper {
         } else if (d instanceof Function) {
             gen.out("OpenFunction$jsint");
         } else if (d instanceof Value) {
-            gen.out("OpenValue$jsint");
+            if ("ReferenceDeclaration".equals(d.getUnit().getValueDeclarationType((Value)d).asString())) {
+                gen.out("OpenReference$jsint");
+            } else {
+                gen.out("OpenValue$jsint");
+            }
         } else if (d instanceof com.redhat.ceylon.model.typechecker.model.IntersectionType) {
             gen.out("OpenIntersection");
         } else if (d instanceof com.redhat.ceylon.model.typechecker.model.UnionType) {
