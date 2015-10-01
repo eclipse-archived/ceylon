@@ -75,7 +75,7 @@
 shared native void hello();
 
 shared native("jvm") void hello() {
-    System.console().printf("Hello, world!");
+    System.console()?.printf("Hello, world!");
 }
 
 shared native("js") void hello() {
