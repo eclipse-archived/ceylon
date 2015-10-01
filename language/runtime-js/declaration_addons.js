@@ -134,25 +134,27 @@ ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.memberDeclarations=fun
     function isProp(mem) {
       return _prot['$prop$get' + mem[0].toUpperCase() + mem.substring(1)]!==undefined;
     }
+    var cdec={t:'u',l:[{t:ClassWithInitializerDeclaration$meta$declaration},{t:ClassWithConstructorsDeclaration$meta$declaration}]};
     for (var mem in _prot) {
       if (isProp(mem))continue;
       var _d = undefined;
       var mm=getrtmm$$(_prot[mem]);
+      var kind=$$$mptypes.Kind$memberDeclarations;
       if (mm && inherited && mm.$cont!==this.tipo)continue;
-      if (mem.substring(0,9)==='$prop$get' && extendsType($$$mptypes.Kind$memberDeclarations,{t:ValueDeclaration$meta$declaration})) {
+      if (mem.substring(0,9)==='$prop$get' && extendsType(kind,{t:ValueDeclaration$meta$declaration})) {
         var _nom=mm.d[mm.d.length-1];
         var _idx=_nom.indexOf('$');
         if (_idx>0)_nom=_nom.substring(0,_idx);
         _d=this.getMemberDeclaration(_nom,{Kind$getMemberDeclaration:{t:ValueDeclaration$meta$declaration}},inherited);
-      } else if (_prot[mem].$$ && extendsType($$$mptypes.Kind$memberDeclarations,{t:ClassOrInterfaceDeclaration$meta$declaration})) {
+      } else if (_prot[mem].$$ && extendsType(kind,{t:ClassOrInterfaceDeclaration$meta$declaration})) {
         var mt=mm.d[mm.d.length-2];
-        if ((mt==='$c' && !extendsType({t:ClassDeclaration$meta$declaration},$$$mptypes.Kind$memberDeclarations))
-            ||(mt==='$i' && !extendsType({t:InterfaceDeclaration$meta$declaration},$$$mptypes.Kind$memberDeclarations)))continue;
+        if ((mt==='$c' && !extendsType(cdec,kind))
+            ||(mt==='$i' && !extendsType({t:InterfaceDeclaration$meta$declaration},kind)))continue;
         _d=this.getMemberDeclaration(mm.d[mm.d.length-1],
           {Kind$getMemberDeclaration:{t:ClassOrInterfaceDeclaration$meta$declaration}},inherited);
       } else if(mm && mm.d) {
         var mt=mm.d[mm.d.length-2];
-        if (mt === '$m' && extendsType({t:FunctionDeclaration$meta$declaration},$$$mptypes.Kind$memberDeclarations)) {
+        if (mt === '$m' && extendsType({t:FunctionDeclaration$meta$declaration},kind)) {
           _d=this.getMemberDeclaration(mm.d[mm.d.length-1],{Kind$getMemberDeclaration:{t:FunctionDeclaration$meta$declaration}},inherited);
         }
       }
@@ -161,22 +163,22 @@ ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.memberDeclarations=fun
     return defs.length?ArraySequence(defs,{Element$ArraySequence:$$$mptypes.Kind$memberDeclarations}):empty();
   }
   //Fallback to the model declarations
-  if (extendsType({t:FunctionDeclaration$meta$declaration},$$$mptypes.Kind$memberDeclarations)) {
+  if (extendsType({t:FunctionDeclaration$meta$declaration},kind)) {
     for (var df in this.meta['$m']) {
       defs.push(this.meta['$m'][df]);
     }
   }
-  if (extendsType({t:ValueDeclaration$meta$declaration},$$$mptypes.Kind$memberDeclarations)) {
+  if (extendsType({t:ValueDeclaration$meta$declaration},kind)) {
     for (var df in this.meta['$at']) {
       defs.push(this.meta['$at'][df]);
     }
   }
-  if (extendsType({t:InterfaceDeclaration$meta$declaration},$$$mptypes.Kind$memberDeclarations)) {
+  if (extendsType({t:InterfaceDeclaration$meta$declaration},kind)) {
     for (var df in this.meta['$i']) {
       defs.push(this.meta['$i'][df]);
     }
   }
-  if (extendsType({t:ClassDeclaration$meta$declaration},$$$mptypes.Kind$memberDeclarations)) {
+  if (extendsType(dec,kind)) {
     for (var df in this.meta['$c']) {
       defs.push(this.meta['$c'][df]);
     }
@@ -191,6 +193,7 @@ ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.memberDeclarations=fun
       _d=this.getMemberDeclaration(m.nm, {Kind$getMemberDeclaration:{t:FunctionDeclaration$meta$declaration}});
     } else if (mt==='c') {
       _d=this.getMemberDeclaration(m.nm, {Kind$getMemberDeclaration:{t:ClassDeclaration$meta$declaration}});
+      if (!is$(_d,kind))_d=null;
     } else if (mt==='i') {
       _d=this.getMemberDeclaration(m.nm, {Kind$getMemberDeclaration:{t:InterfaceDeclaration$meta$declaration}});
     } else if (mt==='a'||mt==='g'||mt==='o'||mt==='s') {
@@ -201,7 +204,7 @@ ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.memberDeclarations=fun
       r.push(_d);
     }
   }
-  return r.length===0?empty():ArraySequence(r,{Element$ArraySequence:$$$mptypes.Kind$memberDeclarations});
+  return r.length===0?empty():ArraySequence(r,{Element$ArraySequence:kind});
 };
 ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.memberDeclarations.$crtmm$=function(){return{mod:$CCMM$,$t:{t:Sequential,a:{Element$Sequential:'Kind'}},ps:[],$cont:ClassOrInterfaceDeclaration,tp:{Kind:{sts:[{t:NestableDeclaration$meta$declaration}]}},an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','ClassOrInterfaceDeclaration','$m','memberDeclarations']};};
 ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.declaredMemberDeclarations=function(m) {
