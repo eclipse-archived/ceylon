@@ -184,3 +184,22 @@ native shared class NativeClassMismatch12<A>() given A satisfies Usable {}
 @error native("jvm") shared class NativeClassMismatch12<B>() {}
 
 @error native("js") shared class NativeClassMismatch12<A>() given A satisfies Category {}
+
+
+native class NativeClassMismatch13() {
+    shared void test1(Integer i) {}
+    native shared void test2(Integer i) {}
+    native shared void test3(Integer i);
+}
+
+@error native("jvm") class NativeClassMismatch13() {
+    @error shared void test1(Integer i) {}
+    @error shared void test2(Integer i) {}
+    @error shared void test3(Integer i) {}
+}
+
+@error native("js") class NativeClassMismatch13() {
+    @error shared void test1(Integer i) {}
+    @error shared void test2(Integer i) {}
+    @error shared void test3(Integer i) {}
+}
