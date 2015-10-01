@@ -10,8 +10,8 @@ if (this.$constrs$===undefined) {
         var r=AppliedCallableConstructor$jsint(this.tipo[k],{Type$AppliedCallableConstructor:this.$$targs$$.Type$AppliedClass,
             Arguments$AppliedCallableConstructor:args},undefined,this.$targs);
       } else {
-        var r=AppliedValueConstructor$jsint(this.tipo[k],{Set$AppliedValueConstructor:{t:Nothing},
-              Type$AppliedValueConstructor:this.$$targs$$.Type$AppliedClass});
+        var r=AppliedValueConstructor$jsint(this.tipo[k],
+              {Type$AppliedValueConstructor:this.$$targs$$.Type$AppliedClass});
       }
       ccc.push(r);
     }
