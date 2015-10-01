@@ -14,9 +14,9 @@ final class bug1825_ {
                     {
                         .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$1$reified$0 = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType;
                         .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$1$reified$1 = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType;
-                        .ceylon.collection.Stability arg$1$0 = .ceylon.collection.HashMap.$default$stability(arg$1$reified$0, arg$1$reified$1);
-                        .ceylon.collection.Hashtable arg$1$1 = .ceylon.collection.HashMap.$default$hashtable(arg$1$reified$0, arg$1$reified$1, arg$1$0);
-                        .ceylon.language.Iterable arg$1$2 = .ceylon.collection.HashMap.$default$entries(arg$1$reified$0, arg$1$reified$1, arg$1$0, arg$1$1);
+                        .ceylon.collection.Stability arg$1$0 = .ceylon.collection.HashMap.HashMap$stability(arg$1$reified$0, arg$1$reified$1);
+                        .ceylon.collection.Hashtable arg$1$1 = .ceylon.collection.HashMap.HashMap$hashtable(arg$1$reified$0, arg$1$reified$1, arg$1$0);
+                        .ceylon.language.Iterable arg$1$2 = .ceylon.collection.HashMap.HashMap$entries(arg$1$reified$0, arg$1$reified$1, arg$1$0, arg$1$1);
                     }
                     returning new .ceylon.collection.HashMap(arg$1$reified$0, arg$1$reified$1, arg$1$0, arg$1$1, arg$1$2);
                 );
