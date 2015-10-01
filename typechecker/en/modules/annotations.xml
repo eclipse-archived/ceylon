@@ -375,9 +375,14 @@ shared deprecated</programlisting>
                 </listitem>
                 <listitem>
                     <para><literal>native</literal> specifies that a program
-                    element is actually implemented in a different language, 
-                    and that the program element should be ignored by the
-                    Ceylon compiler backend.</para>
+                    element is implementation is specific to a certain platform,
+                    and should be ignored by the compiler backend when compiling 
+                    for any other platform, or that it is actually implemented 
+                    in a different language, and that the program element should 
+                    be completely ignored by the Ceylon compiler backend, or that
+                    a module or module <literal>import</literal> statement, as 
+                    defined in <xref linkend="moduledescriptors"/>, is specific 
+                    to a certain platform.</para>
                 </listitem>
                 <listitem>
                     <para><literal>deprecated</literal> indicates that a value, 

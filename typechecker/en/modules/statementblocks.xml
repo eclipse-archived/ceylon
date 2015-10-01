@@ -170,6 +170,25 @@
     ...
 }</programlisting>
             
+            <para>As an exception to this rule, the namespace of a declaration annotated
+            <literal>native</literal> may contain a second declaration with the same name
+            if:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>the second declaration has exactly the same schema, as defined
+                    in <xref linkend="type"/>,</para>
+                </listitem>
+                <listitem>
+                    <para>the second declaration is also annotated <literal>native</literal>,
+                    and</para>
+                </listitem>
+                <listitem>
+                    <para>the two <literal>native</literal> annotations have distinct 
+                    arguments for the <literal>backend</literal> parameter.</para>
+                </listitem>
+            </itemizedlist>
+            
             <para>A class or interface may not inherit a declaration with the same name as 
             a declaration it contains unless either:</para>
                 
