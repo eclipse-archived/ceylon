@@ -533,9 +533,10 @@
             <screen><emphasis>&lt;repository&gt;</emphasis>/default/<emphasis>&lt;archive&gt;</emphasis></screen>
             
             <para>For example, the module archive <literal>ceylon.language-1.0.1.car</literal>,
-            module script, and source archive <literal>ceylon.language-1.0.1.src</literal>,
-            belonging to the repository included in the Ceylon SDK are obtained from 
-            the following addresses:</para>
+            module script, <literal>ceylon.language-1.0.1.js</literal>, and source 
+            archive <literal>ceylon.language-1.0.1.src</literal>, belonging to the 
+            repository included in the Ceylon SDK are obtained from the following 
+            addresses:</para>
      
             <screen>modules/ceylon/language/1.0.1/ceylon.language-1.0.1.car</screen>        
             <screen>modules/ceylon/language/1.0.1/ceylon.language-1.0.1.js</screen>
