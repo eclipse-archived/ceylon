@@ -53,8 +53,10 @@ import ceylon.language.serialization.ReachableReference;
 })
 public final class Array<Element>
         implements Serializable, SearchableList<Element>,
-                    ReifiedType {
+                    ReifiedType, java.io.Serializable {
     
+    private static final long serialVersionUID = 8612707712992151156L;
+
     private static final Finished FIN = finished_.get_();
     
     private static final java.lang.Object[] EMPTY_ARRAY = new java.lang.Object[0];    

@@ -27,7 +27,9 @@ public final class Integer
     implements Integral<Integer>,
                Binary<Integer>,
                Exponentiable<Integer,Integer>, 
-               ReifiedType {
+               ReifiedType, java.io.Serializable {
+
+    private static final long serialVersionUID = 3611850372864102202L;
 
     static final long TWO_FIFTY_THREE = 1L << 53;
 

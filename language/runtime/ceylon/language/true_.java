@@ -1,5 +1,7 @@
 package ceylon.language;
 
+import java.io.ObjectStreamException;
+
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Class;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
@@ -14,8 +16,16 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 @ValueType
 public final class true_ extends Boolean {
 
+    private static final long serialVersionUID = -6256274272803665251L;
+    
+    java.lang.Object readResolve() 
+            throws ObjectStreamException {
+        return value;
+    }
+    
     @Ignore
-    public static final TypeDescriptor $TypeDescriptor$ = TypeDescriptor.klass(true_.class);
+    public static final TypeDescriptor $TypeDescriptor$ 
+            = TypeDescriptor.klass(true_.class);
 
     private final static true_ value = new true_();
 

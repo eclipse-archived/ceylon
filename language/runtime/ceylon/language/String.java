@@ -45,8 +45,11 @@ import ceylon.language.impl.BaseIterator;
     @Annotation("final")})
 public final class String
     implements Comparable<String>, SearchableList<Character>,
-               Summable<String>, ReifiedType {
+               Summable<String>, ReifiedType,
+               java.io.Serializable {
     
+    private static final long serialVersionUID = 3920012367456670329L;
+
     @Ignore
     public final static TypeDescriptor $TypeDescriptor$ = 
             TypeDescriptor.klass(String.class);

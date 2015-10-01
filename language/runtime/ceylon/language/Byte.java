@@ -21,7 +21,10 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 @ValueType
 public final class Byte implements 
         Binary<Byte>, Invertible<Byte>, 
-        Enumerable<Byte>, ReifiedType {
+        Enumerable<Byte>, ReifiedType, 
+        java.io.Serializable {
+    
+    private static final long serialVersionUID = -8113399654156430108L;
     
     @Ignore
     public final static TypeDescriptor $TypeDescriptor$ = TypeDescriptor.klass(Byte.class);

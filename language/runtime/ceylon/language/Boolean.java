@@ -12,8 +12,11 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 @Class
 @CaseTypes({"ceylon.language::true", "ceylon.language::false"})
 @ValueType
-public abstract class Boolean implements ReifiedType {
+public abstract class Boolean 
+        implements ReifiedType, java.io.Serializable {
 
+    private static final long serialVersionUID = -2696784743732343464L;
+    
     @Ignore
     public final static TypeDescriptor $TypeDescriptor$ = TypeDescriptor.klass(Boolean.class);
     

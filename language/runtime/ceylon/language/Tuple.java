@@ -11,14 +11,6 @@ import java.lang.ref.SoftReference;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import ceylon.language.impl.BaseIterator;
-import ceylon.language.impl.rethrow_;
-import ceylon.language.meta.declaration.ClassDeclaration;
-import ceylon.language.meta.declaration.ValueDeclaration;
-import ceylon.language.serialization.Member;
-import ceylon.language.impl.MemberImpl;
-import ceylon.language.serialization.ReachableReference;
-
 import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.metadata.Annotation;
 import com.redhat.ceylon.compiler.java.metadata.Annotations;
@@ -38,6 +30,14 @@ import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 import com.redhat.ceylon.compiler.java.runtime.serialization.$Serialization$;
 import com.redhat.ceylon.compiler.java.runtime.serialization.Serializable;
+
+import ceylon.language.impl.BaseIterator;
+import ceylon.language.impl.MemberImpl;
+import ceylon.language.impl.rethrow_;
+import ceylon.language.meta.declaration.ClassDeclaration;
+import ceylon.language.meta.declaration.ValueDeclaration;
+import ceylon.language.serialization.Member;
+import ceylon.language.serialization.ReachableReference;
 
 @Ceylon(major = 8)
 @Class(extendsType = "ceylon.language::Object", 
@@ -73,8 +73,11 @@ import com.redhat.ceylon.compiler.java.runtime.serialization.Serializable;
 public final class Tuple<Element, First extends Element, 
                 Rest extends Sequential<? extends Element>>
 //        extends BaseSequence<Element>
-        implements Sequence<Element>, Serializable, ReifiedType {
-
+        implements Sequence<Element>, Serializable, 
+                   ReifiedType, java.io.Serializable {
+    
+    private static final long serialVersionUID = 6194999680327535668L;
+    
     /** 
      * A backing array. May be shared between many Tuple instances
      * (Flyweight pattern).

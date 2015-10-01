@@ -21,7 +21,10 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 })
 @ValueType
 public final class Float
-    implements Number<Float>, Exponentiable<Float,Float>, ReifiedType {
+    implements Number<Float>, Exponentiable<Float,Float>, 
+               ReifiedType, java.io.Serializable {
+
+    private static final long serialVersionUID = 8699090544995758140L;
 
     private static final double TWO_FIFTY_TWO = (double) (1L << 52);
 

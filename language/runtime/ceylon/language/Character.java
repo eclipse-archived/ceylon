@@ -17,7 +17,11 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 		        "ceylon.language::Enumerable<ceylon.language::Character>"})
 @ValueType
 public final class Character
-        implements Comparable<Character>, Enumerable<Character>, ReifiedType {
+        implements Comparable<Character>, 
+                   Enumerable<Character>, 
+                   ReifiedType, java.io.Serializable {
+
+    private static final long serialVersionUID = -4232871157069047777L;
 
     @Ignore
     public final static TypeDescriptor $TypeDescriptor$ = TypeDescriptor.klass(Character.class);
