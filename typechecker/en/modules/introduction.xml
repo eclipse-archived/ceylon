@@ -64,6 +64,24 @@
             in a JavaScript virtual machine.
             </para>
             
+            <para>
+            Finally, the language supports the development of cross-platform modules that
+            contain platform-specific implementation code, via the <literal>native</literal>
+            annotation.
+            </para>
+            
+            <programlisting>shared native void hello();
+
+shared native("jvm") void hello() {
+    System.out.println("Hello, world!");
+}
+
+shared native("js") void hello() {
+    dynamic {
+        alert("Hello, world!");
+    }
+}</programlisting>
+            
         </section>
     
     </section>
