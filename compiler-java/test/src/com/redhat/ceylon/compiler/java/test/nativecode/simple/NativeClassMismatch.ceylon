@@ -99,7 +99,7 @@ native shared class NativeClassMismatch8jvm() satisfies NativeClassMismatchSuper
 
 native("jvm") shared class NativeClassMismatch8jvm() satisfies NativeClassMismatchSuper1 {
     native("jvm") shared actual void test1(Integer i) {
-        NativeClassMismatch8js().test2(i);
+        /*@error*/ NativeClassMismatch8js().test2(i);
     }
 }
 
@@ -109,7 +109,7 @@ native shared class NativeClassMismatch8js() satisfies NativeClassMismatchSuper2
 
 native("js") shared class NativeClassMismatch8js() satisfies NativeClassMismatchSuper2 {
     native("js") shared actual void test2(Integer i) {
-        NativeClassMismatch8jvm().test1(i);
+        /*@error*/ NativeClassMismatch8jvm().test1(i);
     }
 }
 
@@ -184,3 +184,22 @@ native shared class NativeClassMismatch12<A>() given A satisfies Usable {}
 /*@error*/ native("jvm") shared class NativeClassMismatch12<B>() {}
 
 /*@error*/ native("js") shared class NativeClassMismatch12<A>() given A satisfies Category {}
+
+
+native class NativeClassMismatch13() {
+    shared void test1(Integer i) {}
+    native shared void test2(Integer i) {}
+    native shared void test3(Integer i);
+}
+
+/*@error*/ native("jvm") class NativeClassMismatch13() {
+    /*@error*/ shared void test1(Integer i) {}
+    /*@error*/ shared void test2(Integer i) {}
+    /*@error*/ shared void test3(Integer i) {}
+}
+
+/*@error*/ native("js") class NativeClassMismatch13() {
+    /*@error*/ shared void test1(Integer i) {}
+    /*@error*/ shared void test2(Integer i) {}
+    /*@error*/ shared void test3(Integer i) {}
+}

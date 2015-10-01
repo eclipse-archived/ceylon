@@ -321,7 +321,15 @@ public class NativeTests extends CompilerTests {
                 new CompilerError(179, "native header does not have the same number of type parameters as native implementation: 'NativeClassMismatch11'"),
                 new CompilerError(184, "type parameter does not have the same bounds as its header: 'B' for 'NativeClassMismatch12'"),
                 new CompilerError(184, "type parameter does not have the same name as its header: 'B' for 'NativeClassMismatch12'"),
-                new CompilerError(186, "type parameter does not have the same bounds as its header: 'A' for 'NativeClassMismatch12'")
+                new CompilerError(186, "type parameter does not have the same bounds as its header: 'A' for 'NativeClassMismatch12'"),
+                new CompilerError(195, "native header 'test3' of 'NativeClassMismatch13' has no native implementation"),
+                new CompilerError(196, "member implementing a native header member must be marked native: 'test1' in 'NativeClassMismatch13'"),
+                new CompilerError(197, "member implementing a native header member must be marked native: 'test2' in 'NativeClassMismatch13'"),
+                new CompilerError(198, "member implementing a native header member must be marked native: 'test3' in 'NativeClassMismatch13'"),
+                new CompilerError(201, "native header 'test3' of 'NativeClassMismatch13' has no native implementation"),
+                new CompilerError(202, "member implementing a native header member must be marked native: 'test1' in 'NativeClassMismatch13'"),
+                new CompilerError(203, "member implementing a native header member must be marked native: 'test2' in 'NativeClassMismatch13'"),
+                new CompilerError(204, "member implementing a native header member must be marked native: 'test3' in 'NativeClassMismatch13'")
         );
     }
     
