@@ -630,4 +630,14 @@ shared void strings() {
     check("protocol:foo/bar/baz".locations(":/".contains).sequence()==[8->':',12->'/',16->'/']);
     check(("protocol:foo/bar/baz".locate(":/".contains) else 1)==8->':');
     check(("protocol:foo/bar/baz".locateLast(":/".contains) else 1)==16->'/');
+    
+    check("XYZ".permutations.map(String).sequence()==["XYZ", "XZY", "YXZ", "YZX", "ZXY", "ZYX"], "string permutations 1");
+    check("XYX".permutations.map(String).sequence()==["XXY", "XYX", "YXX"], "string permutations 2");
+    check("XXY".permutations.map(String).sequence()==["XXY", "XYX", "YXX"], "string permutations 3");
+    check("YXX".permutations.map(String).sequence()==["YXX", "XYX", "XXY"], "string permutations 4");
+    check("XXX".permutations.map(String).sequence()==["XXX"], "string permutations 5");
+    check("X".permutations.map(String).sequence()==["X"], "string permutations singleton");
+    check("".permutations.map(String).sequence()==[], "string permutations empty");
+    check("VWXYZ".permutations.size==120, "string permutations");
+    check("UVWXYZ".permutations.size==720, "string permutations");
 }

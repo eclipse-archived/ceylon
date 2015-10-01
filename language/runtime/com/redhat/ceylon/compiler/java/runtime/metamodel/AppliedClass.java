@@ -374,9 +374,8 @@ public class AppliedClass<Type, Arguments extends Sequential<? extends Object>>
             FreeValueConstructor callableCtor = (FreeValueConstructor)ctor;
             com.redhat.ceylon.model.typechecker.model.Type constructorType = callableCtor.constructor.appliedType(this.producedType, Collections.<com.redhat.ceylon.model.typechecker.model.Type>emptyList());
             TypedDeclaration val = (TypedDeclaration)callableCtor.constructor.getContainer().getDirectMember(callableCtor.constructor.getName(), null, false);
-            return new AppliedValueConstructor<Type,java.lang.Object>(
+            return new AppliedValueConstructor<Type>(
                     this.$reifiedType,
-                    TypeDescriptor.NothingType,
                     callableCtor, val.getTypedReference(),
                     this, null);
         } else {
@@ -475,7 +474,7 @@ public class AppliedClass<Type, Arguments extends Sequential<? extends Object>>
                     dd = ((FreeValueConstructor)d).declaration;
                 }
                 // ATM this is an AND WRT annotation types: all must be present
-                ctors.add(((ValueConstructor<Type, ?>)getDeclaredConstructor(TypeDescriptor.NothingType, d.getName())).get());
+                ctors.add(((ValueConstructor<Type>)getDeclaredConstructor(TypeDescriptor.NothingType, d.getName())).get());
             }
             
             Object[] array = ctors.toArray(new Object[ctors.size()]);

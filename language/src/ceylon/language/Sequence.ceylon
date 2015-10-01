@@ -183,19 +183,51 @@ shared sealed interface Sequence<out Element=Anything>
     
     shared actual default 
     Element[] measure(Integer from, Integer length) 
-            => sublist(from, from+length-1).sequence();
+            => if (length > 0)
+            then span(from, from + length - 1)
+            else [];
     
     shared actual default 
-    Element[] span(Integer from, Integer to) 
-            => sublist(from, to).sequence();
+    Element[] span(Integer from, Integer to) {
+        if (from <= to) {
+            return 
+                if (to >= 0 && from <= lastIndex) 
+                then ArraySequence(Array(sublist(from,to)))
+                else [];
+        }
+        else {
+            return 
+                if (from >= 0 && to <= lastIndex) 
+                then ArraySequence(Array(sublist(to,from).reversed))
+                else [];
+        }
+    }
     
     shared actual default 
-    Element[] spanFrom(Integer from) 
-            => sublistFrom(from).sequence();
+    Element[] spanFrom(Integer from) {
+        if (from <= 0) {
+            return this;
+        }
+        else if (from < size) {
+            return ArraySequence(Array(sublistFrom(from)));
+        }
+        else {
+            return [];
+        }
+    }
     
     shared actual default 
-    Element[] spanTo(Integer to) 
-            => sublistTo(to).sequence();
+    Element[] spanTo(Integer to) {
+        if (to >= lastIndex) {
+            return this;
+        }
+        else if (to >= 0) {
+            return ArraySequence(Array(sublistTo(to)));
+        }
+        else {
+            return [];
+        }
+    }
     
     shared actual default 
     String string => (super of Sequential<Element>).string;

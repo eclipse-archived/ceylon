@@ -9,8 +9,8 @@ import ceylon.language { AnnotationType=Annotation }
 
 shared native class OpenValueConstructor(containingPackage, shared Anything meta) satisfies ValueConstructorDeclaration {
   shared actual native ClassDeclaration container;
-  shared actual native ValueConstructor<Result,Set> apply<Result=Anything, Set=Nothing>();
-  shared actual native MemberClassValueConstructor<Container, Result, Set> memberApply<Container=Nothing, Result=Anything, Set=Nothing>(Type<Object> containerType);
+  shared actual native ValueConstructor<Result> apply<Result=Anything>();
+  shared actual native MemberClassValueConstructor<Container, Result> memberApply<Container=Nothing, Result=Anything>(Type<Object> containerType);
 
   shared actual native Boolean shared;
   shared actual native Boolean formal;

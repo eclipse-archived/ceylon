@@ -104,36 +104,49 @@ class ArraySequence<out Element>(array)
             from + length <= 0) {
             return [];
         }
-        else if (from < 0) {
-            return ArraySequence(array[0 : length + from]);
-        }
         else {
-            return ArraySequence(array[from:length]);
+            return ArraySequence(array[from : length]);
         }
     }
     
     shared actual 
     Element[] span(Integer from, Integer to) {
         if (from <= to) {
-            return to < 0 || from > lastIndex
+            return 
+                if (to < 0 || from > lastIndex)
                 then [] 
                 else ArraySequence(array[from..to]);
         }
         else {
-            return from < 0 || to > lastIndex
+            return 
+                if (from < 0 || to > lastIndex)
                 then [] 
                 else ArraySequence(array[from..to]);
         }
     }
     
-    spanFrom(Integer from) 
-            => from > lastIndex 
-            then [] 
-            else ArraySequence(array[from...]);
+    shared actual ArraySequence<Element>|[] spanFrom(Integer from) {
+        if (from <= 0) {
+            return this;
+        }
+        else if (from < size) {
+            return ArraySequence(array[from...]);
+        }
+        else {
+            return [];
+        }
+    }
     
-    spanTo(Integer to)
-            => to < 0
-            then []
-            else ArraySequence(array[...to]);
+    shared actual ArraySequence<Element>|[] spanTo(Integer to) {
+        if (to >= lastIndex) {
+            return this;
+        }
+        else if (to >= 0) {
+            return ArraySequence(array[...to]);
+        }
+        else {
+            return [];
+        }
+    }
     
 }

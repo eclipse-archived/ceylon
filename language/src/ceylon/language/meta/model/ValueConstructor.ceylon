@@ -24,8 +24,8 @@ import ceylon.language.meta.declaration{ValueConstructorDeclaration}
         print(ctor.get());
         
    """
-shared sealed interface ValueConstructor<out Type=Object,in Set=Nothing>
-        satisfies ValueModel<Type, Set> & Gettable<Type, Set> {
+shared sealed interface ValueConstructor<out Type=Object>
+        satisfies ValueModel<Type> & Gettable<Type> {
     
     "This value's declaration."
     shared formal actual ValueConstructorDeclaration declaration;
