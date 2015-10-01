@@ -32,7 +32,7 @@ initTypeProto(Integer, 'ceylon.language::Integer', $_Object,$_Number, JSNumber,
         $init$Integral(), $init$Exponentiable(), $init$Binary());
 Integer.$crtmm$=function(){return{an:function(){return[shared(),$_native(),$_final()];},mod:$CCMM$,d:['$','Integer']};}
 atr$(Integer.$$.prototype,'integer',function(){ return this; },undefined,
-     function(){return {mod:$CCMM$,$t:{t:Integer},pa:0,$cont:Integer,d:['$','Integer','$at','integer']};});
+     function(){return {mod:$CCMM$,$t:{t:Integer},pa:0,$cont:Integer,d:['$','Integer','$at','integer$woput0']};});
 
 function Float(value) {
     if (value!==null && value!==undefined && value.getT$name && value.getT$name() === 'ceylon.language::Float') {
@@ -315,7 +315,7 @@ atr$(JSNum$proto, '$_float', function(){ return Float(this.valueOf()); },
   undefined,function(){return{pa:65,mod:$CCMM$,$t:{t:Float},$cont:Integer,d:['$','Integer','$at','float']};});
 $specialiseForNumber$(Integer, '$_float', function(){return {mod:$CCMM$,$t:{t:Float},pa:67,$cont:Integer,d:['$','Integer','$at','float']};})
 // its (private) constructor parameter
-$specialiseForNumber$(Float, '$_float', function(){return {mod:$CCMM$,$t:{t:Float},pa:0,$cont:Float,d:['$','Float','$at','float']};})
+$specialiseForNumber$(Float, '$_float', function(){return {mod:$CCMM$,$t:{t:Float},pa:0,$cont:Float,d:['$','Float','$at','float$oirx2o']};})
 
 atr$(JSNum$proto, 'integer', function(){ return toInt(this); },
   undefined,function(){return{pa:65,mod:$CCMM$,$t:{t:Integer},$cont:$_Number,d:['$','Float','$at','integer']};});
