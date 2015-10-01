@@ -70,10 +70,12 @@
             annotation.
             </para>
             
-            <programlisting>shared native void hello();
+            <programlisting>import java.lang { System }
+
+shared native void hello();
 
 shared native("jvm") void hello() {
-    System.out.println("Hello, world!");
+    System.console().printf("Hello, world!");
 }
 
 shared native("js") void hello() {
