@@ -9,17 +9,6 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
-import ceylon.language.Anything;
-import ceylon.language.AssertionError;
-import ceylon.language.Basic;
-import ceylon.language.Empty;
-import ceylon.language.Identifiable;
-import ceylon.language.Null;
-import ceylon.language.Sequence;
-import ceylon.language.Sequential;
-import ceylon.language.empty_;
-import ceylon.language.null_;
-
 import com.redhat.ceylon.compiler.java.language.BooleanArray;
 import com.redhat.ceylon.compiler.java.language.ByteArray;
 import com.redhat.ceylon.compiler.java.language.CharArray;
@@ -45,8 +34,22 @@ import com.redhat.ceylon.model.typechecker.model.TypeParameter;
 import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.model.typechecker.model.Unit;
 
-public abstract class TypeDescriptor {
+import ceylon.language.Anything;
+import ceylon.language.AssertionError;
+import ceylon.language.Basic;
+import ceylon.language.Empty;
+import ceylon.language.Identifiable;
+import ceylon.language.Null;
+import ceylon.language.Sequence;
+import ceylon.language.Sequential;
+import ceylon.language.empty_;
+import ceylon.language.null_;
 
+public abstract class TypeDescriptor 
+        implements java.io.Serializable {
+
+    private static final long serialVersionUID = -7025975752915564091L;
+    
     public static final TypeDescriptor NothingType = new Nothing();
     private static final Variance[] NO_VARIANCE = new Variance[0];
 
@@ -93,6 +96,9 @@ public abstract class TypeDescriptor {
     }
     
     public static abstract class Generic extends TypeDescriptor {
+        
+        private static final long serialVersionUID = 3624907451428501623L;
+        
         protected final TypeDescriptor[] typeArguments;
         protected final Variance[] useSiteVariance;
 
@@ -175,7 +181,11 @@ public abstract class TypeDescriptor {
         }
     }
 
-    public static class Class extends Generic implements QualifiableTypeDescriptor {
+    public static class Class extends Generic 
+            implements QualifiableTypeDescriptor {
+        
+        private static final long serialVersionUID = -490491495105002855L;
+        
         protected final java.lang.Class<?> klass;
 
         public Class(java.lang.Class<?> klass, Variance[] useSiteVariance, TypeDescriptor[] typeArguments){
@@ -381,6 +391,8 @@ public abstract class TypeDescriptor {
     // FIXME: implement getSequenceElement
     public static class Tuple extends Class {
 
+        private static final long serialVersionUID = 6816227953528929741L;
+        
         private final TypeDescriptor[] elements;
         private final boolean variadic, atLeastOne;
         private final int firstDefaulted;
@@ -550,8 +562,11 @@ public abstract class TypeDescriptor {
         }
     }
     
-    public static class FunctionOrValue extends Generic implements QualifiableTypeDescriptor {
+    public static class FunctionOrValue extends Generic 
+            implements QualifiableTypeDescriptor {
 
+        private static final long serialVersionUID = 1916449991722960781L;
+        
         private final String name;
         private final java.lang.Class<?> klass;
         private final boolean local;
@@ -672,6 +687,8 @@ public abstract class TypeDescriptor {
     
     public static class Member extends TypeDescriptor {
 
+        private static final long serialVersionUID = 1139040165187154453L;
+        
         private TypeDescriptor container;
         private TypeDescriptor member;
 
@@ -734,6 +751,8 @@ public abstract class TypeDescriptor {
     
     public static class Nothing extends TypeDescriptor {
         
+        private static final long serialVersionUID = -2762984778119395164L;
+        
         @Override
         public boolean is(TypeDescriptor instanceType) {
             return false;
@@ -773,6 +792,9 @@ public abstract class TypeDescriptor {
     }
     
     public abstract static class Composite extends TypeDescriptor {
+        
+        private static final long serialVersionUID = -5468389615462158394L;
+        
         protected final TypeDescriptor[] members;
 
         public Composite(TypeDescriptor[] members) {
@@ -827,7 +849,9 @@ public abstract class TypeDescriptor {
     }
 
     public static class Union extends Composite {
-
+        
+        private static final long serialVersionUID = -7420930358788416571L;
+        
         public Union(TypeDescriptor[] members) {
             super(members);
         }
@@ -913,7 +937,9 @@ public abstract class TypeDescriptor {
     }
 
     public static class Intersection extends Composite {
-
+        
+        private static final long serialVersionUID = -6146724688533043308L;
+        
         public Intersection(TypeDescriptor[] members) {
             super(members);
         }
