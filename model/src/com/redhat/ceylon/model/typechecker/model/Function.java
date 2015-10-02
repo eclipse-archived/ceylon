@@ -16,7 +16,7 @@ public class Function extends FunctionOrValue implements Generic, Scope, Functio
 
     private static final int VOID = 1<<22;
     private static final int DEFERRED = 1<<23;
-    private static final int ANONYMOUS = 1<<24;
+    private static final int NO_NAME = 1<<24;
     
     private List<TypeParameter> typeParameters = emptyList();
     private List<ParameterList> parameterLists = new ArrayList<ParameterList>(1);
@@ -100,18 +100,19 @@ public class Function extends FunctionOrValue implements Generic, Scope, Functio
         return true;
     }
 
+    //TODO: replace with setNamed()
     public void setAnonymous(boolean anonymous) {
         if (anonymous) {
-            flags|=ANONYMOUS;
+            flags|=NO_NAME;
         }
         else {
-            flags&=(~ANONYMOUS);
+            flags&=(~NO_NAME);
         }
     }
     
     @Override
     public boolean isAnonymous() {
-        return (flags&ANONYMOUS)!=0;
+        return (flags&NO_NAME)!=0;
     }
     
     /**
@@ -119,7 +120,7 @@ public class Function extends FunctionOrValue implements Generic, Scope, Functio
      */
     @Override
     public boolean isNamed() {
-        return (flags&ANONYMOUS)==0;
+        return (flags&NO_NAME)==0;
     }
 
     @Override

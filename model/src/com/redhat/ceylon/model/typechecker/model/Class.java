@@ -18,10 +18,10 @@ public class Class extends ClassOrInterface implements Functional {
     private static final int SERIALIZABLE = 1<<15;
     private static final int ANONYMOUS = 1<<16;
     private static final int JAVA_ENUM = 1<<17;
+    private static final int VALUE_CONSTRUCTOR = 1<<18;
     private static final int OVERLOADED = 1<<19;
     private static final int ABSTRACTION = 1<<20;
-    private static final int NAMED = 1<<18;
-    private static final int VALUE_CONSTRUCTOR = 1<<21;
+    private static final int NO_NAME = 1<<24;
     
     private ParameterList parameterList;
     private List<Declaration> overloads;
@@ -94,15 +94,15 @@ public class Class extends ClassOrInterface implements Functional {
      */
     @Override
     public boolean isNamed() {
-        return (flags&NAMED)!=0;
+        return (flags&NO_NAME)==0;
     }
     
     public void setNamed(boolean named) {
-        if (named) {
-            flags|=NAMED;
+        if (!named) {
+            flags|=NO_NAME;
         }
         else {
-            flags&=(~NAMED);
+            flags&=(~NO_NAME);
         }
 
     }
