@@ -16,9 +16,9 @@ public class Function extends FunctionOrValue implements Generic, Scope, Functio
 
     public Function() {}
     
-    private static final int VOID = 1<<4;
-    private static final int DEFERRED = 1<<5;
-    private static final int ANONYMOUS = 1<<6;
+    private static final int VOID = 1;
+    private static final int DEFERRED = 1<<1;
+    private static final int ANONYMOUS = 1<<2;
     
     private int flags;
     

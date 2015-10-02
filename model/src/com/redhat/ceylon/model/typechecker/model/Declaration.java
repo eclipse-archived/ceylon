@@ -30,7 +30,7 @@ public abstract class Declaration
     private static final int FORMAL = 1<<1;
     private static final int ACTUAL = 1<<2;
     private static final int DEFAULT = 1<<3;
-    private static final int ANNOTATION = 1<<5;
+    private static final int ANNOTATION = 1<<4;
     private static final int DEPRECATED = 1<<5;
     
     private static final int PROTECTED = 1<<8;
