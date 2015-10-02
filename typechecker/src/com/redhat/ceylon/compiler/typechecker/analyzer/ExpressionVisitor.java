@@ -3146,7 +3146,8 @@ public class ExpressionVisitor extends Visitor {
     }
     
     private void checkSuperInvocation(
-            Tree.MemberOrTypeExpression qmte) {
+            Tree.MemberOrTypeExpression qmte,
+            List<Type> signature, boolean spread) {
         Declaration member = qmte.getDeclaration();
         if (member!=null) {
             String name = member.getName();
@@ -3165,14 +3166,11 @@ public class ExpressionVisitor extends Visitor {
                 if (ci!=null) {
                     Type et = ci.getExtendedType();
                     if (et!=null) {
-                        //TODO: might be better to pass the 
-                        //      signature here in order to 
-                        //      avoid an error when a 
-                        //      different overloaded version 
-                        //      has been refined
                         Declaration etm = 
                                 et.getDeclaration()
-                                    .getMember(name, null, false);
+                                    .getMember(name, 
+                                            signature, 
+                                            spread);
                         if (etm!=null && 
                                 !etm.getContainer()
                                     .equals(type) && 
@@ -3188,14 +3186,11 @@ public class ExpressionVisitor extends Visitor {
                         }
                     }
                     for (Type st: ci.getSatisfiedTypes()) {
-                        //TODO: might be better to pass the 
-                        //      signature here in order to 
-                        //      avoid an error when a 
-                        //      different overloaded version 
-                        //      has been refined
                         Declaration stm = 
                                 st.getDeclaration()
-                                    .getMember(name, null, false);
+                                    .getMember(name, 
+                                            signature, 
+                                            spread);
                         if (stm!=null && 
                                 !stm.getContainer()
                                     .equals(type) && 
@@ -6074,8 +6069,10 @@ public class ExpressionVisitor extends Visitor {
             }
         }
         else {
-            member = (TypedDeclaration) 
-                    handleAbstractionOrHeader(member, that, error);
+            member = 
+                    (TypedDeclaration) 
+                        handleAbstractionOrHeader(member, 
+                                that, error);
             that.setDeclaration(member);
             if (error) {
                 if (checkConcreteConstructor(member, that)) {
@@ -6250,7 +6247,7 @@ public class ExpressionVisitor extends Visitor {
             Tree.Primary primary = that.getPrimary();
             String name = name(id);
             List<Type> signature = that.getSignature();
-            boolean ellipsis = that.getEllipsis();
+            boolean spread = that.getEllipsis();
             String container;
             boolean ambiguous;
             TypedDeclaration member;
@@ -6260,7 +6257,7 @@ public class ExpressionVisitor extends Visitor {
                         pack.getNameAsString() + "'";
                 member = 
                         getPackageTypedDeclaration(name, 
-                                signature, ellipsis, unit);
+                                signature, spread, unit);
                 ambiguous = false;
             }
             else {
@@ -6281,7 +6278,7 @@ public class ExpressionVisitor extends Visitor {
                     //name, check the current class
                     Declaration direct = 
                             ci.getDirectMember(name, 
-                                    signature, ellipsis);
+                                    signature, spread);
                     if (direct instanceof TypedDeclaration &&
                             //ignore it if shared, since it
                             //might be refined by the subtype
@@ -6290,16 +6287,16 @@ public class ExpressionVisitor extends Visitor {
                     }
                     else {
                         member = getTypedMember(d, name, 
-                                signature, ellipsis, unit);
+                                signature, spread, unit);
                     }
                 }
                 else {
                     member = getTypedMember(d, name, 
-                            signature, ellipsis, unit);
+                            signature, spread, unit);
                 }
                 ambiguous = member==null && 
                         d.isMemberAmbiguous(name, unit, 
-                                signature, ellipsis);
+                                signature, spread);
             }
             if (member==null) {
                 if (error) {
@@ -6317,8 +6314,10 @@ public class ExpressionVisitor extends Visitor {
                 }
             }
             else {
-                member = (TypedDeclaration) 
-                        handleAbstractionOrHeader(member, that, error);
+                member = 
+                        (TypedDeclaration) 
+                            handleAbstractionOrHeader(member, 
+                                    that, error);
                 that.setDeclaration(member);
                 resetSuperReference(that);
                 boolean selfReference = 
@@ -6333,7 +6332,7 @@ public class ExpressionVisitor extends Visitor {
                                 member, name, container, 
                                 selfReference);
                     }
-                    checkSuperMember(that);
+                    checkSuperMember(that, signature, spread);
                 }
             }
             return member;
@@ -6350,11 +6349,13 @@ public class ExpressionVisitor extends Visitor {
     }
 
     private void checkSuperMember(
-            Tree.QualifiedMemberOrTypeExpression that) {
+            Tree.QualifiedMemberOrTypeExpression that,
+            List<Type> signature, boolean spread) {
         Tree.Term term = 
-                eliminateParensAndWidening(that.getPrimary());
+                eliminateParensAndWidening(
+                        that.getPrimary());
         if (term instanceof Tree.Super) {
-            checkSuperInvocation(that);
+            checkSuperInvocation(that, signature, spread);
         }
     }
 
@@ -6688,8 +6689,10 @@ public class ExpressionVisitor extends Visitor {
             }
         }
         else {
-            type = (TypeDeclaration) 
-                    handleAbstractionOrHeader(type, that, error);
+            type = 
+                    (TypeDeclaration) 
+                        handleAbstractionOrHeader(type, 
+                                that, error);
             that.setDeclaration(type);
             if (error) {
                 if (checkConcreteClass(type, that)) {
@@ -6989,7 +6992,7 @@ public class ExpressionVisitor extends Visitor {
             Tree.Primary primary = that.getPrimary();
             Tree.Identifier id = that.getIdentifier();
             List<Type> signature = that.getSignature();
-            boolean ellipsis = that.getEllipsis();
+            boolean spread = that.getEllipsis();
             String name = name(id);
             String container;
             boolean ambiguous;
@@ -7000,7 +7003,7 @@ public class ExpressionVisitor extends Visitor {
                         pack.getNameAsString() + "'";
                 type = 
                         getPackageTypeDeclaration(name, 
-                                signature, ellipsis, unit);
+                                signature, spread, unit);
                 ambiguous = false;
             }
             else {
@@ -7017,22 +7020,22 @@ public class ExpressionVisitor extends Visitor {
                         d.inherits(ci)) {
                     Declaration direct = 
                             ci.getDirectMember(name, 
-                                    signature, ellipsis);
+                                    signature, spread);
                     if (direct instanceof TypeDeclaration) {
                         type = (TypeDeclaration) direct;
                     }
                     else {
                         type = getTypeMember(d, name, 
-                                signature, ellipsis, unit);
+                                signature, spread, unit);
                     }
                 }
                 else {
                     type = getTypeMember(d, name, 
-                            signature, ellipsis, unit);
+                            signature, spread, unit);
                 }
                 ambiguous = type==null && 
                         d.isMemberAmbiguous(name, unit, 
-                                signature, ellipsis);
+                                signature, spread);
             }
             if (type==null) {
                 if (error) {
@@ -7050,8 +7053,10 @@ public class ExpressionVisitor extends Visitor {
                 }
             }
             else {
-                type = (TypeDeclaration) 
-                        handleAbstractionOrHeader(type, that, error);
+                type = 
+                        (TypeDeclaration) 
+                            handleAbstractionOrHeader(type, 
+                                    that, error);
                 that.setDeclaration(type);
                 resetSuperReference(that);
                 if (!isSelfReference(primary) && 
@@ -7066,7 +7071,7 @@ public class ExpressionVisitor extends Visitor {
                         }
                     }
                     if (!inExtendsClause) {
-                        checkSuperMember(that);
+                        checkSuperMember(that, signature, spread);
                     }
                 }
             }
