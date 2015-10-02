@@ -209,7 +209,7 @@ public class Package
     public Map<String,DeclarationWithProximity> 
     getMatchingDeclarations(Unit unit, String startingWith, 
             int proximity) {
-        Map<String, DeclarationWithProximity> result = 
+        Map<String,DeclarationWithProximity> result = 
                 getMatchingDirectDeclarations(startingWith, 
                         //package toplevels - just less than 
                         //explicitly imported declarations
@@ -222,9 +222,9 @@ public class Package
                 getModule()
                     .getAvailableDeclarations(
                             startingWith, proximity);
-        Map<String, DeclarationWithProximity> thingsToAdd = new HashMap<>();
-
-        for (Map.Entry<String, DeclarationWithProximity> e: 
+        Map<String,DeclarationWithProximity> thingsToAdd = 
+                new HashMap<String,DeclarationWithProximity>();
+        for (Map.Entry<String,DeclarationWithProximity> e: 
                 importables.entrySet()) {
             boolean already = false;
             DeclarationWithProximity existing = e.getValue();
@@ -246,7 +246,7 @@ public class Package
         return result;
     }
 
-    public Map<String, DeclarationWithProximity> 
+    public Map<String,DeclarationWithProximity> 
     getMatchingDirectDeclarations(String startingWith, 
             int proximity) {
         Map<String,DeclarationWithProximity> result = 
@@ -263,10 +263,10 @@ public class Package
         return result;
     }
 
-    public Map<String, DeclarationWithProximity> 
+    public Map<String,DeclarationWithProximity> 
     getImportableDeclarations(Unit unit, String startingWith, 
             List<Import> imports, int proximity) {
-        Map<String, DeclarationWithProximity> result = 
+        Map<String,DeclarationWithProximity> result = 
                 new TreeMap<String,DeclarationWithProximity>();
         for (Declaration d: getMembers()) {
             if (isResolvable(d) && d.isShared() && 
