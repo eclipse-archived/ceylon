@@ -748,6 +748,7 @@ shared interface Iterable<out Element=Anything,
      and [[ceylon.language::min]] may be used to find the  
      largest and smallest values in a stream of [[Comparable]] 
      values, according to the natural order of its elements."
+    see (`function package.max`, `function package.min`)
     shared default 
     Element|Absent max(
             "The function comparing pairs of elements."
