@@ -15,6 +15,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Annotation;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AnnotationList;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Primary;
+import com.redhat.ceylon.compiler.typechecker.tree.TreeUtil;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 
@@ -74,17 +75,21 @@ public class WarningSuppressionVisitor<E extends Enum<E>>
     }
     
     public void visit(Tree.Declaration that) {
-        EnumMap<E, Integer> priorCounts = counts.clone();
-        EnumMap<E,Boolean> added = pre(that.getAnnotationList());
-        super.visit(that);
-        post(priorCounts, added, that.getAnnotationList());
+        if (!TreeUtil.isForUnsupportedBackend(that.getAnnotationList(), that.getUnit())) {
+            EnumMap<E, Integer> priorCounts = counts.clone();
+            EnumMap<E,Boolean> added = pre(that.getAnnotationList());
+            super.visit(that);
+            post(priorCounts, added, that.getAnnotationList());
+        }
     }
     
     public void visit(Tree.ModuleDescriptor that) {
-        EnumMap<E, Integer> priorCounts = counts.clone();
-        EnumMap<E,Boolean> added = pre(that.getAnnotationList());
-        super.visit(that);
-        post(priorCounts, added, that.getAnnotationList());
+        if (!TreeUtil.isForUnsupportedBackend(that.getAnnotationList(), that.getUnit())) {
+            EnumMap<E, Integer> priorCounts = counts.clone();
+            EnumMap<E,Boolean> added = pre(that.getAnnotationList());
+            super.visit(that);
+            post(priorCounts, added, that.getAnnotationList());
+        }
     }
     
     public void visit(Tree.PackageDescriptor that) {
@@ -95,10 +100,12 @@ public class WarningSuppressionVisitor<E extends Enum<E>>
     }
     
     public void visit(Tree.ImportModule that) {
-        EnumMap<E, Integer> priorCounts = counts.clone();
-        EnumMap<E,Boolean> added = pre(that.getAnnotationList());
-        super.visit(that);
-        post(priorCounts, added, that.getAnnotationList());
+        if (!TreeUtil.isForUnsupportedBackend(that.getAnnotationList(), that.getUnit())) {
+            EnumMap<E, Integer> priorCounts = counts.clone();
+            EnumMap<E,Boolean> added = pre(that.getAnnotationList());
+            super.visit(that);
+            post(priorCounts, added, that.getAnnotationList());
+        }
     }
     
     public void visit(Tree.Assertion that) {
