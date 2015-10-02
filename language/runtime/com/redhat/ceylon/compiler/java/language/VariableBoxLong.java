@@ -3,7 +3,10 @@ package com.redhat.ceylon.compiler.java.language;
 /**
  * Used for captured {@code variable} local attributes. 
  */
-public class VariableBoxLong {
+public class VariableBoxLong
+        implements java.io.Serializable {
+    
+    private static final long serialVersionUID = -6894579505815283454L;
     
     public long ref;
     
