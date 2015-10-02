@@ -6258,8 +6258,9 @@ public class ExpressionVisitor extends Visitor {
                 Package pack = unit.getPackage();
                 container = "package '" + 
                         pack.getNameAsString() + "'";
-                member = getPackageTypedDeclaration(name, 
-                        signature, ellipsis, unit);
+                member = 
+                        getPackageTypedDeclaration(name, 
+                                signature, ellipsis, unit);
                 ambiguous = false;
             }
             else {
@@ -6997,8 +6998,9 @@ public class ExpressionVisitor extends Visitor {
                 Package pack = unit.getPackage();
                 container = "package '" + 
                         pack.getNameAsString() + "'";
-                type = getPackageTypeDeclaration(name, 
-                        signature, ellipsis, unit);
+                type = 
+                        getPackageTypeDeclaration(name, 
+                                signature, ellipsis, unit);
                 ambiguous = false;
             }
             else {
@@ -8802,7 +8804,8 @@ public class ExpressionVisitor extends Visitor {
 		else {
 		    errorNode = that;
             ClassOrInterface classOrInterface = 
-                    getContainingClassOrInterface(that.getScope());
+                    getContainingClassOrInterface(
+                            that.getScope());
 		    if (that instanceof Tree.ClassLiteral ||
 		        that instanceof Tree.InterfaceLiteral) {
 		        d = classOrInterface;
@@ -8936,13 +8939,19 @@ public class ExpressionVisitor extends Visitor {
             String name = name(id);
             Tree.StaticType type = that.getType();
             if (type == null) {
-                Scope scope = 
-                        that.getPackageQualified() ?
-                                unit.getPackage() :
-                                that.getScope();
-                TypedDeclaration result = 
-                        getTypedDeclaration(scope, name, 
-                                null, false, unit);
+                TypedDeclaration result;
+                if (that.getPackageQualified()) {
+                    result = 
+                            getPackageTypedDeclaration(
+                                    name, 
+                                    null, false, unit);
+                }
+                else {
+                    result = 
+                            getTypedDeclaration(
+                                    that.getScope(), name, 
+                                    null, false, unit);
+                }
                 if (result!=null) {
                     checkBaseVisibility(that, result, name);
                     setMemberMetatype(that, result);
