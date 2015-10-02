@@ -9,7 +9,6 @@ import static com.redhat.ceylon.model.typechecker.model.ModelUtil.lookupMemberFo
 import static java.util.Collections.singleton;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -222,13 +221,15 @@ public class Package
                 getModule()
                     .getAvailableDeclarations(
                             startingWith, proximity);
-        Map<String,DeclarationWithProximity> thingsToAdd = 
-                new HashMap<String,DeclarationWithProximity>();
+        List<Map.Entry<String,DeclarationWithProximity>> 
+        entriesToAdd =
+                new ArrayList
+                <Map.Entry<String,DeclarationWithProximity>>
+                        (importables.size());
         for (Map.Entry<String,DeclarationWithProximity> e: 
                 importables.entrySet()) {
             boolean already = false;
             DeclarationWithProximity existing = e.getValue();
-            String name = e.getKey();
             for (DeclarationWithProximity importable: 
                     result.values()) {
                 Declaration id = importable.getDeclaration();
@@ -239,10 +240,13 @@ public class Package
                 }
             }
             if (!already) {
-                thingsToAdd.put(name, existing);
+                entriesToAdd.add(e);
             }
         }
-        result.putAll(thingsToAdd);
+        for (Map.Entry<String,DeclarationWithProximity> e:
+                entriesToAdd) {
+            result.put(e.getKey(), e.getValue());
+        }
         return result;
     }
 
