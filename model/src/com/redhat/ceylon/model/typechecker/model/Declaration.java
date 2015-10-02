@@ -25,20 +25,23 @@ import com.redhat.ceylon.common.Backend;
 public abstract class Declaration 
         extends Element 
         implements Referenceable, Annotated {
-
+    
+    private static final int SHARED = 1;
+    private static final int FORMAL = 1<<1;
+    private static final int ACTUAL = 1<<2;
+    private static final int DEFAULT = 1<<3;
+    private static final int ANNOTATION = 1<<5;
+    private static final int DEPRECATED = 1<<5;
+    
+    private static final int PROTECTED = 1<<8;
+    private static final int PACKAGE = 1<<9;
+    private static final int STATIC = 1<<10;
+    
 	private String name;
+	private int modifiers;
 	private String qualifier;
-	private boolean shared;
-	private boolean formal;
-	private boolean actual;
-	private boolean deprecated;
-	private boolean def;
-	private boolean annotation;
     private Scope visibleScope;
     private Declaration refinedDeclaration = this;
-    private boolean staticallyImportable;
-    private boolean protectedVisibility;
-    private boolean packageVisibility;
     private String qualifiedNameAsStringCache;
 	private String nativeBackend;
 	private boolean otherInstanceAccess;
@@ -62,11 +65,16 @@ public abstract class Declaration
     }
 
     public boolean isShared() {
-        return shared;
+        return (modifiers&SHARED)!=0;
     }
 
     public void setShared(boolean shared) {
-        this.shared = shared;
+        if (shared) {
+            modifiers|=SHARED;
+        }
+        else {
+            modifiers&=(~SHARED);
+        }
     }
 
     public boolean isParameterized() {
@@ -74,11 +82,16 @@ public abstract class Declaration
     }
     
     public boolean isDeprecated() {
-		return deprecated;
+		return (modifiers&DEPRECATED)!=0;
 	}
     
     public void setDeprecated(boolean deprecated) {
-		this.deprecated = deprecated;
+        if (deprecated) {
+            modifiers|=DEPRECATED;
+        }
+        else {
+            modifiers&=(~DEPRECATED);
+        }
 	}
 
     String toStringName() {
@@ -135,30 +148,45 @@ public abstract class Declaration
     }
     
     public boolean isAnnotation() {
-        return annotation;
+        return (modifiers&ANNOTATION)!=0;
     }
     
     public void setAnnotation(boolean annotation) {
-        this.annotation = annotation;
+        if (annotation) {
+            modifiers|=ANNOTATION;
+        }
+        else {
+            modifiers&=(~ANNOTATION);
+        }
     }
 
     public boolean isActual() {
         if (actualCompleter != null) {
             completeActual();
         }
-        return actual;
+        return (modifiers&ACTUAL)!=0;
     }
 
     public void setActual(boolean actual) {
-        this.actual = actual;
+        if (actual) {
+            modifiers|=ACTUAL;
+        }
+        else {
+            modifiers&=(~ACTUAL);
+        }
     }
 
     public boolean isFormal() {
-        return formal;
+        return (modifiers&FORMAL)!=0;
     }
     
     public void setFormal(boolean formal) {
-        this.formal = formal;
+        if (formal) {
+            modifiers|=FORMAL;
+        }
+        else {
+            modifiers&=(~FORMAL);
+        }
     }
 
     public boolean isNative() {
@@ -191,11 +219,16 @@ public abstract class Declaration
     }
 
     public boolean isDefault() {
-        return def;
+        return (modifiers&DEFAULT)!=0;
     }
 
     public void setDefault(boolean def) {
-        this.def = def;
+        if (def) {
+            modifiers|=DEFAULT;
+        }
+        else {
+            modifiers&=(~DEFAULT);
+        }
     }
     
     public Declaration getRefinedDeclaration() {
@@ -305,27 +338,42 @@ public abstract class Declaration
     }
     
     public boolean isStaticallyImportable() {
-        return staticallyImportable;
+        return (modifiers&STATIC)!=0;
     }
     
     public void setStaticallyImportable(boolean staticallyImportable) {
-        this.staticallyImportable = staticallyImportable;
+        if (staticallyImportable) {
+            modifiers|=STATIC;
+        }
+        else {
+            modifiers&=(~STATIC);
+        }
     }
     
     public boolean isProtectedVisibility() {
-        return protectedVisibility;
+        return (modifiers&PROTECTED)!=0;
     }
     
     public void setProtectedVisibility(boolean protectedVisibility) {
-        this.protectedVisibility = protectedVisibility;
+        if (protectedVisibility) {
+            modifiers|=PROTECTED;
+        }
+        else {
+            modifiers&=(~PROTECTED);
+        }
     }
     
     public boolean isPackageVisibility() {
-        return packageVisibility;
+        return (modifiers&PACKAGE)!=0;
     }
     
     public void setPackageVisibility(boolean packageVisibility) {
-        this.packageVisibility = packageVisibility;
+        if (packageVisibility) {
+            modifiers|=PACKAGE;
+        }
+        else {
+            modifiers&=(~PACKAGE);
+        }
     }
 
     /**

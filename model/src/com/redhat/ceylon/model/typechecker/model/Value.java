@@ -10,17 +10,18 @@ import java.util.Set;
  * @author Gavin King
  */
 public class Value extends FunctionOrValue implements Scope {
-
-    private boolean variable;
-    private boolean trans;
-    private boolean late;
-    private boolean enumValue;
-    private boolean specifiedInForElse;
-    private boolean inferred;
-
+    
+    private static final int VARIABLE = 1;
+    private static final int TRANSIENT = 1<<1;
+    private static final int LATE = 1<<2;
+    private static final int ENUM_VALUE = 1<<3;
+    private static final int SPECIFIED_IN_FOR_ELSE = 1<<4;
+    private static final int INFERRED = 1<<5;
+    private static final int SELF_CAPTURED = 1<<6;
+    
+    private int flags;
+    
     private Setter setter;
-    // used for object declarations that use their own value binding in their body
-    private boolean selfCaptured;
 
     public Setter getSetter() {
         return setter;
@@ -32,62 +33,101 @@ public class Value extends FunctionOrValue implements Scope {
     
     @Override
     public boolean isVariable() {
-        return variable || setter!=null;
+        return (flags&VARIABLE)!=0 || setter!=null;
     }
 
     public void setVariable(boolean variable) {
-        this.variable = variable;
+        if (variable) {
+            flags|=VARIABLE;
+        }
+        else {
+            flags&=(~VARIABLE);
+        }
     }
 
     @Override
     public boolean isTransient() {
-        return trans;
+        return (flags&TRANSIENT)!=0;
     }
     
     public void setTransient(boolean trans) {
-    	this.trans = trans;
+        if (trans) {
+            flags|=TRANSIENT;
+        }
+        else {
+            flags&=(~TRANSIENT);
+        }
     }
     
     @Override
     public boolean isLate() {
-		return late;
+		return (flags&LATE)!=0;
 	}
     
     public void setLate(boolean late) {
-		this.late = late;
+        if (late) {
+            flags|=LATE;
+        }
+        else {
+            flags&=(~LATE);
+        }
 	}
 
     public boolean isEnumValue() {
-        return enumValue;
+        return (flags&ENUM_VALUE)!=0;
     }
 
     public void setEnumValue(boolean enumValue) {
-        this.enumValue = enumValue;
+        if (enumValue) {
+            flags|=ENUM_VALUE;
+        }
+        else {
+            flags&=(~ENUM_VALUE);
+        }
     }
 
     public boolean isSpecifiedInForElse() {
-        return specifiedInForElse;
+        return (flags&SPECIFIED_IN_FOR_ELSE)!=0;
     }
 
     public void setSpecifiedInForElse(boolean assignedInFor) {
-        this.specifiedInForElse = assignedInFor;
+        if (assignedInFor) {
+            flags|=SPECIFIED_IN_FOR_ELSE;
+        }
+        else {
+            flags&=(~SPECIFIED_IN_FOR_ELSE);
+        }
     }
 
+    /**
+     * used for object declarations that use their own 
+     * value binding in their body
+     */
     @Override
     public boolean isSelfCaptured(){
-        return selfCaptured;
+        return (flags&SELF_CAPTURED)!=0;
     }
     
     public void setSelfCaptured(boolean selfCaptured) {
-        this.selfCaptured = selfCaptured;
+        if (selfCaptured) {
+            flags|=SELF_CAPTURED;
+        }
+        else {
+            flags&=(~SELF_CAPTURED);
+        }
     }
     
     public boolean isInferred() {
-        return inferred;
+        return (flags&INFERRED)!=0;
     }
     
     public void setInferred(boolean inferred) {
-        this.inferred = inferred;
+        if (inferred) {
+            flags|=INFERRED;
+        }
+        else {
+            flags&=(~INFERRED);
+        }
     }
 
     @Override

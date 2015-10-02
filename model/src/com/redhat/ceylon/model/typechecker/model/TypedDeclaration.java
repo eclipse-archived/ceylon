@@ -13,12 +13,15 @@ import java.util.Objects;
  * @author Gavin King
  */
 public abstract class TypedDeclaration extends Declaration {
-
+    
+    private static final int UNCHECKED_NULL = 1;
+    private static final int UNBOXED_KNOWN = 1<<1;
+    private static final int UNBOXED = 1<<2;
+    private static final int TYPE_ERASED = 1<<3;
+    private static final int UNTRUSTED_TYPE = 1<<4;
+    
     private Type type;
-    private boolean uncheckedNullType = false;
-    private Boolean unboxed;
-    private boolean typeErased;
-    private boolean untrustedType;
+    private int backendFlags;
     private boolean dynamicallyTyped;
     
     private TypedDeclaration originalDeclaration;
@@ -130,36 +133,67 @@ public abstract class TypedDeclaration extends Declaration {
         this.originalDeclaration = originalDeclaration;
     }
 
-    public Boolean getUnboxed() { 
-        return unboxed; 
+    public Boolean getUnboxed() {
+        if ((backendFlags&UNBOXED_KNOWN)==0) {
+            return null;
+        }
+        else {
+            return (backendFlags&UNBOXED)!=0;
+        }
     }
 
     public void setUnboxed(Boolean value) { 
-        unboxed = value; 
+        if (value==null) {
+            backendFlags&=(~UNBOXED_KNOWN);
+        }
+        else {
+            backendFlags|=UNBOXED_KNOWN;
+            if (value) {
+                backendFlags|=UNBOXED;
+            }
+            else {
+                backendFlags&=(~UNBOXED);
+            }
+        }
     }
 
     public Boolean getTypeErased() { 
-        return typeErased; 
+        return (backendFlags&TYPE_ERASED)!=0; 
     }
 
     public void setTypeErased(Boolean typeErased) { 
-        this.typeErased = typeErased; 
+        if (typeErased) {
+           backendFlags|=TYPE_ERASED; 
+        }
+        else {
+            backendFlags&=(~TYPE_ERASED);
+        }
     }
 
     public Boolean getUntrustedType() { 
-        return untrustedType; 
+        return (backendFlags&UNTRUSTED_TYPE)!=0; 
     }
 
     public void setUntrustedType(Boolean untrustedType) { 
-        this.untrustedType = untrustedType; 
+        if (untrustedType) {
+            backendFlags|=UNTRUSTED_TYPE; 
+         }
+         else {
+             backendFlags&=(~UNTRUSTED_TYPE);
+         }
     }
 
     public boolean hasUncheckedNullType() {
-        return uncheckedNullType;
+        return (backendFlags&UNCHECKED_NULL)!=0;
     }
     
     public void setUncheckedNullType(boolean uncheckedNullType) {
-        this.uncheckedNullType = uncheckedNullType;
+        if (uncheckedNullType) {
+            backendFlags|=UNCHECKED_NULL; 
+         }
+         else {
+             backendFlags&=(~UNCHECKED_NULL);
+         }
     }
 
     @Override

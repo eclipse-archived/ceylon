@@ -5,15 +5,18 @@ import java.util.List;
 
 public abstract class FunctionOrValue extends TypedDeclaration {
     
-    private boolean captured;
-    private boolean shortcutRefinement;
+    private static final int CAPTURED = 1;
+    private static final int SHORTCUT_REFINEMENT = 1<<1;
+    private static final int OVERLOADED = 1<<2;
+    private static final int ABSTRACTION = 1<<3;
+    private static final int IMPLEMENTED = 1<<4;
+    
+    private int flags;
+    
     private Parameter initializerParameter;
     private List<Declaration> members = new ArrayList<Declaration>(3);
     private List<Annotation> annotations = new ArrayList<Annotation>(4);
-    private boolean overloaded;
-    private boolean abstraction;
     private List<Declaration> overloads;
-    private boolean implemented;
     
     @Override
     public List<Annotation> getAnnotations() {
@@ -30,11 +33,16 @@ public abstract class FunctionOrValue extends TypedDeclaration {
     }
     
     public boolean isShortcutRefinement() {
-        return shortcutRefinement;
+        return (flags&SHORTCUT_REFINEMENT)!=0;
     }
     
     public void setShortcutRefinement(boolean shortcutRefinement) {
-        this.shortcutRefinement = shortcutRefinement;
+        if (shortcutRefinement) {
+            flags|=SHORTCUT_REFINEMENT;
+        }
+        else {
+            flags&=(~SHORTCUT_REFINEMENT);
+        }
     }
     
     @Override
@@ -61,29 +69,44 @@ public abstract class FunctionOrValue extends TypedDeclaration {
 
     @Override
     public boolean isCaptured() {
-        return captured;
+        return (flags&CAPTURED)!=0;
     }
 
-    public void setCaptured(boolean local) {
-        this.captured = local;
+    public void setCaptured(boolean captured) {
+        if (captured) {
+            flags|=CAPTURED;
+        }
+        else {
+            flags&=(~CAPTURED);
+        }
     }
 
     @Override
     public boolean isOverloaded() {
-        return overloaded;
+        return (flags&OVERLOADED)!=0;
     }
     
     public void setOverloaded(boolean overloaded) {
-        this.overloaded = overloaded;
+        if (overloaded) {
+            flags|=OVERLOADED;
+        }
+        else {
+            flags&=(~OVERLOADED);
+        }
     }
     
     public void setAbstraction(boolean abstraction) {
-        this.abstraction = abstraction;
+        if (abstraction) {
+            flags|=ABSTRACTION;
+        }
+        else {
+            flags&=(~ABSTRACTION);
+        }
     }
     
     @Override
     public boolean isAbstraction() {
-        return abstraction;
+        return (flags&ABSTRACTION)!=0;
     }
     
     @Override
@@ -105,11 +128,16 @@ public abstract class FunctionOrValue extends TypedDeclaration {
     }
     
     public boolean isImplemented() {
-        return implemented;
+        return (flags&IMPLEMENTED)!=0;
     }
     
     public void setImplemented(boolean implemented) {
-        this.implemented = implemented;
+        if (implemented) {
+            flags|=IMPLEMENTED;
+        }
+        else {
+            flags&=(~IMPLEMENTED);
+        }
     }
 
 }

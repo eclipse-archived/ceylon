@@ -16,14 +16,15 @@ public class Function extends FunctionOrValue implements Generic, Scope, Functio
 
     public Function() {}
     
-    //private boolean formal;
-
+    private static final int VOID = 1<<4;
+    private static final int DEFERRED = 1<<5;
+    private static final int ANONYMOUS = 1<<6;
+    
+    private int flags;
+    
     private List<TypeParameter> typeParameters = emptyList();
     private List<ParameterList> parameterLists = new ArrayList<ParameterList>(1);
-    private boolean declaredVoid;
     private Object annotationConstructor;
-    private boolean deferred;
-    private boolean anonymous;
     
     public Object getAnnotationConstructor() {
         return annotationConstructor;
@@ -63,19 +64,29 @@ public class Function extends FunctionOrValue implements Generic, Scope, Functio
 
     @Override
     public boolean isDeclaredVoid() {
-        return declaredVoid;
+        return (flags&VOID)!=0;
     }
     
     public void setDeclaredVoid(boolean declaredVoid) {
-        this.declaredVoid = declaredVoid;
+        if (declaredVoid) {
+            flags|=VOID;
+        }
+        else {
+            flags&=(~VOID);
+        }
     }
     
     public boolean isDeferred() {
-        return deferred;
+        return (flags&DEFERRED)!=0;
     }
     
     public void setDeferred(boolean deferred) {
-        this.deferred = deferred;
+        if (deferred) {
+            flags|=DEFERRED;
+        }
+        else {
+            flags&=(~DEFERRED);
+        }
     }
     
     public Parameter getParameter(String name) {
@@ -94,12 +105,17 @@ public class Function extends FunctionOrValue implements Generic, Scope, Functio
     }
 
     public void setAnonymous(boolean anonymous) {
-        this.anonymous = anonymous;
+        if (anonymous) {
+            flags|=ANONYMOUS;
+        }
+        else {
+            flags&=(~ANONYMOUS);
+        }
     }
     
     @Override
     public boolean isAnonymous() {
-        return anonymous;
+        return (flags&ANONYMOUS)!=0;
     }
     
     /**
@@ -107,7 +123,7 @@ public class Function extends FunctionOrValue implements Generic, Scope, Functio
      */
     @Override
     public boolean isNamed() {
-        return !anonymous;
+        return (flags&ANONYMOUS)==0;
     }
 
     @Override
