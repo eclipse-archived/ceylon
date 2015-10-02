@@ -137,53 +137,8 @@ be found here:
 
 ## Running the sample programs
 
-To compile and run the samples, start from the distribution 
-directory containing this file.
-
-### Sample module
-
-To run the "hello world" program, type:
-
-    cd samples/helloworld
-
-For Java:
-
-    ../../bin/ceylon compile com.example.helloworld
-    ../../bin/ceylon doc --non-shared --source-code com.example.helloworld
-    ../../bin/ceylon run com.example.helloworld/1.0.0 John
-
-For JavaScript:
-
-    ../../bin/ceylon compile-js com.example.helloworld
-    ../../bin/ceylon run-js com.example.helloworld/1.0.0
-
-### Sample with no module
-
-To run a program defined in the default module, type:
-
-    cd samples/no-module
-
-For Java:
-
-    ../../bin/ceylon compile default
-    ../../bin/ceylon doc --non-shared --source-code default
-    ../../bin/ceylon run default
-
-For JavaScript:
-
-    ../../bin/ceylon compile-js default
-    ../../bin/ceylon run-js default
-
-### Sample module with Java interoperability
-
-To run the "Java interop" program, type:
-
-    cd samples/interop-java
-    ../../bin/ceylon compile com.example.interop
-    ../../bin/ceylon doc --non-shared --source-code com.example.interop
-    ../../bin/ceylon run com.example.interop/1.0.0 John
-
-Note: this is only available for the Java backend.
+To compile and run the samples, read the README.md contained in
+the `samples` sub folder for instructions.
 
 ## Tool usage
 
