@@ -514,6 +514,17 @@ public abstract class TypeDeclaration extends Declaration
             String name,
             List<Type> signature, boolean variadic, 
             boolean onlyExactMatches) {
+        if (!onlyExactMatches) {
+            //first try for an exact match
+            SupertypeDeclaration sd = 
+                    getMemberInternal(name, 
+                            signature, variadic, 
+                            true);
+            if (sd.getMember()!=null || sd.isAmbiguous()) {
+                return sd;
+            }
+        }
+        
         //first search for the member in the local
         //scope, including non-shared declarations
         Declaration dec = 
@@ -525,18 +536,6 @@ public abstract class TypeDeclaration extends Declaration
             //for, return it
             //TODO: should also return it if we're 
             //      calling from local scope!
-            if (signature!=null && dec.isAbstraction()) {
-                //look for a supertype declaration that 
-                //matches the given signature better
-                SupertypeDeclaration sd =
-                        getSupertypeDeclaration(name, 
-                                signature, variadic, 
-                                onlyExactMatches);
-                Declaration sm = sd.getMember();
-                if (sm!=null && !sm.isAbstraction()) {
-                    return sd;
-                }
-            }
             return new SupertypeDeclaration(dec, false);
         }
         else {
@@ -564,8 +563,8 @@ public abstract class TypeDeclaration extends Declaration
     @Override
     protected Declaration getMemberOrParameter(
             String name, 
-            List<Type> signature, 
-            boolean variadic, boolean onlyExactMatches) {
+            List<Type> signature, boolean variadic, 
+            boolean onlyExactMatches) {
         //first search for the member or parameter 
         //in the local scope, including non-shared 
         //declarations
@@ -750,8 +749,7 @@ public abstract class TypeDeclaration extends Declaration
                 }
                 Declaration dm = 
                         type.getDirectMember(name, 
-                                null, false, 
-                                onlyExactMatches);
+                                null, false);
                 if (dm!=null && 
                         dm.isShared() && 
                         isResolvable(dm)) {
@@ -801,12 +799,18 @@ public abstract class TypeDeclaration extends Declaration
         Type type = getType();
         Type st = type.getSupertype(new ExactCriteria());
         if (st == null) {
-            //try again, ignoring the given signature
-            st = type.getSupertype(new LooseCriteria());
+            //no match
+            if (!onlyExactMatches) {
+                //try again, ignoring the given signature
+                st = type.getSupertype(new LooseCriteria());
+            }
         }
-        else if (st.isUnknown() && this instanceof Class) {
-            //try again, ignoring Java abstract members
-            st = type.getSupertype(new SkipFormalCriteria());
+        else if (st.isUnknown()) {
+            //ambiguous
+            if (this instanceof Class) {
+                //try again, ignoring Java abstract members
+                st = type.getSupertype(new SkipFormalCriteria());
+            }
         }
         if (st == null) {
             //no such member
