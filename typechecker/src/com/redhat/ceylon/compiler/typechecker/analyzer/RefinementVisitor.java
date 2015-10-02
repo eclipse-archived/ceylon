@@ -682,6 +682,7 @@ public class RefinementVisitor extends Visitor {
                         signature, false);
         boolean legallyOverloaded = 
                 !isOverloadedVersion(member) ||
+                isOverloadedVersion(root) ||
                 member.isNative();
         if (root == null || root.equals(member) || 
                 (root.isNative() && member.isNative())) {
@@ -726,7 +727,8 @@ public class RefinementVisitor extends Visitor {
                         root.getContainer();
             List<Declaration> interveningRefinements = 
                     getInterveningRefinements(name, 
-                            signature, root, type, rootType);
+                            signature, root, 
+                            type, rootType);
             for (Declaration refined: interveningRefinements) {
                 if (isOverloadedVersion(refined)) {
                     //if this member is overloaded, the

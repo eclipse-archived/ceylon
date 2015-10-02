@@ -1482,8 +1482,7 @@ public class ExpressionVisitor extends Visitor {
                     root.getContainer();
         List<Declaration> interveningRefinements = 
                 getInterveningRefinements(method.getName(), 
-                        getSignature(method), 
-                        root, ci, td);
+                        getSignature(method), root, ci, td);
         if (interveningRefinements.isEmpty()) {
             that.getBaseMemberExpression()
                 .addError("shortcut refinement does not exactly refine any overloaded inherited member");
