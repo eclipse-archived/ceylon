@@ -8954,7 +8954,8 @@ public class ExpressionVisitor extends Visitor {
                 }
             } else {
                 TypeDeclaration qtd = 
-                        type.getTypeModel().getDeclaration();
+                        type.getTypeModel()
+                            .getDeclaration();
             	//checkNonlocalType(that.getType(), qtd);
             	String container = "type '" + qtd.getName(unit) + "'";
             	TypedDeclaration member = 

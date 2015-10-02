@@ -4362,15 +4362,18 @@ functionLiteral returns [FunctionLiteral literal]
     ft=referencePath
     {
       if ($ft.type instanceof QualifiedType) {
-        $literal.setType(((QualifiedType)$ft.type).getOuterType());
-        $literal.setIdentifier($ft.type.getIdentifier());
-        $literal.setTypeArgumentList($ft.type.getTypeArgumentList());
+        QualifiedType qt = (QualifiedType) $ft.type;
+        $literal.setType(qt.getOuterType());
+        $literal.setIdentifier(qt.getIdentifier());
+        $literal.setTypeArgumentList(qt.getTypeArgumentList());
         $literal.setEndToken(null);
       }
       else if ($ft.type instanceof BaseType) {
-        $literal.setIdentifier($ft.type.getIdentifier());
-        $literal.setTypeArgumentList($ft.type.getTypeArgumentList());
+        BaseType bt = (BaseType) $ft.type;
+        $literal.setIdentifier(bt.getIdentifier());
+        $literal.setTypeArgumentList(bt.getTypeArgumentList());
         $literal.setEndToken(null);
+        $literal.setPackageQualified(bt.getPackageQualified());
       }
     }
   ;
