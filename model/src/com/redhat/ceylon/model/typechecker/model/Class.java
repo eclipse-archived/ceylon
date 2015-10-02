@@ -11,59 +11,82 @@ import java.util.Objects;
 
 public class Class extends ClassOrInterface implements Functional {
     
-    private boolean constructors;
-    private boolean enumerated;
-    private boolean abstr;
+    private static final int CONSTRUCTORS = 1;
+    private static final int ENUMERATED = 1<<1;
+    private static final int ABSTRACT = 1<<2;
+    private static final int OVERLOADED = 1<<3;
+    private static final int ABSTRACTION = 1<<4;
+    private static final int ANONYMOUS = 1<<5;
+    private static final int JAVA_ENUM = 1<<6;
+    private static final int NAMED = 1<<7;
+    private static final int FINAL = 1<<8;
+    private static final int SERIALIZABLE = 1<<9;
+    private static final int VALUE_CONSTRUCTOR = 1<<10;
+    
+    private int flags;
+    
     private ParameterList parameterList;
-    private boolean overloaded;
-    private boolean abstraction;
-    private boolean anonymous;
-    private boolean javaEnum;
-    private boolean named = true;
-    private boolean fin;
-    private boolean serializable;
     private List<Declaration> overloads;
     private List<Reference> unimplementedFormals = 
             Collections.<Reference>emptyList();
-    private boolean valueConstructor;
 
     public boolean hasConstructors() {
-        return constructors;
+        return (flags&CONSTRUCTORS)!=0;
     }
     
     public void setConstructors(boolean constructors) {
-        this.constructors = constructors;
+        if (constructors) {
+            flags|=CONSTRUCTORS;
+        }
+        else {
+            flags&=(~CONSTRUCTORS);
+        }
     }
     
     public boolean hasEnumerated() {
-        return enumerated;
+        return (flags&ENUMERATED)!=0;
     }
 
     public void setEnumerated(boolean enumerated) {
-        this.enumerated = enumerated;
+        if (enumerated) {
+            flags|=ENUMERATED;
+        }
+        else {
+            flags&=(~ENUMERATED);
+        }
     }
     
     @Override
     public boolean isValueConstructor() {
-        return valueConstructor;
+        return (flags&VALUE_CONSTRUCTOR)!=0;
     }
     
     public void setValueConstructor(boolean valueConstructor) {
-        this.valueConstructor = valueConstructor;
+        if (valueConstructor) {
+            flags|=VALUE_CONSTRUCTOR;
+        }
+        else {
+            flags&=(~VALUE_CONSTRUCTOR);
+        }
     }
     
     @Override
     public boolean isAnonymous() {
-        return anonymous;
+        return (flags&ANONYMOUS)!=0;
     }
     
     public void setAnonymous(boolean anonymous) {
-        this.anonymous = anonymous;
+        if (anonymous) {
+            flags|=ANONYMOUS;
+        }
+        else {
+            flags&=(~ANONYMOUS);
+        }
     }
     
     @Override
     public boolean isObjectClass() {
-        return anonymous;
+        return isAnonymous();
     }
     
     /**
@@ -73,24 +96,36 @@ public class Class extends ClassOrInterface implements Functional {
      */
     @Override
     public boolean isNamed() {
-        return named;
+        return (flags&NAMED)!=0;
     }
     
     public void setNamed(boolean named) {
-        this.named = named;
+        if (named) {
+            flags|=NAMED;
+        }
+        else {
+            flags&=(~NAMED);
+        }
+
     }
     
     @Override
     public boolean isAbstract() {
-        return abstr;
+        return (flags&ABSTRACT)!=0;
     }
 
-    public void setAbstract(boolean isAbstract) {
-        this.abstr = isAbstract;
+    public void setAbstract(boolean abstr) {
+        if (abstr) {
+            flags|=ABSTRACT;
+        }
+        else {
+            flags&=(~ABSTRACT);
+        }
+
     }
     
     public Constructor getDefaultConstructor() {
-        if (constructors) {
+        if (hasConstructors()) {
             for (Declaration dec: getMembers()) {
                 if (dec instanceof Constructor &&
                         dec.getName()==null) {
@@ -105,7 +140,7 @@ public class Class extends ClassOrInterface implements Functional {
     }
     
     public FunctionOrValue getDefaultConstructorFunctionOrValue() {
-        if (constructors) {
+        if (hasConstructors()) {
             for (Declaration dec: getMembers()) {
                 if (dec instanceof FunctionOrValue &&
                         dec.getName()==null) {
@@ -138,7 +173,7 @@ public class Class extends ClassOrInterface implements Functional {
     }
     
     public ParameterList getParameterList() {
-        if (constructors) {
+        if (hasConstructors()) {
             Constructor defaultConstructor = 
                     getDefaultConstructor();
             if (defaultConstructor==null) {
@@ -191,11 +226,17 @@ public class Class extends ClassOrInterface implements Functional {
     
     @Override
     public boolean isOverloaded() {
-    	return overloaded;
+    	return (flags&OVERLOADED)!=0;
     }
     
     public void setOverloaded(boolean overloaded) {
-		this.overloaded = overloaded;
+        if (overloaded) {
+            flags|=OVERLOADED;
+        }
+        else {
+            flags&=(~OVERLOADED);
+        }
+
 	}
     
     @Override
@@ -221,21 +262,31 @@ public class Class extends ClassOrInterface implements Functional {
     }
     
     public void setAbstraction(boolean abstraction) {
-        this.abstraction = abstraction;
+        if (abstraction) {
+            flags|=ABSTRACTION;
+        }
+        else {
+            flags&=(~ABSTRACTION);
+        }
     }
     
     @Override
     public boolean isAbstraction() {
-        return abstraction;
+        return (flags&ABSTRACTION)!=0;
     }
     
     @Override
     public boolean isFinal() {
-		return fin||anonymous;
+		return (flags&FINAL)!=0||(flags&ANONYMOUS)!=0;
 	}
     
     public void setFinal(boolean fin) {
-		this.fin = fin;
+		if (fin) {
+		    flags|=FINAL;
+		}
+		else {
+		    flags&=(~FINAL);
+		}
 	}
 
     @Override
@@ -410,19 +461,29 @@ public class Class extends ClassOrInterface implements Functional {
     }
 
     public boolean isSerializable() {
-        return serializable;
+        return (flags&SERIALIZABLE)!=0;
     }
 
     public void setSerializable(boolean serializable) {
-        this.serializable = serializable;
+        if (serializable) {
+            flags|=SERIALIZABLE;
+        }
+        else {
+            flags&=(~SERIALIZABLE);
+        }
     }
 
     public boolean isJavaEnum() {
-        return javaEnum;
+        return (flags&JAVA_ENUM)!=0;
     }
 
     public void setJavaEnum(boolean javaEnum) {
-        this.javaEnum = javaEnum;
+        if (javaEnum) {
+            flags|=JAVA_ENUM;
+        }
+        else {
+            flags&=(~JAVA_ENUM);
+        }
     }
     
     @Override
