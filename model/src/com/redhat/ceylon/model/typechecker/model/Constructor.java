@@ -15,12 +15,11 @@ import java.util.Objects;
  */
 public class Constructor extends TypeDeclaration implements Functional {
 
-    public Constructor() {}
+    private static final int ABSTRACT = 1<<13;
+    private static final int OVERLOADED = 1<<19;
+    private static final int ABSTRACTION = 1<<20;
     
     private ParameterList parameterList;
-    private boolean overloaded;
-    private boolean abstraction;
-    private boolean abstr;
     private List<Declaration> overloads;
     private List<Declaration> members = new ArrayList<Declaration>(3);
     private List<Annotation> annotations = new ArrayList<Annotation>(4);
@@ -31,11 +30,16 @@ public class Constructor extends TypeDeclaration implements Functional {
 
     @Override
     public boolean isAbstract() {
-        return abstr;
+        return (flags&ABSTRACT)!=0;
     }
     
-    public void setAbstract(boolean isAbstract) {
-        this.abstr = isAbstract;
+    public void setAbstract(boolean abstr) {
+        if (abstr) {
+            flags|=ABSTRACT;
+        }
+        else {
+            flags&=(~ABSTRACT);
+        }
     }
     
     public ParameterList getParameterList() {
@@ -65,20 +69,30 @@ public class Constructor extends TypeDeclaration implements Functional {
     
     @Override
     public boolean isOverloaded() {
-    	return overloaded;
+    	return (flags&OVERLOADED)!=0;
     }
     
     public void setOverloaded(boolean overloaded) {
-		this.overloaded = overloaded;
+        if (overloaded) {
+            flags|=OVERLOADED;
+        }
+        else {
+            flags&=(~OVERLOADED);
+        }
 	}
     
     public void setAbstraction(boolean abstraction) {
-        this.abstraction = abstraction;
+        if (abstraction) {
+            flags|=ABSTRACTION;
+        }
+        else {
+            flags&=(~ABSTRACTION);
+        }
     }
     
     @Override
     public boolean isAbstraction() {
-        return abstraction;
+        return (flags&ABSTRACTION)!=0;
     }
     
     @Override

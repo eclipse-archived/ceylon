@@ -14,13 +14,9 @@ import java.util.Set;
  */
 public class Function extends FunctionOrValue implements Generic, Scope, Functional {
 
-    public Function() {}
-    
-    private static final int VOID = 1;
-    private static final int DEFERRED = 1<<1;
-    private static final int ANONYMOUS = 1<<2;
-    
-    private int flags;
+    private static final int VOID = 1<<22;
+    private static final int DEFERRED = 1<<23;
+    private static final int ANONYMOUS = 1<<24;
     
     private List<TypeParameter> typeParameters = emptyList();
     private List<ParameterList> parameterLists = new ArrayList<ParameterList>(1);

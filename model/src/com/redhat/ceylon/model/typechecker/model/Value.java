@@ -11,15 +11,13 @@ import java.util.Set;
  */
 public class Value extends FunctionOrValue implements Scope {
     
-    private static final int VARIABLE = 1;
-    private static final int TRANSIENT = 1<<1;
-    private static final int LATE = 1<<2;
-    private static final int ENUM_VALUE = 1<<3;
-    private static final int SPECIFIED_IN_FOR_ELSE = 1<<4;
-    private static final int INFERRED = 1<<5;
-    private static final int SELF_CAPTURED = 1<<6;
-    
-    private int flags;
+    private static final int VARIABLE = 1<<22;
+    private static final int TRANSIENT = 1<<23;
+    private static final int LATE = 1<<24;
+    private static final int ENUM_VALUE = 1<<25;
+    private static final int SPECIFIED_IN_FOR_ELSE = 1<<26;
+    private static final int INFERRED = 1<<27;
+    private static final int SELF_CAPTURED = 1<<28;
     
     private Setter setter;
 

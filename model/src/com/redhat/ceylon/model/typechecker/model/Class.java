@@ -11,19 +11,17 @@ import java.util.Objects;
 
 public class Class extends ClassOrInterface implements Functional {
     
-    private static final int CONSTRUCTORS = 1;
-    private static final int ENUMERATED = 1<<1;
-    private static final int ABSTRACT = 1<<2;
-    private static final int OVERLOADED = 1<<3;
-    private static final int ABSTRACTION = 1<<4;
-    private static final int ANONYMOUS = 1<<5;
-    private static final int JAVA_ENUM = 1<<6;
-    private static final int NAMED = 1<<7;
-    private static final int FINAL = 1<<8;
-    private static final int SERIALIZABLE = 1<<9;
-    private static final int VALUE_CONSTRUCTOR = 1<<10;
-    
-    private int flags;
+    private static final int CONSTRUCTORS = 1<<11;
+    private static final int ENUMERATED = 1<<12;
+    private static final int ABSTRACT = 1<<13;
+    private static final int FINAL = 1<<14;
+    private static final int SERIALIZABLE = 1<<15;
+    private static final int ANONYMOUS = 1<<16;
+    private static final int JAVA_ENUM = 1<<17;
+    private static final int OVERLOADED = 1<<19;
+    private static final int ABSTRACTION = 1<<20;
+    private static final int NAMED = 1<<18;
+    private static final int VALUE_CONSTRUCTOR = 1<<21;
     
     private ParameterList parameterList;
     private List<Declaration> overloads;

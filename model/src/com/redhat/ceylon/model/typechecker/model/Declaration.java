@@ -38,7 +38,7 @@ public abstract class Declaration
     private static final int STATIC = 1<<10;
     
 	private String name;
-	private int modifiers;
+	protected int flags;
 	private String qualifier;
     private Scope visibleScope;
     private Declaration refinedDeclaration = this;
@@ -65,15 +65,15 @@ public abstract class Declaration
     }
 
     public boolean isShared() {
-        return (modifiers&SHARED)!=0;
+        return (flags&SHARED)!=0;
     }
 
     public void setShared(boolean shared) {
         if (shared) {
-            modifiers|=SHARED;
+            flags|=SHARED;
         }
         else {
-            modifiers&=(~SHARED);
+            flags&=(~SHARED);
         }
     }
 
@@ -82,15 +82,15 @@ public abstract class Declaration
     }
     
     public boolean isDeprecated() {
-		return (modifiers&DEPRECATED)!=0;
+		return (flags&DEPRECATED)!=0;
 	}
     
     public void setDeprecated(boolean deprecated) {
         if (deprecated) {
-            modifiers|=DEPRECATED;
+            flags|=DEPRECATED;
         }
         else {
-            modifiers&=(~DEPRECATED);
+            flags&=(~DEPRECATED);
         }
 	}
 
@@ -148,15 +148,15 @@ public abstract class Declaration
     }
     
     public boolean isAnnotation() {
-        return (modifiers&ANNOTATION)!=0;
+        return (flags&ANNOTATION)!=0;
     }
     
     public void setAnnotation(boolean annotation) {
         if (annotation) {
-            modifiers|=ANNOTATION;
+            flags|=ANNOTATION;
         }
         else {
-            modifiers&=(~ANNOTATION);
+            flags&=(~ANNOTATION);
         }
     }
 
@@ -164,28 +164,28 @@ public abstract class Declaration
         if (actualCompleter != null) {
             completeActual();
         }
-        return (modifiers&ACTUAL)!=0;
+        return (flags&ACTUAL)!=0;
     }
 
     public void setActual(boolean actual) {
         if (actual) {
-            modifiers|=ACTUAL;
+            flags|=ACTUAL;
         }
         else {
-            modifiers&=(~ACTUAL);
+            flags&=(~ACTUAL);
         }
     }
 
     public boolean isFormal() {
-        return (modifiers&FORMAL)!=0;
+        return (flags&FORMAL)!=0;
     }
     
     public void setFormal(boolean formal) {
         if (formal) {
-            modifiers|=FORMAL;
+            flags|=FORMAL;
         }
         else {
-            modifiers&=(~FORMAL);
+            flags&=(~FORMAL);
         }
     }
 
@@ -219,15 +219,15 @@ public abstract class Declaration
     }
 
     public boolean isDefault() {
-        return (modifiers&DEFAULT)!=0;
+        return (flags&DEFAULT)!=0;
     }
 
     public void setDefault(boolean def) {
         if (def) {
-            modifiers|=DEFAULT;
+            flags|=DEFAULT;
         }
         else {
-            modifiers&=(~DEFAULT);
+            flags&=(~DEFAULT);
         }
     }
     
@@ -338,41 +338,41 @@ public abstract class Declaration
     }
     
     public boolean isStaticallyImportable() {
-        return (modifiers&STATIC)!=0;
+        return (flags&STATIC)!=0;
     }
     
     public void setStaticallyImportable(boolean staticallyImportable) {
         if (staticallyImportable) {
-            modifiers|=STATIC;
+            flags|=STATIC;
         }
         else {
-            modifiers&=(~STATIC);
+            flags&=(~STATIC);
         }
     }
     
     public boolean isProtectedVisibility() {
-        return (modifiers&PROTECTED)!=0;
+        return (flags&PROTECTED)!=0;
     }
     
     public void setProtectedVisibility(boolean protectedVisibility) {
         if (protectedVisibility) {
-            modifiers|=PROTECTED;
+            flags|=PROTECTED;
         }
         else {
-            modifiers&=(~PROTECTED);
+            flags&=(~PROTECTED);
         }
     }
     
     public boolean isPackageVisibility() {
-        return (modifiers&PACKAGE)!=0;
+        return (flags&PACKAGE)!=0;
     }
     
     public void setPackageVisibility(boolean packageVisibility) {
         if (packageVisibility) {
-            modifiers|=PACKAGE;
+            flags|=PACKAGE;
         }
         else {
-            modifiers&=(~PACKAGE);
+            flags&=(~PACKAGE);
         }
     }
 

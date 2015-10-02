@@ -14,24 +14,28 @@ import java.util.Objects;
  */
 public abstract class TypedDeclaration extends Declaration {
     
-    private static final int UNCHECKED_NULL = 1;
-    private static final int UNBOXED_KNOWN = 1<<1;
-    private static final int UNBOXED = 1<<2;
-    private static final int TYPE_ERASED = 1<<3;
-    private static final int UNTRUSTED_TYPE = 1<<4;
+    private static final int UNCHECKED_NULL = 1<<11;
+    private static final int UNBOXED_KNOWN = 1<<12;
+    private static final int UNBOXED = 1<<13;
+    private static final int TYPE_ERASED = 1<<14;
+    private static final int UNTRUSTED_TYPE = 1<<15;
+    private static final int DYNAMIC = 1<<16;
     
     private Type type;
-    private int backendFlags;
-    private boolean dynamicallyTyped;
     
     private TypedDeclaration originalDeclaration;
     
     public boolean isDynamicallyTyped() {
-        return dynamicallyTyped;
+        return (flags&DYNAMIC)!=0;
     }
     
-    public void setDynamicallyTyped(boolean isDynamicallyTyped) {
-        this.dynamicallyTyped = isDynamicallyTyped;
+    public void setDynamicallyTyped(boolean dynamicallyTyped) {
+        if (dynamicallyTyped) {
+            flags|=DYNAMIC;
+        }
+        else {
+            flags&=(~DYNAMIC);
+        }
     }
         
     public TypeDeclaration getTypeDeclaration() {
@@ -134,65 +138,65 @@ public abstract class TypedDeclaration extends Declaration {
     }
 
     public Boolean getUnboxed() {
-        if ((backendFlags&UNBOXED_KNOWN)==0) {
+        if ((flags&UNBOXED_KNOWN)==0) {
             return null;
         }
         else {
-            return (backendFlags&UNBOXED)!=0;
+            return (flags&UNBOXED)!=0;
         }
     }
 
     public void setUnboxed(Boolean value) { 
         if (value==null) {
-            backendFlags&=(~UNBOXED_KNOWN);
+            flags&=(~UNBOXED_KNOWN);
         }
         else {
-            backendFlags|=UNBOXED_KNOWN;
+            flags|=UNBOXED_KNOWN;
             if (value) {
-                backendFlags|=UNBOXED;
+                flags|=UNBOXED;
             }
             else {
-                backendFlags&=(~UNBOXED);
+                flags&=(~UNBOXED);
             }
         }
     }
 
     public Boolean getTypeErased() { 
-        return (backendFlags&TYPE_ERASED)!=0; 
+        return (flags&TYPE_ERASED)!=0; 
     }
 
     public void setTypeErased(Boolean typeErased) { 
         if (typeErased) {
-           backendFlags|=TYPE_ERASED; 
+           flags|=TYPE_ERASED; 
         }
         else {
-            backendFlags&=(~TYPE_ERASED);
+            flags&=(~TYPE_ERASED);
         }
     }
 
     public Boolean getUntrustedType() { 
-        return (backendFlags&UNTRUSTED_TYPE)!=0; 
+        return (flags&UNTRUSTED_TYPE)!=0; 
     }
 
     public void setUntrustedType(Boolean untrustedType) { 
         if (untrustedType) {
-            backendFlags|=UNTRUSTED_TYPE; 
+            flags|=UNTRUSTED_TYPE; 
          }
          else {
-             backendFlags&=(~UNTRUSTED_TYPE);
+             flags&=(~UNTRUSTED_TYPE);
          }
     }
 
     public boolean hasUncheckedNullType() {
-        return (backendFlags&UNCHECKED_NULL)!=0;
+        return (flags&UNCHECKED_NULL)!=0;
     }
     
     public void setUncheckedNullType(boolean uncheckedNullType) {
         if (uncheckedNullType) {
-            backendFlags|=UNCHECKED_NULL; 
+            flags|=UNCHECKED_NULL; 
          }
          else {
-             backendFlags&=(~UNCHECKED_NULL);
+             flags&=(~UNCHECKED_NULL);
          }
     }
 
