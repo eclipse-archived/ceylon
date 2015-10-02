@@ -84,7 +84,7 @@ public class Class extends ClassOrInterface implements Functional {
     
     @Override
     public boolean isObjectClass() {
-        return isAnonymous();
+        return (flags&ANONYMOUS)!=0;
     }
     
     /**
