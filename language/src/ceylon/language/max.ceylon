@@ -13,7 +13,12 @@ see (`interface Comparable`,
      `function largest`,
      `function Iterable.max`)
 tagged("Comparisons", "Streams")
-shared Absent|Value max<Value,Absent>
+shared native Absent|Value max<Value,Absent>
+        (Iterable<Value,Absent> values) 
+        given Value satisfies Comparable<Value>
+        given Absent satisfies Null;
+
+shared native("js") Absent|Value max<Value,Absent>
         (Iterable<Value,Absent> values) 
         given Value satisfies Comparable<Value>
         given Absent satisfies Null {
@@ -31,5 +36,48 @@ shared Absent|Value max<Value,Absent>
         "iterable must be empty"
         assert (is Absent null);
         return null;
+    }
+}
+
+shared native("jvm") Absent|Value max<Value,Absent>
+        (Iterable<Value,Absent> values)
+        given Value satisfies Comparable<Value>
+        given Absent satisfies Null {
+    
+    value it = values.iterator();
+    switch (first = it.next())
+    case (is Finished) {
+        "iterable must be empty"
+        assert (is Absent null);
+        return null;
+    }
+    case (is Integer) {
+        variable Integer max = first;
+        while (is Integer val = it.next()) {
+            if ((val of Integer) > max) {
+                max = val;
+            }
+        }
+        assert (is Value result = max);
+        return result;
+    }
+    case (is Float) {
+        variable Float max = first;
+        while (is Float val = it.next()) {
+            if ((val of Float) > max) {
+                max = val;
+            }
+        }
+        assert (is Value result = max);
+        return result;
+    }
+    else {
+        variable value max = first;
+        while (!is Finished val = it.next()) {
+            if (val>max) {
+                max = val;
+            }
+        }
+        return max;
     }
 }
