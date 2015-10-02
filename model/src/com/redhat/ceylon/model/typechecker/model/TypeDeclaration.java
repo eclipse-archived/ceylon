@@ -214,8 +214,8 @@ public abstract class TypeDeclaration extends Declaration
         return type;
     }
 
-    private List<Declaration> getInheritableMembers(String name, 
-            List<TypeDeclaration> visited) {
+    private List<Declaration> getInheritableMembers(
+            String name, List<TypeDeclaration> visited) {
         if (visited.contains(this)) {
             return Collections.emptyList();
         }
@@ -232,7 +232,8 @@ public abstract class TypeDeclaration extends Declaration
                 }
             }
             if (members.isEmpty()) {
-                members.addAll(getInheritedMembers(name, visited));
+                members.addAll(getInheritedMembers(name, 
+                        visited));
             }
             return members;
         }
@@ -264,15 +265,16 @@ public abstract class TypeDeclaration extends Declaration
         return false;
     }
     
-    private List<Declaration> getInheritedMembers(String name, 
-            List<TypeDeclaration> visited) {
+    private List<Declaration> getInheritedMembers(
+            String name, List<TypeDeclaration> visited) {
         List<Declaration> members = 
                 new ArrayList<Declaration>();
         for (Type st: getSatisfiedTypes()) {
             //if ( !(t instanceof TypeParameter) ) { //don't look for members in a type parameter with a self-referential lower bound
             for (Declaration member: 
                     st.getDeclaration()
-                        .getInheritableMembers(name, visited)) {
+                        .getInheritableMembers(name, 
+                                visited)) {
                 if (!contains(members, member)) {
                     members.add(member);
                 }
@@ -283,7 +285,8 @@ public abstract class TypeDeclaration extends Declaration
         if (et!=null) {
             for (Declaration member: 
                     et.getDeclaration()
-                        .getInheritableMembers(name, visited)) {
+                        .getInheritableMembers(name, 
+                                visited)) {
                 if (!contains(members, member)) {
                     members.add(member);
                 }
@@ -451,7 +454,8 @@ public abstract class TypeDeclaration extends Declaration
                 unit.getImportedDeclaration(this, name, 
                         signature, variadic);
         if (dec==null) {
-            return getMemberInternal(name, signature, variadic, false)
+            return getMemberInternal(name, 
+                    signature, variadic, false)
                     .getMember();
         }
         else {
@@ -480,7 +484,8 @@ public abstract class TypeDeclaration extends Declaration
                 unit.getImportedDeclaration(this, name, 
                         signature, variadic);
         if (dec==null) {
-            return getMemberInternal(name, signature, variadic, false)
+            return getMemberInternal(name, 
+                    signature, variadic, false)
                     .isAmbiguous();
         }
         else {
@@ -499,13 +504,16 @@ public abstract class TypeDeclaration extends Declaration
             List<Type> signature, 
             boolean variadic,
             boolean onlyExactMatches) {
-        return getMemberInternal(name, signature, variadic, onlyExactMatches)
+        return getMemberInternal(name, 
+                signature, variadic, 
+                onlyExactMatches)
                 .getMember();
     }
 
     private SupertypeDeclaration getMemberInternal(
             String name,
-            List<Type> signature, boolean variadic, boolean onlyExactMatches) {
+            List<Type> signature, boolean variadic, 
+            boolean onlyExactMatches) {
         //first search for the member in the local
         //scope, including non-shared declarations
         Declaration dec = 
@@ -714,7 +722,8 @@ public abstract class TypeDeclaration extends Declaration
                 }
                 Declaration dm = 
                         type.getDirectMember(name, 
-                                signature, variadic, onlyExactMatches);
+                                signature, variadic, 
+                                onlyExactMatches);
                 if (dm!=null && 
                         dm.isShared() && 
                         isResolvable(dm)) {
@@ -741,7 +750,8 @@ public abstract class TypeDeclaration extends Declaration
                 }
                 Declaration dm = 
                         type.getDirectMember(name, 
-                                null, false, onlyExactMatches);
+                                null, false, 
+                                onlyExactMatches);
                 if (dm!=null && 
                         dm.isShared() && 
                         isResolvable(dm)) {
@@ -766,7 +776,8 @@ public abstract class TypeDeclaration extends Declaration
                 }
                 Declaration dm = 
                         type.getDirectMember(name, 
-                                signature, variadic, onlyExactMatches);
+                                signature, variadic, 
+                                onlyExactMatches);
                 if (dm!=null && 
                         dm.isShared() &&
                         isResolvable(dm)) {
@@ -815,7 +826,8 @@ public abstract class TypeDeclaration extends Declaration
             Declaration member = 
                     st.getDeclaration()
                         .getDirectMember(name, 
-                                signature, variadic, onlyExactMatches);
+                                signature, variadic, 
+                                onlyExactMatches);
             return new SupertypeDeclaration(member, false);
         }
     }
