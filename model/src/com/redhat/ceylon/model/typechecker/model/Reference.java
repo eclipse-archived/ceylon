@@ -86,10 +86,10 @@ public abstract class Reference {
                 g.getTypeParameters();
         for (int i=0, l=typeParameters.size(); 
                 i<l; i++) {
-            TypeParameter pt = typeParameters.get(i);
-            Type dta = pt.getDefaultTypeArgument();
+            TypeParameter tp = typeParameters.get(i);
+            Type dta = tp.getDefaultTypeArgument();
             if (dta!=null &&
-                    !typeArguments.containsKey(pt)) {
+                    !typeArguments.containsKey(tp)) {
                 // only make a copy of typeArguments if required
                 if (typeArguments == typeArgs) {
                     // make a copy big enough to fit every type parameter
@@ -98,7 +98,7 @@ public abstract class Reference {
                                 (typeParameters.size());
                     typeArgs.putAll(typeArguments);
                 }
-                typeArgs.put(pt, 
+                typeArgs.put(tp, 
                         dta.substitute(typeArgs, 
                                 EMPTY_VARIANCE_MAP));
             }
