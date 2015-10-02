@@ -75,20 +75,23 @@ public abstract class Element {
      */
     public Declaration getDirectMember(String name, 
             List<Type> signature, boolean ellipsis) {
-        return getDirectMember(name, signature, ellipsis, false);
+        return getDirectMember(name, signature, ellipsis, 
+                false);
     }
 
     /**
      * Search only directly inside this scope.
      */
     public Declaration getDirectMember(String name, 
-            List<Type> signature, boolean ellipsis, boolean onlyExactMatches) {
+            List<Type> signature, boolean ellipsis, 
+            boolean onlyExactMatches) {
         return lookupMember(getMembers(), 
                 name, signature, ellipsis, onlyExactMatches);
     }
 
     /**
-     * Search only directly inside this scope for the given backend.
+     * Search only directly inside this scope for the given 
+     * backend.
      */
     public Declaration getDirectMemberForBackend(String name, 
             String backend) {
@@ -104,8 +107,10 @@ public abstract class Element {
      * produce a nicer error.
      */
     public Declaration getMember(String name, 
-            List<Type> signature, boolean ellipsis, boolean onlyExactMatches) {
-        return getDirectMember(name, signature, ellipsis, onlyExactMatches);
+            List<Type> signature, boolean ellipsis, 
+            boolean onlyExactMatches) {
+        return getDirectMember(name, signature, ellipsis, 
+                onlyExactMatches);
     }
 
     /**
@@ -128,7 +133,8 @@ public abstract class Element {
      */
     public Declaration getMemberOrParameter(Unit unit, String name, 
             List<Type> signature, boolean ellipsis) {
-        return getMemberOrParameter(unit, name, signature, ellipsis, false);
+        return getMemberOrParameter(unit, name, signature, 
+                ellipsis, false);
     }
     
     /**
@@ -138,7 +144,8 @@ public abstract class Element {
      * declarations of this scope and containing scopes.
      */
     public Declaration getMemberOrParameter(Unit unit, String name, 
-            List<Type> signature, boolean ellipsis, boolean onlyExactMatches) {
+            List<Type> signature, boolean ellipsis, 
+            boolean onlyExactMatches) {
         Declaration d = 
                 getMemberOrParameter(name, signature, ellipsis);
         if (d!=null) {
@@ -163,7 +170,8 @@ public abstract class Element {
      */
     protected Declaration getMemberOrParameter(String name, 
             List<Type> signature, boolean ellipsis) {
-        return getMemberOrParameter(name, signature, ellipsis, false);
+        return getMemberOrParameter(name, signature, ellipsis, 
+                false);
     }
 
     /**
@@ -173,8 +181,10 @@ public abstract class Element {
      * direct members.
      */
     protected Declaration getMemberOrParameter(String name, 
-            List<Type> signature, boolean ellipsis, boolean onlyExactMatches) {
-        return getDirectMember(name, signature, ellipsis, onlyExactMatches);
+            List<Type> signature, boolean ellipsis, 
+            boolean onlyExactMatches) {
+        return getDirectMember(name, signature, ellipsis, 
+                onlyExactMatches);
     }
 
     public boolean isInherited(Declaration d) {
