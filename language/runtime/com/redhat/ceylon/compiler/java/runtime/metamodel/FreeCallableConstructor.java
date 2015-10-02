@@ -3,6 +3,19 @@ package com.redhat.ceylon.compiler.java.runtime.metamodel;
 import java.lang.reflect.AnnotatedElement;
 import java.util.List;
 
+import com.redhat.ceylon.compiler.java.Util;
+import com.redhat.ceylon.compiler.java.metadata.Ceylon;
+import com.redhat.ceylon.compiler.java.metadata.Ignore;
+import com.redhat.ceylon.compiler.java.metadata.Name;
+import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
+import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
+import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
+import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
+import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.Nothing;
+import com.redhat.ceylon.model.typechecker.model.Class;
+import com.redhat.ceylon.model.typechecker.model.Constructor;
+import com.redhat.ceylon.model.typechecker.model.Generic;
+
 import ceylon.language.Anything;
 import ceylon.language.Iterator;
 import ceylon.language.Sequential;
@@ -19,21 +32,6 @@ import ceylon.language.meta.declaration.Package;
 import ceylon.language.meta.model.CallableConstructor;
 import ceylon.language.meta.model.MemberClassCallableConstructor;
 import ceylon.language.meta.model.Type;
-import ceylon.language.meta.model.TypeApplicationException;
-
-import com.redhat.ceylon.compiler.java.Util;
-import com.redhat.ceylon.compiler.java.metadata.Ceylon;
-import com.redhat.ceylon.compiler.java.metadata.Ignore;
-import com.redhat.ceylon.compiler.java.metadata.Name;
-import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
-import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
-import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
-import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
-import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.Nothing;
-import com.redhat.ceylon.model.typechecker.model.Class;
-import com.redhat.ceylon.model.typechecker.model.Constructor;
-import com.redhat.ceylon.model.typechecker.model.Generic;
-import com.redhat.ceylon.model.typechecker.model.NothingType;
 
 @Ceylon(major = 8)
 @com.redhat.ceylon.compiler.java.metadata.Class

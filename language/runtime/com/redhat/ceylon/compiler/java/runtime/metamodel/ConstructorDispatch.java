@@ -10,6 +10,15 @@ import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.redhat.ceylon.compiler.java.Util;
+import com.redhat.ceylon.compiler.java.codegen.Decl;
+import com.redhat.ceylon.compiler.java.metadata.ConstructorName;
+import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
+import com.redhat.ceylon.model.typechecker.model.Declaration;
+import com.redhat.ceylon.model.typechecker.model.Function;
+import com.redhat.ceylon.model.typechecker.model.Parameter;
+import com.redhat.ceylon.model.typechecker.model.Reference;
+
 import ceylon.language.Array;
 import ceylon.language.Callable;
 import ceylon.language.Entry;
@@ -19,15 +28,6 @@ import ceylon.language.empty_;
 import ceylon.language.meta.model.Applicable;
 import ceylon.language.meta.model.ClassModel;
 import ceylon.language.meta.model.InvocationException;
-
-import com.redhat.ceylon.compiler.java.Util;
-import com.redhat.ceylon.compiler.java.codegen.Decl;
-import com.redhat.ceylon.compiler.java.metadata.ConstructorName;
-import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
-import com.redhat.ceylon.model.typechecker.model.Declaration;
-import com.redhat.ceylon.model.typechecker.model.Function;
-import com.redhat.ceylon.model.typechecker.model.Parameter;
-import com.redhat.ceylon.model.typechecker.model.Reference;
 
 /**
  * Dispatches to constructors

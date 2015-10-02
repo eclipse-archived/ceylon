@@ -4,22 +4,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import ceylon.language.Array;
-import ceylon.language.Iterator;
-import ceylon.language.Map;
-import ceylon.language.Sequence;
-import ceylon.language.Sequential;
-import ceylon.language.empty_;
-import ceylon.language.finished_;
-import ceylon.language.meta.declaration.AnnotatedDeclaration;
-import ceylon.language.meta.declaration.ClassDeclaration;
-import ceylon.language.meta.declaration.FunctionDeclaration;
-import ceylon.language.meta.declaration.InterfaceDeclaration;
-import ceylon.language.meta.declaration.ValueDeclaration;
-import ceylon.language.meta.model.Attribute;
-import ceylon.language.meta.model.IncompatibleTypeException;
-import ceylon.language.meta.model.Member;
-
 import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.language.ObjectArrayIterable;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
@@ -37,6 +21,22 @@ import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Functional;
 import com.redhat.ceylon.model.typechecker.model.Reference;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
+
+import ceylon.language.Array;
+import ceylon.language.Iterator;
+import ceylon.language.Map;
+import ceylon.language.Sequence;
+import ceylon.language.Sequential;
+import ceylon.language.empty_;
+import ceylon.language.finished_;
+import ceylon.language.meta.declaration.AnnotatedDeclaration;
+import ceylon.language.meta.declaration.ClassDeclaration;
+import ceylon.language.meta.declaration.FunctionDeclaration;
+import ceylon.language.meta.declaration.InterfaceDeclaration;
+import ceylon.language.meta.declaration.ValueDeclaration;
+import ceylon.language.meta.model.Attribute;
+import ceylon.language.meta.model.IncompatibleTypeException;
+import ceylon.language.meta.model.Member;
 
 @Ceylon(major = 8)
 @com.redhat.ceylon.compiler.java.metadata.Class

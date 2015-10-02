@@ -5,16 +5,6 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
-import ceylon.language.Anything;
-import ceylon.language.Sequential;
-import ceylon.language.empty_;
-import ceylon.language.meta.declaration.CallableConstructorDeclaration;
-import ceylon.language.meta.declaration.ClassDeclaration$impl;
-import ceylon.language.meta.declaration.ConstructorDeclaration;
-import ceylon.language.meta.declaration.FunctionOrValueDeclaration;
-import ceylon.language.meta.declaration.ValueConstructorDeclaration;
-import ceylon.language.meta.declaration.ValueDeclaration;
-
 import com.redhat.ceylon.compiler.java.language.ObjectArrayIterable;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Defaulted;
@@ -31,6 +21,15 @@ import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.Constructor;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.ParameterList;
+
+import ceylon.language.Anything;
+import ceylon.language.Sequential;
+import ceylon.language.empty_;
+import ceylon.language.meta.declaration.CallableConstructorDeclaration;
+import ceylon.language.meta.declaration.ClassDeclaration$impl;
+import ceylon.language.meta.declaration.FunctionOrValueDeclaration;
+import ceylon.language.meta.declaration.ValueConstructorDeclaration;
+import ceylon.language.meta.declaration.ValueDeclaration;
 
 @Ceylon(major = 8)
 @com.redhat.ceylon.compiler.java.metadata.Class

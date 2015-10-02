@@ -9,14 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import ceylon.language.Array;
-import ceylon.language.Sequence;
-import ceylon.language.Sequential;
-import ceylon.language.empty_;
-import ceylon.language.meta.declaration.FunctionDeclaration;
-
 import com.redhat.ceylon.compiler.java.Util;
-import com.redhat.ceylon.compiler.java.codegen.Decl;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Name;
@@ -27,10 +20,14 @@ import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 import com.redhat.ceylon.compiler.java.metadata.Variance;
 import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
-import com.redhat.ceylon.model.typechecker.model.Constructor;
-import com.redhat.ceylon.model.typechecker.model.Function;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.Reference;
+
+import ceylon.language.Array;
+import ceylon.language.Sequence;
+import ceylon.language.Sequential;
+import ceylon.language.empty_;
+import ceylon.language.meta.declaration.FunctionDeclaration;
 
 @Ceylon(major = 8)
 @com.redhat.ceylon.compiler.java.metadata.Class

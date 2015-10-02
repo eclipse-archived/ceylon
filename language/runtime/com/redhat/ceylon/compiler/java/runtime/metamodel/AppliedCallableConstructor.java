@@ -266,7 +266,7 @@ public class AppliedCallableConstructor<Type, Arguments extends Sequential<? ext
         if (this == other) {
             return true;
         } else if (other instanceof AppliedCallableConstructor) {
-            AppliedCallableConstructor autre = (AppliedCallableConstructor)other;
+            AppliedCallableConstructor<?,?> autre = (AppliedCallableConstructor<?,?>)other;
             return this.appliedClass.equals(autre.appliedClass)
                     && freeConstructor.equals(autre.freeConstructor);
         } else {

@@ -2,13 +2,6 @@ package com.redhat.ceylon.compiler.java.runtime.metamodel;
 
 import java.util.List;
 
-import ceylon.language.Map;
-import ceylon.language.Sequence;
-import ceylon.language.Sequential;
-import ceylon.language.empty_;
-import ceylon.language.meta.declaration.FunctionDeclaration;
-import ceylon.language.meta.model.Function;
-
 import com.redhat.ceylon.compiler.java.codegen.Decl;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
@@ -18,10 +11,15 @@ import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 import com.redhat.ceylon.compiler.java.metadata.Variance;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
-import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.Reference;
-import com.redhat.ceylon.model.typechecker.model.TypedReference;
+
+import ceylon.language.Map;
+import ceylon.language.Sequence;
+import ceylon.language.Sequential;
+import ceylon.language.empty_;
+import ceylon.language.meta.declaration.FunctionDeclaration;
+import ceylon.language.meta.model.Function;
 
 @Ceylon(major = 8)
 @com.redhat.ceylon.compiler.java.metadata.Class(extendsType="ceylon.language::Basic")

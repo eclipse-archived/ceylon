@@ -1,13 +1,5 @@
 package com.redhat.ceylon.compiler.java.runtime.metamodel;
 
-import ceylon.language.Sequential;
-import ceylon.language.empty_;
-import ceylon.language.meta.declaration.ValueConstructorDeclaration;
-import ceylon.language.meta.model.Member;
-import ceylon.language.meta.model.MemberClass;
-import ceylon.language.meta.model.MemberClassValueConstructor;
-import ceylon.language.meta.model.ValueConstructor;
-
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes;
@@ -16,8 +8,15 @@ import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 import com.redhat.ceylon.compiler.java.metadata.Variance;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
-import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.Nothing;
 import com.redhat.ceylon.model.typechecker.model.TypedReference;
+
+import ceylon.language.Sequential;
+import ceylon.language.empty_;
+import ceylon.language.meta.declaration.ValueConstructorDeclaration;
+import ceylon.language.meta.model.Member;
+import ceylon.language.meta.model.MemberClass;
+import ceylon.language.meta.model.MemberClassValueConstructor;
+import ceylon.language.meta.model.ValueConstructor;
 
 
 @Ceylon(major=8)
@@ -35,7 +34,7 @@ public class AppliedValueMemberConstructor<Container, Get>
     
     protected final FreeValueConstructor declaration;
     protected final TypedReference typedReference;
-    private final ceylon.language.meta.model.Type<? extends Get> closedType;
+//    private final ceylon.language.meta.model.Type<? extends Get> closedType;
     @Ignore
     protected final TypeDescriptor $reifiedGet;
     
@@ -47,7 +46,7 @@ public class AppliedValueMemberConstructor<Container, Get>
         super($reifiedContainer, TypeDescriptor.klass(ceylon.language.meta.model.Value.class, $reifiedGet), clazz.getContainer());
         this.declaration = declaration;
         this.typedReference = typedReference;
-        this.closedType = Metamodel.getAppliedMetamodel(typedReference.getType());
+//        this.closedType = Metamodel.getAppliedMetamodel(typedReference.getType());
         this.$reifiedGet = $reifiedGet;
         this.clazz = clazz;
     }

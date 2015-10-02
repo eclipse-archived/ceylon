@@ -6,19 +6,6 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 
-import ceylon.language.AssertionError;
-import ceylon.language.Collection;
-import ceylon.language.Entry;
-import ceylon.language.String;
-import ceylon.language.Tuple;
-import ceylon.language.impl.rethrow_;
-import ceylon.language.impl.ElementImpl;
-import ceylon.language.impl.MemberImpl;
-import ceylon.language.impl.outerImpl_;
-import ceylon.language.meta.declaration.ClassDeclaration;
-import ceylon.language.meta.declaration.ValueDeclaration;
-import ceylon.language.meta.model.ClassModel;
-
 import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.runtime.metamodel.AppliedClass;
@@ -32,6 +19,18 @@ import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
 import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.model.typechecker.model.TypedReference;
+
+import ceylon.language.AssertionError;
+import ceylon.language.Collection;
+import ceylon.language.Entry;
+import ceylon.language.String;
+import ceylon.language.Tuple;
+import ceylon.language.impl.ElementImpl;
+import ceylon.language.impl.MemberImpl;
+import ceylon.language.impl.rethrow_;
+import ceylon.language.meta.declaration.ClassDeclaration;
+import ceylon.language.meta.declaration.ValueDeclaration;
+import ceylon.language.meta.model.ClassModel;
 
 @Ceylon(major = 8, minor=0)
 @com.redhat.ceylon.compiler.java.metadata.Class

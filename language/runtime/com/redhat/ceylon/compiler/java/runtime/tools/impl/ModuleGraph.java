@@ -2,7 +2,6 @@ package com.redhat.ceylon.compiler.java.runtime.tools.impl;
 
 import java.util.HashSet;
 import java.util.Set;
-import java.util.Stack;
 
 import com.redhat.ceylon.model.cmr.ArtifactResult;
 

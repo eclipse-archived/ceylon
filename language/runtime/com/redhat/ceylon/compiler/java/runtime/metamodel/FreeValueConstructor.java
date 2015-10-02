@@ -166,9 +166,9 @@ public class FreeValueConstructor
         com.redhat.ceylon.model.typechecker.model.Type getType = typedReference.getType();
         TypeDescriptor reifiedGet = Metamodel.getTypeDescriptorForProducedType(getType.getQualifyingType());
         // immutable values have Set=Nothing
-        com.redhat.ceylon.model.typechecker.model.Type setType = getVariable() ? 
-                getType : modelDecl.getUnit().getNothingType();
-        TypeDescriptor reifiedSet = getVariable() ? reifiedGet : TypeDescriptor.NothingType;
+//        com.redhat.ceylon.model.typechecker.model.Type setType = getVariable() ? 
+//                getType : modelDecl.getUnit().getNothingType();
+//        TypeDescriptor reifiedSet = getVariable() ? reifiedGet : TypeDescriptor.NothingType;
         
         Metamodel.checkReifiedTypeArgument("apply", "Value<$1>", 
                 Variance.OUT, getType, $reifiedGet);
@@ -206,9 +206,9 @@ public class FreeValueConstructor
         com.redhat.ceylon.model.typechecker.model.Type getType = typedReference.getType();
         TypeDescriptor reifiedGet = Metamodel.getTypeDescriptorForProducedType(getType.getQualifyingType());
         // immutable values have Set=Nothing
-        com.redhat.ceylon.model.typechecker.model.Type setType = getVariable() ? 
-                getType : modelDecl.getUnit().getNothingType();
-        TypeDescriptor reifiedSet = getVariable() ? reifiedGet : TypeDescriptor.NothingType;
+//        com.redhat.ceylon.model.typechecker.model.Type setType = getVariable() ? 
+//                getType : modelDecl.getUnit().getNothingType();
+//        TypeDescriptor reifiedSet = getVariable() ? reifiedGet : TypeDescriptor.NothingType;
         
         Metamodel.checkReifiedTypeArgument("memberApply", "Attribute<$1,$2>", 
                 Variance.IN, memberQualifyingType, $reifiedContainer,

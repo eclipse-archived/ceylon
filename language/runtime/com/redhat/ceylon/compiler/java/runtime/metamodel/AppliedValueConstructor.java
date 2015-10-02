@@ -9,13 +9,6 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.Arrays;
 
-import ceylon.language.null_;
-import ceylon.language.meta.declaration.ValueConstructorDeclaration;
-import ceylon.language.meta.model.IncompatibleTypeException;
-import ceylon.language.meta.model.MutationException;
-import ceylon.language.meta.model.StorageException;
-import ceylon.language.meta.model.ValueConstructor;
-
 import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
@@ -35,6 +28,13 @@ import com.redhat.ceylon.model.loader.model.LazyValue;
 import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.TypedReference;
 
+import ceylon.language.null_;
+import ceylon.language.meta.declaration.ValueConstructorDeclaration;
+import ceylon.language.meta.model.IncompatibleTypeException;
+import ceylon.language.meta.model.MutationException;
+import ceylon.language.meta.model.StorageException;
+import ceylon.language.meta.model.ValueConstructor;
+
 
 @Ceylon(major=8)
 @com.redhat.ceylon.compiler.java.metadata.Class
@@ -47,7 +47,7 @@ public class AppliedValueConstructor<Get>
 
     private static final Class<?>[] NO_PARAMS = new Class<?>[0];
     
-    private final ceylon.language.meta.model.Type<Get> type;
+//    private final ceylon.language.meta.model.Type<Get> type;
     @Ignore
     protected final TypeDescriptor $reifiedGet;
     protected final FreeValueConstructor declaration;
@@ -65,7 +65,7 @@ public class AppliedValueConstructor<Get>
             TypedReference valueTypedReference,
             AppliedClass<Get,?> clazz, Object instance) {
         this.producedType = valueTypedReference.getType();
-        this.type = Metamodel.getAppliedMetamodel(producedType);
+//        this.type = Metamodel.getAppliedMetamodel(producedType);
         this.$reifiedGet = $reifiedGet;
         this.declaration = value;
         this.instance = instance;
@@ -297,7 +297,6 @@ public class AppliedValueConstructor<Get>
         }
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public java.lang.Object $setIfAssignable(@Name("newValue") @TypeInfo("ceylon.language::Anything") java.lang.Object newValue){
         Type newValueType = Metamodel.getProducedType(newValue);

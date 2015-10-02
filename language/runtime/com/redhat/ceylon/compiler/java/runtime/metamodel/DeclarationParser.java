@@ -3,7 +3,6 @@ package com.redhat.ceylon.compiler.java.runtime.metamodel;
 import ceylon.language.meta.declaration.AliasDeclaration;
 import ceylon.language.meta.declaration.ClassDeclaration;
 import ceylon.language.meta.declaration.ClassOrInterfaceDeclaration;
-import ceylon.language.meta.declaration.ConstructorDeclaration;
 import ceylon.language.meta.declaration.Declaration;
 import ceylon.language.meta.declaration.FunctionDeclaration;
 import ceylon.language.meta.declaration.Module;
