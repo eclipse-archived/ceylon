@@ -236,7 +236,7 @@ void test<T>() {
     }
     @type:"Class<OtherLocalClass,Nothing>" value otherLocalClass = `OtherLocalClass`;
     @type:"CallableConstructor<OtherLocalClass,Nothing>" value otherLocalClassCtor = `OtherLocalClass.create`;
-    @type:"ValueConstructor<OtherLocalClass,Nothing>" value otherLocalClassSingCtor = `OtherLocalClass.instance`;
+    @type:"ValueConstructor<OtherLocalClass>" value otherLocalClassSingCtor = `OtherLocalClass.instance`;
     @type:"Method<OtherLocalClass,String,[]>" value otherLocalClassFun = `OtherLocalClass.fun`;
     
 }
@@ -393,9 +393,9 @@ void meta() {
     @error value cd12 = `interface Bar.baz`;
     @error value cd15 =  `new Bar.instance`;
     @type:"CallableConstructor<Bar,[String]>" value cd13 = `Bar.baz`;
-    @type:"ValueConstructor<Bar,Nothing>" value cd17 = `Bar.instance`;
+    @type:"ValueConstructor<Bar>" value cd17 = `Bar.instance`;
     @type:"CallableConstructor<Baz,[String]>" value cd18 = `Baz.baz`;
-    @type:"ValueConstructor<Baz,Nothing>" value cd19 = `Baz.instance`;
+    @type:"ValueConstructor<Baz>" value cd19 = `Baz.instance`;
     @error value cd14 = `new Foo`;
     
     @error value broke = `Map<Anything,Anything>`;

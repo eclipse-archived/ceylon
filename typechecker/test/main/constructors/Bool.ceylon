@@ -30,7 +30,7 @@ BoolOpen f = BoolOpen.false;
 
 void inferredTypes() {
     @type:"Bool" value t = Bool.true;
-    @type:"ValueConstructor<Bool,Nothing>" value model = `Bool.true`;
+    @type:"ValueConstructor<Bool>" value model = `Bool.true`;
     @type:"ValueDeclaration" value valueref = `value Bool.true`;
 }
 
