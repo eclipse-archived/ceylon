@@ -340,11 +340,20 @@ public abstract class TypeDeclaration extends Declaration
     public Declaration getRefinedMember(String name, 
             List<Type> signature, boolean ellipsis) {
         return getRefinedMember(name, signature, ellipsis,
+                false);
+    }
+    
+    public Declaration getRefinedMember(String name, 
+            List<Type> signature, boolean ellipsis,
+            boolean onlyExactMatches) {
+        return getRefinedMember(name, signature, ellipsis,
+                onlyExactMatches,
                         new HashSet<TypeDeclaration>());
     }
 
     protected Declaration getRefinedMember(String name, 
             List<Type> signature, boolean ellipsis, 
+            boolean onlyExactMatches,
             Set<TypeDeclaration> visited) {
         if (!visited.add(this)) {
             return null;
@@ -356,7 +365,8 @@ public abstract class TypeDeclaration extends Declaration
                 Declaration ed = 
                         et.getDeclaration()
                             .getRefinedMember(name, 
-                                    signature, ellipsis, 
+                                    signature, ellipsis,
+                                    onlyExactMatches,
                                     visited);
                 if (isBetterRefinement(signature, 
                         ellipsis, result, ed)) {
@@ -368,6 +378,7 @@ public abstract class TypeDeclaration extends Declaration
                         st.getDeclaration()
                             .getRefinedMember(name, 
                                     signature, ellipsis, 
+                                    onlyExactMatches,
                                     visited);
                 if (isBetterRefinement(signature, 
                         ellipsis, result, sd)) {
@@ -375,7 +386,9 @@ public abstract class TypeDeclaration extends Declaration
                 }
             }
             Declaration dd = 
-                    getDirectMember(name, signature, ellipsis);
+                    getDirectMember(name, 
+                            signature, ellipsis,
+                            onlyExactMatches);
             if (isBetterRefinement(signature, 
                     ellipsis, result, dd)) {
                 result = dd;
@@ -495,7 +508,10 @@ public abstract class TypeDeclaration extends Declaration
             List<Type> signature, boolean variadic, boolean onlyExactMatches) {
         //first search for the member in the local
         //scope, including non-shared declarations
-        Declaration dec = getDirectMember(name, signature, variadic, onlyExactMatches);
+        Declaration dec = 
+                getDirectMember(name, 
+                        signature, variadic, 
+                        onlyExactMatches);
         if (dec!=null && dec.isShared()) {
             //if it's shared, it's what we're looking 
             //for, return it
@@ -504,9 +520,10 @@ public abstract class TypeDeclaration extends Declaration
             if (signature!=null && dec.isAbstraction()) {
                 //look for a supertype declaration that 
                 //matches the given signature better
-                SupertypeDeclaration sd = 
+                SupertypeDeclaration sd =
                         getSupertypeDeclaration(name, 
-                                signature, variadic, onlyExactMatches);
+                                signature, variadic, 
+                                onlyExactMatches);
                 Declaration sm = sd.getMember();
                 if (sm!=null && !sm.isAbstraction()) {
                     return sd;
@@ -518,7 +535,8 @@ public abstract class TypeDeclaration extends Declaration
             //now look for inherited shared declarations
             SupertypeDeclaration sd = 
                     getSupertypeDeclaration(name, 
-                            signature, variadic, onlyExactMatches);
+                            signature, variadic, 
+                            onlyExactMatches);
             if (sd.getMember()!=null || sd.isAmbiguous()) {
                 return sd;
             }
@@ -545,7 +563,8 @@ public abstract class TypeDeclaration extends Declaration
         //declarations
         Declaration dec = 
                 getDirectMember(name, 
-                        signature, variadic, onlyExactMatches);
+                        signature, variadic, 
+                        onlyExactMatches);
         if (dec!=null) {
             if (signature!=null && 
                     dec.isAbstraction()) {
@@ -553,7 +572,8 @@ public abstract class TypeDeclaration extends Declaration
                 // matches the given signature better
                 Declaration supertype = 
                         getSupertypeDeclaration(name, 
-                                signature, variadic, onlyExactMatches)
+                                signature, variadic, 
+                                onlyExactMatches)
                                 .getMember();
                 if (supertype!=null && 
                         !supertype.isAbstraction()) {
@@ -569,14 +589,16 @@ public abstract class TypeDeclaration extends Declaration
                 Declaration hdr = getNativeHeader(this);
                 if (hdr != null) {
                     dec = hdr.getDirectMember(name,
-                            signature, variadic, onlyExactMatches);
+                            signature, variadic, 
+                            onlyExactMatches);
                 }
             }
 
             if (dec == null) {
                 //now look for inherited shared declarations
                 dec = getSupertypeDeclaration(name,
-                        signature, variadic, onlyExactMatches)
+                        signature, variadic, 
+                        onlyExactMatches)
                         .getMember();
             }
         }

@@ -86,7 +86,8 @@ public abstract class Element {
             List<Type> signature, boolean ellipsis, 
             boolean onlyExactMatches) {
         return lookupMember(getMembers(), 
-                name, signature, ellipsis, onlyExactMatches);
+                name, signature, ellipsis, 
+                onlyExactMatches);
     }
 
     /**

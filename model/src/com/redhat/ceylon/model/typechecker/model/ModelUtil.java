@@ -2168,10 +2168,19 @@ public class ModelUtil {
         Unit unit = dec.getUnit();
         for (Parameter param: parameters) {
             FunctionOrValue model = param.getModel();
-            Type t = 
-                    model==null ? 
-                        unit.getUnknownType() : 
-                        model.getType();
+            Type t;
+            if (model instanceof Value) {
+                t = model.getType();
+            }
+            else if (model instanceof Function) {
+                t = appliedType(
+                        unit.getCallableDeclaration(),
+                        model.getType(),
+                        unit.getUnknownType());
+            }
+            else {
+                t = unit.getUnknownType();
+            }
             signature.add(t);
         }
         return signature;
@@ -2205,7 +2214,8 @@ public class ModelUtil {
                     (parameters.size());
         Unit unit = dec.getUnit();
         for (Parameter param: parameters) {
-            TypedReference typedParameter = ref.getTypedParameter(param);
+            TypedReference typedParameter = 
+                    ref.getTypedParameter(param);
             Type t = 
                     typedParameter==null ? 
                         unit.getUnknownType() : 
@@ -2499,23 +2509,31 @@ public class ModelUtil {
             String name, List<Type> signature, 
             Declaration root,
             TypeDeclaration bottom, TypeDeclaration top) {
+        boolean rootOverloaded = isOverloadedVersion(root);
         List<Declaration> result = 
                 new ArrayList<Declaration>(2);
         for (TypeDeclaration std: 
                 bottom.getSupertypeDeclarations()) {
             if (std.inherits(top) && !std.equals(bottom)) {
                 Declaration member = 
-                        std.getDirectMember(name, 
-                                signature, false);
+                        std.getDirectMember(name,
+                                //TODO: should we use the 
+                                //signature of root here?
+                                signature, false,
+                                rootOverloaded);
                 if (member!=null && 
                         member.isShared() && 
                         !isAbstraction(member)) {
                     TypeDeclaration td = 
                             (TypeDeclaration) 
                                 member.getContainer();
+                    boolean overloaded = 
+                            rootOverloaded ||
+                            isOverloadedVersion(member);
                     Declaration refined = 
                             td.getRefinedMember(name, 
-                                    signature, false);
+                                    signature, false,
+                                    overloaded);
                     if (refined!=null && 
                             refined.equals(root)) {
                         result.add(member);
