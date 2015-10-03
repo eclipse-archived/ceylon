@@ -1686,10 +1686,14 @@ public abstract class DeclarationVisitor extends Visitor {
                     }
                     Tree.ExistsOrNonemptyCondition encond;
                     if (c instanceof Tree.ExistsCondition) {
-                        encond = new Tree.ExistsCondition(null);
+                        encond = 
+                                new Tree.ExistsCondition(
+                                        c.getToken());
                     }
                     else if (c instanceof Tree.NonemptyCondition) {
-                        encond = new Tree.NonemptyCondition(null);
+                        encond = 
+                                new Tree.NonemptyCondition(
+                                        c.getToken());
                     }
                     else {
                         //impossible!
@@ -1709,7 +1713,8 @@ public abstract class DeclarationVisitor extends Visitor {
                         id = v.getIdentifier();
                     }
                     Tree.IsCondition icond = 
-                            new Tree.IsCondition(null);
+                            new Tree.IsCondition(
+                                    c.getToken());
                     icond.setNot(!ic.getNot());
                     icond.setVariable(ev);
                     icond.setType(ic.getType());
