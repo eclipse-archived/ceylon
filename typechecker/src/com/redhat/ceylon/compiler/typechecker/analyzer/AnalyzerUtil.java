@@ -202,7 +202,6 @@ public class AnalyzerUtil {
                 vars.putAll(qualifyingType.getVarianceOverrides());
             }
             
-//            if (tas instanceof Tree.TypeArgumentList) {
             Tree.TypeArgumentList tal = 
                     (Tree.TypeArgumentList) tas;
             int size = typeParameters.size();
@@ -240,46 +239,19 @@ public class AnalyzerUtil {
                     }
                 }
             }
-//            }
-//            else {
-//                List<Type> types = 
-//                        tas.getTypeModels();
-//                int count = types.size();
-//                for (int i=0; i<count; i++) {
-//                    Type t = types.get(i);
-//                    if (t==null) {
-//                        typeArguments.add(null);
-//                    }
-//                    else {
-//                        typeArguments.add(t);
-//                        if (i<size) {
-//                            TypeParameter tp = 
-//                                    typeParameters.get(i);
-//                            typeArgMap.put(tp, t);
-//                        }
-//                    }
-//                }
-//            }
-//            if (!(tas instanceof Tree.InferredTypeArguments)) {
             
             //for missing arguments, use the default args
             for (int i=typeArguments.size(); i<size; i++) {
                 TypeParameter tp = typeParameters.get(i);
-                Declaration tpd = tp.getDeclaration();
-            	Type dta = tp.getDefaultTypeArgument();
-                if (dta==null || 
-            	        //necessary to prevent stack overflow
-            	        //for illegal recursively-defined
-            	        //default type argument
-            	        dta.involvesDeclaration(tpd)) {
-            		break;
-            	}
-            	else {
-            	    Type da = dta.substitute(typeArgs, vars);
-            		typeArguments.add(da);
-            		typeArgs.put(tp, da);
-            	}
-//                }
+                Type dta = tp.getDefaultTypeArgument();
+                if (dta==null) {
+                    break;
+                }
+                else {
+                    Type da = dta.substitute(typeArgs, vars);
+                    typeArguments.add(da);
+                    typeArgs.put(tp, da);
+                }
             }
             
             return typeArguments;
