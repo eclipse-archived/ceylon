@@ -2618,24 +2618,37 @@ public class ExpressionVisitor extends Visitor {
     }
     
     private void checkMemberOperator(Type pt, 
-            Tree.QualifiedMemberOrTypeExpression mte) {
-        Tree.MemberOperator op = mte.getMemberOperator();
-        Tree.Primary p = mte.getPrimary();
+            Tree.QualifiedMemberOrTypeExpression qmte) {
+        Tree.MemberOperator op = qmte.getMemberOperator();
+        Tree.Primary p = qmte.getPrimary();
         if (op instanceof Tree.SafeMemberOp)  {
-            checkOptional(pt, p);
+            if (qmte.getStaticMethodReference()) {
+                op.addError("static reference may not involve safe member operator");
+            }
+            else {
+                checkOptional(pt, p);
+            }
         }
         else if (op instanceof Tree.SpreadOp) {
-            checkIterable(pt, p);
+            if (qmte.getStaticMethodReference()) {
+                op.addError("static reference may not involve spread member operator");
+            }
+            else {
+                checkIterable(pt, p);
+            }
         }
     }
 
     private Type unwrap(Type type, 
-            Tree.QualifiedMemberOrTypeExpression mte) {
-        if (type==null) {
+            Tree.QualifiedMemberOrTypeExpression qmte) {
+        if (qmte.getStaticMethodReference()) {
+            return type;
+        }
+        else if (type==null) {
             return null;
         }
         else {
-            Tree.MemberOperator op = mte.getMemberOperator();
+            Tree.MemberOperator op = qmte.getMemberOperator();
             if (op instanceof Tree.SafeMemberOp)  {
                 return unit.getDefiniteType(type);
             }
@@ -2657,17 +2670,22 @@ public class ExpressionVisitor extends Visitor {
     
     Type wrap(Type type, Type receivingType, 
             Tree.QualifiedMemberOrTypeExpression mte) {
-        Tree.MemberOperator op = mte.getMemberOperator();
-        if (op instanceof Tree.SafeMemberOp)  {
-            return unit.getOptionalType(type);
-        }
-        else if (op instanceof Tree.SpreadOp) {
-            return unit.isNonemptyIterableType(receivingType) ?
-                    unit.getSequenceType(type) :
-                    unit.getSequentialType(type);
+        if (mte.getStaticMethodReference()) {
+            return type;
         }
         else {
-            return type;
+            Tree.MemberOperator op = mte.getMemberOperator();
+            if (op instanceof Tree.SafeMemberOp)  {
+                return unit.getOptionalType(type);
+            }
+            else if (op instanceof Tree.SpreadOp) {
+                return unit.isNonemptyIterableType(receivingType) ?
+                        unit.getSequenceType(type) :
+                            unit.getSequentialType(type);
+            }
+            else {
+                return type;
+            }
         }
     }
     

@@ -398,6 +398,11 @@ class Operators() {
     @type:"Boolean" value within2 = 0<="hello".size<10;
     @error @type:"Boolean" value within3 = 0<"hello".size<"oops";
     @error @type:"Boolean" value within3 = "oops"<="hello".size<=10;
+    
+    @error value iterFirst = Iterable<Integer>*.first;
+    
+    @error value arrayOfSize = Array?.ofSize(10, 0);
+
 }
 
 class Sc() satisfies Scalable<Float,Sc> {
