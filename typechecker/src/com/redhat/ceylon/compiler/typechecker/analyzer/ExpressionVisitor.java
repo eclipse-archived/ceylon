@@ -650,7 +650,7 @@ public class ExpressionVisitor extends Visitor {
             destructure(lastPattern, se, sequenceType);
         }
     }
-
+    
     @Override public void visit(Tree.Variable that) {
         super.visit(that);
         Tree.SpecifierExpression se = 
@@ -665,6 +665,18 @@ public class ExpressionVisitor extends Visitor {
                 }
             }
         }
+    }
+    
+    @Override public void visit(Tree.SyntheticAssertion that) {
+        super.visit(that);
+        //amazingly dirty!
+        that.visit(new Visitor() {
+            @Override
+            public void visitAny(Node that) {
+                that.getErrors().clear();
+                super.visitAny(that);
+            }
+        });
     }
     
     @Override public void visit(Tree.ConditionList that) {
@@ -773,8 +785,7 @@ public class ExpressionVisitor extends Visitor {
                 knownType = unit.getAnythingType(); //or should we use unknown?
             }
             
-            Type it = 
-                    narrow(type, knownType, that.getNot());
+            Type it = narrow(type, knownType, that.getNot());
             //check for disjointness
             if (it.isNothing()) {
                 if (that.getNot()) {

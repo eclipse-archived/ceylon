@@ -343,3 +343,61 @@ void superfluousValue() {
         e.printStackTrace();
     }
 }
+
+class TestGuards() {
+    
+    Integer a([Integer*] ints) {
+        if (is [] ints) {
+            return 0;
+        }
+        return ints.first;
+    }
+    
+    Integer b([Integer*] ints) {
+        if (!is [Integer+] ints) {
+            return 0;
+        }
+        return ints.first;
+    }
+    
+    
+    Integer c([Integer*] ints) {
+        if (!nonempty ints) {
+            return 0;
+        }
+        return ints.first;
+    }
+    
+    
+    Integer d(Integer? int) {
+        if (!exists int) {
+            return 0;
+        }
+        return int;
+    }
+    
+    Integer e(Integer? int) {
+        if (is Null int) {
+            return 0;
+        }
+        return int;
+    }
+    
+    
+    Integer f(Integer? int) {
+        if (!is Integer int) {
+            return 0;
+        }
+        return int;
+    }
+    
+    Integer z([Integer*] ints) {
+        if (!nonempty ints) {
+            return 0;
+        }
+        else {
+            return ints.first;
+        }
+    }
+
+}

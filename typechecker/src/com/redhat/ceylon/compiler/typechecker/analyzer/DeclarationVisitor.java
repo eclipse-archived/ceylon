@@ -37,6 +37,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Annotation;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ObjectDefinition;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.Statement;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.ClassAlias;
@@ -1613,10 +1614,134 @@ public abstract class DeclarationVisitor extends Visitor {
     
     @Override
     public void visit(Tree.Body that) {
+        addAdditionalAssertions(that);
+        
         int oid=id;
         id=0;
         super.visit(that);
         id=oid;
+    }
+
+    private static void addAdditionalAssertions(Tree.Body that) {
+        List<Tree.Statement> originals = 
+                that.getStatements();
+        List<Statement> result = 
+                new ArrayList<Tree.Statement>
+                    (originals.size());
+        for (Tree.Statement st: originals) {
+            result.add(st);
+            if (st instanceof Tree.IfStatement) {
+                Tree.IfStatement ifst =
+                        (Tree.IfStatement) st;
+                Tree.IfClause ifcl = ifst.getIfClause();
+                Tree.ElseClause elcl = ifst.getElseClause();
+                if (ifcl!=null && elcl==null) {
+                    Tree.Block block = ifcl.getBlock();
+                    if (block!=null) {
+                        List<Tree.Statement> statements = 
+                                block.getStatements();
+                        if (!statements.isEmpty()) {
+                            Tree.Statement last = 
+                                    statements.get(
+                                            statements.size()-1);
+                            if (last instanceof Tree.Directive) {
+                                Tree.ConditionList acl = 
+                                       negate(ifcl.getConditionList());
+                                if (acl!=null) {
+                                    Tree.Assertion a =
+                                            new Tree.SyntheticAssertion(null);
+                                    a.setConditionList(acl);
+                                    result.add(a);
+                                }                                
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        originals.clear();
+        originals.addAll(result);
+    }
+    
+    private static Tree.ConditionList negate(
+            Tree.ConditionList cl) {
+        if (cl!=null) {
+            List<Tree.Condition> conditions = 
+                    cl.getConditions();
+            if (conditions.size()==1) {
+                Tree.Condition c = conditions.get(0);
+                Tree.Identifier id = null;
+                Tree.Type t = null;
+                Tree.Condition cond;
+                Tree.Variable ev = new Tree.Variable(null);
+                ev.setType(new Tree.SyntheticVariable(null));
+                if (c instanceof Tree.ExistsOrNonemptyCondition) {
+                    Tree.ExistsOrNonemptyCondition enc = 
+                            (Tree.ExistsOrNonemptyCondition) c;
+                    Tree.Statement s = enc.getVariable();
+                    if (s instanceof Tree.Variable) {
+                        Tree.Variable v = (Tree.Variable) s;
+                        t = v.getType();
+                        id = v.getIdentifier();
+                    }
+                    Tree.ExistsOrNonemptyCondition encond;
+                    if (c instanceof Tree.ExistsCondition) {
+                        encond = new Tree.ExistsCondition(null);
+                    }
+                    else if (c instanceof Tree.NonemptyCondition) {
+                        encond = new Tree.NonemptyCondition(null);
+                    }
+                    else {
+                        //impossible!
+                        return null;
+                    }
+                    encond.setNot(!enc.getNot());
+                    encond.setVariable(ev);
+                    cond = encond;
+                }
+                else if (c instanceof Tree.IsCondition) {
+                    Tree.IsCondition ic = (Tree.IsCondition) c;
+                    Tree.Variable v = 
+                            (Tree.Variable) 
+                                ic.getVariable();
+                    if (v!=null) {
+                        t = v.getType();
+                        id = v.getIdentifier();
+                    }
+                    Tree.IsCondition icond = 
+                            new Tree.IsCondition(null);
+                    icond.setNot(!ic.getNot());
+                    icond.setVariable(ev);
+                    icond.setType(ic.getType());
+                    cond = icond;
+                    
+                }
+                else {
+                    return null;
+                }
+                if (id!=null && 
+                        t instanceof Tree.SyntheticVariable) { 
+                    Tree.SpecifierExpression ese = 
+                            new Tree.SpecifierExpression(null);
+                    Tree.Expression ee = 
+                            new Tree.Expression(null);
+                    Tree.BaseMemberExpression ebme = 
+                            new Tree.BaseMemberExpression(null);
+                    ebme.setTypeArguments(
+                            new Tree.InferredTypeArguments(null));
+                    ee.setTerm(ebme);
+                    ese.setExpression(ee);
+                    ev.setSpecifierExpression(ese);
+                    ev.setIdentifier(id);
+                    ebme.setIdentifier(id);
+                    Tree.ConditionList result = 
+                            new Tree.ConditionList(null);
+                    result.addCondition(cond);
+                    return result;
+                }
+            }
+        }
+        return null;
     }
     
     @Override
