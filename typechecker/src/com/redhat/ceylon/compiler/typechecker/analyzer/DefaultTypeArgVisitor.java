@@ -28,9 +28,6 @@ public class DefaultTypeArgVisitor extends Visitor {
                         tp.setDefaultTypeArgument(null);
                     }
                 }
-                //Note: this might not be truly necessary, 
-                //at least I don't seem to have any tests
-                //that crash in this way!
                 catch (DecidabilityException re) {
                     ts.addError("undecidable default type argument");
                     tp.setDefaultTypeArgument(null);
