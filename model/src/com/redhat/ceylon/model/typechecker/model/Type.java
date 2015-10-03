@@ -2782,6 +2782,9 @@ public class Type extends Reference {
 
         Type substitute(Type type, 
                 boolean covariant, boolean contravariant) {
+            //Need to guard against stack overflows here,
+            //since DefaultTypeArgVisitor catches our
+            //thrown DecidabilityException
             checkDepth();
             try {
                 incDepth();
