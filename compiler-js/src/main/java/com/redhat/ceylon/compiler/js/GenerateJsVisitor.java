@@ -3219,28 +3219,34 @@ public class GenerateJsVisitor extends Visitor {
         }
         String custom = "Assertion failed";
         //Scan for a "doc" annotation with custom message
-        if (that.getAnnotationList() != null && that.getAnnotationList().getAnonymousAnnotation() != null) {
-            custom = that.getAnnotationList().getAnonymousAnnotation().getStringLiteral().getText();
-        } else {
-            for (Tree.Annotation ann : that.getAnnotationList().getAnnotations()) {
-                BaseMemberExpression bme = (BaseMemberExpression)ann.getPrimary();
-                if ("doc".equals(bme.getDeclaration().getName())) {
-                    custom = ((Tree.ListedArgument)ann.getPositionalArgumentList().getPositionalArguments().get(0))
-                            .getExpression().getTerm().getText();
+        Tree.AnnotationList annotationList = that.getAnnotationList();
+        if (annotationList!=null) {
+            if (annotationList != null && annotationList.getAnonymousAnnotation() != null) {
+                custom = annotationList.getAnonymousAnnotation().getStringLiteral().getText();
+            } else {
+                for (Tree.Annotation ann : annotationList.getAnnotations()) {
+                    BaseMemberExpression bme = (BaseMemberExpression)ann.getPrimary();
+                    if ("doc".equals(bme.getDeclaration().getName())) {
+                        custom = ((Tree.ListedArgument)ann.getPositionalArgumentList().getPositionalArguments().get(0))
+                                .getExpression().getTerm().getText();
+                    }
                 }
             }
         }
         StringBuilder sb = new StringBuilder(custom).append(": '");
-        for (int i = that.getConditionList().getToken().getTokenIndex()+1;
-                i < that.getConditionList().getEndToken().getTokenIndex(); i++) {
-            sb.append(tokens.get(i).getText());
+        Tree.ConditionList conditionList = that.getConditionList();
+        if (conditionList!=null) {
+            for (int i = conditionList.getToken().getTokenIndex()+1;
+                    i < conditionList.getEndToken().getTokenIndex(); i++) {
+                sb.append(tokens.get(i).getText());
+            }
+            sb.append("' at ").append(that.getUnit().getFilename()).append(" (").append(
+                    conditionList.getLocation()).append(")");
+            conds.specialConditionsAndBlock(conditionList, null, getClAlias()+"asrt$(");
+            //escape
+            out(",\"", JsUtils.escapeStringLiteral(sb.toString()), "\",'",that.getLocation(), "','",
+                    that.getUnit().getFilename(), "');");
         }
-        sb.append("' at ").append(that.getUnit().getFilename()).append(" (").append(
-                that.getConditionList().getLocation()).append(")");
-        conds.specialConditionsAndBlock(that.getConditionList(), null, getClAlias()+"asrt$(");
-        //escape
-        out(",\"", JsUtils.escapeStringLiteral(sb.toString()), "\",'",that.getLocation(), "','",
-                that.getUnit().getFilename(), "');");
         endLine();
     }
 
