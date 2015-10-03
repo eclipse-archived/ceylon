@@ -2782,9 +2782,9 @@ public class Type extends Reference {
 
         Type substitute(Type type, 
                 boolean covariant, boolean contravariant) {
-//            checkDepth();
-//            try {
-//                incDepth();
+            checkDepth();
+            try {
+                incDepth();
             TypeDeclaration dec;
             TypeDeclaration ptd = type.getDeclaration();
             Unit unit = ptd.getUnit();
@@ -2878,10 +2878,10 @@ public class Type extends Reference {
                 return substitutedType(dec, type,
                         covariant, contravariant);
             }
-//            }
-//            finally {
-//                decDepth();
-//            }
+            }
+            finally {
+                decDepth();
+            }
         }
 
         private Type substitutedAppliedTypeConstructor(
