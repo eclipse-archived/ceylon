@@ -1184,11 +1184,12 @@ public class Unit {
                             else if (rest.isExactly(emptyType)) {
                                 return size;
                             }
+                            else if (rest.isTuple()) {
+                                tuple = rest;
+                                //continue looping
+                            }
                             else {
-                                tuple = rest.getSupertype(td);
-                                if (tuple==null) {
-                                    return -1;
-                                }
+                                return -1;
                             }
                         }
                     }
