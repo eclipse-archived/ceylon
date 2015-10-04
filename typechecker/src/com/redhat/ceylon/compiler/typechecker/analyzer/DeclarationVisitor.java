@@ -1738,6 +1738,23 @@ public abstract class DeclarationVisitor extends Visitor {
             }
             return false;
         }
+        else if (last instanceof Tree.ForStatement) {
+            Tree.ForStatement is = (Tree.ForStatement) last;
+            Tree.ElseClause ec = is.getElseClause();
+            if (ec!=null) {
+                Tree.Block ecb = ec.getBlock();
+                if (ecb!=null) {
+                    List<Tree.Statement> ests = 
+                            ecb.getStatements();
+                    if (!ests.isEmpty()) {
+                        Tree.Statement elast =
+                                ests.get(ests.size()-1);
+                        return definitelyReturns(elast);
+                    }
+                }
+            }
+            return false;
+        }
         else {
             return false;
         }
