@@ -1628,7 +1628,8 @@ public abstract class DeclarationVisitor extends Visitor {
         List<Statement> result = 
                 new ArrayList<Tree.Statement>
                     (originals.size());
-        for (Tree.Statement st: originals) {
+        for (int i=0; i<originals.size()-1; i++) { //exclude the last statement
+            Tree.Statement st = originals.get(i);
             result.add(st);
             if (st instanceof Tree.IfStatement) {
                 Tree.IfStatement ifst =
