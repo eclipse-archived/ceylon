@@ -428,6 +428,18 @@ class TestGuards() {
         return int;
     }
     
+    Integer j(Integer? int) {
+        if (!exists int) {
+            for (i in 0:10) {
+                print(i);
+            }
+            else {
+                return 0;
+            }
+        }
+        return int;
+    }
+    
     Integer g1(Integer? int) {
         if (!exists int) {
             if (1==0) {
