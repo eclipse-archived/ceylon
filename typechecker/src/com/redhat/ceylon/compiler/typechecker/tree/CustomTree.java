@@ -34,5 +34,20 @@ public class CustomTree extends Tree {
             return variable;
         }
     }
+    
+    public static class GuardedVariable
+            extends Tree.Variable {
+        private Tree.ConditionList conditionList;
+        public GuardedVariable(Token token) {
+            super(token);
+        }
+        public Tree.ConditionList getConditionList() {
+            return conditionList;
+        }
+        public void setConditionList(
+                Tree.ConditionList condition) {
+            this.conditionList = condition;
+        }
+    }
 
 }

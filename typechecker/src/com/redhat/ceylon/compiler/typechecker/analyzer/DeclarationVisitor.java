@@ -33,11 +33,9 @@ import java.util.Set;
 
 import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.compiler.typechecker.context.TypecheckerUnit;
+import com.redhat.ceylon.compiler.typechecker.tree.CustomTree;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.Annotation;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.ObjectDefinition;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.Statement;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.ClassAlias;
@@ -326,7 +324,7 @@ public abstract class DeclarationVisitor extends Visitor {
             || that instanceof Tree.Enumerated
             || that instanceof Tree.AnyMethod
             || that instanceof Tree.AnyAttribute
-        || that instanceof ObjectDefinition;
+            || that instanceof Tree.ObjectDefinition;
     }
     
     private static boolean mustHaveHeader(Declaration model) {
@@ -718,7 +716,7 @@ public abstract class DeclarationVisitor extends Visitor {
         if (firstNonImportNode!=null) {
             for (Tree.Import im: 
                     that.getImportList().getImports()) {
-                if (im.getStopIndex() > 
+                if (im.getEndIndex() > 
                         firstNonImportNode.getStartIndex()) {
                     im.addError("import statement must occur before any declaration or descriptor");
                 }
@@ -1625,13 +1623,14 @@ public abstract class DeclarationVisitor extends Visitor {
     private static void addAdditionalAssertions(Tree.Body that) {
         List<Tree.Statement> originals = 
                 that.getStatements();
-        List<Statement> result = 
+        List<Tree.Statement> result = 
                 new ArrayList<Tree.Statement>
                     (originals.size());
-        for (int i=0; i<originals.size()-1; i++) { //exclude the last statement
+        for (int i=0; i<originals.size(); i++) {
             Tree.Statement st = originals.get(i);
             result.add(st);
-            if (st instanceof Tree.IfStatement) {
+            if (i<originals.size()-1 &&
+                    st instanceof Tree.IfStatement) {
                 Tree.IfStatement ifst =
                         (Tree.IfStatement) st;
                 Tree.IfClause ifcl = ifst.getIfClause();
@@ -1646,13 +1645,10 @@ public abstract class DeclarationVisitor extends Visitor {
                                     statements.get(
                                             statements.size()-1);
                             if (last instanceof Tree.Directive) {
-                                Tree.ConditionList acl = 
+                                Tree.Variable v = 
                                        negate(ifcl.getConditionList());
-                                if (acl!=null) {
-                                    Tree.Assertion a =
-                                            new Tree.SyntheticAssertion(null);
-                                    a.setConditionList(acl);
-                                    result.add(a);
+                                if (v!=null) {
+                                    result.add(v);
                                 }                                
                             }
                         }
@@ -1664,8 +1660,7 @@ public abstract class DeclarationVisitor extends Visitor {
         originals.addAll(result);
     }
     
-    private static Tree.ConditionList negate(
-            Tree.ConditionList cl) {
+    private static Tree.Variable negate(Tree.ConditionList cl) {
         if (cl!=null) {
             List<Tree.Condition> conditions = 
                     cl.getConditions();
@@ -1673,9 +1668,6 @@ public abstract class DeclarationVisitor extends Visitor {
                 Tree.Condition c = conditions.get(0);
                 Tree.Identifier id = null;
                 Tree.Type t = null;
-                Tree.Condition cond;
-                Tree.Variable ev = new Tree.Variable(null);
-                ev.setType(new Tree.SyntheticVariable(null));
                 if (c instanceof Tree.ExistsOrNonemptyCondition) {
                     Tree.ExistsOrNonemptyCondition enc = 
                             (Tree.ExistsOrNonemptyCondition) c;
@@ -1685,24 +1677,6 @@ public abstract class DeclarationVisitor extends Visitor {
                         t = v.getType();
                         id = v.getIdentifier();
                     }
-                    Tree.ExistsOrNonemptyCondition encond;
-                    if (c instanceof Tree.ExistsCondition) {
-                        encond = 
-                                new Tree.ExistsCondition(
-                                        c.getToken());
-                    }
-                    else if (c instanceof Tree.NonemptyCondition) {
-                        encond = 
-                                new Tree.NonemptyCondition(
-                                        c.getToken());
-                    }
-                    else {
-                        //impossible!
-                        return null;
-                    }
-                    encond.setNot(!enc.getNot());
-                    encond.setVariable(ev);
-                    cond = encond;
                 }
                 else if (c instanceof Tree.IsCondition) {
                     Tree.IsCondition ic = (Tree.IsCondition) c;
@@ -1713,20 +1687,12 @@ public abstract class DeclarationVisitor extends Visitor {
                         t = v.getType();
                         id = v.getIdentifier();
                     }
-                    Tree.IsCondition icond = 
-                            new Tree.IsCondition(
-                                    c.getToken());
-                    icond.setNot(!ic.getNot());
-                    icond.setVariable(ev);
-                    icond.setType(ic.getType());
-                    cond = icond;
-                    
                 }
-                else {
-                    return null;
-                }
-                if (id!=null && 
-                        t instanceof Tree.SyntheticVariable) { 
+                if (id!=null && t instanceof Tree.SyntheticVariable) { 
+                    CustomTree.GuardedVariable ev = 
+                            new CustomTree.GuardedVariable(null);
+                    ev.setConditionList(cl);
+                    ev.setType(new Tree.SyntheticVariable(null));
                     Tree.SpecifierExpression ese = 
                             new Tree.SpecifierExpression(null);
                     Tree.Expression ee = 
@@ -1740,10 +1706,7 @@ public abstract class DeclarationVisitor extends Visitor {
                     ev.setSpecifierExpression(ese);
                     ev.setIdentifier(id);
                     ebme.setIdentifier(id);
-                    Tree.ConditionList result = 
-                            new Tree.ConditionList(null);
-                    result.addCondition(cond);
-                    return result;
+                    return ev;
                 }
             }
         }
@@ -1772,6 +1735,14 @@ public abstract class DeclarationVisitor extends Visitor {
     
     @Override
     public void visit(Tree.Variable that) {
+        if (that instanceof CustomTree.GuardedVariable) {
+            ConditionScope cb = new ConditionScope();
+            cb.setId(id++);
+            that.setScope(cb);
+            visitElement(that, cb);
+            enterScope(cb);
+        }
+        
         Tree.SpecifierExpression se = 
                 that.getSpecifierExpression();
         if (se!=null) {
@@ -2099,7 +2070,7 @@ public abstract class DeclarationVisitor extends Visitor {
             }
         }
         if (hasAnnotation(al, "aliased", unit)) {
-            Annotation aliased = 
+            Tree.Annotation aliased = 
                     getAnnotation(al, "aliased", unit);
             List<String> aliases = 
                     getAnnotationSequenceArgument(aliased);

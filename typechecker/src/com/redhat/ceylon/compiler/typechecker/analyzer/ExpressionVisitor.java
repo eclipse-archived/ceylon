@@ -72,6 +72,7 @@ import java.util.Set;
 
 import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.compiler.typechecker.context.TypecheckerUnit;
+import com.redhat.ceylon.compiler.typechecker.tree.CustomTree;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
@@ -653,30 +654,26 @@ public class ExpressionVisitor extends Visitor {
     
     @Override public void visit(Tree.Variable that) {
         super.visit(that);
-        Tree.SpecifierExpression se = 
-                that.getSpecifierExpression();
-        if (se!=null) {
-            inferType(that, se);
-            if (that.getType()!=null) {
-                Type t = 
-                        that.getType().getTypeModel();
-                if (!isTypeUnknown(t)) {
-                    checkType(t, se);
+        if (that instanceof CustomTree.GuardedVariable) {
+            CustomTree.GuardedVariable gv = 
+                    (CustomTree.GuardedVariable) that;
+            setTypeForElseVariable(that, 
+                    gv.getConditionList());
+        }
+        else {
+            Tree.SpecifierExpression se = 
+                    that.getSpecifierExpression();
+            if (se!=null) {
+                inferType(that, se);
+                Tree.Type type = that.getType();
+                if (type!=null) {
+                    Type t = type.getTypeModel();
+                    if (!isTypeUnknown(t)) {
+                        checkType(t, se);
+                    }
                 }
             }
         }
-    }
-    
-    @Override public void visit(Tree.SyntheticAssertion that) {
-        super.visit(that);
-        //amazingly dirty!
-        that.visit(new Visitor() {
-            @Override
-            public void visitAny(Node that) {
-                that.getErrors().clear();
-                super.visitAny(that);
-            }
-        });
     }
     
     @Override public void visit(Tree.ConditionList that) {
@@ -7759,61 +7756,14 @@ public class ExpressionVisitor extends Visitor {
                 Tree.Switched switched = 
                         switchClause().getSwitched();
                 if (switched!=null) {
-                    Type switchExpressionType = 
-                            getSwitchedExpressionType(switched);
-                    Tree.SwitchCaseList switchCaseList = 
-                            switchCaseList();
-                    if (switchExpressionType!=null && 
-                            switchCaseList!=null) {
-                        if (!isTypeUnknown(switchExpressionType)) {
-                            Type caseUnionType = 
-                                    caseUnionType(switchCaseList);
-                            if (caseUnionType!=null) {
-                                Type complementType = 
-                                        switchExpressionType
-                                            .minus(caseUnionType);
-                                complementType =
-                                        unit.denotableType(
-                                                complementType);
-                                var.getType()
-                                    .setTypeModel(complementType);
-                                var.getDeclarationModel()
-                                    .setType(complementType);
-                            }
-                        }
-                    }
+                    setTypeForElseVariable(var, switched);
                 }
             }
             if (ifStatementOrExpression!=null) {
                 Tree.ConditionList conditionList = 
                         ifClause().getConditionList();
                 if (conditionList!=null) {
-                    Tree.Condition c = 
-                            conditionList.getConditions()
-                                .get(0);
-                    Tree.SpecifierExpression se = 
-                            var.getSpecifierExpression();
-                    if (c instanceof Tree.ExistsCondition) {
-                        Tree.ExistsCondition ec = 
-                                (Tree.ExistsCondition) c;
-                        inferDefiniteType(var, se, !ec.getNot());
-                    }
-                    else if (c instanceof Tree.NonemptyCondition) {
-                        Tree.NonemptyCondition ec = 
-                                (Tree.NonemptyCondition) c;
-                        inferNonemptyType(var, se, !ec.getNot());
-                    }
-                    else if (c instanceof Tree.IsCondition) {
-                        Tree.IsCondition ic = 
-                                (Tree.IsCondition) c;
-                        Tree.Expression e = se.getExpression();
-                        Type t = 
-                                narrow(ic.getType().getTypeModel(), 
-                                        e.getTypeModel(),
-                                        !ic.getNot());
-                        var.getType().setTypeModel(t);
-                        var.getDeclarationModel().setType(t);
-                    }
+                    setTypeForElseVariable(var, conditionList);
                 }
             }
         }
@@ -7821,6 +7771,63 @@ public class ExpressionVisitor extends Visitor {
         if (block!=null) block.visit(this);
         Tree.Expression expression = that.getExpression();
         if (expression!=null) expression.visit(this);
+    }
+
+    private void setTypeForElseVariable(Tree.Variable var, 
+            Tree.Switched switched) {
+        Type switchExpressionType = 
+                getSwitchedExpressionType(switched);
+        Tree.SwitchCaseList switchCaseList = 
+                switchCaseList();
+        if (switchExpressionType!=null && 
+                switchCaseList!=null) {
+            if (!isTypeUnknown(switchExpressionType)) {
+                Type caseUnionType = 
+                        caseUnionType(switchCaseList);
+                if (caseUnionType!=null) {
+                    Type complementType = 
+                            switchExpressionType
+                                .minus(caseUnionType);
+                    complementType =
+                            unit.denotableType(
+                                    complementType);
+                    var.getType()
+                        .setTypeModel(complementType);
+                    var.getDeclarationModel()
+                        .setType(complementType);
+                }
+            }
+        }
+    }
+
+    private void setTypeForElseVariable(Tree.Variable var, 
+            Tree.ConditionList conditionList) {
+        Tree.Condition c = 
+                conditionList.getConditions()
+                    .get(0);
+        Tree.SpecifierExpression se = 
+                var.getSpecifierExpression();
+        if (c instanceof Tree.ExistsCondition) {
+            Tree.ExistsCondition ec = 
+                    (Tree.ExistsCondition) c;
+            inferDefiniteType(var, se, !ec.getNot());
+        }
+        else if (c instanceof Tree.NonemptyCondition) {
+            Tree.NonemptyCondition ec = 
+                    (Tree.NonemptyCondition) c;
+            inferNonemptyType(var, se, !ec.getNot());
+        }
+        else if (c instanceof Tree.IsCondition) {
+            Tree.IsCondition ic = 
+                    (Tree.IsCondition) c;
+            Tree.Expression e = se.getExpression();
+            Type t = 
+                    narrow(ic.getType().getTypeModel(), 
+                            e.getTypeModel(),
+                            !ic.getNot());
+            var.getType().setTypeModel(t);
+            var.getDeclarationModel().setType(t);
+        }
     }
     
     private void checkCases(Tree.SwitchCaseList switchCaseList) {
