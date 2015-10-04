@@ -381,14 +381,108 @@ class TestGuards() {
             return 0;
         }
         return int;
-    }
-    
+    }    
     
     Integer f(Integer? int) {
         if (!is Integer int) {
             return 0;
         }
         return int;
+    }
+    
+    Integer g(Integer? int) {
+        if (!exists int) {
+            if (1==0) {
+                return 0;
+            }
+            else {
+                return 1;
+            }
+        }
+        return int;
+    }
+    
+    Integer h(Integer? int) {
+        if (!exists int) {
+            switch (1==0) 
+            case (true) {
+                return 0;
+            }
+            case (false) {
+                return 1;
+            }
+        }
+        return int;
+    }
+    
+    Integer i(Integer? int) {
+        if (!exists int) {
+            switch (1==0) 
+            case (true) {
+                return 0;
+            }
+            else {
+                return 1;
+            }
+        }
+        return int;
+    }
+    
+    Integer g1(Integer? int) {
+        if (!exists int) {
+            if (1==0) {
+                //return 0;
+            }
+            else {
+                return 1;
+            }
+        }
+        @error return int;
+    }
+    
+    Integer g2(Integer? int) {
+        if (!exists int) {
+            if (1==0) {
+                return 0;
+            }
+            else {
+                //return 1;
+            }
+        }
+        @error return int;
+    }
+    
+    Integer h1(Integer? int) {
+        if (!exists int) {
+            switch (1==0) 
+            case (true) {
+                //return 0;
+            }
+            case (false) {
+                return 1;
+            }
+        }
+        @error return int;
+    }
+    
+    Integer i1(Integer? int) {
+        if (!exists int) {
+            switch (1==0) 
+            case (true) {
+                return 0;
+            }
+            else {
+                //return 1;
+            }
+        }
+        @error return int;
+    }
+    
+    Integer d1(Integer? int) {
+        if (!exists int) {
+            print("hello");
+        }
+        @error return int;
     }
     
     Integer z([Integer*] ints) {

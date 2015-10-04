@@ -1612,7 +1612,7 @@ public abstract class DeclarationVisitor extends Visitor {
     
     @Override
     public void visit(Tree.Body that) {
-        addAdditionalAssertions(that);
+        addGuardedVariables(that);
         
         int oid=id;
         id=0;
@@ -1620,7 +1620,7 @@ public abstract class DeclarationVisitor extends Visitor {
         id=oid;
     }
 
-    private static void addAdditionalAssertions(Tree.Body that) {
+    private static void addGuardedVariables(Tree.Body that) {
         List<Tree.Statement> originals = 
                 that.getStatements();
         List<Tree.Statement> result = 
@@ -1644,9 +1644,10 @@ public abstract class DeclarationVisitor extends Visitor {
                             Tree.Statement last = 
                                     statements.get(
                                             statements.size()-1);
-                            if (last instanceof Tree.Directive) {
+                            if (definitelyReturns(last)) {
                                 Tree.Variable v = 
-                                       negate(ifcl.getConditionList());
+                                       guardedVariable(
+                                               ifcl.getConditionList());
                                 if (v!=null) {
                                     result.add(v);
                                 }                                
@@ -1659,8 +1660,91 @@ public abstract class DeclarationVisitor extends Visitor {
         originals.clear();
         originals.addAll(result);
     }
+
+    public static boolean definitelyReturns(Tree.Statement last) {
+        if (last instanceof Tree.Directive) {
+            return true;
+        }
+        else if (last instanceof Tree.IfStatement) {
+            Tree.IfStatement is = (Tree.IfStatement) last;
+            Tree.IfClause ic = is.getIfClause();
+            Tree.ElseClause ec = is.getElseClause();
+            if (ic!=null && ec!=null) {
+                Tree.Block icb = ic.getBlock();
+                Tree.Block ecb = ec.getBlock();
+                if (icb!=null && ecb!=null) {
+                    List<Tree.Statement> ists = 
+                            icb.getStatements();
+                    List<Tree.Statement> ests = 
+                            ecb.getStatements();
+                    if (!ists.isEmpty() && !ests.isEmpty()) {
+                        Tree.Statement ilast =
+                                ists.get(ists.size()-1);
+                        Tree.Statement elast =
+                                ests.get(ests.size()-1);
+                        return definitelyReturns(ilast) &&
+                                definitelyReturns(elast);
+                    }
+                }
+            }
+            return false;
+        }
+        else if (last instanceof Tree.SwitchStatement) {
+            Tree.SwitchStatement ss = (Tree.SwitchStatement) last;
+            Tree.SwitchCaseList scl = ss.getSwitchCaseList();
+            if (scl!=null) {
+                for (Tree.CaseClause cc: scl.getCaseClauses()) {
+                    Tree.Block cb = cc.getBlock();
+                    if (cb == null) {
+                        return false;
+                    }
+                    else {
+                        List<Tree.Statement> csts = 
+                                cb.getStatements();
+                        if (csts.isEmpty()) {
+                            return false;
+                        }
+                        else {
+                            Tree.Statement clast =
+                                    csts.get(csts.size()-1);
+                            if (!definitelyReturns(clast)) {
+                                return false;
+                            }
+                        }
+                    }
+                }
+                Tree.ElseClause ec = scl.getElseClause();
+                if (ec!=null) {
+                    Tree.Block ecb = ec.getBlock();
+                    if (ecb == null) {
+                        return false;
+                    }
+                    else {
+                        List<Tree.Statement> ests = 
+                                ecb.getStatements();
+                        if (ests.isEmpty()) {
+                            return false;
+                        }
+                        else {
+                            Tree.Statement elast =
+                                    ests.get(ests.size()-1);
+                            if (!definitelyReturns(elast)) {
+                                return false;
+                            }
+                        }
+                    }
+                }
+                return true;
+            }
+            return false;
+        }
+        else {
+            return false;
+        }
+    }
     
-    private static Tree.Variable negate(Tree.ConditionList cl) {
+    private static Tree.Variable guardedVariable(
+            Tree.ConditionList cl) {
         if (cl!=null) {
             List<Tree.Condition> conditions = 
                     cl.getConditions();
