@@ -31,7 +31,8 @@ ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.getMemberDeclaration=f
   } else {
     raiz = this.tipo();
   }
-  if (extendsType($$$mptypes.Kind$getMemberDeclaration, {t:ValueDeclaration$meta$declaration})) {
+  var kind=$$$mptypes.Kind$getMemberDeclaration;
+  if (extendsType(kind,{t:ValueDeclaration$meta$declaration})) {
     var escapedName = escapePropertyName$(name$20);
     var propname=getValuePropertyName$(escapedName);
     var _d = raiz[propname];
@@ -53,7 +54,7 @@ ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.getMemberDeclaration=f
     }
     if(_d)_m=OpenValue$jsint(this.containingPackage, _d);
   }
-  if (!_m && extendsType($$$mptypes.Kind$getMemberDeclaration, {t:FunctionDeclaration$meta$declaration})) {
+  if (!_m && extendsType(kind,{t:FunctionDeclaration$meta$declaration})) {
     var _d = findMethodByNameFromPrototype$(raiz, name$20);
     if(_d){
       var mm=getrtmm$$(_d);
@@ -63,7 +64,7 @@ ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.getMemberDeclaration=f
         _m=OpenFunction$jsint(this.containingPackage, _d);
     }
   }
-  if (!_m && extendsType($$$mptypes.Kind$getMemberDeclaration, {t:ClassOrInterfaceDeclaration$meta$declaration})) {
+  if (!_m && extendsType(kind,{t:ClassOrInterfaceDeclaration$meta$declaration})) {
     var nom=name$20+'$'+this.name;
     var _d = raiz[nom];
     if (_d===undefined) {
@@ -89,11 +90,19 @@ ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.getMemberDeclaration=f
       }
     }
     if(_d){
-      var wantsClass=extendsType($$$mptypes.Kind$getMemberDeclaration,{t:ClassDeclaration$meta$declaration});
-      var wantsIface=extendsType($$$mptypes.Kind$getMemberDeclaration,{t:InterfaceDeclaration$meta$declaration});
+      var wantsClass=extendsType(kind,{t:ClassDeclaration$meta$declaration});
+      var wantsIface=extendsType(kind,{t:InterfaceDeclaration$meta$declaration});
       var _$m = getrtmm$$(_d);
       var _mdl=get_model(_$m);
       if ((wantsClass && _mdl.mt!=='c') || (wantsIface && _mdl.mt!=='i'))return null;
+      if (wantsClass && _mdl.mt==='c') {
+        //check for constructors or initializer?
+        if (extendsType(kind,{t:ClassWithConstructorsDeclaration$meta$declaration})) {
+          if (_mdl.$cn===undefined)return null;
+        } else if (extendsType(kind,{t:ClassWithInitializerDeclaration$meta$declaration})) {
+          if (_mdl.$cn)return null;
+        }
+      }
       _m=(_mdl.mt==='c'?openClass$jsint:OpenInterface$jsint)(this.containingPackage, _d);
     }
   }
@@ -151,7 +160,7 @@ ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.memberDeclarations=fun
         if ((mt==='$c' && !extendsType(cdec,kind))
             ||(mt==='$i' && !extendsType({t:InterfaceDeclaration$meta$declaration},kind)))continue;
         _d=this.getMemberDeclaration(mm.d[mm.d.length-1],
-          {Kind$getMemberDeclaration:{t:ClassOrInterfaceDeclaration$meta$declaration}},inherited);
+          {Kind$getMemberDeclaration:kind},inherited);
       } else if(mm && mm.d) {
         var mt=mm.d[mm.d.length-2];
         if (mt === '$m' && extendsType({t:FunctionDeclaration$meta$declaration},kind)) {
@@ -160,7 +169,7 @@ ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.memberDeclarations=fun
       }
       if (_d){_d.parent$=this;defs.push(_d);};
     }
-    return defs.length?ArraySequence(defs,{Element$ArraySequence:$$$mptypes.Kind$memberDeclarations}):empty();
+    return defs.length?ArraySequence(defs,{Element$ArraySequence:kind}):empty();
   }
   //Fallback to the model declarations
   if (extendsType({t:FunctionDeclaration$meta$declaration},kind)) {
