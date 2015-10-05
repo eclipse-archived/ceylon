@@ -1642,6 +1642,8 @@ public class ClassTransformer extends AbstractTransformer {
         boolean[] needsLookup = new boolean[]{false};
         for (Declaration member : model.getMembers()) {
             if (hasField(member)) {
+                if (member instanceof Function)
+                    continue; // TODO: This class is not serializable
                 ListBuffer<JCStatement> caseStmts = ListBuffer.<JCStatement>lb();
                 if (member instanceof Value
                         && ((Value)member).isLate()) {
@@ -1778,6 +1780,8 @@ public class ClassTransformer extends AbstractTransformer {
         boolean[] needsLookup = new boolean[]{false};
         for (Declaration member : model.getMembers()) {
             if (hasField(member)) {
+                if (member instanceof Function)
+                    continue; // TODO: This class is not serializable 
                 ListBuffer<JCStatement> caseStmts = ListBuffer.<JCStatement>lb();
                 if (member instanceof Value
                         && ((Value)member).isLate()) {
