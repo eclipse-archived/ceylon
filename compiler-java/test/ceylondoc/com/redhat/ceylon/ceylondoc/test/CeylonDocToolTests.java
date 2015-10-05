@@ -530,13 +530,16 @@ public class CeylonDocToolTests {
         // download a required jar
         RepositoryManager repoManager = CeylonUtils.repoManager().buildManager();
         File undertowCoreModule = repoManager.getArtifact(new ArtifactContext("io.undertow.core", "1.0.0.Beta20", ".jar"));
+        File narnyaModule = repoManager.getArtifact(new ArtifactContext("org.jboss.narayana.jta", "5.1.1.Final", ".jar"));
         File languageModule = repoManager.getArtifact(new ArtifactContext(AbstractModelLoader.CEYLON_LANGUAGE, TypeChecker.LANGUAGE_MODULE_VERSION, ".car"));
 
         // fire up the java compiler
         JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
         assertNotNull("Missing Java compiler, this test is probably being run with a JRE instead of a JDK!", compiler);
         List<String> options = Arrays.asList("-sourcepath", "../ceylon-sdk/source", "-d", dir.getAbsolutePath(), 
-                "-classpath", undertowCoreModule.getAbsolutePath()+File.pathSeparator+languageModule.getAbsolutePath());
+                "-classpath", undertowCoreModule.getAbsolutePath()+File.pathSeparator
+                +narnyaModule.getAbsolutePath()+File.pathSeparator
+                +languageModule.getAbsolutePath());
         StandardJavaFileManager fileManager = compiler.getStandardFileManager(null, null, null);
         String[] fileNames = new String[]{
                 "ceylon/net/http/server/internal/JavaHelper.java",
@@ -551,6 +554,8 @@ public class CeylonDocToolTests {
                 "ceylon/interop/java/internal/javaShortArray_.java",
                 "ceylon/interop/java/internal/javaStringArray_.java",
                 "ceylon/interop/java/internal/Util.java",
+                "ceylon/transaction/internal/RecoveryHelper.java",
+                "ceylon/transaction/internal/RecoveryXAResource.java",
         };
         List<String> qualifiedNames = new ArrayList<String>(fileNames.length);
         for(String name : fileNames){
@@ -564,6 +569,7 @@ public class CeylonDocToolTests {
         // now we need to zip it up
         makeCarFromClassFiles(dir, fileNames, "ceylon.net", Versions.CEYLON_VERSION_NUMBER);
         makeCarFromClassFiles(dir, fileNames, "ceylon.interop.java", Versions.CEYLON_VERSION_NUMBER);
+        makeCarFromClassFiles(dir, fileNames, "ceylon.transaction", Versions.CEYLON_VERSION_NUMBER);
     }
 
     private void makeCarFromClassFiles(File dir, String[] fileNames, String module, String version) throws IOException {
