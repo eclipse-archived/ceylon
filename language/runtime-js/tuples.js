@@ -203,7 +203,14 @@ function tpl$(elems,spread){
       return e;
     }
     return elems.slice(0);
-  }
+  };
+  that.append=function(elems){
+    var na=that.nativeArray();
+    for (var i=0;i<elems.size;i++) {
+      na.push(elems.$_get(i));
+    }
+    return tpl$(na);
+  };
   return that;
 }
 ex$.tpl$=tpl$;
