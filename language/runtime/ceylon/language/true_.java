@@ -18,6 +18,7 @@ public final class true_ extends Boolean {
 
     private static final long serialVersionUID = -6256274272803665251L;
     
+    @Ignore
     java.lang.Object readResolve() 
             throws ObjectStreamException {
         return value;
