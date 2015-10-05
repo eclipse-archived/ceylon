@@ -34,10 +34,16 @@ import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.channels.FileChannel.MapMode;
 import java.nio.charset.Charset;
+import java.nio.file.FileVisitResult;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.SimpleFileVisitor;
+import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.jar.JarOutputStream;
@@ -574,15 +580,26 @@ public class CeylonDocToolTests {
 
     private void makeCarFromClassFiles(File dir, String[] fileNames, String module, String version) throws IOException {
         String modulePath = module.replace('.', '/') + "/";
+        final Path dirPath = dir.toPath();
+        File classFolder = new File(dir, modulePath);
         File jarFolder = new File(dir, modulePath+version);
         jarFolder.mkdirs();
         File jarFile = new File(jarFolder, module+"-"+version+".car");
         // now jar it up
         JarOutputStream outputStream = new JarOutputStream(new FileOutputStream(jarFile));
-        for(String name : fileNames){
-            if(!name.startsWith(modulePath))
-                continue;
-            String classFile = name.substring(0, name.length()-5) + ".class";
+        final List<String> files = new LinkedList<String>();
+        final Path classPath = classFolder.toPath();
+        // collect all class files
+        Files.walkFileTree(classPath, new SimpleFileVisitor<Path>(){
+            @Override
+            public FileVisitResult visitFile(Path path, BasicFileAttributes attr) throws IOException {
+                if(path.toString().endsWith(".class")){
+                    files.add(dirPath.relativize(path).toString());
+                }
+                return FileVisitResult.CONTINUE;
+            }
+        });
+        for(String classFile : files){
             ZipEntry entry = new ZipEntry(classFile);
             outputStream.putNextEntry(entry);
 
