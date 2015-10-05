@@ -284,7 +284,7 @@ public class MiscTests extends CompilerTests {
                 "regex",
                 "time",
                 // commented out until we make it compile DAMNIT
-//                "transaction",
+                "transaction",
                 "unicode"
         };
         String[] extraModules = {
