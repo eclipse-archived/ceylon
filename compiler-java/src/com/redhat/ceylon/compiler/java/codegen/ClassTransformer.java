@@ -32,7 +32,7 @@ import static com.sun.tools.javac.code.Flags.VARARGS;
 
 import java.lang.annotation.RetentionPolicy;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.EnumSet;
@@ -103,6 +103,7 @@ import com.redhat.ceylon.model.typechecker.model.TypedReference;
 import com.redhat.ceylon.model.typechecker.model.Unit;
 import com.redhat.ceylon.model.typechecker.model.Value;
 import com.sun.tools.javac.code.Flags;
+import com.sun.tools.javac.code.TypeTags;
 import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.JCAnnotation;
 import com.sun.tools.javac.tree.JCTree.JCBinary;
@@ -114,10 +115,10 @@ import com.sun.tools.javac.tree.JCTree.JCFieldAccess;
 import com.sun.tools.javac.tree.JCTree.JCIdent;
 import com.sun.tools.javac.tree.JCTree.JCMethodInvocation;
 import com.sun.tools.javac.tree.JCTree.JCNewClass;
+import com.sun.tools.javac.tree.JCTree.JCPrimitiveTypeTree;
 import com.sun.tools.javac.tree.JCTree.JCReturn;
 import com.sun.tools.javac.tree.JCTree.JCStatement;
 import com.sun.tools.javac.tree.JCTree.JCSwitch;
-import com.sun.tools.javac.tree.JCTree.JCUnary;
 import com.sun.tools.javac.tree.JCTree.JCVariableDecl;
 import com.sun.tools.javac.util.Context;
 import com.sun.tools.javac.util.List;
@@ -267,6 +268,17 @@ public class ClassTransformer extends AbstractTransformer {
             if(supportsReifiedAlias(model))
                 classBuilder.reifiedAlias(model.getType());
         }
+        
+        // Now, once all the fields have been added,
+        // we can add things which depend on knowing all the fields
+        if (Strategy.generateJpaCtor(def)) {
+            buildJpaConstructor((Class)def.getDeclarationModel(), classBuilder);
+        }
+        if (model instanceof Class
+                && !(model instanceof ClassAlias)) { 
+            serialization((Class)model, classBuilder);
+        }
+        
         // reset position before initializer constructor is generated. 
         at(def);
         List<JCTree> result;
@@ -283,7 +295,41 @@ public class ClassTransformer extends AbstractTransformer {
             result = classBuilder.build();
         }
         
+        
+        
         return result;
+    }
+
+    protected void buildJpaConstructor(Class model, ClassDefinitionBuilder classBuilder) {
+        MethodDefinitionBuilder ctor = classBuilder.addConstructor();
+        ctor.ignoreModelAnnotations();
+        ctor.modifiers(PROTECTED);
+        for (TypeParameter tp : model.getTypeParameters()) {
+            ctor.reifiedTypeParameter(tp);
+        }
+        
+        final ListBuffer<JCStatement> stmts = ListBuffer.lb();
+        
+        // invoke super (or this if
+        ListBuffer<JCExpression> superArgs = ListBuffer.<JCExpression>lb();
+        if (model.isSerializable()) {
+            superArgs.add(make().TypeCast(make().QualIdent(syms().ceylonSerializationType.tsym),
+                    makeNull()));
+            for (JCExpression ta : makeReifiedTypeArguments(model.getType())) {
+                superArgs.add(ta);
+            }
+        } else {
+            for (JCExpression ta : makeReifiedTypeArguments(model.getExtendedType())) {
+                superArgs.add(ta);
+            }
+        }
+        stmts.add(make().Exec(make().Apply(null,
+                model.isSerializable() ? naming.makeThis() : naming.makeSuper(),
+                superArgs.toList())));
+        if (!model.isSerializable()) {
+            buildFieldInits(model, classBuilder, stmts);
+        }
+        ctor.body(stmts.toList());
     }
 
     /** 
@@ -1141,7 +1187,6 @@ public class ClassTransformer extends AbstractTransformer {
                     instantiatorImplCb);
         }
         satisfaction(def.getSatisfiedTypes(), model, classBuilder);
-        serialization(model, classBuilder);
         at(def);
         
         // Generate the inner members list for model loading
@@ -1307,7 +1352,19 @@ public class ClassTransformer extends AbstractTransformer {
             Value value = (Value)member;
             if (!value.isTransient()
                     && !value.isFormal()
+                    && !ModelUtil.isConstructor(value)
                     && (value.isShared() || value.isCaptured())) {
+                return true;
+            }
+        } else if (member instanceof Function) {
+            Function function = (Function)member;
+            
+            if (function.isShortcutRefinement()
+                    || (function.isDeferred() && function.isCaptured())
+                    || function.isParameter() 
+                       && (function.isCaptured()
+                           || function.isShared()
+                           || function.isActual())) {
                 return true;
             }
         }
@@ -1328,10 +1385,12 @@ public class ClassTransformer extends AbstractTransformer {
      *     value (basically some kind of 0)</li>
      * </ul>
      */
-    private void serializationConstructor(Class model, ClassDefinitionBuilder classBuilder) {
+    private void serializationConstructor(Class model, 
+            ClassDefinitionBuilder classBuilder) {
         MethodDefinitionBuilder ctor = classBuilder.addConstructor();
         ctor.ignoreModelAnnotations();
         ctor.modifiers(PUBLIC);
+        
         ParameterDefinitionBuilder serializationPdb = ParameterDefinitionBuilder.systemParameter(this, "ignored");
         serializationPdb.modifiers(FINAL);
         serializationPdb.type(make().Type(syms().ceylonSerializationType), null);
@@ -1354,9 +1413,17 @@ public class ClassTransformer extends AbstractTransformer {
                     naming.makeSuper(),
                     superArgs.toList())));
         }
+        buildFieldInits(model, classBuilder, stmts);
+        ctor.body(stmts.toList());
+    }
 
+    protected void buildFieldInits(Class model,
+            ClassDefinitionBuilder classBuilder,
+            final ListBuffer<JCStatement> stmts) {
+        final HashSet<String> excludeFields = new HashSet<String>();
         // initialize reified type arguments to according to parameters
         for (TypeParameter tp : model.getTypeParameters()) {
+            excludeFields.add(naming.getTypeArgumentDescriptorName(tp));
             stmts.add(makeReifiedTypeParameterAssignment(tp));
         }
         
@@ -1366,6 +1433,7 @@ public class ClassTransformer extends AbstractTransformer {
                 @Override
                 public void visit(Class model, Interface iface) {
                     if (hasImpl(iface)) {
+                        excludeFields.add(getCompanionFieldName(iface));
                         stmts.add(makeCompanionInstanceAssignment(model, iface, model.getType().getSupertype(iface)));
                     }
                 }
@@ -1376,6 +1444,7 @@ public class ClassTransformer extends AbstractTransformer {
                 if (!(decl instanceof Interface)) {
                     continue;
                 }
+                satisfiedInterfaces.add((Interface)decl);
                 // make sure we get the right instantiation of the interface
                 satisfiedType = model.getType().getSupertype(decl);
                 walkSatisfiedInterfaces(model, visitor, satisfiedType, satisfiedInterfaces);
@@ -1383,43 +1452,56 @@ public class ClassTransformer extends AbstractTransformer {
         }
         
         // initialize attribute fields to null or a zero
-        for (Declaration member : model.getMembers()) {
-            if (hasField(member)) {
-                Value value = (Value)member;
-                if (value.isLate()) {
-                    continue;
-                }
-                // initialize all reference fields to null and all primitive 
-                // fields to a default value.
-                JCExpression nullOrZero;
-                if (CodegenUtil.isUnBoxed(value)) {
-                    Object literal;
-                    Type type = value.getType();
-                    if (isCeylonBoolean(type)) {
-                        literal = false;
-                    } else if (isCeylonByte(type)) {
-                        literal = (byte)0;
-                    } else if (isCeylonInteger(type)) {
-                        literal = 0L;
-                    } else if (isCeylonCharacter(type)) {
-                        literal = 0;
-                    } else if (isCeylonFloat(type)) {
-                        literal = 0.0;
-                    } else if (isCeylonString(type)) {
-                        literal = "";
-                    } else {
-                        throw BugException.unhandledCase(type);
-                    }
-                    nullOrZero = make().Literal(literal);
-                } else {
-                    nullOrZero = makeNull();
-                }
-                stmts.add(make().Exec(make().Assign(
-                        naming.makeQualifiedName(naming.makeThis(), value, Naming.NA_IDENT), 
-                        nullOrZero)));
+        appendDefaultFieldInits(classBuilder, stmts, excludeFields);
+    }
+
+    protected void appendDefaultFieldInits(ClassDefinitionBuilder model,
+            final ListBuffer<JCStatement> stmts,
+            Collection<String> excludeFields) {
+        for (JCVariableDecl field : model.getFields()) {
+            String fieldName = field.name.toString();
+            if (excludeFields != null && excludeFields.contains(fieldName)) {
+                continue;
             }
+            if (field.mods != null
+                    && (field.mods.flags & STATIC) != 0) {
+                continue;
+            }
+            // initialize all reference fields to null and all primitive 
+            // fields to a default value.
+            JCExpression nullOrZero;
+            if (field.vartype instanceof JCPrimitiveTypeTree) {
+                switch (((JCPrimitiveTypeTree)field.vartype).typetag) {
+                case TypeTags.BYTE:
+                case TypeTags.SHORT:
+                case TypeTags.INT:
+                    nullOrZero = make().Literal(0);
+                    break;
+                case TypeTags.LONG:
+                    nullOrZero = make().Literal(0L);
+                    break;
+                case TypeTags.FLOAT:
+                    nullOrZero = make().Literal(0.0f);
+                    break;
+                case TypeTags.DOUBLE:
+                    nullOrZero = make().Literal(0.0);
+                    break;
+                case TypeTags.BOOLEAN:
+                    nullOrZero = make().Literal(false);
+                    break;
+                case TypeTags.CHAR:
+                    nullOrZero = make().Literal('\0');
+                    break;
+                default:
+                    throw new RuntimeException();
+                }
+            }else {
+                nullOrZero = makeNull();
+            }
+            stmts.add(make().Exec(make().Assign(
+                    naming.makeQualIdent(naming.makeThis(), fieldName), 
+                    nullOrZero)));
         }
-        ctor.body(stmts.toList());
     }
     
     static interface SatisfactionVisitor {

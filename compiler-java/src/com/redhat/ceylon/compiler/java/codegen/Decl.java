@@ -895,6 +895,19 @@ public class Decl {
         return false;
     }
     
+    public static boolean hasOnyValueConstructors(Class cls) {
+        if (cls.getParameterList() == null) {
+            for (Declaration d : cls.getMembers()) {
+                if (d instanceof Constructor &&
+                        !((Constructor) d).isValueConstructor()) {
+                    return false;
+                }
+            }
+            return true;
+        } 
+        return false;
+    }
+    
     /** Is the given constructor an enumerated ("singleton") constructor */
     public static boolean isEnumeratedConstructor(Constructor ctor) {
         return ctor != null && ctor.getContainer().getDirectMember(ctor.getName(), null, false) instanceof Value;

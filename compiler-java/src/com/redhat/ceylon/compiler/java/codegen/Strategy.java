@@ -25,7 +25,9 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.MethodDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
 import com.redhat.ceylon.model.loader.JvmBackendUtil;
+import com.redhat.ceylon.model.loader.model.LazyClass;
 import com.redhat.ceylon.model.typechecker.model.Class;
+import com.redhat.ceylon.model.typechecker.model.ClassAlias;
 import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.model.typechecker.model.Constructor;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
@@ -33,10 +35,12 @@ import com.redhat.ceylon.model.typechecker.model.Element;
 import com.redhat.ceylon.model.typechecker.model.Functional;
 import com.redhat.ceylon.model.typechecker.model.Function;
 import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
+import com.redhat.ceylon.model.typechecker.model.ModelUtil;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.ParameterList;
 import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
+import com.redhat.ceylon.model.typechecker.model.TypeParameter;
 import com.redhat.ceylon.model.typechecker.model.Unit;
 import com.redhat.ceylon.model.typechecker.model.Value;
 
@@ -362,6 +366,98 @@ class Strategy {
     public static boolean preferLazySwitchingIterable(
             java.util.List<PositionalArgument> positionalArguments) {
         return positionalArguments.size() < 128;
+    }
+
+    public static boolean generateJpaCtor(
+            Tree.ClassOrInterface def) {
+        return generateJpaCtor(def.getDeclarationModel());
+    }
+
+    static boolean generateJpaCtor(ClassOrInterface declarationModel) {
+        if (declarationModel instanceof Class
+                && !(declarationModel instanceof ClassAlias)
+                && declarationModel.isToplevel()) {
+            Class cls = (Class)declarationModel;
+            if (cls.getCaseValues() != null && !cls.getCaseValues().isEmpty()) {
+                return false;
+            }
+            if (hasNullaryNonJpaConstructor(cls)) {
+                // The class will already have a nullary ctor
+                return false;
+            }
+            
+            boolean hasDelegatableSuper;
+            Class superClass = (Class)cls.getExtendedType().getDeclaration();
+            if (superClass instanceof LazyClass
+                    && !((LazyClass)superClass).isCeylon()) {
+                // If the superclass is Java then generate a Jpa constructor
+                // if there's a nullary superclass constructor we can call
+                hasDelegatableSuper = cls.getParameterList() != null 
+                        && cls.getParameterList().getParameters() != null 
+                        && cls.getParameterList().getParameters().isEmpty();
+            } else {
+                hasDelegatableSuper = hasNullaryNonJpaConstructor(superClass)
+                        || hasJpaConstructor(superClass);
+            }
+            
+            boolean constrained = 
+                    (cls.getCaseValues() != null 
+                    && !cls.getCaseValues().isEmpty())
+                    || Decl.hasOnyValueConstructors(cls);
+            
+            return hasDelegatableSuper
+                    && !constrained;
+        } else {
+            return false;
+        }
+    }
+    
+    /**
+     * Whether the given class has a "JPA constructor". 
+     * A JPA constructor is a hidden-from-Ceylon constructor
+     * which is used by frameworks like JPA. To be useful to frameworks
+     * the JPA constructor must be nullary. A JPA constructor
+     * will not be nullary if the class is generic: This makes it non-useful 
+     * to JPA, but allows subclasses to delegate to it and have their own
+     * nullary JPA constructor.  
+     * @param c The class
+     * @return
+     */
+    public static boolean hasJpaConstructor(Class c) {
+        //if (c instanceof LazyClass) {
+            // If it's binary it has a JpaConstructor if it says so
+        //    return ((LazyClass)c).hasJpaConstructor();
+        //} else {
+            // Otherwise it has a Jpa constructor if it doesn't already have
+            // a nullary ceylon constructor
+            return !hasNullaryNonJpaConstructor(c);
+        //}
+    }
+    
+    /**
+     * Will this class have a nullary Java constructor, excluding JPA constructors
+     * @param c
+     * @return
+     */
+    protected static boolean hasNullaryNonJpaConstructor(Class c) {
+        if (c.isToplevel()
+                && !(c instanceof ClassAlias)) {
+            List<Parameter> parameters = null;
+            if (c.hasConstructors()) {
+                Constructor defaultConstructor = Decl.getDefaultConstructor(c);
+                if (defaultConstructor != null
+                        && defaultConstructor.getParameterList() != null) {
+                    parameters = defaultConstructor.getParameterList().getParameters();
+                }
+            } else if (c.getParameterList() != null ){
+                parameters = c.getParameterList().getParameters();
+            }
+            return parameters != null 
+                    && (parameters.isEmpty()
+                    || parameters.get(0).isDefaulted()
+                    || (parameters.get(0).isSequenced() && !parameters.get(0).isAtLeastOne()));
+        }
+        return false;
     }
     
 }

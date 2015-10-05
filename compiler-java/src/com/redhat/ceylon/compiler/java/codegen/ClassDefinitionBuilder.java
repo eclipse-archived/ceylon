@@ -26,6 +26,8 @@ import static com.sun.tools.javac.code.Flags.PRIVATE;
 import static com.sun.tools.javac.code.Flags.PUBLIC;
 import static com.sun.tools.javac.code.Flags.STATIC;
 
+import java.util.ArrayList;
+
 import com.redhat.ceylon.compiler.java.codegen.recovery.TransformationPlan;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.model.typechecker.model.Annotation;
@@ -420,13 +422,15 @@ public class ClassDefinitionBuilder {
         }else if (ignoreAnnotations) {
             ret = ret.prependList(gen.makeAtIgnore());
         }else{
+            boolean jpaConstructor = thisType != null && Strategy.generateJpaCtor((Class)thisType.getDeclaration());
             if (hasConstructors || thisType != null) {
                 Type exType = extendingType;
                 if (extendingType != null
                         && extendingType.getDeclaration().isNativeHeader()) {
                     exType = extendingType.getExtendedType();
                 }
-                ret = ret.prependList(gen.makeAtClass(thisType, exType, hasConstructors));
+                ret = ret.prependList(gen.makeAtClass(thisType, exType, 
+                        hasConstructors));
             }
             ret = ret.prependList(this.annotations.toList());
         }
@@ -728,5 +732,15 @@ public class ClassDefinitionBuilder {
 
     public boolean hasDelegatingConstructors() {
         return hasDelegatingConstructors;
+    }
+
+    public Iterable<JCVariableDecl> getFields() {
+        ArrayList<JCVariableDecl> result = new ArrayList<JCVariableDecl>();
+        for (JCTree t : defs) {
+            if (t instanceof JCVariableDecl) {
+                result.add((JCVariableDecl)t);
+            }
+        }
+        return result;
     }
 }
