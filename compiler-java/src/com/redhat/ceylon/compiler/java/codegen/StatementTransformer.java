@@ -30,15 +30,18 @@ import java.util.HashSet;
 import java.util.Set;
 
 import com.redhat.ceylon.common.BooleanUtil;
+import com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.BoxingStrategy;
 import com.redhat.ceylon.compiler.java.codegen.Naming.CName;
 import com.redhat.ceylon.compiler.java.codegen.Naming.Substitution;
 import com.redhat.ceylon.compiler.java.codegen.Naming.SyntheticName;
 import com.redhat.ceylon.compiler.java.codegen.recovery.HasErrorException;
+import com.redhat.ceylon.compiler.typechecker.tree.CustomTree;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Break;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.CaseClause;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Condition;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.ConditionList;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Continue;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ForStatement;
@@ -4766,4 +4769,63 @@ public class StatementTransformer extends AbstractTransformer {
         }
         return (specExpr != null) ? specExpr.getExpression() : null;
     }
+
+    public JCTree transform(CustomTree.GuardedVariable that) {
+        BoxingStrategy boxingStrategy = CodegenUtil.getBoxingStrategy(that.getDeclarationModel());
+        Tree.Expression expr = that.getSpecifierExpression().getExpression();
+        Type fromType = expr.getTypeModel();
+        Value newValue = that.getDeclarationModel();
+        Type toType = newValue.getType();
+        Tree.ConditionList conditionList = that.getConditionList();
+        Tree.Condition condition = conditionList.getConditions().get(0);
+        
+        JCExpression val = expressionGen().transformExpression(expr);
+        at(that);
+        if(condition instanceof Tree.IsCondition){
+            if(!willEraseToObject(toType)){
+                // Want raw type for instanceof since it can't be used with generic types
+                JCExpression rawToTypeExpr = makeJavaType(toType, JT_NO_PRIMITIVES | JT_RAW);
+                // Substitute variable with the correct type to use in the rest of the code block
+                val = make().TypeCast(rawToTypeExpr, val);
+                if (CodegenUtil.isUnBoxed(newValue) && canUnbox(toType)) {
+                    val = unboxType(val, toType);
+                }
+            }
+        }else if(condition instanceof Tree.ExistsCondition){
+            Type exprType = fromType;
+            if (isOptional(exprType)) {
+                exprType = typeFact().getDefiniteType(exprType);
+            }
+            val = expressionGen().applyErasureAndBoxing(val, 
+                    exprType,
+                    CodegenUtil.hasTypeErased(expr),
+                    true,
+                    CodegenUtil.hasUntrustedType(expr),
+                    boxingStrategy, 
+                    toType, 
+                    0);
+        }else if(condition instanceof Tree.NonemptyCondition){
+            Type exprType = fromType;
+            if (isOptional(exprType)) {
+                exprType = typeFact().getDefiniteType(exprType);
+            }
+            val = expressionGen().applyErasureAndBoxing(val,
+                    exprType, false, true,
+                    BoxingStrategy.BOXED,
+                    toType,
+                    ExpressionTransformer.EXPR_DOWN_CAST);
+        }
+        SyntheticName alias = naming.alias(that.getIdentifier().getText());
+        Substitution subst = naming.addVariableSubst(newValue, alias.getName());
+        // FIXME: this is rubbish, but the same rubbish from assert. it's most likely wrong there too
+        Scope scope = that.getScope().getScope();
+        while (scope instanceof ConditionScope) {
+            scope = scope.getScope();
+        }
+        subst.scopeClose(scope);
+
+        JCExpression varType = makeJavaType(toType);
+        return make().VarDef(make().Modifiers(FINAL), alias.asName(), varType, val);
+    }
 }
+

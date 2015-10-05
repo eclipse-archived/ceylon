@@ -34,6 +34,7 @@ import com.redhat.ceylon.compiler.java.codegen.Naming.SyntheticName;
 import com.redhat.ceylon.compiler.java.codegen.recovery.Drop;
 import com.redhat.ceylon.compiler.java.codegen.recovery.HasErrorException;
 import com.redhat.ceylon.compiler.java.codegen.recovery.TransformationPlan;
+import com.redhat.ceylon.compiler.typechecker.tree.CustomTree;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Return;
@@ -1073,6 +1074,13 @@ public class CeylonVisitor extends Visitor {
         append(gen.at(that).Exec(makeDynamicUnsupportedError(that)));
     }
 
+    public void visit(Tree.Variable that) {
+        if(that instanceof CustomTree.GuardedVariable)
+            append(gen.statementGen().transform((CustomTree.GuardedVariable)that));
+        else
+            super.visit(that);
+    }
+    
     private JCExpression makeDynamicUnsupportedError(Node that) {
         return gen.makeErroneous(that, UnsupportedVisitor.DYNAMIC_UNSUPPORTED_ERR);
     }
