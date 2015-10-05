@@ -1,0 +1,102 @@
+package com.redhat.ceylon.compiler.java.test.statement.conditional;
+
+class MethodIfSyntheticElse implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    MethodIfSyntheticElse() {
+    }
+    
+    public final long m(final .ceylon.language.Integer $int) {
+        if (1L == 2L) {
+            .ceylon.language.Integer $int$2;
+            if (!(($int$2 = $int) != null)) {
+                final .java.lang.Object $int$3 = $int$2;
+                return 0L;
+            }
+            final long int$4 = $int.longValue();
+            return int$4 + int$4;
+        }
+        return (
+            let
+            {
+                .ceylon.language.Integer $ceylontmp$5 = $int;
+            }
+            returning $ceylontmp$5 != null ? $ceylontmp$5 : .ceylon.language.Integer.instance(2L);
+        ).longValue();
+    }
+    
+    public final long m2(final .ceylon.language.Integer $int) {
+        .ceylon.language.Integer $int$7;
+        if (($int$7 = $int) != null) {
+            final long $int$8 = $int$7.longValue();
+            return $int$8 + 1L;
+        }
+        final .java.lang.Object int$9 = $int;
+        return 0L;
+    }
+    
+    public final long m3(final .ceylon.language.Integer $int) {
+        if (!($int != null)) {
+            return 0L;
+        }
+        final long int$12 = ((.ceylon.language.Integer)$int).longValue();
+        return int$12 + 1L;
+    }
+    
+    public final long m4(final .ceylon.language.Integer $int) {
+        .java.lang.Object $int$14;
+        if (($int$14 = $int) != null) {
+            final long $int$15 = ((.ceylon.language.Integer)$int$14).longValue();
+            return $int$15 + 1L;
+        }
+        final .java.lang.Object int$16 = $int;
+        return 0L;
+    }
+    
+    public final .java.lang.String m5(final .java.lang.Object $int) {
+        .java.lang.Object $int$18;
+        if (($int$18 = $int) instanceof .ceylon.language.Integer) {
+            final long $int$19 = ((.ceylon.language.Integer)$int$18).longValue();
+            return .ceylon.language.Integer.toString($int$19);
+        }
+        final .java.lang.String int$20 = ((.ceylon.language.String)$int).toString();
+        return int$20;
+    }
+    
+    public final .java.lang.String m6(final .java.lang.Object $int) {
+        .java.lang.Object $int$22;
+        if (!(($int$22 = $int) instanceof .ceylon.language.Integer)) {
+            final .java.lang.String $int$23 = ((.ceylon.language.String)$int$22).toString();
+            return $int$23;
+        }
+        final long int$24 = ((.ceylon.language.Integer)$int).longValue();
+        return .ceylon.language.Integer.toString(int$24);
+    }
+    
+    public final .java.lang.String m7(final .ceylon.language.Sequential<? extends .ceylon.language.String> arg) {
+        .ceylon.language.Sequential<? extends .ceylon.language.String> arg$26;
+        if ((arg$26 = arg) instanceof .ceylon.language.Sequence) {
+            final .ceylon.language.Sequence<? extends .ceylon.language.String> arg$27 = (.ceylon.language.Sequence<? extends .ceylon.language.String>)(.ceylon.language.Sequence)arg$26;
+            return ((.ceylon.language.String)(.java.lang.Object)arg$27.getFirst()).toString();
+        }
+        final .ceylon.language.Empty arg$28 = (.ceylon.language.Empty)(.ceylon.language.Sequential)arg;
+        final .ceylon.language.Empty empt = arg$28;
+        return "";
+    }
+    
+    public final .java.lang.String m8(final .ceylon.language.Sequential<? extends .ceylon.language.String> arg) {
+        .ceylon.language.Sequential<? extends .ceylon.language.String> arg$30;
+        if (!((arg$30 = arg) instanceof .ceylon.language.Sequence)) {
+            final .ceylon.language.Empty arg$31 = (.ceylon.language.Empty)(.ceylon.language.Sequential)arg$30;
+            final .ceylon.language.Empty empt = arg$31;
+            return "";
+        }
+        final .ceylon.language.Sequence<? extends .ceylon.language.String> arg$32 = (.ceylon.language.Sequence<? extends .ceylon.language.String>)(.ceylon.language.Sequence)arg;
+        return ((.ceylon.language.String)(.java.lang.Object)arg$32.getFirst()).toString();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.statement.conditional.MethodIfSyntheticElse.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.conditional.MethodIfSyntheticElse.class);
+}

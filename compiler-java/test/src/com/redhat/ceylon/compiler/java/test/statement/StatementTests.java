@@ -269,6 +269,11 @@ public class StatementTests extends CompilerTests {
         compareWithJavaSource("conditional/IfExpression");
     }
 
+    @Test
+    public void testConMethodIfSyntheticElse(){
+        compareWithJavaSource("conditional/MethodIfSyntheticElse");
+    }
+
     //
     // for
 
