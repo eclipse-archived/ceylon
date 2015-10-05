@@ -235,6 +235,7 @@ public class Symtab {
     public final Type ceylonAtCaseTypes;
     public final Type ceylonAtIgnore;
     public final Type ceylonAtConstructorName;
+    public final Type ceylonAtJpa;
     public final Type ceylonVarianceType;
     public final Type ceylonAtTypeParameters;
     public final Type ceylonAtTypeParameter;
@@ -649,6 +650,7 @@ public class Symtab {
         ceylonAtCaseTypes = enterClass("com.redhat.ceylon.compiler.java.metadata.CaseTypes");
         ceylonAtIgnore = enterClass("com.redhat.ceylon.compiler.java.metadata.Ignore");
         ceylonAtConstructorName = enterClass("com.redhat.ceylon.compiler.java.metadata.ConstructorName");
+        ceylonAtJpa = enterClass("com.redhat.ceylon.compiler.java.metadata.Jpa");
         ceylonVarianceType = enterClass("com.redhat.ceylon.compiler.java.metadata.Variance");
         ceylonAtTypeParameter = enterClass("com.redhat.ceylon.compiler.java.metadata.TypeParameter");
         ceylonAtTypeParameters = enterClass("com.redhat.ceylon.compiler.java.metadata.TypeParameters");

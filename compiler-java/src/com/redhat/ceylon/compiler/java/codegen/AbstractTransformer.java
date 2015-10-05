@@ -3231,6 +3231,10 @@ public abstract class AbstractTransformer implements Transformation {
         return makeModelAnnotation(syms().ceylonAtIgnore);
     }
     
+    List<JCAnnotation> makeAtJpa() {
+        return makeModelAnnotation(syms().ceylonAtJpa);
+    }
+    
     List<JCAnnotation> makeAtConstructorName(String name, boolean delegation) {
         List<JCExpression> ass = List.<JCExpression>of(
                 make().Assign(naming.makeUnquotedIdent("value"), make().Literal(name == null ? "" : name)));

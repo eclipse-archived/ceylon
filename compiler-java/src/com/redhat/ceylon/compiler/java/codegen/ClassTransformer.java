@@ -302,7 +302,8 @@ public class ClassTransformer extends AbstractTransformer {
 
     protected void buildJpaConstructor(Class model, ClassDefinitionBuilder classBuilder) {
         MethodDefinitionBuilder ctor = classBuilder.addConstructor();
-        ctor.ignoreModelAnnotations();
+        ctor.modelAnnotations(makeAtJpa());
+        ctor.modelAnnotations(makeAtIgnore());
         ctor.modifiers(PROTECTED);
         for (TypeParameter tp : model.getTypeParameters()) {
             ctor.reifiedTypeParameter(tp);
