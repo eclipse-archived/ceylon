@@ -137,7 +137,7 @@ void memberCallableCtorDeclAssertions(CallableConstructorDeclaration decl) {
 
 void valueCtorModelAssertions(ValueConstructor<ConstructorLiteralsSub> model) {
     assert("com.redhat.ceylon.compiler.java.test.metamodel::ConstructorLiteralsSub.val" == model.string);
-    assert(model == `new ConstructorLiteralsSub.val`.apply<ConstructorLiteralsSub,Nothing>());
+    assert(model == `new ConstructorLiteralsSub.val`.apply<ConstructorLiteralsSub>());
 }
 void memberValueCtorModelAssertions(MemberClassValueConstructor<ConstructorLiteralsSub, ConstructorLiteralsSub.Member2> model) {
     assert("com.redhat.ceylon.compiler.java.test.metamodel::ConstructorLiteralsSub.Member2.val2" == model.string);
