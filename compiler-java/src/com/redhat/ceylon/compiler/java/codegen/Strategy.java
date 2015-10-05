@@ -392,9 +392,9 @@ class Strategy {
                     && !((LazyClass)superClass).isCeylon()) {
                 // If the superclass is Java then generate a Jpa constructor
                 // if there's a nullary superclass constructor we can call
-                hasDelegatableSuper = cls.getParameterList() != null 
-                        && cls.getParameterList().getParameters() != null 
-                        && cls.getParameterList().getParameters().isEmpty();
+                hasDelegatableSuper = superClass.getParameterList() != null 
+                        && superClass.getParameterList().getParameters() != null 
+                        && superClass.getParameterList().getParameters().isEmpty();
             } else {
                 hasDelegatableSuper = hasNullaryNonJpaConstructor(superClass)
                         || hasJpaConstructor(superClass);
