@@ -2,6 +2,11 @@ package com.redhat.ceylon.compiler.java.test.expression.attribute;
 
 class InitializerParamAccessWithExtends extends .java.lang.Object implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
+    protected InitializerParamAccessWithExtends() {
+        super();
+        this.b = false;
+    }
+    
     InitializerParamAccessWithExtends(final boolean b) {
         super();
         this.b = b;
@@ -39,6 +44,11 @@ class InitializerParamAccessWithExtends extends .java.lang.Object implements .co
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.attribute.InitializerParamAccessWithExtends.class);
 }
 class InitializerParamAccessWithExtends2 extends .com.redhat.ceylon.compiler.java.test.expression.attribute.InitializerParamAccessWithExtends {
+    
+    protected InitializerParamAccessWithExtends2() {
+        super();
+        this.b = false;
+    }
     
     InitializerParamAccessWithExtends2(final boolean b) {
         super(b);

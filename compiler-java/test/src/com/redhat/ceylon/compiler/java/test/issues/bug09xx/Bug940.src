@@ -2,6 +2,10 @@ package com.redhat.ceylon.compiler.java.test.issues.bug09xx;
 
 public class Bug940 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
+    protected Bug940() {
+        super();
+    }
+    
     public Bug940(final .ceylon.language.Callable<? extends .java.lang.Object> callable) {
         final .ceylon.language.Callable<? extends .java.lang.Object> z = (.ceylon.language.Callable<? extends .java.lang.Object>)callable.$call$();
         z.$call$();

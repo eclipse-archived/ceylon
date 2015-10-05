@@ -27,7 +27,7 @@ final class SerializableInterface$impl<T> {
 }
 interface SerializableSubInterface<S> extends .com.redhat.ceylon.compiler.java.test.structure.klass.SerializableInterface<S> {
 }
-class SerializableInterfaceSatisfier implements .com.redhat.ceylon.compiler.java.runtime.serialization.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.klass.SerializableSubInterface<.ceylon.language.Integer> {
+class SerializableInterfaceSatisfier implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.klass.SerializableSubInterface<.ceylon.language.Integer>, .com.redhat.ceylon.compiler.java.runtime.serialization.Serializable {
     
     public SerializableInterfaceSatisfier(final .com.redhat.ceylon.compiler.java.runtime.serialization.$Serialization$ ignored) {
         this.$com$redhat$ceylon$compiler$java$test$structure$klass$SerializableInterface$this$ = new .com.redhat.ceylon.compiler.java.test.structure.klass.SerializableInterface$impl<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, this);
@@ -47,6 +47,17 @@ class SerializableInterfaceSatisfier implements .com.redhat.ceylon.compiler.java
     public .ceylon.language.Integer defaultMethod() {
         return $com$redhat$ceylon$compiler$java$test$structure$klass$SerializableInterface$this$.defaultMethod();
     }
+    
+    @.java.lang.Override
+    public final .ceylon.language.Integer formalMethod() {
+        return .ceylon.language.Integer.instance(1L);
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.klass.SerializableInterfaceSatisfier.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.SerializableInterfaceSatisfier.class);
     
     @.java.lang.Override
     public .java.util.Collection<.ceylon.language.serialization.ReachableReference> $references$() {
@@ -71,19 +82,12 @@ class SerializableInterfaceSatisfier implements .com.redhat.ceylon.compiler.java
         
         } else throw new .ceylon.language.AssertionError("unexpected reachable reference " + reference);
     }
-    
-    @.java.lang.Override
-    public final .ceylon.language.Integer formalMethod() {
-        return .ceylon.language.Integer.instance(1L);
-    }
-    
-    @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
-        return .com.redhat.ceylon.compiler.java.test.structure.klass.SerializableInterfaceSatisfier.$TypeDescriptor$;
-    }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.SerializableInterfaceSatisfier.class);
 }
-class SerializableInterfaceSatisfierGeneric<U> implements .com.redhat.ceylon.compiler.java.runtime.serialization.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.klass.SerializableSubInterface<U> {
+class SerializableInterfaceSatisfierGeneric<U> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.klass.SerializableSubInterface<U>, .com.redhat.ceylon.compiler.java.runtime.serialization.Serializable {
+    
+    protected SerializableInterfaceSatisfierGeneric(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$U) {
+        this((.com.redhat.ceylon.compiler.java.runtime.serialization.$Serialization$)null, $reified$U);
+    }
     
     public SerializableInterfaceSatisfierGeneric(final .com.redhat.ceylon.compiler.java.runtime.serialization.$Serialization$ ignored, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$U) {
         this.$reified$U = $reified$U;
@@ -112,6 +116,16 @@ class SerializableInterfaceSatisfierGeneric<U> implements .com.redhat.ceylon.com
     @.java.lang.Override
     public U defaultMethod() {
         return $com$redhat$ceylon$compiler$java$test$structure$klass$SerializableInterface$this$.defaultMethod();
+    }
+    
+    @.java.lang.Override
+    public final U formalMethod() {
+        return getU$priv$();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.SerializableInterfaceSatisfierGeneric.class, $reified$U);
     }
     
     @.java.lang.Override
@@ -145,15 +159,5 @@ class SerializableInterfaceSatisfierGeneric<U> implements .com.redhat.ceylon.com
             throw new .java.lang.RuntimeException("unknown attribute");
         
         } else throw new .ceylon.language.AssertionError("unexpected reachable reference " + reference);
-    }
-    
-    @.java.lang.Override
-    public final U formalMethod() {
-        return getU$priv$();
-    }
-    
-    @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
-        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.SerializableInterfaceSatisfierGeneric.class, $reified$U);
     }
 }

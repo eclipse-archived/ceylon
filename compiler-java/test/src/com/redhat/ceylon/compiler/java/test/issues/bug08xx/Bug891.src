@@ -7,6 +7,11 @@ interface Bug891_Interface {
 }
 class Bug891_Class implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug891_Interface {
     
+    protected Bug891_Class() {
+        super();
+        this.arg = null;
+    }
+    
     Bug891_Class(final .ceylon.language.Callable<? extends .java.lang.Object> arg) {
         this.arg = arg;
     }

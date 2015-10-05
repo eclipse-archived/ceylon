@@ -2,6 +2,11 @@ package com.redhat.ceylon.compiler.java.test.structure.mcr;
 
 class ClassDefaultMemberClassSpecifier implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
+    protected ClassDefaultMemberClassSpecifier() {
+        super();
+        this.other = null;
+    }
+    
     ClassDefaultMemberClassSpecifier(final .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassSpecifier other) {
         this.other = other;
     }

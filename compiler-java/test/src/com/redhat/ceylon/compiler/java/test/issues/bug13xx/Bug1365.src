@@ -2,6 +2,10 @@ package com.redhat.ceylon.compiler.java.test.issues.bug13xx;
 
 public abstract class Bug1365_A implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
+    protected Bug1365_A() {
+        super();
+    }
+    
     public Bug1365_A(final .ceylon.language.Callable<? extends .ceylon.language.Float> ff) {
     }
     
@@ -12,6 +16,11 @@ public abstract class Bug1365_A implements .com.redhat.ceylon.compiler.java.runt
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1365_A.class);
 }
 class Bug1365_B extends .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1365_A {
+    
+    protected Bug1365_B() {
+        super();
+        this.f = 0.0;
+    }
     
     Bug1365_B(final double f) {
         super(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Float>(.ceylon.language.Float.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Float()", (short)-1){
@@ -36,6 +45,11 @@ class Bug1365_B extends .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1365_B.class);
 }
 class Bug1365_C extends .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1365_A {
+    
+    protected Bug1365_C() {
+        super();
+        this.f = 0.0;
+    }
     
     Bug1365_C(final double f) {
         super(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Float>(.ceylon.language.Float.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Float()", (short)-1){

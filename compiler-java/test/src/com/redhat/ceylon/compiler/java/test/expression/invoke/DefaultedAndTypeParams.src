@@ -2,6 +2,12 @@ package com.redhat.ceylon.compiler.java.test.expression.invoke;
 
 class DefaultedAndTypeParams<X> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
+    protected DefaultedAndTypeParams(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$X) {
+        super();
+        this.$reified$X = $reified$X;
+        this.init = null;
+    }
+    
     DefaultedAndTypeParams(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$X, final X init) {
         this.$reified$X = $reified$X;
         this.init = init;

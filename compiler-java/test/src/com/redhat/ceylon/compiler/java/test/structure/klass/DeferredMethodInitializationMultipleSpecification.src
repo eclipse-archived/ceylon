@@ -2,6 +2,10 @@ package com.redhat.ceylon.compiler.java.test.structure.klass;
 
 class DeferredMethodInitializationMultipleSpecification implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
+    protected DeferredMethodInitializationMultipleSpecification() {
+        super();
+    }
+    
     DeferredMethodInitializationMultipleSpecification(final boolean b) {
         
         final class s_ {

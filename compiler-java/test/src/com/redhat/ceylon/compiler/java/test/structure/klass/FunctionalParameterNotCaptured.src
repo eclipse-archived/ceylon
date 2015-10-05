@@ -2,6 +2,11 @@ package com.redhat.ceylon.compiler.java.test.structure.klass;
 
 class FunctionalParameterNotCaptured implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
+    protected FunctionalParameterNotCaptured() {
+        super();
+        this.string = null;
+    }
+    
     FunctionalParameterNotCaptured(final .ceylon.language.Callable<? extends .ceylon.language.String> f) {
         this.string = f.$call$().toString();
     }

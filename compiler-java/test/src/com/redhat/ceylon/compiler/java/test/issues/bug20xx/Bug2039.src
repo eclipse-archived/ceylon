@@ -1,6 +1,11 @@
 package com.redhat.ceylon.compiler.java.test.issues.bug20xx;
 
 class Bug2039 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    protected Bug2039() {
+        super();
+        this.somefunc = null;
+    }
     private final .ceylon.language.Callable<? extends .java.lang.Object> somefunc;
     
     public final .ceylon.language.Callable<? extends .java.lang.Object> getSomefunc() {

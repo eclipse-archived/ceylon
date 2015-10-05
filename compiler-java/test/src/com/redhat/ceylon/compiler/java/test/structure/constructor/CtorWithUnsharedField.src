@@ -1,6 +1,11 @@
 package com.redhat.ceylon.compiler.java.test.structure.constructor;
 
 class CtorUnsharedField implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    protected CtorUnsharedField() {
+        super();
+        this.who = null;
+    }
     @.com.redhat.ceylon.compiler.java.metadata.NoInitCheck
     private final .java.lang.String who;
     

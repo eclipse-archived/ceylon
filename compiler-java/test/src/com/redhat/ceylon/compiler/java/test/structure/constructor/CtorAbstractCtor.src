@@ -1,6 +1,10 @@
 package com.redhat.ceylon.compiler.java.test.structure.constructor;
 
 class CtorAbstractCtorSuper implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    protected CtorAbstractCtorSuper() {
+        super();
+    }
     public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorSuper.foo_ foo_ = null;
     
     public static final class foo_ {
@@ -20,6 +24,12 @@ class CtorAbstractCtorSuper implements .com.redhat.ceylon.compiler.java.runtime.
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorSuper.class);
 }
 class CtorAbstractCtorPartial extends .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorSuper {
+    
+    protected CtorAbstractCtorPartial() {
+        super();
+        this.x = 0L;
+        this.y = 0L;
+    }
     @.com.redhat.ceylon.compiler.java.metadata.NoInitCheck
     private final long x;
     
@@ -73,6 +83,12 @@ class CtorAbstractCtorPartial extends .com.redhat.ceylon.compiler.java.test.stru
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartial.class);
 }
 class CtorAbstractCtorPartialShared extends .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorSuper {
+    
+    protected CtorAbstractCtorPartialShared() {
+        super();
+        this.x = 0L;
+        this.y = 0L;
+    }
     @.com.redhat.ceylon.compiler.java.metadata.NoInitCheck
     private final long x;
     
@@ -124,6 +140,12 @@ class CtorAbstractCtorPartialShared extends .com.redhat.ceylon.compiler.java.tes
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialShared.class);
 }
 class CtorAbstractCtorPartialCaptured extends .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorSuper {
+    
+    protected CtorAbstractCtorPartialCaptured() {
+        super();
+        this.x = 0L;
+        this.y = 0L;
+    }
     @.com.redhat.ceylon.compiler.java.metadata.NoInitCheck
     private final long x;
     
@@ -179,6 +201,12 @@ class CtorAbstractCtorPartialCaptured extends .com.redhat.ceylon.compiler.java.t
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialCaptured.class);
 }
 class CtorAbstractCtorPartialVariable extends .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorSuper {
+    
+    protected CtorAbstractCtorPartialVariable() {
+        super();
+        this.x = 0L;
+        this.y = 0L;
+    }
     @.com.redhat.ceylon.compiler.java.metadata.NoInitCheck
     private long x;
     
@@ -365,6 +393,12 @@ class CtorAbstractCtorPartialVariable extends .com.redhat.ceylon.compiler.java.t
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialVariable.class);
 }
 class CtorAbstractCtorPartialSharedVariable extends .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorSuper {
+    
+    protected CtorAbstractCtorPartialSharedVariable() {
+        super();
+        this.x = 0L;
+        this.y = 0L;
+    }
     @.com.redhat.ceylon.compiler.java.metadata.NoInitCheck
     private long x;
     
@@ -551,6 +585,12 @@ class CtorAbstractCtorPartialSharedVariable extends .com.redhat.ceylon.compiler.
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialSharedVariable.class);
 }
 class CtorAbstractCtorPartialCapturedVariable extends .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorSuper {
+    
+    protected CtorAbstractCtorPartialCapturedVariable() {
+        super();
+        this.x = 0L;
+        this.y = 0L;
+    }
     @.com.redhat.ceylon.compiler.java.metadata.NoInitCheck
     private long x;
     
@@ -762,6 +802,13 @@ class CtorAbstractCtorGeneric<T> extends .com.redhat.ceylon.compiler.java.test.s
             }
             returning null;
         );
+    }
+    
+    protected CtorAbstractCtorGeneric(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        super();
+        this.$reified$T = $reified$T;
+        this.x = null;
+        this.y = null;
     }
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
     @.com.redhat.ceylon.compiler.java.metadata.NoInitCheck

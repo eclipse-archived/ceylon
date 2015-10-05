@@ -24,6 +24,10 @@ public final class coalesce_ {
 }
 class Bug1403 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
+    protected Bug1403() {
+        super();
+    }
+    
     Bug1403(final .ceylon.language.Sequence<? extends .ceylon.language.String> attrs) {
     }
     

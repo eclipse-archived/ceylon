@@ -14,6 +14,15 @@ package com.redhat.ceylon.compiler.java.test.structure.alias;
         caseTypes = {})})
 public class MemberClassAliasWithTypeParameters_Foo<C> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
+    @.com.redhat.ceylon.compiler.java.metadata.Jpa
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    protected MemberClassAliasWithTypeParameters_Foo(@.com.redhat.ceylon.compiler.java.metadata.Ignore
+    final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$C) {
+        super();
+        this.$reified$C = $reified$C;
+        this.c = null;
+    }
+    
     public MemberClassAliasWithTypeParameters_Foo(@.com.redhat.ceylon.compiler.java.metadata.Ignore
     final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$C, @.com.redhat.ceylon.compiler.java.metadata.Name("c")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("C")

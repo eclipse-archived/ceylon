@@ -2,6 +2,14 @@ package com.redhat.ceylon.compiler.java.test.structure.klass;
 
 class FuctionalParameter implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
+    protected FuctionalParameter() {
+        super();
+        this.voidFp = null;
+        this.stringFp = null;
+        this.sharedVoidFp = null;
+        this.sharedStringFp = null;
+    }
+    
     FuctionalParameter(final .ceylon.language.Callable<? extends .java.lang.Object> voidFp, final .ceylon.language.Callable<? extends .ceylon.language.String> stringFp, final .ceylon.language.Callable<? extends .java.lang.Object> sharedVoidFp, final .ceylon.language.Callable<? extends .ceylon.language.String> sharedStringFp) {
         this.voidFp = voidFp;
         this.stringFp = stringFp;

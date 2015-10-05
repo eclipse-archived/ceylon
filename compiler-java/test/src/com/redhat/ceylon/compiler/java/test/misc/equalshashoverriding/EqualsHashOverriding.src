@@ -2,6 +2,11 @@ package com.redhat.ceylon.compiler.java.test.misc.equalshashoverriding;
 
 class EqualsHashOverriding implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
+    protected EqualsHashOverriding() {
+        super();
+        this.s = null;
+    }
+    
     EqualsHashOverriding(final .java.lang.String s) {
         this.s = s;
     }
@@ -44,6 +49,11 @@ class EqualsHashOverriding implements .com.redhat.ceylon.compiler.java.runtime.m
 }
 class EqualsHashOverriding2 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
+    protected EqualsHashOverriding2() {
+        super();
+        this.hash = 0L;
+    }
+    
     EqualsHashOverriding2(final .java.lang.String s) {
         this.hash = 0L;
     }
@@ -67,6 +77,11 @@ class EqualsHashOverriding2 implements .com.redhat.ceylon.compiler.java.runtime.
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.misc.equalshashoverriding.EqualsHashOverriding2.class);
 }
 class EqualsHashOverriding3 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    protected EqualsHashOverriding3() {
+        super();
+        this.hash = 0L;
+    }
     
     EqualsHashOverriding3(final .java.lang.String s) {
         hash = 0L;

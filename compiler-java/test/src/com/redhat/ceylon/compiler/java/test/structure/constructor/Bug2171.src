@@ -28,6 +28,10 @@ class Test2 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTyp
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.Test2.class);
 }
 class Test3 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    protected Test3() {
+        super();
+    }
     public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.Test3.a_ a_ = null;
     
     public static final class a_ {
@@ -62,6 +66,10 @@ class Test3 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTyp
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.Test3.class);
 }
 class Test4 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    protected Test4() {
+        super();
+    }
     public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.Test4.a_ a_ = null;
     
     public static final class a_ {
@@ -102,6 +110,10 @@ class Test4 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTyp
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.Test4.class);
 }
 class TestA implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    protected TestA() {
+        super();
+    }
     public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.TestA.a_ a_ = null;
     
     public static final class a_ {
@@ -125,6 +137,11 @@ class TestA implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTyp
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.TestA.class);
 }
 class TestB1 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    protected TestB1() {
+        super();
+        this.name = null;
+    }
     @.com.redhat.ceylon.compiler.java.metadata.NoInitCheck
     private final .java.lang.String name;
     
@@ -175,6 +192,11 @@ class TestB1 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.TestB1.class);
 }
 class TestB2 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    protected TestB2() {
+        super();
+        this.name = null;
+    }
     @.com.redhat.ceylon.compiler.java.metadata.NoInitCheck
     private final .java.lang.String name;
     
@@ -224,6 +246,11 @@ class TestB2 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.TestB2.class);
 }
 class TestB3 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    protected TestB3() {
+        super();
+        this.name = null;
+    }
     @.com.redhat.ceylon.compiler.java.metadata.NoInitCheck
     private final .java.lang.String name;
     
@@ -276,6 +303,11 @@ class TestB3 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.TestB3.class);
 }
 class TestB4 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    protected TestB4() {
+        super();
+        this.name = null;
+    }
     @.com.redhat.ceylon.compiler.java.metadata.NoInitCheck
     private final .java.lang.String name;
     
@@ -353,6 +385,11 @@ class TestB4 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.TestB4.class);
 }
 class TestC implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    protected TestC() {
+        super();
+        this.name = null;
+    }
     @.com.redhat.ceylon.compiler.java.metadata.NoInitCheck
     private final .java.lang.String name;
     
@@ -401,6 +438,10 @@ class TestC implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTyp
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.TestC.class);
 }
 class TestC2 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    protected TestC2() {
+        super();
+    }
     private static final .com.redhat.ceylon.compiler.java.test.structure.constructor.TestC2.a$delegation$_ a$delegation$_ = null;
     
     private static final class a$delegation$_ {

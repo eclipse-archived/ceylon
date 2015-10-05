@@ -7,6 +7,11 @@ interface I {
 }
 class C implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug06xx.I {
     
+    protected C() {
+        super();
+        this.x = null;
+    }
+    
     C(final .ceylon.language.Integer x) {
         this.x = x;
     }

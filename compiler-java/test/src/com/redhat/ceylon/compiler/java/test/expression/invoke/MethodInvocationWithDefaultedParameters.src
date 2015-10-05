@@ -2,6 +2,13 @@ package com.redhat.ceylon.compiler.java.test.expression.invoke;
 
 class Fookls implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
+    protected Fookls() {
+        super();
+        this.prop = 0L;
+        this.privProp = 0L;
+        this.init = 0L;
+    }
+    
     Fookls(final long init) {
         this.init = init;
         this.prop = 42L;
@@ -295,6 +302,10 @@ class Fookls implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.invoke.Fookls.class);
 }
 class Foosubkls extends .com.redhat.ceylon.compiler.java.test.expression.invoke.Fookls {
+    
+    protected Foosubkls() {
+        super();
+    }
     
     Foosubkls(final long init) {
         super(init);

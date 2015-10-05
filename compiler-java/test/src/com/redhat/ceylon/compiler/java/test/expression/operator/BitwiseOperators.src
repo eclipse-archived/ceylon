@@ -126,6 +126,18 @@ abstract class BWMyInteger extends .java.lang.Object implements .com.redhat.ceyl
 }
 class BitwiseOperators implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
+    protected BitwiseOperators() {
+        super();
+        this.initN = null;
+        this.initI = null;
+        this.n1 = 0L;
+        this.n2 = 0L;
+        this.i1 = 0L;
+        this.boxedN1 = null;
+        this.boxedN2 = null;
+        this.boxedI1 = null;
+    }
+    
     BitwiseOperators(final .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger initN, final .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger initI) {
         this.initN = initN;
         this.initI = initI;
@@ -413,6 +425,10 @@ class BitwiseOperators implements .com.redhat.ceylon.compiler.java.runtime.model
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.operator.BitwiseOperators.class);
 }
 class BitwiseOperatorsSub extends .com.redhat.ceylon.compiler.java.test.expression.operator.BitwiseOperators {
+    
+    protected BitwiseOperatorsSub() {
+        super();
+    }
     
     BitwiseOperatorsSub(final .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger initN, final .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger initI) {
         super(initN, initI);

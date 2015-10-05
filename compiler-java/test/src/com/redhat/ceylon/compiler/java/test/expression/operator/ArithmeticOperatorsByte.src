@@ -65,6 +65,18 @@ abstract class MyByte extends .java.lang.Object implements .com.redhat.ceylon.co
 }
 class ArithmeticOperators implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
+    protected ArithmeticOperators() {
+        super();
+        this.initN = null;
+        this.initI = null;
+        this.n1 = 0;
+        this.n2 = 0;
+        this.i1 = 0;
+        this.boxedByte1 = null;
+        this.boxedByte2 = null;
+        this.boxedByte3 = null;
+    }
+    
     ArithmeticOperators(final .com.redhat.ceylon.compiler.java.test.expression.operator.MyByte initN, final .com.redhat.ceylon.compiler.java.test.expression.operator.MyByte initI) {
         this.initN = initN;
         this.initI = initI;
@@ -701,6 +713,10 @@ class ArithmeticOperators implements .com.redhat.ceylon.compiler.java.runtime.mo
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.operator.ArithmeticOperators.class);
 }
 class ArithmeticOperatorsSub extends .com.redhat.ceylon.compiler.java.test.expression.operator.ArithmeticOperators {
+    
+    protected ArithmeticOperatorsSub() {
+        super();
+    }
     
     ArithmeticOperatorsSub(final .com.redhat.ceylon.compiler.java.test.expression.operator.MyByte initN, final .com.redhat.ceylon.compiler.java.test.expression.operator.MyByte initI) {
         super(initN, initI);

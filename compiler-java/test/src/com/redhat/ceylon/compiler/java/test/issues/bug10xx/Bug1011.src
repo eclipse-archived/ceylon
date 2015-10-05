@@ -74,6 +74,12 @@ final class bug1011_ {
 }
 public class LazyMap<Key, Item> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
+    protected LazyMap(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Key, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Item) {
+        super();
+        this.$reified$Key = $reified$Key;
+        this.$reified$Item = $reified$Item;
+    }
+    
     public LazyMap(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Key, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Item, final .ceylon.language.Iterable<? extends .ceylon.language.Entry<? extends Key, ? extends Item>, ? extends .java.lang.Object> entries) {
         this.$reified$Key = $reified$Key;
         this.$reified$Item = $reified$Item;
@@ -87,6 +93,11 @@ public class LazyMap<Key, Item> implements .com.redhat.ceylon.compiler.java.runt
     }
 }
 public class LazySet<Element> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    protected LazySet(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element) {
+        super();
+        this.$reified$Element = $reified$Element;
+    }
     
     public LazySet(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element, final .ceylon.language.Iterable<? extends Element, ? extends .java.lang.Object> elements) {
         this.$reified$Element = $reified$Element;

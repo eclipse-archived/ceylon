@@ -23,6 +23,11 @@ class CtorConcreteDelegationSuper<T> implements .com.redhat.ceylon.compiler.java
     }
 }
 class C<T> extends .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorConcreteDelegationSuper<T> {
+    
+    protected C(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        super($reified$T);
+        this.$reified$T = $reified$T;
+    }
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
     private static final .com.redhat.ceylon.compiler.java.test.structure.constructor.C.x$delegation$_ x$delegation$_ = null;
     
@@ -126,6 +131,11 @@ class C<T> extends .com.redhat.ceylon.compiler.java.test.structure.constructor.C
     }
 }
 class ExtendsBasic<X> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    protected ExtendsBasic(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$X) {
+        super();
+        this.$reified$X = $reified$X;
+    }
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$X;
     private static final .com.redhat.ceylon.compiler.java.test.structure.constructor.ExtendsBasic.pour$delegation$_ pour$delegation$_ = null;
     
@@ -178,6 +188,11 @@ class ExtendsBasic<X> implements .com.redhat.ceylon.compiler.java.runtime.model.
     }
 }
 class Hello implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    protected Hello() {
+        super();
+        this.who = null;
+    }
     @.com.redhat.ceylon.compiler.java.metadata.NoInitCheck
     private final .java.lang.String who;
     

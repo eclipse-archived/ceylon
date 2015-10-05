@@ -2,6 +2,11 @@ package com.redhat.ceylon.compiler.java.test.expression.instantiation;
 
 class Single<Element> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
+    protected Single(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element) {
+        super();
+        this.$reified$Element = $reified$Element;
+    }
+    
     Single(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element, final Element e) {
         this.$reified$Element = $reified$Element;
     }
@@ -13,6 +18,12 @@ class Single<Element> implements .com.redhat.ceylon.compiler.java.runtime.model.
     }
 }
 public class KlassTypeParams<U, V> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    protected KlassTypeParams(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$U, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$V) {
+        super();
+        this.$reified$U = $reified$U;
+        this.$reified$V = $reified$V;
+    }
     
     public KlassTypeParams(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$U, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$V, final U u, final V v) {
         this.$reified$U = $reified$U;

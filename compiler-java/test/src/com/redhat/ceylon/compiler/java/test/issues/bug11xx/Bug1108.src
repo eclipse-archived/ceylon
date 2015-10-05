@@ -2,6 +2,12 @@ package com.redhat.ceylon.compiler.java.test.issues.bug11xx;
 
 class Bug1108 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
+    protected Bug1108() {
+        super();
+        this.foo = null;
+        this.bar = null;
+    }
+    
     Bug1108(final .java.lang.String foo, final .ceylon.language.Callable<? extends .ceylon.language.String> bar) {
         this.foo = foo;
         this.bar = bar;

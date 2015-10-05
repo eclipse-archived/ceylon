@@ -186,6 +186,12 @@ public final class anno_ {
 @.com.redhat.ceylon.compiler.java.metadata.Class(constructors = true)
 class CPAnnoTest2 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
+    @.com.redhat.ceylon.compiler.java.metadata.Jpa
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    protected CPAnnoTest2() {
+        super();
+    }
+    
     @.javax.annotation.Generated({"by you"})
     @.ceylon.language.SharedAnnotation$annotation$
     public CPAnnoTest2(@.com.redhat.ceylon.compiler.java.metadata.Name("x")

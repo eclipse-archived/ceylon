@@ -23,6 +23,12 @@ final class Bug143Writer$impl {
 }
 class Bug143ToFunctionWriter implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug143Writer {
     
+    protected Bug143ToFunctionWriter() {
+        super();
+        this.$com$redhat$ceylon$compiler$java$test$issues$bug14xx$Bug143Writer$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug143Writer$impl(this);
+        this.write = null;
+    }
+    
     Bug143ToFunctionWriter(final .ceylon.language.Callable<? extends .java.lang.Object> write) {
         this.write = write;
         this.$com$redhat$ceylon$compiler$java$test$issues$bug14xx$Bug143Writer$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug143Writer$impl(this);

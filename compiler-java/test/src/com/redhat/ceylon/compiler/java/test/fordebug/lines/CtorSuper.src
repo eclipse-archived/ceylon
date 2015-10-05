@@ -4,6 +4,13 @@ package com.redhat.ceylon.compiler.java.test.fordebug.lines; // line 1
 @.ceylon.language.SharedAnnotation$annotation$ // line 1
 @.com.redhat.ceylon.compiler.java.metadata.Class(constructors = true) // line 1
 public class CtorSuper implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType { // line 1
+     // line 1
+    @.com.redhat.ceylon.compiler.java.metadata.Jpa // line 1
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    protected CtorSuper() { // line 1
+        super();
+        this.v2 = 0L;
+    }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore // line 2
     private final long v2; // line 2
      // line 3
@@ -74,6 +81,12 @@ public class CtorSuper implements .com.redhat.ceylon.compiler.java.runtime.model
         constructors = true, // line 19
         extendsType = "com.redhat.ceylon.compiler.java.test.fordebug.lines::CtorSuper") // line 19
 public class CtorSuper2 extends .com.redhat.ceylon.compiler.java.test.fordebug.lines.CtorSuper { // line 19
+     // line 19
+    @.com.redhat.ceylon.compiler.java.metadata.Jpa // line 19
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    protected CtorSuper2() { // line 19
+        super();
+    }
      // line 22
     @.ceylon.language.SharedAnnotation$annotation$ // line 22
     public CtorSuper2(@.com.redhat.ceylon.compiler.java.metadata.Name("i") // line 22

@@ -59,6 +59,10 @@ final class switchExpression_ {
 }
 class SwitchExpressionTop implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
+    protected SwitchExpressionTop() {
+        super();
+    }
+    
     SwitchExpressionTop(final .java.lang.Object a) {
     }
     
@@ -69,6 +73,10 @@ class SwitchExpressionTop implements .com.redhat.ceylon.compiler.java.runtime.mo
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.swtch.SwitchExpressionTop.class);
 }
 class SwitchExpressionBottom extends .com.redhat.ceylon.compiler.java.test.statement.swtch.SwitchExpressionTop {
+    
+    protected SwitchExpressionBottom() {
+        super();
+    }
     
     SwitchExpressionBottom(final .java.lang.Object val) {
         super((

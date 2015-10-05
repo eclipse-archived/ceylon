@@ -13,6 +13,10 @@ class Bug1981 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
         );
     }
     
+    protected Bug1981() {
+        super();
+    }
+    
     public static final .java.lang.String Bug1981$qname(final .java.lang.String name$param$) {
         return name$param$;
     }

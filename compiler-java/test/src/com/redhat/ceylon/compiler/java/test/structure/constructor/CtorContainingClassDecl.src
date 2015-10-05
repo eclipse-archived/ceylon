@@ -1,6 +1,10 @@
 package com.redhat.ceylon.compiler.java.test.structure.constructor;
 
 class CtorContainingClassDecl implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    protected CtorContainingClassDecl() {
+        super();
+    }
     public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorContainingClassDecl.bar_ bar_ = null;
     
     public static final class bar_ {

@@ -2,6 +2,12 @@ package com.redhat.ceylon.compiler.java.test.issues.bug14xx;
 
 public class Bug1479<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
+    protected Bug1479(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        super();
+        this.$reified$T = $reified$T;
+        this.parent = null;
+    }
+    
     public Bug1479(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final T data) {
         this.$reified$T = $reified$T;
     }

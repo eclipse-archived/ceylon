@@ -1,12 +1,36 @@
 package com.redhat.ceylon.compiler.java.test.structure.klass;
 
-class SerializableCycle implements .com.redhat.ceylon.compiler.java.runtime.serialization.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class SerializableCycle implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.runtime.serialization.Serializable {
     
     public SerializableCycle(final .com.redhat.ceylon.compiler.java.runtime.serialization.$Serialization$ ignored) {
+        this.ref = null;
     }
     
     SerializableCycle() {
     }
+    private .java.lang.Object ref;
+    
+    public final .java.lang.Object getRef() {
+        if (this.ref != null) {
+            return ref;
+        } else {
+            throw new .ceylon.language.InitializationError("Accessing uninitialized \'late\' attribute \'ref\'");
+        }
+    }
+    
+    public final void setRef(final .java.lang.Object ref) {
+        if (this.ref == null) {
+            this.ref = ref;
+            return;
+        }
+        throw new .ceylon.language.InitializationError("Re-initialization of \'late\' attribute");
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.klass.SerializableCycle.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.SerializableCycle.class);
     
     @.java.lang.Override
     public .java.util.Collection<.ceylon.language.serialization.ReachableReference> $references$() {
@@ -41,27 +65,4 @@ class SerializableCycle implements .com.redhat.ceylon.compiler.java.runtime.seri
         
         } else throw new .ceylon.language.AssertionError("unexpected reachable reference " + reference);
     }
-    private .java.lang.Object ref;
-    
-    public final .java.lang.Object getRef() {
-        if (this.ref != null) {
-            return ref;
-        } else {
-            throw new .ceylon.language.InitializationError("Accessing uninitialized \'late\' attribute \'ref\'");
-        }
-    }
-    
-    public final void setRef(final .java.lang.Object ref) {
-        if (this.ref == null) {
-            this.ref = ref;
-            return;
-        }
-        throw new .ceylon.language.InitializationError("Re-initialization of \'late\' attribute");
-    }
-    
-    @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
-        return .com.redhat.ceylon.compiler.java.test.structure.klass.SerializableCycle.$TypeDescriptor$;
-    }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.SerializableCycle.class);
 }

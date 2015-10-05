@@ -2,6 +2,12 @@ package com.redhat.ceylon.compiler.java.test.structure.klass;
 
 abstract class RefiningAnythingMembersClass<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
+    protected RefiningAnythingMembersClass(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        super();
+        this.$reified$T = $reified$T;
+        this.t = null;
+    }
+    
     RefiningAnythingMembersClass(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final T t) {
         this.$reified$T = $reified$T;
         this.t = t;

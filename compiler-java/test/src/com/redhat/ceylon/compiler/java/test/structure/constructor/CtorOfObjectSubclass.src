@@ -2,6 +2,10 @@ package com.redhat.ceylon.compiler.java.test.structure.constructor;
 
 class CtorOfObjectSubclass extends .java.lang.Object implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
+    protected CtorOfObjectSubclass() {
+        super();
+    }
+    
     @.java.lang.Override
     public final boolean equals(final .java.lang.Object that) {
         return ((.ceylon.language.Boolean).ceylon.language.nothing_.get_()).booleanValue();

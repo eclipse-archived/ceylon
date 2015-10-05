@@ -23,6 +23,10 @@ class Bug2187 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
             returning null;
         );
     }
+    
+    protected Bug2187() {
+        super();
+    }
     private static final .com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2187.bar$delegation$_ bar$delegation$_ = null;
     
     private static final class bar$delegation$_ {

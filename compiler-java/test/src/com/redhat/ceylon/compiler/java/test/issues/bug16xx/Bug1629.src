@@ -2,6 +2,19 @@ package com.redhat.ceylon.compiler.java.test.issues.bug16xx;
 
 class Bug1629 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
+    protected Bug1629() {
+        super();
+        this.captured0$2 = null;
+        this.captured1$5 = 0;
+        this.captured2$8 = null;
+        this.captured12$15 = null;
+        this.captured11$13 = 0;
+        this.captured10$11 = null;
+        this.s$22 = null;
+        this.x$20 = null;
+        this.o$18 = null;
+    }
+    
     Bug1629(final .java.lang.Object o, final .java.lang.Object x, final .ceylon.language.Sequential<? extends .ceylon.language.Character> s) {
         .java.lang.Object captured0$1 = null;
         if ((captured0$1 = o) instanceof .ceylon.language.String) {

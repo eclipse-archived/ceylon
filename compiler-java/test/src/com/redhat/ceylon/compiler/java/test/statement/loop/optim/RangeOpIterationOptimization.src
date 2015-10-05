@@ -2,6 +2,12 @@ package com.redhat.ceylon.compiler.java.test.statement.loop.optim;
 
 class OptimizedForWithRange implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
+    protected OptimizedForWithRange() {
+        super();
+        this.start = 0L;
+        this.end = 0L;
+    }
+    
     OptimizedForWithRange(final long start, final long end) {
         this.start = start;
         this.end = end;

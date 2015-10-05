@@ -10,6 +10,10 @@ package com.redhat.ceylon.compiler.java.test.annotations;
 @.ceylon.language.AnnotationAnnotation$annotation$
 final class Bug2315 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.OptionalAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.Bug2315, .ceylon.language.meta.declaration.ClassDeclaration, .java.lang.Object> {
     
+    protected Bug2315() {
+        super();
+    }
+    
     Bug2315(.com.redhat.ceylon.compiler.java.test.annotations.Bug2315$annotation$ anno) {
         this((.ceylon.language.Sequence<? extends .ceylon.language.String>).com.redhat.ceylon.compiler.java.Util.sequentialWrapperBoxed(anno.strings()));
     }
@@ -50,6 +54,10 @@ final class bug2315_ {
 @.ceylon.language.FinalAnnotation$annotation$
 @.ceylon.language.AnnotationAnnotation$annotation$
 final class Bug2315Integer implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.OptionalAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.Bug2315Integer, .ceylon.language.meta.declaration.ClassDeclaration, .java.lang.Object> {
+    
+    protected Bug2315Integer() {
+        super();
+    }
     
     Bug2315Integer(.com.redhat.ceylon.compiler.java.test.annotations.Bug2315Integer$annotation$ anno) {
         this((.ceylon.language.Sequence<? extends .ceylon.language.Integer>).com.redhat.ceylon.compiler.java.Util.sequentialWrapperBoxed(anno.ints()));
@@ -92,6 +100,10 @@ final class bug2315Integer_ {
 @.ceylon.language.FinalAnnotation$annotation$
 @.ceylon.language.AnnotationAnnotation$annotation$
 final class Bug2315Class implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.OptionalAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.Bug2315Class, .ceylon.language.meta.declaration.ClassDeclaration, .java.lang.Object> {
+    
+    protected Bug2315Class() {
+        super();
+    }
     
     Bug2315Class(.com.redhat.ceylon.compiler.java.test.annotations.Bug2315Class$annotation$ anno) {
         this((.ceylon.language.Sequence<? extends .ceylon.language.meta.declaration.ClassDeclaration>).com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.<.ceylon.language.meta.declaration.ClassDeclaration>parseMetamodelReferences(.ceylon.language.meta.declaration.ClassDeclaration.$TypeDescriptor$, anno.classes()));
@@ -142,6 +154,10 @@ final class bug2315Class_ {
 @.ceylon.language.FinalAnnotation$annotation$
 @.ceylon.language.AnnotationAnnotation$annotation$
 final class Bug2315Iterable implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.SequencedAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.Bug2315Iterable, .ceylon.language.meta.declaration.ClassDeclaration, .java.lang.Object> {
+    
+    protected Bug2315Iterable() {
+        super();
+    }
     
     Bug2315Iterable(.com.redhat.ceylon.compiler.java.test.annotations.Bug2315Iterable$annotation$ anno) {
         this((.ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object>).com.redhat.ceylon.compiler.java.Util.sequentialWrapperBoxed(anno.strings()));

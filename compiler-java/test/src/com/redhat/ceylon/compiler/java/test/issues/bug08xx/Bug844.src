@@ -29,6 +29,13 @@ public class Bug844_Top<Element> implements .com.redhat.ceylon.compiler.java.run
 }
 public class Bug844_Bottom<Element, First extends Element> extends .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug844_Top<Element> {
     
+    protected Bug844_Bottom(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$First) {
+        super($reified$Element);
+        this.$reified$Element = $reified$Element;
+        this.$reified$First = $reified$First;
+        this.firstAttribute = null;
+    }
+    
     public Bug844_Bottom(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$First, final First firstAttribute) {
         super($reified$Element);
         this.$reified$Element = $reified$Element;
@@ -55,6 +62,22 @@ public class Bug844_Bottom<Element, First extends Element> extends .com.redhat.c
     }
 }
 public abstract class Bug844_Tuple<Element, First extends Element, Rest> extends .java.lang.Object implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.Sequence<Element> {
+    
+    protected Bug844_Tuple(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$First, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Rest) {
+        super();
+        this.$reified$Element = $reified$Element;
+        this.$reified$First = $reified$First;
+        this.$reified$Rest = $reified$Rest;
+        this.$ceylon$language$Category$this$ = new .ceylon.language.Category$impl<.java.lang.Object>(.ceylon.language.Object.$TypeDescriptor$, this);
+        this.$ceylon$language$Iterable$this$ = new .ceylon.language.Iterable$impl($reified$Element, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, this);
+        this.$ceylon$language$Collection$this$ = new .ceylon.language.Collection$impl<Element>($reified$Element, this);
+        this.$ceylon$language$Correspondence$this$ = new .ceylon.language.Correspondence$impl<.ceylon.language.Integer, Element>(.ceylon.language.Integer.$TypeDescriptor$, $reified$Element, this);
+        this.$ceylon$language$List$this$ = new .ceylon.language.List$impl<Element>($reified$Element, this);
+        this.$ceylon$language$Sequential$this$ = new .ceylon.language.Sequential$impl<Element>($reified$Element, this);
+        this.$ceylon$language$Sequence$this$ = new .ceylon.language.Sequence$impl<Element>($reified$Element, this);
+        this.first = null;
+        this.rest = null;
+    }
     
     public Bug844_Tuple(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$First, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Rest, final First first, final .java.lang.Object rest) {
         super();

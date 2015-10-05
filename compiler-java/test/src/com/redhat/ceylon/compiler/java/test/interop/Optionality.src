@@ -2,6 +2,14 @@ package com.redhat.ceylon.compiler.java.test.interop;
 
 class OptionalInterface implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface {
     
+    protected OptionalInterface() {
+        super();
+        this.prop1 = null;
+        this.prop2 = null;
+        this.prop3 = null;
+        this.prop4 = null;
+    }
+    
     OptionalInterface(final .com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface x) {
         this.prop1 = x;
         this.prop2 = null;

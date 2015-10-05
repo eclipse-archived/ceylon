@@ -2,6 +2,11 @@ package com.redhat.ceylon.compiler.java.test.structure.constructor;
 
 class ChainingInit<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
+    protected ChainingInit(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        super();
+        this.$reified$T = $reified$T;
+    }
+    
     ChainingInit(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final long i) {
         this.$reified$T = $reified$T;
     }
@@ -13,6 +18,11 @@ class ChainingInit<T> implements .com.redhat.ceylon.compiler.java.runtime.model.
     }
 }
 class ChainingCtor<T> extends .com.redhat.ceylon.compiler.java.test.structure.constructor.ChainingInit<T> {
+    
+    protected ChainingCtor(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        super($reified$T);
+        this.$reified$T = $reified$T;
+    }
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
     
     public ChainingCtor(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final long i$param$) {
@@ -38,6 +48,11 @@ class ChainingCtor<T> extends .com.redhat.ceylon.compiler.java.test.structure.co
     }
 }
 class ChainingCtorCtor2<T> extends .com.redhat.ceylon.compiler.java.test.structure.constructor.ChainingCtor<T> {
+    
+    protected ChainingCtorCtor2(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        super($reified$T);
+        this.$reified$T = $reified$T;
+    }
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
     
     public ChainingCtorCtor2(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final long i$param$) {
@@ -64,6 +79,11 @@ class ChainingCtorCtor2<T> extends .com.redhat.ceylon.compiler.java.test.structu
 }
 class ChainingCtorInit1<T> extends .com.redhat.ceylon.compiler.java.test.structure.constructor.ChainingCtor<T> {
     
+    protected ChainingCtorInit1(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        super($reified$T);
+        this.$reified$T = $reified$T;
+    }
+    
     ChainingCtorInit1(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final long i) {
         super($reified$T, i);
         this.$reified$T = $reified$T;
@@ -76,6 +96,11 @@ class ChainingCtorInit1<T> extends .com.redhat.ceylon.compiler.java.test.structu
     }
 }
 class ChainingCtorInit2<T> extends .com.redhat.ceylon.compiler.java.test.structure.constructor.ChainingCtor<T> {
+    
+    protected ChainingCtorInit2(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        super($reified$T);
+        this.$reified$T = $reified$T;
+    }
     
     ChainingCtorInit2(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final long i) {
         super($reified$T, i);
@@ -90,6 +115,11 @@ class ChainingCtorInit2<T> extends .com.redhat.ceylon.compiler.java.test.structu
 }
 class ChainingCtorInit3<T> extends .com.redhat.ceylon.compiler.java.test.structure.constructor.ChainingCtor<T> {
     
+    protected ChainingCtorInit3(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        super($reified$T);
+        this.$reified$T = $reified$T;
+    }
+    
     ChainingCtorInit3(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final long i) {
         super($reified$T, .com.redhat.ceylon.compiler.java.test.structure.constructor.ChainingCtor.nonDefault_, i);
         this.$reified$T = $reified$T;
@@ -102,6 +132,11 @@ class ChainingCtorInit3<T> extends .com.redhat.ceylon.compiler.java.test.structu
     }
 }
 class ChainingCtorCtor<T> extends .com.redhat.ceylon.compiler.java.test.structure.constructor.ChainingCtor<T> {
+    
+    protected ChainingCtorCtor(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        super($reified$T);
+        this.$reified$T = $reified$T;
+    }
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
     
     public ChainingCtorCtor(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final long i$param$) {

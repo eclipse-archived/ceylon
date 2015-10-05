@@ -272,6 +272,10 @@ interface Bug1286_initializer$Bug1286_initializer$1$Bug1286_initializer$2$object
 }
 class Bug1286_initializer implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
+    protected Bug1286_initializer() {
+        super();
+    }
+    
     Bug1286_initializer(final .java.lang.Object objectArgument) {
         (
             let

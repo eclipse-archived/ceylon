@@ -2,6 +2,11 @@ package com.redhat.ceylon.compiler.java.test.issues.bug13xx;
 
 public class Bug1353 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
+    protected Bug1353() {
+        super();
+        this.id = null;
+    }
+    
     public Bug1353(final .java.lang.String id) {
         this.id = id;
     }

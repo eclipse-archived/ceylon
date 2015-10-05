@@ -31,6 +31,10 @@ final class Bug1323_1 implements .com.redhat.ceylon.compiler.java.runtime.model.
         );
     }
     
+    protected Bug1323_1() {
+        super();
+    }
+    
     Bug1323_1(.com.redhat.ceylon.compiler.java.test.annotations.Bug1323_1$annotation$ anno) {
         this(anno.i(), .com.redhat.ceylon.compiler.java.Util.sequentialWrapperBoxed(anno.a()));
     }
@@ -68,6 +72,10 @@ final class Bug1323_1 implements .com.redhat.ceylon.compiler.java.runtime.model.
 @.ceylon.language.FinalAnnotation$annotation$
 @.ceylon.language.AnnotationAnnotation$annotation$
 final class Bug1323_2 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.SequencedAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.Bug1323_2, .ceylon.language.meta.declaration.FunctionDeclaration, .java.lang.Object> {
+    
+    protected Bug1323_2() {
+        super();
+    }
     
     Bug1323_2(.com.redhat.ceylon.compiler.java.test.annotations.Bug1323_2$annotation$ anno) {
         this(anno.i(), .com.redhat.ceylon.compiler.java.Util.sequentialWrapperBoxed(anno.a()));

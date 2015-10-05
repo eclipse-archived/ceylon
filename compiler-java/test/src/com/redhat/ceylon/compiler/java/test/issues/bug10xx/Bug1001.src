@@ -12,6 +12,13 @@ final class bug1001Foo_ {
 @.ceylon.language.SharedAnnotation$annotation$
 public class Bug1001 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
+    protected Bug1001() {
+        super();
+        this.paramMethodRefCaptured = null;
+        this.paramMethodRefCaptured2 = null;
+        this.initLateMethodRefCaptured$priv$ = null;
+    }
+    
     public Bug1001(final .ceylon.language.Callable<? extends .ceylon.language.Integer> paramUnusedMethodRef, final .ceylon.language.Callable<? extends .ceylon.language.Integer> paramMethodRef, final .ceylon.language.Callable<? extends .ceylon.language.Integer> paramMethodRefCaptured, final .ceylon.language.Callable<? extends .java.lang.Object> paramMethodRefCaptured2) {
         this.paramMethodRefCaptured = paramMethodRefCaptured;
         this.paramMethodRefCaptured2 = paramMethodRefCaptured2;

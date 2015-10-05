@@ -22,6 +22,14 @@ public final class bug2037_ {
 @.ceylon.language.SharedAnnotation$annotation$
 public class Bug2037 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
+    @.com.redhat.ceylon.compiler.java.metadata.Jpa
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    protected Bug2037() {
+        super();
+        this.p2 = null;
+        this.p1 = null;
+    }
+    
     public Bug2037(@.com.redhat.ceylon.compiler.java.metadata.Name("p1")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
     final .java.lang.String p1, @.com.redhat.ceylon.compiler.java.metadata.Name("p2")

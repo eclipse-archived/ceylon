@@ -109,6 +109,18 @@ abstract class MyInteger extends .java.lang.Object implements .com.redhat.ceylon
 }
 class ArithmeticOperators implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
+    protected ArithmeticOperators() {
+        super();
+        this.initN = null;
+        this.initI = null;
+        this.n1 = 0L;
+        this.n2 = 0L;
+        this.i1 = 0L;
+        this.boxedN1 = null;
+        this.boxedN2 = null;
+        this.boxedI1 = null;
+    }
+    
     ArithmeticOperators(final .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger initN, final .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger initI) {
         this.initN = initN;
         this.initI = initI;
@@ -1013,6 +1025,10 @@ class ArithmeticOperators implements .com.redhat.ceylon.compiler.java.runtime.mo
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.operator.ArithmeticOperators.class);
 }
 class ArithmeticOperatorsSub extends .com.redhat.ceylon.compiler.java.test.expression.operator.ArithmeticOperators {
+    
+    protected ArithmeticOperatorsSub() {
+        super();
+    }
     
     ArithmeticOperatorsSub(final .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger initN, final .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger initI) {
         super(initN, initI);

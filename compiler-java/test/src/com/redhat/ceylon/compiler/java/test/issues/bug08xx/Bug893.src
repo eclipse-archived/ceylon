@@ -49,6 +49,13 @@ public interface XEmpty893 extends .com.redhat.ceylon.compiler.java.test.issues.
 }
 public abstract class XSingleton893<Element> extends .java.lang.Object implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug08xx.XSequence893<Element> {
     
+    protected XSingleton893(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element) {
+        super();
+        this.$reified$Element = $reified$Element;
+        this.$com$redhat$ceylon$compiler$java$test$issues$bug08xx$XIterable893$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug08xx.XIterable893$impl<Element>($reified$Element, this);
+        this.fail2 = null;
+    }
+    
     public XSingleton893(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element, final Element element) {
         super();
         this.$reified$Element = $reified$Element;

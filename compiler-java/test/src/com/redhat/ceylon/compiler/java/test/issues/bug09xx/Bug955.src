@@ -11,6 +11,10 @@ final class bug955_ {
 }
 class Bug595 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
+    protected Bug595() {
+        super();
+    }
+    
     Bug595(final .ceylon.language.Callable<? extends .ceylon.language.String> str, final .java.lang.String att) {
     }
     

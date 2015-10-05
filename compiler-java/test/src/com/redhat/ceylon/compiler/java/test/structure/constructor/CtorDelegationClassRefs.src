@@ -3,6 +3,12 @@ package com.redhat.ceylon.compiler.java.test.structure.constructor;
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 @.com.redhat.ceylon.compiler.java.metadata.Class(constructors = true)
 class CtorDelegationClassRefsSuper implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Jpa
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    protected CtorDelegationClassRefsSuper() {
+        super();
+    }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationClassRefsSuper.sup_ sup_ = null;
     
@@ -35,6 +41,12 @@ class CtorDelegationClassRefsSuper implements .com.redhat.ceylon.compiler.java.r
         constructors = true,
         extendsType = "com.redhat.ceylon.compiler.java.test.structure.constructor::CtorDelegationClassRefsSuper")
 class CtorDelegationClassRefs extends .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationClassRefsSuper {
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Jpa
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    protected CtorDelegationClassRefs() {
+        super();
+    }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     private static final .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationClassRefs.abstract_ abstract_ = null;
     

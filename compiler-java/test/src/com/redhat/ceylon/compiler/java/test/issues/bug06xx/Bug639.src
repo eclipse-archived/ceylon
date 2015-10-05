@@ -7,6 +7,11 @@ interface Bug639Widening {
 }
 class Bug639WideningImpl implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug639Widening {
     
+    protected Bug639WideningImpl() {
+        super();
+        this.implementation = null;
+    }
+    
     Bug639WideningImpl(final .java.lang.String impl) {
         this.implementation = .ceylon.language.String.instance(impl);
     }
@@ -28,6 +33,11 @@ class Bug639WideningImpl implements .com.redhat.ceylon.compiler.java.runtime.mod
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug639WideningImpl.class);
 }
 class Bug639WideningImpl2 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug639Widening {
+    
+    protected Bug639WideningImpl2() {
+        super();
+        this.implementation = null;
+    }
     
     Bug639WideningImpl2(final long impl) {
         this.implementation = .ceylon.language.Integer.instance(impl);

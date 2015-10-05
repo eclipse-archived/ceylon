@@ -13,6 +13,10 @@ class NamedArgumentInvocationInitWithSequence implements .com.redhat.ceylon.comp
         );
     }
     
+    protected NamedArgumentInvocationInitWithSequence() {
+        super();
+    }
+    
     NamedArgumentInvocationInitWithSequence(final .java.lang.String a, final .ceylon.language.Sequential<? extends .ceylon.language.Integer> b) {
     }
     

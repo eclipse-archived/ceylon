@@ -2,6 +2,13 @@ package com.redhat.ceylon.compiler.java.test.expression.attribute;
 
 class ThisQualifiedSpecification implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
+    protected ThisQualifiedSpecification() {
+        super();
+        this.e = 0L;
+        this.m$priv$ = null;
+        this.n = null;
+    }
+    
     ThisQualifiedSpecification(long a) {
         final long b;
         long c = 0L;

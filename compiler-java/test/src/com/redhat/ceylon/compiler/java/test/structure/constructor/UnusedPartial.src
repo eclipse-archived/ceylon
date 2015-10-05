@@ -1,6 +1,11 @@
 package com.redhat.ceylon.compiler.java.test.structure.constructor;
 
 class UnusedPartial implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    protected UnusedPartial() {
+        super();
+        this.name = null;
+    }
     private final .java.lang.String name;
     
     @.ceylon.language.SharedAnnotation$annotation$

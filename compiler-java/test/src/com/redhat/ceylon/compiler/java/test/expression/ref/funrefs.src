@@ -4,6 +4,13 @@ package com.redhat.ceylon.compiler.java.test.expression.ref;
 @.com.redhat.ceylon.compiler.java.metadata.Members({@.com.redhat.ceylon.compiler.java.metadata.Member(klass = .com.redhat.ceylon.compiler.java.test.expression.ref.Person.Address.class)})
 class Person implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
+    @.com.redhat.ceylon.compiler.java.metadata.Jpa
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    protected Person() {
+        super();
+        this.name = null;
+    }
+    
     Person(@.com.redhat.ceylon.compiler.java.metadata.Name("name")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
     final .java.lang.String name) {

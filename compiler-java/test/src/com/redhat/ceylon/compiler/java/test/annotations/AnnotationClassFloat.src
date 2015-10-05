@@ -16,6 +16,10 @@ package com.redhat.ceylon.compiler.java.test.annotations;
 @.ceylon.language.FinalAnnotation$annotation$
 final class AnnotationClassFloat implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.SequencedAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassFloat, .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration, .java.lang.Object> {
     
+    protected AnnotationClassFloat() {
+        super();
+    }
+    
     AnnotationClassFloat(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassFloat$annotation$ anno) {
         this(anno.f());
     }

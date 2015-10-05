@@ -2,6 +2,14 @@ package com.redhat.ceylon.compiler.java.test.structure.klass;
 
 class MethodInitializerParameter<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
+    protected MethodInitializerParameter(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        super();
+        this.$reified$T = $reified$T;
+        this.m = null;
+        this.m2 = null;
+        this.m3 = null;
+    }
+    
     MethodInitializerParameter(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final .ceylon.language.Callable<? extends .java.lang.Object> m, final .ceylon.language.Callable<? extends .java.lang.Object> m2, final .ceylon.language.Callable<? extends T> m3) {
         this.$reified$T = $reified$T;
         this.m = m;

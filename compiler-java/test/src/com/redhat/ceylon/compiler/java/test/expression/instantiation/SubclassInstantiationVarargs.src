@@ -24,6 +24,10 @@ class Foo implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType 
 }
 class Bar extends .com.redhat.ceylon.compiler.java.test.expression.instantiation.Foo {
     
+    protected Bar() {
+        super();
+    }
+    
     Bar(final .java.lang.String name1, final .java.lang.String name2) {
         super((.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.empty_.get_(), new .java.lang.Object[]{
                 .ceylon.language.String.instance(name1),
@@ -38,6 +42,10 @@ class Bar extends .com.redhat.ceylon.compiler.java.test.expression.instantiation
 }
 class FooNonempty implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
+    protected FooNonempty() {
+        super();
+    }
+    
     FooNonempty(final .ceylon.language.Sequence<? extends .ceylon.language.String> name) {
     }
     
@@ -48,6 +56,10 @@ class FooNonempty implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.instantiation.FooNonempty.class);
 }
 class BarNonempty extends .com.redhat.ceylon.compiler.java.test.expression.instantiation.FooNonempty {
+    
+    protected BarNonempty() {
+        super();
+    }
     
     BarNonempty(final .java.lang.String name1, final .java.lang.String name2) {
         super((.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.empty_.get_(), new .java.lang.Object[]{

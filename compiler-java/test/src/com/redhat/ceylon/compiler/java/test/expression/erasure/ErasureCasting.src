@@ -503,6 +503,13 @@ class EC_ErasedMemberImpl<Element> implements .com.redhat.ceylon.compiler.java.r
 }
 class EC_Tuple<Element, First extends Element> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
+    protected EC_Tuple(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$First) {
+        super();
+        this.$reified$Element = $reified$Element;
+        this.$reified$First = $reified$First;
+        this.first = null;
+    }
+    
     EC_Tuple(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$First, final First first) {
         this.$reified$Element = $reified$Element;
         this.$reified$First = $reified$First;

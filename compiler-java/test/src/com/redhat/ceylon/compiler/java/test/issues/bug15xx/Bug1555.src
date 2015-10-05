@@ -2,6 +2,13 @@ package com.redhat.ceylon.compiler.java.test.issues.bug15xx;
 
 class Bug1555<Element extends .ceylon.language.Enumerable<Element>> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
+    protected Bug1555(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element) {
+        super();
+        this.$reified$Element = $reified$Element;
+        this.first = 0L;
+        this.last = 0L;
+    }
+    
     Bug1555(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element, final long first, final long last) {
         this.$reified$Element = $reified$Element;
         this.first = first;

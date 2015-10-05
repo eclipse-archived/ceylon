@@ -203,6 +203,11 @@ public final class keywordInForLoop2_ {
 }
 class KeywordInForLoop3 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
+    protected KeywordInForLoop3() {
+        super();
+        this.age = 0L;
+    }
+    
     KeywordInForLoop3(final long age) {
         this.age = age;
         final .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.quoting.$goto.KeywordInForLoop3> people = (.ceylon.language.Sequence<? extends .com.redhat.ceylon.compiler.java.test.quoting.$goto.KeywordInForLoop3>).ceylon.language.Tuple.instance(.com.redhat.ceylon.compiler.java.test.quoting.$goto.KeywordInForLoop3.$TypeDescriptor$, new .java.lang.Object[]{

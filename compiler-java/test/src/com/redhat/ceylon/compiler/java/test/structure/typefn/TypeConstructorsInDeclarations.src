@@ -33,6 +33,12 @@ final class producesTc_ {
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 class ConsumesTc implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
+    @.com.redhat.ceylon.compiler.java.metadata.Jpa
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    protected ConsumesTc() {
+        super();
+    }
+    
     ConsumesTc(@.com.redhat.ceylon.compiler.java.metadata.Name("tc")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
             value = "<Any> => Any()",

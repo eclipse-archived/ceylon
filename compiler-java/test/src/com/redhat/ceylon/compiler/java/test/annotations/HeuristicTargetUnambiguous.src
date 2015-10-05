@@ -20,6 +20,15 @@ class HeuristicTarget1 implements .com.redhat.ceylon.compiler.java.runtime.model
 @.ceylon.language.DocAnnotation$annotation$(description = "Targeting annotations on parameters and attributes")
 class HeuristicTarget2 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
+    @.com.redhat.ceylon.compiler.java.metadata.Jpa
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    protected HeuristicTarget2() {
+        super();
+        this.s = null;
+        this.s2 = null;
+        this.s3 = null;
+    }
+    
     HeuristicTarget2(@.com.redhat.ceylon.compiler.java.metadata.Name("s")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
     @.com.redhat.ceylon.compiler.java.test.annotations.ParameterTarget

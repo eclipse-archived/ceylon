@@ -22,6 +22,12 @@ public class Bug1989 implements .com.redhat.ceylon.compiler.java.runtime.model.R
         );
     }
     
+    protected Bug1989() {
+        super();
+        this.fp2 = null;
+        this.fp = null;
+    }
+    
     public Bug1989(final .ceylon.language.Callable<? extends .java.lang.Object> fp2, final .ceylon.language.Callable<? extends .java.lang.Object> fp) {
         this.fp2 = fp2;
         this.fp = fp;

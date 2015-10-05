@@ -15,6 +15,12 @@ final class bug1154_ {
 }
 public class Bug1154Bar<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
+    protected Bug1154Bar(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        super();
+        this.$reified$T = $reified$T;
+        this.element = null;
+    }
+    
     public Bug1154Bar(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final T element) {
         this.$reified$T = $reified$T;
         this.element = element;
@@ -32,6 +38,14 @@ public class Bug1154Bar<T> implements .com.redhat.ceylon.compiler.java.runtime.m
     }
 }
 public class Bug1154<Element, First extends Element, Rest extends .ceylon.language.Sequential<? extends Element>> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    protected Bug1154(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$First, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Rest) {
+        super();
+        this.$reified$Element = $reified$Element;
+        this.$reified$First = $reified$First;
+        this.$reified$Rest = $reified$Rest;
+        this.tuple = null;
+    }
     
     public Bug1154(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$First, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Rest, final .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1154Bar<First> first, final Rest rest) {
         this.$reified$Element = $reified$Element;

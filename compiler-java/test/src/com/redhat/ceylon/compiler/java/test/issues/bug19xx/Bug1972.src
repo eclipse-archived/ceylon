@@ -52,13 +52,27 @@ class Bug1972Sub extends .com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bu
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bug1972Sub.class);
 }
-class Bug1972Ser implements .com.redhat.ceylon.compiler.java.runtime.serialization.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class Bug1972Ser implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.runtime.serialization.Serializable {
+    
+    protected Bug1972Ser() {
+        this((.com.redhat.ceylon.compiler.java.runtime.serialization.$Serialization$)null);
+    }
     
     public Bug1972Ser(final .com.redhat.ceylon.compiler.java.runtime.serialization.$Serialization$ ignored) {
     }
     
     Bug1972Ser(final .ceylon.language.String x) {
     }
+    
+    private final void m$priv$() {
+        new .com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bug1972Ser((.ceylon.language.String)null);
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bug1972Ser.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bug1972Ser.class);
     
     @.java.lang.Override
     public .java.util.Collection<.ceylon.language.serialization.ReachableReference> $references$() {
@@ -83,16 +97,6 @@ class Bug1972Ser implements .com.redhat.ceylon.compiler.java.runtime.serializati
         
         } else throw new .ceylon.language.AssertionError("unexpected reachable reference " + reference);
     }
-    
-    private final void m$priv$() {
-        new .com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bug1972Ser((.ceylon.language.String)null);
-    }
-    
-    @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
-        return .com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bug1972Ser.$TypeDescriptor$;
-    }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bug1972Ser.class);
 }
 class Bug1972SerSub extends .com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bug1972Ser implements .com.redhat.ceylon.compiler.java.runtime.serialization.Serializable {
     
@@ -103,6 +107,12 @@ class Bug1972SerSub extends .com.redhat.ceylon.compiler.java.test.issues.bug19xx
     Bug1972SerSub() {
         super((.ceylon.language.String)null);
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bug1972SerSub.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bug1972SerSub.class);
     
     @.java.lang.Override
     public .java.util.Collection<.ceylon.language.serialization.ReachableReference> $references$() {
@@ -127,10 +137,4 @@ class Bug1972SerSub extends .com.redhat.ceylon.compiler.java.test.issues.bug19xx
         
         } else throw new .ceylon.language.AssertionError("unexpected reachable reference " + reference);
     }
-    
-    @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
-        return .com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bug1972SerSub.$TypeDescriptor$;
-    }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bug1972SerSub.class);
 }

@@ -1,6 +1,10 @@
 package com.redhat.ceylon.compiler.java.test.structure.constructor;
 
 class SingletonExtendingNamed implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    protected SingletonExtendingNamed() {
+        super();
+    }
     public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonExtendingNamed.foo_ foo_ = null;
     
     public static final class foo_ {

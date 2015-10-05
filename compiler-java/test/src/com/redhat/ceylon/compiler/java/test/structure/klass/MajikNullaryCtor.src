@@ -3,6 +3,7 @@ package com.redhat.ceylon.compiler.java.test.structure.klass;
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 class MajikNullaryCtor implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
+    @.com.redhat.ceylon.compiler.java.metadata.Jpa
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     protected MajikNullaryCtor() {
         super();
@@ -83,6 +84,7 @@ class MajikNullaryCtor implements .com.redhat.ceylon.compiler.java.runtime.model
 @.ceylon.language.AbstractAnnotation$annotation$
 abstract class MajikNullaryCtorAbstract implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
+    @.com.redhat.ceylon.compiler.java.metadata.Jpa
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     protected MajikNullaryCtorAbstract() {
         super();
@@ -119,6 +121,7 @@ class MajikNullaryCtorNullary implements .com.redhat.ceylon.compiler.java.runtim
 @.com.redhat.ceylon.compiler.java.metadata.Class(extendsType = "com.redhat.ceylon.compiler.java.test.structure.klass::MajikNullaryCtorNullary")
 class MajikNullaryCtorNullarySuper extends .com.redhat.ceylon.compiler.java.test.structure.klass.MajikNullaryCtorNullary {
     
+    @.com.redhat.ceylon.compiler.java.metadata.Jpa
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     protected MajikNullaryCtorNullarySuper() {
         super();
@@ -176,6 +179,7 @@ class MajikNullaryCtorDefaulted implements .com.redhat.ceylon.compiler.java.runt
 @.com.redhat.ceylon.compiler.java.metadata.Class(extendsType = "com.redhat.ceylon.compiler.java.test.structure.klass::MajikNullaryCtorDefaulted")
 class MajikNullaryCtorDefaultedSub extends .com.redhat.ceylon.compiler.java.test.structure.klass.MajikNullaryCtorDefaulted {
     
+    @.com.redhat.ceylon.compiler.java.metadata.Jpa
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     protected MajikNullaryCtorDefaultedSub() {
         super();
@@ -236,6 +240,7 @@ class MajikNullaryCtorSequenced implements .com.redhat.ceylon.compiler.java.runt
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 class MajikNullaryCtorSequencedNonempty implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
+    @.com.redhat.ceylon.compiler.java.metadata.Jpa
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     protected MajikNullaryCtorSequencedNonempty() {
         super();
@@ -273,8 +278,10 @@ class MajikNullaryCtorSequencedNonempty implements .com.redhat.ceylon.compiler.j
         caseTypes = {})})
 class MajikNullaryCtorGeneric<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
+    @.com.redhat.ceylon.compiler.java.metadata.Jpa
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    protected MajikNullaryCtorGeneric(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+    protected MajikNullaryCtorGeneric(@.com.redhat.ceylon.compiler.java.metadata.Ignore
+    final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
         super();
         this.$reified$T = $reified$T;
         this.i = 0L;
@@ -309,6 +316,7 @@ class MajikNullaryCtorGeneric<T> implements .com.redhat.ceylon.compiler.java.run
 @.com.redhat.ceylon.compiler.java.metadata.Class(extendsType = "com.redhat.ceylon.compiler.java.test.structure.klass::MajikNullaryCtorGeneric<ceylon.language::String>")
 class MajikNullaryCtorGenericSub extends .com.redhat.ceylon.compiler.java.test.structure.klass.MajikNullaryCtorGeneric<.ceylon.language.String> {
     
+    @.com.redhat.ceylon.compiler.java.metadata.Jpa
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     protected MajikNullaryCtorGenericSub() {
         super(.ceylon.language.String.$TypeDescriptor$);
@@ -344,6 +352,7 @@ class MajikNullaryCtorGenericSub extends .com.redhat.ceylon.compiler.java.test.s
 @.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"ceylon.language::Category<ceylon.language::String>"})
 class MajikNullaryCtorMixin implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.Category<.ceylon.language.String> {
     
+    @.com.redhat.ceylon.compiler.java.metadata.Jpa
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     protected MajikNullaryCtorMixin() {
         super();
@@ -403,6 +412,31 @@ class MajikNullaryCtorMixin implements .com.redhat.ceylon.compiler.java.runtime.
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.MajikNullaryCtorMixin.class);
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"ceylon.language::Category<ceylon.language::String>"})
+@.com.redhat.ceylon.compiler.java.metadata.Class(extendsType = "com.redhat.ceylon.compiler.java.test.structure.klass::MajikNullaryCtorMixin")
+class MajikNullaryCtorMixinSub extends .com.redhat.ceylon.compiler.java.test.structure.klass.MajikNullaryCtorMixin implements .ceylon.language.Category<.ceylon.language.String> {
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Jpa
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    protected MajikNullaryCtorMixinSub() {
+        super();
+    }
+    
+    MajikNullaryCtorMixinSub(@.com.redhat.ceylon.compiler.java.metadata.Name("i")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
+    final long i) {
+        super(i);
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.klass.MajikNullaryCtorMixinSub.$TypeDescriptor$;
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.MajikNullaryCtorMixinSub.class);
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 @.com.redhat.ceylon.compiler.java.metadata.Class(constructors = true)
@@ -492,6 +526,7 @@ class MajikNullaryCtorValueCtorAndDefault implements .com.redhat.ceylon.compiler
 @.com.redhat.ceylon.compiler.java.metadata.Class(constructors = true)
 class MajikNullaryCtorValueCtorAndCallable implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
+    @.com.redhat.ceylon.compiler.java.metadata.Jpa
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     protected MajikNullaryCtorValueCtorAndCallable() {
         super();
@@ -615,6 +650,7 @@ final class majikNullaryCtorValueCtorOf_ extends .com.redhat.ceylon.compiler.jav
 @.ceylon.language.SerializableAnnotation$annotation$
 class MajikNullaryCtorSer implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.runtime.serialization.Serializable {
     
+    @.com.redhat.ceylon.compiler.java.metadata.Jpa
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     protected MajikNullaryCtorSer() {
         this((.com.redhat.ceylon.compiler.java.runtime.serialization.$Serialization$)null);

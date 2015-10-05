@@ -16,6 +16,11 @@ package com.redhat.ceylon.compiler.java.test.annotations;
 @.ceylon.language.FinalAnnotation$annotation$
 final class AnnotationClassCharacter implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.SequencedAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassCharacter, .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration, .java.lang.Object> {
     
+    protected AnnotationClassCharacter() {
+        super();
+        this.c = 0;
+    }
+    
     AnnotationClassCharacter(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassCharacter$annotation$ anno) {
         this(anno.c());
     }

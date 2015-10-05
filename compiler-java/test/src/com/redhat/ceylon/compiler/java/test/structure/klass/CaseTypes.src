@@ -83,6 +83,10 @@ public final class bar_ extends .com.redhat.ceylon.compiler.java.test.structure.
 }
 public abstract class CaseTypes2 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
+    protected CaseTypes2() {
+        super();
+    }
+    
     public CaseTypes2(final .java.lang.String name) {
     }
     

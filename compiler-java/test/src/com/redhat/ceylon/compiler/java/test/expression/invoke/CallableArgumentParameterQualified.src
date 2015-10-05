@@ -10,6 +10,11 @@ final class callableArgumentParameterQualified_f_ {
 }
 class CallableArgumentParameterQualified implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
+    protected CallableArgumentParameterQualified() {
+        super();
+        this.bar = null;
+    }
+    
     CallableArgumentParameterQualified(final .ceylon.language.Callable<? extends .java.lang.Object> bar) {
         this.bar = bar;
     }

@@ -3,6 +3,18 @@ package com.redhat.ceylon.compiler.java.test.annotations;
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 class SetterTarget implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
+    @.com.redhat.ceylon.compiler.java.metadata.Jpa
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    protected SetterTarget() {
+        super();
+        this.attr = null;
+        this.attr2 = null;
+        this.attr3 = null;
+        this.attr4 = null;
+        this.param3 = null;
+        this.param4 = null;
+    }
+    
     SetterTarget(@.com.redhat.ceylon.compiler.java.metadata.Name("param3")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
     .java.lang.String param3$param$, @.com.redhat.ceylon.compiler.java.metadata.Name("param4")

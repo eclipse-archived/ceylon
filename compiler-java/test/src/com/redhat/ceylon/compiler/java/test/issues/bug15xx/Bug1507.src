@@ -52,6 +52,11 @@ final class bug1507_ {
 }
 class Bug1507IntWrapper implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
+    protected Bug1507IntWrapper() {
+        super();
+        this.wrappedInt = 0L;
+    }
+    
     Bug1507IntWrapper(final long wrappedInt) {
         this.wrappedInt = wrappedInt;
     }

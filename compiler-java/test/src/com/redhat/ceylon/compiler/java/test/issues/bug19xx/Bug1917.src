@@ -72,6 +72,11 @@ final class bug1917works_ {
 }
 class Bug1917Interop extends .com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bug1917Java implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
+    protected Bug1917Interop() {
+        super();
+        this.dataSource = null;
+    }
+    
     Bug1917Interop(final .com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bug1917Java dataSource) {
         super();
         this.dataSource = dataSource;

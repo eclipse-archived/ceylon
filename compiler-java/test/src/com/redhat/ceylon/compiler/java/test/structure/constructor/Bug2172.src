@@ -1,6 +1,12 @@
 package com.redhat.ceylon.compiler.java.test.structure.constructor;
 
 public class Point implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    protected Point() {
+        super();
+        this.x = 0.0;
+        this.y = 0.0;
+    }
     @.com.redhat.ceylon.compiler.java.metadata.NoInitCheck
     private final double x;
     

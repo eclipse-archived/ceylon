@@ -2,6 +2,14 @@ package com.redhat.ceylon.compiler.java.test.issues.bug17xx;
 
 class Bug1717<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
+    protected Bug1717(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        super();
+        this.$reified$T = $reified$T;
+        this.t = null;
+        this.s = null;
+        this.x = null;
+    }
+    
     Bug1717(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends T>> t, final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .ceylon.language.String>> s, final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends T>>>> x) {
         this.$reified$T = $reified$T;
         this.t = t;

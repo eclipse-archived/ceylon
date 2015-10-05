@@ -2,6 +2,13 @@ package com.redhat.ceylon.compiler.java.test.expression.ref;
 
 class ValueParameterRef<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
+    protected ValueParameterRef(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        super();
+        this.$reified$T = $reified$T;
+        this.val = null;
+        this.typeParam = null;
+    }
+    
     ValueParameterRef(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final .java.lang.String val, final T typeParam) {
         this.$reified$T = $reified$T;
         this.val = val;

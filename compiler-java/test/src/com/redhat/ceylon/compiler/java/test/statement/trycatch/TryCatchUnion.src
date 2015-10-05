@@ -2,6 +2,10 @@ package com.redhat.ceylon.compiler.java.test.statement.trycatch;
 
 class E1 extends .ceylon.language.Exception {
     
+    protected E1() {
+        super();
+    }
+    
     E1(final .ceylon.language.String description, final .java.lang.Exception cause) {
         super(description, cause);
     }
@@ -13,6 +17,10 @@ class E1 extends .ceylon.language.Exception {
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.trycatch.E1.class);
 }
 class E2 extends .ceylon.language.Exception {
+    
+    protected E2() {
+        super();
+    }
     
     E2(final .ceylon.language.String description, final .java.lang.Exception cause) {
         super(description, cause);

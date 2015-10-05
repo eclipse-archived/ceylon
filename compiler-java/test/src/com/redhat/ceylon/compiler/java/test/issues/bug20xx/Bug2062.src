@@ -91,6 +91,13 @@ final class IBug2062$impl<Element> {
 }
 class SBug2062<Element> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug20xx.IBug2062<Element> {
     
+    protected SBug2062(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element) {
+        super();
+        this.$reified$Element = $reified$Element;
+        this.$com$redhat$ceylon$compiler$java$test$issues$bug20xx$IBug2062$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug20xx.IBug2062$impl<Element>($reified$Element, this);
+        this.elements = null;
+    }
+    
     SBug2062(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element, final .ceylon.language.Sequence<? extends Element> elements) {
         this.$reified$Element = $reified$Element;
         this.elements = elements;

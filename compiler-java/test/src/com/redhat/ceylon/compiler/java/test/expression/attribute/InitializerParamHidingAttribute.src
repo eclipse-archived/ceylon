@@ -2,6 +2,10 @@ package com.redhat.ceylon.compiler.java.test.expression.attribute;
 
 class InitializerParamHidingAttribute implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
+    protected InitializerParamHidingAttribute() {
+        super();
+    }
+    
     InitializerParamHidingAttribute(final boolean b) {
         final boolean b2 = b;
     }
@@ -13,6 +17,12 @@ class InitializerParamHidingAttribute implements .com.redhat.ceylon.compiler.jav
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.attribute.InitializerParamHidingAttribute.class);
 }
 class InitializerParamHidingAttribute2 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    protected InitializerParamHidingAttribute2() {
+        super();
+        this.b = false;
+        this.b2 = false;
+    }
     
     InitializerParamHidingAttribute2(final boolean b) {
         this.b = b;

@@ -14,6 +14,12 @@ package com.redhat.ceylon.compiler.java.test.issues.bug16xx;
 @.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"ceylon.language::OptionalAnnotation<com.redhat.ceylon.compiler.java.test.issues.bug16xx::Bug1676_2_A,ceylon.language.meta.declaration::ClassDeclaration,ceylon.language::Anything>"})
 final class Bug1676_2_A implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.OptionalAnnotation<.com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1676_2_A, .ceylon.language.meta.declaration.ClassDeclaration, .java.lang.Object> {
     
+    @.com.redhat.ceylon.compiler.java.metadata.Jpa
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    protected Bug1676_2_A() {
+        super();
+    }
+    
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     Bug1676_2_A(.com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1676_2_A$annotation$ anno) {
         this(new .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1676_2_B(anno.x()));

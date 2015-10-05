@@ -1,6 +1,11 @@
 package com.redhat.ceylon.compiler.java.test.structure.constructor;
 
 class CtorInitializingMethod implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    protected CtorInitializingMethod() {
+        super();
+        this.name$priv$ = null;
+    }
     private .ceylon.language.Callable<? extends .ceylon.language.String> name$priv$;
     
     private final .java.lang.String name$priv$(final long $int) {
@@ -19,6 +24,10 @@ class CtorInitializingMethod implements .com.redhat.ceylon.compiler.java.runtime
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorInitializingMethod.class);
 }
 class CtorInitializerMethod implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    protected CtorInitializerMethod() {
+        super();
+    }
     
     CtorInitializerMethod(final .ceylon.language.Callable<? extends .ceylon.language.String> nom) {
         

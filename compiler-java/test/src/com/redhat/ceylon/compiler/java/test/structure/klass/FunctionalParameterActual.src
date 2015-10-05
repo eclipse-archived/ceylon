@@ -18,6 +18,11 @@ class FunctionalParameterActual<T> implements .com.redhat.ceylon.compiler.java.r
 }
 class FunctionalParameterActualString extends .com.redhat.ceylon.compiler.java.test.structure.klass.FunctionalParameterActual<.ceylon.language.String> {
     
+    protected FunctionalParameterActualString() {
+        super(.ceylon.language.String.$TypeDescriptor$);
+        this.m = null;
+    }
+    
     FunctionalParameterActualString(final .ceylon.language.Callable<? extends .ceylon.language.String> m) {
         super(.ceylon.language.String.$TypeDescriptor$);
         this.m = m;

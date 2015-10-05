@@ -2,6 +2,13 @@ package com.redhat.ceylon.compiler.java.test.statement.loop.optim;
 
 class IntegerSpans implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
+    protected IntegerSpans() {
+        super();
+        this.first = 0L;
+        this.last = 0L;
+        this.a = false;
+    }
+    
     IntegerSpans(final long first, final long last) {
         this.first = first;
         this.last = last;
@@ -140,6 +147,14 @@ class IntegerSpans implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.loop.optim.IntegerSpans.class);
 }
 class IntegerSpansWithStep implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    protected IntegerSpansWithStep() {
+        super();
+        this.first = 0L;
+        this.last = 0L;
+        this.step = 0L;
+        this.a = false;
+    }
     
     IntegerSpansWithStep(final long first, final long last, final long step) {
         this.first = first;
@@ -301,6 +316,13 @@ class IntegerSpansWithStep implements .com.redhat.ceylon.compiler.java.runtime.m
 }
 class CharacterSpans implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
+    protected CharacterSpans() {
+        super();
+        this.first = 0;
+        this.last = 0;
+        this.a = false;
+    }
+    
     CharacterSpans(final int first, final int last) {
         this.first = first;
         this.last = last;
@@ -444,6 +466,14 @@ class CharacterSpans implements .com.redhat.ceylon.compiler.java.runtime.model.R
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.loop.optim.CharacterSpans.class);
 }
 class CharacterSpansWithStep implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    protected CharacterSpansWithStep() {
+        super();
+        this.first = 0;
+        this.last = 0;
+        this.step = 0L;
+        this.a = false;
+    }
     
     CharacterSpansWithStep(final int first, final int last, final long step) {
         this.first = first;

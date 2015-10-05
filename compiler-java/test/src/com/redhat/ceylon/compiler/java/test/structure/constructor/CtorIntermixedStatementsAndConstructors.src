@@ -1,6 +1,16 @@
 package com.redhat.ceylon.compiler.java.test.structure.constructor;
 
 class CtorIntermixedStatementsAndConstructors implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    protected CtorIntermixedStatementsAndConstructors() {
+        super();
+        this.a = 0L;
+        this.c = 0L;
+        this.b = 0L;
+        this.d = 0L;
+        this.e = 0L;
+        this.f = 0L;
+    }
     private final long a;
     
     public final long getA() {

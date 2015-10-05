@@ -2,6 +2,12 @@ package com.redhat.ceylon.compiler.java.test.issues.bug16xx;
 
 class Bug1603<Element extends .ceylon.language.Ordinal<? extends Element> & .ceylon.language.Comparable<? super Element> & .ceylon.language.Summable<Element>> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
+    protected Bug1603(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element) {
+        super();
+        this.$reified$Element = $reified$Element;
+        this.first = null;
+    }
+    
     Bug1603(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element, final Element first, final long length) {
         this.$reified$Element = $reified$Element;
         this.first = first;

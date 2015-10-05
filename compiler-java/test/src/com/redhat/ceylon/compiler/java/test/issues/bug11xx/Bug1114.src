@@ -2,6 +2,12 @@ package com.redhat.ceylon.compiler.java.test.issues.bug11xx;
 
 class Bug1114 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
+    protected Bug1114() {
+        super();
+        this.test = false;
+        this.g_ = null;
+    }
+    
     Bug1114(final boolean test) {
         this.test = test;
         .com.redhat.ceylon.compiler.java.language.GetterLong j$getter$_;

@@ -289,6 +289,13 @@ public class Container<TagType extends .com.redhat.ceylon.compiler.java.test.iss
         );
     }
     
+    protected Container(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$TagType) {
+        super();
+        this.$reified$TagType = $reified$TagType;
+        this.$com$redhat$ceylon$compiler$java$test$issues$bug08xx$Visitable$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitable$impl(this);
+        this.tags = null;
+    }
+    
     public Container(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$TagType, final .java.lang.String name, final .ceylon.language.Sequential initialTags) {
         this.$reified$TagType = $reified$TagType;
         this.$com$redhat$ceylon$compiler$java$test$issues$bug08xx$Visitable$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitable$impl(this);
@@ -385,6 +392,10 @@ public class Block extends .com.redhat.ceylon.compiler.java.test.issues.bug08xx.
         );
     }
     
+    protected Block() {
+        super(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Tag.$TypeDescriptor$);
+    }
+    
     public Block(final .java.lang.String name, final .ceylon.language.Sequential initialTags) {
         super(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Tag.$TypeDescriptor$, name, initialTags);
     }
@@ -429,6 +440,10 @@ public class Inline extends .com.redhat.ceylon.compiler.java.test.issues.bug08xx
             }
             returning null;
         );
+    }
+    
+    protected Inline() {
+        super(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.InlineTag.$TypeDescriptor$);
     }
     
     public Inline(final .java.lang.String name, final .ceylon.language.Sequential initialTags) {

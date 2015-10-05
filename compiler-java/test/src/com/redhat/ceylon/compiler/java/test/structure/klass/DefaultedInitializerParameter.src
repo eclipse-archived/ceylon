@@ -44,6 +44,10 @@ class DefaultedInitializerParameter2 implements .com.redhat.ceylon.compiler.java
         );
     }
     
+    protected DefaultedInitializerParameter2() {
+        super();
+    }
+    
     DefaultedInitializerParameter2(final long n, final .java.lang.String s) {
     }
     

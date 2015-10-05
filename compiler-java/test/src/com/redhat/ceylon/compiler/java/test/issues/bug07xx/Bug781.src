@@ -21,6 +21,11 @@ interface Bug781Interface {
 }
 class Bug781_1<T extends .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug781Class & .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug781Interface> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
+    protected Bug781_1(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        super();
+        this.$reified$T = $reified$T;
+    }
+    
     Bug781_1(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final T t) {
         this.$reified$T = $reified$T;
         ((.com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug781Class)t).c();

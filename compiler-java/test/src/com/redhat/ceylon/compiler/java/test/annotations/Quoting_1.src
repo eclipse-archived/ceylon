@@ -34,6 +34,16 @@ public interface Cloneable<Clone extends .com.redhat.ceylon.compiler.java.test.a
         "com.redhat.ceylon.compiler.java.test.annotations::Cloneable<com.redhat.ceylon.compiler.java.test.annotations::Quoting>"})
 final class Quoting implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.SequencedAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.Quoting, .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration, .java.lang.Object>, .com.redhat.ceylon.compiler.java.test.annotations.Cloneable<.com.redhat.ceylon.compiler.java.test.annotations.Quoting> {
     
+    @.com.redhat.ceylon.compiler.java.metadata.Jpa
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    protected Quoting() {
+        super();
+        this.string = null;
+        this.toString = null;
+        this.hash = 0L;
+        this.hashCode = 0L;
+    }
+    
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     Quoting(.com.redhat.ceylon.compiler.java.test.annotations.Quoting$annotation$ anno) {
         this(anno.string(), anno.toString(), anno.hash(), anno.hashCode());

@@ -2,6 +2,11 @@ package com.redhat.ceylon.compiler.java.test.structure.klass;
 
 class SharedParameter implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
+    protected SharedParameter() {
+        super();
+        this.s = null;
+    }
+    
     SharedParameter(final .java.lang.String s) {
         this.s = s;
     }

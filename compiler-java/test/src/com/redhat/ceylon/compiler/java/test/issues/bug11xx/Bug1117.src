@@ -15,6 +15,11 @@ abstract class Bug1117Tree implements .com.redhat.ceylon.compiler.java.runtime.m
 }
 class Bug1117Constant extends .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1117Tree {
     
+    protected Bug1117Constant() {
+        super();
+        this.val = 0L;
+    }
+    
     Bug1117Constant(final long val) {
         super();
         this.val = val;
@@ -37,6 +42,12 @@ class Bug1117Constant extends .com.redhat.ceylon.compiler.java.test.issues.bug11
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1117Constant.class);
 }
 class Bug1117UnaryOperator extends .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1117Tree {
+    
+    protected Bug1117UnaryOperator() {
+        super();
+        this.branch = null;
+        this.f = null;
+    }
     
     Bug1117UnaryOperator(final .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1117Tree branch, final .ceylon.language.Callable<? extends .ceylon.language.Integer> f) {
         super();
@@ -66,6 +77,13 @@ class Bug1117UnaryOperator extends .com.redhat.ceylon.compiler.java.test.issues.
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1117UnaryOperator.class);
 }
 class Bug1117BinaryOperator extends .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1117Tree {
+    
+    protected Bug1117BinaryOperator() {
+        super();
+        this.left = null;
+        this.right = null;
+        this.f = null;
+    }
     
     Bug1117BinaryOperator(final .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1117Tree left, final .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1117Tree right, final .ceylon.language.Callable<? extends .ceylon.language.Integer> f) {
         super();
@@ -102,6 +120,10 @@ class Bug1117BinaryOperator extends .com.redhat.ceylon.compiler.java.test.issues
 }
 class Bug1117UnaryMinus extends .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1117UnaryOperator {
     
+    protected Bug1117UnaryMinus() {
+        super();
+    }
+    
     Bug1117UnaryMinus(final .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1117Tree t) {
         super(t, new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.Integer.$TypeDescriptor$), "Integer(Integer)", (short)-1){
             
@@ -120,6 +142,10 @@ class Bug1117UnaryMinus extends .com.redhat.ceylon.compiler.java.test.issues.bug
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1117UnaryMinus.class);
 }
 class Bug1117Plus extends .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1117BinaryOperator {
+    
+    protected Bug1117Plus() {
+        super();
+    }
     
     Bug1117Plus(final .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1117Tree left, final .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1117Tree right) {
         super(left, right, new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$), "Integer(Integer, Integer)", (short)-1){

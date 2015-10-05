@@ -2,6 +2,13 @@ package com.redhat.ceylon.compiler.java.test.structure.klass;
 
 class KlassWithObjectMember implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
+    protected KlassWithObjectMember() {
+        super();
+        this.x = null;
+        this.capturedobj = null;
+        this.sharedobj = null;
+    }
+    
     KlassWithObjectMember(final .java.lang.String x) {
         this.x = x;
         final .com.redhat.ceylon.compiler.java.test.structure.klass.KlassWithObjectMember.localobj_ localobj = new .com.redhat.ceylon.compiler.java.test.structure.klass.KlassWithObjectMember.localobj_();

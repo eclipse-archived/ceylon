@@ -2,6 +2,14 @@ package com.redhat.ceylon.compiler.java.test.expression.ref;
 
 class AttributeRef<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
+    protected AttributeRef(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        super();
+        this.$reified$T = $reified$T;
+        this.t = null;
+        this.val = null;
+        this.typeParam = null;
+    }
+    
     AttributeRef(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final T t) {
         this.$reified$T = $reified$T;
         this.t = t;

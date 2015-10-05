@@ -2,6 +2,12 @@ package com.redhat.ceylon.compiler.java.test.statement.loop.optim;
 
 class OptimizedForWithSegment implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
+    protected OptimizedForWithSegment() {
+        super();
+        this.start = 0L;
+        this.length = 0L;
+    }
+    
     OptimizedForWithSegment(final long start, final long length) {
         this.start = start;
         this.length = length;

@@ -29,6 +29,12 @@ public class Klass implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
         );
     }
     
+    @.com.redhat.ceylon.compiler.java.metadata.Jpa
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    protected Klass() {
+        super();
+    }
+    
     public Klass(@.com.redhat.ceylon.compiler.java.metadata.Name("p1")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     final long p1, @.com.redhat.ceylon.compiler.java.metadata.Name("p2")

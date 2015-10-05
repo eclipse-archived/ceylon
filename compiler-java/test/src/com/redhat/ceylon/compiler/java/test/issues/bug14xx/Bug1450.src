@@ -25,6 +25,12 @@ final class Bug1450$impl<Element> {
 }
 class Bug1450_Single<Element> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1450<Element> {
     
+    protected Bug1450_Single(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element) {
+        super();
+        this.$reified$Element = $reified$Element;
+        this.$com$redhat$ceylon$compiler$java$test$issues$bug14xx$Bug1450$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1450$impl<Element>($reified$Element, this);
+    }
+    
     Bug1450_Single(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element, final Element element) {
         this.$reified$Element = $reified$Element;
         this.$com$redhat$ceylon$compiler$java$test$issues$bug14xx$Bug1450$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1450$impl<Element>($reified$Element, this);

@@ -55,6 +55,13 @@ abstract class Bug1924<RootTerminal> implements .com.redhat.ceylon.compiler.java
 }
 class JavaEntry<K, V> extends .java.lang.Object implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.util.Map.Entry<K, V> {
     
+    protected JavaEntry(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$K, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$V) {
+        super();
+        this.$reified$K = $reified$K;
+        this.$reified$V = $reified$V;
+        this.entry = null;
+    }
+    
     JavaEntry(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$K, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$V, final .ceylon.language.Entry<? extends K, ? extends V> entry) {
         super();
         this.$reified$K = $reified$K;

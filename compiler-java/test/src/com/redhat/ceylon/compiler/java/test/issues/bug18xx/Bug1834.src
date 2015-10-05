@@ -41,6 +41,13 @@ abstract class Right extends .com.redhat.ceylon.compiler.java.test.issues.bug18x
 }
 class Bottom extends .com.redhat.ceylon.compiler.java.test.issues.bug18xx.Right {
     
+    protected Bottom() {
+        super();
+        this.sides = null;
+        this.children = null;
+        this.children2 = null;
+    }
+    
     Bottom(final .com.redhat.ceylon.compiler.java.test.issues.bug18xx.Right mid, final .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.issues.bug18xx.Left> sides) {
         super();
         this.sides = sides;

@@ -13,6 +13,12 @@ class Bug1067 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
         );
     }
     
+    protected Bug1067() {
+        super();
+        this.f = null;
+        this.g = null;
+    }
+    
     Bug1067(final .ceylon.language.Callable<? extends .java.lang.Object> f, final .ceylon.language.Callable<? extends .java.lang.Object> g) {
         this.f = f;
         this.g = g;

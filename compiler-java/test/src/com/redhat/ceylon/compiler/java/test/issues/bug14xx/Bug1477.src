@@ -13,6 +13,11 @@ class Bug1477Node<TItem> implements .com.redhat.ceylon.compiler.java.runtime.mod
         );
     }
     
+    protected Bug1477Node(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$TItem) {
+        super();
+        this.$reified$TItem = $reified$TItem;
+    }
+    
     Bug1477Node(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$TItem, final TItem item, final .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1477Node<TItem>> children) {
         this.$reified$TItem = $reified$TItem;
     }

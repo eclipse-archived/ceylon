@@ -13,6 +13,12 @@ public class Bug1236<P> implements .com.redhat.ceylon.compiler.java.runtime.mode
         );
     }
     
+    protected Bug1236(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$P) {
+        super();
+        this.$reified$P = $reified$P;
+        this.parent = null;
+    }
+    
     public Bug1236(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$P, final .ceylon.language.Callable<? extends .ceylon.language.String> parent, final .java.lang.String a) {
         this.$reified$P = $reified$P;
         this.parent = parent;

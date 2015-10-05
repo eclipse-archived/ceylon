@@ -24,6 +24,10 @@ class VariadicPossiblyEmpty implements .com.redhat.ceylon.compiler.java.runtime.
 }
 class VariadicNonEmpty implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
+    protected VariadicNonEmpty() {
+        super();
+    }
+    
     VariadicNonEmpty(final .ceylon.language.Sequence<? extends .ceylon.language.Integer> arg) {
     }
     

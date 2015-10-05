@@ -13,6 +13,10 @@ class SequencedParameterClassInstantiation implements .com.redhat.ceylon.compile
         );
     }
     
+    protected SequencedParameterClassInstantiation() {
+        super();
+    }
+    
     SequencedParameterClassInstantiation(final long a, final .ceylon.language.Sequential<? extends .ceylon.language.Integer> args) {
     }
     
@@ -31,6 +35,10 @@ class SequencedParameterClassInstantiation implements .com.redhat.ceylon.compile
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.instantiation.SequencedParameterClassInstantiation.class);
 }
 class SequencedParameterClassInstantiationNonempty implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    protected SequencedParameterClassInstantiationNonempty() {
+        super();
+    }
     
     SequencedParameterClassInstantiationNonempty(final long a, final .ceylon.language.Sequence<? extends .ceylon.language.Integer> args) {
     }

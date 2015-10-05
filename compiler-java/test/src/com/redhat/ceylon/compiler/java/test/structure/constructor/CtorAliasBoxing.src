@@ -1,6 +1,11 @@
 package com.redhat.ceylon.compiler.java.test.structure.constructor;
 
 class CtorAliasBoxing implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    protected CtorAliasBoxing() {
+        super();
+        this.string = null;
+    }
     private final .java.lang.String string;
     
     @.java.lang.Override

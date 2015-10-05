@@ -4,6 +4,14 @@ package com.redhat.ceylon.compiler.java.test.metamodel;
 @.com.redhat.ceylon.compiler.java.metadata.Members({@.com.redhat.ceylon.compiler.java.metadata.Member(klass = .com.redhat.ceylon.compiler.java.test.metamodel.LitClass.Member.class)})
 class LitClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
+    @.com.redhat.ceylon.compiler.java.metadata.Jpa
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    protected LitClass() {
+        super();
+        this.attribute = 0L;
+        this.variableAttribute = 0L;
+    }
+    
     LitClass(@.com.redhat.ceylon.compiler.java.metadata.Name("i")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     final long i) {
@@ -89,6 +97,15 @@ class LitClass implements .com.redhat.ceylon.compiler.java.runtime.model.Reified
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 class LitClassWithParameters implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
+    @.com.redhat.ceylon.compiler.java.metadata.Jpa
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    protected LitClassWithParameters() {
+        super();
+        this.parameterAndSharedAttribute = 0L;
+        this.sharedMethodAndParameter = null;
+        this.sharedAttributeAndParameter = 0L;
+    }
+    
     LitClassWithParameters(@.com.redhat.ceylon.compiler.java.metadata.Name("parameterAndSharedAttribute")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     final long parameterAndSharedAttribute, @.com.redhat.ceylon.compiler.java.metadata.Name("parameterAttribute")
@@ -151,6 +168,17 @@ class LitClassWithParameters implements .com.redhat.ceylon.compiler.java.runtime
         satisfies = {},
         caseTypes = {})})
 class LitParameterisedClassWithParameters<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Jpa
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    protected LitParameterisedClassWithParameters(@.com.redhat.ceylon.compiler.java.metadata.Ignore
+    final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        super();
+        this.$reified$T = $reified$T;
+        this.parameterAndSharedAttribute = 0L;
+        this.sharedMethodAndParameter = null;
+        this.sharedAttributeAndParameter = 0L;
+    }
     
     LitParameterisedClassWithParameters(@.com.redhat.ceylon.compiler.java.metadata.Ignore
     final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, @.com.redhat.ceylon.compiler.java.metadata.Name("parameterAndSharedAttribute")
@@ -217,6 +245,16 @@ class LitParameterisedClassWithParameters<T> implements .com.redhat.ceylon.compi
         satisfies = {},
         caseTypes = {})})
 class LitParameterisedClass<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Jpa
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    protected LitParameterisedClass(@.com.redhat.ceylon.compiler.java.metadata.Ignore
+    final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        super();
+        this.$reified$T = $reified$T;
+        this.attribute = 0L;
+        this.variableAttribute = 0L;
+    }
     
     LitParameterisedClass(@.com.redhat.ceylon.compiler.java.metadata.Ignore
     final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, @.com.redhat.ceylon.compiler.java.metadata.Name("t")
@@ -316,6 +354,12 @@ class LitParameterisedClass<T> implements .com.redhat.ceylon.compiler.java.runti
 @.com.redhat.ceylon.compiler.java.metadata.Class(constructors = true)
 class LitClassWithConstructors implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
+    @.com.redhat.ceylon.compiler.java.metadata.Jpa
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    protected LitClassWithConstructors() {
+        super();
+    }
+    
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public .com.redhat.ceylon.compiler.java.test.metamodel.LitClassWithConstructors.Member Member$new$(final boolean b$param$) {
         return new Member(b$param$);
@@ -408,6 +452,14 @@ class LitClassWithConstructors implements .com.redhat.ceylon.compiler.java.runti
         constructors = true,
         extendsType = "com.redhat.ceylon.compiler.java.test.metamodel::LitClassWithConstructors")
 class LitParameterisedClassWithConstructors<T> extends .com.redhat.ceylon.compiler.java.test.metamodel.LitClassWithConstructors {
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Jpa
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    protected LitParameterisedClassWithConstructors(@.com.redhat.ceylon.compiler.java.metadata.Ignore
+    final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        super();
+        this.$reified$T = $reified$T;
+    }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
     

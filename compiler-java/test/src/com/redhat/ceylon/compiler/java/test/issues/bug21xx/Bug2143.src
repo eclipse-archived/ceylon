@@ -13,6 +13,12 @@ package com.redhat.ceylon.compiler.java.test.issues.bug21xx;
 @.ceylon.language.FinalAnnotation$annotation$
 final class Bug2143 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
+    @.com.redhat.ceylon.compiler.java.metadata.Jpa
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    protected Bug2143() {
+        super();
+    }
+    
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     Bug2143(.com.redhat.ceylon.compiler.java.test.issues.bug21xx.Bug2143$annotation$ anno) {
         this(anno.name());

@@ -20,6 +20,12 @@ package com.redhat.ceylon.compiler.java.test.annotations;
 @.ceylon.language.AnnotationAnnotation$annotation$
 final class CollidingLiteralDefaults implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.SequencedAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.CollidingLiteralDefaults, .ceylon.language.meta.declaration.FunctionDeclaration, .java.lang.Object> {
     
+    protected CollidingLiteralDefaults() {
+        super();
+        this.i1 = 0L;
+        this.i2 = 0L;
+    }
+    
     CollidingLiteralDefaults(.com.redhat.ceylon.compiler.java.test.annotations.CollidingLiteralDefaults$annotation$ anno) {
         this(anno.i1(), anno.i2());
     }

@@ -116,6 +116,11 @@ class Bug1334_5 implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
 }
 class Bug1334_6 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
+    protected Bug1334_6() {
+        super();
+        this.hash = 0L;
+    }
+    
     Bug1334_6(final long hash) {
         this.hash = hash;
     }
@@ -179,6 +184,11 @@ class Bug1334_7 implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
 }
 class Bug1334_8 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
+    protected Bug1334_8() {
+        super();
+        this.hash = 0L;
+    }
+    
     Bug1334_8(final long hash) {
         this.hash = hash;
     }
@@ -241,6 +251,10 @@ class Bug1334_9 implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1334_9.class);
 }
 class Bug1334_6_2 extends .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1334_6 {
+    
+    protected Bug1334_6_2() {
+        super();
+    }
     
     Bug1334_6_2(final long h) {
         super(h);

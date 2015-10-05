@@ -2,6 +2,11 @@ package com.redhat.ceylon.compiler.java.test.issues.bug16xx;
 
 class Bug1662 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.Summable<.com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1662> {
     
+    protected Bug1662() {
+        super();
+        this.$float = 0.0;
+    }
+    
     Bug1662(final double $float) {
         this.$float = $float;
     }

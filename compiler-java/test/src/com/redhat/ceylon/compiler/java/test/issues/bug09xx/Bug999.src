@@ -24,6 +24,16 @@ interface Bug999Interface<Key, Value> {
 }
 class Bug999 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug999Interface<.ceylon.language.Integer, .ceylon.language.Boolean> {
     
+    protected Bug999() {
+        super();
+        this.i = 0L;
+        this.f = null;
+        this.attr3 = null;
+        this.attr4 = null;
+        this.attr7 = false;
+        this.attr8 = false;
+    }
+    
     Bug999(final long i, final .ceylon.language.Callable<? extends .ceylon.language.Boolean> f) {
         this.i = i;
         this.f = f;

@@ -65,6 +65,15 @@ public interface CE_MethodInterface {
 }
 public class CE_MethodInterfaceImpl implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.expression.erasure.CE_MethodInterface {
     
+    protected CE_MethodInterfaceImpl() {
+        super();
+        this.c = null;
+        this.erased = null;
+        this.nonErased = null;
+        this.m1$specifier$ = null;
+        this.m2$specifier$ = null;
+    }
+    
     public CE_MethodInterfaceImpl(final .com.redhat.ceylon.compiler.java.test.expression.erasure.CE_MethodClass c, final .java.lang.Object erased, final .ceylon.language.Callable<? extends .ceylon.language.Integer> nonErased) {
         this.c = c;
         this.erased = erased;

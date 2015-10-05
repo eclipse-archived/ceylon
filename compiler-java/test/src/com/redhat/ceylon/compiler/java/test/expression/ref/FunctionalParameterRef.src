@@ -2,6 +2,21 @@ package com.redhat.ceylon.compiler.java.test.expression.ref;
 
 class FunctionalParameterRef implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
+    protected FunctionalParameterRef() {
+        super();
+        this.nullary = null;
+        this.unary = null;
+        this.binary = null;
+        this.ternary = null;
+        this.nary = null;
+        this.nullarySequenced = null;
+        this.unarySequenced = null;
+        this.binarySequenced = null;
+        this.ternarySequenced = null;
+        this.narySequenced = null;
+        this.unaryUnaryMpl = null;
+    }
+    
     FunctionalParameterRef(final .ceylon.language.Callable<? extends .ceylon.language.String> nullary, final .ceylon.language.Callable<? extends .ceylon.language.String> unary, final .ceylon.language.Callable<? extends .ceylon.language.String> binary, final .ceylon.language.Callable<? extends .ceylon.language.String> ternary, final .ceylon.language.Callable<? extends .ceylon.language.String> nary, final .ceylon.language.Callable<? extends .ceylon.language.String> nullarySequenced, final .ceylon.language.Callable<? extends .ceylon.language.String> unarySequenced, final .ceylon.language.Callable<? extends .ceylon.language.String> binarySequenced, final .ceylon.language.Callable<? extends .ceylon.language.String> ternarySequenced, final .ceylon.language.Callable<? extends .ceylon.language.String> narySequenced, final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .ceylon.language.String>> unaryUnaryMpl) {
         this.nullary = nullary;
         this.unary = unary;

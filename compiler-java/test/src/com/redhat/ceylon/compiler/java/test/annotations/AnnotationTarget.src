@@ -97,6 +97,14 @@ interface AnnotationTargetClass$InnerInterface {
 @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget$annotation$
 class AnnotationTargetClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
+    protected AnnotationTargetClass() {
+        super();
+        this.parameter = null;
+        this.attribute = false;
+        this.varAttribute = false;
+        this.obj = null;
+    }
+    
     AnnotationTargetClass(final .java.lang.String parameter) {
         this.parameter = parameter;
         this.attribute = true;

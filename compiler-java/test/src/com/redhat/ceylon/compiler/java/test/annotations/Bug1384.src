@@ -14,6 +14,11 @@ public @interface Bug1384$annotation$ {
 @.ceylon.language.AnnotationAnnotation$annotation$
 public final class Bug1384 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.OptionalAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.Bug1384, .ceylon.language.meta.declaration.ValueDeclaration, .java.lang.Object> {
     
+    protected Bug1384() {
+        super();
+        this.reference = null;
+    }
+    
     public Bug1384(.com.redhat.ceylon.compiler.java.test.annotations.Bug1384$annotation$ anno) {
         this(.com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.<.ceylon.language.meta.declaration.ValueDeclaration>parseMetamodelReference(anno.reference()));
     }
@@ -52,6 +57,11 @@ public @interface Bug1384_sequence$annotation$ {
 @.ceylon.language.FinalAnnotation$annotation$
 @.ceylon.language.AnnotationAnnotation$annotation$
 public final class Bug1384_sequence implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.OptionalAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.Bug1384_sequence, .ceylon.language.meta.declaration.ValueDeclaration, .java.lang.Object> {
+    
+    protected Bug1384_sequence() {
+        super();
+        this.references = null;
+    }
     
     public Bug1384_sequence(.com.redhat.ceylon.compiler.java.test.annotations.Bug1384_sequence$annotation$ anno) {
         this(.com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.<.ceylon.language.meta.declaration.ValueDeclaration>parseMetamodelReferences(.ceylon.language.meta.declaration.ValueDeclaration.$TypeDescriptor$, anno.references()));

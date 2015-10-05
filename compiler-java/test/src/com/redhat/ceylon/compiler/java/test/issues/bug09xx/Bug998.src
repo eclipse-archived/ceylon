@@ -2,6 +2,12 @@ package com.redhat.ceylon.compiler.java.test.issues.bug09xx;
 
 class Bug998 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
+    protected Bug998() {
+        super();
+        this.f = null;
+        this.rows = null;
+    }
+    
     Bug998(final long i, final .ceylon.language.Callable<? extends .ceylon.language.Boolean> f) {
         this.f = f;
         this.rows = (.ceylon.language.Sequence<? extends .ceylon.language.Boolean>)(.ceylon.language.Sequence)new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Boolean, .java.lang.Object>(.ceylon.language.Boolean.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){

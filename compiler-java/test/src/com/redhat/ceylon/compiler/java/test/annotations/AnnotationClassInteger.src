@@ -29,6 +29,10 @@ final class AnnotationClassInteger implements .com.redhat.ceylon.compiler.java.r
         );
     }
     
+    protected AnnotationClassInteger() {
+        super();
+    }
+    
     AnnotationClassInteger(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassInteger$annotation$ anno) {
         this(anno.i(), anno.j());
     }

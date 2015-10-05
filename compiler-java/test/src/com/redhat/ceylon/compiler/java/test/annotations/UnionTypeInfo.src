@@ -45,6 +45,13 @@ public class Bar implements .com.redhat.ceylon.compiler.java.runtime.model.Reifi
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 class UnionTypeInfo implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
+    @.com.redhat.ceylon.compiler.java.metadata.Jpa
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    protected UnionTypeInfo() {
+        super();
+        this.sharedAttr = null;
+    }
+    
     UnionTypeInfo(@.com.redhat.ceylon.compiler.java.metadata.Name("param")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
             value = "com.redhat.ceylon.compiler.java.test.annotations::Foo|com.redhat.ceylon.compiler.java.test.annotations::Bar",
@@ -149,6 +156,12 @@ class UnionTypeInfo implements .com.redhat.ceylon.compiler.java.runtime.model.Re
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 @.ceylon.language.SharedAnnotation$annotation$
 public class SharedUnionTypeInfo implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Jpa
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    protected SharedUnionTypeInfo() {
+        super();
+    }
     
     public SharedUnionTypeInfo(@.com.redhat.ceylon.compiler.java.metadata.Name("param")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(

@@ -2,6 +2,12 @@ package com.redhat.ceylon.compiler.java.test.statement.conditional;
 
 class AssertVariableScopes implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
+    protected AssertVariableScopes() {
+        super();
+        this.x = null;
+        this.y = null;
+    }
+    
     AssertVariableScopes(final .java.lang.Object x, final .java.lang.Object y) {
         this.x = x;
         this.y = y;

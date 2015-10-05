@@ -11,6 +11,11 @@ interface VarianceBottom extends .com.redhat.ceylon.compiler.java.test.structure
 }
 class VarianceClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
+    protected VarianceClass() {
+        super();
+        this.classAttr = null;
+    }
+    
     VarianceClass(final .com.redhat.ceylon.compiler.java.test.structure.klass.VarianceMiddle classParam) {
         this.classAttr = classParam;
     }
@@ -31,6 +36,11 @@ class VarianceClass implements .com.redhat.ceylon.compiler.java.runtime.model.Re
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.VarianceClass.class);
 }
 class VarianceSubClass extends .com.redhat.ceylon.compiler.java.test.structure.klass.VarianceClass {
+    
+    protected VarianceSubClass() {
+        super();
+        this.classAttr = null;
+    }
     
     VarianceSubClass(final .com.redhat.ceylon.compiler.java.test.structure.klass.VarianceBottom classParam) {
         super(classParam);

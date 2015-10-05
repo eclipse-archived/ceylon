@@ -2,6 +2,11 @@ package com.redhat.ceylon.compiler.java.test.issues.bug09xx;
 
 class Bug931BinaryOperator implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
+    protected Bug931BinaryOperator() {
+        super();
+        this.f = null;
+    }
+    
     Bug931BinaryOperator(final .ceylon.language.Callable<? extends .ceylon.language.Integer> f) {
         this.f = f;
     }

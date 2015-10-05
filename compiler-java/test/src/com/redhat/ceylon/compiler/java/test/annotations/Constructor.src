@@ -112,6 +112,12 @@ final class valueConstructorAnnotation_ {
 @.com.redhat.ceylon.compiler.java.metadata.Class(constructors = true)
 class Constructor implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
+    @.com.redhat.ceylon.compiler.java.metadata.Jpa
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    protected Constructor() {
+        super();
+    }
+    
     @.ceylon.language.DocAnnotation$annotation$(description = "docannotation")
     @.com.redhat.ceylon.compiler.java.test.annotations.ConstructorAnnotation$annotation$
     @.com.redhat.ceylon.compiler.java.test.annotations.CallableConstructorAnnotation$annotation$

@@ -275,6 +275,15 @@ public final class MethodInterface$impl {
 @.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"com.redhat.ceylon.compiler.java.test.structure.reified::MethodInterface"})
 public class MethodInterfaceImpl implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.reified.MethodInterface {
     
+    @.com.redhat.ceylon.compiler.java.metadata.Jpa
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    protected MethodInterfaceImpl() {
+        super();
+        this.$com$redhat$ceylon$compiler$java$test$structure$reified$MethodInterface$this$ = new .com.redhat.ceylon.compiler.java.test.structure.reified.MethodInterface$impl(this);
+        this.c = null;
+        this.m$specifier$ = null;
+    }
+    
     public MethodInterfaceImpl(@.com.redhat.ceylon.compiler.java.metadata.Name("c")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.structure.reified::MethodClass")
     final .com.redhat.ceylon.compiler.java.test.structure.reified.MethodClass c) {

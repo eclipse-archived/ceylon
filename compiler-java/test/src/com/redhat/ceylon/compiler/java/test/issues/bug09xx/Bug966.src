@@ -2,6 +2,20 @@ package com.redhat.ceylon.compiler.java.test.issues.bug09xx;
 
 public abstract class Bug966<Element extends .ceylon.language.Enumerable<Element>> extends .java.lang.Object implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.Sequence<Element>, .ceylon.language.Category<.java.lang.Object> {
     
+    protected Bug966(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element) {
+        super();
+        this.$reified$Element = $reified$Element;
+        this.$ceylon$language$Category$this$ = new .ceylon.language.Category$impl<.java.lang.Object>(.ceylon.language.Object.$TypeDescriptor$, this);
+        this.$ceylon$language$Iterable$this$ = new .ceylon.language.Iterable$impl($reified$Element, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, this);
+        this.$ceylon$language$Collection$this$ = new .ceylon.language.Collection$impl<Element>($reified$Element, this);
+        this.$ceylon$language$Correspondence$this$ = new .ceylon.language.Correspondence$impl<.ceylon.language.Integer, Element>(.ceylon.language.Integer.$TypeDescriptor$, $reified$Element, this);
+        this.$ceylon$language$List$this$ = new .ceylon.language.List$impl<Element>($reified$Element, this);
+        this.$ceylon$language$Sequential$this$ = new .ceylon.language.Sequential$impl<Element>($reified$Element, this);
+        this.$ceylon$language$Sequence$this$ = new .ceylon.language.Sequence$impl<Element>($reified$Element, this);
+        this.first = null;
+        this.last = null;
+    }
+    
     public Bug966(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element, final Element first, final Element last) {
         super();
         this.$reified$Element = $reified$Element;

@@ -121,6 +121,11 @@ class ConstructorRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
             returning null;
         );
     }
+    
+    protected ConstructorRef() {
+        super();
+        this.string = null;
+    }
     private final .java.lang.String string;
     
     @.java.lang.Override
@@ -274,6 +279,15 @@ class ConstructorRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
         caseTypes = {})})
 @.com.redhat.ceylon.compiler.java.metadata.Class(constructors = true)
 class ConstructorRefTp<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Jpa
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    protected ConstructorRefTp(@.com.redhat.ceylon.compiler.java.metadata.Ignore
+    final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        super();
+        this.$reified$T = $reified$T;
+        this.string = null;
+    }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
     @.com.redhat.ceylon.compiler.java.metadata.Ignore

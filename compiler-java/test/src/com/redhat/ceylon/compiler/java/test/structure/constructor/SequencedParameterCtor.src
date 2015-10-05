@@ -13,6 +13,10 @@ class SequencedParameterCtor implements .com.redhat.ceylon.compiler.java.runtime
         );
     }
     
+    protected SequencedParameterCtor() {
+        super();
+    }
+    
     private final void use$priv$() {
         new .com.redhat.ceylon.compiler.java.test.structure.constructor.SequencedParameterCtor(.com.redhat.ceylon.compiler.java.test.structure.constructor.SequencedParameterCtor.possiblyEmpty_);
         new .com.redhat.ceylon.compiler.java.test.structure.constructor.SequencedParameterCtor(.com.redhat.ceylon.compiler.java.test.structure.constructor.SequencedParameterCtor.possiblyEmpty_, (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.empty_.get_(), new .java.lang.Object[]{.ceylon.language.String.instance("")}));

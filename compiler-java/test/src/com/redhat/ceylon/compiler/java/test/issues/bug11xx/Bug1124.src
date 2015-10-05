@@ -10,6 +10,12 @@ interface Bug1124Interface<Key, Value> {
 }
 class Bug1124 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1124Interface<.ceylon.language.Integer, .ceylon.language.Boolean> {
     
+    protected Bug1124() {
+        super();
+        this.i = 0L;
+        this.f = null;
+    }
+    
     Bug1124(final long i, final .ceylon.language.Callable<? extends .ceylon.language.Boolean> f) {
         this.i = i;
         this.f = f;

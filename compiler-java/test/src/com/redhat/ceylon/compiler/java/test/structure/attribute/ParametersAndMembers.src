@@ -2,6 +2,14 @@ package com.redhat.ceylon.compiler.java.test.structure.attribute;
 
 class ParametersAndMembers implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
+    protected ParametersAndMembers() {
+        super();
+        this.unsharedCapturedVpd = null;
+        this.sharedVpd = null;
+        this.unsharedCapturedHidden = null;
+        this.sharedHidden = null;
+    }
+    
     ParametersAndMembers(final .java.lang.String unsharedUncapturedHidden, final .java.lang.String unsharedCapturedHidden, final .java.lang.String sharedHidden, final .java.lang.String unsharedUncapturedVpd, final .java.lang.String unsharedCapturedVpd, final .java.lang.String sharedVpd) {
         this.unsharedCapturedHidden = unsharedCapturedHidden;
         this.sharedHidden = sharedHidden;

@@ -2,6 +2,11 @@ package com.redhat.ceylon.compiler.java.test.issues.bug12xx;
 
 class Bug1243<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
+    protected Bug1243(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        super();
+        this.$reified$T = $reified$T;
+    }
+    
     Bug1243(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final T t) {
         this.$reified$T = $reified$T;
     }
@@ -62,6 +67,11 @@ class Bug1243<T> implements .com.redhat.ceylon.compiler.java.runtime.model.Reifi
 }
 class Bug1243b<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
+    protected Bug1243b(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        super();
+        this.$reified$T = $reified$T;
+    }
+    
     Bug1243b(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final T t) {
         this.$reified$T = $reified$T;
     }
@@ -121,6 +131,11 @@ class Bug1243b<T> implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
     }
 }
 class Bug1243c<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    protected Bug1243c(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        super();
+        this.$reified$T = $reified$T;
+    }
     
     Bug1243c(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final T t) {
         this.$reified$T = $reified$T;

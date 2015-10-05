@@ -156,6 +156,14 @@ final class nestedLeafLiteralArgument_ {
 @.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"ceylon.language::SequencedAnnotation<com.redhat.ceylon.compiler.java.test.annotations::NestedBranch,ceylon.language.meta.declaration::FunctionDeclaration,ceylon.language::Anything>"})
 final class NestedBranch implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.SequencedAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.NestedBranch, .ceylon.language.meta.declaration.FunctionDeclaration, .java.lang.Object> {
     
+    @.com.redhat.ceylon.compiler.java.metadata.Jpa
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    protected NestedBranch() {
+        super();
+        this.s = null;
+        this.b = null;
+    }
+    
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     NestedBranch(.com.redhat.ceylon.compiler.java.test.annotations.NestedBranch$annotation$ anno) {
         this(anno.s(), new .com.redhat.ceylon.compiler.java.test.annotations.NestedLeaf(anno.b()));

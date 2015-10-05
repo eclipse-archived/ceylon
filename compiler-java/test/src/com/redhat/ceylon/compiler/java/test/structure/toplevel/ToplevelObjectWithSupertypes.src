@@ -2,6 +2,10 @@ package com.redhat.ceylon.compiler.java.test.structure.toplevel;
 
 public class C implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
+    protected C() {
+        super();
+    }
+    
     public C(final long n) {
     }
     

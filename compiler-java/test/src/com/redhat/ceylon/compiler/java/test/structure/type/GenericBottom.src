@@ -2,6 +2,14 @@ package com.redhat.ceylon.compiler.java.test.structure.type;
 
 class GenericBottom<T, U> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
+    protected GenericBottom(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$U) {
+        super();
+        this.$reified$T = $reified$T;
+        this.$reified$U = $reified$U;
+        this.attrTp = null;
+        this.attrIntersection = null;
+    }
+    
     GenericBottom(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$U, final .java.lang.Object argObject) {
         this.$reified$T = $reified$T;
         this.$reified$U = $reified$U;

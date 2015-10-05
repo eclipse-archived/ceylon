@@ -16,6 +16,10 @@ package com.redhat.ceylon.compiler.java.test.annotations;
 @.ceylon.language.FinalAnnotation$annotation$
 final class AnnotationClassBoolean implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.SequencedAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBoolean, .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration, .java.lang.Object> {
     
+    protected AnnotationClassBoolean() {
+        super();
+    }
+    
     AnnotationClassBoolean(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBoolean$annotation$ anno) {
         this(anno.b());
     }
@@ -215,6 +219,10 @@ final class annotationClassVariadicIterable_ {
 @.ceylon.language.FinalAnnotation$annotation$
 final class AnnotationClassBooleanSequence implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.SequencedAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBooleanSequence, .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration, .java.lang.Object> {
     
+    protected AnnotationClassBooleanSequence() {
+        super();
+    }
+    
     AnnotationClassBooleanSequence(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBooleanSequence$annotation$ anno) {
         this(.com.redhat.ceylon.compiler.java.Util.sequentialWrapperBoxed(anno.b()));
     }
@@ -284,6 +292,10 @@ final class annotationClassSequenceSequence_ {
 @.ceylon.language.AnnotationAnnotation$annotation$
 @.ceylon.language.FinalAnnotation$annotation$
 final class AnnotationClassBooleanIterable implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.SequencedAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBooleanIterable, .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration, .java.lang.Object> {
+    
+    protected AnnotationClassBooleanIterable() {
+        super();
+    }
     
     AnnotationClassBooleanIterable(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBooleanIterable$annotation$ anno) {
         this(.com.redhat.ceylon.compiler.java.Util.sequentialWrapperBoxed(anno.b()));

@@ -2,6 +2,10 @@ package com.redhat.ceylon.compiler.java.test.expression.invoke;
 
 class NamedArgumentInvocationInit implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
+    protected NamedArgumentInvocationInit() {
+        super();
+    }
+    
     NamedArgumentInvocationInit(final .java.lang.String a, final long b) {
     }
     

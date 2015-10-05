@@ -2,6 +2,13 @@ package com.redhat.ceylon.compiler.java.test.issues.bug09xx;
 
 class Bug954 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
+    protected Bug954() {
+        super();
+        this.n = 0L;
+        this.pubx = null;
+        this.puby = null;
+    }
+    
     Bug954(final boolean b) {
         this.n = 2L;
         

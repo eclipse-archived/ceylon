@@ -19,6 +19,11 @@ public @interface EnumeratedReference_X$annotations$ {
 @.ceylon.language.AnnotationAnnotation$annotation$
 public final class EnumeratedReference_X implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.SequencedAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReference_X, .ceylon.language.meta.declaration.FunctionDeclaration, .java.lang.Object> {
     
+    protected EnumeratedReference_X() {
+        super();
+        this.y = null;
+    }
+    
     public EnumeratedReference_X(.com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReference_X$annotation$ anno) {
         this(new .com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReference_Y(anno.y()));
     }
@@ -63,6 +68,10 @@ public @interface EnumeratedReference_Y$annotations$ {
 @.ceylon.language.FinalAnnotation$annotation$
 @.ceylon.language.AnnotationAnnotation$annotation$
 public final class EnumeratedReference_Y implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.SequencedAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReference_Y, .ceylon.language.meta.declaration.FunctionDeclaration, .java.lang.Object> {
+    
+    protected EnumeratedReference_Y() {
+        super();
+    }
     
     public EnumeratedReference_Y(.com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReference_Y$annotation$ anno) {
         this(.com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.parseEnumerationReference(anno.c()));

@@ -2,6 +2,10 @@ package com.redhat.ceylon.compiler.java.test.statement.swtch;
 
 class SwitchWithNullCase implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
+    protected SwitchWithNullCase() {
+        super();
+    }
+    
     SwitchWithNullCase(final .ceylon.language.Boolean s, final .ceylon.language.String s2, final .ceylon.language.Character s3, final .java.lang.Object s4) {
         {
             .ceylon.language.Boolean sel$0 = s;

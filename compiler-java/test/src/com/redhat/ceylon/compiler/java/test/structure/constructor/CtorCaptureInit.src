@@ -1,6 +1,16 @@
 package com.redhat.ceylon.compiler.java.test.structure.constructor;
 
 class CtorCaptureInit implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    protected CtorCaptureInit() {
+        super();
+        this.sharedName = null;
+        this.init = 0L;
+        this.sharedInit = 0L;
+        this.count = 0L;
+        this.sharedCount = 0L;
+        this.captured = null;
+    }
     private final .java.lang.String sharedName;
     
     public final .java.lang.String getSharedName() {

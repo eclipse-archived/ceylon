@@ -24,6 +24,11 @@ public final class run_ {
 }
 class Person implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
+    protected Person() {
+        super();
+        this.name = null;
+    }
+    
     Person(final .java.lang.String name) {
         this.name = name;
     }

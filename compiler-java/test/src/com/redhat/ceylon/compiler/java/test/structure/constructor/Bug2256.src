@@ -1,6 +1,10 @@
 package com.redhat.ceylon.compiler.java.test.structure.constructor;
 
 public class Bug2256 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    protected Bug2256() {
+        super();
+    }
     private static final .com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2256.$delegation$ $delegation$ = null;
     
     private static final class $delegation$ {

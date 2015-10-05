@@ -3,6 +3,13 @@ package com.redhat.ceylon.compiler.java.test.metamodel;
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 class BugCl566 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
+    @.com.redhat.ceylon.compiler.java.metadata.Jpa
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    protected BugCl566() {
+        super();
+        this.a = null;
+    }
+    
     BugCl566(@.com.redhat.ceylon.compiler.java.metadata.Name("a")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     final .java.lang.Object a) {

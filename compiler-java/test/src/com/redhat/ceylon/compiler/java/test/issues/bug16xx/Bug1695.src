@@ -31,6 +31,11 @@ class Bug1695A extends .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1
 }
 class Bug1695B extends .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1695T {
     
+    protected Bug1695B() {
+        super();
+        this.c = null;
+    }
+    
     Bug1695B(final .ceylon.language.Sequence c) {
         super();
         this.c = c;

@@ -2,6 +2,11 @@ package com.redhat.ceylon.compiler.java.test.expression.invoke;
 
 class CallablePositionalInvocationQualified implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
+    protected CallablePositionalInvocationQualified() {
+        super();
+        this.f = null;
+    }
+    
     CallablePositionalInvocationQualified(final .ceylon.language.Callable<? extends .java.lang.Object> f) {
         this.f = f;
     }

@@ -2,6 +2,18 @@ package com.redhat.ceylon.compiler.java.test.issues.bug06xx;
 
 class Bug689<X, Y> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
+    protected Bug689(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$X, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Y) {
+        super();
+        this.$reified$X = $reified$X;
+        this.$reified$Y = $reified$Y;
+        this.attributeWithUnion = null;
+        this.attributeWithIntersection = null;
+        this.variableWithUnion = null;
+        this.variableWithIntersection = null;
+        this.attributeWithUnionWithinTypeArg = null;
+        this.attributeWithUnionErasedToIterable = null;
+    }
+    
     Bug689(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$X, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Y, final X x, final Y y, final .java.lang.Object xy) {
         this.$reified$X = $reified$X;
         this.$reified$Y = $reified$Y;

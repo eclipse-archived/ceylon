@@ -2,6 +2,10 @@ package com.redhat.ceylon.compiler.java.test.structure.importIt;
 
 class ImportCeylonLanguageType implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
+    protected ImportCeylonLanguageType() {
+        super();
+    }
+    
     ImportCeylonLanguageType(final long n) {
     }
     

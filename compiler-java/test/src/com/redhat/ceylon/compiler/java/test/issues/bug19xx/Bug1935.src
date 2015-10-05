@@ -4,6 +4,11 @@ interface One1935<Item> {
 }
 class OneClass1935<Item> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug19xx.One1935<Item> {
     
+    protected OneClass1935(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Item) {
+        super();
+        this.$reified$Item = $reified$Item;
+    }
+    
     OneClass1935(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Item, final .com.redhat.ceylon.compiler.java.test.issues.bug19xx.One1935<? extends Item> t) {
         this.$reified$Item = $reified$Item;
     }
@@ -26,6 +31,12 @@ final class one1935_ {
 interface Two1935<Key, Item> {
 }
 class TwoClass1935<Key, Item> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug19xx.Two1935<Key, Item> {
+    
+    protected TwoClass1935(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Key, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Item) {
+        super();
+        this.$reified$Key = $reified$Key;
+        this.$reified$Item = $reified$Item;
+    }
     
     TwoClass1935(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Key, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Item, final .com.redhat.ceylon.compiler.java.test.issues.bug19xx.Two1935<? extends Key, ? extends Item> t) {
         this.$reified$Key = $reified$Key;

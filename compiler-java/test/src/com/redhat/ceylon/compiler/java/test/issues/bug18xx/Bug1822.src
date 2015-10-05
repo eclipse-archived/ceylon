@@ -2,6 +2,11 @@ package com.redhat.ceylon.compiler.java.test.issues.bug18xx;
 
 public class AnythingVoidHandler1822 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
+    protected AnythingVoidHandler1822() {
+        super();
+        this.done = null;
+    }
+    
     public AnythingVoidHandler1822(final .ceylon.language.Callable<? extends .java.lang.Object> done) {
         this.done = done;
     }

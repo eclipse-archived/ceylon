@@ -13,6 +13,10 @@ class InitializerVarargs implements .com.redhat.ceylon.compiler.java.runtime.mod
         );
     }
     
+    protected InitializerVarargs() {
+        super();
+    }
+    
     InitializerVarargs(final .java.lang.String f, final .ceylon.language.Sequential<? extends .ceylon.language.String> fs) {
         final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> iterable$3 = fs;
         final boolean isTuple$4 = iterable$3 instanceof .ceylon.language.Tuple && ((.ceylon.language.Tuple)iterable$3).$getArray$() != null;

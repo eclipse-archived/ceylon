@@ -2,6 +2,10 @@ package com.redhat.ceylon.compiler.java.test.structure.klass;
 
 class ClassWithVariableParameterInit implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
+    protected ClassWithVariableParameterInit() {
+        super();
+    }
+    
     ClassWithVariableParameterInit(long i) {
         i = 0L;
         (
@@ -29,6 +33,11 @@ class ClassWithVariableParameterInit implements .com.redhat.ceylon.compiler.java
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.ClassWithVariableParameterInit.class);
 }
 class ClassWithVariableParameter implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    protected ClassWithVariableParameter() {
+        super();
+        this.i = 0L;
+    }
     
     ClassWithVariableParameter(long i) {
         this.i = i;
@@ -68,6 +77,10 @@ class ClassWithVariableParameter implements .com.redhat.ceylon.compiler.java.run
 }
 class ClassWithHiddenVariableParameterInit implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
+    protected ClassWithHiddenVariableParameterInit() {
+        super();
+    }
+    
     ClassWithHiddenVariableParameterInit(long i) {
         i = 0L;
         (
@@ -95,6 +108,11 @@ class ClassWithHiddenVariableParameterInit implements .com.redhat.ceylon.compile
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.ClassWithHiddenVariableParameterInit.class);
 }
 class ClassWithHiddenVariableParameter implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    protected ClassWithHiddenVariableParameter() {
+        super();
+        this.i = 0L;
+    }
     
     ClassWithHiddenVariableParameter(long i) {
         this.i = i;
@@ -133,6 +151,11 @@ class ClassWithHiddenVariableParameter implements .com.redhat.ceylon.compiler.ja
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.ClassWithHiddenVariableParameter.class);
 }
 class ClassWithVariableParameterCapturedInit implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    protected ClassWithVariableParameterCapturedInit() {
+        super();
+        this.i = 0L;
+    }
     
     ClassWithVariableParameterCapturedInit(long i$param$) {
         this.i = i$param$;
@@ -176,6 +199,11 @@ class ClassWithVariableParameterCapturedInit implements .com.redhat.ceylon.compi
 }
 class ClassWithVariableParameterCaptured implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
+    protected ClassWithVariableParameterCaptured() {
+        super();
+        this.i = 0L;
+    }
+    
     ClassWithVariableParameterCaptured(long i$param$) {
         this.i = i$param$;
         fn$priv$();
@@ -217,6 +245,11 @@ class ClassWithVariableParameterCaptured implements .com.redhat.ceylon.compiler.
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.ClassWithVariableParameterCaptured.class);
 }
 class ClassWithHiddenVariableParameterCapturedInit implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    protected ClassWithHiddenVariableParameterCapturedInit() {
+        super();
+        this.i = 0L;
+    }
     
     ClassWithHiddenVariableParameterCapturedInit(long i$param$) {
         this.i = i$param$;
@@ -260,6 +293,11 @@ class ClassWithHiddenVariableParameterCapturedInit implements .com.redhat.ceylon
 }
 class ClassWithHiddenVariableParameterCaptured implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
+    protected ClassWithHiddenVariableParameterCaptured() {
+        super();
+        this.i = 0L;
+    }
+    
     ClassWithHiddenVariableParameterCaptured(long i$param$) {
         this.i = i$param$;
         fn$priv$();
@@ -301,6 +339,11 @@ class ClassWithHiddenVariableParameterCaptured implements .com.redhat.ceylon.com
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.ClassWithHiddenVariableParameterCaptured.class);
 }
 class ClassWithVariableParameterCapturedInitSub extends .com.redhat.ceylon.compiler.java.test.structure.klass.ClassWithVariableParameterCapturedInit {
+    
+    protected ClassWithVariableParameterCapturedInitSub() {
+        super();
+        this.i = 0L;
+    }
     
     ClassWithVariableParameterCapturedInitSub(long i$param$) {
         super((

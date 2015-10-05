@@ -43,6 +43,14 @@ class Bug1594Class<T> implements .com.redhat.ceylon.compiler.java.runtime.model.
 }
 class Bug1594OptimizedIs<X extends .ceylon.language.List<? extends .java.lang.Object>, Y extends .ceylon.language.String, Y2 extends .ceylon.language.List<? extends .ceylon.language.Character>, Z extends Y> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
+    protected Bug1594OptimizedIs(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$X, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Y, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Y2, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Z) {
+        super();
+        this.$reified$X = $reified$X;
+        this.$reified$Y = $reified$Y;
+        this.$reified$Y2 = $reified$Y2;
+        this.$reified$Z = $reified$Z;
+    }
+    
     Bug1594OptimizedIs(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$X, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Y, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Y2, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Z, final .java.lang.Object o) {
         this.$reified$X = $reified$X;
         this.$reified$Y = $reified$Y;

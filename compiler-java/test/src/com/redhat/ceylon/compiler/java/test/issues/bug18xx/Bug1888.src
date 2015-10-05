@@ -2,6 +2,11 @@ package com.redhat.ceylon.compiler.java.test.issues.bug18xx;
 
 class Bug1888 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
+    protected Bug1888() {
+        super();
+        this.cycled = null;
+    }
+    
     Bug1888(.java.lang.String cycled$param$) {
         this.cycled = cycled$param$;
         final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> l = new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 1, false){

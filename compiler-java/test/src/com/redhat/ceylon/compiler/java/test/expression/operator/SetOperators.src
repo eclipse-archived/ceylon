@@ -190,6 +190,13 @@ public class SetOperators implements .com.redhat.ceylon.compiler.java.runtime.mo
 }
 class SetOperatorsSuper implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
+    protected SetOperatorsSuper() {
+        super();
+        this.a = null;
+        this.b = null;
+        this.sync = null;
+    }
+    
     SetOperatorsSuper(.ceylon.language.Set<? extends .ceylon.language.Integer> a$param$, .ceylon.language.Set<? extends .ceylon.language.Integer> b$param$) {
         this.a = a$param$;
         this.b = b$param$;
@@ -261,6 +268,10 @@ class SetOperatorsSuper implements .com.redhat.ceylon.compiler.java.runtime.mode
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.operator.SetOperatorsSuper.class);
 }
 class SetOperatorsSub extends .com.redhat.ceylon.compiler.java.test.expression.operator.SetOperatorsSuper {
+    
+    protected SetOperatorsSub() {
+        super();
+    }
     
     SetOperatorsSub(final .ceylon.language.Set<? extends .ceylon.language.Integer> a, final .ceylon.language.Set<? extends .java.lang.Object> b) {
         super(a, (.ceylon.language.Set<? extends .ceylon.language.Integer>)(.ceylon.language.Set)b);

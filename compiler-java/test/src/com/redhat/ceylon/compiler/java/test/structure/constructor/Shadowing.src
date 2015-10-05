@@ -2,6 +2,10 @@ package com.redhat.ceylon.compiler.java.test.structure.constructor;
 
 class Shadowing implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
+    protected Shadowing() {
+        super();
+    }
+    
     public Shadowing(final .java.lang.String name$param$, final long i$param$) {
         final long i = 0L;
         final long j;

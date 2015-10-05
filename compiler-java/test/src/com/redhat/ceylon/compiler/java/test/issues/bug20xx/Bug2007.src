@@ -3,6 +3,12 @@ package com.redhat.ceylon.compiler.java.test.issues.bug20xx;
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 class Bug2007_1 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
+    @.com.redhat.ceylon.compiler.java.metadata.Jpa
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    protected Bug2007_1() {
+        super();
+    }
+    
     Bug2007_1(@.com.redhat.ceylon.compiler.java.metadata.Name("x")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     final long x) {

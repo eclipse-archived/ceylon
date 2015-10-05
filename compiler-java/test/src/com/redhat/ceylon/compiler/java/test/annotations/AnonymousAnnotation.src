@@ -4,6 +4,13 @@ package com.redhat.ceylon.compiler.java.test.annotations;
 @.ceylon.language.DocAnnotation$annotation$(description = "class doc")
 class AnnonymousAnnotation implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
+    @.com.redhat.ceylon.compiler.java.metadata.Jpa
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    protected AnnonymousAnnotation() {
+        super();
+        this.s = null;
+    }
+    
     AnnonymousAnnotation(@.com.redhat.ceylon.compiler.java.metadata.Name("s")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
     final .java.lang.String s, @.com.redhat.ceylon.compiler.java.metadata.Name("s2")

@@ -2,6 +2,11 @@ package com.redhat.ceylon.compiler.java.test.issues.bug12xx;
 
 class Bug1291 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
+    protected Bug1291() {
+        super();
+        this.i = 0L;
+    }
+    
     Bug1291(final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1291 other, final long i) {
         this.i = i;
         final long x = getI$priv$() + other.getI$priv$();

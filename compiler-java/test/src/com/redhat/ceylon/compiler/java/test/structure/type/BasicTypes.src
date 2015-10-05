@@ -92,6 +92,30 @@ public final class globalMethodOptionalCharacter_ {
 }
 class BasicTypes implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
+    protected BasicTypes() {
+        super();
+        this.privateAttrInteger = 0L;
+        this.privateAttrFloat = 0.0;
+        this.privateAttrString = null;
+        this.privateAttrBoolean = false;
+        this.privateAttrCharacter = 0;
+        this.privateAttrOptionalInteger = null;
+        this.privateAttrOptionalFloat = null;
+        this.privateAttrOptionalString = null;
+        this.privateAttrOptionalBoolean = null;
+        this.privateAttrOptionalCharacter = null;
+        this.sharedAttrInteger = 0L;
+        this.sharedAttrFloat = 0.0;
+        this.sharedAttrString = null;
+        this.sharedAttrBoolean = false;
+        this.sharedAttrCharacter = 0;
+        this.sharedAttrOptionalInteger = null;
+        this.sharedAttrOptionalFloat = null;
+        this.sharedAttrOptionalString = null;
+        this.sharedAttrOptionalBoolean = null;
+        this.sharedAttrOptionalCharacter = null;
+    }
+    
     BasicTypes(final long paramInteger, final double paramFloat, final .java.lang.String paramString, final boolean paramBoolean, final int paramCharacter, final .ceylon.language.Integer paramOptionalInteger, final .ceylon.language.Float paramOptionalFloat, final .ceylon.language.String paramOptionalString, final .ceylon.language.Boolean paramOptionalBoolean, final .ceylon.language.Character paramOptionalCharacter) {
         final long privateNonCapturedAttrInteger;
         final double privateNonCapturedAttrFloat;
@@ -286,6 +310,11 @@ class BasicTypes implements .com.redhat.ceylon.compiler.java.runtime.model.Reifi
 }
 abstract class TypeParameterClass<ClassParam> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
+    protected TypeParameterClass(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$ClassParam) {
+        super();
+        this.$reified$ClassParam = $reified$ClassParam;
+    }
+    
     TypeParameterClass(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$ClassParam, final ClassParam classParam) {
         this.$reified$ClassParam = $reified$ClassParam;
     }
@@ -301,6 +330,11 @@ abstract class TypeParameterClass<ClassParam> implements .com.redhat.ceylon.comp
     }
 }
 class IntegerParameterClass extends .com.redhat.ceylon.compiler.java.test.structure.type.TypeParameterClass<.ceylon.language.Integer> {
+    
+    protected IntegerParameterClass() {
+        super(.ceylon.language.Integer.$TypeDescriptor$);
+        this.attr = null;
+    }
     
     IntegerParameterClass(final long classParam) {
         super(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(classParam));

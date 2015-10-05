@@ -2,6 +2,11 @@ package com.redhat.ceylon.compiler.java.test.issues.bug13xx;
 
 public class Bug1370 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
+    protected Bug1370() {
+        super();
+        this.f = null;
+    }
+    
     public Bug1370(final .ceylon.language.Callable<? extends .ceylon.language.String> f) {
         this.f = f;
     }
@@ -18,6 +23,12 @@ public class Bug1370 implements .com.redhat.ceylon.compiler.java.runtime.model.R
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1370.class);
 }
 public class Bug1370_B<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    protected Bug1370_B(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        super();
+        this.$reified$T = $reified$T;
+        this.f = null;
+    }
     
     public Bug1370_B(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final .ceylon.language.Callable<? extends T> f) {
         this.$reified$T = $reified$T;
@@ -36,6 +47,11 @@ public class Bug1370_B<T> implements .com.redhat.ceylon.compiler.java.runtime.mo
     }
 }
 public class Bug1370_C implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    protected Bug1370_C() {
+        super();
+        this.f = null;
+    }
     
     public Bug1370_C(final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .ceylon.language.String>> f) {
         this.f = f;

@@ -39,6 +39,11 @@ abstract class Mid1728 extends .com.redhat.ceylon.compiler.java.test.issues.bug1
 }
 class Bottom1728 extends .com.redhat.ceylon.compiler.java.test.issues.bug17xx.Mid1728 {
     
+    protected Bottom1728() {
+        super();
+        this.child = null;
+    }
+    
     Bottom1728(final .java.lang.Object child) {
         super();
         this.child = (.com.redhat.ceylon.compiler.java.test.issues.bug17xx.Top1728)child;
@@ -126,6 +131,11 @@ class BaseType1728 extends .com.redhat.ceylon.compiler.java.test.issues.bug17xx.
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug17xx.BaseType1728.class);
 }
 class UnionType1728 extends .com.redhat.ceylon.compiler.java.test.issues.bug17xx.Type1728 {
+    
+    protected UnionType1728() {
+        super();
+        this.children = null;
+    }
     
     UnionType1728(final .ceylon.language.Sequence children) {
         super();

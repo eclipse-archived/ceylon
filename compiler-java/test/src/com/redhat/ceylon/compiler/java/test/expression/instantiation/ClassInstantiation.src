@@ -17,6 +17,10 @@ class ClassInstantiation implements .com.redhat.ceylon.compiler.java.runtime.mod
 }
 class ClassInstantiationWithParam implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
+    protected ClassInstantiationWithParam() {
+        super();
+    }
+    
     ClassInstantiationWithParam(final long i) {
     }
     
@@ -31,6 +35,10 @@ class ClassInstantiationWithParam implements .com.redhat.ceylon.compiler.java.ru
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.instantiation.ClassInstantiationWithParam.class);
 }
 class ClassInstantiationWithParams implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    protected ClassInstantiationWithParams() {
+        super();
+    }
     
     ClassInstantiationWithParams(final long i, final .java.lang.String j) {
     }

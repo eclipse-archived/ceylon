@@ -2,6 +2,13 @@ package com.redhat.ceylon.compiler.java.test.issues.bug09xx;
 
 class Bug979Iterable implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.Iterable<.ceylon.language.String, .java.lang.Object> {
     
+    protected Bug979Iterable() {
+        super();
+        this.$ceylon$language$Category$this$ = new .ceylon.language.Category$impl<.java.lang.Object>(.ceylon.language.Object.$TypeDescriptor$, this);
+        this.$ceylon$language$Iterable$this$ = new .ceylon.language.Iterable$impl(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$, this);
+        this.strings = null;
+    }
+    
     Bug979Iterable(final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> strings) {
         this.strings = strings;
         this.$ceylon$language$Iterable$this$ = new .ceylon.language.Iterable$impl(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$, this);
@@ -342,6 +349,15 @@ class Bug979Iterable implements .com.redhat.ceylon.compiler.java.runtime.model.R
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug979Iterable.class);
 }
 class Bug979Set extends .java.lang.Object implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.Set<.ceylon.language.String> {
+    
+    protected Bug979Set() {
+        super();
+        this.$ceylon$language$Category$this$ = new .ceylon.language.Category$impl<.java.lang.Object>(.ceylon.language.Object.$TypeDescriptor$, this);
+        this.$ceylon$language$Iterable$this$ = new .ceylon.language.Iterable$impl(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$, this);
+        this.$ceylon$language$Collection$this$ = new .ceylon.language.Collection$impl<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, this);
+        this.$ceylon$language$Set$this$ = new .ceylon.language.Set$impl<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, this);
+        this.strings = null;
+    }
     
     Bug979Set(final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> strings) {
         super();

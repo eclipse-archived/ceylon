@@ -67,6 +67,13 @@ class MethodRefinementWithSpecifiers_ClassNoParam implements .com.redhat.ceylon.
 }
 class MethodRefinementWithSpecifiers_Class implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.method.MethodRefinementWithSpecifiers_Interface {
     
+    protected MethodRefinementWithSpecifiers_Class() {
+        super();
+        this.arg = null;
+        this.f9$specifier$ = null;
+        this.f10$specifier$ = null;
+    }
+    
     MethodRefinementWithSpecifiers_Class(final .ceylon.language.Callable<? extends .java.lang.Object> arg) {
         this.arg = arg;
         this.f9$specifier$ = .com.redhat.ceylon.compiler.java.test.structure.method.methodRefinementWithSpecifiers_returnsMethod_.methodRefinementWithSpecifiers_returnsMethod();

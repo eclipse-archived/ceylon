@@ -2,6 +2,11 @@ package com.redhat.ceylon.compiler.java.test.structure.method;
 
 class MethodDefaultedParamCaptureInitParam implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
+    protected MethodDefaultedParamCaptureInitParam() {
+        super();
+        this.s = null;
+    }
+    
     MethodDefaultedParamCaptureInitParam(final .java.lang.String s) {
         this.s = s;
     }

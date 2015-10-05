@@ -81,6 +81,10 @@ class C4 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
         );
     }
     
+    protected C4() {
+        super();
+    }
+    
     C4(final long i, final long n) {
     }
     
@@ -105,6 +109,11 @@ class C5<U> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTyp
             }
             returning null;
         );
+    }
+    
+    protected C5(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$U) {
+        super();
+        this.$reified$U = $reified$U;
     }
     
     C5(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$U, final long i, final U u) {

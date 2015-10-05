@@ -2,6 +2,10 @@ package com.redhat.ceylon.compiler.java.test.issues.bug05xx;
 
 class Bug544 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
+    protected Bug544() {
+        super();
+    }
+    
     Bug544(final .java.lang.String s) {
     }
     
@@ -12,6 +16,11 @@ class Bug544 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug05xx.Bug544.class);
 }
 class Bug544SharedAttribute extends .com.redhat.ceylon.compiler.java.test.issues.bug05xx.Bug544 {
+    
+    protected Bug544SharedAttribute() {
+        super();
+        this.s = null;
+    }
     
     Bug544SharedAttribute(final .java.lang.String s) {
         super(s);
@@ -30,6 +39,11 @@ class Bug544SharedAttribute extends .com.redhat.ceylon.compiler.java.test.issues
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug05xx.Bug544SharedAttribute.class);
 }
 class Bug544Captured extends .com.redhat.ceylon.compiler.java.test.issues.bug05xx.Bug544 {
+    
+    protected Bug544Captured() {
+        super();
+        this.s = null;
+    }
     
     Bug544Captured(final .java.lang.String s) {
         super(s);
@@ -52,6 +66,10 @@ class Bug544Captured extends .com.redhat.ceylon.compiler.java.test.issues.bug05x
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug05xx.Bug544Captured.class);
 }
 class Bug544NonSharedAttr extends .com.redhat.ceylon.compiler.java.test.issues.bug05xx.Bug544 {
+    
+    protected Bug544NonSharedAttr() {
+        super();
+    }
     
     Bug544NonSharedAttr(final .java.lang.String s) {
         super(s);
@@ -76,6 +94,10 @@ class Bug544Toplevel extends .com.redhat.ceylon.compiler.java.test.issues.bug05x
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug05xx.Bug544Toplevel.class);
 }
 class Bug544Qualified extends .com.redhat.ceylon.compiler.java.test.issues.bug05xx.Bug544 {
+    
+    protected Bug544Qualified() {
+        super();
+    }
     
     Bug544Qualified(final .com.redhat.ceylon.compiler.java.test.issues.bug05xx.Bug544SharedAttribute b) {
         super(b.getS());

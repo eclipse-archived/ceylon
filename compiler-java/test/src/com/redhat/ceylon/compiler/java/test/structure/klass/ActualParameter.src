@@ -15,6 +15,12 @@ abstract class ActualParameterSuper implements .com.redhat.ceylon.compiler.java.
 }
 class ActualParameter extends .com.redhat.ceylon.compiler.java.test.structure.klass.ActualParameterSuper {
     
+    protected ActualParameter() {
+        super();
+        this.string = null;
+        this.s = null;
+    }
+    
     ActualParameter(final .java.lang.String string, final .ceylon.language.String s) {
         super();
         this.string = string;

@@ -2,6 +2,10 @@ package com.redhat.ceylon.compiler.java.test.statement.trycatch;
 
 class ThrowExceptionSubclassE extends .ceylon.language.Exception {
     
+    protected ThrowExceptionSubclassE() {
+        super();
+    }
+    
     ThrowExceptionSubclassE(final .ceylon.language.String description, final .java.lang.Exception cause) {
         super(description, cause);
     }

@@ -3,6 +3,15 @@ package com.redhat.ceylon.compiler.java.test.annotations;
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 class AmbiguousClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
+    @.com.redhat.ceylon.compiler.java.metadata.Jpa
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    protected AmbiguousClass() {
+        super();
+        this.s = null;
+        this.s2 = null;
+        this.s3 = null;
+    }
+    
     @.com.redhat.ceylon.compiler.java.test.annotations.TypeOrConstructorTarget
     AmbiguousClass(@.com.redhat.ceylon.compiler.java.metadata.Name("s2")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
