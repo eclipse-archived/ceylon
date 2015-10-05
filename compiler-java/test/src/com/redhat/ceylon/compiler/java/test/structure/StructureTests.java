@@ -406,6 +406,10 @@ public class StructureTests extends CompilerTests {
     public void testKlsSubclassException(){
         compareWithJavaSource("klass/SubclassException");
     }
+    @Test
+    public void testKlsMajikNullaryCtor(){
+        compareWithJavaSource("klass/MajikNullaryCtor");
+    }
     //
     // Methods
     
