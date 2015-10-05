@@ -30,6 +30,7 @@ import com.redhat.ceylon.compiler.js.util.Options;
 import com.redhat.ceylon.compiler.js.util.RetainedVars;
 import com.redhat.ceylon.compiler.js.util.TypeUtils;
 import com.redhat.ceylon.compiler.js.util.TypeUtils.RuntimeMetamodelAnnotationGenerator;
+import com.redhat.ceylon.compiler.typechecker.tree.CustomTree.GuardedVariable;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeDeclaration;
@@ -2968,7 +2969,19 @@ public class GenerateJsVisitor extends Visitor {
        conds.generateWhile(that);
    }
 
-    /** Generates js code to check if a term is of a certain type. We solve this in JS by
+   @Override public void visit(final Tree.Variable that) {
+       final boolean guarded = that instanceof GuardedVariable;
+       if (guarded) {
+           out("function ", names.name(that.getDeclarationModel()), "(){return ");
+       }
+       super.visit(that);
+       if (guarded) {
+           out(";}");
+           endLine();
+       }
+   }
+
+   /** Generates js code to check if a term is of a certain type. We solve this in JS by
      * checking against all types that Type satisfies (in the case of union types, matching any
      * type will do, and in case of intersection types, all types must be matched).
      * @param term The term that is to be checked against a type
