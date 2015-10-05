@@ -237,6 +237,7 @@ class OptionalInterface implements .com.redhat.ceylon.compiler.java.runtime.mode
             }.sequence();
             return .com.redhat.ceylon.compiler.java.Util.checkNull(x$2.getProp1()).getProp1();
         }
+        final .java.lang.Object x$19 = x;
         return null;
     }
     private .com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface prop1;

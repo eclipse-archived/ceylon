@@ -12,14 +12,15 @@ class MethodIfNonEmptySequence implements .com.redhat.ceylon.compiler.java.runti
             final .ceylon.language.Sequence<? extends .ceylon.language.Integer> s = x$2;
             return ((.ceylon.language.Integer)(.java.lang.Object)x$2.getFirst()).longValue();
         }
+        final .ceylon.language.Empty x$3 = (.ceylon.language.Empty)(.ceylon.language.Sequential)x;
         return 0L;
     }
     
     public final long mvar(final .ceylon.language.Sequential<? extends .ceylon.language.Integer> x) {
-        .ceylon.language.Sequential<? extends .ceylon.language.Integer> s$4;
-        if ((s$4 = x) instanceof .ceylon.language.Sequence) {
-            final .ceylon.language.Sequence<? extends .ceylon.language.Integer> s$5 = (.ceylon.language.Sequence<? extends .ceylon.language.Integer>)(.ceylon.language.Sequence)s$4;
-            return ((.ceylon.language.Integer)(.java.lang.Object)s$5.getFirst()).longValue();
+        .ceylon.language.Sequential<? extends .ceylon.language.Integer> s$5;
+        if ((s$5 = x) instanceof .ceylon.language.Sequence) {
+            final .ceylon.language.Sequence<? extends .ceylon.language.Integer> s$6 = (.ceylon.language.Sequence<? extends .ceylon.language.Integer>)(.ceylon.language.Sequence)s$5;
+            return ((.ceylon.language.Integer)(.java.lang.Object)s$6.getFirst()).longValue();
         }
         return 0L;
     }

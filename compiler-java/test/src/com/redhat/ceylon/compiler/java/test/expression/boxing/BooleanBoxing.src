@@ -24,16 +24,17 @@ class BooleanBoxing implements .com.redhat.ceylon.compiler.java.runtime.model.Re
             final boolean b$2 = b$1.booleanValue();
             return .ceylon.language.Boolean.instance(!b$2);
         }
-        return b;
+        final .java.lang.Object b$3 = b;
+        return (.ceylon.language.Boolean)b$3;
     }
     
     private final boolean negate3$priv$(final .ceylon.language.Boolean b) {
-        .ceylon.language.Boolean b$4;
-        if ((b$4 = b) != null) {
-            final boolean b$6 = b$4.booleanValue();
-            return !b$6;
+        .ceylon.language.Boolean b$5;
+        if ((b$5 = b) != null) {
+            final boolean b$7 = b$5.booleanValue();
+            return !b$7;
         } else {
-            final .java.lang.Object b$5 = b$4;
+            final .java.lang.Object b$6 = b$5;
             return false;
         }
     }

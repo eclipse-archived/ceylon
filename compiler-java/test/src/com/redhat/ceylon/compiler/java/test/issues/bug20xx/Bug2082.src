@@ -126,12 +126,14 @@ final class isValid_ {
             type$2.isNeat(val);
             return type$2.isValid(val);
         }
-        .java.lang.Object type2$4;
-        if ((type2$4 = type2) instanceof .com.redhat.ceylon.compiler.java.test.issues.bug20xx.eBug2082_) {
-            final .com.redhat.ceylon.compiler.java.test.issues.bug20xx.eBug2082_ type2$5 = (.com.redhat.ceylon.compiler.java.test.issues.bug20xx.eBug2082_)type2$4;
-            type2$5.isNeat(val);
-            return type2$5.isValid(val);
+        final .com.redhat.ceylon.compiler.java.test.issues.bug20xx.fBug2082_ type$3 = (.com.redhat.ceylon.compiler.java.test.issues.bug20xx.fBug2082_)type;
+        .java.lang.Object type2$5;
+        if ((type2$5 = type2) instanceof .com.redhat.ceylon.compiler.java.test.issues.bug20xx.eBug2082_) {
+            final .com.redhat.ceylon.compiler.java.test.issues.bug20xx.eBug2082_ type2$6 = (.com.redhat.ceylon.compiler.java.test.issues.bug20xx.eBug2082_)type2$5;
+            type2$6.isNeat(val);
+            return type2$6.isValid(val);
         }
+        final .com.redhat.ceylon.compiler.java.test.issues.bug20xx.fBug2082_ type2$7 = (.com.redhat.ceylon.compiler.java.test.issues.bug20xx.fBug2082_)type2;
         return true;
     }
 }

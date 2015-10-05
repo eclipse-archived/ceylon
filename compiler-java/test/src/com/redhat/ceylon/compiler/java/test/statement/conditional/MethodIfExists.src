@@ -11,14 +11,15 @@ class MethodIfExists implements .com.redhat.ceylon.compiler.java.runtime.model.R
             final long x$2 = x$1.longValue();
             return x$2;
         }
+        final .java.lang.Object x$3 = x;
         return 0L;
     }
     
     public final long m2(final .ceylon.language.Integer x) {
-        .ceylon.language.Integer y$4;
-        if ((y$4 = x) != null) {
-            final long y$5 = y$4.longValue();
-            return y$5;
+        .ceylon.language.Integer y$5;
+        if ((y$5 = x) != null) {
+            final long y$6 = y$5.longValue();
+            return y$6;
         }
         return 0L;
     }
