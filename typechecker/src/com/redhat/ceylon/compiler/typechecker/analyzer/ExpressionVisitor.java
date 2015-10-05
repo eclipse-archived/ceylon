@@ -75,6 +75,7 @@ import com.redhat.ceylon.compiler.typechecker.context.TypecheckerUnit;
 import com.redhat.ceylon.compiler.typechecker.tree.CustomTree;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.ConditionList;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Pattern;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
@@ -659,6 +660,17 @@ public class ExpressionVisitor extends Visitor {
                     (CustomTree.GuardedVariable) that;
             setTypeForElseVariable(that, 
                     gv.getConditionList());
+            Tree.BaseMemberExpression bme =
+                    (Tree.BaseMemberExpression)
+                        that.getSpecifierExpression()
+                            .getExpression()
+                            .getTerm();
+            Declaration original = bme.getDeclaration();
+            if (original instanceof TypedDeclaration) {
+                that.getDeclarationModel()
+                    .setOriginalDeclaration(
+                            (TypedDeclaration) original);
+            }
         }
         else {
             Tree.SpecifierExpression se = 
