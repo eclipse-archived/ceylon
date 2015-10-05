@@ -1,1 +1,4 @@
-return this.value in Character.titlecase$;
+if (Character.unicat$===undefined) {
+  this.letter;
+}
+return Character.unicat$.Lt.test(this.string);

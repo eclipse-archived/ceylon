@@ -1,2 +1,4 @@
-var str = codepointToString(this.value);
-return str.toUpperCase()!==str && !(this.value in Character.titlecase$);
+if (Character.unicat$===undefined) {
+  this.letter;
+}
+return Character.unicat$.Ll.test(this.string);
