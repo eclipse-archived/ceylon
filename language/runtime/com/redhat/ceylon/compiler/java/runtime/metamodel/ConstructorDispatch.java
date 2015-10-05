@@ -13,6 +13,7 @@ import java.util.List;
 import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.codegen.Decl;
 import com.redhat.ceylon.compiler.java.metadata.ConstructorName;
+import com.redhat.ceylon.compiler.java.metadata.Jpa;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Function;
@@ -362,6 +363,9 @@ class ConstructorDispatch<Type, Arguments extends Sequential<? extends Object>>
         final Constructor<?>[] defaultedMethods = new Constructor[dispatch.length];
         String ctorName = freeConstructor == null ? null : freeConstructor.declaration.getName();
         outer: for(Constructor<?> constr : javaClass.getDeclaredConstructors()) {
+            if (constr.isAnnotationPresent(Jpa.class)) {
+                continue;
+            }
             int ii = 0;
             boolean jvmVarargs = MethodHandleUtil.isJvmVarargsMethodOrConstructor(constr);
             Class<?>[] pts = constr.getParameterTypes();
