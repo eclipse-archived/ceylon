@@ -1306,6 +1306,13 @@ public class ExpressionTransformer extends AbstractTransformer {
         String getter = Decl.isMethod(declaration) ? "getFunction" : "getValue";
         JCExpression toplevelCall = make().Apply(null, makeSelect(packageCall, getter), 
                                                  List.<JCExpression>of(ceylonLiteral(declaration.getName())));
+
+        if(declaration instanceof Value && !((Value) declaration).isTransient()){
+            JCExpression metamodelCast = makeJavaType(typeFact().getLanguageModuleDeclarationTypeDeclaration(
+                    "ReferenceDeclaration").getType(), 
+                    JT_NO_PRIMITIVES);
+            toplevelCall = make().TypeCast(metamodelCast, toplevelCall);
+        }
         
         return toplevelCall;
     }
