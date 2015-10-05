@@ -26,6 +26,9 @@ shared class IsOperatorTest() {
         shared actual Integer hash = 0;
     }
     Anything o = o1;
+    Anything o2 = o1;
+    Anything o3 = o1;
+    Anything o4 = o1;
     object i1 extends Object() satisfies Identifiable {
         shared actual Boolean equals(Object o) {
             return false;
@@ -33,9 +36,18 @@ shared class IsOperatorTest() {
         shared actual Integer hash = 0;
     }
     Anything i = i1;
+    Anything i2 = i1;
+    Anything i3 = i1;
+    Anything i4 = i1;
     object io1 extends Basic() {}
     Anything io = io1;
+    Anything io2 = io1;
+    Anything io3 = io1;
+    Anything io4 = io1;
     Anything nowt = null;
+    Anything nowt2 = null;
+    Anything nowt3 = null;
+    Anything nowt4 = null;
     
     Throwable throwable = AssertionError("");
     Throwable exception = Exception();
@@ -57,62 +69,62 @@ shared class IsOperatorTest() {
         } else {
             throw;
         }
-        if (is Object nowt) {
+        if (is Object nowt2) {
             throw;
         }
-        if (is Identifiable nowt) {
+        if (is Identifiable nowt3) {
             throw;
         }
-        if (is Basic nowt) {
+        if (is Basic nowt4) {
             throw;
         }
         
         if (is Null o) {
             throw;
         }
-        if (is Object o) {
+        if (is Object o2) {
         
         } else {
             throw;
         }
-        if (is Identifiable o) {
+        if (is Identifiable o3) {
             throw;
         }
-        if (is Basic o) {
+        if (is Basic o4) {
             throw;
         }
         
         if (is Null i) {
             throw;
         }
-        if (is Object i) {
+        if (is Object i2) {
         
         } else {
             throw;
         }
-        if (is Identifiable i) {
+        if (is Identifiable i3) {
         
         } else {
             throw;
         }
-        if (is Basic i) {
+        if (is Basic i4) {
             throw;
         }
         
         if (is Null io) {
             throw;
         }
-        if (is Object io) {
+        if (is Object io2) {
         
         } else {
             throw;
         }
-        if (is Identifiable io) {
+        if (is Identifiable io3) {
         
         } else {
             throw;
         }
-        if (is Basic io) {
+        if (is Basic io4) {
             
         } else {
             throw;
