@@ -17,6 +17,12 @@ public class AssertionError extends java.lang.Error implements ReifiedType {
 
     private static final long serialVersionUID = -1790691559137471641L;
 
+    @Ignore // JPA constructor
+    protected AssertionError() {
+        super();
+        this.message = null;
+    }
+    
     @Ignore
     private final java.lang.String message;
     
