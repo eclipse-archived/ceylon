@@ -133,7 +133,8 @@ public abstract class TypedDeclaration extends Declaration {
         return originalDeclaration;
     }
     
-    public void setOriginalDeclaration(TypedDeclaration originalDeclaration) {
+    public void setOriginalDeclaration(
+            TypedDeclaration originalDeclaration) {
         this.originalDeclaration = originalDeclaration;
     }
 
@@ -205,26 +206,29 @@ public abstract class TypedDeclaration extends Declaration {
         int ret = 17;
         Scope container = getContainer();
         if (container instanceof Declaration) {
-            ret = (37 * ret) + ((Declaration) container).hashCodeForCache();
+            Declaration dec = (Declaration) container;
+            ret = (37 * ret) + dec.hashCodeForCache();
         }
         else {
             ret = (37 * ret) + container.hashCode();
         }
         String qualifier = getQualifier();
-        ret = (37 * ret) + (qualifier == null ? 0 : qualifier.hashCode());
+        ret = (37 * ret) + (qualifier == null ? 
+                0 : qualifier.hashCode());
         ret = (37 * ret) + Objects.hashCode(getName());
         return ret;
     }
 
     @Override
     protected boolean equalsForCache(Object o) {
-        if (o == null || o instanceof TypedDeclaration == false) {
+        if (o == null || !(o instanceof TypedDeclaration)) {
             return false;
         }
         TypedDeclaration b = (TypedDeclaration) o;
         Scope container = getContainer();
         if (container instanceof Declaration) {
-            if (!((Declaration) container).equalsForCache(b.getContainer())) {
+            Declaration dec = (Declaration) container;
+            if (!dec.equalsForCache(b.getContainer())) {
                 return false;
             }
         }
