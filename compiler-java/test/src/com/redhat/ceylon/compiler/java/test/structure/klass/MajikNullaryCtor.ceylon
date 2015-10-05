@@ -42,6 +42,8 @@ class MajikNullaryCtorMixin(shared Integer i) satisfies Category<String> {
     shared actual Boolean contains(String element) => true;
     // generated, but companions must not be null!
 }
+class MajikNullaryCtorMixinSub(Integer i) extends MajikNullaryCtorMixin(i) satisfies Category<String> {
+}
 
 class MajikNullaryCtorValueCtor {
     shared new val {}
