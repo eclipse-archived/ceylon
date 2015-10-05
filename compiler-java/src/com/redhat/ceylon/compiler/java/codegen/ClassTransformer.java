@@ -1431,25 +1431,35 @@ public class ClassTransformer extends AbstractTransformer {
         // initialize companion instances to a new companion instance
         if (!model.getSatisfiedTypes().isEmpty()) {
             SatisfactionVisitor visitor = new SatisfactionVisitor() {
+                
                 @Override
-                public void visit(Class model, Interface iface) {
-                    if (hasImpl(iface)) {
-                        excludeFields.add(getCompanionFieldName(iface));
+                public void satisfiesDirectly(Class model, Interface iface, boolean alreadySatisfied) {
+                    if (!alreadySatisfied) {
+                        assignCompanion(model, iface);
+                    }
+                }
+
+                @Override
+                public void satisfiesIndirectly(Class model, Interface iface, boolean alreadySatisfied) {
+                    if (!alreadySatisfied) {
+                        assignCompanion(model, iface);
+                    }
+                }
+
+                private void assignCompanion(Class model, Interface iface) {
+                    if (hasImpl(iface)
+                            && excludeFields.add(getCompanionFieldName(iface))) {
                         stmts.add(makeCompanionInstanceAssignment(model, iface, model.getType().getSupertype(iface)));
                     }
                 }
-            };
-            HashSet<Interface> satisfiedInterfaces = new HashSet<Interface>();
-            for (Type satisfiedType : model.getSatisfiedTypes()) {
-                TypeDeclaration decl = satisfiedType.getDeclaration();
-                if (!(decl instanceof Interface)) {
-                    continue;
+
+                @Override
+                public void satisfiesIndirectlyViaClass(Class model,
+                        Interface iface, Class via, boolean alreadySatisfied) {
+                    // don't care
                 }
-                satisfiedInterfaces.add((Interface)decl);
-                // make sure we get the right instantiation of the interface
-                satisfiedType = model.getType().getSupertype(decl);
-                walkSatisfiedInterfaces(model, visitor, satisfiedType, satisfiedInterfaces);
-            }
+            };
+            walkSatisfiedInterfaces(model, model.getType(), visitor);
         }
         
         // initialize attribute fields to null or a zero
@@ -1506,27 +1516,52 @@ public class ClassTransformer extends AbstractTransformer {
     }
     
     static interface SatisfactionVisitor {
-        void visit(Class model, Interface iface);
+        /** The class satisfies the interface directly */
+        void satisfiesDirectly(Class model, Interface iface, boolean alreadySatisfied);
+        /** The class satisfies the interface indirectly via interfaces only */
+        void satisfiesIndirectly(Class model, Interface iface, boolean alreadySatisfied);
+        /** The class satisfies the interface indirectly via the given superclass */
+        void satisfiesIndirectlyViaClass(Class model, Interface iface, Class via, boolean alreadySatisfied);
     }
     
     private void walkSatisfiedInterfaces(final Class model,
+            Type type, 
+            SatisfactionVisitor visitor) {
+        walkSatisfiedInterfacesInternal(model, type, null, visitor, new HashSet<Interface>());
+    }
+    
+    private void walkSatisfiedInterfacesInternal(final Class model,
+            Type type,
+            Class via, 
             SatisfactionVisitor visitor, 
-            Type satisfiedType, Set<Interface> satisfiedInterfaces) {
-        satisfiedType = satisfiedType.resolveAliases();
-        Interface iface = (Interface)satisfiedType.getDeclaration();
+            Set<Interface> satisfiedInterfaces) {
+        type = type.resolveAliases();
         
-        if (satisfiedInterfaces.contains(iface)
-                || iface.getType().isExactly(typeFact().getIdentifiableDeclaration().getType())) {
-            return;
+
+        Type ext = type.getExtendedType();
+        if (ext != null) {
+            // recurse up this extended class
+            walkSatisfiedInterfacesInternal(model, ext, (Class)ext.getDeclaration(), visitor, satisfiedInterfaces);
         }
         
-        visitor.visit(model, iface);
-        
-        satisfiedInterfaces.add(iface);
-        // recurse up the hierarchy
-        for (Type sat : iface.getSatisfiedTypes()) {
-            sat = model.getType().getSupertype(sat.getDeclaration());
-            walkSatisfiedInterfaces(model, visitor, sat, satisfiedInterfaces);
+        for (Type sat : type.getSatisfiedTypes()) {
+            Interface iface = (Interface)sat.getDeclaration();
+            
+            if (iface.getType().isExactly(typeFact().getIdentifiableDeclaration().getType())) {
+                return;
+            }
+            // recurse up this satisfies interface
+            walkSatisfiedInterfacesInternal(model, sat, via, visitor, satisfiedInterfaces);
+            
+            boolean alreadySatisfied = !satisfiedInterfaces.add((Interface)model.getType().getSupertype(iface).getDeclaration());
+            
+            if (via != null) {
+                visitor.satisfiesIndirectlyViaClass(model, iface, via, alreadySatisfied);
+            } else if (model.getType().equals(type)) {
+                visitor.satisfiesDirectly(model, iface, alreadySatisfied);
+            } else {
+                visitor.satisfiesIndirectly(model, iface, alreadySatisfied);
+            }
         }
     }
 
