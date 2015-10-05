@@ -283,7 +283,6 @@ public class MiscTests extends CompilerTests {
                 "promise",
                 "regex",
                 "time",
-                // commented out until we make it compile DAMNIT
                 "transaction",
                 "unicode"
         };
