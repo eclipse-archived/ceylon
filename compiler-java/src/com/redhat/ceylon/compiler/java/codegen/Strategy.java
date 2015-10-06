@@ -386,15 +386,23 @@ class Strategy {
                 return false;
             }
             
-            boolean hasDelegatableSuper;
+            boolean hasDelegatableSuper = false;
             Class superClass = (Class)cls.getExtendedType().getDeclaration();
             if (superClass instanceof LazyClass
                     && !((LazyClass)superClass).isCeylon()) {
-                // If the superclass is Java then generate a Jpa constructor
-                // if there's a nullary superclass constructor we can call
-                hasDelegatableSuper = superClass.getParameterList() != null 
-                        && superClass.getParameterList().getParameters() != null 
-                        && superClass.getParameterList().getParameters().isEmpty();
+                if (superClass.isAbstraction()) {
+                    for (Declaration s : superClass.getOverloads()) {
+                        if (s instanceof Class
+                                && isNullary((Class)s)) {
+                            hasDelegatableSuper = true;
+                            break;
+                        }
+                    }
+                } else {
+                    // If the superclass is Java then generate a Jpa constructor
+                    // if there's a nullary superclass constructor we can call
+                    hasDelegatableSuper = isNullary(superClass);
+                }
             } else {
                 hasDelegatableSuper = hasNullaryNonJpaConstructor(superClass)
                         || hasJpaConstructor(superClass);
@@ -412,6 +420,12 @@ class Strategy {
         }
     }
     
+    private static boolean isNullary(Class superClass) {
+        return superClass.getParameterList() != null 
+                && superClass.getParameterList().getParameters() != null 
+                && superClass.getParameterList().getParameters().isEmpty();
+    }
+    
     /**
      * Whether the given class has a "JPA constructor". 
      * A JPA constructor is a hidden-from-Ceylon constructor
@@ -424,14 +438,13 @@ class Strategy {
      * @return
      */
     public static boolean hasJpaConstructor(Class c) {
-        //if (c instanceof LazyClass) {
+        if (c instanceof LazyClass
+                && !(c instanceof ClassAlias)) {
             // If it's binary it has a JpaConstructor if it says so
-        //    return ((LazyClass)c).hasJpaConstructor();
-        //} else {
-            // Otherwise it has a Jpa constructor if it doesn't already have
-            // a nullary ceylon constructor
-            return !hasNullaryNonJpaConstructor(c);
-        //}
+            return ((LazyClass)c).hasJpaConstructor();
+        } else {
+            return generateJpaCtor(c);
+        }
     }
     
     /**
