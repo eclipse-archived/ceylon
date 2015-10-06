@@ -518,4 +518,11 @@ public class NativeTests extends CompilerTests {
                 new CompilerError(47, "native backend name on declaration conflicts with its scope: 'test'")
         );
     }
+    
+    @Test
+    public void testNativeErrorHandling() {
+        testNativeErrors("NativeErrorHandling",
+                new CompilerError(22, "function or value does not exist: 'foo'")
+        );
+    }
 }
