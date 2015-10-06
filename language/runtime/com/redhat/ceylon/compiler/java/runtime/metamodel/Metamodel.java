@@ -868,7 +868,7 @@ public class Metamodel {
                     throw Metamodel.newModelError("Unsupported underlying declaration type: " + underlyingDeclaration);
                 ret = TypeDescriptor.functionOrValue(classMirror.klass, tdArgs);
             }else
-                ret = TypeDescriptor.functionOrValue(underlyingDeclaration.getName(), tdArgs);
+                ret = TypeDescriptor.functionOrValue(underlyingDeclaration.getPrefixedName(), tdArgs);
             if(type.getQualifyingType() != null)
                 return TypeDescriptor.member(getTypeDescriptorForProducedType(type.getQualifyingType()), ret);
             return ret;
