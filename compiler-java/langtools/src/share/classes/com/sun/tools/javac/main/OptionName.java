@@ -59,6 +59,7 @@ public enum OptionName {
     CEYLONUSER("-user"),
     CEYLONPASS("-pass"),
     CEYLONNOOSGI("-noosgi"),
+    CEYLONOSGIPROVIDEDBUNDLES("-osgi-provided-bundles"),
     CEYLONNOPOM("-nopom"),
     CEYLONPACK200("-pack200"),
     SOURCEPATH("-sourcepath"),

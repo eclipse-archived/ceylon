@@ -99,6 +99,7 @@ public class CeylonCompileAntTask extends LazyCeylonAntTask  {
     private FileSet files;
     private List<JavacOption> javacOptions = new ArrayList<JavacOption>(0);
     private Boolean noOsgi;
+    private String osgiProvidedBundles;
     private Boolean noPom;
     private Boolean pack200;
     private List<SuppressWarning> suppressWarnings = new ArrayList<SuppressWarning>(0);
@@ -120,6 +121,20 @@ public class CeylonCompileAntTask extends LazyCeylonAntTask  {
     
     public boolean getNoOsgi() {
         return noOsgi;
+    }
+
+    /**
+     * Comma-separated list of module names.
+     * The listed modules are expected to be OSGI bundles provided by the framework,
+     * and will be omitted from the 'Required-Bundle' OSGI header in the
+     * manifest of the generated car file.
+     */
+    public void setOsgiProvidedBundles(String osgiProvidedBundles) {
+        this.osgiProvidedBundles = osgiProvidedBundles;
+    }
+    
+    public String getOsgiProvidedBundles() {
+        return osgiProvidedBundles;
     }
 
     /**
@@ -464,6 +479,9 @@ public class CeylonCompileAntTask extends LazyCeylonAntTask  {
         
         if (noOsgi != null && noOsgi.booleanValue())
             appendOption(cmd, "--no-osgi");
+
+        if (osgiProvidedBundles != null && !osgiProvidedBundles.isEmpty())
+            appendOptionArgument(cmd, "--osgi-provided-bundles", osgiProvidedBundles);
 
         if (noPom != null && noPom.booleanValue())
             appendOption(cmd, "--no-pom");

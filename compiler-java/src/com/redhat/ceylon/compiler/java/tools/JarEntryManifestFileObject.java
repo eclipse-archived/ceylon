@@ -32,7 +32,11 @@ import java.io.Reader;
 import java.io.Writer;
 import java.net.URI;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
+import java.util.StringTokenizer;
 import java.util.TimeZone;
 import java.util.jar.Attributes;
 import java.util.jar.JarOutputStream;
@@ -55,13 +59,15 @@ public class JarEntryManifestFileObject implements JavaFileObject {
     private String fileName;
     private String jarFileName;
     private Module module;
+    private String osgiProvidedBundles;
 
-    public JarEntryManifestFileObject(String jarFileName, JarOutputStream jarFile, String fileName, Module module) {
+    public JarEntryManifestFileObject(String jarFileName, JarOutputStream jarFile, String fileName, Module module, String osgiProvidedBundles) {
         super();
         this.jarFileName = jarFileName;
         this.jarFile = jarFile;
         this.fileName = fileName;
         this.module = module;
+        this.osgiProvidedBundles = osgiProvidedBundles;
     }
 
     /*
@@ -80,7 +86,7 @@ public class JarEntryManifestFileObject implements JavaFileObject {
     }
 
     private void writeManifestJarEntry(Manifest originalManifest) throws IOException {
-        Manifest manifest = new OsgiManifest(module, originalManifest).build();
+        Manifest manifest = new OsgiManifest(module, originalManifest, osgiProvidedBundles).build();
         jarFile.putNextEntry(new ZipEntry(fileName));
         manifest.write(jarFile);
     }
@@ -190,6 +196,8 @@ public class JarEntryManifestFileObject implements JavaFileObject {
         static {
             formatter.setTimeZone(TimeZone.getTimeZone("GMT"));
         }
+        
+        private String osgiProvidedBundles;
 
         public static boolean isManifestFileName(String fileName) {
             return MANIFEST_FILE_NAME.equalsIgnoreCase(fileName);
@@ -198,13 +206,14 @@ public class JarEntryManifestFileObject implements JavaFileObject {
         private final Manifest originalManifest;
         private final Module module;
 
-        public OsgiManifest(Module module) {
-            this(module, null);
+        public OsgiManifest(Module module, String osgiProvidedBundles) {
+            this(module, null, osgiProvidedBundles);
         }
 
-        public OsgiManifest(Module module, Manifest originalManifest) {
+        public OsgiManifest(Module module, Manifest originalManifest, String osgiProvidedBundles) {
             this.module = module;
             this.originalManifest = originalManifest;
+            this.osgiProvidedBundles = osgiProvidedBundles;
         }
 
         private String toOSGIBundleVersion(String ceylonVersion) {
@@ -336,6 +345,11 @@ public class JarEntryManifestFileObject implements JavaFileObject {
          * Composes OSGi Require-Bundle header content.
          */
         private String getRequireBundle() {
+            List<String> providedBundles = null;
+            if (osgiProvidedBundles != null && !osgiProvidedBundles.isEmpty()) {
+                providedBundles = Arrays.asList(osgiProvidedBundles.split("(,| )+"));
+            }
+            
             StringBuilder requires = new StringBuilder();
             boolean distImportAlreadyFound = false;
             for (ModuleImport anImport : module.getImports()) {
@@ -344,6 +358,11 @@ public class JarEntryManifestFileObject implements JavaFileObject {
                 }
                 Module m = anImport.getModule();
                 String moduleName = m.getNameAsString();
+                
+                if (providedBundles != null && providedBundles.contains(moduleName)) {
+                    continue;
+                }
+                
                 if ("com.redhat.ceylon.dist".equals(moduleName)) {
                     distImportAlreadyFound = true;
                 }

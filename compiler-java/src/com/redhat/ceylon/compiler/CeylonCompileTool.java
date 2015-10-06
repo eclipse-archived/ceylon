@@ -171,6 +171,7 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
     private String encoding;
     private String resourceRoot = DefaultToolOptions.getCompilerResourceRootName();
     private boolean noOsgi = DefaultToolOptions.getCompilerNoOsgi();
+    private String osgiProvidedBundles = DefaultToolOptions.getCompilerOsgiProvidedBundles();
     private boolean noPom = DefaultToolOptions.getCompilerNoPom();
     private boolean pack200 = DefaultToolOptions.getCompilerPack200();
     private EnumSet<Warning> suppressWarnings = EnumUtil.enumsFromStrings(Warning.class, DefaultToolOptions.getCompilerSuppressWarnings());
@@ -198,6 +199,14 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
     @Description("Indicates that the generated car file should not contain OSGi module declarations.")
     public void setNoOsgi(boolean noOsgi) {
         this.noOsgi = noOsgi;
+    }
+
+    @OptionArgument(longName="osgi-provided-bundles", argumentName="modules")
+    @Description("Comma-separated list of module names. "
+            + "The listed modules are expected to be OSGI bundles provided by the framework, "
+            + "and will be omitted from the generated MANIFEST 'Required-Bundle' OSGI header.")
+    public void setOsgiProvidedBundles(String osgiProvidedBundles) {
+        this.osgiProvidedBundles = osgiProvidedBundles;
     }
 
     @Option(longName="no-pom")
@@ -403,6 +412,12 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
 
         if (noOsgi) {
             arguments.add("-noosgi");
+        }
+
+        if (osgiProvidedBundles != null
+                && ! osgiProvidedBundles.isEmpty()) {
+            arguments.add("-osgi-provided-bundles");
+            arguments.add(osgiProvidedBundles);
         }
 
         if (noPom) {

@@ -121,6 +121,7 @@ public class JarOutputRepositoryManager {
         private Set<String> folders = new HashSet<String>();
         private boolean manifestWritten = false;
         private boolean writeOsgiManifest;
+        private String osgiProvidedBundles;
         private final String resourceRootPath;
         private boolean writeMavenManifest;
         private TaskListener taskListener;
@@ -144,6 +145,7 @@ public class JarOutputRepositoryManager {
                     options.get(OptionName.VERBOSE) != null, cmrLog);
             this.module = module;
             this.writeOsgiManifest = !options.isSet(OptionName.CEYLONNOOSGI);
+            this.osgiProvidedBundles = options.get(OptionName.CEYLONOSGIPROVIDEDBUNDLES);
             this.writeMavenManifest = !options.isSet(OptionName.CEYLONNOPOM);
             
             // Determine the special path that signals that the files it contains
@@ -206,7 +208,7 @@ public class JarOutputRepositoryManager {
                 resourceCreator.copy(modifiedResourceFilesFull);
     
                 if (writeOsgiManifest && !manifestWritten && !module.isDefault()) {
-                    Manifest manifest = new OsgiManifest(module, getPreviousManifest()).build();
+                    Manifest manifest = new OsgiManifest(module, getPreviousManifest(), osgiProvidedBundles).build();
                     writeManifestJarEntry(manifest);
                 }
                 if (writeMavenManifest) {
@@ -330,7 +332,7 @@ public class JarOutputRepositoryManager {
                 modifiedResourceFilesFull.add(FileUtil.applyPath(resourceCreator.getPaths(), fileName).getPath());
                 if (writeOsgiManifest && OsgiManifest.isManifestFileName(entryName) && !module.isDefault()) {
                     this.manifestWritten = true;
-                    return new JarEntryManifestFileObject(outputJarFile.getPath(), jarOutputStream, entryName, module);
+                    return new JarEntryManifestFileObject(outputJarFile.getPath(), jarOutputStream, entryName, module, osgiProvidedBundles);
                 }
             }
             return new JarEntryFileObject(outputJarFile.getPath(), jarOutputStream, entryName);

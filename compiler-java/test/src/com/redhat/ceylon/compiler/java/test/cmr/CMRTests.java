@@ -1317,6 +1317,67 @@ public class CMRTests extends CompilerTests {
     }
 
     @Test
+    public void testMdlOsgiManifestFiltersProvidedBundles() throws IOException {
+        compile("modules/osgi/a/module.ceylon",
+                "modules/osgi/a/package.ceylon",
+                "modules/osgi/a/A.ceylon");
+
+        ArrayList<String> options = new ArrayList<>(defaultOptions);
+        options.addAll(Arrays.asList(
+                    "-osgi-provided-bundles", 
+                    "com.redhat.ceylon.compiler.java.test.cmr.modules.osgi.a , ceylon.language"));
+        
+        compilesWithoutWarnings(
+                options,
+                "modules/osgi/b/module.ceylon",
+                "modules/osgi/b/package.ceylon",
+                "modules/osgi/b/B.ceylon");
+
+        final String moduleBName = "com.redhat.ceylon.compiler.java.test.cmr.modules.osgi.b";
+        final String moduleVersion = "1.1.0";
+
+        final Manifest manifest = getManifest(moduleBName, moduleVersion);
+
+        final String[] requireBundle = ((String) manifest.getMainAttributes()
+                .get(OsgiManifest.Require_Bundle)).split(",");
+        assertEquals(1, requireBundle.length);
+
+        assertThat(Arrays.asList(requireBundle), CoreMatchers.hasItems(
+                "com.redhat.ceylon.dist;bundle-version="+Versions.CEYLON_VERSION_NUMBER+";visibility:=reexport"));
+    }
+
+    @Test
+    public void testMdlOsgiManifestFiltersProvidedBundle() throws IOException {
+        compile("modules/osgi/a/module.ceylon",
+                "modules/osgi/a/package.ceylon",
+                "modules/osgi/a/A.ceylon");
+
+        ArrayList<String> options = new ArrayList<>(defaultOptions);
+        options.addAll(Arrays.asList(
+                    "-osgi-provided-bundles", 
+                    "com.redhat.ceylon.compiler.java.test.cmr.modules.osgi.a"));
+        
+        compilesWithoutWarnings(
+                options,
+                "modules/osgi/b/module.ceylon",
+                "modules/osgi/b/package.ceylon",
+                "modules/osgi/b/B.ceylon");
+
+        final String moduleBName = "com.redhat.ceylon.compiler.java.test.cmr.modules.osgi.b";
+        final String moduleVersion = "1.1.0";
+
+        final Manifest manifest = getManifest(moduleBName, moduleVersion);
+
+        final String[] requireBundle = ((String) manifest.getMainAttributes()
+                .get(OsgiManifest.Require_Bundle)).split(",");
+        assertEquals(2, requireBundle.length);
+
+        assertThat(Arrays.asList(requireBundle), CoreMatchers.hasItems(
+                "ceylon.language;bundle-version="+Versions.CEYLON_VERSION_NUMBER+";visibility:=reexport",
+                "com.redhat.ceylon.dist;bundle-version="+Versions.CEYLON_VERSION_NUMBER+";visibility:=reexport"));
+    }
+
+    @Test
     public void testMdlOsgiManifestReexportsSharedImportedModules() throws IOException {
         compile("modules/osgi/a/module.ceylon",
                 "modules/osgi/a/package.ceylon",
