@@ -19,6 +19,8 @@
  */
 package com.redhat.ceylon.compiler.java.test.interop;
 
+import java.util.Arrays;
+
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -558,5 +560,14 @@ public class InteropTests extends CompilerTests {
     public void testIopBug2331(){
         compile("Bug2331Java.java");
         compile("Bug2331.ceylon");
+    }
+
+    @Test
+    public void testIopJavaSerialization() throws Throwable{
+        compile("JavaSerialization.ceylon", "javaSerializationRoundTrip_.java");
+        runInJBossModules("run",
+                "com.redhat.ceylon.compiler.java.test.interop",
+                Arrays.asList(//"com.redhat.ceylon.compiler.java.test.interop",
+                        "--run", "com.redhat.ceylon.compiler.java.test.interop.javaSerializationRoundTrip"));
     }
 }

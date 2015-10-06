@@ -410,6 +410,10 @@ public class StructureTests extends CompilerTests {
     public void testKlsMajikNullaryCtor(){
         compareWithJavaSource("klass/MajikNullaryCtor");
     }
+    @Test
+    public void testKlsJavaIoSerializable(){
+        compareWithJavaSource("klass/JavaIoSerializable");
+    }
     //
     // Methods
     
