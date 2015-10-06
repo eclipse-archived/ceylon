@@ -42,6 +42,7 @@ public class LazyClass extends Class implements LazyContainer {
     private boolean isTypeParamsLoaded = false;
     private boolean isTypeParamsLoaded2 = false;
     private boolean local = false;
+    private boolean hasJpaConstructor;
 
     @Override
     protected java.lang.Class<?> getModelClass() {
@@ -416,5 +417,14 @@ public class LazyClass extends Class implements LazyContainer {
     public boolean isDeprecated() {
         // requires no lazy-loading
         return super.isDeprecated();
+    }
+
+    public boolean hasJpaConstructor() {
+        load();
+        return hasJpaConstructor;
+    }
+    
+    public void setHasJpaConstructor(boolean hasJpaConstructor) {
+        this.hasJpaConstructor = hasJpaConstructor;
     }
 }

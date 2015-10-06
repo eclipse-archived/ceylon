@@ -108,6 +108,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     private static final String CEYLON_PACKAGE_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.Package";
     public static final String CEYLON_IGNORE_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.Ignore";
     private static final String CEYLON_CLASS_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.Class";
+    private static final String CEYLON_JPA_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.Jpa";
     private static final String CEYLON_ENUMERATED_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.Enumerated";
     //private static final String CEYLON_CONSTRUCTOR_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.Constructor";
     //private static final String CEYLON_PARAMETERLIST_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.ParameterList";
@@ -1315,6 +1316,16 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         }
     };
     
+    private void setHasJpaConstructor(LazyClass c, ClassMirror classMirror) {
+        for(MethodMirror methodMirror : classMirror.getDirectMethods()){
+            if (methodMirror.isConstructor()
+                    && methodMirror.getAnnotation(CEYLON_JPA_ANNOTATION) != null) {
+                c.setHasJpaConstructor(true);
+                break;
+            }
+        }
+    }
+    
     private List<MethodMirror> getClassConstructors(ClassMirror classMirror, MethodMirrorFilter p) {
         LinkedList<MethodMirror> constructors = new LinkedList<MethodMirror>();
         boolean isFromJDK = isFromJDK(classMirror);
@@ -2064,6 +2075,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         MethodMirror constructor = null;
         if (klass instanceof LazyClass) {
             constructor = ((LazyClass)klass).getConstructor();
+            setHasJpaConstructor((LazyClass)klass, classMirror);
         }
         
         // Set up enumerated constructors before looking at getters,
