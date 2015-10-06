@@ -120,6 +120,20 @@ public class JsCompiler {
                 super.visit(that);
             }
         }
+        @Override
+        public void visit(Tree.ModuleDescriptor that) {
+            if (isForBackend(that.getAnnotationList(), Backend.JavaScript, that.getUnit())) {
+                super.visit(that);
+            } else {
+                addErrors(that);
+            }
+        }
+        @Override
+        public void visit(Tree.ImportModule that) {
+            if (isForBackend(that.getAnnotationList(), Backend.JavaScript, that.getUnit())) {
+                super.visit(that);
+            }
+        }
     };
     
     private final Visitor unitVisitor = new Visitor() {
@@ -331,6 +345,7 @@ public class JsCompiler {
     private void compileUnit(PhasedUnit pu, JsIdentifierNames names) throws IOException {
         pu.getCompilationUnit().visit(unitVisitor);
         if (exitCode != 0) {
+            pu.getCompilationUnit().visit(errorVisitor);
             return;
         }
         if (errCount == 0 || !stopOnErrors) {
