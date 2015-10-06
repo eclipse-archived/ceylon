@@ -102,7 +102,7 @@ public class RuntimeModelLoader extends ReflectionModelLoader {
         }
         try{
             return classLoader.loadClass(name);
-        }catch(ClassNotFoundException x){
+        }catch(ClassNotFoundException|NoClassDefFoundError x){
             return null;
         }
     }
