@@ -35,6 +35,7 @@ import com.redhat.ceylon.model.typechecker.model.Element;
 import com.redhat.ceylon.model.typechecker.model.Functional;
 import com.redhat.ceylon.model.typechecker.model.Function;
 import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
+import com.redhat.ceylon.model.typechecker.model.Interface;
 import com.redhat.ceylon.model.typechecker.model.ModelUtil;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.ParameterList;
@@ -411,7 +412,7 @@ class Strategy {
             boolean constrained = 
                     (cls.getCaseValues() != null 
                     && !cls.getCaseValues().isEmpty())
-                    || Decl.hasOnyValueConstructors(cls);
+                    || Decl.hasOnlyValueConstructors(cls);
             
             return hasDelegatableSuper
                     && !constrained;
@@ -474,20 +475,42 @@ class Strategy {
     }
 
     public static boolean introduceJavaIoSerializable(
-            com.redhat.ceylon.compiler.typechecker.tree.Tree.ClassOrInterface def) {
-        return introduceJavaIoSerializable(def.getDeclarationModel());
-    }
-
-    public static boolean introduceJavaIoSerializable(
-            ClassOrInterface declarationModel) {
-        if (declarationModel instanceof Class
-                && !(declarationModel instanceof ClassAlias)) {
-            Class cls = (Class)declarationModel;
-            if (!cls.isAnonymous()
-                    && declarationModel.getExtendedType() != null
-                    && (declarationModel.getExtendedType().isBasic()
-                    || declarationModel.getExtendedType().isObject())) {
+            Class cls) {
+        if (!(cls instanceof ClassAlias)) {
+            if ((!Decl.hasOnlyValueConstructors(cls) || (cls.isAnonymous()))
+                    && cls.getExtendedType() != null
+                    && (cls.getExtendedType().isBasic()
+                    || cls.getExtendedType().isObject())) {
                 return true;
+            }
+        }
+        return false;
+    }
+    
+    /** Should the given class have a readResolve() method added ?
+     * @param ser */
+    public static boolean addReadResolve(Class cls, Interface ser) {
+        if (cls.isAnonymous()
+                && cls.isToplevel()) {
+            // It explicitly inherits Serializable 
+            if (cls.inherits(ser)) {
+                return true;
+            }
+            // It has had Serializable introduced implicitly:
+            // Since Serializable hidden from the Ceylon model
+            // we have to iterate up the tree to figure it out...
+            TypeDeclaration c = cls;
+            while(c != null) {
+                if (c instanceof Class
+                        && Strategy.introduceJavaIoSerializable((Class)c)) {
+                    return true;
+                }
+                if (c.getExtendedType() != null) {
+                    c = c.getExtendedType().getDeclaration();
+                } else {
+                    break;
+                }
+                
             }
         }
         return false;

@@ -895,7 +895,7 @@ public class Decl {
         return false;
     }
     
-    public static boolean hasOnyValueConstructors(Class cls) {
+    public static boolean hasOnlyValueConstructors(Class cls) {
         if (cls.getParameterList() == null) {
             for (Declaration d : cls.getMembers()) {
                 if (d instanceof Constructor &&

@@ -274,11 +274,12 @@ public class ClassTransformer extends AbstractTransformer {
         if (Strategy.generateJpaCtor(def)) {
             buildJpaConstructor((Class)def.getDeclarationModel(), classBuilder);
         }
-        if (Strategy.introduceJavaIoSerializable(def)) {
-            classBuilder.introduce(make().QualIdent(syms().serializableType.tsym));
-        }
+        
         if (model instanceof Class
-                && !(model instanceof ClassAlias)) { 
+                && !(model instanceof ClassAlias)) {
+            if (Strategy.introduceJavaIoSerializable((Class)model)) {
+                classBuilder.introduce(make().QualIdent(syms().serializableType.tsym));
+            }
             serialization((Class)model, classBuilder);
         }
         
@@ -5075,6 +5076,11 @@ public class ClassTransformer extends AbstractTransformer {
         ClassDefinitionBuilder objectClassBuilder = ClassDefinitionBuilder.object(
                 this, javaClassName, name, Decl.isLocal(klass)).forDefinition(klass);
         
+        if (Strategy.introduceJavaIoSerializable(klass)) {
+            objectClassBuilder.introduce(make().QualIdent(syms().serializableType.tsym));
+        }
+        makeReadResolve(objectClassBuilder, klass, model);
+        
         // Make sure top types satisfy reified type
         if (model == null || !model.isNativeHeader()) {
             addReifiedTypeInterface(objectClassBuilder, klass);
@@ -5187,6 +5193,27 @@ public class ClassTransformer extends AbstractTransformer {
         return result;
     }
     
+    private void makeReadResolve(ClassDefinitionBuilder objectClassBuilder,
+            Class cls, 
+            Value model) {
+        Interface ser = (Interface)loader().getJDKBaseModule().getPackage("java.io").getDirectMember("Serializable", null, false);
+        if (Strategy.addReadResolve(cls, ser)) {
+            MethodDefinitionBuilder readResolve = MethodDefinitionBuilder.systemMethod(this, "readResolve");
+            readResolve.modifiers(PRIVATE);
+            readResolve.resultType(null, make().Type(syms().objectType));
+            JCExpression apply;
+            if (cls.isToplevel()) {
+                apply = make().Apply(null,
+                    naming.makeQualifiedName(naming.makeTypeDeclarationExpression(null, cls, DeclNameFlag.QUALIFIED), model, Naming.NA_MEMBER | Naming.NA_GETTER),
+                    List.<JCExpression>nil());
+            } else {
+                apply = makeNull();
+            }
+            readResolve.body(make().Return(apply));
+            objectClassBuilder.method(readResolve);
+        }
+    }
+
     /**
      * Makes a {@code main()} method which calls the given top-level method
      * @param def
