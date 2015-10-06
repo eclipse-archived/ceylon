@@ -15,6 +15,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.IdentityHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
@@ -137,6 +138,8 @@ public class JsCompiler {
     };
     
     private final Visitor unitVisitor = new Visitor() {
+        private final IdentityHashMap<Unit, Integer> javaUnits = new IdentityHashMap<>();
+
         private boolean hasErrors(Node that) {
             boolean r=false;
             for (Message m: that.getErrors()) {
@@ -241,8 +244,10 @@ public class JsCompiler {
             }
             
             if (declarationUnit != null && nonCeylonUnit(declarationUnit)) {
-                if (!providedByAJavaNativeModuleImport(that.getUnit(), declarationUnit)) {
+                if (!providedByAJavaNativeModuleImport(that.getUnit(), declarationUnit) &&
+                        !javaUnits.containsKey(declarationUnit)) {
                     that.addUnsupportedError("cannot call Java declarations in Javascript", Backend.JavaScript);
+                    javaUnits.put(declarationUnit, 0);
                 }
             }
             super.visit(that);
@@ -259,8 +264,10 @@ public class JsCompiler {
             }
             
             if (declarationUnit != null && nonCeylonUnit(declarationUnit)) {
-                if (!providedByAJavaNativeModuleImport(that.getUnit(), declarationUnit)) {
+                if (!providedByAJavaNativeModuleImport(that.getUnit(), declarationUnit) &&
+                        !javaUnits.containsKey(declarationUnit)) {
                     that.addUnsupportedError("cannot call Java declarations in Javascript", Backend.JavaScript);
+                    javaUnits.put(declarationUnit, 0);
                 }
             }
             super.visit(that);
@@ -275,8 +282,10 @@ public class JsCompiler {
             }
             
             if (declarationUnit != null && nonCeylonUnit(declarationUnit)) {
-                if (!providedByAJavaNativeModuleImport(that.getUnit(), declarationUnit)) {
+                if (!providedByAJavaNativeModuleImport(that.getUnit(), declarationUnit) &&
+                        !javaUnits.containsKey(declarationUnit)) {
                     that.addUnsupportedError("cannot call Java declarations in Javascript", Backend.JavaScript);
+                    javaUnits.put(declarationUnit, 0);
                 }
             }
             super.visit(that);
