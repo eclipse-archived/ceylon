@@ -51,6 +51,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.LetExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.QualifiedMemberExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
 import com.redhat.ceylon.model.loader.JvmBackendUtil;
 import com.redhat.ceylon.model.loader.NamingBase.Prefix;
@@ -181,7 +182,7 @@ public class ExpressionTransformer extends AbstractTransformer {
      * the "outer" invocation (which generates the outer part of the tree) 
      * and even on the "inner" invocation (which generates the inner part of the tree)
      */
-    private Tree.QualifiedMemberExpression spreading = null;
+    private Tree.QualifiedMemberOrTypeExpression spreading = null;
     private Naming.SyntheticName memberPrimary = null;
     private ClassOrInterface withinSuperInvocation = null;
     private ClassOrInterface withinDefaultParameterExpression = null;
@@ -4050,21 +4051,7 @@ public class ExpressionTransformer extends AbstractTransformer {
     private JCExpression transform(Tree.QualifiedMemberExpression expr, TermTransformer transformer) {
         JCExpression result;
         if (expr.getMemberOperator() instanceof Tree.SafeMemberOp) {
-            Naming.SyntheticName tmpVarName = naming.alias("safe");
-            JCExpression typeExpr = makeJavaType(expr.getTarget().getQualifyingType(), JT_NO_PRIMITIVES);
-            JCExpression transExpr = transformMemberExpression(expr, tmpVarName.makeIdent(), transformer);
-            if (isFunctionalResult(expr.getTypeModel())) {
-                return transExpr;
-            }
-            // the marker we get for boxing on a QME with a SafeMemberOp is always unboxed
-            // since it returns an optional type, but that doesn't tell us if the underlying
-            // expr is or not boxed
-            boolean isBoxed = !CodegenUtil.isUnBoxed((TypedDeclaration)expr.getDeclaration());
-            transExpr = boxUnboxIfNecessary(transExpr, isBoxed, expr.getTarget().getType(), BoxingStrategy.BOXED);
-            JCExpression testExpr = make().Binary(JCTree.NE, tmpVarName.makeIdent(), makeNull());
-            JCExpression condExpr = make().Conditional(testExpr, transExpr, makeNull());
-            JCExpression primaryExpr = transformQualifiedMemberPrimary(expr);
-            result = makeLetExpr(tmpVarName, null, typeExpr, primaryExpr, condExpr);
+            result = transformSafeMemberOperator(expr, transformer);
         } else if (expr.getMemberOperator() instanceof Tree.SpreadOp) {
             result = transformSpreadOperator(expr, transformer);
         } else {
@@ -4074,14 +4061,31 @@ public class ExpressionTransformer extends AbstractTransformer {
         return result;
     }
 
-    
-    
-    private JCExpression transformSpreadOperator(final Tree.QualifiedMemberExpression expr, TermTransformer transformer) {
+    private JCExpression transformSafeMemberOperator(Tree.QualifiedMemberOrTypeExpression expr, TermTransformer transformer) {
+        Naming.SyntheticName tmpVarName = naming.alias("safe");
+        JCExpression typeExpr = makeJavaType(expr.getTarget().getQualifyingType(), JT_NO_PRIMITIVES);
+        JCExpression transExpr = transformMemberExpression(expr, tmpVarName.makeIdent(), transformer);
+        if (isFunctionalResult(expr.getTypeModel())) {
+            return transExpr;
+        }
+        // the marker we get for boxing on a QME with a SafeMemberOp is always unboxed
+        // since it returns an optional type, but that doesn't tell us if the underlying
+        // expr is or not boxed
+        boolean isBoxed = expr.getDeclaration() instanceof TypeDeclaration 
+                || !CodegenUtil.isUnBoxed((TypedDeclaration)expr.getDeclaration());
+        transExpr = boxUnboxIfNecessary(transExpr, isBoxed, expr.getTarget().getType(), BoxingStrategy.BOXED);
+        JCExpression testExpr = make().Binary(JCTree.NE, tmpVarName.makeIdent(), makeNull());
+        JCExpression condExpr = make().Conditional(testExpr, transExpr, makeNull());
+        JCExpression primaryExpr = transformQualifiedMemberPrimary(expr);
+        return makeLetExpr(tmpVarName, null, typeExpr, primaryExpr, condExpr);
+    }
+
+    private JCExpression transformSpreadOperator(final Tree.QualifiedMemberOrTypeExpression expr, TermTransformer transformer) {
         at(expr);
         
         boolean spreadMethodReferenceOuter = !expr.equals(this.spreading) && !isWithinInvocation() && isCeylonCallableSubtype(expr.getTypeModel());
         boolean spreadMethodReferenceInner = expr.equals(this.spreading) && isWithinInvocation();
-        Tree.QualifiedMemberExpression oldSpreading = spreading;
+        Tree.QualifiedMemberOrTypeExpression oldSpreading = spreading;
         if (spreadMethodReferenceOuter) {
             spreading = expr;
         }
@@ -4175,7 +4179,9 @@ public class ExpressionTransformer extends AbstractTransformer {
                 transformedElement = applyErasureAndBoxing(transformedElement, resultElementType, 
                         // don't trust the erased flag of expr, as it reflects the result type of the overall spread expr,
                         // not necessarily of the applied member
-                        CodegenUtil.hasTypeErased((TypedDeclaration)expr.getTarget().getDeclaration()), 
+                        expr.getTarget().getDeclaration() instanceof TypedDeclaration
+                         ? CodegenUtil.hasTypeErased((TypedDeclaration)expr.getTarget().getDeclaration())
+                         : false, 
                         !CodegenUtil.isUnBoxed(expr), BoxingStrategy.BOXED, resultElementType, 0);
                 
                 MethodDefinitionBuilder nextMdb = MethodDefinitionBuilder.systemMethod(this, "next");
@@ -4530,6 +4536,12 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
     
     private JCExpression transform(Tree.QualifiedTypeExpression expr, TermTransformer transformer) {
+        if (expr.getMemberOperator() instanceof Tree.SafeMemberOp) {
+            return transformSafeMemberOperator(expr, transformer);
+        }
+        if (expr.getMemberOperator() instanceof Tree.SpreadOp) {
+            return transformSpreadOperator(expr, transformer);
+        }
         JCExpression primaryExpr = transformQualifiedMemberPrimary(expr);
         return transformMemberExpression(expr, primaryExpr, transformer);
     }
