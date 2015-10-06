@@ -3,6 +3,9 @@ interface SpreadTest {
 }
 class Spread1() satisfies SpreadTest {
     shared actual String x() { return "S1"; }
+    shared class Internal(){
+      shared Spread1 fuera => outer;
+    }
 }
 class Spread2() satisfies SpreadTest {
     shared actual String x() { return "S2"; }
@@ -89,8 +92,11 @@ shared void operators() {
     if (is String s14_1 = spread14(2)[1]) {
         check(s14_1 == "HE", "spread 14 item 1");
     } else { fail("spread 14 item 1");}
-    check(spread14(2) == ["HE", "HE", "HE"], "spread14(2) == ``spread14(2)``");
+        check(spread14(2) == ["HE", "HE", "HE"], "spread14(2) == ``spread14(2)``");
     }
+    value spreadTypes = { spreadList.first, Spread1() }*.Internal();
+    check(spreadTypes.size==2, "Spread 15");
+    check(spreadTypes.first.fuera == spreadList.first, "Spread 16");
 
     check("hello" in "hello world", "in 1");
     check("world" in "hello world", "in 2");
