@@ -3,6 +3,7 @@ package com.redhat.ceylon.compiler.typechecker.tree;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -147,10 +148,13 @@ public class TreeUtil {
     
     public static boolean isForBackend(Set<String> backendNames,
             BackendSupport support) {
-        return isForBackend(backendNames, support.getSupportedBackends());
+        Set<String> sups = new HashSet<String>(support.getSupportedBackends().size() + 1);
+        sups.addAll(support.getSupportedBackends());
+        sups.add(Backend.None.nativeAnnotation);
+        return isForBackend(backendNames, sups);
     }
     
-    public static boolean isForBackend(Set<String> backendNames, 
+    private static boolean isForBackend(Set<String> backendNames,
             Set<String> backends) {
         if (backendNames != null) {
             if (!backends.containsAll(backendNames)) {

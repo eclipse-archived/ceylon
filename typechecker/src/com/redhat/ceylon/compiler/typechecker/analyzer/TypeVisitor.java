@@ -1639,6 +1639,6 @@ public class TypeVisitor extends Visitor {
     // validity of the code for the other backend 
     private boolean isNativeForWrongBackend(Set<String> backends) {
         return backends != null &&
-                !isForBackend(backends, unit.getSupportedBackends());
+                !isForBackend(backends, unit);
     }    
 }
