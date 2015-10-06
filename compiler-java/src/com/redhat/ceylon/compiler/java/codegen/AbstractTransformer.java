@@ -74,6 +74,7 @@ import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
 import com.redhat.ceylon.model.typechecker.model.Functional;
 import com.redhat.ceylon.model.typechecker.model.Generic;
 import com.redhat.ceylon.model.typechecker.model.Interface;
+import com.redhat.ceylon.model.typechecker.model.ModelUtil;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.ModuleImport;
 import com.redhat.ceylon.model.typechecker.model.Package;
@@ -1055,10 +1056,15 @@ public abstract class AbstractTransformer implements Transformation {
         if(decl.getContainer() instanceof ClassOrInterface == false)
             return decl;
         java.util.List<Type> signature = com.redhat.ceylon.model.typechecker.model.ModelUtil.getSignature(decl);
+        boolean overloaded = decl.isOverloaded() || decl.isAbstraction();
+        Declaration refinedDeclaration = decl.getRefinedDeclaration();
+        if(refinedDeclaration != null){
+            overloaded |= refinedDeclaration.isOverloaded() || refinedDeclaration.isAbstraction();
+        }
         ClassOrInterface container = (ClassOrInterface) decl.getContainer();
         HashSet<TypeDeclaration> visited = new HashSet<TypeDeclaration>();
         // start looking for it, but skip this type, only lookup upwards of it
-        TypedDeclaration firstRefinedDeclaration = getFirstRefinedDeclaration(container, decl, signature, visited, true);
+        TypedDeclaration firstRefinedDeclaration = getFirstRefinedDeclaration(container, decl, signature, visited, true, overloaded);
         // only keep the first refined decl if its type can be trusted: if it is not itself widening
         if(firstRefinedDeclaration != null){
             if(CodegenUtil.hasUntrustedType(firstRefinedDeclaration))
@@ -1069,24 +1075,24 @@ public abstract class AbstractTransformer implements Transformation {
 
     private TypedDeclaration getFirstRefinedDeclaration(TypeDeclaration typeDecl, TypedDeclaration decl, 
             java.util.List<Type> signature, HashSet<TypeDeclaration> visited,
-            boolean skipType) {
+            boolean skipType, boolean isOverloaded) {
         if(!visited.add(typeDecl))
             return null;
         if(!skipType){
-            TypedDeclaration member = (TypedDeclaration) typeDecl.getDirectMember(decl.getName(), signature, false);
+            TypedDeclaration member = (TypedDeclaration) typeDecl.getDirectMember(decl.getName(), signature, false, isOverloaded);
             if(member != null)
                 return member;
         }
         // look up
         // first look in super types
         if(typeDecl.getExtendedType() != null){
-            TypedDeclaration refinedDecl = getFirstRefinedDeclaration(typeDecl.getExtendedType().getDeclaration(), decl, signature, visited, false);
+            TypedDeclaration refinedDecl = getFirstRefinedDeclaration(typeDecl.getExtendedType().getDeclaration(), decl, signature, visited, false, isOverloaded);
             if(refinedDecl != null && refinedDecl.isShared())
                 return refinedDecl;
         }
         // look in interfaces
         for(Type interf : typeDecl.getSatisfiedTypes()){
-            TypedDeclaration refinedDecl = getFirstRefinedDeclaration(interf.getDeclaration(), decl, signature, visited, false);
+            TypedDeclaration refinedDecl = getFirstRefinedDeclaration(interf.getDeclaration(), decl, signature, visited, false, isOverloaded);
             if(refinedDecl != null && refinedDecl.isShared())
                 return refinedDecl;
         }
