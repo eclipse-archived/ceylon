@@ -15,7 +15,6 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.IdentityHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
@@ -138,7 +137,6 @@ public class JsCompiler {
     };
     
     private final Visitor unitVisitor = new Visitor() {
-        private final IdentityHashMap<Unit, Integer> javaUnits = new IdentityHashMap<>();
 
         private boolean hasErrors(Node that) {
             boolean r=false;
@@ -234,63 +232,23 @@ public class JsCompiler {
         }
         
         @Override
-        public void visit(Tree.BaseMemberOrTypeExpression that) {
+        public void visit(Tree.MemberOrTypeExpression that) {
             if (hasErrors(that)) return;
             Declaration declaration = nativeImplToJavascript(that.getDeclaration());
-            
             Unit declarationUnit = null;
             if (declaration != null) {
                 declarationUnit = declaration.getUnit();
             }
             
             if (declarationUnit != null && nonCeylonUnit(declarationUnit)) {
-                if (!providedByAJavaNativeModuleImport(that.getUnit(), declarationUnit) &&
-                        !javaUnits.containsKey(declarationUnit)) {
+                if (!providedByAJavaNativeModuleImport(that.getUnit(), declarationUnit)) {
                     that.addUnsupportedError("cannot call Java declarations in Javascript", Backend.JavaScript);
-                    javaUnits.put(declarationUnit, 0);
+                    return;
                 }
             }
             super.visit(that);
         }
         
-        @Override
-        public void visit(Tree.QualifiedMemberOrTypeExpression that) {
-            if (hasErrors(that)) return;
-            Declaration declaration = nativeImplToJavascript(that.getDeclaration());
-
-            Unit declarationUnit = null;
-            if (declaration != null) {
-                declarationUnit = declaration.getUnit();
-            }
-            
-            if (declarationUnit != null && nonCeylonUnit(declarationUnit)) {
-                if (!providedByAJavaNativeModuleImport(that.getUnit(), declarationUnit) &&
-                        !javaUnits.containsKey(declarationUnit)) {
-                    that.addUnsupportedError("cannot call Java declarations in Javascript", Backend.JavaScript);
-                    javaUnits.put(declarationUnit, 0);
-                }
-            }
-            super.visit(that);
-        }
-
-        public void visit(Tree.BaseType that) {
-            if (hasErrors(that)) return;
-            Declaration declaration = nativeImplToJavascript(that.getDeclarationModel());
-            Unit declarationUnit = null;
-            if (declaration != null) {
-                declarationUnit = declaration.getUnit();
-            }
-            
-            if (declarationUnit != null && nonCeylonUnit(declarationUnit)) {
-                if (!providedByAJavaNativeModuleImport(that.getUnit(), declarationUnit) &&
-                        !javaUnits.containsKey(declarationUnit)) {
-                    that.addUnsupportedError("cannot call Java declarations in Javascript", Backend.JavaScript);
-                    javaUnits.put(declarationUnit, 0);
-                }
-            }
-            super.visit(that);
-        }
-
         protected boolean providedByAJavaNativeModuleImport(
                 Unit currentUnit, Unit declarationUnit) {
             boolean isFromAJavaNativeModuleImport;
