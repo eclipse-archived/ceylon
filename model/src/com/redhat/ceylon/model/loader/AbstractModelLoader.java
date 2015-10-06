@@ -268,6 +268,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     private static final TypeMirror JAVA_DOUBLE_ARRAY_TYPE = simpleJDKObjectType("java.lang.DoubleArray");
     private static final TypeMirror JAVA_CHAR_ARRAY_TYPE = simpleJDKObjectType("java.lang.CharArray");
     private static final TypeMirror JAVA_BOOLEAN_ARRAY_TYPE = simpleJDKObjectType("java.lang.BooleanArray");
+    private static final TypeMirror JAVA_IO_SERIALIZABLE_TYPE_TYPE = simpleJDKObjectType("java.io.Serializable");
     
     private static TypeMirror simpleJDKObjectType(String name) {
         return new SimpleReflType(name, SimpleReflType.Module.JDK, TypeKind.DECLARED);
@@ -4161,7 +4162,8 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             for(TypeMirror iface : classMirror.getInterfaces()){
                 // ignore generated interfaces
                 if(sameType(iface, CEYLON_REIFIED_TYPE_TYPE) 
-                        || sameType(iface, CEYLON_SERIALIZABLE_TYPE))
+                        || sameType(iface, CEYLON_SERIALIZABLE_TYPE)
+                        || sameType(iface, JAVA_IO_SERIALIZABLE_TYPE_TYPE))
                     continue;
                 try{
                     klass.getSatisfiedTypes().add(getNonPrimitiveType(ModelUtil.getModule(klass), iface, klass, VarianceLocation.INVARIANT));
