@@ -221,6 +221,9 @@ public class ModuleManager implements BackendSupport {
         return modules;
     }
 
+    protected void setModules(Modules modules) {
+        this.modules = modules;
+    }
     /**
      * Returns the set of native backend names supported by
      * this ModuleManager. Returning an empty set signifies
