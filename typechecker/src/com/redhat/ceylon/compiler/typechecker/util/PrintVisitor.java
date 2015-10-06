@@ -132,12 +132,30 @@ public class PrintVisitor extends Visitor {
                     print("[captured]");
                 }
                 print(" : " + d);
+                Declaration rd = d.getRefinedDeclaration();
+                if (rd!=null && !rd.equals(d)) {
+                    Declaration container = 
+                            (Declaration) 
+                                rd.getContainer();
+                    print(" (refines " + container.getName() + 
+                            "." + rd.getName() + ")");
+                }
             }
         }
         if (node instanceof Tree.SpecifierStatement) {
             Declaration d = ((Tree.SpecifierStatement) node).getDeclaration();
             if (d!=null) {
                 print(" : " + d);
+            }
+            if (((Tree.SpecifierStatement) node).getRefinement()) {
+                Declaration rd = d.getRefinedDeclaration();
+                if (rd!=null && !rd.equals(d)) {
+                    Declaration container = 
+                            (Declaration) 
+                                rd.getContainer();
+                    print(" (refines " + container.getName() + 
+                            "." + rd.getName() + ")");
+                }
             }
         }
         if (node instanceof Tree.SimpleType) {
