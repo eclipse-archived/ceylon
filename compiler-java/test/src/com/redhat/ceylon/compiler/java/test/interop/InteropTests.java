@@ -554,4 +554,9 @@ public class InteropTests extends CompilerTests {
         compile("JpaCtor.ceylon");
     }
     
+    @Test
+    public void testIopBug2331(){
+        compile("Bug2331Java.java");
+        compile("Bug2331.ceylon");
+    }
 }
