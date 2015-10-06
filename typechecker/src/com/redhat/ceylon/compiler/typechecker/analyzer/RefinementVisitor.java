@@ -1690,6 +1690,15 @@ public class RefinementVisitor extends Visitor {
             Tree.BaseMemberExpression bme,
             Tree.SpecifierStatement that, 
             ClassOrInterface c) {
+        ClassOrInterface ci = 
+                (ClassOrInterface) 
+                    sv.getContainer();
+        Declaration refined = 
+                ci.getRefinedMember(sv.getName(), 
+                        null, false);
+        Value root = 
+                refined instanceof Value ? 
+                        (Value) refined : sv;
         final Reference rv = getRefinedMember(sv, c);
         if (!sv.isFormal() && !sv.isDefault()
                 && !sv.isShortcutRefinement()) { //this condition is here to squash a dupe message
@@ -1709,7 +1718,7 @@ public class RefinementVisitor extends Visitor {
         v.setActual(true);
         v.getAnnotations().add(new Annotation("shared"));
         v.getAnnotations().add(new Annotation("actual"));
-        v.setRefinedDeclaration(sv.getRefinedDeclaration());
+        v.setRefinedDeclaration(root);
         Unit unit = that.getUnit();
         v.setUnit(unit);
         v.setContainer(c);
