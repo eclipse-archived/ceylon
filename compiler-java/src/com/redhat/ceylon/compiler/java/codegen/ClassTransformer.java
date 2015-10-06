@@ -274,6 +274,9 @@ public class ClassTransformer extends AbstractTransformer {
         if (Strategy.generateJpaCtor(def)) {
             buildJpaConstructor((Class)def.getDeclarationModel(), classBuilder);
         }
+        if (Strategy.introduceJavaIoSerializable(def)) {
+            classBuilder.introduce(make().QualIdent(syms().serializableType.tsym));
+        }
         if (model instanceof Class
                 && !(model instanceof ClassAlias)) { 
             serialization((Class)model, classBuilder);

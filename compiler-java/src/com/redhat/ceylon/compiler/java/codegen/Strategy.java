@@ -472,5 +472,25 @@ class Strategy {
         }
         return false;
     }
+
+    public static boolean introduceJavaIoSerializable(
+            com.redhat.ceylon.compiler.typechecker.tree.Tree.ClassOrInterface def) {
+        return introduceJavaIoSerializable(def.getDeclarationModel());
+    }
+
+    public static boolean introduceJavaIoSerializable(
+            ClassOrInterface declarationModel) {
+        if (declarationModel instanceof Class
+                && !(declarationModel instanceof ClassAlias)) {
+            Class cls = (Class)declarationModel;
+            if (!cls.isAnonymous()
+                    && declarationModel.getExtendedType() != null
+                    && (declarationModel.getExtendedType().isBasic()
+                    || declarationModel.getExtendedType().isObject())) {
+                return true;
+            }
+        }
+        return false;
+    }
     
 }

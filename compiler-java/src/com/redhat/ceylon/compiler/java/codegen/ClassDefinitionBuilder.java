@@ -502,6 +502,7 @@ public class ClassDefinitionBuilder {
             String className = gen.naming.getCompanionClassName(decl, false);//.replaceFirst(".*\\.", "");
             concreteInterfaceMemberDefs = new ClassDefinitionBuilder(gen, className, decl.getName(), isLocal)
                 .ignoreAnnotations();
+            concreteInterfaceMemberDefs.introduce(gen.make().QualIdent(gen.syms().serializableType.tsym));
             concreteInterfaceMemberDefs.isCompanion = true;
         }
         return concreteInterfaceMemberDefs;
@@ -742,5 +743,9 @@ public class ClassDefinitionBuilder {
             }
         }
         return result;
+    }
+
+    public void introduce(JCExpression qualIdent) {
+        this.satisfies.add(qualIdent);
     }
 }
