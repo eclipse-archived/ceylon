@@ -4,7 +4,6 @@ import java.util.EnumSet;
 import java.util.List;
 
 import com.redhat.ceylon.common.Backend;
-import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Annotation;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
