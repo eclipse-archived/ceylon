@@ -178,7 +178,7 @@ public class JsCompiler {
             Unit importedDeclarationUnit = importedDeclaration.getUnit();
             if (importedDeclarationUnit != null && nonCeylonUnit(importedDeclarationUnit)) {
                 if (!providedByAJavaNativeModuleImport(that.getUnit(), importedDeclarationUnit)) {
-                    that.addUnexpectedError("cannot import Java declarations in Javascript", Backend.JavaScript);
+                    that.addUnsupportedError("cannot import Java declarations in Javascript", Backend.JavaScript);
                 }
             }
             super.visit(that);
@@ -205,7 +205,7 @@ public class JsCompiler {
                     importNativeBackend = TreeUtil.getNativeBackend(that.getAnnotationList(), that.getUnit());
                     if (!Backend.Java.nativeAnnotation.equals(importNativeBackend)
                             && !Backend.Java.nativeAnnotation.equals(moduleNativeBackend)) {
-                        that.getImportPath().addUnexpectedError("cannot import Java modules in Javascript", Backend.JavaScript);
+                        that.getImportPath().addUnsupportedError("cannot import Java modules in Javascript", Backend.JavaScript);
                     }
                 } else {
                     super.visit(that);
@@ -242,7 +242,7 @@ public class JsCompiler {
             
             if (declarationUnit != null && nonCeylonUnit(declarationUnit)) {
                 if (!providedByAJavaNativeModuleImport(that.getUnit(), declarationUnit)) {
-                    that.addUnexpectedError("cannot call Java declarations in Javascript", Backend.JavaScript);
+                    that.addUnsupportedError("cannot call Java declarations in Javascript", Backend.JavaScript);
                 }
             }
             super.visit(that);
@@ -260,7 +260,7 @@ public class JsCompiler {
             
             if (declarationUnit != null && nonCeylonUnit(declarationUnit)) {
                 if (!providedByAJavaNativeModuleImport(that.getUnit(), declarationUnit)) {
-                    that.addUnexpectedError("cannot call Java declarations in Javascript", Backend.JavaScript);
+                    that.addUnsupportedError("cannot call Java declarations in Javascript", Backend.JavaScript);
                 }
             }
             super.visit(that);
@@ -276,7 +276,7 @@ public class JsCompiler {
             
             if (declarationUnit != null && nonCeylonUnit(declarationUnit)) {
                 if (!providedByAJavaNativeModuleImport(that.getUnit(), declarationUnit)) {
-                    that.addUnexpectedError("cannot call Java declarations in Javascript", Backend.JavaScript);
+                    that.addUnsupportedError("cannot call Java declarations in Javascript", Backend.JavaScript);
                 }
             }
             super.visit(that);
