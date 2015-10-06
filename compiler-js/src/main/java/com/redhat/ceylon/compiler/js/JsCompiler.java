@@ -116,13 +116,15 @@ public class JsCompiler {
         }
         @Override
         public void visit(Tree.Declaration that) {
-            if (isForBackend(that.getAnnotationList(), Backend.JavaScript, that.getUnit())) {
+            if (isForBackend(that.getAnnotationList(), Backend.JavaScript, that.getUnit())
+                    || isForBackend(that.getAnnotationList(), Backend.None, that.getUnit())) {
                 super.visit(that);
             }
         }
         @Override
         public void visit(Tree.ModuleDescriptor that) {
-            if (isForBackend(that.getAnnotationList(), Backend.JavaScript, that.getUnit())) {
+            if (isForBackend(that.getAnnotationList(), Backend.JavaScript, that.getUnit())
+                    || isForBackend(that.getAnnotationList(), Backend.None, that.getUnit())) {
                 super.visit(that);
             } else {
                 addErrors(that);
@@ -130,7 +132,8 @@ public class JsCompiler {
         }
         @Override
         public void visit(Tree.ImportModule that) {
-            if (isForBackend(that.getAnnotationList(), Backend.JavaScript, that.getUnit())) {
+            if (isForBackend(that.getAnnotationList(), Backend.JavaScript, that.getUnit())
+                    || isForBackend(that.getAnnotationList(), Backend.None, that.getUnit())) {
                 super.visit(that);
             }
         }
