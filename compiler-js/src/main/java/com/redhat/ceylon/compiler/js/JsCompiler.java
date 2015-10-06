@@ -174,17 +174,7 @@ public class JsCompiler {
             if (that.getImportModel() == null) {
                 return;
             }
-            Declaration importedDeclaration = nativeImplToJavascript(importModel.getDeclaration());
-            if (importedDeclaration == null) {
-                return;
-            }
-            
-            Unit importedDeclarationUnit = importedDeclaration.getUnit();
-            if (importedDeclarationUnit != null && nonCeylonUnit(importedDeclarationUnit)) {
-                if (!providedByAJavaNativeModuleImport(that.getUnit(), importedDeclarationUnit)) {
-                    that.addUnsupportedError("cannot import Java declarations in Javascript", Backend.JavaScript);
-                }
-            }
+            javaUnit(that, importModel.getDeclaration(), "cannot import Java declarations in Javascript");
             super.visit(that);
         }
         @Override
@@ -234,20 +224,35 @@ public class JsCompiler {
             return declaration;
         }
         
-        @Override
-        public void visit(Tree.MemberOrTypeExpression that) {
-            if (hasErrors(that)) return;
-            Declaration declaration = nativeImplToJavascript(that.getDeclaration());
+        private boolean javaUnit(Node that, Declaration d, String msg) {
+            Declaration declaration = nativeImplToJavascript(d);
             Unit declarationUnit = null;
             if (declaration != null) {
                 declarationUnit = declaration.getUnit();
             }
-            
             if (declarationUnit != null && nonCeylonUnit(declarationUnit)) {
                 if (!providedByAJavaNativeModuleImport(that.getUnit(), declarationUnit)) {
                     that.addUnsupportedError("cannot call Java declarations in Javascript", Backend.JavaScript);
-                    return;
+                    return true;
                 }
+            }
+            return false;
+        }
+
+        @Override
+        public void visit(Tree.MemberOrTypeExpression that) {
+            if (hasErrors(that)) return;
+            if (javaUnit(that, that.getDeclaration(), "cannot call Java declarations in Javascript")) {
+                return;
+            }
+            super.visit(that);
+        }
+        
+        @Override
+        public void visit(Tree.BaseType that) {
+            if (hasErrors(that)) return;
+            if (javaUnit(that, that.getDeclarationModel(), "cannot call Java declarations in Javascript")) {
+                return;
             }
             super.visit(that);
         }
