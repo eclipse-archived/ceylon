@@ -47,12 +47,6 @@ final class useClassAliasCtor_ {
 @.com.redhat.ceylon.compiler.java.metadata.Class(extendsType = "com.redhat.ceylon.compiler.java.test.structure.constructor::ClassAliasCtor")
 class ClassAliasCtorDefaultSub extends .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassAliasCtor {
     
-    @.com.redhat.ceylon.compiler.java.metadata.Jpa
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    protected ClassAliasCtorDefaultSub() {
-        super();
-    }
-    
     ClassAliasCtorDefaultSub(@.com.redhat.ceylon.compiler.java.metadata.Name("j")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     final long j) {
@@ -70,12 +64,6 @@ class ClassAliasCtorDefaultSub extends .com.redhat.ceylon.compiler.java.test.str
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 @.com.redhat.ceylon.compiler.java.metadata.Class(extendsType = "com.redhat.ceylon.compiler.java.test.structure.constructor::ClassAliasCtor")
 class ClassAliasCtorQualDefaultSub extends .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassAliasCtor {
-    
-    @.com.redhat.ceylon.compiler.java.metadata.Jpa
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    protected ClassAliasCtorQualDefaultSub() {
-        super();
-    }
     
     ClassAliasCtorQualDefaultSub(@.com.redhat.ceylon.compiler.java.metadata.Name("j")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
@@ -95,12 +83,6 @@ class ClassAliasCtorQualDefaultSub extends .com.redhat.ceylon.compiler.java.test
 @.com.redhat.ceylon.compiler.java.metadata.Class(extendsType = "com.redhat.ceylon.compiler.java.test.structure.constructor::ClassAliasCtor")
 class ClassAliasCtorOtherSub extends .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassAliasCtor {
     
-    @.com.redhat.ceylon.compiler.java.metadata.Jpa
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    protected ClassAliasCtorOtherSub() {
-        super();
-    }
-    
     ClassAliasCtorOtherSub(@.com.redhat.ceylon.compiler.java.metadata.Name("j")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     final long j) {
@@ -118,12 +100,6 @@ class ClassAliasCtorOtherSub extends .com.redhat.ceylon.compiler.java.test.struc
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 @.com.redhat.ceylon.compiler.java.metadata.Class(extendsType = "com.redhat.ceylon.compiler.java.test.structure.constructor::ClassAliasCtor")
 class ClassAliasCtorAliasSub extends .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassAliasCtor {
-    
-    @.com.redhat.ceylon.compiler.java.metadata.Jpa
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    protected ClassAliasCtorAliasSub() {
-        super();
-    }
     
     ClassAliasCtorAliasSub(@.com.redhat.ceylon.compiler.java.metadata.Name("j")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
@@ -144,12 +120,6 @@ class ClassAliasCtorAliasSub extends .com.redhat.ceylon.compiler.java.test.struc
         constructors = true,
         extendsType = "com.redhat.ceylon.compiler.java.test.structure.constructor::ClassAliasCtor")
 class ClassAliasCtorAliasSub2 extends .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassAliasCtor {
-    
-    @.com.redhat.ceylon.compiler.java.metadata.Jpa
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    protected ClassAliasCtorAliasSub2() {
-        super();
-    }
     
     @.ceylon.language.SharedAnnotation$annotation$
     public ClassAliasCtorAliasSub2(@.com.redhat.ceylon.compiler.java.metadata.Name("j")

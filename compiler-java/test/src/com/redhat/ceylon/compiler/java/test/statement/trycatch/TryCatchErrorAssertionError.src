@@ -2,10 +2,6 @@ package com.redhat.ceylon.compiler.java.test.statement.trycatch;
 
 class AssertionErrorSubclass extends .ceylon.language.AssertionError {
     
-    protected AssertionErrorSubclass() {
-        super();
-    }
-    
     AssertionErrorSubclass(final .java.lang.String message) {
         super(message);
     }
