@@ -184,7 +184,9 @@ public class BmeGenerator {
     }
 
     static void generateQte(final Tree.QualifiedTypeExpression that, final GenerateJsVisitor gen) {
-        if (that.getDirectlyInvoked() && that.getMemberOperator() instanceof Tree.SafeMemberOp==false) {
+        if (that.getMemberOperator() instanceof Tree.SpreadOp) {
+            SequenceGenerator.generateSpread(that, gen);
+        } else if (that.getDirectlyInvoked() && that.getMemberOperator() instanceof Tree.SafeMemberOp==false) {
             if (gen.isInDynamicBlock() && that.getDeclaration() == null) {
                 gen.out("new ");
             }
