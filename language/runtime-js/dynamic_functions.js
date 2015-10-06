@@ -39,7 +39,7 @@ function pndo$(o) {
   else if (is$(o,{t:Anything}))print(o);
   else if (o.string)print(o.string);
   else {
-    console.log(o);
+    print(o.toString());
   }
 }
 ex$.pndo$=pndo$;
